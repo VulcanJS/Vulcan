@@ -1,0 +1,28 @@
+<head>
+  <title>The Grid</title>
+</head>
+
+<body>
+  <div>
+    {{> loginButtons}}
+  </div>
+  <div style='clear:both;'></div>
+  <div>
+    {{> posts}}
+  </div>
+</body>
+
+<template name="posts">
+  <h2>Posts</h2>
+  <ul>
+    {{#each posts}}
+      {{> post}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="post">
+  <li>
+    <div class="headline">{{headline}}</div>
+  </li>
+</template>
