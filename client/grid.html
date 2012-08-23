@@ -3,23 +3,27 @@
 </head>
 
 <body>
+  {{> nav}}
+  {{> posts}}
+  {{> selected_post}}
+</body>
+
+<template name="nav">
   <header class="header grid">
     <h1 class="logo"><a href="/">The Grid</a></h1>
     <ul class="nav site-nav">
-      <li><a href="/">Top</a></li>
-      <li><a href="/">New</a></li>
-      <li><a href="/">Ask</a></li>
-      <li><a href="/">Show</a></li>
-      <li><a href="/">Jobs</a></li>
+      <li><a href="#">Top</a></li>
+      <li><a href="#">New</a></li>
+      <li><a href="#">Ask</a></li>
+      <li><a href="#">Show</a></li>
+      <li><a href="#">Jobs</a></li>
     </ul>
     <ul class="nav user-nav">
       <li>{{> loginButtons}}</li>
       <li><a class="submit" href="/">Submit</a></li>
     </ul>
   </header>
-  {{> posts}}
-  {{> selected_post}}
-</body>
+</template>
 
 <template name="posts">
   {{#if show}}
@@ -28,27 +32,6 @@
       {{> post}}
     {{/each}}
   </div>
-  {{/if}}
-</template>
-
-<template name="selected_post">
-  {{#if show}}
-  {{#with post}}
-  <div class="post grid">
-    {{> post}}
-    {{#if body}}
-    <div class="post-message">{{body}}</div>
-    {{/if}}
-    <div class="comment-new">
-      <div class="comment-field">
-        <textarea name="comment" rows="3" autofocus="autofocus"></textarea>
-      </div>
-      <div class="comment-submit">
-        <input type="submit" value="Add Comment" />
-      </div>
-    </div>
-  </div>
-  {{/with}}
   {{/if}}
 </template>
 
@@ -76,4 +59,55 @@
       <p class="post-meta">By <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span></p>
     </div>
   </div>
+</template>
+
+<template name="selected_post">
+  {{#if show}}
+  {{#with post}}
+  <div class="post grid">
+    {{> post}}
+    {{#if body}}
+    <div class="post-message">{{body}}</div>
+    {{/if}}
+    <div class="comment-new">
+      <div class="comment-field">
+        <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
+      </div>
+      <div class="comment-submit">
+        <input type="submit" value="Add Comment" />
+      </div>
+    </div>
+    {{> comments}}
+  </div>
+  {{/with}}
+  {{/if}}
+</template>
+
+<template name="comments">
+  {{#if show}}
+  <ul>
+    {{#each comments}}
+      {{> comment}}
+    {{/each}}
+  </ul>
+  {{else}}
+  <p>No comments.</p>
+  {{/if}}
+</template>
+
+<template name="comment">
+  <li class="comment">
+    <div class="comment-content">
+      <div class="comment-actions">
+        <a class="upvote icon-up" href="/">upvote</a>
+        <a class="downvote icon-down" href="/">downvote</a>
+      </div>
+      <div class="comment-meta">
+        <a class="comment-username">{{submitter}}</a>
+        <span class="comment-time">{{ago}}</span>
+        <a class="comment-permalink icon-link">link</a>
+      </div>
+      <div class="comment-text">{{body}}</div>
+    </div>
+  </li>
 </template>
