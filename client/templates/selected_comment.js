@@ -1,5 +1,6 @@
 Template.selected_comment.events = {
   'click input[type=submit]': function(){
+    console.log(1);
     var post = Session.get('selected_post');
     var parentComment = Session.get('selected_comment');
     var $comment = $('#comment');

@@ -7,6 +7,7 @@
     <div class="post-message">{{body}}</div>
     {{/if}}
     {{/with}}
+    {{#if show_comment_form}}
     <div class="comment-new">
       <div class="comment-field">
         <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
@@ -15,6 +16,7 @@
         <input type="submit" value="Add Comment" />
       </div>
     </div>
+    {{/if}}
     {{#if has_comments}}
     <ul>
     {{#each child_comments}}

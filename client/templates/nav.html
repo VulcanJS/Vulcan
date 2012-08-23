@@ -9,8 +9,13 @@
       <li><a href="#">Jobs</a></li>
     </ul>
     <ul class="nav user-nav">
-      <li>{{> loginButtons}}</li>
-      <li><a class="submit" href="/">Submit</a></li>
+      {{#if logged_in}}
+      <li><a id="signout" href="#">Sign Out</a></li>
+      {{else}}
+      <li><a id="signup" href="#">Sign Up</a></li>
+      <li><a id="signin" href="#">Sign In</a></li>
+      {{/if}}
+      <li><a id="submit" href="#">Submit</a></li>
     </ul>
   </header>
 </template>
