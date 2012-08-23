@@ -1,0 +1,7 @@
+.selected-post .post-rank{
+  display: none !important;
+}
+
+.selected-comment .comment-reply{
+  display: none;
+}

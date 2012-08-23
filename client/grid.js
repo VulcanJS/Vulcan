@@ -3,3 +3,5 @@ Meteor.subscribe('posts');
 
 Comments = new Meteor.Collection('comments');
 Meteor.subscribe('comments');
+
+Session.set('state', 'list');

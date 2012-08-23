@@ -1,11 +1,5 @@
-Template.posts.events = {
-  'click .discuss-link': function(){
-    Session.set('selected_post', this);
-  }
-};
-
 Template.posts.show = function(){
-  return !Session.get('selected_post');
+  return Session.equals('state', 'list');
 };
 
 Template.posts.posts = function(){

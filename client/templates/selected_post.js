@@ -14,7 +14,7 @@ Template.selected_post.events = {
 };
 
 Template.selected_post.show = function(){
-  return !!Session.get('selected_post');
+  return Session.equals('state', 'view_post');
 };
 
 Template.selected_post.post = function(){
