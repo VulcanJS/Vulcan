@@ -13,12 +13,14 @@
       <div class="comment-text">{{body}}</div>
       <a href="#" class="comment-reply">Reply</a>
     </div>
+    {{#unless repress_recursion}}
     <ul class="comment-children">
-    {{#each comments}}
+    {{#each child_comments}}
       {{#with this}}
       {{> comment}}
       {{/with}}
     {{/each}}
     </ul>
+    {{/unless}}
   </li>
 </template>

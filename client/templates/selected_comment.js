@@ -27,5 +27,6 @@ Template.selected_comment.post = function(){
 
 Template.selected_comment.comment = function(){
   var comment = Session.get('selected_comment');
+  comment.repress_recursion = true;
   return comment;
 };

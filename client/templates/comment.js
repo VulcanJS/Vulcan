@@ -11,7 +11,7 @@ Template.comment.ago = function(){
   return submitted.toString();
 };
 
-Template.comment.comments = function(){
+Template.comment.child_comments = function(){
   var post = Session.get('selected_post');
   var comments = Comments.find({ post: post._id, parent: this._id });
   return comments;

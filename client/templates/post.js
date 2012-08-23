@@ -1,5 +1,6 @@
 Template.post.events = {
   'click .discuss-link': function(){
+    this.top_level_comments = Comments.find({post: this._id, parent: null});
     Session.set('selected_post', this);
     Session.set('state', 'view_post');
   }
