@@ -1,3 +1,7 @@
+body{
+  background-image: url('/img/bg.png');
+}
+
 .selected-post .post-rank{
   display: none !important;
 }
