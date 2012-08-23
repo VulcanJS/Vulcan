@@ -10,3 +10,9 @@ Template.comment.ago = function(){
   var submitted = new Date(this.submitted);
   return submitted.toString();
 };
+
+Template.comment.comments = function(){
+  var post = Session.get('selected_post');
+  var comments = Comments.find({ post: post._id, parent: this._id });
+  return comments;
+};

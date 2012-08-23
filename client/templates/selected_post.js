@@ -21,3 +21,15 @@ Template.selected_post.post = function(){
   var post = Session.get('selected_post');
   return post;
 };
+
+Template.selected_post.has_comments = function(){
+  var post = Session.get('selected_post');
+  var comments = Comments.find({ post: post._id, parent: null });
+  return comments.count() > 0;
+};
+
+Template.selected_post.comments = function(){
+  var post = Session.get('selected_post');
+  var comments = Comments.find({ post: post._id, parent: null });
+  return comments;
+};

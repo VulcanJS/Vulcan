@@ -13,5 +13,12 @@
       <div class="comment-text">{{body}}</div>
       <a href="#" class="comment-reply">Reply</a>
     </div>
+    <ul class="comment-children">
+    {{#each comments}}
+      {{#with this}}
+      {{> comment}}
+      {{/with}}
+    {{/each}}
+    </ul>
   </li>
 </template>
