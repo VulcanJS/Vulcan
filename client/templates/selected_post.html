@@ -1,0 +1,21 @@
+<template name="selected_post">
+  {{#if show}}
+  {{#with post}}
+  <div class="post grid">
+    {{> post}}
+    {{#if body}}
+    <div class="post-message">{{body}}</div>
+    {{/if}}
+    <div class="comment-new">
+      <div class="comment-field">
+        <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
+      </div>
+      <div class="comment-submit">
+        <input type="submit" value="Add Comment" />
+      </div>
+    </div>
+    {{> comments}}
+  </div>
+  {{/with}}
+  {{/if}}
+</template>

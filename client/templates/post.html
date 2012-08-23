@@ -1,0 +1,25 @@
+<template name="post">
+  <div class="post">
+    <ul class="post-actions">
+      <li class="post-share"><a class="share-link icon-share">
+        <span class="action">Share</span>
+      </a></li>
+      <li class="post-discuss"><a class="discuss-link icon-comment">
+        <span class="count">{{comments}}</span>
+        <span class="action">Discuss</span>
+      </a></li>
+      <li class="post-upvote"><a class="upvote-link">
+        <span class="count">{{votes}}</span>
+        <span class="action">Upvote</span>
+      </a></li>
+    </ul>
+    <div class="post-content">
+      <span class="post-rank">1</span>
+      <h3 class="post-heading">
+        <a href="/" class="post-title">{{headline}}</a>
+        <span class="post-domain"></span>
+      </h3>
+      <p class="post-meta">By <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span></p>
+    </div>
+  </div>
+</template>

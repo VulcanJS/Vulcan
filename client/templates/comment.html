@@ -1,0 +1,16 @@
+<template name="comment">
+  <li class="comment">
+    <div class="comment-content">
+      <div class="comment-actions">
+        <a class="upvote icon-up" href="/">upvote</a>
+        <a class="downvote icon-down" href="/">downvote</a>
+      </div>
+      <div class="comment-meta">
+        <a class="comment-username">{{submitter}}</a>
+        <span class="comment-time">{{ago}}</span>
+        <a class="comment-permalink icon-link">link</a>
+      </div>
+      <div class="comment-text">{{body}}</div>
+    </div>
+  </li>
+</template>

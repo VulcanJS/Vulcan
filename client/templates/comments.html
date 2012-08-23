@@ -1,0 +1,11 @@
+<template name="comments">
+  {{#if show}}
+  <ul>
+    {{#each comments}}
+      {{> comment}}
+    {{/each}}
+  </ul>
+  {{else}}
+  <p>No comments.</p>
+  {{/if}}
+</template>
