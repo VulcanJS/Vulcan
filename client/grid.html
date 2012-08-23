@@ -3,26 +3,77 @@
 </head>
 
 <body>
-  <div>
-    {{> loginButtons}}
-  </div>
-  <div style='clear:both;'></div>
-  <div>
-    {{> posts}}
-  </div>
+  <header class="header grid">
+    <h1 class="logo"><a href="/">The Grid</a></h1>
+    <ul class="nav site-nav">
+      <li><a href="/">Top</a></li>
+      <li><a href="/">New</a></li>
+      <li><a href="/">Ask</a></li>
+      <li><a href="/">Show</a></li>
+      <li><a href="/">Jobs</a></li>
+    </ul>
+    <ul class="nav user-nav">
+      <li>{{> loginButtons}}</li>
+      <li><a class="submit" href="/">Submit</a></li>
+    </ul>
+  </header>
+  {{> posts}}
+  {{> selected_post}}
 </body>
 
 <template name="posts">
-  <h2>Posts</h2>
-  <ul>
+  {{#if show}}
+  <div class="posts grid">
     {{#each posts}}
       {{> post}}
     {{/each}}
-  </ul>
+  </div>
+  {{/if}}
+</template>
+
+<template name="selected_post">
+  {{#if show}}
+  {{#with post}}
+  <div class="post grid">
+    {{> post}}
+    {{#if body}}
+    <div class="post-message">{{body}}</div>
+    {{/if}}
+    <div class="comment-new">
+      <div class="comment-field">
+        <textarea name="comment" rows="3" autofocus="autofocus"></textarea>
+      </div>
+      <div class="comment-submit">
+        <input type="submit" value="Add Comment" />
+      </div>
+    </div>
+  </div>
+  {{/with}}
+  {{/if}}
 </template>
 
 <template name="post">
-  <li>
-    <div class="headline">{{headline}}</div>
-  </li>
+  <div class="post">
+    <ul class="post-actions">
+      <li class="post-share"><a class="share-link icon-share">
+        <span class="action">Share</span>
+      </a></li>
+      <li class="post-discuss"><a class="discuss-link icon-comment">
+        <span class="count">{{comments}}</span>
+        <span class="action">Discuss</span>
+      </a></li>
+      <li class="post-upvote"><a class="upvote-link">
+        <span class="count">{{votes}}</span>
+        <span class="action">Upvote</span>
+      </a></li>
+    </ul>
+    <div class="post-content">
+      <span class="post-rank">1</span>
+      <h3 class="post-heading">
+        <a href="/" class="post-title">{{headline}}</a>
+        <span class="post-domain"></span>
+      </h3>
+      <p class="post-meta">By <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span></p>
+    </div>
+  </div>
 </template>
