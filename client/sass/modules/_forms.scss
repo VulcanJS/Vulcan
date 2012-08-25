@@ -1,0 +1,48 @@
+form{
+	@extend .grid-block;
+	.control-group{
+		margin-bottom:$grid-padding;
+		label{
+			float:left;
+		}
+		.controls{
+			margin-left:100px;
+		}
+	}
+	.form-actions{
+		@include cf;
+	}
+	input[type="text"], input[type="password"], textarea{
+		display:block;
+		padding:5px 6px;
+		width:100%;
+		font-size:14px;
+		@include border-box;
+		border:none;
+		@include transition(all, 500ms);	
+		@include box-shadow(inset 0px 0px 0px 1px black(0.2));
+		&:focus{
+			outline: none;
+			@include box-shadow(inset 0px 0px 0px 1px rgba($red,0.5),  0px 0px 5px 0px rgba($red,0.2));
+		}
+	}
+	input[type="text"], input[type="password"]{
+		height:30px;
+		line-height:20px;
+	}
+	textarea{
+		min-height:100px;
+		line-height:1.4;
+	}
+	input[type="submit"], button, .button, .btn{
+		background:$red;
+		color:white;
+		display:block;
+		padding:0px 10px;
+		border:none;
+		font-size:16px;
+		cursor:pointer;
+		margin:0;
+		float:right;
+	}
+}

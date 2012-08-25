@@ -1,0 +1,18 @@
+body, textarea, input, button, input[type="submit"], input[type="button"]{
+	font-family:"PT SANS", Helvetica, sans-serif;
+	color:$text;
+	line-height:1.6;
+}
+.post-title, .header, .post-rank, .button{
+	font-family:"kulturista-web", Rokkitt, Georgia, serif;
+}
+a{
+	text-decoration:none;
+	font-weight:bold;
+	&:link, &:visited, &:active{
+		color:$red;
+	}
+	&:hover{
+		color:black;
+	}
+}

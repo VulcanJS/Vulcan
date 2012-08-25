@@ -1,0 +1,92 @@
+// @import "susy";
+
+
+
+.grid{
+	width:74%;
+	margin:0 13%;
+}
+.grid-small{
+	width:320px;
+	margin:0 auto;
+}
+
+$break-small: 520px;
+$break-large: 1200px;
+
+
+
+@mixin grid($name, $breakpoint, $cols, $col-width, $gut-width, $grid-margin){
+	// @debug $breakpoint;
+	// @debug $cols;
+	// @debug $col-width;
+	// @debug $gut-width;
+	// @debug $grid-margin;
+	@include at-breakpoint($breakpoint){
+		$total-columns  : $cols;
+		$column-width   : $col-width;
+		$gutter-width   : $gut-width;
+		$grid-padding	: $grid-margin;
+		.#{$name} {
+			display:block;
+		}
+		.grid{
+			@include container;
+			// margin:0 $grid-margin;
+		}
+		#header{
+			margin-bottom:$gut-width;
+			.logo{
+				@include span-columns(1, $cols);
+
+			}
+			.tagline{
+				@include span-columns($cols - 1 omega, $cols);		
+			}
+		}
+		.project{
+			@include span-columns(1, $cols);
+			&:nth-child(#{$cols+"n +"+$cols}){
+				@include span-columns(1 omega, $cols);
+			}	
+		}
+		.project{
+			margin-bottom:$gut-width*2;
+		}
+	}
+}
+
+// PHONE
+$phone-max-width:400px;
+@mixin phone(){
+	$name: "phone";
+	$min-width:0;
+	$max-width:$phone-max-width;
+	$cols:2;
+	$col-width:44%;
+	$gutter:12%;
+	$margin:20px;
+	$breakpoint:$min-width $cols $max-width;
+	@include grid($name, $breakpoint, $cols, $col-width, $gutter, $margin);
+	@include at-breakpoint($breakpoint){
+
+	}
+}
+// @include phone;
+
+//LARGE
+$large-max-width:1200px;
+@mixin large{
+	$name: "large";
+	$min-width:$phone-max-width+1;
+	$cols: 4;
+	$col-width:18%;
+	$gutter:9.3%;
+	$margin:120px;
+	$breakpoint: $min-width $cols;
+	@include grid($name, $breakpoint, $cols, $col-width, $gutter, $margin);
+	@include at-breakpoint($breakpoint){
+		
+	}
+}
+// @include large;

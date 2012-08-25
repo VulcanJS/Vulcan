@@ -1,0 +1,70 @@
+.comment{
+	.comment{
+		margin-left:$grid-unit;
+	}
+}
+.comment-content{
+	position:relative;
+	@extend .grid-block;
+	font-size:14px;
+}
+.comment-meta{
+	margin-bottom:5px;
+	.comment-username, .comment-time, .comment-permalink{
+		display:inline-block;
+		margin-right:4px;
+	}
+	color:$light-text;
+	.comment-permalink{
+		position:relative;
+		@include hide-text;
+		width:20px;
+		color:$light-text;
+		&:before{
+			position:absolute;
+			display:block;
+			top:1px;
+			left:0;
+			text-indent:0;
+		}
+		&:hover:before{
+			color:$red;
+		}
+	}
+}
+.comment-actions{
+	position:absolute;
+	left:-40px;
+	top:0px;
+	a{
+		position:relative;
+		display:block;
+		height:30px;
+		width:30px;
+		background:black(0.07);
+		overflow:hidden;
+		@include hide-text;
+		&.upvote{
+			margin-bottom:2px;
+		}
+		&:before{
+			display:block;
+			position:absolute;
+			height:30px;
+			width:30px;
+			line-height:30px;
+			text-align:center;
+			text-indent:0;
+			color:black(0.2);
+		}
+		&:hover{
+			background:black(0.17);
+			&:before{
+				color:white(1);
+			}
+		}
+	}
+}
+.comment-new{
+	@extend .grid-block;
+}
