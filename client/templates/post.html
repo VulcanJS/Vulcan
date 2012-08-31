@@ -8,10 +8,17 @@
         <span class="count">{{comments}}</span>
         <span class="action">Discuss</span>
       </a></li>
+      {{#if voted}}
+      <li class="post-upvote"><a class="upvote-link voted">
+        <span class="count">{{votes}}</span>
+        <span class="action">Upvote</span>
+      </a></li>
+      {{else}}
       <li class="post-upvote"><a class="upvote-link">
         <span class="count">{{votes}}</span>
         <span class="action">Upvote</span>
       </a></li>
+      {{/if}}
     </ul>
     <div class="post-content">
       <span class="post-rank">1</span>

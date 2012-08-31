@@ -9,11 +9,8 @@ Meteor.publish('posts', function() {
 Meteor.startup(function(){
   Posts.allow({
       insert: function(){ return true; }
-    , update: function(userId, post){
-        // TODO: allow updates to body by submitter
-        // TODO: allow updates to * by admins
-        return false;
-    }
+    , update: function(){ return false; }
+    , remove: function(){ return false; }
   });
 });
 
@@ -28,10 +25,23 @@ Meteor.publish('comments', function() {
 Meteor.startup(function(){
   Comments.allow({
       insert: function(){ return true; }
-    , update: function(userId, comment){
-        // TODO: allow updates to body by submitter
-        // TODO: allow updates to * by admins
-        return false;
-    }
+    , update: function(){ return false; }
+    , remove: function(){ return false; }
+  });
+});
+
+// MyVotes
+
+MyVotes = new Meteor.Collection('myvotes');
+
+Meteor.publish('myvotes', function() {
+  return MyVotes.find();
+});
+
+Meteor.startup(function(){
+  MyVotes.allow({
+      insert: function(){ return false; }
+    , update: function(){ return false; }
+    , remove: function(){ return false; }
   });
 });
