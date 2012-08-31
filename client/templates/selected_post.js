@@ -4,14 +4,7 @@ Template.selected_post.events = {
 
     var post = Session.get('selected_post');
     var $comment = $('#comment');
-    var comment = {
-        post: post._id
-      , body: $comment.val()
-      , submitter: Meteor.user().username
-      , submitted: new Date().getTime()
-    };
-
-    Comments.insert(comment);
+    Meteor.call('comment', post, null, $comment.val());
     $comment.val('');
   }
 };

@@ -8,7 +8,7 @@ Meteor.publish('posts', function() {
 
 Meteor.startup(function(){
   Posts.allow({
-      insert: function(){ return true; }
+      insert: function(){ return true; }  //TODO: change to false
     , update: function(){ return false; }
     , remove: function(){ return false; }
   });
@@ -24,7 +24,7 @@ Meteor.publish('comments', function() {
 
 Meteor.startup(function(){
   Comments.allow({
-      insert: function(){ return true; }
+      insert: function(){ return false; }
     , update: function(){ return false; }
     , remove: function(){ return false; }
   });

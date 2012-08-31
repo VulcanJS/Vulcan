@@ -20,6 +20,12 @@ Template.nav.events = {
       Session.set('previous_state', Session.get('state'));
       Session.set('state', 'signin');
   }
+
+  , 'click .user-nav #submit': function(event){
+      event.preventDefault();
+      Session.set('previous_state', Session.get('state'));
+      Session.set('state', 'submit');
+  }
 };
 
 Template.nav.logged_in = function(){

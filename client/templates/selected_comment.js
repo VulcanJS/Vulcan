@@ -5,15 +5,8 @@ Template.selected_comment.events = {
     var post = Session.get('selected_post');
     var parentComment = Session.get('selected_comment');
     var $comment = $('#comment');
-    var comment = {
-        post: post._id
-      , parent: parentComment._id
-      , body: $comment.val()
-      , submitter: Meteor.user().username
-      , submitted: new Date().getTime()
-    };
+    Meteor.call('comment', post, parentComment, $comment.val());
 
-    Comments.insert(comment);
     Session.set('selected_comment', null);
     Session.set('state', 'view_post');
   }
