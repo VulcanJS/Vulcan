@@ -1,10 +1,11 @@
 body{
-	background:#efefef url("/img/bg.png") top center;
-  cursor: default;
+	// background:#e9f3f7 url("/img/bg.png") top center;
+	background:#e9f3f7;
+	background:#edf5f8;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5){
 	body{
-		background:#efefef url("/img/bg@2x.png") top center;
+		// background:#e9f3f7 url("/img/bg@2x.png") top center;
 		background-size:10px 10px;
 	}
 }
@@ -16,4 +17,15 @@ body{
 }
 .debug{
 	display:none;
+}
+.hidden{
+	display:none;
+}
+.overlay{
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	z-index:50;
 }

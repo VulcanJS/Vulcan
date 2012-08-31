@@ -1,7 +1,5 @@
 .comment{
-	.comment{
-		margin-left:$grid-unit;
-	}
+	margin-left:30px;
 }
 .comment-content{
 	position:relative;
@@ -34,20 +32,22 @@
 }
 .comment-actions{
 	position:absolute;
-	left:-40px;
+	left:-30px;
 	top:0px;
 	a{
 		position:relative;
 		display:block;
 		height:30px;
 		width:30px;
-		background:black(0.07);
+		background:$light-blue;
+		@include box-shadow(0 1px 1px black(0.15));
 		overflow:hidden;
 		@include hide-text;
 		&.upvote{
-			margin-bottom:2px;
+			margin-bottom:1px;
 		}
-		&:before{
+		i{
+			font-size:12px;
 			display:block;
 			position:absolute;
 			height:30px;
@@ -55,16 +55,20 @@
 			line-height:30px;
 			text-align:center;
 			text-indent:0;
-			color:black(0.2);
+			color:$light-blue2;
 		}
 		&:hover{
-			background:black(0.17);
-			&:before{
-				color:white(1);
+			background:$highlight-color;
+			i{
+				color:white;
 			}
 		}
 	}
 }
 .comment-new{
 	@extend .grid-block;
+	@include cf;
+	.comment-field{
+		margin-bottom:$grid-margin;
+	}
 }

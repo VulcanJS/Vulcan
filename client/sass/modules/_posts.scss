@@ -12,7 +12,7 @@
 	margin-right:160px;
 	.post-info{
 		padding:$grid-padding - 2px $grid-padding;
-		margin-left:$grid-unit;
+		margin-left:30px;
 	}
 	.post-rank{
 		position:absolute;
@@ -35,17 +35,22 @@
 			height:100%;
 			display:table;
 			float:left;
-			width:$grid-unit;
-			@include background(linear-gradient(#f6f6f6, #eaeaea));
-			@include box-shadow(inset 0 1px 0 white, inset -1px 0 1px black(0.1));
+			width:30px;
+			// @include background(linear-gradient(#f3f6f8, #dfe3e5));
+			@include border-radius(3px 0 0 3px);
+			// background:$light-blue;
+			// @include box-shadow(inset 0 1px 0 white, inset -1px 0 1px black(0.1));
+			border-right:1px solid $lightest-grey;
 			i{
+				font-size:12px;
 				display:table-cell;
 				height:100%;
 				width:100%;
 				text-align:center;
 				// line-height:$grid-unit;
 				vertical-align:middle;
-				color:$light-text;
+				color:$light-blue2;
+				color:$red;
 				text-shadow:0px 1px 0px white;
 				&.icon-check{
 					display:none;
@@ -55,23 +60,20 @@
 				display:none;
 			}
 			&.not-voted:hover{
-				@include background(linear-gradient(#e5e5e5, #dfdbdb));
 				@include box-shadow(none);
-				background:$dark-grey;
+				background:$highlight-color url("/img/bg-header.png") top center;
 				i{
 					color:white;
 					text-shadow:none;
 				}
 			}
 			&.voted{
-				background: #fafafa;
 				cursor:default;
 				i.icon-up{
 					display:none;
 				}
 				i.icon-check{
-					// color:$lighter-text;
-					color:$red;
+					color:$blue;
 					display:table-cell;
 				}
 			}
@@ -103,10 +105,13 @@
 	float:right;
 	padding:0;
 	li{
+		position:relative;
 		float:left;
 		margin-left:$grid-margin;
 		a{
 			@extend .grid-block;
+			background:$light-blue;
+			background:white;
 			position:relative;
 			display:block;
 			padding:0;
@@ -118,6 +123,9 @@
 			color:$light-text;
 			font-size:36px;
 			line-height:50px;
+			// @include background(linear-gradient(/*right top,*/ #f6f6f6, #e3e3e3));
+			// @include box-shadow(inset 0 1px 0 white, 0 1px 1px black(0.15));
+			// background:#fffce6;
 			// &.medium{
 			// 	background-color:red(0.05);
 			// }
@@ -151,12 +159,22 @@
 			// &.gigahot{
 			// 	color:red(1);					
 			// }
+			&.share-link{
+				color:$blue;
+				color:$yellow;
+			}
+			&.discuss-link{
+				color:$green;
+			}
+			&.more-link{
+				color:$blue;
+			}
 			&:hover{
-				background:$dark-grey;
+				background:$highlight-color url("/img/bg-header.png") top center;
 				color:white;
 			}
 			&.voted{
-				background:$dark-grey;
+				background:$highlight-color;
 				color:white;
 				cursor: default;
 				.action{
@@ -186,7 +204,8 @@
 				bottom:5px;
 				left:0px;
 				font-size:13px;
-				color:$red;
+				color:$light-text;
+				// color:$red;
 			}
 		}
 	}
@@ -196,4 +215,57 @@
 	padding:20px;
 	margin-bottom:$grid-margin;
 	font-size:18px;
+}
+.share-options{
+	// height:$grid-unit;
+	position:absolute;
+	// width:200px;
+	left:-223px;
+	top:5px;
+	background:white;
+	border:1px solid $red;
+	@include border-radius(3px);
+	@include box-shadow(0px 1px 2px black(0.25));
+	z-index:100;
+	@include transition(all, 300ms);	
+	&.hidden{
+		display:block;
+		opacity:0;
+		pointer-events: none;
+		left:-210px;
+	}
+	&:after, &:before {
+		left: 100%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	&:after {
+		border-color: rgba(255, 255, 255, 0);
+		border-left-color: #ffffff;
+		border-width: 10px;
+		top: 20px;
+		margin-top: -10px;
+	}
+	&:before {
+		border-color: rgba(0, 0, 0, 0);
+		border-left-color: $red;
+		border-width: 11px;
+		top: 20px;
+		margin-top: -11px;
+	}
+	.buttons{
+		@include cf;
+		padding:15px 5px 5px 15px;
+		.button{
+			float:left;
+			margin-right:10px;
+			background:transparent;
+			padding:0px;
+		}
+	}
+
 }

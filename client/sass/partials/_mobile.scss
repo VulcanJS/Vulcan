@@ -14,9 +14,11 @@
 		margin-left:0;
 		margin-right:0;
 		padding:0 10px;
+		min-width:200px;
 	}
 	.header{
 		height:50px;
+		@include border-radius(0px);
 		.logo{
 			top:12px;
 		}
@@ -56,7 +58,8 @@
 	.post{
 		.post-content{
 			margin-right:50px;
-			min-height:90px;
+			margin-right:0px;
+			// min-height:90px;
 			.upvote-link{
 				width:30px;
 			}
@@ -65,22 +68,23 @@
 				padding:6px 4px 6px 8px;
 			}
 			.post-heading{
-				line-height:1.4;
 				.post-title{
+					line-height:1.2;
 					display:block;
-					margin-bottom:3px;
+					margin-bottom:4px;
 					font-size:18px;
 				}
 				.post-domain{
+					line-height:1;
 					display:block;
-					margin-bottom:3px;
+					margin-bottom:4px;
 					font-size:13px;
 				}	
 			}
 			.post-meta{
-				font-size:12px;
+				font-size:11px;
 				.comments{
-					display:none;
+					// display:none;
 				}
 				.unit{
 					font-size:0;
@@ -92,12 +96,13 @@
 			}
 		}
 		.post-actions{
+			display:none;
 			li{
 				float:none;
 				a{
 					height:40px;
 					width:40px;
-					font-size:30px;
+					font-size:30px;				
 					i{
 						display:block;
 						position:absolute;
@@ -105,7 +110,7 @@
 						left:0px;
 						width:100%;
 						height:100%;
-						line-height:44px;
+						line-height:40px;
 						text-align:center;
 					}
 					.count{
