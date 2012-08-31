@@ -7,18 +7,20 @@
           </div>
         </div>
       </li>
-      <li class="post-discuss"><a class="discuss-link icon-comment">
-        <i class="icon-comment"></i>
-        <span class="count">{{comments}}</span>
-        <span class="action">Discuss</span>
-      </a></li>
+      <li class="post-discuss">
+        <a class="discuss-link">
+          <i class="icon-comment"></i>
+          <span class="count">{{comments}}</span>
+          <span class="action">Discuss</span>
+        </a>
+      </li>
       <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
     </ul>
     <div class="post-content">
       <span class="post-rank">1</span>
       <div class="post-upvote">
         {{#if voted}}
-          <a class="upvote-link voted"><i class="icon-up"></i><span>Upvote</span></a>
+          <a class="upvote-link voted"><i class="icon-check"></i><span>Upvote</span></a>
         {{else}}
           <a class="upvote-link not-voted"><i class="icon-up"></i><span>Upvote</span></a>
         {{/if}}
@@ -26,9 +28,9 @@
       <div class="post-info">
         <h3 class="post-heading">
           <a href="/" class="post-title">{{headline}}</a>
-          <span class="post-domain"></span>
+          <span class="post-domain">news.ycombinator.com</span>
         </h3>
-        <p class="post-meta">By <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a href="/posts/503d8b390000007629000002">{{comments}} comments</a></span></p>
+        <p class="post-meta"><span class="points">{{votes}} <span class="unit">points </span></span>by  <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a href="/posts/503d8b390000007629000002">{{comments}} comments</a></span></p>
       </div>
     </div>
   </div>
