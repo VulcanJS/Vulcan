@@ -2,3 +2,4 @@ npm-debug.log
 *.scssc
 .sass-cache/*
 .DS_Store
+*-ck.js
