@@ -1,5 +1,7 @@
 Template.selected_post.events = {
-  'click input[type=submit]': function(){
+  'click input[type=submit]': function(evt){
+    evt.preventDefault();
+
     var post = Session.get('selected_post');
     var $comment = $('#comment');
     var comment = {
@@ -8,6 +10,7 @@ Template.selected_post.events = {
       , submitter: Meteor.user().username
       , submitted: new Date().getTime()
     };
+
     Comments.insert(comment);
     $comment.val('');
   }

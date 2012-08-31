@@ -1,5 +1,6 @@
 Template.post.events = {
-    'click .discuss-link': function(){
+    'click .discuss-link': function(evt){
+      evt.preventDefault();
       Session.set('selected_post', this);
       Session.set('state', 'view_post');
   }
