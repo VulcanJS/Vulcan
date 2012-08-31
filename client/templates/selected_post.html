@@ -9,12 +9,14 @@
     {{/with}}
     {{#if show_comment_form}}
     <div class="comment-new">
-      <div class="comment-field">
-        <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
-      </div>
-      <div class="comment-submit">
-        <input type="submit" value="Add Comment" />
-      </div>
+      <form>
+        <div class="comment-field">
+          <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
+        </div>
+        <div class="comment-submit">
+          <input type="submit" value="Add Comment" />
+        </div>
+      </form>
     </div>
     {{/if}}
     {{#if has_comments}}
