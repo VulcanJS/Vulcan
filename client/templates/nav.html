@@ -1,14 +1,26 @@
 <template name="nav">
+  <div id="menu" class="hidden">
+    <ul>
+      <li><a href="/">Top</a></li>
+      <li><a href="/">New</a></li>
+      <li><a href="/">Ask</a></li>
+      <li><a href="/">Show</a></li>
+      <li><a href="/">Jobs </a></li>
+      <li><a href="/">Sign Up </a></li>
+      <li><a href="/">Log In</a></li>
+    </ul>
+  </div>
   <header class="header grid">
     <h1 class="logo"><a href="/">The Grid</a></h1>
-    <ul class="nav site-nav">
+    <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>Menu</span></a><a href="/submit" class="mobile mobile-button submit"><i class="icon-plus"></i><span>Submit</span></a>
+    <ul class="nav site-nav desktop">
       <li><a href="#">Top</a></li>
       <li><a href="#">New</a></li>
       <li><a href="#">Ask</a></li>
       <li><a href="#">Show</a></li>
       <li><a href="#">Jobs</a></li>
     </ul>
-    <ul class="nav user-nav">
+    <ul class="nav user-nav desktop">
       {{#if logged_in}}
       <li><a id="signout" href="#">Sign Out</a></li>
       {{else}}

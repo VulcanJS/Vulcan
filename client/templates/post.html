@@ -1,32 +1,35 @@
 <template name="post">
   <div class="post">
     <ul class="post-actions">
-      <li class="post-share"><a class="share-link icon-share">
-        <span class="action">Share</span>
-      </a></li>
+      <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">Share</span></a>
+        <div class="share-options hidden">
+          <div data-url="" data-text="A post with a body" class="share-replace">
+          </div>
+        </div>
+      </li>
       <li class="post-discuss"><a class="discuss-link icon-comment">
+        <i class="icon-comment"></i>
         <span class="count">{{comments}}</span>
         <span class="action">Discuss</span>
       </a></li>
-      {{#if voted}}
-      <li class="post-upvote"><a class="upvote-link voted">
-        <span class="count">{{votes}}</span>
-        <span class="action">Upvote</span>
-      </a></li>
-      {{else}}
-      <li class="post-upvote"><a class="upvote-link">
-        <span class="count">{{votes}}</span>
-        <span class="action">Upvote</span>
-      </a></li>
-      {{/if}}
+      <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
     </ul>
     <div class="post-content">
       <span class="post-rank">1</span>
-      <h3 class="post-heading">
-        <a href="/" class="post-title">{{headline}}</a>
-        <span class="post-domain"></span>
-      </h3>
-      <p class="post-meta">By <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span></p>
+      <div class="post-upvote">
+        {{#if voted}}
+          <a class="upvote-link voted"><i class="icon-up"></i><span>Upvote</span></a>
+        {{else}}
+          <a class="upvote-link not-voted"><i class="icon-up"></i><span>Upvote</span></a>
+        {{/if}}
+      </div>
+      <div class="post-info">
+        <h3 class="post-heading">
+          <a href="/" class="post-title">{{headline}}</a>
+          <span class="post-domain"></span>
+        </h3>
+        <p class="post-meta">By <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a href="/posts/503d8b390000007629000002">{{comments}} comments</a></span></p>
+      </div>
     </div>
   </div>
 </template>
