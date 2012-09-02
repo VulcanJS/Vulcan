@@ -1,5 +1,6 @@
 Template.submit.events = {
-  'click input[type=submit]': function(){
+  'click input[type=submit]': function(event){
+    event.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
 
     var title= $('#title').val();
