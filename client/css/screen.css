@@ -599,17 +599,22 @@ body.pageslide-open {
 /* line 4, ../sass/modules/_comments.scss */
 .comment-content {
   position: relative;
+  -webkit-border-radius: 0 3px 3px 3px;
+  -moz-border-radius: 0 3px 3px 3px;
+  -ms-border-radius: 0 3px 3px 3px;
+  -o-border-radius: 0 3px 3px 3px;
+  border-radius: 0 3px 3px 3px;
   font-size: 14px; }
 
-/* line 9, ../sass/modules/_comments.scss */
+/* line 10, ../sass/modules/_comments.scss */
 .comment-meta {
   margin-bottom: 5px;
   color: #b3c1c6; }
-  /* line 11, ../sass/modules/_comments.scss */
+  /* line 12, ../sass/modules/_comments.scss */
   .comment-meta .comment-username, .comment-meta .comment-time, .comment-meta .comment-permalink {
     display: inline-block;
     margin-right: 4px; }
-  /* line 16, ../sass/modules/_comments.scss */
+  /* line 17, ../sass/modules/_comments.scss */
   .comment-meta .comment-permalink {
     position: relative;
     text-indent: 100%;
@@ -617,29 +622,34 @@ body.pageslide-open {
     overflow: hidden;
     width: 20px;
     color: #b3c1c6; }
-    /* line 21, ../sass/modules/_comments.scss */
+    /* line 22, ../sass/modules/_comments.scss */
     .comment-meta .comment-permalink:before {
       position: absolute;
       display: block;
       top: 1px;
       left: 0;
       text-indent: 0; }
-    /* line 28, ../sass/modules/_comments.scss */
+    /* line 29, ../sass/modules/_comments.scss */
     .comment-meta .comment-permalink:hover:before {
       color: #f36c3d; }
 
-/* line 33, ../sass/modules/_comments.scss */
+/* line 34, ../sass/modules/_comments.scss */
 .comment-actions {
   position: absolute;
   left: -30px;
   top: 0px; }
-  /* line 37, ../sass/modules/_comments.scss */
+  /* line 38, ../sass/modules/_comments.scss */
   .comment-actions a {
+    -webkit-border-radius: 0 0 0 3px;
+    -moz-border-radius: 0 0 0 3px;
+    -ms-border-radius: 0 0 0 3px;
+    -o-border-radius: 0 0 0 3px;
+    border-radius: 0 0 0 3px;
     position: relative;
     display: block;
     height: 30px;
     width: 30px;
-    background: #d8e9f5;
+    background: white;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
@@ -647,10 +657,15 @@ body.pageslide-open {
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden; }
-    /* line 46, ../sass/modules/_comments.scss */
+    /* line 50, ../sass/modules/_comments.scss */
     .comment-actions a.upvote {
+      -webkit-border-radius: 3px 0 0 0;
+      -moz-border-radius: 3px 0 0 0;
+      -ms-border-radius: 3px 0 0 0;
+      -o-border-radius: 3px 0 0 0;
+      border-radius: 3px 0 0 0;
       margin-bottom: 1px; }
-    /* line 49, ../sass/modules/_comments.scss */
+    /* line 54, ../sass/modules/_comments.scss */
     .comment-actions a i {
       font-size: 12px;
       display: block;
@@ -660,15 +675,15 @@ body.pageslide-open {
       line-height: 30px;
       text-align: center;
       text-indent: 0;
-      color: #92b5c3; }
-    /* line 60, ../sass/modules/_comments.scss */
+      color: #f36c3d; }
+    /* line 66, ../sass/modules/_comments.scss */
     .comment-actions a:hover {
       background: #4e555d; }
-      /* line 62, ../sass/modules/_comments.scss */
+      /* line 68, ../sass/modules/_comments.scss */
       .comment-actions a:hover i {
         color: white; }
 
-/* line 68, ../sass/modules/_comments.scss */
+/* line 74, ../sass/modules/_comments.scss */
 .comment-new {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
@@ -680,7 +695,7 @@ body.pageslide-open {
   /* line 58, ../sass/partials/_mixins.scss */
   .comment-new:after {
     clear: both; }
-  /* line 71, ../sass/modules/_comments.scss */
+  /* line 77, ../sass/modules/_comments.scss */
   .comment-new .comment-field {
     margin-bottom: 10px; }
 
@@ -756,13 +771,17 @@ input[type="submit"], button, .button, .btn {
   margin: 0;
   float: right; }
 
-/* line 2, ../sass/modules/_dialogs.scss */
-.dialog h2 {
-  text-align: center;
-  padding-bottom: 15px;
+/* line 1, ../sass/modules/_dialogs.scss */
+.dialog {
   margin-bottom: 10px; }
-/* line 7, ../sass/modules/_dialogs.scss */
-.dialog .footer-notice {
+  /* line 2, ../sass/modules/_dialogs.scss */
+  .dialog h2 {
+    text-align: center;
+    padding-bottom: 15px;
+    margin-bottom: 10px; }
+
+/* line 9, ../sass/modules/_dialogs.scss */
+.footer-notice {
   text-align: center; }
 
 /* line 1, ../sass/partials/_mobile.scss */

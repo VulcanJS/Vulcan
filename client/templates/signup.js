@@ -1,19 +1,24 @@
 Template.signup.events = {
-    'click input[type=submit]': function(){
-      var username = $('#username input').val();
-      var password = $('#password input').val();
+    'click input[type=submit]': function(event){
+      event.preventDefault();
+      var username = $('#username').val();
+      var email = $('#email').val();
+      var password = $('#password').val();
       Meteor.createUser({
           username: username
+        , email: email  
         , password: password
       }, null, function(err){
-        if(err)
+        if(err){
+          console.log(err);
           alert(err);
-        else
+        }else{
           Session.set('state', Session.get('previous_state'));
+        }  
       });
   }
 
-  , 'click a': function(){
+  , 'click #signin': function(){
       Session.set('state', 'signin');
   }
 };

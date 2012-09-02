@@ -2,8 +2,9 @@ Template.submit.events = {
   'click input[type=submit]': function(){
     if(!Meteor.user()) throw 'You must be logged in.';
 
-    var title= $('#title input').val();
-    var url = $('#url input').val();
+    var title= $('#title').val();
+    var url = $('#url').val();
+    var body = $('#body').val();
 
     var postId = Posts.insert({
         headline: title

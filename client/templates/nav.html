@@ -14,20 +14,20 @@
     <h1 class="logo"><a href="/">The Grid</a></h1>
     <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>Menu</span></a><a href="/submit" class="mobile mobile-button submit"><i class="icon-plus"></i><span>Submit</span></a>
     <ul class="nav site-nav desktop">
-      <li><a href="#">Top</a></li>
-      <li><a href="#">New</a></li>
-      <li><a href="#">Ask</a></li>
-      <li><a href="#">Show</a></li>
-      <li><a href="#">Jobs</a></li>
+      <li><a href="#top">Top</a></li>
+      <li><a href="#new">New</a></li>
+      <li><a href="#ask">Ask</a></li>
+      <li><a href="#show">Show</a></li>
+      <li><a href="#jobs">Jobs</a></li>
     </ul>
     <ul class="nav user-nav desktop">
       {{#if logged_in}}
-      <li><a id="signout" href="#">Sign Out</a></li>
+      <li><a id="logout" href="#logout">Log Out</a></li>
       {{else}}
-      <li><a id="signup" href="#">Sign Up</a></li>
-      <li><a id="signin" href="#">Sign In</a></li>
+      <li><a id="signup" href="#signup">Sign Up</a></li>
+      <li><a id="signin" href="#signin">Sign In</a></li>
       {{/if}}
-      <li><a id="submit" href="#">Submit</a></li>
+      <li><a id="submit" class="submit button" href="#submit">Submit</a></li>
     </ul>
   </header>
 </template>

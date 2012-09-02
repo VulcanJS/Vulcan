@@ -4,24 +4,24 @@ Template.nav.events = {
       Session.set('state', 'list');
   }
 
-  , 'click .user-nav #signout': function(event){
+  , 'click #logout': function(event){
       event.preventDefault();
       Meteor.logout();
   }
 
-  , 'click .user-nav #signup': function(event){
+  , 'click #signup': function(event){
       event.preventDefault();
       Session.set('previous_state', Session.get('state'));
       Session.set('state', 'signup');
   }
 
-  , 'click .user-nav #signin': function(event){
+  , 'click #signin': function(event){
       event.preventDefault();
       Session.set('previous_state', Session.get('state'));
       Session.set('state', 'signin');
   }
 
-  , 'click .user-nav #submit': function(event){
+  , 'click #submit': function(event){
       event.preventDefault();
       Session.set('previous_state', Session.get('state'));
       Session.set('state', 'submit');

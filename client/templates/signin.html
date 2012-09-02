@@ -1,16 +1,21 @@
 <template name="signin">
   {{#if show}}
-  <div class="grid signin">
-    <div>
-      <label id="username">Username: <input type="text" value="" /></label>
-    </div>
-    <div>
-      <label id="password">Password: <input type="password" value="" /></label>
-    </div>
-    <div>
-      <input type="submit" value="Sign In" />
-    </div>
-    <p><a href="#">Don't have an account? Sign up!</a></p>
+  <div class="grid-small grid-block dialog signin">
+    <form>
+      <h2>Sign In</h2>
+      <div class="control-group">
+        <label>Username</label>
+        <div class="controls"><input id="username" type="text" value="" /></div>
+      </div>
+      <div class="control-group">
+        <label>Password</label>
+        <div class="controls"><input id="password" type="password" value="" /></div>
+      </div>
+      <div class="form-actions">
+        <input type="submit" class="button" value="Sign In" />
+      </div>
+    </form>
   </div>
+  <p class="grid-small footer-notice">Don't have an account? <a href="#" id="signup">Sign up!</a></p>
   {{/if}}
 </template>

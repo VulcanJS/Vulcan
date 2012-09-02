@@ -4,6 +4,7 @@
 .comment-content{
 	position:relative;
 	@extend .grid-block;
+	@include border-radius(0 3px 3px 3px);
 	font-size:14px;
 }
 .comment-meta{
@@ -35,15 +36,19 @@
 	left:-30px;
 	top:0px;
 	a{
+		@include border-radius(0 0 0 3px);
 		position:relative;
 		display:block;
 		height:30px;
 		width:30px;
-		background:$light-blue;
+		// background:$light-blue;
+		background:white;
 		@include box-shadow(0 1px 1px black(0.15));
 		overflow:hidden;
 		@include hide-text;
+		// border-right:1px solid $lightest-grey;
 		&.upvote{
+			@include border-radius(3px 0 0 0);
 			margin-bottom:1px;
 		}
 		i{
@@ -55,7 +60,8 @@
 			line-height:30px;
 			text-align:center;
 			text-indent:0;
-			color:$light-blue2;
+			// color:$light-blue2;
+			color:$red;
 		}
 		&:hover{
 			background:$highlight-color;

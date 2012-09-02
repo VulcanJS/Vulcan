@@ -1,16 +1,25 @@
 <template name="signup">
   {{#if show}}
-  <div class="grid signup">
-    <div>
-      <label id="username">Username: <input type="text" value="" /></label>
-    </div>
-    <div>
-      <label id="password">Password: <input type="password" value="" /></label>
-    </div>
-    <div>
-      <input type="submit" value="Sign In" />
-    </div>
-    <p><a href="#">Already have an account? Sign in!</a></p>
+  <div class="grid-small grid-block dialog signup">
+    <form>
+      <h2>Sign Up</h2>
+      <div class="control-group">
+        <label>Username</label>
+        <div class="controls"><input id="username" name="username" type="text" value="" /></div>
+      </div>
+      <div class="control-group">
+        <label>Email</label>
+        <div class="controls"><input id="email" name="email" type="text" value="" /></div>
+      </div>
+      <div class="control-group">
+        <label>Password</label>
+        <div class="controls"><input id="password" name="password" type="password" value="" /></div>
+      </div>
+      <div class="form-actions">
+        <input type="submit" class="button" value="Sign Up" />
+      </div>
+    </form>
   </div>
+  <p class="grid-small footer-notice">Already have an account? <a href="#" id="signin">Sign in!</a></p>  
   {{/if}}
 </template>
