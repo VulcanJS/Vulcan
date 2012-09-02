@@ -6,3 +6,4 @@ Template.posts.posts = function(){
   var posts = Posts.find({}, {sort: {headline: 1}});
   return posts;
 };
+

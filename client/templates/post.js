@@ -8,6 +8,13 @@ Template.post.events = {
   , 'click .upvote-link': function(){
       Meteor.call('voteForPost', this);
   }
+
+  , 'click .share-link': function(){
+      e.preventDefault();
+      $(".share-link").not($(this)).next().addClass("hidden");
+      $(this).next().toggleClass("hidden");
+      $(".overlay").toggleClass("hidden");
+  }
 };
 
 Template.post.rank = function(){
