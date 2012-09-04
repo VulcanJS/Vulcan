@@ -1,0 +1,1 @@
+Meteor.accounts.twitter.config('8HVvfpRhAuHzWyByp4D6Q', 'http://gridgrid.meteor.com');
