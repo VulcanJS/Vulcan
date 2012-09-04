@@ -1,67 +1,34 @@
 Template.post.events = {
-    'click .go-to-comments': function(e){
-      e.preventDefault();
-      Session.set('selected_post', this);
-      Session.set('state', 'view_post');
-  }
+  'click input[type=submit]': function(e){
+    e.preventDefault();
 
-  , 'click .upvote-link': function(){
-      Meteor.call('voteForPost', this);
-  }
-
-  , 'click .share-link': function(e){
-      var $this = $(e.target);
-      e.preventDefault();
-      $(".share-link").not($this).next().addClass("hidden");
-      $this.next().toggleClass("hidden");
-      // $(".overlay").toggleClass("hidden");
+    var post = Posts.findOne({_id: Session.get('selected_post_id')});
+    var $comment = $('#comment');
+    Meteor.call('comment', post, null, $comment.val());
+    $comment.val('');
   }
 };
 
-Template.post.rendered = function(){
-  console.log('post rendered');
-  if (Meteor.is_client) {     
-    if($(window).width()>400){ //do not load social media plugin on mobile
-      console.log($('.share-replace'));
-      $('.share-replace').sharrre({
-        share: {
-          googlePlus: true,
-          facebook: true,
-          twitter: true,
-        },
-        buttons: {
-          googlePlus: {size: 'tall'},
-          facebook: {layout: 'box_count'},
-          twitter: {count: 'vertical'},
-        },
-        enableHover: false,
-        enableCounter: false,
-        enableTracking: true
-      });
-    }
-  }
+Template.post.show = function(){
+  return Session.equals('state', 'view_post');
 };
 
-Template.post.rank = function(){
-  return 1;
+Template.post.show_comment_form = function(){
+  return Meteor.user() !== null;
 };
 
-Template.post.ago = function(){
-  var submitted = new Date(this.submitted);
-  var timeAgo=jQuery.timeago(submitted);
-  return timeAgo;
+Template.post.post = function(){
+  var post = Posts.findOne({_id: Session.get('selected_post_id')});
+  return post;
 };
 
-Template.post.voted = function(){
-  var user = Meteor.user();
-  if(!user) return false;
-  var myvote = MyVotes.findOne({post: this._id, user: user._id});
-  return !!myvote;
+Template.post.has_comments = function(){
+  console.log(Session.get('selected_post_id'));
+  var post_id = Session.get('selected_post_id');
+  return Comments.find({post: post_id, parent: null}).count() > 0;
 };
 
-Template.post.domain = function(){
-  var a = document.createElement('a');
-  a.href = this.url;
-  return a.hostname;
+Template.post.child_comments = function(){
+  var post_id = Session.get('selected_post_id');
+  return Comments.find({post: post_id, parent: null});
 };
-

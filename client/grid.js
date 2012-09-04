@@ -16,8 +16,8 @@ if (Meteor.is_client) {
 			this.filter(this.require_login, {only: ['submit']});
 		},
 		require_login: function(page) {
-		  var username = Session.get('username');
-		  if (username) {
+			console.log(Meteor.user());
+		  if (Meteor.user()) {
 		    return page;
 		  } else {
 		    return 'signin';
@@ -28,13 +28,15 @@ if (Meteor.is_client) {
 		  'test':'test',
 		  'signin':'signin',
 		  'signup':'signup',
-		  'submit':'submit'
+		  'submit':'submit',
+		  'posts/:id':'post'
 		},
 		top: function() { console.log("top"); this.goto('top'); },
 		test: function() {console.log("test");  this.goto('test'); },		
 		signup: function() {console.log("signup");  this.goto('signup'); },
 		signin: function() {console.log("signin");  this.goto('signin'); },
-		submit: function() {console.log("submit");  this.goto('submit'); }
+		submit: function() {console.log("submit");  this.goto('submit'); },
+		post: function(id) {console.log("post, id="+id); Session.set('selected_post_id', id); this.goto('post'); },		
 	});
   
 	var Router = new SimpleRouter();

@@ -13,12 +13,14 @@ Template.signup.events = {
           console.log(err);
           alert(err);
         }else{
-          Session.set('state', Session.get('previous_state'));
+          // Session.set('state', Session.get('previous_state'));
+          Router.navigate('', {trigger: true});
         }  
       });
   }
 
   , 'click #signin': function(){
-      Session.set('state', 'signin');
+      // Session.set('state', 'signin');
+      Router.navigate('signin', {trigger: true});
   }
 };

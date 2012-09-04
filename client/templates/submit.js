@@ -20,6 +20,7 @@ Template.submit.events = {
     Meteor.call('voteForPost', post);
 
     Session.set('selected_post', post);
-    Session.set('state', 'view_post');
+    // Session.set('state', 'view_post');
+    Router.navigate('posts/'+postId, {trigger: true});
   }
 };

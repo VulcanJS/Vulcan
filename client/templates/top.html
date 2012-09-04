@@ -1,3 +1,7 @@
 <template name="top">
-	{{> posts}}
+	<div class="posts grid">
+    {{#each posts}}
+      {{> item}}
+    {{/each}}
+  </div>
 </template>

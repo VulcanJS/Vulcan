@@ -1,37 +1,31 @@
 <template name="post">
-  <div class="post">
-    <ul class="post-actions">
-      <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">Share</span></a>
-        <div class="share-options hidden">
-          <div data-url="" data-text="A post with a body" class="share-replace">
-          </div>
+  <div class="single-post grid">
+    {{#with post}}
+    {{> item}}
+    {{#if body}}
+    <div class="post-message">{{body}}</div>
+    {{/if}}
+    {{/with}}
+    {{#if show_comment_form}}
+    <div class="comment-new">
+      <form>
+        <div class="comment-field">
+          <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
         </div>
-      </li>
-      <li class="post-discuss">
-        <a class="discuss-link go-to-comments" href="#">
-          <i class="icon-comment"></i>
-          <span class="count">{{comments}}</span>
-          <span class="action">Discuss</span>
-        </a>
-      </li>
-      <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
-    </ul>
-    <div class="post-content">
-      <span class="post-rank">{{rank}}</span>
-      <div class="post-upvote">
-        {{#if voted}}
-          <a class="upvote-link voted"><i class="icon-check"></i><span>Upvote</span></a>
-        {{else}}
-          <a class="upvote-link not-voted"><i class="icon-up"></i><span>Upvote</span></a>
-        {{/if}}
-      </div>
-      <div class="post-info">
-        <h3 class="post-heading">
-          <a href="{{url}}" class="post-title">{{headline}}</a>
-          <span class="post-domain">{{domain}}</span>
-        </h3>
-        <p class="post-meta"><span class="points">{{votes}} <span class="unit">points </span></span>by  <a class="post-author">{{submitter}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a class="go-to-comments" href="#">{{comments}} comments</a></span></p>
-      </div>
+        <div class="comment-submit">
+          <input type="submit" class="button" value="Add Comment" />
+        </div>
+      </form>
     </div>
+    {{/if}}
+    {{#if has_comments}}
+    <ul>
+    {{#each child_comments}}
+    {{> comment}}
+    {{/each}}
+    </ul>
+    {{else}}
+    <p>No comments.</p>
+    {{/if}}
   </div>
 </template>

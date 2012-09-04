@@ -8,12 +8,14 @@ Template.signin.events = {
           console.log(err);
           alert(err);
         }else{
-          Session.set('state', Session.get('previous_state'));
+          // Session.set('state', Session.get('previous_state'));
+          Router.navigate('', {trigger: true});
         } 
       });
   }
 
   , 'click #signup': function(){
-      Session.set('state', 'signup');
+      // Session.set('state', 'signup');
+      Router.navigate('signup', {trigger: true});
   }
 };
