@@ -7,3 +7,6 @@ Template.posts.posts = function(){
   return posts;
 };
 
+Template.posts.rendered = function(){
+  console.log('posts rendered');
+};

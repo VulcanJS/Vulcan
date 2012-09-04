@@ -1,6 +1,6 @@
 Template.post.events = {
-    'click .discuss-link': function(evt){
-      evt.preventDefault();
+    'click .discuss-link': function(e){
+      e.preventDefault();
       Session.set('selected_post', this);
       Session.set('state', 'view_post');
   }
@@ -9,11 +9,36 @@ Template.post.events = {
       Meteor.call('voteForPost', this);
   }
 
-  , 'click .share-link': function(){
+  , 'click .share-link': function(e){
+      var $this = $(e.target);
       e.preventDefault();
-      $(".share-link").not($(this)).next().addClass("hidden");
-      $(this).next().toggleClass("hidden");
-      $(".overlay").toggleClass("hidden");
+      $(".share-link").not($this).next().addClass("hidden");
+      $this.next().toggleClass("hidden");
+      // $(".overlay").toggleClass("hidden");
+  }
+};
+
+Template.post.rendered = function(){
+  console.log('post rendered');
+  if (Meteor.is_client) {     
+    if($(window).width()>400){ //do not load social media plugin on mobile
+      console.log($('.share-replace'));
+      $('.share-replace').sharrre({
+        share: {
+          googlePlus: true,
+          facebook: true,
+          twitter: true,
+        },
+        buttons: {
+          googlePlus: {size: 'tall'},
+          facebook: {layout: 'box_count'},
+          twitter: {count: 'vertical'},
+        },
+        enableHover: false,
+        enableCounter: false,
+        enableTracking: true
+      });
+    }
   }
 };
 
@@ -23,7 +48,9 @@ Template.post.rank = function(){
 
 Template.post.ago = function(){
   var submitted = new Date(this.submitted);
-  return submitted.toString();
+  var timeAgo=jQuery.timeago(submitted);
+  console.log(timeAgo);
+  return timeAgo;
 };
 
 Template.post.voted = function(){
@@ -38,3 +65,4 @@ Template.post.domain = function(){
   a.href = this.url;
   return a.hostname;
 };
+

@@ -31,3 +31,7 @@ Template.nav.events = {
 Template.nav.logged_in = function(){
   return Meteor.user() !== null;
 };
+
+Template.nav.rendered = function(){
+  console.log('nav rendered');
+};
