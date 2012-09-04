@@ -23,7 +23,3 @@ Template.submit.events = {
     Session.set('state', 'view_post');
   }
 };
-
-Template.submit.show = function(){
-  return Session.equals('state', 'submit');
-};

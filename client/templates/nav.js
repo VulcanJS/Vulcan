@@ -11,20 +11,23 @@ Template.nav.events = {
 
   , 'click #signup': function(event){
       event.preventDefault();
-      Session.set('previous_state', Session.get('state'));
-      Session.set('state', 'signup');
+      // Session.set('previous_state', Session.get('state'));
+      // Session.set('state', 'signup');
+      Router.navigate('signup', {trigger: true});
   }
 
   , 'click #signin': function(event){
       event.preventDefault();
-      Session.set('previous_state', Session.get('state'));
-      Session.set('state', 'signin');
+      // Session.set('previous_state', Session.get('state'));
+      // Session.set('state', 'signin');
+      Router.navigate('signin', {trigger: true});
   }
 
   , 'click #submit': function(event){
       event.preventDefault();
-      Session.set('previous_state', Session.get('state'));
-      Session.set('state', 'submit');
+      // Session.set('previous_state', Session.get('state'));
+      // Session.set('state', 'submit');
+      Router.navigate('submit', {trigger: true});
   }
 };
 

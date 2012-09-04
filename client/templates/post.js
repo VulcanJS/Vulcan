@@ -1,5 +1,5 @@
 Template.post.events = {
-    'click .discuss-link': function(e){
+    'click .go-to-comments': function(e){
       e.preventDefault();
       Session.set('selected_post', this);
       Session.set('state', 'view_post');
@@ -49,7 +49,6 @@ Template.post.rank = function(){
 Template.post.ago = function(){
   var submitted = new Date(this.submitted);
   var timeAgo=jQuery.timeago(submitted);
-  console.log(timeAgo);
   return timeAgo;
 };
 

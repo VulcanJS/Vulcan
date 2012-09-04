@@ -1,0 +1,8 @@
+{
+  "meteor": {
+    "branch": "auth"
+  },
+  "packages": {
+    "router": {}
+  }
+}

@@ -22,7 +22,3 @@ Template.signup.events = {
       Session.set('state', 'signin');
   }
 };
-
-Template.signup.show = function(){
-  return Session.equals('state', 'signup');
-};
