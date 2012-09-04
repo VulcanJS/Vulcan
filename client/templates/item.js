@@ -1,8 +1,9 @@
 Template.item.events = {
     'click .go-to-comments': function(e){
       e.preventDefault();
-      Session.set('selected_post', this);
+      // Session.set('selected_post', this);
       Session.set('state', 'view_post');
+      Router.navigate('posts/'+this._id, {trigger: true});
   }
 
   , 'click .upvote-link': function(){
