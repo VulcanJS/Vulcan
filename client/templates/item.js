@@ -65,4 +65,3 @@ Template.item.domain = function(){
   a.href = this.url;
   return a.hostname;
 };
-

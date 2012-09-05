@@ -1,0 +1,29 @@
+<template name="single_comment">
+  <div class="post grid">
+    {{#if postLoaded}}
+      {{#with post}}
+        {{> item}}
+        {{#if body}}
+          <div class="post-message">{{body}}</div>
+        {{/if}}
+      {{/with}}
+    {{/if}}
+    {{#with comment}}
+    <ul class="selected-comment">
+    {{> comment}}
+    </ul>
+    {{/with}}
+    {{#if show_comment_form}}
+    <div class="comment-new">
+      <form>
+        <div class="comment-field">
+          <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
+        </div>
+        <div class="comment-submit">
+          <input type="submit" class="button" value="Add Reply" />
+        </div>
+      </form>
+    </div>
+    {{/if}}
+  </div>
+</template>

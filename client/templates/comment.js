@@ -1,8 +1,11 @@
 Template.comment.events = {
-  'click .comment-reply': function(event){
+  'click .goto-comment': function(event){
     event.preventDefault();
+    var href=event.target.href.replace(/^(?:\/\/|[^\/]+)*\//, "");
+
     Session.set('selected_comment', this);
-    Session.set('state', 'reply');
+    // Session.set('state', 'reply');
+    Router.navigate(href, {trigger: true});
   }
 };
 
@@ -12,7 +15,7 @@ Template.comment.ago = function(){
 };
 
 Template.comment.child_comments = function(){
-  var post = Session.get('selected_post');
-  var comments = Comments.find({ post: post._id, parent: this._id });
+  var post_id = Session.get('selected_post_id');
+  var comments = Comments.find({ post: post_id, parent: this._id });
   return comments;
 };
