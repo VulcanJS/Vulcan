@@ -8,7 +8,6 @@
 // 	}
 // }
 .header{
-	overflow:hidden;
 	background:$highlight-color url("/img/bg-header.png") top center;
 	background-color:$highlight-color;
 	margin-bottom:$grid-margin;
@@ -78,5 +77,35 @@
 			background-image: url('/img/logo@2x.png');
 			background-size: 124px 37px;
 		}
+	}
+}
+.auth-buttons{
+	float:right;
+	margin:20px 10px 0 0;
+	#login-buttons{
+		position:relative;
+		.accounts-dialog{
+			@extend .popover;
+		}
+		a{
+			text-decoration:none;
+			color:$text;
+		}
+		a.login-link-text{
+			color:#fff;
+			font-weight:normal;
+			display:inline-block;
+			line-height:26px;
+			height:26px;
+		}
+		#login-buttons-password{
+			@extend .button;
+			float:none !important;
+			@include text-shadow(none);
+			width:auto;
+			line-height:1.5;
+			height:26px;
+			margin:10px 0 !important;
+			}
 	}
 }

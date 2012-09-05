@@ -21,13 +21,16 @@
       <li><a href="jobs">Jobs</a></li>
     </ul>
     <ul class="nav user-nav desktop">
-      {{#if logged_in}}
+<!--       {{#if logged_in}}
       <li><a id="logout" href="logout">Log Out</a></li>
       {{else}}
       <li><a id="signup" href="signup">Sign Up</a></li>
       <li><a id="signin" href="signin">Sign In</a></li>
-      {{/if}}
+      {{/if}} -->
       <li><a id="submit" class="submit button" href="submit">Submit</a></li>
     </ul>
+    <div class="auth-buttons">
+        {{> loginButtons}}
+      </div>
   </header>
 </template>

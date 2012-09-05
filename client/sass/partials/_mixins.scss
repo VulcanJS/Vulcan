@@ -1,11 +1,21 @@
+/*================ FUNCTIONS =================*/
 @function black($opacity){
-	@return rgba(0,0,0,$opacity)
+	@return rgba(0,0,0,$opacity);
 }
 @function white($opacity){
-	@return rgba(255,255,255,$opacity)
+	@return rgba(255,255,255,$opacity);
 }
 @function red($opacity){
-	@return rgba($red,$opacity)
+	@return rgba($red,$opacity);
+}
+/*================ CLASSES =================*/
+.popover{
+	background:white;
+	border:1px solid $red;
+	@include border-radius(3px);
+	@include box-shadow(0px 1px 2px 0px black(0.25));
+	z-index:100;
+	@include transition(all, 300ms);
 }
 .grid-block{
 	background:#fff;
@@ -15,6 +25,7 @@
 	margin-bottom:$grid-margin;
 	@include box-shadow(0 1px 1px black(0.15));
 }
+/*================ MIXINS =================*/
 @mixin border-box{
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
