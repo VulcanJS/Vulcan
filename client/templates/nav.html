@@ -27,7 +27,9 @@
       <li><a id="signup" href="signup">Sign Up</a></li>
       <li><a id="signin" href="signin">Sign In</a></li>
       {{/if}} -->
-      <li><a id="submit" class="submit button" href="submit">Submit</a></li>
+      {{#if logged_in}}
+        <li><a id="submit" class="submit button" href="submit">Post</a></li>
+      {{/if}}
     </ul>
     <div class="auth-buttons">
         {{> loginButtons}}

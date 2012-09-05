@@ -84,6 +84,7 @@
 	margin:20px 10px 0 0;
 	#login-buttons{
 		position:relative;
+		line-height:26px;
 		.accounts-dialog{
 			@extend .popover;
 		}
@@ -95,8 +96,12 @@
 			color:#fff;
 			font-weight:normal;
 			display:inline-block;
-			line-height:26px;
 			height:26px;
+			font-size:0;
+			&:after{
+				content:"Sign Up/Sign In";
+				font-size:16px;
+			}
 		}
 		#login-buttons-password{
 			@extend .button;
@@ -106,6 +111,25 @@
 			line-height:1.5;
 			height:26px;
 			margin:10px 0 !important;
+		}
+		.login-header{
+			color:white(0.7);
+			font-family:inherit;
+			height:26px;
+			margin-right:10px;		
+			&:before{
+				content:"Welcome, ";
 			}
+		}
+		#login-buttons-logout{
+			color:white;
+			background:none;
+			border:none;
+			font-family:inherit;
+			font-size:inherit;
+			padding:0;
+			height:26px;
+			margin-right:10px;
+		}
 	}
 }
