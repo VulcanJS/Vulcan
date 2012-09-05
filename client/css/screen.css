@@ -328,10 +328,10 @@ body.pageslide-open {
     top: 20px;
     top: 17px;
     left: 50%;
-    margin-left: -65px;
-    width: 124px;
-    height: 37px; }
-    /* line 48, ../sass/modules/_header.scss */
+    margin-left: -78px;
+    width: 156px;
+    height: 39px; }
+    /* line 50, ../sass/modules/_header.scss */
     .header .logo a {
       display: block;
       height: 100%;
@@ -339,43 +339,40 @@ body.pageslide-open {
       background-position: center center;
       background-image: url("/img/thegrid.svg");
       background-image: url("/img/logo.png");
+      background-image: url("/img/telescope-logo@2x.png");
+      background-size: 156px 39px;
       font: 0/0 a;
       text-shadow: none;
       color: transparent; }
-  /* line 62, ../sass/modules/_header.scss */
+  /* line 66, ../sass/modules/_header.scss */
   .header .user-nav {
     float: right;
     margin-right: 10px; }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  /* line 76, ../sass/modules/_header.scss */
-  .header .logo a {
-    background-image: url("/img/logo@2x.png");
-    background-size: 124px 37px; } }
-/* line 82, ../sass/modules/_header.scss */
+/* line 86, ../sass/modules/_header.scss */
 .auth-buttons {
   float: right;
   margin: 20px 10px 0 0; }
-  /* line 85, ../sass/modules/_header.scss */
+  /* line 89, ../sass/modules/_header.scss */
   .auth-buttons #login-buttons {
     position: relative;
     line-height: 26px; }
-    /* line 91, ../sass/modules/_header.scss */
+    /* line 95, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a {
       text-decoration: none;
       color: #4a4444; }
-    /* line 95, ../sass/modules/_header.scss */
+    /* line 99, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a.login-link-text {
       color: #fff;
       font-weight: normal;
       display: inline-block;
       height: 26px;
       font-size: 0; }
-      /* line 101, ../sass/modules/_header.scss */
+      /* line 105, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons a.login-link-text:after {
         content: "Sign Up/Sign In";
         font-size: 16px; }
-    /* line 106, ../sass/modules/_header.scss */
+    /* line 110, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -383,16 +380,16 @@ body.pageslide-open {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 115, ../sass/modules/_header.scss */
+    /* line 119, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons .login-header {
       color: rgba(255, 255, 255, 0.7);
       font-family: inherit;
       height: 26px;
       margin-right: 10px; }
-      /* line 120, ../sass/modules/_header.scss */
+      /* line 124, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons .login-header:before {
         content: "Welcome, "; }
-    /* line 124, ../sass/modules/_header.scss */
+    /* line 128, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       background: none;

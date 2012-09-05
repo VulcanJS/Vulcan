@@ -6,5 +6,6 @@
 backbone
 accounts-passwords
 accounts-ui
-meteor-router
+# meteor-router
 # accounts-twitter
+router
