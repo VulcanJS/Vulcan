@@ -1,4 +1,4 @@
 Meteor.accounts.config({
-	requireEmail: true,
+	// requireEmail: true,
 	requireUsername: true
 });
