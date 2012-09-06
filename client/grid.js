@@ -37,7 +37,7 @@ if (Meteor.is_client) {
 		test: function() {console.log("test");  this.goto('test'); },		
 		signup: function() {console.log("signup");  this.goto('signup'); },
 		signin: function() {console.log("signin");  this.goto('signin'); },
-		submit: function() {console.log("submit");  this.goto('submit'); },
+		submit: function() {console.log("submit");  this.goto('post_submit'); },
 		post: function(id) {
 			console.log("post, id="+id); 
 			Session.set('selected_post_id', id); 

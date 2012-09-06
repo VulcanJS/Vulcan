@@ -1,11 +1,23 @@
-Template.selected_post.events = {
+Template.post_edit.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
+    if(!Meteor.user()) throw 'You must be logged in.';
 
-    var post = Posts.findOne(Session.get('selected_post_id'));
-    var $comment = $('#comment');
-    Meteor.call('comment', post, null, $comment.val());
-    $comment.val('');
+    var selected_post_id=Session.get("selected_post_id");
+    var title= $('#title').val();
+    var url = $('#url').val();
+    var body = $('#body').val();
+
+    var post_id = Posts.update(selected_post_id,
+ 		{
+	   		$set: {
+		        headline: title
+		      , url: url
+		      , body: body
+	    	}
+    	}
+    );
+    Router.navigate("posts/"+selected_post_id, {trigger:true});
   }
 };
 

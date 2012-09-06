@@ -1,4 +1,4 @@
-Template.submit.events = {
+Template.post_submit.events = {
   'click input[type=submit]': function(event){
     event.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';

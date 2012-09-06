@@ -25,7 +25,6 @@ Template.comment_item.author = function(){
 };
 
 Template.comment_item.is_my_comment = function(){
-  console.log(this);
   if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
     return true;
   }
