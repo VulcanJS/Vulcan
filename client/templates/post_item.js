@@ -20,25 +20,23 @@ Template.post_item.events = {
 };
 
 Template.post_item.rendered = function(){
-  console.log('post rendered');
   if (Meteor.is_client) {     
     if($(window).width()>400){ //do not load social media plugin on mobile
-      console.log($('.share-replace'));
-      $('.share-replace').sharrre({
-        share: {
-          googlePlus: true,
-          facebook: true,
-          twitter: true,
-        },
-        buttons: {
-          googlePlus: {size: 'tall'},
-          facebook: {layout: 'box_count'},
-          twitter: {count: 'vertical'},
-        },
-        enableHover: false,
-        enableCounter: false,
-        enableTracking: true
-      });
+    //   $('.share-replace').sharrre({
+    //     share: {
+    //       googlePlus: true,
+    //       facebook: true,
+    //       twitter: true,
+    //     },
+    //     buttons: {
+    //       googlePlus: {size: 'tall'},
+    //       facebook: {layout: 'box_count'},
+    //       twitter: {count: 'vertical'},
+    //     },
+    //     enableHover: false,
+    //     enableCounter: false,
+    //     enableTracking: true
+    //   });
     }
   }
 };
@@ -75,6 +73,7 @@ Template.post_item.is_my_post = function(){
 
 Template.post_item.author = function(){
   if(this.user_id){
+    console.log(this.user_id);
     return Meteor.users.findOne(this.user_id).username
   }
 };

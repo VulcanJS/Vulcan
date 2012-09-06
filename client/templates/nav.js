@@ -36,5 +36,4 @@ Template.nav.logged_in = function(){
 };
 
 Template.nav.rendered = function(){
-  console.log('nav rendered');
 };

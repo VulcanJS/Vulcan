@@ -8,5 +8,4 @@ Template.top.posts = function(){
 };
 
 Template.top.rendered = function(){
-  console.log('posts rendered');
 };
