@@ -10,6 +10,9 @@
 	min-height:$grid-unit - 30px;
 	// margin-right:240px;
 	margin-right:160px;
+	.my-post &{
+		margin-right:240px;
+	}
 	.post-info{
 		padding:$grid-padding - 2px $grid-padding;
 		margin-left:30px;
@@ -159,6 +162,9 @@
 			// &.gigahot{
 			// 	color:red(1);					
 			// }
+			&.edit-link{
+				color:$red;
+			}
 			&.share-link{
 				color:$blue;
 				color:$yellow;

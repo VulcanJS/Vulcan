@@ -19,6 +19,7 @@
 		@include hide-text;
 		width:20px;
 		color:$light-text;
+		margin:0;
 		&:before{
 			position:absolute;
 			display:block;

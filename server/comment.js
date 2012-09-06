@@ -5,7 +5,7 @@ Meteor.methods({
     var comment = {
         post: post._id
       , body: text
-      , submitter: user.username
+      , user_id: user._id
       , submitted: new Date().getTime()
     };
     if(parentComment)

@@ -12,9 +12,12 @@
         </a>
       </div>
       <div class="comment-meta">
-        <a class="comment-username">{{submitter}}</a>
+        <a class="comment-username">{{author}}</a>
         <span class="comment-time">{{ago}}</span>
         <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">link</a>
+        {{#if is_my_comment}}
+          | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
+        {{/if}}
       </div>
       <div class="comment-text">{{body}}</div>
       <a href="/comments/{{_id}}" class="comment-reply goto-comment">Reply</a>

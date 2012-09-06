@@ -19,3 +19,15 @@ Template.comment.child_comments = function(){
   var comments = Comments.find({ post: post_id, parent: this._id });
   return comments;
 };
+
+Template.comment.author = function(){
+  return Meteor.users.findOne(this.user_id).username
+};
+
+Template.comment.is_my_comment = function(){
+  console.log(this);
+  if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
+    return true;
+  }
+  return false;
+};

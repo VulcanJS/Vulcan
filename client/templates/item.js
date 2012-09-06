@@ -65,3 +65,16 @@ Template.item.domain = function(){
   a.href = this.url;
   return a.hostname;
 };
+
+Template.item.is_my_post = function(){
+  if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
+    return true;
+  }
+  return false;
+};
+
+Template.item.author = function(){
+  if(this.user_id){
+    return Meteor.users.findOne(this.user_id).username
+  }
+};
