@@ -8,16 +8,21 @@ Meteor.publish('posts', function() {
 
 Meteor.startup(function(){
   Posts.allow({
-      insert: function(){ return true; }  //TODO: change to false
+      insert: function(){ 
+        return true;
+      }
     , update: function(userId, docs, fields, modifier){
         console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
-
         if(docs[0].user_id && docs[0].user_id==userId){
           return true;
         }
         return false;
       }
-    , remove: function(){ return false; }
+    , remove: function(userId, docs){ 
+        if(docs[0].user_id && docs[0].user_id==userId){
+          return true;
+        }
+        return false; }
   });
 });
 
@@ -31,9 +36,22 @@ Meteor.publish('comments', function() {
 
 Meteor.startup(function(){
   Comments.allow({
-      insert: function(){ return false; }
-    , update: function(){ return false; }
-    , remove: function(){ return false; }
+      insert: function(){         
+        return true;
+      }
+    , update: function(userId, docs, fields, modifier){
+        console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
+        if(docs[0].user_id && docs[0].user_id==userId){
+          return true;
+        }
+        return false;
+      }
+    , remove: function(userId, docs){ 
+        if(docs[0].user_id && docs[0].user_id==userId){
+          return true;
+        }
+        return false; 
+      }
   });
 });
 
@@ -47,6 +65,23 @@ Meteor.publish('myvotes', function() {
 
 Meteor.startup(function(){
   MyVotes.allow({
+      insert: function(){ return false; }
+    , update: function(){ return false; }
+    , remove: function(){ return false; }
+  });
+});
+
+
+// Options
+
+Options = new Meteor.Collection('options');
+
+Meteor.publish('options', function() {
+  return Options.find();
+});
+
+Meteor.startup(function(){
+  Options.allow({
       insert: function(){ return false; }
     , update: function(){ return false; }
     , remove: function(){ return false; }

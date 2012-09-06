@@ -31,7 +31,8 @@ if (Meteor.is_client) {
 		  'submit':'submit',
 		  'posts/:id':'post',
 		  'posts/:id/edit':'post_edit',
-		  'comments/:id':'comment'
+		  'comments/:id':'comment',
+		  'comments/:id/edit':'comment_edit'
 		},
 		top: function() { console.log("top"); this.goto('top'); },
 		test: function() {console.log("test");  this.goto('test'); },		
@@ -52,7 +53,12 @@ if (Meteor.is_client) {
 			console.log("comment, id="+id); 
 			Session.set('selected_comment_id', id);
 			this.goto('comment_page'); 
-		},		
+		},
+		comment_edit: function(id) {
+			console.log("comment_edit, id="+id); 
+			Session.set('selected_comment_id', id);
+			this.goto('comment_edit'); 
+		},				
 	});
   
 	var Router = new SimpleRouter();
