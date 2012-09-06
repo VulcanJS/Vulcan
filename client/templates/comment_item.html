@@ -1,4 +1,4 @@
-<template name="comment">
+<template name="comment_item">
   <li class="comment">
     <div class="comment-content">
       <div class="comment-actions">
@@ -26,7 +26,7 @@
     <ul class="comment-children">
     {{#each child_comments}}
       {{#with this}}
-      {{> comment}}
+      {{> comment_item}}
       {{/with}}
     {{/each}}
     </ul>

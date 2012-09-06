@@ -1,8 +1,8 @@
-<template name="comment_single">
+<template name="comment_page">
   <div class="post grid">
     {{#if postLoaded}}
       {{#with post}}
-        {{> item}}
+        {{> post_item}}
         {{#if body}}
           <div class="post-message">{{body}}</div>
         {{/if}}
@@ -10,7 +10,7 @@
     {{/if}}
     {{#with comment}}
     <ul class="selected-comment">
-    {{> comment}}
+    {{> comment_item}}
     </ul>
     {{/with}}
     {{#if show_comment_form}}

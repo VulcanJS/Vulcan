@@ -1,4 +1,4 @@
-Template.item.events = {
+Template.post_item.events = {
     'click .go-to-comments': function(e){
       e.preventDefault();
       // Session.set('selected_post', this);
@@ -19,7 +19,7 @@ Template.item.events = {
   }
 };
 
-Template.item.rendered = function(){
+Template.post_item.rendered = function(){
   console.log('post rendered');
   if (Meteor.is_client) {     
     if($(window).width()>400){ //do not load social media plugin on mobile
@@ -43,37 +43,37 @@ Template.item.rendered = function(){
   }
 };
 
-Template.item.rank = function(){
+Template.post_item.rank = function(){
   return 1;
 };
 
-Template.item.ago = function(){
+Template.post_item.ago = function(){
   var submitted = new Date(this.submitted);
   var timeAgo=jQuery.timeago(submitted);
   return timeAgo;
 };
 
-Template.item.voted = function(){
+Template.post_item.voted = function(){
   var user = Meteor.user();
   if(!user) return false;
   var myvote = MyVotes.findOne({post: this._id, user: user._id});
   return !!myvote;
 };
 
-Template.item.domain = function(){
+Template.post_item.domain = function(){
   var a = document.createElement('a');
   a.href = this.url;
   return a.hostname;
 };
 
-Template.item.is_my_post = function(){
+Template.post_item.is_my_post = function(){
   if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
     return true;
   }
   return false;
 };
 
-Template.item.author = function(){
+Template.post_item.author = function(){
   if(this.user_id){
     return Meteor.users.findOne(this.user_id).username
   }

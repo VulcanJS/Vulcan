@@ -1,4 +1,4 @@
-<template name="post">
+<template name="post_page">
   <div class="single-post grid">
     {{#with post}}
     {{> post_item}}
@@ -21,7 +21,7 @@
     {{#if has_comments}}
     <ul>
     {{#each child_comments}}
-    {{> comment}}
+    {{> comment_item}}
     {{/each}}
     </ul>
     {{else}}
