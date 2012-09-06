@@ -214,7 +214,7 @@
 	}
 }
 .post-message{
-	background:white;
+	@extend .grid-block;
 	padding:20px;
 	margin-bottom:$grid-margin;
 	font-size:18px;

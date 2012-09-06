@@ -79,7 +79,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   transition: all, 300ms; }
 
 /* line 20, ../sass/partials/_mixins.scss */
-.grid-block, .post-content, .post-actions li a, .comment-content, .comment-new {
+.grid-block, .post-content, .post-actions li a, .post-message, .comment-content, .comment-new {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -589,7 +589,6 @@ body.pageslide-open {
 
 /* line 216, ../sass/modules/_posts.scss */
 .post-message {
-  background: white;
   padding: 20px;
   margin-bottom: 10px;
   font-size: 18px; }
