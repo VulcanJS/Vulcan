@@ -1,3 +1,8 @@
+// Users
+
+Meteor.publish('users', function() {
+  return Meteor.users.find({}, {fields: {emails: false}});
+});
 // Posts
 
 Posts = new Meteor.Collection('posts');
@@ -8,8 +13,12 @@ Meteor.publish('posts', function() {
 
 Meteor.startup(function(){
   Posts.allow({
-      insert: function(){ 
-        return true;
+      insert: function(userId, doc){
+        console.log(userId);
+        if(userId){
+          return true;
+        }
+        return false;
       }
     , update: function(userId, docs, fields, modifier){
         console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
@@ -36,8 +45,12 @@ Meteor.publish('comments', function() {
 
 Meteor.startup(function(){
   Comments.allow({
-      insert: function(){         
-        return true;
+      insert: function(userId, doc){
+        console.log(userId);
+        if(userId){
+          return true;
+        }
+        return false;
       }
     , update: function(userId, docs, fields, modifier){
         console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);

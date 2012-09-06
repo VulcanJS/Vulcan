@@ -1,3 +1,5 @@
+Meteor.subscribe('users');
+
 Posts = new Meteor.Collection('posts');
 Meteor.subscribe('posts');
 
