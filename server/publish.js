@@ -85,18 +85,18 @@ Meteor.startup(function(){
 });
 
 
-// Options
+// Settings
 
-Options = new Meteor.Collection('options');
+Settings = new Meteor.Collection('settings');
 
-Meteor.publish('options', function() {
-  return Options.find();
+Meteor.publish('settings', function() {
+  return Settings.find();
 });
 
 Meteor.startup(function(){
-  Options.allow({
-      insert: function(){ return false; }
-    , update: function(){ return false; }
-    , remove: function(){ return false; }
+  Settings.allow({
+      insert: function(){ return true; }
+    , update: function(){ return true; }
+    , remove: function(){ return true; }
   });
 });

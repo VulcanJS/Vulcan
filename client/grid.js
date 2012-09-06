@@ -9,6 +9,9 @@ Meteor.subscribe('comments');
 MyVotes = new Meteor.Collection('myvotes');
 Meteor.subscribe('myvotes');
 
+Settings = new Meteor.Collection('settings');
+Meteor.subscribe('settings');
+
 Session.set('state', 'list');
 
 if (Meteor.is_client) {
@@ -34,13 +37,15 @@ if (Meteor.is_client) {
 		  'posts/:id':'post',
 		  'posts/:id/edit':'post_edit',
 		  'comments/:id':'comment',
-		  'comments/:id/edit':'comment_edit'
+		  'comments/:id/edit':'comment_edit',
+		  'settings':'settings'
 		},
 		top: function() { console.log("top"); this.goto('top'); },
 		test: function() {console.log("test");  this.goto('test'); },		
 		signup: function() {console.log("signup");  this.goto('signup'); },
 		signin: function() {console.log("signin");  this.goto('signin'); },
 		submit: function() {console.log("submit");  this.goto('post_submit'); },
+		settings: function() {console.log("settings");  this.goto('settings'); },
 		post: function(id) {
 			console.log("post, id="+id); 
 			Session.set('selected_post_id', id); 
@@ -60,7 +65,7 @@ if (Meteor.is_client) {
 			console.log("comment_edit, id="+id); 
 			Session.set('selected_comment_id', id);
 			this.goto('comment_edit'); 
-		},				
+		}	
 	});
   
 	var Router = new SimpleRouter();

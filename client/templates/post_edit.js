@@ -8,7 +8,7 @@ Template.post_edit.events = {
     var url = $('#url').val();
     var body = $('#body').val();
 
-    var post_id = Posts.update(selected_post_id,
+    Posts.update(selected_post_id,
  		{
 	   		$set: {
 		        headline: title
