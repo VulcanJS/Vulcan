@@ -10,6 +10,7 @@ Template.submit.events = {
     var postId = Posts.insert({
         headline: title
       , url: url
+      , body: body
       , user_id: Meteor.user()._id
       , submitted: new Date().getTime()
       , votes: 0

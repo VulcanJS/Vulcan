@@ -30,6 +30,7 @@ if (Meteor.is_client) {
 		  'signup':'signup',
 		  'submit':'submit',
 		  'posts/:id':'post',
+		  'posts/:id/edit':'post_edit',
 		  'comments/:id':'comment'
 		},
 		top: function() { console.log("top"); this.goto('top'); },
@@ -39,15 +40,18 @@ if (Meteor.is_client) {
 		submit: function() {console.log("submit");  this.goto('submit'); },
 		post: function(id) {
 			console.log("post, id="+id); 
-			Session.set('selected_post', Posts.findOne({_id:id}));
 			Session.set('selected_post_id', id); 
-			this.goto('post'); 
-		},	
+			this.goto('post_page'); 
+		},
+		post_edit: function(id) {
+			console.log("post_edit, id="+id); 
+			Session.set('selected_post_id', id); 
+			this.goto('post_edit'); 
+		},
 		comment: function(id) {
 			console.log("comment, id="+id); 
-			Session.set('selected_comment', Comments.findOne({_id:id}));
 			Session.set('selected_comment_id', id);
-			this.goto('single_comment'); 
+			this.goto('comment_page'); 
 		},		
 	});
   

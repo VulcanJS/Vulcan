@@ -1,4 +1,4 @@
-Template.single_comment.events = {
+Template.comment_page.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
 
@@ -14,15 +14,15 @@ Template.single_comment.events = {
   }
 };
 
-Template.single_comment.show = function(){
+Template.comment_page.show = function(){
   return Session.equals('state', 'reply');
 };
 
-Template.single_comment.show_comment_form = function(){
+Template.comment_page.show_comment_form = function(){
   return Meteor.user() !== null;
 };
 
-Template.single_comment.postLoaded = function(){
+Template.comment_page.postLoaded = function(){
   var selected_comment = Comments.findOne(Session.get('selected_comment_id'));
   if(selected_comment){
     return true;
@@ -31,7 +31,7 @@ Template.single_comment.postLoaded = function(){
   }
 }
 
-Template.single_comment.post = function(){
+Template.comment_page.post = function(){
   var selected_comment = Comments.findOne(Session.get('selected_comment_id'));
   if(selected_comment){
     var post = selected_comment.post;
@@ -39,8 +39,8 @@ Template.single_comment.post = function(){
   }
 };
 
-Template.single_comment.comment = function(){
+Template.comment_page.comment = function(){
   var comment = Comments.findOne({_id:Session.get('selected_comment_id')});
-  Template.single_comment.repress_recursion = true;
+  Template.comment_page.repress_recursion = true;
   return comment;
 };
