@@ -72,8 +72,7 @@ Template.post_item.is_my_post = function(){
 };
 
 Template.post_item.author = function(){
-  if(this.user_id){
-    console.log(this.user_id);
+  if(this.user_id && Meteor.users.findOne(this.user_id)){
     return Meteor.users.findOne(this.user_id).username
   }
 };
