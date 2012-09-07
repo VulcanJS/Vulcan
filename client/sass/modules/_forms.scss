@@ -7,6 +7,19 @@ form, .accounts-dialog{
 		}
 		.controls{
 			margin-left:100px;
+			position:relative;
+			.get-title-link{
+				position:absolute;
+				display:block;
+				top:2px;
+				right:8px;
+				&.loading{
+					background:url(/img/loading.gif) center center no-repeat;
+					height:22px;
+					width:18px;
+					@include hide-text2;
+				}
+			}
 		}
 	}
 	.form-actions{
