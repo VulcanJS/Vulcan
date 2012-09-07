@@ -35,6 +35,12 @@ form, .accounts-dialog{
 		min-height:100px;
 		line-height:1.4;
 	}
+	.delete-link{
+		float:left;
+	}
+	input[type="submit"], button, .button, .btn{
+		float:right;
+	}
 }
 input[type="submit"], button, .button, .btn{
 	-webkit-appearance: none;
@@ -47,5 +53,5 @@ input[type="submit"], button, .button, .btn{
 	font-size:16px;
 	cursor:pointer;
 	margin:0;
-	float:right;
+	
 }

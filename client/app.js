@@ -34,8 +34,10 @@ if (Meteor.is_client) {
 		  'signin':'signin',
 		  'signup':'signup',
 		  'submit':'submit',
+  		  'posts/deleted':'post_deleted',
 		  'posts/:id':'post',
 		  'posts/:id/edit':'post_edit',
+		  'comments/deleted':'comment_deleted',		  
 		  'comments/:id':'comment',
 		  'comments/:id/edit':'comment_edit',
 		  'settings':'settings'
@@ -46,6 +48,8 @@ if (Meteor.is_client) {
 		signin: function() {console.log("signin");  this.goto('signin'); },
 		submit: function() {console.log("submit");  this.goto('post_submit'); },
 		settings: function() {console.log("settings");  this.goto('settings'); },
+		post_deleted: function() {console.log("post_deleted");  this.goto('post_deleted'); },
+		comment_deleted: function() {console.log("comment_deleted");  this.goto('comment_deleted'); },
 		post: function(id) {
 			console.log("post, id="+id); 
 			Session.set('selected_post_id', id); 
@@ -73,6 +77,19 @@ if (Meteor.is_client) {
 		Backbone.history.start({pushState: true});
 	});
 }
+
+
+
+// if (Meteor.is_client) {
+//     Meteor.startup(function () {
+// 		var setting=Settings.find().fetch()[0];
+// 		console.log(setting);
+// 		if(setting){
+// 			document.title = setting.title;
+// 		}
+// 	});
+// }
+
   // Template.sign_in.events = {
   //   'submit form': function(e) {
   //     e.preventDefault();

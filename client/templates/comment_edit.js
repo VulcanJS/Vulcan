@@ -16,6 +16,16 @@ Template.comment_edit.events = {
     );
     Router.navigate("posts/"+selected_post_id, {trigger:true});
   }
+
+  , 'click .delete-link': function(e){
+      e.preventDefault();
+      if(confirm("Are you sure?")){
+        var selected_comment_id=Session.get("selected_comment_id");
+        Comments.remove(selected_comment_id);
+        Router.navigate("comments/deleted", {trigger:true});
+      }
+  }
+
 };
 
 Template.comment_edit.comment = function(){

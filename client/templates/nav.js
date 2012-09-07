@@ -36,4 +36,10 @@ Template.nav.logged_in = function(){
 };
 
 Template.nav.rendered = function(){
+
+  var setting=Settings.find().fetch()[0];
+  if(setting){
+    document.title = setting.title;
+  }
+
 };

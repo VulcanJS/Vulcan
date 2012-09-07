@@ -19,6 +19,15 @@ Template.post_edit.events = {
     );
     Router.navigate("posts/"+selected_post_id, {trigger:true});
   }
+
+  , 'click .delete-link': function(e){
+    e.preventDefault();
+    if(confirm("Are you sure?")){
+      var selected_post_id=Session.get("selected_post_id");
+      Posts.remove(selected_post_id);
+      Router.navigate("posts/deleted", {trigger:true});
+    }
+  }
 };
 
 Template.post_edit.post = function(){
