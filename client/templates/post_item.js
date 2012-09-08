@@ -76,3 +76,10 @@ Template.post_item.author = function(){
     return Meteor.users.findOne(this.user_id).username
   }
 };
+
+
+Template.post_item.body_formatted = function(){
+  var converter = new Markdown.Converter();
+  var html_body=converter.makeHtml(this.body);
+  return html_body.autoLink();
+}

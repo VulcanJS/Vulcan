@@ -19,7 +19,7 @@
           | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
         {{/if}}
       </div>
-      <div class="comment-text">{{{body_formatted}}}</div>
+      <div class="comment-text markdown">{{{body_formatted}}}</div>
       <a href="/comments/{{_id}}" class="comment-reply goto-comment">Reply</a>
     </div>
     {{#unless repress_recursion}}

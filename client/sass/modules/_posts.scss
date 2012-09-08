@@ -218,6 +218,9 @@
 	padding:20px;
 	margin-bottom:$grid-margin;
 	font-size:18px;
+	.list &{
+		display:none;
+	}
 }
 .share-options{
 	// height:$grid-unit;
