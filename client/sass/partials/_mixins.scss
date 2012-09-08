@@ -1,3 +1,15 @@
+@mixin cf{
+	/* For modern browsers */
+	&:before,&:after {
+		content:"";
+		display:table;
+	}
+	&:after {
+	clear:both;
+	}
+	/* For IE 6/7 (trigger hasLayout) */
+	*zoom:1;
+}
 /*================ FUNCTIONS =================*/
 @function black($opacity){
 	@return rgba(0,0,0,$opacity);
@@ -24,6 +36,9 @@
 	padding:$grid-padding;
 	margin-bottom:$grid-margin;
 	@include box-shadow(0 1px 1px black(0.15));
+}
+.cf{
+	@include cf;
 }
 /*================ MIXINS =================*/
 @mixin border-box{
@@ -60,18 +75,7 @@
 @mixin box-emboss($opacity, $opacity2){
 	box-shadow:white($opacity) 0 1px 0, inset black($opacity2) 0 1px 0;
 }
-@mixin cf{
-	/* For modern browsers */
-	&:before,&:after {
-		content:"";
-		display:table;
-	}
-	&:after {
-	clear:both;
-	}
-	/* For IE 6/7 (trigger hasLayout) */
-	*zoom:1;
-}
+
 @mixin breakpoint($point) {
   @if $point == wide {
     @media (max-width: 9999px) { @content; }

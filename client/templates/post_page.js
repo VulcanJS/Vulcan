@@ -2,9 +2,9 @@ Template.post_page.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
 
-    var post = Posts.findOne(Session.get('selected_post_id'));
+    var post_id = Session.get('selected_post_id');
     var $comment = $('#comment');
-    Meteor.call('comment', post, null, $comment.val());
+    Meteor.call('comment', post_id, null, $comment.val());
     $comment.val('');
   }
 };

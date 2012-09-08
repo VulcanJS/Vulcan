@@ -60,7 +60,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /*================ FUNCTIONS =================*/
 /*================ CLASSES =================*/
-/* line 12, ../sass/partials/_mixins.scss */
+/* line 24, ../sass/partials/_mixins.scss */
 .popover, .auth-buttons #login-buttons .accounts-dialog, .share-options {
   background: white;
   border: 1px solid #f36c3d;
@@ -78,7 +78,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   -o-transition: all, 300ms;
   transition: all, 300ms; }
 
-/* line 20, ../sass/partials/_mixins.scss */
+/* line 32, ../sass/partials/_mixins.scss */
 .grid-block, .post-content, .post-actions li a, .post-message, .comment-content, .comment-new {
   background: #fff;
   -webkit-border-radius: 3px;
@@ -91,6 +91,19 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
+
+/* line 40, ../sass/partials/_mixins.scss */
+.cf, .comment-new, .comment-new .comment-submit {
+  /* For modern browsers */
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom: 1; }
+  /* line 3, ../sass/partials/_mixins.scss */
+  .cf:before, .comment-new:before, .comment-new .comment-submit:before, .cf:after, .comment-new:after, .comment-new .comment-submit:after {
+    content: "";
+    display: table; }
+  /* line 7, ../sass/partials/_mixins.scss */
+  .cf:after, .comment-new:after, .comment-new .comment-submit:after {
+    clear: both; }
 
 /*================ MIXINS =================*/
 /* line 1, ../sass/partials/_main.scss */
@@ -283,11 +296,11 @@ body.pageslide-open {
   -webkit-box-shadow: 0 1px 1px black;
   -moz-box-shadow: 0 1px 1px black;
   box-shadow: 0 1px 1px black; }
-  /* line 65, ../sass/partials/_mixins.scss */
+  /* line 3, ../sass/partials/_mixins.scss */
   .header:before, .header:after {
     content: "";
     display: table; }
-  /* line 69, ../sass/partials/_mixins.scss */
+  /* line 7, ../sass/partials/_mixins.scss */
   .header:after {
     clear: both; }
   /* line 19, ../sass/modules/_header.scss */
@@ -413,11 +426,11 @@ body.pageslide-open {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
   *zoom: 1; }
-  /* line 65, ../sass/partials/_mixins.scss */
+  /* line 3, ../sass/partials/_mixins.scss */
   .post:before, .post:after {
     content: "";
     display: table; }
-  /* line 69, ../sass/partials/_mixins.scss */
+  /* line 7, ../sass/partials/_mixins.scss */
   .post:after {
     clear: both; }
 
@@ -643,11 +656,11 @@ body.pageslide-open {
     /* For IE 6/7 (trigger hasLayout) */
     *zoom: 1;
     padding: 15px 5px 5px 15px; }
-    /* line 65, ../sass/partials/_mixins.scss */
+    /* line 3, ../sass/partials/_mixins.scss */
     .share-options .buttons:before, .share-options .buttons:after {
       content: "";
       display: table; }
-    /* line 69, ../sass/partials/_mixins.scss */
+    /* line 7, ../sass/partials/_mixins.scss */
     .share-options .buttons:after {
       clear: both; }
     /* line 264, ../sass/modules/_posts.scss */
@@ -749,21 +762,28 @@ body.pageslide-open {
       .comment-actions a:hover i {
         color: white; }
 
-/* line 75, ../sass/modules/_comments.scss */
-.comment-new {
-  /* For modern browsers */
-  /* For IE 6/7 (trigger hasLayout) */
-  *zoom: 1; }
-  /* line 65, ../sass/partials/_mixins.scss */
-  .comment-new:before, .comment-new:after {
-    content: "";
-    display: table; }
-  /* line 69, ../sass/partials/_mixins.scss */
-  .comment-new:after {
-    clear: both; }
-  /* line 78, ../sass/modules/_comments.scss */
-  .comment-new .comment-field {
-    margin-bottom: 10px; }
+/* line 78, ../sass/modules/_comments.scss */
+.comment-new .comment-field {
+  margin-bottom: 10px; }
+/* line 84, ../sass/modules/_comments.scss */
+.comment-page .comment-new {
+  margin-left: 30px;
+  position: relative;
+  background: #ffffff; }
+  /* line 88, ../sass/modules/_comments.scss */
+  .comment-page .comment-new:after {
+    bottom: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom-color: #ffffff;
+    border-width: 8px;
+    left: 20px;
+    margin-left: -8px; }
 
 /* line 3, ../sass/modules/_forms.scss */
 form .control-group, .accounts-dialog .control-group {
@@ -794,11 +814,11 @@ form .form-actions, .accounts-dialog .form-actions {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
   *zoom: 1; }
-  /* line 65, ../sass/partials/_mixins.scss */
+  /* line 3, ../sass/partials/_mixins.scss */
   form .form-actions:before, form .form-actions:after, .accounts-dialog .form-actions:before, .accounts-dialog .form-actions:after {
     content: "";
     display: table; }
-  /* line 69, ../sass/partials/_mixins.scss */
+  /* line 7, ../sass/partials/_mixins.scss */
   form .form-actions:after, .accounts-dialog .form-actions:after {
     clear: both; }
 /* line 28, ../sass/modules/_forms.scss */

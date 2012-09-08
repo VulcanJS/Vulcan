@@ -6,16 +6,12 @@ Template.comment_page.events = {
     var post_id=Comments.findOne(parentComment_id).post;
 
     var $comment = $('#comment');
-    // var comment_id= Meteor.call('comment', post, parentComment, $comment.val());
-    var comment_id=Comments.insert({
-      'post':post_id,
-      'parent':parentComment_id,
-      "body":$comment.val()
-    });
+    var comment_id= Meteor.call('comment', post_id, parentComment_id, $comment.val());
+
     console.log(comment_id);
     Session.set('selected_comment', null);
     // Session.set('state', 'view_post');
-    // Router.navigate('posts/'+post_id, {trigger:true});
+    Router.navigate('posts/'+post_id, {trigger:true});
   }
 };
 
@@ -47,8 +43,6 @@ Template.comment_page.post = function(){
 
 Template.comment_page.comment = function(){
   var comment = Comments.findOne(Session.get('selected_comment_id'));
-  console.log("comment: ");
-  console.log(comment);
   Template.comment_page.repress_recursion = true;
   return comment;
 };
