@@ -29,3 +29,7 @@ Template.post_page.child_comments = function(){
   var post = Posts.findOne(Session.get('selected_post_id'));
   return Comments.find({post: post._id, parent: null});
 };
+
+Template.post_page.body_formatted = function(){
+  return this.body.autoLink();
+}

@@ -30,3 +30,7 @@ Template.comment_item.is_my_comment = function(){
   }
   return false;
 };
+
+Template.comment_item.body_formatted = function(){
+  return this.body.autoLink();
+}
