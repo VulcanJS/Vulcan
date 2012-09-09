@@ -5,7 +5,19 @@
 
 	}
 	&.queued{
-		opacity:0.3;
+		.comment-notification{
+			@extend .grid-block;
+			display:block;
+			position:absolute;
+			top:0;
+			right:-120px;
+			width:70px;
+		}
+		.comment-content{
+			height:1px;
+			padding:0;
+			overflow:hidden;
+		}
 	}
 }
 .comment-content{
@@ -113,18 +125,6 @@
 }
 .comments{
 	.comment:nth-child(3){
-		.comment-notification{
-			@extend .grid-block;
-			display:block;
-			position:absolute;
-			top:0;
-			right:-120px;
-			width:70px;
-		}
-		.comment-content{
-			height:1px;
-			padding:0;
-			overflow:hidden;
-		}
+
 	}
 }

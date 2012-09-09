@@ -1,6 +1,6 @@
 <template name="comment_item">
   <li class="comment {{#if isNew}}queued{{else}}opened{{/if}}" id={{_id}}>
-    <div class="comment-notification">{{author}}</div>
+    <div class="comment-notification"><a href="#" class="open-comment-link">{{author}}</a></div>
     <div class="comment-content">
       <div class="comment-actions">
         <a class="upvote" href="/">

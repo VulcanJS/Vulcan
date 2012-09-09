@@ -6,6 +6,10 @@ Template.comment_item.events = {
     Session.set('selected_comment', this);
     // Session.set('state', 'reply');
     Router.navigate(href, {trigger: true});
+  },
+  'click .open-comment-link': function(e){
+    e.preventDefault();
+    $(event.target).parents(".comment").removeClass("queued").addClass("opened");
   }
 };
 
