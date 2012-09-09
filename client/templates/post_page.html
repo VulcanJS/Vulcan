@@ -15,14 +15,6 @@
       </form>
     </div>
     {{/if}}
-    {{#if has_comments}}
-    <ul>
-    {{#each child_comments}}
-    {{> comment_item}}
-    {{/each}}
-    </ul>
-    {{else}}
-    <p>No comments.</p>
-    {{/if}}
+    {{> comment_list}}
   </div>
 </template>

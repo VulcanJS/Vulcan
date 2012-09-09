@@ -1,3 +1,4 @@
+(function() {
 Template.post_page.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
@@ -18,20 +19,10 @@ Template.post_page.post = function(){
   return post;
 };
 
-Template.post_page.has_comments = function(){
-  var post = Posts.findOne(Session.get('selected_post_id'));
-  if(post){
-    return Comments.find({post: post._id, parent: null}).count() > 0;
-  }
-};
-
-Template.post_page.child_comments = function(){
-  var post = Posts.findOne(Session.get('selected_post_id'));
-  return Comments.find({post: post._id, parent: null});
-};
-
 Template.post_page.body_formatted = function(){
   var converter = new Markdown.Converter();
   var html_body=converter.makeHtml(this.body);
   return html_body.autoLink();
 }
+
+})();

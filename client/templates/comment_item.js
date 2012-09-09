@@ -40,3 +40,9 @@ Template.comment_item.body_formatted = function(){
     return html_body.autoLink();
   }
 }
+
+Template.comment_item.helpers({
+  isNew: function() {
+    return (new Date(this.submitted)) > StyleNewRecords;
+  }
+});

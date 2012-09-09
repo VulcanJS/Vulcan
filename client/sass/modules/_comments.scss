@@ -1,11 +1,21 @@
 .comment{
 	margin-left:30px;
+	position:relative;
+	&.opened{
+
+	}
+	&.queued{
+		opacity:0.3;
+	}
 }
 .comment-content{
 	position:relative;
 	@extend .grid-block;
 	@include border-radius(0 3px 3px 3px);
 	font-size:14px;
+}
+.comment-notification{
+	display:none;
 }
 .comment-meta{
 	margin-bottom:5px;
@@ -101,5 +111,20 @@
 		}
 	}
 }
-
-// abcdefgh
+.comments{
+	.comment:nth-child(3){
+		.comment-notification{
+			@extend .grid-block;
+			display:block;
+			position:absolute;
+			top:0;
+			right:-120px;
+			width:70px;
+		}
+		.comment-content{
+			height:1px;
+			padding:0;
+			overflow:hidden;
+		}
+	}
+}
