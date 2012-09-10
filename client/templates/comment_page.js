@@ -46,3 +46,5 @@ Template.comment_page.comment = function(){
   Template.comment_page.repress_recursion = true;
   return comment;
 };
+
+Session.set('StyleNewRecords', new Date());

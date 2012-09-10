@@ -48,8 +48,9 @@ Template.comment_item.body_formatted = function(){
 
 Template.comment_item.helpers({
   isNew: function() {
-    if(typeof StyleNewRecords != 'undefined')
-      return (new Date(this.submitted)) > StyleNewRecords;
+    // the user's own comments are never queued
+    if(Meteor.user()._id!=this.user_id && Session.get('StyleNewRecords'))
+      return (new Date(this.submitted)) > Session.get('StyleNewRecords');
     return false;
   }
 });
