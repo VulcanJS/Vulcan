@@ -52,5 +52,11 @@ Template.comment_item.helpers({
     if(Meteor.user()._id!=this.user_id && Session.get('StyleNewRecords'))
       return (new Date(this.submitted)) > Session.get('StyleNewRecords');
     return false;
+  },
+  repress_recursion: function(){
+    if(window.repress_recursion){
+      return true;
+    }
+    return false;
   }
 });

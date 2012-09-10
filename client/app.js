@@ -56,7 +56,11 @@ if (Meteor.is_client) {
 		post: function(id) {
 			console.log("post, id="+id); 
 			Session.set('selected_post_id', id); 
-			this.goto('post_page'); 
+			this.goto('post_page');
+			// on post page, we show the comment recursion
+			window.repress_recursion=false;
+			// reset the new comment time at each new request of the post page
+			Session.set('StyleNewRecords', new Date());
 		},
 		post_edit: function(id) {
 			console.log("post_edit, id="+id); 
@@ -66,7 +70,8 @@ if (Meteor.is_client) {
 		comment: function(id) {
 			console.log("comment, id="+id); 
 			Session.set('selected_comment_id', id);
-			this.goto('comment_page'); 
+			this.goto('comment_page');
+			window.repress_recursion=true;
 		},
 		comment_edit: function(id) {
 			console.log("comment_edit, id="+id); 

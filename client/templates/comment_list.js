@@ -12,6 +12,4 @@ Template.comment_list.child_comments = function(){
   return Comments.find({post: post._id, parent: null});
 };
 
-Session.set('StyleNewRecords', new Date());
-
 })();
