@@ -11,8 +11,8 @@ Meteor.methods({
     if(parentComment_id)
       comment.parent = parentComment_id;
 
-    Comments.insert(comment);
+    var new_comment_id=Comments.insert(comment);
     Posts.update(post_id, {$inc: {comments: 1}});
-    return true;
+    return new_comment_id;
   }
 });

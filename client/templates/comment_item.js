@@ -9,7 +9,8 @@ Template.comment_item.events = {
   },
   'click .open-comment-link': function(e){
     e.preventDefault();
-    $(event.target).parents(".comment").removeClass("queued").addClass("opened");
+    console.log('clicked me', event.target, $(event.target).closest(".comment"));
+    $(event.target).closest(".comment").removeClass("queued");
   }
 };
 
@@ -47,6 +48,8 @@ Template.comment_item.body_formatted = function(){
 
 Template.comment_item.helpers({
   isNew: function() {
-    return (new Date(this.submitted)) > StyleNewRecords;
+    if(typeof StyleNewRecords != 'undefined')
+      return (new Date(this.submitted)) > StyleNewRecords;
+    return false;
   }
 });

@@ -5,8 +5,11 @@ Template.post_page.events = {
 
     var post_id = Session.get('selected_post_id');
     var $comment = $('#comment');
-    Meteor.call('comment', post_id, null, $comment.val());
+    var new_comment_id=Meteor.call('comment', post_id, null, $comment.val(), function(error, result){
+      $("#"+result).removeClass("queued"); // does not work because new element is not yet in the DOM (probably)
+    });
     $comment.val('');
+
   }
 };
 

@@ -79,7 +79,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   transition: all, 300ms; }
 
 /* line 32, ../sass/partials/_mixins.scss */
-.grid-block, .post-content, .post-actions li a, .post-message, .comment.queued .comment-notification, .comment-content, .comment-new {
+.grid-block, .post-content, .post-actions li a, .post-message, .comment .comment-notification a, .comment-content, .comment-new {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -674,20 +674,74 @@ body.pageslide-open {
 .comment {
   margin-left: 30px;
   position: relative; }
-  /* line 8, ../sass/modules/_comments.scss */
-  .comment.queued .comment-notification {
-    display: block;
+  /* line 4, ../sass/modules/_comments.scss */
+  .comment .comment-notification {
+    -webkit-transition: ease-out opacity 400ms;
+    -webkit-transition-delay: 0ms;
+    -moz-transition: ease-out opacity 400ms 0ms;
+    -o-transition: ease-out opacity 400ms 0ms;
+    transition: ease-out opacity 400ms 0ms;
     position: absolute;
-    top: 0;
-    right: -120px;
-    width: 70px; }
-  /* line 16, ../sass/modules/_comments.scss */
-  .comment.queued .comment-content {
-    height: 1px;
-    padding: 0;
-    overflow: hidden; }
+    right: 0;
+    top: -20px;
+    opacity: 0; }
+    /* line 10, ../sass/modules/_comments.scss */
+    .comment .comment-notification a {
+      pointer-events: none;
+      position: absolute;
+      left: 15px;
+      display: block;
+      padding: 3px 8px;
+      background: #ffffff;
+      white-space: nowrap;
+      font-size: 14px; }
+      /* line 19, ../sass/modules/_comments.scss */
+      .comment .comment-notification a:after {
+        right: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(255, 255, 255, 0);
+        border-right-color: #ffffff;
+        border-width: 8px;
+        top: 50%;
+        margin-top: -8px; }
+  /* line 36, ../sass/modules/_comments.scss */
+  .comment .comment-body {
+    -webkit-transition: ease-out opacity 600ms;
+    -webkit-transition-delay: 0ms;
+    -moz-transition: ease-out opacity 600ms 0ms;
+    -o-transition: ease-out opacity 600ms 0ms;
+    transition: ease-out opacity 600ms 0ms;
+    opacity: 1; }
+  /* line 41, ../sass/modules/_comments.scss */
+  .comment.queued:after {
+    position: absolute;
+    display: block;
+    content: " ";
+    top: -6px;
+    left: -30px;
+    width: 100%;
+    height: 0px;
+    opacity: 1;
+    border-top: 1px dashed rgba(0, 0, 0, 0.2);
+    padding-right: 35px; }
+  /* line 53, ../sass/modules/_comments.scss */
+  .comment.queued .comment-notification {
+    opacity: 1; }
+    /* line 55, ../sass/modules/_comments.scss */
+    .comment.queued .comment-notification a {
+      pointer-events: auto; }
+  /* line 59, ../sass/modules/_comments.scss */
+  .comment.queued .comment-body {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none; }
 
-/* line 23, ../sass/modules/_comments.scss */
+/* line 67, ../sass/modules/_comments.scss */
 .comment-content {
   position: relative;
   -webkit-border-radius: 0 3px 3px 3px;
@@ -697,19 +751,15 @@ body.pageslide-open {
   border-radius: 0 3px 3px 3px;
   font-size: 14px; }
 
-/* line 29, ../sass/modules/_comments.scss */
-.comment-notification {
-  display: none; }
-
-/* line 32, ../sass/modules/_comments.scss */
+/* line 74, ../sass/modules/_comments.scss */
 .comment-meta {
   margin-bottom: 5px;
   color: #b3c1c6; }
-  /* line 34, ../sass/modules/_comments.scss */
+  /* line 76, ../sass/modules/_comments.scss */
   .comment-meta .comment-username, .comment-meta .comment-time, .comment-meta .comment-permalink {
     display: inline-block;
     margin-right: 4px; }
-  /* line 39, ../sass/modules/_comments.scss */
+  /* line 81, ../sass/modules/_comments.scss */
   .comment-meta .comment-permalink {
     position: relative;
     text-indent: 100%;
@@ -718,23 +768,23 @@ body.pageslide-open {
     width: 20px;
     color: #b3c1c6;
     margin: 0; }
-    /* line 45, ../sass/modules/_comments.scss */
+    /* line 87, ../sass/modules/_comments.scss */
     .comment-meta .comment-permalink:before {
       position: absolute;
       display: block;
       top: 1px;
       left: 0;
       text-indent: 0; }
-    /* line 52, ../sass/modules/_comments.scss */
+    /* line 94, ../sass/modules/_comments.scss */
     .comment-meta .comment-permalink:hover:before {
       color: #f36c3d; }
 
-/* line 57, ../sass/modules/_comments.scss */
+/* line 99, ../sass/modules/_comments.scss */
 .comment-actions {
   position: absolute;
   left: -30px;
   top: 0px; }
-  /* line 61, ../sass/modules/_comments.scss */
+  /* line 103, ../sass/modules/_comments.scss */
   .comment-actions a {
     -webkit-border-radius: 0 0 0 3px;
     -moz-border-radius: 0 0 0 3px;
@@ -753,7 +803,7 @@ body.pageslide-open {
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden; }
-    /* line 73, ../sass/modules/_comments.scss */
+    /* line 115, ../sass/modules/_comments.scss */
     .comment-actions a.upvote {
       -webkit-border-radius: 3px 0 0 0;
       -moz-border-radius: 3px 0 0 0;
@@ -761,7 +811,7 @@ body.pageslide-open {
       -o-border-radius: 3px 0 0 0;
       border-radius: 3px 0 0 0;
       margin-bottom: 1px; }
-    /* line 77, ../sass/modules/_comments.scss */
+    /* line 119, ../sass/modules/_comments.scss */
     .comment-actions a i {
       font-size: 12px;
       display: block;
@@ -772,22 +822,22 @@ body.pageslide-open {
       text-align: center;
       text-indent: 0;
       color: #f36c3d; }
-    /* line 89, ../sass/modules/_comments.scss */
+    /* line 131, ../sass/modules/_comments.scss */
     .comment-actions a:hover {
       background: #4e555d; }
-      /* line 91, ../sass/modules/_comments.scss */
+      /* line 133, ../sass/modules/_comments.scss */
       .comment-actions a:hover i {
         color: white; }
 
-/* line 100, ../sass/modules/_comments.scss */
+/* line 142, ../sass/modules/_comments.scss */
 .comment-new .comment-field {
   margin-bottom: 10px; }
-/* line 106, ../sass/modules/_comments.scss */
+/* line 148, ../sass/modules/_comments.scss */
 .comment-page .comment-new {
   margin-left: 30px;
   position: relative;
   background: #ffffff; }
-  /* line 110, ../sass/modules/_comments.scss */
+  /* line 152, ../sass/modules/_comments.scss */
   .comment-page .comment-new:after {
     bottom: 100%;
     border: solid transparent;
