@@ -54,8 +54,8 @@ Template.post_item.ago = function(){
 Template.post_item.voted = function(){
   var user = Meteor.user();
   if(!user) return false;
-  var myvote = MyVotes.findOne({post: this._id, user: user._id});
-  return !!myvote;
+  
+  return _.include(this.voters, user._id);
 };
 
 Template.post_item.domain = function(){
