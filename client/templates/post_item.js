@@ -77,6 +77,9 @@ Template.post_item.author = function(){
   }
 };
 
+Template.post_item.short_score = function(){
+  return Math.floor(this.score*1000)/1000;
+}
 
 Template.post_item.body_formatted = function(){
   var converter = new Markdown.Converter();

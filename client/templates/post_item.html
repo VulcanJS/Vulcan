@@ -20,9 +20,9 @@
       <span class="post-rank">{{rank}}</span>
       <div class="post-upvote">
         {{#if voted}}
-          <a class="upvote-link voted"><i class="icon-check"></i><span>Upvote</span></a>
+          <span class="upvote-link voted"><i class="icon-check"></i><span>Upvote</span></span>
         {{else}}
-          <a class="upvote-link not-voted"><i class="icon-up"></i><span>Upvote</span></a>
+          <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>Upvote</span></a>
         {{/if}}
       </div>
       <div class="post-info">
@@ -34,6 +34,7 @@
           {{#if is_my_post}}
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}
+          | score: {{short_score}}, votes: {{votes}}
         </p>
       </div>
     </div>
