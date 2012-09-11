@@ -6,7 +6,7 @@ var Scoring = {
   updateObject: function(object) {
     
     // just count the number of votes for now
-    var baseScore = MyVotes.find({votedFor: object._id}).count();
+    var baseScore = object.votes;
     
     // now multiply by 'age' exponentiated
     // FIXME: timezones <-- set by server or is getTime() ok?
@@ -29,14 +29,16 @@ var Scoring = {
 
 Meteor.methods({
   voteForPost: function(post){
-    var user = this.userId();
-    if(!user) return false;
-
-    var myvote = MyVotes.findOne({votedFor: post._id, user: user});
-    if(myvote) return false;
-
-    MyVotes.insert({votedFor: post._id, user: user, vote: 1});
+    var userId = this.userId();
+    if(!userId) return false;
     
+    // atomically update the post's votes
+    var query = {_id: post._id, voters: {$ne: userId}};
+    var update = {$push: {voters: userId}, $inc: {votes: 1}};
+    Posts.update(query, update);
+    
+    // now update the post's score
+    post = Posts.findOne(post._id);
     Scoring.updateObject(post);
     Posts.update(post._id, {$set: {score: post.score}});
     
