@@ -12,4 +12,8 @@ Template.comment_list.child_comments = function(){
   return Comments.find({post: post._id, parent: null});
 };
 
+Template.comment_list.rendered = function(){
+	t("comment_list");
+}
+
 })();

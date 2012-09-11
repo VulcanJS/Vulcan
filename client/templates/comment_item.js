@@ -46,12 +46,30 @@ Template.comment_item.body_formatted = function(){
   }
 }
 
+Template.comment_item.rendered=function(){
+  t("comment_item");
+}
+
 Template.comment_item.helpers({
-  isNew: function() {
-    // the user's own comments are never queued
-    if(Meteor.user() && Meteor.user()._id!=this.user_id && Session.get('StyleNewRecords'))
-      return (new Date(this.submitted)) > Session.get('StyleNewRecords');
-    return false;
+  isQueued: function() {
+    var commentIsNew=false;
+    var d=new Date(this.submitted);
+    commentIsNew=d > window.newCommentTimestamp;
+    console.log("comment submission date: "+d+" |  newCommentTimestamp: "+window.newCommentTimestamp+" | isNew: "+commentIsNew);
+
+    if(Meteor.user()){
+      // if user is logged in
+      if(Meteor.user()._id==this.user_id){
+        // if comment belongs to the user, never queue it
+        return false;
+      }else{
+        // if not, see if it's newer than the global request timestamp
+        return commentIsNew;
+      }
+    }else{
+      // if user is not logged in
+      return commentIsNew;
+    }
   },
   repress_recursion: function(){
     if(window.repress_recursion){

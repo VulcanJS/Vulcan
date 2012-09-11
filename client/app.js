@@ -60,7 +60,7 @@ if (Meteor.is_client) {
 			// on post page, we show the comment recursion
 			window.repress_recursion=false;
 			// reset the new comment time at each new request of the post page
-			Session.set('StyleNewRecords', new Date());
+			window.newCommentTimestamp=new Date();
 		},
 		post_edit: function(id) {
 			console.log("post_edit, id="+id); 
@@ -86,7 +86,10 @@ if (Meteor.is_client) {
 	});
 }
 
-
+t=function(message){
+	var d=new Date();
+	console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());
+}
 
 // if (Meteor.is_client) {
 //     Meteor.startup(function () {
