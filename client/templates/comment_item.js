@@ -56,20 +56,14 @@ Template.comment_item.helpers({
     var d=new Date(this.submitted);
     commentIsNew=d > window.newCommentTimestamp;
     console.log("comment submission date: "+d+" |  newCommentTimestamp: "+window.newCommentTimestamp+" | isNew: "+commentIsNew);
-
-    if(Meteor.user()){
-      // if user is logged in
-      if(Meteor.user()._id==this.user_id){
-        // if comment belongs to the user, never queue it
-        return false;
-      }else{
-        // if not, see if it's newer than the global request timestamp
-        return commentIsNew;
-      }
-    }else{
-      // if user is not logged in
-      return commentIsNew;
+    
+    if(Meteor.user() && Meteor.user()._id==this.user_id){
+      // if user is logged in, and the comment belongs to the user, then never queue it
+      return false;
     }
+    // else, check if comment is newer than the global new comment timestamp, and return the result
+    return commentIsNew;
+    
   },
   repress_recursion: function(){
     if(window.repress_recursion){
