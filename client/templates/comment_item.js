@@ -49,7 +49,7 @@ Template.comment_item.body_formatted = function(){
 Template.comment_item.helpers({
   isNew: function() {
     // the user's own comments are never queued
-    if(Meteor.user()._id!=this.user_id && Session.get('StyleNewRecords'))
+    if(Meteor.user() && Meteor.user()._id!=this.user_id && Session.get('StyleNewRecords'))
       return (new Date(this.submitted)) > Session.get('StyleNewRecords');
     return false;
   },
