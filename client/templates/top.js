@@ -3,7 +3,7 @@ Template.top.show = function(){
 };
 
 Template.top.posts = function(){
-  var posts = Posts.find({}, {sort: {submitted: -1}});
+  var posts = Posts.find({}, {sort: {score: -1}});
   return posts;
 };
 
