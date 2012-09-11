@@ -59,7 +59,11 @@ Template.post_item.voted = function(){
 };
 
 Template.post_item.rank = function() {
-  return Posts.find({score: {$gt: this.score}}).count();
+  var filter = {$or: [
+    {score: {$gt: this.score}},
+    {$and: [{score: this.score}, {submitted: {$lt: this.submitted}}]}
+  ]};
+  return Posts.find(filter).count();
 }
 
 Template.post_item.domain = function(){
