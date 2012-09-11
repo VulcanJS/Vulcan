@@ -8,7 +8,7 @@ Meteor.publish('users', function() {
 Posts = new Meteor.Collection('posts');
 
 Meteor.publish('posts', function() {
-  return Posts.find();
+  return Posts.find({}, {sort: {score: -1}});
 });
 
 Meteor.startup(function(){
