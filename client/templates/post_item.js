@@ -20,6 +20,12 @@ Template.post_item.events = {
 };
 
 Template.post_item.rendered = function(){
+  // var $this=$(this.find(".post"));
+  // var distance=(getRank(this.data)-1)*80
+  // $this.css("top", distance+"px");
+  // console.log(this.data);
+  // console.log(distance+"px");
+
   if (Meteor.is_client) {     
     if($(window).width()>400){ //do not load social media plugin on mobile
     //   $('.share-replace').sharrre({
@@ -41,9 +47,9 @@ Template.post_item.rendered = function(){
   }
 };
 
-Template.post_item.rank = function(){
-  return 1;
-};
+Template.post_item.preserve({
+  '.post': function (node) { return node.id; }
+});
 
 Template.post_item.ago = function(){
   var submitted = new Date(this.submitted);
@@ -58,12 +64,20 @@ Template.post_item.voted = function(){
   return _.include(this.voters, user._id);
 };
 
-Template.post_item.rank = function() {
+var getRank = function(post){
   var filter = {$or: [
-    {score: {$gt: this.score}},
-    {$and: [{score: this.score}, {submitted: {$lt: this.submitted}}]}
+    {score: {$gt: post.score}},
+    {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
   ]};
-  return Posts.find(filter).count();
+  return Posts.find(filter).count()+1;  
+}
+
+Template.post_item.rank = function() {
+  return getRank(this);
+}
+
+Template.post_item.top_distance = function(){
+  return (getRank(this)-1) * 80;
 }
 
 Template.post_item.domain = function(){

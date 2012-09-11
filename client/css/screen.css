@@ -430,11 +430,11 @@ body.pageslide-open {
     /* For modern browsers */
     /* For IE 6/7 (trigger hasLayout) */
     *zoom: 1;
-    -webkit-transition: ease-out top 400ms;
+    -webkit-transition: ease-out top 2000ms;
     -webkit-transition-delay: 0ms;
-    -moz-transition: ease-out top 400ms 0ms;
-    -o-transition: ease-out top 400ms 0ms;
-    transition: ease-out top 400ms 0ms; }
+    -moz-transition: ease-out top 2000ms 0ms;
+    -o-transition: ease-out top 2000ms 0ms;
+    transition: ease-out top 2000ms 0ms; }
     /* line 3, ../sass/partials/_mixins.scss */
     .posts .post:before, .posts .post:after {
       content: "";
@@ -442,66 +442,6 @@ body.pageslide-open {
     /* line 7, ../sass/partials/_mixins.scss */
     .posts .post:after {
       clear: both; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(1) {
-      top: 0px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(2) {
-      top: 80px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(3) {
-      top: 160px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(4) {
-      top: 240px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(5) {
-      top: 320px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(6) {
-      top: 400px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(7) {
-      top: 480px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(8) {
-      top: 560px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(9) {
-      top: 640px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(10) {
-      top: 720px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(11) {
-      top: 800px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(12) {
-      top: 880px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(13) {
-      top: 960px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(14) {
-      top: 1040px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(15) {
-      top: 1120px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(16) {
-      top: 1200px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(17) {
-      top: 1280px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(18) {
-      top: 1360px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(19) {
-      top: 1440px; }
-    /* line 10, ../sass/modules/_posts.scss */
-    .posts .post:nth-child(20) {
-      top: 1520px; }
 
 /* line 16, ../sass/modules/_posts.scss */
 .post-content {

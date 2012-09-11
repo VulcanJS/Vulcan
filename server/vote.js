@@ -7,12 +7,15 @@ var Scoring = {
     
     // just count the number of votes for now
     var baseScore = object.votes;
-    
+
     // now multiply by 'age' exponentiated
     // FIXME: timezones <-- set by server or is getTime() ok?
     var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
     
-    object.score = baseScore * Math.pow(ageInHours + 2, -0.1375);
+    // object.score = baseScore * Math.pow(ageInHours + 2, -0.1375);
+
+    // debug: just add 1 to the score for each new vote
+    object.score = object.score+1;
   },
   
   // rerun all the scoring
