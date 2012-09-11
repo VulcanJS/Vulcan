@@ -58,6 +58,10 @@ Template.post_item.voted = function(){
   return _.include(this.voters, user._id);
 };
 
+Template.post_item.rank = function() {
+  return Posts.find({score: {$gt: this.score}}).count();
+}
+
 Template.post_item.domain = function(){
   var a = document.createElement('a');
   a.href = this.url;
