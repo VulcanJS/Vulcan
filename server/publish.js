@@ -11,24 +11,26 @@ Meteor.publish('posts', function() {
   return Posts.find({}, {sort: {score: -1}});
 });
 
+// FIXME -- check all docs, not just the first one.
 Meteor.startup(function(){
   Posts.allow({
       insert: function(userId, doc){
         console.log(userId);
         if(userId){
+          doc.userId = userId;
           return true;
         }
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
-        if(docs[0].user_id && docs[0].user_id==userId){
+        console.log("Document's user: "+docs[0].userId+" | Current user: "+userId);
+        if(docs[0].userId && docs[0].userId==userId){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(docs[0].user_id && docs[0].user_id==userId){
+        if(docs[0].userId && docs[0].userId==userId){
           return true;
         }
         return false; }
