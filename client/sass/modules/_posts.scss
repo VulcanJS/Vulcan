@@ -1,7 +1,17 @@
-.post{
+.posts{
 	position:relative;
-	// margin-bottom:$grid-margin;
-	@include cf;
+	.post{
+		position:absolute;
+		width:100%;
+		// margin-bottom:$grid-margin;
+		@include cf;
+		@include single-transition(ease-out, top, 400ms, 0ms);
+		@for $i from 0 through 19 {
+			&:nth-child(#{$i+1}){
+				top:#{$i*80px};
+			};
+		}
+	}
 }
 .post-content{
 	position:relative;
