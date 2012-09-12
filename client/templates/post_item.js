@@ -19,12 +19,26 @@ Template.post_item.events = {
   }
 };
 
+
+Template.post_item.created = function(){
+  var distance=(getRank(this.data)-1) * 80;
+  this.current_distance = distance;
+}
+
 Template.post_item.rendered = function(){
-  // var $this=$(this.find(".post"));
-  // var distance=(getRank(this.data)-1)*80
-  // $this.css("top", distance+"px");
-  // console.log(this.data);
-  // console.log(distance+"px");
+  var new_distance=(getRank(this.data)-1)*80;
+  var old_distance=this.current_distance;
+  var $this=$(this.find(".post"));
+
+  // console.log("rendered: ", this.data.headline, "| old distance: "+old_distance, "| new distance: "+new_distance);
+
+  $this.css("top", old_distance+"px");
+  setTimeout(function() {
+    $this.css("top", new_distance+"px");
+    // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
+    $this.addClass("animate");
+  }, 100);
+
 
   if (Meteor.is_client) {     
     if($(window).width()>400){ //do not load social media plugin on mobile
@@ -48,7 +62,7 @@ Template.post_item.rendered = function(){
 };
 
 Template.post_item.preserve({
-  '.post': function (node) { return node.id; }
+  '.post': function (node) {console.log("preserving node: ",node); return node.id; }
 });
 
 Template.post_item.ago = function(){
@@ -76,7 +90,7 @@ Template.post_item.rank = function() {
   return getRank(this);
 }
 
-Template.post_item.top_distance = function(){
+Template.post_item.top_distanceXX = function(){
   return (getRank(this)-1) * 80;
 }
 
