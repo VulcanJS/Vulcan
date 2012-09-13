@@ -31,7 +31,7 @@ Meteor.startup(function(){
         return false;
       }
     , remove: function(userId, docs){ 
-        if(docs[0].userId && docs[0].userId==userId){
+        if(docs[0].user_id && docs[0].user_id==userId){
           return true;
         }
         return false; }
