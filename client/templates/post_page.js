@@ -1,15 +1,17 @@
 (function() {
+
+var editor;
+
 Template.post_page.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
-
+    var content = editor.exportFile();
     var post_id = Session.get('selected_post_id');
     var $comment = $('#comment');
-    var new_comment_id=Meteor.call('comment', post_id, null, $comment.val(), function(error, result){
+    var new_comment_id=Meteor.call('comment', post_id, null, content, function(error, result){
       $("#"+result).removeClass("queued"); // does not work because new element is not yet in the DOM (probably)
     });
     $comment.val('');
-
   }
 };
 
@@ -30,6 +32,16 @@ Template.post_page.body_formatted = function(){
 
 Template.post_page.rendered = function(){
   t("post_page");
+  editor= new EpicEditor({
+  container:  'editor',
+  basePath:   '/editor',
+  clientSideStorage: false,
+  theme: {
+    base:'/themes/base/epiceditor.css',
+    preview:'/themes/preview/github.css',
+    editor:'/themes/editor/epic-light.css'
+  }
+}).load();
 }
 
 window.newCommentTimestamp=new Date();

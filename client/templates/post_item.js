@@ -21,24 +21,28 @@ Template.post_item.events = {
 
 
 Template.post_item.created = function(){
-  var distance=(getRank(this.data)-1) * 80;
-  this.current_distance = distance;
+  if(this.data){
+    this.current_distance = (getRank(this.data)-1) * 80;
+  }
 }
 
 Template.post_item.rendered = function(){
-  var new_distance=(getRank(this.data)-1)*80;
-  var old_distance=this.current_distance;
-  var $this=$(this.find(".post"));
+  if(this.data){
+    var new_distance=(getRank(this.data)-1)*80;
+    var old_distance=this.current_distance;
+    var $this=$(this.find(".post"));
 
-  // console.log("rendered: ", this.data.headline, "| old distance: "+old_distance, "| new distance: "+new_distance);
+    // console.log("rendered: ", this.data.headline, "| old distance: "+old_distance, "| new distance: "+new_distance);
 
-  $this.css("top", old_distance+"px");
-  setTimeout(function() {
-    $this.css("top", new_distance+"px");
-    // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
-    $this.addClass("animate");
-  }, 100);
-
+    // at rendering time, move posts to their old place
+    $this.css("top", old_distance+"px");
+    setTimeout(function() {
+      // then a few milliseconds after, move the to their new spot
+      $this.css("top", new_distance+"px");
+      // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
+      $this.addClass("animate");
+    }, 100);
+  }
 
   if (Meteor.is_client) {     
     if($(window).width()>400){ //do not load social media plugin on mobile
@@ -66,6 +70,8 @@ Template.post_item.preserve({
 });
 
 Template.post_item.ago = function(){
+    console.log("this::::: ",this);
+
   var submitted = new Date(this.submitted);
   var timeAgo=jQuery.timeago(submitted);
   return timeAgo;

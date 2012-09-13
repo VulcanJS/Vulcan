@@ -267,6 +267,15 @@ body.pageslide-open {
 /* line 5, ../sass/partials/_markdown.scss */
 .markdown em {
   font-style: italic; }
+/* line 8, ../sass/partials/_markdown.scss */
+.markdown ul, .markdown ol {
+  padding-left: 18px; }
+/* line 11, ../sass/partials/_markdown.scss */
+.markdown ul {
+  list-style-type: disc; }
+/* line 14, ../sass/partials/_markdown.scss */
+.markdown ol {
+  list-style-type: decimal; }
 
 /* line 5, ../sass/partials/_grid.scss */
 .grid {
@@ -912,10 +921,10 @@ form input[type="text"], form input[type="password"], form textarea, form .login
   box-sizing: border-box;
   /* Opera/IE 8+ */
   border: 1px solid #b5b0b0;
-  -webkit-transition: all, 500ms;
-  -moz-transition: all, 500ms;
-  -o-transition: all, 500ms;
-  transition: all, 500ms; }
+  -webkit-transition: border-color 500ms;
+  -moz-transition: border-color 500ms;
+  -o-transition: border-color 500ms;
+  transition: border-color 500ms; }
   /* line 37, ../sass/modules/_forms.scss */
   form input[type="text"]:focus, form input[type="password"]:focus, form textarea:focus, form .login-form input:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus {
     outline: none;

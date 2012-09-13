@@ -32,7 +32,7 @@ form, .accounts-dialog{
 		font-size:14px;
 		@include border-box;
 		border:1px solid $grey;
-		@include transition(all, 500ms);	
+		@include single-transition(border-color, 500ms);	
 		// @include box-shadow(inset 0px 0px 0px 1px black(0.2));
 		&:focus{
 			outline: none;
