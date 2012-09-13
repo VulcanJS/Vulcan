@@ -39,16 +39,7 @@
   Template.comment_edit.rendered = function(){
     var comment= Comments.findOne(Session.get('selected_comment_id'));
     if(comment){
-      editor= new EpicEditor({
-      container:  'editor',
-      basePath:   '/editor',
-      clientSideStorage: false,
-      theme: {
-        base:'/themes/base/epiceditor.css',
-        preview:'/themes/preview/github.css',
-        editor:'/themes/editor/epic-light.css'
-      }
-      }).load();  
+      editor= new EpicEditor(epicEditorOptions).load();  
       editor.importFile('editor',comment.body);
     }
   }

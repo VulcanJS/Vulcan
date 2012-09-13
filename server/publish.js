@@ -23,8 +23,9 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        console.log("Document's user: "+docs[0].userId+" | Current user: "+userId);
-        if(docs[0].userId && docs[0].userId==userId){
+      console.log(docs);
+        console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
+        if(docs[0].user_id && docs[0].user_id==userId){
           return true;
         }
         return false;

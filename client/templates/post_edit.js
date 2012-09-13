@@ -1,3 +1,6 @@
+(function(){
+  var editor;
+
 Template.post_edit.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
@@ -6,7 +9,8 @@ Template.post_edit.events = {
     var selected_post_id=Session.get("selected_post_id");
     var title= $('#title').val();
     var url = $('#url').val();
-    var body = $('#body').val();
+    var body = editor.exportFile();
+    console.log("body:   ", body)
 
     Posts.update(selected_post_id,
  		{
@@ -34,3 +38,13 @@ Template.post_edit.post = function(){
   var post = Posts.findOne(Session.get('selected_post_id'));
   return post;
 };
+
+Template.post_edit.rendered = function(){
+  var post= Posts.findOne(Session.get('selected_post_id'));
+  if(post){
+    editor= new EpicEditor(EpicEditorOptions).load();  
+    editor.importFile('editor',post.body);
+  }
+}
+
+})();

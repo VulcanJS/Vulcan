@@ -66,7 +66,7 @@ Template.post_item.rendered = function(){
 };
 
 Template.post_item.preserve({
-  '.post': function (node) {console.log("preserving node: ",node); return node.id; }
+  '.post': function (node) {return node.id; }
 });
 
 Template.post_item.ago = function(){

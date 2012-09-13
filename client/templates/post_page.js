@@ -32,16 +32,7 @@ Template.post_page.body_formatted = function(){
 
 Template.post_page.rendered = function(){
   t("post_page");
-  editor= new EpicEditor({
-  container:  'editor',
-  basePath:   '/editor',
-  clientSideStorage: false,
-  theme: {
-    base:'/themes/base/epiceditor.css',
-    preview:'/themes/preview/github.css',
-    editor:'/themes/editor/epic-light.css'
-  }
-}).load();
+  editor= new EpicEditor(EpicEditorOptions).load();
 }
 
 window.newCommentTimestamp=new Date();

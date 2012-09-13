@@ -1,3 +1,6 @@
+(function(){
+  var editor;
+
 Template.post_submit.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
@@ -10,7 +13,7 @@ Template.post_submit.events = {
     var postId = Posts.insert({
         headline: title
       , url: url
-      , body: body
+      , body: editor.exportFile()
       , user_id: Meteor.user()._id
       , submitted: new Date().getTime()
       , votes: 0
@@ -43,3 +46,8 @@ Template.post_submit.events = {
     }
   }
 };
+
+Template.post_submit.rendered = function(){
+  editor= new EpicEditor(EpicEditorOptions).load();
+}
+})();
