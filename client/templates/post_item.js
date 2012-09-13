@@ -70,8 +70,6 @@ Template.post_item.preserve({
 });
 
 Template.post_item.ago = function(){
-    console.log("this::::: ",this);
-
   var submitted = new Date(this.submitted);
   var timeAgo=jQuery.timeago(submitted);
   return timeAgo;
@@ -94,10 +92,6 @@ var getRank = function(post){
 
 Template.post_item.rank = function() {
   return getRank(this);
-}
-
-Template.post_item.top_distanceXX = function(){
-  return (getRank(this)-1) * 80;
 }
 
 Template.post_item.domain = function(){
