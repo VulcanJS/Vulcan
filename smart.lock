@@ -2,7 +2,7 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "auth",
-    "commit": "02cf89a54b43102fbaf68657b7671e7f2791ea78"
+    "commit": "a5a3d3a94a0c35bbea7f81752e72edd3190e4842"
   },
   "dependencies": {
     "basePackages": {
@@ -11,12 +11,12 @@
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.1.0",
-        "commit": "c73515515f1d267108f78b4928a6866952290761"
+        "tag": "v0.1.1",
+        "commit": "bb806c51efe3686a8da6628269aa67a269a4e076"
       },
       "deps-extensions": {
         "git": "https://github.com/tmeasday/meteor-deps-extensions.git",
-        "branch": "master",
+        "tag": "v0.1.0",
         "commit": "110462c0ba33aaeb35e55069134287325cc453e5"
       }
     }
