@@ -7,4 +7,4 @@ backbone
 accounts-password
 accounts-ui
 # accounts-twitter
-# router
+router
