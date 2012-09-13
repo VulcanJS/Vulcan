@@ -23,7 +23,6 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-      console.log(docs);
         console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
         if(docs[0].user_id && docs[0].user_id==userId){
           return true;
@@ -56,11 +55,13 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
-        if(docs[0].user_id && docs[0].user_id==userId){
-          return true;
-        }
-        return false;
+        // console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
+        // if(docs[0].user_id && docs[0].user_id==userId){
+        //   return true;
+        // }
+        // return false;
+                // temporarily disabling security
+        return true;
       }
     , remove: function(userId, docs){ 
         if(docs[0].user_id && docs[0].user_id==userId){

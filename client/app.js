@@ -72,11 +72,13 @@ if (Meteor.is_client) {
 			Session.set('selected_comment_id', id);
 			this.goto('comment_page');
 			window.repress_recursion=true;
+			window.newCommentTimestamp=new Date();
 		},
 		comment_edit: function(id) {
 			console.log("comment_edit, id="+id); 
 			Session.set('selected_comment_id', id);
-			this.goto('comment_edit'); 
+			this.goto('comment_edit');
+			window.newCommentTimestamp=new Date();
 		}	
 	});
   

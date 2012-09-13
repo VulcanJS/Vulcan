@@ -1,5 +1,5 @@
 <template name="comment_item">
-  <li class="comment{{#if isQueued}} queued{{/if}}" id="{{_id}}">
+  <li class="comment" id="{{_id}}">
     <div class="comment-notification"><a href="#" class="open-comment-link">{{author}}</a></div>
     <div class="comment-body">
       <div class="comment-content">
@@ -20,12 +20,14 @@
           {{#if is_my_comment}}
             | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
           {{/if}}
+            | <a class="queue-comment" href="#">queue</a>
+            | <span>{{full_date}}</span>
         </div>
         <div class="comment-text markdown">{{{body_formatted}}}</div>
         <a href="/comments/{{_id}}" class="comment-reply goto-comment">Reply</a>
       </div>
       {{#unless repress_recursion}}
-      <ul class="comment-children">
+      <ul class="comment-children comment-list">
       {{#each child_comments}}
         {{#with this}}
         {{> comment_item}}

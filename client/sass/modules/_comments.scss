@@ -5,12 +5,12 @@
 		@include single-transition(ease-out, opacity, 400ms, 0ms);
 		position:absolute;
 		right:0;
-		top:-20px;
+		top:-19px;
 		opacity:0;
 		a{
 			pointer-events:none;
 			position:absolute;
-			left:15px;
+			left:10px;
 			@extend .grid-block;
 			display:block;
 			padding:3px 8px;
@@ -42,13 +42,14 @@
 			position:absolute;
 			display:block;
 			content:" ";
-			top:-6px;
+			top:-5px;
 			left:-30px;
 			width:100%;
 			height:0px;
 			opacity:1;
-			border-top:1px dashed black(0.2);
-			padding-right:35px;
+			border-top:1px solid black(0.1);
+			border-bottom:1px solid white(0.8);
+			padding-right:30px;
 		}
 		.comment-notification{
 			opacity:1;
@@ -60,7 +61,17 @@
 			opacity:0;
 			position:absolute;
 			pointer-events:none;
-			
+		}
+		& + .queued{
+			&:after{
+				display:none;
+			}
+			.comment-notification{
+				top:10px;
+				a{
+					color:blue;
+				}
+			}
 		}
 	}
 }
