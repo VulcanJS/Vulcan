@@ -34,7 +34,7 @@ Meteor.startup(function(){
         if(docs[0].user_id && docs[0].user_id==userId){
           return true;
         }
-        return false; }
+        return true; }
   });
 });
 
