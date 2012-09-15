@@ -98,6 +98,10 @@ var breakTag = '<br />';
 return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
 }
 
+$.fn.exists = function () {
+    return this.length !== 0;
+}
+
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',

@@ -1,15 +1,9 @@
 (function(){
 
   commentIsNew=function(comment){
-    var commentIsNew=false;
     var d=new Date(comment.submitted);
-    commentIsNew=d > window.newCommentTimestamp;
+    var commentIsNew=d > window.newCommentTimestamp;
     console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+window.newCommentTimestamp+" | isNew: "+commentIsNew);
-    if(Meteor.user() && Meteor.user()._id==comment.user_id){
-      // if user is logged in, and the comment belongs to the user, then never queue it
-      return false;
-    }
-    // else, check if comment is newer than the global new comment timestamp, and return the result
     return commentIsNew;
   };
 
@@ -85,20 +79,56 @@ Template.comment_item.rendered=function(){
     console.log(comment);
     var $comment=$("#"+comment._id);
     var $commentParentList=$comment.closest(".comment-list");
-    if(commentIsNew(comment)){
-      $comment.addClass("queued");
-      if(!$commentParentList.hasClass("has-queued-comments")){
-        $commentParentList.addClass("has-queued-comments").prepend('<div class="queued-comments"></div>');
+
+    if(false && Meteor.user() && Meteor.user()._id==comment.user_id){
+      // if user is logged in, and the comment belongs to the user, then never queue it
+    }else{
+      if(commentIsNew(comment)){
+        // go up and down the DOM until we find either A) a queue container or B) an unqueued comment
+        $up=$comment.prevAll(".queue-container, .comment-displayed").first();
+        $down=$comment.nextAll(".queue-container, .comment-displayed").first();
+        if($up.hasClass("queue-container")){
+          console.log("case 1", $up);
+          // we've found a container above our comment, so we use it to store our queue
+          $container=$up;
+        }else if($down.hasClass("queue-container")){
+          console.log("case 2", $down);
+          // we've found a container below our comment, so we use it to store our queue
+          $container=$down;
+        }else if($up.hasClass('comment-displayed') || !$up.exists()){
+          console.log("case 3", $up);
+          // we've found containers neither above or below, but 
+          // A) we've hit a displayed comment or
+          // B) we've haven't found any comments (i.e. we're at the beginning of the list)
+          // so we put our queue container just before the comment
+          $container=$('<div class="queue-container"><ul></ul></div>').insertBefore($comment);
+          $container.click(function(){
+            console.log($container);
+            $(this).find("a").each(function(){
+              var target=$(this).attr("href");
+              console.log("target: ", target);
+              $(target).removeClass("comment-queued").addClass("comment-displayed");
+            });
+            $(this).hide("slow").remove();
+          });
+        }else{
+          console.log("case 4");
+        }
+        console.log("up", $up);
+        console.log("down", $down);
+        console.log("container", $container);
+        var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip"><span class="tooltip"><span>'+author+'</span></span></a></li>';
+        $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
+        $comment.removeClass("comment-displayed").addClass("comment-queued");
       }
-      $commentParentList.find(".queued-comments").append('<a href="#">'+author+'</a>');
     }
   }
 }
 
 Template.comment_item.helpers({
-  isQueued: function() {
-    commentIsNew(this);
-  },
+  // isQueued: function() {
+  //   commentIsNew(this);
+  // },
   repress_recursion: function(){
     if(window.repress_recursion){
       return true;

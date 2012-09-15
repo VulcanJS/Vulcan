@@ -1,79 +1,123 @@
+.queue-container{
+	position:relative;
+	height:0px;
+	@include single-transition(ease-out, opacity, 400ms, 0ms);	
+	ul{
+		position:absolute;
+		// right:0;
+		margin-left:100%;
+		left:10px;
+		top:-30px;
+		// @include box-shadow(0 1px 1px black(0.15));
+		@include border-radius(3px);
+		background: black(0.05);
+		padding:10px 0 0 10px;
+		max-width:120px;
+		white-space:nowrap;
+		@extend cf;
+		&:after {
+			right: 100%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+			border-color: rgba(255, 255, 255, 0);
+			border-right-color: black(0.05);
+			border-width: 8px;
+			top: 25px;
+			margin-top: -8px;
+		}
+		li{
+			display:block;
+			float:left;
+			margin:0 10px 10px 0;
+			display:block;
+			height:30px;
+			width:30px;
+			background:$red;
+			@include border-radius(100px);
+			line-height:30px;
+			text-align:center;
+			position:relative;
+			&.before{
+				position:absolute;
+			}
+			a{
+				position:absolute;
+				top:0px;
+				display:block;
+				height:30px;
+				width:30px;
+				@include border-radius(100px);
+				// @extend .has-tooltip;
+			}
+			// pointer-events:none;
+			// position:absolute;
+			// left:10px;
+			// @extend .grid-block;
+			// display:block;
+			// padding:3px 8px;
+			
+			// white-space:nowrap;
+
+			// font-size:14px;
+		}
+	}
+}
 .comment{
 	margin-left:30px;
 	position:relative;
-	.comment-notification{
-		@include single-transition(ease-out, opacity, 400ms, 0ms);
-		position:absolute;
-		right:0;
-		top:-19px;
-		opacity:0;
-		a{
-			pointer-events:none;
-			position:absolute;
-			left:10px;
-			@extend .grid-block;
-			display:block;
-			padding:3px 8px;
-			background: #ffffff;
-			white-space:nowrap;
-			&:after {
-				right: 100%;
-				border: solid transparent;
-				content: " ";
-				height: 0;
-				width: 0;
-				position: absolute;
-				pointer-events: none;
-				border-color: rgba(255, 255, 255, 0);
-				border-right-color: #ffffff;
-				border-width: 8px;
-				top: 50%;
-				margin-top: -8px;
-			}
-			font-size:14px;
-		}
-	}
+
 	.comment-body{
 		@include single-transition(ease-out, opacity, 600ms, 0ms);
 		opacity:1;
 	}
-	&.queued{
-		&:after{
-			position:absolute;
-			display:block;
-			content:" ";
-			top:-5px;
-			left:-30px;
-			width:100%;
-			height:0px;
-			opacity:1;
-			border-top:1px solid black(0.1);
-			border-bottom:1px solid white(0.8);
-			padding-right:30px;
-		}
-		.comment-notification{
-			opacity:1;
-			a{
-				pointer-events:auto;
-			}
-		}
+	&.comment-queued{
 		.comment-body{
 			opacity:0;
 			position:absolute;
 			pointer-events:none;
 		}
-		& + .queued{
-			&:after{
-				display:none;
-			}
-			.comment-notification{
-				top:10px;
-				a{
-					color:blue;
-				}
-			}
-		}
 	}
+	// &.comment-queued{
+	// 	&:after{
+	// 		position:absolute;
+	// 		display:block;
+	// 		content:" ";
+	// 		top:-5px;
+	// 		left:-30px;
+	// 		width:100%;
+	// 		height:0px;
+	// 		opacity:1;
+	// 		border-top:1px solid black(0.1);
+	// 		border-bottom:1px solid white(0.8);
+	// 		padding-right:30px;
+	// 	}
+	// 	.comment-notification{
+	// 		opacity:1;
+	// 		a{
+	// 			pointer-events:auto;
+	// 		}
+	// 	}
+	// 	.comment-body{
+	// 		opacity:0;
+	// 		position:absolute;
+	// 		pointer-events:none;
+	// 	}
+	// 	& + .comment-queued{
+	// 		&:after{
+	// 			display:none;
+	// 		}
+	// 		.comment-notification{
+	// 			top:10px;
+	// 			a{
+	// 				color:blue;
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 .comment-content{
 	position:relative;
