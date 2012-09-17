@@ -120,6 +120,10 @@ Template.comment_item.rendered=function(){
         }
       );
       // $(event.target).closest(".comment").addClass("queued");
+    },
+    'click .upvote': function(e) {
+      e.preventDefault();
+      Meteor.call('voteForComment', this._id);
     }
   };
 

@@ -8,7 +8,7 @@ Template.post_item.events = {
 
   , 'click .upvote-link': function(){
       console.log('upvote', this);
-      Meteor.call('voteForPost', this);
+      Meteor.call('voteForPost', this._id);
   }
 
   , 'click .share-link': function(e){
