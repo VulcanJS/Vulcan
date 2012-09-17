@@ -27,11 +27,12 @@ Template.post_item.created = function(){
 }
 
 Template.post_item.rendered = function(){
+  // t("post_item");
   if(this.data){
     var new_distance=(getRank(this.data)-1)*80;
     var old_distance=this.current_distance;
     var $this=$(this.find(".post"));
-
+    var instance=this;
     // console.log("rendered: ", this.data.headline, "| old distance: "+old_distance, "| new distance: "+new_distance);
 
     // at rendering time, move posts to their old place
@@ -41,6 +42,7 @@ Template.post_item.rendered = function(){
       $this.css("top", new_distance+"px");
       // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
       $this.addClass("animate");
+      instance.current_distance=new_distance;
     }, 100);
   }
 
