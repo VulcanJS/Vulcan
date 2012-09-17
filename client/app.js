@@ -102,16 +102,12 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
-findBottomest= function(element){
-    var $children=element.children();
-    if($children.length>0){
-        return findBottomest($children.last());
-    }else{
-        return element;            
-    }
-};
-$.fn.bottomest = function() {
-    return findBottomest(this);
+getGravatar = function(email, defaultImage){
+	defaultURL = (typeof defaultImage === "undefined") ? "" : "?d="+defaultImage;
+	if(CryptoJS){
+		hash = CryptoJS.MD5(email.trim().toLowerCase());
+		return "http://www.gravatar.com/avatar/"+hash+defaultURL;
+	}
 }
 
 

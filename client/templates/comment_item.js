@@ -78,8 +78,12 @@ Template.comment_item.rendered=function(){
         // TODO: save scroll position
         if(Meteor.users.findOne(comment.user_id)){
           // get comment author name
-          var author=Meteor.users.findOne(comment.user_id).username;
-        }
+          var user=Meteor.users.findOne(comment.user_id);
+          var author=user.username;
+
+          // TODO: add gravatar support
+          // var email=user.email;
+          // <img src="'+getGravatar(email, 'http://telescope.herokuapp.com/img/default_avatar.png',30)+'"/>
         var $container=findQueueContainer($comment);
         var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip"><span class="tooltip"><span>'+author+'</span></span></a></li>';
         $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
@@ -88,6 +92,7 @@ Template.comment_item.rendered=function(){
         console.log("data on:", $comment);
         console.log("data1", $.data($comment));
         // TODO: take the user back to their previous scroll position
+         }
       }
     }
   }
