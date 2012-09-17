@@ -3,7 +3,7 @@
   commentIsNew=function(comment){
     var d=new Date(comment.submitted);
     var commentIsNew=d > window.newCommentTimestamp;
-    console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+window.newCommentTimestamp+" | isNew: "+commentIsNew);
+    // console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+window.newCommentTimestamp+" | isNew: "+commentIsNew);
     return commentIsNew;
   };
 
@@ -14,26 +14,23 @@
     $queuedAncestors=$comment.parents(".comment-queued");
 
     if($queuedAncestors.exists()){
-      console.log("----------- case 1", $queuedAncestors);
+      console.log("----------- case 1 -----------");
       // 1. 
       // our comment has one or more queued ancestor, so we look for the root-most
       // ancestor's queue container
-      console.log($queuedAncestors.last());
-      console.log("data on", $queuedAncestors.last());
-      console.log("data2", $queuedAncestors.last().data());
       $container=$queuedAncestors.last().data("queue");
     }else if($up.hasClass("queue-container")){
-      console.log("----------- case 2", $up);
+      console.log("----------- case 2 -----------");
       // 2. 
       // we've found a container on the same level above our comment, so we use it to store our queue
       $container=$up;
     }else if($down.hasClass("queue-container")){
-      console.log("----------- case 3", $down);
+      console.log("----------- case 3 -----------");
       // 3. 
       // we've found a container on the same level below our comment, so we use it to store our queue
       $container=$down;
     }else if($up.hasClass('comment-displayed') || !$up.exists()){
-      console.log("----------- case 4", $up);
+      console.log("----------- case 4 -----------");
       // 4. 
       // we've found containers neither above or below, but 
       // A) we've hit a displayed comment or
@@ -54,7 +51,6 @@
     console.log("down", $down);
     console.log("queuedAncestors", $queuedAncestors);
     console.log("container", $container);
-    // $.data( $comment, "queue", $container );
     return $container;
   };
 
