@@ -834,9 +834,7 @@ body.pageslide-open {
     opacity: 1; }
   /* line 78, ../sass/modules/_comments.scss */
   .comment.comment-queued .comment-body {
-    opacity: 0;
-    position: absolute;
-    pointer-events: none; }
+    opacity: 0.5; }
 
 /* line 122, ../sass/modules/_comments.scss */
 .comment-content {
