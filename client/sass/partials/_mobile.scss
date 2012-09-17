@@ -1,8 +1,24 @@
 .mobile{
 	display:none !important;
 }
-
 @media screen and (max-width: $break-small) {
+	.header-button{
+		position:relative;
+		display:block;
+		margin-top:10px;
+		background:$red;
+		color:white;
+		height:30px;
+		width:40px;
+		i{
+			position:absolute;
+			width:100%;
+			text-align:center;
+			line-height:30px;
+			height:30px;
+			font-size:18px;
+		}
+	}
 	.mobile{
 		display:block !important;
 	}
@@ -16,28 +32,41 @@
 		padding:0 10px;
 		min-width:200px;
 	}
+	.posts{
+		margin:0 10px;
+		padding:0;
+	}
 	.header{
 		height:50px;
 		@include border-radius(0px);
 		.logo{
 			top:12px;
 		}
-		.mobile-button{
-			position:relative;
-			display:block;
-			margin-top:10px;
-			background:$red;
-			color:white;
-			height:30px;
-			width:40px;
-			i{
-				position:absolute;
-				width:100%;
-				text-align:center;
-				line-height:30px;
-				height:30px;
-				font-size:18px;
+		.auth-buttons{
+			margin:0;
+			.login-link-and-dropdown-list{
+				right:0px !important;
+				position:static !important;
+				.login-link-text{
+					@extend .header-button;
+					height:30px !important;
+					margin:10px 0 0 0 !important;
+					&:after{
+						content: "\75" !important;
+						font-family: 'icomoon' !important;
+						position:absolute;
+						width:100%;
+						text-align:center;
+						line-height:30px !important;
+						height:30px !important;
+						font-size:18px !important;
+					}
+				}
 			}
+		}
+		.mobile-button{
+			@extend .header-button;
+			
 			span{
 				display:none;
 			}
