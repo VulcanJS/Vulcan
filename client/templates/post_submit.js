@@ -18,6 +18,7 @@ Template.post_submit.events = {
       , submitted: new Date().getTime()
       , votes: 0
       , comments: 0
+      , score: 0
     });
     var post = Posts.findOne(postId);
 

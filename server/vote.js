@@ -4,7 +4,10 @@
 var Scoring = {
   // re-run the scoring algorithm on a single object
   updateObject: function(object) {
-    
+    if(isNaN(object.score)){
+      object.score=0;
+    }
+
     // just count the number of votes for now
     var baseScore = object.votes;
 
@@ -15,7 +18,8 @@ var Scoring = {
     // object.score = baseScore * Math.pow(ageInHours + 2, -0.1375);
 
     // debug: just add 1 to the score for each new vote
-    object.score = object.score+1;
+    object.score += 1;
+
   },
   
   // rerun all the scoring

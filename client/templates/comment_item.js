@@ -48,7 +48,6 @@
       $container.click(function(){
         $(this).find("a").each(function(){
           var target=$(this).attr("href");
-          console.log("target: ", target);
           $(target).removeClass("comment-queued").addClass("comment-displayed");
         });
         $(this).hide("slow").remove();
@@ -69,7 +68,7 @@ Template.comment_item.rendered=function(){
     var comment=this.data;
     var $comment=$("#"+comment._id);
 
-    if(false && Meteor.user() && Meteor.user()._id==comment.user_id){
+    if(Meteor.user() && Meteor.user()._id==comment.user_id){
       // if user is logged in, and the comment belongs to the user, then never queue it
     }else{
       if(commentIsNew(comment) && !$comment.hasClass("comment-queued")){
