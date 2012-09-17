@@ -11,26 +11,34 @@
     // go up and down the DOM until we find either A) a queue container or B) an unqueued comment
     $up=$comment.prevAll(".queue-container, .comment-displayed").first();
     $down=$comment.nextAll(".queue-container, .comment-displayed").first();
+    $prev=$comment.prev();
+    $next=$comment.next();
     $queuedAncestors=$comment.parents(".comment-queued");
-
     if($queuedAncestors.exists()){
-      console.log("----------- case 1 -----------");
+      console.log("----------- case 1: Queued Ancestor -----------");
       // 1. 
       // our comment has one or more queued ancestor, so we look for the root-most
       // ancestor's queue container
       $container=$queuedAncestors.last().data("queue");
-    }else if($up.hasClass("queue-container")){
-      console.log("----------- case 2 -----------");
+    }else if($prev.hasClass("queue-container")){
+      console.log("----------- case 2: Queued Brother -----------");
       // 2. 
-      // we've found a container on the same level above our comment, so we use it to store our queue
-      $container=$up;
+      // the comment just above is queued, so we use the same queue container as him
+      $container=$prev.data("queue");
+    }else if($prev.find(".comment").last().hasClass("comment-queued")){
+      console.log("----------- case 3: Queued Cousin -----------");
+      // 3.
+      // there are no queued comments going up on the same level, 
+      // but the bottom-most child of the comment directly above is queued
+      console.log("cousin", $prev.bottomest());
+      $container=$prev.find(".comment").last().data("queue");
     }else if($down.hasClass("queue-container")){
-      console.log("----------- case 3 -----------");
+      console.log("----------- case 4: Queued Sister -----------");
       // 3. 
-      // we've found a container on the same level below our comment, so we use it to store our queue
-      $container=$down;
+      // the comment just below is queued, so we use the same queue container as him
+      $container=$next.data("queue");
     }else if($up.hasClass('comment-displayed') || !$up.exists()){
-      console.log("----------- case 4 -----------");
+      console.log("----------- case 5: No Queue -----------");
       // 4. 
       // we've found containers neither above or below, but 
       // A) we've hit a displayed comment or

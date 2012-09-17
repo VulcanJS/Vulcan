@@ -76,9 +76,9 @@
 	}
 	&.comment-queued{
 		.comment-body{
-			opacity:0.5;
-			// position:absolute;
-			// pointer-events:none;
+			opacity:0;
+			position:absolute;
+			pointer-events:none;
 		}
 	}
 	// &.comment-queued{

@@ -102,6 +102,19 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
+findBottomest= function(element){
+    var $children=element.children();
+    if($children.length>0){
+        return findBottomest($children.last());
+    }else{
+        return element;            
+    }
+};
+$.fn.bottomest = function() {
+    return findBottomest(this);
+}
+
+
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',
