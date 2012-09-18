@@ -3,9 +3,21 @@
 		<div class="user-table grid-block">
 			<h1>Users</h1>
 			<table>
-			    {{#each users}}
-			      {{> user_item}}
-			    {{/each}}
+				<thead>
+					<tr>
+						<td colspan="2">Name</td>
+						<td>Member since</td>
+						<td>Email</td>
+						<td>Posts</td>
+						<td>Comments</td>
+						<td>Karma</td>
+					</tr>
+				</thead>
+				<tbody>
+				    {{#each users}}
+				      {{> user_item}}
+				    {{/each}}
+				</tbody>
 			</table>
 		</div>
 	</div>

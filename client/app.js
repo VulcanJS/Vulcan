@@ -1,4 +1,8 @@
-Meteor.subscribe('users');
+var current_user_id=0;
+if(Meteor.user()){
+	current_user_id=Meteor.user()._id;
+}
+Meteor.subscribe('users', current_user_id);
 
 Posts = new Meteor.Collection('posts');
 Meteor.subscribe('posts');

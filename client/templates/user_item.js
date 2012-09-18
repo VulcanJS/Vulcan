@@ -1,5 +1,4 @@
 Template.user_item.rendered = function(){
-	console.log(this.data);
 };
 
 Template.user_item.avatar_url = function(){
@@ -10,6 +9,21 @@ Template.user_item.avatar_url = function(){
 };
 
 Template.user_item.created_at_formatted = function(){
-	var nice_date=moment(this.created_at);
-	return nice_date.format("MMMM Do YYYY, HH:mm");
+	// return moment(this.created_at).format("MMMM Do YYYY, HH:mm");
+	return moment(this.created_at).fromNow();
+}
+
+Template.user_item.email = function(){
+	return this.emails[0].email;
+}
+
+Template.user_item.posts_count = function(){
+	console.log("------- \n user:", this.username);
+	Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
+	return Posts.find({'user_id':this._id}).count();
+}
+
+Template.user_item.comments_count = function(){
+	// Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
+	return Comments.find({'user_id':this._id}).count();
 }

@@ -1071,6 +1071,13 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   -o-border-radius: 30px;
   border-radius: 30px; }
 
+/* line 13, ../sass/modules/_users.scss */
+table tr td {
+  padding: 10px; }
+/* line 19, ../sass/modules/_users.scss */
+table thead tr td {
+  font-weight: bold; }
+
 /* line 1, ../sass/partials/_mobile.scss */
 .mobile {
   display: none !important; }
