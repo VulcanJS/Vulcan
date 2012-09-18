@@ -236,17 +236,19 @@ a {
   color: #FFF;
   -webkit-box-shadow: inset 0 0 5px 5px #222;
   -moz-box-shadow: inset 0 0 5px 5px #222;
-  box-shadow: inset 0 0 5px 5px #222; }
+  box-shadow: inset 0 0 5px 5px #222;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto; }
 
-/* line 22, ../sass/partials/_pageslide.scss */
+/* line 25, ../sass/partials/_pageslide.scss */
 #menu ul {
   padding: 0;
   margin: 0; }
-  /* line 25, ../sass/partials/_pageslide.scss */
+  /* line 28, ../sass/partials/_pageslide.scss */
   #menu ul li {
     padding: 0;
     margin: 0; }
-    /* line 28, ../sass/partials/_pageslide.scss */
+    /* line 31, ../sass/partials/_pageslide.scss */
     #menu ul li a {
       display: block;
       width: 100%;
@@ -256,16 +258,20 @@ a {
       -webkit-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.8);
       -moz-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.8);
       box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.8); }
-      /* line 36, ../sass/partials/_pageslide.scss */
+      /* line 39, ../sass/partials/_pageslide.scss */
       #menu ul li a:hover {
         background: rgba(0, 0, 0, 0.5);
         color: white; }
 
-/* line 44, ../sass/partials/_pageslide.scss */
+/* line 47, ../sass/partials/_pageslide.scss */
 body.pageslide-open {
   overflow: hidden; }
+  /* line 49, ../sass/partials/_pageslide.scss */
+  body.pageslide-open .posts {
+    height: 100%;
+    overflow: hidden; }
 
-/* line 47, ../sass/partials/_pageslide.scss */
+/* line 54, ../sass/partials/_pageslide.scss */
 .wrapper {
   position: absolute;
   top: 0;

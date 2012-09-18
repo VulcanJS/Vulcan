@@ -29,6 +29,14 @@ Template.nav.events = {
       // Session.set('state', 'submit');
       Router.navigate('submit', {trigger: true});
   }
+
+  , 'click #mobile-menu': function(event){
+    event.preventDefault();
+    $.pageslide({
+      href: '#pageslide',
+      iframe: false
+    });
+  }
 };
 
 Template.nav.logged_in = function(){

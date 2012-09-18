@@ -38,7 +38,7 @@ Template.post_item.rendered = function(){
 
     // at rendering time, move posts to their old place
     $this.css("top", old_distance+"px");
-    setTimeout(function() {
+    Meteor.setTimeout(function() {
       // then a few milliseconds after, move the to their new spot
       $this.css("top", new_distance+"px");
       // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that

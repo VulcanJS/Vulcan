@@ -17,6 +17,9 @@
     -webkit-box-shadow: inset 0 0 5px 5px #222;
     -moz-box-shadow: inset 0 0 5px 5px #222;
     box-shadow: inset 0 0 5px 5px #222;
+
+    -webkit-overflow-scrolling: touch;
+    overflow-y:auto;
 }
 #menu{
     ul{
@@ -43,6 +46,10 @@
 }
 body.pageslide-open{
     overflow:hidden;
+    .posts { 
+        height: 100%;
+      overflow: hidden;
+    }
 }
 .wrapper{
     position:absolute;
