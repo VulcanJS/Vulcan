@@ -3,6 +3,7 @@
     "branch": "auth"
   },
   "packages": {
-    "router": {}
+    "router": {},
+    "groups": {}
   }
 }
