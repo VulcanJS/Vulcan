@@ -83,9 +83,12 @@ Template.comment_item.rendered=function(){
 
           // TODO: add gravatar support
           // var email=user.email;
-          // <img src="'+getGravatar(email, 'http://telescope.herokuapp.com/img/default_avatar.png',30)+'"/>
+          var imgURL=Gravatar.getGravatar(Meteor.user(), {
+            d: 'http://telescope.herokuapp.com/img/default_avatar.png',
+            s: 30
+          });
         var $container=findQueueContainer($comment);
-        var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip"><span class="tooltip"><span>'+author+'</span></span></a></li>';
+        var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip"><span class="tooltip"><span>'+author+'</span></span><img src="'+imgURL+'"/></a></li>';
         $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
         $comment.removeClass("comment-displayed").addClass("comment-queued");
         $comment.data("queue", $container);

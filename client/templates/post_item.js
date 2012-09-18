@@ -48,7 +48,7 @@ Template.post_item.rendered = function(){
   }
 
   if (Meteor.is_client) {     
-    if($(window).width()>400){ //do not load social media plugin on mobile
+    if($(window).width()>400 && document.domain!="0.0.0.0"){ //do not load social media plugin on mobile
       $('.share-replace').sharrre({
         share: {
           googlePlus: true,
