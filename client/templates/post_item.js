@@ -8,7 +8,7 @@ Template.post_item.events = {
 
   , 'click .upvote-link': function(){
       console.log('upvote', this);
-      Meteor.call('voteForPost', this._id);
+      Meteor.call('upvotePost', this._id);
   }
 
   , 'click .share-link': function(e){
@@ -82,7 +82,7 @@ Template.post_item.voted = function(){
   var user = Meteor.user();
   if(!user) return false;
   
-  return _.include(this.voters, user._id);
+  return _.include(this.upvoters, user._id);
 };
 
 var getRank = function(post){

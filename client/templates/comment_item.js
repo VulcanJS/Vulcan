@@ -123,7 +123,7 @@ Template.comment_item.rendered=function(){
     },
     'click .upvote': function(e) {
       e.preventDefault();
-      Meteor.call('voteForComment', this._id);
+      Meteor.call('up voteComment', this._id);
     }
   };
 
