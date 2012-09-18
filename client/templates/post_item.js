@@ -76,9 +76,7 @@ Template.post_item.preserve({
 });
 
 Template.post_item.ago = function(){
-  var submitted = new Date(this.submitted);
-  var timeAgo=jQuery.timeago(submitted);
-  return timeAgo;
+  return moment(this.submitted).fromNow();
 };
 
 Template.post_item.voted = function(){

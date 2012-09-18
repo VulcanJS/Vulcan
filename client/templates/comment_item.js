@@ -179,8 +179,6 @@ Template.comment_item.helpers({
     return false;
   },
   ago: function(){
-    var submitted = new Date(this.submitted);
-    var timeAgo=jQuery.timeago(submitted);
-    return timeAgo;
+    return moment(this.submitted).fromNow();
   }
 });

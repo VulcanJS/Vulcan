@@ -1,5 +1,7 @@
 <template name="user_item">
-<tr>
+<tr class="user">
+	<td><span class="user-avatar" style="background-image:url({{avatar_url}});"></span></td>
 	<td>{{username}}</td>
+	<td>{{created_at_formatted}}</td>
 </tr>
 </template>

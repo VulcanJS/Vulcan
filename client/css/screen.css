@@ -1060,6 +1060,17 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
 .footer-notice {
   text-align: center; }
 
+/* line 3, ../sass/modules/_users.scss */
+.user-list .user .user-avatar, .user-table .user .user-avatar {
+  height: 30px;
+  width: 30px;
+  display: block;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px; }
+
 /* line 1, ../sass/partials/_mobile.scss */
 .mobile {
   display: none !important; }
