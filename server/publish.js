@@ -2,7 +2,7 @@
 
 Meteor.publish('users', function(current_user_id) {
   console.log(Meteor.users.findOne(current_user_id).emails[0].email);
-  if(current_user_id && Meteor.users.findOne(current_user_id).emails[0].email=="sacha357@gmail.com"){
+  if(current_user_id && isAdmin(Meteor.users.findOne(current_user_id))){
     return Meteor.users.find();
   }else{
     return Meteor.users.find({}, {fields: {emails: false}});

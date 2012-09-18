@@ -14,7 +14,9 @@ Template.user_item.created_at_formatted = function(){
 }
 
 Template.user_item.email = function(){
-	return this.emails[0].email;
+	if(this.emails){
+		return this.emails[0].email;
+	}
 }
 
 Template.user_item.posts_count = function(){
