@@ -49,21 +49,24 @@ Template.post_item.rendered = function(){
 
   if (Meteor.is_client) {     
     if($(window).width()>400){ //do not load social media plugin on mobile
-    //   $('.share-replace').sharrre({
-    //     share: {
-    //       googlePlus: true,
-    //       facebook: true,
-    //       twitter: true,
-    //     },
-    //     buttons: {
-    //       googlePlus: {size: 'tall'},
-    //       facebook: {layout: 'box_count'},
-    //       twitter: {count: 'vertical'},
-    //     },
-    //     enableHover: false,
-    //     enableCounter: false,
-    //     enableTracking: true
-    //   });
+      $('.share-replace').sharrre({
+        share: {
+          googlePlus: true,
+          facebook: true,
+          twitter: true,
+        },
+        buttons: {
+          googlePlus: {size: 'tall'},
+          facebook: {layout: 'box_count'},
+          twitter: {
+            count: 'vertical',
+            via: 'TelescopeApp'
+          },
+        },
+        enableHover: false,
+        enableCounter: false,
+        enableTracking: true
+      });
     }
   }
 };
@@ -102,6 +105,10 @@ Template.post_item.domain = function(){
   a.href = this.url;
   return a.hostname;
 };
+
+Template.post_item.current_domain = function(){
+  return "http://"+document.domain;
+}
 
 Template.post_item.is_my_post = function(){
   if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
