@@ -1,3 +1,12 @@
 <template name="users">
-
+	<div class="grid">
+		<div class=" grid-block">
+			<h1>Users</h1>
+			<table>
+			    {{#each users}}
+			      {{> user_item}}
+			    {{/each}}
+			</table>
+		</div>
+	</div>
 </template>

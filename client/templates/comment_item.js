@@ -30,7 +30,6 @@
       // 3.
       // there are no queued comments going up on the same level, 
       // but the bottom-most child of the comment directly above is queued
-      console.log("cousin", $prev.bottomest());
       $container=$prev.find(".comment").last().data("queue");
     }else if($down.hasClass("queue-container")){
       console.log("----------- case 4: Queued Sister -----------");
@@ -83,12 +82,12 @@ Template.comment_item.rendered=function(){
 
           // TODO: add gravatar support
           // var email=user.email;
-          var imgURL=Gravatar.getGravatar(Meteor.user(), {
+          var imgURL=Gravatar.getGravatar(user, {
             d: 'http://telescope.herokuapp.com/img/default_avatar.png',
             s: 30
           });
         var $container=findQueueContainer($comment);
-        var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip"><span class="tooltip"><span>'+author+'</span></span><img src="'+imgURL+'"/></a></li>';
+        var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip" style="background-image:url('+imgURL+')"><span class="tooltip"><span>'+author+'</span></span></a></li>';
         $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
         $comment.removeClass("comment-displayed").addClass("comment-queued");
         $comment.data("queue", $container);

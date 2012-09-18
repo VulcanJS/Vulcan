@@ -45,7 +45,8 @@ if (Meteor.is_client) {
 		  'comments/deleted':'comment_deleted',		  
 		  'comments/:id':'comment',
 		  'comments/:id/edit':'comment_edit',
-		  'settings':'settings'
+		  'settings':'settings',
+		  'users':'users',
 		},
 		top: function() { this.goto('posts_top'); },
 		new: function() { this.goto('posts_new'); },		
@@ -53,6 +54,7 @@ if (Meteor.is_client) {
 		signin: function() { this.goto('signin'); },
 		submit: function() { this.goto('post_submit'); },
 		settings: function() { this.goto('settings'); },
+		users: function() { this.goto('users'); },
 		post_deleted: function() { this.goto('post_deleted'); },
 		comment_deleted: function() { this.goto('comment_deleted'); },
 		post: function(id) {
