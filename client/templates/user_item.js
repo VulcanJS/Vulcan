@@ -19,10 +19,16 @@ Template.user_item.email = function(){
 	}
 }
 
+Template.user_item.posts = function(){
+	return Posts.find({'user_id':this._id});
+}
+
 Template.user_item.posts_count = function(){
-	console.log("------- \n user:", this.username);
-	Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
 	return Posts.find({'user_id':this._id}).count();
+}
+
+Template.user_item.comments = function(){
+	return Comments.find({'user_id':this._id});
 }
 
 Template.user_item.comments_count = function(){

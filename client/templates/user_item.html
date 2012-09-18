@@ -4,7 +4,14 @@
 	<td>{{username}}</td>
 	<td>{{created_at_formatted}}</td>
 	<td>{{email}}</td>
-	<td><a href="#">{{posts_count}}</a></td>
+	<td>
+		<a href="#">{{posts_count}}</a>
+		<ul class="posts-list">
+			{{#each posts}}
+				<li><a href="/posts/{{_id}}">{{headline}}</a></li>
+			{{/each}}
+		</ul>
+	</td>
 	<td><a href="#">{{comments_count}}</a></td>
 	<td>{{karma}}</td>
 </tr>
