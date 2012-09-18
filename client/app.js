@@ -33,6 +33,8 @@ if (Meteor.is_client) {
 		},
 		routes: {
 		  '': 'top',
+		  'top':'top',
+		  'new':'new',
 		  'test':'test',
 		  'signin':'signin',
 		  'signup':'signup',
@@ -45,14 +47,14 @@ if (Meteor.is_client) {
 		  'comments/:id/edit':'comment_edit',
 		  'settings':'settings'
 		},
-		top: function() { console.log("top"); this.goto('top'); },
-		test: function() {console.log("test");  this.goto('test'); },		
-		signup: function() {console.log("signup");  this.goto('signup'); },
-		signin: function() {console.log("signin");  this.goto('signin'); },
-		submit: function() {console.log("submit");  this.goto('post_submit'); },
-		settings: function() {console.log("settings");  this.goto('settings'); },
-		post_deleted: function() {console.log("post_deleted");  this.goto('post_deleted'); },
-		comment_deleted: function() {console.log("comment_deleted");  this.goto('comment_deleted'); },
+		top: function() { this.goto('posts_top'); },
+		new: function() { this.goto('posts_new'); },		
+		signup: function() { this.goto('signup'); },
+		signin: function() { this.goto('signin'); },
+		submit: function() { this.goto('post_submit'); },
+		settings: function() { this.goto('settings'); },
+		post_deleted: function() { this.goto('post_deleted'); },
+		comment_deleted: function() { this.goto('comment_deleted'); },
 		post: function(id) {
 			console.log("post, id="+id); 
 			Session.set('selected_post_id', id); 

@@ -89,10 +89,19 @@ Template.post_item.voted = function(){
 };
 
 var getRank = function(post){
-  var filter = {$or: [
-    {score: {$gt: post.score}},
-    {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
-  ]};
+  console.log(window.sortBy);
+  if(window.sortBy=="score"){
+    var filter = {$or: [
+      {score: {$gt: post.score}},
+      {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
+    ]};
+  }else{
+    var filter = {$or: [
+      {submitted: {$gt: post.submitted}},
+      {$and: [{submitted: post.submitted}, {score: {$lt: post.score}}]}
+    ]};
+  }
+
   return Posts.find(filter).count()+1;  
 }
 

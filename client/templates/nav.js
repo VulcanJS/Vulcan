@@ -37,6 +37,16 @@ Template.nav.events = {
       iframe: false
     });
   }
+
+  , 'click .top': function(event){
+      event.preventDefault();
+      Router.navigate('top', {trigger: true});
+  }
+
+  , 'click .new': function(event){
+      event.preventDefault();
+      Router.navigate('new', {trigger: true});
+  }
 };
 
 Template.nav.logged_in = function(){
