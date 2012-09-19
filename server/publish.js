@@ -1,13 +1,32 @@
 // Users
 
 Meteor.publish('users', function(current_user_id) {
-  console.log(Meteor.users.findOne(current_user_id).emails[0].email);
   if(current_user_id && isAdmin(Meteor.users.findOne(current_user_id))){
     return Meteor.users.find();
   }else{
     return Meteor.users.find({}, {fields: {emails: false}});
   }
 });
+
+Meteor.startup(function(){
+  Meteor.users.allow({
+      insert: function(userId, doc){
+        //TODO
+        return true;
+      }
+    , update: function(userId, docs, fields, modifier){
+      //TODO
+      console.log("updating user");
+      console.log(docs);
+      console.log(fields);
+        return true;
+      }
+    , remove: function(userId, docs){ 
+        return false; 
+      }
+  });
+});
+
 // Posts
 
 Posts = new Meteor.Collection('posts');
@@ -20,7 +39,6 @@ Meteor.publish('posts', function() {
 Meteor.startup(function(){
   Posts.allow({
       insert: function(userId, doc){
-        console.log(userId);
         if(userId){
           doc.userId = userId;
           return true;
@@ -28,7 +46,6 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
         if(docs[0].user_id && docs[0].user_id==userId){
           return true;
         }
@@ -53,20 +70,16 @@ Meteor.publish('comments', function() {
 Meteor.startup(function(){
   Comments.allow({
       insert: function(userId, doc){
-        console.log(userId);
         if(userId){
           return true;
         }
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        // console.log("Document's user: "+docs[0].user_id+" | Current user: "+userId);
-        // if(docs[0].user_id && docs[0].user_id==userId){
-        //   return true;
-        // }
-        // return false;
-                // temporarily disabling security
-        return true;
+        if(docs[0].user_id && docs[0].user_id==userId){
+          return true;
+        }
+        return false;
       }
     , remove: function(userId, docs){ 
         if(docs[0].user_id && docs[0].user_id==userId){

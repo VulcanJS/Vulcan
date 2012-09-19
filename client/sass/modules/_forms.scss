@@ -6,7 +6,7 @@ form, .accounts-dialog{
 			float:left;
 		}
 		.controls{
-			margin-left:100px;
+			margin-left:120px;
 			position:relative;
 			.get-title-link{
 				position:absolute;
@@ -24,6 +24,10 @@ form, .accounts-dialog{
 	}
 	.form-actions{
 		@include cf;
+		a{
+			float:left;
+			display:block;
+		}
 	}
 	input[type="text"], input[type="password"], textarea, .login-form input{
 		display:block;
@@ -47,9 +51,6 @@ form, .accounts-dialog{
 	textarea{
 		min-height:100px;
 		line-height:1.4;
-	}
-	.delete-link{
-		float:left;
 	}
 	input[type="submit"], button, .button, .btn{
 		float:right;

@@ -117,11 +117,13 @@
 			margin:10px 0 !important;
 		}
 		.login-header{
-			color:white(0.7);
 			font-family:inherit;
 			height:26px;
-			margin-right:10px;		
+			margin-right:10px;
+			cursor:pointer;
+			color:white;	
 			&:before{
+				color:white(0.5);
 				content:"Welcome, ";
 			}
 		}
@@ -134,6 +136,7 @@
 			padding:0;
 			height:26px;
 			margin-right:10px;
+			text-shadow:none;
 		}
 	}
 }

@@ -156,6 +156,12 @@ a {
   a:hover {
     color: black; }
 
+/* line 19, ../sass/partials/_typography.scss */
+h3 {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #b3c1c6; }
+
 @font-face {
   font-family: 'icomoon';
   src: url("fonts/icomoon.eot"); }
@@ -476,14 +482,16 @@ body.pageslide-open {
       margin: 10px 0 !important; }
     /* line 119, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons .login-header {
-      color: rgba(255, 255, 255, 0.7);
       font-family: inherit;
       height: 26px;
-      margin-right: 10px; }
-      /* line 124, ../sass/modules/_header.scss */
+      margin-right: 10px;
+      cursor: pointer;
+      color: white; }
+      /* line 125, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons .login-header:before {
+        color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 128, ../sass/modules/_header.scss */
+    /* line 130, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       background: none;
@@ -492,7 +500,8 @@ body.pageslide-open {
       font-size: inherit;
       padding: 0;
       height: 26px;
-      margin-right: 10px; }
+      margin-right: 10px;
+      text-shadow: none; }
 
 /* line 1, ../sass/modules/_posts.scss */
 .posts {
@@ -963,7 +972,7 @@ form .control-group, .accounts-dialog .control-group {
     float: left; }
   /* line 8, ../sass/modules/_forms.scss */
   form .control-group .controls, .accounts-dialog .control-group .controls {
-    margin-left: 100px;
+    margin-left: 120px;
     position: relative; }
     /* line 11, ../sass/modules/_forms.scss */
     form .control-group .controls .get-title-link, .accounts-dialog .control-group .controls .get-title-link {
@@ -991,7 +1000,11 @@ form .form-actions, .accounts-dialog .form-actions {
   /* line 7, ../sass/partials/_mixins.scss */
   form .form-actions:after, .accounts-dialog .form-actions:after {
     clear: both; }
-/* line 28, ../sass/modules/_forms.scss */
+  /* line 27, ../sass/modules/_forms.scss */
+  form .form-actions a, .accounts-dialog .form-actions a {
+    float: left;
+    display: block; }
+/* line 32, ../sass/modules/_forms.scss */
 form input[type="text"], form input[type="password"], form textarea, form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog textarea, .accounts-dialog .login-form input {
   display: block;
   padding: 5px 6px;
@@ -1008,29 +1021,26 @@ form input[type="text"], form input[type="password"], form textarea, form .login
   -moz-transition: border-color 500ms;
   -o-transition: border-color 500ms;
   transition: border-color 500ms; }
-  /* line 37, ../sass/modules/_forms.scss */
+  /* line 41, ../sass/modules/_forms.scss */
   form input[type="text"]:focus, form input[type="password"]:focus, form textarea:focus, form .login-form input:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus {
     outline: none;
     border-color: #f36c3d;
     -webkit-box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3);
     -moz-box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3);
     box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3); }
-/* line 43, ../sass/modules/_forms.scss */
+/* line 47, ../sass/modules/_forms.scss */
 form input[type="text"], form input[type="password"], form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog .login-form input {
   height: 30px;
   line-height: 20px; }
-/* line 47, ../sass/modules/_forms.scss */
+/* line 51, ../sass/modules/_forms.scss */
 form textarea, .accounts-dialog textarea {
   min-height: 100px;
   line-height: 1.4; }
-/* line 51, ../sass/modules/_forms.scss */
-form .delete-link, .accounts-dialog .delete-link {
-  float: left; }
-/* line 54, ../sass/modules/_forms.scss */
+/* line 55, ../sass/modules/_forms.scss */
 form input[type="submit"], form button, form .button, form .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons form #login-buttons-password, form .btn, .accounts-dialog input[type="submit"], .accounts-dialog button, .accounts-dialog .button, .accounts-dialog .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .accounts-dialog #login-buttons-password, .accounts-dialog .btn {
   float: right; }
 
-/* line 58, ../sass/modules/_forms.scss */
+/* line 59, ../sass/modules/_forms.scss */
 input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;

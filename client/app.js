@@ -51,6 +51,9 @@ if (Meteor.is_client) {
 		  'comments/:id/edit':'comment_edit',
 		  'settings':'settings',
 		  'users':'users',
+		  'account':'user_edit',
+		  'forgot_password':'forgot_password',
+		  'users/:id/edit':'user_edit'
 		},
 		top: function() { this.goto('posts_top'); },
 		new: function() { this.goto('posts_new'); },		
@@ -61,6 +64,7 @@ if (Meteor.is_client) {
 		users: function() { this.goto('users'); },
 		post_deleted: function() { this.goto('post_deleted'); },
 		comment_deleted: function() { this.goto('comment_deleted'); },
+		forgot_password: function() { this.goto('user_password'); },
 		post: function(id) {
 			console.log("post, id="+id); 
 			Session.set('selected_post_id', id); 
@@ -87,7 +91,13 @@ if (Meteor.is_client) {
 			Session.set('selected_comment_id', id);
 			this.goto('comment_edit');
 			window.newCommentTimestamp=new Date();
-		}	
+		},
+		user_edit: function(id){
+			if(typeof id !== undefined){
+				window.selected_user_id=id;
+			}
+			this.goto('user_edit');
+		}
 	});
   
 	var Router = new SimpleRouter();
@@ -108,14 +118,6 @@ return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2')
 
 $.fn.exists = function () {
     return this.length !== 0;
-}
-
-getGravatar = function(email, defaultImage){
-	defaultURL = (typeof defaultImage === "undefined") ? "" : "?d="+defaultImage;
-	if(CryptoJS){
-		hash = CryptoJS.MD5(email.trim().toLowerCase());
-		return "http://www.gravatar.com/avatar/"+hash+defaultURL;
-	}
 }
 
 

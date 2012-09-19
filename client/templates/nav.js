@@ -47,12 +47,23 @@ Template.nav.events = {
       event.preventDefault();
       Router.navigate('new', {trigger: true});
   }
+
+  , 'click .login-header': function(e){
+      e.preventDefault();
+      Router.navigate('account', {trigger:true});
+  }
 };
 
 Template.nav.logged_in = function(){
   return Meteor.user() !== null;
 };
 
+Template.nav.site_title = function(){
+  var setting=Settings.find().fetch()[0];
+  if(setting){
+    return setting.title;
+  }
+}
 Template.nav.rendered = function(){
 
   var setting=Settings.find().fetch()[0];
