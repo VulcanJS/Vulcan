@@ -6,7 +6,7 @@
 	<td>{{email}}</td>
 	<td>
 		<a href="#">{{posts_count}}</a>
-		<ul class="posts-list">
+		<ul class="posts-list hidden">
 			{{#each posts}}
 				<li><a href="/posts/{{_id}}">{{headline}}</a></li>
 			{{/each}}
@@ -14,5 +14,6 @@
 	</td>
 	<td><a href="#">{{comments_count}}</a></td>
 	<td>{{karma}}</td>
+	<td>{{#if is_admin}}<i class="icon-check"></i>{{/if}}</td>
 </tr>
 </template>
