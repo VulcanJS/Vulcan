@@ -15,29 +15,29 @@
     $next=$comment.next();
     $queuedAncestors=$comment.parents(".comment-queued");
     if($queuedAncestors.exists()){
-      console.log("----------- case 1: Queued Ancestor -----------");
+      // console.log("----------- case 1: Queued Ancestor -----------");
       // 1. 
       // our comment has one or more queued ancestor, so we look for the root-most
       // ancestor's queue container
       $container=$queuedAncestors.last().data("queue");
     }else if($prev.hasClass("queue-container")){
-      console.log("----------- case 2: Queued Brother -----------");
+      // console.log("----------- case 2: Queued Brother -----------");
       // 2. 
       // the comment just above is queued, so we use the same queue container as him
       $container=$prev.data("queue");
     }else if($prev.find(".comment").last().hasClass("comment-queued")){
-      console.log("----------- case 3: Queued Cousin -----------");
+      // console.log("----------- case 3: Queued Cousin -----------");
       // 3.
       // there are no queued comments going up on the same level, 
       // but the bottom-most child of the comment directly above is queued
       $container=$prev.find(".comment").last().data("queue");
     }else if($down.hasClass("queue-container")){
-      console.log("----------- case 4: Queued Sister -----------");
+      // console.log("----------- case 4: Queued Sister -----------");
       // 3. 
       // the comment just below is queued, so we use the same queue container as him
       $container=$next.data("queue");
     }else if($up.hasClass('comment-displayed') || !$up.exists()){
-      console.log("----------- case 5: No Queue -----------");
+      // console.log("----------- case 5: No Queue -----------");
       // 4. 
       // we've found containers neither above or below, but 
       // A) we've hit a displayed comment or
@@ -91,8 +91,6 @@ Template.comment_item.rendered=function(){
         $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
         $comment.removeClass("comment-displayed").addClass("comment-queued");
         $comment.data("queue", $container);
-        console.log("data on:", $comment);
-        console.log("data1", $.data($comment));
         // TODO: take the user back to their previous scroll position
          }
       }
@@ -130,7 +128,11 @@ Template.comment_item.rendered=function(){
     },
     'click .upvote': function(e) {
       e.preventDefault();
-      Meteor.call('up voteComment', this._id);
+      Meteor.call('upvoteComment', this._id);
+    },
+    'click .downvote': function(e) {
+      e.preventDefault();
+      Meteor.call('downvoteComment', this._id);
     }
   };
 

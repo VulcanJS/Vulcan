@@ -13,6 +13,9 @@ Meteor.methods({
 
     var new_comment_id=Comments.insert(comment);
     Posts.update(post_id, {$inc: {comments: 1}});
+
+    Meteor.call('upvoteComment', new_comment_id);
+
     return new_comment_id;
   }
 });

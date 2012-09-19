@@ -9,7 +9,7 @@ Template.comment_list.has_comments = function(){
 
 Template.comment_list.child_comments = function(){
   var post = Posts.findOne(Session.get('selected_post_id'));
-  return Comments.find({post: post._id, parent: null});
+  return Comments.find({post: post._id, parent: null}, {sort: {score: -1, submitted: -1}});
 };
 
 Template.comment_list.rendered = function(){
