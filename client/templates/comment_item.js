@@ -190,5 +190,15 @@ Template.comment_item.helpers({
   },
   ago: function(){
     return moment(this.submitted).fromNow();
+  },
+  upvoted: function(){
+    var user = Meteor.user();
+    if(!user) return false;
+    return _.include(this.upvoters, user._id);
+  },
+  downvoted: function(){
+    var user = Meteor.user();
+    if(!user) return false;
+    return _.include(this.downvoters, user._id);
   }
 });

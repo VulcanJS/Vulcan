@@ -940,16 +940,34 @@ body.pageslide-open {
       /* line 188, ../sass/modules/_comments.scss */
       .comment-actions a:hover i {
         color: white; }
+  /* line 193, ../sass/modules/_comments.scss */
+  .comment-actions.upvoted .upvote, .comment-actions.downvoted .downvote {
+    cursor: default; }
+    /* line 195, ../sass/modules/_comments.scss */
+    .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i {
+      color: #7ac0e4; }
+    /* line 198, ../sass/modules/_comments.scss */
+    .comment-actions.upvoted .upvote:hover, .comment-actions.downvoted .downvote:hover {
+      background: white; }
+  /* line 202, ../sass/modules/_comments.scss */
+  .comment-actions.downvoted .upvote, .comment-actions.upvoted .downvote {
+    cursor: default; }
+    /* line 204, ../sass/modules/_comments.scss */
+    .comment-actions.downvoted .upvote i, .comment-actions.upvoted .downvote i {
+      color: #b3c1c6; }
+    /* line 207, ../sass/modules/_comments.scss */
+    .comment-actions.downvoted .upvote:hover, .comment-actions.upvoted .downvote:hover {
+      background: white; }
 
-/* line 197, ../sass/modules/_comments.scss */
+/* line 215, ../sass/modules/_comments.scss */
 .comment-new .comment-field {
   margin-bottom: 10px; }
-/* line 203, ../sass/modules/_comments.scss */
+/* line 221, ../sass/modules/_comments.scss */
 .comment-page .comment-new {
   margin-left: 30px;
   position: relative;
   background: #ffffff; }
-  /* line 207, ../sass/modules/_comments.scss */
+  /* line 225, ../sass/modules/_comments.scss */
   .comment-page .comment-new:after {
     bottom: 100%;
     border: solid transparent;

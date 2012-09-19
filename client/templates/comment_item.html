@@ -3,7 +3,7 @@
 <!--     <div class="comment-notification"><a href="#" class="open-comment-link">{{author}}</a></div>
  -->    <div class="comment-body">
       <div class="comment-content">
-        <div class="comment-actions">
+        <div class="comment-actions {{#if upvoted}}upvoted{{/if}} {{#if downvoted}}downvoted{{/if}}">
           <a class="upvote" href="/">
             <i class="icon-up"></i>
             <span>upvote</span>

@@ -190,6 +190,24 @@
 			}
 		}
 	}
+	&.upvoted .upvote, &.downvoted .downvote{
+		cursor:default;
+		i{
+			color:$blue;
+		}
+		&:hover{
+			background:white;
+		}
+	}
+	&.downvoted .upvote, &.upvoted .downvote{
+		cursor:default;
+		i{
+			color:$light-text;
+		}
+		&:hover{
+			background:white;
+		}
+	}
 }
 .comment-new{
 	@extend .grid-block;
