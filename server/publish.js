@@ -19,6 +19,8 @@ Meteor.startup(function(){
       console.log("updating user");
       console.log(docs);
       console.log(fields);
+      console.log(modifier);
+
         return true;
       }
     , remove: function(userId, docs){ 
@@ -45,14 +47,14 @@ Meteor.startup(function(){
         }
         return false;
       }
-    , update: function(userId, docs, fields, modifier){
-        if(docs[0].user_id && docs[0].user_id==userId){
+    , update: function(userId, docs, fields, modifier){ 
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(docs[0].user_id && docs[0].user_id==userId){
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false; }
@@ -76,13 +78,13 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        if(docs[0].user_id && docs[0].user_id==userId){
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(docs[0].user_id && docs[0].user_id==userId){
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false; 
@@ -117,8 +119,8 @@ Meteor.publish('settings', function() {
 
 Meteor.startup(function(){
   Settings.allow({
-      insert: function(){ return true; }
-    , update: function(){ return true; }
-    , remove: function(){ return true; }
+      insert: function(userId, docs){ return isAdmin(userId); }
+    , update: function(userId, docs, fields, modifier){ return isAdmin(userId); }
+    , remove: function(userId, docs){ return isAdmin(userId); }
   });
 });

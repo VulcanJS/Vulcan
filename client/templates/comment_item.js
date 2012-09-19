@@ -62,7 +62,7 @@
 
 
 Template.comment_item.rendered=function(){
-  t("comment_item");
+  // t("comment_item");
   if(this.data){
     var comment=this.data;
     var $comment=$("#"+comment._id);
@@ -151,9 +151,11 @@ Template.comment_item.rendered=function(){
     }
   };
 
-  Template.comment_item.is_my_comment = function(){
-    if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
-      return true;
+  Template.comment_item.can_edit = function(){
+    if(this.user_id){
+      if(Meteor.user() && (isAdmin(Meteor.user()) || Meteor.user()._id==this.user_id)){
+        return true;
+      }
     }
     return false;
   };
@@ -165,7 +167,13 @@ Template.comment_item.rendered=function(){
       return html_body.autoLink();
     }
   }
+
+  Template.comment_item.is_admin = function(){
+    return currentUserIsAdmin();
+  };
+
 })();
+
 
 
 Template.comment_item.helpers({

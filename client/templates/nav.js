@@ -64,6 +64,11 @@ Template.nav.site_title = function(){
     return setting.title;
   }
 }
+
+Template.nav.is_admin = function(){
+    return currentUserIsAdmin();
+  };
+
 Template.nav.rendered = function(){
 
   var setting=Settings.find().fetch()[0];

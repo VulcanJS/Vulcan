@@ -7,7 +7,6 @@ Template.post_item.events = {
   }
 
   , 'click .upvote-link': function(){
-      console.log('upvote', this);
       Meteor.call('upvotePost', this._id);
   }
 
@@ -34,8 +33,6 @@ Template.post_item.rendered = function(){
     var old_distance=this.current_distance;
     var $this=$(this.find(".post"));
     var instance=this;
-    // console.log("rendered: ", this.data.headline, "| old distance: "+old_distance, "| new distance: "+new_distance);
-
     // at rendering time, move posts to their old place
     $this.css("top", old_distance+"px");
     Meteor.setTimeout(function() {
@@ -87,7 +84,6 @@ Template.post_item.voted = function(){
 };
 
 var getRank = function(post){
-  console.log(window.sortBy);
   if(window.sortBy=="score"){
     var filter = {$or: [
       {score: {$gt: post.score}},
@@ -117,12 +113,18 @@ Template.post_item.current_domain = function(){
   return "http://"+document.domain;
 }
 
-Template.post_item.is_my_post = function(){
-  if(this.user_id && Meteor.user() && Meteor.user()._id==this.user_id){
-    return true;
+Template.post_item.can_edit = function(){
+  if(this.user_id){
+    if(Meteor.user() && (isAdmin(Meteor.user()) ||  Meteor.user()._id==this.user_id)){
+      return true;
+    }
   }
   return false;
 };
+
+Template.post_item.is_admin = function(){
+    return currentUserIsAdmin();
+  };
 
 Template.post_item.author = function(){
   if(this.user_id && Meteor.users.findOne(this.user_id)){

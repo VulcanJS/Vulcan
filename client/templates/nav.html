@@ -3,6 +3,10 @@
     <ul>
       <li><a class="top" href="/top">Top</a></li>
       <li><a class="new" href="/new">New</a></li>
+      {{#if isAdmin}}
+        <li><a class="users" href="/users">Users</a></li>
+        <li><a class="settings" href="/settings">Settings</a></li>
+      {{/if}}
 <!--       <li><a href="/ask">Ask</a></li>
       <li><a href="/show">Show</a></li>
       <li><a href="/jobs">Jobs </a></li>
@@ -15,8 +19,12 @@
     <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>Menu</span></a>
     <!-- <a href="/submit" class="mobile mobile-button submit"><i class="icon-plus"></i><span>Submit</span></a> -->
     <ul class="nav site-nav desktop">
-      <li><a class="top" href="top">Top</a></li>
-      <li><a class="new" href="new">New</a></li>
+      <li><a class="top" href="/top">Top</a></li>
+      <li><a class="new" href="/new">New</a></li>
+      {{#if isAdmin}}
+        <li><a class="users" href="/users">Users</a></li>
+        <li><a class="settings" href="/settings">Settings</a></li>
+      {{/if}}
 <!--       <li><a href="ask">Ask</a></li>
       <li><a href="show">Show</a></li>
       <li><a href="jobs">Jobs</a></li> -->

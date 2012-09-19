@@ -31,7 +31,7 @@ Template.post_page.body_formatted = function(){
 }
 
 Template.post_page.rendered = function(){
-  t("post_page");
+  // t("post_page");
   if(Meteor.user()){
     editor= new EpicEditor(EpicEditorOptions).load();
   }

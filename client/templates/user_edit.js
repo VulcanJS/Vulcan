@@ -19,7 +19,6 @@ Template.user_edit.events = {
  		{
 	   		$set: {
 		        username: username
-		      , email: email
 	    	}
     	}
     );
@@ -29,7 +28,6 @@ Template.user_edit.events = {
 
 Template.user_edit.user = function(){
 	var current_user=Meteor.user();
-	console.log(window.selected_user_id);
 	if(window.selected_user_id && !current_user.loading && isAdmin(current_user)){
 	  return Meteor.users.findOne(window.selected_user_id);
 	}else{
@@ -38,7 +36,6 @@ Template.user_edit.user = function(){
 }
 
 Template.user_edit.email = function(){
-	console.log(this);
 	if(!this.loading){
 		return this.emails[0].email;
 	}

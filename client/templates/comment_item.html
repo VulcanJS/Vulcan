@@ -17,11 +17,13 @@
           <a class="comment-username" href="#">{{author}}</a>
           <span class="comment-time">{{ago}}</span>
           <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">link</a>
-          {{#if is_my_comment}}
+          {{#if can_edit}}
             | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
           {{/if}}
+          {{#if is_admin}}          
             | <a class="queue-comment" href="#">queue</a>
             | <span>{{full_date}}</span>
+          {{/if}}
         </div>
         <div class="comment-text markdown">{{{body_formatted}}}</div>
         <a href="/comments/{{_id}}" class="comment-reply goto-comment">Reply</a>

@@ -35,10 +35,12 @@
           <span class="post-domain">{{domain}}</span>
         </h3>
         <p class="post-meta"><span class="points">{{votes}} <span class="unit">points </span></span>by  <a class="post-author">{{author}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a class="go-to-comments" href="posts/{{_id}}">{{comments}} comments</a></span>
-          {{#if is_my_post}}
+          {{#if can_edit}}
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}
+          {{#if is_admin}}
           | score: {{short_score}}, votes: {{votes}}
+          {{/if}}
         </p>
       </div>
     </div>

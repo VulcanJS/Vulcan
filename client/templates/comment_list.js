@@ -13,7 +13,7 @@ Template.comment_list.child_comments = function(){
 };
 
 Template.comment_list.rendered = function(){
-	t("comment_list");
+	// t("comment_list");
 }
 
 })();

@@ -120,7 +120,11 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
-
+Session.set('currentUserIsAdmin', (Meteor.user() && !Meteor.user().loading) ? isAdmin(Meteor.user()) : false )
+currentUserIsAdmin = function(){
+	return Session.get('currentUserIsAdmin');
+}
+  
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',
