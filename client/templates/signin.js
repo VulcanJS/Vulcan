@@ -6,7 +6,7 @@ Template.signin.events = {
       Meteor.loginWithPassword(username, password, function(err){
         if(err){
           console.log(err);
-          alert(err);
+          throwError(err.reason);
         }else{
           // Session.set('state', Session.get('previous_state'));
           Router.navigate('', {trigger: true});

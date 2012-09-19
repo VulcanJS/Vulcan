@@ -79,7 +79,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   transition: all, 300ms; }
 
 /* line 32, ../sass/partials/_mixins.scss */
-.grid-block, .post-content, .post-actions li a, .post-message, .comment-content, .comment-new {
+.grid-block, .post-content, .post-actions li a, .post-message, .comment-content, .comment-new, .error {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -1105,6 +1105,13 @@ table tr td {
 /* line 22, ../sass/modules/_users.scss */
 table thead tr td {
   font-weight: bold; }
+
+/* line 1, ../sass/modules/_errors.scss */
+.error {
+  margin-bottom: 10px;
+  text-align: center;
+  background: #f36c3d;
+  color: white; }
 
 /* line 1, ../sass/partials/_mobile.scss */
 .mobile {
