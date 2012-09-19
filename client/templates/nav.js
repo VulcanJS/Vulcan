@@ -1,10 +1,5 @@
 Template.nav.events = {
-    'click .site-nav a': function(event){
-      event.preventDefault();
-      Session.set('state', 'list');
-  }
-
-  , 'click #logout': function(event){
+  'click #logout': function(event){
       event.preventDefault();
       Meteor.logout();
   }
@@ -37,17 +32,7 @@ Template.nav.events = {
       iframe: false
     });
   }
-
-  , 'click .top': function(event){
-      event.preventDefault();
-      Router.navigate('top', {trigger: true});
-  }
-
-  , 'click .new': function(event){
-      event.preventDefault();
-      Router.navigate('new', {trigger: true});
-  }
-
+  
   , 'click .login-header': function(e){
       e.preventDefault();
       Router.navigate('account', {trigger:true});

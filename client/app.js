@@ -2,7 +2,11 @@ var current_user_id=0;
 if(Meteor.user()){
 	current_user_id=Meteor.user()._id;
 }
-Meteor.subscribe('users', current_user_id);
+
+Meteor.subscribe('users', current_user_id, function(){
+	// once we've subscribed, set a session variable to check if the current user is an admin
+	Session.set('currentUserIsAdmin', (Meteor.user() && !Meteor.user().loading) ? isAdmin(Meteor.user()) : false );	
+});
 
 Posts = new Meteor.Collection('posts');
 Meteor.subscribe('posts');
@@ -120,7 +124,6 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
-Session.set('currentUserIsAdmin', (Meteor.user() && !Meteor.user().loading) ? isAdmin(Meteor.user()) : false )
 currentUserIsAdmin = function(){
 	return Session.get('currentUserIsAdmin');
 }
