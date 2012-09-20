@@ -2,6 +2,6 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 
 # Instalation
 - Install Meteor
-- Install Meteorite
+- Install [Meteorite](https://github.com/oortcloud/meteorite/)
 - Run `mrt`
 - Optional: use the [Heroku buildpack for Meteorite](https://github.com/oortcloud/heroku-buildpack-meteorite) to push to Heroku
