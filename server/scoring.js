@@ -19,11 +19,22 @@ var Scoring = {
 
   },
   
-  // rerun all the scoring
+  // rerun all the scoring -- TODO: should we check to see if the score has 
+  // changed before saving?
   updateScores: function() {
     Posts.find().forEach(function(post) {
       Scoring.updateObject(post);
       Posts.update(post._id, {$set: {score: post.score}});
     });
+    
+    Comments.find().forEach(function(comment) {
+      Scoring.updateObject(comment);
+      Comments.update(comment._id, {$set: {score: comment.score}});
+    });
   }
 }
+
+Meteor.Cron = new Cron();
+Meteor.Cron.addJob(1, function() {
+  Scoring.updateScores();
+})

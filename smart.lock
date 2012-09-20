@@ -2,12 +2,13 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "auth",
-    "commit": "102880a306b1ea1b967f7a9ad208d3fa30e3a268"
+    "commit": "e9dcfff310c5ab2e8b968bd2b7319d3c32e3c2a1"
   },
   "dependencies": {
     "basePackages": {
       "router": {},
-      "groups": {}
+      "groups": {},
+      "cron": {}
     },
     "packages": {
       "router": {
@@ -17,8 +18,13 @@
       },
       "groups": {
         "git": "https://github.com/possibilities/meteor-groups.git",
-        "tag": "v0.0.5",
-        "commit": "d79861fa9f31d885ffae02dd67ca6b2b725dcf13"
+        "tag": "v0.0.6",
+        "commit": "ee45c3fbdb84313f6f0124ed30e02e101d3829cb"
+      },
+      "cron": {
+        "git": "https://github.com/tmeasday/meteor-cron.git",
+        "tag": "v0.0.1",
+        "commit": "8cecc021c1fb681bfa1de2aa8242448a4516049a"
       },
       "deps-extensions": {
         "git": "https://github.com/tmeasday/meteor-deps-extensions.git",
