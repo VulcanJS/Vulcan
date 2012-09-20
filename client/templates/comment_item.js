@@ -128,10 +128,18 @@ Template.comment_item.rendered=function(){
     },
     'click .upvote': function(e) {
       e.preventDefault();
+      if(!Meteor.user()){
+        throwError("Please log in first");
+        return false;
+      }
       Meteor.call('upvoteComment', this._id);
     },
     'click .downvote': function(e) {
       e.preventDefault();
+      if(!Meteor.user()){
+        throwError("Please log in first");
+        return false;
+      }
       Meteor.call('downvoteComment', this._id);
     }
   };

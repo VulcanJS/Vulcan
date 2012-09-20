@@ -4,7 +4,10 @@
 Template.post_submit.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
-    if(!Meteor.user()) throw 'You must be logged in.';
+    if(!Meteor.user()){
+      throwError('You must be logged in.');
+      return false;
+    }
 
     var title= $('#title').val();
     var url = $('#url').val();

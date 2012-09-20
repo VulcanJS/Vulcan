@@ -7,6 +7,10 @@ Template.post_item.events = {
   }
 
   , 'click .upvote-link': function(){
+      if(!Meteor.user()){
+        throwError("Please log in first");
+        return false;
+      }
       Meteor.call('upvotePost', this._id);
   }
 
