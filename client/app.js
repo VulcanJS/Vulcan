@@ -30,6 +30,11 @@ if (Meteor.is_client) {
 		initialize: function() {
 			FilteredRouter.prototype.initialize.call(this);
 			this.filter(this.require_login, {only: ['submit']});
+			this.filter(this.start_request);
+		},
+		start_request: function(page){
+			Session.set("error", null);
+			return page;
 		},
 		require_login: function(page) {
 			console.log(Meteor.user());

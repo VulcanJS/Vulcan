@@ -5,20 +5,27 @@ Template.settings.events = {
 
     var title= $('#title').val();
     var theme = $('#theme').val();
+    var analytics_code = $('#analytics_code').val();
     var prevSetting=Settings.find().fetch()[0];
 
     if(prevSetting){
       Settings.update(prevSetting._id,{
           $set: {
             title: title,
-            theme: theme
+            theme: theme,
+            analytics_code: analytics_code
           }
+      }, function(){
+        throwError("Settings have been updated");
       });
     }else{
        var settingId = Settings.insert({
         title: title,
-        theme: theme
-    });   
+        theme: theme,
+        analytics_code: analytics_code
+    }, function(){
+        throwError("Settings have been created");
+      });   
     }
   }
 };
