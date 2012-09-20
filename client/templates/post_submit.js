@@ -25,7 +25,7 @@ Template.post_submit.events = {
     });
     var post = Posts.findOne(postId);
 
-    Meteor.call('voteForPost', post);
+    Meteor.call('upvotePost', postId);
 
     Session.set('selected_post', post);
     // Session.set('state', 'view_post');
