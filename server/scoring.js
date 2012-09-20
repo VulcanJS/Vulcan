@@ -34,7 +34,9 @@ var Scoring = {
   }
 }
 
-Meteor.Cron = new Cron();
-Meteor.Cron.addJob(1, function() {
+// tick every second
+Meteor.Cron = new Cron(1000);
+// update scores every 10 seconds
+Meteor.Cron.addJob(10, function() {
   Scoring.updateScores();
 })
