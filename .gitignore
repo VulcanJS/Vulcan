@@ -3,3 +3,4 @@ npm-debug.log
 .sass-cache/*
 .DS_Store
 *-ck.js
+providers_secret.js
