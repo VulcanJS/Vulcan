@@ -1,22 +1,5 @@
 (function() {
 
-Template.post_page.events = {
-  'click input[type=submit]': function(e, template){
-    e.preventDefault();
-    var content = template.editor.exportFile();
-    var post_id = Session.get('selected_post_id');
-    var $comment = $('#comment');
-    var new_comment_id=Meteor.call('comment', post_id, null, content, function(error, result){
-      $("#"+result).removeClass("queued"); // does not work because new element is not yet in the DOM (probably)
-    });
-
-    $comment.val('');
-  }
-};
-
-Template.post_page.show_comment_form = function(){
-  return Meteor.user() !== null;
-};
 
 Template.post_page.post = function(){
   var post = Posts.findOne(Session.get('selected_post_id'));
@@ -31,9 +14,6 @@ Template.post_page.body_formatted = function(){
 
 Template.post_page.rendered = function(){
   // t("post_page");
-  if(Meteor.user() && !this.editor){
-    this.editor = new EpicEditor(EpicEditorOptions).load();
-  }
 }
 
 window.newCommentTimestamp=new Date();

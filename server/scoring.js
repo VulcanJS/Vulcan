@@ -37,6 +37,6 @@ var Scoring = {
 // tick every second
 Meteor.Cron = new Cron(1000);
 // update scores every 10 seconds
-Meteor.Cron.addJob(30, function() {
+Meteor.Cron.addJob(3, function() {
   Scoring.updateScores();
 })
