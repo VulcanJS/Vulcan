@@ -715,7 +715,7 @@ body.pageslide-open {
 /* line 238, ../sass/modules/_posts.scss */
 .share-options {
   position: absolute;
-  left: -223px;
+  left: -150px;
   top: 5px; }
   /* line 245, ../sass/modules/_posts.scss */
   .share-options.hidden {
