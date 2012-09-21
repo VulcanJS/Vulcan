@@ -6,7 +6,8 @@ Template.post_item.events = {
       Router.navigate('posts/'+this._id, {trigger: true});
   }
 
-  , 'click .upvote-link': function(){
+  , 'click .upvote-link': function(e){
+    e.preventDefault();
       if(!Meteor.user()){
         throwError("Please log in first");
         return false;
