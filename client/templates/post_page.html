@@ -6,9 +6,11 @@
     {{#if show_comment_form}}
     <div class="comment-new">
       <form>
-        <div class="comment-field" id="editor">
-          <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
-        </div>
+        {{#constant}}
+          <div class="comment-field" id="editor">
+              <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
+          </div>
+        {{/constant}}
         <div class="comment-submit">
           <input type="submit" class="button" value="Add Comment" />
         </div>
