@@ -109,28 +109,29 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* line 1, ../sass/partials/_main.scss */
 body {
   background: #e9f3f7;
-  background: #edf5f8; }
+  background: #edf5f8;
+  min-height: 1500px; }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  /* line 7, ../sass/partials/_main.scss */
+  /* line 8, ../sass/partials/_main.scss */
   body {
     background-size: 10px 10px; } }
-/* line 12, ../sass/partials/_main.scss */
+/* line 13, ../sass/partials/_main.scss */
 #spinner {
   height: 100%;
   width: 100%;
   position: fixed;
   z-index: 1000; }
 
-/* line 18, ../sass/partials/_main.scss */
+/* line 19, ../sass/partials/_main.scss */
 .debug {
   display: none; }
 
-/* line 21, ../sass/partials/_main.scss */
+/* line 22, ../sass/partials/_main.scss */
 .hidden {
   display: none; }
 
-/* line 24, ../sass/partials/_main.scss */
+/* line 25, ../sass/partials/_main.scss */
 .overlay {
   position: fixed;
   top: 0;
