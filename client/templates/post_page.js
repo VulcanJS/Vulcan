@@ -16,8 +16,6 @@ Template.post_page.events = {
   }
 };
 
-Template.post_page.preserve(['#comment-form']);
-
 Template.post_page.show_comment_form = function(){
   return Meteor.user() !== null;
 };
