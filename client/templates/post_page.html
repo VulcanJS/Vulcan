@@ -4,18 +4,18 @@
      {{> post_item}}
     {{/with}}
     {{#if show_comment_form}}
-      {{#constant}}
-        <div class="comment-new">
-          <form>
-            <div class="comment-field" id="editor">
+    <div class="comment-new">
+      <form>
+        {{#constant}}
+          <div class="comment-field" id="editor">
               <textarea id="comment" rows="3" autofocus="autofocus"></textarea>
-            </div>
-            <div class="comment-submit">
-              <input type="submit" class="button" value="Add Comment" />
-            </div>
-          </form>
+          </div>
+        {{/constant}}
+        <div class="comment-submit">
+          <input type="submit" class="button" value="Add Comment" />
         </div>
-      {{/constant}}
+      </form>
+    </div>
     {{/if}}
     {{> comment_list}}
   </div>

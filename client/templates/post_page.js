@@ -1,11 +1,9 @@
 (function() {
 
-var editor;
-
 Template.post_page.events = {
-  'click input[type=submit]': function(e){
+  'click input[type=submit]': function(e, template){
     e.preventDefault();
-    var content = editor.exportFile();
+    var content = template.editor.exportFile();
     var post_id = Session.get('selected_post_id');
     var $comment = $('#comment');
     var new_comment_id=Meteor.call('comment', post_id, null, content, function(error, result){
@@ -33,8 +31,8 @@ Template.post_page.body_formatted = function(){
 
 Template.post_page.rendered = function(){
   // t("post_page");
-  if(Meteor.user()){
-    editor= new EpicEditor(EpicEditorOptions).load();
+  if(Meteor.user() && !this.editor){
+    this.editor = new EpicEditor(EpicEditorOptions).load();
   }
 }
 
