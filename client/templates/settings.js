@@ -6,6 +6,7 @@ Template.settings.events = {
     var title= $('#title').val();
     var theme = $('#theme').val();
     var analytics_code = $('#analytics_code').val();
+    var tlkio_channel = $('#tlkio_channel').val();
     var prevSetting=Settings.find().fetch()[0];
 
     if(prevSetting){
@@ -13,7 +14,8 @@ Template.settings.events = {
           $set: {
             title: title,
             theme: theme,
-            analytics_code: analytics_code
+            analytics_code: analytics_code,
+            tlkio_channel: tlkio_channel
           }
       }, function(){
         throwError("Settings have been updated");
@@ -22,7 +24,8 @@ Template.settings.events = {
        var settingId = Settings.insert({
         title: title,
         theme: theme,
-        analytics_code: analytics_code
+        analytics_code: analytics_code,
+        tlkio_channel: tlkio_channel
     }, function(){
         throwError("Settings have been created");
       });   

@@ -30,3 +30,29 @@ body{
 	width:100%;
 	z-index:50;
 }
+#tlkio{
+	position:fixed;
+	top:0px;
+	right:-280px;
+	@include single-transition(ease-out, right, 300ms, 0ms);
+	z-index:1000;
+	background:#333;
+	&.open{
+		right:0px;
+		@include box-shadow(-1px 0px 5px black(0.15));
+	}
+	.open-chat{
+		display:block;
+		background:$blue;
+		@include border-radius(3px 3px 0px 0px);
+		position:absolute;
+		top:50%;
+		right:264px;
+		text-transform:uppercase;
+		color:white;
+		padding:3px 10px;
+		@include rotate(270deg);
+		@include box-shadow(-1px 0px 1px black(0.15));
+		z-index:1001;
+	}
+}

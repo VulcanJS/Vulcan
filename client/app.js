@@ -132,7 +132,15 @@ $.fn.exists = function () {
 currentUserIsAdmin = function(){
 	return Session.get('currentUserIsAdmin');
 }
-  
+
+getSetting = function(setting){
+	var settings=Settings.find().fetch()[0];
+	if(settings){
+		return settings[setting];
+	}
+	return '';
+}
+
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',
