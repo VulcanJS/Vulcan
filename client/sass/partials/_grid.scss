@@ -5,6 +5,11 @@
 .grid{
 	width:74%;
 	margin:0 13%;
+	@include single-transition(ease-out, margin, 300ms, 0ms);
+	.chat-open &{
+		margin-right:24%;
+		margin-left:2%;
+	}
 }
 .grid-small{
 	width:320px;

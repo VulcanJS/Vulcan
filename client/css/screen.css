@@ -395,9 +395,18 @@ body.pageslide-open {
 /* line 5, ../sass/partials/_grid.scss */
 .grid {
   width: 74%;
-  margin: 0 13%; }
+  margin: 0 13%;
+  -webkit-transition: ease-out margin 300ms;
+  -webkit-transition-delay: 0ms;
+  -moz-transition: ease-out margin 300ms 0ms;
+  -o-transition: ease-out margin 300ms 0ms;
+  transition: ease-out margin 300ms 0ms; }
+  /* line 9, ../sass/partials/_grid.scss */
+  .chat-open .grid {
+    margin-right: 24%;
+    margin-left: 2%; }
 
-/* line 9, ../sass/partials/_grid.scss */
+/* line 14, ../sass/partials/_grid.scss */
 .grid-small {
   width: 320px;
   margin: 0 auto; }

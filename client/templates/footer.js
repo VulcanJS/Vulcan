@@ -33,6 +33,7 @@ Template.footer.events = {
 		    }
 		    window.chat_loaded=true;
 		}
+		$('body').toggleClass('chat-open');
 		$('#tlkio').toggleClass('open');
 	}
 }
