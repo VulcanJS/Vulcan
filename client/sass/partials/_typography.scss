@@ -10,10 +10,10 @@ a{
 	text-decoration:none;
 	font-weight:bold;
 	&:link, &:visited, &:active{
-		color:$red;
+		color:$medium-text;
 	}
 	&:hover{
-		color:black;
+		color:$red;
 	}
 }
 h3{
