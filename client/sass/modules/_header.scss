@@ -37,16 +37,15 @@
 	}
 	.logo{
 		position:absolute;
-		top:20px;
 		top:17px;
 		left:50%;
-		margin-left:-78px;
+		margin-left:-75px;
 		// width:130px;
 		// height:26px;
 		// width:124px;
 		// height:37px;
-		width:156px;
-		height:39px;
+		width:150px;
+		height:31px;
 		a{
 			display:block;
 			height:100%;
@@ -54,10 +53,12 @@
 			// margin:0 auto;
 			background-position:center center;
 			// background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTMzLjMzMnB4IiBoZWlnaHQ9IjI1LjkwM3B4IiB2aWV3Qm94PSIwIDAgMTMzLjMzMiAyNS45MDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEzMy4zMzIgMjUuOTAzIg0KCSB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xMy44NCwyMi4zMjdIOC43MjZWNi45ODRINC40OTlWMi42NTJoMTMuNTY5djQuMzMySDEzLjg0VjIyLjMyN3oiLz4NCgk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMzIuNDE4LDEwLjI0NlYyLjY1Mmg1LjExNHYxOS42NzRoLTUuMTE0di04LjA2M2gtNy4zODR2OC4wNjNoLTUuMTE1VjIuNjUyaDUuMTE1djcuNTkzSDMyLjQxOHoiLz4NCgk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNDUuOTg3LDYuOTg0djMuMjg4aDUuNzY3djQuMzMyaC01Ljc2N3YzLjM5Mmg2LjA4djQuMzMySDQwLjg3M1YyLjY1MmgxMS4xOTR2NC4zMzJINDUuOTg3eiIvPg0KCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik04My43OTYsMTEuMzQxYy0wLjA1MiwyLjg3MS0wLjI2MSw1LjMyMy0yLjAwOSw3Ljc3NmMtMS45MzEsMi42ODgtNC44MjgsMy44NjItOC4xMTUsMy44NjINCgkJYy02LjE4NCwwLTEwLjQ5LTQuMjAyLTEwLjQ5LTEwLjM4NkM2My4xODIsNi4yMDEsNjcuNTE0LDIsNzMuODU0LDJjNC4wNDQsMCw3LjE3NiwxLjgyNyw4Ljg3Miw1LjUwNmwtNC44NTMsMi4wMzUNCgkJQzc3LjE2OCw3LjY2Miw3NS42ODEsNi40MSw3My42Miw2LjQxYy0zLjM2NiwwLTUuMTE0LDMuMjA5LTUuMTE0LDYuMjFjMCwzLjA1MywxLjgyNyw2LjE1OCw1LjE5Miw2LjE1OA0KCQljMi4yMTgsMCwzLjkxNS0xLjE0OCw0LjEyMy0zLjQxOGgtNC4xNzV2LTQuMDE5SDgzLjc5NnoiLz4NCgk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTAyLjUwNSwyMi4zMjdoLTYuMzY3bC00LjgyNy03LjU2N2gtMC4wNTJ2Ny41NjdoLTUuMTE0VjIuNjUyaDcuNjQ2YzMuODg4LDAsNi44MzYsMS44NTMsNi44MzYsNi4wNTQNCgkJYzAsMi43MTMtMS41MTQsNS4wNjItNC4zMDYsNS41NThMMTAyLjUwNSwyMi4zMjd6IE05MS4yNTksMTEuNDcyaDAuNDk2YzEuNjcsMCwzLjU0OC0wLjMxMywzLjU0OC0yLjQ1M3MtMS44NzgtMi40NTMtMy41NDgtMi40NTMNCgkJaC0wLjQ5NlYxMS40NzJ6Ii8+DQoJPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTEwOS4wMDIsMjIuMzI3aC01LjExNFYyLjY1Mmg1LjExNFYyMi4zMjd6Ii8+DQoJPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTExMi4zNDIsMi42NTJoNy4yNTRjNS40NzksMCw5Ljk5NCw0LjMwNSw5Ljk5NCw5LjgzN2MwLDUuNTMyLTQuNTQsOS44MzctOS45OTQsOS44MzdoLTcuMjU0VjIuNjUyeg0KCQkgTTExNy40NTYsMTcuOTk1aDEuMTQ4YzMuMDUzLDAsNS42NjMtMS42Nyw1LjY2My01LjUwNWMwLTMuNTIzLTIuMzIzLTUuNTA2LTUuNjEtNS41MDZoLTEuMjAxVjE3Ljk5NXoiLz4NCjwvZz4NCjwvc3ZnPg0K);
-			background-image: url('/img/thegrid.svg');
-			background-image: url('/img/logo.png');
-			background-image: url('/img/telescope-logo@2x.png');
+			// background-image: url('/img/thegrid.svg');
+			// background-image: url('/img/logo.png');
+			// background-image: url('/img/telescope-logo@2x.png');
+			background-image: url('/img/telescope-logo2.png');
 			background-size: 156px 39px;
+			background-size:150px 31px;
 			font: 0/0 a;
 			text-shadow: none;
 			color: transparent;

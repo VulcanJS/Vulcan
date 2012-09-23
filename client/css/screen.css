@@ -426,54 +426,52 @@ body.pageslide-open {
   /* line 38, ../sass/modules/_header.scss */
   .header .logo {
     position: absolute;
-    top: 20px;
     top: 17px;
     left: 50%;
-    margin-left: -78px;
-    width: 156px;
-    height: 39px; }
-    /* line 50, ../sass/modules/_header.scss */
+    margin-left: -75px;
+    width: 150px;
+    height: 31px; }
+    /* line 49, ../sass/modules/_header.scss */
     .header .logo a {
       display: block;
       height: 100%;
       width: 100%;
       background-position: center center;
-      background-image: url("/img/thegrid.svg");
-      background-image: url("/img/logo.png");
-      background-image: url("/img/telescope-logo@2x.png");
+      background-image: url("/img/telescope-logo2.png");
       background-size: 156px 39px;
+      background-size: 150px 31px;
       font: 0/0 a;
       text-shadow: none;
       color: transparent; }
-  /* line 66, ../sass/modules/_header.scss */
+  /* line 67, ../sass/modules/_header.scss */
   .header .user-nav {
     float: right;
     margin-right: 10px; }
 
-/* line 86, ../sass/modules/_header.scss */
+/* line 87, ../sass/modules/_header.scss */
 .auth-buttons {
   float: right;
   margin: 20px 10px 0 0; }
-  /* line 89, ../sass/modules/_header.scss */
+  /* line 90, ../sass/modules/_header.scss */
   .auth-buttons #login-buttons {
     position: relative;
     line-height: 26px; }
-    /* line 95, ../sass/modules/_header.scss */
+    /* line 96, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a {
       text-decoration: none;
       color: #4a4444; }
-    /* line 99, ../sass/modules/_header.scss */
+    /* line 100, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a.login-link-text {
       color: #fff;
       font-weight: normal;
       display: inline-block;
       height: 26px;
       font-size: 0; }
-      /* line 105, ../sass/modules/_header.scss */
+      /* line 106, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons a.login-link-text:after {
         content: "Sign Up/Sign In";
         font-size: 16px; }
-    /* line 110, ../sass/modules/_header.scss */
+    /* line 111, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -481,18 +479,18 @@ body.pageslide-open {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 119, ../sass/modules/_header.scss */
+    /* line 120, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons .login-header {
       font-family: inherit;
       height: 26px;
       margin-right: 10px;
       cursor: pointer;
       color: white; }
-      /* line 125, ../sass/modules/_header.scss */
+      /* line 126, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons .login-header:before {
         color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 130, ../sass/modules/_header.scss */
+    /* line 131, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       background: none;
