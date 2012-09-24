@@ -5,8 +5,6 @@ Template.footer.tlkio_channel = function(){
 	return getSetting('tlkio_channel');
 }
 Template.footer.rendered = function(){
-	console.log(document.getElementById('tlkio'));
-
 }
 Template.footer.events = {
 	'click .open-chat': function(e){

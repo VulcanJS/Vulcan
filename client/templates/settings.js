@@ -26,6 +26,7 @@ Template.settings.events = {
        var settingId = Settings.insert({
         title: title,
         theme: theme,
+        footer_code: footer_code,
         analytics_code: analytics_code,
         tlkio_channel: tlkio_channel
     }, function(){
