@@ -2,7 +2,7 @@ Template.footer.footerCode = function(){
 	return getSetting('footerCode');
 }
 Template.footer.analyticsCode = function(){
-	return getSetting('analytics_Code');
+	return getSetting('analyticsCode');
 }
 Template.footer.tlkioChannel = function(){
 	return getSetting('tlkioChannel');
