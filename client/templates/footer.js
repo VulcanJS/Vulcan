@@ -1,11 +1,11 @@
-Template.footer.footer_code = function(){
-	return getSetting('footer_code');
+Template.footer.footerCode = function(){
+	return getSetting('footerCode');
 }
-Template.footer.analytics_code = function(){
-	return getSetting('analytics_code');
+Template.footer.analyticsCode = function(){
+	return getSetting('analytics_Code');
 }
-Template.footer.tlkio_channel = function(){
-	return getSetting('tlkio_channel');
+Template.footer.tlkioChannel = function(){
+	return getSetting('tlkioChannel');
 }
 Template.footer.rendered = function(){
 	if((mixpanel_id=getSetting("mixpanel_id")) && !window.mixpanel){
@@ -58,7 +58,7 @@ Template.footer.events = {
 	'click .open-chat': function(e){
 		e.preventDefault();
 		if(!window.chat_loaded){
-			if(getSetting('tlkio_channel')){
+			if(tlkioChannel=getSetting('tlkioChannel')){
 			    var target_element  = document.getElementById('tlkio'),
 			        channel_name    = target_element.getAttribute('data-channel'),
 			        custom_css_path = target_element.getAttribute('data-theme'),
