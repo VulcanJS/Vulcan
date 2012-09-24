@@ -1,3 +1,6 @@
+Template.footer.footer_code = function(){
+	return getSetting('footer_code');
+}
 Template.footer.analytics_code = function(){
 	return getSetting('analytics_code');
 }

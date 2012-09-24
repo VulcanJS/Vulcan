@@ -141,6 +141,10 @@ body {
   z-index: 50; }
 
 /* line 33, ../sass/partials/_main.scss */
+.footer {
+  text-align: center; }
+
+/* line 36, ../sass/partials/_main.scss */
 #tlkio {
   position: fixed;
   top: 0px;
@@ -152,13 +156,13 @@ body {
   transition: ease-out right 300ms 0ms;
   z-index: 1000;
   background: #333; }
-  /* line 40, ../sass/partials/_main.scss */
+  /* line 43, ../sass/partials/_main.scss */
   #tlkio.open {
     right: 0px;
     -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 44, ../sass/partials/_main.scss */
+  /* line 47, ../sass/partials/_main.scss */
   #tlkio .open-chat {
     display: block;
     background: #7ac0e4;
