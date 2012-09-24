@@ -233,7 +233,24 @@ EpicEditorOptions={
 		editor:'/themes/editor/epic-light.css'
 	}
 };
-
+SharrreOptions={
+	share: {
+	  googlePlus: true,
+	  // facebook: true,
+	  twitter: true,
+	},
+	buttons: {
+	  googlePlus: {size: 'tall'},
+	  // facebook: {layout: 'box_count'},
+	  twitter: {
+	    count: 'vertical',
+	    via: 'TelescopeApp'
+	  },
+	},
+	enableHover: false,
+	enableCounter: false,
+	enableTracking: true
+}
 Meteor.startup(function(){
 	
 });

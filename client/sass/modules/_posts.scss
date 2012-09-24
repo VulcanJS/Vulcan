@@ -221,6 +221,7 @@
 				left:0px;
 				font-size:13px;
 				color:$light-text;
+				pointer-events:none;
 				// color:$red;
 			}
 		}
@@ -239,14 +240,14 @@
 	// height:$grid-unit;
 	position:absolute;
 	// width:200px;
-	left:-150px;
+	left:-170px;
 	top:5px;
 	@extend .popover;
 	&.hidden{
 		display:block;
 		opacity:0;
 		pointer-events: none;
-		left:-210px;
+		left:-160px;
 	}
 	&:after, &:before {
 		left: 100%;

@@ -755,29 +755,30 @@ body.pageslide-open {
         bottom: 5px;
         left: 0px;
         font-size: 13px;
-        color: #b3c1c6; }
+        color: #b3c1c6;
+        pointer-events: none; }
 
-/* line 229, ../sass/modules/_posts.scss */
+/* line 230, ../sass/modules/_posts.scss */
 .post-message {
   padding: 20px;
   margin-bottom: 10px;
   font-size: 18px; }
-  /* line 234, ../sass/modules/_posts.scss */
+  /* line 235, ../sass/modules/_posts.scss */
   .list .post-message {
     display: none; }
 
-/* line 238, ../sass/modules/_posts.scss */
+/* line 239, ../sass/modules/_posts.scss */
 .share-options {
   position: absolute;
-  left: -150px;
+  left: -170px;
   top: 5px; }
-  /* line 245, ../sass/modules/_posts.scss */
+  /* line 246, ../sass/modules/_posts.scss */
   .share-options.hidden {
     display: block;
     opacity: 0;
     pointer-events: none;
-    left: -210px; }
-  /* line 251, ../sass/modules/_posts.scss */
+    left: -160px; }
+  /* line 252, ../sass/modules/_posts.scss */
   .share-options:after, .share-options:before {
     left: 100%;
     border: solid transparent;
@@ -786,21 +787,21 @@ body.pageslide-open {
     width: 0;
     position: absolute;
     pointer-events: none; }
-  /* line 260, ../sass/modules/_posts.scss */
+  /* line 261, ../sass/modules/_posts.scss */
   .share-options:after {
     border-color: rgba(255, 255, 255, 0);
     border-left-color: #ffffff;
     border-width: 10px;
     top: 20px;
     margin-top: -10px; }
-  /* line 267, ../sass/modules/_posts.scss */
+  /* line 268, ../sass/modules/_posts.scss */
   .share-options:before {
     border-color: rgba(0, 0, 0, 0);
     border-left-color: #f36c3d;
     border-width: 11px;
     top: 20px;
     margin-top: -11px; }
-  /* line 274, ../sass/modules/_posts.scss */
+  /* line 275, ../sass/modules/_posts.scss */
   .share-options .buttons {
     /* For modern browsers */
     /* For IE 6/7 (trigger hasLayout) */
@@ -813,7 +814,7 @@ body.pageslide-open {
     /* line 7, ../sass/partials/_mixins.scss */
     .share-options .buttons:after {
       clear: both; }
-    /* line 277, ../sass/modules/_posts.scss */
+    /* line 278, ../sass/modules/_posts.scss */
     .share-options .buttons .button, .share-options .buttons .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .share-options .buttons #login-buttons-password {
       float: left;
       margin-right: 10px;

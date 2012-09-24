@@ -20,6 +20,8 @@ Template.post_item.events = {
       e.preventDefault();
       $(".share-link").not($this).next().addClass("hidden");
       $this.next().toggleClass("hidden");
+      console.log($this);
+      $this.next().find('.share-replace').sharrre(SharrreOptions);
       // $(".overlay").toggleClass("hidden");
   }
 };
@@ -49,28 +51,7 @@ Template.post_item.rendered = function(){
     }, 100);
   }
 
-  if (Meteor.is_client) {     
-    if($(window).width()>400 && document.domain!="0.0.0.0"){ //do not load social media plugin on mobile
-      $('.share-replace').sharrre({
-        share: {
-          googlePlus: true,
-          // facebook: true,
-          twitter: true,
-        },
-        buttons: {
-          googlePlus: {size: 'tall'},
-          // facebook: {layout: 'box_count'},
-          twitter: {
-            count: 'vertical',
-            via: 'TelescopeApp'
-          },
-        },
-        enableHover: false,
-        enableCounter: false,
-        enableTracking: true
-      });
-    }
-  }
+
 };
 
 Template.post_item.preserve({
