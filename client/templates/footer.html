@@ -1,11 +1,12 @@
 <template name="footer">
-	{{#if tlkio_channel}}
-		{{#constant}}
-			<div id="tlkio" data-channel="{{tlkio_channel}}" style="width:280px;height:100%;"><a href="http://tlk.io/telescope" class="open-chat">chat</a>
-</div>
-		{{/constant}}
+	{{#constant}}
+	{{#if tlkio_channel}}	
+		<div id="tlkio" data-channel="{{tlkio_channel}}" style="width:280px;height:100%;"><a href="http://tlk.io/telescope" class="open-chat">chat</a>
+		</div>		
 	{{/if}}
 	<div class="footer grid">
-	</div>
+		{{{footer_code}}}
+	</div>	
 	{{{analytics_code}}}
+	{{/constant}}
 </template>

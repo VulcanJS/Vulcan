@@ -5,6 +5,7 @@ Template.settings.events = {
 
     var title= $('#title').val();
     var theme = $('#theme').val();
+    var footer_code=$("#footer_code");
     var analytics_code = $('#analytics_code').val();
     var tlkio_channel = $('#tlkio_channel').val();
     var prevSetting=Settings.find().fetch()[0];
@@ -14,6 +15,7 @@ Template.settings.events = {
           $set: {
             title: title,
             theme: theme,
+            footer_code: footer_code,
             analytics_code: analytics_code,
             tlkio_channel: tlkio_channel
           }
