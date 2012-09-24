@@ -134,6 +134,7 @@ if (Meteor.is_client) {
 		  'users':'users',
 		  'account':'user_edit',
 		  'forgot_password':'forgot_password',
+		  'user/:id': 'user_profile',
 		  'users/:id/edit':'user_edit'
 		},
 		top: function() { this.goto('posts_top'); },
@@ -172,6 +173,12 @@ if (Meteor.is_client) {
 			Session.set('selected_comment_id', id);
 			this.goto('comment_edit');
 			window.newCommentTimestamp=new Date();
+		},
+		user_profile: function(id){
+			if(typeof id !== undefined){
+				window.selected_user_id=id;
+			}
+			this.goto('user_profile');
 		},
 		user_edit: function(id){
 			if(typeof id !== undefined){
