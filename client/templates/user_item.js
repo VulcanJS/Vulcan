@@ -29,7 +29,7 @@ Template.user_item.created_at_formatted = function(){
 
 Template.user_item.email = function(){
 	if(this.emails){
-		return this.emails[0].email;
+		return this.emails[0].address;
 	}
 }
 

@@ -39,6 +39,9 @@ Template.settings.events = {
   }
 };
 
+Template.settings.currentUserIsAdmin(){
+  return currentUserIsAdmin();
+}
 Template.settings.no_settings = function(){
   if(Settings.find().fetch()[0]){
     return false;

@@ -45,7 +45,7 @@ Template.footer.rendered = function(){
 			mixpanel.people.identify(currentUserEmail);
 			mixpanel.people.set({
 			    'username': Meteor.user().username,
-			    'created_at': Meteor.user().created_at,
+			    'created_at': Meteor.user().createdAt,
 			    'email': currentUserEmail
 			});
 			mixpanel.register({
