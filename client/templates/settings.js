@@ -2,36 +2,38 @@ Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
-
     var title= $('#title').val();
     var theme = $('#theme').val();
-    var footer_code=$("#footer_code").val();
-    var analytics_code = $('#analytics_code').val();
-    var tlkio_channel = $('#tlkio_channel').val();
-    var mixpanel_id= $('#mixpanel_id').val();
+    var footerCode=$("#footer_code").val();
+    var analyticsCode = $('#analytics_code').val();
+    var tlkioChannel = $('#tlkio_channel').val();
+    var mixpanelId= $('#mixpanel_id').val();
+    var proxinoKey=$('#proxino_key').val();
     var prevSetting=Settings.find().fetch()[0];
-
+    
     if(prevSetting){
       Settings.update(prevSetting._id,{
           $set: {
             title: title,
             theme: theme,
-            footer_code: footer_code,
-            analytics_code: analytics_code,
-            tlkio_channel: tlkio_channel,
-            mixpanel_id: mixpanel_id
+            footerCode: footerCode,
+            analyticsCode: analyticsCode,
+            tlkioChannel: tlkioChannel,
+            mixpanelId: mixpanelId,
+            proxinoKey: proxinoKey
           }
       }, function(){
         throwError("Settings have been updated");
       });
     }else{
        var settingId = Settings.insert({
-        title: title,
-        theme: theme,
-        footer_code: footer_code,
-        analytics_code: analytics_code,
-        tlkio_channel: tlkio_channel,
-        mixpanel_id: mixpanel_id
+          title: title,
+          theme: theme,
+          footerCode: footerCode,
+          analyticsCode: analyticsCode,
+          tlkioChannel: tlkioChannel,
+          mixpanelId: mixpanelId,
+          proxinoKey: proxinoKey
     }, function(){
         throwError("Settings have been created");
       });   

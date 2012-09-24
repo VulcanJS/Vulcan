@@ -9,7 +9,6 @@ Template.footer.tlkio_channel = function(){
 }
 Template.footer.rendered = function(){
 	if((mixpanel_id=getSetting("mixpanel_id")) && !window.mixpanel){
-		console.log("starting mixpanel");
 		(function (c, a) {
 		    window.mixpanel = a;
 		    var b, d, h, e;
@@ -37,7 +36,6 @@ Template.footer.rendered = function(){
 		    };
 		    a.__SV = 1.1
 		})(document, window.mixpanel || []);
-		console.log(mixpanel_id);
 		mixpanel.init(mixpanel_id);
 
 		if(Meteor.user()){
@@ -45,12 +43,13 @@ Template.footer.rendered = function(){
 			mixpanel.people.identify(currentUserEmail);
 			mixpanel.people.set({
 			    'username': Meteor.user().username,
-			    'created_at': Meteor.user().createdAt,
+			    'createdAt': Meteor.user().createdAt,
 			    'email': currentUserEmail
 			});
 			mixpanel.register({
 			    'username': Meteor.user().username,
-			    'Email': currentUserEmail
+			    'createdAt': Meteor.user().createdAt,
+			    'email': currentUserEmail
 			});
 		}
 	}	
