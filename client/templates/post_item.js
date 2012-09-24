@@ -114,7 +114,9 @@ Template.post_item.is_admin = function(){
 
 Template.post_item.author = function(){
   if(this.user_id && Meteor.users.findOne(this.user_id)){
-    return Meteor.users.findOne(this.user_id).username
+    return Meteor.users.findOne(this.user_id).username;
+  }else{
+    return this.author;
   }
 };
 

@@ -18,6 +18,7 @@ Template.post_submit.events = {
       , url: url
       , body: editor.exportFile()
       , user_id: Meteor.user()._id
+      , author: Meteor.user().username
       , submitted: new Date().getTime()
       , votes: 0
       , comments: 0
