@@ -19,10 +19,16 @@ Template.user_edit.events = {
     Meteor.users.update(user._id,
  		{
 	   		$set: {
-		        username: username,
                 "profile.bio": bio
 	    	}
-    	}
+    	},
+        function(error){
+            if(error){
+                throwError(error.reason);
+            }else{
+                throwError('Profile updated');
+            }
+        }
     );
   }
 

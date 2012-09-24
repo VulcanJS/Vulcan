@@ -15,13 +15,18 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+      // console.log("updating");
+      // console.log(userId);
+      // console.log(docs);
+      // console.log(fields);
+      // console.log(modifier);
+        if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
         }
         return false; 
