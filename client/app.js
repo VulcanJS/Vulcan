@@ -103,9 +103,6 @@ if (Meteor.is_client) {
 		},
 		start_request: function(page){
 			Session.set("error", null);
-			if(Meteor.user() && !Meteor.user().createdAt){
-				throwError("Due to the Auth API update, please log out and then create a new account. Sorry!")
-			}
 			return page;
 		},
 		require_login: function(page) {

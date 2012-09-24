@@ -61,4 +61,7 @@ Template.nav.rendered = function(){
     document.title = setting.title;
   }
 
+  if(Meteor.user() && !Meteor.user().loading && !Meteor.user().createdAt){
+    throwError("Due to the Auth API update, please log out and then create a new account. Sorry!")
+  }
 };
