@@ -1163,6 +1163,17 @@ table tr td {
 table thead tr td {
   font-weight: bold; }
 
+/* line 2, ../sass/modules/_user-profile.scss */
+.user-profile .user-avatar {
+  height: 80px;
+  width: 80px;
+  display: block;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  -ms-border-radius: 80px;
+  -o-border-radius: 80px;
+  border-radius: 80px; }
+
 /* line 1, ../sass/modules/_errors.scss */
 .error {
   margin-bottom: 10px;
