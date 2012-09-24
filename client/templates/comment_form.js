@@ -23,16 +23,19 @@
 	    	// post a child comment
 		    var parent_comment_id =selected_comment_id;
 		    var post_id=Comments.findOne(parent_comment_id).post;
-	        Meteor.call('comment', post_id, parent_comment_id, content);
+	        var comment_id=Meteor.call('comment', post_id, parent_comment_id, content);
 	        Session.set('selected_comment_id', null);
 	    	Router.navigate('posts/'+post_id, {trigger:true});
 	    }else{
 	    	// post a root comment
 	    	var parent_comment_id=null;
 	    	var post_id=Session.get('selected_post_id');
-	        Meteor.call('comment', post_id, parent_comment_id, content);
+	        var comment_id=Meteor.call('comment', post_id, parent_comment_id, content);
 	        $comment.val('');
 	    }
+
+	    trackEvent("new comment", {'post ID': post_id, 'comment ID': comment_id});
+
 	  }
 	};
 })();

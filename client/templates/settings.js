@@ -8,6 +8,7 @@ Template.settings.events = {
     var footer_code=$("#footer_code").val();
     var analytics_code = $('#analytics_code').val();
     var tlkio_channel = $('#tlkio_channel').val();
+    var mixpanel_id= $('#mixpanel_id').val();
     var prevSetting=Settings.find().fetch()[0];
 
     if(prevSetting){
@@ -17,7 +18,8 @@ Template.settings.events = {
             theme: theme,
             footer_code: footer_code,
             analytics_code: analytics_code,
-            tlkio_channel: tlkio_channel
+            tlkio_channel: tlkio_channel,
+            mixpanel_id: mixpanel_id
           }
       }, function(){
         throwError("Settings have been updated");
@@ -28,7 +30,8 @@ Template.settings.events = {
         theme: theme,
         footer_code: footer_code,
         analytics_code: analytics_code,
-        tlkio_channel: tlkio_channel
+        tlkio_channel: tlkio_channel,
+        mixpanel_id: mixpanel_id
     }, function(){
         throwError("Settings have been created");
       });   

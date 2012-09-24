@@ -141,6 +141,16 @@ getSetting = function(setting){
 	return '';
 }
 
+getCurrentUserEmail = function(){
+	return Meteor.user() ? Meteor.user().emails[0].email : '';
+}
+
+trackEvent = function(event, properties){
+	var properties= (typeof properties === 'undefined') ? {} : properties;
+	if(mixpanel){
+		mixpanel.track(event, properties);
+	}
+}
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',

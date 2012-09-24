@@ -28,6 +28,9 @@ Template.post_submit.events = {
     Meteor.call('upvotePost', postId);
 
     Session.set('selected_post', post);
+
+    trackEvent("new post", {'post ID': postId});
+
     // Session.set('state', 'view_post');
     Router.navigate('posts/'+postId, {trigger: true});
   }

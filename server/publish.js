@@ -19,11 +19,15 @@ Meteor.startup(function(){
       console.log("updating user");
       console.log(docs);
       console.log(fields);
-      console.log(modifier);
-
-        return true;
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+          return true;
+        }
+        return false;
       }
     , remove: function(userId, docs){ 
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+          return true;
+        }
         return false; 
       }
   });
@@ -91,23 +95,6 @@ Meteor.startup(function(){
       }
   });
 });
-
-// MyVotes
-
-MyVotes = new Meteor.Collection('myvotes');
-
-Meteor.publish('myvotes', function() {
-  return MyVotes.find();
-});
-
-Meteor.startup(function(){
-  MyVotes.allow({
-      insert: function(){ return false; }
-    , update: function(){ return false; }
-    , remove: function(){ return false; }
-  });
-});
-
 
 // Settings
 
