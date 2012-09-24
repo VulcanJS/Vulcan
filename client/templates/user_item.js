@@ -9,22 +9,7 @@ Template.user_item.avatar_url = function(){
 };
 
 Template.user_item.created_at_formatted = function(){
-	// return moment(this.created_at).format("MMMM Do YYYY, HH:mm");
-	// console.log("user: ", this);
-	// if(!this.created_at && !window.foo){
-	// 	Meteor.users.update(this._id,
-	//  		{
-	// 	   		$set: {
-	// 		        created_at: new Date().getTime()
-	// 	    	}
-	//     	}, function(error){
-	//     		console.log(error);
-	//     		throwError(error.reason);
-	//     	}
- //    	);
- //    	window.foo=true;
-	// }
-	return moment(this.created_at).fromNow();
+	return moment(this.createdAt).fromNow();
 }
 
 Template.user_item.email = function(){

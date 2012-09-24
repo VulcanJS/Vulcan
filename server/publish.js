@@ -1,7 +1,7 @@
 // Users
 
 Meteor.publish('users', function(current_user_id) {
-  if(current_user_id && isAdmin(Meteor.users.findOne(current_user_id))){
+  if(current_user_id && isAdmin(current_user_id)){
     return Meteor.users.find();
   }else{
     return Meteor.users.find({}, {fields: {emails: false}});
@@ -15,10 +15,6 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-      //TODO
-      console.log("updating user");
-      console.log(docs);
-      console.log(fields);
         if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }

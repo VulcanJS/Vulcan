@@ -8,6 +8,7 @@ Template.user_edit.events = {
     var user=window.selected_user_id? Meteor.users.findOne(window.selected_user_id) : Meteor.user();
     var username= $('#title').val();
     var email = $('#url').val();
+    var bio = $('#bio').val();
     var old_password = $('#new_password').val();
     var new_password = $('#new_password').val();
 
@@ -18,7 +19,8 @@ Template.user_edit.events = {
     Meteor.users.update(user._id,
  		{
 	   		$set: {
-		        username: username
+		        username: username,
+                "profile.bio": bio
 	    	}
     	}
     );
@@ -39,6 +41,12 @@ Template.user_edit.email = function(){
 	if(!this.loading){
 		return this.emails[0].address;
 	}
+}
+
+Template.user_edit.bio = function(){
+    if(!this.loading && this.profile){
+        return this.profile.bio;
+    }
 }
 
 })();

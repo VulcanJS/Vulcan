@@ -39,7 +39,7 @@ Template.settings.events = {
   }
 };
 
-Template.settings.currentUserIsAdmin(){
+Template.settings.currentUserIsAdmin = function(){
   return currentUserIsAdmin();
 }
 Template.settings.no_settings = function(){
