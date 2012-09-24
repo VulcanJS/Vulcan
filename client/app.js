@@ -219,7 +219,7 @@ getCurrentUserEmail = function(){
 
 trackEvent = function(event, properties){
 	var properties= (typeof properties === 'undefined') ? {} : properties;
-	if(mixpanel){
+	if(typeof mixpanel != 'undefined'){
 		mixpanel.track(event, properties);
 	}
 }
