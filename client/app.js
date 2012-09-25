@@ -37,6 +37,7 @@ if (Meteor.is_client) {
 		},
 		start_request: function(page){
 			Session.set("error", null);
+			Session.set("openedComments", null);
 			return page;
 		},
 		require_login: function(page) {
