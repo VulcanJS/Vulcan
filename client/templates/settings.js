@@ -5,7 +5,6 @@ Template.settings.events = {
     var title= $('#title').val();
     var theme = $('#theme').val();
     var footerCode=$("#footer_code").val();
-    console.log(footerCode);
     var analyticsCode = $('#analytics_code').val();
     var tlkioChannel = $('#tlkio_channel').val();
     var mixpanelId= $('#mixpanel_id').val();

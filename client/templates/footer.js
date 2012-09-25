@@ -1,43 +1,18 @@
-Template.footer.footerCode = function(){
-	return getSetting('footerCode');
-}
-Template.footer.analyticsCode = function(){
-	return getSetting('analyticsCode');
-}
-Template.footer.tlkioChannel = function(){
-	return getSetting('tlkioChannel');
-}
-Template.footer.rendered = function(){
-	if((mixpanel_id=getSetting("mixpanel_id")) && !window.mixpanel){
-		(function (c, a) {
-		    window.mixpanel = a;
-		    var b, d, h, e;
-		    b = c.createElement("script");
-		    b.type = "text/javascript";
-		    b.async = !0;
-		    b.src = ("https:" === c.location.protocol ? "https:" : "http:") + '//cdn.mxpnl.com/libs/mixpanel-2.1.min.js';
-		    d = c.getElementsByTagName("script")[0];
-		    d.parentNode.insertBefore(b, d);
-		    a._i = [];
-		    a.init = function (b, c, f) {
-		        function d(a, b) {
-		            var c = b.split(".");
-		            2 == c.length && (a = a[c[0]], b = c[1]);
-		            a[b] = function () {
-		                a.push([b].concat(Array.prototype.slice.call(arguments, 0)))
-		            }
-		        }
-		        var g = a;
-		        "undefined" !== typeof f ? g = a[f] = [] : f = "mixpanel";
-		        g.people = g.people || [];
-		        h = "disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" ");
-		        for (e = 0; e < h.length; e++) d(g, h[e]);
-		        a._i.push([b, c, f])
-		    };
-		    a.__SV = 1.1
-		})(document, window.mixpanel || []);
-		mixpanel.init(mixpanel_id);
+Template.footer.helpers({
+	footerCode: function(){
+		return getSetting('footerCode');
+	}
+	,analyticsCode: function(){
+		return getSetting('analyticsCode');
+	}
+	,tlkioChannel: function(){
+		return getSetting('tlkioChannel');
+	}
+});
 
+Template.footer.rendered = function(){
+	if((mixpanel_id=getSetting("mixpanel_id")) && window.mixpanel.length==0){
+		mixpanel.init(mixpanel_id);
 		if(Meteor.user()){
 			var currentUserEmail=getCurrentUserEmail();
 			mixpanel.people.identify(currentUserEmail);
@@ -52,8 +27,15 @@ Template.footer.rendered = function(){
 			    'email': currentUserEmail
 			});
 		}
-	}	
+	}
+
+    document.title = getSetting("title");
+
+	if(Meteor.user() && !Meteor.user().loading && !Meteor.user().createdAt){
+		throwError("Due to the Auth API update, please log out and then create a new account. Sorry!")
+	}
 }
+
 Template.footer.events = {
 	'click .open-chat': function(e){
 		e.preventDefault();

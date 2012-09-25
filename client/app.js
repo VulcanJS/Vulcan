@@ -21,72 +21,6 @@ Meteor.subscribe('comments', function() {
 Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
 	if(proxinoKey=getSetting('proxinoKey')){
-		Proxino = {
-		  key:null,
-		  log:function(obj){
-		    if(typeof(obj) === "string"){
-		      obj = {type:"Message", body:obj}
-		    }
-		    if(obj.type === undefined || obj.body === undefined){
-		      throw "Make sure object meets form:{type:_,body:_}"
-		    }
-		    if(Proxino.key === null){
-		      throw "Please set your API key."
-		    }
-		    obj.key = Proxino.key;
-		    if(obj.url === undefined){
-		      var g_url;
-		      try{
-		        g_url = Proxino.get_url(obj.body);
-		      }
-		      catch(e){
-		        g_url = null;
-		      }
-		      if(g_url !== null && g_url.length > 0){
-		          obj.url = g_url[0];
-		      }
-		      else{
-		        obj.url = document.URL;
-		      }
-		    }
-		    try{
-		      $.ajax({
-		        url:"https://p.proxino.com/message",
-		        data:obj,
-		        dataType:"jsonp",
-		        success:function(data){
-		          //console.log(data);
-		        }
-		      }); 
-		    }
-		    catch(exc){
-		      // Ignore failure to post, don't want recursive loop
-		    }
-		  },
-		  track_errors:function(){
-		    if(Proxino.key === null){
-		      throw "Please set your API key."
-		    }
-		    window.onerror = function(msg, url, lineno){
-		      var data = {type:"Exception",body:msg}; 
-		      if(msg === undefined){
-		        data.body = "No message";
-		      }
-		      if(url !== undefined && url !== "undefined" && url !== ""){
-		        data.url = url;
-		      }
-		      if(lineno !== undefined && lineno !== 0){
-		        data.lineno = lineno;
-		      }
-		      //var body_str = msg + " at resource " + url + " in line " + lineno;
-		      Proxino.log(data);
-		    }
-		  },
-		  get_url:function(text) {
-		      var urlRegex = /(https?:\/\/[^\s]+)/g;
-		      return text.match(urlRegex);
-		  }
-		}
 		Proxino.key = proxinoKey;
 		Proxino.track_errors();
 	}	
@@ -106,7 +40,6 @@ if (Meteor.is_client) {
 			return page;
 		},
 		require_login: function(page) {
-			console.log(Meteor.user());
 		  if (Meteor.user()) {
 		    return page;
 		  } else {
@@ -131,7 +64,7 @@ if (Meteor.is_client) {
 		  'users':'users',
 		  'account':'user_edit',
 		  'forgot_password':'forgot_password',
-		  'user/:id': 'user_profile',
+		  'users/:id': 'user_profile',
 		  'users/:id/edit':'user_edit'
 		},
 		top: function() { this.goto('posts_top'); },
@@ -191,42 +124,10 @@ if (Meteor.is_client) {
 	});
 }
 
-t=function(message){
-	var d=new Date();
-	console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());
-}
-
-function nl2br (str) {   
-var breakTag = '<br />';    
-return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
-}
-
 $.fn.exists = function () {
     return this.length !== 0;
 }
 
-currentUserIsAdmin = function(){
-	return Session.get('currentUserIsAdmin');
-}
-
-getSetting = function(setting){
-	var settings=Settings.find().fetch()[0];
-	if(settings){
-		return settings[setting];
-	}
-	return '';
-}
-
-getCurrentUserEmail = function(){
-	return Meteor.user() ? Meteor.user().emails[0].email : '';
-}
-
-trackEvent = function(event, properties){
-	var properties= (typeof properties === 'undefined') ? {} : properties;
-	if(typeof mixpanel != 'undefined'){
-		mixpanel.track(event, properties);
-	}
-}
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',
@@ -255,6 +156,3 @@ SharrreOptions={
 	enableCounter: false,
 	enableTracking: true
 }
-Meteor.startup(function(){
-	
-});
