@@ -9,7 +9,7 @@ Template.user_item.avatar_url = function(){
 };
 
 Template.user_item.created_at_formatted = function(){
-	return moment(this.createdAt).fromNow();
+	return this.createdAt ? moment(this.createdAt).fromNow() : '–';
 }
 
 Template.user_item.email = function(){
