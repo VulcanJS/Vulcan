@@ -7,16 +7,22 @@ var Scoring = {
     if(isNaN(object.score)){
       object.score=0;
     }
-
-    // just count the number of votes for now
-    var baseScore = object.votes;
+    if(typeof object.votes === 'undefined'){
+      object.votes=0;
+    }
+    // use baseScore if defined, if not just use the number of votes
+    // note: for transition period, also use votes if there are more votes than baseScore
+    var baseScore = (typeof object.baseScore === 'undefined' || object.votes>object.baseScore) ? object.votes : object.baseScore;
 
     // now multiply by 'age' exponentiated
     // FIXME: timezones <-- set by server or is getTime() ok?
     var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
     
-    object.score = baseScore * Math.pow(ageInHours + 2, -0.1375);
+    // Bindle algorithm
+    // object.score = baseScore * Math.pow(ageInHours + 2, -0.1375);
 
+    // HN algorithm (same as Bindle)
+    object.score = (baseScore) / Math.pow(ageInHours + 2, 1.3);
   },
   
   // rerun all the scoring -- TODO: should we check to see if the score has 
@@ -37,6 +43,6 @@ var Scoring = {
 // tick every second
 Meteor.Cron = new Cron(1000);
 // update scores every 10 seconds
-Meteor.Cron.addJob(30, function() {
+Meteor.Cron.addJob(10, function() {
   Scoring.updateScores();
 })

@@ -30,7 +30,6 @@ Template.footer.rendered = function(){
 	}
 
     document.title = getSetting("title");
-
 	if(Meteor.user() && !Meteor.user().loading && !Meteor.user().createdAt){
 		throwError("Due to the Auth API update, please log out and then create a new account. Sorry!")
 	}
