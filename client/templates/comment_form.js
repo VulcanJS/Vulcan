@@ -28,7 +28,7 @@ Template.comment_form.events = {
     	var parent_comment_id=null;
     	var post_id=Session.get('selected_post_id');
         var comment_id=Meteor.call('comment', post_id, parent_comment_id, content);
-        $comment.val('');
+        instance.editor.importFile('editor', '');
     }
 
     trackEvent("new comment", {'post ID': post_id, 'comment ID': comment_id});
