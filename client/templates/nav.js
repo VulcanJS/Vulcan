@@ -1,12 +1,3 @@
-Template.nav.helpers({
-  logged_in: function(){
-    return Meteor.user() !== null;
-  }
-  ,is_admin: function(){
-    return currentUserIsAdmin();
-  }
-})
-
 Template.nav.events = {
   'click #logout': function(event){
       event.preventDefault();

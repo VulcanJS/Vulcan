@@ -1,9 +1,3 @@
-Template.comment_form.helpers({
-	show_comment_form: function(){
-		return Meteor.user() !== null;
-	}
-});
-
 Template.comment_form.rendered = function(){
 	if(Meteor.user() && !this.editor){
 		this.editor = new EpicEditor(EpicEditorOptions).load();
@@ -35,4 +29,3 @@ Template.comment_form.events = {
 
   }
 };
-

@@ -99,10 +99,6 @@
       }
     }
 
-    ,is_admin: function(){
-      return currentUserIsAdmin();
-    }
-
     ,repress_recursion: function(){
       if(window.repress_recursion){
         return true;

@@ -1,7 +1,4 @@
-Meteor.subscribe('users', function(){
-	// once we've subscribed, set a session variable to check if the current user is an admin
-	Session.set('currentUserIsAdmin', (Meteor.user() && !Meteor.user().loading) ? isAdmin(Meteor.user()) : false );	
-});
+Meteor.subscribe('users');
 
 Posts = new Meteor.Collection('posts');
 Meteor.subscribe('posts');
@@ -15,10 +12,10 @@ Meteor.subscribe('comments', function() {
 
 Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
-	if(proxinoKey=getSetting('proxinoKey')){
+	if((proxinoKey=getSetting('proxinoKey'))){
 		Proxino.key = proxinoKey;
 		Proxino.track_errors();
-	}	
+	}
 });
 
 Session.set('state', 'list');

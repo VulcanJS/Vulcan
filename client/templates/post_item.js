@@ -108,10 +108,6 @@ Template.post_item.can_edit = function(){
   return false;
 };
 
-Template.post_item.is_admin = function(){
-    return currentUserIsAdmin();
-  };
-
 Template.post_item.author = function(){
   if(this.user_id && Meteor.users.findOne(this.user_id)){
     return Meteor.users.findOne(this.user_id).username;

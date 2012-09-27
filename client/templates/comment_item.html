@@ -21,7 +21,7 @@
           {{#if can_edit}}
             | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
           {{/if}}
-          {{#if is_admin}}          
+          {{#if currentUser.isAdmin}}
             | <a class="queue-comment" href="#">queue</a>
             | <span>{{full_date}}</span>
           {{/if}}

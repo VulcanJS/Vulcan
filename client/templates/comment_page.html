@@ -5,11 +5,17 @@
         {{> post_item}}
       {{/with}}
     {{/if}}
+
+    {{#if comment}}
     {{#with comment}}
       <ul class="selected-comment">
        {{> comment_item}}
       </ul>
     {{/with}}
-    {{> comment_form}}
+    {{/if}}
+
+    {{#if currentUser}}
+      {{> comment_form}}
+    {{/if}}
   </div>
 </template>

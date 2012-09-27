@@ -40,7 +40,7 @@
           {{#if can_edit}}
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}
-          {{#if is_admin}}
+          {{#if currentUser.isAdmin}}
           | votes: {{votes}}, baseScore: {{baseScore}}, score: {{short_score}}
           {{/if}}
         </p>
