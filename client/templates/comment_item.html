@@ -1,6 +1,6 @@
 <template name="comment_item">
   <li class="comment comment-displayed" id="{{_id}}">
-<!--     <div class="comment-notification"><a href="#" class="open-comment-link">{{author}}</a></div>
+<!--     <div class="comment-notification"><a href="#" class="open-comment-link">{{author.username}}</a></div>
  -->    <div class="comment-body">
       <div class="comment-content">
         <div class="comment-actions {{#if upvoted}}upvoted{{/if}} {{#if downvoted}}downvoted{{/if}}">
@@ -14,7 +14,7 @@
           </a>
         </div>
         <div class="comment-meta">
-          <a class="comment-username" href="/users/{{user_id}}">{{author}}</a>
+          <a class="comment-username" href="/users/{{user_id}}">{{author.username}}</a>
           <span class="comment-time">{{ago}},</span>
           <span class="points">{{votes}} <span class="unit">points </span>
           <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">link</a>

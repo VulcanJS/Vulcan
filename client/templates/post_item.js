@@ -108,7 +108,7 @@ Template.post_item.can_edit = function(){
   return false;
 };
 
-Template.post_item.author = function(){
+Template.post_item.authorName = function(){
   if(this.user_id && Meteor.users.findOne(this.user_id)){
     return Meteor.users.findOne(this.user_id).username;
   }else{

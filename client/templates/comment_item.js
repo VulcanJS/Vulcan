@@ -77,9 +77,7 @@
     }
 
     ,author: function(){
-      if(Meteor.users.findOne(this.user_id)){
-        return Meteor.users.findOne(this.user_id).username;
-      }
+      return Meteor.users.findOne(this.user_id);
     }
 
     ,can_edit: function(){
@@ -100,10 +98,7 @@
     }
 
     ,repress_recursion: function(){
-      if(window.repress_recursion){
-        return true;
-      }
-      return false;
+      return window.repress_recursion;
     }
 
     ,ago: function(){
@@ -111,15 +106,11 @@
     }
 
     ,upvoted: function(){
-      var user = Meteor.user();
-      if(!user) return false;
-      return _.include(this.upvoters, user._id);
+      return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);
     }
 
     ,downvoted: function(){
-      var user = Meteor.user();
-      if(!user) return false;
-      return _.include(this.downvoters, user._id);
+      return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
     }
 
   });
