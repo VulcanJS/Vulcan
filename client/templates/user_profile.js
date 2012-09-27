@@ -16,5 +16,5 @@ Template.user_profile.avatar_url = function(){
 Template.user_profile.created_at_formatted = Template.user_item.created_at_formatted;
 
 Template.user_profile.is_current_user = function(){
-	return (window.selected_user_id === current_user_id);
+	return Meteor.user() && (window.selected_user_id === Meteor.user()._id);
 }
