@@ -1,7 +1,7 @@
 // Users
 
-Meteor.publish('users', function(current_user_id) {
-  if(current_user_id && isAdmin(current_user_id)){
+Meteor.publish('users', function() {
+  if (this.userId() && isAdmin(this.userId())) {
     return Meteor.users.find();
   }else{
     return Meteor.users.find({}, {fields: {emails: false}});
