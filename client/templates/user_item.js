@@ -3,7 +3,7 @@ Template.user_item.rendered = function(){
 
 Template.user_item.avatar_url = function(){
 	return Gravatar.getGravatar(this, {
-		d: 'http://telescope.herokuapp.com/img/default_avatar.png',
+		d: 'http://telesc.pe/img/default_avatar.png',
 		s: 30
 	});
 };
