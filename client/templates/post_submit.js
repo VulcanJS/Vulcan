@@ -28,7 +28,7 @@ Template.post_submit.events = {
 
     Meteor.call('upvotePost', postId);
 
-    Session.set('selected_post', post);
+    Session.set('selected_post_id', postId);
 
     trackEvent("new post", {'post ID': postId});
 
