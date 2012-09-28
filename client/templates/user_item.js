@@ -34,7 +34,3 @@ Template.user_item.comments_count = function(){
 	// Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
 	return Comments.find({'user_id':this._id}).count();
 }
-
-Template.user_item.is_admin = function(){
-	return isAdmin(this);
-}

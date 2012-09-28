@@ -16,30 +16,30 @@
     $queuedAncestors=$comment.parents(".comment-queued");
     if($queuedAncestors.exists()){
       // console.log("----------- case 1: Queued Ancestor -----------");
-      // 1. 
+      // 1.
       // our comment has one or more queued ancestor, so we look for the root-most
       // ancestor's queue container
       $container=$queuedAncestors.last().data("queue");
     }else if($prev.hasClass("queue-container")){
       // console.log("----------- case 2: Queued Brother -----------");
-      // 2. 
+      // 2.
       // the comment just above is queued, so we use the same queue container as him
       $container=$prev.data("queue");
     }else if($prev.find(".comment").last().hasClass("comment-queued")){
       // console.log("----------- case 3: Queued Cousin -----------");
       // 3.
-      // there are no queued comments going up on the same level, 
+      // there are no queued comments going up on the same level,
       // but the bottom-most child of the comment directly above is queued
       $container=$prev.find(".comment").last().data("queue");
     }else if($down.hasClass("queue-container")){
       // console.log("----------- case 4: Queued Sister -----------");
-      // 3. 
+      // 3.
       // the comment just below is queued, so we use the same queue container as him
       $container=$next.data("queue");
     }else if($up.hasClass('comment-displayed') || !$up.exists()){
       // console.log("----------- case 5: No Queue -----------");
-      // 4. 
-      // we've found containers neither above or below, but 
+      // 4.
+      // we've found containers neither above or below, but
       // A) we've hit a displayed comment or
       // B) we've haven't found any comments (i.e. we're at the beginning of the list)
       // so we put our queue container just before the comment
@@ -77,18 +77,14 @@
     }
 
     ,author: function(){
-      if(Meteor.users.findOne(this.user_id)){
-        return Meteor.users.findOne(this.user_id).username;
-      }
+      return Meteor.users.findOne(this.user_id);
     }
 
     ,can_edit: function(){
-      if(this.user_id){
-        if(Meteor.user() && (isAdmin(Meteor.user()) || Meteor.user()._id==this.user_id)){
-          return true;
-        }
-      }
-      return false;
+      if(this.user_id && Meteor.userId())
+        return Meteor.user().isAdmin || (Meteor.userId() === this.user_id);
+      else
+        return false;
     }
 
     ,body_formatted: function(){
@@ -99,15 +95,8 @@
       }
     }
 
-    ,is_admin: function(){
-      return currentUserIsAdmin();
-    }
-
     ,repress_recursion: function(){
-      if(window.repress_recursion){
-        return true;
-      }
-      return false;
+      return window.repress_recursion;
     }
 
     ,ago: function(){
@@ -115,15 +104,11 @@
     }
 
     ,upvoted: function(){
-      var user = Meteor.user();
-      if(!user) return false;
-      return _.include(this.upvoters, user._id);
+      return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);
     }
 
     ,downvoted: function(){
-      var user = Meteor.user();
-      if(!user) return false;
-      return _.include(this.downvoters, user._id);
+      return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
     }
 
   });
@@ -182,7 +167,7 @@ Template.comment_item.rendered=function(){
       event.preventDefault();
       var href=event.target.href.replace(/^(?:\/\/|[^\/]+)*\//, "");
 
-      Session.set('selected_comment', this);
+      Session.set('selected_comment_id', this._id);
       // Session.set('state', 'reply');
       Router.navigate(href, {trigger: true});
     },
@@ -222,7 +207,7 @@ Template.comment_item.rendered=function(){
     // 'click .queue-container, click .queue-container a': function(e, instance){
     //   e.preventDefault();
     //   var $this=$(e.target);
-      
+
     //   var queueContainer= $this.is("a") ? $this.closest('.queue-container') : $this;
     //   console.log($this, queueContainer);
     //   queueContainer.find("a").each(function(){
@@ -233,6 +218,6 @@ Template.comment_item.rendered=function(){
     // }
   };
 
-  
+
 
 })();
