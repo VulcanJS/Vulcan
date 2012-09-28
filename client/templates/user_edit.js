@@ -36,7 +36,7 @@ Template.user_edit.events = {
 
 Template.user_edit.user = function(){
 	var current_user=Meteor.user();
-	if(window.selected_user_id && !current_user.loading && isAdmin(current_user)){
+	if(window.selected_user_id && !current_user.loading && current_user.isAdmin){
 	  return Meteor.users.findOne(window.selected_user_id);
 	}else{
 		return current_user;

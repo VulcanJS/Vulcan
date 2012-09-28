@@ -3,7 +3,9 @@
     {{#with post}}
      {{> post_item}}
     {{/with}}
-    {{> comment_form}}
+    {{#if currentUser}}
+      {{> comment_form}}
+    {{/if}}
     {{> comment_list}}
   </div>
 </template>
