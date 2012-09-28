@@ -3,7 +3,7 @@
     <ul>
       <li><a class="top" href="/top">Top</a></li>
       <li><a class="new" href="/new">New</a></li>
-      {{#if is_admin}}
+      {{#if currentUser.isAdmin}}
         <li><a class="users" href="/users">Users</a></li>
         <li><a class="settings" href="/settings">Settings</a></li>
       {{/if}}
@@ -21,7 +21,7 @@
     <ul class="nav site-nav desktop">
       <li><a class="top" href="/top">Top</a></li>
       <li><a class="new" href="/new">New</a></li>
-      {{#if is_admin}}
+      {{#if currentUser.isAdmin}}
         <li><a class="users" href="/users">Users</a></li>
         <li><a class="settings" href="/settings">Settings</a></li>
       {{/if}}
@@ -30,13 +30,13 @@
       <li><a href="jobs">Jobs</a></li> -->
     </ul>
     <ul class="nav user-nav desktop">
-<!--       {{#if logged_in}}
+<!--       {{#if currentUser}}
       <li><a id="logout" href="logout">Log Out</a></li>
       {{else}}
       <li><a id="signup" href="signup">Sign Up</a></li>
       <li><a id="signin" href="signin">Sign In</a></li>
       {{/if}} -->
-      {{#if logged_in}}
+      {{#if currentUser}}
         <li><a id="submit" class="submit button" href="/submit">Post</a></li>
       {{/if}}
     </ul>
