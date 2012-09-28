@@ -4,3 +4,6 @@ npm-debug.log
 .DS_Store
 *-ck.js
 providers_secret.js
+*.sublime-project
+
+*.sublime-workspace
