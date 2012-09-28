@@ -1,9 +1,9 @@
 <template name="comment_page">
   <div class="post grid comment-page">
-    {{#if postLoaded}}
-      {{#with post}}
-        {{> post_item}}
-      {{/with}}
+    {{#if post}}
+    {{#with post}}
+      {{> post_item}}
+    {{/with}}
     {{/if}}
 
     {{#if comment}}
