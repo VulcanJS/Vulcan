@@ -100,12 +100,10 @@ Template.post_item.current_domain = function(){
 }
 
 Template.post_item.can_edit = function(){
-  if(this.user_id){
-    if(Meteor.user() && (isAdmin(Meteor.user()) ||  Meteor.user()._id==this.user_id)){
-      return true;
-    }
-  }
-  return false;
+  if(this.user_id && Meteor.userId())
+    return Meteor.user().isAdmin || (Meteor.userId() === this.user_id);
+  else
+    return false;
 };
 
 Template.post_item.authorName = function(){

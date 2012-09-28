@@ -1,4 +1,8 @@
 // Users
+isAdmin=function(userId){
+	var user = Meteor.users.findOne(userId);
+	return user && user.isAdmin;
+}
 
 Meteor.publish('users', function() {
   if (this.userId() && isAdmin(this.userId())) {
@@ -92,7 +96,7 @@ Meteor.startup(function(){
         if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
-        return false; 
+        return false;
       }
   });
 });
