@@ -22,13 +22,12 @@ Template.post_submit.events = {
       , submitted: new Date().getTime()
       , votes: 0
       , comments: 0
+      , baseScore: 0
       , score: 0
     });
     var post = Posts.findOne(postId);
 
     Meteor.call('upvotePost', postId);
-
-    Session.set('selected_post', post);
 
     trackEvent("new post", {'post ID': postId});
 

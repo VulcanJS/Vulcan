@@ -129,7 +129,7 @@
   });
 
 Template.comment_item.created=function(){
-  this.firstRender=true;
+  // this.firstRender=true;
 }
 
 Template.comment_item.rendered=function(){
@@ -159,10 +159,12 @@ Template.comment_item.rendered=function(){
         var $container=findQueueContainer($comment);
         var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip" style="background-image:url('+imgURL+')"><span class="tooltip"><span>'+author+'</span></span></a></li>';
         if(this.firstRender){
+          // TODO: fix re-rendering problem with timer
           console.log("first render");
           $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
           this.firstRender=false;
         }else{
+          console.log("not first render");
           $(comment_link).appendTo($container.find("ul"));
         }
         $comment.removeClass("comment-displayed").addClass("comment-queued");
