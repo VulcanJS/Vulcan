@@ -8,7 +8,8 @@
     "basePackages": {
       "router": {},
       "groups": {},
-      "cron": {}
+      "cron": {},
+      "moment": {}
     },
     "packages": {
       "router": {
@@ -25,6 +26,11 @@
         "git": "https://github.com/tmeasday/meteor-cron.git",
         "tag": "v0.0.1",
         "commit": "8cecc021c1fb681bfa1de2aa8242448a4516049a"
+      },
+      "moment": {
+        "git": "https://github.com/possibilities/meteor-moment.git",
+        "tag": "v1.7.0",
+        "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
       },
       "deps-extensions": {
         "git": "https://github.com/tmeasday/meteor-deps-extensions.git",
