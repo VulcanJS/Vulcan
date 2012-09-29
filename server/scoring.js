@@ -11,9 +11,6 @@ var updateScore = function (collection, id) {
   // FIXME: timezones <-- set by server or is getTime() ok?
   var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
 
-  // Bindle algorithm
-  // object.score = baseScore * Math.pow(ageInHours + 2, -0.1375);
-
   // HN algorithm (same as Bindle)
   var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
 
