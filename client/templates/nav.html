@@ -15,13 +15,7 @@
     </ul>
   </div>
   <header class="header grid">
-    {{#if logo_url}}
-       <h1 class="logo image" style="height:{{logo_height}}px; width:{{logo_width}}px; top:{{logo_top}}px; margin-left:{{logo_offset}}px;">
-        <a href="/" style="background-image:url({{logo_url}}); background-size:{{logo_width}}px {{logo_height}}px;">{{site_title}}</a>
-      </h1>
-    {{else}}
-      <h1 class="logo"><a href="/">{{site_title}}</a></h1>
-    {{/if}}
+
     <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>Menu</span></a>
     <!-- <a href="/submit" class="mobile mobile-button submit"><i class="icon-plus"></i><span>Submit</span></a> -->
     <ul class="nav site-nav desktop">
@@ -35,6 +29,13 @@
       <li><a href="show">Show</a></li>
       <li><a href="jobs">Jobs</a></li> -->
     </ul>
+        {{#if logo_url}}
+       <h1 class="logo image" style="height:{{logo_height}}px; width:{{logo_width}}px; top:{{logo_top}}px; margin-left:{{logo_offset}}px;">
+        <a href="/" style="background-image:url({{logo_url}}); background-size:{{logo_width}}px {{logo_height}}px;">{{site_title}}</a>
+      </h1>
+    {{else}}
+      <h1 class="logo"><a href="/">{{site_title}}</a></h1>
+    {{/if}}
     <ul class="nav user-nav desktop">
 <!--       {{#if currentUser}}
       <li><a id="logout" href="logout">Log Out</a></li>

@@ -34,14 +34,18 @@
 	.site-nav{
 		float:left;
 		margin-left:20px;
+		position:relative;
+		z-index:20;
 	}
 	.logo{
-		text-align:center;
 		position:absolute;
+		display:inline-block;
+		text-align:center;
 		top:10px;
 		width:100%;
 		color:white;
 		font-size:30px;
+		z-index:10;
 		a, a:visited{
 			color:white;
 		}
@@ -62,6 +66,8 @@
 	.user-nav{
 		float:right;
 		margin-right:10px;
+		position:relative;
+		z-index:20;
 		.submit{
 			// background:$red;
 			// display:block;
@@ -80,6 +86,8 @@
 // 	}
 // }
 .auth-buttons{
+	position:relative;
+	z-index:20;
 	float:right;
 	margin:20px 10px 0 0;
 	#login-buttons{
