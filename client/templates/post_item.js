@@ -100,8 +100,8 @@ Template.post_item.current_domain = function(){
 }
 
 Template.post_item.can_edit = function(){
-  if(this.user_id && Meteor.userId())
-    return Meteor.user().isAdmin || (Meteor.userId() === this.user_id);
+  if(Meteor.user() && (Meteor.user().isAdmin || Meteor.userId() === this.user_id)
+    return true;
   else
     return false;
 };

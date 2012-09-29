@@ -23,8 +23,8 @@ function prepopulateDatabase(){
   });
 }
 
-Meteor.startup(function () {
-  if(Posts.find().count() === 0){
-    prepopulateDatabase();
-  }
-});
+// Meteor.startup(function () {
+//   if(Posts.find().count() === 0){
+//     prepopulateDatabase();
+//   }
+// });
