@@ -10,7 +10,7 @@
         </div>
       </li>
       <li class="post-discuss">
-        <a class="discuss-link go-to-comments" href="posts/{{_id}}">
+        <a class="discuss-link go-to-comments" href="/posts/{{_id}}">
           <i class="icon-comment"></i>
           <span class="count">{{comments}}</span>
           <span class="action">Discuss</span>
@@ -36,7 +36,7 @@
           {{/if}}
           {{#if url}}<span class="post-domain">{{domain}}</span>{{/if}}
         </h3>
-        <p class="post-meta"><span class="points">{{votes}} <span class="unit">points </span></span>by  <a class="post-author" href="/users/{{user_id}}">{{authorName}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a class="go-to-comments" href="posts/{{_id}}">{{comments}} comments</a></span>
+        <p class="post-meta"><span class="points">{{votes}} <span class="unit">points </span></span>by  <a class="post-author" href="/users/{{user_id}}">{{authorName}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a class="go-to-comments" href="/posts/{{_id}}">{{comments}} comments</a></span>
           {{#if can_edit}}
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}

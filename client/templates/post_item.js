@@ -1,5 +1,6 @@
 Template.post_item.events = {
 
+
   'click .upvote-link': function(e){
     e.preventDefault();
       if(!Meteor.user()){
