@@ -9,5 +9,4 @@ accounts-ui
 # accounts-twitter
 router
 groups
-cron
 moment
