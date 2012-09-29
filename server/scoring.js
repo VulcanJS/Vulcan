@@ -22,5 +22,5 @@ Meteor.startup(function () {
   Meteor.setInterval(function () {
     Posts.find().forEach(function (post) { updateScore(Posts, post._id); });
     Comments.find().forEach(function (comment) { updateScore(Comments, comment._id); });
-  }, 10 * 1000);
+  }, 3 * 1000);
 });

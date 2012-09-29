@@ -2,10 +2,12 @@
   <div class="grid submit">
     {{#with comment}}
     <form class="grid-block form-horizontal">
+      {{#constant}}
       <div class="control-group">
         <label class="control-label">Comment</label>
         <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
       </div>
+      {{/constant}}
       <div class="form-actions">
         <a class="delete-link" href="/comments/deleted">Delete Comment</a>
         <input type="submit" value="Submit" />
