@@ -9,6 +9,9 @@ Template.settings.events = {
     var tlkioChannel = $('#tlkio_channel').val();
     var mixpanelId= $('#mixpanel_id').val();
     var proxinoKey=$('#proxino_key').val();
+    var logoUrl=$('#logo_url').val();
+    var logoHeight=$('#logo_height').val();
+    var logoWidth=$('#logo_width').val();
     var prevSetting=Settings.find().fetch()[0];
     
     if(prevSetting){
@@ -20,7 +23,10 @@ Template.settings.events = {
             analyticsCode: analyticsCode,
             tlkioChannel: tlkioChannel,
             mixpanelId: mixpanelId,
-            proxinoKey: proxinoKey
+            proxinoKey: proxinoKey,
+            logoUrl: logoUrl,
+            logoHeight: logoHeight,
+            logoWidth: logoWidth
           }
       }, function(){
         throwError("Settings have been updated");
@@ -33,7 +39,10 @@ Template.settings.events = {
           analyticsCode: analyticsCode,
           tlkioChannel: tlkioChannel,
           mixpanelId: mixpanelId,
-          proxinoKey: proxinoKey
+          proxinoKey: proxinoKey,
+          logoUrl: logoUrl,
+          logoHeight: logoHeight,
+          logoWidth: logoWidth
     }, function(){
         throwError("Settings have been created");
       });   

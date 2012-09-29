@@ -108,30 +108,29 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /*================ MIXINS =================*/
 /* line 1, ../sass/partials/_main.scss */
 body {
-  background: #e9f3f7;
-  background: #edf5f8;
+  background: #e0f1f7;
   min-height: 1500px; }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  /* line 8, ../sass/partials/_main.scss */
+  /* line 6, ../sass/partials/_main.scss */
   body {
     background-size: 10px 10px; } }
-/* line 13, ../sass/partials/_main.scss */
+/* line 11, ../sass/partials/_main.scss */
 #spinner {
   height: 100%;
   width: 100%;
   position: fixed;
   z-index: 1000; }
 
-/* line 19, ../sass/partials/_main.scss */
+/* line 17, ../sass/partials/_main.scss */
 .debug {
   display: none; }
 
-/* line 22, ../sass/partials/_main.scss */
+/* line 20, ../sass/partials/_main.scss */
 .hidden {
   display: none; }
 
-/* line 25, ../sass/partials/_main.scss */
+/* line 23, ../sass/partials/_main.scss */
 .overlay {
   position: fixed;
   top: 0;
@@ -140,11 +139,11 @@ body {
   width: 100%;
   z-index: 50; }
 
-/* line 33, ../sass/partials/_main.scss */
+/* line 31, ../sass/partials/_main.scss */
 .footer {
   text-align: center; }
 
-/* line 36, ../sass/partials/_main.scss */
+/* line 34, ../sass/partials/_main.scss */
 #tlkio {
   position: fixed;
   top: 0px;
@@ -156,13 +155,13 @@ body {
   transition: ease-out right 300ms 0ms;
   z-index: 1000;
   background: #333; }
-  /* line 43, ../sass/partials/_main.scss */
+  /* line 41, ../sass/partials/_main.scss */
   #tlkio.open {
     right: 0px;
     -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 47, ../sass/partials/_main.scss */
+  /* line 45, ../sass/partials/_main.scss */
   #tlkio .open-chat {
     display: block;
     background: #7ac0e4;
@@ -481,53 +480,57 @@ body.pageslide-open {
     margin-left: 20px; }
   /* line 38, ../sass/modules/_header.scss */
   .header .logo {
+    text-align: center;
     position: absolute;
-    top: 17px;
-    left: 50%;
-    margin-left: -75px;
-    width: 150px;
-    height: 31px; }
-    /* line 49, ../sass/modules/_header.scss */
-    .header .logo a {
-      display: block;
-      height: 100%;
-      width: 100%;
-      background-position: center center;
-      background-image: url("/img/telescope-logo2.png");
-      background-size: 156px 39px;
-      background-size: 150px 31px;
-      font: 0/0 a;
-      text-shadow: none;
-      color: transparent; }
-  /* line 67, ../sass/modules/_header.scss */
+    top: 10px;
+    width: 100%;
+    color: white;
+    font-size: 30px; }
+    /* line 45, ../sass/modules/_header.scss */
+    .header .logo a, .header .logo a:visited {
+      color: white; }
+    /* line 48, ../sass/modules/_header.scss */
+    .header .logo.image {
+      position: absolute;
+      left: 50%; }
+      /* line 51, ../sass/modules/_header.scss */
+      .header .logo.image a {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background: no-repeat center center;
+        font: 0/0 a;
+        text-shadow: none;
+        color: transparent; }
+  /* line 62, ../sass/modules/_header.scss */
   .header .user-nav {
     float: right;
     margin-right: 10px; }
 
-/* line 87, ../sass/modules/_header.scss */
+/* line 82, ../sass/modules/_header.scss */
 .auth-buttons {
   float: right;
   margin: 20px 10px 0 0; }
-  /* line 90, ../sass/modules/_header.scss */
+  /* line 85, ../sass/modules/_header.scss */
   .auth-buttons #login-buttons {
     position: relative;
     line-height: 26px; }
-    /* line 96, ../sass/modules/_header.scss */
+    /* line 91, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a {
       text-decoration: none;
       color: #4a4444; }
-    /* line 100, ../sass/modules/_header.scss */
+    /* line 95, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a.login-link-text {
       color: #fff;
       font-weight: normal;
       display: inline-block;
       height: 26px;
       font-size: 0; }
-      /* line 106, ../sass/modules/_header.scss */
+      /* line 101, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons a.login-link-text:after {
         content: "Sign Up/Sign In";
         font-size: 16px; }
-    /* line 111, ../sass/modules/_header.scss */
+    /* line 106, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -535,18 +538,18 @@ body.pageslide-open {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 120, ../sass/modules/_header.scss */
+    /* line 115, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons .login-header {
       font-family: inherit;
       height: 26px;
       margin-right: 10px;
       cursor: pointer;
       color: white; }
-      /* line 126, ../sass/modules/_header.scss */
+      /* line 121, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons .login-header:before {
         color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 131, ../sass/modules/_header.scss */
+    /* line 126, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       background: none;
