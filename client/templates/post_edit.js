@@ -1,25 +1,37 @@
-(function(){
-  var editor;
+// Template.post_edit.preserve(['#title', '#url', '#editor']);
+
+Template.post_edit.helpers({
+  post: function(){
+    return Posts.findOne(Session.get('selected_post_id'));
+  }
+});
+
+Template.post_edit.rendered = function(){
+  var post= Posts.findOne(Session.get('selected_post_id'));
+  if(post && !this.editor){
+    this.editor= new EpicEditor(EpicEditorOptions).load();  
+    this.editor.importFile('editor',post.body);
+  }
+}
 
 Template.post_edit.events = {
-  'click input[type=submit]': function(e){
+  'click input[type=submit]': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
 
     var selected_post_id=Session.get("selected_post_id");
     var title= $('#title').val();
     var url = $('#url').val();
-    var body = editor.exportFile();
-    console.log("body:   ", body)
+    var body = instance.editor.exportFile();
 
     Posts.update(selected_post_id,
- 		{
-	   		$set: {
-		        headline: title
-		      , url: url
-		      , body: body
-	    	}
-    	}
+    {
+        $set: {
+            headline: title
+          , url: url
+          , body: body
+        }
+      }
     );
     Router.navigate("posts/"+selected_post_id, {trigger:true});
   }
@@ -33,18 +45,3 @@ Template.post_edit.events = {
     }
   }
 };
-
-Template.post_edit.post = function(){
-  var post = Posts.findOne(Session.get('selected_post_id'));
-  return post;
-};
-
-Template.post_edit.rendered = function(){
-  var post= Posts.findOne(Session.get('selected_post_id'));
-  if(post){
-    editor= new EpicEditor(EpicEditorOptions).load();  
-    editor.importFile('editor',post.body);
-  }
-}
-
-})();

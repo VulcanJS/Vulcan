@@ -1,8 +1,5 @@
-(function(){
-  var editor;
-
 Template.post_submit.events = {
-  'click input[type=submit]': function(e){
+  'click input[type=submit]': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
       throwError('You must be logged in.');
@@ -11,12 +8,12 @@ Template.post_submit.events = {
 
     var title= $('#title').val();
     var url = $('#url').val();
-    var body = $('#body').val();
+    var body = instance.editor.exportFile();
 
     var postId = Posts.insert({
         headline: title
       , url: url
-      , body: editor.exportFile()
+      , body: body
       , user_id: Meteor.user()._id
       , author: Meteor.user().username
       , submitted: new Date().getTime()
@@ -55,6 +52,5 @@ Template.post_submit.events = {
 };
 
 Template.post_submit.rendered = function(){
-  editor= new EpicEditor(EpicEditorOptions).load();
+  this.editor= new EpicEditor(EpicEditorOptions).load();
 }
-})();
