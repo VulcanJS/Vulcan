@@ -11,7 +11,7 @@ Template.footer.helpers({
 });
 
 Template.footer.rendered = function(){
-	if((mixpanel_id=getSetting("mixpanel_id")) && window.mixpanel.length==0){
+	if((mixpanel_id=getSetting("mixpanelId")) && window.mixpanel.length==0){
 		mixpanel.init(mixpanel_id);
 		if(Meteor.user()){
 			var currentUserEmail=getCurrentUserEmail();

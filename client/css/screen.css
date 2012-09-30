@@ -162,7 +162,7 @@ body {
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
   /* line 45, ../sass/partials/_main.scss */
-  #tlkio .open-chat {
+  #tlkio .open-chat, #tlkio .report-bug {
     display: block;
     background: #7ac0e4;
     -webkit-border-radius: 3px 3px 0px 0px;
@@ -171,7 +171,7 @@ body {
     -o-border-radius: 3px 3px 0px 0px;
     border-radius: 3px 3px 0px 0px;
     position: absolute;
-    top: 50%;
+    top: 300px;
     right: 264px;
     text-transform: uppercase;
     color: white;
@@ -184,7 +184,12 @@ body {
     -webkit-box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
-    z-index: 1001; }
+    z-index: 1001;
+    white-space: nowrap; }
+  /* line 60, ../sass/partials/_main.scss */
+  #tlkio .report-bug {
+    top: 400px;
+    right: 236px; }
 
 /* line 1, ../sass/partials/_typography.scss */
 body, textarea, input, button, input[type="submit"], input[type="button"] {
