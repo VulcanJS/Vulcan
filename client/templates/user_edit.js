@@ -1,16 +1,17 @@
 Template.user_edit.events = {
   'submit form': function(e){
     e.preventDefault();
-    $target=$(e.target);
     if(!Meteor.user()) throwError('You must be logged in.');
-    
+    var $target=$(e.target);
     var user=window.selected_user_id? Meteor.users.findOne(window.selected_user_id) : Meteor.user();
     var update = {
-      "profile.name": $target.find('[name=email]').val()
+      "profile.name": $target.find('[name=name]').val(),
+      "profile.bio": $target.find('[name=bio]').val(),
+      "profile.email": $target.find('[name=email]').val()
     };
     
     // TODO: enable change email
-    var email = $(e.target).find('[name=email]').val();
+    var email = $target.find('[name=email]').val();
     
     var old_password = $target.find('[name=old_password]').val();
     var new_password = $target.find('[name=new_password]').val();
