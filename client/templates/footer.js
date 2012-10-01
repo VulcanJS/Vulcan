@@ -15,6 +15,7 @@ Template.footer.rendered = function(){
 		mixpanel.init(mixpanelId);
 		if(Meteor.user()){
 			var currentUserEmail=getCurrentUserEmail();
+			console.log(currentUserEmail);
 			mixpanel.people.identify(currentUserEmail);
 			mixpanel.people.set({
 			    'username': Meteor.user().username,
