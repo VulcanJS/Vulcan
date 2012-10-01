@@ -12,6 +12,7 @@ Template.settings.events = {
     var logoUrl=$('#logo_url').val();
     var logoHeight=$('#logo_height').val();
     var logoWidth=$('#logo_width').val();
+    var notes=$('#notes').val();
     var prevSetting=Settings.find().fetch()[0];
     
     if(prevSetting){
@@ -26,7 +27,8 @@ Template.settings.events = {
             proxinoKey: proxinoKey,
             logoUrl: logoUrl,
             logoHeight: logoHeight,
-            logoWidth: logoWidth
+            logoWidth: logoWidth,
+            notes: notes
           }
       }, function(){
         throwError("Settings have been updated");
@@ -42,7 +44,8 @@ Template.settings.events = {
           proxinoKey: proxinoKey,
           logoUrl: logoUrl,
           logoHeight: logoHeight,
-          logoWidth: logoWidth
+          logoWidth: logoWidth,
+          notes:notes
     }, function(){
         throwError("Settings have been created");
       });   
