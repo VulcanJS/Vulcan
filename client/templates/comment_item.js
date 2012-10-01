@@ -71,7 +71,7 @@
     }
 
     ,child_comments: function(){
-      var post_id = Session.get('selected_post_id');
+      var post_id = Session.get('selectedPostId');
       var comments = Comments.find({ post: post_id, parent: this._id });
       return comments;
     }
@@ -159,20 +159,7 @@ Template.comment_item.rendered=function(){
     }
   }
 
-
   Template.comment_item.events = {
-    'click .goto-comment': function(event){
-      event.preventDefault();
-      var href=event.target.href.replace(/^(?:\/\/|[^\/]+)*\//, "");
-
-      Session.set('selected_comment_id', this._id);
-      // Session.set('state', 'reply');
-      Router.navigate(href, {trigger: true});
-    },
-    'click .open-comment-link': function(e){
-      e.preventDefault();
-      $(event.target).closest(".comment").removeClass("queued");
-    },
     'click .queue-comment': function(e){
       e.preventDefault();
       var current_comment_id=$(event.target).closest(".comment").attr("id");
@@ -215,7 +202,5 @@ Template.comment_item.rendered=function(){
     //   queueContainer.hide("slow").remove();
     // }
   };
-
-
 
 })();

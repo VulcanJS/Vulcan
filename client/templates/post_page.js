@@ -1,8 +1,5 @@
-(function() {
-
-
 Template.post_page.post = function(){
-  var post = Posts.findOne(Session.get('selected_post_id'));
+  var post = Posts.findOne(Session.get('selectedPostId'));
   return post;
 };
 
@@ -12,10 +9,4 @@ Template.post_page.body_formatted = function(){
   return html_body.autoLink();
 }
 
-Template.post_page.rendered = function(){
-  // t("post_page");
-}
-
 window.newCommentTimestamp=new Date();
-
-})();

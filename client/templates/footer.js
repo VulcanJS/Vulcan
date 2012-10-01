@@ -11,15 +11,16 @@ Template.footer.helpers({
 });
 
 Template.footer.rendered = function(){
-	if((mixpanel_id=getSetting("mixpanelId")) && window.mixpanel.length==0){
-		mixpanel.init(mixpanel_id);
+	if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length==0){
+		mixpanel.init(mixpanelId);
 		if(Meteor.user()){
 			var currentUserEmail=getCurrentUserEmail();
 			mixpanel.people.identify(currentUserEmail);
 			mixpanel.people.set({
 			    'username': Meteor.user().username,
-			    'createdAt': Meteor.user().createdAt,
-			    'email': currentUserEmail
+			    '$last_login': new Date(), 
+			    '$created': Meteor.user().createdAt,
+			    '$email': currentUserEmail
 			});
 			mixpanel.register({
 			    'username': Meteor.user().username,

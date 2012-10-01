@@ -48,6 +48,10 @@ form, .accounts-dialog{
 		height:30px;
 		line-height:20px;
 	}
+	input[disabled='disabled']{
+		color:$light-text;
+		background:$lightest-grey;
+	}
 	textarea{
 		min-height:100px;
 		line-height:1.4;

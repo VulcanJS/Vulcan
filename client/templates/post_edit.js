@@ -2,12 +2,12 @@
 
 Template.post_edit.helpers({
   post: function(){
-    return Posts.findOne(Session.get('selected_post_id'));
+    return Posts.findOne(Session.get('selectedPostId'));
   }
 });
 
 Template.post_edit.rendered = function(){
-  var post= Posts.findOne(Session.get('selected_post_id'));
+  var post= Posts.findOne(Session.get('selectedPostId'));
   if(post && !this.editor){
     this.editor= new EpicEditor(EpicEditorOptions).load();  
     this.editor.importFile('editor',post.body);
@@ -19,12 +19,12 @@ Template.post_edit.events = {
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
 
-    var selected_post_id=Session.get("selected_post_id");
+    var selectedPostId=Session.get('selectedPostId');
     var title= $('#title').val();
     var url = $('#url').val();
     var body = instance.editor.exportFile();
 
-    Posts.update(selected_post_id,
+    Posts.update(selectedPostId,
     {
         $set: {
             headline: title
@@ -33,14 +33,17 @@ Template.post_edit.events = {
         }
       }
     );
-    Router.navigate("posts/"+selected_post_id, {trigger:true});
+
+    trackEvent("edit post", {'postId': selectedPostId});
+
+    Router.navigate("posts/"+selectedPostId, {trigger:true});
   }
 
   , 'click .delete-link': function(e){
     e.preventDefault();
     if(confirm("Are you sure?")){
-      var selected_post_id=Session.get("selected_post_id");
-      Posts.remove(selected_post_id);
+      var selectedPostId=Session.get('selectedPostId');
+      Posts.remove(selectedPostId);
       Router.navigate("posts/deleted", {trigger:true});
     }
   }

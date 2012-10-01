@@ -1124,14 +1124,18 @@ form input[type="text"], form input[type="password"], form .login-form input, .a
   height: 30px;
   line-height: 20px; }
 /* line 51, ../sass/modules/_forms.scss */
+form input[disabled='disabled'], .accounts-dialog input[disabled='disabled'] {
+  color: #b3c1c6;
+  background: #e7eff2; }
+/* line 55, ../sass/modules/_forms.scss */
 form textarea, .accounts-dialog textarea {
   min-height: 100px;
   line-height: 1.4; }
-/* line 55, ../sass/modules/_forms.scss */
+/* line 59, ../sass/modules/_forms.scss */
 form input[type="submit"], form button, form .button, form .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons form #login-buttons-password, form .btn, .accounts-dialog input[type="submit"], .accounts-dialog button, .accounts-dialog .button, .accounts-dialog .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .accounts-dialog #login-buttons-password, .accounts-dialog .btn {
   float: right; }
 
-/* line 59, ../sass/modules/_forms.scss */
+/* line 63, ../sass/modules/_forms.scss */
 input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;

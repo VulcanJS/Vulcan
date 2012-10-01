@@ -1,11 +1,11 @@
 Template.comment_edit.helpers({
 	comment:function(){
-		return Comments.findOne(Session.get('selected_comment_id'));
+		return Comments.findOne(Session.get('selectedCommentId'));
 	}
 });
 
 Template.comment_edit.rendered = function(){
-	var comment= Comments.findOne(Session.get('selected_comment_id'));
+	var comment= Comments.findOne(Session.get('selectedCommentId'));
 	if(comment && Meteor.user() && !this.editor){
 		this.editor = new EpicEditor(EpicEditorOptions).load();
 		this.editor.importFile('editor',comment.body);
@@ -17,25 +17,28 @@ Template.comment_edit.events = {
 		e.preventDefault();
 		if(!Meteor.user()) throw 'You must be logged in.';
 
-		var selected_comment_id=Session.get("selected_comment_id");
-		var selected_post_id=Comments.findOne(selected_comment_id).post;
+		var selectedCommentId=Session.get('selectedCommentId');
+		var selectedPostId=Comments.findOne(selectedCommentId).post;
 		var content = instance.editor.exportFile();
 
-		var comment_id = Comments.update(selected_comment_id,
+		var commentId = Comments.update(selectedCommentId,
 		{
 				$set: {
 					body: content
 				}
 			}
 		);
-		Router.navigate("posts/"+selected_post_id, {trigger:true});
+
+		trackEvent("edit comment", {'postId': selectedPostId, 'commentId': selectedCommentId});
+
+		Router.navigate("posts/"+selectedPostId, {trigger:true});
 	}
 
 	, 'click .delete-link': function(e){
 		e.preventDefault();
 		if(confirm("Are you sure?")){
-			var selected_comment_id=Session.get("selected_comment_id");
-			Comments.remove(selected_comment_id);
+			var selectedCommentId=Session.get('selectedCommentId');
+			Comments.remove(selectedCommentId);
 			Router.navigate("comments/deleted", {trigger:true});
 		}
 	}

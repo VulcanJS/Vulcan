@@ -14,7 +14,7 @@ Template.post_submit.events = {
         headline: title
       , url: url
       , body: body
-      , user_id: Meteor.user()._id
+      , userId: Meteor.user()._id
       , author: Meteor.user().username
       , submitted: new Date().getTime()
       , votes: 0
@@ -26,9 +26,8 @@ Template.post_submit.events = {
 
     Meteor.call('upvotePost', postId);
 
-    trackEvent("new post", {'post ID': postId});
+    trackEvent("new post", {'postId': postId});
 
-    // Session.set('state', 'view_post');
     Router.navigate('posts/'+postId, {trigger: true});
   }
 
