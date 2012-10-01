@@ -3,7 +3,7 @@ Template.user_email.events = {
     e.preventDefault();
     if(!Meteor.user()) throwError('You must be logged in.');
     var $target=$(e.target);
-    var user=window.selected_user_id? Meteor.users.findOne(window.selected_user_id) : Meteor.user();
+    var user=window.selectedUserId? Meteor.users.findOne(window.selectedUserId) : Meteor.user();
     var update = {
       "profile.email": $target.find('[name=email]').val()
     };

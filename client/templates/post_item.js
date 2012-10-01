@@ -32,7 +32,7 @@ Template.post_item.helpers({
     return "http://"+document.domain;
   },
   can_edit: function(){
-    if(Meteor.user() && (Meteor.user().isAdmin || Meteor.userId() === this.user_id))
+    if(Meteor.user() && (Meteor.user().isAdmin || Meteor.userId() === this.userId))
       return true;
     else
       return false;

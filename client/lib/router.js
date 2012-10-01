@@ -76,6 +76,7 @@ SimpleRouter = FilteredRouter.extend({
 	  'comments/:id':'comment',
 	  'comments/:id/edit':'comment_edit',
 	  'settings':'settings',
+	  'admin':'admin',
 	  'users':'users',
 	  'account':'user_edit',
 	  'forgot_password':'forgot_password',
@@ -92,6 +93,7 @@ SimpleRouter = FilteredRouter.extend({
 	post_deleted: function() { this.goto('post_deleted'); },
 	comment_deleted: function() { this.goto('comment_deleted'); },
 	forgot_password: function() { this.goto('user_password'); },
+	admin: function() {this.goto('admin'); },
 	post: function(id) {
 		console.log("post, id="+id); 
 		Session.set('selectedPostId', id); 
@@ -121,13 +123,13 @@ SimpleRouter = FilteredRouter.extend({
 	},
 	user_profile: function(id){
 		if(typeof id !== undefined){
-			window.selected_user_id=id;
+			window.selectedUserId=id;
 		}
 		this.goto('user_profile');
 	},
 	user_edit: function(id){
 		if(typeof id !== undefined){
-			window.selected_user_id=id;
+			window.selectedUserId=id;
 		}
 		this.goto('user_edit');
 	}

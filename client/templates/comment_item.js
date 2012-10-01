@@ -64,29 +64,27 @@
   };
 
   Template.comment_item.helpers({
-
     full_date: function(){
       var submitted = new Date(this.submitted);
       return submitted.toString();
     }
-
     ,child_comments: function(){
       var post_id = Session.get('selectedPostId');
       var comments = Comments.find({ post: post_id, parent: this._id });
       return comments;
     }
-
     ,author: function(){
-      return Meteor.users.findOne(this.user_id);
+      return Meteor.users.findOne(this.userId);
     }
-
+    ,authorName: function(){
+      return getAuthorName(this);
+    }
     ,can_edit: function(){
-      if(this.user_id && Meteor.userId())
-        return Meteor.user().isAdmin || (Meteor.userId() === this.user_id);
+      if(this.userId && Meteor.userId())
+        return Meteor.user().isAdmin || (Meteor.userId() === this.userId);
       else
         return false;
     }
-
     ,body_formatted: function(){
       if(this.body){
         var converter = new Markdown.Converter();
@@ -94,23 +92,18 @@
         return html_body.autoLink();
       }
     }
-
     ,repress_recursion: function(){
       return window.repress_recursion;
     }
-
     ,ago: function(){
       return moment(this.submitted).fromNow();
     }
-
     ,upvoted: function(){
       return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);
     }
-
     ,downvoted: function(){
       return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
     }
-
   });
 
 Template.comment_item.created=function(){
@@ -124,7 +117,7 @@ Template.comment_item.rendered=function(){
     var $comment=$("#"+comment._id);
     var openedComments=sessionGetObject('openedComments') || [];
 
-    if(Meteor.user() && Meteor.user()._id==comment.user_id){
+    if(Meteor.user() && Meteor.user()._id==comment.userId){
       // if user is logged in, and the comment belongs to the user, then never queue it
     }else{
       if(commentIsNew(comment) && !$comment.hasClass("comment-queued") && openedComments.indexOf(comment._id)==-1){
@@ -132,9 +125,9 @@ Template.comment_item.rendered=function(){
         // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
         // across template renderings
         // TODO: save scroll position
-        if(Meteor.users.findOne(comment.user_id)){
+        if(Meteor.users.findOne(comment.userId)){
           // get comment author name
-          var user=Meteor.users.findOne(comment.user_id);
+          var user=Meteor.users.findOne(comment.userId);
           var author=user.username;
 
           var imgURL=Gravatar.getGravatar(user, {
@@ -179,7 +172,7 @@ Template.comment_item.rendered=function(){
         return false;
       }
       Meteor.call('upvoteComment', this._id, function(error, result){
-        trackEvent("post upvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+        trackEvent("post upvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
       });
     },
     'click .upvoted .upvote': function(e, instance){
@@ -189,7 +182,7 @@ Template.comment_item.rendered=function(){
         return false;
       }
       Meteor.call('cancelUpvoteComment', this._id, function(error, result){
-        trackEvent("post upvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+        trackEvent("post upvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
       });
     },
     'click .not-downvoted .downvote': function(e, instance){
@@ -199,7 +192,7 @@ Template.comment_item.rendered=function(){
         return false;
       }
       Meteor.call('downvoteComment', this._id, function(error, result){
-        trackEvent("post downvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+        trackEvent("post downvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
       });
     },
     'click .downvoted .downvote': function(e, instance){
@@ -209,7 +202,7 @@ Template.comment_item.rendered=function(){
         return false;
       }
       Meteor.call('cancelDownvoteComment', this._id, function(error, result){
-        trackEvent("post downvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+        trackEvent("post downvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
       });
     }
   };
