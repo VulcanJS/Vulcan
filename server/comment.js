@@ -1,21 +1,22 @@
 Meteor.methods({
-  comment: function(post_id, parentComment_id, text){
+  comment: function(postId, parentCommentId, text){
     var user = Meteor.users.findOne(this.userId());
 
     var comment = {
-        post: post_id
+        post: postId
       , body: text
       , user_id: user._id
       , submitted: new Date().getTime()
     };
-    if(parentComment_id)
-      comment.parent = parentComment_id;
+    if(parentCommentId)
+      comment.parent = parentCommentId;
 
-    var new_comment_id=Comments.insert(comment);
-    Posts.update(post_id, {$inc: {comments: 1}});
+    var newCommentId=Comments.insert(comment);
 
-    Meteor.call('upvoteComment', new_comment_id);
+    Posts.update(postId, {$inc: {comments: 1}});
 
-    return new_comment_id;
+    Meteor.call('upvoteComment', newCommentId);
+
+    return newCommentId;
   }
 });

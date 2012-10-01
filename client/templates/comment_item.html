@@ -2,7 +2,7 @@
   <li class="comment comment-displayed" id="{{_id}}">
    <div class="comment-body">
       <div class="comment-content">
-        <div class="comment-actions {{#if upvoted}}upvoted{{/if}} {{#if downvoted}}downvoted{{/if}}">
+        <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
             <i class="icon-up"></i>
             <span>upvote</span>

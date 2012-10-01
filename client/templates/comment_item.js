@@ -172,35 +172,46 @@ Template.comment_item.rendered=function(){
           }
         );
       },
-    'click .upvote': function(e) {
+    'click .not-upvoted .upvote': function(e, instance){
       e.preventDefault();
       if(!Meteor.user()){
         throwError("Please log in first");
         return false;
       }
-      Meteor.call('upvoteComment', this._id);
+      Meteor.call('upvoteComment', this._id, function(error, result){
+        trackEvent("post upvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+      });
     },
-    'click .downvote': function(e) {
+    'click .upvoted .upvote': function(e, instance){
       e.preventDefault();
       if(!Meteor.user()){
         throwError("Please log in first");
         return false;
       }
-      Meteor.call('downvoteComment', this._id);
+      Meteor.call('cancelUpvoteComment', this._id, function(error, result){
+        trackEvent("post upvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+      });
+    },
+    'click .not-downvoted .downvote': function(e, instance){
+      e.preventDefault();
+      if(!Meteor.user()){
+        throwError("Please log in first");
+        return false;
+      }
+      Meteor.call('downvoteComment', this._id, function(error, result){
+        trackEvent("post downvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+      });
+    },
+    'click .downvoted .downvote': function(e, instance){
+      e.preventDefault();
+      if(!Meteor.user()){
+        throwError("Please log in first");
+        return false;
+      }
+      Meteor.call('cancelDownvoteComment', this._id, function(error, result){
+        trackEvent("post downvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.user_id});
+      });
     }
-
-    // 'click .queue-container, click .queue-container a': function(e, instance){
-    //   e.preventDefault();
-    //   var $this=$(e.target);
-
-    //   var queueContainer= $this.is("a") ? $this.closest('.queue-container') : $this;
-    //   console.log($this, queueContainer);
-    //   queueContainer.find("a").each(function(){
-    //     var target=$(this).attr("href");
-    //     $(target).removeClass("comment-queued").addClass("comment-displayed");
-    //   });
-    //   queueContainer.hide("slow").remove();
-    // }
   };
 
 })();

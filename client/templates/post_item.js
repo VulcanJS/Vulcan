@@ -1,13 +1,15 @@
 Template.post_item.events = {
 
 
-  'click .upvote-link': function(e){
+  'click .upvote-link': function(e, instance){
     e.preventDefault();
       if(!Meteor.user()){
         throwError("Please log in first");
         return false;
       }
-      Meteor.call('upvotePost', this._id);
+      Meteor.call('upvotePost', this._id, function(error, result){
+        trackEvent("post upvoted", {'postId': instance.postId});
+      });
   }
 
   , 'click .share-link': function(e){

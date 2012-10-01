@@ -14,4 +14,12 @@
 	ol{
 		list-style-type:decimal;
 	}
+	a{
+		&:link, &:visited, &:active{
+			color:$blue;
+		}
+		&:hover{
+			color:$red;
+		}
+	}
 }

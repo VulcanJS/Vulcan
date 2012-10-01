@@ -352,6 +352,12 @@ body.pageslide-open {
 /* line 14, ../sass/partials/_markdown.scss */
 .markdown ol {
   list-style-type: decimal; }
+/* line 18, ../sass/partials/_markdown.scss */
+.markdown a:link, .markdown a:visited, .markdown a:active {
+  color: #7ac0e4; }
+/* line 21, ../sass/partials/_markdown.scss */
+.markdown a:hover {
+  color: #f36c3d; }
 
 /* line 1, ../sass/partials/_tooltips.scss */
 .has-tooltip {
