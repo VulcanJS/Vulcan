@@ -45,7 +45,7 @@ Template.user_edit.user = function(){
 
 Template.user_edit.email = function(){
 	if(!this.loading){
-		return this.emails[0].address;
+		return this.emails && this.emails[0] && this.emails[0].address;
 	}
 }
 
