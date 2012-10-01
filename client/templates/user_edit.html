@@ -1,6 +1,11 @@
 <template name="user_edit">
   <div class="grid-small grid-block dialog user-edit">
   	{{#with user}}
+    {{#if profileIncomplete}}
+    <div>
+      Please complete your profile below before continuing.
+    </div>
+    {{/if}}
     <form>
       <h2>Account</h2>
       <div class="control-group">
