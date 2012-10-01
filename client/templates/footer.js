@@ -20,14 +20,15 @@ Template.footer.rendered = function(){
 			mixpanel.people.set({
 			    'username': Meteor.user().username,
 			    '$last_login': new Date(), 
-			    '$created': Meteor.user().createdAt,
+			    '$created': moment(Meteor.user().createdAt)._d,
 			    '$email': currentUserEmail
 			});
 			mixpanel.register({
 			    'username': Meteor.user().username,
-			    'createdAt': Meteor.user().createdAt,
+			    'createdAt': moment(Meteor.user().createdAt)._d,
 			    'email': currentUserEmail
 			});
+			mixpanel.name_tag(currentUserEmail);
 		}
 	}
 
