@@ -1157,6 +1157,10 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   font-size: 16px;
   cursor: pointer;
   margin: 0; }
+  /* line 74, ../sass/modules/_forms.scss */
+  input[type="submit"].disabled, button.disabled, .button.disabled, .auth-buttons #login-buttons .disabled#login-buttons-password, .btn.disabled {
+    background: #dfdbdb;
+    pointer-events: none; }
 
 /* line 1, ../sass/modules/_dialogs.scss */
 .dialog {

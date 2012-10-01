@@ -7,6 +7,7 @@ Template.comment_form.rendered = function(){
 Template.comment_form.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
+    $(e.target).addClass('disabled');
 	var $comment = $('#comment');
 	var content = instance.editor.exportFile();
 
@@ -19,7 +20,6 @@ Template.comment_form.events = {
             trackEvent("new child comment", {'postId': postId, 'commentId': result, 'parentId': parentCommentId});
             Router.navigate('posts/'+postId, {trigger:true});
         });
-       
     }else{
     	// post a root comment
     	var parentCommentId=null;

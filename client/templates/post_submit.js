@@ -1,6 +1,9 @@
 Template.post_submit.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
+
+    $(e.target).addClass('disabled');
+
     if(!Meteor.user()){
       throwError('You must be logged in.');
       return false;
