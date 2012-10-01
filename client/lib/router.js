@@ -6,8 +6,42 @@ SimpleRouter = FilteredRouter.extend({
 		this.filter(this.require_profile);
 	},
 	start_request: function(page){
+		// runs at every new page change
+
 		Session.set("error", null);
 		Session.set("openedComments", null);
+		document.title = getSetting("title");
+
+		// Mixpanel
+
+		if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length==0){
+			mixpanel.init(mixpanelId);
+			if(Meteor.user()){
+				var currentUserEmail=getCurrentUserEmail();
+				console.log(currentUserEmail);
+				mixpanel.people.identify(currentUserEmail);
+				mixpanel.people.set({
+				    'username': Meteor.user().username,
+				    '$last_login': new Date(), 
+				    '$created': moment(Meteor.user().createdAt)._d,
+				    '$email': currentUserEmail
+				});
+				mixpanel.register({
+				    'username': Meteor.user().username,
+				    'createdAt': moment(Meteor.user().createdAt)._d,
+				    'email': currentUserEmail
+				});
+				mixpanel.name_tag(currentUserEmail);
+			}
+		}
+
+		// GoSquared
+
+	    if((goSquaredId=getSetting("goSquaredId"))){
+			GoSquared.acct = goSquaredId;
+			GoSquaredInit();
+		}
+
 		return page;
 	},
 	require_login: function(page) {
@@ -18,14 +52,14 @@ SimpleRouter = FilteredRouter.extend({
 	  }
 	},
   
-  // if the user is logged in but their profile isn't filled out enough
-  require_profile: function(page) {
-    var user = Meteor.user();
-    if  (user && !user.loading && !userProfileComplete(user))
-      return 'user_edit';
-    else
-      return page;
-  },
+	// if the user is logged in but their profile isn't filled out enough
+	require_profile: function(page) {
+	var user = Meteor.user();
+	if  (user && !user.loading && !userProfileComplete(user))
+	  return 'user_email';
+	else
+	  return page;
+	},
   
 	routes: {
 	  '': 'top',
@@ -60,7 +94,7 @@ SimpleRouter = FilteredRouter.extend({
 	forgot_password: function() { this.goto('user_password'); },
 	post: function(id) {
 		console.log("post, id="+id); 
-		Session.set('selected_post_id', id); 
+		Session.set('selectedPostId', id); 
 		this.goto('post_page');
 		// on post page, we show the comment recursion
 		window.repress_recursion=false;
@@ -69,19 +103,19 @@ SimpleRouter = FilteredRouter.extend({
 	},
 	post_edit: function(id) {
 		console.log("post_edit, id="+id); 
-		Session.set('selected_post_id', id); 
+		Session.set('selectedPostId', id); 
 		this.goto('post_edit'); 
 	},
 	comment: function(id) {
 		console.log("comment, id="+id); 
-		Session.set('selected_comment_id', id);
+		Session.set('selectedCommentId', id);
 		this.goto('comment_page');
 		window.repress_recursion=true;
 		window.newCommentTimestamp=new Date();
 	},
 	comment_edit: function(id) {
 		console.log("comment_edit, id="+id); 
-		Session.set('selected_comment_id', id);
+		Session.set('selectedCommentId', id);
 		this.goto('comment_edit');
 		window.newCommentTimestamp=new Date();
 	},

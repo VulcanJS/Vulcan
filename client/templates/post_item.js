@@ -1,28 +1,62 @@
-Template.post_item.events = {
-
-
-  'click .upvote-link': function(e, instance){
-    e.preventDefault();
-      if(!Meteor.user()){
-        throwError("Please log in first");
-        return false;
-      }
-      Meteor.call('upvotePost', this._id, function(error, result){
-        trackEvent("post upvoted", {'postId': instance.postId});
-      });
+var getRank = function(post){
+  if(window.sortBy=="score"){
+    var filter = {$or: [
+      {score: {$gt: post.score}},
+      {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
+    ]};
+  }else{
+    var filter = {$or: [
+      {submitted: {$gt: post.submitted}},
+      {$and: [{submitted: post.submitted}, {score: {$lt: post.score}}]}
+    ]};
   }
 
-  , 'click .share-link': function(e){
-      var $this = $(e.target);
-      e.preventDefault();
-      $(".share-link").not($this).next().addClass("hidden");
-      $this.next().toggleClass("hidden");
-      console.log($this);
-      $this.next().find('.share-replace').sharrre(SharrreOptions);
-      // $(".overlay").toggleClass("hidden");
-  }
-};
+  return Posts.find(filter).count()+1;  
+}
 
+Template.post_item.preserve({
+  '.post': function (node) {return node.id; }
+});
+
+
+Template.post_item.helpers({
+  rank: function() {
+    return getRank(this);
+  },
+  domain: function(){
+    var a = document.createElement('a');
+    a.href = this.url;
+    return a.hostname;
+  },
+  current_domain: function(){
+    return "http://"+document.domain;
+  },
+  can_edit: function(){
+    if(Meteor.user() && (Meteor.user().isAdmin || Meteor.userId() === this.user_id))
+      return true;
+    else
+      return false;
+  },
+  authorName: function(){
+    return getAuthorName(this);
+  },
+  short_score: function(){
+    return Math.floor(this.score*1000)/1000;
+  },
+  body_formatted: function(){
+    var converter = new Markdown.Converter();
+    var html_body=converter.makeHtml(this.body);
+    return html_body.autoLink();
+  },
+  ago: function(){
+    return moment(this.submitted).fromNow();
+  },
+  voted: function(){
+    var user = Meteor.user();
+    if(!user) return false; 
+    return _.include(this.upvoters, user._id);
+  },
+});
 
 Template.post_item.created = function(){
   if(this.data){
@@ -51,72 +85,25 @@ Template.post_item.rendered = function(){
 
 };
 
-Template.post_item.preserve({
-  '.post': function (node) {return node.id; }
-});
-
-Template.post_item.ago = function(){
-  return moment(this.submitted).fromNow();
-};
-
-Template.post_item.voted = function(){
-  var user = Meteor.user();
-  if(!user) return false;
-  
-  return _.include(this.upvoters, user._id);
-};
-
-var getRank = function(post){
-  if(window.sortBy=="score"){
-    var filter = {$or: [
-      {score: {$gt: post.score}},
-      {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
-    ]};
-  }else{
-    var filter = {$or: [
-      {submitted: {$gt: post.submitted}},
-      {$and: [{submitted: post.submitted}, {score: {$lt: post.score}}]}
-    ]};
+Template.post_item.events = {
+  'click .upvote-link': function(e, instance){
+    e.preventDefault();
+      if(!Meteor.user()){
+        throwError("Please log in first");
+        return false;
+      }
+      Meteor.call('upvotePost', this._id, function(error, result){
+        trackEvent("post upvoted", {'postId': instance.postId});
+      });
   }
 
-  return Posts.find(filter).count()+1;  
-}
-
-Template.post_item.rank = function() {
-  return getRank(this);
-}
-
-Template.post_item.domain = function(){
-  var a = document.createElement('a');
-  a.href = this.url;
-  return a.hostname;
-};
-
-Template.post_item.current_domain = function(){
-  return "http://"+document.domain;
-}
-
-Template.post_item.can_edit = function(){
-  if(Meteor.user() && (Meteor.user().isAdmin || Meteor.userId() === this.user_id))
-    return true;
-  else
-    return false;
-};
-
-Template.post_item.authorName = function(){
-  if(this.user_id && Meteor.users.findOne(this.user_id)){
-    return Meteor.users.findOne(this.user_id).username;
-  }else{
-    return this.author;
+  , 'click .share-link': function(e){
+      var $this = $(e.target);
+      e.preventDefault();
+      $(".share-link").not($this).next().addClass("hidden");
+      $this.next().toggleClass("hidden");
+      console.log($this);
+      $this.next().find('.share-replace').sharrre(SharrreOptions);
+      // $(".overlay").toggleClass("hidden");
   }
 };
-
-Template.post_item.short_score = function(){
-  return Math.floor(this.score*1000)/1000;
-}
-
-Template.post_item.body_formatted = function(){
-  var converter = new Markdown.Converter();
-  var html_body=converter.makeHtml(this.body);
-  return html_body.autoLink();
-}

@@ -1,11 +1,9 @@
 <template name="user_email">
   <div class="grid-small grid-block dialog user-edit">
   	{{#with user}}
-    {{#if profileIncomplete}}
     <div>
-      Please add your email below before continuing.
+      Please fill in your email below to finish signing up.
     </div>
-    {{/if}}
     <form>
       <div class="control-group">
         <label>Email</label>
@@ -14,7 +12,6 @@
         </div>
       </div>
       <div class="form-actions">
-        <a href="/forgot_password">Forgot password?</a>
         <input type="submit" class="button" value="Submit" />
       </div>
     </form>
