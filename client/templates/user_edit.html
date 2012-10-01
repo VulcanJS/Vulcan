@@ -1,6 +1,11 @@
 <template name="user_edit">
   <div class="grid-small grid-block dialog user-edit">
   	{{#with user}}
+    {{#if profileIncomplete}}
+    <div>
+      Please complete your profile below before continuing.
+    </div>
+    {{/if}}
     <form>
       <h2>Account</h2>
       <div class="control-group">
@@ -10,20 +15,25 @@
       <div class="control-group">
         <label>Email</label>
         <div class="controls"><input id="email" name="email" disabled="disabled" type="text" value="{{email}}" /></div>
+        <label>Display Name</label>
+        <div class="controls"><input name="name" type="text" value="{{profile.name}}" /></div>
+      </div>
+      <div class="control-group">
+        <label>Email 2</label>
+        <div class="controls"><input name="email" type="text" value="{{profile.email}}" /></div>
       </div>
       <div class="control-group">
         <label>Bio</label>
-        <div class="controls"><textarea id="bio" name="bio" type="text">{{bio}}</textarea></div>
+        <div class="controls"><textarea name="bio" type="text">{{profile.bio}}</textarea></div>
       </div>
       <h3>Change Password?</h3>
       <div class="control-group">
         <label>Old Password</label>
-        <div class="controls"><input id="old_password" name="old_password" type="text" value="" /></div>
+        <div class="controls"><input name="old_password" type="text" value="" /></div>
       </div>
       <div class="control-group">
         <label>New Password</label>
-        <div class="controls"><input id="new_password" name="new_password" type="text" value="" /></div>
-      </div>
+        <div class="controls"><input name="new_password" type="text" value="" /></div>
       </div>
       <div class="form-actions">
         <a href="/forgot_password">Forgot password?</a>
