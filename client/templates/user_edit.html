@@ -8,19 +8,31 @@
     {{/if}}
     <form>
       <h2>Account</h2>
+      {{#if username}}
       <div class="control-group">
         <label>Username</label>
-        <div class="controls"><input id="username" name="username" disabled="disabled" type="text" value="{{username}}" /></div>
+        <div class="controls">
+          <input id="username" name="username" disabled="disabled" type="text" value="{{username}}" />
+        </div>
+      </div>
+      {{/if}}
+<!--       <div class="control-group">
+        <label>Email</label>
+        <div class="controls">
+          <input id="email" name="email" disabled="disabled" type="text" value="{{email}}" />
+        </div>
+      </div> -->
+      <div class="control-group">
+        <label>Display Name</label>
+        <div class="controls">
+          <input name="name" type="text" value="{{profile.name}}" />
+        </div>
       </div>
       <div class="control-group">
         <label>Email</label>
-        <div class="controls"><input id="email" name="email" disabled="disabled" type="text" value="{{email}}" /></div>
-        <label>Display Name</label>
-        <div class="controls"><input name="name" type="text" value="{{profile.name}}" /></div>
-      </div>
-      <div class="control-group">
-        <label>Email 2</label>
-        <div class="controls"><input name="email" type="text" value="{{profile.email}}" /></div>
+        <div class="controls">
+          <input name="email" type="text" value="{{profile.email}}" />
+        </div>
       </div>
       <div class="control-group">
         <label>Bio</label>

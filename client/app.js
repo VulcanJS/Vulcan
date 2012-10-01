@@ -151,7 +151,8 @@ if (Meteor.is_client) {
   
 	var Router = new SimpleRouter();
 	Meteor.startup(function() {
-		Backbone.history.start({pushState: true});
+		if(!Backbone.history._hasPushState)
+			Backbone.history.start({pushState: true});
 	});
 }
 
