@@ -12,6 +12,9 @@ Meteor.subscribe('comments', function() {
 
 Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
+
+	// runs once on site load
+
 	if((proxinoKey=getSetting('proxinoKey'))){
 		Proxino.key = proxinoKey;
 		Proxino.track_errors();
@@ -28,8 +31,43 @@ if (Meteor.is_client) {
 			this.filter(this.start_request);
 		},
 		start_request: function(page){
+
+			// runs at every new page change
+
 			Session.set("error", null);
 			Session.set("openedComments", null);
+			document.title = getSetting("title");
+
+			// Mixpanel
+
+			if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length==0){
+				mixpanel.init(mixpanelId);
+				if(Meteor.user()){
+					var currentUserEmail=getCurrentUserEmail();
+					console.log(currentUserEmail);
+					mixpanel.people.identify(currentUserEmail);
+					mixpanel.people.set({
+					    'username': Meteor.user().username,
+					    '$last_login': new Date(), 
+					    '$created': moment(Meteor.user().createdAt)._d,
+					    '$email': currentUserEmail
+					});
+					mixpanel.register({
+					    'username': Meteor.user().username,
+					    'createdAt': moment(Meteor.user().createdAt)._d,
+					    'email': currentUserEmail
+					});
+					mixpanel.name_tag(currentUserEmail);
+				}
+			}
+
+			// GoSquared
+
+		    if((goSquaredId=getSetting("goSquaredId"))){
+    			GoSquared.acct = goSquaredId;
+    			GoSquaredInit();
+    		}
+
 			return page;
 		},
 		require_login: function(page) {

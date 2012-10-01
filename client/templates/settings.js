@@ -9,6 +9,7 @@ Template.settings.events = {
     var tlkioChannel = $('#tlkio_channel').val();
     var mixpanelId= $('#mixpanel_id').val();
     var proxinoKey=$('#proxino_key').val();
+    var goSquaredId=$('#gosquared_id').val();
     var logoUrl=$('#logo_url').val();
     var logoHeight=$('#logo_height').val();
     var logoWidth=$('#logo_width').val();
@@ -25,6 +26,7 @@ Template.settings.events = {
             tlkioChannel: tlkioChannel,
             mixpanelId: mixpanelId,
             proxinoKey: proxinoKey,
+            goSquaredId: goSquaredId,
             logoUrl: logoUrl,
             logoHeight: logoHeight,
             logoWidth: logoWidth,
@@ -42,6 +44,7 @@ Template.settings.events = {
           tlkioChannel: tlkioChannel,
           mixpanelId: mixpanelId,
           proxinoKey: proxinoKey,
+          goSquaredId: goSquaredId,
           logoUrl: logoUrl,
           logoHeight: logoHeight,
           logoWidth: logoWidth,

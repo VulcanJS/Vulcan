@@ -11,28 +11,8 @@ Template.footer.helpers({
 });
 
 Template.footer.rendered = function(){
-	if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length==0){
-		mixpanel.init(mixpanelId);
-		if(Meteor.user()){
-			var currentUserEmail=getCurrentUserEmail();
-			console.log(currentUserEmail);
-			mixpanel.people.identify(currentUserEmail);
-			mixpanel.people.set({
-			    'username': Meteor.user().username,
-			    '$last_login': new Date(), 
-			    '$created': moment(Meteor.user().createdAt)._d,
-			    '$email': currentUserEmail
-			});
-			mixpanel.register({
-			    'username': Meteor.user().username,
-			    'createdAt': moment(Meteor.user().createdAt)._d,
-			    'email': currentUserEmail
-			});
-			mixpanel.name_tag(currentUserEmail);
-		}
-	}
 
-    document.title = getSetting("title");
+
 }
 
 Template.footer.events = {
