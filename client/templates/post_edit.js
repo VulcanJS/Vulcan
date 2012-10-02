@@ -7,7 +7,28 @@
 
 Template.post_edit.helpers({
   post: function(){
-    return Posts.findOne(Session.get('selectedPostId'));
+    // The idea here is to isolate the call to findOne() so that it stops
+    // being reactive once data is found. The reason being that server scoring
+    // updates will 'change' the post, and meteor will overwrite the user's
+    // input, even if preserve is set. 
+    // Kind of like {{#constant}}, except it waits for data.
+    // 
+    // XXX: either figure out a different approach, or factor this out and
+    // use everywhere.
+    var outerContext = Meteor.deps.Context.current;
+    var innerContext = new Meteor.deps.Context;
+    var post;
+    
+    innerContext.onInvalidate(function() {
+      // we don't need to send the invalidate through anymore if post is set
+      post || outerContext.invalidate();
+    });
+    
+    innerContext.run(function() {
+      post = Posts.findOne(Session.get('selectedPostId'));
+    })
+    
+    return post;
   }
 });
 
@@ -16,11 +37,6 @@ Template.post_edit.rendered = function(){
   if(post && !this.editor){
     this.editor= new EpicEditor(EpicEditorOptions).load();  
     this.editor.importFile('editor',post.body);
-  }
-  // workaround {{#constant}} bug
-  if(post && !this.postRendered){
-    $('#title').val(post.headline);
-    this.postRendered=true;
   }
 }
 
