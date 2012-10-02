@@ -81,8 +81,6 @@ Template.post_item.rendered = function(){
       instance.current_distance=new_distance;
     }, 100);
   }
-
-
 };
 
 Template.post_item.events = {

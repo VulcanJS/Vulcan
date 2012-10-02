@@ -31,7 +31,7 @@ Template.comment_edit.events = {
 
 		trackEvent("edit comment", {'postId': selectedPostId, 'commentId': selectedCommentId});
 
-		Router.navigate("posts/"+selectedPostId, {trigger:true});
+		Router.navigate("posts/"+selectedPostId+"/comment/"+selectedCommentId, {trigger:true});
 	}
 
 	, 'click .delete-link': function(e){

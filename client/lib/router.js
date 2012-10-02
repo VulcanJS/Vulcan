@@ -62,26 +62,27 @@ SimpleRouter = FilteredRouter.extend({
 	},
   
 	routes: {
-	  '': 'top',
-	  'top':'top',
-	  'new':'new',
-	  'test':'test',
-	  'signin':'signin',
-	  'signup':'signup',
-	  'submit':'submit',
-		  'posts/deleted':'post_deleted',
-		  'posts/:id/edit':'post_edit',
-	  'posts/:id':'post',
-	  'comments/deleted':'comment_deleted',		  
-	  'comments/:id':'comment',
-	  'comments/:id/edit':'comment_edit',
-	  'settings':'settings',
-	  'admin':'admin',
-	  'users':'users',
-	  'account':'user_edit',
-	  'forgot_password':'forgot_password',
-	  'users/:id': 'user_profile',
-	  'users/:id/edit':'user_edit'
+		'': 'top',
+		'top':'top',
+		'new':'new',
+		'test':'test',
+		'signin':'signin',
+		'signup':'signup',
+		'submit':'submit',
+		'posts/deleted':'post_deleted',
+		'posts/:id/edit':'post_edit',
+		'posts/:id/comment/:comment_id':'post',
+		'posts/:id':'post',
+		'comments/deleted':'comment_deleted',	  
+		'comments/:id':'comment',
+		'comments/:id/edit':'comment_edit',
+		'settings':'settings',
+		'admin':'admin',
+		'users':'users',
+		'account':'user_edit',
+		'forgot_password':'forgot_password',
+		'users/:id': 'user_profile',
+		'users/:id/edit':'user_edit'
 	},
 	top: function() { this.goto('posts_top'); },
 	new: function() { this.goto('posts_new'); },		
@@ -94,9 +95,12 @@ SimpleRouter = FilteredRouter.extend({
 	comment_deleted: function() { this.goto('comment_deleted'); },
 	forgot_password: function() { this.goto('user_password'); },
 	admin: function() {this.goto('admin'); },
-	post: function(id) {
-		console.log("post, id="+id); 
-		Session.set('selectedPostId', id); 
+	post: function(id, commentId) {
+		console.log("post, id="+id+', commentId='+commentId); 
+		window.template='post_page'; 
+		Session.set('selectedPostId', id);
+		if(typeof commentId !== 'undefined')
+			Session.set('scrollToCommentId', commentId); 
 		this.goto('post_page');
 		// on post page, we show the comment recursion
 		window.repress_recursion=false;
@@ -104,19 +108,22 @@ SimpleRouter = FilteredRouter.extend({
 		window.newCommentTimestamp=new Date();
 	},
 	post_edit: function(id) {
-		console.log("post_edit, id="+id); 
+		console.log("post_edit, id="+id);
+		window.template='post_edit';
 		Session.set('selectedPostId', id); 
 		this.goto('post_edit'); 
 	},
 	comment: function(id) {
-		console.log("comment, id="+id); 
+		console.log("comment, id="+id);
+		window.template='comment_page';
 		Session.set('selectedCommentId', id);
 		this.goto('comment_page');
 		window.repress_recursion=true;
 		window.newCommentTimestamp=new Date();
 	},
 	comment_edit: function(id) {
-		console.log("comment_edit, id="+id); 
+		console.log("comment_edit, id="+id);
+		window.template='comment_edit'; 
 		Session.set('selectedCommentId', id);
 		this.goto('comment_edit');
 		window.newCommentTimestamp=new Date();

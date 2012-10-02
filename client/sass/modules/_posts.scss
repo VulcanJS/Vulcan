@@ -17,6 +17,9 @@
 			.post-content, .post-actions li a{
 				background:$light-yellow;
 			}
+			.post-actions li a:hover{
+				background:$highlight-color url("/img/bg-header.png") top center;
+			}
 		}
 	}
 }
@@ -116,12 +119,12 @@
 			color:$text;
 			font-weight:normal;
 			line-height:1;
-			&:hover{
-				color:$red;
-			}
 			&:visited{
 				color:$grey;
 			}
+			&:hover{
+				color:$red;
+			}	
 		}
 		.post-domain{
 			color:$light-text;

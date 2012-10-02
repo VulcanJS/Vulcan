@@ -1,12 +1,21 @@
-Template.post_page.post = function(){
-  var post = Posts.findOne(Session.get('selectedPostId'));
-  return post;
-};
+Template.post_page.helpers({
+	post: function(){
+		var post = Posts.findOne(Session.get('selectedPostId'));
+		return post;
+	},
+	body_formatted: function(){
+		var converter = new Markdown.Converter();
+		var html_body=converter.makeHtml(this.body);
+		return html_body.autoLink();
+	}
+}); 
 
-Template.post_page.body_formatted = function(){
-  var converter = new Markdown.Converter();
-  var html_body=converter.makeHtml(this.body);
-  return html_body.autoLink();
+Template.post_page.rendered = function(){
+	if((scrollToCommentId=Session.get('scrollToCommentId')) && !this.rendered && $('#'+scrollToCommentId).exists()){
+		scrollPageTo('#'+scrollToCommentId);
+		Session.set('scrollToCommentId', null);
+		this.rendered=true;
+	}
 }
 
 window.newCommentTimestamp=new Date();

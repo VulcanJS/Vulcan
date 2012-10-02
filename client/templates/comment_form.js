@@ -11,22 +11,24 @@ Template.comment_form.events = {
 	var $comment = $('#comment');
 	var content = instance.editor.exportFile();
 
-    if(selectedCommentId=Session.get('selectedCommentId')){
+    if(window.template=='comment_page'){
     	// post a child comment
+        var selectedCommentId=Session.get('selectedCommentId')
 	    var parentCommentId =selectedCommentId;
 	    var postId=Comments.findOne(parentCommentId).post;
-        var commentId=Meteor.call('comment', postId, parentCommentId, content, function(error, result){
+        Meteor.call('comment', postId, parentCommentId, content, function(error, result){
             Session.set('selectedCommentId', null);
             trackEvent("new child comment", {'postId': postId, 'commentId': result, 'parentId': parentCommentId});
+            Session.set('scrollToCommentId', result);
             Router.navigate('posts/'+postId, {trigger:true});
         });
     }else{
     	// post a root comment
     	var parentCommentId=null;
     	var postId=Session.get('selectedPostId');
-        var commentId=Meteor.call('comment', postId, parentCommentId, content, function(error, result){
+        Meteor.call('comment', postId, parentCommentId, content, function(error, result){
             trackEvent("new root comment", {'postId': postId, 'commentId': result});
-            // window.location.hash=result;
+            Session.set('scrollToCommentId', result);
             instance.editor.importFile('editor', '');
         });
     }

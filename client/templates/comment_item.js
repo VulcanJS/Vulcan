@@ -44,14 +44,17 @@
       // B) we've haven't found any comments (i.e. we're at the beginning of the list)
       // so we put our queue container just before the comment
       $container=$('<div class="queue-container"><ul></ul></div>').insertBefore($comment);
-      $container.click(function(){
-        $(this).find("a").each(function(){
+      $container.click(function(e){
+        e.preventDefault();
+        var links=$(this).find("a");
+        links.each(function(){
           var target=$(this).attr("href");
           $(target).removeClass("comment-queued").addClass("comment-displayed");
           var openedComments=sessionGetObject('openedComments') || [];
           openedComments.push(target.substr(1));
           sessionSetObject('openedComments', openedComments);
         });
+        // scrollPageTo(links.first().attr("href"));
         $(this).hide("slow").remove();
       });
     }
