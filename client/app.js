@@ -25,10 +25,3 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
-getAuthorName = function(item){
-	// keep both variables for transition period
-	var id=item.userId || item.user_id;
-	// if item is linked to a user, get that user's display name. Else, return the author field.
-	return (id && (user=Meteor.users.findOne(id))) ? getDisplayName(user) : this.author;
-}
-

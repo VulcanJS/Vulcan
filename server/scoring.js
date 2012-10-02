@@ -14,6 +14,8 @@ var updateScore = function (collection, id) {
   // HN algorithm (same as Bindle)
   var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
 
+  if(object.sticky)
+    newScore=999;
   collection.update(id, {$set: {score: newScore}});
 };
 

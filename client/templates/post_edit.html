@@ -5,17 +5,23 @@
         {{#constant}}
           <div class="control-group">
             <label class="control-label">Title</label>
-            <div class="controls"><input id="title" type="text" value="{{headline}}" /></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">URL</label>
-            <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
+            <div class="controls"><input name="title" id="title" type="text" value="{{headline}}" /></div>
           </div>
           <div class="control-group">
             <label class="control-label">Body</label>
-            <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
+            <div class="controls" id="editor"><textarea name="body" id="body" value="" class="input-xlarge">{{body}}</textarea></div>
           </div>
-        {{/constant}}         
+        {{/constant}}
+        {{#if currentUser.isAdmin}}
+          {{#constant}}
+            <div class="control-group">
+              <label class="control-label">Sticky?</label>
+              <div class="controls">
+                    <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
+              </div>
+            </div>
+          {{/constant}}  
+        {{/if}}     
         <div class="form-actions">
           <a class="delete-link" href="/posts/deleted">Delete Post</a>
           <input type="submit" value="Submit" />

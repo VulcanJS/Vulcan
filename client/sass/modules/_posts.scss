@@ -13,6 +13,11 @@
 		&.animate{
 			@include single-transition(ease-out, top, 400ms, 0ms);
 		}
+		&.sticky{
+			.post-content, .post-actions li a{
+				background:$light-yellow;
+			}
+		}
 	}
 }
 .post-content{
@@ -91,6 +96,19 @@
 			}
 		}
 	}
+	.post-sticky{
+		display:block;
+		position:absolute;
+		right:20px;
+		top:16px;
+		font-size:24px;
+		i{
+			color:$light-text;
+		}
+		span{
+			display:none;
+		}
+	}
 	.post-heading{
 		margin-bottom:0px;
 		.post-title{
@@ -100,6 +118,9 @@
 			line-height:1;
 			&:hover{
 				color:$red;
+			}
+			&:visited{
+				color:$grey;
 			}
 		}
 		.post-domain{

@@ -1,4 +1,9 @@
-// Template.post_edit.preserve(['#title', '#url', '#editor']);
+// Template.post_edit.preserve(['#title', '#url', '#editor', '#sticky']);
+
+// Template.post_edit.preserve({
+//   // 'input[id]': function (node) { return node.id; }
+//    '[name]': function(node) { return node.getAttribute('name');}
+// });
 
 Template.post_edit.helpers({
   post: function(){
@@ -12,6 +17,11 @@ Template.post_edit.rendered = function(){
     this.editor= new EpicEditor(EpicEditorOptions).load();  
     this.editor.importFile('editor',post.body);
   }
+  // workaround {{#constant}} bug
+  if(post && !this.postRendered){
+    $('#title').val(post.headline);
+    this.postRendered=true;
+  }
 }
 
 Template.post_edit.events = {
@@ -23,6 +33,8 @@ Template.post_edit.events = {
     var title= $('#title').val();
     var url = $('#url').val();
     var body = instance.editor.exportFile();
+    var sticky=!!$('#sticky').attr('checked');
+    console.log('sticky:', sticky);
 
     Posts.update(selectedPostId,
     {
@@ -30,6 +42,7 @@ Template.post_edit.events = {
             headline: title
           , url: url
           , body: body
+          , sticky: sticky
         }
       }
     );

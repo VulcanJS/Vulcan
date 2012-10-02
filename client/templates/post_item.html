@@ -1,5 +1,5 @@
 <template name="post_item">
-  <div class="post" style="top:{{top_distance}}px;" id="{{_id}}">
+  <div class="post {{#if sticky}}sticky{{/if}}" style="top:{{top_distance}}px;" id="{{_id}}">
     <ul class="post-actions">
       <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">Share</span></a>
         <div class="share-options hidden">
@@ -28,6 +28,9 @@
         {{/if}}
       </div>
       <div class="post-info">
+        {{#if sticky}}
+          <span class="post-sticky"><i class="icon-pin"></i><span>Sticky</span></span>
+        {{/if}}
         <h3 class="post-heading">
           {{#if url}}
             <a href="{{url}}" class="post-title" target="_blank">{{headline}}</a>
