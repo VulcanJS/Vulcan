@@ -4,8 +4,6 @@
   },
   "packages": {
     "router": {},
-    "groups": {},
-    "cron": {},
     "moment": {}
   }
 }

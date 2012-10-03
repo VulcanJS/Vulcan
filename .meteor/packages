@@ -6,7 +6,6 @@
 backbone
 accounts-password
 accounts-ui
-router
-groups
-moment
 accounts-twitter
+router
+moment
