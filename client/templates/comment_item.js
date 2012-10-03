@@ -83,9 +83,8 @@
       return getAuthorName(this);
     },
     user_avatar: function(){
-      console.log("comment: ", this);
-      console.log("user: ", Meteor.users.findOne(this.userId));
-      return getAvatarUrl(Meteor.users.findOne(this.userId));
+      if(author=Meteor.users.findOne(this.userId))
+        return getAvatarUrl(author);
     }  
     ,can_edit: function(){
       if(this.userId && Meteor.userId())
