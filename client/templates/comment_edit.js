@@ -38,7 +38,7 @@ Template.comment_edit.events = {
 		e.preventDefault();
 		if(confirm("Are you sure?")){
 			var selectedCommentId=Session.get('selectedCommentId');
-			Comments.remove(selectedCommentId);
+			Meteor.call('removeComment', selectedCommentId);
 			Router.navigate("comments/deleted", {trigger:true});
 		}
 	}
