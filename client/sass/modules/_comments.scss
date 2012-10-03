@@ -128,15 +128,15 @@
 		margin-left:50px;
 	}
 	.user-avatar{
-		@include border-radius(30px);
+		@include border-radius(100px);
 		overflow:hidden;
-	position:block;
-	float:left;
-	img{
+		position:block;
+		float:left;
+		img{
 			height:40px;
-	width:40px;
+			width:40px;
+		}
 	}
-}
 }
 .comment-meta{
 	margin-bottom:5px;

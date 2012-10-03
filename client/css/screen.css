@@ -971,11 +971,11 @@ body.pageslide-open {
     margin-left: 50px; }
   /* line 130, ../sass/modules/_comments.scss */
   .comment-content .user-avatar {
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    -ms-border-radius: 30px;
-    -o-border-radius: 30px;
-    border-radius: 30px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -ms-border-radius: 100px;
+    -o-border-radius: 100px;
+    border-radius: 100px;
     overflow: hidden;
     position: block;
     float: left; }
