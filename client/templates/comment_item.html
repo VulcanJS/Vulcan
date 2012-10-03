@@ -12,21 +12,24 @@
             <span>downvote</span>
           </a>
         </div>
-        <div class="comment-meta">
-          <a class="comment-username" href="/users/{{userId}}">{{authorName}}</a>
-          <span class="comment-time">{{ago}},</span>
-          <span class="points">{{votes}} <span class="unit">points </span>
-          <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">link</a>
-          {{#if can_edit}}
-            | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
-          {{/if}}
-          {{#if currentUser.isAdmin}}
-            | <a class="queue-comment" href="#">queue</a>
-            | <span>{{full_date}}</span>
-          {{/if}}
+        <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        <div class="comment-main">
+          <div class="comment-meta">
+            <a class="comment-username" href="/users/{{userId}}">{{authorName}}</a>
+            <span class="comment-time">{{ago}},</span>
+            <span class="points">{{votes}} <span class="unit">points </span>
+            <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">link</a>
+            {{#if can_edit}}
+              | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
+            {{/if}}
+            {{#if currentUser.isAdmin}}
+              | <a class="queue-comment" href="#">queue</a>
+              | <span>{{full_date}}</span>
+            {{/if}}
+          </div>
+          <div class="comment-text markdown">{{{body_formatted}}}</div>
+          <a href="/comments/{{_id}}" class="comment-reply goto-comment">Reply</a>
         </div>
-        <div class="comment-text markdown">{{{body_formatted}}}</div>
-        <a href="/comments/{{_id}}" class="comment-reply goto-comment">Reply</a>
       </div>
       {{#unless repress_recursion}}
       <ul class="comment-children comment-list">

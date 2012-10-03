@@ -124,8 +124,20 @@
 	@extend .grid-block;
 	@include border-radius(0 3px 3px 3px);
 	font-size:14px;
+	.comment-main{
+		margin-left:50px;
+	}
+	.user-avatar{
+		@include border-radius(30px);
+		overflow:hidden;
+	position:block;
+	float:left;
+	img{
+			height:40px;
+	width:40px;
+	}
 }
-
+}
 .comment-meta{
 	margin-bottom:5px;
 	.comment-username, .comment-time, .comment-permalink{

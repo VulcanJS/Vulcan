@@ -81,7 +81,10 @@
     }
     ,authorName: function(){
       return getAuthorName(this);
-    }
+    },
+    user_avatar: function(){
+      return getAvatarUrl(Meteor.users.findOne(this.userId));
+    }  
     ,can_edit: function(){
       if(this.userId && Meteor.userId())
         return Meteor.user().isAdmin || (Meteor.userId() === this.userId);

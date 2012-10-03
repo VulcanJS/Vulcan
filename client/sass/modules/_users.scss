@@ -3,6 +3,7 @@
 		.user-avatar{
 			height:30px;
 			width:30px;
+			background-size: 30px 30px;
 			display:block;
 			@include border-radius(30px);
 		}
