@@ -135,7 +135,7 @@ Template.comment_item.rendered=function(){
         if(Meteor.users.findOne(comment.userId)){
           // get comment author name
           var user=Meteor.users.findOne(comment.userId);
-          var author=user.username;
+          var author=getDisplayName(user);
 
           var imgURL=Gravatar.getGravatar(user, {
             d: 'http://telesc.pe/img/default_avatar.png',
