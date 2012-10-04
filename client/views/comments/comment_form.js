@@ -38,7 +38,7 @@ Template.comment_form.events = {
             trackEvent("newComment", properties);
 
             addNotification("newReply", properties, parentUser, Meteor.user());
-            if(parentAuthorId!=post.userId){
+            if(parentComment.userId!=post.userId){
                 // if the original poster is different from the author of the parent comment
                 // notify them too
                 addNotification("newComment", properties, postUser, Meteor.user());
