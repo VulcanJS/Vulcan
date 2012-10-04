@@ -1,4 +1,5 @@
 <template name="notifications">
+	{{#if currentUser}}
 	<div class="notifications">
 		<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>
 		<a href="#" class="clear-notifications">Clear notifications</a>
@@ -8,4 +9,5 @@
 	    {{/each}}
 		</ul>
 	</div>
+	{{/if}}
 </template>
