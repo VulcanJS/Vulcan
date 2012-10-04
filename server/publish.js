@@ -24,7 +24,7 @@ Meteor.startup(function(){
       console.log(docs);
       console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
-      if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId) || fields=='notifications'){
+      if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
         }
         return false;

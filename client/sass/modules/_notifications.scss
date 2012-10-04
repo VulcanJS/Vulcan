@@ -1,10 +1,11 @@
 .notifications{
 	position:fixed;
 	height:100%;
-	width:120px;
+	width:200px;
 	top:0px;
-	left:0px;
+	left:-200px;
 	background:white(0.8);
+	@include single-transition(ease-out, left, 300ms, 0ms);
 	ul{
 		li{
 			margin-bottom:10px;
@@ -16,5 +17,25 @@
 				font-size:13px;
 			}
 		}
+	}
+	.notifications-toggle{
+		display:block;
+		position:absolute;
+		left:200px;
+		top:20px;
+		white-space:nowrap;
+		background:white;
+		@include border-radius(0px 3px 3px 0px);
+		@include box-shadow(0 1px 1px black(0.15));
+		padding:3px 10px;
+		font-size:13px;
+		&.no-notifications{
+			background:white(0.3);
+			@include box-shadow(none);
+			color:$light-text;
+		}
+	}
+	.notifications-open &{
+		left:0px;
 	}
 }

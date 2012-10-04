@@ -24,7 +24,6 @@ Template.comment_form.events = {
             'commentAuthorId': Meteor.user()._id,
             'commentAuthorName': getDisplayName(Meteor.user()),
             'postId': postId,
-            'postHeadline': post.headline,
             'parentCommentId': parentCommentId,
             'parentAuthorId': parentComment.userId,
             'parentAuthorName': getDisplayName(parentUser)
@@ -56,8 +55,7 @@ Template.comment_form.events = {
         var properties={
             'commentAuthorId': Meteor.user()._id,
             'commentAuthorName': getDisplayName(Meteor.user()),
-            'postId': postId,
-            'postHeadline': post.headline,
+            'postId': postId
         };
 
         Meteor.call('comment', postId, parentCommentId, content, function(error, result){

@@ -10,5 +10,10 @@ Template.notification_item.helpers({
 	},
 	isNewReply: function(){
 		return this.event=="newReply";
+	},
+	postHeadline: function(){
+		var post=Posts.findOne(this.postId);
+		if(post)
+			return post.headline;
 	}
 });
