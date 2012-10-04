@@ -1,11 +1,30 @@
 {
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
-    "branch": "master",
-    "commit": "19e42c4ec883e2de881f4cf633f828b25f3a81ad"
+    "branch": "auth",
+    "commit": "507792523a6c99a19f6ba6057aa7c7d54d801102"
   },
   "dependencies": {
-    "basePackages": {},
-    "packages": {}
+    "basePackages": {
+      "router": {},
+      "moment": {}
+    },
+    "packages": {
+      "router": {
+        "git": "https://github.com/tmeasday/meteor-router.git",
+        "tag": "v0.1.1",
+        "commit": "bb806c51efe3686a8da6628269aa67a269a4e076"
+      },
+      "moment": {
+        "git": "https://github.com/possibilities/meteor-moment.git",
+        "tag": "v1.7.0",
+        "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
+      },
+      "deps-extensions": {
+        "git": "https://github.com/tmeasday/meteor-deps-extensions.git",
+        "tag": "v0.1.0",
+        "commit": "110462c0ba33aaeb35e55069134287325cc453e5"
+      }
+    }
   }
 }

@@ -37,11 +37,11 @@ Template.comment_form.events = {
 
             trackEvent("newComment", properties);
 
-            addNotification("newReply", properties, parentUser, Meteor.user());
+            Meteor.call('addNotification','newReply', properties, parentUser, Meteor.user());
             if(parentComment.userId!=post.userId){
                 // if the original poster is different from the author of the parent comment
                 // notify them too
-                addNotification("newComment", properties, postUser, Meteor.user());
+                Meteor.call('addNotification','newComment', properties, postUser, Meteor.user());
             }
 
             Session.set('scrollToCommentId', result);
@@ -65,7 +65,7 @@ Template.comment_form.events = {
             properties['commentId']=result;
 
             trackEvent("newComment", properties);
-            addNotification("newComment", properties, postUser, Meteor.user());
+            Meteor.call('addNotification','newComment', properties, postUser, Meteor.user());
             Session.set('scrollToCommentId', result);
             instance.editor.importFile('editor', '');
         });
