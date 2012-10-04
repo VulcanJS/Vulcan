@@ -3,6 +3,6 @@ Template.notifications.helpers({
     var user=Meteor.user();
     console.log(Meteor.user());
     if(user && !user.loading)
-      return user.profile.notifications;
+      return user.profile && user.profile.notifications;
   }
 });
