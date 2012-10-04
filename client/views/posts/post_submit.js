@@ -12,26 +12,15 @@ Template.post_submit.events = {
     var title= $('#title').val();
     var url = $('#url').val();
     var body = instance.editor.exportFile();
-
-    var postId = Posts.insert({
-        headline: title
-      , url: url
-      , body: body
-      , userId: Meteor.user()._id
-      , author: Meteor.user().username
-      , submitted: new Date().getTime()
-      , votes: 0
-      , comments: 0
-      , baseScore: 0
-      , score: 0
+    
+    Meteor.call('post', {
+      headline: title,
+      body: body,
+      url: url
+    }, function(err, postId) {
+      trackEvent("new post", {'postId': postId});
+      Router.navigate('posts/'+postId, {trigger: true});
     });
-    var post = Posts.findOne(postId);
-
-    Meteor.call('upvotePost', postId);
-
-    trackEvent("new post", {'postId': postId});
-
-    Router.navigate('posts/'+postId, {trigger: true});
   }
 
   ,'click .get-title-link': function(e){
