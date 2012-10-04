@@ -51,6 +51,7 @@
 				height:30px;
 				width:30px;
 				@include border-radius(100px);
+				background-size: 30px 30px;
 				// @extend .has-tooltip;
 			}
 			// pointer-events:none;

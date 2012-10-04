@@ -18,8 +18,12 @@ Template.comment_form.events = {
         var parentComment=Comments.findOne(parentCommentId);
         var parentUser=Meteor.users.findOne(parentComment.userId);
 	    var postId=Comments.findOne(parentCommentId).post;
+        var post=Posts.findOne(postId);
+        var message=getDisplayName(Meteor.user())+' has replied to your comment on "'+post.headline+'"';
+        
         Meteor.call('comment', postId, parentCommentId, content, function(error, result){
             Session.set('selectedCommentId', null);
+
             trackEvent("new child comment", {
                 'postId': postId, 
                 'commentId': result, 
@@ -29,6 +33,9 @@ Template.comment_form.events = {
                 'parentAuthorId': parentComment.userId,
                 'parentAuthorName': getDisplayName(parentUser)
             });
+
+            addNotification(parentUser, message, 'posts/'+postId+'/comments/'+result);
+
             Session.set('scrollToCommentId', result);
             Router.navigate('posts/'+postId, {trigger:true});
         });
