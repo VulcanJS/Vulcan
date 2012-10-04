@@ -45,7 +45,7 @@
       <li><a id="signup" href="signup">Sign Up</a></li>
       <li><a id="signin" href="signin">Sign In</a></li>
       {{/if}} -->
-      {{#if currentUser}}
+      {{#if currentUser.approved}}
         <li><a id="submit" class="submit button" href="/submit">Post</a></li>
       {{/if}}
     </ul>
