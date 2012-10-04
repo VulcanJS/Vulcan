@@ -3,18 +3,18 @@
 		<span class="notification-timestamp">{{nice_time}}</span>
 		<p>
 
-			{{#if isNewChildComment}}
+			{{#if isNewReply}}
 				{{#with properties}}
 					<a href="/users/{{commentAuthorId}}">{{commentAuthorName}}</a> has replied to your comment on "<a href='/posts/{{postId}}/comment/{{commentId}}'>{{postHeadline}}</a>".
 				{{/with}}
 			{{/if}}
 
-			{{#if isNewRootComment}}
+			{{#if isNewComment}}
 				{{#with properties}}
 					<a href="/users/{{commentAuthorId}}">{{commentAuthorName}}</a> left a new comment on your post "<a href='/posts/{{postId}}/comment/{{commentId}}'>{{postHeadline}}</a>".
 				{{/with}}
 			{{/if}}
-			
+
 		</p>
 	</li>
 </template>

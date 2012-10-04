@@ -25,3 +25,6 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
+$(document).bind('keyup', 'ctrl+n', function(){
+	$('.notifications').toggleClass('hidden');
+});

@@ -5,10 +5,10 @@ Template.notification_item.helpers({
 	properties: function(){
 		return this.properties;
 	},
-	isNewRootComment: function(){
-		return this.event=="newRootComment";
+	isNewComment: function(){
+		return this.event=="newComment";
 	},
-	isNewChildComment: function(){
-		return this.event=="newChildComment";
+	isNewReply: function(){
+		return this.event=="newReply";
 	}
 });
