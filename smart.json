@@ -3,7 +3,9 @@
     "branch": "auth"
   },
   "packages": {
+    // "observatory": {},
     "router": {},
     "moment": {}
+
   }
 }

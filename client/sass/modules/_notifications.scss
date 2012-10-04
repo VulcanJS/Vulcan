@@ -1,0 +1,20 @@
+.notifications{
+	position:fixed;
+	height:100%;
+	width:120px;
+	top:0px;
+	left:0px;
+	background:white(0.8);
+	ul{
+		li{
+			margin-bottom:10px;
+			padding:10px;
+			border-bottom:1px solid $lighter-grey;
+			font-size:14px;
+			.notification-timestamp{
+				color:$light-text;
+				font-size:13px;
+			}
+		}
+	}
+}

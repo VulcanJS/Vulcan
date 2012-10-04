@@ -24,17 +24,16 @@ Template.comment_form.events = {
         Meteor.call('comment', postId, parentCommentId, content, function(error, result){
             Session.set('selectedCommentId', null);
 
-            trackEvent("new child comment", {
-                'postId': postId, 
+            trackEvent("newChildComment", {
+                'postId': postId,
+                'postHeadline': post.headline,
                 'commentId': result, 
                 'commentAuthorId': Meteor.user()._id,
                 'commentAuthorName': getDisplayName(Meteor.user()),
                 'parentId': parentCommentId, 
                 'parentAuthorId': parentComment.userId,
                 'parentAuthorName': getDisplayName(parentUser)
-            });
-
-            addNotification(parentUser, message, 'posts/'+postId+'/comments/'+result);
+            }, parentUser);
 
             Session.set('scrollToCommentId', result);
             Router.navigate('posts/'+postId, {trigger:true});
@@ -43,13 +42,16 @@ Template.comment_form.events = {
     	// post a root comment
     	var parentCommentId=null;
     	var postId=Session.get('selectedPostId');
+        var post=Posts.findOne(postId);
+        var postUser=Meteor.users.findOne(post.userId);
         Meteor.call('comment', postId, parentCommentId, content, function(error, result){
-            trackEvent("new root comment", {
+            trackEvent("newRootComment", {
                 'postId': postId, 
+                'postHeadline': post.headline,
                 'commentId': result,
                 'commentAuthorId': Meteor.user()._id,
                 'commentAuthorName': getDisplayName(Meteor.user())
-            });
+            }, postUser);
             Session.set('scrollToCommentId', result);
             instance.editor.importFile('editor', '');
         });

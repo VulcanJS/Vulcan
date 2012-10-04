@@ -1,4 +1,4 @@
-Meteor.accounts.config({
+Accounts.config({
 	requireEmail: true,
 	requireUsername: true
 });

@@ -1256,6 +1256,25 @@ table thead tr td {
   background: #f36c3d;
   color: white; }
 
+/* line 1, ../sass/modules/_notifications.scss */
+.notifications {
+  position: fixed;
+  height: 100%;
+  width: 120px;
+  top: 0px;
+  left: 0px;
+  background: rgba(255, 255, 255, 0.8); }
+  /* line 9, ../sass/modules/_notifications.scss */
+  .notifications ul li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #dfdbdb;
+    font-size: 14px; }
+    /* line 14, ../sass/modules/_notifications.scss */
+    .notifications ul li .notification-timestamp {
+      color: #b3c1c6;
+      font-size: 13px; }
+
 /* line 1, ../sass/partials/_mobile.scss */
 .mobile {
   display: none !important; }

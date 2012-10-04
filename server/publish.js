@@ -19,12 +19,13 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-      // console.log("updating");
-      // console.log(userId);
-      // console.log(docs);
-      // console.log(fields);
-      // console.log(modifier);
-        if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
+      console.log("updating");
+      console.log(userId);
+      console.log(docs);
+      console.log('fields: '+fields);
+      // console.log(modifier); //uncommenting this crashes everything
+      return true;
+      if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId) || fields=='notifications'){
           return true;
         }
         return false;

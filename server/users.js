@@ -1,4 +1,4 @@
-Meteor.accounts.onCreateUser(function(options, extra, user){
+Accounts.onCreateUser(function(options, extra, user){
   _.extend(user, extra);
   
   user.karma = 0;

@@ -1,6 +1,9 @@
 <template name="notifications">
-	{{#each notifications}}
-		<p>{{message}}</p>
-		<p>{{link}}</p>
-    {{/each}}
+	<div class="notifications">
+		<ul>
+		{{#each notifications}}
+			{{> notification_item}}
+	    {{/each}}
+		</ul>
+	</div>
 </template>
