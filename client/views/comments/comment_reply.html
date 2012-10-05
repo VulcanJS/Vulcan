@@ -1,6 +1,11 @@
-<template name="comment_page">
-  {{#if canView}}
+<template name="comment_reply">
+  {{#if canComment true}}
   <div class="post grid comment-page">
+    {{#if post}}
+    {{#with post}}
+      {{> post_item}}
+    {{/with}}
+    {{/if}}
 
     {{#if comment}}
     {{#with comment}}
@@ -10,6 +15,7 @@
     {{/with}}
     {{/if}}
 
+    {{> comment_form}}
   </div>
   {{/if}}
 </template>

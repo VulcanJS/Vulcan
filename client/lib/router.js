@@ -8,7 +8,6 @@ SimpleRouter = FilteredRouter.extend({
 	start_request: function(page){
 		// runs at every new page change
 
-		Session.set("error", null);
 		Session.set("openedComments", null);
 		document.title = getSetting("title");
 
@@ -94,6 +93,7 @@ SimpleRouter = FilteredRouter.extend({
 		'posts/:id':'post',
 		'comments/deleted':'comment_deleted',	  
 		'comments/:id':'comment',
+		'comments/:id/reply':'comment_reply',
 		'comments/:id/edit':'comment_edit',
 		'settings':'settings',
 		'admin':'admin',
@@ -134,9 +134,16 @@ SimpleRouter = FilteredRouter.extend({
 	},
 	comment: function(id) {
 		console.log("comment, id="+id);
-		window.template='comment_page';
 		Session.set('selectedCommentId', id);
 		this.goto('comment_page');
+		window.repress_recursion=true;
+		window.newCommentTimestamp=new Date();
+	},
+	comment_reply: function(id) {
+		console.log("comment reply, id="+id);
+		window.template='comment_reply';
+		Session.set('selectedCommentId', id);
+		this.goto('comment_reply');
 		window.repress_recursion=true;
 		window.newCommentTimestamp=new Date();
 	},

@@ -26,7 +26,7 @@ Template.post_edit.helpers({
     
     innerContext.run(function() {
       post = Posts.findOne(Session.get('selectedPostId'));
-    })
+    });
     
     return post;
   }

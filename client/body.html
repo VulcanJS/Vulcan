@@ -1,8 +1,10 @@
 <template name="body">
-  {{> nav}}
-  {{> error}}
-  {{{render currentPage}}}
-  {{> notifications}}
-  {{> footer}}
-  <div class="overlay hidden"></div>
+	{{#if canView}}
+  		{{> nav}}
+  	{{/if}}
+	{{> error}}
+	{{{render currentPage}}}
+	{{> notifications}}
+	{{> footer}}
+	<div class="overlay hidden"></div>
 </template>

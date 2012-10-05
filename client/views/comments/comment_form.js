@@ -11,7 +11,7 @@ Template.comment_form.events = {
 	var $comment = $('#comment');
 	var content = instance.editor.exportFile();
 
-    if(window.template=='comment_page'){
+    if(window.template=='comment_reply'){
         // child comment
         var parentCommentId=Session.get('selectedCommentId');
         var parentComment=Comments.findOne(parentCommentId);

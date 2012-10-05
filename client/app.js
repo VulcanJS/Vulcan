@@ -29,3 +29,24 @@ $.fn.exists = function () {
 $(document).bind('keyup', 'ctrl+n', function(){
 	$('.notifications').toggleClass('hidden');
 });
+
+Handlebars.registerHelper('canView', function(redirect) {
+	var redirect=(redirect=="true");
+	return canView(Meteor.user(), redirect);
+});
+Handlebars.registerHelper('canPost', function(redirect) {
+	var redirect=(redirect=="true");
+	return canPost(Meteor.user(), redirect);
+});
+Handlebars.registerHelper('canComment', function(redirect) {
+	var redirect=(redirect=="true");
+	return canComment(Meteor.user(), redirect);
+});
+Handlebars.registerHelper('canUpvote', function(collection, redirect) {
+	var redirect=(redirect=="true");
+	return canUpvote(Meteor.user()), collection, redirect;
+});
+Handlebars.registerHelper('canDownvote', function(collection, redirect) {
+	var redirect=(redirect=="true");
+	return canDownvote(Meteor.user(), collection, redirect);
+});
