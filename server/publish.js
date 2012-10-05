@@ -1,11 +1,5 @@
-// Users
-isAdmin=function(userId){
-	var user = Meteor.users.findOne(userId);
-	return user && user.isAdmin;
-}
-
 Meteor.publish('users', function() {
-  if (this.userId() && isAdmin(this.userId())) {
+  if (this.userId() && isAdminById(this.userId())) {
     return Meteor.users.find();
   }else{
     return Meteor.users.find({}, {fields: {emails: false}});
@@ -24,13 +18,13 @@ Meteor.startup(function(){
       // console.log(docs);
       // console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
-      if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
+      if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
+        if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
         }
         return false; 
@@ -61,13 +55,13 @@ Meteor.startup(function(){
         // console.log(userId);
         // console.log(docs);
         // console.log('fields: '+fields);
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false; }
@@ -91,13 +85,13 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;
@@ -115,9 +109,9 @@ Meteor.publish('settings', function() {
 
 Meteor.startup(function(){
   Settings.allow({
-      insert: function(userId, docs){ return isAdmin(userId); }
-    , update: function(userId, docs, fields, modifier){ return isAdmin(userId); }
-    , remove: function(userId, docs){ return isAdmin(userId); }
+      insert: function(userId, docs){ return isAdminById(userId); }
+    , update: function(userId, docs, fields, modifier){ return isAdminById(userId); }
+    , remove: function(userId, docs){ return isAdminById(userId); }
   });
 });
 
@@ -139,13 +133,13 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
         return false;

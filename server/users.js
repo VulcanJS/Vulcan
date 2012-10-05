@@ -5,7 +5,7 @@ Accounts.onCreateUser(function(options, extra, user){
   user.profile = user.profile || {};
   
   // users start pending, need to be approved
-  user.approved = false
+  user.isInvited = false
   
   if (options.email)
     user.profile.email = options.email;

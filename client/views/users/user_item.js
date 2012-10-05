@@ -28,3 +28,38 @@ Template.user_item.helpers({
 		return Comments.find({'userId':this._id}).count();
 	}
 });
+
+Template.user_item.events({
+	'click .invite-link': function(e, instance){
+		e.preventDefault();
+		Meteor.users.update(instance.data._id,{
+			$set:{
+				isInvited: true
+			}
+		});
+	},
+	'click .uninvite-link': function(e, instance){
+		e.preventDefault();
+		Meteor.users.update(instance.data._id,{
+			$set:{
+				isInvited: false
+			}
+		});
+	},
+	'click .admin-link': function(e, instance){
+		e.preventDefault();
+		Meteor.users.update(instance.data._id,{
+			$set:{
+				isAdmin: true
+			}
+		});
+	},
+	'click .unadmin-link': function(e, instance){
+		e.preventDefault();
+		Meteor.users.update(instance.data._id,{
+			$set:{
+				isAdmin: false
+			}
+		});
+	}
+})

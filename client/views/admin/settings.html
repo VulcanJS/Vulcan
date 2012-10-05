@@ -8,6 +8,12 @@
       {{/if}}
       {{#if currentUser.isAdmin}}
       <div class="control-group">
+        <label class="control-label">Require Invite?</label>
+        <div class="controls">
+              <input type="checkbox" name="requireInvite" id="requireInvite" {{#if requireInvite}}checked{{/if}} />
+        </div>
+      </div>
+      <div class="control-group">
         <label>Site Title</label>
         <div class="controls"><input id="title" name="title" type="text" value="{{title}}" /></div>
       </div>

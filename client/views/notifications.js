@@ -15,6 +15,7 @@ Template.notifications.helpers({
   notification_class: function(){
     var notifications=Notifications.find({userId: Meteor.user()._id, read: false}).fetch();
   	if(notifications.length==0)
+  		return 'no-notifications';
   }
 });
 

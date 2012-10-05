@@ -50,7 +50,7 @@
       <li><a id="signup" href="signup">Sign Up</a></li>
       <li><a id="signin" href="signin">Sign In</a></li>
       {{/if}} -->
-      {{#if currentUser.approved}}
+      {{#if canPost}}
         <li><a id="submit" class="submit button" href="/submit">Post</a></li>
       {{/if}}
     </ul>

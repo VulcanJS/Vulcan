@@ -14,7 +14,7 @@
     {{/with}}
     {{/if}}
 
-    {{#if currentUser.approved}}
+    {{#if canPostComment}}
       {{> comment_form}}
     {{/if}}
   </div>

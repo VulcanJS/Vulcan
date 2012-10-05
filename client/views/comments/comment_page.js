@@ -3,8 +3,13 @@ Template.comment_page.post = function(){
   return selectedComment && Posts.findOne(selectedComment.post);
 };
 
-Template.comment_page.comment = function(){
-  var comment = Comments.findOne(Session.get('selectedCommentId'));
-  Template.comment_page.repress_recursion = true;
-  return comment;
-};
+Template.comment_page.helpers({
+	comment: function(){
+		var comment = Comments.findOne(Session.get('selectedCommentId'));
+		Template.comment_page.repress_recursion = true;
+		return comment;
+	},
+	canComment: function(){
+		return canComment(Meteor.user());
+	}
+});
