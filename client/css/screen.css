@@ -1268,11 +1268,11 @@ table thead tr td {
   top: 0px;
   left: -200px;
   background: rgba(255, 255, 255, 0.8);
-  -webkit-transition: ease-out left 300ms;
+  -webkit-transition: ease-out left 400ms;
   -webkit-transition-delay: 0ms;
-  -moz-transition: ease-out left 300ms 0ms;
-  -o-transition: ease-out left 300ms 0ms;
-  transition: ease-out left 300ms 0ms; }
+  -moz-transition: ease-out left 400ms 0ms;
+  -o-transition: ease-out left 400ms 0ms;
+  transition: ease-out left 400ms 0ms; }
   /* line 10, ../sass/modules/_notifications.scss */
   .notifications ul li {
     margin-bottom: 10px;

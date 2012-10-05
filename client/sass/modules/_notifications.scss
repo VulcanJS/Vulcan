@@ -5,7 +5,7 @@
 	top:0px;
 	left:-200px;
 	background:white(0.8);
-	@include single-transition(ease-out, left, 300ms, 0ms);
+	@include single-transition(ease-out, left, 400ms, 0ms);
 	ul{
 		li{
 			margin-bottom:10px;

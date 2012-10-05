@@ -6,11 +6,11 @@ Template.user_password.events = {
    
     var options=new Object();
     options.email=$('#email').val();
-    Meteor.forgotPassword(options, function(error){
+    Accounts.forgotPassword(options, function(error){
     	if(error){
-    		alert(error);
+    		console.log(error);
     	}else{
-    		alert("Password reset link sent!");
+    		throwError("Password reset link sent!");
     	}
     });
 
