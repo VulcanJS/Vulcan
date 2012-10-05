@@ -8,9 +8,15 @@
       {{/if}}
       {{#if currentUser.isAdmin}}
       <div class="control-group">
-        <label class="control-label">Require Invite?</label>
+        <label class="control-label">Require Invite to view?</label>
         <div class="controls">
-              <input type="checkbox" name="requireInvite" id="requireInvite" {{#if requireInvite}}checked{{/if}} />
+              <input type="checkbox" name="requireViewInvite" id="requireViewInvite" {{#if requireViewInvite}}checked{{/if}} />
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Require Invite to post?</label>
+        <div class="controls">
+              <input type="checkbox" name="requirePostInvite" id="requirePostInvite" {{#if requirePostInvite}}checked{{/if}} />
         </div>
       </div>
       <div class="control-group">

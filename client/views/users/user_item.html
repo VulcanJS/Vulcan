@@ -14,7 +14,7 @@
 	</td>
 	<td><a href="#">{{comments_count}}</a></td>
 	<td>{{karma}}</td>
-	<td>{{#if isInvited}}<i class="icon-check"></i>{{else}}<a href="#" class="invite-link">Invite</a>{{/if}}</td>
-	<td>{{#if isAdmin}}<i class="icon-check"></i>{{else}}<a href="#" class="admin-link">Make admin</a>{{/if}}</td>
+	<td>{{#if isInvited}}<a class="uninvite-link" href="#"><i class="icon-check"></i>Uninvite</a>{{else}}<a href="#" class="invite-link">Invite</a>{{/if}}</td>
+	<td>{{#if isAdmin}}<a class="unadmin-link" href="#"><i class="icon-check unadmin-link"></i>Unadmin</a>{{else}}<a href="#" class="admin-link">Make admin</a>{{/if}}</td>
 </tr>
 </template>

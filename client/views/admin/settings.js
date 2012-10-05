@@ -2,7 +2,8 @@ Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
-    var requireInvite=!!$('#requireInvite').attr('checked');
+    var requireViewInvite=!!$('#requireViewInvite').attr('checked');
+    var requirePostInvite=!!$('#requirePostInvite').attr('checked');
     var title= $('#title').val();
     var theme = $('#theme').val();
     var footerCode=$("#footerCode").val();
@@ -24,7 +25,8 @@ Template.settings.events = {
     if(prevSetting){
       Settings.update(prevSetting._id,{
           $set: {
-            requireInvite:requireInvite,
+            requireViewInvite:requireViewInvite,
+            requirePostInvite:requirePostInvite,            
             title: title,
             theme: theme,
             footerCode: footerCode,
@@ -48,7 +50,8 @@ Template.settings.events = {
       });
     }else{
        var settingId = Settings.insert({
-          requireInvite:requireInvite, 
+          requireViewInvite:requireViewInvite, 
+          requirePostInvite:requirePostInvite,        
           title: title,
           theme: theme,
           footerCode: footerCode,
