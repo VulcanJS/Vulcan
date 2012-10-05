@@ -19,10 +19,10 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-      console.log("updating");
-      console.log(userId);
-      console.log(docs);
-      console.log('fields: '+fields);
+      // console.log("updating");
+      // console.log(userId);
+      // console.log(docs);
+      // console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
       if(isAdmin(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
@@ -57,6 +57,10 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){ 
+        // console.log("updating");
+        // console.log(userId);
+        // console.log(docs);
+        // console.log('fields: '+fields);
         if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }

@@ -17,6 +17,7 @@ Template.settings.events = {
     var veroAPIKey=$('#veroAPIKey').val();
     var veroSecret=$('#veroSecret').val();
     var intercomId=$('#intercomId').val();
+
     var prevSetting=Settings.find().fetch()[0];
     
     if(prevSetting){
@@ -38,7 +39,9 @@ Template.settings.events = {
             veroSecret:veroSecret,
             notes: notes
           }
-      }, function(){
+      }, function(error){
+        if(error)
+          console.log(error);
         throwError("Settings have been updated");
       });
     }else{
@@ -51,6 +54,7 @@ Template.settings.events = {
           mixpanelId: mixpanelId,
           proxinoKey: proxinoKey,
           goSquaredId: goSquaredId,
+          intercomId: intercomId,          
           logoUrl: logoUrl,
           logoHeight: logoHeight,
           logoWidth: logoWidth,
