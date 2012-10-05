@@ -4,17 +4,32 @@
 	width:200px;
 	top:0px;
 	left:-200px;
-	background:white(0.8);
+	background:#f3f3f3;
 	@include single-transition(ease-out, left, 400ms, 0ms);
+	.mark-as-read{
+		display:block;
+		text-align:center;
+		padding:10px;
+		font-size:13px;
+		border-bottom:1px solid $lighter-grey;
+		background:#f3f3f3;
+		&:link, &:visited{
+			color:$blue;
+		}
+	}
 	ul{
 		li{
-			margin-bottom:10px;
 			padding:10px;
 			border-bottom:1px solid $lighter-grey;
-			font-size:14px;
+			font-size:13px;
+			background:white;
 			.notification-timestamp{
 				color:$light-text;
-				font-size:13px;
+				font-size:12px;
+			}
+			&.read{
+				color:$light-text;
+				background:#f3f3f3;
 			}
 		}
 	}
@@ -37,5 +52,6 @@
 	}
 	.notifications-open &{
 		left:0px;
+		@include box-shadow(1px 0px 1px black(0.15));
 	}
 }

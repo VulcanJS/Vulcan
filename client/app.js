@@ -4,11 +4,12 @@ Posts = new Meteor.Collection('posts');
 Meteor.subscribe('posts');
 
 Comments = new Meteor.Collection('comments');
-
 Meteor.subscribe('comments', function() {
    StyleNewRecords = new Date();
 });
 
+Notifications = new Meteor.Collection('notifications');
+Meteor.subscribe('notifications');
 
 Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){

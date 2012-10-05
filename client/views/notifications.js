@@ -1,22 +1,21 @@
 Template.notifications.helpers({
   notifications: function(){
-    var user=Meteor.user();
-    if(user && !user.loading)
-      return user.notifications;
+    return Notifications.find({userId: Meteor.user()._id}, {sort: {timestamp: -1}});
   },
   notification_count: function(){
-  	var user=Meteor.user();
-  	if(!user.notifications || user.notifications.length==0){
+  	var notifications=Notifications.find({userId: Meteor.user()._id, read: false}).fetch();
+    console.log(notifications);
+  	if(notifications.length==0){
   		return 'No notifications';
-  	}else if(user.notifications.length==1){
+  	}else if(notifications.length==1){
   		return '1 notification';
   	}else{
-  		return user.notifications.length+' notifications';
+  		return notifications.length+' notifications';
   	}
   },
   notification_class: function(){
-  	var user=Meteor.user();
-  	if(!user.notifications || user.notifications.length==0)
+    var notifications=Notifications.find({userId: Meteor.user()._id, read: false}).fetch();
+  	if(notifications.length==0)
   		return 'no-notifications';
   }
 });
@@ -25,7 +24,7 @@ Template.notifications.events({
 	'click .notifications-toggle': function(){
 		$('body').toggleClass('notifications-open');
 	},
-	'click .clear-notifications': function(){
-		Meteor.call('clearNotifications', Meteor.user());
+	'click .mark-as-read': function(){
+		Meteor.call('markAllNotificationsAsRead', Meteor.user());
 	}
 })

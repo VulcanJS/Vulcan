@@ -17,3 +17,9 @@ Template.notification_item.helpers({
 			return post.headline;
 	}
 });
+
+Template.notification_item.events({
+  'click .action-link': function(event, instance){
+    Meteor.call('markNotificationAsRead', instance.data._id);
+  }
+});

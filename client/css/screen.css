@@ -1267,23 +1267,38 @@ table thead tr td {
   width: 200px;
   top: 0px;
   left: -200px;
-  background: rgba(255, 255, 255, 0.8);
+  background: #f3f3f3;
   -webkit-transition: ease-out left 400ms;
   -webkit-transition-delay: 0ms;
   -moz-transition: ease-out left 400ms 0ms;
   -o-transition: ease-out left 400ms 0ms;
   transition: ease-out left 400ms 0ms; }
-  /* line 10, ../sass/modules/_notifications.scss */
+  /* line 9, ../sass/modules/_notifications.scss */
+  .notifications .mark-as-read {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #dfdbdb;
+    background: #f3f3f3; }
+    /* line 16, ../sass/modules/_notifications.scss */
+    .notifications .mark-as-read:link, .notifications .mark-as-read:visited {
+      color: #7ac0e4; }
+  /* line 21, ../sass/modules/_notifications.scss */
   .notifications ul li {
-    margin-bottom: 10px;
     padding: 10px;
     border-bottom: 1px solid #dfdbdb;
-    font-size: 14px; }
-    /* line 15, ../sass/modules/_notifications.scss */
+    font-size: 13px;
+    background: white; }
+    /* line 26, ../sass/modules/_notifications.scss */
     .notifications ul li .notification-timestamp {
       color: #b3c1c6;
-      font-size: 13px; }
-  /* line 21, ../sass/modules/_notifications.scss */
+      font-size: 12px; }
+    /* line 30, ../sass/modules/_notifications.scss */
+    .notifications ul li.read {
+      color: #b3c1c6;
+      background: #f3f3f3; }
+  /* line 36, ../sass/modules/_notifications.scss */
   .notifications .notifications-toggle {
     display: block;
     position: absolute;
@@ -1301,16 +1316,19 @@ table thead tr td {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     padding: 3px 10px;
     font-size: 13px; }
-    /* line 32, ../sass/modules/_notifications.scss */
+    /* line 47, ../sass/modules/_notifications.scss */
     .notifications .notifications-toggle.no-notifications {
       background: rgba(255, 255, 255, 0.3);
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;
       color: #b3c1c6; }
-  /* line 38, ../sass/modules/_notifications.scss */
+  /* line 53, ../sass/modules/_notifications.scss */
   .notifications-open .notifications {
-    left: 0px; }
+    left: 0px;
+    -webkit-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15); }
 
 /* line 1, ../sass/partials/_mobile.scss */
 .mobile {

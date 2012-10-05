@@ -116,3 +116,35 @@ Meteor.startup(function(){
     , remove: function(userId, docs){ return isAdmin(userId); }
   });
 });
+
+
+// Notifications
+
+Notifications = new Meteor.Collection('notifications');
+
+Meteor.publish('notifications', function() {
+  return Notifications.find();
+});
+
+Meteor.startup(function(){
+  Notifications.allow({
+      insert: function(userId, doc){
+        if(userId){
+          return true;
+        }
+        return false;
+      }
+    , update: function(userId, docs, fields, modifier){
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+          return true;
+        }
+        return false;
+      }
+    , remove: function(userId, docs){ 
+        if(isAdmin(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+          return true;
+        }
+        return false;
+      }
+  });
+});

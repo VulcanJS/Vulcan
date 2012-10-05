@@ -2,7 +2,7 @@
 	{{#if currentUser}}
 	<div class="notifications">
 		<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>
-		<a href="#" class="clear-notifications">Clear notifications</a>
+		<a href="#" class="mark-as-read">Mark all as read</a>
 		<ul>
 		{{#each notifications}}
 			{{> notification_item}}
