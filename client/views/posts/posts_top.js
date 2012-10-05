@@ -6,9 +6,3 @@ Template.posts_top.posts = function(){
 Template.posts_top.created = function(){
 	window.sortBy="score";
 }
-
-Template.posts_top.helpers({
-	canView: function(){
-		return canView(Meteor.user());
-	}
-});

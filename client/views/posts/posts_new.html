@@ -1,5 +1,5 @@
 <template name="posts_new">
-	{{#if canView}}
+	{{#if canView replace}}
 		<div class="posts grid list">
 			{{#each posts}}
 				{{> post_item}}

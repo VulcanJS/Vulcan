@@ -30,23 +30,23 @@ $(document).bind('keyup', 'ctrl+n', function(){
 	$('.notifications').toggleClass('hidden');
 });
 
-Handlebars.registerHelper('canView', function(redirect) {
-	var redirect=(redirect=="true");
-	return canView(Meteor.user(), redirect);
+Handlebars.registerHelper('canView', function(action) {
+	var action=(typeof action === 'undefined') ? null : action;
+	return canView(Meteor.user(), action);
 });
-Handlebars.registerHelper('canPost', function(redirect) {
-	var redirect=(redirect=="true");
-	return canPost(Meteor.user(), redirect);
+Handlebars.registerHelper('canPost', function(action) {
+	var action=(typeof action === 'undefined') ? null : action;
+	return canPost(Meteor.user(), action);
 });
-Handlebars.registerHelper('canComment', function(redirect) {
-	var redirect=(redirect=="true");
-	return canComment(Meteor.user(), redirect);
+Handlebars.registerHelper('canComment', function(action) {
+	var action=(typeof action === 'undefined') ? null : action;
+	return canComment(Meteor.user(), action);
 });
-Handlebars.registerHelper('canUpvote', function(collection, redirect) {
-	var redirect=(redirect=="true");
-	return canUpvote(Meteor.user()), collection, redirect;
+Handlebars.registerHelper('canUpvote', function(collection, action) {
+	var action=(typeof action === 'undefined') ? null : action;
+	return canUpvote(Meteor.user()), collection, action;
 });
-Handlebars.registerHelper('canDownvote', function(collection, redirect) {
-	var redirect=(redirect=="true");
-	return canDownvote(Meteor.user(), collection, redirect);
+Handlebars.registerHelper('canDownvote', function(collection, action) {
+	var action=(typeof action === 'undefined') ? null : action;
+	return canDownvote(Meteor.user(), collection, action);
 });
