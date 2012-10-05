@@ -3,7 +3,7 @@
     {{#with post}}
      {{> post_item}}
     {{/with}}
-    {{#if currentUser}}
+    {{#if currentUser.approved}}
       {{> comment_form}}
     {{/if}}
     {{> comment_list}}
