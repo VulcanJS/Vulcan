@@ -1,4 +1,5 @@
 <template name="post_page">
+	{{#if canView}}
   <div class="single-post grid">
     {{#with post}}
      {{> post_item}}
@@ -8,4 +9,5 @@
     {{/if}}
     {{> comment_list}}
   </div>
+  {{/if}}
 </template>

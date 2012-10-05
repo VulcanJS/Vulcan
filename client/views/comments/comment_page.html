@@ -1,4 +1,5 @@
 <template name="comment_page">
+  {{#if canView}}
   <div class="post grid comment-page">
     {{#if post}}
     {{#with post}}
@@ -18,4 +19,5 @@
       {{> comment_form}}
     {{/if}}
   </div>
+  {{/if}}
 </template>

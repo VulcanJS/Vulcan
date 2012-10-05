@@ -11,5 +11,8 @@ Template.comment_page.helpers({
 	},
 	canComment: function(){
 		return canComment(Meteor.user());
+	},
+	canView: function(){
+		return canView(Meteor.user());
 	}
 });

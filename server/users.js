@@ -4,7 +4,7 @@ Accounts.onCreateUser(function(options, extra, user){
   user.karma = 0;
   user.profile = user.profile || {};
   
-  // users start pending, need to be approved
+  // users start pending, need to be invited
   user.isInvited = false
   
   if (options.email)
