@@ -46,7 +46,10 @@ SimpleRouter = FilteredRouter.extend({
 			window.intercomSettings = {
 				app_id: intercomId,
 				email: currentUserEmail,
-				created_at: Meteor.user().createdAt
+				created_at: moment(Meteor.user().createdAt).unix(),
+				custom_data: {
+					'profile link': 'http://'+document.domain+'/users/'+Meteor.user()._id
+				}
 			};
 			IntercomInit();
 		}
