@@ -42,7 +42,7 @@ SimpleRouter = FilteredRouter.extend({
 		}
 
 		// Intercom
-		if(intercomId=getSetting("intercomId") && Meteor.user()){
+		if((intercomId=getSetting("intercomId")) && Meteor.user()){
 			window.intercomSettings = {
 				app_id: intercomId,
 				email: currentUserEmail,

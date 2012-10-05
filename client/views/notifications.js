@@ -20,7 +20,8 @@ Template.notifications.helpers({
 });
 
 Template.notifications.events({
-	'click .notifications-toggle': function(){
+	'click .notifications-toggle': function(e){
+    e.preventDefault();
 		$('body').toggleClass('notifications-open');
 	},
 	'click .mark-as-read': function(){
