@@ -4,18 +4,19 @@ Template.settings.events = {
     if(!Meteor.user()) throw 'You must be logged in.';
     var title= $('#title').val();
     var theme = $('#theme').val();
-    var footerCode=$("#footer_code").val();
-    var analyticsCode = $('#analytics_code').val();
-    var tlkioChannel = $('#tlkio_channel').val();
-    var mixpanelId= $('#mixpanel_id').val();
-    var proxinoKey=$('#proxino_key').val();
-    var goSquaredId=$('#gosquared_id').val();
-    var logoUrl=$('#logo_url').val();
-    var logoHeight=$('#logo_height').val();
-    var logoWidth=$('#logo_width').val();
+    var footerCode=$("#footerCode").val();
+    var analyticsCode = $('#analyticsCode').val();
+    var tlkioChannel = $('#tlkioChannel').val();
+    var mixpanelId= $('#mixpanelId').val();
+    var proxinoKey=$('#proxinoKey').val();
+    var goSquaredId=$('#goSquaredId').val();
+    var logoUrl=$('#logoUrl').val();
+    var logoHeight=$('#logoHeight').val();
+    var logoWidth=$('#logoWidth').val();
     var notes=$('#notes').val();
-    var veroAPIKey=$('#vero_apikey').val();
-    var veroSecret=$('#vero_secret').val();
+    var veroAPIKey=$('#veroAPIKey').val();
+    var veroSecret=$('#veroSecret').val();
+    var intercomId=$('#intercomId').val();
     var prevSetting=Settings.find().fetch()[0];
     
     if(prevSetting){
@@ -29,6 +30,7 @@ Template.settings.events = {
             mixpanelId: mixpanelId,
             proxinoKey: proxinoKey,
             goSquaredId: goSquaredId,
+            intercomId: intercomId,
             logoUrl: logoUrl,
             logoHeight: logoHeight,
             logoWidth: logoWidth,
