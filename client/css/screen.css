@@ -492,13 +492,19 @@ body.pageslide-open {
         line-height: 26px;
         height: 26px;
         font-weight: normal; }
-  /* line 34, ../sass/modules/_header.scss */
+        /* line 33, ../sass/modules/_header.scss */
+        .header .nav li a.intercom em:before {
+          content: '('; }
+        /* line 36, ../sass/modules/_header.scss */
+        .header .nav li a.intercom em:after {
+          content: ')'; }
+  /* line 43, ../sass/modules/_header.scss */
   .header .site-nav {
     float: left;
     margin-left: 20px;
     position: relative;
     z-index: 20; }
-  /* line 40, ../sass/modules/_header.scss */
+  /* line 49, ../sass/modules/_header.scss */
   .header .logo {
     position: absolute;
     display: inline-block;
@@ -508,14 +514,14 @@ body.pageslide-open {
     color: white;
     font-size: 30px;
     z-index: 10; }
-    /* line 49, ../sass/modules/_header.scss */
+    /* line 58, ../sass/modules/_header.scss */
     .header .logo a, .header .logo a:visited {
       color: white; }
-    /* line 52, ../sass/modules/_header.scss */
+    /* line 61, ../sass/modules/_header.scss */
     .header .logo.image {
       position: absolute;
       left: 50%; }
-      /* line 55, ../sass/modules/_header.scss */
+      /* line 64, ../sass/modules/_header.scss */
       .header .logo.image a {
         display: block;
         height: 100%;
@@ -524,39 +530,39 @@ body.pageslide-open {
         font: 0/0 a;
         text-shadow: none;
         color: transparent; }
-  /* line 66, ../sass/modules/_header.scss */
+  /* line 75, ../sass/modules/_header.scss */
   .header .user-nav {
     float: right;
     margin-right: 10px;
     position: relative;
     z-index: 20; }
 
-/* line 88, ../sass/modules/_header.scss */
+/* line 97, ../sass/modules/_header.scss */
 .auth-buttons {
   position: relative;
   z-index: 20;
   float: right;
   margin: 20px 10px 0 0; }
-  /* line 93, ../sass/modules/_header.scss */
+  /* line 102, ../sass/modules/_header.scss */
   .auth-buttons #login-buttons {
     position: relative;
     line-height: 26px; }
-    /* line 99, ../sass/modules/_header.scss */
+    /* line 108, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a {
       text-decoration: none;
       color: #4a4444; }
-    /* line 103, ../sass/modules/_header.scss */
+    /* line 112, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons a.login-link-text {
       color: #fff;
       font-weight: normal;
       display: inline-block;
       height: 26px;
       font-size: 0; }
-      /* line 109, ../sass/modules/_header.scss */
+      /* line 118, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons a.login-link-text:after {
         content: "Sign Up/Sign In";
         font-size: 16px; }
-    /* line 114, ../sass/modules/_header.scss */
+    /* line 123, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -564,18 +570,18 @@ body.pageslide-open {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 123, ../sass/modules/_header.scss */
+    /* line 132, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons .login-header {
       font-family: inherit;
       height: 26px;
       margin-right: 10px;
       cursor: pointer;
       color: white; }
-      /* line 129, ../sass/modules/_header.scss */
+      /* line 138, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons .login-header:before {
         color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 134, ../sass/modules/_header.scss */
+    /* line 143, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       background: none;

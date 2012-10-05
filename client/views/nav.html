@@ -22,6 +22,11 @@
     <ul class="nav site-nav desktop">
       <li><a class="top" href="/top">Top</a></li>
       <li><a class="new" href="/new">New</a></li>
+      
+      {{#if intercom}}
+        <li><a id="Intercom" class="intercom" href="#">Support</a></li>
+      {{/if}}
+
       {{#if currentUser.isAdmin}}
         <li><a class="users" href="/users">Users</a></li>
         <li><a class="settings" href="/settings">Settings</a></li>
