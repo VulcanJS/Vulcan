@@ -49,6 +49,13 @@ SimpleRouter = FilteredRouter.extend({
 				created_at: moment(Meteor.user().createdAt).unix(),
 				custom_data: {
 					'profile link': 'http://'+document.domain+'/users/'+Meteor.user()._id
+				},
+				widget: {
+					activator: '#Intercom',
+					use_counter: true,
+					activator_html: function ( obj ) {
+						return obj.activator_html_functions.brackets();
+					}
 				}
 			};
 			IntercomInit();
