@@ -1,9 +1,12 @@
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
     var user = Meteor.user();
-    
+
     if (!user || !canPost(user))
       throw new Meteor.Error('You need to login or be invited to post new comments.')
+    
+    if(!this.isSimulation)
+        limitRate(user, Comments, 15);
 
     var comment = {
         post: postId

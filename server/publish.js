@@ -51,10 +51,6 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){ 
-        // console.log("updating");
-        // console.log(userId);
-        // console.log(docs);
-        // console.log('fields: '+fields);
         if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }

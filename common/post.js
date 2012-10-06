@@ -1,8 +1,12 @@
 Meteor.methods({
   post: function(post){
     var user = Meteor.user();
+
     if (!user || !canPost(user))
       throw new Meteor.Error('You need to login or be invited to post new stories.')
+
+    if(!this.isSimulation)
+        limitRate(user, Posts, 30);
 
     post = _.extend(post, {
       userId: user._id,

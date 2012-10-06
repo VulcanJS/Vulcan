@@ -30,21 +30,29 @@ Template.comment_form.events = {
         };
 
         Meteor.call('comment', postId, parentCommentId, content, function(error, result){
-            Session.set('selectedCommentId', null);
+            if(error){
+                console.log(error);
+                throwError(error.reason);
+            }else{
+                clearError();
 
-            properties['commentId']=result;
+                Session.set('selectedCommentId', null);
 
-            trackEvent("newComment", properties);
+                properties['commentId']=result;
 
-            Meteor.call('notify','newReply', properties, parentUser, Meteor.user());
-            if(parentComment.userId!=post.userId){
-                // if the original poster is different from the author of the parent comment
-                // notify them too
-                Meteor.call('notify','newComment', properties, postUser, Meteor.user());
+                trackEvent("newComment", properties);
+
+                Meteor.call('notify','newReply', properties, parentUser, Meteor.user());
+
+                if(parentComment.userId!=post.userId){
+                    // if the original poster is different from the author of the parent comment
+                    // notify them too
+                    Meteor.call('notify','newComment', properties, postUser, Meteor.user());
+                }
+
+                Session.set('scrollToCommentId', result);
+                Router.navigate('posts/'+postId, {trigger:true});
             }
-
-            Session.set('scrollToCommentId', result);
-            Router.navigate('posts/'+postId, {trigger:true});
         });
     }else{
         // root comment
@@ -59,13 +67,19 @@ Template.comment_form.events = {
         };
 
         Meteor.call('comment', postId, parentCommentId, content, function(error, result){
+            if(error){
+                console.log(error);
+                throwError(error.reason);
+            }else{
+                clearError();
+                
+                properties['commentId']=result;
 
-            properties['commentId']=result;
-
-            trackEvent("newComment", properties);
-            Meteor.call('notify','newComment', properties, postUser, Meteor.user());
-            Session.set('scrollToCommentId', result);
-            instance.editor.importFile('editor', '');
+                trackEvent("newComment", properties);
+                Meteor.call('notify','newComment', properties, postUser, Meteor.user());
+                Session.set('scrollToCommentId', result);
+                instance.editor.importFile('editor', '');
+            }
         });
     }
 

@@ -15,6 +15,11 @@
 				{{/with}}
 			{{/if}}
 
+			{{#if isMessage}}
+				{{#with properties}}
+					<a href="#" class="action-link">{{message}}</a>
+				{{/with}}
+			{{/if}}
 		</p>
 	</li>
 </template>

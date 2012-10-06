@@ -11,6 +11,9 @@ Template.notification_item.helpers({
 	isNewReply: function(){
 		return this.event=="newReply";
 	},
+	isMessage: function(){
+		return this.event=="message";
+	},
 	postHeadline: function(){
 		var post=Posts.findOne(this.postId);
 		if(post)

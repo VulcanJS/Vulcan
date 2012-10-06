@@ -17,9 +17,14 @@ Template.post_submit.events = {
       headline: title,
       body: body,
       url: url
-    }, function(err, postId) {
-      trackEvent("new post", {'postId': postId});
-      Router.navigate('posts/'+postId, {trigger: true});
+    }, function(error, postId) {
+      if(error){
+        console.log(error);
+        throwError(error.reason);
+      }else{
+        trackEvent("new post", {'postId': postId});
+        Router.navigate('posts/'+postId, {trigger: true});
+      }
     });
   }
 

@@ -46,6 +46,16 @@ userProfileComplete = function(user) {
 	return !!getEmail(user);
 }
 
+findLast= function(user, collection){
+	return collection.findOne({userId: user._id}, {sort: {submitted: -1}})
+}
+limitRate= function(user, collection, interval){
+	var now = new Date().getTime();
+    var timeFromLast=Math.floor((now-findLast(user, collection).submitted)/1000);
+    if(timeFromLast<interval){
+      throw new Meteor.Error('999','Please wait '+(interval-timeFromLast)+' seconds before posting again');
+    }
+}
 // Permissions
 
 
