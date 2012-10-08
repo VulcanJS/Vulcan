@@ -556,13 +556,8 @@ body.pageslide-open {
       color: #fff;
       font-weight: normal;
       display: inline-block;
-      height: 26px;
-      font-size: 0; }
-      /* line 118, ../sass/modules/_header.scss */
-      .auth-buttons #login-buttons a.login-link-text:after {
-        content: "Sign Up/Sign In";
-        font-size: 16px; }
-    /* line 123, ../sass/modules/_header.scss */
+      height: 26px; }
+    /* line 118, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -570,18 +565,18 @@ body.pageslide-open {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 132, ../sass/modules/_header.scss */
+    /* line 127, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons .login-header {
       font-family: inherit;
       height: 26px;
       margin-right: 10px;
       cursor: pointer;
       color: white; }
-      /* line 138, ../sass/modules/_header.scss */
+      /* line 133, ../sass/modules/_header.scss */
       .auth-buttons #login-buttons .login-header:before {
         color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 143, ../sass/modules/_header.scss */
+    /* line 138, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       background: none;
@@ -1205,16 +1200,32 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   border-radius: 0px;
   background: #f36c3d;
   color: white;
+  text-align: center;
   display: block;
   padding: 0px 10px;
   border: none;
   font-size: 16px;
   cursor: pointer;
-  margin: 0; }
-  /* line 74, ../sass/modules/_forms.scss */
+  margin: 0;
+  line-height: 26px;
+  height: 26px;
+  font-weight: normal; }
+  /* line 78, ../sass/modules/_forms.scss */
   input[type="submit"].disabled, button.disabled, .button.disabled, .auth-buttons #login-buttons .disabled#login-buttons-password, .btn.disabled {
     background: #dfdbdb;
     pointer-events: none; }
+  /* line 82, ../sass/modules/_forms.scss */
+  input[type="submit"]:link, input[type="submit"]:hover, input[type="submit"]:active, input[type="submit"]:visited, button:link, button:hover, button:active, button:visited, .button:link, .auth-buttons #login-buttons #login-buttons-password:link, .button:hover, .auth-buttons #login-buttons #login-buttons-password:hover, .button:active, .auth-buttons #login-buttons #login-buttons-password:active, .button:visited, .auth-buttons #login-buttons #login-buttons-password:visited, .btn:link, .btn:hover, .btn:active, .btn:visited {
+    color: white; }
+
+/* line 86, ../sass/modules/_forms.scss */
+.twitter-signup {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dfdbdb; }
+  /* line 90, ../sass/modules/_forms.scss */
+  .twitter-signup .twitter-button {
+    background: #00aced; }
 
 /* line 1, ../sass/modules/_dialogs.scss */
 .dialog {

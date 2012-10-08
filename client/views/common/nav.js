@@ -17,6 +17,10 @@ Template.nav.events = {
   }
 };
 
+Template.nav.rendered=function(){
+  $('.login-link-text').text("Sign Up/Sign In");
+};
+
 Template.nav.helpers({
   site_title: function(){
     return getSetting('title');

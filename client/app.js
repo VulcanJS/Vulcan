@@ -18,10 +18,16 @@ Meteor.subscribe('settings', function(){
 
 	// runs once on site load
 
+	window.settingsLoaded=true;
+
 	if((proxinoKey=getSetting('proxinoKey'))){
 		Proxino.key = proxinoKey;
 		Proxino.track_errors();
 	}
+
+	// window.Router = new SimpleRouter();
+	window.Backbone.history.start({pushState: true});
+
 });
 
 $.fn.exists = function () {
@@ -33,22 +39,22 @@ $(document).bind('keyup', 'ctrl+n', function(){
 });
 
 Handlebars.registerHelper('canView', function(action) {
-	var action=(typeof action === 'undefined') ? null : action;
+	var action=(typeof action !== 'string') ? null : action;
 	return canView(Meteor.user(), action);
 });
 Handlebars.registerHelper('canPost', function(action) {
-	var action=(typeof action === 'undefined') ? null : action;
+	var action=(typeof action !== 'string') ? null : action;
 	return canPost(Meteor.user(), action);
 });
 Handlebars.registerHelper('canComment', function(action) {
-	var action=(typeof action === 'undefined') ? null : action;
+	var action=(typeof action !== 'string') ? null : action;
 	return canComment(Meteor.user(), action);
 });
 Handlebars.registerHelper('canUpvote', function(collection, action) {
-	var action=(typeof action === 'undefined') ? null : action;
+	var action=(typeof action !== 'string') ? null : action;
 	return canUpvote(Meteor.user()), collection, action;
 });
 Handlebars.registerHelper('canDownvote', function(collection, action) {
-	var action=(typeof action === 'undefined') ? null : action;
+	var action=(typeof action !== 'string') ? null : action;
 	return canDownvote(Meteor.user(), collection, action);
 });

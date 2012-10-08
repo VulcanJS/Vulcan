@@ -72,6 +72,9 @@ limitRate= function(user, collection, interval){
 canView = function(user, action){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
   var action=(typeof action === 'undefined') ? null : action;
+  // console.log('canView', 'user:', user, 'action:', action, getSetting('requireViewInvite'));
+  if(!window.settingsLoaded)
+    return false;
   if(getSetting('requireViewInvite')==true){
     try{
       if(!user){
@@ -84,12 +87,13 @@ canView = function(user, action){
     }catch(error){
       if(action){
         switch(error){
-          case "no_account":
+          case "no_account": 
+
             throwError("Please sign in or create an account first.");
             action=='replace' ? Router.goto('signin') : Router.navigate('signin', {trigger : true});
             break;
           case "no_invite":
-            throwError("Sorry, you need to have an invitation to do view the site.");
+            // throwError("Sorry, you need to have an invitation to do view the site.");
             action=='replace' ? Router.goto('no_invite') : Router.navigate('invite', {trigger : true});
             break;      
         }
@@ -103,6 +107,9 @@ canView = function(user, action){
 canPost = function(user, action){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
   var action=(typeof action === 'undefined') ? null : action;
+  // console.log('canPost', user, action, getSetting('requirePostInvite'));
+  if(!window.settingsLoaded)
+    return false;
   try{
     if(!user){
       throw "no_account";

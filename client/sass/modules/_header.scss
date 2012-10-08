@@ -114,11 +114,6 @@
 			font-weight:normal;
 			display:inline-block;
 			height:26px;
-			font-size:0;
-			&:after{
-				content:"Sign Up/Sign In";
-				font-size:16px;
-			}
 		}
 		#login-buttons-password{
 			@extend .button;

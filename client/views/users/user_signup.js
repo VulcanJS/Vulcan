@@ -17,10 +17,14 @@ Template.signup.events = {
           Router.navigate('', {trigger: true});
         }  
       });
-  }
+  },
 
-  , 'click #signin': function(){
+  'click #signin': function(){
       // Session.set('state', 'signin');
       Router.navigate('signin', {trigger: true});
+  },
+
+  'click .twitter-button': function(){
+    Meteor.loginWithTwitter(function(){});
   }
 };

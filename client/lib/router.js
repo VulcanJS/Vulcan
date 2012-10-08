@@ -107,8 +107,8 @@ SimpleRouter = FilteredRouter.extend({
 		'users/:id': 'user_profile',
 		'users/:id/edit':'user_edit'
 	},
-	top: function() {  this.goto('posts_top'); },
-	new: function() { this.goto('posts_new'); },		
+	top: function() {if(canView(Meteor.user(), 'replace')) this.goto('posts_top'); },
+	new: function() {if(canView(Meteor.user(), 'replace')) this.goto('posts_new'); },		
 	signup: function() { this.goto('signup'); },
 	signin: function() { this.goto('signin'); },
 	invite: function() { this.goto('no_invite'); },
@@ -175,5 +175,4 @@ SimpleRouter = FilteredRouter.extend({
   
 var Router = new SimpleRouter();
 Meteor.startup(function() {
-	Backbone.history.start({pushState: true});
 });

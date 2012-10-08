@@ -65,14 +65,29 @@ input[type="submit"], button, .button, .btn{
 	@include border-radius(0px);
 	background:$red;
 	color:white;
+	text-align:center;
 	display:block;
 	padding:0px 10px;
 	border:none;
 	font-size:16px;
 	cursor:pointer;
 	margin:0;
+	line-height:26px;
+	height:26px;
+	font-weight:normal;
 	&.disabled{
 		background:$lighter-grey;
 		pointer-events:none;
+	}
+	&:link, &:hover, &:active, &:visited{
+		color:white;
+	}
+}
+.twitter-signup{
+	margin-bottom:20px;
+	padding-bottom:20px;
+	border-bottom:1px solid $lighter-grey;
+	.twitter-button{
+		background:#00aced;
 	}
 }

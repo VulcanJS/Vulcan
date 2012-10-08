@@ -1,9 +1,7 @@
 <template name="posts_top">
-	{{#if canView replace}}
 		<div class="posts grid list">
 			{{#each posts}}
 				{{> post_item}}
 			{{/each}}
 		</div>
-	{{/if}}
 </template>

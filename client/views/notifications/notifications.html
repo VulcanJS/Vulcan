@@ -1,13 +1,15 @@
 <template name="notifications">
 	{{#if currentUser}}
-	<div class="notifications">
-		<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>
-		<a href="#" class="mark-as-read">Mark all as read</a>
-		<ul>
-		{{#each notifications}}
-			{{> notification_item}}
-	    {{/each}}
-		</ul>
-	</div>
+		{{#if canPost}}
+		<div class="notifications">
+			<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>
+			<a href="#" class="mark-as-read">Mark all as read</a>
+			<ul>
+			{{#each notifications}}
+				{{> notification_item}}
+		    {{/each}}
+			</ul>
+		</div>
+		{{/if}}
 	{{/if}}
 </template>
