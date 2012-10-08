@@ -2,7 +2,18 @@ Meteor.publish('users', function() {
   if (this.userId() && isAdminById(this.userId())) {
     return Meteor.users.find();
   }else{
-    return Meteor.users.find({}, {fields: {emails: false}});
+    return Meteor.users.find({}, {fields: {
+      secret_id: false,
+      isAdmin: false,
+      emails: false,
+      email_hash: false,
+      notifications: false,
+      'profile.email': false,
+      'services.twitter.accessToken': false,
+      'services.twitter.accessTokenSecret': false,
+      'services.twitter.id': false,
+      'services.password': false
+    }});
   }
 });
 

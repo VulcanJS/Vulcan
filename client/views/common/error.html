@@ -1,11 +1,5 @@
 <template name="error">
-	{{#if message}}
-		<div class="grid">
-			<div class="error">
-				{{#constant}}
-				{{message}}
-				{{/constant}}
-			</div>
-		</div>
-	{{/if}}
+	{{#each errors}}
+		{{> error_item}}
+	{{/each}}
 </template>

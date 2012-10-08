@@ -90,3 +90,29 @@
     @media (max-width: 320px)  { @content; }
   }
 }
+
+// http://blackbe.lt/useful-sass-mixins-css-trangle/
+@mixin triangle($dir, $size, $color) {
+    border: $size transparent solid;
+
+    @if ($dir == "top" or $dir == "up" or $dir == "left" or $dir == "before") {
+        &:before {
+            @if ($dir == "top" or $dir == "up") {
+                border-bottom-color: $color;
+            }
+            @else if ($dir == "right" or $dir == "after") {
+                border-left-color: $color;
+            }
+        }
+    }
+    @else if ($dir == "bottom" or $dir == "down" or $dir == "left" or $dir == "before") {
+        &:after {
+            @if ($dir == "bottom" or $dir == "down") {
+                border-top-color: $color;
+            }
+            @else if ($dir == "left" or $dir == "before") {
+                border-right-color: $color;
+            }
+        }
+    }
+}

@@ -1,9 +1,3 @@
-throwError = function(message){
-	Session.set("error", message);
-}
-clearError = function(){
-	Session.set("error", null);
-}
 t=function(message){
 	var d=new Date();
 	console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());

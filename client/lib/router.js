@@ -11,6 +11,9 @@ SimpleRouter = FilteredRouter.extend({
 		Session.set("openedComments", null);
 		document.title = getSetting("title");
 
+		// set all errors who have been seen to not show anymore
+		clearSeenErrors();
+
 		// Mixpanel
 
 		if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length==0){

@@ -1,3 +1,5 @@
+Errors = new Meteor.Collection(null);
+
 Meteor.subscribe('users');
 
 Posts = new Meteor.Collection('posts');
