@@ -7,85 +7,42 @@ Template.comment_form.rendered = function(){
 Template.comment_form.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
-
-    clearSeenErrors();
-
     $(e.target).addClass('disabled');
-	var $comment = $('#comment');
+    clearSeenErrors();
 	var content = instance.editor.exportFile();
 
     if(window.template=='comment_reply'){
         // child comment
         var parentCommentId=Session.get('selectedCommentId');
-        var parentComment=Comments.findOne(parentCommentId);
-        var parentUser=Meteor.users.findOne(parentComment.userId);
         var postId=Comments.findOne(parentCommentId).post;
-        var post=Posts.findOne(postId);
-        var postUser=Meteor.users.findOne(post.userId);
 
-        var properties={
-            'commentAuthorId': Meteor.user()._id,
-            'commentAuthorName': getDisplayName(Meteor.user()),
-            'postId': postId,
-            'parentCommentId': parentCommentId,
-            'parentAuthorId': parentComment.userId,
-            'parentAuthorName': getDisplayName(parentUser)
-        };
-
-        Meteor.call('comment', postId, parentCommentId, content, function(error, result){
+        Meteor.call('comment', postId, parentCommentId, content, function(error, commentProperties){
             if(error){
                 console.log(error);
                 throwError(error.reason);
             }else{
                 Session.set('selectedCommentId', null);
-                properties['commentId']=result;
-                trackEvent("newComment", properties);
+                trackEvent("newComment", commentProperties);
 
-                Meteor.call('notify','newReply', properties, parentUser, Meteor.user());
-
-                if(parentComment.userId!=post.userId){
-                    // if the original poster is different from the author of the parent comment
-                    // notify them too
-                    Meteor.call('notify','newComment', properties, postUser, Meteor.user());
-                }
-
-                Session.set('scrollToCommentId', result);
+                Session.set('scrollToCommentId', commentProperties.commentId);
                 Router.navigate('posts/'+postId, {trigger:true});
             }
         });
     }else{
         // root comment
+        var parentCommentId=null;        
         var postId=Session.get('selectedPostId');
-        var post=Posts.findOne(postId);
-        var postUser=Meteor.users.findOne(post.userId);
 
-        var properties={
-            'commentAuthorId': Meteor.user()._id,
-            'commentAuthorName': getDisplayName(Meteor.user()),
-            'postId': postId
-        };
-
-        Meteor.call('comment', postId, parentCommentId, content, function(error, result){
+        Meteor.call('comment', postId, parentCommentId, content, function(error, commentProperties){
             if(error){
                 console.log(error);
                 throwError(error.reason);
             }else{
-                properties['commentId']=result;
-                trackEvent("newComment", properties);
-                Meteor.call('notify','newComment', properties, postUser, Meteor.user());
-                Session.set('scrollToCommentId', result);
+                trackEvent("newComment", commentProperties);
+                Session.set('scrollToCommentId', commentProperties.commentId);
                 instance.editor.importFile('editor', '');
             }
         });
-    }
-
-
-    if(window.template=='comment_page'){
-        // post a child comment
-
-    }else{
-    	// post a root comment
-        
     }
   }
 };

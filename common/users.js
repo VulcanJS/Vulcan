@@ -51,7 +51,10 @@ findLast= function(user, collection){
 }
 limitRate= function(user, collection, interval){
   var now = new Date().getTime();
-  var timeFromLast=Math.floor((now-findLast(user, collection).submitted)/1000);
+  var last=findLast(user, collection);
+  if(!last)
+    return true; // if this is the user's first post or comment ever, stop here
+  var timeFromLast=Math.floor((now-last.submitted)/1000);
   if(timeFromLast<interval){
    throw new Meteor.Error('999','Please wait '+(interval-timeFromLast)+' seconds before posting again');
   }

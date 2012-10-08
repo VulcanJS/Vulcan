@@ -1,6 +1,14 @@
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
     var user = Meteor.user();
+    var post=Posts.findOne(postId);
+    var postUser=Meteor.users.findOne(post.userId);
+
+    var properties={
+        'commentAuthorId': user._id,
+        'commentAuthorName': getDisplayName(user),
+        'postId': postId,
+    };
 
     if (!user || !canPost(user))
       throw new Meteor.Error('You need to login or be invited to post new comments.')
@@ -24,7 +32,29 @@ Meteor.methods({
 
     Meteor.call('upvoteComment', newCommentId);
 
-    return newCommentId;
+    properties['commentId']=newCommentId;
+
+    if(!this.isSimulation){
+      if(parentCommentId){
+        // child comment
+        var parentComment=Comments.find(parentCommentId);
+        var parentUser=Meteor.users.find(parentComment.userId);
+
+        properties['parentCommentId']=parentCommentId;
+        properties['parentAuthorId']=parentComment.userId;
+        properties['parentAuthorName']=getDisplayName(parentUser);
+
+        notify('newReply', properties, parentUser, user);
+        if(parentComment.userId!=post.userId){
+          // if the original poster is different from the author of the parent comment, notify them too
+          notify('newComment', properties, postUser, Meteor.user());
+        }
+      }else{
+        // root comment
+        notify('newComment', properties, postUser, Meteor.user());
+      }
+    }
+    return properties;
   },
   removeComment: function(commentId){
     var comment=Comments.findOne(commentId);

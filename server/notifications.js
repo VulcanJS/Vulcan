@@ -15,34 +15,3 @@ notify= function(event, properties, userToNotify, userDoingAction){
 		var newNotificationId=Notifications.insert(notification);
 	}
 };
-markNotificationAsRead= function(notificationId){
-	Notifications.update(
-		{_id: notificationId},
-		{
-			$set:{
-				read: true
-			}
-		},
-		function(error, result){
-			if(error){
-				console.log(error);
-			}	
-		}
-	);	
-};
-markAllNotificationsAsRead= function(user){
-	Notifications.update(
-		{userId: user._id},
-		{
-			$set:{
-				read: true
-			}
-		},
-		{multi: true},
-		function(error, result){
-			if(error){
-				console.log(error);
-			}	
-		}
-	);	
-};
