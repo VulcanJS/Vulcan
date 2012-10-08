@@ -3,7 +3,22 @@ Errors = new Meteor.Collection(null);
 Meteor.subscribe('users');
 
 Posts = new Meteor.Collection('posts');
-Meteor.subscribe('posts');
+Session.set('page_size', 8);
+Session.set('current_page', 1);
+Session.set('sort_order', JSON.stringify({score: -1}));
+Meteor.autosubscribe(function() {
+	Meteor.subscribe('posts', Session.get('page_size'), Session.get('current_page'), Session.get('sort_order'), function() {
+		var newPostsCount = Posts.find().count();
+		if (Session.equals('posts_count', newPostsCount)) {
+			// We didn't fetch any new post, so hide the "View more" button:
+			$('button.more').hide();
+		}
+		else {
+			Session.set('posts_count', newPostsCount);
+			$('button.more').show();
+		}
+	});
+});
 
 Comments = new Meteor.Collection('comments');
 Meteor.subscribe('comments', function() {

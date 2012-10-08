@@ -47,8 +47,10 @@ Meteor.startup(function(){
 
 Posts = new Meteor.Collection('posts');
 
-Meteor.publish('posts', function() {
-  return Posts.find({}, {sort: {score: -1}});
+Meteor.publish('posts', function(page_size, current_page, sort) {
+  // Workaround till Session can store objects again:
+  var sort = JSON.parse(sort);
+  return Posts.find({}, {skip: 0, limit: page_size * current_page, sort: sort});
 });
 
 // FIXME -- check all docs, not just the first one.

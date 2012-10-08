@@ -107,8 +107,22 @@ SimpleRouter = FilteredRouter.extend({
 		'users/:id': 'user_profile',
 		'users/:id/edit':'user_edit'
 	},
-	top: function() {if(canView(Meteor.user(), 'replace')) this.goto('posts_top'); },
-	new: function() {if(canView(Meteor.user(), 'replace')) this.goto('posts_new'); },		
+	top: function() {
+		if (canView(Meteor.user(), 'replace')) {
+			Session.set('current_page', 1);
+			Session.set('sort_order', JSON.stringify({score: -1}));
+			Session.set('posts_count', null);
+			this.goto('posts_top');
+		}
+	},
+	new: function() {
+		if (canView(Meteor.user(), 'replace')) {
+			Session.set('current_page', 1);
+			Session.set('sort_order', JSON.stringify({submitted: -1}));
+			Session.set('posts_count', null);
+			this.goto('posts_new');
+		}
+	},
 	signup: function() { this.goto('signup'); },
 	signin: function() { this.goto('signin'); },
 	invite: function() { this.goto('no_invite'); },
