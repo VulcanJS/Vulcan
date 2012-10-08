@@ -7,6 +7,9 @@ Template.comment_form.rendered = function(){
 Template.comment_form.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
+
+    clearSeenErrors();
+
     $(e.target).addClass('disabled');
 	var $comment = $('#comment');
 	var content = instance.editor.exportFile();
@@ -34,12 +37,8 @@ Template.comment_form.events = {
                 console.log(error);
                 throwError(error.reason);
             }else{
-                clearError();
-
                 Session.set('selectedCommentId', null);
-
                 properties['commentId']=result;
-
                 trackEvent("newComment", properties);
 
                 Meteor.call('notify','newReply', properties, parentUser, Meteor.user());
@@ -71,10 +70,7 @@ Template.comment_form.events = {
                 console.log(error);
                 throwError(error.reason);
             }else{
-                clearError();
-                
                 properties['commentId']=result;
-
                 trackEvent("newComment", properties);
                 Meteor.call('notify','newComment', properties, postUser, Meteor.user());
                 Session.set('scrollToCommentId', result);
