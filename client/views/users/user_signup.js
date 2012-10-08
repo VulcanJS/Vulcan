@@ -4,7 +4,7 @@ Template.signup.events = {
       var username = $('#username').val();
       var email = $('#email').val();
       var password = $('#password').val();
-      Meteor.createUser({
+      Accounts.createUser({
           username: username
         , email: email  
         , password: password
