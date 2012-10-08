@@ -15,10 +15,12 @@ Template.settings.events = {
     var logoUrl=$('#logoUrl').val();
     var logoHeight=$('#logoHeight').val();
     var logoWidth=$('#logoWidth').val();
-    var notes=$('#notes').val();
     var veroAPIKey=$('#veroAPIKey').val();
     var veroSecret=$('#veroSecret').val();
     var intercomId=$('#intercomId').val();
+    var landingPageText=$('#landingPageText').val();
+    var afterSignupText=$('#afterSignupText').val();
+    var notes=$('#notes').val();
 
     var prevSetting=Settings.find().fetch()[0];
     
@@ -41,6 +43,8 @@ Template.settings.events = {
             logoWidth: logoWidth,
             veroAPIKey: veroAPIKey,
             veroSecret:veroSecret,
+            landingPageText:landingPageText,
+            afterSignupText:afterSignupText,
             notes: notes
           }
       }, function(error){
@@ -66,6 +70,8 @@ Template.settings.events = {
           logoWidth: logoWidth,
           veroAPIKey: veroAPIKey,
           veroSecret:veroSecret,
+          landingPageText:landingPageText,
+          afterSignupText:afterSignupText,
           notes:notes
     }, function(){
         throwError("Settings have been created");

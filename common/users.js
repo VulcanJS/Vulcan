@@ -88,9 +88,8 @@ canView = function(user, action){
       if(action){
         switch(error){
           case "no_account": 
-
-            throwError("Please sign in or create an account first.");
-            action=='replace' ? Router.goto('signin') : Router.navigate('signin', {trigger : true});
+            // throwError("Please sign in or create an account first.");
+            action=='replace' ? Router.goto('no_account') : Router.navigate('signin', {trigger : true});
             break;
           case "no_invite":
             // throwError("Sorry, you need to have an invitation to do view the site.");
