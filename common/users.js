@@ -73,7 +73,7 @@ canView = function(user, action){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
   var action=(typeof action === 'undefined') ? null : action;
   // console.log('canView', 'user:', user, 'action:', action, getSetting('requireViewInvite'));
-  if(!window.settingsLoaded)
+  if(Meteor.isClient && !window.settingsLoaded)
     return false;
   if(getSetting('requireViewInvite')==true){
     try{
@@ -107,7 +107,7 @@ canPost = function(user, action){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
   var action=(typeof action === 'undefined') ? null : action;
   // console.log('canPost', user, action, getSetting('requirePostInvite'));
-  if(!window.settingsLoaded)
+  if(Meteor.isClient && !window.settingsLoaded)
     return false;
   try{
     if(!user){
