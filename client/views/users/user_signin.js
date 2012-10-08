@@ -20,6 +20,8 @@ Template.signin.events = {
   },
 
   'click .twitter-button': function(){
-    Meteor.loginWithTwitter(function(){});
+    Meteor.loginWithTwitter(function(){
+      Router.navigate('/', {trigger: true});
+    });
   }
 };
