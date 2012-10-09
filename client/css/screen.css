@@ -107,29 +107,37 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /*================ MIXINS =================*/
 /* line 1, ../sass/partials/_main.scss */
+html, body, .outer-wrapper {
+  height: 100%; }
+
+/* line 4, ../sass/partials/_main.scss */
 body {
   background: #e0f1f7; }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  /* line 6, ../sass/partials/_main.scss */
+  /* line 9, ../sass/partials/_main.scss */
   body {
     background-size: 10px 10px; } }
-/* line 11, ../sass/partials/_main.scss */
+/* line 14, ../sass/partials/_main.scss */
+.outer-wrapper {
+  position: relative; }
+
+/* line 18, ../sass/partials/_main.scss */
 #spinner {
   height: 100%;
   width: 100%;
   position: fixed;
   z-index: 1000; }
 
-/* line 17, ../sass/partials/_main.scss */
+/* line 24, ../sass/partials/_main.scss */
 .debug {
   display: none; }
 
-/* line 20, ../sass/partials/_main.scss */
+/* line 27, ../sass/partials/_main.scss */
 .hidden {
   display: none; }
 
-/* line 23, ../sass/partials/_main.scss */
+/* line 30, ../sass/partials/_main.scss */
 .overlay {
   position: fixed;
   top: 0;
@@ -138,11 +146,11 @@ body {
   width: 100%;
   z-index: 50; }
 
-/* line 31, ../sass/partials/_main.scss */
+/* line 38, ../sass/partials/_main.scss */
 .footer {
   text-align: center; }
 
-/* line 34, ../sass/partials/_main.scss */
+/* line 41, ../sass/partials/_main.scss */
 #tlkio {
   position: fixed;
   top: 0px;
@@ -154,13 +162,13 @@ body {
   transition: ease-out right 300ms 0ms;
   z-index: 1000;
   background: #333; }
-  /* line 41, ../sass/partials/_main.scss */
+  /* line 48, ../sass/partials/_main.scss */
   #tlkio.open {
     right: 0px;
     -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 45, ../sass/partials/_main.scss */
+  /* line 52, ../sass/partials/_main.scss */
   #tlkio .open-chat, #tlkio .report-bug {
     display: block;
     background: #7ac0e4;
@@ -185,7 +193,7 @@ body {
     box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
     z-index: 1001;
     white-space: nowrap; }
-  /* line 60, ../sass/partials/_main.scss */
+  /* line 67, ../sass/partials/_main.scss */
   #tlkio .report-bug {
     top: 400px;
     right: 236px; }
@@ -873,6 +881,25 @@ body.pageslide-open {
 /* line 300, ../sass/modules/_posts.scss */
 .post.sticky .post-actions li a:hover {
   background: #4e555d url("/img/bg-header.png") top center; }
+
+/* line 304, ../sass/modules/_posts.scss */
+.more-button {
+  position: absolute;
+  padding-bottom: 10px; }
+  /* line 307, ../sass/modules/_posts.scss */
+  .more-button a {
+    display: block;
+    height: 70px;
+    background: rgba(0, 0, 0, 0.075);
+    text-align: center;
+    color: white;
+    line-height: 70px;
+    font-size: 24px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px; }
 
 /* line 1, ../sass/modules/_comments.scss */
 .queue-container {

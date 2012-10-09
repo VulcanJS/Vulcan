@@ -76,9 +76,6 @@ Template.post_item.rendered = function(){
   if(this.data){
     var new_distance=(getRank(this.data)-1)*80;
     var old_distance=this.current_distance;
-    console.log('post: ', this.data.headline)
-    console.log('old_distance', old_distance);
-    console.log('new_distance', new_distance);
     var $this=$(this.find(".post"));
     var instance=this;
     // at rendering time, move posts to their old place

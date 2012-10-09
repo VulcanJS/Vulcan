@@ -301,3 +301,17 @@
 		background:$highlight-color url("/img/bg-header.png") top center;
 	}	
 }
+.more-button{
+	position:absolute;
+	padding-bottom:10px;
+	a{
+		display:block;
+		height:$grid-unit;
+		background:black(0.075);
+		text-align:center;
+		color:white;
+		line-height:$grid-unit;
+		font-size:24px;
+		@include border-radius(3px);
+	}
+}

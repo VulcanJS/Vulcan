@@ -3,7 +3,7 @@ Template.posts_new.posts = function(){
 };
 
 Template.posts_new.created = function(){
-  var postsPerPage=5;
+  var postsPerPage=10;
   var pageNumber=Session.get('currentPageNumber') || 1;
   var postsView={
     find: {},
@@ -16,10 +16,18 @@ Template.posts_new.created = function(){
   sessionSetObject('postsView', postsView);
 }
 
-Template.posts_new.events({
-  'click button.more': function() {
+Template.posts_new.helpers({
+  moreLinkDistance: function(){
     var postsView=sessionGetObject('postsView');
-    postsView.postsPerPage+=postsView.postsPerPage;
+    return (postsView.limit+1)*80;
+  }
+});
+
+Template.posts_new.events({
+  'click .more-link': function(e) {
+    e.preventDefault();
+    var postsView=sessionGetObject('postsView');
+    postsView.limit+=postsView.postsPerPage;
     postsView.pageNumber++;
     sessionSetObject('postsView', postsView);
   },

@@ -15,8 +15,16 @@ Template.posts_top.created = function(){
   sessionSetObject('postsView', postsView);
 }
 
+Template.posts_top.helpers({
+  moreLinkDistance: function(){
+    var postsView=sessionGetObject('postsView');
+    return (postsView.limit+1)*80;
+  }
+});
+
 Template.posts_top.events({
-  'click button.more': function() {
+  'click .more-link': function(e) {
+    e.preventDefault();
     var postsView=sessionGetObject('postsView');
     postsView.limit+=postsView.postsPerPage;
     postsView.pageNumber++;

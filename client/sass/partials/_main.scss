@@ -1,3 +1,6 @@
+html, body, .outer-wrapper{
+	height:100%;
+}
 body{
 	background:#e0f1f7;
 	// min-height:1500px;
@@ -8,6 +11,10 @@ body{
 		background-size:10px 10px;
 	}
 }
+.outer-wrapper{
+	position:relative;
+}
+
 #spinner{
 	height:100%;
 	width:100%;
