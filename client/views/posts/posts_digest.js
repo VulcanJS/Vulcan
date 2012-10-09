@@ -18,7 +18,7 @@ Template.posts_digest.posts = function(){
 };
 
 Template.posts_digest.created = function(){
-  var postsPerPage=10;
+  var postsPerPage=5;
   var pageNumber=Session.get('currentPageNumber') || 1;
   var range=getDateRange(pageNumber);
   var postsView={

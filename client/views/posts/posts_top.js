@@ -3,7 +3,7 @@ Template.posts_top.posts = function(){
 };
 
 Template.posts_top.created = function(){
-  var postsPerPage=5;
+  var postsPerPage=10;
   var pageNumber=Session.get('currentPageNumber') || 1;
   var postsView={
     find: {},
