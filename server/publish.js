@@ -54,7 +54,14 @@ Meteor.publish('posts', function(find, sort, skip, limit) {
   console.log("publishing…");
   console.log(find, sort, skip, limit);
   var collection=Posts.find(find, {sort: sort, skip: skip, limit: limit});
-  console.log('found '+collection.count()+' posts');
+  collectionArray=collection.fetch();
+
+  console.log('collection.count() '+collection.count());
+  console.log('collection.fetch().length '+collectionArray.length);
+
+  for(i=0;i<collectionArray.length;i++){
+    console.log('- '+collectionArray[i].headline);
+  }
   console.log('\n\n\n');
   return collection;
 });

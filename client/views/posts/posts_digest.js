@@ -19,7 +19,7 @@ Template.posts_digest.created = function(){
   var range=getDateRange(pageNumber);
   var postsView={
     find: {submitted: {$gte: range.start, $lt: range.end}},
-    sort: {submitted: -1},
+    sort: {score: -1},
     skip:0,
     postsPerPage: postsPerPage,
     limit: postsPerPage,
@@ -35,7 +35,6 @@ Template.posts_digest.events({
     postsView.page++;
     var range=getDateRange(postsView.page);
     postsView.find={submitted: {$gte: range.start, $lt: range.end}}
-    console.log(postsView.page);
     sessionSetObject('postsView', postsView);
   },
   'click .next-link': function(e) {

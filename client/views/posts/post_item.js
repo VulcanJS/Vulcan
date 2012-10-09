@@ -1,5 +1,5 @@
 var getRank = function(post){
-  if(window.sortBy=="score"){
+  if(JSON.stringify(sessionGetObject('postsView').sort)==='{"score":-1}'){
     var filter = {$or: [
       {score: {$gt: post.score}},
       {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
@@ -52,7 +52,7 @@ Template.post_item.helpers({
     return moment(this.submitted).fromNow();
   },
   timestamp: function(){
-    return moment(this.submitted).format("dddd, MMMM Do YYYY, h:mm:ss a");
+    return moment(this.submitted).format("MMMM Do, h:mm:ss a");
   },
   voted: function(){
     var user = Meteor.user();

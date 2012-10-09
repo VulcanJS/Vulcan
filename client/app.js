@@ -20,15 +20,20 @@ var postsView={
 	sort: {submitted: -1},
 	skip:0,
 	postsPerPage:10,
-	limit:10
+	limit:1
 }
 sessionSetObject('postsView', postsView);
 
 Meteor.autosubscribe(function() {
 	var view=sessionGetObject('postsView');
-	console.log(view);
 	Meteor.subscribe('posts', view.find, view.sort, view.skip, view.limit, function() {
-		console.log('found '+Posts.find().count()+' posts');
+		collectionArray=Posts.find().fetch();
+		console.log('--------- Publishing ----------');
+		console.log('postsView: ', view);
+		  for(i=0;i<collectionArray.length;i++){
+		    console.log('- '+collectionArray[i].headline);
+		  }
+		console.log('found '+collectionArray.length+' posts');
 		// var newPostsCount = Posts.find().count();
 		// if (Session.equals('posts_count', newPostsCount)) {
 		// 	// We didn't fetch any new post, so hide the "View more" button:
