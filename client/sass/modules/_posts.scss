@@ -3,23 +3,9 @@
 	.post{
 		position:absolute;
 		width:100%;
-		// margin-bottom:$grid-margin;
 		@include cf;
-		// @for $i from 0 through 19 {
-		// 	&:nth-child(#{$i+1}){
-		// 		top:#{$i*80px};
-		// 	};
-		// }
 		&.animate{
 			@include single-transition(ease-out, top, 400ms, 0ms);
-		}
-		&.sticky{
-			.post-content, .post-actions li a{
-				background:$light-yellow;
-			}
-			.post-actions li a:hover{
-				background:$highlight-color url("/img/bg-header.png") top center;
-			}
 		}
 	}
 }
@@ -306,5 +292,12 @@
 			padding:0px;
 		}
 	}
-
+}
+.post.sticky{
+	.post-content, .post-actions li a{
+		background:$light-yellow;
+	}
+	.post-actions li a:hover{
+		background:$highlight-color url("/img/bg-header.png") top center;
+	}	
 }

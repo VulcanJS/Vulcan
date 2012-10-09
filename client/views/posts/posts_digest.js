@@ -10,7 +10,11 @@ getDateRange= function(pageNumber){
 }
 
 Template.posts_digest.posts = function(){
-  return Posts.find();
+  var postsView=sessionGetObject('postsView');
+  console.log('postsView:: ',postsView);
+  var collection=Posts.find(postsView.find);
+  console.log('collection ', collection.fetch());
+  return collection;
 };
 
 Template.posts_digest.created = function(){

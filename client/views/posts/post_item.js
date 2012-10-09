@@ -1,17 +1,21 @@
 var getRank = function(post){
-  if(JSON.stringify(sessionGetObject('postsView').sort)==='{"score":-1}'){
+  var postsView=sessionGetObject('postsView');
+  if(JSON.stringify(postsView.sort)==='{"score":-1}'){
+    // sorted by score
     var filter = {$or: [
       {score: {$gt: post.score}},
       {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
     ]};
   }else{
+    // sorted by time
     var filter = {$or: [
       {submitted: {$gt: post.submitted}},
       {$and: [{submitted: post.submitted}, {score: {$lt: post.score}}]}
     ]};
   }
-
-  return Posts.find(filter).count()+1;  
+  // merge filter with current find query conditions
+  var newFilter=jQuery.extend(filter, postsView.find);
+  return Posts.find(newFilter).count()+1;  
 }
 
 Template.post_item.preserve({
@@ -72,6 +76,9 @@ Template.post_item.rendered = function(){
   if(this.data){
     var new_distance=(getRank(this.data)-1)*80;
     var old_distance=this.current_distance;
+    console.log('post: ', this.data.headline)
+    console.log('old_distance', old_distance);
+    console.log('new_distance', new_distance);
     var $this=$(this.find(".post"));
     var instance=this;
     // at rendering time, move posts to their old place

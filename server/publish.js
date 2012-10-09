@@ -50,19 +50,19 @@ Posts = new Meteor.Collection('posts');
 //   return Posts.find({}, {sort: {score: -1}});
 // });
 
-Meteor.publish('posts', function(find, sort, skip, limit) {
-  console.log("publishing…");
-  console.log(find, sort, skip, limit);
-  var collection=Posts.find(find, {sort: sort, skip: skip, limit: limit});
-  collectionArray=collection.fetch();
+Meteor.publish('posts', function(postsView) {
+  var collection=Posts.find(postsView.find, {sort: postsView.sort, skip: postsView.skip, limit: postsView.limit});
 
-  console.log('collection.count() '+collection.count());
-  console.log('collection.fetch().length '+collectionArray.length);
+  // console.log("publishing…");
+  // console.log(postsView.find, postsView.sort, postsView.skip, postsView.limit);
+  // collectionArray=collection.fetch();
+  // console.log('collection.count() '+collection.count());
+  // console.log('collection.fetch().length '+collectionArray.length);
+  // for(i=0;i<collectionArray.length;i++){
+  //   console.log('- '+collectionArray[i].headline);
+  // }
+  // console.log('\n');
 
-  for(i=0;i<collectionArray.length;i++){
-    console.log('- '+collectionArray[i].headline);
-  }
-  console.log('\n\n\n');
   return collection;
 });
 

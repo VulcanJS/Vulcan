@@ -10,11 +10,7 @@ Errors = new Meteor.Collection(null);
 Meteor.subscribe('users');
 
 Posts = new Meteor.Collection('posts');
-// Meteor.subscribe('posts');
 
-// Session.set('page_size', 8);
-// Session.set('current_page', 1);
-// Session.set('sort_order', JSON.stringify({score: -1}));
 var postsView={
 	find: {},
 	sort: {submitted: -1},
@@ -26,23 +22,14 @@ sessionSetObject('postsView', postsView);
 
 Meteor.autosubscribe(function() {
 	var view=sessionGetObject('postsView');
-	Meteor.subscribe('posts', view.find, view.sort, view.skip, view.limit, function() {
-		collectionArray=Posts.find().fetch();
-		console.log('--------- Publishing ----------');
-		console.log('postsView: ', view);
-		  for(i=0;i<collectionArray.length;i++){
-		    console.log('- '+collectionArray[i].headline);
-		  }
-		console.log('found '+collectionArray.length+' posts');
-		// var newPostsCount = Posts.find().count();
-		// if (Session.equals('posts_count', newPostsCount)) {
-		// 	// We didn't fetch any new post, so hide the "View more" button:
-		// 	$('button.more').hide();
-		// }
-		// else {
-		// 	Session.set('posts_count', newPostsCount);
-		// 	$('button.more').show();
-		// }
+	Meteor.subscribe('posts', view, function() {
+		// collectionArray=Posts.find().fetch();
+		// console.log('--------- Publishing ----------');
+		// console.log('postsView: ', view);
+		//   for(i=0;i<collectionArray.length;i++){
+		//     console.log('- '+collectionArray[i].headline);
+		//   }
+		// console.log('found '+collectionArray.length+' posts');
 	});
 });
 

@@ -21,6 +21,8 @@ Template.post_submit.events = {
       if(error){
         console.log(error);
         throwError(error.reason);
+        clearSeenErrors();
+        $(e.target).removeClass('disabled');
       }else{
         trackEvent("new post", {'postId': postId});
         Router.navigate('posts/'+postId, {trigger: true});
