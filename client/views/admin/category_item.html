@@ -1,3 +1,10 @@
 <template name="category_item">
-	<li></li>
+	<li>      
+		<form>
+        <div class="control-group inline">
+          <div class="controls"><input id="name_{{_id}}" type="text" value="{{name}}" /></div>
+          <a class="button submit edit-link" href="#">Save</a>
+        </div>
+      </form>
+  </li>
 </template>

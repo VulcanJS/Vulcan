@@ -15,6 +15,16 @@
         <label class="control-label">Message</label>
         <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge"/></div>
       </div>
+      <div class="control-group">
+        <label class="control-label">Category</label>
+        <div class="controls">
+          {{#each categories}}
+          <label class="radio inline">
+            <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" /> {{name}}
+          </label>
+          {{/each}}
+        </div>
+      </div>
       {{/constant}}
       <div class="form-actions">
         <input type="submit" value="Submit" />

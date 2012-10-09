@@ -29,6 +29,13 @@ Template.post_edit.helpers({
     });
     
     return post;
+  },
+  categories: function(){
+    return Categories.find();
+  },
+  isChecked: function(){
+    var post= Posts.findOne(Session.get('selectedPostId'));
+    return $.inArray( this.name, post.categories) != -1;
   }
 });
 
@@ -50,7 +57,13 @@ Template.post_edit.events = {
     var url = $('#url').val();
     var body = instance.editor.exportFile();
     var sticky=!!$('#sticky').attr('checked');
-    console.log('sticky:', sticky);
+    var categories=[];
+
+    $('input[name=category]:checked').each(function() {
+       categories.push($(this).val());
+     });
+
+    console.log('categories:', categories);
 
     Posts.update(selectedPostId,
     {
@@ -59,6 +72,7 @@ Template.post_edit.events = {
           , url: url
           , body: body
           , sticky: sticky
+          , categories: categories
         }
       }
     );

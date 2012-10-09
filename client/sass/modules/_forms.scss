@@ -1,9 +1,17 @@
 form, .accounts-dialog{
+	&.form-block{
+		background:$lightest-grey;
+		@include border-radius(3px);
+		margin-bottom:10px;
+		padding:10px;
+	}
 	// @extend .grid-block;
 	.control-group{
+		@include cf;
 		margin-bottom:$grid-padding;
 		label{
 			float:left;
+			margin-right:10px;
 		}
 		.controls{
 			margin-left:120px;
@@ -20,6 +28,17 @@ form, .accounts-dialog{
 					@include hide-text2;
 				}
 			}
+		}
+		&.inline{
+			.controls{
+				margin-left:0px;
+				width:80%;
+				float:left;
+			}
+			.submit{
+				float:right;
+			}
+			margin-bottom:10px;
 		}
 	}
 	.form-actions{

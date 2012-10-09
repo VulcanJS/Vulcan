@@ -1138,23 +1138,44 @@ body.pageslide-open {
     left: 20px;
     margin-left: -8px; }
 
-/* line 3, ../sass/modules/_forms.scss */
+/* line 2, ../sass/modules/_forms.scss */
+form.form-block, .accounts-dialog.form-block {
+  background: #e7eff2;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  padding: 10px; }
+/* line 9, ../sass/modules/_forms.scss */
 form .control-group, .accounts-dialog .control-group {
+  /* For modern browsers */
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom: 1;
   margin-bottom: 15px; }
-  /* line 5, ../sass/modules/_forms.scss */
+  /* line 3, ../sass/partials/_mixins.scss */
+  form .control-group:before, form .control-group:after, .accounts-dialog .control-group:before, .accounts-dialog .control-group:after {
+    content: "";
+    display: table; }
+  /* line 7, ../sass/partials/_mixins.scss */
+  form .control-group:after, .accounts-dialog .control-group:after {
+    clear: both; }
+  /* line 12, ../sass/modules/_forms.scss */
   form .control-group label, .accounts-dialog .control-group label {
-    float: left; }
-  /* line 8, ../sass/modules/_forms.scss */
+    float: left;
+    margin-right: 10px; }
+  /* line 16, ../sass/modules/_forms.scss */
   form .control-group .controls, .accounts-dialog .control-group .controls {
     margin-left: 120px;
     position: relative; }
-    /* line 11, ../sass/modules/_forms.scss */
+    /* line 19, ../sass/modules/_forms.scss */
     form .control-group .controls .get-title-link, .accounts-dialog .control-group .controls .get-title-link {
       position: absolute;
       display: block;
       top: 2px;
       right: 8px; }
-      /* line 16, ../sass/modules/_forms.scss */
+      /* line 24, ../sass/modules/_forms.scss */
       form .control-group .controls .get-title-link.loading, .accounts-dialog .control-group .controls .get-title-link.loading {
         background: url(/img/loading.gif) center center no-repeat;
         height: 22px;
@@ -1162,7 +1183,18 @@ form .control-group, .accounts-dialog .control-group {
         font: 0/0 a;
         text-shadow: none;
         color: transparent; }
-/* line 25, ../sass/modules/_forms.scss */
+  /* line 32, ../sass/modules/_forms.scss */
+  form .control-group.inline, .accounts-dialog .control-group.inline {
+    margin-bottom: 10px; }
+    /* line 33, ../sass/modules/_forms.scss */
+    form .control-group.inline .controls, .accounts-dialog .control-group.inline .controls {
+      margin-left: 0px;
+      width: 80%;
+      float: left; }
+    /* line 38, ../sass/modules/_forms.scss */
+    form .control-group.inline .submit, .accounts-dialog .control-group.inline .submit {
+      float: right; }
+/* line 44, ../sass/modules/_forms.scss */
 form .form-actions, .accounts-dialog .form-actions {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
@@ -1174,11 +1206,11 @@ form .form-actions, .accounts-dialog .form-actions {
   /* line 7, ../sass/partials/_mixins.scss */
   form .form-actions:after, .accounts-dialog .form-actions:after {
     clear: both; }
-  /* line 27, ../sass/modules/_forms.scss */
+  /* line 46, ../sass/modules/_forms.scss */
   form .form-actions a, .accounts-dialog .form-actions a {
     float: left;
     display: block; }
-/* line 32, ../sass/modules/_forms.scss */
+/* line 51, ../sass/modules/_forms.scss */
 form input[type="text"], form input[type="password"], form textarea, form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog textarea, .accounts-dialog .login-form input {
   display: block;
   padding: 5px 6px;
@@ -1195,30 +1227,30 @@ form input[type="text"], form input[type="password"], form textarea, form .login
   -moz-transition: border-color 500ms;
   -o-transition: border-color 500ms;
   transition: border-color 500ms; }
-  /* line 41, ../sass/modules/_forms.scss */
+  /* line 60, ../sass/modules/_forms.scss */
   form input[type="text"]:focus, form input[type="password"]:focus, form textarea:focus, form .login-form input:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus {
     outline: none;
     border-color: #f36c3d;
     -webkit-box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3);
     -moz-box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3);
     box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3); }
-/* line 47, ../sass/modules/_forms.scss */
+/* line 66, ../sass/modules/_forms.scss */
 form input[type="text"], form input[type="password"], form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog .login-form input {
   height: 30px;
   line-height: 20px; }
-/* line 51, ../sass/modules/_forms.scss */
+/* line 70, ../sass/modules/_forms.scss */
 form input[disabled='disabled'], .accounts-dialog input[disabled='disabled'] {
   color: #b3c1c6;
   background: #e7eff2; }
-/* line 55, ../sass/modules/_forms.scss */
+/* line 74, ../sass/modules/_forms.scss */
 form textarea, .accounts-dialog textarea {
   min-height: 100px;
   line-height: 1.4; }
-/* line 59, ../sass/modules/_forms.scss */
+/* line 78, ../sass/modules/_forms.scss */
 form input[type="submit"], form button, form .button, form .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons form #login-buttons-password, form .btn, .accounts-dialog input[type="submit"], .accounts-dialog button, .accounts-dialog .button, .accounts-dialog .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .accounts-dialog #login-buttons-password, .accounts-dialog .btn {
   float: right; }
 
-/* line 63, ../sass/modules/_forms.scss */
+/* line 82, ../sass/modules/_forms.scss */
 input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
@@ -1238,20 +1270,20 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   line-height: 26px;
   height: 26px;
   font-weight: normal; }
-  /* line 78, ../sass/modules/_forms.scss */
+  /* line 97, ../sass/modules/_forms.scss */
   input[type="submit"].disabled, button.disabled, .button.disabled, .auth-buttons #login-buttons .disabled#login-buttons-password, .btn.disabled {
     background: #dfdbdb;
     pointer-events: none; }
-  /* line 82, ../sass/modules/_forms.scss */
+  /* line 101, ../sass/modules/_forms.scss */
   input[type="submit"]:link, input[type="submit"]:hover, input[type="submit"]:active, input[type="submit"]:visited, button:link, button:hover, button:active, button:visited, .button:link, .auth-buttons #login-buttons #login-buttons-password:link, .button:hover, .auth-buttons #login-buttons #login-buttons-password:hover, .button:active, .auth-buttons #login-buttons #login-buttons-password:active, .button:visited, .auth-buttons #login-buttons #login-buttons-password:visited, .btn:link, .btn:hover, .btn:active, .btn:visited {
     color: white; }
 
-/* line 86, ../sass/modules/_forms.scss */
+/* line 105, ../sass/modules/_forms.scss */
 .twitter-signup {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #dfdbdb; }
-  /* line 90, ../sass/modules/_forms.scss */
+  /* line 109, ../sass/modules/_forms.scss */
   .twitter-signup .twitter-button {
     background: #00aced; }
 

@@ -14,14 +14,24 @@
           <label class="control-label">Body</label>
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
         </div>
+        <div class="control-group">
+          <label class="control-label">Category</label>
+          <div class="controls">
+            {{#each categories}}
+            <label class="radio inline">
+              <input id="category_{{_id}}" type="checkbox" value="{{name}}" name="category" {{#if isChecked }} checked {{/if}}/> {{name}}
+            </label>
+            {{/each}}
+          </div>
+        </div>
         {{#if currentUser.isAdmin}}
             <div class="control-group">
               <label class="control-label">Sticky?</label>
               <div class="controls">
-                    <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
+                    <input type="radio" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
               </div>
             </div>
-        {{/if}}  
+        {{/if}}
         <div class="form-actions">
           <a class="delete-link" href="/posts/deleted">Delete Post</a>
           <input type="submit" value="Submit" />

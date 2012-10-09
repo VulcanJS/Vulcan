@@ -8,8 +8,6 @@ Template.categories.events({
   'click input[type=submit]': function(e){
     e.preventDefault();
 
-    $(e.target).addClass('disabled');
-
     var name= $('#name').val();
     
     Meteor.call('category', {
@@ -19,10 +17,9 @@ Template.categories.events({
         console.log(error);
         throwError(error.reason);
         clearSeenErrors();
-        $(e.target).removeClass('disabled');
       }else{
         $('#name').val('');
-        throwError('New category "'+categoryName+'" created');
+        // throwError('New category "'+categoryName+'" created');
       }
     });
   }

@@ -1,3 +1,9 @@
+Template.post_submit.helpers({
+  categories: function(){
+    return Categories.find();
+  }
+});
+
 Template.post_submit.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
@@ -12,11 +18,17 @@ Template.post_submit.events = {
     var title= $('#title').val();
     var url = $('#url').val();
     var body = instance.editor.exportFile();
-    
+    var categories=[];
+
+    $('input[name=category]:checked').each(function() {
+       categories.push($(this).val());
+     });
+
     Meteor.call('post', {
       headline: title,
       body: body,
-      url: url
+      url: url,
+      categories: categories,
     }, function(error, postId) {
       if(error){
         console.log(error);
