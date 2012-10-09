@@ -1,0 +1,22 @@
+<template name="categories">
+  {{#if isAdmin true}}
+    <div class="grid-small grid-block dialog admin">
+      <h2>Categories</h2>
+      <h3>Add new category</h3>
+      <form>
+        <div class="control-group">
+          <label>Name</label>
+          <div class="controls"><input id="name" type="text" value="" /></div>
+        </div>
+        <div class="form-actions">
+          <input type="submit" class="button" value="Submit" />
+        </div>
+      </form>
+      <ul>
+        {{#with categories}}
+          {{> category_item}}
+        {{/with}}
+      </ul>
+    </div>
+  {{/if}}
+</template>

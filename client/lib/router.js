@@ -105,6 +105,7 @@ SimpleRouter = FilteredRouter.extend({
 		'comments/:id/edit':'comment_edit',
 		'settings':'settings',
 		'admin':'admin',
+		'categories':'categories',
 		'users':'users',
 		'account':'user_edit',
 		'forgot_password':'forgot_password',
@@ -136,12 +137,13 @@ SimpleRouter = FilteredRouter.extend({
 	signin: function() { this.goto('signin'); },
 	invite: function() { this.goto('no_invite'); },
 	submit: function() { this.goto('post_submit'); },
-	settings: function() {if(isAdmin(Meteor.user())) this.goto('settings'); },
-	users: function() {if(isAdmin(Meteor.user())) this.goto('users'); },
+	settings: function() { this.goto('settings'); },
+	users: function() { this.goto('users'); },
 	post_deleted: function() { this.goto('post_deleted'); },
 	comment_deleted: function() { this.goto('comment_deleted'); },
 	forgot_password: function() { this.goto('user_password'); },
-	admin: function() {if(isAdmin(Meteor.user())) this.goto('admin'); },
+	admin: function() { this.goto('admin'); },
+	categories: function() { this.goto('categories'); },
 	post: function(id, commentId) {
 		console.log("post, id="+id+', commentId='+commentId); 
 		window.template='post_page'; 

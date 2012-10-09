@@ -1,26 +1,28 @@
 <template name="users">
-	<div class="grid">
-		<div class="user-table grid-block">
-			<h1>Users</h1>
-			<table>
-				<thead>
-					<tr>
-						<td colspan="2">Name</td>
-						<td>Member since</td>
-						<td>Email</td>
-						<td>Posts</td>
-						<td>Comments</td>
-						<td>Karma</td>
-						<td>Is Invited?</td>
-						<td>Is Admin?</td>
-					</tr>
-				</thead>
-				<tbody>
-				    {{#each users}}
-				      {{> user_item}}
-				    {{/each}}
-				</tbody>
-			</table>
-		</div>
-	</div>
+  {{#if isAdmin true}}
+    <div class="grid">
+      <div class="user-table grid-block">
+        <h1>Users</h1>
+        <table>
+          <thead>
+            <tr>
+              <td colspan="2">Name</td>
+              <td>Member since</td>
+              <td>Email</td>
+              <td>Posts</td>
+              <td>Comments</td>
+              <td>Karma</td>
+              <td>Is Invited?</td>
+              <td>Is Admin?</td>
+            </tr>
+          </thead>
+          <tbody>
+              {{#each users}}
+                {{> user_item}}
+              {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {{/if}}
 </template>
