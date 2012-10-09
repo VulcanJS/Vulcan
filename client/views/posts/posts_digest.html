@@ -1,0 +1,9 @@
+<template name="posts_digest">
+		<a href="#" class="prev-link" data-increment="-1">Previous Day</a>
+		<a href="#" class="next-link" data-increment="1">Next Day</a>
+		<div class="posts grid list">
+			{{#each posts}}
+				{{> post_item}}
+			{{/each}}
+		</div>
+</template>

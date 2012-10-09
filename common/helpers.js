@@ -20,12 +20,6 @@ trackEvent = function(event, properties){
 		mixpanel.track(event, properties);
 	}
 }
-sessionSetObject=function(name, value){
-	Session.set(name, JSON.stringify(value));
-}
-sessionGetObject=function(name){
-	return JSON.parse(Session.get(name));
-}
 getAuthorName = function(item){
 	// keep both variables for transition period
 	var id=item.userId || item.user_id;

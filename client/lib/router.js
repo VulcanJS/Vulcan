@@ -85,7 +85,11 @@ SimpleRouter = FilteredRouter.extend({
 	routes: {
 		'': 'top',
 		'top':'top',
+		'top/:page':'top',
 		'new':'new',
+		'new/:page':'new',
+		'digest':'digest',
+		'digest/:page':'digest',
 		'test':'test',
 		'signin':'signin',
 		'signup':'signup',
@@ -107,21 +111,26 @@ SimpleRouter = FilteredRouter.extend({
 		'users/:id': 'user_profile',
 		'users/:id/edit':'user_edit'
 	},
-	top: function() {
+	top: function(page) {
 		if (canView(Meteor.user(), 'replace')) {
-			Session.set('current_page', 1);
-			Session.set('sort_order', JSON.stringify({score: -1}));
-			Session.set('posts_count', null);
+			var page = (typeof page === 'undefined') ? 1 : page;
+			Session.set('currentPageNumber', page);
 			this.goto('posts_top');
 		}
 	},
-	new: function() {
+	new: function(page) {
 		if (canView(Meteor.user(), 'replace')) {
-			Session.set('current_page', 1);
-			Session.set('sort_order', JSON.stringify({submitted: -1}));
-			Session.set('posts_count', null);
+			var page = (typeof page === 'undefined') ? 1 : page;
+			Session.set('currentPageNumber', page);
 			this.goto('posts_new');
 		}
+	},
+	digest: function(page){
+		if (canView(Meteor.user(), 'replace')) {
+			var page = (typeof page === 'undefined') ? 1 : page;
+			Session.set('currentPageNumber', page);
+			this.goto('posts_digest');
+		}		
 	},
 	signup: function() { this.goto('signup'); },
 	signin: function() { this.goto('signin'); },

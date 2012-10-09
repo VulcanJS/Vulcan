@@ -1,13 +1,15 @@
 <template name="posts_new">
 	{{#if canView replace}}
+		<a href="#" class="prev-link">Previous Page</a>
+		<a href="#" class="next-link">Next Page</a>
 		<div class="posts grid list">
 			{{#each posts}}
 				{{> post_item}}
 			{{/each}}
 		</div>
 		
-		<div class="grid" style="position:absolute;bottom:50px;">
+<!-- 		<div class="grid" style="position:absolute;bottom:50px;">
 			<button class="more">View more</button>
-		</div>
+		</div> -->
 	{{/if}}
 </template>

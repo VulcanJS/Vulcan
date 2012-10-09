@@ -51,6 +51,9 @@ Template.post_item.helpers({
   ago: function(){
     return moment(this.submitted).fromNow();
   },
+  timestamp: function(){
+    return moment(this.submitted).format("dddd, MMMM Do YYYY, h:mm:ss a");
+  },
   voted: function(){
     var user = Meteor.user();
     if(!user) return false; 

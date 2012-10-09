@@ -44,7 +44,7 @@
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}
           {{#if currentUser.isAdmin}}
-          | votes: {{votes}}, baseScore: {{baseScore}}, score: {{short_score}}
+          | votes: {{votes}}, baseScore: {{baseScore}}, score: {{short_score}}, time: {{timestamp}}
           {{/if}}
         </p>
       </div>
