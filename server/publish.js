@@ -94,8 +94,8 @@ Meteor.startup(function(){
 
 Comments = new Meteor.Collection('comments');
 
-Meteor.publish('comments', function() {
-  return Comments.find();
+Meteor.publish('comments', function(postId) {
+  return Comments.find({post: postId});
 });
 
 Meteor.startup(function(){
@@ -143,7 +143,8 @@ Meteor.startup(function(){
 Notifications = new Meteor.Collection('notifications');
 
 Meteor.publish('notifications', function() {
-  return Notifications.find();
+  // only publish notifications belonging to the current user
+  return Notifications.find({userId:this.userId()});
 });
 
 Meteor.startup(function(){
@@ -166,5 +167,21 @@ Meteor.startup(function(){
         }
         return false;
       }
+  });
+});
+
+// Categories
+
+Categories = new Meteor.Collection('categories');
+
+Meteor.publish('categories', function() {
+  return Categories.find();
+});
+
+Meteor.startup(function(){
+  Categories.allow({
+      insert: function(userId, docs){ return isAdminById(userId); }
+    , update: function(userId, docs, fields, modifier){ return isAdminById(userId); }
+    , remove: function(userId, docs){ return isAdminById(userId); }
   });
 });

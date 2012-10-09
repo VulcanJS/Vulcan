@@ -1,13 +1,58 @@
+// ** Client-side helpers **
+
 sessionSetObject=function(name, value){
 	Session.set(name, JSON.stringify(value));
 }
 sessionGetObject=function(name){
 	return JSON.parse(Session.get(name));
 }
+$.fn.exists = function () {
+    return this.length !== 0;
+}
+
+
+// ** Errors **
+// Local (client-only) collection
 
 Errors = new Meteor.Collection(null);
 
+
+// ** Settings **
+
+Settings = new Meteor.Collection('settings');
+Meteor.subscribe('settings', function(){
+
+	// runs once on site load
+
+	window.settingsLoaded=true;
+
+	if((proxinoKey=getSetting('proxinoKey'))){
+		Proxino.key = proxinoKey;
+		Proxino.track_errors();
+	}
+
+	// window.Router = new SimpleRouter();
+	window.Backbone.history.start({pushState: true});
+
+});
+
+
+// ** Users **
+
 Meteor.subscribe('users');
+
+
+// ** Notifications **
+// Only load if user is logged in
+
+if(Meteor.user()){
+	Notifications = new Meteor.Collection('notifications');
+	Meteor.subscribe('notifications');
+}
+
+
+// ** Posts **
+// Collection depends on postsView object
 
 Posts = new Meteor.Collection('posts');
 
@@ -33,38 +78,26 @@ Meteor.autosubscribe(function() {
 	});
 });
 
+
+// ** Categories **
+
+Categories = new Meteor.Collection('categories');
+Meteor.subscribe('categories');
+
+
+// ** Comments **
+// Collection depends on selectedPostId session variable
+
+Session.set('selectedPostId', null);
 Comments = new Meteor.Collection('comments');
-Meteor.subscribe('comments', function() {
-   StyleNewRecords = new Date();
+Meteor.autosubscribe(function() {
+	Meteor.subscribe('comments', Session.get('selectedPostId'), function() {
+		//
+	});
 });
 
-Notifications = new Meteor.Collection('notifications');
-Meteor.subscribe('notifications');
 
-Settings = new Meteor.Collection('settings');
-Meteor.subscribe('settings', function(){
-
-	// runs once on site load
-
-	window.settingsLoaded=true;
-
-	if((proxinoKey=getSetting('proxinoKey'))){
-		Proxino.key = proxinoKey;
-		Proxino.track_errors();
-	}
-
-	// window.Router = new SimpleRouter();
-	window.Backbone.history.start({pushState: true});
-
-});
-
-$.fn.exists = function () {
-    return this.length !== 0;
-}
-
-$(document).bind('keyup', 'ctrl+n', function(){
-	$('.notifications').toggleClass('hidden');
-});
+// ** Handlebars helpers **
 
 Handlebars.registerHelper('canView', function(action) {
 	var action=(typeof action !== 'string') ? null : action;
