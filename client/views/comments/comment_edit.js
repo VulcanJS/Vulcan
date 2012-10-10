@@ -6,6 +6,7 @@ Template.comment_edit.helpers({
 
 Template.comment_edit.rendered = function(){
 	var comment= Comments.findOne(Session.get('selectedCommentId'));
+
 	if(comment && Meteor.user() && !this.editor){
 		this.editor = new EpicEditor(EpicEditorOptions).load();
 		this.editor.importFile('editor',comment.body);

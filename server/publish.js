@@ -96,8 +96,8 @@ Meteor.startup(function(){
 
 Comments = new Meteor.Collection('comments');
 
-Meteor.publish('comments', function(postId) {
-  return Comments.find({post: postId});
+Meteor.publish('comments', function(query) {
+  return Comments.find(query);
 });
 
 Meteor.startup(function(){
