@@ -134,6 +134,5 @@ Handlebars.registerHelper('canEdit', function(collectionName, action) {
   var collection = (typeof collectionName !== 'string') ? Posts : eval(collectionName);
   var itemId = (collectionName==="Posts") ? Session.get('selectedPostId') : Session.get('selectedCommentId');
   var item=collection.findOne(itemId);
-  console.log(collectionName, action, itemId);
   return item && canEdit(Meteor.user(), item, action);
 });

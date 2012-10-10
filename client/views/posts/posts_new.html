@@ -5,7 +5,7 @@
 				{{> post_item}}
 			{{/each}}
 		</div>
-		<div class="grid more-button" style="top: {{moreLinkDistance}}px">
+		<div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}" style="top: {{moreLinkDistance}}px">
 			<a class="more-link" href="#">Load more</a>
 		</div>
 	{{/if}}

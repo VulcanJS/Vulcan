@@ -8,6 +8,7 @@ Template.posts_top.created = function(){
   var postsView={
     find: {},
     sort: {score: -1},
+    skip: 0,
     limit: postsPerPage,
     postsPerPage: postsPerPage,
     page: pageNumber
@@ -17,8 +18,11 @@ Template.posts_top.created = function(){
 
 Template.posts_top.helpers({
   moreLinkDistance: function(){
+    return (Posts.find().count()+1)*80;
+  },
+  allPostsLoaded: function(){
     var postsView=sessionGetObject('postsView');
-    return (postsView.limit+1)*80;
+    return Posts.find().count() < postsView.skip + postsView.limit;
   }
 });
 

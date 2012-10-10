@@ -18,8 +18,11 @@ Template.posts_new.created = function(){
 
 Template.posts_new.helpers({
   moreLinkDistance: function(){
+    return (Posts.find().count()+1)*80;
+  },
+  allPostsLoaded: function(){
     var postsView=sessionGetObject('postsView');
-    return (postsView.limit+1)*80;
+    return Posts.find().count() < postsView.skip + postsView.limit;
   }
 });
 
