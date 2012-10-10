@@ -85,11 +85,14 @@ SimpleRouter = FilteredRouter.extend({
   routes: {
     '': 'top',
     'top':'top',
+    'top/':'top',
     'top/:page':'top',
     'new':'new',
+    'new/':'new',
     'new/:page':'new',
+    'digest/:year/:month/:day':'digest',
     'digest':'digest',
-    'digest/:page':'digest',
+    'digest/':'digest',
     'test':'test',
     'signin':'signin',
     'signup':'signup',
@@ -126,10 +129,31 @@ SimpleRouter = FilteredRouter.extend({
       this.goto('posts_new');
     }
   },
-  digest: function(page){
+  digest: function(year, month, day){
+
     if(canView(Meteor.user(), 'replace')) {
       var page = (typeof page === 'undefined') ? 1 : page;
       Session.set('currentPageNumber', page);
+      if(typeof day === 'undefined'){
+        var date = new Date();
+        var mDate = moment(date);
+        this.navigate(getDigestURL(mDate));
+      }else{
+        var date=new Date(year, month-1, day);
+        var mDate = moment(date);
+      }
+
+      sessionSetObject('currentDate', date);
+      var postsPerPage=5;
+      var postsView={
+        find: {submitted: {$gte: mDate.startOf('day').valueOf(), $lt: mDate.endOf('day').valueOf()}},
+        sort: {score: -1},
+        skip:0,
+        postsPerPage: postsPerPage,
+        limit: postsPerPage
+      }
+      sessionSetObject('postsView', postsView);
+
       this.goto('posts_digest');
     }   
   },

@@ -20,7 +20,7 @@
             <div class="controls">
               {{#each categories}}
               <label class="radio inline">
-                <input id="category_{{_id}}" type="checkbox" value="{{name}}" name="category" {{#if isChecked }} checked {{/if}}/> {{name}}
+                <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{#if isChecked }} checked {{/if}}/> {{name}}
               </label>
               {{/each}}
             </div>

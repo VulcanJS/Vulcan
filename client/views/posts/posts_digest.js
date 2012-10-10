@@ -1,55 +1,30 @@
-getDateRange= function(pageNumber){
-  var now = moment(new Date());
-  var dayToDisplay=now.subtract('days', pageNumber-1);
-  var range={};
-  range.start = dayToDisplay.startOf('day').valueOf();
-  range.end = dayToDisplay.endOf('day').valueOf();
-  console.log("after: ", dayToDisplay.startOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
-  console.log("before: ", dayToDisplay.endOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
-  return range;
-}
-
-Template.posts_digest.posts = function(){
-  var postsView=sessionGetObject('postsView');
-  console.log('postsView:: ',postsView);
-  var collection=Posts.find(postsView.find);
-  console.log('collection ', collection.fetch());
-  return collection;
-};
-
-Template.posts_digest.created = function(){
-  var postsPerPage=5;
-  var pageNumber=Session.get('currentPageNumber') || 1;
-  var range=getDateRange(pageNumber);
-  var postsView={
-    find: {submitted: {$gte: range.start, $lt: range.end}},
-    sort: {score: -1},
-    skip:0,
-    postsPerPage: postsPerPage,
-    limit: postsPerPage,
-    page: pageNumber
-  }
-  sessionSetObject('postsView', postsView);
-}
-
-Template.posts_digest.events({
-  'click .prev-link': function(e) {
-    e.preventDefault();
+Template.posts_digest.helpers({
+  posts: function(){
     var postsView=sessionGetObject('postsView');
-    postsView.page++;
-    var range=getDateRange(postsView.page);
-    postsView.find={submitted: {$gte: range.start, $lt: range.end}}
-    sessionSetObject('postsView', postsView);
+    var collection=Posts.find(postsView.find);
+    return collection;
   },
-  'click .next-link': function(e) {
-    e.preventDefault();
-    var postsView=sessionGetObject('postsView');
-    if(postsView.page>1){
-      postsView.page--;
-      var range=getDateRange(postsView.page);
-      postsView.find={submitted: {$gte: range.start, $lt: range.end}}
-      console.log(postsView.page);
-      sessionSetObject('postsView', postsView);
-    }
+  currentDate: function(){
+    return moment(sessionGetObject('currentDate')).format("dddd, MMMM Do YYYY");
+  },
+  previousDateURL: function(){
+    var currentDate=moment(sessionGetObject('currentDate'));
+    var newDate=currentDate.subtract('days', 1);
+    return getDigestURL(newDate);
+  },
+  showPreviousDate: function(){
+    // TODO
+    return true;
+  },
+  nextDateURL: function(){
+    var currentDate=moment(sessionGetObject('currentDate'));
+    var newDate=currentDate.add('days', 1);
+    return getDigestURL(newDate);
+  },
+  showNextDate: function(){
+    var currentDate=moment(sessionGetObject('currentDate'));
+    var nextDate=currentDate.add('days', 1); 
+    var today=moment(new Date());
+    return today.diff(nextDate, 'days') > 0
   }
 });

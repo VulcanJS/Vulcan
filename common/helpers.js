@@ -29,3 +29,16 @@ getAuthorName = function(item){
 scrollPageTo = function(selector){
 	$('body').scrollTop($(selector).offset().top);	
 }
+getDigestURL = function(moment){
+	return '/digest/'+moment.year()+'/'+(moment.month()+1)+'/'+moment.date()
+}
+getDateRange= function(pageNumber){
+  var now = moment(new Date());
+  var dayToDisplay=now.subtract('days', pageNumber-1);
+  var range={};
+  range.start = dayToDisplay.startOf('day').valueOf();
+  range.end = dayToDisplay.endOf('day').valueOf();
+  // console.log("after: ", dayToDisplay.startOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
+  // console.log("before: ", dayToDisplay.endOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
+  return range;
+}
