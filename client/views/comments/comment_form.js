@@ -14,7 +14,7 @@ Template.comment_form.events = {
     clearSeenErrors();
 	var content = instance.editor.exportFile();
 
-    if(window.template=='comment_reply'){
+    if(Router.current_page()=='comment_reply'){
         // child comment
         var parentCommentId=Session.get('selectedCommentId');
         var postId=Comments.findOne(parentCommentId).post;

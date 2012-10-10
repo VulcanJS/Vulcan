@@ -2,20 +2,6 @@ Template.posts_new.posts = function(){
   return Posts.find();
 };
 
-Template.posts_new.created = function(){
-  var postsPerPage=10;
-  var pageNumber=Session.get('currentPageNumber') || 1;
-  var postsView={
-    find: {},
-    sort: {submitted: -1},
-    postsPerPage: postsPerPage,
-    limit: postsPerPage,
-    page: pageNumber,
-    skip:0
-  }
-  sessionSetObject('postsView', postsView);
-}
-
 Template.posts_new.helpers({
   moreLinkDistance: function(){
     return (Posts.find().count()+1)*80;

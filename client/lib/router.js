@@ -76,10 +76,12 @@ SimpleRouter = FilteredRouter.extend({
   // if the user is logged in but their profile isn't filled out enough
   require_profile: function(page) {
   var user = Meteor.user();
-  if  (user && !user.loading && !userProfileComplete(user))
-    return 'user_email';
-  else
-    return page;
+    if (user && !user.loading && !userProfileComplete(user)){
+      Session.set('selectedUserId', user._id);
+      return 'user_email';
+    } else {
+      return page;
+    }
   },
   
   routes: {
@@ -117,24 +119,41 @@ SimpleRouter = FilteredRouter.extend({
   },
   top: function(page) {
     if(canView(Meteor.user(), 'replace')) {
-      var page = (typeof page === 'undefined') ? 1 : page;
-      Session.set('currentPageNumber', page);
+      var pageNumber = (typeof page === 'undefined') ? 1 : page;
+      var postsPerPage=10;
+      var postsView={
+        find: {},
+        sort: {score: -1},
+        skip: (pageNumber-1)*postsPerPage,
+        limit: postsPerPage,
+        postsPerPage: postsPerPage,
+        page: pageNumber
+      }
+      sessionSetObject('postsView', postsView);
       this.goto('posts_top');
     }
   },
   new: function(page) {
     if(canView(Meteor.user(), 'replace')) {
-      var page = (typeof page === 'undefined') ? 1 : page;
-      Session.set('currentPageNumber', page);
+      var pageNumber = (typeof page === 'undefined') ? 1 : page;
+      var postsPerPage=10;
+      var postsView={
+        find: {},
+        sort: {submitted: -1},
+        postsPerPage: postsPerPage,
+        skip:(pageNumber-1)*postsPerPage,
+        limit: postsPerPage,
+        page: pageNumber
+      }
+      sessionSetObject('postsView', postsView);
       this.goto('posts_new');
     }
   },
   digest: function(year, month, day){
-
     if(canView(Meteor.user(), 'replace')) {
-      var page = (typeof page === 'undefined') ? 1 : page;
-      Session.set('currentPageNumber', page);
       if(typeof day === 'undefined'){
+        // if day is not defined, just use today
+        // and change the URL to today's date
         var date = new Date();
         var mDate = moment(date);
         this.navigate(getDigestURL(mDate));
@@ -142,7 +161,6 @@ SimpleRouter = FilteredRouter.extend({
         var date=new Date(year, month-1, day);
         var mDate = moment(date);
       }
-
       sessionSetObject('currentDate', date);
       var postsPerPage=5;
       var postsView={
@@ -153,7 +171,6 @@ SimpleRouter = FilteredRouter.extend({
         limit: postsPerPage
       }
       sessionSetObject('postsView', postsView);
-
       this.goto('posts_digest');
     }   
   },
@@ -169,7 +186,6 @@ SimpleRouter = FilteredRouter.extend({
   admin: function() { this.goto('admin'); },
   categories: function() { this.goto('categories'); },
   post: function(id, commentId) {
-    console.log("post, id="+id+', commentId='+commentId); 
     window.template='post_page'; 
     Session.set('selectedPostId', id);
     if(typeof commentId !== 'undefined')
@@ -181,42 +197,35 @@ SimpleRouter = FilteredRouter.extend({
     window.newCommentTimestamp=new Date();
   },
   post_edit: function(id) {
-    console.log("post_edit, id="+id);
-    window.template='post_edit';
     Session.set('selectedPostId', id); 
     this.goto('post_edit'); 
   },
   comment: function(id) {
-    console.log("comment, id="+id);
     Session.set('selectedCommentId', id);
-    this.goto('comment_page');
     window.repress_recursion=true;
     window.newCommentTimestamp=new Date();
+    this.goto('comment_page');    
   },
   comment_reply: function(id) {
-    console.log("comment reply, id="+id);
-    window.template='comment_reply';
     Session.set('selectedCommentId', id);
-    this.goto('comment_reply');
     window.repress_recursion=true;
     window.newCommentTimestamp=new Date();
+    this.goto('comment_reply');
   },
   comment_edit: function(id) {
-    console.log("comment_edit, id="+id);
-    window.template='comment_edit'; 
     Session.set('selectedCommentId', id);
-    this.goto('comment_edit');
     window.newCommentTimestamp=new Date();
+    this.goto('comment_edit');
   },
   user_profile: function(id){
     if(typeof id !== undefined){
-      window.selectedUserId=id;
+      Session.set('selectedUserId', id);
     }
     this.goto('user_profile');
   },
   user_edit: function(id){
     if(typeof id !== undefined){
-      window.selectedUserId=id;
+      Session.set('selectedUserId', id);
     }
     this.goto('user_edit');
   }

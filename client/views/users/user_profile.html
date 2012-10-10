@@ -4,7 +4,7 @@
 		<div class="user-profile grid-block">
 			<table>
 				<tr>
-					<td colspan="2"><span class="user-avatar" style="background-image:url({{avatar_url}});"></span></td>
+					<td colspan="2"><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
 				</tr>
 				<tr>
 					<td>Name: </td>
@@ -12,14 +12,14 @@
 				</tr>
 				<tr>
 					<td>Member since: </td>
-					<td>{{created_at_formatted}}</td>
+					<td>{{createdAtFormatted}}</td>
 				</tr>
 				<tr>
 					<td>Bio: </td>
 					<td>{{profile.bio}}</td>
 				</tr>
 			</table>
-			{{#if is_current_user}}
+			{{#if isCurrentUser}}
 			<a href="/users/{{_id}}/edit">Edit profile</a>
 			{{/if}}
 		</div>

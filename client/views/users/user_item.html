@@ -1,18 +1,18 @@
 <template name="user_item">
 <tr class="user">
-	<td><span class="user-avatar" style="background-image:url({{avatar_url}});"></span></td>
-	<td><a href="/users/{{_id}}/edit">{{display_name}}</a></td>
-	<td>{{created_at_formatted}}</td>
+	<td><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
+	<td><a href="/users/{{_id}}/edit">{{displayName}}</a></td>
+	<td>{{createdAtFormatted}}</td>
 	<td>{{email}}</td>
 	<td>
-		<a href="#">{{posts_count}}</a>
+		<a href="#">{{postsCount}}</a>
 		<ul class="posts-list hidden">
 			{{#each posts}}
 				<li><a href="/posts/{{_id}}">{{headline}}</a></li>
 			{{/each}}
 		</ul>
 	</td>
-	<td><a href="#">{{comments_count}}</a></td>
+	<td><a href="#">{{commentsCount}}</a></td>
 	<td>{{karma}}</td>
 	<td>{{#if isInvited}}<a class="uninvite-link" href="#"><i class="icon-check"></i>Uninvite</a>{{else}}<a href="#" class="invite-link">Invite</a>{{/if}}</td>
 	<td>{{#if isAdmin}}<a class="unadmin-link" href="#"><i class="icon-check unadmin-link"></i>Unadmin</a>{{else}}<a href="#" class="admin-link">Make admin</a>{{/if}}</td>

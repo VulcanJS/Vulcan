@@ -1,20 +1,20 @@
 
 
 Template.user_profile.user = function(){
-	if(window.selectedUserId){
-		return Meteor.users.findOne(window.selectedUserId);
+	if(userId=Session.get('selectedUserId')){
+		return Meteor.users.findOne(userId);
 	}
 }
 
-Template.user_profile.avatar_url = function(){
+Template.user_profile.avatarUrl = function(){
 	return Gravatar.getGravatar(this, {
 		d: 'http://telescope.herokuapp.com/img/default_avatar.png',
 		s: 80
 	});
 }
 
-Template.user_profile.created_at_formatted = Template.user_item.created_at_formatted;
+Template.user_profile.createdAtFormatted = Template.user_item.createdAtFormatted;
 
-Template.user_profile.is_current_user = function(){
-	return Meteor.user() && (window.selectedUserId === Meteor.user()._id);
+Template.user_profile.isCurrentUser = function(){
+	return Meteor.user() && (Session.get('selectedUserId') === Meteor.user()._id);
 }

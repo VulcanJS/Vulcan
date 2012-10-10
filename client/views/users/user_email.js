@@ -3,7 +3,7 @@ Template.user_email.events = {
     e.preventDefault();
     if(!Meteor.user()) throwError('You must be logged in.');
     var $target=$(e.target);
-    var user=window.selectedUserId? Meteor.users.findOne(window.selectedUserId) : Meteor.user();
+    var user=Session.get('selectedUserId')? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
     var update = {
       "profile.email": $target.find('[name=email]').val()
     };
@@ -32,8 +32,8 @@ Template.user_email.profileIncomplete = function() {
 
 Template.user_email.user = function(){
 	var current_user=Meteor.user();
-	if(window.selected_user_id && !current_user.loading && current_user.isAdmin){
-	  return Meteor.users.findOne(window.selected_user_id);
+	if(Session.get('selectedUserId') && !current_user.loading && current_user.isAdmin){
+	  return Meteor.users.findOne(Session.get('selectedUserId'));
 	}else{
 		return current_user;
 	}

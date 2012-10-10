@@ -3,7 +3,7 @@ Template.user_edit.events = {
     e.preventDefault();
     if(!Meteor.user()) throwError('You must be logged in.');
     var $target=$(e.target);
-    var user=window.selectedUserId? Meteor.users.findOne(window.selectedUserId) : Meteor.user();
+    var user=Session.get('selectedUserId') ? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
     var update = {
       "profile.name": $target.find('[name=name]').val(),
       "profile.bio": $target.find('[name=bio]').val(),
@@ -40,8 +40,8 @@ Template.user_edit.profileIncomplete = function() {
 
 Template.user_edit.user = function(){
 	var currentUser=Meteor.user();
-	if(window.selectedUserId && !currentUser.loading && currentUser.isAdmin){
-	  return Meteor.users.findOne(window.selectedUserId);
+	if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
+	  return Meteor.users.findOne(Session.get('selectedUserId'));
 	}else{
 		return currentUser;
 	}

@@ -2,13 +2,13 @@ Template.user_item.rendered = function(){
 };
 
 Template.user_item.helpers({
-	avatar_url: function(){
+	avatarUrl: function(){
 		return getAvatarUrl(this);
 	},
-	created_at_formatted: function(){
+	createdAtFormatted: function(){
 		return this.createdAt ? moment(this.createdAt).fromNow() : '–';
 	},
-	display_name: function(){
+	displayName: function(){
 		return getDisplayName(this);
 	},
 	email: function(){
@@ -17,13 +17,13 @@ Template.user_item.helpers({
 	posts: function(){
 		return Posts.find({'userId':this._id});
 	},
-	posts_count: function(){
+	postsCount: function(){
 		return Posts.find({'userId':this._id}).count();
 	},
 	comments: function(){
 		return Comments.find({'userId':this._id});
 	},
-	comments_count: function(){
+	commentsCount: function(){
 		// Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
 		return Comments.find({'userId':this._id}).count();
 	}
