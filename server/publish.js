@@ -80,12 +80,14 @@ Meteor.startup(function(){
         if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
+        throw new Meteor.Error(403, 'You do not have permission to edit this post');
         return false;
       }
     , remove: function(userId, docs){ 
         if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
+        throw new Meteor.Error(403, 'You do not have permission to delete this post');
         return false; }
   });
 });
@@ -110,11 +112,13 @@ Meteor.startup(function(){
         if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
         }
+        throw new Meteor.Error(403, 'You do not have permission to edit this comment');        
         return false;
       }
     , remove: function(userId, docs){ 
         if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
           return true;
+        throw new Meteor.Error(403, 'You do not have permission to delete this comment');
         }
         return false;
       }

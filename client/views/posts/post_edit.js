@@ -50,7 +50,10 @@ Template.post_edit.rendered = function(){
 Template.post_edit.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
-    if(!Meteor.user()) throw 'You must be logged in.';
+    if(!Meteor.user()){
+      throwError('You must be logged in.');
+      return false;
+    }
 
     var selectedPostId=Session.get('selectedPostId');
     var title= $('#title').val();
@@ -75,11 +78,15 @@ Template.post_edit.events = {
           , categories: categories
         }
       }
+    ,function(error){
+      if(error){
+        throwError(error.reason);
+      }else{
+        trackEvent("edit post", {'postId': selectedPostId});
+        Router.navigate("posts/"+selectedPostId, {trigger:true});
+      }
+    }
     );
-
-    trackEvent("edit post", {'postId': selectedPostId});
-
-    Router.navigate("posts/"+selectedPostId, {trigger:true});
   }
 
   , 'click .delete-link': function(e){

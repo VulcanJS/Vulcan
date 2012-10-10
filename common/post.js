@@ -13,7 +13,7 @@ Meteor.methods({
 
     post = _.extend(post, {
       userId: user._id,
-      author: user.username,
+      author: getDisplayName(user),
       submitted: new Date().getTime(),
       votes: 0,
       comments: 0,

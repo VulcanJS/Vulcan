@@ -128,3 +128,10 @@ Handlebars.registerHelper('isAdmin', function(showError) {
     return false;
   }
 });
+Handlebars.registerHelper('canEdit', function(collectionName, action) {
+  var action = (typeof action !== 'string') ? null : action;
+  var collection = (typeof collectionName !== 'string') ? Posts : eval(collectionName);
+  var itemId = (collectionName==="Posts") ? Session.get('selectedPostId') : Session.get('selectedCommentId');
+  var item=collection.findOne(itemId);
+  return item && canEdit(Meteor.user(), item, action);
+});

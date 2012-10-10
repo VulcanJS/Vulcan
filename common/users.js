@@ -154,3 +154,24 @@ canDownvote = function(user, collection, action){
   var action=(typeof action === 'undefined') ? null : action;
   return canPost(user, action);
 }
+canEdit = function(user, item, action){
+  var user=(typeof user === 'undefined') ? Meteor.user() : user;
+  var action=(typeof action === 'undefined') ? null : action;
+  try{
+    if(!user || !item || user._id!==item.userId){
+      throw "no_rights";
+    }else{
+      return true;
+    }
+  }catch(error){
+    if(action){
+      switch(error){
+        case "no_rights":
+          throwError("Sorry, you do not have the rights to edit this item.");
+          action=='replace' ? Router.goto('no_rights') : Router.navigate('no_rights', {trigger : true});
+          break;
+      }
+    }
+    return false;
+  }
+}
