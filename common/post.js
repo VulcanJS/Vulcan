@@ -5,8 +5,8 @@ Meteor.methods({
     if (!user || !canPost(user))
       throw new Meteor.Error(123, 'You need to login or be invited to post new stories.');
 
-    if(!post.headline || !post.url)
-      throw new Meteor.Error(456, 'Please fill in a headline and URL');
+    if(!post.headline)
+      throw new Meteor.Error(456, 'Please fill in a headline');
 
     if(!this.isSimulation)
         limitRate(user, Posts, 30);
