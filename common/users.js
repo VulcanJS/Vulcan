@@ -158,7 +158,11 @@ canEdit = function(user, item, action){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
   var action=(typeof action === 'undefined') ? null : action;
   try{
-    if(!user || !item || user._id!==item.userId){
+    if (!user || !item){
+      throw "no_rights";
+    } else if (isAdmin(user)) {
+      return true;
+    } else if (user._id!==item.userId) {
       throw "no_rights";
     }else{
       return true;
