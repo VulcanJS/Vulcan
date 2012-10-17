@@ -66,6 +66,7 @@ var postsView={
 sessionSetObject('postsView', postsView);
 
 Meteor.autosubscribe(function() {
+  Session.set('postsReady', false);
   var view=sessionGetObject('postsView');
   Meteor.subscribe('posts', view, function() {
     // collectionArray=Posts.find().fetch();
@@ -75,6 +76,7 @@ Meteor.autosubscribe(function() {
     //     console.log('- '+collectionArray[i].headline);
     //   }
     // console.log('found '+collectionArray.length+' posts');
+    Session.set('postsReady', true);
   });
 });
 

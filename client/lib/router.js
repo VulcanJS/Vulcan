@@ -120,7 +120,7 @@ SimpleRouter = FilteredRouter.extend({
   top: function(page) {
     if(canView(Meteor.user(), 'replace')) {
       var pageNumber = (typeof page === 'undefined') ? 1 : page;
-      var postsPerPage=10;
+      var postsPerPage=1;
       var postsView={
         find: {},
         sort: {score: -1},
@@ -186,11 +186,29 @@ SimpleRouter = FilteredRouter.extend({
   admin: function() { this.goto('admin'); },
   categories: function() { this.goto('categories'); },
   post: function(id, commentId) {
-    window.template='post_page'; 
     Session.set('selectedPostId', id);
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
-    this.goto('post_page');
+    
+  	var postsView={
+  	  find: {_id:Session.get('selectedPostId')},
+  	  sort: {},
+  	  skip:0,
+  	  postsPerPage:1,
+  	  limit:1
+  	}
+  	sessionSetObject('postsView', postsView);
+    
+    this.goto(function() {
+      if (Posts.findOne(id)) {
+        return 'post_page';
+      } else if (! Session.get('postsReady')) {
+        return 'loading';
+      } else {
+        return 'not_found';
+      }
+    });
+    
     // on post page, we show the comment recursion
     window.repress_recursion=false;
     // reset the new comment time at each new request of the post page
