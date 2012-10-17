@@ -11,7 +11,7 @@ Meteor.methods({
     };
 
     if (!user || !canPost(user))
-      throw new Meteor.Error('You need to login or be invited to post new comments.')
+      throw new Meteor.Error('You need to login or be invited to post new comments.');
     
     if(!this.isSimulation)
         limitRate(user, Comments, 15);

@@ -11,13 +11,13 @@ getDisplayNameById = function(userId){
   getDisplayName(Meteor.users.findOne(userId));
 }
 getDisplayName = function(user){
-  return (user.profile && user.profile.name) ? user.profile.name : user.username
+  return (user.profile && user.profile.name) ? user.profile.name : user.username;
 }
 getSignupMethod = function(user){
   if(user.services && user.services.twitter){
     return 'twitter';
   }else{
-    return 'regular'
+    return 'regular';
   }
 }
 getEmail = function(user){

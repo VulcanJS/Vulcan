@@ -151,6 +151,14 @@ body {
   text-align: center; }
 
 /* line 41, ../sass/partials/_main.scss */
+#login-buttons .loading {
+  display: none; }
+
+/* line 44, ../sass/partials/_main.scss */
+#loading {
+  height: 300px; }
+
+/* line 47, ../sass/partials/_main.scss */
 #tlkio {
   position: fixed;
   top: 0px;
@@ -162,13 +170,13 @@ body {
   transition: ease-out right 300ms 0ms;
   z-index: 1000;
   background: #333; }
-  /* line 48, ../sass/partials/_main.scss */
+  /* line 54, ../sass/partials/_main.scss */
   #tlkio.open {
     right: 0px;
     -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 52, ../sass/partials/_main.scss */
+  /* line 58, ../sass/partials/_main.scss */
   #tlkio .open-chat, #tlkio .report-bug {
     display: block;
     background: #7ac0e4;
@@ -193,7 +201,7 @@ body {
     box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
     z-index: 1001;
     white-space: nowrap; }
-  /* line 67, ../sass/partials/_main.scss */
+  /* line 73, ../sass/partials/_main.scss */
   #tlkio .report-bug {
     top: 400px;
     right: 236px; }

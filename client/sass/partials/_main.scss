@@ -38,6 +38,12 @@ body{
 .footer{
 	text-align:center;
 }
+#login-buttons .loading{
+	display:none;
+}
+#loading{
+	height:300px;
+}
 #tlkio{
 	position:fixed;
 	top:0px;
