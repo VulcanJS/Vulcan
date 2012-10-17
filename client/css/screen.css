@@ -892,10 +892,11 @@ body.pageslide-open {
 
 /* line 304, ../sass/modules/_posts.scss */
 .more-button {
-  position: absolute;
+  position: relative;
   padding-bottom: 10px; }
   /* line 307, ../sass/modules/_posts.scss */
   .more-button a {
+    width: 100%;
     display: block;
     height: 70px;
     background: rgba(0, 0, 0, 0.075);
@@ -1419,8 +1420,58 @@ table thead tr td {
 .mobile {
   display: none !important; }
 
+/* line 4, ../sass/partials/_mobile.scss */
+.mobile-nav {
+  position: fixed;
+  overflow: auto;
+  width: 280px;
+  left: -280px;
+  top: 0px;
+  bottom: 0px;
+  background: #444;
+  color: white;
+  -webkit-box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5);
+  box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5); }
+  /* line 15, ../sass/partials/_mobile.scss */
+  .mobile-nav ul li {
+    border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
+    /* line 17, ../sass/partials/_mobile.scss */
+    .mobile-nav ul li a {
+      display: block;
+      height: 50px;
+      padding: 0 10px;
+      line-height: 50px; }
+      /* line 22, ../sass/partials/_mobile.scss */
+      .mobile-nav ul li a:hover {
+        background: #f36c3d;
+        color: white; }
+
+/* line 30, ../sass/partials/_mobile.scss */
+.mobile-nav, .content-wrapper {
+  -webkit-transition: ease-out left 300ms;
+  -webkit-transition-delay: 0ms;
+  -moz-transition: ease-out left 300ms 0ms;
+  -o-transition: ease-out left 300ms 0ms;
+  transition: ease-out left 300ms 0ms; }
+
+/* line 33, ../sass/partials/_mobile.scss */
+.content-wrapper {
+  position: relative;
+  left: 0px; }
+
+/* line 39, ../sass/partials/_mobile.scss */
+.mobile-nav-open .mobile-nav {
+  left: 0px; }
+/* line 42, ../sass/partials/_mobile.scss */
+.mobile-nav-open .outer-wrapper {
+  overflow: hidden; }
+  /* line 44, ../sass/partials/_mobile.scss */
+  .mobile-nav-open .outer-wrapper .content-wrapper {
+    left: 280px; }
+
 @media screen and (max-width: 400px) {
-  /* line 5, ../sass/partials/_mobile.scss */
+  /* line 50, ../sass/partials/_mobile.scss */
   .header-button, .header .auth-buttons .login-link-and-dropdown-list .login-link-text, .header .mobile-button {
     position: relative;
     display: block;
@@ -1429,7 +1480,7 @@ table thead tr td {
     color: white;
     height: 30px;
     width: 40px; }
-    /* line 13, ../sass/partials/_mobile.scss */
+    /* line 58, ../sass/partials/_mobile.scss */
     .header-button i, .header .auth-buttons .login-link-and-dropdown-list .login-link-text i, .header .mobile-button i {
       position: absolute;
       width: 100%;
@@ -1438,28 +1489,32 @@ table thead tr td {
       height: 30px;
       font-size: 18px; }
 
-  /* line 22, ../sass/partials/_mobile.scss */
+  /* line 67, ../sass/partials/_mobile.scss */
   .mobile {
     display: block !important; }
 
-  /* line 25, ../sass/partials/_mobile.scss */
+  /* line 70, ../sass/partials/_mobile.scss */
   .desktop {
     display: none !important; }
 
-  /* line 28, ../sass/partials/_mobile.scss */
+  /* line 73, ../sass/partials/_mobile.scss */
   .grid, .grid-small {
     width: auto;
     margin-left: 0;
     margin-right: 0;
-    padding: 0 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     min-width: 200px; }
 
-  /* line 35, ../sass/partials/_mobile.scss */
+  /* line 81, ../sass/partials/_mobile.scss */
   .posts {
     margin: 0 10px;
     padding: 0; }
+    /* line 84, ../sass/partials/_mobile.scss */
+    .posts .post-rank {
+      display: none; }
 
-  /* line 39, ../sass/partials/_mobile.scss */
+  /* line 88, ../sass/partials/_mobile.scss */
   .header {
     height: 50px;
     -webkit-border-radius: 0px;
@@ -1467,21 +1522,30 @@ table thead tr td {
     -ms-border-radius: 0px;
     -o-border-radius: 0px;
     border-radius: 0px; }
-    /* line 42, ../sass/partials/_mobile.scss */
+    /* line 91, ../sass/partials/_mobile.scss */
     .header .logo {
       top: 12px; }
-    /* line 45, ../sass/partials/_mobile.scss */
+      /* line 94, ../sass/partials/_mobile.scss */
+      .header .logo a img {
+        height: auto !important;
+        max-height: 40px !important;
+        width: auto !important; }
+    /* line 101, ../sass/partials/_mobile.scss */
     .header .auth-buttons {
       margin: 0; }
-      /* line 47, ../sass/partials/_mobile.scss */
+      /* line 103, ../sass/partials/_mobile.scss */
       .header .auth-buttons .login-link-and-dropdown-list {
         right: 0px !important;
         position: static !important; }
-        /* line 50, ../sass/partials/_mobile.scss */
+        /* line 106, ../sass/partials/_mobile.scss */
         .header .auth-buttons .login-link-and-dropdown-list .login-link-text {
+          font: 0/0 a;
+          text-shadow: none;
+          color: transparent;
           height: 30px !important;
-          margin: 10px 0 0 0 !important; }
-          /* line 54, ../sass/partials/_mobile.scss */
+          margin: 10px 0 0 0 !important;
+          display: block !important; }
+          /* line 112, ../sass/partials/_mobile.scss */
           .header .auth-buttons .login-link-and-dropdown-list .login-link-text:after {
             content: "\75" !important;
             font-family: 'icomoon' !important;
@@ -1491,67 +1555,67 @@ table thead tr td {
             line-height: 30px !important;
             height: 30px !important;
             font-size: 18px !important; }
-    /* line 70, ../sass/partials/_mobile.scss */
+    /* line 128, ../sass/partials/_mobile.scss */
     .header .mobile-button span {
       display: none; }
-    /* line 73, ../sass/partials/_mobile.scss */
+    /* line 131, ../sass/partials/_mobile.scss */
     .header .mobile-button.menu {
       float: left; }
-    /* line 76, ../sass/partials/_mobile.scss */
+    /* line 134, ../sass/partials/_mobile.scss */
     .header .mobile-button.submit {
       float: right; }
-    /* line 79, ../sass/partials/_mobile.scss */
+    /* line 137, ../sass/partials/_mobile.scss */
     .header .mobile-button:hover {
       background: white; }
-      /* line 81, ../sass/partials/_mobile.scss */
+      /* line 139, ../sass/partials/_mobile.scss */
       .header .mobile-button:hover i {
         color: #f36c3d; }
 
-  /* line 88, ../sass/partials/_mobile.scss */
+  /* line 146, ../sass/partials/_mobile.scss */
   .post .post-content {
     margin-right: 50px;
     margin-right: 0px; }
-    /* line 92, ../sass/partials/_mobile.scss */
+    /* line 150, ../sass/partials/_mobile.scss */
     .post .post-content .upvote-link {
       width: 30px; }
-    /* line 95, ../sass/partials/_mobile.scss */
+    /* line 153, ../sass/partials/_mobile.scss */
     .post .post-content .post-info {
       margin-left: 30px;
       padding: 6px 4px 6px 8px; }
-    /* line 100, ../sass/partials/_mobile.scss */
+    /* line 158, ../sass/partials/_mobile.scss */
     .post .post-content .post-heading .post-title {
       line-height: 1.2;
       display: block;
       margin-bottom: 4px;
       font-size: 18px; }
-    /* line 106, ../sass/partials/_mobile.scss */
+    /* line 164, ../sass/partials/_mobile.scss */
     .post .post-content .post-heading .post-domain {
       line-height: 1;
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
-    /* line 113, ../sass/partials/_mobile.scss */
+    /* line 171, ../sass/partials/_mobile.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
-      /* line 118, ../sass/partials/_mobile.scss */
+      /* line 176, ../sass/partials/_mobile.scss */
       .post .post-content .post-meta .unit {
         font-size: 0; }
-        /* line 120, ../sass/partials/_mobile.scss */
+        /* line 178, ../sass/partials/_mobile.scss */
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; }
-  /* line 127, ../sass/partials/_mobile.scss */
+  /* line 185, ../sass/partials/_mobile.scss */
   .post .post-actions {
     display: none; }
-    /* line 129, ../sass/partials/_mobile.scss */
+    /* line 187, ../sass/partials/_mobile.scss */
     .post .post-actions li {
       float: none; }
-      /* line 131, ../sass/partials/_mobile.scss */
+      /* line 189, ../sass/partials/_mobile.scss */
       .post .post-actions li a {
         height: 40px;
         width: 40px;
         font-size: 30px; }
-        /* line 135, ../sass/partials/_mobile.scss */
+        /* line 193, ../sass/partials/_mobile.scss */
         .post .post-actions li a i {
           display: block;
           position: absolute;
@@ -1561,9 +1625,9 @@ table thead tr td {
           height: 100%;
           line-height: 40px;
           text-align: center; }
-        /* line 145, ../sass/partials/_mobile.scss */
+        /* line 203, ../sass/partials/_mobile.scss */
         .post .post-actions li a .count {
           top: 9px; }
-        /* line 148, ../sass/partials/_mobile.scss */
+        /* line 206, ../sass/partials/_mobile.scss */
         .post .post-actions li a .action {
           display: none; } }

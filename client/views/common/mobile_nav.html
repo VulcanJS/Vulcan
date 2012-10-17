@@ -1,0 +1,16 @@
+<template name="mobile_nav">
+  <div id="" class="mobile-nav">
+    <div>
+      <ul>
+        <li><a class="top" href="/top">Top</a></li>
+        <li><a class="new" href="/new">New</a></li>
+        <li><a class="digest" href="/digest">Digest</a></li>
+        {{#if currentUser.isAdmin}}
+          <li><a class="users" href="/users">Users</a></li>
+          <li><a class="settings" href="/settings">Settings</a></li>
+          <li><a class="admin" href="/admin">Admin</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+</template>

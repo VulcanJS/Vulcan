@@ -302,9 +302,10 @@
 	}	
 }
 .more-button{
-	position:absolute;
+	position:relative;
 	padding-bottom:10px;
 	a{
+		width:100%;
 		display:block;
 		height:$grid-unit;
 		background:black(0.075);

@@ -4,7 +4,7 @@ Template.posts_top.posts = function(){
 
 Template.posts_top.helpers({
   moreLinkDistance: function(){
-    return (Posts.find().count()+1)*80;
+    return (Posts.find().count())*80;
   },
   allPostsLoaded: function(){
     var postsView=sessionGetObject('postsView');
