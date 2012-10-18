@@ -7,6 +7,9 @@ Template.post_item.helpers({
   rank: function() {
     return this._rank + 1;
   },
+  isPostPage: function(){
+    return Router.current_page() === 'post_page'
+  },
   domain: function(){
     var a = document.createElement('a');
     a.href = this.url;

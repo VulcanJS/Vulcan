@@ -105,6 +105,12 @@
 		.accounts-dialog{
 			@extend .popover;
 		}
+		.account-link{
+			display:block;
+			color:white !important;
+			margin-bottom:10px;
+			float:none;
+		}
 		a{
 			text-decoration:none;
 			color:$text;
