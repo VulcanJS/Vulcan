@@ -25,6 +25,8 @@ getEmail = function(user){
     return user.profile.email;
   }else if(user.emails){
     return user.emails[0].address || user.emails[0].email;
+  }else if(user.profile.email){
+    return user.profile.email;
   }else{ 
     return ''; 
   }
