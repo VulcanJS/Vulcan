@@ -10,6 +10,7 @@ SimpleRouter = FilteredRouter.extend({
     // runs at every new page change
 
     Session.set("openedComments", null);
+    Session.set('currentScroll', null);
     document.title = getSetting("title");
 
     // set all errors who have been seen to not show anymore

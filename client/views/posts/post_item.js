@@ -50,17 +50,22 @@ Template.post_item.helpers({
 
 Template.post_item.created = function(){
   if(this.data){
-    this.current_distance = this.data._rank * 80;
+    this.current_distance = this.data._rank * 81;
   }
 }
 
 Template.post_item.rendered = function(){
   var self = this;
+  var rank = self.data._rank;
   
   // t("post_item");
   if(self.data){
-    var new_distance = self.data._rank * 80;
-    var old_distance = self.current_distance;
+    var distanceFromTop= 0;
+    for(var i=1; i<=rank; i++){
+      distanceFromTop+= $('.post-'+i).height();
+    }
+    var new_distance = distanceFromTop ;
+    var old_distance = self.current_distance ;
     
     var $this = $(this.find(".post"));
     
