@@ -57,8 +57,8 @@ Template.post_item.created = function(){
 Template.post_item.rendered = function(){
   var self = this;
   var rank = self.data._rank;
-  
-  // t("post_item");
+  var $this = $(this.find(".post"));
+
   if(self.data){
     var distanceFromTop= 0;
     for(var i=1; i<=rank; i++){
@@ -66,8 +66,6 @@ Template.post_item.rendered = function(){
     }
     var new_distance = distanceFromTop ;
     var old_distance = self.current_distance ;
-    
-    var $this = $(this.find(".post"));
     
     // at rendering time, move posts to their old place
     $this.css("top", old_distance+"px");
@@ -77,9 +75,13 @@ Template.post_item.rendered = function(){
       $this.css("top", new_distance+"px");
       
       // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
-      $this.addClass("animate");
       self.current_distance=new_distance;
-    }, 100);
+    }, 1);
+
+    Meteor.setTimeout(function(){
+      $this.addClass("animate");
+    }, 2);
+    
   }
 };
 
