@@ -4,7 +4,8 @@ sessionSetObject=function(name, value){
   Session.set(name, JSON.stringify(value));
 }
 sessionGetObject=function(name){
-  return JSON.parse(Session.get(name));
+  var data = Session.get(name);
+  return data && JSON.parse(data);
 }
 $.fn.exists = function () {
     return this.length !== 0;
@@ -36,51 +37,88 @@ Meteor.subscribe('settings', function(){
 
 });
 
-
-// ** Users **
-
-Meteor.subscribe('users');
-
-
 // ** Notifications **
 // Only load if user is logged in
 
+var Notifications = new Meteor.Collection('notifications');
 if(Meteor.user()){
-  Notifications = new Meteor.Collection('notifications');
   Meteor.subscribe('notifications');
 }
 
 
 // ** Posts **
-// Collection depends on postsView object
+// We have a few subscriptions here, for the various ways we load posts
+//
+// The advantage is that
+//   a) we can change pages a lot quicker
+//     XXX: and we can animate between them (todo)
+//   b) we know when an individual page is ready
 
 Posts = new Meteor.Collection('posts');
 
-var postsView={
-  find: {},
-  sort: {submitted: -1},
-  skip:0,
-  postsPerPage:10,
-  limit:1
-}
-sessionSetObject('postsView', postsView);
-
+// TOP page
+TOP_PAGE_PER_PAGE = 10;
+TOP_PAGE_SORT = {score: -1};
+Session.set('topPageLimit', TOP_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.set('postsReady', false);
-  var view=sessionGetObject('postsView');
-  Meteor.subscribe('posts', view, function() {
-    // collectionArray=Posts.find().fetch();
-    // console.log('--------- Publishing ----------');
-    // console.log('postsView: ', view);
-    //   for(i=0;i<collectionArray.length;i++){
-    //     console.log('- '+collectionArray[i].headline);
-    //   }
-    // console.log('found '+collectionArray.length+' posts');
-    Session.set('postsReady', true);
+  Session.get('topPostsReady', false);
+  Meteor.subscribe('posts', {}, {
+    sort: TOP_PAGE_SORT, 
+    limit: Session.get('topPageLimit')
+  }, function() {
+    Session.set('topPostsReady', true);
   });
 });
+var topPosts = function() {
+  var orderedPosts = Posts.find({}, {sort: TOP_PAGE_SORT});
+  return limitDocuments(orderedPosts, Session.get('topPageLimit'));
+}
 
-// single post, e.g. post_page
+// NEW page
+NEW_PAGE_PER_PAGE = 10;
+NEW_PAGE_SORT = {submitted: -1};
+Session.set('newPageLimit', NEW_PAGE_PER_PAGE);
+Meteor.autosubscribe(function() {
+  Session.get('newPostsReady', false);
+  Meteor.subscribe('posts', {}, {
+    sort: NEW_PAGE_SORT, 
+    limit: Session.get('newPageLimit')
+  }, function() {
+    Session.set('newPostsReady', true);
+  });
+});
+var newPosts = function() {
+  var orderedPosts = Posts.find({}, {sort: NEW_PAGE_SORT});
+  return limitDocuments(orderedPosts, Session.get('newPageLimit'));
+}
+
+// DIGEST page
+DIGEST_PAGE_PER_PAGE = 5;
+DIGEST_PAGE_SORT = {score: -1};
+var digestPageFind = function() {
+  var mDate = moment(sessionGetObject('currentDate'));
+  return {submitted: {
+    $gte: mDate.startOf('day').valueOf(), 
+    $lt: mDate.endOf('day').valueOf()
+  }};
+}
+
+Session.set('digestPageLimit', DIGEST_PAGE_PER_PAGE);
+Meteor.autosubscribe(function() {
+  Session.get('digestPostsReady', false);
+  Meteor.subscribe('posts', digestPageFind(), {
+    sort: DIGEST_PAGE_SORT, 
+    limit: Session.get('digestPageLimit')
+  }, function() {
+    Session.set('digestPostsReady', true);
+  });
+});
+var digestPosts = function() {
+  var orderedPosts = Posts.find(digestPageFind(), {sort: DIGEST_PAGE_SORT});
+  return limitDocuments(orderedPosts, Session.get('digestPageLimit'));
+}
+
+// SINGLE post, e.g. post_page
 Meteor.autosubscribe(function() {
   Session.set('postReady', false);
   Meteor.subscribe('post', Session.get('selectedPostId'), function() {

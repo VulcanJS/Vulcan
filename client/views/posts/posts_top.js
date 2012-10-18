@@ -1,24 +1,18 @@
-Template.posts_top.posts = function(){
-  return Posts.find();
-};
+Template.posts_top.posts = function() { return topPosts(); };
 
 Template.posts_top.helpers({
   moreLinkDistance: function(){
-    return (Posts.find().count())*80;
+    return topPosts().length * 80;
   },
   allPostsLoaded: function(){
-    var postsView=sessionGetObject('postsView');
-    return Posts.find().count() < postsView.skip + postsView.limit;
+    return topPosts().length < Session.get('topPageLimit');
   }
 });
 
 Template.posts_top.events({
   'click .more-link': function(e) {
     e.preventDefault();
-    var postsView=sessionGetObject('postsView');
-    postsView.limit+=postsView.postsPerPage;
-    postsView.pageNumber++;
-    sessionSetObject('postsView', postsView);
+    Session.set('topPageLimit', Session.get('topPageLimit') + TOP_PAGE_PER_PAGE)
   }
 });
 

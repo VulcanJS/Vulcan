@@ -50,6 +50,11 @@ SimpleRouter = FilteredRouter.extend({
     }
   },
   
+  // wait for the subscription to be ready, this one is only used manually
+  awaitSubscription: function(page, subName) {
+    return Session.get(subName) ? page : 'loading';
+  },
+  
   routes: {
     '': 'top',
     'top':'top',
@@ -83,39 +88,28 @@ SimpleRouter = FilteredRouter.extend({
     'users/:id': 'user_profile',
     'users/:id/edit':'user_edit'
   },
-  top: function(page) {
+  top: function() {
+    var self = this;
+    
+    // XXX: where do we go if not? Should the if be in the goto (so it's reactive?)
     if(canView(Meteor.user(), 'replace')) {
-      var pageNumber = (typeof page === 'undefined') ? 1 : page;
-      var postsPerPage=1;
-      var postsView={
-        find: {},
-        sort: {score: -1},
-        skip: (pageNumber-1)*postsPerPage,
-        limit: postsPerPage,
-        postsPerPage: postsPerPage,
-        page: pageNumber
-      }
-      sessionSetObject('postsView', postsView);
-      this.goto('posts_top');
+      self.goto(function() {
+        return self.awaitSubscription('posts_top', 'topPostsReady');
+      });
     }
   },
   new: function(page) {
+    var self = this;
+    
     if(canView(Meteor.user(), 'replace')) {
-      var pageNumber = (typeof page === 'undefined') ? 1 : page;
-      var postsPerPage=10;
-      var postsView={
-        find: {},
-        sort: {submitted: -1},
-        postsPerPage: postsPerPage,
-        skip:(pageNumber-1)*postsPerPage,
-        limit: postsPerPage,
-        page: pageNumber
-      }
-      sessionSetObject('postsView', postsView);
-      this.goto('posts_new');
+      self.goto(function() {
+        return self.awaitSubscription('posts_new', 'newPostsReady');
+      });
     }
   },
   digest: function(year, month, day){
+    var self = this;
+    
     if(canView(Meteor.user(), 'replace')) {
       if(typeof day === 'undefined'){
         // if day is not defined, just use today
@@ -125,20 +119,14 @@ SimpleRouter = FilteredRouter.extend({
         this.navigate(getDigestURL(mDate));
       }else{
         var date=new Date(year, month-1, day);
-        var mDate = moment(date);
       }
+      
       sessionSetObject('currentDate', date);
-      var postsPerPage=5;
-      var postsView={
-        find: {submitted: {$gte: mDate.startOf('day').valueOf(), $lt: mDate.endOf('day').valueOf()}},
-        sort: {score: -1},
-        skip:0,
-        postsPerPage: postsPerPage,
-        limit: postsPerPage
-      }
-      sessionSetObject('postsView', postsView);
-      this.goto('posts_digest');
-    }   
+      
+      self.goto(function() {
+        return self.awaitSubscription('posts_digest', 'digestPostsReady');
+      });
+    } 
   },
   signup: function() { this.goto('signup'); },
   signin: function() { this.goto('signin'); },

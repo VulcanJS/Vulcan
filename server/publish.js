@@ -50,8 +50,8 @@ Posts = new Meteor.Collection('posts');
 //   return Posts.find({}, {sort: {score: -1}});
 // });
 
-Meteor.publish('posts', function(postsView) {
-  var collection=Posts.find(postsView.find, {sort: postsView.sort, skip: postsView.skip, limit: postsView.limit});
+Meteor.publish('posts', function(find, options) {
+  var collection=Posts.find(find, options);
 
   // console.log("publishing…");
   // console.log(postsView.find, postsView.sort, postsView.skip, postsView.limit);

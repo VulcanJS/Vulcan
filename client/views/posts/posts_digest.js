@@ -1,8 +1,6 @@
 Template.posts_digest.helpers({
   posts: function(){
-    var postsView=sessionGetObject('postsView');
-    var collection=Posts.find(postsView.find);
-    return collection;
+    return digestPosts();
   },
   currentDate: function(){
     return moment(sessionGetObject('currentDate')).format("dddd, MMMM Do YYYY");
