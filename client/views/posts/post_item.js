@@ -1,23 +1,3 @@
-var getRank = function(post){
-  var postsView=sessionGetObject('postsView');
-  if(JSON.stringify(postsView.sort)==='{"score":-1}'){
-    // sorted by score
-    var filter = {$or: [
-      {score: {$gt: post.score}},
-      {$and: [{score: post.score}, {submitted: {$lt: post.submitted}}]}
-    ]};
-  }else{
-    // sorted by time
-    var filter = {$or: [
-      {submitted: {$gt: post.submitted}},
-      {$and: [{submitted: post.submitted}, {score: {$lt: post.score}}]}
-    ]};
-  }
-  // merge filter with current find query conditions
-  var newFilter=jQuery.extend(filter, postsView.find);
-  return Posts.find(newFilter).count()+1;  
-}
-
 Template.post_item.preserve({
   '.post': function (node) {return node.id; }
 });
@@ -25,7 +5,7 @@ Template.post_item.preserve({
 
 Template.post_item.helpers({
   rank: function() {
-    return getRank(this);
+    return this._rank + 1;
   },
   domain: function(){
     var a = document.createElement('a');
@@ -67,25 +47,30 @@ Template.post_item.helpers({
 
 Template.post_item.created = function(){
   if(this.data){
-    this.current_distance = (getRank(this.data)-1) * 80;
+    this.current_distance = this.data._rank * 80;
   }
 }
 
 Template.post_item.rendered = function(){
+  var self = this;
+  
   // t("post_item");
-  if(this.data){
-    var new_distance=(getRank(this.data)-1)*80;
-    var old_distance=this.current_distance;
-    var $this=$(this.find(".post"));
-    var instance=this;
+  if(self.data){
+    var new_distance = self.data._rank * 80;
+    var old_distance = self.current_distance;
+    
+    var $this = $(this.find(".post"));
+    
     // at rendering time, move posts to their old place
     $this.css("top", old_distance+"px");
+    
+    // then a few milliseconds after, move the to their new spot
     Meteor.setTimeout(function() {
-      // then a few milliseconds after, move the to their new spot
       $this.css("top", new_distance+"px");
+      
       // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
       $this.addClass("animate");
-      instance.current_distance=new_distance;
+      self.current_distance=new_distance;
     }, 100);
   }
 };

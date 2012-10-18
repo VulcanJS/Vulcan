@@ -4,6 +4,7 @@ SimpleRouter = FilteredRouter.extend({
     this.filter(this.require_login, {only: ['submit']});
     this.filter(this.start_request);
     this.filter(this.require_profile);
+    this.filter(this.requirePost, {only: ['post_page']});
   },
   start_request: function(page){
     // runs at every new page change
@@ -13,56 +14,10 @@ SimpleRouter = FilteredRouter.extend({
 
     // set all errors who have been seen to not show anymore
     clearSeenErrors();
-
-    // Mixpanel
-
-    if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length==0){
-      mixpanel.init(mixpanelId);
-      if(Meteor.user()){
-        var currentUserEmail=getCurrentUserEmail();
-        mixpanel.people.identify(currentUserEmail);
-        mixpanel.people.set({
-            'username': getDisplayName(Meteor.user()),
-            '$last_login': new Date(), 
-            '$created': moment(Meteor.user().createdAt)._d,
-            '$email': currentUserEmail
-        });
-        mixpanel.register({
-            'username': getDisplayName(Meteor.user()),
-            'createdAt': moment(Meteor.user().createdAt)._d,
-            'email': currentUserEmail
-        });
-        mixpanel.name_tag(currentUserEmail);
-      }
-    }
-
-    // GoSquared
-
-      if((goSquaredId=getSetting("goSquaredId"))){
-      GoSquared.acct = goSquaredId;
-      GoSquaredInit();
-    }
-
-    // Intercom
-    if((intercomId=getSetting("intercomId")) && Meteor.user()){
-      window.intercomSettings = {
-        app_id: intercomId,
-        email: currentUserEmail,
-        created_at: moment(Meteor.user().createdAt).unix(),
-        custom_data: {
-          'profile link': 'http://'+document.domain+'/users/'+Meteor.user()._id
-        },
-        widget: {
-          activator: '#Intercom',
-          use_counter: true,
-          activator_html: function ( obj ) {
-            return obj.activator_html_functions.brackets();
-          }
-        }
-      };
-      IntercomInit();
-    }
-
+    
+    // log this request with mixpanel, etc
+    instrumentRequest();
+    
     return page;
   },
   require_login: function(page) {
@@ -75,13 +30,29 @@ SimpleRouter = FilteredRouter.extend({
   
   // if the user is logged in but their profile isn't filled out enough
   require_profile: function(page) {
-  var user = Meteor.user();
-    if (user && !user.loading && !userProfileComplete(user)){
+    var user = Meteor.user();
+    if (user && ! user.loading && ! userProfileComplete(user)){
       Session.set('selectedUserId', user._id);
       return 'user_email';
     } else {
       return page;
     }
+  },
+  
+  // if we are on a page that requires a post, as set in selectedPostId
+  requirePost: function(page) {
+    if (Posts.findOne(Session.get('selectedPostId'))) {
+      return 'post_page';
+    } else if (! Session.get('postReady')) {
+      return 'loading';
+    } else {
+      return 'not_found';
+    }
+  },
+  
+  // wait for the subscription to be ready, this one is only used manually
+  awaitSubscription: function(page, subName) {
+    return Session.get(subName) ? page : 'loading';
   },
   
   routes: {
@@ -117,39 +88,28 @@ SimpleRouter = FilteredRouter.extend({
     'users/:id': 'user_profile',
     'users/:id/edit':'user_edit'
   },
-  top: function(page) {
+  top: function() {
+    var self = this;
+    
+    // XXX: where do we go if not? Should the if be in the goto (so it's reactive?)
     if(canView(Meteor.user(), 'replace')) {
-      var pageNumber = (typeof page === 'undefined') ? 1 : page;
-      var postsPerPage=1;
-      var postsView={
-        find: {},
-        sort: {score: -1},
-        skip: (pageNumber-1)*postsPerPage,
-        limit: postsPerPage,
-        postsPerPage: postsPerPage,
-        page: pageNumber
-      }
-      sessionSetObject('postsView', postsView);
-      this.goto('posts_top');
+      self.goto(function() {
+        return self.awaitSubscription('posts_top', 'topPostsReady');
+      });
     }
   },
   new: function(page) {
+    var self = this;
+    
     if(canView(Meteor.user(), 'replace')) {
-      var pageNumber = (typeof page === 'undefined') ? 1 : page;
-      var postsPerPage=10;
-      var postsView={
-        find: {},
-        sort: {submitted: -1},
-        postsPerPage: postsPerPage,
-        skip:(pageNumber-1)*postsPerPage,
-        limit: postsPerPage,
-        page: pageNumber
-      }
-      sessionSetObject('postsView', postsView);
-      this.goto('posts_new');
+      self.goto(function() {
+        return self.awaitSubscription('posts_new', 'newPostsReady');
+      });
     }
   },
   digest: function(year, month, day){
+    var self = this;
+    
     if(canView(Meteor.user(), 'replace')) {
       if(typeof day === 'undefined'){
         // if day is not defined, just use today
@@ -159,20 +119,14 @@ SimpleRouter = FilteredRouter.extend({
         this.navigate(getDigestURL(mDate));
       }else{
         var date=new Date(year, month-1, day);
-        var mDate = moment(date);
       }
+      
       sessionSetObject('currentDate', date);
-      var postsPerPage=5;
-      var postsView={
-        find: {submitted: {$gte: mDate.startOf('day').valueOf(), $lt: mDate.endOf('day').valueOf()}},
-        sort: {score: -1},
-        skip:0,
-        postsPerPage: postsPerPage,
-        limit: postsPerPage
-      }
-      sessionSetObject('postsView', postsView);
-      this.goto('posts_digest');
-    }   
+      
+      self.goto(function() {
+        return self.awaitSubscription('posts_digest', 'digestPostsReady');
+      });
+    } 
   },
   signup: function() { this.goto('signup'); },
   signin: function() { this.goto('signin'); },
@@ -190,24 +144,7 @@ SimpleRouter = FilteredRouter.extend({
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
     
-  	var postsView={
-  	  find: {_id:Session.get('selectedPostId')},
-  	  sort: {},
-  	  skip:0,
-  	  postsPerPage:1,
-  	  limit:1
-  	}
-  	sessionSetObject('postsView', postsView);
-    
-    this.goto(function() {
-      if (Posts.findOne(id)) {
-        return 'post_page';
-      } else if (! Session.get('postsReady')) {
-        return 'loading';
-      } else {
-        return 'not_found';
-      }
-    });
+    this.goto('post_page');
     
     // on post page, we show the comment recursion
     window.repress_recursion=false;
