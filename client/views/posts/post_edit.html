@@ -1,7 +1,7 @@
 <template name="post_edit">
   {{#if canEdit "Posts" "replace"}}
     <div class="grid submit">
-      {{#with post}}
+      {{#constant}}{{#with post}}
         <form class="grid-block form-horizontal">
           <div class="control-group">
             <label class="control-label">Title</label>
@@ -42,7 +42,7 @@
             <input type="submit" value="Submit" />
           </div>
         </form>
-      {{/with}}
+      {{/with}}{{/constant}}
     </div>
   {{/if}}
 </template>
