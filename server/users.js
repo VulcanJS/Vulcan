@@ -1,5 +1,5 @@
-Accounts.onCreateUser(function(options, extra, user){
-  _.extend(user, extra);
+Accounts.onCreateUser(function(options, user){
+  _.extend(user, options);
   
   user.karma = 0;
   user.profile = user.profile || {};
