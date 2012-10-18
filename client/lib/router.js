@@ -31,7 +31,7 @@ SimpleRouter = FilteredRouter.extend({
   // if the user is logged in but their profile isn't filled out enough
   require_profile: function(page) {
     var user = Meteor.user();
-    if (user && ! user.loading && ! userProfileComplete(user)){
+    if (user && Meteor.userLoaded() && ! userProfileComplete(user)){
       Session.set('selectedUserId', user._id);
       return 'user_email';
     } else {
