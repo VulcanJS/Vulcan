@@ -1,6 +1,6 @@
 {
   "meteor": {
-    "branch": "auth"
+    "branch": "master"
   },
   "packages": {
     "router": {},

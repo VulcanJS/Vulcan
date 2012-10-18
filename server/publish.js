@@ -1,7 +1,12 @@
-Meteor.publish('users', function() {
-  if (this.userId() && isAdminById(this.userId())) {
+Meteor.publish('currentUser', function() {
+  return Meteor.users.findOne(this.userId);
+});
+Meteor.publish('allUsers', function() {
+  if (this.userId && isAdminById(this.userId)) {
+    // if user is admin, publish all fields
     return Meteor.users.find();
   }else{
+    // else, filter out sensitive info
     return Meteor.users.find({}, {fields: {
       secret_id: false,
       isAdmin: false,
@@ -24,10 +29,10 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-      // console.log("updating");
-      // console.log(userId);
-      // console.log(docs);
-      // console.log('fields: '+fields);
+      console.log("updating");
+      console.log(userId);
+      console.log(docs);
+      console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
       if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
@@ -153,7 +158,7 @@ Notifications = new Meteor.Collection('notifications');
 
 Meteor.publish('notifications', function() {
   // only publish notifications belonging to the current user
-  return Notifications.find({userId:this.userId()});
+  return Notifications.find({userId:this._id});
 });
 
 Meteor.startup(function(){

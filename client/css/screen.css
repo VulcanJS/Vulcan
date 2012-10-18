@@ -763,7 +763,6 @@ body.pageslide-open {
     /* line 138, ../sass/modules/_header.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
-      background: none;
       border: none;
       font-family: inherit;
       font-size: inherit;

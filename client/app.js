@@ -1,3 +1,7 @@
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+});
+
 // ** Client-side helpers **
 
 sessionSetObject=function(name, value){
@@ -12,9 +16,8 @@ $.fn.exists = function () {
 }
 
 // ** Users **
-
-Meteor.subscribe('users');
-
+Meteor.subscribe('currentUser');
+Meteor.subscribe('allUsers');
 
 // ** Errors **
 // Local (client-only) collection

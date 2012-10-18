@@ -4,9 +4,9 @@
 # but you can also edit it by hand.
 
 backbone
-accounts-password
+accounts-base
 accounts-ui
+accounts-password
 accounts-twitter
 router
 moment
-# observatory
