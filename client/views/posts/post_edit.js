@@ -36,6 +36,9 @@ Template.post_edit.helpers({
   isChecked: function(){
     var post= Posts.findOne(Session.get('selectedPostId'));
     return $.inArray( this.name, post.categories) != -1;
+  },
+  submittedDate: function(){
+    return moment(this.submitted).format("MMMM Do, h:mm:ss a");
   }
 });
 
@@ -44,6 +47,9 @@ Template.post_edit.rendered = function(){
   if(post && !this.editor){
     this.editor= new EpicEditor(EpicEditorOptions).load();  
     this.editor.importFile('editor',post.body);
+    $('#submitted').datepicker().on('changeDate', function(ev){
+      $('#submitted_hidden').val(moment(ev.date).valueOf());
+    });
   }
 }
 
@@ -58,6 +64,7 @@ Template.post_edit.events = {
     var selectedPostId=Session.get('selectedPostId');
     var title= $('#title').val();
     var url = $('#url').val();
+    var submitted = $('#submitted_hidden').val();
     var body = instance.editor.exportFile();
     var sticky=!!$('#sticky').attr('checked');
     var categories=[];
@@ -73,6 +80,7 @@ Template.post_edit.events = {
         $set: {
             headline: title
           , url: url
+          , submitted: parseInt(submitted)
           , body: body
           , sticky: sticky
           , categories: categories
