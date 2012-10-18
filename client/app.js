@@ -11,6 +11,10 @@ $.fn.exists = function () {
     return this.length !== 0;
 }
 
+// ** Users **
+
+Meteor.subscribe('users');
+
 
 // ** Errors **
 // Local (client-only) collection

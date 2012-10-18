@@ -3,9 +3,9 @@ isAdminById=function(userId){
   return user && isAdmin(user);
 }
 isAdmin=function(user){
-  if(!user)
+  if(!user || typeof user === 'undefined')
     return false;
-  return user.isAdmin;
+  return !!user.isAdmin;
 }
 getDisplayNameById = function(userId){
   getDisplayName(Meteor.users.findOne(userId));
@@ -25,7 +25,7 @@ getEmail = function(user){
     return user.profile.email;
   }else if(user.emails){
     return user.emails[0].address || user.emails[0].email;
-  }else if(user.profile.email){
+  }else if(user.profile && user.profile.email){
     return user.profile.email;
   }else{ 
     return ''; 

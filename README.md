@@ -6,7 +6,7 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 - Run `mrt`
 
 # Running Telescope on Heroku
-- Use the [Heroku buildpack for Meteorite](https://github.com/oortcloud/heroku-buildpack-meteorite) to push to Heroku (if you get an error when pushign to Heroku, running `mrt update` before pushing again sometimes helps)
+- Use the [Heroku buildpack for Meteorite](https://github.com/oortcloud/heroku-buildpack-meteorite) to push to Heroku
 - `heroku config:add ROOT_URL=http://your_url`
 
 # Setup
