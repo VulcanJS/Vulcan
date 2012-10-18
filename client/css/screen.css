@@ -1707,14 +1707,17 @@ table thead tr td {
         height: auto !important;
         max-height: 40px !important;
         width: auto !important; }
-    /* line 101, ../sass/partials/_mobile.scss */
+    /* line 102, ../sass/partials/_mobile.scss */
     .header .auth-buttons {
       margin: 0; }
-      /* line 103, ../sass/partials/_mobile.scss */
+      /* line 104, ../sass/partials/_mobile.scss */
+      .header .auth-buttons #login-buttons {
+        display: block !important; }
+      /* line 107, ../sass/partials/_mobile.scss */
       .header .auth-buttons .login-link-and-dropdown-list {
         right: 0px !important;
         position: static !important; }
-        /* line 106, ../sass/partials/_mobile.scss */
+        /* line 110, ../sass/partials/_mobile.scss */
         .header .auth-buttons .login-link-and-dropdown-list .login-link-text {
           font: 0/0 a;
           text-shadow: none;
@@ -1722,7 +1725,7 @@ table thead tr td {
           height: 30px !important;
           margin: 10px 0 0 0 !important;
           display: block !important; }
-          /* line 112, ../sass/partials/_mobile.scss */
+          /* line 116, ../sass/partials/_mobile.scss */
           .header .auth-buttons .login-link-and-dropdown-list .login-link-text:after {
             content: "\75" !important;
             font-family: 'icomoon' !important;
@@ -1732,67 +1735,67 @@ table thead tr td {
             line-height: 30px !important;
             height: 30px !important;
             font-size: 18px !important; }
-    /* line 128, ../sass/partials/_mobile.scss */
+    /* line 132, ../sass/partials/_mobile.scss */
     .header .mobile-button span {
       display: none; }
-    /* line 131, ../sass/partials/_mobile.scss */
+    /* line 135, ../sass/partials/_mobile.scss */
     .header .mobile-button.menu {
       float: left; }
-    /* line 134, ../sass/partials/_mobile.scss */
+    /* line 138, ../sass/partials/_mobile.scss */
     .header .mobile-button.submit {
       float: right; }
-    /* line 137, ../sass/partials/_mobile.scss */
+    /* line 141, ../sass/partials/_mobile.scss */
     .header .mobile-button:hover {
       background: white; }
-      /* line 139, ../sass/partials/_mobile.scss */
+      /* line 143, ../sass/partials/_mobile.scss */
       .header .mobile-button:hover i {
         color: #f36c3d; }
 
-  /* line 146, ../sass/partials/_mobile.scss */
+  /* line 150, ../sass/partials/_mobile.scss */
   .post .post-content {
     margin-right: 50px;
     margin-right: 0px; }
-    /* line 150, ../sass/partials/_mobile.scss */
+    /* line 154, ../sass/partials/_mobile.scss */
     .post .post-content .upvote-link {
       width: 30px; }
-    /* line 153, ../sass/partials/_mobile.scss */
+    /* line 157, ../sass/partials/_mobile.scss */
     .post .post-content .post-info {
       margin-left: 30px;
       padding: 6px 4px 6px 8px; }
-    /* line 158, ../sass/partials/_mobile.scss */
+    /* line 162, ../sass/partials/_mobile.scss */
     .post .post-content .post-heading .post-title {
       line-height: 1.2;
       display: block;
       margin-bottom: 4px;
       font-size: 18px; }
-    /* line 164, ../sass/partials/_mobile.scss */
+    /* line 168, ../sass/partials/_mobile.scss */
     .post .post-content .post-heading .post-domain {
       line-height: 1;
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
-    /* line 171, ../sass/partials/_mobile.scss */
+    /* line 175, ../sass/partials/_mobile.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
-      /* line 176, ../sass/partials/_mobile.scss */
+      /* line 180, ../sass/partials/_mobile.scss */
       .post .post-content .post-meta .unit {
         font-size: 0; }
-        /* line 178, ../sass/partials/_mobile.scss */
+        /* line 182, ../sass/partials/_mobile.scss */
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; }
-  /* line 185, ../sass/partials/_mobile.scss */
+  /* line 189, ../sass/partials/_mobile.scss */
   .post .post-actions {
     display: none; }
-    /* line 187, ../sass/partials/_mobile.scss */
+    /* line 191, ../sass/partials/_mobile.scss */
     .post .post-actions li {
       float: none; }
-      /* line 189, ../sass/partials/_mobile.scss */
+      /* line 193, ../sass/partials/_mobile.scss */
       .post .post-actions li a {
         height: 40px;
         width: 40px;
         font-size: 30px; }
-        /* line 193, ../sass/partials/_mobile.scss */
+        /* line 197, ../sass/partials/_mobile.scss */
         .post .post-actions li a i {
           display: block;
           position: absolute;
@@ -1802,9 +1805,9 @@ table thead tr td {
           height: 100%;
           line-height: 40px;
           text-align: center; }
-        /* line 203, ../sass/partials/_mobile.scss */
+        /* line 207, ../sass/partials/_mobile.scss */
         .post .post-actions li a .count {
           top: 9px; }
-        /* line 206, ../sass/partials/_mobile.scss */
+        /* line 210, ../sass/partials/_mobile.scss */
         .post .post-actions li a .action {
           display: none; } }

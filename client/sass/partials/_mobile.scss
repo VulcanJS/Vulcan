@@ -98,8 +98,12 @@
 				}
 			}
 		}
+
 		.auth-buttons{
 			margin:0;
+			#login-buttons{
+				display:block !important;
+			}
 			.login-link-and-dropdown-list{
 				right:0px !important;
 				position:static !important;
