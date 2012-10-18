@@ -1,8 +1,6 @@
 Accounts.onCreateUser(function(options, user){
-  _.extend(user, options);
-  
+  user.profile = options.profile || {};
   user.karma = 0;
-  user.profile = user.profile || {};
   
   // users start pending, need to be invited
   user.isInvited = false
@@ -16,6 +14,8 @@ Accounts.onCreateUser(function(options, user){
   if (!user.profile.name)
     user.profile.name = user.username;
   
+  console.log('### user', user)
+
   return user;
 });
 

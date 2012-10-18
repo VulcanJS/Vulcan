@@ -11,7 +11,6 @@ Meteor.publish('allUsers', function() {
       secret_id: false,
       isAdmin: false,
       emails: false,
-      email_hash: false,
       notifications: false,
       'profile.email': false,
       'services.twitter.accessToken': false,
