@@ -19,7 +19,11 @@ Template.nav.events = {
 };
 
 Template.nav.rendered=function(){
-  $('.login-link-text').text("Sign Up/Sign In");
+  if(!Meteor.user()){
+    $('.login-link-text').text("Sign Up/Sign In");
+  }else{
+    $('#login-buttons-logout').before('<a href="/account" class="account-link button">My Account</a>');
+  }
 };
 
 Template.nav.helpers({
