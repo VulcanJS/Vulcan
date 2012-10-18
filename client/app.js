@@ -80,6 +80,14 @@ Meteor.autosubscribe(function() {
   });
 });
 
+// single post, e.g. post_page
+Meteor.autosubscribe(function() {
+  Session.set('postReady', false);
+  Meteor.subscribe('post', Session.get('selectedPostId'), function() {
+    Session.set('postReady', true);
+  })
+});
+
 
 // ** Categories **
 

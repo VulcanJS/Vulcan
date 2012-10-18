@@ -66,6 +66,11 @@ Meteor.publish('posts', function(postsView) {
   return collection;
 });
 
+// a single post, identified by id
+Meteor.publish('post', function(id) {
+  return Posts.find(id);
+});
+
 // FIXME -- check all docs, not just the first one.
 Meteor.startup(function(){
   Posts.allow({

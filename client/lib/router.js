@@ -4,6 +4,7 @@ SimpleRouter = FilteredRouter.extend({
     this.filter(this.require_login, {only: ['submit']});
     this.filter(this.start_request);
     this.filter(this.require_profile);
+    this.filter(this.requirePost, {only: ['post_page']});
   },
   start_request: function(page){
     // runs at every new page change
@@ -29,12 +30,23 @@ SimpleRouter = FilteredRouter.extend({
   
   // if the user is logged in but their profile isn't filled out enough
   require_profile: function(page) {
-  var user = Meteor.user();
-    if (user && !user.loading && !userProfileComplete(user)){
+    var user = Meteor.user();
+    if (user && ! user.loading && ! userProfileComplete(user)){
       Session.set('selectedUserId', user._id);
       return 'user_email';
     } else {
       return page;
+    }
+  },
+  
+  // if we are on a page that requires a post, as set in selectedPostId
+  requirePost: function(page) {
+    if (Posts.findOne(Session.get('selectedPostId'))) {
+      return 'post_page';
+    } else if (! Session.get('postReady')) {
+      return 'loading';
+    } else {
+      return 'not_found';
     }
   },
   
@@ -144,24 +156,7 @@ SimpleRouter = FilteredRouter.extend({
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
     
-  	var postsView={
-  	  find: {_id:Session.get('selectedPostId')},
-  	  sort: {},
-  	  skip:0,
-  	  postsPerPage:1,
-  	  limit:1
-  	}
-  	sessionSetObject('postsView', postsView);
-    
-    this.goto(function() {
-      if (Posts.findOne(id)) {
-        return 'post_page';
-      } else if (! Session.get('postsReady')) {
-        return 'loading';
-      } else {
-        return 'not_found';
-      }
-    });
+    this.goto('post_page');
     
     // on post page, we show the comment recursion
     window.repress_recursion=false;
