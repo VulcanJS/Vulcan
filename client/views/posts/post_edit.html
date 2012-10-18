@@ -28,35 +28,14 @@
               </label>
               {{/each}}
             </div>
-            <div class="control-group">
-              <label class="control-label">URL</label>
-              <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Submitted</label>
-              <div class="controls"><input id="submitted" type="text" value="{{submittedDate}}" /><input id="submitted_hidden" type="hidden" value="{{submitted}}" /></div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Body</label>
-              <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Category</label>
-              <div class="controls">
-                {{#each categories}}
-                <label class="radio inline">
-                  <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{#if isChecked }} checked {{/if}}/> {{name}}
-                </label>
-                {{/each}}
-              </div>
-            </div>
-            {{#if isAdmin}}
-                <div class="control-group">
-                  <label class="control-label">Sticky?</label>
-                  <div class="controls">
-                        <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
-                  </div>
+          </div>
+          {{#if isAdmin}}
+              <div class="control-group">
+                <label class="control-label">Sticky?</label>
+                <div class="controls">
+                      <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
                 </div>
+              </div>
           {{/if}}
           <div class="form-actions">
             <a class="delete-link" href="/posts/deleted">Delete Post</a>
