@@ -2,6 +2,8 @@ Accounts.onCreateUser(function(options, user){
   user.profile = options.profile || {};
   user.karma = 0;
   
+
+
   // users start pending, need to be invited
   user.isInvited = false
   
@@ -14,7 +16,9 @@ Accounts.onCreateUser(function(options, user){
   if (!user.profile.name)
     user.profile.name = user.username;
   
-  console.log('### user', user)
+  // if this is the first user ever, make them an admin
+  if ( !Meteor.users.find().count() )
+    user.isAdmin = true;
 
   return user;
 });
