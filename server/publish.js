@@ -7,7 +7,7 @@ Meteor.publish('allUsers', function() {
     return Meteor.users.find();
   }else{
     // else, filter out sensitive info
-    return Meteor.users.find({}, {fields: {
+    return Meteor.users.find( { _id : { $ne : this.userId } }, {fields: {
       secret_id: false,
       isAdmin: false,
       emails: false,
