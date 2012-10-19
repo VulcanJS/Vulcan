@@ -1,19 +1,23 @@
 <template name="posts_digest">
-		<div class="grid">
-			<div class="grid-block">
-				The top 5 posts of each day. |
-			{{#if showPreviousDate}}
-			<a href="{{previousDateURL}}" class="prev-link" data-increment="-1">Previous Day</a> | 
-			{{/if}}
-			{{currentDate}} |
-			{{#if showNextDate}}
-			<a href="{{nextDateURL}}" class="next-link" data-increment="1">Next Day</a>
-			{{/if}}
-			</div>
-		</div>
-		<div class="posts grid list">
-			{{#each posts}}
-				{{> post_item}}
-			{{/each}}
-		</div>
+    <div class="grid">
+      <div class="grid-block">
+        The top 5 posts of each day. |
+      {{#if showPreviousDate}}
+      <a href="{{previousDateURL}}" class="prev-link" data-increment="-1">Previous Day</a> | 
+      {{/if}}
+      {{currentDate}} |
+      {{#if showNextDate}}
+      <a href="{{nextDateURL}}" class="next-link" data-increment="1">Next Day</a>
+      {{/if}}
+      </div>
+    </div>
+    <div class="posts grid list">
+      {{#if hasPosts}}
+        {{#each posts}}
+          {{> post_item}}
+        {{/each}}
+      {{else}}
+        <p class="empty-notice">Sorry, nothing for today.</p>
+      {{/if}}
+    </div>
 </template>

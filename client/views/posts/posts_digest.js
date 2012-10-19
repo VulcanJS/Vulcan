@@ -2,6 +2,9 @@ Template.posts_digest.helpers({
   posts: function(){
     return digestPosts();
   },
+  hasPosts: function(){
+    return !!digestPosts().length;
+  },
   currentDate: function(){
     return moment(sessionGetObject('currentDate')).format("dddd, MMMM Do YYYY");
   },
@@ -23,6 +26,6 @@ Template.posts_digest.helpers({
     var currentDate=moment(sessionGetObject('currentDate'));
     var nextDate=currentDate.add('days', 1); 
     var today=moment(new Date());
-    return today.diff(nextDate, 'days') > 0
+    return today.diff(nextDate, 'days') >= 0
   }
 });
