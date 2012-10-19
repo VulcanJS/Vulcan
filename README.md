@@ -11,7 +11,7 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 - Markdown support
 - Day by day view
 
-# Instalation
+# Installation
 - Install Meteor
 - Install [Meteorite](https://github.com/oortcloud/meteorite/)
 - Run `mrt`
