@@ -102,8 +102,7 @@ var newPosts = function() {
 // DIGEST page
 DIGEST_PAGE_PER_PAGE = 5;
 DIGEST_PAGE_SORT = {score: -1};
-var digestPageFind = function() {
-  var mDate = moment(sessionGetObject('currentDate'));
+var digestPageFind = function(mDate) {
   return {submitted: {
     $gte: mDate.startOf('day').valueOf(), 
     $lt: mDate.endOf('day').valueOf()
@@ -113,15 +112,23 @@ var digestPageFind = function() {
 Session.set('digestPageLimit', DIGEST_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
   Session.get('digestPostsReady', false);
-  Meteor.subscribe('posts', digestPageFind(), {
-    sort: DIGEST_PAGE_SORT, 
-    limit: Session.get('digestPageLimit')
-  }, function() {
-    Session.set('digestPostsReady', true);
-  });
+  
+  var mDate = moment(sessionGetObject('currentDate'));
+  // start yesterday, and subscribe to 3 days
+  mDate.add('days', -1);
+  for (var i = 0; i < 3; i++) {
+    Meteor.subscribe('posts', digestPageFind(mDate), {
+      sort: DIGEST_PAGE_SORT, 
+      limit: Session.get('digestPageLimit')
+    }, function() {
+      Session.set('digestPostsReady', true);
+    });
+    mDate.add('days', 1);
+  }
 });
 var digestPosts = function() {
-  var orderedPosts = Posts.find(digestPageFind(), {sort: DIGEST_PAGE_SORT});
+  var mDate = moment(sessionGetObject('currentDate'))
+  var orderedPosts = Posts.find(digestPageFind(mDate), {sort: DIGEST_PAGE_SORT});
   return limitDocuments(orderedPosts, Session.get('digestPageLimit'));
 }
 
