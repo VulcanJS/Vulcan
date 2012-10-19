@@ -1,1 +1,0 @@
-// Meteor.accounts.twitter.setSecret('veZM4yC21bWExvsaht4cgzNMQgkmiqTHbPQzyTWH1I');

@@ -1,4 +1,9 @@
-// TL = TLog.getLogger(TLog.LOGLEVEL_MAX,true);
+// ** Accounts UI Config **
+
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+});
+
 EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',

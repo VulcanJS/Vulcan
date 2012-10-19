@@ -7,8 +7,8 @@ Template.post_item.helpers({
   rank: function() {
     return this._rank + 1;
   },
-  isPostPage: function(){
-    return Router.current_page() === 'post_page'
+  showRank: function(){
+    return _.contains(['posts_top', 'posts_new', 'posts_digest'], Router.current_page());
   },
   domain: function(){
     var a = document.createElement('a');

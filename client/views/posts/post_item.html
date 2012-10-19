@@ -19,8 +19,7 @@
       <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
     </ul>
     <div class="post-content">
-      {{#if isPostPage}}
-      {{else}}<span class="post-rank">{{rank}}</span>{{/if}}
+      {{#if showRank}}<span class="post-rank">{{rank}}</span>{{/if}}
       <div class="post-upvote">
         {{#if voted}}
           <span class="upvote-link voted"><i class="icon-check"></i><span>Upvote</span></span>

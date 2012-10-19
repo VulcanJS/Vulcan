@@ -1,4 +1,5 @@
 SimpleRouter = FilteredRouter.extend({
+  
   initialize: function() {
     FilteredRouter.prototype.initialize.call(this);
     this.filter(this.require_login, {only: ['submit']});
@@ -6,14 +7,20 @@ SimpleRouter = FilteredRouter.extend({
     this.filter(this.require_profile);
     this.filter(this.requirePost, {only: ['post_page']});
   },
+
   start_request: function(page){
     // runs at every new page change
 
+    // openedComments is an Array that tracks which comments
+    // have been expanded by the user, to make sure they stay expanded
     Session.set("openedComments", null);
+
+    // currentScroll stores the position of the user in the page
     Session.set('currentScroll', null);
+
     document.title = getSetting("title");
 
-    // set all errors who have been seen to not show anymore
+    // set all errors who have already been seen to not show anymore
     clearSeenErrors();
     
     // log this request with mixpanel, etc
@@ -21,6 +28,7 @@ SimpleRouter = FilteredRouter.extend({
     
     return page;
   },
+
   require_login: function(page) {
     if (Meteor.user()) {
       return page;
@@ -28,7 +36,7 @@ SimpleRouter = FilteredRouter.extend({
       return 'signin';
     }
   },
-  
+
   // if the user is logged in but their profile isn't filled out enough
   require_profile: function(page) {
     var user = Meteor.user();

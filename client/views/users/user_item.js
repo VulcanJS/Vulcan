@@ -26,6 +26,9 @@ Template.user_item.helpers({
 	commentsCount: function(){
 		// Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
 		return Comments.find({'userId':this._id}).count();
+	},
+	userIsAdmin: function(){
+		return isAdmin(this);
 	}
 });
 

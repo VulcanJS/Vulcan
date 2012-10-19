@@ -1,8 +1,7 @@
-Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_AND_EMAIL'
-});
+// HELPERS
 
-// ** Client-side helpers **
+// Workaround for the fact that you cannot store objects in
+// Session variables. Is used by app.js so needs to come first. 
 
 sessionSetObject=function(name, value){
   Session.set(name, JSON.stringify(value));
@@ -11,11 +10,11 @@ sessionGetObject=function(name){
   var data = Session.get(name);
   return data && JSON.parse(data);
 }
-$.fn.exists = function () {
-    return this.length !== 0;
-}
+
+// SUBSCRIPTIONS
 
 // ** Users **
+
 Meteor.subscribe('currentUser');
 Meteor.subscribe('allUsers');
 
@@ -23,7 +22,6 @@ Meteor.subscribe('allUsers');
 // Local (client-only) collection
 
 Errors = new Meteor.Collection(null);
-
 
 // ** Settings **
 
@@ -51,7 +49,6 @@ var Notifications = new Meteor.Collection('notifications');
 if(Meteor.user()){
   Meteor.subscribe('notifications');
 }
-
 
 // ** Posts **
 // We have a few subscriptions here, for the various ways we load posts
@@ -140,7 +137,6 @@ Meteor.autosubscribe(function() {
   })
 });
 
-
 // ** Categories **
 
 Categories = new Meteor.Collection('categories');
@@ -157,44 +153,4 @@ Meteor.autosubscribe(function() {
   Meteor.subscribe('comments', query, function() {
     //
   });
-});
-
-
-// ** Handlebars helpers **
-
-Handlebars.registerHelper('canView', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canView(Meteor.user(), action);
-});
-Handlebars.registerHelper('canPost', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canPost(Meteor.user(), action);
-});
-Handlebars.registerHelper('canComment', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canComment(Meteor.user(), action);
-});
-Handlebars.registerHelper('canUpvote', function(collection, action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canUpvote(Meteor.user()), collection, action;
-});
-Handlebars.registerHelper('canDownvote', function(collection, action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canDownvote(Meteor.user(), collection, action);
-});
-Handlebars.registerHelper('isAdmin', function(showError) {
-  if(isAdmin(Meteor.user())){
-    return true;
-  }else{
-    if((typeof showError === "string") && (showError === "true"))
-      throwError('Sorry, you do not have access to this page');
-    return false;
-  }
-});
-Handlebars.registerHelper('canEdit', function(collectionName, action) {
-  var action = (typeof action !== 'string') ? null : action;
-  var collection = (typeof collectionName !== 'string') ? Posts : eval(collectionName);
-  var itemId = (collectionName==="Posts") ? Session.get('selectedPostId') : Session.get('selectedCommentId');
-  var item=collection.findOne(itemId);
-  return item && canEdit(Meteor.user(), item, action);
 });
