@@ -48,12 +48,6 @@ Template.post_item.helpers({
   },
 });
 
-Template.post_item.created = function(){
-  if(this.data){
-    this.current_distance = this.data._rank * 81;
-  }
-}
-
 Template.post_item.rendered = function(){
   var self = this;
   var rank = self.data._rank;
@@ -64,24 +58,23 @@ Template.post_item.rendered = function(){
     for(var i=1; i<=rank; i++){
       distanceFromTop+= $('.post-'+i).height();
     }
-    var new_distance = distanceFromTop ;
-    var old_distance = self.current_distance ;
     
-    // at rendering time, move posts to their old place
-    $this.css("top", old_distance+"px");
-    
-    // then a few milliseconds after, move the to their new spot
-    Meteor.setTimeout(function() {
-      $this.css("top", new_distance+"px");
+    // if this is the first rendering, just go straight to the correct spot,
+    // and don't animate our way there.
+    if (_.isUndefined(self.current_distance)) {
+      self.current_distance = distanceFromTop;
+      $this.css("top", self.current_distance + "px");
       
-      // we don't want elements to be animated the first ever time they load, so we only set the class "animate" after that
-      self.current_distance=new_distance;
-    }, 1);
-
-    Meteor.setTimeout(function(){
-      $this.addClass("animate");
-    }, 2);
-    
+    // otherwise, stay in the old spot, but once the browser has rendered
+    // us there, animate to a new spot
+    } else {
+      $this.css("top", self.current_distance + "px");
+      
+      Meteor.defer(function() {
+        self.current_distance = distanceFromTop;
+        $this.addClass('animate').css("top", self.current_distance + "px");
+      });
+    }
   }
 };
 
