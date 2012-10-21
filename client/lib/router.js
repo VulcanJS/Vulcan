@@ -196,5 +196,3 @@ SimpleRouter = FilteredRouter.extend({
 });
   
 var Router = new SimpleRouter();
-Meteor.startup(function() {
-});
