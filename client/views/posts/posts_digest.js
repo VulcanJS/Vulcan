@@ -23,19 +23,20 @@ Template.posts_digest.helpers({
     return getDigestURL(newDate);
   },
   showNextDate: function(){
-    var currentDate=moment(sessionGetObject('currentDate'));
-    var nextDate=currentDate.add('days', 1); 
+    var currentDate=moment(sessionGetObject('currentDate')).startOf('day');
     var today=moment(new Date());
-    return today.diff(nextDate, 'days') > 0
+    return today.diff(currentDate, 'days') > 0
   }
 });
 
-Template.posts_digest.rendered = function(){
-  var currentDate=moment(sessionGetObject('currentDate'));
+Template.posts_digest.created = function(){
+  var currentDate=moment(sessionGetObject('currentDate')).startOf('day');
+  var today=moment(new Date()).startOf('day');
   $(document).bind('keydown', 'left', function(){
     Router.navigate(getDigestURL(currentDate.subtract('days', 1)), {trigger: true});    
   });
   $(document).bind('keydown', 'right', function(){
-    Router.navigate(getDigestURL(currentDate.add('days', 1)), {trigger: true});      
+    if(today.diff(currentDate, 'days') > 0)
+      Router.navigate(getDigestURL(currentDate.add('days', 1)), {trigger: true});      
   });  
 };

@@ -1,3 +1,5 @@
+// note: this is some horrible code, I know
+
 Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
@@ -18,6 +20,7 @@ Template.settings.events = {
     var veroAPIKey=$('#veroAPIKey').val();
     var veroSecret=$('#veroSecret').val();
     var intercomId=$('#intercomId').val();
+    var scoreInterval=$('#scoreInterval').val();
     var landingPageText=$('#landingPageText').val();
     var afterSignupText=$('#afterSignupText').val();
     var notes=$('#notes').val();
@@ -45,6 +48,7 @@ Template.settings.events = {
             veroSecret:veroSecret,
             landingPageText:landingPageText,
             afterSignupText:afterSignupText,
+            scoreInterval: scoreInterval,
             notes: notes
           }
       }, function(error){
@@ -72,6 +76,7 @@ Template.settings.events = {
           veroSecret:veroSecret,
           landingPageText:landingPageText,
           afterSignupText:afterSignupText,
+          scoreInterval:scoreInterval,
           notes:notes
     }, function(){
         throwError("Settings have been created");
