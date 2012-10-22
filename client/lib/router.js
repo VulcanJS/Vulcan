@@ -95,7 +95,8 @@ SimpleRouter = FilteredRouter.extend({
     'account':'user_edit',
     'forgot_password':'forgot_password',
     'users/:id': 'user_profile',
-    'users/:id/edit':'user_edit'
+    'users/:id/edit':'user_edit',
+    ':year/:month/:day':'digest',
   },
   top: function() {
     var self = this;

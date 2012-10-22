@@ -29,3 +29,13 @@ Template.posts_digest.helpers({
     return today.diff(nextDate, 'days') > 0
   }
 });
+
+Template.posts_digest.rendered = function(){
+  var currentDate=moment(sessionGetObject('currentDate'));
+  $(document).bind('keydown', 'left', function(){
+    Router.navigate(getDigestURL(currentDate.subtract('days', 1)), {trigger: true});    
+  });
+  $(document).bind('keydown', 'right', function(){
+    Router.navigate(getDigestURL(currentDate.add('days', 1)), {trigger: true});      
+  });  
+};

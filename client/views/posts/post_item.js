@@ -46,6 +46,10 @@ Template.post_item.helpers({
     if(!user) return false; 
     return _.include(this.upvoters, user._id);
   },
+  userAvatar: function(){
+    if(author=Meteor.users.findOne(this.userId))
+      return getAvatarUrl(author);
+  }
 });
 
 Template.post_item.rendered = function(){
