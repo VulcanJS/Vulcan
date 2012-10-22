@@ -24,7 +24,7 @@ Template.posts_digest.helpers({
   },
   showNextDate: function(){
     var currentDate=moment(sessionGetObject('currentDate')).startOf('day');
-    var today=moment(new Date());
+    var today=moment(new Date()).startOf('day');
     return today.diff(currentDate, 'days') > 0
   }
 });
