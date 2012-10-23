@@ -1,8 +1,30 @@
 Template.post_submit.helpers({
   categories: function(){
     return Categories.find();
+  },
+  users: function(){
+    return Meteor.users.find();
+  },
+  userName: function(){
+    return getDisplayName(this);
+  },
+  isSelected: function(){
+    var post=Posts.findOne(Session.get('selectedPostId'));
+    return post && this._id == post.userId;
   }
 });
+
+Template.post_submit.rendered = function(){
+  Session.set('selectedPostId', null);
+}
+
+Template.post_submit.rendered = function(){
+  this.editor= new EpicEditor(EpicEditorOptions).load();
+  $('#submitted').datepicker().on('changeDate', function(ev){
+    $('#submitted_hidden').val(moment(ev.date).valueOf());
+  });
+}
+
 
 Template.post_submit.events = {
   'click input[type=submit]': function(e, instance){
@@ -19,6 +41,9 @@ Template.post_submit.events = {
     var url = $('#url').val();
     var body = instance.editor.exportFile();
     var categories=[];
+    var sticky=!!$('#sticky').attr('checked');
+    var submitted = $('#submitted_hidden').val();
+    var userId = $('#postUser').val();
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
@@ -29,6 +54,9 @@ Template.post_submit.events = {
       body: body,
       url: url,
       categories: categories,
+      sticky: sticky,
+      submitted: submitted,
+      userId: userId
     }, function(error, postId) {
       if(error){
         console.log(error);
@@ -60,7 +88,3 @@ Template.post_submit.events = {
     }
   }
 };
-
-Template.post_submit.rendered = function(){
-  this.editor= new EpicEditor(EpicEditorOptions).load();
-}

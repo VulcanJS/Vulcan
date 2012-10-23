@@ -18,6 +18,16 @@ Template.post_edit.helpers({
   },
   submittedDate: function(){
     return moment(this.submitted).format("MMMM Do, h:mm:ss a");
+  },
+  users: function(){
+    return Meteor.users.find();
+  },
+  userName: function(){
+    return getDisplayName(this);
+  },
+  isSelected: function(){
+    var post=Posts.findOne(Session.get('selectedPostId'));
+    return post && this._id == post.userId;
   }
 });
 
@@ -43,26 +53,29 @@ Template.post_edit.events = {
     var selectedPostId=Session.get('selectedPostId');
     var title= $('#title').val();
     var url = $('#url').val();
-    var submitted = $('#submitted_hidden').val();
     var body = instance.editor.exportFile();
-    var sticky=!!$('#sticky').attr('checked');
     var categories=[];
+    var sticky=!!$('#sticky').attr('checked');
+    var submitted = $('#submitted_hidden').val();
+    var userId = $('#postUser').val();
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
      });
 
     console.log('categories:', categories);
-
+    console.log('submitted', submitted);
+    console.log('userId', userId, getDisplayNameById(userId));
     Posts.update(selectedPostId,
     {
         $set: {
             headline: title
           , url: url
-          , submitted: parseInt(submitted)
           , body: body
-          , sticky: sticky
           , categories: categories
+          , submitted: parseInt(submitted)
+          , sticky: sticky
+          , userId: userId
         }
       }
     ,function(error){

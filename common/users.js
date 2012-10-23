@@ -7,11 +7,11 @@ isAdmin=function(user){
     return false;
   return !!user.isAdmin;
 }
-getDisplayNameById = function(userId){
-  getDisplayName(Meteor.users.findOne(userId));
-}
 getDisplayName = function(user){
   return (user.profile && user.profile.name) ? user.profile.name : user.username;
+}
+getDisplayNameById = function(userId){
+  return getDisplayName(Meteor.users.findOne(userId));
 }
 getSignupMethod = function(user){
   if(user.services && user.services.twitter){

@@ -25,6 +25,28 @@
           {{/each}}
         </div>
       </div>
+      {{#if isAdmin}}
+        <div class="control-group">
+          <label class="control-label">Sticky?</label>
+          <div class="controls">
+            <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Date</label>
+          <div class="controls"><input id="submitted" type="text" value="{{submittedDate}}" /><input id="submitted_hidden" type="hidden" value="{{submitted}}" /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">User</label>
+          <div class="controls">
+            <select id="postUser">
+              {{#each users}}
+              <option {{#if isSelected}}selected{{/if}} value="{{_id}}">{{userName}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      {{/if}}
       {{/constant}}
       <div class="form-actions">
         <input type="submit" value="Submit" />
