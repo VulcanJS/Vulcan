@@ -67,7 +67,7 @@ Template.post_edit.events = {
     var sticky=!!$('#sticky').attr('checked');
     var submitted = $('#submitted_hidden').val();
     var userId = $('#postUser').val();
-    var status = $('input[name=status]:checked').val();
+    var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
