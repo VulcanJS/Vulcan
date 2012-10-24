@@ -21,6 +21,12 @@
             </div>
           </div>
           <div class="control-group">
+            <label class="control-label">Posts must be approved by admin?</label>
+            <div class="controls">
+                  <input type="checkbox" name="requirePostsApproval" id="requirePostsApproval" {{#if requirePostsApproval}}checked{{/if}} />
+            </div>
+          </div>
+          <div class="control-group">
             <label>Site Title</label>
             <div class="controls"><input id="title" name="title" type="text" value="{{title}}" /></div>
           </div>

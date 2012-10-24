@@ -28,7 +28,16 @@ Template.post_edit.helpers({
   isSelected: function(){
     var post=Posts.findOne(Session.get('selectedPostId'));
     return post && this._id == post.userId;
-  }
+  },
+  statusPending: function(){
+    return this.status == STATUS_PENDING;
+  },
+  statusApproved: function(){
+    return this.status == STATUS_APPROVED;
+  },
+  statusRejected: function(){
+    return this.status == STATUS_REJECTED;
+  },  
 });
 
 Template.post_edit.rendered = function(){
@@ -58,10 +67,11 @@ Template.post_edit.events = {
     var sticky=!!$('#sticky').attr('checked');
     var submitted = $('#submitted_hidden').val();
     var userId = $('#postUser').val();
+    var status = $('input[name=status]:checked').val();
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
-     });
+    });
 
     console.log('categories:', categories);
     console.log('submitted', submitted);
@@ -76,6 +86,7 @@ Template.post_edit.events = {
           , submitted: parseInt(submitted)
           , sticky: sticky
           , userId: userId
+          , status: status
         }
       }
     ,function(error){

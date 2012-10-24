@@ -72,6 +72,7 @@ SimpleRouter = FilteredRouter.extend({
     'new':'new',
     'new/':'new',
     'new/:page':'new',
+    'pending':'pending',
     'digest/:year/:month/:day':'digest',
     'digest':'digest',
     'digest/':'digest',
@@ -117,6 +118,14 @@ SimpleRouter = FilteredRouter.extend({
       });
     }
   },
+  pending: function(page) {
+    var self = this;
+    if(canPost(Meteor.user(), 'replace')) {
+      self.goto(function() {
+        return self.awaitSubscription('posts_pending', 'pendingPostsReady');
+      });
+    }
+  },  
   digest: function(year, month, day){
     var self = this;
     

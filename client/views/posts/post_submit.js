@@ -57,15 +57,17 @@ Template.post_submit.events = {
       sticky: sticky,
       submitted: submitted,
       userId: userId
-    }, function(error, postId) {
+    }, function(error, post) {
       if(error){
         console.log(error);
         throwError(error.reason);
         clearSeenErrors();
         $(e.target).removeClass('disabled');
       }else{
-        trackEvent("new post", {'postId': postId});
-        Router.navigate('posts/'+postId, {trigger: true});
+        trackEvent("new post", {'postId': post.postId});
+        if(post.status === STATUS_PENDING)
+          throwError('Thanks, your post is awaiting approval.')
+        Router.navigate('posts/'+post.postId, {trigger: true});
       }
     });
   }

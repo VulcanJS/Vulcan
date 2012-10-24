@@ -8,7 +8,7 @@ Template.post_item.helpers({
     return this._rank + 1;
   },
   showRank: function(){
-    return _.contains(['posts_top', 'posts_new', 'posts_digest'], Router.current_page());
+    return _.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending'], Router.current_page());
   },
   domain: function(){
     var a = document.createElement('a');

@@ -9,6 +9,11 @@
       <li><a class="new" href="/new">New</a></li>
       <li><a class="digest" href="/digest">Digest</a></li>
       {{/if}}
+      {{#if canPost}}
+        {{#if requirePostsApproval}}
+          <li><a class="pending" href="/pending">Pending</a></li>
+        {{/if}}
+      {{/if}}
       {{#if intercom}}
         <li><a id="Intercom" class="intercom" href="#">Support</a></li>
       {{/if}}

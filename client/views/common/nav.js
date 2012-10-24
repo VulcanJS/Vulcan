@@ -50,5 +50,8 @@ Template.nav.helpers({
   },
   canPost: function(){
     return canPost(Meteor.user());
-  }   
+  },
+  requirePostsApproval: function(){
+    return getSetting('requirePostsApproval');
+  }  
 });

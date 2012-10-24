@@ -1,8 +1,13 @@
+STATUS_PENDING=1;
+STATUS_APPROVED=2;
+STATUS_REJECTED=3;
+
 Meteor.methods({
   post: function(post){
     var user = Meteor.user();
     var userId = post.userId || user._id;
     var submitted = parseInt(post.submitted) || new Date().getTime();
+    var status = STATUS_APPROVED;
 
     if (!user || !canPost(user))
       throw new Meteor.Error(123, 'You need to login or be invited to post new stories.');
@@ -13,9 +18,9 @@ Meteor.methods({
     if(!this.isSimulation)
         limitRate(user, Posts, 30);
 
-    console.log(userId);
-    console.log(submitted);
-    console.log(post);
+    if(getSetting('requirePostsApproval') && !isAdmin(user))
+      status = STATUS_PENDING;
+
 
     post = _.extend(post, {
       userId: userId,
@@ -24,13 +29,15 @@ Meteor.methods({
       votes: 0,
       comments: 0,
       baseScore: 0,
-      score: 0
+      score: 0,
+      status: status
     });
     
     var postId=Posts.insert(post);
+    post['postId']=postId;
 
     Meteor.call('upvotePost', postId);
 
-    return postId;
+    return post;
   }
 });
