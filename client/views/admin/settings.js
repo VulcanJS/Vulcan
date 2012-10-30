@@ -1,87 +1,42 @@
-// note: this is some horrible code, I know
-
 Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
-    var requireViewInvite=!!$('#requireViewInvite').attr('checked');
-    var requirePostInvite=!!$('#requirePostInvite').attr('checked');
-    var requirePostsApproval=!!$('#requirePostsApproval').attr('checked');
-    var title= $('#title').val();
-    var theme = $('#theme').val();
-    var footerCode=$("#footerCode").val();
-    var analyticsCode = $('#analyticsCode').val();
-    var tlkioChannel = $('#tlkioChannel').val();
-    var mixpanelId= $('#mixpanelId').val();
-    var proxinoKey=$('#proxinoKey').val();
-    var goSquaredId=$('#goSquaredId').val();
-    var logoUrl=$('#logoUrl').val();
-    var logoHeight=$('#logoHeight').val();
-    var logoWidth=$('#logoWidth').val();
-    var veroAPIKey=$('#veroAPIKey').val();
-    var veroSecret=$('#veroSecret').val();
-    var intercomId=$('#intercomId').val();
-    var scoreInterval=$('#scoreInterval').val();
-    var landingPageText=$('#landingPageText').val();
-    var afterSignupText=$('#afterSignupText').val();
-    var notes=$('#notes').val();
 
+    var settings = {
+        requireViewInvite:      !!$('#requireViewInvite').attr('checked')
+      , requirePostInvite:      !!$('#requirePostInvite').attr('checked')
+      , requirePostsApproval:   !!$('#requirePostsApproval').attr('checked')    
+      , title:                  $('#title').val()
+      , theme:                  $('#theme').val()
+      , footerCode:             $("#footerCode").val()
+      , analyticsCode:          $('#analyticsCode').val()
+      , mixpanelId:             $('#mixpanelId').val()
+      , proxinoKey:             $('#proxinoKey').val()
+      , goSquaredId:            $('#goSquaredId').val()
+      , intercomId:             $('#intercomId').val()
+      , logoUrl:                $('#logoUrl').val()
+      , logoHeight:             $('#logoHeight').val()
+      , logoWidth:              $('#logoWidth').val()
+      , veroAPIKey:             $('#veroAPIKey').val()
+      , veroSecret:             $('#veroSecret').val()
+      , landingPageText:        $('#landingPageText').val()
+      , afterSignupText:        $('#afterSignupText').val()
+      , scoreInterval:          $('#scoreInterval').val()
+      , notes:                  $('#notes').val()
+    }
     var prevSetting=Settings.find().fetch()[0];
     
     if(prevSetting){
       Settings.update(prevSetting._id,{
-          $set: {
-            requireViewInvite:requireViewInvite,
-            requirePostInvite:requirePostInvite,
-            requirePostsApproval: requirePostsApproval,        
-            title: title,
-            theme: theme,
-            footerCode: footerCode,
-            analyticsCode: analyticsCode,
-            tlkioChannel: tlkioChannel,
-            mixpanelId: mixpanelId,
-            proxinoKey: proxinoKey,
-            goSquaredId: goSquaredId,
-            intercomId: intercomId,
-            logoUrl: logoUrl,
-            logoHeight: logoHeight,
-            logoWidth: logoWidth,
-            veroAPIKey: veroAPIKey,
-            veroSecret:veroSecret,
-            landingPageText:landingPageText,
-            afterSignupText:afterSignupText,
-            scoreInterval: scoreInterval,
-            notes: notes
-          }
+          $set: settings
       }, function(error){
         if(error)
           console.log(error);
         throwError("Settings have been updated");
       });
     }else{
-       var settingId = Settings.insert({
-          requireViewInvite:requireViewInvite, 
-          requirePostInvite:requirePostInvite, 
-          requirePostsApproval:requirePostsApproval,      
-          title: title,
-          theme: theme,
-          footerCode: footerCode,
-          analyticsCode: analyticsCode,
-          tlkioChannel: tlkioChannel,
-          mixpanelId: mixpanelId,
-          proxinoKey: proxinoKey,
-          goSquaredId: goSquaredId,
-          intercomId: intercomId,          
-          logoUrl: logoUrl,
-          logoHeight: logoHeight,
-          logoWidth: logoWidth,
-          veroAPIKey: veroAPIKey,
-          veroSecret:veroSecret,
-          landingPageText:landingPageText,
-          afterSignupText:afterSignupText,
-          scoreInterval:scoreInterval,
-          notes:notes
-    }, function(){
+       var settingId = Settings.insert(settings, function(){
         throwError("Settings have been created");
       });   
     }
