@@ -95,7 +95,8 @@ NEW_PAGE_SORT = {submitted: -1};
 Session.set('newPageLimit', NEW_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
   Session.get('newPostsReady', false);
-  Meteor.subscribe('posts', FIND_APPROVED, {
+  // note: should use FIND_APPROVED, but this is a temporary workaround because of bug
+  Meteor.subscribe('posts', {userId:{$exists: true},$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]}, {
     sort: NEW_PAGE_SORT, 
     limit: Session.get('newPageLimit')
   }, function() {

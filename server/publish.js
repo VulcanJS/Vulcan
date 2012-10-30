@@ -57,15 +57,15 @@ Posts = new Meteor.Collection('posts');
 Meteor.publish('posts', function(find, options) {
   var collection=Posts.find(find, options);
 
-  // console.log("publishing…");
-  // console.log(postsView.find, postsView.sort, postsView.skip, postsView.limit);
-  // collectionArray=collection.fetch();
-  // console.log('collection.count() '+collection.count());
-  // console.log('collection.fetch().length '+collectionArray.length);
-  // for(i=0;i<collectionArray.length;i++){
-  //   console.log('- '+collectionArray[i].headline);
-  // }
-  // console.log('\n');
+  console.log("publishing…");
+  console.log(find, options.sort, options.skip, options.limit);
+  collectionArray=collection.fetch();
+  console.log('collection.count() '+collection.count());
+  console.log('collection.fetch().length '+collectionArray.length);
+  for(i=0;i<collectionArray.length;i++){
+    console.log('- '+collectionArray[i].headline);
+  }
+  console.log('\n');
 
   return collection;
 });

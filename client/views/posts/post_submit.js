@@ -44,19 +44,21 @@ Template.post_submit.events = {
     var sticky=!!$('#sticky').attr('checked');
     var submitted = $('#submitted_hidden').val();
     var userId = $('#postUser').val();
+    var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
      });
 
     Meteor.call('post', {
-      headline: title,
-      body: body,
-      url: url,
-      categories: categories,
-      sticky: sticky,
-      submitted: submitted,
-      userId: userId
+        headline: title
+      , body: body
+      , url: url
+      , categories: categories
+      , sticky: sticky
+      , submitted: submitted
+      , userId: userId
+      , status: status
     }, function(error, post) {
       if(error){
         console.log(error);

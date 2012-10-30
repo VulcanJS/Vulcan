@@ -28,7 +28,6 @@ Meteor.methods({
     }
 
     // check that user waits more than 30 seconds between posts
-    console.log(timeSinceLastPost);
     if(!this.isSimulation && timeSinceLastPost < 30)
       throw new Meteor.Error(604, 'Please wait '+(30-timeSinceLastPost)+' seconds before posting again');
 

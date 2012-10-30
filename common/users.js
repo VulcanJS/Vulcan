@@ -66,7 +66,6 @@ numberOfItemsInPast24Hours = function(user, collection){
       $gte: mDate.subtract('hours',24).valueOf()
     }
   });
-  console.log(items.fetch());
   return items.count();
 }
 
