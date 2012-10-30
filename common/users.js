@@ -48,22 +48,29 @@ userProfileComplete = function(user) {
   return !!getEmail(user);
 }
 
-findLast= function(user, collection){
-  return collection.findOne({userId: user._id}, {sort: {submitted: -1}})
+findLast = function(user, collection){
+  return collection.findOne({userId: user._id}, {sort: {submitted: -1}});
 }
-limitRate= function(user, collection, interval){
+timeSinceLast = function(user, collection){
   var now = new Date().getTime();
-  var last=findLast(user, collection);
+  var last = findLast(user, collection);
   if(!last)
-    return true; // if this is the user's first post or comment ever, stop here
-  var timeFromLast=Math.abs(Math.floor((now-last.submitted)/1000));
-  if(timeFromLast<interval){
-   throw new Meteor.Error('999','Please wait '+(interval-timeFromLast)+' seconds before posting again');
-  }
+    return 999; // if this is the user's first post or comment ever, stop here
+  return Math.abs(Math.floor((now-last.submitted)/1000));
 }
+numberOfItemsInPast24Hours = function(user, collection){
+  var mDate = moment(new Date());
+  var items=collection.find({
+    userId: user._id,
+    submitted: {
+      $gte: mDate.subtract('hours',24).valueOf()
+    }
+  });
+  console.log(items.fetch());
+  return items.count();
+}
+
 // Permissions
-
-
 
 // user:                Defaults to Meteor.user()
 // action:              If the permission check fails, there are 3 possible outcomes: 

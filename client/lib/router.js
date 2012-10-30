@@ -130,15 +130,7 @@ SimpleRouter = FilteredRouter.extend({
     var self = this;
     
     if(canView(Meteor.user(), 'replace')) {
-      if(typeof day === 'undefined'){
-        // if day is not defined, just use today
-        // and change the URL to today's date
-        var date = new Date();
-        var mDate = moment(date);
-        this.navigate(getDigestURL(mDate));
-      }else{
-        var date=new Date(year, month-1, day);
-      }
+      var date = (typeof day === 'undefined') ? new Date() : new Date(year, month-1, day);
       
       sessionSetObject('currentDate', date);
       
