@@ -11,7 +11,6 @@ sessionGetObject=function(name){
   return data && JSON.parse(data);
 }
 getSetting = function(setting){
-  console.log(Settings.find().fetch()[0]);
   var settings=Settings.find().fetch()[0];
   if(settings){
     return settings[setting];
