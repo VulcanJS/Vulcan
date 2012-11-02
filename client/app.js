@@ -75,7 +75,7 @@ TOP_PAGE_PER_PAGE = 10;
 TOP_PAGE_SORT = {score: -1};
 Session.set('topPageLimit', TOP_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.get('topPostsReady', false);
+  Session.set('topPostsReady', false);
   Meteor.subscribe('posts', FIND_APPROVED, {
     sort: TOP_PAGE_SORT, 
     limit: Session.get('topPageLimit')
@@ -93,7 +93,7 @@ NEW_PAGE_PER_PAGE = 10;
 NEW_PAGE_SORT = {submitted: -1};
 Session.set('newPageLimit', NEW_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.get('newPostsReady', false);
+  Session.set('newPostsReady', false);
   // note: should use FIND_APPROVED, but this is a temporary workaround because of bug
   Meteor.subscribe('posts', {userId:{$exists: true},$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]}, {
     sort: NEW_PAGE_SORT, 
@@ -111,7 +111,7 @@ PENDING_FIND = {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]};
 // PENDING_FIND = {};
 // PENDING page
 Meteor.autosubscribe(function() {
-  Session.get('pendingPostsReady', false);
+  Session.set('pendingPostsReady', false);
   Meteor.subscribe('posts', PENDING_FIND, {
     sort: NEW_PAGE_SORT, 
     limit: Session.get('newPageLimit')
@@ -140,7 +140,7 @@ var digestPageFind = function(mDate) {
 
 Session.set('digestPageLimit', DIGEST_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.get('digestPostsReady', false);
+  Session.set('digestPostsReady', false);
   
   var mDate = moment(sessionGetObject('currentDate'));
   // start yesterday, and subscribe to 3 days
