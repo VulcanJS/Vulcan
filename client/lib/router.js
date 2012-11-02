@@ -5,7 +5,7 @@ SimpleRouter = FilteredRouter.extend({
     this.filter(this.require_login, {only: ['submit']});
     this.filter(this.start_request);
     this.filter(this.require_profile);
-    this.filter(this.requirePost, {only: ['post_page']});
+    this.filter(this.requirePost, {only: ['post_page', 'post_edit']});
   },
 
   start_request: function(page){
@@ -51,7 +51,7 @@ SimpleRouter = FilteredRouter.extend({
   // if we are on a page that requires a post, as set in selectedPostId
   requirePost: function(page) {
     if (Posts.findOne(Session.get('selectedPostId'))) {
-      return 'post_page';
+      return page;
     } else if (! Session.get('postReady')) {
       return 'loading';
     } else {
@@ -59,6 +59,10 @@ SimpleRouter = FilteredRouter.extend({
     }
   },
   
+  requireSettings: function() {
+    // TO DO
+  },
+
   // wait for the subscription to be ready, this one is only used manually
   awaitSubscription: function(page, subName) {
     return Session.get(subName) ? page : 'loading';
