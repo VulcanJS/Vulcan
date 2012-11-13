@@ -24,7 +24,7 @@ var Setting = function (options) {
 	this.notes = '';
 	
 	for (field in this) {
-		if (options[field]) this[field] = options[field];
+		if (options && options[field]) this[field] = options[field];
 	}
 }
 
@@ -63,7 +63,7 @@ var ModelForm = function (model, formOptions) {
 					type: this.option(field, 'type') || model[field].constructor.name.toLowerCase(),
 					title: this.option(field, 'title') || StringUtils.humanize(field),
 					id: field,
-					'default': model[field]
+					default: model[field]
 				}				
 				
 				if(this.option(field, 'enum')) formSchema[field]['enum'] = this.option(field, 'enum');
@@ -150,84 +150,27 @@ Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
-    var requireViewInvite=!!$('#requireViewInvite').attr('checked');
-    var requirePostInvite=!!$('#requirePostInvite').attr('checked');
-    var requirePostsApproval=!!$('#requirePostsApproval').attr('checked');
-    var title= $('#title').val();
-    var theme = $('#theme').val();
-    var footerCode=$("#footerCode").val();
-    var analyticsCode = $('#analyticsCode').val();
-    var tlkioChannel = $('#tlkioChannel').val();
-    var mixpanelId= $('#mixpanelId').val();
-    var proxinoKey=$('#proxinoKey').val();
-    var goSquaredId=$('#goSquaredId').val();
-    var logoUrl=$('#logoUrl').val();
-    var logoHeight=$('#logoHeight').val();
-    var logoWidth=$('#logoWidth').val();
-    var veroAPIKey=$('#veroAPIKey').val();
-    var veroSecret=$('#veroSecret').val();
-    var intercomId=$('#intercomId').val();
-    var scoreUpdateInterval=$('#scoreUpdateInterval').val();
-    var landingPageText=$('#landingPageText').val();
-    var afterSignupText=$('#afterSignupText').val();
-    var notes=$('#notes').val();
 
-    var prevSetting=Settings.find().fetch()[0];
+	var updatedSetting = new Setting();
+	for (field in updatedSetting) {
+		var regexExpression = ':regex(id, jsonform.*' + field + ')';
+		var htmlElement = $(regexExpression);
+		if (updatedSetting[field].constructor == Boolean) updatedSetting[field] = !!htmlElement.attr('checked');
+		else updatedSetting[field] = htmlElement.val();
+	}
+	
+    var prevSetting = Settings.find().fetch()[0];
     
     if(prevSetting){
       Settings.update(prevSetting._id,{
-          $set: {
-            requireViewInvite:requireViewInvite,
-            requirePostInvite:requirePostInvite,
-            requirePostsApproval: requirePostsApproval,        
-            title: title,
-            theme: theme,
-            footerCode: footerCode,
-            analyticsCode: analyticsCode,
-            tlkioChannel: tlkioChannel,
-            mixpanelId: mixpanelId,
-            proxinoKey: proxinoKey,
-            goSquaredId: goSquaredId,
-			veroAPIKey: veroAPIKey,
-            veroSecret:veroSecret,
-			intercomId: intercomId,
-            logoUrl: logoUrl,
-            logoHeight: logoHeight,
-            logoWidth: logoWidth,
-			scoreUpdateInterval: scoreUpdateInterval,
-            landingPageText:landingPageText,
-            afterSignupText:afterSignupText,
-            notes: notes
-          }
+          $set: updatedSetting
       }, function(error){
         if(error)
           console.log(error);
         throwError("Settings have been updated");
       });
     }else{
-       var settingId = Settings.insert({
-          requireViewInvite:requireViewInvite, 
-          requirePostInvite:requirePostInvite, 
-          requirePostsApproval:requirePostsApproval,      
-          title: title,
-          theme: theme,
-          footerCode: footerCode,
-          analyticsCode: analyticsCode,
-          tlkioChannel: tlkioChannel,
-          mixpanelId: mixpanelId,
-          proxinoKey: proxinoKey,
-          goSquaredId: goSquaredId,          
-	      veroAPIKey: veroAPIKey,
-          veroSecret:veroSecret,
-		  intercomId: intercomId,
-          logoUrl: logoUrl,
-          logoHeight: logoHeight,
-          logoWidth: logoWidth,
-		  scoreUpdateInterval:scoreUpdateInterval,
-          landingPageText:landingPageText,
-          afterSignupText:afterSignupText,
-          notes:notes
-    }, function(){
+       var settingId = Settings.insert(updatedSetting, function(){
         throwError("Settings have been created");
       });   
     }
