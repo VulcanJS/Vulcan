@@ -59,17 +59,15 @@ var ModelForm = function (modelClass, model, formOptions) {
 	this.formSchema = function() {
 		var formSchema = {};
 		
-		for (var field in model) {
-			if (field != '_id') {
-				formSchema[field] = {			
-					type: this.option(field, 'type') || model[field].constructor.name.toLowerCase(),
-					title: this.option(field, 'title') || StringUtils.humanize(field),
-					id: field,
-					default: model[field]
-				}				
+		for (var field in this.schema(model)) {
+			formSchema[field] = {			
+				type: this.option(field, 'type') || model[field].constructor.name.toLowerCase(),
+				title: this.option(field, 'title') || StringUtils.humanize(field),
+				id: field,
+				default: model[field]
+			}				
 
-				if(this.option(field, 'enum')) formSchema[field]['enum'] = this.option(field, 'enum');
-			}
+			if(this.option(field, 'enum')) formSchema[field]['enum'] = this.option(field, 'enum');
 		}
 		
 		return formSchema;
@@ -80,38 +78,27 @@ var ModelForm = function (modelClass, model, formOptions) {
 		return null;
 	}
 	
-	this.submit = function () {
-		for (field in model) {
-			if (field != '_id') {
-				var regexExpression = ':regex(id, jsonform.*' + field + ')';
-				var htmlElement = $(regexExpression);
-				if (model[field].constructor == Boolean) model[field] = !!htmlElement.attr('checked');
-				else model[field] = htmlElement.val();
-			}
+	this.submit = function (createHandler, updateHandler) {
+		for (field in this.schema(model)) {
+			var regexExpression = ':regex(id, jsonform.*' + field + ')';
+			var htmlElement = $(regexExpression);
+			if (model[field].constructor == Boolean) model[field] = !!htmlElement.attr('checked');
+			else model[field] = htmlElement.val();
 		}
 		
-		if(model._id) {
-			modelClass.update(model._id,{
-	          $set: schema(model)
-	      }, function(error){
-	        if(error)
-	          console.log(error);
-	        throwError("Settings have been updated");
-	      });
-	    }else{
-	       var settingId = modelClass.insert(schema(model), function(){
-	        throwError("Settings have been created");
-	      });   
+		if (model._id) {
+			modelClass.update(model._id, {$set: this.schema(model)}, updateHandler);
+	    } else {
+	       model._id = modelClass.insert(this.schema(model), createHandler);   
 	    }
+	}
 	
-		function schema(model) {
-			schema = {};
-			for (field in model) {
-				if (field != '_id') schema[field] = model[field];
-			}
-			return schema;
+	this.schema = function (model) {
+		schema = {};
+		for (field in model) {
+			if (field != '_id') schema[field] = model[field];
 		}
-		
+		return schema;
 	}
 }
 
@@ -190,7 +177,14 @@ Template.settings.events = {
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
 	
-	settingsForm.submit();
+	settingsForm.submit(
+		function(){
+	    	throwError("Settings have been created");
+		},
+		function(error) {
+			if(error) console.log(error);
+        	throwError("Settings have been updated");
+		});
   }
 };
 
