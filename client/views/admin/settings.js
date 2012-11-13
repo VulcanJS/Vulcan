@@ -1,6 +1,7 @@
 // note: this is some horrible code, I know
 
 var Setting = function (options) {
+	this._id = null;
 	this.requireViewInvite = false;
     this.requirePostInvite = false;
     this.requirePostsApproval = false;
@@ -44,7 +45,8 @@ var StringUtils = {
 	}
 }
 
-var ModelForm = function (model, formOptions) {
+var ModelForm = function (modelClass, model, formOptions) {
+	this.modelClass = modelClass;
 	this.model = model;
 	this.formOptions = formOptions;
 	
@@ -65,7 +67,7 @@ var ModelForm = function (model, formOptions) {
 					id: field,
 					default: model[field]
 				}				
-				
+
 				if(this.option(field, 'enum')) formSchema[field]['enum'] = this.option(field, 'enum');
 			}
 		}
@@ -77,7 +79,43 @@ var ModelForm = function (model, formOptions) {
 		if (formOptions[field]) return formOptions[field][optionName];
 		return null;
 	}
+	
+	this.submit = function () {
+		for (field in model) {
+			if (field != '_id') {
+				var regexExpression = ':regex(id, jsonform.*' + field + ')';
+				var htmlElement = $(regexExpression);
+				if (model[field].constructor == Boolean) model[field] = !!htmlElement.attr('checked');
+				else model[field] = htmlElement.val();
+			}
+		}
+		
+		if(model._id) {
+			modelClass.update(model._id,{
+	          $set: schema(model)
+	      }, function(error){
+	        if(error)
+	          console.log(error);
+	        throwError("Settings have been updated");
+	      });
+	    }else{
+	       var settingId = modelClass.insert(schema(model), function(){
+	        throwError("Settings have been created");
+	      });   
+	    }
+	
+		function schema(model) {
+			schema = {};
+			for (field in model) {
+				if (field != '_id') schema[field] = model[field];
+			}
+			return schema;
+		}
+		
+	}
 }
+
+var settingsForm;
 
 Template.settings.generate_settings_form = function (setting) {
 	Meteor.defer(function() {
@@ -142,7 +180,8 @@ Template.settings.generate_settings_form = function (setting) {
 			}
 		};
 		
-		new ModelForm(setting, options).generate();
+		settingsForm = new ModelForm(Settings, setting, options);
+		settingsForm.generate();
 	})
 }
 
@@ -150,30 +189,8 @@ Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
-
-	var updatedSetting = new Setting();
-	for (field in updatedSetting) {
-		var regexExpression = ':regex(id, jsonform.*' + field + ')';
-		var htmlElement = $(regexExpression);
-		if (updatedSetting[field].constructor == Boolean) updatedSetting[field] = !!htmlElement.attr('checked');
-		else updatedSetting[field] = htmlElement.val();
-	}
 	
-    var prevSetting = Settings.find().fetch()[0];
-    
-    if(prevSetting){
-      Settings.update(prevSetting._id,{
-          $set: updatedSetting
-      }, function(error){
-        if(error)
-          console.log(error);
-        throwError("Settings have been updated");
-      });
-    }else{
-       var settingId = Settings.insert(updatedSetting, function(){
-        throwError("Settings have been created");
-      });   
-    }
+	settingsForm.submit();
   }
 };
 
