@@ -1,5 +1,33 @@
 // note: this is some horrible code, I know
 
+var Setting = function (options) {
+	this.requireViewInvite = false;
+    this.requirePostInvite = false;
+    this.requirePostsApproval = false;
+    this.title = '';
+    this.theme = '';
+    this.footerCode = '';
+    this.analyticsCode = '';
+    this.tlkioChannel = '';
+    this.mixpanelId = '';
+    this.proxinoKey = '';
+    this.goSquaredId = '';
+	this.veroAPIKey = '';
+	this.veroSecret = '';
+	this.intercomId = '';
+	this.logoUrl = '';
+	this.logoHeight = '';
+	this.logoWidth = '';
+	this.scoreUpdateInterval = '';
+	this.landingPageText = '';
+	this.afterSignupText = '';
+	this.notes = '';
+	
+	for (field in this) {
+		if (options[field]) this[field] = options[field];
+	}
+}
+
 var StringUtils = {
 	humanize: function(string) {
 		return this.capitalize(this.convertCamelToSpaces(string));
@@ -34,7 +62,8 @@ var ModelForm = function (model, formOptions) {
 				formSchema[field] = {			
 					type: this.option(field, 'type') || model[field].constructor.name.toLowerCase(),
 					title: this.option(field, 'title') || StringUtils.humanize(field),
-					id: field
+					id: field,
+					'default': model[field]
 				}				
 				
 				if(this.option(field, 'enum')) formSchema[field]['enum'] = this.option(field, 'enum');
@@ -214,7 +243,7 @@ Template.settings.no_settings = function(){
 
 Template.settings.setting = function(){
   var setting = Settings.find().fetch()[0];
-  return setting;
+  return new Setting(setting) || new Setting();
 };
 
 Template.settings.is_theme = function(theme){
