@@ -21,22 +21,33 @@ var ModelForm = function (model, formOptions) {
 	this.formOptions = formOptions;
 	
 	this.generate = function () {
+		$('#json-form').jsonForm({
+		  schema: this.formSchema()
+		});
+	}
+	
+	this.formSchema = function() {
 		var formSchema = {};
 		
 		for (var field in model) {
 			if (field != '_id') {
 				formSchema[field] = {			
-					type: (formOptions[field] && formOptions[field]['type']) || model[field].constructor.name.toLowerCase(),
-					title: (formOptions[field] && formOptions[field]['title']) || StringUtils.humanize(field),
+					type: this.option(field, 'type') || model[field].constructor.name.toLowerCase(),
+					title: this.option(field, 'title') || StringUtils.humanize(field),
 					id: field
 				}				
+				
+				if(this.option(field, 'enum')) formSchema[field]['enum'] = this.option(field, 'enum');
 			}
 		}
 		
-		$('#json-form').jsonForm({
-		  schema: formSchema
-		});
+		return formSchema;
 	}	
+	
+	this.option = function(field, optionName) {
+		if (formOptions[field]) return formOptions[field][optionName];
+		return null;
+	}
 }
 
 Template.settings.generate_settings_form = function (setting) {
@@ -53,6 +64,52 @@ Template.settings.generate_settings_form = function (setting) {
 			},
 			'title': {
 				title: 'Site Title'
+			},
+			'theme': {
+				'enum': [
+					'Default',
+					'Ascndr',
+					'Telescope'
+				]
+			},
+			'footerCode': {
+				type: 'textarea'
+			},
+			'analyticsCode': {
+				type: 'textarea'
+			},
+			'tlkioChannel': {
+				title: '<a href="http://tlk.io/">Tlk.io</a> Channel'
+			},
+			'mixpanelId': {
+				title: '<a href="http://mixpanel.com/">Mixpanel</a> ID'
+			},
+			'proxinoKey': {
+				title: '<a href="http://proxino.com/">Proxino</a> key'
+			},
+			'goSquaredId': {
+				title: '<a href="http://gosquared.com/">GoSquared</a> ID'
+			},
+			'intercomId': {
+				title: '<a href="http://intercom.io/">Intercom</a> ID'
+			},
+			'veroAPIKey': {
+				title: '<a href="http://getvero.com/">Vero</a> API key'
+			},
+			'veroSecret': {
+				title: '<a href="http://getvero.com/">Vero</a> secret'
+			},
+			'logoUrl': {
+				title: 'Logo URL'
+			},
+			'landingPageText': {
+				type: 'textarea'
+			},
+			'afterSignupText': {
+				type: 'textarea'
+			},
+			'notes': {
+				type: 'textarea'
 			}
 		};
 		
@@ -81,7 +138,7 @@ Template.settings.events = {
     var veroAPIKey=$('#veroAPIKey').val();
     var veroSecret=$('#veroSecret').val();
     var intercomId=$('#intercomId').val();
-    var scoreInterval=$('#scoreInterval').val();
+    var scoreUpdateInterval=$('#scoreUpdateInterval').val();
     var landingPageText=$('#landingPageText').val();
     var afterSignupText=$('#afterSignupText').val();
     var notes=$('#notes').val();
@@ -102,15 +159,15 @@ Template.settings.events = {
             mixpanelId: mixpanelId,
             proxinoKey: proxinoKey,
             goSquaredId: goSquaredId,
-            intercomId: intercomId,
+			veroAPIKey: veroAPIKey,
+            veroSecret:veroSecret,
+			intercomId: intercomId,
             logoUrl: logoUrl,
             logoHeight: logoHeight,
             logoWidth: logoWidth,
-            veroAPIKey: veroAPIKey,
-            veroSecret:veroSecret,
+			scoreUpdateInterval: scoreUpdateInterval,
             landingPageText:landingPageText,
             afterSignupText:afterSignupText,
-            scoreInterval: scoreInterval,
             notes: notes
           }
       }, function(error){
@@ -130,16 +187,16 @@ Template.settings.events = {
           tlkioChannel: tlkioChannel,
           mixpanelId: mixpanelId,
           proxinoKey: proxinoKey,
-          goSquaredId: goSquaredId,
-          intercomId: intercomId,          
+          goSquaredId: goSquaredId,          
+	      veroAPIKey: veroAPIKey,
+          veroSecret:veroSecret,
+		  intercomId: intercomId,
           logoUrl: logoUrl,
           logoHeight: logoHeight,
           logoWidth: logoWidth,
-          veroAPIKey: veroAPIKey,
-          veroSecret:veroSecret,
+		  scoreUpdateInterval:scoreUpdateInterval,
           landingPageText:landingPageText,
           afterSignupText:afterSignupText,
-          scoreInterval:scoreInterval,
           notes:notes
     }, function(){
         throwError("Settings have been created");
