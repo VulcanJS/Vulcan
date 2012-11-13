@@ -1,5 +1,26 @@
 // note: this is some horrible code, I know
 
+Template.settings.generate_settings_form = function () {
+	Meteor.defer(function() {
+		$('#json-form').jsonForm({
+		  schema: {
+		    name: {
+		      type: 'string',
+		      title: 'Name',
+		      required: true
+		    },
+		    age: {
+		      type: 'number',
+		      title: 'Age'
+		    }
+		  },
+		  onSubmit: function (errors, values) {
+		    
+		  }
+		});
+	})
+}
+
 Template.settings.events = {
   'click input[type=submit]': function(e){
     e.preventDefault();

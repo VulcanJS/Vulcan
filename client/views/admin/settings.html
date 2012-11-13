@@ -2,113 +2,143 @@
   {{#if isAdmin true}}
     <div class="grid-small grid-block dialog settings">
       {{#with setting}}
-        <form>
+
+		<form id="json-form"></form>
+		{{generate_settings_form}}
+		
+        
           <h2>Settings</h2>
           {{#if no_settings}}
             <p>No settings yet.</p>
           {{/if}}
           {{#if currentUser.isAdmin}}
+
+		  <form>	
           <div class="control-group">
-            <label class="control-label">Require Invite to view?</label>
-            <div class="controls">
-                  <input type="checkbox" name="requireViewInvite" id="requireViewInvite" {{#if requireViewInvite}}checked{{/if}} />
-            </div>
-          </div>
-          <div class="control-group">
+	            <label class="control-label">Require Invite to view?</label>
+	            <div class="controls">
+	                  <input type="checkbox" name="requireViewInvite" id="requireViewInvite" {{#if requireViewInvite}}checked{{/if}} />
+	            </div>
+	      </div>
+	
+       	  <div class="control-group">
             <label class="control-label">Require Invite to post?</label>
             <div class="controls">
                   <input type="checkbox" name="requirePostInvite" id="requirePostInvite" {{#if requirePostInvite}}checked{{/if}} />
             </div>
           </div>
-          <div class="control-group">
-            <label class="control-label">Posts must be approved by admin?</label>
-            <div class="controls">
-                  <input type="checkbox" name="requirePostsApproval" id="requirePostsApproval" {{#if requirePostsApproval}}checked{{/if}} />
-            </div>
-          </div>
+	
+         <div class="control-group">
+           <label class="control-label">Posts must be approved by admin?</label>
+           <div class="controls">
+                 <input type="checkbox" name="requirePostsApproval" id="requirePostsApproval" {{#if requirePostsApproval}}checked{{/if}} />
+           </div>
+         </div>
+
           <div class="control-group">
             <label>Site Title</label>
             <div class="controls"><input id="title" name="title" type="text" value="{{title}}" /></div>
           </div>
+
           <div class="control-group">
             <label>Theme</label>
             <div class="controls">
               <select id="theme">
-              <option {{#if is_default}}selected{{/if}} value="default">Default</option>
-           <option {{#if is_ascndr}}selected{{/if}} value="ascndr">Ascndr</option>
-            <option {{#if is_telescope}}selected{{/if}} value="telescope">Telescope</option>
-          </select>
-        </div>
+	              <option {{#if is_default}}selected{{/if}} value="default">Default</option>
+		          <option {{#if is_ascndr}}selected{{/if}} value="ascndr">Ascndr</option>
+		          <option {{#if is_telescope}}selected{{/if}} value="telescope">Telescope</option>
+	          </select>
+		    </div>
           </div>
+
           <div class="control-group">
             <label>Footer Code</label>
             <div class="controls"><textarea id="footerCode" name="footerCode">{{footerCode}}</textarea></div>
           </div>
+
           <div class="control-group">
             <label>Analytics Code</label>
             <div class="controls"><textarea id="analyticsCode" name="analyticsCode">{{analyticsCode}}</textarea></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://tlk.io" target="_blank">Tlk.io</a> channel</label>
             <div class="controls"><input id="tlkioChannel" name="tlkioChannel" type="text" value="{{tlkioChannel}}" /></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://mixpanel.com" target="_blank">Mixpanel</a> ID</label>
             <div class="controls"><input id="mixpanelId" name="mixpanelId" type="text" value="{{mixpanelId}}" /></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://proxino.com" target="_blank">Proxino</a> key</label>
             <div class="controls"><input id="proxinoKey" name="proxinoKey" type="text" value="{{proxinoKey}}" /></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://gosquared.com" target="_blank">GoSquared</a> ID</label>
             <div class="controls"><input id="goSquaredId" name="goSquaredId" type="text" value="{{goSquaredId}}" /></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://getvero.com" target="_blank">Vero</a> API key</label>
             <div class="controls"><input id="veroAPIKey" name="veroAPIKey" type="text" value="{{veroAPIKey}}" /></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://getvero.com" target="_blank">Vero</a> secret</label>
             <div class="controls"><input id="veroSecret" name="veroSecret" type="text" value="{{veroSecret}}" /></div>
           </div>
+
           <div class="control-group">
             <label><a href="http://intercom.io" target="_blank">Intercom</a> ID</label>
             <div class="controls"><input id="intercomId" name="intercomId" type="text" value="{{intercomId}}" /></div>
           </div>
+
           <div class="control-group">
             <label>Logo URL</label>
             <div class="controls"><input id="logoUrl" name="logoUrl" type="text" value="{{logoUrl}}" /></div>
           </div>
+
           <div class="control-group">
             <label>Logo Height</label>
             <div class="controls"><input id="logoHeight" name="logoHeight" type="text" value="{{logoHeight}}" /></div>
           </div>
+
           <div class="control-group">
             <label>Logo Width</label>
             <div class="controls"><input id="logoWidth" name="logoWidth" type="text" value="{{logoWidth}}" /></div>
           </div>
+
           <div class="control-group">
             <label>Score Update Interval</label>
-            <div class="controls"><input id="scoreInterval" name="scoreInterval" type="text" value="{{scoreInterval}}" /></div>
+            <div class="controls">
+				<input id="scoreInterval" name="scoreInterval" type="text" value="{{scoreInterval}}" />
+			</div>
           </div>
+
           <div class="control-group">
             <label>Landing Page Text</label>
             <div class="controls"><textarea id="landingPageText" name="landingPageText">{{landingPageText}}</textarea></div>
           </div>
+
           <div class="control-group">
             <label>After Signup Text</label>
             <div class="controls"><textarea id="afterSignupText" name="afterSignupText">{{afterSignupText}}</textarea></div>
-          </div>      
+          </div>   
+   
           <div class="control-group">
             <label>Notes</label>
             <div class="controls"><textarea id="notes" name="notes">{{notes}}</textarea></div>
           </div>
+
           <div class="form-actions">
             <input type="submit" class="button" value="Submit" />
           </div>
+		
+		  </form>
           {{/if}}
-        </form>
       {{/with}}
     </div>
   {{/if}}
