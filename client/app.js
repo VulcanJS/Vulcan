@@ -19,11 +19,6 @@ getSetting = function(setting){
 }
 // SUBSCRIPTIONS
 
-// ** Users **
-
-Meteor.subscribe('currentUser');
-Meteor.subscribe('allUsers');
-
 // ** Errors **
 // Local (client-only) collection
 
@@ -38,14 +33,15 @@ Meteor.subscribe('settings', function(){
 
   window.settingsLoaded=true;
 
-  if((proxinoKey=getSetting('proxinoKey'))){
-    Proxino.key = proxinoKey;
-    Proxino.track_errors();
-  }
-
   window.Backbone.history.start({pushState: true});
 
 });
+
+// ** Users **
+
+Meteor.subscribe('currentUser');
+Meteor.subscribe('allUsers');
+
 
 // ** Notifications **
 // Only load if user is logged in
