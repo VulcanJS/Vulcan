@@ -7,7 +7,6 @@ var Setting = function (options) {
     this.theme = '';
     this.footerCode = '';
     this.analyticsCode = '';
-    this.tlkioChannel = '';
     this.mixpanelId = '';
     this.proxinoKey = '';
     this.goSquaredId = '';

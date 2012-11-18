@@ -66,9 +66,6 @@ function settingsFormOptions() {
 		'analyticsCode': {
 			type: 'textarea'
 		},
-		'tlkioChannel': {
-			title: '<a href="http://tlk.io/">Tlk.io</a> Channel'
-		},
 		'mixpanelId': {
 			title: '<a href="http://mixpanel.com/">Mixpanel</a> ID'
 		},
