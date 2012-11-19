@@ -143,32 +143,28 @@ SimpleRouter = FilteredRouter.extend({
       });
     } 
   },
-  signup: function() { this.goto('signup'); },
-  signin: function() { this.goto('signin'); },
-  invite: function() { this.goto('no_invite'); },
-  submit: function() { this.goto('post_submit'); },
-  settings: function() { this.goto('settings'); },
-  users: function() { this.goto('users'); },
-  post_deleted: function() { this.goto('post_deleted'); },
-  comment_deleted: function() { this.goto('comment_deleted'); },
-  forgot_password: function() { this.goto('user_password'); },
-  admin: function() { this.goto('admin'); },
-  categories: function() { this.goto('categories'); },
   post: function(id, commentId) {
+    var self = this;
+    
     Session.set('selectedPostId', id);
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
-    
-    this.goto('post_page');
-    
+        
     // on post page, we show the comment recursion
     window.repress_recursion=false;
     // reset the new comment time at each new request of the post page
     window.newCommentTimestamp=new Date();
+
+    self.goto(function() {
+      return self.awaitSubscription('post_page', 'postReady');
+    });
   },
   post_edit: function(id) {
+    var self = this;
     Session.set('selectedPostId', id); 
-    this.goto('post_edit'); 
+    self.goto(function() {
+      return self.awaitSubscription('post_edit', 'postReady');
+    });
   },
   comment: function(id) {
     Session.set('selectedCommentId', id);
@@ -198,7 +194,18 @@ SimpleRouter = FilteredRouter.extend({
       Session.set('selectedUserId', id);
     }
     this.goto('user_edit');
-  }
+  },
+  signup: function() { this.goto('signup'); },
+  signin: function() { this.goto('signin'); },
+  invite: function() { this.goto('no_invite'); },
+  submit: function() { this.goto('post_submit'); },
+  settings: function() { this.goto('settings'); },
+  users: function() { this.goto('users'); },
+  post_deleted: function() { this.goto('post_deleted'); },
+  comment_deleted: function() { this.goto('comment_deleted'); },
+  forgot_password: function() { this.goto('user_password'); },
+  admin: function() { this.goto('admin'); },
+  categories: function() { this.goto('categories'); }  
 });
   
 var Router = new SimpleRouter();
