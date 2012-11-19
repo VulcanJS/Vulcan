@@ -179,6 +179,6 @@ Comments = new Meteor.Collection('comments');
 Meteor.autosubscribe(function() {
   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
   Meteor.subscribe('comments', query, function() {
-    //
+    Session.set('commentReady', true);
   });
 });

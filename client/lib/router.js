@@ -145,7 +145,7 @@ SimpleRouter = FilteredRouter.extend({
   },
   post: function(id, commentId) {
     var self = this;
-    
+
     Session.set('selectedPostId', id);
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
@@ -161,27 +161,40 @@ SimpleRouter = FilteredRouter.extend({
   },
   post_edit: function(id) {
     var self = this;
+
     Session.set('selectedPostId', id); 
     self.goto(function() {
       return self.awaitSubscription('post_edit', 'postReady');
     });
   },
   comment: function(id) {
+    var self = this;
+
     Session.set('selectedCommentId', id);
     window.repress_recursion=true;
     window.newCommentTimestamp=new Date();
-    this.goto('comment_page');    
+    self.goto(function() {
+      return self.awaitSubscription('comment_page', 'commentReady');
+    });
   },
   comment_reply: function(id) {
+    var self = this;
+
     Session.set('selectedCommentId', id);
     window.repress_recursion=true;
     window.newCommentTimestamp=new Date();
-    this.goto('comment_reply');
+    self.goto(function() {
+      return self.awaitSubscription('comment_reply', 'commentReady');
+    });
   },
   comment_edit: function(id) {
+    var self = this;
+    
     Session.set('selectedCommentId', id);
     window.newCommentTimestamp=new Date();
-    this.goto('comment_edit');
+    self.goto(function() {
+      return self.awaitSubscription('comment_edit', 'commentReady');
+    });
   },
   user_profile: function(id){
     if(typeof id !== undefined){
