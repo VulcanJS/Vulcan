@@ -114,7 +114,7 @@ canView = function(user, action){
 canPost = function(user, action){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
   var action=(typeof action === 'undefined') ? null : action;
-  // console.log('canPost', user, action, getSetting('requirePostInvite'));
+  console.log('canPost', user, action, getSetting('requirePostInvite'));
   if(Meteor.isClient && !window.settingsLoaded)
     return false;
   try{
@@ -135,8 +135,9 @@ canPost = function(user, action){
     if(action){
       switch(error){
         case "no_account":
+          console.log("no account");
           throwError("Please sign in or create an account first.");
-          action=='replace' ? Router.goto('signin') : Router.navigate('signin', {trigger : true});
+          action=='replace' ? Router.goto('user_signin') : Router.navigate('signin', {trigger : true});
           break;
         case "no_invite":
           throwError("Sorry, you need to have an invitation to do this.");

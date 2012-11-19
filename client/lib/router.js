@@ -88,6 +88,7 @@ SimpleRouter = FilteredRouter.extend({
     'posts/deleted':'post_deleted',
     'posts/:id/edit':'post_edit',
     'posts/:id/comment/:comment_id':'post',
+    'posts/:id/':'post',
     'posts/:id':'post',
     'comments/deleted':'comment_deleted',   
     'comments/:id':'comment',
@@ -154,7 +155,6 @@ SimpleRouter = FilteredRouter.extend({
     window.repress_recursion=false;
     // reset the new comment time at each new request of the post page
     window.newCommentTimestamp=new Date();
-
     self.goto(function() {
       return self.awaitSubscription('post_page', 'postReady');
     });
@@ -189,7 +189,7 @@ SimpleRouter = FilteredRouter.extend({
   },
   comment_edit: function(id) {
     var self = this;
-    
+
     Session.set('selectedCommentId', id);
     window.newCommentTimestamp=new Date();
     self.goto(function() {
@@ -208,8 +208,8 @@ SimpleRouter = FilteredRouter.extend({
     }
     this.goto('user_edit');
   },
-  signup: function() { this.goto('signup'); },
-  signin: function() { this.goto('signin'); },
+  signup: function() { this.goto('user_signup'); },
+  signin: function() { this.goto('user_signin'); },
   invite: function() { this.goto('no_invite'); },
   submit: function() { this.goto('post_submit'); },
   settings: function() { this.goto('settings'); },

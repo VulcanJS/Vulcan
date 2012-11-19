@@ -17,6 +17,9 @@ getSetting = function(setting){
   }
   return '';
 }
+clearSeenErrors = function(){
+  Errors.update({seen:true}, {$set: {show:false}}, {multi:true});
+}
 // SUBSCRIPTIONS
 
 // ** Errors **

@@ -19,7 +19,7 @@ Template.post_submit.rendered = function(){
 }
 
 Template.post_submit.rendered = function(){
-  if(!this.editor)
+  if(!this.editor && $('#editor').exists())
     this.editor= new EpicEditor(EpicEditorOptions).load();
   $('#submitted').datepicker().on('changeDate', function(ev){
     $('#submitted_hidden').val(moment(ev.date).valueOf());
