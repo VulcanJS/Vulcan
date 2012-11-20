@@ -1,7 +1,4 @@
-// note: this is some horrible code, I know
-
 var settingsForm;
-
 
 Template.settings.helpers({
 	generateSettingsForm: function (setting) {

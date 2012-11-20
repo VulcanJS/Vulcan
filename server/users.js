@@ -28,5 +28,11 @@ Accounts.onCreateUser(function(options, user){
 Meteor.methods({
   changeEmail: function(newEmail) {
     Meteor.users.update(Meteor.userId(), {$set: {emails: [{address: newEmail}]}});
+  },
+  numberOfPostsToday: function(){
+    console.log(numberOfItemsInPast24Hours(Meteor.user(), Posts));
+  },
+  numberOfCommentsToday: function(){
+    console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
   }
 });

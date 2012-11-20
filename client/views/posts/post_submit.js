@@ -19,7 +19,8 @@ Template.post_submit.rendered = function(){
 }
 
 Template.post_submit.rendered = function(){
-  this.editor= new EpicEditor(EpicEditorOptions).load();
+  if(!this.editor && $('#editor').exists())
+    this.editor= new EpicEditor(EpicEditorOptions).load();
   $('#submitted').datepicker().on('changeDate', function(ev){
     $('#submitted_hidden').val(moment(ev.date).valueOf());
   });
@@ -44,25 +45,29 @@ Template.post_submit.events = {
     var sticky=!!$('#sticky').attr('checked');
     var submitted = $('#submitted_hidden').val();
     var userId = $('#postUser').val();
+    var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
      });
 
     Meteor.call('post', {
-      headline: title,
-      body: body,
-      url: url,
-      categories: categories,
-      sticky: sticky,
-      submitted: submitted,
-      userId: userId
+        headline: title
+      , body: body
+      , url: url
+      , categories: categories
+      , sticky: sticky
+      , submitted: submitted
+      , userId: userId
+      , status: status
     }, function(error, post) {
       if(error){
         console.log(error);
         throwError(error.reason);
         clearSeenErrors();
         $(e.target).removeClass('disabled');
+        if(error.error == 603)
+          Router.navigate('/posts/'+error.details, {trigger:true});
       }else{
         trackEvent("new post", {'postId': post.postId});
         if(post.status === STATUS_PENDING)

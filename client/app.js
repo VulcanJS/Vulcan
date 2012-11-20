@@ -11,19 +11,16 @@ sessionGetObject=function(name){
   return data && JSON.parse(data);
 }
 getSetting = function(setting){
-  console.log(Settings.find().fetch()[0]);
   var settings=Settings.find().fetch()[0];
   if(settings){
     return settings[setting];
   }
   return '';
 }
+clearSeenErrors = function(){
+  Errors.update({seen:true}, {$set: {show:false}}, {multi:true});
+}
 // SUBSCRIPTIONS
-
-// ** Users **
-
-Meteor.subscribe('currentUser');
-Meteor.subscribe('allUsers');
 
 // ** Errors **
 // Local (client-only) collection
@@ -39,14 +36,15 @@ Meteor.subscribe('settings', function(){
 
   window.settingsLoaded=true;
 
-  if((proxinoKey=getSetting('proxinoKey'))){
-    Proxino.key = proxinoKey;
-    Proxino.track_errors();
-  }
-
   window.Backbone.history.start({pushState: true});
 
 });
+
+// ** Users **
+
+Meteor.subscribe('currentUser');
+Meteor.subscribe('allUsers');
+
 
 // ** Notifications **
 // Only load if user is logged in
@@ -76,7 +74,7 @@ TOP_PAGE_PER_PAGE = 10;
 TOP_PAGE_SORT = {score: -1};
 Session.set('topPageLimit', TOP_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.get('topPostsReady', false);
+  Session.set('topPostsReady', false);
   Meteor.subscribe('posts', FIND_APPROVED, {
     sort: TOP_PAGE_SORT, 
     limit: Session.get('topPageLimit')
@@ -94,8 +92,9 @@ NEW_PAGE_PER_PAGE = 10;
 NEW_PAGE_SORT = {submitted: -1};
 Session.set('newPageLimit', NEW_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.get('newPostsReady', false);
-  Meteor.subscribe('posts', FIND_APPROVED, {
+  Session.set('newPostsReady', false);
+  // note: should use FIND_APPROVED, but this is a temporary workaround because of bug
+  Meteor.subscribe('posts', {userId:{$exists: true},$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]}, {
     sort: NEW_PAGE_SORT, 
     limit: Session.get('newPageLimit')
   }, function() {
@@ -111,7 +110,7 @@ PENDING_FIND = {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]};
 // PENDING_FIND = {};
 // PENDING page
 Meteor.autosubscribe(function() {
-  Session.get('pendingPostsReady', false);
+  Session.set('pendingPostsReady', false);
   Meteor.subscribe('posts', PENDING_FIND, {
     sort: NEW_PAGE_SORT, 
     limit: Session.get('newPageLimit')
@@ -140,7 +139,7 @@ var digestPageFind = function(mDate) {
 
 Session.set('digestPageLimit', DIGEST_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
-  Session.get('digestPostsReady', false);
+  Session.set('digestPostsReady', false);
   
   var mDate = moment(sessionGetObject('currentDate'));
   // start yesterday, and subscribe to 3 days
@@ -183,6 +182,6 @@ Comments = new Meteor.Collection('comments');
 Meteor.autosubscribe(function() {
   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
   Meteor.subscribe('comments', query, function() {
-    //
+    Session.set('commentReady', true);
   });
 });

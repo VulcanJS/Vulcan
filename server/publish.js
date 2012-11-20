@@ -28,10 +28,10 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-      console.log("updating");
-      console.log(userId);
-      console.log(docs);
-      console.log('fields: '+fields);
+      // console.log("updating");
+      // console.log(userId);
+      // console.log(docs);
+      // console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
       if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
@@ -56,16 +56,17 @@ Posts = new Meteor.Collection('posts');
 
 Meteor.publish('posts', function(find, options) {
   var collection=Posts.find(find, options);
+  var collectionArray=collection.fetch();
 
-  // console.log("publishing…");
-  // console.log(postsView.find, postsView.sort, postsView.skip, postsView.limit);
-  // collectionArray=collection.fetch();
-  // console.log('collection.count() '+collection.count());
-  // console.log('collection.fetch().length '+collectionArray.length);
-  // for(i=0;i<collectionArray.length;i++){
-  //   console.log('- '+collectionArray[i].headline);
-  // }
-  // console.log('\n');
+  console.log("publishing…");
+  console.log(find, options.sort, options.skip, options.limit);
+  console.log('collection.count() '+collection.count());
+  console.log('collection.fetch().length '+collectionArray.length);
+  
+  for(i=0;i<collectionArray.length;i++){
+    console.log('- '+collectionArray[i].headline);
+  }
+  console.log('\n');
 
   return collection;
 });
@@ -157,7 +158,7 @@ Notifications = new Meteor.Collection('notifications');
 
 Meteor.publish('notifications', function() {
   // only publish notifications belonging to the current user
-  return Notifications.find({userId:this._id});
+  return Notifications.find({userId:this.userId});
 });
 
 Meteor.startup(function(){

@@ -7,3 +7,4 @@ providers_secret.js
 *.sublime-project
 
 *.sublime-workspace
+codekit-config.json

@@ -1,3 +1,4 @@
+
 var Setting = Model.extend({
 		
 	blankSchema: {
@@ -23,7 +24,7 @@ var Setting = Model.extend({
 		afterSignupText: '',
 		notes: '',
 	},		
-	
+
 	init: function(options) {
 		this._super(Settings, options);
 		

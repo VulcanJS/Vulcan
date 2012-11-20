@@ -1,5 +1,5 @@
 <template name="post_submit">
-  {{#if canPost true}}
+  {{#if canPost "replace"}}
   <div class="grid submit">
     <form class="grid-block form-horizontal">
       {{#constant}}
@@ -25,7 +25,9 @@
           {{/each}}
         </div>
       </div>
+      {{/constant}}
       {{#if isAdmin}}
+        {{#constant}}
         <div class="control-group">
           <label class="control-label">Sticky?</label>
           <div class="controls">
@@ -46,8 +48,22 @@
             </select>
           </div>
         </div>
+        <div class="control-group">
+          <label class="control-label">Status</label>
+          <div class="controls">
+            <label class="radio inline">
+              <input id="status_pending" type="radio" value="1" name="status"/> Pending
+            </label>
+            <label class="radio inline">
+              <input id="status_approved" type="radio" value="2" name="status" checked /> Approved
+            </label>
+            <label class="radio inline">  
+              <input id="status_rejected" type="radio" value="3" name="status"/> Rejected
+            </label>
+          </div>
+        </div>
+        {{/constant}} 
       {{/if}}
-      {{/constant}}
       <div class="form-actions">
         <input type="submit" value="Submit" />
       </div>

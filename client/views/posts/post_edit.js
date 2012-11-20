@@ -17,7 +17,10 @@ Template.post_edit.helpers({
     return $.inArray( this.name, post.categories) != -1;
   },
   submittedDate: function(){
-    return moment(this.submitted).format("MMMM Do, h:mm:ss a");
+    return moment(this.submitted).format("MM/DD/YYYY");
+  },
+  submittedTime: function(){
+    return moment(this.submitted).format("HH:mm");
   },
   users: function(){
     return Meteor.users.find();
@@ -43,11 +46,12 @@ Template.post_edit.helpers({
 Template.post_edit.rendered = function(){
   var post= Posts.findOne(Session.get('selectedPostId'));
   if(post && !this.editor){
+
     this.editor= new EpicEditor(EpicEditorOptions).load();  
     this.editor.importFile('editor',post.body);
-    $('#submitted').datepicker().on('changeDate', function(ev){
-      $('#submitted_hidden').val(moment(ev.date).valueOf());
-    });
+
+    $('#submitted_date').datepicker();
+
   }
 }
 
@@ -65,7 +69,7 @@ Template.post_edit.events = {
     var body = instance.editor.exportFile();
     var categories=[];
     var sticky=!!$('#sticky').attr('checked');
-    var submitted = $('#submitted_hidden').val();
+    var submitted = parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
     var userId = $('#postUser').val();
     var status = parseInt($('input[name=status]:checked').val());
 
@@ -73,9 +77,6 @@ Template.post_edit.events = {
        categories.push($(this).val());
     });
 
-    console.log('categories:', categories);
-    console.log('submitted', submitted);
-    console.log('userId', userId, getDisplayNameById(userId));
     Posts.update(selectedPostId,
     {
         $set: {
@@ -83,7 +84,7 @@ Template.post_edit.events = {
           , url: url
           , body: body
           , categories: categories
-          , submitted: parseInt(submitted)
+          , submitted: submitted
           , sticky: sticky
           , userId: userId
           , status: status

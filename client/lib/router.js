@@ -5,7 +5,7 @@ SimpleRouter = FilteredRouter.extend({
     this.filter(this.require_login, {only: ['submit']});
     this.filter(this.start_request);
     this.filter(this.require_profile);
-    this.filter(this.requirePost, {only: ['post_page']});
+    this.filter(this.requirePost, {only: ['post_page', 'post_edit']});
   },
 
   start_request: function(page){
@@ -51,7 +51,7 @@ SimpleRouter = FilteredRouter.extend({
   // if we are on a page that requires a post, as set in selectedPostId
   requirePost: function(page) {
     if (Posts.findOne(Session.get('selectedPostId'))) {
-      return 'post_page';
+      return page;
     } else if (! Session.get('postReady')) {
       return 'loading';
     } else {
@@ -59,6 +59,10 @@ SimpleRouter = FilteredRouter.extend({
     }
   },
   
+  requireSettings: function() {
+    // TO DO
+  },
+
   // wait for the subscription to be ready, this one is only used manually
   awaitSubscription: function(page, subName) {
     return Session.get(subName) ? page : 'loading';
@@ -84,6 +88,7 @@ SimpleRouter = FilteredRouter.extend({
     'posts/deleted':'post_deleted',
     'posts/:id/edit':'post_edit',
     'posts/:id/comment/:comment_id':'post',
+    'posts/:id/':'post',
     'posts/:id':'post',
     'comments/deleted':'comment_deleted',   
     'comments/:id':'comment',
@@ -130,15 +135,7 @@ SimpleRouter = FilteredRouter.extend({
     var self = this;
     
     if(canView(Meteor.user(), 'replace')) {
-      if(typeof day === 'undefined'){
-        // if day is not defined, just use today
-        // and change the URL to today's date
-        var date = new Date();
-        var mDate = moment(date);
-        this.navigate(getDigestURL(mDate));
-      }else{
-        var date=new Date(year, month-1, day);
-      }
+      var date = (typeof day === 'undefined') ? new Date() : new Date(year, month-1, day);
       
       sessionSetObject('currentDate', date);
       
@@ -147,49 +144,57 @@ SimpleRouter = FilteredRouter.extend({
       });
     } 
   },
-  signup: function() { this.goto('signup'); },
-  signin: function() { this.goto('signin'); },
-  invite: function() { this.goto('no_invite'); },
-  submit: function() { this.goto('post_submit'); },
-  settings: function() { this.goto('settings'); },
-  users: function() { this.goto('users'); },
-  post_deleted: function() { this.goto('post_deleted'); },
-  comment_deleted: function() { this.goto('comment_deleted'); },
-  forgot_password: function() { this.goto('user_password'); },
-  admin: function() { this.goto('admin'); },
-  categories: function() { this.goto('categories'); },
   post: function(id, commentId) {
+    var self = this;
+
     Session.set('selectedPostId', id);
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
-    
-    this.goto('post_page');
-    
+        
     // on post page, we show the comment recursion
     window.repress_recursion=false;
     // reset the new comment time at each new request of the post page
     window.newCommentTimestamp=new Date();
+    self.goto(function() {
+      return self.awaitSubscription('post_page', 'postReady');
+    });
   },
   post_edit: function(id) {
+    var self = this;
+
     Session.set('selectedPostId', id); 
-    this.goto('post_edit'); 
+    self.goto(function() {
+      return self.awaitSubscription('post_edit', 'postReady');
+    });
   },
   comment: function(id) {
+    var self = this;
+
     Session.set('selectedCommentId', id);
     window.repress_recursion=true;
     window.newCommentTimestamp=new Date();
-    this.goto('comment_page');    
+    self.goto(function() {
+      return self.awaitSubscription('comment_page', 'commentReady');
+    });
   },
   comment_reply: function(id) {
+    var self = this;
+
     Session.set('selectedCommentId', id);
     window.repress_recursion=true;
     window.newCommentTimestamp=new Date();
-    this.goto('comment_reply');
+    self.goto(function() {
+      return self.awaitSubscription('comment_reply', 'commentReady');
+    });
   },
   comment_edit: function(id) {
+    var self = this;
+
     Session.set('selectedCommentId', id);
     window.newCommentTimestamp=new Date();
-    this.goto('comment_edit');
+    self.goto(function() {
+      return self.awaitSubscription('comment_edit', 'commentReady');
+    });
   },
   user_profile: function(id){
     if(typeof id !== undefined){
@@ -202,7 +207,18 @@ SimpleRouter = FilteredRouter.extend({
       Session.set('selectedUserId', id);
     }
     this.goto('user_edit');
-  }
+  },
+  signup: function() { this.goto('user_signup'); },
+  signin: function() { this.goto('user_signin'); },
+  invite: function() { this.goto('no_invite'); },
+  submit: function() { this.goto('post_submit'); },
+  settings: function() { this.goto('settings'); },
+  users: function() { this.goto('users'); },
+  post_deleted: function() { this.goto('post_deleted'); },
+  comment_deleted: function() { this.goto('comment_deleted'); },
+  forgot_password: function() { this.goto('user_password'); },
+  admin: function() { this.goto('admin'); },
+  categories: function() { this.goto('categories'); }  
 });
   
 var Router = new SimpleRouter();
