@@ -16,16 +16,19 @@ var StringUtils = {
 
 var Model = Class.extend({
 	
-	init: function(modelClass, options) {
+	init: function(modelClass, data) {
 		this.modelClass = modelClass;
 		this.schema = this.blankSchema;
 		this.formOptions = {};
-		
-		if (options) {
-			this._id = options._id;
+		this.load(data)
+	},
+	
+	load: function(data) {
+		if (data) {
+			this._id = data._id;
 		
 			for (field in this.schema) {
-				if (options[field]) this.schema[field] = options[field];
+				if (data[field]) this.schema[field] = data[field];
 			}
 		}		
 	},
@@ -66,7 +69,7 @@ var Model = Class.extend({
 		if (this.formOptions[field]) this.formOptions[field]['enum'] = options;
 		else this.formOptions[field] = { 'enum': options };		
 	},
-	
+
 	save: function(createHandler, updateHandler) {
 		if (this._id) {
 			this.modelClass.update(this._id, {$set: this.schema}, updateHandler);

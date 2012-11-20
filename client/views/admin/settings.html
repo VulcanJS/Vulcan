@@ -5,13 +5,13 @@
         
           		<h2>Settings</h2>
 
-	          	{{#if no_settings}}
+	          	{{#if noSettings}}
 	            	<p>No settings yet.</p>
 	          	{{/if}}
 	
 	          	{{#if currentUser.isAdmin}}
 					<form id="json-form"></form>
-					{{generate_settings_form setting}}
+					{{generateSettingsForm setting}}
 	          	{{/if}}
 	
       		{{/with}}
