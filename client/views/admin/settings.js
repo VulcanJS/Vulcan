@@ -4,13 +4,9 @@ var settingsForm;
 
 Template.settings.generate_settings_form = function (setting) {
 	Meteor.defer(function() {
-		form().generateFor(setting);
+		settingsForm = new ModelForm();
+		settingsForm.generateFor(setting, '#json-form');
 	})	
-}
-
-function form() {	
-	settingsForm = new ModelForm(Settings, settingsFormOptions());
-	return settingsForm;
 }
 
 Template.settings.events = {
@@ -19,13 +15,14 @@ Template.settings.events = {
 		if(!Meteor.user()) throw 'You must be logged in.';
 
 		settingsForm.submit(
-		function(){
-		   	throwError("Settings have been created");
-		},
-		function(error) {
-			if(error) console.log(error);
-		      	throwError("Settings have been updated");
-		});
+			function(){
+			   	throwError("Settings have been created");
+			},
+			function(error) {
+				if(error) console.log(error);
+			      	throwError("Settings have been updated");
+			}
+		);
 	}
 };
 
