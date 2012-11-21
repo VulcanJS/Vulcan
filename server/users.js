@@ -34,5 +34,9 @@ Meteor.methods({
   },
   numberOfCommentsToday: function(){
     console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
+  },
+  testEmail: function(){
+    console.log('////////////////email test…');
+    Email.send({from: 'info@sachagreif.com', to: 'sacha357@gmail.com', subject: 'mailgun test', text: 'lorem ipsum dolor'});
   }
 });
