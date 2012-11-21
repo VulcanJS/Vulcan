@@ -90,7 +90,7 @@ canView = function(user, returnError){
     }else if(isAdmin(user) || user.isInvited){
       return true;
     }else{
-      throw returnError ? "no_invite" : false;
+      return returnError ? "no_invite" : false;
     }
   }else{
     return true;
@@ -111,7 +111,7 @@ canPost = function(user, returnError){
     if (user.isInvited) {
       return true;
     } else {
-      throw returnError ? "no_invite" : false;
+      return returnError ? "no_invite" : false;
     }
   } else {
     return true;
