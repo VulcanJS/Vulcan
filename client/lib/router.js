@@ -69,7 +69,7 @@
 
   comment_edit = function(id) {
     Session.set('selectedCommentId', id);
-
+    
     // XXX: should use the Session for these
     window.newCommentTimestamp=new Date();
   
@@ -110,7 +110,7 @@
     '/submit':'post_submit',
     '/invite':'no_invite',
     '/posts/deleted':'post_deleted',
-    '/posts/:id/edit':'post_edit',
+    '/posts/:id/edit':post_edit,
     '/posts/:id/comment/:comment_id':post,
     '/posts/:id/':post,
     '/posts/:id':post,
@@ -187,6 +187,25 @@
       // otherwise the error tells us what to show.
       return error;
     },
+    
+    canEdit: function(page) {
+      if (page === 'comment_edit') {
+        var item = Comments.findOne(Session.get('selectedCommentId'));
+      } else {
+        var item = Posts.findOne(Session.get('selectedPostId'));
+      }
+      
+      var error = canEdit(Meteor.user(), item, true);
+      if (error === true)
+        return page;
+      
+      // a problem.. make sure the item has loaded and we have logged in
+      if (! item || Meteor.loggingIn())
+        return 'loading';
+      
+      // otherwise the error tells us what to show.
+      return error;
+    },
   
     awaitSubscription: function(page) {
       return Session.equals(PAGE_SUBS[page], true) ? page : 'loading';
@@ -195,8 +214,8 @@
     // if the user is logged in but their profile isn't filled out enough
     requireProfile: function(page) {
       var user = Meteor.user();
-      // XXX: this is out of date
-      if (user && Meteor.userId() && ! userProfileComplete(user)){
+
+      if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
         Session.set('selectedUserId', user._id);
         return 'user_email';
       } else {
@@ -228,5 +247,6 @@
     only: ['posts_top', 'posts_new', 'posts_digest']
   });
   Meteor.Router.filter('canPost', {only: 'posts_pending'});
+  Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']})
 }());
