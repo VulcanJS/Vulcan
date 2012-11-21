@@ -72,118 +72,70 @@ numberOfItemsInPast24Hours = function(user, collection){
 // Permissions
 
 // user:                Defaults to Meteor.user()
-// action:              If the permission check fails, there are 3 possible outcomes: 
-//                          1. (undefined or null) fail silently
-//                          2. ('replace') fail and replace the page with something else
-//                          3. ('redirect') fail and redirect to another page
-
-canView = function(user, action){
+// returnError:         If there's an error, should we return what the problem is?
+// 
+// return true if all is well, false || an error string if not
+canView = function(user, returnError){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
-  var action=(typeof action === 'undefined') ? null : action;
-  // console.log('canView', 'user:', user, 'action:', action, getSetting('requireViewInvite'));
+  
+  // console.log('canView', 'user:', user, 'returnError:', returnError, getSetting('requireViewInvite'));
+  
+  // XXX: replace with session var
   if(Meteor.isClient && !window.settingsLoaded)
     return false;
-  if(getSetting('requireViewInvite')==true){
-    try{
-      if(!user){
-        throw "no_account";
-      }else if(isAdmin(user) || user.isInvited){
-        return true;
-      }else{
-        throw "no_invite";
-      }
-    }catch(error){
-      if(action){
-        switch(error){
-          case "no_account": 
-            // throwError("Please sign in or create an account first.");
-            action=='replace' ? Router.goto('no_account') : Router.navigate('signin', {trigger : true});
-            break;
-          case "no_invite":
-            // throwError("Sorry, you need to have an invitation to do view the site.");
-            action=='replace' ? Router.goto('no_invite') : Router.navigate('invite', {trigger : true});
-            break;      
-        }
-      }   
-      return false;
+  
+  if(getSetting('requireViewInvite') === true){
+    if(!user){
+      return returnError ? "no_account" : false;
+    }else if(isAdmin(user) || user.isInvited){
+      return true;
+    }else{
+      throw returnError ? "no_invite" : false;
     }
   }else{
     return true;
   }
 }
-canPost = function(user, action){
+canPost = function(user, returnError){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
-  var action=(typeof action === 'undefined') ? null : action;
+
   // console.log('canPost', user, action, getSetting('requirePostInvite'));
   if(Meteor.isClient && !window.settingsLoaded)
     return false;
-  try{
-    if(!user){
-      throw "no_account";
-    }else if(isAdmin(user)){
+  
+  if(!user){
+    return returnError ? "no_account" : false;
+  } else if (isAdmin(user)) {
+    return true;
+  } else if (getSetting('requirePostInvite')) {
+    if (user.isInvited) {
       return true;
-    }else if(getSetting('requirePostInvite')){
-      if(user.isInvited){
-        return true;
-      }else{
-        throw "no_invite";
-      }
-    }else{
-      return true;
+    } else {
+      throw returnError ? "no_invite" : false;
     }
-  }catch(error){
-    if(action){
-      switch(error){
-        case "no_account":
-          throwError("Please sign in or create an account first.");
-          action=='replace' ? Router.goto('user_signin') : Router.navigate('signin', {trigger : true});
-          break;
-        case "no_invite":
-          throwError("Sorry, you need to have an invitation to do this.");
-          action=='replace' ? Router.goto('no_invite') : Router.navigate('invite', {trigger : true});
-          break;      
-      }
-    }   
-    return false;
+  } else {
+    return true;
   }
 }
-canComment = function(user, action){
-  var user=(typeof user === 'undefined') ? Meteor.user() : user;
-  var action=(typeof action === 'undefined') ? null : action;
-  return canPost(user, action);
+canComment = function(user, returnError){
+  return canPost(user, returnError);
 }
-canUpvote = function(user, collection, action){
-  var user=(typeof user === 'undefined') ? Meteor.user() : user;
-  var action=(typeof action === 'undefined') ? null : action;
-  return canPost(user, action);
+canUpvote = function(user, collection, returnError){
+  return canPost(user, returnError);
 }
-canDownvote = function(user, collection, action){
-  var user=(typeof user === 'undefined') ? Meteor.user() : user;
-  var action=(typeof action === 'undefined') ? null : action;
-  return canPost(user, action);
+canDownvote = function(user, collection, returnError){
+  return canPost(user, returnError);
 }
-canEdit = function(user, item, action){
+canEdit = function(user, item, returnError){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
-  var action=(typeof action === 'undefined') ? null : action;
-  try{
-    if (!user || !item){
-      throw "no_rights";
-    } else if (isAdmin(user)) {
-      return true;
-    } else if (user._id!==item.userId) {
-      throw "no_rights";
-    }else{
-      return true;
-    }
-  }catch(error){
-    if(action){
-      switch(error){
-        case "no_rights":
-          throwError("Sorry, you do not have the rights to edit this item.");
-          action=='replace' ? Router.goto('no_rights') : Router.navigate('no_rights', {trigger : true});
-          break;
-      }
-    }
-    return false;
+  
+  if (!user || !item){
+    return returnError ? "no_rights" : false;
+  } else if (isAdmin(user)) {
+    return true;
+  } else if (user._id!==item.userId) {
+    return returnError ? "no_rights" : false;
+  }else {
+    return true;
   }
 }

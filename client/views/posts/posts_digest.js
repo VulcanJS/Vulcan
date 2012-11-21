@@ -6,37 +6,37 @@ Template.posts_digest.helpers({
     return !!digestPosts().length;
   },
   currentDate: function(){
-    return moment(sessionGetObject('currentDate')).format("dddd, MMMM Do YYYY");
+    // return moment(Session.get('currentDate')).format("dddd, MMMM Do YYYY");
   },
   previousDateURL: function(){
-    var currentDate=moment(sessionGetObject('currentDate'));
-    var newDate=currentDate.subtract('days', 1);
-    return getDigestURL(newDate);
+    // var currentDate=moment(Session.get('currentDate'));
+    // var newDate=currentDate.subtract('days', 1);
+    // return getDigestURL(newDate);
   },
   showPreviousDate: function(){
     // TODO
     return true;
   },
   nextDateURL: function(){
-    var currentDate=moment(sessionGetObject('currentDate'));
-    var newDate=currentDate.add('days', 1);
-    return getDigestURL(newDate);
+    // var currentDate=moment(Session.get('currentDate'));
+    // var newDate=currentDate.add('days', 1);
+    // return getDigestURL(newDate);
   },
   showNextDate: function(){
-    var currentDate=moment(sessionGetObject('currentDate')).startOf('day');
-    var today=moment(new Date()).startOf('day');
-    return today.diff(currentDate, 'days') > 0
+    // var currentDate=moment(Session.get('currentDate')).startOf('day');
+    // var today=moment(new Date()).startOf('day');
+    // return today.diff(currentDate, 'days') > 0
   }
 });
 
 Template.posts_digest.created = function(){
-  var currentDate=moment(sessionGetObject('currentDate')).startOf('day');
-  var today=moment(new Date()).startOf('day');
-  $(document).bind('keydown', 'left', function(){
-    Router.navigate(getDigestURL(currentDate.subtract('days', 1)), {trigger: true});    
-  });
-  $(document).bind('keydown', 'right', function(){
-    if(today.diff(currentDate, 'days') > 0)
-      Router.navigate(getDigestURL(currentDate.add('days', 1)), {trigger: true});      
-  });  
+  // var currentDate=moment(Session.get('currentDate')).startOf('day');
+  // var today=moment(new Date()).startOf('day');
+  // $(document).bind('keydown', 'left', function(){
+  //   Meteor.Router.to(getDigestURL(currentDate.subtract('days', 1)));
+  // });
+  // $(document).bind('keydown', 'right', function(){
+  //   if(today.diff(currentDate, 'days') > 0)
+  //     Meteor.Router.to(getDigestURL(currentDate.add('days', 1)));      
+  // });  
 };

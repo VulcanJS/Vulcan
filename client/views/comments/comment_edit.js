@@ -35,7 +35,7 @@ Template.comment_edit.events = {
 
 		trackEvent("edit comment", {'postId': selectedPostId, 'commentId': selectedCommentId});
 
-		Router.navigate("posts/"+selectedPostId+"/comment/"+selectedCommentId, {trigger:true});
+		Meteor.Router.to("/posts/"+selectedPostId+"/comment/"+selectedCommentId);
 	}
 
 	, 'click .delete-link': function(e){
@@ -43,7 +43,7 @@ Template.comment_edit.events = {
 		if(confirm("Are you sure?")){
 			var selectedCommentId=Session.get('selectedCommentId');
 			Meteor.call('removeComment', selectedCommentId);
-			Router.navigate("comments/deleted", {trigger:true});
+			Meteor.Router.to("/comments/deleted");
 		}
 	}
 

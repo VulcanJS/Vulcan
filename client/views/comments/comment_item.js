@@ -50,9 +50,9 @@
         links.each(function(){
           var target=$(this).attr("href");
           $(target).removeClass("comment-queued").addClass("comment-displayed");
-          var openedComments=sessionGetObject('openedComments') || [];
+          var openedComments=Session.get('openedComments') || [];
           openedComments.push(target.substr(1));
-          sessionSetObject('openedComments', openedComments);
+          Session.set('openedComments', openedComments);
         });
         // scrollPageTo(links.first().attr("href"));
         $(this).hide("slow").remove();
@@ -122,7 +122,7 @@ Template.comment_item.rendered=function(){
   if(this.data){
     var comment=this.data;
     var $comment=$("#"+comment._id);
-    var openedComments=sessionGetObject('openedComments') || [];
+    var openedComments=Session.get('openedComments') || [];
 
     if(Meteor.user() && Meteor.user()._id==comment.userId){
       // if user is logged in, and the comment belongs to the user, then never queue it

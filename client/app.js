@@ -1,15 +1,4 @@
 // HELPERS
-
-// Workaround for the fact that you cannot store objects in
-// Session variables. Is used by app.js so needs to come first. 
-
-sessionSetObject=function(name, value){
-  Session.set(name, JSON.stringify(value));
-}
-sessionGetObject=function(name){
-  var data = Session.get(name);
-  return data && JSON.parse(data);
-}
 getSetting = function(setting){
   var settings=Settings.find().fetch()[0];
   if(settings){
@@ -35,9 +24,6 @@ Meteor.subscribe('settings', function(){
   // runs once on site load
 
   window.settingsLoaded=true;
-
-  window.Backbone.history.start({pushState: true});
-
 });
 
 // ** Users **
@@ -141,7 +127,7 @@ Session.set('digestPageLimit', DIGEST_PAGE_PER_PAGE);
 Meteor.autosubscribe(function() {
   Session.set('digestPostsReady', false);
   
-  var mDate = moment(sessionGetObject('currentDate'));
+  var mDate = moment(Session.get('currentDate'));
   // start yesterday, and subscribe to 3 days
   mDate.add('days', -1);
   for (var i = 0; i < 3; i++) {
@@ -155,7 +141,7 @@ Meteor.autosubscribe(function() {
   }
 });
 var digestPosts = function() {
-  var mDate = moment(sessionGetObject('currentDate'))
+  var mDate = moment(Session.get('currentDate'))
   var orderedPosts = Posts.find(digestPageFind(mDate), {sort: DIGEST_PAGE_SORT});
   return limitDocuments(orderedPosts, Session.get('digestPageLimit'));
 }
