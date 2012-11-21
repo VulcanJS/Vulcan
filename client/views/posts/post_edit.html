@@ -1,77 +1,75 @@
 <template name="post_edit">
-  {{#if canEdit "Posts" "replace"}}
-    <div class="grid submit">
-      {{#constant}}{{#with post}}
-        <form class="grid-block form-horizontal">
-          <div class="control-group">
-            <label class="control-label">Title</label>
-            <div class="controls"><input id="title" type="text" value="{{headline}}" /></div>
+  <div class="grid submit">
+    {{#constant}}{{#with post}}
+      <form class="grid-block form-horizontal">
+        <div class="control-group">
+          <label class="control-label">Title</label>
+          <div class="controls"><input id="title" type="text" value="{{headline}}" /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">URL</label>
+          <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Body</label>
+          <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Category</label>
+          <div class="controls">
+            {{#each categories}}
+            <label class="radio inline">
+              <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{#if isChecked }} checked {{/if}}/> {{name}}
+            </label>
+            {{/each}}
           </div>
+        </div>
+        {{#if isAdmin}}
           <div class="control-group">
-            <label class="control-label">URL</label>
-            <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">Body</label>
-            <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">Category</label>
+            <label class="control-label">Sticky?</label>
             <div class="controls">
-              {{#each categories}}
+              <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Date</label>
+            <div class="controls"><input id="submitted_date" type="text" value="{{submittedDate}}" /></div>
+            <input id="submitted_hidden" type="hidden" value="{{submitted}}" />
+          </div>
+          <div class="control-group">
+            <label class="control-label">Time</label>
+            <div class="controls"><input id="submitted_time" type="text" value="{{submittedTime}}" /></div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">User</label>
+            <div class="controls">
+              <select id="postUser">
+                {{#each users}}
+                <option {{#if isSelected}}selected{{/if}} value="{{_id}}">{{userName}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Status</label>
+            <div class="controls">
               <label class="radio inline">
-                <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{#if isChecked }} checked {{/if}}/> {{name}}
+                <input id="status_pending" type="radio" value="1" name="status" {{#if statusPending }} checked {{/if}}/> Pending
               </label>
-              {{/each}}
+              <label class="radio inline">
+                <input id="status_approved" type="radio" value="2" name="status" {{#if statusApproved  }} checked {{/if}}/> Approved
+              </label>
+              <label class="radio inline">  
+                <input id="status_rejected" type="radio" value="3" name="status" {{#if statusRejected  }} checked {{/if}}/> Rejected
+              </label>
             </div>
           </div>
-          {{#if isAdmin}}
-            <div class="control-group">
-              <label class="control-label">Sticky?</label>
-              <div class="controls">
-                <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Date</label>
-              <div class="controls"><input id="submitted_date" type="text" value="{{submittedDate}}" /></div>
-              <input id="submitted_hidden" type="hidden" value="{{submitted}}" />
-            </div>
-            <div class="control-group">
-              <label class="control-label">Time</label>
-              <div class="controls"><input id="submitted_time" type="text" value="{{submittedTime}}" /></div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">User</label>
-              <div class="controls">
-                <select id="postUser">
-                  {{#each users}}
-                  <option {{#if isSelected}}selected{{/if}} value="{{_id}}">{{userName}}</option>
-                  {{/each}}
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Status</label>
-              <div class="controls">
-                <label class="radio inline">
-                  <input id="status_pending" type="radio" value="1" name="status" {{#if statusPending }} checked {{/if}}/> Pending
-                </label>
-                <label class="radio inline">
-                  <input id="status_approved" type="radio" value="2" name="status" {{#if statusApproved  }} checked {{/if}}/> Approved
-                </label>
-                <label class="radio inline">  
-                  <input id="status_rejected" type="radio" value="3" name="status" {{#if statusRejected  }} checked {{/if}}/> Rejected
-                </label>
-              </div>
-            </div>
-          {{/if}}
-          <div class="form-actions">
-            <a class="delete-link" href="/posts/deleted">Delete Post</a>
-            <input type="submit" value="Submit" />
-          </div>
-        </form>
-      {{/with}}{{/constant}}
-    </div>
-  {{/if}}
+        {{/if}}
+        <div class="form-actions">
+          <a class="delete-link" href="/posts/deleted">Delete Post</a>
+          <input type="submit" value="Submit" />
+        </div>
+      </form>
+    {{/with}}{{/constant}}
+  </div>
 </template>

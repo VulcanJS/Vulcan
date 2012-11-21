@@ -69,7 +69,7 @@
 
   comment_edit = function(id) {
     Session.set('selectedCommentId', id);
-
+    
     // XXX: should use the Session for these
     window.newCommentTimestamp=new Date();
   
@@ -187,6 +187,25 @@
       // otherwise the error tells us what to show.
       return error;
     },
+    
+    canEdit: function(page) {
+      if (page === 'comment_edit') {
+        var item = Comments.findOne(Session.get('selectedCommentId'));
+      } else {
+        var item = Posts.findOne(Session.get('selectedPostId'));
+      }
+      
+      var error = canEdit(Meteor.user(), item, true);
+      if (error === true)
+        return page;
+      
+      // a problem.. make sure the item has loaded and we have logged in
+      if (! item || Meteor.loggingIn())
+        return 'loading';
+      
+      // otherwise the error tells us what to show.
+      return error;
+    },
   
     awaitSubscription: function(page) {
       return Session.equals(PAGE_SUBS[page], true) ? page : 'loading';
@@ -227,5 +246,6 @@
     only: ['posts_top', 'posts_new', 'posts_digest']
   });
   Meteor.Router.filter('canPost', {only: 'posts_pending'});
+  Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']})
 }());
