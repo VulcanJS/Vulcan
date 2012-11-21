@@ -6,7 +6,6 @@ Template.comment_page.post = function(){
 Template.comment_page.helpers({
 	comment: function(){
 		var comment = Comments.findOne(Session.get('selectedCommentId'));
-		Template.comment_page.repress_recursion = true;
 		return comment;
 	}
 });

@@ -23,7 +23,7 @@ Meteor.subscribe('settings', function(){
 
   // runs once on site load
 
-  window.settingsLoaded=true;
+  Session.set('settingsLoaded',true);
 });
 
 // ** Users **

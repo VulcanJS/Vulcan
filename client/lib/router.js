@@ -34,10 +34,10 @@
       Session.set('scrollToCommentId', commentId); 
   
     // XXX: should use the Session for these
-    // on post page, we show the comment recursion
-    window.repress_recursion=false;
+    // on post page, we show the comment tree
+    Session.set('showChildComments',true);
     // reset the new comment time at each new request of the post page
-    window.newCommentTimestamp=new Date();
+    Session.set('newCommentTimestamp',new Date());
   
     return 'post_page';
   };
@@ -50,9 +50,7 @@
   comment = function(id) {
     Session.set('selectedCommentId', id);
   
-    // XXX: should use the Session for these
-    window.repress_recursion=true;
-    window.newCommentTimestamp=new Date();
+    Session.set('newCommentTimestamp',new Date());
   
     return 'comment_page';
   };
@@ -60,18 +58,15 @@
   comment_reply = function(id) {
     Session.set('selectedCommentId', id);
 
-    // XXX: should use the Session for these
-    window.repress_recursion=true;
-    window.newCommentTimestamp=new Date();
+    Session.set('newCommentTimestamp',new Date());
   
     return 'comment_reply';
   };
 
   comment_edit = function(id) {
     Session.set('selectedCommentId', id);
-
-    // XXX: should use the Session for these
-    window.newCommentTimestamp=new Date();
+    
+    Session.set('newCommentTimestamp',new Date());
   
     return 'comment_edit';
   };
@@ -110,7 +105,7 @@
     '/submit':'post_submit',
     '/invite':'no_invite',
     '/posts/deleted':'post_deleted',
-    '/posts/:id/edit':'post_edit',
+    '/posts/:id/edit':post_edit,
     '/posts/:id/comment/:comment_id':post,
     '/posts/:id/':post,
     '/posts/:id':post,
@@ -133,7 +128,7 @@
   Meteor.Router.filters({
     startRequest: function(page){
       // runs at every new page change
-
+      console.log('------ Request start --------');
       // openedComments is an Array that tracks which comments
       // have been expanded by the user, to make sure they stay expanded
       Session.set("openedComments", null);
@@ -187,6 +182,25 @@
       // otherwise the error tells us what to show.
       return error;
     },
+    
+    canEdit: function(page) {
+      if (page === 'comment_edit') {
+        var item = Comments.findOne(Session.get('selectedCommentId'));
+      } else {
+        var item = Posts.findOne(Session.get('selectedPostId'));
+      }
+      
+      var error = canEdit(Meteor.user(), item, true);
+      if (error === true)
+        return page;
+      
+      // a problem.. make sure the item has loaded and we have logged in
+      if (! item || Meteor.loggingIn())
+        return 'loading';
+      
+      // otherwise the error tells us what to show.
+      return error;
+    },
   
     awaitSubscription: function(page) {
       return Session.equals(PAGE_SUBS[page], true) ? page : 'loading';
@@ -195,8 +209,8 @@
     // if the user is logged in but their profile isn't filled out enough
     requireProfile: function(page) {
       var user = Meteor.user();
-      // XXX: this is out of date
-      if (user && Meteor.userLoaded() && ! userProfileComplete(user)){
+
+      if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
         Session.set('selectedUserId', user._id);
         return 'user_email';
       } else {
@@ -227,6 +241,7 @@
   Meteor.Router.filter('canView', {
     only: ['posts_top', 'posts_new', 'posts_digest']
   });
-  Meteor.Router.filter('canPost', {only: 'posts_pending'});
+  Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
+  Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']})
 }());
