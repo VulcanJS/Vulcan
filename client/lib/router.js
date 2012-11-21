@@ -110,7 +110,7 @@
     '/submit':'post_submit',
     '/invite':'no_invite',
     '/posts/deleted':'post_deleted',
-    '/posts/:id/edit':'post_edit',
+    '/posts/:id/edit':post_edit,
     '/posts/:id/comment/:comment_id':post,
     '/posts/:id/':post,
     '/posts/:id':post,
@@ -195,8 +195,7 @@
     // if the user is logged in but their profile isn't filled out enough
     requireProfile: function(page) {
       var user = Meteor.user();
-      // XXX: this is out of date
-      if (user && Meteor.userLoaded() && ! userProfileComplete(user)){
+      if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
         Session.set('selectedUserId', user._id);
         return 'user_email';
       } else {
