@@ -126,27 +126,6 @@
 
 
   Meteor.Router.filters({
-    startRequest: function(page){
-      // runs at every new page change
-      console.log('------ Request start --------');
-      // openedComments is an Array that tracks which comments
-      // have been expanded by the user, to make sure they stay expanded
-      Session.set("openedComments", null);
-      
-      // currentScroll stores the position of the user in the page
-      Session.set('currentScroll', null);
-      
-      document.title = getSetting("title");
-      
-      // set all errors who have already been seen to not show anymore
-      clearSeenErrors();
-          
-      // log this request with mixpanel, etc
-      instrumentRequest();
-    
-      return page;
-    },
-
     requireLogin: function(page) {
       if (Meteor.loggingIn()) {
         return 'loading';
@@ -234,7 +213,6 @@
     }
   });
   // 
-  Meteor.Router.filter('startRequest'); // all
   Meteor.Router.filter('requireProfile');
   Meteor.Router.filter('awaitSubscription', {
     only: ['posts_top', 'posts_new', 'posts_pending', 'posts_digest']
@@ -249,4 +227,27 @@
   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']});
   Meteor.Router.filter('isAdmin', {only: ['posts_pending', 'users', 'settings', 'categories', 'admin']});
+  
+  Meteor.startup(function() {
+    Meteor.autorun(function() {
+      // grab the current page from the router, so this re-runs every time it changes
+      Meteor.Router.page();
+      console.log('------ Request start --------');
+    
+      // openedComments is an Array that tracks which comments
+      // have been expanded by the user, to make sure they stay expanded
+      Session.set("openedComments", null);
+      
+      // currentScroll stores the position of the user in the page
+      Session.set('currentScroll', null);
+      
+      document.title = getSetting("title");
+      
+      // set all errors who have already been seen to not show anymore
+      clearSeenErrors();
+          
+      // log this request with mixpanel, etc
+      instrumentRequest();    
+    });    
+  });
 }());
