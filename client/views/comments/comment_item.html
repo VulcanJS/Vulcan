@@ -31,7 +31,7 @@
           <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">Reply</a>
         </div>
       </div>
-      {{#unless repress_recursion}}
+      {{#if showChildComments}}
       <ul class="comment-children comment-list">
       {{#each child_comments}}
         {{#with this}}
@@ -39,7 +39,7 @@
         {{/with}}
       {{/each}}
       </ul>
-      {{/unless}}
+      {{/if}}
     </div>
   </li>
 </template>

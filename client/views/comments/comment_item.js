@@ -99,8 +99,8 @@
         return html_body.autoLink();
       }
     }
-    ,repress_recursion: function(){
-      return window.repress_recursion;
+    ,showChildComments: function(){
+      return Session.get('showChildComments');
     }
     ,ago: function(){
       return moment(this.submitted).fromNow();

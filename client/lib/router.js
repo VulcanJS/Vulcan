@@ -35,9 +35,9 @@
   
     // XXX: should use the Session for these
     // on post page, we show the comment recursion
-    window.repress_recursion=false;
+    Session.set('showChildComments',true);
     // reset the new comment time at each new request of the post page
-    window.newCommentTimestamp=new Date();
+    Session.set('newCommentTimestamp',new Date());
   
     return 'post_page';
   };
@@ -51,8 +51,8 @@
     Session.set('selectedCommentId', id);
   
     // XXX: should use the Session for these
-    window.repress_recursion=true;
-    window.newCommentTimestamp=new Date();
+    Session.set('showChildComments',false);
+    Session.set('newCommentTimestamp',new Date());
   
     return 'comment_page';
   };
@@ -61,8 +61,8 @@
     Session.set('selectedCommentId', id);
 
     // XXX: should use the Session for these
-    window.repress_recursion=true;
-    window.newCommentTimestamp=new Date();
+    Session.set('showChildComments', false);
+    Session.set('newCommentTimestamp',new Date());
   
     return 'comment_reply';
   };
@@ -71,7 +71,7 @@
     Session.set('selectedCommentId', id);
     
     // XXX: should use the Session for these
-    window.newCommentTimestamp=new Date();
+    Session.set('newCommentTimestamp',new Date());
   
     return 'comment_edit';
   };
