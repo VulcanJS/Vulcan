@@ -4,6 +4,10 @@ Template.post_item.preserve({
 
 
 Template.post_item.helpers({
+  currentPost: function(){
+    console.log(this);
+    return this;
+  },
   rank: function() {
     return this._rank + 1;
   },
@@ -19,10 +23,7 @@ Template.post_item.helpers({
     return "http://"+document.domain;
   },
   can_edit: function(){
-    if(Meteor.user() && (Meteor.user().isAdmin || Meteor.userId() === this.userId))
-      return true;
-    else
-      return false;
+    return canEdit(Meteor.user(), this);
   },
   authorName: function(){
     return getAuthorName(this);

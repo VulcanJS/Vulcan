@@ -10,8 +10,7 @@ canView = function(user, returnError){
   
   // console.log('canView', 'user:', user, 'returnError:', returnError, getSetting('requireViewInvite'));
   
-  // XXX: replace with session var
-  if(Meteor.isClient && !window.settingsLoaded)
+  if(Meteor.isClient && !Session.get('settingsLoaded'))
     return false;
   
   if(getSetting('requireViewInvite') === true){
@@ -30,7 +29,7 @@ canPost = function(user, returnError){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
 
   // console.log('canPost', user, action, getSetting('requirePostInvite'));
-  if(Meteor.isClient && !window.settingsLoaded)
+  if(Meteor.isClient && !Session.get('settingsLoaded'))
     return false;
   
   if(!user){
