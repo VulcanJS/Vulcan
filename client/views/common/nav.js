@@ -14,7 +14,7 @@ Template.nav.events = {
   
   , 'click .login-header': function(e){
       e.preventDefault();
-      Router.navigate('account', {trigger:true});
+      Meteor.Router.to('/account');
   }
 };
 

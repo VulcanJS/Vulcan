@@ -14,7 +14,7 @@ Template.comment_form.events = {
     clearSeenErrors();
 	var content = instance.editor.exportFile();
 
-    if(Router.current_page()=='comment_reply'){
+    if(Meteor.Router.page()=='comment_reply'){
         // child comment
         var parentCommentId=Session.get('selectedCommentId');
         var postId=Comments.findOne(parentCommentId).post;
@@ -28,7 +28,7 @@ Template.comment_form.events = {
                 trackEvent("newComment", commentProperties);
 
                 Session.set('scrollToCommentId', commentProperties.commentId);
-                Router.navigate('posts/'+postId, {trigger:true});
+                Meteor.Router.to('/posts/'+postId);
             }
         });
     }else{

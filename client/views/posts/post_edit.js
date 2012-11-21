@@ -95,7 +95,7 @@ Template.post_edit.events = {
         throwError(error.reason);
       }else{
         trackEvent("edit post", {'postId': selectedPostId});
-        Router.navigate("posts/"+selectedPostId, {trigger:true});
+        Meteor.Router.to("/posts/"+selectedPostId);
       }
     }
     );
@@ -106,7 +106,7 @@ Template.post_edit.events = {
     if(confirm("Are you sure?")){
       var selectedPostId=Session.get('selectedPostId');
       Posts.remove(selectedPostId);
-      Router.navigate("posts/deleted", {trigger:true});
+      Meteor.Router.to("posts/deleted");
     }
   }
 };

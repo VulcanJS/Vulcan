@@ -9,19 +9,19 @@ Template.user_signin.events = {
           throwError(err.reason);
         }else{
           // Session.set('state', Session.get('previous_state'));
-          Router.navigate('', {trigger: true});
+          Meteor.Router.navigate('/');
         } 
       });
   },
 
   'click #signup': function(){
       // Session.set('state', 'signup');
-      Router.navigate('signup', {trigger: true});
+      Meteor.Router.to('/signup');
   },
 
   'click .twitter-button': function(){
     Meteor.loginWithTwitter(function(){
-      Router.navigate('/', {trigger: true});
+      Meteor.Router.to('/');
     });
   }
 };

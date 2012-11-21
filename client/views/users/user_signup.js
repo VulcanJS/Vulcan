@@ -14,19 +14,19 @@ Template.user_signup.events = {
           alert(err);
         }else{
           // Session.set('state', Session.get('previous_state'));
-          Router.navigate('', {trigger: true});
+          Meteor.Router.navigate('/');
         }  
       });
   },
 
   'click #signin': function(){
       // Session.set('state', 'signin');
-      Router.navigate('signin', {trigger: true});
+      Meteor.Router.to('/signin');
   },
 
   'click .twitter-button': function(){
     Meteor.loginWithTwitter(function(){
-      Router.navigate('/', {trigger: true});
+      Meteor.Router.to('/');
     });
   }
 };
