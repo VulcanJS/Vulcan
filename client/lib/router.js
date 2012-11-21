@@ -196,7 +196,7 @@
     requireProfile: function(page) {
       var user = Meteor.user();
       // XXX: this is out of date
-      if (user && Meteor.userLoaded() && ! userProfileComplete(user)){
+      if (user && Meteor.userId() && ! userProfileComplete(user)){
         Session.set('selectedUserId', user._id);
         return 'user_email';
       } else {
