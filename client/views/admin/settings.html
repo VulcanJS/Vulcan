@@ -1,20 +1,18 @@
 <template name="settings">
-	{{#if isAdmin true}}
-		<div class="grid-small grid-block dialog settings">
-      		{{#with setting}}
-        
-          		<h2>Settings</h2>
+  <div class="grid-small grid-block dialog settings">
+    {{#with setting}}
 
-	          	{{#if noSettings}}
-	            	<p>No settings yet.</p>
-	          	{{/if}}
-	
-	          	{{#if currentUser.isAdmin}}
-					<form id="json-form"></form>
-					{{generateSettingsForm setting}}
-	          	{{/if}}
-	
-      		{{/with}}
-    	</div>
-	{{/if}}
+      <h2>Settings</h2>
+
+      {{#if noSettings}}
+      <p>No settings yet.</p>
+      {{/if}}
+
+      {{#if currentUser.isAdmin}}
+        <form id="json-form"></form>
+        {{generateSettingsForm setting}}
+      {{/if}}
+
+    {{/with}}
+  </div>
 </template>

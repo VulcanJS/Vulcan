@@ -202,6 +202,10 @@
       return error;
     },
   
+    isAdmin: function(page) {
+      return isAdmin(Meteor.user()) ? page : "no_rights";
+    },
+
     awaitSubscription: function(page) {
       return Session.equals(PAGE_SUBS[page], true) ? page : 'loading';
     },
@@ -243,5 +247,6 @@
   });
   Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
-  Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']})
+  Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']});
+  Meteor.Router.filter('isAdmin', {only: ['posts_pending', 'users', 'settings', 'categories', 'admin']});
 }());
