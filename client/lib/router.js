@@ -50,7 +50,6 @@
   comment = function(id) {
     Session.set('selectedCommentId', id);
   
-    // XXX: should use the Session for these
     Session.set('newCommentTimestamp',new Date());
   
     return 'comment_page';
@@ -59,7 +58,6 @@
   comment_reply = function(id) {
     Session.set('selectedCommentId', id);
 
-    // XXX: should use the Session for these
     Session.set('newCommentTimestamp',new Date());
   
     return 'comment_reply';
@@ -68,7 +66,6 @@
   comment_edit = function(id) {
     Session.set('selectedCommentId', id);
     
-    // XXX: should use the Session for these
     Session.set('newCommentTimestamp',new Date());
   
     return 'comment_edit';
@@ -131,7 +128,7 @@
   Meteor.Router.filters({
     startRequest: function(page){
       // runs at every new page change
-
+      console.log('------ Request start --------');
       // openedComments is an Array that tracks which comments
       // have been expanded by the user, to make sure they stay expanded
       Session.set("openedComments", null);
@@ -244,7 +241,7 @@
   Meteor.Router.filter('canView', {
     only: ['posts_top', 'posts_new', 'posts_digest']
   });
-  Meteor.Router.filter('canPost', {only: 'posts_pending'});
+  Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']})
 }());

@@ -20,7 +20,7 @@ var updateScore = function (collection, id) {
 };
 
 Meteor.startup(function () {
-  var scoreInterval = getSetting("scoreInterval") || 30;
+  var scoreInterval = getSetting("scoreUpdateInterval") || 30;
   // recalculate scores every N seconds
   if(scoreInterval>0){
     intervalId=Meteor.setInterval(function () {

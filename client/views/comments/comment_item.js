@@ -2,8 +2,8 @@
 
   commentIsNew=function(comment){
     var d=new Date(comment.submitted);
-    var commentIsNew=d > Session.get('newCommentTimestamp');
-    // console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+Session.get('newCommentTimestamp')+" | isNew: "+commentIsNew);
+    var commentIsNew=d > new Date(Session.get('newCommentTimestamp'));
+    // console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+new Date(Session.get('newCommentTimestamp'))+" | isNew: "+commentIsNew);
     return commentIsNew;
   };
 
@@ -53,6 +53,7 @@
           var openedComments=Session.get('openedComments') || [];
           openedComments.push(target.substr(1));
           Session.set('openedComments', openedComments);
+          // console.log(Session.get('openedComments'));
         });
         // scrollPageTo(links.first().attr("href"));
         $(this).hide("slow").remove();
