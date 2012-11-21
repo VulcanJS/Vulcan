@@ -2,8 +2,8 @@
 
   commentIsNew=function(comment){
     var d=new Date(comment.submitted);
-    var commentIsNew=d > window.newCommentTimestamp;
-    // console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+window.newCommentTimestamp+" | isNew: "+commentIsNew);
+    var commentIsNew=d > Session.get('newCommentTimestamp');
+    // console.log("body: "+comment.body+" | comment submission date: "+d+" |  newCommentTimestamp: "+Session.get('newCommentTimestamp')+" | isNew: "+commentIsNew);
     return commentIsNew;
   };
 

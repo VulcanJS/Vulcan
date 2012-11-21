@@ -23,5 +23,3 @@ Template.post_page.rendered = function(){
 		this.rendered=true;
 	}
 }
-
-window.newCommentTimestamp=new Date();

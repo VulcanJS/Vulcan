@@ -34,7 +34,7 @@
       Session.set('scrollToCommentId', commentId); 
   
     // XXX: should use the Session for these
-    // on post page, we show the comment recursion
+    // on post page, we show the comment tree
     Session.set('showChildComments',true);
     // reset the new comment time at each new request of the post page
     Session.set('newCommentTimestamp',new Date());
@@ -51,7 +51,6 @@
     Session.set('selectedCommentId', id);
   
     // XXX: should use the Session for these
-    Session.set('showChildComments',false);
     Session.set('newCommentTimestamp',new Date());
   
     return 'comment_page';
@@ -61,7 +60,6 @@
     Session.set('selectedCommentId', id);
 
     // XXX: should use the Session for these
-    Session.set('showChildComments', false);
     Session.set('newCommentTimestamp',new Date());
   
     return 'comment_reply';
