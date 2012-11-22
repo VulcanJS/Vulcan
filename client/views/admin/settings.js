@@ -3,7 +3,7 @@ var settingsForm;
 Template.settings.helpers({
 	generateSettingsForm: function (setting) {
 		Meteor.defer(function() {
-			settingsForm = new ModelForm();
+			settingsForm = new DatabaseForm();
 			settingsForm.generateFor(setting, '#json-form');
 		})	
 	},

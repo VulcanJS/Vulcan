@@ -1,4 +1,4 @@
-var ModelForm = Class.extend({
+var DatabaseForm = Class.extend({
 	
 	generateFor: function (model, formSelector) {
 		this.model = model;

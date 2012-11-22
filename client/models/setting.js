@@ -1,5 +1,5 @@
 
-var Setting = Model.extend({
+var Setting = FormModel.extend({
 		
 	blankSchema: {
 		requireViewInvite: false,

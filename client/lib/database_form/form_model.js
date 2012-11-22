@@ -14,7 +14,7 @@ var StringUtils = {
 	}
 }
 
-var Model = Class.extend({
+var FormModel = Class.extend({
 	
 	init: function(modelClass, data) {
 		this.modelClass = modelClass;
