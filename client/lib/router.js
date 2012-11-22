@@ -36,9 +36,7 @@
     // XXX: should use the Session for these
     // on post page, we show the comment tree
     Session.set('showChildComments',true);
-    // reset the new comment time at each new request of the post page
-    Session.set('newCommentTimestamp',new Date());
-  
+
     return 'post_page';
   };
 
@@ -49,25 +47,16 @@
 
   comment = function(id) {
     Session.set('selectedCommentId', id);
-  
-    Session.set('newCommentTimestamp',new Date());
-  
     return 'comment_page';
   };
 
   comment_reply = function(id) {
     Session.set('selectedCommentId', id);
-
-    Session.set('newCommentTimestamp',new Date());
-  
     return 'comment_reply';
   };
 
   comment_edit = function(id) {
-    Session.set('selectedCommentId', id);
-    
-    Session.set('newCommentTimestamp',new Date());
-  
+    Session.set('selectedCommentId', id);  
     return 'comment_edit';
   };
 
@@ -232,12 +221,13 @@
     Meteor.autorun(function() {
       // grab the current page from the router, so this re-runs every time it changes
       Meteor.Router.page();
-      console.log('------ Request start --------');
+      // console.log('------ Request start --------');
     
       // openedComments is an Array that tracks which comments
       // have been expanded by the user, to make sure they stay expanded
       Session.set("openedComments", null);
-      
+      Session.set('requestTimestamp',new Date());
+
       // currentScroll stores the position of the user in the page
       Session.set('currentScroll', null);
       
