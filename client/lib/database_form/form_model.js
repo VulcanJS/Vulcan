@@ -45,7 +45,7 @@ var FormModel = Class.extend({
 		this.load(data)
 	},
 	
-	// If data has been provided in the constructor, load it into the current class
+	// If data has been provided in the constructor, load it into the current object
 	load: function(data) {
 		if (data) {
 			this._id = data._id;
@@ -107,7 +107,13 @@ var FormModel = Class.extend({
 		else this.formOptions[field] = { 'enum': options };		
 	},
 
-	// If the record was originally loaded from the database, update it. Otherwise, create a new record with the appropriate data.
+	/*
+	If the record was originally loaded from the database, update it. 
+	Otherwise, create a new record with the appropriate data.
+	
+	createHandler, updateHandler: Functions to run after the database operations completes (such as displaying a message confirming things were saved properly). 
+	These usually come from a DatabaseForm, which in turn gets them from a template helper.
+	*/
 	save: function(createHandler, updateHandler) {
 		if (this._id) {
 			this.collection.update(this._id, {$set: this.schema}, updateHandler);
