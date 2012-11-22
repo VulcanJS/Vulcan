@@ -3,7 +3,7 @@ var StringUtils = {
 	
 	/* 
 	Assumes that the argument is a camel-case string.
-	It places spaces between each word and capitalize the first letter. So, a string like "camelCase" becomes "Camel Case".
+	It places spaces between each word and capitalizes the first letter. So, a string like "camelCase" becomes "Camel Case".
 	*/
 	humanize: function(string) {
 		return this.capitalize(this.convertCamelToSpaces(string));
@@ -35,6 +35,7 @@ var FormModel = Class.extend({
 		/*
 		blankSchema is an object that each extending class must provide. 
 		It contains all the fields to be saved to the database and their default values.
+		The schema field holds the data to be saved to the database.
 		*/
 		this.schema = this.blankSchema;		
 		
