@@ -13,6 +13,7 @@ Template.posts_top.rendered = function(){
     $('.post').each(function(){
       distanceFromTop += $(this).height();
     });
+    $('body').css('min-height',distanceFromTop+160);
     $('.more-button').css('top', distanceFromTop+"px");  
 }
 
