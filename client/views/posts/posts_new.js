@@ -1,10 +1,10 @@
 Template.posts_new.posts = function() {
-  return newPosts();
+  return postsForSub.newPosts();
 };
 
 Template.posts_new.helpers({
   allPostsLoaded: function(){
-    return newPosts().length < Session.get('newPageLimit');
+    return postsForSub.newPosts().length < Session.get('newPostsLimit');
   }
 });
 
@@ -21,6 +21,6 @@ Template.posts_new.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
-    Session.set('newPageLimit', Session.get('newPageLimit') + NEW_PAGE_PER_PAGE)
+    Session.set('newPostsLimit', Session.get('newPostsLimit') + NEW_PAGE_PER_PAGE)
   }
 });

@@ -1,9 +1,9 @@
 Template.posts_digest.helpers({
   posts: function(){
-    return digestPosts();
+    return postsForSub.digestPosts();
   },
   hasPosts: function(){
-    return !!digestPosts().length;
+    return !!postsForSub.digestPosts().length;
   },
   currentDate: function(){
     return moment(Session.get('currentDate')).format("dddd, MMMM Do YYYY");

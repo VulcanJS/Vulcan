@@ -1,10 +1,10 @@
 Template.posts_pending.posts = function() {
-  return pendingPosts();
+  return postsForSub.pendingPosts();
 };
 
 Template.posts_pending.helpers({
   allPostsLoaded: function(){
-    return pendingPosts().length < Session.get('newPageLimit');
+    return postsForSub.pendingPosts().length < Session.get('pendingPostsLimit');
   }
 });
 
@@ -20,6 +20,6 @@ Template.posts_pending.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
-    Session.set('newPageLimit', Session.get('newPageLimit') + NEW_PAGE_PER_PAGE)
+    Session.set('pendingPostsLimit', Session.get('pendingPostsLimit') + NEW_PAGE_PER_PAGE)
   }
 });

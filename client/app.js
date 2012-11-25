@@ -54,104 +54,90 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 FIND_APPROVED={$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]};
-
-// TOP page
 TOP_PAGE_PER_PAGE = 10;
-TOP_PAGE_SORT = {score: -1};
-Session.set('topPageLimit', TOP_PAGE_PER_PAGE);
-Meteor.autosubscribe(function() {
-  Session.set('topPostsReady', false);
-  Meteor.subscribe('posts', FIND_APPROVED, {
-    sort: TOP_PAGE_SORT, 
-    limit: Session.get('topPageLimit')
-  }, function() {
-    Session.set('topPostsReady', true);
-  });
-});
-var topPosts = function() {
-  var orderedPosts = Posts.find(FIND_APPROVED, {sort: TOP_PAGE_SORT});
-  return limitDocuments(orderedPosts, Session.get('topPageLimit'));
-}
-
-// NEW page
 NEW_PAGE_PER_PAGE = 10;
-NEW_PAGE_SORT = {submitted: -1};
-Session.set('newPageLimit', NEW_PAGE_PER_PAGE);
-Meteor.autosubscribe(function() {
-  Session.set('newPostsReady', false);
-  // note: should use FIND_APPROVED, but this is a temporary workaround because of bug
-  Meteor.subscribe('posts', {userId:{$exists: true},$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]}, {
-    sort: NEW_PAGE_SORT, 
-    limit: Session.get('newPageLimit')
-  }, function() {
-    Session.set('newPostsReady', true);
-  });
-});
-var newPosts = function() {
-  var orderedPosts = Posts.find(FIND_APPROVED, {sort: NEW_PAGE_SORT});
-  return limitDocuments(orderedPosts, Session.get('newPageLimit'));
-}
-
-PENDING_FIND = {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]};
-// PENDING_FIND = {};
-// PENDING page
-Meteor.autosubscribe(function() {
-  Session.set('pendingPostsReady', false);
-  Meteor.subscribe('posts', PENDING_FIND, {
-    sort: NEW_PAGE_SORT, 
-    limit: Session.get('newPageLimit')
-  }, function() {
-    Session.set('pendingPostsReady', true);
-  });
-});
-var pendingPosts = function() {
-  var orderedPosts = Posts.find( PENDING_FIND, {sort: NEW_PAGE_SORT});
-  return limitDocuments(orderedPosts, Session.get('newPageLimit'));
-}
-
-// DIGEST page
+PENDING_PAGE_PER_PAGE = 10;
 DIGEST_PAGE_PER_PAGE = 5;
-DIGEST_PAGE_SORT = {score: -1};
-var digestPageFind = function(mDate) {
-  var find = {
-    submitted: {
-      $gte: mDate.startOf('day').valueOf(), 
-      $lt: mDate.endOf('day').valueOf()
+
+// name <- the name of various session vars that will be set:
+//  - 'nameReady' <- is the subscription loading or ready?
+//  - 'nameLimit' <- how many of this type are we currently displaying?
+// options:
+//   - find <- how to find the items
+//   - sort <- how to sort them
+//   - perPage <- how many to display per-page
+//   - 
+postsForSub = {};
+setupPostSubscription = function(name, options) {
+  var readyName = name + 'Ready';
+  var limitName = name + 'Limit';
+  
+  if (options.perPage && ! Session.get(limitName))
+    Session.set(limitName, options.perPage);
+  
+  // setup the subscription
+  Meteor.autosubscribe(function() {
+    Session.set(readyName, false);
+
+    var findOptions = {
+      sort: options.sort,
+      limit: options.perPage && Session.get(limitName) 
+    };
+    
+    var find = _.isFunction(options.find) ? options.find() : options.find;
+    Meteor.subscribe('posts', find || {}, findOptions, function() {
+      Session.set(readyName, true);
+    });
+  });
+  
+  // setup a function to find the relevant posts (+deal with mm's lack of limit)
+  postsForSub[name] = function() {
+    var find = _.isFunction(options.find) ? options.find() : options.find;
+    var orderedPosts = Posts.find(find || {}, {sort: options.sort});
+    if (options.perPage) {
+      return limitDocuments(orderedPosts, Session.get(limitName));
+    } else {
+      return orderedPosts;
     }
   };
-  find=_.extend(find, FIND_APPROVED);
-  return find;
 }
 
-Session.set('digestPageLimit', DIGEST_PAGE_PER_PAGE);
-Meteor.autosubscribe(function() {
-  Session.set('digestPostsReady', false);
-  
-  var mDate = moment(Session.get('currentDate'));
-  // start yesterday, and subscribe to 3 days
-  mDate.add('days', -1);
-  for (var i = 0; i < 3; i++) {
-    Meteor.subscribe('posts', digestPageFind(mDate), {
-      sort: DIGEST_PAGE_SORT, 
-      limit: Session.get('digestPageLimit')
-    }, function() {
-      Session.set('digestPostsReady', true);
-    });
-    mDate.add('days', 1);
-  }
+setupPostSubscription('singlePost', {
+  find: function() { return Session.get('selectedPostId'); }
 });
-var digestPosts = function() {
-  var mDate = moment(Session.get('currentDate'))
-  var orderedPosts = Posts.find(digestPageFind(mDate), {sort: DIGEST_PAGE_SORT});
-  return limitDocuments(orderedPosts, Session.get('digestPageLimit'));
-}
 
-// SINGLE post, e.g. post_page
-Meteor.autosubscribe(function() {
-  Session.set('postReady', false);
-  Meteor.subscribe('post', Session.get('selectedPostId'), function() {
-    Session.set('postReady', true);
-  })
+setupPostSubscription('topPosts', {
+  find: FIND_APPROVED,
+  sort: {score: -1},
+  perPage: TOP_PAGE_PER_PAGE
+});
+
+setupPostSubscription('newPosts', {
+  find: FIND_APPROVED,
+  sort: {submitted: -1},
+  perPage: NEW_PAGE_PER_PAGE
+});
+
+setupPostSubscription('pendingPosts', {
+  find: {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]},
+  sort: {score: -1},
+  perPage: PENDING_PAGE_PER_PAGE
+});
+
+setupPostSubscription('digestPosts', {
+  find: function() {
+    var mDate = moment(Session.get('currentDate'));
+    var find = {
+      submitted: {
+        $gte: mDate.startOf('day').valueOf(), 
+        $lt: mDate.endOf('day').valueOf()
+      }
+    };
+    find=_.extend(find, FIND_APPROVED);
+    return find;
+  },
+  sort: {score: -1},
+  perPage: DIGEST_PAGE_PER_PAGE
 });
 
 // ** Categories **
