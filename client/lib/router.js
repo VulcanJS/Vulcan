@@ -7,8 +7,8 @@
     'posts_new': 'newPostsReady',
     'posts_pending': 'pendingPostsReady',
     'posts_digest': 'digestPostsReady',
-    'post_page': 'postReady',
-    'post_edit': 'postReady',
+    'post_page': 'singlePostReady',
+    'post_edit': 'singlePostReady',
     'comment_page': 'commentReady',
     'comment_reply': 'commentReady',
     'comment_edit': 'commentReady'
@@ -25,7 +25,16 @@
     } else {
       Session.set('currentDate', new Date(year, month-1, day));
     }
-    return 'posts_digest';
+    
+    // a manual version of awaitSubscription; the sub can be loading
+    // with a new day, but the data is already there (as the subscription is 
+    // for three days)
+    if (postsForSub.digestPosts().length === 0 && 
+          Session.equals(PAGE_SUBS['post_digest'], false)) {
+      return 'loading'
+    } else {
+      return 'posts_digest';
+    }
   };
 
   post = function(id, commentId) {
@@ -204,7 +213,7 @@
   // 
   Meteor.Router.filter('requireProfile');
   Meteor.Router.filter('awaitSubscription', {
-    only: ['posts_top', 'posts_new', 'posts_pending', 'posts_digest']
+    only: ['posts_top', 'posts_new', 'posts_pending']
   });
   Meteor.Router.filter('requireLogin', {
     only: ['post_submit']
