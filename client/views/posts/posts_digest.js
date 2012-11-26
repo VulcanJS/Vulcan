@@ -25,7 +25,7 @@ Template.posts_digest.helpers({
   showNextDate: function(){
     var currentDate=moment(Session.get('currentDate')).startOf('day');
     var today=moment(new Date()).startOf('day');
-    return today.diff(currentDate, 'days') > 0
+    return isAdmin(Meteor.user()) || (today.diff(currentDate, 'days') > 0)
   }
 });
 
@@ -36,7 +36,7 @@ Template.posts_digest.created = function(){
     Meteor.Router.to(getDigestURL(currentDate.subtract('days', 1)));
   });
   $(document).bind('keydown', 'right', function(){
-    if(today.diff(currentDate, 'days') > 0)
+    if(isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
       Meteor.Router.to(getDigestURL(currentDate.add('days', 1)));      
   });  
 };
