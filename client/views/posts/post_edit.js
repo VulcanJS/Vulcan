@@ -71,7 +71,7 @@ Template.post_edit.events = {
     });
     
     var properties = {
-      title:            $('#title').val(),
+      headline:            $('#title').val(),
       url:              $('#url').val(),
       body:             instance.editor.exportFile(),
       categories:       categories,
