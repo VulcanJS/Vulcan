@@ -64,11 +64,17 @@ Template.post_edit.events = {
     }
 
     var selectedPostId=Session.get('selectedPostId');
+    var categories = [];
+
+    $('input[name=category]:checked').each(function() {
+       categories.push($(this).val());
+    });
+    
     var properties = {
       title:            $('#title').val(),
       url:              $('#url').val(),
       body:             instance.editor.exportFile(),
-      categories:       [],
+      categories:       categories,
     };
     
     if(isAdmin(Meteor.user())){
@@ -83,9 +89,7 @@ Template.post_edit.events = {
 
     console.log(properties);
 
-    $('input[name=category]:checked').each(function() {
-       categories.push($(this).val());
-    });
+
 
     Posts.update(selectedPostId,
     {
