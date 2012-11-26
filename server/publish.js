@@ -54,15 +54,19 @@ Posts = new Meteor.Collection('posts');
 //   return Posts.find({}, {sort: {score: -1}});
 // });
 
-Meteor.publish('posts', function(find, options) {
+Meteor.publish('posts', function(find, options, subName) {
   var collection=Posts.find(find, options);
   var collectionArray=collection.fetch();
 
-  console.log("publishing…");
+  // if this is a single post subscription but no post ID is passed, just return an empty collection
+  if(subName==="singlePost" && _.isEmpty(find)){
+    collection=null;
+    collectionArray=[];
+  }
+
+  console.log("publishing :"+subName);
   console.log(find, options.sort, options.skip, options.limit);
-  console.log('collection.count() '+collection.count());
   console.log('collection.fetch().length '+collectionArray.length);
-  
   for(i=0;i<collectionArray.length;i++){
     console.log('- '+collectionArray[i].headline);
   }

@@ -29,8 +29,7 @@
     // a manual version of awaitSubscription; the sub can be loading
     // with a new day, but the data is already there (as the subscription is 
     // for three days)
-    if (postsForSub.digestPosts().length === 0 && 
-          Session.equals(PAGE_SUBS['post_digest'], false)) {
+    if (postsForSub.digestPosts().length === 0 && Session.equals(PAGE_SUBS['post_digest'], false)) {
       return 'loading'
     } else {
       return 'posts_digest';

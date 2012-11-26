@@ -85,7 +85,7 @@ setupPostSubscription = function(name, options) {
     };
     
     var find = _.isFunction(options.find) ? options.find() : options.find;
-    Meteor.subscribe('posts', find || {}, findOptions, function() {
+    Meteor.subscribe('posts', find || {}, findOptions, name, function() {
       Session.set(readyName, true);
     });
   });
@@ -102,9 +102,11 @@ setupPostSubscription = function(name, options) {
   };
 }
 
-setupPostSubscription('singlePost', {
-  find: function() { return Session.get('selectedPostId'); }
-});
+// if(Session.get('selectedPostId')){
+  setupPostSubscription('singlePost', {
+    find: function() { return Session.get('selectedPostId'); }
+  });
+// }
 
 setupPostSubscription('topPosts', {
   find: FIND_APPROVED,
