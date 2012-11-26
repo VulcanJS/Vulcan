@@ -82,7 +82,7 @@
     }
     return 'user_edit';
   };
-  
+
   // XXX: not sure if the '/' trailing routes are needed any more
   Meteor.Router.add({
     '/': 'posts_top',
@@ -178,6 +178,10 @@
       return error;
     },
   
+    isLoggedOut: function(page){
+      return Meteor.user() ? "already_logged_in" : page;
+    },
+
     isAdmin: function(page) {
       return isAdmin(Meteor.user()) ? page : "no_rights";
     },
@@ -211,15 +215,10 @@
   });
   // 
   Meteor.Router.filter('requireProfile');
-  Meteor.Router.filter('awaitSubscription', {
-    only: ['posts_top', 'posts_new', 'posts_pending']
-  });
-  Meteor.Router.filter('requireLogin', {
-    only: ['post_submit']
-  });
-  Meteor.Router.filter('canView', {
-    only: ['posts_top', 'posts_new', 'posts_digest']
-  });
+  Meteor.Router.filter('awaitSubscription', {only: ['posts_top', 'posts_new', 'posts_pending']});
+  Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
+  Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest']});
+  Meteor.Router.filter('isLoggedOut', {only: ['user_signin', 'user_signup']});
   Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']});
@@ -229,7 +228,7 @@
     Meteor.autorun(function() {
       // grab the current page from the router, so this re-runs every time it changes
       Meteor.Router.page();
-      // console.log('------ Request start --------');
+      console.log('------ Request start --------');
     
       // openedComments is an Array that tracks which comments
       // have been expanded by the user, to make sure they stay expanded
@@ -245,7 +244,15 @@
       clearSeenErrors();
           
       // log this request with mixpanel, etc
-      instrumentRequest();    
+      analyticsRequest();    
+
+      // if there are any pending events, log them too
+      if(eventBuffer=Session.get('eventBuffer')){
+        _.each(eventBuffer, function(e){
+          console.log('in buffer: ', e);
+          trackEvent(e.event, e.properties);
+        });
+      }
     });    
   });
 }());

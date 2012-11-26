@@ -64,13 +64,13 @@ Meteor.publish('posts', function(find, options, subName) {
     collectionArray=[];
   }
 
-  console.log("publishing :"+subName);
-  console.log(find, options.sort, options.skip, options.limit);
-  console.log('collection.fetch().length '+collectionArray.length);
-  for(i=0;i<collectionArray.length;i++){
-    console.log('- '+collectionArray[i].headline);
-  }
-  console.log('\n');
+  // console.log("publishing :"+subName);
+  // console.log(find, options.sort, options.skip, options.limit);
+  // console.log('collection.fetch().length '+collectionArray.length);
+  // for(i=0;i<collectionArray.length;i++){
+  //   console.log('- '+collectionArray[i].headline);
+  // }
+  // console.log('\n');
 
   return collection;
 });

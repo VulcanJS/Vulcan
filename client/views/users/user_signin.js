@@ -3,14 +3,11 @@ Template.user_signin.events = {
       event.preventDefault();
       var username = $('#username').val();
       var password = $('#password').val();
-      Accounts.loginWithPassword(username, password, function(err){
+      Meteor.loginWithPassword(username, password, function(err){
         if(err){
           console.log(err);
           throwError(err.reason);
-        }else{
-          // Session.set('state', Session.get('previous_state'));
-          Meteor.Router.navigate('/');
-        } 
+        }
       });
   },
 

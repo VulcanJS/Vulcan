@@ -2,9 +2,7 @@ Accounts.onCreateUser(function(options, user){
   user.profile = options.profile || {};
   user.karma = 0;
   
-
-
-  // users start pending, need to be invited
+  // users start pending and need to be invited
   user.isInvited = false
   
   if (options.email)
@@ -19,6 +17,8 @@ Accounts.onCreateUser(function(options, user){
   // if this is the first user ever, make them an admin
   if ( !Meteor.users.find().count() )
     user.isAdmin = true;
+
+  trackEvent('new user', {username: user.username, email: user.profile.email});
 
   return user;
 });
@@ -38,5 +38,8 @@ Meteor.methods({
   testEmail: function(){
     console.log('////////////////email test…');
     Email.send({from: 'info@sachagreif.com', to: 'sacha357@gmail.com', subject: 'mailgun test', text: 'lorem ipsum dolor'});
+  },
+  testBuffer: function(){
+    // TODO
   }
 });

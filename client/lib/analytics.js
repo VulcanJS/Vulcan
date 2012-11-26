@@ -1,4 +1,4 @@
-var instrumentRequest = function() {
+var analyticsRequest = function() {
   // Mixpanel
   if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length===0 ){
     mixpanel.init(mixpanelId);

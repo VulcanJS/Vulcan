@@ -72,7 +72,7 @@ Template.post_submit.events = {
         trackEvent("new post", {'postId': post.postId});
         if(post.status === STATUS_PENDING)
           throwError('Thanks, your post is awaiting approval.')
-        Meteor.Router.to('posts/'+post.postId);
+        Meteor.Router.to('/posts/'+post.postId);
       }
     });
   }

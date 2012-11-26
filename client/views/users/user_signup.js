@@ -8,19 +8,16 @@ Template.user_signup.events = {
           username: username
         , email: email  
         , password: password
-      }, null, function(err){
+      }, function(err){
         if(err){
           console.log(err);
-          alert(err);
         }else{
-          // Session.set('state', Session.get('previous_state'));
-          Meteor.Router.navigate('/');
+          Meteor.Router.to('/');
         }  
       });
   },
 
   'click #signin': function(){
-      // Session.set('state', 'signin');
       Meteor.Router.to('/signin');
   },
 

@@ -138,8 +138,8 @@ setupPostSubscription('digestPosts', {
     find=_.extend(find, FIND_APPROVED);
     return find;
   },
-  sort: {score: -1},
-  perPage: DIGEST_PAGE_PER_PAGE
+  sort: {score: -1}
+  // ,perPage: DIGEST_PAGE_PER_PAGE
 });
 
 // ** Categories **
