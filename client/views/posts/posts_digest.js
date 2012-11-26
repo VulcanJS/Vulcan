@@ -33,10 +33,10 @@ Template.posts_digest.created = function(){
   var currentDate=moment(Session.get('currentDate')).startOf('day');
   var today=moment(new Date()).startOf('day');
   $(document).bind('keydown', 'left', function(){
-    Meteor.Router.to(getDigestURL(currentDate.subtract('days', 1)));
+    Meteor.Router.to($('.prev-link').attr('href'));
   });
   $(document).bind('keydown', 'right', function(){
     if(isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
-      Meteor.Router.to(getDigestURL(currentDate.add('days', 1)));      
+      Meteor.Router.to($('.next-link').attr('href'));      
   });  
 };
