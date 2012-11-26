@@ -64,14 +64,24 @@ Template.post_edit.events = {
     }
 
     var selectedPostId=Session.get('selectedPostId');
-    var title= $('#title').val();
-    var url = $('#url').val();
-    var body = instance.editor.exportFile();
-    var categories=[];
-    var sticky=!!$('#sticky').attr('checked');
-    var submitted = parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
-    var userId = $('#postUser').val();
-    var status = parseInt($('input[name=status]:checked').val());
+    var properties = {
+      title:            $('#title').val(),
+      url:              $('#url').val(),
+      body:             instance.editor.exportFile(),
+      categories:       [],
+    };
+    
+    if(isAdmin(Meteor.user())){
+      adminProperties = {
+        submitted:  parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf()),
+        sticky:     !!$('#sticky').attr('checked'),
+        userId:     $('#postUser').val(),
+        status:     parseInt($('input[name=status]:checked').val()),
+      };
+      properties = _.extend(properties, adminProperties);
+    }
+
+    console.log(properties);
 
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
@@ -79,16 +89,7 @@ Template.post_edit.events = {
 
     Posts.update(selectedPostId,
     {
-        $set: {
-            headline: title
-          , url: url
-          , body: body
-          , categories: categories
-          , submitted: submitted
-          , sticky: sticky
-          , userId: userId
-          , status: status
-        }
+        $set: properties
       }
     ,function(error){
       if(error){
