@@ -111,7 +111,7 @@ Template.post_edit.events = {
     if(confirm("Are you sure?")){
       var selectedPostId=Session.get('selectedPostId');
       Posts.remove(selectedPostId);
-      Meteor.Router.to("posts/deleted");
+      Meteor.Router.to("/posts/deleted");
     }
   }
 };
