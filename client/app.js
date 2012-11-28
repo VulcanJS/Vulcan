@@ -139,7 +139,7 @@ setupPostSubscription('digestPosts', {
     return find;
   },
   sort: {score: -1}
-  // ,perPage: DIGEST_PAGE_PER_PAGE
+  ,perPage: DIGEST_PAGE_PER_PAGE
 });
 
 // ** Categories **
