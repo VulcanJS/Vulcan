@@ -10,6 +10,9 @@
           <li><a class="settings" href="/settings">Settings</a></li>
           <li><a class="admin" href="/admin">Admin</a></li>
         {{/if}}
+        {{#if canView}}
+          <li><a href="/submit">Post</a></li>
+        {{/if}}
       </ul>
     </div>
   </div>
