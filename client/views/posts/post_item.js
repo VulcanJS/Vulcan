@@ -87,8 +87,8 @@ Template.post_item.events = {
   'click .upvote-link': function(e, instance){
     e.preventDefault();
       if(!Meteor.user()){
+        Meteor.Router.to('/signin');
         throwError("Please log in first");
-        return false;
       }
       Meteor.call('upvotePost', this._id, function(error, result){
         trackEvent("post upvoted", {'postId': instance.postId});

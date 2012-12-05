@@ -240,6 +240,8 @@
       
       document.title = getSetting("title");
       
+      // $('body').css('min-height','0');
+
       // set all errors who have already been seen to not show anymore
       clearSeenErrors();
           
