@@ -43,3 +43,10 @@ Meteor.methods({
     // TODO
   }
 });
+
+// permissions for the profiler
+Meteor.Profiler.allow = function(userId) {
+  var user = Meteor.users.findOne(userId);
+  return user && user.isAdmin;
+};
+

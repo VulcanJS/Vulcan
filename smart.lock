@@ -27,7 +27,7 @@
       "profiler": {
         "git": "https://github.com/tmeasday/meteor-profiler.git",
         "branch": "master",
-        "commit": "dd6b17169abaad470ba722cb5f3aa4cc7caefd0c"
+        "commit": "25a14a4e94a4748745738031baab1400860eede7"
       },
       "page-js": {
         "git": "https://github.com/tmeasday/meteor-page-js.git",
