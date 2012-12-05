@@ -21,6 +21,8 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 # Installation
 - Install Meteor
 - Install [Meteorite](https://github.com/oortcloud/meteorite/)
+- Download or clone Telescope into /some/path
+- cd /some/path
 - Run `mrt`
 
 # Running Telescope on Heroku

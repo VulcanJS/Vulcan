@@ -138,10 +138,7 @@ Template.comment_item.rendered=function(){
           var user=Meteor.users.findOne(comment.userId);
           var author=getDisplayName(user);
 
-          var imgURL=Gravatar.getGravatar(user, {
-            d: 'http://telesc.pe/img/default_avatar.png',
-            s: 30
-          });
+          var imgURL=getAvatarUrl(user);
         var $container=findQueueContainer($comment);
         var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip" style="background-image:url('+imgURL+')"><span class="tooltip"><span>'+author+'</span></span></a></li>';
         if(this.firstRender){
