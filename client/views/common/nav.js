@@ -2,17 +2,12 @@ Template.nav.events = {
   'click #logout': function(event){
       event.preventDefault();
       Meteor.logout();
-  }
-  , 'click #mobile-menu': function(event){
+  },
+  'click #mobile-menu': function(event){
     event.preventDefault();
-    // $.pageslide({
-    //   href: '#pageslide',
-    //   iframe: false
-    // });
     $('body').toggleClass('mobile-nav-open');
-  }
-  
-  , 'click .login-header': function(e){
+  },  
+  'click .login-header': function(e){
       e.preventDefault();
       Meteor.Router.to('/account');
   }

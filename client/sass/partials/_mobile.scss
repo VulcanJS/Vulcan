@@ -89,7 +89,10 @@
 		height:50px;
 		@include border-radius(0px);
 		.logo{
-			top:12px;
+			top:0px;
+			font-size:22px;
+			line-height:50px;
+			z-index:10;
 			a{
 				img{
 					height:auto !important;
@@ -100,6 +103,7 @@
 		}
 
 		.auth-buttons{
+			z-index:100;
 			margin:0;
 			#login-buttons{
 				display:block !important;
@@ -127,6 +131,7 @@
 			}
 		}
 		.mobile-button{
+			z-index:100;
 			@extend .header-button;
 			
 			span{
