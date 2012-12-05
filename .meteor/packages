@@ -12,3 +12,4 @@ router
 moment
 spiderable
 email
+profiler

@@ -2,28 +2,42 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "master",
-    "commit": "16cf8a26218ae4650eb36b25ee55c2b5f6a71a31"
+    "commit": "067113a37dd4e7824db1a16d5f7a90c3739eed9c"
   },
   "dependencies": {
     "basePackages": {
       "router": {},
-      "moment": {}
+      "moment": {},
+      "profiler": {
+        "git": "https://github.com/tmeasday/meteor-profiler.git",
+        "branch": "master"
+      }
     },
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.2.6",
-        "commit": "a1866908a9fb6d287bb877c6583cee93f89e378e"
+        "tag": "v0.3.1",
+        "commit": "ec83354533169fa7b2214f4e1b2faa87164c090f"
       },
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
         "tag": "v1.7.0",
         "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
       },
+      "profiler": {
+        "git": "https://github.com/tmeasday/meteor-profiler.git",
+        "branch": "master",
+        "commit": "dd6b17169abaad470ba722cb5f3aa4cc7caefd0c"
+      },
       "page-js": {
         "git": "https://github.com/tmeasday/meteor-page-js.git",
         "tag": "v1.3.1",
         "commit": "ee0b651869928abe50b5d06d7f32ccd2e657883a"
+      },
+      "node-modules": {
+        "git": "https://github.com/possibilities/meteor-node-modules.git",
+        "tag": "v0.0.5",
+        "commit": "d502e5091759073a6baed856fadd93012749842d"
       }
     }
   }

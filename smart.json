@@ -4,6 +4,7 @@
   },
   "packages": {
     "router": {},
-    "moment": {}
+    "moment": {},
+    "profiler": {"git": "https://github.com/tmeasday/meteor-profiler.git"}
   }
 }
