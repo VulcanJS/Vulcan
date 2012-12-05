@@ -1071,20 +1071,21 @@ body.pageslide-open {
       float: left;
       margin-right: 10px;
       background: transparent;
-      padding: 0px; }
+      padding: 0px;
+      height: 100%; }
 
-/* line 301, ../sass/modules/_posts.scss */
+/* line 302, ../sass/modules/_posts.scss */
 .post.sticky .post-content, .post.sticky .post-actions li a {
   background: #fffce0; }
-/* line 304, ../sass/modules/_posts.scss */
+/* line 305, ../sass/modules/_posts.scss */
 .post.sticky .post-actions li a:hover {
   background: #4e555d url("/img/bg-header.png") top center; }
 
-/* line 308, ../sass/modules/_posts.scss */
+/* line 309, ../sass/modules/_posts.scss */
 .more-button {
   position: relative;
   padding-bottom: 10px; }
-  /* line 311, ../sass/modules/_posts.scss */
+  /* line 312, ../sass/modules/_posts.scss */
   .more-button a {
     width: 100%;
     display: block;
