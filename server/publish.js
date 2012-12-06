@@ -54,6 +54,14 @@ Posts = new Meteor.Collection('posts');
 //   return Posts.find({}, {sort: {score: -1}});
 // });
 
+
+Meteor.publish('paginatedPosts', function(find, options, limit) {
+  options = options || {};
+  options.limit = limit;
+  
+  return Posts.find(find || {}, options);
+});
+
 Meteor.publish('posts', function(find, options, subName) {
   var collection=Posts.find(find, options);
   var collectionArray=collection.fetch();

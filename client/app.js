@@ -108,11 +108,18 @@ setupPostSubscription = function(name, options) {
   });
 // }
 
-setupPostSubscription('topPosts', {
-  find: FIND_APPROVED,
-  sort: {score: -1},
-  perPage: TOP_PAGE_PER_PAGE
-});
+// setupPostSubscription('topPosts', {
+//   find: FIND_APPROVED,
+//   sort: {score: -1},
+//   perPage: TOP_PAGE_PER_PAGE
+// });
+
+var topPostsHandle = paginatedSubscription(
+  TOP_PAGE_PER_PAGE, 'paginatedPosts', FIND_APPROVED, {sort: {score: -1}}
+);
+var topPosts = function() {
+  return limitDocuments(Posts.find(FIND_APPROVED, {sort: {score: -1}}), topPostsHandle.loaded());
+}
 
 setupPostSubscription('newPosts', {
   find: FIND_APPROVED,

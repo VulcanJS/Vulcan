@@ -1,10 +1,13 @@
 Template.posts_top.posts = function() {
-  return postsForSub.topPosts();
+  return topPosts();
 };
 
 Template.posts_top.helpers({
+  postsReady: function() {
+    return ! topPostsHandle.loading();
+  },
   allPostsLoaded: function(){
-    return postsForSub.topPosts().length < Session.get('topPostsLimit');
+    return topPosts().length < topPostsHandle.loaded()
   }
 });
 
@@ -21,7 +24,7 @@ Template.posts_top.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
-    Session.set('topPostsLimit', Session.get('topPostsLimit') + TOP_PAGE_PER_PAGE);
+    topPostsHandle.loadNextPage();
   }
 });
 

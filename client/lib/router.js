@@ -215,7 +215,7 @@
   });
   // 
   Meteor.Router.filter('requireProfile');
-  Meteor.Router.filter('awaitSubscription', {only: ['posts_top', 'posts_new', 'posts_pending']});
+  Meteor.Router.filter('awaitSubscription', {only: ['posts_new', 'posts_pending']});
   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
   Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest']});
   Meteor.Router.filter('isLoggedOut', {only: ['user_signin', 'user_signup']});
