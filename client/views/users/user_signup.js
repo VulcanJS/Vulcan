@@ -4,6 +4,10 @@ Template.user_signup.events = {
       var username = $('#username').val();
       var email = $('#email').val();
       var password = $('#password').val();
+      if(!username || !email || !password){
+        throwError('Please fill in all fields');
+        return false;
+      }
       Accounts.createUser({
           username: username
         , email: email  

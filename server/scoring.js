@@ -17,6 +17,8 @@ var updateScore = function (collection, id) {
   if(object.sticky)
     newScore=999;
   collection.update(id, {$set: {score: newScore}});
+
+  // console.log('old score: '+object.baseScore+' | new score: '+newScore+' | score diff: '+Math.abs(newScore-object.baseScore));
 };
 
 Meteor.startup(function () {
