@@ -26,9 +26,10 @@ Meteor.startup(function () {
   // recalculate scores every N seconds
   if(scoreInterval>0){
     intervalId=Meteor.setInterval(function () {
-      // console.log('tick ('+scoreInterval+')');
+      console.log('scoring started ' + new Date().valueOf());
       Posts.find().forEach(function (post) { updateScore(Posts, post._id); });
       Comments.find().forEach(function (comment) { updateScore(Comments, comment._id); });
+      console.log('scoring done ' + new Date().valueOf());
     }, scoreInterval * 1000);
   }
 });
