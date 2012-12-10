@@ -38,7 +38,7 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 # Local Variables
 Meteor uses local environment variables for a few things, such as configuring email. While this is straightforward to do on Heroku (see above), on a local dev environment the best way is to set up an alias for the `mrt` command. 
 
-In your `.bash_profile` file, just add:
+For example, to configure Meteor to use Mailgun for email, in your `.bash_profile` file just add:
 `alias m='MAIL_URL=smtp://username:password@smtp.mailgun.org:587/ mrt'`
 
 
