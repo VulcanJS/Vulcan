@@ -56,6 +56,7 @@ STATUS_REJECTED=3;
 FIND_APPROVED={$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]};
 TOP_PAGE_PER_PAGE = 10;
 NEW_PAGE_PER_PAGE = 10;
+BEST_PAGE_PER_PAGE = 10;
 PENDING_PAGE_PER_PAGE = 10;
 DIGEST_PAGE_PER_PAGE = 5;
 
@@ -117,6 +118,12 @@ setupPostSubscription('topPosts', {
 setupPostSubscription('newPosts', {
   find: FIND_APPROVED,
   sort: {submitted: -1},
+  perPage: NEW_PAGE_PER_PAGE
+});
+
+setupPostSubscription('bestPosts', {
+  find: FIND_APPROVED,
+  sort: {baseScore: -1},
   perPage: NEW_PAGE_PER_PAGE
 });
 

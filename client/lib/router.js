@@ -5,6 +5,7 @@
   PAGE_SUBS = {
     'posts_top': 'topPostsReady',
     'posts_new': 'newPostsReady',
+    'posts_best': 'bestPostsReady',
     'posts_pending': 'pendingPostsReady',
     'posts_digest': 'digestPostsReady',
     'post_page': 'singlePostReady',
@@ -92,6 +93,8 @@
     '/new':'posts_new',
     '/new/':'posts_new',
     '/new/:page':'posts_new',
+    '/best':'posts_best',
+    '/best/':'posts_best',
     '/pending':'posts_pending',
     '/digest/:year/:month/:day': digest,
     '/digest': digest,
@@ -215,9 +218,9 @@
   });
   // 
   Meteor.Router.filter('requireProfile');
-  Meteor.Router.filter('awaitSubscription', {only: ['posts_top', 'posts_new', 'posts_pending']});
+  Meteor.Router.filter('awaitSubscription', {only: ['posts_top', 'posts_new', 'posts_pending', 'posts_best']});
   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
-  Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest']});
+  Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});
   Meteor.Router.filter('isLoggedOut', {only: ['user_signin', 'user_signup']});
   Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
