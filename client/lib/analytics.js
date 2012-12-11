@@ -54,12 +54,12 @@ var analyticsRequest = function() {
 
   // Clicky
   if(clickyId = getSetting("clickyId") && typeof clicky !== 'undefined'){
-    clicky.log(encodeURIComponent(window.location.href));
+    clicky.log(encodeURIComponent(window.location.pathname), Meteor.Router.page(), "pageview");
   }
 
   // GoSquared
   if (goSquaredId = getSetting("goSquaredId") && typeof GoSquared !== 'undefined') {
-    // GoSquared.DefaultTracker.TrackView(encodeURIComponent(window.location.href), Meteor.Router.page());
+    // GoSquared.DefaultTracker.TrackView(encodeURIComponent(window.location.pathname), Meteor.Router.page());
   }
 
   // Intercom
