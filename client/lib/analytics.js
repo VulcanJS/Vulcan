@@ -5,7 +5,7 @@ var analyticsInit = function() {
   }
 
   // GoSquared
-  if (goSquaredId = getSetting("goSquaredId")) {
+  if (false && (goSquaredId = getSetting("goSquaredId"))) {
     var GoSquared = {};
     GoSquared.acct = goSquaredId;
     window._gstc_lt = +new Date;
@@ -54,12 +54,12 @@ var analyticsRequest = function() {
 
   // Clicky
   if(clickyId = getSetting("clickyId") && typeof clicky !== 'undefined'){
-    clicky.log(window.location.href);
+    clicky.log(encodeURIComponent(window.location.href));
   }
 
   // GoSquared
   if (goSquaredId = getSetting("goSquaredId") && typeof GoSquared !== 'undefined') {
-    GoSquared.DefaultTracker.TrackView(window.location.href, Meteor.Router.page());
+    // GoSquared.DefaultTracker.TrackView(encodeURIComponent(window.location.href), Meteor.Router.page());
   }
 
   // Intercom
