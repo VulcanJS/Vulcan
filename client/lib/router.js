@@ -16,13 +16,15 @@
   }
   
   // specific router functions
-  digest = function(year, month, day){
+  digest = function(year, month, day, view){
+    var destination = (typeof view === 'undefined') ? 'posts_digest' : 'posts_digest_'+view
     if (typeof day === 'undefined') {
       // we can get into an infinite reactive loop with the subscription filter
       // if we keep setting the date even when it's barely changed
-      if (new Date() - Session.get('currentDate') > 60 * 1000) {
+      if (new Date() - new Date(Session.get('currentDate')) > 60 * 1000) {
         Session.set('currentDate', new Date());
       }
+      // Session.set('currentDate', new Date());
     } else {
       Session.set('currentDate', new Date(year, month-1, day));
     }
@@ -30,10 +32,10 @@
     // a manual version of awaitSubscription; the sub can be loading
     // with a new day, but the data is already there (as the subscription is 
     // for three days)
-    if (postsForSub.digestPosts().length === 0 && Session.equals(PAGE_SUBS['post_digest'], false)) {
+    if (Session.equals('initialLoad', true) || (Session.equals(PAGE_SUBS['post_digest'], false) && postsForSub.digestPosts().length === 0)) {
       return 'loading'
     } else {
-      return 'posts_digest';
+      return destination;
     }
   };
 
@@ -231,32 +233,37 @@
     Meteor.autorun(function() {
       // grab the current page from the router, so this re-runs every time it changes
       Meteor.Router.page();
-      console.log('------ Request start --------');
-    
-      // openedComments is an Array that tracks which comments
-      // have been expanded by the user, to make sure they stay expanded
-      Session.set("openedComments", null);
-      Session.set('requestTimestamp',new Date());
 
-      // currentScroll stores the position of the user in the page
-      Session.set('currentScroll', null);
+      if(Meteor.Router.page() !== "loading"){
+        console.log('------ Request start -------- ('+Meteor.Router.page()+')');
       
-      document.title = getSetting("title");
-      
-      // $('body').css('min-height','0');
+        // openedComments is an Array that tracks which comments
+        // have been expanded by the user, to make sure they stay expanded
+        Session.set("openedComments", null);
+        Session.set('requestTimestamp',new Date());
 
-      // set all errors who have already been seen to not show anymore
-      clearSeenErrors();
-          
-      // log this request with mixpanel, etc
-      analyticsRequest();    
+        // currentScroll stores the position of the user in the page
+        Session.set('currentScroll', null);
+        
+        document.title = getSetting("title");
+        
+        // $('body').css('min-height','0');
 
-      // if there are any pending events, log them too
-      if(eventBuffer=Session.get('eventBuffer')){
-        _.each(eventBuffer, function(e){
-          console.log('in buffer: ', e);
-          trackEvent(e.event, e.properties);
-        });
+        // set all errors who have already been seen to not show anymore
+        clearSeenErrors();
+            
+        // log this request with mixpanel, etc
+        analyticsRequest();
+        
+        // if there are any pending events, log them too
+        if(eventBuffer=Session.get('eventBuffer')){
+          _.each(eventBuffer, function(e){
+            console.log('in buffer: ', e);
+            trackEvent(e.event, e.properties);
+          });
+        }else{
+          console.log('------ Loading… --------');
+        }
       }
     });    
   });

@@ -1,3 +1,5 @@
+Session.set('initialLoad', true);
+
 // HELPERS
 getSetting = function(setting){
   var settings=Settings.find().fetch()[0];
@@ -22,7 +24,7 @@ Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
 
   // runs once on site load
-
+  analyticsInit();
   Session.set('settingsLoaded',true);
 });
 
@@ -87,6 +89,7 @@ setupPostSubscription = function(name, options) {
     
     var find = _.isFunction(options.find) ? options.find() : options.find;
     Meteor.subscribe('posts', find || {}, findOptions, name, function() {
+      Session.set('initialLoad', false);
       Session.set(readyName, true);
     });
   });

@@ -11,6 +11,7 @@ var Setting = FormModel.extend({
 	    analyticsCode: '',
 	    tlkioChannel: '',
 	    mixpanelId: '',
+	    clickyId:'',
 	    proxinoKey: '',
 	    goSquaredId: '',
 		veroAPIKey: '',
@@ -34,6 +35,7 @@ var Setting = FormModel.extend({
 		this.overwriteTitle('title', 'Site Title');
 		this.overwriteTitle('tlkioChannel', '<a href="http://tlk.io/">Tlk.io</a> Channel');
 		this.overwriteTitle('mixpanelId', '<a href="http://mixpanel.com/">Mixpanel</a> ID');
+		this.overwriteTitle('clickyId', '<a href="http://getclicky.com/">Clicky</a> ID');
 		this.overwriteTitle('proxinoKey', '<a href="http://proxino.com/">Proxino</a> key');
 		this.overwriteTitle('goSquaredId', '<a href="http://gosquared.com/">GoSquared</a> ID');
 		this.overwriteTitle('intercomId', '<a href="http://intercom.io/">Intercom</a> ID');
