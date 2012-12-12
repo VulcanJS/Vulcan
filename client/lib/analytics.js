@@ -1,23 +1,50 @@
 var analyticsInit = function() {
   // Mixpanel
-  if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length===0 ){
+  if (mixpanelId=getSetting("mixpanelId")){
+    (function (c, a) {
+    window.mixpanel = a;
+    var b, d, h, e;
+    b = c.createElement("script");
+    b.type = "text/javascript";
+    b.async = !0;
+    b.src = ("https:" === c.location.protocol ? "https:" : "http:") + '//cdn.mxpnl.com/libs/mixpanel-2.1.min.js';
+    d = c.getElementsByTagName("script")[0];
+    d.parentNode.insertBefore(b, d);
+    a._i = [];
+    a.init = function (b, c, f) {
+        function d(a, b) {
+            var c = b.split(".");
+            2 == c.length && (a = a[c[0]], b = c[1]);
+            a[b] = function () {
+                a.push([b].concat(Array.prototype.slice.call(arguments, 0)))
+            }
+        }
+        var g = a;
+        "undefined" !== typeof f ? g = a[f] = [] : f = "mixpanel";
+        g.people = g.people || [];
+        h = "disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" ");
+        for (e = 0; e < h.length; e++) d(g, h[e]);
+        a._i.push([b, c, f])
+    };
+    a.__SV = 1.1
+    })(document, window.mixpanel || []);
     mixpanel.init(mixpanelId);
   }
 
   // GoSquared
-  // if (goSquaredId = getSetting("goSquaredId")) {
-  //   var GoSquared = {};
-  //   GoSquared.acct = goSquaredId;
-  //   window._gstc_lt = +new Date;
-  //   var d = document, g = d.createElement("script");
-  //   g.type = "text/javascript";
-  //   g.src = "//d1l6p2sc9645hc.cloudfront.net/tracker.js";
-  //   var s = d.getElementsByTagName("script")[0];
-  //   s.parentNode.insertBefore(g, s);
-  // }
+  if (goSquaredId = getSetting("goSquaredId")) {
+    window.GoSquared = {};
+    GoSquared.acct = goSquaredId;
+    window._gstc_lt = +new Date;
+    var d = document, g = d.createElement("script");
+    g.type = "text/javascript";
+    g.src = "//d1l6p2sc9645hc.cloudfront.net/tracker.js";
+    var s = d.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(g, s);
+  }
 
   // Clicky
-  if((clickyId=getSetting("clickyId"))){
+  if ((clickyId = getSetting("clickyId"))){
     clicky_site_ids = [];
     clicky_site_ids.push(clickyId);
     (function() {
@@ -33,7 +60,7 @@ var analyticsInit = function() {
 
 var analyticsRequest = function() {
   // Mixpanel
-  if((mixpanelId=getSetting("mixpanelId")) && window.mixpanel.length===0 ){
+  if(typeof mixpanel !== 'undefined'){
     if(Meteor.user()){
       var currentUserEmail=getCurrentUserEmail();
       mixpanel.people.identify(currentUserEmail);
@@ -53,32 +80,13 @@ var analyticsRequest = function() {
   }
 
   // Clicky
-  if(clickyId = getSetting("clickyId") && typeof clicky !== 'undefined'){
+  if(typeof clicky !== 'undefined'){
     clicky.log(encodeURIComponent(window.location.pathname), Meteor.Router.page(), "pageview");
   }
 
   // GoSquared
-  if (goSquaredId = getSetting("goSquaredId") && typeof GoSquared !== 'undefined') {
-    // GoSquared.DefaultTracker.TrackView(encodeURIComponent(window.location.pathname), Meteor.Router.page());
+  if (typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined') {
+    GoSquared.DefaultTracker.TrackView(window.location.pathname, Meteor.Router.page());
   }
 
-  // Intercom
-  if((intercomId=getSetting("intercomId")) && Meteor.user()){
-    window.intercomSettings = {
-      app_id: intercomId,
-      email: currentUserEmail,
-      created_at: moment(Meteor.user().createdAt).unix(),
-      custom_data: {
-        'profile link': 'http://'+document.domain+'/users/'+Meteor.user()._id
-      },
-      widget: {
-        activator: '#Intercom',
-        use_counter: true,
-        activator_html: function ( obj ) {
-          return obj.activator_html_functions.brackets();
-        }
-      }
-    };
-    IntercomInit();
-  }
 }
