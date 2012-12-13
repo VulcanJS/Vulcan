@@ -3,7 +3,8 @@ Template.posts_digest.helpers({
     return currentDigestHandle().fetch();
   },
   hasPosts: function(){
-    return ! currentDigestHandle().loading();
+    var handle = currentDigestHandle()
+    return handle && ! handle.loading() && handle.loaded() > 0;
   },
   currentDate: function(){
     return moment(Session.get('currentDate')).format("dddd, MMMM Do YYYY");
