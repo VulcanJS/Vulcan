@@ -60,7 +60,7 @@ var analyticsInit = function() {
 
 var analyticsRequest = function() {
   // Mixpanel
-  if(typeof mixpanel !== 'undefined'){
+  if(typeof mixpanel !== 'undefined' && typeof mixpanel.people !== 'undefined'){
     if(Meteor.user()){
       var currentUserEmail=getCurrentUserEmail();
       mixpanel.people.identify(currentUserEmail);

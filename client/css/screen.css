@@ -120,29 +120,28 @@ body {
     background-size: 10px 10px; } }
 /* line 14, ../sass/partials/_main.scss */
 .outer-wrapper {
-  position: relative;
-  overflow: hidden; }
+  position: relative; }
 
-/* line 18, ../sass/partials/_main.scss */
+/* line 17, ../sass/partials/_main.scss */
 .content-wrapper {
   padding-bottom: 10px; }
 
-/* line 21, ../sass/partials/_main.scss */
+/* line 20, ../sass/partials/_main.scss */
 #spinner {
   height: 100%;
   width: 100%;
   position: fixed;
   z-index: 1000; }
 
-/* line 27, ../sass/partials/_main.scss */
+/* line 26, ../sass/partials/_main.scss */
 .debug {
   display: none; }
 
-/* line 30, ../sass/partials/_main.scss */
+/* line 29, ../sass/partials/_main.scss */
 .hidden {
   display: none; }
 
-/* line 33, ../sass/partials/_main.scss */
+/* line 32, ../sass/partials/_main.scss */
 .overlay {
   position: fixed;
   top: 0;
@@ -151,19 +150,19 @@ body {
   width: 100%;
   z-index: 50; }
 
-/* line 41, ../sass/partials/_main.scss */
+/* line 40, ../sass/partials/_main.scss */
 .footer {
   text-align: center; }
 
-/* line 44, ../sass/partials/_main.scss */
+/* line 43, ../sass/partials/_main.scss */
 #login-buttons .loading {
   display: none; }
 
-/* line 47, ../sass/partials/_main.scss */
+/* line 46, ../sass/partials/_main.scss */
 #loading {
   height: 300px; }
 
-/* line 50, ../sass/partials/_main.scss */
+/* line 49, ../sass/partials/_main.scss */
 #tlkio {
   position: fixed;
   top: 0px;
@@ -175,13 +174,13 @@ body {
   transition: ease-out right 300ms 0ms;
   z-index: 1000;
   background: #333; }
-  /* line 57, ../sass/partials/_main.scss */
+  /* line 56, ../sass/partials/_main.scss */
   #tlkio.open {
     right: 0px;
     -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 61, ../sass/partials/_main.scss */
+  /* line 60, ../sass/partials/_main.scss */
   #tlkio .open-chat, #tlkio .report-bug {
     display: block;
     background: #7ac0e4;
@@ -206,7 +205,7 @@ body {
     box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
     z-index: 1001;
     white-space: nowrap; }
-  /* line 76, ../sass/partials/_main.scss */
+  /* line 75, ../sass/partials/_main.scss */
   #tlkio .report-bug {
     top: 400px;
     right: 236px; }

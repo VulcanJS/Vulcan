@@ -23,16 +23,16 @@ Template.posts_list.helpers({
   }
 });
 
-Template.posts_top.rendered = function(){
-    var distanceFromTop = 0;
-    $('.post').each(function(){
-      distanceFromTop += $(this).height();
-    });
-    $('body').css('min-height',distanceFromTop+160);
-    $('.more-button').css('top', distanceFromTop+"px");  
+Template.posts_list.rendered = function(){
+  var distanceFromTop = 0;
+  $('.post').each(function(){
+    distanceFromTop += $(this).height();
+  });
+  $('body').css('min-height',distanceFromTop+160);
+  $('.more-button').css('top', distanceFromTop+"px");  
 }
 
-Template.posts_top.events({
+Template.posts_list.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
