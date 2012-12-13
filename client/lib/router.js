@@ -1,20 +1,4 @@
-(function() {
-
-  // XXX: could we just work this out programmatically based on the name?
-  //   -- fix this along with the general problem of subscription mess
-  PAGE_SUBS = {
-    'posts_top': 'topPostsReady',
-    'posts_new': 'newPostsReady',
-    'posts_best': 'bestPostsReady',
-    'posts_pending': 'pendingPostsReady',
-    'posts_digest': 'digestPostsReady',
-    'post_page': 'singlePostReady',
-    'post_edit': 'singlePostReady',
-    'comment_page': 'commentReady',
-    'comment_reply': 'commentReady',
-    'comment_edit': 'commentReady'
-  }
-  
+(function() {  
   // specific router functions
   digest = function(year, month, day, view){
     var destination = (typeof view === 'undefined') ? 'posts_digest' : 'posts_digest_'+view
@@ -191,10 +175,6 @@
       return isAdmin(Meteor.user()) ? page : "no_rights";
     },
 
-    awaitSubscription: function(page) {
-      return Session.equals(PAGE_SUBS[page], true) ? page : 'loading';
-    },
-  
     // if the user is logged in but their profile isn't filled out enough
     requireProfile: function(page) {
       var user = Meteor.user();
@@ -220,7 +200,6 @@
   });
   // 
   Meteor.Router.filter('requireProfile');
-  Meteor.Router.filter('awaitSubscription', {only: ['posts_top', 'posts_new', 'posts_pending', 'posts_best']});
   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
   Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});
   Meteor.Router.filter('isLoggedOut', {only: ['user_signin', 'user_signup']});

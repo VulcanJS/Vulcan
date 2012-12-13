@@ -56,101 +56,40 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 FIND_APPROVED={$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]};
-TOP_PAGE_PER_PAGE = 10;
-NEW_PAGE_PER_PAGE = 10;
-BEST_PAGE_PER_PAGE = 10;
-PENDING_PAGE_PER_PAGE = 10;
 DIGEST_PAGE_PER_PAGE = 5;
 
-// name <- the name of various session vars that will be set:
-//  - 'nameReady' <- is the subscription loading or ready?
-//  - 'nameLimit' <- how many of this type are we currently displaying?
-// options:
-//   - find <- how to find the items
-//   - sort <- how to sort them
-//   - perPage <- how many to display per-page
-//   - 
-postsForSub = {};
-setupPostSubscription = function(name, options) {
-  var readyName = name + 'Ready';
-  var limitName = name + 'Limit';
-  
-  if (options.perPage && ! Session.get(limitName))
-    Session.set(limitName, options.perPage);
-  
-  // setup the subscription
-  Meteor.autosubscribe(function() {
-    Session.set(readyName, false);
-
-    var findOptions = {
-      sort: options.sort,
-      limit: options.perPage && Session.get(limitName) 
-    };
-    
-    var find = _.isFunction(options.find) ? options.find() : options.find;
-    Meteor.subscribe('posts', find || {}, findOptions, name, function() {
-      Session.set('initialLoad', false);
-      Session.set(readyName, true);
-    });
-  });
-  
-  // setup a function to find the relevant posts (+deal with mm's lack of limit)
-  postsForSub[name] = function() {
-    var find = _.isFunction(options.find) ? options.find() : options.find;
-    var orderedPosts = Posts.find(find || {}, {sort: options.sort});
-    if (options.perPage) {
-      return limitDocuments(orderedPosts, Session.get(limitName));
-    } else {
-      return orderedPosts;
-    }
-  };
+var postListSubscription = function(find, options, per_page) {
+  var handle = paginatedSubscription(per_page, 'paginatedPosts', find, options);
+  handle.fetch = function() {
+    return limitDocuments(Posts.find(find, options), handle.loaded());
+  }
+  return handle;
 }
 
-// if(Session.get('selectedPostId')){
-  setupPostSubscription('singlePost', {
-    find: function() { return Session.get('selectedPostId'); }
-  });
-// }
+var topPostsHandle = postListSubscription(FIND_APPROVED, {sort: {score: -1}}, 10);
+var newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {submitted: -1}}, 10);
+var bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {baseScore: -1}}, 10);
+var pendingPostsHandle = postListSubscription(
+  {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]}, 
+  {sort: {score: -1}}, 
+  10
+);
 
-setupPostSubscription('topPosts', {
-  find: FIND_APPROVED,
-  sort: {score: -1},
-  perPage: TOP_PAGE_PER_PAGE
-});
-
-setupPostSubscription('newPosts', {
-  find: FIND_APPROVED,
-  sort: {submitted: -1},
-  perPage: NEW_PAGE_PER_PAGE
-});
-
-setupPostSubscription('bestPosts', {
-  find: FIND_APPROVED,
-  sort: {baseScore: -1},
-  perPage: NEW_PAGE_PER_PAGE
-});
-
-setupPostSubscription('pendingPosts', {
-  find: {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]},
-  sort: {score: -1},
-  perPage: PENDING_PAGE_PER_PAGE
-});
-
-setupPostSubscription('digestPosts', {
-  find: function() {
-    var mDate = moment(Session.get('currentDate'));
-    var find = {
-      submitted: {
-        $gte: mDate.startOf('day').valueOf(), 
-        $lt: mDate.endOf('day').valueOf()
-      }
-    };
-    find=_.extend(find, FIND_APPROVED);
-    return find;
-  },
-  sort: {score: -1}
-  ,perPage: DIGEST_PAGE_PER_PAGE
-});
+// setupPostSubscription('digestPosts', {
+//   find: function() {
+//     var mDate = moment(Session.get('currentDate'));
+//     var find = {
+//       submitted: {
+//         $gte: mDate.startOf('day').valueOf(), 
+//         $lt: mDate.endOf('day').valueOf()
+//       }
+//     };
+//     find=_.extend(find, FIND_APPROVED);
+//     return find;
+//   },
+//   sort: {score: -1}
+//   ,perPage: DIGEST_PAGE_PER_PAGE
+// });
 
 // ** Categories **
 
