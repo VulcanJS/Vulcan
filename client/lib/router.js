@@ -13,11 +13,8 @@
       Session.set('currentDate', new Date(year, month-1, day));
     }
     
-    // a manual version of awaitSubscription; the sub can be loading
-    // with a new day, but the data is already there (as the subscription is 
-    // for three days)
-    if (Session.equals('initialLoad', true) || (Session.equals(PAGE_SUBS['post_digest'], false) && postsForSub.digestPosts().length === 0)) {
-      return 'loading'
+    if (currentDigestHandle().loading()) {
+      return 'loading';
     } else {
       return destination;
     }

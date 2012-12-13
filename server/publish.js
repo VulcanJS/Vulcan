@@ -50,42 +50,17 @@ Meteor.startup(function(){
 // Posts
 
 Posts = new Meteor.Collection('posts');
-// Meteor.publish('posts', function() {
-//   return Posts.find({}, {sort: {score: -1}});
-// });
 
+// a single post, identified by id
+Meteor.publish('post', function(id) {
+  return Posts.find(id);
+});
 
 Meteor.publish('paginatedPosts', function(find, options, limit) {
   options = options || {};
   options.limit = limit;
   
   return Posts.find(find || {}, options);
-});
-
-Meteor.publish('posts', function(find, options, subName) {
-  var collection=Posts.find(find, options);
-  var collectionArray=collection.fetch();
-
-  // if this is a single post subscription but no post ID is passed, just return an empty collection
-  if(subName==="singlePost" && _.isEmpty(find)){
-    collection=null;
-    collectionArray=[];
-  }
-
-  // console.log("publishing :"+subName);
-  // console.log(find, options.sort, options.skip, options.limit);
-  // console.log('collection.fetch().length '+collectionArray.length);
-  // for(i=0;i<collectionArray.length;i++){
-  //   console.log('- '+collectionArray[i].headline);
-  // }
-  // console.log('\n');
-
-  return collection;
-});
-
-// a single post, identified by id
-Meteor.publish('post', function(id) {
-  return Posts.find(id);
 });
 
 // FIXME -- check all docs, not just the first one.
