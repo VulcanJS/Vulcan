@@ -7,7 +7,7 @@ Template.posts_new.newPostsHandle = function() {
 Template.posts_best.bestPostsHandle = function() { 
   return bestPostsHandle;
 }
-Template.posts_best.pendingPostsHandle = function() { 
+Template.posts_pending.pendingPostsHandle = function() { 
   return pendingPostsHandle;
 }
 
