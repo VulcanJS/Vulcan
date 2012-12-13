@@ -13,7 +13,7 @@
       Session.set('currentDate', new Date(year, month-1, day));
     }
     
-    if (currentDigestHandle().loading()) {
+    if (!currentDigestHandle() || currentDigestHandle().loading()) {
       return 'loading';
     } else {
       return destination;
