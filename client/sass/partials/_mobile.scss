@@ -90,6 +90,7 @@
 		@include border-radius(0px);
 		.logo{
 			top:0px;
+			left:0px;
 			font-size:22px;
 			line-height:50px;
 			z-index:10;
@@ -111,6 +112,10 @@
 			.login-link-and-dropdown-list{
 				right:0px !important;
 				position:static !important;
+				#login-dropdown-list{
+					right:0px !important;
+					margin:0px !important;
+				}
 				.login-link-text{
 					@extend .header-button;
 					@include hide-text2;
