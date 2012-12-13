@@ -79,14 +79,14 @@ var analyticsRequest = function() {
     }
   }
 
-  // Clicky
-  if(typeof clicky !== 'undefined'){
-    clicky.log(encodeURIComponent(window.location.pathname), Meteor.Router.page(), "pageview");
-  }
-
   // GoSquared
   if (typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined') {
     GoSquared.DefaultTracker.TrackView(window.location.pathname, Meteor.Router.page());
+  }
+
+  // Clicky
+  if(typeof clicky !== 'undefined'){
+    clicky.log(encodeURIComponent(window.location.pathname), Meteor.Router.page(), "pageview");
   }
 
 }

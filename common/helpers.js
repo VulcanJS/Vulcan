@@ -35,3 +35,9 @@ getDateRange= function(pageNumber){
   // console.log("before: ", dayToDisplay.endOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
   return range;
 }
+cleanUp = function(s){
+  return stripHTML(s);
+}
+stripHTML = function(s){
+  return s.replace(/<(?:.|\n)*?>/gm, '');
+}

@@ -4,6 +4,8 @@ STATUS_REJECTED=3;
 
 Meteor.methods({
   post: function(post){
+    var headline = cleanUp(post.headline);
+    var body = cleanUp(post.body);
     var user = Meteor.user();
     var userId = post.userId || user._id;
     var submitted = parseInt(post.submitted) || new Date().getTime();
@@ -35,6 +37,8 @@ Meteor.methods({
       throw new Meteor.Error(605, 'Sorry, you cannot submit more than 30 posts per day');
 
     post = _.extend(post, {
+      headline: headline,
+      body: body,
       userId: userId,
       author: getDisplayNameById(userId),
       submitted: submitted,

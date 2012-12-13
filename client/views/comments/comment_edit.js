@@ -23,7 +23,7 @@ Template.comment_edit.events = {
 
 		var selectedCommentId=Session.get('selectedCommentId');
 		var selectedPostId=Comments.findOne(selectedCommentId).post;
-		var content = instance.editor.exportFile();
+		var content = cleanUp(instance.editor.exportFile());
 
 		var commentId = Comments.update(selectedCommentId,
 		{
