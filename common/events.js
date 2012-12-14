@@ -7,7 +7,7 @@ trackEvent = function(event, properties){
     if(typeof mixpanel.track !== 'undefined'){
       mixpanel.track(event, properties);
     }
-    if(typeof GoSquared.DefaultTracker !== 'undefined'){
+    if(typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined'){
       GoSquared.DefaultTracker.TrackEvent(event, JSON.stringify(properties));
     }
   }
