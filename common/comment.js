@@ -4,7 +4,7 @@ Meteor.methods({
     var post=Posts.findOne(postId);
     var postUser=Meteor.users.findOne(post.userId);
     var timeSinceLastComment=timeSinceLast(user, Comments);
-    var text= cleanUp(text);
+    var cleanText= cleanUp(text);
 
     var properties={
         'commentAuthorId': user._id,
