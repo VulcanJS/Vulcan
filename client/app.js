@@ -114,7 +114,7 @@ Meteor.autorun(function() {
   _.each(digestHandles, function(handle, hash) {
     var mDate = moment(hash, 'DD-MM-YYYY');
     if (mDate < firstDate || mDate > lastDate) {
-      console.log('unsubscribing digest for ' + mDate.toString())
+      // console.log('unsubscribing digest for ' + mDate.toString())
       handle.stop();
       delete digestHandles[dateHash(mDate)];
     }
@@ -124,7 +124,7 @@ Meteor.autorun(function() {
   // but we want to be smart about it --  
   for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
     if (! digestHandles[dateHash(mDate)] && mDate < moment().add('days', 1)) {
-      console.log('subscribing digest for ' + mDate.toString());
+      // console.log('subscribing digest for ' + mDate.toString());
       digestHandles[dateHash(mDate)] = daySubscription(mDate);
     }
   }

@@ -28,7 +28,6 @@
     if(typeof commentId !== 'undefined')
       Session.set('scrollToCommentId', commentId); 
   
-    // XXX: should use the Session for these
     // on post page, we show the comment tree
     Session.set('showChildComments',true);
 
@@ -91,14 +90,14 @@
     '/submit':'post_submit',
     '/invite':'no_invite',
     '/posts/deleted':'post_deleted',
-    '/posts/:id/edit':post_edit,
-    '/posts/:id/comment/:comment_id':post,
-    '/posts/:id/':post,
-    '/posts/:id':post,
+    '/posts/:id/edit': post_edit,
+    '/posts/:id/comment/:comment_id': post,
+    '/posts/:id/': post,
+    '/posts/:id': post,
     '/comments/deleted':'comment_deleted',   
-    '/comments/:id':comment,
-    '/comments/:id/reply':comment_reply,
-    '/comments/:id/edit':comment_edit,
+    '/comments/:id': comment,
+    '/comments/:id/reply': comment_reply,
+    '/comments/:id/edit': comment_edit,
     '/settings':'settings',
     '/admin':'admin',
     '/categories':'categories',
@@ -106,9 +105,9 @@
     '/account':'user_edit',
     '/forgot_password':'user_password',
     '/users/:id': user_profile,
-    '/users/:id/edit':user_edit,
-    '/:year/:month/:day':digest,
-  });
+    '/users/:id/edit': user_edit,
+    '/:year/:month/:day': digest
+});
 
 
   Meteor.Router.filters({

@@ -31,6 +31,7 @@ Template.posts_digest.helpers({
 });
 
 Template.posts_digest.created = function(){
+  $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
   var currentDate=moment(Session.get('currentDate')).startOf('day');
   var today=moment(new Date()).startOf('day');
   $(document).bind('keyup', 'left', function(){
