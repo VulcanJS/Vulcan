@@ -1661,7 +1661,7 @@ table thead tr td {
   .mobile-nav-open .outer-wrapper .content-wrapper {
     left: 280px; }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   /* line 50, ../sass/partials/_mobile.scss */
   .header-button, .header .auth-buttons .login-link-and-dropdown-list .login-link-text, .header .mobile-button {
     position: relative;
@@ -1725,22 +1725,25 @@ table thead tr td {
         height: auto !important;
         max-height: 40px !important;
         width: auto !important; }
-    /* line 106, ../sass/partials/_mobile.scss */
+      /* line 104, ../sass/partials/_mobile.scss */
+      .header .logo.image {
+        margin-top: -10px; }
+    /* line 108, ../sass/partials/_mobile.scss */
     .header .auth-buttons {
       z-index: 100;
       margin: 0; }
-      /* line 109, ../sass/partials/_mobile.scss */
+      /* line 111, ../sass/partials/_mobile.scss */
       .header .auth-buttons #login-buttons {
         display: block !important; }
-      /* line 112, ../sass/partials/_mobile.scss */
+      /* line 114, ../sass/partials/_mobile.scss */
       .header .auth-buttons .login-link-and-dropdown-list {
         right: 0px !important;
         position: static !important; }
-        /* line 115, ../sass/partials/_mobile.scss */
+        /* line 117, ../sass/partials/_mobile.scss */
         .header .auth-buttons .login-link-and-dropdown-list #login-dropdown-list {
           right: 0px !important;
           margin: 0px !important; }
-        /* line 119, ../sass/partials/_mobile.scss */
+        /* line 121, ../sass/partials/_mobile.scss */
         .header .auth-buttons .login-link-and-dropdown-list .login-link-text {
           font: 0/0 a;
           text-shadow: none;
@@ -1748,7 +1751,7 @@ table thead tr td {
           height: 30px !important;
           margin: 10px 0 0 0 !important;
           display: block !important; }
-          /* line 125, ../sass/partials/_mobile.scss */
+          /* line 127, ../sass/partials/_mobile.scss */
           .header .auth-buttons .login-link-and-dropdown-list .login-link-text:after {
             content: "\75" !important;
             font-family: 'icomoon' !important;
@@ -1758,70 +1761,70 @@ table thead tr td {
             line-height: 30px !important;
             height: 30px !important;
             font-size: 18px !important; }
-    /* line 138, ../sass/partials/_mobile.scss */
+    /* line 140, ../sass/partials/_mobile.scss */
     .header .mobile-button {
       z-index: 100; }
-      /* line 142, ../sass/partials/_mobile.scss */
+      /* line 144, ../sass/partials/_mobile.scss */
       .header .mobile-button span {
         display: none; }
-      /* line 145, ../sass/partials/_mobile.scss */
+      /* line 147, ../sass/partials/_mobile.scss */
       .header .mobile-button.menu {
         float: left; }
-      /* line 148, ../sass/partials/_mobile.scss */
+      /* line 150, ../sass/partials/_mobile.scss */
       .header .mobile-button.submit {
         float: right; }
-      /* line 151, ../sass/partials/_mobile.scss */
+      /* line 153, ../sass/partials/_mobile.scss */
       .header .mobile-button:hover {
         background: white; }
-        /* line 153, ../sass/partials/_mobile.scss */
+        /* line 155, ../sass/partials/_mobile.scss */
         .header .mobile-button:hover i {
           color: #f36c3d; }
 
-  /* line 160, ../sass/partials/_mobile.scss */
+  /* line 162, ../sass/partials/_mobile.scss */
   .post .post-content {
     margin-right: 50px;
     margin-right: 0px; }
-    /* line 164, ../sass/partials/_mobile.scss */
+    /* line 166, ../sass/partials/_mobile.scss */
     .post .post-content .upvote-link {
       width: 30px; }
-    /* line 167, ../sass/partials/_mobile.scss */
+    /* line 169, ../sass/partials/_mobile.scss */
     .post .post-content .post-info {
       margin-left: 30px;
       padding: 6px 4px 6px 8px; }
-    /* line 172, ../sass/partials/_mobile.scss */
+    /* line 174, ../sass/partials/_mobile.scss */
     .post .post-content .post-heading .post-title {
       line-height: 1.2;
       display: block;
       margin-bottom: 4px;
       font-size: 18px; }
-    /* line 178, ../sass/partials/_mobile.scss */
+    /* line 180, ../sass/partials/_mobile.scss */
     .post .post-content .post-heading .post-domain {
       line-height: 1;
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
-    /* line 185, ../sass/partials/_mobile.scss */
+    /* line 187, ../sass/partials/_mobile.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
-      /* line 190, ../sass/partials/_mobile.scss */
+      /* line 192, ../sass/partials/_mobile.scss */
       .post .post-content .post-meta .unit {
         font-size: 0; }
-        /* line 192, ../sass/partials/_mobile.scss */
+        /* line 194, ../sass/partials/_mobile.scss */
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; }
-  /* line 199, ../sass/partials/_mobile.scss */
+  /* line 201, ../sass/partials/_mobile.scss */
   .post .post-actions {
     display: none; }
-    /* line 201, ../sass/partials/_mobile.scss */
+    /* line 203, ../sass/partials/_mobile.scss */
     .post .post-actions li {
       float: none; }
-      /* line 203, ../sass/partials/_mobile.scss */
+      /* line 205, ../sass/partials/_mobile.scss */
       .post .post-actions li a {
         height: 40px;
         width: 40px;
         font-size: 30px; }
-        /* line 207, ../sass/partials/_mobile.scss */
+        /* line 209, ../sass/partials/_mobile.scss */
         .post .post-actions li a i {
           display: block;
           position: absolute;
@@ -1831,9 +1834,9 @@ table thead tr td {
           height: 100%;
           line-height: 40px;
           text-align: center; }
-        /* line 217, ../sass/partials/_mobile.scss */
+        /* line 219, ../sass/partials/_mobile.scss */
         .post .post-actions li a .count {
           top: 9px; }
-        /* line 220, ../sass/partials/_mobile.scss */
+        /* line 222, ../sass/partials/_mobile.scss */
         .post .post-actions li a .action {
           display: none; } }

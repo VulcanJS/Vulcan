@@ -101,8 +101,10 @@
 					width:auto !important;
 				}
 			}
+			&.image{
+				margin-top:-10px; //since the mobile header is 20px thinner than the normal one, take off 10px more
+			}
 		}
-
 		.auth-buttons{
 			z-index:100;
 			margin:0;
