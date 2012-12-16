@@ -215,6 +215,13 @@
       if(Meteor.Router.page() !== "loading"){
         console.log('------ Request start -------- ('+Meteor.Router.page()+')');
       
+
+        if(_.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending', 'posts_best'], Meteor.Router.page())){
+          Session.set('isPostsList', true);
+        }else{
+          Session.set('isPostsList', false);
+        }
+
         // openedComments is an Array that tracks which comments
         // have been expanded by the user, to make sure they stay expanded
         Session.set("openedComments", null);

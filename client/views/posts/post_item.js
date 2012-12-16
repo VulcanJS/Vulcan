@@ -12,7 +12,7 @@ Template.post_item.helpers({
     return this._rank + 1;
   },
   showRank: function(){
-    return _.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending'], Meteor.Router.page());
+    return Session.get('isPostsList');
   },
   domain: function(){
     var a = document.createElement('a');
