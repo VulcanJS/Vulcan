@@ -28,6 +28,7 @@ Template.posts_list.rendered = function(){
   $('.post').each(function(){
     distanceFromTop += $(this).height();
   });
+  Session.set('distanceFromTop', distanceFromTop);
   $('body').css('min-height',distanceFromTop+160);
   $('.more-button').css('top', distanceFromTop+"px");  
 }

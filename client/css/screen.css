@@ -152,17 +152,21 @@ body {
 
 /* line 40, ../sass/partials/_main.scss */
 .footer {
-  text-align: center; }
+  text-align: center;
+  padding-bottom: 10px; }
+  /* line 43, ../sass/partials/_main.scss */
+  .footer.absolute {
+    position: absolute; }
 
-/* line 43, ../sass/partials/_main.scss */
+/* line 47, ../sass/partials/_main.scss */
 #login-buttons .loading {
   display: none; }
 
-/* line 46, ../sass/partials/_main.scss */
+/* line 50, ../sass/partials/_main.scss */
 #loading {
   height: 300px; }
 
-/* line 49, ../sass/partials/_main.scss */
+/* line 53, ../sass/partials/_main.scss */
 #tlkio {
   position: fixed;
   top: 0px;
@@ -174,13 +178,13 @@ body {
   transition: ease-out right 300ms 0ms;
   z-index: 1000;
   background: #333; }
-  /* line 56, ../sass/partials/_main.scss */
+  /* line 60, ../sass/partials/_main.scss */
   #tlkio.open {
     right: 0px;
     -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
     box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 60, ../sass/partials/_main.scss */
+  /* line 64, ../sass/partials/_main.scss */
   #tlkio .open-chat, #tlkio .report-bug {
     display: block;
     background: #7ac0e4;
@@ -205,7 +209,7 @@ body {
     box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
     z-index: 1001;
     white-space: nowrap; }
-  /* line 75, ../sass/partials/_main.scss */
+  /* line 79, ../sass/partials/_main.scss */
   #tlkio .report-bug {
     top: 400px;
     right: 236px; }
@@ -633,22 +637,23 @@ body.pageslide-open {
 /* line 5, ../sass/partials/_grid.scss */
 .grid {
   width: 74%;
-  margin: 0 13%;
+  margin-left: 13%;
+  margin-right: 13%;
   -webkit-transition: ease-out margin 300ms;
   -webkit-transition-delay: 0ms;
   -moz-transition: ease-out margin 300ms 0ms;
   -o-transition: ease-out margin 300ms 0ms;
   transition: ease-out margin 300ms 0ms; }
-  /* line 9, ../sass/partials/_grid.scss */
+  /* line 10, ../sass/partials/_grid.scss */
   .chat-open .grid {
     margin-right: 24%;
     margin-left: 2%; }
-  /* line 13, ../sass/partials/_grid.scss */
+  /* line 14, ../sass/partials/_grid.scss */
   .notifications-open .grid {
     margin-left: 24%;
     margin-right: 2%; }
 
-/* line 18, ../sass/partials/_grid.scss */
+/* line 19, ../sass/partials/_grid.scss */
 .grid-small {
   width: 320px;
   margin: 0 auto; }

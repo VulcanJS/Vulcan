@@ -39,6 +39,10 @@ body{
 }
 .footer{
 	text-align:center;
+	padding-bottom:10px;
+	&.absolute{
+		position:absolute;
+	}
 }
 #login-buttons .loading{
 	display:none;

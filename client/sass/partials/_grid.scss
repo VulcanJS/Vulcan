@@ -4,7 +4,8 @@
 
 .grid{
 	width:74%;
-	margin:0 13%;
+	margin-left:13%;
+	margin-right:13%;
 	@include single-transition(ease-out, margin, 300ms, 0ms);
 	.chat-open &{
 		margin-right:24%;
