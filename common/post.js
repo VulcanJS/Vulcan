@@ -15,6 +15,7 @@ Meteor.methods({
     var timeSinceLastPost=timeSinceLast(user, Posts);
     var numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts);
     var postInterval = Math.abs(parseInt(getSetting('postInterval'))) || 30;
+    var maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPosts'))) || 30;
 
     // check that user can post
     if (!user || !canPost(user))
@@ -34,8 +35,8 @@ Meteor.methods({
     if(!this.isSimulation && timeSinceLastPost < postInterval)
       throw new Meteor.Error(604, 'Please wait '+(postInterval-timeSinceLastPost)+' seconds before posting again');
 
-    if(!this.isSimulation && numberOfPostsInPast24Hours > 30)
-      throw new Meteor.Error(605, 'Sorry, you cannot submit more than 30 posts per day');
+    if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
+      throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
 
     post = _.extend(post, {
       headline: headline,
