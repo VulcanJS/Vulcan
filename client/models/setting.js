@@ -8,6 +8,7 @@ var Setting = FormModel.extend({
     scoreUpdateInterval: '',
     postInterval: '',
     commentInterval: '',
+    maxPosts: '',
     title: '',
     logoUrl: '',
     logoHeight: '',
