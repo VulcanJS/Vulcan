@@ -166,54 +166,6 @@ body {
 #loading {
   height: 300px; }
 
-/* line 53, ../sass/partials/_main.scss */
-#tlkio {
-  position: fixed;
-  top: 0px;
-  right: -280px;
-  -webkit-transition: ease-out right 300ms;
-  -webkit-transition-delay: 0ms;
-  -moz-transition: ease-out right 300ms 0ms;
-  -o-transition: ease-out right 300ms 0ms;
-  transition: ease-out right 300ms 0ms;
-  z-index: 1000;
-  background: #333; }
-  /* line 60, ../sass/partials/_main.scss */
-  #tlkio.open {
-    right: 0px;
-    -webkit-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15);
-    box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15); }
-  /* line 64, ../sass/partials/_main.scss */
-  #tlkio .open-chat, #tlkio .report-bug {
-    display: block;
-    background: #7ac0e4;
-    -webkit-border-radius: 3px 3px 0px 0px;
-    -moz-border-radius: 3px 3px 0px 0px;
-    -ms-border-radius: 3px 3px 0px 0px;
-    -o-border-radius: 3px 3px 0px 0px;
-    border-radius: 3px 3px 0px 0px;
-    position: absolute;
-    top: 300px;
-    right: 264px;
-    text-transform: uppercase;
-    color: white;
-    padding: 3px 10px;
-    -webkit-transform: rotate(270deg);
-    -moz-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-    transform: rotate(270deg);
-    -webkit-box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.15);
-    z-index: 1001;
-    white-space: nowrap; }
-  /* line 79, ../sass/partials/_main.scss */
-  #tlkio .report-bug {
-    top: 400px;
-    right: 236px; }
-
 /* line 1, ../sass/partials/_typography.scss */
 body, textarea, input, button, input[type="submit"], input[type="button"] {
   font-family: "Open Sans", "Proxima Nova Soft", "proxima-nova-soft", "PT SANS", "Helvetica Neue", Helvetica, sans-serif;

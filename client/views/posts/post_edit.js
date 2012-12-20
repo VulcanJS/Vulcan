@@ -71,7 +71,7 @@ Template.post_edit.events = {
     });
     
     var properties = {
-      headline:            $('#title').val(),
+      headline:         $('#title').val(),
       url:              $('#url').val(),
       body:             instance.editor.exportFile(),
       categories:       categories,
@@ -86,10 +86,6 @@ Template.post_edit.events = {
       };
       properties = _.extend(properties, adminProperties);
     }
-
-    console.log(properties);
-
-
 
     Posts.update(selectedPostId,
     {

@@ -1,6 +1,6 @@
 <template name="post_item">
   <div class="post post-{{rank}} {{#if sticky}}sticky{{/if}}" id="{{_id}}">
-    <ul class="post-actions just-a-test">
+    <ul class="post-actions">
       <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">Share</span></a>
         <div class="share-options hidden">
           {{#constant}}
@@ -44,7 +44,7 @@
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}
           {{#if currentUser.isAdmin}}
-          | <span class="status" style="color:red;">{{status}}</span> votes: {{votes}}, baseScore: {{baseScore}}, score: {{short_score}}, time: {{timestamp}}
+            | status: {{status}}</span>, votes: {{votes}}, baseScore: {{baseScore}}, score: {{short_score}}
           {{/if}}
         </p>
       </div>
