@@ -19,8 +19,9 @@ Template.posts_list.helpers({
     return ! this.loading();
   },
   allPostsLoaded: function(){
-    return this.fetch().length < this.loaded()
-  }
+    allPostsLoaded = this.fetch().length < this.loaded();
+    Session.set('allPostsLoaded', allPostsLoaded);
+    return allPostsLoaded;  }
 });
 
 Template.posts_list.rendered = function(){

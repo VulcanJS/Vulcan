@@ -152,17 +152,20 @@ body {
 
 /* line 40, ../sass/partials/_main.scss */
 .footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   text-align: center;
-  padding-bottom: 10px; }
-  /* line 43, ../sass/partials/_main.scss */
+  padding: 10px 0 70px 0;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px; }
+  /* line 46, ../sass/partials/_main.scss */
   .footer.absolute {
     position: absolute; }
 
-/* line 47, ../sass/partials/_main.scss */
+/* line 50, ../sass/partials/_main.scss */
 #login-buttons .loading {
   display: none; }
 
-/* line 50, ../sass/partials/_main.scss */
+/* line 53, ../sass/partials/_main.scss */
 #loading {
   height: 300px; }
 

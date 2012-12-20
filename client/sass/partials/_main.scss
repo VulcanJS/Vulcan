@@ -38,8 +38,11 @@ body{
 	z-index:50;
 }
 .footer{
+	border-top:1px solid black(0.05);
 	text-align:center;
-	padding-bottom:10px;
+	padding:10px 0 70px 0;
+	color:black(0.4);
+	font-size:14px;
 	&.absolute{
 		position:absolute;
 	}

@@ -6,7 +6,10 @@ Template.footer.helpers({
     return getSetting('extraCode');
   },  
   distanceFromTop: function(){
-    return parseInt(Session.get('distanceFromTop'))+70+20+70;
+    var distanceFromTop = parseInt(Session.get('distanceFromTop'))+70+20;
+    if(!Session.get('allPostsLoaded'))
+      distanceFromTop += 70;
+    return distanceFromTop;
   },
   footerClass: function(){
     return Session.get('isPostsList') ? 'absolute' : 'static';
