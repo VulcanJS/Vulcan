@@ -5,6 +5,7 @@ Meteor.methods({
     var postUser=Meteor.users.findOne(post.userId);
     var timeSinceLastComment=timeSinceLast(user, Comments);
     var cleanText= cleanUp(text);
+    var commentInterval = Math.abs(parseInt(getSetting('commentInterval'))) || 15;
 
     var properties={
         'commentAuthorId': user._id,
@@ -17,8 +18,8 @@ Meteor.methods({
       throw new Meteor.Error('You need to login or be invited to post new comments.');
     
     // check that user waits more than 15 seconds between comments
-    if(!this.isSimulation && (timeSinceLastComment < 15))
-      throw new Meteor.Error(704, 'Please wait '+(15-timeSinceLastComment)+' seconds before commenting again');
+    if(!this.isSimulation && (timeSinceLastComment < commentInterval))
+      throw new Meteor.Error(704, 'Please wait '+(commentInterval-timeSinceLastComment)+' seconds before commenting again');
 
     var comment = {
         post: postId

@@ -14,6 +14,7 @@ Meteor.methods({
     var postWithSameLink = Posts.findOne({url: post.url});
     var timeSinceLastPost=timeSinceLast(user, Posts);
     var numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts);
+    var postInterval = Math.abs(parseInt(getSetting('postInterval'))) || 30;
 
     // check that user can post
     if (!user || !canPost(user))
@@ -30,8 +31,8 @@ Meteor.methods({
     }
 
     // check that user waits more than 30 seconds between posts
-    if(!this.isSimulation && timeSinceLastPost < 30)
-      throw new Meteor.Error(604, 'Please wait '+(30-timeSinceLastPost)+' seconds before posting again');
+    if(!this.isSimulation && timeSinceLastPost < postInterval)
+      throw new Meteor.Error(604, 'Please wait '+(postInterval-timeSinceLastPost)+' seconds before posting again');
 
     if(!this.isSimulation && numberOfPostsInPast24Hours > 30)
       throw new Meteor.Error(605, 'Sorry, you cannot submit more than 30 posts per day');

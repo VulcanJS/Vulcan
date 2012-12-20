@@ -1352,7 +1352,7 @@ form .control-group, .accounts-dialog .control-group {
     margin-right: 10px; }
   /* line 16, ../sass/modules/_forms.scss */
   form .control-group .controls, .accounts-dialog .control-group .controls {
-    margin-left: 120px;
+    margin-left: 150px;
     position: relative; }
     /* line 19, ../sass/modules/_forms.scss */
     form .control-group .controls .get-title-link, .accounts-dialog .control-group .controls .get-title-link {

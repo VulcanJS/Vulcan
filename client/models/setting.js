@@ -6,6 +6,8 @@ var Setting = FormModel.extend({
     requirePostInvite: false,
     requirePostsApproval: false,
     scoreUpdateInterval: '',
+    postInterval: '',
+    commentInterval: '',
     title: '',
     logoUrl: '',
     logoHeight: '',
