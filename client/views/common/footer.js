@@ -7,7 +7,7 @@ Template.footer.helpers({
   },  
   distanceFromTop: function(){
     var distanceFromTop = parseInt(Session.get('distanceFromTop'))+70+20;
-    if(!Session.get('allPostsLoaded'))
+    if(Meteor.Router.page()!='posts_digest' && !Session.get('allPostsLoaded'))
       distanceFromTop += 70;
     return distanceFromTop;
   },
