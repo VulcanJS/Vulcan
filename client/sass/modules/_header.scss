@@ -16,30 +16,6 @@
 	@include cf;
 	@include border-radius(0 0 3px 3px);
 	@include box-shadow(0 1px 1px black(1));
-	.nav{
-		@include horizontal-list-container;
-		margin-top:20px;
-		li{
-			@include horizontal-list-item;
-			margin-right:10px;
-			a{
-				color:white;
-				font-size:16px;
-				line-height:26px;
-				height:26px;
-				font-weight:normal;
-
-				&.intercom em{
-					&:before{
-						content:'(';
-					}
-					&:after{
-						content:')';
-					}
-				}
-			}
-		}
-	}
 	.site-nav{
 		float:left;
 		margin-left:20px;
@@ -154,3 +130,27 @@
 		}
 	}
 }
+.nav{
+		@include cf;
+		margin-top:20px;
+		li{
+			@include horizontal-list-item;
+			margin-right:10px;
+			a{
+				color:white;
+				font-size:16px;
+				line-height:26px;
+				height:26px;
+				font-weight:normal;
+
+				&.intercom em{
+					&:before{
+						content:'(';
+					}
+					&:after{
+						content:')';
+					}
+				}
+			}
+		}
+	}
