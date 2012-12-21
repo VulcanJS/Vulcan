@@ -123,7 +123,7 @@ Meteor.autorun(function() {
   // set up a sub for each day for the DIGEST_PRELOADING days before and after
   // but we want to be smart about it --  
   for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
-    if (! digestHandles[dateHash(mDate)] && mDate < moment().add('days', 1)) {
+    if (! digestHandles[dateHash(mDate)]) {
       // console.log('subscribing digest for ' + mDate.toString());
       digestHandles[dateHash(mDate)] = daySubscription(mDate);
     }
