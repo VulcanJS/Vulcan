@@ -1,5 +1,3 @@
-// ** Accounts UI Config **
-
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL'
 });
@@ -14,6 +12,7 @@ EpicEditorOptions={
 		editor:'/themes/editor/epic-light.css'
 	}
 };
+
 SharrreOptions={
 	share: {
 	  googlePlus: true,
