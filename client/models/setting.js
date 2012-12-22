@@ -8,7 +8,7 @@ var Setting = FormModel.extend({
     scoreUpdateInterval: '',
     postInterval: '',
     commentInterval: '',
-    maxPosts: '',
+    maxPostsPerDay: '',
     title: '',
     logoUrl: '',
     logoHeight: '',
@@ -22,7 +22,8 @@ var Setting = FormModel.extend({
   },      
 
   init: function(options) {
-    this._super(Settings, options);    
+    this._super(Settings, options);
+    this.overwriteTitle('scoreUpdateInterval', 'Scoring Frequency'); 
     this.overwriteTitle('requireViewInvite', 'Require Invite to view?');
     this.overwriteTitle('requirePostInvite', 'Require Invite to post?');
     this.overwriteTitle('requirePostsApproval', 'Posts must be approved by admin?');

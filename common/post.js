@@ -15,7 +15,7 @@ Meteor.methods({
     var timeSinceLastPost=timeSinceLast(user, Posts);
     var numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts);
     var postInterval = Math.abs(parseInt(getSetting('postInterval'))) || 30;
-    var maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPosts'))) || 30;
+    var maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay'))) || 30;
 
     // check that user can post
     if (!user || !canPost(user))
