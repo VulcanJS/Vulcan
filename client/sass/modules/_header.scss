@@ -131,26 +131,26 @@
 	}
 }
 .nav{
-		@include cf;
-		margin-top:20px;
-		li{
-			@include horizontal-list-item;
-			margin-right:10px;
-			a{
-				color:white;
-				font-size:16px;
-				line-height:26px;
-				height:26px;
-				font-weight:normal;
+	@include cf;
+	margin-top:20px;
+	>li{
+		@include horizontal-list-item;
+		margin-right:10px;
+		>a{
+			color:white;
+			font-size:16px;
+			line-height:26px;
+			height:26px;
+			font-weight:normal;
 
-				&.intercom em{
-					&:before{
-						content:'(';
-					}
-					&:after{
-						content:')';
-					}
+			&.intercom em{
+				&:before{
+					content:'(';
+				}
+				&:after{
+					content:')';
 				}
 			}
 		}
 	}
+}

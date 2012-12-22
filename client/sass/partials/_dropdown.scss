@@ -19,14 +19,10 @@
 		padding:10px;
 		width:140px;
 		@include border-radius(3px);
-		@include box-shadow(0 1px 1px black(0.15));
+		@include box-shadow(0 1px 3px black(0.35));
 		li{
-			display:block;
-			float:none;
-			margin:0;
-			padding:0;
 			a{
-				color:$text;
+				font-size:14px;
 			}
 		}
 	}

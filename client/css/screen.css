@@ -614,19 +614,13 @@ body.pageslide-open {
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
     border-radius: 3px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
-    /* line 23, ../sass/partials/_dropdown.scss */
-    .dropdown ul li {
-      display: block;
-      float: none;
-      margin: 0;
-      padding: 0; }
-      /* line 28, ../sass/partials/_dropdown.scss */
-      .dropdown ul li a {
-        color: #4a4444; }
-  /* line 34, ../sass/partials/_dropdown.scss */
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
+    /* line 24, ../sass/partials/_dropdown.scss */
+    .dropdown ul li a {
+      font-size: 14px; }
+  /* line 30, ../sass/partials/_dropdown.scss */
   .dropdown:hover ul {
     display: block; }
 
@@ -788,7 +782,7 @@ body.pageslide-open {
   .nav:after {
     clear: both; }
   /* line 136, ../sass/modules/_header.scss */
-  .nav li {
+  .nav > li {
     list-style-image: none;
     list-style-type: none;
     margin-left: 0;
@@ -799,26 +793,26 @@ body.pageslide-open {
     padding-right: 4px;
     margin-right: 10px; }
     /* line 48, ../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
-    .nav li:first-child, .nav li.first {
+    .nav > li:first-child, .nav > li.first {
       padding-left: 0; }
     /* line 49, ../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
-    .nav li:last-child {
+    .nav > li:last-child {
       padding-right: 0; }
     /* line 50, ../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
-    .nav li.last {
+    .nav > li.last {
       padding-right: 0; }
     /* line 139, ../sass/modules/_header.scss */
-    .nav li a {
+    .nav > li > a {
       color: white;
       font-size: 16px;
       line-height: 26px;
       height: 26px;
       font-weight: normal; }
       /* line 147, ../sass/modules/_header.scss */
-      .nav li a.intercom em:before {
+      .nav > li > a.intercom em:before {
         content: '('; }
       /* line 150, ../sass/modules/_header.scss */
-      .nav li a.intercom em:after {
+      .nav > li > a.intercom em:after {
         content: ')'; }
 
 /* line 1, ../sass/modules/_posts.scss */
