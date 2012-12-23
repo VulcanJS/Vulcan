@@ -7,7 +7,14 @@ Template.posts_digest.helpers({
     return handle && ! handle.loading() && handle.loaded() > 0;
   },
   currentDate: function(){
-    return moment(Session.get('currentDate')).format("dddd, MMMM Do YYYY");
+    var currentDate=moment(Session.get('currentDate'));
+    var today=moment(new Date());
+    var diff=today.diff(currentDate, 'days');
+    if(diff === 0)
+      return "Today";
+    if(diff === 1)
+      return "Yesterday";
+    return currentDate.format("dddd, MMMM Do YYYY");
   },
   previousDateURL: function(){
     var currentDate=moment(Session.get('currentDate'));
