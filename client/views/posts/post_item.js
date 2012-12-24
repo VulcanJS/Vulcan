@@ -50,6 +50,9 @@ Template.post_item.helpers({
   userAvatar: function(){
     if(author=Meteor.users.findOne(this.userId))
       return getAvatarUrl(author);
+  },
+  inactiveClass: function(){
+    return this.inactive ? "inactive" : "";
   }
 });
 

@@ -48,6 +48,7 @@ Meteor.methods({
       comments: 0,
       baseScore: 0,
       score: 0,
+      inactive: false,
       status: status
     });
     

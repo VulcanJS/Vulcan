@@ -11,6 +11,9 @@
 		&.animate{
 			@include single-transition(ease-out, top, 400ms, 0ms);
 		}
+		&.inactive{
+			opacity:0.4;
+		}
 	}
 }
 .post-content{
