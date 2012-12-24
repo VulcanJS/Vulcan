@@ -52,7 +52,7 @@ Template.post_item.helpers({
       return getAvatarUrl(author);
   },
   inactiveClass: function(){
-    return this.inactive ? "inactive" : "";
+    return (isAdmin(Meteor.user()) && this.inactive) ? "inactive" : "";
   }
 });
 

@@ -12,7 +12,6 @@ var updateScore = function (collection, id, forceUpdate) {
   var n = 30;
   // x = score increase amount of a single vote after n days (for n=100, x=0.000040295)
   var x = 1/Math.pow(n*24+2,1.3);
-  console.log(x)
   var object = collection.findOne(id);
 
   // use baseScore if defined, if not just use the number of votes
@@ -46,8 +45,9 @@ var updateScore = function (collection, id, forceUpdate) {
 
 Meteor.startup(function () {
   var scoreInterval = getSetting("scoreUpdateInterval") || 30;
-  // recalculate scores every N seconds
   if(scoreInterval>0){
+
+    // active items get updated every N seconds
     intervalId=Meteor.setInterval(function () {
       var updatedPosts = 0;
       var updatedComments = 0;
@@ -61,5 +61,16 @@ Meteor.startup(function () {
       console.log("Updated "+updatedPosts+"/"+Posts.find().count()+" Posts")
       console.log("Updated "+updatedComments+"/"+Comments.find().count()+" Comments")
     }, scoreInterval * 1000);
+
+    // inactive items get updated every hour
+    inactiveIntervalId=Meteor.setInterval(function () {
+      Posts.find({'inactive': true}).forEach(function (post) {
+        updatedPosts += updateScore(Posts, post._id);
+      });
+      Comments.find({'inactive': true}).forEach(function (comment) {
+        updatedComments += updateScore(Comments, comment._id);
+      });
+    }, 3600 * 1000);
+
   }
 });

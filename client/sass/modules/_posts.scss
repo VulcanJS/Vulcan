@@ -12,7 +12,9 @@
 			@include single-transition(ease-out, top, 400ms, 0ms);
 		}
 		&.inactive{
-			opacity:0.4;
+			.post-content, .post-actions li a{
+				background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
+			}
 		}
 	}
 }
