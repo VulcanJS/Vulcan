@@ -65,14 +65,14 @@ Template.post_edit.events = {
 
     var selectedPostId=Session.get('selectedPostId');
     var categories = [];
-
+    var url = $('#url').val();
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
     });
     
     var properties = {
       headline:         $('#title').val(),
-      url:              $('#url').val(),
+      url:              url.substring(0, 7) == "http://" ? url : "http://"+url,
       body:             instance.editor.exportFile(),
       categories:       categories,
     };

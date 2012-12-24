@@ -16,7 +16,7 @@ Meteor.methods({
     var numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts);
     var postInterval = Math.abs(parseInt(getSetting('postInterval'))) || 30;
     var maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay'))) || 30;
-
+    
     // check that user can post
     if (!user || !canPost(user))
       throw new Meteor.Error(601, 'You need to login or be invited to post new stories.');
