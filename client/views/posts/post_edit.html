@@ -3,18 +3,18 @@
     {{#constant}}{{#with post}}
       <form class="grid-block form-horizontal">
         <div class="control-group">
-          <label class="control-label">Title</label>
+          <label class="control-label post-form-headline">Title</label>
           <div class="controls"><input id="title" type="text" value="{{headline}}" /></div>
         </div>
         <div class="control-group">
-          <label class="control-label">URL</label>
+          <label class="control-label post-form-url">URL</label>
           <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
         </div>
         <div class="control-group">
-          <label class="control-label">Body</label>
+          <label class="control-label post-form-body">Body</label>
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
         </div>
-        <div class="control-group">
+        <div class="control-group post-form-category">
           <label class="control-label">Category</label>
           <div class="controls">
             {{#each categories}}
@@ -25,22 +25,22 @@
           </div>
         </div>
         {{#if isAdmin}}
-          <div class="control-group">
+          <div class="control-group post-form-sticky">
             <label class="control-label">Sticky?</label>
             <div class="controls">
               <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label">Date</label>
+            <label class="control-label post-form-date">Date</label>
             <div class="controls"><input id="submitted_date" type="text" value="{{submittedDate}}" /></div>
             <input id="submitted_hidden" type="hidden" value="{{submitted}}" />
           </div>
           <div class="control-group">
-            <label class="control-label">Time</label>
+            <label class="control-label post-form-time">Time</label>
             <div class="controls"><input id="submitted_time" type="text" value="{{submittedTime}}" /></div>
           </div>
-          <div class="control-group">
+          <div class="control-group post-form-user">
             <label class="control-label">User</label>
             <div class="controls">
               <select id="postUser">
@@ -50,7 +50,7 @@
               </select>
             </div>
           </div>
-          <div class="control-group">
+          <div class="control-group post-form-status">
             <label class="control-label">Status</label>
             <div class="controls">
               <label class="radio inline">

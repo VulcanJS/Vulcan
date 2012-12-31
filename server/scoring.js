@@ -34,7 +34,7 @@ var updateScore = function (collection, id, forceUpdate) {
 
   // only update database if difference is larger than x to avoid unnecessary updates
   if (forceUpdate || scoreDiff > x){
-    console.log('updating: '+object.headline)
+    // console.log('updating: '+object.headline)
     collection.update(id, {$set: {score: newScore}});
     return 1;
   }else if(ageInHours > n*24){
@@ -59,8 +59,8 @@ Meteor.startup(function () {
       Comments.find({'inactive': {$ne : true}}).forEach(function (comment) {
         updatedComments += updateScore(Comments, comment._id);
       });
-      console.log("Updated "+updatedPosts+"/"+Posts.find().count()+" Posts")
-      console.log("Updated "+updatedComments+"/"+Comments.find().count()+" Comments")
+      // console.log("Updated "+updatedPosts+"/"+Posts.find().count()+" Posts")
+      // console.log("Updated "+updatedComments+"/"+Comments.find().count()+" Comments")
     }, scoreInterval * 1000);
 
     // inactive items get updated every hour

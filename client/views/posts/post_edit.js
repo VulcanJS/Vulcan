@@ -72,7 +72,7 @@ Template.post_edit.events = {
     
     var properties = {
       headline:         $('#title').val(),
-      url:              url.substring(0, 7) == "http://" ? url : "http://"+url,
+      url:              (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url,
       body:             instance.editor.exportFile(),
       categories:       categories,
     };

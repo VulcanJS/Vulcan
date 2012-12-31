@@ -40,7 +40,7 @@ Template.post_submit.events = {
 
     var title= $('#title').val();
     var url = $('#url').val();
-    var cleanUrl = url.substring(0, 7) == "http://" ? url : "http://"+url;
+    var cleanUrl = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
     var body = instance.editor.exportFile();
     var categories=[];
     var sticky=!!$('#sticky').attr('checked');

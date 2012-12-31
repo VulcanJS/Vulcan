@@ -1,5 +1,9 @@
 Session.set('initialLoad', true);
 
+l=function(s){
+  console.log(s);
+}
+
 // HELPERS
 getSetting = function(setting){
   var settings=Settings.find().fetch()[0];
