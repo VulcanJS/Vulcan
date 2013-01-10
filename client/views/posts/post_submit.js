@@ -88,10 +88,11 @@ Template.post_submit.events = {
           }else{
               alert("Sorry, couldn't find a title...");
           }
-       });  
+          $(".get-title-link").removeClass("loading");
+       });
     }else{
       alert("Please fill in an URL first!");
+      $(".get-title-link").removeClass("loading");
     }
-    $(".get-title-link").removeClass("loading");
   }
 };
