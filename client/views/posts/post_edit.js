@@ -14,7 +14,7 @@ Template.post_edit.helpers({
   },
   isChecked: function(){
     var post= Posts.findOne(Session.get('selectedPostId'));
-    return $.inArray( this.name, post.categories) != -1;
+    return $.inArray( this.name, post.categories) != -1 ? 'checked' : '';
   },
   submittedDate: function(){
     return moment(this.submitted).format("MM/DD/YYYY");
@@ -30,7 +30,7 @@ Template.post_edit.helpers({
   },
   isSelected: function(){
     var post=Posts.findOne(Session.get('selectedPostId'));
-    return post && this._id == post.userId;
+    return post && this._id == post.userId ? 'selected' : '';
   },
   statusPending: function(){
     return this.status == STATUS_PENDING;
