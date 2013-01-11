@@ -65,6 +65,8 @@ Meteor.startup(function () {
 
     // inactive items get updated every hour
     inactiveIntervalId=Meteor.setInterval(function () {
+      var updatedPosts = 0;
+      var updatedComments = 0;
       Posts.find({'inactive': true}).forEach(function (post) {
         updatedPosts += updateScore(Posts, post._id);
       });
