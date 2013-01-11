@@ -5,6 +5,7 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 # Learn More
 - [Telescope Site](http://telesc.pe)
 - [Telescope Demo](http://demo.telesc.pe)
+- [Telescope Meta](http://meta.telesc.pe/) – Discussions about Telescope
 
 # License
 - Telescope is distributed under the [MIT License](http://opensource.org/licenses/MIT)
