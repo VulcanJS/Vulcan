@@ -3,6 +3,10 @@
     {{#constant}}{{#with post}}
       <form class="grid-block form-horizontal">
         <div class="control-group">
+          <label class="control-label post-form-headline">CreatedAt</label>
+          <div class="controls"><p>{{created}}</p></div>
+        </div>
+        <div class="control-group">
           <label class="control-label post-form-headline">Title</label>
           <div class="controls"><input id="title" type="text" value="{{headline}}" /></div>
         </div>
@@ -31,15 +35,24 @@
               <input type="checkbox" name="sticky" id="sticky" {{#if sticky}}checked{{/if}} />
             </div>
           </div>
+          {{#if isApproved}}
           <div class="control-group">
-            <label class="control-label post-form-date">Date</label>
+            <label class="control-label post-form-date">Submission Date</label>
             <div class="controls"><input id="submitted_date" type="text" value="{{submittedDate}}" /></div>
             <input id="submitted_hidden" type="hidden" value="{{submitted}}" />
           </div>
           <div class="control-group">
-            <label class="control-label post-form-time">Time</label>
+            <label class="control-label post-form-time">Submission Time</label>
             <div class="controls"><input id="submitted_time" type="text" value="{{submittedTime}}" /></div>
           </div>
+          {{else}}
+          <div class="control-group">
+            <label class="control-label post-form-timestamp">Submission</label>
+            <div class="controls">
+              <p>Note: this post is still pending so it has no submission timestamp yet.</p>
+            </div>  
+          </div>
+          {{/if}}
           <div class="control-group post-form-user">
             <label class="control-label">User</label>
             <div class="controls">

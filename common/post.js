@@ -16,7 +16,8 @@ Meteor.methods({
     var numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts);
     var postInterval = Math.abs(parseInt(getSetting('postInterval'))) || 30;
     var maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay'))) || 30;
-    
+    var postId = '';
+
     // check that user can post
     if (!user || !canPost(user))
       throw new Meteor.Error(601, 'You need to login or be invited to post new stories.');
@@ -43,7 +44,7 @@ Meteor.methods({
       body: body,
       userId: userId,
       author: getDisplayNameById(userId),
-      submitted: submitted,
+      createdAt: new Date().getTime(),
       votes: 0,
       comments: 0,
       baseScore: 0,
@@ -52,11 +53,24 @@ Meteor.methods({
       status: status
     });
     
-    var postId=Posts.insert(post);
-    post['postId']=postId;
+    if(status == STATUS_APPROVED){
+      // if post is approved, set its submitted date (if post is pending, submitted date is left blank)
+      post.submitted  = submitted;
+    }
 
+    Posts.insert(post, function(error, result){
+      if(result){
+        postId = result;
+      }
+    });
+    
     Meteor.call('upvotePost', postId);
 
+    // add the post's own ID to the post object and return it to the client
+    post.postId = postId;
     return post;
+  },
+  post_edit: function(){
+    //TO-DO
   }
 });

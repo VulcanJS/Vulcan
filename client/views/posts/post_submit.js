@@ -26,7 +26,6 @@ Template.post_submit.rendered = function(){
   });
 }
 
-
 Template.post_submit.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
@@ -52,18 +51,23 @@ Template.post_submit.events = {
        categories.push($(this).val());
      });
 
-    Meteor.call('post', {
+    var properties = {
         headline: title
       , body: body
-      , url: cleanUrl
       , categories: categories
       , sticky: sticky
       , submitted: submitted
       , userId: userId
       , status: status
-    }, function(error, post) {
+    };
+    if(url){
+      properties.url = cleanUrl;
+    }
+
+    // console.log(properties);
+
+    Meteor.call('post', properties, function(error, post) {
       if(error){
-        console.log(error);
         throwError(error.reason);
         clearSeenErrors();
         $(e.target).removeClass('disabled');

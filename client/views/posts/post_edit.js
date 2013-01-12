@@ -9,12 +9,20 @@ Template.post_edit.helpers({
   post: function(){
     return Posts.findOne(Session.get('selectedPostId'));
   },
+  created: function(){
+    var post= Posts.findOne(Session.get('selectedPostId'));
+    return moment(post.createdAt).format("MMMM Do, h:mm:ss a");
+  },
   categories: function(){
     return Categories.find();
   },
   isChecked: function(){
     var post= Posts.findOne(Session.get('selectedPostId'));
     return $.inArray( this.name, post.categories) != -1 ? 'checked' : '';
+  },
+  isApproved: function(){
+    var post= Posts.findOne(Session.get('selectedPostId'));
+    return post.status == STATUS_APPROVED;
   },
   submittedDate: function(){
     return moment(this.submitted).format("MM/DD/YYYY");
@@ -64,8 +72,11 @@ Template.post_edit.events = {
     }
 
     var selectedPostId=Session.get('selectedPostId');
+    var post = Posts.findOne(selectedPostId);
     var categories = [];
     var url = $('#url').val();
+    var status = parseInt($('input[name=status]:checked').val());
+
     $('input[name=category]:checked').each(function() {
        categories.push($(this).val());
     });
@@ -78,8 +89,11 @@ Template.post_edit.events = {
     };
     
     if(isAdmin(Meteor.user())){
+      if(status == STATUS_APPROVED){
+        // if post is approved, set submitted timestamp to current date or form field date
+        properties.submitted = (post.submitted == '') ? new Date().getTime() : parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
+      }
       adminProperties = {
-        submitted:  parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf()),
         sticky:     !!$('#sticky').attr('checked'),
         userId:     $('#postUser').val(),
         status:     parseInt($('input[name=status]:checked').val()),

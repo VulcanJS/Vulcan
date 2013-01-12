@@ -37,10 +37,13 @@ Template.post_item.helpers({
     return html_body.autoLink();
   },
   ago: function(){
-    return moment(this.submitted).fromNow();
+    // if post is approved show submission time, else show creation time. 
+    time = this.status == STATUS_APPROVED ? this.submitted : this.createdAt;
+    return moment(time).fromNow();
   },
   timestamp: function(){
-    return moment(this.submitted).format("MMMM Do, h:mm:ss a");
+    time = this.status == STATUS_APPROVED ? this.submitted : this.createdAt;
+    return moment(time).format("MMMM Do, h:mm:ss a");
   },
   voted: function(){
     var user = Meteor.user();
