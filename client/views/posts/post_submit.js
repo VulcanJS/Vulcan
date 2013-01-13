@@ -60,7 +60,7 @@ Template.post_submit.events = {
       , userId: userId
       , status: status
     };
-    if(url){
+    if(url != ''){
       properties.url = cleanUrl;
     }
 

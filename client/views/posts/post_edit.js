@@ -21,9 +21,15 @@ Template.post_edit.helpers({
     return $.inArray( this.name, post.categories) != -1 ? 'checked' : '';
   },
   isApproved: function(){
-    var post= Posts.findOne(Session.get('selectedPostId'));
-    return post.status == STATUS_APPROVED;
+    return this.status == STATUS_APPROVED;
   },
+  isSticky: function(){
+    return this.sticky ? 'checked' : '';
+  },
+  isSelected: function(){
+    var post=Posts.findOne(Session.get('selectedPostId'));
+    return post && this._id == post.userId ? 'selected' : '';
+  },  
   submittedDate: function(){
     return moment(this.submitted).format("MM/DD/YYYY");
   },
@@ -36,18 +42,14 @@ Template.post_edit.helpers({
   userName: function(){
     return getDisplayName(this);
   },
-  isSelected: function(){
-    var post=Posts.findOne(Session.get('selectedPostId'));
-    return post && this._id == post.userId ? 'selected' : '';
+  hasStatusPending: function(){
+    return this.status == STATUS_PENDING ? 'checked' : '';
   },
-  statusPending: function(){
-    return this.status == STATUS_PENDING;
+  hasStatusApproved: function(){
+    return this.status == STATUS_APPROVED ? 'checked' : '';
   },
-  statusApproved: function(){
-    return this.status == STATUS_APPROVED;
-  },
-  statusRejected: function(){
-    return this.status == STATUS_REJECTED;
+  hasStatusRejected: function(){
+    return this.status == STATUS_REJECTED ? 'checked' : '';
   },  
 });
 
@@ -83,11 +85,14 @@ Template.post_edit.events = {
     
     var properties = {
       headline:         $('#title').val(),
-      url:              (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url,
       body:             instance.editor.exportFile(),
       categories:       categories,
     };
     
+    if(url){
+      properties.url = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
+    }
+
     if(isAdmin(Meteor.user())){
       if(status == STATUS_APPROVED){
         // if post is approved, set submitted timestamp to current date or form field date
