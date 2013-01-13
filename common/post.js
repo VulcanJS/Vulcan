@@ -32,12 +32,15 @@ Meteor.methods({
       throw new Meteor.Error(603, 'This link has already been posted', postWithSameLink._id);
     }
 
-    // check that user waits more than 30 seconds between posts
-    if(!this.isSimulation && timeSinceLastPost < postInterval)
-      throw new Meteor.Error(604, 'Please wait '+(postInterval-timeSinceLastPost)+' seconds before posting again');
+    if(!isAdmin(Meteor.user())){
+      // check that user waits more than X seconds between posts
+      if(!this.isSimulation && timeSinceLastPost < postInterval)
+        throw new Meteor.Error(604, 'Please wait '+(postInterval-timeSinceLastPost)+' seconds before posting again');
 
-    if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
-      throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
+      // check that the user doesn't post more than Y posts per day
+      if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
+        throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
+    }
 
     post = _.extend(post, {
       headline: headline,
