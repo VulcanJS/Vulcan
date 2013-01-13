@@ -70,7 +70,21 @@ Meteor.methods({
     post.postId = postId;
     return post;
   },
-  post_edit: function(){
-    //TO-DO
+  post_edit: function(post){
+    //TO-DO: make post_edit server-side?
+  },
+  post_approve: function(postId){
+    //global function for approving a post
+    if(isAdmin(Meteor.user())){
+      Posts.update(postId,{
+        $set: {
+          status: STATUS_APPROVED,
+          submitted: new Date().getTime(),
+          inactive: false
+        }
+      });
+    }else{
+      throw new Meteor.Error(606, "You don't have the rights to do this");
+    }
   }
 });

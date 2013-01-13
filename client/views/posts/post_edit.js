@@ -97,8 +97,7 @@ Template.post_edit.events = {
       if(status == STATUS_APPROVED){
         if(post.submitted == ''){
           // this is the first time we are approving the post
-          properties.submitted = new Date().getTime();
-          properties.inactive = false;
+          Meteor.call('post_approve', selectedPostId);
         }else{
           properties.submitted = parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
         }
@@ -106,7 +105,7 @@ Template.post_edit.events = {
       adminProperties = {
         sticky:     !!$('#sticky').attr('checked'),
         userId:     $('#postUser').val(),
-        status:     parseInt($('input[name=status]:checked').val()),
+        status:     status,
       };
       properties = _.extend(properties, adminProperties);
     }
