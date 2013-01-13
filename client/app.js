@@ -74,7 +74,7 @@ var newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, sub
 var bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, baseScore: -1}}, 10);
 var pendingPostsHandle = postListSubscription(
   {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]}, 
-  {sort: {score: -1}}, 
+  {sort: {createdAt: -1}}, 
   10
 );
 

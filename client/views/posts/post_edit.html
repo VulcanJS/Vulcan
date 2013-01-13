@@ -30,6 +30,12 @@
         </div>
         {{#if isAdmin}}
           <div class="control-group post-form-sticky">
+            <label class="control-label">Inactive?</label>
+            <div class="controls">
+              {{inactive}}
+            </div>
+          </div>
+          <div class="control-group post-form-sticky">
             <label class="control-label">Sticky?</label>
             <div class="controls">
               <input type="checkbox" name="sticky" id="sticky" {{isSticky}} />

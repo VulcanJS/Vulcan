@@ -95,8 +95,13 @@ Template.post_edit.events = {
 
     if(isAdmin(Meteor.user())){
       if(status == STATUS_APPROVED){
-        // if post is approved, set submitted timestamp to current date or form field date
-        properties.submitted = (post.submitted == '') ? new Date().getTime() : parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
+        if(post.submitted == ''){
+          // this is the first time we are approving the post
+          properties.submitted = new Date().getTime();
+          properties.inactive = false;
+        }else{
+          properties.submitted = parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
+        }
       }
       adminProperties = {
         sticky:     !!$('#sticky').attr('checked'),
