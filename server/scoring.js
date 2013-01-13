@@ -14,6 +14,9 @@ var updateScore = function (collection, id, forceUpdate) {
   var x = 1/Math.pow(n*24+2,1.3);
   var object = collection.findOne(id);
 
+  // use submitted timestamp if available, else (for pending posts) calculate score using createdAt
+  var age = object.submitted || object.createdAt;
+
   // use baseScore if defined, if not just use the number of votes
   // note: for transition period, also use votes if there are more votes than baseScore
   // var baseScore = Math.max(object.votes || 0, object.baseScore || 0);
@@ -21,7 +24,7 @@ var updateScore = function (collection, id, forceUpdate) {
 
   // now multiply by 'age' exponentiated
   // FIXME: timezones <-- set by server or is getTime() ok?
-  var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
+  var ageInHours = (new Date().getTime() - object.age) / (60 * 60 * 1000);
 
   // HN algorithm
   var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
