@@ -91,13 +91,14 @@ Template.post_item.rendered = function(){
 
 Template.post_item.events = {
   'click .upvote-link': function(e, instance){
+    var post = this;
     e.preventDefault();
       if(!Meteor.user()){
         Meteor.Router.to('/signin');
         throwError("Please log in first");
       }
-      Meteor.call('upvotePost', this._id, function(error, result){
-        trackEvent("post upvoted", {'postId': instance.postId});
+      Meteor.call('upvotePost', post._id, function(error, result){
+        trackEvent("post upvoted", {'_id': post._id});
       });
   }
 

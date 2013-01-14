@@ -19,8 +19,10 @@
     return collection.findOne({_id: id, downvoters: user._id}) !== undefined;
   }
 
-  var upvote = function(collection, id) {
-    var user = Meteor.user();
+  var upvote = function(collection, id, user) {
+    // if no user is specified, use current user by default
+    var user = (typeof user === 'undefined') ? Meteor.user() : user;
+
     if (!user || !canUpvote(user, collection, true)  || hasUpvotedItem(user, collection, id))
       return false;
 
@@ -45,8 +47,10 @@
     return true;
   };
 
-  var downvote = function(collection, id) {
-    var user = Meteor.user();
+  var downvote = function(collection, id, user) {
+    // if no user is specified, use current user by default
+    var user = (typeof user === 'undefined') ? Meteor.user() : user;
+
     if (! user || !canDownvote(user, collection, 'redirect') || hasDownvotedItem(user, collection, id))
       return false;
     
@@ -71,8 +75,10 @@
     return true;
   };
 
-  var cancelUpvote = function(collection, id) {
-    var user = Meteor.user();
+  var cancelUpvote = function(collection, id, user) {
+    // if no user is specified, use current user by default
+    var user = (typeof user === 'undefined') ? Meteor.user() : user;
+
     if (! user || !canUpvote(user, collection, 'redirect') || ! hasUpvotedItem(user, collection, id))
       return false
     
@@ -97,8 +103,10 @@
     return true;
   };
 
-  var cancelDownvote = function(collection, id) {
-    var user = Meteor.user();
+  var cancelDownvote = function(collection, id, user) {
+    // if no user is specified, use current user by default
+    var user = (typeof user === 'undefined') ? Meteor.user() : user;
+
     if (! user || !canDownvote(user, collection, 'redirect') || ! hasDownvotedItem(user, collection, id))
       return false
 
@@ -123,31 +131,49 @@
     return true;
   };
 
+  // TO-DO: refactor this
+  
   Meteor.methods({
-    upvotePost: function(postId){
-      return upvote.call(this, Posts, postId);
+    upvotePost: function(postId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return upvote.call(this, Posts, postId, user);
     },
-    downvotePost: function(postId){
-      return downvote.call(this, Posts, postId);
+    downvotePost: function(postId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return downvote.call(this, Posts, postId, user);
     },
-    cancelUpvotePost: function(postId){
-      return cancelUpvote.call(this, Posts, postId);
+    cancelUpvotePost: function(postId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return cancelUpvote.call(this, Posts, postId, user);
     },
-    cancelDownvotePost: function(postId){
-      return cancelDownvote.call(this, Posts, postId);
+    cancelDownvotePost: function(postId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return cancelDownvote.call(this, Posts, postId, user);
     },
 
-    upvoteComment: function(commentId){
-      return upvote.call(this, Comments, commentId);
+    upvoteComment: function(commentId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return upvote.call(this, Comments, commentId, user);
     },
-    downvoteComment: function(commentId){
-      return downvote.call(this, Comments, commentId);
+    downvoteComment: function(commentId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return downvote.call(this, Comments, commentId, user);
     },
-    cancelUpvoteComment: function(commentId){
-      return cancelUpvote.call(this, Comments, commentId);
+    cancelUpvoteComment: function(commentId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return cancelUpvote.call(this, Comments, commentId, user);
     },
-    cancelDownvoteComment: function(commentId){
-      return cancelDownvote.call(this, Comments, commentId);
+    cancelDownvoteComment: function(commentId, user){
+      // if no user is specified, use current user by default
+      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      return cancelDownvote.call(this, Comments, commentId, user);
     }
   });
 
