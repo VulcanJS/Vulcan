@@ -16,10 +16,11 @@ Template.post_edit.helpers({
   categories: function(){
     return Categories.find();
   },
-  isChecked: function(){
+/*  isChecked: function(){
     var post= Posts.findOne(Session.get('selectedPostId'));
     return $.inArray( this.name, post.categories) != -1 ? 'checked' : '';
   },
+*/
   isApproved: function(){
     return this.status == STATUS_APPROVED;
   },

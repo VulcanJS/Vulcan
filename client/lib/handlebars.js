@@ -50,11 +50,13 @@ Handlebars.registerHelper('categoriesChecked', function (context, options) {
   for (i in docs) {
    lineItem.name = docs[i].name;
    lineItem.isChecked = "";
+   lineItem._id = i;
    for (k = 0, len = this.categories.length; k < len; k++) {
      if (this.categories[k] == docs[i].name) {
        lineItem.isChecked = "checked";
      }
    }
+   console.log(lineItem);
    ret+= options.fn(lineItem);
    //console.log(ret);
   }
