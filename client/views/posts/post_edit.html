@@ -60,13 +60,11 @@
           </div>
           {{/if}}
           <div class="control-group post-form-user">
-            <label class="control-label">User</label>
+            <label class="control-label">Author</label>
             <div class="controls">
-              <select id="postUser">
-                {{#each users}}
-                <option  value="{{_id}}">{{userName}}</option>
-                {{/each}}
-              </select>
+              <div id="postUser">
+                {{post.author}}
+              </div>
             </div>
           </div>
           <div class="control-group post-form-status">
