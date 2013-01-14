@@ -1,9 +1,9 @@
 Template.notifications.helpers({
   notifications: function(){
-    return Notifications.find({userId: Meteor.user()._id}, {sort: {timestamp: -1}});
+    return Notifications.find({userId: Meteor.userId()}, {sort: {timestamp: -1}});
   },
   notification_count: function(){
-  	var notifications=Notifications.find({userId: Meteor.user()._id, read: false}).fetch();
+  	var notifications=Notifications.find({userId: Meteor.userId(), read: false}).fetch();
   	if(notifications.length==0){
   		return 'No notifications';
   	}else if(notifications.length==1){
@@ -13,7 +13,7 @@ Template.notifications.helpers({
   	}
   },
   notification_class: function(){
-    var notifications=Notifications.find({userId: Meteor.user()._id, read: false}).fetch();
+    var notifications=Notifications.find({userId: Meteor.userId(), read: false}).fetch();
   	if(notifications.length==0)
   		return 'no-notifications';
   }
@@ -26,7 +26,7 @@ Template.notifications.events({
 	},
 	'click .mark-as-read': function(){
     Notifications.update(
-      {userId: Meteor.user()._id},
+      {userId: Meteor.userId()},
       {
         $set:{
           read: true
