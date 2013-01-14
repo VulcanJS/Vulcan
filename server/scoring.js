@@ -24,10 +24,12 @@ var updateScore = function (collection, id, forceUpdate) {
 
   // now multiply by 'age' exponentiated
   // FIXME: timezones <-- set by server or is getTime() ok?
-  var ageInHours = (new Date().getTime() - object.age) / (60 * 60 * 1000);
+  var ageInHours = (new Date().getTime() - age) / (60 * 60 * 1000);
 
   // HN algorithm
   var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
+
+  // console.log('newScore: '+newScore);
 
   // Note: before the first time updateScore runs on a new item, its score will be at 0
   var scoreDiff = Math.abs(object.score - newScore);
