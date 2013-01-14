@@ -36,7 +36,7 @@ getAvatarUrl = function(user){
     return 'https://api.twitter.com/1/users/profile_image?screen_name='+user.services.twitter.screenName;
   }else{
     return Gravatar.getGravatar(user, {
-      d: 'http://telesc.pe/img/default_avatar.png',
+      d: 'http://demo.telesc.pe/img/default_avatar.png',
       s: 30
     });
   }

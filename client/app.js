@@ -101,7 +101,9 @@ Meteor.autorun(function() {
           $lt: mDate.endOf('day').valueOf()
         }
       }, FIND_APPROVED);
-    var options = {sort: {score: -1}};
+    // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
+    // independantly of age
+    var options = {sort: {baseScore: -1}};
     
     // we aren't ever going to paginate this sub, but we'll use pSub
     // so we have a reactive loading() function 
