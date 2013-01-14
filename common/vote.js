@@ -20,7 +20,8 @@
   }
 
   var upvote = function(collection, id) {
-    var user = Meteor.user();
+    // get user from post and not current user in case admin is posting for somebody else
+    var user = Meteor.users.findOne(collection.findOne(id).userId);
     if (!user || !canUpvote(user, collection, true)  || hasUpvotedItem(user, collection, id))
       return false;
 
