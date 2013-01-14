@@ -21,11 +21,11 @@
         <div class="control-group post-form-category">
           <label class="control-label">Category</label>
           <div class="controls">
-            {{#each categories}}
+            {{#categoriesChecked categories}}
             <label class="radio inline">
               <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{isChecked}} /> {{name}}
             </label>
-            {{/each}}
+            {{/categoriesChecked}}
           </div>
         </div>
         {{#if isAdmin}}
