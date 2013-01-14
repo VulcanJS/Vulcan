@@ -66,8 +66,8 @@ Meteor.methods({
         postId = result;
       }
     });
-    
-    Meteor.call('upvotePost', postId);
+
+    Meteor.call('upvotePost', postId, Meteor.users.findOne(post.userId));
 
     // add the post's own ID to the post object and return it to the client
     post.postId = postId;
