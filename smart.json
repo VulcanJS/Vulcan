@@ -1,6 +1,6 @@
 {
   "meteor": {
-    "branch": "master"
+    "branch": "stop-callbacks"
   },
   "packages": {
     "router": {},

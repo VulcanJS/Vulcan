@@ -41,6 +41,13 @@ Meteor.methods({
   },
   testBuffer: function(){
     // TODO
+  },
+  getScoreDiff: function(id){
+    var object = Posts.findOne(id);
+    var baseScore = object.baseScore;
+    var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
+    var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
+    return Math.abs(object.score - newScore);
   }
 });
 

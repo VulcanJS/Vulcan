@@ -157,13 +157,13 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].userId && docs[0].userId==userId)){
           return true;
         }
         return false;
       }
     , remove: function(userId, docs){ 
-        if(isAdminById(userId) || (docs[0].user_id && docs[0].user_id==userId)){
+        if(isAdminById(userId) || (docs[0].userId && docs[0].userId==userId)){
           return true;
         }
         return false;

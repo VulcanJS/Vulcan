@@ -26,7 +26,6 @@ Template.post_submit.rendered = function(){
   });
 }
 
-
 Template.post_submit.events = {
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
@@ -40,6 +39,7 @@ Template.post_submit.events = {
 
     var title= $('#title').val();
     var url = $('#url').val();
+    var cleanUrl = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
     var body = instance.editor.exportFile();
     var categories=[];
     var sticky=!!$('#sticky').attr('checked');
@@ -51,18 +51,23 @@ Template.post_submit.events = {
        categories.push($(this).val());
      });
 
-    Meteor.call('post', {
+    var properties = {
         headline: title
       , body: body
-      , url: url
       , categories: categories
       , sticky: sticky
       , submitted: submitted
       , userId: userId
       , status: status
-    }, function(error, post) {
+    };
+    if(url != ''){
+      properties.url = cleanUrl;
+    }
+
+    // console.log(properties);
+
+    Meteor.call('post', properties, function(error, post) {
       if(error){
-        console.log(error);
         throwError(error.reason);
         clearSeenErrors();
         $(e.target).removeClass('disabled');

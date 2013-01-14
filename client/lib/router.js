@@ -213,7 +213,7 @@
       Meteor.Router.page();
 
       if(Meteor.Router.page() !== "loading"){
-        console.log('------ Request start -------- ('+Meteor.Router.page()+')');
+        console.log('------ '+Meteor.Router.page()+' ------');
       
 
         if(_.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending', 'posts_best'], Meteor.Router.page())){
@@ -247,7 +247,7 @@
             trackEvent(e.event, e.properties);
           });
         }else{
-          console.log('------ Loading… --------');
+          // console.log('------ Loading… --------');
         }
       }
     });    

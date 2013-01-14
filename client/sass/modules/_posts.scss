@@ -11,6 +11,11 @@
 		&.animate{
 			@include single-transition(ease-out, top, 400ms, 0ms);
 		}
+		&.inactive{
+			.post-content, .post-actions li a{
+				background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
+			}
+		}
 	}
 }
 .post-content{

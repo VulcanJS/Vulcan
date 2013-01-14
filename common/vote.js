@@ -28,11 +28,13 @@
     var votedItem = collection.findOne(id);
 
     // Votes & Score
-    collection.update({_id: id},
-                      {$addToSet: {upvoters: user._id},
-                       $inc: {votes: 1, baseScore: votePower}});
+    collection.update({_id: id},{
+      $addToSet: {upvoters: user._id},
+      $inc: {votes: 1, baseScore: votePower},
+      $set: {inactive: false}
+    });
     if(!this.isSimulation)
-      updateScore(collection, id);
+      updateScore(collection, id, true);
 
     // Karma     
     // user's posts and comments do not impact his own karma:
@@ -52,11 +54,13 @@
     var votedItem = collection.findOne(id);
 
     // Votes & Score
-    collection.update({_id: id},
-                      {$addToSet: {downvoters: user._id},
-                       $inc: {votes: -1, baseScore: -votePower}});
+    collection.update({_id: id},{
+      $addToSet: {downvoters: user._id},
+      $inc: {votes: -1, baseScore: -votePower},
+      $set: {inactive: false}
+    });
     if(!this.isSimulation)  
-      updateScore(collection, id);
+      updateScore(collection, id, true);
 
     // Karma
     // user's posts and comments do not impact his own karma:
@@ -76,11 +80,13 @@
     var votedItem = collection.findOne(id);
    
     // Votes & Score
-    collection.update({_id: id},
-                      {$pull: {upvoters: user._id},
-                       $inc: {votes: -1, baseScore: -votePower}});
+    collection.update({_id: id},{
+      $pull: {upvoters: user._id},
+      $inc: {votes: -1, baseScore: -votePower},
+      $set: {inactive: false}
+    });
     if(!this.isSimulation)
-      updateScore(collection, id);
+      updateScore(collection, id, true);
 
     // Karma
     // user's posts and comments do not impact his own karma:
@@ -100,11 +106,13 @@
     var votedItem = collection.findOne(id);
     
     // Votes & Score
-    collection.update({_id: id},
-                      {$pull: {downvoters: user._id},
-                       $inc: {votes: 1, baseScore: votePower}});
+    collection.update({_id: id},{
+      $pull: {downvoters: user._id},
+      $inc: {votes: 1, baseScore: votePower},
+      $set: {inactive: false}
+    });
     if(!this.isSimulation)
-      updateScore(collection, id);
+      updateScore(collection, id, true);
 
     // Karma
     // user's posts and comments do not impact his own karma:
