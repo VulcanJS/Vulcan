@@ -30,6 +30,9 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 - Use the [Heroku buildpack for Meteorite](https://github.com/oortcloud/heroku-buildpack-meteorite) to push to Heroku: `heroku create --stack cedar --buildpack https://github.com/oortcloud/heroku-buildpack-meteorite.git`
 - Add MongoHQ addon
 
+# Running Telescope on EC2
+- Check out [Dirk Krause](https://gist.github.com/dirkk0)'s [installation script for EC2](https://gist.github.com/4530915).
+
 # First Run
 - Set the root URL variable used for Twitter auth (on Heroku: `heroku config:add ROOT_URL=http://your_url`)
 - Fill in your Twitter keys
