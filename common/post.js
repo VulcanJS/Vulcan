@@ -80,7 +80,7 @@ Meteor.methods({
       }
       var notification = getNotification('newPost', properties);
       // call a server method because we do not have access to admin users' info on the client
-      Meteor.call('notifyAdmins', notification, function(error, result){
+      Meteor.call('notifyAdmins', notification, Meteor.user(), function(error, result){
         //run asynchronously        
       });
     }

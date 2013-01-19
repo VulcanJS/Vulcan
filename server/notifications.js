@@ -47,10 +47,13 @@ Meteor.methods({
     }
     return false;
   },
-  notifyAdmins : function(notification){
+  notifyAdmins : function(notification, currentUser){
     // send a notification to every site admin
-    _.each(adminUsers(), function(element, index, list){
-      sendEmail(getEmail(element), notification.subject, notification.text, notification.html);
+    _.each(adminUsers(), function(user, index, list){
+      if(user._id !== currentUser._id){
+        // don't send admins notifications for their own posts
+        sendEmail(getEmail(user), notification.subject, notification.text, notification.html);
+      }
     });
   }
 });
