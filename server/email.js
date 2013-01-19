@@ -2,7 +2,7 @@ sendEmail = function(to, subject, text, html){
 
   // TO-DO: limit who can send emails
 
-  var from = getSetting('defaultEmail') || 'noreply@change_me.com';
+  var from = getSetting('defaultEmail') || 'noreply@example.com';
   var siteName = getSetting('title');
   var subject = '['+siteName+'] '+subject
 

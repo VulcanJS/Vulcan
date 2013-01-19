@@ -28,10 +28,10 @@ Meteor.startup(function(){
         return true;
       }
     , update: function(userId, docs, fields, modifier){
-      // console.log("updating");
-      // console.log(userId);
-      // console.log(docs);
-      // console.log('fields: '+fields);
+      console.log("updating");
+      console.log(userId);
+      console.log(docs);
+      console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
       if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
           return true;
