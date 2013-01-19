@@ -108,7 +108,7 @@ Meteor.autorun(function() {
     // we aren't ever going to paginate this sub, but we'll use pSub
     // so we have a reactive loading() function 
     // (grr... https://github.com/meteor/meteor/pull/273)
-    return postListSubscription(find, options, 5);
+    return postListSubscription(find, options, 50);
   };
   
   // take it to the start of the day.

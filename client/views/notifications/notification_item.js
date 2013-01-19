@@ -5,19 +5,8 @@ Template.notification_item.helpers({
   properties: function(){
     return this.properties;
   },
-  isNewComment: function(){
-    return this.event=="newComment";
-  },
-  isNewReply: function(){
-    return this.event=="newReply";
-  },
-  isMessage: function(){
-    return this.event=="message";
-  },
-  postHeadline: function(){
-    var post=Posts.findOne(this.postId);
-    if(post)
-      return post.headline;
+  notificationHTML: function(){
+    return getNotification(this.event, this.properties).html;
   }
 });
 

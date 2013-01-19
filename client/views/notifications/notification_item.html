@@ -1,25 +1,8 @@
 <template name="notification_item">
-	<li class="{{#if read}}read{{/if}}">
-		<span class="notification-timestamp">{{nice_time}}</span>
-		<p>
-
-			{{#if isNewReply}}
-				{{#with properties}}
-					<a href="/users/{{commentAuthorId}}">{{commentAuthorName}}</a> has replied to your comment on "<a href="/posts/{{postId}}/comment/{{commentId}}" class="action-link">{{postHeadline}}</a>".
-				{{/with}}
-			{{/if}}
-
-			{{#if isNewComment}}
-				{{#with properties}}
-					<a href="/users/{{commentAuthorId}}">{{commentAuthorName}}</a> left a new comment on your post "<a href="/posts/{{postId}}/comment/{{commentId}}" class="action-link">{{postHeadline}}</a>".
-				{{/with}}
-			{{/if}}
-
-			{{#if isMessage}}
-				{{#with properties}}
-					<a href="#" class="action-link">{{message}}</a>
-				{{/with}}
-			{{/if}}
-		</p>
-	</li>
+  <li class="{{#if read}}read{{/if}}">
+    <span class="notification-timestamp">{{nice_time}}</span>
+    <p>
+      {{{notificationHTML}}}
+    </p>
+  </li>
 </template>
