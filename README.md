@@ -35,6 +35,7 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 
 # First Run
 - Set the root URL variable used for Twitter auth (on Heroku: `heroku config:add ROOT_URL=http://your_url`)
+- Set the mail URL variable used for email notifications (for example, with [Mailgun](http://mailgun.com) on Heroku: `heroku config:add MAIL_URL=smtp://postmaster%40YOUR_DOMAIN.mailgun.org:YOUR_PASSWORD@smtp.mailgun.org:587/`)
 - Fill in your Twitter keys
 - The first user account created will automatically be made admin
 - Check out the settings page and fill out basic things like the site's name

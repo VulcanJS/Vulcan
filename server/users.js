@@ -36,8 +36,7 @@ Meteor.methods({
     console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
   },
   testEmail: function(){
-    console.log('////////////////email test…');
-    Email.send({from: 'info@sachagreif.com', to: 'sacha357@gmail.com', subject: 'mailgun test', text: 'lorem ipsum dolor'});
+    Email.send({from: 'test@test.com', to: getEmail(Meteor.user()), subject: 'Telescope email test', text: 'lorem ipsum dolor sit amet.'});
   },
   testBuffer: function(){
     // TODO
