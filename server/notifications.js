@@ -15,12 +15,26 @@ createNotification = function(event, properties, userToNotify, userDoingAction){
     var newNotificationId=Notifications.insert(notification);
 
     if(userToNotify.profile && userToNotify.profile.notificationsFrequency === 1){
-      Meteor.call('sendNotificationEmail', getEmail(userToNotify), newNotificationId);
+      Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
     }
   }
 };
 
+getUnsubscribeLink = function(user){
+  return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
+};
+
 Meteor.methods({
+  sendNotificationEmail: function(userToNotify, notificationId){
+    // Note: we query the DB instead of simply passing arguments from the client
+    // to make sure our email method cannot be used for spam
+    var notification = Notifications.findOne(notificationId);
+    var n = getNotification(notification.event, notification.properties);
+    var to = getEmail(userToNotify);
+    var text = n.text + '\n\n Unsubscribe from all notifications: '+getUnsubscribeLink(userToNotify);
+    var html = n.html + '<br/><br/><a href="'+getUnsubscribeLink(userToNotify)+'">Unsubscribe from all notifications</a>';
+    sendEmail(to, n.subject, text, html);
+  },  
   unsubscribeUser : function(hash){
     // TO-DO: currently, if you have somebody's email you can unsubscribe them
     // A site-specific salt should be added to the hashing method to prevent this

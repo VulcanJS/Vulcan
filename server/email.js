@@ -21,13 +21,3 @@ sendEmail = function(to, subject, text, html){
     html: html
   });
 };
-
-Meteor.methods({
-  sendNotificationEmail: function(to, notificationId){
-    // Note: we query the DB instead of simply passing arguments from the client
-    // to make sure our email method cannot be used for spam
-    var notification = Notifications.findOne(notificationId);
-    var n = getNotification(notification.event, notification.properties);
-    sendEmail(to, n.subject, n.text, n.html);
-  }
-})

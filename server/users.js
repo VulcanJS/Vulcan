@@ -48,6 +48,10 @@ Meteor.methods({
     var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
     var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
     return Math.abs(object.score - newScore);
+  },
+  generateEmailHash: function(){
+    var email_hash = CryptoJS.MD5(getEmail(Meteor.user()).trim().toLowerCase()).toString();
+    Meteor.users.update(Meteor.userId(), {$set : {email_hash : email_hash}});
   }
 });
 
