@@ -48,6 +48,7 @@ Meteor.methods({
     return false;
   },
   notifyAdmins : function(notification){
+    // send a notification to every site admin
     _.each(adminUsers(), function(element, index, list){
       sendEmail(getEmail(element), notification.subject, notification.text, notification.html);
     });

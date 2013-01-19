@@ -71,6 +71,7 @@ Meteor.methods({
     Meteor.call('upvotePost', postId,postAuthor);
 
     if(getSetting('newPostsNotifications')){
+      // notify admin of new posts
       var properties = {
         postAuthorName : getDisplayName(postAuthor),
         postAuthorId : post.userId,
@@ -78,8 +79,9 @@ Meteor.methods({
         postId : postId
       }
       var notification = getNotification('newPost', properties);
+      // call a server method because we do not have access to admin users' info on the client
       Meteor.call('notifyAdmins', notification, function(error, result){
-        // run asynchronously        
+        //run asynchronously        
       });
     }
 

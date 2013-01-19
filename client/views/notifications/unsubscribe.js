@@ -12,6 +12,8 @@ Template.unsubscribe.created = function(){
 
 Template.unsubscribe.helpers({
   unsubscribed : function(){
+    // we have to use a session variable because the string we want to display
+    // depends on the return value of an asynchronous callback (unsubscribeUser)
     return Session.get('unsubscribedMessage');
   }
 });
