@@ -67,7 +67,22 @@ Meteor.methods({
       }
     });
 
-    Meteor.call('upvotePost', postId, Meteor.users.findOne(post.userId));
+    var postAuthor =  Meteor.users.findOne(post.userId);
+    Meteor.call('upvotePost', postId,postAuthor);
+
+    if(getSetting('newPostsNotifications')){
+      var properties = {
+        postAuthorName : getDisplayName(postAuthor),
+        postAuthorId : post.userId,
+        postHeadline : headline,
+        postId : postId
+      }
+      var notification = getNotification('newPost', properties);
+      Meteor.call('notifyAdmins', notification, function(error, result){
+        // run asynchronously        
+      });
+    }
+
 
     // add the post's own ID to the post object and return it to the client
     post.postId = postId;

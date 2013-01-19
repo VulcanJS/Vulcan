@@ -7,6 +7,9 @@ isAdmin=function(user){
     return false;
   return !!user.isAdmin;
 }
+adminUsers = function(){
+  return Meteor.users.find({isAdmin : true}).fetch();
+}
 getDisplayName = function(user){
   return (user.profile && user.profile.name) ? user.profile.name : user.username;
 }

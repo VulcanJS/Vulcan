@@ -25,7 +25,7 @@ getUnsubscribeLink = function(user){
 };
 
 Meteor.methods({
-  sendNotificationEmail: function(userToNotify, notificationId){
+  sendNotificationEmail : function(userToNotify, notificationId){
     // Note: we query the DB instead of simply passing arguments from the client
     // to make sure our email method cannot be used for spam
     var notification = Notifications.findOne(notificationId);
@@ -46,5 +46,10 @@ Meteor.methods({
       return true;
     }
     return false;
+  },
+  notifyAdmins : function(notification){
+    _.each(adminUsers(), function(element, index, list){
+      sendEmail(getEmail(element), notification.subject, notification.text, notification.html);
+    });
   }
 });
