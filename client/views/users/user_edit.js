@@ -14,7 +14,8 @@ Template.user_edit.helpers({
     return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 0 ? 'checked' : '';
   },
   hasNotificationsActivity : function(){
-    return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 1 ? 'checked' : '';
+    var u = Meteor.user();
+    return u.profile && (u.profile.notificationsFrequency == 1 || typeof u.profile.notificationsFrequency === 'undefined') ? 'checked' : '';
   },
   hasNotificationsAll : function(){
     return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 2 ? 'checked' : '';
