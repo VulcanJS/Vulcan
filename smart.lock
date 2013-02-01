@@ -11,7 +11,8 @@
       "profiler": {
         "git": "https://github.com/tmeasday/meteor-profiler.git",
         "branch": "master"
-      }
+      },
+      "database-forms": {}
     },
     "packages": {
       "router": {
@@ -29,10 +30,15 @@
         "branch": "master",
         "commit": "25a14a4e94a4748745738031baab1400860eede7"
       },
+      "database-forms": {
+        "git": "https://github.com/lyudmil/database-forms.git",
+        "tag": "v0.0.1",
+        "commit": "3e458c17f1c6e3499188be01182cdade92683357"
+      },
       "page-js": {
         "git": "https://github.com/tmeasday/meteor-page-js.git",
-        "tag": "v1.3.1",
-        "commit": "ee0b651869928abe50b5d06d7f32ccd2e657883a"
+        "tag": "v1.3.3",
+        "commit": "c1e9832af3fc2b2f5139a16d93a82ca6fa0655da"
       },
       "node-modules": {
         "git": "https://github.com/possibilities/meteor-node-modules.git",
