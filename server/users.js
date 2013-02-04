@@ -1,7 +1,7 @@
 Accounts.onCreateUser(function(options, user){
   user.profile = options.profile || {};
-  user.karma = 0;
-  
+  user.profile.karma = 0;
+  user.profile.notificationsFrequency = 1;
   // users start pending and need to be invited
   user.isInvited = false
   
@@ -36,8 +36,7 @@ Meteor.methods({
     console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
   },
   testEmail: function(){
-    console.log('////////////////email test…');
-    Email.send({from: 'info@sachagreif.com', to: 'sacha357@gmail.com', subject: 'mailgun test', text: 'lorem ipsum dolor'});
+    Email.send({from: 'test@test.com', to: getEmail(Meteor.user()), subject: 'Telescope email test', text: 'lorem ipsum dolor sit amet.'});
   },
   testBuffer: function(){
     // TODO
@@ -48,6 +47,10 @@ Meteor.methods({
     var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
     var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
     return Math.abs(object.score - newScore);
+  },
+  generateEmailHash: function(){
+    var email_hash = CryptoJS.MD5(getEmail(Meteor.user()).trim().toLowerCase()).toString();
+    Meteor.users.update(Meteor.userId(), {$set : {email_hash : email_hash}});
   }
 });
 

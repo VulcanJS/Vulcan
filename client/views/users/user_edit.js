@@ -1,13 +1,39 @@
+Template.user_edit.helpers({
+  profileIncomplete : function() {
+    return Meteor.user() && !this.loading && !userProfileComplete(this);
+  },
+  user : function(){
+    var currentUser=Meteor.user();
+    if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
+      return Meteor.users.findOne(Session.get('selectedUserId'));
+    }else{
+      return currentUser;
+    }
+  },
+  hasNotificationsNone : function(){
+    return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 0 ? 'checked' : '';
+  },
+  hasNotificationsActivity : function(){
+    var u = Meteor.user();
+    return u.profile && (u.profile.notificationsFrequency == 1 || typeof u.profile.notificationsFrequency === 'undefined') ? 'checked' : '';
+  },
+  hasNotificationsAll : function(){
+    return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 2 ? 'checked' : '';
+  }
+})
+
 Template.user_edit.events = {
   'submit form': function(e){
     e.preventDefault();
     if(!Meteor.user()) throwError('You must be logged in.');
     var $target=$(e.target);
     var user=Session.get('selectedUserId') ? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
+    
     var update = {
       "profile.name": $target.find('[name=name]').val(),
       "profile.bio": $target.find('[name=bio]').val(),
-      "profile.email": $target.find('[name=email]').val()
+      "profile.email": $target.find('[name=email]').val(),
+      "profile.notificationsFrequency": parseInt($('input[name=notifications]:checked').val())
     };
     
     // TODO: enable change email
@@ -33,16 +59,3 @@ Template.user_edit.events = {
   }
 
 };
-
-Template.user_edit.profileIncomplete = function() {
-  return Meteor.user() && !this.loading && !userProfileComplete(this);
-}
-
-Template.user_edit.user = function(){
-	var currentUser=Meteor.user();
-	if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
-	  return Meteor.users.findOne(Session.get('selectedUserId'));
-	}else{
-		return currentUser;
-	}
-}

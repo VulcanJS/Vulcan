@@ -47,6 +47,20 @@
         <label>New Password</label>
         <div class="controls"><input name="new_password" type="text" value="" /></div>
       </div>
+          <div class="control-group">
+            <label class="control-label">Email Notifications</label>
+            <div class="controls">
+              <label class="radio">
+                <input id="notifications_activity" type="radio" value="1" name="notifications" {{hasNotificationsActivity}} /> When people reply to me
+              </label>
+              <label class="radio">
+                <input id="notifications_none" type="radio" value="0" name="notifications" {{hasNotificationsNone}} /> None
+              </label>
+<!--               <label class="radio">  
+                <input id="notifications_all" type="radio" value="2" name="notifications" {{hasNotificationsAll}} /> All
+              </label> -->
+            </div>
+          </div>
       <div class="form-actions">
         <a href="/forgot_password">Forgot password?</a>
         <input type="submit" class="button" value="Submit" />

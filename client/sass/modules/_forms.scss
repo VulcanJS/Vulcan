@@ -9,7 +9,7 @@ form, .accounts-dialog{
 	.control-group{
 		@include cf;
 		margin-bottom:$grid-padding;
-		label{
+		>label{
 			float:left;
 			margin-right:10px;
 		}
@@ -27,6 +27,14 @@ form, .accounts-dialog{
 					width:18px;
 					@include hide-text2;
 				}
+			}
+			label{
+				display:block;
+				margin-bottom:5px;
+			}
+			label.inline{
+				display:inline-block;
+				margin-bottom:0;
 			}
 		}
 		&.inline{

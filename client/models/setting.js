@@ -13,6 +13,8 @@ var Setting = FormModel.extend({
     logoUrl: '',
     logoHeight: '',
     logoWidth: '',
+    defaultEmail: '',
+    newPostsNotifications: true,
     mixpanelId: '',
     clickyId:'',
     goSquaredId: '',
