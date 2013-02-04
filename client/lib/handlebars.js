@@ -37,3 +37,28 @@ Handlebars.registerHelper('canEdit', function(collectionName, item, action) {
   // var item=collection.findOne(itemId);
   return item && canEdit(Meteor.user(), item, action);
 });
+Handlebars.registerHelper('categoriesChecked', function (context, options) {
+  //console.log("handlebars help checkCategories");
+  //console.log(context);
+  // console.log(options);
+  //console.log(this);
+  var ret="";
+  var i,k, len;
+  var docs = context.collection.docs;
+  var lineItem = {};
+  //console.log(docs);
+  for (i in docs) {
+   lineItem.name = docs[i].name;
+   lineItem.isChecked = "";
+   lineItem._id = i;
+   for (k = 0, len = this.categories.length; k < len; k++) {
+     if (this.categories[k] == docs[i].name) {
+       lineItem.isChecked = "checked";
+     }
+   }
+   console.log(lineItem);
+   ret+= options.fn(lineItem);
+   //console.log(ret);
+  }
+  return ret;
+});
