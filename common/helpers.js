@@ -6,12 +6,13 @@ nl2br= function(str) {
 var breakTag = '<br />';    
 return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
 }
-getSetting = function(setting){
+getSetting = function(setting, defaultValue){
+  var defaultValue = (typeof defaultValue === 'undefined') ? '' : defaultValue;
   var settings=Settings.find().fetch()[0];
   if(settings){
     return settings[setting];
   }
-  return '';
+  return defaultValue;
 }
 getAuthorName = function(item){
   // keep both variables for transition period
@@ -35,9 +36,35 @@ getDateRange= function(pageNumber){
   // console.log("before: ", dayToDisplay.endOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
   return range;
 }
+// ---------------------------------- URL Helper Functions ----------------------------------- //
+getPostUrl = function(id){
+  return Meteor.absoluteUrl()+'/posts/'+id;
+}
+getCommentUrl = function(id){
+  return Meteor.absoluteUrl()+'/comments/'+id;
+}
+getPostCommentUrl = function(postId, commentId){
+  // get link to a comment on a post page
+  return Meteor.absoluteUrl()+'/posts/'+postId+'/comment/'+commentId;
+}
+getUserUrl = function(id){
+  return Meteor.absoluteUrl()+'users/'+id;
+}
+// ---------------------------------- String Helper Functions ----------------------------------- //
 cleanUp = function(s){
   return stripHTML(s);
 }
 stripHTML = function(s){
   return s.replace(/<(?:.|\n)*?>/gm, '');
+}
+stripMarkdown = function(s){
+  var converter = new Markdown.Converter();
+  var html_body = converter.makeHtml(s);
+  return stripHTML(html_body);
+}
+trimWords = function(s, numWords) {
+  expString = s.split(/\s+/,numWords);
+  if(expString.length >= numWords)
+    return expString.join(" ")+"…";
+  return s;
 }

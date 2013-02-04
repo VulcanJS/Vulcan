@@ -18,6 +18,8 @@
 		}
 	}
 	ul{
+		height:100%;
+		overflow:auto;
 		li{
 			padding:10px;
 			border-bottom:1px solid $lighter-grey;

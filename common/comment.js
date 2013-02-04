@@ -10,6 +10,7 @@ Meteor.methods({
     var properties={
         'commentAuthorId': user._id,
         'commentAuthorName': getDisplayName(user),
+        'commentExcerpt': trimWords(stripMarkdown(cleanText),20),
         'postId': postId,
         'postHeadline' : post.headline
     };

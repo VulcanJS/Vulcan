@@ -15,7 +15,6 @@ createNotification = function(event, properties, userToNotify, userDoingAction){
     var newNotificationId=Notifications.insert(notification);
 
     // send the notification is the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
-
     if(userToNotify.profile && (userToNotify.profile.notificationsFrequency === 1 || typeof userToNotify.profile.notificationsFrequency === 'undefined')){
       Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
     }
@@ -31,7 +30,7 @@ Meteor.methods({
     // Note: we query the DB instead of simply passing arguments from the client
     // to make sure our email method cannot be used for spam
     var notification = Notifications.findOne(notificationId);
-    var n = getNotification(notification.event, notification.properties);
+    var n = getNotification(notification.event, notification.properties, 'email');
     var to = getEmail(userToNotify);
     var text = n.text + '\n\n Unsubscribe from all notifications: '+getUnsubscribeLink(userToNotify);
     var html = n.html + '<br/><br/><a href="'+getUnsubscribeLink(userToNotify)+'">Unsubscribe from all notifications</a>';
