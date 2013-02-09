@@ -15,7 +15,7 @@ Template.post_edit.helpers({
     return moment(post.createdAt).format("MMMM Do, h:mm:ss a");
   },
   categories: function(){
-    return Categories.find();
+    return Categories.find().fetch();
   },
   hasCategory: function(){
     // console.log('hasCategory?')
@@ -40,7 +40,7 @@ Template.post_edit.helpers({
     return moment(this.submitted).format("HH:mm");
   },
   users: function(){
-    return Meteor.users.find();
+    return Meteor.users.find().fetch();
   },
   userName: function(){
     return getDisplayName(this);
