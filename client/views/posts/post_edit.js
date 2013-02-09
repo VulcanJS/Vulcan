@@ -5,6 +5,7 @@
 //    '[name]': function(node) { return node.getAttribute('name');}
 // });
 
+
 Template.post_edit.helpers({
   post: function(){
     return Posts.findOne(Session.get('selectedPostId'));
@@ -16,9 +17,10 @@ Template.post_edit.helpers({
   categories: function(){
     return Categories.find();
   },
-  isChecked: function(){
+  hasCategory: function(){
+    // console.log('hasCategory?')
     var post= Posts.findOne(Session.get('selectedPostId'));
-    return $.inArray( this.name, post.categories) != -1 ? 'checked' : '';
+    return _.contains(post.categories, this.name) ? 'checked' : '';
   },
   isApproved: function(){
     return this.status == STATUS_APPROVED;
@@ -27,7 +29,8 @@ Template.post_edit.helpers({
     return this.sticky ? 'checked' : '';
   },
   isSelected: function(){
-    var post=Posts.findOne(Session.get('selectedPostId'));
+    // console.log('isSelected?')
+    var post= Posts.findOne(Session.get('selectedPostId'));
     return post && this._id == post.userId ? 'selected' : '';
   },  
   submittedDate: function(){

@@ -23,7 +23,7 @@
           <div class="controls">
             {{#each categories}}
             <label class="radio inline">
-              <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{isChecked}} /> {{name}}
+              <input id="category_{{_id}}" type="radio" value="{{name}}" name="category" {{hasCategory}} /> {{name}}
             </label>
             {{/each}}
           </div>
@@ -64,7 +64,7 @@
             <div class="controls">
               <select id="postUser">
                 {{#each users}}
-                <option {{isSelected}} value="{{_id}}">{{userName}}</option>
+                  <option {{isSelected}} value="{{_id}}">{{userName}}</option>
                 {{/each}}
               </select>
             </div>
