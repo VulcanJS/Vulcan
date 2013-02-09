@@ -21,12 +21,14 @@
       {{#if isAdmin}}
       <li class="dropdown">
         <a class="admin" href="/">Admin</a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li><a class="pending" href="/pending">Pending</a></li>
-          <li><a class="users" href="/users">Users</a></li>
-          <li><a class="settings" href="/settings">Settings</a></li>
-          <li><a class="categories" href="/categories">Categories</a></li>
-        </ul>
+        <div class="dropdown-menu">
+          <ul role="menu" aria-labelledby="dLabel">
+            <li><a class="pending" href="/pending">Pending</a></li>
+            <li><a class="users" href="/users">Users</a></li>
+            <li><a class="settings" href="/settings">Settings</a></li>
+            <li><a class="categories" href="/categories">Categories</a></li>
+          </ul>
+        </div>
       </li>
       {{/if}}
     </ul>

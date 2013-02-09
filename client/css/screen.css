@@ -601,27 +601,30 @@ body.pageslide-open {
     content: "▼";
     font-size: 8px; }
   /* line 13, ../sass/partials/_dropdown.scss */
-  .dropdown ul {
+  .dropdown .dropdown-menu {
     display: none;
-    position: absolute;
-    top: 30px;
+    top: 10px;
     left: 10px;
-    background: white;
-    padding: 10px;
-    width: 140px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
-    /* line 24, ../sass/partials/_dropdown.scss */
-    .dropdown ul li a {
-      font-size: 14px; }
-  /* line 30, ../sass/partials/_dropdown.scss */
-  .dropdown:hover ul {
+    position: absolute;
+    padding-top: 20px; }
+    /* line 19, ../sass/partials/_dropdown.scss */
+    .dropdown .dropdown-menu ul {
+      background: white;
+      padding: 10px;
+      width: 140px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      -ms-border-radius: 3px;
+      -o-border-radius: 3px;
+      border-radius: 3px;
+      -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
+      /* line 26, ../sass/partials/_dropdown.scss */
+      .dropdown .dropdown-menu ul li a {
+        font-size: 14px; }
+  /* line 33, ../sass/partials/_dropdown.scss */
+  .dropdown:hover .dropdown-menu {
     display: block; }
 
 /* line 5, ../sass/partials/_grid.scss */
