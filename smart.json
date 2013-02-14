@@ -1,7 +1,5 @@
 {
-  "meteor": {
-    "branch": "stop-callbacks"
-  },
+  "meteor": {},
   "packages": {
     "router": {},
     "moment": {},

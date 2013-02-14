@@ -1,6 +1,11 @@
+## v0.5.3
+
+* Added basic color customization.
+* Fixed Flush bug
+
 ## v0.5.2
 
-* Added notifications of new comments and new replies for all users (along with unsubcribe link) and notifications of new posts for admin users.
+* Added email notifications of new comments and new replies for all users (along with unsubcribe link) and notifications of new posts for admin users.
 
 ## v0.5.1
 
