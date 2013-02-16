@@ -6,13 +6,9 @@ nl2br= function(str) {
 var breakTag = '<br />';    
 return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
 }
-getSetting = function(setting, defaultValue){
-  var defaultValue = (typeof defaultValue === 'undefined') ? '' : defaultValue;
-  var settings=Settings.find().fetch()[0];
-  if(settings){
-    return settings[setting];
-  }
-  return defaultValue;
+getSetting = function(setting, defaultSetting){
+  var settingsObject=Settings.find().fetch()[0];
+  return (settingsObject && settingsObject[setting]) ? settingsObject[setting] : defaultSetting;
 }
 getAuthorName = function(item){
   // keep both variables for transition period

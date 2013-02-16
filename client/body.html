@@ -1,21 +1,29 @@
 <template name="body">
 
   <style>
-    body{
-      background-color: {{backgroundColor}};
-    }
-    input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn, .error{
-      background-color: {{buttonColor}};
-    }
-    a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i{
-      color: {{buttonColor}};
-    }
-    .post-content .post-upvote .upvote-link.voted i.icon-check{
-      color: {{secondaryColor}};
-    }
-    .header{
-      background-color: {{headerColor}};
-    }
+    {{#if backgroundColor}}
+      body{
+        background-color: {{backgroundColor}};
+      }
+    {{/if}}
+    {{#if buttonColor}}
+      input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn, .error{
+        background-color: {{buttonColor}};
+      }
+      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i{
+        color: {{buttonColor}};
+      }
+    {{/if}}
+    {{#if secondaryColor}}
+      .post-content .post-upvote .upvote-link.voted i.icon-check{
+        color: {{secondaryColor}};
+      }
+    {{/if}}
+    {{#if headerColor}}
+      .header{
+        background-color: {{headerColor}};
+      }
+    {{/if}}
   </style>
 
   {{> mobile_nav}}

@@ -3,16 +3,16 @@ Template.body.helpers({
     return Meteor.Router.page();
   },
   backgroundColor: function(){
-  	return getSetting('backgroundColor', '#e0f1f7');
+  	return getSetting('backgroundColor');
   },
   secondaryColor: function(){
-  	return getSetting('secondaryColor', '#7ac0e4');
+  	return getSetting('secondaryColor');
   },
   buttonColor: function(){
-  	return getSetting('buttonColor', '#f36c3d');
+  	return getSetting('buttonColor');
   },
   headerColor: function(){
-  	return getSetting('headerColor', '#4e555d');
+  	return getSetting('headerColor');
   },      
 });
 
