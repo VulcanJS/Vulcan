@@ -34,14 +34,14 @@ getDateRange= function(pageNumber){
 }
 // ---------------------------------- URL Helper Functions ----------------------------------- //
 getPostUrl = function(id){
-  return Meteor.absoluteUrl()+'/posts/'+id;
+  return Meteor.absoluteUrl()+'posts/'+id;
 }
 getCommentUrl = function(id){
-  return Meteor.absoluteUrl()+'/comments/'+id;
+  return Meteor.absoluteUrl()+'comments/'+id;
 }
 getPostCommentUrl = function(postId, commentId){
   // get link to a comment on a post page
-  return Meteor.absoluteUrl()+'/posts/'+postId+'/comment/'+commentId;
+  return Meteor.absoluteUrl()+'posts/'+postId+'/comment/'+commentId;
 }
 getUserUrl = function(id){
   return Meteor.absoluteUrl()+'users/'+id;
