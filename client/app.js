@@ -101,6 +101,11 @@ var queryFind = function(status, slug){
   return find;
 }
 
+var sortBy = function(sortProperty){
+  var sortBy = {sort: {sticky: -1}};
+  sortBy.sort[sortProperty] = -1;
+  return sortBy;
+}
 
 var postListSubscription = function(find, options, per_page) {
   var handle = paginatedSubscription(per_page, 'paginatedPosts', find, options);
@@ -113,10 +118,10 @@ var postListSubscription = function(find, options, per_page) {
 FIND_APPROVED = queryFind(STATUS_APPROVED, Session.get('categorySlug'));
 FIND_PENDING = queryFind(STATUS_PENDING, Session.get('categorySlug'));
 
-var topPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, score: -1}}, 10);
-var newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, submitted: -1}}, 10);
-var bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, baseScore: -1}}, 10);
-var pendingPostsHandle = postListSubscription(FIND_PENDING, {sort: {createdAt: -1}}, 10);
+var topPostsHandle = postListSubscription(FIND_APPROVED, sortBy('score'), 10);
+var newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
+var bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
+var pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
 
 // digest subscriptions
 DIGEST_PRELOADING = 3;
