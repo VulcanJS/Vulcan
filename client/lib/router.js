@@ -74,6 +74,12 @@
     return 'unsubscribe';
   }
 
+  category = function(category_slug, view){
+    var view = (typeof view === 'undefined') ? 'top' : view;
+    Session.set('category_slug', category_slug);
+    return 'posts_'+view;
+  }
+
   // XXX: not sure if the '/' trailing routes are needed any more
   Meteor.Router.add({
     '/': 'posts_top',
@@ -111,7 +117,8 @@
     '/users/:id': user_profile,
     '/users/:id/edit': user_edit,
     '/:year/:month/:day': digest,
-    '/unsubscribe/:hash': unsubscribe
+    '/unsubscribe/:hash': unsubscribe,
+    '/c/:category_slug': category
 });
 
 

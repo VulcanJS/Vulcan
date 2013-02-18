@@ -4,9 +4,8 @@ Template.post_item.preserve({
 
 
 Template.post_item.helpers({
-  currentPost: function(){
-    console.log(this);
-    return this;
+  postLink: function(){
+    return !!this.url ? this.url : "/posts/"+this._id;
   },
   rank: function() {
     return this._rank + 1;
@@ -56,6 +55,12 @@ Template.post_item.helpers({
   },
   inactiveClass: function(){
     return (isAdmin(Meteor.user()) && this.inactive) ? "inactive" : "";
+  },
+  categories: function(){
+    return getPostCategories(this);
+  },
+  categoryLink: function(){
+    return getCategoryUrl(this.slug);
   }
 });
 

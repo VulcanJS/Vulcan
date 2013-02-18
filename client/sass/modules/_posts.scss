@@ -126,6 +126,20 @@
 			font-size:14px;
 			font-weight:normal;
 		}
+		.post-category{
+			display:inline-block;
+			font-size:11px;
+			@include border-radius(3px);
+			background:#eee;
+			padding:0px 6px;
+			text-transform:uppercase;
+			font-weight:normal;
+			vertical-align:middle;
+			&:hover{
+				background:$red;
+				color:white;
+			}
+		}
 	}
 	.post-meta{
 		font-size:13px;

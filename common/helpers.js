@@ -32,6 +32,14 @@ getDateRange= function(pageNumber){
   // console.log("before: ", dayToDisplay.endOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
   return range;
 }
+getPostCategories = function(post){
+  var postCategories = _.map(post.categories, function(categoryId){
+    return Categories.findOne(categoryId);
+  });
+  // put resulting array through a filter to remove empty values in case
+  // some of the post's categories weren't found in the database
+  return _.filter(postCategories, function(e){return e});
+}
 // ---------------------------------- URL Helper Functions ----------------------------------- //
 getPostUrl = function(id){
   return Meteor.absoluteUrl()+'posts/'+id;
@@ -45,6 +53,16 @@ getPostCommentUrl = function(postId, commentId){
 }
 getUserUrl = function(id){
   return Meteor.absoluteUrl()+'users/'+id;
+}
+getCategoryUrl = function(slug){
+  return Meteor.absoluteUrl()+'c/'+slug;
+}
+slugify = function(text) {
+  text = text.replace(/[^-a-zA-Z0-9,&\s]+/ig, '');
+  text = text.replace(/-/gi, "_");
+  text = text.replace(/\s/gi, "-");
+  text = text.toLowerCase();
+  return text;
 }
 // ---------------------------------- String Helper Functions ----------------------------------- //
 cleanUp = function(s){
