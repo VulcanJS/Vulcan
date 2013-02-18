@@ -74,9 +74,9 @@
     return 'unsubscribe';
   }
 
-  category = function(category_slug, view){
+  category = function(categorySlug, view){
     var view = (typeof view === 'undefined') ? 'top' : view;
-    Session.set('category_slug', category_slug);
+    Session.set('categorySlug', categorySlug);
     return 'posts_'+view;
   }
 

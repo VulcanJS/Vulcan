@@ -32,6 +32,11 @@ Meteor.subscribe('settings', function(){
   Session.set('settingsLoaded',true);
 });
 
+// ** Categories **
+
+Categories = new Meteor.Collection('categories');
+Meteor.subscribe('categories');
+
 // ** Users **
 
 Meteor.subscribe('currentUser');
@@ -56,10 +61,46 @@ if(Meteor.user()){
 
 Posts = new Meteor.Collection('posts');
 
+
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
-FIND_APPROVED={$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]};
+
+var queryFind = function(status, slug){
+  var find = {};
+
+  // build find query starting with the status
+  switch(status){
+    case STATUS_APPROVED:
+      find = {
+        $or: [
+          {status: {$exists : false}},
+          {status: STATUS_APPROVED}
+        ]
+      };
+    break;
+    case STATUS_PENDING:
+      find = {status: STATUS_PENDING}
+    break;
+    case STATUS_REJECTED:
+      find = {status: STATUS_REJECTED}
+    break;
+  }
+
+  // if a category slug is defined, modify selector
+  if(slug){
+    console.log('cat slug: ',slug);
+    find={
+      $and : [
+        find,
+        {'categories.slug': slug}
+      ]
+    }; 
+  }
+
+  return find;
+}
+
 
 var postListSubscription = function(find, options, per_page) {
   var handle = paginatedSubscription(per_page, 'paginatedPosts', find, options);
@@ -69,14 +110,13 @@ var postListSubscription = function(find, options, per_page) {
   return handle;
 }
 
+FIND_APPROVED = queryFind(STATUS_APPROVED, Session.get('categorySlug'));
+FIND_PENDING = queryFind(STATUS_PENDING, Session.get('categorySlug'));
+
 var topPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, score: -1}}, 10);
 var newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, submitted: -1}}, 10);
 var bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, baseScore: -1}}, 10);
-var pendingPostsHandle = postListSubscription(
-  {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]}, 
-  {sort: {createdAt: -1}}, 
-  10
-);
+var pendingPostsHandle = postListSubscription(FIND_PENDING, {sort: {createdAt: -1}}, 10);
 
 // digest subscriptions
 DIGEST_PRELOADING = 3;
@@ -136,10 +176,7 @@ Meteor.autorun(function() {
   }
 });
 
-// ** Categories **
 
-Categories = new Meteor.Collection('categories');
-Meteor.subscribe('categories');
 
 
 // ** Comments **
