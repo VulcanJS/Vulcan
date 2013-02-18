@@ -88,8 +88,10 @@ var queryFind = function(status, slug){
   }
 
   // if a category slug is defined, modify selector
+
+  // DOESN'T WORK FOR SOME REASON
   if(slug){
-    console.log('cat slug: ',slug);
+    console.log('cat slug: ', slug);
     find={
       $and : [
         find,

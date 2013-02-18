@@ -95,6 +95,8 @@
     '/digest/:year/:month/:day': digest,
     '/digest': digest,
     '/digest/': digest,
+    '/c/:category_slug/:view': category,
+    '/c/:category_slug': category,
     '/signin':'user_signin',
     '/signup':'user_signup',
     '/submit':'post_submit',
@@ -117,8 +119,7 @@
     '/users/:id': user_profile,
     '/users/:id/edit': user_edit,
     '/:year/:month/:day': digest,
-    '/unsubscribe/:hash': unsubscribe,
-    '/c/:category_slug': category
+    '/unsubscribe/:hash': unsubscribe
 });
 
 
