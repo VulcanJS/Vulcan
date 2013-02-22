@@ -28,8 +28,8 @@ getNotification = function(event, properties, context){
 
     case 'accountApproved':
       notification.subject = 'Your account has been approved.';
-      notification.text = 'Welcome to '+getSetting('title')+'!<br/> Your account has just been approved. <a href="'+Meteor.absoluteUrl()+'">Start posting.</a>';
-      notification.html = 'Welcome to '+getSetting('title')+'! Your account has just been approved.';      
+      notification.text = 'Welcome to '+getSetting('title')+'! Your account has just been approved.';
+      notification.html = 'Welcome to '+getSetting('title')+'!<br/> Your account has just been approved. <a href="'+Meteor.absoluteUrl()+'">Start posting.</a>';      
     break;
 
     default:

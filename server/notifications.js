@@ -1,34 +1,14 @@
-// createNotification = function(event, properties, userToNotify, userDoingAction){
-//   // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
-//   // console.log(userToNotify);
-//   // console.log(userDoingAction);
-//   // console.log(properties);
-//   var notification= {
-//     timestamp: new Date().getTime(),
-//     userId: userToNotify._id,
-//     event: event,
-//     properties: properties,
-//     read: false
-//   }
-//   var newNotificationId=Notifications.insert(notification);
-
-//   // send the notification is the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
-//   if(userToNotify.profile && (userToNotify.profile.notificationsFrequency === 1 || typeof userToNotify.profile.notificationsFrequency === 'undefined')){
-//     Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
-//   }
-// };
-
 getUnsubscribeLink = function(user){
   return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
 };
 
 Meteor.methods({
   createNotification: function(event, properties, userToNotify, userDoingAction){
-   console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
-  console.log(userToNotify);
-  console.log(userDoingAction);
-  console.log(properties);
-   var notification= {
+    // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
+    // console.log(userToNotify);
+    // console.log(userDoingAction);
+    // console.log(properties);
+    var notification= {
       timestamp: new Date().getTime(),
       userId: userToNotify._id,
       event: event,
@@ -46,6 +26,7 @@ Meteor.methods({
     // Note: we query the DB instead of simply passing arguments from the client
     // to make sure our email method cannot be used for spam
     var notification = Notifications.findOne(notificationId);
+    console.log('----------',notification,'----------')
     var n = getNotification(notification.event, notification.properties, 'email');
     var to = getEmail(userToNotify);
     var text = n.text + '\n\n Unsubscribe from all notifications: '+getUnsubscribeLink(userToNotify);
