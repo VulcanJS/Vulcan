@@ -1,6 +1,7 @@
 ## v0.5.4
 
 * Added email notifications for approved users.
+* Added delete users link
 
 ## v0.5.3
 
