@@ -51,15 +51,19 @@ Meteor.methods({
         properties.parentAuthorId = parentComment.userId;
         properties.parentAuthorName = getDisplayName(parentUser);
 
-        createNotification('newReply', properties, parentUser, user);
+        // do not notify users of their own actions (i.e. they're replying to themselves)
+        if(parentUser._id != user._id)
+          Meteor.call('createNotification','newReply', properties, parentUser, user);
 
-        if(parentComment.userId!=post.userId){
-          // if the original poster is different from the author of the parent comment, notify them too
-          createNotification('newComment', properties, postUser, Meteor.user());
-        }
+        // if the original poster is different from the author of the parent comment, notify them too
+        if(postUser._id != user._id && parentComment.userId != post.userId)
+          Meteor.call('createNotification','newComment', properties, postUser, user);
+
       }else{
         // root comment
-        createNotification('newComment', properties, postUser, Meteor.user());
+        // don't notify users of their own comments
+        if(postUser._id != user._id)
+          Meteor.call('createNotification','newComment', properties, postUser, Meteor.user());
       }
     }
     return properties;

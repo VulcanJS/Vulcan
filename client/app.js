@@ -42,7 +42,7 @@ Meteor.subscribe('allUsers');
 // Only load if user is logged in
 
 var Notifications = new Meteor.Collection('notifications');
-if(Meteor.user()){
+if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
 

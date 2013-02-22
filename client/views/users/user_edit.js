@@ -10,6 +10,9 @@ Template.user_edit.helpers({
       return currentUser;
     }
   },
+  userEmail : function(){
+    return getEmail(Meteor.user());
+  },
   hasNotificationsNone : function(){
     return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 0 ? 'checked' : '';
   },

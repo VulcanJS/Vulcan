@@ -145,6 +145,7 @@ Notifications = new Meteor.Collection('notifications');
 
 Meteor.publish('notifications', function() {
   // only publish notifications belonging to the current user
+  console.log('current user Id: '+this.userId)
   return Notifications.find({userId:this.userId});
 });
 

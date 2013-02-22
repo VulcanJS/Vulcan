@@ -26,6 +26,12 @@ getNotification = function(event, properties, context){
       notification.html = '<a href="'+getUserUrl(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postHeadline+'</a>".';      
     break;
 
+    case 'accountApproved':
+      notification.subject = 'Your account has been approved.';
+      notification.text = 'Welcome to '+getSetting('title')+'!<br/> Your account has just been approved. <a href="'+Meteor.absoluteUrl()+'">Start posting.</a>';
+      notification.html = 'Welcome to '+getSetting('title')+'! Your account has just been approved.';      
+    break;
+
     default:
     break;
   }
