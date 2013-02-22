@@ -1,3 +1,7 @@
+## v0.5.4
+
+* Added email notifications for approved users.
+
 ## v0.5.3
 
 * Added basic color customization.
