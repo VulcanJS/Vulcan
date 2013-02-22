@@ -26,7 +26,6 @@ Meteor.methods({
     // Note: we query the DB instead of simply passing arguments from the client
     // to make sure our email method cannot be used for spam
     var notification = Notifications.findOne(notificationId);
-    console.log('----------',notification,'----------')
     var n = getNotification(notification.event, notification.properties, 'email');
     var to = getEmail(userToNotify);
     var text = n.text + '\n\n Unsubscribe from all notifications: '+getUnsubscribeLink(userToNotify);
