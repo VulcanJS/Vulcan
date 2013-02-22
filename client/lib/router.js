@@ -235,7 +235,8 @@
         // currentScroll stores the position of the user in the page
         Session.set('currentScroll', null);
         
-        document.title = getSetting("title");
+        var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
+        document.title = getSetting("title")+tagline;
         
         $('body').css('min-height','0');
 

@@ -10,6 +10,7 @@ var Setting = FormModel.extend({
     commentInterval: '',
     maxPostsPerDay: '',
     title: '',
+    tagline: '',
     logoUrl: '',
     logoHeight: '',
     logoWidth: '',
