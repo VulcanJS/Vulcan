@@ -32,6 +32,10 @@ getDateRange= function(pageNumber){
   // console.log("before: ", dayToDisplay.endOf('day').format("dddd, MMMM Do YYYY, h:mm:ss a"));
   return range;
 }
+getDomain = function(url){
+    urlObject = require('url');
+    return urlObject.parse(url).hostname;
+}
 // ---------------------------------- URL Helper Functions ----------------------------------- //
 getPostUrl = function(id){
   return Meteor.absoluteUrl()+'posts/'+id;
