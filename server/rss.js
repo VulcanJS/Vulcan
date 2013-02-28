@@ -2,7 +2,10 @@
 Meteor.serve('feed.xml', function() {
   var feed = new RSS({
     title: getSetting('title'),
-    description: getSetting('tagline')
+    description: getSetting('tagline'),
+    feed_url: Meteor.absoluteUrl()+'feed.xml',
+    site_url: Meteor.absoluteUrl(),
+    image_url: Meteor.absoluteUrl()+'img/favicon.ico',
   });
   
   Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}}).forEach(function(post) {
