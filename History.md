@@ -1,6 +1,7 @@
 ## v0.5.5
 
 * Added Google Analytics pageview tracking
+* Added RSS feed for /new
 
 ## v0.5.4
 
