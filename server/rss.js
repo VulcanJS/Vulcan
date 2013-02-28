@@ -5,7 +5,7 @@ Meteor.serve('feed.xml', function() {
     description: getSetting('tagline'),
     feed_url: Meteor.absoluteUrl()+'feed.xml',
     site_url: Meteor.absoluteUrl(),
-    image_url: Meteor.absoluteUrl()+'img/favicon.ico',
+    image_url: Meteor.absoluteUrl()+'img/favicon.png',
   });
   
   Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}}).forEach(function(post) {
@@ -14,7 +14,8 @@ Meteor.serve('feed.xml', function() {
      description: post.body+'</br></br> <a href="'+getPostUrl(post._id)+'">Comments</a>',
      author: post.author,
      date: post.submitted,
-     url: (post.url ? post.url : getPostUrl(post._id))
+     url: (post.url ? post.url : getPostUrl(post._id)),
+     guid: post._id
     });
   });
   
