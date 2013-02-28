@@ -1,3 +1,7 @@
+## v0.5.5
+
+* Added Google Analytics pageview tracking
+
 ## v0.5.4
 
 * Added email notifications for approved users.

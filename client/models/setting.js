@@ -20,6 +20,7 @@ var Setting = FormModel.extend({
     secondaryColor: '',
     buttonColor: '',
     headerColor: '',
+    googleAnalyticsId: '',
     mixpanelId: '',
     clickyId:'',
     goSquaredId: '',

@@ -13,7 +13,10 @@ Template.body.helpers({
   },
   headerColor: function(){
   	return getSetting('headerColor');
-  },      
+  },
+  extraCode: function(){
+    return getSetting('extraCode');
+  }     
 });
 
 Template.body.created = function(){
