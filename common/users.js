@@ -16,6 +16,16 @@ getDisplayName = function(user){
 getDisplayNameById = function(userId){
   return getDisplayName(Meteor.users.findOne(userId));
 }
+getTwitterName = function(user){
+  try {
+    return user.services.twitter.screenName;
+  } catch(e) {
+    return undefined;
+  }
+}
+getTwitterNameById = function(userId){
+  return getTwitterName(Meteor.users.findOne(userId));
+}
 getSignupMethod = function(user){
   if(user.services && user.services.twitter){
     return 'twitter';
