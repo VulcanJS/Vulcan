@@ -95,8 +95,10 @@ Template.post_edit.events = {
     }
 
     if(isAdmin(Meteor.user())){
+      console.log('status: '+status)
+      console.log(post)
       if(status == STATUS_APPROVED){
-        if(post.submitted == ''){
+        if(!post.submitted){
           // this is the first time we are approving the post
           properties.submitted = new Date().getTime();
         }else if($('#submitted_date').exists()){
@@ -109,6 +111,7 @@ Template.post_edit.events = {
         status:     status,
       };
       properties = _.extend(properties, adminProperties);
+      console.log(properties)
     }
 
     Posts.update(selectedPostId,
