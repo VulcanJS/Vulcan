@@ -1,7 +1,9 @@
-// serve up RSS at the right url
-Meteor.serve('api', function() {
+// serve up api at the right url
+Meteor.serve('api', function(request) {
   var posts = [];
-  Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: 100}).forEach(function(post) {
+  var limit = parseInt(request.query['limit']);
+  limit = limit ? limit :  100;
+  Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: limit}).forEach(function(post) {
     var url = (post.url ? post.url : getPostUrl(post._id));
     var properties = {
      headline: post.headline,
@@ -22,6 +24,6 @@ Meteor.serve('api', function() {
 
     posts.push(properties);
   });
-  
+
   return JSON.stringify(posts);
 });
