@@ -24,6 +24,7 @@ var Setting = FormModel.extend({
     mixpanelId: '',
     clickyId:'',
     goSquaredId: '',
+    embedlyId: '',
     footerCode: '',
     extraCode: '', 
     notes: ''
