@@ -8,10 +8,11 @@ Meteor.serve = function(path, fn) {
   __meteor_bootstrap__.app
     .use(connect.query()) // <- XXX: we can probably assume accounts did this
     .use(function(req, res, next) {
-      if (req.url !== '/' + path)
+      var test = ('/' + path);
+      if (req.url.substring(0, test.length) !== test)
         return next();
       
       // just run fn() and return it to the requester
-      res.end(fn())
+      res.end(fn(req))
     });
 }
