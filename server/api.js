@@ -1,4 +1,4 @@
-// serve up RSS at the right url
+// serve up api at the right url
 Meteor.serve('api', function(request) {
   var posts = [];
   var limit = parseInt(request.query['limit']);
@@ -24,6 +24,6 @@ Meteor.serve('api', function(request) {
 
     posts.push(properties);
   });
-  
+
   return JSON.stringify(posts);
 });
