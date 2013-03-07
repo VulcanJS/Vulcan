@@ -37,7 +37,7 @@ paginatedSubscription = function (perPage/*, name, arguments */) {
   var handle = new PaginatedSubscriptionHandle(perPage);
   var args = Array.prototype.slice.call(arguments, 1);
   
-  Meteor.autosubscribe(function() {
+  Meteor.autorun(function() {
     var subHandle = Meteor.subscribe.apply(this, args.concat([
       handle.limit(), function() { handle.done(); }
     ]));

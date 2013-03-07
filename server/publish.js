@@ -60,6 +60,7 @@ Meteor.publish('paginatedPosts', function(find, options, limit) {
   options = options || {};
   options.limit = limit;
   
+  console.log('subscribing to paginated posts', find, options, limit);
   return Posts.find(find || {}, options);
 });
 

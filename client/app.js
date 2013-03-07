@@ -117,13 +117,22 @@ var postListSubscription = function(find, options, per_page) {
   return handle;
 }
 
-FIND_APPROVED = queryFind(STATUS_APPROVED, Session.get('categorySlug'));
-FIND_PENDING = queryFind(STATUS_PENDING, Session.get('categorySlug'));
+FIND_APPROVED = function() {
+  return queryFind(STATUS_APPROVED, Session.get('categorySlug'));
+}
+FIND_PENDING = function() {
+  return queryFind(STATUS_PENDING, Session.get('categorySlug'));
+}
 
-var topPostsHandle = postListSubscription(FIND_APPROVED, sortBy('score'), 10);
-var newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
-var bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
-var pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
+var topPostsHandle;
+
+Meteor.autorun(function() {
+  topPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('score'), 10);
+})
+
+// var newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
+// var bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
+// var pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
 
 // digest subscriptions
 DIGEST_PRELOADING = 3;
