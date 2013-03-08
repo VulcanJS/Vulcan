@@ -101,14 +101,14 @@ Template.post_item.events = {
         trackEvent("post upvoted", {'_id': post._id});
       });
   }
-
   , 'click .share-link': function(e){
-      var $this = $(e.target);
+      var $this = $(e.target).parents('.post-share').find('.share-link');
+      var $share = $this.parents('.post-share').find('.share-options');
       e.preventDefault();
-      $(".share-link").not($this).next().addClass("hidden");
-      $this.next().toggleClass("hidden");
-      console.log($this);
-      $this.next().find('.share-replace').sharrre(SharrreOptions);
-      // $(".overlay").toggleClass("hidden");
+      $('.share-link').not($this).removeClass("active");
+      $(".share-options").not($share).addClass("hidden");
+      $this.toggleClass("active");
+      $share.toggleClass("hidden");
+      $share.find('.share-replace').sharrre(SharrreOptions);
   }
 };
