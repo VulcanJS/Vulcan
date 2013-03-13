@@ -2,7 +2,7 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "master",
-    "commit": "2d8b41a87cec884489ead138b5dfea31487363f3"
+    "commit": "471f661c5b32bf66746077defbbac8b2b26046c6"
   },
   "dependencies": {
     "basePackages": {
@@ -17,8 +17,8 @@
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.3.5",
-        "commit": "e8e63db2411204f0a6589b74dd591babbfb2da1a"
+        "tag": "v0.4.3",
+        "commit": "0691a6e2c4c249ce7d00cd6dc7ad27e1c7330a31"
       },
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
@@ -32,13 +32,13 @@
       },
       "database-forms": {
         "git": "https://github.com/lyudmil/database-forms.git",
-        "tag": "v0.0.1",
-        "commit": "3e458c17f1c6e3499188be01182cdade92683357"
+        "tag": "v0.0.2",
+        "commit": "9e21c15aca103a18013b6d518fe5b116f16368f0"
       },
-      "page-js": {
-        "git": "https://github.com/tmeasday/meteor-page-js.git",
+      "page-js-ie-support": {
+        "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
         "tag": "v1.3.5",
-        "commit": "c652f795a86498aa4609ab637a694710421cb218"
+        "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
       },
       "node-modules": {
         "git": "https://github.com/possibilities/meteor-node-modules.git",

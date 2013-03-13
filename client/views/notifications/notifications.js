@@ -25,19 +25,10 @@ Template.notifications.events({
 		$('body').toggleClass('notifications-open');
 	},
 	'click .mark-as-read': function(){
-    Notifications.update(
-      {userId: Meteor.userId()},
-      {
-        $set:{
-          read: true
-        }
-      },
-      {multi: true},
+    Meteor.call('markAllNotificationsAsRead', 
       function(error, result){
-        if(error){
-          console.log(error);
-        } 
+        error && console.log(error);
       }
-    );  
+    );
 	}
 })
