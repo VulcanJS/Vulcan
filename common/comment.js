@@ -44,8 +44,8 @@ Meteor.methods({
     if(!this.isSimulation){
       if(parentCommentId){
         // child comment
-        var parentComment=Comments.find(parentCommentId);
-        var parentUser=Meteor.users.find(parentComment.userId);
+        var parentComment=Comments.findOne(parentCommentId);
+        var parentUser=Meteor.users.findOne(parentComment.userId);
 
         properties.parentCommentId = parentCommentId;
         properties.parentAuthorId = parentComment.userId;
