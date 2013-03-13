@@ -1,7 +1,9 @@
 {
-  "meteor": {},
+  "meteor": {
+    "branch" : "release-0.5.9"
+  },
   "packages": {
-    "router": {},
+    "router": {"branch" : "0.5.9"},
     "moment": {},
     "profiler": {"git": "https://github.com/tmeasday/meteor-profiler.git"},
 	"database-forms": {}

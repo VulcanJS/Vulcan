@@ -23,11 +23,25 @@ getNotification = function(event, properties, context){
     case 'newPost':
       notification.subject = p.postAuthorName+' has created a new post: "'+p.postHeadline+'"';
       notification.text = p.postAuthorName+' has created a new post: "'+p.postHeadline+'" '+getPostUrl(p.postId);
-      notification.html = '<a href="'+getUserUrl(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postHeadline+'</a>".';      
+      notification.html = '<a href="'+getUserUrl(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postHeadline+'</a>".';
     break;
 
     default:
     break;
   }
   return notification;
-}
+};
+
+Meteor.methods({
+  markAllAsRead: function () {
+    Notifications.update(
+      {userId: Meteor.userId()},
+      {
+        $set:{
+          read: true
+        }
+      },
+      {multi: true}
+    );
+  }
+});
