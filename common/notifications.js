@@ -37,3 +37,17 @@ getNotification = function(event, properties, context){
   }
   return notification;
 }
+
+Meteor.methods({
+  markAllNotificationsAsRead: function() {
+    Notifications.update(
+      {userId: Meteor.userId()},
+      {
+        $set:{
+          read: true
+        }
+      },
+      {multi: true}
+    );
+  }
+});
