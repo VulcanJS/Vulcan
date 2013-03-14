@@ -26,8 +26,28 @@ getNotification = function(event, properties, context){
       notification.html = '<a href="'+getUserUrl(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postHeadline+'</a>".';      
     break;
 
+    case 'accountApproved':
+      notification.subject = 'Your account has been approved.';
+      notification.text = 'Welcome to '+getSetting('title')+'! Your account has just been approved.';
+      notification.html = 'Welcome to '+getSetting('title')+'!<br/> Your account has just been approved. <a href="'+Meteor.absoluteUrl()+'">Start posting.</a>';      
+    break;
+
     default:
     break;
   }
   return notification;
 }
+
+Meteor.methods({
+  markAllNotificationsAsRead: function() {
+    Notifications.update(
+      {userId: Meteor.userId()},
+      {
+        $set:{
+          read: true
+        }
+      },
+      {multi: true}
+    );
+  }
+});

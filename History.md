@@ -1,3 +1,17 @@
+## v0.5.6
+
+* Added simple JSON API showing the 100 last posts
+
+## v0.5.5
+
+* Added Google Analytics pageview tracking
+* Added RSS feed for /new
+
+## v0.5.4
+
+* Added email notifications for approved users.
+* Added delete users link
+
 ## v0.5.3
 
 * Added basic color customization.

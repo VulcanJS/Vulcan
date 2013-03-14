@@ -1,10 +1,13 @@
-createNotification = function(event, properties, userToNotify, userDoingAction){
-  // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
-  // console.log(userToNotify);
-  // console.log(userDoingAction);
-  // console.log(properties);
-  if(userToNotify._id!=userDoingAction._id){
-    // make sure we don't notify people of their own actions
+getUnsubscribeLink = function(user){
+  return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
+};
+
+Meteor.methods({
+  createNotification: function(event, properties, userToNotify, userDoingAction){
+    // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
+    // console.log(userToNotify);
+    // console.log(userDoingAction);
+    // console.log(properties);
     var notification= {
       timestamp: new Date().getTime(),
       userId: userToNotify._id,
@@ -18,14 +21,7 @@ createNotification = function(event, properties, userToNotify, userDoingAction){
     if(userToNotify.profile && (userToNotify.profile.notificationsFrequency === 1 || typeof userToNotify.profile.notificationsFrequency === 'undefined')){
       Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
     }
-  }
-};
-
-getUnsubscribeLink = function(user){
-  return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
-};
-
-Meteor.methods({
+  },
   sendNotificationEmail : function(userToNotify, notificationId){
     // Note: we query the DB instead of simply passing arguments from the client
     // to make sure our email method cannot be used for spam

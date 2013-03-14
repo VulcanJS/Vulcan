@@ -169,42 +169,6 @@
 			color:$light-text;
 			font-size:36px;
 			line-height:50px;
-			// @include background(linear-gradient(/*right top,*/ #f6f6f6, #e3e3e3));
-			// @include box-shadow(inset 0 1px 0 white, 0 1px 1px black(0.15));
-			// background:#fffce6;
-			// &.medium{
-			// 	background-color:red(0.05);
-			// }
-			// &.hot{
-			// 	background-color:red(0.2);
-			// }
-			// &.superhot{
-			// 	background-color:red(0.3);
-			// }
-			// &.megahot{
-			// 	background-color:red(0.5);
-			// }
-			// &.gigahot{
-			// 	background-color:red(0.8);					
-			// }
-			// &.low{
-			// 	color:red(0.2);
-			// }
-			// &.medium{
-			// 	color:red(0.3);
-			// }
-			// &.hot{
-			// 	color:red(0.4);
-			// }
-			// &.superhot{
-			// 	color:red(0.6);
-			// }
-			// &.megahot{
-			// 	color:red(0.8);
-			// }
-			// &.gigahot{
-			// 	color:red(1);					
-			// }
 			&.edit-link{
 				color:$red;
 			}

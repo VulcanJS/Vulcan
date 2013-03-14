@@ -40,6 +40,10 @@ getDateRange= function(pageNumber){
 //   // some of the post's categories weren't found in the database
 //   return _.filter(postCategories, function(e){return e});
 // }
+getDomain = function(url){
+    urlObject = require('url');
+    return urlObject.parse(url).hostname;
+}
 // ---------------------------------- URL Helper Functions ----------------------------------- //
 getPostUrl = function(id){
   return Meteor.absoluteUrl()+'posts/'+id;

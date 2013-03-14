@@ -35,9 +35,16 @@ Template.user_item.helpers({
 Template.user_item.events({
 	'click .invite-link': function(e, instance){
 		e.preventDefault();
-		Meteor.users.update(instance.data._id,{
+		var user = Meteor.users.findOne(instance.data._id);
+		Meteor.users.update(user._id,{
 			$set:{
 				isInvited: true
+			}
+		}, {multi: false}, function(error){
+			if(error){
+				throwError();
+			}else{
+				Meteor.call('createNotification','accountApproved', {}, user);
 			}
 		});
 	},
@@ -64,5 +71,10 @@ Template.user_item.events({
 				isAdmin: false
 			}
 		});
+	},
+	'click .delete-link': function(e, instance){
+		e.preventDefault();
+		if(confirm("Are you sure you want to delete "+getDisplayName(instance.data)+"?"))
+			Meteor.users.remove(instance.data._id);
 	}
 })

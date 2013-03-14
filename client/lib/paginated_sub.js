@@ -1,18 +1,18 @@
 PaginatedSubscriptionHandle = function(perPage) {
   this.perPage = perPage;
   this._limit = perPage;
-  this._limitListeners = new Meteor.deps._ContextSet();
+  this._limitListeners = new Deps.Dependency();
   this._loaded = 0;
-  this._loadedListeners = new Meteor.deps._ContextSet();
+  this._loadedListeners = new Deps.Dependency();
 }
 
 PaginatedSubscriptionHandle.prototype.loaded = function() {
-  this._loadedListeners.addCurrentContext();
+  Deps.depend(this._loadedListeners);
   return this._loaded;
 }
 
 PaginatedSubscriptionHandle.prototype.limit = function() {
-  this._limitListeners.addCurrentContext();
+  Deps.depend(this._limitListeners);
   return this._limit;
 }
 
@@ -22,14 +22,14 @@ PaginatedSubscriptionHandle.prototype.loading = function() {
 
 PaginatedSubscriptionHandle.prototype.loadNextPage = function() {
   this._limit += this.perPage;
-  this._limitListeners.invalidateAll();
+  this._limitListeners.changed();
 }
 
 PaginatedSubscriptionHandle.prototype.done = function() {
   // XXX: check if subs that are canceled before they are ready ever fire ready?
   // if they do we need to increase loaded by perPage, not set it to limit
   this._loaded = this._limit;
-  this._loadedListeners.invalidateAll();
+  this._loadedListeners.changed();
 }
 
 

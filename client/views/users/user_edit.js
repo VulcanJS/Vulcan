@@ -3,12 +3,18 @@ Template.user_edit.helpers({
     return Meteor.user() && !this.loading && !userProfileComplete(this);
   },
   user : function(){
-    var currentUser=Meteor.user();
+    var currentUser = Meteor.user();
     if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
-      return Meteor.users.findOne(Session.get('selectedUserId'));
-    }else{
-      return currentUser;
+      currentUser = Meteor.users.findOne(Session.get('selectedUserId'));
     }
+    return currentUser;
+  },
+  userEmail : function(){
+    var currentUser = Meteor.user();
+    if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
+      currentUserMeteor.users.findOne(Session.get('selectedUserId'));
+    }
+    return getEmail(currentUser);
   },
   hasNotificationsNone : function(){
     return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 0 ? 'checked' : '';

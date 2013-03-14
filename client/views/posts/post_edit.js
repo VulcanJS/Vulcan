@@ -95,10 +95,12 @@ Template.post_edit.events = {
     }
 
     if(isAdmin(Meteor.user())){
+      console.log('status: '+status)
+      console.log(post)
       if(status == STATUS_APPROVED){
-        if(post.submitted == ''){
+        if(!post.submitted){
           // this is the first time we are approving the post
-          Meteor.call('post_approve', selectedPostId);
+          properties.submitted = new Date().getTime();
         }else if($('#submitted_date').exists()){
           properties.submitted = parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
         }
@@ -109,6 +111,7 @@ Template.post_edit.events = {
         status:     status,
       };
       properties = _.extend(properties, adminProperties);
+      console.log(properties)
     }
 
     Posts.update(selectedPostId,
