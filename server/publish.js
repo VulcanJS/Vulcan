@@ -33,16 +33,16 @@ Meteor.startup(function(){
       // console.log(docs);
       // console.log('fields: '+fields);
       // console.log(modifier); //uncommenting this crashes everything
-      if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
+      if(isAdminById(userId) || (docs._id && docs._id==userId)){
           return true;
         }
         return false;
       }
-    , remove: function(userId, docs){ 
-        if(isAdminById(userId) || (docs[0]._id && docs[0]._id==userId)){
+    , remove: function(userId, docs){
+        if(isAdminById(userId) || (docs._id && docs._id==userId)){
           return true;
         }
-        return false; 
+        return false;
       }
   });
 });
@@ -59,7 +59,7 @@ Meteor.publish('post', function(id) {
 Meteor.publish('paginatedPosts', function(find, options, limit) {
   options = options || {};
   options.limit = limit;
-  
+
   return Posts.find(find || {}, options);
 });
 
@@ -73,15 +73,15 @@ Meteor.startup(function(){
         }
         return false;
       }
-    , update: function(userId, docs, fields, modifier){ 
-        if(isAdminById(userId) || (docs[0].userId && docs[0].userId===userId)){
+    , update: function(userId, docs, fields, modifier){
+        if(isAdminById(userId) || (docs.userId && docs.userId===userId)){
           return true;
         }
         throw new Meteor.Error(403, 'You do not have permission to edit this post');
         return false;
       }
-    , remove: function(userId, docs){ 
-        if(isAdminById(userId) || (docs[0].userId && docs[0].userId===userId)){
+    , remove: function(userId, docs){
+        if(isAdminById(userId) || (docs.userId && docs.userId===userId)){
           return true;
         }
         throw new Meteor.Error(403, 'You do not have permission to delete this post');
@@ -106,14 +106,14 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        if(isAdminById(userId) || (docs[0].userId && docs[0].userId==userId)){
+        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
           return true;
         }
-        throw new Meteor.Error(403, 'You do not have permission to edit this comment');        
+        throw new Meteor.Error(403, 'You do not have permission to edit this comment');
         return false;
       }
-    , remove: function(userId, docs){ 
-        if(isAdminById(userId) || (docs[0].userId && docs[0].userId==userId)){
+    , remove: function(userId, docs){
+        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
           return true;
         throw new Meteor.Error(403, 'You do not have permission to delete this comment');
         }
@@ -157,13 +157,13 @@ Meteor.startup(function(){
         return false;
       }
     , update: function(userId, docs, fields, modifier){
-        if(isAdminById(userId) || (docs[0].userId && docs[0].userId==userId)){
+        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
           return true;
         }
         return false;
       }
-    , remove: function(userId, docs){ 
-        if(isAdminById(userId) || (docs[0].userId && docs[0].userId==userId)){
+    , remove: function(userId, docs){
+        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
           return true;
         }
         return false;
