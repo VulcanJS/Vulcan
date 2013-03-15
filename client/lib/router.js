@@ -1,4 +1,9 @@
 (function() {  
+  Meteor.Router.beforeRouting = function() {
+    // reset all session variables that might be set by the previous route
+    Session.set('categorySlug', null);
+  }
+  
   // specific router functions
   digest = function(year, month, day, view){
     var destination = (typeof view === 'undefined') ? 'posts_digest' : 'posts_digest_'+view

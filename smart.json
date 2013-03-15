@@ -1,9 +1,11 @@
 {
   "meteor": {},
   "packages": {
-    "router": {},
+    "router": {
+      "git": "https://github.com/tmeasday/meteor-router.git",
+      "branch": "beforeRouting"
+    },
     "moment": {},
-    "profiler": {"git": "https://github.com/tmeasday/meteor-profiler.git"},
-	"database-forms": {}
+    "database-forms": {}
   }
 }
