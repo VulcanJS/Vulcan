@@ -1009,32 +1009,32 @@ body.pageslide-open {
       color: #b3c1c6;
       font-size: 36px;
       line-height: 50px; }
-      /* line 208, ../sass/modules/_posts.scss */
+      /* line 172, ../sass/modules/_posts.scss */
       .post-actions li a.edit-link {
         color: #f36c3d; }
-      /* line 211, ../sass/modules/_posts.scss */
+      /* line 175, ../sass/modules/_posts.scss */
       .post-actions li a.share-link {
         color: #7ac0e4;
         color: #f8e121; }
-      /* line 215, ../sass/modules/_posts.scss */
+      /* line 179, ../sass/modules/_posts.scss */
       .post-actions li a.discuss-link {
         color: #a3d06d; }
-      /* line 218, ../sass/modules/_posts.scss */
+      /* line 182, ../sass/modules/_posts.scss */
       .post-actions li a.more-link {
         color: #7ac0e4; }
-      /* line 221, ../sass/modules/_posts.scss */
+      /* line 185, ../sass/modules/_posts.scss */
       .post-actions li a:hover {
         background: #4e555d url("/img/bg-header.png") top center;
         color: white; }
-      /* line 225, ../sass/modules/_posts.scss */
+      /* line 189, ../sass/modules/_posts.scss */
       .post-actions li a.voted {
         background: #4e555d;
         color: white;
         cursor: default; }
-        /* line 229, ../sass/modules/_posts.scss */
+        /* line 193, ../sass/modules/_posts.scss */
         .post-actions li a.voted .action {
           color: #fff; }
-      /* line 233, ../sass/modules/_posts.scss */
+      /* line 197, ../sass/modules/_posts.scss */
       .post-actions li a .count {
         position: absolute;
         top: 12px;
@@ -1043,12 +1043,12 @@ body.pageslide-open {
         height: 20px;
         line-height: 20px;
         font-size: 11px; }
-      /* line 242, ../sass/modules/_posts.scss */
+      /* line 206, ../sass/modules/_posts.scss */
       .post-actions li a .points {
         display: block;
         font-size: 30px;
         line-height: 50px; }
-      /* line 247, ../sass/modules/_posts.scss */
+      /* line 211, ../sass/modules/_posts.scss */
       .post-actions li a .action {
         display: block;
         height: 20px;
@@ -1061,27 +1061,27 @@ body.pageslide-open {
         color: #b3c1c6;
         pointer-events: none; }
 
-/* line 263, ../sass/modules/_posts.scss */
+/* line 227, ../sass/modules/_posts.scss */
 .post-message {
   padding: 20px;
   margin-bottom: 10px;
   font-size: 18px; }
-  /* line 268, ../sass/modules/_posts.scss */
+  /* line 232, ../sass/modules/_posts.scss */
   .list .post-message {
     display: none; }
 
-/* line 272, ../sass/modules/_posts.scss */
+/* line 236, ../sass/modules/_posts.scss */
 .share-options {
   position: absolute;
   left: -170px;
   top: 5px; }
-  /* line 279, ../sass/modules/_posts.scss */
+  /* line 243, ../sass/modules/_posts.scss */
   .share-options.hidden {
     display: block;
     opacity: 0;
     pointer-events: none;
     left: -160px; }
-  /* line 285, ../sass/modules/_posts.scss */
+  /* line 249, ../sass/modules/_posts.scss */
   .share-options:after, .share-options:before {
     left: 100%;
     border: solid transparent;
@@ -1090,21 +1090,21 @@ body.pageslide-open {
     width: 0;
     position: absolute;
     pointer-events: none; }
-  /* line 294, ../sass/modules/_posts.scss */
+  /* line 258, ../sass/modules/_posts.scss */
   .share-options:after {
     border-color: rgba(255, 255, 255, 0);
     border-left-color: #ffffff;
     border-width: 10px;
     top: 20px;
     margin-top: -10px; }
-  /* line 301, ../sass/modules/_posts.scss */
+  /* line 265, ../sass/modules/_posts.scss */
   .share-options:before {
     border-color: rgba(0, 0, 0, 0);
     border-left-color: #f36c3d;
     border-width: 11px;
     top: 20px;
     margin-top: -11px; }
-  /* line 308, ../sass/modules/_posts.scss */
+  /* line 272, ../sass/modules/_posts.scss */
   .share-options .buttons {
     /* For modern browsers */
     /* For IE 6/7 (trigger hasLayout) */
@@ -1117,7 +1117,7 @@ body.pageslide-open {
     /* line 7, ../sass/partials/_mixins.scss */
     .share-options .buttons:after {
       clear: both; }
-    /* line 311, ../sass/modules/_posts.scss */
+    /* line 275, ../sass/modules/_posts.scss */
     .share-options .buttons .button, .share-options .buttons .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .share-options .buttons #login-buttons-password {
       float: left;
       margin-right: 10px;
@@ -1125,18 +1125,18 @@ body.pageslide-open {
       padding: 0px;
       height: 100%; }
 
-/* line 321, ../sass/modules/_posts.scss */
+/* line 285, ../sass/modules/_posts.scss */
 .post.sticky .post-content, .post.sticky .post-actions li a {
   background: #fffce0; }
-/* line 324, ../sass/modules/_posts.scss */
+/* line 288, ../sass/modules/_posts.scss */
 .post.sticky .post-actions li a:hover {
   background: #4e555d url("/img/bg-header.png") top center; }
 
-/* line 328, ../sass/modules/_posts.scss */
+/* line 292, ../sass/modules/_posts.scss */
 .more-button {
   position: relative;
   padding-bottom: 10px; }
-  /* line 331, ../sass/modules/_posts.scss */
+  /* line 295, ../sass/modules/_posts.scss */
   .more-button a {
     width: 100%;
     display: block;
