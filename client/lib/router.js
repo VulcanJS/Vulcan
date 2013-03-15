@@ -76,7 +76,9 @@
 
   category = function(categorySlug, view){
     var view = (typeof view === 'undefined') ? 'top' : view;
+    console.log('setting category slug to: '+categorySlug)
     Session.set('categorySlug', categorySlug);
+    Meteor.Router.categoryFilter = true;
     return 'posts_'+view;
   }
 
@@ -124,6 +126,18 @@
 
 
   Meteor.Router.filters({
+    clearCategory: function(page){
+      console.log(page)
+      if(Meteor.Router.categoryFilter){
+        console.log('*not* resetting category slug, but auto-turning filter off until next router request')
+        Meteor.Router.categoryFilter = false;
+      }else{
+        console.log('category filter is off, so resetting category slug')
+        Session.set('categorySlug', null);
+      }
+      return page;
+    },
+
     requireLogin: function(page) {
       if (Meteor.loggingIn()) {
         return 'loading';
@@ -210,7 +224,8 @@
       }
     }
   });
-  // 
+  //
+  Meteor.Router.filter('clearCategory');
   Meteor.Router.filter('requireProfile');
   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
   Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});

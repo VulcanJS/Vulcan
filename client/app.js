@@ -125,14 +125,15 @@ FIND_PENDING = function() {
 }
 
 var topPostsHandle;
-
+var newPostsHandle;
 Meteor.autorun(function() {
   topPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('score'), 10);
-})
 
-// var newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
-// var bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
-// var pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
+
+ newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
+ // bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
+ // pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
+});
 
 // digest subscriptions
 DIGEST_PRELOADING = 3;
