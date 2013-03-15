@@ -99,7 +99,7 @@ var queryFind = function(status, slug){
       ]
     }; 
   }
-
+  // console.log(find)
   return find;
 }
 
