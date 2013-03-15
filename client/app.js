@@ -91,7 +91,7 @@ var queryFind = function(status, slug){
 
   // DOESN'T WORK FOR SOME REASON
   if(slug){
-    console.log('cat slug: ', slug);
+    console.log('category slug: ', slug);
     find={
       $and : [
         find,
@@ -126,13 +126,14 @@ FIND_PENDING = function() {
 
 var topPostsHandle;
 var newPostsHandle;
+var bestPostsHandle;
+var pendingPostsHandle;
+
 Meteor.autorun(function() {
   topPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('score'), 10);
-
-
- newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
- // bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
- // pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
+  newPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('submitted'), 10);
+  bestPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('baseScore'), 10);
+  pendingPostsHandle = postListSubscription(FIND_PENDING(), sortBy('createdAt'), 10);
 });
 
 // digest subscriptions
