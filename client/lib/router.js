@@ -1,7 +1,27 @@
 (function() {  
   Meteor.Router.beforeRouting = function() {
     // reset all session variables that might be set by the previous route
+    console.log('clearing categorySlug')
     Session.set('categorySlug', null);
+
+    // openedComments is an Array that tracks which comments
+    // have been expanded by the user, to make sure they stay expanded
+    Session.set("openedComments", null);
+    Session.set('requestTimestamp',new Date());
+
+    // currentScroll stores the position of the user in the page
+    Session.set('currentScroll', null);
+    
+    var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
+    document.title = getSetting("title")+tagline;
+    
+    $('body').css('min-height','0');
+
+    // set all errors who have already been seen to not show anymore
+    clearSeenErrors();
+        
+    // log this request with mixpanel, etc
+    analyticsRequest();
   }
   
   // specific router functions
@@ -131,17 +151,6 @@
 
 
   Meteor.Router.filters({
-    clearCategory: function(page){
-      console.log(page)
-      if(Meteor.Router.categoryFilter){
-        console.log('*not* resetting category slug, but auto-turning filter off until next router request')
-        Meteor.Router.categoryFilter = false;
-      }else{
-        console.log('category filter is off, so resetting category slug')
-        Session.set('categorySlug', null);
-      }
-      return page;
-    },
 
     requireLogin: function(page) {
       if (Meteor.loggingIn()) {
@@ -230,7 +239,6 @@
     }
   });
   //
-  Meteor.Router.filter('clearCategory');
   Meteor.Router.filter('requireProfile');
   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
   Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});
@@ -248,41 +256,12 @@
       if(Meteor.Router.page() !== "loading"){
         console.log('------ '+Meteor.Router.page()+' ------');
       
-
         if(_.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending', 'posts_best'], Meteor.Router.page())){
           Session.set('isPostsList', true);
         }else{
           Session.set('isPostsList', false);
         }
 
-        // openedComments is an Array that tracks which comments
-        // have been expanded by the user, to make sure they stay expanded
-        Session.set("openedComments", null);
-        Session.set('requestTimestamp',new Date());
-
-        // currentScroll stores the position of the user in the page
-        Session.set('currentScroll', null);
-        
-        var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
-        document.title = getSetting("title")+tagline;
-        
-        $('body').css('min-height','0');
-
-        // set all errors who have already been seen to not show anymore
-        clearSeenErrors();
-            
-        // log this request with mixpanel, etc
-        analyticsRequest();
-        
-        // if there are any pending events, log them too
-        if(eventBuffer=Session.get('eventBuffer')){
-          _.each(eventBuffer, function(e){
-            console.log('in buffer: ', e);
-            trackEvent(e.event, e.properties);
-          });
-        }else{
-          // console.log('------ Loading… --------');
-        }
       }
     });    
   });
