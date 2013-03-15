@@ -124,18 +124,10 @@ FIND_PENDING = function() {
   return queryFind(STATUS_PENDING, Session.get('categorySlug'));
 }
 
-var topPostsHandle;
-var newPostsHandle;
-var bestPostsHandle;
-var pendingPostsHandle;
-
-Meteor.autorun(function() {
-  Session.set('handlesChanged', +(new Date()));
-  topPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('score'), 10);
-  // newPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('submitted'), 10);
-  // bestPostsHandle = postListSubscription(FIND_APPROVED(), sortBy('baseScore'), 10);
-  // pendingPostsHandle = postListSubscription(FIND_PENDING(), sortBy('createdAt'), 10);
-});
+var topPostsHandle = postListSubscription(FIND_APPROVED, sortBy('score'), 10);
+var newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
+var bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
+var pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
 
 // digest subscriptions
 DIGEST_PRELOADING = 3;
@@ -152,48 +144,48 @@ var currentDigestHandle = function() {
 
 // we use autorun here, because we DON'T want meteor to automatically
 // unsubscribe for us
-// Meteor.autorun(function() {
-//   var daySubscription = function(mDate) {
-//     var find = _.extend({
-//         submitted: {
-//           $gte: mDate.startOf('day').valueOf(), 
-//           $lt: mDate.endOf('day').valueOf()
-//         }
-//       }, FIND_APPROVED);
-//     // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
-//     // independantly of age
-//     var options = {sort: {baseScore: -1}};
-//     
-//     // we aren't ever going to paginate this sub, but we'll use pSub
-//     // so we have a reactive loading() function 
-//     // (grr... https://github.com/meteor/meteor/pull/273)
-//     return postListSubscription(find, options, 50);
-//   };
-//   
-//   // take it to the start of the day.
-//   var mDate = currentMDateForDigest();
-//   var firstDate = moment(mDate).subtract('days', DIGEST_PRELOADING);
-//   var lastDate = moment(mDate).add('days', DIGEST_PRELOADING);
-//   
-//   // first unsubscribe all the subscriptions that fall outside of our current range
-//   _.each(digestHandles, function(handle, hash) {
-//     var mDate = moment(hash, 'DD-MM-YYYY');
-//     if (mDate < firstDate || mDate > lastDate) {
-//       // console.log('unsubscribing digest for ' + mDate.toString())
-//       handle.stop();
-//       delete digestHandles[dateHash(mDate)];
-//     }
-//   });
-//   
-//   // set up a sub for each day for the DIGEST_PRELOADING days before and after
-//   // but we want to be smart about it --  
-//   for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
-//     if (! digestHandles[dateHash(mDate)]) {
-//       // console.log('subscribing digest for ' + mDate.toString());
-//       digestHandles[dateHash(mDate)] = daySubscription(mDate);
-//     }
-//   }
-// });
+Meteor.autorun(function() {
+  var daySubscription = function(mDate) {
+    var find = _.extend({
+        submitted: {
+          $gte: mDate.startOf('day').valueOf(), 
+          $lt: mDate.endOf('day').valueOf()
+        }
+      }, FIND_APPROVED);
+    // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
+    // independantly of age
+    var options = {sort: {baseScore: -1}};
+    
+    // we aren't ever going to paginate this sub, but we'll use pSub
+    // so we have a reactive loading() function 
+    // (grr... https://github.com/meteor/meteor/pull/273)
+    return postListSubscription(find, options, 50);
+  };
+  
+  // take it to the start of the day.
+  var mDate = currentMDateForDigest();
+  var firstDate = moment(mDate).subtract('days', DIGEST_PRELOADING);
+  var lastDate = moment(mDate).add('days', DIGEST_PRELOADING);
+  
+  // first unsubscribe all the subscriptions that fall outside of our current range
+  _.each(digestHandles, function(handle, hash) {
+    var mDate = moment(hash, 'DD-MM-YYYY');
+    if (mDate < firstDate || mDate > lastDate) {
+      // console.log('unsubscribing digest for ' + mDate.toString())
+      handle.stop();
+      delete digestHandles[dateHash(mDate)];
+    }
+  });
+  
+  // set up a sub for each day for the DIGEST_PRELOADING days before and after
+  // but we want to be smart about it --  
+  for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
+    if (! digestHandles[dateHash(mDate)]) {
+      // console.log('subscribing digest for ' + mDate.toString());
+      digestHandles[dateHash(mDate)] = daySubscription(mDate);
+    }
+  }
+});
 
 
 

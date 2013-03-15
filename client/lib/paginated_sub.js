@@ -26,8 +26,6 @@ PaginatedSubscriptionHandle.prototype.loadNextPage = function() {
 }
 
 PaginatedSubscriptionHandle.prototype.done = function() {
-  console.log('sub done', this._loadedListeners);
-  
   // XXX: check if subs that are canceled before they are ready ever fire ready?
   // if they do we need to increase loaded by perPage, not set it to limit
   this._loaded = this._limit;
@@ -35,14 +33,17 @@ PaginatedSubscriptionHandle.prototype.done = function() {
 }
 
 
+// XXX: somehow? support the last argument being a callback for ready?
 paginatedSubscription = function (perPage/*, name, arguments */) {
   var handle = new PaginatedSubscriptionHandle(perPage);
   var args = Array.prototype.slice.call(arguments, 1);
   
-  console.log('paginationed Sub setting up', args);
   Meteor.autorun(function() {
-    console.log('paginatedSub running', args);
-    var subHandle = Meteor.subscribe.apply(this, args.concat([
+    var ourArgs = _.map(args, function(arg) {
+      return _.isFunction(arg) ? arg() : arg;
+    });
+    
+    var subHandle = Meteor.subscribe.apply(this, ourArgs.concat([
       handle.limit(), function() { handle.done(); }
     ]));
     handle.stop = subHandle.stop;
