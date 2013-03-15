@@ -26,6 +26,8 @@ PaginatedSubscriptionHandle.prototype.loadNextPage = function() {
 }
 
 PaginatedSubscriptionHandle.prototype.done = function() {
+  console.log('sub done', this._loadedListeners);
+  
   // XXX: check if subs that are canceled before they are ready ever fire ready?
   // if they do we need to increase loaded by perPage, not set it to limit
   this._loaded = this._limit;
@@ -37,7 +39,9 @@ paginatedSubscription = function (perPage/*, name, arguments */) {
   var handle = new PaginatedSubscriptionHandle(perPage);
   var args = Array.prototype.slice.call(arguments, 1);
   
+  console.log('paginationed Sub setting up', args);
   Meteor.autorun(function() {
+    console.log('paginatedSub running', args);
     var subHandle = Meteor.subscribe.apply(this, args.concat([
       handle.limit(), function() { handle.done(); }
     ]));

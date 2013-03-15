@@ -1,4 +1,5 @@
 Template.posts_top.topPostsHandle = function() { 
+  Session.get('handlesChanged');
   return topPostsHandle;
 }
 Template.posts_new.newPostsHandle = function() { 
@@ -16,6 +17,8 @@ Template.posts_list.helpers({
     return this.fetch();
   },
   postsReady: function() {
+    console.log('checking postsReady');
+    console.log(this.loading(), this);
     return ! this.loading();
   },
   allPostsLoaded: function(){
