@@ -1,6 +1,3 @@
-var isLoggedIn = function(userId, doc){
-  return !! Meteor.userId();
-}
 
 Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
@@ -108,7 +105,7 @@ Meteor.publish('notifications', function() {
 Meteor.startup(function(){
   Notifications.allow({
       insert: function(userId, doc){
-        // new notifications are created via a Meteor method
+        // new notifications can only be created via a Meteor method
         return false;
       }
     , update: canEditById
