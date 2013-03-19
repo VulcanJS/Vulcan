@@ -829,7 +829,7 @@ body.pageslide-open {
   position: relative; }
   /* line 7, ../sass/modules/_posts.scss */
   .posts .post {
-    position: absolute;
+    position: relative;
     width: 100%;
     /* For modern browsers */
     /* For IE 6/7 (trigger hasLayout) */

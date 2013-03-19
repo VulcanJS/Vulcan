@@ -55,8 +55,8 @@ Meteor.methods({
 });
 
 // permissions for the profiler
-Meteor.Profiler.allow = function(userId) {
-  var user = Meteor.users.findOne(userId);
-  return user && user.isAdmin;
-};
+// Meteor.Profiler.allow = function(userId) {
+//   var user = Meteor.users.findOne(userId);
+//   return user && user.isAdmin;
+// };
 
