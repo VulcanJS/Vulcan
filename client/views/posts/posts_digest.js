@@ -10,9 +10,9 @@ Template.posts_digest.helpers({
     var currentDate=moment(Session.get('currentDate'));
     var today=moment(new Date());
     var diff=today.diff(currentDate, 'days');
-    if(diff === 0)
-      return "Today";
     if(diff === 1)
+      return "Today";
+    if(diff === 2)
       return "Yesterday";
     return currentDate.format("dddd, MMMM Do YYYY");
   },
