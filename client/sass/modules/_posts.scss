@@ -5,7 +5,7 @@
 .posts{
 	position:relative;
 	.post{
-		position:absolute;
+		position:relative;
 		width:100%;
 		@include cf;
 		&.animate{

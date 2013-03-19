@@ -62,33 +62,28 @@ Template.post_item.helpers({
 });
 
 Template.post_item.rendered = function(){
-  var self = this;
-  var rank = self.data._rank;
-  var $this = $(this.find(".post"));
-
-  if(self.data){
-    var distanceFromTop= 0;
-    for(var i=1; i<=rank; i++){
-      distanceFromTop+= $('.post-'+i).height();
-    }
-    
-    // if this is the first rendering, just go straight to the correct spot,
-    // and don't animate our way there.
-    if (_.isUndefined(self.current_distance)) {
-      self.current_distance = distanceFromTop;
-      $this.css("top", self.current_distance + "px");
-      
-    // otherwise, stay in the old spot, but once the browser has rendered
-    // us there, animate to a new spot
-    } else {
-      $this.css("top", self.current_distance + "px");
-      
-      Meteor.defer(function() {
-        self.current_distance = distanceFromTop;
-        $this.addClass('animate').css("top", self.current_distance + "px");
-      });
-    }
+  // animate post from previous position to new position
+  var instance = this;
+  var rank = instance.data._rank;
+  var $this = $(this.firstNode);
+  var previousPosition = 0;
+  var newPosition = 0;
+  for(var i=1; i<=rank; i++){
+    newPosition += $('.post-'+i).height();
   }
+
+ // if element has a currentPosition (i.e. it's not the first ever render)
+ if(previousPosition = instance.currentPosition){
+    // calculate difference between old position and new position and send element there
+    var delta = previousPosition - newPosition;
+    $this.css("top", delta + "px");
+  }
+
+  Meteor.defer(function() {
+    instance.currentPosition = newPosition;
+    // bring element back to its new original position
+    $this.addClass('animate').css("top",  "0px");
+  }); 
 };
 
 Template.post_item.events = {
