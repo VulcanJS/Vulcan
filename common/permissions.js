@@ -25,6 +25,10 @@ canView = function(user, returnError){
     return true;
   }
 }
+canViewById = function(userId, returnError){
+  var user = Meteor.users.findOne(userId);
+  return canView(user, returnError);
+}
 canPost = function(user, returnError){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
 
@@ -46,14 +50,30 @@ canPost = function(user, returnError){
     return true;
   }
 }
+canPostById = function(userId, returnError){
+  var user = Meteor.users.findOne(userId);
+  return canPost(user, returnError);
+}
 canComment = function(user, returnError){
   return canPost(user, returnError);
+}
+canCommentById = function(userId, returnError){
+  var user = Meteor.users.findOne(userId);
+  return canComment(user, returnError);
 }
 canUpvote = function(user, collection, returnError){
   return canPost(user, returnError);
 }
+canUpvoteById = function(userId, returnError){
+  var user = Meteor.users.findOne(userId);
+  return canUpvote(user, returnError);
+}
 canDownvote = function(user, collection, returnError){
   return canPost(user, returnError);
+}
+canDownvoteById = function(userId, returnError){
+  var user = Meteor.users.findOne(userId);
+  return canDownvote(user, returnError);
 }
 canEdit = function(user, item, returnError){
   var user=(typeof user === 'undefined') ? Meteor.user() : user;
@@ -67,4 +87,8 @@ canEdit = function(user, item, returnError){
   }else {
     return true;
   }
+}
+canEditById = function(userId, returnError){
+  var user = Meteor.users.findOne(userId);
+  return canEdit(user, returnError);
 }

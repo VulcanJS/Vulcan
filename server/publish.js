@@ -1,3 +1,7 @@
+var isLoggedIn = function(userId, doc){
+  return !! Meteor.userId();
+}
+
 Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
 });
@@ -24,25 +28,13 @@ Meteor.publish('allUsers', function() {
 Meteor.startup(function(){
   Meteor.users.allow({
       insert: function(userId, doc){
-        //TODO
         return true;
       }
-    , update: function(userId, docs, fields, modifier){
-      // console.log("updating");
-      // console.log(userId);
-      // console.log(docs);
-      // console.log('fields: '+fields);
-      // console.log(modifier); //uncommenting this crashes everything
-      if(isAdminById(userId) || (docs._id && docs._id==userId)){
-          return true;
-        }
-        return false;
+    , update: function(userId, doc, fields, modifier){
+        return isAdminById(userId) || (doc._id && doc._id === userId);
       }
-    , remove: function(userId, docs){
-        if(isAdminById(userId) || (docs._id && docs._id==userId)){
-          return true;
-        }
-        return false;
+    , remove: function(userId, doc){
+        return isAdminById(userId) || (doc._id && doc._id === userId);
       }
   });
 });
@@ -63,29 +55,11 @@ Meteor.publish('paginatedPosts', function(find, options, limit) {
   return Posts.find(find || {}, options);
 });
 
-// FIXME -- check all docs, not just the first one.
 Meteor.startup(function(){
   Posts.allow({
-      insert: function(userId, doc){
-        if(userId){
-          doc.userId = userId;
-          return true;
-        }
-        return false;
-      }
-    , update: function(userId, docs, fields, modifier){
-        if(isAdminById(userId) || (docs.userId && docs.userId===userId)){
-          return true;
-        }
-        throw new Meteor.Error(403, 'You do not have permission to edit this post');
-        return false;
-      }
-    , remove: function(userId, docs){
-        if(isAdminById(userId) || (docs.userId && docs.userId===userId)){
-          return true;
-        }
-        throw new Meteor.Error(403, 'You do not have permission to delete this post');
-        return false; }
+      insert: canPostById
+    , update: canEditById
+    , remove: canEditById
   });
 });
 
@@ -99,26 +73,9 @@ Meteor.publish('comments', function(query) {
 
 Meteor.startup(function(){
   Comments.allow({
-      insert: function(userId, doc){
-        if(userId){
-          return true;
-        }
-        return false;
-      }
-    , update: function(userId, docs, fields, modifier){
-        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
-          return true;
-        }
-        throw new Meteor.Error(403, 'You do not have permission to edit this comment');
-        return false;
-      }
-    , remove: function(userId, docs){
-        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
-          return true;
-        throw new Meteor.Error(403, 'You do not have permission to delete this comment');
-        }
-        return false;
-      }
+      insert: canCommentById
+    , update: canEditById
+    , remove: canEditById
   });
 });
 
@@ -132,9 +89,9 @@ Meteor.publish('settings', function() {
 
 Meteor.startup(function(){
   Settings.allow({
-      insert: function(userId, docs){ return isAdminById(userId); }
-    , update: function(userId, docs, fields, modifier){ return isAdminById(userId); }
-    , remove: function(userId, docs){ return isAdminById(userId); }
+      insert: isAdminById
+    , update: isAdminById
+    , remove: isAdminById
   });
 });
 
@@ -151,23 +108,11 @@ Meteor.publish('notifications', function() {
 Meteor.startup(function(){
   Notifications.allow({
       insert: function(userId, doc){
-        if(userId){
-          return true;
-        }
+        // new notifications are created via a Meteor method
         return false;
       }
-    , update: function(userId, docs, fields, modifier){
-        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
-          return true;
-        }
-        return false;
-      }
-    , remove: function(userId, docs){
-        if(isAdminById(userId) || (docs.userId && docs.userId==userId)){
-          return true;
-        }
-        return false;
-      }
+    , update: canEditById
+    , remove: canEditById
   });
 });
 
@@ -181,8 +126,8 @@ Meteor.publish('categories', function() {
 
 Meteor.startup(function(){
   Categories.allow({
-      insert: function(userId, docs){ return isAdminById(userId); }
-    , update: function(userId, docs, fields, modifier){ return isAdminById(userId); }
-    , remove: function(userId, docs){ return isAdminById(userId); }
+      insert: isAdminById
+    , update: isAdminById
+    , remove: isAdminById
   });
 });
