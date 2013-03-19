@@ -15,7 +15,7 @@
     
     // we need to make sure that the session changes above have been executed 
     // before we can look at the digest handle. XXX: this might be a bad idea
-    Meteor.flush();
+    // Meteor.flush();
     if (!currentDigestHandle() || currentDigestHandle().loading()) {
       return 'loading';
     } else {
