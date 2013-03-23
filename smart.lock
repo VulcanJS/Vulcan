@@ -11,7 +11,8 @@
         "branch": "beforeRouting"
       },
       "moment": {},
-      "database-forms": {}
+      "database-forms": {},
+      "paginated-subscription": {}
     },
     "packages": {
       "router": {
@@ -28,6 +29,11 @@
         "git": "https://github.com/lyudmil/database-forms.git",
         "tag": "v0.0.2",
         "commit": "9e21c15aca103a18013b6d518fe5b116f16368f0"
+      },
+      "paginated-subscription": {
+        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
+        "tag": "v0.1.0",
+        "commit": "623fe77698dbfdfdfdb52855c1ba19f29aca8047"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",

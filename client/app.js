@@ -110,7 +110,7 @@ var sortBy = function(sortProperty){
 }
 
 var postListSubscription = function(find, options, per_page) {
-  var handle = paginatedSubscription(per_page, 'paginatedPosts', find, options);
+  var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
     return limitDocuments(Posts.find(find, options), handle.loaded());
   }

@@ -6,6 +6,7 @@
       "branch": "beforeRouting"
     },
     "moment": {},
-    "database-forms": {}
+    "database-forms": {},
+    "paginated-subscription": {}
   }
 }
