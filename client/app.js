@@ -87,7 +87,7 @@ var dateHash = function(mDate) {
 var currentMDateForDigest = function() {
   return moment(Session.get('currentDate')).startOf('day');
 }
-var currentDigestHandle = function() {
+currentDigestHandle = function() {
   return digestHandles[dateHash(currentMDateForDigest())];
 }
 
