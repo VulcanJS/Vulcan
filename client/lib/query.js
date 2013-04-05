@@ -5,7 +5,7 @@
 // appear in.
 //
 // This is a bit of a hack, and should probably be supported in core (somehow!)
-var limitDocuments = function(cursor, limit) {
+limitDocuments = function(cursor, limit) {
   var i = 0;
   var documents = [];
   cursor.forEach(function(doc) {

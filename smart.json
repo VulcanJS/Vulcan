@@ -3,6 +3,8 @@
   "packages": {
     "router": {},
     "moment": {},
-	"database-forms": {}
+	"database-forms": {
+		"git":"https://github.com/SachaG/database-forms.git"
+	}
   }
 }

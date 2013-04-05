@@ -238,7 +238,7 @@
         var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
         document.title = getSetting("title")+tagline;
         
-        $('body').css('min-height','0');
+        $('body').css('min-height','0').addClass(Meteor.Router.page());
 
         // set all errors who have already been seen to not show anymore
         clearSeenErrors();

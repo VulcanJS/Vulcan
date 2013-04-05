@@ -41,7 +41,7 @@ Meteor.subscribe('allUsers');
 // ** Notifications **
 // Only load if user is logged in
 
-var Notifications = new Meteor.Collection('notifications');
+Notifications = new Meteor.Collection('notifications');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
@@ -69,10 +69,10 @@ var postListSubscription = function(find, options, per_page) {
   return handle;
 }
 
-var topPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, score: -1}}, 10);
-var newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, submitted: -1}}, 10);
-var bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, baseScore: -1}}, 10);
-var pendingPostsHandle = postListSubscription(
+topPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, score: -1}}, 10);
+newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, submitted: -1}}, 10);
+bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, baseScore: -1}}, 10);
+pendingPostsHandle = postListSubscription(
   {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]}, 
   {sort: {createdAt: -1}}, 
   10
