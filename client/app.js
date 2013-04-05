@@ -66,8 +66,8 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-var queryFind = function(status, slug){
-  console.log('calling queryFind')
+var findPosts = function(status){
+  console.log('calling findPosts')
   var find = {};
 
   // build find query starting with the status
@@ -90,8 +90,7 @@ var queryFind = function(status, slug){
 
   // if a category slug is defined, modify selector
 
-  // DOESN'T WORK FOR SOME REASON
-  if(slug){
+  if(slug = Session.get('categorySlug')){
     console.log('category slug: ', slug);
     find={
       $and : [
@@ -104,10 +103,10 @@ var queryFind = function(status, slug){
   return find;
 }
 
-var sortBy = function(sortProperty){
-  var sortBy = {sort: {sticky: -1}};
-  sortBy.sort[sortProperty] = -1;
-  return sortBy;
+var sortPosts = function(sortProperty){
+  var sort = {sort: {sticky: -1}};
+  sort.sort[sortProperty] = -1;
+  return sort;
 }
 
 var postListSubscription = function(find, options, per_page) {
@@ -119,19 +118,10 @@ var postListSubscription = function(find, options, per_page) {
   return handle;
 }
 
-
-var FIND_APPROVED = function() {
-  console.log('calling FIND_APPROVED');
-  return queryFind(STATUS_APPROVED, Session.get('categorySlug'));
-}
-var FIND_PENDING = function() {
-  return queryFind(STATUS_PENDING, Session.get('categorySlug'));
-}
-
-topPostsHandle = postListSubscription(FIND_APPROVED, sortBy('score'), 10);
-newPostsHandle = postListSubscription(FIND_APPROVED, sortBy('submitted'), 10);
-bestPostsHandle = postListSubscription(FIND_APPROVED, sortBy('baseScore'), 10);
-pendingPostsHandle = postListSubscription(FIND_PENDING, sortBy('createdAt'), 10);
+topPostsHandle =      postListSubscription(findPosts(STATUS_APPROVED), sortPosts('score'), 10);
+newPostsHandle =      postListSubscription(findPosts(STATUS_APPROVED), sortPosts('submitted'), 10);
+bestPostsHandle =     postListSubscription(findPosts(STATUS_APPROVED), sortPosts('baseScore'), 10);
+pendingPostsHandle =  postListSubscription(findPosts(STATUS_PENDING), sortPosts('createdAt'), 10);
 
 // digest subscriptions
 DIGEST_PRELOADING = 3;
@@ -156,7 +146,7 @@ Meteor.autorun(function() {
           $gte: mDate.startOf('day').valueOf(), 
           $lt: mDate.endOf('day').valueOf()
         }
-      }, FIND_APPROVED);
+      }, findPosts(STATUS_APPROVED));
     // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
     // independantly of age
     var options = {sort: {baseScore: -1}};
