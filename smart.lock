@@ -7,8 +7,8 @@
   "dependencies": {
     "basePackages": {
       "router": {
-        "git": "https://github.com/tmeasday/meteor-router.git",
-        "branch": "beforeRouting"
+        "git": "https://github.com/SachaG/meteor-router.git",
+        "branch": "master"
       },
       "moment": {},
       "database-forms": {
@@ -18,14 +18,9 @@
     },
     "packages": {
       "router": {
-        "git": "https://github.com/tmeasday/meteor-router.git",
-<<<<<<< HEAD
-        "branch": "beforeRouting",
-        "commit": "23c1e48f6e03909d1ddd02065e67343ffbc154d9"
-=======
-        "tag": "v0.4.4",
-        "commit": "1cc6f24579cf9f3cfe0a42f1bd3e42cdc2491a5f"
->>>>>>> master
+        "git": "https://github.com/SachaG/meteor-router.git",
+        "branch": "master",
+        "commit": "defda40b6045a546fa90bd88ef20b53744a0750e"
       },
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
