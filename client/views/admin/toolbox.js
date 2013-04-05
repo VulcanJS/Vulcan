@@ -1,15 +1,17 @@
 Template.toolbox.events= {
   'click .update-categories':function(){
-  var comments=Comments.find().fetch();
-  $.each(comments, function(index, element){
+  var posts=Posts.find().fetch();
+  $.each(posts, function(index, element){
 
-    if(!element.userId){
-      Comments.update(element._id,{$set:{userId:element.user_id}}, function(error){
-        console.log(error);
-      });
-    }
+    if(element.categories){
+      console.log('Found categories for post "'+element.headline+'"');
+      $.each(element.categories)
+    Posts.update(element._id,{$set:{userId:element.user_id}}, function(error){
+      console.log(error);
+    });
+
     console.log(element);
-
+    }
   });
   }
 }

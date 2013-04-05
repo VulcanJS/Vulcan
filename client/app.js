@@ -67,6 +67,7 @@ STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
 var queryFind = function(status, slug){
+  console.log('calling queryFind')
   var find = {};
 
   // build find query starting with the status
@@ -110,6 +111,7 @@ var sortBy = function(sortProperty){
 }
 
 var postListSubscription = function(find, options, per_page) {
+  console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
     return limitDocuments(Posts.find(find, options), handle.loaded());
@@ -119,6 +121,7 @@ var postListSubscription = function(find, options, per_page) {
 
 
 var FIND_APPROVED = function() {
+  console.log('calling FIND_APPROVED');
   return queryFind(STATUS_APPROVED, Session.get('categorySlug'));
 }
 var FIND_PENDING = function() {
@@ -147,6 +150,7 @@ currentDigestHandle = function() {
 // unsubscribe for us
 Meteor.autorun(function() {
   var daySubscription = function(mDate) {
+    console.log('calling daySubscription')
     var find = _.extend({
         submitted: {
           $gte: mDate.startOf('day').valueOf(), 
