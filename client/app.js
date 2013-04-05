@@ -118,10 +118,10 @@ var postListSubscription = function(find, options, per_page) {
 }
 
 
-FIND_APPROVED = function() {
+var FIND_APPROVED = function() {
   return queryFind(STATUS_APPROVED, Session.get('categorySlug'));
 }
-FIND_PENDING = function() {
+var FIND_PENDING = function() {
   return queryFind(STATUS_PENDING, Session.get('categorySlug'));
 }
 

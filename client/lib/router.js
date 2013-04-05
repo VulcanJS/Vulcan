@@ -1,7 +1,7 @@
 (function() {  
   Meteor.Router.beforeRouting = function() {
     // reset all session variables that might be set by the previous route
-    console.log('clearing categorySlug')
+    console.log('beforeRouting: clearing categorySlug')
     Session.set('categorySlug', null);
 
     // openedComments is an Array that tracks which comments
@@ -111,17 +111,13 @@
   Meteor.Router.add({
     '/': 'posts_top',
     '/top':'posts_top',
-    '/top/':'posts_top',
     '/top/:page':'posts_top',
     '/new':'posts_new',
-    '/new/':'posts_new',
     '/new/:page':'posts_new',
     '/best':'posts_best',
-    '/best/':'posts_best',
     '/pending':'posts_pending',
     '/digest/:year/:month/:day': digest,
     '/digest': digest,
-    '/digest/': digest,
     '/c/:category_slug/:view': category,
     '/c/:category_slug': category,
     '/signin':'user_signin',
@@ -131,14 +127,13 @@
     '/posts/deleted':'post_deleted',
     '/posts/:id/edit': post_edit,
     '/posts/:id/comment/:comment_id': post,
-    '/posts/:id/': post,
     '/posts/:id': post,
     '/comments/deleted':'comment_deleted',   
     '/comments/:id': comment,
     '/comments/:id/reply': comment_reply,
     '/comments/:id/edit': comment_edit,
     '/settings':'settings',
-    '/admin':'admin',
+    '/toolbox':'toolbox',
     '/categories':'categories',
     '/users':'users',
     '/account':'user_edit',
