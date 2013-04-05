@@ -64,8 +64,6 @@ Template.post_submit.events = {
       properties.url = cleanUrl;
     }
 
-    // console.log(properties);
-
     Meteor.call('post', properties, function(error, post) {
       if(error){
         throwError(error.reason);
