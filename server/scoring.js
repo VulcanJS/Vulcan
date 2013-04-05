@@ -1,6 +1,6 @@
 // "secret" server code to recalculate scores
 
-var updateScore = function (collection, id, forceUpdate) {
+updateScore = function (collection, id, forceUpdate) {
   var forceUpdate = typeof forceUpdate !== 'undefined' ? forceUpdate : false;
   // For performance reasons, the database is only updated if the difference between the old score and the new score
   // is meaningful enough. To find out, we calculate the "power" of a single vote after n days.

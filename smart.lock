@@ -2,7 +2,7 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "master",
-    "commit": "f07715dc70de16a7aab84e56ab0c6cbd9c1f9dc6"
+    "commit": "cab491f3650fffc85661bca6b3cecf583410e05d"
   },
   "dependencies": {
     "basePackages": {
@@ -11,13 +11,21 @@
         "branch": "beforeRouting"
       },
       "moment": {},
-      "database-forms": {}
+      "database-forms": {
+        "git": "https://github.com/SachaG/database-forms.git",
+        "branch": "master"
+      }
     },
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
+<<<<<<< HEAD
         "branch": "beforeRouting",
         "commit": "23c1e48f6e03909d1ddd02065e67343ffbc154d9"
+=======
+        "tag": "v0.4.4",
+        "commit": "1cc6f24579cf9f3cfe0a42f1bd3e42cdc2491a5f"
+>>>>>>> master
       },
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
@@ -25,9 +33,9 @@
         "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
       },
       "database-forms": {
-        "git": "https://github.com/lyudmil/database-forms.git",
-        "tag": "v0.0.2",
-        "commit": "9e21c15aca103a18013b6d518fe5b116f16368f0"
+        "git": "https://github.com/SachaG/database-forms.git",
+        "branch": "master",
+        "commit": "d2cc5b14f80d7985e33b9066b222e0e86e088095"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",

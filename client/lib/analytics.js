@@ -1,4 +1,4 @@
-var analyticsInit = function() {
+analyticsInit = function() {
   // Mixpanel
   if (mixpanelId=getSetting("mixpanelId")){
     (function (c, a) {
@@ -70,7 +70,7 @@ var analyticsInit = function() {
 
 }
 
-var analyticsRequest = function() {
+analyticsRequest = function() {
 
   // Google Analytics
   if ((googleAnalyticsId = getSetting("googleAnalyticsId"))){

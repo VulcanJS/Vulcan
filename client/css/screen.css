@@ -769,10 +769,9 @@ body.pageslide-open {
       font-size: inherit;
       padding: 0;
       height: 26px;
-      margin-right: 10px;
       text-shadow: none; }
 
-/* line 134, ../sass/modules/_header.scss */
+/* line 133, ../sass/modules/_header.scss */
 .nav {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
@@ -785,7 +784,7 @@ body.pageslide-open {
   /* line 7, ../sass/partials/_mixins.scss */
   .nav:after {
     clear: both; }
-  /* line 137, ../sass/modules/_header.scss */
+  /* line 136, ../sass/modules/_header.scss */
   .nav > li {
     list-style-image: none;
     list-style-type: none;
@@ -805,17 +804,17 @@ body.pageslide-open {
     /* line 50, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
     .nav > li.last {
       padding-right: 0; }
-    /* line 140, ../sass/modules/_header.scss */
+    /* line 139, ../sass/modules/_header.scss */
     .nav > li > a {
       color: white;
       font-size: 16px;
       line-height: 26px;
       height: 26px;
       font-weight: normal; }
-      /* line 148, ../sass/modules/_header.scss */
+      /* line 147, ../sass/modules/_header.scss */
       .nav > li > a.intercom em:before {
         content: '('; }
-      /* line 151, ../sass/modules/_header.scss */
+      /* line 150, ../sass/modules/_header.scss */
       .nav > li > a.intercom em:after {
         content: ')'; }
 

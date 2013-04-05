@@ -71,6 +71,11 @@ Template.post_item.rendered = function(){
   for(var i=1; i<=rank; i++){
     newPosition += $('.post-'+i).height();
   }
+  // console.log('-------------------')
+  // console.log('post: '+instance.data.headline)
+  // console.log('rank: '+rank)
+  // console.log('newPosition: '+newPosition)
+  // console.log(instance)
 
  // if element has a currentPosition (i.e. it's not the first ever render)
  if(previousPosition = instance.currentPosition){
