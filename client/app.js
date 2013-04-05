@@ -37,7 +37,6 @@ Meteor.subscribe('settings', function(){
 Meteor.subscribe('currentUser');
 Meteor.subscribe('allUsers');
 
-
 // ** Notifications **
 // Only load if user is logged in
 
