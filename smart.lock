@@ -14,7 +14,8 @@
       "database-forms": {
         "git": "https://github.com/SachaG/database-forms.git",
         "branch": "master"
-      }
+      },
+      "paginated-subscription": {}
     },
     "packages": {
       "router": {
@@ -31,6 +32,11 @@
         "git": "https://github.com/SachaG/database-forms.git",
         "branch": "master",
         "commit": "d2cc5b14f80d7985e33b9066b222e0e86e088095"
+      },
+      "paginated-subscription": {
+        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
+        "tag": "v0.1.0",
+        "commit": "623fe77698dbfdfdfdb52855c1ba19f29aca8047"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
