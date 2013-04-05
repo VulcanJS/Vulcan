@@ -56,6 +56,10 @@ if(Meteor.userId() != null){
 
 Posts = new Meteor.Collection('posts');
 
+Meteor.autorun(function() {
+  Meteor.subscribe('singlePost', Session.get('selectedPostId'));
+});
+
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
