@@ -71,44 +71,10 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-// build selector query object
-selectPosts = function(properties){
-  var find = {};
-
-  // Status
-  if(properties.status)
-    find = _.extend(find, {status: properties.status});
-
-  // Slug
-  if(properties.slug)
-    find = _.extend(find, {'categories.slug': properties.slug});
-  
-  // Date
-  if(properties.date){
-    find = _.extend(find, {submitted: 
-      {
-        $gte: moment(properties.date).startOf('day').valueOf(), 
-        $lt: moment(properties.date).endOf('day').valueOf()
-      }
-    });
-  }
-
-  console.log("*"+properties.name+"* --------------")
-  console.log(find)
-
-  return find;
-}
-
-// build sort query object
-sortPosts = function(sortProperty){
-  var sort = {sort: {sticky: -1}};
-  sort.sort[sortProperty] = -1;
-  return sort;
-}
 
 // put it all together with pagination
 postListSubscription = function(find, options, per_page) {
-  // console.log('calling postListSubscription')
+  console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   find = _.isFunction(find) ? find() : find;
   handle.fetch = function() {
@@ -118,19 +84,19 @@ postListSubscription = function(find, options, per_page) {
 }
 
 
-var selectTop = function() {
+selectTop = function() {
   return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var selectNew = function() {
+selectNew = function() {
   return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var selectBest = function() {
+selectBest = function() {
   return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var selectPending = function() {
+selectPending = function() {
   return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
-var selectDigest = function() {
+selectDigest = function() {
   return selectPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
 }
 
