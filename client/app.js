@@ -70,41 +70,6 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-// build find query object
-findPosts = function(properties){
-  var find = {};
-
-  // Status
-  if(properties.status)
-    find = _.extend(find, {status: properties.status});
-
-  // Slug
-  if(properties.slug)
-    find = _.extend(find, {'categories.slug': properties.slug});
-  
-  // Date
-  if(properties.date){
-    find = _.extend(find, {submitted: 
-      {
-        $gte: moment(properties.date).startOf('day').valueOf(), 
-        $lt: moment(properties.date).endOf('day').valueOf()
-      }
-    });
-  }
-
-  console.log("*"+properties.name+"* find query: --------------")
-  console.log(find)
-
-  return find;
-}
-
-// build sort query object
-sortPosts = function(sortProperty){
-  var sort = {sort: {sticky: -1}};
-  sort.sort[sortProperty] = -1;
-  return sort;
-}
-
 // put it all together with pagination
 postListSubscription = function(find, options, per_page) {
   // console.log('calling postListSubscription')
@@ -117,35 +82,38 @@ postListSubscription = function(find, options, per_page) {
 }
 
 
-var findTop = function() {
-  return findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+var selectTop = function() {
+  return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var findNew = function() {
-  return findPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+var selectNew = function() {
+  return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var findBest = function() {
-  return findPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+var selectBest = function() {
+  return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var findPending = function() {
-  return findPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
-}
-var findDigest = function() {
-  return findPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
+var selectPending = function() {
+  return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
 
 // note: the "name" property is for internal debugging purposes only
-topPostsHandle = postListSubscription(findTop, sortPosts('score'), 10);
+topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
 
-newPostsHandle = postListSubscription(findNew, sortPosts('submitted'), 10);  
+newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
 
-bestPostsHandle = postListSubscription(findBest, sortPosts('baseScore'), 10);  
+bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);  
 
-pendingPostsHandle = postListSubscription(findPending, sortPosts('createdAt'), 10);
+pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
 
-digestHandle = postListSubscription(findDigest, sortPosts('score'), 10);  
+DIGEST_PRELOADING = 3;
+Meteor.autorun(function() {
+  console.log('>>>>>>>> Setting up digestHandle', Session.get('currentDate'));
+  digestHandle = Meteor.subscribe('postDigests', Session.get('currentDate'), DIGEST_PRELOADING);
+  digestHandle.fetch = function() {
+    return findDigestPosts(moment(Session.get('currentDate')));
+  }
+})
 
 // digest subscriptions
-// DIGEST_PRELOADING = 3;
 // var digestHandles = {}
 // var dateHash = function(mDate) {
 //   return mDate.format('DD-MM-YYYY');

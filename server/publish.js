@@ -54,6 +54,35 @@ Meteor.publish('paginatedPosts', function(find, options, limit) {
   return Posts.find(find || {}, options);
 });
 
+// date is a JS date, dayWindow is a number of days either side.
+Meteor.publish('postDigests', function(date, dayWindow) {
+  console.log(date);
+    
+  var mDate = moment(date);
+  
+  // XXX: we'd like to this but you can't return multiple cursors across the
+  // same collection. Not sure exactly why this is
+  //
+  // discuss this with @glasser. If it's not for performance reasons we
+  // could wire it up ourselves. Otherwise we are back trying to track
+  // lots of subscriptions on the client side, which is far from ideal.
+  
+  // for now, we'll just return the single digest for the day they are looking at
+  return findDigestPosts(mDate);
+  
+  // var firstDate = moment(mDate).subtract('days', dayWindow);
+  // var lastDate = moment(mDate).add('days', dayWindow);
+  
+  // set up a sub for each day for the DIGEST_PRELOADING days before and after
+  // but we want to be smart about it --  
+  // var cursors = [];
+  // for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
+  //   cursors.push(findDigestPosts(mDate));
+  // }
+  // 
+  // return cursors;
+});
+
 Meteor.startup(function(){
   Posts.allow({
       insert: canPostById
