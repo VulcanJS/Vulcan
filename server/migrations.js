@@ -5,6 +5,30 @@ Migrations = new Meteor.Collection('migrations');
 Meteor.startup(function () {
 
 
+ // migration updatePostStatus: make sure posts have a status
+  if (!Migrations.findOne({name: "updatePostStatus"})) {
+    console.log("//----------------------------------------------------------------------//")
+    console.log("//------------//    Starting updatePostStatus Migration    //-----------//")
+    console.log("//----------------------------------------------------------------------//")
+    Posts.find({status: {$exists : false}}).forEach(function (post) {
+        Posts.update(post._id, {$set: {status: 2}});
+
+        // START CONSOLE LOGS
+        console.log("---------------------")
+        console.log("Post: "+post.headline);
+        console.log("Updating status to approved");
+        // END CONSOLE LOGS
+      
+    });
+    Migrations.insert({name: "updatePostStatus"});
+    console.log("//----------------------------------------------------------------------//")
+    console.log("//------------//     Ending updatePostStatus Migration     //-----------//")
+    console.log("//----------------------------------------------------------------------//")
+  }
+
+
+
+
  // migration updateCategories: make sure categories have slugs
   if (!Migrations.findOne({name: "updateCategories"})) {
     console.log("//----------------------------------------------------------------------//")
@@ -24,7 +48,7 @@ Meteor.startup(function () {
     });
     Migrations.insert({name: "updateCategories"});
     console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//   Ending updatePostCategories Migration   //-----------//")
+    console.log("//------------//     Ending updateCategories Migration     //-----------//")
     console.log("//----------------------------------------------------------------------//")
   }
 
