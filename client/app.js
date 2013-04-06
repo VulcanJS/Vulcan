@@ -1,5 +1,6 @@
 Session.set('initialLoad', true);
 Session.set('currentDate', new Date());
+Session.set('categorySlug', null);
 
 l=function(s){
   console.log(s);
@@ -70,8 +71,8 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-// build find query object
-findPosts = function(properties){
+// build selector query object
+selectPosts = function(properties){
   var find = {};
 
   // Status
@@ -92,7 +93,7 @@ findPosts = function(properties){
     });
   }
 
-  console.log("*"+properties.name+"* find query: --------------")
+  console.log("*"+properties.name+"* --------------")
   console.log(find)
 
   return find;
@@ -117,32 +118,32 @@ postListSubscription = function(find, options, per_page) {
 }
 
 
-var findTop = function() {
-  return findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+var selectTop = function() {
+  return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var findNew = function() {
-  return findPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+var selectNew = function() {
+  return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var findBest = function() {
-  return findPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+var selectBest = function() {
+  return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var findPending = function() {
-  return findPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
+var selectPending = function() {
+  return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
-var findDigest = function() {
-  return findPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
+var selectDigest = function() {
+  return selectPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
 }
 
 // note: the "name" property is for internal debugging purposes only
-topPostsHandle = postListSubscription(findTop, sortPosts('score'), 10);
+topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
 
-newPostsHandle = postListSubscription(findNew, sortPosts('submitted'), 10);  
+newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
 
-bestPostsHandle = postListSubscription(findBest, sortPosts('baseScore'), 10);  
+bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);  
 
-pendingPostsHandle = postListSubscription(findPending, sortPosts('createdAt'), 10);
+pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
 
-digestHandle = postListSubscription(findDigest, sortPosts('score'), 10);  
+digestHandle = postListSubscription(selectDigest, sortPosts('score'), 10);  
 
 // digest subscriptions
 // DIGEST_PRELOADING = 3;
