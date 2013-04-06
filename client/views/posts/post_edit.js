@@ -16,7 +16,7 @@ Template.post_edit.helpers({
   categories: function(){
     var post = this;
     return Categories.find().map(function(category) {
-      category.checked = _.contains(post.categories, category.name) ? 'checked' : '';
+      category.checked = _.contains(_.pluck(post.categories, '_id'), category._id) ? 'checked' : '';
       return category;
     });
   },
@@ -81,7 +81,8 @@ Template.post_edit.events = {
     var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
-      if(category = Categories.findOne($(this).val()))
+      var categoryId = $(this).val();
+      if(category = Categories.findOne(categoryId))
         categories.push(category);
     });
     
