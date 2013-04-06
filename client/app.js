@@ -98,12 +98,14 @@ findPosts = function(properties){
   return find;
 }
 
+// build sort query object
 sortPosts = function(sortProperty){
   var sort = {sort: {sticky: -1}};
   sort.sort[sortProperty] = -1;
   return sort;
 }
 
+// put it all together with pagination
 postListSubscription = function(find, options, per_page) {
   // console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
@@ -113,27 +115,33 @@ postListSubscription = function(find, options, per_page) {
   return handle;
 }
 
+
+var findTop = function() {
+  return findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+var findNew = function() {
+  return findPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+var findBest = function() {
+  return findPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+var findPending = function() {
+  return findPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
+}
+var findDigest = function() {
+  return findPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
+}
+
 // note: the "name" property is for internal debugging purposes only
-Meteor.autorun(function(){
-  console.log('autorun: topPostsHandle')
-  topPostsHandle = postListSubscription(findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('score'), 10);
-});
+topPostsHandle = postListSubscription(findTop, sortPosts('score'), 10);
 
-Meteor.autorun(function(){
-  newPostsHandle = postListSubscription(findPosts({name: 'new', status: STATUS_APPROVED}), sortPosts('submitted'), 10);  
-});
+newPostsHandle = postListSubscription(findNew, sortPosts('submitted'), 10);  
 
-Meteor.autorun(function(){
-  bestPostsHandle = postListSubscription(findPosts({name: 'best', status: STATUS_APPROVED}), sortPosts('baseScore'), 10);  
-});
+bestPostsHandle = postListSubscription(findBest, sortPosts('baseScore'), 10);  
 
-Meteor.autorun(function(){
-  pendingPostsHandle =  postListSubscription(findPosts({name: 'pending', status: STATUS_PENDING}), sortPosts('createdAt'), 10);
-});
+pendingPostsHandle = postListSubscription(findPending, sortPosts('createdAt'), 10);
 
-Meteor.autorun(function(){
-  digestHandle = postListSubscription(findPosts({name: 'digest', status: STATUS_APPROVED, date: Session.get('currentDate') }), sortPosts('score'), 10);  
-});
+digestHandle = postListSubscription(findDigest, sortPosts('score'), 10);  
 
 // digest subscriptions
 // DIGEST_PRELOADING = 3;
