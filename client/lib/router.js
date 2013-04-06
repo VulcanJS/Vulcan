@@ -1,8 +1,9 @@
 (function() {  
   Meteor.Router.beforeRouting = function() {
     // reset all session variables that might be set by the previous route
-    // console.log('beforeRouting: clearing categorySlug')
-    Session.set('categorySlug', null);
+    console.log('beforeRouting: clearing categorySlug')
+    // if(Session.get('categorySlug'))
+      Session.set('categorySlug', null);
 
     // openedComments is an Array that tracks which comments
     // have been expanded by the user, to make sure they stay expanded

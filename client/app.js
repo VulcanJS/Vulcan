@@ -1,4 +1,5 @@
 Session.set('initialLoad', true);
+Session.set('currentDate', new Date());
 
 l=function(s){
   console.log(s);
@@ -70,7 +71,7 @@ STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
 // build find query object
-var findPosts = function(properties){
+findPosts = function(properties){
   var find = {};
 
   // Status
@@ -97,13 +98,13 @@ var findPosts = function(properties){
   return find;
 }
 
-var sortPosts = function(sortProperty){
+sortPosts = function(sortProperty){
   var sort = {sort: {sticky: -1}};
   sort.sort[sortProperty] = -1;
   return sort;
 }
 
-var postListSubscription = function(find, options, per_page) {
+postListSubscription = function(find, options, per_page) {
   // console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
@@ -111,14 +112,29 @@ var postListSubscription = function(find, options, per_page) {
   }
   return handle;
 }
+
+// note: the "name" property is for internal debugging purposes only
 Meteor.autorun(function(){
-  // note: the "name" property is for internal debugging purposes only
-  topPostsHandle =      postListSubscription(findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('score'), 10);
-  newPostsHandle =      postListSubscription(findPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('submitted'), 10);
-  bestPostsHandle =     postListSubscription(findPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('baseScore'), 10);
-  pendingPostsHandle =  postListSubscription(findPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')}), sortPosts('createdAt'), 10);
-  digestHandle =        postListSubscription(findPosts({name: 'digest', status: STATUS_APPROVED, date: Session.get('currentDate') }), sortPosts('score'), 10)
-})
+  console.log('autorun: topPostsHandle')
+  topPostsHandle = postListSubscription(findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('score'), 10);
+});
+
+Meteor.autorun(function(){
+  newPostsHandle = postListSubscription(findPosts({name: 'new', status: STATUS_APPROVED}), sortPosts('submitted'), 10);  
+});
+
+Meteor.autorun(function(){
+  bestPostsHandle = postListSubscription(findPosts({name: 'best', status: STATUS_APPROVED}), sortPosts('baseScore'), 10);  
+});
+
+Meteor.autorun(function(){
+  pendingPostsHandle =  postListSubscription(findPosts({name: 'pending', status: STATUS_PENDING}), sortPosts('createdAt'), 10);
+});
+
+Meteor.autorun(function(){
+  digestHandle = postListSubscription(findPosts({name: 'digest', status: STATUS_APPROVED, date: Session.get('currentDate') }), sortPosts('score'), 10);  
+});
+
 // digest subscriptions
 // DIGEST_PRELOADING = 3;
 // var digestHandles = {}
