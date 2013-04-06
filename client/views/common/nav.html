@@ -10,13 +10,17 @@
       <li><a class="best" href="/best">Best</a></li>
       <li><a class="digest" href="/digest">Digest</a></li>
       {{/if}}
-      {{#if canPost}}
-        {{#if requirePostsApproval}}
-          <li><a class="pending" href="/pending">Pending</a></li>
-        {{/if}}
-      {{/if}}
-      {{#if intercom}}
-        <li><a id="Intercom" class="intercom" href="#">Support</a></li>
+      {{#if hasCategories}}
+      <li class="dropdown">
+        <a class="categories" href="/">Categories</a>
+        <div class="dropdown-menu">
+          <ul role="menu" aria-labelledby="dLabel">
+            {{# each categories}}
+              <li><a class="pending" href="/c/{{slug}}">{{name}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </li>
       {{/if}}
       {{#if isAdmin}}
       <li class="dropdown">
