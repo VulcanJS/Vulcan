@@ -79,8 +79,18 @@ var findPosts = function(properties){
 
   // Slug
   if(properties.slug)
-    find = _.extend(find, {'categories.slug': properties.slug})
+    find = _.extend(find, {'categories.slug': properties.slug});
   
+  // Date
+  if(properties.date){
+    find = _.extend(find, {submitted: 
+      {
+        $gte: moment(properties.date).startOf('day').valueOf(), 
+        $lt: moment(properties.date).endOf('day').valueOf()
+      }
+    });
+  }
+
   console.log("*"+properties.name+"* find query: --------------")
   console.log(find)
 
@@ -94,7 +104,7 @@ var sortPosts = function(sortProperty){
 }
 
 var postListSubscription = function(find, options, per_page) {
-  console.log('calling postListSubscription')
+  // console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
     return limitDocuments(Posts.find(find, options), handle.loaded());
@@ -107,19 +117,20 @@ Meteor.autorun(function(){
   newPostsHandle =      postListSubscription(findPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('submitted'), 10);
   bestPostsHandle =     postListSubscription(findPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('baseScore'), 10);
   pendingPostsHandle =  postListSubscription(findPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')}), sortPosts('createdAt'), 10);
+  digestHandle =        postListSubscription(findPosts({name: 'digest', status: STATUS_APPROVED, date: Session.get('currentDate') }), sortPosts('score'), 10)
 })
 // digest subscriptions
-DIGEST_PRELOADING = 3;
-var digestHandles = {}
-var dateHash = function(mDate) {
-  return mDate.format('DD-MM-YYYY');
-}
-var currentMDateForDigest = function() {
-  return moment(Session.get('currentDate')).startOf('day');
-}
-currentDigestHandle = function() {
-  return digestHandles[dateHash(currentMDateForDigest())];
-}
+// DIGEST_PRELOADING = 3;
+// var digestHandles = {}
+// var dateHash = function(mDate) {
+//   return mDate.format('DD-MM-YYYY');
+// }
+// var currentMDateForDigest = function() {
+//   return moment(Session.get('currentDate')).startOf('day');
+// }
+// currentDigestHandle = function() {
+//   return digestHandles[dateHash(currentMDateForDigest())];
+// }
 
 // we use autorun here, because we DON'T want meteor to automatically
 // unsubscribe for us

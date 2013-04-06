@@ -1,7 +1,7 @@
 (function() {  
   Meteor.Router.beforeRouting = function() {
     // reset all session variables that might be set by the previous route
-    console.log('beforeRouting: clearing categorySlug')
+    // console.log('beforeRouting: clearing categorySlug')
     Session.set('categorySlug', null);
 
     // openedComments is an Array that tracks which comments
@@ -30,9 +30,9 @@
     if (typeof day === 'undefined') {
       // we can get into an infinite reactive loop with the subscription filter
       // if we keep setting the date even when it's barely changed
-      if (new Date() - new Date(Session.get('currentDate')) > 60 * 1000) {
+      // if (new Date() - new Date(Session.get('currentDate')) > 60 * 1000) {
         Session.set('currentDate', new Date());
-      }
+      // }
       // Session.set('currentDate', new Date());
     } else {
       Session.set('currentDate', new Date(year, month-1, day));
@@ -41,11 +41,11 @@
     // we need to make sure that the session changes above have been executed 
     // before we can look at the digest handle. XXX: this might be a bad idea
     // Meteor.flush();
-    if (!currentDigestHandle() || currentDigestHandle().loading()) {
-      return 'loading';
-    } else {
+    // if (!digestHandle() || digestHandle().loading()) {
+    //   return 'loading';
+    // } else {
       return destination;
-    }
+    // }
   };
 
   post = function(id, commentId) {
