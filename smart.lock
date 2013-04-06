@@ -16,8 +16,8 @@
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.4.4",
-        "commit": "1cc6f24579cf9f3cfe0a42f1bd3e42cdc2491a5f"
+        "tag": "v0.5.0",
+        "commit": "b1ee74c816d1fc63b713139158075feb8a0c6d26"
       },
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
