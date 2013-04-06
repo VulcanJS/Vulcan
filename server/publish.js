@@ -41,7 +41,7 @@ Meteor.startup(function(){
 Posts = new Meteor.Collection('posts');
 
 // a single post, identified by id
-Meteor.publish('post', function(id) {
+Meteor.publish('singlePost', function(id) {
   return Posts.find(id);
 });
 

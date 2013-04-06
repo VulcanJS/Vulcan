@@ -61,45 +61,29 @@ if(Meteor.userId() != null){
 
 Posts = new Meteor.Collection('posts');
 
+Meteor.autorun(function() {
+  Meteor.subscribe('singlePost', Session.get('selectedPostId'));
+});
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-var findPosts = function(status){
-  console.log('calling findPosts')
+// build find query object
+var findPosts = function(properties){
   var find = {};
 
-  // build find query starting with the status
-  switch(status){
-    case STATUS_APPROVED:
-      find = {
-        $or: [
-          {status: {$exists : false}},
-          {status: STATUS_APPROVED}
-        ]
-      };
-    break;
-    case STATUS_PENDING:
-      find = {status: STATUS_PENDING}
-    break;
-    case STATUS_REJECTED:
-      find = {status: STATUS_REJECTED}
-    break;
-  }
+  // Status
+  if(properties.status)
+    find = _.extend(find, {status: properties.status});
 
-  // if a category slug is defined, modify selector
+  // Slug
+  if(properties.slug)
+    find = _.extend(find, {'categories.slug': properties.slug})
+  
+  console.log("*"+properties.name+"* find query: --------------")
+  console.log(find)
 
-  if(slug = Session.get('categorySlug')){
-    console.log('category slug: ', slug);
-    find={
-      $and : [
-        find,
-        {'categories.slug': slug}
-      ]
-    }; 
-  }
-  // console.log(find)
   return find;
 }
 
@@ -117,12 +101,13 @@ var postListSubscription = function(find, options, per_page) {
   }
   return handle;
 }
-
-topPostsHandle =      postListSubscription(findPosts(STATUS_APPROVED), sortPosts('score'), 10);
-newPostsHandle =      postListSubscription(findPosts(STATUS_APPROVED), sortPosts('submitted'), 10);
-bestPostsHandle =     postListSubscription(findPosts(STATUS_APPROVED), sortPosts('baseScore'), 10);
-pendingPostsHandle =  postListSubscription(findPosts(STATUS_PENDING), sortPosts('createdAt'), 10);
-
+Meteor.autorun(function(){
+  // note: the "name" property is for internal debugging purposes only
+  topPostsHandle =      postListSubscription(findPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('score'), 10);
+  newPostsHandle =      postListSubscription(findPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('submitted'), 10);
+  bestPostsHandle =     postListSubscription(findPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')}), sortPosts('baseScore'), 10);
+  pendingPostsHandle =  postListSubscription(findPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')}), sortPosts('createdAt'), 10);
+})
 // digest subscriptions
 DIGEST_PRELOADING = 3;
 var digestHandles = {}
@@ -138,49 +123,49 @@ currentDigestHandle = function() {
 
 // we use autorun here, because we DON'T want meteor to automatically
 // unsubscribe for us
-Meteor.autorun(function() {
-  var daySubscription = function(mDate) {
-    console.log('calling daySubscription')
-    var find = _.extend({
-        submitted: {
-          $gte: mDate.startOf('day').valueOf(), 
-          $lt: mDate.endOf('day').valueOf()
-        }
-      }, findPosts(STATUS_APPROVED));
-    // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
-    // independantly of age
-    var options = {sort: {baseScore: -1}};
+// Meteor.autorun(function() {
+//   var daySubscription = function(mDate) {
+//     console.log('calling daySubscription')
+//     var find = _.extend({
+//         submitted: {
+//           $gte: mDate.startOf('day').valueOf(), 
+//           $lt: mDate.endOf('day').valueOf()
+//         }
+//       }, findPosts({status: STATUS_APPROVED}));
+//     // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
+//     // independantly of age
+//     var options = {sort: {baseScore: -1}};
     
-    // we aren't ever going to paginate this sub, but we'll use pSub
-    // so we have a reactive loading() function 
-    // (grr... https://github.com/meteor/meteor/pull/273)
-    return postListSubscription(find, options, 50);
-  };
+//     // we aren't ever going to paginate this sub, but we'll use pSub
+//     // so we have a reactive loading() function 
+//     // (grr... https://github.com/meteor/meteor/pull/273)
+//     return postListSubscription(find, options, 50);
+//   };
   
-  // take it to the start of the day.
-  var mDate = currentMDateForDigest();
-  var firstDate = moment(mDate).subtract('days', DIGEST_PRELOADING);
-  var lastDate = moment(mDate).add('days', DIGEST_PRELOADING);
+//   // take it to the start of the day.
+//   var mDate = currentMDateForDigest();
+//   var firstDate = moment(mDate).subtract('days', DIGEST_PRELOADING);
+//   var lastDate = moment(mDate).add('days', DIGEST_PRELOADING);
   
-  // first unsubscribe all the subscriptions that fall outside of our current range
-  _.each(digestHandles, function(handle, hash) {
-    var mDate = moment(hash, 'DD-MM-YYYY');
-    if (mDate < firstDate || mDate > lastDate) {
-      // console.log('unsubscribing digest for ' + mDate.toString())
-      handle.stop();
-      delete digestHandles[dateHash(mDate)];
-    }
-  });
+//   // first unsubscribe all the subscriptions that fall outside of our current range
+//   _.each(digestHandles, function(handle, hash) {
+//     var mDate = moment(hash, 'DD-MM-YYYY');
+//     if (mDate < firstDate || mDate > lastDate) {
+//       // console.log('unsubscribing digest for ' + mDate.toString())
+//       handle.stop();
+//       delete digestHandles[dateHash(mDate)];
+//     }
+//   });
   
-  // set up a sub for each day for the DIGEST_PRELOADING days before and after
-  // but we want to be smart about it --  
-  for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
-    if (! digestHandles[dateHash(mDate)]) {
-      // console.log('subscribing digest for ' + mDate.toString());
-      digestHandles[dateHash(mDate)] = daySubscription(mDate);
-    }
-  }
-});
+//   // set up a sub for each day for the DIGEST_PRELOADING days before and after
+//   // but we want to be smart about it --  
+//   for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
+//     if (! digestHandles[dateHash(mDate)]) {
+//       // console.log('subscribing digest for ' + mDate.toString());
+//       digestHandles[dateHash(mDate)] = daySubscription(mDate);
+//     }
+//   }
+// });
 
 
 
