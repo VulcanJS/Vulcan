@@ -17,7 +17,7 @@ Template.posts_digest.helpers({
   },
   hasPosts: function(){
     var handle = digestHandle
-    return handle && ! handle.loading() && handle.loaded() > 0;
+    return handle && handle.ready();
   },
   currentDate: function(){
     var currentDate=moment(Session.get('currentDate'));
@@ -79,8 +79,8 @@ Template.posts_list.helpers({
     return this.fetch();
   },
   postsReady: function() {
-    // console.log('checking postsReady', this.loading(), this);
-    return ! this.loading();
+    console.log('checking postsReady', this.ready(), this);
+    return this.ready();
   },
   allPostsLoaded: function(){
     allPostsLoaded = this.fetch().length < this.loaded();

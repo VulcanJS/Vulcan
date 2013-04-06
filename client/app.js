@@ -66,8 +66,6 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-
-
 // put it all together with pagination
 postListSubscription = function(find, options, per_page) {
   console.log('calling postListSubscription')
@@ -94,9 +92,6 @@ selectBest = function() {
 selectPending = function() {
   return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
-selectDigest = function() {
-  return selectPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
-}
 
 topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
 
@@ -106,10 +101,16 @@ bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);
 
 pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
 
-digestHandle = postListSubscription(selectDigest, sortPosts('score'), 10);  
+DIGEST_PRELOADING = 3;
+Meteor.autorun(function() {
+  console.log('>>>>>>>> Setting up digestHandle', Session.get('currentDate'));
+  digestHandle = Meteor.subscribe('postDigests', Session.get('currentDate'), DIGEST_PRELOADING);
+  digestHandle.fetch = function() {
+    return findDigestPosts(moment(Session.get('currentDate')));
+  }
+})
 
 // digest subscriptions
-// DIGEST_PRELOADING = 3;
 // var digestHandles = {}
 // var dateHash = function(mDate) {
 //   return mDate.format('DD-MM-YYYY');
