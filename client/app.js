@@ -77,12 +77,14 @@ postListSubscription = function(find, options, per_page) {
   console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   find = _.isFunction(find) ? find() : find;
+  console.log("handle", handle)
   handle.fetch = function() {
     return limitDocuments(Posts.find(find, options), handle.loaded());
   }
   return handle;
 }
 
+// note: the "name" property is for internal debugging purposes only
 
 selectTop = function() {
   return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
@@ -100,7 +102,6 @@ selectDigest = function() {
   return selectPosts({name: 'digest', status: STATUS_APPROVED,  date: Session.get('currentDate') });
 }
 
-// note: the "name" property is for internal debugging purposes only
 topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
 
 newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
