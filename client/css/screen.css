@@ -1563,6 +1563,7 @@ table thead tr td {
 .user-profile .user-avatar {
   height: 80px;
   width: 80px;
+  background-size: 80px, 80px;
   display: block;
   -webkit-border-radius: 80px;
   -moz-border-radius: 80px;
