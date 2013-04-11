@@ -33,7 +33,7 @@ getDateRange= function(pageNumber){
   return range;
 }
 getDomain = function(url){
-    urlObject = require('url');
+    urlObject = Npm.require('url');
     return urlObject.parse(url).hostname;
 }
 // ---------------------------------- URL Helper Functions ----------------------------------- //
