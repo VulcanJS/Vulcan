@@ -20,9 +20,7 @@ clearSeenErrors = function(){
 // SUBSCRIPTIONS
 
 // ** Errors **
-// Local (client-only) collection
 
-Errors = new Meteor.Collection(null);
 
 // ** Settings **
 
