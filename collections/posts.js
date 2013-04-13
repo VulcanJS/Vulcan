@@ -1,3 +1,5 @@
+Posts = new Meteor.Collection('posts');
+
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;

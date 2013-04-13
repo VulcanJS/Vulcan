@@ -38,7 +38,6 @@ Meteor.startup(function(){
 
 // Posts
 
-Posts = new Meteor.Collection('posts');
 
 // a single post, identified by id
 Meteor.publish('singlePost', function(id) {
@@ -64,7 +63,6 @@ Meteor.startup(function(){
 
 // Comments
 
-Comments = new Meteor.Collection('comments');
 
 Meteor.publish('comments', function(query) {
   return Comments.find(query);
@@ -80,7 +78,6 @@ Meteor.startup(function(){
 
 // Settings
 
-Settings = new Meteor.Collection('settings');
 
 Meteor.publish('settings', function() {
   return Settings.find();
@@ -97,7 +94,6 @@ Meteor.startup(function(){
 
 // Notifications
 
-Notifications = new Meteor.Collection('notifications');
 
 Meteor.publish('notifications', function() {
   // only publish notifications belonging to the current user
@@ -117,7 +113,6 @@ Meteor.startup(function(){
 
 // Categories
 
-Categories = new Meteor.Collection('categories');
 
 Meteor.publish('categories', function() {
   return Categories.find();

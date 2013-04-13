@@ -26,7 +26,6 @@ Errors = new Meteor.Collection(null);
 
 // ** Settings **
 
-Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
 
   // runs once on site load
@@ -36,7 +35,6 @@ Meteor.subscribe('settings', function(){
 
 // ** Categories **
 
-Categories = new Meteor.Collection('categories');
 Meteor.subscribe('categories');
 
 // ** Users **
@@ -48,7 +46,6 @@ Meteor.subscribe('allUsers');
 // ** Notifications **
 // Only load if user is logged in
 
-Notifications = new Meteor.Collection('notifications');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
@@ -61,7 +58,6 @@ if(Meteor.userId() != null){
 //     XXX: and we can animate between them (todo)
 //   b) we know when an individual page is ready
 
-Posts = new Meteor.Collection('posts');
 
 Meteor.autorun(function() {
   Meteor.subscribe('singlePost', Session.get('selectedPostId'));
