@@ -30,19 +30,3 @@
 <template name="posts_pending">
   {{> posts_list pendingPostsHandle}}
 </template>
-
-<template name="posts_digest">
-  <div class="grid">
-    <div class="grid-block">
-      The top 5 posts of each day. |
-    {{#if showPreviousDate}}
-    <a href="{{previousDateURL}}" class="prev-link">Previous Day</a> | 
-    {{/if}}
-    {{currentDate}} |
-    {{#if showNextDate}}
-    <a href="{{nextDateURL}}" class="next-link">Next Day</a>
-    {{/if}}
-    </div>
-  </div>
-  {{> posts_list digestHandle}}
-</template>

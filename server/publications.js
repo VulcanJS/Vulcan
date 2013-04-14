@@ -52,6 +52,11 @@ Meteor.publish('paginatedPosts', function(find, options, limit) {
   return Posts.find(find || {}, options);
 });
 
+Meteor.publish('postDigest', function(date) {
+  var mDate = moment(date);
+  return findDigestPosts(mDate);
+});
+
 // XXX: we'd like to this but you can't return multiple cursors across the
 // same collection. Not sure exactly why this is
 //

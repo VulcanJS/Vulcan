@@ -101,16 +101,14 @@ bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);
 
 pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
 
-digestHandle = postListSubscription(function() { 
-  return selectDigest(moment(Session.get('currentDate')))
-}, sortDigest(), 5);
-
+Meteor.autorun(function() {
+  digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
+});
 
 // ** Comments **
 // Collection depends on selectedPostId and selectedCommentId session variable
 
 Session.set('selectedPostId', null);
-Comments = new Meteor.Collection('comments');
 Meteor.autosubscribe(function() {
   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
   Meteor.subscribe('comments', query, function() {
