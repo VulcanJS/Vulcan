@@ -8,3 +8,5 @@ providers_secret.js
 
 *.sublime-workspace
 codekit-config.json
+
+config.rb
