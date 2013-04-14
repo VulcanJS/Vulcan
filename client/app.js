@@ -68,7 +68,6 @@ STATUS_REJECTED=3;
 
 // put it all together with pagination
 postListSubscription = function(find, options, per_page) {
-  console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
     var ourFind = _.isFunction(find) ? find() : find;

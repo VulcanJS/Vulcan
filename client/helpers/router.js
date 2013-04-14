@@ -1,7 +1,6 @@
 (function() {  
   Meteor.Router.beforeRouting = function() {
     // reset all session variables that might be set by the previous route
-    console.log('beforeRouting: clearing categorySlug')
     Session.set('categorySlug', null);
 
     // openedComments is an Array that tracks which comments
@@ -250,7 +249,8 @@
       if(Meteor.Router.page() !== "loading"){
         console.log('------ '+Meteor.Router.page()+' ------');
       
-        if(_.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending', 'posts_best'], Meteor.Router.page())){
+        // note: posts_digest doesn't use paginated subscriptions so it cannot have a rank
+        if(_.contains(['posts_top', 'posts_new', 'posts_pending', 'posts_best'], Meteor.Router.page())){
           Session.set('isPostsList', true);
         }else{
           Session.set('isPostsList', false);
