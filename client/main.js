@@ -1,53 +1,28 @@
+// Session variables
 Session.set('initialLoad', true);
 Session.set('currentDate', new Date());
 Session.set('categorySlug', null);
 
-l=function(s){
-  console.log(s);
-}
-
-// HELPERS
-getSetting = function(setting){
-  var settings=Settings.find().fetch()[0];
-  if(settings){
-    return settings[setting];
-  }
-  return '';
-}
-clearSeenErrors = function(){
-  Errors.update({seen:true}, {$set: {show:false}}, {multi:true});
-}
-// SUBSCRIPTIONS
-
-// ** Errors **
-
-
-// ** Settings **
-
+// Settings
 Meteor.subscribe('settings', function(){
-
   // runs once on site load
   analyticsInit();
   Session.set('settingsLoaded',true);
 });
 
-// ** Categories **
-
+// Categories
 Meteor.subscribe('categories');
 
-// ** Users **
-
+// Users
 Meteor.subscribe('currentUser');
 Meteor.subscribe('allUsers');
 
-// ** Notifications **
-// Only load if user is logged in
-
+// Notifications - only load if user is logged in
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
 
-// ** Posts **
+// Posts
 // We have a few subscriptions here, for the various ways we load posts
 //
 // The advantage is that
@@ -55,16 +30,17 @@ if(Meteor.userId() != null){
 //     XXX: and we can animate between them (todo)
 //   b) we know when an individual page is ready
 
-
+// Single Post
 Meteor.autorun(function() {
   Meteor.subscribe('singlePost', Session.get('selectedPostId'));
 });
 
-
+// Digest
 Meteor.autorun(function() {
-  Meteor.subscribe('singlePost', Session.get('selectedPostId'));
+  digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
 });
 
+// Posts Lists
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
@@ -80,34 +56,27 @@ postListSubscription = function(find, options, per_page) {
 }
 
 // note: the "name" property is for internal debugging purposes only
-
-
 selectTop = function() {
   return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
+topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
+
 selectNew = function() {
   return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
+newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
+
 selectBest = function() {
   return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
+bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);  
+
 selectPending = function() {
   return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
-
-topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
-
-newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
-
-bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);  
-
 pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
 
-Meteor.autorun(function() {
-  digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
-});
-
-// ** Comments **
+// Comments
 // Collection depends on selectedPostId and selectedCommentId session variable
 
 Session.set('selectedPostId', null);
