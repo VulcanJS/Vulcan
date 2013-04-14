@@ -1,10 +1,14 @@
 {
   "meteor": {},
   "packages": {
-    "router": {},
+    "router": {
+      "git": "https://github.com/SachaG/meteor-router.git"
+    },
     "moment": {},
-	"database-forms": {
-		"git":"https://github.com/SachaG/database-forms.git"
-	}
+  	"database-forms": {
+  		"git":"https://github.com/SachaG/database-forms.git"
+  	},
+    "paginated-subscription": {},
+    "crypto-md5": {}
   }
 }

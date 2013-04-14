@@ -1,4 +1,6 @@
 Session.set('initialLoad', true);
+Session.set('currentDate', new Date());
+Session.set('categorySlug', null);
 
 l=function(s){
   console.log(s);
@@ -18,19 +20,20 @@ clearSeenErrors = function(){
 // SUBSCRIPTIONS
 
 // ** Errors **
-// Local (client-only) collection
 
-Errors = new Meteor.Collection(null);
 
 // ** Settings **
 
-Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
 
   // runs once on site load
   analyticsInit();
   Session.set('settingsLoaded',true);
 });
+
+// ** Categories **
+
+Meteor.subscribe('categories');
 
 // ** Users **
 
@@ -40,7 +43,6 @@ Meteor.subscribe('allUsers');
 // ** Notifications **
 // Only load if user is logged in
 
-Notifications = new Meteor.Collection('notifications');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
@@ -53,7 +55,11 @@ if(Meteor.userId() != null){
 //     XXX: and we can animate between them (todo)
 //   b) we know when an individual page is ready
 
-Posts = new Meteor.Collection('posts');
+
+Meteor.autorun(function() {
+  Meteor.subscribe('singlePost', Session.get('selectedPostId'));
+});
+
 
 Meteor.autorun(function() {
   Meteor.subscribe('singlePost', Session.get('selectedPostId'));
@@ -62,94 +68,49 @@ Meteor.autorun(function() {
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
-FIND_APPROVED={$or: [{status: {$exists : false}}, {status: STATUS_APPROVED}]};
 
-var postListSubscription = function(find, options, per_page) {
-  var handle = paginatedSubscription(per_page, 'paginatedPosts', find, options);
+// put it all together with pagination
+postListSubscription = function(find, options, per_page) {
+  var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
-    return limitDocuments(Posts.find(find, options), handle.loaded());
+    var ourFind = _.isFunction(find) ? find() : find;
+    return limitDocuments(Posts.find(ourFind, options), handle.loaded());
   }
   return handle;
 }
 
-topPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, score: -1}}, 10);
-newPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, submitted: -1}}, 10);
-bestPostsHandle = postListSubscription(FIND_APPROVED, {sort: {sticky: -1, baseScore: -1}}, 10);
-pendingPostsHandle = postListSubscription(
-  {$or: [{status: STATUS_PENDING}, {status: STATUS_REJECTED}]}, 
-  {sort: {createdAt: -1}}, 
-  10
-);
+// note: the "name" property is for internal debugging purposes only
 
-// digest subscriptions
-DIGEST_PRELOADING = 3;
-var digestHandles = {}
-var dateHash = function(mDate) {
-  return mDate.format('DD-MM-YYYY');
+
+selectTop = function() {
+  return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var currentMDateForDigest = function() {
-  return moment(Session.get('currentDate')).startOf('day');
+selectNew = function() {
+  return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-currentDigestHandle = function() {
-  return digestHandles[dateHash(currentMDateForDigest())];
+selectBest = function() {
+  return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+selectPending = function() {
+  return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
 
-// we use autorun here, because we DON'T want meteor to automatically
-// unsubscribe for us
+topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
+
+newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
+
+bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);  
+
+pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
+
 Meteor.autorun(function() {
-  var daySubscription = function(mDate) {
-    var find = _.extend({
-        submitted: {
-          $gte: mDate.startOf('day').valueOf(), 
-          $lt: mDate.endOf('day').valueOf()
-        }
-      }, FIND_APPROVED);
-    // note: the digest is ranked by baseScore and not score because we want the posts with the most votes of the day
-    // independantly of age
-    var options = {sort: {baseScore: -1}};
-    
-    // we aren't ever going to paginate this sub, but we'll use pSub
-    // so we have a reactive loading() function 
-    // (grr... https://github.com/meteor/meteor/pull/273)
-    return postListSubscription(find, options, 50);
-  };
-  
-  // take it to the start of the day.
-  var mDate = currentMDateForDigest();
-  var firstDate = moment(mDate).subtract('days', DIGEST_PRELOADING);
-  var lastDate = moment(mDate).add('days', DIGEST_PRELOADING);
-  
-  // first unsubscribe all the subscriptions that fall outside of our current range
-  _.each(digestHandles, function(handle, hash) {
-    var mDate = moment(hash, 'DD-MM-YYYY');
-    if (mDate < firstDate || mDate > lastDate) {
-      // console.log('unsubscribing digest for ' + mDate.toString())
-      handle.stop();
-      delete digestHandles[dateHash(mDate)];
-    }
-  });
-  
-  // set up a sub for each day for the DIGEST_PRELOADING days before and after
-  // but we want to be smart about it --  
-  for (mDate = firstDate; mDate < lastDate; mDate.add('days',1 )) {
-    if (! digestHandles[dateHash(mDate)]) {
-      // console.log('subscribing digest for ' + mDate.toString());
-      digestHandles[dateHash(mDate)] = daySubscription(mDate);
-    }
-  }
+  digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
 });
-
-// ** Categories **
-
-Categories = new Meteor.Collection('categories');
-Meteor.subscribe('categories');
-
 
 // ** Comments **
 // Collection depends on selectedPostId and selectedCommentId session variable
 
 Session.set('selectedPostId', null);
-Comments = new Meteor.Collection('comments');
 Meteor.autosubscribe(function() {
   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
   Meteor.subscribe('comments', query, function() {

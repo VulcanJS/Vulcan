@@ -1,3 +1,5 @@
+Categories = new Meteor.Collection('categories');
+
 Meteor.methods({
   category: function(category){
     var user = Meteor.user();

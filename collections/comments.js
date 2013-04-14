@@ -1,3 +1,5 @@
+Comments = new Meteor.Collection('comments');
+
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
     var user = Meteor.user();

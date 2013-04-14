@@ -16,7 +16,8 @@ Template.posts_list.helpers({
     return this.fetch();
   },
   postsReady: function() {
-    return ! this.loading();
+    console.log('checking postsReady', this.ready(), this);
+    return this.ready();
   },
   allPostsLoaded: function(){
     allPostsLoaded = this.fetch().length < this.loaded();

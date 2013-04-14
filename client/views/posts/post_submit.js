@@ -47,7 +47,7 @@ Template.post_submit.events = {
     var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
-       categories.push($(this).val());
+      categories.push(Categories.findOne($(this).val()));
      });
 
     var properties = {

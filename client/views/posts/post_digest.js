@@ -1,10 +1,9 @@
 Template.posts_digest.helpers({
-  posts: function(){
-    return currentDigestHandle().fetch();
-  },
   hasPosts: function(){
-    var handle = currentDigestHandle()
-    return handle && ! handle.loading() && handle.loaded() > 0;
+    return digestHandle && digestHandle.ready();
+  },
+  posts: function() {
+    return findDigestPosts(moment(Session.get('currentDate')));
   },
   currentDate: function(){
     var currentDate=moment(Session.get('currentDate'));
@@ -40,7 +39,7 @@ Template.posts_digest.helpers({
 Template.posts_digest.created = function(){
   $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
   var currentDate=moment(Session.get('currentDate')).startOf('day');
-  var today=moment(new Date()).startOf('day');
+  var today=moment(new Date()).startOf('daysy');
   $(document).bind('keyup', 'left', function(){
     Meteor.Router.to($('.prev-link').attr('href'));
   });

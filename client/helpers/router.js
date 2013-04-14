@@ -1,13 +1,37 @@
 (function() {  
+  Meteor.Router.beforeRouting = function() {
+    // reset all session variables that might be set by the previous route
+    Session.set('categorySlug', null);
+
+    // openedComments is an Array that tracks which comments
+    // have been expanded by the user, to make sure they stay expanded
+    Session.set("openedComments", null);
+    Session.set('requestTimestamp',new Date());
+
+    // currentScroll stores the position of the user in the page
+    Session.set('currentScroll', null);
+    
+    var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
+    document.title = getSetting("title")+tagline;
+    
+    $('body').css('min-height','0');
+
+    // set all errors who have already been seen to not show anymore
+    clearSeenErrors();
+        
+    // log this request with mixpanel, etc
+    analyticsRequest();
+  }
+  
   // specific router functions
   digest = function(year, month, day, view){
     var destination = (typeof view === 'undefined') ? 'posts_digest' : 'posts_digest_'+view
     if (typeof day === 'undefined') {
       // we can get into an infinite reactive loop with the subscription filter
       // if we keep setting the date even when it's barely changed
-      if (new Date() - new Date(Session.get('currentDate')) > 60 * 1000) {
+      // if (new Date() - new Date(Session.get('currentDate')) > 60 * 1000) {
         Session.set('currentDate', new Date());
-      }
+      // }
       // Session.set('currentDate', new Date());
     } else {
       Session.set('currentDate', new Date(year, month-1, day));
@@ -16,11 +40,11 @@
     // we need to make sure that the session changes above have been executed 
     // before we can look at the digest handle. XXX: this might be a bad idea
     // Meteor.flush();
-    if (!currentDigestHandle() || currentDigestHandle().loading()) {
-      return 'loading';
-    } else {
+    // if (!digestHandle() || digestHandle().loading()) {
+    //   return 'loading';
+    // } else {
       return destination;
-    }
+    // }
   };
 
   post = function(id, commentId) {
@@ -74,21 +98,27 @@
     return 'unsubscribe';
   }
 
+  category = function(categorySlug, view){
+    var view = (typeof view === 'undefined') ? 'top' : view;
+    console.log('setting category slug to: '+categorySlug)
+    Session.set('categorySlug', categorySlug);
+    Meteor.Router.categoryFilter = true;
+    return 'posts_'+view;
+  }
+
   // XXX: not sure if the '/' trailing routes are needed any more
   Meteor.Router.add({
     '/': 'posts_top',
     '/top':'posts_top',
-    '/top/':'posts_top',
     '/top/:page':'posts_top',
     '/new':'posts_new',
-    '/new/':'posts_new',
     '/new/:page':'posts_new',
     '/best':'posts_best',
-    '/best/':'posts_best',
     '/pending':'posts_pending',
     '/digest/:year/:month/:day': digest,
     '/digest': digest,
-    '/digest/': digest,
+    '/c/:category_slug/:view': category,
+    '/c/:category_slug': category,
     '/signin':'user_signin',
     '/signup':'user_signup',
     '/submit':'post_submit',
@@ -96,14 +126,13 @@
     '/posts/deleted':'post_deleted',
     '/posts/:id/edit': post_edit,
     '/posts/:id/comment/:comment_id': post,
-    '/posts/:id/': post,
     '/posts/:id': post,
     '/comments/deleted':'comment_deleted',   
     '/comments/:id': comment,
     '/comments/:id/reply': comment_reply,
     '/comments/:id/edit': comment_edit,
     '/settings':'settings',
-    '/admin':'admin',
+    '/toolbox':'toolbox',
     '/categories':'categories',
     '/users':'users',
     '/account':'user_edit',
@@ -116,6 +145,7 @@
 
 
   Meteor.Router.filters({
+
     requireLogin: function(page) {
       if (Meteor.loggingIn()) {
         return 'loading';
@@ -202,7 +232,7 @@
       }
     }
   });
-  // 
+  //
   Meteor.Router.filter('requireProfile');
   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
   Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});
@@ -216,45 +246,16 @@
     Meteor.autorun(function() {
       // grab the current page from the router, so this re-runs every time it changes
       Meteor.Router.page();
-
       if(Meteor.Router.page() !== "loading"){
         console.log('------ '+Meteor.Router.page()+' ------');
       
-
-        if(_.contains(['posts_top', 'posts_new', 'posts_digest', 'posts_pending', 'posts_best'], Meteor.Router.page())){
+        // note: posts_digest doesn't use paginated subscriptions so it cannot have a rank
+        if(_.contains(['posts_top', 'posts_new', 'posts_pending', 'posts_best'], Meteor.Router.page())){
           Session.set('isPostsList', true);
         }else{
           Session.set('isPostsList', false);
         }
 
-        // openedComments is an Array that tracks which comments
-        // have been expanded by the user, to make sure they stay expanded
-        Session.set("openedComments", null);
-        Session.set('requestTimestamp',new Date());
-
-        // currentScroll stores the position of the user in the page
-        Session.set('currentScroll', null);
-        
-        var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
-        document.title = getSetting("title")+tagline;
-        
-        $('body').css('min-height','0').addClass(Meteor.Router.page());
-
-        // set all errors who have already been seen to not show anymore
-        clearSeenErrors();
-            
-        // log this request with mixpanel, etc
-        analyticsRequest();
-        
-        // if there are any pending events, log them too
-        if(eventBuffer=Session.get('eventBuffer')){
-          _.each(eventBuffer, function(e){
-            console.log('in buffer: ', e);
-            trackEvent(e.event, e.properties);
-          });
-        }else{
-          // console.log('------ Loading… --------');
-        }
       }
     });    
   });
