@@ -71,9 +71,8 @@ postListSubscription = function(find, options, per_page) {
   console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
-    find = _.isFunction(find) ? find() : find;
-    console.log(find);
-    return limitDocuments(Posts.find(find, options), handle.loaded());
+    var ourFind = _.isFunction(find) ? find() : find;
+    return limitDocuments(Posts.find(ourFind, options), handle.loaded());
   }
   return handle;
 }
