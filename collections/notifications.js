@@ -1,3 +1,5 @@
+Notifications = new Meteor.Collection('notifications');
+
 getNotification = function(event, properties, context){
   var notification = {};
   // the default context to display notifications is the notification sidebar

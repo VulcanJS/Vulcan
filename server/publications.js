@@ -1,4 +1,3 @@
-
 Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
 });
@@ -38,7 +37,6 @@ Meteor.startup(function(){
 
 // Posts
 
-Posts = new Meteor.Collection('posts');
 
 // a single post, identified by id
 Meteor.publish('singlePost', function(id) {
@@ -52,6 +50,12 @@ Meteor.publish('paginatedPosts', function(find, options, limit) {
   console.log('subscribing to paginated posts', find, options, limit);
 
   return Posts.find(find || {}, options);
+});
+
+
+Meteor.publish('postDigest', function(date) {
+  var mDate = moment(date);
+  return findDigestPosts(mDate);
 });
 
 // XXX: we'd like to this but you can't return multiple cursors across the
@@ -89,7 +93,6 @@ Meteor.startup(function(){
 
 // Comments
 
-Comments = new Meteor.Collection('comments');
 
 Meteor.publish('comments', function(query) {
   return Comments.find(query);
@@ -105,7 +108,6 @@ Meteor.startup(function(){
 
 // Settings
 
-Settings = new Meteor.Collection('settings');
 
 Meteor.publish('settings', function() {
   return Settings.find();
@@ -122,7 +124,6 @@ Meteor.startup(function(){
 
 // Notifications
 
-Notifications = new Meteor.Collection('notifications');
 
 Meteor.publish('notifications', function() {
   // only publish notifications belonging to the current user
@@ -142,7 +143,6 @@ Meteor.startup(function(){
 
 // Categories
 
-Categories = new Meteor.Collection('categories');
 
 Meteor.publish('categories', function() {
   return Categories.find();

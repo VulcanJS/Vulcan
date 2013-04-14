@@ -1,5 +1,6 @@
 Session.set('initialLoad', true);
 Session.set('currentDate', new Date());
+Session.set('categorySlug', null);
 
 l=function(s){
   console.log(s);
@@ -19,13 +20,10 @@ clearSeenErrors = function(){
 // SUBSCRIPTIONS
 
 // ** Errors **
-// Local (client-only) collection
 
-Errors = new Meteor.Collection(null);
 
 // ** Settings **
 
-Settings = new Meteor.Collection('settings');
 Meteor.subscribe('settings', function(){
 
   // runs once on site load
@@ -35,7 +33,6 @@ Meteor.subscribe('settings', function(){
 
 // ** Categories **
 
-Categories = new Meteor.Collection('categories');
 Meteor.subscribe('categories');
 
 // ** Users **
@@ -47,7 +44,6 @@ Meteor.subscribe('allUsers');
 // ** Notifications **
 // Only load if user is logged in
 
-Notifications = new Meteor.Collection('notifications');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
@@ -60,11 +56,11 @@ if(Meteor.userId() != null){
 //     XXX: and we can animate between them (todo)
 //   b) we know when an individual page is ready
 
-Posts = new Meteor.Collection('posts');
 
 Meteor.autorun(function() {
   Meteor.subscribe('singlePost', Session.get('selectedPostId'));
 });
+
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
@@ -72,31 +68,31 @@ STATUS_REJECTED=3;
 
 // put it all together with pagination
 postListSubscription = function(find, options, per_page) {
-  // console.log('calling postListSubscription')
+  console.log('calling postListSubscription')
   var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
   handle.fetch = function() {
-    find = _.isFunction(find) ? find() : find;
-    console.log(find);
-    return limitDocuments(Posts.find(find, options), handle.loaded());
+    var ourFind = _.isFunction(find) ? find() : find;
+    return limitDocuments(Posts.find(ourFind, options), handle.loaded());
   }
   return handle;
 }
 
+// note: the "name" property is for internal debugging purposes only
 
-var selectTop = function() {
+
+selectTop = function() {
   return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var selectNew = function() {
+selectNew = function() {
   return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var selectBest = function() {
+selectBest = function() {
   return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
 }
-var selectPending = function() {
+selectPending = function() {
   return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
 
-// note: the "name" property is for internal debugging purposes only
 topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
 
 newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
@@ -105,16 +101,14 @@ bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);
 
 pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
 
-digestHandle = postListSubscription(function() { 
-  return selectDigest(moment(Session.get('currentDate')))
-}, sortDigest(), 5);
-
+Meteor.autorun(function() {
+  digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
+});
 
 // ** Comments **
 // Collection depends on selectedPostId and selectedCommentId session variable
 
 Session.set('selectedPostId', null);
-Comments = new Meteor.Collection('comments');
 Meteor.autosubscribe(function() {
   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
   Meteor.subscribe('comments', query, function() {

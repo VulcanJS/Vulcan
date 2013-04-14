@@ -2,8 +2,7 @@
   Meteor.Router.beforeRouting = function() {
     // reset all session variables that might be set by the previous route
     console.log('beforeRouting: clearing categorySlug')
-    // if(Session.get('categorySlug'))
-      Session.set('categorySlug', null);
+    Session.set('categorySlug', null);
 
     // openedComments is an Array that tracks which comments
     // have been expanded by the user, to make sure they stay expanded
@@ -248,7 +247,6 @@
     Meteor.autorun(function() {
       // grab the current page from the router, so this re-runs every time it changes
       Meteor.Router.page();
-
       if(Meteor.Router.page() !== "loading"){
         console.log('------ '+Meteor.Router.page()+' ------');
       

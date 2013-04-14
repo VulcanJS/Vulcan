@@ -1,3 +1,8 @@
+## v0.6
+
+* Added categories
+* Cleaned up file structure
+
 ## v0.5.6
 
 * Added simple JSON API showing the 100 last posts
