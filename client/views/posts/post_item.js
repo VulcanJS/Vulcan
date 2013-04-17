@@ -58,7 +58,10 @@ Template.post_item.helpers({
   },
   categoryLink: function(){
     return getCategoryUrl(this.slug);
-  }
+  },
+  commentsDisplayText: function(){
+    return this.comments == 1 ? 'comment' : 'comments';
+  },
 });
 
 Template.post_item.rendered = function(){
