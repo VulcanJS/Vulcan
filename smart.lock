@@ -2,17 +2,14 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "master",
-    "commit": "0ffea1c4c308ed24906984f99b13b8fca5a0956c"
+    "commit": "1dfc7171f237a029cca74cbf25024acbf6ed5b75"
   },
   "dependencies": {
     "basePackages": {
-      "router": {
-        "git": "https://github.com/SachaG/meteor-router.git",
-        "branch": "master"
-      },
+      "router": {},
       "moment": {},
       "database-forms": {
-        "git": "https://github.com/SachaG/database-forms.git",
+        "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master"
       },
       "paginated-subscription": {},
@@ -20,9 +17,9 @@
     },
     "packages": {
       "router": {
-        "git": "https://github.com/SachaG/meteor-router.git",
-        "branch": "master",
-        "commit": "defda40b6045a546fa90bd88ef20b53744a0750e"
+        "git": "https://github.com/tmeasday/meteor-router.git",
+        "tag": "v0.5.1",
+        "commit": "32e377c7703bb119acccc859fc7296882903cbe7"
       },
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
@@ -30,7 +27,7 @@
         "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
       },
       "database-forms": {
-        "git": "https://github.com/SachaG/database-forms.git",
+        "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master",
         "commit": "d2cc5b14f80d7985e33b9066b222e0e86e088095"
       },
