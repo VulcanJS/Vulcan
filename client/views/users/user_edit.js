@@ -12,7 +12,7 @@ Template.user_edit.helpers({
   userEmail : function(){
     var currentUser = Meteor.user();
     if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
-      currentUserMeteor.users.findOne(Session.get('selectedUserId'));
+      currentUser = Meteor.users.findOne(Session.get('selectedUserId'));
     }
     return getEmail(currentUser);
   },
