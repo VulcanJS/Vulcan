@@ -6,19 +6,19 @@ STATUS_REJECTED=3;
 
 Meteor.methods({
   post: function(post){
-    var headline = cleanUp(post.headline);
-    var body = cleanUp(post.body);
-    var user = Meteor.user();
-    var userId = post.userId || user._id;
-    var submitted = parseInt(post.submitted) || new Date().getTime();
-    var defaultStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED;
-    var status = post.status || defaultStatus;
-    var postWithSameLink = Posts.findOne({url: post.url});
-    var timeSinceLastPost=timeSinceLast(user, Posts);
-    var numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts);
-    var postInterval = Math.abs(parseInt(getSetting('postInterval'))) || 30;
-    var maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay'))) || 30;
-    var postId = '';
+    var headline = cleanUp(post.headline),
+        body = cleanUp(post.body),
+        user = Meteor.user(),
+        userId = post.userId || user._id,
+        submitted = parseInt(post.submitted) || new Date().getTime(),
+        defaultStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED,
+        status = post.status || defaultStatus,
+        postWithSameLink = Posts.findOne({url: post.url}),
+        timeSinceLastPost=timeSinceLast(user, Posts),
+        numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
+        postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
+        maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30))),
+        postId = '';
 
     // check that user can post
     if (!user || !canPost(user))

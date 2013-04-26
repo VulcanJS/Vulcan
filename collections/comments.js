@@ -2,23 +2,22 @@ Comments = new Meteor.Collection('comments');
 
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
-    var user = Meteor.user();
-    var post=Posts.findOne(postId);
-    var postUser=Meteor.users.findOne(post.userId);
-    var timeSinceLastComment=timeSinceLast(user, Comments);
-    var cleanText= cleanUp(text);
-    var commentInterval = Math.abs(parseInt(getSetting('commentInterval'))) || 15;
-
-    var properties={
-        'commentAuthorId': user._id,
-        'commentAuthorName': getDisplayName(user),
-        'commentExcerpt': trimWords(stripMarkdown(cleanText),20),
-        'postId': postId,
-        'postHeadline' : post.headline
-    };
+    var user = Meteor.user(),
+        post=Posts.findOne(postId),
+        postUser=Meteor.users.findOne(post.userId),
+        timeSinceLastComment=timeSinceLast(user, Comments),
+        cleanText= cleanUp(text),
+        commentInterval = Math.abs(parseInt(getSetting('commentInterval',15))),
+        properties={
+          'commentAuthorId': user._id,
+          'commentAuthorName': getDisplayName(user),
+          'commentExcerpt': trimWords(stripMarkdown(cleanText),20),
+          'postId': postId,
+          'postHeadline' : post.headline
+        };
 
     // check that user can comment
-    if (!user || !canPost(user))
+    if (!user || !canComment(user))
       throw new Meteor.Error('You need to login or be invited to post new comments.');
     
     // check that user waits more than 15 seconds between comments
@@ -26,12 +25,13 @@ Meteor.methods({
       throw new Meteor.Error(704, 'Please wait '+(commentInterval-timeSinceLastComment)+' seconds before commenting again');
 
     var comment = {
-        post: postId
-      , body: cleanText
-      , userId: user._id
-      , submitted: new Date().getTime()
-      , author: getDisplayName(user)
+        post: postId,
+        body: cleanText,
+        userId: user._id,
+        submitted: new Date().getTime(),
+        author: getDisplayName(user)
     };
+    
     if(parentCommentId)
       comment.parent = parentCommentId;
 

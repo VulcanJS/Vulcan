@@ -1,12 +1,8 @@
 (function() {  
   Meteor.Router.beforeRouting = function() {
+    console.log('// Before Routing //')
     // reset all session variables that might be set by the previous route
     Session.set('categorySlug', null);
-
-    // openedComments is an Array that tracks which comments
-    // have been expanded by the user, to make sure they stay expanded
-    Session.set("openedComments", null);
-    Session.set('requestTimestamp',new Date());
 
     // currentScroll stores the position of the user in the page
     Session.set('currentScroll', null);
@@ -146,6 +142,15 @@
 
   Meteor.Router.filters({
 
+    setRequestTimestamp: function(page){
+      // openedComments is an Array that tracks which comments
+      // have been expanded by the user, to make sure they stay expanded
+      Session.set("openedComments", null);
+      Session.set('requestTimestamp',new Date());
+      // console.log('---------------setting request timestamp: '+Session.get('requestTimestamp'))
+      return page;
+    },
+
     requireLogin: function(page) {
       if (Meteor.loggingIn()) {
         return 'loading';
@@ -183,10 +188,12 @@
     },
     
     canEdit: function(page) {
+      // make findOne() non reactive to avoid re-triggering the router every time the 
+      // current comment or post object changes
       if (page === 'comment_edit') {
-        var item = Comments.findOne(Session.get('selectedCommentId'));
+        var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
       } else {
-        var item = Posts.findOne(Session.get('selectedPostId'));
+        var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
       }
       
       var error = canEdit(Meteor.user(), item, true);
@@ -223,7 +230,9 @@
   
     // if we are on a page that requires a post, as set in selectedPostId
     requirePost: function(page) {
-      if (Posts.findOne(Session.get('selectedPostId'))) {
+      // make findOne() non reactive to avoid re-triggering the router every time the 
+      // current comment or post object changes
+      if (Posts.findOne(Session.get('selectedPostId'), {reactive: false})) {
         return page;
       } else if (! Session.get('postReady')) {
         return 'loading';
@@ -241,7 +250,8 @@
   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']});
   Meteor.Router.filter('isAdmin', {only: ['posts_pending', 'users', 'settings', 'categories', 'admin']});
-  
+  Meteor.Router.filter('setRequestTimestamp', {only: ['post_page']});
+
   Meteor.startup(function() {
     Meteor.autorun(function() {
       // grab the current page from the router, so this re-runs every time it changes
