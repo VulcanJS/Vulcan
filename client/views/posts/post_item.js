@@ -62,6 +62,9 @@ Template.post_item.helpers({
   commentsDisplayText: function(){
     return this.comments == 1 ? 'comment' : 'comments';
   },
+  pointsUnitDisplayText: function(){
+    return this.votes == 1 ? 'point' : 'points';
+  }
 });
 
 Template.post_item.rendered = function(){
