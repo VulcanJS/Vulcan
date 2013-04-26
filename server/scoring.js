@@ -12,6 +12,9 @@ updateScore = function (collection, id, forceUpdate) {
   var n = 30;
   // x = score increase amount of a single vote after n days (for n=100, x=0.000040295)
   var x = 1/Math.pow(n*24+2,1.3);
+  // time decay factor
+  var f = 1.3;
+
   var object = collection.findOne(id);
 
   // use submitted timestamp if available, else (for pending posts) calculate score using createdAt
@@ -27,20 +30,14 @@ updateScore = function (collection, id, forceUpdate) {
   var ageInHours = (new Date().getTime() - age) / (60 * 60 * 1000);
 
   // HN algorithm
-  var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
-
-  // console.log('newScore: '+newScore);
+  var newScore = baseScore / Math.pow(ageInHours + 2, f);
 
   // Note: before the first time updateScore runs on a new item, its score will be at 0
   var scoreDiff = Math.abs(object.score - newScore);
 
-  // console.log('updating score | scoreDiff:'+scoreDiff);
-    collection.update(id, {$set: {inactive: false}});
-
   // only update database if difference is larger than x to avoid unnecessary updates
   if (forceUpdate || scoreDiff > x){
-    // console.log('updating: '+object.headline)
-    collection.update(id, {$set: {score: newScore}});
+    collection.update(id, {$set: {score: newScore, inactive: false}});
     return 1;
   }else if(ageInHours > n*24){
     // only set a post as inactive if it's older than n days
