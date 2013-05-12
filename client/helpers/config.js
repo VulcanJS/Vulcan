@@ -20,7 +20,7 @@ SharrreOptions={
 	  twitter: true,
 	},
 	buttons: {
-	  googlePlus: {size: 'tall'},
+	  googlePlus: {size: 'tall', annotation:'bubble'},
 	  // facebook: {layout: 'box_count'},
 	  twitter: {
 	    count: 'vertical',
