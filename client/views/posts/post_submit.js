@@ -16,9 +16,6 @@ Template.post_submit.helpers({
 
 Template.post_submit.rendered = function(){
   Session.set('selectedPostId', null);
-}
-
-Template.post_submit.rendered = function(){
   if(!this.editor && $('#editor').exists())
     this.editor= new EpicEditor(EpicEditorOptions).load();
   $('#submitted').datepicker().on('changeDate', function(ev){
