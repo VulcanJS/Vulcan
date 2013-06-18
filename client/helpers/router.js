@@ -50,7 +50,6 @@
   
     // on post page, we show the comment tree
     Session.set('showChildComments',true);
-
     return 'post_page';
   };
 
@@ -190,20 +189,28 @@
     canEdit: function(page) {
       // make findOne() non reactive to avoid re-triggering the router every time the 
       // current comment or post object changes
+      // but make sure the comment/post is loaded before moving on
       if (page === 'comment_edit') {
         var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
+        if(!Session.get('singleCommentReady'))
+          return 'loading'
       } else {
         var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
+        if(!Session.get('singlePostReady'))
+          return 'loading'
+      }
+
+      var error = canEdit(Meteor.user(), item, true);
+      if (error === true){
+        return page;
+
       }
       
-      var error = canEdit(Meteor.user(), item, true);
-      if (error === true)
-        return page;
-      
       // a problem.. make sure the item has loaded and we have logged in
-      if (! item || Meteor.loggingIn())
+      if (! item || Meteor.loggingIn()){
         return 'loading';
-      
+      }
+
       // otherwise the error tells us what to show.
       return error;
     },

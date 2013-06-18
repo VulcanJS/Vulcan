@@ -2,7 +2,7 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "master",
-    "commit": "1dfc7171f237a029cca74cbf25024acbf6ed5b75"
+    "commit": "9bb2b5447e845c4f483df5e9b42a2c1de5ab909b"
   },
   "dependencies": {
     "basePackages": {
@@ -33,8 +33,8 @@
       },
       "paginated-subscription": {
         "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
-        "tag": "v0.1.1",
-        "commit": "1ba670364ddac149f404158407b2afc89db42ce5"
+        "tag": "v0.1.2",
+        "commit": "35e0c6112df2b4cfeb60b559276a93cac5ee2dd6"
       },
       "crypto-md5": {
         "git": "https://github.com/tmeasday/meteor-crypto-md5.git",

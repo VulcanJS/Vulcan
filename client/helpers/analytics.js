@@ -73,7 +73,7 @@ analyticsInit = function() {
 analyticsRequest = function() {
 
   // Google Analytics
-  if ((googleAnalyticsId = getSetting("googleAnalyticsId"))){
+  if (googleAnalyticsId = getSetting("googleAnalyticsId") && window._gaq){
     window._gaq.push(['_trackPageview', window.location.pathname]);
   } 
 

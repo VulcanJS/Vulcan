@@ -2,6 +2,7 @@
 Session.set('initialLoad', true);
 Session.set('currentDate', new Date());
 Session.set('categorySlug', null);
+Session.set('singlePostReady', false);
 
 // Settings
 Meteor.subscribe('settings', function(){
@@ -32,7 +33,9 @@ if(Meteor.userId() != null){
 
 // Single Post
 Meteor.autorun(function() {
-  Meteor.subscribe('singlePost', Session.get('selectedPostId'));
+  Meteor.subscribe('singlePost', Session.get('selectedPostId'), function(){
+    Session.set('singlePostReady', true);
+  });
 });
 
 // Digest
@@ -80,9 +83,10 @@ pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'),
 // Collection depends on selectedPostId and selectedCommentId session variable
 
 Session.set('selectedPostId', null);
+
 Meteor.autosubscribe(function() {
   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
   Meteor.subscribe('comments', query, function() {
-    Session.set('commentReady', true);
+    Session.set('singleCommentReady', true);
   });
 });

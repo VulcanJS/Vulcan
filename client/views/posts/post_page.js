@@ -12,6 +12,8 @@ Template.post_page.helpers({
 		return canComment(Meteor.user());
 	},
 	canView: function(){
+		console.log('asdas')
+		console.log(canView(Meteor.user()))
 		return canView(Meteor.user());
 	}
 }); 
