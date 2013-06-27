@@ -16,6 +16,8 @@ body {
 	-moz-transition: border-color 500ms;
 	-o-transition: border-color 500ms;
 	transition: border-color 500ms;
+	min-height: 80px;
+
 }
 body:focus{
 	outline: none;
