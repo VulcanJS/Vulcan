@@ -241,7 +241,7 @@
       // current comment or post object changes
       if (Posts.findOne(Session.get('selectedPostId'), {reactive: false})) {
         return page;
-      } else if (! Session.get('postReady')) {
+      } else if (! Session.get('singlePostReady')) {
         return 'loading';
       } else {
         return 'not_found';

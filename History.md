@@ -4,6 +4,7 @@
 * Fixed Twitter avatars
 * Refactoring allow/deny code
 * Added click tracking on links
+* Refactoring RSS and API code to use server-side routing
 
 ## v0.6
 
