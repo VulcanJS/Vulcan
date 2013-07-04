@@ -1,5 +1,14 @@
 Notifications = new Meteor.Collection('notifications');
 
+Notifications.allow({
+    insert: function(userId, doc){
+      // new notifications can only be created via a Meteor method
+      return false;
+    }
+  , update: canEditById
+  , remove: canEditById
+});
+
 getNotification = function(event, properties, context){
   var notification = {};
   // the default context to display notifications is the notification sidebar

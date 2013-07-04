@@ -103,8 +103,8 @@ Template.post_item.events = {
       Meteor.call('upvotePost', post._id, function(error, result){
         trackEvent("post upvoted", {'_id': post._id});
       });
-  }
-  , 'click .share-link': function(e){
+  },
+  'click .share-link': function(e){
       var $this = $(e.target).parents('.post-share').find('.share-link');
       var $share = $this.parents('.post-share').find('.share-options');
       e.preventDefault();
@@ -113,5 +113,11 @@ Template.post_item.events = {
       $this.toggleClass("active");
       $share.toggleClass("hidden");
       $share.find('.share-replace').sharrre(SharrreOptions);
+  },
+  'click .post-title': function(e){
+    Meteor.call('clickedPost', this, function(error, result){
+      if(error)
+        console.log(error);
+    });
   }
 };

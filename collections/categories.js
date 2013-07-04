@@ -1,5 +1,11 @@
 Categories = new Meteor.Collection('categories');
 
+Categories.allow({
+  insert: isAdminById
+, update: isAdminById
+, remove: isAdminById
+});
+
 Meteor.methods({
   category: function(category){
     var user = Meteor.user();

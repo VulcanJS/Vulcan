@@ -2,6 +2,8 @@
 
 * Added Bitly integration
 * Fixed Twitter avatars
+* Refactoring allow/deny code
+* Added click tracking on links
 
 ## v0.6
 

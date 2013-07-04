@@ -4,6 +4,21 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
+Posts.allow({
+    insert: canPostById
+  , update: canEditById
+  , remove: canEditById
+});
+
+Posts.deny({
+  update: function(userId, post, fieldNames) {
+    if(isAdminById(userId))
+      return true;
+    // may only edit the following fields:
+    return (_.without(fieldNames, 'headline', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
+  }
+});
+
 Meteor.methods({
   post: function(post){
     var headline = cleanUp(post.headline),
@@ -110,5 +125,8 @@ Meteor.methods({
   },
   post_edit: function(post){
     //TO-DO: make post_edit server-side?
+  },
+  clickedPost: function(post){
+    Posts.update(post._id, { $inc: { clicks: 1 }});
   }
 });
