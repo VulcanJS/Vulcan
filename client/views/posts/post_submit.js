@@ -36,6 +36,7 @@ Template.post_submit.events = {
 
     var title= $('#title').val();
     var url = $('#url').val();
+    var shortUrl = $('#short-url').val();
     var body = instance.editor.exportFile();
     var categories=[];
     var sticky=!!$('#sticky').attr('checked');
@@ -50,6 +51,7 @@ Template.post_submit.events = {
     var properties = {
         headline: title
       , body: body
+      , shortUrl: shortUrl
       , categories: categories
       , sticky: sticky
       , submitted: submitted
@@ -95,4 +97,5 @@ Template.post_submit.events = {
       $(".get-title-link").removeClass("loading");
     }
   }
+
 };

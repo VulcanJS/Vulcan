@@ -44,6 +44,23 @@ Meteor.methods({
         throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
     }
 
+    // shorten URL
+    if(!this.isSimulation && (token=getSetting('bitlyToken'))){
+      var shortenResponse = Meteor.http.get(
+        "https://api-ssl.bitly.com/v3/shorten?", 
+        {
+          timeout: 5000,
+          params:{ 
+            "format": "json",
+            "access_token": token,
+            "longUrl": post.url
+          }
+        }
+      );
+      if(shortenResponse.statusCode == 200)
+        post.shortUrl = shortenResponse.data.data.url
+    }
+
     post = _.extend(post, {
       headline: headline,
       body: body,
