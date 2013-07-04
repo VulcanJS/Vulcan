@@ -51,7 +51,10 @@ Template.post_edit.helpers({
   },
   hasStatusRejected: function(){
     return this.status == STATUS_REJECTED ? 'checked' : '';
-  },  
+  },
+  shorten: function(){
+    return !!getSetting('bitlyToken');
+  }
 });
 
 Template.post_edit.rendered = function(){
@@ -78,6 +81,7 @@ Template.post_edit.events = {
     var post = Posts.findOne(selectedPostId);
     var categories = [];
     var url = $('#url').val();
+    var shortUrl = $('#short-url').val();
     var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
@@ -88,6 +92,7 @@ Template.post_edit.events = {
     
     var properties = {
       headline:         $('#title').val(),
+      shortUrl:         shortUrl, 
       body:             instance.editor.exportFile(),
       categories:       categories,
     };

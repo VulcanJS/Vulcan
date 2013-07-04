@@ -45,23 +45,20 @@ Meteor.methods({
     }
 
     // shorten URL
-    if(token=getSetting('bitlyToken')){
-      Meteor.http.get(
-        "https://api-ssl.bitly.com/v3/shorten?callback=?", 
+    if(!this.isSimulation && (token=getSetting('bitlyToken'))){
+      var shortenResponse = Meteor.http.get(
+        "https://api-ssl.bitly.com/v3/shorten?", 
         {
-          data:{ 
+          timeout: 5000,
+          params:{ 
             "format": "json",
             "access_token": token,
             "longUrl": post.url
           }
-        },
-        function(response){
-          if(response.status_code == 200){
-            console.log(response)
-            // post.shortUrl = response.data.url
-          } 
         }
       );
+      if(shortenResponse.statusCode == 200)
+        post.shortUrl = shortenResponse.data.data.url
     }
 
     post = _.extend(post, {

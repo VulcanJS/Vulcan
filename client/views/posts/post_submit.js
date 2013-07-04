@@ -11,9 +11,6 @@ Template.post_submit.helpers({
   isSelected: function(){
     var post=Posts.findOne(Session.get('selectedPostId'));
     return post && this._id == post.userId;
-  },
-  shorten: function(){
-    return !!getSetting('bitlyToken');
   }
 });
 
@@ -101,23 +98,4 @@ Template.post_submit.events = {
     }
   }
 
-  ,'click .get-short-url': function(e){
-    e.preventDefault();
-    var url=$("#url").val();
-    $(".get-short-url").addClass("loading");
-    if(url){
-      console.log(url)
-      getShortUrl(url, function(url){
-        if (url){
-          $("#short-url").val(url);
-        }else{
-          alert("Sorry, couldn't find a short URL...");
-        }
-        $(".get-short-url").removeClass("loading");
-      });
-    }else{
-      alert("Please fill in an URL first!");
-      $(".get-short-url").removeClass("loading");
-    }
-  }
 };

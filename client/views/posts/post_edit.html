@@ -14,6 +14,12 @@
           <label class="control-label post-form-url">URL</label>
           <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
         </div>
+        {{#if shorten}}
+        <div class="control-group">
+          <label class="control-label post-form-url">Short URL</label>
+          <div class="controls"><input id="short-url" type="text" value="{{shortUrl}}" /></div>
+        </div>
+        {{/if}}
         <div class="control-group">
           <label class="control-label post-form-body">Body</label>
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
