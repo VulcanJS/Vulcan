@@ -9,7 +9,7 @@ Comments.allow({
 Comments.deny({
   update: function(userId, post, fieldNames) {
     if(isAdminById(userId))
-      return true;
+      return false;
     // may only edit the following fields:
     return (_.without(fieldNames, 'text').length > 0);
   }

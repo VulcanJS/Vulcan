@@ -13,7 +13,7 @@ Posts.allow({
 Posts.deny({
   update: function(userId, post, fieldNames) {
     if(isAdminById(userId))
-      return true;
+      return false;
     // may only edit the following fields:
     return (_.without(fieldNames, 'headline', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
   }

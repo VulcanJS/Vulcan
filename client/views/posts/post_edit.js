@@ -102,8 +102,6 @@ Template.post_edit.events = {
     }
 
     if(isAdmin(Meteor.user())){
-      console.log('status: '+status)
-      console.log(post)
       if(status == STATUS_APPROVED){
         if(!post.submitted){
           // this is the first time we are approving the post
@@ -118,7 +116,6 @@ Template.post_edit.events = {
         status:     status,
       };
       properties = _.extend(properties, adminProperties);
-      console.log(properties)
     }
 
     Posts.update(selectedPostId,
@@ -127,6 +124,7 @@ Template.post_edit.events = {
       }
     ,function(error){
       if(error){
+        console.log(error);
         throwError(error.reason);
       }else{
         trackEvent("edit post", {'postId': selectedPostId});
