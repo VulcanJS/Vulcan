@@ -24,4 +24,6 @@ Template.post_page.rendered = function(){
 		Session.set('scrollToCommentId', null);
 		this.rendered=true;
 	}
+
+	document.title = Posts.findOne(Session.get('selectedPostId')).headline;
 }
