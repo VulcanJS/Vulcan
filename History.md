@@ -1,3 +1,8 @@
+## v0.6.1
+
+* Added Bitly integration
+* Fixed Twitter avatars
+
 ## v0.6
 
 * Added categories
