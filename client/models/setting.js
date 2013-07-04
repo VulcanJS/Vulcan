@@ -25,6 +25,7 @@ Setting = FormModel.extend({
     clickyId:'',
     goSquaredId: '',
     embedlyId: '',
+    bitlyToken: '',
     footerCode: '',
     extraCode: '', 
     notes: ''
@@ -40,6 +41,7 @@ Setting = FormModel.extend({
     this.overwriteTitle('mixpanelId', '<a href="http://mixpanel.com/">Mixpanel</a> ID');
     this.overwriteTitle('clickyId', '<a href="http://getclicky.com/">Clicky</a> ID');
     this.overwriteTitle('goSquaredId', '<a href="http://gosquared.com/">GoSquared</a> ID');
+    this.overwriteTitle('bitlyToken', '<a href="https://bitly.com/a/oauth_apps">Bitly</a> Token');
     this.overwriteTitle('logoUrl', 'Logo URL');
     this.overwriteType('footerCode', 'textarea');
     this.overwriteType('extraCode', 'textarea');

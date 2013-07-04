@@ -6,9 +6,15 @@
         <label class="control-label">URL</label>
         <div class="controls"><input id="url" type="text" value="" /></div>
       </div>
+      {{#if shorten}}
+      <div class="control-group">
+        <label class="control-label">Short URL</label>
+        <div class="controls"><input id="short-url" type="text" value="" /><a href="#" class="get-short-url inline-link">Get short URL</a></div>
+      </div>
+      {{/if}}
       <div class="control-group">
         <label class="control-label">Title</label>
-        <div class="controls"><input id="title" type="text" value="" /><a href="#" class="get-title-link">Suggest title</a></div>
+        <div class="controls"><input id="title" type="text" value="" /><a href="#" class="get-title-link inline-link">Suggest title</a></div>
       </div>
       <div class="control-group">
         <label class="control-label">Message</label>

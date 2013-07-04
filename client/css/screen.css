@@ -1420,13 +1420,13 @@ form .control-group, .accounts-dialog .control-group {
     margin-left: 150px;
     position: relative; }
     /* line 19, ../sass/modules/_forms.scss */
-    form .control-group .controls .get-title-link, .accounts-dialog .control-group .controls .get-title-link {
+    form .control-group .controls .inline-link, .accounts-dialog .control-group .controls .inline-link {
       position: absolute;
       display: block;
       top: 2px;
       right: 8px; }
       /* line 24, ../sass/modules/_forms.scss */
-      form .control-group .controls .get-title-link.loading, .accounts-dialog .control-group .controls .get-title-link.loading {
+      form .control-group .controls .inline-link.loading, .accounts-dialog .control-group .controls .inline-link.loading {
         background: url(/img/loading.gif) center center no-repeat;
         height: 22px;
         width: 18px;

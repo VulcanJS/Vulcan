@@ -11,6 +11,9 @@ Template.post_submit.helpers({
   isSelected: function(){
     var post=Posts.findOne(Session.get('selectedPostId'));
     return post && this._id == post.userId;
+  },
+  shorten: function(){
+    return !!getSetting('bitlyToken');
   }
 });
 
@@ -36,6 +39,7 @@ Template.post_submit.events = {
 
     var title= $('#title').val();
     var url = $('#url').val();
+    var shortUrl = $('#short-url').val();
     var body = instance.editor.exportFile();
     var categories=[];
     var sticky=!!$('#sticky').attr('checked');
@@ -50,6 +54,7 @@ Template.post_submit.events = {
     var properties = {
         headline: title
       , body: body
+      , shortUrl: shortUrl
       , categories: categories
       , sticky: sticky
       , submitted: submitted
@@ -93,6 +98,26 @@ Template.post_submit.events = {
     }else{
       alert("Please fill in an URL first!");
       $(".get-title-link").removeClass("loading");
+    }
+  }
+
+  ,'click .get-short-url': function(e){
+    e.preventDefault();
+    var url=$("#url").val();
+    $(".get-short-url").addClass("loading");
+    if(url){
+      console.log(url)
+      getShortUrl(url, function(url){
+        if (url){
+          $("#short-url").val(url);
+        }else{
+          alert("Sorry, couldn't find a short URL...");
+        }
+        $(".get-short-url").removeClass("loading");
+      });
+    }else{
+      alert("Please fill in an URL first!");
+      $(".get-short-url").removeClass("loading");
     }
   }
 };
