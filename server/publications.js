@@ -18,7 +18,8 @@ Meteor.publish('allUsers', function() {
       'services.twitter.accessToken': false,
       'services.twitter.accessTokenSecret': false,
       'services.twitter.id': false,
-      'services.password': false
+      'services.password': false,
+      'services.resume': false
     }});
   }
 });
