@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "rss": {
+      "version": "0.0.4",
+      "dependencies": {
+        "xml": {
+          "version": "0.0.7"
+        }
+      }
+    }
+  }
+}
