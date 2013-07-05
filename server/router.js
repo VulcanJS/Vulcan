@@ -37,7 +37,7 @@ Meteor.Router.add({
       image_url: Meteor.absoluteUrl()+'img/favicon.png',
     });
     
-    Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}}).forEach(function(post) {
+    Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: 20}).forEach(function(post) {
       feed.item({
        title: post.headline,
        description: post.body+'</br></br> <a href="'+getPostUrl(post._id)+'">Comments</a>',
