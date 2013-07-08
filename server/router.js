@@ -1,7 +1,15 @@
-serveAPI = function(limit){
+serveAPI = function(limitSegment){
   var posts = [];
-  limit = typeof limit == 'undefined' ? 100 : limit;
-  console.log(limit)
+  var limit = 100; // default limit: 100 posts
+  
+  if(this.request.query.limit){
+    // first, try getting the limit from the request (i.e. ?limit=100)
+    limit = this.request.query.limit;
+  }else if(typeof limitSegment !== 'undefined'){
+    // else, get it from the URL segment
+    limit = limitSegment;
+  }
+
   Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: limit}).forEach(function(post) {
     var url = (post.url ? post.url : getPostUrl(post._id));
     var properties = {
@@ -51,7 +59,7 @@ Meteor.Router.add({
     return feed.xml();
   },
   
-  '/api/': serveAPI,
+  '/api': serveAPI,
   
   '/api/:limit': serveAPI
 
