@@ -39,6 +39,10 @@ Meteor.methods({
     if(!this.isSimulation && (timeSinceLastComment < commentInterval))
       throw new Meteor.Error(704, 'Please wait '+(commentInterval-timeSinceLastComment)+' seconds before commenting again');
 
+    // Don't allow empty comments
+    if (!cleanText)
+      throw new Meteor.Error(704,'Your comment is empty.');
+          
     var comment = {
         post: postId,
         body: cleanText,
