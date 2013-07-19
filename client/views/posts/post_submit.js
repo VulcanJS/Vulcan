@@ -21,6 +21,9 @@ Template.post_submit.rendered = function(){
   $('#submitted').datepicker().on('changeDate', function(ev){
     $('#submitted_hidden').val(moment(ev.date).valueOf());
   });
+
+  $("#postUser").selectToAutocomplete();
+
 }
 
 Template.post_submit.events = {

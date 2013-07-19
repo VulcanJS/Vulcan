@@ -1552,6 +1552,16 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   width: 80%;
   display: block; }
 
+/* line 127, ../sass/modules/_forms.scss */
+.ui-autocomplete {
+  background: white;
+  width: 200px!important;
+  padding: 10px;
+  font-size: 14px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
+
 /* line 1, ../sass/modules/_dialogs.scss */
 .dialog {
   margin-bottom: 10px; }

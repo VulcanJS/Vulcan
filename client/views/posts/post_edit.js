@@ -67,6 +67,9 @@ Template.post_edit.rendered = function(){
     $('#submitted_date').datepicker();
 
   }
+
+  $("#postUser").selectToAutocomplete();
+  
 }
 
 Template.post_edit.events = {
