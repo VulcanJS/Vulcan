@@ -2,6 +2,9 @@ Template.posts_digest.helpers({
   hasPosts: function(){
     return digestHandle && digestHandle.ready();
   },
+  noPostsToday: function(){
+    return digestHandle && digestHandle.ready() && !findDigestPosts(moment(Session.get('currentDate'))).count(); 
+  },  
   posts: function() {
     return findDigestPosts(moment(Session.get('currentDate')));
   },

@@ -12,8 +12,12 @@
     </div>
   </div>
   <div class="posts grid list">
-    {{#each posts}}
-      {{> post_item}}
-    {{/each}}
+    {{#if noPostsToday}}
+      <p>Sorry, no posts for today.</p>
+    {{else}}
+      {{#each posts}}
+        {{> post_item}}
+      {{/each}}
+    {{/if}}
   </div>
 </template>
