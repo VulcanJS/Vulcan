@@ -62,10 +62,10 @@ Meteor.methods({
     // shorten URL
     if(!this.isSimulation && (token=getSetting('bitlyToken'))){
       var shortenResponse = Meteor.http.get(
-        "https://api-ssl.bitly.com/v3/shorten?", 
+        "https://api-ssl.bitly.com/v3/shorten?",
         {
           timeout: 5000,
-          params:{ 
+          params:{
             "format": "json",
             "access_token": token,
             "longUrl": post.url
@@ -89,7 +89,7 @@ Meteor.methods({
       inactive: false,
       status: status
     });
-    
+
     if(status == STATUS_APPROVED){
       // if post is approved, set its submitted date (if post is pending, submitted date is left blank)
       post.submitted  = submitted;
@@ -115,7 +115,7 @@ Meteor.methods({
       var notification = getNotification('newPost', properties);
       // call a server method because we do not have access to admin users' info on the client
       Meteor.call('notifyAdmins', notification, Meteor.user(), function(error, result){
-        //run asynchronously        
+        //run asynchronously
       });
     }
 
@@ -128,5 +128,12 @@ Meteor.methods({
   },
   clickedPost: function(post){
     Posts.update(post._id, { $inc: { clicks: 1 }});
+  },
+  deletePostById: function(postId) {
+    // remove post comments
+    if(!this.isSimulation) {
+      Comments.remove({post: postId});
+    }
+    Posts.remove(postId);
   }
 });
