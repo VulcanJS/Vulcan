@@ -9,9 +9,9 @@ accounts-ui
 accounts-password
 accounts-twitter
 router
-moment
 spiderable
 email
 database-forms
 paginated-subscription
 crypto-md5
+momentjs

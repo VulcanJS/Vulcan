@@ -7,7 +7,7 @@
   "dependencies": {
     "basePackages": {
       "router": {},
-      "moment": {},
+      "momentjs": {},
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master"
@@ -18,13 +18,13 @@
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.5.1",
-        "commit": "32e377c7703bb119acccc859fc7296882903cbe7"
+        "tag": "v0.5.3",
+        "commit": "7bd3a1bdd1099625bb8b49406d9b8f961d6f4a17"
       },
-      "moment": {
-        "git": "https://github.com/possibilities/meteor-moment.git",
-        "tag": "v1.7.0",
-        "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
+      "momentjs": {
+        "git": "https://github.com/crapthings/meteor-momentjs.git",
+        "tag": "v2.1.0",
+        "commit": "f421f51c2cb40093374a83adb932937da2f991d3"
       },
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
