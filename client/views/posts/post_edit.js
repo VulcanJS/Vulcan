@@ -30,7 +30,7 @@ Template.post_edit.helpers({
     // console.log('isSelected?')
     var post= Posts.findOne(Session.get('selectedPostId'));
     return post && this._id == post.userId ? 'selected' : '';
-  },  
+  },
   submittedDate: function(){
     return moment(this.submitted).format("MM/DD/YYYY");
   },
@@ -61,7 +61,7 @@ Template.post_edit.rendered = function(){
   var post= Posts.findOne(Session.get('selectedPostId'));
   if(post && !this.editor){
 
-    this.editor= new EpicEditor(EpicEditorOptions).load();  
+    this.editor= new EpicEditor(EpicEditorOptions).load();
     this.editor.importFile('editor',post.body);
 
     $('#submitted_date').datepicker();
@@ -69,7 +69,7 @@ Template.post_edit.rendered = function(){
   }
 
   $("#postUser").selectToAutocomplete();
-  
+
 }
 
 Template.post_edit.events = {
@@ -92,14 +92,14 @@ Template.post_edit.events = {
       if(category = Categories.findOne(categoryId))
         categories.push(category);
     });
-    
+
     var properties = {
       headline:         $('#title').val(),
-      shortUrl:         shortUrl, 
+      shortUrl:         shortUrl,
       body:             instance.editor.exportFile(),
       categories:       categories,
     };
-    
+
     if(url){
       properties.url = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
     }
@@ -135,14 +135,19 @@ Template.post_edit.events = {
       }
     }
     );
-  }
-
-  , 'click .delete-link': function(e){
+  },
+  'click .delete-link': function(e){
     e.preventDefault();
     if(confirm("Are you sure?")){
       var selectedPostId=Session.get('selectedPostId');
-      Posts.remove(selectedPostId);
-      Meteor.Router.to("/posts/deleted");
+      Meteor.call("deletePostById", selectedPostId, function(error) {
+        if (error) {
+          console.log(error);
+          throwError(error.reason);
+        } else {
+          Meteor.Router.to("/posts/deleted");
+        }
+      });
     }
   }
 };
