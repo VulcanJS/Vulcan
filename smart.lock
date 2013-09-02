@@ -2,7 +2,7 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
     "branch": "master",
-    "commit": "9bb2b5447e845c4f483df5e9b42a2c1de5ab909b"
+    "commit": "bb6c88ca9e3409ce4d50b796123c62cfb8fc71fd"
   },
   "dependencies": {
     "basePackages": {
@@ -18,18 +18,18 @@
     "packages": {
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.5.3",
-        "commit": "7bd3a1bdd1099625bb8b49406d9b8f961d6f4a17"
+        "tag": "v0.5.4",
+        "commit": "e40ee450a756b54a32ed67be4595772403256fb5"
       },
       "momentjs": {
         "git": "https://github.com/crapthings/meteor-momentjs.git",
-        "tag": "v2.1.0",
-        "commit": "f421f51c2cb40093374a83adb932937da2f991d3"
+        "tag": "v2.1.0.2",
+        "commit": "59a762e297082eea8b8cae00374c2b7ac6f89529"
       },
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master",
-        "commit": "d2cc5b14f80d7985e33b9066b222e0e86e088095"
+        "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
       },
       "paginated-subscription": {
         "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
@@ -38,18 +38,23 @@
       },
       "crypto-md5": {
         "git": "https://github.com/tmeasday/meteor-crypto-md5.git",
-        "tag": "v0.0.1",
-        "commit": "a0638a6cabfc84e19f2d5828f76aa8f6a0cc8c1a"
+        "tag": "v0.0.2",
+        "commit": "a943bea4cffeac9a14c2825dfe57d32b9d677e6f"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
         "tag": "v1.3.5",
         "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
       },
+      "HTML5-History-API": {
+        "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
+        "tag": "v4.0.0",
+        "commit": "dc4965f1424cfca625ec3fbea17eace03f8e32c5"
+      },
       "crypto-base": {
         "git": "https://github.com/tmeasday/meteor-crypto-base.git",
-        "tag": "v0.0.2",
-        "commit": "f0dceae8493cabfff06af60bbeb11223d36fdae8"
+        "tag": "v0.0.3",
+        "commit": "fdc0b7b3d24e2e31c5c95beddafe890ffbaafd42"
       }
     }
   }
