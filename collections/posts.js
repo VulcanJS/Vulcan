@@ -95,11 +95,7 @@ Meteor.methods({
       post.submitted  = submitted;
     }
 
-    Posts.insert(post, function(error, result){
-      if(result){
-        postId = result;
-      }
-    });
+    postId = Posts.insert(post);
 
     var postAuthor =  Meteor.users.findOne(post.userId);
     Meteor.call('upvotePost', postId,postAuthor);
