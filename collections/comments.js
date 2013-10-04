@@ -91,9 +91,13 @@ Meteor.methods({
   },
   removeComment: function(commentId){
     var comment=Comments.findOne(commentId);
-    // decrement post comment count
-    Posts.update(comment.post, {$inc: {comments: -1}});
-    // note: should we also decrease user's comment karma ?
-    Comments.remove(commentId);
+    if(canEdit(Meteor.user(), comment)){
+      // decrement post comment count
+      Posts.update(comment.post, {$inc: {comments: -1}});
+      // note: should we also decrease user's comment karma ?
+      Comments.remove(commentId);
+    }else{
+      throwError("You don't have permission to delete this comment.");
+    }
   }
 });
