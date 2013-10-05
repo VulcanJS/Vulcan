@@ -1,6 +1,7 @@
 Template.body.helpers({
   pageName : function(){
-    return Meteor.Router.page();
+    // return Meteor.Router.page();
+    return "pageNameHere"
   },
   backgroundColor: function(){
   	return getSetting('backgroundColor');
