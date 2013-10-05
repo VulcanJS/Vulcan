@@ -1,4 +1,4 @@
-Template.body.helpers({
+Template.layout.helpers({
   pageName : function(){
     // return Meteor.Router.page();
     return "pageNameHere"
@@ -20,11 +20,11 @@ Template.body.helpers({
   }     
 });
 
-Template.body.created = function(){
+Template.layout.created = function(){
   Session.set('currentScroll', null);
 }
 
-Template.body.rendered = function(){
+Template.layout.rendered = function(){
     if(currentScroll=Session.get('currentScroll')){
       $('body').scrollTop(currentScroll);
       Session.set('currentScroll', null);

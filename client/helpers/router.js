@@ -12,15 +12,15 @@ Router.map(function() {
   this.route('posts_new', {path: '/new'});
   this.route('posts_best', {path: '/new'});
   
-  this.route('postPage', {
-    path: '/posts/:_id',
-    waitOn: function() {
-      return Meteor.subscribe('singlePost', this.params._id);
-    },
-    data: function() {
-      return Posts.findOne(this.params._id);
-    }
-  });
+  // this.route('postPage', {
+  //   path: '/posts/:_id',
+  //   waitOn: function() {
+  //     return Meteor.subscribe('singlePost', this.params._id);
+  //   },
+  //   data: function() {
+  //     return Posts.findOne(this.params._id);
+  //   }
+  // });
   
 });
 
