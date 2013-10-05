@@ -8,7 +8,6 @@ accounts-base
 accounts-ui
 accounts-password
 accounts-twitter
-router
 spiderable
 email
 database-forms
