@@ -20,11 +20,33 @@ Accounts.onCreateUser(function(options, user){
 
   trackEvent('new user', {username: user.username, email: user.profile.email});
 
+  // add new user to MailChimp list
+  addToMailChimpList(user);
+
   return user;
 });
 
-// FIXME -- don't use this yet, until a) we are sure it's the right approach
-// b) we also update their profile at the same time.
+addToMailChimpList = function(user){
+  // add a user to a MailChimp list.
+  // called when a new user is created, or when an existing user fills in their email
+  if((MAILCHIMP_API_KEY=getSetting('mailChimpAPIKey')) && (MAILCHIMP_LIST_ID=getSetting('mailChimpListId'))){
+
+    var email = getEmail(user);
+    if (! email)
+      throw 'User must have an email address';
+
+    console.log('adding "'+email+'" to MailChimp list…');
+    
+    var mailChimp = new MailChimpAPI(MAILCHIMP_API_KEY, { version : '1.3', secure : false });
+    
+    mailChimp.listSubscribe({
+      id: MAILCHIMP_LIST_ID,
+      email_address: email,
+      double_optin: false
+    });
+  }
+}
+
 Meteor.methods({
   changeEmail: function(newEmail) {
     Meteor.users.update(Meteor.userId(), {$set: {emails: [{address: newEmail}]}});
@@ -51,12 +73,8 @@ Meteor.methods({
   generateEmailHash: function(){
     var email_hash = CryptoJS.MD5(getEmail(Meteor.user()).trim().toLowerCase()).toString();
     Meteor.users.update(Meteor.userId(), {$set : {email_hash : email_hash}});
+  },
+  addCurrentUserToMailChimpList: function(){
+    addToMailChimpList(Meteor.user());
   }
 });
-
-// permissions for the profiler
-// Meteor.Profiler.allow = function(userId) {
-//   var user = Meteor.users.findOne(userId);
-//   return user && user.isAdmin;
-// };
-
