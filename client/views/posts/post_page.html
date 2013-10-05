@@ -1,9 +1,7 @@
 <template name="post_page">
 	{{#if canView}}
   <div class="single-post grid">
-    {{#with post}}
-     {{> post_item}}
-    {{/with}}
+    {{> post_item}}
     {{#if canComment}}
       {{> comment_form}}
     {{/if}}
