@@ -9,7 +9,8 @@
         "branch": "master"
       },
       "paginated-subscription": {},
-      "crypto-md5": {}
+      "crypto-md5": {},
+      "iron-router": {}
     },
     "packages": {
       "router": {
@@ -36,6 +37,11 @@
         "git": "https://github.com/tmeasday/meteor-crypto-md5.git",
         "tag": "v0.0.2",
         "commit": "a943bea4cffeac9a14c2825dfe57d32b9d677e6f"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.5.4",
+        "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
