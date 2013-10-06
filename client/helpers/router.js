@@ -1,6 +1,7 @@
 Router.configure({
   layout: 'layout',
-  loadingTemplate: 'loading'
+  loadingTemplate: 'loading',
+  notFoundTemplate: 'not_found'
 });
 
 Router.map(function() {
@@ -12,6 +13,16 @@ Router.map(function() {
   this.route('posts_new', {path: '/new'});
   this.route('posts_best', {path: '/best'});
   this.route('posts_pending', {path: '/pending'});
+
+  this.route('post_digest', {
+    path: '/digest/:year/:month/:day',
+    waitOn: function() {
+      return Meteor.subscribe('postDigest', new Date(this.params.year, this.params.month-1, this.params.day));
+    },
+    data: function() {
+      return findDigestPosts(moment(new Date(this.params.year, this.params.month-1, this.params.day)));
+    }
+  });
   
   this.route('post_page', {
     path: '/posts/:_id',

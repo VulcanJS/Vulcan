@@ -3,7 +3,8 @@ Template.layout.helpers({
     if(Router._current){
       var currentPath = Router._current.path;
       var currentRoute = _.findWhere(Router.routes, {originalPath: currentPath});
-      return currentRoute.name;
+      if(currentRoute)
+        return currentRoute.name;
     }
   },
   backgroundColor: function(){

@@ -32,16 +32,16 @@ if(Meteor.userId() != null){
 //   b) we know when an individual page is ready
 
 // Single Post
-Meteor.autorun(function() {
-  Meteor.subscribe('singlePost', Session.get('selectedPostId'), function(){
-    Session.set('singlePostReady', true);
-  });
-});
+// Meteor.autorun(function() {
+//   Meteor.subscribe('singlePost', Session.get('selectedPostId'), function(){
+//     Session.set('singlePostReady', true);
+//   });
+// });
 
 // Digest
-Meteor.autorun(function() {
-  digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
-});
+// Meteor.autorun(function() {
+//   digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
+// });
 
 // Posts Lists
 STATUS_PENDING=1;
