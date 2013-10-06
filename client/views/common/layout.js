@@ -1,7 +1,10 @@
 Template.layout.helpers({
   pageName : function(){
-    // return Meteor.Router.page();
-    return "pageNameHere"
+    if(Router._current){
+      var currentPath = Router._current.path;
+      var currentRoute = _.findWhere(Router.routes, {originalPath: currentPath});
+      return currentRoute.name;
+    }
   },
   backgroundColor: function(){
   	return getSetting('backgroundColor');

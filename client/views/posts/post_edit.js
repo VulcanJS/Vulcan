@@ -5,13 +5,13 @@
 //    '[name]': function(node) { return node.getAttribute('name');}
 // });
 
+Template.post_edit.created = function(){
+  post = this.data;
+}
+
 Template.post_edit.helpers({
-  post: function(){
-    return Posts.findOne(Session.get('selectedPostId'));
-  },
   created: function(){
-    var post= Posts.findOne(Session.get('selectedPostId'));
-    return moment(post.createdAt).format("MMMM Do, h:mm:ss a");
+    return moment(this.createdAt).format("MMMM Do, h:mm:ss a");
   },
   categories: function(){
     var post = this;
@@ -27,8 +27,6 @@ Template.post_edit.helpers({
     return this.sticky ? 'checked' : '';
   },
   isSelected: function(){
-    // console.log('isSelected?')
-    var post= Posts.findOne(Session.get('selectedPostId'));
     return post && this._id == post.userId ? 'selected' : '';
   },
   submittedDate: function(){
@@ -58,7 +56,6 @@ Template.post_edit.helpers({
 });
 
 Template.post_edit.rendered = function(){
-  var post= Posts.findOne(Session.get('selectedPostId'));
   if(post && !this.editor){
 
     this.editor= new EpicEditor(EpicEditorOptions).load();
@@ -80,8 +77,6 @@ Template.post_edit.events = {
       return false;
     }
 
-    var selectedPostId=Session.get('selectedPostId');
-    var post = Posts.findOne(selectedPostId);
     var categories = [];
     var url = $('#url').val();
     var shortUrl = $('#short-url').val();
@@ -121,7 +116,7 @@ Template.post_edit.events = {
       properties = _.extend(properties, adminProperties);
     }
 
-    Posts.update(selectedPostId,
+    Posts.update(post._id,
     {
         $set: properties
       }
@@ -130,8 +125,8 @@ Template.post_edit.events = {
         console.log(error);
         throwError(error.reason);
       }else{
-        trackEvent("edit post", {'postId': selectedPostId});
-        Meteor.Router.to("/posts/"+selectedPostId);
+        trackEvent("edit post", {'postId': post._id});
+        Router.go("/posts/"+post._id);
       }
     }
     );
@@ -139,13 +134,12 @@ Template.post_edit.events = {
   'click .delete-link': function(e){
     e.preventDefault();
     if(confirm("Are you sure?")){
-      var selectedPostId=Session.get('selectedPostId');
-      Meteor.call("deletePostById", selectedPostId, function(error) {
+      Meteor.call("deletePostById", post._id, function(error) {
         if (error) {
           console.log(error);
           throwError(error.reason);
         } else {
-          Meteor.Router.to("/posts/deleted");
+          Router.go("/posts/deleted");
         }
       });
     }
