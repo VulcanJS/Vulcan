@@ -38,11 +38,26 @@ Router.map(function() {
   this.route('post_page', {
     path: '/posts/:_id',
     waitOn: function() {
-      return Meteor.subscribe('singlePost', this.params._id);
+      return [Meteor.subscribe('singlePost', this.params._id), Meteor.subscribe('comments', { post : this.params._id })];
     },
     data: function() {
       return {
-        post: Posts.findOne(this.params._id)
+        post: Posts.findOne(this.params._id),
+        comments: Comments.find({post: this.params._id})
+      }
+    }
+  });
+
+  this.route('post_page_with_comment', {
+    path: '/posts/:_id/comment/:_commentId',
+    template: 'post_page',
+    waitOn: function() {
+      return [Meteor.subscribe('singlePost', this.params._id), Meteor.subscribe('comments', { post : this.params._id })];
+    },
+    data: function() {
+      return {
+        post: Posts.findOne(this.params._id),
+        comments: Comments.find({post: this.params._id})
       }
     }
   });
@@ -80,6 +95,9 @@ Router.map(function() {
 
   this.route('comment_reply', {
     path: '/comments/:_id/reply',
+    waitOn: function() {
+      return Meteor.subscribe('comments', this.params._id);
+    },
     data: function() {
       return {
         comment: Comments.findOne(this.params._id)

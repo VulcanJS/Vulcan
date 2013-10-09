@@ -17,6 +17,7 @@ Comments.deny({
 
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
+    console.log('parentCommentId: '+parentCommentId)
     var user = Meteor.user(),
         post=Posts.findOne(postId),
         postUser=Meteor.users.findOne(post.userId),
@@ -55,7 +56,8 @@ Meteor.methods({
       comment.parent = parentCommentId;
 
     var newCommentId=Comments.insert(comment);
-
+    console.log(comment)
+    console.log(newCommentId)
     Posts.update(postId, {$inc: {comments: 1}});
 
     Meteor.call('upvoteComment', newCommentId);

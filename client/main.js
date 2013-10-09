@@ -82,11 +82,11 @@ pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'),
 // Comments
 // Collection depends on selectedPostId and selectedCommentId session variable
 
-Session.set('selectedPostId', null);
+// Session.set('selectedPostId', null);
 
-Meteor.autosubscribe(function() {
-  var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
-  Meteor.subscribe('comments', query, function() {
-    Session.set('singleCommentReady', true);
-  });
-});
+// Meteor.autosubscribe(function() {
+//   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
+//   Meteor.subscribe('comments', query, function() {
+//     Session.set('singleCommentReady', true);
+//   });
+// });

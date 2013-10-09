@@ -67,56 +67,53 @@
     return $container;
   };
 
-  Template.comment_item.helpers({
-    full_date: function(){
-      var submitted = new Date(this.submitted);
-      return submitted.toString();
+Template.comment_item.helpers({
+  full_date: function(){
+    var submitted = new Date(this.submitted);
+    return submitted.toString();
+  },
+  child_comments: function(){
+    var comments = Comments.find({ post: postObject._id, parent: this._id });
+    return comments;
+  },
+  author: function(){
+    return Meteor.users.findOne(this.userId);
+  },
+  authorName: function(){
+    return getAuthorName(this);
+  },
+  user_avatar: function(){
+    if(author=Meteor.users.findOne(this.userId))
+      return getAvatarUrl(author);
+  },
+  can_edit: function(){
+    if(this.userId && Meteor.userId())
+      return Meteor.user().isAdmin || (Meteor.userId() === this.userId);
+    else
+      return false;
+  },
+  body_formatted: function(){
+    if(this.body){
+      var converter = new Markdown.Converter();
+      var html_body=converter.makeHtml(this.body);
+      return html_body.autoLink();
     }
-    ,child_comments: function(){
-      var post_id = Session.get('selectedPostId');
-      var comments = Comments.find({ post: post_id, parent: this._id });
-      return comments;
-    }
-    ,author: function(){
-      return Meteor.users.findOne(this.userId);
-    }
-    ,authorName: function(){
-      return getAuthorName(this);
-    },
-    user_avatar: function(){
-      if(author=Meteor.users.findOne(this.userId))
-        return getAvatarUrl(author);
-    }  
-    ,can_edit: function(){
-      if(this.userId && Meteor.userId())
-        return Meteor.user().isAdmin || (Meteor.userId() === this.userId);
-      else
-        return false;
-    }
-    ,body_formatted: function(){
-      if(this.body){
-        var converter = new Markdown.Converter();
-        var html_body=converter.makeHtml(this.body);
-        return html_body.autoLink();
-      }
-    }
-    ,showChildComments: function(){
-      return Session.get('showChildComments');
-    }
-    ,ago: function(){
-      return moment(this.submitted).fromNow();
-    }
-    ,upvoted: function(){
-      return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);
-    }
-    ,downvoted: function(){
-      return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
-    }
-  });
-
-Template.comment_item.created=function(){
-  // this.firstRender=true;
-}
+  },
+  showChildComments: function(){
+    // TODO: fix this
+    // return Session.get('showChildComments');
+    return true;
+  },
+  ago: function(){
+    return moment(this.submitted).fromNow();
+  },
+  upvoted: function(){
+    return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);
+  },
+  downvoted: function(){
+    return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
+  }
+});
 
 Template.comment_item.rendered=function(){
   // t("comment_item");

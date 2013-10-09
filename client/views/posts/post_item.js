@@ -1,8 +1,3 @@
-Template.post_item.preserve({
-  '.post': function (node) {return node.id; }
-});
-
-
 Template.post_item.helpers({
   post: function(){
     // note: when the data context is set by the router, it will be "this.post". When set by a parent template it'll be "this"

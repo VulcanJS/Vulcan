@@ -1,11 +1,4 @@
 Template.comment_reply.post = function(){
-  var selectedComment = Comments.findOne(Session.get('selectedCommentId'));
-  return selectedComment && Posts.findOne(selectedComment.post);
+  var comment = this;
+  return comment && Posts.findOne(comment.post);
 };
-
-Template.comment_reply.helpers({
-	comment: function(){
-		var comment = Comments.findOne(Session.get('selectedCommentId'));
-		return comment;
-	}
-});
