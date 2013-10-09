@@ -12,9 +12,9 @@ Template.posts_pending.pendingPostsHandle = function() {
 }
 
 Template.posts_list.helpers({
-  // posts: function() {
-  //   return this.fetch();
-  // },
+  posts: function() {
+    return this.fetch();
+  },
   postsReady: function() {
     return this.ready();
   },

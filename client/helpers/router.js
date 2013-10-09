@@ -62,7 +62,14 @@ Router.map(function() {
 
   // Comment Page
 
-
+  this.route('comment_page', {
+    path: '/comment/:_id',
+    data: function() {
+      return {
+        comment: Comments.findOne(this.params._id)
+      }
+    }
+  });
 
   // Comment Edit
 
