@@ -1,3 +1,53 @@
+/*
+
+---------------------------------------------------------------
+|                  Routes: Table of Contents                  |
+---------------------------------------------------------------
+
+
+1) Paginated Lists
+----------------------
+Top
+New
+Best
+Pending
+Categories
+
+2) Digest
+--------------------
+Digest
+
+3) Posts
+--------------------
+Post Page
+Post Page (scroll to comment)
+Post Edit
+Post Submit
+
+4) Comments
+--------------------
+Comment Page
+Comment Edit
+Comment Submit
+
+5) Users
+--------------------
+User Profie
+User Edit
+Forgot Password
+Account
+All Users
+Unsubscribe (from notifications)
+Sign Up
+Sign In
+
+6) Misc Routes
+--------------------
+Settings
+Toolbox
+
+*/
+
 Router.configure({
   layout: 'layout',
   loadingTemplate: 'loading',
@@ -14,6 +64,16 @@ Router.map(function() {
   this.route('posts_new', {path: '/new'});
   this.route('posts_best', {path: '/best'});
   this.route('posts_pending', {path: '/pending'});
+
+  // Top
+
+  // New
+
+  // Best
+
+  // Pending
+
+  // Categories
 
   // Digest
 
@@ -179,7 +239,7 @@ Router.map(function() {
   // User Sign-Up
 
   this.route('signup');
-  
+
   // User Sign-In
 
   this.route('signin');
