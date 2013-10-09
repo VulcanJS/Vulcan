@@ -1,7 +1,7 @@
 /*
 
 ---------------------------------------------------------------
-|                  Routes: Table of Contents                  |
+#                            Routes                           #
 ---------------------------------------------------------------
 
 
@@ -46,6 +46,21 @@ Sign In
 Settings
 Toolbox
 
+
+---------------------------------------------------------------
+#                            Filters                          #
+---------------------------------------------------------------
+
+isLoggedIn
+isLoggedOut
+isAdmin
+
+canView
+canPost
+canEdit
+
+hasCompletedProfile
+
 */
 
 Router.configure({
@@ -53,6 +68,8 @@ Router.configure({
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found'
 });
+
+//--------------------------- Routes ---------------------------//
 
 Router.map(function() {
   this.route('home', {
@@ -254,6 +271,93 @@ Router.map(function() {
 
 });
 
+//--------------------------- Filters ---------------------------//
+
+filters= {
+  
+  isLoggedIn: function(page) {
+    if (Meteor.loggingIn()) {
+      return 'loading';
+    } else if (Meteor.user()) {
+      return page;
+    } else {
+      return 'user_signin';
+    }
+  },
+
+  isLoggedOut: function(page){
+    return Meteor.user() ? "already_logged_in" : page;
+  },
+
+  isAdmin: function(page) {
+    return isAdmin(Meteor.user()) ? page : "no_rights";
+  },
+
+  canView: function(page) {
+    var error = canView(Meteor.user(), true);
+    if (error === true)
+      return page;
+    
+    // a problem.. make sure we are logged in
+    if (Meteor.loggingIn())
+      return 'loading';
+    
+    // otherwise the error tells us what to show.
+    return error;
+  },
+
+  canPost: function(page) {
+    var error = canPost(Meteor.user(), true);
+    if (error === true)
+      return page;
+    
+    // a problem.. make sure we are logged in
+    if (Meteor.loggingIn())
+      return 'loading';
+    
+    // otherwise the error tells us what to show.
+    return error;
+  },
+
+  canEdit: function(page) {
+    // make findOne() non reactive to avoid re-triggering the router every time the 
+    // current comment or post object changes
+    // but make sure the comment/post is loaded before moving on
+    if (page === 'comment_edit') {
+      var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
+      if(!Session.get('singleCommentReady'))
+        return 'loading'
+    } else {
+      var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
+      if(!Session.get('singlePostReady'))
+        return 'loading'
+    }
+
+    var error = canEdit(Meteor.user(), item, true);
+    if (error === true)
+      return page;
+    
+    // a problem.. make sure the item has loaded and we have logged in
+    if (! item || Meteor.loggingIn()){
+      return 'loading';
+    }
+
+    // otherwise the error tells us what to show.
+    return error;
+  },
+
+  hasCompletedProfile = function() {
+    var user = Meteor.user();
+
+    if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
+      Session.set('selectedUserId', user._id);
+      return 'user_email';
+    } else {
+      return page;
+    }
+  }
+
+}
 
 // (function() {  
 //   Meteor.Router.beforeRouting = function() {
