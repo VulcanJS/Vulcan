@@ -3,8 +3,15 @@
 Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
 });
+Meteor.publish('singleUser', function(userId) {
+  console.log(isAdminById(this.userId))
+  if(!isAdminById(this.userId))
+    throw new Meteor.Error("You do not have the rights to view this user profile");
+
+  return Meteor.users.find(userId);
+});
 Meteor.publish('allUsers', function() {
-  if (this.userId && isAdminById(this.userId)) {
+  if (isAdminById(this.userId)) {
     // if user is admin, publish all fields
     return Meteor.users.find();
   }else{

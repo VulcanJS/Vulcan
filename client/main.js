@@ -4,9 +4,16 @@ Session.set('currentDate', new Date());
 Session.set('categorySlug', null);
 Session.set('singlePostReady', false);
 
+// Subscriptions
+
+// note: here we only subscribe to subscriptions that we need to be available all the time.
+// For subscriptions depending on specific pages, see the router. 
+
+// TODO: add session variable that tracks once all subscriptions here have loaded
+
 // Settings
 Meteor.subscribe('settings', function(){
-  // runs once on site load
+  // runs once after settings have loaded
   analyticsInit();
   Session.set('settingsLoaded',true);
 });
@@ -14,9 +21,10 @@ Meteor.subscribe('settings', function(){
 // Categories
 Meteor.subscribe('categories');
 
-// Users
+// Current User
+// we need to subscribe to the currentUser subscription because by default, 
+//Meteor doesn't send all the user properties that we need
 Meteor.subscribe('currentUser');
-Meteor.subscribe('allUsers');
 
 // Notifications - only load if user is logged in
 if(Meteor.userId() != null){
@@ -78,15 +86,3 @@ selectPending = function() {
   return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
 }
 pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
-
-// Comments
-// Collection depends on selectedPostId and selectedCommentId session variable
-
-// Session.set('selectedPostId', null);
-
-// Meteor.autosubscribe(function() {
-//   var query = { $or : [ { post : Session.get('selectedPostId') } , { _id : Session.get('selectedCommentId') } ] };
-//   Meteor.subscribe('comments', query, function() {
-//     Session.set('singleCommentReady', true);
-//   });
-// });

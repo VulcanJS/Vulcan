@@ -223,9 +223,9 @@ Router.map(function() {
 
   this.route('user_profile', {
     path: '/users/:_id',
-    // waitOn: function() {
-    //   TODO: subscribe to the correct user
-    // },
+    waitOn: function() {
+      return Meteor.subscribe('singleUser', this.params._id);
+    },
     data: function() {
       return {
         user: Meteor.users.findOne(this.params._id)
@@ -237,9 +237,9 @@ Router.map(function() {
 
   this.route('user_edit', {
     path: '/users/:_id/edit',
-    // waitOn: function() {
-    //   TODO: subscribe to the correct user
-    // },
+    waitOn: function() {
+      return Meteor.subscribe('singleUser', this.params._id);
+    },
     data: function() {
       return {
         user: Meteor.users.findOne(this.params._id)
@@ -265,7 +265,16 @@ Router.map(function() {
 
   // All Users
 
-  this.route('users');
+  this.route('users', {
+    waitOn: function() {
+      return Meteor.subscribe('allUsers');
+    },
+    data: function() {
+      return {
+        users: Meteor.users.find({}, {sort: {createdAt: -1}})
+      }
+    }
+  });
 
   // Unsubscribe (from notifications)
 
