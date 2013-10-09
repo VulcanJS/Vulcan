@@ -176,6 +176,22 @@ Router.map(function() {
     }
   });
 
+  // User Sign-Up
+
+  this.route('signup');
+  
+  // User Sign-In
+
+  this.route('signin');
+
+  // Settings
+
+  this.route('settings');
+
+  // Toolbox
+
+  this.route('toolbox');
+
 });
 
 

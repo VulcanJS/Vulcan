@@ -1,4 +1,4 @@
-Template.user_signin.events = {
+Template.signin.events = {
     'click input[type=submit]': function(event){
       event.preventDefault();
       var username = $('#username').val();
@@ -13,12 +13,12 @@ Template.user_signin.events = {
 
   'click #signup': function(){
       // Session.set('state', 'signup');
-      Meteor.Router.to('/signup');
+      Router.go('/signup');
   },
 
   'click .twitter-button': function(){
     Meteor.loginWithTwitter(function(){
-      Meteor.Router.to('/');
+      Router.go('/');
     });
   }
 };
