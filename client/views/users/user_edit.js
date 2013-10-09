@@ -1,39 +1,31 @@
 Template.user_edit.helpers({
   profileIncomplete : function() {
-    return Meteor.user() && !this.loading && !userProfileComplete(this);
-  },
-  user : function(){
-    var currentUser = Meteor.user();
-    if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
-      currentUser = Meteor.users.findOne(Session.get('selectedUserId'));
-    }
-    return currentUser;
+    return this && !this.loading && !userProfileComplete(this);
   },
   userEmail : function(){
-    var currentUser = Meteor.user();
-    if(Session.get('selectedUserId') && !currentUser.loading && currentUser.isAdmin){
-      currentUser = Meteor.users.findOne(Session.get('selectedUserId'));
-    }
-    return getEmail(currentUser);
+    return getEmail(this);
   },
   hasNotificationsNone : function(){
-    return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 0 ? 'checked' : '';
+    return this.profile && this.profile.notificationsFrequency == 0 ? 'checked' : '';
   },
   hasNotificationsActivity : function(){
-    var u = Meteor.user();
-    return u.profile && (u.profile.notificationsFrequency == 1 || typeof u.profile.notificationsFrequency === 'undefined') ? 'checked' : '';
+    return this.profile && (this.profile.notificationsFrequency == 1 || typeof this.profile.notificationsFrequency === 'undefined') ? 'checked' : '';
   },
   hasNotificationsAll : function(){
-    return Meteor.user().profile && Meteor.user().profile.notificationsFrequency == 2 ? 'checked' : '';
+    return this.profile && this.profile.notificationsFrequency == 2 ? 'checked' : '';
   }
 })
 
 Template.user_edit.events = {
   'submit form': function(e){
+    console.log(this)
     e.preventDefault();
-    if(!Meteor.user()) throwError('You must be logged in.');
+
+    if(!Meteor.user())
+      throwError('You must be logged in.');
+    
     var $target=$(e.target);
-    var user=Session.get('selectedUserId') ? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
+    var user = this;
     
     var update = {
       "profile.name": $target.find('[name=name]').val(),

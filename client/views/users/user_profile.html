@@ -8,7 +8,7 @@
 				</tr>
 				<tr>
 					<td>Name: </td>
-					<td>{{username}}</td>
+					<td>{{profile.name}}</td>
 				</tr>
 				<tr>
 					<td>Member since: </td>
@@ -19,8 +19,8 @@
 					<td>{{profile.bio}}</td>
 				</tr>
 			</table>
-			{{#if isCurrentUser}}
-			<a href="/users/{{_id}}/edit">Edit profile</a>
+			{{#if canEditProfile}}
+				<a href="/users/{{_id}}/edit">Edit profile</a>
 			{{/if}}
 		</div>
 		{{/with}}

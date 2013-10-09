@@ -117,6 +117,54 @@ Router.map(function() {
     }
   });
 
+  // User Profile
+
+  this.route('user_profile', {
+    path: '/users/:_id',
+    // waitOn: function() {
+    //   TODO: subscribe to the correct user
+    // },
+    data: function() {
+      return {
+        user: Meteor.users.findOne(this.params._id)
+      }
+    }
+  });
+
+  // User Edit
+
+  this.route('user_edit', {
+    path: '/users/:_id/edit',
+    // waitOn: function() {
+    //   TODO: subscribe to the correct user
+    // },
+    data: function() {
+      return {
+        user: Meteor.users.findOne(this.params._id)
+      }
+    }
+  });
+
+  // Forgot Password
+
+  this.route('forgot_password');
+
+  // Account
+
+  this.route('account', {
+    path: '/account',
+    template: 'user_edit',
+    data: function() {
+      return {
+        user: Meteor.user()
+      }
+    }
+  });
+
+  // All Users
+
+  this.route('users');
+
   // Unsubscribe (from notifications)
 
   this.route('unsubscribe', {
@@ -127,6 +175,7 @@ Router.map(function() {
       }
     }
   });
+
 });
 
 
