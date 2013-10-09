@@ -6,7 +6,8 @@ Router.configure({
 
 Router.map(function() {
   this.route('home', {
-    path: '/', template: 'posts_top'
+    path: '/', 
+    template: 'posts_top'
   });
   
   this.route('posts_top', {path: '/top'});
@@ -45,7 +46,7 @@ Router.map(function() {
       }
     }
   });
-  
+
   // Post Edit
 
   this.route('post_edit', {
@@ -60,10 +61,25 @@ Router.map(function() {
     }
   });
 
+  // Post Submit
+
+  this.route('post_submit', {path: '/submit'});
+
   // Comment Page
 
   this.route('comment_page', {
-    path: '/comment/:_id',
+    path: '/comments/:_id',
+    data: function() {
+      return {
+        comment: Comments.findOne(this.params._id)
+      }
+    }
+  });
+
+  // Comment Reply
+
+  this.route('comment_reply', {
+    path: '/comments/:_id/reply',
     data: function() {
       return {
         comment: Comments.findOne(this.params._id)
@@ -72,6 +88,15 @@ Router.map(function() {
   });
 
   // Comment Edit
+
+  this.route('comment_edit', {
+    path: '/comments/:_id/edit',
+    data: function() {
+      return {
+        comment: Comments.findOne(this.params._id)
+      }
+    }
+  });
 
 });
 

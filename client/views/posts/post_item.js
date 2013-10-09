@@ -4,6 +4,10 @@ Template.post_item.preserve({
 
 
 Template.post_item.helpers({
+  post: function(){
+    // note: when the data context is set by the router, it will be "this.post". When set by a parent template it'll be "this"
+    return this.post || this;
+  },
   postLink: function(){
     return !!this.url ? this.url : "/posts/"+this._id;
   },

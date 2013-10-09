@@ -71,16 +71,17 @@ Template.post_edit.rendered = function(){
 
 Template.post_edit.events = {
   'click input[type=submit]': function(e, instance){
+    var post = this;
+    var categories = [];
+    var url = $('#url').val();
+    var shortUrl = $('#short-url').val();
+    var status = parseInt($('input[name=status]:checked').val());
+
     e.preventDefault();
     if(!Meteor.user()){
       throwError('You must be logged in.');
       return false;
     }
-
-    var categories = [];
-    var url = $('#url').val();
-    var shortUrl = $('#short-url').val();
-    var status = parseInt($('input[name=status]:checked').val());
 
     $('input[name=category]:checked').each(function() {
       var categoryId = $(this).val();
@@ -116,11 +117,9 @@ Template.post_edit.events = {
       properties = _.extend(properties, adminProperties);
     }
 
-    Posts.update(post._id,
-    {
-        $set: properties
-      }
-    ,function(error){
+    Posts.update(post._id,{
+      $set: properties
+    }, function(error){
       if(error){
         console.log(error);
         throwError(error.reason);
@@ -128,11 +127,13 @@ Template.post_edit.events = {
         trackEvent("edit post", {'postId': post._id});
         Router.go("/posts/"+post._id);
       }
-    }
-    );
+    });
   },
   'click .delete-link': function(e){
+    var post = this;
+
     e.preventDefault();
+    
     if(confirm("Are you sure?")){
       Meteor.call("deletePostById", post._id, function(error) {
         if (error) {

@@ -1,52 +1,44 @@
-Template.comment_edit.helpers({
-	comment:function(){
-		return Comments.findOne(Session.get('selectedCommentId'));
-	}
-});
-
 Template.comment_edit.rendered = function(){
-	var comment= Comments.findOne(Session.get('selectedCommentId'));
+  var comment = this.data.comment;
 
-	if(comment && Meteor.user() && !this.editor){
-		this.editor = new EpicEditor(EpicEditorOptions).load();
-		this.editor.importFile('editor',comment.body);
-		$(this.editor.editor).bind('keydown', 'meta+return', function(){
-			$(window.editor).closest('form').find('input[type="submit"]').click();
-		});
-	}
+  if(comment && Meteor.user() && !this.editor){
+    this.editor = new EpicEditor(EpicEditorOptions).load();
+    this.editor.importFile('editor', comment.body);
+    $(this.editor.editor).bind('keydown', 'meta+return', function(){
+      $(window.editor).closest('form').find('input[type="submit"]').click();
+    });
+  }
 }
 
 Template.comment_edit.events = {
-	'click input[type=submit]': function(e, instance){
-		e.preventDefault();
-		if(!Meteor.user()) throw 'You must be logged in.';
+  'click input[type=submit]': function(e, instance){
+    var comment = this;
+    var content = cleanUp(instance.editor.exportFile());
 
-		var selectedCommentId=Session.get('selectedCommentId');
-		var selectedPostId=Comments.findOne(selectedCommentId).post;
-		var content = cleanUp(instance.editor.exportFile());
+    e.preventDefault();
 
-		var commentId = Comments.update(selectedCommentId,
-		{
-				$set: {
-					body: content
-				}
-			}
-		);
+    if(!Meteor.user())
+      throw 'You must be logged in.';
 
-		trackEvent("edit comment", {'postId': selectedPostId, 'commentId': selectedCommentId});
+    Comments.update(comment._id, {
+      $set: {
+        body: content
+      }
+    });
 
-		Meteor.Router.to("/posts/"+selectedPostId+"/comment/"+selectedCommentId);
-	}
+    trackEvent("edit comment", {'postId': comment.post, 'commentId': comment._id});
+    Router.go("/posts/"+comment.post+"/comments/"+comment._id);
+  },
+  'click .delete-link': function(e){
+    var comment = this;
 
-	, 'click .delete-link': function(e){
-		e.preventDefault();
-		if(confirm("Are you sure?")){
-			var selectedCommentId=Session.get('selectedCommentId');
-			Meteor.call('removeComment', selectedCommentId);
-			Meteor.Router.to("/comments/deleted");
-		}
-	}
-
+    e.preventDefault();
+    
+    if(confirm("Are you sure?")){
+      Meteor.call('removeComment', comment._id);
+      Router.go("/comments/deleted");
+    }
+  }
 };
 
 

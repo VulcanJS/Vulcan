@@ -1,6 +1,6 @@
 <template name="post_edit">
   <div class="grid submit">
-    {{#constant}}
+    {{#with post}}{{#constant}}
       <form class="grid-block form-horizontal">
         <div class="control-group">
           <label class="control-label post-form-headline">Created</label>
@@ -95,6 +95,6 @@
           <input type="submit" value="Submit" />
         </div>
       </form>
-    {{/constant}}
+    {{/constant}}{{/with}}
   </div>
 </template>

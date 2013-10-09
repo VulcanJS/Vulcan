@@ -1,11 +1,6 @@
 Template.layout.helpers({
   pageName : function(){
-    if(Router._current){
-      var currentPath = Router._current.path;
-      var currentRoute = _.findWhere(Router.routes, {originalPath: currentPath});
-      if(currentRoute)
-        return currentRoute.name;
-    }
+    getCurrentRoute();
   },
   backgroundColor: function(){
   	return getSetting('backgroundColor');
