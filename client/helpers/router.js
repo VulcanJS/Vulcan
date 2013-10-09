@@ -14,19 +14,26 @@ Router.map(function() {
   this.route('posts_best', {path: '/best'});
   this.route('posts_pending', {path: '/pending'});
 
+  // Digest
 
   this.route('posts_digest', {
     path: '/digest/:year/:month/:day',
+    onBeforeRun: function(){
+      currentDate = new Date(this.params.year, this.params.month-1, this.params.day);
+      Session.set('currentDate', currentDate);
+    },
     waitOn: function() {
-      return Meteor.subscribe('postDigest', new Date(this.params.year, this.params.month-1, this.params.day));
+      return Meteor.subscribe('postDigest', currentDate);
     },
     data: function() {
       return {
-        posts: findDigestPosts(moment(new Date(this.params.year, this.params.month-1, this.params.day)))
+        posts: findDigestPosts(moment(currentDate))
       }
     }
   });
   
+  // Post Page
+
   this.route('post_page', {
     path: '/posts/:_id',
     waitOn: function() {
@@ -39,6 +46,8 @@ Router.map(function() {
     }
   });
   
+  // Post Edit
+
   this.route('post_edit', {
     path: '/posts/:_id/edit',
     waitOn: function() {
@@ -50,6 +59,13 @@ Router.map(function() {
       }
     }
   });
+
+  // Comment Page
+
+
+
+  // Comment Edit
+
 });
 
 
