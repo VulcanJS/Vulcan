@@ -14,13 +14,16 @@ Router.map(function() {
   this.route('posts_best', {path: '/best'});
   this.route('posts_pending', {path: '/pending'});
 
-  this.route('post_digest', {
+
+  this.route('posts_digest', {
     path: '/digest/:year/:month/:day',
     waitOn: function() {
       return Meteor.subscribe('postDigest', new Date(this.params.year, this.params.month-1, this.params.day));
     },
     data: function() {
-      return findDigestPosts(moment(new Date(this.params.year, this.params.month-1, this.params.day)));
+      return {
+        posts: findDigestPosts(moment(new Date(this.params.year, this.params.month-1, this.params.day)))
+      }
     }
   });
   
@@ -30,7 +33,9 @@ Router.map(function() {
       return Meteor.subscribe('singlePost', this.params._id);
     },
     data: function() {
-      return Posts.findOne(this.params._id);
+      return {
+        post: Posts.findOne(this.params._id)
+      }
     }
   });
   
@@ -40,7 +45,9 @@ Router.map(function() {
       return Meteor.subscribe('singlePost', this.params._id);
     },
     data: function() {
-      return Posts.findOne(this.params._id);
+      return {
+        post: Posts.findOne(this.params._id)
+      }
     }
   });
 });
