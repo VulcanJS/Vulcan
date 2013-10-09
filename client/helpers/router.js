@@ -42,11 +42,12 @@ Router.map(function() {
     },
     data: function() {
       return {
-        post: Posts.findOne(this.params._id),
-        comments: Comments.find({post: this.params._id})
+        post: Posts.findOne(this.params._id)
       }
     }
   });
+
+  // Post Page (scroll to a comment)
 
   this.route('post_page_with_comment', {
     path: '/posts/:_id/comment/:_commentId',
@@ -56,10 +57,10 @@ Router.map(function() {
     },
     data: function() {
       return {
-        post: Posts.findOne(this.params._id),
-        comments: Comments.find({post: this.params._id})
+        post: Posts.findOne(this.params._id)
       }
     }
+    // TODO: scroll window to specific comment
   });
 
   // Post Edit

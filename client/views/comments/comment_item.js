@@ -73,8 +73,8 @@ Template.comment_item.helpers({
     return submitted.toString();
   },
   child_comments: function(){
-    var comments = Comments.find({ post: postObject._id, parent: this._id });
-    return comments;
+    // return only child comments
+    return Comments.find({ post: postObject._id, parent: this._id });
   },
   author: function(){
     return Meteor.users.findOne(this.userId);
