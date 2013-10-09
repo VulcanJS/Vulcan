@@ -117,6 +117,16 @@ Router.map(function() {
     }
   });
 
+  // Unsubscribe (from notifications)
+
+  this.route('unsubscribe', {
+    path: '/unsubscribe/:hash',
+    data: function() {
+      return {
+        hash: this.params.hash
+      }
+    }
+  });
 });
 
 
