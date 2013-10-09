@@ -69,7 +69,9 @@ Router.configure({
   notFoundTemplate: 'not_found'
 });
 
-//--------------------------- Routes ---------------------------//
+//--------------------------------------------------------------------------------------------------//
+//--------------------------------------------- Routes ---------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
 
 Router.map(function() {
   this.route('home', {
@@ -110,12 +112,32 @@ Router.map(function() {
     }
   });
   
+  this.route('posts_digest_shortcut', {
+    path: '/digest',
+    template: 'posts_digest',
+    onBeforeRun: function(){
+      currentDate = new Date();
+      Session.set('currentDate', currentDate);
+    },
+    waitOn: function() {
+      return Meteor.subscribe('postDigest', currentDate);
+    },
+    data: function() {
+      return {
+        posts: findDigestPosts(moment(currentDate))
+      }
+    }
+  });
+
   // Post Page
 
   this.route('post_page', {
     path: '/posts/:_id',
     waitOn: function() {
-      return [Meteor.subscribe('singlePost', this.params._id), Meteor.subscribe('comments', { post : this.params._id })];
+      return [
+        Meteor.subscribe('singlePost', this.params._id), 
+        Meteor.subscribe('comments', { post : this.params._id })
+      ];
     },
     data: function() {
       return {
@@ -130,7 +152,10 @@ Router.map(function() {
     path: '/posts/:_id/comment/:_commentId',
     template: 'post_page',
     waitOn: function() {
-      return [Meteor.subscribe('singlePost', this.params._id), Meteor.subscribe('comments', { post : this.params._id })];
+      return [
+        Meteor.subscribe('singlePost', this.params._id), 
+        Meteor.subscribe('comments', { post : this.params._id })
+      ];
     },
     data: function() {
       return {
@@ -271,7 +296,9 @@ Router.map(function() {
 
 });
 
-//--------------------------- Filters ---------------------------//
+//--------------------------------------------------------------------------------------------------//
+//--------------------------------------------- Filters --------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
 
 filters= {
   
@@ -338,15 +365,14 @@ filters= {
       return page;
     
     // a problem.. make sure the item has loaded and we have logged in
-    if (! item || Meteor.loggingIn()){
+    if (! item || Meteor.loggingIn())
       return 'loading';
-    }
 
     // otherwise the error tells us what to show.
     return error;
   },
 
-  hasCompletedProfile = function() {
+  hasCompletedProfile: function() {
     var user = Meteor.user();
 
     if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){

@@ -19,7 +19,7 @@ Template.user_email.events = {
       } else {
         throwError('Thanks for signing up!');
         trackEvent("new sign-up", {'userId': user._id, 'auth':'twitter'});
-        Meteor.Router.to('/');
+        Router.go('/');
       }
     });
   }

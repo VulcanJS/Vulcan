@@ -41,11 +41,11 @@ Template.posts_digest.created = function(){
   var currentDate=moment(Session.get('currentDate')).startOf('day');
   var today=moment(new Date()).startOf('daysy');
   $(document).bind('keyup', 'left', function(){
-    Meteor.Router.to($('.prev-link').attr('href'));
+    Router.go($('.prev-link').attr('href'));
   });
   $(document).bind('keyup', 'right', function(){
     if(isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
-      Meteor.Router.to($('.next-link').attr('href'));      
+      Router.go($('.next-link').attr('href'));      
   });  
 };
 

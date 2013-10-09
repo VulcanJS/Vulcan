@@ -96,7 +96,7 @@ Template.post_item.events = {
     var post = this;
     e.preventDefault();
       if(!Meteor.user()){
-        Meteor.Router.to('/signin');
+        Router.go('/signin');
         throwError("Please log in first");
       }
       Meteor.call('upvotePost', post._id, function(error, result){

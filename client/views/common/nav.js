@@ -9,7 +9,7 @@ Template.nav.events = {
   },  
   'click .login-header': function(e){
       e.preventDefault();
-      Meteor.Router.to('/account');
+      Router.go('/account');
   }
 };
 
