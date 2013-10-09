@@ -44,6 +44,7 @@ Sign In
 6) Misc Routes
 --------------------
 Settings
+Categories
 Toolbox
 
 
@@ -86,14 +87,24 @@ Router.map(function() {
 
   // Top
 
+  // TODO
+
   // New
+
+  // TODO
 
   // Best
 
+  // TODO
+
   // Pending
+
+  // TODO
 
   // Categories
 
+  // TODO
+  
   // Digest
 
   this.route('posts_digest', {
@@ -294,6 +305,10 @@ Router.map(function() {
   // User Sign-In
 
   this.route('signin');
+
+  // Categories
+
+  this.route('categories');
 
   // Settings
 

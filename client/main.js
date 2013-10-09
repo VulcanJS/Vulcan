@@ -2,7 +2,6 @@
 Session.set('initialLoad', true);
 Session.set('currentDate', new Date());
 Session.set('categorySlug', null);
-Session.set('singlePostReady', false);
 
 // Subscriptions
 
@@ -30,26 +29,6 @@ Meteor.subscribe('currentUser');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
-
-// Posts
-// We have a few subscriptions here, for the various ways we load posts
-//
-// The advantage is that
-//   a) we can change pages a lot quicker
-//     XXX: and we can animate between them (todo)
-//   b) we know when an individual page is ready
-
-// Single Post
-// Meteor.autorun(function() {
-//   Meteor.subscribe('singlePost', Session.get('selectedPostId'), function(){
-//     Session.set('singlePostReady', true);
-//   });
-// });
-
-// Digest
-// Meteor.autorun(function() {
-//   digestHandle = Meteor.subscribe('postDigest', Session.get('currentDate'));
-// });
 
 // Posts Lists
 STATUS_PENDING=1;
