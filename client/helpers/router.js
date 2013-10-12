@@ -245,7 +245,7 @@ Router.map(function() {
   this.route('home', {
     path: '/',
     template:'posts_list',
-    waitOn: postListSubscription(selectTop, sortPosts('score'), 11),
+    waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
     after: function() {
       Session.set('view', 'top');
     }
@@ -254,7 +254,7 @@ Router.map(function() {
   this.route('posts_top', {
     path: '/top',
     template:'posts_list',
-    waitOn: postListSubscription(selectTop, sortPosts('score'), 11),
+    waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
     after: function() {
       Session.set('view', 'top');
     }
@@ -265,7 +265,7 @@ Router.map(function() {
   this.route('posts_new', {
     path: '/new',
     template:'posts_list',
-    waitOn: postListSubscription(selectNew, sortPosts('submitted'), 12),
+    waitOn: postListSubscription(selectPosts, sortPosts('submitted'), 12),
     after: function() {
       Session.set('view', 'new');
     }
@@ -276,7 +276,7 @@ Router.map(function() {
   this.route('posts_best', {
     path: '/best',
     template:'posts_list',
-    waitOn: postListSubscription(selectBest, sortPosts('baseScore'), 13),
+    waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     after: function() {
       Session.set('view', 'best');
     }
@@ -287,7 +287,9 @@ Router.map(function() {
   this.route('posts_pending', {
     path: '/pending',
     template:'posts_list',
-    waitOn: postListSubscription(selectPending, sortPosts('createdAt'), 14),
+    waitOn: postListSubscription(function(){
+      return selectPosts({status: STATUS_PENDING})
+    }, sortPosts('createdAt'), 14),
     after: function() {
       Session.set('view', 'pending');
     }
@@ -298,11 +300,19 @@ Router.map(function() {
   this.route('category', {
     path: '/c/:slug',
     template:'posts_list',
-    waitOn: function() {
-      Session.set('view', 'top');
-      Session.set('categorySlug', this.params.slug);
-      return postListSubscription(selectTop, sortPosts('score'), 10)
-    }
+    waitOn: postListSubscription(function(){
+      // problem: :slug param is not accessible from here
+      return selectPosts({status: STATUS_PENDING, slug: 'experiments'});
+    }, sortPosts('score'), 15)
+    // waitOn: function(){
+      // problem: infinite loading screen
+    //   var slug = this.params.slug;
+    //         console.log(slug)
+
+    //   return postListSubscription(function(){
+    //     return selectPosts({status: STATUS_PENDING, slug: slug});
+    //   }, sortPosts('createdAt'), 14);
+    // }
   });
 
   // this.route('category_view', {

@@ -1,6 +1,6 @@
 Template.posts_list.helpers({
   posts: function() {
-    // console.log(Router.current().waitOn[0])
+    console.log(Router.current().waitOn[0])
     return Router.current().waitOn[0].fetch();
   },
   postsReady: function() {
