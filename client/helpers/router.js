@@ -202,6 +202,7 @@ var filters = {
 //------------------------------------- Subscription Functions -------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
+
 // Posts Lists
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
@@ -289,11 +290,9 @@ Router.map(function() {
 
   this.route('posts_digest', {
     path: '/digest/:year/:month/:day',
-    onBeforeRun: function(){
+    waitOn: function() {
       currentDate = new Date(this.params.year, this.params.month-1, this.params.day);
       Session.set('currentDate', currentDate);
-    },
-    waitOn: function() {
       return Meteor.subscribe('postDigest', currentDate);
     },
     data: function() {
@@ -306,11 +305,10 @@ Router.map(function() {
   this.route('posts_digest_shortcut', {
     path: '/digest',
     template: 'posts_digest',
-    onBeforeRun: function(){
-      currentDate = new Date();
-      Session.set('currentDate', currentDate);
-    },
     waitOn: function() {
+      // note: this runs twice for some reason? is 'today' changing?
+      currentDate = Session.get('today');
+      Session.set('currentDate', currentDate);
       return Meteor.subscribe('postDigest', currentDate);
     },
     data: function() {

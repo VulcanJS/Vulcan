@@ -1,7 +1,7 @@
 // Session variables
 Session.set('initialLoad', true);
-Session.set('currentDate', new Date());
 Session.set('categorySlug', null);
+Session.set('today', new Date());
 
 // Subscriptions
 
