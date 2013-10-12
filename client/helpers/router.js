@@ -82,7 +82,8 @@ Toolbox
 //--------------------------------------------------------------------------------------------------//
 
 Router.configure({
-  layout: 'layout',
+  // autoRender: false,
+  layoutTemplate: 'layout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found'
 });
@@ -93,93 +94,101 @@ Router.configure({
 
 var filters = {
   
-  isLoggedIn: function(page) {
-    if (Meteor.loggingIn()) {
-      return 'loading';
-    } else if (Meteor.user()) {
-      return page;
-    } else {
-      return 'user_signin';
+  // isLoggedIn: function(page) {
+  //   if (Meteor.loggingIn()) {
+  //     return 'loading';
+  //   } else if (Meteor.user()) {
+  //     return page;
+  //   } else {
+  //     return 'user_signin';
+  //   }
+  // },
+
+  // isLoggedOut: function(page){
+  //   return Meteor.user() ? "already_logged_in" : page;
+  // },
+
+  // isAdmin: function(page) {
+  //   return isAdmin(Meteor.user()) ? page : "no_rights";
+  // },
+
+  // canView: function(page) {
+  //   var error = canView(Meteor.user(), true);
+  //   if (error === true)
+  //     return page;
+    
+  //   // a problem.. make sure we are logged in
+  //   if (Meteor.loggingIn())
+  //     return 'loading';
+    
+  //   // otherwise the error tells us what to show.
+  //   return error;
+  // },
+
+  // canPost: function(page) {
+  //   var error = canPost(Meteor.user(), true);
+  //   if (error === true)
+  //     return page;
+    
+  //   // a problem.. make sure we are logged in
+  //   if (Meteor.loggingIn())
+  //     return 'loading';
+    
+  //   // otherwise the error tells us what to show.
+  //   return error;
+  // },
+
+  canEditPost: function() {
+    var post = Posts.findOne(this.params._id);
+    if(!currentUserCanEdit(post)){
+      this.render('no_rights');
+      this.stop();
     }
   },
 
-  isLoggedOut: function(page){
-    return Meteor.user() ? "already_logged_in" : page;
-  },
-
-  isAdmin: function(page) {
-    return isAdmin(Meteor.user()) ? page : "no_rights";
-  },
-
-  canView: function(page) {
-    var error = canView(Meteor.user(), true);
-    if (error === true)
-      return page;
-    
-    // a problem.. make sure we are logged in
-    if (Meteor.loggingIn())
-      return 'loading';
-    
-    // otherwise the error tells us what to show.
-    return error;
-  },
-
-  canPost: function(page) {
-    var error = canPost(Meteor.user(), true);
-    if (error === true)
-      return page;
-    
-    // a problem.. make sure we are logged in
-    if (Meteor.loggingIn())
-      return 'loading';
-    
-    // otherwise the error tells us what to show.
-    return error;
-  },
-
-  canEdit: function(router, item) {
-    if(!currentUserCanEdit(item)){
-      router.render('no_rights');
-      router.stop();
-    }
-  },
-
-  canEditX: function(page) {
-    // make findOne() non reactive to avoid re-triggering the router every time the 
-    // current comment or post object changes
-    // but make sure the comment/post is loaded before moving on
-    if (page === 'comment_edit') {
-      var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
-      if(!Session.get('singleCommentReady'))
-        return 'loading'
-    } else {
-      var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
-      if(!Session.get('singlePostReady'))
-        return 'loading'
-    }
-
-    var error = canEdit(Meteor.user(), item, true);
-    if (error === true)
-      return page;
-    
-    // a problem.. make sure the item has loaded and we have logged in
-    if (! item || Meteor.loggingIn())
-      return 'loading';
-
-    // otherwise the error tells us what to show.
-    return error;
-  },
-
-  hasCompletedProfile: function() {
-    var user = Meteor.user();
-
-    if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
-      Session.set('selectedUserId', user._id);
-      return 'user_email';
-    } else {
-      return page;
+  canEditComment: function() {
+    var comment = Comments.findOne(this.params._id);
+    if(!currentUserCanEdit(comment)){
+      this.render('no_rights');
+      this.stop();
     }
   }
+//   canEditX: function(page) {
+//     // make findOne() non reactive to avoid re-triggering the router every time the 
+//     // current comment or post object changes
+//     // but make sure the comment/post is loaded before moving on
+//     if (page === 'comment_edit') {
+//       var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
+//       if(!Session.get('singleCommentReady'))
+//         return 'loading'
+//     } else {
+//       var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
+//       if(!Session.get('singlePostReady'))
+//         return 'loading'
+//     }
+
+//     var error = canEdit(Meteor.user(), item, true);
+//     if (error === true)
+//       return page;
+    
+//     // a problem.. make sure the item has loaded and we have logged in
+//     if (! item || Meteor.loggingIn())
+//       return 'loading';
+
+//     // otherwise the error tells us what to show.
+//     return error;
+//   },
+
+//   hasCompletedProfile: function() {
+//     var user = Meteor.user();
+
+//     if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
+//       Session.set('selectedUserId', user._id);
+//       return 'user_email';
+//     } else {
+//       return page;
+//     }
+//   }
 
 }
 
@@ -204,6 +213,8 @@ Router.map(function() {
   // Top
 
   // TODO
+  
+  // waitOn: subs.topPostHandle = postListSubscription(selectTop, sortPosts('score'), 10);  
 
   // New
 
@@ -256,6 +267,8 @@ Router.map(function() {
     }
   });
 
+  // -------------------------------------------- Post -------------------------------------------- //
+
   // Post Page
 
   this.route('post_page', {
@@ -304,16 +317,15 @@ Router.map(function() {
         post: Posts.findOne(this.params._id)
       }
     },
-    after: function(){
-      var post = Posts.findOne(this.params._id);
-      filters.canEdit(this, post);
-    }
+    after: filters.canEditPost
   });
 
   // Post Submit
 
   this.route('post_submit', {path: '/submit'});
 
+  // -------------------------------------------- Comment -------------------------------------------- //
+  
   // Comment Page
 
   this.route('comment_page', {
@@ -348,10 +360,7 @@ Router.map(function() {
         comment: Comments.findOne(this.params._id)
       }
     },
-    after: function(){
-      var comment = Posts.findOne(this.params._id);
-      filters.canEdit(this, comment);
-    }
+    after: filters.canEditComment
   });
 
   // User Profile

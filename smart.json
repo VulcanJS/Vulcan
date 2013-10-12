@@ -1,13 +1,15 @@
 {
   "meteor": {},
   "packages": {
-    "router": {},
     "momentjs": {},
     "database-forms": {
       "git": "git://github.com/SachaG/database-forms.git"
     },
     "paginated-subscription": {},
     "crypto-md5": {},
-    "iron-router": {}
+    "iron-router": {
+      "git": "https://github.com/EventedMind/iron-router.git",
+      "branch": "dev"
+    }
   }
 }

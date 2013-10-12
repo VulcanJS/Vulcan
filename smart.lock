@@ -2,7 +2,6 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "router": {},
       "momentjs": {},
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
@@ -10,14 +9,12 @@
       },
       "paginated-subscription": {},
       "crypto-md5": {},
-      "iron-router": {}
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "branch": "dev"
+      }
     },
     "packages": {
-      "router": {
-        "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.5.4.1",
-        "commit": "d00e380dda2184b70e909fc4a0fb5358d602c586"
-      },
       "momentjs": {
         "git": "https://github.com/crapthings/meteor-momentjs.git",
         "tag": "v2.1.0.2",
@@ -40,18 +37,8 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.5.4",
-        "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
-      },
-      "page-js-ie-support": {
-        "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
-        "tag": "v1.3.5",
-        "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
-      },
-      "HTML5-History-API": {
-        "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
-        "tag": "v4.0.0",
-        "commit": "dc4965f1424cfca625ec3fbea17eace03f8e32c5"
+        "branch": "dev",
+        "commit": "97ce4e61badaea7987682a530ac627c5c1c116aa"
       },
       "crypto-base": {
         "git": "https://github.com/tmeasday/meteor-crypto-base.git",
