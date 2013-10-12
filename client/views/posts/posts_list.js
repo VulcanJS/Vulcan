@@ -1,12 +1,13 @@
 Template.posts_list.helpers({
   posts: function() {
-    return currentSubscription.fetch();
+    console.log(postsSubscriptions[Session.get('view')])
+    return postsSubscriptions[Session.get('view')].fetch();
   },
   postsReady: function() {
-    return currentSubscription.ready();
+    return postsSubscriptions[Session.get('view')].ready();
   },
   allPostsLoaded: function(){
-    allPostsLoaded = currentSubscription.fetch().length < currentSubscription.loaded();
+    allPostsLoaded = postsSubscriptions[Session.get('view')].fetch().length < postsSubscriptions[Session.get('view')].loaded();
     Session.set('allPostsLoaded', allPostsLoaded);
     return allPostsLoaded;  
   }
@@ -25,7 +26,7 @@ Template.posts_list.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
-    currentSubscription.loadNextPage();
+    postsSubscriptions[Session.get('view')].loadNextPage();
   }
 });
 

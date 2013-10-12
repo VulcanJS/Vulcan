@@ -248,7 +248,6 @@ Router.map(function() {
     waitOn: postsSubscriptions.top = postListSubscription(selectTop, sortPosts('score'), 10),
     after: function() {
       Session.set('view', 'top');
-      currentSubscription = postsSubscriptions.top;
     }
   });
 
@@ -258,7 +257,6 @@ Router.map(function() {
     waitOn: postsSubscriptions.top = postListSubscription(selectTop, sortPosts('score'), 11),
     after: function() {
       Session.set('view', 'top');
-      currentSubscription = postsSubscriptions.top;
     }
   });
 
@@ -270,7 +268,6 @@ Router.map(function() {
     waitOn: postsSubscriptions.new = postListSubscription(selectNew, sortPosts('submitted'), 12),
     after: function() {
       Session.set('view', 'new');
-      currentSubscription = postsSubscriptions.new;
     }
   });
 
