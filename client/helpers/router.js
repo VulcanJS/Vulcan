@@ -94,9 +94,7 @@ Router.configure({
 //--------------------------------------------- Filters --------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
-subs = {
 
-}
 
 var filters = {
   
@@ -202,6 +200,8 @@ var filters = {
 //------------------------------------- Subscription Functions -------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
+postsSubscriptions = {};
+currentSubscription = {};
 
 // Posts Lists
 STATUS_PENDING=1;
@@ -239,53 +239,93 @@ var postListSubscription = function(find, options, per_page) {
 //--------------------------------------------------------------------------------------------------//
 
 Router.map(function() {
-  this.route('home', {
-    path: '/', 
-    template: 'posts_top'
-  });
-  
-  this.route('posts_new', {path: '/new'});
-  this.route('posts_best', {path: '/best'});
-  this.route('posts_pending', {path: '/pending'});
 
   // Top
 
   this.route('home', {
     path: '/',
-    template:'posts_top',
-    waitOn: subs.topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10)
+    template:'posts_list',
+    waitOn: postsSubscriptions.top = postListSubscription(selectTop, sortPosts('score'), 10),
+    after: function() {
+      Session.set('view', 'top');
+      currentSubscription = postsSubscriptions.top;
+    }
   });
 
   this.route('posts_top', {
     path: '/top',
-    waitOn: subs.topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10)
+    template:'posts_list',
+    waitOn: postsSubscriptions.top = postListSubscription(selectTop, sortPosts('score'), 11),
+    after: function() {
+      Session.set('view', 'top');
+      currentSubscription = postsSubscriptions.top;
+    }
   });
 
   // New
 
   this.route('posts_new', {
     path: '/new',
-    waitOn: subs.newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10)
+    template:'posts_list',
+    waitOn: postsSubscriptions.new = postListSubscription(selectNew, sortPosts('submitted'), 12),
+    after: function() {
+      Session.set('view', 'new');
+      currentSubscription = postsSubscriptions.new;
+    }
   });
 
   // Best
 
   this.route('posts_best', {
     path: '/best',
-    waitOn: subs.bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10)
+    template:'posts_list',
+    waitOn: postsSubscriptions.best = postListSubscription(selectBest, sortPosts('baseScore'), 13),
+    after: function() {
+      Session.set('view', 'best');
+    }
   });
 
   // Pending
 
   this.route('posts_pending', {
     path: '/pending',
-    waitOn: subs.pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10)
+    template:'posts_list',
+    waitOn: postsSubscriptions.pending = postListSubscription(selectPending, sortPosts('createdAt'), 14),
+    after: function() {
+      Session.set('view', 'pending');
+    }
   });
 
   // Categories
 
+  // this.route('category', {
+  //   path: '/c/:slug/',
+  //   waitOn:
+  //   before: function() {
+  //     view = 'top';
+  //     Session.set('categorySlug', this.params.slug);
+  //     Router._categoryFilter = true;
+  //   }
+  // });
+
+  // this.route('category_view', {
+  //   path: '/c/:slug/:view',
+  //   waitOn:
+  //   before: function() {
+  //     var view = this.params.view;
+  //     Session.set('categorySlug', this.params.slug);
+  //     Router._categoryFilter = true;
+  //   }
+  // });
   // TODO
   
+  //   category = function(categorySlug, view){
+//     var view = (typeof view === 'undefined') ? 'top' : view;
+//     console.log('setting category slug to: '+categorySlug)
+//     Session.set('categorySlug', categorySlug);
+//     Meteor.Router.categoryFilter = true;
+//     return 'posts_'+view;
+//   }
   // Digest
 
   this.route('posts_digest', {

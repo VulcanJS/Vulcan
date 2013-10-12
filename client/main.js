@@ -2,6 +2,7 @@
 Session.set('initialLoad', true);
 Session.set('categorySlug', null);
 Session.set('today', new Date());
+Session.set('view', 'top');
 
 // Subscriptions
 
@@ -29,39 +30,3 @@ Meteor.subscribe('currentUser');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
-
-// Posts Lists
-STATUS_PENDING=1;
-STATUS_APPROVED=2;
-STATUS_REJECTED=3;
-
-// put it all together with pagination
-postListSubscription = function(find, options, per_page) {
-  var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
-  handle.fetch = function() {
-    var ourFind = _.isFunction(find) ? find() : find;
-    return limitDocuments(Posts.find(ourFind, options), handle.loaded());
-  }
-  return handle;
-}
-
-// note: the "name" property is for internal debugging purposes only
-// selectTop = function() {
-//   return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-// }
-// topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
-
-selectNew = function() {
-  return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-}
-newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10);  
-
-selectBest = function() {
-  return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-}
-bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10);  
-
-selectPending = function() {
-  return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
-}
-pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10);
