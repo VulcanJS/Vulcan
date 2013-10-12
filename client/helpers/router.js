@@ -245,7 +245,7 @@ Router.map(function() {
   this.route('home', {
     path: '/',
     template:'posts_list',
-    waitOn: postsSubscriptions.top = postListSubscription(selectTop, sortPosts('score'), 10),
+    waitOn: postListSubscription(selectTop, sortPosts('score'), 11),
     after: function() {
       Session.set('view', 'top');
     }
@@ -254,7 +254,7 @@ Router.map(function() {
   this.route('posts_top', {
     path: '/top',
     template:'posts_list',
-    waitOn: postsSubscriptions.top = postListSubscription(selectTop, sortPosts('score'), 11),
+    waitOn: postListSubscription(selectTop, sortPosts('score'), 11),
     after: function() {
       Session.set('view', 'top');
     }
@@ -265,7 +265,7 @@ Router.map(function() {
   this.route('posts_new', {
     path: '/new',
     template:'posts_list',
-    waitOn: postsSubscriptions.new = postListSubscription(selectNew, sortPosts('submitted'), 12),
+    waitOn: postListSubscription(selectNew, sortPosts('submitted'), 12),
     after: function() {
       Session.set('view', 'new');
     }
@@ -276,7 +276,7 @@ Router.map(function() {
   this.route('posts_best', {
     path: '/best',
     template:'posts_list',
-    waitOn: postsSubscriptions.best = postListSubscription(selectBest, sortPosts('baseScore'), 13),
+    waitOn: postListSubscription(selectBest, sortPosts('baseScore'), 13),
     after: function() {
       Session.set('view', 'best');
     }
@@ -287,7 +287,7 @@ Router.map(function() {
   this.route('posts_pending', {
     path: '/pending',
     template:'posts_list',
-    waitOn: postsSubscriptions.pending = postListSubscription(selectPending, sortPosts('createdAt'), 14),
+    waitOn: postListSubscription(selectPending, sortPosts('createdAt'), 14),
     after: function() {
       Session.set('view', 'pending');
     }
@@ -295,22 +295,25 @@ Router.map(function() {
 
   // Categories
 
-  // this.route('category', {
-  //   path: '/c/:slug/',
-  //   waitOn:
-  //   before: function() {
-  //     view = 'top';
-  //     Session.set('categorySlug', this.params.slug);
-  //     Router._categoryFilter = true;
-  //   }
-  // });
+  this.route('category', {
+    path: '/c/:slug',
+    template:'posts_list',
+    waitOn: function() {
+      Session.set('view', 'top');
+      Session.set('categorySlug', this.params.slug);
+      return postListSubscription(selectTop, sortPosts('score'), 10)
+    }
+  });
 
   // this.route('category_view', {
   //   path: '/c/:slug/:view',
-  //   waitOn:
-  //   before: function() {
-  //     var view = this.params.view;
+  //   waitOn: function() {
+  //     Session.set('view', this.params.view);
   //     Session.set('categorySlug', this.params.slug);
+  //     return postListSubscription(selectTop, sortPosts('score'), 10),
+  //   },
+  //   before: function() {
+
   //     Router._categoryFilter = true;
   //   }
   // });

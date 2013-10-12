@@ -1,13 +1,13 @@
 Template.posts_list.helpers({
   posts: function() {
-    console.log(postsSubscriptions[Session.get('view')])
-    return postsSubscriptions[Session.get('view')].fetch();
+    // console.log(Router.current().waitOn[0])
+    return Router.current().waitOn[0].fetch();
   },
   postsReady: function() {
-    return postsSubscriptions[Session.get('view')].ready();
+    return Router.current().waitOn[0].ready();
   },
   allPostsLoaded: function(){
-    allPostsLoaded = postsSubscriptions[Session.get('view')].fetch().length < postsSubscriptions[Session.get('view')].loaded();
+    allPostsLoaded = Router.current().waitOn[0].fetch().length < Router.current().waitOn[0].loaded();
     Session.set('allPostsLoaded', allPostsLoaded);
     return allPostsLoaded;  
   }
@@ -26,7 +26,7 @@ Template.posts_list.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
-    postsSubscriptions[Session.get('view')].loadNextPage();
+    Router.current().waitOn[0].loadNextPage();
   }
 });
 
