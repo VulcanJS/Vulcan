@@ -25,7 +25,9 @@ canEditComment
 
 hasCompletedProfile
 
-
+---------------------------------------------------------------
+#                    Subscription Functions                   #
+---------------------------------------------------------------
 
 ---------------------------------------------------------------
 #                             Routes                          #
@@ -91,6 +93,10 @@ Router.configure({
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Filters --------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
+
+subs = {
+
+}
 
 var filters = {
   
@@ -192,8 +198,40 @@ var filters = {
 
 }
 
+//--------------------------------------------------------------------------------------------------//
+//------------------------------------- Subscription Functions -------------------------------------//
+//--------------------------------------------------------------------------------------------------//
 
+// Posts Lists
+STATUS_PENDING=1;
+STATUS_APPROVED=2;
+STATUS_REJECTED=3;
 
+var selectTop = function() {
+  return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+
+var selectNew = function() {
+  return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+
+var selectBest = function() {
+  return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+}
+
+var selectPending = function() {
+  return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
+}
+
+// put it all together with pagination
+var postListSubscription = function(find, options, per_page) {
+  var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
+  handle.fetch = function() {
+    var ourFind = _.isFunction(find) ? find() : find;
+    return limitDocuments(Posts.find(ourFind, options), handle.loaded());
+  }
+  return handle;
+}
 
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
@@ -205,28 +243,43 @@ Router.map(function() {
     template: 'posts_top'
   });
   
-  this.route('posts_top', {path: '/top'});
   this.route('posts_new', {path: '/new'});
   this.route('posts_best', {path: '/best'});
   this.route('posts_pending', {path: '/pending'});
 
   // Top
 
-  // TODO
-  
-  // waitOn: subs.topPostHandle = postListSubscription(selectTop, sortPosts('score'), 10);  
+  this.route('home', {
+    path: '/',
+    template:'posts_top',
+    waitOn: subs.topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10)
+  });
+
+  this.route('posts_top', {
+    path: '/top',
+    waitOn: subs.topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10)
+  });
 
   // New
 
-  // TODO
+  this.route('posts_new', {
+    path: '/new',
+    waitOn: subs.newPostsHandle = postListSubscription(selectNew, sortPosts('submitted'), 10)
+  });
 
   // Best
 
-  // TODO
+  this.route('posts_best', {
+    path: '/best',
+    waitOn: subs.bestPostsHandle = postListSubscription(selectBest, sortPosts('baseScore'), 10)
+  });
 
   // Pending
 
-  // TODO
+  this.route('posts_pending', {
+    path: '/pending',
+    waitOn: subs.pendingPostsHandle = postListSubscription(selectPending, sortPosts('createdAt'), 10)
+  });
 
   // Categories
 

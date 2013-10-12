@@ -46,10 +46,10 @@ postListSubscription = function(find, options, per_page) {
 }
 
 // note: the "name" property is for internal debugging purposes only
-selectTop = function() {
-  return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-}
-topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
+// selectTop = function() {
+//   return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
+// }
+// topPostsHandle = postListSubscription(selectTop, sortPosts('score'), 10);
 
 selectNew = function() {
   return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});

@@ -1,16 +1,3 @@
-Template.posts_top.topPostsHandle = function() { 
-  return topPostsHandle;
-}
-Template.posts_new.newPostsHandle = function() { 
-  return newPostsHandle;
-}
-Template.posts_best.bestPostsHandle = function() { 
-  return bestPostsHandle;
-}
-Template.posts_pending.pendingPostsHandle = function() { 
-  return pendingPostsHandle;
-}
-
 Template.posts_list.helpers({
   posts: function() {
     return this.fetch();
