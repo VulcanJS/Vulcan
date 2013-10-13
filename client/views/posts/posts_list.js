@@ -1,5 +1,7 @@
 Template.posts_list.helpers({
   posts: function() {
+    console.log(this)
+    console.log(Router.current())
     console.log(Router.current().waitOn[0])
     return Router.current().waitOn[0].fetch();
   },

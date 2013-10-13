@@ -97,50 +97,37 @@ Router.configure({
 
 
 var filters = {
-  
-  // isLoggedIn: function(page) {
-  //   if (Meteor.loggingIn()) {
-  //     return 'loading';
-  //   } else if (Meteor.user()) {
-  //     return page;
-  //   } else {
-  //     return 'user_signin';
-  //   }
-  // },
 
-  // isLoggedOut: function(page){
-  //   return Meteor.user() ? "already_logged_in" : page;
-  // },
+  isLoggedIn: function() {
+    if (Meteor.loggingIn()) {
+      this.render('loading');
+      this.stop(); 
+    } else if (!Meteor.user()) {
+      this.render('user_signin');
+      this.stop(); 
+    }
+  },
 
-  // isAdmin: function(page) {
-  //   return isAdmin(Meteor.user()) ? page : "no_rights";
-  // },
+  isLoggedOut: function() {
+    if(Meteor.user()){
+      this.render('already_logged_in');
+      this.stop();
+    }
+  },
 
-  // canView: function(page) {
-  //   var error = canView(Meteor.user(), true);
-  //   if (error === true)
-  //     return page;
-    
-  //   // a problem.. make sure we are logged in
-  //   if (Meteor.loggingIn())
-  //     return 'loading';
-    
-  //   // otherwise the error tells us what to show.
-  //   return error;
-  // },
+  isAdmin: function() {
+    if(!isAdmin(Meteor.user())){
+      this.render('no_rights');
+      this.stop();      
+    }
+  },
 
-  // canPost: function(page) {
-  //   var error = canPost(Meteor.user(), true);
-  //   if (error === true)
-  //     return page;
-    
-  //   // a problem.. make sure we are logged in
-  //   if (Meteor.loggingIn())
-  //     return 'loading';
-    
-  //   // otherwise the error tells us what to show.
-  //   return error;
-  // },
+  canView: function() {
+    if(!canView(Meteor.user())){
+      this.render('no_rights');
+      this.stop();
+    }
+  },
 
   canEditPost: function() {
     var post = Posts.findOne(this.params._id);
@@ -156,43 +143,16 @@ var filters = {
       this.render('no_rights');
       this.stop();
     }
+  },
+
+  hasCompletedProfile: function() {
+    var user = Meteor.user();
+    if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
+      // Session.set('selectedUserId', user._id);
+      this.render('user_email');
+      this.stop();
+    }
   }
-//   canEditX: function(page) {
-//     // make findOne() non reactive to avoid re-triggering the router every time the 
-//     // current comment or post object changes
-//     // but make sure the comment/post is loaded before moving on
-//     if (page === 'comment_edit') {
-//       var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
-//       if(!Session.get('singleCommentReady'))
-//         return 'loading'
-//     } else {
-//       var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
-//       if(!Session.get('singlePostReady'))
-//         return 'loading'
-//     }
-
-//     var error = canEdit(Meteor.user(), item, true);
-//     if (error === true)
-//       return page;
-    
-//     // a problem.. make sure the item has loaded and we have logged in
-//     if (! item || Meteor.loggingIn())
-//       return 'loading';
-
-//     // otherwise the error tells us what to show.
-//     return error;
-//   },
-
-//   hasCompletedProfile: function() {
-//     var user = Meteor.user();
-
-//     if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
-//       Session.set('selectedUserId', user._id);
-//       return 'user_email';
-//     } else {
-//       return page;
-//     }
-//   }
 
 }
 
@@ -200,7 +160,7 @@ var filters = {
 //------------------------------------- Subscription Functions -------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
-postsSubscriptions = {};
+postsHandle = {};
 currentSubscription = {};
 
 // Posts Lists
@@ -255,7 +215,18 @@ Router.map(function() {
     path: '/top',
     template:'posts_list',
     waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
+    // before: function() {
+    //   postsHandle = postListSubscription(selectPosts, sortPosts('score'), 11);
+    //   console.log(postsHandle.ready())
+    //   if(postsHandle.ready()) {
+    //     console.log('ready')
+    //   } else {
+    //     console.log('loading…')
+    //     this.stop();
+    //   }
+    // },
     after: function() {
+      console.log('posts top route')
       Session.set('view', 'top');
     }
   });
@@ -374,11 +345,22 @@ Router.map(function() {
 
   this.route('post_page', {
     path: '/posts/:_id',
-    waitOn: function() {
-      return [
-        Meteor.subscribe('singlePost', this.params._id), 
-        Meteor.subscribe('comments', { post : this.params._id })
-      ];
+    // waitOn: function() {
+    //   return [
+    //     Meteor.subscribe('singlePost', this.params._id), 
+    //     Meteor.subscribe('comments', { post : this.params._id })
+    //   ];
+    // },
+    template: 'post_page',
+    before: function() {
+      var postsHandle = Meteor.subscribe('singlePost', this.params._id);
+      var commentsHandle = Meteor.subscribe('comments', { post : this.params._id })
+      if(postsHandle.ready() && commentsHandle.ready()) {
+        console.log('ready')
+      } else {
+        console.log('loading…')
+        this.stop();
+      }
     },
     data: function() {
       return {

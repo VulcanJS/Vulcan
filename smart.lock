@@ -20,11 +20,6 @@
         "tag": "v2.1.0.2",
         "commit": "59a762e297082eea8b8cae00374c2b7ac6f89529"
       },
-      "database-forms": {
-        "git": "git://github.com/SachaG/database-forms.git",
-        "branch": "master",
-        "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
-      },
       "paginated-subscription": {
         "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
         "tag": "v0.1.2",
