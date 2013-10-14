@@ -446,6 +446,8 @@ Router.map(function() {
     after: filters.canEditComment
   });
 
+  // -------------------------------------------- Users -------------------------------------------- //
+
   // User Profile
 
   this.route('user_profile', {
@@ -521,6 +523,8 @@ Router.map(function() {
   // User Sign-In
 
   this.route('signin');
+
+  // -------------------------------------------- Other -------------------------------------------- //
 
   // Categories
 
