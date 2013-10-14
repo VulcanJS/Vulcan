@@ -345,27 +345,31 @@ Router.map(function() {
 
   this.route('post_page', {
     path: '/posts/:_id',
-    // waitOn: function() {
-    //   return [
-    //     Meteor.subscribe('singlePost', this.params._id), 
-    //     Meteor.subscribe('comments', { post : this.params._id })
-    //   ];
-    // },
-    template: 'post_page',
-    before: function() {
-      var postsHandle = Meteor.subscribe('singlePost', this.params._id);
-      var commentsHandle = Meteor.subscribe('comments', { post : this.params._id })
-      if(postsHandle.ready() && commentsHandle.ready()) {
-        console.log('ready')
-      } else {
-        console.log('loading…')
-        this.stop();
-      }
+    waitOn: function() {
+      return [
+        Meteor.subscribe('singlePost', this.params._id), 
+        Meteor.subscribe('comments', { post : this.params._id })
+      ];
     },
+    template: 'post_page',
+    // reactive: false,
+    // before: function() {
+    //   var postsHandle = Meteor.subscribe('singlePost', this.params._id);
+    //   var commentsHandle = Meteor.subscribe('comments', { post : this.params._id })
+    //   if(postsHandle.ready() && commentsHandle.ready()) {
+    //     console.log('ready')
+    //   } else {
+    //     console.log('loading…')
+    //     this.stop();
+    //   }
+    // },
     data: function() {
       return {
         post: Posts.findOne(this.params._id)
       }
+    },
+    after: function() {
+      console.log('post page route')
     }
   });
 
