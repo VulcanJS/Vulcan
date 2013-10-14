@@ -13,8 +13,7 @@ Template.comment_form.events = {
     $(e.target).addClass('disabled');
     clearSeenErrors();
     var content = instance.editor.exportFile();
-    // note: find a better way to test if this is the comment_reply template…
-    if(Router._current.path.search('reply') != -1){
+    if(getCurrentTemplate() == 'comment_reply'){
       // child comment
       var parentComment = this.comment;
       console.log(parentComment)

@@ -16,6 +16,7 @@ Setting = FormModel.extend({
     logoWidth: '',
     defaultEmail: '',
     newPostsNotifications: true,
+    nestedComments: true,
     backgroundColor: '',
     secondaryColor: '',
     buttonColor: '',

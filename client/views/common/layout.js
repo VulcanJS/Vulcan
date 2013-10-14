@@ -1,6 +1,6 @@
 Template.layout.helpers({
   pageName : function(){
-    getCurrentRoute();
+    getCurrentTemplate();
   },
   backgroundColor: function(){
   	return getSetting('backgroundColor');
@@ -27,5 +27,10 @@ Template.layout.rendered = function(){
     if(currentScroll=Session.get('currentScroll')){
       $('body').scrollTop(currentScroll);
       Session.set('currentScroll', null);
-    }   
+    }
+
+    // set title
+    var title = getSetting("title");
+    var tagline = getSetting("tagline");
+    document.title = tagline ? title+': '+tagline : title;
 }

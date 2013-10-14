@@ -22,12 +22,14 @@
             {{#if can_edit}}
               | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
             {{/if}}
-            {{#if currentUser.isAdmin}}
+            {{#if currentUser.isAdmin}}`
               | <span>{{full_date}}</span>
             {{/if}}
           </div>
           <div class="comment-text markdown">{{{body_formatted}}}</div>
-          <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">Reply</a>
+          {{#if getSetting "nestedComments"}}
+            <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">Reply</a>
+          {{/if}}
         </div>
       </div>
       {{#if showChildComments}}

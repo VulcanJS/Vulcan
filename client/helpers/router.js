@@ -87,7 +87,24 @@ Router.configure({
   // autoRender: false,
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
-  notFoundTemplate: 'not_found'
+  notFoundTemplate: 'not_found',
+  before: function() {
+    console.log('// Before Routing //')
+
+    // reset all session variables that might be set by the previous route
+    Session.set('categorySlug', null);
+
+    // currentScroll stores the position of the user in the page
+    Session.set('currentScroll', null);
+
+    $('body').css('min-height','0');
+
+    // set all errors who have already been seen to not show anymore
+    clearSeenErrors();
+        
+    // log this request with mixpanel, etc
+    analyticsRequest();
+  }
 });
 
 //--------------------------------------------------------------------------------------------------//
@@ -352,7 +369,7 @@ Router.map(function() {
       ];
     },
     template: 'post_page',
-    // reactive: false,
+    // reactive: false, 
     // before: function() {
     //   var postsHandle = Meteor.subscribe('singlePost', this.params._id);
     //   var commentsHandle = Meteor.subscribe('comments', { post : this.params._id })

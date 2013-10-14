@@ -99,12 +99,12 @@ analyticsRequest = function() {
 
   // GoSquared
   if (typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined') {
-    GoSquared.DefaultTracker.TrackView(window.location.pathname, Meteor.Router.page());
+    GoSquared.DefaultTracker.TrackView(window.location.pathname, getCurrentTemplate());
   }
 
   // Clicky
   if(typeof clicky !== 'undefined'){
-    clicky.log(encodeURIComponent(window.location.pathname), Meteor.Router.page(), "pageview");
+    clicky.log(encodeURIComponent(window.location.pathname), getCurrentTemplate(), "pageview");
   }
 
 }

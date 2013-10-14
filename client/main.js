@@ -9,7 +9,7 @@ Session.set('view', 'top');
 // note: here we only subscribe to subscriptions that we need to be available all the time.
 // For subscriptions depending on specific pages, see the router. 
 
-// TODO: add session variable that tracks once all subscriptions here have loaded
+// TODO: add session variable that tracks when all global subscriptions have loaded
 
 // Settings
 Meteor.subscribe('settings', function(){

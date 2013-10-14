@@ -1,5 +1,9 @@
 // ** Handlebars helpers **
 
+Handlebars.registerHelper('getSetting', function(setting){
+  return getSetting(setting);
+});
+
 Handlebars.registerHelper('canView', function(action) {
   var action=(typeof action !== 'string') ? null : action;
   return canView(Meteor.user(), action);
