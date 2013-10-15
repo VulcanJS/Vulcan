@@ -1,7 +1,7 @@
 // ** Handlebars helpers **
 
-Handlebars.registerHelper('getSetting', function(setting){
-  return getSetting(setting);
+Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
+  return getSetting(setting, defaultArgument);
 });
 
 Handlebars.registerHelper('canView', function(action) {

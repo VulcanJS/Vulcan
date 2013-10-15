@@ -27,7 +27,7 @@
             {{/if}}
           </div>
           <div class="comment-text markdown">{{{body_formatted}}}</div>
-          {{#if getSetting "nestedComments"}}
+          {{#if getSetting "nestedComments" true}}
             <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">Reply</a>
           {{/if}}
         </div>
