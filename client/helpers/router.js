@@ -89,7 +89,7 @@ Router.configure({
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found',
   before: function() {
-    // console.log('// Before Routing //')
+    console.log('// Routing to '+Router._currentController.template)
 
     // reset all session variables that might be set by the previous route
     Session.set('categorySlug', null);
@@ -249,10 +249,10 @@ Router.map(function() {
   this.route('category', {
     path: '/c/:slug',
     template:'posts_list',
-    waitOn: postListSubscription(function(){
-      // problem: :slug param is not accessible from here
-      return selectPosts({status: STATUS_PENDING, slug: 'experiments'});
-    }, sortPosts('score'), 15)
+    // waitOn: postListSubscription(function(){
+    //   // problem: :slug param is not accessible from here
+    //   return selectPosts({status: STATUS_PENDING, slug: 'experiments'});
+    // }, sortPosts('score'), 15)
     // waitOn: function(){
       // problem: infinite loading screen
     //   var slug = this.params.slug;
@@ -262,6 +262,10 @@ Router.map(function() {
     //     return selectPosts({status: STATUS_PENDING, slug: slug});
     //   }, sortPosts('createdAt'), 14);
     // }
+    after: function() {
+      Session.set('view', 'category');
+      Session.set('categorySlug', this.params.slug);
+    }
   });
 
   // this.route('category_view', {
@@ -345,9 +349,6 @@ Router.map(function() {
       return {
         post: Posts.findOne(this.params._id)
       }
-    },
-    after: function() {
-      console.log('post page route')
     }
   });
 

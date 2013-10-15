@@ -33,9 +33,12 @@ if(Meteor.userId() != null){
 
 postsSubs = {}
 
-postsSubs.top = postListSubscription(selectPosts, sortPosts('score'), 11);
-postsSubs.new = postListSubscription(selectPosts, sortPosts('submitted'), 12);
-postsSubs.best = postListSubscription(selectPosts, sortPosts('baseScore'), 13);
+postsSubs.top = postListSubscription(selectPosts, sortPosts('score'), 10);
+postsSubs.new = postListSubscription(selectPosts, sortPosts('submitted'), 10);
+postsSubs.best = postListSubscription(selectPosts, sortPosts('baseScore'), 10);
 postsSubs.pending = postListSubscription(function(){
     return selectPosts({status: STATUS_PENDING})
-  }, sortPosts('createdAt'), 14);
+  }, sortPosts('createdAt'), 10);
+postsSubs.category = postListSubscription(function(){
+    return selectPosts({status: STATUS_APPROVED, slug: Session.get('categorySlug')})
+  }, sortPosts('score'), 10);
