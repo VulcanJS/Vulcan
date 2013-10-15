@@ -30,3 +30,12 @@ Meteor.subscribe('currentUser');
 if(Meteor.userId() != null){
   Meteor.subscribe('notifications');
 }
+
+postsSubs = {}
+
+postsSubs.top = postListSubscription(selectPosts, sortPosts('score'), 11);
+postsSubs.new = postListSubscription(selectPosts, sortPosts('submitted'), 12);
+postsSubs.best = postListSubscription(selectPosts, sortPosts('baseScore'), 13);
+postsSubs.pending = postListSubscription(function(){
+    return selectPosts({status: STATUS_PENDING})
+  }, sortPosts('createdAt'), 14);

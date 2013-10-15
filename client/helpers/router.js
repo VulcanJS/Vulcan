@@ -89,7 +89,7 @@ Router.configure({
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found',
   before: function() {
-    console.log('// Before Routing //')
+    // console.log('// Before Routing //')
 
     // reset all session variables that might be set by the previous route
     Session.set('categorySlug', null);
@@ -174,44 +174,6 @@ var filters = {
 }
 
 //--------------------------------------------------------------------------------------------------//
-//------------------------------------- Subscription Functions -------------------------------------//
-//--------------------------------------------------------------------------------------------------//
-
-postsHandle = {};
-currentSubscription = {};
-
-// Posts Lists
-STATUS_PENDING=1;
-STATUS_APPROVED=2;
-STATUS_REJECTED=3;
-
-var selectTop = function() {
-  return selectPosts({name: 'top', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-}
-
-var selectNew = function() {
-  return selectPosts({name: 'new', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-}
-
-var selectBest = function() {
-  return selectPosts({name: 'best', status: STATUS_APPROVED, slug: Session.get('categorySlug')});
-}
-
-var selectPending = function() {
-  return selectPosts({name: 'pending', status: STATUS_PENDING, slug: Session.get('categorySlug')});
-}
-
-// put it all together with pagination
-var postListSubscription = function(find, options, per_page) {
-  var handle = Meteor.subscribeWithPagination('paginatedPosts', find, options, per_page);
-  handle.fetch = function() {
-    var ourFind = _.isFunction(find) ? find() : find;
-    return limitDocuments(Posts.find(ourFind, options), handle.loaded());
-  }
-  return handle;
-}
-
-//--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
@@ -222,7 +184,7 @@ Router.map(function() {
   this.route('home', {
     path: '/',
     template:'posts_list',
-    waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
+    // waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
     after: function() {
       Session.set('view', 'top');
     }
@@ -231,7 +193,7 @@ Router.map(function() {
   this.route('posts_top', {
     path: '/top',
     template:'posts_list',
-    waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
+    // waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
     // before: function() {
     //   postsHandle = postListSubscription(selectPosts, sortPosts('score'), 11);
     //   console.log(postsHandle.ready())
@@ -243,7 +205,6 @@ Router.map(function() {
     //   }
     // },
     after: function() {
-      console.log('posts top route')
       Session.set('view', 'top');
     }
   });
@@ -253,7 +214,7 @@ Router.map(function() {
   this.route('posts_new', {
     path: '/new',
     template:'posts_list',
-    waitOn: postListSubscription(selectPosts, sortPosts('submitted'), 12),
+    // waitOn: postListSubscription(selectPosts, sortPosts('submitted'), 12),
     after: function() {
       Session.set('view', 'new');
     }
@@ -264,7 +225,7 @@ Router.map(function() {
   this.route('posts_best', {
     path: '/best',
     template:'posts_list',
-    waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     after: function() {
       Session.set('view', 'best');
     }
@@ -275,9 +236,9 @@ Router.map(function() {
   this.route('posts_pending', {
     path: '/pending',
     template:'posts_list',
-    waitOn: postListSubscription(function(){
-      return selectPosts({status: STATUS_PENDING})
-    }, sortPosts('createdAt'), 14),
+    // waitOn: postListSubscription(function(){
+    //   return selectPosts({status: STATUS_PENDING})
+    // }, sortPosts('createdAt'), 14),
     after: function() {
       Session.set('view', 'pending');
     }

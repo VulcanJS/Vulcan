@@ -1,15 +1,14 @@
 Template.posts_list.helpers({
   posts: function() {
-    console.log(this)
-    console.log(Router.current())
-    console.log(Router.current().waitOn[0])
-    return Router.current().waitOn[0].fetch();
+    // console.log(Session.get('view'))
+    // console.log(postsSubs[Session.get('view')])
+    return postsSubs[Session.get('view')].fetch();
   },
   postsReady: function() {
-    return Router.current().waitOn[0].ready();
+    return postsSubs[Session.get('view')].ready();
   },
   allPostsLoaded: function(){
-    allPostsLoaded = Router.current().waitOn[0].fetch().length < Router.current().waitOn[0].loaded();
+    allPostsLoaded = postsSubs[Session.get('view')].fetch().length < postsSubs[Session.get('view')].loaded();
     Session.set('allPostsLoaded', allPostsLoaded);
     return allPostsLoaded;  
   }
@@ -28,7 +27,7 @@ Template.posts_list.events({
   'click .more-link': function(e) {
     e.preventDefault();
     Session.set('currentScroll',$('body').scrollTop());
-    Router.current().waitOn[0].loadNextPage();
+    postsSubs[Session.get('view')].loadNextPage();
   }
 });
 
