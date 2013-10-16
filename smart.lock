@@ -20,6 +20,11 @@
         "tag": "v2.1.0.2",
         "commit": "59a762e297082eea8b8cae00374c2b7ac6f89529"
       },
+      "database-forms": {
+        "git": "git://github.com/SachaG/database-forms.git",
+        "branch": "master",
+        "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
+      },
       "paginated-subscription": {
         "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
         "tag": "v0.1.2",
@@ -33,7 +38,7 @@
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
         "branch": "dev",
-        "commit": "97ce4e61badaea7987682a530ac627c5c1c116aa"
+        "commit": "13d0007ee9dfa1a111a0e55eedcf002c593f5489"
       },
       "crypto-base": {
         "git": "https://github.com/tmeasday/meteor-crypto-base.git",

@@ -10,3 +10,7 @@ providers_secret.js
 codekit-config.json
 
 config.rb
+
+deploy.sh
+
+.demeteorized
