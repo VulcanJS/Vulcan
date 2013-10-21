@@ -25,6 +25,13 @@ Meteor.publish('singleUser', function(userId) {
   }
 });
 
+Meteor.publish('commentingUsers', function(postId) {
+  var post = Posts.findOne(postId);
+  var comments = Comments.find({post: post._id}).fetch();
+  var commenters = _.unique(_.pluck(comments, "userId"));
+  return Meteor.users.find({_id: {$in: commenters}}); 
+});
+
 Meteor.publish('allUsers', function() {
   if (isAdminById(this.userId)) {
     // if user is admin, publish all fields
@@ -55,8 +62,8 @@ Meteor.publish('postDigest', function(date) {
 
 // Other Publications
 
-Meteor.publish('comments', function(query) {
-  return Comments.find(query);
+Meteor.publish('comments', function(postId) {
+  return Comments.find({post: postId});
 });
 
 Meteor.publish('settings', function() {

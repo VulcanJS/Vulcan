@@ -320,7 +320,8 @@ Router.map(function() {
     waitOn: function() {
       return [
         Meteor.subscribe('singlePost', this.params._id), 
-        Meteor.subscribe('comments', { post : this.params._id })
+        Meteor.subscribe('comments', this.params._id),
+        Meteor.subscribe('commentingUsers', this.params._id)
       ];
     },
     template: 'post_page',
@@ -340,6 +341,8 @@ Router.map(function() {
       return {
         postId: this.params._id
       }
+    },
+    after: function() {
     }
   });
 
@@ -351,12 +354,13 @@ Router.map(function() {
     waitOn: function() {
       return [
         Meteor.subscribe('singlePost', this.params._id), 
-        Meteor.subscribe('comments', { post : this.params._id })
+        Meteor.subscribe('comments', this.params._id ),
+        Meteor.subscribe('commentingUsers', this.params._id)
       ];
     },
     data: function() {
       return {
-        post: Posts.findOne(this.params._id)
+        postId: this.params._id
       }
     }
     // TODO: scroll window to specific comment

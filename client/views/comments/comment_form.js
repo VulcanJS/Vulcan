@@ -28,7 +28,8 @@ Template.comment_form.events = {
       });
     }else{
       // root comment
-      var post = this.post;
+      // console.log(postObject)
+      var post = postObject;
 
       Meteor.call('comment', post._id, null, content, function(error, commentProperties){
         if(error){
