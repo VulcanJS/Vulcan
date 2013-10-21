@@ -22,14 +22,13 @@ Meteor.subscribe('settings', function(){
 Meteor.subscribe('categories');
 
 // Current User
-// we need to subscribe to the currentUser subscription because by default, 
-//Meteor doesn't send all the user properties that we need
+// We need to subscribe to the currentUser subscription because by itself, 
+// Meteor doesn't send all the user properties that we need
 Meteor.subscribe('currentUser');
 
 // Notifications - only load if user is logged in
-if(Meteor.userId() != null){
+if(Meteor.user() != null)
   Meteor.subscribe('notifications');
-}
 
 postsSubs = {}
 

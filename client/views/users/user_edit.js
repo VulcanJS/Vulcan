@@ -18,7 +18,6 @@ Template.user_edit.helpers({
 
 Template.user_edit.events = {
   'submit form': function(e){
-    console.log(this)
     e.preventDefault();
 
     if(!Meteor.user())

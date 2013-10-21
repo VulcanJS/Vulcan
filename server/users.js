@@ -1,6 +1,6 @@
 Accounts.onCreateUser(function(options, user){
   user.profile = options.profile || {};
-  user.profile.karma = 0;
+  user.karma = 0;
   user.profile.notificationsFrequency = 1;
   // users start pending and need to be invited
   user.isInvited = false
