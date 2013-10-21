@@ -335,8 +335,10 @@ Router.map(function() {
     //   }
     // },
     data: function() {
+      // note: do not pass actual post object in data property because we don't want the route to be reactive
+      // and re-run every time a post score changes
       return {
-        post: Posts.findOne(this.params._id)
+        postId: this.params._id
       }
     }
   });

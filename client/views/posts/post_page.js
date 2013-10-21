@@ -1,4 +1,7 @@
 Template.post_page.helpers({
+  post: function () {
+    return Posts.findOne(this.postId);
+  },
   body_formatted: function(){
     var converter = new Markdown.Converter();
     var html_body=converter.makeHtml(this.body);

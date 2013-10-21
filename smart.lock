@@ -38,7 +38,7 @@
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
         "branch": "dev",
-        "commit": "13d0007ee9dfa1a111a0e55eedcf002c593f5489"
+        "commit": "dddf61e618285ec2045a16f224870b1aeba05cdd"
       },
       "crypto-base": {
         "git": "https://github.com/tmeasday/meteor-crypto-base.git",
