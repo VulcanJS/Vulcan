@@ -33,15 +33,15 @@ Template.user_edit.events = {
       "profile.notificationsFrequency": parseInt($('input[name=notifications]:checked').val())
     };
     
-    // TODO: enable change email
-    var email = $target.find('[name=email]').val();
-    
     var old_password = $target.find('[name=old_password]').val();
     var new_password = $target.find('[name=new_password]').val();
 
-    // XXX we should do something if there is an error updating these things
     if(old_password && new_password){
-   		Meteor.changePassword(old_password, new_password);
+   		Accounts.changePassword(old_password, new_password, function(error){
+        // TODO: interrupt update if there's an error at this point
+        if(error)
+          throwError(error.reason);
+      });
     }
     
     Meteor.users.update(user._id, {
