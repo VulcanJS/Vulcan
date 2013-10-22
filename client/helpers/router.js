@@ -321,7 +321,7 @@ Router.map(function() {
       return [
         Meteor.subscribe('singlePost', this.params._id), 
         Meteor.subscribe('comments', this.params._id),
-        Meteor.subscribe('commentingUsers', this.params._id)
+        Meteor.subscribe('postUsers', this.params._id)
       ];
     },
     template: 'post_page',
@@ -355,7 +355,7 @@ Router.map(function() {
       return [
         Meteor.subscribe('singlePost', this.params._id), 
         Meteor.subscribe('comments', this.params._id ),
-        Meteor.subscribe('commentingUsers', this.params._id)
+        Meteor.subscribe('postUsers', this.params._id)
       ];
     },
     data: function() {

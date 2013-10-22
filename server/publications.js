@@ -25,11 +25,15 @@ Meteor.publish('singleUser', function(userId) {
   }
 });
 
-Meteor.publish('commentingUsers', function(postId) {
+Meteor.publish('postUsers', function(postId) {
+  // publish post author and post commenters
   var post = Posts.findOne(postId);
   var comments = Comments.find({post: post._id}).fetch();
-  var commenters = _.unique(_.pluck(comments, "userId"));
-  return Meteor.users.find({_id: {$in: commenters}}); 
+  // get IDs from all commenters on the post, plus post author's ID
+  var users = _.pluck(comments, "userId");
+  users.push(post.userId);
+  users = _.unique(users);
+  return Meteor.users.find({_id: {$in: users}}); 
 });
 
 Meteor.publish('allUsers', function() {
