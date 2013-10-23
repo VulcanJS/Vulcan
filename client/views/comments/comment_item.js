@@ -48,10 +48,8 @@ findQueueContainer=function($comment){
       links.each(function(){
         var target=$(this).attr("href");
         $(target).removeClass("comment-queued").addClass("comment-displayed");
-        var openedComments=Session.get('openedComments') || [];
-        openedComments.push(target.substr(1));
-        Session.set('openedComments', openedComments);
-        // console.log(Session.get('openedComments'));
+        // add comment ID to global array to avoid queuing it again
+        window.openedComments.push(target.substr(1));
       });
       // scrollPageTo(links.first().attr("href"));
       $(this).hide("slow").remove();
@@ -66,23 +64,20 @@ findQueueContainer=function($comment){
 };
 
 Template.comment_item.created = function() {
-  this.firstRender = true;
+  // if comments are supposed to be queued, then queue this comment on create
+  this.isQueued = window.queueComments;
 }
 
 Template.comment_item.rendered=function(){
   console.log('//-------// \n comment rendered: '+this.data.body)
-  console.log('queue comment? '+window.queueComments)
-  // console.log(this)
-// t("comment_item");
-if(this.data){
-  var comment=this.data;
-  var $comment=$("#"+comment._id);
-  var openedComments=Session.get('openedComments') || [];
+  console.log(this)
+  if(this.data){
+    var comment=this.data;
+    var $comment=$("#"+comment._id);
 
-  if(Meteor.user() && Meteor.user()._id==comment.userId){
-    // if user is logged in, and the comment belongs to the user, then never queue it
-  }else{
-    if(window.queueComments && !$comment.hasClass("comment-queued") && openedComments.indexOf(comment._id)==-1){
+    if(Meteor.user() && Meteor.user()._id==comment.userId){
+      // if user is logged in, and the comment belongs to the user, then never queue it
+    }else if(this.isQueued && !$comment.hasClass("comment-queued") && window.openedComments.indexOf(comment._id)==-1){
       // if comment is new and has not already been previously queued
       // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
       // across template renderings
@@ -94,18 +89,13 @@ if(this.data){
       var imgURL=getAvatarUrl(user);
       var $container=findQueueContainer($comment);
       var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip" style="background-image:url('+imgURL+')"><span class="tooltip"><span>'+author+'</span></span></a></li>';
-      if(this.firstRender){
-        // TODO: fix re-rendering problem with timer
-        $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
-        this.firstRender=false;
-      }else{
-        $(comment_link).appendTo($container.find("ul"));
-      }
+
+      $(comment_link).appendTo($container.find("ul"));
+      // $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
+
       $comment.removeClass("comment-displayed").addClass("comment-queued");
       $comment.data("queue", $container);
       // TODO: take the user back to their previous scroll position
-       
-      }
     }
   }
 }

@@ -8,7 +8,6 @@ Template.post_page.helpers({
     return html_body.autoLink();
   },
   canComment: function(){
-    console.log(canComment(Meteor.user()))
     return canComment(Meteor.user());
   },
   canView: function(){

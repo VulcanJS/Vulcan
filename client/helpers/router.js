@@ -345,6 +345,7 @@ Router.map(function() {
     after: function() {
       console.log('router after')
       window.queueComments = false;
+      window.openedComments = [];
     }
   });
 
@@ -411,6 +412,9 @@ Router.map(function() {
       return {
         comment: Comments.findOne(this.params._id)
       }
+    },
+    after: function() {
+      window.queueComments = false;
     }
   });
 
