@@ -109,6 +109,9 @@ input[type="submit"], button, .button, .btn{
 	&:link, &:hover, &:active, &:visited{
 		color:white;
 	}
+	&.inline{
+		display: inline-block;
+	}
 }
 .twitter-signup{
 	margin-bottom:20px;

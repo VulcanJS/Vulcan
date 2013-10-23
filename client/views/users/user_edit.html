@@ -47,20 +47,29 @@
         <label>New Password</label>
         <div class="controls"><input name="new_password" type="password" value="" /></div>
       </div>
-          <div class="control-group">
-            <label class="control-label">Email Notifications</label>
-            <div class="controls">
-              <label class="checkbox">
-                <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> New Posts
-              </label>
-              <label class="checkbox">
-                <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> Comments on my posts
-              </label>
-              <label class="checkbox">
-                <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> Replies to my comments
-              </label>
-            </div>
-          </div>
+      <div class="control-group">
+        <label class="control-label">Email Notifications</label>
+        <div class="controls">
+          <label class="checkbox">
+            <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> New Posts
+          </label>
+          <label class="checkbox">
+            <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> Comments on my posts
+          </label>
+          <label class="checkbox">
+            <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> Replies to my comments
+          </label>
+        </div>
+      </div>
+      {{#if isAdmin}}
+      <div class="control-group">
+        <h3>Invites</h3>
+        <label>Invites</label>
+        <div class="controls">
+          <input name="invitesCount" type="text" value="{{invitesCount}}" />
+        </div>
+      </div>
+      {{/if}}
       <div class="form-actions">
         <a href="/forgot_password">Forgot password?</a>
         <input type="submit" class="button" value="Submit" />

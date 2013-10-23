@@ -13,6 +13,7 @@ Setting = FormModel.extend({
     postInterval: '',
     commentInterval: '',
     maxPostsPerDay: '',
+    startInvitesCount: 3,
     title: '',
     tagline: '',
     logoUrl: '',

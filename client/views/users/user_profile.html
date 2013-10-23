@@ -20,7 +20,14 @@
 				</tr>
 			</table>
 			{{#if canEditProfile}}
-				<a href="/users/{{_id}}/edit">Edit profile</a>
+				<a class="button inline" href="/users/{{_id}}/edit">Edit profile</a>
+			{{/if}}
+			{{#if canInvite}}
+				{{#if invitesCount}}
+					<a class="button inline" href="">Invite ({{invitesCount}} left)</a>
+				{{else}}
+					<a class="button inline disabled" href="">Invite (none left)</a>
+				{{/if}}
 			{{/if}}
 		</div>
 		{{/with}}

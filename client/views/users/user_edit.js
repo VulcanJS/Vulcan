@@ -25,16 +25,16 @@ Template.user_edit.events = {
     
     var $target=$(e.target);
     var user = this;
-    
     var update = {
       "profile.name": $target.find('[name=name]').val(),
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.email": $target.find('[name=email]').val(),
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
       "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
-      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length
+      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length,
+      "invitesCount": parseInt($target.find('[name=invitesCount]').val())
     };
-    
+
     var old_password = $target.find('[name=old_password]').val();
     var new_password = $target.find('[name=new_password]').val();
 

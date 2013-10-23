@@ -15,8 +15,11 @@ Accounts.onCreateUser(function(options, user){
     user.profile.name = user.username;
   
   // if this is the first user ever, make them an admin
-  if ( !Meteor.users.find().count() )
+  if (!Meteor.users.find().count() )
     user.isAdmin = true;
+
+  // give new users a few invites (default to 3)
+  user.invitesCount = getSetting('startInvitesCount', 3);
 
   trackEvent('new user', {username: user.username, email: user.profile.email});
 
