@@ -2,6 +2,8 @@
 
 * Switched to IronRouter.
 * Made nested comments optional.
+* Reworked notifications settings
+* Stopped publishing all users
 
 ## v0.6.2
 
