@@ -9,7 +9,7 @@ Meteor.methods({
         userToNotify = options.userToNotify,
         userDoingAction = options.userDoingAction,
         sendEmail = options.sendEmail;
-    console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
+    // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
     // console.log(userToNotify);
     // console.log(userDoingAction);
     // console.log(properties);

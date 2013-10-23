@@ -45,7 +45,7 @@ Template.user_item.events({
           event: 'accountApproved', 
           properties: {}, 
           userToNotify: user, 
-          userDoingAction: null, 
+          userDoingAction: Meteor.user(), 
           sendEmail: getSetting("emailNotifications")
         });
       }
