@@ -343,6 +343,8 @@ Router.map(function() {
       }
     },
     after: function() {
+      console.log('router after')
+      window.queueComments = false;
     }
   });
 
@@ -403,7 +405,7 @@ Router.map(function() {
   this.route('comment_reply', {
     path: '/comments/:_id/reply',
     waitOn: function() {
-      return Meteor.subscribe('comments', this.params._id);
+      return Meteor.subscribe('singleComment', this.params._id);
     },
     data: function() {
       return {

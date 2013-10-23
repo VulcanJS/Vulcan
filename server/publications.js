@@ -70,6 +70,10 @@ Meteor.publish('comments', function(postId) {
   return Comments.find({post: postId});
 });
 
+Meteor.publish('singleComment', function(commentId) {
+  return Comments.find(commentId);
+});
+
 Meteor.publish('settings', function() {
   return Settings.find();
 });

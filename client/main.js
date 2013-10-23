@@ -30,14 +30,20 @@ Meteor.subscribe('currentUser');
 if(Meteor.user() != null)
   Meteor.subscribe('notifications');
 
+// Posts Lists
+
 postsSubs = {}
 
 postsSubs.top = postListSubscription(selectPosts, sortPosts('score'), 10);
+
 postsSubs.new = postListSubscription(selectPosts, sortPosts('submitted'), 10);
+
 postsSubs.best = postListSubscription(selectPosts, sortPosts('baseScore'), 10);
+
 postsSubs.pending = postListSubscription(function(){
     return selectPosts({status: STATUS_PENDING})
   }, sortPosts('createdAt'), 10);
+
 postsSubs.category = postListSubscription(function(){
     return selectPosts({status: STATUS_APPROVED, slug: Session.get('categorySlug')})
   }, sortPosts('score'), 10);

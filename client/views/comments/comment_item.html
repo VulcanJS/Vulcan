@@ -12,7 +12,9 @@
             <span>downvote</span>
           </a>
         </div>
-        <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        {{#constant}}
+          <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        {{/constant}}
         <div class="comment-main">
           <div class="comment-meta">
             <a class="comment-username" href="/users/{{userId}}">{{authorName}}</a>

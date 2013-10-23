@@ -14,3 +14,8 @@ Template.comment_list.helpers({
     return comments;
   }
 });
+
+Template.comment_list.rendered = function(){
+  window.queueComments = true;
+  console.log('comment list done rendering')
+}

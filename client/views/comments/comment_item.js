@@ -70,6 +70,8 @@ Template.comment_item.created = function() {
 }
 
 Template.comment_item.rendered=function(){
+  console.log('//-------// \n comment rendered: '+this.data.body)
+  console.log('queue comment? '+window.queueComments)
   // console.log(this)
 // t("comment_item");
 if(this.data){
@@ -80,7 +82,7 @@ if(this.data){
   if(Meteor.user() && Meteor.user()._id==comment.userId){
     // if user is logged in, and the comment belongs to the user, then never queue it
   }else{
-    if(!$comment.hasClass("comment-queued") && openedComments.indexOf(comment._id)==-1){
+    if(window.queueComments && !$comment.hasClass("comment-queued") && openedComments.indexOf(comment._id)==-1){
       // if comment is new and has not already been previously queued
       // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
       // across template renderings
@@ -116,7 +118,7 @@ Template.comment_item.helpers({
   },
   child_comments: function(){
     // return only child comments
-    return Comments.find({ post: postObject._id, parent: this._id });
+    return Comments.find({parent: this._id });
   },
   author: function(){
     return Meteor.users.findOne(this.userId);

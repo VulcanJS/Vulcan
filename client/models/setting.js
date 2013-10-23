@@ -1,3 +1,4 @@
+// TODO: figure out why things don't work when you set a field to default to "true"
 
 Setting = FormModel.extend({
       
@@ -15,8 +16,9 @@ Setting = FormModel.extend({
     logoHeight: '',
     logoWidth: '',
     defaultEmail: '',
-    newPostsNotifications: true,
-    nestedComments: true,
+    newPostsNotifications: false,
+    newRepliesNotifications: false,
+    nestedComments: false,
     backgroundColor: '',
     secondaryColor: '',
     buttonColor: '',

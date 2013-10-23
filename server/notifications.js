@@ -17,7 +17,8 @@ Meteor.methods({
     }
     var newNotificationId=Notifications.insert(notification);
 
-    // send the notification is the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
+    // send the notification if notifications are activated,
+    // the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
     if(userToNotify.profile && (userToNotify.profile.notificationsFrequency === 1 || typeof userToNotify.profile.notificationsFrequency === 'undefined')){
       Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
     }
