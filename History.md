@@ -1,9 +1,12 @@
 ## v0.7
 
+#### Huge update!
+
 * Switched to IronRouter.
+* Added new invite system.
 * Made nested comments optional.
-* Reworked notifications settings
-* Stopped publishing all users
+* Reworked notifications settings.
+* Stopped publishing all users.
 
 ## v0.6.2
 

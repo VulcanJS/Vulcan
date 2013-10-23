@@ -41,7 +41,13 @@ Template.user_item.events({
       if(error){
         throwError();
       }else{
-        Meteor.call('createNotification','accountApproved', {}, user, true);
+        Meteor.call('createNotification', {
+          event: 'accountApproved', 
+          properties: {}, 
+          userToNotify: user, 
+          userDoingAction: null, 
+          sendEmail: getSetting("emailNotifications")
+        });
       }
     });
   },

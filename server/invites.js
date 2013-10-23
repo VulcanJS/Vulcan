@@ -24,6 +24,14 @@ Meteor.methods({
         invitedByName: getDisplayName(currentUser)
       }});
 
+      Meteor.call('createNotification', {
+        event: 'accountApproved', 
+        properties: {}, 
+        userToNotify: user, 
+        userDoingAction: null, 
+        sendEmail: true
+      });
+
     }else{
       throw new Meteor.Error(701, "You can't invite this user, sorry.");
     }

@@ -3,8 +3,13 @@ getUnsubscribeLink = function(user){
 };
 
 Meteor.methods({
-  createNotification: function(event, properties, userToNotify, userDoingAction, sendEmail){
-    // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
+  createNotification: function(options){
+    var event = options.event,
+        properties = options.properties,
+        userToNotify = options.userToNotify,
+        userDoingAction = options.userDoingAction,
+        sendEmail = options.sendEmail;
+    console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
     // console.log(userToNotify);
     // console.log(userDoingAction);
     // console.log(properties);
