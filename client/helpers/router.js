@@ -88,11 +88,8 @@ Router.configure({
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found',
-  before: function() {
+  after: function() {
     console.log('// Routing to '+Router._currentController.template)
-
-    // reset all session variables that might be set by the previous route
-    Session.set('categorySlug', null);
 
     // currentScroll stores the position of the user in the page
     Session.set('currentScroll', null);
@@ -343,14 +340,13 @@ Router.map(function() {
       }
     },
     after: function() {
-      console.log('router after')
       window.queueComments = false;
       window.openedComments = [];
     }
   });
 
   // Post Page (scroll to a comment)
-
+  // TODO: merge this route with previous one using optional parameters
   this.route('post_page_with_comment', {
     path: '/posts/:_id/comment/:_commentId',
     template: 'post_page',
@@ -365,6 +361,10 @@ Router.map(function() {
       return {
         postId: this.params._id
       }
+    },
+    after: function() {
+      window.queueComments = false;
+      window.openedComments = [];
     }
     // TODO: scroll window to specific comment
   });

@@ -69,8 +69,6 @@ Template.comment_item.created = function() {
 }
 
 Template.comment_item.rendered=function(){
-  console.log('//-------// \n comment rendered: '+this.data.body)
-  console.log(this)
   if(this.data){
     var comment=this.data;
     var $comment=$("#"+comment._id);
