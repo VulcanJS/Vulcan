@@ -5,14 +5,14 @@ Template.user_edit.helpers({
   userEmail : function(){
     return getEmail(this);
   },
-  hasNotificationsNone : function(){
-    return this.profile && this.profile.notificationsFrequency == 0 ? 'checked' : '';
+  hasNotificationsPosts : function(){
+    return getUserSetting('notifications.posts') ? 'checked' : '';
   },
-  hasNotificationsActivity : function(){
-    return this.profile && (this.profile.notificationsFrequency == 1 || typeof this.profile.notificationsFrequency === 'undefined') ? 'checked' : '';
+  hasNotificationsComments : function(){
+    return getUserSetting('notifications.comments') ? 'checked' : '';
   },
-  hasNotificationsAll : function(){
-    return this.profile && this.profile.notificationsFrequency == 2 ? 'checked' : '';
+  hasNotificationsReplies : function(){
+    return getUserSetting('notifications.replies') ? 'checked' : '';
   }
 })
 
@@ -30,7 +30,9 @@ Template.user_edit.events = {
       "profile.name": $target.find('[name=name]').val(),
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.email": $target.find('[name=email]').val(),
-      "profile.notificationsFrequency": parseInt($('input[name=notifications]:checked').val())
+      "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
+      "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
+      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length
     };
     
     var old_password = $target.find('[name=old_password]').val();

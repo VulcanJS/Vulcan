@@ -41,7 +41,7 @@ Template.user_item.events({
       if(error){
         throwError();
       }else{
-        Meteor.call('createNotification','accountApproved', {}, user);
+        Meteor.call('createNotification','accountApproved', {}, user, true);
       }
     });
   },

@@ -6,6 +6,9 @@ Setting = FormModel.extend({
     requireViewInvite: false,
     requirePostInvite: false,
     requirePostsApproval: false,
+    emailNotifications: false,
+    nestedComments: false,
+    defaultEmail: '',
     scoreUpdateInterval: '',
     postInterval: '',
     commentInterval: '',
@@ -15,10 +18,6 @@ Setting = FormModel.extend({
     logoUrl: '',
     logoHeight: '',
     logoWidth: '',
-    defaultEmail: '',
-    newPostsNotifications: false,
-    newRepliesNotifications: false,
-    nestedComments: false,
     backgroundColor: '',
     secondaryColor: '',
     buttonColor: '',
@@ -39,8 +38,9 @@ Setting = FormModel.extend({
   init: function(options) {
     this._super(Settings, options);
     this.overwriteTitle('scoreUpdateInterval', 'Scoring Frequency'); 
-    this.overwriteTitle('requireViewInvite', 'Require Invite to view?');
-    this.overwriteTitle('requirePostInvite', 'Require Invite to post?');
+    this.overwriteTitle('requireViewInvite', 'Require invite to view?');
+    this.overwriteTitle('requirePostInvite', 'Require invite to post?');
+    this.overwriteTitle('emailNotifications', 'Enable email notifications?');
     this.overwriteTitle('requirePostsApproval', 'Posts must be approved by admin?');
     this.overwriteTitle('title', 'Site Title');
     this.overwriteTitle('mixpanelId', '<a href="http://mixpanel.com/">Mixpanel</a> ID');

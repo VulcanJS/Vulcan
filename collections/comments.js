@@ -17,7 +17,6 @@ Comments.deny({
 
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
-    console.log('parentCommentId: '+parentCommentId)
     var user = Meteor.user(),
         post=Posts.findOne(postId),
         postUser=Meteor.users.findOne(post.userId),
@@ -56,8 +55,7 @@ Meteor.methods({
       comment.parent = parentCommentId;
 
     var newCommentId=Comments.insert(comment);
-    console.log(comment)
-    console.log(newCommentId)
+
     Posts.update(postId, {$inc: {comments: 1}});
 
     Meteor.call('upvoteComment', newCommentId);
@@ -74,19 +72,21 @@ Meteor.methods({
         properties.parentAuthorId = parentComment.userId;
         properties.parentAuthorName = getDisplayName(parentUser);
 
+        // reply notification
         // do not notify users of their own actions (i.e. they're replying to themselves)
         if(parentUser._id != user._id)
-          Meteor.call('createNotification','newReply', properties, parentUser, user);
+          Meteor.call('createNotification','newReply', properties, parentUser, user, getUserSetting('notifications.replies', false, parentUser));
 
+        // comment notification
         // if the original poster is different from the author of the parent comment, notify them too
         if(postUser._id != user._id && parentComment.userId != post.userId)
-          Meteor.call('createNotification','newComment', properties, postUser, user);
+          Meteor.call('createNotification','newComment', properties, postUser, user, getUserSetting('notifications.comments', false, postUser));
 
       }else{
         // root comment
         // don't notify users of their own comments
         if(postUser._id != user._id)
-          Meteor.call('createNotification','newComment', properties, postUser, Meteor.user());
+          Meteor.call('createNotification','newComment', properties, postUser, Meteor.user(), getUserSetting('notifications.comments', false, postUser));
       }
     }
     return properties;
