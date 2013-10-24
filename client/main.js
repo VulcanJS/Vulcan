@@ -15,7 +15,6 @@ Session.set('postsLimit', getSetting('postsPerPage', 2));
 // Settings
 Meteor.subscribe('settings', function(){
   // runs once after settings have loaded
-  analyticsInit();
   Session.set('settingsLoaded',true);
 });
 
@@ -31,20 +30,6 @@ Meteor.subscribe('currentUser');
 if(Meteor.user() != null)
   Meteor.subscribe('notifications');
 
-// Posts Lists
-
-// postsSubs = {}
-
-// postsSubs.top = postListSubscription(selectPosts, sortPosts('score'), 10);
-
-// postsSubs.new = postListSubscription(selectPosts, sortPosts('submitted'), 10);
-
-// // postsSubs.best = postListSubscription(selectPosts, sortPosts('baseScore'), 10);
-
-// postsSubs.pending = postListSubscription(function(){
-//     return selectPosts({status: STATUS_PENDING})
-//   }, sortPosts('createdAt'), 10);
-
-// postsSubs.category = postListSubscription(function(){
-//     return selectPosts({status: STATUS_APPROVED, slug: Session.get('categorySlug')})
-//   }, sortPosts('score'), 10);
+STATUS_PENDING=1;
+STATUS_APPROVED=2;
+STATUS_REJECTED=3;

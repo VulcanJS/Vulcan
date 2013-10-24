@@ -137,7 +137,7 @@ var filters = {
   },
 
   canView: function() {
-    if(!canView()){
+    if(Session.get('settingsLoaded') && !canView()){
       this.render('no_rights');
       this.stop();
     }

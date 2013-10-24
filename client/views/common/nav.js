@@ -55,5 +55,8 @@ Template.nav.helpers({
   },
   categories: function(){
     return Categories.find();
+  },
+  categoryLink: function () {
+    return getCategoryUrl(this.slug);
   }
 });
