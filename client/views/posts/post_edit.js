@@ -6,10 +6,13 @@
 // });
 
 Template.post_edit.created = function(){
-  post = this.data;
+  post = Posts.findOne(this.data.postId);
 }
 
 Template.post_edit.helpers({
+  post: function () {
+    return Posts.findOne(this.postId);
+  },
   created: function(){
     return moment(this.createdAt).format("MMMM Do, h:mm:ss a");
   },

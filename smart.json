@@ -7,9 +7,7 @@
     },
     "paginated-subscription": {},
     "crypto-md5": {},
-    "iron-router": {
-      "git": "https://github.com/EventedMind/iron-router.git",
-      "branch": "dev"
-    }
+    "iron-router": {},
+    "nprogress": {}
   }
 }

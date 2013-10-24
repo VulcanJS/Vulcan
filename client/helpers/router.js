@@ -79,45 +79,38 @@ Toolbox
 
 */
 
+
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Config ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
+
 Router.configure({
-  // autoRender: false,
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found',
-  after: function() {
-    console.log('// Routing to '+Router._currentController.template)
-
-    // currentScroll stores the position of the user in the page
-    Session.set('currentScroll', null);
-
-    $('body').css('min-height','0');
-
-    // set all errors who have already been seen to not show anymore
-    clearSeenErrors();
-        
-    // log this request with mixpanel, etc
-    analyticsRequest();
-  }
 });
 
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Filters --------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
-
-
 var filters = {
 
+  nProgressHook: function () {
+    // console.log('// nProgress Hook')
+    if (this.ready()) {
+      NProgress.done(); 
+    } else {
+      NProgress.start();
+      this.stop();
+    }
+  },
+
   isLoggedIn: function() {
-    if (Meteor.loggingIn()) {
-      this.render('loading');
-      this.stop(); 
-    } else if (!Meteor.user()) {
-      this.render('user_signin');
+    if (!(Meteor.loggingIn() || Meteor.user())) {
+      throwError('Please Sign In First.')
+      this.render('signin');
       this.stop(); 
     }
   },
@@ -130,22 +123,33 @@ var filters = {
   },
 
   isAdmin: function() {
-    if(!isAdmin(Meteor.user())){
+    if(!isAdmin()){
+      throwError("Sorry, you  have to be an admin to view this page.")
       this.render('no_rights');
       this.stop();      
     }
   },
 
   canView: function() {
-    if(!canView(Meteor.user())){
+    if(!canView()){
       this.render('no_rights');
       this.stop();
+    }
+  },
+
+  canPost: function () {
+    console.log('canPost')
+    if(!canPost()){
+      throwError("Sorry, you don't have permissions to add new items.")
+      this.render('no_rights');
+      this.stop();      
     }
   },
 
   canEditPost: function() {
     var post = Posts.findOne(this.params._id);
     if(!currentUserCanEdit(post)){
+      throwError("Sorry, you cannot edit this post.")
       this.render('no_rights');
       this.stop();
     }
@@ -154,6 +158,7 @@ var filters = {
   canEditComment: function() {
     var comment = Comments.findOne(this.params._id);
     if(!currentUserCanEdit(comment)){
+      throwError("Sorry, you cannot edit this comment.")
       this.render('no_rights');
       this.stop();
     }
@@ -170,18 +175,34 @@ var filters = {
 
 }
 
-// TODO: enable filters with "only"
+Router.load( function () {
+  // console.log('// Load Hook: '+Router._currentController.template)
+  analyticsRequest(); // log this request with mixpanel, etc
+  clearSeenErrors(); // set all errors who have already been seen to not show anymore  
+});
 
-//   Meteor.Router.filter('requireProfile');
-//   Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
-//   Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});
-//   Meteor.Router.filter('isLoggedOut', {only: ['user_signin', 'user_signup']});
-//   Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
-//   Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
-//   Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']});
-//   Meteor.Router.filter('isAdmin', {only: ['posts_pending', 'users', 'settings', 'categories', 'admin']});
-//   Meteor.Router.filter('setRequestTimestamp', {only: ['post_page']});
+Router.before( function () {
+  // console.log('// Before Hook: '+Router._currentController.template)
+});
 
+Router.before(filters.hasCompletedProfile);
+Router.before(filters.isLoggedIn, {only: ['comment_reply','post_submit']});
+Router.before(filters.canView);
+Router.before(filters.isLoggedOut, {only: ['signin', 'signup']});
+Router.before(filters.canPost, {only: ['posts_pending', 'comment_reply', 'post_submit']});
+Router.before(filters.canEditPost, {only: ['post_edit']});
+Router.before(filters.canEditComment, {only: ['comment_edit']});
+Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'categories', 'toolbox']});
+
+Router.after( function () {
+  // console.log('// After Hook: '+Router._currentController.template)
+  var scrollTo = window.currentScroll || 0;
+  $('body').scrollTop(scrollTo);
+});
+
+Router.unload( function () {
+  // console.log('// Unload Hook: '+Router._currentController.template)
+});
 
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
@@ -285,6 +306,7 @@ Router.map(function() {
       Session.set('currentDate', currentDate);
       return Meteor.subscribe('postDigest', currentDate);
     },
+    before: filters.nProgressHook,
     data: function() {
       return {
         posts: findDigestPosts(moment(currentDate))
@@ -301,6 +323,7 @@ Router.map(function() {
       Session.set('currentDate', currentDate);
       return Meteor.subscribe('postDigest', currentDate);
     },
+    before: filters.nProgressHook,
     data: function() {
       return {
         posts: findDigestPosts(moment(currentDate))
@@ -310,78 +333,59 @@ Router.map(function() {
 
   // -------------------------------------------- Post -------------------------------------------- //
 
+
   // Post Page
 
   this.route('post_page', {
     path: '/posts/:_id',
-    waitOn: function() {
-      return [
-        Meteor.subscribe('singlePost', this.params._id), 
-        Meteor.subscribe('comments', this.params._id),
-        Meteor.subscribe('postUsers', this.params._id)
-      ];
+    waitOn: function () {
+        // console.log('// Subscription Hook')
+        this.subscribe('singlePost', this.params._id).wait(), 
+        this.subscribe('comments', this.params._id).wait(),
+        this.subscribe('postUsers', this.params._id).wait()
     },
-    template: 'post_page',
-    // before: function() {
-    //   var postsHandle = Meteor.subscribe('singlePost', this.params._id);
-    //   var commentsHandle = Meteor.subscribe('comments', { post : this.params._id })
-    //   if(postsHandle.ready() && commentsHandle.ready()) {
-    //     console.log('ready')
-    //   } else {
-    //     console.log('loading…')
-    //     this.stop();
-    //   }
-    // },
-    data: function() {
-      // note: do not pass actual post object in data property because we don't want the route to be reactive
-      // and re-run every time a post score changes
-      return {
-        postId: this.params._id
-      }
+    before: filters.nProgressHook,
+    data: function () {
+      return {postId: this.params._id};
     },
-    after: function() {
+    after: function () {
       window.queueComments = false;
       window.openedComments = [];
+      // TODO: scroll to comment position
     }
   });
 
-  // Post Page (scroll to a comment)
-  // TODO: merge this route with previous one using optional parameters
-  this.route('post_page_with_comment', {
-    path: '/posts/:_id/comment/:_commentId',
-    template: 'post_page',
-    waitOn: function() {
-      return [
-        Meteor.subscribe('singlePost', this.params._id), 
-        Meteor.subscribe('comments', this.params._id ),
-        Meteor.subscribe('postUsers', this.params._id)
-      ];
+  this.route('post_page', {
+    path: '/posts/:_id/comment/:commentId',
+    waitOn: function () {
+        // console.log('// Subscription Hook')
+        this.subscribe('singlePost', this.params._id).wait(), 
+        this.subscribe('comments', this.params._id).wait(),
+        this.subscribe('postUsers', this.params._id).wait()
     },
-    data: function() {
-      return {
-        postId: this.params._id
-      }
+    before: filters.nProgressHook,
+    data: function () {
+      return {postId: this.params._id};
     },
-    after: function() {
+    after: function () {
       window.queueComments = false;
       window.openedComments = [];
+      // TODO: scroll to comment position
     }
-    // TODO: scroll window to specific comment
   });
 
   // Post Edit
 
   this.route('post_edit', {
     path: '/posts/:_id/edit',
-    waitOn: function() {
+    waitOn: function () {
       return Meteor.subscribe('singlePost', this.params._id);
     },
+    before: filters.nProgressHook,
     data: function() {
-      return {
-        post: Posts.findOne(this.params._id)
-      }
-    },
-    after: filters.canEditPost
+      return {postId: this.params._id};
+    }
+    // after: filters.canEditPost
   });
 
   // Post Submit
@@ -394,6 +398,9 @@ Router.map(function() {
 
   this.route('comment_page', {
     path: '/comments/:_id',
+    waitOn: function() {
+      return Meteor.subscribe('singleComment', this.params._id);
+    },    
     data: function() {
       return {
         comment: Comments.findOne(this.params._id)
@@ -408,6 +415,7 @@ Router.map(function() {
     waitOn: function() {
       return Meteor.subscribe('singleComment', this.params._id);
     },
+    before: filters.nProgressHook,
     data: function() {
       return {
         comment: Comments.findOne(this.params._id)
@@ -439,11 +447,10 @@ Router.map(function() {
     waitOn: function() {
       return Meteor.subscribe('singleUser', this.params._idOrSlug);
     },
+    before: filters.nProgressHook,
     data: function() {
       var findById = Meteor.users.findOne(this.params._idOrSlug);
-      var findBySlug = Meteor.users.findOne({'profile.slug': this.params._idOrSlug});
-      console.log(findById)
-      console.log(findBySlug)
+      var findBySlug = Meteor.users.findOne({slug: this.params._idOrSlug});
       return {
         user: (typeof findById == "undefined") ? findBySlug : findById
       }
@@ -457,6 +464,7 @@ Router.map(function() {
     waitOn: function() {
       return Meteor.subscribe('singleUser', this.params._id);
     },
+    before: filters.nProgressHook,
     data: function() {
       return {
         user: Meteor.users.findOne(this.params._id)
@@ -486,6 +494,7 @@ Router.map(function() {
     waitOn: function() {
       return Meteor.subscribe('allUsers');
     },
+    before: filters.nProgressHook,
     data: function() {
       return {
         users: Meteor.users.find({}, {sort: {createdAt: -1}})
