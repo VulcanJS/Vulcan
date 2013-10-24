@@ -14,8 +14,9 @@ Template.posts_best.helpers({
     // Session.set('allPostsLoaded', allPostsLoaded);
     // return allPostsLoaded;  
   },
-  loadMoreCount: function () {
-    return parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
+  loadMoreUrl: function () {
+    var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
+    return '/' + Session.get('view') + '/' + count;
   }
 });
 

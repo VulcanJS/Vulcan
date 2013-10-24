@@ -201,7 +201,7 @@ Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'ca
 
 // After Hooks
 
-Router.after(filters.resetScroll, {except:['posts_best']});
+Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending']});
 
 // Unload Hooks
 
@@ -211,30 +211,48 @@ Router.after(filters.resetScroll, {except:['posts_best']});
 //--------------------------------------------- Routes ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
-var subs = {
-  top: {
-    find: {
-
-    },
-    options: {
-
-    }
-  },
-  new: {
-
-  },
-  best: {
-    find: {
-      status: 2
-    },
-    options: {
-     sort: {
-        sticky: -1,
-        baseScore: -1,
-        createdAt: -1,
-        _id: -1
+getParameters = function (limit) {
+  var limit = parseInt(limit);
+  return {
+    top: {
+      find: {
+        status: 2
       },
-      limit: 10
+      options: {
+        sort: {
+          sticky: -1,
+          score: -1,
+          _id: -1
+        },
+        limit: limit
+      }
+    },
+    new: {
+      find: {
+        status: 2
+      },
+      options: {
+        sort: {
+          sticky: -1,
+          submitted: -1,
+          _id: -1
+        },
+        limit: limit
+      }
+    },
+    best: {
+      find: {
+        status: 2
+      },
+      options: {
+       sort: {
+          sticky: -1,
+          baseScore: -1,
+          createdAt: -1,
+          _id: -1
+        },
+        limit: limit
+      }
     }
   }
 }
@@ -246,19 +264,45 @@ Router.map(function() {
 
   // Top
 
-  this.route('home', {
+  this.route('posts_top', {
     path: '/',
-    template:'posts_list',
-    // waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
+    template:'posts_best',
+    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+    waitOn: function () {
+      var parameters = getParameters(10);
+      return Meteor.subscribe('postsList', parameters.top.find, parameters.top.options);
+    },
+    data: function () {
+      var parameters = getParameters(10);
+      Session.set('postsLimit', 10);
+      return {
+        posts: Posts.find(parameters.top.find, parameters.top.options)
+      }
+    },
+    before: filters.nProgressHook,
     after: function() {
       Session.set('view', 'top');
     }
   });
 
   this.route('posts_top', {
-    path: '/top',
-    template:'posts_list',
-    // waitOn: postListSubscription(selectPosts, sortPosts('score'), 11),
+    path: '/top/:limit?',
+    template:'posts_best',
+    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+    waitOn: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters(limit);
+      return Meteor.subscribe('postsList', parameters.top.find, parameters.top.options);
+    },
+    data: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters(limit);
+      Session.set('postsLimit', limit);
+      return {
+        posts: Posts.find(parameters.top.find, parameters.top.options)
+      }
+    },
+    before: filters.nProgressHook,
     after: function() {
       Session.set('view', 'top');
     }
@@ -267,9 +311,23 @@ Router.map(function() {
   // New
 
   this.route('posts_new', {
-    path: '/new',
-    template:'posts_list',
-    // waitOn: postListSubscription(selectPosts, sortPosts('submitted'), 12),
+    path: '/new/:limit?',
+    template:'posts_best',
+    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+    waitOn: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters(limit);
+      return Meteor.subscribe('postsList', parameters.new.find, parameters.new.options);
+    },
+    data: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters(limit);
+      Session.set('postsLimit', limit);
+      return {
+        posts: Posts.find(parameters.new.find, parameters.new.options)
+      }
+    },
+    before: filters.nProgressHook,
     after: function() {
       Session.set('view', 'new');
     }
@@ -283,22 +341,15 @@ Router.map(function() {
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      console.log('waitOn')
-      return Meteor.subscribe('postsList', subs.best.find, _.extend(subs.best.options, {limit: parseInt(limit)}));
+      var parameters = getParameters(limit);
+      return Meteor.subscribe('postsList', parameters.best.find, parameters.best.options);
     },
-    // before: function () {
-    //   console.log('before best')
-    //   var limit = this.params.limit || getSetting('postsPerPage', 10);
-    //   this.subscribe('postsList', subs.best.find, _.extend(subs.best.options, {limit: parseInt(limit)})).wait();
-    // },
     data: function () {
-      console.log('data best')
       var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters(limit);
       Session.set('postsLimit', limit);
       return {
-        posts: Posts.find(subs.best.find, _.extend(subs.best.options, {limit: parseInt(limit)}))
-        // find: subs.best.find,
-        // options: _.extend(subs.best.options), {limit: parseInt(limit)})
+        posts: Posts.find(parameters.best.find, parameters.best.options)
       }
     },
     before: filters.nProgressHook,
