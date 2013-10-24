@@ -198,6 +198,7 @@ Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'ca
 Router.after( function () {
   var scrollTo = window.currentScroll || 0;
   $('body').scrollTop(scrollTo);
+  $('body').css("min-height", 0);
 });
 
 // Unload Hooks
