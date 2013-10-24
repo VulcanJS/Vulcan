@@ -25,11 +25,11 @@
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
         </div>
         <div class="control-group post-form-category">
-          <label class="control-label">Category</label>
+          <label class="control-label">Categories</label>
           <div class="controls">
             {{#each categories}}
             <label class="radio inline">
-              <input id="category_{{_id}}" type="radio" value="{{_id}}" name="category" {{checked}} /> {{name}}
+              <input id="category_{{_id}}" type="checkbox" value="{{_id}}" name="category" {{checked}} /> {{name}}
             </label>
             {{/each}}
           </div>
