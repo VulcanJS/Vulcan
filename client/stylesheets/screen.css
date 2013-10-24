@@ -192,6 +192,11 @@ h3 {
   margin-bottom: 10px;
   color: #b3c1c6; }
 
+/* line 24, ../sass/partials/_typography.scss */
+.small {
+  font-size: 80%;
+  color: #b3c1c6; }
+
 @font-face {
   font-family: 'icomoon';
   src: url("fonts/icomoon.eot"); }
@@ -1507,8 +1512,13 @@ form textarea, .accounts-dialog textarea {
 /* line 86, ../sass/modules/_forms.scss */
 form input[type="submit"], form button, form .button, form .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons form #login-buttons-password, form .btn, .accounts-dialog input[type="submit"], .accounts-dialog button, .accounts-dialog .button, .accounts-dialog .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .accounts-dialog #login-buttons-password, .accounts-dialog .btn {
   float: right; }
+/* line 89, ../sass/modules/_forms.scss */
+form .note, .accounts-dialog .note {
+  padding: 5px 0;
+  color: #b3c1c6;
+  font-size: 80%; }
 
-/* line 90, ../sass/modules/_forms.scss */
+/* line 95, ../sass/modules/_forms.scss */
 input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
@@ -1528,34 +1538,34 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   line-height: 26px;
   height: 26px;
   font-weight: normal; }
-  /* line 105, ../sass/modules/_forms.scss */
+  /* line 110, ../sass/modules/_forms.scss */
   input[type="submit"].disabled, button.disabled, .button.disabled, .auth-buttons #login-buttons .disabled#login-buttons-password, .btn.disabled {
     background: #dfdbdb;
     pointer-events: none; }
-  /* line 109, ../sass/modules/_forms.scss */
+  /* line 114, ../sass/modules/_forms.scss */
   input[type="submit"]:link, input[type="submit"]:hover, input[type="submit"]:active, input[type="submit"]:visited, button:link, button:hover, button:active, button:visited, .button:link, .auth-buttons #login-buttons #login-buttons-password:link, .button:hover, .auth-buttons #login-buttons #login-buttons-password:hover, .button:active, .auth-buttons #login-buttons #login-buttons-password:active, .button:visited, .auth-buttons #login-buttons #login-buttons-password:visited, .btn:link, .btn:hover, .btn:active, .btn:visited {
     color: white; }
-  /* line 112, ../sass/modules/_forms.scss */
+  /* line 117, ../sass/modules/_forms.scss */
   input[type="submit"].inline, button.inline, .button.inline, .auth-buttons #login-buttons .inline#login-buttons-password, .btn.inline {
     display: inline-block; }
 
-/* line 116, ../sass/modules/_forms.scss */
+/* line 121, ../sass/modules/_forms.scss */
 .twitter-signup {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #dfdbdb; }
-  /* line 120, ../sass/modules/_forms.scss */
+  /* line 125, ../sass/modules/_forms.scss */
   .twitter-signup .twitter-button {
     background: #00aced; }
 
-/* line 124, ../sass/modules/_forms.scss */
+/* line 129, ../sass/modules/_forms.scss */
 .category-slug {
   font-size: 12px;
   float: left;
   width: 80%;
   display: block; }
 
-/* line 130, ../sass/modules/_forms.scss */
+/* line 135, ../sass/modules/_forms.scss */
 .ui-autocomplete {
   background: white;
   width: 200px!important;

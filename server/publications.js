@@ -1,4 +1,4 @@
-var userFieldsPrivacy = { // false means private
+var privacyOptions = { // false means private
   secret_id: false,
   isAdmin: false,
   emails: false,
@@ -18,7 +18,7 @@ Meteor.publish('currentUser', function() {
 });
 
 Meteor.publish('singleUser', function(userIdOrSlug) {
-  var options = isAdminById(this.userId) ? {} : {fields: userFieldsPrivacy};
+  var options = isAdminById(this.userId) ? {limit: 1} : {limit: 1, fields: privacyOptions};
   var findById = Meteor.users.find(userIdOrSlug, options);
   var findBySlug = Meteor.users.find({'profile.slug': userIdOrSlug}, options)
   // if we find something when treating the argument as an ID, return that; else assume it's a slug

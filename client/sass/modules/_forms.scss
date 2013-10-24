@@ -86,6 +86,11 @@ form, .accounts-dialog{
 	input[type="submit"], button, .button, .btn{
 		float:right;
 	}
+	.note{
+		padding: 5px 0;
+		color: $light-text;
+		font-size: 80%;
+	}
 }
 input[type="submit"], button, .button, .btn{
 	-webkit-appearance: none;

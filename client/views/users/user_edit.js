@@ -5,6 +5,9 @@ Template.user_edit.helpers({
   userEmail : function(){
     return getEmail(this);
   },
+  profileUrl: function(){
+    return Meteor.absoluteUrl()+"users/"+this.profile.slug;
+  },
   hasNotificationsPosts : function(){
     return getUserSetting('notifications.posts') ? 'checked' : '';
   },
@@ -24,9 +27,11 @@ Template.user_edit.events = {
       throwError('You must be logged in.');
     
     var $target=$(e.target);
+    var name = $target.find('[name=name]').val();
     var user = this;
     var update = {
-      "profile.name": $target.find('[name=name]').val(),
+      "profile.name": name,
+      "profile.slug": slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.email": $target.find('[name=email]').val(),
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
