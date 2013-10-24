@@ -175,15 +175,14 @@ var filters = {
 
 }
 
+// Load Hooks
+
 Router.load( function () {
-  // console.log('// Load Hook: '+Router._currentController.template)
   analyticsRequest(); // log this request with mixpanel, etc
   clearSeenErrors(); // set all errors who have already been seen to not show anymore  
 });
 
-Router.before( function () {
-  // console.log('// Before Hook: '+Router._currentController.template)
-});
+// Before Hooks
 
 Router.before(filters.hasCompletedProfile);
 Router.before(filters.isLoggedIn, {only: ['comment_reply','post_submit']});
@@ -194,15 +193,16 @@ Router.before(filters.canEditPost, {only: ['post_edit']});
 Router.before(filters.canEditComment, {only: ['comment_edit']});
 Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'categories', 'toolbox']});
 
+// After Hooks
+
 Router.after( function () {
-  // console.log('// After Hook: '+Router._currentController.template)
   var scrollTo = window.currentScroll || 0;
   $('body').scrollTop(scrollTo);
 });
 
-Router.unload( function () {
-  // console.log('// Unload Hook: '+Router._currentController.template)
-});
+// Unload Hooks
+
+//
 
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
