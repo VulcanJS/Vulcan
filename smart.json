@@ -5,7 +5,6 @@
     "database-forms": {
       "git": "git://github.com/SachaG/database-forms.git"
     },
-    "paginated-subscription": {},
     "crypto-md5": {},
     "iron-router": {},
     "nprogress": {}
