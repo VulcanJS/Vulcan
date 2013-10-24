@@ -62,6 +62,7 @@ Meteor.publish('singlePost', function(id) {
 });
 
 Meteor.publish('postsList', function(find, options) {
+  console.log(find)
   console.log(options)
   if(canViewById(this.userId)){
     options = options || {};

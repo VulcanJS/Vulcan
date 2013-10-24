@@ -144,7 +144,6 @@ var filters = {
   },
 
   canPost: function () {
-    console.log('canPost')
     if(!canPost()){
       throwError("Sorry, you don't have permissions to add new items.")
       this.render('no_rights');
@@ -201,7 +200,7 @@ Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'ca
 
 // After Hooks
 
-Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending']});
+Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'category']});
 
 // Unload Hooks
 
@@ -212,8 +211,8 @@ Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best
 //--------------------------------------------------------------------------------------------------//
 
 getParameters = function (view, limit, category) {
-  var limit = parseInt(limit);
-  var parameters = {
+  // TODO: streamline syntax to get a base object that gets extended for each view
+  var allParameters = {
     top: {
       find: {
         status: 2
@@ -224,7 +223,7 @@ getParameters = function (view, limit, category) {
           score: -1,
           _id: -1
         },
-        limit: limit
+        limit: 10
       }
     },
     new: {
@@ -237,7 +236,7 @@ getParameters = function (view, limit, category) {
           submitted: -1,
           _id: -1
         },
-        limit: limit
+        limit: 10
       }
     },
     best: {
@@ -251,7 +250,7 @@ getParameters = function (view, limit, category) {
           createdAt: -1,
           _id: -1
         },
-        limit: limit
+        limit: 10
       }
     },
     pending: {
@@ -264,11 +263,33 @@ getParameters = function (view, limit, category) {
           createdAt: -1,
           _id: -1
         },
-        limit: limit
+        limit: 10
+      }
+    },
+    category: {
+      find: {
+        status: 2
+      },
+      options: {
+        sort: {
+          sticky: -1,
+          score: -1,
+          _id: -1
+        },
+        limit: 10
       }
     }
   }
-  return parameters[view];
+
+  var parameters = allParameters[view];
+
+  if(typeof limit != 'undefined')
+    _.extend(parameters.options, {limit: parseInt(limit)});
+
+  if(typeof category != 'undefined')
+    _.extend(parameters.find, {'categories.slug': category});
+
+  return parameters;
 }
 
 
@@ -283,14 +304,14 @@ Router.map(function() {
     template:'posts_best',
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
-      var parameters = getParameters(10);
-      return Meteor.subscribe('postsList', parameters.top.find, parameters.top.options);
+      var parameters = getParameters('top', 10);
+      return Meteor.subscribe('postsList', parameters.find, parameters.options);
     },
     data: function () {
-      var parameters = getParameters(10);
+      var parameters = getParameters('top', 10);
       Session.set('postsLimit', 10);
       return {
-        posts: Posts.find(parameters.top.find, parameters.top.options)
+        posts: Posts.find(parameters.find, parameters.options)
       }
     },
     before: filters.nProgressHook,
@@ -398,16 +419,16 @@ Router.map(function() {
   // Categories
 
   this.route('category', {
-    path: '/c/:slug',
+    path: '/category/:slug/:limit?',
     template:'posts_best',
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('category', limit);
+      var parameters = getParameters('category', limit, this.params.slug);
       return Meteor.subscribe('postsList', parameters.find, parameters.options);
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('category', limit);
+      var parameters = getParameters('category', limit, this.params.slug);
       Session.set('postsLimit', limit);
       return {
         posts: Posts.find(parameters.find, parameters.options)

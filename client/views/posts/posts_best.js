@@ -16,7 +16,8 @@ Template.posts_best.helpers({
   },
   loadMoreUrl: function () {
     var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
-    return '/' + Session.get('view') + '/' + count;
+    var categorySegment = Session.get('categorySlug') ? Session.get('categorySlug') + '/' : '';
+    return '/' + Session.get('view') + '/' + categorySegment + count;
   }
 });
 
