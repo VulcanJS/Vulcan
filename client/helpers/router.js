@@ -212,83 +212,52 @@ Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best
 //--------------------------------------------------------------------------------------------------//
 
 getParameters = function (view, limit, category) {
-  // TODO: streamline syntax to get a base object that gets extended for each view
-  var allParameters = {
-    top: {
-      find: {
-        status: 2
-      },
-      options: {
-        sort: {
-          sticky: -1,
-          score: -1,
-          _id: -1
-        },
-        limit: 10
-      }
+
+  var baseParameters = {
+    find: {
+      status: 2
     },
-    new: {
-      find: {
-        status: 2
-      },
-      options: {
-        sort: {
-          sticky: -1,
-          submitted: -1,
-          _id: -1
-        },
-        limit: 10
-      }
-    },
-    best: {
-      find: {
-        status: 2
-      },
-      options: {
-       sort: {
-          sticky: -1,
-          baseScore: -1,
-          createdAt: -1,
-          _id: -1
-        },
-        limit: 10
-      }
-    },
-    pending: {
-      find: {
-        status: 1
-      },
-      options: {
-       sort: {
-          sticky: -1,
-          createdAt: -1,
-          _id: -1
-        },
-        limit: 10
-      }
-    },
-    category: {
-      find: {
-        status: 2
-      },
-      options: {
-        sort: {
-          sticky: -1,
-          score: -1,
-          _id: -1
-        },
-        limit: 10
-      }
+    options: {
+      limit: 10
     }
   }
 
-  var parameters = allParameters[view];
+  // TODO: find a way to guarantee order of parameters, or else switch back to old syntax
+
+  switch (view) {
+
+    case 'top':
+      var parameters = $.extend(true, baseParameters, {options: {sort: {sticky: -1, score: -1}}});
+      break;
+
+    case 'new':
+      var parameters = $.extend(true, baseParameters, {options: {sort: {sticky: -1, submitted: -1}}});
+      break;
+
+    case 'best':
+      var parameters = $.extend(true, baseParameters, {options: {sort: {sticky: -1, baseScore: -1}}});
+      break;
+
+    case 'pending':
+      var parameters = $.extend(true, baseParameters, {find: {status: 1}, options: {sort: {baseScore: -1}}});
+      break;      
+
+    case 'category': // same as top for now
+      var parameters = $.extend(true, baseParameters, {options: {sort: {sticky: -1, score: -1}}});
+      break;
+
+  }
+
+  // sort by _id to break ties
+  $.extend(true, parameters, {options: {sort: {_id: -1}}})
 
   if(typeof limit != 'undefined')
     _.extend(parameters.options, {limit: parseInt(limit)});
 
   if(typeof category != 'undefined')
     _.extend(parameters.find, {'categories.slug': category});
+
+  // console.log(parameters.options.sort)
 
   return parameters;
 }

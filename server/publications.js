@@ -65,6 +65,15 @@ Meteor.publish('postsList', function(find, options) {
   if(canViewById(this.userId)){
     options = options || {};
     var posts = Posts.find(find, options);
+
+    // console.log('//-------- Subscription Parameters:');
+    // console.log(find);
+    // console.log(options);
+    // console.log('Found '+posts.fetch().length+ ' posts:');
+    // posts.rewind();
+    // console.log(_.pluck(posts.fetch(), 'headline'));
+    // posts.rewind();
+
     return posts;
   }
 });
