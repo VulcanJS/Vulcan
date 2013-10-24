@@ -7,7 +7,8 @@
 * Made nested comments optional.
 * Reworked notifications settings.
 * Stopped publishing all users.
-* Added URL slugs for user profiles
+* Added URL slugs for user profiles.
+* Using nProgress to show loading.
 
 ## v0.6.2
 
