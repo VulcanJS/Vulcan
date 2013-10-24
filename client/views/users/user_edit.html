@@ -8,14 +8,13 @@
     {{/if}}
     <form>
       <h2>Account</h2>
-      {{#if username}}
       <div class="control-group">
         <label>Username</label>
         <div class="controls">
-          <input id="username" name="username" disabled="disabled" type="text" value="{{username}}" />
+          <input id="username" name="username" disabled="disabled" type="text" value="{{userName}}" />
         </div>
+        <p class="note">Profile URL: {{profileUrl}}</p>
       </div>
-      {{/if}}
 <!--       <div class="control-group">
         <label>Email</label>
         <div class="controls">
@@ -27,7 +26,6 @@
         <div class="controls">
           <input name="name" type="text" value="{{profile.name}}" />
         </div>
-        <p class="note">Profile URL: {{profileUrl}}</p>
       </div>
       <div class="control-group">
         <label>Email</label>

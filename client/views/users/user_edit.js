@@ -2,11 +2,14 @@ Template.user_edit.helpers({
   profileIncomplete : function() {
     return this && !this.loading && !userProfileComplete(this);
   },
+  userName: function(){
+    return getUserName(this);
+  },
   userEmail : function(){
     return getEmail(this);
   },
   profileUrl: function(){
-    return Meteor.absoluteUrl()+"users/"+this.profile.slug;
+    return Meteor.absoluteUrl()+"users/"+this.slug;
   },
   hasNotificationsPosts : function(){
     return getUserSetting('notifications.posts') ? 'checked' : '';
