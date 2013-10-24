@@ -211,9 +211,9 @@ Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best
 //--------------------------------------------- Routes ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 
-getParameters = function (limit) {
+getParameters = function (view, limit, category) {
   var limit = parseInt(limit);
-  return {
+  var parameters = {
     top: {
       find: {
         status: 2
@@ -253,8 +253,22 @@ getParameters = function (limit) {
         },
         limit: limit
       }
+    },
+    pending: {
+      find: {
+        status: 1
+      },
+      options: {
+       sort: {
+          sticky: -1,
+          createdAt: -1,
+          _id: -1
+        },
+        limit: limit
+      }
     }
   }
+  return parameters[view];
 }
 
 
@@ -291,15 +305,15 @@ Router.map(function() {
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters(limit);
-      return Meteor.subscribe('postsList', parameters.top.find, parameters.top.options);
+      var parameters = getParameters('top', limit);
+      return Meteor.subscribe('postsList', parameters.find, parameters.options);
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters(limit);
+      var parameters = getParameters('top', limit);
       Session.set('postsLimit', limit);
       return {
-        posts: Posts.find(parameters.top.find, parameters.top.options)
+        posts: Posts.find(parameters.find, parameters.options)
       }
     },
     before: filters.nProgressHook,
@@ -316,15 +330,15 @@ Router.map(function() {
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters(limit);
-      return Meteor.subscribe('postsList', parameters.new.find, parameters.new.options);
+      var parameters = getParameters('new', limit);
+      return Meteor.subscribe('postsList', parameters.find, parameters.options);
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters(limit);
+      var parameters = getParameters('new', limit);
       Session.set('postsLimit', limit);
       return {
-        posts: Posts.find(parameters.new.find, parameters.new.options)
+        posts: Posts.find(parameters.find, parameters.options)
       }
     },
     before: filters.nProgressHook,
@@ -338,18 +352,17 @@ Router.map(function() {
   this.route('posts_best', {
     path: '/best/:limit?',
     template:'posts_best',
-    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters(limit);
-      return Meteor.subscribe('postsList', parameters.best.find, parameters.best.options);
+      var parameters = getParameters('best', limit);
+      return Meteor.subscribe('postsList', parameters.find, parameters.options);
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters(limit);
+      var parameters = getParameters('best', limit);
       Session.set('postsLimit', limit);
       return {
-        posts: Posts.find(parameters.best.find, parameters.best.options)
+        posts: Posts.find(parameters.find, parameters.options)
       }
     },
     before: filters.nProgressHook,
@@ -361,11 +374,22 @@ Router.map(function() {
   // Pending
 
   this.route('posts_pending', {
-    path: '/pending',
-    template:'posts_list',
-    // waitOn: postListSubscription(function(){
-    //   return selectPosts({status: STATUS_PENDING})
-    // }, sortPosts('createdAt'), 14),
+    path: '/pending/:limit?',
+    template:'posts_best',
+    waitOn: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters('pending', limit);
+      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+    },
+    data: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters('pending', limit);
+      Session.set('postsLimit', limit);
+      return {
+        posts: Posts.find(parameters.find, parameters.options)
+      }
+    },
+    before: filters.nProgressHook,
     after: function() {
       Session.set('view', 'pending');
     }
@@ -375,7 +399,21 @@ Router.map(function() {
 
   this.route('category', {
     path: '/c/:slug',
-    template:'posts_list',
+    template:'posts_best',
+    waitOn: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters('category', limit);
+      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+    },
+    data: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      var parameters = getParameters('category', limit);
+      Session.set('postsLimit', limit);
+      return {
+        posts: Posts.find(parameters.find, parameters.options)
+      }
+    },
+    before: filters.nProgressHook,
     // waitOn: postListSubscription(function(){
     //   // problem: :slug param is not accessible from here
     //   return selectPosts({status: STATUS_PENDING, slug: 'experiments'});
