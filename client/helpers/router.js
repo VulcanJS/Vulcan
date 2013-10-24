@@ -107,6 +107,12 @@ var filters = {
     }
   },
 
+  resetScroll: function () {
+    var scrollTo = window.currentScroll || 0;
+    $('body').scrollTop(scrollTo);
+    $('body').css("min-height", 0);
+  },
+
   isLoggedIn: function() {
     if (!(Meteor.loggingIn() || Meteor.user())) {
       throwError('Please Sign In First.')
@@ -195,11 +201,7 @@ Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'ca
 
 // After Hooks
 
-Router.after( function () {
-  var scrollTo = window.currentScroll || 0;
-  $('body').scrollTop(scrollTo);
-  $('body').css("min-height", 0);
-});
+Router.after(filters.resetScroll, {except:['posts_best']});
 
 // Unload Hooks
 
@@ -208,6 +210,35 @@ Router.after( function () {
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
+
+var subs = {
+  top: {
+    find: {
+
+    },
+    options: {
+
+    }
+  },
+  new: {
+
+  },
+  best: {
+    find: {
+      status: 2
+    },
+    options: {
+     sort: {
+        sticky: -1,
+        baseScore: -1,
+        createdAt: -1,
+        _id: -1
+      },
+      limit: 10
+    }
+  }
+}
+
 
 Router.map(function() {
 
@@ -247,9 +278,30 @@ Router.map(function() {
   // Best
 
   this.route('posts_best', {
-    path: '/best',
-    template:'posts_list',
+    path: '/best/:limit?',
+    template:'posts_best',
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+    waitOn: function () {
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      console.log('waitOn')
+      return Meteor.subscribe('postsList', subs.best.find, _.extend(subs.best.options, {limit: parseInt(limit)}));
+    },
+    // before: function () {
+    //   console.log('before best')
+    //   var limit = this.params.limit || getSetting('postsPerPage', 10);
+    //   this.subscribe('postsList', subs.best.find, _.extend(subs.best.options, {limit: parseInt(limit)})).wait();
+    // },
+    data: function () {
+      console.log('data best')
+      var limit = this.params.limit || getSetting('postsPerPage', 10);
+      Session.set('postsLimit', limit);
+      return {
+        posts: Posts.find(subs.best.find, _.extend(subs.best.options, {limit: parseInt(limit)}))
+        // find: subs.best.find,
+        // options: _.extend(subs.best.options), {limit: parseInt(limit)})
+      }
+    },
+    before: filters.nProgressHook,
     after: function() {
       Session.set('view', 'best');
     }

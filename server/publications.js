@@ -61,6 +61,20 @@ Meteor.publish('singlePost', function(id) {
   }
 });
 
+Meteor.publish('postsList', function(find, options) {
+  console.log(options)
+  if(canViewById(this.userId)){
+    options = options || {};
+    var posts = Posts.find(find, options);
+    console.log('/// '+posts.fetch().length)
+    posts.rewind();
+
+    console.log(_.pluck(posts.fetch(), 'headline'));
+    posts.rewind();
+    return posts;
+  }
+});
+
 Meteor.publish('paginatedPosts', function(find, options, limit) {
   if(canViewById(this.userId)){
     options = options || {};
