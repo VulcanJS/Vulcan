@@ -17,12 +17,12 @@ Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
 });
 
-Meteor.publish('singleUser', function(userId) {
-  if(isAdminById(this.userId)){
-    return Meteor.users.find(userId);
-  }else{
-    return Meteor.users.find(userId, {fields: userFieldsPrivacy}); 
-  }
+Meteor.publish('singleUser', function(userIdOrSlug) {
+  var options = isAdminById(this.userId) ? {} : {fields: userFieldsPrivacy};
+  var findById = Meteor.users.find(userIdOrSlug, options);
+  var findBySlug = Meteor.users.find({'profile.slug': userIdOrSlug}, options)
+  // if we find something when treating the argument as an ID, return that; else assume it's a slug
+  return findById.count() ? findById : findBySlug;
 });
 
 Meteor.publish('postUsers', function(postId) {

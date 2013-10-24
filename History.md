@@ -7,6 +7,7 @@
 * Made nested comments optional.
 * Reworked notifications settings.
 * Stopped publishing all users.
+* Added URL slugs for user profiles
 
 ## v0.6.2
 

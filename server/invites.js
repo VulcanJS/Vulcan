@@ -35,10 +35,5 @@ Meteor.methods({
     }else{
       throw new Meteor.Error(701, "You can't invite this user, sorry.");
     }
-  },
-  giveInvites: function () {
-    if(isAdmin(Meteor.user())){
-      Meteor.users.update({}, {$inc:{invitesCount: 1}}, {multi:true});
-    }
   }
 })

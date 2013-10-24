@@ -435,13 +435,17 @@ Router.map(function() {
   // User Profile
 
   this.route('user_profile', {
-    path: '/users/:_id',
+    path: '/users/:_idOrSlug',
     waitOn: function() {
-      return Meteor.subscribe('singleUser', this.params._id);
+      return Meteor.subscribe('singleUser', this.params._idOrSlug);
     },
     data: function() {
+      var findById = Meteor.users.findOne(this.params._idOrSlug);
+      var findBySlug = Meteor.users.findOne({'profile.slug': this.params._idOrSlug});
+      console.log(findById)
+      console.log(findBySlug)
       return {
-        user: Meteor.users.findOne(this.params._id)
+        user: (typeof findById == "undefined") ? findBySlug : findById
       }
     }
   });
