@@ -184,7 +184,8 @@ var filters = {
 
 Router.load( function () {
   analyticsRequest(); // log this request with mixpanel, etc
-  clearSeenErrors(); // set all errors who have already been seen to not show anymore  
+  clearSeenErrors(); // set all errors who have already been seen to not show anymore
+  Session.set('categorySlug', null); 
 });
 
 // Before Hooks
