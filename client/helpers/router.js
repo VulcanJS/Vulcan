@@ -301,7 +301,7 @@ Router.map(function() {
 
   this.route('posts_top', {
     path: '/',
-    template:'posts_best',
+    template:'posts_list',
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var parameters = getParameters('top', 10);
@@ -322,7 +322,7 @@ Router.map(function() {
 
   this.route('posts_top', {
     path: '/top/:limit?',
-    template:'posts_best',
+    template:'posts_list',
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -347,7 +347,7 @@ Router.map(function() {
 
   this.route('posts_new', {
     path: '/new/:limit?',
-    template:'posts_best',
+    template:'posts_list',
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -372,7 +372,7 @@ Router.map(function() {
 
   this.route('posts_best', {
     path: '/best/:limit?',
-    template:'posts_best',
+    template:'posts_list',
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('best', limit);
@@ -396,7 +396,7 @@ Router.map(function() {
 
   this.route('posts_pending', {
     path: '/pending/:limit?',
-    template:'posts_best',
+    template:'posts_list',
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('pending', limit);
@@ -420,7 +420,7 @@ Router.map(function() {
 
   this.route('category', {
     path: '/category/:slug/:limit?',
-    template:'posts_best',
+    template:'posts_list',
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('category', limit, this.params.slug);

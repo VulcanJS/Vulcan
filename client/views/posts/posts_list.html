@@ -4,11 +4,8 @@
 			{{> post_item}}
 		{{/each}}
 	</div>
-  {{#if postsReady}}
   	<div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}">
-  		<a class="more-link" href="#">Load more</a>
+  		<a class="more-link" href="{{loadMoreUrl}}">Load more</a>
   	</div>
-  {{else}}
-    <div class="grid">Loading... </div>
-  {{/if}}
+
 </template>

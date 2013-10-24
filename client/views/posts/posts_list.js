@@ -1,16 +1,16 @@
 Template.posts_list.helpers({
-  posts: function() {
-    // console.log(Session.get('view'))
-    // console.log(postsSubs[Session.get('view')])
-    return postsSubs[Session.get('view')].fetch();
-  },
-  postsReady: function() {
-    return postsSubs[Session.get('view')].ready();
-  },
   allPostsLoaded: function(){
-    allPostsLoaded = postsSubs[Session.get('view')].fetch().length < postsSubs[Session.get('view')].loaded();
-    Session.set('allPostsLoaded', allPostsLoaded);
-    return allPostsLoaded;  
+    return false;
+    // TODO: find out when all posts have been loaded
+    
+    // allPostsLoaded = postsSubs[Session.get('view')].fetch().length < postsSubs[Session.get('view')].loaded();
+    // Session.set('allPostsLoaded', allPostsLoaded);
+    // return allPostsLoaded;  
+  },
+  loadMoreUrl: function () {
+    var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
+    var categorySegment = Session.get('categorySlug') ? Session.get('categorySlug') + '/' : '';
+    return '/' + Session.get('view') + '/' + categorySegment + count;
   }
 });
 
@@ -22,12 +22,4 @@ Template.posts_list.rendered = function(){
   Session.set('distanceFromTop', distanceFromTop);
   $('body').css('min-height',distanceFromTop+160);
 }
-
-Template.posts_list.events({
-  'click .more-link': function(e) {
-    e.preventDefault();
-    Session.set('currentScroll',$('body').scrollTop());
-    postsSubs[Session.get('view')].loadNextPage();
-  }
-});
 
