@@ -7,7 +7,6 @@
         "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master"
       },
-      "paginated-subscription": {},
       "crypto-md5": {},
       "iron-router": {},
       "nprogress": {}
@@ -22,11 +21,6 @@
         "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master",
         "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
-      },
-      "paginated-subscription": {
-        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
-        "tag": "v0.1.2",
-        "commit": "35e0c6112df2b4cfeb60b559276a93cac5ee2dd6"
       },
       "crypto-md5": {
         "git": "https://github.com/tmeasday/meteor-crypto-md5.git",

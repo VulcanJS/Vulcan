@@ -40,14 +40,15 @@ Meteor.publish('postUsers', function(postId) {
   }
 });
 
-Meteor.publish('allUsers', function() {
+Meteor.publish('allUsers', function(limit) {
+  console.log(limit)
   if(canViewById(this.userId)){
     if (isAdminById(this.userId)) {
       // if user is admin, publish all fields
-      return Meteor.users.find();
+      return Meteor.users.find({}, {sort:{createdAt: -1}, limit: limit});
     }else{
       // else, filter out sensitive info
-      return Meteor.users.find({}, {fields: userFieldsPrivacy});
+      return Meteor.users.find({}, {sort:{createdAt: -1}, limit: limit, fields: userFieldsPrivacy});
     }
   }
 });

@@ -129,7 +129,7 @@ var filters = {
   },
 
   isAdmin: function() {
-    if(!isAdmin()){
+    if(Session.get('settingsLoaded') && !isAdmin()){
       throwError("Sorry, you  have to be an admin to view this page.")
       this.render('no_rights');
       this.stop();      
@@ -197,11 +197,11 @@ Router.before(filters.isLoggedOut, {only: ['signin', 'signup']});
 Router.before(filters.canPost, {only: ['posts_pending', 'comment_reply', 'post_submit']});
 Router.before(filters.canEditPost, {only: ['post_edit']});
 Router.before(filters.canEditComment, {only: ['comment_edit']});
-Router.before(filters.isAdmin, {only: ['posts_pending', 'users', 'settings', 'categories', 'toolbox']});
+Router.before(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings', 'categories', 'toolbox']});
 
 // After Hooks
 
-Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'category']});
+Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'category', 'all-users']});
 
 // Unload Hooks
 
@@ -623,14 +623,19 @@ Router.map(function() {
 
   // All Users
 
-  this.route('users', {
+  this.route('all-users', {
+    path: '/all-users/:limit?',
+    template: 'users',
     waitOn: function() {
-      return Meteor.subscribe('allUsers');
+      var limit = parseInt(this.params.limit) || 20;
+      return Meteor.subscribe('allUsers', limit);
     },
     before: filters.nProgressHook,
     data: function() {
+      var limit = parseInt(this.params.limit) || 20;
+      Session.set('usersLimit', limit);
       return {
-        users: Meteor.users.find({}, {sort: {createdAt: -1}})
+        users: Meteor.users.find({}, {sort: {createdAt: -1}, limit: limit})
       }
     }
   });
