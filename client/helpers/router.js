@@ -26,8 +26,11 @@ canEditComment
 hasCompletedProfile
 
 ---------------------------------------------------------------
-#                    Subscription Functions                   #
+#                          Controllers                        #
 ---------------------------------------------------------------
+
+PostsListController
+PostPageController
 
 ---------------------------------------------------------------
 #                             Routes                          #
@@ -208,8 +211,67 @@ Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best
 //
 
 //--------------------------------------------------------------------------------------------------//
+//------------------------------------------- Controllers ------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
+
+
+// Common controller for all posts lists
+
+PostsListController = RouteController.extend({
+  template:'posts_list',
+  // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+  waitOn: function () {
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    var limit = this.params.limit || getSetting('postsPerPage', 10);
+    var parameters = getParameters(view, limit);
+    return [
+      Meteor.subscribe('postsList', parameters.find, parameters.options),
+      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+    ]
+  },
+  data: function () {
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    var limit = this.params.limit || getSetting('postsPerPage', 10);
+    var parameters = getParameters(view, limit);
+    Session.set('postsLimit', limit);
+    return {
+      posts: Posts.find(parameters.find, parameters.options)
+    }
+  },
+  before: filters.nProgressHook,
+  after: function() {
+    Session.set('view', 'top');
+  }    
+});
+
+// Common controller for post pages
+
+PostPageController = RouteController.extend({
+  template: 'post_page',
+  waitOn: function () {
+    return [
+      Meteor.subscribe('singlePost', this.params._id), 
+      Meteor.subscribe('comments', this.params._id),
+      Meteor.subscribe('postUsers', this.params._id)
+    ];
+  },
+  before: filters.nProgressHook,
+  data: function () {
+    return {postId: this.params._id};
+  },
+  after: function () {
+    window.queueComments = false;
+    window.openedComments = [];
+    // TODO: scroll to comment position
+  } 
+});
+
+
+//--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
+
+// getParameters gives an object containing the appropriate find and options arguments for the subscriptions's Posts.find()
 
 getParameters = function (view, limit, category) {
 
@@ -221,8 +283,6 @@ getParameters = function (view, limit, category) {
       limit: 10
     }
   }
-
-  // TODO: find a way to guarantee order of parameters, or else switch back to old syntax
 
   switch (view) {
 
@@ -262,38 +322,7 @@ getParameters = function (view, limit, category) {
   return parameters;
 }
 
-// Common controller for all posts lists
-
-PostsListController = RouteController.extend({
-  template:'posts_list',
-  // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
-  waitOn: function () {
-    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
-    var limit = this.params.limit || getSetting('postsPerPage', 10);
-    var parameters = getParameters(view, limit);
-    return [
-      Meteor.subscribe('postsList', parameters.find, parameters.options),
-      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-    ]
-  },
-  data: function () {
-    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
-    var limit = this.params.limit || getSetting('postsPerPage', 10);
-    var parameters = getParameters(view, limit);
-    Session.set('postsLimit', limit);
-    return {
-      posts: Posts.find(parameters.find, parameters.options)
-    }
-  },
-  before: filters.nProgressHook,
-  after: function() {
-    Session.set('view', 'top');
-  }    
-});
-
 Router.map(function() {
-
-  // TODO: put paginated subscriptions inside router
 
   // Top
 
@@ -330,7 +359,8 @@ Router.map(function() {
 
   // Categories
 
-  // category route uses slightly different hooks, so don't inherit from PostListController for now
+  // category route uses slightly different hooks, so don't inherit from PostsListController for now
+  // TODO: use PostsListController here as well
 
   this.route('category', {
     path: '/category/:slug/:limit?',
@@ -403,39 +433,13 @@ Router.map(function() {
 
   this.route('post_page', {
     path: '/posts/:_id',
-    waitOn: function () {
-        return [
-          Meteor.subscribe('singlePost', this.params._id), 
-          Meteor.subscribe('comments', this.params._id),
-          Meteor.subscribe('postUsers', this.params._id)
-        ];
-    },
-    before: filters.nProgressHook,
-    data: function () {
-      return {postId: this.params._id};
-    },
-    after: function () {
-      window.queueComments = false;
-      window.openedComments = [];
-      // TODO: scroll to comment position
-    }
+    controller: PostPageController
   });
 
-  this.route('post_page', {
+  this.route('post_page_with_comment', {
     path: '/posts/:_id/comment/:commentId',
-    waitOn: function () {
-        // console.log('// Subscription Hook')
-        this.subscribe('singlePost', this.params._id).wait(), 
-        this.subscribe('comments', this.params._id).wait(),
-        this.subscribe('postUsers', this.params._id).wait()
-    },
-    before: filters.nProgressHook,
-    data: function () {
-      return {postId: this.params._id};
-    },
+    controller: PostPageController,
     after: function () {
-      window.queueComments = false;
-      window.openedComments = [];
       // TODO: scroll to comment position
     }
   });
