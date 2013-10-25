@@ -3,6 +3,7 @@ Session.set('initialLoad', true);
 Session.set('today', new Date());
 Session.set('view', 'top');
 Session.set('postsLimit', getSetting('postsPerPage', 2));
+Session.set('settingsLoaded', false);
 
 // Subscriptions
 

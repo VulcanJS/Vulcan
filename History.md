@@ -9,6 +9,7 @@
 * Stopped publishing all users.
 * Added URL slugs for user profiles.
 * Using nProgress to show loading.
+* Paginating users dashboard.
 
 ## v0.6.2
 

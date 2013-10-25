@@ -129,10 +129,10 @@ var filters = {
   },
 
   isAdmin: function() {
-    if(Session.get('settingsLoaded') && !isAdmin()){
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()){
       throwError("Sorry, you  have to be an admin to view this page.")
       this.render('no_rights');
-      this.stop();      
+      this.stop(); 
     }
   },
 
