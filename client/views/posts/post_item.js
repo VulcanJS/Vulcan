@@ -30,7 +30,9 @@ Template.post_item.helpers({
     return getAuthorName(this);
   },
   profileUrl: function(){
-    return getProfileUrl(Meteor.users.findOne(this.userId));
+    var user = Meteor.users.findOne(this.userId);
+    if(user)
+      return getProfileUrl(user);
   },
   short_score: function(){
     return Math.floor(this.score*1000)/1000;
