@@ -7,5 +7,8 @@ Template.toolbox.events= {
   } ,
   'click .update-user-slugs':function(){
       Meteor.call('updateUserSlugs');
-  } 
+  }, 
+  'click .update-posts-slugs':function(){
+      Meteor.call('updatePostsSlugs');
+  }
 }
