@@ -3,9 +3,6 @@
 Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
   return getSetting(setting, defaultArgument);
 });
-Handlebars.registerHelper('userProfileRoute', function(displayName){
-  return "/users/"+slugify(displayName);
-});
 Handlebars.registerHelper('canView', function() {
   return canView(Meteor.user());
 });

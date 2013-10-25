@@ -275,7 +275,10 @@ Router.map(function() {
     // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
     waitOn: function () {
       var parameters = getParameters('top', 10);
-      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+      return [
+        Meteor.subscribe('postsList', parameters.find, parameters.options),
+        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      ]
     },
     data: function () {
       var parameters = getParameters('top', 10);
@@ -297,7 +300,10 @@ Router.map(function() {
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('top', limit);
-      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+      return [
+        Meteor.subscribe('postsList', parameters.find, parameters.options),
+        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      ]
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -322,7 +328,10 @@ Router.map(function() {
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('new', limit);
-      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+      return [
+        Meteor.subscribe('postsList', parameters.find, parameters.options),
+        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      ]
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -346,7 +355,10 @@ Router.map(function() {
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('best', limit);
-      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+      return [
+        Meteor.subscribe('postsList', parameters.find, parameters.options),
+        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      ]
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -370,7 +382,10 @@ Router.map(function() {
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('pending', limit);
-      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+      return [
+        Meteor.subscribe('postsList', parameters.find, parameters.options),
+        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      ]
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -394,7 +409,10 @@ Router.map(function() {
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
       var parameters = getParameters('category', limit, this.params.slug);
-      return Meteor.subscribe('postsList', parameters.find, parameters.options);
+      return [
+        Meteor.subscribe('postsList', parameters.find, parameters.options),
+        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      ]
     },
     data: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -472,10 +490,11 @@ Router.map(function() {
   this.route('post_page', {
     path: '/posts/:_id',
     waitOn: function () {
-        // console.log('// Subscription Hook')
-        this.subscribe('singlePost', this.params._id).wait(), 
-        this.subscribe('comments', this.params._id).wait(),
-        this.subscribe('postUsers', this.params._id).wait()
+        return [
+          Meteor.subscribe('singlePost', this.params._id), 
+          Meteor.subscribe('comments', this.params._id),
+          Meteor.subscribe('postUsers', this.params._id)
+        ];
     },
     before: filters.nProgressHook,
     data: function () {

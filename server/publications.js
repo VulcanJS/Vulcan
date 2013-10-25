@@ -54,6 +54,15 @@ Meteor.publish('allUsers', function(limit) {
   }
 });
 
+Meteor.publish('postsListUsers', function(find, options) {
+  // publish all the users that have posted the currently displayed list of posts
+  if(canViewById(this.userId)){
+    var posts = Posts.find(find, options);
+    var userIds = _.pluck(posts.fetch(), 'userId');
+    return Meteor.users.find({_id: {$in: userIds}}, {multi: true});
+  }
+});
+
 // Posts
 
 // a single post, identified by id

@@ -1,4 +1,4 @@
-## v0.7
+## v0.7 “IronScope”
 
 #### Huge update!
 

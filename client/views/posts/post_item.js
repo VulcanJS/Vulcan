@@ -29,6 +29,9 @@ Template.post_item.helpers({
   authorName: function(){
     return getAuthorName(this);
   },
+  profileUrl: function(){
+    return getProfileUrl(Meteor.users.findOne(this.userId));
+  },
   short_score: function(){
     return Math.floor(this.score*1000)/1000;
   },
