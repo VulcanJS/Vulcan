@@ -262,6 +262,34 @@ getParameters = function (view, limit, category) {
   return parameters;
 }
 
+// Common controller for all posts lists
+
+PostsListController = RouteController.extend({
+  template:'posts_list',
+  // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
+  waitOn: function () {
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    var limit = this.params.limit || getSetting('postsPerPage', 10);
+    var parameters = getParameters(view, limit);
+    return [
+      Meteor.subscribe('postsList', parameters.find, parameters.options),
+      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+    ]
+  },
+  data: function () {
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    var limit = this.params.limit || getSetting('postsPerPage', 10);
+    var parameters = getParameters(view, limit);
+    Session.set('postsLimit', limit);
+    return {
+      posts: Posts.find(parameters.find, parameters.options)
+    }
+  },
+  before: filters.nProgressHook,
+  after: function() {
+    Session.set('view', 'top');
+  }    
+});
 
 Router.map(function() {
 
@@ -271,140 +299,42 @@ Router.map(function() {
 
   this.route('posts_top', {
     path: '/',
-    template:'posts_list',
-    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
-    waitOn: function () {
-      var parameters = getParameters('top', 10);
-      return [
-        Meteor.subscribe('postsList', parameters.find, parameters.options),
-        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-      ]
-    },
-    data: function () {
-      var parameters = getParameters('top', 10);
-      Session.set('postsLimit', 10);
-      return {
-        posts: Posts.find(parameters.find, parameters.options)
-      }
-    },
-    before: filters.nProgressHook,
-    after: function() {
-      Session.set('view', 'top');
-    }
+    controller: PostsListController
   });
 
   this.route('posts_top', {
     path: '/top/:limit?',
-    template:'posts_list',
-    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
-    waitOn: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('top', limit);
-      return [
-        Meteor.subscribe('postsList', parameters.find, parameters.options),
-        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-      ]
-    },
-    data: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('top', limit);
-      Session.set('postsLimit', limit);
-      return {
-        posts: Posts.find(parameters.find, parameters.options)
-      }
-    },
-    before: filters.nProgressHook,
-    after: function() {
-      Session.set('view', 'top');
-    }
+    controller: PostsListController
   });
 
   // New
 
   this.route('posts_new', {
     path: '/new/:limit?',
-    template:'posts_list',
-    // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
-    waitOn: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('new', limit);
-      return [
-        Meteor.subscribe('postsList', parameters.find, parameters.options),
-        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-      ]
-    },
-    data: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('new', limit);
-      Session.set('postsLimit', limit);
-      return {
-        posts: Posts.find(parameters.find, parameters.options)
-      }
-    },
-    before: filters.nProgressHook,
-    after: function() {
-      Session.set('view', 'new');
-    }
+    controller: PostsListController
   });
 
   // Best
 
   this.route('posts_best', {
     path: '/best/:limit?',
-    template:'posts_list',
-    waitOn: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('best', limit);
-      return [
-        Meteor.subscribe('postsList', parameters.find, parameters.options),
-        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-      ]
-    },
-    data: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('best', limit);
-      Session.set('postsLimit', limit);
-      return {
-        posts: Posts.find(parameters.find, parameters.options)
-      }
-    },
-    before: filters.nProgressHook,
-    after: function() {
-      Session.set('view', 'best');
-    }
+    controller: PostsListController
   });
 
   // Pending
 
   this.route('posts_pending', {
     path: '/pending/:limit?',
-    template:'posts_list',
-    waitOn: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('pending', limit);
-      return [
-        Meteor.subscribe('postsList', parameters.find, parameters.options),
-        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-      ]
-    },
-    data: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('pending', limit);
-      Session.set('postsLimit', limit);
-      return {
-        posts: Posts.find(parameters.find, parameters.options)
-      }
-    },
-    before: filters.nProgressHook,
-    after: function() {
-      Session.set('view', 'pending');
-    }
+    controller: PostsListController
   });
 
   // Categories
 
+  // category route uses slightly different hooks, so don't inherit from PostListController for now
+
   this.route('category', {
     path: '/category/:slug/:limit?',
+    // controller: PostsListController,
     template:'posts_list',
     waitOn: function () {
       var limit = this.params.limit || getSetting('postsPerPage', 10);
@@ -423,19 +353,6 @@ Router.map(function() {
       }
     },
     before: filters.nProgressHook,
-    // waitOn: postListSubscription(function(){
-    //   // problem: :slug param is not accessible from here
-    //   return selectPosts({status: STATUS_PENDING, slug: 'experiments'});
-    // }, sortPosts('score'), 15)
-    // waitOn: function(){
-      // problem: infinite loading screen
-    //   var slug = this.params.slug;
-    //         console.log(slug)
-
-    //   return postListSubscription(function(){
-    //     return selectPosts({status: STATUS_PENDING, slug: slug});
-    //   }, sortPosts('createdAt'), 14);
-    // }
     after: function() {
       Session.set('view', 'category');
       Session.set('categorySlug', this.params.slug);
@@ -444,9 +361,6 @@ Router.map(function() {
 
   // TODO: enable /category/new, /category/best, etc. views
 
-  // this.route('category_view', {
-  //   path: '/c/:slug/:view',
-  // });
 
   // Digest
 
