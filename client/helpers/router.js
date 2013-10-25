@@ -223,7 +223,8 @@ PostsListController = RouteController.extend({
     // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     var limit = this.params.limit || getSetting('postsPerPage', 10);
-    var parameters = getParameters(view, limit);
+    // note: most of the time this.params.slug will be empty
+    var parameters = getParameters(view, limit, this.params.slug);
     return [
       Meteor.subscribe('postsList', parameters.find, parameters.options),
       Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
@@ -232,7 +233,7 @@ PostsListController = RouteController.extend({
   data: function () {
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     var limit = this.params.limit || getSetting('postsPerPage', 10);
-    var parameters = getParameters(view, limit);
+    var parameters = getParameters(view, limit, this.params.slug);
     Session.set('postsLimit', limit);
     return {
       posts: Posts.find(parameters.find, parameters.options)
@@ -240,7 +241,8 @@ PostsListController = RouteController.extend({
   },
   before: filters.nProgressHook,
   after: function() {
-    Session.set('view', 'top');
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    Session.set('view', view);
   }    
 });
 
@@ -359,32 +361,10 @@ Router.map(function() {
 
   // Categories
 
-  // category route uses slightly different hooks, so don't inherit from PostsListController for now
-  // TODO: use PostsListController here as well
-
   this.route('category', {
     path: '/category/:slug/:limit?',
-    // controller: PostsListController,
-    template:'posts_list',
-    waitOn: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('category', limit, this.params.slug);
-      return [
-        Meteor.subscribe('postsList', parameters.find, parameters.options),
-        Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
-      ]
-    },
-    data: function () {
-      var limit = this.params.limit || getSetting('postsPerPage', 10);
-      var parameters = getParameters('category', limit, this.params.slug);
-      Session.set('postsLimit', limit);
-      return {
-        posts: Posts.find(parameters.find, parameters.options)
-      }
-    },
-    before: filters.nProgressHook,
+    controller: PostsListController,
     after: function() {
-      Session.set('view', 'category');
       Session.set('categorySlug', this.params.slug);
     }
   });
