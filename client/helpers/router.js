@@ -219,8 +219,8 @@ Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best
 
 PostsListController = RouteController.extend({
   template:'posts_list',
-  // waitOn: postListSubscription(selectPosts, sortPosts('baseScore'), 13),
   waitOn: function () {
+    // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     var limit = this.params.limit || getSetting('postsPerPage', 10);
     var parameters = getParameters(view, limit);
