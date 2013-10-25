@@ -6,25 +6,20 @@ Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
 Handlebars.registerHelper('userProfileRoute', function(displayName){
   return "/users/"+slugify(displayName);
 });
-Handlebars.registerHelper('canView', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canView(Meteor.user(), action);
+Handlebars.registerHelper('canView', function() {
+  return canView(Meteor.user());
 });
-Handlebars.registerHelper('canPost', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canPost(Meteor.user(), action);
+Handlebars.registerHelper('canPost', function() {
+  return canPost(Meteor.user());
 });
-Handlebars.registerHelper('canComment', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canComment(Meteor.user(), action);
+Handlebars.registerHelper('canComment', function() {
+  return canComment(Meteor.user());
 });
-Handlebars.registerHelper('canUpvote', function(collection, action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canUpvote(Meteor.user()), collection, action;
+Handlebars.registerHelper('canUpvote', function(collection) {
+  return canUpvote(Meteor.user(), collection);
 });
-Handlebars.registerHelper('canDownvote', function(collection, action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canDownvote(Meteor.user(), collection, action);
+Handlebars.registerHelper('canDownvote', function(collection) {
+  return canDownvote(Meteor.user(), collection);
 });
 Handlebars.registerHelper('isAdmin', function(showError) {
   if(isAdmin(Meteor.user())){
