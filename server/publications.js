@@ -69,7 +69,6 @@ Meteor.publish('postsListUsers', function(find, options) {
 // Publish all users
 
 Meteor.publish('allUsers', function(limit) {
-  console.log(limit)
   if(canViewById(this.userId)){
     if (isAdminById(this.userId)) {
       // if user is admin, publish all fields
