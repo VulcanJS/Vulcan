@@ -101,7 +101,6 @@ Router.configure({
 var filters = {
 
   nProgressHook: function () {
-    // console.log('// nProgress Hook')
     if (this.ready()) {
       NProgress.done(); 
     } else {
@@ -193,6 +192,24 @@ Router.load( function () {
 
 // Before Hooks
 
+// Use nProgress on every route that has to load a subscription
+Router.before(filters.nProgressHook, {only: [
+  'posts_top', 
+  'posts_new', 
+  'posts_best', 
+  'posts_pending', 
+  'posts_digest',
+  'posts_category', 
+  'post_page',
+  'post_edit',
+  'comment_page',
+  'comment_edit',
+  'comment_reply',
+  'user_edit',
+  'user_profile',
+  'all-users'
+]});
+
 Router.before(filters.hasCompletedProfile);
 Router.before(filters.isLoggedIn, {only: ['comment_reply','post_submit']});
 Router.before(filters.canView);
@@ -204,7 +221,7 @@ Router.before(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings',
 
 // After Hooks
 
-Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'category', 'all-users']});
+Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'posts_category', 'all-users']});
 
 // Unload Hooks
 
@@ -239,7 +256,6 @@ PostsListController = RouteController.extend({
       posts: Posts.find(parameters.find, parameters.options)
     }
   },
-  before: filters.nProgressHook,
   after: function() {
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     Session.set('view', view);
@@ -259,7 +275,6 @@ PostsDigestController = RouteController.extend({
       Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
     ]
   },
-  before: filters.nProgressHook,
   data: function() {
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
     var parameters = getDigestParameters(currentDate);
@@ -281,7 +296,6 @@ PostPageController = RouteController.extend({
       Meteor.subscribe('postUsers', this.params._id)
     ];
   },
-  before: filters.nProgressHook,
   data: function () {
     return {postId: this.params._id};
   },
@@ -355,7 +369,7 @@ getParameters = function (view, limit, category) {
       break;
 
     case 'pending':
-      var parameters = $.extend(true, baseParameters, {find: {status: 1}, options: {sort: {baseScore: -1}}});
+      var parameters = $.extend(true, baseParameters, {find: {status: 1}, options: {sort: {createdAt: -1}}});
       break;      
 
     case 'category': // same as top for now
@@ -392,7 +406,7 @@ getDigestParameters = function (date) {
       }
     },
     options: {
-      sort: {baseScore: -1, _id: 1}
+      sort: {sticky: -1, baseScore: -1, _id: 1}
     }
   };
   return parameters;
@@ -435,7 +449,7 @@ Router.map(function() {
 
   // Categories
 
-  this.route('category', {
+  this.route('posts_category', {
     path: '/category/:slug/:limit?',
     controller: PostsListController,
     after: function() {
@@ -453,7 +467,7 @@ Router.map(function() {
     controller: PostsDigestController
   });
   
-  this.route('posts_digest_shortcut', {
+  this.route('posts_digest', {
     path: '/digest',
     controller: PostsDigestController
   });
@@ -468,7 +482,7 @@ Router.map(function() {
     controller: PostPageController
   });
 
-  this.route('post_page_with_comment', {
+  this.route('post_page', {
     path: '/posts/:_id/comment/:commentId',
     controller: PostPageController,
     after: function () {
@@ -562,7 +576,6 @@ Router.map(function() {
       var limit = parseInt(this.params.limit) || 20;
       return Meteor.subscribe('allUsers', limit);
     },
-    before: filters.nProgressHook,
     data: function() {
       var limit = parseInt(this.params.limit) || 20;
       Session.set('usersLimit', limit);
