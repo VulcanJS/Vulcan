@@ -147,7 +147,7 @@ var filters = {
   },
 
   canPost: function () {
-    if(!canPost()){
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !canPost()){
       throwError("Sorry, you don't have permissions to add new items.")
       this.render('no_rights');
       this.stop();      
@@ -156,7 +156,7 @@ var filters = {
 
   canEditPost: function() {
     var post = Posts.findOne(this.params._id);
-    if(!currentUserCanEdit(post)){
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(post)){
       throwError("Sorry, you cannot edit this post.")
       this.render('no_rights');
       this.stop();
@@ -165,7 +165,7 @@ var filters = {
 
   canEditComment: function() {
     var comment = Comments.findOne(this.params._id);
-    if(!currentUserCanEdit(comment)){
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(comment)){
       throwError("Sorry, you cannot edit this comment.")
       this.render('no_rights');
       this.stop();
@@ -215,7 +215,7 @@ Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best
 //--------------------------------------------------------------------------------------------------//
 
 
-// Common controller for all posts lists
+// Controller for all posts lists
 
 PostsListController = RouteController.extend({
   template:'posts_list',
@@ -246,7 +246,31 @@ PostsListController = RouteController.extend({
   }    
 });
 
-// Common controller for post pages
+// Controller for post digest
+
+PostsDigestController = RouteController.extend({
+  template: 'posts_digest',
+  waitOn: function() {
+    // if day is set, use that. If not default to today
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
+    var parameters = getDigestParameters(currentDate);
+    return [
+      Meteor.subscribe('postsList', parameters.find, parameters.options),
+      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+    ]
+  },
+  before: filters.nProgressHook,
+  data: function() {
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
+    var parameters = getDigestParameters(currentDate);
+    Session.set('currentDate', currentDate);
+    return {
+      posts: Posts.find(parameters.find, parameters.options)
+    }
+  }
+});
+
+// Controller for post pages
 
 PostPageController = RouteController.extend({
   template: 'post_page',
@@ -268,7 +292,36 @@ PostPageController = RouteController.extend({
   } 
 });
 
+// Controller for comment pages
 
+CommentPageController = RouteController.extend({
+  waitOn: function() {
+    return [
+      Meteor.subscribe('singleComment', this.params._id),
+      Meteor.subscribe('commentUser', this.params._id)
+    ]
+  },
+  data: function() {
+    return {
+      comment: Comments.findOne(this.params._id)
+    }
+  }
+});
+
+// Controller for user pages
+
+UserPageController = RouteController.extend({
+  waitOn: function() {
+    return Meteor.subscribe('singleUser', this.params._idOrSlug);
+  },
+  data: function() {
+    var findById = Meteor.users.findOne(this.params._idOrSlug);
+    var findBySlug = Meteor.users.findOne({slug: this.params._idOrSlug});
+    return {
+      user: (typeof findById == "undefined") ? findBySlug : findById
+    }
+  }
+})
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------- Routes ---------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
@@ -324,6 +377,26 @@ getParameters = function (view, limit, category) {
   return parameters;
 }
 
+// Special case for digest
+// TODO: merge back into general getParameters function
+
+getDigestParameters = function (date) {
+  var mDate = moment(date);
+  var parameters = {
+    find: {
+      status: 2,
+      submitted: {
+        $gte: mDate.startOf('day').valueOf(), 
+        $lt: mDate.endOf('day').valueOf()
+      }
+    },
+    options: {
+      sort: {baseScore: -1, _id: 1}
+    }
+  };
+  return parameters;
+}
+
 Router.map(function() {
 
   // Top
@@ -376,34 +449,12 @@ Router.map(function() {
 
   this.route('posts_digest', {
     path: '/digest/:year/:month/:day',
-    waitOn: function() {
-      currentDate = new Date(this.params.year, this.params.month-1, this.params.day);
-      Session.set('currentDate', currentDate);
-      return Meteor.subscribe('postDigest', currentDate);
-    },
-    before: filters.nProgressHook,
-    data: function() {
-      return {
-        posts: findDigestPosts(moment(currentDate))
-      }
-    }
+    controller: PostsDigestController
   });
   
   this.route('posts_digest_shortcut', {
     path: '/digest',
-    template: 'posts_digest',
-    waitOn: function() {
-      // note: this runs twice for some reason? is 'today' changing?
-      currentDate = Session.get('today');
-      Session.set('currentDate', currentDate);
-      return Meteor.subscribe('postDigest', currentDate);
-    },
-    before: filters.nProgressHook,
-    data: function() {
-      return {
-        posts: findDigestPosts(moment(currentDate))
-      }
-    }
+    controller: PostsDigestController
   });
 
   // -------------------------------------------- Post -------------------------------------------- //
@@ -431,11 +482,9 @@ Router.map(function() {
     waitOn: function () {
       return Meteor.subscribe('singlePost', this.params._id);
     },
-    before: filters.nProgressHook,
     data: function() {
       return {postId: this.params._id};
     }
-    // after: filters.canEditPost
   });
 
   // Post Submit
@@ -448,29 +497,14 @@ Router.map(function() {
 
   this.route('comment_page', {
     path: '/comments/:_id',
-    waitOn: function() {
-      return Meteor.subscribe('singleComment', this.params._id);
-    },    
-    data: function() {
-      return {
-        comment: Comments.findOne(this.params._id)
-      }
-    }
+    controller: CommentPageController
   });
 
   // Comment Reply
 
   this.route('comment_reply', {
     path: '/comments/:_id/reply',
-    waitOn: function() {
-      return Meteor.subscribe('singleComment', this.params._id);
-    },
-    before: filters.nProgressHook,
-    data: function() {
-      return {
-        comment: Comments.findOne(this.params._id)
-      }
-    },
+    controller: CommentPageController,
     after: function() {
       window.queueComments = false;
     }
@@ -480,12 +514,10 @@ Router.map(function() {
 
   this.route('comment_edit', {
     path: '/comments/:_id/edit',
-    data: function() {
-      return {
-        comment: Comments.findOne(this.params._id)
-      }
-    },
-    after: filters.canEditComment
+    controller: CommentPageController,
+    after: function() {
+      window.queueComments = false;
+    }
   });
 
   // -------------------------------------------- Users -------------------------------------------- //
@@ -494,37 +526,15 @@ Router.map(function() {
 
   this.route('user_profile', {
     path: '/users/:_idOrSlug',
-    waitOn: function() {
-      return Meteor.subscribe('singleUser', this.params._idOrSlug);
-    },
-    before: filters.nProgressHook,
-    data: function() {
-      var findById = Meteor.users.findOne(this.params._idOrSlug);
-      var findBySlug = Meteor.users.findOne({slug: this.params._idOrSlug});
-      return {
-        user: (typeof findById == "undefined") ? findBySlug : findById
-      }
-    }
+    controller: UserPageController
   });
 
   // User Edit
 
   this.route('user_edit', {
-    path: '/users/:_id/edit',
-    waitOn: function() {
-      return Meteor.subscribe('singleUser', this.params._id);
-    },
-    before: filters.nProgressHook,
-    data: function() {
-      return {
-        user: Meteor.users.findOne(this.params._id)
-      }
-    }
+    path: '/users/:_idOrSlug/edit',
+    controller: UserPageController
   });
-
-  // Forgot Password
-
-  this.route('forgot_password');
 
   // Account
 
@@ -537,6 +547,10 @@ Router.map(function() {
       }
     }
   });
+
+  // Forgot Password
+
+  this.route('forgot_password');
 
   // All Users
 

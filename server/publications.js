@@ -28,6 +28,8 @@ Meteor.publish('singleUser', function(userIdOrSlug) {
   }
 });
 
+// Publish users for current post and its comments
+
 Meteor.publish('postUsers', function(postId) {
   if(canViewById(this.userId)){
     // publish post author and post commenters
@@ -37,7 +39,16 @@ Meteor.publish('postUsers', function(postId) {
     var users = _.pluck(comments, "userId");
     users.push(post.userId);
     users = _.unique(users);
-    return Meteor.users.find({_id: {$in: users}});
+    return Meteor.users.find({_id: {$in: users}}, {fields: privacyOptions});
+  }
+});
+
+// Publish user for current comment
+
+Meteor.publish('commentUser', function(commentId) {
+  if(canViewById(this.userId)){
+    var comment = Comments.findOne(commentId);
+    return Meteor.users.find({_id: comment.userId}, {fields: privacyOptions});
   }
 });
 
@@ -97,12 +108,6 @@ Meteor.publish('paginatedPosts', function(find, options, limit) {
   }
 });
 
-Meteor.publish('postDigest', function(date) {
-  if(canViewById(this.userId)){  
-    var mDate = moment(date);
-    return findDigestPosts(mDate);
-  }
-});
 
 // Other Publications
 

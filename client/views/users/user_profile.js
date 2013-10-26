@@ -17,3 +17,9 @@ Template.user_profile.helpers({
     return Meteor.user().invitesCount;
   }
 });
+
+Template.user_profile.events({
+  'click .invite-link': function(e, instance){
+    Meteor.call('inviteUser', instance.data.user._id);
+  }
+});

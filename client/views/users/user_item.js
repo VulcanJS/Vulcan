@@ -26,6 +26,9 @@ Template.user_item.helpers({
   },
   userIsAdmin: function(){
     return isAdmin(this);
+  },
+  profileUrl: function () {
+    return getProfileUrl(this);
   }
 });
 

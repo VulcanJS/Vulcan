@@ -1,7 +1,7 @@
 <template name="user_item">
 <tr class="user">
 	<td><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
-	<td><a href="/users/{{_id}}/edit">{{displayName}}</a></td>
+	<td><a href="{{profileUrl}}">{{displayName}}</a></td>
 	<td>{{createdAtFormatted}}</td>
 	<td>{{profile.email}}</td>
 	<td>

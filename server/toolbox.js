@@ -19,7 +19,8 @@ Meteor.methods({
   updateUserSlugs: function () {
     if(isAdmin(Meteor.user())){
       Meteor.users.find().forEach(function(user){
-        Meteor.users.update(user._id, {$set:{slug: slugify(getUserName(user))}});
+        if(getUserName(user))
+          Meteor.users.update(user._id, {$set:{slug: slugify(getUserName(user))}});
       });
     } 
   },
