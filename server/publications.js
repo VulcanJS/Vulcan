@@ -11,12 +11,16 @@ var privacyOptions = { // false means private
   'services.resume': false
 };
 
-// Users
+// -------------------------------------------- Users -------------------------------------------- //
+
+// Publish the current user
 
 Meteor.publish('currentUser', function() {
   var user = Meteor.users.find(this.userId);
   return user;
 });
+
+// Publish a single user
 
 Meteor.publish('singleUser', function(userIdOrSlug) {
   if(canViewById(this.userId)){
@@ -28,7 +32,7 @@ Meteor.publish('singleUser', function(userIdOrSlug) {
   }
 });
 
-// Publish users for current post and its comments
+// Publish authors of the current post and its comments
 
 Meteor.publish('postUsers', function(postId) {
   if(canViewById(this.userId)){
@@ -43,7 +47,7 @@ Meteor.publish('postUsers', function(postId) {
   }
 });
 
-// Publish user for current comment
+// Publish author of the current comment
 
 Meteor.publish('commentUser', function(commentId) {
   if(canViewById(this.userId)){
@@ -51,6 +55,18 @@ Meteor.publish('commentUser', function(commentId) {
     return Meteor.users.find({_id: comment.userId}, {fields: privacyOptions});
   }
 });
+
+// Publish all the users that have posted the currently displayed list of posts
+
+Meteor.publish('postsListUsers', function(find, options) {
+  if(canViewById(this.userId)){
+    var posts = Posts.find(find, options);
+    var userIds = _.pluck(posts.fetch(), 'userId');
+    return Meteor.users.find({_id: {$in: userIds}}, {multi: true});
+  }
+});
+
+// Publish all users
 
 Meteor.publish('allUsers', function(limit) {
   console.log(limit)
@@ -65,25 +81,17 @@ Meteor.publish('allUsers', function(limit) {
   }
 });
 
-Meteor.publish('postsListUsers', function(find, options) {
-  // publish all the users that have posted the currently displayed list of posts
-  if(canViewById(this.userId)){
-    var posts = Posts.find(find, options);
-    var userIds = _.pluck(posts.fetch(), 'userId');
-    return Meteor.users.find({_id: {$in: userIds}}, {multi: true});
-  }
-});
+// -------------------------------------------- Posts -------------------------------------------- //
 
-// Posts
+// Publish a single post
 
-// a single post, identified by id
 Meteor.publish('singlePost', function(id) {
   if(canViewById(this.userId)){
     return Posts.find(id);
   }
 });
 
-// The post related to the current comment
+// Publish the post related to the current comment
 
 Meteor.publish('commentPost', function(commentId) {
   if(canViewById(this.userId)){
@@ -91,6 +99,8 @@ Meteor.publish('commentPost', function(commentId) {
     return Posts.find(comment.post);
   }
 });
+
+// Publish a list of posts
 
 Meteor.publish('postsList', function(find, options) {
   if(canViewById(this.userId)){
@@ -109,28 +119,27 @@ Meteor.publish('postsList', function(find, options) {
   }
 });
 
-Meteor.publish('paginatedPosts', function(find, options, limit) {
-  if(canViewById(this.userId)){
-    options = options || {};
-    options.limit = limit;
-    return Posts.find(find || {}, options);
-  }
-});
 
 
-// Other Publications
+// -------------------------------------------- Comments -------------------------------------------- //
 
-Meteor.publish('comments', function(postId) {
+// Publish comments for a specific post
+
+Meteor.publish('postComments', function(postId) {
   if(canViewById(this.userId)){  
     return Comments.find({post: postId});
   }
 });
+
+// Publish a single comment
 
 Meteor.publish('singleComment', function(commentId) {
   if(canViewById(this.userId)){
     return Comments.find(commentId);
   }
 });
+
+// -------------------------------------------- Other -------------------------------------------- //
 
 Meteor.publish('settings', function() {  
   return Settings.find();

@@ -277,7 +277,7 @@ PostPageController = RouteController.extend({
   waitOn: function () {
     return [
       Meteor.subscribe('singlePost', this.params._id), 
-      Meteor.subscribe('comments', this.params._id),
+      Meteor.subscribe('postComments', this.params._id),
       Meteor.subscribe('postUsers', this.params._id)
     ];
   },
