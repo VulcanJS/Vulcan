@@ -320,7 +320,10 @@ CommentPageController = RouteController.extend({
     return {
       comment: Comments.findOne(this.params._id)
     }
-  }
+  },
+  after: function () {
+    window.queueComments = false;
+  } 
 });
 
 // Controller for user pages
