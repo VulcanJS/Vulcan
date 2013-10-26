@@ -83,6 +83,15 @@ Meteor.publish('singlePost', function(id) {
   }
 });
 
+// The post related to the current comment
+
+Meteor.publish('commentPost', function(commentId) {
+  if(canViewById(this.userId)){
+    var comment = Comments.findOne(commentId);
+    return Posts.find(comment.post);
+  }
+});
+
 Meteor.publish('postsList', function(find, options) {
   if(canViewById(this.userId)){
     options = options || {};

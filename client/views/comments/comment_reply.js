@@ -1,4 +1,5 @@
-Template.comment_reply.post = function(){
-  var comment = this;
-  return comment && Posts.findOne(comment.post);
-};
+Template.comment_reply.helpers({
+  post: function () {
+    return Posts.findOne(this.comment.post);
+  }
+});

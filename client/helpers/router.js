@@ -298,7 +298,8 @@ CommentPageController = RouteController.extend({
   waitOn: function() {
     return [
       Meteor.subscribe('singleComment', this.params._id),
-      Meteor.subscribe('commentUser', this.params._id)
+      Meteor.subscribe('commentUser', this.params._id),
+      Meteor.subscribe('commentPost', this.params._id)
     ]
   },
   data: function() {
