@@ -5,7 +5,7 @@ Handlebars.registerHelper('each_with_index', function(items, options) {
   items.forEach(function(item, i){
     var key = 'Branch-' + i;
     out = out + Spark.labelBranch(key,function(){
-      options.fn(_.extend(item, {rank: i}));
+      return options.fn(_.extend(item, {rank: i}));
     });
   });
   console.log('each_with_index:')
