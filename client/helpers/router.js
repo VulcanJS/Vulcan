@@ -256,15 +256,14 @@ PostsListController = RouteController.extend({
     Session.set('postsLimit', limit);
 
     // get posts and decorate them with rank property
+    // note: using handlebars helper instead
     // posts = posts.map(function (post, index) {
     //   post.rank = index;
     //   return post;
     // });
 
-    console.log('postsWithRank:')
-    console.log(posts)
     return {
-      posts: posts
+      postsList: posts
     }
   },
   after: function() {

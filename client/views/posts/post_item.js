@@ -78,7 +78,6 @@ Template.post_item.helpers({
 
 Template.post_item.rendered = function(){
   // animate post from previous position to new position
-  console.log(this)
   var instance = this;
   var $instance = $(instance.firstNode.nextSibling);
   var rank = instance.data.rank; // use jQuery instead of decorating the data object
@@ -87,15 +86,16 @@ Template.post_item.rendered = function(){
   var previousPosition = 0;
   var newPosition = $instance.position().top;
 
-  console.log('-----------------------')
-  console.log('headline: '+this.data.headline)
-  console.log('new rank: '+(rank+1))
-  console.log('newPosition: '+newPosition)
+  // console.log('-----------------------')
+  // console.log('headline: '+this.data.headline)
+  // console.log('new rank: '+(rank+1))
+  // console.log('newPosition: '+newPosition)
 
   // if element has a currentPosition (i.e. it's not the first ever render)
   if(previousPosition = instance.currentPosition){
     // calculate difference between old position and new position and send element here
     var delta = previousPosition - newPosition;
+    // console.log('deta: '+delta)
     $instance.css("top", delta + "px");
   }
 

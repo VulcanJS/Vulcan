@@ -1,6 +1,9 @@
 // ** Handlebars helpers **
 
-Handlebars.registerHelper('each_with_index', function(items, options) {
+Handlebars.registerHelper('eachWithRank', function(items, options) {
+  console.log('======= eachWithRank ========')
+  // note: cannot use this because it would delete and recreate all nodes
+  items.rewind()
   var out = '';
   items.forEach(function(item, i){
     var key = 'Branch-' + i;
@@ -8,10 +11,9 @@ Handlebars.registerHelper('each_with_index', function(items, options) {
       return options.fn(_.extend(item, {rank: i}));
     });
   });
-  console.log('each_with_index:')
-  console.log(out)
   return out;
 });
+
 Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
   return getSetting(setting, defaultArgument);
 });

@@ -1,12 +1,13 @@
 Template.posts_list.helpers({
-  // posts : function () {
-    
-  //   var posts = this.postsList.map(function (post, index, cursor) {
-  //     post._rank = index + 1;
-  //     return post;
-  //   });
-  //   return this.postsList;
-  // },
+  posts : function () {
+    // this.postsList.rewind();    
+    // var posts = this.postsList.map(function (post, index, cursor) {
+    //   post.rank = index;
+    //   return post;
+    // });
+    // return posts;
+    return this.postsList;
+  },
   allPostsLoaded: function(){
     return false;
     // TODO: find out when all posts have been loaded
