@@ -1,8 +1,8 @@
 <template name="posts_list">
 	<div class="posts grid list">
-		{{#each posts}}
+		{{#each_with_index posts}}
 			{{> post_item}}
-		{{/each}}
+		{{/each_with_index}}
 	</div>
 	<div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}">
 		<a class="more-link" href="{{loadMoreUrl}}">Load more</a>

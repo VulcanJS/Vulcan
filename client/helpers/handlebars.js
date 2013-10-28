@@ -1,5 +1,17 @@
 // ** Handlebars helpers **
 
+Handlebars.registerHelper('each_with_index', function(items, options) {
+  var out = '';
+  items.forEach(function(item, i){
+    var key = 'Branch-' + i;
+    out = out + Spark.labelBranch(key,function(){
+      options.fn(_.extend(item, {rank: i}));
+    });
+  });
+  console.log('each_with_index:')
+  console.log(out)
+  return out;
+});
 Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
   return getSetting(setting, defaultArgument);
 });

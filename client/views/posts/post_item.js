@@ -1,3 +1,7 @@
+Template.post_item.created = function () {
+  instance = this;
+};
+
 Template.post_item.helpers({
   post: function(){
     // note: when the data context is set by the router, it will be "this.post". When set by a parent template it'll be "this"
@@ -9,11 +13,9 @@ Template.post_item.helpers({
   postTarget: function() {
     return !!this.url ? '_blank' : '';
   },
-  rank: function() {
-    return this._rank + 1;
-  },
-  showRank: function(){
-    return Session.get('isPostsList');
+  oneBasedRank: function(){
+    if(typeof this.rank != 'undefined')
+      return this.rank + 1;
   },
   domain: function(){
     var a = document.createElement('a');
@@ -76,26 +78,31 @@ Template.post_item.helpers({
 
 Template.post_item.rendered = function(){
   // animate post from previous position to new position
+  console.log(this)
   var instance = this;
-  var rank = instance.data._rank;
-  var $this = $(this.firstNode);
-  var previousPosition = 0;
-  var newPosition = 0;
-  for(var i=1; i<=rank; i++){
-    newPosition += $('.post-'+i).height();
-  }
+  var $instance = $(instance.firstNode.nextSibling);
+  var rank = instance.data.rank; // use jQuery instead of decorating the data object
+  // var rank = $instance.index();
 
- // if element has a currentPosition (i.e. it's not the first ever render)
- if(previousPosition = instance.currentPosition){
+  var previousPosition = 0;
+  var newPosition = $instance.position().top;
+
+  console.log('-----------------------')
+  console.log('headline: '+this.data.headline)
+  console.log('new rank: '+(rank+1))
+  console.log('newPosition: '+newPosition)
+
+  // if element has a currentPosition (i.e. it's not the first ever render)
+  if(previousPosition = instance.currentPosition){
     // calculate difference between old position and new position and send element here
     var delta = previousPosition - newPosition;
-    $this.css("top", delta + "px");
+    $instance.css("top", delta + "px");
   }
 
   Meteor.defer(function() {
     instance.currentPosition = newPosition;
     // bring element back to its new original position
-    $this.addClass('animate').css("top",  "0px");
+    $instance.addClass('animate').css("top",  "0px");
   }); 
 };
 

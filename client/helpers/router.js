@@ -248,12 +248,23 @@ PostsListController = RouteController.extend({
     ]
   },
   data: function () {
+    console.log('// postsList data function')
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     var limit = this.params.limit || getSetting('postsPerPage', 10);
     var parameters = getParameters(view, limit, this.params.slug);
+    var posts = Posts.find(parameters.find, parameters.options);
     Session.set('postsLimit', limit);
+
+    // get posts and decorate them with rank property
+    // posts = posts.map(function (post, index) {
+    //   post.rank = index;
+    //   return post;
+    // });
+
+    console.log('postsWithRank:')
+    console.log(posts)
     return {
-      posts: Posts.find(parameters.find, parameters.options)
+      posts: posts
     }
   },
   after: function() {
