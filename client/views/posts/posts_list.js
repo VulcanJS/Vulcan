@@ -1,4 +1,13 @@
 Template.posts_list.helpers({
+  // posts : function () {
+    // not used, forces multiple re-renders
+    // this.postsList.rewind();    
+    // var posts = this.postsList.map(function (post, index, cursor) {
+    //   post.rank = index;
+    //   return post;
+    // });
+    // return posts;
+  // },
   allPostsLoaded: function(){
     return false;
     // TODO: find out when all posts have been loaded

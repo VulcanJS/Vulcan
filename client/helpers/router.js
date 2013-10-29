@@ -253,6 +253,14 @@ PostsListController = RouteController.extend({
     var parameters = getParameters(view, limit, this.params.slug);
     var posts = Posts.find(parameters.find, parameters.options);
     Session.set('postsLimit', limit);
+
+    // get posts and decorate them with rank property
+    // note: not actually used; find better way
+    // posts = posts.map(function (post, index) {
+    //   post.rank = index;
+    //   return post;
+    // });
+
     return {
       posts: posts
     }
