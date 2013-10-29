@@ -16,6 +16,7 @@ Session.set('settingsLoaded', false);
 Meteor.subscribe('settings', function(){
   // runs once after settings have loaded
   Session.set('settingsLoaded',true);
+  analyticsInit();
 });
 
 // Categories
@@ -33,3 +34,4 @@ if(Meteor.user() != null)
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
+
