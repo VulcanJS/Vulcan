@@ -4,10 +4,8 @@
     <ul class="post-actions">
       <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">Share</span></a>
         <div class="share-options hidden">
-          {{#constant}}
           <div data-url="{{#if url}}{{url}}{{else}}{{current_domain}}/posts/{{_id}}{{/if}}" data-text="{{headline}}" class="share-replace">
           </div>
-          {{/constant}}
         </div>
       </li>
       <li class="post-discuss">
