@@ -80,67 +80,50 @@ Template.post_item.helpers({
   }
 });
 
-var recalculatePosition = function ($object, positionsArray) {
-  var positionsLength = positionsArray.length,
-      previousPosition = positionsArray[positionsLength-2]
-      newPosition = positionsArray[positionsLength-1]
- 
-  // calculate difference between old position and new position and send element here
-  var delta = previousPosition - newPosition;
-  console.log('previousPosition: '+previousPosition)
-  console.log('newPosition: '+newPosition)
-  console.log('delta: '+delta)
+var recalculatePosition = function ($object) {
+  console.log('recalculatePosition for '+$object)
+  var positionsArray = $object.data('positionsArray');
 
-  // send object back to previous position, then animate it to new one
-  $object.css("top", delta + "px").addClass('animate').delay(1).queue(function(next){ 
-    $(this).css('top','0px'); 
-    next(); 
-  });
+  if(typeof positionsArray !== 'undefined'){
+    
+    var positionsLength = positionsArray.length,
+        top = $object.position().top
+
+    // if current position is different from the last position in the array, add current position
+    if(top != positionsArray[positionsLength-1]){
+      positionsArray.push(top);
+      $object.data('positionsArray', positionsArray);
+    }
+
+    console.log(positionsArray)
+
+    // delta is the difference between the last two positions in the array
+    var delta = positionsArray[positionsLength-2] - positionsArray[positionsLength-1]
+
+    // if new position is different from previous position
+    if(delta != 0){
+
+      // console.log('previousPosition: '+previousPosition)
+      // console.log('newPosition: '+newPosition)
+      // console.log('delta: '+delta)
+
+      // send object back to previous position
+      $object.css("top", delta + "px").addClass('animate');
+
+      // then wait a little and animate it to new one
+      setTimeout(function() { 
+        $object.css("top", "0px")
+      }, 1);
+    
+    }
+  }
 }
 
 Template.post_item.rendered = function(){
-  // animate post from previous position to new position
-  var instance = this,
-      $instance = $(instance.firstNode.nextSibling),
-      top = $instance.position().top;
-
-  console.log('-----------------------')
-  console.log('headline: '+this.data.headline)
-
-  if(typeof instance.positionsHistory == "undefined"){
-    instance.positionsHistory = [top];
-  }else{
-    instance.positionsHistory.push(top);
-    recalculatePosition($instance, instance.positionsHistory)
-  }
-
-
-  console.log('render positions: '+instance.positionsHistory)
-
-  // var rank = instance.data.rank; 
-  // var rank = $instance.index(); // use jQuery instead of decorating the data object
-
-  // var previousPosition = 0;
-  // var newPosition = $instance.position().top;
-
-
-  // console.log('newPosition: '+newPosition)
-  // console.log(instance)
-
-  // if it's not the first ever render, element should have a currentPosition
-  // if(instance.renderCount > 1){
-    // calculate difference between old position and new position and send element here
-
-    // var delta = previousPosition - newPosition;
-    // console.log('delta: '+delta)
-    // $instance.css("top", delta + "px");
-  // }
-
-  // Meteor.defer(function() {
-  //   instance.currentPosition = newPosition;
-  //   // bring element back to its new original position
-  //   $instance.addClass('animate').css("top",  "0px");
-  // }); 
+  // when one post re-renders, force all of them to recalculate their position
+  $('.post').each(function(index, item){
+    recalculatePosition($(item));
+  });
 };
 
 Template.post_item.events = {
