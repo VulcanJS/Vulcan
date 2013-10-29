@@ -248,7 +248,6 @@ PostsListController = RouteController.extend({
     ]
   },
   data: function () {
-    console.log('// postsList data function')
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     var limit = this.params.limit || getSetting('postsPerPage', 10);
     var parameters = getParameters(view, limit, this.params.slug);
@@ -256,7 +255,7 @@ PostsListController = RouteController.extend({
     Session.set('postsLimit', limit);
 
     // get posts and decorate them with rank property
-    // note: using handlebars helper instead
+    // note: not actually used; find better way
     // posts = posts.map(function (post, index) {
     //   post.rank = index;
     //   return post;

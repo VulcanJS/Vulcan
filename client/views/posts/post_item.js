@@ -74,9 +74,6 @@ Template.post_item.helpers({
   },
   pointsUnitDisplayText: function(){
     return this.votes == 1 ? 'point' : 'points';
-  },
-  lastRender: function(){
-    return Session.get('postItemLastRender');
   }
 });
 

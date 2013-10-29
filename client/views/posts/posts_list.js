@@ -1,5 +1,6 @@
 Template.posts_list.helpers({
   posts : function () {
+    // not used, forces multiple re-renders
     // this.postsList.rewind();    
     // var posts = this.postsList.map(function (post, index, cursor) {
     //   post.rank = index;

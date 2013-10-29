@@ -1,7 +1,7 @@
 // ** Handlebars helpers **
 
 Handlebars.registerHelper('eachWithRank', function(items, options) {
-  console.log('======= eachWithRank ========')
+  // not used, forces multiple renders
   // note: cannot use this because it would delete and recreate all nodes
   items.rewind()
   var out = '';
