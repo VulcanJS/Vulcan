@@ -11,6 +11,8 @@
 * Using nProgress to show loading.
 * Paginating users dashboard.
 
+Note: If you're upgrading from a previous version of Telescope, you'll need to run the "update user slugs" method from within the Admin Toolbox panel inside the web app to get user profiles to work. 
+
 ## v0.6.2
 
 * Fixed bug where anybody could delete any comment.
