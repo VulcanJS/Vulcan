@@ -7,13 +7,10 @@ Template.posts_list.helpers({
     });
     return posts;
   },
-  allPostsLoaded: function(){
-    return false;
-    // TODO: find out when all posts have been loaded
-    
-    // allPostsLoaded = postsSubs[Session.get('view')].fetch().length < postsSubs[Session.get('view')].loaded();
-    // Session.set('allPostsLoaded', allPostsLoaded);
-    // return allPostsLoaded;  
+  hasMorePosts: function(){
+    console.log(this.postsCount)
+    // as long as we ask for N posts and all N posts showed up, then keep showing the "load more" button
+    return parseInt(Session.get('postsLimit')) == this.postsCount
   },
   loadMoreUrl: function () {
     var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
