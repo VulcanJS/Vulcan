@@ -44,8 +44,8 @@ Meteor.methods({
       throw new Meteor.Error(602, 'Please fill in a headline');
 
     // check that there are no previous posts with the same link
-    if(post.url && postWithSameLink){
-      Meteor.call('upvotePost', postWithSameLink._id);
+    if(post.url && (typeof postWithSameLink !== 'undefined')){
+      Meteor.call('upvotePost', postWithSameLink);
       throw new Meteor.Error(603, 'This link has already been posted', postWithSameLink._id);
     }
 
@@ -80,8 +80,11 @@ Meteor.methods({
 
     postId = Posts.insert(post);
 
+    post = _.extend(post, {_id: postId});
+
     var postAuthor =  Meteor.users.findOne(post.userId);
-    Meteor.call('upvotePost', postId,postAuthor);
+
+    Meteor.call('upvotePost', post, postAuthor);
 
     if(getSetting('emailNotifications', false)){
       // notify users of new posts
