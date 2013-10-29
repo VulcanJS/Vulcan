@@ -77,54 +77,38 @@ Template.post_item.helpers({
   }
 });
 
-// var recalculatePosition = function ($object) {
-//   var pArray = $object.data('positionsArray'),
-//       top = $object.position().top;
-      
-//   if(typeof pArray !== 'undefined'){ 
+var recalculatePosition = function ($object, pArray) {
+  // delta is the difference between the last two positions in the array
+  var delta = pArray[pArray.length-2] - pArray[pArray.length-1];
 
-//     // if current position is different from the last position in the array, add current position
-//     if(top != pArray[pArray.length-1]){
-//       pArray.push(top);
-//       $object.data('positionsArray', pArray);
-//     }
+  // if new position is different from previous position
+  if(delta != 0){
+    // send object back to previous position
+    $object.removeClass('animate').css("top", delta + "px");
+    // then wait a little and animate it to new one
+    setTimeout(function() { 
+      $object.addClass('animate').css("top", "0px")
+    }, 1);  
+  }
+}
 
-//     // delta is the difference between the last two positions in the array
-//     var delta = pArray[pArray.length-2] - pArray[pArray.length-1];
+Template.post_item.rendered = function(){
+  var instance = this,
+      $instance = $(instance.firstNode.nextSibling),
+      top = $instance.position().top;
 
-//     // if new position is different from previous position
-//     if(delta != 0){
+  // if this is the first render, initialize array, else push current position
+  if(typeof instance.pArray === 'undefined'){
+    instance.pArray = [top]
+  }else{
+    instance.pArray.push(top);
+  }
 
-//       // send object back to previous position
-//       $object.removeClass('animate').css("top", delta + "px").addClass('animate');
+  // if this is *not* the first render, recalculate positions
+  if(instance.pArray.length>1)
+    recalculatePosition($instance, instance.pArray);
 
-//       // then wait a little and animate it to new one
-//       setTimeout(function() { 
-//         $object.css("top", "0px")
-//       }, 1500);
-    
-//     }
-//   }
-// }
-
-// Template.post_item.rendered = function(){
-
-//   var instance = this,
-//       $instance = $(instance.firstNode.nextSibling),
-//       top = $instance.position().top;
-
-//   instance.renderCount = (typeof instance.renderCount === 'undefined') ? 1 : instance.renderCount+1;
-
-//   if(instance.renderCount>1){
-//     // when one post re-renders, force all of them to recalculate their position
-//     $('.post').each(function(index, item){
-//       recalculatePosition($(item));
-//     });
-//   }else{
-//     $instance.data('positionsArray', [top]);
-//   }
-
-// };
+};
 
 Template.post_item.events = {
   'click .upvote-link': function(e, instance){
