@@ -8,7 +8,6 @@ Template.posts_list.helpers({
     return posts;
   },
   hasMorePosts: function(){
-    console.log(this.postsCount)
     // as long as we ask for N posts and all N posts showed up, then keep showing the "load more" button
     return parseInt(Session.get('postsLimit')) == this.postsCount
   },
