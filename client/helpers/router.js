@@ -185,7 +185,6 @@ var filters = {
 // Load Hooks
 
 Router.load( function () {
-  analyticsRequest(); // log this request with mixpanel, etc
   clearSeenErrors(); // set all errors who have already been seen to not show anymore
   Session.set('categorySlug', null); 
 });
@@ -222,6 +221,9 @@ Router.before(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings',
 // After Hooks
 
 Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'posts_category', 'all-users']});
+Router.after( function () {
+  analyticsRequest() // log this request with mixpanel, etc
+});
 
 // Unload Hooks
 
