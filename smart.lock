@@ -9,7 +9,8 @@
         "branch": "master"
       },
       "paginated-subscription": {},
-      "crypto-md5": {}
+      "crypto-md5": {},
+      "i18next-meteor": {}
     },
     "packages": {
       "router": {
@@ -36,6 +37,11 @@
         "git": "https://github.com/tmeasday/meteor-crypto-md5.git",
         "tag": "v0.0.2",
         "commit": "a943bea4cffeac9a14c2825dfe57d32b9d677e6f"
+      },
+      "i18next-meteor": {
+        "git": "https://github.com/ckir/i18next-meteor.git",
+        "tag": "v1.6.0",
+        "commit": "6d922cc0adea92904e51a2a153d26dd66fb2789d"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
