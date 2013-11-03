@@ -56,9 +56,12 @@ Meteor.methods({
 
     var newCommentId=Comments.insert(comment);
 
+    // extend comment with newly created _id
+    comment = _.extend(comment, {_id: newCommentId});
+
     Posts.update(postId, {$inc: {comments: 1}});
 
-    Meteor.call('upvoteComment', newCommentId);
+    Meteor.call('upvoteComment', comment);
 
     properties.commentId = newCommentId;
 
