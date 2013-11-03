@@ -9,6 +9,20 @@ Meteor.subscribe('settings', function(){
   // runs once on site load
   analyticsInit();
   Session.set('settingsLoaded',true);
+
+  // Localisation
+  i18n.init({
+    lng: getSetting("language"),
+    resStore: eval(getSetting("language")),
+    saveMissing: true,
+    debug: true
+    });
+
+  Handlebars.registerHelper('i18n',
+    function(str){
+      return (i18n != undefined ? i18n.t(str) : str);
+    }
+  );
 });
 
 // Categories

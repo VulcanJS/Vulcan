@@ -1,7 +1,7 @@
 <template name="post_item">
   <div class="post post-{{rank}} {{#if sticky}}sticky{{/if}} {{inactiveClass}}" id="{{_id}}">
     <ul class="post-actions">
-      <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">Share</span></a>
+      <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">{{i18n 'Share'}}</span></a>
         <div class="share-options hidden">
           {{#constant}}
           <div data-url="{{#if url}}{{url}}{{else}}{{current_domain}}/posts/{{_id}}{{/if}}" data-text="{{headline}}" class="share-replace">
@@ -13,7 +13,7 @@
         <a class="discuss-link go-to-comments" href="/posts/{{_id}}">
           <i class="icon-comment"></i>
           <span class="count">{{comments}}</span>
-          <span class="action">Discuss</span>
+          <span class="action">{{i18n 'Discuss'}}</span>
         </a>
       </li>
       <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
@@ -22,14 +22,14 @@
       {{#if showRank}}<span class="post-rank">{{rank}}</span>{{/if}}
       <div class="post-upvote">
         {{#if voted}}
-          <span class="upvote-link voted"><i class="icon-check"></i><span>Upvote</span></span>
+          <span class="upvote-link voted"><i class="icon-check"></i><span>{{i18n "Upvote"}}</span></span>
         {{else}}
-          <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>Upvote</span></a>
+          <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>{{i18n "Upvote"}}</span></a>
         {{/if}}
       </div>
       <div class="post-info">
         {{#if sticky}}
-          <span class="post-sticky"><i class="icon-pin"></i><span>Sticky</span></span>
+          <span class="post-sticky"><i class="icon-pin"></i><span>{{i18n "Sticky"}}</span></span>
         {{/if}}
         <h3 class="post-heading">
           <a href="{{postLink}}" class="post-title" target="_blank">{{headline}}</a>
@@ -43,7 +43,7 @@
             | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
           {{/if}}
           {{#if currentUser.isAdmin}}
-            | status: {{status}}</span>, votes: {{votes}}, baseScore: {{baseScore}}, score: {{short_score}}, clicks: {{clicks}}
+            | {{i18n "status"}}: {{status}}</span>, {{i18n "votes"}}: {{votes}}, {{i18n "baseScore"}}: {{baseScore}}, {{i18n "score"}}: {{short_score}}, {{i18n "clicks"}}: {{clicks}}
           {{/if}}
         </p>
       </div>

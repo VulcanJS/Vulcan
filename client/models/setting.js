@@ -15,6 +15,7 @@ Setting = FormModel.extend({
     logoHeight: '',
     logoWidth: '',
     defaultEmail: '',
+    language: 'en',
     newPostsNotifications: true,
     backgroundColor: '',
     secondaryColor: '',
