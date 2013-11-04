@@ -13,9 +13,9 @@ Template.posts_digest.helpers({
     var today=moment(new Date());
     var diff=today.diff(currentDate, 'days');
     if(diff === 1)
-      return "Today";
+      return i18n.t("Today");
     if(diff === 2)
-      return "Yesterday";
+      return i18n.t("Yesterday");
     return currentDate.format("dddd, MMMM Do YYYY");
   },
   previousDateURL: function(){
