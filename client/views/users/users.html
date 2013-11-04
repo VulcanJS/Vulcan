@@ -1,7 +1,14 @@
 <template name="users">
     <div class="grid">
       <div class="user-table grid-block">
-        <h1>Users</h1>
+        <h2>Users</h2>
+        <p class="filter">
+          <span>Filter by: </span>
+          <a class="{{activeClass 'all'}}" href="/all-users">All</a>
+          <a class="{{activeClass 'invited'}}" href="/all-users/?filter=invited">Invited</a>
+          <a class="{{activeClass 'uninvited'}}" href="/all-users/?filter=uninvited">Uninvited</a>
+          <a class="{{activeClass 'admin'}}" href="/all-users/?filter=admin">Admin</a>
+        </p>
         <table>
           <thead>
             <tr>

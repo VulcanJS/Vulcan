@@ -1,3 +1,15 @@
+.filter{
+	background: $lightest-grey;
+	@include border-radius(3px);
+	padding: 8px 15px;
+	a, span{
+		display: inline-block;
+		margin-right: 20px;
+		&.active{
+			border-bottom: 2px solid $blue;
+		}
+	}
+}
 .user-list, .user-table{
 	.user{
 		.user-avatar{

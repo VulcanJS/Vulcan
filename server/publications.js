@@ -68,15 +68,11 @@ Meteor.publish('postsListUsers', function(find, options) {
 
 // Publish all users
 
-Meteor.publish('allUsers', function(limit) {
+Meteor.publish('allUsers', function(find, options) {
   if(canViewById(this.userId)){
-    if (isAdminById(this.userId)) {
-      // if user is admin, publish all fields
-      return Meteor.users.find({}, {sort:{createdAt: -1}, limit: limit});
-    }else{
-      // else, filter out sensitive info
-      return Meteor.users.find({}, {sort:{createdAt: -1}, limit: limit, fields: userFieldsPrivacy});
-    }
+    if (!isAdminById(this.userId)) // if user is not admin, filter out sensitive info
+      options = _.extend(options, {fields: privacyOptions});
+    return Meteor.users.find(find, options);  
   }
 });
 

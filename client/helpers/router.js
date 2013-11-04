@@ -519,14 +519,18 @@ Router.map(function() {
     path: '/all-users/:limit?',
     template: 'users',
     waitOn: function() {
-      var limit = parseInt(this.params.limit) || 20;
-      return Meteor.subscribe('allUsers', limit);
+      var limit = parseInt(this.params.limit) || 20,
+          parameters = getUsersParameters(this.params.filter, limit);
+      return Meteor.subscribe('allUsers', parameters.find, parameters.options);
     },
     data: function() {
-      var limit = parseInt(this.params.limit) || 20;
+      var limit = parseInt(this.params.limit) || 20,
+          parameters = getUsersParameters(this.params.filter, limit),
+          filter = (typeof this.params.filter === 'string') ? this.params.filter : 'all';
       Session.set('usersLimit', limit);
       return {
-        users: Meteor.users.find({}, {sort: {createdAt: -1}, limit: limit})
+        users: Meteor.users.find(parameters.find, parameters.options),
+        filter: filter
       }
     }
   });
