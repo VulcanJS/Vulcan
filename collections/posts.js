@@ -4,19 +4,19 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-Posts.allow({
-    insert: canPostById
-  , update: canEditById
-  , remove: canEditById
-});
-
 Posts.deny({
   update: function(userId, post, fieldNames) {
     if(isAdminById(userId))
       return false;
-    // may only edit the following fields:
+    // deny the update if it contains something other than the following fields
     return (_.without(fieldNames, 'headline', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
   }
+});
+
+Posts.allow({
+    insert: canPostById
+  , update: canEditById
+  , remove: canEditById
 });
 
 Meteor.methods({

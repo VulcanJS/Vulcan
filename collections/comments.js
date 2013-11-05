@@ -1,19 +1,22 @@
 Comments = new Meteor.Collection('comments');
 
-Comments.allow({
-    insert: canCommentById
-  , update: canEditById
-  , remove: canEditById
-});
-
 Comments.deny({
   update: function(userId, post, fieldNames) {
     if(isAdminById(userId))
       return false;
-    // may only edit the following fields:
-    return (_.without(fieldNames, 'text').length > 0);
+    // deny the update if it contains something other than the following fields
+    return (_.without(fieldNames, 'body').length > 0);
   }
 });
+
+Comments.allow({
+  insert: canCommentById,
+  update: canEditById,
+  remove: canEditById
+});
+
+
+
 
 Meteor.methods({
   comment: function(postId, parentCommentId, text){

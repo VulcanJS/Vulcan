@@ -27,7 +27,7 @@ Template.comment_edit.events = {
     });
 
     trackEvent("edit comment", {'postId': comment.post, 'commentId': comment._id});
-    Router.go("/posts/"+comment.post+"/comments/"+comment._id);
+    Router.go("/posts/"+comment.post+"/comment/"+comment._id);
   },
   'click .delete-link': function(e){
     var comment = this;
