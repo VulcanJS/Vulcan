@@ -19,6 +19,8 @@ Posts.allow({
   , remove: canEditById
 });
 
+clickedPosts = [];
+
 Meteor.methods({
   post: function(post){
     var headline = cleanUp(post.headline),
@@ -112,9 +114,13 @@ Meteor.methods({
   post_edit: function(post){
     // TODO: make post_edit server-side?
   },
-  clickedPost: function(post){
-    // TODO: add some server-side IP verification or something
-    Posts.update(post._id, { $inc: { clicks: 1 }});
+  clickedPost: function(post, sessionId){
+    // only let clients increment a post's click counter once per session
+    var click = {_id: post._id, sessionId: sessionId};
+    if(_.where(clickedPosts, click).length == 0){
+      clickedPosts.push(click);
+      Posts.update(post._id, { $inc: { clicks: 1 }});
+    }
   },
   deletePostById: function(postId) {
     // remove post comments

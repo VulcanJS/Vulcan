@@ -133,7 +133,7 @@ Template.post_item.events = {
     $share.find('.share-replace').sharrre(SharrreOptions);
   },
   'click .post-title': function(e){
-    Meteor.call('clickedPost', this, function(error, result){
+    Meteor.call('clickedPost', this, Session.get('sessionId'), function(error, result){
       if(error)
         console.log(error);
     });
