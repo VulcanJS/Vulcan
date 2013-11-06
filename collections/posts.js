@@ -34,9 +34,10 @@ Meteor.methods({
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
         maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30))),
         postId = '';
-        if(isAdmin(Meteor.user()) {
-          userId = post.userId || user._id // Don't trust HTML from the users, they are bad
-        }
+
+    // only let admins post as another user
+    if(isAdmin(Meteor.user()))
+      userId = post.userId || user._id 
         
     // check that user can post
     if (!user || !canPost(user))
