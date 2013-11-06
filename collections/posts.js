@@ -106,9 +106,10 @@ Meteor.methods({
     return post;
   },
   post_edit: function(post){
-    //TO-DO: make post_edit server-side?
+    // TODO: make post_edit server-side?
   },
   clickedPost: function(post){
+    // TODO: add some server-side IP verification or something
     Posts.update(post._id, { $inc: { clicks: 1 }});
   },
   deletePostById: function(postId) {

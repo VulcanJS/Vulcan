@@ -63,7 +63,7 @@ Meteor.publish('postsListUsers', function(find, options) {
   if(canViewById(this.userId)){
     var posts = Posts.find(find, options);
     var userIds = _.pluck(posts.fetch(), 'userId');
-    return Meteor.users.find({_id: {$in: userIds}}, {multi: true});
+    return Meteor.users.find({_id: {$in: userIds}}, {fields: privacyOptions, multi: true});
   }
 });
 
