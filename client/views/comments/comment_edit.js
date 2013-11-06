@@ -19,7 +19,7 @@ Template.comment_edit.rendered = function(){
 Template.comment_edit.events = {
 	'click input[type=submit]': function(e, instance){
 		e.preventDefault();
-		if(!Meteor.user()) throw 'You must be logged in.';
+		if(!Meteor.user()) throw i18n.t('You must be logged in.');
 
 		var selectedCommentId=Session.get('selectedCommentId');
 		var selectedPostId=Comments.findOne(selectedCommentId).post;
@@ -40,7 +40,7 @@ Template.comment_edit.events = {
 
 	, 'click .delete-link': function(e){
 		e.preventDefault();
-		if(confirm("Are you sure?")){
+		if(confirm(i18n.t("Are you sure?"))){
 			var selectedCommentId=Session.get('selectedCommentId');
 			Meteor.call('removeComment', selectedCommentId);
 			Meteor.Router.to("/comments/deleted");

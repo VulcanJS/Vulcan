@@ -31,7 +31,7 @@ Template.user_edit.helpers({
 Template.user_edit.events = {
   'submit form': function(e){
     e.preventDefault();
-    if(!Meteor.user()) throwError('You must be logged in.');
+    if(!Meteor.user()) throwError(i18n.t('You must be logged in.'));
     var $target=$(e.target);
     var user=Session.get('selectedUserId') ? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
     
@@ -59,7 +59,7 @@ Template.user_edit.events = {
       if(error){
         throwError(error.reason);
       } else {
-        throwError('Profile updated');
+        throwError(i18n.t('Profile updated'));
       }
     });
   }

@@ -174,7 +174,7 @@ Template.comment_item.rendered=function(){
       e.preventDefault();
       if(!Meteor.user()){
         Meteor.Router.to('/signin');
-        throwError("Please log in first");
+        throwError(i18n.t("Please log in first"));
       }
       Meteor.call('upvoteComment', this._id, function(error, result){
         trackEvent("post upvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
@@ -184,7 +184,7 @@ Template.comment_item.rendered=function(){
       e.preventDefault();
       if(!Meteor.user()){
         Meteor.Router.to('/signin');
-        throwError("Please log in first");
+        throwError(i18n.t("Please log in first"));
       }
       Meteor.call('cancelUpvoteComment', this._id, function(error, result){
         trackEvent("post upvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
@@ -194,7 +194,7 @@ Template.comment_item.rendered=function(){
       e.preventDefault();
       if(!Meteor.user()){
         Meteor.Router.to('/signin');
-        throwError("Please log in first");
+        throwError(i18n.t("Please log in first"));
       }
       Meteor.call('downvoteComment', this._id, function(error, result){
         trackEvent("post downvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
@@ -204,7 +204,7 @@ Template.comment_item.rendered=function(){
       e.preventDefault();
       if(!Meteor.user()){
         Meteor.Router.to('/signin');
-        throwError("Please log in first");
+        throwError(i18n.t("Please log in first"));
       }
       Meteor.call('cancelDownvoteComment', this._id, function(error, result){
         trackEvent("post downvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});

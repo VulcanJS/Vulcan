@@ -5,11 +5,11 @@
         <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
             <i class="icon-up"></i>
-            <span>upvote</span>
+            <span>{{i18n "upvote"}}</span>
           </a>
           <a class="downvote" href="#">
             <i class="icon-down"></i>
-            <span>downvote</span>
+            <span>{{i18n "downvote"}}</span>
           </a>
         </div>
         <div class="user-avatar"><img src="{{user_avatar}}" /></div>
@@ -18,16 +18,16 @@
             <a class="comment-username" href="/users/{{userId}}">{{authorName}}</a>
             <span class="comment-time">{{ago}},</span>
             <span class="points">{{votes}} <span class="unit">points </span>
-            <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">link</a>
+            <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">{{i18n "link"}}</a>
             {{#if can_edit}}
-              | <a class="edit-link" href="/comments/{{_id}}/edit">Edit</a>
+              | <a class="edit-link" href="/comments/{{_id}}/edit">{{i18n "Edit"}}</a>
             {{/if}}
             {{#if currentUser.isAdmin}}
               | <span>{{full_date}}</span>
             {{/if}}
           </div>
           <div class="comment-text markdown">{{{body_formatted}}}</div>
-          <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">Reply</a>
+          <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
         </div>
       </div>
       {{#if showChildComments}}
