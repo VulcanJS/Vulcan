@@ -2,6 +2,7 @@
   "meteor": {},
   "packages": {
     "momentjs": {},
+    "crypto-base": {},
     "database-forms": {
       "git": "git://github.com/SachaG/database-forms.git"
     },
