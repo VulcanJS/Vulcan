@@ -4,7 +4,7 @@
 		<div class="user-profile grid-block">
 			<table>
 				<tr>
-					<td colspan="2"><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
+					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
 				</tr>
 				<tr>
 					<td>Name: </td>
@@ -18,6 +18,18 @@
 					<td>Bio: </td>
 					<td>{{profile.bio}}</td>
 				</tr>
+				<tr>
+					<td>Twitter: </td>
+					<td><a href="http://twitter.com/{{getTwitter}}">{{getTwitter}}</a></td>
+				</tr>
+				<tr>
+					<td>GitHub: </td>
+					<td><a href="http://github.com/{{getGitHub}}">{{getGitHub}}</a></td>
+				</tr>
+				<tr>
+					<td>Site: </td>
+					<td><a href="{{profile.site}}">{{profile.site}}</a></td>
+				</tr>								
 			</table>
 			{{#if canEditProfile}}
 				<a class="button inline" href="/users/{{slug}}/edit">Edit profile</a>

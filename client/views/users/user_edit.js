@@ -8,6 +8,12 @@ Template.user_edit.helpers({
   userEmail : function(){
     return getEmail(this);
   },
+  getTwitter: function(){
+    return getTwitterName(this);
+  },
+  getGitHub: function(){
+    return getGitHubName(this);
+  },
   profileUrl: function(){
     return Meteor.absoluteUrl()+"users/"+this.slug;
   },
@@ -37,6 +43,9 @@ Template.user_edit.events = {
       "profile.slug": slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.email": $target.find('[name=email]').val(),
+      "profile.twitter": $target.find('[name=twitter]').val(),
+      "profile.github": $target.find('[name=github]').val(),
+      "profile.site": $target.find('[name=site]').val(),
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
       "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
       "profile.notifications.replies": $('input[name=notifications_replies]:checked').length,
