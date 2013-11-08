@@ -1,3 +1,11 @@
+## v0.7.1
+
+* Added karma redistribution.
+* Improved user dashboard.
+* Improved user profiles. 
+
+Note: run the "update user profile" script from the toolbox after updating. 
+
 ## v0.7 “IronScope”
 
 #### Huge update!

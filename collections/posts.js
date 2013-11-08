@@ -86,6 +86,9 @@ Meteor.methods({
 
     postId = Posts.insert(post);
 
+    // increment posts count
+    Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
+
     post = _.extend(post, {_id: postId});
 
     var postAuthor =  Meteor.users.findOne(post.userId);
@@ -124,9 +127,13 @@ Meteor.methods({
   },
   deletePostById: function(postId) {
     // remove post comments
-    if(!this.isSimulation) {
-      Comments.remove({post: postId});
-    }
+    // if(!this.isSimulation) {
+    //   Comments.remove({post: postId});
+    // }
+    // NOTE: actually, keep comments afer all
+
+    // decrement post count
+    Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
   }
 });

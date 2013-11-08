@@ -5,15 +5,15 @@
 	<td>{{createdAtFormatted}}</td>
 	<td>{{profile.email}}</td>
 	<td>
-		<a href="#">{{postsCount}}</a>
+		<a href="#">{{postCount}}</a>
 		<ul class="posts-list hidden">
 			{{#each posts}}
 				<li><a href="/posts/{{_id}}">{{headline}}</a></li>
 			{{/each}}
 		</ul>
 	</td>
-	<td><a href="#">{{commentsCount}}</a></td>
-	<td>{{karma}}</td>
+	<td><a href="#">{{commentCount}}</a></td>
+	<td>{{getKarma}}</td>
 	<td>{{#if isInvited}}<a class="uninvite-link" href="#"><i class="icon-check"></i>Uninvite</a>{{else}}<a href="#" class="invite-link">Invite</a>{{/if}}</td>
 	<td>{{#if userIsAdmin}}<a class="unadmin-link" href="#"><i class="icon-check unadmin-link"></i>Unadmin</a>{{else}}<a href="#" class="admin-link">Make admin</a>{{/if}}</td>
 	<td><a class="delete-link" href="#">Delete User</a></td>

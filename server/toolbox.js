@@ -17,8 +17,14 @@ Meteor.methods({
       Meteor.users.update({}, {$inc:{invitesCount: 1}}, {multi:true});
   },
   updateUserProfiles: function () {
+    console.log('//--------------------------//\nUpdating user profiles…')
     if(isAdmin(Meteor.user())){
-      Meteor.users.find().forEach(function(user){
+      var allUsers = Meteor.users.find();
+      console.log('> Found '+allUsers.count()+' users.\n');
+
+      allUsers.forEach(function(user){
+        console.log('> Updating user '+user._id+' ('+user.username+')');
+
         // update user slug
         if(getUserName(user))
           Meteor.users.update(user._id, {$set:{slug: slugify(getUserName(user))}});
@@ -26,8 +32,19 @@ Meteor.methods({
         // update user isAdmin flag
         if(typeof user.isAdmin === 'undefined')
           Meteor.users.update(user._id, {$set: {isAdmin: false}});
+
+        // update postCount
+        var postsByUser = Posts.find({userId: user._id});
+        Meteor.users.update(user._id, {$set: {postCount: postsByUser.count()}});
+        console.log(postsByUser.count())
+        // update commentCount
+        var commentsByUser = Comments.find({userId: user._id});
+        Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
+                console.log(commentsByUser.count())
+
       });
-    } 
+    }
+    console.log('Done updating user profiles.\n//--------------------------//')
   },
   updatePostsSlugs: function () {
     //TODO

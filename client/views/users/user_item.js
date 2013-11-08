@@ -14,21 +14,17 @@ Template.user_item.helpers({
   posts: function(){
     return Posts.find({'userId':this._id});
   },
-  postsCount: function(){
-    return Posts.find({'userId':this._id}).count();
-  },
   comments: function(){
     return Comments.find({'userId':this._id});
-  },
-  commentsCount: function(){
-    // Posts.find({'user_id':this._id}).forEach(function(post){console.log(post.headline);});
-    return Comments.find({'userId':this._id}).count();
   },
   userIsAdmin: function(){
     return isAdmin(this);
   },
   profileUrl: function () {
     return getProfileUrl(this);
+  },
+  getKarma: function() {
+    return Math.round(100*this.karma)/100;
   }
 });
 
