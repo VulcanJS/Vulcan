@@ -16,11 +16,16 @@ Meteor.methods({
     if(isAdmin(Meteor.user()))
       Meteor.users.update({}, {$inc:{invitesCount: 1}}, {multi:true});
   },
-  updateUserSlugs: function () {
+  updateUserProfiles: function () {
     if(isAdmin(Meteor.user())){
       Meteor.users.find().forEach(function(user){
+        // update user slug
         if(getUserName(user))
           Meteor.users.update(user._id, {$set:{slug: slugify(getUserName(user))}});
+
+        // update user isAdmin flag
+        if(typeof user.isAdmin === 'undefined')
+          Meteor.users.update(user._id, {$set: {isAdmin: false}});
       });
     } 
   },

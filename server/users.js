@@ -2,7 +2,8 @@ Accounts.onCreateUser(function(options, user){
   user.profile = options.profile || {};
   user.karma = 0;
   // users start pending and need to be invited
-  user.isInvited = false
+  user.isInvited = false;
+  user.isAdmin = false;
   
   if (options.email)
     user.profile.email = options.email;

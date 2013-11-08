@@ -30,7 +30,7 @@ Meteor.methods({
         submitted = parseInt(post.submitted) || new Date().getTime(),
         defaultStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED,
         status = post.status || defaultStatus,
-        postWithSameLink = Posts.findOne({url: post.url}),
+        postWithSameLink = Posts.findOne({url: post.url}), // TODO: limit scope of search to past month or something
         timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),

@@ -1,14 +1,23 @@
-.filter{
+.filter-sort{
+	@include cf;
 	background: $lightest-grey;
 	@include border-radius(3px);
 	padding: 8px 15px;
+	font-size: 14px;
 	a, span{
 		display: inline-block;
 		margin-right: 20px;
 		&.active{
 			border-bottom: 2px solid $blue;
 		}
+	}	
+	.filter{
+		float: left;
 	}
+	.sort{
+		float: right;
+	}
+
 }
 .user-list, .user-table{
 	.user{

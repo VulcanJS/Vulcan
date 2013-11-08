@@ -1610,23 +1610,40 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   margin-bottom: 20px; }
 
 /* line 1, ../sass/modules/_users.scss */
-.filter {
+.filter-sort {
+  /* For modern browsers */
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom: 1;
   background: #e7eff2;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 8px 15px; }
-  /* line 5, ../sass/modules/_users.scss */
-  .filter a, .filter span {
+  padding: 8px 15px;
+  font-size: 14px; }
+  /* line 3, ../sass/partials/_mixins.scss */
+  .filter-sort:before, .filter-sort:after {
+    content: "";
+    display: table; }
+  /* line 7, ../sass/partials/_mixins.scss */
+  .filter-sort:after {
+    clear: both; }
+  /* line 7, ../sass/modules/_users.scss */
+  .filter-sort a, .filter-sort span {
     display: inline-block;
     margin-right: 20px; }
-    /* line 8, ../sass/modules/_users.scss */
-    .filter a.active, .filter span.active {
+    /* line 10, ../sass/modules/_users.scss */
+    .filter-sort a.active, .filter-sort span.active {
       border-bottom: 2px solid #7ac0e4; }
+  /* line 14, ../sass/modules/_users.scss */
+  .filter-sort .filter {
+    float: left; }
+  /* line 17, ../sass/modules/_users.scss */
+  .filter-sort .sort {
+    float: right; }
 
-/* line 15, ../sass/modules/_users.scss */
+/* line 24, ../sass/modules/_users.scss */
 .user-list .user .user-avatar, .user-table .user .user-avatar {
   height: 30px;
   width: 30px;
@@ -1638,10 +1655,10 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   -o-border-radius: 30px;
   border-radius: 30px; }
 
-/* line 29, ../sass/modules/_users.scss */
+/* line 38, ../sass/modules/_users.scss */
 table tr td {
   padding: 10px; }
-/* line 35, ../sass/modules/_users.scss */
+/* line 44, ../sass/modules/_users.scss */
 table thead tr td {
   font-weight: bold; }
 

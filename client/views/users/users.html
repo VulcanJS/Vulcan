@@ -2,13 +2,21 @@
     <div class="grid">
       <div class="user-table grid-block">
         <h2>Users</h2>
-        <p class="filter">
-          <span>Filter by: </span>
-          <a class="{{activeClass 'all'}}" href="/all-users">All</a>
-          <a class="{{activeClass 'invited'}}" href="/all-users/?filter=invited">Invited</a>
-          <a class="{{activeClass 'uninvited'}}" href="/all-users/?filter=uninvited">Uninvited</a>
-          <a class="{{activeClass 'admin'}}" href="/all-users/?filter=admin">Admin</a>
-        </p>
+        <div class="filter-sort">
+          <p class="filter">
+            <span>Filter by: </span>
+            <a class="{{activeClass 'all'}}" href="{{filterBy 'all'}}">All</a>
+            <a class="{{activeClass 'invited'}}" href="{{filterBy 'invited'}}">Invited</a>
+            <a class="{{activeClass 'uninvited'}}" href="{{filterBy 'uninvited'}}">Uninvited</a>
+            <a class="{{activeClass 'admin'}}" href="{{filterBy 'admin'}}">Admin</a>
+          </p>
+          <p class="sort">
+            <span>Sort by: </span>
+            <a class="{{activeClass 'createdAt'}}" href="{{sortBy 'createdAt'}}">Created</a>
+            <a class="{{activeClass 'karma'}}" href="{{sortBy 'karma'}}">Karma</a>
+            <a class="{{activeClass 'username'}}" href="{{sortBy 'username'}}">Username</a>
+          </p>
+        </div>
         <table>
           <thead>
             <tr>

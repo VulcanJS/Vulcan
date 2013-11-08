@@ -521,17 +521,19 @@ Router.map(function() {
     template: 'users',
     waitOn: function() {
       var limit = parseInt(this.params.limit) || 20,
-          parameters = getUsersParameters(this.params.filter, limit);
+          parameters = getUsersParameters(this.params.filterBy, this.params.sortBy, limit);
       return Meteor.subscribe('allUsers', parameters.find, parameters.options);
     },
     data: function() {
       var limit = parseInt(this.params.limit) || 20,
-          parameters = getUsersParameters(this.params.filter, limit),
-          filter = (typeof this.params.filter === 'string') ? this.params.filter : 'all';
+          parameters = getUsersParameters(this.params.filterBy, this.params.sortBy, limit),
+          filterBy = (typeof this.params.filterBy === 'string') ? this.params.filterBy : 'all',
+          sortBy = (typeof this.params.sortBy === 'string') ? this.params.sortBy : 'createdAt';
       Session.set('usersLimit', limit);
       return {
         users: Meteor.users.find(parameters.find, parameters.options),
-        filter: filter
+        filterBy: filterBy,
+        sortBy: sortBy
       }
     }
   });
