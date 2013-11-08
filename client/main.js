@@ -28,8 +28,8 @@ Meteor.subscribe('categories');
 // Meteor doesn't send all the user properties that we need
 Meteor.subscribe('currentUser');
 
-// Subscribe to all users for now to make user selection autocomplete work?
-// Meteor.subscribe('allUsers', {}, {});
+// Subscribe to all users for now to make user selection autocomplete work
+Meteor.subscribe('allUsersAdmin');
 
 // Notifications - only load if user is logged in
 if(Meteor.user() != null)

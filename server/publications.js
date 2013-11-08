@@ -77,6 +77,14 @@ Meteor.publish('allUsers', function(find, options) {
   }
 });
 
+// publish all users for admins to make autocomplete work
+// TODO: find a better way
+
+Meteor.publish('allUsersAdmin', function() {
+  if (isAdminById(this.userId))
+    return Meteor.users.find();  
+});
+
 // -------------------------------------------- Posts -------------------------------------------- //
 
 // Publish a single post
