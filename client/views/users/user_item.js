@@ -8,7 +8,7 @@ Template.user_item.helpers({
   displayName: function(){
     return getDisplayName(this);
   },
-  email: function(){
+  getEmail: function(){
     return getEmail(this);
   },
   posts: function(){

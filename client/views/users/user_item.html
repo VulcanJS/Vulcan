@@ -3,16 +3,9 @@
 	<td><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
 	<td><a href="{{profileUrl}}">{{displayName}}</a></td>
 	<td>{{createdAtFormatted}}</td>
-	<td>{{profile.email}}</td>
-	<td>
-		<a href="#">{{postCount}}</a>
-		<ul class="posts-list hidden">
-			{{#each posts}}
-				<li><a href="/posts/{{_id}}">{{headline}}</a></li>
-			{{/each}}
-		</ul>
-	</td>
-	<td><a href="#">{{commentCount}}</a></td>
+	<td>{{getEmail}}</td>
+	<td>{{postCount}}</td>
+	<td>{{commentCount}}</td>
 	<td>{{getKarma}}</td>
 	<td>{{#if isInvited}}<a class="uninvite-link" href="#"><i class="icon-check"></i>Uninvite</a>{{else}}<a href="#" class="invite-link">Invite</a>{{/if}}</td>
 	<td>{{#if userIsAdmin}}<a class="unadmin-link" href="#"><i class="icon-check unadmin-link"></i>Unadmin</a>{{else}}<a href="#" class="admin-link">Make admin</a>{{/if}}</td>

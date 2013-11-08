@@ -36,11 +36,10 @@ Meteor.methods({
         // update postCount
         var postsByUser = Posts.find({userId: user._id});
         Meteor.users.update(user._id, {$set: {postCount: postsByUser.count()}});
-        console.log(postsByUser.count())
+        
         // update commentCount
         var commentsByUser = Comments.find({userId: user._id});
         Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
-                console.log(commentsByUser.count())
 
       });
     }
