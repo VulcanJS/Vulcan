@@ -60,7 +60,7 @@ Meteor.methods({
     var newCommentId=Comments.insert(comment);
 
     // increment comment count
-    Meteor.users.update({_id: userId}, {$inc: {commentCount: 1}});
+    Meteor.users.update({_id: user._id}, {$inc: {commentCount: 1}});
 
     // extend comment with newly created _id
     comment = _.extend(comment, {_id: newCommentId});
