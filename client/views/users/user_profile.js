@@ -16,10 +16,10 @@ Template.user_profile.helpers({
   invitesCount: function() {
     return Meteor.user().invitesCount;
   },
-  getTwitter: function () {
+  getTwitterName: function () {
     return getTwitterName(this);
   },
-  getGitHub: function () {
+  getGitHubName: function () {
     return getGitHubName(this);
   }
 });

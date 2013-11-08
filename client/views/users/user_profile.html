@@ -18,18 +18,24 @@
 					<td>Bio: </td>
 					<td>{{profile.bio}}</td>
 				</tr>
-				<tr>
-					<td>Twitter: </td>
-					<td><a href="http://twitter.com/{{getTwitter}}">{{getTwitter}}</a></td>
-				</tr>
-				<tr>
-					<td>GitHub: </td>
-					<td><a href="http://github.com/{{getGitHub}}">{{getGitHub}}</a></td>
-				</tr>
-				<tr>
-					<td>Site: </td>
-					<td><a href="{{profile.site}}">{{profile.site}}</a></td>
-				</tr>								
+				{{#if getTwitterName}}
+					<tr>
+						<td>Twitter: </td>
+						<td><a href="http://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
+					</tr>
+				{{/if}}
+				{{#if getGitHubName}}
+					<tr>
+						<td>GitHub: </td>
+						<td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
+					</tr>
+				{{/if}}
+				{{#if site}}
+					<tr>
+						<td>Site: </td>
+						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
+					</tr>
+				{{/if}}					
 			</table>
 			{{#if canEditProfile}}
 				<a class="button inline" href="/users/{{slug}}/edit">Edit profile</a>
