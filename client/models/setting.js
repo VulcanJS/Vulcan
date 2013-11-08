@@ -8,6 +8,7 @@ Setting = FormModel.extend({
     requirePostsApproval: false,
     emailNotifications: false,
     nestedComments: false,
+    redistributeKarma: false,
     defaultEmail: '',
     scoreUpdateInterval: '',
     postInterval: '',
