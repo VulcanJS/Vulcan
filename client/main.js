@@ -23,8 +23,8 @@ Meteor.subscribe('settings', function(){
   i18n.init({
     lng: getSetting("language"),
     resStore: eval(getSetting("language")),
-    saveMissing: true,
-    debug: true
+    keyseparator: '::',
+    nsseparator: ':::'
     });
 });
 

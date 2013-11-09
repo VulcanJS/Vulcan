@@ -4,14 +4,14 @@
         <h2>{{i18n "Users"}}</h2>
         <div class="filter-sort">
           <p class="filter">
-            <span>Filter by: </span>
+            <span>{{i18n "Filter by"}}: </span>
             <a class="{{activeClass 'all'}}" href="{{filterBy 'all'}}">{{i18n "All"}}</a>
             <a class="{{activeClass 'invited'}}" href="{{filterBy 'invited'}}">{{i18n "Invited"}}</a>
             <a class="{{activeClass 'uninvited'}}" href="{{filterBy 'uninvited'}}">{{i18n "Uninvited"}}</a>
             <a class="{{activeClass 'admin'}}" href="{{filterBy 'admin'}}">{{i18n "Admin"}}</a>
           </p>
           <p class="sort">
-            <span>Sort by: </span>
+            <span>{{i18n "Sort by"}}: </span>
             <a class="{{activeClass 'createdAt'}}" href="{{sortBy 'createdAt'}}">{{i18n "Created"}}</a>
             <a class="{{activeClass 'karma'}}" href="{{sortBy 'karma'}}">{{i18n "Karma"}}</a>
             <a class="{{activeClass 'username'}}" href="{{sortBy 'username'}}">{{i18n "Username"}}</a>
