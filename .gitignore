@@ -13,4 +13,7 @@ config.rb
 
 deploy.sh
 
-.idea
+.demeteorized
+
+dump/
+dump/*

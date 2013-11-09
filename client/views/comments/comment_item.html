@@ -12,10 +12,12 @@
             <span>{{i18n "downvote"}}</span>
           </a>
         </div>
-        <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        {{#constant}}
+          <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        {{/constant}}
         <div class="comment-main">
           <div class="comment-meta">
-            <a class="comment-username" href="/users/{{userId}}">{{authorName}}</a>
+            <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
             <span class="comment-time">{{ago}},</span>
             <span class="points">{{votes}} <span class="unit">points </span>
             <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">{{i18n "link"}}</a>
@@ -27,14 +29,16 @@
             {{/if}}
           </div>
           <div class="comment-text markdown">{{{body_formatted}}}</div>
-          <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
+          {{#if getSetting "nestedComments" true}}
+            <a href="/comments/{{_id}}/reply" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
+          {{/if}}
         </div>
       </div>
       {{#if showChildComments}}
       <ul class="comment-children comment-list">
       {{#each child_comments}}
         {{#with this}}
-        {{> comment_item}}
+          {{> comment_item}}
         {{/with}}
       {{/each}}
       </ul>

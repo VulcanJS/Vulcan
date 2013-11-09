@@ -20,7 +20,7 @@ Template.user_email.events = {
         throwError(i18n.t('Thanks for signing up!'));
         Meteor.call('addCurrentUserToMailChimpList');
         trackEvent("new sign-up", {'userId': user._id, 'auth':'twitter'});
-        Meteor.Router.to('/');
+        Router.go('/');
       }
     });
   }

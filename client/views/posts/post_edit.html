@@ -1,6 +1,6 @@
 <template name="post_edit">
   <div class="grid submit">
-    {{#constant}}{{#with post}}
+    {{#with post}}{{#constant}}
       <form class="grid-block form-horizontal">
         <div class="control-group">
           <label class="control-label post-form-headline">{{i18n "Created"}}</label>
@@ -25,11 +25,11 @@
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
         </div>
         <div class="control-group post-form-category">
-          <label class="control-label">{{i18n "Category"}}</label>
+          <label class="control-label">{{i18n "Categories"}}</label>
           <div class="controls">
             {{#each categories}}
             <label class="radio inline">
-              <input id="category_{{_id}}" type="radio" value="{{_id}}" name="category" {{checked}} /> {{name}}
+              <input id="category_{{_id}}" type="checkbox" value="{{_id}}" name="category" {{checked}} /> {{name}}
             </label>
             {{/each}}
           </div>
@@ -65,6 +65,7 @@
             </div>  
           </div>
           {{/if}}
+          {{#if false}} <!-- user selection autocomplete disabled for now -->
           <div class="control-group post-form-user">
             <label class="control-label">{{i18n "User"}}</label>
             <div class="controls">
@@ -75,6 +76,7 @@
               </select>
             </div>
           </div>
+          {{/if}}
           <div class="control-group post-form-status">
             <label class="control-label">{{i18n "Status"}}</label>
             <div class="controls">
@@ -95,6 +97,6 @@
           <input type="submit" value="{{i18n "Submit"}}" />
         </div>
       </form>
-    {{/with}}{{/constant}}
+    {{/constant}}{{/with}}
   </div>
 </template>

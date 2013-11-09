@@ -72,12 +72,12 @@ Template.post_submit.events = {
         clearSeenErrors();
         $(e.target).removeClass('disabled');
         if(error.error == 603)
-          Meteor.Router.to('/posts/'+error.details);
+          Router.go('/posts/'+error.details);
       }else{
         trackEvent("new post", {'postId': post.postId});
         if(post.status === STATUS_PENDING)
           throwError('Thanks, your post is awaiting approval.')
-        Meteor.Router.to('/posts/'+post.postId);
+        Router.go('/posts/'+post.postId);
       }
     });
   }

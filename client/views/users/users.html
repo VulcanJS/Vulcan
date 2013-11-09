@@ -1,7 +1,24 @@
 <template name="users">
     <div class="grid">
       <div class="user-table grid-block">
-        <h1>{{i18n "Users"}}</h1>
+        <h2>{{i18n "Users"}}</h2>
+        <div class="filter-sort">
+          <p class="filter">
+            <span>Filter by: </span>
+            <a class="{{activeClass 'all'}}" href="{{filterBy 'all'}}">{{i18n "All"}}</a>
+            <a class="{{activeClass 'invited'}}" href="{{filterBy 'invited'}}">{{i18n "Invited"}}</a>
+            <a class="{{activeClass 'uninvited'}}" href="{{filterBy 'uninvited'}}">{{i18n "Uninvited"}}</a>
+            <a class="{{activeClass 'admin'}}" href="{{filterBy 'admin'}}">{{i18n "Admin"}}</a>
+          </p>
+          <p class="sort">
+            <span>Sort by: </span>
+            <a class="{{activeClass 'createdAt'}}" href="{{sortBy 'createdAt'}}">{{i18n "Created"}}</a>
+            <a class="{{activeClass 'karma'}}" href="{{sortBy 'karma'}}">{{i18n "Karma"}}</a>
+            <a class="{{activeClass 'username'}}" href="{{sortBy 'username'}}">{{i18n "Username"}}</a>
+            <a class="{{activeClass 'postCount'}}" href="{{sortBy 'postCount'}}">{{i18n "Posts"}}</a>
+            <a class="{{activeClass 'commentCount'}}" href="{{sortBy 'commentCount'}}">{{i18n "Comments"}}</a>
+          </p>
+        </div>
         <table>
           <thead>
             <tr>
@@ -22,6 +39,9 @@
               {{/each}}
           </tbody>
         </table>
+        <div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}">
+          <a class="more-link" href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
+        </div>
       </div>
     </div>
 </template>

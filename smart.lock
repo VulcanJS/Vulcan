@@ -2,61 +2,52 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "router": {},
       "momentjs": {},
+      "crypto-base": {},
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master"
       },
-      "paginated-subscription": {},
       "crypto-md5": {},
-      "i18next-meteor": {}
+      "iron-router": {},
+      "i18next-meteor": {},
+      "nprogress": {}
     },
     "packages": {
-      "router": {
-        "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.5.4.1",
-        "commit": "d00e380dda2184b70e909fc4a0fb5358d602c586"
-      },
       "momentjs": {
         "git": "https://github.com/crapthings/meteor-momentjs.git",
         "tag": "v2.1.0.2",
         "commit": "59a762e297082eea8b8cae00374c2b7ac6f89529"
+      },
+      "crypto-base": {
+        "git": "https://github.com/tmeasday/meteor-crypto-base.git",
+        "tag": "v0.0.3",
+        "commit": "fdc0b7b3d24e2e31c5c95beddafe890ffbaafd42"
       },
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
         "branch": "master",
         "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
       },
-      "paginated-subscription": {
-        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
-        "tag": "v0.1.2",
-        "commit": "35e0c6112df2b4cfeb60b559276a93cac5ee2dd6"
-      },
       "crypto-md5": {
         "git": "https://github.com/tmeasday/meteor-crypto-md5.git",
         "tag": "v0.0.2",
         "commit": "a943bea4cffeac9a14c2825dfe57d32b9d677e6f"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.6.1",
+        "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
       },
       "i18next-meteor": {
         "git": "https://github.com/ckir/i18next-meteor.git",
         "tag": "v1.6.0",
         "commit": "6d922cc0adea92904e51a2a153d26dd66fb2789d"
       },
-      "page-js-ie-support": {
-        "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
-        "tag": "v1.3.5",
-        "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
-      },
-      "HTML5-History-API": {
-        "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
-        "tag": "v4.0.0",
-        "commit": "dc4965f1424cfca625ec3fbea17eace03f8e32c5"
-      },
-      "crypto-base": {
-        "git": "https://github.com/tmeasday/meteor-crypto-base.git",
+      "nprogress": {
+        "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
         "tag": "v0.0.3",
-        "commit": "fdc0b7b3d24e2e31c5c95beddafe890ffbaafd42"
+        "commit": "ffd1c5dd400af64121197f4e637a215c4b6b1fc7"
       }
     }
   }

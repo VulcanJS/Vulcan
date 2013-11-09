@@ -4,11 +4,11 @@
 		<div class="user-profile grid-block">
 			<table>
 				<tr>
-					<td colspan="2"><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
+					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
 				</tr>
 				<tr>
 					<td>{{i18n "Name"}}: </td>
-					<td>{{username}}</td>
+					<td>{{profile.name}}</td>
 				</tr>
 				<tr>
 					<td>{{i18n "Member since"}}: </td>
@@ -18,9 +18,34 @@
 					<td>{{i18n "Bio"}}: </td>
 					<td>{{profile.bio}}</td>
 				</tr>
+				{{#if getTwitterName}}
+					<tr>
+						<td>Twitter: </td>
+						<td><a href="http://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
+					</tr>
+				{{/if}}
+				{{#if getGitHubName}}
+					<tr>
+						<td>GitHub: </td>
+						<td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
+					</tr>
+				{{/if}}
+				{{#if site}}
+					<tr>
+						<td>Site: </td>
+						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
+					</tr>
+				{{/if}}					
 			</table>
-			{{#if isCurrentUser}}
-			<a href="/users/{{_id}}/edit">{{i18n "Edit profile"}}</a>
+			{{#if canEditProfile}}
+				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>
+			{{/if}}
+			{{#if canInvite}}
+				{{#if invitesCount}}
+					<a class="button inline invite-link" href="#">{{i18n "Invite "}}({{invitesCount}} {{i18n "left"}})</a>
+				{{else}}
+					<a class="button inline disabled" href="#">{{i18n "Invite (none left)"}}</a>
+				{{/if}}
 			{{/if}}
 		</div>
 		{{/with}}

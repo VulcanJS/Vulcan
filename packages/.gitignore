@@ -6,4 +6,5 @@ crypto-md5
 page-js-ie-support
 HTML5-History-API
 crypto-base
-/i18next-meteor
+iron-router
+nprogress

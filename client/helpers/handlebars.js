@@ -1,24 +1,36 @@
 // ** Handlebars helpers **
 
-Handlebars.registerHelper('canView', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canView(Meteor.user(), action);
+Handlebars.registerHelper('eachWithRank', function(items, options) {
+  // not used, forces multiple renders
+  // note: cannot use this because it would delete and recreate all nodes
+  items.rewind()
+  var out = '';
+  items.forEach(function(item, i){
+    var key = 'Branch-' + i;
+    out = out + Spark.labelBranch(key,function(){
+      return options.fn(_.extend(item, {rank: i}));
+    });
+  });
+  return out;
 });
-Handlebars.registerHelper('canPost', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canPost(Meteor.user(), action);
+
+Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
+  return getSetting(setting, defaultArgument);
 });
-Handlebars.registerHelper('canComment', function(action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canComment(Meteor.user(), action);
+Handlebars.registerHelper('canView', function() {
+  return canView(Meteor.user());
 });
-Handlebars.registerHelper('canUpvote', function(collection, action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canUpvote(Meteor.user()), collection, action;
+Handlebars.registerHelper('canPost', function() {
+  return canPost(Meteor.user());
 });
-Handlebars.registerHelper('canDownvote', function(collection, action) {
-  var action=(typeof action !== 'string') ? null : action;
-  return canDownvote(Meteor.user(), collection, action);
+Handlebars.registerHelper('canComment', function() {
+  return canComment(Meteor.user());
+});
+Handlebars.registerHelper('canUpvote', function(collection) {
+  return canUpvote(Meteor.user(), collection);
+});
+Handlebars.registerHelper('canDownvote', function(collection) {
+  return canDownvote(Meteor.user(), collection);
 });
 Handlebars.registerHelper('isAdmin', function(showError) {
   if(isAdmin(Meteor.user())){
@@ -37,3 +49,8 @@ Handlebars.registerHelper('canEdit', function(collectionName, item, action) {
   // var item=collection.findOne(itemId);
   return item && canEdit(Meteor.user(), item, action);
 });
+Handlebars.registerHelper('i18n',
+  function(str){
+    return (i18n != undefined ? i18n.t(str) : str);
+  }
+);

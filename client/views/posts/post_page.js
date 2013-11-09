@@ -1,8 +1,6 @@
 Template.post_page.helpers({
-  post: function(){
-    console.log('post page')
-    var post = Posts.findOne(Session.get('selectedPostId'));
-    return post;
+  post: function () {
+    return Posts.findOne(this.postId);
   },
   body_formatted: function(){
     var converter = new Markdown.Converter();
@@ -11,9 +9,6 @@ Template.post_page.helpers({
   },
   canComment: function(){
     return canComment(Meteor.user());
-  },
-  canView: function(){
-    return canView(Meteor.user());
   }
 }); 
 
@@ -23,6 +18,5 @@ Template.post_page.rendered = function(){
     Session.set('scrollToCommentId', null);
     this.rendered=true;
   }
-
-  document.title = Posts.findOne(Session.get('selectedPostId')).headline;
+  document.title = this.data.headline;
 }

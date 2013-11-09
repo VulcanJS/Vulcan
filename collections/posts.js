@@ -4,37 +4,43 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
+Posts.deny({
+  update: function(userId, post, fieldNames) {
+    if(isAdminById(userId))
+      return false;
+    // deny the update if it contains something other than the following fields
+    return (_.without(fieldNames, 'headline', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
+  }
+});
+
 Posts.allow({
     insert: canPostById
   , update: canEditById
   , remove: canEditById
 });
 
-Posts.deny({
-  update: function(userId, post, fieldNames) {
-    if(isAdminById(userId))
-      return false;
-    // may only edit the following fields:
-    return (_.without(fieldNames, 'headline', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
-  }
-});
+clickedPosts = [];
 
 Meteor.methods({
   post: function(post){
     var headline = cleanUp(post.headline),
         body = cleanUp(post.body),
         user = Meteor.user(),
-        userId = post.userId || user._id,
+        userId = user._id,
         submitted = parseInt(post.submitted) || new Date().getTime(),
         defaultStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED,
         status = post.status || defaultStatus,
-        postWithSameLink = Posts.findOne({url: post.url}),
+        postWithSameLink = Posts.findOne({url: post.url}), // TODO: limit scope of search to past month or something
         timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
         maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30))),
         postId = '';
 
+    // only let admins post as another user
+    if(isAdmin(Meteor.user()))
+      userId = post.userId || user._id 
+        
     // check that user can post
     if (!user || !canPost(user))
       throw new Meteor.Error(601, 'You need to login or be invited to post new stories.');
@@ -44,8 +50,8 @@ Meteor.methods({
       throw new Meteor.Error(602, 'Please fill in a headline');
 
     // check that there are no previous posts with the same link
-    if(post.url && postWithSameLink){
-      Meteor.call('upvotePost', postWithSameLink._id);
+    if(post.url && (typeof postWithSameLink !== 'undefined')){
+      Meteor.call('upvotePost', postWithSameLink);
       throw new Meteor.Error(603, 'This link has already been posted', postWithSameLink._id);
     }
 
@@ -57,23 +63,6 @@ Meteor.methods({
       // check that the user doesn't post more than Y posts per day
       if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
         throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
-    }
-
-    // shorten URL
-    if(!this.isSimulation && (token=getSetting('bitlyToken'))){
-      var shortenResponse = Meteor.http.get(
-        "https://api-ssl.bitly.com/v3/shorten?",
-        {
-          timeout: 5000,
-          params:{
-            "format": "json",
-            "access_token": token,
-            "longUrl": post.url
-          }
-        }
-      );
-      if(shortenResponse.statusCode == 200)
-        post.shortUrl = shortenResponse.data.data.url
     }
 
     post = _.extend(post, {
@@ -97,11 +86,17 @@ Meteor.methods({
 
     postId = Posts.insert(post);
 
-    var postAuthor =  Meteor.users.findOne(post.userId);
-    Meteor.call('upvotePost', postId,postAuthor);
+    // increment posts count
+    Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
 
-    if(getSetting('newPostsNotifications')){
-      // notify admin of new posts
+    post = _.extend(post, {_id: postId});
+
+    var postAuthor =  Meteor.users.findOne(post.userId);
+
+    Meteor.call('upvotePost', post, postAuthor);
+
+    if(getSetting('emailNotifications', false)){
+      // notify users of new posts
       var properties = {
         postAuthorName : getDisplayName(postAuthor),
         postAuthorId : post.userId,
@@ -110,7 +105,7 @@ Meteor.methods({
       }
       var notification = getNotification('newPost', properties);
       // call a server method because we do not have access to admin users' info on the client
-      Meteor.call('notifyAdmins', notification, Meteor.user(), function(error, result){
+      Meteor.call('notifyUsers', notification, Meteor.user(), function(error, result){
         //run asynchronously
       });
     }
@@ -120,16 +115,25 @@ Meteor.methods({
     return post;
   },
   post_edit: function(post){
-    //TO-DO: make post_edit server-side?
+    // TODO: make post_edit server-side?
   },
-  clickedPost: function(post){
-    Posts.update(post._id, { $inc: { clicks: 1 }});
+  clickedPost: function(post, sessionId){
+    // only let clients increment a post's click counter once per session
+    var click = {_id: post._id, sessionId: sessionId};
+    if(_.where(clickedPosts, click).length == 0){
+      clickedPosts.push(click);
+      Posts.update(post._id, { $inc: { clicks: 1 }});
+    }
   },
   deletePostById: function(postId) {
     // remove post comments
-    if(!this.isSimulation) {
-      Comments.remove({post: postId});
-    }
+    // if(!this.isSimulation) {
+    //   Comments.remove({post: postId});
+    // }
+    // NOTE: actually, keep comments afer all
+
+    // decrement post count
+    Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
   }
 });

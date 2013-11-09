@@ -1,3 +1,27 @@
+## v0.7.1
+
+* Added karma redistribution.
+* Improved user dashboard.
+* Improved user profiles. 
+
+Note: run the "update user profile" script from the toolbox after updating. 
+
+## v0.7 “IronScope”
+
+#### Huge update!
+
+* Switched to IronRouter.
+* Added new invite system.
+* Made nested comments optional.
+* Reworked notifications settings.
+* Stopped publishing all users.
+* Added URL slugs for user profiles.
+* Using nProgress to show loading.
+* Paginating users dashboard.
+* Filtering users dashboard.
+
+Note: If you're upgrading from a previous version of Telescope, you'll need to run the "update user slugs" method from within the Admin Toolbox panel inside the web app to get user profiles to work. 
+
 ## v0.6.2
 
 * Fixed bug where anybody could delete any comment.

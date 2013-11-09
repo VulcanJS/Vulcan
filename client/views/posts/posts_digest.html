@@ -11,13 +11,15 @@
     {{/if}}
     </div>
   </div>
-  <div class="posts grid list">
-    {{#if noPostsToday}}
-      <p>{{i18n "Sorry, no posts for today."}}</p>
-    {{else}}
+  {{#if hasPosts}}
+    <div class="posts grid list">
       {{#each posts}}
         {{> post_item}}
       {{/each}}
-    {{/if}}
-  </div>
+    </div>
+  {{else}}
+    <div class="grid-small grid-block dialog">
+      <p>{{i18n "Sorry, no posts for today"}}.</p>
+    </div>
+  {{/if}}
 </template>

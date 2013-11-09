@@ -82,6 +82,10 @@
 			pointer-events:none;
 		}
 	}
+	.comment-reply{
+		display: inline-block;
+		margin-top: 10px;
+	}
 	// &.comment-queued{
 	// 	&:after{
 	// 		position:absolute;

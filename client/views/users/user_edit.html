@@ -8,14 +8,13 @@
     {{/if}}
     <form>
       <h2>{{i18n "Account"}}</h2>
-      {{#if username}}
       <div class="control-group">
         <label>{{i18n "Username"}}</label>
         <div class="controls">
-          <input id="username" name="username" disabled="disabled" type="text" value="{{username}}" />
+          <input id="username" name="username" disabled="disabled" type="text" value="{{userName}}" />
         </div>
+        <p class="note">Profile URL: {{profileUrl}}</p>
       </div>
-      {{/if}}
 <!--       <div class="control-group">
         <label>Email</label>
         <div class="controls">
@@ -38,29 +37,56 @@
         <label>{{i18n "Bio"}}</label>
         <div class="controls"><textarea name="bio" type="text">{{profile.bio}}</textarea></div>
       </div>
+      <div class="control-group">
+      <label>Twitter Username</label>
+        <div class="controls">
+          <input name="twitter" type="text" value="{{getTwitter}}" />
+        </div>
+      </div>
+      <div class="control-group">
+        <label>GitHub Username</label>
+        <div class="controls">
+          <input name="github" type="text" value="{{getGitHub}}" />
+        </div>
+      </div>
+      <div class="control-group">
+        <label>Site</label>
+        <div class="controls">
+          <input name="site" type="text" value="{{profile.site}}" />
+        </div>
+      </div>
       <h3>{{i18n "Change Password?"}}</h3>
       <div class="control-group">
-        <label>Old Password</label>
-        <div class="controls"><input name="old_password" type="text" value="" /></div>
+        <label>{{i18n "Old Password"}}</label>
+        <div class="controls"><input name="old_password" type="password" value="" /></div>
       </div>
       <div class="control-group">
         <label>{{i18n "New Password"}}</label>
-        <div class="controls"><input name="new_password" type="text" value="" /></div>
+        <div class="controls"><input name="new_password" type="password" value="" /></div>
       </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n "Email Notifications"}}</label>
-            <div class="controls">
-              <label class="radio">
-                <input id="notifications_activity" type="radio" value="1" name="notifications" {{hasNotificationsActivity}} /> {{i18n "When people reply to me"}}
-              </label>
-              <label class="radio">
-                <input id="notifications_none" type="radio" value="0" name="notifications" {{hasNotificationsNone}} /> {{i18n "None"}}
-              </label>
-<!--               <label class="radio">  
-                <input id="notifications_all" type="radio" value="2" name="notifications" {{hasNotificationsAll}} /> {{i18n "All"}}
-              </label> -->
-            </div>
-          </div>
+      <div class="control-group">
+        <label class="control-label">{{i18n "Email Notifications"}}</label>
+        <div class="controls">
+          <label class="checkbox">
+            <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> {{i18n "New Posts"}}
+          </label>
+          <label class="checkbox">
+            <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> {{i18n "Comments on my posts"}}
+          </label>
+          <label class="checkbox">
+            <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> {{i18n "Replies to my comments"}}
+          </label>
+        </div>
+      </div>
+      {{#if isAdmin}}
+      <div class="control-group">
+        <h3>Invites</h3>
+        <label>Invites</label>
+        <div class="controls">
+          <input name="invitesCount" type="text" value="{{invitesCount}}" />
+        </div>
+      </div>
+      {{/if}}
       <div class="form-actions">
         <a href="/forgot_password">{{i18n "Forgot password?"}}</a>
         <input type="submit" class="button" value="{{i18n "Submit"}}" />

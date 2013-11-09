@@ -3,11 +3,17 @@ getUnsubscribeLink = function(user){
 };
 
 Meteor.methods({
-  createNotification: function(event, properties, userToNotify, userDoingAction){
+  createNotification: function(options){
+    var event = options.event,
+        properties = options.properties,
+        userToNotify = options.userToNotify,
+        userDoingAction = options.userDoingAction,
+        sendEmail = options.sendEmail;
     // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
     // console.log(userToNotify);
     // console.log(userDoingAction);
     // console.log(properties);
+    // console.log(sendEmail);
     var notification= {
       timestamp: new Date().getTime(),
       userId: userToNotify._id,
@@ -17,8 +23,9 @@ Meteor.methods({
     }
     var newNotificationId=Notifications.insert(notification);
 
-    // send the notification is the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
-    if(userToNotify.profile && (userToNotify.profile.notificationsFrequency === 1 || typeof userToNotify.profile.notificationsFrequency === 'undefined')){
+    // send the notification if notifications are activated,
+    // the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
+    if(sendEmail){
       Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
     }
   },
@@ -44,11 +51,11 @@ Meteor.methods({
     }
     return false;
   },
-  notifyAdmins : function(notification, currentUser){
-    // send a notification to every site admin
-    _.each(adminUsers(), function(user, index, list){
-      if(user._id !== currentUser._id){
-        // don't send admins notifications for their own posts
+  notifyUsers : function(notification, currentUser){
+    // send a notification to every user according to their notifications settings
+    _.each(Meteor.users.find().fetch(), function(user, index, list){
+      if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user)){
+        // don't send users notifications for their own posts
         sendEmail(getEmail(user), notification.subject, notification.text, notification.html);
       }
     });

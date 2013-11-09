@@ -1,27 +1,20 @@
-Template.posts_top.topPostsHandle = function() { 
-  return topPostsHandle;
-}
-Template.posts_new.newPostsHandle = function() { 
-  return newPostsHandle;
-}
-Template.posts_best.bestPostsHandle = function() { 
-  return bestPostsHandle;
-}
-Template.posts_pending.pendingPostsHandle = function() { 
-  return pendingPostsHandle;
-}
-
 Template.posts_list.helpers({
-  posts: function() {
-    return this.fetch();
+  posts : function () {
+    this.postsList.rewind();    
+    var posts = this.postsList.map(function (post, index, cursor) {
+      post.rank = index;
+      return post;
+    });
+    return posts;
   },
-  postsReady: function() {
-    return this.ready();
+  hasMorePosts: function(){
+    // as long as we ask for N posts and all N posts showed up, then keep showing the "load more" button
+    return parseInt(Session.get('postsLimit')) == this.postsCount
   },
-  allPostsLoaded: function(){
-    allPostsLoaded = this.fetch().length < this.loaded();
-    Session.set('allPostsLoaded', allPostsLoaded);
-    return allPostsLoaded;  
+  loadMoreUrl: function () {
+    var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
+    var categorySegment = Session.get('categorySlug') ? Session.get('categorySlug') + '/' : '';
+    return '/' + Session.get('view') + '/' + categorySegment + count;
   }
 });
 
@@ -33,12 +26,4 @@ Template.posts_list.rendered = function(){
   Session.set('distanceFromTop', distanceFromTop);
   $('body').css('min-height',distanceFromTop+160);
 }
-
-Template.posts_list.events({
-  'click .more-link': function(e) {
-    e.preventDefault();
-    Session.set('currentScroll',$('body').scrollTop());
-    this.loadNextPage();
-  }
-});
 

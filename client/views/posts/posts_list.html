@@ -4,29 +4,9 @@
 			{{> post_item}}
 		{{/each}}
 	</div>
-  {{#if postsReady}}
-  	<div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}">
-  		<a class="more-link" href="#">{{i18n "Load more"}}</a>
+  {{#if hasMorePosts}}
+  	<div class="grid more-button">
+  		<a class="more-link" href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
   	</div>
-  {{else}}
-    <div>{{i18n "Loading..."}}</div>
   {{/if}}
-</template>
-
-<!-- and the various pages that use the above template -->
-<!-- XXX: makes me want to be able to set a context from the router... -->
-<template name="posts_top">
-  {{> posts_list topPostsHandle}}
-</template>
-
-<template name="posts_new">
-  {{> posts_list newPostsHandle}}
-</template>
-
-<template name="posts_best">
-  {{> posts_list bestPostsHandle}}
-</template>
-
-<template name="posts_pending">
-  {{> posts_list pendingPostsHandle}}
 </template>

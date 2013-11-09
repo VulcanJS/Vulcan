@@ -9,7 +9,7 @@ Template.nav.events = {
   },  
   'click .login-header': function(e){
       e.preventDefault();
-      Meteor.Router.to('/account');
+      Router.go('/account');
   }
 };
 
@@ -17,7 +17,8 @@ Template.nav.rendered=function(){
   if(!Meteor.user()){
     $('.login-link-text').text(i18n.t("Sign Up/Sign In"));
   }else{
-    $('#login-buttons-logout').before('<a href="/account" class="account-link button">'+i18n.t("My Account")+'</a>');
+    $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">{{i18n "View Profile"}}</a>');
+    $('#login-buttons-logout').before('<a href="/account" class="account-link button">{{i18n "Edit Account"}}</a>');
   }
 };
 
@@ -54,5 +55,8 @@ Template.nav.helpers({
   },
   categories: function(){
     return Categories.find();
+  },
+  categoryLink: function () {
+    return getCategoryUrl(this.slug);
   }
 });

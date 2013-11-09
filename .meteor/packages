@@ -8,14 +8,14 @@ accounts-base
 accounts-ui
 accounts-password
 accounts-twitter
-router
 spiderable
 email
 database-forms
-paginated-subscription
 crypto-md5
 momentjs
 standard-app-packages
 rss
+iron-router
 mailchimp
+nprogress
 i18next-meteor
