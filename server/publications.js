@@ -86,8 +86,11 @@ Meteor.publish('allUsers', function(find, options) {
 // TODO: find a better way
 
 Meteor.publish('allUsersAdmin', function() {
-  if (isAdminById(this.userId))
-    return Meteor.users.find();  
+  if (isAdminById(this.userId)) {
+    return Meteor.users.find();
+  } else {
+    this.stop();
+  }
 });
 
 // -------------------------------------------- Posts -------------------------------------------- //
