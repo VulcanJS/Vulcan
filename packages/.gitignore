@@ -6,3 +6,5 @@ crypto-md5
 page-js-ie-support
 HTML5-History-API
 crypto-base
+iron-router
+nprogress

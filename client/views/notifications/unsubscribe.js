@@ -1,5 +1,5 @@
 Template.unsubscribe.created = function(){
-  var hash = Session.get('userEmailHash');
+  var hash = this.data.hash;
   Meteor.call('unsubscribeUser', hash, function(error, result){
     if(result){
       Session.set('unsubscribedMessage', 'You have been unsubscribed from all notifications.');

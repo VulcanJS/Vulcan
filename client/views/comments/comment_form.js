@@ -13,38 +13,33 @@ Template.comment_form.events = {
     $(e.target).addClass('disabled');
     clearSeenErrors();
     var content = instance.editor.exportFile();
-
-    if(Meteor.Router.page()=='comment_reply'){
+    if(getCurrentTemplate() == 'comment_reply'){
       // child comment
-      var parentCommentId=Session.get('selectedCommentId');
-      var postId=Comments.findOne(parentCommentId).post;
-
-      Meteor.call('comment', postId, parentCommentId, content, function(error, commentProperties){
-          if(error){
-              console.log(error);
-              throwError(error.reason);
-          }else{
-              Session.set('selectedCommentId', null);
-              trackEvent("newComment", commentProperties);
-
-              Session.set('scrollToCommentId', commentProperties.commentId);
-              Meteor.Router.to('/posts/'+postId);
-          }
+      var parentComment = this.comment;
+      console.log(parentComment)
+      Meteor.call('comment', parentComment.post, parentComment._id, content, function(error, commentProperties){
+        if(error){
+          console.log(error);
+          throwError(error.reason);
+        }else{
+          trackEvent("newComment", commentProperties);
+          Router.go('/posts/'+parentComment.post+'/comment/'+commentProperties.commentId);
+        }
       });
     }else{
       // root comment
-      var parentCommentId=null;        
-      var postId=Session.get('selectedPostId');
+      // console.log(postObject)
+      var post = postObject;
 
-      Meteor.call('comment', postId, parentCommentId, content, function(error, commentProperties){
-          if(error){
-              console.log(error);
-              throwError(error.reason);
-          }else{
-              trackEvent("newComment", commentProperties);
-              Session.set('scrollToCommentId', commentProperties.commentId);
-              instance.editor.importFile('editor', '');
-          }
+      Meteor.call('comment', post._id, null, content, function(error, commentProperties){
+        if(error){
+          console.log(error);
+          throwError(error.reason);
+        }else{
+          trackEvent("newComment", commentProperties);
+          Session.set('scrollToCommentId', commentProperties.commentId);
+          instance.editor.importFile('editor', '');
+        }
       });
     }
   }

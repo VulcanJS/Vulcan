@@ -1,279 +1,574 @@
-(function() {  
-  Meteor.Router.beforeRouting = function() {
-    console.log('// Before Routing //')
-    // reset all session variables that might be set by the previous route
-    Session.set('categorySlug', null);
+/*
 
-    // currentScroll stores the position of the user in the page
-    Session.set('currentScroll', null);
-    
-    var tagline = getSetting("tagline") ? ": "+getSetting("tagline") : '';
-    document.title = getSetting("title")+tagline;
-    
-    $('body').css('min-height','0');
+//--------------------------------------------------------------------------------------------------//
+//---------------------------------------- Table Of Contents ---------------------------------------//
+//--------------------------------------------------------------------------------------------------//
 
-    // set all errors who have already been seen to not show anymore
-    clearSeenErrors();
-        
-    // log this request with mixpanel, etc
-    analyticsRequest();
-  }
-  
-  // specific router functions
-  digest = function(year, month, day, view){
-    var destination = (typeof view === 'undefined') ? 'posts_digest' : 'posts_digest_'+view
-    if (typeof day === 'undefined') {
-      // we can get into an infinite reactive loop with the subscription filter
-      // if we keep setting the date even when it's barely changed
-      // if (new Date() - new Date(Session.get('currentDate')) > 60 * 1000) {
-        Session.set('currentDate', new Date());
-      // }
-      // Session.set('currentDate', new Date());
-    } else {
-      Session.set('currentDate', new Date(year, month-1, day));
-    }
-    
-    // we need to make sure that the session changes above have been executed 
-    // before we can look at the digest handle. XXX: this might be a bad idea
-    // Meteor.flush();
-    // if (!digestHandle() || digestHandle().loading()) {
-    //   return 'loading';
-    // } else {
-      return destination;
-    // }
-  };
+---------------------------------------------------------------
+#                             Config                          #
+---------------------------------------------------------------
 
-  post = function(id, commentId) {
-    Session.set('selectedPostId', id);
-    if(typeof commentId !== 'undefined')
-      Session.set('scrollToCommentId', commentId); 
-  
-    // on post page, we show the comment tree
-    Session.set('showChildComments',true);
-    return 'post_page';
-  };
+//
 
-  post_edit = function(id) {
-    Session.set('selectedPostId', id); 
-    return 'post_edit';
-  };
+---------------------------------------------------------------
+#                            Filters                          #
+---------------------------------------------------------------
 
-  comment = function(id) {
-    Session.set('selectedCommentId', id);
-    return 'comment_page';
-  };
+isLoggedIn
+isLoggedOut
+isAdmin
 
-  comment_reply = function(id) {
-    Session.set('selectedCommentId', id);
-    return 'comment_reply';
-  };
+canView
+canPost
+canEditPost
+canEditComment
 
-  comment_edit = function(id) {
-    Session.set('selectedCommentId', id);  
-    return 'comment_edit';
-  };
+hasCompletedProfile
 
-  // XXX: do these two really not want to set it to undefined (or null)?
-  user_profile = function(id) {
-    if(typeof id !== undefined){
-      Session.set('selectedUserId', id);
-    }
-    return 'user_profile';
-  };
+---------------------------------------------------------------
+#                          Controllers                        #
+---------------------------------------------------------------
 
-  user_edit = function(id) {
-    if(typeof id !== undefined){
-      Session.set('selectedUserId', id);
-    }
-    return 'user_edit';
-  };
+PostsListController
+PostPageController
 
-  unsubscribe = function(hash){
-    Session.set('userEmailHash', hash);
-    return 'unsubscribe';
-  }
+---------------------------------------------------------------
+#                             Routes                          #
+---------------------------------------------------------------
 
-  category = function(categorySlug, view){
-    var view = (typeof view === 'undefined') ? 'top' : view;
-    console.log('setting category slug to: '+categorySlug)
-    Session.set('categorySlug', categorySlug);
-    Meteor.Router.categoryFilter = true;
-    return 'posts_'+view;
-  }
+1) Paginated Lists
+----------------------
+Top
+New
+Best
+Pending
+Categories
 
-  // XXX: not sure if the '/' trailing routes are needed any more
-  Meteor.Router.add({
-    '/': 'posts_top',
-    '/top':'posts_top',
-    '/top/:page':'posts_top',
-    '/new':'posts_new',
-    '/new/:page':'posts_new',
-    '/best':'posts_best',
-    '/pending':'posts_pending',
-    '/digest/:year/:month/:day': digest,
-    '/digest': digest,
-    '/c/:category_slug/:view': category,
-    '/c/:category_slug': category,
-    '/signin':'user_signin',
-    '/signup':'user_signup',
-    '/submit':'post_submit',
-    '/invite':'no_invite',
-    '/posts/deleted':'post_deleted',
-    '/posts/:id/edit': post_edit,
-    '/posts/:id/comment/:comment_id': post,
-    '/posts/:id': post,
-    '/comments/deleted':'comment_deleted',   
-    '/comments/:id': comment,
-    '/comments/:id/reply': comment_reply,
-    '/comments/:id/edit': comment_edit,
-    '/settings':'settings',
-    '/toolbox':'toolbox',
-    '/categories':'categories',
-    '/users':'users',
-    '/account':'user_edit',
-    '/forgot_password':'user_password',
-    '/users/:id': user_profile,
-    '/users/:id/edit': user_edit,
-    '/:year/:month/:day': digest,
-    '/unsubscribe/:hash': unsubscribe
+2) Digest
+--------------------
+Digest
+
+3) Posts
+--------------------
+Post Page
+Post Page (scroll to comment)
+Post Edit
+Post Submit
+
+4) Comments
+--------------------
+Comment Page
+Comment Edit
+Comment Submit
+
+5) Users
+--------------------
+User Profie
+User Edit
+Forgot Password
+Account
+All Users
+Unsubscribe (from notifications)
+Sign Up
+Sign In
+
+6) Misc Routes
+--------------------
+Settings
+Categories
+Toolbox
+
+
+
+*/
+
+
+//--------------------------------------------------------------------------------------------------//
+//--------------------------------------------- Config ---------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
+
+
+Router.configure({
+  layoutTemplate: 'layout',
+  loadingTemplate: 'loading',
+  notFoundTemplate: 'not_found',
 });
 
+//--------------------------------------------------------------------------------------------------//
+//--------------------------------------------- Filters --------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
 
-  Meteor.Router.filters({
+var filters = {
 
-    setRequestTimestamp: function(page){
-      // openedComments is an Array that tracks which comments
-      // have been expanded by the user, to make sure they stay expanded
-      Session.set("openedComments", null);
-      Session.set('requestTimestamp',new Date());
-      // console.log('---------------setting request timestamp: '+Session.get('requestTimestamp'))
-      return page;
-    },
+  nProgressHook: function () {
+    if (this.ready()) {
+      NProgress.done(); 
+    } else {
+      NProgress.start();
+      this.stop();
+    }
+  },
 
-    requireLogin: function(page) {
-      if (Meteor.loggingIn()) {
-        return 'loading';
-      } else if (Meteor.user()) {
-        return page;
-      } else {
-        return 'user_signin';
-      }
-    },
-    
-    canView: function(page) {
-      var error = canView(Meteor.user(), true);
-      if (error === true)
-        return page;
-      
-      // a problem.. make sure we are logged in
-      if (Meteor.loggingIn())
-        return 'loading';
-      
-      // otherwise the error tells us what to show.
-      return error;
-    },
+  resetScroll: function () {
+    var scrollTo = window.currentScroll || 0;
+    $('body').scrollTop(scrollTo);
+    $('body').css("min-height", 0);
+  },
+
+  isLoggedIn: function() {
+    if (!(Meteor.loggingIn() || Meteor.user())) {
+      throwError('Please Sign In First.')
+      this.render('signin');
+      this.stop(); 
+    }
+  },
+
+  isLoggedOut: function() {
+    if(Meteor.user()){
+      this.render('already_logged_in');
+      this.stop();
+    }
+  },
+
+  isAdmin: function() {
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()){
+      throwError("Sorry, you  have to be an admin to view this page.")
+      this.render('no_rights');
+      this.stop(); 
+    }
+  },
+
+  canView: function() {
+    if(Session.get('settingsLoaded') && !canView()){
+      this.render('no_rights');
+      this.stop();
+    }
+  },
+
+  canPost: function () {
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !canPost()){
+      throwError("Sorry, you don't have permissions to add new items.")
+      this.render('no_rights');
+      this.stop();      
+    }
+  },
+
+  canEditPost: function() {
+    var post = Posts.findOne(this.params._id);
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(post)){
+      throwError("Sorry, you cannot edit this post.")
+      this.render('no_rights');
+      this.stop();
+    }
+  },
+
+  canEditComment: function() {
+    var comment = Comments.findOne(this.params._id);
+    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(comment)){
+      throwError("Sorry, you cannot edit this comment.")
+      this.render('no_rights');
+      this.stop();
+    }
+  },
+
+  hasCompletedProfile: function() {
+    var user = Meteor.user();
+    if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
+      // Session.set('selectedUserId', user._id);
+      this.render('user_email');
+      this.stop();
+    }
+  }
+
+}
+
+// Load Hooks
+
+Router.load( function () {
+  clearSeenErrors(); // set all errors who have already been seen to not show anymore
+  Session.set('categorySlug', null); 
+});
+
+// Before Hooks
+
+// Use nProgress on every route that has to load a subscription
+Router.before(filters.nProgressHook, {only: [
+  'posts_top', 
+  'posts_new', 
+  'posts_best', 
+  'posts_pending', 
+  'posts_digest',
+  'posts_category', 
+  'post_page',
+  'post_edit',
+  'comment_page',
+  'comment_edit',
+  'comment_reply',
+  'user_edit',
+  'user_profile',
+  'all-users'
+]});
+
+Router.before(filters.hasCompletedProfile);
+Router.before(filters.isLoggedIn, {only: ['comment_reply','post_submit']});
+Router.before(filters.canView);
+Router.before(filters.isLoggedOut, {only: ['signin', 'signup']});
+Router.before(filters.canPost, {only: ['posts_pending', 'comment_reply', 'post_submit']});
+Router.before(filters.canEditPost, {only: ['post_edit']});
+Router.before(filters.canEditComment, {only: ['comment_edit']});
+Router.before(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings', 'categories', 'toolbox']});
+
+// After Hooks
+
+Router.after(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'posts_category', 'all-users']});
+Router.after( function () {
+  analyticsRequest() // log this request with mixpanel, etc
+});
+
+// Unload Hooks
+
+//
+
+//--------------------------------------------------------------------------------------------------//
+//------------------------------------------- Controllers ------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
+
+
+// Controller for all posts lists
+
+PostsListController = RouteController.extend({
+  template:'posts_list',
+  waitOn: function () {
+    // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    var limit = this.params.limit || getSetting('postsPerPage', 10);
+    // note: most of the time this.params.slug will be empty
+    var parameters = getParameters(view, limit, this.params.slug);
+    return [
+      Meteor.subscribe('postsList', parameters.find, parameters.options),
+      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+    ]
+  },
+  data: function () {
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1],
+        limit = this.params.limit || getSetting('postsPerPage', 10),
+        parameters = getParameters(view, limit, this.params.slug),
+        posts = Posts.find(parameters.find, parameters.options);
+        postsCount = posts.count();
+        
+    Session.set('postsLimit', limit);
+
+    // get posts and decorate them with rank property
+    // note: not actually used; 
+    // posts = posts.map(function (post, index) {
+    //   post.rank = index;
+    //   return post;
+    // });
+
+    return {
+      postsList: posts,
+      postsCount: postsCount
+    }
+  },
+  after: function() {
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
+    Session.set('view', view);
+  }    
+});
+
+// Controller for post digest
+
+PostsDigestController = RouteController.extend({
+  template: 'posts_digest',
+  waitOn: function() {
+    // if day is set, use that. If not default to today
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
+    var parameters = getDigestParameters(currentDate);
+    return [
+      Meteor.subscribe('postsList', parameters.find, parameters.options),
+      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+    ]
+  },
+  data: function() {
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
+    var parameters = getDigestParameters(currentDate);
+    Session.set('currentDate', currentDate);
+    return {
+      posts: Posts.find(parameters.find, parameters.options)
+    }
+  }
+});
+
+// Controller for post pages
+
+PostPageController = RouteController.extend({
+  template: 'post_page',
+  waitOn: function () {
+    return [
+      Meteor.subscribe('singlePost', this.params._id), 
+      Meteor.subscribe('postComments', this.params._id),
+      Meteor.subscribe('postUsers', this.params._id)
+    ];
+  },
+  data: function () {
+    return {postId: this.params._id};
+  },
+  after: function () {
+    window.queueComments = false;
+    window.openedComments = [];
+    // TODO: scroll to comment position
+  } 
+});
+
+// Controller for comment pages
+
+CommentPageController = RouteController.extend({
+  waitOn: function() {
+    return [
+      Meteor.subscribe('singleComment', this.params._id),
+      Meteor.subscribe('commentUser', this.params._id),
+      Meteor.subscribe('commentPost', this.params._id)
+    ]
+  },
+  data: function() {
+    return {
+      comment: Comments.findOne(this.params._id)
+    }
+  },
+  after: function () {
+    window.queueComments = false;
+  } 
+});
+
+// Controller for user pages
+
+UserPageController = RouteController.extend({
+  waitOn: function() {
+    return Meteor.subscribe('singleUser', this.params._idOrSlug);
+  },
+  data: function() {
+    var findById = Meteor.users.findOne(this.params._idOrSlug);
+    var findBySlug = Meteor.users.findOne({slug: this.params._idOrSlug});
+    return {
+      user: (typeof findById == "undefined") ? findBySlug : findById
+    }
+  }
+});
+
+//--------------------------------------------------------------------------------------------------//
+//--------------------------------------------- Routes ---------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
+
+Router.map(function() {
+
+  // Top
+
+  this.route('posts_top', {
+    path: '/',
+    controller: PostsListController
+  });
+
+  this.route('posts_top', {
+    path: '/top/:limit?',
+    controller: PostsListController
+  });
+
+  // New
+
+  this.route('posts_new', {
+    path: '/new/:limit?',
+    controller: PostsListController
+  });
+
+  // Best
+
+  this.route('posts_best', {
+    path: '/best/:limit?',
+    controller: PostsListController
+  });
+
+  // Pending
+
+  this.route('posts_pending', {
+    path: '/pending/:limit?',
+    controller: PostsListController
+  });
+
+  // Categories
+
+  this.route('posts_category', {
+    path: '/category/:slug/:limit?',
+    controller: PostsListController,
+    after: function() {
+      Session.set('categorySlug', this.params.slug);
+    }
+  });
+
+  // TODO: enable /category/new, /category/best, etc. views
+
+
+  // Digest
+
+  this.route('posts_digest', {
+    path: '/digest/:year/:month/:day',
+    controller: PostsDigestController
+  });
   
-    canPost: function(page) {
-      var error = canPost(Meteor.user(), true);
-      if (error === true)
-        return page;
-      
-      // a problem.. make sure we are logged in
-      if (Meteor.loggingIn())
-        return 'loading';
-      
-      // otherwise the error tells us what to show.
-      return error;
+  this.route('posts_digest', {
+    path: '/digest',
+    controller: PostsDigestController
+  });
+
+  // -------------------------------------------- Post -------------------------------------------- //
+
+
+  // Post Page
+
+  this.route('post_page', {
+    path: '/posts/:_id',
+    controller: PostPageController
+  });
+
+  this.route('post_page', {
+    path: '/posts/:_id/comment/:commentId',
+    controller: PostPageController,
+    after: function () {
+      // TODO: scroll to comment position
+    }
+  });
+
+  // Post Edit
+
+  this.route('post_edit', {
+    path: '/posts/:_id/edit',
+    waitOn: function () {
+      return Meteor.subscribe('singlePost', this.params._id);
     },
-    
-    canEdit: function(page) {
-      // make findOne() non reactive to avoid re-triggering the router every time the 
-      // current comment or post object changes
-      // but make sure the comment/post is loaded before moving on
-      if (page === 'comment_edit') {
-        var item = Comments.findOne(Session.get('selectedCommentId'), {reactive: false});
-        if(!Session.get('singleCommentReady'))
-          return 'loading'
-      } else {
-        var item = Posts.findOne(Session.get('selectedPostId'), {reactive: false});
-        if(!Session.get('singlePostReady'))
-          return 'loading'
-      }
+    data: function() {
+      return {postId: this.params._id};
+    }
+  });
 
-      var error = canEdit(Meteor.user(), item, true);
-      if (error === true){
-        return page;
+  // Post Submit
 
-      }
-      
-      // a problem.. make sure the item has loaded and we have logged in
-      if (! item || Meteor.loggingIn()){
-        return 'loading';
-      }
+  this.route('post_submit', {path: '/submit'});
 
-      // otherwise the error tells us what to show.
-      return error;
-    },
+  // -------------------------------------------- Comment -------------------------------------------- //
   
-    isLoggedOut: function(page){
-      return Meteor.user() ? "already_logged_in" : page;
-    },
+  // Comment Page
 
-    isAdmin: function(page) {
-      return isAdmin(Meteor.user()) ? page : "no_rights";
-    },
+  this.route('comment_page', {
+    path: '/comments/:_id',
+    controller: CommentPageController
+  });
 
-    // if the user is logged in but their profile isn't filled out enough
-    requireProfile: function(page) {
-      var user = Meteor.user();
+  // Comment Reply
 
-      if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
-        Session.set('selectedUserId', user._id);
-        return 'user_email';
-      } else {
-        return page;
-      }
-    },
-  
-    // if we are on a page that requires a post, as set in selectedPostId
-    requirePost: function(page) {
-      // make findOne() non reactive to avoid re-triggering the router every time the 
-      // current comment or post object changes
-      if (Posts.findOne(Session.get('selectedPostId'), {reactive: false})) {
-        return page;
-      } else if (! Session.get('singlePostReady')) {
-        return 'loading';
-      } else {
-        return 'not_found';
+  this.route('comment_reply', {
+    path: '/comments/:_id/reply',
+    controller: CommentPageController,
+    after: function() {
+      window.queueComments = false;
+    }
+  });
+
+  // Comment Edit
+
+  this.route('comment_edit', {
+    path: '/comments/:_id/edit',
+    controller: CommentPageController,
+    after: function() {
+      window.queueComments = false;
+    }
+  });
+
+  // -------------------------------------------- Users -------------------------------------------- //
+
+  // User Profile
+
+  this.route('user_profile', {
+    path: '/users/:_idOrSlug',
+    controller: UserPageController
+  });
+
+  // User Edit
+
+  this.route('user_edit', {
+    path: '/users/:_idOrSlug/edit',
+    controller: UserPageController
+  });
+
+  // Account
+
+  this.route('account', {
+    path: '/account',
+    template: 'user_edit',
+    data: function() {
+      return {
+        user: Meteor.user()
       }
     }
   });
-  //
-  Meteor.Router.filter('requireProfile');
-  Meteor.Router.filter('requireLogin', {only: ['comment_reply','post_submit']});
-  Meteor.Router.filter('canView', {only: ['posts_top', 'posts_new', 'posts_digest', 'posts_best']});
-  Meteor.Router.filter('isLoggedOut', {only: ['user_signin', 'user_signup']});
-  Meteor.Router.filter('canPost', {only: ['posts_pending', 'comment_reply', 'post_submit']});
-  Meteor.Router.filter('canEdit', {only: ['post_edit', 'comment_edit']});
-  Meteor.Router.filter('requirePost', {only: ['post_page', 'post_edit']});
-  Meteor.Router.filter('isAdmin', {only: ['posts_pending', 'users', 'settings', 'categories', 'admin']});
-  Meteor.Router.filter('setRequestTimestamp', {only: ['post_page']});
 
-  Meteor.startup(function() {
-    Meteor.autorun(function() {
-      // grab the current page from the router, so this re-runs every time it changes
-      Meteor.Router.page();
-      if(Meteor.Router.page() !== "loading"){
-        console.log('------ '+Meteor.Router.page()+' ------');
-      
-        // note: posts_digest doesn't use paginated subscriptions so it cannot have a rank
-        if(_.contains(['posts_top', 'posts_new', 'posts_pending', 'posts_best'], Meteor.Router.page())){
-          Session.set('isPostsList', true);
-        }else{
-          Session.set('isPostsList', false);
-        }
+  // Forgot Password
 
+  this.route('forgot_password');
+
+  // All Users
+
+  this.route('all-users', {
+    path: '/all-users/:limit?',
+    template: 'users',
+    waitOn: function() {
+      var limit = parseInt(this.params.limit) || 20,
+          parameters = getUsersParameters(this.params.filterBy, this.params.sortBy, limit);
+      return Meteor.subscribe('allUsers', parameters.find, parameters.options);
+    },
+    data: function() {
+      var limit = parseInt(this.params.limit) || 20,
+          parameters = getUsersParameters(this.params.filterBy, this.params.sortBy, limit),
+          filterBy = (typeof this.params.filterBy === 'string') ? this.params.filterBy : 'all',
+          sortBy = (typeof this.params.sortBy === 'string') ? this.params.sortBy : 'createdAt';
+      Session.set('usersLimit', limit);
+      return {
+        users: Meteor.users.find(parameters.find, parameters.options),
+        filterBy: filterBy,
+        sortBy: sortBy
       }
-    });    
+    }
   });
-}());
+
+  // Unsubscribe (from notifications)
+
+  this.route('unsubscribe', {
+    path: '/unsubscribe/:hash',
+    data: function() {
+      return {
+        hash: this.params.hash
+      }
+    }
+  });
+
+  // User Sign-Up
+
+  this.route('signup');
+
+  // User Sign-In
+
+  this.route('signin');
+
+  // -------------------------------------------- Other -------------------------------------------- //
+
+  // Categories
+
+  this.route('categories');
+
+  // Settings
+
+  this.route('settings');
+
+  // Toolbox
+
+  this.route('toolbox');
+
+});

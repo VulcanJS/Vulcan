@@ -187,9 +187,19 @@ a {
     color: #f36c3d; }
 
 /* line 19, ../sass/partials/_typography.scss */
+h2 {
+  font-size: 36px;
+  margin-bottom: 10px; }
+
+/* line 23, ../sass/partials/_typography.scss */
 h3 {
   font-weight: bold;
   margin-bottom: 10px;
+  color: #b3c1c6; }
+
+/* line 28, ../sass/partials/_typography.scss */
+.small {
+  font-size: 80%;
   color: #b3c1c6; }
 
 @font-face {
@@ -373,6 +383,14 @@ body.pageslide-open {
 /* line 47, ../sass/partials/_markdown.scss */
 .markdown h5 {
   font-size: 14px; }
+/* line 50, ../sass/partials/_markdown.scss */
+.markdown code {
+  font-family: monospace;
+  margin: 0 2px;
+  padding: 0px 5px;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
 
 /* line 1, ../sass/partials/_tooltips.scss */
 .has-tooltip {
@@ -1240,8 +1258,12 @@ body.pageslide-open {
     opacity: 0;
     position: absolute;
     pointer-events: none; }
+  /* line 85, ../sass/modules/_comments.scss */
+  .comment .comment-reply {
+    display: inline-block;
+    margin-top: 10px; }
 
-/* line 123, ../sass/modules/_comments.scss */
+/* line 127, ../sass/modules/_comments.scss */
 .comment-content {
   position: relative;
   -webkit-border-radius: 0 3px 3px 3px;
@@ -1250,10 +1272,10 @@ body.pageslide-open {
   -o-border-radius: 0 3px 3px 3px;
   border-radius: 0 3px 3px 3px;
   font-size: 14px; }
-  /* line 128, ../sass/modules/_comments.scss */
+  /* line 132, ../sass/modules/_comments.scss */
   .comment-content .comment-main {
     margin-left: 50px; }
-  /* line 131, ../sass/modules/_comments.scss */
+  /* line 135, ../sass/modules/_comments.scss */
   .comment-content .user-avatar {
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
@@ -1263,21 +1285,21 @@ body.pageslide-open {
     overflow: hidden;
     position: block;
     float: left; }
-    /* line 136, ../sass/modules/_comments.scss */
+    /* line 140, ../sass/modules/_comments.scss */
     .comment-content .user-avatar img {
       height: 40px;
       width: 40px;
       display: block; }
 
-/* line 143, ../sass/modules/_comments.scss */
+/* line 147, ../sass/modules/_comments.scss */
 .comment-meta {
   margin-bottom: 5px;
   color: #b3c1c6; }
-  /* line 145, ../sass/modules/_comments.scss */
+  /* line 149, ../sass/modules/_comments.scss */
   .comment-meta .comment-username, .comment-meta .comment-time, .comment-meta .comment-permalink {
     display: inline-block;
     margin-right: 4px; }
-  /* line 150, ../sass/modules/_comments.scss */
+  /* line 154, ../sass/modules/_comments.scss */
   .comment-meta .comment-permalink {
     position: relative;
     text-indent: 100%;
@@ -1286,23 +1308,23 @@ body.pageslide-open {
     width: 20px;
     color: #b3c1c6;
     margin: 0; }
-    /* line 156, ../sass/modules/_comments.scss */
+    /* line 160, ../sass/modules/_comments.scss */
     .comment-meta .comment-permalink:before {
       position: absolute;
       display: block;
       top: 1px;
       left: 0;
       text-indent: 0; }
-    /* line 163, ../sass/modules/_comments.scss */
+    /* line 167, ../sass/modules/_comments.scss */
     .comment-meta .comment-permalink:hover:before {
       color: #f36c3d; }
 
-/* line 168, ../sass/modules/_comments.scss */
+/* line 172, ../sass/modules/_comments.scss */
 .comment-actions {
   position: absolute;
   left: -30px;
   top: 0px; }
-  /* line 172, ../sass/modules/_comments.scss */
+  /* line 176, ../sass/modules/_comments.scss */
   .comment-actions a {
     -webkit-border-radius: 0 0 0 3px;
     -moz-border-radius: 0 0 0 3px;
@@ -1321,7 +1343,7 @@ body.pageslide-open {
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden; }
-    /* line 184, ../sass/modules/_comments.scss */
+    /* line 188, ../sass/modules/_comments.scss */
     .comment-actions a.upvote {
       -webkit-border-radius: 3px 0 0 0;
       -moz-border-radius: 3px 0 0 0;
@@ -1329,7 +1351,7 @@ body.pageslide-open {
       -o-border-radius: 3px 0 0 0;
       border-radius: 3px 0 0 0;
       margin-bottom: 1px; }
-    /* line 188, ../sass/modules/_comments.scss */
+    /* line 192, ../sass/modules/_comments.scss */
     .comment-actions a i {
       font-size: 12px;
       display: block;
@@ -1340,40 +1362,40 @@ body.pageslide-open {
       text-align: center;
       text-indent: 0;
       color: #f36c3d; }
-    /* line 200, ../sass/modules/_comments.scss */
+    /* line 204, ../sass/modules/_comments.scss */
     .comment-actions a:hover {
       background: #4e555d; }
-      /* line 202, ../sass/modules/_comments.scss */
+      /* line 206, ../sass/modules/_comments.scss */
       .comment-actions a:hover i {
         color: white; }
-  /* line 207, ../sass/modules/_comments.scss */
+  /* line 211, ../sass/modules/_comments.scss */
   .comment-actions.upvoted .upvote, .comment-actions.downvoted .downvote {
     cursor: default; }
-    /* line 209, ../sass/modules/_comments.scss */
+    /* line 213, ../sass/modules/_comments.scss */
     .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i {
       color: #7ac0e4; }
-    /* line 212, ../sass/modules/_comments.scss */
+    /* line 216, ../sass/modules/_comments.scss */
     .comment-actions.upvoted .upvote:hover, .comment-actions.downvoted .downvote:hover {
       background: white; }
-  /* line 216, ../sass/modules/_comments.scss */
+  /* line 220, ../sass/modules/_comments.scss */
   .comment-actions.downvoted .upvote, .comment-actions.upvoted .downvote {
     cursor: default; }
-    /* line 218, ../sass/modules/_comments.scss */
+    /* line 222, ../sass/modules/_comments.scss */
     .comment-actions.downvoted .upvote i, .comment-actions.upvoted .downvote i {
       color: #b3c1c6; }
-    /* line 221, ../sass/modules/_comments.scss */
+    /* line 225, ../sass/modules/_comments.scss */
     .comment-actions.downvoted .upvote:hover, .comment-actions.upvoted .downvote:hover {
       background: white; }
 
-/* line 229, ../sass/modules/_comments.scss */
+/* line 233, ../sass/modules/_comments.scss */
 .comment-new .comment-field {
   margin-bottom: 10px; }
-/* line 235, ../sass/modules/_comments.scss */
+/* line 239, ../sass/modules/_comments.scss */
 .comment-page .comment-new {
   margin-left: 30px;
   position: relative;
   background: #ffffff; }
-  /* line 239, ../sass/modules/_comments.scss */
+  /* line 243, ../sass/modules/_comments.scss */
   .comment-page .comment-new:after {
     bottom: 100%;
     border: solid transparent;
@@ -1507,8 +1529,13 @@ form textarea, .accounts-dialog textarea {
 /* line 86, ../sass/modules/_forms.scss */
 form input[type="submit"], form button, form .button, form .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons form #login-buttons-password, form .btn, .accounts-dialog input[type="submit"], .accounts-dialog button, .accounts-dialog .button, .accounts-dialog .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .accounts-dialog #login-buttons-password, .accounts-dialog .btn {
   float: right; }
+/* line 89, ../sass/modules/_forms.scss */
+form .note, .accounts-dialog .note {
+  padding: 5px 0;
+  color: #b3c1c6;
+  font-size: 80%; }
 
-/* line 90, ../sass/modules/_forms.scss */
+/* line 95, ../sass/modules/_forms.scss */
 input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
@@ -1528,31 +1555,34 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   line-height: 26px;
   height: 26px;
   font-weight: normal; }
-  /* line 105, ../sass/modules/_forms.scss */
+  /* line 110, ../sass/modules/_forms.scss */
   input[type="submit"].disabled, button.disabled, .button.disabled, .auth-buttons #login-buttons .disabled#login-buttons-password, .btn.disabled {
     background: #dfdbdb;
     pointer-events: none; }
-  /* line 109, ../sass/modules/_forms.scss */
+  /* line 114, ../sass/modules/_forms.scss */
   input[type="submit"]:link, input[type="submit"]:hover, input[type="submit"]:active, input[type="submit"]:visited, button:link, button:hover, button:active, button:visited, .button:link, .auth-buttons #login-buttons #login-buttons-password:link, .button:hover, .auth-buttons #login-buttons #login-buttons-password:hover, .button:active, .auth-buttons #login-buttons #login-buttons-password:active, .button:visited, .auth-buttons #login-buttons #login-buttons-password:visited, .btn:link, .btn:hover, .btn:active, .btn:visited {
     color: white; }
+  /* line 117, ../sass/modules/_forms.scss */
+  input[type="submit"].inline, button.inline, .button.inline, .auth-buttons #login-buttons .inline#login-buttons-password, .btn.inline {
+    display: inline-block; }
 
-/* line 113, ../sass/modules/_forms.scss */
+/* line 121, ../sass/modules/_forms.scss */
 .twitter-signup {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #dfdbdb; }
-  /* line 117, ../sass/modules/_forms.scss */
+  /* line 125, ../sass/modules/_forms.scss */
   .twitter-signup .twitter-button {
     background: #00aced; }
 
-/* line 121, ../sass/modules/_forms.scss */
+/* line 129, ../sass/modules/_forms.scss */
 .category-slug {
   font-size: 12px;
   float: left;
   width: 80%;
   display: block; }
 
-/* line 127, ../sass/modules/_forms.scss */
+/* line 135, ../sass/modules/_forms.scss */
 .ui-autocomplete {
   background: white;
   width: 200px!important;
@@ -1575,7 +1605,45 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
 .footer-notice {
   text-align: center; }
 
-/* line 3, ../sass/modules/_users.scss */
+/* line 5, ../sass/modules/_settings.scss */
+.toolbox ul {
+  margin-bottom: 20px; }
+
+/* line 1, ../sass/modules/_users.scss */
+.filter-sort {
+  /* For modern browsers */
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom: 1;
+  background: #e7eff2;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 8px 15px;
+  font-size: 14px; }
+  /* line 3, ../sass/partials/_mixins.scss */
+  .filter-sort:before, .filter-sort:after {
+    content: "";
+    display: table; }
+  /* line 7, ../sass/partials/_mixins.scss */
+  .filter-sort:after {
+    clear: both; }
+  /* line 7, ../sass/modules/_users.scss */
+  .filter-sort a, .filter-sort span {
+    display: inline-block;
+    margin-right: 20px; }
+    /* line 10, ../sass/modules/_users.scss */
+    .filter-sort a.active, .filter-sort span.active {
+      border-bottom: 2px solid #7ac0e4; }
+  /* line 14, ../sass/modules/_users.scss */
+  .filter-sort .filter {
+    float: left; }
+  /* line 17, ../sass/modules/_users.scss */
+  .filter-sort .sort {
+    float: right; }
+
+/* line 24, ../sass/modules/_users.scss */
 .user-list .user .user-avatar, .user-table .user .user-avatar {
   height: 30px;
   width: 30px;
@@ -1587,10 +1655,10 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   -o-border-radius: 30px;
   border-radius: 30px; }
 
-/* line 17, ../sass/modules/_users.scss */
+/* line 38, ../sass/modules/_users.scss */
 table tr td {
   padding: 10px; }
-/* line 23, ../sass/modules/_users.scss */
+/* line 44, ../sass/modules/_users.scss */
 table thead tr td {
   font-weight: bold; }
 

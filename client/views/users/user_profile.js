@@ -1,20 +1,31 @@
+Template.user_profile.helpers({
+  avatarUrl: function() {
+    return getAvatarUrl(this);
+  },
+  canEditProfile: function() {
+    var currentUser = Meteor.user();
+    return currentUser && (this._id == currentUser._id || isAdmin(currentUser))
+  },
+  createdAtFormatted: function() {
+    return this.createdAt;
+  },
+  canInvite: function() {
+    // if the user is logged in, the target user hasn't been invited yet, invites are enabled, and user is not viewing their own profile
+    return Meteor.user() && Meteor.user()._id != this._id && !isInvited(this) && invitesEnabled() && canInvite(Meteor.user());
+  },
+  invitesCount: function() {
+    return Meteor.user().invitesCount;
+  },
+  getTwitterName: function () {
+    return getTwitterName(this);
+  },
+  getGitHubName: function () {
+    return getGitHubName(this);
+  }
+});
 
-
-Template.user_profile.user = function(){
-	if(userId=Session.get('selectedUserId')){
-		return Meteor.users.findOne(userId);
-	}
-}
-
-Template.user_profile.avatarUrl = function(){
-	return Gravatar.getGravatar(this, {
-		d: 'http://telescope.herokuapp.com/img/default_avatar.png',
-		s: 80
-	});
-}
-
-Template.user_profile.createdAtFormatted = Template.user_item.createdAtFormatted;
-
-Template.user_profile.isCurrentUser = function(){
-	return Meteor.user() && (Session.get('selectedUserId') === Meteor.user()._id);
-}
+Template.user_profile.events({
+  'click .invite-link': function(e, instance){
+    Meteor.call('inviteUser', instance.data.user._id);
+  }
+});

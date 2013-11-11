@@ -1,14 +1,16 @@
 <template name="comment_page">
   {{#if canView}}
   <div class="post grid comment-page">
+    
+    {{#with post}}
+      {{>post_item}}
+    {{/with}}
 
-    {{#if comment}}
     {{#with comment}}
       <ul class="selected-comment">
        {{> comment_item}}
       </ul>
     {{/with}}
-    {{/if}}
 
   </div>
   {{/if}}

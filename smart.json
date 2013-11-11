@@ -1,12 +1,13 @@
 {
   "meteor": {},
   "packages": {
-    "router": {},
     "momentjs": {},
-  	"database-forms": {
-  		"git":"git://github.com/SachaG/database-forms.git"
-  	},
-    "paginated-subscription": {},
-    "crypto-md5": {}
+    "crypto-base": {},
+    "database-forms": {
+      "git": "git://github.com/SachaG/database-forms.git"
+    },
+    "crypto-md5": {},
+    "iron-router": {},
+    "nprogress": {}
   }
 }

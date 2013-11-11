@@ -1,6 +1,6 @@
-Template.body.helpers({
+Template.layout.helpers({
   pageName : function(){
-    return Meteor.Router.page();
+    getCurrentTemplate();
   },
   backgroundColor: function(){
   	return getSetting('backgroundColor');
@@ -19,13 +19,18 @@ Template.body.helpers({
   }     
 });
 
-Template.body.created = function(){
+Template.layout.created = function(){
   Session.set('currentScroll', null);
 }
 
-Template.body.rendered = function(){
+Template.layout.rendered = function(){
     if(currentScroll=Session.get('currentScroll')){
       $('body').scrollTop(currentScroll);
       Session.set('currentScroll', null);
-    }   
+    }
+
+    // set title
+    var title = getSetting("title");
+    var tagline = getSetting("tagline");
+    document.title = tagline ? title+': '+tagline : title;
 }

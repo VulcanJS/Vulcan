@@ -1,13 +1,13 @@
 <template name="post_page">
 	{{#if canView}}
-  <div class="single-post grid">
     {{#with post}}
-     {{> post_item}}
+    <div class="single-post grid">
+      {{> post_item}}
+      {{#if canComment}}
+        {{> comment_form}}
+      {{/if}}
+      {{> comment_list}}
+    </div>
     {{/with}}
-    {{#if canComment}}
-      {{> comment_form}}
-    {{/if}}
-    {{> comment_list}}
-  </div>
   {{/if}}
 </template>
