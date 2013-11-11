@@ -10,6 +10,7 @@
       },
       "crypto-md5": {},
       "iron-router": {},
+      "i18next-meteor": {},
       "nprogress": {}
     },
     "packages": {
@@ -37,6 +38,11 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.6.1",
         "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
+      },
+      "i18next-meteor": {
+        "git": "https://github.com/ckir/i18next-meteor.git",
+        "tag": "v1.6.0",
+        "commit": "6d922cc0adea92904e51a2a153d26dd66fb2789d"
       },
       "nprogress": {
         "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",

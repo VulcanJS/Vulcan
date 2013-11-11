@@ -117,7 +117,7 @@ var filters = {
 
   isLoggedIn: function() {
     if (!(Meteor.loggingIn() || Meteor.user())) {
-      throwError('Please Sign In First.')
+      throwError(i18n.t('Please Sign In First.'))
       this.render('signin');
       this.stop(); 
     }
@@ -132,7 +132,7 @@ var filters = {
 
   isAdmin: function() {
     if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()){
-      throwError("Sorry, you  have to be an admin to view this page.")
+      throwError(i18n.t("Sorry, you  have to be an admin to view this page."))
       this.render('no_rights');
       this.stop(); 
     }
@@ -147,7 +147,7 @@ var filters = {
 
   canPost: function () {
     if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !canPost()){
-      throwError("Sorry, you don't have permissions to add new items.")
+      throwError(i18n.t("Sorry, you don't have permissions to add new items."))
       this.render('no_rights');
       this.stop();      
     }
@@ -156,7 +156,7 @@ var filters = {
   canEditPost: function() {
     var post = Posts.findOne(this.params._id);
     if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(post)){
-      throwError("Sorry, you cannot edit this post.")
+      throwError(i18n.t("Sorry, you cannot edit this post."))
       this.render('no_rights');
       this.stop();
     }
@@ -165,7 +165,7 @@ var filters = {
   canEditComment: function() {
     var comment = Comments.findOne(this.params._id);
     if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(comment)){
-      throwError("Sorry, you cannot edit this comment.")
+      throwError(i18n.t("Sorry, you cannot edit this comment."))
       this.render('no_rights');
       this.stop();
     }

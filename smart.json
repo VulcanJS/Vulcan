@@ -8,6 +8,7 @@
     },
     "crypto-md5": {},
     "iron-router": {},
+    "i18next-meteor": {},
     "nprogress": {}
   }
 }

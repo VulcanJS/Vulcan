@@ -21,6 +21,7 @@ Setting = FormModel.extend({
     logoUrl: '',
     logoHeight: '',
     logoWidth: '',
+    language: 'en',
     backgroundColor: '',
     secondaryColor: '',
     buttonColor: '',

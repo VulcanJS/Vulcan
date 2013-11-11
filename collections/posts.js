@@ -43,26 +43,26 @@ Meteor.methods({
         
     // check that user can post
     if (!user || !canPost(user))
-      throw new Meteor.Error(601, 'You need to login or be invited to post new stories.');
+      throw new Meteor.Error(601, i18n.t('You need to login or be invited to post new stories.'));
 
     // check that user provided a headline
     if(!post.headline)
-      throw new Meteor.Error(602, 'Please fill in a headline');
+      throw new Meteor.Error(602, i18n.t('Please fill in a headline'));
 
     // check that there are no previous posts with the same link
     if(post.url && (typeof postWithSameLink !== 'undefined')){
       Meteor.call('upvotePost', postWithSameLink);
-      throw new Meteor.Error(603, 'This link has already been posted', postWithSameLink._id);
+      throw new Meteor.Error(603, i18n.t('This link has already been posted', postWithSameLink._id));
     }
 
     if(!isAdmin(Meteor.user())){
       // check that user waits more than X seconds between posts
       if(!this.isSimulation && timeSinceLastPost < postInterval)
-        throw new Meteor.Error(604, 'Please wait '+(postInterval-timeSinceLastPost)+' seconds before posting again');
+        throw new Meteor.Error(604, i18n.t('Please wait ')+(postInterval-timeSinceLastPost)+i18n.t(' seconds before posting again'));
 
       // check that the user doesn't post more than Y posts per day
       if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
-        throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
+        throw new Meteor.Error(605, i18n.t('Sorry, you cannot submit more than ')+maxPostsPer24Hours+i18n.t(' posts per day'));
     }
 
     post = _.extend(post, {

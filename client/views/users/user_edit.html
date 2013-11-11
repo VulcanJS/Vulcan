@@ -3,13 +3,13 @@
   	{{#with user}}
     {{#if profileIncomplete}}
     <div>
-      Please complete your profile below before continuing.
+      {{i18n "Please complete your profile below before continuing."}}
     </div>
     {{/if}}
     <form>
-      <h2>Account</h2>
+      <h2>{{i18n "Account"}}</h2>
       <div class="control-group">
-        <label>Username</label>
+        <label>{{i18n "Username"}}</label>
         <div class="controls">
           <input id="username" name="username" disabled="disabled" type="text" value="{{userName}}" />
         </div>
@@ -22,19 +22,19 @@
         </div>
       </div> -->
       <div class="control-group">
-        <label>Display Name</label>
+        <label>{{i18n "Display Name"}}</label>
         <div class="controls">
           <input name="name" type="text" value="{{profile.name}}" />
         </div>
       </div>
       <div class="control-group">
-        <label>Email</label>
+        <label>{{i18n "Email"}}</label>
         <div class="controls">
           <input name="email" type="text" value="{{userEmail}}" />
         </div>
       </div>
       <div class="control-group">
-        <label>Bio</label>
+        <label>{{i18n "Bio"}}</label>
         <div class="controls"><textarea name="bio" type="text">{{profile.bio}}</textarea></div>
       </div>
       <div class="control-group">
@@ -55,26 +55,26 @@
           <input name="site" type="text" value="{{profile.site}}" />
         </div>
       </div>
-      <h3>Change Password?</h3>
+      <h3>{{i18n "Change Password?"}}</h3>
       <div class="control-group">
-        <label>Old Password</label>
+        <label>{{i18n "Old Password"}}</label>
         <div class="controls"><input name="old_password" type="password" value="" /></div>
       </div>
       <div class="control-group">
-        <label>New Password</label>
+        <label>{{i18n "New Password"}}</label>
         <div class="controls"><input name="new_password" type="password" value="" /></div>
       </div>
       <div class="control-group">
-        <label class="control-label">Email Notifications</label>
+        <label class="control-label">{{i18n "Email Notifications"}}</label>
         <div class="controls">
           <label class="checkbox">
-            <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> New Posts
+            <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> {{i18n "New Posts"}}
           </label>
           <label class="checkbox">
-            <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> Comments on my posts
+            <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> {{i18n "Comments on my posts"}}
           </label>
           <label class="checkbox">
-            <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> Replies to my comments
+            <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> {{i18n "Replies to my comments"}}
           </label>
         </div>
       </div>
@@ -88,8 +88,8 @@
       </div>
       {{/if}}
       <div class="form-actions">
-        <a href="/forgot_password">Forgot password?</a>
-        <input type="submit" class="button" value="Submit" />
+        <a href="/forgot_password">{{i18n "Forgot password?"}}</a>
+        <input type="submit" class="button" value="{{i18n "Submit"}}" />
       </div>
     </form>
     {{/with}}
