@@ -38,12 +38,17 @@ Meteor.publish('singleUser', function(userIdOrSlug) {
 Meteor.publish('postUsers', function(postId) {
   if(canViewById(this.userId)){
     // publish post author and post commenters
-    var post = Posts.findOne(postId);
-    var comments = Comments.find({post: post._id}).fetch();
-    // get IDs from all commenters on the post, plus post author's ID
-    var users = _.pluck(comments, "userId");
-    users.push(post.userId);
-    users = _.unique(users);
+    var post = Posts.findOne(postId),
+        users = [];
+        
+    if(post) {
+      var comments = Comments.find({post: post._id}).fetch();
+      // get IDs from all commenters on the post, plus post author's ID
+      users = _.pluck(comments, "userId");
+      users.push(post.userId);
+      users = _.unique(users);
+    }
+    
     return Meteor.users.find({_id: {$in: users}}, {fields: privacyOptions});
   }
 });
@@ -53,7 +58,7 @@ Meteor.publish('postUsers', function(postId) {
 Meteor.publish('commentUser', function(commentId) {
   if(canViewById(this.userId)){
     var comment = Comments.findOne(commentId);
-    return Meteor.users.find({_id: comment.userId}, {fields: privacyOptions});
+    return Meteor.users.find({_id: comment && comment.userId}, {fields: privacyOptions});
   }
 });
 
@@ -100,7 +105,7 @@ Meteor.publish('singlePost', function(id) {
 Meteor.publish('commentPost', function(commentId) {
   if(canViewById(this.userId)){
     var comment = Comments.findOne(commentId);
-    return Posts.find(comment.post);
+    return Posts.find({_id: comment && comment.post});
   }
 });
 
