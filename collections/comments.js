@@ -36,15 +36,15 @@ Meteor.methods({
 
     // check that user can comment
     if (!user || !canComment(user))
-      throw new Meteor.Error('You need to login or be invited to post new comments.');
+      throw new Meteor.Error(i18n.t('You need to login or be invited to post new comments.'));
     
     // check that user waits more than 15 seconds between comments
     if(!this.isSimulation && (timeSinceLastComment < commentInterval))
-      throw new Meteor.Error(704, 'Please wait '+(commentInterval-timeSinceLastComment)+' seconds before commenting again');
+      throw new Meteor.Error(704, i18n.t('Please wait ')+(commentInterval-timeSinceLastComment)+i18n.t(' seconds before commenting again'));
 
     // Don't allow empty comments
     if (!cleanText)
-      throw new Meteor.Error(704,'Your comment is empty.');
+      throw new Meteor.Error(704,i18n.t('Your comment is empty.'));
           
     var comment = {
         post: postId,
