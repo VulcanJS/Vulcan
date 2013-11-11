@@ -53,7 +53,7 @@ Meteor.methods({
   },
   notifyUsers : function(notification, currentUser){
     // send a notification to every user according to their notifications settings
-    _.each(Meteor.users.find().fetch(), function(user, index, list){
+    Meteor.users.find().forEach(function(user) {
       if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user)){
         // don't send users notifications for their own posts
         sendEmail(getEmail(user), notification.subject, notification.text, notification.html);
