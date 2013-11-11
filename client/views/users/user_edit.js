@@ -9,10 +9,10 @@ Template.user_edit.helpers({
     return getEmail(this);
   },
   getTwitter: function(){
-    return getTwitterName(this);
+    return getTwitterName(this) || "";
   },
   getGitHub: function(){
-    return getGitHubName(this);
+    return getGitHubName(this) || "";
   },
   profileUrl: function(){
     return Meteor.absoluteUrl()+"users/"+this.slug;
