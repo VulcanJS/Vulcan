@@ -133,7 +133,9 @@ Meteor.methods({
     // NOTE: actually, keep comments afer all
 
     // decrement post count
+    var post = Posts.findOne({_id: postId});
     Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
+    
     Posts.remove(postId);
   }
 });
