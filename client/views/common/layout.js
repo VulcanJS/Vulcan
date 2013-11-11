@@ -32,5 +32,5 @@ Template.layout.rendered = function(){
     // set title
     var title = getSetting("title");
     var tagline = getSetting("tagline");
-    document.title = tagline ? title+': '+tagline : title;
+    document.title = (tagline ? title+': '+tagline : title) || "";
 }
