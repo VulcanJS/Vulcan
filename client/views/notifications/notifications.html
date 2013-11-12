@@ -3,7 +3,7 @@
 		{{#if canPost}}
 		<div class="notifications desktop">
 			<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>
-			<a href="#" class="mark-as-read">Mark all as read</a>
+			<a href="#" class="mark-as-read">{{i18n "Mark all as read"}}</a>
 			<ul>
 			{{#each notifications}}
 				{{> notification_item}}

@@ -7,15 +7,15 @@
 					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
 				</tr>
 				<tr>
-					<td>Name: </td>
+					<td>{{i18n "Name"}}: </td>
 					<td>{{profile.name}}</td>
 				</tr>
 				<tr>
-					<td>Member since: </td>
+					<td>{{i18n "Member since"}}: </td>
 					<td>{{createdAtFormatted}}</td>
 				</tr>
 				<tr>
-					<td>Bio: </td>
+					<td>{{i18n "Bio"}}: </td>
 					<td>{{profile.bio}}</td>
 				</tr>
 				{{#if getTwitterName}}
@@ -38,13 +38,13 @@
 				{{/if}}					
 			</table>
 			{{#if canEditProfile}}
-				<a class="button inline" href="/users/{{slug}}/edit">Edit profile</a>
+				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>
 			{{/if}}
 			{{#if canInvite}}
 				{{#if invitesCount}}
-					<a class="button inline invite-link" href="#">Invite ({{invitesCount}} left)</a>
+					<a class="button inline invite-link" href="#">{{i18n "Invite "}}({{invitesCount}} {{i18n "left"}})</a>
 				{{else}}
-					<a class="button inline disabled" href="#">Invite (none left)</a>
+					<a class="button inline disabled" href="#">{{i18n "Invite (none left)"}}</a>
 				{{/if}}
 			{{/if}}
 		</div>

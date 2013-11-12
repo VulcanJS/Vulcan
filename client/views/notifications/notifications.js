@@ -5,11 +5,11 @@ Template.notifications.helpers({
   notification_count: function(){
   	var notifications=Notifications.find({userId: Meteor.userId(), read: false}).fetch();
   	if(notifications.length==0){
-  		return 'No notifications';
+  		return i18n.t('No notifications');
   	}else if(notifications.length==1){
-  		return '1 notification';
+  		return i18n.t('1 notification');
   	}else{
-  		return notifications.length+' notifications';
+  		return notifications.length+' '+i18n.t('notifications');
   	}
   },
   notification_class: function(){

@@ -3,19 +3,19 @@
     <form class="grid-block form-horizontal">
       {{#constant}}
       <div class="control-group">
-        <label class="control-label">URL</label>
+        <label class="control-label">{{i18n "URL"}}</label>
         <div class="controls"><input id="url" type="text" value="" /></div>
       </div>
       <div class="control-group">
-        <label class="control-label">Title</label>
-        <div class="controls"><input id="title" type="text" value="" /><a href="#" class="get-title-link inline-link">Suggest title</a></div>
+        <label class="control-label">{{i18n "Title"}}</label>
+        <div class="controls"><input id="title" type="text" value="" /><a href="#" class="get-title-link inline-link">{{i18n "Suggest title"}}</a></div>
       </div>
       <div class="control-group">
-        <label class="control-label">Message</label>
+        <label class="control-label">{{i18n "Body"}}</label>
         <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge"/></div>
       </div>
       <div class="control-group">
-        <label class="control-label">Category</label>
+        <label class="control-label">{{i18n "Category"}}</label>
         <div class="controls">
           {{#each categories}}
           <label class="radio inline">
@@ -28,17 +28,17 @@
       {{#if isAdmin}}
         {{#constant}}
         <div class="control-group">
-          <label class="control-label">Sticky?</label>
+          <label class="control-label">{{i18n "Sticky?"}}</label>
           <div class="controls">
             <input type="checkbox" name="sticky" id="sticky" />
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label">Date</label>
+          <label class="control-label">{{i18n "Date"}}</label>
           <div class="controls"><input id="submitted" type="text" value="{{submittedDate}}" /><input id="submitted_hidden" type="hidden" value="{{submitted}}" /></div>
         </div>
         <div class="control-group">
-          <label class="control-label">User</label>
+          <label class="control-label">{{i18n "User"}}</label>
           <div class="controls">
             <select id="postUser">
               {{#each users}}
@@ -48,23 +48,23 @@
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label">Status</label>
+          <label class="control-label">{{i18n "Status"}}</label>
           <div class="controls">
             <label class="radio inline">
-              <input id="status_pending" type="radio" value="1" name="status"/> Pending
+              <input id="status_pending" type="radio" value="1" name="status"/> {{i18n "Pending"}}
             </label>
             <label class="radio inline">
-              <input id="status_approved" type="radio" value="2" name="status" checked /> Approved
+              <input id="status_approved" type="radio" value="2" name="status" checked /> {{i18n "Approved"}}
             </label>
             <label class="radio inline">  
-              <input id="status_rejected" type="radio" value="3" name="status"/> Rejected
+              <input id="status_rejected" type="radio" value="3" name="status"/> {{i18n "Rejected"}}
             </label>
           </div>
         </div>
         {{/constant}} 
       {{/if}}
       <div class="form-actions">
-        <input type="submit" value="Submit" />
+        <input type="submit" value="{{i18n "Submit"}}" />
       </div>
     </form>
   </div>
