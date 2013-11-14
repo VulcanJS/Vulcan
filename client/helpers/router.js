@@ -174,7 +174,6 @@ var filters = {
   hasCompletedProfile: function() {
     var user = Meteor.user();
     if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
-      // Session.set('selectedUserId', user._id);
       this.render('user_email');
       this.stop();
     }

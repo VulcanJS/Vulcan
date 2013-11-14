@@ -4,6 +4,8 @@ Accounts.onCreateUser(function(options, user){
   // users start pending and need to be invited
   user.isInvited = false;
   user.isAdmin = false;
+  user.postCount = 0;
+  user.commentCount = 0;
   
   if (options.email)
     user.profile.email = options.email;
@@ -26,8 +28,9 @@ Accounts.onCreateUser(function(options, user){
 
   trackEvent('new user', {username: user.username, email: user.profile.email});
 
-  // add new user to MailChimp list
-  addToMailChimpList(user);
+  // if user has already filled in their email, add them to MailChimp list
+  if(user.profile.email)
+    addToMailChimpList(user);
 
   return user;
 });
