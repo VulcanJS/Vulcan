@@ -13,8 +13,8 @@ Template.user_profile.helpers({
     // if the user is logged in, the target user hasn't been invited yet, invites are enabled, and user is not viewing their own profile
     return Meteor.user() && Meteor.user()._id != this._id && !isInvited(this) && invitesEnabled() && canInvite(Meteor.user());
   },
-  invitesCount: function() {
-    return Meteor.user().invitesCount;
+  inviteCount: function() {
+    return Meteor.user().inviteCount;
   },
   getTwitterName: function () {
     return getTwitterName(this);
@@ -27,5 +27,6 @@ Template.user_profile.helpers({
 Template.user_profile.events({
   'click .invite-link': function(e, instance){
     Meteor.call('inviteUser', instance.data.user._id);
+    throwError('Thanks, user has been invited.')
   }
 });

@@ -3,7 +3,7 @@ var privacyOptions = { // false means private
   isAdmin: false,
   emails: false,
   notifications: false,
-  invitesCount: false,
+  inviteCount: false,
   'profile.email': false,
   'services.twitter.accessToken': false,
   'services.twitter.accessTokenSecret': false,

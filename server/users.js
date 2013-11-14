@@ -1,12 +1,15 @@
 Accounts.onCreateUser(function(options, user){
-  user.profile = options.profile || {};
-  user.karma = 0;
-  // users start pending and need to be invited
-  user.isInvited = false;
-  user.isAdmin = false;
-  user.postCount = 0;
-  user.commentCount = 0;
-  
+  var userProperties = {
+    profile: options.profile || {},
+    karma: 0,
+    isInvited: false,
+    isAdmin: false,
+    postCount: 0,
+    commentCount: 0,
+    invitedCount: 0
+  }
+  user = _.extend(user, userProperties);
+
   if (options.email)
     user.profile.email = options.email;
     
@@ -24,7 +27,7 @@ Accounts.onCreateUser(function(options, user){
     user.isAdmin = true;
 
   // give new users a few invites (default to 3)
-  user.invitesCount = getSetting('startInvitesCount', 3);
+  user.inviteCount = getSetting('startInvitesCount', 3);
 
   trackEvent('new user', {username: user.username, email: user.profile.email});
 

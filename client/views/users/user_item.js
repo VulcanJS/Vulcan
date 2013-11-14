@@ -20,11 +20,15 @@ Template.user_item.helpers({
   userIsAdmin: function(){
     return isAdmin(this);
   },
-  profileUrl: function () {
+  getProfileUrl: function () {
     return getProfileUrl(this);
   },
   getKarma: function() {
     return Math.round(100*this.karma)/100;
+  },
+  getInvitedUserProfileUrl: function () {
+    var user = Meteor.users.findOne(this.invitedId);
+    return getProfileUrl(user);
   }
 });
 
