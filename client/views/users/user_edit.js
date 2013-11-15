@@ -49,7 +49,7 @@ Template.user_edit.events = {
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
       "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
       "profile.notifications.replies": $('input[name=notifications_replies]:checked').length,
-      "invitesCount": parseInt($target.find('[name=invitesCount]').val())
+      "inviteCount": parseInt($target.find('[name=inviteCount]').val())
     };
 
     var old_password = $target.find('[name=old_password]').val();

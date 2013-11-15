@@ -3,12 +3,15 @@
 	background: $lightest-grey;
 	@include border-radius(3px);
 	padding: 8px 15px;
-	font-size: 14px;
+	font-size: 13px;
 	a, span{
 		display: inline-block;
 		margin-right: 20px;
 		&.active{
 			border-bottom: 2px solid $blue;
+		}
+		&:last-child{
+			margin-right: 0;
 		}
 	}	
 	.filter{
@@ -54,4 +57,10 @@ table{
 		}
 	}
 
+}
+.user-table{
+	font-size: 13px;
+	tr{
+		border-bottom: 1px solid #eee;
+	}
 }

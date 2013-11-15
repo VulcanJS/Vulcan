@@ -14,7 +14,7 @@ Meteor.methods({
   },
   giveInvites: function () {
     if(isAdmin(Meteor.user()))
-      Meteor.users.update({}, {$inc:{invitesCount: 1}}, {multi:true});
+      Meteor.users.update({}, {$inc:{inviteCount: 1}}, {multi:true});
   },
   updateUserProfiles: function () {
     console.log('//--------------------------//\nUpdating user profiles…')

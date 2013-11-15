@@ -41,8 +41,8 @@
 				<a class="button inline" href="/users/{{slug}}/edit">Edit profile</a>
 			{{/if}}
 			{{#if canInvite}}
-				{{#if invitesCount}}
-					<a class="button inline invite-link" href="#">Invite ({{invitesCount}} left)</a>
+				{{#if inviteCount}}
+					<a class="button inline invite-link" href="#">Invite ({{inviteCount}} left)</a>
 				{{else}}
 					<a class="button inline disabled" href="#">Invite (none left)</a>
 				{{/if}}
