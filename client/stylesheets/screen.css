@@ -803,6 +803,13 @@ body.pageslide-open {
   .nav:after {
     clear: both; }
   /* line 136, ../sass/modules/_header.scss */
+  .nav input#search {
+    padding: 4px;
+    margin-top: -2px;
+    border-radius: 4px;
+    border: 0px;
+    width: 150px;
+  }
   .nav > li {
     list-style-image: none;
     list-style-type: none;

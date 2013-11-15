@@ -112,7 +112,7 @@
 			height:26px;
 			margin-right:10px;
 			cursor:pointer;
-			color:white;	
+			color:white;
 			&:before{
 				color:white(0.5);
 				content:"Welcome, ";
@@ -136,6 +136,13 @@
 	>li{
 		@include horizontal-list-item;
 		margin-right:10px;
+    input#search {
+      padding: 4px;
+      margin-top: -2px;
+      border-radius: 4px;
+      border: 0px;
+      width: 150px;
+    }
 		>a{
 			color:white;
 			font-size:16px;

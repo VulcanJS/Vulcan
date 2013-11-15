@@ -6,14 +6,23 @@ Template.nav.events = {
   'click #mobile-menu': function(event){
     event.preventDefault();
     $('body').toggleClass('mobile-nav-open');
-  },  
+  },
   'click .login-header': function(e){
       e.preventDefault();
       Router.go('/account');
+  },
+  'keyup #search': function(e){
+      e.preventDefault();
+      Session.set('query', $(e.target).val());
   }
 };
 
+Template.nav.preserve({
+  'input#search': function (node) { return node.id; }
+});
+
 Template.nav.rendered=function(){
+
   if(!Meteor.user()){
     $('.login-link-text').text("Sign Up/Sign In");
   }else{
@@ -58,5 +67,8 @@ Template.nav.helpers({
   },
   categoryLink: function () {
     return getCategoryUrl(this.slug);
+  },
+  query: function () {
+    return Session.get("query");
   }
 });
