@@ -127,6 +127,7 @@ Meteor.publish('postsList', function(find, options, query) {
     if (query){
       var posts = Posts.find({$or: [
           {headline: {$regex: query, $options: 'i'}},
+          {url: {$regex: query, $options: 'i'}},
           {body: {$regex: query, $options: 'i'}}
         ]}, options);
     } else {
