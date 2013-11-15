@@ -246,7 +246,7 @@ PostsListController = RouteController.extend({
     // note: most of the time this.params.slug will be empty
     var parameters = getParameters(view, limit, this.params.slug);
     return [
-      Meteor.subscribe('postsList', parameters.find, parameters.options),
+      Meteor.subscribe('postsList', parameters.find, parameters.options, Session.get("query")),
       Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
     ]
   },

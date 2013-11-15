@@ -121,10 +121,17 @@ Meteor.publish('commentPost', function(commentId) {
 
 // Publish a list of posts
 
-Meteor.publish('postsList', function(find, options) {
+Meteor.publish('postsList', function(find, options, query) {
   if(canViewById(this.userId)){
     options = options || {};
-    var posts = Posts.find(find, options);
+    if (query){
+      var posts = Posts.find({$or: [
+          {headline: {$regex: query, $options: 'i'}},
+          {body: {$regex: query, $options: 'i'}}
+        ]}, options);
+    } else {
+      var posts = Posts.find(find, options);
+    }
 
     // console.log('//-------- Subscription Parameters:');
     // console.log(find);
