@@ -19,13 +19,15 @@ Meteor.subscribe('settings', function(){
   Session.set('settingsLoaded',true);
   analyticsInit();
 
+  i18n = $.i18n;
+  
   // Localisation
   i18n.init({
     lng: getSetting("language"),
     resStore: eval(getSetting("language")),
     keyseparator: '::',
     nsseparator: ':::'
-    });
+  });
 });
 
 // Categories

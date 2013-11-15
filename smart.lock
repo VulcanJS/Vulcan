@@ -10,7 +10,10 @@
       },
       "crypto-md5": {},
       "iron-router": {},
-      "i18next-meteor": {},
+      "i18next-meteor": {
+        "git": "git://github.com/SachaG/i18next-meteor.git",
+        "branch": "master"
+      },
       "nprogress": {}
     },
     "packages": {
@@ -40,9 +43,9 @@
         "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
       },
       "i18next-meteor": {
-        "git": "https://github.com/ckir/i18next-meteor.git",
-        "tag": "v1.6.0",
-        "commit": "6d922cc0adea92904e51a2a153d26dd66fb2789d"
+        "git": "git://github.com/SachaG/i18next-meteor.git",
+        "branch": "master",
+        "commit": "429adc8e5f8049a3b0f4e6186d94482799253059"
       },
       "nprogress": {
         "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
