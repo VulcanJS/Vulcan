@@ -139,7 +139,6 @@ var filters = {
   },
 
   canView: function() {
-    console.log('canview?')
     if(Session.get('settingsLoaded') && !canView()){
       console.log('cannot view')
       this.render('no_rights');

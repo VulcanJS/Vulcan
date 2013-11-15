@@ -5,10 +5,18 @@
 
     <ul class="nav site-nav desktop">
       {{#if canView}}
-      <li><a class="top" href="/top">Top</a></li>
-      <li><a class="new" href="/new">New</a></li>
-      <li><a class="best" href="/best">Best</a></li>
-      <li><a class="digest" href="/digest">Digest</a></li>
+      <li class="dropdown">
+        <a class="View" href="/">View</a>
+        <div class="dropdown-menu">
+          <ul role="menu" aria-labelledby="dLabel">
+            <li><a class="top" href="/top">Top</a></li>
+            <li><a class="new" href="/new">New</a></li>
+            <li><a class="best" href="/best">Best</a></li>
+            <li><a class="digest" href="/digest">Digest</a></li>
+          </ul>
+        </div>
+      </li>
+
       {{/if}}
       {{#if hasCategories}}
       <li class="dropdown">
@@ -36,8 +44,9 @@
         </div>
       </li>
       {{/if}}
-      <li>
-        <input id="search" placeholder="search" value="{{query}}">
+      <li class="search {{queryEmpty}}">
+        <input id="search" class="search-field" placeholder="search" value="{{query}}">
+        <a href="#" class="search-clear">╳</a>
       </li>
     </ul>
 

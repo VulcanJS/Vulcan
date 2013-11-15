@@ -1,3 +1,7 @@
+## v0.7.2
+
+* Added basic search (thanks Ry!)
+
 ## v0.7.1
 
 * Added karma redistribution.

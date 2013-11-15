@@ -803,13 +803,6 @@ body.pageslide-open {
   .nav:after {
     clear: both; }
   /* line 136, ../sass/modules/_header.scss */
-  .nav input#search {
-    padding: 4px;
-    margin-top: -2px;
-    border-radius: 4px;
-    border: 0px;
-    width: 150px;
-  }
   .nav > li {
     list-style-image: none;
     list-style-type: none;
@@ -829,19 +822,64 @@ body.pageslide-open {
     /* line 50, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
     .nav > li.last {
       padding-right: 0; }
-    /* line 139, ../sass/modules/_header.scss */
+    /* line 140, ../sass/modules/_header.scss */
     .nav > li > a {
       color: white;
       font-size: 16px;
       line-height: 26px;
       height: 26px;
       font-weight: normal; }
-      /* line 147, ../sass/modules/_header.scss */
+      /* line 148, ../sass/modules/_header.scss */
       .nav > li > a.intercom em:before {
         content: '('; }
-      /* line 150, ../sass/modules/_header.scss */
+      /* line 151, ../sass/modules/_header.scss */
       .nav > li > a.intercom em:after {
         content: ')'; }
+
+/* line 158, ../sass/modules/_header.scss */
+.search {
+  position: relative; }
+  /* line 160, ../sass/modules/_header.scss */
+  .search .search-field {
+    font-size: 14px;
+    padding: 4px 12px;
+    line-height: 1.3;
+    border-radius: 20px;
+    border: 0px;
+    width: 100px;
+    background: white; }
+    /* line 168, ../sass/modules/_header.scss */
+    .search .search-field:focus {
+      outline: none; }
+  /* line 172, ../sass/modules/_header.scss */
+  .search .search-clear {
+    display: block;
+    background: rgba(0, 0, 0, 0.15);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    font-weight: bold;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -9px;
+    font-size: 12px;
+    height: 16px;
+    width: 16px;
+    text-align: center;
+    line-height: 16px;
+    z-index: 1000; }
+  /* line 189, ../sass/modules/_header.scss */
+  .search.empty .search-field {
+    background: rgba(255, 255, 255, 0.1); }
+    /* line 191, ../sass/modules/_header.scss */
+    .search.empty .search-field:focus {
+      background: white; }
+  /* line 195, ../sass/modules/_header.scss */
+  .search.empty .search-clear {
+    display: none; }
 
 /* line 1, ../sass/modules/_posts.scss */
 .empty-notice {

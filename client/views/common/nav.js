@@ -1,36 +1,3 @@
-Template.nav.events = {
-  'click #logout': function(event){
-      event.preventDefault();
-      Meteor.logout();
-  },
-  'click #mobile-menu': function(event){
-    event.preventDefault();
-    $('body').toggleClass('mobile-nav-open');
-  },
-  'click .login-header': function(e){
-      e.preventDefault();
-      Router.go('/account');
-  },
-  'keyup #search': function(e){
-      e.preventDefault();
-      Session.set('query', $(e.target).val());
-  }
-};
-
-Template.nav.preserve({
-  'input#search': function (node) { return node.id; }
-});
-
-Template.nav.rendered=function(){
-
-  if(!Meteor.user()){
-    $('.login-link-text').text("Sign Up/Sign In");
-  }else{
-    $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
-    $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
-  }
-};
-
 Template.nav.helpers({
   site_title: function(){
     return getSetting('title');
@@ -70,5 +37,53 @@ Template.nav.helpers({
   },
   query: function () {
     return Session.get("query");
+  },
+  queryEmpty: function () {
+    return !!Session.get("query") ? '' : 'empty';
   }
 });
+
+Template.nav.preserve({
+  'input#search': function (node) { return node.id; }
+});
+
+Template.nav.rendered=function(){
+
+  if(!Meteor.user()){
+    $('.login-link-text').text("Sign Up/Sign In");
+  }else{
+    $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
+    $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
+  }
+};
+
+Template.nav.events = {
+  'click #logout': function(e){
+    e.preventDefault();
+    Meteor.logout();
+  },
+  'click #mobile-menu': function(e){
+    e.preventDefault();
+    $('body').toggleClass('mobile-nav-open');
+  },
+  'click .login-header': function(e){
+    e.preventDefault();
+    Router.go('/account');
+  },
+  'click .search-clear': function (e) {
+    e.preventDefault();
+    Session.set('query', '');
+    $('.search').addClass('empty');
+  },
+  'keyup .search-field': function(e){
+    e.preventDefault();
+    var val = $(e.target).val(),
+        $search = $('.search');
+    if(val==''){
+      $search.addClass('empty');
+    }else{
+      $search.removeClass('empty');
+    }
+    Session.set('query', val);
+  }
+};
