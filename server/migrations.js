@@ -106,6 +106,39 @@ Meteor.startup(function () {
     console.log("//----------------------------------------------------------------------//")
   }
 
+  // migration updateUserProfiles: update user profiles with slugs and a few other properties
+  if (!Migrations.findOne({name: "updateUserProfiles"})) {
+    console.log("//----------------------------------------------------------------------//")
+    console.log("//------------//  Starting updateUserProfiles Migration  //-----------//")
+    console.log("//----------------------------------------------------------------------//")
 
+    var allUsers = Meteor.users.find();
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      console.log('> Updating user '+user._id+' ('+user.username+')');
+
+      // update user slug
+      if(getUserName(user))
+        Meteor.users.update(user._id, {$set:{slug: slugify(getUserName(user))}});
+
+      // update user isAdmin flag
+      if(typeof user.isAdmin === 'undefined')
+        Meteor.users.update(user._id, {$set: {isAdmin: false}});
+
+      // update postCount
+      var postsByUser = Posts.find({userId: user._id});
+      Meteor.users.update(user._id, {$set: {postCount: postsByUser.count()}});
+      
+      // update commentCount
+      var commentsByUser = Comments.find({userId: user._id});
+      Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
+
+    });
+    Migrations.insert({name: "updateUserProfiles"});
+    console.log("//----------------------------------------------------------------------//")
+    console.log("//------------//     Ending updateUserProfiles Migration     //-----------//")
+    console.log("//----------------------------------------------------------------------//")
+  }
 
 });
