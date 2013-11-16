@@ -83,7 +83,8 @@ Template.nav.events = {
       delay(function(){
         Session.set('searchQuery', val);
         $search.removeClass('empty');
-        if(getCurrentRoute() != '/search')
+        // if we're not already on the search page, go to it
+        if(getCurrentRoute().indexOf('search') == -1)
           Router.go('/search');
       }, 500 );
     }
