@@ -186,7 +186,14 @@ var filters = {
 
 Router.load( function () {
   clearSeenErrors(); // set all errors who have already been seen to not show anymore
-  Session.set('categorySlug', null); 
+  Session.set('categorySlug', null);
+
+  // clear search query and field (unless we're on the search page itself)
+  if(getCurrentRoute()!='/search'){
+    Session.set('searchQuery', '');
+    $('.search-field').val('').blur();
+  }
+
 });
 
 // Before Hooks
@@ -243,16 +250,16 @@ PostsListController = RouteController.extend({
     var view = this.path == '/' ? 'top' : this.path.split('/')[1];
     var limit = this.params.limit || getSetting('postsPerPage', 10);
     // note: most of the time this.params.slug will be empty
-    var parameters = getParameters(view, limit, this.params.slug);
+    var parameters = getParameters(view, limit, this.params.slug, Session.get("searchQuery"));
     return [
-      Meteor.subscribe('postsList', parameters.find, parameters.options, Session.get("query")),
+      Meteor.subscribe('postsList', parameters.find, parameters.options),
       Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
     ]
   },
   data: function () {
     var view = this.path == '/' ? 'top' : this.path.split('/')[1],
         limit = this.params.limit || getSetting('postsPerPage', 10),
-        parameters = getParameters(view, limit, this.params.slug),
+        parameters = getParameters(view, limit, this.params.slug, Session.get("searchQuery")),
         posts = Posts.find(parameters.find, parameters.options);
         postsCount = posts.count();
         
@@ -361,6 +368,8 @@ UserPageController = RouteController.extend({
 
 Router.map(function() {
 
+  // -------------------------------------------- Post Lists -------------------------------------------- //
+
   // Top
 
   this.route('posts_top', {
@@ -406,6 +415,12 @@ Router.map(function() {
 
   // TODO: enable /category/new, /category/best, etc. views
 
+  // Search
+
+  this.route('search', {
+    path: '/search',
+    controller: PostsListController    
+  });
 
   // Digest
 

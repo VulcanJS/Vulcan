@@ -35,11 +35,11 @@ Template.nav.helpers({
   categoryLink: function () {
     return getCategoryUrl(this.slug);
   },
-  query: function () {
-    return Session.get("query");
+  searchQuery: function () {
+    return Session.get("searchQuery");
   },
-  queryEmpty: function () {
-    return !!Session.get("query") ? '' : 'empty';
+  searchQueryEmpty: function () {
+    return !!Session.get("searchQuery") ? '' : 'empty';
   }
 });
 
@@ -74,11 +74,15 @@ Template.nav.events = {
     e.preventDefault();
     var val = $(e.target).val(),
         $search = $('.search');
+    Session.set('searchQuery', val);
     if(val==''){
       $search.addClass('empty');
+      // window.history.back();
+      // actually, just do nothing and show an empty template 
     }else{
       $search.removeClass('empty');
-    }
-    Session.set('query', val);
+      if(getCurrentRoute() != '/search')
+        Router.go('/search');
+    }  
   }
 };

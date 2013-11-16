@@ -121,19 +121,10 @@ Meteor.publish('commentPost', function(commentId) {
 
 // Publish a list of posts
 
-Meteor.publish('postsList', function(find, options, query) {
+Meteor.publish('postsList', function(find, options) {
   if(canViewById(this.userId)){
     options = options || {};
-    if (query){
-      var posts = Posts.find({$or: [
-          {headline: {$regex: query, $options: 'i'}},
-          {url: {$regex: query, $options: 'i'}},
-          {body: {$regex: query, $options: 'i'}}
-        ]}, options);
-    } else {
-      var posts = Posts.find(find, options);
-    }
-
+    var posts = Posts.find(find, options);
     // console.log('//-------- Subscription Parameters:');
     // console.log(find);
     // console.log(options);
@@ -141,13 +132,11 @@ Meteor.publish('postsList', function(find, options, query) {
     // posts.rewind();
     // console.log(_.pluck(posts.fetch(), 'headline'));
     // posts.rewind();
-
+    console.log(_.pluck(posts.fetch(), 'headline'))
     return posts;
   }
   return [];
 });
-
-
 
 // -------------------------------------------- Comments -------------------------------------------- //
 
