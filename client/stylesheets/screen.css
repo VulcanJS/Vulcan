@@ -851,33 +851,13 @@ body.pageslide-open {
     /* line 168, ../sass/modules/_header.scss */
     .search .search-field:focus {
       outline: none; }
-  /* line 172, ../sass/modules/_header.scss */
-  .search .search-clear {
-    display: block;
-    background: rgba(0, 0, 0, 0.15);
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    font-weight: bold;
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    margin-top: -9px;
-    font-size: 12px;
-    height: 16px;
-    width: 16px;
-    text-align: center;
-    line-height: 16px;
-    z-index: 1000; }
-  /* line 189, ../sass/modules/_header.scss */
+  /* line 173, ../sass/modules/_header.scss */
   .search.empty .search-field {
     background: rgba(255, 255, 255, 0.1); }
-    /* line 191, ../sass/modules/_header.scss */
+    /* line 175, ../sass/modules/_header.scss */
     .search.empty .search-field:focus {
       background: white; }
-  /* line 195, ../sass/modules/_header.scss */
+  /* line 179, ../sass/modules/_header.scss */
   .search.empty .search-clear {
     display: none; }
 

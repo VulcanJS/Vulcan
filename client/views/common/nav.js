@@ -70,12 +70,7 @@ Template.nav.events = {
     e.preventDefault();
     Router.go('/account');
   },
-  'click .search-clear': function (e) {
-    e.preventDefault();
-    Session.set('query', '');
-    $('.search').addClass('empty');
-  },
-  'keyup .search-field': function(e){
+  'keyup, change, search .search-field': function(e){
     e.preventDefault();
     var val = $(e.target).val(),
         $search = $('.search');
