@@ -70,7 +70,7 @@ Template.nav.events = {
     e.preventDefault();
     Router.go('/account');
   },
-  'keyup, change, search .search-field': function(e){
+  'keyup, search .search-field': function(e){
     e.preventDefault();
     var val = $(e.target).val(),
         $search = $('.search');    
