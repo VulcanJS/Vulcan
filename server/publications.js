@@ -125,7 +125,6 @@ Meteor.publish('postsList', function(find, options) {
   if(canViewById(this.userId)){
     options = options || {};
     var posts = Posts.find(find, options);
-
     // console.log('//-------- Subscription Parameters:');
     // console.log(find);
     // console.log(options);
@@ -133,13 +132,11 @@ Meteor.publish('postsList', function(find, options) {
     // posts.rewind();
     // console.log(_.pluck(posts.fetch(), 'headline'));
     // posts.rewind();
-
+    console.log(_.pluck(posts.fetch(), 'headline'))
     return posts;
   }
   return [];
 });
-
-
 
 // -------------------------------------------- Comments -------------------------------------------- //
 

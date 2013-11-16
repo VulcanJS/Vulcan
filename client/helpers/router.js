@@ -139,7 +139,6 @@ var filters = {
   },
 
   canView: function() {
-    console.log('canview?')
     if(Session.get('settingsLoaded') && !canView()){
       console.log('cannot view')
       this.render('no_rights');
@@ -187,7 +186,14 @@ var filters = {
 
 Router.load( function () {
   clearSeenErrors(); // set all errors who have already been seen to not show anymore
-  Session.set('categorySlug', null); 
+  Session.set('categorySlug', null);
+
+  // if we're not on the search page itself, clear search query and field
+  if(getCurrentRoute().indexOf('search') == -1){
+    Session.set('searchQuery', '');
+    $('.search-field').val('').blur();
+  }
+
 });
 
 // Before Hooks
@@ -199,7 +205,8 @@ Router.before(filters.nProgressHook, {only: [
   'posts_best', 
   'posts_pending', 
   'posts_digest',
-  'posts_category', 
+  'posts_category',
+  'search',
   'post_page',
   'post_edit',
   'comment_page',
@@ -241,10 +248,11 @@ PostsListController = RouteController.extend({
   template:'posts_list',
   waitOn: function () {
     // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
-    var view = this.path == '/' ? 'top' : this.path.split('/')[1];
-    var limit = this.params.limit || getSetting('postsPerPage', 10);
     // note: most of the time this.params.slug will be empty
-    var parameters = getParameters(view, limit, this.params.slug);
+    var view = this.path == '/' ? 'top' : this.path.split('/')[1],
+        limit = this.params.limit || getSetting('postsPerPage', 10),
+        parameters = getParameters(view, limit, this.params.slug, Session.get("searchQuery"));
+        
     return [
       Meteor.subscribe('postsList', parameters.find, parameters.options),
       Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
@@ -253,10 +261,10 @@ PostsListController = RouteController.extend({
   data: function () {
     var view = this.path == '/' ? 'top' : this.path.split('/')[1],
         limit = this.params.limit || getSetting('postsPerPage', 10),
-        parameters = getParameters(view, limit, this.params.slug),
+        parameters = getParameters(view, limit, this.params.slug, Session.get("searchQuery")),
         posts = Posts.find(parameters.find, parameters.options);
         postsCount = posts.count();
-        
+  
     Session.set('postsLimit', limit);
 
     // get posts and decorate them with rank property
@@ -362,6 +370,8 @@ UserPageController = RouteController.extend({
 
 Router.map(function() {
 
+  // -------------------------------------------- Post Lists -------------------------------------------- //
+
   // Top
 
   this.route('posts_top', {
@@ -407,6 +417,12 @@ Router.map(function() {
 
   // TODO: enable /category/new, /category/best, etc. views
 
+  // Search
+
+  this.route('search', {
+    path: '/search/:limit?',
+    controller: PostsListController    
+  });
 
   // Digest
 
