@@ -67,10 +67,11 @@ Meteor.publish('commentUser', function(commentId) {
 
 // Publish all the users that have posted the currently displayed list of posts
 
-Meteor.publish('postsListUsers', function(find, options) {
+Meteor.publish('postsListUsers', function(terms) {
   if(canViewById(this.userId)){
-    var posts = Posts.find(find, options);
-    var userIds = _.pluck(posts.fetch(), 'userId');
+    var parameters = getParameters(terms),
+        posts = Posts.find(parameters.find, parameters.options),
+        userIds = _.pluck(posts.fetch(), 'userId');
     return Meteor.users.find({_id: {$in: userIds}}, {fields: privacyOptions, multi: true});
   }
   return [];
@@ -78,11 +79,12 @@ Meteor.publish('postsListUsers', function(find, options) {
 
 // Publish all users
 
-Meteor.publish('allUsers', function(find, options) {
+Meteor.publish('allUsers', function(filterBy, sortBy, limit) {
   if(canViewById(this.userId)){
+    var parameters = getUsersParameters(filterBy, sortBy, limit);
     if (!isAdminById(this.userId)) // if user is not admin, filter out sensitive info
-      options = _.extend(options, {fields: privacyOptions});
-    return Meteor.users.find(find, options);  
+      parameters.options = _.extend(parameters.options, {fields: privacyOptions});
+    return Meteor.users.find(parameters.find, parameters.options);  
   }
   return [];
 });
@@ -121,18 +123,16 @@ Meteor.publish('commentPost', function(commentId) {
 
 // Publish a list of posts
 
-Meteor.publish('postsList', function(find, options) {
+Meteor.publish('postsList', function(terms) {
   if(canViewById(this.userId)){
-    options = options || {};
-    var posts = Posts.find(find, options);
+    var parameters = getParameters(terms),
+        posts = Posts.find(parameters.find, parameters.options);
     // console.log('//-------- Subscription Parameters:');
-    // console.log(find);
-    // console.log(options);
+    // console.log(parameters.find);
+    // console.log(parameters.options);
     // console.log('Found '+posts.fetch().length+ ' posts:');
     // posts.rewind();
     // console.log(_.pluck(posts.fetch(), 'headline'));
-    // posts.rewind();
-    console.log(_.pluck(posts.fetch(), 'headline'))
     return posts;
   }
   return [];

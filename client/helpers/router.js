@@ -249,30 +249,31 @@ PostsListController = RouteController.extend({
   waitOn: function () {
     // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
     // note: most of the time this.params.slug will be empty
-    var view = this.path == '/' ? 'top' : this.path.split('/')[1],
-        limit = this.params.limit || getSetting('postsPerPage', 10),
-        parameters = getParameters(view, limit, this.params.slug, Session.get("searchQuery"));
-        
+    var terms = {
+      view: this.path == '/' ? 'top' : this.path.split('/')[1],
+      limit: this.params.limit || getSetting('postsPerPage', 10),
+      category: this.params.slug,
+      query: Session.get("searchQuery")
+    }
     return [
-      Meteor.subscribe('postsList', parameters.find, parameters.options),
-      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      Meteor.subscribe('postsList', terms),
+      Meteor.subscribe('postsListUsers', terms)
     ]
   },
   data: function () {
     var view = this.path == '/' ? 'top' : this.path.split('/')[1],
         limit = this.params.limit || getSetting('postsPerPage', 10),
-        parameters = getParameters(view, limit, this.params.slug, Session.get("searchQuery")),
+        terms = {
+          view: this.path == '/' ? 'top' : this.path.split('/')[1],
+          limit: this.params.limit || getSetting('postsPerPage', 10),
+          category: this.params.slug,
+          query: Session.get("searchQuery")
+        },
+        parameters = getParameters(terms),
         posts = Posts.find(parameters.find, parameters.options);
         postsCount = posts.count();
   
     Session.set('postsLimit', limit);
-
-    // get posts and decorate them with rank property
-    // note: not actually used; 
-    // posts = posts.map(function (post, index) {
-    //   post.rank = index;
-    //   return post;
-    // });
 
     return {
       postsList: posts,
@@ -291,16 +292,25 @@ PostsDigestController = RouteController.extend({
   template: 'posts_digest',
   waitOn: function() {
     // if day is set, use that. If not default to today
-    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
-    var parameters = getDigestParameters(currentDate);
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today'),
+        terms = {
+          view: 'digest',
+          after: moment(currentDate).startOf('day').valueOf(),
+          before: moment(currentDate).endOf('day').valueOf()
+        }
     return [
-      Meteor.subscribe('postsList', parameters.find, parameters.options),
-      Meteor.subscribe('postsListUsers', parameters.find, parameters.options)
+      Meteor.subscribe('postsList', terms),
+      Meteor.subscribe('postsListUsers', terms)
     ]
   },
   data: function() {
-    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
-    var parameters = getDigestParameters(currentDate);
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today'),
+        terms = {
+          view: 'digest',
+          after: moment(currentDate).startOf('day').valueOf(),
+          before: moment(currentDate).endOf('day').valueOf()
+        },
+        parameters = getParameters(terms);
     Session.set('currentDate', currentDate);
     return {
       posts: Posts.find(parameters.find, parameters.options)
@@ -537,9 +547,8 @@ Router.map(function() {
     path: '/all-users/:limit?',
     template: 'users',
     waitOn: function() {
-      var limit = parseInt(this.params.limit) || 20,
-          parameters = getUsersParameters(this.params.filterBy, this.params.sortBy, limit);
-      return Meteor.subscribe('allUsers', parameters.find, parameters.options);
+      var limit = parseInt(this.params.limit) || 20;
+      return Meteor.subscribe('allUsers', this.params.filterBy, this.params.sortBy, limit);
     },
     data: function() {
       var limit = parseInt(this.params.limit) || 20,
