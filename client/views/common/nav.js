@@ -73,16 +73,28 @@ Template.nav.events = {
   'keyup, change, search .search-field': function(e){
     e.preventDefault();
     var val = $(e.target).val(),
-        $search = $('.search');
-    Session.set('searchQuery', val);
+        $search = $('.search');    
     if(val==''){
+      // if search field is empty, just do nothing and show an empty template 
       $search.addClass('empty');
-      // window.history.back();
-      // actually, just do nothing and show an empty template 
+      Session.set('searchQuery', '');
     }else{
-      $search.removeClass('empty');
-      if(getCurrentRoute() != '/search')
-        Router.go('/search');
-    }  
+      // if search field is not empty, add a delay to avoid firing new searches for every keystroke 
+      delay(function(){
+        Session.set('searchQuery', val);
+        $search.removeClass('empty');
+        if(getCurrentRoute() != '/search')
+          Router.go('/search');
+      }, 500 );
+    }
   }
 };
+
+// see: http://stackoverflow.com/questions/1909441/jquery-keyup-delay
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
