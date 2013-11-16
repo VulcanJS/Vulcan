@@ -188,8 +188,8 @@ Router.load( function () {
   clearSeenErrors(); // set all errors who have already been seen to not show anymore
   Session.set('categorySlug', null);
 
-  // clear search query and field (unless we're on the search page itself)
-  if(getCurrentRoute()!='/search'){
+  // if we're not on the search page itself, clear search query and field
+  if(getCurrentRoute().indexOf('search') == -1){
     Session.set('searchQuery', '');
     $('.search-field').val('').blur();
   }
@@ -205,7 +205,8 @@ Router.before(filters.nProgressHook, {only: [
   'posts_best', 
   'posts_pending', 
   'posts_digest',
-  'posts_category', 
+  'posts_category',
+  'search',
   'post_page',
   'post_edit',
   'comment_page',
@@ -418,7 +419,7 @@ Router.map(function() {
   // Search
 
   this.route('search', {
-    path: '/search',
+    path: '/search/:limit?',
     controller: PostsListController    
   });
 
