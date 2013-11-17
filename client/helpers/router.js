@@ -249,31 +249,23 @@ PostsListController = RouteController.extend({
   waitOn: function () {
     // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
     // note: most of the time this.params.slug will be empty
-    var terms = {
+    this._terms = {
       view: this.path == '/' ? 'top' : this.path.split('/')[1],
       limit: this.params.limit || getSetting('postsPerPage', 10),
       category: this.params.slug,
       query: Session.get("searchQuery")
     }
     return [
-      Meteor.subscribe('postsList', terms),
-      Meteor.subscribe('postsListUsers', terms)
+      Meteor.subscribe('postsList', this._terms),
+      Meteor.subscribe('postsListUsers', this._terms)
     ]
   },
   data: function () {
-    var view = this.path == '/' ? 'top' : this.path.split('/')[1],
-        limit = this.params.limit || getSetting('postsPerPage', 10),
-        terms = {
-          view: this.path == '/' ? 'top' : this.path.split('/')[1],
-          limit: this.params.limit || getSetting('postsPerPage', 10),
-          category: this.params.slug,
-          query: Session.get("searchQuery")
-        },
-        parameters = getParameters(terms),
+    var parameters = getParameters(this._terms),
         posts = Posts.find(parameters.find, parameters.options);
         postsCount = posts.count();
   
-    Session.set('postsLimit', limit);
+    Session.set('postsLimit', this._terms.limit);
 
     return {
       postsList: posts,
