@@ -160,11 +160,17 @@ Meteor.publish('singleComment', function(commentId) {
 
 // -------------------------------------------- Other -------------------------------------------- //
 
-Meteor.publish('settings', function() {  
-  return Settings.find({}, {fields:{
-    mailChimpAPIKey: false,
-    mailChimpListId: false
-  }});
+Meteor.publish('settings', function() {
+  var options = {};
+  if(!isAdminById(this.userId)){
+    options = _.extend(options, {
+      fields: {
+        mailChimpAPIKey: false,
+        mailChimpListId: false
+      }
+    });
+  }
+  return Settings.find({}, options);
 });
 
 Meteor.publish('notifications', function() {
