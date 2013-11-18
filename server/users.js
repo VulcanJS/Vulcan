@@ -49,8 +49,10 @@ Accounts.onCreateUser(function(options, user){
     if(getUserSetting('notifications.users', false, admin)){
       var notification = getNotificationContents({
         event: 'newUser',
-        username: getUserName(user),
-        profileUrl: getProfileUrl(user),
+        properties: {
+          username: getUserName(user),
+          profileUrl: getProfileUrl(user)
+        },
         userId: admin._id
       }, 'email');
       sendNotification(notification, admin);
