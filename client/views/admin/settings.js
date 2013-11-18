@@ -29,8 +29,10 @@ Template.settings.events = {
         throwError("Settings have been created");
       },
       function(error) {
-        if(error) console.log(error);
-          throwError("Settings have been updated");
+        if(error)
+          console.log(error);
+        throwError("Settings have been updated");
+
       }
     );
   }

@@ -13,12 +13,20 @@ Accounts.onCreateUser(function(options, user){
   if (options.email)
     user.profile.email = options.email;
     
-  if (user.profile.email)
-    user.email_hash = CryptoJS.MD5(user.profile.email.trim().toLowerCase()).toString();
+  if (getEmail(user))
+    user.email_hash = getEmailHash(user);
   
   if (!user.profile.name)
     user.profile.name = user.username;
   
+  // set notifications default preferences
+  user.profile.notifications = {
+    users: false,
+    posts: false,
+    comments: true,
+    replies: true
+  }
+
   // create slug from username
   user.slug = slugify(getUserName(user));
 
@@ -35,8 +43,28 @@ Accounts.onCreateUser(function(options, user){
   if(user.profile.email)
     addToMailChimpList(user);
 
+  // send notifications to admins
+  var admins = Meteor.users.find({isAdmin: true});
+  admins.forEach(function(admin){
+    if(getUserSetting('notifications.users', false, admin)){
+      var notification = getNotificationContents({
+        event: 'newUser',
+        username: getUserName(user),
+        profileUrl: getProfileUrl(user),
+        userId: admin._id
+      }, 'email');
+      sendNotification(notification, admin);
+    }
+  });
+
+
   return user;
 });
+
+getEmailHash = function(user){
+  // todo: add some kind of salt in here
+  return CryptoJS.MD5(getEmail(user).trim().toLowerCase() + user.createdAt).toString();
+}
 
 addToMailChimpList = function(user){
   // add a user to a MailChimp list.
@@ -82,9 +110,9 @@ Meteor.methods({
     var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
     return Math.abs(object.score - newScore);
   },
-  generateEmailHash: function(){
-    var email_hash = CryptoJS.MD5(getEmail(Meteor.user()).trim().toLowerCase()).toString();
-    Meteor.users.update(Meteor.userId(), {$set : {email_hash : email_hash}});
+  setEmailHash: function(user){
+    var email_hash = CryptoJS.MD5(getEmail(user).trim().toLowerCase()).toString();
+    Meteor.users.update(user._id, {$set : {email_hash : email_hash}});
   },
   addCurrentUserToMailChimpList: function(){
     addToMailChimpList(Meteor.user());

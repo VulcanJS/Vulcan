@@ -360,8 +360,13 @@ UserPageController = RouteController.extend({
   data: function() {
     var findById = Meteor.users.findOne(this.params._idOrSlug);
     var findBySlug = Meteor.users.findOne({slug: this.params._idOrSlug});
-    return {
-      user: (typeof findById == "undefined") ? findBySlug : findById
+    if(typeof findById !== "undefined"){
+      // redirect to slug-based URL
+      Router.go(getProfileUrl(findById), {replaceState: true});
+    }else{
+      return {
+        user: (typeof findById == "undefined") ? findBySlug : findById
+      }
     }
   }
 });

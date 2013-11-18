@@ -1,6 +1,10 @@
+## v0.7.3
+
+* Added notifications for new users creation.
+
 ## v0.7.2
 
-* Added basic search (thanks Ry!)
+* Added basic search (thanks Ry!).
 
 ## v0.7.1
 

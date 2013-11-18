@@ -6,6 +6,12 @@
 				<tr>
 					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
 				</tr>
+				{{#if isAdmin}}
+					<tr>
+						<td>ID: </td>
+						<td>{{_id}}</td>
+					</tr>
+				{{/if}}
 				<tr>
 					<td>Name: </td>
 					<td>{{profile.name}}</td>

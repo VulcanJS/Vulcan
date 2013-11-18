@@ -67,6 +67,11 @@
       <div class="control-group">
         <label class="control-label">Email Notifications</label>
         <div class="controls">
+          {{#if isAdmin}}
+            <label class="checkbox">
+              <input id="notifications_users" type="checkbox" name="notifications_users" {{hasNotificationsUsers}} /> New Users
+            </label>
+          {{/if}}
           <label class="checkbox">
             <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> New Posts
           </label>
