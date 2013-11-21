@@ -8,9 +8,6 @@
     },
     "crypto-md5": {},
     "iron-router": {},
-    "i18next-meteor": {
-      "git": "git://github.com/SachaG/i18next-meteor.git"
-    },
     "nprogress": {}
   }
 }

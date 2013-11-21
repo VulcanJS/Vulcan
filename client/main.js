@@ -18,16 +18,6 @@ Meteor.subscribe('settings', function(){
   // runs once after settings have loaded
   Session.set('settingsLoaded',true);
   analyticsInit();
-
-  i18n = $.i18n;
-  
-  // Localisation
-  i18n.init({
-    lng: getSetting("language"),
-    resStore: eval(getSetting("language")),
-    keyseparator: '::',
-    nsseparator: ':::'
-  });
 });
 
 // Categories

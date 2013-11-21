@@ -49,8 +49,3 @@ Handlebars.registerHelper('canEdit', function(collectionName, item, action) {
   // var item=collection.findOne(itemId);
   return item && canEdit(Meteor.user(), item, action);
 });
-Handlebars.registerHelper('i18n',
-  function(str){
-    // return ($.i18n != undefined ? $.i18n.t(str) : str);
-  }
-);

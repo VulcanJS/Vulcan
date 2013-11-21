@@ -18,7 +18,7 @@ getNotification = function(event, properties, context){
     case 'newReply':
       notification.subject = i18n.t('Someone replied to your comment on')+' "'+p.postHeadline+'"';
       notification.text = p.commentAuthorName+i18n.t(' has replied to your comment on')+' "'+p.postHeadline+'": '+getPostCommentUrl(p.postId, p.commentId);
-      notification.html = '<p><a href="'+getUserUrl(p.commentAuthorId)+'">'+p.commentAuthorName+'</a>'.i18n.t(' has replied to your comment on')+' "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postHeadline+'</a>"</p>';
+      notification.html = '<p><a href="'+getUserUrl(p.commentAuthorId)+'">'+p.commentAuthorName+'</a>'+i18n.t(' has replied to your comment on')+' "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postHeadline+'</a>"</p>';
       if(context === 'email')
         notification.html += '<p>'+p.commentExcerpt+'</p><a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+i18n.t('Read more')+'</a>';
     break;

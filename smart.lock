@@ -10,10 +10,6 @@
       },
       "crypto-md5": {},
       "iron-router": {},
-      "i18next-meteor": {
-        "git": "git://github.com/SachaG/i18next-meteor.git",
-        "branch": "master"
-      },
       "nprogress": {}
     },
     "packages": {
@@ -23,9 +19,9 @@
         "commit": "59a762e297082eea8b8cae00374c2b7ac6f89529"
       },
       "crypto-base": {
-        "git": "https://github.com/tmeasday/meteor-crypto-base.git",
-        "tag": "v0.0.3",
-        "commit": "fdc0b7b3d24e2e31c5c95beddafe890ffbaafd42"
+        "git": "https://github.com/oortcloud/meteor-crypto-base.git",
+        "tag": "v3.1.2.1",
+        "commit": "5df8d82a0595553415bbfae2930c6ecbeece5794"
       },
       "database-forms": {
         "git": "git://github.com/SachaG/database-forms.git",
@@ -33,19 +29,14 @@
         "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
       },
       "crypto-md5": {
-        "git": "https://github.com/tmeasday/meteor-crypto-md5.git",
-        "tag": "v0.0.2",
-        "commit": "a943bea4cffeac9a14c2825dfe57d32b9d677e6f"
+        "git": "https://github.com/oortcloud/meteor-crypto-md5.git",
+        "tag": "v3.1.2.2",
+        "commit": "75bbb3eeace302122d3554a6212a6fe92553fa18"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.6.1",
         "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
-      },
-      "i18next-meteor": {
-        "git": "git://github.com/SachaG/i18next-meteor.git",
-        "branch": "master",
-        "commit": "429adc8e5f8049a3b0f4e6186d94482799253059"
       },
       "nprogress": {
         "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
