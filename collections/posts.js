@@ -97,15 +97,17 @@ Meteor.methods({
 
     if(getSetting('emailNotifications', false)){
       // notify users of new posts
-      var properties = {
-        postAuthorName : getDisplayName(postAuthor),
-        postAuthorId : post.userId,
-        postHeadline : headline,
-        postId : postId
+      var notification = {
+        event: 'newPost',
+        properties: {
+          postAuthorName : getDisplayName(postAuthor),
+          postAuthorId : post.userId,
+          postHeadline : headline,
+          postId : postId
+        }
       }
-      var notification = getNotification('newPost', properties);
-      // call a server method because we do not have access to admin users' info on the client
-      Meteor.call('notifyUsers', notification, Meteor.user(), function(error, result){
+      // call a server method because we do not have access to users' info on the client
+      Meteor.call('newPostNotify', notification, function(error, result){
         //run asynchronously
       });
     }

@@ -1,27 +1,3 @@
-Template.nav.events = {
-  'click #logout': function(event){
-      event.preventDefault();
-      Meteor.logout();
-  },
-  'click #mobile-menu': function(event){
-    event.preventDefault();
-    $('body').toggleClass('mobile-nav-open');
-  },  
-  'click .login-header': function(e){
-      e.preventDefault();
-      Router.go('/account');
-  }
-};
-
-Template.nav.rendered=function(){
-  if(!Meteor.user()){
-    $('.login-link-text').text(i18n.t("Sign Up/Sign In"));
-  }else{
-    $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">'+i18n.t("View Profile")+'</a>');
-    $('#login-buttons-logout').before('<a href="/account" class="account-link button">'+i18n.t("Edit Account")+'</a>');
-  }
-};
-
 Template.nav.helpers({
   site_title: function(){
     return getSetting('title');
@@ -60,3 +36,28 @@ Template.nav.helpers({
     return getCategoryUrl(this.slug);
   }
 });
+
+Template.nav.rendered=function(){
+
+  if(!Meteor.user()){
+    $('.login-link-text').text("Sign Up/Sign In");
+  }else{
+    $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
+    $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
+  }
+};
+
+Template.nav.events = {
+  'click #logout': function(e){
+    e.preventDefault();
+    Meteor.logout();
+  },
+  'click #mobile-menu': function(e){
+    e.preventDefault();
+    $('body').toggleClass('mobile-nav-open');
+  },
+  'click .login-header': function(e){
+    e.preventDefault();
+    Router.go('/account');
+  }
+};

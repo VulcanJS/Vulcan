@@ -2,13 +2,20 @@
   <header class="header grid">
 
     <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>{{i18n "Menu"}}</span></a>
-    
+
     <ul class="nav site-nav desktop">
       {{#if canView}}
-      <li><a class="top" href="/top">{{i18n "Top"}}</a></li>
-      <li><a class="new" href="/new">{{i18n "New"}}</a></li>
-      <li><a class="best" href="/best">{{i18n "Best"}}</a></li>
-      <li><a class="digest" href="/digest">{{i18n "Digest"}}</a></li>
+      <li class="dropdown">
+        <a class="View" href="/">{{i18n "View"}}</a>
+        <div class="dropdown-menu">
+          <ul role="menu" aria-labelledby="dLabel">
+            <li><a class="top" href="/top">{{i18n "Top"}}</a></li>
+            <li><a class="new" href="/new">{{i18n "New"}}</a></li>
+            <li><a class="best" href="/best">{{i18n "Best"}}</a></li>
+            <li><a class="digest" href="/digest">{{i18n "Digest"}}</a></li>
+          </ul>
+        </div>
+      </li>
       {{/if}}
       {{#if hasCategories}}
       <li class="dropdown">
@@ -36,8 +43,11 @@
         </div>
       </li>
       {{/if}}
+      <li>
+        {{> search}}
+      </li>
     </ul>
-    
+
     {{#if logo_url}}
       <h1 class="logo image" style="height:{{logo_height}}px; width:{{logo_width}}px; top:{{logo_top}}px; margin-left:{{logo_offset}}px;">
         <a href="/">
@@ -47,13 +57,13 @@
     {{else}}
       <h1 class="logo"><a href="/">{{site_title}}</a></h1>
     {{/if}}
-    
+
     {{#if canView}}
     <ul class="nav user-nav desktop">
       <li><a id="submit" class="submit button" href="/submit">{{i18n "Post"}}</a></li>
     </ul>
     {{/if}}
-    
+
     <div class="auth-buttons">
       {{loginButtons align="right"}}
     </div>

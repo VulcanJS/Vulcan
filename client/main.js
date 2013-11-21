@@ -2,7 +2,7 @@
 Session.set('initialLoad', true);
 Session.set('today', new Date());
 Session.set('view', 'top');
-Session.set('postsLimit', getSetting('postsPerPage', 2));
+Session.set('postsLimit', getSetting('postsPerPage', 10));
 Session.set('settingsLoaded', false);
 Session.set('sessionId', Meteor.default_connection._lastSessionId);
 

@@ -1,14 +1,33 @@
 <template name="user_item">
 <tr class="user">
 	<td><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
-	<td><a href="{{profileUrl}}">{{displayName}}</a></td>
+	<td>
+		<a href="{{getProfileUrl}}">{{displayName}}</a>
+		<br/>
+		<a href="mailto:{{getEmail}}">{{getEmail}}</a>
+	</td>
 	<td>{{createdAtFormatted}}</td>
-	<td>{{getEmail}}</td>
 	<td>{{postCount}}</td>
 	<td>{{commentCount}}</td>
 	<td>{{getKarma}}</td>
-	<td>{{#if isInvited}}<a class="uninvite-link" href="#"><i class="icon-check"></i>{{i18n "Uninvite"}}</a>{{else}}<a href="#" class="invite-link">{{i18n "Invite"}}</a>{{/if}}</td>
-	<td>{{#if userIsAdmin}}<a class="unadmin-link" href="#"><i class="icon-check unadmin-link"></i>{{i18n "Unadmin"}}</a>{{else}}<a href="#" class="admin-link">{{i18n "Make admin"}}</a>{{/if}}</td>
-	<td><a class="delete-link" href="#">{{i18n "Delete User"}}</a></td>
+	<td>
+		{{#if invites}}
+		<h4>{{i18n "Invited"}} {{invitedCount}} {{i18n "users"}}:</h4>
+		<ul>
+			{{#each invites}}
+				<li><a href="{{getInvitedUserProfileUrl}}">{{invitedName}}</a></li>
+			{{/each}}
+		</ul>
+		{{/if}}
+		<p>({{inviteCount}} {{i18n "invites left"}})</p>
+	</td>
+	<td>{{#if isInvited}}<i class="icon-check"></i>{{/if}}</td>
+	<td>{{#if userIsAdmin}}<i class="icon-check"></i>{{/if}}</td>
+	<td>
+		<ul>
+			<li>{{#if isInvited}}<a class="uninvite-link" href="#">{{i18n "Uninvite"}}</a>{{else}}<a href="#" class="invite-link">{{i18n "Invite"}}</a>{{/if}}</li>
+			<li>{{#if userIsAdmin}}<a class="unadmin-link" href="#">{{i18n "Unadmin"}}</a>{{else}}<a href="#" class="admin-link">{{i18n "Make admin"}}</a>{{/if}}</li>
+			<li><a class="delete-link" href="#">{{i18n "Delete User"}}</a></li>
+	</td>
 </tr>
 </template>

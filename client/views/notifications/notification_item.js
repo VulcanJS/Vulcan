@@ -6,7 +6,7 @@ Template.notification_item.helpers({
     return this.properties;
   },
   notificationHTML: function(){
-    return getNotification(this.event, this.properties).html;
+    return getNotificationContents(this).html;
   }
 });
 

@@ -60,7 +60,8 @@ Template.post_item.helpers({
     return _.include(this.upvoters, user._id);
   },
   userAvatar: function(){
-    if(author=Meteor.users.findOne(this.userId), {reactive: false})
+    var author = Meteor.users.findOne(this.userId, {reactive: false});
+    if(!!author)
       return getAvatarUrl(author);
   },
   inactiveClass: function(){

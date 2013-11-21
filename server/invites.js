@@ -1,21 +1,19 @@
 Meteor.methods({
   inviteUser: function (userId) {
-
     var currentUser = Meteor.user();
     var invitedUser = Meteor.users.findOne(userId);
     var invite = {
-      invited: invitedUser._id,
+      invitedId: invitedUser._id,
       invitedName: getDisplayName(invitedUser),
       time: new Date()
     };
 
     // if the current user is logged in, still has available invites and is himself invited (or an admin), and the target user is not invited
 
-    if(currentUser && currentUser.invitesCount > 0 && canInvite(currentUser) && !isInvited(invitedUser)){
+    if(currentUser && currentUser.inviteCount > 0 && canInvite(currentUser) && !isInvited(invitedUser)){
 
       // update invinting user
-      Meteor.users.update(Meteor.userId(), {$inc:{invitesCount: -1}});
-      Meteor.users.update(Meteor.userId(), {$push:{invites: invite}});
+      Meteor.users.update(Meteor.userId(), {$inc:{inviteCount: -1}, $inc:{invitedCount: 1}, $push:{invites: invite}});
 
       // update invited user
       Meteor.users.update(userId, {$set: {

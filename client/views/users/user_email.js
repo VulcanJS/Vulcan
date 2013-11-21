@@ -1,3 +1,9 @@
+Template.user_email.helpers({
+  user: function(){
+    return Meteor.user();
+  }
+});
+
 Template.user_email.events = {
   'submit form': function(e){
     e.preventDefault();
@@ -26,16 +32,3 @@ Template.user_email.events = {
   }
 
 };
-
-Template.user_email.profileIncomplete = function() {
-  return Meteor.user() && !this.loading && !userProfileComplete(this);
-}
-
-Template.user_email.user = function(){
-	var current_user=Meteor.user();
-	if(Session.get('selectedUserId') && !current_user.loading && current_user.isAdmin){
-	  return Meteor.users.findOne(Session.get('selectedUserId'));
-	}else{
-		return current_user;
-	}
-}

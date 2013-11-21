@@ -822,19 +822,44 @@ body.pageslide-open {
     /* line 50, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
     .nav > li.last {
       padding-right: 0; }
-    /* line 139, ../sass/modules/_header.scss */
+    /* line 140, ../sass/modules/_header.scss */
     .nav > li > a {
       color: white;
       font-size: 16px;
       line-height: 26px;
       height: 26px;
       font-weight: normal; }
-      /* line 147, ../sass/modules/_header.scss */
+      /* line 148, ../sass/modules/_header.scss */
       .nav > li > a.intercom em:before {
         content: '('; }
-      /* line 150, ../sass/modules/_header.scss */
+      /* line 151, ../sass/modules/_header.scss */
       .nav > li > a.intercom em:after {
         content: ')'; }
+
+/* line 158, ../sass/modules/_header.scss */
+.search {
+  position: relative; }
+  /* line 160, ../sass/modules/_header.scss */
+  .search .search-field {
+    font-size: 14px;
+    padding: 4px 12px;
+    line-height: 1.3;
+    border-radius: 20px;
+    border: 0px;
+    width: 100px;
+    background: white; }
+    /* line 168, ../sass/modules/_header.scss */
+    .search .search-field:focus {
+      outline: none; }
+  /* line 173, ../sass/modules/_header.scss */
+  .search.empty .search-field {
+    background: rgba(255, 255, 255, 0.1); }
+    /* line 175, ../sass/modules/_header.scss */
+    .search.empty .search-field:focus {
+      background: white; }
+  /* line 179, ../sass/modules/_header.scss */
+  .search.empty .search-clear {
+    display: none; }
 
 /* line 1, ../sass/modules/_posts.scss */
 .empty-notice {
@@ -1621,7 +1646,7 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 8px 15px;
-  font-size: 14px; }
+  font-size: 13px; }
   /* line 3, ../sass/partials/_mixins.scss */
   .filter-sort:before, .filter-sort:after {
     content: "";
@@ -1636,14 +1661,17 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
     /* line 10, ../sass/modules/_users.scss */
     .filter-sort a.active, .filter-sort span.active {
       border-bottom: 2px solid #7ac0e4; }
-  /* line 14, ../sass/modules/_users.scss */
+    /* line 13, ../sass/modules/_users.scss */
+    .filter-sort a:last-child, .filter-sort span:last-child {
+      margin-right: 0; }
+  /* line 17, ../sass/modules/_users.scss */
   .filter-sort .filter {
     float: left; }
-  /* line 17, ../sass/modules/_users.scss */
+  /* line 20, ../sass/modules/_users.scss */
   .filter-sort .sort {
     float: right; }
 
-/* line 24, ../sass/modules/_users.scss */
+/* line 27, ../sass/modules/_users.scss */
 .user-list .user .user-avatar, .user-table .user .user-avatar {
   height: 30px;
   width: 30px;
@@ -1655,12 +1683,19 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   -o-border-radius: 30px;
   border-radius: 30px; }
 
-/* line 38, ../sass/modules/_users.scss */
+/* line 41, ../sass/modules/_users.scss */
 table tr td {
   padding: 10px; }
-/* line 44, ../sass/modules/_users.scss */
+/* line 47, ../sass/modules/_users.scss */
 table thead tr td {
   font-weight: bold; }
+
+/* line 61, ../sass/modules/_users.scss */
+.user-table {
+  font-size: 13px; }
+  /* line 63, ../sass/modules/_users.scss */
+  .user-table tr {
+    border-bottom: 1px solid #eee; }
 
 /* line 2, ../sass/modules/_user-profile.scss */
 .user-profile .user-avatar {
