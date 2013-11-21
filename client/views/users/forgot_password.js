@@ -7,7 +7,7 @@ Template.forgot_password.events = {
       if(error){
         console.log(error);
       }else{
-        throwError("Password reset link sent!");
+        throwError(i18n.t("Password reset link sent!"));
       }
     });
   }

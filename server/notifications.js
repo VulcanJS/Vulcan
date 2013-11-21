@@ -14,7 +14,7 @@ Meteor.methods({
     // console.log(userDoingAction);
     // console.log(properties);
     // console.log(sendEmail);
-    var notification= {
+    var notification = {
       timestamp: new Date().getTime(),
       userId: userToNotify._id,
       event: event,
@@ -26,38 +26,45 @@ Meteor.methods({
     // send the notification if notifications are activated,
     // the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
     if(sendEmail){
-      Meteor.call('sendNotificationEmail', userToNotify, newNotificationId);
+      // get specific notification content for "email" context
+      var contents = getNotificationContents(notification, 'email');     
+      sendNotification(contents);
     }
   },
-  sendNotificationEmail : function(userToNotify, notificationId){
-    // Note: we query the DB instead of simply passing arguments from the client
-    // to make sure our email method cannot be used for spam
-    var notification = Notifications.findOne(notificationId);
-    var n = getNotification(notification.event, notification.properties, 'email');
-    var to = getEmail(userToNotify);
-    var text = n.text + '\n\n Unsubscribe from all notifications: '+getUnsubscribeLink(userToNotify);
-    var html = n.html + '<br/><br/><a href="'+getUnsubscribeLink(userToNotify)+'">Unsubscribe from all notifications</a>';
-    sendEmail(to, n.subject, text, html);
-  },  
   unsubscribeUser : function(hash){
     // TO-DO: currently, if you have somebody's email you can unsubscribe them
-    // A site-specific salt should be added to the hashing method to prevent this
+    // A user-specific salt should be added to the hashing method to prevent this
     var user = Meteor.users.findOne({email_hash: hash});
     if(user){
       var update = Meteor.users.update(user._id, {
-        $set: {'profile.notificationsFrequency' : 0}
+        $set: {
+          'profile.notifications.users' : 0,
+          'profile.notifications.posts' : 0,
+          'profile.notifications.comments' : 0,
+          'profile.notifications.replies' : 0
+        }
       });
       return true;
     }
     return false;
   },
-  notifyUsers : function(notification, currentUser){
+  newPostNotify : function(properties){
+    var currentUser = Meteor.users.findOne(this.userId);
+    console.log('newPostNotify')
     // send a notification to every user according to their notifications settings
     Meteor.users.find().forEach(function(user) {
+      // don't send users notifications for their own posts
       if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user)){
-        // don't send users notifications for their own posts
-        sendEmail(getEmail(user), notification.subject, notification.text, notification.html);
+        properties.userId = user._id;
+        var notification = getNotificationContents(properties, 'email');
+        sendNotification(notification, user);
       }
     });
   }
 });
+
+sendNotification = function (notification) {
+  // console.log('send notification:')
+  // console.log(notification)
+  sendEmail(notification.to, notification.subject, notification.text, notification.html);
+}

@@ -33,7 +33,7 @@ Template.post_submit.events = {
     $(e.target).addClass('disabled');
 
     if(!Meteor.user()){
-      throwError('You must be logged in.');
+      throwError(i18n.t('You must be logged in.'));
       return false;
     }
 

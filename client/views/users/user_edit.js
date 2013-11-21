@@ -17,24 +17,26 @@ Template.user_edit.helpers({
   profileUrl: function(){
     return Meteor.absoluteUrl()+"users/"+this.slug;
   },
+  hasNotificationsUsers : function(){
+    return getUserSetting('notifications.users', '', this) ? 'checked' : '';
+  },
   hasNotificationsPosts : function(){
-    return getUserSetting('notifications.posts') ? 'checked' : '';
+    return getUserSetting('notifications.notifications_posts', '', this) ? 'checked' : '';
   },
   hasNotificationsComments : function(){
-    return getUserSetting('notifications.comments') ? 'checked' : '';
+    return getUserSetting('notifications.comments', '', this) ? 'checked' : '';
   },
   hasNotificationsReplies : function(){
-    return getUserSetting('notifications.replies') ? 'checked' : '';
+    return getUserSetting('notifications.replies', '', this) ? 'checked' : '';
   }
 })
 
 Template.user_edit.events = {
   'submit form': function(e){
-    e.preventDefault();
 
     if(!Meteor.user())
-      throwError('You must be logged in.');
-    
+      throwError(i18n.t('You must be logged in.'));
+
     var $target=$(e.target);
     var name = $target.find('[name=name]').val();
     var user = this;
@@ -46,6 +48,7 @@ Template.user_edit.events = {
       "profile.twitter": $target.find('[name=twitter]').val(),
       "profile.github": $target.find('[name=github]').val(),
       "profile.site": $target.find('[name=site]').val(),
+      "profile.notifications.users": $('input[name=notifications_users]:checked').length, // only actually used for admins
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
       "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
       "profile.notifications.replies": $('input[name=notifications_replies]:checked').length,
@@ -69,7 +72,7 @@ Template.user_edit.events = {
       if(error){
         throwError(error.reason);
       } else {
-        throwError('Profile updated');
+        throwError(i18n.t('Profile updated'));
       }
     });
   }

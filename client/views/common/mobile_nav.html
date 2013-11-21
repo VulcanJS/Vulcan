@@ -2,16 +2,16 @@
   <div id="" class="mobile-nav">
     <div>
       <ul>
-        <li><a class="top" href="/top">Top</a></li>
-        <li><a class="new" href="/new">New</a></li>
-        <li><a class="digest" href="/digest">Digest</a></li>
+        <li><a class="top" href="/top">{{i18n "Top"}}</a></li>
+        <li><a class="new" href="/new">{{i18n "New"}}</a></li>
+        <li><a class="digest" href="/digest">{{i18n "Digest"}}</a></li>
         {{#if currentUser.isAdmin}}
-          <li><a class="users" href="/users">Users</a></li>
-          <li><a class="settings" href="/settings">Settings</a></li>
-          <li><a class="admin" href="/admin">Admin</a></li>
+          <li><a class="users" href="/users">{{i18n "Users"}}</a></li>
+          <li><a class="settings" href="/settings">{{i18n "Settings"}}</a></li>
+          <li><a class="admin" href="/admin">{{i18n "Admin"}}</a></li>
         {{/if}}
         {{#if canView}}
-          <li><a href="/submit">Post</a></li>
+          <li><a href="/submit">{{i18n "Post"}}</a></li>
         {{/if}}
       </ul>
     </div>

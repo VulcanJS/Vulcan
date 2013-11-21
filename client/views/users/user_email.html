@@ -2,17 +2,17 @@
   <div class="grid-small grid-block dialog user-edit">
   	{{#with user}}
     <div>
-      Please fill in your email below to finish signing up.
+      {{i18n "Please fill in your email below to finish signing up."}}
     </div>
     <form>
       <div class="control-group">
-        <label>Email</label>
+        <label>{{i18n "Email"}}</label>
         <div class="controls">
           <input name="email" type="text" value="{{profile.email}}" />
         </div>
       </div>
       <div class="form-actions">
-        <input type="submit" class="button" value="Submit" />
+        <input type="submit" class="button" value="{{i18n "Submit"}}" />
       </div>
     </form>
     {{/with}}
