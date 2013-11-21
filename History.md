@@ -1,3 +1,7 @@
+## v0.7.4 “InterScope”
+
+* Added basic internationalization (thanks Toam!). 
+
 ## v0.7.3
 
 * Refactored notifications.
