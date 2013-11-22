@@ -1,0 +1,24 @@
+<template name="logs">
+  <div class="grid-small grid-block dialog admin">
+    <h2>Search Logs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{#each this}}
+          <tr>
+            <td>{{keyword}}</td>
+            <td>{{getTimestamp}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="grid more-button">
+      <a class="more-link" href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
+    </div>
+  </div>
+</template>

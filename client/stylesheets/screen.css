@@ -1671,31 +1671,33 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
   .filter-sort .sort {
     float: right; }
 
-/* line 27, ../sass/modules/_users.scss */
-.user-list .user .user-avatar, .user-table .user .user-avatar {
-  height: 30px;
-  width: 30px;
-  background-size: 30px 30px;
-  display: block;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  -o-border-radius: 30px;
-  border-radius: 30px; }
-
-/* line 41, ../sass/modules/_users.scss */
-table tr td {
-  padding: 10px; }
-/* line 47, ../sass/modules/_users.scss */
-table thead tr td {
-  font-weight: bold; }
-
-/* line 61, ../sass/modules/_users.scss */
-.user-table {
+/* line 25, ../sass/modules/_users.scss */
+.user-list, .user-table {
   font-size: 13px; }
-  /* line 63, ../sass/modules/_users.scss */
-  .user-table tr {
+  /* line 28, ../sass/modules/_users.scss */
+  .user-list .user .user-avatar, .user-table .user .user-avatar {
+    height: 30px;
+    width: 30px;
+    background-size: 30px 30px;
+    display: block;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    -o-border-radius: 30px;
+    border-radius: 30px; }
+
+/* line 40, ../sass/modules/_users.scss */
+table {
+  width: 100%; }
+  /* line 42, ../sass/modules/_users.scss */
+  table tr {
     border-bottom: 1px solid #eee; }
+    /* line 44, ../sass/modules/_users.scss */
+    table tr td {
+      padding: 10px; }
+  /* line 50, ../sass/modules/_users.scss */
+  table thead tr td, table thead tr th {
+    font-weight: bold; }
 
 /* line 2, ../sass/modules/_user-profile.scss */
 .user-profile .user-avatar {

@@ -127,6 +127,8 @@ Meteor.publish('postsList', function(terms) {
   if(canViewById(this.userId)){
     var parameters = getParameters(terms),
         posts = Posts.find(parameters.find, parameters.options);
+    if(terms.query)
+      logSearch(terms.query);
     // console.log('//-------- Subscription Parameters:');
     // console.log(parameters.find);
     // console.log(parameters.options);
@@ -184,6 +186,14 @@ Meteor.publish('notifications', function() {
 Meteor.publish('categories', function() {
   if(canViewById(this.userId)){
     return Categories.find();
+  }
+  return [];
+});
+
+Meteor.publish('searches', function(limit) {
+  var limit = typeof limit === undefined ? 20 : limit; 
+  if(isAdminById(this.userId)){
+   return Searches.find({}, {limit: limit, sort: {timestamp: -1}});
   }
   return [];
 });

@@ -23,6 +23,7 @@
 
 }
 .user-list, .user-table{
+	font-size: 13px;	
 	.user{
 		.user-avatar{
 			height:30px;
@@ -37,14 +38,16 @@
 	}
 }
 table{
+	width: 100%;
 	tr{
+		border-bottom: 1px solid #eee;
 		td{
 			padding:10px;
 		}			
 	}
 	thead{
 		tr{
-			td{
+			td, th{
 				font-weight:bold;
 			}
 		}
@@ -57,10 +60,4 @@ table{
 		}
 	}
 
-}
-.user-table{
-	font-size: 13px;
-	tr{
-		border-bottom: 1px solid #eee;
-	}
 }

@@ -1,6 +1,7 @@
 ## v0.7.4 “InterScope”
 
-* Added basic internationalization (thanks Toam!). 
+* Added basic internationalization (thanks Toam!).
+* Added search logging. 
 
 ## v0.7.3
 

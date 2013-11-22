@@ -214,7 +214,8 @@ Router.before(filters.nProgressHook, {only: [
   'comment_reply',
   'user_edit',
   'user_profile',
-  'all-users'
+  'all-users',
+  'logs'
 ]});
 
 Router.before(filters.canView);
@@ -224,7 +225,7 @@ Router.before(filters.isLoggedOut, {only: ['signin', 'signup']});
 Router.before(filters.canPost, {only: ['posts_pending', 'comment_reply', 'post_submit']});
 Router.before(filters.canEditPost, {only: ['post_edit']});
 Router.before(filters.canEditComment, {only: ['comment_edit']});
-Router.before(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings', 'categories', 'toolbox']});
+Router.before(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings', 'categories', 'toolbox', 'logs']});
 
 // After Hooks
 
@@ -594,4 +595,17 @@ Router.map(function() {
 
   this.route('toolbox');
 
+  // Search Logs
+
+  this.route('logs', {
+    path: '/logs/:limit?',
+    waitOn: function () {
+      var limit = this.params.limit || 100;
+      Session.set('logsLimit', limit);
+      return Meteor.subscribe('searches', limit);
+    },
+    data: function () {
+      return Searches.find({}, {sort: {timestamp: -1}});
+    }
+  });
 });
