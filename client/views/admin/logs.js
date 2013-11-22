@@ -1,12 +1,13 @@
 Template.logs.helpers({
   getTime: function () {
-    return moment(this.timestamp).format("hh:mm:ss");
+    return moment(this.timestamp).format("HH:mm:ss");
   },
   getDate: function () {
     currentDate = moment(this.timestamp).format("MMMM DD");
     return currentDate;
   },
   searchCount: function () {
+    // TODO: doesn't work properly with "load more"
     var after = moment(this.timestamp).startOf('day').valueOf(),
         before = moment(this.timestamp).endOf('day').valueOf();
 
