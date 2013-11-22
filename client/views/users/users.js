@@ -16,5 +16,5 @@ Template.users.helpers({
   },
   filterBy: function (parameter) {
     return "?filterBy="+parameter+"&sortBy="+this.sortBy;
-  },
+  }
 });

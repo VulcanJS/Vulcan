@@ -1693,11 +1693,37 @@ table {
   table tr {
     border-bottom: 1px solid #eee; }
     /* line 44, ../sass/modules/_users.scss */
-    table tr td {
+    table tr td, table tr th {
       padding: 10px; }
   /* line 50, ../sass/modules/_users.scss */
   table thead tr td, table thead tr th {
     font-weight: bold; }
+
+/* line 63, ../sass/modules/_users.scss */
+.search-date-header {
+  background: #e7eff2; }
+  /* line 65, ../sass/modules/_users.scss */
+  .search-date-header th {
+    /* For modern browsers */
+    /* For IE 6/7 (trigger hasLayout) */
+    *zoom: 1; }
+    /* line 3, ../sass/partials/_mixins.scss */
+    .search-date-header th:before, .search-date-header th:after {
+      content: "";
+      display: table; }
+    /* line 7, ../sass/partials/_mixins.scss */
+    .search-date-header th:after {
+      clear: both; }
+  /* line 68, ../sass/modules/_users.scss */
+  .search-date-header .search-date {
+    display: block;
+    float: left;
+    font-weight: bold; }
+  /* line 73, ../sass/modules/_users.scss */
+  .search-date-header .search-count {
+    font-size: 13px;
+    display: block;
+    float: right; }
 
 /* line 2, ../sass/modules/_user-profile.scss */
 .user-profile .user-avatar {
