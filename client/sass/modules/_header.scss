@@ -164,6 +164,8 @@
 		border-radius: 20px;
 		border: 0px;
 		width: 100px;
+		-webkit-transition: 0.2s all;
+		-moz-transition: 0.2s all;
 		background: white;
 		&:focus{
 			outline:none;
