@@ -31,7 +31,7 @@ Template.user_edit.helpers({
   }
 })
 
-Template.user_edit.events = {
+Template.user_edit.events({
   'submit form': function(e){
 
     if(!Meteor.user())
@@ -77,4 +77,4 @@ Template.user_edit.events = {
     });
   }
 
-};
+});

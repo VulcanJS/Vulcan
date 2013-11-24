@@ -4,7 +4,7 @@ Template.user_email.helpers({
   }
 });
 
-Template.user_email.events = {
+Template.user_email.events({
   'submit form': function(e){
     e.preventDefault();
     if(!Meteor.user()) throwError(i18n.t('You must be logged in.'));
@@ -31,4 +31,4 @@ Template.user_email.events = {
     });
   }
 
-};
+});
