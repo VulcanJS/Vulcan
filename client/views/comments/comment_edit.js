@@ -10,7 +10,7 @@ Template.comment_edit.rendered = function(){
   }
 }
 
-Template.comment_edit.events = {
+Template.comment_edit.events({
   'click input[type=submit]': function(e, instance){
     var comment = this;
     var content = cleanUp(instance.editor.exportFile());
@@ -39,8 +39,4 @@ Template.comment_edit.events = {
       Router.go("/comments/deleted");
     }
   }
-};
-
-
-
-
+});

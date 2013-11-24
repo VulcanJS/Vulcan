@@ -1,4 +1,4 @@
-Template.forgot_password.events = {
+Template.forgot_password.events({
   'click input[type=submit]': function(e){
     e.preventDefault();
     var options=new Object();
@@ -11,4 +11,4 @@ Template.forgot_password.events = {
       }
     });
   }
-};
+});

@@ -47,7 +47,7 @@ Template.nav.rendered=function(){
   }
 };
 
-Template.nav.events = {
+Template.nav.events({
   'click #logout': function(e){
     e.preventDefault();
     Meteor.logout();
@@ -60,4 +60,4 @@ Template.nav.events = {
     e.preventDefault();
     Router.go('/account');
   }
-};
+});

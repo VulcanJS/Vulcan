@@ -111,7 +111,7 @@ Template.post_item.rendered = function(){
 
 };
 
-Template.post_item.events = {
+Template.post_item.events({
   'click .upvote-link': function(e, instance){
     var post = this;
     e.preventDefault();
@@ -139,4 +139,4 @@ Template.post_item.events = {
         console.log(error);
     });
   }
-};
+});

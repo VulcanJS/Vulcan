@@ -11,7 +11,7 @@ Template.search.preserve({
   'input#search': function (node) { return node.id; }
 });
 
-Template.search.events = {
+Template.search.events({
   'keyup, search .search-field': function(e){
     e.preventDefault();
     var val = $(e.target).val(),
@@ -31,7 +31,7 @@ Template.search.events = {
       }, 500 );
     }
   }
-};
+});
 
 // see: http://stackoverflow.com/questions/1909441/jquery-keyup-delay
 var delay = (function(){
