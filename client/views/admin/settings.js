@@ -19,7 +19,7 @@ Template.settings.helpers({
   }
 });
 
-Template.settings.events = {
+Template.settings.events({
   'click input[type=submit]': function(e){
     e.preventDefault();
     if(!Meteor.user()) throw 'You must be logged in.';
@@ -36,4 +36,4 @@ Template.settings.events = {
       }
     );
   }
-};
+});

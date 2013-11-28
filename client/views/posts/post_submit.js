@@ -26,7 +26,7 @@ Template.post_submit.rendered = function(){
 
 }
 
-Template.post_submit.events = {
+Template.post_submit.events({
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
 
@@ -80,9 +80,8 @@ Template.post_submit.events = {
         Router.go('/posts/'+post.postId);
       }
     });
-  }
-
-  ,'click .get-title-link': function(e){
+  },
+  'click .get-title-link': function(e){
     e.preventDefault();
     var url=$("#url").val();
     $(".get-title-link").addClass("loading");
@@ -101,4 +100,4 @@ Template.post_submit.events = {
     }
   }
 
-};
+});

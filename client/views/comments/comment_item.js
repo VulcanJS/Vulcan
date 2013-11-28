@@ -152,7 +152,7 @@ Template.comment_item.helpers({
   }  
 });
 
-Template.comment_item.events = {
+Template.comment_item.events({
   'click .queue-comment': function(e){
     e.preventDefault();
     var current_comment_id=$(event.target).closest(".comment").attr("id");
@@ -205,4 +205,4 @@ Template.comment_item.events = {
       trackEvent("post downvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
     });
   }
-};
+});

@@ -23,6 +23,7 @@
 
 }
 .user-list, .user-table{
+	font-size: 13px;	
 	.user{
 		.user-avatar{
 			height:30px;
@@ -37,14 +38,16 @@
 	}
 }
 table{
+	width: 100%;
 	tr{
-		td{
+		border-bottom: 1px solid #eee;
+		td, th{
 			padding:10px;
-		}			
+		}	
 	}
 	thead{
 		tr{
-			td{
+			td, th{
 				font-weight:bold;
 			}
 		}
@@ -56,11 +59,20 @@ table{
 			}			
 		}
 	}
-
 }
-.user-table{
-	font-size: 13px;
-	tr{
-		border-bottom: 1px solid #eee;
+.search-date-header{
+	background: $lightest-grey;
+	th{
+		@include cf;
+	}
+	.search-date{
+		display: block;
+		float: left;
+		font-weight: bold;
+	}
+	.search-count{
+		font-size: 13px;
+		display: block;
+		float: right;
 	}
 }

@@ -72,7 +72,7 @@ Template.post_edit.rendered = function(){
 
 }
 
-Template.post_edit.events = {
+Template.post_edit.events({
   'click input[type=submit]': function(e, instance){
     var post = this;
     var categories = [];
@@ -148,4 +148,4 @@ Template.post_edit.events = {
       });
     }
   }
-};
+});
