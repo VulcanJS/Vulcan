@@ -7,7 +7,7 @@ Template.comment_form.rendered = function(){
   }
 }
 
-Template.comment_form.events = {
+Template.comment_form.events({
   'submit form': function(e, instance){
     e.preventDefault();
     $(e.target).addClass('disabled');
@@ -43,4 +43,4 @@ Template.comment_form.events = {
       });
     }
   }
-};
+});

@@ -1,4 +1,4 @@
-Template.signin.events = {
+Template.signin.events({
     'click input[type=submit]': function(event){
       event.preventDefault();
       var username = $('#username').val();
@@ -21,4 +21,4 @@ Template.signin.events = {
       Router.go('/');
     });
   }
-};
+});

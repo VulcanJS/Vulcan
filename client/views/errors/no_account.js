@@ -3,10 +3,10 @@ Template.no_account.helpers({
     return getSetting("landingPageText");
   }
 });
-Template.no_account.events = {
+Template.no_account.events({
   'click .twitter-button': function(){
     Meteor.loginWithTwitter(function(){
 		Router.go('/');
     });
   }
-};
+});
