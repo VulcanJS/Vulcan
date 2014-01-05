@@ -1,4 +1,4 @@
-Template.toolbox.events= {
+Template.toolbox.events({
   'click .update-categories':function(){
 
   },
@@ -11,4 +11,4 @@ Template.toolbox.events= {
   'click .update-posts-slugs':function(){
       Meteor.call('updatePostsSlugs');
   }
-}
+});
