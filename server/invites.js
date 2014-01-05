@@ -24,7 +24,7 @@ Meteor.methods({
       }});
       console.log(a)
 
-      Meteor.call('createNotification', {
+      createNotification({
         event: 'accountApproved', 
         properties: {}, 
         userToNotify: invitedUser, 

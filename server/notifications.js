@@ -2,35 +2,36 @@ getUnsubscribeLink = function(user){
   return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
 };
 
-Meteor.methods({
-  createNotification: function(options){
-    var event = options.event,
-        properties = options.properties,
-        userToNotify = options.userToNotify,
-        userDoingAction = options.userDoingAction,
-        sendEmail = options.sendEmail;
-    // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
-    // console.log(userToNotify);
-    // console.log(userDoingAction);
-    // console.log(properties);
-    // console.log(sendEmail);
-    var notification = {
-      timestamp: new Date().getTime(),
-      userId: userToNotify._id,
-      event: event,
-      properties: properties,
-      read: false
-    }
-    var newNotificationId=Notifications.insert(notification);
+createNotification = function(options) {
+  var event = options.event,
+      properties = options.properties,
+      userToNotify = options.userToNotify,
+      userDoingAction = options.userDoingAction,
+      sendEmail = options.sendEmail;
+  // console.log('adding new notification for:'+getDisplayName(userToNotify)+', for event:'+event);
+  // console.log(userToNotify);
+  // console.log(userDoingAction);
+  // console.log(properties);
+  // console.log(sendEmail);
+  var notification = {
+    timestamp: new Date().getTime(),
+    userId: userToNotify._id,
+    event: event,
+    properties: properties,
+    read: false
+  }
+  var newNotificationId=Notifications.insert(notification);
 
-    // send the notification if notifications are activated,
-    // the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
-    if(sendEmail){
-      // get specific notification content for "email" context
-      var contents = getNotificationContents(notification, 'email');     
-      sendNotification(contents);
-    }
-  },
+  // send the notification if notifications are activated,
+  // the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
+  if(sendEmail){
+    // get specific notification content for "email" context
+    var contents = getNotificationContents(notification, 'email');     
+    sendNotification(contents);
+  }
+}
+
+Meteor.methods({
   unsubscribeUser : function(hash){
     // TO-DO: currently, if you have somebody's email you can unsubscribe them
     // A user-specific salt should be added to the hashing method to prevent this
