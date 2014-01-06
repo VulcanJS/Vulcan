@@ -23,14 +23,19 @@ Meteor.methods({
       throw new Meteor.Error(403, "Not an admin");
 
     var category = Categories.findOne(categoryId);
-    if (!category)
-      throw new Meteor.Error(404, "No such category");
-
-    // Such update is server-only, because Minimongo does not support $ yet
-    Posts.update(
-      {'categories._id': categoryId}
-    , {$set: {'categories.$': category}}
-    , {multi: true}
-    );
+    if (!category) {
+      Posts.update(
+        {}
+      , {$pull: {categories: {_id: categoryId}}}
+      , {multi: true}
+      );
+    } else {
+      // Such update is server-only, because Minimongo does not support $ yet
+      Posts.update(
+        {'categories._id': categoryId}
+      , {$set: {'categories.$': category}}
+      , {multi: true}
+      );
+    }
   }
 })
