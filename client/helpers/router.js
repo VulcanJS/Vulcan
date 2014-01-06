@@ -131,6 +131,8 @@ var filters = {
   },
 
   isAdmin: function() {
+    this.subscribe('currentUser').wait();
+    if(!this.ready()) return;
     if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()){
       throwError(i18n.t("Sorry, you  have to be an admin to view this page."))
       this.render('no_rights');
