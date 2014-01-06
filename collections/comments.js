@@ -81,41 +81,44 @@ Meteor.methods({
         properties.parentAuthorId = parentComment.userId;
         properties.parentAuthorName = getDisplayName(parentUser);
 
-        // reply notification
-        // do not notify users of their own actions (i.e. they're replying to themselves)
-        if(parentUser._id != user._id){
-          Meteor.call('createNotification', {
-            event: 'newReply', 
-            properties: properties, 
-            userToNotify: parentUser, 
-            userDoingAction: user, 
-            sendEmail: getUserSetting('notifications.replies', false, parentUser)
-          });
-        }
+        if(!this.isSimulation){
+          // reply notification
+          // do not notify users of their own actions (i.e. they're replying to themselves)
+          if(parentUser._id != user._id){
+            createNotification({
+              event: 'newReply',
+              properties: properties,
+              userToNotify: parentUser,
+              userDoingAction: user,
+              sendEmail: getUserSetting('notifications.replies', false, parentUser)
+            });
+          }
 
-        // comment notification
-        // if the original poster is different from the author of the parent comment, notify them too
-        if(postUser._id != user._id && parentComment.userId != post.userId){
-          Meteor.call('createNotification', {
-            event: 'newComment',
-            properties: properties,
-            userToNotify: postUser,
-            userDoingAction: user,
-            sendEmail: getUserSetting('notifications.comments', false, postUser)
-          });
+          // comment notification
+          // if the original poster is different from the author of the parent comment, notify them too
+          if(postUser._id != user._id && parentComment.userId != post.userId){
+            createNotification({
+              event: 'newComment',
+              properties: properties,
+              userToNotify: postUser,
+              userDoingAction: user,
+              sendEmail: getUserSetting('notifications.comments', false, postUser)
+            });
+          }
         }
-
       }else{
-        // root comment
-        // don't notify users of their own comments
-        if(postUser._id != user._id){
-          Meteor.call('createNotification', {
-            event: 'newComment',
-            properties: properties,
-            userToNotify: postUser,
-            userDoingAction: Meteor.user(),
-            sendEmail: getUserSetting('notifications.comments', false, postUser)
-          });
+        if(!this.isSimulation){
+          // root comment
+          // don't notify users of their own comments
+          if(postUser._id != user._id){
+            createNotification({
+              event: 'newComment',
+              properties: properties,
+              userToNotify: postUser,
+              userDoingAction: Meteor.user(),
+              sendEmail: getUserSetting('notifications.comments', false, postUser)
+            });
+          }
         }
       }
     }
