@@ -133,7 +133,7 @@ var filters = {
   isAdmin: function() {
     this.subscribe('currentUser').wait();
     if(!this.ready()) return;
-    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()){
+    if(!isAdmin()){
       throwError(i18n.t("Sorry, you  have to be an admin to view this page."))
       this.render('no_rights');
       this.stop(); 
@@ -141,7 +141,10 @@ var filters = {
   },
 
   canView: function() {
-    if(Session.get('settingsLoaded') && !canView()){
+    this.subscribe('currentUser').wait();
+    this.subscribe('settings').wait();
+    if(!this.ready()) return;
+    if(!canView()){
       console.log('cannot view')
       this.render('no_rights');
       this.stop();
@@ -149,7 +152,10 @@ var filters = {
   },
 
   canPost: function () {
-    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !canPost()){
+    this.subscribe('currentUser').wait();
+    this.subscribe('settings').wait();
+    if(!this.ready()) return;
+    if(!canPost()){
       throwError(i18n.t("Sorry, you don't have permissions to add new items."))
       this.render('no_rights');
       this.stop();      
@@ -157,8 +163,11 @@ var filters = {
   },
 
   canEditPost: function() {
+    this.subscribe('currentUser').wait();
+    if(!this.ready()) return;
+    // Already subscribed to this post by route({waitOn: ...})
     var post = Posts.findOne(this.params._id);
-    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(post)){
+    if(!currentUserCanEdit(post)){
       throwError(i18n.t("Sorry, you cannot edit this post."))
       this.render('no_rights');
       this.stop();
@@ -166,8 +175,11 @@ var filters = {
   },
 
   canEditComment: function() {
+    this.subscribe('currentUser').wait();
+    if(!this.ready()) return;
+    // Already subscribed to this commit by CommentPageController
     var comment = Comments.findOne(this.params._id);
-    if(!Meteor.loggingIn() && Session.get('settingsLoaded') && !currentUserCanEdit(comment)){
+    if(!currentUserCanEdit(comment)){
       throwError(i18n.t("Sorry, you cannot edit this comment."))
       this.render('no_rights');
       this.stop();
@@ -175,8 +187,10 @@ var filters = {
   },
 
   hasCompletedProfile: function() {
+    this.subscribe('currentUser').wait();
+    if(!this.ready()) return;
     var user = Meteor.user();
-    if (user && ! Meteor.loggingIn() && ! userProfileComplete(user)){
+    if (user && ! userProfileComplete(user)){
       this.render('user_email');
       this.stop();
     }
