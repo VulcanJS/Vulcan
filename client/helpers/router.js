@@ -92,6 +92,7 @@ Router.configure({
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'not_found',
+  waitOn: Meteor.subscribe('categories')
 });
 
 //--------------------------------------------------------------------------------------------------//
