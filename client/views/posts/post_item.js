@@ -8,7 +8,7 @@ Template.post_item.helpers({
     return this.post || this;
   },
   postLink: function(){
-    return !!this.url ? this.url : "/posts/"+this._id;
+    return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
   postTarget: function() {
     return !!this.url ? '_blank' : '';
@@ -132,11 +132,5 @@ Template.post_item.events({
     $this.toggleClass("active");
     $share.toggleClass("hidden");
     $share.find('.share-replace').sharrre(SharrreOptions);
-  },
-  'click .post-title': function(e){
-    Meteor.call('clickedPost', this, Session.get('sessionId'), function(error, result){
-      if(error)
-        console.log(error);
-    });
   }
 });
