@@ -32,8 +32,14 @@ Meteor.subscribe('currentUser');
 Meteor.subscribe('allUsersAdmin');
 
 // Notifications - only load if user is logged in
-if(Meteor.user() != null)
-  Meteor.subscribe('notifications');
+// Not mandatory, because server won't publish anything even if we try to load.
+// Remember about Deps.autorun - user can log in and log out several times
+Deps.autorun(function() {
+  // userId() can be changed before user(), because loading profile takes time
+  if(Meteor.userId()) {
+    Meteor.subscribe('notifications');
+  }
+})
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;

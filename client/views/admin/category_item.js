@@ -9,5 +9,10 @@ Template.category_item.events({
     }else{
       Categories.remove(categoryId);
     }
+    Meteor.call('updateCategoryInPosts', categoryId, function(error) {
+      if (error) {
+        throwError(error.reason);
+      }
+    });
   }
 })

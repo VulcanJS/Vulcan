@@ -33,7 +33,9 @@ Template.user_edit.helpers({
 
 Template.user_edit.events({
   'submit form': function(e){
+    e.preventDefault();
 
+    clearSeenErrors();
     if(!Meteor.user())
       throwError(i18n.t('You must be logged in.'));
 
@@ -74,6 +76,10 @@ Template.user_edit.events({
       } else {
         throwError(i18n.t('Profile updated'));
       }
+      Deps.afterFlush(function() {
+        var element = $('.grid > .error');
+        $('html, body').animate({scrollTop: element.offset().top});
+      });
     });
   }
 
