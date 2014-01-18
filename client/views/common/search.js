@@ -28,7 +28,7 @@ Template.search.events({
         // if we're not already on the search page, go to it
         if(getCurrentRoute().indexOf('search') == -1)
           Router.go('/search');
-      }, 500 );
+      }, 700 );
     }
   }
 });
