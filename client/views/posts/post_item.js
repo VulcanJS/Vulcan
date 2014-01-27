@@ -123,6 +123,18 @@ Template.post_item.events({
       trackEvent("post upvoted", {'_id': post._id});
     });
   },
+  Template.post_item.events({
+  'click .downvote-link': function(e, instance){
+    var post = this;
+    e.preventDefault();
+    if(!Meteor.user()){
+      Router.go('/signin');
+      throwError(i18n.t("Please log in first"));
+    }
+    Meteor.call('downvotePost', post, function(error, result){
+      trackEvent("post downvoted", {'_id': post._id});
+    });
+  },
   'click .share-link': function(e){
     var $this = $(e.target).parents('.post-share').find('.share-link');
     var $share = $this.parents('.post-share').find('.share-options');
