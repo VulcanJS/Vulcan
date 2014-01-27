@@ -18,13 +18,18 @@
       <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
     </ul>
     <div class="post-content">
-      <div class="post-upvote">
-        {{#if voted}}
-          <span class="upvote-link voted"><i class="icon-check"></i><span>{{i18n "Upvote"}}</span></span>
-        {{else}}
-          <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>{{i18n "Upvote"}}</span></a>
-        {{/if}}
-      </div>
+
+    <div class="post-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
+          <a class="upvote" href="#">
+            <i class="icon-up"></i>
+            <span>{{i18n "upvote"}}</span>
+          </a>
+          <a class="downvote" href="#">
+            <i class="icon-down"></i>
+            <span>{{i18n "downvote"}}</span>
+          </a>
+    </div>
+
       <div class="post-info">
         {{#if sticky}}
           <span class="post-sticky"><i class="icon-pin"></i><span>{{i18n "Sticky"}}</span></span>
