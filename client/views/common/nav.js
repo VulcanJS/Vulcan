@@ -34,7 +34,10 @@ Template.nav.helpers({
   },
   categoryLink: function () {
     return getCategoryUrl(this.slug);
-  }
+  },
+  currentCategory: function () {    
+  return this.slug;  
+  } 
 });
 
 Template.nav.rendered=function(){
