@@ -36,8 +36,18 @@ Template.nav.helpers({
     return getCategoryUrl(this.slug);
   },
   currentCategory: function () {
+    
+    if (Session.get('categorySlug') == null)
+  {
+    return('')
+  }
+  else
+  {
     return Session.get('categorySlug');
+  }
  } 
+ 
+ 
 });
 
 Template.nav.rendered=function(){
