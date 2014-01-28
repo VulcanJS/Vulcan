@@ -35,10 +35,10 @@ Template.nav.helpers({
   categoryLink: function () {
     return getCategoryUrl(this.slug);
   },
-  currentCategory: function () {    
-    console.log(this.slug);
-    return this.slug;  
-  } 
+  currentCategory: function () {
+    console.log(this);
+    /// return this;
+ } 
 });
 
 Template.nav.rendered=function(){
