@@ -36,8 +36,7 @@ Template.nav.helpers({
     return getCategoryUrl(this.slug);
   },
   currentCategory: function () {
-    console.log(this);
-    /// return this;
+    return Session.get('categorySlug');
  } 
 });
 
