@@ -20,7 +20,7 @@ Template.user_profile.helpers({
     return getTwitterName(this);
   },
   getFacebookName: function () {
-    return getFacebookNamethis);
+    return getFacebookName(this);
   }
 });
 
