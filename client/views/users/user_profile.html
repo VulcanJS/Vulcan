@@ -23,7 +23,25 @@
 				<tr>
 					<td>{{i18n "Bio:"}}</td>
 					<td>{{profile.bio}}</td>
-				</tr>				
+				</tr>
+				{{#if getTwitterName}}
+					<tr>
+						<td>Twitter: </td>
+						<td><a href="http://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
+					</tr>
+				{{/if}}
+				{{#if getFacebookName}}
+					<tr>
+						<td>{{i18n "Facebook"}}:</td>
+						<td><a href="http://facebook.com/{{getFacebookName}}">{{getFacebookName}}</a></td>
+					</tr>
+				{{/if}}
+				{{#if site}}
+					<tr>
+						<td>{{i18n "Site"}}:</td>
+						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
+					</tr>
+				{{/if}}					
 			</table>
 			{{#if canEditProfile}}
 				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>

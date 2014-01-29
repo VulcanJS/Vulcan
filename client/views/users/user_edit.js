@@ -11,8 +11,8 @@ Template.user_edit.helpers({
   getTwitter: function(){
     return getTwitterName(this) || "";
   },
-  getGitHub: function(){
-    return getGitHubName(this) || "";
+  getFacebook: function(){
+    return getFacebookName(this) || "";
   },
   profileUrl: function(){
     return Meteor.absoluteUrl()+"users/"+this.slug;
@@ -48,7 +48,7 @@ Template.user_edit.events({
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.email": $target.find('[name=email]').val(),
       "profile.twitter": $target.find('[name=twitter]').val(),
-      "profile.github": $target.find('[name=github]').val(),
+      "profile.facebook": $target.find('[name=facebook]').val(),
       "profile.site": $target.find('[name=site]').val(),
       "profile.notifications.users": $('input[name=notifications_users]:checked').length, // only actually used for admins
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
