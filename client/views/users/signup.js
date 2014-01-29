@@ -30,4 +30,14 @@ Template.signup.events({
       Router.go('/');
     });
   }
+  'click .facebook-button': function(){
+    Meteor.loginWithFacebook(function(){
+      Router.go('/');
+    });
+  }
+    'click .google-button': function(){
+    Meteor.loginWithGoogle(function(){
+      Router.go('/');
+    });
+  }
 });
