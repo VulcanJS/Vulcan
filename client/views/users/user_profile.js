@@ -1,6 +1,17 @@
 Template.user_profile.helpers({
   avatarUrl: function() {
-    return getAvatarUrl(this);
+    if(getSignupMethod(user)=='twitter'){
+    return 'http://twitter.com/api/users/profile_image/'+ user.services.twitter.screenName +'?&size=bigger';
+  }
+  else if(getSignupMethod(user)=='facebook'){
+    return 'http://graph.facebook.com/' + user.services.facebook.id + '/picture/?width=80&height=80';
+  }
+  else{
+    return Gravatar.getGravatar(user, {
+      d: 'http://demo.telesc.pe/img/default_avatar.png',
+      s: 80
+    });
+  }
   },
   canEditProfile: function() {
     var currentUser = Meteor.user();
