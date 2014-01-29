@@ -8,6 +8,9 @@ var privacyOptions = { // false means private
   'services.twitter.accessToken': false,
   'services.twitter.accessTokenSecret': false,
   'services.twitter.id': false,
+  'services.facebook.accessToken': false,
+  'services.facebook.accessTokenSecret': false,
+  'services.facebook.id': false,
   'services.password': false,
   'services.resume': false
 };
