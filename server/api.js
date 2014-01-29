@@ -24,6 +24,9 @@ serveAPI = function(limitSegment){
     if(twitterName = getTwitterNameById(post.userId))
       properties['twitterName'] = twitterName;
 
+    if(facebookName = getFacebookNameById(post.userId))
+      properties['facebookName'] = facebookName;
+
     posts.push(properties);
   });
 
