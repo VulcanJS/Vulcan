@@ -29,12 +29,14 @@ Template.signup.events({
     Meteor.loginWithTwitter(function(){
       Router.go('/');
     });
-  }
+  },
+
   'click .facebook-button': function(){
     Meteor.loginWithFacebook(function(){
       Router.go('/');
     });
-  }
+  },
+  
     'click .google-button': function(){
     Meteor.loginWithGoogle(function(){
       Router.go('/');
