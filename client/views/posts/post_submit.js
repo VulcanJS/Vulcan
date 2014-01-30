@@ -1,4 +1,7 @@
 Template.post_submit.helpers({
+  categoriesEnabled: function(){
+    return Categories.find().count();
+  },
   categories: function(){
     return Categories.find();
   },
