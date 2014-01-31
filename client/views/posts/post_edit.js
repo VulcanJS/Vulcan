@@ -23,6 +23,9 @@ Template.post_edit.helpers({
       return category;
     });
   },
+  categoriesEnabled: function(){
+    return Categories.find().count();
+  },
   isApproved: function(){
     return this.status == STATUS_APPROVED;
   },
