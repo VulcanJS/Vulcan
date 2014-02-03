@@ -24,6 +24,7 @@
           <label class="control-label post-form-body">{{i18n "Body"}}</label>
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
         </div>
+        {{#if categoriesEnabled}}
         <div class="control-group post-form-category">
           <label class="control-label">{{i18n "Categories"}}</label>
           <div class="controls">
@@ -34,6 +35,7 @@
             {{/each}}
           </div>
         </div>
+        {{/if}}
         {{#if isAdmin}}
           <div class="control-group post-form-sticky">
             <label class="control-label">{{i18n "Inactive?"}}</label>
