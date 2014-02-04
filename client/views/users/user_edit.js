@@ -21,7 +21,7 @@ Template.user_edit.helpers({
     return getUserSetting('notifications.users', '', this) ? 'checked' : '';
   },
   hasNotificationsPosts : function(){
-    return getUserSetting('notifications.notifications_posts', '', this) ? 'checked' : '';
+    return getUserSetting('notifications.posts', '', this) ? 'checked' : '';
   },
   hasNotificationsComments : function(){
     return getUserSetting('notifications.comments', '', this) ? 'checked' : '';
@@ -67,7 +67,7 @@ Template.user_edit.events({
           throwError(error.reason);
       });
     }
-    
+
     Meteor.users.update(user._id, {
       $set: update
     }, function(error){
