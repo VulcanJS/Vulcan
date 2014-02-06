@@ -17,3 +17,5 @@ deploy.sh
 
 dump/
 dump/*
+
+settings.json
