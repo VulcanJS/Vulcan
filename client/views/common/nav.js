@@ -30,7 +30,7 @@ Template.nav.helpers({
     return Categories.find().count();
   },
   categories: function(){
-    return Categories.find();
+    return Categories.find({}, {sort: {name: 1}});
   },
   categoryLink: function () {
     return getCategoryUrl(this.slug);
