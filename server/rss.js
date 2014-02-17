@@ -13,7 +13,7 @@ serveRSS = function() {
      description: post.body+'</br></br> <a href="'+getPostUrl(post._id)+'">Comments</a>',
      author: post.author,
      date: post.submitted,
-     url: (post.url ? post.url : getPostUrl(post._id)),
+     url: (post.url ? getOutgoingUrl(post.url) : getPostUrl(post._id)),
      guid: post._id
     });
   });
