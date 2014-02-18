@@ -17,7 +17,7 @@ var privacyOptions = { // false means private
 // Publish the current user
 
 Meteor.publish('currentUser', function() {
-  var user = Meteor.users.find(this.userId);
+  var user = Meteor.users.find({_id: this.userId});
   return user;
 });
 
