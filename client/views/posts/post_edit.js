@@ -141,12 +141,13 @@ Template.post_edit.events({
     e.preventDefault();
     
     if(confirm("Are you sure?")){
+      Router.go("/");
       Meteor.call("deletePostById", post._id, function(error) {
         if (error) {
           console.log(error);
           throwError(error.reason);
         } else {
-          Router.go("/posts/deleted");
+          throwError('Your post has been deleted.');
         }
       });
     }
