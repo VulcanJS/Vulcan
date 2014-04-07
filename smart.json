@@ -1,5 +1,8 @@
 {
-  "meteor": {},
+  "meteor": {
+    "git": "https://github.com/meteor/meteor.git",
+    "tag": "release/0.7.0"
+  },
   "packages": {
     "momentjs": {},
     "crypto-base": {},
@@ -7,7 +10,10 @@
       "git": "git://github.com/SachaG/database-forms.git"
     },
     "crypto-md5": {},
-    "iron-router": {},
+    "iron-router": {
+      "git": "https://github.com/EventedMind/iron-router",
+      "tag": "v0.6.2"
+    },
     "nprogress": {},
     "fast-render": {},
     "spin": {}
