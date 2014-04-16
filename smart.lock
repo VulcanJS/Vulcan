@@ -1,5 +1,9 @@
 {
-  "meteor": {},
+  "meteor": {
+    "git": "https://github.com/meteor/meteor.git",
+    "tag": "release/0.7.0",
+    "commit": "e042e5a85a0fb38b51637aee2715564272ec1fdc"
+  },
   "dependencies": {
     "basePackages": {
       "momentjs": {},
@@ -9,7 +13,10 @@
         "branch": "master"
       },
       "crypto-md5": {},
-      "iron-router": {},
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router",
+        "tag": "v0.6.2"
+      },
       "nprogress": {},
       "fast-render": {},
       "spin": {}
@@ -36,19 +43,19 @@
         "commit": "75bbb3eeace302122d3554a6212a6fe92553fa18"
       },
       "iron-router": {
-        "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.4",
-        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
+        "git": "https://github.com/EventedMind/iron-router",
+        "tag": "v0.6.2",
+        "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
       },
       "nprogress": {
         "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
-        "tag": "v0.0.3",
-        "commit": "ffd1c5dd400af64121197f4e637a215c4b6b1fc7"
+        "tag": "v0.0.4",
+        "commit": "8333206b751a24fac1fbd1b03fa37621bcefe50c"
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.1.16",
-        "commit": "e08aa22d76f25bb43e9d0f8bee3880c686f62b2b"
+        "tag": "v0.1.25",
+        "commit": "010c4ee25b48ab6a7373000be48f9cd4a8535880"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
