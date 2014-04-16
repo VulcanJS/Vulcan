@@ -37,8 +37,8 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.2",
-        "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
+        "tag": "v0.6.4",
+        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
       },
       "nprogress": {
         "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
@@ -47,8 +47,8 @@
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.1.12",
-        "commit": "b190f1592401f4084ce54b8f713b134e35a4e0db"
+        "tag": "v0.1.16",
+        "commit": "e08aa22d76f25bb43e9d0f8bee3880c686f62b2b"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
