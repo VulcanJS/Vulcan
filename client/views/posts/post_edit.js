@@ -1,9 +1,3 @@
-// Template.post_edit.preserve(['#title', '#url', '#editor', '#sticky']);
-
-// Template.post_edit.preserve({
-//   // 'input[id]': function (node) { return node.id; }
-//    '[name]': function(node) { return node.getAttribute('name');}
-// });
 
 Template.post_edit.created = function(){
   post = Posts.findOne(this.data.postId);

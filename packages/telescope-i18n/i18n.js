@@ -13,7 +13,7 @@ i18n = {
 };
 
 if(Meteor.isClient){
-  Handlebars.registerHelper('i18n', function(str){
+  UI.registerHelper('i18n', function(str){
     return i18n.t(str);
   }); 
 }

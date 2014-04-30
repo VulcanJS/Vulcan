@@ -13,7 +13,7 @@ Template.post_submit.helpers({
   },
   isSelected: function(){
     var post=Posts.findOne(Session.get('selectedPostId'));
-    return post && this._id == post.userId;
+    return (post && this._id == post.userId) ? 'selected' : '';
   }
 });
 

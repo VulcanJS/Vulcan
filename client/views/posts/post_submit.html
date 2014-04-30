@@ -12,7 +12,7 @@
       </div>
       <div class="control-group">
         <label class="control-label">{{i18n "Body"}}</label>
-        <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge"/></div>
+        <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge"></textarea></div>
       </div>
       {{#if categoriesEnabled}}
       <div class="control-group">
@@ -44,7 +44,7 @@
           <div class="controls">
             <select id="postUser">
               {{#each users}}
-              <option {{#if isSelected}}selected{{/if}} value="{{_id}}">{{userName}}</option>
+              <option {{isSelected}} value="{{_id}}">{{userName}}</option>
               {{/each}}
             </select>
           </div>

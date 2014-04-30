@@ -7,10 +7,6 @@ Template.search.helpers({
   }
 });
 
-Template.search.preserve({
-  'input#search': function (node) { return node.id; }
-});
-
 Template.search.events({
   'keyup, search .search-field': function(e){
     e.preventDefault();

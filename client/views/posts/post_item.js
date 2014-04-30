@@ -94,20 +94,20 @@ var recalculatePosition = function ($object, pArray) {
 }
 
 Template.post_item.rendered = function(){
-  var instance = this,
-      $instance = $(instance.firstNode.nextSibling),
-      top = $instance.position().top;
+  // var instance = this,
+  //     $instance = $(instance.firstNode.nextSibling),
+  //     top = $instance.position().top;
 
-  // if this is the first render, initialize array, else push current position
-  if(typeof instance.pArray === 'undefined'){
-    instance.pArray = [top]
-  }else{
-    instance.pArray.push(top);
-  }
+  // // if this is the first render, initialize array, else push current position
+  // if(typeof instance.pArray === 'undefined'){
+  //   instance.pArray = [top]
+  // }else{
+  //   instance.pArray.push(top);
+  // }
 
-  // if this is *not* the first render, recalculate positions
-  if(instance.pArray.length>1)
-    recalculatePosition($instance, instance.pArray);
+  // // if this is *not* the first render, recalculate positions
+  // if(instance.pArray.length>1)
+  //   recalculatePosition($instance, instance.pArray);
 
 };
 
