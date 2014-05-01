@@ -10,6 +10,7 @@
     "iron-router": {},
     "nprogress": {},
     "fast-render": {},
-    "spin": {}
+    "spin": {},
+    "autoform": {}
   }
 }

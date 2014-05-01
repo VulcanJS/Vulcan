@@ -18,3 +18,7 @@ i18next-meteor
 /fast-render
 /spin
 /blaze-layout
+/autoform
+/simple-schema
+/collection2
+/moment

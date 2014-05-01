@@ -12,7 +12,8 @@
       "iron-router": {},
       "nprogress": {},
       "fast-render": {},
-      "spin": {}
+      "spin": {},
+      "autoform": {}
     },
     "packages": {
       "momentjs": {
@@ -55,10 +56,30 @@
         "tag": "v0.2.2",
         "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
       },
+      "autoform": {
+        "git": "https://github.com/aldeed/meteor-autoform.git",
+        "tag": "v0.8.0",
+        "commit": "54a820a4a561e7f49d6fbc05d24b75c3d8d2e9be"
+      },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
         "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      },
+      "simple-schema": {
+        "git": "https://github.com/aldeed/meteor-simple-schema.git",
+        "tag": "v0.4.0",
+        "commit": "2cc6aac0d35a4e00b065c1437d540b2aefba5241"
+      },
+      "collection2": {
+        "git": "https://github.com/aldeed/meteor-collection2.git",
+        "tag": "v0.3.11",
+        "commit": "7e970671305657678e8508d8107d5e6c5e158559"
+      },
+      "moment": {
+        "git": "https://github.com/acreeger/meteor-moment.git",
+        "tag": "v2.6.0",
+        "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
       }
     }
   }
