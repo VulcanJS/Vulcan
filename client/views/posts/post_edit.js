@@ -1,8 +1,3 @@
-
-Template.post_edit.created = function(){
-  post = Posts.findOne(this.data.postId);
-}
-
 Template.post_edit.helpers({
   post: function () {
     return Posts.findOne(this.postId);
@@ -26,8 +21,8 @@ Template.post_edit.helpers({
   isSticky: function(){
     return this.sticky ? 'checked' : '';
   },
-  isSelected: function(){
-    return post && this._id == post.userId ? 'selected' : '';
+  isSelected: function(parentPost){
+    return parentPost && this._id == parentPost.userId ? 'selected' : '';
   },
   submittedDate: function(){
     return moment(this.submitted).format("MM/DD/YYYY");
@@ -56,6 +51,8 @@ Template.post_edit.helpers({
 });
 
 Template.post_edit.rendered = function(){
+  var post = this;
+
   if(post && !this.editor){
 
     this.editor= new EpicEditor(EpicEditorOptions).load();
@@ -65,7 +62,7 @@ Template.post_edit.rendered = function(){
 
   }
 
-  $("#postUser").selectToAutocomplete();
+  // $("#postUser").selectToAutocomplete(); // XXX
 
 }
 

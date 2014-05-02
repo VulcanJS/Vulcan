@@ -18,5 +18,6 @@ Template.post_page.rendered = function(){
     Session.set('scrollToCommentId', null);
     this.rendered=true;
   }
-  document.title = this.data.headline;
+  if(this.data) // XXX
+    document.title = this.data.headline;
 }
