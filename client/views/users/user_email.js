@@ -12,7 +12,8 @@ Template.user_email.events({
     var user=Session.get('selectedUserId')? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
     var update = {
       "profile.email": $target.find('[name=email]').val(),
-      "username": $target.find('[name=username]').val()
+      "username": $target.find('[name=username]').val(),
+        "slug": $target.find('[name=username]').val()
     };
 
     // TODO: enable change email
