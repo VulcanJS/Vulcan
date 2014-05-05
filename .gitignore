@@ -19,3 +19,4 @@ dump/
 dump/*
 
 settings.json
+.idea
