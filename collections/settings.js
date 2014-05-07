@@ -5,113 +5,146 @@ Settings = new Meteor.Collection("settings", {
         title: {
             type: String,
             label: "Title",
+            optional: true
         },
         tagline: {
             type: String,
-            label: "Tagline"
+            label: "Tagline",
+            optional: true
         },
         copies: {
             type: Number,
             label: "Number of copies",
+            optional: true
         },
         requireViewInvite: {
             type: Boolean,
             label: "Require invite to view",
+            optional: true
         },
         requirePostInvite: {
             type: Boolean,
             label: "Require invite to post",
+            optional: true
         },
         requirePostsApproval: {
             type: Boolean,
             label: "Posts must be approved by admin",
+            optional: true
         },
         emailNotifications: {
             type: Boolean,
             label: "Enable email notifications",
+            optional: true
         },
         nestedComments: {
             type: Boolean,
             label: "Enable nested comments",
+            optional: true
         },
         redistributeKarma: {
             type: Boolean,
             label: "Enable redistributed karma",
+            optional: true
         },
         defaultEmail: {
             type: String,
+            optional: true
         },       
         scoreUpdateInterval: {
             type: Number,
+            optional: true
         }, 
         postInterval: {
             type: Number,
+            optional: true
         },
         commentInterval: {
             type: Number,
+            optional: true
         },
         maxPostsPerDay: {
             type: Number,
+            optional: true
         },
         startInvitesCount: {
             type: Number,
-            defaultValue: 3
+            defaultValue: 3,
+            optional: true
         },
         postsPerPage: {
             type: Number,
-            defaultValue: 10
+            defaultValue: 10,
+            optional: true
         },
         logoUrl: {
-            type: String
+            type: String,
+            optional: true
         },
         logoHeight: {
-            type: Number
+            type: Number,
+            optional: true
         },
         logoWidth: {
-            type: Number
+            type: Number,
+            optional: true
         },
         language: {
             type: String,
-            defaultValue: 'en'
+            defaultValue: 'en',
+            optional: true
         },
         backgroundColor: {
-            type: String
+            type: String,
+            optional: true
         },
         secondaryColor: {
-            type: String
+            type: String,
+            optional: true
         },
         buttonColor: {
-            type: String
+            type: String,
+            optional: true
         },
         headerColor: {
-            type: String
+            type: String,
+            optional: true
         },
         googleAnalyticsId: {
-            type: String
+            type: String,
+            optional: true
         },
         mixpanelId: {
-            type: String
+            type: String,
+            optional: true
         },
         clickyId: {
-            type: String
+            type: String,
+            optional: true
         },
         embedlyId: {
-            type: String
+            type: String,
+            optional: true
         },
         mailChimpAPIKey: {
-            type: String
+            type: String,
+            optional: true
         },
         mailChimpListId: {
-            type: String
+            type: String,
+            optional: true
         },
         footerCode: {
-            type: String
+            type: String,
+            optional: true
         },
         extraCode: {
-            type: String
+            type: String,
+            optional: true
         },
         notes: {
-            type: String
+            type: String,
+            optional: true
         },                                                                                                                                                                                 
     })
 });
