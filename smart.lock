@@ -4,10 +4,6 @@
     "basePackages": {
       "momentjs": {},
       "crypto-base": {},
-      "database-forms": {
-        "git": "git://github.com/SachaG/database-forms.git",
-        "branch": "master"
-      },
       "crypto-md5": {},
       "iron-router": {},
       "nprogress": {},
@@ -26,11 +22,6 @@
         "tag": "v3.1.2.1",
         "commit": "5df8d82a0595553415bbfae2930c6ecbeece5794"
       },
-      "database-forms": {
-        "git": "git://github.com/SachaG/database-forms.git",
-        "branch": "master",
-        "commit": "b11ac7d5ca10df610ee5ca810cde45bb38ac81b7"
-      },
       "crypto-md5": {
         "git": "https://github.com/oortcloud/meteor-crypto-md5.git",
         "tag": "v3.1.2.2",
@@ -48,8 +39,8 @@
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.2.4",
-        "commit": "160a64bd61792f53a7c8848c5e979a953be13564"
+        "tag": "v0.2.5",
+        "commit": "93e2fb334e55fbe9b5ebb2a2e65964018658f43e"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
