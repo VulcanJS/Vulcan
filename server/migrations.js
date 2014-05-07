@@ -7,23 +7,23 @@ Meteor.startup(function () {
 
  // migration updatePostStatus: make sure posts have a status
   if (!Migrations.findOne({name: "updatePostStatus"})) {
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//    Starting updatePostStatus Migration    //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//    Starting updatePostStatus Migration    //-----------//");
+    console.log("//----------------------------------------------------------------------//");
     Posts.find({status: {$exists : false}}).forEach(function (post) {
         Posts.update(post._id, {$set: {status: 2}});
 
         // START CONSOLE LOGS
-        console.log("---------------------")
+        console.log("---------------------");
         console.log("Post: "+post.headline);
         console.log("Updating status to approved");
         // END CONSOLE LOGS
       
     });
     Migrations.insert({name: "updatePostStatus"});
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//     Ending updatePostStatus Migration     //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending updatePostStatus Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
   }
 
 
@@ -31,25 +31,25 @@ Meteor.startup(function () {
 
  // migration updateCategories: make sure categories have slugs
   if (!Migrations.findOne({name: "updateCategories"})) {
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//    Starting updateCategories Migration    //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//    Starting updateCategories Migration    //-----------//");
+    console.log("//----------------------------------------------------------------------//");
     Categories.find().forEach(function (category) {
       if(typeof category.slug === "undefined"){
         var slug = slugify(category.name);
         Categories.update(category._id, {$set: {slug: slug}});
 
         // START CONSOLE LOGS
-        console.log("---------------------")
+        console.log("---------------------");
         console.log("Category: "+category.name);
         console.log("Updating category with new slug: "+slug);
         // END CONSOLE LOGS
       }
     });
     Migrations.insert({name: "updateCategories"});
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//     Ending updateCategories Migration     //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending updateCategories Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
   }
 
 
@@ -57,9 +57,9 @@ Meteor.startup(function () {
 
   // migration updateCategories: store full category object in post instead of just the name
   if (!Migrations.findOne({name: "updatePostCategories"})) {
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//  Starting updatePostCategories Migration  //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting updatePostCategories Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
     Posts.find().forEach(function (post) {
       var oldCategories = post.categories;
       var newCategories = [];
@@ -88,10 +88,10 @@ Meteor.startup(function () {
       }
 
       // START CONSOLE LOGS
-      console.log("---------------------")
+      console.log("---------------------");
       console.log("Post: "+post.headline);
       if(updating){
-        console.log(oldCategories.length+" categories: "+oldCategories)
+        console.log(oldCategories.length+" categories: "+oldCategories);
         console.log("Updating categories array to: ");
         console.log(newCategories);
       }else{
@@ -101,16 +101,16 @@ Meteor.startup(function () {
 
     });
     Migrations.insert({name: "updatePostCategories"});
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//     Ending updateCategories Migration     //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending updateCategories Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
   }
 
   // migration updateUserProfiles: update user profiles with slugs and a few other properties
   if (!Migrations.findOne({name: "updateUserProfiles"})) {
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//  Starting updateUserProfiles Migration  //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting updateUserProfiles Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
 
     var allUsers = Meteor.users.find();
     console.log('> Found '+allUsers.count()+' users.\n');
@@ -136,9 +136,9 @@ Meteor.startup(function () {
 
     });
     Migrations.insert({name: "updateUserProfiles"});
-    console.log("//----------------------------------------------------------------------//")
-    console.log("//------------//     Ending updateUserProfiles Migration     //-----------//")
-    console.log("//----------------------------------------------------------------------//")
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending updateUserProfiles Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
   }
 
 });

@@ -39,7 +39,7 @@ Meteor.methods({
 
     // only let admins post as another user
     if(isAdmin(Meteor.user()))
-      userId = post.userId || user._id 
+      userId = post.userId || user._id; 
         
     // check that user can post
     if (!user || !canPost(user))
@@ -105,7 +105,7 @@ Meteor.methods({
           postHeadline : headline,
           postId : postId
         }
-      }
+      };
       // call a server method because we do not have access to users' info on the client
       Meteor.call('newPostNotify', notification, function(error, result){
         //run asynchronously

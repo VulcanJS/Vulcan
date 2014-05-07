@@ -16,16 +16,16 @@ serveAPI = function(limitSegment){
     };
 
     if(post.body)
-      properties['body'] = post.body;
+      properties.body = post.body;
 
     if(post.url)
-      properties['domain'] = getDomain(url);
+      properties.domain = getDomain(url);
 
     if(twitterName = getTwitterNameById(post.userId))
-      properties['twitterName'] = twitterName;
+      properties.twitterName = twitterName;
 
     posts.push(properties);
   });
 
   return JSON.stringify(posts); 
-}
+};

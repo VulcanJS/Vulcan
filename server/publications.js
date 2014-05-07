@@ -27,7 +27,7 @@ Meteor.publish('singleUser', function(userIdOrSlug) {
   if(canViewById(this.userId)){
     var options = isAdminById(this.userId) ? {limit: 1} : {limit: 1, fields: privacyOptions};
     var findById = Meteor.users.find(userIdOrSlug, options);
-    var findBySlug = Meteor.users.find({slug: userIdOrSlug}, options)
+    var findBySlug = Meteor.users.find({slug: userIdOrSlug}, options);
     // if we find something when treating the argument as an ID, return that; else assume it's a slug
     return findById.count() ? findById : findBySlug;
   }
