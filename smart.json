@@ -5,9 +5,9 @@
     "crypto-base": {},
     "crypto-md5": {},
     "iron-router": {},
-    "nprogress": {},
     "fast-render": {},
     "spin": {},
-    "autoform": {}
+    "autoform": {},
+    "iron-router-progress": {}
   }
 }

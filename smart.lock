@@ -6,10 +6,10 @@
       "crypto-base": {},
       "crypto-md5": {},
       "iron-router": {},
-      "nprogress": {},
       "fast-render": {},
       "spin": {},
-      "autoform": {}
+      "autoform": {},
+      "iron-router-progress": {}
     },
     "packages": {
       "momentjs": {
@@ -32,11 +32,6 @@
         "tag": "v0.7.1",
         "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
       },
-      "nprogress": {
-        "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
-        "tag": "v0.0.4",
-        "commit": "8333206b751a24fac1fbd1b03fa37621bcefe50c"
-      },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
         "tag": "v0.2.5",
@@ -51,6 +46,11 @@
         "git": "https://github.com/aldeed/meteor-autoform.git",
         "tag": "v0.8.0",
         "commit": "54a820a4a561e7f49d6fbc05d24b75c3d8d2e9be"
+      },
+      "iron-router-progress": {
+        "git": "https://github.com/Multiply/iron-router-progress.git",
+        "tag": "v0.3.1",
+        "commit": "3f7900feb4bb70a1289b39a1fdcd1f438c0335b3"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

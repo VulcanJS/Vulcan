@@ -16,10 +16,10 @@ standard-app-packages
 rss
 iron-router
 mailchimp
-nprogress
 telescope-i18n
 fast-render
 spin
 autoform
 collection2
 accounts-facebook
+iron-router-progress
