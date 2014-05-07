@@ -23,7 +23,7 @@ getNotificationContents = function(notification, context){
         subject: 'Someone replied to your comment on "'+p.postHeadline+'"',
         text: p.commentAuthorName+' has replied to your comment on "'+p.postHeadline+'": '+getPostCommentUrl(p.postId, p.commentId),
         html: '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> has replied to your comment on "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postHeadline+'</a>"</p>'
-      }
+      };
       if(context == 'email')
         n.html += '<p>'+p.commentExcerpt+'</p><a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">Read more</a>';
       break;
@@ -33,7 +33,7 @@ getNotificationContents = function(notification, context){
         subject: 'A new comment on your post "'+p.postHeadline+'"',
         text: 'You have a new comment by '+p.commentAuthorName+' on your post "'+p.postHeadline+'": '+getPostCommentUrl(p.postId, p.commentId),
         html: '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> left a new comment on your post "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postHeadline+'</a>"</p>'
-      }
+      };
       if(context == 'email')
         n.html += '<p>'+p.commentExcerpt+'</p><a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">Read more</a>';
       break;
@@ -43,7 +43,7 @@ getNotificationContents = function(notification, context){
         subject: p.postAuthorName+' has created a new post: "'+p.postHeadline+'"',
         text: p.postAuthorName+' has created a new post: "'+p.postHeadline+'" '+getPostUrl(p.postId),
         html: '<a href="'+getProfileUrlById(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postHeadline+'</a>".'  
-      }
+      };
       break;
 
     case 'accountApproved':
@@ -51,7 +51,7 @@ getNotificationContents = function(notification, context){
         subject: 'Your account has been approved.',
         text: 'Welcome to '+getSetting('title')+'! Your account has just been approved.',
         html: 'Welcome to '+getSetting('title')+'!<br/> Your account has just been approved. <a href="'+Meteor.absoluteUrl()+'">Start posting.</a>'
-      }
+      };
       break;
 
     case 'newUser':
@@ -59,7 +59,7 @@ getNotificationContents = function(notification, context){
         subject: 'New user: '+p.username,
         text: 'A new user account has been created: '+p.profileUrl,
         html: 'A new user account has been created: <a href="'+p.profileUrl+'">'+p.username+'</a>'
-      }
+      };
       break;
 
     default:
@@ -74,7 +74,7 @@ getNotificationContents = function(notification, context){
   }
 
   return n;
-}
+};
 
 Meteor.methods({
   markAllNotificationsAsRead: function() {

@@ -61,7 +61,7 @@
                                                   * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
                                                   */
 
-        this.getConverter = function () { return markdownConverter; }
+        this.getConverter = function () { return markdownConverter; };
 
         var that = this,
             panels;
@@ -85,7 +85,7 @@
                     undoManager.setCommandMode();
                     f();
                     that.refreshPreview();
-                }
+                };
             }
 
             uiManager = new UIManager(idPostfix, panels, undoManager, previewManager, commandManager, help);
@@ -96,7 +96,7 @@
             forceRefresh();
         };
 
-    }
+    };
 
     // before: contains all the text in the input box BEFORE the selection.
     // after: contains all the text in the input box AFTER the selection.
@@ -157,8 +157,8 @@
         if (remove) {
             beforeReplacer = afterReplacer = "";
         } else {
-            beforeReplacer = function (s) { that.before += s; return ""; }
-            afterReplacer = function (s) { that.after = s + that.after; return ""; }
+            beforeReplacer = function (s) { that.before += s; return ""; };
+            afterReplacer = function (s) { that.after = s + that.after; return ""; };
         }
         
         this.selection = this.selection.replace(/^(\s*)/, beforeReplacer).replace(/(\s*)$/, afterReplacer);
@@ -250,7 +250,7 @@
         this.buttonBar = doc.getElementById("wmd-button-bar" + postfix);
         this.preview = doc.getElementById("wmd-preview" + postfix);
         this.input = doc.getElementById("wmd-input" + postfix);
-    };
+    }
 
     // Returns true if the DOM element is visible, false if it's hidden.
     // Checks if display is anything other than none.
@@ -262,7 +262,7 @@
         }
         else if (elem.currentStyle) {
             // IE
-            return elem.currentStyle["display"] !== "none";
+            return elem.currentStyle.display !== "none";
         }
     };
 
@@ -332,7 +332,7 @@
         pattern = pre + pattern + post;
 
         return new re(pattern, flags);
-    }
+    };
 
     // UNFINISHED
     // The assignment in the while loop makes jslint cranky.
@@ -650,7 +650,7 @@
                 this.text = inputArea.value;
             }
 
-        }
+        };
 
         // Sets the selected text in the input box after we've performed an
         // operation.
@@ -767,7 +767,7 @@
             this.scrollTop = chunk.scrollTop;
         };
         this.init();
-    };
+    }
 
     function PreviewManager(converter, panels, previewRefreshCallback) {
 
@@ -902,11 +902,11 @@
                 parent.appendChild(preview);
             else
                 parent.insertBefore(preview, sibling);
-        }
+        };
 
         var nonSuckyBrowserPreviewSet = function (text) {
             panels.preview.innerHTML = text;
-        }
+        };
 
         var previewSetter;
 
@@ -962,7 +962,7 @@
         };
 
         init();
-    };
+    }
 
     // Creates the background behind the hyperlink text entry box.
     // And download dialog
@@ -1321,7 +1321,7 @@
             if (button.execute) {
                 button.execute(undoManager);
             }
-        };
+        }
 
         function setupButton(button, isEnabled) {
 
@@ -1359,7 +1359,7 @@
                         }
                         doClick(this);
                         return false;
-                    }
+                    };
                 }
             }
             else {
@@ -1371,7 +1371,7 @@
         function bindCommand(method) {
             if (typeof method === "string")
                 method = commandManager[method];
-            return function () { method.apply(commandManager, arguments); }
+            return function () { method.apply(commandManager, arguments); };
         }
 
         function makeSpritedButtonRow() {
@@ -1409,7 +1409,7 @@
                 spacer.id = "wmd-spacer" + num + postfix;
                 buttonRow.appendChild(spacer);
                 xPosition += 25;
-            }
+            };
 
             buttons.bold = makeButton("wmd-bold-button", "Strong <strong> Ctrl+B", "0px", bindCommand("doBold"));
             buttons.italic = makeButton("wmd-italic-button", "Emphasis <em> Ctrl+I", "-20px", bindCommand("doItalic"));
@@ -1467,7 +1467,7 @@
                 setupButton(buttons.undo, undoManager.canUndo());
                 setupButton(buttons.redo, undoManager.canRedo());
             }
-        };
+        }
 
         this.setUndoRedoButtonStates = setUndoRedoButtonStates;
 
@@ -2154,7 +2154,7 @@
         chunk.startTag = "----------\n";
         chunk.selection = "";
         chunk.skipLines(2, 1, true);
-    }
+    };
 
 
 })();

@@ -19,4 +19,4 @@ serveRSS = function() {
   });
   
   return feed.xml();
-}
+};

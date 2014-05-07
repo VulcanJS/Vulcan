@@ -19,7 +19,7 @@ createNotification = function(options) {
     event: event,
     properties: properties,
     read: false
-  }
+  };
   var newNotificationId=Notifications.insert(notification);
 
   // send the notification if notifications are activated,
@@ -29,7 +29,7 @@ createNotification = function(options) {
     var contents = getNotificationContents(notification, 'email');     
     sendNotification(contents);
   }
-}
+};
 
 Meteor.methods({
   unsubscribeUser : function(hash){
@@ -51,7 +51,7 @@ Meteor.methods({
   },
   newPostNotify : function(properties){
     var currentUser = Meteor.users.findOne(this.userId);
-    console.log('newPostNotify')
+    console.log('newPostNotify');
     // send a notification to every user according to their notifications settings
     Meteor.users.find().forEach(function(user) {
       // don't send users notifications for their own posts
@@ -68,4 +68,4 @@ sendNotification = function (notification) {
   // console.log('send notification:')
   // console.log(notification)
   sendEmail(notification.to, notification.subject, notification.text, notification.html);
-}
+};
