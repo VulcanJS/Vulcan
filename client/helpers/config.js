@@ -25,7 +25,7 @@ SharrreOptions={
 	  twitter: {
 	    count: 'vertical',
 	    via: 'TelescopeApp'
-	  },
+	  }
 	},
 	enableHover: false,
 	enableCounter: false,
