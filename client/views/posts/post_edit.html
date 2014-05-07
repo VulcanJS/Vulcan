@@ -1,6 +1,6 @@
 <template name="post_edit">
   <div class="grid submit">
-    {{#with post}}{{#constant}}
+    {{#with post}}
       <form class="grid-block form-horizontal">
         <div class="control-group">
           <label class="control-label post-form-headline">{{i18n "Created"}}</label>
@@ -72,7 +72,7 @@
             <div class="controls">
               <select id="postUser">
                 {{#each users}}
-                  <option {{isSelected}} value="{{_id}}">{{userName}}</option>
+                  <option {{isSelected ..}} value="{{_id}}">{{userName}}</option>
                 {{/each}}
               </select>
             </div>
@@ -97,6 +97,6 @@
           <input type="submit" value="{{i18n "Submit"}}" />
         </div>
       </form>
-    {{/constant}}{{/with}}
+    {{/with}}
   </div>
 </template>

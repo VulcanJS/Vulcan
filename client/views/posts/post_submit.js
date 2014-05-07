@@ -25,7 +25,7 @@ Template.post_submit.rendered = function(){
     $('#submitted_hidden').val(moment(ev.date).valueOf());
   });
 
-  $("#postUser").selectToAutocomplete();
+  // $("#postUser").selectToAutocomplete(); // XXX
 
 }
 

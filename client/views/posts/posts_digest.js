@@ -1,6 +1,7 @@
 Template.posts_digest.helpers({
   hasPosts: function(){
-    return !!this.posts.count();  
+    if(this.posts) // XXX
+      return !!this.posts.count();  
   },
   currentDate: function(){
     var currentDate=moment(Session.get('currentDate'));
