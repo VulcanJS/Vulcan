@@ -12,11 +12,6 @@ Settings = new Meteor.Collection("settings", {
             label: "Tagline",
             optional: true
         },
-        copies: {
-            type: Number,
-            label: "Number of copies",
-            optional: true
-        },
         requireViewInvite: {
             type: Boolean,
             label: "Require invite to view",
