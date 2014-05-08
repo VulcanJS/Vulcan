@@ -3,7 +3,7 @@
 Handlebars.registerHelper('eachWithRank', function(items, options) {
   // not used, forces multiple renders
   // note: cannot use this because it would delete and recreate all nodes
-  items.rewind()
+  items.rewind();
   var out = '';
   items.forEach(function(item, i){
     var key = 'Branch-' + i;
