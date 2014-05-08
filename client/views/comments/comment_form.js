@@ -16,7 +16,6 @@ Template.comment_form.events({
     if(getCurrentTemplate() == 'comment_reply'){
       // child comment
       var parentComment = this.comment;
-      console.log(parentComment)
       Meteor.call('comment', parentComment.post, parentComment._id, content, function(error, commentProperties){
         if(error){
           console.log(error);
@@ -28,7 +27,6 @@ Template.comment_form.events({
       });
     }else{
       // root comment
-      // console.log(postObject)
       var post = postObject;
 
       Meteor.call('comment', post._id, null, content, function(error, commentProperties){

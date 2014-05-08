@@ -1,5 +1,6 @@
 Template.comment_reply.helpers({
   post: function () {
-    return Posts.findOne(this.comment.post);
+    if(this.comment) // XXX
+      return Posts.findOne(this.comment.post);
   }
 });
