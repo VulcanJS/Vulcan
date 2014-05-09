@@ -27,7 +27,7 @@ Template.nav.helpers({
     return getSetting('requirePostsApproval');
   },
   hasCategories: function(){
-    return Categories.find().count();
+    return typeof Categories !== 'undefined' && Categories.find().count();
   },
   categories: function(){
     return Categories.find({}, {sort: {name: 1}});

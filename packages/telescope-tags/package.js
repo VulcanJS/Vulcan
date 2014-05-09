@@ -8,13 +8,17 @@ Package.on_use(function (api) {
     'templating'
   ], 'client');
 
+  api.add_files(['lib/tags.js'], ['client', 'server']);
+
   api.add_files([
-    'lib/client/tags.js', 
     'lib/client/routes.js',
     'lib/client/views/categories.html',
     'lib/client/views/categories.js',
+    'lib/client/views/category_item.html',
+    'lib/client/views/category_item.js',
     ], ['client']);
+
   api.add_files(['lib/server/publications.js'], ['server']);
   
-  api.export('adminNav');
+  api.export(['preloadSubscriptions', 'adminNav', 'Categories']);
 });
