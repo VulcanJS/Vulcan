@@ -9,7 +9,31 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
+viewNav = typeof viewNav === 'undefined' ? [] : viewNav;
 
+adminNav = typeof adminNav === 'undefined' ? [] : adminNav;
+adminNav = adminNav.concat([
+  {
+    route: '',
+    label: 'Pending'
+  },
+  {
+    route: '',
+    label: 'Users'
+  },
+  {
+    route: '',
+    label: 'Settings'
+  },
+  {
+    route: '',
+    label: 'Search Logs'
+  },
+  {
+    route: '',
+    label: 'Toolbox'
+  }   
+]);
 
 // Notifications - only load if user is logged in
 // Not mandatory, because server won't publish anything even if we try to load.

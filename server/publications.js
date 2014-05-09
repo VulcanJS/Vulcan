@@ -183,13 +183,6 @@ Meteor.publish('notifications', function() {
   return [];
 });
 
-Meteor.publish('categories', function() {
-  if(canViewById(this.userId)){
-    return Categories.find();
-  }
-  return [];
-});
-
 Meteor.publish('searches', function(limit) {
   var limit = typeof limit === undefined ? 20 : limit; 
   if(isAdminById(this.userId)){
