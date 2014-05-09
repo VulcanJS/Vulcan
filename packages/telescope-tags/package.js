@@ -15,5 +15,6 @@ Package.on_use(function (api) {
     'lib/client/views/categories.js',
     ], ['client']);
   api.add_files(['lib/server/publications.js'], ['server']);
-  // api.export('i18n');
+  
+  api.export('adminNav');
 });

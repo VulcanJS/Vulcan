@@ -10,27 +10,45 @@ STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
 viewNav = typeof viewNav === 'undefined' ? [] : viewNav;
+viewNav = viewNav.concat([
+  {
+    route: 'posts_top',
+    label: 'Top'
+  },
+  {
+    route: 'posts_new',
+    label: 'New'
+  },
+  {
+    route: 'posts_best',
+    label: 'Best'
+  },
+  {
+    route: 'posts_digest',
+    label: 'Digest'
+  }   
+]);
 
 adminNav = typeof adminNav === 'undefined' ? [] : adminNav;
 adminNav = adminNav.concat([
   {
-    route: '',
+    route: 'posts_pending',
     label: 'Pending'
   },
   {
-    route: '',
+    route: 'all-users',
     label: 'Users'
   },
   {
-    route: '',
+    route: 'settings',
     label: 'Settings'
   },
   {
-    route: '',
+    route: 'logs',
     label: 'Search Logs'
   },
   {
-    route: '',
+    route: 'toolbox',
     label: 'Toolbox'
   }   
 ]);

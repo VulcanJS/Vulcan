@@ -34,6 +34,12 @@ Template.nav.helpers({
   },
   categoryLink: function () {
     return getCategoryUrl(this.slug);
+  },
+  viewNav: function () {
+    return viewNav;
+  },
+  adminNav: function () {
+    return adminNav;
   }
 });
 

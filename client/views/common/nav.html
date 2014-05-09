@@ -9,10 +9,9 @@
         <a class="View" href="/">{{i18n "View"}}</a>
         <div class="dropdown-menu">
           <ul role="menu" aria-labelledby="dLabel">
-            <li><a class="top" href="/top">{{i18n "Top"}}</a></li>
-            <li><a class="new" href="/new">{{i18n "New"}}</a></li>
-            <li><a class="best" href="/best">{{i18n "Best"}}</a></li>
-            <li><a class="digest" href="/digest">{{i18n "Digest"}}</a></li>
+            {{#each viewNav}}
+              {{> navItem this}}
+            {{/each}}
           </ul>
         </div>
       </li>
@@ -34,12 +33,9 @@
         <a class="admin" href="/">{{i18n "Administration"}}</a>
         <div class="dropdown-menu">
           <ul role="menu" aria-labelledby="dLabel">
-            <li><a class="pending" href="/pending">{{i18n "Pending"}}</a></li>
-            <li><a class="users" href="/all-users">{{i18n "Users"}}</a></li>
-            <li><a class="settings" href="/settings">{{i18n "Settings"}}</a></li>
-            <li><a class="categories" href="/categories">{{i18n "Categories"}}</a></li>
-            <li><a class="logs" href="/logs">{{i18n "Logs"}}</a></li>
-            <li><a class="categories" href="/toolbox">{{i18n "Toolbox"}}</a></li>
+            {{#each adminNav}}
+              {{> navItem this}}
+            {{/each}}
           </ul>
         </div>
       </li>

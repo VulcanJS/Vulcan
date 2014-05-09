@@ -1,6 +1,6 @@
 // ** Handlebars helpers **
 
-Handlebars.registerHelper('eachWithRank', function(items, options) {
+UI.registerHelper('eachWithRank', function(items, options) {
   // not used, forces multiple renders
   // note: cannot use this because it would delete and recreate all nodes
   items.rewind();
@@ -14,25 +14,25 @@ Handlebars.registerHelper('eachWithRank', function(items, options) {
   return out;
 });
 
-Handlebars.registerHelper('getSetting', function(setting, defaultArgument){
+UI.registerHelper('getSetting', function(setting, defaultArgument){
   return getSetting(setting, defaultArgument);
 });
-Handlebars.registerHelper('canView', function() {
+UI.registerHelper('canView', function() {
   return canView(Meteor.user());
 });
-Handlebars.registerHelper('canPost', function() {
+UI.registerHelper('canPost', function() {
   return canPost(Meteor.user());
 });
-Handlebars.registerHelper('canComment', function() {
+UI.registerHelper('canComment', function() {
   return canComment(Meteor.user());
 });
-Handlebars.registerHelper('canUpvote', function(collection) {
+UI.registerHelper('canUpvote', function(collection) {
   return canUpvote(Meteor.user(), collection);
 });
-Handlebars.registerHelper('canDownvote', function(collection) {
+UI.registerHelper('canDownvote', function(collection) {
   return canDownvote(Meteor.user(), collection);
 });
-Handlebars.registerHelper('isAdmin', function(showError) {
+UI.registerHelper('isAdmin', function(showError) {
   if(isAdmin(Meteor.user())){
     return true;
   }else{
@@ -41,11 +41,15 @@ Handlebars.registerHelper('isAdmin', function(showError) {
     return false;
   }
 });
-Handlebars.registerHelper('canEdit', function(collectionName, item, action) {
+UI.registerHelper('canEdit', function(collectionName, item, action) {
   var action = (typeof action !== 'string') ? null : action;
   var collection = (typeof collectionName !== 'string') ? Posts : eval(collectionName);
   console.log(item);
   // var itemId = (collectionName==="Posts") ? Session.get('selectedPostId') : Session.get('selectedCommentId');
   // var item=collection.findOne(itemId);
   return item && canEdit(Meteor.user(), item, action);
+});
+
+UI.registerHelper('log', function(context){
+  console.log(context);
 });
