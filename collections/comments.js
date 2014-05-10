@@ -1,5 +1,52 @@
 Comments = new Meteor.Collection('comments');
 
+// Comments = new Meteor.Collection("comments", {
+//   schema: new SimpleSchema({
+//     body: {
+//       type: String,
+//     },
+//     baseScore: {
+//       type: Number
+//     },
+//     score: {
+//       type: Number
+//     }
+//     baseScore: {
+//       type: Number
+//     },
+//     upvotes: {
+//       type: Number
+//     },
+//     upvoters: {
+//       type: []
+//     },
+//     downvotes: {
+//       type: Number
+//     },
+//     downvoters: {
+//       type: []
+//     }
+//     score: {
+//       type: Number
+//     },
+//     author: {
+//       type: String
+//     },
+//     inactive: {
+//       type: Boolean
+//     },
+//     createdAt: {
+//       type: Date
+//     },
+//     postId: {
+//       type: "???"
+//     },
+//     userId: {
+//       type: "???"
+//     }
+//   })
+// });
+
 Comments.deny({
   update: function(userId, post, fieldNames) {
     if(isAdminById(userId))

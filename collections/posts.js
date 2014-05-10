@@ -1,5 +1,66 @@
 Posts = new Meteor.Collection('posts');
 
+// Posts = new Meteor.Collection("posts", {
+//   schema: new SimpleSchema({
+//     headline: {
+//       type: String,
+//       label: "Title",
+//     },
+//     url: {
+//       type: String,
+//       label: "URL"
+//     },
+//     body: {
+//       type: String,
+//     },
+//     author: {
+//       type: String
+//     },
+//     comments: {
+//       type: Number
+//     },
+//     baseScore: {
+//       type: Number
+//     },
+//     upvotes: {
+//       type: Number
+//     },
+//     upvoters: {
+//       type: []
+//     },
+//     downvotes: {
+//       type: Number
+//     },
+//     downvoters: {
+//       type: []
+//     }
+//     score: {
+//       type: Number
+//     },
+//     status: {
+//       type: Number
+//     },
+//     createdAt: {
+//       type: Date
+//     },
+//     submitted: {
+//       type: Date
+//     },
+//     sticky: {
+//       type: Boolean
+//     },
+//     inactive: {
+//       type: Boolean
+//     },
+//     categories: {
+//       type: []
+//     },
+//     userId: {
+//       type: "???"
+//     }
+//   })
+// });
+
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;

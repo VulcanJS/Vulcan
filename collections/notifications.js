@@ -1,5 +1,25 @@
 Notifications = new Meteor.Collection('notifications');
 
+// Notifications = new Meteor.Collection("notifications", {
+//   schema: new SimpleSchema({
+//     properties: {
+//       type: Object
+//     },
+//     event: {
+//       type: String
+//     },
+//     read: {
+//       type: Boolean
+//     },
+//     createdAt: {
+//       type: Date
+//     },
+//     userId: {
+//       type: "???"
+//     }
+//   })
+// });
+
 Notifications.allow({
     insert: function(userId, doc){
       // new notifications can only be created via a Meteor method
