@@ -74,7 +74,7 @@ Template.post_item.helpers({
     return this.comments == 1 ? i18n.t('comment') : i18n.t('comments');
   },
   pointsUnitDisplayText: function(){
-    return this.votes == 1 ? i18n.t('point') : i18n.t('points');
+    return this.upvotes == 1 ? i18n.t('point') : i18n.t('points');
   }
 });
 

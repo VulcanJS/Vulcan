@@ -141,4 +141,55 @@ Meteor.startup(function () {
     console.log("//----------------------------------------------------------------------//");
   }
 
+  // migration resetUpvotesDownvotes: reset upvotes and downvotes properties on each post
+  if (!Migrations.findOne({name: "resetUpvotesDownvotes"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting resetUpvotesDownvotes Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Posts.find().forEach(function (post) {
+      var upvotes = 0,
+          downvotes = 0;
+      console.log("Post: "+post.headline);
+      if(post.upvoters){
+        upvotes = post.upvoters.length;
+        console.log("Found "+upvotes+" upvotes.")
+      }
+      if(post.downvoters){
+        downvotes = post.downvoters.length;
+        console.log("Found "+downvotes+" downvotes.")
+      }
+      Posts.update(post._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "resetUpvotesDownvotes"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending resetUpvotesDownvotes Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
+
+  // migration resetUpvotesDownvotes: reset upvotes and downvotes properties on each comment
+  if (!Migrations.findOne({name: "resetCommentsUpvotesDownvotes"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting resetCommentsUpvotesDownvotes Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Comments.find().forEach(function (comment) {
+      var upvotes = 0,
+          downvotes = 0;
+      console.log("Comment: "+comment._id);
+      if(comment.upvoters){
+        upvotes = comment.upvoters.length;
+        console.log("Found "+upvotes+" upvotes.")
+      }
+      if(comment.downvoters){
+        downvotes = comment.downvoters.length;
+        console.log("Found "+downvotes+" downvotes.")
+      }
+      Comments.update(comment._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "resetCommentsUpvotesDownvotes"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending resetCommentsUpvotesDownvotes Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
 });
