@@ -1,51 +1,54 @@
-Comments = new Meteor.Collection('comments');
-
-// Comments = new Meteor.Collection("comments", {
-//   schema: new SimpleSchema({
-//     body: {
-//       type: String,
-//     },
-//     baseScore: {
-//       type: Number
-//     },
-//     score: {
-//       type: Number
-//     }
-//     baseScore: {
-//       type: Number
-//     },
-//     upvotes: {
-//       type: Number
-//     },
-//     upvoters: {
-//       type: []
-//     },
-//     downvotes: {
-//       type: Number
-//     },
-//     downvoters: {
-//       type: []
-//     }
-//     score: {
-//       type: Number
-//     },
-//     author: {
-//       type: String
-//     },
-//     inactive: {
-//       type: Boolean
-//     },
-//     createdAt: {
-//       type: Date
-//     },
-//     postId: {
-//       type: "???"
-//     },
-//     userId: {
-//       type: "???"
-//     }
-//   })
-// });
+Comments = new Meteor.Collection("comments", {
+  schema: new SimpleSchema({
+    body: {
+      type: String,
+    },
+    baseScore: {
+      type: Number,
+      optional: true
+    },
+    score: {
+      type: Number,
+      optional: true
+    },
+    upvotes: {
+      type: Number,
+      optional: true
+    },
+    upvoters: {
+      type: [String], // XXX
+      optional: true
+    },
+    downvotes: {
+      type: Number,
+      optional: true
+    },
+    downvoters: {
+      type: [String], // XXX
+      optional: true
+    },
+    author: {
+      type: String,
+      optional: true
+    },
+    inactive: {
+      type: Boolean,
+      optional: true
+    },
+    createdAt: {
+      type: Date,
+      optional: true
+    },
+    postId: {
+      type: String, // XXX
+      optional: true
+    },
+    userId: {
+      type: String, // XXX
+      optional: true
+    }
+  })
+});
 
 Comments.deny({
   update: function(userId, post, fieldNames) {
