@@ -44,8 +44,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.8.0",
-        "commit": "54a820a4a561e7f49d6fbc05d24b75c3d8d2e9be"
+        "tag": "v0.8.1",
+        "commit": "385051a5e4bbea3b2a54965800f5f530987ef432"
       },
       "iron-router-progress": {
         "git": "https://github.com/Multiply/iron-router-progress.git",
@@ -59,8 +59,8 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.4.0",
-        "commit": "2cc6aac0d35a4e00b065c1437d540b2aefba5241"
+        "tag": "v0.5.0",
+        "commit": "c90127c383ad829747502bf7f6dfb6aabae094b8"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",

@@ -9,7 +9,7 @@ serveRSS = function() {
   
   Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: 20}).forEach(function(post) {
     feed.item({
-     title: post.headline,
+     title: post.title,
      description: post.body+'</br></br> <a href="'+getPostUrl(post._id)+'">Comments</a>',
      author: post.author,
      date: post.submitted,

@@ -15,7 +15,7 @@ Meteor.startup(function () {
 
         // START CONSOLE LOGS
         console.log("---------------------");
-        console.log("Post: "+post.headline);
+        console.log("Post: "+post.title);
         console.log("Updating status to approved");
         // END CONSOLE LOGS
       
@@ -89,7 +89,7 @@ Meteor.startup(function () {
 
       // START CONSOLE LOGS
       console.log("---------------------");
-      console.log("Post: "+post.headline);
+      console.log("Post: "+post.title);
       if(updating){
         console.log(oldCategories.length+" categories: "+oldCategories);
         console.log("Updating categories array to: ");
@@ -149,7 +149,7 @@ Meteor.startup(function () {
     Posts.find().forEach(function (post) {
       var upvotes = 0,
           downvotes = 0;
-      console.log("Post: "+post.headline);
+      console.log("Post: "+post.title);
       if(post.upvoters){
         upvotes = post.upvoters.length;
         console.log("Found "+upvotes+" upvotes.")
@@ -190,6 +190,22 @@ Meteor.startup(function () {
     Migrations.insert({name: "resetCommentsUpvotesDownvotes"});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending resetCommentsUpvotesDownvotes Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
+
+  // migration headlineToTitle: change "headline" property to "title"
+  if (!Migrations.findOne({name: "headlineToTitle"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting headlineToTitle Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Posts.find().forEach(function (post) {
+      console.log("Post: "+post.headline+" "+post.title);
+      Posts.update(post._id, { $rename: { 'headline': 'title'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "headlineToTitle"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending headlineToTitle Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
   }
 });

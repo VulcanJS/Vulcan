@@ -134,7 +134,7 @@ Meteor.publish('postsList', function(terms) {
     // console.log(parameters.options);
     // console.log('Found '+posts.fetch().length+ ' posts:');
     // posts.rewind();
-    // console.log(_.pluck(posts.fetch(), 'headline'));
+    // console.log(_.pluck(posts.fetch(), 'title'));
     return posts;
   }
   return [];

@@ -55,7 +55,7 @@ Template.post_submit.events({
      });
 
     var properties = {
-        headline: title
+        title: title
       , body: body
       , shortUrl: shortUrl
       , categories: categories

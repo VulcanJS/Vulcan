@@ -40,9 +40,9 @@ getNotificationContents = function(notification, context){
   switch(event){
     case 'newReply':
       var n = {
-        subject: 'Someone replied to your comment on "'+p.postHeadline+'"',
-        text: p.commentAuthorName+' has replied to your comment on "'+p.postHeadline+'": '+getPostCommentUrl(p.postId, p.commentId),
-        html: '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> has replied to your comment on "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postHeadline+'</a>"</p>'
+        subject: 'Someone replied to your comment on "'+p.postTitle+'"',
+        text: p.commentAuthorName+' has replied to your comment on "'+p.postTitle+'": '+getPostCommentUrl(p.postId, p.commentId),
+        html: '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> has replied to your comment on "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postTitle+'</a>"</p>'
       };
       if(context == 'email')
         n.html += '<p>'+p.commentExcerpt+'</p><a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">Read more</a>';
@@ -50,9 +50,9 @@ getNotificationContents = function(notification, context){
 
     case 'newComment':
       var n = {
-        subject: 'A new comment on your post "'+p.postHeadline+'"',
-        text: 'You have a new comment by '+p.commentAuthorName+' on your post "'+p.postHeadline+'": '+getPostCommentUrl(p.postId, p.commentId),
-        html: '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> left a new comment on your post "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postHeadline+'</a>"</p>'
+        subject: 'A new comment on your post "'+p.postTitle+'"',
+        text: 'You have a new comment by '+p.commentAuthorName+' on your post "'+p.postTitle+'": '+getPostCommentUrl(p.postId, p.commentId),
+        html: '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> left a new comment on your post "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postTitle+'</a>"</p>'
       };
       if(context == 'email')
         n.html += '<p>'+p.commentExcerpt+'</p><a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">Read more</a>';
@@ -60,9 +60,9 @@ getNotificationContents = function(notification, context){
 
     case 'newPost':
       var n = {
-        subject: p.postAuthorName+' has created a new post: "'+p.postHeadline+'"',
-        text: p.postAuthorName+' has created a new post: "'+p.postHeadline+'" '+getPostUrl(p.postId),
-        html: '<a href="'+getProfileUrlById(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postHeadline+'</a>".'  
+        subject: p.postAuthorName+' has created a new post: "'+p.postTitle+'"',
+        text: p.postAuthorName+' has created a new post: "'+p.postTitle+'" '+getPostUrl(p.postId),
+        html: '<a href="'+getProfileUrlById(p.postAuthorId)+'">'+p.postAuthorName+'</a> has created a new post: "<a href="'+getPostUrl(p.postId)+'" class="action-link">'+p.postTitle+'</a>".'  
       };
       break;
 

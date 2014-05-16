@@ -87,7 +87,7 @@ Template.post_edit.events({
     });
 
     var properties = {
-      headline:         $('#title').val(),
+      title:         $('#title').val(),
       shortUrl:         shortUrl,
       body:             instance.editor.exportFile(),
       categories:       categories,

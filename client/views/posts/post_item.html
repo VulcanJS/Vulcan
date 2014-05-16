@@ -4,7 +4,7 @@
     <ul class="post-actions">
       <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">{{i18n 'Share'}}</span></a>
         <div class="share-options hidden">
-          <div data-url="{{#if url}}{{outgoingUrl}}{{else}}{{current_domain}}/posts/{{_id}}{{/if}}" data-text="{{headline}}" class="share-replace">
+          <div data-url="{{#if url}}{{outgoingUrl}}{{else}}{{current_domain}}/posts/{{_id}}{{/if}}" data-text="{{title}}" class="share-replace">
           </div>
         </div>
       </li>
@@ -31,7 +31,7 @@
           <span class="post-sticky"><i class="icon-pin"></i><span>{{i18n "Sticky"}}</span></span>
         {{/if}}
         <h3 class="post-heading">
-          <a href="{{postLink}}" class="post-title" target="{{postTarget}}">{{headline}}</a>
+          <a href="{{postLink}}" class="post-title" target="{{postTarget}}">{{title}}</a>
           {{#if url}}<span class="post-domain">{{domain}}</span>{{/if}}
             {{#each categories}}
               <a href="{{categoryLink}}" class="post-category category-{{slug}}">{{name}}</a>

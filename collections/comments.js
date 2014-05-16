@@ -1,5 +1,13 @@
 Comments = new Meteor.Collection("comments", {
   schema: new SimpleSchema({
+    _id: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id
+    },
+    createdAt: {
+      type: Date,
+      optional: true
+    },
     body: {
       type: String,
     },
@@ -33,10 +41,6 @@ Comments = new Meteor.Collection("comments", {
     },
     inactive: {
       type: Boolean,
-      optional: true
-    },
-    createdAt: {
-      type: Date,
       optional: true
     },
     postId: {
@@ -81,7 +85,7 @@ Meteor.methods({
           'commentAuthorName': getDisplayName(user),
           'commentExcerpt': trimWords(stripMarkdown(cleanText),20),
           'postId': postId,
-          'postHeadline' : post.headline
+          'postTitle' : post.title
         };
 
     // check that user can comment

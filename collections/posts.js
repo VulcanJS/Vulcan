@@ -4,7 +4,19 @@
 
 Posts = new Meteor.Collection("posts", {
   schema: new SimpleSchema({
-    headline: {
+    _id: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Id
+    },
+    createdAt: {
+      type: Date,
+      optional: true
+    },
+    submitted: {
+      type: Date,
+      optional: true
+    },    
+    title: {
       type: String,
       label: "Title",
     },
@@ -53,14 +65,6 @@ Posts = new Meteor.Collection("posts", {
       type: Number,
       optional: true
     },
-    createdAt: {
-      type: Date,
-      optional: true
-    },
-    submitted: {
-      type: Date,
-      optional: true
-    },
     sticky: {
       type: Boolean,
       optional: true
@@ -89,7 +93,7 @@ Posts.deny({
     if(isAdminById(userId))
       return false;
     // deny the update if it contains something other than the following fields
-    return (_.without(fieldNames, 'headline', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
+    return (_.without(fieldNames, 'title', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
   }
 });
 
@@ -103,7 +107,7 @@ clickedPosts = [];
 
 Meteor.methods({
   post: function(post){
-    var headline = cleanUp(post.headline),
+    var title = cleanUp(post.title),
         body = cleanUp(post.body),
         user = Meteor.user(),
         userId = user._id,
@@ -125,9 +129,9 @@ Meteor.methods({
     if (!user || !canPost(user))
       throw new Meteor.Error(601, i18n.t('You need to login or be invited to post new stories.'));
 
-    // check that user provided a headline
-    if(!post.headline)
-      throw new Meteor.Error(602, i18n.t('Please fill in a headline'));
+    // check that user provided a title
+    if(!post.title)
+      throw new Meteor.Error(602, i18n.t('Please fill in a title'));
 
     // check that there are no previous posts with the same link
     if(post.url && (typeof postWithSameLink !== 'undefined')){
@@ -146,7 +150,7 @@ Meteor.methods({
     }
 
     post = _.extend(post, {
-      headline: headline,
+      title: title,
       body: body,
       userId: userId,
       author: getDisplayNameById(userId),
@@ -182,7 +186,7 @@ Meteor.methods({
         properties: {
           postAuthorName : getDisplayName(postAuthor),
           postAuthorId : post.userId,
-          postHeadline : headline,
+          postTitle : title,
           postId : postId
         }
       };
