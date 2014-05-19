@@ -1,7 +1,4 @@
 Template.post_edit.helpers({
-  post: function () {
-    return Posts.findOne(this.postId);
-  },
   created: function(){
     return moment(this.createdAt).format("MMMM Do, h:mm:ss a");
   },
@@ -51,12 +48,10 @@ Template.post_edit.helpers({
 });
 
 Template.post_edit.rendered = function(){
-  var post = this;
-
+  var post = this.data.post;
   if(post && !this.editor){
-
     this.editor= new EpicEditor(EpicEditorOptions).load();
-    this.editor.importFile('editor',post.body);
+    this.editor.importFile('editor', post.body);
 
     $('#submitted_date').datepicker();
 
