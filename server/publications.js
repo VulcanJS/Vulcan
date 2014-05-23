@@ -94,7 +94,7 @@ Meteor.publish('allUsers', function(filterBy, sortBy, limit) {
 
 Meteor.publish('allUsersAdmin', function() {
   if (isAdminById(this.userId)) {
-    return Meteor.users.find();
+    return Meteor.users.find({isInvited: true});
   } else {
     return [];
   }
