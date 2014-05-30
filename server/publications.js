@@ -94,7 +94,7 @@ Meteor.publish('allUsers', function(filterBy, sortBy, limit) {
 
 Meteor.publish('allUsersAdmin', function() {
   if (isAdminById(this.userId)) {
-    return Meteor.users.find();
+    return Meteor.users.find({isInvited: true});
   } else {
     return [];
   }
@@ -179,13 +179,6 @@ Meteor.publish('notifications', function() {
   // only publish notifications belonging to the current user
   if(canViewById(this.userId)){
     return Notifications.find({userId:this.userId});
-  }
-  return [];
-});
-
-Meteor.publish('categories', function() {
-  if(canViewById(this.userId)){
-    return Categories.find();
   }
   return [];
 });

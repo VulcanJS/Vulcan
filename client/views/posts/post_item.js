@@ -75,6 +75,9 @@ Template.post_item.helpers({
   },
   pointsUnitDisplayText: function(){
     return this.votes == 1 ? i18n.t('point') : i18n.t('points');
+  },
+  isApproved: function(){
+    return this.status == STATUS_APPROVED;
   }
 });
 
@@ -132,5 +135,13 @@ Template.post_item.events({
     $this.toggleClass("active");
     $share.toggleClass("hidden");
     $share.find('.share-replace').sharrre(SharrreOptions);
+  },
+  'click .approve-link': function(e, instance){
+    Meteor.call('approvePost', this);
+    e.preventDefault();
+  },  
+  'click .unapprove-link': function(e, instance){
+    Meteor.call('unapprovePost', this);
+    e.preventDefault();
   }
 });
