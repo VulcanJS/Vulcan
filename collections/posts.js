@@ -203,6 +203,21 @@ Meteor.methods({
   post_edit: function(post){
     // TODO: make post_edit server-side?
   },
+  approvePost: function(post){
+    if(isAdmin(Meteor.user())){
+      var now = new Date().getTime();
+      Posts.update(post._id, {$set: {status: 2, submitted: now}});
+    }else{
+      throwError('You need to be an admin to do that.');
+    }
+  },
+  unapprovePost: function(post){
+    if(isAdmin(Meteor.user())){
+      Posts.update(post._id, {$set: {status: 1}});
+    }else{
+      throwError('You need to be an admin to do that.');
+    }
+  },
   clickedPost: function(post, sessionId){
     // only let clients increment a post's click counter once per session
     var click = {_id: post._id, sessionId: sessionId};
