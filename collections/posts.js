@@ -52,7 +52,7 @@ Meteor.methods({
     // check that there are no previous posts with the same link
     if(post.url && (typeof postWithSameLink !== 'undefined')){
       Meteor.call('upvotePost', postWithSameLink);
-      throw new Meteor.Error(603, i18n.t('This link has already been posted', postWithSameLink._id));
+      throw new Meteor.Error(603, i18n.t('This link has already been posted'), postWithSameLink._id);
     }
 
     if(!isAdmin(Meteor.user())){
