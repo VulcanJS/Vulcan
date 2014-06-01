@@ -28,7 +28,7 @@ Template.post_edit.helpers({
     return moment(this.submitted).format("HH:mm");
   },
   users: function(){
-    return Meteor.users.find().fetch();
+    return Meteor.users.find({}, {sort: {'profile.name': 1}});
   },
   userName: function(){
     return getDisplayName(this);
