@@ -102,7 +102,7 @@ Template.post_edit.events({
         }
       }
       adminProperties = {
-        sticky:     !!$('#sticky').attr('checked'),
+        sticky:     $('#sticky').is(':checked'),
         userId:     $('#postUser').val(),
         status:     status,
       };
