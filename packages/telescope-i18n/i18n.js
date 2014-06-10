@@ -1,6 +1,6 @@
 i18n = {
 
-  translations: [],
+  translations: {},
 
   t: function (str) {
     var lang = getSetting('language', 'en');
