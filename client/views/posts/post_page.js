@@ -19,5 +19,5 @@ Template.post_page.rendered = function(){
     this.rendered=true;
   }
   if(this.data) // XXX
-    document.title = this.data.title;
+    document.title = $(".post-title").text();
 }

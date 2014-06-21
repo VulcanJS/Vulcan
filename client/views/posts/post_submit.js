@@ -6,7 +6,7 @@ Template.post_submit.helpers({
     return Categories.find();
   },
   users: function(){
-    return Meteor.users.find();
+    return Meteor.users.find({}, {sort: {'profile.name': 1}});
   },
   userName: function(){
     return getDisplayName(this);
