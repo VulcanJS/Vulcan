@@ -73,6 +73,9 @@ form, .accounts-dialog{
 			border-color:$red;
 			@include box-shadow(0px 0px 5px 0px rgba($red,0.3));
 		}
+		&[type="number"]{
+			width: 30%;
+		}
 	}
 	input[type="text"], input[type="password"], input[type="number"], .login-form input{
 		height:30px;

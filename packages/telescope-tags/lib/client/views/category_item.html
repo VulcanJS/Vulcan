@@ -3,7 +3,10 @@
 		<form>
         <div class="control-group inline">
           <a class="button submit edit-link" href="#">Save</a>
-          <div class="controls"><input id="name_{{_id}}" type="text" value="{{name}}" /></div>
+          <div class="controls">
+            <input class="category-name" id="name_{{_id}}" type="text" value="{{name}}" placeholder="Name"/>
+            <input class="category-number" id="order_{{_id}}" type="number" value="{{order}}" placeholder="0"/>
+          </div>
           <span class="category-slug small">Slug: /{{slug}}</span>
         </div>
       </form>

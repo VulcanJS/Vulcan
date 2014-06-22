@@ -4,7 +4,7 @@ Template.post_edit.helpers({
   },
   categories: function(){
     var post = this;
-    return Categories.find().map(function(category) {
+    return Categories.find({}, {sort: {order: 1, name: 1}}).map(function(category) {
       category.checked = _.contains(_.pluck(post.categories, '_id'), category._id) ? 'checked' : '';
       return category;
     });

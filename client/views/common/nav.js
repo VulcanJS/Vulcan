@@ -30,7 +30,7 @@ Template.nav.helpers({
     return typeof Categories !== 'undefined' && Categories.find().count();
   },
   categories: function(){
-    return Categories.find({}, {sort: {name: 1}});
+    return Categories.find({}, {sort: {order: 1, name: 1}});
   },
   categoryLink: function () {
     return getCategoryUrl(this.slug);

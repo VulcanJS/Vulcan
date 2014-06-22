@@ -3,9 +3,10 @@ Template.category_item.events({
     e.preventDefault();
     var categoryId = instance.data._id;
     var name = $('#name_'+categoryId).val();
+    var order = parseInt($('#order_'+categoryId).val());
     var slug = slugify(name);
     if(name){
-      Categories.update(categoryId,{ $set: {name: name, slug: slug}});
+      Categories.update(categoryId,{ $set: {name: name, slug: slug, order: order}});
     }else{
       Categories.remove(categoryId);
     }

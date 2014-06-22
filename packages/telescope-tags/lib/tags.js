@@ -6,6 +6,10 @@ CategorySchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
+  order: {
+    type: Number,
+    optional: true
+  },
   slug: {
     type: String
   },

@@ -1,6 +1,6 @@
 Template.categories.helpers({
   categories: function(){
-    return Categories.find({}, {sort: {name: 1}});
+    return Categories.find({}, {sort: {order: 1, name: 1}});
   }
 });
 
@@ -9,10 +9,12 @@ Template.categories.events({
     e.preventDefault();
 
     var name = $('#name').val();
+    var order = parseInt($('#order').val());
     var slug = slugify(name);
     
     Meteor.call('category', {
       name: name,
+      order: order,
       slug: slug
     }, function(error, categoryName) {
       if(error){
