@@ -20,7 +20,7 @@ Meteor.startup(function () {
         // END CONSOLE LOGS
       
     });
-    Migrations.insert({name: "updatePostStatus"});
+    Migrations.insert({name: "updatePostStatus", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending updatePostStatus Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -46,7 +46,7 @@ Meteor.startup(function () {
         // END CONSOLE LOGS
       }
     });
-    Migrations.insert({name: "updateCategories"});
+    Migrations.insert({name: "updateCategories", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending updateCategories Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -100,7 +100,7 @@ Meteor.startup(function () {
       // END CONSOLE LOGS
 
     });
-    Migrations.insert({name: "updatePostCategories"});
+    Migrations.insert({name: "updatePostCategories", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending updateCategories Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -135,7 +135,7 @@ Meteor.startup(function () {
       Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
 
     });
-    Migrations.insert({name: "updateUserProfiles"});
+    Migrations.insert({name: "updateUserProfiles", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending updateUserProfiles Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -161,7 +161,7 @@ Meteor.startup(function () {
       Posts.update(post._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
     });
-    Migrations.insert({name: "resetUpvotesDownvotes"});
+    Migrations.insert({name: "resetUpvotesDownvotes", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending resetUpvotesDownvotes Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -187,7 +187,7 @@ Meteor.startup(function () {
       Comments.update(comment._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
     });
-    Migrations.insert({name: "resetCommentsUpvotesDownvotes"});
+    Migrations.insert({name: "resetCommentsUpvotesDownvotes", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending resetCommentsUpvotesDownvotes Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -203,7 +203,7 @@ Meteor.startup(function () {
       Posts.update(post._id, { $rename: { 'headline': 'title'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "headlineToTitle"});
+    Migrations.insert({name: "headlineToTitle", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending headlineToTitle Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -219,7 +219,7 @@ Meteor.startup(function () {
       Comments.update(comment._id, { $rename: { 'submitted': 'createdAt'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "commentsSubmittedToCreatedAt"});
+    Migrations.insert({name: "commentsSubmittedToCreatedAt", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending commentsSubmittedToCreatedAt Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -235,7 +235,7 @@ Meteor.startup(function () {
       Comments.update(comment._id, { $rename: { 'post': 'postId'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "commentsPostToPostId"});
+    Migrations.insert({name: "commentsPostToPostId", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending commentsPostToPostId Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -255,7 +255,7 @@ Meteor.startup(function () {
       Posts.update(post._id, { $set: { 'createdAt': createdAt, submitted: submitted}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "createdAtSubmittedToDate"});
+    Migrations.insert({name: "createdAtSubmittedToDate", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending createdAtSubmittedToDate Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -274,7 +274,7 @@ Meteor.startup(function () {
       Comments.update(comment._id, { $set: { 'createdAt': createdAt}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "commentsCreatedAtToDate"});
+    Migrations.insert({name: "commentsCreatedAtToDate", timestamp: new Date()});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending createdAtSubmittedToDate Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
