@@ -3,7 +3,6 @@ Categories = new Meteor.Collection('categories');
 CategorySchema = new SimpleSchema({
  _id: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
   order: {

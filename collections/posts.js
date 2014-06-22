@@ -5,7 +5,6 @@
 postSchemaObject = {
   _id: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
     optional: true
   },
   createdAt: {

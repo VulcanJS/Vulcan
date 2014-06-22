@@ -3,7 +3,7 @@ var Schema = {};
 Schema.User = new SimpleSchema({
   _id: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id
+    optional: true
   },
   username: {
     type: String,

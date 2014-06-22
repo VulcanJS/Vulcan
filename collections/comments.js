@@ -2,7 +2,6 @@ Comments = new Meteor.Collection("comments", {
   schema: new SimpleSchema({
     _id: {
       type: String,
-      regEx: SimpleSchema.RegEx.Id,
       optional: true
     },
     createdAt: {
