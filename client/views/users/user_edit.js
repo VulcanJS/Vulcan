@@ -28,6 +28,9 @@ Template.user_edit.helpers({
   },
   hasNotificationsReplies : function(){
     return getUserSetting('notifications.replies', '', this) ? 'checked' : '';
+  },
+  hasPassword: function () {
+    return hasPassword(Meteor.user());
   }
 })
 

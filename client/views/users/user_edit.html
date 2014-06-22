@@ -55,15 +55,17 @@
           <input name="site" type="text" value="{{profile.site}}" />
         </div>
       </div>
-      <h3>{{i18n "Change Password?"}}</h3>
-      <div class="control-group">
-        <label>{{i18n "Old Password"}}</label>
-        <div class="controls"><input name="old_password" type="password" value="" /></div>
-      </div>
-      <div class="control-group">
-        <label>{{i18n "New Password"}}</label>
-        <div class="controls"><input name="new_password" type="password" value="" /></div>
-      </div>
+      {{#if hasPassword}}
+        <h3>{{i18n "Change Password?"}}</h3>
+        <div class="control-group">
+          <label>{{i18n "Old Password"}}</label>
+          <div class="controls"><input name="old_password" type="password" value="" /></div>
+        </div>
+        <div class="control-group">
+          <label>{{i18n "New Password"}}</label>
+          <div class="controls"><input name="new_password" type="password" value="" /></div>
+        </div>
+      {{/if}}
       <div class="control-group">
         <label class="control-label">{{i18n "Email Notifications"}}</label>
         <div class="controls">
