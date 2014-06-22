@@ -137,7 +137,7 @@ Template.comment_item.helpers({
     return true;
   },
   ago: function(){
-    return moment(this.submitted).fromNow();
+    return moment(this.createdAt).fromNow();
   },
   upvoted: function(){
     return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);

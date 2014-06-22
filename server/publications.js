@@ -43,7 +43,7 @@ Meteor.publish('postUsers', function(postId) {
         users = [];
         
     if(post) {
-      var comments = Comments.find({post: post._id}).fetch();
+      var comments = Comments.find({postId: post._id}).fetch();
       // get IDs from all commenters on the post, plus post author's ID
       users = _.pluck(comments, "userId");
       users.push(post.userId);
@@ -146,7 +146,7 @@ Meteor.publish('postsList', function(terms) {
 
 Meteor.publish('postComments', function(postId) {
   if(canViewById(this.userId)){  
-    return Comments.find({post: postId});
+    return Comments.find({postId: postId});
   }
   return [];
 });

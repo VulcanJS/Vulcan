@@ -2,7 +2,8 @@ Comments = new Meteor.Collection("comments", {
   schema: new SimpleSchema({
     _id: {
       type: String,
-      regEx: SimpleSchema.RegEx.Id
+      regEx: SimpleSchema.RegEx.Id,
+      optional: true
     },
     createdAt: {
       type: Date,
@@ -13,10 +14,12 @@ Comments = new Meteor.Collection("comments", {
     },
     baseScore: {
       type: Number,
+      decimal: true,
       optional: true
     },
     score: {
       type: Number,
+      decimal: true,
       optional: true
     },
     upvotes: {
@@ -101,11 +104,15 @@ Meteor.methods({
       throw new Meteor.Error(704,i18n.t('Your comment is empty.'));
           
     var comment = {
-        post: postId,
-        body: cleanText,
-        userId: user._id,
-        submitted: new Date().getTime(),
-        author: getDisplayName(user)
+      postId: postId,
+      body: cleanText,
+      userId: user._id,
+      createdAt: new Date(),
+      upvotes: 0,
+      downvotes: 0,
+      baseScore: 0,
+      score: 0,
+      author: getDisplayName(user)
     };
     
     if(parentCommentId)
