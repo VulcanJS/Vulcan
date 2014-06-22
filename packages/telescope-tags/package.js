@@ -1,13 +1,15 @@
 Package.describe("Telescope tags package");
 
 Package.on_use(function (api) {
+
+  api.use(['telescope-base', 'simple-schema'], ['client', 'server']);
+
   api.use([
     'jquery',
     'underscore',
     'iron-router',
     'templating'
   ], 'client');
-  api.use('simple-schema', ['client', 'server']);
 
   api.add_files(['lib/tags.js'], ['client', 'server']);
 

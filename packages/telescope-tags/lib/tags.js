@@ -19,7 +19,6 @@ CategorySchema = new SimpleSchema({
 });
 
 // push "categories" property to addToPostSchema, so that it's later added to postSchema
-addToPostSchema = typeof addToPostSchema === 'undefined' ? [] : addToPostSchema;
 addToPostSchema.push(
   {
     propertyName: 'categories',

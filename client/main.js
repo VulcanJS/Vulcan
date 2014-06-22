@@ -9,7 +9,6 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-viewNav = typeof viewNav === 'undefined' ? [] : viewNav;
 viewNav = viewNav.concat([
   {
     route: 'posts_top',
@@ -29,7 +28,6 @@ viewNav = viewNav.concat([
   }   
 ]);
 
-adminNav = typeof adminNav === 'undefined' ? [] : adminNav;
 adminNav = adminNav.concat([
   {
     route: 'posts_pending',

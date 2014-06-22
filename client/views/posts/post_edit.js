@@ -100,7 +100,7 @@ Template.post_edit.events({
           // this is the first time we are approving the post
           properties.submitted = new Date();
         }else if($('#submitted_date').exists()){
-          properties.submitted = new Date(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
+          properties.submitted = moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").toDate();
         }
       }
       adminProperties = {
