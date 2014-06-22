@@ -208,4 +208,36 @@ Meteor.startup(function () {
     console.log("//------------//     Ending headlineToTitle Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
   }
+
+  // migration commentsSubmittedToCreatedAt: change "submitted" property to "createdAt"
+  if (!Migrations.findOne({name: "commentsSubmittedToCreatedAt"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting commentsSubmittedToCreatedAt Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Comments.find().forEach(function (comment) {
+      console.log("Comment: "+comment._id);
+      Comments.update(comment._id, { $rename: { 'submitted': 'createdAt'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "commentsSubmittedToCreatedAt"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending commentsSubmittedToCreatedAt Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
+
+  // migration commentsPostToPostId: change "post" property to "postId"
+  if (!Migrations.findOne({name: "commentsPostToPostId"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting commentsPostToPostId Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Comments.find().forEach(function (comment) {
+      console.log("Comment: "+comment._id);
+      Comments.update(comment._id, { $rename: { 'post': 'postId'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "commentsPostToPostId"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending commentsPostToPostId Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
 });
