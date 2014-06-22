@@ -1,3 +1,3 @@
 Template.error.errors= function(){
-  return Errors.find();
+  return Errors.find({show: true});
 }
