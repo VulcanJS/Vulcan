@@ -8,3 +8,6 @@ viewNav = [];
 
 // array containing items in the admin menu
 adminNav = [];
+
+// array containing subscriptions to be preloaded
+preloadSubscriptions = [];

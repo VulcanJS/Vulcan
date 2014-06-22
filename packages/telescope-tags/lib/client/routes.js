@@ -1,4 +1,3 @@
-preloadSubscriptions = typeof preloadSubscriptions === 'undefined' ? [] : preloadSubscriptions;
 preloadSubscriptions.push('categories');
 
 adminNav.push({

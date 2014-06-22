@@ -7,5 +7,5 @@ Package.on_use(function (api) {
   api.add_files(['lib/base_client.js'], ['client']);
   api.add_files(['lib/base_server.js'], ['server']);
 
-  api.export(['adminNav', 'viewNav', 'addToPostSchema']);
+  api.export(['adminNav', 'viewNav', 'addToPostSchema', 'preloadSubscriptions']);
 });
