@@ -200,6 +200,14 @@ h3 {
   font-size: 80%;
   color: #b3c1c6; }
 
+/* line 32, ../sass/partials/_typography.scss */
+strong {
+  font-weight: bold; }
+
+/* line 35, ../sass/partials/_typography.scss */
+em {
+  font-style: italic; }
+
 @font-face {
   font-family: 'icomoon';
   src: url("fonts/icomoon.eot"); }
