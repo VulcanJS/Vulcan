@@ -240,4 +240,43 @@ Meteor.startup(function () {
     console.log("//------------//     Ending commentsPostToPostId Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
   }
+
+  // migration createdAtSubmittedToDate: change posts' createdAt and submitted properties 
+  // from unix timestamps to Date() objects
+  if (!Migrations.findOne({name: "createdAtSubmittedToDate"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting createdAtSubmittedToDate Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Posts.find().forEach(function (post) {
+      console.log("Posts: "+post.title);
+      var createdAt = new Date(post.createdAt);
+      var submitted = new Date(post.submitted);
+      console.log(createdAt)
+      Posts.update(post._id, { $set: { 'createdAt': createdAt, submitted: submitted}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "createdAtSubmittedToDate"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending createdAtSubmittedToDate Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
+
+  // migration commentsCreatedAtToDate: change comments' createdAt property
+  // from unix timestamps to Date() objects
+  if (!Migrations.findOne({name: "commentsCreatedAtToDate"})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//  Starting commentsCreatedAtToDate Migration  //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Comments.find().forEach(function (comment) {
+      console.log("Comment: "+comment._id);
+      var createdAt = new Date(comment.createdAt);
+      console.log(createdAt)
+      Comments.update(comment._id, { $set: { 'createdAt': createdAt}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    Migrations.insert({name: "commentsCreatedAtToDate"});
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//     Ending createdAtSubmittedToDate Migration     //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+  }
 });
