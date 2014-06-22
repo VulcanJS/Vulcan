@@ -96,9 +96,9 @@ Template.post_edit.events({
       if(status == STATUS_APPROVED){
         if(!post.submitted){
           // this is the first time we are approving the post
-          properties.submitted = new Date().getTime();
+          properties.submitted = new Date();
         }else if($('#submitted_date').exists()){
-          properties.submitted = parseInt(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
+          properties.submitted = new Date(moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").valueOf());
         }
       }
       adminProperties = {

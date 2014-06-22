@@ -28,8 +28,8 @@ Template.comment_edit.events({
       }
     });
 
-    trackEvent("edit comment", {'postId': comment.post, 'commentId': comment._id});
-    Router.go("/posts/"+comment.post+"/comment/"+comment._id);
+    trackEvent("edit comment", {'postId': comment.postId, 'commentId': comment._id});
+    Router.go("/posts/"+comment.postId+"/comment/"+comment._id);
   },
   'click .delete-link': function(e){
     var comment = this;
@@ -38,7 +38,7 @@ Template.comment_edit.events({
     
     if(confirm(i18n.t("Are you sure?"))){
       Meteor.call('removeComment', comment._id);
-      Router.go("/posts/"+comment.post)
+      Router.go("/posts/"+comment.postId)
       throwError("Your comment has been deleted.");
 //      Router.go("/comments/deleted");
     }
