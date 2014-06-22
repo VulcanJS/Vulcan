@@ -6,7 +6,8 @@ Posts = new Meteor.Collection("posts", {
   schema: new SimpleSchema({
     _id: {
       type: String,
-      regEx: SimpleSchema.RegEx.Id
+      regEx: SimpleSchema.RegEx.Id,
+      optional: true
     },
     createdAt: {
       type: Date,
@@ -39,6 +40,7 @@ Posts = new Meteor.Collection("posts", {
     },
     baseScore: {
       type: Number,
+      decimal: true,
       optional: true
     },
     upvotes: {
@@ -59,6 +61,7 @@ Posts = new Meteor.Collection("posts", {
     },
     score: {
       type: Number,
+      decimal: true,
       optional: true
     },
     status: {
@@ -111,7 +114,7 @@ Meteor.methods({
         body = cleanUp(post.body),
         user = Meteor.user(),
         userId = user._id,
-        submitted = parseInt(post.submitted) || new Date().getTime(),
+        submitted = post.submitted || new Date(),
         defaultStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED,
         status = post.status || defaultStatus,
         postWithSameLink = Posts.findOne({url: post.url}), // TODO: limit scope of search to past month or something
@@ -154,8 +157,9 @@ Meteor.methods({
       body: body,
       userId: userId,
       author: getDisplayNameById(userId),
-      createdAt: new Date().getTime(),
-      votes: 0,
+      createdAt: new Date(),
+      upvotes: 0,
+      downvotes: 0,
       comments: 0,
       baseScore: 0,
       score: 0,
@@ -167,6 +171,8 @@ Meteor.methods({
       // if post is approved, set its submitted date (if post is pending, submitted date is left blank)
       post.submitted  = submitted;
     }
+
+    console.log(post)
 
     postId = Posts.insert(post);
 

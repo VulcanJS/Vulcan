@@ -42,7 +42,6 @@ Template.post_submit.events({
 
     var title= $('#title').val();
     var url = $('#url').val();
-    var shortUrl = $('#short-url').val();
     var body = instance.editor.exportFile();
     var categories=[];
     var sticky=!!$('#sticky').attr('checked');
@@ -57,17 +56,21 @@ Template.post_submit.events({
     var properties = {
         title: title
       , body: body
-      , shortUrl: shortUrl
       , categories: categories
       , sticky: sticky
-      , submitted: submitted
       , userId: userId
       , status: status
     };
-    if(url){
+
+    if(!!url){
       var cleanUrl = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
       properties.url = cleanUrl;
     }
+    if(!!submitted){
+      properties.submitted = new Date(submitted);
+    }
+
+    console.log(properties)
 
     Meteor.call('post', properties, function(error, post) {
       if(error){
