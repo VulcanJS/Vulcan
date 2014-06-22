@@ -64,7 +64,7 @@ Template.post_edit.rendered = function(){
 Template.post_edit.events({
   'click input[type=submit]': function(e, instance){
     var post = this;
-    var categories = [];
+    var categoriesArray = [];
     var url = $('#url').val();
     var shortUrl = $('#short-url').val();
     var status = parseInt($('input[name=status]:checked').val());
@@ -77,16 +77,18 @@ Template.post_edit.events({
 
     $('input[name=category]:checked').each(function() {
       var categoryId = $(this).val();
-      if(category = Categories.findOne(categoryId))
-        categories.push(category);
+      if(category = Categories.findOne(categoryId)){
+        categoriesArray.push(category);
+      }
     });
 
     var properties = {
       title:         $('#title').val(),
       shortUrl:         shortUrl,
       body:             instance.editor.exportFile(),
-      categories:       categories,
+      categories:       categoriesArray,
     };
+
 
     if(url){
       properties.url = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
@@ -108,6 +110,7 @@ Template.post_edit.events({
       };
       properties = _.extend(properties, adminProperties);
     }
+    console.log(properties)
 
     Posts.update(post._id,{
       $set: properties

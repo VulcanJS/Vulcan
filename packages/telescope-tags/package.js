@@ -7,6 +7,7 @@ Package.on_use(function (api) {
     'iron-router',
     'templating'
   ], 'client');
+  api.use('simple-schema', ['client', 'server']);
 
   api.add_files(['lib/tags.js'], ['client', 'server']);
 
@@ -20,5 +21,5 @@ Package.on_use(function (api) {
 
   api.add_files(['lib/server/publications.js'], ['server']);
   
-  api.export(['preloadSubscriptions', 'adminNav', 'Categories']);
+  api.export(['preloadSubscriptions', 'adminNav', 'Categories', 'addToPostSchema']);
 });

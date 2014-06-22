@@ -1,5 +1,31 @@
 Categories = new Meteor.Collection('categories');
 
+CategorySchema = new SimpleSchema({
+ _id: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true
+  },
+  slug: {
+    type: String
+  },
+  name: {
+    type: String
+  },    
+});
+
+// push "categories" property to addToPostSchema, so that it's later added to postSchema
+addToPostSchema = typeof addToPostSchema === 'undefined' ? [] : addToPostSchema;
+addToPostSchema.push(
+  {
+    propertyName: 'categories',
+    propertySchema: {
+      type: [CategorySchema],
+      optional: true
+    }
+  }
+);
+
 Meteor.startup(function () {
 Categories.allow({
   insert: isAdminById

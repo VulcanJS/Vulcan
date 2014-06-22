@@ -2,89 +2,93 @@
 
 // Note: XXX = change this
 
+postSchemaObject = {
+  _id: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true
+  },
+  createdAt: {
+    type: Date,
+    optional: true
+  },
+  submitted: {
+    type: Date,
+    optional: true
+  },    
+  title: {
+    type: String,
+    label: "Title",
+  },
+  url: {
+    type: String,
+    label: "URL",
+    optional: true
+  },
+  body: {
+    type: String,
+    optional: true
+  },
+  author: {
+    type: String,
+    optional: true
+  },
+  comments: {
+    type: Number,
+    optional: true
+  },
+  baseScore: {
+    type: Number,
+    decimal: true,
+    optional: true
+  },
+  upvotes: {
+    type: Number,
+    optional: true
+  },
+  upvoters: {
+    type: [String], // XXX
+    optional: true
+  },
+  downvotes: {
+    type: Number,
+    optional: true
+  },
+  downvoters: {
+    type: [String], // XXX
+    optional: true
+  },
+  score: {
+    type: Number,
+    decimal: true,
+    optional: true
+  },
+  status: {
+    type: Number,
+    optional: true
+  },
+  sticky: {
+    type: Boolean,
+    optional: true
+  },
+  inactive: {
+    type: Boolean,
+    optional: true
+  },
+  userId: {
+    type: String, // XXX
+    optional: true
+  }
+};
+
+// add any extra properties to postSchemaObject (provided by packages for example)
+addToPostSchema = typeof addToPostSchema === 'undefined' ? [] : addToPostSchema;
+_.each(addToPostSchema, function(item){
+  postSchemaObject[item.propertyName] = item.propertySchema;
+});
+
 Posts = new Meteor.Collection("posts", {
-  schema: new SimpleSchema({
-    _id: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-      optional: true
-    },
-    createdAt: {
-      type: Date,
-      optional: true
-    },
-    submitted: {
-      type: Date,
-      optional: true
-    },    
-    title: {
-      type: String,
-      label: "Title",
-    },
-    url: {
-      type: String,
-      label: "URL",
-      optional: true
-    },
-    body: {
-      type: String,
-      optional: true
-    },
-    author: {
-      type: String,
-      optional: true
-    },
-    comments: {
-      type: Number,
-      optional: true
-    },
-    baseScore: {
-      type: Number,
-      decimal: true,
-      optional: true
-    },
-    upvotes: {
-      type: Number,
-      optional: true
-    },
-    upvoters: {
-      type: [String], // XXX
-      optional: true
-    },
-    downvotes: {
-      type: Number,
-      optional: true
-    },
-    downvoters: {
-      type: [String], // XXX
-      optional: true
-    },
-    score: {
-      type: Number,
-      decimal: true,
-      optional: true
-    },
-    status: {
-      type: Number,
-      optional: true
-    },
-    sticky: {
-      type: Boolean,
-      optional: true
-    },
-    inactive: {
-      type: Boolean,
-      optional: true
-    },
-    categories: {
-      type: [String], // XXX
-      optional: true
-    },
-    userId: {
-      type: String, // XXX
-      optional: true
-    }
-  })
+  schema: new SimpleSchema(postSchemaObject)
 });
 
 STATUS_PENDING=1;
