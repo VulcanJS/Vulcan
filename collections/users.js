@@ -1,36 +1,36 @@
 var Schema = {};
 
 Schema.User = new SimpleSchema({
-    _id: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Id
-    },
-    username: {
-        type: String,
-        regEx: /^[a-z0-9A-Z_]{3,15}$/
-    },
-    emails: {
-        type: [Object]
-    },
-    "emails.$.address": {
-        type: String,
-        regEx: SimpleSchema.RegEx.Email
-    },
-    "emails.$.verified": {
-        type: Boolean
-    },
-    createdAt: {
-        type: Date
-    },
-    profile: {
-        type: Schema.UserProfile,
-        optional: true
-    },
-    services: {
-        type: Object,
-        optional: true,
-        blackbox: true
-    }
+  _id: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id
+  },
+  username: {
+    type: String,
+    regEx: /^[a-z0-9A-Z_]{3,15}$/
+  },
+  emails: {
+    type: [Object]
+  },
+  "emails.$.address": {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email
+  },
+  "emails.$.verified": {
+    type: Boolean
+  },
+  createdAt: {
+    type: Date
+  },
+  profile: {
+    type: Schema.UserProfile,
+    optional: true
+  },
+  services: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  }
 });
 
 // Meteor.users.attachSchema(Schema.User);
