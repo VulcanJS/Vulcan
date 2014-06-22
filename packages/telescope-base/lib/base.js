@@ -1,3 +1,4 @@
+// Initialize common arrays
 
 // array containing properties to be added to the post schema on startup.
 addToPostSchema = [];
