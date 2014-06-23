@@ -2,7 +2,7 @@ Package.describe("Telescope tags package");
 
 Package.on_use(function (api) {
 
-  api.use(['telescope-base', 'simple-schema'], ['client', 'server']);
+  api.use(['telescope-lib', 'telescope-base', 'simple-schema'], ['client', 'server']);
 
   api.use([
     'jquery',

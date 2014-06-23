@@ -2,7 +2,7 @@ Package.describe("Telescope search package");
 
 Package.on_use(function (api) {
 
-  api.use(['telescope-base', 'simple-schema'], ['client', 'server']);
+  api.use(['telescope-lib', 'telescope-base', 'simple-schema'], ['client', 'server']);
 
   api.use([
     'jquery',
@@ -26,5 +26,5 @@ Package.on_use(function (api) {
     'lib/server/publications.js'
     ], ['server']);
   
-  api.export(['adminNav']);
+  api.export(['adminNav', 'viewParameters']);
 });

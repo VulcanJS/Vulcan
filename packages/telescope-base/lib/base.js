@@ -14,3 +14,6 @@ preloadSubscriptions = [];
 
 // array containing nav items; initialize with views menu
 navItems = ['viewsMenu'];
+
+// array containing post list view parameters
+viewParameters = []
