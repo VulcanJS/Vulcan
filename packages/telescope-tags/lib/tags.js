@@ -1,6 +1,4 @@
-Categories = new Meteor.Collection('categories');
-
-CategorySchema = new SimpleSchema({
+categorySchema = new SimpleSchema({
  _id: {
     type: String,
     optional: true
@@ -17,12 +15,16 @@ CategorySchema = new SimpleSchema({
   },    
 });
 
+Categories = new Meteor.Collection("categories", {
+  schema: categorySchema
+});
+
 // push "categories" property to addToPostSchema, so that it's later added to postSchema
 addToPostSchema.push(
   {
     propertyName: 'categories',
     propertySchema: {
-      type: [CategorySchema],
+      type: [categorySchema],
       optional: true
     }
   }

@@ -81,7 +81,6 @@ postSchemaObject = {
 };
 
 // add any extra properties to postSchemaObject (provided by packages for example)
-addToPostSchema = typeof addToPostSchema === 'undefined' ? [] : addToPostSchema;
 _.each(addToPostSchema, function(item){
   postSchemaObject[item.propertyName] = item.propertySchema;
 });

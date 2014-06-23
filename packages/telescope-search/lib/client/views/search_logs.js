@@ -1,4 +1,4 @@
-Template.logs.helpers({
+Template.searchLogs.helpers({
   getTime: function () {
     return moment(this.timestamp).format("HH:mm:ss");
   },

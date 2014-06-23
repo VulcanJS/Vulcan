@@ -42,10 +42,6 @@ adminNav = adminNav.concat([
     label: 'Settings'
   },
   {
-    route: 'logs',
-    label: 'Search Logs'
-  },
-  {
     route: 'toolbox',
     label: 'Toolbox'
   }   
