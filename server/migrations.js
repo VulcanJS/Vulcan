@@ -167,7 +167,7 @@ var migrationsList = {
   },
   headlineToTitle: function () {
     var i = 0;
-    Posts.find({title: {$exists : false}).forEach(function (post) {
+    Posts.find({title: {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: "+post.headline+" "+post.title);
       Posts.update(post._id, { $rename: { 'headline': 'title'}}, {multi: true, validate: false});
@@ -187,7 +187,7 @@ var migrationsList = {
   },
   commentsPostToPostId: function () {
     var i = 0;
-    Comments.find({postId: {$exists : false}).forEach(function (comment) {
+    Comments.find({postId: {$exists : false}}).forEach(function (comment) {
       i++;
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $rename: { 'post': 'postId'}}, {multi: true, validate: false});
