@@ -19,6 +19,16 @@ Categories = new Meteor.Collection("categories", {
   schema: categorySchema
 });
 
+// category post list parameters
+viewParameters.category = function (terms, baseParameters) {
+  // always same as "top" view for now
+  var parameters = deepExtend(true, baseParameters, {options: {sort: {sticky: -1, score: -1}}});;
+
+  if(typeof terms.category !== 'undefined' && !!terms.category)
+    _.extend(parameters.find, {'categories.slug': terms.category});
+
+  return parameters;
+}
 
 // push "categoriesMenu" template to navItems
 navItems.push('categoriesMenu');

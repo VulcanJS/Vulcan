@@ -15,5 +15,36 @@ preloadSubscriptions = [];
 // array containing nav items; initialize with views menu
 navItems = ['viewsMenu'];
 
-// array containing post list view parameters
-viewParameters = []
+// object containing post list view parameters
+viewParameters = {}
+
+viewParameters.top = function (terms, baseParameters) {
+  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, score: -1}}});
+}
+
+viewParameters.new = function (terms, baseParameters) {
+  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, submitted: -1}}});
+}
+
+viewParameters.best = function (terms, baseParameters) {
+  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, baseScore: -1}}});
+}
+
+viewParameters.pending = function (terms, baseParameters) {
+  return deepExtend(true, baseParameters, {find: {status: 1}, options: {sort: {createdAt: -1}}});
+}
+
+viewParameters.digest = function (terms, baseParameters) {
+  var parameters = deepExtend(true, baseParameters, {
+    find: {
+      submitted: {
+        $gte: terms.after, 
+        $lt: terms.before
+      }
+    },
+    options: {
+      sort: {sticky: -1, baseScore: -1}
+    }
+  });
+  return parameters;
+}

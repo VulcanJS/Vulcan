@@ -30,21 +30,23 @@ isAdminById=function(userId){
 
 
 // search post list parameters
-viewParameters.push({
-  search: function (terms, baseParameters) {
-    // if query is empty, just return parameters that will result in an empty collection
-    if(typeof terms.query == 'undefined' || !!terms.query)
-      return {find:{_id: 0}}
+viewParameters.search = function (terms, baseParameters) {
+  // if query is empty, just return parameters that will result in an empty collection
+  if(typeof terms.query == 'undefined' || !terms.query)
+    return {find:{_id: 0}}
 
-    var parameters = deepExtend(true, baseParameters, {
-      find: {
-        $or: [
-          {title: {$regex: terms.query, $options: 'i'}},
-          {url: {$regex: terms.query, $options: 'i'}},
-          {body: {$regex: terms.query, $options: 'i'}}
-        ]
-      }
-    });
-    return parameters;
-  }
-});
+  // log current search in the db
+  if(Meteor.isServer)
+    logSearch(terms.query);
+
+  var parameters = deepExtend(true, baseParameters, {
+    find: {
+      $or: [
+        {title: {$regex: terms.query, $options: 'i'}},
+        {url: {$regex: terms.query, $options: 'i'}},
+        {body: {$regex: terms.query, $options: 'i'}}
+      ]
+    }
+  });
+  return parameters;
+}
