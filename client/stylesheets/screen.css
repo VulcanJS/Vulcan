@@ -829,17 +829,17 @@ body.pageslide-open {
     .nav > li.last {
       padding-right: 0; }
     /* line 140, ../sass/modules/_header.scss */
-    .nav > li > a {
+    .nav > li > a, .nav > li > div > a {
       color: white;
       font-size: 16px;
       line-height: 26px;
       height: 26px;
       font-weight: normal; }
       /* line 148, ../sass/modules/_header.scss */
-      .nav > li > a.intercom em:before {
+      .nav > li > a.intercom em:before, .nav > li > div > a.intercom em:before {
         content: '('; }
       /* line 151, ../sass/modules/_header.scss */
-      .nav > li > a.intercom em:after {
+      .nav > li > a.intercom em:after, .nav > li > div > a.intercom em:after {
         content: ')'; }
 
 /* line 158, ../sass/modules/_header.scss */

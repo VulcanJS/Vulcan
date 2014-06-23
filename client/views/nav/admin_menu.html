@@ -1,7 +1,7 @@
 <template name="adminMenu">
   {{#if isAdmin}}
-    <li class="dropdown">
-      <a class="admin" href="/">{{i18n "Administration"}}</a>
+    <div class="dropdown">
+      <a class="admin" href="/">{{i18n "Admin"}}</a>
       <div class="dropdown-menu">
         <ul role="menu" aria-labelledby="dLabel">
           {{#each menu}}
@@ -9,6 +9,6 @@
           {{/each}}
         </ul>
       </div>
-    </li>
+    </div>
   {{/if}}
 </template>

@@ -1,6 +1,6 @@
 <template name="categoriesMenu">
   {{#if hasCategories}}
-    <li class="dropdown">
+    <div class="dropdown">
       <a class="categories" href="/">{{i18n "Categories"}}</a>
       <div class="dropdown-menu">
         <ul role="menu" aria-labelledby="dLabel">
@@ -9,6 +9,6 @@
           {{/each}}
         </ul>
       </div>
-    </li>
+    </div>
   {{/if}}
 </template>

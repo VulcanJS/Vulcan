@@ -137,7 +137,7 @@
 		@include horizontal-list-item;
 		margin-right:10px;
 
-		>a{
+		>a, >div >a{
 			color:white;
 			font-size:16px;
 			line-height:26px;
