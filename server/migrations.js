@@ -16,12 +16,12 @@ var runMigration = function (migrationName) {
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//    Starting "+migrationName+" Migration    //-----------//");
     console.log("//----------------------------------------------------------------------//");
-    Migrations.insert({name: migrationName, startedAt: new Date(), finished: false});
+    Migrations.insert({name: migrationName, startedAt: new Date(), completed: false});
 
     // execute migration function
-    var itemsAffected = migrationsList[migrationName]();
+    var itemsAffected = migrationsList[migrationName]() || 0;
 
-    Migrations.update({name: migrationName}, {$set: {finishedAt: new Date(), finished: true, itemsAffected: itemsAffected}});
+    Migrations.update({name: migrationName}, {$set: {finishedAt: new Date(), completed: true, itemsAffected: itemsAffected}});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending "+migrationName+" Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
