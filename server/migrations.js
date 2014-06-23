@@ -4,7 +4,6 @@ Migrations = new Meteor.Collection('migrations');
 
 Meteor.startup(function () {
   allMigrations = Object.keys(migrationsList);
-  console.log(allMigrations)
   _.each(allMigrations, function(migrationName){
     runMigration(migrationName);
   });
@@ -20,9 +19,9 @@ var runMigration = function (migrationName) {
     Migrations.insert({name: migrationName, startedAt: new Date(), finished: false});
 
     // execute migration function
-    migrationsList[migrationName]();
+    var itemsAffected = migrationsList[migrationName]();
 
-    Migrations.update({name: migrationName}, {$set: {finishedAt: new Date(), finished: true}});
+    Migrations.update({name: migrationName}, {$set: {finishedAt: new Date(), finished: true, itemsAffected: itemsAffected}});
     console.log("//----------------------------------------------------------------------//");
     console.log("//------------//     Ending "+migrationName+" Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
@@ -31,26 +30,33 @@ var runMigration = function (migrationName) {
 
 var migrationsList = {
   updatePostStatus: function () {
+    var i = 0;
     Posts.find({status: {$exists : false}}).forEach(function (post) {
+      i++;
       Posts.update(post._id, {$set: {status: 2}});
       console.log("---------------------");
       console.log("Post: "+post.title);
       console.log("Updating status to approved");  
     });
+    return i;
   },
   updateCategories: function () {
-    Categories.find().forEach(function (category) {
-      if(typeof category.slug === "undefined"){
+    var i = 0;
+    Categories.find({slug: {$exists : false}}).forEach(function (category) {
+        i++;
         var slug = slugify(category.name);
         Categories.update(category._id, {$set: {slug: slug}});
         console.log("---------------------");
         console.log("Category: "+category.name);
         console.log("Updating category with new slug: "+slug);
-      }
+    
     });
+    return i;
   },
   updatePostCategories: function () {
+    var i = 0;
     Posts.find().forEach(function (post) {
+      i++;
       var oldCategories = post.categories;
       var newCategories = [];
       var category = {};
@@ -89,12 +95,15 @@ var migrationsList = {
       }
       // END CONSOLE LOGS
     });
+    return i;
   },
   updateUserProfiles: function () {
+    var i = 0;
     var allUsers = Meteor.users.find();
     console.log('> Found '+allUsers.count()+' users.\n');
 
     allUsers.forEach(function(user){
+      i++;
       console.log('> Updating user '+user._id+' ('+user.username+')');
 
       // update user slug
@@ -114,9 +123,12 @@ var migrationsList = {
       Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
 
     });
+    return i;
   },
   resetUpvotesDownvotes: function () {
+    var i = 0;
     Posts.find().forEach(function (post) {
+      i++;
       var upvotes = 0,
           downvotes = 0;
       console.log("Post: "+post.title);
@@ -130,10 +142,13 @@ var migrationsList = {
       }
       Posts.update(post._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
-    }); 
+    });
+    return i;
   },
   resetCommentsUpvotesDownvotes: function () {
+    var i = 0;
     Comments.find().forEach(function (comment) {
+      i++;
       var upvotes = 0,
           downvotes = 0;
       console.log("Comment: "+comment._id);
@@ -148,45 +163,65 @@ var migrationsList = {
       Comments.update(comment._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
     });
+    return i;
   },
   headlineToTitle: function () {
-    Posts.find().forEach(function (post) {
+    var i = 0;
+    Posts.find({title: {$exists : false}).forEach(function (post) {
+      i++;
       console.log("Post: "+post.headline+" "+post.title);
       Posts.update(post._id, { $rename: { 'headline': 'title'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
+    return i;
   },
   commentsSubmittedToCreatedAt: function () {
+    var i = 0;
     Comments.find().forEach(function (comment) {
+      i++;
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $rename: { 'submitted': 'createdAt'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
+    return i;
   },
   commentsPostToPostId: function () {
-    Comments.find().forEach(function (comment) {
+    var i = 0;
+    Comments.find({postId: {$exists : false}).forEach(function (comment) {
+      i++;
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $rename: { 'post': 'postId'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
+    return i;
   },
   createdAtSubmittedToDate: function () {
+    var i = 0;
     Posts.find().forEach(function (post) {
-      console.log("Posts: "+post.title);
-      var createdAt = new Date(post.createdAt);
-      var submitted = new Date(post.submitted);
-      console.log(createdAt)
-      Posts.update(post._id, { $set: { 'createdAt': createdAt, submitted: submitted}}, {multi: true, validate: false});
-      console.log("---------------------");
+      if(typeof post.submitted == "number" || typeof post.createdAt == "number"){
+        i++;
+        console.log("Posts: "+post.title);
+        var createdAt = new Date(post.createdAt);
+        var submitted = new Date(post.submitted);
+        console.log(createdAt)
+        Posts.update(post._id, { $set: { 'createdAt': createdAt, submitted: submitted}}, {multi: true, validate: false});
+        console.log("---------------------");
+      }
     });
+    return i;
   },
   commentsCreatedAtToDate: function () {
+    var i = 0;
     Comments.find().forEach(function (comment) {
-      console.log("Comment: "+comment._id);
-      var createdAt = new Date(comment.createdAt);
-      console.log(createdAt)
-      Comments.update(comment._id, { $set: { 'createdAt': createdAt}}, {multi: true, validate: false});
-      console.log("---------------------");
+      if(typeof comment.createdAt == "number"){
+        i++;
+        console.log("Comment: "+comment._id);
+        var createdAt = new Date(comment.createdAt);
+        console.log(createdAt)
+        Comments.update(comment._id, { $set: { 'createdAt': createdAt}}, {multi: true, validate: false});
+        console.log("---------------------");
+      }
     });
+    return i;
   }
 }
