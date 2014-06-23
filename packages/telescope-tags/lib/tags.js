@@ -19,6 +19,10 @@ Categories = new Meteor.Collection("categories", {
   schema: categorySchema
 });
 
+
+// push "categoriesMenu" template to navItems
+navItems.push('categoriesMenu');
+
 // push "categories" property to addToPostSchema, so that it's later added to postSchema
 addToPostSchema.push(
   {

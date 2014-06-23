@@ -19,6 +19,7 @@ Package.on_use(function (api) {
     'lib/client/views/search.js',
     'lib/client/views/search_logs.html',
     'lib/client/views/search_logs.js',
+    'lib/client/views/search_nav.html'
     ], ['client']);
 
   api.add_files([

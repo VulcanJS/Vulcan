@@ -9,6 +9,8 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
+navItems.push('adminMenu');
+
 viewNav = viewNav.concat([
   {
     route: 'posts_top',

@@ -1,4 +1,14 @@
 Template.nav.helpers({
+  navMenus: function () {
+    var navMenus = _.map(navItems, function(templateName){
+      return {template: Template[templateName]}
+    });
+    return navMenus;
+  },
+  includeTemplate: function (templateName) {
+    console.log(Template[templateName])
+    return Template[templateName];
+  },
   site_title: function(){
     return getSetting('title');
   },
@@ -25,21 +35,6 @@ Template.nav.helpers({
   },
   requirePostsApproval: function(){
     return getSetting('requirePostsApproval');
-  },
-  hasCategories: function(){
-    return typeof Categories !== 'undefined' && Categories.find().count();
-  },
-  categories: function(){
-    return Categories.find({}, {sort: {order: 1, name: 1}});
-  },
-  categoryLink: function () {
-    return getCategoryUrl(this.slug);
-  },
-  viewNav: function () {
-    return viewNav;
-  },
-  adminNav: function () {
-    return adminNav;
   }
 });
 

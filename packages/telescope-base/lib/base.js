@@ -11,3 +11,6 @@ adminNav = [];
 
 // array containing subscriptions to be preloaded
 preloadSubscriptions = [];
+
+// array containing nav items; initialize with views menu
+navItems = ['viewsMenu'];
