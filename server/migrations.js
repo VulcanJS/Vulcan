@@ -3,63 +3,53 @@
 Migrations = new Meteor.Collection('migrations');
 
 Meteor.startup(function () {
+  allMigrations = Object.keys(migrationsList);
+  console.log(allMigrations)
+  _.each(allMigrations, function(migrationName){
+    runMigration(migrationName);
+  });
+});
 
+// wrapper function for all migrations
+var runMigration = function (migrationName) {
+  // migration updatePostStatus: make sure posts have a status
+  if (!Migrations.findOne({name: migrationName})) {
+    console.log("//----------------------------------------------------------------------//");
+    console.log("//------------//    Starting "+migrationName+" Migration    //-----------//");
+    console.log("//----------------------------------------------------------------------//");
+    Migrations.insert({name: migrationName, startedAt: new Date(), finished: false});
 
- // migration updatePostStatus: make sure posts have a status
-  if (!Migrations.findOne({name: "updatePostStatus"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//    Starting updatePostStatus Migration    //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-    Posts.find({status: {$exists : false}}).forEach(function (post) {
-        Posts.update(post._id, {$set: {status: 2}});
+    // execute migration function
+    migrationsList[migrationName]();
 
-        // START CONSOLE LOGS
-        console.log("---------------------");
-        console.log("Post: "+post.title);
-        console.log("Updating status to approved");
-        // END CONSOLE LOGS
-      
-    });
-    Migrations.insert({name: "updatePostStatus", timestamp: new Date()});
+    Migrations.update({name: migrationName}, {$set: {finishedAt: new Date(), finished: true}});
     console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending updatePostStatus Migration     //-----------//");
+    console.log("//------------//     Ending "+migrationName+" Migration     //-----------//");
     console.log("//----------------------------------------------------------------------//");
   }
+}
 
-
-
-
- // migration updateCategories: make sure categories have slugs
-  if (!Migrations.findOne({name: "updateCategories"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//    Starting updateCategories Migration    //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+var migrationsList = {
+  updatePostStatus: function () {
+    Posts.find({status: {$exists : false}}).forEach(function (post) {
+      Posts.update(post._id, {$set: {status: 2}});
+      console.log("---------------------");
+      console.log("Post: "+post.title);
+      console.log("Updating status to approved");  
+    });
+  },
+  updateCategories: function () {
     Categories.find().forEach(function (category) {
       if(typeof category.slug === "undefined"){
         var slug = slugify(category.name);
         Categories.update(category._id, {$set: {slug: slug}});
-
-        // START CONSOLE LOGS
         console.log("---------------------");
         console.log("Category: "+category.name);
         console.log("Updating category with new slug: "+slug);
-        // END CONSOLE LOGS
       }
     });
-    Migrations.insert({name: "updateCategories", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending updateCategories Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-
-
-
-  // migration updateCategories: store full category object in post instead of just the name
-  if (!Migrations.findOne({name: "updatePostCategories"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting updatePostCategories Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  updatePostCategories: function () {
     Posts.find().forEach(function (post) {
       var oldCategories = post.categories;
       var newCategories = [];
@@ -98,20 +88,9 @@ Meteor.startup(function () {
         console.log("No updates");
       }
       // END CONSOLE LOGS
-
     });
-    Migrations.insert({name: "updatePostCategories", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending updateCategories Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration updateUserProfiles: update user profiles with slugs and a few other properties
-  if (!Migrations.findOne({name: "updateUserProfiles"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting updateUserProfiles Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-
+  },
+  updateUserProfiles: function () {
     var allUsers = Meteor.users.find();
     console.log('> Found '+allUsers.count()+' users.\n');
 
@@ -135,17 +114,8 @@ Meteor.startup(function () {
       Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
 
     });
-    Migrations.insert({name: "updateUserProfiles", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending updateUserProfiles Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration resetUpvotesDownvotes: reset upvotes and downvotes properties on each post
-  if (!Migrations.findOne({name: "resetUpvotesDownvotes"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting resetUpvotesDownvotes Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  resetUpvotesDownvotes: function () {
     Posts.find().forEach(function (post) {
       var upvotes = 0,
           downvotes = 0;
@@ -160,18 +130,9 @@ Meteor.startup(function () {
       }
       Posts.update(post._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
-    });
-    Migrations.insert({name: "resetUpvotesDownvotes", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending resetUpvotesDownvotes Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration resetUpvotesDownvotes: reset upvotes and downvotes properties on each comment
-  if (!Migrations.findOne({name: "resetCommentsUpvotesDownvotes"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting resetCommentsUpvotesDownvotes Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+    }); 
+  },
+  resetCommentsUpvotesDownvotes: function () {
     Comments.find().forEach(function (comment) {
       var upvotes = 0,
           downvotes = 0;
@@ -187,66 +148,29 @@ Meteor.startup(function () {
       Comments.update(comment._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
     });
-    Migrations.insert({name: "resetCommentsUpvotesDownvotes", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending resetCommentsUpvotesDownvotes Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration headlineToTitle: change "headline" property to "title"
-  if (!Migrations.findOne({name: "headlineToTitle"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting headlineToTitle Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  headlineToTitle: function () {
     Posts.find().forEach(function (post) {
       console.log("Post: "+post.headline+" "+post.title);
       Posts.update(post._id, { $rename: { 'headline': 'title'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "headlineToTitle", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending headlineToTitle Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration commentsSubmittedToCreatedAt: change "submitted" property to "createdAt"
-  if (!Migrations.findOne({name: "commentsSubmittedToCreatedAt"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting commentsSubmittedToCreatedAt Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  commentsSubmittedToCreatedAt: function () {
     Comments.find().forEach(function (comment) {
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $rename: { 'submitted': 'createdAt'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "commentsSubmittedToCreatedAt", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending commentsSubmittedToCreatedAt Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration commentsPostToPostId: change "post" property to "postId"
-  if (!Migrations.findOne({name: "commentsPostToPostId"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting commentsPostToPostId Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  commentsPostToPostId: function () {
     Comments.find().forEach(function (comment) {
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $rename: { 'post': 'postId'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "commentsPostToPostId", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending commentsPostToPostId Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration createdAtSubmittedToDate: change posts' createdAt and submitted properties 
-  // from unix timestamps to Date() objects
-  if (!Migrations.findOne({name: "createdAtSubmittedToDate"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting createdAtSubmittedToDate Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  createdAtSubmittedToDate: function () {
     Posts.find().forEach(function (post) {
       console.log("Posts: "+post.title);
       var createdAt = new Date(post.createdAt);
@@ -255,18 +179,8 @@ Meteor.startup(function () {
       Posts.update(post._id, { $set: { 'createdAt': createdAt, submitted: submitted}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "createdAtSubmittedToDate", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending createdAtSubmittedToDate Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
-  }
-
-  // migration commentsCreatedAtToDate: change comments' createdAt property
-  // from unix timestamps to Date() objects
-  if (!Migrations.findOne({name: "commentsCreatedAtToDate"})) {
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//  Starting commentsCreatedAtToDate Migration  //-----------//");
-    console.log("//----------------------------------------------------------------------//");
+  },
+  commentsCreatedAtToDate: function () {
     Comments.find().forEach(function (comment) {
       console.log("Comment: "+comment._id);
       var createdAt = new Date(comment.createdAt);
@@ -274,9 +188,5 @@ Meteor.startup(function () {
       Comments.update(comment._id, { $set: { 'createdAt': createdAt}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    Migrations.insert({name: "commentsCreatedAtToDate", timestamp: new Date()});
-    console.log("//----------------------------------------------------------------------//");
-    console.log("//------------//     Ending createdAtSubmittedToDate Migration     //-----------//");
-    console.log("//----------------------------------------------------------------------//");
   }
-});
+}
