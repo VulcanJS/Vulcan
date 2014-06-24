@@ -4,9 +4,9 @@
     <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>{{i18n "Menu"}}</span></a>
 
     <ul class="nav site-nav desktop">
-      {{#each navMenus}}
+      {{#each navItems}}
         <li>
-          {{> template}}
+          {{> UI.dynamic template=this}}
         </li>
       {{/each}}
     </ul>

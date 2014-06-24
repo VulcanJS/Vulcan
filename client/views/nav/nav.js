@@ -1,13 +1,6 @@
 Template.nav.helpers({
-  navMenus: function () {
-    var navMenus = _.map(navItems, function(templateName){
-      return {template: Template[templateName]}
-    });
-    return navMenus;
-  },
-  includeTemplate: function (templateName) {
-    console.log(Template[templateName])
-    return Template[templateName];
+  navItems: function () {
+    return navItems;
   },
   site_title: function(){
     return getSetting('title');
