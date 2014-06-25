@@ -70,7 +70,7 @@ Template.post_submit.events({
       properties.submitted = new Date(submitted);
     }
 
-    console.log(properties)
+    // console.log(properties)
 
     Meteor.call('post', properties, function(error, post) {
       if(error){

@@ -174,7 +174,7 @@ Meteor.methods({
       post.submitted  = submitted;
     }
 
-    console.log(post)
+    // console.log(post)
 
     postId = Posts.insert(post);
 

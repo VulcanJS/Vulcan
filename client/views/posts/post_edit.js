@@ -110,7 +110,7 @@ Template.post_edit.events({
       };
       properties = _.extend(properties, adminProperties);
     }
-    console.log(properties)
+    // console.log(properties)
 
     Posts.update(post._id,{
       $set: properties
