@@ -1,3 +1,11 @@
+## v0.8.2 “SchemaScope”
+
+* Improved migrations with timestamps and number of rows affected.
+* Created `telescope-lib` and `telescope-base` pacakge.
+* Pulled out search into its own `telescope-search` package.
+* Made menu and views modular. 
+* Using SimpleSchema and Collection2 for models.
+
 ## v0.8.1 “FlexScope”
 
 * Extracted part of the tags feature into its own package. 
