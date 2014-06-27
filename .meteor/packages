@@ -27,3 +27,5 @@ telescope-tags
 telescope-base
 telescope-search
 telescope-lib
+telescope-rss
+telescope-api

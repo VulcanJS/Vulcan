@@ -1,9 +1,6 @@
 serveAPI = function(limitSegment){
   var posts = [];
-  var limit = 100; // default limit: 100 posts
-  
-  if(typeof limitSegment !== 'undefined')
-    limit = limitSegment;
+  var limit = typeof limitSegment === 'undefined' ? 20 : limitSegment // default limit: 20 posts
 
   Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: limit}).forEach(function(post) {
     var url = (post.url ? post.url : getPostUrl(post._id));
