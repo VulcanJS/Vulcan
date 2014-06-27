@@ -1,5 +1,4 @@
 <template name="post_item">
-  {{# with post}}
   <div class="post post-{{rank}} {{#if sticky}}sticky{{/if}} {{inactiveClass}}" id="{{_id}}">
     <ul class="post-actions">
       <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">{{i18n 'Share'}}</span></a>
@@ -57,5 +56,4 @@
       <div class="post-message markdown">{{{body_formatted}}}</div>
     {{/if}}
   </div>
-  {{/with}}
 </template>

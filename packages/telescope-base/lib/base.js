@@ -12,6 +12,9 @@ adminNav = [];
 // array containing subscriptions to be preloaded
 preloadSubscriptions = [];
 
+// array containing post modules (not used yet)
+postModules = ['postRank', 'postVote', 'postInfo', 'postShare', 'postDiscuss'];
+
 // array containing nav items; initialize with views menu
 navItems = ['viewsMenu'];
 

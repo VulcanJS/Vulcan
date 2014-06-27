@@ -3,10 +3,6 @@ Template.post_item.created = function () {
 };
 
 Template.post_item.helpers({
-  post: function(){
-    // note: when the data context is set by the router, it will be "this.post". When set by a parent template it'll be "this"
-    return this.post || this;
-  },
   postLink: function(){
     return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
@@ -80,39 +76,6 @@ Template.post_item.helpers({
     return this.status == STATUS_APPROVED;
   }
 });
-
-var recalculatePosition = function ($object, pArray) {
-  // delta is the difference between the last two positions in the array
-  var delta = pArray[pArray.length-2] - pArray[pArray.length-1];
-
-  // if new position is different from previous position
-  if(delta != 0){
-    // send object back to previous position
-    $object.removeClass('animate').css("top", delta + "px");
-    // then wait a little and animate it to new one
-    setTimeout(function() { 
-      $object.addClass('animate').css("top", "0px")
-    }, 1);  
-  }
-}
-
-Template.post_item.rendered = function(){
-  // var instance = this,
-  //     $instance = $(instance.firstNode.nextSibling),
-  //     top = $instance.position().top;
-
-  // // if this is the first render, initialize array, else push current position
-  // if(typeof instance.pArray === 'undefined'){
-  //   instance.pArray = [top]
-  // }else{
-  //   instance.pArray.push(top);
-  // }
-
-  // // if this is *not* the first render, recalculate positions
-  // if(instance.pArray.length>1)
-  //   recalculatePosition($instance, instance.pArray);
-
-};
 
 Template.post_item.events({
   'click .upvote-link': function(e, instance){
