@@ -97,6 +97,7 @@ Template.post_submit.events({
 
     // Categories
 
+    properties.categories = [];
     $('input[name=category]:checked').each(function() {
       properties.categories.push(Categories.findOne($(this).val()));
      });

@@ -116,7 +116,6 @@ Meteor.methods({
         body = cleanUp(post.body),
         user = Meteor.user(),
         userId = user._id,
-        submitted = post.submitted || new Date(),
         timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
@@ -233,9 +232,12 @@ Meteor.methods({
     return post;
   },
   setPostedAt: function(post, customPostedAt){
+
     var postedAt = new Date(); // default to current date and time
+        
     if(isAdmin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
       var postedAt = customPostedAt;
+
     Posts.update(post._id, {$set: {postedAt: postedAt}});
   },
   post_edit: function(post){

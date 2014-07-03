@@ -136,27 +136,27 @@ Template.post_edit.events({
 
       if(adminProperties.status == STATUS_APPROVED){  
 
-    var setPostedAt = false;
-    var postedAt = new Date(); // default to current browser date and time
-    var postedAtDate = $('#postedAtDate').datepicker('getDate');
-    var postedAtTime = $('#postedAtTime').val();
+        var setPostedAt = false;
+        var postedAt = new Date(); // default to current browser date and time
+        var postedAtDate = $('#postedAtDate').datepicker('getDate');
+        var postedAtTime = $('#postedAtTime').val();
 
-    if($('#postedAtDate').exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
-      postedAt = postedAtDate;
-      setPostedAt = true;
-    }
+        if($('#postedAtDate').exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
+          postedAt = postedAtDate;
+          setPostedAt = true;
+        }
 
-    if($('#postedAtTime').exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
-      var hours = postedAtTime.split(':')[0];
-      var minutes = postedAtTime.split(':')[1];
-      postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
-      setPostedAt = true;
-    }
+        if($('#postedAtTime').exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
+          var hours = postedAtTime.split(':')[0];
+          var minutes = postedAtTime.split(':')[1];
+          postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
+          setPostedAt = true;
+        }
 
         if(setPostedAt){ // if either custom date or time has been set, pass result to method
-          Meteor.call('setPostedAt', post); // use a method to guarantee timestamp integrity
+          Meteor.call('setPostedAt', post, postedAt); // use a method to guarantee timestamp integrity
         }else{
-          Meteor.call('setPostedAt');
+          Meteor.call('setPostedAt', post);
         }
       }
     }
