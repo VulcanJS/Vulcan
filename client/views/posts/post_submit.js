@@ -20,6 +20,7 @@ Template.post_submit.helpers({
     }else{
       return 'hidden'
     }
+    // return (Session.get('currentPostStatus') || STATUS_APPROVED) == STATUS_APPROVED; // default to approved
   }
 });
 
@@ -68,16 +69,16 @@ Template.post_submit.events({
     var setPostedAt = false;
     var postedAt = new Date(); // default to current browser date and time
     var postedAtDate = $('#postedAtDate').datepicker('getDate');
-    var postedAtTime = $('#postedAtTime').val().split(':');
+    var postedAtTime = $('#postedAtTime').val();
 
-    if(postedAtDate != "Invalid Date"){ // if custom date is set, use it
+    if($('#postedAtDate').exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
       postedAt = postedAtDate;
       setPostedAt = true;
     }
 
-    if(postedAtTime.length==2){ // if custom time is set, use it
-      var hours = postedAtTime[0];
-      var minutes = postedAtTime[1];
+    if($('#postedAtTime').exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
+      var hours = postedAtTime.split(':')[0];
+      var minutes = postedAtTime.split(':')[1];
       postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
       setPostedAt = true;
     }
@@ -100,7 +101,7 @@ Template.post_submit.events({
       properties.categories.push(Categories.findOne($(this).val()));
      });
 
-    console.log(properties)
+    // console.log(properties)
 
     // ------------------------------ Insert ------------------------------ //
 

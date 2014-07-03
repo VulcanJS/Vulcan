@@ -196,7 +196,7 @@ Meteor.methods({
 
     // ------------------------------ Insert ------------------------------ //
 
-    console.log(post)
+    // console.log(post)
     post._id = Posts.insert(post);
 
     // ------------------------------ Post-Insert ------------------------------ //
@@ -239,7 +239,7 @@ Meteor.methods({
   approvePost: function(post){
     if(isAdmin(Meteor.user())){
       var now = new Date();
-      Posts.update(post._id, {$set: {status: 2, submitted: now}});
+      Posts.update(post._id, {$set: {status: 2, postedAt: now}});
     }else{
       throwError('You need to be an admin to do that.');
     }

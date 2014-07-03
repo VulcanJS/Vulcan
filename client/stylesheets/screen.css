@@ -1625,7 +1625,7 @@ table {
 /* line 1, ../sass/modules/_share.scss */
 .share-options {
   position: absolute;
-  left: -180px;
+  left: -200px;
   top: 5px;
   padding: 10px;
   line-height: 1; }

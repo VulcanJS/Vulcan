@@ -13,7 +13,7 @@ Template.post_edit.helpers({
     return Categories.find().count();
   },
   showPostedAt: function () {
-    if(Session.get('currentPostStatus') == STATUS_APPROVED){
+    if((Session.get('currentPostStatus') || this.status) == STATUS_APPROVED){
       return 'visible'
     }else{
       return 'hidden'
@@ -139,16 +139,16 @@ Template.post_edit.events({
     var setPostedAt = false;
     var postedAt = new Date(); // default to current browser date and time
     var postedAtDate = $('#postedAtDate').datepicker('getDate');
-    var postedAtTime = $('#postedAtTime').split(':').val();
+    var postedAtTime = $('#postedAtTime').val();
 
-    if(postedAtDate != "Invalid Date"){ // if custom date is set, use it
+    if($('#postedAtDate').exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
       postedAt = postedAtDate;
       setPostedAt = true;
     }
 
-    if(postedAtTime.length==2){ // if custom time is set, use it
-      var hours = postedAtTime[0];
-      var minutes = postedAtTime[1];
+    if($('#postedAtTime').exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
+      var hours = postedAtTime.split(':')[0];
+      var minutes = postedAtTime.split(':')[1];
       postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
       setPostedAt = true;
     }
