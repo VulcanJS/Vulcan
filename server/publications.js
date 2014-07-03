@@ -93,8 +93,9 @@ Meteor.publish('allUsers', function(filterBy, sortBy, limit) {
 // TODO: find a better way
 
 Meteor.publish('allUsersAdmin', function() {
+  var selector = getSetting('requirePostInvite') ? {isInvited: true} : {};
   if (isAdminById(this.userId)) {
-    return Meteor.users.find({isInvited: true});
+    return Meteor.users.find(selector);
   } else {
     return [];
   }

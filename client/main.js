@@ -56,9 +56,5 @@ Deps.autorun(function() {
   // userId() can be changed before user(), because loading profile takes time
   if(Meteor.userId()) {
     Meteor.subscribe('notifications');
-    if(isAdmin(Meteor.user())){
-      // Subscribe to all users for now to make user selection autocomplete work
-      Meteor.subscribe('allUsersAdmin');
-    }
   }
 });

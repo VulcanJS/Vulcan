@@ -11,9 +11,8 @@ Template.post_submit.helpers({
   userName: function(){
     return getDisplayName(this);
   },
-  isSelected: function(){
-    var post=Posts.findOne(Session.get('selectedPostId'));
-    return (post && this._id == post.userId) ? 'selected' : '';
+  isSelected: function(user){
+    return user._id == Meteor.userId() ? "selected" : "";
   }
 });
 

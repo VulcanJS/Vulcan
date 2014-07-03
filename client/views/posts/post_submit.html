@@ -41,7 +41,7 @@
           <div class="controls">
             <select id="postUser">
               {{#each users}}
-              <option {{isSelected}} value="{{_id}}">{{userName}}</option>
+                <option {{isSelected this}} value="{{_id}}">{{userName}}</option>
               {{/each}}
             </select>
           </div>
