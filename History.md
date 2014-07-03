@@ -1,3 +1,7 @@
+## v0.8.3 “CleanScope”
+
+* Refactored the way dating and timestamping works with pending/approved posts. 
+
 ## v0.8.2 “SchemaScope”
 
 * Improved migrations with timestamps and number of rows affected.

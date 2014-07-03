@@ -36,6 +36,10 @@ postSchemaObject = {
     type: Number,
     optional: true
   },
+  clicks: {
+    type: Number,
+    optional: true
+  },
   baseScore: {
     type: Number,
     decimal: true,
