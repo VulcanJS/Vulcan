@@ -5,12 +5,12 @@ Template.comment_list.created = function(){
 Template.comment_list.helpers({
   has_comments: function(){
     var post = this;
-    var comments = Comments.find({postId: post._id, parent: null}, {sort: {score: -1, submitted: -1}});
+    var comments = Comments.find({postId: post._id, parent: null}, {sort: {score: -1, postedAt: -1}});
     return comments.count() > 0;
   },
   child_comments: function(){
     var post = this;
-    var comments = Comments.find({postId: post._id, parent: null}, {sort: {score: -1, submitted: -1}});
+    var comments = Comments.find({postId: post._id, parent: null}, {sort: {score: -1, postedAt: -1}});
     return comments;
   }
 });

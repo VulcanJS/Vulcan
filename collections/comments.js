@@ -8,6 +8,10 @@ Comments = new Meteor.Collection("comments", {
       type: Date,
       optional: true
     },
+    postedAt: { // for now, comments are always created and posted at the same time
+      type: Date,
+      optional: true
+    },
     body: {
       type: String,
     },
@@ -107,6 +111,7 @@ Meteor.methods({
       body: cleanText,
       userId: user._id,
       createdAt: new Date(),
+      postedAt: new Date(),
       upvotes: 0,
       downvotes: 0,
       baseScore: 0,

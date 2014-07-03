@@ -11,7 +11,8 @@
       "autoform": {},
       "iron-router-progress": {},
       "jquery-hotkeys": {},
-      "marked": {}
+      "marked": {},
+      "bootstrap3-datepicker": {}
     },
     "packages": {
       "momentjs": {
@@ -63,6 +64,11 @@
         "git": "https://github.com/chuangbo/meteor-marked.git",
         "tag": "v0.3.2",
         "commit": "850f63135cdeb05344c420bd586fd8af9cab75df"
+      },
+      "bootstrap3-datepicker": {
+        "git": "https://github.com/rajit/bootstrap3-datepicker.git",
+        "tag": "v0.2.1",
+        "commit": "442484eb1c8eb00c6b9e0e9c88accc934cf8f04a"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

@@ -1,10 +1,3 @@
-// commentIsNew=function(comment){
-//   var d=new Date(comment.submitted);
-//   var commentIsNew=d > new Date(Session.get('requestTimestamp'));
-//   // console.log("------------\n body: "+comment.body+" \n comment submission date: "+d+" \n  requestTimestamp: "+new Date(Session.get('requestTimestamp'))+" \n now: "+new Date()+"\nisNew: "+commentIsNew);
-//   return commentIsNew;
-// };
-
 findQueueContainer=function($comment){
   // go up and down the DOM until we find either A) a queue container or B) an unqueued comment
   $up=$comment.prevAll(".queue-container, .comment-displayed").first();
@@ -152,7 +145,7 @@ Template.comment_item.events({
     var comment_id = Comments.update(current_comment_id,
         {
           $set: {
-            submitted:  new Date().getTime()
+            postedAt:  new Date().getTime()
           }
         }
       );

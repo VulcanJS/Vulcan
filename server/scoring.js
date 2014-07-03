@@ -8,7 +8,7 @@ Meteor.startup(function () {
       var updatedPosts = 0;
       var updatedComments = 0;
       // console.log('tick ('+scoreInterval+')');
-      Posts.find({'inactive': {$ne : true}}).forEach(function (post) {
+      Posts.find({'status': 2,'inactive': {$ne : true}}).forEach(function (post) { // only run scoring on approved posts
         updatedPosts += updateScore({collection: Posts, item: post});
       });
       Comments.find({'inactive': {$ne : true}}).forEach(function (comment) {

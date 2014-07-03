@@ -33,10 +33,6 @@
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label">{{i18n "Date"}}</label>
-          <div class="controls"><input id="submitted" type="text" value="{{submittedDate}}" /><input id="submitted_hidden" type="hidden" value="{{submitted}}" /></div>
-        </div>
-        <div class="control-group">
           <label class="control-label">{{i18n "User"}}</label>
           <div class="controls">
             <select id="postUser">
@@ -59,6 +55,17 @@
               <input id="status_rejected" type="radio" value="3" name="status"/> {{i18n "Rejected"}}
             </label>
           </div>
+        </div>
+        <div id="postedAt" class={{showPostedAt}}>
+          <div class="control-group">
+            <label class="control-label post-form-date">{{i18n "Posted Date"}}</label>
+            <div class="controls"><input id="postedAtDate" type="text" value="{{postedAtDate}}" /></div>
+          </div>
+          <div class="control-group">
+            <label class="control-label post-form-time">{{i18n "Posted Time"}}</label>
+            <div class="controls"><input id="postedAtTime" type="text" value="{{postedAtTime}}" /></div>
+          </div>
+          <p class="help-block">Leave blank to post at current time.</p>
         </div>
       {{/if}}
       <div class="form-actions">

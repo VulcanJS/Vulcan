@@ -145,3 +145,8 @@ input[type="submit"], button, .button, .btn{
 	font-size:14px;
 	@include box-shadow(0 1px 1px black(0.15));
 }
+
+.help-block{
+	color: $light-text;
+	margin-bottom:$grid-padding;
+}

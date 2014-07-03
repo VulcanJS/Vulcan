@@ -41,11 +41,11 @@ Template.post_item.helpers({
   },
   ago: function(){
     // if post is approved show submission time, else show creation time. 
-    time = this.status == STATUS_APPROVED ? this.submitted : this.createdAt;
+    time = this.status == STATUS_APPROVED ? this.postedAt : this.createdAt;
     return moment(time).fromNow();
   },
   timestamp: function(){
-    time = this.status == STATUS_APPROVED ? this.submitted : this.createdAt;
+    time = this.status == STATUS_APPROVED ? this.postedAt : this.createdAt;
     return moment(time).format("MMMM Do, h:mm:ss a");
   },
   voted: function(){

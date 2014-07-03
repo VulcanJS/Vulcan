@@ -12,8 +12,12 @@ Template.post_edit.helpers({
   categoriesEnabled: function(){
     return Categories.find().count();
   },
-  isApproved: function(){
-    return this.status == STATUS_APPROVED;
+  showPostedAt: function () {
+    if(Session.get('currentPostStatus') == STATUS_APPROVED){
+      return 'visible'
+    }else{
+      return 'hidden'
+    }
   },
   isSticky: function(){
     return this.sticky ? 'checked' : '';
@@ -21,11 +25,11 @@ Template.post_edit.helpers({
   isSelected: function(parentPost){
     return parentPost && this._id == parentPost.userId ? 'selected' : '';
   },
-  submittedDate: function(){
-    return moment(this.submitted).format("MM/DD/YYYY");
+  postedAtDate: function(){
+    return !!this.postedAt ? moment(this.postedAt).format("MM/DD/YYYY") : null;
   },
-  submittedTime: function(){
-    return moment(this.submitted).format("HH:mm");
+  postedAtTime: function(){
+    return !!this.postedAt ? moment(this.postedAt).format("HH:mm") : null;
   },
   users: function(){
     return Meteor.users.find({}, {sort: {'profile.name': 1}});
@@ -48,26 +52,28 @@ Template.post_edit.helpers({
 });
 
 Template.post_edit.rendered = function(){
+  Session.set('currentPostStatus', this.status);
+
   var post = this.data.post;
   if(post && !this.editor){
     this.editor= new EpicEditor(EpicEditorOptions).load();
     this.editor.importFile('editor', post.body);
 
-    $('#submitted_date').datepicker();
+    $('#postedAtDate').datepicker();
 
   }
+
 
   // $("#postUser").selectToAutocomplete(); // XXX
 
 }
 
 Template.post_edit.events({
+  'change input[name=status]': function (e, i) {
+    Session.set('currentPostStatus', e.currentTarget.value);
+  },
   'click input[type=submit]': function(e, instance){
     var post = this;
-    var categoriesArray = [];
-    var url = $('#url').val();
-    var shortUrl = $('#short-url').val();
-    var status = parseInt($('input[name=status]:checked').val());
 
     e.preventDefault();
     if(!Meteor.user()){
@@ -75,42 +81,88 @@ Template.post_edit.events({
       return false;
     }
 
+    // ------------------------------ Properties ------------------------------ //
+
+    // Basic Properties
+
+    var properties = {
+      title:         $('#title').val(),
+      body:          instance.editor.exportFile()
+    };
+
+    // Categories
+
+    var categoriesArray = [];
     $('input[name=category]:checked').each(function() {
       var categoryId = $(this).val();
       if(category = Categories.findOne(categoryId)){
         categoriesArray.push(category);
       }
     });
+    properties.categoriesArray = categoriesArray;
 
-    var properties = {
-      title:         $('#title').val(),
-      shortUrl:         shortUrl,
-      body:             instance.editor.exportFile(),
-      categories:       categoriesArray,
-    };
+    // URL
 
-
-    if(url){
+    var url = $('#url').val();
+    if(!!url){
       properties.url = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
     }
 
+    // ShortURL
+
+    var shortUrl = $('#short-url').val();
+    if(!!shortUrl)
+        properties.shortUrl = shortUrl;
+
+    // ------------------------------ Admin Properties ------------------------------ //
+
+
     if(isAdmin(Meteor.user())){
-      if(status == STATUS_APPROVED){
-        if(!post.submitted){
-          // this is the first time we are approving the post
-          properties.submitted = new Date();
-        }else if($('#submitted_date').exists()){
-          properties.submitted = moment($('#submitted_date').val()+$('#submitted_time').val(), "MM/DD/YYYY HH:mm").toDate();
-        }
-      }
+
+      // Basic Properties
+
       adminProperties = {
         sticky:     $('#sticky').is(':checked'),
         userId:     $('#postUser').val(),
-        status:     status,
       };
+
+      // Status
+
+      adminProperties.status = parseInt($('input[name=status]:checked').val());
+
       properties = _.extend(properties, adminProperties);
+
+      // PostedAt
+
+      if(adminProperties.status == STATUS_APPROVED){  
+
+    var setPostedAt = false;
+    var postedAt = new Date(); // default to current browser date and time
+    var postedAtDate = $('#postedAtDate').datepicker('getDate');
+    var postedAtTime = $('#postedAtTime').split(':').val();
+
+    if(postedAtDate != "Invalid Date"){ // if custom date is set, use it
+      postedAt = postedAtDate;
+      setPostedAt = true;
+    }
+
+    if(postedAtTime.length==2){ // if custom time is set, use it
+      var hours = postedAtTime[0];
+      var minutes = postedAtTime[1];
+      postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
+      setPostedAt = true;
+    }
+
+        if(setPostedAt){ // if either custom date or time has been set, pass result to method
+          Meteor.call('setPostedAt', post); // use a method to guarantee timestamp integrity
+        }else{
+          Meteor.call('setPostedAt');
+        }
+      }
     }
     // console.log(properties)
+
+    // ------------------------------ Update ------------------------------ //
 
     Posts.update(post._id,{
       $set: properties

@@ -49,24 +49,6 @@
               <input type="checkbox" name="sticky" id="sticky" {{isSticky}} />
             </div>
           </div>
-          {{#if isApproved}}
-          <div class="control-group">
-            <label class="control-label post-form-date">{{i18n "Submission Date"}}</label>
-            <div class="controls"><input id="submitted_date" type="text" value="{{submittedDate}}" /></div>
-            <input id="submitted_hidden" type="hidden" value="{{submitted}}" />
-          </div>
-          <div class="control-group">
-            <label class="control-label post-form-time">{{i18n "Submission Time"}}</label>
-            <div class="controls"><input id="submitted_time" type="text" value="{{submittedTime}}" /></div>
-          </div>
-          {{else}}
-          <div class="control-group">
-            <label class="control-label post-form-timestamp">{{i18n "Submission"}}</label>
-            <div class="controls">
-              <p>{{i18n "Note: this post is still pending so it has no submission timestamp yet."}}</p>
-            </div>  
-          </div>
-          {{/if}}
           <div class="control-group post-form-user">
             <label class="control-label">{{i18n "User"}}</label>
             <div class="controls">
@@ -89,6 +71,16 @@
               <label class="radio inline">  
                 <input id="status_rejected" type="radio" value="3" name="status" {{hasStatusRejected}} /> {{i18n "Rejected"}}
               </label>
+            </div>
+          </div>
+          <div id="postedAt" class={{showPostedAt}}>
+            <div class="control-group">
+              <label class="control-label post-form-date">{{i18n "Posted Date"}}</label>
+              <div class="controls"><input id="postedAtDate" type="text" value="{{postedAtDate}}" /></div>
+            </div>
+            <div class="control-group">
+              <label class="control-label post-form-time">{{i18n "Posted Time"}}</label>
+              <div class="controls"><input id="postedAtTime" type="text" value="{{postedAtTime}}" /></div>
             </div>
           </div>
         {{/if}}
