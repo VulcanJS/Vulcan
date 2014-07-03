@@ -1,6 +1,9 @@
 ## v0.8.3 “CleanScope”
 
 * Refactored the way dating and timestamping works with pending/approved posts. 
+* Cleaned up unused/old third-party code.
+* Migrated "submitted" property to "postedAt".
+* Added a "postedAt" property to comments.
 
 ## v0.8.2 “SchemaScope”
 
