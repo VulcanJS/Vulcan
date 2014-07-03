@@ -1,3 +1,5 @@
+// TODO: switch over to Tom's migration package.
+
 // database migrations
 // http://stackoverflow.com/questions/10365496/meteor-how-to-perform-database-migrations
 Migrations = new Meteor.Collection('migrations');

@@ -44,7 +44,7 @@ Template.post_submit.events({
     var url = $('#url').val();
     var body = instance.editor.exportFile();
     var categories=[];
-    var sticky=!!$('#sticky').attr('checked');
+    var sticky=!!$('#sticky:checked').length;
     var submitted = $('#submitted_hidden').val();
     var userId = $('#postUser').val();
     var status = parseInt($('input[name=status]:checked').val());
