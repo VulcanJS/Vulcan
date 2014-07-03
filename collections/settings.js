@@ -7,6 +7,10 @@ Settings = new Meteor.Collection("settings", {
       label: "Title",
       optional: true
     },
+    siteUrl: {
+      type: String,
+      optional: true
+    },
     tagline: {
       type: String,
       label: "Tagline",
