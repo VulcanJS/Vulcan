@@ -12,7 +12,7 @@
 			@include single-transition(ease-out, top, 400ms, 0ms);
 		}
 		&.inactive{
-			.post-content, .post-actions li a{
+			.post-content{
 				background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 			}
 		}
@@ -150,11 +150,11 @@
 .post-actions{
 	float:right;
 	padding:0;
-	li{
+	>li{
 		position:relative;
 		float:left;
 		margin-left:$grid-margin;
-		a{
+		>a{
 			@extend .grid-block;
 			background:$light-blue;
 			background:white;
@@ -233,54 +233,7 @@
 		display:none;
 	}
 }
-.share-options{
-	// height:$grid-unit;
-	position:absolute;
-	// width:200px;
-	left:-170px;
-	top:5px;
-	@extend .popover;
-	&.hidden{
-		display:block;
-		opacity:0;
-		pointer-events: none;
-		left:-160px;
-	}
-	&:after, &:before {
-		left: 100%;
-		border: solid transparent;
-		content: " ";
-		height: 0;
-		width: 0;
-		position: absolute;
-		pointer-events: none;
-	}
-	&:after {
-		border-color: rgba(255, 255, 255, 0);
-		border-left-color: #ffffff;
-		border-width: 10px;
-		top: 20px;
-		margin-top: -10px;
-	}
-	&:before {
-		border-color: rgba(0, 0, 0, 0);
-		border-left-color: $red;
-		border-width: 11px;
-		top: 20px;
-		margin-top: -11px;
-	}
-	.buttons{
-		@include cf;
-		padding:15px 5px 5px 15px;
-		.button{
-			float:left;
-			margin-right:10px;
-			background:transparent;
-			padding:0px;
-			height:100%;
-		}
-	}
-}
+
 .post.sticky{
 	.post-content, .post-actions li a{
 		background:$light-yellow;

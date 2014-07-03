@@ -105,6 +105,10 @@ Settings = new Meteor.Collection("settings", {
       type: String,
       optional: true
     },
+    twitterAccount: {
+      type: String,
+      optional: true
+    },
     googleAnalyticsId: {
       type: String,
       optional: true

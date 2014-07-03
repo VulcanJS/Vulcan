@@ -6,6 +6,9 @@ Template.post_item.helpers({
   postLink: function(){
     return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
+  sourceLink: function(){
+    return !!this.url ? this.url : "/posts/"+this._id;
+  },
   postTarget: function() {
     return !!this.url ? '_blank' : '';
   },
@@ -74,6 +77,9 @@ Template.post_item.helpers({
   },
   isApproved: function(){
     return this.status == STATUS_APPROVED;
+  },
+  viaTwitter: function () {
+    return !!getSetting('twitterAccount') ? 'via='+getSetting('twitterAccount') : '';
   }
 });
 
@@ -97,7 +103,6 @@ Template.post_item.events({
     $(".share-options").not($share).addClass("hidden");
     $this.toggleClass("active");
     $share.toggleClass("hidden");
-    $share.find('.share-replace').sharrre(SharrreOptions);
   },
   'click .approve-link': function(e, instance){
     Meteor.call('approvePost', this);

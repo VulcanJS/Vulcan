@@ -80,7 +80,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   transition: all, 300ms; }
 
 /* line 32, ../sass/partials/_mixins.scss */
-.grid-block, .post-content, .post-actions li a, .post-message, .comment-content, .comment-new, .error {
+.grid-block, .post-content, .post-actions > li > a, .post-message, .comment-content, .comment-new, .error {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -899,7 +899,7 @@ body.pageslide-open {
       -o-transition: ease-out top 400ms 0ms;
       transition: ease-out top 400ms 0ms; }
     /* line 15, ../sass/modules/_posts.scss */
-    .posts .post.inactive .post-content, .posts .post.inactive .post-actions li a {
+    .posts .post.inactive .post-content {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg=="); }
 
 /* line 21, ../sass/modules/_posts.scss */
@@ -1040,12 +1040,12 @@ body.pageslide-open {
   float: right;
   padding: 0; }
   /* line 153, ../sass/modules/_posts.scss */
-  .post-actions li {
+  .post-actions > li {
     position: relative;
     float: left;
     margin-left: 10px; }
     /* line 157, ../sass/modules/_posts.scss */
-    .post-actions li a {
+    .post-actions > li > a {
       background: #d8e9f5;
       background: white;
       position: relative;
@@ -1060,32 +1060,32 @@ body.pageslide-open {
       font-size: 36px;
       line-height: 50px; }
       /* line 172, ../sass/modules/_posts.scss */
-      .post-actions li a.edit-link {
+      .post-actions > li > a.edit-link {
         color: #f36c3d; }
       /* line 175, ../sass/modules/_posts.scss */
-      .post-actions li a.share-link {
+      .post-actions > li > a.share-link {
         color: #7ac0e4;
         color: #f8e121; }
       /* line 179, ../sass/modules/_posts.scss */
-      .post-actions li a.discuss-link {
+      .post-actions > li > a.discuss-link {
         color: #a3d06d; }
       /* line 182, ../sass/modules/_posts.scss */
-      .post-actions li a.more-link {
+      .post-actions > li > a.more-link {
         color: #7ac0e4; }
       /* line 185, ../sass/modules/_posts.scss */
-      .post-actions li a:hover {
+      .post-actions > li > a:hover {
         background: #4e555d url("/img/bg-header.png") top center;
         color: white; }
       /* line 189, ../sass/modules/_posts.scss */
-      .post-actions li a.voted {
+      .post-actions > li > a.voted {
         background: #4e555d;
         color: white;
         cursor: default; }
         /* line 193, ../sass/modules/_posts.scss */
-        .post-actions li a.voted .action {
+        .post-actions > li > a.voted .action {
           color: #fff; }
       /* line 197, ../sass/modules/_posts.scss */
-      .post-actions li a .count {
+      .post-actions > li > a .count {
         position: absolute;
         top: 12px;
         display: block;
@@ -1094,12 +1094,12 @@ body.pageslide-open {
         line-height: 20px;
         font-size: 11px; }
       /* line 206, ../sass/modules/_posts.scss */
-      .post-actions li a .points {
+      .post-actions > li > a .points {
         display: block;
         font-size: 30px;
         line-height: 50px; }
       /* line 211, ../sass/modules/_posts.scss */
-      .post-actions li a .action {
+      .post-actions > li > a .action {
         display: block;
         height: 20px;
         width: 100%;
@@ -1120,73 +1120,18 @@ body.pageslide-open {
   .list .post-message {
     display: none; }
 
-/* line 236, ../sass/modules/_posts.scss */
-.share-options {
-  position: absolute;
-  left: -170px;
-  top: 5px; }
-  /* line 243, ../sass/modules/_posts.scss */
-  .share-options.hidden {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-    left: -160px; }
-  /* line 249, ../sass/modules/_posts.scss */
-  .share-options:after, .share-options:before {
-    left: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none; }
-  /* line 258, ../sass/modules/_posts.scss */
-  .share-options:after {
-    border-color: rgba(255, 255, 255, 0);
-    border-left-color: #ffffff;
-    border-width: 10px;
-    top: 20px;
-    margin-top: -10px; }
-  /* line 265, ../sass/modules/_posts.scss */
-  .share-options:before {
-    border-color: rgba(0, 0, 0, 0);
-    border-left-color: #f36c3d;
-    border-width: 11px;
-    top: 20px;
-    margin-top: -11px; }
-  /* line 272, ../sass/modules/_posts.scss */
-  .share-options .buttons {
-    /* For modern browsers */
-    /* For IE 6/7 (trigger hasLayout) */
-    *zoom: 1;
-    padding: 15px 5px 5px 15px; }
-    /* line 3, ../sass/partials/_mixins.scss */
-    .share-options .buttons:before, .share-options .buttons:after {
-      content: "";
-      display: table; }
-    /* line 7, ../sass/partials/_mixins.scss */
-    .share-options .buttons:after {
-      clear: both; }
-    /* line 275, ../sass/modules/_posts.scss */
-    .share-options .buttons .button, .share-options .buttons .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .share-options .buttons #login-buttons-password {
-      float: left;
-      margin-right: 10px;
-      background: transparent;
-      padding: 0px;
-      height: 100%; }
-
-/* line 285, ../sass/modules/_posts.scss */
+/* line 238, ../sass/modules/_posts.scss */
 .post.sticky .post-content, .post.sticky .post-actions li a {
   background: #fffce0; }
-/* line 288, ../sass/modules/_posts.scss */
+/* line 241, ../sass/modules/_posts.scss */
 .post.sticky .post-actions li a:hover {
   background: #4e555d url("/img/bg-header.png") top center; }
 
-/* line 292, ../sass/modules/_posts.scss */
+/* line 245, ../sass/modules/_posts.scss */
 .more-button {
   position: relative;
   padding-bottom: 10px; }
-  /* line 295, ../sass/modules/_posts.scss */
+  /* line 248, ../sass/modules/_posts.scss */
   .more-button a {
     width: 100%;
     display: block;
@@ -1839,6 +1784,124 @@ table {
     -webkit-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
     box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15); }
+
+/* line 1, ../sass/modules/_share.scss */
+.share-options {
+  position: absolute;
+  left: -180px;
+  top: 5px;
+  padding: 10px;
+  line-height: 1; }
+  /* line 9, ../sass/modules/_share.scss */
+  .share-options a {
+    display: inline-block;
+    line-height: 1; }
+  /* line 14, ../sass/modules/_share.scss */
+  .share-options.hidden {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    left: -160px; }
+  /* line 20, ../sass/modules/_share.scss */
+  .share-options:after, .share-options:before {
+    left: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none; }
+  /* line 29, ../sass/modules/_share.scss */
+  .share-options:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-left-color: #ffffff;
+    border-width: 10px;
+    top: 20px;
+    margin-top: -3px; }
+  /* line 36, ../sass/modules/_share.scss */
+  .share-options:before {
+    border-color: rgba(0, 0, 0, 0);
+    border-left-color: #f36c3d;
+    border-width: 11px;
+    top: 20px;
+    margin-top: -4px; }
+  /* line 43, ../sass/modules/_share.scss */
+  .share-options .buttons {
+    /* For modern browsers */
+    /* For IE 6/7 (trigger hasLayout) */
+    *zoom: 1;
+    padding: 15px 5px 5px 15px; }
+    /* line 3, ../sass/partials/_mixins.scss */
+    .share-options .buttons:before, .share-options .buttons:after {
+      content: "";
+      display: table; }
+    /* line 7, ../sass/partials/_mixins.scss */
+    .share-options .buttons:after {
+      clear: both; }
+    /* line 46, ../sass/modules/_share.scss */
+    .share-options .buttons .button, .share-options .buttons .auth-buttons #login-buttons #login-buttons-password, .auth-buttons #login-buttons .share-options .buttons #login-buttons-password {
+      float: left;
+      margin-right: 10px;
+      background: transparent;
+      padding: 0px;
+      height: 100%; }
+
+/* line 56, ../sass/modules/_share.scss */
+a.mt-share-inline-square-sm img {
+  width: 34px;
+  height: auto;
+  border: 0px; }
+
+/* line 61, ../sass/modules/_share.scss */
+a.mt-share-inline-square-sm {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  margin-right: 4px; }
+
+/* line 71, ../sass/modules/_share.scss */
+.mt-google:hover {
+  background-color: #e15f4f; }
+
+/* line 74, ../sass/modules/_share.scss */
+.mt-google {
+  background-color: #dd4b39; }
+
+/* line 77, ../sass/modules/_share.scss */
+.mt-linkedin:hover {
+  background-color: #1087c0; }
+
+/* line 80, ../sass/modules/_share.scss */
+.mt-linkedin {
+  background-color: #0e76a8; }
+
+/* line 83, ../sass/modules/_share.scss */
+.mt-twitter:hover {
+  background-color: #08bbff; }
+
+/* line 86, ../sass/modules/_share.scss */
+.mt-twitter {
+  background-color: #00acee; }
+
+/* line 89, ../sass/modules/_share.scss */
+.mt-facebook:hover {
+  background-color: #4264aa; }
+
+/* line 92, ../sass/modules/_share.scss */
+.mt-facebook {
+  background-color: #3b5998; }
+
+/* line 95, ../sass/modules/_share.scss */
+.mt-pinterest:hover {
+  background-color: #dd2a30; }
+
+/* line 98, ../sass/modules/_share.scss */
+.mt-pinterest {
+  background-color: #cc2127; }
 
 /* line 1, ../sass/partials/_mobile.scss */
 .mobile {
