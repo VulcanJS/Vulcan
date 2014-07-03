@@ -7,12 +7,12 @@ serveRSS = function() {
     image_url: Meteor.absoluteUrl()+'img/favicon.png',
   });
   
-  Posts.find({status: STATUS_APPROVED}, {sort: {submitted: -1}, limit: 20}).forEach(function(post) {
+  Posts.find({status: STATUS_APPROVED}, {sort: {postedAt: -1}, limit: 20}).forEach(function(post) {
     feed.item({
      title: post.title,
      description: post.body+'</br></br> <a href="'+getPostUrl(post._id)+'">Comments</a>',
      author: post.author,
-     date: post.submitted,
+     date: post.postedAt,
      url: (post.url ? getOutgoingUrl(post.url) : getPostUrl(post._id)),
      guid: post._id
     });

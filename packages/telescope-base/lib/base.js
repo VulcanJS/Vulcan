@@ -26,7 +26,7 @@ viewParameters.top = function (terms, baseParameters) {
 }
 
 viewParameters.new = function (terms, baseParameters) {
-  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, submitted: -1}}});
+  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, postedAt: -1}}});
 }
 
 viewParameters.best = function (terms, baseParameters) {
@@ -40,7 +40,7 @@ viewParameters.pending = function (terms, baseParameters) {
 viewParameters.digest = function (terms, baseParameters) {
   var parameters = deepExtend(true, baseParameters, {
     find: {
-      submitted: {
+      postedAt: {
         $gte: terms.after, 
         $lt: terms.before
       }
