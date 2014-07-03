@@ -9,7 +9,8 @@
       "fast-render": {},
       "spin": {},
       "autoform": {},
-      "iron-router-progress": {}
+      "iron-router-progress": {},
+      "jquery-hotkeys": {}
     },
     "packages": {
       "momentjs": {
@@ -34,8 +35,8 @@
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.2.5",
-        "commit": "93e2fb334e55fbe9b5ebb2a2e65964018658f43e"
+        "tag": "v0.2.8",
+        "commit": "149984b1aff3a5642a270aff9bd9006872c8302e"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
@@ -44,13 +45,18 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.8.1",
-        "commit": "385051a5e4bbea3b2a54965800f5f530987ef432"
+        "tag": "v0.13.5",
+        "commit": "27dd5b912eeba687b228a6a7c2c14eef63b12cca"
       },
       "iron-router-progress": {
         "git": "https://github.com/Multiply/iron-router-progress.git",
-        "tag": "v0.3.1",
-        "commit": "3f7900feb4bb70a1289b39a1fdcd1f438c0335b3"
+        "tag": "v0.4.1",
+        "commit": "496fcda9a6ec352b4733725f60c6f280250c3541"
+      },
+      "jquery-hotkeys": {
+        "git": "https://github.com/terryschen/meteor-jquery-hotkeys.git",
+        "tag": "v0.0.1",
+        "commit": "a4035db5f3ea7cc72905d8d57741a847a1e8794e"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -59,13 +65,13 @@
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.5.0",
-        "commit": "c90127c383ad829747502bf7f6dfb6aabae094b8"
+        "tag": "v0.5.1",
+        "commit": "a29956b34d03a4591dbd0eaed9d37009ef48b8db"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.11",
-        "commit": "7e970671305657678e8508d8107d5e6c5e158559"
+        "tag": "v0.4.2",
+        "commit": "4ff4b707bec8be434919730bf101325adb215444"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

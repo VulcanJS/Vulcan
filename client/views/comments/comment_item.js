@@ -101,8 +101,7 @@ Template.comment_item.rendered=function(){
 
 Template.comment_item.helpers({
   full_date: function(){
-    var submitted = new Date(this.submitted);
-    return submitted.toString();
+    return this.createdAt.toString();
   },
   child_comments: function(){
     // return only child comments

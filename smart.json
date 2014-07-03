@@ -8,6 +8,7 @@
     "fast-render": {},
     "spin": {},
     "autoform": {},
-    "iron-router-progress": {}
+    "iron-router-progress": {},
+    "jquery-hotkeys": {}
   }
 }
