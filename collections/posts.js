@@ -117,7 +117,6 @@ Meteor.methods({
         user = Meteor.user(),
         userId = user._id,
         submitted = post.submitted || new Date(),
-        postWithSameLink = Posts.findOne({url: post.url}), // TODO: limit scope of search to past month or something
         timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
@@ -135,10 +134,16 @@ Meteor.methods({
     if(!post.title)
       throw new Meteor.Error(602, i18n.t('Please fill in a title'));
 
-    // check that there are no previous posts with the same link
-    if(post.url && (typeof postWithSameLink !== 'undefined')){
-      Meteor.call('upvotePost', postWithSameLink);
-      throw new Meteor.Error(603, i18n.t('This link has already been posted'), postWithSameLink._id);
+
+    if(!!post.url){
+      // check that there are no previous posts with the same link in the past 6 months
+      var sixMonthsAgo = moment().subtract('months', 6).toDate();
+      var postWithSameLink = Posts.findOne({url: post.url, postedAt: {$gte: sixMonthsAgo}});
+
+      if(typeof postWithSameLink !== 'undefined'){
+        Meteor.call('upvotePost', postWithSameLink);
+        throw new Meteor.Error(603, i18n.t('This link has already been posted'), postWithSameLink._id);
+      }
     }
 
     if(!isAdmin(Meteor.user())){
