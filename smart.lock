@@ -10,7 +10,8 @@
       "spin": {},
       "autoform": {},
       "iron-router-progress": {},
-      "jquery-hotkeys": {}
+      "jquery-hotkeys": {},
+      "marked": {}
     },
     "packages": {
       "momentjs": {
@@ -57,6 +58,11 @@
         "git": "https://github.com/terryschen/meteor-jquery-hotkeys.git",
         "tag": "v0.0.1",
         "commit": "a4035db5f3ea7cc72905d8d57741a847a1e8794e"
+      },
+      "marked": {
+        "git": "https://github.com/chuangbo/meteor-marked.git",
+        "tag": "v0.3.2",
+        "commit": "850f63135cdeb05344c420bd586fd8af9cab75df"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

@@ -9,6 +9,7 @@
     "spin": {},
     "autoform": {},
     "iron-router-progress": {},
-    "jquery-hotkeys": {}
+    "jquery-hotkeys": {},
+    "marked": {}
   }
 }

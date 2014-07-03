@@ -123,13 +123,6 @@ Template.comment_item.helpers({
     else
       return false;
   },
-  body_formatted: function(){
-    if(this.body){
-      var converter = new Markdown.Converter();
-      var html_body=converter.makeHtml(this.body);
-      return html_body.autoLink();
-    }
-  },
   showChildComments: function(){
     // TODO: fix this
     // return Session.get('showChildComments');

@@ -1,11 +1,3 @@
-Template.post_page.helpers({
-  body_formatted: function(){
-    var converter = new Markdown.Converter();
-    var html_body=converter.makeHtml(this.body);
-    return html_body.autoLink();
-  }
-}); 
-
 Template.post_page.rendered = function(){
   if((scrollToCommentId=Session.get('scrollToCommentId')) && !this.rendered && $('#'+scrollToCommentId).exists()){
     scrollPageTo('#'+scrollToCommentId);

@@ -55,7 +55,7 @@
       </div>
     </div>
     {{#if body}}
-      <div class="post-message markdown">{{{body_formatted}}}</div>
+      <div class="post-message markdown">{{#markdown}}{{body}}{{/markdown}}</div>
     {{/if}}
   </div>
 </template>
