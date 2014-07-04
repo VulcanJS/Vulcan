@@ -4,31 +4,106 @@
 }
 .posts{
 	position:relative;
-	.post{
-		position:relative;
-		width:100%;
-		@include cf;
-		&.animate{
-			@include single-transition(ease-out, top, 400ms, 0ms);
+	@include box-shadow(0 1px 1px black(0.15));
+	border-radius: 3px;
+}
+.post{
+	position:relative;
+	width:100%;
+	@include cf;
+	background: white;
+	border-bottom:1px solid $lightest-grey;
+	&:first-child{
+		border-radius: 3px 3px 0px 0px;
+	}
+	&:last-child{
+		border: none;
+	}
+	&.animate{
+		@include single-transition(ease-out, top, 400ms, 0ms);
+	}
+	&.inactive{
+		.post-content{
+			background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 		}
-		&.inactive{
-			.post-content{
-				background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
+	}
+	.single-post &{
+		margin-bottom: 10px;
+		border-radius: 3px;
+		@include box-shadow(0 1px 1px black(0.15));
+	}
+}
+.inner-table{
+	display: table;
+	height: 100%;
+}
+.inner-table-cell{
+	display: table-cell;
+	vertical-align:middle;	
+}
+.post-upvote{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	height:100%;
+	padding: 0 5px;
+	.upvote-link{
+		width: 24px;
+		height: 24px;
+		padding: 6px;
+		display: block;
+		text-align: center;
+		i{
+			display: block;
+			border-radius: 50%;
+			border: 1px solid rgba($red, 0.3);
+			font-size:10px;
+			height:100%;
+			width:100%;
+			text-align:center;
+			// line-height:$grid-unit;
+			color:rgba($red, 0.8);
+			text-shadow:0px 1px 0px white;
+			line-height: 2.2;
+			&.icon-check{
+				display:none;
+			}
+		}
+		span{
+			display:none;
+		}
+		&.not-voted:hover{
+			i{
+				background: rgba($red, 0.1);
+				color:$red;
+				text-shadow:none;
+			}
+		}
+		&.voted{
+			cursor:default;
+			i.icon-up{
+				display:none;
+			}
+			i.icon-check{
+				border: 1px solid rgba($blue, 0.6);
+				display: block;
+				color:rgba($blue, 0.8);
+				opacity: 0.5;
 			}
 		}
 	}
 }
+.post-info{
+	padding:$grid-padding - 2px 0;
+	margin-left:50px;
+}
 .post-content{
 	position:relative;
-	@extend .grid-block;
 	padding:0;
 	min-height:$grid-unit - 30px;
 	// margin-right:240px;
 	margin-right:160px;
-	.post-info{
-		padding:$grid-padding - 2px $grid-padding;
-		margin-left:30px;
-	}
+
 	.post-rank{
 		position:absolute;
 		top:0px;
@@ -42,58 +117,7 @@
 		// font-weight:bold;
 		color:black(0.1);
 	}
-	.post-upvote{
-		position:absolute;
-		top:0px;
-		bottom:0px;
-		.upvote-link{
-			height:100%;
-			display:table;
-			float:left;
-			width:30px;
-			// @include background(linear-gradient(#f3f6f8, #dfe3e5));
-			@include border-radius(3px 0 0 3px);
-			// background:$light-blue;
-			// @include box-shadow(inset 0 1px 0 white, inset -1px 0 1px black(0.1));
-			border-right:1px solid $lightest-grey;
-			i{
-				font-size:12px;
-				display:table-cell;
-				height:100%;
-				width:100%;
-				text-align:center;
-				// line-height:$grid-unit;
-				vertical-align:middle;
-				color:$light-blue2;
-				color:$red;
-				text-shadow:0px 1px 0px white;
-				&.icon-check{
-					display:none;
-				}
-			}
-			span{
-				display:none;
-			}
-			&.not-voted:hover{
-				@include box-shadow(none);
-				background:$highlight-color url("/img/bg-header.png") top center;
-				i{
-					color:white;
-					text-shadow:none;
-				}
-			}
-			&.voted{
-				cursor:default;
-				i.icon-up{
-					display:none;
-				}
-				i.icon-check{
-					color:$blue;
-					display:table-cell;
-				}
-			}
-		}
-	}
+
 	.post-sticky{
 		display:block;
 		position:absolute;
@@ -107,45 +131,47 @@
 			display:none;
 		}
 	}
-	.post-heading{
-		margin-bottom:0px;
-		.post-title{
-			font-size:20px;
-			color:$text;
-			font-weight:normal;
-			line-height:1;
-			&:visited{
-				color:$grey;
-			}
-			&:hover{
-				color:$red;
-			}	
+	
+
+}
+.post-heading{
+	margin-bottom:3px;
+	.post-title{
+		font-size:18px;
+		color:$text;
+		font-weight:normal;
+		line-height:1;
+		&:visited{
+			color:$grey;
 		}
-		.post-domain{
-			color:$light-text;
-			font-size:14px;
-			font-weight:normal;
-		}
-		.post-category{
-			display:inline-block;
-			font-size:11px;
-			@include border-radius(3px);
-			background:#eee;
-			padding:0px 6px;
-			text-transform:uppercase;
-			font-weight:normal;
-			vertical-align:middle;
-			&:hover{
-				background:$red;
-				color:white;
-			}
-		}
+		&:hover{
+			color:$red;
+		}	
 	}
-	.post-meta{
-		font-size:13px;
+	.post-domain{
 		color:$light-text;
-		line-height:1.5;
+		font-size:14px;
+		font-weight:normal;
 	}
+	.post-category{
+		display:inline-block;
+		font-size:11px;
+		@include border-radius(3px);
+		background:#eee;
+		padding:0px 6px;
+		text-transform:uppercase;
+		font-weight:normal;
+		vertical-align:middle;
+		&:hover{
+			background:$red;
+			color:white;
+		}
+	}
+}
+.post-meta{
+	font-size:12px;
+	color:$light-text;
+	line-height:1.5;
 }
 .post-actions{
 	float:right;
@@ -155,9 +181,6 @@
 		float:left;
 		margin-left:$grid-margin;
 		>a{
-			@extend .grid-block;
-			background:$light-blue;
-			background:white;
 			position:relative;
 			display:block;
 			padding:0;
@@ -183,8 +206,9 @@
 				color:$blue;
 			}
 			&:hover{
-				background:$highlight-color url("/img/bg-header.png") top center;
-				color:white;
+				&, .action{
+					color:$red;
+				}
 			}
 			&.voted{
 				background:$highlight-color;
@@ -225,26 +249,18 @@
 	}
 }
 .post-message{
-	@extend .grid-block;
 	padding:20px;
-	margin-bottom:$grid-margin;
 	font-size:18px;
+	border-top: 1px solid $lightest-grey;
 	.list &{
 		display:none;
 	}
 }
 
 .post.sticky{
-	.post-content, .post-actions li a{
-		background:$light-yellow;
-	}
-	.post-actions li a:hover{
-		background:$highlight-color url("/img/bg-header.png") top center;
-	}	
+	background:$light-yellow;
 }
 .more-button{
-	position:relative;
-	padding-bottom:10px;
 	a{
 		width:100%;
 		display:block;
@@ -253,7 +269,10 @@
 		text-align:center;
 		color:white;
 		line-height:$grid-unit;
-		font-size:24px;
-		@include border-radius(3px);
+		font-size:16px;
+		border-radius: 0px 0px 3px 3px;
+		&:hover{
+			background: black(0.15);
+		}
 	}
 }

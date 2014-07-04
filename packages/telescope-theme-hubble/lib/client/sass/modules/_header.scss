@@ -14,8 +14,7 @@
 	height:$grid-unit;
 	position:relative;
 	@include cf;
-	@include border-radius(0 0 3px 3px);
-	@include box-shadow(0 1px 1px black(1));
+	border-radius: 0 0 3px 3px;
 	.site-nav{
 		float:left;
 		margin-left:20px;

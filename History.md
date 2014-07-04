@@ -1,3 +1,7 @@
+## v0.8.4
+
+* Themes now have their own package.
+
 ## v0.8.3 “CleanScope”
 
 * Refactored the way dating and timestamping works with pending/approved posts. 

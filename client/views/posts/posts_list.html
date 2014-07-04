@@ -3,10 +3,10 @@
 		{{#each posts}}
 			{{> post_item}}
 		{{/each}}
-	</div>
-  {{#if hasMorePosts}}
-  	<div class="grid more-button">
-  		<a class="more-link" href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
-  	</div>
-  {{/if}}
+    {{#if hasMorePosts}}
+      <div class="more-button">
+        <a class="more-link" href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
+      </div>
+    {{/if}}
+  </div>
 </template>

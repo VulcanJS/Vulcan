@@ -21,11 +21,15 @@
     <div class="post-content">
       {{#if oneBasedRank}}<span class="post-rank">{{oneBasedRank}}</span>{{/if}}
       <div class="post-upvote">
-        {{#if voted}}
-          <span class="upvote-link voted"><i class="icon-check"></i><span>{{i18n "Upvote"}}</span></span>
-        {{else}}
-          <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>{{i18n "Upvote"}}</span></a>
-        {{/if}}
+        <div class="inner-table">
+          <div class="inner-table-cell">
+            {{#if voted}}
+              <span class="upvote-link voted"><i class="icon-check"></i><span>{{i18n "Upvote"}}</span></span>
+            {{else}}
+              <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>{{i18n "Upvote"}}</span></a>
+            {{/if}}
+          </div>
+        </div>
       </div>
       <div class="post-info">
         {{#if sticky}}
