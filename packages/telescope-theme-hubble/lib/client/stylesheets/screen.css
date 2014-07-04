@@ -163,7 +163,7 @@ body {
   display: none; }
 
 /* line 49, ../sass/partials/_main.scss */
-#loading {
+#loading, .loading {
   height: 300px; }
 
 /* line 1, ../sass/partials/_typography.scss */
