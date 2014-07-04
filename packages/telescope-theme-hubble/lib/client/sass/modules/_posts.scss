@@ -2,25 +2,27 @@
 
 .post{
 	display: flex;
+	display: -webkit-flex;
+	display: -moz-flex;
 	.leftmost{
-		order: 1;
-		flex-grow: 1;
+		@include order(1);
+		@include flex-grow(1);
 	}
 	.left{
-		order: 2;
-		flex-grow: 1;
+		@include order(2);
+		@include flex-grow(1);
 	}
 	.center{
-		order: 3;
-		flex-grow: 100;
+		@include order(3);
+		@include flex-grow(100);
 	}
 	.right{
-		order: 4;
-		flex-grow: 1;
+		@include order(4);
+		@include flex-grow(1);
 	}
 	.rightmost{
-		order: 5;
-		flex-grow: 1;
+		@include order(5);
+		@include flex-grow(1);
 	}
 }
 

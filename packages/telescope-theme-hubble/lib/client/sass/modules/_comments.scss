@@ -14,7 +14,7 @@
 		padding:10px 0 0 10px;
 		max-width:120px;
 		white-space:nowrap;
-		@extend cf;
+		@extend .cf;
 		&:after {
 			right: 100%;
 			border: solid transparent;
