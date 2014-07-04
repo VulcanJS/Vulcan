@@ -58,3 +58,5 @@ Deps.autorun(function() {
     Meteor.subscribe('notifications');
   }
 });
+
+Deps.autorun(function() { console.log(Posts.find().count()); })

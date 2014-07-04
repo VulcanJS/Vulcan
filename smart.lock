@@ -9,7 +9,6 @@
       "fast-render": {},
       "spin": {},
       "autoform": {},
-      "iron-router-progress": {},
       "jquery-hotkeys": {},
       "marked": {},
       "bootstrap3-datepicker": {}
@@ -49,11 +48,6 @@
         "git": "https://github.com/aldeed/meteor-autoform.git",
         "tag": "v0.13.5",
         "commit": "27dd5b912eeba687b228a6a7c2c14eef63b12cca"
-      },
-      "iron-router-progress": {
-        "git": "https://github.com/Multiply/iron-router-progress.git",
-        "tag": "v0.4.1",
-        "commit": "496fcda9a6ec352b4733725f60c6f280250c3541"
       },
       "jquery-hotkeys": {
         "git": "https://github.com/terryschen/meteor-jquery-hotkeys.git",
