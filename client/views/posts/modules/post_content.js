@@ -1,23 +1,6 @@
-var post = {};
-
-Template.post_item.created = function () {
-  post = this.data;
-};
-
-Template.post_item.helpers({
-  postModules: function () {
-    return postModules;
-  },
-  templateClass: function () {
-    return camelToDash(this.template);
-  },
-  templateContext: function () {
-    // extend post object with post module position and pass it as the module's context
-    var context = _.extend(post, {position: this.position});
-    return context;
-  },
-  log: function(a){
-    console.log(a);
+Template.postContent.helpers({
+  log: function (a){
+    console.log(a)
   },
   postLink: function(){
     return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
@@ -27,10 +10,6 @@ Template.post_item.helpers({
   },
   postTarget: function() {
     return !!this.url ? '_blank' : '';
-  },
-  oneBasedRank: function(){
-    if(typeof this.rank != 'undefined')
-      return this.rank + 1;
   },
   domain: function(){
     var a = document.createElement('a');
@@ -64,11 +43,6 @@ Template.post_item.helpers({
     time = this.status == STATUS_APPROVED ? this.postedAt : this.createdAt;
     return moment(time).format("MMMM Do, h:mm:ss a");
   },
-  voted: function(){
-    var user = Meteor.user();
-    if(!user) return false; 
-    return _.include(this.upvoters, user._id);
-  },
   userAvatar: function(){
     var author = Meteor.users.findOne(this.userId, {reactive: false});
     if(!!author)
@@ -91,36 +65,5 @@ Template.post_item.helpers({
   },
   viaTwitter: function () {
     return !!getSetting('twitterAccount') ? 'via='+getSetting('twitterAccount') : '';
-  }
-});
-
-Template.post_item.events({
-  'click .upvote-link': function(e, instance){
-    var post = this;
-    e.preventDefault();
-    if(!Meteor.user()){
-      Router.go('/signin');
-      throwError(i18n.t("Please log in first"));
-    }
-    Meteor.call('upvotePost', post, function(error, result){
-      trackEvent("post upvoted", {'_id': post._id});
-    });
-  },
-  'click .share-link': function(e){
-    var $this = $(e.target).parents('.post-share').find('.share-link');
-    var $share = $this.parents('.post-share').find('.share-options');
-    e.preventDefault();
-    $('.share-link').not($this).removeClass("active");
-    $(".share-options").not($share).addClass("hidden");
-    $this.toggleClass("active");
-    $share.toggleClass("hidden");
-  },
-  'click .approve-link': function(e, instance){
-    Meteor.call('approvePost', this);
-    e.preventDefault();
-  },  
-  'click .unapprove-link': function(e, instance){
-    Meteor.call('unapprovePost', this);
-    e.preventDefault();
   }
 });

@@ -1,65 +1,10 @@
 <template name="post_item">
   <div class="post post-{{rank}} {{#if sticky}}sticky{{/if}} {{inactiveClass}}" id="{{_id}}">
-    <ul class="post-actions">
-      <li class="post-share desktop"><a href="#" class="share-link"><i class="icon-share"></i><span class="action">{{i18n 'Share'}}</span></a>
-        <div class="share-options hidden">
-          <a class="mt-facebook mt-share-inline-square-sm" href="https://www.facebook.com/sharer/sharer.php?u={{sourceLink}}" target="_blank"><img src="http://mojotech-static.s3.amazonaws.com/facebook@2x.png"></a>
-          <a class="mt-twitter mt-share-inline-square-sm" href="http://twitter.com/intent/tweet?text={{title}}&url={{sourceLink}}&{{viaTwitter}}" target="_blank"><img src="http://mojotech-static.s3.amazonaws.com/twitter@2x.png"></a>
-          <a class="mt-linkedin mt-share-inline-square-sm" href="http://www.linkedin.com/shareArticle?mini=true&url={{sourceLink}}&amp;summary={{title}}" target="_blank"><img src="http://mojotech-static.s3.amazonaws.com/linkedin@2x.png"></a>
-          <a class="mt-google mt-share-inline-square-sm" href="https://plus.google.com/share?url={{sourceLink}}" target="_blank"><img src="http://mojotech-static.s3.amazonaws.com/google@2x.png"></a>
-        </div>
-      </li>
-      <li class="post-discuss">
-        <a class="discuss-link go-to-comments" href="/posts/{{_id}}">
-          <i class="icon-comment"></i>
-          <span class="count">{{comments}}</span>
-          <span class="action">{{i18n 'Discuss'}}</span>
-        </a>
-      </li>
-      <li class="post-more mobile"><a class="more-link"><i class="icon-share"></i><span class="action">Text </span></a></li>
-    </ul>
-    <div class="post-content">
-      {{#if oneBasedRank}}<span class="post-rank">{{oneBasedRank}}</span>{{/if}}
-      <div class="post-upvote">
-        <div class="inner-table">
-          <div class="inner-table-cell">
-            {{#if voted}}
-              <span class="upvote-link voted"><i class="icon-check"></i><span>{{i18n "Upvote"}}</span></span>
-            {{else}}
-              <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>{{i18n "Upvote"}}</span></a>
-            {{/if}}
-          </div>
-        </div>
+    {{#if oneBasedRank}}<span class="post-rank">{{oneBasedRank}}</span>{{/if}}
+    {{#each postModules}}
+      <div class="{{templateClass}} {{position}}">
+        {{> UI.dynamic template=template data=..}}
       </div>
-      <div class="post-info">
-        {{#if sticky}}
-          <span class="post-sticky"><i class="icon-pin"></i><span>{{i18n "Sticky"}}</span></span>
-        {{/if}}
-        <h3 class="post-heading">
-          <a href="{{postLink}}" class="post-title" target="{{postTarget}}">{{title}}</a>
-          {{#if url}}<span class="post-domain">{{domain}}</span>{{/if}}
-            {{#each categories}}
-              <a href="{{categoryLink}}" class="post-category category-{{slug}}">{{name}}</a>
-            {{/each}}
-        </h3>
-        <p class="post-meta"><span class="points">{{upvotes}} <span class="unit">{{pointsUnitDisplayText}} </span></span>by  <a class="post-author" href="{{profileUrl}}">{{authorName}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a class="go-to-comments" href="/posts/{{_id}}">{{comments}} {{commentsDisplayText}}</a></span>
-          {{#if can_edit}}
-            | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
-          {{/if}}
-          {{#if currentUser.isAdmin}}
-            |
-            {{#if isApproved}}
-              <a href="#" class="unapprove-link goto-edit">Unapprove</a>
-            {{else}}
-              <a href="#" class="approve-link goto-edit">Approve</a>
-            {{/if}}
-            | {{i18n "score"}}: {{short_score}}, {{i18n "clicks"}}: {{clicks}}
-          {{/if}}
-        </p>
-      </div>
-    </div>
-    {{#if body}}
-      <div class="post-message markdown">{{#markdown}}{{body}}{{/markdown}}</div>
-    {{/if}}
+    {{/each}}
   </div>
 </template>

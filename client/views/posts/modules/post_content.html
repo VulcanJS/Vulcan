@@ -1,0 +1,31 @@
+<template name="postContent">
+  <div class="post-info">
+    {{#if sticky}}
+      <span class="post-sticky"><i class="icon-pin"></i><span>{{i18n "Sticky"}}</span></span>
+    {{/if}}
+    <h3 class="post-heading">
+      <a href="{{postLink}}" class="post-title" target="{{postTarget}}">{{title}}</a>
+      {{#if url}}<span class="post-domain">{{domain}}</span>{{/if}}
+        {{#each categories}}
+          <a href="{{categoryLink}}" class="post-category category-{{slug}}">{{name}}</a>
+        {{/each}}
+    </h3>
+    <p class="post-meta"><span class="points">{{upvotes}} <span class="unit">{{pointsUnitDisplayText}} </span></span>by  <a class="post-author" href="{{profileUrl}}">{{authorName}}</a> <span class="post-time">{{ago}}</span><span class="comments">, <a class="go-to-comments" href="/posts/{{_id}}">{{comments}} {{commentsDisplayText}}</a></span>
+      {{#if can_edit}}
+        | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
+      {{/if}}
+      {{#if currentUser.isAdmin}}
+        |
+        {{#if isApproved}}
+          <a href="#" class="unapprove-link goto-edit">Unapprove</a>
+        {{else}}
+          <a href="#" class="approve-link goto-edit">Approve</a>
+        {{/if}}
+        | {{i18n "score"}}: {{short_score}}, {{i18n "clicks"}}: {{clicks}}
+      {{/if}}
+    </p>
+  </div>
+  {{#if body}}
+    <div class="post-message markdown">{{#markdown}}{{body}}{{/markdown}}</div>
+  {{/if}}
+</template>

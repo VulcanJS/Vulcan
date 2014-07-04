@@ -12,9 +12,6 @@ adminNav = [];
 // array containing subscriptions to be preloaded
 preloadSubscriptions = [];
 
-// array containing post modules (not used yet)
-postModules = ['postRank', 'postVote', 'postInfo', 'postShare', 'postDiscuss'];
-
 // array containing nav items; initialize with views menu
 navItems = ['viewsMenu'];
 
@@ -51,3 +48,30 @@ viewParameters.digest = function (terms, baseParameters) {
   });
   return parameters;
 }
+
+// array containing post modules
+/*
+  1. leftmost
+  2. left
+  3. center
+  4. right
+  5. rightmost
+*/
+postModules = [
+  {
+    template: 'postUpvote',
+    position: 'leftmost'
+  },
+  {
+    template: 'postContent', 
+    position: 'center'
+  },
+  {
+    template: 'postShare', 
+    position: 'right'
+  },
+  {
+    template: 'postDiscuss',
+    position: 'right'
+  }
+];
