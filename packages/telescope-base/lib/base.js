@@ -59,19 +59,19 @@ viewParameters.digest = function (terms, baseParameters) {
 */
 postModules = [
   {
-    name: 'postVote',
+    template: 'postUpvote',
     position: 'leftmost'
   },
   {
-    name: 'postBody', 
+    template: 'postContent', 
     position: 'center'
   },
   {
-    name: 'postShare', 
+    template: 'postShare', 
     position: 'right'
   },
   {
-    name: 'postDiscuss'
-    position: 'rightmost'
+    template: 'postDiscuss',
+    position: 'right'
   }
 ];

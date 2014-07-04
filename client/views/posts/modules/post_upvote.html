@@ -1,0 +1,7 @@
+<template name="postUpvote">
+  {{#if voted}}
+    <span class="upvote-link voted"><i class="icon-check"></i><span>{{i18n "Upvote"}}</span></span>
+  {{else}}
+    <a class="upvote-link not-voted" href="#"><i class="icon-up"></i><span>{{i18n "Upvote"}}</span></a>
+  {{/if}}
+</template>
