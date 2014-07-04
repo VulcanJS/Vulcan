@@ -539,7 +539,7 @@ body.pageslide-open {
     left: 0px;
     width: 100%;
     color: white;
-    font-size: 30px;
+    font-size: 24px;
     z-index: 10; }
     /* line 34, ../sass/modules/_header.scss */
     .header .logo a, .header .logo a:visited {
