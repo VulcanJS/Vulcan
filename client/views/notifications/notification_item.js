@@ -1,4 +1,4 @@
-Template.notification_item.helpers({
+Template[getTemplate('notification_item')].helpers({
   nice_time: function(){
     return moment(this.timestamp).fromNow();
   },
@@ -10,7 +10,7 @@ Template.notification_item.helpers({
   }
 });
 
-Template.notification_item.events({
+Template[getTemplate('notification_item')].events({
   'click .action-link': function(event, instance){
     var notificationId=instance.data._id;
     Notifications.update(

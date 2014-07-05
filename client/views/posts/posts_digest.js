@@ -1,4 +1,20 @@
-Template.posts_digest.helpers({
+Template[getTemplate('posts_digest')].created = function(){
+  $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
+  var currentDate=moment(Session.get('currentDate')).startOf('day');
+  var today=moment(new Date()).startOf('daysy');
+  $(document).bind('keyup', 'left', function(){
+    Router.go($('.prev-link').attr('href'));
+  });
+  $(document).bind('keyup', 'right', function(){
+    if(isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
+      Router.go($('.next-link').attr('href'));      
+  });  
+};
+
+Template[getTemplate('posts_digest')].helpers({
+  post_item: function () {
+    return getTemplate('post_item');
+  },
   hasPosts: function(){
     if(this.posts) // XXX
       return !!this.posts.count();  
@@ -34,20 +50,7 @@ Template.posts_digest.helpers({
   }
 });
 
-Template.posts_digest.created = function(){
-  $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
-  var currentDate=moment(Session.get('currentDate')).startOf('day');
-  var today=moment(new Date()).startOf('daysy');
-  $(document).bind('keyup', 'left', function(){
-    Router.go($('.prev-link').attr('href'));
-  });
-  $(document).bind('keyup', 'right', function(){
-    if(isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
-      Router.go($('.next-link').attr('href'));      
-  });  
-};
-
-Template.posts_digest.rendered = function(){
+Template[getTemplate('posts_digest')].rendered = function(){
   var distanceFromTop = 0;
   $('.post').each(function(){
     distanceFromTop += $(this).height();

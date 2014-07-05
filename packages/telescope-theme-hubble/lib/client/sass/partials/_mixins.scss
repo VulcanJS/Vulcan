@@ -116,3 +116,14 @@
         }
     }
 }
+/*================ FLEXBOX =================*/
+@mixin order($order){
+  order: $order;
+  -webkit-order: $order;
+  -moz-order: $order;
+}
+@mixin flex-grow($i){
+  flex-grow: $i;
+  -webkit-flex-grow: $i;
+  -moz-flex-grow: $i;
+}

@@ -1,7 +1,7 @@
 <template name="posts_list">
 	<div class="posts grid list">
 		{{#each posts}}
-			{{> post_item}}
+			{{> UI.dynamic template=post_item}}
 		{{/each}}
     {{#if hasMorePosts}}
       <div class="more-button">

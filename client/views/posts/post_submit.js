@@ -1,4 +1,4 @@
-Template.post_submit.helpers({
+Template[getTemplate('post_submit')].helpers({
   categoriesEnabled: function(){
     return Categories.find().count();
   },
@@ -24,7 +24,7 @@ Template.post_submit.helpers({
   }
 });
 
-Template.post_submit.rendered = function(){
+Template[getTemplate('post_submit')].rendered = function(){
   Session.set('currentPostStatus', STATUS_APPROVED);
   Session.set('selectedPostId', null);
   if(!this.editor && $('#editor').exists())
@@ -36,7 +36,7 @@ Template.post_submit.rendered = function(){
 
 }
 
-Template.post_submit.events({
+Template[getTemplate('post_submit')].events({
   'change input[name=status]': function (e, i) {
     Session.set('currentPostStatus', e.currentTarget.value);
   },

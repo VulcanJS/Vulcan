@@ -1,10 +1,10 @@
 var post = {};
 
-Template.post_item.created = function () {
+Template[getTemplate('post_item')].created = function () {
   post = this.data;
 };
 
-Template.post_item.helpers({
+Template[getTemplate('post_item')].helpers({
   postModules: function () {
     return postModules;
   },
@@ -94,7 +94,7 @@ Template.post_item.helpers({
   }
 });
 
-Template.post_item.events({
+Template[getTemplate('post_item')].events({
   'click .upvote-link': function(e, instance){
     var post = this;
     e.preventDefault();
@@ -105,15 +105,6 @@ Template.post_item.events({
     Meteor.call('upvotePost', post, function(error, result){
       trackEvent("post upvoted", {'_id': post._id});
     });
-  },
-  'click .share-link': function(e){
-    var $this = $(e.target).parents('.post-share').find('.share-link');
-    var $share = $this.parents('.post-share').find('.share-options');
-    e.preventDefault();
-    $('.share-link').not($this).removeClass("active");
-    $(".share-options").not($share).addClass("hidden");
-    $this.toggleClass("active");
-    $share.toggleClass("hidden");
   },
   'click .approve-link': function(e, instance){
     Meteor.call('approvePost', this);

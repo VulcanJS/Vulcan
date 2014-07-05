@@ -36,7 +36,7 @@
       <ul class="comment-children comment-list">
       {{#each child_comments}}
         {{#with this}}
-          {{> comment_item}}
+          {{> UI.dynamic template=comment_item}}
         {{/with}}
       {{/each}}
       </ul>

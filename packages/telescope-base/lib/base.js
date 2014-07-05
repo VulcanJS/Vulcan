@@ -67,11 +67,17 @@ postModules = [
     position: 'center'
   },
   {
-    template: 'postShare', 
-    position: 'right'
-  },
-  {
     template: 'postDiscuss',
-    position: 'right'
+    position: 'rightmost'
   }
 ];
+
+// Dynamic Templates
+
+templates = {}
+
+getTemplate = function (name) {
+  // if template has been overwritten, return this; else return template name
+  return !!templates[name] ? templates[name] : name;
+}
+

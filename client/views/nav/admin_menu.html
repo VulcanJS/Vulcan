@@ -5,7 +5,7 @@
       <div class="dropdown-menu">
         <ul role="menu" aria-labelledby="dLabel">
           {{#each menu}}
-            {{> menuItem this}}
+            {{> UI.dynamic template=menuItem data=this}}
           {{/each}}
         </ul>
       </div>

@@ -1,4 +1,4 @@
-Template.user_profile.helpers({
+Template[getTemplate('user_profile')].helpers({
   avatarUrl: function() {
     return getAvatarUrl(this);
   },
@@ -24,7 +24,7 @@ Template.user_profile.helpers({
   }
 });
 
-Template.user_profile.events({
+Template[getTemplate('user_profile')].events({
   'click .invite-link': function(e, instance){
     Meteor.call('inviteUser', instance.data.user._id);
     throwError('Thanks, user has been invited.')

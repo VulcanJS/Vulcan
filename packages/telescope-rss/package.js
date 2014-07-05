@@ -1,4 +1,4 @@
-Package.describe("Telescope RSS package");
+Package.describe({summary: "Telescope RSS package"});
 
 Package.on_use(function (api) {
 

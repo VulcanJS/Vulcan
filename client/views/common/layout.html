@@ -26,13 +26,13 @@
     {{/if}}
   </style>
   <div class="outer-wrapper {{currentPage}}">
-    {{> mobile_nav}}
+    {{> UI.dynamic template=mobile_nav}}
     <div class="content-wrapper template-{{pageName}}">
-      {{> nav}}
-      {{> error}}
+      {{> UI.dynamic template=nav}}
+      {{> UI.dynamic template=error}}
       {{> yield}}
-      {{> notifications}}
-      {{> footer}}
+      {{> UI.dynamic template=notifications}}
+      {{> UI.dynamic template=footer}}
       <div class="overlay hidden"></div>
     </div>
     {{{extraCode}}}

@@ -1,4 +1,19 @@
-Template.layout.helpers({
+Template[getTemplate('layout')].helpers({
+  mobile_nav: function () {
+    return getTemplate('mobile_nav');
+  },
+  nav: function () {
+    return getTemplate('nav');
+  },
+  error: function () {
+    return getTemplate('error');
+  },
+  notifications: function () {
+    return getTemplate('notifications');
+  },
+  footer: function () {
+    return getTemplate('footer');
+  },
   pageName : function(){
     // getCurrentTemplate();
   },
@@ -19,11 +34,11 @@ Template.layout.helpers({
   }     
 });
 
-Template.layout.created = function(){
+Template[getTemplate('layout')].created = function(){
   Session.set('currentScroll', null);
 }
 
-Template.layout.rendered = function(){
+Template[getTemplate('layout')].rendered = function(){
   if(currentScroll=Session.get('currentScroll')){
     $('body').scrollTop(currentScroll);
     Session.set('currentScroll', null);

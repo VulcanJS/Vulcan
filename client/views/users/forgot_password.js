@@ -1,4 +1,4 @@
-Template.forgot_password.events({
+Template[getTemplate('forgot_password')].events({
   'click input[type=submit]': function(e){
     e.preventDefault();
     var options=new Object();
