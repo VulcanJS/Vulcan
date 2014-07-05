@@ -1,4 +1,4 @@
-Package.describe("Telescope tags package");
+Package.describe({summary: "Telescope tags package"});
 
 Package.on_use(function (api) {
 

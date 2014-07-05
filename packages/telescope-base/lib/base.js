@@ -67,12 +67,8 @@ postModules = [
     position: 'center'
   },
   {
-    template: 'postShare', 
-    position: 'right'
-  },
-  {
     template: 'postDiscuss',
-    position: 'right'
+    position: 'rightmost'
   }
 ];
 

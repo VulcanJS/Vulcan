@@ -1,4 +1,4 @@
-Package.describe("Telescope i18n package");
+Package.describe({summary: "Telescope i18n package"});
 
 Package.on_use(function (api) {
 	api.use(['ui'], 'client');
