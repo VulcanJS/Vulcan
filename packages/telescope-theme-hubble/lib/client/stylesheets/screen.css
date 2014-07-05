@@ -962,7 +962,7 @@ body.pageslide-open {
 .post.sticky {
   background: #fffce0; }
 
-/* line 295, ../sass/modules/_posts.scss */
+/* line 296, ../sass/modules/_posts.scss */
 .more-button a {
   display: block;
   width: 100%;
@@ -973,16 +973,16 @@ body.pageslide-open {
   line-height: 70px;
   font-size: 16px;
   border-radius: 0px 0px 3px 3px; }
-  /* line 305, ../sass/modules/_posts.scss */
+  /* line 306, ../sass/modules/_posts.scss */
   .more-button a:hover {
     background: rgba(0, 0, 0, 0.15); }
 
-/* line 316, ../sass/modules/_posts.scss */
+/* line 312, ../sass/modules/_posts.scss */
 .inner-table {
   display: table;
   height: 100%; }
 
-/* line 320, ../sass/modules/_posts.scss */
+/* line 316, ../sass/modules/_posts.scss */
 .inner-table-cell {
   display: table-cell;
   vertical-align: middle; }
