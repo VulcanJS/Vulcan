@@ -764,7 +764,7 @@ body.pageslide-open {
 
 /* line 98, ../sass/modules/_posts.scss */
 .post-upvote {
-  padding: 0 10px 0 5px; }
+  padding: 0 5px; }
   /* line 100, ../sass/modules/_posts.scss */
   .post-upvote .upvote-link {
     position: relative;
@@ -816,7 +816,7 @@ body.pageslide-open {
 /* line 152, ../sass/modules/_posts.scss */
 .post-content {
   position: relative;
-  padding: 0;
+  padding: 0 10px;
   min-height: 40px; }
   /* line 156, ../sass/modules/_posts.scss */
   .post-content .post-sticky {
@@ -852,22 +852,23 @@ body.pageslide-open {
     color: #b3c1c6;
     font-size: 14px;
     font-weight: normal; }
-  /* line 189, ../sass/modules/_posts.scss */
-  .post-heading .post-category {
-    display: inline-block;
-    font-size: 11px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    background: #eee;
-    padding: 0px 6px;
-    text-transform: uppercase;
-    font-weight: normal;
-    vertical-align: middle; }
-    /* line 198, ../sass/modules/_posts.scss */
-    .post-heading .post-category:hover {
-      background: #f36c3d;
-      color: white; }
+
+/* line 190, ../sass/modules/_posts.scss */
+.post-category {
+  display: inline-block;
+  font-size: 11px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background: #eee;
+  padding: 0px 6px;
+  text-transform: uppercase;
+  font-weight: normal;
+  vertical-align: middle; }
+  /* line 199, ../sass/modules/_posts.scss */
+  .post-category:hover {
+    background: #f36c3d;
+    color: white; }
 
 /* line 204, ../sass/modules/_posts.scss */
 .post-meta {

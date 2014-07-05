@@ -50,17 +50,22 @@ viewParameters.digest = function (terms, baseParameters) {
 }
 
 // array containing post modules
-/*
-  1. leftmost
-  2. left
-  3. center
-  4. right
-  5. rightmost
-*/
+modulePositions = [
+  'leftOfLeft',
+  'left',
+  'rightOfLeft',
+  'leftOfCenter',
+  'center',
+  'rightOfCenter',
+  'leftOfRight',
+  'right',
+  'rightOfRight'
+];
+
 postModules = [
   {
     template: 'postUpvote',
-    position: 'leftmost'
+    position: 'leftOfLeft'
   },
   {
     template: 'postContent', 
@@ -68,7 +73,7 @@ postModules = [
   },
   {
     template: 'postDiscuss',
-    position: 'rightmost'
+    position: 'rightOfRight'
   }
 ];
 

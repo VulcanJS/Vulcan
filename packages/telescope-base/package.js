@@ -16,6 +16,7 @@ Package.on_use(function (api) {
     'navItems', 
     'viewParameters', 
     'postModules',
+    'modulePositions',
     'getTemplate',
     'templates'
     ]);

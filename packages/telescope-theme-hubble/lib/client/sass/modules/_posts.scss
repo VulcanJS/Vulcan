@@ -96,7 +96,7 @@
 	}
 }
 .post-upvote{
-	padding: 0 10px 0 5px;
+	padding: 0 5px;
 	.upvote-link{
 		position: relative;
 		// top: 17px;
@@ -151,7 +151,7 @@
 }
 .post-content{
 	position:relative;
-	padding:0;
+	padding:0 10px;
 	min-height:$grid-unit - 30px;
 	.post-sticky{
 		display:block;
@@ -186,19 +186,19 @@
 		font-size:14px;
 		font-weight:normal;
 	}
-	.post-category{
-		display:inline-block;
-		font-size:11px;
-		@include border-radius(3px);
-		background:#eee;
-		padding:0px 6px;
-		text-transform:uppercase;
-		font-weight:normal;
-		vertical-align:middle;
-		&:hover{
-			background:$red;
-			color:white;
-		}
+}
+.post-category{
+	display:inline-block;
+	font-size:11px;
+	@include border-radius(3px);
+	background:#eee;
+	padding:0px 6px;
+	text-transform:uppercase;
+	font-weight:normal;
+	vertical-align:middle;
+	&:hover{
+		background:$red;
+		color:white;
 	}
 }
 .post-meta{

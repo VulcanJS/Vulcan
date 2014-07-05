@@ -20,10 +20,12 @@ Package.on_use(function (api) {
     'lib/client/views/category_item.html',
     'lib/client/views/category_item.js',
     'lib/client/views/categories_menu.html',
-    'lib/client/views/categories_menu.js'
+    'lib/client/views/categories_menu.js',
+    'lib/client/views/post_categories.html',
+    'lib/client/views/post_categories.js'
     ], ['client']);
 
   api.add_files(['lib/server/publications.js'], ['server']);
   
-  api.export(['preloadSubscriptions', 'adminNav', 'Categories', 'addToPostSchema', 'navItems']);
+  api.export(['preloadSubscriptions', 'adminNav', 'Categories', 'addToPostSchema', 'navItems', 'postModules']);
 });

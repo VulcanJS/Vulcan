@@ -51,9 +51,6 @@ Template[getTemplate('postContent')].helpers({
   inactiveClass: function(){
     return (isAdmin(Meteor.user()) && this.inactive) ? i18n.t('inactive') : "";
   },
-  categoryLink: function(){
-    return getCategoryUrl(this.slug);
-  },
   commentsDisplayText: function(){
     return this.comments == 1 ? i18n.t('comment') : i18n.t('comments');
   },
