@@ -276,10 +276,13 @@
 		}
 	}
 }
-.post-message{
-	padding:20px 0px;
+.post-body{
+	@include box-shadow(0 1px 1px black(0.15));
+	border-radius: 3px;
+	margin-bottom: 10px;
+	background: white;
+	padding:20px;
 	font-size:16px;
-	border-top: 1px solid $lightest-grey;
 	.list &{
 		display:none;
 	}

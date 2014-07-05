@@ -2,6 +2,9 @@ Template[getTemplate('post_page')].helpers({
   post_item: function () {
     return getTemplate('post_item');
   },
+  post_body: function () {
+    return getTemplate('post_body');
+  },
   comment_form: function () {
     return getTemplate('comment_form');
   },
