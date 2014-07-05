@@ -1,40 +1,45 @@
 // modules layout
 .posts{
-	// display: table;
+	display: table;
+	border-collapse: collapse;
 }
 .post{
-	// display: table-row;
-	// >div{
-	// 	display: table-cell;
-	// }
-	display: flex;
-	display: -webkit-flex;
-	display: -moz-flex;
-	.leftmost{
-		@include order(1);
-		@include flex-grow(1);
-		// width: 1px;
-	}
-	.left{
-		@include order(2);
-		@include flex-grow(1);
-		// width: 1px;
+	display: table-row;
+	>div{
+		display: table-cell;
+		vertical-align: middle;
 	}
 	.center{
-		@include order(3);
-		@include flex-grow(30);
-		// width: 1px;
+		width: 100%;
 	}
-	.right{
-		@include order(4);
-		@include flex-grow(1);
-		// width: 1px;
-	}
-	.rightmost{
-		@include order(5);
-		@include flex-grow(1);
-		// width: 1px;
-	}
+	// display: flex;
+	// display: -webkit-flex;
+	// display: -moz-flex;
+	// .leftmost{
+	// 	@include order(1);
+	// 	@include flex-grow(1);
+	// 	// width: 1px;
+	// }
+	// .left{
+	// 	@include order(2);
+	// 	@include flex-grow(1);
+	// 	// width: 1px;
+	// }
+	// .center{
+	// 	@include order(3);
+	// 	@include flex-grow(30);
+	// 	// width: 1px;
+	// }
+	// .right{
+	// 	@include order(4);
+	// 	@include flex-grow(1);
+	// 	// width: 1px;
+	// }
+	// .rightmost{
+	// 	@include order(5);
+	// 	@include flex-grow(1);
+	// 	// width: 1px;
+	// }
 }
 
 .empty-notice{
@@ -49,7 +54,6 @@
 .post{
 	position:relative;
 	width:100%;
-	@include cf;
 	background: white;
 	border-bottom:1px solid $lightest-grey;
 	&:first-child{
@@ -72,11 +76,27 @@
 		@include box-shadow(0 1px 1px black(0.15));
 	}
 }
+.post-rank{
+  position: relative;
+  span{	
+	position:absolute;
+	top:0px;
+	left:-60px;
+	display:block;
+	height:36px;
+	line-height:36px;
+	width:30px;
+	text-align:right;
+	font-size:18px;
+	// font-weight:bold;
+	color:black(0.2);
+	}
+}
 .post-upvote{
 	padding: 0 10px 0 5px;
 	.upvote-link{
 		position: relative;
-		top: 17px;
+		// top: 17px;
 		// transform: translateY(-50%);
 		width: 24px;
 		height: 24px;
@@ -125,19 +145,6 @@
 }
 .post-info{
 	padding:$grid-padding - 2px 0;
-}
-.post-rank{
-	position:absolute;
-	top:0px;
-	left:-50px;
-	display:block;
-	height:$grid-unit;
-	line-height:$grid-unit;
-	width:30px;
-	text-align:right;
-	font-size:18px;
-	// font-weight:bold;
-	color:black(0.2);
 }
 .post-content{
 	position:relative;

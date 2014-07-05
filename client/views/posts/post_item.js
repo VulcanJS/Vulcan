@@ -28,9 +28,9 @@ Template[getTemplate('post_item')].helpers({
   postTarget: function() {
     return !!this.url ? '_blank' : '';
   },
-  oneBasedRank: function(){
-    if(typeof this.rank != 'undefined')
-      return this.rank + 1;
+  rankClass: function(){
+    if(typeof this.rank !== 'undefined')
+      return "has-rank post-"+(this.rank + 1);
   },
   domain: function(){
     var a = document.createElement('a');
