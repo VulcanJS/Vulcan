@@ -49,7 +49,6 @@
 		.upvote-link, .downvote-link{
 			height:50%;
 			display:table;
-			float:left;
 			width:30px;
 			// @include background(linear-gradient(#f3f6f8, #dfe3e5));
 			@include border-radius(3px 0 0 3px);
