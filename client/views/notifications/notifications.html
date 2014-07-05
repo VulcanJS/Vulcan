@@ -6,7 +6,7 @@
 			<a href="#" class="mark-as-read">{{i18n "Mark all as read"}}</a>
 			<ul>
 			{{#each notifications}}
-				{{> notification_item}}
+				{{> UI.dynamic template=notification_item}}
 		    {{/each}}
 			</ul>
 		</div>

@@ -12,6 +12,9 @@ Template[getTemplate('posts_digest')].created = function(){
 };
 
 Template[getTemplate('posts_digest')].helpers({
+  post_item: function () {
+    return getTemplate('post_item');
+  },
   hasPosts: function(){
     if(this.posts) // XXX
       return !!this.posts.count();  

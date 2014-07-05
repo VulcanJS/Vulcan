@@ -1,4 +1,7 @@
 Template[getTemplate('notifications')].helpers({
+  notification_item: function () {
+    return getTemplate('notification_item');
+  },
   notifications: function(){
     return Notifications.find({userId: Meteor.userId()}, {sort: {timestamp: -1}});
   },

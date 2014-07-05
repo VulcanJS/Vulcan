@@ -3,6 +3,9 @@ Template[getTemplate('comment_list')].created = function(){
 }
 
 Template[getTemplate('comment_list')].helpers({
+  comment_item: function () {
+    return getTemplate('comment_item');
+  },
   has_comments: function(){
     var post = this;
     var comments = Comments.find({postId: post._id, parent: null}, {sort: {score: -1, postedAt: -1}});

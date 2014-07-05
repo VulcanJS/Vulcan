@@ -1,4 +1,19 @@
 Template[getTemplate('layout')].helpers({
+  mobile_nav: function () {
+    return getTemplate('mobile_nav');
+  },
+  nav: function () {
+    return getTemplate('nav');
+  },
+  error: function () {
+    return getTemplate('error');
+  },
+  notifications: function () {
+    return getTemplate('notifications');
+  },
+  footer: function () {
+    return getTemplate('footer');
+  },
   pageName : function(){
     // getCurrentTemplate();
   },

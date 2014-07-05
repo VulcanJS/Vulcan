@@ -3,12 +3,12 @@
   <div class="post grid comment-page">
     
     {{#with post}}
-      {{>post_item}}
+      {{> UI.dynamic template=post_item}}
     {{/with}}
 
     {{#with comment}}
       <ul class="selected-comment">
-       {{> comment_item}}
+       {{> UI.dynamic template=comment_item}}
       </ul>
     {{/with}}
 

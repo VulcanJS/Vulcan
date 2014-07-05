@@ -1,4 +1,7 @@
 Template[getTemplate('posts_list')].helpers({
+  post_item: function () {
+    return getTemplate('post_item');
+  },
   posts : function () {
     if(this.postsList){ // XXX
       this.postsList.rewind();    

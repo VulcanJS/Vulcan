@@ -14,7 +14,7 @@
   {{#if hasPosts}}
     <div class="posts grid list">
       {{#each posts}}
-        {{> post_item}}
+        {{> UI.dynamic template=post_item}}
       {{/each}}
     </div>
   {{else}}
