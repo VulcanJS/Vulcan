@@ -86,20 +86,19 @@ Template[getTemplate('post_edit')].events({
     // Basic Properties
 
     var properties = {
-      title:         $('#title').val(),
-      body:          instance.editor.exportFile()
+      title:            $('#title').val(),
+      body:             instance.editor.exportFile(),
+      categories:  []
     };
 
     // Categories
 
-    var categoriesArray = [];
     $('input[name=category]:checked').each(function() {
       var categoryId = $(this).val();
       if(category = Categories.findOne(categoryId)){
-        categoriesArray.push(category);
+        properties.categories.push(category);
       }
     });
-    properties.categoriesArray = categoriesArray;
 
     // URL
 
@@ -160,6 +159,7 @@ Template[getTemplate('post_edit')].events({
         }
       }
     }
+    
     // console.log(properties)
 
     // ------------------------------ Update ------------------------------ //
