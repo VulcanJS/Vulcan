@@ -1,28 +1,39 @@
 // modules layout
-
+.posts{
+	// display: table;
+}
 .post{
+	// display: table-row;
+	// >div{
+	// 	display: table-cell;
+	// }
 	display: flex;
 	display: -webkit-flex;
 	display: -moz-flex;
 	.leftmost{
 		@include order(1);
 		@include flex-grow(1);
+		// width: 1px;
 	}
 	.left{
 		@include order(2);
 		@include flex-grow(1);
+		// width: 1px;
 	}
 	.center{
 		@include order(3);
-		@include flex-grow(100);
+		@include flex-grow(30);
+		// width: 1px;
 	}
 	.right{
 		@include order(4);
 		@include flex-grow(1);
+		// width: 1px;
 	}
 	.rightmost{
 		@include order(5);
 		@include flex-grow(1);
+		// width: 1px;
 	}
 }
 
@@ -186,9 +197,8 @@
 	line-height:1.5;
 }
 .post-share, .post-discuss{
-	position:relative;
-	float:left;
 	margin-left:$grid-margin;
+	position: relative;
 	>a{
 		position:relative;
 		display:block;

@@ -1,4 +1,4 @@
-Template.toolbox.events({
+Template[getTemplate('toolbox')].events({
   'click .update-categories':function(){
 
   },

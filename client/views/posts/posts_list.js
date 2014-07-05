@@ -1,4 +1,4 @@
-Template.posts_list.helpers({
+Template[getTemplate('posts_list')].helpers({
   posts : function () {
     if(this.postsList){ // XXX
       this.postsList.rewind();    
@@ -20,7 +20,7 @@ Template.posts_list.helpers({
   }
 });
 
-Template.posts_list.rendered = function(){
+Template[getTemplate('posts_list')].rendered = function(){
   var distanceFromTop = 0;
   $('.post').each(function(){
     distanceFromTop += $(this).height();

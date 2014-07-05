@@ -1,10 +1,10 @@
-Template.comment_form.helpers({
+Template[getTemplate('comment_form')].helpers({
   canComment: function(){
     return canComment(Meteor.user());
   }
 })
 
-Template.comment_form.rendered = function(){
+Template[getTemplate('comment_form')].rendered = function(){
   if(Meteor.user() && !this.editor){
     this.editor = new EpicEditor(EpicEditorOptions).load();
     $(this.editor.editor).bind('keydown', 'meta+return', function(){
@@ -13,7 +13,7 @@ Template.comment_form.rendered = function(){
   }
 }
 
-Template.comment_form.events({
+Template[getTemplate('comment_form')].events({
   'submit form': function(e, instance){
     e.preventDefault();
     $(e.target).addClass('disabled');

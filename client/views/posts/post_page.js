@@ -1,4 +1,4 @@
-Template.post_page.rendered = function(){
+Template[getTemplate('post_page')].rendered = function(){
   if((scrollToCommentId=Session.get('scrollToCommentId')) && !this.rendered && $('#'+scrollToCommentId).exists()){
     scrollPageTo('#'+scrollToCommentId);
     Session.set('scrollToCommentId', null);

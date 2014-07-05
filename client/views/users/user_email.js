@@ -1,10 +1,10 @@
-Template.user_email.helpers({
+Template[getTemplate('user_email')].helpers({
   user: function(){
     return Meteor.user();
   }
 });
 
-Template.user_email.events({
+Template[getTemplate('user_email')].events({
   'submit form': function(e){
     e.preventDefault();
     if(!Meteor.user()) throwError(i18n.t('You must be logged in.'));

@@ -1,10 +1,10 @@
 var post = {};
 
-Template.post_item.created = function () {
+Template[getTemplate('post_item')].created = function () {
   post = this.data;
 };
 
-Template.post_item.helpers({
+Template[getTemplate('post_item')].helpers({
   postModules: function () {
     return postModules;
   },
@@ -94,7 +94,7 @@ Template.post_item.helpers({
   }
 });
 
-Template.post_item.events({
+Template[getTemplate('post_item')].events({
   'click .upvote-link': function(e, instance){
     var post = this;
     e.preventDefault();

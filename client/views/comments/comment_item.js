@@ -56,12 +56,12 @@ findQueueContainer=function($comment){
   return $container;
 };
 
-Template.comment_item.created = function() {
+Template[getTemplate('comment_item')].created = function() {
   // if comments are supposed to be queued, then queue this comment on create
   this.isQueued = window.queueComments;
 }
 
-Template.comment_item.rendered=function(){
+Template[getTemplate('comment_item')].rendered=function(){
   if(this.data){
     var comment=this.data;
     var $comment=$("#"+comment._id);
@@ -92,7 +92,7 @@ Template.comment_item.rendered=function(){
 }
 
 
-Template.comment_item.helpers({
+Template[getTemplate('comment_item')].helpers({
   full_date: function(){
     return this.createdAt.toString();
   },

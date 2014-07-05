@@ -1,4 +1,4 @@
-Template.post_edit.helpers({
+Template[getTemplate('post_edit')].helpers({
   created: function(){
     return moment(this.createdAt).format("MMMM Do, h:mm:ss a");
   },
@@ -51,7 +51,7 @@ Template.post_edit.helpers({
   }
 });
 
-Template.post_edit.rendered = function(){
+Template[getTemplate('post_edit')].rendered = function(){
   Session.set('currentPostStatus', this.status);
 
   var post = this.data.post;
@@ -68,7 +68,7 @@ Template.post_edit.rendered = function(){
 
 }
 
-Template.post_edit.events({
+Template[getTemplate('post_edit')].events({
   'change input[name=status]': function (e, i) {
     Session.set('currentPostStatus', e.currentTarget.value);
   },

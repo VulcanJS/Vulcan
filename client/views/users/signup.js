@@ -1,4 +1,4 @@
-Template.signup.events({
+Template[getTemplate('signup')].events({
     'click input[type=submit]': function(event){
       event.preventDefault();
       var username = $('#username').val();

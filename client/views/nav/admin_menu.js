@@ -1,4 +1,4 @@
-Template.adminMenu.helpers({
+Template[getTemplate('adminMenu')].helpers({
   menu: function () {
     return adminNav;
   }

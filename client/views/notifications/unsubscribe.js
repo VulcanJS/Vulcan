@@ -1,4 +1,4 @@
-Template.unsubscribe.created = function(){
+Template[getTemplate('unsubscribe')].created = function(){
   var hash = this.data.hash;
   Meteor.call('unsubscribeUser', hash, function(error, result){
     if(result){
@@ -10,7 +10,7 @@ Template.unsubscribe.created = function(){
   trackEvent('notificationsUnsubcribe', {hash: hash});
 }
 
-Template.unsubscribe.helpers({
+Template[getTemplate('unsubscribe')].helpers({
   unsubscribed : function(){
     // we have to use a session variable because the string we want to display
     // depends on the return value of an asynchronous callback (unsubscribeUser)

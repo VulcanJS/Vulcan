@@ -1,4 +1,4 @@
-Template.nav.helpers({
+Template[getTemplate('nav')].helpers({
   navItems: function () {
     return navItems;
   },
@@ -31,7 +31,7 @@ Template.nav.helpers({
   }
 });
 
-Template.nav.rendered=function(){
+Template[getTemplate('nav')].rendered=function(){
 
   if(!Meteor.user()){
     $('.login-link-text').text("Sign Up/Sign In");
@@ -41,7 +41,7 @@ Template.nav.rendered=function(){
   }
 };
 
-Template.nav.events({
+Template[getTemplate('nav')].events({
   'click #logout': function(e){
     e.preventDefault();
     Meteor.logout();

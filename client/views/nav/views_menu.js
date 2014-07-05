@@ -1,4 +1,4 @@
-Template.viewsMenu.helpers({
+Template[getTemplate('viewsMenu')].helpers({
   views: function () {
     return viewNav;
   }

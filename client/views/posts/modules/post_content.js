@@ -1,4 +1,4 @@
-Template.postContent.helpers({
+Template[getTemplate('postContent')].helpers({
   log: function (a){
     console.log(a)
   },

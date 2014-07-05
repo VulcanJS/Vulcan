@@ -1,3 +1,3 @@
-Template.error.errors= function(){
+Template[getTemplate('error')].errors= function(){
   return Errors.find({show: true});
 }

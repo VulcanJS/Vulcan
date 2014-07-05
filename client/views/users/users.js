@@ -1,4 +1,4 @@
-Template.users.helpers({
+Template[getTemplate('users')].helpers({
   loadMoreUrl: function(){
     var count = parseInt(Session.get('usersLimit')) + 20;
     return '/all-users/' + count + '?filterBy='+this.filterBy+'&sortBy='+this.sortBy;

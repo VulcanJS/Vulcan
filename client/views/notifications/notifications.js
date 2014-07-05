@@ -1,4 +1,4 @@
-Template.notifications.helpers({
+Template[getTemplate('notifications')].helpers({
   notifications: function(){
     return Notifications.find({userId: Meteor.userId()}, {sort: {timestamp: -1}});
   },
@@ -19,7 +19,7 @@ Template.notifications.helpers({
   }
 });
 
-Template.notifications.events({
+Template[getTemplate('notifications')].events({
 	'click .notifications-toggle': function(e){
     e.preventDefault();
 		$('body').toggleClass('notifications-open');
