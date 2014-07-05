@@ -117,7 +117,7 @@ Meteor.publish('singlePost', function(id) {
 Meteor.publish('commentPost', function(commentId) {
   if(canViewById(this.userId)){
     var comment = Comments.findOne(commentId);
-    return Posts.find({_id: comment && comment.post});
+    return Posts.find({_id: comment && comment.postId});
   }
   return [];
 });

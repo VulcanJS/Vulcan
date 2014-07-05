@@ -1,11 +1,7 @@
 <template name="comment_list">
-  {{#if has_comments}}
-    <ul class="comments comment-list">
-      {{#each child_comments}}
-        {{> UI.dynamic template=comment_item}}
-      {{/each}}
-    </ul>
-  {{else}}
-    <p>{{i18n "No comments."}}</p>
-  {{/if}}
+  <ul class="comments comment-list">
+    {{#each child_comments}}
+      {{> UI.dynamic template=comment_item}}
+    {{/each}}
+  </ul>
 </template>

@@ -22,13 +22,13 @@ Template[getTemplate('comment_form')].events({
     if(getCurrentTemplate() == 'comment_reply'){
       // child comment
       var parentComment = this.comment;
-      Meteor.call('comment', parentComment.post, parentComment._id, content, function(error, commentProperties){
+      Meteor.call('comment', parentComment.postId, parentComment._id, content, function(error, commentProperties){
         if(error){
           console.log(error);
           throwError(error.reason);
         }else{
           trackEvent("newComment", commentProperties);
-          Router.go('/posts/'+parentComment.post+'/comment/'+commentProperties.commentId);
+          Router.go('/posts/'+parentComment.postId+'/comment/'+commentProperties.commentId);
         }
       });
     }else{

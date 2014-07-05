@@ -5,8 +5,13 @@ Template[getTemplate('comment_reply')].helpers({
   comment_item: function () {
     return getTemplate('comment_item');
   },
+  comment_form: function () {
+    return getTemplate('comment_form');
+  },
   post: function () {
-    if(this.comment) // XXX
-      return Posts.findOne(this.comment.post);
+    if(this.comment){ // XXX
+      var post = Posts.findOne(this.comment.postId);
+      return post;
+    }
   }
 });

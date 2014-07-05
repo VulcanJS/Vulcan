@@ -4,6 +4,10 @@ Comments = new Meteor.Collection("comments", {
       type: String,
       optional: true
     },
+    parentCommentId: {
+      type: String,
+      optional: true
+    },
     createdAt: {
       type: Date,
       optional: true
@@ -120,7 +124,7 @@ Meteor.methods({
     };
     
     if(parentCommentId)
-      comment.parent = parentCommentId;
+      comment.parentCommentId = parentCommentId;
 
     var newCommentId=Comments.insert(comment);
 

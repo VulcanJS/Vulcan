@@ -70,7 +70,7 @@ Template[getTemplate('comment_item')].helpers({
   },
   child_comments: function(){
     // return only child comments
-    return Comments.find({parent: this._id });
+    return Comments.find({parentCommentId: this._id });
   },
   author: function(){
     return Meteor.users.findOne(this.userId);

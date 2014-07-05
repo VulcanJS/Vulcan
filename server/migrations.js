@@ -245,5 +245,15 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  parentToParentCommentId: function () {
+    var i = 0;
+    Comments.find({parentCommentId: {$exists : false}}).forEach(function (comment) {
+      i++;
+      console.log("Comment: "+comment._id);
+      Comments.update(comment._id, { $set: { 'parentCommentId': comment.parent}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
   }
 }
