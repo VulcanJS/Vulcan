@@ -95,12 +95,12 @@ Template[getTemplate('post_submit')].events({
       properties.url = cleanUrl;
     }
 
-    // Categories
+    // ------------------------------ Callbacks ------------------------------ //
 
-    properties.categories = [];
-    $('input[name=category]:checked').each(function() {
-      properties.categories.push(Categories.findOne($(this).val()));
-     });
+    // run all post submit client callbacks on properties object successively
+    properties = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, properties);
 
     // console.log(properties)
 

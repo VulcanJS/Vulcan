@@ -17,6 +17,12 @@ Package.on_use(function (api) {
     'viewParameters', 
     'postModules',
     'modulePositions',
+    'postSubmitClientCallbacks',
+    'postSubmitServerCallbacks',
+    'postEditClientCallbacks',
+    'commentSubmitClientCallbacks',
+    'commentSubmitServerCallbacks',
+    'commentEditClientCallbacks',
     'getTemplate',
     'templates'
     ]);

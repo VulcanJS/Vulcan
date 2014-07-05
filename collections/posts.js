@@ -202,6 +202,13 @@ Meteor.methods({
 
     post = _.extend(post, properties);
 
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on post object successively
+    post = postSubmitServerCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, post);
+
     // ------------------------------ Insert ------------------------------ //
 
     // console.log(post)

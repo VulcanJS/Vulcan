@@ -91,15 +91,6 @@ Template[getTemplate('post_edit')].events({
       categories:  []
     };
 
-    // Categories
-
-    $('input[name=category]:checked').each(function() {
-      var categoryId = $(this).val();
-      if(category = Categories.findOne(categoryId)){
-        properties.categories.push(category);
-      }
-    });
-
     // URL
 
     var url = $('#url').val();
@@ -159,7 +150,14 @@ Template[getTemplate('post_edit')].events({
         }
       }
     }
-    
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post edit client callbacks on properties object successively
+    properties = postEditClientCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, properties);
+
     // console.log(properties)
 
     // ------------------------------ Update ------------------------------ //

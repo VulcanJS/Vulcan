@@ -77,7 +77,20 @@ postModules = [
   }
 ];
 
-// Dynamic Templates
+// ------------------------------ Callbacks ------------------------------ //
+
+postSubmitClientCallbacks = [];
+postSubmitServerCallbacks = [];
+
+postEditClientCallbacks = [];
+
+commentEditClientCallbacks = []; // not used yet
+commentEditServerCallbacks = []; // not used yet
+
+commentEditClientCallbacks = []; // not used yet
+
+// ------------------------------ Dynamic Templates ------------------------------ //
+
 
 templates = {}
 

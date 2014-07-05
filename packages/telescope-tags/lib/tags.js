@@ -50,20 +50,32 @@ addToPostSchema.push(
   }
 );
 
-Meteor.startup(function () {
-Categories.allow({
-  insert: isAdminById
-, update: isAdminById
-, remove: isAdminById
-});
+var getCheckedCategories = function (properties) {
+  properties.categories = [];
+  $('input[name=category]:checked').each(function() {
+    var categoryId = $(this).val();
+    properties.categories.push(Categories.findOne(categoryId));
+  });
+  return properties;
+}
 
-Meteor.methods({
-  category: function(category){
-    console.log(category)
-    if (!Meteor.user() || !isAdmin(Meteor.user()))
-      throw new Meteor.Error(i18n.t('You need to login and be an admin to add a new category.'));
-    var categoryId=Categories.insert(category);
-    return category.name;
-  }
-});
+postSubmitClientCallbacks.push(getCheckedCategories);
+postEditClientCallbacks.push(getCheckedCategories);
+
+Meteor.startup(function () {
+  Categories.allow({
+    insert: isAdminById
+  , update: isAdminById
+  , remove: isAdminById
+  });
+
+  Meteor.methods({
+    category: function(category){
+      console.log(category)
+      if (!Meteor.user() || !isAdmin(Meteor.user()))
+        throw new Meteor.Error(i18n.t('You need to login and be an admin to add a new category.'));
+      var categoryId=Categories.insert(category);
+      return category.name;
+    }
+  });
 });
