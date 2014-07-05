@@ -54,10 +54,20 @@ Template.post_item.helpers({
     time = this.status == STATUS_APPROVED ? this.submitted : this.createdAt;
     return moment(time).format("MMMM Do, h:mm:ss a");
   },
-  voted: function(){
+  upvoted: function(){
     var user = Meteor.user();
     if(!user) return false; 
     return _.include(this.upvoters, user._id);
+  },
+  downvoted: function(){
+    var user = Meteor.user();
+    if(!user) return false; 
+    return _.include(this.downvoters, user._id);
+  },
+  voted: function(){
+    var user = Meteor.user();
+    if(!user) return false; 
+    return _.include(this.downvoters, user._id) || _.include(this.upvoters, user._id);
   },
   userAvatar: function(){
     var author = Meteor.users.findOne(this.userId, {reactive: false});
@@ -124,6 +134,17 @@ Template.post_item.events({
     }
     Meteor.call('upvotePost', post, function(error, result){
       trackEvent("post upvoted", {'_id': post._id});
+    });
+  },
+  'click .downvote-link': function(e, instance){
+    var post = this;
+    e.preventDefault();
+    if(!Meteor.user()){
+      Router.go('/signin');
+      throwError(i18n.t("Please log in first"));
+    }
+    Meteor.call('downvotePost', post, function(error, result){
+      trackEvent("post downvoted", {'_id': post._id});
     });
   },
   'click .share-link': function(e){
