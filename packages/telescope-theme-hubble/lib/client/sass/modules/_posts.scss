@@ -46,10 +46,12 @@
 	text-align:center;
 	padding:10px 0;
 }
+.posts-wrapper{
+	@include box-shadow(0 1px 1px black(0.15));
+	border-radius: 3px;	
+}
 .posts{
 	position:relative;
-	@include box-shadow(0 1px 1px black(0.15));
-	border-radius: 3px;
 }
 .post{
 	position:relative;
@@ -287,8 +289,8 @@
 }
 .more-button{
 	a{
+		display: block;
 		width:100%;
-		display:block;
 		height:$grid-unit;
 		background:black(0.075);
 		text-align:center;
