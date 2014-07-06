@@ -27,7 +27,5 @@ Package.on_use(function (api) {
 
   api.add_files(['lib/server/publications.js'], ['server']);
  
-  api.add_files(['lib/client/post_thumbnail.html'], ['client']); 
-
   api.export(['preloadSubscriptions', 'adminNav', 'Categories', 'addToPostSchema', 'navItems', 'postModules']);
 });
