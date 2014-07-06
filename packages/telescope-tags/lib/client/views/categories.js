@@ -9,7 +9,8 @@ Template.categories.events({
     e.preventDefault();
 
     var name = $('#name').val();
-    var order = parseInt($('#order').val());
+    var numberOfCategories = Categories.find().count();
+    var order = parseInt($('#order').val()) || (numberOfCategories + 1);
     var slug = slugify(name);
     
     Meteor.call('category', {
