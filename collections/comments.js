@@ -197,7 +197,7 @@ Meteor.methods({
     var comment=Comments.findOne(commentId);
     if(canEdit(Meteor.user(), comment)){
       // decrement post comment count
-      Posts.update(comment.post, {$inc: {comments: -1}});
+      Posts.update(comment.postId, {$inc: {comments: -1}});
 
       // decrement user comment count
       Meteor.users.update({_id: comment.userId}, {$inc: {commentCount: -1}});
