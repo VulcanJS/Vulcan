@@ -46,10 +46,9 @@
 		position:absolute;
 		top:0px;
 		bottom:0px;
-		.upvote-link{
-			height:100%;
+		.upvote-link, .downvote-link{
+			height:50%;
 			display:table;
-			float:left;
 			width:30px;
 			// @include background(linear-gradient(#f3f6f8, #dfe3e5));
 			@include border-radius(3px 0 0 3px);
@@ -82,17 +81,33 @@
 					text-shadow:none;
 				}
 			}
+		}
+		.upvote-link, .downvote-link{
 			&.voted{
+                                height:100%;
 				cursor:default;
 				i.icon-up{
 					display:none;
 				}
 				i.icon-check{
-					color:$blue;
 					display:table-cell;
 				}
 			}
-		}
+                }
+		.upvote-link{
+			&.voted{
+				i.icon-check{
+					color:$blue;
+				}
+			}
+                }
+		.downvote-link{
+			&.voted{
+				i.icon-check{
+					color:$red;
+				}
+			}
+                }
 	}
 	.post-sticky{
 		display:block;
