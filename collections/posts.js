@@ -1,7 +1,3 @@
-// Posts = new Meteor.Collection('posts');
-
-// Note: XXX = change this
-
 postSchemaObject = {
   _id: {
     type: String,

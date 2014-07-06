@@ -58,3 +58,7 @@ Deps.autorun(function() {
     Meteor.subscribe('notifications');
   }
 });
+
+
+// Sort postModules array position using modulePositions as index
+postModules = _.sortBy(postModules, function(module){return _.indexOf(modulePositions, module.position)});

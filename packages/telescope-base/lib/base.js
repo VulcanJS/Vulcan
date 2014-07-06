@@ -1,7 +1,9 @@
 // Initialize common arrays
 
-// array containing properties to be added to the post schema on startup.
+// array containing properties to be added to the post/settings/comments schema on startup.
 addToPostSchema = [];
+addToCommentsSchema = [];
+addToSettingsSchema = [];
 
 // array containing items in the views menu
 viewNav = [];

@@ -6,8 +6,7 @@ Template[getTemplate('post_item')].created = function () {
 
 Template[getTemplate('post_item')].helpers({
   postModules: function () {
-    // sort by position using modulePositions as index
-    return _.sortBy(postModules, function(module){return _.indexOf(modulePositions, module.position)});
+    return postModules;
   },
   templateClass: function () {
     return camelToDash(this.template);

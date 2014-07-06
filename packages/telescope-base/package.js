@@ -12,6 +12,8 @@ Package.on_use(function (api) {
     'adminNav', 
     'viewNav', 
     'addToPostSchema', 
+    'addToCommentsSchema', 
+    'addToSettingsSchema', 
     'preloadSubscriptions', 
     'navItems', 
     'viewParameters', 
