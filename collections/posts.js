@@ -227,7 +227,7 @@ Meteor.methods({
           postAuthorName : getDisplayName(postAuthor),
           postAuthorId : post.userId,
           postTitle : title,
-          postId : postId
+          postId : post._id
         }
       };
       // call a server method because we do not have access to users' info on the client

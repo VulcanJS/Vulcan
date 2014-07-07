@@ -36,7 +36,6 @@ getNotificationContents = function(notification, context){
       context = typeof context === 'undefined' ? 'sidebar' : context,
       userToNotify = Meteor.users.findOne(notification.userId);
 
-
   switch(event){
     case 'newReply':
       var n = {
