@@ -1,7 +1,4 @@
 Template[getTemplate('postContent')].helpers({
-  log: function (a){
-    console.log(a)
-  },
   postLink: function(){
     return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
@@ -57,10 +54,24 @@ Template[getTemplate('postContent')].helpers({
   pointsUnitDisplayText: function(){
     return this.upvotes == 1 ? i18n.t('point') : i18n.t('points');
   },
+  postsMustBeApproved: function () {
+    return !!getSetting('requirePostsApproval');
+  },
   isApproved: function(){
     return this.status == STATUS_APPROVED;
   },
   viaTwitter: function () {
     return !!getSetting('twitterAccount') ? 'via='+getSetting('twitterAccount') : '';
+  }
+});
+
+Template[getTemplate('postContent')].events({
+  'click .approve-link': function(e, instance){
+    Meteor.call('approvePost', this);
+    e.preventDefault();
+  },  
+  'click .unapprove-link': function(e, instance){
+    Meteor.call('unapprovePost', this);
+    e.preventDefault();
   }
 });

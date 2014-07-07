@@ -327,8 +327,9 @@
 		text-align:center;
 		color:white;
 		line-height:$grid-unit;
-		font-size:16px;
+		font-size:18px;
 		border-radius: 0px 0px 3px 3px;
+		text-shadow: 0px 1px 1px 0px black(0.25);
 		&:hover{
 			background: black(0.15);
 		}

@@ -12,11 +12,13 @@
         | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">Edit</a>
       {{/if}}
       {{#if currentUser.isAdmin}}
-        |
-        {{#if isApproved}}
-          <a href="#" class="unapprove-link goto-edit">Unapprove</a>
-        {{else}}
-          <a href="#" class="approve-link goto-edit">Approve</a>
+        {{#if postsMustBeApproved}}
+          |
+          {{#if isApproved}}
+            <a href="#" class="unapprove-link goto-edit">Unapprove</a>
+          {{else}}
+            <a href="#" class="approve-link goto-edit">Approve</a>
+          {{/if}}
         {{/if}}
         | {{i18n "score"}}: {{short_score}}, {{i18n "clicks"}}: {{clicks}}
       {{/if}}
