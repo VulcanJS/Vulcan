@@ -24,7 +24,7 @@ Template[getTemplate('post_item')].helpers({
     moduleContext._id = null;
     return moduleContext;
   },
-  templateClass: function () {
-    return camelToDash(this.template);
+  moduleClass: function () {
+    return camelToDash(this.template) + ' ' + this.position + ' cell';
   }
 });

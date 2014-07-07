@@ -3,7 +3,7 @@
     <div class="modules-group left-modules">
       <div class="inner">
       {{#each leftPostModules}}
-        <div class="{{templateClass}} {{position}} cell">
+        <div class="{{moduleClass}}">
           {{> UI.dynamic template=template data=..}}
         </div>
       {{/each}}
@@ -12,7 +12,7 @@
     <div class="modules-group center-modules">
       <div class="inner">
       {{#each centerPostModules}}
-        <div class="{{templateClass}} {{position}} cell">
+        <div class="{{moduleClass}}">
           {{> UI.dynamic template=template data=..}}
         </div>
       {{/each}}
@@ -21,7 +21,7 @@
     <div class="modules-group right-modules">
       <div class="inner">
       {{#each rightPostModules}}
-        <div class="{{templateClass}} {{position}} cell">
+        <div class="{{moduleClass}}">
           {{> UI.dynamic template=template data=..}}
         </div>
       {{/each}}
