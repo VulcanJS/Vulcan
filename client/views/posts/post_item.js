@@ -10,13 +10,13 @@ Template[getTemplate('post_item')].created = function () {
 
 Template[getTemplate('post_item')].helpers({
   leftPostModules: function () {
-    return filteredModules(['leftOfLeft', 'left', 'rightOfLeft']);
+    return filteredModules(['left-left', 'left-center', 'left-right']);
   },
   centerPostModules: function () {
-    return filteredModules(['leftOfCenter', 'center', 'rightOfCenter']);
+    return filteredModules(['center-left', 'center-center', 'center-right']);
   },
   rightPostModules: function () {
-    return filteredModules(['leftOfRight', 'right', 'rightOfRight']);
+    return filteredModules(['right-left', 'right-center', 'right-right']);
   },
   moduleContext: function () {
     var moduleContext = _.extend(this, post);

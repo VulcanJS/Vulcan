@@ -1,6 +1,6 @@
 ## v0.8.4
 
-* Themes now have their own package.
+* See [blog post](http://telesc.pe/blog/telescope-v09-modulescope) for changelog. 
 
 ## v0.8.3 “CleanScope”
 

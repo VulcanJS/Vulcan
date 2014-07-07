@@ -53,15 +53,15 @@ viewParameters.digest = function (terms, baseParameters) {
 
 // array containing post modules
 modulePositions = [
-  'leftOfLeft',
-  'left',
-  'rightOfLeft',
-  'leftOfCenter',
-  'center',
-  'rightOfCenter',
-  'leftOfRight',
-  'right',
-  'rightOfRight'
+  'left-left',
+  'left-center',
+  'left-right',
+  'center-left',
+  'center-center',
+  'center-right',
+  'right-left',
+  'right-center',
+  'right-right'
 ];
 
 postModules = [

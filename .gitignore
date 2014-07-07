@@ -22,3 +22,6 @@ settings.json
 .idea
 
 scratch
+
+.deploy
+.deploy/*
