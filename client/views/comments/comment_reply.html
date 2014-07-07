@@ -1,9 +1,10 @@
 <template name="comment_reply">
-  {{#if canComment "replace"}}
   <div class="grid comment-page single-post">
     
     {{#with post}}
-      {{> UI.dynamic template=post_item}}
+      <div class="posts">
+        {{> UI.dynamic template=post_item}}
+      </div>
     {{/with}}
 
     {{#with comment}}
@@ -12,8 +13,9 @@
       </ul>
     {{/with}}
 
-    {{> UI.dynamic template=comment_form}}
-    
+    {{#if canComment}}
+      {{> UI.dynamic template=comment_form}}
+    {{/if}}
+
   </div>
-  {{/if}}
 </template>

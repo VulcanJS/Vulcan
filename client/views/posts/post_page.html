@@ -1,6 +1,8 @@
 <template name="post_page">
   <div class="single-post grid">
-    {{> UI.dynamic template=post_item}}
+    <div class="posts">
+      {{> UI.dynamic template=post_item}}
+    </div>
     {{#if body}}
       {{> UI.dynamic template=post_body}}
     {{/if}}
