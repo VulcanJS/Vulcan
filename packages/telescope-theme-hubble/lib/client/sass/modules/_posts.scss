@@ -5,12 +5,37 @@
 }
 .post{
 	display: table-row;
-	>div{
+	.modules-group{
 		display: table-cell;
 		vertical-align: middle;
+		.inner{
+			@include flex();
+			@include align-items(center);
+		}
+		.cell{
+			// display: table-cell;
+			// vertical-align: middle;		
+			margin-right: $grid-margin;
+			@include flex-shrink(0);
+		}
 	}
-	.center{
-		width: 100%;
+	.left-modules{
+		.inner{
+			margin-left: $grid-margin;
+		}
+	}
+	.center-modules{
+		.cell{
+			@include flex-shrink(1);
+		}
+	}
+	.right-modules{
+		.inner{
+			@include justify-content(flex-end);
+		}
+	}
+	.post-content, .post-categories{
+		@include flex-shrink(1 !important);
 	}
 	// display: flex;
 	// display: -webkit-flex;
@@ -96,7 +121,6 @@
 	}
 }
 .post-upvote{
-	padding: 0 5px;
 	.upvote-link{
 		position: relative;
 		// top: 17px;
@@ -150,13 +174,11 @@
 	padding:$grid-padding - 2px 0;
 }
 .post-content{
-	position:relative;
-	padding:0 10px;
 	min-height:$grid-unit - 30px;
 	.post-sticky{
 		display:block;
 		position:absolute;
-		right:20px;
+		right:-40px;
 		top:16px;
 		font-size:24px;
 		i{
@@ -187,6 +209,9 @@
 		font-weight:normal;
 	}
 }
+.post-categories{
+	text-align: right;
+}
 .post-category{
 	display:inline-block;
 	font-size:11px;
@@ -207,7 +232,6 @@
 	line-height:1.5;
 }
 .post-share, .post-discuss{
-	margin-left:$grid-margin;
 	position: relative;
 	>a{
 		position:relative;

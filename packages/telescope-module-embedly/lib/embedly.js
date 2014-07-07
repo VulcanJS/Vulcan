@@ -9,7 +9,7 @@ addToPostSchema.push(thumbnailProperty);
 
 postModules.push({
   template: 'postThumbnail', 
-  position: 'rightOfLeft'
+  position: 'leftOfCenter'
 });
 
 var embedlyKeyProperty = {

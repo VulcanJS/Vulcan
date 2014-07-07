@@ -5,8 +5,14 @@ Template[getTemplate('post_item')].created = function () {
 };
 
 Template[getTemplate('post_item')].helpers({
-  postModules: function () {
-    return postModules;
+  leftPostModules: function () {
+    return _.filter(postModules, function(module){return _.contains(['leftOfLeft', 'left', 'rightOfLeft'], module.position)});
+  },
+  centerPostModules: function () {
+    return _.filter(postModules, function(module){return _.contains(['leftOfCenter', 'center', 'rightOfCenter'], module.position)});
+  },
+  rightPostModules: function () {
+    return _.filter(postModules, function(module){return _.contains(['leftOfRight', 'right', 'rightOfRight'], module.position)});
   },
   templateClass: function () {
     return camelToDash(this.template);
