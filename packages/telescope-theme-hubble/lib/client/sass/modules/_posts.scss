@@ -2,6 +2,16 @@
 .posts{
 	display: table;
 	border-collapse: collapse;
+	width: 100%;
+	position: relative;
+	.single-post &{
+		margin-bottom: 10px;
+		.post{
+			border-radius: 3px;
+			display: block;
+			@extend .has-shadow;
+		}
+	}
 }
 .post{
 	display: table-row;
@@ -25,6 +35,7 @@
 		}
 	}
 	.center-modules{
+		width: 100%;
 		.cell{
 			@include flex-shrink(1);
 		}
@@ -72,11 +83,8 @@
 	padding:10px 0;
 }
 .posts-wrapper{
-	@include box-shadow(0 1px 1px black(0.15));
+	@extend .has-shadow;
 	border-radius: 3px;	
-}
-.posts{
-	position:relative;
 }
 .post{
 	position:relative;
@@ -96,12 +104,6 @@
 		.post-content{
 			background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 		}
-	}
-	.single-post &{
-		display: block;
-		margin-bottom: 10px;
-		border-radius: 3px;
-		@include box-shadow(0 1px 1px black(0.15));
 	}
 }
 .post-rank{
@@ -301,7 +303,7 @@
 	}
 }
 .post-body{
-	@include box-shadow(0 1px 1px black(0.15));
+	@extend .has-shadow;
 	border-radius: 3px;
 	margin-bottom: 10px;
 	background: white;

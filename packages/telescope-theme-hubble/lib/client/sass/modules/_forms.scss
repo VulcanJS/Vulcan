@@ -100,14 +100,14 @@ form, .accounts-dialog{
 }
 input[type="submit"], button, .button, .btn{
 	-webkit-appearance: none;
-	@include border-radius(0px);
+	border-radius: 3px;
 	background:$red;
 	color:white;
 	text-align:center;
 	display:block;
 	padding:0px 10px;
 	border:none;
-	font-size:16px;
+	font-size:15px;
 	cursor:pointer;
 	margin:0;
 	line-height:26px;
