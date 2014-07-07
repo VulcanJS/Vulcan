@@ -67,15 +67,15 @@ modulePositions = [
 postModules = [
   {
     template: 'postUpvote',
-    position: 'leftOfLeft'
+    position: 'left-left'
   },
   {
     template: 'postContent', 
-    position: 'center'
+    position: 'center-center'
   },
   {
     template: 'postDiscuss',
-    position: 'rightOfRight'
+    position: 'right-right'
   }
 ];
 
