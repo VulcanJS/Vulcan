@@ -11,7 +11,8 @@
       "autoform": {},
       "jquery-hotkeys": {},
       "marked": {},
-      "bootstrap3-datepicker": {}
+      "bootstrap3-datepicker": {},
+      "subs-manager": {}
     },
     "packages": {
       "momentjs": {
@@ -63,6 +64,11 @@
         "git": "https://github.com/rajit/bootstrap3-datepicker.git",
         "tag": "v0.2.1",
         "commit": "442484eb1c8eb00c6b9e0e9c88accc934cf8f04a"
+      },
+      "subs-manager": {
+        "git": "https://github.com/meteorhacks/subs-manager.git",
+        "tag": "v1.0.1",
+        "commit": "38317052d1601002d4dff537e4e0f61d1aa36e6d"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
