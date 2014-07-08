@@ -46,8 +46,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.13.5",
-        "commit": "27dd5b912eeba687b228a6a7c2c14eef63b12cca"
+        "tag": "v0.14.0",
+        "commit": "30de032833052ea61e9d37bca5523264309d4478"
       },
       "jquery-hotkeys": {
         "git": "https://github.com/terryschen/meteor-jquery-hotkeys.git",
