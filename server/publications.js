@@ -41,7 +41,7 @@ Meteor.publish('postUsers', function(postId) {
     // publish post author and post commenters
     var post = Posts.findOne(postId),
         users = [];
-        
+
     if(post) {
       var comments = Comments.find({postId: post._id}).fetch();
       // get IDs from all commenters on the post, plus post author's ID
@@ -49,7 +49,7 @@ Meteor.publish('postUsers', function(postId) {
       users.push(post.userId);
       users = _.unique(users);
     }
-    
+
     return Meteor.users.find({_id: {$in: users}}, {fields: privacyOptions});
   }
   return [];
@@ -84,7 +84,7 @@ Meteor.publish('allUsers', function(filterBy, sortBy, limit) {
     var parameters = getUsersParameters(filterBy, sortBy, limit);
     if (!isAdminById(this.userId)) // if user is not admin, filter out sensitive info
       parameters.options = _.extend(parameters.options, {fields: privacyOptions});
-    return Meteor.users.find(parameters.find, parameters.options);  
+    return Meteor.users.find(parameters.find, parameters.options);
   }
   return [];
 });
@@ -144,7 +144,7 @@ Meteor.publish('postsList', function(terms) {
 // Publish comments for a specific post
 
 Meteor.publish('postComments', function(postId) {
-  if(canViewById(this.userId)){  
+  if(canViewById(this.userId)){
     return Comments.find({postId: postId});
   }
   return [];
@@ -181,4 +181,3 @@ Meteor.publish('notifications', function() {
   }
   return [];
 });
-
