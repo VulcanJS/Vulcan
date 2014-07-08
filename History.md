@@ -1,3 +1,7 @@
+## v0.9.1
+
+* Using Arunoda's [Subscription Manager](https://github.com/meteorhacks/subs-manager).
+
 ## v0.9
 
 * See [blog post](http://telesc.pe/blog/telescope-v09-modulescope) for changelog. 
