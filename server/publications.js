@@ -144,11 +144,6 @@ Meteor.publish('postsList', function(terms) {
 // Publish comments for a specific post
 
 Meteor.publish('postComments', function(postId) {
-  console.log('comments..');
-  Meteor._wrapAsync(function(callback) {
-    Meteor.setTimeout(callback, 2000);
-  })();
-
   if(canViewById(this.userId)){
     return Comments.find({postId: postId});
   }
