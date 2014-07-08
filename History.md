@@ -1,4 +1,4 @@
-## v0.8.4
+## v0.9
 
 * See [blog post](http://telesc.pe/blog/telescope-v09-modulescope) for changelog. 
 
