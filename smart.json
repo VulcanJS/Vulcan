@@ -10,6 +10,7 @@
     "autoform": {},
     "jquery-hotkeys": {},
     "marked": {},
-    "bootstrap3-datepicker": {}
+    "bootstrap3-datepicker": {},
+    "subs-manager": {}
   }
 }
