@@ -1,5 +1,6 @@
-var filteredModules = function (positions) {
-  return _.filter(postModules, function(module){return _.contains(positions, module.position)});
+var filteredModules = function (group) {
+  // return the modules whose positions start with group
+  return _.filter(postModules, function(module){return module.position.indexOf(group) == 0});
 }
 
 var post = {};
@@ -10,19 +11,19 @@ Template[getTemplate('post_item')].created = function () {
 
 Template[getTemplate('post_item')].helpers({
   leftPostModules: function () {
-    return filteredModules(['left-left', 'left-center', 'left-right']);
+    return filteredModules('left');
   },
   centerPostModules: function () {
-    return filteredModules(['center-left', 'center-center', 'center-right']);
+    return filteredModules('center');
   },
   rightPostModules: function () {
-    return filteredModules(['right-left', 'right-center', 'right-right']);
+    return filteredModules('right');
   },
-  moduleContext: function () {
-    var moduleContext = _.extend(this, post);
-    moduleContext.templateClass = camelToDash(moduleContext.template);
-    moduleContext._id = null;
-    return moduleContext;
+  moduleContext: function () { // not used for now
+    var module = this;
+    module.templateClass = camelToDash(this.template) + ' ' + this.position + ' cell';
+    module.post = post;
+    return module;
   },
   moduleClass: function () {
     return camelToDash(this.template) + ' ' + this.position + ' cell';
