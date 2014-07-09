@@ -1,0 +1,119 @@
+.mobile-nav{
+  position:fixed;
+  overflow:auto;
+  width:280px;
+  left:-280px;
+  top:0px;
+  bottom:0px;
+  background:#444;
+  color:white;
+  @include box-shadow(inset -3px 0px 7px black(0.5));
+  z-index: 1000;
+  ul{
+    li{
+      border-bottom:1px white(0.1) solid;
+      a{
+        display:block;
+        height:50px;
+        padding:0 10px;
+        line-height:50px;
+        &:hover{
+          background:$red;
+          color:white;
+        }
+      }
+    }
+  }
+}
+.mobile-nav, .content-wrapper{
+  @include single-transition(ease-out, left, 300ms, 0ms);
+}
+.mobile-nav-open{
+  .mobile-nav{
+    left:0px;
+  }
+  .outer-wrapper{
+    overflow:hidden;
+    .inner-wrapper{
+      left:280px;
+    }
+  }
+}
+
+.header-button{
+  position:relative;
+  display:block;
+  margin-top:10px;
+  background:$red;
+  color:white;
+  height:30px;
+  width:40px;
+  i{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    line-height:30px;
+    height:30px;
+    font-size:18px;
+  }
+}
+
+.mobile-menu-button{
+  display: none;
+  @include small{
+    display: block;
+  }
+  z-index:100;
+  @extend .header-button;
+  
+  span{
+    display:none;
+  }
+  &.menu{
+    float:left;
+  }
+  &.submit{
+    float:right;
+  }
+  &:hover{
+    background:white;
+    i{
+      color:$red;
+    }
+  }
+}
+
+.auth-buttons{
+  @include small {
+    z-index:100;
+    margin:0;
+    #login-buttons{
+      display:block !important;
+    }
+    .login-link-and-dropdown-list{
+      right:0px !important;
+      position:static !important;
+      #login-dropdown-list{
+        right:0px !important;
+        margin:0px !important;
+      }
+      .login-link-text{
+        // @extend .header-button;
+        @include hide-text2;
+        height:30px !important;
+        margin:10px 0 0 0 !important;
+        display:block !important;
+        &:after{
+          content: "\75" !important;
+          font-family: 'icomoon' !important;
+          position:absolute;
+          width:100%;
+          text-align:center;
+          line-height:30px !important;
+          height:30px !important;
+          font-size:18px !important;
+        }
+      }
+    }
+  }
+}

@@ -27,12 +27,14 @@
   </style>
   <div class="outer-wrapper {{currentPage}}">
     {{> UI.dynamic template=mobile_nav}}
-    <div class="content-wrapper template-{{pageName}}">
+    <div class="inner-wrapper template-{{pageName}}">
       {{> UI.dynamic template=nav}}
-      {{> UI.dynamic template=error}}
-      {{> yield}}
-      {{> UI.dynamic template=notifications}}
-      {{> UI.dynamic template=footer}}
+      <div class="content-wrapper">
+        {{> UI.dynamic template=error}}
+        {{> yield}}
+        {{> UI.dynamic template=notifications}}
+        {{> UI.dynamic template=footer}}
+      </div>
       <div class="overlay hidden"></div>
     </div>
     {{{extraCode}}}

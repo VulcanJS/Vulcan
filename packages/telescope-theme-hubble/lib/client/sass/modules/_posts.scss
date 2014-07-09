@@ -1,7 +1,7 @@
 // modules layout
 .posts{
-	display: table;
-	border-collapse: collapse;
+	// display: table;
+	// border-collapse: collapse;
 	width: 100%;
 	position: relative;
 	.single-post &{
@@ -14,7 +14,7 @@
 	}
 }
 .post{
-	display: table-row;
+	// display: table-row;
 	.modules-group{
 		display: table-cell;
 		vertical-align: middle;

@@ -7,7 +7,7 @@
 @import "compass/css3";
 @import "compass/typography/lists/horizontal-list";
 
-@import "partials/variables";
+@import "partials/grid";
 @import "partials/colors";
 @import "partials/mixins";
 @import "partials/main";
@@ -18,9 +18,9 @@
 @import "partials/tooltips";
 // @import "partials/datepicker";
 @import "partials/dropdown";
-@import "partials/grid";
 
-@import "modules/header";
+@import "modules/nav";
+@import "modules/mobile_nav";
 @import "modules/posts";
 @import "modules/comments";
 @import "modules/forms";
@@ -32,4 +32,4 @@
 @import "modules/notifications";
 @import "modules/share";
 
-@import "partials/mobile";
+// @import "partials/mobile";

@@ -1,9 +1,9 @@
 <template name="nav">
-  <header class="header grid">
+  <header class="header">
 
-    <a id="mobile-menu" href="#menu" class="mobile mobile-button menu"><i class="icon-menu"></i><span>{{i18n "Menu"}}</span></a>
+    <a id="mobile-menu" href="#menu" class="mobile mobile-button menu mobile-menu-button"><i class="icon-menu"></i><span>{{i18n "Menu"}}</span></a>
 
-    <ul class="nav site-nav desktop">
+    <ul class="nav site-nav desktop-nav has-dropdown">
       {{#each navItems}}
         <li>
           {{> UI.dynamic template=this}}
@@ -12,7 +12,7 @@
     </ul>
 
     {{#if logo_url}}
-      <h1 class="logo image" style="height:{{logo_height}}px; width:{{logo_width}}px; top:{{logo_top}}px; margin-left:{{logo_offset}}px;">
+      <h1 class="logo image" style="height:{{logo_height}}px; width:{{logo_width}}px; margin-left:{{logo_offset}}px;">
         <a href="/">
           <img src="{{logo_url}}" style="height:{{logo_height}}px;" alt="{{site_title}}"/>
         </a>
@@ -22,7 +22,7 @@
     {{/if}}
 
     {{#if canView}}
-    <ul class="nav user-nav desktop">
+    <ul class="nav user-nav  desktop-nav">
       <li><a id="submit" class="submit button" href="/submit">{{i18n "Post"}}</a></li>
     </ul>
     {{/if}}

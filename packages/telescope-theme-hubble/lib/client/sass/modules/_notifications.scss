@@ -1,11 +1,12 @@
 .notifications{
 	position:fixed;
 	height:100%;
-	width:200px;
+	width:260px;
 	top:0px;
-	left:-200px;
+	left:-260px;
 	background:#f3f3f3;
 	@include single-transition(ease-out, left, 400ms, 0ms);
+	z-index: 1000;
 	.mark-as-read{
 		display:block;
 		text-align:center;
@@ -35,25 +36,30 @@
 			}
 		}
 	}
-	.notifications-toggle{
-		display:block;
-		position:absolute;
-		left:200px;
-		top:20px;
-		white-space:nowrap;
-		background:white;
-		@include border-radius(0px 3px 3px 0px);
-		@include box-shadow(0 1px 1px black(0.15));
-		padding:3px 10px;
-		font-size:13px;
-		&.no-notifications{
-			background:white(0.3);
-			@include box-shadow(none);
-			color:$light-text;
-		}
-	}
 	.notifications-open &{
 		left:0px;
 		@include box-shadow(1px 0px 1px black(0.15));
+	}
+}
+
+.notifications-toggle{
+	display:block;
+	position:absolute;
+	left:260px;
+	top:80px;
+	white-space:nowrap;
+	background:white;
+	@include border-radius(0px 3px 3px 0px);
+	@include box-shadow(0 1px 1px black(0.15));
+	padding:3px 10px;
+	font-size:13px;
+	&.no-notifications{
+		background:white(0.3);
+		@include box-shadow(none);
+		color:$light-text;
+	}
+	.notifications-open &{
+		background: white;
+		color: $text;
 	}
 }

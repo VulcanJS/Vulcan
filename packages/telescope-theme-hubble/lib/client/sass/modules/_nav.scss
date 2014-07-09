@@ -11,10 +11,9 @@
 	background:$highlight-color url("/img/bg-header.png") top center;
 	background-color:$highlight-color;
 	margin-bottom:$grid-margin;
-	height:$grid-unit;
 	position:relative;
+	height: 60px;
 	@include cf;
-	border-radius: 0 0 3px 3px;
 	.site-nav{
 		float:left;
 		margin-left:20px;
@@ -22,11 +21,10 @@
 		z-index:20;
 	}
 	.logo{
+		@extend .vcenter;
 		position:absolute;
-		display:inline-block;
+		display:block;
 		text-align:center;
-		top:10px;
-		left:0px;
 		width:100%;
 		color:white;
 		font-size:24px;
@@ -95,7 +93,7 @@
 			color:#fff;
 			font-weight:normal;
 			display:inline-block;
-			height:26px;
+			font-size: 15px;
 		}
 		#login-buttons-password{
 			@extend .button;
@@ -131,16 +129,14 @@
 }
 .nav{
 	@include cf;
-	margin-top:20px;
+	@extend .vcenter;
 	>li{
 		@include horizontal-list-item;
 		margin-right:10px;
 
 		>a, >div >a{
 			color:white;
-			font-size:16px;
-			line-height:26px;
-			height:26px;
+			font-size:15px;
 			font-weight:normal;
 
 			&.intercom em{
@@ -180,5 +176,11 @@
 		.search-clear{
 			display: none;
 		}
+	}
+}
+
+.desktop-nav{
+	@include small{
+		display: none;
 	}
 }

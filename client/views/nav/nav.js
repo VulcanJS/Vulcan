@@ -46,7 +46,7 @@ Template[getTemplate('nav')].events({
     e.preventDefault();
     Meteor.logout();
   },
-  'click #mobile-menu': function(e){
+  'click .mobile-menu-button': function(e){
     e.preventDefault();
     $('body').toggleClass('mobile-nav-open');
   },
