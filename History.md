@@ -1,6 +1,7 @@
 ## v0.9.1
 
 * Using Arunoda's [Subscription Manager](https://github.com/meteorhacks/subs-manager).
+* Fixing mobile version.
 
 ## v0.9
 
