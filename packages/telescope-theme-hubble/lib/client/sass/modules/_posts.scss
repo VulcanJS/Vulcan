@@ -44,9 +44,6 @@
 		.inner{
 			@include justify-content(flex-end);
 		}
-		@include small{
-			display: block;
-		}
 	}
 	.post-content, .post-categories{
 		@include flex-shrink(1 !important);
@@ -216,6 +213,9 @@
 }
 .post-categories{
 	text-align: right;
+	@include small{
+		display: none;
+	}
 }
 .post-category{
 	display:inline-block;
@@ -235,6 +235,11 @@
 	font-size:12px;
 	color:$light-text;
 	line-height:1.5;
+}
+.post-share{
+	@include small{
+		display: none;
+	}
 }
 .post-share, .post-discuss{
 	position: relative;

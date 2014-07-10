@@ -1,8 +1,5 @@
 <template name="postContent">
   <div class="post-info">
-    {{#if sticky}}
-      <span class="post-sticky"><i class="icon-pin"></i><span>{{i18n "Sticky"}}</span></span>
-    {{/if}}
     <h3 class="post-heading">
       <a href="{{postLink}}" class="post-title" target="{{postTarget}}">{{title}}</a>
       {{#if url}}<span class="post-domain">{{domain}}</span>{{/if}}
