@@ -1,3 +1,7 @@
+*, *:before, *:after {
+	@include box-sizing(border-box);
+}
+
 html, body, .outer-wrapper{
 	height:100%;
 }

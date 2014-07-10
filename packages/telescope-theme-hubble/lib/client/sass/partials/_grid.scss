@@ -35,10 +35,6 @@ $medium-break: 50em;
 .content-wrapper{
 	padding: 0 10px;
 }
-.inner-wrapper{
-	position: relative;
-  @include single-transition(all, 300ms, 0ms, ease-out);
-}
 .grid{
 	width:100%;
 	max-width: 1000px;
@@ -46,6 +42,7 @@ $medium-break: 50em;
 	margin-right: auto;
 }
 .grid-small{
-	width:320px;
+  width: 100%;
+	max-width:320px;
 	margin:0 auto;
 }

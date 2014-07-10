@@ -1,51 +1,51 @@
+$mobile-nav-width: 200px;
+
 .mobile-nav{
   position:fixed;
   overflow:auto;
-  width:280px;
-  left:-280px;
-  top:0px;
-  bottom:0px;
+  left: -$mobile-nav-width;
+  left: calc((100% - 60px) * -1);
+  width: $mobile-nav-width;
+  width: calc(100% - 60px);
+  height: 100%;
+  top: 0px;
+  bottom: 0px;
   background:#444;
   color:white;
   @include box-shadow(inset -3px 0px 7px black(0.5));
-  z-index: 1000;
-  ul{
-    li{
-      border-bottom:1px white(0.1) solid;
-      a{
-        display:block;
-        height:50px;
-        padding:0 10px;
-        line-height:50px;
-        &:hover{
-          background:$red;
-          color:white;
-        }
-      }
-    }
-  }
+  z-index: 100;
 }
-.mobile-nav, .content-wrapper{
-  @include single-transition(ease-out, left, 300ms, 0ms);
+
+.mobile-nav, .inner-wrapper{
+  @include single-transition(all, 300ms, ease-out, 0ms);
 }
+
+.inner-wrapper{
+  position: relative;
+  left: 0px;
+}
+
 .mobile-nav-open{
+  overflow: hidden;
   .mobile-nav{
     left:0px;
   }
   .outer-wrapper{
     overflow:hidden;
     .inner-wrapper{
-      left:280px;
+      left:$mobile-nav-width;
+      left: calc(100% - 60px);
     }
   }
 }
 
-.header-button{
-  position:relative;
+@mixin header-button{
   display:block;
-  margin-top:10px;
   background:$red;
-  color:white;
+  border-radius: 3px;
+  &, &:link, &:visited, &:hover{
+    color:white;
+  }
   height:30px;
   width:40px;
   i{
@@ -59,12 +59,12 @@
 }
 
 .mobile-menu-button{
-  display: none;
-  @include small{
-    display: block;
+  @include header-button;
+  @extend %vcenter;
+  @include medium-large{
+    display: none;
   }
   z-index:100;
-  @extend .header-button;
   
   span{
     display:none;
@@ -85,6 +85,7 @@
 
 .auth-buttons{
   @include small {
+    height: 30px;
     z-index:100;
     margin:0;
     #login-buttons{
@@ -98,12 +99,14 @@
         margin:0px !important;
       }
       .login-link-text{
-        // @extend .header-button;
-        @include hide-text2;
+        @include header-button;
+        @include hide-text;
         height:30px !important;
-        margin:10px 0 0 0 !important;
-        display:block !important;
+        padding: 0 !important;
         &:after{
+          text-indent: 0px;
+          display: block;
+          top: 0px;
           content: "\75" !important;
           font-family: 'icomoon' !important;
           position:absolute;
@@ -116,4 +119,49 @@
       }
     }
   }
+}
+
+
+.mobile-nav{
+  a{
+    display: block;
+    height: auto;
+    line-height: inherit;
+    padding: 10px;
+    font-size: 15px;
+    border-bottom:1px white(0.1) solid;    
+  }  
+  .dropdown{
+    >a{
+      background: #333;
+      color: white;
+      &:hover{
+        color: $red;
+      }
+      &:after{
+        display:inline-block;
+        position:relative;
+        top:-1px;
+        margin-left:4px;
+        content:"▼";
+        font-size:8px;
+      }
+    }
+  }
+  .dropdown-menu{
+    li{
+      a{
+        &:hover{
+          background: $red;
+          color: white;
+        }
+      }
+      border-bottom:1px white(0.1) solid;
+    }
+  }  
+}
+
+.mobile-submit{
+  padding: 10px;
+  border-bottom:1px white(0.1) solid;
 }

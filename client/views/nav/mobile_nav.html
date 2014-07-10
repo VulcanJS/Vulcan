@@ -1,8 +1,8 @@
 <template name="mobile_nav">
-  <div id="" class="mobile-nav">
-    <div>
+  <div class="mobile-nav">
+    <div class="mobile-nav-inner">
 
-      <ul class="">
+      <ul class="mobile-menu">
         {{#each navItems}}
           <li>
             {{> UI.dynamic template=this}}
@@ -11,7 +11,7 @@
       </ul>
 
       {{#if canView}}
-        <ul class="">
+        <ul class="mobile-submit">
           <li><a id="submit" class="submit button" href="/submit">{{i18n "Post"}}</a></li>
         </ul>
       {{/if}}

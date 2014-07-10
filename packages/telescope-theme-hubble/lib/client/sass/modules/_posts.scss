@@ -44,6 +44,9 @@
 		.inner{
 			@include justify-content(flex-end);
 		}
+		@include small{
+			display: block;
+		}
 	}
 	.post-content, .post-categories{
 		@include flex-shrink(1 !important);
@@ -127,8 +130,8 @@
 		position: relative;
 		// top: 17px;
 		// transform: translateY(-50%);
-		width: 24px;
-		height: 24px;
+		width: 36px;
+		height: 36px;
 		padding: 6px;
 		display: block;
 		text-align: center;

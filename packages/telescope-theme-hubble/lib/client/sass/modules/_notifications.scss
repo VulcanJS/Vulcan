@@ -1,9 +1,20 @@
 .notifications{
-	position:fixed;
-	height:100%;
-	width:260px;
-	top:0px;
-	left:-260px;
+	@include small{
+		margin-bottom: 10px;
+		&.no-notifications{
+			display: none;
+		}
+		.read{
+			display: none;
+		}
+	}
+	@include medium-large{
+		position:fixed;
+		height:100%;
+		width:260px;
+		top:0px;
+		left:-260px;
+	}
 	background:#f3f3f3;
 	@include single-transition(ease-out, left, 400ms, 0ms);
 	z-index: 1000;
@@ -43,6 +54,9 @@
 }
 
 .notifications-toggle{
+	@include small{
+		display: none;
+	}
 	display:block;
 	position:absolute;
 	left:260px;
@@ -53,6 +67,7 @@
 	@include box-shadow(0 1px 1px black(0.15));
 	padding:3px 10px;
 	font-size:13px;
+	z-index: 10;
 	&.no-notifications{
 		background:white(0.3);
 		@include box-shadow(none);

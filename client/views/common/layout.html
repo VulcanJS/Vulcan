@@ -7,8 +7,8 @@
       }
     {{/if}}
     {{#if buttonColor}}
-      input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn, .error{
-        background-color: {{buttonColor}};
+      input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn, .error, .mobile-menu-button, .login-link-text{
+        background-color: {{buttonColor}} !important;
       }
       a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i{
         color: {{buttonColor}};
@@ -31,8 +31,8 @@
       {{> UI.dynamic template=nav}}
       <div class="content-wrapper">
         {{> UI.dynamic template=error}}
-        {{> yield}}
         {{> UI.dynamic template=notifications}}
+        {{> yield}}
         {{> UI.dynamic template=footer}}
       </div>
       <div class="overlay hidden"></div>

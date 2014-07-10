@@ -1,11 +1,11 @@
 <template name="categoriesMenu">
   {{#if hasCategories}}
     <div class="dropdown">
-      <a class="categories" href="/">{{i18n "Categories"}}</a>
+      <a class="categories dropdown-top-level" href="/">{{i18n "Categories"}}</a>
       <div class="dropdown-menu">
         <ul role="menu" aria-labelledby="dLabel">
           {{# each categories}}
-            <li><a href="{{categoryLink}}">{{name}}</a></li>
+            <li><a class="dropdown-sub-level" href="{{categoryLink}}">{{name}}</a></li>
           {{/each}}
         </ul>
       </div>

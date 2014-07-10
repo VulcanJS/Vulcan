@@ -17,6 +17,7 @@ Package.on_use(function (api) {
     'lib/client/routes.js',
     'lib/client/views/search.html',
     'lib/client/views/search.js',
+    'lib/client/css/search.css',
     'lib/client/views/search_logs.html',
     'lib/client/views/search_logs.js'
     ], ['client']);

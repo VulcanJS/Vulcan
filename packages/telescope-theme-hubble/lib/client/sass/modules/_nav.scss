@@ -14,14 +14,16 @@
 	position:relative;
 	height: 60px;
 	@include cf;
+	padding: 0 20px;
+	z-index: 100;
+	@include small{
+		padding: 0 10px;
+	}
 	.site-nav{
 		float:left;
-		margin-left:20px;
-		position:relative;
-		z-index:20;
 	}
 	.logo{
-		@extend .vcenter;
+		@extend %vcenter;
 		position:absolute;
 		display:block;
 		text-align:center;
@@ -48,9 +50,6 @@
 	}
 	.user-nav{
 		float:right;
-		margin-right:10px;
-		position:relative;
-		z-index:20;
 		.submit{
 			// background:$red;
 			// display:block;
@@ -69,10 +68,10 @@
 // 	}
 // }
 .auth-buttons{
-	position:relative;
+	@extend %vcenter;
 	z-index:20;
 	float:right;
-	margin:20px 10px 0 0;
+	margin-right: 10px;
 	#login-buttons{
 		position:relative;
 		line-height:26px;
@@ -94,6 +93,8 @@
 			font-weight:normal;
 			display:inline-block;
 			font-size: 15px;
+			padding: 0px 8px;
+			border-radius: 3px;
 		}
 		#login-buttons-password{
 			@extend .button;
@@ -129,11 +130,13 @@
 }
 .nav{
 	@include cf;
-	@extend .vcenter;
+	@extend %vcenter;
 	>li{
 		@include horizontal-list-item;
 		margin-right:10px;
-
+		&:last-child{
+			margin-right: 0px;
+		}
 		>a, >div >a{
 			color:white;
 			font-size:15px;
