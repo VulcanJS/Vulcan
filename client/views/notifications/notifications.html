@@ -2,7 +2,6 @@
 	{{#if currentUser}}
 		{{#if canPost}}
 		<div class="notifications {{notification_class}}">
-			<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>
 			<a href="#" class="mark-as-read">{{i18n "Mark all as read"}}</a>
 			<ul>
 			{{#each notifications}}
@@ -10,6 +9,7 @@
 		    {{/each}}
 			</ul>
 		</div>
+		<a href="#" class="notifications-toggle {{notification_class}}">{{notification_count}}</a>	
 		{{/if}}
 	{{/if}}
 </template>

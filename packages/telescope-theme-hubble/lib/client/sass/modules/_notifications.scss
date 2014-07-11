@@ -1,3 +1,5 @@
+$notifications-width: 260px;
+
 .notifications{
 	@include small{
 		margin-bottom: 10px;
@@ -11,12 +13,12 @@
 	@include medium-large{
 		position:fixed;
 		height:100%;
-		width:260px;
+		width:$notifications-width;
 		top:0px;
-		left:-260px;
+		left:-$notifications-width;
 	}
 	background:#f3f3f3;
-	@include single-transition(ease-out, left, 400ms, 0ms);
+	@include single-transition(left, 400ms, ease-out, 0ms);
 	z-index: 1000;
 	.mark-as-read{
 		display:block;
@@ -54,12 +56,13 @@
 }
 
 .notifications-toggle{
+	@include single-transition(left, 400ms, ease-out, 0ms);	
 	@include small{
 		display: none;
 	}
 	display:block;
 	position:absolute;
-	left:260px;
+	left:0px;
 	top:80px;
 	white-space:nowrap;
 	background:white;
@@ -74,6 +77,8 @@
 		color:$light-text;
 	}
 	.notifications-open &{
+		@include box-shadow(0 1px 1px black(0.15));
+		left: $notifications-width;
 		background: white;
 		color: $text;
 	}

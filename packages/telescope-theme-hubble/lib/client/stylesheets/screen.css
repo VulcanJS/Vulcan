@@ -489,11 +489,11 @@ body.pageslide-open {
   /* line 13, ../sass/partials/_dropdown.scss */
   .has-dropdown .dropdown .dropdown-menu {
     display: none;
-    top: 10px;
+    top: 20px;
     left: 10px;
     position: absolute;
-    padding-top: 20px;
-    z-index: 1000; }
+    padding-top: 10px;
+    z-index: 10000; }
     /* line 20, ../sass/partials/_dropdown.scss */
     .has-dropdown .dropdown .dropdown-menu ul {
       background: white;
@@ -1745,34 +1745,34 @@ table {
   background: #f36c3d;
   color: white; }
 
-/* line 1, ../sass/modules/_notifications.scss */
+/* line 3, ../sass/modules/_notifications.scss */
 .notifications {
   background: #f3f3f3;
-  -moz-transition: ease-out left 400ms 0ms;
-  -o-transition: ease-out left 400ms 0ms;
-  -webkit-transition: ease-out left 400ms;
+  -moz-transition: left 400ms ease-out 0ms;
+  -o-transition: left 400ms ease-out 0ms;
+  -webkit-transition: left 400ms ease-out;
   -webkit-transition-delay: 0ms;
-  transition: ease-out left 400ms 0ms;
+  transition: left 400ms ease-out 0ms;
   z-index: 1000; }
   @media screen and (max-width: 30em) {
-    /* line 1, ../sass/modules/_notifications.scss */
+    /* line 3, ../sass/modules/_notifications.scss */
     .notifications {
       margin-bottom: 10px; }
-      /* line 4, ../sass/modules/_notifications.scss */
+      /* line 6, ../sass/modules/_notifications.scss */
       .notifications.no-notifications {
         display: none; }
-      /* line 7, ../sass/modules/_notifications.scss */
+      /* line 9, ../sass/modules/_notifications.scss */
       .notifications .read {
         display: none; } }
   @media screen and (min-width: 30em) {
-    /* line 1, ../sass/modules/_notifications.scss */
+    /* line 3, ../sass/modules/_notifications.scss */
     .notifications {
       position: fixed;
       height: 100%;
       width: 260px;
       top: 0px;
       left: -260px; } }
-  /* line 21, ../sass/modules/_notifications.scss */
+  /* line 23, ../sass/modules/_notifications.scss */
   .notifications .mark-as-read {
     display: block;
     text-align: center;
@@ -1780,39 +1780,44 @@ table {
     font-size: 13px;
     border-bottom: 1px solid #dfdbdb;
     background: #f3f3f3; }
-    /* line 28, ../sass/modules/_notifications.scss */
+    /* line 30, ../sass/modules/_notifications.scss */
     .notifications .mark-as-read:link, .notifications .mark-as-read:visited {
       color: #7ac0e4; }
-  /* line 32, ../sass/modules/_notifications.scss */
+  /* line 34, ../sass/modules/_notifications.scss */
   .notifications ul {
     height: 100%;
     overflow: auto; }
-    /* line 35, ../sass/modules/_notifications.scss */
+    /* line 37, ../sass/modules/_notifications.scss */
     .notifications ul li {
       padding: 10px;
       border-bottom: 1px solid #dfdbdb;
       font-size: 13px;
       background: white; }
-      /* line 40, ../sass/modules/_notifications.scss */
+      /* line 42, ../sass/modules/_notifications.scss */
       .notifications ul li .notification-timestamp {
         color: #b3c1c6;
         font-size: 12px; }
-      /* line 44, ../sass/modules/_notifications.scss */
+      /* line 46, ../sass/modules/_notifications.scss */
       .notifications ul li.read {
         color: #b3c1c6;
         background: #f3f3f3; }
-  /* line 50, ../sass/modules/_notifications.scss */
+  /* line 52, ../sass/modules/_notifications.scss */
   .notifications-open .notifications {
     left: 0px;
     -moz-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
     -webkit-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
     box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15); }
 
-/* line 56, ../sass/modules/_notifications.scss */
+/* line 58, ../sass/modules/_notifications.scss */
 .notifications-toggle {
+  -moz-transition: left 400ms ease-out 0ms;
+  -o-transition: left 400ms ease-out 0ms;
+  -webkit-transition: left 400ms ease-out;
+  -webkit-transition-delay: 0ms;
+  transition: left 400ms ease-out 0ms;
   display: block;
   position: absolute;
-  left: 260px;
+  left: 0px;
   top: 80px;
   white-space: nowrap;
   background: white;
@@ -1826,18 +1831,22 @@ table {
   font-size: 13px;
   z-index: 10; }
   @media screen and (max-width: 30em) {
-    /* line 56, ../sass/modules/_notifications.scss */
+    /* line 58, ../sass/modules/_notifications.scss */
     .notifications-toggle {
       display: none; } }
-  /* line 71, ../sass/modules/_notifications.scss */
+  /* line 74, ../sass/modules/_notifications.scss */
   .notifications-toggle.no-notifications {
     background: rgba(255, 255, 255, 0.3);
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #b3c1c6; }
-  /* line 76, ../sass/modules/_notifications.scss */
+  /* line 79, ../sass/modules/_notifications.scss */
   .notifications-open .notifications-toggle {
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    left: 260px;
     background: white;
     color: #4a4444; }
 

@@ -12,11 +12,11 @@
 	}
 	.dropdown-menu{
 		display:none;
-		top:10px;
+		top:20px;
 		left:10px;
 		position:absolute;
-		padding-top:20px;
-		z-index: 1000;
+		padding-top:10px;
+		z-index: 10000;
 		ul{
 			background:white;
 			padding:10px;
