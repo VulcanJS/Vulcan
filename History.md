@@ -2,6 +2,7 @@
 
 * Using Arunoda's [Subscription Manager](https://github.com/meteorhacks/subs-manager).
 * Fixing mobile version.
+* Made the background color setting into a more general background CSS setting. 
 
 ## v0.9
 

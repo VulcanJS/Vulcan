@@ -17,8 +17,8 @@ Template[getTemplate('layout')].helpers({
   pageName : function(){
     // getCurrentTemplate();
   },
-  backgroundColor: function(){
-  	return getSetting('backgroundColor');
+  backgroundCSS: function(){
+  	return getSetting('backgroundCSS');
   },
   secondaryColor: function(){
   	return getSetting('secondaryColor');

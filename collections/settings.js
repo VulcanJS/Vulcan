@@ -90,9 +90,10 @@ settingsSchemaObject = {
       defaultValue: 'en',
       optional: true
   },
-  backgroundColor: {
+  backgroundCSS: {
     type: String,
-    optional: true
+    optional: true,
+    label: "Background CSS: color, image, etc."
   },
   secondaryColor: {
     type: String,
