@@ -537,24 +537,25 @@ body.pageslide-open {
       padding: 0 10px; } }
   /* line 22, ../sass/modules/_nav.scss */
   .header .site-nav {
-    float: left; }
-  /* line 25, ../sass/modules/_nav.scss */
+    float: left;
+    z-index: 20;
+    position: relative; }
+  /* line 27, ../sass/modules/_nav.scss */
   .header .logo {
     position: absolute;
     display: block;
     text-align: center;
     width: 100%;
     color: white;
-    font-size: 24px;
-    z-index: 10; }
-    /* line 34, ../sass/modules/_nav.scss */
+    font-size: 24px; }
+    /* line 35, ../sass/modules/_nav.scss */
     .header .logo a, .header .logo a:visited {
       color: white; }
-    /* line 37, ../sass/modules/_nav.scss */
+    /* line 38, ../sass/modules/_nav.scss */
     .header .logo.image {
       position: absolute;
       left: 50%; }
-      /* line 40, ../sass/modules/_nav.scss */
+      /* line 41, ../sass/modules/_nav.scss */
       .header .logo.image a {
         display: block;
         height: 100%;
@@ -563,30 +564,32 @@ body.pageslide-open {
         font: 0/0 a;
         text-shadow: none;
         color: transparent; }
-  /* line 51, ../sass/modules/_nav.scss */
+  /* line 52, ../sass/modules/_nav.scss */
   .header .user-nav {
+    z-index: 20;
+    position: relative;
     float: right; }
 
-/* line 70, ../sass/modules/_nav.scss */
+/* line 73, ../sass/modules/_nav.scss */
 .auth-buttons {
   z-index: 20;
   float: right;
   margin-right: 10px; }
-  /* line 75, ../sass/modules/_nav.scss */
+  /* line 78, ../sass/modules/_nav.scss */
   .auth-buttons #login-buttons {
     position: relative;
     line-height: 26px; }
-    /* line 81, ../sass/modules/_nav.scss */
+    /* line 84, ../sass/modules/_nav.scss */
     .auth-buttons #login-buttons .account-link {
       display: block;
       color: white !important;
       margin-bottom: 10px;
       float: none; }
-    /* line 87, ../sass/modules/_nav.scss */
+    /* line 90, ../sass/modules/_nav.scss */
     .auth-buttons #login-buttons a {
       text-decoration: none;
       color: #4a4444; }
-    /* line 91, ../sass/modules/_nav.scss */
+    /* line 94, ../sass/modules/_nav.scss */
     .auth-buttons #login-buttons a.login-link-text {
       color: #fff;
       font-weight: normal;
@@ -594,7 +597,7 @@ body.pageslide-open {
       font-size: 15px;
       padding: 0px 8px;
       border-radius: 3px; }
-    /* line 99, ../sass/modules/_nav.scss */
+    /* line 102, ../sass/modules/_nav.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -602,18 +605,18 @@ body.pageslide-open {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 108, ../sass/modules/_nav.scss */
+    /* line 111, ../sass/modules/_nav.scss */
     .auth-buttons #login-buttons .login-header {
       font-family: inherit;
       height: 26px;
       margin-right: 10px;
       cursor: pointer;
       color: white; }
-      /* line 114, ../sass/modules/_nav.scss */
+      /* line 117, ../sass/modules/_nav.scss */
       .auth-buttons #login-buttons .login-header:before {
         color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 119, ../sass/modules/_nav.scss */
+    /* line 122, ../sass/modules/_nav.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       border: none;
@@ -623,7 +626,7 @@ body.pageslide-open {
       height: 26px;
       text-shadow: none; }
 
-/* line 131, ../sass/modules/_nav.scss */
+/* line 134, ../sass/modules/_nav.scss */
 .nav {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
@@ -635,7 +638,7 @@ body.pageslide-open {
   /* line 7, ../sass/partials/_mixins.scss */
   .nav:after {
     clear: both; }
-  /* line 134, ../sass/modules/_nav.scss */
+  /* line 137, ../sass/modules/_nav.scss */
   .nav > li {
     list-style-image: none;
     list-style-type: none;
@@ -654,25 +657,25 @@ body.pageslide-open {
     /* line 52, ../../../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/typography/lists/_horizontal-list.scss */
     .nav > li.last {
       padding-right: 0; }
-    /* line 137, ../sass/modules/_nav.scss */
+    /* line 140, ../sass/modules/_nav.scss */
     .nav > li:last-child {
       margin-right: 0px; }
-    /* line 140, ../sass/modules/_nav.scss */
+    /* line 143, ../sass/modules/_nav.scss */
     .nav > li > a, .nav > li > div > a {
       color: white;
       font-size: 15px;
       font-weight: normal; }
-      /* line 146, ../sass/modules/_nav.scss */
+      /* line 149, ../sass/modules/_nav.scss */
       .nav > li > a.intercom em:before, .nav > li > div > a.intercom em:before {
         content: '('; }
-      /* line 149, ../sass/modules/_nav.scss */
+      /* line 152, ../sass/modules/_nav.scss */
       .nav > li > a.intercom em:after, .nav > li > div > a.intercom em:after {
         content: ')'; }
 
-/* line 156, ../sass/modules/_nav.scss */
+/* line 159, ../sass/modules/_nav.scss */
 .search {
   position: relative; }
-  /* line 158, ../sass/modules/_nav.scss */
+  /* line 161, ../sass/modules/_nav.scss */
   .search .search-field {
     font-size: 14px;
     padding: 4px 12px;
@@ -683,21 +686,21 @@ body.pageslide-open {
     -webkit-transition: 0.2s all;
     -moz-transition: 0.2s all;
     background: white; }
-    /* line 168, ../sass/modules/_nav.scss */
+    /* line 171, ../sass/modules/_nav.scss */
     .search .search-field:focus {
       outline: none; }
-  /* line 173, ../sass/modules/_nav.scss */
+  /* line 176, ../sass/modules/_nav.scss */
   .search.empty .search-field {
     background: rgba(255, 255, 255, 0.1); }
-    /* line 175, ../sass/modules/_nav.scss */
+    /* line 178, ../sass/modules/_nav.scss */
     .search.empty .search-field:focus {
       background: white; }
-  /* line 179, ../sass/modules/_nav.scss */
+  /* line 182, ../sass/modules/_nav.scss */
   .search.empty .search-clear {
     display: none; }
 
 @media screen and (max-width: 30em) {
-  /* line 185, ../sass/modules/_nav.scss */
+  /* line 188, ../sass/modules/_nav.scss */
   .desktop-nav {
     display: none; } }
 

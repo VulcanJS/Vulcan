@@ -21,6 +21,8 @@
 	}
 	.site-nav{
 		float:left;
+		z-index: 20;
+		position: relative;
 	}
 	.logo{
 		@extend %vcenter;
@@ -30,7 +32,6 @@
 		width:100%;
 		color:white;
 		font-size:24px;
-		z-index:10;
 		a, a:visited{
 			color:white;
 		}
@@ -49,6 +50,8 @@
 		}
 	}
 	.user-nav{
+		z-index: 20;
+		position: relative;
 		float:right;
 		.submit{
 			// background:$red;
