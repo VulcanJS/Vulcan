@@ -59,6 +59,7 @@ findQueueContainer=function($comment){
 Template[getTemplate('comment_item')].created = function() {
   // if comments are supposed to be queued, then queue this comment on create
   this.isQueued = window.queueComments;
+  window.openedComments = [];
 }
 
 Template[getTemplate('comment_item')].helpers({
