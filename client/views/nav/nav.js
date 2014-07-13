@@ -31,13 +31,9 @@ Template[getTemplate('nav')].helpers({
   }
 });
 
-Template[getTemplate('nav')].rendered=function(){
-
-  if(!Meteor.user()){
+Template[getTemplate('nav')].rendered = function(){
+  if(!Meteor.loggingIn() && !Meteor.user()){
     $('.login-link-text').text("Sign Up/Sign In");
-  }else{
-    $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
-    $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
   }
 };
 
@@ -53,5 +49,11 @@ Template[getTemplate('nav')].events({
   'click .login-header': function(e){
     e.preventDefault();
     Router.go('/account');
+  },
+  'click #login-name-link': function(e){
+    if(Meteor.user() && !$('account-link').exists()){
+      $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
+      $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
+    }  
   }
 });

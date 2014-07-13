@@ -4,6 +4,7 @@ Some of the improvements planned for the next versions of Telescope. Email [hell
 
 [Fixing issues](https://github.com/TelescopeJS/Telescope/issues) is also a great way to pitch in :)
 
+- Get rid of default user account dropdown. 
 - Better user profiles. 
 - Better user dashboard (with search).
 - Implement real reactive joins.
