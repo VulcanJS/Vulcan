@@ -26,7 +26,9 @@
 			// display: table-cell;
 			// vertical-align: middle;		
 			margin-right: $grid-margin;
-			@include flex-shrink(0);
+			@include medium-large{
+				@include flex-shrink(0);
+			}
 		}
 	}
 	.left-modules{
@@ -37,16 +39,47 @@
 	.center-modules{
 		width: 100%;
 		.cell{
-			@include flex-shrink(1);
+			@include medium-large{
+				@include flex-shrink(1);
+			}
 		}
 	}
 	.right-modules{
-		.inner{
-			@include justify-content(flex-end);
+		@include small{
+			display: none;
+			background: #333;
+			padding: 10px;
+			&.visible{
+				display: block;
+			}
+			.inner{
+				@include justify-content(center);
+			}
+			.cell{
+				@include flex-grow(1);
+				flex: 1;
+				text-align: center;
+			}
+		}
+		@include medium-large{
+			.inner{
+				@include justify-content(flex-end);
+			}
+		}
+		.cell{
+			&:last-child{
+				margin-right: 0px;
+			}
 		}
 	}
-	.post-content, .post-categories{
-		@include flex-shrink(1 !important);
+	.post-content{
+		@include small{
+			@include flex-grow(1);
+			flex: 1;
+		}
+		@include medium-large{
+			@include flex-shrink(1 !important);
+		}
 	}
 	// display: flex;
 	// display: -webkit-flex;
@@ -76,6 +109,38 @@
 	// 	@include flex-grow(1);
 	// 	// width: 1px;
 	// }
+}
+
+.post-actions{
+	display: none;
+	text-align: right;
+	@include flex-shrink(1);
+	padding-right: 5px;
+	@include small{
+		display: block;
+	}
+	a{
+		display: block;
+		border-radius: 3px;
+		border: 1px solid $red;
+		color: $red;
+		text-align: center;
+		width: 30px;
+		height: 30px;
+		line-height: 14px;
+		font-weight: bold;
+		font-size: 24px;
+	}
+}
+
+.post-meta-item{
+	display: inline;
+	&:after{
+		content: ",";
+	}
+	&:last-child:after{
+		content: "";
+	}
 }
 
 .empty-notice{
@@ -209,13 +274,12 @@
 		color:$light-text;
 		font-size:14px;
 		font-weight:normal;
+		display: block;
 	}
 }
 .post-categories{
 	text-align: right;
-	@include small{
-		display: none;
-	}
+
 }
 .post-category{
 	display:inline-block;
@@ -236,16 +300,12 @@
 	color:$light-text;
 	line-height:1.5;
 }
-.post-share{
-	@include small{
-		display: none;
-	}
-}
+
 .post-share, .post-discuss{
 	position: relative;
 	>a{
 		position:relative;
-		display:block;
+		display:inline-block;
 		padding:0;
 		width:$grid-unit;
 		height:$grid-unit;

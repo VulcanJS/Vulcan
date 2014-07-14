@@ -8,6 +8,7 @@ Some of the improvements planned for the next versions of Telescope. Email [hell
 - Better user profiles. 
 - Better user dashboard (with search).
 - Implement real reactive joins.
+- Add list of users participating in a thread. 
 - Improve post pagination.
 - Improve subscriptions management. 
 - Improve the invite system. See [#253](https://github.com/TelescopeJS/Telescope/issues/253).

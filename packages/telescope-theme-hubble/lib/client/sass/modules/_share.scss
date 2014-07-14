@@ -1,7 +1,13 @@
 .share-options{
-  position:absolute;
-  left:-180px;
-  top:5px;
+  position:absolute;  
+  @include small{
+    left: 0px;
+    top: 75px;
+  }
+  @include medium-large{
+    left:-180px;
+    top:5px;
+  }
   padding: 10px;
   line-height: 1;
   a{
@@ -26,17 +32,33 @@
   }
   &:after {
     border-color: rgba(255, 255, 255, 0);
-    border-left-color: #ffffff;
     border-width: 10px;
-    top: 20px;
-    margin-top: -3px;
+    @include small{
+      border-bottom-color: #ffffff;
+      top: -20px;
+      left: 50%;
+      margin-left: -11px;
+    }
+    @include medium-large{
+      border-left-color: #ffffff;
+      top: 20px;
+      margin-top: -3px;
+    }
   }
   &:before {
     border-color: rgba(0, 0, 0, 0);
-    border-left-color: $red;
     border-width: 11px;
-    top: 20px;
-    margin-top: -4px;
+    @include small{
+      border-bottom-color: $red;
+      top: -22px;
+      left: 50%;
+      margin-left: -12px;
+    }
+    @include medium-large{
+      border-left-color: $red;
+      top: 20px;
+      margin-top: -4px;
+    }
   }
   .buttons{
     @include cf;

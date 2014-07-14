@@ -111,33 +111,33 @@ Template[getTemplate('comment_item')].helpers({
 });
 
 Template[getTemplate('comment_item')].rendered=function(){
-  if(this.data){
-    var comment=this.data;
-    var $comment=$("#"+comment._id);
+  // if(this.data){
+  //   var comment=this.data;
+  //   var $comment=$("#"+comment._id);
 
-    if(Meteor.user() && Meteor.user()._id==comment.userId){
-      // if user is logged in, and the comment belongs to the user, then never queue it
-    }else if(this.isQueued && !$comment.hasClass("comment-queued") && window.openedComments.indexOf(comment._id)==-1){
-      // if comment is new and has not already been previously queued
-      // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
-      // across template renderings
-      // TODO: save scroll position
+  //   if(Meteor.user() && Meteor.user()._id==comment.userId){
+  //     // if user is logged in, and the comment belongs to the user, then never queue it
+  //   }else if(this.isQueued && !$comment.hasClass("comment-queued") && window.openedComments.indexOf(comment._id)==-1){
+  //     // if comment is new and has not already been previously queued
+  //     // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
+  //     // across template renderings
+  //     // TODO: save scroll position
       
-      // get comment author name
-      var user=Meteor.users.findOne(comment.userId);
-      var author=getDisplayName(user);
-      var imgURL=getAvatarUrl(user);
-      var $container=findQueueContainer($comment);
-      var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip" style="background-image:url('+imgURL+')"><span class="tooltip"><span>'+author+'</span></span></a></li>';
+  //     // get comment author name
+  //     var user=Meteor.users.findOne(comment.userId);
+  //     var author=getDisplayName(user);
+  //     var imgURL=getAvatarUrl(user);
+  //     var $container=findQueueContainer($comment);
+  //     var comment_link='<li class="icon-user"><a href="#'+comment._id+'" class="has-tooltip" style="background-image:url('+imgURL+')"><span class="tooltip"><span>'+author+'</span></span></a></li>';
 
-      $(comment_link).appendTo($container.find("ul"));
-      // $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
+  //     $(comment_link).appendTo($container.find("ul"));
+  //     // $(comment_link).appendTo($container.find("ul")).hide().fadeIn("slow");
 
-      $comment.removeClass("comment-displayed").addClass("comment-queued");
-      $comment.data("queue", $container);
-      // TODO: take the user back to their previous scroll position
-    }
-  }
+  //     $comment.removeClass("comment-displayed").addClass("comment-queued");
+  //     $comment.data("queue", $container);
+  //     // TODO: take the user back to their previous scroll position
+  //   }
+  // }
 }
 
 Template.comment_item.events({

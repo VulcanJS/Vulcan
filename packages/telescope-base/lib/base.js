@@ -74,11 +74,40 @@ postModules = [
     position: 'center-center'
   },
   {
+    template: 'postActions',
+    position: 'center-right'
+  },
+  {
     template: 'postDiscuss',
     position: 'right-right'
   }
 ];
 
+postHeading = [
+  {
+    template: 'postTitle',
+    order: 1
+  },
+  {
+    template: 'postDomain', 
+    order: 5
+  }
+]
+
+postMeta = [
+  {
+    template: 'postMeta',
+    order: 1
+  },
+  {
+    template: 'postCommentsLink',
+    order: 3
+  },  
+  {
+    template: 'postAdmin', 
+    order: 5
+  }
+]
 // ------------------------------ Callbacks ------------------------------ //
 
 postSubmitClientCallbacks = [];

@@ -30,10 +30,10 @@ viewParameters.category = function (terms, baseParameters) {
   return parameters;
 }
 
-// push "categoriesModule" modules to postModules
-postModules.push({
+// push "categories" modules to postHeading
+postHeading.push({
   template: 'postCategories',
-  position: 'right-left'
+  order: 3
 });
   
 // push "categoriesMenu" template to navItems

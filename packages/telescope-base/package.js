@@ -18,6 +18,8 @@ Package.on_use(function (api) {
     'navItems', 
     'viewParameters', 
     'postModules',
+    'postHeading',
+    'postMeta',
     'modulePositions',
     'postSubmitClientCallbacks',
     'postSubmitServerCallbacks',
