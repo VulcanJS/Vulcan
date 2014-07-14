@@ -31,7 +31,12 @@
 		text-align:center;
 		width:100%;
 		color:white;
-		font-size:24px;
+		@include small{
+			font-size: 18px;
+		}
+		@include medium-large{
+			font-size:24px;
+		}
 		left: 0px;
 		right: 0px;
 		a, a:visited{
