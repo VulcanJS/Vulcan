@@ -70,12 +70,12 @@ postModules = [
     position: 'left-left'
   },
   {
-    template: 'postContent', 
-    position: 'center-center'
+    template: 'postActions',
+    position: 'left-right'
   },
   {
-    template: 'postActions',
-    position: 'center-right'
+    template: 'postContent', 
+    position: 'center-center'
   },
   {
     template: 'postDiscuss',

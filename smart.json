@@ -11,6 +11,7 @@
     "jquery-hotkeys": {},
     "marked": {},
     "bootstrap3-datepicker": {},
-    "subs-manager": {}
+    "subs-manager": {},
+    "telescope-module-embedly": {}
   }
 }

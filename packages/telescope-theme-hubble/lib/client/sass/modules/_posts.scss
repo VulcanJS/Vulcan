@@ -34,10 +34,25 @@
 	.left-modules{
 		.inner{
 			margin-left: $grid-margin;
+		}	
+		@include small{
+			.inner{
+				display: block;
+			}
+			margin-right: $grid-margin;
+
+		}
+		@include medium-large{
+
 		}
 	}
 	.center-modules{
 		width: 100%;
+		@include small{
+			.inner{
+				display: block;
+			}
+		}
 		.cell{
 			@include medium-large{
 				@include flex-shrink(1);
@@ -121,15 +136,73 @@
 	}
 	a{
 		display: block;
-		border-radius: 3px;
-		border: 1px solid $red;
-		color: $red;
+		width: 36px;
+		height: 36px;
+		padding: 6px;
+		span{
+			display: block;
+			height: 100%;
+			width: 100%;
+			border-radius: 3px;
+			border: 1px solid rgba($red, 0.3);
+			color: rgba($red, 0.8);
+			text-align: center;
+			line-height: 10px;
+			font-weight: bold;
+			font-size: 20px;
+		}
+	}
+}
+
+
+.post-upvote{
+	.upvote-link{
+		position: relative;
+		// top: 17px;
+		// transform: translateY(-50%);
+		width: 36px;
+		height: 36px;
+		padding: 6px;
+		display: block;
 		text-align: center;
-		width: 30px;
-		height: 30px;
-		line-height: 14px;
-		font-weight: bold;
-		font-size: 24px;
+		i{
+			display: block;
+			border-radius: 50%;
+			border: 1px solid rgba($red, 0.3);
+			font-size:10px;
+			height:100%;
+			width:100%;
+			text-align:center;
+			// line-height:$grid-unit;
+			color:rgba($red, 0.8);
+			text-shadow:0px 1px 0px white;
+			line-height: 2.2;
+			&.icon-check{
+				display:none;
+			}
+		}
+		span{
+			display:none;
+		}
+		&.not-voted:hover{
+			i{
+				background: rgba($red, 0.1);
+				color:$red;
+				text-shadow:none;
+			}
+		}
+		&.voted{
+			cursor:default;
+			i.icon-up{
+				display:none;
+			}
+			i.icon-check{
+				border: 1px solid rgba($blue, 0.6);
+				display: block;
+				color:rgba($blue, 0.8);
+				opacity: 0.5;
+			}
+		}
 	}
 }
 
@@ -187,56 +260,6 @@
 	color:black(0.2);
 	}
 }
-.post-upvote{
-	.upvote-link{
-		position: relative;
-		// top: 17px;
-		// transform: translateY(-50%);
-		width: 36px;
-		height: 36px;
-		padding: 6px;
-		display: block;
-		text-align: center;
-		i{
-			display: block;
-			border-radius: 50%;
-			border: 1px solid rgba($red, 0.3);
-			font-size:10px;
-			height:100%;
-			width:100%;
-			text-align:center;
-			// line-height:$grid-unit;
-			color:rgba($red, 0.8);
-			text-shadow:0px 1px 0px white;
-			line-height: 2.2;
-			&.icon-check{
-				display:none;
-			}
-		}
-		span{
-			display:none;
-		}
-		&.not-voted:hover{
-			i{
-				background: rgba($red, 0.1);
-				color:$red;
-				text-shadow:none;
-			}
-		}
-		&.voted{
-			cursor:default;
-			i.icon-up{
-				display:none;
-			}
-			i.icon-check{
-				border: 1px solid rgba($blue, 0.6);
-				display: block;
-				color:rgba($blue, 0.8);
-				opacity: 0.5;
-			}
-		}
-	}
-}
 .post-info{
 	padding:$grid-padding - 2px 0;
 }
@@ -258,11 +281,18 @@
 }
 .post-heading{
 	margin-bottom:3px;
+	@include small{
+		line-height: 1.5;
+	}
 	.post-title{
-		font-size:18px;
+		@include small{
+			font-size: 15px;
+		}
+		@include medium-large{
+			font-size:18px;
+		}
 		color:$text;
 		font-weight:normal;
-		line-height:1;
 		&:visited{
 			color:$grey;
 		}
@@ -272,7 +302,12 @@
 	}
 	.post-domain{
 		color:$light-text;
-		font-size:14px;
+		@include small{
+			font-size: 13px;
+		}
+		@include medium-large{
+			font-size:14px;
+		}
 		font-weight:normal;
 		display: block;
 	}

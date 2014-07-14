@@ -1,8 +1,9 @@
 ## v0.9.1
 
 * Using Arunoda's [Subscription Manager](https://github.com/meteorhacks/subs-manager).
-* Fixing mobile version.
+* Updating mobile version.
 * Made the background color setting into a more general background CSS setting. 
+* Added `postHeading` and `postMeta` hooks. 
 
 ## v0.9
 

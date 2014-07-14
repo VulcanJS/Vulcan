@@ -12,7 +12,8 @@
       "jquery-hotkeys": {},
       "marked": {},
       "bootstrap3-datepicker": {},
-      "subs-manager": {}
+      "subs-manager": {},
+      "telescope-module-embedly": {}
     },
     "packages": {
       "momentjs": {
@@ -69,6 +70,11 @@
         "git": "https://github.com/meteorhacks/subs-manager.git",
         "tag": "v1.0.1",
         "commit": "38317052d1601002d4dff537e4e0f61d1aa36e6d"
+      },
+      "telescope-module-embedly": {
+        "git": "https://github.com/TelescopeJS/telescope-module-embedly.git",
+        "tag": "v0.2.0",
+        "commit": "03768577ab53f9fa97e14e24abc4a7eded421f34"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
