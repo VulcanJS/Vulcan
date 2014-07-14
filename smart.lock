@@ -73,8 +73,8 @@
       },
       "telescope-module-embedly": {
         "git": "https://github.com/TelescopeJS/telescope-module-embedly.git",
-        "tag": "v0.2.0",
-        "commit": "03768577ab53f9fa97e14e24abc4a7eded421f34"
+        "tag": "v0.2.1",
+        "commit": "70642021ad727a9a267698dad15f06163a7c3bad"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
