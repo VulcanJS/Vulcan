@@ -7,6 +7,7 @@
 	}
 	ul, ol{
 		padding-left:18px;
+		margin-bottom: 1em;
 	}
 	ul{
 		list-style-type:disc;
@@ -54,5 +55,14 @@
 		border: 1px solid #ddd;
 		background-color: #f8f8f8;
 		border-radius: 3px;
+	}
+	pre{
+		padding: 20px;
+		border: 1px solid #ddd;
+		background-color: #f8f8f8;
+		code{
+			border: none;
+			background: none;
+		}	
 	}
 }

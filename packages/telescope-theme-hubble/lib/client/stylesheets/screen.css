@@ -391,45 +391,46 @@ body.pageslide-open {
   font-style: italic; }
 /* line 8, ../sass/partials/_markdown.scss */
 .markdown ul, .markdown ol {
-  padding-left: 18px; }
-/* line 11, ../sass/partials/_markdown.scss */
+  padding-left: 18px;
+  margin-bottom: 1em; }
+/* line 12, ../sass/partials/_markdown.scss */
 .markdown ul {
   list-style-type: disc; }
-/* line 14, ../sass/partials/_markdown.scss */
+/* line 15, ../sass/partials/_markdown.scss */
 .markdown ol {
   list-style-type: decimal; }
-/* line 18, ../sass/partials/_markdown.scss */
+/* line 19, ../sass/partials/_markdown.scss */
 .markdown a:link, .markdown a:visited, .markdown a:active {
   color: #7ac0e4; }
-/* line 21, ../sass/partials/_markdown.scss */
+/* line 22, ../sass/partials/_markdown.scss */
 .markdown a:hover {
   color: #f36c3d; }
-/* line 25, ../sass/partials/_markdown.scss */
+/* line 26, ../sass/partials/_markdown.scss */
 .markdown p {
   margin-bottom: 1em; }
-  /* line 27, ../sass/partials/_markdown.scss */
+  /* line 28, ../sass/partials/_markdown.scss */
   .markdown p:last-child {
     margin-bottom: 0; }
-/* line 31, ../sass/partials/_markdown.scss */
+/* line 32, ../sass/partials/_markdown.scss */
 .markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5 {
   font-weight: bold;
   margin-bottom: 0; }
-/* line 35, ../sass/partials/_markdown.scss */
+/* line 36, ../sass/partials/_markdown.scss */
 .markdown h1 {
   font-size: 36px; }
-/* line 38, ../sass/partials/_markdown.scss */
+/* line 39, ../sass/partials/_markdown.scss */
 .markdown h2 {
   font-size: 24px; }
-/* line 41, ../sass/partials/_markdown.scss */
+/* line 42, ../sass/partials/_markdown.scss */
 .markdown h3 {
   font-size: 18px; }
-/* line 44, ../sass/partials/_markdown.scss */
+/* line 45, ../sass/partials/_markdown.scss */
 .markdown h4 {
   font-size: 16px; }
-/* line 47, ../sass/partials/_markdown.scss */
+/* line 48, ../sass/partials/_markdown.scss */
 .markdown h5 {
   font-size: 14px; }
-/* line 50, ../sass/partials/_markdown.scss */
+/* line 51, ../sass/partials/_markdown.scss */
 .markdown code {
   font-family: monospace;
   margin: 0 2px;
@@ -437,6 +438,15 @@ body.pageslide-open {
   border: 1px solid #ddd;
   background-color: #f8f8f8;
   border-radius: 3px; }
+/* line 59, ../sass/partials/_markdown.scss */
+.markdown pre {
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8; }
+  /* line 63, ../sass/partials/_markdown.scss */
+  .markdown pre code {
+    border: none;
+    background: none; }
 
 /* line 1, ../sass/partials/_tooltips.scss */
 .has-tooltip {
