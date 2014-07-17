@@ -54,9 +54,6 @@
 			}
 		}
 		.cell{
-			@include medium-large{
-				@include flex-shrink(1);
-			}
 		}
 	}
 	.right-modules{
