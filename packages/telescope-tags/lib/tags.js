@@ -79,3 +79,7 @@ Meteor.startup(function () {
     }
   });
 });
+
+getCategoryUrl = function(slug){
+  return getSiteUrl()+'category/'+slug;
+};

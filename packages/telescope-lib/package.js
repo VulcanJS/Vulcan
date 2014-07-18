@@ -10,9 +10,14 @@ Package.on_use(function (api) {
     'jquery'
   ], 'client');
 
-  api.add_files(['lib/autolink.js', 'lib/deep_extend.js', 'lib/camel_to_dash.js'], ['client', 'server']);
+  api.add_files(['lib/lib.js', 'lib/deep_extend.js', 'lib/autolink.js'], ['client', 'server']);
 
   api.add_files(['lib/client/jquery.exists.js'], ['client']);
   
-  api.export(['deepExtend', 'camelToDash']);
+  api.export([
+    'deepExtend', 
+    'camelToDash',
+    'getSetting',
+    'getSiteUrl'
+  ]);
 });
