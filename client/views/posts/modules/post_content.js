@@ -25,10 +25,6 @@ Template[getTemplate('postContent')].helpers({
   },
   commentsDisplayText: function(){
     return this.comments == 1 ? i18n.t('comment') : i18n.t('comments');
-  },
-  
-  viaTwitter: function () {
-    return !!getSetting('twitterAccount') ? 'via='+getSetting('twitterAccount') : '';
   }
 });
 
