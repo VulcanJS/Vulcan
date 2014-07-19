@@ -255,5 +255,17 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  addLastCommentDate: function () {
+    var i = 0;
+    Posts.find({comments: {$gt: 0}}).forEach(function (post) {
+      i++;
+      console.log("Post: "+post._id);
+      var postComments = Comments.find({postId: post._id}, {sort: {postedAt: -1}}).fetch();
+      var lastComment = postComments[0];
+      Posts.update(post._id, { $set: { lastCommentDate: lastComment.postedAt}}, {multi: false, validate: false});
+      console.log("---------------------");
+    });
+    return i;
   }
 }

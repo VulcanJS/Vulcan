@@ -90,6 +90,7 @@ Meteor.methods({
         timeSinceLastComment=timeSinceLast(user, Comments),
         cleanText= cleanUp(text),
         commentInterval = Math.abs(parseInt(getSetting('commentInterval',15))),
+        now = new Date(),
         properties={
           'commentAuthorId': user._id,
           'commentAuthorName': getDisplayName(user),
@@ -114,8 +115,8 @@ Meteor.methods({
       postId: postId,
       body: cleanText,
       userId: user._id,
-      createdAt: new Date(),
-      postedAt: new Date(),
+      createdAt: now,
+      postedAt: now,
       upvotes: 0,
       downvotes: 0,
       baseScore: 0,
@@ -134,7 +135,7 @@ Meteor.methods({
     // extend comment with newly created _id
     comment = _.extend(comment, {_id: newCommentId});
 
-    Posts.update(postId, {$inc: {comments: 1}});
+    Posts.update(postId, {$inc: {comments: 1}, lastCommentDate: now});
 
     Meteor.call('upvoteComment', comment);
 
