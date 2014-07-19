@@ -53,7 +53,7 @@ Meteor.methods({
     var currentUser = Meteor.users.findOne(this.userId);
     console.log('newPostNotify');
     // send a notification to every user according to their notifications settings
-    Meteor.users.find().forEach(function(user) {
+    Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
       // don't send users notifications for their own posts
       if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user)){
         properties.userId = user._id;
