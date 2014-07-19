@@ -135,7 +135,7 @@ Meteor.methods({
     // extend comment with newly created _id
     comment = _.extend(comment, {_id: newCommentId});
 
-    Posts.update(postId, {$inc: {comments: 1}, lastCommentDate: now});
+    Posts.update(postId, {$inc: {comments: 1}, $set: {lastCommentDate: now}});
 
     Meteor.call('upvoteComment', comment);
 
