@@ -1,3 +1,7 @@
+## v0.9.2.1
+
+* Added `lastCommentedAt` property to posts. 
+
 ## v0.9.1
 
 * Using Arunoda's [Subscription Manager](https://github.com/meteorhacks/subs-manager).

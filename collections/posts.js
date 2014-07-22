@@ -32,7 +32,7 @@ postSchemaObject = {
     type: Number,
     optional: true
   },
-  lastCommentDate: {
+  lastCommentedAt: {
     type: Date,
     optional: true
   },
