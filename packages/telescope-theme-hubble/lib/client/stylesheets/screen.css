@@ -516,7 +516,7 @@ body.pageslide-open {
     .has-dropdown .dropdown .dropdown-menu ul {
       background: white;
       padding: 10px;
-      width: 140px;
+      min-width: 140px;
       -moz-border-radius: 3px;
       -webkit-border-radius: 3px;
       border-radius: 3px;

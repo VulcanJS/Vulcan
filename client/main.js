@@ -11,25 +11,6 @@ STATUS_REJECTED=3;
 
 navItems.push('adminMenu');
 
-viewNav = viewNav.concat([
-  {
-    route: 'posts_top',
-    label: 'Top'
-  },
-  {
-    route: 'posts_new',
-    label: 'New'
-  },
-  {
-    route: 'posts_best',
-    label: 'Best'
-  },
-  {
-    route: 'posts_digest',
-    label: 'Digest'
-  }   
-]);
-
 adminNav = adminNav.concat([
   {
     route: 'posts_pending',

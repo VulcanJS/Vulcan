@@ -6,7 +6,24 @@ addToCommentsSchema = [];
 addToSettingsSchema = [];
 
 // array containing items in the views menu
-viewNav = [];
+viewNav = [
+  {
+    route: 'posts_top',
+    label: 'Top'
+  },
+  {
+    route: 'posts_new',
+    label: 'New'
+  },
+  {
+    route: 'posts_best',
+    label: 'Best'
+  },
+  {
+    route: 'posts_digest',
+    label: 'Digest'
+  }   
+];
 
 // array containing items in the admin menu
 adminNav = [];
@@ -20,24 +37,33 @@ navItems = ['viewsMenu'];
 // object containing post list view parameters
 viewParameters = {}
 
-viewParameters.top = function (terms, baseParameters) {
-  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, score: -1}}});
+viewParameters.top = function (terms) {
+  return {
+    options: {sort: {sticky: -1, score: -1}}
+  };
 }
 
-viewParameters.new = function (terms, baseParameters) {
-  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, postedAt: -1}}});
+viewParameters.new = function (terms) {
+  return {
+    options: {sort: {sticky: -1, postedAt: -1}}
+  };
 }
 
-viewParameters.best = function (terms, baseParameters) {
-  return deepExtend(true, baseParameters, {options: {sort: {sticky: -1, baseScore: -1}}});
+viewParameters.best = function (terms) {
+  return {
+    options: {sort: {sticky: -1, baseScore: -1}}
+  };
 }
 
-viewParameters.pending = function (terms, baseParameters) {
-  return deepExtend(true, baseParameters, {find: {status: 1}, options: {sort: {createdAt: -1}}});
+viewParameters.pending = function (terms) {
+  return {
+    find: {status: 1}, 
+    options: {sort: {createdAt: -1}}
+  };
 }
 
-viewParameters.digest = function (terms, baseParameters) {
-  var parameters = deepExtend(true, baseParameters, {
+viewParameters.digest = function (terms) {
+  return {
     find: {
       postedAt: {
         $gte: terms.after, 
@@ -47,8 +73,7 @@ viewParameters.digest = function (terms, baseParameters) {
     options: {
       sort: {sticky: -1, baseScore: -1}
     }
-  });
-  return parameters;
+  };
 }
 
 // array containing post modules

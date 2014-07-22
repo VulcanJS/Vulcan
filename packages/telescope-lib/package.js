@@ -17,6 +17,7 @@ Package.on_use(function (api) {
   api.export([
     'deepExtend', 
     'camelToDash',
+    'dashToCamel',
     'getSetting',
     'getSiteUrl'
   ]);

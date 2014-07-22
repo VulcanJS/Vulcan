@@ -20,7 +20,7 @@
 		ul{
 			background:white;
 			padding:10px;
-			width:140px;
+			min-width:140px;
 			@include border-radius(3px);
 			@include box-shadow(0 1px 3px black(0.35));
 			li{

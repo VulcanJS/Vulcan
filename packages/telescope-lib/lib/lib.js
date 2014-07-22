@@ -14,3 +14,7 @@ getSetting = function(setting, defaultValue){
 camelToDash = function (str) {
   return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
 }
+
+dashToCamel = function (str) {
+  return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
+}
