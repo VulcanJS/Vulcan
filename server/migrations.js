@@ -258,7 +258,10 @@ var migrationsList = {
   },
   addLastCommentedAt: function () {
     var i = 0;
-    Posts.find({comments: {$gt: 0}}).forEach(function (post) {
+    Posts.find({$and: [
+      {comments: {$gt: 0}}, 
+      {lastCommentedAt: {$exists : false}}
+    ]}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
       var postComments = Comments.find({postId: post._id}, {sort: {postedAt: -1}}).fetch();
