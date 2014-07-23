@@ -4,7 +4,7 @@
       <div class="inner">
       {{#each leftPostModules}}
         <div class="{{moduleClass}}">
-          {{> UI.dynamic template=template data=..}}
+          {{> UI.dynamic template=getTemplate data=..}}
         </div>
       {{/each}}
       </div>
@@ -13,7 +13,7 @@
       <div class="inner">
       {{#each centerPostModules}}
         <div class="{{moduleClass}}">
-          {{> UI.dynamic template=template data=..}}
+          {{> UI.dynamic template=getTemplate data=..}}
         </div>
       {{/each}}
       </div>
@@ -22,7 +22,7 @@
       <div class="inner">
       {{#each rightPostModules}}
         <div class="{{moduleClass}}">
-          {{> UI.dynamic template=template data=..}}
+          {{> UI.dynamic template=getTemplate data=..}}
         </div>
       {{/each}}
       </div>

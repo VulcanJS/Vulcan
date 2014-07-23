@@ -5,6 +5,9 @@ Template[getTemplate('postContent')].helpers({
   postMeta: function () {
     return postMeta;
   },
+  getTemplate: function () {
+    return getTemplate(this.template);
+  },
   sourceLink: function(){
     return !!this.url ? this.url : "/posts/"+this._id;
   },
