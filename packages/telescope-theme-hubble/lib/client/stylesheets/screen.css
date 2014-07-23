@@ -384,53 +384,52 @@ body.pageslide-open {
   background: #e9f3f7; }
 
 /* line 2, ../sass/partials/_markdown.scss */
+.markdown ul, .markdown ol, .markdown p, .markdown pre {
+  margin-bottom: 1em; }
+/* line 5, ../sass/partials/_markdown.scss */
 .markdown strong {
   font-weight: bold; }
-/* line 5, ../sass/partials/_markdown.scss */
+/* line 8, ../sass/partials/_markdown.scss */
 .markdown em {
   font-style: italic; }
-/* line 8, ../sass/partials/_markdown.scss */
+/* line 11, ../sass/partials/_markdown.scss */
 .markdown ul, .markdown ol {
-  padding-left: 18px;
-  margin-bottom: 1em; }
-/* line 12, ../sass/partials/_markdown.scss */
+  padding-left: 18px; }
+/* line 14, ../sass/partials/_markdown.scss */
 .markdown ul {
   list-style-type: disc; }
-/* line 15, ../sass/partials/_markdown.scss */
+/* line 17, ../sass/partials/_markdown.scss */
 .markdown ol {
   list-style-type: decimal; }
-/* line 19, ../sass/partials/_markdown.scss */
+/* line 21, ../sass/partials/_markdown.scss */
 .markdown a:link, .markdown a:visited, .markdown a:active {
   color: #7ac0e4; }
-/* line 22, ../sass/partials/_markdown.scss */
+/* line 24, ../sass/partials/_markdown.scss */
 .markdown a:hover {
   color: #f36c3d; }
-/* line 26, ../sass/partials/_markdown.scss */
-.markdown p {
-  margin-bottom: 1em; }
-  /* line 28, ../sass/partials/_markdown.scss */
-  .markdown p:last-child {
-    margin-bottom: 0; }
-/* line 32, ../sass/partials/_markdown.scss */
+/* line 29, ../sass/partials/_markdown.scss */
+.markdown p:last-child {
+  margin-bottom: 0; }
+/* line 33, ../sass/partials/_markdown.scss */
 .markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5 {
   font-weight: bold;
   margin-bottom: 0; }
-/* line 36, ../sass/partials/_markdown.scss */
+/* line 37, ../sass/partials/_markdown.scss */
 .markdown h1 {
   font-size: 36px; }
-/* line 39, ../sass/partials/_markdown.scss */
+/* line 40, ../sass/partials/_markdown.scss */
 .markdown h2 {
   font-size: 24px; }
-/* line 42, ../sass/partials/_markdown.scss */
+/* line 43, ../sass/partials/_markdown.scss */
 .markdown h3 {
   font-size: 18px; }
-/* line 45, ../sass/partials/_markdown.scss */
+/* line 46, ../sass/partials/_markdown.scss */
 .markdown h4 {
   font-size: 16px; }
-/* line 48, ../sass/partials/_markdown.scss */
+/* line 49, ../sass/partials/_markdown.scss */
 .markdown h5 {
   font-size: 14px; }
-/* line 51, ../sass/partials/_markdown.scss */
+/* line 52, ../sass/partials/_markdown.scss */
 .markdown code {
   font-family: monospace;
   margin: 0 2px;
@@ -438,12 +437,12 @@ body.pageslide-open {
   border: 1px solid #ddd;
   background-color: #f8f8f8;
   border-radius: 3px; }
-/* line 59, ../sass/partials/_markdown.scss */
+/* line 60, ../sass/partials/_markdown.scss */
 .markdown pre {
   padding: 20px;
   border: 1px solid #ddd;
   background-color: #f8f8f8; }
-  /* line 63, ../sass/partials/_markdown.scss */
+  /* line 64, ../sass/partials/_markdown.scss */
   .markdown pre code {
     border: none;
     background: none; }
