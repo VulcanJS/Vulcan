@@ -6,7 +6,7 @@
       {{i18n "Please complete your profile below before continuing."}}
     </div>
     {{/if}}
-    <form>
+    <form id="account-form">
       <h2>{{i18n "Account"}}</h2>
       <div class="control-group">
         <label>{{i18n "Username"}}</label>
@@ -101,4 +101,6 @@
     </form>
     {{/with}}
   </div>
+
+  {{> invites }}
 </template>
