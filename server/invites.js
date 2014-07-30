@@ -1,4 +1,54 @@
 Meteor.methods({
+
+  inviteUserByEmail: function(invitation){
+    
+    var userEmail = invitation.invitedUserEmail,
+        user = Meteor.users.findOne({ emails : { $elemMatch: { address: userEmail } } }),
+        currentUser = Meteor.user(),
+        currentUserCanInvite = (currentUser.inviteCount > 0 && canInvite(currentUser)),
+        currentUserIsAdmin = isAdmin(currentUser);
+
+    // check if the person is already invited
+    if(user && (isInvited(user) || isAdmin(user))){
+      throw new Meteor.Error(403, "This person is already invited.");
+    } else {
+      if((currentUserIsAdmin || currentUserCanInvite)){
+
+        // create an invite
+        // consider invite accepted if the invited person has an account already
+        Invites.insert({
+          invitingUserId: Meteor.userId(),
+          invitedUserEmail: userEmail,
+          accepted: typeof user !== "undefined"
+        });
+        
+        // update invinting user
+        Meteor.users.update(Meteor.userId(), {$inc:{inviteCount: -1}, $inc:{invitedCount: 1}});
+
+        if(user){
+          // update invited user
+          Meteor.users.update(user._id, {$set: {
+            isInvited: true,
+            invitedBy: Meteor.userId(),
+            invitedByName: getDisplayName(currentUser)
+          }});
+          
+          createNotification({
+            event: 'accountApproved',
+            properties: {},
+            userToNotify: user,
+            userDoingAction: currentUser,
+            sendEmail: true
+          });
+        } else {
+          // TODO: figure out what to do with new people
+        }
+      } else {
+        throw new Meteor.Error(701, "You can't invite this user, sorry.");
+      }
+    }
+  },
+
   inviteUser: function (userId) {
     var currentUser = Meteor.user(),
         invitedUser = Meteor.users.findOne(userId),
