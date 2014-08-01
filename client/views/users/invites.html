@@ -3,7 +3,7 @@
     <h2>Invites</h2>
     
     {{#if canCurrentUserInvite}}
-      {{#autoForm schema=invitesSchema id="inviteForm" class="form-block" type="method" meteormethod="inviteUserByEmail"}}
+      {{#autoForm schema=invitesSchema id="inviteForm" class="form-block" type="method" meteormethod="inviteUser"}}
         <h3>Invite someone</h3>
         <div class="control-group">
           <label>Email</label>
