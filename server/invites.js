@@ -29,6 +29,13 @@ Meteor.methods({
     } else {
       if(currentUserIsAdmin || currentUserCanInvite){
 
+        // don't allow duplicate multpile invite for the same person
+        var existingInvite = Invites.findOne({ invitedUserEmail : userEmail }); 
+
+        if(existingInvite){
+          throw new Meteor.Error(403, "Somebody has already invited this person.");
+        }
+
         // create an invite
         // consider invite accepted if the invited person has an account already
         Invites.insert({
