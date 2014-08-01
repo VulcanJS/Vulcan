@@ -29,3 +29,6 @@ i18next-meteor
 /subs-manager
 /telescope-module-embedly
 /telescope-recently-commented
+/iron-layout
+/iron-core
+/iron-dynamic-template
