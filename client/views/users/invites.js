@@ -25,16 +25,19 @@ var scrollUp = function(){
 AutoForm.hooks({
   inviteForm: {
     onSuccess: function(operation, result, template) {
+      clearSeenErrors();
+
       if(result && result.newUser){
         throwError('Almost there. Please give your friend a sign up link to get in.');
       } else {
         throwError('Thank you!');
       }
-
       scrollUp();
     },
 
     onError: function(operation, error, template) {
+      clearSeenErrors();
+      
       if(error && error.reason){
         throwError(error.reason);
         scrollUp();
