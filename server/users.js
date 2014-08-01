@@ -43,6 +43,25 @@ Accounts.onCreateUser(function(options, user){
   if(user.profile.email)
     addToMailChimpList(user);
 
+  // if the new user has been invited 
+  // set her status accordingly and update invitation info
+  if(invitesEnabled() && user.profile.email){
+    var invite = Invites.findOne({ invitedUserEmail : user.profile.email });
+    if(invite){
+      var invitedBy = Meteor.users.findOne({ _id : invite.invitingUserId });
+      
+      user = _.extend(user, {
+        isInvited: true,
+        invitedBy: invitedBy._id,
+        invitedByName: getDisplayName(invitedBy)
+      });
+
+      Invites.update(invite._id, {$set : {
+        accepted : true
+      }});
+    }
+  }
+
   // send notifications to admins
   var admins = Meteor.users.find({isAdmin: true});
   admins.forEach(function(admin){
@@ -58,7 +77,6 @@ Accounts.onCreateUser(function(options, user){
       sendNotification(notification, admin);
     }
   });
-
 
   return user;
 });
