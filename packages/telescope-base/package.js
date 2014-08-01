@@ -21,12 +21,18 @@ Package.on_use(function (api) {
     'postHeading',
     'postMeta',
     'modulePositions',
+
+    'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
     'postSubmitServerCallbacks',
+
+    'postEditRenderedCallbacks',
     'postEditClientCallbacks',
+
     'commentSubmitClientCallbacks',
     'commentSubmitServerCallbacks',
     'commentEditClientCallbacks',
+    
     'getTemplate',
     'templates'
     ]);

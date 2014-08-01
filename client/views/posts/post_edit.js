@@ -52,6 +52,12 @@ Template[getTemplate('post_edit')].helpers({
 });
 
 Template[getTemplate('post_edit')].rendered = function(){
+  // run all post edit rendered callbacks
+  var instance = this;
+  postEditRenderedCallbacks.forEach(function(callback) {
+    callback(instance);
+  });
+
   Session.set('currentPostStatus', this.status);
 
   var post = this.data.post;

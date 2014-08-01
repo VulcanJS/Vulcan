@@ -1,6 +1,7 @@
-## v0.9.2.1
+## v0.9.1.2
 
 * Added `lastCommentedAt` property to posts. 
+* Added hooks to `post_edit` and `post_submit`'s `rendered` callback.
 
 ## v0.9.1
 

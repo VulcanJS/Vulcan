@@ -135,9 +135,11 @@ postMeta = [
 ]
 // ------------------------------ Callbacks ------------------------------ //
 
+postSubmitRenderedCallbacks = [];
 postSubmitClientCallbacks = [];
 postSubmitServerCallbacks = [];
 
+postEditRenderedCallbacks = [];
 postEditClientCallbacks = [];
 
 commentEditClientCallbacks = []; // not used yet
