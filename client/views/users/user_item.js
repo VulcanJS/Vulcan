@@ -35,7 +35,7 @@ Template[getTemplate('user_item')].helpers({
 Template[getTemplate('user_item')].events({
   'click .invite-link': function(e, instance){
     e.preventDefault();
-    Meteor.call('inviteUser', instance.data._id);
+    Meteor.call('inviteUser', { userId : instance.data._id });
   },
   'click .uninvite-link': function(e, instance){
     e.preventDefault();
