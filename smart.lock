@@ -13,7 +13,8 @@
       "marked": {},
       "bootstrap3-datepicker": {},
       "subs-manager": {},
-      "telescope-module-embedly": {}
+      "telescope-module-embedly": {},
+      "handlebars-server": {}
     },
     "packages": {
       "momentjs": {
@@ -76,6 +77,11 @@
         "tag": "v0.2.4",
         "commit": "0abb29ce8956f70ae99f0317b405b8f51f66df54"
       },
+      "handlebars-server": {
+        "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
+        "tag": "v1.2.0",
+        "commit": "1b72c4e9d82af66293e50be4516c487d15d97464"
+      },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
         "tag": "v0.2.0",
@@ -88,8 +94,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.3",
-        "commit": "cb470de2cfeebeccbf76d4cc0a39ad4afc76d553"
+        "tag": "v0.4.4",
+        "commit": "c70deb36e10f63238b884529eea1e38cf0789903"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

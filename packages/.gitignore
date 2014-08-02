@@ -32,3 +32,4 @@ i18next-meteor
 /iron-layout
 /iron-core
 /iron-dynamic-template
+/handlebars-server

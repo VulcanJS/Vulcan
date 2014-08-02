@@ -35,3 +35,5 @@ telescope-theme-hubble
 telescope-module-share
 subs-manager
 telescope-module-embedly
+telescope-digest
+handlebars-server
