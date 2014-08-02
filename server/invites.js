@@ -62,6 +62,24 @@ Meteor.methods({
             userDoingAction: currentUser,
             sendEmail: true
           });
+        } else {
+
+          var communityName = getSetting('title','Telescope'),
+              subject = 'You are invited to try ' + communityName,
+              emailHtml = Handlebars.templates['email_invite']({
+                subject: subject,
+                invitedBy: getDisplayName(Meteor.user()),
+                communityName: communityName,
+                singupLink: getSignupUrl()
+              });
+
+          sendNotification({
+            to : userEmail,
+            subject : subject,
+            text : stripHTML(emailHtml),
+            html : emailHtml
+          });
+
         }
       } else {
         throw new Meteor.Error(701, "You can't invite this user, sorry.");
