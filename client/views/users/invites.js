@@ -28,7 +28,7 @@ AutoForm.hooks({
       clearSeenErrors();
 
       if(result && result.newUser){
-        throwError('Almost there. Please give your friend a sign up link to get in.');
+        throwError('An invite has been sent out. Thank you!');
       } else {
         throwError('Thank you!');
       }
