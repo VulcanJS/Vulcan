@@ -19,6 +19,10 @@ campaignSchema = new SimpleSchema({
     type: [String],
     optional: true
   }, 
+  webHits: {
+    type: Number,
+    optional: true
+  }, 
 });
 
 Campaigns = new Meteor.Collection("campaigns", {

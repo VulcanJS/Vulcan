@@ -22,3 +22,29 @@ sendEmail = function(to, subject, text, html){
     html: html
   });
 };
+
+buildEmailTemplate = function (htmlContent) {
+  var juice = Meteor.require('juice');
+
+  var emailHTML = Handlebars.templates[getTemplate('emailMain')]({
+    headerColor: getSetting('headerColor'),
+    buttonColor: getSetting('buttonColor'),
+    logo: '',
+    siteName: getSetting('title'),
+    siteUrl: getSiteUrl(),
+    body: htmlContent,
+    unsubscribe: '',
+    footer: ''
+  });
+
+  var inlinedHTML = Async.runSync(function(done) {
+    juice.juiceContent(emailHTML, {
+      url: getSiteUrl(),
+      removeStyleTags: false
+    }, function (error, result) {
+      done(null, result);
+    });
+  }).result;
+
+  return inlinedHTML;
+}

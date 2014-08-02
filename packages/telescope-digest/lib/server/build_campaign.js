@@ -6,11 +6,9 @@ buildCampaign = function (postsCount) {
     limit: postsCount
   });
   var campaignPosts = Posts.find(params.find, params.options).fetch();
-  console.log(_.pluck(campaignPosts, 'title'))
 
   // iterate through posts and pass each of them through a handlebars template
   var postsHTML = _.map(campaignPosts, function(post){
-    console.log(post)
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
@@ -24,11 +22,15 @@ buildCampaign = function (postsCount) {
     if(post.url)
       properties.domain = getDomain(post.url)
 
-    var template = Handlebars.templates[getTemplate('postItemEmail')](properties);
+    var template = Handlebars.templates[getTemplate('emailPostItem')](properties);
     return template;
   }).join('');
 
-  console.log(postsHTML)
+  var emailHTML = buildEmailTemplate(postsHTML)
+
+  // console.log(emailHTML)
+
+  return emailHTML
 }
 
 Meteor.methods({

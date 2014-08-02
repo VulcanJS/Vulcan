@@ -29,7 +29,8 @@ Package.on_use(function (api) {
 
   api.add_files([
     'lib/server/build_campaign.js',
-    'lib/server/templates/postItemEmail.handlebars'
+    'lib/server/routes.js',
+    'lib/server/templates/emailPostItem.handlebars'
   ], ['server']);
   
   api.export([

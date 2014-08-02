@@ -13,6 +13,7 @@
     "bootstrap3-datepicker": {},
     "subs-manager": {},
     "telescope-module-embedly": {},
-    "handlebars-server": {}
+    "handlebars-server": {},
+    "npm": {}
   }
 }
