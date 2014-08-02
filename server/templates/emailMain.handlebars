@@ -37,17 +37,20 @@
                 padding-right: 12px !important;
             }
          }
-
+        .container{
+          border-radius: 3px;
+        }
         .heading-container{
           background: {{headerColor}};
           color: white;
           font-family: Helvetica, sans-serif;
-          padding: 10px;
+          padding: 15px;
           text-align: center;
           font-weight: bold;
-          font-size: 24px;  
+          font-size: 20px;
+          border-radius: 3px 3px 0px 0px;
         }
-        .container-padding{
+        .main-container{
           line-height: 1.7;
           background: white;
           padding: 0 30px;
@@ -67,6 +70,7 @@
           font-family: Helvetica, sans-serif;
           padding: 30px;
           color: #777;
+          border-radius: 0px 0px 3px 3px;
         }
     </style>
 </head>
@@ -96,7 +100,7 @@
         </tr>
         <tr>
           <td class="footer-container">
-            Telescope
+            {{{footer}}}
           </td>
         </tr>
       </table>

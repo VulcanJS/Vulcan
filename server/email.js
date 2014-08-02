@@ -34,7 +34,7 @@ buildEmailTemplate = function (htmlContent) {
     siteUrl: getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
-    footer: ''
+    footer: getSetting('emailFooter')
   });
 
   var inlinedHTML = Async.runSync(function(done) {
