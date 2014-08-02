@@ -13,7 +13,8 @@
       "marked": {},
       "bootstrap3-datepicker": {},
       "subs-manager": {},
-      "telescope-module-embedly": {}
+      "telescope-module-embedly": {},
+      "handlebars-server": {}
     },
     "packages": {
       "momentjs": {
@@ -95,6 +96,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "handlebars-server": {
+        "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
+        "tag": "v1.2.0",
+        "commit": "1b72c4e9d82af66293e50be4516c487d15d97464"
       }
     }
   }
