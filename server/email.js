@@ -43,12 +43,12 @@ sendEmail = function(to, subject, html, text){
     });
   }
 
-  console.log('sending email…');
-  console.log(from);
-  console.log(to);
-  console.log(subject);
-  console.log(text);
-  console.log(html);
+  console.log('//////// sending email…');
+  console.log('from: '+from);
+  console.log('to: '+to);
+  console.log('subject: '+subject);
+  console.log('text: '+text);
+  console.log('html: '+html);
 
   Email.send({
     from: from, 

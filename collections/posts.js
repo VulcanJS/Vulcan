@@ -296,7 +296,7 @@ Meteor.methods({
       var currentUser = Meteor.users.findOne(this.userId);
       console.log('newPostNotify');
       var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
-      var html = Handlebars.templates[getTemplate('emailNewPost')](p)
+      var html = buildEmailTemplate(Handlebars.templates[getTemplate('emailNewPost')](p))
       // send a notification to every user according to their notifications settings
       Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
         // don't send users notifications for their own posts
