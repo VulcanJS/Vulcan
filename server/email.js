@@ -1,32 +1,7 @@
-sendEmail = function(to, subject, text, html){
-
-  // TODO: limit who can send emails
-  // TODO: fix this error: Error: getaddrinfo ENOTFOUND
-  
-  var from = getSetting('defaultEmail', 'noreply@example.com');
-  var siteName = getSetting('title');
-  var subject = '['+siteName+'] '+subject;
-
-  console.log('sending email…');
-  console.log(from);
-  console.log(to);
-  console.log(subject);
-  console.log(text);
-  console.log(html);
-
-  Email.send({
-    from: from, 
-    to: to, 
-    subject: subject, 
-    text: text,
-    html: html
-  });
-};
-
 buildEmailTemplate = function (htmlContent) {
   var juice = Meteor.require('juice');
 
-  var emailHTML = Handlebars.templates[getTemplate('emailMain')]({
+  var emailHTML = Handlebars.templates[getTemplate('emailWrapper')]({
     headerColor: getSetting('headerColor'),
     buttonColor: getSetting('buttonColor'),
     logo: '',
@@ -46,5 +21,40 @@ buildEmailTemplate = function (htmlContent) {
     });
   }).result;
 
-  return inlinedHTML;
+  var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+  
+  return doctype+inlinedHTML;
 }
+
+sendEmail = function(to, subject, html, text){
+
+  // TODO: limit who can send emails
+  // TODO: fix this error: Error: getaddrinfo ENOTFOUND
+  
+  var from = getSetting('defaultEmail', 'noreply@example.com');
+  var siteName = getSetting('title');
+  var subject = '['+siteName+'] '+subject;
+
+  if (typeof text == 'undefined'){
+    // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough. 
+    var htmlToText = Meteor.require('html-to-text');
+    var text = htmlToText.fromString(html, {
+        wordwrap: 130
+    });
+  }
+
+  console.log('sending email…');
+  console.log(from);
+  console.log(to);
+  console.log(subject);
+  console.log(text);
+  console.log(html);
+
+  Email.send({
+    from: from, 
+    to: to, 
+    subject: subject, 
+    text: text,
+    html: html
+  });
+};

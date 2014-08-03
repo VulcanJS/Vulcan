@@ -223,19 +223,18 @@ Meteor.methods({
 
     Meteor.call('upvotePost', post, postAuthor);
 
-    if(getSetting('emailNotifications', false)){
+    if(!!getSetting('emailNotifications', false)){
       // notify users of new posts
-      var notification = {
-        event: 'newPost',
-        properties: {
-          postAuthorName : getDisplayName(postAuthor),
-          postAuthorId : post.userId,
-          postTitle : title,
-          postId : post._id
-        }
+      emailProperties = {
+        postAuthorName : getDisplayName(postAuthor),
+        postAuthorId : post.userId,
+        postTitle : title,
+        postId : post._id,
+        profileUrl: getProfileUrlById(post.userId),
+        postUrl: getPostUrl(post._id)
       };
       // call a server method because we do not have access to users' info on the client
-      Meteor.call('newPostNotify', notification, function(error, result){
+      Meteor.call('newPostNotify', emailProperties, function(error, result){
         //run asynchronously
       });
     }
@@ -290,5 +289,20 @@ Meteor.methods({
     
     Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
+  },
+  newPostNotify : function(p){
+    // only run on server since we need to get a list of all users
+    if(Meteor.isServer){
+      var currentUser = Meteor.users.findOne(this.userId);
+      console.log('newPostNotify');
+      var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
+      var html = Handlebars.templates[getTemplate('emailNewPost')](p)
+      // send a notification to every user according to their notifications settings
+      Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
+        // don't send users notifications for their own posts
+        if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user))
+          sendEmail(getEmail(user), subject, html);
+      });
+    }
   }
 });

@@ -6,7 +6,7 @@ Template[getTemplate('notification_item')].helpers({
     return this.properties;
   },
   notificationHTML: function(){
-    return getNotificationContents(this).html;
+    return buildSiteNotification(this);
   }
 });
 

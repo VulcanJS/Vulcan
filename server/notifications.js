@@ -26,9 +26,52 @@ createNotification = function(options) {
   // the notificationsFrequency is set to 1, or if it's undefined (legacy compatibility)
   if(sendEmail){
     // get specific notification content for "email" context
-    var contents = getNotificationContents(notification, 'email');     
+    var contents = buildEmailNotification(notification);     
     sendNotification(contents);
   }
+};
+
+buildEmailNotification = function (notification) {
+ var event = notification.event,
+      p = notification.properties,
+      userToNotify = Meteor.users.findOne(notification.userId),
+      n = {}
+
+  n.to = getEmail(userToNotify);
+
+  p.profileUrl = getProfileUrlById(p.commentAuthorId);
+  p.postCommentUrl = getPostCommentUrl(p.postId, p.commentId);
+  p.unsubscribeLink = getUnsubscribeLink(userToNotify);
+
+  switch(event){
+    case 'newReply':
+      n.subject = 'Someone replied to your comment on "'+p.postTitle+'"';
+      n.template = 'emailNewReply';
+      n.text = p.commentAuthorName+' has replied to your comment on "'+p.postTitle+'": '+getPostCommentUrl(p.postId, p.commentId);
+      break;
+
+    case 'newComment':
+      n.subject = 'A new comment on your post "'+p.postTitle+'"';
+      n.template = 'emailNewComment';
+      n.text = 'You have a new comment by '+p.commentAuthorName+' on your post "'+p.postTitle+'": '+getPostCommentUrl(p.postId, p.commentId);
+      break; 
+
+    default:
+      break;
+  }
+
+  n.html = Handlebars.templates[getTemplate(n.template)](p);
+  // append unsubscribe link to all outgoing notifications
+  n.text = n.text + '\n\n Unsubscribe from all notifications: '+getUnsubscribeLink(userToNotify);
+
+  return n;
+}
+
+sendNotification = function (notification) {
+  // console.log('send notification:')
+  // console.log(notification)
+  var html = buildEmailTemplate(notification.html)
+  sendEmail(notification.to, notification.subject, html, notification.text);
 };
 
 Meteor.methods({
@@ -48,24 +91,6 @@ Meteor.methods({
       return true;
     }
     return false;
-  },
-  newPostNotify : function(properties){
-    var currentUser = Meteor.users.findOne(this.userId);
-    console.log('newPostNotify');
-    // send a notification to every user according to their notifications settings
-    Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
-      // don't send users notifications for their own posts
-      if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user)){
-        properties.userId = user._id;
-        var notification = getNotificationContents(properties, 'email');
-        sendNotification(notification, user);
-      }
-    });
   }
 });
 
-sendNotification = function (notification) {
-  // console.log('send notification:')
-  // console.log(notification)
-  sendEmail(notification.to, notification.subject, notification.text, notification.html);
-};

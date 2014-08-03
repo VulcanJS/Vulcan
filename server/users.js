@@ -47,15 +47,13 @@ Accounts.onCreateUser(function(options, user){
   var admins = Meteor.users.find({isAdmin: true});
   admins.forEach(function(admin){
     if(getUserSetting('notifications.users', false, admin)){
-      var notification = getNotificationContents({
-        event: 'newUser',
-        properties: {
-          username: getUserName(user),
-          profileUrl: getProfileUrl(user)
-        },
-        userId: admin._id
-      }, 'email');
-      sendNotification(notification, admin);
+      var emailProperties = {
+        profileUrl: getProfileUrl(user),
+        username: getUserName(user)
+      }
+      sendEmail(getEmail(admin), 'New user account: '+getUserName(user), 
+        Handlebars.templates[getTemplate('emailNewUser')](emailProperties)
+      )
     }
   });
 

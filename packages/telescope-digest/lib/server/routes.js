@@ -5,7 +5,7 @@ Meteor.startup(function () {
 
     this.route('campaign', {
       where: 'server',
-      path: '/campaign/:id?',
+      path: '/email/campaign/:id?',
       action: function() {
         var campaignId = parseInt(this.params.id);
         var htmlContent = buildCampaign(2);

@@ -24,13 +24,13 @@ Meteor.methods({
       }});
       console.log(a);
 
-      createNotification({
-        event: 'accountApproved', 
-        properties: {}, 
-        userToNotify: invitedUser, 
-        userDoingAction: currentUser, 
-        sendEmail: true
-      });
+      var emailProperties = {
+        siteTitle: getSettings('siteTitle'),
+        siteUrl: getSiteUrl()
+      }
+      sendEmail(getEmail(invitedUser), 'You\'ve been invited', 
+        Handlebars.templates[getTemplate('emailAccountApproved')](emailProperties)
+      )
 
     }else{
       throw new Meteor.Error(701, "You can't invite this user, sorry.");
