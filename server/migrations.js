@@ -270,5 +270,15 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  deleteNotifications: function () {
+    var i = 0;
+    Notifications.find().forEach(function (n) {
+      i++;
+      console.log("Notification: "+n._id);
+      Notifications.remove(n._id);
+      console.log("---------------------");
+    });
+    return i;
   }
 }
