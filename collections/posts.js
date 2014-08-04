@@ -114,6 +114,26 @@ Posts.allow({
 
 clickedPosts = [];
 
+getPostProperties = function(post) {
+
+  var postAuthor = Meteor.users.findOne(post.userId)
+  var p = {
+    postAuthorName : getDisplayName(postAuthor),
+    postTitle : cleanUp(post.title),
+    profileUrl: getProfileUrlById(post.userId),
+    postUrl: getPostUrl(post._id),
+    thumbnailUrl: post.thumbnailUrl
+  };
+  
+  if(post.url)
+    p.url = post.url;
+
+  if(post.body)
+    p.body = marked(post.body);
+
+  return p;
+}
+
 Meteor.methods({
   post: function(post){
     var title = cleanUp(post.title),
@@ -225,16 +245,8 @@ Meteor.methods({
 
     if(!!getSetting('emailNotifications', false)){
       // notify users of new posts
-      emailProperties = {
-        postAuthorName : getDisplayName(postAuthor),
-        postAuthorId : post.userId,
-        postTitle : title,
-        postId : post._id,
-        profileUrl: getProfileUrlById(post.userId),
-        postUrl: getPostUrl(post._id)
-      };
       // call a server method because we do not have access to users' info on the client
-      Meteor.call('newPostNotify', emailProperties, function(error, result){
+      Meteor.call('newPostNotify', post, function(error, result){
         //run asynchronously
       });
     }
@@ -290,9 +302,10 @@ Meteor.methods({
     Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
   },
-  newPostNotify : function(p){
+  newPostNotify : function(post){
     // only run on server since we need to get a list of all users
     if(Meteor.isServer){
+      var p = getPostProperties(post);
       var currentUser = Meteor.users.findOne(this.userId);
       console.log('newPostNotify');
       var subject = p.postAuthorName+' has created a new post: '+p.postTitle;

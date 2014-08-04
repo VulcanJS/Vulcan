@@ -9,6 +9,7 @@ buildEmailTemplate = function (htmlContent) {
     siteUrl: getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
+    accountLink: getSiteUrl()+'account',
     footer: getSetting('emailFooter')
   });
 

@@ -70,7 +70,7 @@ $notifications-width: 260px;
 	@include box-shadow(0 1px 1px black(0.15));
 	padding:3px 10px;
 	font-size:13px;
-	z-index: 10;
+	z-index: 20;
 	&.no-notifications{
 		background:white(0.3);
 		@include box-shadow(none);

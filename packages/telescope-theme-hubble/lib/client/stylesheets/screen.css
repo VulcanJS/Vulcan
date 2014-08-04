@@ -1949,7 +1949,7 @@ table {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   padding: 3px 10px;
   font-size: 13px;
-  z-index: 10; }
+  z-index: 20; }
   @media screen and (max-width: 30em) {
     /* line 58, ../sass/modules/_notifications.scss */
     .notifications-toggle {

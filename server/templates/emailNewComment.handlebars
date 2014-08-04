@@ -1,5 +1,13 @@
-<span class="heading"><a href="{{profileUrl}}">{{commentAuthorName}}</a>
-left a new comment on your post 
-"<a href="{{postCommentUrl}}" class="action-link">{{postTitle}}</a>"</span><br/><br/>
+<span class="heading">
+<a href="{{profileUrl}}">{{commentAuthorName}}</a>
+left a new comment on 
+<a href="{{postUrl}}" class="action-link">{{postTitle}}</a>:
+</span>
+<br/><br/>
 
-{{{commentExcerpt}}} <a href="{{postCommentUrl}}" class="action-link">Read more…</a><br/><br/>
+<div class="comment-body">
+{{{body}}}
+</div>
+<br>
+
+<a href="{{postCommentUrl}}" class="action-link">Discuss</a><br/><br/>
