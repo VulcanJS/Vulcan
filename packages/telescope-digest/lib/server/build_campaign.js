@@ -22,14 +22,19 @@ buildCampaign = function (postsArray) {
 
     subject += post.title;
 
+    var postUser = Meteor.users.findOne(post.userId);
+
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
       authorName: getAuthorName(post),
-      userAvatar: getAvatarUrl(Meteor.users.findOne(post.userId)),
-      cleanHeadline:encodeURIComponent(post.title),
-      cleanURL:encodeURIComponent(post.url),
-      postLink: getPostLink(post)
+      postLink: getPostLink(post),
+      profileUrl: getProfileUrl(postUser),
+      postPageLink: getPostPageUrl(post),
+      date: moment(post.postedAt).format("MMMM D YYYY")
     });
+
+    if (post.body)
+      properties.body = marked(trimWords(post.body, 20)).replace('<p>', '').replace('</p>', ''); // remove p tags
     
     if(post.url)
       properties.domain = getDomain(post.url)
@@ -40,6 +45,7 @@ buildCampaign = function (postsArray) {
   // 2. Wrap posts HTML in digest template
   var digestHTML = Handlebars.templates[getTemplate('emailDigest')]({
     siteName: getSetting('title'),
+    date: moment().format("dddd, MMMM Do YYYY"),
     content: postsHTML
   });
 
