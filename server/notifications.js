@@ -5,17 +5,17 @@ getUnsubscribeLink = function(user){
 // given a notification, return the correct subject and html to send an email
 buildEmailNotification = function (notification) {
   var subject, template;
-
-  var p = notification.properties;
+  var post = notification.properties.post;
+  var comment = notification.properties.comment;
   
   switch(notification.event){
     case 'newReply':
-      subject = 'Someone replied to your comment on "'+p.postTitle+'"';
+      subject = 'Someone replied to your comment on "'+post.title+'"';
       template = 'emailNewReply';
       break;
 
     case 'newComment':
-      subject = 'A new comment on your post "'+p.postTitle+'"';
+      subject = 'A new comment on your post "'+post.title+'"';
       template = 'emailNewComment';
       break; 
 
@@ -23,15 +23,16 @@ buildEmailNotification = function (notification) {
       break;
   }
 
-  p = _.extend(p,{
-    body: marked(p.body),
-    profileUrl: getProfileUrlById(p.commentAuthorId),
-    postCommentUrl: getPostCommentUrl(p.postId, p.commentId)
+  var emailProperties = _.extend(notification.properties, {
+    body: marked(comment.body),
+    profileUrl: getProfileUrlById(comment.userId),
+    postCommentUrl: getPostCommentUrl(post._id, comment._id),
+    postLink: getPostLink(post)
   });
 
-  console.log(p)
+  // console.log(emailProperties)
 
-  var notificationHtml = Handlebars.templates[getTemplate(template)](p);
+  var notificationHtml = Handlebars.templates[getTemplate(template)](emailProperties);
   var html = buildEmailTemplate(notificationHtml);
 
   return {

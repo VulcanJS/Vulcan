@@ -30,6 +30,7 @@ Package.on_use(function (api) {
   api.add_files([
     'lib/server/build_campaign.js',
     'lib/server/routes.js',
+    'lib/server/templates/emailDigest.handlebars',
     'lib/server/templates/emailPostItem.handlebars'
   ], ['server']);
   

@@ -8,7 +8,7 @@ Meteor.startup(function () {
       path: '/email/campaign/:id?',
       action: function() {
         var campaignId = parseInt(this.params.id);
-        var htmlContent = buildCampaign(2);
+        var htmlContent = buildCampaign(5);
         this.response.write(htmlContent);
         this.response.end();
       }

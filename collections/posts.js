@@ -121,8 +121,9 @@ getPostProperties = function(post) {
     postAuthorName : getDisplayName(postAuthor),
     postTitle : cleanUp(post.title),
     profileUrl: getProfileUrlById(post.userId),
-    postUrl: getPostUrl(post._id),
-    thumbnailUrl: post.thumbnailUrl
+    postUrl: getPostPageUrl(post._id),
+    thumbnailUrl: post.thumbnailUrl,
+    linkUrl: !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post._id)
   };
   
   if(post.url)
@@ -132,6 +133,19 @@ getPostProperties = function(post) {
     p.body = marked(post.body);
 
   return p;
+}
+
+getPostPageUrl = function(post){
+  return getSiteUrl()+'posts/'+post._id;
+};
+
+getPostEditUrl = function(id){
+  return getSiteUrl()+'posts/'+id+'/edit';
+};
+
+// for a given post, return its link if it has one, or else its post page URL
+getPostLink = function (post) {
+  return !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post);
 }
 
 Meteor.methods({

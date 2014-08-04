@@ -49,22 +49,35 @@ createNotification = function(event, properties, userToNotify) {
 
 buildSiteNotification = function (notification) {
   var event = notification.event,
-      p = notification.properties,
+      comment = notification.properties.comment,
+      post = notification.properties.post,
       userToNotify = Meteor.users.findOne(notification.userId),
+      template,
       html
+
+  var properties = {
+    profileUrl: getProfileUrlById(comment.userId),
+    author: comment.author,
+    postCommentUrl: getPostCommentUrl(post._id, comment._id),
+    postTitle: post.title
+  }
 
   switch(event){
     case 'newReply':
-      html = '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> has replied to your comment on "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postTitle+'</a>"</p>';
+      template = 'notification_new_reply';
       break;
 
     case 'newComment':
-      html = '<p><a href="'+getProfileUrlById(p.commentAuthorId)+'">'+p.commentAuthorName+'</a> left a new comment on your post "<a href="'+getPostCommentUrl(p.postId, p.commentId)+'" class="action-link">'+p.postTitle+'</a>"</p>';
+      template = 'notification_new_comment';
       break; 
 
     default:
       break;
   }
+
+  html = Blaze.toHTML(Blaze.With(properties, function(){
+    return Template[getTemplate(template)]
+  }));
 
   return html;
 };

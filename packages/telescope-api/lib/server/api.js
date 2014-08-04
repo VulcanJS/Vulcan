@@ -3,7 +3,7 @@ serveAPI = function(limitSegment){
   var limit = typeof limitSegment === 'undefined' ? 20 : limitSegment // default limit: 20 posts
 
   Posts.find({status: STATUS_APPROVED}, {sort: {postedAt: -1}, limit: limit}).forEach(function(post) {
-    var url = (post.url ? post.url : getPostUrl(post._id));
+    var url = getPostLink(post);
     var properties = {
      title: post.title,
      headline: post.title, // for backwards compatibility

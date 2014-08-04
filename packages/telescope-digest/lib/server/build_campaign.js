@@ -7,7 +7,7 @@ buildCampaign = function (postsCount) {
   });
   var campaignPosts = Posts.find(params.find, params.options).fetch();
 
-  // iterate through posts and pass each of them through a handlebars template
+  // 1. Iterate through posts and pass each of them through a handlebars template
   var postsHTML = _.map(campaignPosts, function(post){
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
@@ -16,7 +16,7 @@ buildCampaign = function (postsCount) {
       userAvatar: getAvatarUrl(Meteor.users.findOne(post.userId)),
       cleanHeadline:encodeURIComponent(post.title),
       cleanURL:encodeURIComponent(post.url),
-      outgoingUrl: getOutgoingUrl(post.url)
+      postLink: getPostLink(post)
     });
     
     if(post.url)
@@ -26,7 +26,14 @@ buildCampaign = function (postsCount) {
     return template;
   }).join('');
 
-  var emailHTML = buildEmailTemplate(postsHTML)
+  // 2. Wrap posts HTML in digest template
+  var digestHTML = Handlebars.templates[getTemplate('emailDigest')]({
+    siteName: getSetting('title'),
+    content: postsHTML
+  });
+
+  // 3. wrap digest HTML in email wrapper tempalte
+  var emailHTML = buildEmailTemplate(digestHTML);
 
   // console.log(emailHTML)
 
