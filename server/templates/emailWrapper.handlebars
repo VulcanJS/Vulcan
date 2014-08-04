@@ -48,13 +48,16 @@
         }
         .heading-container{
           background: {{headerColor}};
-          color: white;
-          font-family: Helvetica, sans-serif;
           padding: 15px;
           text-align: center;
-          font-weight: bold;
-          font-size: 20px;
           border-radius: 3px 3px 0px 0px;
+        }
+        .heading-container, .logo{
+          text-align: center;
+          color: white;
+          font-family: Helvetica, sans-serif;
+          font-weight: bold;
+          font-size: 20px;          
         }
         .main-container{
           line-height: 1.7;
@@ -103,7 +106,11 @@
       <table border="0" width="600" cellpadding="0" cellspacing="0" class="container" bgcolor="#ffffff">
         <tr>
           <td class="heading-container">
-            {{siteName}}
+            {{#if logoUrl}}
+              <img class="logo" src="{{logoUrl}}" height="{{logoHeight}}" width="{{logoWidth}}" alt="{{siteName}}"/>
+            {{else}}
+              {{siteName}}
+            {{/if}}
           </td>
         </tr>
         <tr>

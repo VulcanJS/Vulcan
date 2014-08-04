@@ -2,6 +2,7 @@ getUnsubscribeLink = function(user){
   return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
 };
 
+// given a notification, return the correct subject and html to send an email
 buildEmailNotification = function (notification) {
   var subject, template;
 

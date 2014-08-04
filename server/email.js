@@ -1,17 +1,23 @@
 buildEmailTemplate = function (htmlContent) {
+
   var juice = Meteor.require('juice');
 
-  var emailHTML = Handlebars.templates[getTemplate('emailWrapper')]({
+  var emailProperties = {
     headerColor: getSetting('headerColor'),
     buttonColor: getSetting('buttonColor'),
-    logo: '',
     siteName: getSetting('title'),
+    tagline: getSetting('tagline'),
     siteUrl: getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
     accountLink: getSiteUrl()+'account',
-    footer: getSetting('emailFooter')
-  });
+    footer: getSetting('emailFooter'),
+    logoUrl: getSetting('logoUrl'),
+    logoHeight: getSetting('logoHeight'),
+    logoWidth: getSetting('logoWidth')
+  }
+
+  var emailHTML = Handlebars.templates[getTemplate('emailWrapper')](emailProperties);
 
   var inlinedHTML = Async.runSync(function(done) {
     juice.juiceContent(emailHTML, {
