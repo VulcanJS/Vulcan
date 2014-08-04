@@ -15,7 +15,9 @@
       "subs-manager": {},
       "telescope-module-embedly": {},
       "handlebars-server": {},
-      "npm": {}
+      "npm": {},
+      "mailchimp": {},
+      "synced-cron": {}
     },
     "packages": {
       "momentjs": {
@@ -88,6 +90,16 @@
         "tag": "v0.2.6",
         "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
       },
+      "mailchimp": {
+        "git": "https://github.com/MiroHibler/meteor-mailchimp.git",
+        "tag": "v0.4.0",
+        "commit": "cabd63c49f8bf27b28a53358df475bd14b9becb0"
+      },
+      "synced-cron": {
+        "git": "https://github.com/percolatestudio/meteor-synced-cron.git",
+        "tag": "v0.1.1",
+        "commit": "c731ab04e7bf2b0aa7a7e3c4f4750c8c648b791d"
+      },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
         "tag": "v0.2.0",
@@ -100,8 +112,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.4",
-        "commit": "c70deb36e10f63238b884529eea1e38cf0789903"
+        "tag": "v0.4.5",
+        "commit": "336903730249197b3358dac31b1bd5ed64fecc50"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

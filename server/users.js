@@ -51,9 +51,8 @@ Accounts.onCreateUser(function(options, user){
         profileUrl: getProfileUrl(user),
         username: getUserName(user)
       }
-      sendEmail(getEmail(admin), 'New user account: '+getUserName(user), 
-        Handlebars.templates[getTemplate('emailNewUser')](emailProperties)
-      )
+      var html = Handlebars.templates[getTemplate('emailNewUser')](emailProperties);
+      sendEmail(getEmail(admin), 'New user account: '+getUserName(user), buildEmailTemplate(html));
     }
   });
 
@@ -67,22 +66,34 @@ getEmailHash = function(user){
 };
 
 addToMailChimpList = function(user){
+  MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
+  MailChimpOptions.listId = getSetting('mailChimpListId');
   // add a user to a MailChimp list.
   // called when a new user is created, or when an existing user fills in their email
-  if((MAILCHIMP_API_KEY=getSetting('mailChimpAPIKey')) && (MAILCHIMP_LIST_ID=getSetting('mailChimpListId'))){
+  if(!!MailChimpOptions.apiKey && !!MailChimpOptions.listId){
 
     var email = getEmail(user);
     if (! email)
       throw 'User must have an email address';
 
     console.log('adding "'+email+'" to MailChimp list…');
-    
-    var mailChimp = new MailChimpAPI(MAILCHIMP_API_KEY, { version : '1.3', secure : false });
-    
-    mailChimp.listSubscribe({
-      id: MAILCHIMP_LIST_ID,
-      email_address: email,
+
+    try {
+        var api = new MailChimp();
+    } catch ( error ) {
+        console.log( error.message );
+    }
+
+    api.call( 'lists', 'subscribe', {
+      id: MailChimpOptions.listId,
+      email: {"email": email},
       double_optin: false
+    }, function ( error, result ) {
+      if ( error ) {
+        console.log( error.message );
+      } else {
+        console.log( JSON.stringify( result ) );
+      }
     });
   }
 };

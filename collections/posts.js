@@ -321,7 +321,6 @@ Meteor.methods({
     if(Meteor.isServer){
       var p = getPostProperties(post);
       var currentUser = Meteor.users.findOne(this.userId);
-      console.log('newPostNotify');
       var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
       var html = buildEmailTemplate(Handlebars.templates[getTemplate('emailNewPost')](p))
       // send a notification to every user according to their notifications settings

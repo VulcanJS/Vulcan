@@ -1,3 +1,7 @@
+## v0.9.2 “MailScope”
+
+* Refactored email system to use global HTML email wrapper.
+
 ## v0.9.1.2
 
 * Added `lastCommentedAt` property to posts. 

@@ -31,7 +31,7 @@ Campaigns = new Meteor.Collection("campaigns", {
 
 addToPostSchema.push(
   {
-    propertyName: 'sentAt',
+    propertyName: 'scheduledAt',
     propertySchema: {
       type: Date,
       optional: true
@@ -39,9 +39,34 @@ addToPostSchema.push(
   }
 );
 
+var postsPerNewsletter = {
+  propertyName: 'postsPerNewsletter',
+  propertySchema: {
+    type: Number,
+    optional: true
+  }
+}
+addToSettingsSchema.push(postsPerNewsletter);
+
+var newsletterFrequency = {
+  propertyName: 'newsletterFrequency',
+  propertySchema: {
+    type: Number,
+    optional: true,
+    label: 'Send newsletter every X days (requires restart)'
+  }
+}
+addToSettingsSchema.push(newsletterFrequency);
+
+// create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
 viewParameters.campaign = function (terms) {
   return {
-    find: {sentAt: {$exists: false}}, 
+    find: {
+      scheduledAt: {$exists: false},
+      postedAt: {
+        $gte: terms.after 
+      }
+    }, 
     options: {sort: {sticky: -1, score: -1}}
   };
 }

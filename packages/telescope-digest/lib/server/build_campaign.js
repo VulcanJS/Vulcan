@@ -1,14 +1,26 @@
-buildCampaign = function (postsCount) {
-  // Every x days, find the top y posts that haven't yet been part of a digest, 
-  // build a template around them, and pass the whole thing on to sender function.
+defaultFrequency = 7;
+defaultPosts = 5;
+
+getCampaignPosts = function (postsCount) {
+  var newsletterFrequency = getSetting('newsletterFrequency', defaultFrequency);
+  var xDaysAgo = moment().subtract('days', newsletterFrequency).toDate();
   var params = getParameters({
     view: 'campaign',
-    limit: postsCount
+    limit: postsCount,
+    after: xDaysAgo
   });
-  var campaignPosts = Posts.find(params.find, params.options).fetch();
+  return Posts.find(params.find, params.options).fetch();
+}
+
+buildCampaign = function (postsArray) {
+  var postsHTML = '', subject = '';
 
   // 1. Iterate through posts and pass each of them through a handlebars template
-  var postsHTML = _.map(campaignPosts, function(post){
+  postsArray.forEach(function (post, index) {
+    if(index > 0)
+      subject += ', ';
+
+    subject += post.title;
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
@@ -22,9 +34,8 @@ buildCampaign = function (postsCount) {
     if(post.url)
       properties.domain = getDomain(post.url)
 
-    var template = Handlebars.templates[getTemplate('emailPostItem')](properties);
-    return template;
-  }).join('');
+    postsHTML += Handlebars.templates[getTemplate('emailPostItem')](properties);
+  });
 
   // 2. Wrap posts HTML in digest template
   var digestHTML = Handlebars.templates[getTemplate('emailDigest')]({
@@ -35,13 +46,114 @@ buildCampaign = function (postsCount) {
   // 3. wrap digest HTML in email wrapper tempalte
   var emailHTML = buildEmailTemplate(digestHTML);
 
-  // console.log(emailHTML)
+  return {
+    postIds: _.pluck(postsArray, '_id'),
+    subject: trimWords(subject, 15),
+    html: emailHTML
+  }
+}
 
-  return emailHTML
+scheduleCampaign = function (campaign) {
+  MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
+  MailChimpOptions.listId = getSetting('mailChimpListId');
+
+  var htmlToText = Meteor.require('html-to-text');
+  var text = htmlToText.fromString(campaign.html, {
+      wordwrap: 130
+  });
+  var defaultEmail = getSetting('defaultEmail');
+
+  if(!!MailChimpOptions.apiKey && !!MailChimpOptions.listId){
+
+    console.log( 'Creating campaign…');
+
+    try {
+        var api = new MailChimp();
+    } catch ( error ) {
+        console.log( error.message );
+    }
+
+    api.call( 'campaigns', 'create', {
+      type: 'regular',
+      options: {
+        list_id: MailChimpOptions.listId,
+        subject: campaign.subject,
+        from_email: getSetting('defaultEmail'),
+        from_name: getSetting('title')+ ' Top Posts',
+      },
+      content: {
+        html: campaign.html,
+        text: text
+      }
+    }, Meteor.bindEnvironment(function ( error, result ) {
+      if ( error ) {
+        console.log( error.message );
+      } else {
+        console.log( 'Campaign created');
+        // console.log( JSON.stringify( result ) );
+
+        var cid = result.id;
+        var archive_url = result.archive_url;
+        var scheduledTime = moment().zone(0).add('hours', 1).format("YYYY-MM-DD HH:mm:ss");
+
+        api.call('campaigns', 'schedule', {
+          cid: cid,
+          schedule_time: scheduledTime
+        }, Meteor.bindEnvironment(function ( error, result) {
+          if (error) {
+            console.log( error.message );
+          }else{
+            console.log('Campaign scheduled for '+scheduledTime);
+            console.log(campaign.subject)
+            // console.log( JSON.stringify( result ) );
+
+            // mark posts as sent
+            Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+
+            // send confirmation email
+            var confirmationHtml = Handlebars.templates[getTemplate('emailDigestConfirmation')]({
+              time: scheduledTime,
+              newsletterLink: archive_url,
+              subject: campaign.subject
+            });
+            sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
+          }
+        }));
+      }
+    }));
+  }
+}
+
+scheduleNextCampaign = function () {
+  var posts = getCampaignPosts(getSetting('postsPerNewsletter', defaultPosts));
+  if(!!posts.length){
+    scheduleCampaign(buildCampaign(posts))
+  }else{
+    console.log('No posts to schedule today…')
+  }
 }
 
 Meteor.methods({
-  testBuildCampaign: function (postsCount) {
-    buildCampaign(postsCount);
+  testCampaign: function (postsCount) {
+    scheduleNextCampaign(postsCount);
   }
-})
+});
+
+SyncedCron.add({
+  name: 'Schedule digest newsletter.',
+  schedule: function(parser) {
+    // parser is a later.parse object
+    var frequency = getSetting('newsletterFrequency', defaultFrequency);
+    var interval = 'days';
+    return parser.text('every '+frequency+' '+interval);
+  }, 
+  job: function() {
+    scheduleNextCampaign();
+  }
+});
+
+Meteor.startup(function() {
+  if(getSetting('newsletterFrequency') != 0) {
+    SyncedCron.start();
+  };
+});

@@ -15,7 +15,6 @@ momentjs
 standard-app-packages
 rss
 iron-router
-mailchimp
 telescope-i18n
 fast-render
 spin
@@ -38,3 +37,5 @@ telescope-module-embedly
 telescope-digest
 handlebars-server
 npm
+mailchimp
+synced-cron

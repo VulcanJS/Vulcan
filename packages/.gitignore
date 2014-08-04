@@ -34,3 +34,5 @@ i18next-meteor
 /iron-dynamic-template
 /handlebars-server
 /npm
+/mailchimp
+/synced-cron

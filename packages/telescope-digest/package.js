@@ -5,7 +5,8 @@ Package.on_use(function (api) {
   api.use([
     'telescope-lib', 
     'telescope-base', 
-    'simple-schema'
+    'simple-schema',
+    'mailchimp'
   ], ['client', 'server']);
 
   api.use([
@@ -16,6 +17,7 @@ Package.on_use(function (api) {
   ], 'client');
 
   api.use([
+    'synced-cron',
     'handlebars-server'
   ], ['server']);
 
@@ -31,6 +33,7 @@ Package.on_use(function (api) {
     'lib/server/build_campaign.js',
     'lib/server/routes.js',
     'lib/server/templates/emailDigest.handlebars',
+    'lib/server/templates/emailDigestConfirmation.handlebars',
     'lib/server/templates/emailPostItem.handlebars'
   ], ['server']);
   

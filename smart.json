@@ -14,6 +14,8 @@
     "subs-manager": {},
     "telescope-module-embedly": {},
     "handlebars-server": {},
-    "npm": {}
+    "npm": {},
+    "mailchimp": {},
+    "synced-cron": {}
   }
 }
