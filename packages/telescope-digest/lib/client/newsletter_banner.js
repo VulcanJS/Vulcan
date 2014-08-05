@@ -1,24 +1,21 @@
-var showLoader = function () {
-  console.log('show loader')
-}
-
-var hideLoader = function () {
-  console.log('hide loader')
-}
-
 var confirmSubscription = function () {
   $('.newsletter-banner form').css('opacity', 0);
   $('.newsletter-banner .newsletter-subscribed').css('display', 'block').css('opacity', 1);
+  Meteor.setInterval(function () {
+    dismissBanner();
+  }, 2000)
 }
 
 var dismissBanner = function () {
-  if(Meteor.user()){
-    // if user is connected, change setting in their account
-    setUserSetting('showBanner', false);
-  }else{
-    // set cookie
-    Cookie.set('showBaner', "no");    
-  }
+  $('.newsletter-banner').fadeOut('fast', function () {
+    if(Meteor.user()){
+      // if user is connected, change setting in their account
+      setUserSetting('showBanner', false);
+    }else{
+      // set cookie
+      Cookie.set('showBanner', "no");    
+    }
+  });
 }
 
 Template[getTemplate('newsletterBanner')].helpers({
@@ -30,7 +27,7 @@ Template[getTemplate('newsletterBanner')].helpers({
   },
   showBanner: function () {
     if( 
-          Cookie.get('showBaner') == "no" 
+          Cookie.get('showBanner') == "no" 
       ||  (Meteor.user() && getUserSetting('showBanner', true) == false) 
       ||  (Meteor.user() && getUserSetting('subscribedToNewsletter', false) == true) 
     ){
@@ -44,10 +41,11 @@ Template[getTemplate('newsletterBanner')].helpers({
 Template[getTemplate('newsletterBanner')].events({
   'click .newsletter-button': function (e) {
     e.preventDefault();
+    var $b = $('.newsletter-button');
     if(Meteor.user()){
-      showLoader();
+      $b.addClass('show-loader');
       Meteor.call('addCurrentUserToMailChimpList', function (error, result) {
-        hideLoader();
+        $b.removeClass('show-loader');
         if(error){
           console.log(error);
           thowError(error.message);
@@ -62,9 +60,9 @@ Template[getTemplate('newsletterBanner')].events({
         alert('Please fill in your email.');
         return
       }
-      showLoader();
-      Meteor.call('addEmailToMailChimpList', function (error, result) {
-        hideLoader();
+      $b.addClass('show-loader');
+      Meteor.call('addEmailToMailChimpList', email, function (error, result) {
+        $b.removeClass('show-loader');
         if(error){
           console.log(error);
           thowError(error.message);
