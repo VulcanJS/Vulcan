@@ -17,6 +17,7 @@
     "npm": {},
     "mailchimp": {},
     "synced-cron": {},
-    "cookies": {}
+    "cookies": {},
+    "telescope-newsletter": {}
   }
 }

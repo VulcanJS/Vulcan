@@ -18,7 +18,8 @@
       "npm": {},
       "mailchimp": {},
       "synced-cron": {},
-      "cookies": {}
+      "cookies": {},
+      "telescope-newsletter": {}
     },
     "packages": {
       "momentjs": {
@@ -105,6 +106,11 @@
         "git": "https://github.com/subhog/meteor-cookies.git",
         "tag": "v0.3.0",
         "commit": "c3d2684cd97dd611652833169b5f628ad23c57f6"
+      },
+      "telescope-newsletter": {
+        "git": "https://github.com/TelescopeJS/telescope-newsletter.git",
+        "tag": "v0.1.0",
+        "commit": "718fceba7102116af0a7ce74fd7254d4c066ea09"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
