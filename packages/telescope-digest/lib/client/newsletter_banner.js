@@ -41,11 +41,11 @@ Template[getTemplate('newsletterBanner')].helpers({
 Template[getTemplate('newsletterBanner')].events({
   'click .newsletter-button': function (e) {
     e.preventDefault();
-    var $b = $('.newsletter-button');
+    var $banner = $('.newsletter-banner');
     if(Meteor.user()){
-      $b.addClass('show-loader');
+      $banner.addClass('show-loader');
       Meteor.call('addCurrentUserToMailChimpList', function (error, result) {
-        $b.removeClass('show-loader');
+        $banner.removeClass('show-loader');
         if(error){
           console.log(error);
           thowError(error.message);
@@ -60,12 +60,12 @@ Template[getTemplate('newsletterBanner')].events({
         alert('Please fill in your email.');
         return
       }
-      $b.addClass('show-loader');
+      $banner.addClass('show-loader');
       Meteor.call('addEmailToMailChimpList', email, function (error, result) {
-        $b.removeClass('show-loader');
+        $banner.removeClass('show-loader');
         if(error){
           console.log(error);
-          thowError(error.message);
+          throwError(error.message);
         }else{
           console.log(result);
           confirmSubscription();

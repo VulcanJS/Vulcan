@@ -51,13 +51,19 @@
   vertical-align: middle;
   position: relative;
 }
-.newsletter-button.show-loader{
-  color: rgba(255,255,255,0);
+.show-loader{
+  pointer-events:none;
 }
-.newsletter-button .button-loader{
+.show-loader .newsletter-tagline, .show-loader .newsletter-email{
+  opacity: 0.35;
+}
+.show-loader .newsletter-button{
+  color: rgba(255,255,255,0); /* hide button text */
+}
+.button-loader{
   display: none;
 }
-.newsletter-button.show-loader .button-loader{
+.show-loader .button-loader{
   position: absolute;
   z-index: 100;
   top: 0px;

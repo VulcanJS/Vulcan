@@ -1,13 +1,12 @@
-addToMailChimpList = function(userOrEmail, confirm){
-  var apiError = null, 
-      apiResult = null;
+addToMailChimpList = function(userOrEmail, confirm, done){
+  var user, email;
 
   if(typeof userOrEmail == "string"){
-    var user = null;
-    var email = userOrEmail;
+    user = null;
+    email = userOrEmail;
   }else if(typeof userOrEmail == "object"){
-    var user = userOrEmail;
-    var email = getEmail(user);
+    user = userOrEmail;
+    email = getEmail(user);
     if (!email)
       throw 'User must have an email address';
   }
@@ -30,23 +29,19 @@ addToMailChimpList = function(userOrEmail, confirm){
       id: MailChimpOptions.listId,
       email: {"email": email},
       double_optin: confirm
-    }, Meteor.bindEnvironment(function ( error, result ) {
+    }, function ( error, result ) {
       if ( error ) {
         console.log( error.message );
-        apiError = error
+        done(error.message, null);
       } else {
         console.log( JSON.stringify( result ) );
-        apiResult = result;
         if(!!user)
           setUserSetting('subscribedToNewsletter', true);
+        done(null, result);
       }
-    }));
+    });
   }
-  if(!!apiError){
-    throw new Meteor.Error(500, apiError.message);
-  }else if (apiResult){
-    return apiResult;
-  }
+
 };
 
 syncAddToMailChimpList = Async.wrap(addToMailChimpList);
