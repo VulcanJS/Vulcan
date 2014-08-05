@@ -59,77 +59,6 @@ buildCampaign = function (postsArray) {
   }
 }
 
-scheduleCampaign = function (campaign) {
-  MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
-  MailChimpOptions.listId = getSetting('mailChimpListId');
-
-  var htmlToText = Meteor.require('html-to-text');
-  var text = htmlToText.fromString(campaign.html, {
-      wordwrap: 130
-  });
-  var defaultEmail = getSetting('defaultEmail');
-
-  if(!!MailChimpOptions.apiKey && !!MailChimpOptions.listId){
-
-    console.log( 'Creating campaign…');
-
-    try {
-        var api = new MailChimp();
-    } catch ( error ) {
-        console.log( error.message );
-    }
-
-    api.call( 'campaigns', 'create', {
-      type: 'regular',
-      options: {
-        list_id: MailChimpOptions.listId,
-        subject: campaign.subject,
-        from_email: getSetting('defaultEmail'),
-        from_name: getSetting('title')+ ' Top Posts',
-      },
-      content: {
-        html: campaign.html,
-        text: text
-      }
-    }, Meteor.bindEnvironment(function ( error, result ) {
-      if ( error ) {
-        console.log( error.message );
-      } else {
-        console.log( 'Campaign created');
-        // console.log( JSON.stringify( result ) );
-
-        var cid = result.id;
-        var archive_url = result.archive_url;
-        var scheduledTime = moment().zone(0).add('hours', 1).format("YYYY-MM-DD HH:mm:ss");
-
-        api.call('campaigns', 'schedule', {
-          cid: cid,
-          schedule_time: scheduledTime
-        }, Meteor.bindEnvironment(function ( error, result) {
-          if (error) {
-            console.log( error.message );
-          }else{
-            console.log('Campaign scheduled for '+scheduledTime);
-            console.log(campaign.subject)
-            // console.log( JSON.stringify( result ) );
-
-            // mark posts as sent
-            Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
-
-            // send confirmation email
-            var confirmationHtml = Handlebars.templates[getTemplate('emailDigestConfirmation')]({
-              time: scheduledTime,
-              newsletterLink: archive_url,
-              subject: campaign.subject
-            });
-            sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
-          }
-        }));
-      }
-    }));
-  }
-}
-
 scheduleNextCampaign = function () {
   var posts = getCampaignPosts(getSetting('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
@@ -143,23 +72,4 @@ Meteor.methods({
   testCampaign: function () {
     scheduleNextCampaign();
   }
-});
-
-SyncedCron.add({
-  name: 'Schedule digest newsletter.',
-  schedule: function(parser) {
-    // parser is a later.parse object
-    var frequency = getSetting('newsletterFrequency', defaultFrequency);
-    var interval = 'days';
-    return parser.text('every '+frequency+' '+interval);
-  }, 
-  job: function() {
-    scheduleNextCampaign();
-  }
-});
-
-Meteor.startup(function() {
-  if(getSetting('newsletterFrequency') != 0) {
-    SyncedCron.start();
-  };
 });

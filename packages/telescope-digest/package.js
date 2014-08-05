@@ -19,7 +19,8 @@ Package.on_use(function (api) {
 
   api.use([
     'synced-cron',
-    'handlebars-server'
+    'handlebars-server',
+    'npm'
   ], ['server']);
 
   api.add_files([
@@ -34,6 +35,8 @@ Package.on_use(function (api) {
 
   api.add_files([
     'lib/server/campaign.js',
+    'lib/server/cron.js',
+    'lib/server/mailchimp.js',    
     'lib/server/routes.js',
     'lib/server/templates/emailDigest.handlebars',
     'lib/server/templates/emailDigestConfirmation.handlebars',

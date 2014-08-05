@@ -106,7 +106,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -webkit-border-radius: 3px;
   border-radius: 3px;
   padding: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
@@ -206,7 +206,7 @@ body {
   display: none; }
 
 /* line 55, ../sass/partials/_main.scss */
-#loading, .loading {
+#loading, .loading-page {
   height: 300px; }
 
 /* line 1, ../sass/partials/_typography.scss */
@@ -533,7 +533,7 @@ body.pageslide-open {
 .header {
   background: #4e555d url("/img/bg-header.png") top center;
   background-color: #4e555d;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
   height: 60px;
   /* For modern browsers */
@@ -930,7 +930,7 @@ body.pageslide-open {
     -moz-align-items: center; }
   /* line 25, ../sass/modules/_posts.scss */
   .post .modules-group .cell {
-    margin-right: 20px; }
+    margin-right: 10px; }
     @media screen and (min-width: 30em) {
       /* line 25, ../sass/modules/_posts.scss */
       .post .modules-group .cell {
@@ -939,11 +939,11 @@ body.pageslide-open {
         -moz-flex-shrink: 0; } }
 /* line 35, ../sass/modules/_posts.scss */
 .post .left-modules .inner {
-  margin-left: 20px; }
+  margin-left: 10px; }
 @media screen and (max-width: 30em) {
   /* line 34, ../sass/modules/_posts.scss */
   .post .left-modules {
-    margin-right: 20px; }
+    margin-right: 10px; }
     /* line 39, ../sass/modules/_posts.scss */
     .post .left-modules .inner {
       display: block; } }
@@ -1747,12 +1747,12 @@ input[type="submit"], button, .button, .auth-buttons #login-buttons #login-butto
 
 /* line 1, ../sass/modules/_dialogs.scss */
 .dialog {
-  margin-bottom: 20px; }
+  margin-bottom: 10px; }
   /* line 2, ../sass/modules/_dialogs.scss */
   .dialog h2 {
     text-align: center;
     padding-bottom: 15px;
-    margin-bottom: 20px; }
+    margin-bottom: 10px; }
 
 /* line 9, ../sass/modules/_dialogs.scss */
 .footer-notice {
@@ -1860,7 +1860,7 @@ table {
 
 /* line 1, ../sass/modules/_errors.scss */
 .error {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: center;
   background: #f36c3d;
   color: white; }

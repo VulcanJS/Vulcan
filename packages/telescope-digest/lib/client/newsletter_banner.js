@@ -48,7 +48,7 @@ Template[getTemplate('newsletterBanner')].events({
         $banner.removeClass('show-loader');
         if(error){
           console.log(error);
-          thowError(error.message);
+          throwError(error.message);
         }else{
           console.log(result);
           confirmSubscription();

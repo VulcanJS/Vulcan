@@ -1,7 +1,7 @@
 .newsletter-banner{
   background: rgba(255,255,255,0.7);
   border-radius: 3px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 20px;
   position: relative;
   overflow: hidden;
@@ -81,7 +81,7 @@
   background: rgba(0,0,0,0.15);
   color: white;
   top: 50%;
-  margin-top:-15px;
+  margin-top: -15px;
   right: 20px;
   font-size: 24px;
   text-align: center;
@@ -90,4 +90,17 @@
 }
 .newsletter-dismiss:hover{
   color: inherit;
+}
+@media screen and (max-width: 30em) {
+  .newsletter-dismiss, .newsletter-dismiss:link{
+    top: 10px;
+    right: 10px;
+    margin-top: 0px;
+  }
+  .newsletter-tagline{
+    padding: 0 30px;
+  }
+  .newsletter-tagline, .newsletter-email, .newsletter-button{
+    margin-bottom: 10px;
+  }
 }
