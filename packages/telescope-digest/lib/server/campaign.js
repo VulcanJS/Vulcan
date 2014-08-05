@@ -140,8 +140,8 @@ scheduleNextCampaign = function () {
 }
 
 Meteor.methods({
-  testCampaign: function (postsCount) {
-    scheduleNextCampaign(postsCount);
+  testCampaign: function () {
+    scheduleNextCampaign();
   }
 });
 

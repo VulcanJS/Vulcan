@@ -1,7 +1,10 @@
 <template name="footer">
   {{#if footerCode}}
-  <div class="footer grid {{footerClass}}">
-    {{{footerCode}}}
-  </div>
+    <div class="footer grid {{footerClass}}">
+      {{{footerCode}}}
+    </div>
   {{/if}}
+  {{#each footerModules}}
+    {{> UI.dynamic template=getTemplate}}
+  {{/each}}
 </template>

@@ -70,3 +70,7 @@ viewParameters.campaign = function (terms) {
     options: {sort: {sticky: -1, score: -1}}
   };
 }
+
+heroModules.push({
+  template: 'newsletterBanner'
+});

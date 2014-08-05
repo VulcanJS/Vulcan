@@ -10,7 +10,7 @@
 .header{
 	background:$highlight-color url("/img/bg-header.png") top center;
 	background-color:$highlight-color;
-	margin-bottom:$grid-margin;
+	margin-bottom:20px;
 	position:relative;
 	height: 60px;
 	@include cf;

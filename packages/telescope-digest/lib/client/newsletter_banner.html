@@ -1,0 +1,15 @@
+<template name="newsletterBanner">
+  {{#if showBanner}}
+    <div class="newsletter-banner grid">
+      <form>
+        <h4 class="newsletter-tagline">Receive the best of {{siteName}} right in your inbox</h4>
+        {{#if isNotConnected}}
+          <input class="newsletter-email" type="email" placeholder="Your Email">
+        {{/if}}
+        <button class="newsletter-button">Get Newsletter</button>
+      </form>
+      <h4 class="newsletter-subscribed">Thanks for subscribing!</h4>
+      <a href="#" class="newsletter-dismiss">×</a>
+    </div>
+  {{/if}}
+</template>

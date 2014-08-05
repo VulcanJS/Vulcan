@@ -17,7 +17,8 @@
       "handlebars-server": {},
       "npm": {},
       "mailchimp": {},
-      "synced-cron": {}
+      "synced-cron": {},
+      "cookies": {}
     },
     "packages": {
       "momentjs": {
@@ -99,6 +100,11 @@
         "git": "https://github.com/percolatestudio/meteor-synced-cron.git",
         "tag": "v0.1.1",
         "commit": "c731ab04e7bf2b0aa7a7e3c4f4750c8c648b791d"
+      },
+      "cookies": {
+        "git": "https://github.com/subhog/meteor-cookies.git",
+        "tag": "v0.3.0",
+        "commit": "c3d2684cd97dd611652833169b5f628ad23c57f6"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

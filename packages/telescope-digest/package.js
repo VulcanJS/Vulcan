@@ -13,7 +13,8 @@ Package.on_use(function (api) {
     'jquery',
     'underscore',
     'iron-router',
-    'templating'
+    'templating',
+    'cookies'
   ], 'client');
 
   api.use([
@@ -22,15 +23,17 @@ Package.on_use(function (api) {
   ], ['server']);
 
   api.add_files([
-    'lib/campaign.js'
+    'lib/digest.js'
   ], ['client', 'server']);
 
   api.add_files([
-
+    'lib/client/newsletter_banner.html',
+    'lib/client/newsletter_banner.js',
+    'lib/client/newsletter_banner.css'
   ], ['client']);
 
   api.add_files([
-    'lib/server/build_campaign.js',
+    'lib/server/campaign.js',
     'lib/server/routes.js',
     'lib/server/templates/emailDigest.handlebars',
     'lib/server/templates/emailDigestConfirmation.handlebars',

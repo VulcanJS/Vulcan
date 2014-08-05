@@ -35,6 +35,9 @@
       <div class="content-wrapper">
         {{> UI.dynamic template=error}}
         {{> UI.dynamic template=notifications}}
+        {{#each heroModules}}
+          {{> UI.dynamic template=getTemplate}}
+        {{/each}}
         {{> yield}}
         {{> UI.dynamic template=footer}}
       </div>

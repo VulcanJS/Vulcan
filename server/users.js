@@ -41,7 +41,7 @@ Accounts.onCreateUser(function(options, user){
 
   // if user has already filled in their email, add them to MailChimp list
   if(user.profile.email)
-    addToMailChimpList(user);
+    addToMailChimpList(user, false);
 
   // send notifications to admins
   var admins = Meteor.users.find({isAdmin: true});
@@ -65,16 +65,24 @@ getEmailHash = function(user){
   return CryptoJS.MD5(getEmail(user).trim().toLowerCase() + user.createdAt).toString();
 };
 
-addToMailChimpList = function(user){
+addToMailChimpList = function(userOrEmail, confirm){
+  var returnValue;
+
+  if(typeof userOrEmail == "string"){
+    var user = null;
+    var email = userOrEmail;
+  }else if(typeof userOrEmail == "object"){
+    var user = userOrEmail;
+    var email = getEmail(user);
+    if (!email)
+      throw 'User must have an email address';
+  }
+
   MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
   MailChimpOptions.listId = getSetting('mailChimpListId');
   // add a user to a MailChimp list.
   // called when a new user is created, or when an existing user fills in their email
   if(!!MailChimpOptions.apiKey && !!MailChimpOptions.listId){
-
-    var email = getEmail(user);
-    if (! email)
-      throw 'User must have an email address';
 
     console.log('adding "'+email+'" to MailChimp list…');
 
@@ -87,15 +95,20 @@ addToMailChimpList = function(user){
     api.call( 'lists', 'subscribe', {
       id: MailChimpOptions.listId,
       email: {"email": email},
-      double_optin: false
-    }, function ( error, result ) {
+      double_optin: confirm
+    }, Meteor.bindEnvironment(function ( error, result ) {
       if ( error ) {
         console.log( error.message );
+        throw new Meteor.error(500, error.message);
       } else {
         console.log( JSON.stringify( result ) );
+        if(!!user)
+          setUserSetting('subscribedToNewsletter', true);
+        return result;
       }
-    });
+    }));
   }
+  return returnValue;
 };
 
 Meteor.methods({
@@ -126,6 +139,10 @@ Meteor.methods({
     Meteor.users.update(user._id, {$set : {email_hash : email_hash}});
   },
   addCurrentUserToMailChimpList: function(){
-    addToMailChimpList(Meteor.user());
+    var currentUser = Meteor.users.findOne(this.userId);
+    return addToMailChimpList(currentUser, false);
+  },
+  addEmailToMailChimpList: function (email) {
+    return addToMailChimpList(email, true);
   }
 });

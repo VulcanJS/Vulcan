@@ -533,7 +533,7 @@ body.pageslide-open {
 .header {
   background: #4e555d url("/img/bg-header.png") top center;
   background-color: #4e555d;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   position: relative;
   height: 60px;
   /* For modern browsers */
@@ -1640,7 +1640,7 @@ form .form-actions, .accounts-dialog .form-actions {
     float: left;
     display: block; }
 /* line 62, ../sass/modules/_forms.scss */
-form input[type="text"], form input[type="password"], form input[type="number"], form textarea, form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog input[type="number"], .accounts-dialog textarea, .accounts-dialog .login-form input {
+form input[type="text"], form input[type="password"], form input[type="number"], form input[type="email"], form textarea, form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog input[type="number"], .accounts-dialog input[type="email"], .accounts-dialog textarea, .accounts-dialog .login-form input {
   display: block;
   padding: 5px 6px;
   width: 100%;
@@ -1657,14 +1657,14 @@ form input[type="text"], form input[type="password"], form input[type="number"],
   -webkit-transition: border-color 500ms;
   transition: border-color 500ms; }
   /* line 71, ../sass/modules/_forms.scss */
-  form input[type="text"]:focus, form input[type="password"]:focus, form input[type="number"]:focus, form textarea:focus, form .login-form input:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog input[type="number"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus {
+  form input[type="text"]:focus, form input[type="password"]:focus, form input[type="number"]:focus, form input[type="email"]:focus, form textarea:focus, form .login-form input:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog input[type="number"]:focus, .accounts-dialog input[type="email"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus {
     outline: none;
     border-color: #f36c3d;
     -moz-box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3);
     -webkit-box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3);
     box-shadow: 0px 0px 5px 0px rgba(243, 108, 61, 0.3); }
   /* line 76, ../sass/modules/_forms.scss */
-  form input[type="text"][type="number"], form input[type="password"][type="number"], form input[type="number"][type="number"], form textarea[type="number"], form .login-form input[type="number"], .accounts-dialog input[type="text"][type="number"], .accounts-dialog input[type="password"][type="number"], .accounts-dialog input[type="number"][type="number"], .accounts-dialog textarea[type="number"], .accounts-dialog .login-form input[type="number"] {
+  form input[type="text"][type="number"], form input[type="password"][type="number"], form input[type="number"][type="number"], form input[type="email"][type="number"], form textarea[type="number"], form .login-form input[type="number"], .accounts-dialog input[type="text"][type="number"], .accounts-dialog input[type="password"][type="number"], .accounts-dialog input[type="number"][type="number"], .accounts-dialog input[type="email"][type="number"], .accounts-dialog textarea[type="number"], .accounts-dialog .login-form input[type="number"] {
     width: 30%; }
 /* line 80, ../sass/modules/_forms.scss */
 form input[type="text"], form input[type="password"], form input[type="number"], form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog input[type="number"], .accounts-dialog .login-form input {

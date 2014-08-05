@@ -31,7 +31,13 @@ Template[getTemplate('layout')].helpers({
   },
   extraCode: function(){
     return getSetting('extraCode');
-  }     
+  },
+  heroModules: function () {
+    return heroModules;
+  },
+  getTemplate: function () {
+    return getTemplate(this.template);
+  }
 });
 
 Template[getTemplate('layout')].created = function(){

@@ -16,6 +16,7 @@
     "handlebars-server": {},
     "npm": {},
     "mailchimp": {},
-    "synced-cron": {}
+    "synced-cron": {},
+    "cookies": {}
   }
 }

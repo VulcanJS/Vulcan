@@ -76,6 +76,10 @@ viewParameters.digest = function (terms) {
   };
 }
 
+footerModules = [];
+
+heroModules = [];
+
 // array containing post modules
 modulePositions = [
   'left-left',
