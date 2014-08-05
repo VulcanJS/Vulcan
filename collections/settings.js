@@ -124,14 +124,6 @@ settingsSchemaObject = {
     type: String,
     optional: true
   },
-  mailChimpAPIKey: {
-    type: String,
-    optional: true
-  },
-  mailChimpListId: {
-    type: String,
-    optional: true
-  },
   footerCode: {
     type: String,
     optional: true
