@@ -1,6 +1,13 @@
 ## v0.9.2 “MailScope”
 
+* Use [handlebars-server](https://github.com/EventedMind/meteor-handlebars-server) for all email templates. 
 * Refactored email system to use global HTML email wrapper.
+* Added routes to preview email templates. 
+* Changed how notifications are stored in db.
+* Added `deleteNotifications` migration to delete all existing notifications.
+* Now using templates for on-site notifications too.
+* Added `heroModules` and `footerModules` hooks.
+* Added [telescope-newsletter](https://github.com/TelescopeJS/Telescope-Newsletter) package. 
 
 ## v0.9.1.2
 

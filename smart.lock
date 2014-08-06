@@ -79,8 +79,8 @@
       },
       "telescope-module-embedly": {
         "git": "https://github.com/TelescopeJS/telescope-module-embedly.git",
-        "tag": "v0.2.5",
-        "commit": "2278792a61556dd13432964da279ef830a62b422"
+        "tag": "v0.2.6",
+        "commit": "902fde23c137ed8447525920cbd8a5bfa86d7028"
       },
       "handlebars-server": {
         "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
@@ -109,8 +109,8 @@
       },
       "telescope-newsletter": {
         "git": "https://github.com/TelescopeJS/telescope-newsletter.git",
-        "tag": "v0.1.3",
-        "commit": "56db1c8590131694db2757ab0ca929084b4dd9fe"
+        "tag": "v0.1.4",
+        "commit": "2c5364380d8e4f1f8599ddc726d7f3527612837d"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

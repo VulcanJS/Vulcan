@@ -65,3 +65,8 @@ sendEmail = function(to, subject, html, text){
     html: html
   });
 };
+
+buildAndSendEmail = function (to, subject, template, properties) {
+  var html = buildEmailTemplate(Handlebars.templates[getTemplate(template)](properties));
+  sendEmail (to, subject, buildEmailTemplate(html));
+} 
