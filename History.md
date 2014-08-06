@@ -8,6 +8,7 @@
 * Now using templates for on-site notifications too.
 * Added `heroModules` and `footerModules` hooks.
 * Added [telescope-newsletter](https://github.com/TelescopeJS/Telescope-Newsletter) package. 
+* Sending emails from within `setTimeout`s to fix latency compensation issue. 
 
 ## v0.9.1.2
 

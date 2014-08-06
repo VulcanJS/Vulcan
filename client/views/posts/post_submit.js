@@ -111,7 +111,6 @@ Template[getTemplate('post_submit')].events({
     // console.log(properties)
 
     // ------------------------------ Insert ------------------------------ //
-
     Meteor.call('post', properties, function(error, post) {
       if(error){
         throwError(error.reason);

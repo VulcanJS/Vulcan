@@ -42,6 +42,21 @@ buildEmailNotification = function (notification) {
   }
 }
 
+newPostNotification = function(post, excludedIDs){
+  
+  var excludedIDs = typeof excludedIDs == 'undefined' ? [] : excludedIDs;
+  var p = getPostProperties(post);
+  var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
+  var html = buildEmailTemplate(Handlebars.templates[getTemplate('emailNewPost')](p));
+
+  // send a notification to every user according to their notifications settings
+  Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
+    // don't send user a notification if their ID is in excludedIDs
+    if(excludedIDs.indexOf(user._id) == -1)
+      sendEmail(getEmail(user), subject, html);
+  });
+}
+
 Meteor.methods({
   unsubscribeUser : function(hash){
     // TO-DO: currently, if you have somebody's email you can unsubscribe them

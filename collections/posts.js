@@ -152,8 +152,8 @@ Meteor.methods({
   post: function(post){
     var title = cleanUp(post.title),
         body = cleanUp(post.body),
-        user = Meteor.user(),
-        userId = user._id,
+        userId = this.userId,
+        user = Meteor.users.findOne(userId),
         timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
@@ -257,12 +257,12 @@ Meteor.methods({
 
     Meteor.call('upvotePost', post, postAuthor);
 
-    if(!!getSetting('emailNotifications', false)){
-      // notify users of new posts
-      // call a server method because we do not have access to users' info on the client
-      Meteor.call('newPostNotify', post, function(error, result){
-        //run asynchronously
-      });
+    // notify users of new posts
+    if(Meteor.isServer && !!getSetting('emailNotifications', false)){
+      // we don't want emails to hold up the post submission, so we make the whole thing async with setTimeout
+      Meteor.setTimeout(function () {
+        newPostNotification(post, [userId])
+      }, 1);
     }
 
     return post;
@@ -315,20 +315,5 @@ Meteor.methods({
     
     Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
-  },
-  newPostNotify : function(post){
-    // only run on server since we need to get a list of all users
-    if(Meteor.isServer){
-      var p = getPostProperties(post);
-      var currentUser = Meteor.users.findOne(this.userId);
-      var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
-      var html = buildEmailTemplate(Handlebars.templates[getTemplate('emailNewPost')](p))
-      // send a notification to every user according to their notifications settings
-      Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
-        // don't send users notifications for their own posts
-        if(user._id !== currentUser._id && getUserSetting('notifications.posts', false, user))
-          sendEmail(getEmail(user), subject, html);
-      });
-    }
   }
 });

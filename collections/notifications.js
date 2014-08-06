@@ -42,8 +42,11 @@ createNotification = function(event, properties, userToNotify) {
 
   // 2. Send notification by email (if on server)
   if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
-    notificationEmail = buildEmailNotification(notification);
-    sendEmail(getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
+    // put in setTimeout so it doesn't hold up the rest of the method
+    Meteor.setTimeout(function () {
+      notificationEmail = buildEmailNotification(notification);
+      sendEmail(getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
+    }, 1);
   }
 };
 
