@@ -74,8 +74,8 @@
       },
       "subs-manager": {
         "git": "https://github.com/meteorhacks/subs-manager.git",
-        "tag": "v1.0.1",
-        "commit": "38317052d1601002d4dff537e4e0f61d1aa36e6d"
+        "tag": "v1.0.2",
+        "commit": "029236aa004062cc10d8c04e79907d6fe223ecf7"
       },
       "telescope-module-embedly": {
         "git": "https://github.com/TelescopeJS/telescope-module-embedly.git",
@@ -109,8 +109,8 @@
       },
       "telescope-newsletter": {
         "git": "https://github.com/TelescopeJS/telescope-newsletter.git",
-        "tag": "v0.1.4",
-        "commit": "2c5364380d8e4f1f8599ddc726d7f3527612837d"
+        "tag": "v0.1.6",
+        "commit": "f537dfdf41e6a6007f414ead6102b4d9f9bc087a"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
