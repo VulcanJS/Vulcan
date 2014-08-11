@@ -54,6 +54,23 @@
 				{{/if}}
 			{{/if}}
 		</div>
+		<div class="user-profile-votes grid-block">
+		<h3>{{i18n "Upvoted Posts"}}</h3>
+		<table>
+		<thead>
+			<tr>
+				<td>Post</td>
+				<td>Upvoted At</td>
+			</tr>
+		</thead>
+		{{#each upvotes}}
+			<tr>
+				<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+				<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+			</tr>
+		{{/each}}
+		</table>
+		</div>
 		{{/with}}
 	</div>
 </template>

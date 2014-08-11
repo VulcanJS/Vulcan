@@ -53,3 +53,7 @@ UI.registerHelper('canEdit', function(collectionName, item, action) {
 UI.registerHelper('log', function(context){
   console.log(context);
 });
+
+UI.registerHelper("formatDate", function(datetime, format) {
+  return moment(datetime).format(format);
+});

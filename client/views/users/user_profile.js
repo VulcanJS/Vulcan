@@ -21,6 +21,14 @@ Template[getTemplate('user_profile')].helpers({
   },
   getGitHubName: function () {
     return getGitHubName(this);
+  },
+  upvotes: function () {
+    // extend upvotes with each upvoted post
+    var extendedVotes = Meteor.user().profile.upvotedPosts.map(function (item) {
+      var post = Posts.findOne(item.itemId);
+      return _.extend(item, post);
+    });
+    return extendedVotes
   }
 });
 

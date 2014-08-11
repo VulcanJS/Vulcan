@@ -1,3 +1,7 @@
+## v0.9.3
+
+* Now keeping track of upvoted/downvoted posts & comments.
+
 ## v0.9.2 “MailScope”
 
 * Use [handlebars-server](https://github.com/EventedMind/meteor-handlebars-server) for all email templates. 
