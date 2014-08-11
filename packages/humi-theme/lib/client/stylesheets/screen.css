@@ -1,0 +1,21 @@
+header {
+    background-color: #57d0ff;
+}
+
+.search.empty .search-field {
+    background: white;
+}
+
+.nav > li > a, .nav > li > div > a {
+    font-size: 20px;    
+}
+
+input[type="submit"], button, .button, .btn {
+    background: red;   
+    line-height: 35px;
+    height: 35px;
+}
+
+body {
+    background: white;
+}
