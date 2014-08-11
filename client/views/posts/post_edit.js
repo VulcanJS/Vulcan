@@ -82,6 +82,9 @@ Template[getTemplate('post_edit')].events({
     var post = this;
 
     e.preventDefault();
+
+    $(e.target).addClass('disabled');
+
     if(!Meteor.user()){
       throwError('You must be logged in.');
       return false;
@@ -174,6 +177,8 @@ Template[getTemplate('post_edit')].events({
       if(error){
         console.log(error);
         throwError(error.reason);
+        clearSeenErrors();
+        $(e.target).removeClass('disabled');
       }else{
         trackEvent("edit post", {'postId': post._id});
         Router.go("/posts/"+post._id);
