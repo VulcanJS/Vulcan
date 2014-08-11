@@ -24,10 +24,6 @@ postSchemaObject = {
     type: String,
     optional: true
   },
-  author: {
-    type: String,
-    optional: true
-  },
   comments: {
     type: Number,
     optional: true
