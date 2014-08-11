@@ -171,19 +171,24 @@ Template[getTemplate('post_edit')].events({
 
     // ------------------------------ Update ------------------------------ //
 
-    Posts.update(post._id,{
-      $set: properties
-    }, function(error){
-      if(error){
-        console.log(error);
-        throwError(error.reason);
-        clearSeenErrors();
-        $(e.target).removeClass('disabled');
-      }else{
-        trackEvent("edit post", {'postId': post._id});
-        Router.go("/posts/"+post._id);
-      }
-    });
+    if (properties) {      
+      Posts.update(post._id,{
+        $set: properties
+      }, function(error){
+        if(error){
+          console.log(error);
+          throwError(error.reason);
+          clearSeenErrors();
+          $(e.target).removeClass('disabled');
+        }else{
+          trackEvent("edit post", {'postId': post._id});
+          Router.go("/posts/"+post._id);
+        }
+      });
+    } else {
+      $(e.target).removeClass('disabled');
+    }
+
   },
   'click .delete-link': function(e){
     var post = this;
