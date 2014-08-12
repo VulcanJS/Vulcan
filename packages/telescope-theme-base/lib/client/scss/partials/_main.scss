@@ -1,0 +1,61 @@
+*, *:before, *:after {
+  @include box-sizing(border-box);
+  line-height: 1.5;  
+}
+
+html, body, .outer-wrapper{
+  height:100%;
+}
+body{
+  background:#e0f1f7;
+  font-size: 14px;
+  @include small{
+    overflow-x: hidden;
+  }
+}
+html, body, input, button{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5){
+  body{
+    // background:#e9f3f7 url("/img/bg@2x.png") top center;
+    background-size:10px 10px;
+  }
+}
+.outer-wrapper{
+  position:relative;
+}
+.content-wrapper{
+  padding-bottom:20px;
+}
+#spinner{
+  margin: 100px 0;
+}
+.debug{
+  display:none;
+}
+
+.footer{
+  text-align:center;
+  padding:10px 0 70px 0;
+  color:black(0.4);
+  font-size:14px;
+  &.absolute{
+    position:absolute;
+  }
+}
+#login-buttons .loading{
+  display:none;
+}
+#loading, .loading-page{
+  height:300px;
+}
+
+.content-wrapper{
+  padding: 0 10px;
+  @include small{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}

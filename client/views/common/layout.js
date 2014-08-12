@@ -17,20 +17,8 @@ Template[getTemplate('layout')].helpers({
   pageName : function(){
     // getCurrentTemplate();
   },
-  backgroundCSS: function(){
-  	return getSetting('backgroundCSS');
-  },
-  secondaryColor: function(){
-  	return getSetting('secondaryColor');
-  },
-  buttonColor: function(){
-  	return getSetting('buttonColor');
-  },
-  headerColor: function(){
-  	return getSetting('headerColor');
-  },
-  extraCode: function(){
-    return getSetting('extraCode');
+  css: function () {
+    return getTemplate('css');
   },
   heroModules: function () {
     return heroModules;

@@ -38,3 +38,7 @@ i18next-meteor
 /synced-cron
 /cookies
 /telescope-newsletter
+/accounts-entry
+/accounts-t9n
+/simple-form
+/underscore-string-latest

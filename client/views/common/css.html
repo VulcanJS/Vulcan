@@ -1,0 +1,26 @@
+<template name="css">
+  <style>
+      body{
+        background: {{getSetting "backgroundCSS"}};
+      }
+      input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn, .error, .mobile-menu-button, .login-link-text{
+        background-color: {{getSetting "buttonColor"}} !important;
+      }
+      a, a:link, a:active, a:visited, a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link{
+        color: {{getSetting "buttonColor"}};
+      }
+      .toggle-actions-link{
+        border-color: {{getSetting "buttonColor"}};
+      }
+      .post-content .post-upvote .upvote-link.voted i.icon-check{
+        color: {{getSetting "secondaryColor"}};
+      }
+      .header{
+        background-color: {{getSetting "headerColor"}};
+      }
+    .logo-image{
+      height:{{getSetting "logoHeight"}}px; 
+      width:{{getSetting "logoWidth"}}px; 
+    }
+  </style>
+</template>

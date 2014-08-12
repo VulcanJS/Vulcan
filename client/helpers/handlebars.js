@@ -15,7 +15,9 @@ UI.registerHelper('eachWithRank', function(items, options) {
 });
 
 UI.registerHelper('getSetting', function(setting, defaultArgument){
-  return getSetting(setting, defaultArgument);
+  var defaultArgument = (typeof defaultArgument !== 'undefined') ? defaultArgument : '';
+  var setting = getSetting(setting, defaultArgument);
+  return setting;
 });
 UI.registerHelper('canView', function() {
   return canView(Meteor.user());

@@ -10,23 +10,21 @@
 @import "partials/grid";
 @import "partials/colors";
 @import "partials/mixins";
-@import "partials/main";
+// @import "partials/main";
 @import "partials/typography";
 @import "partials/icons";
-@import "partials/pageslide";
+// @import "partials/pageslide";
 @import "partials/markdown";
 @import "partials/tooltips";
 // @import "partials/datepicker";
-@import "partials/dropdown";
 
 @import "modules/nav";
-@import "modules/mobile_nav";
+// @import "modules/mobile_nav";
 @import "modules/posts";
 @import "modules/comments";
-@import "modules/forms";
+// @import "modules/forms";
 @import "modules/dialogs";
-@import "modules/settings";
-@import "modules/users";
+// @import "modules/users";
 @import "modules/user-profile";
 @import "modules/errors";
 @import "modules/notifications";

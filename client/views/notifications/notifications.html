@@ -1,7 +1,7 @@
 <template name="notifications">
 	{{#if currentUser}}
 		{{#if canPost}}
-		<div class="notifications {{notification_class}}">
+		<div class="notifications module {{notification_class}}">
 			<a href="#" class="mark-as-read">{{i18n "Mark all as read"}}</a>
 			<ul>
 			{{#each notifications}}

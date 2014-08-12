@@ -1,12 +1,12 @@
 /*Datepicker for BootstrapCopyright 2012 Stefan PetreLicensed under the Apache License v2.0http://www.apache.org/licenses/LICENSE-2.0*/
  .datepicker {
- 	display:none;
- 	position:absolute;
- 	width:300px;
- 	height:auto;
- 	background:white;
- 	@include box-shadow(0px 2px 5px black(0.15));
- 	border:3px #eee solid;
+  display:none;
+  position:absolute;
+  width:300px;
+  height:auto;
+  background:white;
+  @include box-shadow(0px 2px 5px black(0.15));
+  border:3px #eee solid;
     top:0;
     left:0;
     padding:4px;

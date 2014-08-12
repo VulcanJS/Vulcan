@@ -1,0 +1,17 @@
+.hidden{
+  display:none;
+}
+.visible{
+  display: block;
+}
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  z-index:50;
+}
+a, a:link, a:visited, a:hover, a:active{
+  text-decoration: none;
+}

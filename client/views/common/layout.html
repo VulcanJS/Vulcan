@@ -1,33 +1,6 @@
 <template name="layout">
 
-  <style>
-    {{#if backgroundCSS}}
-      body{
-        background: {{backgroundCSS}};
-      }
-    {{/if}}
-    {{#if buttonColor}}
-      input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn, .error, .mobile-menu-button, .login-link-text{
-        background-color: {{buttonColor}} !important;
-      }
-      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link{
-        color: {{buttonColor}};
-      }
-      .toggle-actions-link{
-        border-color: {{buttonColor}};
-      }
-    {{/if}}
-    {{#if secondaryColor}}
-      .post-content .post-upvote .upvote-link.voted i.icon-check{
-        color: {{secondaryColor}};
-      }
-    {{/if}}
-    {{#if headerColor}}
-      .header{
-        background-color: {{headerColor}};
-      }
-    {{/if}}
-  </style>
+{{> UI.dynamic template=css}}
   <div class="outer-wrapper {{currentPage}}">
     {{> UI.dynamic template=mobile_nav}}
     <div class="inner-wrapper template-{{pageName}}">

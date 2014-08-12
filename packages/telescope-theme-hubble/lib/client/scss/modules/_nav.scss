@@ -67,6 +67,9 @@
 		}
 	}
 }
+.user-menu{
+
+}
 // @media only screen and (-webkit-min-device-pixel-ratio: 1.5){
 // 	.header{
 // 		// background-image:url("/img/bg-header@2x.png");
@@ -143,7 +146,8 @@
 	@extend %vcenter;
 	>li{
 		@include horizontal-list-item;
-		margin-right:10px;
+		margin:0 10px 0 0;
+		line-height: 2;
 		&:last-child{
 			margin-right: 0px;
 		}
@@ -189,11 +193,5 @@
 		.search-clear{
 			display: none;
 		}
-	}
-}
-
-.desktop-nav{
-	@include small{
-		display: none;
 	}
 }

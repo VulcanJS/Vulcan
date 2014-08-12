@@ -18,6 +18,7 @@
     "mailchimp": {},
     "synced-cron": {},
     "cookies": {},
-    "telescope-newsletter": {}
+    "telescope-newsletter": {},
+    "accounts-entry": {}
   }
 }
