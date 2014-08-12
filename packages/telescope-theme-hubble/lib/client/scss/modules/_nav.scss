@@ -29,7 +29,6 @@
 		position:absolute;
 		display:block;
 		text-align:center;
-		width:100%;
 		color:white;
 		@include small{
 			font-size: 18px;
@@ -42,18 +41,15 @@
 		a, a:visited{
 			color:white;
 		}
-		&.image{
-			position:absolute;
-			left:50%;
-			a{
-				display:block;
-				height:100%;
-				width:100%;
-				background: no-repeat center center;
-				font: 0/0 a;
-				text-shadow: none;
-				color: transparent;
-			}
+	}
+	.logo-image{
+		line-height: 1;
+		a{
+			display:inline-block;
+			background: no-repeat center center;
+			font: 0/0 a;
+			text-shadow: none;
+			color: transparent;
 		}
 	}
 	.user-nav{

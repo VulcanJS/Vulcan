@@ -338,7 +338,6 @@ em {
     position: absolute;
     display: block;
     text-align: center;
-    width: 100%;
     color: white;
     left: 0px;
     right: 0px; }
@@ -350,48 +349,45 @@ em {
       /* line 27, ../scss/modules/_nav.scss */
       .header .logo {
         font-size: 24px; } }
-    /* line 42, ../scss/modules/_nav.scss */
+    /* line 41, ../scss/modules/_nav.scss */
     .header .logo a, .header .logo a:visited {
       color: white; }
-    /* line 45, ../scss/modules/_nav.scss */
-    .header .logo.image {
-      position: absolute;
-      left: 50%; }
-      /* line 48, ../scss/modules/_nav.scss */
-      .header .logo.image a {
-        display: block;
-        height: 100%;
-        width: 100%;
-        background: no-repeat center center;
-        font: 0/0 a;
-        text-shadow: none;
-        color: transparent; }
-  /* line 59, ../scss/modules/_nav.scss */
+  /* line 45, ../scss/modules/_nav.scss */
+  .header .logo-image {
+    line-height: 1; }
+    /* line 47, ../scss/modules/_nav.scss */
+    .header .logo-image a {
+      display: inline-block;
+      background: no-repeat center center;
+      font: 0/0 a;
+      text-shadow: none;
+      color: transparent; }
+  /* line 55, ../scss/modules/_nav.scss */
   .header .user-nav {
     z-index: 20;
     position: relative;
     float: right; }
 
-/* line 83, ../scss/modules/_nav.scss */
+/* line 79, ../scss/modules/_nav.scss */
 .auth-buttons {
   z-index: 20;
   float: right;
   margin-right: 10px; }
-  /* line 88, ../scss/modules/_nav.scss */
+  /* line 84, ../scss/modules/_nav.scss */
   .auth-buttons #login-buttons {
     position: relative;
     line-height: 26px; }
-    /* line 94, ../scss/modules/_nav.scss */
+    /* line 90, ../scss/modules/_nav.scss */
     .auth-buttons #login-buttons .account-link {
       display: block;
       color: white !important;
       margin-bottom: 10px;
       float: none; }
-    /* line 100, ../scss/modules/_nav.scss */
+    /* line 96, ../scss/modules/_nav.scss */
     .auth-buttons #login-buttons a {
       text-decoration: none;
       color: #4a4444; }
-    /* line 104, ../scss/modules/_nav.scss */
+    /* line 100, ../scss/modules/_nav.scss */
     .auth-buttons #login-buttons a.login-link-text {
       color: #fff;
       font-weight: normal;
@@ -399,7 +395,7 @@ em {
       font-size: 15px;
       padding: 0px 8px;
       border-radius: 3px; }
-    /* line 112, ../scss/modules/_nav.scss */
+    /* line 108, ../scss/modules/_nav.scss */
     .auth-buttons #login-buttons #login-buttons-password {
       float: none !important;
       text-shadow: none;
@@ -407,18 +403,18 @@ em {
       line-height: 1.5;
       height: 26px;
       margin: 10px 0 !important; }
-    /* line 121, ../scss/modules/_nav.scss */
+    /* line 117, ../scss/modules/_nav.scss */
     .auth-buttons #login-buttons .login-header {
       font-family: inherit;
       height: 26px;
       margin-right: 10px;
       cursor: pointer;
       color: white; }
-      /* line 127, ../scss/modules/_nav.scss */
+      /* line 123, ../scss/modules/_nav.scss */
       .auth-buttons #login-buttons .login-header:before {
         color: rgba(255, 255, 255, 0.5);
         content: "Welcome, "; }
-    /* line 132, ../scss/modules/_nav.scss */
+    /* line 128, ../scss/modules/_nav.scss */
     .auth-buttons #login-buttons #login-buttons-logout {
       color: white;
       border: none;
@@ -428,7 +424,7 @@ em {
       height: 26px;
       text-shadow: none; }
 
-/* line 144, ../scss/modules/_nav.scss */
+/* line 140, ../scss/modules/_nav.scss */
 .nav {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
@@ -440,7 +436,7 @@ em {
   /* line 7, ../scss/partials/_mixins.scss */
   .nav:after {
     clear: both; }
-  /* line 147, ../scss/modules/_nav.scss */
+  /* line 143, ../scss/modules/_nav.scss */
   .nav > li {
     list-style-image: none;
     list-style-type: none;
@@ -460,25 +456,25 @@ em {
     /* line 52, ../../../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/typography/lists/_horizontal-list.scss */
     .nav > li.last {
       padding-right: 0; }
-    /* line 151, ../scss/modules/_nav.scss */
+    /* line 147, ../scss/modules/_nav.scss */
     .nav > li:last-child {
       margin-right: 0px; }
-    /* line 154, ../scss/modules/_nav.scss */
+    /* line 150, ../scss/modules/_nav.scss */
     .nav > li > a, .nav > li > div > a {
       color: white;
       font-size: 15px;
       font-weight: normal; }
-      /* line 160, ../scss/modules/_nav.scss */
+      /* line 156, ../scss/modules/_nav.scss */
       .nav > li > a.intercom em:before, .nav > li > div > a.intercom em:before {
         content: '('; }
-      /* line 163, ../scss/modules/_nav.scss */
+      /* line 159, ../scss/modules/_nav.scss */
       .nav > li > a.intercom em:after, .nav > li > div > a.intercom em:after {
         content: ')'; }
 
-/* line 170, ../scss/modules/_nav.scss */
+/* line 166, ../scss/modules/_nav.scss */
 .search {
   position: relative; }
-  /* line 172, ../scss/modules/_nav.scss */
+  /* line 168, ../scss/modules/_nav.scss */
   .search .search-field {
     font-size: 14px;
     padding: 4px 12px;
@@ -489,16 +485,16 @@ em {
     -webkit-transition: 0.2s all;
     -moz-transition: 0.2s all;
     background: white; }
-    /* line 182, ../scss/modules/_nav.scss */
+    /* line 178, ../scss/modules/_nav.scss */
     .search .search-field:focus {
       outline: none; }
-  /* line 187, ../scss/modules/_nav.scss */
+  /* line 183, ../scss/modules/_nav.scss */
   .search.empty .search-field {
     background: rgba(255, 255, 255, 0.1); }
-    /* line 189, ../scss/modules/_nav.scss */
+    /* line 185, ../scss/modules/_nav.scss */
     .search.empty .search-field:focus {
       background: white; }
-  /* line 193, ../scss/modules/_nav.scss */
+  /* line 189, ../scss/modules/_nav.scss */
   .search.empty .search-clear {
     display: none; }
 
