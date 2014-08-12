@@ -70,7 +70,8 @@
 .comment{
 	margin-left:30px;
 	position:relative;
-
+	padding: 0;
+	background: none;
 	.comment-body{
 		@include single-transition(ease-out, opacity, 600ms, 0ms);
 		opacity:1;

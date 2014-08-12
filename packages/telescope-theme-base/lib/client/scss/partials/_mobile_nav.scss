@@ -1,162 +1,134 @@
+$mobile-nav-width: 200px;
+
+.mobile-nav{
+  position:fixed;
+  overflow:auto;
+  left: -$mobile-nav-width;
+  left: calc((100% - 60px) * -1);
+  width: $mobile-nav-width;
+  width: calc(100% - 60px);
+  height: 100%;
+  top: 0px;
+  bottom: 0px;
+  background:#444;
+  color:white;
+  @include box-shadow(inset -3px 0px 7px black(0.5));
+  z-index: 100;
+}
+
+.mobile-nav, .inner-wrapper{
+  @include single-transition(all, 300ms, ease-out, 0ms);
+}
+
+.inner-wrapper{
+  position: relative;
+  left: 0px;
+}
+
+.mobile-nav-open{
+  overflow: hidden;
+  .mobile-nav{
+    left:0px;
+  }
+  .outer-wrapper{
+    overflow:hidden;
+    .inner-wrapper{
+      left:$mobile-nav-width;
+      left: calc(100% - 60px);
+    }
+  }
+}
+
+@mixin header-button{
+  display:block;
+  background:$red;
+  border-radius: 3px;
+  &, &:link, &:visited, &:hover{
+    color:white;
+  }
+  height:30px;
+  width:40px;
+  i{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    line-height:30px;
+    height:30px;
+    font-size:18px;
+  }
+}
+
+.mobile-menu-button{
+  @include header-button;
+  @extend %vcenter;
+  @include medium-large{
+    display: none;
+  }
+  z-index:100;
+  
+  span{
+    display:none;
+  }
+  &.menu{
+    float:left;
+  }
+  &.submit{
+    float:right;
+  }
+}
+
+
 .desktop-nav{
   @include small{
     display: none;
   }
 }
 
-.mobile{
-  display:none !important;
-}
-.mobile-nav{
-  position:fixed;
-  overflow:auto;
-  width:280px;
-  left:-280px;
-  top:0px;
-  bottom:0px;
-  background:#444;
-  color:white;
-  @include box-shadow(inset -3px 0px 7px black(0.5));
-  ul{
+.mobile-menu{
+  li{
+    margin-bottom: 0;
+    border-bottom:1px white(0.1) solid;
+    &:last-child{
+      border:none;
+    }
+  }
+  a{
+    display: block;
+    height: auto;
+    line-height: inherit;
+    padding: 10px;
+    font-size: 15px;
+    &, &:link, &:visited{
+      color: white;
+    }
+  }
+  .dropdown{
+    >a{
+      &:after{
+        display:inline-block;
+        position:relative;
+        top:-1px;
+        margin-left:4px;
+        content:"▼";
+        font-size:8px;
+      }
+    }
+  }
+  .dropdown-menu{
     li{
+      margin-bottom: 0;
+      a{
+        background: #333;
+      }
       border-bottom:1px white(0.1) solid;
-      a{
-        display:block;
-        height:50px;
-        padding:0 10px;
-        line-height:50px;
-        &:hover{
-          background:$red;
-          color:white;
-        }
-      }
     }
-  }
+  }  
 }
-.mobile-nav, .content-wrapper{
-  @include single-transition(ease-out, left, 300ms, 0ms);
-}
-.content-wrapper{
-  position:relative;
 
-  left:0px;
-}
-.mobile-nav-open{
-  .mobile-nav{
-    left:0px;
+.mobile-submit{
+  padding: 10px;
+  border-bottom:1px white(0.1) solid;
+  .button{
+    max-width: none;
   }
-  .outer-wrapper{
-    overflow:hidden;
-    .content-wrapper{
-      left:280px;
-    }
-  }
-}
-@media screen and (max-width: $break-small) {
-  .header-button{
-    position:relative;
-    display:block;
-    margin-top:10px;
-    background:$red;
-    color:white;
-    height:30px;
-    width:40px;
-    i{
-      position:absolute;
-      width:100%;
-      text-align:center;
-      line-height:30px;
-      height:30px;
-      font-size:18px;
-    }
-  }
-  .mobile{
-    display:block !important;
-  }
-  .desktop{
-    display:none !important;
-  }
-  .grid, .grid-small{
-    width:100%;
-    margin-left:0;
-    margin-right:0;
-    // padding-left:10px;
-    // padding-right:10px;
-    min-width:200px;
-  }
-
-  .header{
-    height:50px;
-    @include border-radius(0px);
-    .logo{
-      top:0px;
-      left:0px;
-      font-size:22px;
-      line-height:50px;
-      z-index:10;
-      a{
-        img{
-          height:auto !important;
-          max-height:40px !important;
-          width:auto !important;
-        }
-      }
-      &.image{
-        margin-top:-10px; //since the mobile header is 20px thinner than the normal one, take off 10px more
-      }
-    }
-    .auth-buttons{
-      z-index:100;
-      margin:0;
-      #login-buttons{
-        display:block !important;
-      }
-      .login-link-and-dropdown-list{
-        right:0px !important;
-        position:static !important;
-        #login-dropdown-list{
-          right:0px !important;
-          margin:0px !important;
-        }
-        .login-link-text{
-          @extend .header-button;
-          @include hide-text2;
-          height:30px !important;
-          margin:10px 0 0 0 !important;
-          display:block !important;
-          &:after{
-            content: "\75" !important;
-            font-family: 'icomoon' !important;
-            position:absolute;
-            width:100%;
-            text-align:center;
-            line-height:30px !important;
-            height:30px !important;
-            font-size:18px !important;
-          }
-        }
-      }
-    }
-    .mobile-button{
-      z-index:100;
-      @extend .header-button;
-      
-      span{
-        display:none;
-      }
-      &.menu{
-        float:left;
-      }
-      &.submit{
-        float:right;
-      }
-      &:hover{
-        background:white;
-        i{
-          color:$red;
-        }
-      }
-    }
-  }
-  
 }

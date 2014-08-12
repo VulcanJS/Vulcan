@@ -19,6 +19,9 @@ UI.registerHelper('getSetting', function(setting, defaultArgument){
   var setting = getSetting(setting, defaultArgument);
   return setting;
 });
+UI.registerHelper('isLoggedIn', function() {
+  return !!Meteor.user();
+});
 UI.registerHelper('canView', function() {
   return canView(Meteor.user());
 });

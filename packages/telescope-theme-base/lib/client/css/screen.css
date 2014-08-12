@@ -105,6 +105,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   .cf:after {
     clear: both; }
 
+/* line 133, ../scss/partials/_mixins.scss */
+.mobile-menu-button {
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%); }
+
 /*================ FLEXBOX =================*/
 /* line 2, ../scss/partials/_forms.scss */
 form.form-block, .accounts-dialog.form-block {
@@ -250,7 +259,7 @@ input[type="submit"], button, .button, .btn {
   color: white;
   text-align: center;
   display: block;
-  max-width: 250px;
+  max-width: 300px;
   padding: 10px 12px;
   line-height: 1;
   border: none;
@@ -336,7 +345,7 @@ html, body, .outer-wrapper {
 body {
   background: #e0f1f7;
   font-size: 14px; }
-  @media screen and (max-width: 30em) {
+  @media screen and (max-width: 40em) {
     /* line 9, ../scss/partials/_main.scss */
     body {
       overflow-x: hidden; } }
@@ -386,177 +395,136 @@ html, body, input, button {
 /* line 55, ../scss/partials/_main.scss */
 .content-wrapper {
   padding: 0 10px; }
-  @media screen and (max-width: 30em) {
+  @media screen and (max-width: 40em) {
     /* line 55, ../scss/partials/_main.scss */
     .content-wrapper {
       overflow-x: hidden;
       overflow-y: hidden; } }
 
-@media screen and (max-width: 30em) {
-  /* line 1, ../scss/partials/_mobile_nav.scss */
-  .desktop-nav {
-    display: none; } }
-
-/* line 7, ../scss/partials/_mobile_nav.scss */
-.mobile {
-  display: none !important; }
-
-/* line 10, ../scss/partials/_mobile_nav.scss */
+/* line 3, ../scss/partials/_mobile_nav.scss */
 .mobile-nav {
   position: fixed;
   overflow: auto;
-  width: 280px;
-  left: -280px;
+  left: -200px;
+  left: calc((100% - 60px) * -1);
+  width: 200px;
+  width: calc(100% - 60px);
+  height: 100%;
   top: 0px;
   bottom: 0px;
   background: #444;
   color: white;
   -moz-box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5);
-  box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5); }
-  /* line 21, ../scss/partials/_mobile_nav.scss */
-  .mobile-nav ul li {
-    border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
-    /* line 23, ../scss/partials/_mobile_nav.scss */
-    .mobile-nav ul li a {
-      display: block;
-      height: 50px;
-      padding: 0 10px;
-      line-height: 50px; }
-      /* line 28, ../scss/partials/_mobile_nav.scss */
-      .mobile-nav ul li a:hover {
-        background: #f36c3d;
-        color: white; }
+  box-shadow: inset -3px 0px 7px rgba(0, 0, 0, 0.5);
+  z-index: 100; }
 
-/* line 36, ../scss/partials/_mobile_nav.scss */
-.mobile-nav, .content-wrapper {
-  -moz-transition: ease-out left 300ms 0ms;
-  -o-transition: ease-out left 300ms 0ms;
-  -webkit-transition: ease-out left 300ms;
+/* line 19, ../scss/partials/_mobile_nav.scss */
+.mobile-nav, .inner-wrapper {
+  -moz-transition: all 300ms ease-out 0ms;
+  -o-transition: all 300ms ease-out 0ms;
+  -webkit-transition: all 300ms ease-out;
   -webkit-transition-delay: 0ms;
-  transition: ease-out left 300ms 0ms; }
+  transition: all 300ms ease-out 0ms; }
 
-/* line 39, ../scss/partials/_mobile_nav.scss */
-.content-wrapper {
+/* line 23, ../scss/partials/_mobile_nav.scss */
+.inner-wrapper {
   position: relative;
   left: 0px; }
 
-/* line 45, ../scss/partials/_mobile_nav.scss */
-.mobile-nav-open .mobile-nav {
-  left: 0px; }
-/* line 48, ../scss/partials/_mobile_nav.scss */
-.mobile-nav-open .outer-wrapper {
+/* line 28, ../scss/partials/_mobile_nav.scss */
+.mobile-nav-open {
   overflow: hidden; }
-  /* line 50, ../scss/partials/_mobile_nav.scss */
-  .mobile-nav-open .outer-wrapper .content-wrapper {
-    left: 280px; }
+  /* line 30, ../scss/partials/_mobile_nav.scss */
+  .mobile-nav-open .mobile-nav {
+    left: 0px; }
+  /* line 33, ../scss/partials/_mobile_nav.scss */
+  .mobile-nav-open .outer-wrapper {
+    overflow: hidden; }
+    /* line 35, ../scss/partials/_mobile_nav.scss */
+    .mobile-nav-open .outer-wrapper .inner-wrapper {
+      left: 200px;
+      left: calc(100% - 60px); }
 
-@media screen and (max-width: 500px) {
-  /* line 56, ../scss/partials/_mobile_nav.scss */
-  .header-button, .header .auth-buttons .login-link-and-dropdown-list .login-link-text, .header .mobile-button {
-    position: relative;
-    display: block;
-    margin-top: 10px;
-    background: #f36c3d;
-    color: white;
-    height: 30px;
-    width: 40px; }
-    /* line 64, ../scss/partials/_mobile_nav.scss */
-    .header-button i, .header .auth-buttons .login-link-and-dropdown-list .login-link-text i, .header .mobile-button i {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      line-height: 30px;
-      height: 30px;
-      font-size: 18px; }
-
-  /* line 73, ../scss/partials/_mobile_nav.scss */
-  .mobile {
-    display: block !important; }
-
-  /* line 76, ../scss/partials/_mobile_nav.scss */
-  .desktop {
-    display: none !important; }
-
-  /* line 79, ../scss/partials/_mobile_nav.scss */
-  .grid, .grid-small {
+/* line 61, ../scss/partials/_mobile_nav.scss */
+.mobile-menu-button {
+  display: block;
+  background: #f36c3d;
+  border-radius: 3px;
+  height: 30px;
+  width: 40px;
+  z-index: 100; }
+  /* line 46, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu-button, .mobile-menu-button:link, .mobile-menu-button:visited, .mobile-menu-button:hover {
+    color: white; }
+  /* line 51, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu-button i {
+    position: absolute;
     width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    min-width: 200px; }
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    font-size: 18px; }
+  @media screen and (min-width: 40em) {
+    /* line 61, ../scss/partials/_mobile_nav.scss */
+    .mobile-menu-button {
+      display: none; } }
+  /* line 69, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu-button span {
+    display: none; }
+  /* line 72, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu-button.menu {
+    float: left; }
+  /* line 75, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu-button.submit {
+    float: right; }
 
-  /* line 88, ../scss/partials/_mobile_nav.scss */
-  .header {
-    height: 50px;
-    -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    border-radius: 0px; }
-    /* line 91, ../scss/partials/_mobile_nav.scss */
-    .header .logo {
-      top: 0px;
-      left: 0px;
-      font-size: 22px;
-      line-height: 50px;
-      z-index: 10; }
-      /* line 98, ../scss/partials/_mobile_nav.scss */
-      .header .logo a img {
-        height: auto !important;
-        max-height: 40px !important;
-        width: auto !important; }
-      /* line 104, ../scss/partials/_mobile_nav.scss */
-      .header .logo.image {
-        margin-top: -10px; }
-    /* line 108, ../scss/partials/_mobile_nav.scss */
-    .header .auth-buttons {
-      z-index: 100;
-      margin: 0; }
-      /* line 111, ../scss/partials/_mobile_nav.scss */
-      .header .auth-buttons #login-buttons {
-        display: block !important; }
-      /* line 114, ../scss/partials/_mobile_nav.scss */
-      .header .auth-buttons .login-link-and-dropdown-list {
-        right: 0px !important;
-        position: static !important; }
-        /* line 117, ../scss/partials/_mobile_nav.scss */
-        .header .auth-buttons .login-link-and-dropdown-list #login-dropdown-list {
-          right: 0px !important;
-          margin: 0px !important; }
-        /* line 121, ../scss/partials/_mobile_nav.scss */
-        .header .auth-buttons .login-link-and-dropdown-list .login-link-text {
-          font: 0/0 a;
-          text-shadow: none;
-          color: transparent;
-          height: 30px !important;
-          margin: 10px 0 0 0 !important;
-          display: block !important; }
-          /* line 127, ../scss/partials/_mobile_nav.scss */
-          .header .auth-buttons .login-link-and-dropdown-list .login-link-text:after {
-            content: "\75" !important;
-            font-family: 'icomoon' !important;
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            line-height: 30px !important;
-            height: 30px !important;
-            font-size: 18px !important; }
-    /* line 140, ../scss/partials/_mobile_nav.scss */
-    .header .mobile-button {
-      z-index: 100; }
-      /* line 144, ../scss/partials/_mobile_nav.scss */
-      .header .mobile-button span {
-        display: none; }
-      /* line 147, ../scss/partials/_mobile_nav.scss */
-      .header .mobile-button.menu {
-        float: left; }
-      /* line 150, ../scss/partials/_mobile_nav.scss */
-      .header .mobile-button.submit {
-        float: right; }
-      /* line 153, ../scss/partials/_mobile_nav.scss */
-      .header .mobile-button:hover {
-        background: white; }
-        /* line 155, ../scss/partials/_mobile_nav.scss */
-        .header .mobile-button:hover i {
-          color: #f36c3d; } }
+@media screen and (max-width: 40em) {
+  /* line 81, ../scss/partials/_mobile_nav.scss */
+  .desktop-nav {
+    display: none; } }
+
+/* line 88, ../scss/partials/_mobile_nav.scss */
+.mobile-menu li {
+  margin-bottom: 0;
+  border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
+  /* line 91, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu li:last-child {
+    border: none; }
+/* line 95, ../scss/partials/_mobile_nav.scss */
+.mobile-menu a {
+  display: block;
+  height: auto;
+  line-height: inherit;
+  padding: 10px;
+  font-size: 15px; }
+  /* line 101, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu a, .mobile-menu a:link, .mobile-menu a:visited {
+    color: white; }
+/* line 107, ../scss/partials/_mobile_nav.scss */
+.mobile-menu .dropdown > a:after {
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  margin-left: 4px;
+  content: "▼";
+  font-size: 8px; }
+/* line 118, ../scss/partials/_mobile_nav.scss */
+.mobile-menu .dropdown-menu li {
+  margin-bottom: 0;
+  border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
+  /* line 120, ../scss/partials/_mobile_nav.scss */
+  .mobile-menu .dropdown-menu li a {
+    background: #333; }
+
+/* line 128, ../scss/partials/_mobile_nav.scss */
+.mobile-submit {
+  padding: 10px;
+  border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
+  /* line 131, ../scss/partials/_mobile_nav.scss */
+  .mobile-submit .button {
+    max-width: none; }
+
 /* line 1, ../scss/partials/_typography.scss */
 h1, h2, h3, h4, h5 {
   line-height: 1.3; }
@@ -724,9 +692,12 @@ table {
       -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
       -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
-      /* line 30, ../scss/partials/_dropdown.scss */
-      .has-dropdown .dropdown .dropdown-menu ul li a {
-        font-size: 14px; }
-  /* line 37, ../scss/partials/_dropdown.scss */
+      /* line 29, ../scss/partials/_dropdown.scss */
+      .has-dropdown .dropdown .dropdown-menu ul li {
+        margin-bottom: 0; }
+        /* line 31, ../scss/partials/_dropdown.scss */
+        .has-dropdown .dropdown .dropdown-menu ul li a {
+          font-size: 14px; }
+  /* line 38, ../scss/partials/_dropdown.scss */
   .has-dropdown .dropdown:hover .dropdown-menu {
     display: block; }

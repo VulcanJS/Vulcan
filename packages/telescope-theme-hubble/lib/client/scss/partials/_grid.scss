@@ -46,6 +46,8 @@ $medium-break: 50em;
 }
 .grid-small, .entry{
   width: 100%;
-	max-width:320px;
+  @include medium-large{
+	 max-width:400px;
+  }
 	margin:0 auto;
 }

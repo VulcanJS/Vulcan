@@ -27,6 +27,7 @@
       @include border-radius(3px);
       @include box-shadow(0 1px 3px black(0.35));
       li{
+        margin-bottom: 0;
         a{
           font-size:14px;
         }

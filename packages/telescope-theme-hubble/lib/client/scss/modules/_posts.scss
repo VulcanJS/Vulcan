@@ -86,7 +86,7 @@
 		}
 		.cell{
 			&:last-child{
-				margin-right: 0px;
+				// margin-right: 0px;
 			}
 		}
 	}
@@ -380,7 +380,7 @@
 		}
 		.count{
 			position:absolute;
-			top:12px;
+			top:14px;
 			display:block;
 			width:100%;
 			height:20px;
@@ -470,15 +470,14 @@
         width:30px;
       }
       .post-info{
-        margin-left:30px;
-        padding:6px 4px 6px 8px;
+        // margin-left:30px;
+        padding:13px 0;
       }
       .post-heading{
         .post-title{
           line-height:1.2;
           display:block;
           margin-bottom:4px;
-          font-size:18px;
         }
         .post-domain{
           line-height:1;
@@ -497,33 +496,6 @@
           &:after{
             font-size:12px;
             content:"pts ";
-          }
-        }
-      }
-    }
-    .post-actions{
-      display:none;
-      li{
-        float:none;
-        a{
-          height:40px;
-          width:40px;
-          font-size:30px;       
-          i{
-            display:block;
-            position:absolute;
-            top:0px;
-            left:0px;
-            width:100%;
-            height:100%;
-            line-height:40px;
-            text-align:center;
-          }
-          .count{
-            top:9px;
-          }
-          .action{
-            display:none;
           }
         }
       }
