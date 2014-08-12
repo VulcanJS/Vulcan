@@ -1,6 +1,8 @@
-## v0.9.3
+## v0.9.2.5 “AccountScope”
 
 * Now keeping track of upvoted/downvoted posts & comments.
+* Using [accounts-entry](https://github.com/Differential/accounts-entry/) for accounts stuff.
+* Split out part of the Hubble theme into a new “base” theme.
 
 ## v0.9.2 “MailScope”
 
