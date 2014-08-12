@@ -1,6 +1,9 @@
 Template[getTemplate('user_email')].helpers({
   user: function(){
     return Meteor.user();
+  },
+  username: function () {
+    return getUserName(Meteor.user());
   }
 });
 
