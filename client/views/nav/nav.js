@@ -2,17 +2,14 @@ Template[getTemplate('nav')].helpers({
   navItems: function () {
     return navItems;
   },
+  userMenu: function () {
+    return getTemplate('userMenu');
+  },
   site_title: function(){
     return getSetting('title');
   },
   logo_url: function(){
     return getSetting('logoUrl');
-  },
-  logo_height: function(){
-    return getSetting('logoHeight');
-  },
-  logo_width: function(){
-    return getSetting('logoWidth');
   },
   logo_top: function(){
     return Math.floor((70-getSetting('logoHeight'))/2);

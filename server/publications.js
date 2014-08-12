@@ -34,6 +34,18 @@ Meteor.publish('singleUser', function(userIdOrSlug) {
   return [];
 });
 
+Meteor.publish('upvotedPosts', function(userIdOrSlug) {
+  var findById = Meteor.users.findOne(userIdOrSlug);
+  var findBySlug = Meteor.users.findOne({slug: userIdOrSlug});
+  var user = typeof findById !== 'undefined' ? findById : findBySlug;
+  var upvotedPostIds = _.pluck(user.profile.upvotedPosts, 'itemId');
+  if (this.userId = user._id) { // only publish upvoted posts when users are browsing their own profile
+    return Posts.find({_id: {$in: upvotedPostIds}});
+  }
+  return [];
+});
+
+
 // Publish authors of the current post and its comments
 
 Meteor.publish('postUsers', function(postId) {

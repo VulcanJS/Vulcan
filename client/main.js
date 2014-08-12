@@ -9,8 +9,6 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
-navItems.push('adminMenu');
-
 adminNav = adminNav.concat([
   {
     route: 'posts_pending',
@@ -50,4 +48,11 @@ postMeta = _.sortBy(postMeta, 'order');
 
 Meteor.startup(function () {
   $('#rss-link').attr('title', i18n.t('New Posts'));
+
+  AccountsEntry.config({
+    homeRoute: '/',
+    dashboardRoute: '/',
+    passwordSignupFields: 'USERNAME_AND_EMAIL',
+    profileRoute: 'profile'
+  });
 });

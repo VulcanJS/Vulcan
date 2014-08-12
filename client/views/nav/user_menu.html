@@ -1,0 +1,18 @@
+<template name="userMenu">
+  {{#if isLoggedIn}}
+    <div class="user-menu dropdown">
+      <a class="view dropdown-top-level" href="/">{{name}}</a>
+      <div class="dropdown-menu">
+        <ul role="menu" aria-labelledby="dLabel">
+          <li><a href="{{profileUrl}}">{{i18n "Profile"}}</a></li>
+          <li><a href="/account">{{i18n "Edit Account"}}</a></li> 
+          <li><a href="/sign-out">{{i18n "Sign Out"}}</a></li>
+        </ul>
+      </div>
+    </div>
+  {{else}}
+    <a href="/sign-in">{{i18n "Sign In"}}</a>
+    |
+    <a href="/sign-up">{{i18n "Sign Up"}}</a>
+  {{/if}}
+</template>

@@ -23,8 +23,9 @@ Schema.User = new SimpleSchema({
     type: Date
   },
   profile: {
-    type: Schema.UserProfile,
-    optional: true
+    type: Object,
+    optional: true,
+    blackbox: true
   },
   services: {
     type: Object,

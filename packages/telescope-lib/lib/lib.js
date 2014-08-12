@@ -18,3 +18,10 @@ camelToDash = function (str) {
 dashToCamel = function (str) {
   return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
 }
+
+trimWords = function(s, numWords) {
+  expString = s.split(/\s+/,numWords);
+  if(expString.length >= numWords)
+    return expString.join(" ")+"…";
+  return s;
+};

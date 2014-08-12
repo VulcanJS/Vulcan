@@ -124,18 +124,6 @@ settingsSchemaObject = {
     type: String,
     optional: true
   },
-  embedlyId: {
-    type: String,
-    optional: true
-  },
-  mailChimpAPIKey: {
-    type: String,
-    optional: true
-  },
-  mailChimpListId: {
-    type: String,
-    optional: true
-  },
   footerCode: {
     type: String,
     optional: true
@@ -144,10 +132,14 @@ settingsSchemaObject = {
     type: String,
     optional: true
   },
+  emailFooter: {
+    type: String,
+    optional: true
+  },
   notes: {
     type: String,
     optional: true
-  }                                                                                                                                                                                 
+  }                                                                                                                                                                            
 };
 
 // add any extra properties to settingsSchemaObject (provided by packages for example)

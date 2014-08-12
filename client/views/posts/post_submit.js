@@ -25,6 +25,12 @@ Template[getTemplate('post_submit')].helpers({
 });
 
 Template[getTemplate('post_submit')].rendered = function(){
+  // run all post submit rendered callbacks
+  var instance = this;
+  postSubmitRenderedCallbacks.forEach(function(callback) {
+    callback(instance);
+  });
+
   Session.set('currentPostStatus', STATUS_APPROVED);
   Session.set('selectedPostId', null);
   if(!this.editor && $('#editor').exists())
@@ -105,21 +111,24 @@ Template[getTemplate('post_submit')].events({
     // console.log(properties)
 
     // ------------------------------ Insert ------------------------------ //
-
-    Meteor.call('post', properties, function(error, post) {
-      if(error){
-        throwError(error.reason);
-        clearSeenErrors();
-        $(e.target).removeClass('disabled');
-        if(error.error == 603)
-          Router.go('/posts/'+error.details);
-      }else{
-        trackEvent("new post", {'postId': post._id});
-        if(post.status === STATUS_PENDING)
-          throwError('Thanks, your post is awaiting approval.')
-        Router.go('/posts/'+post._id);
-      }
-    });
+    if (properties) {
+      Meteor.call('post', properties, function(error, post) {
+        if(error){
+          throwError(error.reason);
+          clearSeenErrors();
+          $(e.target).removeClass('disabled');
+          if(error.error == 603)
+            Router.go('/posts/'+error.details);
+        }else{
+          trackEvent("new post", {'postId': post._id});
+          if(post.status === STATUS_PENDING)
+            throwError('Thanks, your post is awaiting approval.')
+          Router.go('/posts/'+post._id);
+        }
+      });
+    } else {
+      $(e.target).removeClass('disabled');      
+    }
 
   },
   'click .get-title-link': function(e){

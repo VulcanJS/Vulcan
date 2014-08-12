@@ -15,7 +15,6 @@ momentjs
 standard-app-packages
 rss
 iron-router
-mailchimp
 telescope-i18n
 fast-render
 spin
@@ -31,8 +30,15 @@ telescope-api
 jquery-hotkeys
 marked
 bootstrap3-datepicker
-telescope-theme-hubble
 telescope-module-share
 subs-manager
 telescope-module-embedly
 handlebars-server
+npm
+mailchimp
+synced-cron
+cookies
+telescope-newsletter
+telescope-theme-base
+accounts-entry
+telescope-theme-hubble

@@ -16,17 +16,25 @@ Package.on_use(function (api) {
     'addToSettingsSchema', 
     'preloadSubscriptions', 
     'navItems', 
-    'viewParameters', 
+    'viewParameters',
+    'footerModules',
+    'heroModules',
     'postModules',
     'postHeading',
     'postMeta',
     'modulePositions',
+
+    'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
     'postSubmitServerCallbacks',
+
+    'postEditRenderedCallbacks',
     'postEditClientCallbacks',
+
     'commentSubmitClientCallbacks',
     'commentSubmitServerCallbacks',
     'commentEditClientCallbacks',
+    
     'getTemplate',
     'templates'
     ]);

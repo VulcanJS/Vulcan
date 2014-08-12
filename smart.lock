@@ -14,7 +14,13 @@
       "bootstrap3-datepicker": {},
       "subs-manager": {},
       "telescope-module-embedly": {},
-      "handlebars-server": {}
+      "handlebars-server": {},
+      "npm": {},
+      "mailchimp": {},
+      "synced-cron": {},
+      "cookies": {},
+      "telescope-newsletter": {},
+      "accounts-entry": {}
     },
     "packages": {
       "momentjs": {
@@ -34,23 +40,23 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.7.1",
-        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
+        "tag": "v0.8.2",
+        "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.2.8",
-        "commit": "149984b1aff3a5642a270aff9bd9006872c8302e"
+        "tag": "v1.0.0",
+        "commit": "acbc04982025fe78cebb8865b5a04689741d4b0b"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
-        "tag": "v0.2.2",
-        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
+        "tag": "v2.0.4",
+        "commit": "f7b1e12a7caff1283cdb3671a393c182d0ae9862"
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.15.1",
-        "commit": "723aed684ef9d16e94424cde6389b8e4a03d546e"
+        "tag": "v0.16.1",
+        "commit": "34a447fd3a1b3164c78f865aabbac3ddc2d033fb"
       },
       "jquery-hotkeys": {
         "git": "https://github.com/terryschen/meteor-jquery-hotkeys.git",
@@ -59,8 +65,8 @@
       },
       "marked": {
         "git": "https://github.com/chuangbo/meteor-marked.git",
-        "tag": "v0.3.2",
-        "commit": "850f63135cdeb05344c420bd586fd8af9cab75df"
+        "tag": "v0.3.3",
+        "commit": "a0966771f9108835755368d0879429675d7e0db4"
       },
       "bootstrap3-datepicker": {
         "git": "https://github.com/rajit/bootstrap3-datepicker.git",
@@ -69,38 +75,98 @@
       },
       "subs-manager": {
         "git": "https://github.com/meteorhacks/subs-manager.git",
-        "tag": "v1.0.1",
-        "commit": "38317052d1601002d4dff537e4e0f61d1aa36e6d"
+        "tag": "v1.0.2",
+        "commit": "029236aa004062cc10d8c04e79907d6fe223ecf7"
       },
       "telescope-module-embedly": {
         "git": "https://github.com/TelescopeJS/telescope-module-embedly.git",
-        "tag": "v0.2.2",
-        "commit": "8220f763900863e896c9380861e6b431fb0eefae"
+        "tag": "v0.2.6",
+        "commit": "902fde23c137ed8447525920cbd8a5bfa86d7028"
       },
-      "blaze-layout": {
-        "git": "https://github.com/EventedMind/blaze-layout.git",
-        "tag": "v0.2.4",
-        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      "handlebars-server": {
+        "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
+        "tag": "v1.2.0",
+        "commit": "1b72c4e9d82af66293e50be4516c487d15d97464"
+      },
+      "npm": {
+        "git": "https://github.com/arunoda/meteor-npm.git",
+        "tag": "v0.2.6",
+        "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
+      },
+      "mailchimp": {
+        "git": "https://github.com/MiroHibler/meteor-mailchimp.git",
+        "tag": "v0.4.2",
+        "commit": "7d100e96b37eb931f4e1d9544da677bb43fe8b5b"
+      },
+      "synced-cron": {
+        "git": "https://github.com/percolatestudio/meteor-synced-cron.git",
+        "tag": "v0.1.1",
+        "commit": "c731ab04e7bf2b0aa7a7e3c4f4750c8c648b791d"
+      },
+      "cookies": {
+        "git": "https://github.com/subhog/meteor-cookies.git",
+        "tag": "v0.3.0",
+        "commit": "c3d2684cd97dd611652833169b5f628ad23c57f6"
+      },
+      "telescope-newsletter": {
+        "git": "https://github.com/TelescopeJS/telescope-newsletter.git",
+        "tag": "v0.1.7",
+        "commit": "5f97c9cc3ed9d89c53a604a6fdf2ae07aa9f0f41"
+      },
+      "accounts-entry": {
+        "git": "https://github.com/Differential/accounts-entry.git",
+        "tag": "v0.8.0",
+        "commit": "cf7f7d0ecc285824bc2748e305f5d693df99b4ae"
+      },
+      "iron-layout": {
+        "git": "https://github.com/EventedMind/iron-layout.git",
+        "tag": "v0.2.0",
+        "commit": "4a2d53e35ba036b0c189c7ceca34be494d4c6c97"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.6.0",
-        "commit": "418ec496612fb2afc853e342f0d2269b6674a2fe"
+        "tag": "v0.7.0",
+        "commit": "77d267aec4ba8a70f677e5d9ef9fb91fb0e3f0f6"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.2",
-        "commit": "4ff4b707bec8be434919730bf101325adb215444"
+        "tag": "v0.4.6",
+        "commit": "80554182486be0d8e74f7ed02194a5649d712e27"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
       },
-      "handlebars-server": {
-        "git": "https://github.com/EventedMind/meteor-handlebars-server.git",
-        "tag": "v1.2.0",
-        "commit": "1b72c4e9d82af66293e50be4516c487d15d97464"
+      "accounts-t9n": {
+        "git": "https://github.com/softwarerero/meteor-accounts-t9n.git",
+        "tag": "v0.0.5",
+        "commit": "ad9539a8818049d5d9fa050d8b2a1f62706483b1"
+      },
+      "simple-form": {
+        "git": "https://github.com/Differential/simple-form.git",
+        "tag": "v0.1.8",
+        "commit": "1ea0d3621b333e6f24f37e0e93efd3c081068716"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.5",
+        "commit": "273e3ab7d005d91a1a59c71bd224533b4dae2fbd"
+      },
+      "iron-core": {
+        "git": "https://github.com/EventedMind/iron-core.git",
+        "tag": "v0.2.0",
+        "commit": "0e48b5dc50d03f01025b7b900fb5ce2f13d52cad"
+      },
+      "iron-dynamic-template": {
+        "git": "https://github.com/EventedMind/iron-dynamic-template.git",
+        "tag": "v0.2.1",
+        "commit": "4dd1185c4d9d616c9abdb3f33e4a7d5a88db7e18"
+      },
+      "underscore-string-latest": {
+        "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
+        "tag": "v2.3.3",
+        "commit": "4a5d70eee48fbd90a6e6fc78747250d704a0b3bb"
       }
     }
   }
