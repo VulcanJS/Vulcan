@@ -3,8 +3,8 @@ getSiteUrl = function () {
 }
 
 getSetting = function(setting, defaultValue){
-  var settings=Settings.find().fetch()[0];
-  if(settings && settings[setting]){
+  var settings = Settings.find().fetch()[0];
+  if(settings && (typeof settings[setting] !== 'undefined')){
     return settings[setting];
   }else{
     return typeof defaultValue === 'undefined' ? '' : defaultValue;

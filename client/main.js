@@ -38,7 +38,6 @@ Deps.autorun(function() {
   }
 });
 
-
 // Sort postModules array position using modulePositions as index
 postModules = _.sortBy(postModules, function(module){return _.indexOf(modulePositions, module.position)});
 
