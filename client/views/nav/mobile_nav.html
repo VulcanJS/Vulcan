@@ -11,7 +11,7 @@
         {{/if}}
         {{#each navItems}}
           <li>
-            {{> UI.dynamic template=this}}
+            {{> UI.dynamic template=getTemplate}}
           </li>
         {{/each}}
         {{#if canPost}}

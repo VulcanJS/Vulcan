@@ -70,8 +70,8 @@
       },
       "bootstrap3-datepicker": {
         "git": "https://github.com/rajit/bootstrap3-datepicker.git",
-        "tag": "v0.2.1",
-        "commit": "442484eb1c8eb00c6b9e0e9c88accc934cf8f04a"
+        "tag": "v1.3.0-1",
+        "commit": "d28f9193f294890eb8d49f5f3b24e2f2a628e1fa"
       },
       "subs-manager": {
         "git": "https://github.com/meteorhacks/subs-manager.git",
@@ -110,8 +110,8 @@
       },
       "telescope-newsletter": {
         "git": "https://github.com/TelescopeJS/telescope-newsletter.git",
-        "tag": "v0.1.7",
-        "commit": "5f97c9cc3ed9d89c53a604a6fdf2ae07aa9f0f41"
+        "tag": "v0.1.8",
+        "commit": "dc8c72ee2879e95e511d836b923eebbe6e5d97b5"
       },
       "accounts-entry": {
         "git": "https://github.com/Differential/accounts-entry.git",

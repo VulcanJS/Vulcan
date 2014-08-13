@@ -2,6 +2,9 @@ Template[getTemplate('mobile_nav')].helpers({
   navItems: function () {
     return navItems;
   },
+  getTemplate: function () {
+    return getTemplate(this);
+  },
   canPost: function(){
     return canPost(Meteor.user());
   },
