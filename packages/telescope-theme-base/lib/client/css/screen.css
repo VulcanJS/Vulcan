@@ -679,9 +679,13 @@ table {
     padding-top: 20px;
     z-index: 10000; }
     /* line 20, ../scss/partials/_dropdown.scss */
+    .has-dropdown .dropdown .dropdown-menu.dropdown-left {
+      left: auto;
+      right: 10px; }
+    /* line 24, ../scss/partials/_dropdown.scss */
     .has-dropdown .dropdown .dropdown-menu, .has-dropdown .dropdown .dropdown-menu a, .has-dropdown .dropdown .dropdown-menu a:link, .has-dropdown .dropdown .dropdown-menu a:visited {
       color: #4a4444; }
-    /* line 23, ../scss/partials/_dropdown.scss */
+    /* line 27, ../scss/partials/_dropdown.scss */
     .has-dropdown .dropdown .dropdown-menu ul {
       background: white;
       padding: 10px;
@@ -692,13 +696,13 @@ table {
       -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
       -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
-      /* line 29, ../scss/partials/_dropdown.scss */
+      /* line 33, ../scss/partials/_dropdown.scss */
       .has-dropdown .dropdown .dropdown-menu ul li {
         margin-bottom: 0; }
-        /* line 31, ../scss/partials/_dropdown.scss */
+        /* line 35, ../scss/partials/_dropdown.scss */
         .has-dropdown .dropdown .dropdown-menu ul li a {
           font-size: 14px; }
-  /* line 38, ../scss/partials/_dropdown.scss */
+  /* line 42, ../scss/partials/_dropdown.scss */
   .has-dropdown .dropdown:hover .dropdown-menu {
     display: block; }
 

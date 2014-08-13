@@ -17,6 +17,10 @@
     position:absolute;
     padding-top:20px;
     z-index: 10000;
+    &.dropdown-left{
+      left:auto;
+      right: 10px;
+    }
     &, a, a:link, a:visited{
       color: $text;
     }
