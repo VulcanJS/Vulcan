@@ -1,10 +1,10 @@
-Template.categories.helpers({
+Template[getTemplate('categories')].helpers({
   categories: function(){
     return Categories.find({}, {sort: {order: 1, name: 1}});
   }
 });
 
-Template.categories.events({
+Template[getTemplate('categories')].events({
   'click input[type=submit]': function(e){
     e.preventDefault();
 

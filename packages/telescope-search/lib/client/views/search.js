@@ -1,4 +1,4 @@
-Template.search.helpers({
+Template[getTemplate('search')].helpers({
   searchQuery: function () {
     return Session.get("searchQuery");
   },
@@ -7,7 +7,7 @@ Template.search.helpers({
   }
 });
 
-Template.search.events({
+Template[getTemplate('search')].events({
   'keyup, search .search-field': function(e){
     e.preventDefault();
     var val = $(e.target).val(),

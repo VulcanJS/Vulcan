@@ -1,4 +1,4 @@
-Template.categoriesMenu.helpers({
+Template[getTemplate('categoriesMenu')].helpers({
   hasCategories: function(){
     return typeof Categories !== 'undefined' && Categories.find().count();
   },
