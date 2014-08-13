@@ -1,3 +1,7 @@
+## v0.9.2.6 “InviteScope”
+
+* Added new invite features (thanks [@callmephilip](https://github.com/callmephilip)!)
+
 ## v0.9.2.5 “AccountScope”
 
 * Now keeping track of upvoted/downvoted posts & comments.
