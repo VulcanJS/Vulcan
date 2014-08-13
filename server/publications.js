@@ -193,3 +193,9 @@ Meteor.publish('notifications', function() {
   }
   return [];
 });
+
+Meteor.publish('invites', function(){
+  if(canViewById(this.userId)){
+    return Invites.find({invitingUserId:this.userId});
+  }
+});
