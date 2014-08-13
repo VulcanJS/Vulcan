@@ -2,6 +2,9 @@ Template[getTemplate('nav')].helpers({
   navItems: function () {
     return navItems;
   },
+  getTemplate: function () {
+    return getTemplate(this);
+  },
   userMenu: function () {
     return getTemplate('userMenu');
   },
