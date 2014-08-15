@@ -163,3 +163,8 @@ getTemplate = function (name) {
   return !!templates[name] ? templates[name] : name;
 }
 
+// ------------------------------ Theme Settings ------------------------------ //
+
+themeSettings = {
+  'useDropdowns': true // whether or not to use dropdown menus in a theme
+};

@@ -37,6 +37,8 @@ Package.on_use(function (api) {
     'commentEditClientCallbacks',
     
     'getTemplate',
-    'templates'
+    'templates',
+
+    'themeSettings'
     ]);
 });

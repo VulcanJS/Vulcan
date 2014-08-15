@@ -11,6 +11,14 @@ getSetting = function(setting, defaultValue){
   }
 };
 
+getThemeSetting = function(setting, defaultValue){
+  if(typeof themeSettings[setting] !== 'undefined'){
+    return themeSettings[setting];
+  }else{
+    return typeof defaultValue === 'undefined' ? '' : defaultValue;
+  }
+};
+
 camelToDash = function (str) {
   return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
 }

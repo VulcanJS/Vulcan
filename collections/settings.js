@@ -86,10 +86,6 @@ settingsSchemaObject = {
       type: Number,
       optional: true
   },
-  useDropdowns: {
-    type: Boolean,
-    optional: true
-  },
   language: {
       type: String,
       defaultValue: 'en',

@@ -12,7 +12,7 @@ Template[getTemplate('nav')].helpers({
     return !!secondaryNav.length;
   },
   dropdownClass: function () {
-    return getSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
+    return getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
   },
   getTemplate: function () {
     return getTemplate(this);
