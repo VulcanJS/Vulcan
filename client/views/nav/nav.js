@@ -1,6 +1,15 @@
 Template[getTemplate('nav')].helpers({
-  navItems: function () {
-    return navItems;
+  primaryNav: function () {
+    return primaryNav;
+  },
+  hasPrimaryNav: function () {
+    return !!primaryNav.length;
+  },
+  secondaryNav: function () {
+    return secondaryNav;
+  },
+  hasSecondaryNav: function () {
+    return !!secondaryNav.length;
   },
   getTemplate: function () {
     return getTemplate(this);

@@ -1,6 +1,9 @@
 Template[getTemplate('mobile_nav')].helpers({
-  navItems: function () {
-    return navItems;
+  primaryNav: function () {
+    return primaryNav;
+  },
+  secondaryNav: function () {
+    return secondaryNav;
   },
   getTemplate: function () {
     return getTemplate(this);

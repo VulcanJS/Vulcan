@@ -32,8 +32,9 @@ adminNav = [];
 preloadSubscriptions = [];
 
 // array containing nav items; initialize with views menu and admin menu
-navItems = ['viewsMenu', 'adminMenu'];
+primaryNav = ['viewsMenu', 'adminMenu'];
 
+secondaryNav = ['userMenu', 'submitButton'];
 
 // object containing post list view parameters
 viewParameters = {}

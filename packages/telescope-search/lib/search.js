@@ -1,5 +1,5 @@
-// push "search" template to navItems
-navItems.push('search');
+// push "search" template to primaryNav
+primaryNav.push('search');
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({

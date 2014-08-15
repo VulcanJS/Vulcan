@@ -33,8 +33,8 @@ postHeading.push({
   order: 3
 });
   
-// push "categoriesMenu" template to navItems
-navItems.push('categoriesMenu');
+// push "categoriesMenu" template to primaryNav
+primaryNav.push('categoriesMenu');
 
 // push "categories" property to addToPostSchema, so that it's later added to postSchema
 addToPostSchema.push(

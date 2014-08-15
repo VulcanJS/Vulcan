@@ -492,16 +492,20 @@ html, body, input, button {
   .mobile-menu li:last-child {
     border: none; }
 /* line 95, ../scss/partials/_mobile_nav.scss */
+.mobile-menu .sign-in {
+  border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
+  margin-right: 0px; }
+/* line 99, ../scss/partials/_mobile_nav.scss */
 .mobile-menu a {
   display: block;
   height: auto;
   line-height: inherit;
   padding: 10px;
   font-size: 15px; }
-  /* line 101, ../scss/partials/_mobile_nav.scss */
+  /* line 105, ../scss/partials/_mobile_nav.scss */
   .mobile-menu a, .mobile-menu a:link, .mobile-menu a:visited {
     color: white; }
-/* line 107, ../scss/partials/_mobile_nav.scss */
+/* line 111, ../scss/partials/_mobile_nav.scss */
 .mobile-menu .dropdown > a:after {
   display: inline-block;
   position: relative;
@@ -509,19 +513,19 @@ html, body, input, button {
   margin-left: 4px;
   content: "▼";
   font-size: 8px; }
-/* line 118, ../scss/partials/_mobile_nav.scss */
+/* line 122, ../scss/partials/_mobile_nav.scss */
 .mobile-menu .dropdown-menu li {
   margin-bottom: 0;
   border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
-  /* line 120, ../scss/partials/_mobile_nav.scss */
+  /* line 124, ../scss/partials/_mobile_nav.scss */
   .mobile-menu .dropdown-menu li a {
     background: #333; }
 
-/* line 128, ../scss/partials/_mobile_nav.scss */
+/* line 132, ../scss/partials/_mobile_nav.scss */
 .mobile-submit {
   padding: 10px;
   border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
-  /* line 131, ../scss/partials/_mobile_nav.scss */
+  /* line 135, ../scss/partials/_mobile_nav.scss */
   .mobile-submit .button {
     max-width: none; }
 

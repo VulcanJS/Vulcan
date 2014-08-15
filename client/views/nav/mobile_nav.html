@@ -3,20 +3,16 @@
     <div class="mobile-nav-inner">
 
       <ul class="mobile-menu">
-        {{#if isLoggedIn}}
-          <li>{{> UI.dynamic template=userMenu}}</li>
-        {{else}}
-          <li><a href="/sign-in">{{i18n "Sign In"}}</a></li>
-          <li><a href="/sign-up">{{i18n "Sign Up"}}</a></li>
-        {{/if}}
-        {{#each navItems}}
+        {{#each primaryNav}}
           <li>
             {{> UI.dynamic template=getTemplate}}
           </li>
         {{/each}}
-        {{#if canPost}}
-          <li class="mobile-submit"><a id="submit" class="submit button" href="/submit">{{i18n "Post"}}</a></li>
-        {{/if}}
+        {{#each secondaryNav}}
+          <li>
+            {{> UI.dynamic template=getTemplate}}
+          </li>
+        {{/each}}
       </ul>
     </div>
   </div>

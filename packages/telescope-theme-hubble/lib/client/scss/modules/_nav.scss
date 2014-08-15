@@ -1,14 +1,4 @@
-// .header{
-// 	background:url("../images/bg-black.png") top center;
-// }
-// @media only screen and (-webkit-min-device-pixel-ratio: 1.5){
-// 	.header{
-// 		background:url("../images/bg-black@2x.png") top center;
-// 		background-size:10px 10px;
-// 	}
-// }
 .header{
-	background:$highlight-color url("/img/bg-header.png") top center;
 	background-color:$highlight-color;
 	margin-bottom:$grid-margin;
 	position:relative;
@@ -63,79 +53,8 @@
 		}
 	}
 }
-.user-menu{
-
-}
-// @media only screen and (-webkit-min-device-pixel-ratio: 1.5){
-// 	.header{
-// 		// background-image:url("/img/bg-header@2x.png");
-// 		// background-size: 10px 10px;
-// 		.logo a{
-// 			background-image: url('/img/logo@2x.png');
-// 			background-size: 124px 37px;
-// 		}
-// 	}
-// }
-.auth-buttons{
-	@extend %vcenter;
-	z-index:20;
-	float:right;
+.sign-in{
 	margin-right: 10px;
-	#login-buttons{
-		position:relative;
-		line-height:26px;
-		.accounts-dialog{
-			@extend .popover;
-		}
-		.account-link{
-			display:block;
-			color:white !important;
-			margin-bottom:10px;
-			float:none;
-		}
-		a{
-			text-decoration:none;
-			color:$text;
-		}
-		a.login-link-text{
-			color:#fff;
-			font-weight:normal;
-			display:inline-block;
-			font-size: 15px;
-			padding: 0px 8px;
-			border-radius: 3px;
-		}
-		#login-buttons-password{
-			@extend .button;
-			float:none !important;
-			@include text-shadow(none);
-			width:auto;
-			line-height:1.5;
-			height:26px;
-			margin:10px 0 !important;
-		}
-		.login-header{
-			font-family:inherit;
-			height:26px;
-			margin-right:10px;
-			cursor:pointer;
-			color:white;
-			&:before{
-				color:white(0.5);
-				content:"Welcome, ";
-			}
-		}
-		#login-buttons-logout{
-			color:white;
-			// background:none;
-			border:none;
-			font-family:inherit;
-			font-size:inherit;
-			padding:0;
-			height:26px;
-			text-shadow:none;
-		}
-	}
 }
 .nav{
 	@include cf;

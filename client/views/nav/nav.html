@@ -13,21 +13,25 @@
       <h1 class="logo"><a href="/">{{site_title}}</a></h1>
     {{/if}}
 
-    <ul class="nav site-nav desktop-nav has-dropdown">
-      {{#each navItems}}
-        <li>
-          {{> UI.dynamic template=getTemplate}}
-        </li>
-      {{/each}}
-    </ul>
+    {{#if hasPrimaryNav}}
+      <ul class="nav site-nav desktop-nav has-dropdown">
+        {{#each primaryNav}}
+          <li>
+            {{> UI.dynamic template=getTemplate}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
 
-    <ul class="nav user-nav desktop-nav has-dropdown">
-      <li>{{> UI.dynamic template=userMenu}}</li>
-      {{#if canPost}}
-        <li><a id="submit" class="submit button" href="/submit">{{i18n "Post"}}</a></li>
-      {{/if}}
-    </ul>
-
+    {{#if hasSecondaryNav}}
+      <ul class="nav user-nav desktop-nav has-dropdown">
+        {{#each secondaryNav}}
+          <li>
+            {{> UI.dynamic template=getTemplate}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
 
   </header>
 </template>

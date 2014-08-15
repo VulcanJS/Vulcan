@@ -1,6 +1,7 @@
 ## v0.9.2.6 “InviteScope”
 
 * Added new invite features (thanks [@callmephilip](https://github.com/callmephilip)!)
+* Changed `navItems` to `primaryNav` and added `secondaryNav`. 
 
 ## v0.9.2.5 “AccountScope”
 
