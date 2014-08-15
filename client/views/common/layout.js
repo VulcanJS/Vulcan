@@ -38,3 +38,15 @@ Template[getTemplate('layout')].rendered = function(){
     Session.set('currentScroll', null);
   }
 }
+
+Template.layout.events({
+  'click .outer-wrapper':function(e){
+      var container = $("#login-dropdown-list");
+      var container2 = $("#login-name-link");
+      if (!container.is(e.target) && !container2.is(e.target)
+         && container.has(e.target).length === 0 && container2.has(e.target).length === 0)
+     {
+        Accounts._loginButtonsSession.closeDropdown();
+     }
+ }
+});
