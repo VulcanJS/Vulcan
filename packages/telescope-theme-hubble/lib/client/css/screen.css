@@ -328,7 +328,7 @@ em {
     .header {
       padding: 0 10px; } }
   /* line 12, ../scss/modules/_nav.scss */
-  .header .site-nav {
+  .header .primary-nav {
     float: left;
     z-index: 20;
     position: relative; }
@@ -362,7 +362,7 @@ em {
       text-shadow: none;
       color: transparent; }
   /* line 45, ../scss/modules/_nav.scss */
-  .header .user-nav {
+  .header .secondary-nav {
     z-index: 20;
     position: relative;
     float: right; }

@@ -14,7 +14,7 @@
     {{/if}}
 
     {{#if hasPrimaryNav}}
-      <ul class="nav site-nav desktop-nav has-dropdown">
+      <ul class="nav primary-nav desktop-nav {{dropdownClass}}">
         {{#each primaryNav}}
           <li>
             {{> UI.dynamic template=getTemplate}}
@@ -24,7 +24,7 @@
     {{/if}}
 
     {{#if hasSecondaryNav}}
-      <ul class="nav user-nav desktop-nav has-dropdown">
+      <ul class="nav secondary-nav desktop-nav {{dropdownClass}}">
         {{#each secondaryNav}}
           <li>
             {{> UI.dynamic template=getTemplate}}

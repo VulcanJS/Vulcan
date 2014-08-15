@@ -9,7 +9,7 @@
 	@include small{
 		padding: 0 10px;
 	}
-	.site-nav{
+	.primary-nav{
 		float:left;
 		z-index: 20;
 		position: relative;
@@ -42,7 +42,7 @@
 			color: transparent;
 		}
 	}
-	.user-nav{
+	.secondary-nav{
 		z-index: 20;
 		position: relative;
 		float:right;
