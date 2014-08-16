@@ -2,6 +2,7 @@
 
 * Added new invite features (thanks [@callmephilip](https://github.com/callmephilip)!)
 * Changed `navItems` to `primaryNav` and added `secondaryNav`. 
+* Added new `themeSettings` object for storing theme-level settings.
 
 ## v0.9.2.5 “AccountScope”
 
