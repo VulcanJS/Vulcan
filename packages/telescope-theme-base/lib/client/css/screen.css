@@ -643,6 +643,14 @@ li {
   .mobile-menu-button .hamburger {
     fill: white; }
 
+/* line 75, ../scss/specific/_header.scss */
+.account-link {
+  display: inline-block; }
+
+/* line 78, ../scss/specific/_header.scss */
+.sign-in {
+  margin-right: 20px; }
+
 /* line 1, ../scss/specific/_layout.scss */
 *, *:before, *:after {
   -moz-box-sizing: border-box;
