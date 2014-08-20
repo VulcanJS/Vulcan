@@ -24,10 +24,13 @@ $mobile-header-height: 50px;
   }
 }
 .header-module, .header-submodule{
+  display: inline-block;
   margin-right: 20px;
 }
-.header-module:last-child{
-  margin-right: 0px;
+.header-module{
+  &:last-child{
+    margin-right: 0px;
+  }
 }
 .logo{
   vertical-align: middle;

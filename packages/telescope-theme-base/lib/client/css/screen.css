@@ -596,21 +596,22 @@ li {
 
 /* line 26, ../scss/specific/_header.scss */
 .header-module, .header-submodule {
+  display: inline-block;
   margin-right: 20px; }
 
-/* line 29, ../scss/specific/_header.scss */
+/* line 31, ../scss/specific/_header.scss */
 .header-module:last-child {
   margin-right: 0px; }
 
-/* line 32, ../scss/specific/_header.scss */
+/* line 35, ../scss/specific/_header.scss */
 .logo {
   vertical-align: middle;
   line-height: 1; }
   @media screen and (max-width: 40em) {
-    /* line 32, ../scss/specific/_header.scss */
+    /* line 35, ../scss/specific/_header.scss */
     .logo {
       margin-right: 0; }
-      /* line 37, ../scss/specific/_header.scss */
+      /* line 40, ../scss/specific/_header.scss */
       .logo a {
         font-size: 24px;
         display: block;
@@ -624,13 +625,13 @@ li {
         z-index: 10;
         margin-right: 0; } }
 
-/* line 53, ../scss/specific/_header.scss */
+/* line 56, ../scss/specific/_header.scss */
 .logo-image a, .logo-image img {
   display: block;
   height: 100%;
   width: 100%; }
 
-/* line 60, ../scss/specific/_header.scss */
+/* line 63, ../scss/specific/_header.scss */
 .mobile-menu-button {
   position: absolute;
   display: inline-block;
@@ -638,7 +639,7 @@ li {
   top: 50%;
   margin-top: -17px;
   z-index: 100; }
-  /* line 66, ../scss/specific/_header.scss */
+  /* line 69, ../scss/specific/_header.scss */
   .mobile-menu-button .hamburger {
     fill: white; }
 
