@@ -751,26 +751,30 @@ body {
     display: none; } }
 
 /* line 63, ../scss/specific/_mobile_nav.scss */
+.mobile-menu .header-module, .mobile-menu .header-submodule {
+  display: block;
+  margin-right: 0px; }
+/* line 67, ../scss/specific/_mobile_nav.scss */
 .mobile-menu > li {
   margin-bottom: 0;
   border-bottom: 1px rgba(255, 255, 255, 0.2) solid; }
-  /* line 66, ../scss/specific/_mobile_nav.scss */
+  /* line 70, ../scss/specific/_mobile_nav.scss */
   .mobile-menu > li:last-child {
     border: none; }
-/* line 70, ../scss/specific/_mobile_nav.scss */
+/* line 74, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .sign-in {
   border-bottom: 1px rgba(255, 255, 255, 0.2) solid;
   margin-right: 0px; }
-/* line 74, ../scss/specific/_mobile_nav.scss */
+/* line 78, ../scss/specific/_mobile_nav.scss */
 .mobile-menu a {
   display: block;
   height: auto;
   line-height: inherit;
   font-size: 15px; }
-  /* line 79, ../scss/specific/_mobile_nav.scss */
+  /* line 83, ../scss/specific/_mobile_nav.scss */
   .mobile-menu a, .mobile-menu a:link, .mobile-menu a:visited {
     color: white; }
-/* line 85, ../scss/specific/_mobile_nav.scss */
+/* line 89, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .dropdown > a:after {
   display: inline-block;
   position: relative;
@@ -778,26 +782,26 @@ body {
   margin-left: 4px;
   content: "▼";
   font-size: 8px; }
-/* line 95, ../scss/specific/_mobile_nav.scss */
+/* line 99, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .dropdown-top-level {
   padding: 10px; }
-/* line 98, ../scss/specific/_mobile_nav.scss */
+/* line 102, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .dropdown-menu {
   background: #333; }
-  /* line 100, ../scss/specific/_mobile_nav.scss */
+  /* line 104, ../scss/specific/_mobile_nav.scss */
   .mobile-menu .dropdown-menu li {
     padding: 10px;
     margin-bottom: 0;
     border-top: 1px rgba(255, 255, 255, 0.2) solid; }
-/* line 106, ../scss/specific/_mobile_nav.scss */
+/* line 110, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .submit {
   margin: 10px; }
 
-/* line 111, ../scss/specific/_mobile_nav.scss */
+/* line 115, ../scss/specific/_mobile_nav.scss */
 .mobile-submit {
   padding: 10px;
   border-bottom: 1px rgba(255, 255, 255, 0.2) solid; }
-  /* line 114, ../scss/specific/_mobile_nav.scss */
+  /* line 118, ../scss/specific/_mobile_nav.scss */
   .mobile-submit .button {
     max-width: none; }
 

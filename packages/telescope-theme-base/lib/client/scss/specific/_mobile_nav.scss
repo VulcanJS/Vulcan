@@ -60,6 +60,10 @@ $mobile-nav-width: 200px;
 }
 
 .mobile-menu{
+  .header-module, .header-submodule{
+    display: block;
+    margin-right: 0px;
+  }
   >li{
     margin-bottom: 0;
     border-bottom:1px white(0.2) solid;
