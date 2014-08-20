@@ -9,7 +9,7 @@ Package.on_use(function (api) {
     ], ['client', 'server']);
 
   api.add_files([
-    // 'lib/client/css/screen.css',
+    'lib/client/css/screen.css',
     ], ['client']);
   
 });
