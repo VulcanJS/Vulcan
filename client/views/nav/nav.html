@@ -18,7 +18,7 @@
     {{#if hasPrimaryNav}}
       <ul class="nav primary-nav desktop-nav {{dropdownClass}} header-module desktop-only">
         {{#each primaryNav}}
-          <li class="header-submodule">
+          <li>
             {{> UI.dynamic template=getTemplate}}
           </li>
         {{/each}}
@@ -28,7 +28,7 @@
     {{#if hasSecondaryNav}}
       <ul class="nav secondary-nav desktop-nav {{dropdownClass}} header-module desktop-only">
         {{#each secondaryNav}}
-          <li class="header-submodule">
+          <li>
             {{> UI.dynamic template=getTemplate}}
           </li>
         {{/each}}

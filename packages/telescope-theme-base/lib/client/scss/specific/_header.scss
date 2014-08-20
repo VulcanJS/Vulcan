@@ -14,17 +14,20 @@ $mobile-header-height: 50px;
   }
   .nav{
     list-style-type: none;
-    li{
+    >li{
       margin-bottom: 0;
+      display: inline-block;
+      &:last-child .header-submodule{
+        margin-right: 0px;
+      }
     }
   }
 }
 .header-module, .header-submodule{
-  display: inline-block;
   margin-right: 20px;
-  &:last-child{
-    margin-right: 0px;
-  }
+}
+.header-module:last-child{
+  margin-right: 0px;
 }
 .logo{
   vertical-align: middle;

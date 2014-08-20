@@ -587,26 +587,30 @@ li {
   .header .nav {
     list-style-type: none; }
     /* line 17, ../scss/specific/_header.scss */
-    .header .nav li {
-      margin-bottom: 0; }
+    .header .nav > li {
+      margin-bottom: 0;
+      display: inline-block; }
+      /* line 20, ../scss/specific/_header.scss */
+      .header .nav > li:last-child .header-submodule {
+        margin-right: 0px; }
 
-/* line 22, ../scss/specific/_header.scss */
+/* line 26, ../scss/specific/_header.scss */
 .header-module, .header-submodule {
-  display: inline-block;
   margin-right: 20px; }
-  /* line 25, ../scss/specific/_header.scss */
-  .header-module:last-child, .header-submodule:last-child {
-    margin-right: 0px; }
 
 /* line 29, ../scss/specific/_header.scss */
+.header-module:last-child {
+  margin-right: 0px; }
+
+/* line 32, ../scss/specific/_header.scss */
 .logo {
   vertical-align: middle;
   line-height: 1; }
   @media screen and (max-width: 40em) {
-    /* line 29, ../scss/specific/_header.scss */
+    /* line 32, ../scss/specific/_header.scss */
     .logo {
       margin-right: 0; }
-      /* line 34, ../scss/specific/_header.scss */
+      /* line 37, ../scss/specific/_header.scss */
       .logo a {
         font-size: 24px;
         display: block;
@@ -620,13 +624,13 @@ li {
         z-index: 10;
         margin-right: 0; } }
 
-/* line 50, ../scss/specific/_header.scss */
+/* line 53, ../scss/specific/_header.scss */
 .logo-image a, .logo-image img {
   display: block;
   height: 100%;
   width: 100%; }
 
-/* line 57, ../scss/specific/_header.scss */
+/* line 60, ../scss/specific/_header.scss */
 .mobile-menu-button {
   position: absolute;
   display: inline-block;
@@ -634,7 +638,7 @@ li {
   top: 50%;
   margin-top: -17px;
   z-index: 100; }
-  /* line 63, ../scss/specific/_header.scss */
+  /* line 66, ../scss/specific/_header.scss */
   .mobile-menu-button .hamburger {
     fill: white; }
 
