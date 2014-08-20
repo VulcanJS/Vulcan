@@ -7,7 +7,7 @@ settingsSchemaObject = {
   siteUrl: {
     type: String,
     optional: true,
-    label: 'Site URL (include trailing slash)'
+    label: 'Site URL (with trailing "/")'
   },
   tagline: {
     type: String,

@@ -1,0 +1,23 @@
+table{
+  width: 100%;
+  tr{
+    border-bottom: 1px solid #eee;
+    td, th{
+      padding:10px;
+    } 
+  }
+  thead{
+    tr{
+      td, th{
+        font-weight:bold;
+      }
+    }
+  }
+  tbody{
+    tr{
+      td{
+        
+      }     
+    }
+  }
+}

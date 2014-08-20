@@ -1,0 +1,37 @@
+.user-list, .user-table{
+  font-size: 13px;  
+  .user{
+    .user-avatar{
+      height:30px;
+      width:30px;
+      background-size: 30px 30px;
+      display:block;
+      @include border-radius(30px);
+    }
+    .posts-list{
+      
+    }
+  }
+}
+.filter-sort{
+  @include cf;
+  padding: $grid-padding;
+  background: black(0.05);
+  a, span{
+    display: inline-block;
+    margin-right: 20px;
+    &.active{
+      border-bottom: 2px solid $blue;
+    }
+    &:last-child{
+      margin-right: 0;
+    }
+  } 
+  .filter{
+    float: left;
+  }
+  .sort{
+    float: right;
+  }
+
+}

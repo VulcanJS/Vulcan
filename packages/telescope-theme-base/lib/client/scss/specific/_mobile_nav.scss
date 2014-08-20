@@ -1,5 +1,16 @@
 $mobile-nav-width: 200px;
 
+.mobile-only{
+  @include medium-large{
+    display: none !important;
+  }
+}
+.desktop-only{
+  @include small{
+    display: none !important;
+  }
+}
+
 .mobile-nav{
   position:fixed;
   overflow:auto;

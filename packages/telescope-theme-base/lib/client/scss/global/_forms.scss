@@ -13,11 +13,20 @@ form, .accounts-dialog{
     @include cf;
     margin-bottom:$grid-padding;
     >label{
-      float:left;
-      margin-right:10px;
+      font-weight: bold;
+      display: block;
+      @include small{
+        margin-bottom: 5px;
+      }
+      @include medium-large{
+        float:left;
+        margin-right:10px;
+      }
     }
     .controls{
-      margin-left:150px;
+      @include medium-large{
+        margin-left: 200px;
+      }
       position:relative;
       .inline-link{
         position:absolute;
@@ -52,13 +61,13 @@ form, .accounts-dialog{
       margin-bottom:10px;
     }
   }
-  .form-actions{
+  .form-actions, .form-group{
     @include cf;
     a{
       float:left;
       display:block;
     }
-    .button{
+    .button, .btn{
       float: right;
     }
   }
@@ -125,6 +134,9 @@ input[type="submit"], button, .button, .btn{
   &.inline{
     display: inline-block;
   }
+}
+input[type="search"]{
+  font-size:14px;
 }
 .twitter-signup{
   margin-bottom:20px;

@@ -4,19 +4,19 @@
     <a id="mobile-menu" href="#menu" class="mobile mobile-button menu mobile-menu-button"><i class="icon-menu"></i><span>{{i18n "Menu"}}</span></a>
 
     {{#if logo_url}}
-      <h1 class="logo logo-image">
+      <h1 class="logo logo-image header-module">
         <a href="/">
           <img src="{{logo_url}}" alt="{{site_title}}"/>
         </a>
       </h1>
     {{else}}
-      <h1 class="logo"><a href="/">{{site_title}}</a></h1>
+      <h1 class="logo header-module"><a href="/">{{site_title}}</a></h1>
     {{/if}}
 
     {{#if hasPrimaryNav}}
-      <ul class="nav primary-nav desktop-nav {{dropdownClass}}">
+      <ul class="nav primary-nav desktop-nav {{dropdownClass}} header-module desktop-only">
         {{#each primaryNav}}
-          <li>
+          <li class="header-submodule">
             {{> UI.dynamic template=getTemplate}}
           </li>
         {{/each}}
@@ -24,9 +24,9 @@
     {{/if}}
 
     {{#if hasSecondaryNav}}
-      <ul class="nav secondary-nav desktop-nav {{dropdownClass}}">
+      <ul class="nav secondary-nav desktop-nav {{dropdownClass}} header-module desktop-only">
         {{#each secondaryNav}}
-          <li>
+          <li class="header-submodule">
             {{> UI.dynamic template=getTemplate}}
           </li>
         {{/each}}

@@ -1,9 +1,9 @@
 <template name="settings">
   <div class="grid-small grid-block dialog settings">
     {{#if this.hasSettings}}
-      {{> quickForm collection="Settings" id="updateSettingsForm" type="update" doc=this.settings }}
+      {{> quickForm collection="Settings" id="updateSettingsForm" type="update" doc=this.settings template="bootstrap3-horizontal" label-class="control-label" input-col-class="controls"}}
     {{else}}
-      {{> quickForm collection="Settings" id="updateSettingsForm" type="insert"}}
+      {{> quickForm collection="Settings" id="updateSettingsForm" type="insert" template="bootstrap3-horizontal" label-class="control-label" input-col-class="controls"}}
     {{/if}}
   </div>
 </template>

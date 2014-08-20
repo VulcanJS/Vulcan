@@ -1,0 +1,38 @@
+.header{
+  background: $dark-grey;
+  margin-bottom: $grid-margin;
+  padding: $grid-padding;
+  @include cf;
+  &, a, a:link, a:visited{
+    color: white;
+  }
+  .nav{
+    list-style-type: none;
+    li{
+      margin-bottom: 0;
+    }
+  }
+  .header-module, .header-submodule{
+    display: inline-block;
+    margin-right: 20px;
+    &:last-child{
+      margin-right: 0px;
+    }
+  }
+}
+.logo{
+  vertical-align: middle;
+  line-height: 1;
+  @include small{
+    font-size: 24px;
+    text-align: center;
+    display: block;
+  }
+}
+.logo-image{
+  a, img{
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}

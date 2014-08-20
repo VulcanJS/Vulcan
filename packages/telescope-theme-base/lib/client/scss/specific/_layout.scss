@@ -1,0 +1,32 @@
+*, *:before, *:after {
+  @include box-sizing(border-box);
+  line-height: 1.5;  
+}
+
+html, body, .outer-wrapper{
+  height:100%;
+}
+
+body{
+  background:#eee;
+  font-size: 14px;
+  @include small{
+    overflow-x: hidden;
+  }
+}
+
+.outer-wrapper{
+  position:relative;
+}
+.content-wrapper{
+  padding-bottom:20px;
+}
+.content-wrapper{
+  padding: 0 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+  @include small{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}

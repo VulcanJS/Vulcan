@@ -17,10 +17,6 @@
     position:absolute;
     padding-top:20px;
     z-index: 10000;
-    &.dropdown-left{
-      left:auto;
-      right: 10px;
-    }
     &, a, a:link, a:visited{
       color: $text;
     }
@@ -30,6 +26,7 @@
       min-width:140px;
       @include border-radius(3px);
       @include box-shadow(0 1px 3px black(0.35));
+      list-style-type: none;
       li{
         margin-bottom: 0;
         a{
