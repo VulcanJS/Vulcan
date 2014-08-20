@@ -424,22 +424,19 @@
 }
 
 .more-button{
-	padding: 0;
-	background: none;
-	a{
-		display: block;
-		width:100%;
-		height:$grid-unit;
-		background:black(0.1);
-		text-align:center;
-		color:white;
-		line-height:$grid-unit;
-		font-size:18px;
-		border-radius: 0px 0px 3px 3px;
-		text-shadow: 0px 1px 1px 0px black(0.25);
-		&:hover{
-			background: black(0.15);
-		}
+	display: block;
+	width:100%;
+	height:$grid-unit;
+	background:black(0.05);
+	text-align:center;
+	color:white;
+	line-height:$grid-unit;
+	font-size:18px;
+	border-radius: 0px 0px 3px 3px;
+	text-shadow: 0px 1px 1px 0px black(0.25);
+	padding: 0px;
+	&:hover{
+		background: black(0.15);
 	}
 }
 

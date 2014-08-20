@@ -1,8 +1,14 @@
+$mobile-header-height: 50px;
+
 .header{
   background: $dark-grey;
   margin-bottom: $grid-margin;
   padding: $grid-padding;
-  @include cf;
+  @include small{
+    height: $mobile-header-height;
+    padding: 10px;
+    position: relative;
+  }
   &, a, a:link, a:visited{
     color: white;
   }
@@ -12,21 +18,32 @@
       margin-bottom: 0;
     }
   }
-  .header-module, .header-submodule{
-    display: inline-block;
-    margin-right: 20px;
-    &:last-child{
-      margin-right: 0px;
-    }
+}
+.header-module, .header-submodule{
+  display: inline-block;
+  margin-right: 20px;
+  &:last-child{
+    margin-right: 0px;
   }
 }
 .logo{
   vertical-align: middle;
   line-height: 1;
   @include small{
-    font-size: 24px;
-    text-align: center;
-    display: block;
+    margin-right: 0;
+    a{
+      font-size: 24px;
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: $mobile-header-height;
+      line-height: $mobile-header-height;
+      text-align: center;
+      left: 0px;
+      top: 0px;
+      z-index: 10;
+      margin-right: 0;
+    }
   }
 }
 .logo-image{
@@ -35,4 +52,17 @@
     height: 100%;
     width: 100%;
   }
+}
+
+.mobile-menu-button{
+  position: absolute;
+  display: inline-block;
+  padding: 4px;
+  top: 50%;
+  margin-top: -17px;
+  .hamburger{
+    fill: white;
+  }
+  z-index:100;
+
 }

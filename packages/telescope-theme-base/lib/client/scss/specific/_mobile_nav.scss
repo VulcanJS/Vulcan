@@ -50,43 +50,7 @@ $mobile-nav-width: 200px;
   }
 }
 
-@mixin header-button{
-  display:block;
-  background:$red;
-  border-radius: 3px;
-  &, &:link, &:visited, &:hover{
-    color:white;
-  }
-  height:30px;
-  width:40px;
-  i{
-    position:absolute;
-    width:100%;
-    text-align:center;
-    line-height:30px;
-    height:30px;
-    font-size:18px;
-  }
-}
 
-.mobile-menu-button{
-  @include header-button;
-  @extend %vcenter;
-  @include medium-large{
-    display: none;
-  }
-  z-index:100;
-  
-  span{
-    display:none;
-  }
-  &.menu{
-    float:left;
-  }
-  &.submit{
-    float:right;
-  }
-}
 
 
 .desktop-nav{
@@ -96,22 +60,21 @@ $mobile-nav-width: 200px;
 }
 
 .mobile-menu{
-  li{
+  >li{
     margin-bottom: 0;
-    border-bottom:1px white(0.1) solid;
+    border-bottom:1px white(0.2) solid;
     &:last-child{
       border:none;
     }
   }
   .sign-in{
-    border-bottom:1px white(0.1) solid;
+    border-bottom:1px white(0.2) solid;
     margin-right: 0px;
   }
   a{
     display: block;
     height: auto;
     line-height: inherit;
-    padding: 10px;
     font-size: 15px;
     &, &:link, &:visited{
       color: white;
@@ -129,20 +92,25 @@ $mobile-nav-width: 200px;
       }
     }
   }
+  .dropdown-top-level{
+    padding: 10px;
+  }
   .dropdown-menu{
+    background: #333;
     li{
+      padding: 10px;
       margin-bottom: 0;
-      a{
-        background: #333;
-      }
-      border-bottom:1px white(0.1) solid;
+      border-top:1px white(0.2) solid;
     }
-  }  
+  }
+  .submit{
+    margin: 10px;
+  }
 }
 
 .mobile-submit{
   padding: 10px;
-  border-bottom:1px white(0.1) solid;
+  border-bottom:1px white(0.2) solid;
   .button{
     max-width: none;
   }

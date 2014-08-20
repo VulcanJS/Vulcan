@@ -22,6 +22,9 @@
 		color:white;
 		@include small{
 			font-size: 18px;
+			a{
+				position: static;
+			}
 		}
 		@include medium-large{
 			font-size:24px;
@@ -60,8 +63,6 @@
 	@include cf;
 	@extend %vcenter;
 	>li{
-		@include horizontal-list-item;
-		margin:0 10px 0 0;
 		line-height: 2;
 		&:last-child{
 			margin-right: 0px;
@@ -114,4 +115,11 @@
 .has-dropdown .user-menu .dropdown-menu{
   left:auto;
   right: 10px;
+ }
+ .has-dropdown .notifications-menu .dropdown-menu{
+  left:auto;
+  right: 10px;
+ }
+ .newsletter-dismiss{
+ 	line-height: 30px !important;
  }

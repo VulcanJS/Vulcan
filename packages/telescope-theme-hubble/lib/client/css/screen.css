@@ -287,35 +287,38 @@ em {
     @media screen and (max-width: 30em) {
       /* line 17, ../scss/modules/_nav.scss */
       .header .logo {
-        font-size: 18px; } }
+        font-size: 18px; }
+        /* line 25, ../scss/modules/_nav.scss */
+        .header .logo a {
+          position: static; } }
     @media screen and (min-width: 30em) {
       /* line 17, ../scss/modules/_nav.scss */
       .header .logo {
         font-size: 24px; } }
-    /* line 31, ../scss/modules/_nav.scss */
+    /* line 34, ../scss/modules/_nav.scss */
     .header .logo a, .header .logo a:visited {
       color: white; }
-  /* line 35, ../scss/modules/_nav.scss */
+  /* line 38, ../scss/modules/_nav.scss */
   .header .logo-image {
     line-height: 1; }
-    /* line 37, ../scss/modules/_nav.scss */
+    /* line 40, ../scss/modules/_nav.scss */
     .header .logo-image a {
       display: inline-block;
       background: no-repeat center center;
       font: 0/0 a;
       text-shadow: none;
       color: transparent; }
-  /* line 45, ../scss/modules/_nav.scss */
+  /* line 48, ../scss/modules/_nav.scss */
   .header .secondary-nav {
     z-index: 20;
     position: relative;
     float: right; }
 
-/* line 56, ../scss/modules/_nav.scss */
+/* line 59, ../scss/modules/_nav.scss */
 .sign-in {
   margin-right: 10px; }
 
-/* line 59, ../scss/modules/_nav.scss */
+/* line 62, ../scss/modules/_nav.scss */
 .nav {
   /* For modern browsers */
   /* For IE 6/7 (trigger hasLayout) */
@@ -327,45 +330,28 @@ em {
   /* line 7, ../scss/partials/_mixins.scss */
   .nav:after {
     clear: both; }
-  /* line 62, ../scss/modules/_nav.scss */
+  /* line 65, ../scss/modules/_nav.scss */
   .nav > li {
-    list-style-image: none;
-    list-style-type: none;
-    margin-left: 0;
-    white-space: nowrap;
-    float: left;
-    padding-left: 4px;
-    padding-right: 4px;
-    margin: 0 10px 0 0;
     line-height: 2; }
-    /* line 49, ../../../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/typography/lists/_horizontal-list.scss */
-    .nav > li:first-child {
-      padding-left: 0; }
-    /* line 50, ../../../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/typography/lists/_horizontal-list.scss */
-    .nav > li:last-child {
-      padding-right: 0; }
-    /* line 52, ../../../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/compass-core/stylesheets/compass/typography/lists/_horizontal-list.scss */
-    .nav > li.last {
-      padding-right: 0; }
-    /* line 66, ../scss/modules/_nav.scss */
+    /* line 67, ../scss/modules/_nav.scss */
     .nav > li:last-child {
       margin-right: 0px; }
-    /* line 69, ../scss/modules/_nav.scss */
+    /* line 70, ../scss/modules/_nav.scss */
     .nav > li > a, .nav > li > div > a {
       color: white;
       font-size: 15px;
       font-weight: normal; }
-      /* line 75, ../scss/modules/_nav.scss */
+      /* line 76, ../scss/modules/_nav.scss */
       .nav > li > a.intercom em:before, .nav > li > div > a.intercom em:before {
         content: '('; }
-      /* line 78, ../scss/modules/_nav.scss */
+      /* line 79, ../scss/modules/_nav.scss */
       .nav > li > a.intercom em:after, .nav > li > div > a.intercom em:after {
         content: ')'; }
 
-/* line 85, ../scss/modules/_nav.scss */
+/* line 86, ../scss/modules/_nav.scss */
 .search {
   position: relative; }
-  /* line 87, ../scss/modules/_nav.scss */
+  /* line 88, ../scss/modules/_nav.scss */
   .search .search-field {
     font-size: 14px;
     padding: 4px 12px;
@@ -376,23 +362,32 @@ em {
     -webkit-transition: 0.2s all;
     -moz-transition: 0.2s all;
     background: white; }
-    /* line 97, ../scss/modules/_nav.scss */
+    /* line 98, ../scss/modules/_nav.scss */
     .search .search-field:focus {
       outline: none; }
-  /* line 102, ../scss/modules/_nav.scss */
+  /* line 103, ../scss/modules/_nav.scss */
   .search.empty .search-field {
     background: rgba(255, 255, 255, 0.1); }
-    /* line 104, ../scss/modules/_nav.scss */
+    /* line 105, ../scss/modules/_nav.scss */
     .search.empty .search-field:focus {
       background: white; }
-  /* line 108, ../scss/modules/_nav.scss */
+  /* line 109, ../scss/modules/_nav.scss */
   .search.empty .search-clear {
     display: none; }
 
-/* line 114, ../scss/modules/_nav.scss */
+/* line 115, ../scss/modules/_nav.scss */
 .has-dropdown .user-menu .dropdown-menu {
   left: auto;
   right: 10px; }
+
+/* line 119, ../scss/modules/_nav.scss */
+.has-dropdown .notifications-menu .dropdown-menu {
+  left: auto;
+  right: 10px; }
+
+/* line 123, ../scss/modules/_nav.scss */
+.newsletter-dismiss {
+  line-height: 30px !important; }
 
 /* line 1, ../scss/modules/_posts.scss */
 .module {
@@ -797,70 +792,67 @@ em {
 
 /* line 426, ../scss/modules/_posts.scss */
 .more-button {
-  padding: 0;
-  background: none; }
-  /* line 429, ../scss/modules/_posts.scss */
-  .more-button a {
-    display: block;
-    width: 100%;
-    height: 70px;
-    background: rgba(0, 0, 0, 0.1);
-    text-align: center;
-    color: white;
-    line-height: 70px;
-    font-size: 18px;
-    border-radius: 0px 0px 3px 3px;
-    text-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25); }
-    /* line 440, ../scss/modules/_posts.scss */
-    .more-button a:hover {
-      background: rgba(0, 0, 0, 0.15); }
+  display: block;
+  width: 100%;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.05);
+  text-align: center;
+  color: white;
+  line-height: 70px;
+  font-size: 18px;
+  border-radius: 0px 0px 3px 3px;
+  text-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+  padding: 0px; }
+  /* line 438, ../scss/modules/_posts.scss */
+  .more-button:hover {
+    background: rgba(0, 0, 0, 0.15); }
 
-/* line 446, ../scss/modules/_posts.scss */
+/* line 443, ../scss/modules/_posts.scss */
 .inner-table {
   display: table;
   height: 100%; }
 
-/* line 450, ../scss/modules/_posts.scss */
+/* line 447, ../scss/modules/_posts.scss */
 .inner-table-cell {
   display: table-cell;
   vertical-align: middle; }
 
 @media screen and (max-width: 500px) {
-  /* line 457, ../scss/modules/_posts.scss */
+  /* line 454, ../scss/modules/_posts.scss */
   .posts {
     padding: 0; }
-    /* line 460, ../scss/modules/_posts.scss */
+    /* line 457, ../scss/modules/_posts.scss */
     .posts .post-rank {
       display: none; }
 
-  /* line 465, ../scss/modules/_posts.scss */
+  /* line 462, ../scss/modules/_posts.scss */
   .post .post-content {
     margin-right: 50px;
     margin-right: 0px; }
-    /* line 469, ../scss/modules/_posts.scss */
+    /* line 466, ../scss/modules/_posts.scss */
     .post .post-content .upvote-link {
       width: 30px; }
-    /* line 472, ../scss/modules/_posts.scss */
+    /* line 469, ../scss/modules/_posts.scss */
     .post .post-content .post-info {
       padding: 13px 0; }
-    /* line 477, ../scss/modules/_posts.scss */
+    /* line 474, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-title {
       line-height: 1.2;
       display: block;
       margin-bottom: 4px; }
-    /* line 482, ../scss/modules/_posts.scss */
+    /* line 479, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-domain {
       line-height: 1;
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
-    /* line 489, ../scss/modules/_posts.scss */
+    /* line 486, ../scss/modules/_posts.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
-      /* line 494, ../scss/modules/_posts.scss */
+      /* line 491, ../scss/modules/_posts.scss */
       .post .post-content .post-meta .unit {
         font-size: 0; }
-        /* line 496, ../scss/modules/_posts.scss */
+        /* line 493, ../scss/modules/_posts.scss */
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; } }
@@ -1118,111 +1110,6 @@ em {
   text-align: center;
   background: #f36c3d;
   color: white; }
-
-/* line 3, ../scss/modules/_notifications.scss */
-.notifications {
-  background: #f3f3f3;
-  -moz-transition: left 400ms ease-out 0ms;
-  -o-transition: left 400ms ease-out 0ms;
-  -webkit-transition: left 400ms ease-out;
-  -webkit-transition-delay: 0ms;
-  transition: left 400ms ease-out 0ms;
-  z-index: 1000; }
-  @media screen and (max-width: 30em) {
-    /* line 3, ../scss/modules/_notifications.scss */
-    .notifications {
-      margin-bottom: 10px; }
-      /* line 6, ../scss/modules/_notifications.scss */
-      .notifications.no-notifications {
-        display: none; }
-      /* line 9, ../scss/modules/_notifications.scss */
-      .notifications .read {
-        display: none; } }
-  @media screen and (min-width: 30em) {
-    /* line 3, ../scss/modules/_notifications.scss */
-    .notifications {
-      position: fixed;
-      height: 100%;
-      width: 260px;
-      top: 0px;
-      left: -260px; } }
-  /* line 23, ../scss/modules/_notifications.scss */
-  .notifications .mark-as-read {
-    display: block;
-    text-align: center;
-    padding: 10px;
-    font-size: 13px;
-    border-bottom: 1px solid #dfdbdb;
-    background: #f3f3f3; }
-    /* line 30, ../scss/modules/_notifications.scss */
-    .notifications .mark-as-read:link, .notifications .mark-as-read:visited {
-      color: #7ac0e4; }
-  /* line 34, ../scss/modules/_notifications.scss */
-  .notifications ul {
-    height: 100%;
-    overflow: auto; }
-    /* line 37, ../scss/modules/_notifications.scss */
-    .notifications ul li {
-      padding: 10px;
-      border-bottom: 1px solid #dfdbdb;
-      font-size: 13px;
-      background: white; }
-      /* line 42, ../scss/modules/_notifications.scss */
-      .notifications ul li .notification-timestamp {
-        color: #b3c1c6;
-        font-size: 12px; }
-      /* line 46, ../scss/modules/_notifications.scss */
-      .notifications ul li.read {
-        color: #b3c1c6;
-        background: #f3f3f3; }
-  /* line 52, ../scss/modules/_notifications.scss */
-  .notifications-open .notifications {
-    left: 0px;
-    -moz-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.15); }
-
-/* line 58, ../scss/modules/_notifications.scss */
-.notifications-toggle {
-  -moz-transition: left 400ms ease-out 0ms;
-  -o-transition: left 400ms ease-out 0ms;
-  -webkit-transition: left 400ms ease-out;
-  -webkit-transition-delay: 0ms;
-  transition: left 400ms ease-out 0ms;
-  display: block;
-  position: absolute;
-  left: 0px;
-  top: 80px;
-  white-space: nowrap;
-  background: white;
-  -moz-border-radius: 0px 3px 3px 0px;
-  -webkit-border-radius: 0px;
-  border-radius: 0px 3px 3px 0px;
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  padding: 3px 10px;
-  font-size: 13px;
-  z-index: 20; }
-  @media screen and (max-width: 30em) {
-    /* line 58, ../scss/modules/_notifications.scss */
-    .notifications-toggle {
-      display: none; } }
-  /* line 74, ../scss/modules/_notifications.scss */
-  .notifications-toggle.no-notifications {
-    background: rgba(255, 255, 255, 0.3);
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    color: #b3c1c6; }
-  /* line 79, ../scss/modules/_notifications.scss */
-  .notifications-open .notifications-toggle {
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    left: 260px;
-    background: white;
-    color: #4a4444; }
 
 /* line 1, ../scss/modules/_share.scss */
 .share-options {

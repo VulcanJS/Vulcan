@@ -3,8 +3,8 @@ buildEmailTemplate = function (htmlContent) {
   var juice = Meteor.require('juice');
 
   var emailProperties = {
-    headerColor: getSetting('headerColor'),
-    buttonColor: getSetting('buttonColor'),
+    headerColor: getSetting('headerColor', '#444444'),
+    buttonColor: getSetting('buttonColor', '#DD3416'),
     siteName: getSetting('title'),
     tagline: getSetting('tagline'),
     siteUrl: getSiteUrl(),

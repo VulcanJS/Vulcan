@@ -105,15 +105,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   .cf:after {
     clear: both; }
 
-/* line 133, ../scss/includes/_mixins.scss */
-.mobile-menu-button {
-  position: relative;
-  top: 50%;
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%); }
-
 /*================ FLEXBOX =================*/
 /* line 2, ../scss/global/_forms.scss */
 form.form-block, .accounts-dialog.form-block {
@@ -533,87 +524,119 @@ li {
     margin-left: 4px;
     content: "▼";
     font-size: 8px; }
-  /* line 13, ../scss/specific/_dropdown.scss */
-  .has-dropdown .dropdown .dropdown-menu {
-    display: none;
-    top: 10px;
-    left: 10px;
-    position: absolute;
-    padding-top: 20px;
-    z-index: 10000; }
-    /* line 20, ../scss/specific/_dropdown.scss */
-    .has-dropdown .dropdown .dropdown-menu, .has-dropdown .dropdown .dropdown-menu a, .has-dropdown .dropdown .dropdown-menu a:link, .has-dropdown .dropdown .dropdown-menu a:visited {
-      color: #444444; }
-    /* line 23, ../scss/specific/_dropdown.scss */
-    .has-dropdown .dropdown .dropdown-menu ul {
-      background: white;
-      padding: 10px;
-      min-width: 140px;
-      -moz-border-radius: 3px;
-      -webkit-border-radius: 3px;
-      border-radius: 3px;
-      -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-      -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-      list-style-type: none; }
-      /* line 30, ../scss/specific/_dropdown.scss */
-      .has-dropdown .dropdown .dropdown-menu ul li {
-        margin-bottom: 0; }
-        /* line 32, ../scss/specific/_dropdown.scss */
-        .has-dropdown .dropdown .dropdown-menu ul li a {
-          font-size: 14px; }
-  /* line 39, ../scss/specific/_dropdown.scss */
+  /* line 14, ../scss/specific/_dropdown.scss */
   .has-dropdown .dropdown:hover .dropdown-menu {
     display: block; }
 
-/* line 1, ../scss/specific/_header.scss */
+/* line 19, ../scss/specific/_dropdown.scss */
+.has-dropdown .dropdown-menu {
+  display: none;
+  top: 10px;
+  left: 10px;
+  position: absolute;
+  padding-top: 20px;
+  z-index: 10000; }
+  /* line 26, ../scss/specific/_dropdown.scss */
+  .has-dropdown .dropdown-menu, .has-dropdown .dropdown-menu a, .has-dropdown .dropdown-menu a:link, .has-dropdown .dropdown-menu a:visited {
+    color: #444444; }
+  /* line 29, ../scss/specific/_dropdown.scss */
+  .has-dropdown .dropdown-menu a.button {
+    color: white; }
+  /* line 32, ../scss/specific/_dropdown.scss */
+  .has-dropdown .dropdown-menu ul {
+    background: white;
+    padding: 10px;
+    min-width: 140px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    list-style-type: none; }
+    /* line 39, ../scss/specific/_dropdown.scss */
+    .has-dropdown .dropdown-menu ul li {
+      margin-bottom: 10px; }
+      /* line 41, ../scss/specific/_dropdown.scss */
+      .has-dropdown .dropdown-menu ul li:last-child {
+        margin-bottom: 0; }
+      /* line 44, ../scss/specific/_dropdown.scss */
+      .has-dropdown .dropdown-menu ul li a {
+        font-size: 14px; }
+
+/* line 1, ../scss/specific/_errors.scss */
+.error {
+  background: #dd3416;
+  color: white; }
+
+/* line 3, ../scss/specific/_header.scss */
 .header {
   background: #444444;
   margin-bottom: 10px;
-  padding: 15px;
-  /* For modern browsers */
-  /* For IE 6/7 (trigger hasLayout) */
-  *zoom: 1; }
-  /* line 6, ../scss/includes/_mixins.scss */
-  .header:before, .header:after {
-    content: "";
-    display: table; }
-  /* line 10, ../scss/includes/_mixins.scss */
-  .header:after {
-    clear: both; }
-  /* line 6, ../scss/specific/_header.scss */
+  padding: 15px; }
+  @media screen and (max-width: 40em) {
+    /* line 3, ../scss/specific/_header.scss */
+    .header {
+      height: 50px;
+      padding: 10px;
+      position: relative; } }
+  /* line 12, ../scss/specific/_header.scss */
   .header, .header a, .header a:link, .header a:visited {
     color: white; }
-  /* line 9, ../scss/specific/_header.scss */
+  /* line 15, ../scss/specific/_header.scss */
   .header .nav {
     list-style-type: none; }
-    /* line 11, ../scss/specific/_header.scss */
+    /* line 17, ../scss/specific/_header.scss */
     .header .nav li {
       margin-bottom: 0; }
-  /* line 15, ../scss/specific/_header.scss */
-  .header .header-module, .header .header-submodule {
-    display: inline-block;
-    margin-right: 20px; }
-    /* line 18, ../scss/specific/_header.scss */
-    .header .header-module:last-child, .header .header-submodule:last-child {
-      margin-right: 0px; }
 
-/* line 23, ../scss/specific/_header.scss */
+/* line 22, ../scss/specific/_header.scss */
+.header-module, .header-submodule {
+  display: inline-block;
+  margin-right: 20px; }
+  /* line 25, ../scss/specific/_header.scss */
+  .header-module:last-child, .header-submodule:last-child {
+    margin-right: 0px; }
+
+/* line 29, ../scss/specific/_header.scss */
 .logo {
   vertical-align: middle;
   line-height: 1; }
   @media screen and (max-width: 40em) {
-    /* line 23, ../scss/specific/_header.scss */
+    /* line 29, ../scss/specific/_header.scss */
     .logo {
-      font-size: 24px;
-      text-align: center;
-      display: block; } }
+      margin-right: 0; }
+      /* line 34, ../scss/specific/_header.scss */
+      .logo a {
+        font-size: 24px;
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        left: 0px;
+        top: 0px;
+        z-index: 10;
+        margin-right: 0; } }
 
-/* line 33, ../scss/specific/_header.scss */
+/* line 50, ../scss/specific/_header.scss */
 .logo-image a, .logo-image img {
   display: block;
   height: 100%;
   width: 100%; }
+
+/* line 57, ../scss/specific/_header.scss */
+.mobile-menu-button {
+  position: absolute;
+  display: inline-block;
+  padding: 4px;
+  top: 50%;
+  margin-top: -17px;
+  z-index: 100; }
+  /* line 63, ../scss/specific/_header.scss */
+  .mobile-menu-button .hamburger {
+    fill: white; }
 
 /* line 1, ../scss/specific/_layout.scss */
 *, *:before, *:after {
@@ -709,66 +732,32 @@ body {
       left: 200px;
       left: calc(100% - 60px); }
 
-/* line 72, ../scss/specific/_mobile_nav.scss */
-.mobile-menu-button {
-  display: block;
-  background: #dd3416;
-  border-radius: 3px;
-  height: 30px;
-  width: 40px;
-  z-index: 100; }
-  /* line 57, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu-button, .mobile-menu-button:link, .mobile-menu-button:visited, .mobile-menu-button:hover {
-    color: white; }
-  /* line 62, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu-button i {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    line-height: 30px;
-    height: 30px;
-    font-size: 18px; }
-  @media screen and (min-width: 40em) {
-    /* line 72, ../scss/specific/_mobile_nav.scss */
-    .mobile-menu-button {
-      display: none; } }
-  /* line 80, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu-button span {
-    display: none; }
-  /* line 83, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu-button.menu {
-    float: left; }
-  /* line 86, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu-button.submit {
-    float: right; }
-
 @media screen and (max-width: 40em) {
-  /* line 92, ../scss/specific/_mobile_nav.scss */
+  /* line 56, ../scss/specific/_mobile_nav.scss */
   .desktop-nav {
     display: none; } }
 
-/* line 99, ../scss/specific/_mobile_nav.scss */
-.mobile-menu li {
+/* line 63, ../scss/specific/_mobile_nav.scss */
+.mobile-menu > li {
   margin-bottom: 0;
-  border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
-  /* line 102, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu li:last-child {
+  border-bottom: 1px rgba(255, 255, 255, 0.2) solid; }
+  /* line 66, ../scss/specific/_mobile_nav.scss */
+  .mobile-menu > li:last-child {
     border: none; }
-/* line 106, ../scss/specific/_mobile_nav.scss */
+/* line 70, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .sign-in {
-  border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
+  border-bottom: 1px rgba(255, 255, 255, 0.2) solid;
   margin-right: 0px; }
-/* line 110, ../scss/specific/_mobile_nav.scss */
+/* line 74, ../scss/specific/_mobile_nav.scss */
 .mobile-menu a {
   display: block;
   height: auto;
   line-height: inherit;
-  padding: 10px;
   font-size: 15px; }
-  /* line 116, ../scss/specific/_mobile_nav.scss */
+  /* line 79, ../scss/specific/_mobile_nav.scss */
   .mobile-menu a, .mobile-menu a:link, .mobile-menu a:visited {
     color: white; }
-/* line 122, ../scss/specific/_mobile_nav.scss */
+/* line 85, ../scss/specific/_mobile_nav.scss */
 .mobile-menu .dropdown > a:after {
   display: inline-block;
   position: relative;
@@ -776,21 +765,32 @@ body {
   margin-left: 4px;
   content: "▼";
   font-size: 8px; }
-/* line 133, ../scss/specific/_mobile_nav.scss */
-.mobile-menu .dropdown-menu li {
-  margin-bottom: 0;
-  border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
-  /* line 135, ../scss/specific/_mobile_nav.scss */
-  .mobile-menu .dropdown-menu li a {
-    background: #333; }
+/* line 95, ../scss/specific/_mobile_nav.scss */
+.mobile-menu .dropdown-top-level {
+  padding: 10px; }
+/* line 98, ../scss/specific/_mobile_nav.scss */
+.mobile-menu .dropdown-menu {
+  background: #333; }
+  /* line 100, ../scss/specific/_mobile_nav.scss */
+  .mobile-menu .dropdown-menu li {
+    padding: 10px;
+    margin-bottom: 0;
+    border-top: 1px rgba(255, 255, 255, 0.2) solid; }
+/* line 106, ../scss/specific/_mobile_nav.scss */
+.mobile-menu .submit {
+  margin: 10px; }
 
-/* line 143, ../scss/specific/_mobile_nav.scss */
+/* line 111, ../scss/specific/_mobile_nav.scss */
 .mobile-submit {
   padding: 10px;
-  border-bottom: 1px rgba(255, 255, 255, 0.1) solid; }
-  /* line 146, ../scss/specific/_mobile_nav.scss */
+  border-bottom: 1px rgba(255, 255, 255, 0.2) solid; }
+  /* line 114, ../scss/specific/_mobile_nav.scss */
   .mobile-submit .button {
     max-width: none; }
+
+/* line 1, ../scss/specific/_notifications.scss */
+.notification-item {
+  margin-bottom: 10px; }
 
 /* line 1, ../scss/specific/_posts.scss */
 .more-button {
