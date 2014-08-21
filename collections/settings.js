@@ -96,18 +96,26 @@ settingsSchemaObject = {
     optional: true,
     label: "Background CSS: color, image, etc."
   },
-  secondaryColor: {
-    type: String,
-    optional: true
-  },
+  // secondaryColor: {
+  //   type: String,
+  //   optional: true
+  // },
   buttonColor: {
     type: String,
     optional: true
   },
+  buttonTextColor: {
+    type: String,
+    optional: true
+  },  
   headerColor: {
     type: String,
     optional: true
   },
+  headerTextColor: {
+    type: String,
+    optional: true
+  },  
   twitterAccount: {
     type: String,
     optional: true

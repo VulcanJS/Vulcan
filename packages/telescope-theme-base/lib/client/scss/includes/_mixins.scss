@@ -116,14 +116,14 @@ $grid-margin: 10px;
   z-index:100;
   @include transition(all, 300ms);
 }
-.grid-block{
-  background:#fff;
-  @include border-radius(3px);
-  // border:1px solid $light-blue;
-  padding:$grid-padding;
-  margin-bottom:$grid-margin;
-  @include box-shadow(0 1px 1px black(0.15));
-}
+// .grid-block{
+//   background:#fff;
+//   @include border-radius(3px);
+//   // border:1px solid $light-blue;
+//   padding:$grid-padding;
+//   margin-bottom:$grid-margin;
+//   @include box-shadow(0 1px 1px black(0.15));
+// }
 .has-shadow{
   @include box-shadow(0 1px 1px black(0.15));
 }

@@ -4,13 +4,17 @@ $mobile-header-height: 50px;
   background: $dark-grey;
   margin-bottom: $grid-margin;
   padding: $grid-padding;
+  color: white;
   @include small{
     height: $mobile-header-height;
     padding: 10px;
     position: relative;
   }
-  &, a, a:link, a:visited{
-    color: white;
+  a, a:link, a:visited{
+    color: inherit;
+    &.button{
+      color: white;
+    }
   }
   .nav{
     list-style-type: none;

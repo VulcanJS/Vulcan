@@ -74,18 +74,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -webkit-transition: all, 300ms;
   transition: all, 300ms; }
 
-/* line 119, ../scss/includes/_mixins.scss */
-.grid-block {
-  background: #fff;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  padding: 15px;
-  margin-bottom: 10px;
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
-
 /* line 127, ../scss/includes/_mixins.scss */
 .has-shadow {
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
@@ -371,7 +359,7 @@ a {
   height: 300px; }
 
 /* line 39, ../scss/global/_main.scss */
-.module {
+.grid-module {
   background: white;
   margin-bottom: 10px;
   padding: 15px; }
@@ -573,45 +561,49 @@ li {
 .header {
   background: #444444;
   margin-bottom: 10px;
-  padding: 15px; }
+  padding: 15px;
+  color: white; }
   @media screen and (max-width: 40em) {
     /* line 3, ../scss/specific/_header.scss */
     .header {
       height: 50px;
       padding: 10px;
       position: relative; } }
-  /* line 12, ../scss/specific/_header.scss */
-  .header, .header a, .header a:link, .header a:visited {
-    color: white; }
-  /* line 15, ../scss/specific/_header.scss */
+  /* line 13, ../scss/specific/_header.scss */
+  .header a, .header a:link, .header a:visited {
+    color: inherit; }
+    /* line 15, ../scss/specific/_header.scss */
+    .header a.button, .header a:link.button, .header a:visited.button {
+      color: white; }
+  /* line 19, ../scss/specific/_header.scss */
   .header .nav {
     list-style-type: none; }
-    /* line 17, ../scss/specific/_header.scss */
+    /* line 21, ../scss/specific/_header.scss */
     .header .nav > li {
       margin-bottom: 0;
       display: inline-block; }
-      /* line 20, ../scss/specific/_header.scss */
+      /* line 24, ../scss/specific/_header.scss */
       .header .nav > li:last-child .header-submodule {
         margin-right: 0px; }
 
-/* line 26, ../scss/specific/_header.scss */
+/* line 30, ../scss/specific/_header.scss */
 .header-module, .header-submodule {
   display: inline-block;
   margin-right: 20px; }
 
-/* line 31, ../scss/specific/_header.scss */
+/* line 35, ../scss/specific/_header.scss */
 .header-module:last-child {
   margin-right: 0px; }
 
-/* line 35, ../scss/specific/_header.scss */
+/* line 39, ../scss/specific/_header.scss */
 .logo {
   vertical-align: middle;
   line-height: 1; }
   @media screen and (max-width: 40em) {
-    /* line 35, ../scss/specific/_header.scss */
+    /* line 39, ../scss/specific/_header.scss */
     .logo {
       margin-right: 0; }
-      /* line 40, ../scss/specific/_header.scss */
+      /* line 44, ../scss/specific/_header.scss */
       .logo a {
         font-size: 24px;
         display: block;
@@ -625,13 +617,13 @@ li {
         z-index: 10;
         margin-right: 0; } }
 
-/* line 56, ../scss/specific/_header.scss */
+/* line 60, ../scss/specific/_header.scss */
 .logo-image a, .logo-image img {
   display: block;
   height: 100%;
   width: 100%; }
 
-/* line 63, ../scss/specific/_header.scss */
+/* line 67, ../scss/specific/_header.scss */
 .mobile-menu-button {
   position: absolute;
   display: inline-block;
@@ -639,15 +631,15 @@ li {
   top: 50%;
   margin-top: -17px;
   z-index: 100; }
-  /* line 69, ../scss/specific/_header.scss */
+  /* line 73, ../scss/specific/_header.scss */
   .mobile-menu-button .hamburger {
     fill: white; }
 
-/* line 75, ../scss/specific/_header.scss */
+/* line 79, ../scss/specific/_header.scss */
 .account-link {
   display: inline-block; }
 
-/* line 78, ../scss/specific/_header.scss */
+/* line 82, ../scss/specific/_header.scss */
 .sign-in {
   margin-right: 20px; }
 
