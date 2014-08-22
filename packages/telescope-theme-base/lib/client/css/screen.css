@@ -544,11 +544,15 @@ li {
     list-style-type: none; }
     /* line 39, ../scss/specific/_dropdown.scss */
     .has-dropdown .dropdown-menu ul li {
-      margin-bottom: 10px; }
-      /* line 41, ../scss/specific/_dropdown.scss */
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eeeeee; }
+      /* line 43, ../scss/specific/_dropdown.scss */
       .has-dropdown .dropdown-menu ul li:last-child {
-        margin-bottom: 0; }
-      /* line 44, ../scss/specific/_dropdown.scss */
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none; }
+      /* line 48, ../scss/specific/_dropdown.scss */
       .has-dropdown .dropdown-menu ul li a {
         font-size: 14px; }
 
