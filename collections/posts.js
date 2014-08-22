@@ -24,8 +24,12 @@ postSchemaObject = {
     type: String,
     optional: true
   },
-  comments: {
+  commentsCount: {
     type: Number,
+    optional: true
+  },
+  commenters: {
+    type: [String],
     optional: true
   },
   lastCommentedAt: {

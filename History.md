@@ -4,6 +4,8 @@
 * Changed `navItems` to `primaryNav` and added `secondaryNav`. 
 * Added new `themeSettings` object for storing theme-level settings.
 * Notifications is now a nav menu item. 
+* Renamed `comments` to `commentsCount` on `Post` model.
+* Now tracking list of commenters `_id`s on `Post` model.
 
 ## v0.9.2.5 “AccountScope”
 

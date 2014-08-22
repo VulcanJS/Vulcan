@@ -280,5 +280,26 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  commentsToCommentsCount: function () {
+    var i = 0;
+    Posts.find({commentsCount: {$exists : false}}).forEach(function (post) {
+      i++;
+      console.log("Post: "+post._id);
+      Posts.update(post._id, { $rename: { 'comments': 'commentsCount'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  addCommentersToPosts: function () {
+    var i = 0;
+    Comments.find().forEach(function (comment) {
+      i++;
+      console.log("Comment: "+comment._id);
+      console.log("Post: "+comment.postId);
+      Posts.update(comment.postId, { $addToSet: { 'commenters': comment.userId}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
   }
 }

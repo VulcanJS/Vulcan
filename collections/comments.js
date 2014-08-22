@@ -128,7 +128,11 @@ Meteor.methods({
     // extend comment with newly created _id
     comment = _.extend(comment, {_id: newCommentId});
 
-    Posts.update(postId, {$inc: {comments: 1}, $set: {lastCommentedAt: now}});
+    Posts.update(postId, {
+      $inc:       {commentsCount: 1},
+      $set:       {lastCommentedAt: now},
+      $addToSet:  {commenters: user._id}
+    });
 
     Meteor.call('upvoteComment', comment);
 
@@ -167,8 +171,11 @@ Meteor.methods({
   removeComment: function(commentId){
     var comment=Comments.findOne(commentId);
     if(canEdit(Meteor.user(), comment)){
-      // decrement post comment count
-      Posts.update(comment.postId, {$inc: {comments: -1}});
+      // decrement post comment count and remove user ID from post
+      Posts.update(comment.postId, {
+        $inc:   {commentsCount: -1},
+        $pull:  {commenters: comment.userId}
+      });
 
       // decrement user comment count
       Meteor.users.update({_id: comment.userId}, {$inc: {commentCount: -1}});
