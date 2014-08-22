@@ -6,6 +6,7 @@
 * Notifications is now a nav menu item. 
 * Renamed `comments` to `commentsCount` on `Post` model.
 * Now tracking list of commenters `_id`s on `Post` model.
+* Rerun interrupted migrations. 
 
 ## v0.9.2.5 “AccountScope”
 
