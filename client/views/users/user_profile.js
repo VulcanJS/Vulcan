@@ -24,11 +24,25 @@ Template[getTemplate('user_profile')].helpers({
   },
   upvotes: function () {
     // extend upvotes with each upvoted post
-    var extendedVotes = Meteor.user().profile.upvotedPosts.map(function (item) {
-      var post = Posts.findOne(item.itemId);
-      return _.extend(item, post);
-    });
-    return extendedVotes
+    if(!!this.profile.upvotedPosts){
+      var extendedVotes = this.profile.upvotedPosts.map(function (item) {
+        var post = Posts.findOne(item.itemId);
+        return _.extend(item, post);
+      });
+      return extendedVotes
+    }
+  },
+  comments: function () {
+    var comments = Comments.find({_id: {$in: this.profile.comments}});
+    if(!!this.profile.comments){
+      // extend comments with each commented post
+      var extendedComments = comments.map(function (comment) {
+        var post = Posts.findOne(comment.postId);
+        comment.postTitle = post.title;
+        return comment;
+      });
+      return extendedComments    
+    }
   }
 });
 

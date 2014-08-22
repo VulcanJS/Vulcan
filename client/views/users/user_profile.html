@@ -1,7 +1,6 @@
 <template name="user_profile">
-	<div class="grid grid-module">
-		{{#with user}}
-		<div class="user-profile grid-block">
+	{{#with user}}
+		<div class="user-profile grid grid-module">
 			<table>
 				<tr>
 					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
@@ -54,23 +53,41 @@
 				{{/if}}
 			{{/if}}
 		</div>
-		<div class="user-profile-votes grid-block">
-		<h3>{{i18n "Upvoted Posts"}}</h3>
-		<table>
-		<thead>
-			<tr>
-				<td>Post</td>
-				<td>Upvoted At</td>
-			</tr>
-		</thead>
-		{{#each upvotes}}
-			<tr>
-				<td><a href="/posts/{{_id}}/">{{title}}</a></td>
-				<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
-			</tr>
-		{{/each}}
-		</table>
+		<div class="user-profile-votes grid grid-module">
+			<h3>{{i18n "Upvoted Posts"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Upvoted At</td>
+				</tr>
+			</thead>
+			{{#each upvotes}}
+				<tr>
+					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			</table>
 		</div>
-		{{/with}}
-	</div>
+		<div class="user-profile-comments grid grid-module">
+			<h3>{{i18n "Comments"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Comment</td>
+					<td>Commented At</td>
+				</tr>
+			</thead>
+			{{#each comments}}
+				<tr>
+					<td><a href="/posts/{{postId}}/">{{postTitle}}</a></td>
+					<td>{{body}}</td>
+					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			</table>
+		</div>
+	{{/with}}
 </template>
