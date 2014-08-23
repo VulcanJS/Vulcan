@@ -53,6 +53,25 @@
 				{{/if}}
 			{{/if}}
 		</div>
+
+		<div class="user-profile-posts grid grid-module">
+			<h3>{{i18n "Posts"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Created At</td>
+				</tr>
+			</thead>
+			{{#each posts}}
+				<tr>
+					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			</table>
+		</div>
+
 		<div class="user-profile-votes grid grid-module">
 			<h3>{{i18n "Upvoted Posts"}}</h3>
 			<table>
@@ -62,7 +81,7 @@
 					<td>Upvoted At</td>
 				</tr>
 			</thead>
-			{{#each upvotes}}
+			{{#each upvotedPosts}}
 				<tr>
 					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
 					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
@@ -70,6 +89,25 @@
 			{{/each}}
 			</table>
 		</div>
+
+		<div class="user-profile-votes grid grid-module">
+			<h3>{{i18n "Downvoted Posts"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Downvoted At</td>
+				</tr>
+			</thead>
+			{{#each downvoted}}
+				<tr>
+					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			</table>
+		</div>
+
 		<div class="user-profile-comments grid grid-module">
 			<h3>{{i18n "Comments"}}</h3>
 			<table>
@@ -89,5 +127,6 @@
 			{{/each}}
 			</table>
 		</div>
+
 	{{/with}}
 </template>

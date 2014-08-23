@@ -1,6 +1,5 @@
-## v0.9.2.7
+## v0.9.2.7 “ProfileScope”
 
-* Now tracking list of comments `_id`s on `User` model. 
 * Show user comments on user profile page. 
 
 ## v0.9.2.6 “InviteScope”

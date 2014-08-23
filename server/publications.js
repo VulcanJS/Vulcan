@@ -34,31 +34,41 @@ Meteor.publish('singleUser', function(userIdOrSlug) {
   return [];
 });
 
-Meteor.publish('upvotedPosts', function(userIdOrSlug) {
+Meteor.publish('userData', function(userIdOrSlug) {
   var findById = Meteor.users.findOne(userIdOrSlug);
   var findBySlug = Meteor.users.findOne({slug: userIdOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var upvotedPostIds = _.pluck(user.profile.upvotedPosts, 'itemId');
-  return Posts.find({_id: {$in: upvotedPostIds}});
-});
 
-Meteor.publish('userComments', function(userIdOrSlug) {
-  var findById = Meteor.users.findOne(userIdOrSlug);
-  var findBySlug = Meteor.users.findOne({slug: userIdOrSlug});
-  var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  return Comments.find({_id: {$in: user.profile.comments}});
-});
+  // user's own posts
+  var userPosts = Posts.find({userId: user._id});
+  var postsIds = _.pluck(userPosts.fetch(), '_id');
 
-Meteor.publish('commentedPosts', function(userIdOrSlug) {
-  var findById = Meteor.users.findOne(userIdOrSlug);
-  var findBySlug = Meteor.users.findOne({slug: userIdOrSlug});
-  var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var comments = Comments.find({_id: {$in: user.profile.comments}});
-  if(!!comments.count()){ // there might not be any comments
-    var commentedPostIds = _.pluck(comments.fetch(), 'postId');
-    return Posts.find({_id: {$in: commentedPostIds}});
+  // user's own comments
+  var userComments = Comments.find({userId: user._id});
+  var commentsIds = _.pluck(userComments.fetch(), '_id');
+
+  // add upvoted posts ids
+  var postsIds = postsIds.concat(_.pluck(user.profile.upvotedPosts, 'itemId'));
+
+  // add upvoted comments ids
+  var commentsIds = commentsIds.concat(_.pluck(user.profile.upvotedComments, 'itemId'));
+
+  // add downvoted posts ids
+  var postsIds = postsIds.concat(_.pluck(user.profile.downvotedPosts, 'itemId'));
+
+  // add downvoted comments ids
+  var commentsIds = commentsIds.concat(_.pluck(user.profile.downvotedComments, 'itemId'));
+
+  // add commented posts ids
+  if(!!userComments.count()){ // there might not be any comments
+    var commentedPostIds = _.pluck(userComments.fetch(), 'postId');
+    var postsIds = postsIds.concat(commentedPostIds);
   }
-  return [];
+
+  return [
+    Comments.find({_id: {$in: commentsIds}}),
+    Posts.find({_id: {$in: postsIds}})
+  ];
 });
 
 // Publish authors of the current post and its comments

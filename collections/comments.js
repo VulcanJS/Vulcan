@@ -124,8 +124,7 @@ Meteor.methods({
 
     // increment comment count
     Meteor.users.update({_id: user._id}, {
-      $inc:       {'profile.commentsCount': 1},
-      $addToSet:  {'profile.comments': newCommentId}
+      $inc:       {'data.commentsCount': 1}
     });
 
     // extend comment with newly created _id
@@ -182,8 +181,7 @@ Meteor.methods({
 
       // decrement user comment count and remove comment ID from user
       Meteor.users.update({_id: comment.userId}, {
-        $inc:   {'profile.commentsCount': -1},
-        $pull:  {'profile.comments': comment._id}
+        $inc:   {'data.commentsCount': -1}
       });
 
       // note: should we also decrease user's comment karma ?

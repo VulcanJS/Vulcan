@@ -312,16 +312,5 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
-  },
-  addCommentsToUsers: function () {
-    var i = 0;
-    Comments.find().forEach(function (comment) {
-      i++;
-      console.log("Comment: "+comment._id);
-      console.log("User: "+comment.userId);
-      Meteor.users.update(comment.userId, { $addToSet: { 'profile.comments': comment._id}}, {multi: true, validate: false});
-      console.log("---------------------");
-    });
-    return i;
   }
 }

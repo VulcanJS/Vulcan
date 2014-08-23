@@ -22,7 +22,10 @@ Template[getTemplate('user_profile')].helpers({
   getGitHubName: function () {
     return getGitHubName(this);
   },
-  upvotes: function () {
+  posts: function () {
+    return Posts.find({userId: this._id});
+  },
+  upvotedPosts: function () {
     // extend upvotes with each upvoted post
     if(!!this.profile.upvotedPosts){
       var extendedVotes = this.profile.upvotedPosts.map(function (item) {
@@ -32,6 +35,16 @@ Template[getTemplate('user_profile')].helpers({
       return extendedVotes
     }
   },
+  downvotedPosts: function () {
+    // extend upvotes with each upvoted post
+    if(!!this.profile.downvotedPosts){
+      var extendedVotes = this.profile.downvotedPosts.map(function (item) {
+        var post = Posts.findOne(item.itemId);
+        return _.extend(item, post);
+      });
+      return extendedVotes
+    }
+  },  
   comments: function () {
     var comments = Comments.find({_id: {$in: this.profile.comments}});
     if(!!this.profile.comments){

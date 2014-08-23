@@ -22,7 +22,12 @@ Schema.User = new SimpleSchema({
   createdAt: {
     type: Date
   },
-  profile: {
+  profile: { // public and modifiable
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  data: { // public but not modifiable
     type: Object,
     optional: true,
     blackbox: true
