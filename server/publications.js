@@ -48,17 +48,17 @@ Meteor.publish('userData', function(userIdOrSlug) {
   var commentsIds = _.pluck(userComments.fetch(), '_id');
 
   // add upvoted posts ids
-  var postsIds = postsIds.concat(_.pluck(user.profile.upvotedPosts, 'itemId'));
+  var postsIds = postsIds.concat(_.pluck(user.votes.upvotedPosts, 'itemId'));
 
   // add upvoted comments ids
-  var commentsIds = commentsIds.concat(_.pluck(user.profile.upvotedComments, 'itemId'));
+  var commentsIds = commentsIds.concat(_.pluck(user.votes.upvotedComments, 'itemId'));
 
   // add downvoted posts ids
-  var postsIds = postsIds.concat(_.pluck(user.profile.downvotedPosts, 'itemId'));
+  var postsIds = postsIds.concat(_.pluck(user.votes.downvotedPosts, 'itemId'));
 
   // add downvoted comments ids
-  var commentsIds = commentsIds.concat(_.pluck(user.profile.downvotedComments, 'itemId'));
-
+  var commentsIds = commentsIds.concat(_.pluck(user.votes.downvotedComments, 'itemId'));
+    
   // add commented posts ids
   if(!!userComments.count()){ // there might not be any comments
     var commentedPostIds = _.pluck(userComments.fetch(), 'postId');

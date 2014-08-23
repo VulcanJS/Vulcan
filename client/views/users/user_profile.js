@@ -27,8 +27,8 @@ Template[getTemplate('user_profile')].helpers({
   },
   upvotedPosts: function () {
     // extend upvotes with each upvoted post
-    if(!!this.profile.upvotedPosts){
-      var extendedVotes = this.profile.upvotedPosts.map(function (item) {
+    if(!!this.votes.upvotedPosts){
+      var extendedVotes = this.votes.upvotedPosts.map(function (item) {
         var post = Posts.findOne(item.itemId);
         return _.extend(item, post);
       });
@@ -37,8 +37,8 @@ Template[getTemplate('user_profile')].helpers({
   },
   downvotedPosts: function () {
     // extend upvotes with each upvoted post
-    if(!!this.profile.downvotedPosts){
-      var extendedVotes = this.profile.downvotedPosts.map(function (item) {
+    if(!!this.votes.downvotedPosts){
+      var extendedVotes = this.votes.downvotedPosts.map(function (item) {
         var post = Posts.findOne(item.itemId);
         return _.extend(item, post);
       });
@@ -46,8 +46,8 @@ Template[getTemplate('user_profile')].helpers({
     }
   },  
   comments: function () {
-    var comments = Comments.find({_id: {$in: this.profile.comments}});
-    if(!!this.profile.comments){
+    var comments = Comments.find({userId: this._id})
+    if(!!comments){
       // extend comments with each commented post
       var extendedComments = comments.map(function (comment) {
         var post = Posts.findOne(comment.postId);

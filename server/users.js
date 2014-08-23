@@ -6,7 +6,13 @@ Accounts.onCreateUser(function(options, user){
     isAdmin: false,
     postCount: 0,
     commentCount: 0,
-    invitedCount: 0
+    invitedCount: 0,
+    votes: {
+      upvotedPosts: [],
+      downvotedPosts: [],
+      upvotedComments: [],
+      downvotedComments: []
+    }
   };
   user = _.extend(user, userProperties);
 

@@ -312,5 +312,32 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  createVotes: function () { // create empty user.votes object
+    var i = 0;
+    Meteor.users.find({votes: {$exists : false}}).forEach(function (user) {
+      i++;
+      console.log("User: "+user._id);
+      Meteor.users.update(user._id, {$set: {votes: {}}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  moveVotesFromProfile: function () {
+    var i = 0;
+    Meteor.users.find().forEach(function (user) {
+      i++;
+      console.log("User: "+user._id);
+      Meteor.users.update(user._id, {
+        $rename: {
+          'profile.upvotedPosts': 'votes.upvotedPosts',
+          'profile.downvotedPosts': 'votes.downvotedPosts',
+          'profile.upvotedComments': 'votes.upvotedComments',
+          'profile.downvotedComments': 'votes.downvotedComments'
+        }
+      }, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
   }
 }
