@@ -1,0 +1,12 @@
+<template name="postsDaily">
+  <div class="grid">
+    {{#each day}}
+      <div class="posts-day posts list">
+        <h2 class="posts-day-heading">xyz</h2>
+        {{#each posts}}
+          {{> UI.dynamic template=post_item}}
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</template>
