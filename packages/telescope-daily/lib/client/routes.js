@@ -11,27 +11,31 @@ Meteor.startup(function () {
 
     PostsDailyController = FastRender.RouteController.extend({
       template: getTemplate('posts_daily'),
-      waitOn: function() {
-        // if number of days is set use that, else default to 3
-        var days = this.params.days ? this.params.days : 3,
-            terms = {
-              view: 'daily',
-              after: moment().subtract('days', days).startOf('day').toDate()
-            };
-        return [
-          coreSubscriptions.subscribe('postsList', terms),
-          coreSubscriptions.subscribe('postsListUsers', terms)
-        ];
+      onBeforeAction: function() {
+        this.days = this.params.days ? this.params.days : 3;
+        
+        var terms = {
+          view: 'daily',
+          after: moment().subtract('days', this.days).startOf('day').toDate()
+        };
+
+        this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {
+          Session.set('postsLoaded', true);
+        });
+
+        this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
+
+        return [this.postsSubscription, this.postsUsersSubscription];
+
       },
       data: function() {
-        var days = this.params.days ? this.params.days : 3;
         return {
-          days: days
+          days: this.days
         };
       }
     });
 
-    this.route('posts_daily', {
+    this.route('postsDaily', {
       path: '/daily/:days?',
       controller: PostsDailyController
     });

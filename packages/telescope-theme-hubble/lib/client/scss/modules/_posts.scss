@@ -285,7 +285,7 @@
 }
 .post-heading{
 	margin-bottom:3px;
-	line-height: 1.3;
+	line-height: 1.2;
 	@include small{
 		line-height: 1.5;
 	}
@@ -473,7 +473,7 @@
       }
       .post-heading{
         .post-title{
-          display:block;
+          display:block;	
           margin-bottom:4px;
         }
         .post-domain{

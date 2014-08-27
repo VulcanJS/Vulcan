@@ -1,3 +1,8 @@
+viewNav.push({
+  route: 'postsDaily',
+  label: 'Day By Day'
+});
+
 viewParameters.daily = function (terms) {
   return {
     find: {
@@ -6,7 +11,8 @@ viewParameters.daily = function (terms) {
       }
     },
     options: {
-      sort: {createdAt: -1, sticky: -1, baseScore: -1}
+      sort: {createdAt: -1, sticky: -1, baseScore: -1},
+      limit: 0
     }
   };
 }

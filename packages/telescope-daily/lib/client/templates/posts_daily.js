@@ -1,9 +1,9 @@
 var getPosts = function (date) {
   var terms = {
-        view: 'digest',
-        after: moment(date).startOf('day').toDate(),
-        before: moment(date).endOf('day').toDate()
-      };
+    view: 'digest',
+    after: moment(date).startOf('day').toDate(),
+    before: moment(date).endOf('day').toDate()
+  };
   var parameters = getParameters(terms);
   var posts = Posts.find(parameters.find, parameters.options).map(function (post, index, cursor) {
     post.rank = index;
@@ -13,6 +13,9 @@ var getPosts = function (date) {
 }
 
 Template[getTemplate('postsDaily')].helpers({
+  postsLoaded: function () {
+    return !!Session.get('postsLoaded');
+  },
   post_item: function () {
     return getTemplate('post_item');
   },
@@ -29,13 +32,13 @@ Template[getTemplate('postsDaily')].helpers({
   posts: function () {
     return getPosts(this.date);
   },
-  hasMorePosts: function(){
-    // as long as we ask for N posts and all N posts showed up, then keep showing the "load more" button
-    return parseInt(Session.get('postsLimit')) == this.postsCount
-  },
   loadMoreUrl: function () {
-    var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));
-    var categorySegment = Session.get('categorySlug') ? Session.get('categorySlug') + '/' : '';
-    return '/' + Session.get('view') + '/' + categorySegment + count;
+    return '/daily/' + (parseInt(this.days) + 3);
   }
 });
+
+// Template[getTemplate('postsDaily')].events({
+//   'click .more-button': function (e) {
+//     e.preventDefault();
+//   } 
+// });

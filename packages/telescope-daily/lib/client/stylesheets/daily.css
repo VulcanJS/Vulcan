@@ -1,11 +1,7 @@
 .posts-day-heading{
   font-size: 16px;
-  font-weight: bold;
-  background: #efefef;
-  padding: 15px;
-  /*border-bottom: 1px solid #e7eff2;*/
-  margin-bottom: 0;
-  border-radius: 3px 3px 0 0;
+  color: rgba(0,0,0,0.5);
+  margin: 20px 0 10px 0;
 }
 .empty-day-notice{
   padding: 15px;
