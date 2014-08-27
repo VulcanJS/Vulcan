@@ -646,7 +646,8 @@ em {
 
 /* line 286, ../scss/modules/_posts.scss */
 .post-heading {
-  margin-bottom: 3px; }
+  margin-bottom: 3px;
+  line-height: 1.3; }
   @media screen and (max-width: 30em) {
     /* line 286, ../scss/modules/_posts.scss */
     .post-heading {
@@ -818,7 +819,11 @@ em {
   display: table-cell;
   vertical-align: middle; }
 
+<<<<<<< HEAD
 @media screen and (max-width: 500px) {
+=======
+@media screen and (max-width: 30em) {
+>>>>>>> master
   /* line 455, ../scss/modules/_posts.scss */
   .posts {
     padding: 0; }
@@ -838,15 +843,18 @@ em {
       padding: 13px 0; }
     /* line 475, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-title {
-      line-height: 1.2;
       display: block;
       margin-bottom: 4px; }
+<<<<<<< HEAD
     /* line 480, ../scss/modules/_posts.scss */
+=======
+    /* line 478, ../scss/modules/_posts.scss */
+>>>>>>> master
     .post .post-content .post-heading .post-domain {
-      line-height: 1;
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
+<<<<<<< HEAD
     /* line 487, ../scss/modules/_posts.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
@@ -854,6 +862,15 @@ em {
       .post .post-content .post-meta .unit {
         font-size: 0; }
         /* line 494, ../scss/modules/_posts.scss */
+=======
+    /* line 484, ../scss/modules/_posts.scss */
+    .post .post-content .post-meta {
+      font-size: 11px; }
+      /* line 486, ../scss/modules/_posts.scss */
+      .post .post-content .post-meta .unit {
+        font-size: 0; }
+        /* line 488, ../scss/modules/_posts.scss */
+>>>>>>> master
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; } }

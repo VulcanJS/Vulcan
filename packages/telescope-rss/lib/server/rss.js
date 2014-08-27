@@ -8,9 +8,10 @@ serveRSS = function() {
   });
   
   Posts.find({status: STATUS_APPROVED}, {sort: {postedAt: -1}, limit: 20}).forEach(function(post) {
+    var description = !!post.body ? post.body+'</br></br>' : '';
     feed.item({
      title: post.title,
-     description: post.body+'</br></br> <a href="'+getPostPageUrl(post._id)+'">Comments</a>',
+     description: description+'<a href="'+getPostUrl(post._id)+'">Discuss</a>',
      author: post.author,
      date: post.postedAt,
      url: getPostLink(post),

@@ -1,6 +1,7 @@
 .markdown{
-  ul, ol, p, pre{
+  ul, ol, p, pre, blockquote{
     margin-bottom: 1em;
+    line-height: 1.7;
   }
   strong{
     font-weight:bold;
@@ -65,5 +66,9 @@
       border: none;
       background: none;
     } 
+  }
+  blockquote{
+    border-left: 3px solid #eee;
+    padding-left: 20px;
   }
 }
