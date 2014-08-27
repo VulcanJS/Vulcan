@@ -13,9 +13,11 @@ Meteor.startup(function () {
       template: getTemplate('posts_daily'),
       onBeforeAction: function() {
         this.days = this.params.days ? this.params.days : 3;
-        
+        // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
+
         var terms = {
           view: 'daily',
+          days: this.days,
           after: moment().subtract('days', this.days).startOf('day').toDate()
         };
 
@@ -29,6 +31,7 @@ Meteor.startup(function () {
 
       },
       data: function() {
+        Session.set('postsDays', this.days);
         return {
           days: this.days
         };

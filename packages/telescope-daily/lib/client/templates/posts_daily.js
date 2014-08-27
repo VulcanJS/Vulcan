@@ -20,9 +20,10 @@ Template[getTemplate('postsDaily')].helpers({
     return getTemplate('post_item');
   },
   days: function () {
-    console.log(this)
     var daysArray = [];
-    for (i = 0; i < this.days; i++) {
+    // var days = this.days;
+    var days = Session.get('postsDays');
+    for (i = 0; i < days; i++) {
       daysArray.push({
         date: moment().subtract('days', i).startOf('day').toDate()
       });
@@ -33,12 +34,15 @@ Template[getTemplate('postsDaily')].helpers({
     return getPosts(this.date);
   },
   loadMoreUrl: function () {
-    return '/daily/' + (parseInt(this.days) + 3);
+    var count = parseInt(Session.get('postsDays')) + 3;
+    return '/daily/' + count;
   }
 });
 
 // Template[getTemplate('postsDaily')].events({
 //   'click .more-button': function (e) {
 //     e.preventDefault();
+//     var count = parseInt(Session.get('postsDays')) + 3;
+//     Session.set('postsDays', count);
 //   } 
 // });
