@@ -645,47 +645,48 @@ em {
 
 /* line 285, ../scss/modules/_posts.scss */
 .post-heading {
-  margin-bottom: 3px; }
+  margin-bottom: 3px;
+  line-height: 1.3; }
   @media screen and (max-width: 30em) {
     /* line 285, ../scss/modules/_posts.scss */
     .post-heading {
       line-height: 1.5; } }
-  /* line 290, ../scss/modules/_posts.scss */
+  /* line 291, ../scss/modules/_posts.scss */
   .post-heading .post-title {
     color: #4a4444;
     font-weight: normal; }
     @media screen and (max-width: 30em) {
-      /* line 290, ../scss/modules/_posts.scss */
+      /* line 291, ../scss/modules/_posts.scss */
       .post-heading .post-title {
         font-size: 15px; } }
     @media screen and (min-width: 30em) {
-      /* line 290, ../scss/modules/_posts.scss */
+      /* line 291, ../scss/modules/_posts.scss */
       .post-heading .post-title {
         font-size: 18px; } }
-    /* line 299, ../scss/modules/_posts.scss */
+    /* line 300, ../scss/modules/_posts.scss */
     .post-heading .post-title:visited {
       color: #b5b0b0; }
-    /* line 302, ../scss/modules/_posts.scss */
+    /* line 303, ../scss/modules/_posts.scss */
     .post-heading .post-title:hover {
       color: #f36c3d; }
-  /* line 306, ../scss/modules/_posts.scss */
+  /* line 307, ../scss/modules/_posts.scss */
   .post-heading .post-domain {
     color: #b3c1c6;
     font-weight: normal; }
     @media screen and (max-width: 30em) {
-      /* line 306, ../scss/modules/_posts.scss */
+      /* line 307, ../scss/modules/_posts.scss */
       .post-heading .post-domain {
         font-size: 13px; } }
     @media screen and (min-width: 30em) {
-      /* line 306, ../scss/modules/_posts.scss */
+      /* line 307, ../scss/modules/_posts.scss */
       .post-heading .post-domain {
         font-size: 14px; } }
 
-/* line 317, ../scss/modules/_posts.scss */
+/* line 318, ../scss/modules/_posts.scss */
 .post-categories {
   text-align: right; }
 
-/* line 321, ../scss/modules/_posts.scss */
+/* line 322, ../scss/modules/_posts.scss */
 .post-category {
   display: inline-block;
   font-size: 11px;
@@ -697,21 +698,21 @@ em {
   text-transform: uppercase;
   font-weight: normal;
   vertical-align: middle; }
-  /* line 330, ../scss/modules/_posts.scss */
+  /* line 331, ../scss/modules/_posts.scss */
   .post-category:hover {
     background: #f36c3d;
     color: white; }
 
-/* line 335, ../scss/modules/_posts.scss */
+/* line 336, ../scss/modules/_posts.scss */
 .post-meta {
   font-size: 12px;
   color: #b3c1c6;
   line-height: 1.5; }
 
-/* line 341, ../scss/modules/_posts.scss */
+/* line 342, ../scss/modules/_posts.scss */
 .post-share, .post-discuss {
   position: relative; }
-  /* line 343, ../scss/modules/_posts.scss */
+  /* line 344, ../scss/modules/_posts.scss */
   .post-share > a, .post-discuss > a {
     position: relative;
     display: inline-block;
@@ -724,31 +725,31 @@ em {
     color: #b3c1c6;
     font-size: 36px;
     line-height: 50px; }
-    /* line 355, ../scss/modules/_posts.scss */
+    /* line 356, ../scss/modules/_posts.scss */
     .post-share > a.edit-link, .post-discuss > a.edit-link {
       color: #f36c3d; }
-    /* line 358, ../scss/modules/_posts.scss */
+    /* line 359, ../scss/modules/_posts.scss */
     .post-share > a.share-link, .post-discuss > a.share-link {
       color: #7ac0e4;
       color: #f8e121; }
-    /* line 362, ../scss/modules/_posts.scss */
+    /* line 363, ../scss/modules/_posts.scss */
     .post-share > a.discuss-link, .post-discuss > a.discuss-link {
       color: #a3d06d; }
-    /* line 365, ../scss/modules/_posts.scss */
+    /* line 366, ../scss/modules/_posts.scss */
     .post-share > a.more-link, .post-discuss > a.more-link {
       color: #7ac0e4; }
-    /* line 369, ../scss/modules/_posts.scss */
+    /* line 370, ../scss/modules/_posts.scss */
     .post-share > a:hover, .post-share > a:hover .action, .post-discuss > a:hover, .post-discuss > a:hover .action {
       color: #f36c3d; }
-    /* line 373, ../scss/modules/_posts.scss */
+    /* line 374, ../scss/modules/_posts.scss */
     .post-share > a.voted, .post-discuss > a.voted {
       background: #4e555d;
       color: white;
       cursor: default; }
-      /* line 377, ../scss/modules/_posts.scss */
+      /* line 378, ../scss/modules/_posts.scss */
       .post-share > a.voted .action, .post-discuss > a.voted .action {
         color: #fff; }
-    /* line 381, ../scss/modules/_posts.scss */
+    /* line 382, ../scss/modules/_posts.scss */
     .post-share > a .count, .post-discuss > a .count {
       position: absolute;
       top: 14px;
@@ -757,12 +758,12 @@ em {
       height: 20px;
       line-height: 20px;
       font-size: 11px; }
-    /* line 390, ../scss/modules/_posts.scss */
+    /* line 391, ../scss/modules/_posts.scss */
     .post-share > a .points, .post-discuss > a .points {
       display: block;
       font-size: 30px;
       line-height: 50px; }
-    /* line 395, ../scss/modules/_posts.scss */
+    /* line 396, ../scss/modules/_posts.scss */
     .post-share > a .action, .post-discuss > a .action {
       display: block;
       height: 20px;
@@ -775,22 +776,22 @@ em {
       color: #b3c1c6;
       pointer-events: none; }
 
-/* line 410, ../scss/modules/_posts.scss */
+/* line 411, ../scss/modules/_posts.scss */
 .post-body {
   border-radius: 3px;
   margin-bottom: 10px;
   background: white;
   padding: 20px;
   font-size: 16px; }
-  /* line 417, ../scss/modules/_posts.scss */
+  /* line 418, ../scss/modules/_posts.scss */
   .list .post-body {
     display: none; }
 
-/* line 422, ../scss/modules/_posts.scss */
+/* line 423, ../scss/modules/_posts.scss */
 .post.sticky {
   background: #fffce0; }
 
-/* line 426, ../scss/modules/_posts.scss */
+/* line 427, ../scss/modules/_posts.scss */
 .more-button {
   display: block;
   width: 100%;
@@ -803,22 +804,22 @@ em {
   border-radius: 0px 0px 3px 3px;
   text-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
   padding: 0px; }
-  /* line 438, ../scss/modules/_posts.scss */
+  /* line 439, ../scss/modules/_posts.scss */
   .more-button:hover {
     background: rgba(0, 0, 0, 0.15); }
 
-/* line 443, ../scss/modules/_posts.scss */
+/* line 444, ../scss/modules/_posts.scss */
 .inner-table {
   display: table;
   height: 100%; }
 
-/* line 447, ../scss/modules/_posts.scss */
+/* line 448, ../scss/modules/_posts.scss */
 .inner-table-cell {
   display: table-cell;
   vertical-align: middle; }
 
-@media screen and (max-width: 500px) {
-  /* line 454, ../scss/modules/_posts.scss */
+@media screen and (max-width: 30em) {
+  /* line 455, ../scss/modules/_posts.scss */
   .posts {
     padding: 0; }
     /* line 457, ../scss/modules/_posts.scss */
@@ -837,22 +838,20 @@ em {
       padding: 13px 0; }
     /* line 474, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-title {
-      line-height: 1.2;
       display: block;
       margin-bottom: 4px; }
-    /* line 479, ../scss/modules/_posts.scss */
+    /* line 478, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-domain {
-      line-height: 1;
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
-    /* line 486, ../scss/modules/_posts.scss */
+    /* line 484, ../scss/modules/_posts.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
-      /* line 491, ../scss/modules/_posts.scss */
+      /* line 486, ../scss/modules/_posts.scss */
       .post .post-content .post-meta .unit {
         font-size: 0; }
-        /* line 493, ../scss/modules/_posts.scss */
+        /* line 488, ../scss/modules/_posts.scss */
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; } }

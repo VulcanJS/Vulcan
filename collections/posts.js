@@ -203,7 +203,7 @@ Meteor.methods({
       author: getDisplayNameById(userId),
       upvotes: 0,
       downvotes: 0,
-      comments: 0,
+      commentsCount: 0,
       baseScore: 0,
       score: 0,
       inactive: false,
