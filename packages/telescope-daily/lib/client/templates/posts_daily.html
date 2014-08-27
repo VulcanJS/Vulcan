@@ -1,11 +1,15 @@
 <template name="postsDaily">
   <div class="grid">
-    {{#each day}}
-      <div class="posts-day posts list">
-        <h2 class="posts-day-heading">xyz</h2>
-        {{#each posts}}
-          {{> UI.dynamic template=post_item}}
-        {{/each}}
+    {{#each days}}
+      <div class="posts-wrapper posts-day posts list grid-module">
+        <h2 class="posts-day-heading">{{formatDate date "dddd, MMMM Do YYYY"}}</h2>
+        {{#if posts}}
+          {{#each posts}}
+            {{> UI.dynamic template=post_item}}
+          {{/each}}
+        {{else}}
+          <p class="empty-day-notice">Sorry, not posts for that day.</p>
+        {{/if}}
       </div>
     {{/each}}
   </div>

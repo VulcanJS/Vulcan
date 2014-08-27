@@ -1,5 +1,12 @@
 Meteor.startup(function () {
 
+  var coreSubscriptions = new SubsManager({
+    // cache recent 50 subscriptions
+    cacheLimit: 50,
+    // expire any subscription after 30 minutes
+    expireIn: 30
+  });
+  
   Router.map(function() {
 
     PostsDailyController = FastRender.RouteController.extend({
@@ -17,15 +24,9 @@ Meteor.startup(function () {
         ];
       },
       data: function() {
-        var days = this.params.days ? this.params.days : 3,
-            terms = {
-              view: 'daily',
-              after: moment().subtract('days', days).startOf('day').toDate()
-            },
-            parameters = getParameters(terms);
-        Session.set('currentDate', currentDate);
+        var days = this.params.days ? this.params.days : 3;
         return {
-          posts: Posts.find(parameters.find, parameters.options)
+          days: days
         };
       }
     });

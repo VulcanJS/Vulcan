@@ -225,7 +225,8 @@
 }
 .posts-wrapper{
 	@extend .has-shadow;
-	border-radius: 3px;	
+	border-radius: 3px;
+	padding: 0;
 }
 .post{
 	position:relative;
