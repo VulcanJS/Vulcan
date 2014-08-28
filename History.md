@@ -1,7 +1,10 @@
-## v0.9.2.7 “ProfileScope”
+## v0.9.2.7 “DailyScope”
 
 * Show user comments on user profile page. 
 * Move votes to their own `user.votes` object.
+* Add daily view.
+* Default root view is now customizable. 
+* Updated to 0.9.0.
 
 ## v0.9.2.6 “InviteScope”
 

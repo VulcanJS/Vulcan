@@ -12,6 +12,9 @@ var getPosts = function (date) {
   return posts;
 }
 
+Template[getTemplate('postsDaily')].rendered = function  () {
+  console.log('rendered')
+}
 Template[getTemplate('postsDaily')].helpers({
   postsLoaded: function () {
     return !!Session.get('postsLoaded');

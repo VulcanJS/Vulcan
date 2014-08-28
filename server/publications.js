@@ -130,12 +130,15 @@ Meteor.publish('allUsers', function(filterBy, sortBy, limit) {
 // TODO: find a better way
 
 Meteor.publish('allUsersAdmin', function() {
-  var selector = getSetting('requirePostInvite') ? {isInvited: true} : {};
+  var selector = getSetting('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
   if (isAdminById(this.userId)) {
-    return Meteor.users.find(selector);
-  } else {
-    return [];
+    return Meteor.users.find(selector, {fields: {
+      _id: true,
+      profile: true,
+      slug: true
+    }});
   }
+  return [];
 });
 
 // -------------------------------------------- Posts -------------------------------------------- //
