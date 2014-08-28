@@ -1,3 +1,5 @@
+var RSS = Npm.require('rss');
+
 serveRSS = function() {
   var feed = new RSS({
     title: getSetting('title'),

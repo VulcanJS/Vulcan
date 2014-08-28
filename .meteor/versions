@@ -70,7 +70,6 @@ reactive-dict@1.0.0
 reload@1.0.0
 retry@1.0.0
 routepolicy@1.0.0
-rss@0.0.0
 sacha:spin@2.0.4
 service-configuration@1.0.0
 session@1.0.0
@@ -84,7 +83,7 @@ telescope-api@0.0.0
 telescope-base@0.0.0
 telescope-daily@0.0.0
 telescope-i18n@0.0.0
-telescope-lib@0.0.0
+telescope-lib@0.2.9
 telescope-module-embedly@0.2.9
 telescope-module-share@0.0.0
 telescope-newsletter@0.0.0

@@ -20,8 +20,8 @@ accounts-facebook
 iron:router@0.9.1
 
 meteorhacks:fast-render@1.0.0
-meteorhacks:npm@1.1.2
 meteorhacks:subs-manager@1.1.0
+meteorhacks:npm
 
 mrt:jquery-hotkeys@0.0.1
 mrt:cookies@0.3.0
@@ -56,5 +56,5 @@ telescope-newsletter
 telescope-module-embedly
 telescope-i18n
 
-npm-container
 
+npm-container

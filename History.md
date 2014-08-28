@@ -4,7 +4,8 @@
 * Move votes to their own `user.votes` object.
 * Add daily view.
 * Default root view is now customizable. 
-* Updated to 0.9.0.
+* Updated app to 0.9.0.
+* Updated all packages to be 0.9.0-compatible.
 
 ## v0.9.2.6 “InviteScope”
 

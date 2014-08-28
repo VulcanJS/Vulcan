@@ -1,6 +1,6 @@
 buildEmailTemplate = function (htmlContent) {
 
-  var juice = Meteor.require('juice');
+  var juice = Meteor.npmRequire('juice');
 
   var emailProperties = {
     headerColor: getSetting('headerColor', '#444444'),
@@ -44,7 +44,7 @@ sendEmail = function(to, subject, html, text){
 
   if (typeof text == 'undefined'){
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough. 
-    var htmlToText = Meteor.require('html-to-text');
+    var htmlToText = Meteor.npmRequire('html-to-text');
     var text = htmlToText.fromString(html, {
         wordwrap: 130
     });

@@ -1,6 +1,6 @@
 Package.describe({summary: "Telescope API package"});
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
 
   api.use(['telescope-base', 'telescope-lib'], ['server']);
 
