@@ -691,6 +691,11 @@ body {
       overflow-x: hidden;
       overflow-y: hidden; } }
 
+/* line 1, ../scss/specific/_loading.scss */
+.loading-module {
+  height: 70px;
+  position: relative; }
+
 @media screen and (min-width: 40em) {
   /* line 3, ../scss/specific/_mobile_nav.scss */
   .mobile-only {

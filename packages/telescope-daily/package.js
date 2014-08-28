@@ -22,5 +22,5 @@ Package.on_use(function (api) {
 
   api.add_files(['lib/server/publications.js'], ['server']);
  
-  api.export([]);
+  api.export(['PostsDailyController']);
 });

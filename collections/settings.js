@@ -52,6 +52,18 @@ settingsSchemaObject = {
     type: Number,
     optional: true
   }, 
+  defaultView: {
+    type: String,
+    optional: true,
+    autoform: {
+      options: _.map(viewNav, function (view) {
+        return {
+          value: camelCaseify(view.label),
+          label: view.label
+        }
+      })
+    },
+  },
   postInterval: {
     type: Number,
     optional: true

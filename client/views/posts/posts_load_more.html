@@ -1,0 +1,11 @@
+<template name="postsLoadMore">
+  {{#if hasMorePosts}}
+    <a class="more-button grid-module" href="{{loadMoreUrl}}"><span>{{i18n "Load more"}}</span></a>
+  {{else}}
+    {{#unless ready}}
+      <div class="grid loading-module">
+        {{> spinner}}
+      </div>
+    {{/unless}}
+  {{/if}}
+</template>

@@ -5,8 +5,6 @@
   			{{> UI.dynamic template=post_item}}
   		{{/each}}
     </div>
-    {{#if hasMorePosts}}
-      <a class="more-button grid-module" href="{{loadMoreUrl}}"><span>{{i18n "Load more"}}</span></a>
-    {{/if}}
   </div>
+  {{> UI.dynamic template=postsLoadMore}}
 </template>

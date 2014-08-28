@@ -595,7 +595,7 @@ em {
     border-radius: 3px 3px 0px 0px; }
   /* line 239, ../scss/modules/_posts.scss */
   .post:last-child {
-    border: none; }
+    border-radius: 0px 0px 3px 3px; }
   /* line 242, ../scss/modules/_posts.scss */
   .post.animate {
     -moz-transition: ease-out top 400ms 0ms;

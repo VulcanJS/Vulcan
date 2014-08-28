@@ -18,6 +18,7 @@ Package.on_use(function (api) {
     'deepExtend', 
     'camelToDash',
     'dashToCamel',
+    'camelCaseify',
     'getSetting',
     'getThemeSetting',
     'getSiteUrl',
