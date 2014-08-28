@@ -296,14 +296,10 @@
 		@include medium-large{
 			font-size:18px;
 		}
-		color:$text;
 		font-weight:normal;
 		&:visited{
 			color:$grey;
 		}
-		&:hover{
-			color:$red;
-		}	
 	}
 	.post-domain{
 		color:$light-text;
@@ -338,6 +334,12 @@
 	font-size:12px;
 	color:$light-text;
 	line-height:1.5;
+	a{
+		color:$medium-text;
+		&:visited, &:active{
+			color:$medium-text;
+		}
+	}
 }
 
 .post-share, .post-discuss{
