@@ -9,7 +9,7 @@ accounts-ui-unstyled@1.0.0
 accounts-ui@1.0.0
 application-configuration@1.0.0
 autoform@0.0.0
-autoupdate@1.0.4
+autoupdate@1.0.5
 backbone@1.0.0
 binary-heap@1.0.0
 blaze-tools@1.0.0
@@ -35,7 +35,7 @@ handlebars-server@0.0.0
 handlebars@1.0.0
 html-tools@1.0.0
 htmljs@1.0.0
-http@1.0.2
+http@1.0.3
 id-map@1.0.0
 iron-core@0.2.0
 iron-dynamic-template@0.2.1
@@ -44,7 +44,7 @@ iron-router@0.8.2
 jquery-hotkeys@0.0.0
 jquery@1.0.0
 json@1.0.0
-less@1.0.5
+less@1.0.6
 livedata@1.0.7
 localstorage@1.0.0
 logging@1.0.2
@@ -76,7 +76,7 @@ simple-form@0.0.0
 simple-schema@0.0.0
 spacebars-compiler@1.0.1
 spacebars@1.0.0
-spiderable@1.0.1
+spiderable@1.0.2
 spin@0.0.0
 srp@1.0.0
 standard-app-packages@1.0.0
