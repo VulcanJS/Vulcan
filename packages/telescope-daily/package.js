@@ -2,12 +2,12 @@ Package.describe({summary: "Telescope daily view"});
 
 Package.on_use(function (api) {
 
-  api.use(['telescope-lib', 'telescope-base', 'fast-render', 'subs-manager'], ['client', 'server']);
+  api.use(['telescope-lib', 'telescope-base', 'meteorhacks:fast-render', 'meteorhacks:subs-manager'], ['client', 'server']);
 
   api.use([
     'jquery',
     'underscore',
-    'iron-router',
+    'iron:router',
     'templating'
   ], 'client');
 

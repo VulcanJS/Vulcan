@@ -3,6 +3,9 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+# Meteor Packages
+
+standard-app-packages
 backbone
 accounts-base
 accounts-ui
@@ -10,37 +13,48 @@ accounts-password
 accounts-twitter
 spiderable
 email
-crypto-md5
-momentjs
-standard-app-packages
-rss
-iron-router
-telescope-i18n
-fast-render
-spin
-autoform
-collection2
 accounts-facebook
+
+# Atmosphere Packages
+
+iron:router@0.9.1
+
+meteorhacks:fast-render@1.0.0
+meteorhacks:npm@1.1.2
+meteorhacks:subs-manager@1.1.0
+
+mrt:jquery-hotkeys@0.0.1
+mrt:cookies@0.3.0
+mrt:moment
+mrt:mailchimp
+
+cmather:handlebars-server@0.2.0
+tmeasday:crypto-md5@3.1.2
+sacha:spin@2.0.4
+chuangbo:marked@0.3.3
+percolatestudio:synced-cron@0.1.1
+joshowens:accounts-entry@0.9.0
+aldeed:autoform@0.17.1
+
+# Atmosphere Packages (Old)
+
+bootstrap3-datepicker
+
+# Telescope Packages
+
 telescope-tags
 telescope-base
 telescope-search
 telescope-lib
 telescope-rss
 telescope-api
-jquery-hotkeys
-marked
-bootstrap3-datepicker
 telescope-module-share
-subs-manager
-telescope-module-embedly
-handlebars-server
-npm
-mailchimp
-synced-cron
-cookies
-telescope-newsletter
 telescope-theme-base
-accounts-entry
 telescope-theme-hubble
 telescope-daily
+telescope-newsletter
+telescope-module-embedly
+telescope-i18n
+
+npm-container
 

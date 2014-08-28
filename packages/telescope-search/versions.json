@@ -1,6 +1,10 @@
 {
   "dependencies": [
     [
+      "aldeed:simple-schema",
+      "0.7.0"
+    ],
+    [
       "application-configuration",
       "1.0.0"
     ],
@@ -53,20 +57,20 @@
       "1.0.0"
     ],
     [
-      "iron-core",
-      "0.2.0"
+      "iron:core",
+      "0.3.2"
     ],
     [
-      "iron-dynamic-template",
-      "0.2.1"
+      "iron:dynamic-template",
+      "0.3.0"
     ],
     [
-      "iron-layout",
-      "0.2.0"
+      "iron:layout",
+      "0.3.0"
     ],
     [
-      "iron-router",
-      "0.8.2"
+      "iron:router",
+      "0.9.1"
     ],
     [
       "jquery",
@@ -125,10 +129,6 @@
       "1.0.0"
     ],
     [
-      "simple-schema",
-      "0.0.0"
-    ],
-    [
       "spacebars",
       "1.0.0"
     ],
@@ -166,6 +166,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.25",
+  "toolVersion": "meteor-tool@1.0.26",
   "format": "1.0"
 }

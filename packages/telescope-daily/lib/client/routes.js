@@ -5,7 +5,9 @@ var coreSubscriptions = new SubsManager({
   expireIn: 30
 });
 
-PostsDailyController = FastRender.RouteController.extend({
+// note: FastRender not defined here?
+
+PostsDailyController = RouteController.extend({
   template: getTemplate('posts_daily'),
   onBeforeAction: function() {
     this.days = this.params.days ? this.params.days : 3;
@@ -14,7 +16,7 @@ PostsDailyController = FastRender.RouteController.extend({
     var terms = {
       view: 'daily',
       days: this.days,
-      after: moment().subtract('days', this.days).startOf('day').toDate()
+      after: moment().subtract(this.days, 'days').startOf('day').toDate()
     };
 
     this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {

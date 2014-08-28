@@ -25,7 +25,7 @@ Template[getTemplate('postsDaily')].helpers({
     var days = Session.get('postsDays');
     for (i = 0; i < days; i++) {
       daysArray.push({
-        date: moment().subtract('days', i).startOf('day').toDate()
+        date: moment().subtract(i, 'days').startOf('day').toDate()
       });
     }
     return daysArray;

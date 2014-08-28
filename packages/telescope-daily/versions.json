@@ -37,10 +37,6 @@
       "1.0.0"
     ],
     [
-      "fast-render",
-      "0.0.0"
-    ],
-    [
       "follower-livedata",
       "1.0.0"
     ],
@@ -61,20 +57,20 @@
       "1.0.0"
     ],
     [
-      "iron-core",
-      "0.2.0"
+      "iron:core",
+      "0.3.2"
     ],
     [
-      "iron-dynamic-template",
-      "0.2.1"
+      "iron:dynamic-template",
+      "0.3.0"
     ],
     [
-      "iron-layout",
-      "0.2.0"
+      "iron:layout",
+      "0.3.0"
     ],
     [
-      "iron-router",
-      "0.8.2"
+      "iron:router",
+      "0.9.1"
     ],
     [
       "jquery",
@@ -99,6 +95,14 @@
     [
       "meteor",
       "1.0.2"
+    ],
+    [
+      "meteorhacks:fast-render",
+      "1.0.0"
+    ],
+    [
+      "meteorhacks:subs-manager",
+      "1.1.0"
     ],
     [
       "minifiers",
@@ -149,10 +153,6 @@
       "1.0.1"
     ],
     [
-      "subs-manager",
-      "0.0.0"
-    ],
-    [
       "telescope-base",
       "0.0.0"
     ],
@@ -182,6 +182,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.25",
+  "toolVersion": "meteor-tool@1.0.26",
   "format": "1.0"
 }
