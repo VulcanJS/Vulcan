@@ -12,9 +12,6 @@ var getPosts = function (date) {
   return posts;
 }
 
-Template[getTemplate('postsDaily')].rendered = function  () {
-  console.log('rendered')
-}
 Template[getTemplate('postsDaily')].helpers({
   postsLoaded: function () {
     return !!Session.get('postsLoaded');
@@ -41,11 +38,3 @@ Template[getTemplate('postsDaily')].helpers({
     return '/daily/' + count;
   }
 });
-
-// Template[getTemplate('postsDaily')].events({
-//   'click .more-button': function (e) {
-//     e.preventDefault();
-//     var count = parseInt(Session.get('postsDays')) + 3;
-//     Session.set('postsDays', count);
-//   } 
-// });
