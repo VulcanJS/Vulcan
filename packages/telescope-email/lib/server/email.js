@@ -76,7 +76,7 @@ sendEmail = function(to, subject, html, text){
 };
 
 buildAndSendEmail = function (to, subject, template, properties) {
-  var html = getEmailTemplate(template)(properties);
+  var html = buildEmailTemplate(getEmailTemplate(template)(properties));
   return sendEmail (to, subject, html);
 }
 
