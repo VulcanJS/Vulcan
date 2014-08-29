@@ -80,7 +80,7 @@ Accounts.onCreateUser(function(options, user){
         profileUrl: getProfileUrl(user),
         username: getUserName(user)
       }
-      var html = Handlebars.templates[getTemplate('emailNewUser')](emailProperties);
+      var html = getEmailTemplate('emailNewUser')(emailProperties);
       sendEmail(getEmail(admin), 'New user account: '+getUserName(user), buildEmailTemplate(html));
     }
   });
@@ -102,9 +102,6 @@ Meteor.methods({
   },
   numberOfCommentsToday: function(){
     console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
-  },
-  testEmail: function(){
-    Email.send({from: 'test@test.com', to: getEmail(Meteor.user()), subject: 'Telescope email test', text: 'lorem ipsum dolor sit amet.'});
   },
   testBuffer: function(){
     // TODO

@@ -23,6 +23,10 @@ meteorhacks:fast-render@1.0.0
 meteorhacks:subs-manager@1.1.0
 meteorhacks:npm
 
+aldeed:autoform
+aldeed:collection2
+aldeed:simple-schema
+
 mrt:jquery-hotkeys@0.0.1
 mrt:cookies@0.3.0
 mrt:moment
@@ -34,7 +38,6 @@ sacha:spin@2.0.4
 chuangbo:marked@0.3.3
 percolatestudio:synced-cron@0.1.1
 joshowens:accounts-entry@0.9.0
-aldeed:autoform@0.17.1
 
 # Atmosphere Packages (Old)
 
@@ -58,3 +61,5 @@ telescope-i18n
 
 
 npm-container
+telescope-email
+
