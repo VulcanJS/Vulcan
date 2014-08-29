@@ -1,5 +1,4 @@
 
-var juice = Npm.require('juice');
 var htmlToText = Npm.require('html-to-text');
 
 getEmailTemplate = function (template) {

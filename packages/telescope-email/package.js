@@ -5,7 +5,6 @@ Package.describe({
 });
 
 Npm.depends({
-  juice: "0.4.0", 
   "html-to-text": "0.1.0"
 });
 
