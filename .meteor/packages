@@ -35,6 +35,7 @@ mrt:mailchimp
 cmather:handlebars-server@0.2.0
 tmeasday:crypto-md5@3.1.2
 sacha:spin@2.0.4
+sacha:juice
 chuangbo:marked@0.3.3
 percolatestudio:synced-cron@0.1.1
 joshowens:accounts-entry@0.9.0
@@ -58,9 +59,8 @@ telescope-daily
 telescope-newsletter
 telescope-module-embedly
 telescope-i18n
+telescope-email
 
 
 npm-container
-telescope-email
-sacha:juice
 
