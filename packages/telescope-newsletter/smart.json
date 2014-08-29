@@ -1,0 +1,8 @@
+{
+  "name": "telescope-newsletter",
+  "description": "Telescope Newsletter package.",
+  "homepage": "https://github.com/TelescopeJS/telescope-newsletter",
+  "author": "Sacha Greif <info@sachagreif.com> (http://sachagreif.com)",
+  "version": "0.1.9",
+  "git": "https://github.com/TelescopeJS/telescope-newsletter.git"
+}
