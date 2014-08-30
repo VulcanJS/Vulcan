@@ -119,21 +119,24 @@ var migrationsList = {
       i++;
       console.log('> Updating user '+user._id+' ('+user.username+')');
 
+      var properties = {}
       // update user slug
       if(getUserName(user))
-        Meteor.users.update(user._id, {$set:{slug: slugify(getUserName(user))}});
+        properties.slug = slugify(getUserName(user));
 
       // update user isAdmin flag
       if(typeof user.isAdmin === 'undefined')
-        Meteor.users.update(user._id, {$set: {isAdmin: false}});
+        properties.isAdmin = false;
 
       // update postCount
       var postsByUser = Posts.find({userId: user._id});
-      Meteor.users.update(user._id, {$set: {postCount: postsByUser.count()}});
+      properties.postCount = postsByUser.count();
       
       // update commentCount
       var commentsByUser = Comments.find({userId: user._id});
-      Meteor.users.update(user._id, {$set: {commentCount: commentsByUser.count()}});
+      properties.commentCount = commentsByUser.count();
+
+      Meteor.users.update(user._id, {$set:properties});
 
     });
     return i;
