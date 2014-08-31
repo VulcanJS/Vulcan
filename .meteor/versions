@@ -45,6 +45,7 @@ less@1.0.6
 livedata@1.0.7
 localstorage@1.0.0
 logging@1.0.2
+matb33:collection-hooks@0.7.3
 meteor@1.0.2
 meteorhacks:fast-render@1.0.0
 meteorhacks:npm@1.1.2

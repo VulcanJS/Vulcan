@@ -24,6 +24,10 @@ postSchemaObject = {
     type: String,
     optional: true
   },
+  htmlBody: {
+    type: String,
+    optional: true
+  },
   commentsCount: {
     type: Number,
     optional: true
@@ -129,8 +133,8 @@ getPostProperties = function(post) {
   if(post.url)
     p.url = post.url;
 
-  if(post.body)
-    p.body = marked(post.body);
+  if(post.htmlBody)
+    p.htmlBody = post.htmlBody;
 
   return p;
 }
@@ -148,10 +152,22 @@ getPostLink = function (post) {
   return !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post);
 }
 
+Posts.before.insert(function (userId, doc) {
+  doc.htmlBody = sanitize(marked(doc.body));
+});
+
+Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
+  // if body is being modified, update htmlBody too
+  if (modifier.$set && modifier.$set.body) {
+    modifier.$set = modifier.$set || {};
+    modifier.$set.htmlBody = sanitize(marked(modifier.$set.body));
+  }
+});
+
 Meteor.methods({
   post: function(post){
     var title = cleanUp(post.title),
-        body = cleanUp(post.body),
+        body = post.body,
         userId = this.userId,
         user = Meteor.users.findOne(userId),
         timeSinceLastPost=timeSinceLast(user, Posts),
@@ -174,7 +190,7 @@ Meteor.methods({
 
     if(!!post.url){
       // check that there are no previous posts with the same link in the past 6 months
-      var sixMonthsAgo = moment().subtract('months', 6).toDate();
+      var sixMonthsAgo = moment().subtract(6, 'months').toDate();
       var postWithSameLink = Posts.findOne({url: post.url, postedAt: {$gte: sixMonthsAgo}});
 
       if(typeof postWithSameLink !== 'undefined'){

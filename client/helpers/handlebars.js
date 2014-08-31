@@ -62,3 +62,9 @@ UI.registerHelper('log', function(context){
 UI.registerHelper("formatDate", function(datetime, format) {
   return moment(datetime).format(format);
 });
+
+UI.registerHelper("sanitize", function(content) {
+  console.log('cleaning up…')
+  console.log(content)
+  return cleanUp(content);
+});

@@ -94,10 +94,12 @@ Template[getTemplate('post_edit')].events({
 
     // Basic Properties
 
+    var body = instance.editor.exportFile();
+
     var properties = {
       title:            $('#title').val(),
-      body:             instance.editor.exportFile(),
-      categories:  []
+      body:             body,
+      categories:       []
     };
 
     // URL

@@ -26,7 +26,7 @@
               | <span>{{full_date}}</span>
             {{/if}}
           </div>
-          <div class="comment-text markdown">{{#markdown}}{{body}}{{/markdown}}</div>
+          <div class="comment-text markdown">{{{htmlBody}}}</div>
           {{#if getSetting "nestedComments" true}}
             <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
           {{/if}}

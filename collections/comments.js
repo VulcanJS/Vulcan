@@ -19,6 +19,10 @@ Comments = new Meteor.Collection("comments", {
     body: {
       type: String,
     },
+    htmlBody: {
+      type: String,
+      optional: true
+    },
     baseScore: {
       type: Number,
       decimal: true,
@@ -79,8 +83,17 @@ Comments.allow({
   remove: canEditById
 });
 
+Comments.before.insert(function (userId, doc) {
+  doc.htmlBody = sanitize(marked(doc.body));
+});
 
-
+Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
+  // if body is being modified, update htmlBody too
+  if (modifier.$set && modifier.$set.body) {
+    modifier.$set = modifier.$set || {};
+    modifier.$set.htmlBody = sanitize(marked(modifier.$set.body));
+  }
+});
 
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
@@ -88,7 +101,6 @@ Meteor.methods({
         post=Posts.findOne(postId),
         postUser=Meteor.users.findOne(post.userId),
         timeSinceLastComment=timeSinceLast(user, Comments),
-        cleanText= cleanUp(text),
         commentInterval = Math.abs(parseInt(getSetting('commentInterval',15))),
         now = new Date();
 
@@ -101,12 +113,12 @@ Meteor.methods({
       throw new Meteor.Error(704, i18n.t('Please wait ')+(commentInterval-timeSinceLastComment)+i18n.t(' seconds before commenting again'));
 
     // Don't allow empty comments
-    if (!cleanText)
+    if (!text)
       throw new Meteor.Error(704,i18n.t('Your comment is empty.'));
           
     var comment = {
       postId: postId,
-      body: cleanText,
+      body: text,
       userId: user._id,
       createdAt: now,
       postedAt: now,
