@@ -111,9 +111,8 @@ Posts.deny({
 });
 
 Posts.allow({
-    insert: canPostById
-  , update: canEditById
-  , remove: canEditById
+  update: canEditById,
+  remove: canEditById
 });
 
 clickedPosts = [];

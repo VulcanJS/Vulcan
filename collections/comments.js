@@ -78,7 +78,6 @@ Comments.deny({
 });
 
 Comments.allow({
-  insert: canCommentById,
   update: canEditById,
   remove: canEditById
 });
