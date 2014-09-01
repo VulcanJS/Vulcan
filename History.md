@@ -1,4 +1,4 @@
-## v0.9.2.7 “DailyScope”
+## v0.9.3 “DailyScope”
 
 * Show user comments on user profile page. 
 * Move votes to their own `user.votes` object.
