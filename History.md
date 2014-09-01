@@ -6,6 +6,8 @@
 * Default root view is now customizable. 
 * Updated app to 0.9.0.
 * Updated all packages to be 0.9.0-compatible.
+* Fixed XSS bug (CVE ID: CVE-2014-5144) by sanitizing user input server-side.
+* Now storing both markdown and HTML versions of content. 
 
 ## v0.9.2.6 “InviteScope”
 

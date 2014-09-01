@@ -64,4 +64,5 @@ telescope-email
 
 npm-container
 matb33:collection-hooks
+djedi:sanitize-html
 

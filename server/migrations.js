@@ -342,5 +342,27 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  addHTMLBody: function () {
+    var i = 0;
+    Posts.find({body: {$exists : true}}).forEach(function (post) {
+      i++;
+      var htmlBody = sanitize(marked(post.body));
+      console.log("Post: "+post._id);
+      Posts.update(post._id, { $set: { 'htmlBody': htmlBody}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  addHTMLComment: function () {
+    var i = 0;
+    Comments.find({body: {$exists : true}}).forEach(function (comment) {
+      i++;
+      var htmlBody = sanitize(marked(comment.body));
+      console.log("Comment: "+comment._id);
+      Comments.update(comment._id, { $set: { 'htmlBody': htmlBody}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
   }
 }
