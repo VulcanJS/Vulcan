@@ -1,3 +1,5 @@
+var daysPerPage = 5;
+
 var coreSubscriptions = new SubsManager({
   // cache recent 50 subscriptions
   cacheLimit: 50,
@@ -10,7 +12,7 @@ var coreSubscriptions = new SubsManager({
 PostsDailyController = RouteController.extend({
   template: getTemplate('posts_daily'),
   onBeforeAction: function() {
-    this.days = this.params.days ? this.params.days : 3;
+    this.days = this.params.days ? this.params.days : daysPerPage;
     // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
 
     var terms = {

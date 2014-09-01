@@ -51,7 +51,8 @@ Template[getTemplate('user_profile')].helpers({
       // extend comments with each commented post
       var extendedComments = comments.map(function (comment) {
         var post = Posts.findOne(comment.postId);
-        comment.postTitle = post.title;
+        if(post) // post might not be available anymore
+          comment.postTitle = post.title;
         return comment;
       });
       return extendedComments    

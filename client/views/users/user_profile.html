@@ -121,7 +121,7 @@
 			{{#each comments}}
 				<tr>
 					<td><a href="/posts/{{postId}}/">{{postTitle}}</a></td>
-					<td>{{body}}</td>
+					<td>{{{htmlBody}}}</td>
 					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}

@@ -1,3 +1,5 @@
+var daysPerPage = 5;
+
 var getPosts = function (date) {
   var terms = {
     view: 'digest',
@@ -34,7 +36,7 @@ Template[getTemplate('postsDaily')].helpers({
     return getPosts(this.date);
   },
   loadMoreUrl: function () {
-    var count = parseInt(Session.get('postsDays')) + 3;
+    var count = parseInt(Session.get('postsDays')) + daysPerPage;
     return '/daily/' + count;
   }
 });
