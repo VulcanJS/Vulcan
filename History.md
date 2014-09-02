@@ -1,3 +1,5 @@
+* Removed unneeded allow insert on Posts and Comments. 
+
 ## v0.9.3 “DailyScope”
 
 * Show user comments on user profile page. 

@@ -152,7 +152,8 @@ getPostLink = function (post) {
 }
 
 Posts.before.insert(function (userId, doc) {
-  doc.htmlBody = sanitize(marked(doc.body));
+  if(!!doc.body)
+    doc.htmlBody = sanitize(marked(doc.body));
 });
 
 Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
