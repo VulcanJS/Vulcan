@@ -1,0 +1,43 @@
+{
+  "builtBy": "meteor/10",
+  "sliceDependencies": {
+    "browser.json": {
+      "files": {
+        "/Users/byennen/Sites/Telescope/packages/rss/package.js": "89de2f49d9a381a9cf4dd0e7bae6b68a7338e21e"
+      },
+      "directories": []
+    },
+    "os.json": {
+      "files": {
+        "/Users/byennen/Sites/Telescope/packages/rss/package.js": "89de2f49d9a381a9cf4dd0e7bae6b68a7338e21e",
+        "/Users/byennen/Sites/Telescope/packages/rss/.npm/package/npm-shrinkwrap.json": "0a3be6c35cdfce81dd08905cc43024c19288add9",
+        "/Users/byennen/Sites/Telescope/packages/rss/rss.js": "8353eee25fe321435ce81d1abed156e03a0151de"
+      },
+      "directories": []
+    },
+    "tests.browser.json": {
+      "files": {
+        "/Users/byennen/Sites/Telescope/packages/rss/package.js": "89de2f49d9a381a9cf4dd0e7bae6b68a7338e21e"
+      },
+      "directories": []
+    },
+    "tests.os.json": {
+      "files": {
+        "/Users/byennen/Sites/Telescope/packages/rss/package.js": "89de2f49d9a381a9cf4dd0e7bae6b68a7338e21e",
+        "/Users/byennen/Sites/Telescope/packages/rss/.npm/package/npm-shrinkwrap.json": "0a3be6c35cdfce81dd08905cc43024c19288add9"
+      },
+      "directories": []
+    }
+  },
+  "pluginDependencies": {
+    "files": {
+      "/Users/byennen/Sites/Telescope/packages/rss/package.js": "89de2f49d9a381a9cf4dd0e7bae6b68a7338e21e"
+    },
+    "directories": []
+  },
+  "pluginProviderPackages": {
+    "rss": "/Users/byennen/Sites/Telescope/packages/rss",
+    "meteor": "/Users/byennen/.meteor/packages/meteor/d06ae22393"
+  },
+  "source": "/Users/byennen/Sites/Telescope/packages/rss"
+}

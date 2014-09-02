@@ -42,7 +42,6 @@ joshowens:accounts-entry@0.9.0
 
 # Atmosphere Packages (Old)
 
-bootstrap3-datepicker
 
 # Telescope Packages
 
@@ -65,4 +64,5 @@ telescope-email
 npm-container
 matb33:collection-hooks
 djedi:sanitize-html
+rajit:bootstrap3-datepicker
 

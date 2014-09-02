@@ -1,0 +1,25 @@
+{
+  "format": "unipackage-slice-pre1",
+  "packageVariables": [
+    {
+      "name": "RSS",
+      "export": true
+    }
+  ],
+  "uses": [
+    {
+      "package": "meteor"
+    }
+  ],
+  "node_modules": "npm/node_modules",
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "os/packages/rss.js",
+      "length": 610,
+      "offset": 0,
+      "servePath": "/packages/rss.js",
+      "sourceMap": "os/packages/rss.js.map"
+    }
+  ]
+}

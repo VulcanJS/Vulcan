@@ -1,0 +1,21 @@
+{
+  "format": "unipackage-slice-pre1",
+  "noExports": true,
+  "packageVariables": [],
+  "uses": [
+    {
+      "package": "meteor"
+    }
+  ],
+  "node_modules": "npm/node_modules",
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "tests.os/packages/rsstests.js",
+      "length": 0,
+      "offset": 0,
+      "servePath": "/packages/rss:tests.js",
+      "sourceMap": "tests.os/packages/rsstests.js.map"
+    }
+  ]
+}
