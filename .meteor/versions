@@ -14,7 +14,6 @@ backbone@1.0.0
 binary-heap@1.0.0
 blaze-tools@1.0.0
 blaze@1.0.3
-bootstrap3-datepicker@0.0.0
 callback-hook@1.0.0
 check@1.0.0
 chuangbo:marked@0.3.4
@@ -68,6 +67,7 @@ oauth@1.0.0
 observe-sequence@1.0.1
 ordered-dict@1.0.0
 percolatestudio:synced-cron@0.1.1
+rajit:bootstrap3-datepicker@1.3.1
 random@1.0.0
 reactive-dict@1.0.0
 reload@1.0.0
