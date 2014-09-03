@@ -69,6 +69,13 @@
 					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
+			{{#if hasMorePosts}}
+				<tr>
+					<td colspan="2">
+    				<a class="posts-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
 			</table>
 		</div>
 
@@ -87,6 +94,13 @@
 					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
+			{{#if hasMoreUpvotedPosts}}
+				<tr>
+					<td colspan="2">
+    				<a class="upvotedposts-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
 			</table>
 		</div>
 
@@ -105,6 +119,13 @@
 					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
+			{{#if hasMoreDownvotedPosts}}
+				<tr>
+					<td colspan="2">
+    				<a class="downvoted-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
 			</table>
 		</div>
 
@@ -125,6 +146,13 @@
 					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
+			{{#if hasMoreComments}}
+				<tr>
+					<td colspan="2">
+    				<a class="comments-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
 			</table>
 		</div>
 

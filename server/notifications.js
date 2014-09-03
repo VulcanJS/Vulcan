@@ -43,7 +43,6 @@ buildEmailNotification = function (notification) {
 }
 
 newPostNotification = function(post, excludedIDs){
-  
   var excludedIDs = typeof excludedIDs == 'undefined' ? [] : excludedIDs;
   var p = getPostProperties(post);
   var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
