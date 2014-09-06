@@ -7,6 +7,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.0.1');
   api.addFiles('lib/auto-recommend.js', ['client']);
+  api.addFiles('lib/auto-recommend-settings.js', ['client','server']);
 
   api.use(['telescope-lib', 'telescope-base'], ['client', 'server']);
 

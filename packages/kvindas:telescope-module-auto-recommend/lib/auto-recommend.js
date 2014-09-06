@@ -2,6 +2,11 @@ Meteor.startup(function () {
 
   Template[getTemplate('post_submit')].events({
     'blur #url': function(e){
+
+      if(!isAutoRecommendEnabled() ){
+        return;
+      }
+
       var url=$("#url").val(),
           $titleLinkEl = $(".get-title-link"),
           $titleEl = $("#title"),
@@ -32,6 +37,10 @@ Meteor.startup(function () {
 
 
 // utility functions
+function isAutoRecommendEnabled() {
+  var setting = getSetting("autoRecommendTitleAndContent");
+  return !!setting;
+}
 // Validates if url exists, in case it does, returns the url result
 function recommendTitleAndContent(url, cb){
   var suggestedTitle, suggestedDescription, failFn;
