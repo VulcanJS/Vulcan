@@ -1,4 +1,3 @@
-console.log("adding settings to addToSettings");
 var autoRecommendProperty = {
   propertyName: 'autoRecommendTitleAndContent',
   propertySchema: {

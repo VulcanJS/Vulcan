@@ -2,39 +2,41 @@ Meteor.startup(function () {
 
   Template[getTemplate('post_submit')].events({
     'blur #url': function(e){
-
-      if(!isAutoRecommendEnabled() ){
-        return;
-      }
-
-      var url=$("#url").val(),
-          $titleLinkEl = $(".get-title-link"),
-          $titleEl = $("#title"),
-          $descEl  = $("#editor iframe").contents().find("#epiceditor-editor-frame").contents().find("body"),
-          suggestion;
-
-      $titleLinkEl.addClass("loading");
-      recommendTitleAndContent(url, function(err, suggestedTitle, suggestedDescription){
-        // Error occurred
-        if(err){
-          $titleLinkEl.removeClass("loading");
-          return;
-        }
-        $titleLinkEl.removeClass("loading");
-        if (suggestedTitle){
-          $titleEl.val(suggestedTitle);
-        }
-        if (suggestedDescription){
-          $descEl.text(suggestedDescription);
-        }
-
-      })
-
+      autoRecommendTitleAndContent();
     }
   });
 
 });
 
+
+function autoRecommendTitleAndContent() {
+  if(!isAutoRecommendEnabled() ){
+    return;
+  }
+
+  var url=$("#url").val(),
+    $titleLinkEl = $(".get-title-link"),
+    $titleEl = $("#title"),
+    $descEl  = $("#editor iframe").contents().find("#epiceditor-editor-frame").contents().find("body"),
+    suggestion;
+
+  $titleLinkEl.addClass("loading");
+  recommendTitleAndContent(url, function(err, suggestedTitle, suggestedDescription){
+    // Error occurred
+    if(err){
+      $titleLinkEl.removeClass("loading");
+      return;
+    }
+    $titleLinkEl.removeClass("loading");
+    if (suggestedTitle){
+      $titleEl.val(suggestedTitle);
+    }
+    if (suggestedDescription){
+      $descEl.text(suggestedDescription);
+    }
+
+  })
+}
 
 // utility functions
 function isAutoRecommendEnabled() {
