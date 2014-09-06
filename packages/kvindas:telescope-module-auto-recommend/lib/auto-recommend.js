@@ -1,27 +1,38 @@
 Meteor.startup(function () {
 
-  Template[getTemplate('post_submit')].events({
+  if(!Meteor.isClient){
+    return;
+  }
+  var template = Template[getTemplate('post_submit')];
+  if(!template){ return; }
+
+  template.events({
     'blur #url': function(e){
-      autoRecommendTitleAndContent();
+      AutoRecommendService.autoRecommendTitleAndContent();
     }
   });
 
 });
 
+AutoRecommendService = {};
 
-function autoRecommendTitleAndContent() {
-  if(!isAutoRecommendEnabled() ){
+AutoRecommendService.isAutoRecommendEnabled = function(){
+  var setting = getSetting("autoRecommendTitleAndContent");
+  return !!setting;
+}
+
+AutoRecommendService.autoRecommendTitleAndContent = function() {
+  if(!this.isAutoRecommendEnabled() ){
     return;
   }
 
   var url=$("#url").val(),
     $titleLinkEl = $(".get-title-link"),
     $titleEl = $("#title"),
-    $descEl  = $("#editor iframe").contents().find("#epiceditor-editor-frame").contents().find("body"),
-    suggestion;
+    $descEl  = $("#editor iframe").contents().find("#epiceditor-editor-frame").contents().find("body");
 
   $titleLinkEl.addClass("loading");
-  recommendTitleAndContent(url, function(err, suggestedTitle, suggestedDescription){
+  this.recommendTitleAndContent(url, function(err, suggestedTitle, suggestedDescription){
     // Error occurred
     if(err){
       $titleLinkEl.removeClass("loading");
@@ -38,37 +49,36 @@ function autoRecommendTitleAndContent() {
   })
 }
 
-// utility functions
-function isAutoRecommendEnabled() {
-  var setting = getSetting("autoRecommendTitleAndContent");
-  return !!setting;
-}
 // Validates if url exists, in case it does, returns the url result
-function recommendTitleAndContent(url, cb){
+AutoRecommendService.recommendTitleAndContent = function (url, cb){
   var suggestedTitle, suggestedDescription, failFn;
 
   if(!url){
     return;
   }
+  var _this = this;
   $.get(url).done(function(response){
     if(!response.results || response.results.length === 0 ){
       cb("Url not found");
       return;
     }
-    suggestedTitle=getTitleFromHtml(response.results[0]);
-    suggestedDescription=getDescriptionFromHtml(response.results[0]);
+    suggestedTitle = _this.getTitleFromHtml(response.results[0]);
+    suggestedDescription = _this.getDescriptionFromHtml(response.results[0]);
     cb(null, suggestedTitle, suggestedDescription);
   }).fail(function(){
     cb("Error occurred while extracting title and description");
   });
 }
 
-function getTitleFromHtml(htmlTxt){
+AutoRecommendService.getTitleFromHtml = function(htmlTxt){
   var title = ((/<title>(.*?)<\/title>/m).exec(htmlTxt));
+  if(!title){
+    return "";
+  }
   return title[1];
 }
 
-function getDescriptionFromHtml(htmlTxt){
+AutoRecommendService.getDescriptionFromHtml = function(htmlTxt){
   var description = ((/content="(.*?)"\s.*name="description"/mi).exec(htmlTxt));
   if(!description){
     description = ((/content="(.*?)"\s.*name="description"/mi).exec(htmlTxt));
@@ -85,5 +95,5 @@ function getDescriptionFromHtml(htmlTxt){
   if(description){
     return description[1];
   }
-  return undefined;
+  return "";
 }
