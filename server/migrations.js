@@ -364,5 +364,16 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  userDataCommentsCountToCommentCount: function(){
+    var i = 0;
+    Meteor.users.find({'data.commentsCount': {$exists: true}}).forEach(function(user){
+      i++;
+      var commentCount = Comments.find({userId: user._id}).count();
+      console.log("User: "+user._id);
+      Meteor.users.update(user._id, {$unset: {data: ""}, $set: {'commentCount': commentCount}});
+      console.log("---------------------");
+    });
+    return i;
   }
 }
