@@ -156,7 +156,7 @@ Template.comment_item.events({
   'click .not-upvoted .upvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('upvoteComment', this, function(error, result){
@@ -166,7 +166,7 @@ Template.comment_item.events({
   'click .upvoted .upvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('cancelUpvoteComment', this, function(error, result){
@@ -176,7 +176,7 @@ Template.comment_item.events({
   'click .not-downvoted .downvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('downvoteComment', this, function(error, result){
@@ -186,7 +186,7 @@ Template.comment_item.events({
   'click .downvoted .downvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('cancelDownvoteComment', this, function(error, result){
