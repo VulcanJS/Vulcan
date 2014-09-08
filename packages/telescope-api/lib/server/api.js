@@ -1,4 +1,4 @@
-postAPI = function(limitSegment){
+serveAPI = function(limitSegment){
   var posts = [];
   var limit = typeof limitSegment === 'undefined' ? 20 : limitSegment // default limit: 20 posts
 
