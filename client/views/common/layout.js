@@ -15,7 +15,7 @@ Template[getTemplate('layout')].helpers({
     return getTemplate('footer');
   },
   pageName : function(){
-    // getCurrentTemplate();
+    return getCurrentTemplate();
   },
   css: function () {
     return getTemplate('css');
