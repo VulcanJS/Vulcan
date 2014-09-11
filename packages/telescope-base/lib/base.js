@@ -73,7 +73,7 @@ viewParameters.digest = function (terms) {
       }
     },
     options: {
-      sort: {sticky: -1, baseScore: -1}
+      sort: {sticky: -1, baseScore: -1, limit: 0}
     }
   };
 }
