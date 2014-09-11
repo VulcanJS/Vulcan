@@ -152,13 +152,13 @@ getPostLink = function (post) {
 }
 
 Posts.before.insert(function (userId, doc) {
-  if(!!doc.body)
+  if(Meteor.isServer && !!doc.body)
     doc.htmlBody = sanitize(marked(doc.body));
 });
 
 Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
   // if body is being modified, update htmlBody too
-  if (modifier.$set && modifier.$set.body) {
+  if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set = modifier.$set || {};
     modifier.$set.htmlBody = sanitize(marked(modifier.$set.body));
   }
