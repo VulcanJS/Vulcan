@@ -84,6 +84,9 @@ Template[getTemplate('user_edit')].events({
         $('html, body').animate({scrollTop: element.offset().top});
       });
     });
+
+    Meteor.call('setEmailHash', user);
+
   }
 
 });

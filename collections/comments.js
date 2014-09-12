@@ -83,12 +83,13 @@ Comments.allow({
 });
 
 Comments.before.insert(function (userId, doc) {
-  doc.htmlBody = sanitize(marked(doc.body));
+  if(Meteor.isServer)
+    doc.htmlBody = sanitize(marked(doc.body));
 });
 
 Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
   // if body is being modified, update htmlBody too
-  if (modifier.$set && modifier.$set.body) {
+  if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set = modifier.$set || {};
     modifier.$set.htmlBody = sanitize(marked(modifier.$set.body));
   }
