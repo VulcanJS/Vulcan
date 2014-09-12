@@ -110,7 +110,7 @@ Meteor.methods({
     return Math.abs(object.score - newScore);
   },
   setEmailHash: function(user){
-    var email_hash = CryptoJS.MD5(getEmail(user).trim().toLowerCase()).toString();
-    Meteor.users.update(user._id, {$set : {email_hash : email_hash}});
+    var hash = getEmailHash(user);
+    Meteor.users.update(user._id, {$set : {email_hash : hash}});
   }
 });
