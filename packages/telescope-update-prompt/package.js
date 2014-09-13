@@ -6,7 +6,7 @@ Package.describe({
 
 Package.onUse(function (api) {
 
-  api.use(['telescope-lib', 'telescope-base'], ['client', 'server']);
+  api.use(['telescope-lib', 'telescope-base', 'http'], ['client', 'server']);
 
   api.use([
     'jquery',
@@ -23,5 +23,7 @@ Package.onUse(function (api) {
     'lib/client/templates/update_banner.css'
   ], ['client']);
 
- 
+  api.export([
+    'compareVersions'
+  ]);
 });
