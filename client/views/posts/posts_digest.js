@@ -60,3 +60,7 @@ Template[getTemplate('posts_digest')].rendered = function(){
   $('body').css('min-height',distanceFromTop+160);
   $('.more-button').css('top', distanceFromTop+"px");  
 }
+
+Template[getTemplate('posts_digest')].created = function() {
+  Session.set('listPopulatedAt', new Date());
+};
