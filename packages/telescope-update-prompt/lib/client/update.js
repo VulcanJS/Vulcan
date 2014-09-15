@@ -11,17 +11,18 @@ compareVersions = function (v1, v2) { // return true if v2 is newer than v1
 
 Meteor.startup(function () {
   if(Meteor.user() && isAdmin(Meteor.user())){
-    var url = 'http://localhost:3000/';
+    var url = 'http://version.telescopeapp.org/';
     HTTP.get(url, {
-      data: {
+      params: {
         currentVersion: telescopeVersion,
         siteTitle: getSetting('title'),
         siteUrl: getSiteUrl()
       }
     }, function (error, result) {
       if(result){
+        // console.log(result);
         var currentVersion = telescopeVersion;
-        var newVersion = "0.9.5";
+        var newVersion = result.content;
         var message = "";
         if (compareVersions(currentVersion, newVersion)){
           Session.set('updateVersion', newVersion);
