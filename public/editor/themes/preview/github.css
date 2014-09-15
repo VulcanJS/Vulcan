@@ -1,4 +1,4 @@
-html { padding:0px; }
+html { padding:0 10px; }
 
 body {
   margin:0;
@@ -11,11 +11,11 @@ body {
 }
 
 #epiceditor-preview{
-	padding:10px;
-	font-family:"Proxima Nova Soft", "proxima-nova-soft", "PT SANS", "Helvetica Neue", Helvetica, sans-serif;
-	font-size:16px;
+	padding-top:10px;
+	padding-bottom:10px;
+	font-family: Helvetica,arial,freesans,clean,sans-serif;
+	font-size:13px;
 	line-height:1.6;
-	background: #efefef;
 }
 
 #epiceditor-preview>*:first-child{
