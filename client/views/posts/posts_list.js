@@ -14,5 +14,12 @@ Template[getTemplate('posts_list')].helpers({
   },
   postsLoadMore: function () {
     return getTemplate('postsLoadMore');
+  },
+  postsIncoming: function () {
+    return getTemplate('postsIncoming');
   }
 });
+
+Template[getTemplate('posts_list')].created = function() {
+  Session.set('listPopulatedAt', new Date());
+};

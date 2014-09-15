@@ -11,6 +11,9 @@
     {{/if}}
     </div>
   </div>
+  
+  {{> postsListIncoming count=postsIncoming.count}}
+
   {{#if hasPosts}}
     <div class="posts grid list">
       {{#each posts}}
