@@ -12,7 +12,7 @@ EpicEditorOptions={
 	theme: {
 		base:'/themes/base/epiceditor.css',
 		preview:'/themes/preview/github.css',
-		editor:'/themes/editor/epic-light.css'
+		editor:'/themes/editor/epic-light2.css'
 	}
 };
 
