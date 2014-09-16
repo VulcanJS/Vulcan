@@ -100,12 +100,13 @@ telescope-i18n@0.0.0
 telescope-lib@0.2.9
 telescope-module-embedly@0.2.9
 telescope-module-share@0.0.0
-telescope-newsletter@0.0.0
+telescope-newsletter@0.1.0
 telescope-rss@0.0.0
 telescope-search@0.0.0
 telescope-tags@0.0.0
 telescope-theme-base@0.0.0
 telescope-theme-hubble@0.0.0
+telescope-update-prompt@0.1.0
 templating@1.0.6
 tmeasday:crypto-base@3.1.2
 tmeasday:crypto-md5@3.1.2

@@ -1,4 +1,8 @@
-Package.describe({summary: "Telescope email digest package"});
+Package.describe({
+  summary: "Telescope email newsletter package",
+  version: '0.1.0',
+  name: "telescope-newsletter"
+});
 
 Npm.depends({later: "1.1.6"});
 
@@ -30,9 +34,9 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/newsletter_banner.html',
-    'lib/client/newsletter_banner.js',
-    'lib/client/newsletter_banner.css'
+    'lib/client/templates/newsletter_banner.html',
+    'lib/client/templates/newsletter_banner.js',
+    'lib/client/templates/newsletter_banner.css'
   ], ['client']);
 
   api.add_files([

@@ -1,4 +1,8 @@
+## v0.9.3 “UpdateScope”
+
 * Removed unneeded allow insert on Posts and Comments. 
+* Renaming `postMeta` template to `postInfo` to avoid ambiguity.
+* Fixing avatar code.
 
 ## v0.9.3 “DailyScope”
 
