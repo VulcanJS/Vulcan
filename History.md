@@ -6,6 +6,7 @@
 * Adding update prompt package.
 * Upgrading to Meteor 0.9.2.
 * Do not remove deleted comments from database, use `isDeleted` flag instead.
+* Now showing "X new posts" instead of just displaying them. Thanks @dburles!
 
 ## v0.9.3 “DailyScope”
 
