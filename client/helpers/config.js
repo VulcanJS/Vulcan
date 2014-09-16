@@ -6,7 +6,9 @@ EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',
 	clientSideStorage: false,
-	autogrow: true,
+	autogrow: {
+		minHeight: 100
+	},
 	theme: {
 		base:'/themes/base/epiceditor.css',
 		preview:'/themes/preview/github.css',

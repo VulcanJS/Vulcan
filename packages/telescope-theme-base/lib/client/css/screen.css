@@ -304,6 +304,11 @@ input[type="search"] {
   color: #b3c1c6;
   margin-bottom: 15px; }
 
+/* line 167, ../scss/global/_forms.scss */
+.comment-field {
+  margin-bottom: 10px;
+  border: 1px solid #B5B0B0; }
+
 /* line 1, ../scss/global/_links.scss */
 a {
   text-decoration: none; }
