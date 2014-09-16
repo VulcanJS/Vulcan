@@ -68,7 +68,7 @@ Meteor.methods({
             actionLink : user ? getSigninUrl() : getSignupUrl(),
             invitedBy : getDisplayName(currentUser),
             profileUrl : getProfileUrl(currentUser)
-          }
+          };
 
       Meteor.setTimeout(function () {
         buildAndSendEmail(userEmail, emailSubject, getTemplate('emailInvite'), emailProperties);

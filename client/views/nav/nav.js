@@ -62,7 +62,7 @@ Template[getTemplate('nav')].events({
     e.preventDefault();
     Router.go('/account');
   },
-  'click #login-name-link': function(e){
+  'click #login-name-link': function(){
     if(Meteor.user() && !$('account-link').exists()){
       $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
       $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
