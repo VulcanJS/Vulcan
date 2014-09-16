@@ -4,7 +4,10 @@ Package.describe({
   name: "telescope-newsletter"
 });
 
-Npm.depends({later: "1.1.6"});
+Npm.depends({
+  "html-to-text": "0.1.0",
+  "later": "1.1.6"
+});
 
 Package.onUse(function (api) {
 
