@@ -127,7 +127,7 @@ postHeading = [
 
 postMeta = [
   {
-    template: 'postMeta',
+    template: 'postInfo',
     order: 1
   },
   {

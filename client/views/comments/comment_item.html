@@ -1,6 +1,9 @@
 <template name="comment_item">
   <li class="comment module comment-displayed" id="{{_id}}">
    <div class="comment-body">
+      {{#if isDeleted}}
+        <div class="comment-deleted">This comment has been deleted.</div>
+      {{else}}
       <div class="comment-content">
         <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
@@ -32,14 +35,15 @@
           {{/if}}
         </div>
       </div>
+      {{/if}}
       {{#if showChildComments}}
-      <ul class="comment-children comment-list">
-      {{#each child_comments}}
-        {{#with this}}
-          {{> UI.dynamic template=comment_item}}
-        {{/with}}
-      {{/each}}
-      </ul>
+        <ul class="comment-children comment-list">
+        {{#each child_comments}}
+          {{#with this}}
+            {{> UI.dynamic template=comment_item}}
+          {{/with}}
+        {{/each}}
+        </ul>
       {{/if}}
     </div>
   </li>

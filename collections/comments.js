@@ -64,6 +64,10 @@ Comments = new Meteor.Collection("comments", {
     userId: {
       type: String, // XXX
       optional: true
+    },
+    isDeleted: {
+      type: Boolean,
+      optional: true
     }
   })
 });
@@ -197,7 +201,13 @@ Meteor.methods({
       });
 
       // note: should we also decrease user's comment karma ?
-      Comments.remove(commentId);
+      // We don't actually delete the comment to avoid losing all child comments.
+      // Instead, we give it a special flag
+      Comments.update({_id: commentId}, {$set: {
+        body: 'Deleted',
+        htmlBody: 'Deleted',
+        isDeleted: true
+      }});
     }else{
       throwError("You don't have permission to delete this comment.");
     }

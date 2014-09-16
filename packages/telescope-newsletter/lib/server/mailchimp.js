@@ -2,7 +2,7 @@ scheduleCampaign = function (campaign) {
   MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
   MailChimpOptions.listId = getSetting('mailChimpListId');
 
-  var htmlToText = Meteor.require('html-to-text');
+  var htmlToText = Npm.require('html-to-text');
   var text = htmlToText.fromString(campaign.html, {
       wordwrap: 130
   });

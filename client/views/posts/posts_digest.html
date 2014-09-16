@@ -11,6 +11,9 @@
     {{/if}}
     </div>
   </div>
+  
+  {{> UI.dynamic template=postsListIncoming data=incoming}}
+
   {{#if hasPosts}}
     <div class="posts grid list">
       {{#each posts}}

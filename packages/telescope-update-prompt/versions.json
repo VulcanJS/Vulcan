@@ -1,10 +1,6 @@
 {
   "dependencies": [
     [
-      "accounts-base",
-      "1.1.0"
-    ],
-    [
       "application-configuration",
       "1.0.2"
     ],
@@ -65,6 +61,10 @@
       "1.0.1"
     ],
     [
+      "http",
+      "1.0.5"
+    ],
+    [
       "id-map",
       "1.0.0"
     ],
@@ -93,27 +93,11 @@
       "1.0.0"
     ],
     [
-      "livedata",
-      "1.0.9"
-    ],
-    [
-      "localstorage",
-      "1.0.0"
-    ],
-    [
       "logging",
       "1.0.3"
     ],
     [
       "meteor",
-      "1.1.0"
-    ],
-    [
-      "meteorhacks:fast-render",
-      "1.1.0"
-    ],
-    [
-      "meteorhacks:subs-manager",
       "1.1.0"
     ],
     [
@@ -127,10 +111,6 @@
     [
       "mongo",
       "1.0.5"
-    ],
-    [
-      "mongo-livedata",
-      "1.0.4"
     ],
     [
       "observe-sequence",
@@ -158,10 +138,6 @@
     ],
     [
       "routepolicy",
-      "1.0.1"
-    ],
-    [
-      "service-configuration",
       "1.0.1"
     ],
     [
@@ -198,6 +174,10 @@
     ],
     [
       "underscore",
+      "1.0.0"
+    ],
+    [
+      "url",
       "1.0.0"
     ],
     [

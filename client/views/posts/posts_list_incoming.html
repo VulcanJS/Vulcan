@@ -1,0 +1,9 @@
+<template name="postsListIncoming">
+  {{#if count}}
+    <a class="more-button show-new grid-module" href="">
+      <span>
+        {{i18n "View"}} {{count}} {{i18n "new"}} {{pluralize count "post"}}
+      </span>
+    </a>
+  {{/if}}
+</template>

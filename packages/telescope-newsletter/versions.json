@@ -2,10 +2,14 @@
   "dependencies": [
     [
       "aldeed:simple-schema",
-      "0.7.0"
+      "1.0.3"
     ],
     [
       "application-configuration",
+      "1.0.2"
+    ],
+    [
+      "base64",
       "1.0.0"
     ],
     [
@@ -14,10 +18,14 @@
     ],
     [
       "blaze",
-      "1.0.3"
+      "2.0.0"
     ],
     [
       "blaze-tools",
+      "1.0.0"
+    ],
+    [
+      "boilerplate-generator",
       "1.0.0"
     ],
     [
@@ -33,16 +41,20 @@
       "0.2.0"
     ],
     [
+      "ddp",
+      "1.0.8"
+    ],
+    [
       "deps",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "ejson",
-      "1.0.0"
+      "1.0.2"
     ],
     [
       "follower-livedata",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "geojson-utils",
@@ -58,7 +70,7 @@
     ],
     [
       "htmljs",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "id-map",
@@ -66,19 +78,19 @@
     ],
     [
       "iron:core",
-      "0.3.2"
+      "0.3.4"
     ],
     [
       "iron:dynamic-template",
-      "0.3.0"
+      "0.4.1"
     ],
     [
       "iron:layout",
-      "0.3.0"
+      "0.4.1"
     ],
     [
       "iron:router",
-      "0.9.1"
+      "0.9.3"
     ],
     [
       "jquery",
@@ -89,32 +101,32 @@
       "1.0.0"
     ],
     [
-      "livedata",
-      "1.0.7"
-    ],
-    [
       "logging",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "meteor",
-      "1.0.2"
+      "1.1.0"
+    ],
+    [
+      "meteorhacks:async",
+      "1.0.0"
     ],
     [
       "meteorhacks:npm",
-      "1.1.2"
+      "1.2.0"
     ],
     [
       "minifiers",
-      "1.0.2"
+      "1.1.0"
     ],
     [
       "minimongo",
-      "1.0.1"
+      "1.0.3"
     ],
     [
-      "mongo-livedata",
-      "1.0.3"
+      "mongo",
+      "1.0.5"
     ],
     [
       "mrt:cookies",
@@ -126,7 +138,7 @@
     ],
     [
       "observe-sequence",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "ordered-dict",
@@ -134,7 +146,7 @@
     ],
     [
       "percolatestudio:synced-cron",
-      "0.1.1"
+      "0.3.0"
     ],
     [
       "random",
@@ -142,7 +154,11 @@
     ],
     [
       "reactive-dict",
-      "1.0.0"
+      "1.0.2"
+    ],
+    [
+      "reactive-var",
+      "1.0.1"
     ],
     [
       "retry",
@@ -150,15 +166,15 @@
     ],
     [
       "routepolicy",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "spacebars",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "spacebars-compiler",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "telescope-base",
@@ -174,11 +190,15 @@
     ],
     [
       "templating",
-      "1.0.4"
+      "1.0.6"
+    ],
+    [
+      "tracker",
+      "1.0.2"
     ],
     [
       "ui",
-      "1.0.0"
+      "1.0.2"
     ],
     [
       "underscore",
@@ -186,10 +206,14 @@
     ],
     [
       "webapp",
-      "1.0.2"
+      "1.1.1"
+    ],
+    [
+      "webapp-hashing",
+      "1.0.0"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.26",
+  "toolVersion": "meteor-tool@1.0.30",
   "format": "1.0"
 }
