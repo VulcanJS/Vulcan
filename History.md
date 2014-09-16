@@ -5,6 +5,7 @@
 * Fixing avatar code.
 * Adding update prompt package.
 * Upgrading to Meteor 0.9.2.
+* Do not remove deleted comments from database, use `isDeleted` flag instead.
 
 ## v0.9.3 “DailyScope”
 
