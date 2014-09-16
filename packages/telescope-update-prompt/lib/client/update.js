@@ -10,6 +10,8 @@ compareVersions = function (v1, v2) { // return true if v2 is newer than v1
 }
 
 Meteor.startup(function () {
+  Session.set('updateVersion', null);
+
   if(Meteor.user() && isAdmin(Meteor.user())){
     var url = 'http://version.telescopeapp.org/';
     HTTP.get(url, {
