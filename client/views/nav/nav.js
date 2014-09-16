@@ -64,8 +64,9 @@ Template[getTemplate('nav')].events({
   },
   'click #login-name-link': function(){
     if(Meteor.user() && !$('account-link').exists()){
-      $('#login-buttons-logout').before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
-      $('#login-buttons-logout').before('<a href="/account" class="account-link button">Edit Account</a>');
-    }  
+      var $loginButtonsLogout = $('#login-buttons-logout');
+      $loginButtonsLogout.before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
+      $loginButtonsLogout.before('<a href="/account" class="account-link button">Edit Account</a>');
+    }
   }
 });
