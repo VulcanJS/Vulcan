@@ -15,8 +15,8 @@ Template[getTemplate('posts_list')].helpers({
   postsLoadMore: function () {
     return getTemplate('postsLoadMore');
   },
-  postsIncoming: function () {
-    return getTemplate('postsIncoming');
+  postsListIncoming: function () {
+    return getTemplate('postsListIncoming');
   }
 });
 

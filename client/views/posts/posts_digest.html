@@ -12,7 +12,7 @@
     </div>
   </div>
   
-  {{> postsListIncoming count=postsIncoming.count}}
+  {{> UI.dynamic template=postsListIncoming data=incoming}}
 
   {{#if hasPosts}}
     <div class="posts grid list">

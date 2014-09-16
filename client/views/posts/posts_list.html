@@ -1,5 +1,5 @@
 <template name="posts_list">
-  {{> postsListIncoming count=postsListIncoming.count}}
+  {{> UI.dynamic template=postsListIncoming data=incoming}}
   <div class="posts-wrapper grid grid-module">
     <div class="posts list">
       {{#each posts}}
