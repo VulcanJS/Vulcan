@@ -167,9 +167,8 @@ _.each(addToSettingsSchema, function(item){
   settingsSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Settings = new Meteor.Collection("settings", {
-  schema: new SimpleSchema(settingsSchemaObject)
-});
+Settings = new Meteor.Collection("settings");
+Settings.attachSchema(new SimpleSchema(settingsSchemaObject));
 
 Settings.allow({
   insert: isAdminById,
