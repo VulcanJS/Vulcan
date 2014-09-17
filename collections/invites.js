@@ -17,9 +17,8 @@ InviteSchema = new SimpleSchema({
   }
 });
 
-Invites = new Meteor.Collection("invites", {
-  schema: InviteSchema
-});
+Invites = new Meteor.Collection("invites");
+Invites.attachSchema(InviteSchema);
 
 
 // invites are managed through Meteor method

@@ -93,9 +93,10 @@ _.each(addToPostSchema, function(item){
   postSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Posts = new Meteor.Collection("posts", {
-  schema: new SimpleSchema(postSchemaObject)
-});
+Posts = new Meteor.Collection("posts");
+
+PostSchema = new SimpleSchema(postSchemaObject);
+Posts.attachSchema(PostSchema);
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
