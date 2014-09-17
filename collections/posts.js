@@ -1,4 +1,4 @@
-PostSchema = new SimpleSchema({
+postSchemaObject = {
   _id: {
     type: String,
     optional: true
@@ -86,7 +86,7 @@ PostSchema = new SimpleSchema({
     type: String, // XXX
     optional: true
   }
-});
+};
 
 // add any extra properties to postSchemaObject (provided by packages for example)
 _.each(addToPostSchema, function(item){
@@ -94,6 +94,8 @@ _.each(addToPostSchema, function(item){
 });
 
 Posts = new Meteor.Collection("posts");
+
+PostSchema = new SimpleSchema(postSchemaObject);
 Posts.attachSchema(PostSchema);
 
 STATUS_PENDING=1;

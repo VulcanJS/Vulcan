@@ -1,4 +1,4 @@
-SettingSchema = new SimpleSchema({
+settingsSchemaObject = {
   title: {
     type: String,
     label: "Title",
@@ -160,7 +160,7 @@ SettingSchema = new SimpleSchema({
     type: String,
     optional: true
   }                                                                                                                                                                            
-});
+};
 
 // add any extra properties to settingsSchemaObject (provided by packages for example)
 _.each(addToSettingsSchema, function(item){
@@ -168,6 +168,7 @@ _.each(addToSettingsSchema, function(item){
 });
 
 Settings = new Meteor.Collection("settings");
+SettingSchema = new SimpleSchema(settingsSchemaObject);
 Settings.attachSchema(SettingsSchema);
 
 Settings.allow({
