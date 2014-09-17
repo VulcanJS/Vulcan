@@ -168,7 +168,7 @@ _.each(addToSettingsSchema, function(item){
 });
 
 Settings = new Meteor.Collection("settings");
-SettingSchema = new SimpleSchema(settingsSchemaObject);
+SettingsSchema = new SimpleSchema(settingsSchemaObject);
 Settings.attachSchema(SettingsSchema);
 
 Settings.allow({
