@@ -1,4 +1,4 @@
-postSchemaObject = {
+PostsSchema = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -86,16 +86,15 @@ postSchemaObject = {
     type: String, // XXX
     optional: true
   }
-};
+});
 
 // add any extra properties to postSchemaObject (provided by packages for example)
 _.each(addToPostSchema, function(item){
   postSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Posts = new Meteor.Collection("posts", {
-  schema: new SimpleSchema(postSchemaObject)
-});
+Posts = new Meteor.Collection("posts");
+Posts.attachSchema(PostsSchema);
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;

@@ -1,4 +1,4 @@
-InviteSchema = new SimpleSchema({
+InvitesSchema = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -17,9 +17,8 @@ InviteSchema = new SimpleSchema({
   }
 });
 
-Invites = new Meteor.Collection("invites", {
-  schema: InviteSchema
-});
+Invites = new Meteor.Collection("invites");
+Invites.attachSchema(InvitesSchema);
 
 
 // invites are managed through Meteor method
