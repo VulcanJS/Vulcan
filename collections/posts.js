@@ -13,7 +13,7 @@ postSchemaObject = {
   },    
   title: {
     type: String,
-    label: "Title",
+    label: "Title"
   },
   url: {
     type: String,
@@ -119,7 +119,7 @@ clickedPosts = [];
 
 getPostProperties = function(post) {
 
-  var postAuthor = Meteor.users.findOne(post.userId)
+  var postAuthor = Meteor.users.findOne(post.userId);
   var p = {
     postAuthorName : getDisplayName(postAuthor),
     postTitle : cleanUp(post.title),
@@ -136,7 +136,7 @@ getPostProperties = function(post) {
     p.htmlBody = post.htmlBody;
 
   return p;
-}
+};
 
 getPostPageUrl = function(post){
   return getSiteUrl()+'posts/'+post._id;
@@ -149,7 +149,7 @@ getPostEditUrl = function(id){
 // for a given post, return its link if it has one, or else its post page URL
 getPostLink = function (post) {
   return !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post);
-}
+};
 
 Posts.before.insert(function (userId, doc) {
   if(Meteor.isServer && !!doc.body)
@@ -222,8 +222,8 @@ Meteor.methods({
       commentsCount: 0,
       baseScore: 0,
       score: 0,
-      inactive: false,
-    }
+      inactive: false
+    };
 
     // UserId    
     if(isAdmin(Meteor.user()) && !!post.userId){ // only let admins post as other users
@@ -288,7 +288,7 @@ Meteor.methods({
     var postedAt = new Date(); // default to current date and time
         
     if(isAdmin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
-      var postedAt = customPostedAt;
+      postedAt = customPostedAt;
 
     Posts.update(post._id, {$set: {postedAt: postedAt}});
   },
@@ -323,7 +323,7 @@ Meteor.methods({
     // if(!this.isSimulation) {
     //   Comments.remove({post: postId});
     // }
-    // NOTE: actually, keep comments afer all
+    // NOTE: actually, keep comments after all
 
     // decrement post count
     var post = Posts.findOne({_id: postId});

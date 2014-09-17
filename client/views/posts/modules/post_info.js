@@ -18,5 +18,5 @@ Template[getTemplate('postInfo')].helpers({
     var user = Meteor.users.findOne(this.userId, {reactive: false});
     if(user)
       return getProfileUrl(user);
-  },
+  }
 });

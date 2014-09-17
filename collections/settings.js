@@ -62,7 +62,7 @@ settingsSchemaObject = {
           label: view.label
         }
       })
-    },
+    }
   },
   postInterval: {
     type: Number,

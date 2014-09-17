@@ -20,14 +20,14 @@ Template[getTemplate('mobile_nav')].helpers({
 });
 
 Template[getTemplate('mobile_nav')].events({
-  'click .dropdown-sub-level':function(event){
+  'click .dropdown-sub-level': function () {
     $('body').toggleClass('mobile-nav-open');
   }
 });
 
 Template[getTemplate('mobile_nav')].rendered = function () {
   $('.mobile-nav .dropdown-menu').hide();
-}
+};
 
 Template[getTemplate('mobile_nav')].events({
   'click .dropdown-top-level': function (e) {

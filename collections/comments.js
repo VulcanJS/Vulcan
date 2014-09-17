@@ -17,7 +17,7 @@ Comments = new Meteor.Collection("comments", {
       optional: true
     },
     body: {
-      type: String,
+      type: String
     },
     htmlBody: {
       type: String,
@@ -102,9 +102,9 @@ Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
     var user = Meteor.user(),
-        post=Posts.findOne(postId),
-        postUser=Meteor.users.findOne(post.userId),
-        timeSinceLastComment=timeSinceLast(user, Comments),
+        post = Posts.findOne(postId),
+        postUser = Meteor.users.findOne(post.userId),
+        timeSinceLastComment = timeSinceLast(user, Comments),
         commentInterval = Math.abs(parseInt(getSetting('commentInterval',15))),
         now = new Date();
 
@@ -157,13 +157,13 @@ Meteor.methods({
     var notificationProperties = {
       comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
       post: _.pick(post, '_id', 'title', 'url')
-    }
+    };
 
     if(!this.isSimulation){
       if(parentCommentId){
         // child comment
-        var parentComment=Comments.findOne(parentCommentId);
-        var parentUser=Meteor.users.findOne(parentComment.userId);
+        var parentComment = Comments.findOne(parentCommentId);
+        var parentUser = Meteor.users.findOne(parentComment.userId);
 
         notificationProperties.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
 
@@ -187,7 +187,7 @@ Meteor.methods({
     return comment;
   },
   removeComment: function(commentId){
-    var comment=Comments.findOne(commentId);
+    var comment = Comments.findOne(commentId);
     if(canEdit(Meteor.user(), comment)){
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {

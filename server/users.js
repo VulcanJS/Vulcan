@@ -79,7 +79,7 @@ Accounts.onCreateUser(function(options, user){
       var emailProperties = {
         profileUrl: getProfileUrl(user),
         username: getUserName(user)
-      }
+      };
       var html = getEmailTemplate('emailNewUser')(emailProperties);
       sendEmail(getEmail(admin), 'New user account: '+getUserName(user), buildEmailTemplate(html));
     }

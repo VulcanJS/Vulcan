@@ -60,7 +60,7 @@ Template[getTemplate('comment_item')].created = function() {
   // if comments are supposed to be queued, then queue this comment on create
   this.isQueued = window.queueComments;
   window.openedComments = [];
-}
+};
 
 Template[getTemplate('comment_item')].helpers({
   comment_item: function () {
@@ -138,7 +138,7 @@ Template[getTemplate('comment_item')].rendered=function(){
   //     // TODO: take the user back to their previous scroll position
   //   }
   // }
-}
+};
 
 Template.comment_item.events({
   'click .queue-comment': function(e){
