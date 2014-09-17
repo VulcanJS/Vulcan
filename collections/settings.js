@@ -1,4 +1,4 @@
-SettingsSchema = new SimpleSchema({
+SettingSchema = new SimpleSchema({
   title: {
     type: String,
     label: "Title",

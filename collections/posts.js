@@ -1,4 +1,4 @@
-PostsSchema = new SimpleSchema({
+PostSchema = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -94,7 +94,7 @@ _.each(addToPostSchema, function(item){
 });
 
 Posts = new Meteor.Collection("posts");
-Posts.attachSchema(PostsSchema);
+Posts.attachSchema(PostSchema);
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;

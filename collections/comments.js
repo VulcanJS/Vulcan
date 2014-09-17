@@ -1,4 +1,4 @@
-CommentsSchema = new SimpleSchema({
+CommentSchema = new SimpleSchema({
     _id: {
         type: String,
         optional: true
@@ -71,7 +71,7 @@ CommentsSchema = new SimpleSchema({
 });
 
 Comments = new Meteor.Collection("comments");
-Comments.attachSchema(CommentsSchema);
+Comments.attachSchema(CommentSchema);
 
 Comments.deny({
   update: function(userId, post, fieldNames) {
