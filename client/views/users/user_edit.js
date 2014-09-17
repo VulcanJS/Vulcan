@@ -32,7 +32,7 @@ Template[getTemplate('user_edit')].helpers({
   hasPassword: function () {
     return hasPassword(Meteor.user());
   }
-})
+});
 
 Template[getTemplate('user_edit')].events({
   'submit #account-form': function(e){

@@ -38,7 +38,7 @@ createNotification = function(event, properties, userToNotify) {
     properties: properties,
     read: false
   };
-  var newNotificationId=Notifications.insert(notification);
+  var newNotificationId = Notifications.insert(notification);
 
   // 2. Send notification by email (if on server)
   if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
@@ -56,14 +56,14 @@ buildSiteNotification = function (notification) {
       post = notification.properties.post,
       userToNotify = Meteor.users.findOne(notification.userId),
       template,
-      html
+      html;
 
   var properties = {
     profileUrl: getProfileUrlById(comment.userId),
     author: comment.author,
     postCommentUrl: getPostCommentUrl(post._id, comment._id),
     postTitle: post.title
-  }
+  };
 
   switch(event){
     case 'newReply':

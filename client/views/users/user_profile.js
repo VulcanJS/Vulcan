@@ -3,7 +3,7 @@ Template[getTemplate('user_profile')].created = function () {
   Session.set('upvotedPostsShown', 5);
   Session.set('downvotedPostsShown', 5);
   Session.set('commentsShown', 5);  
-}
+};
 
 Template[getTemplate('user_profile')].helpers({
   avatarUrl: function() {

@@ -7,5 +7,5 @@ Template[getTemplate('postAdmin')].helpers({
   },
   shortScore: function(){
     return Math.floor(this.score*1000)/1000;
-  }, 
+  }
 });

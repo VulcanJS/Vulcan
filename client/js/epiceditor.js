@@ -683,7 +683,7 @@
     utilBtns = self.iframe.getElementById('epiceditor-utilbar');
 
     // TODO: Move into fullscreen setup function (_setupFullscreen)
-    _elementStates = {}
+    _elementStates = {};
     self._goFullscreen = function (el) {
       this._fixScrollbars('auto');
 

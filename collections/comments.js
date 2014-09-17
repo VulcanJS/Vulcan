@@ -1,76 +1,77 @@
-Comments = new Meteor.Collection("comments", {
-  schema: new SimpleSchema({
+CommentSchema = new SimpleSchema({
     _id: {
-      type: String,
-      optional: true
+        type: String,
+        optional: true
     },
     parentCommentId: {
-      type: String,
-      optional: true
+        type: String,
+        optional: true
     },
     createdAt: {
-      type: Date,
-      optional: true
+        type: Date,
+        optional: true
     },
     postedAt: { // for now, comments are always created and posted at the same time
-      type: Date,
-      optional: true
+        type: Date,
+        optional: true
     },
     body: {
-      type: String,
+        type: String
     },
     htmlBody: {
-      type: String,
-      optional: true
+        type: String,
+        optional: true
     },
     baseScore: {
-      type: Number,
-      decimal: true,
-      optional: true
+        type: Number,
+        decimal: true,
+        optional: true
     },
     score: {
-      type: Number,
-      decimal: true,
-      optional: true
+        type: Number,
+        decimal: true,
+        optional: true
     },
     upvotes: {
-      type: Number,
-      optional: true
+        type: Number,
+        optional: true
     },
     upvoters: {
-      type: [String], // XXX
-      optional: true
+        type: [String], // XXX
+        optional: true
     },
     downvotes: {
-      type: Number,
-      optional: true
+        type: Number,
+        optional: true
     },
     downvoters: {
-      type: [String], // XXX
-      optional: true
+        type: [String], // XXX
+        optional: true
     },
     author: {
-      type: String,
-      optional: true
+        type: String,
+        optional: true
     },
     inactive: {
-      type: Boolean,
-      optional: true
+        type: Boolean,
+        optional: true
     },
     postId: {
-      type: String, // XXX
-      optional: true
+        type: String, // XXX
+        optional: true
     },
     userId: {
-      type: String, // XXX
-      optional: true
+        type: String, // XXX
+        optional: true
     },
     isDeleted: {
-      type: Boolean,
-      optional: true
+        type: Boolean,
+        optional: true
     }
-  })
 });
+
+Comments = new Meteor.Collection("comments");
+Comments.attachSchema(CommentSchema);
 
 Comments.deny({
   update: function(userId, post, fieldNames) {
@@ -102,9 +103,9 @@ Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
 Meteor.methods({
   comment: function(postId, parentCommentId, text){
     var user = Meteor.user(),
-        post=Posts.findOne(postId),
-        postUser=Meteor.users.findOne(post.userId),
-        timeSinceLastComment=timeSinceLast(user, Comments),
+        post = Posts.findOne(postId),
+        postUser = Meteor.users.findOne(post.userId),
+        timeSinceLastComment = timeSinceLast(user, Comments),
         commentInterval = Math.abs(parseInt(getSetting('commentInterval',15))),
         now = new Date();
 
@@ -157,13 +158,13 @@ Meteor.methods({
     var notificationProperties = {
       comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
       post: _.pick(post, '_id', 'title', 'url')
-    }
+    };
 
     if(!this.isSimulation){
       if(parentCommentId){
         // child comment
-        var parentComment=Comments.findOne(parentCommentId);
-        var parentUser=Meteor.users.findOne(parentComment.userId);
+        var parentComment = Comments.findOne(parentCommentId);
+        var parentUser = Meteor.users.findOne(parentComment.userId);
 
         notificationProperties.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
 
@@ -187,7 +188,7 @@ Meteor.methods({
     return comment;
   },
   removeComment: function(commentId){
-    var comment=Comments.findOne(commentId);
+    var comment = Comments.findOne(commentId);
     if(canEdit(Meteor.user(), comment)){
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {
