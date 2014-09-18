@@ -18,12 +18,12 @@
   margin-right: auto; }
 
 /* line 47, ../scss/partials/_grid.scss */
-.grid-small, .entry {
+.grid-small, .at-form {
   width: 100%;
   margin: 0 auto; }
   @media screen and (min-width: 30em) {
     /* line 47, ../scss/partials/_grid.scss */
-    .grid-small, .entry {
+    .grid-small, .at-form {
       max-width: 500px; } }
 
 /*================ FUNCTIONS =================*/
