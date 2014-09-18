@@ -140,7 +140,7 @@ Template[getTemplate('comment_item')].rendered=function(){
   // }
 };
 
-Template.comment_item.events({
+Template[getTemplate('comment_item')].events({
   'click .queue-comment': function(e){
     e.preventDefault();
     var current_comment_id=$(event.target).closest(".comment").attr("id");
