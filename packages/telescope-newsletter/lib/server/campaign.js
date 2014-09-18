@@ -67,10 +67,11 @@ buildCampaign = function (postsArray) {
   }
 }
 
-scheduleNextCampaign = function () {
+scheduleNextCampaign = function (isTest) {
+  var isTest = typeof isTest === 'undefined' ? false : isTest;
   var posts = getCampaignPosts(getSetting('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
-    return scheduleCampaign(buildCampaign(posts))
+    return scheduleCampaign(buildCampaign(posts), isTest);
   }else{
     var result = 'No posts to schedule today…';
     console.log(result)
@@ -80,6 +81,6 @@ scheduleNextCampaign = function () {
 
 Meteor.methods({
   testCampaign: function () {
-    scheduleNextCampaign();
+    scheduleNextCampaign(true);
   }
 });
