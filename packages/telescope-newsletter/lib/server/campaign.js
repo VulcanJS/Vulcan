@@ -81,6 +81,7 @@ scheduleNextCampaign = function (isTest) {
 
 Meteor.methods({
   testCampaign: function () {
-    scheduleNextCampaign(true);
+    if(isAdminById(this.userId))
+      scheduleNextCampaign(true);
   }
 });
