@@ -9,7 +9,7 @@ getCampaignPosts = function (postsCount) {
   var lastCampaign = SyncedCron._collection.findOne({name: 'Schedule newsletter'}, {sort: {finishedAt: -1}, limit: 1});
   
   // if there is a last campaign use its date, else default to posts from the last 7 days
-  var lastWeek = moment().subtract('days', 7).toDate();
+  var lastWeek = moment().subtract(7, 'days').toDate();
   var after = (typeof lastCampaign != 'undefined') ? lastCampaign.finishedAt : lastWeek
 
   var params = getParameters({
