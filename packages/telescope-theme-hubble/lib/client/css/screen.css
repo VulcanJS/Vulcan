@@ -614,7 +614,7 @@ em {
 
 /* line 267, ../scss/modules/_posts.scss */
 .post-info {
-  padding: 13px 0; }
+  padding: 10px 0; }
 
 /* line 270, ../scss/modules/_posts.scss */
 .post-content {
@@ -1072,6 +1072,14 @@ em {
     border-width: 8px;
     left: 20px;
     margin-left: -8px; }
+
+/* line 259, ../scss/modules/_comments.scss */
+.comment-deleted {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 3px;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  color: #b3c1c6; }
 
 /* line 1, ../scss/modules/_dialogs.scss */
 .dialog {

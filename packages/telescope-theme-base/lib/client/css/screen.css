@@ -61,7 +61,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 111, ../scss/includes/_mixins.scss */
 .popover {
   background: white;
-  border: 1px solid #dd3416;
+  border: 1px solid #DD3416;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -217,7 +217,7 @@ form input[type="text"], form input[type="password"], form input[type="number"],
   /* line 83, ../scss/global/_forms.scss */
   form input[type="text"]:focus, form input[type="password"]:focus, form input[type="number"]:focus, form input[type="email"]:focus, form textarea:focus, form .login-form input:focus, form input.form-control:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog input[type="number"]:focus, .accounts-dialog input[type="email"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus, .accounts-dialog input.form-control:focus {
     outline: none;
-    border-color: #dd3416;
+    border-color: #DD3416;
     -moz-box-shadow: 0px 0px 5px 0px rgba(221, 52, 22, 0.3);
     -webkit-box-shadow: 0px 0px 5px 0px rgba(221, 52, 22, 0.3);
     box-shadow: 0px 0px 5px 0px rgba(221, 52, 22, 0.3); }
@@ -246,7 +246,7 @@ form .note, .accounts-dialog .note {
 input[type="submit"], button, .button, .btn {
   -webkit-appearance: none;
   border-radius: 3px;
-  background: #dd3416;
+  background: #DD3416;
   color: white;
   text-align: center;
   display: block;
@@ -304,6 +304,14 @@ input[type="search"] {
   color: #b3c1c6;
   margin-bottom: 15px; }
 
+/* line 167, ../scss/global/_forms.scss */
+#editor > iframe {
+  border: 1px solid #B5B0B0; }
+
+/* line 170, ../scss/global/_forms.scss */
+.comment-field {
+  margin-bottom: 10px; }
+
 /* line 1, ../scss/global/_links.scss */
 a {
   text-decoration: none; }
@@ -313,7 +321,7 @@ a {
     font-weight: bold; }
   /* line 7, ../scss/global/_links.scss */
   a:hover {
-    color: #dd3416; }
+    color: #DD3416; }
 
 /* line 1, ../scss/global/_main.scss */
 .hidden {
@@ -420,7 +428,7 @@ a {
   color: #7ac0e4; }
 /* line 25, ../scss/global/_markdown.scss */
 .markdown a:hover {
-  color: #dd3416; }
+  color: #DD3416; }
 /* line 30, ../scss/global/_markdown.scss */
 .markdown p:last-child {
   margin-bottom: 0; }
@@ -563,7 +571,7 @@ li {
 
 /* line 1, ../scss/specific/_errors.scss */
 .error {
-  background: #dd3416;
+  background: #DD3416;
   color: white; }
 
 /* line 3, ../scss/specific/_header.scss */

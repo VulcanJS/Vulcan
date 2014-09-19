@@ -1,15 +1,14 @@
 html { 
   padding:10px;
-  border: 1px solid #B5B0B0;
 }
 
 body {
   border:0;
-  background:#fcfcfc;
+  background:#fff;
   font-family:monospace;
   font-size:14px;
   padding:10px;
-  line-height:1.35em;
+  line-height:1.5;
   margin:0;
   padding:0;
 }

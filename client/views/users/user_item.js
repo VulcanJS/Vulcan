@@ -66,4 +66,4 @@ Template[getTemplate('user_item')].events({
     if(confirm(i18n.t("Are you sure you want to delete ")+getDisplayName(instance.data)+"?"))
       Meteor.users.remove(instance.data._id);
   }
-})
+});

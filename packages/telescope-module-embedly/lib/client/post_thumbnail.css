@@ -3,7 +3,7 @@
 }
 
 .post-thumbnail-link{
-  display: inline-block;
+  display: block;
   margin-right: 10px;
   position: relative;
   overflow: hidden;

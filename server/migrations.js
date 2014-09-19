@@ -18,7 +18,7 @@ var runMigration = function (migrationName) {
   if (migration){
     if(typeof migration.finishedAt === 'undefined'){
       // if migration exists but hasn't finished, remove it and start fresh
-      console.log('!!! Found incomplete migration "'+migrationName+'", removing and running again.')
+      console.log('!!! Found incomplete migration "'+migrationName+'", removing and running again.');
       Migrations.remove({name: migrationName});
     }else{
       // do nothing
@@ -39,7 +39,7 @@ var runMigration = function (migrationName) {
   console.log("//----------------------------------------------------------------------//");
   console.log("//------------//     Ending "+migrationName+" Migration     //-----------//");
   console.log("//----------------------------------------------------------------------//");
-}
+};
 
 var migrationsList = {
   updatePostStatus: function () {
@@ -119,7 +119,7 @@ var migrationsList = {
       i++;
       console.log('> Updating user '+user._id+' ('+user.username+')');
 
-      var properties = {}
+      var properties = {};
       // update user slug
       if(getUserName(user))
         properties.slug = slugify(getUserName(user));
@@ -219,7 +219,7 @@ var migrationsList = {
         console.log("Posts: "+post.title);
         var createdAt = new Date(post.createdAt);
         var submitted = new Date(post.submitted);
-        console.log(createdAt)
+        console.log(createdAt);
         Posts.update(post._id, { $set: { 'createdAt': createdAt, submitted: submitted}}, {multi: true, validate: false});
         console.log("---------------------");
       }
@@ -365,4 +365,4 @@ var migrationsList = {
     });
     return i;
   }
-}
+};

@@ -8,7 +8,7 @@ Template[getTemplate('unsubscribe')].created = function(){
     }
   });
   trackEvent('notificationsUnsubcribe', {hash: hash});
-}
+};
 
 Template[getTemplate('unsubscribe')].helpers({
   unsubscribed : function(){

@@ -40,7 +40,7 @@ buildEmailNotification = function (notification) {
     subject: subject,
     html: html
   }
-}
+};
 
 newPostNotification = function(post, excludedIDs){
   var excludedIDs = typeof excludedIDs == 'undefined' ? [] : excludedIDs;
@@ -54,7 +54,7 @@ newPostNotification = function(post, excludedIDs){
     if(excludedIDs.indexOf(user._id) == -1)
       sendEmail(getEmail(user), subject, html);
   });
-}
+};
 
 Meteor.methods({
   unsubscribeUser : function(hash){

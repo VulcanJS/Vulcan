@@ -62,7 +62,7 @@ settingsSchemaObject = {
           label: view.label
         }
       })
-    },
+    }
   },
   postInterval: {
     type: Number,
@@ -167,9 +167,9 @@ _.each(addToSettingsSchema, function(item){
   settingsSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Settings = new Meteor.Collection("settings", {
-  schema: new SimpleSchema(settingsSchemaObject)
-});
+Settings = new Meteor.Collection("settings");
+SettingsSchema = new SimpleSchema(settingsSchemaObject);
+Settings.attachSchema(SettingsSchema);
 
 Settings.allow({
   insert: isAdminById,

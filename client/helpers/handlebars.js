@@ -68,3 +68,8 @@ UI.registerHelper("sanitize", function(content) {
   console.log(content)
   return cleanUp(content);
 });
+
+UI.registerHelper('pluralize', function(count, string) {
+  string = count === 1 ? string : string + 's';
+  return i18n.t(string);
+});

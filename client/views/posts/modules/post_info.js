@@ -1,4 +1,4 @@
-Template[getTemplate('postMeta')].helpers({
+Template[getTemplate('postInfo')].helpers({
   pointsUnitDisplayText: function(){
     return this.upvotes == 1 ? i18n.t('point') : i18n.t('points');
   },
@@ -18,5 +18,5 @@ Template[getTemplate('postMeta')].helpers({
     var user = Meteor.users.findOne(this.userId, {reactive: false});
     if(user)
       return getProfileUrl(user);
-  },
+  }
 });

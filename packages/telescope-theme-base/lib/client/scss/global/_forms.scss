@@ -164,3 +164,9 @@ input[type="search"]{
   color: $light-text;
   margin-bottom:$grid-padding;
 }
+#editor>iframe{
+  border: 1px solid #B5B0B0;
+}
+.comment-field{
+  margin-bottom: 10px;  
+}

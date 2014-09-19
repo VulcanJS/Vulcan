@@ -6,11 +6,13 @@ EpicEditorOptions={
 	container:  'editor',
 	basePath:   '/editor',
 	clientSideStorage: false,
-	autogrow: true,
+	autogrow: {
+		minHeight: 100
+	},
 	theme: {
 		base:'/themes/base/epiceditor.css',
 		preview:'/themes/preview/github.css',
-		editor:'/themes/editor/epic-light.css'
+		editor:'/themes/editor/epic-light3.css'
 	}
 };
 
@@ -18,7 +20,7 @@ SharrreOptions={
 	share: {
 	  googlePlus: true,
 	  // facebook: true,
-	  twitter: true,
+	  twitter: true
 	},
 	buttons: {
 	  googlePlus: {size: 'tall', annotation:'bubble'},

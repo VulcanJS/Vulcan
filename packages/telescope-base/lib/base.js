@@ -1,9 +1,20 @@
-// Initialize common arrays
+// ------------------------------------- Schemas -------------------------------- //
 
 // array containing properties to be added to the post/settings/comments schema on startup.
 addToPostSchema = [];
 addToCommentsSchema = [];
 addToSettingsSchema = [];
+
+// ------------------------------------- Navigation -------------------------------- //
+
+
+// array containing nav items; initialize with views menu and admin menu
+primaryNav = ['viewsMenu', 'adminMenu'];
+
+secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
+
+// array containing items in the admin menu
+adminNav = [];
 
 // array containing items in the views menu
 viewNav = [
@@ -22,19 +33,11 @@ viewNav = [
   {
     route: 'posts_digest',
     label: 'Digest'
-  }   
+  } 
 ];
 
-// array containing items in the admin menu
-adminNav = [];
+// ------------------------------------- Views -------------------------------- //
 
-// array containing subscriptions to be preloaded
-preloadSubscriptions = [];
-
-// array containing nav items; initialize with views menu and admin menu
-primaryNav = ['viewsMenu', 'adminMenu'];
-
-secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
 
 // object containing post list view parameters
 viewParameters = {}
@@ -78,9 +81,10 @@ viewParameters.digest = function (terms) {
   };
 }
 
-footerModules = [];
 
 heroModules = [];
+
+footerModules = [];
 
 // array containing post modules
 modulePositions = [
@@ -127,7 +131,7 @@ postHeading = [
 
 postMeta = [
   {
-    template: 'postMeta',
+    template: 'postInfo',
     order: 1
   },
   {
@@ -168,3 +172,8 @@ getTemplate = function (name) {
 themeSettings = {
   'useDropdowns': true // whether or not to use dropdown menus in a theme
 };
+
+// ------------------------------ Subscriptions ------------------------------ //
+
+// array containing subscriptions to be preloaded
+preloadSubscriptions = [];

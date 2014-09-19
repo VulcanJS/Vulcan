@@ -1,8 +1,10 @@
-scheduleCampaign = function (campaign) {
+scheduleCampaign = function (campaign, isTest) {
+  var isTest = typeof isTest === 'undefined' ? false : isTest;
+
   MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
   MailChimpOptions.listId = getSetting('mailChimpListId');
 
-  var htmlToText = Meteor.require('html-to-text');
+  var htmlToText = Npm.require('html-to-text');
   var text = htmlToText.fromString(campaign.html, {
       wordwrap: 130
   });
@@ -55,8 +57,9 @@ scheduleCampaign = function (campaign) {
             console.log(campaign.subject)
             // console.log( JSON.stringify( result ) );
 
-            // mark posts as sent
-            Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+            // if this is not a test, mark posts as sent
+            if (!isTest)
+              Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
             // send confirmation email
             var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
