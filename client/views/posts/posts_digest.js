@@ -34,7 +34,7 @@ Template[getTemplate('posts_digest')].helpers({
   },
   previousDateURL: function(){
     var currentDate=moment(Session.get('currentDate'));
-    var newDate=currentDate.subtract('days', 1);
+    var newDate=currentDate.subtract(1, 'days');
     return getDigestURL(newDate);
   },
   showPreviousDate: function(){
