@@ -182,14 +182,10 @@ if (Meteor.isClient){
   var query = Settings.find();
   var handle = query.observeChanges({
     added: function (id, fields) {
-      console.log('Added document to settings');
-      console.log(fields);
       if (fields.language)
         T9n.language = fields.language;
     },
     changed: function (id, fields) {
-      console.log('Changed document inside settings');
-      console.log(fields);
       if (fields.language)
         T9n.language = fields.language;
     }
