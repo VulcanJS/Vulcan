@@ -256,7 +256,7 @@ Meteor.methods({
     // ------------------------------ Callbacks ------------------------------ //
 
     // run all post submit server callbacks on post object successively
-    post = postSubmitServerCallbacks.reduce(function(result, currentFunction) {
+    post = postSubmitMethodCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(result);
     }, post);
 
@@ -264,6 +264,13 @@ Meteor.methods({
 
     // console.log(post)
     post._id = Posts.insert(post);
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on post object successively
+    post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, post);
 
     // ------------------------------ Post-Insert ------------------------------ //
 
@@ -273,14 +280,6 @@ Meteor.methods({
     var postAuthor =  Meteor.users.findOne(post.userId);
 
     Meteor.call('upvotePost', post, postAuthor);
-
-    // notify users of new posts
-    if(Meteor.isServer && !!getSetting('emailNotifications', false)){
-      // we don't want emails to hold up the post submission, so we make the whole thing async with setTimeout
-      Meteor.setTimeout(function () {
-        newPostNotification(post, [userId])
-      }, 1);
-    }
 
     return post;
   },

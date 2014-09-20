@@ -27,14 +27,23 @@ Package.onUse(function (api) {
 
     'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
-    'postSubmitServerCallbacks',
+    'postSubmitMethodCallbacks',
+    'postAfterSubmitMethodCallbacks',
 
     'postEditRenderedCallbacks',
     'postEditClientCallbacks',
+    'postEditMethodCallbacks',
+    'postAfterEditMethodCallbacks',
 
+    'commentSubmitRenderedCallbacks',
     'commentSubmitClientCallbacks',
-    'commentSubmitServerCallbacks',
+    'commentSubmitMethodCallbacks',
+    'commentAfterSubmitMethodCallbacks',
+
+    'commentEditRenderedCallbacks',
     'commentEditClientCallbacks',
+    'commentEditMethodCallbacks',
+    'commentAfterEditMethodCallbacks',
     
     'getTemplate',
     'templates',
