@@ -1,3 +1,13 @@
+## v0.9.5 “FixScope”
+
+* Fixed `/settings` bug (thanks @steffenstraetz!).
+* Code cleanup (thanks @wulfmeister!).
+* Fixed upvote/downvote concurrency bug (thanks @spifd!).
+* Renamed `SubmitServerCallbacks` to `SubmitMethodCallbacks` for posts and comments.
+* Added `AfterSubmitMethodCallbacks` for posts and comments.
+* Made notifications into their own `telescope-notifications` package.
+* `telescope-update-prompt` package now sends user, post, and comment count when phoning home.
+
 ## v0.9.4 “UpdateScope”
 
 * Removed unneeded allow insert on Posts and Comments. 

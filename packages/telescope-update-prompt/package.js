@@ -23,6 +23,10 @@ Package.onUse(function (api) {
     'lib/client/templates/update_banner.css'
   ], ['client']);
 
+  api.add_files([
+    'lib/server/phone_home.js'
+  ], ['server']);
+
   api.export([
     'compareVersions'
   ]);
