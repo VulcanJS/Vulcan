@@ -21,12 +21,12 @@ Notifications = new Meteor.Collection('notifications');
 // });
 
 Notifications.allow({
-    insert: function(userId, doc){
-      // new notifications can only be created via a Meteor method
-      return false;
-    }
-  , update: canEditById
-  , remove: canEditById
+  insert: function(userId, doc){
+    // new notifications can only be created via a Meteor method
+    return false;
+  },
+  update: can.editById,
+  remove: can.editById
 });
 
 createNotification = function(event, properties, userToNotify) {
@@ -67,11 +67,11 @@ buildSiteNotification = function (notification) {
 
   switch(event){
     case 'newReply':
-      template = 'notification_new_reply';
+      template = 'notificationNewReply';
       break;
 
     case 'newComment':
-      template = 'notification_new_comment';
+      template = 'notificationNewComment';
       break; 
 
     default:
@@ -96,5 +96,54 @@ Meteor.methods({
       },
       {multi: true}
     );
+  }
+});
+
+// add new post notification callback on post submit
+postSubmitMethodCallbacks.push(function (post) {
+  if(Meteor.isServer && !!getSetting('emailNotifications', false)){
+    // we don't want emails to hold up the post submission, so we make the whole thing async with setTimeout
+    Meteor.setTimeout(function () {
+      newPostNotification(post, [post.userId])
+    }, 1);
+  }
+  return post;
+});
+
+// add new comment notification callback on comment submit
+commentSubmitMethodCallbacks.push(function (comment) {
+  if(Meteor.isServer){
+
+    var post = Posts.findOne(comment.postId);
+    var parentCommentId = comment.parentCommentId;
+    
+    var notificationProperties = {
+      comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
+      post: _.pick(post, '_id', 'title', 'url')
+    };
+
+    if(parentCommentId){
+      // child comment
+      var parentComment = Comments.findOne(parentCommentId);
+      var parentUser = Meteor.users.findOne(parentComment.userId);
+
+      notificationProperties.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
+
+      // reply notification
+      // do not notify users of their own actions (i.e. they're replying to themselves)
+      if(parentUser._id != user._id)
+        createNotification('newReply', notificationProperties, parentUser);
+
+      // comment notification
+      // if the original poster is different from the author of the parent comment, notify them too
+      if(postUser._id != user._id && parentComment.userId != post.userId)
+        createNotification('newComment', notificationProperties, postUser);
+
+    }else{
+      // root comment
+      // don't notify users of their own comments
+      if(postUser._id != user._id)
+        createNotification('newComment', notificationProperties, postUser);
+    }
   }
 });
