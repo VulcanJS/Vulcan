@@ -265,6 +265,13 @@ Meteor.methods({
     // console.log(post)
     post._id = Posts.insert(post);
 
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on post object successively
+    post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, post);
+
     // ------------------------------ Post-Insert ------------------------------ //
 
     // increment posts count

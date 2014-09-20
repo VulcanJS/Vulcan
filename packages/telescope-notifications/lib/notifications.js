@@ -100,7 +100,7 @@ Meteor.methods({
 });
 
 // add new post notification callback on post submit
-postSubmitMethodCallbacks.push(function (post) {
+postAfterSubmitMethodCallbacks.push(function (post) {
   if(Meteor.isServer && !!getSetting('emailNotifications', false)){
     // we don't want emails to hold up the post submission, so we make the whole thing async with setTimeout
     Meteor.setTimeout(function () {
@@ -111,12 +111,14 @@ postSubmitMethodCallbacks.push(function (post) {
 });
 
 // add new comment notification callback on comment submit
-commentSubmitMethodCallbacks.push(function (comment) {
+commentAfterSubmitMethodCallbacks.push(function (comment) {
   if(Meteor.isServer){
 
-    var post = Posts.findOne(comment.postId);
     var parentCommentId = comment.parentCommentId;
-    
+    var user = Meteor.user();
+    var post = Posts.findOne(comment.postId);
+    var postUser = Meteor.users.findOne(post.userId);
+
     var notificationProperties = {
       comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
       post: _.pick(post, '_id', 'title', 'url')
@@ -146,4 +148,6 @@ commentSubmitMethodCallbacks.push(function (comment) {
         createNotification('newComment', notificationProperties, postUser);
     }
   }
+
+  return comment;
 });

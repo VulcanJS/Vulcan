@@ -147,15 +147,19 @@ Meteor.methods({
 
     // -------------------------------- Insert ------------------------------- //
 
-    var newCommentId=Comments.insert(comment);
+    comment._id = Comments.insert(comment);
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on comment object successively
+    comment = commentAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, comment);
 
     // increment comment count
     Meteor.users.update({_id: user._id}, {
       $inc:       {'data.commentsCount': 1}
     });
-
-    // extend comment with newly created _id
-    comment = _.extend(comment, {_id: newCommentId});
 
     Posts.update(postId, {
       $inc:       {commentsCount: 1},
