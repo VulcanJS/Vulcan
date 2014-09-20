@@ -65,5 +65,6 @@ matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
 telescope-update-prompt
-splendido:accounts-templates-bootstrap
+service-configuration
+splendido:accounts-templates-unstyled
 
