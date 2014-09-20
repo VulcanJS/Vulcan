@@ -47,11 +47,11 @@ settingsSchemaObject = {
   defaultEmail: {
     type: String,
     optional: true
-  },       
+  },
   scoreUpdateInterval: {
     type: Number,
     optional: true
-  }, 
+  },
   defaultView: {
     type: String,
     optional: true,
@@ -60,7 +60,7 @@ settingsSchemaObject = {
         return {
           value: camelCaseify(view.label),
           label: view.label
-        }
+        };
       })
     }
   },
@@ -119,7 +119,7 @@ settingsSchemaObject = {
   buttonTextColor: {
     type: String,
     optional: true
-  },  
+  },
   headerColor: {
     type: String,
     optional: true
@@ -127,7 +127,7 @@ settingsSchemaObject = {
   headerTextColor: {
     type: String,
     optional: true
-  },  
+  },
   twitterAccount: {
     type: String,
     optional: true
@@ -159,7 +159,7 @@ settingsSchemaObject = {
   notes: {
     type: String,
     optional: true
-  }                                                                                                                                                                            
+  },
 };
 
 // add any extra properties to settingsSchemaObject (provided by packages for example)
@@ -178,18 +178,20 @@ Settings.allow({
 });
 
 
-var query = Settings.find();
-var handle = query.observeChanges({
-  added: function (id, fields) {
-    console.log('Added document to settings');
-    console.log(fields);
-    if (fields.language)
-      T9n.language = fields.language;
-  },
-  changed: function (id, fields) {
-    console.log('Changed document inside settings');
-    console.log(fields);
-    if (fields.language)
-      T9n.language = fields.language;
-  }
-});
+if (Meteor.isClient){
+  var query = Settings.find();
+  var handle = query.observeChanges({
+    added: function (id, fields) {
+      console.log('Added document to settings');
+      console.log(fields);
+      if (fields.language)
+        T9n.language = fields.language;
+    },
+    changed: function (id, fields) {
+      console.log('Changed document inside settings');
+      console.log(fields);
+      if (fields.language)
+        T9n.language = fields.language;
+    }
+  });
+}
