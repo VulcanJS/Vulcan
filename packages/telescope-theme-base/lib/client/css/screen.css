@@ -405,53 +405,56 @@ a {
     float: right; }
 
 /* line 2, ../scss/global/_markdown.scss */
+.markdown img {
+  max-width: 100%; }
+/* line 5, ../scss/global/_markdown.scss */
 .markdown ul, .markdown ol, .markdown p, .markdown pre, .markdown blockquote {
   margin-bottom: 1em;
   line-height: 1.7; }
-/* line 6, ../scss/global/_markdown.scss */
+/* line 9, ../scss/global/_markdown.scss */
 .markdown strong {
   font-weight: bold; }
-/* line 9, ../scss/global/_markdown.scss */
+/* line 12, ../scss/global/_markdown.scss */
 .markdown em {
   font-style: italic; }
-/* line 12, ../scss/global/_markdown.scss */
+/* line 15, ../scss/global/_markdown.scss */
 .markdown ul, .markdown ol {
   padding-left: 18px; }
-/* line 15, ../scss/global/_markdown.scss */
+/* line 18, ../scss/global/_markdown.scss */
 .markdown ul {
   list-style-type: disc; }
-/* line 18, ../scss/global/_markdown.scss */
+/* line 21, ../scss/global/_markdown.scss */
 .markdown ol {
   list-style-type: decimal; }
-/* line 22, ../scss/global/_markdown.scss */
+/* line 25, ../scss/global/_markdown.scss */
 .markdown a:link, .markdown a:visited, .markdown a:active {
   color: #7ac0e4; }
-/* line 25, ../scss/global/_markdown.scss */
+/* line 28, ../scss/global/_markdown.scss */
 .markdown a:hover {
   color: #DD3416; }
-/* line 30, ../scss/global/_markdown.scss */
+/* line 33, ../scss/global/_markdown.scss */
 .markdown p:last-child {
   margin-bottom: 0; }
-/* line 34, ../scss/global/_markdown.scss */
+/* line 37, ../scss/global/_markdown.scss */
 .markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5 {
   font-weight: bold;
   margin-bottom: 0; }
-/* line 38, ../scss/global/_markdown.scss */
+/* line 41, ../scss/global/_markdown.scss */
 .markdown h1 {
   font-size: 36px; }
-/* line 41, ../scss/global/_markdown.scss */
+/* line 44, ../scss/global/_markdown.scss */
 .markdown h2 {
   font-size: 24px; }
-/* line 44, ../scss/global/_markdown.scss */
+/* line 47, ../scss/global/_markdown.scss */
 .markdown h3 {
   font-size: 18px; }
-/* line 47, ../scss/global/_markdown.scss */
+/* line 50, ../scss/global/_markdown.scss */
 .markdown h4 {
   font-size: 16px; }
-/* line 50, ../scss/global/_markdown.scss */
+/* line 53, ../scss/global/_markdown.scss */
 .markdown h5 {
   font-size: 14px; }
-/* line 53, ../scss/global/_markdown.scss */
+/* line 56, ../scss/global/_markdown.scss */
 .markdown code {
   font-family: monospace;
   margin: 0 2px;
@@ -459,16 +462,16 @@ a {
   border: 1px solid #ddd;
   background-color: #f8f8f8;
   border-radius: 3px; }
-/* line 61, ../scss/global/_markdown.scss */
+/* line 64, ../scss/global/_markdown.scss */
 .markdown pre {
   padding: 20px;
   border: 1px solid #ddd;
   background-color: #f8f8f8; }
-  /* line 65, ../scss/global/_markdown.scss */
+  /* line 68, ../scss/global/_markdown.scss */
   .markdown pre code {
     border: none;
     background: none; }
-/* line 70, ../scss/global/_markdown.scss */
+/* line 73, ../scss/global/_markdown.scss */
 .markdown blockquote {
   border-left: 3px solid #eee;
   padding-left: 20px; }
