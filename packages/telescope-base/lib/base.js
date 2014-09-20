@@ -147,15 +147,19 @@ postMeta = [
 
 postSubmitRenderedCallbacks = [];
 postSubmitClientCallbacks = [];
-postSubmitServerCallbacks = [];
+postSubmitMethodCallbacks = [];
 
 postEditRenderedCallbacks = [];
 postEditClientCallbacks = [];
+postEditMethodCallbacks = []; // not used yet
 
-commentEditClientCallbacks = []; // not used yet
-commentEditServerCallbacks = []; // not used yet
+commentSubmitRenderedCallbacks = [];
+commentSubmitClientCallbacks = [];
+commentSubmitMethodCallbacks = [];
 
-commentEditClientCallbacks = []; // not used yet
+commentEditRenderedCallbacks = []; 
+commentEditClientCallbacks = [];
+commentEditMethodCallbacks = []; // not used yet
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 
