@@ -8,7 +8,6 @@
 standard-app-packages
 backbone
 accounts-base
-accounts-ui
 accounts-password
 accounts-twitter
 spiderable
@@ -58,13 +57,17 @@ telescope-newsletter
 telescope-module-embedly
 telescope-i18n
 telescope-email
+telescope-update-prompt
+telescope-notifications
 
 
 npm-container
 matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
-telescope-update-prompt
-service-configuration
-splendido:accounts-templates-unstyled
 
+
+# Accounts Templates
+splendido:accounts-templates-unstyled
+service-configuration
+accounts-ui

@@ -62,4 +62,4 @@ var extendPost = function (post) {
   return post;
 }
 
-postSubmitServerCallbacks.push(extendPost);
+postSubmitMethodCallbacks.push(extendPost);

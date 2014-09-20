@@ -2,7 +2,11 @@
 
 Meteor.publish('singleComment', function(commentId) {
   if(canViewById(this.userId)){
-    return Comments.find(commentId);
+    // publish both current comment and child comments
+    var commentIds = [commentId];
+    var childCommentIds = _.pluck(Comments.find({parentCommentId: commentId}, {fields: {_id: 1}}).fetch(), '_id');
+    commentIds = commentIds.concat(childCommentIds);
+    return Comments.find({_id: {$in: commentIds}});
   }
   return [];
 });
