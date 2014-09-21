@@ -68,6 +68,7 @@ rajit:bootstrap3-datepicker
 
 
 # Accounts Templates
-splendido:accounts-templates-unstyled
 service-configuration
 accounts-ui
+splendido:accounts-templates-unstyled
+
