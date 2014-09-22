@@ -9,7 +9,7 @@ getCampaignPosts = function (postsCount) {
   var lastCampaign = SyncedCron._collection.findOne({name: 'Schedule newsletter'}, {sort: {finishedAt: -1}, limit: 1});
   
   // if there is a last campaign use its date, else default to posts from the last 7 days
-  var lastWeek = moment().subtract('days', 7).toDate();
+  var lastWeek = moment().subtract(7, 'days').toDate();
   var after = (typeof lastCampaign != 'undefined') ? lastCampaign.finishedAt : lastWeek
 
   var params = getParameters({
@@ -67,10 +67,11 @@ buildCampaign = function (postsArray) {
   }
 }
 
-scheduleNextCampaign = function () {
+scheduleNextCampaign = function (isTest) {
+  var isTest = typeof isTest === 'undefined' ? false : isTest;
   var posts = getCampaignPosts(getSetting('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
-    return scheduleCampaign(buildCampaign(posts))
+    return scheduleCampaign(buildCampaign(posts), isTest);
   }else{
     var result = 'No posts to schedule today…';
     console.log(result)
@@ -80,6 +81,7 @@ scheduleNextCampaign = function () {
 
 Meteor.methods({
   testCampaign: function () {
-    scheduleNextCampaign();
+    if(isAdminById(this.userId))
+      scheduleNextCampaign(true);
   }
 });

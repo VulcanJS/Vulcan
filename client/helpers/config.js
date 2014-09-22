@@ -12,7 +12,7 @@ EpicEditorOptions={
 	theme: {
 		base:'/themes/base/epiceditor.css',
 		preview:'/themes/preview/github.css',
-		editor:'/themes/editor/epic-light2.css'
+		editor:'/themes/editor/epic-light3.css'
 	}
 };
 
@@ -20,7 +20,7 @@ SharrreOptions={
 	share: {
 	  googlePlus: true,
 	  // facebook: true,
-	  twitter: true,
+	  twitter: true
 	},
 	buttons: {
 	  googlePlus: {size: 'tall', annotation:'bubble'},

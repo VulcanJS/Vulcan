@@ -11,14 +11,6 @@ Meteor.publish('settings', function() {
   return Settings.find({}, options);
 });
 
-Meteor.publish('notifications', function() {
-  // only publish notifications belonging to the current user
-  if(canViewById(this.userId)){
-    return Notifications.find({userId:this.userId});
-  }
-  return [];
-});
-
 Meteor.publish('invites', function(){
   if(canViewById(this.userId)){
     return Invites.find({invitingUserId:this.userId});

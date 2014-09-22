@@ -14,7 +14,12 @@ Package.onUse(function (api) {
     'jquery'
   ], 'client');
 
-  api.add_files(['lib/lib.js', 'lib/deep_extend.js', 'lib/autolink.js'], ['client', 'server']);
+  api.add_files([
+    'lib/lib.js', 
+    'lib/deep_extend.js', 
+    'lib/autolink.js', 
+    'lib/permissions.js'
+  ], ['client', 'server']);
 
   api.add_files(['lib/client/jquery.exists.js'], ['client']);
   
@@ -26,6 +31,7 @@ Package.onUse(function (api) {
     'getSetting',
     'getThemeSetting',
     'getSiteUrl',
-    'trimWords'
+    'trimWords',
+    'can'
   ]);
 });

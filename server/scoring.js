@@ -1,10 +1,10 @@
 
 Meteor.startup(function () {
   var scoreInterval = getSetting("scoreUpdateInterval") || 30;
-  if(scoreInterval>0){
+  if (scoreInterval > 0) {
 
     // active items get updated every N seconds
-    intervalId=Meteor.setInterval(function () {
+    intervalId = Meteor.setInterval(function () {
       var updatedPosts = 0;
       var updatedComments = 0;
       // console.log('tick ('+scoreInterval+')');
@@ -19,7 +19,7 @@ Meteor.startup(function () {
     }, scoreInterval * 1000);
 
     // inactive items get updated every hour
-    inactiveIntervalId=Meteor.setInterval(function () {
+    inactiveIntervalId = Meteor.setInterval(function () {
       var updatedPosts = 0;
       var updatedComments = 0;
       Posts.find({'inactive': true}).forEach(function (post) {

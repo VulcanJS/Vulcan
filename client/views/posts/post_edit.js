@@ -72,7 +72,7 @@ Template[getTemplate('post_edit')].rendered = function(){
 
   // $("#postUser").selectToAutocomplete(); // XXX
 
-}
+};
 
 Template[getTemplate('post_edit')].events({
   'change input[name=status]': function (e, i) {
@@ -124,7 +124,7 @@ Template[getTemplate('post_edit')].events({
 
       adminProperties = {
         sticky:     $('#sticky').is(':checked'),
-        userId:     $('#postUser').val(),
+        userId:     $('#postUser').val()
       };
 
       // Status
@@ -137,17 +137,19 @@ Template[getTemplate('post_edit')].events({
 
       if(adminProperties.status == STATUS_APPROVED){  
 
+        var $postedAtDate = $('#postedAtDate');
+        var $postedAtTime = $('#postedAtTime');
         var setPostedAt = false;
         var postedAt = new Date(); // default to current browser date and time
-        var postedAtDate = $('#postedAtDate').datepicker('getDate');
-        var postedAtTime = $('#postedAtTime').val();
+        var postedAtDate = $postedAtDate.datepicker('getDate');
+        var postedAtTime = $postedAtTime.val();
 
-        if($('#postedAtDate').exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
+        if($postedAtDate.exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
           postedAt = postedAtDate;
           setPostedAt = true;
         }
 
-        if($('#postedAtTime').exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
+        if($postedAtTime.exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
           var hours = postedAtTime.split(':')[0];
           var minutes = postedAtTime.split(':')[1];
           postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();

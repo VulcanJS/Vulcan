@@ -1,6 +1,6 @@
 Template[getTemplate('comment_list')].created = function(){
   postObject = this.data;
-}
+};
 
 Template[getTemplate('comment_list')].helpers({
   comment_item: function () {
@@ -16,4 +16,4 @@ Template[getTemplate('comment_list')].helpers({
 Template[getTemplate('comment_list')].rendered = function(){
   // once all comments have been rendered, activate comment queuing for future real-time comments
   window.queueComments = true;
-}
+};
