@@ -466,12 +466,13 @@ a {
 .markdown pre {
   padding: 20px;
   border: 1px solid #ddd;
-  background-color: #f8f8f8; }
-  /* line 68, ../scss/global/_markdown.scss */
+  background-color: #f8f8f8;
+  overflow-x: scroll; }
+  /* line 69, ../scss/global/_markdown.scss */
   .markdown pre code {
     border: none;
     background: none; }
-/* line 73, ../scss/global/_markdown.scss */
+/* line 74, ../scss/global/_markdown.scss */
 .markdown blockquote {
   border-left: 3px solid #eee;
   padding-left: 20px; }
