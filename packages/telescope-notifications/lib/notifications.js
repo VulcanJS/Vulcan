@@ -10,7 +10,8 @@ NotificationsHelpers.addEventType('newReply', {
     return this.properties.comment.author + " has replied to your comment on \"" + this.properties.post.title + "\"";
   },
   metadata: {
-    emailTemplate: 'notificationNewReply'
+    emailTemplate: 'emailNewReply',
+    template: 'notificationNewReply'
   }
 });
 
@@ -19,7 +20,8 @@ NotificationsHelpers.addEventType('newComment', {
     return this.properties.comment.author + " left a new comment on \"" + this.properties.post.title + "\"";
   },
   metadata: {
-    emailTemplate: 'notificationNewComment'
+    emailTemplate: 'emailNewComment',
+    template: 'notificationNewComment'
   }
 });
 
@@ -58,7 +60,7 @@ buildSiteNotification = function (notification) {
   };
 
   html = Blaze.toHTML(Blaze.With(properties, function(){
-    return Template[getTemplate(notification.metadata.emailTemplate)]
+    return Template[getTemplate(notification.metadata.template)]
   }));
 
   return html;
