@@ -23,12 +23,15 @@
 
 Notifications = new Meteor.Collection('notifications', {
   transform: function (notification) {
-    notification.message = function () {
-      if (NotificationsHelpers.eventTypes[this.event].messageFormat) {
-        return NotificationsHelpers.eventTypes[this.event].messageFormat.apply(this)
+    //allow for fields filter
+    if (notification.event) {
+      notification.message = function () {
+        if (NotificationsHelpers.eventTypes[this.event].messageFormat) {
+          return NotificationsHelpers.eventTypes[this.event].messageFormat.apply(this)
+        }
       }
+      notification.metadata = NotificationsHelpers.eventTypes[notification.event].metadata
     }
-    notification.metadata = NotificationsHelpers.eventTypes[notification.event].metadata
     return notification
   }
 });
@@ -82,5 +85,17 @@ NotificationsHelpers.addEventType = function (key, options) {
 }
 
 
-
+if (Package['iron:router']) {
+  routeSeenByUser = function () {
+    //TODO: make this a method
+    //TODO (possibly): allow for a disable overall and/or on a per user basis
+    Notifications.find({url:this.path, read: false}, {fields: {read: 1}}).forEach(function (notification) {
+      Notifications.update(notification._id, { $set: { read: true } })
+    });
+  }
+  if (Router.onRun)
+    Router.onRun(routeSeenByUser);
+  else
+    Router.load(routeSeenByUser);
+};
 

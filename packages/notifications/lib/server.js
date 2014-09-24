@@ -15,7 +15,8 @@ createNotification = function(userId, params, callback) {
     userId: userId,
     event: params.event,
     properties: params.properties,
-    read: false
+    read: false,
+    url: params.url
   };
   var error, newNotificationId;
   try {
