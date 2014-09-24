@@ -1,10 +1,6 @@
 {
   "dependencies": [
     [
-      "aldeed:simple-schema",
-      "1.0.3"
-    ],
-    [
       "application-configuration",
       "1.0.2"
     ],
@@ -41,10 +37,6 @@
       "1.0.0"
     ],
     [
-      "cmather:handlebars-server",
-      "0.2.0"
-    ],
-    [
       "ddp",
       "1.0.8"
     ],
@@ -69,10 +61,6 @@
       "1.0.0"
     ],
     [
-      "handlebars",
-      "1.0.0"
-    ],
-    [
       "html-tools",
       "1.0.0"
     ],
@@ -87,22 +75,6 @@
     [
       "id-map",
       "1.0.0"
-    ],
-    [
-      "iron:core",
-      "0.3.4"
-    ],
-    [
-      "iron:dynamic-template",
-      "0.4.1"
-    ],
-    [
-      "iron:layout",
-      "0.4.1"
-    ],
-    [
-      "iron:router",
-      "0.9.3"
     ],
     [
       "jquery",
@@ -143,10 +115,6 @@
     [
       "mongo",
       "1.0.5"
-    ],
-    [
-      "notifications",
-      "0.0.1"
     ],
     [
       "observe-sequence",
@@ -195,18 +163,6 @@
     [
       "standard-app-packages",
       "1.0.1"
-    ],
-    [
-      "telescope-base",
-      "0.0.0"
-    ],
-    [
-      "telescope-i18n",
-      "0.0.0"
-    ],
-    [
-      "telescope-lib",
-      "0.2.9"
     ],
     [
       "templating",

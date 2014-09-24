@@ -7,6 +7,7 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
+    'notifications',
     'telescope-lib',
     'telescope-base', 
     'aldeed:simple-schema'
