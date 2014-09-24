@@ -1,3 +1,8 @@
+## v0.9.6
+
+* Fixed security hole in user update. 
+* Kadira is now included by default. 
+
 ## v0.9.5 “FixScope”
 
 * Fixed `/settings` bug (thanks @steffenstraetz!).
