@@ -28,6 +28,7 @@ Notifications = new Meteor.Collection('notifications', {
         return NotificationsHelpers.eventTypes[this.event].messageFormat.apply(this)
       }
     }
+    notification.metadata = NotificationsHelpers.eventTypes[notification.event].metadata
     return notification
   }
 });
@@ -62,11 +63,11 @@ Meteor.methods({
   }
 });
 
-
+//This is not stored in the notifications for dynamic updating
+//for example if you change the metadata.emailTemplate it will
+//continue to just work. 
 NotificationsHelpers = {}
-
 NotificationsHelpers.eventTypes = {}
-
 NotificationsHelpers.addEventType = function (key, options) {
   //TODO: check for input sanity!
   
@@ -74,8 +75,10 @@ NotificationsHelpers.addEventType = function (key, options) {
     throw new Error('Notifications: event type already exists!');
 
   NotificationsHelpers.eventTypes[key] = {}
-  if (options && options.message)
+  if (options) {
     NotificationsHelpers.eventTypes[key].messageFormat = options.message
+    NotificationsHelpers.eventTypes[key].metadata = options.metadata
+  }
 }
 
 

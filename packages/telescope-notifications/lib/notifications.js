@@ -8,12 +8,18 @@ Notifications.deny({
 NotificationsHelpers.addEventType('newReply', {
   message: function () {
     return this.properties.comment.author + " has replied to your comment on \"" + this.properties.post.title + "\"";
+  },
+  metadata: {
+    emailTemplate: 'notificationNewReply'
   }
 });
 
 NotificationsHelpers.addEventType('newComment', {
   message: function () {
     return this.properties.comment.author + " left a new comment on \"" + this.properties.post.title + "\"";
+  },
+  metadata: {
+    emailTemplate: 'notificationNewComment'
   }
 });
 
@@ -42,7 +48,6 @@ buildSiteNotification = function (notification) {
       comment = notification.properties.comment,
       post = notification.properties.post,
       userToNotify = Meteor.users.findOne(notification.userId),
-      template,
       html;
 
   var properties = {
@@ -52,21 +57,8 @@ buildSiteNotification = function (notification) {
     postTitle: post.title
   };
 
-  switch(event){
-    case 'newReply':
-      template = 'notificationNewReply';
-      break;
-
-    case 'newComment':
-      template = 'notificationNewComment';
-      break; 
-
-    default:
-      break;
-  }
-
   html = Blaze.toHTML(Blaze.With(properties, function(){
-    return Template[getTemplate(template)]
+    return Template[getTemplate(notification.metadata.emailTemplate)]
   }));
 
   return html;
