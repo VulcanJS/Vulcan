@@ -46,6 +46,7 @@ Package.onUse(function (api) {
   ], ['server']);
   
   api.export([
+    'Notifications',
     'createNotification',
     'buildSiteNotification',
     'newPostNotification',
