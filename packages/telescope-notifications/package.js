@@ -48,7 +48,8 @@ Package.onUse(function (api) {
   
   api.export([
     'Notifications',
-    'createNotification',
+    'NotificationsHelpers',
+    '_createNotification',
     'buildSiteNotification',
     'newPostNotification',
     'buildEmailNotification',

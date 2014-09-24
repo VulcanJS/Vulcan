@@ -11,12 +11,12 @@ buildEmailNotification = function (notification) {
   
   switch(notification.event){
     case 'newReply':
-      subject = 'Someone replied to your comment on "'+post.title+'"';
+      subject = notification.message();
       template = 'emailNewReply';
       break;
 
     case 'newComment':
-      subject = 'A new comment on your post "'+post.title+'"';
+      subject = notification.message();
       template = 'emailNewComment';
       break; 
 

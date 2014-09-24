@@ -23,7 +23,12 @@
 
 Notifications = new Meteor.Collection('notifications', {
   transform: function (notification) {
-    return notification //will use to add a 'message' function
+    notification.message = function () {
+      if (NotificationsHelpers.eventTypes[this.event].messageFormat) {
+        return NotificationsHelpers.eventTypes[this.event].messageFormat.apply(this)
+      }
+    }
+    return notification
   }
 });
 
@@ -56,3 +61,23 @@ Meteor.methods({
     );
   }
 });
+
+
+NotificationsHelpers = {}
+
+NotificationsHelpers.eventTypes = {}
+
+NotificationsHelpers.addEventType = function (key, options) {
+  //TODO: check for input sanity!
+  
+  if (NotificationsHelpers.eventTypes[key]) 
+    throw new Error('Notifications: event type already exists!');
+
+  NotificationsHelpers.eventTypes[key] = {}
+  if (options && options.message)
+    NotificationsHelpers.eventTypes[key].messageFormat = options.message
+}
+
+
+
+

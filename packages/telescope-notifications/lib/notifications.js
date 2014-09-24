@@ -5,6 +5,18 @@ Notifications.deny({
   remove: ! can.editById
 });
 
+NotificationsHelpers.addEventType('newReply', {
+  message: function () {
+    return this.properties.comment.author + " has replied to your comment on \"" + this.properties.post.title + "\"";
+  }
+});
+
+NotificationsHelpers.addEventType('newComment', {
+  message: function () {
+    return this.properties.comment.author + " left a new comment on \"" + this.properties.post.title + "\"";
+  }
+});
+
 _createNotification = function(event, params, userToNotify) {
   params = {
     event: event,
