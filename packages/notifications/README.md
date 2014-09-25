@@ -58,7 +58,7 @@ Notifications.createNotification(userToNotifyId, params, function (error, notifi
     if (error) throw error; //output error like normal
     
     if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
-      var notification = Notifications.findOne(notificationId);
+      var notification = Notifications.collection.findOne(notificationId);
       // send email
     }
   })
