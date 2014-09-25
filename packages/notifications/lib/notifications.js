@@ -21,15 +21,21 @@
 //   })
 // });
 
+//The collection and any instance functionality
 Notifications = new Meteor.Collection('notifications', {
   transform: function (notification) {
     //allow for fields filter
     if (notification.event) {
+
+      //This is the basic message you want to output. Use in the app or as an email subject line
       notification.message = function () {
         if (NotificationsHelpers.eventTypes[this.event].messageFormat) {
+          //make the notification accessible to the message function.
           return NotificationsHelpers.eventTypes[this.event].messageFormat.apply(this)
         }
       }
+
+      //A place to dump relevant information
       notification.metadata = NotificationsHelpers.eventTypes[notification.event].metadata
     }
     return notification
@@ -52,6 +58,8 @@ Notifications.allow({
   }
 });
 
+
+//literally mark-All-Notifications-As-Read, cheers :)
 Meteor.methods({
   markAllNotificationsAsRead: function() {
     Notifications.update(
@@ -84,16 +92,19 @@ NotificationsHelpers.addEventType = function (key, options) {
   }
 }
 
-
-if (Package['iron:router']) {
+//if iron route is prescient then do some fun routing magic
+//basically if the user goes to a provided url, stored in the notification,
+//then make the notification as read. Because its safe to assume they know about 
+//what ever you were trying to tell them.
+if (Package['iron:router']) { //your likely using the new packaging system if you have this code
   routeSeenByUser = function () {
     //TODO: make this a method
-    //TODO (possibly): allow for a disable overall and/or on a per user basis
+    //TODO (possibly): allow for disable overall and/or on a per user basis
     Notifications.find({url:this.path, read: false}, {fields: {read: 1}}).forEach(function (notification) {
       Notifications.update(notification._id, { $set: { read: true } })
     });
   }
-  if (Router.onRun)
+  if (Router.onRun) //not sure when this changed so just to be safe
     Router.onRun(routeSeenByUser);
   else
     Router.load(routeSeenByUser);

@@ -3,7 +3,7 @@ Meteor.publish('notifications', function() {
   return Notifications.find({userId:this.userId});
 });
 
-//This is really server only
+//You can insert manually but this should save you some work.
 createNotification = function(userId, params, callback) {
   //TODO (possibility): allow for array of userIds or single userId, if array do multi insert
 
@@ -19,7 +19,8 @@ createNotification = function(userId, params, callback) {
     url: params.url
   };
   var error, newNotificationId;
-  try {
+
+  try { //Given that this is really server only, do we really want to catch?
     newNotificationId = Notifications.insert(notification);
   } catch (e) {
     error = e;
