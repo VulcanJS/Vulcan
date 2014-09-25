@@ -59,6 +59,7 @@ telescope-i18n
 telescope-email
 telescope-update-prompt
 telescope-notifications
+telescope-kadira
 
 
 npm-container
@@ -71,4 +72,3 @@ rajit:bootstrap3-datepicker
 service-configuration
 accounts-ui
 splendido:accounts-templates-unstyled
-
