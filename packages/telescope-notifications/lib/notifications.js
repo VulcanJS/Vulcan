@@ -1,11 +1,11 @@
 // --  OPTIONAL  --
 //Insure that notification security is maintained as per telescope standards.
-Notifications.deny({
+Notifications.collection.deny({
   update: ! can.editById,
   remove: ! can.editById
 });
 
-NotificationsHelpers.addEventType('newReply', {
+Notifications.addEventType('newReply', {
   message: function () {
     return this.properties.comment.author + " has replied to your comment on \"" + this.properties.post.title + "\"";
   },
@@ -15,7 +15,7 @@ NotificationsHelpers.addEventType('newReply', {
   }
 });
 
-NotificationsHelpers.addEventType('newComment', {
+Notifications.addEventType('newComment', {
   message: function () {
     return this.properties.comment.author + " left a new comment on \"" + this.properties.post.title + "\"";
   },
@@ -35,7 +35,7 @@ _createNotification = function(event, params, userToNotify) {
     if (error) throw error; //output error like normal
     // 2. Send notification by email (if on server)
     if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
-      var notification = Notifications.findOne(notificationId);
+      var notification = Notifications.collection.findOne(notificationId);
       // put in setTimeout so it doesn't hold up the rest of the method
       Meteor.setTimeout(function () {
         notificationEmail = buildEmailNotification(notification);

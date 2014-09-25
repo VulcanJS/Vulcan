@@ -1,43 +1,44 @@
-// Not sure SimpleSchema is the right way to go here but 
-// I am leaving it for reference
-//
-// Notifications = new Meteor.Collection("notifications", {
-//   schema: new SimpleSchema({
-//     properties: {
-//       type: Object
-//     },
-//     event: {
-//       type: String
-//     },
-//     read: {
-//       type: Boolean
-//     },
-//     createdAt: {
-//       type: Date
-//     },
-//     userId: {
-//       type: "???"
-//     }
-//   })
-// });
+//This is our Global Object. 
+Notifications = {
+  //EventTypes allows us to add reusable logic that can be updated
+  //without the need for migrations.
+  //
+  // messageFormat - a function that the package user defines, outputs a message string
+  // metadata - useful data like template names that don't need to be in the database
+  eventTypes: {},
+
+  //add an event type
+  addEventType: function (key, options) {
+    check(key, String);
+    check(options, Match.Optional(Object));
+
+    if (Notifications.eventTypes[key]) 
+      throw new Error('Notifications: event type already exists!');
+
+    Notifications.eventTypes[key] = {
+      messageFormat: options.message,
+      metadata: options.metadata
+    };
+  }
+};
 
 //The collection and any instance functionality
-Notifications = new Meteor.Collection('notifications', {
+Notifications.collection = new Meteor.Collection('notifications', {
   transform: function (notification) {
-    //allow for fields filter
-    if (notification.event) {
+    if (notification.event) { //event may not be available if fields filter was called.
 
       //This is the basic message you want to output. Use in the app or as an email subject line
+      // it is optional and is set up with createNotification from the server code.
       notification.message = function () {
-        if (NotificationsHelpers.eventTypes[this.event].messageFormat) {
-          //make the notification accessible to the message function.
-          return NotificationsHelpers.eventTypes[this.event].messageFormat.apply(this)
-        }
-      }
+        if (Notifications.eventTypes[this.event].messageFormat) {
+          //make the notification data accessible to the message function.
+          return Notifications.eventTypes[this.event].messageFormat.apply(this)
+        };
+      };
 
-      //A place to dump relevant information
-      notification.metadata = NotificationsHelpers.eventTypes[notification.event].metadata
-    }
+      //Load the current metadata, this will update with a hot-code-push.
+      notification.metadata = Notifications.eventTypes[notification.event].metadata
+    };
     return notification
   }
 });
@@ -45,7 +46,7 @@ Notifications = new Meteor.Collection('notifications', {
 //Minimum requirement for notifications to work while still providing 
 //basic security. For added limitations use `Notifications.deny` in 
 //your app.
-Notifications.allow({
+Notifications.collection.allow({
   insert: function(userId, doc){
     // new notifications can only be created via a Meteor method
     return false;
@@ -62,7 +63,7 @@ Notifications.allow({
 //literally mark-All-Notifications-As-Read, cheers :)
 Meteor.methods({
   markAllNotificationsAsRead: function() {
-    Notifications.update(
+    Notifications.collection.update(
       {userId: Meteor.userId()},
       {
         $set:{
@@ -74,23 +75,7 @@ Meteor.methods({
   }
 });
 
-//This is not stored in the notifications for dynamic updating
-//for example if you change the metadata.emailTemplate it will
-//continue to just work. 
-NotificationsHelpers = {}
-NotificationsHelpers.eventTypes = {}
-NotificationsHelpers.addEventType = function (key, options) {
-  //TODO: check for input sanity!
-  
-  if (NotificationsHelpers.eventTypes[key]) 
-    throw new Error('Notifications: event type already exists!');
 
-  NotificationsHelpers.eventTypes[key] = {}
-  if (options) {
-    NotificationsHelpers.eventTypes[key].messageFormat = options.message
-    NotificationsHelpers.eventTypes[key].metadata = options.metadata
-  }
-}
 
 //if iron route is prescient then do some fun routing magic
 //basically if the user goes to a provided url, stored in the notification,
@@ -100,8 +85,8 @@ if (Package['iron:router']) { //your likely using the new packaging system if yo
   routeSeenByUser = function () {
     //TODO: make this a method
     //TODO (possibly): allow for disable overall and/or on a per user basis
-    Notifications.find({url:this.path, read: false}, {fields: {read: 1}}).forEach(function (notification) {
-      Notifications.update(notification._id, { $set: { read: true } })
+    Notifications.collection.find({url:this.path, read: false}, {fields: {read: 1}}).forEach(function (notification) {
+      Notifications.collection.update(notification._id, { $set: { read: true } })
     });
   }
   if (Router.onRun) //not sure when this changed so just to be safe

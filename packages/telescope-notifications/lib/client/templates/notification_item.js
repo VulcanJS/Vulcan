@@ -13,7 +13,7 @@ Template[getTemplate('notificationItem')].helpers({
 Template[getTemplate('notificationItem')].events({
   'click .action-link': function(event, instance){
     var notificationId=instance.data._id;
-    Notifications.update(
+    Notifications.collection.update(
     {_id: notificationId},
     {
       $set:{

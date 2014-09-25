@@ -1,5 +1,7 @@
 #Notifications
 
+#### OUT OF DATE, SEE CODE FOR DETAILS!
+
 A notifications pattern strait out of Telescope! (actually still in Telescope >_>) Worth notting that everything in here is open to change. Any refrences to telescope may or may not have been aproved.
 
 ##Current Status:
