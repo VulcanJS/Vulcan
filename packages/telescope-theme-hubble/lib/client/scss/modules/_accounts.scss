@@ -1,7 +1,3 @@
-.at-form{
-
-}
-
 .at-oauth{
   text-align: center;
   .at-social-btn{
@@ -45,8 +41,13 @@
 #at-btn{
   margin: 0 auto;
 }
-
-.at-signup-link{
+.at-title{
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+.at-signup-link, .at-signin-link{
   border-top: 1px solid #ddd;
   margin-top: 15px;
   padding-top: 15px;

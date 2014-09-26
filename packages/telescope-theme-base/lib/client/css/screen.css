@@ -518,55 +518,6 @@ h4 {
 li {
   margin: 0 0 10px 0; }
 
-/* line 5, ../scss/specific/_accounts.scss */
-.at-oauth {
-  text-align: center; }
-  /* line 7, ../scss/specific/_accounts.scss */
-  .at-oauth .at-social-btn {
-    margin: 0 auto 15px auto; }
-
-/* line 12, ../scss/specific/_accounts.scss */
-.at-sep {
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 15px; }
-  /* line 17, ../scss/specific/_accounts.scss */
-  .at-sep:before, .at-sep:after {
-    display: block;
-    content: " ";
-    border-bottom: 1px solid #ddd;
-    width: 100%;
-    position: absolute;
-    top: 48%; }
-  /* line 25, ../scss/specific/_accounts.scss */
-  .at-sep:before {
-    left: -55%; }
-  /* line 28, ../scss/specific/_accounts.scss */
-  .at-sep:after {
-    right: -55%; }
-
-/* line 34, ../scss/specific/_accounts.scss */
-.at-input label {
-  margin-bottom: 5px; }
-
-/* line 39, ../scss/specific/_accounts.scss */
-#at-forgotPwd {
-  font-size: 13px;
-  float: right;
-  margin-top: -8px; }
-
-/* line 45, ../scss/specific/_accounts.scss */
-#at-btn {
-  margin: 0 auto; }
-
-/* line 49, ../scss/specific/_accounts.scss */
-.at-signup-link {
-  border-top: 1px solid #ddd;
-  margin-top: 15px;
-  padding-top: 15px;
-  text-align: center; }
-
 /* line 1, ../scss/specific/_dropdown.scss */
 .has-dropdown .dropdown {
   position: relative; }
