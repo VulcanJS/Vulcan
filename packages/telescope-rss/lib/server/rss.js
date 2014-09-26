@@ -13,7 +13,11 @@ var getMeta = function() {
 servePostRSS = function() {
   var feed = new RSS(getMeta());
 
-  Posts.find({status: STATUS_APPROVED}, {sort: {postedAt: -1}, limit: 20}).forEach(function(post) {
+  filters = {
+    status: STATUS_APPROVED,
+    postedAt: {$lte: new Date()}
+  };
+  Posts.find(filters, {sort: {postedAt: -1}, limit: 20}).forEach(function(post) {
     var description = !!post.body ? post.body+'</br></br>' : '';
     feed.item({
      title: post.title,
