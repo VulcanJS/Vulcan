@@ -6,15 +6,15 @@
     ],
     [
       "blaze",
-      "2.0.0"
+      "2.0.1"
     ],
     [
       "deps",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "ejson",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "geojson-utils",
@@ -26,7 +26,7 @@
     ],
     [
       "http",
-      "1.0.5"
+      "1.0.6"
     ],
     [
       "id-map",
@@ -42,7 +42,7 @@
     ],
     [
       "meteor",
-      "1.1.0"
+      "1.1.1"
     ],
     [
       "minimongo",
@@ -62,7 +62,7 @@
     ],
     [
       "reactive-var",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "telescope-base",
@@ -78,7 +78,7 @@
     ],
     [
       "templating",
-      "1.0.6"
+      "1.0.7"
     ],
     [
       "tracker",
@@ -86,7 +86,7 @@
     ],
     [
       "ui",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "underscore",
@@ -98,6 +98,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.31",
+  "toolVersion": "meteor-tool@1.0.32",
   "format": "1.0"
 }
