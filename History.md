@@ -4,6 +4,8 @@
 * Kadira is now included by default. 
 * Comments now have their own feed (thanks @delgermurun!).
 * Fixed URL collision bug (thanks @GoodEveningMiss!).
+* Now using [`account-templates`](https://github.com/splendido/accounts-templates-core) (thanks @splendido!).
+* Retinizing avatar sizes (thanks @shaialon!).
 
 ## v0.9.5 “FixScope”
 
