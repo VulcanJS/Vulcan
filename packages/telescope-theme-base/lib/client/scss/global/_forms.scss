@@ -9,7 +9,7 @@ form, .accounts-dialog{
   >div{
     @include cf;
   }
-  .control-group, .form-group{
+  .control-group, .form-group, .at-input{
     @include cf;
     margin-bottom:$grid-padding;
     >label{

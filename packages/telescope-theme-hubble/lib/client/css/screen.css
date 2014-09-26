@@ -18,12 +18,13 @@
   margin-right: auto; }
 
 /* line 47, ../scss/partials/_grid.scss */
-.grid-small, .entry {
+.grid-small, .at-form {
   width: 100%;
-  margin: 0 auto; }
+  margin-left: auto;
+  margin-right: auto; }
   @media screen and (min-width: 30em) {
     /* line 47, ../scss/partials/_grid.scss */
-    .grid-small, .entry {
+    .grid-small, .at-form {
       max-width: 500px; } }
 
 /*================ FUNCTIONS =================*/
@@ -32,7 +33,7 @@
 /* line 108, ../scss/partials/_mixins.scss */
 .popover, .share-options {
   background: white;
-  border: 1px solid #dd3416;
+  border: 1px solid #DD3416;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -204,11 +205,11 @@ em {
     left: 50%;
     top: -40px;
     opacity: 0;
-    -moz-transition: ease-out opacity 300ms 0ms;
-    -o-transition: ease-out opacity 300ms 0ms;
-    -webkit-transition: ease-out opacity 300ms;
+    -moz-transition: ease-out 300ms opacity 0ms;
+    -o-transition: ease-out 300ms opacity 0ms;
+    -webkit-transition: ease-out 300ms opacity;
     -webkit-transition-delay: 0ms;
-    transition: ease-out opacity 300ms 0ms; }
+    transition: ease-out 300ms opacity 0ms; }
     /* line 11, ../scss/partials/_tooltips.scss */
     .has-tooltip .tooltip span {
       display: block;
@@ -237,6 +238,62 @@ em {
   /* line 35, ../scss/partials/_tooltips.scss */
   .has-tooltip:hover .tooltip {
     opacity: 1; }
+
+/* line 1, ../scss/modules/_accounts.scss */
+.at-oauth {
+  text-align: center; }
+  /* line 3, ../scss/modules/_accounts.scss */
+  .at-oauth .at-social-btn {
+    margin: 0 auto 15px auto; }
+
+/* line 8, ../scss/modules/_accounts.scss */
+.at-sep {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px; }
+  /* line 13, ../scss/modules/_accounts.scss */
+  .at-sep:before, .at-sep:after {
+    display: block;
+    content: " ";
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    position: absolute;
+    top: 48%; }
+  /* line 21, ../scss/modules/_accounts.scss */
+  .at-sep:before {
+    left: -55%; }
+  /* line 24, ../scss/modules/_accounts.scss */
+  .at-sep:after {
+    right: -55%; }
+
+/* line 30, ../scss/modules/_accounts.scss */
+.at-input label {
+  margin-bottom: 5px; }
+
+/* line 35, ../scss/modules/_accounts.scss */
+#at-forgotPwd {
+  font-size: 13px;
+  float: right;
+  margin-top: -8px; }
+
+/* line 41, ../scss/modules/_accounts.scss */
+#at-btn {
+  margin: 0 auto; }
+
+/* line 44, ../scss/modules/_accounts.scss */
+.at-title {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  text-align: center; }
+
+/* line 50, ../scss/modules/_accounts.scss */
+.at-signup-link, .at-signin-link {
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding-top: 15px;
+  text-align: center; }
 
 /* line 1, ../scss/modules/_nav.scss */
 .header {
@@ -538,7 +595,7 @@ em {
   /* line 191, ../scss/modules/_posts.scss */
   .post-upvote .upvote-link.not-voted:hover i {
     background: rgba(221, 52, 22, 0.1);
-    color: #dd3416;
+    color: #DD3416;
     text-shadow: none; }
   /* line 197, ../scss/modules/_posts.scss */
   .post-upvote .upvote-link.voted {
@@ -587,11 +644,11 @@ em {
     border-radius: 0px 0px 3px 3px; }
   /* line 242, ../scss/modules/_posts.scss */
   .post.animate {
-    -moz-transition: ease-out top 400ms 0ms;
-    -o-transition: ease-out top 400ms 0ms;
-    -webkit-transition: ease-out top 400ms;
+    -moz-transition: ease-out 400ms top 0ms;
+    -o-transition: ease-out 400ms top 0ms;
+    -webkit-transition: ease-out 400ms top;
     -webkit-transition-delay: 0ms;
-    transition: ease-out top 400ms 0ms; }
+    transition: ease-out 400ms top 0ms; }
   /* line 246, ../scss/modules/_posts.scss */
   .post.inactive .post-content {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg=="); }
@@ -686,7 +743,7 @@ em {
   vertical-align: middle; }
   /* line 328, ../scss/modules/_posts.scss */
   .post-category:hover {
-    background: #dd3416;
+    background: #DD3416;
     color: white; }
 
 /* line 333, ../scss/modules/_posts.scss */
@@ -719,7 +776,7 @@ em {
     line-height: 50px; }
     /* line 359, ../scss/modules/_posts.scss */
     .post-share > a.edit-link, .post-discuss > a.edit-link {
-      color: #dd3416; }
+      color: #DD3416; }
     /* line 362, ../scss/modules/_posts.scss */
     .post-share > a.share-link, .post-discuss > a.share-link {
       color: #7ac0e4;
@@ -732,7 +789,7 @@ em {
       color: #7ac0e4; }
     /* line 373, ../scss/modules/_posts.scss */
     .post-share > a:hover, .post-share > a:hover .action, .post-discuss > a:hover, .post-discuss > a:hover .action {
-      color: #dd3416; }
+      color: #DD3416; }
     /* line 377, ../scss/modules/_posts.scss */
     .post-share > a.voted, .post-discuss > a.voted {
       background: #4e555d;
@@ -851,11 +908,11 @@ em {
 .queue-container {
   position: relative;
   height: 0px;
-  -moz-transition: ease-out opacity 400ms 0ms;
-  -o-transition: ease-out opacity 400ms 0ms;
-  -webkit-transition: ease-out opacity 400ms;
+  -moz-transition: ease-out 400ms opacity 0ms;
+  -o-transition: ease-out 400ms opacity 0ms;
+  -webkit-transition: ease-out 400ms opacity;
   -webkit-transition-delay: 0ms;
-  transition: ease-out opacity 400ms 0ms; }
+  transition: ease-out 400ms opacity 0ms; }
   /* line 5, ../scss/modules/_comments.scss */
   .queue-container ul {
     position: absolute;
@@ -891,7 +948,7 @@ em {
       display: block;
       height: 30px;
       width: 30px;
-      background: #dd3416;
+      background: #DD3416;
       -moz-border-radius: 100px;
       -webkit-border-radius: 100px;
       border-radius: 100px;
@@ -921,11 +978,11 @@ em {
   background: none; }
   /* line 75, ../scss/modules/_comments.scss */
   .comment .comment-body {
-    -moz-transition: ease-out opacity 600ms 0ms;
-    -o-transition: ease-out opacity 600ms 0ms;
-    -webkit-transition: ease-out opacity 600ms;
+    -moz-transition: ease-out 600ms opacity 0ms;
+    -o-transition: ease-out 600ms opacity 0ms;
+    -webkit-transition: ease-out 600ms opacity;
     -webkit-transition-delay: 0ms;
-    transition: ease-out opacity 600ms 0ms;
+    transition: ease-out 600ms opacity 0ms;
     opacity: 1; }
   /* line 80, ../scss/modules/_comments.scss */
   .comment.comment-queued .comment-body {
@@ -987,7 +1044,7 @@ em {
       text-indent: 0; }
     /* line 168, ../scss/modules/_comments.scss */
     .comment-meta .comment-permalink:hover:before {
-      color: #dd3416; }
+      color: #DD3416; }
 
 /* line 173, ../scss/modules/_comments.scss */
 .comment-actions {
@@ -1027,7 +1084,7 @@ em {
       line-height: 30px;
       text-align: center;
       text-indent: 0;
-      color: #dd3416; }
+      color: #DD3416; }
     /* line 205, ../scss/modules/_comments.scss */
     .comment-actions a:hover {
       background: #4e555d; }
@@ -1107,7 +1164,7 @@ em {
 .error {
   margin-bottom: 10px;
   text-align: center;
-  background: #dd3416;
+  background: #DD3416;
   color: white; }
 
 /* line 1, ../scss/modules/_share.scss */
@@ -1168,14 +1225,14 @@ em {
     @media screen and (max-width: 30em) {
       /* line 48, ../scss/modules/_share.scss */
       .share-options:before {
-        border-bottom-color: #dd3416;
+        border-bottom-color: #DD3416;
         top: -22px;
         left: 50%;
         margin-left: -12px; } }
     @media screen and (min-width: 30em) {
       /* line 48, ../scss/modules/_share.scss */
       .share-options:before {
-        border-left-color: #dd3416;
+        border-left-color: #DD3416;
         top: 20px;
         margin-top: -4px; } }
   /* line 63, ../scss/modules/_share.scss */
