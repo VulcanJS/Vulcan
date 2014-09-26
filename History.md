@@ -2,6 +2,8 @@
 
 * Fixed security hole in user update. 
 * Kadira is now included by default. 
+* Comments now have their own feed (thanks @delgermurun!).
+* Fixed URL collision bug (thanks @GoodEveningMiss!).
 
 ## v0.9.5 “FixScope”
 

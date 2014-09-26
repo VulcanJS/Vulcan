@@ -56,6 +56,7 @@ telescope-i18n
 telescope-email
 telescope-update-prompt
 telescope-notifications
+telescope-kadira
 
 
 npm-container
@@ -65,7 +66,6 @@ rajit:bootstrap3-datepicker
 telescope-update-prompt
 telescope-notifications
 telescope-kadira
-
 
 # Accounts Templates
 service-configuration
