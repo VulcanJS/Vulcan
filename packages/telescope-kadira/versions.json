@@ -14,7 +14,7 @@
     ],
     [
       "blaze",
-      "2.0.0"
+      "2.0.1"
     ],
     [
       "callback-hook",
@@ -22,23 +22,23 @@
     ],
     [
       "check",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "ddp",
-      "1.0.8"
+      "1.0.9"
     ],
     [
       "deps",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "ejson",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "email",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "follower-livedata",
@@ -54,7 +54,7 @@
     ],
     [
       "http",
-      "1.0.5"
+      "1.0.6"
     ],
     [
       "id-map",
@@ -70,7 +70,11 @@
     ],
     [
       "livedata",
-      "1.0.9"
+      "1.0.10"
+    ],
+    [
+      "localstorage",
+      "1.0.0"
     ],
     [
       "logging",
@@ -78,11 +82,15 @@
     ],
     [
       "meteor",
-      "1.1.0"
+      "1.1.1"
     ],
     [
       "meteorhacks:kadira",
-      "2.5.0"
+      "2.9.2"
+    ],
+    [
+      "meteorhacks:kadira-binary-deps",
+      "1.0.1"
     ],
     [
       "minimongo",
@@ -90,11 +98,11 @@
     ],
     [
       "mongo",
-      "1.0.5"
+      "1.0.6"
     ],
     [
       "mongo-livedata",
-      "1.0.4"
+      "1.0.5"
     ],
     [
       "observe-sequence",
@@ -110,7 +118,7 @@
     ],
     [
       "reactive-var",
-      "1.0.1"
+      "1.0.2"
     ],
     [
       "retry",
@@ -134,7 +142,7 @@
     ],
     [
       "ui",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "underscore",
@@ -146,6 +154,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.31",
+  "toolVersion": "meteor-tool@1.0.32",
   "format": "1.0"
 }

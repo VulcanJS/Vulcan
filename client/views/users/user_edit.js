@@ -56,8 +56,7 @@ Template[getTemplate('user_edit')].events({
       "profile.notifications.users": $('input[name=notifications_users]:checked').length, // only actually used for admins
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
       "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
-      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length,
-      "inviteCount": parseInt($target.find('[name=inviteCount]').val())
+      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length
     };
 
     var old_password = $target.find('[name=old_password]').val();
