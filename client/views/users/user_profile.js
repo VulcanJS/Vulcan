@@ -2,16 +2,13 @@ Template[getTemplate('user_profile')].created = function () {
   Session.set('postsShown', 5);
   Session.set('upvotedPostsShown', 5);
   Session.set('downvotedPostsShown', 5);
-  Session.set('commentsShown', 5);  
+  Session.set('commentsShown', 5);
 };
 
 Template[getTemplate('user_profile')].helpers({
-  avatarUrl: function() {
-    return getAvatarUrl(this);
-  },
   canEditProfile: function() {
     var currentUser = Meteor.user();
-    return currentUser && (this._id == currentUser._id || isAdmin(currentUser))
+    return currentUser && (this._id == currentUser._id || isAdmin(currentUser));
   },
   createdAtFormatted: function() {
     return this.createdAt;
@@ -71,7 +68,7 @@ Template[getTemplate('user_profile')].helpers({
           comment.postTitle = post.title;
         return comment;
       });
-      return extendedComments    
+      return extendedComments;
     }
   },
   hasMoreComments: function () {
@@ -82,7 +79,7 @@ Template[getTemplate('user_profile')].helpers({
 Template[getTemplate('user_profile')].events({
   'click .invite-link': function(e, instance){
     Meteor.call('inviteUser', instance.data.user._id);
-    throwError('Thanks, user has been invited.')
+    throwError('Thanks, user has been invited.');
   },
   'click .posts-more': function (e) {
     e.preventDefault();

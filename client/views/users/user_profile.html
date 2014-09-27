@@ -3,7 +3,7 @@
 		<div class="user-profile grid grid-module">
 			<table>
 				<tr>
-					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
+					<td colspan="2">{{>avatar user=this}}</td>
 				</tr>
 				{{#if isAdmin}}
 					<tr>
@@ -40,7 +40,7 @@
 						<td>{{i18n "Site"}}:</td>
 						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
 					</tr>
-				{{/if}}					
+				{{/if}}
 			</table>
 			{{#if canEditProfile}}
 				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>
