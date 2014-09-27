@@ -63,6 +63,8 @@ mongo-livedata@1.0.5
 mongo@1.0.6
 mrt:cookies@0.3.0
 mrt:jquery-hotkeys@0.0.1
+mrt:jquery-ui-bootstrap@1.8.16
+mrt:jquery-ui@1.9.2
 mrt:mailchimp@0.4.0
 mrt:moment@2.8.1
 npm-bcrypt@0.7.7
