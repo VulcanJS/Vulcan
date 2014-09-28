@@ -1,0 +1,39 @@
+  <style type="text/css"> /*<![CDATA[*/
+        .gistic_gene {
+            padding: 3px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        .gistic_gene:hover {
+            padding: 1px;
+            border: 2px solid #1974b8;
+        }
+        .gistic_selected_gene {
+            #background:#DDD;
+            font-weight:bold;
+        }
+        .gistic_amp {
+            height: 1em;
+            background-color: red;
+        }
+        .gistic_del {
+            height: 1em;
+            background-color: blue;
+        }
+        #gistic_table_filter {
+            font-size: 12px;
+            font-weight: bold;
+            padding-bottom: 8px;
+        }
+        #gistic_msg_box {
+            line-height: 2.5em;
+            float: left;
+        }
+        #gistic_msg_box span {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 1px;
+            border: 2px solid #1974b8;
+            border-radius:5px;
+        }
+  /*]]>*/

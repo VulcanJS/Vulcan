@@ -1,0 +1,990 @@
+<template name="cbioportal">
+  <div class="main_query_panel">
+    <div id="main_query_form" style="display: block;">
+      <form id="main_form" action="index.do" method="get" name="main_form">
+        <div class="query_step_section">
+          <span class="step_header">Select Cancer Study:</span> <select id=
+          "select_cancer_type" name="cancer_study_id" class="chzn-done" style=
+          "display: none;">
+            <option value="all">
+              All Cancer Studies
+            </option>
+
+            <optgroup id="dmp-study-group" label="MSKCC DMP">
+              </optgroup>
+
+            <optgroup id="laml-study-group" label="Acute Myeloid Leukemia">
+              <option value="laml_tcga_pub">
+                Acute Myeloid Leukemia (TCGA, NEJM 2013)
+              </option>
+
+              <option value="laml_tcga">
+                Acute Myeloid Leukemia (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="acyc-study-group" label="Adenoid Cystic Carcinoma">
+              <option value="acyc_mskcc">
+                Adenoid Cystic Carcinoma (MSKCC, Nature Genetics 2013)
+              </option>
+            </optgroup>
+
+            <optgroup id="acc-study-group" label="Adrenocortical Carcinoma">
+              <option value="acc_tcga">
+                Adrenocortical Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="blca-study-group" label="Bladder Urothelial Carcinoma">
+              <option value="blca_mskcc_solit_2012">
+                Bladder Cancer (MSKCC, JCO 2013)
+              </option>
+
+              <option value="blca_bgi">
+                Bladder Urothelial Carcinoma (BGI, Nature Genetics 2013)
+              </option>
+
+              <option value="blca_tcga_pub">
+                Bladder Urothelial Carcinoma (TCGA, Nature 2014)
+              </option>
+
+              <option value="blca_tcga">
+                Bladder Urothelial Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="lgg-study-group" label="Brain Lower Grade Glioma">
+              <option value="lgg_tcga">
+                Brain Lower Grade Glioma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="brca-study-group" label="Breast Invasive Carcinoma">
+              <option value="brca_bccrc">
+                Breast Invasive Carcinoma (British Columbia, Nature 2012)
+              </option>
+
+              <option value="brca_broad">
+                Breast Invasive Carcinoma (Broad, Nature 2012)
+              </option>
+
+              <option value="brca_sanger">
+                Breast Invasive Carcinoma (Sanger, Nature 2012)
+              </option>
+
+              <option value="brca_tcga_pub">
+                Breast Invasive Carcinoma (TCGA, Nature 2012)
+              </option>
+
+              <option value="brca_tcga">
+                Breast Invasive Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="cellline-study-group" label="Cell Line">
+              <option value="cellline_ccle_broad">
+                Cancer Cell Line Encyclopedia (Novartis/Broad, Nature 2012)
+              </option>
+
+              <option value="cellline_nci60">
+                NCI-60 Cell Lines (NCI, Cancer Res. 2012)
+              </option>
+            </optgroup>
+
+            <optgroup id="cesc-study-group" label=
+            "Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma">
+              <option value="cesc_tcga">
+                Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma (TCGA,
+                Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="coadread-study-group" label="Colorectal Adenocarcinoma">
+              <option value="coadread_genentech">
+                Colorectal Adenocarcinoma (Genentech, Nature 2012)
+              </option>
+
+              <option value="coadread_tcga_pub">
+                Colorectal Adenocarcinoma (TCGA, Nature 2012)
+              </option>
+
+              <option value="coadread_tcga">
+                Colorectal Adenocarcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="esca-study-group" label="Esophageal Carcinoma">
+              <option value="esca_broad">
+                Esophageal Adenocarcinoma (Broad, Nature Genetics 2013)
+              </option>
+            </optgroup>
+
+            <optgroup id="gbm-study-group" label="Glioblastoma Multiforme">
+              <option value="gbm_tcga_pub2013">
+                Glioblastoma (TCGA, Cell 2013)
+              </option>
+
+              <option value="gbm_tcga_pub">
+                Glioblastoma (TCGA, Nature 2008)
+              </option>
+
+              <option value="gbm_tcga">
+                Glioblastoma Multiforme (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="hnsc-study-group" label=
+            "Head and Neck Squamous Cell Carcinoma">
+              <option value="hnsc_broad">
+                Head and Neck Squamous Cell Carcinoma (Broad, Science 2011)
+              </option>
+
+              <option value="hnsc_jhu">
+                Head and Neck Squamous Cell Carcinoma (Johns Hopkins, Science 2011)
+              </option>
+
+              <option value="hnsc_tcga">
+                Head and Neck Squamous Cell Carcinoma (TCGA, Provisional)
+              </option>
+
+              <option value="hnsc_tcga_pub">
+                Head and Neck Squamous Cell Carcinoma (TCGA, in revision)
+              </option>
+            </optgroup>
+
+            <optgroup id="kich-study-group" label="Kidney Chromophobe">
+              <option value="kich_tcga">
+                Kidney Chromophobe (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="kirc-study-group" label="Kidney Renal Clear Cell Carcinoma">
+              <option value="kirc_bgi">
+                Kidney Renal Clear Cell Carcinoma (BGI, Nature Genetics 2012)
+              </option>
+
+              <option value="kirc_tcga_pub">
+                Kidney Renal Clear Cell Carcinoma (TCGA, Nature 2013)
+              </option>
+
+              <option value="kirc_tcga">
+                Kidney Renal Clear Cell Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="kirp-study-group" label=
+            "Kidney Renal Papillary Cell Carcinoma">
+              <option value="kirp_tcga">
+                Kidney Renal Papillary Cell Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="lihc-study-group" label="Liver Hepatocellular Carcinoma">
+              <option value="lihc_amc_prv">
+                Liver Hepatocellular Carcinoma (AMC, Hepatology in press)
+              </option>
+
+              <option value="lihc_riken">
+                Liver Hepatocellular Carcinoma (RIKEN, Nature Genetics 2012)
+              </option>
+
+              <option value="lihc_tcga">
+                Liver Hepatocellular Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="luad-study-group" label="Lung Adenocarcinoma">
+              <option value="luad_broad">
+                Lung Adenocarcinoma (Broad, Cell 2012)
+              </option>
+
+              <option value="luad_tcga_pub">
+                Lung Adenocarcinoma (TCGA, Nature, in press)
+              </option>
+
+              <option value="luad_tcga">
+                Lung Adenocarcinoma (TCGA, Provisional)
+              </option>
+
+              <option value="luad_tsp">
+                Lung Adenocarcinoma (TSP, Nature 2008)
+              </option>
+            </optgroup>
+
+            <optgroup id="lusc-study-group" label="Lung Squamous Cell Carcinoma">
+              <option value="lusc_tcga_pub">
+                Lung Squamous Cell Carcinoma (TCGA, Nature 2012)
+              </option>
+
+              <option value="lusc_tcga">
+                Lung Squamous Cell Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="dlbc-study-group" label=
+            "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma">
+              <option value="dlbc_tcga">
+                Lymphoid Neoplasm Diffuse Large B-cell Lymphoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="mbl-study-group" label="Medulloblastoma">
+              <option value="mbl_broad">
+                Medulloblastoma (Broad, Nature 2012)
+              </option>
+
+              <option value="mbl_icgc">
+                Medulloblastoma (ICGC, Nature 2012)
+              </option>
+
+              <option value="mbl_pcgp">
+                Medulloblastoma (PCGP, Nature 2012)
+              </option>
+            </optgroup>
+
+            <optgroup id="mm-study-group" label="Multiple Myeloma">
+              <option value="mm_broad">
+                Multiple Myeloma (Broad, Cancer Cell 2014)
+              </option>
+            </optgroup>
+
+            <optgroup id="ov-study-group" label="Ovarian Serous Cystadenocarcinoma">
+              <option value="ov_tcga_pub">
+                Ovarian Serous Cystadenocarcinoma (TCGA, Nature 2011)
+              </option>
+
+              <option value="ov_tcga">
+                Ovarian Serous Cystadenocarcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="paad-study-group" label="Pancreatic Adenocarcinoma">
+              <option value="paad_icgc">
+                Pancreatic Adenocarcinoma (ICGC, Nature 2012)
+              </option>
+
+              <option value="paad_tcga">
+                Pancreatic Adenocarcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="all-study-group" label="Pediatric Acute Lymphoid Leukemia">
+              </optgroup>
+
+            <optgroup id="prad-study-group" label="Prostate Adenocarcinoma">
+              <option value="prad_broad_2013">
+                Prostate Adenocarcinoma (Broad/Cornell, Cell 2013)
+              </option>
+
+              <option value="prad_broad">
+                Prostate Adenocarcinoma (Broad/Cornell, Nature Genetics 2012)
+              </option>
+
+              <option value="prad_mskcc">
+                Prostate Adenocarcinoma (MSKCC, Cancer Cell 2010)
+              </option>
+
+              <option value="prad_tcga">
+                Prostate Adenocarcinoma (TCGA, Provisional)
+              </option>
+
+              <option value="prad_mich">
+                Prostate Adenocarcinoma, Metastatic (Michigan, Nature 2012)
+              </option>
+            </optgroup>
+
+            <optgroup id="sarc-study-group" label="Sarcoma">
+              <option value="sarc_mskcc">
+                Sarcoma (MSKCC/Broad, Nature Genetics 2010)
+              </option>
+
+              <option value="sarc_tcga">
+                Sarcoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="skcm-study-group" label="Skin Cutaneous Melanoma">
+              <option value="skcm_broad">
+                Skin Cutaneous Melanoma (Broad, Cell 2012)
+              </option>
+
+              <option value="skcm_tcga">
+                Skin Cutaneous Melanoma (TCGA, Provisional)
+              </option>
+
+              <option value="skcm_yale">
+                Skin Cutaneous Melanoma (Yale, Nature Genetics 2012)
+              </option>
+            </optgroup>
+
+            <optgroup id="scco-study-group" label="Small Cell Carcinoma of the Ovary">
+              <option value="scco_mskcc">
+                Small Cell Carcinoma of the Ovary (MSKCC, Nature Genetics in press)
+              </option>
+            </optgroup>
+
+            <optgroup id="sclc-study-group" label="Small Cell Lung Cancer">
+              <option value="sclc_clcgp">
+                Small Cell Lung Cancer (CLCGP, Nature Genetics 2012)
+              </option>
+
+              <option value="sclc_jhu">
+                Small Cell Lung Cancer (Johns Hopkins, Nature Genetics 2012)
+              </option>
+            </optgroup>
+
+            <optgroup id="stad-study-group" label="Stomach Adenocarcinoma">
+              <option value="stad_tcga">
+                Stomach Adenocarcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="thca-study-group" label="Thyroid Carcinoma">
+              <option value="thca_tcga">
+                Thyroid Carcinoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="ucs-study-group" label="Uterine Carcinosarcoma">
+              <option value="ucs_tcga">
+                Uterine Carcinosarcoma (TCGA, Provisional)
+              </option>
+            </optgroup>
+
+            <optgroup id="ucec-study-group" label="Uterine Corpus Endometrial Carcinoma">
+              <option value="ucec_tcga">
+                Uterine Corpus Endometrial Carcinoma (TCGA, Provisional)
+              </option>
+
+              <option value="ucec_tcga_pub">
+                Uterine Corpus Endometrioid Carcinoma (TCGA, Nature 2013)
+              </option>
+            </optgroup>
+          </select>
+
+          <div id="select_cancer_type_chzn" class="chzn-container chzn-container-single"
+          style="width: 550px;" title="">
+            <a href="javascript:void(0)" class="chzn-single" tabindex="-1"><span>All
+            Cancer Studies</span></a>
+
+            <div class="chzn-drop">
+              <div class="chzn-search">
+                <input type="text" autocomplete="off" />
+              </div>
+
+              <ul class="chzn-results">
+                <li id="select_cancer_type_chzn_o_0" class=
+                "active-result result-selected" style="">All Cancer Studies</li>
+
+                <li id="select_cancer_type_chzn_g_1" class="group-result">MSKCC DMP</li>
+
+                <li id="select_cancer_type_chzn_g_2" class="group-result">Acute Myeloid
+                Leukemia</li>
+
+                <li id="select_cancer_type_chzn_o_3" class="active-result group-option"
+                style="">Acute Myeloid Leukemia (TCGA, NEJM 2013)</li>
+
+                <li id="select_cancer_type_chzn_o_4" class="active-result group-option"
+                style="">Acute Myeloid Leukemia (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_5" class="group-result">Adenoid Cystic
+                Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_6" class="active-result group-option"
+                style="">Adenoid Cystic Carcinoma (MSKCC, Nature Genetics 2013)</li>
+
+                <li id="select_cancer_type_chzn_g_7" class="group-result">Adrenocortical
+                Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_8" class="active-result group-option"
+                style="">Adrenocortical Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_9" class="group-result">Bladder
+                Urothelial Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_10" class="active-result group-option"
+                style="">Bladder Cancer (MSKCC, JCO 2013)</li>
+
+                <li id="select_cancer_type_chzn_o_11" class="active-result group-option"
+                style="">Bladder Urothelial Carcinoma (BGI, Nature Genetics 2013)</li>
+
+                <li id="select_cancer_type_chzn_o_12" class="active-result group-option"
+                style="">Bladder Urothelial Carcinoma (TCGA, Nature 2014)</li>
+
+                <li id="select_cancer_type_chzn_o_13" class="active-result group-option"
+                style="">Bladder Urothelial Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_14" class="group-result">Brain Lower
+                Grade Glioma</li>
+
+                <li id="select_cancer_type_chzn_o_15" class="active-result group-option"
+                style="">Brain Lower Grade Glioma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_16" class="group-result">Breast
+                Invasive Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_17" class="active-result group-option"
+                style="">Breast Invasive Carcinoma (British Columbia, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_18" class="active-result group-option"
+                style="">Breast Invasive Carcinoma (Broad, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_19" class="active-result group-option"
+                style="">Breast Invasive Carcinoma (Sanger, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_20" class="active-result group-option"
+                style="">Breast Invasive Carcinoma (TCGA, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_21" class="active-result group-option"
+                style="">Breast Invasive Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_22" class="group-result">Cell Line</li>
+
+                <li id="select_cancer_type_chzn_o_23" class="active-result group-option"
+                style="">Cancer Cell Line Encyclopedia (Novartis/Broad, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_24" class="active-result group-option"
+                style="">NCI-60 Cell Lines (NCI, Cancer Res. 2012)</li>
+
+                <li id="select_cancer_type_chzn_g_25" class="group-result">Cervical
+                Squamous Cell Carcinoma and Endocervical Adenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_26" class="active-result group-option"
+                style="">Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma
+                (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_27" class="group-result">Colorectal
+                Adenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_28" class="active-result group-option"
+                style="">Colorectal Adenocarcinoma (Genentech, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_29" class="active-result group-option"
+                style="">Colorectal Adenocarcinoma (TCGA, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_30" class="active-result group-option"
+                style="">Colorectal Adenocarcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_31" class="group-result">Esophageal
+                Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_32" class="active-result group-option"
+                style="">Esophageal Adenocarcinoma (Broad, Nature Genetics 2013)</li>
+
+                <li id="select_cancer_type_chzn_g_33" class="group-result">Glioblastoma
+                Multiforme</li>
+
+                <li id="select_cancer_type_chzn_o_34" class="active-result group-option"
+                style="">Glioblastoma (TCGA, Cell 2013)</li>
+
+                <li id="select_cancer_type_chzn_o_35" class="active-result group-option"
+                style="">Glioblastoma (TCGA, Nature 2008)</li>
+
+                <li id="select_cancer_type_chzn_o_36" class="active-result group-option"
+                style="">Glioblastoma Multiforme (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_37" class="group-result">Head and Neck
+                Squamous Cell Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_38" class="active-result group-option"
+                style="">Head and Neck Squamous Cell Carcinoma (Broad, Science 2011)</li>
+
+                <li id="select_cancer_type_chzn_o_39" class="active-result group-option"
+                style="">Head and Neck Squamous Cell Carcinoma (Johns Hopkins, Science
+                2011)</li>
+
+                <li id="select_cancer_type_chzn_o_40" class="active-result group-option"
+                style="">Head and Neck Squamous Cell Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_o_41" class="active-result group-option"
+                style="">Head and Neck Squamous Cell Carcinoma (TCGA, in revision)</li>
+
+                <li id="select_cancer_type_chzn_g_42" class="group-result">Kidney
+                Chromophobe</li>
+
+                <li id="select_cancer_type_chzn_o_43" class="active-result group-option"
+                style="">Kidney Chromophobe (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_44" class="group-result">Kidney Renal
+                Clear Cell Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_45" class="active-result group-option"
+                style="">Kidney Renal Clear Cell Carcinoma (BGI, Nature Genetics
+                2012)</li>
+
+                <li id="select_cancer_type_chzn_o_46" class="active-result group-option"
+                style="">Kidney Renal Clear Cell Carcinoma (TCGA, Nature 2013)</li>
+
+                <li id="select_cancer_type_chzn_o_47" class="active-result group-option"
+                style="">Kidney Renal Clear Cell Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_48" class="group-result">Kidney Renal
+                Papillary Cell Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_49" class="active-result group-option"
+                style="">Kidney Renal Papillary Cell Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_50" class="group-result">Liver
+                Hepatocellular Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_51" class="active-result group-option"
+                style="">Liver Hepatocellular Carcinoma (AMC, Hepatology in press)</li>
+
+                <li id="select_cancer_type_chzn_o_52" class="active-result group-option"
+                style="">Liver Hepatocellular Carcinoma (RIKEN, Nature Genetics
+                2012)</li>
+
+                <li id="select_cancer_type_chzn_o_53" class="active-result group-option"
+                style="">Liver Hepatocellular Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_54" class="group-result">Lung
+                Adenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_55" class="active-result group-option"
+                style="">Lung Adenocarcinoma (Broad, Cell 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_56" class="active-result group-option"
+                style="">Lung Adenocarcinoma (TCGA, Nature, in press)</li>
+
+                <li id="select_cancer_type_chzn_o_57" class="active-result group-option"
+                style="">Lung Adenocarcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_o_58" class="active-result group-option"
+                style="">Lung Adenocarcinoma (TSP, Nature 2008)</li>
+
+                <li id="select_cancer_type_chzn_g_59" class="group-result">Lung Squamous
+                Cell Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_60" class="active-result group-option"
+                style="">Lung Squamous Cell Carcinoma (TCGA, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_61" class="active-result group-option"
+                style="">Lung Squamous Cell Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_62" class="group-result">Lymphoid
+                Neoplasm Diffuse Large B-cell Lymphoma</li>
+
+                <li id="select_cancer_type_chzn_o_63" class="active-result group-option"
+                style="">Lymphoid Neoplasm Diffuse Large B-cell Lymphoma (TCGA,
+                Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_64" class="group-result">
+                Medulloblastoma</li>
+
+                <li id="select_cancer_type_chzn_o_65" class="active-result group-option"
+                style="">Medulloblastoma (Broad, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_66" class="active-result group-option"
+                style="">Medulloblastoma (ICGC, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_67" class="active-result group-option"
+                style="">Medulloblastoma (PCGP, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_g_68" class="group-result">Multiple
+                Myeloma</li>
+
+                <li id="select_cancer_type_chzn_o_69" class="active-result group-option"
+                style="">Multiple Myeloma (Broad, Cancer Cell 2014)</li>
+
+                <li id="select_cancer_type_chzn_g_70" class="group-result">Ovarian Serous
+                Cystadenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_71" class="active-result group-option"
+                style="">Ovarian Serous Cystadenocarcinoma (TCGA, Nature 2011)</li>
+
+                <li id="select_cancer_type_chzn_o_72" class="active-result group-option"
+                style="">Ovarian Serous Cystadenocarcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_73" class="group-result">Pancreatic
+                Adenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_74" class="active-result group-option"
+                style="">Pancreatic Adenocarcinoma (ICGC, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_75" class="active-result group-option"
+                style="">Pancreatic Adenocarcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_76" class="group-result">Pediatric
+                Acute Lymphoid Leukemia</li>
+
+                <li id="select_cancer_type_chzn_g_77" class="group-result">Prostate
+                Adenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_78" class="active-result group-option"
+                style="">Prostate Adenocarcinoma (Broad/Cornell, Cell 2013)</li>
+
+                <li id="select_cancer_type_chzn_o_79" class="active-result group-option"
+                style="">Prostate Adenocarcinoma (Broad/Cornell, Nature Genetics
+                2012)</li>
+
+                <li id="select_cancer_type_chzn_o_80" class="active-result group-option"
+                style="">Prostate Adenocarcinoma (MSKCC, Cancer Cell 2010)</li>
+
+                <li id="select_cancer_type_chzn_o_81" class="active-result group-option"
+                style="">Prostate Adenocarcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_o_82" class="active-result group-option"
+                style="">Prostate Adenocarcinoma, Metastatic (Michigan, Nature 2012)</li>
+
+                <li id="select_cancer_type_chzn_g_83" class="group-result">Sarcoma</li>
+
+                <li id="select_cancer_type_chzn_o_84" class="active-result group-option"
+                style="">Sarcoma (MSKCC/Broad, Nature Genetics 2010)</li>
+
+                <li id="select_cancer_type_chzn_o_85" class="active-result group-option"
+                style="">Sarcoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_86" class="group-result">Skin Cutaneous
+                Melanoma</li>
+
+                <li id="select_cancer_type_chzn_o_87" class="active-result group-option"
+                style="">Skin Cutaneous Melanoma (Broad, Cell 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_88" class="active-result group-option"
+                style="">Skin Cutaneous Melanoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_o_89" class="active-result group-option"
+                style="">Skin Cutaneous Melanoma (Yale, Nature Genetics 2012)</li>
+
+                <li id="select_cancer_type_chzn_g_90" class="group-result">Small Cell
+                Carcinoma of the Ovary</li>
+
+                <li id="select_cancer_type_chzn_o_91" class="active-result group-option"
+                style="">Small Cell Carcinoma of the Ovary (MSKCC, Nature Genetics in
+                press)</li>
+
+                <li id="select_cancer_type_chzn_g_92" class="group-result">Small Cell
+                Lung Cancer</li>
+
+                <li id="select_cancer_type_chzn_o_93" class="active-result group-option"
+                style="">Small Cell Lung Cancer (CLCGP, Nature Genetics 2012)</li>
+
+                <li id="select_cancer_type_chzn_o_94" class="active-result group-option"
+                style="">Small Cell Lung Cancer (Johns Hopkins, Nature Genetics
+                2012)</li>
+
+                <li id="select_cancer_type_chzn_g_95" class="group-result">Stomach
+                Adenocarcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_96" class="active-result group-option"
+                style="">Stomach Adenocarcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_97" class="group-result">Thyroid
+                Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_98" class="active-result group-option"
+                style="">Thyroid Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_99" class="group-result">Uterine
+                Carcinosarcoma</li>
+
+                <li id="select_cancer_type_chzn_o_100" class="active-result group-option"
+                style="">Uterine Carcinosarcoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_g_101" class="group-result">Uterine
+                Corpus Endometrial Carcinoma</li>
+
+                <li id="select_cancer_type_chzn_o_102" class="active-result group-option"
+                style="">Uterine Corpus Endometrial Carcinoma (TCGA, Provisional)</li>
+
+                <li id="select_cancer_type_chzn_o_103" class="active-result group-option"
+                style="">Uterine Corpus Endometrioid Carcinoma (TCGA, Nature 2013)</li>
+              </ul>
+            </div>
+          </div><!-- This div shows the cancer description -->
+
+          <div id="cancer_study_desc" style="display: none;"></div>
+        </div>
+
+        <div class="query_step_section" id="step2" style="display: none;">
+          <span class="step_header">Select Genomic Profiles:</span>
+
+          <div id="genomic_profiles"></div>
+        </div>
+
+        <div class="query_step_section" id="step2cross">
+          <span class="step_header">Select Data Type Priority:</span> <input type="radio"
+          name="data_priority" id="pri_mutcna" value="0" checked="checked" /> <label for=
+          "pri_mutcna">Mutation and CNA</label> <input type="radio" name="data_priority"
+          id="pri_mut" value="1" /> <label for="pri_mut">Only Mutation</label>
+          <input type="radio" name="data_priority" id="pri_cna" value="2" /> <label for=
+          "pri_cna">Only CNA</label>
+        </div>
+
+        <div class="query_step_section" id="step3" style="display: none;">
+          <table>
+            <tbody>
+              <tr>
+                <td><span class="step_header">Select Patient/Case Set:</span></td>
+
+                <td>
+                  <select id="select_case_set" name="case_set_id" class="chzn-done"
+                  style="display: none;">
+                    </select>
+
+                  <div id="select_case_set_chzn" class=
+                  "chzn-container chzn-container-single chzn-container-single-nosearch"
+                  style="width: 420px;" title="">
+                    <a href="javascript:void(0)" class="chzn-single chzn-default"
+                    tabindex="-1"><span>Select an Option</span></a>
+
+                    <div class="chzn-drop">
+                      <div class="chzn-search">
+                        <input type="text" autocomplete="off" />
+                      </div>
+
+                      <ul class="chzn-results"></ul>
+                    </div>
+                  </div>
+                </td>
+
+                <td><a id="build_custom_case_set" onclick="promptCustomCaseSetBuilder()"
+                title="Build a Custom Case Set Based on Clinical Attributes" name=
+                "build_custom_case_set">Build Case Set</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <div id="custom_case_list_section" style="display: none;">
+            <p><span style="font-size:80%">Enter case IDs below:</span></p>
+            <textarea id="custom_case_set_ids" name="case_ids" rows="6" cols="80">
+</textarea>
+          </div>
+        </div>
+
+        <div class="query_step_section">
+          <span class="step_header">Enter Gene Set:</span> 
+          <span style=
+          "font-size:120%; color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=
+          "onco_query_lang_desc.jsp" onclick=
+          "return popitup('onco_query_lang_desc.jsp')">Advanced: Onco Query Language
+          (OQL)</a></span>
+
+          <div style="padding-top:10px;">
+            <select id="select_gene_set" name="gene_set_choice" class="chzn-done" style=
+            "display: none;">
+              <option value="user-defined-list">
+                User-defined List
+              </option>
+
+              <option value="prostate-cancer:-ar-signaling-(10-genes)">
+                Prostate Cancer: AR Signaling (10 genes)
+              </option>
+
+              <option value=
+              "prostate-cancer:-ar-and-steroid-synthesis-enzymes-(30-genes)">
+                Prostate Cancer: AR and steroid synthesis enzymes (30 genes)
+              </option>
+
+              <option value="prostate-cancer:-steroid-inactivating-genes-(10-genes)">
+                Prostate Cancer: Steroid inactivating genes (10 genes)
+              </option>
+
+              <option value="prostate-cancer:-down-regulated-by-androgen-(19-genes)">
+                Prostate Cancer: Down-regulated by androgen (19 genes)
+              </option>
+
+              <option value="glioblastoma:-tp53-pathway-(4-genes)">
+                Glioblastoma: TP53 Pathway (4 genes)
+              </option>
+
+              <option value="glioblastoma:-rtk/ras/pi3k/akt-signaling-(17-genes)">
+                Glioblastoma: RTK/Ras/PI3K/AKT Signaling (17 genes)
+              </option>
+
+              <option value="glioblastoma:-rb-pathway-(7-genes)">
+                Glioblastoma: RB Pathway (7 genes)
+              </option>
+
+              <option value=
+              "ovarian-cancer:-oncogenes-associated-with-epithelial-ovarian-cancer-(17-genes)">
+              Ovarian Cancer: Oncogenes associated with epithelial ovarian cancer (17
+              genes)
+              </option>
+
+              <option value=
+              "ovarian-cancer:-putative-tumor-suppressor-genes-in-epithelial-ovarian-cancer-(16-genes)">
+              Ovarian Cancer: Putative tumor-suppressor genes in epithelial ovarian
+              cancer (16 genes)
+              </option>
+
+              <option value="general:-cell-cycle-control-(34-genes)">
+                General: Cell Cycle Control (34 genes)
+              </option>
+
+              <option value="general:-p53-signaling-(6-genes)">
+                General: p53 signaling (6 genes)
+              </option>
+
+              <option value="general:-dna-damage-response-(12-genes)">
+                General: DNA Damage Response (12 genes)
+              </option>
+
+              <option value="general:-other-growth-/-proliferation-signaling-(11-genes)">
+                General: Other growth / proliferation signaling (11 genes)
+              </option>
+
+              <option value=
+              "general:-survival-/-cell-death-regulation-signaling-(23-genes)">
+                General: Survival / cell death regulation signaling (23 genes)
+              </option>
+
+              <option value="general:-telomere-maintenance-(2-genes)">
+                General: Telomere maintenance (2 genes)
+              </option>
+
+              <option value="general:-rtk-signaling-family-(16-genes)">
+                General: RTK signaling family (16 genes)
+              </option>
+
+              <option value="general:-pi3k-akt-mtor-signaling-(17-genes)">
+                General: PI3K-AKT-mTOR signaling (17 genes)
+              </option>
+
+              <option value="general:-ras-raf-mek-erk/jnk-signaling-(26-genes)">
+                General: Ras-Raf-MEK-Erk/JNK signaling (26 genes)
+              </option>
+
+              <option value=
+              "general:-regulation-of-ribosomal-protein-synthesis-and-cell-growth-(9-genes)">
+              General: Regulation of ribosomal protein synthesis and cell growth (9
+              genes)
+              </option>
+
+              <option value="general:-angiogenesis-(6-genes)">
+                General: Angiogenesis (6 genes)
+              </option>
+
+              <option value="general:-folate-transport-(5-genes)">
+                General: Folate transport (5 genes)
+              </option>
+
+              <option value="general:-invasion-and-metastasis-(27-genes)">
+                General: Invasion and metastasis (27 genes)
+              </option>
+            </select>
+
+            <div id="select_gene_set_chzn" class="chzn-container chzn-container-single"
+            style="width: 620px;" title="">
+              <a href="javascript:void(0)" class="chzn-single" tabindex=
+              "-1"><span>User-defined List</span></a>
+
+              <div class="chzn-drop">
+                <div class="chzn-search">
+                  <input type="text" autocomplete="off" />
+                </div>
+
+                <ul class="chzn-results">
+                  <li id="select_gene_set_chzn_o_0" class="active-result result-selected"
+                  style="">User-defined List</li>
+
+                  <li id="select_gene_set_chzn_o_1" class="active-result" style="">
+                  Prostate Cancer: AR Signaling (10 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_2" class="active-result" style="">
+                  Prostate Cancer: AR and steroid synthesis enzymes (30 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_3" class="active-result" style="">
+                  Prostate Cancer: Steroid inactivating genes (10 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_4" class="active-result" style="">
+                  Prostate Cancer: Down-regulated by androgen (19 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_5" class="active-result" style="">
+                  Glioblastoma: TP53 Pathway (4 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_6" class="active-result" style="">
+                  Glioblastoma: RTK/Ras/PI3K/AKT Signaling (17 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_7" class="active-result" style="">
+                  Glioblastoma: RB Pathway (7 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_8" class="active-result" style="">
+                  Ovarian Cancer: Oncogenes associated with epithelial ovarian cancer (17
+                  genes)</li>
+
+                  <li id="select_gene_set_chzn_o_9" class="active-result" style="">
+                  Ovarian Cancer: Putative tumor-suppressor genes in epithelial ovarian
+                  cancer (16 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_10" class="active-result" style="">
+                  General: Cell Cycle Control (34 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_11" class="active-result" style="">
+                  General: p53 signaling (6 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_12" class="active-result" style="">
+                  General: DNA Damage Response (12 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_13" class="active-result" style="">
+                  General: Other growth / proliferation signaling (11 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_14" class="active-result" style="">
+                  General: Survival / cell death regulation signaling (23 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_15" class="active-result" style="">
+                  General: Telomere maintenance (2 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_16" class="active-result" style="">
+                  General: RTK signaling family (16 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_17" class="active-result" style="">
+                  General: PI3K-AKT-mTOR signaling (17 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_18" class="active-result" style="">
+                  General: Ras-Raf-MEK-Erk/JNK signaling (26 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_19" class="active-result" style="">
+                  General: Regulation of ribosomal protein synthesis and cell growth (9
+                  genes)</li>
+
+                  <li id="select_gene_set_chzn_o_20" class="active-result" style="">
+                  General: Angiogenesis (6 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_21" class="active-result" style="">
+                  General: Folate transport (5 genes)</li>
+
+                  <li id="select_gene_set_chzn_o_22" class="active-result" style="">
+                  General: Invasion and metastasis (27 genes)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button id="toggle_mutsig_dialog" onclick=
+            "promptMutsigTable(); return false;" style="font-size: 1em; display: none;"
+            class=
+            "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+            role="button" aria-disabled="false"><span class="ui-button-text">Select From
+            Recurrently Mutated Genes (MutSig)</span></button> <button id=
+            "toggle_gistic_dialog_button" onclick=
+            "Gistic.UI.open_dialog(); return false;" style=
+            "font-size: 1em; display: none;" class=
+            "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+            role="button" aria-disabled="false"><span class="ui-button-text">Select Genes
+            from Recurrent CNAs (Gistic)</span></button>
+          </div>
+          <textarea rows="5" cols="80" id="gene_list" placeholder=
+          "Enter HUGO Gene Symbols or Gene Aliases" required="" name="gene_list">
+</textarea>
+
+          <p id="genestatus"></p>
+        </div>
+        <div class="query_step_section" id="step5" style="display: none;">
+          <span class="step_header">Optional Arguments: &nbsp;&nbsp;</span><br />
+
+          <div class="toggler">
+            <div id="optional_args"></div>
+          </div>
+        </div><input type="hidden" id="clinical_param_selection" name=
+        "clinical_param_selection" value="null" /> <input type="hidden" id="tab_index"
+        name="tab_index" value="tab_visualize" />
+
+        <p>&nbsp;<br />
+        <input id="main_submit" class=
+        "ui-button ui-widget ui-state-default ui-corner-all" style="height: 34px;" type=
+        "submit" name="Action" value="Submit" /></p>
+      </form>
+    </div>
+  </div>
+</template>

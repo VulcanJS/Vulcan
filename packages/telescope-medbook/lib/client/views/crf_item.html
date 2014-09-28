@@ -1,0 +1,14 @@
+<template name="crfItem">
+	<li>      
+		<form>
+        <div class="control-group inline">
+          <a class="button submit edit-link" href="#">Save</a>
+          <div class="controls">
+            <input class="crf-name" id="name_{{_id}}" type="text" value="{{name}}" placeholder="Name"/>
+            <input class="crf-number" id="order_{{_id}}" type="number" value="{{order}}" placeholder="0"/>
+          </div>
+          <span class="crf-slug small">Slug: /{{slug}}</span>
+        </div>
+      </form>
+  </li>
+</template>
