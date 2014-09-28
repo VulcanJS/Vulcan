@@ -3,7 +3,10 @@ var kadiraAppIdProperty = {
   propertyGroup: 'kadira',
   propertySchema: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'kadira'
+    }
   }
 }
 addToSettingsSchema.push(kadiraAppIdProperty);
@@ -13,7 +16,10 @@ var kadiraAppSecretProperty = {
   propertyGroup: 'kadira',
   propertySchema: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'kadira'
+    }
   }
 }
 addToSettingsSchema.push(kadiraAppSecretProperty);

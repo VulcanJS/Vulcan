@@ -48,7 +48,10 @@ var showBanner = {
   propertySchema: {
     type: Boolean,
     optional: true,
-    label: 'Show newsletter sign-up banner'
+    label: 'Show newsletter sign-up banner',
+    autoform: {
+      group: 'newsletter'
+    }
   }
 }
 addToSettingsSchema.push(showBanner);
@@ -58,6 +61,9 @@ var mailChimpAPIKey = {
   propertySchema: {
     type: String,
     optional: true,
+    autoform: {
+      group: 'newsletter'
+    }
   }
 }
 addToSettingsSchema.push(mailChimpAPIKey);
@@ -67,6 +73,9 @@ var mailChimpListId = {
   propertySchema: {
     type: String,
     optional: true,
+    autoform: {
+      group: 'newsletter'
+    }
   }
 }
 addToSettingsSchema.push(mailChimpListId);
@@ -75,7 +84,10 @@ var postsPerNewsletter = {
   propertyName: 'postsPerNewsletter',
   propertySchema: {
     type: Number,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'newsletter'
+    }
   }
 }
 addToSettingsSchema.push(postsPerNewsletter);
@@ -86,6 +98,7 @@ var newsletterFrequency = {
     type: Number,
     optional: true,
     autoform: {
+      group: 'newsletter',
       options: [
         {
           value: 1,
