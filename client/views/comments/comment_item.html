@@ -15,7 +15,7 @@
             <span>{{i18n "downvote"}}</span>
           </a>
         </div>
-        <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        <div class="user-avatar">{{>avatar userId=userId class=""}}</div>
         <div class="comment-main">
           <div class="comment-meta">
             <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>

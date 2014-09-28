@@ -1,16 +1,8 @@
 {
   "dependencies": [
     [
-      "aldeed:simple-schema",
-      "1.0.3"
-    ],
-    [
       "application-configuration",
       "1.0.2"
-    ],
-    [
-      "autoupdate",
-      "1.1.1"
     ],
     [
       "base64",
@@ -25,24 +17,12 @@
       "2.0.1"
     ],
     [
-      "blaze-tools",
-      "1.0.0"
-    ],
-    [
-      "boilerplate-generator",
-      "1.0.0"
-    ],
-    [
       "callback-hook",
       "1.0.0"
     ],
     [
       "check",
       "1.0.1"
-    ],
-    [
-      "cmather:handlebars-server",
-      "0.2.0"
     ],
     [
       "ddp",
@@ -57,8 +37,8 @@
       "1.0.3"
     ],
     [
-      "fastclick",
-      "1.0.0"
+      "email",
+      "1.0.3"
     ],
     [
       "follower-livedata",
@@ -67,14 +47,6 @@
     [
       "geojson-utils",
       "1.0.0"
-    ],
-    [
-      "handlebars",
-      "1.0.0"
-    ],
-    [
-      "html-tools",
-      "1.0.1"
     ],
     [
       "htmljs",
@@ -89,22 +61,6 @@
       "1.0.0"
     ],
     [
-      "iron:core",
-      "0.3.4"
-    ],
-    [
-      "iron:dynamic-template",
-      "0.4.1"
-    ],
-    [
-      "iron:layout",
-      "0.4.1"
-    ],
-    [
-      "iron:router",
-      "0.9.3"
-    ],
-    [
       "jquery",
       "1.0.0"
     ],
@@ -117,6 +73,10 @@
       "1.0.10"
     ],
     [
+      "localstorage",
+      "1.0.0"
+    ],
+    [
       "logging",
       "1.0.3"
     ],
@@ -125,28 +85,24 @@
       "1.1.1"
     ],
     [
-      "meteor-platform",
-      "1.1.1"
+      "meteorhacks:kadira",
+      "2.9.2"
     ],
     [
-      "minifiers",
-      "1.1.0"
+      "meteorhacks:kadira-binary-deps",
+      "1.0.1"
     ],
     [
       "minimongo",
       "1.0.3"
     ],
     [
-      "mobile-status-bar",
-      "1.0.0"
-    ],
-    [
       "mongo",
       "1.0.6"
     ],
     [
-      "notifications",
-      "0.0.1"
+      "mongo-livedata",
+      "1.0.5"
     ],
     [
       "observe-sequence",
@@ -161,48 +117,16 @@
       "1.0.0"
     ],
     [
-      "reactive-dict",
-      "1.0.3"
-    ],
-    [
       "reactive-var",
       "1.0.2"
-    ],
-    [
-      "reload",
-      "1.1.0"
     ],
     [
       "retry",
       "1.0.0"
     ],
     [
-      "routepolicy",
-      "1.0.1"
-    ],
-    [
-      "session",
-      "1.0.2"
-    ],
-    [
-      "spacebars",
-      "1.0.2"
-    ],
-    [
-      "spacebars-compiler",
-      "1.0.2"
-    ],
-    [
-      "standard-app-packages",
-      "1.0.2"
-    ],
-    [
       "telescope-base",
       "0.0.0"
-    ],
-    [
-      "telescope-email",
-      "0.2.9"
     ],
     [
       "telescope-i18n",
@@ -211,10 +135,6 @@
     [
       "telescope-lib",
       "0.2.9"
-    ],
-    [
-      "templating",
-      "1.0.7"
     ],
     [
       "tracker",
@@ -230,14 +150,6 @@
     ],
     [
       "url",
-      "1.0.0"
-    ],
-    [
-      "webapp",
-      "1.1.2"
-    ],
-    [
-      "webapp-hashing",
       "1.0.0"
     ]
   ],
