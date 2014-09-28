@@ -1,6 +1,6 @@
 <template name="user_item">
 <tr class="user">
-	<td><span class="user-avatar" style="background-image:url({{avatarUrl}});"></span></td>
+	<td>{{>avatar user=this}}</td>
 	<td>
 		<a href="{{getProfileUrl}}">{{displayName}}</a>
 		<br/>

@@ -79,10 +79,6 @@ Template[getTemplate('comment_item')].helpers({
   authorName: function(){
     return getAuthorName(this);
   },
-  user_avatar: function(){
-    if(author=Meteor.users.findOne(this.userId))
-      return getAvatarUrl(author);
-  },
   can_edit: function(){
     if(this.userId && Meteor.userId())
       return Meteor.user().isAdmin || (Meteor.userId() === this.userId);
@@ -107,7 +103,7 @@ Template[getTemplate('comment_item')].helpers({
     var user = Meteor.users.findOne(this.userId);
     if(user)
       return getProfileUrl(user);
-  }  
+  }
 });
 
 Template[getTemplate('comment_item')].rendered=function(){
@@ -122,7 +118,7 @@ Template[getTemplate('comment_item')].rendered=function(){
   //     // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
   //     // across template renderings
   //     // TODO: save scroll position
-      
+
   //     // get comment author name
   //     var user=Meteor.users.findOne(comment.userId);
   //     var author=getDisplayName(user);

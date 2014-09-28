@@ -1,7 +1,4 @@
 Template[getTemplate('user_item')].helpers({
-  avatarUrl: function(){
-    return getAvatarUrl(this);
-  },
   createdAtFormatted: function(){
     return this.createdAt ? moment(this.createdAt).fromNow() : '–';
   },
