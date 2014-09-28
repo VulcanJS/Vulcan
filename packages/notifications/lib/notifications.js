@@ -20,7 +20,7 @@ Notifications = {
     //
     // If its a function it will be run with the from the instance scope
     //
-    // If its a string it will return a html from a template with the instance
+    // If its a string it will return a template with the instance
     // as its data. 
     //
     // If its an object it will run run any number of templates or functions based on the optional
@@ -46,9 +46,9 @@ Notifications = {
       } 
 
       else if (_.isString(message)) {
-        return Blaze.toHTML(Blaze.With(this, function(){
+        return Blaze.With(this, function(){
           return Template[message]
-        }));
+        });
       } 
 
       else {
