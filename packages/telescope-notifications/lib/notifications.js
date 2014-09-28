@@ -31,7 +31,7 @@ _createNotification = function(event, params, userToNotify) {
     properties: params
   };
   // 1. Store notification in database
-  createNotification(userToNotify._id, params, function (error, notificationId) { 
+   Notifications.createNotification(userToNotify._id, params, function (error, notificationId) { 
     if (error) throw error; //output error like normal
     // 2. Send notification by email (if on server)
     if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){

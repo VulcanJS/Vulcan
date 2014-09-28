@@ -7,7 +7,7 @@ Meteor.publish('notifications', function() {
 Notifications.createNotification = function(userId, params, callback) {
   //TODO (possibility): allow for array of userIds or single userId, if array do multi insert
 
-  if (!NotificationsHelpers.eventTypes[params.event])
+  if (!Notifications.eventTypes[params.event])
     throw new Error('Notification event type does not exists');
 
   //TODO: sanity check input

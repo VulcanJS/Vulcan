@@ -15,7 +15,49 @@ Notifications = {
     if (Notifications.eventTypes[key]) 
       throw new Error('Notifications: event type already exists!');
 
+    // Package users can define a predefined message from the notification instance.
+    // It requires the user pass a options.message function or object.
+    //
+    // If its a function it will be run with the from the instance scope
+    //
+    // If its a string it will return a html from a template with the instance
+    // as its data. 
+    //
+    // If its an object it will run run any number of templates or functions based on the optional
+    // string argument given at the time of call. If no string is passed it will default 
+    // to 'default'. From there it acts the same as ether of the above patterns.
+    var message = function (template) {
+      var message, messageFormat = Notifications.eventTypes[key].messageFormat
+
+      if (_.isObject(messageFormat) && !_.isFunction(messageFormat) && !_.isString(messageFormat)) {
+        if (messageFormat[template]) {
+          message = messageFormat[template]
+        } else {
+          message = messageFormat.default
+          if (!message) {
+            throw new Meteor.Error('Notifications: No default message defined for "' + this.event + '" notifications');
+          }
+        }
+      } 
+      message = message || messageFormat
+
+      if (_.isFunction(message)) {
+        return message.apply(this) 
+      } 
+
+      else if (_.isString(message)) {
+        return Blaze.toHTML(Blaze.With(this, function(){
+          return Template[message]
+        }));
+      } 
+
+      else {
+        throw new Meteor.Error('Notifications: message not defined for "' + this.event + '" notifications');
+      }
+    }
+
     Notifications.eventTypes[key] = {
+      message: message,
       messageFormat: options.message,
       metadata: options.metadata
     };
@@ -29,10 +71,11 @@ Notifications.collection = new Meteor.Collection('notifications', {
 
       //This is the basic message you want to output. Use in the app or as an email subject line
       // it is optional and is set up with createNotification from the server code.
-      notification.message = function () {
-        if (Notifications.eventTypes[this.event].messageFormat) {
+      notification.message = function (template) {
+        check(template, Match.Optional(String));
+        if (Notifications.eventTypes[this.event].message) {
           //make the notification data accessible to the message function.
-          return Notifications.eventTypes[this.event].messageFormat.apply(this)
+          return Notifications.eventTypes[this.event].message.call(this, template)
         };
       };
 
