@@ -28,12 +28,7 @@
 
 <template name="afFormGroup_settings">
   <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-    {{#if this.skipLabel}}
-    {{! We include the empty label as the easiest way to keep proper field alignment}}
-    <label {{afEmptyFieldLabelAtts}}></label>
-    {{else}}
     {{> afFieldLabel afFieldLabelAtts}}
-    {{/if}}
     <div class="{{rightColumnClass}}">
       {{> afFieldInput afFieldInputAtts}}
       {{#if afFieldInstructions}}
@@ -88,5 +83,13 @@
         </ul>
       </div>
     </div>
+  </div>
+</template>
+
+<template name="afCheckbox_settings">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" value="{{this.value}}" {{atts}} />aaaa
+    </label>
   </div>
 </template>

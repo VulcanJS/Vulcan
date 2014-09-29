@@ -42,10 +42,10 @@ settingsSchemaObject = {
   },
   requirePostsApproval: {
     type: Boolean,
-    label: "Posts must be approved by admin",
     optional: true,
     autoform: {
-      group: 'access'
+      group: 'general',
+      instructions: "Posts must be approved by admin"
     }
   },
   // nestedComments: {
@@ -86,6 +86,7 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'posts',
+      instructions: 'The view used for the front page',
       options: _.map(viewNav, function (view) {
         return {
           value: camelCaseify(view.label),
@@ -163,7 +164,8 @@ settingsSchemaObject = {
     defaultValue: 'en',
     optional: true,
     autoform: {
-      group: 'internationalization'
+      group: 'general',
+      instructions: 'The two-letter code for the app\'s language. Defaults to "en".'
     }
   },
   backgroundCSS: {
@@ -172,7 +174,8 @@ settingsSchemaObject = {
     label: "Background CSS",
     autoform: {
       group: 'extras',
-      instructions: 'CSS code for the &lt;body&gt;\'s "background" property'
+      instructions: 'CSS code for the <body>\'s "background" property',
+      rows: 5
     }
   },
   // secondaryColor: {
@@ -240,7 +243,8 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'extras',
-      instructions: 'Footer content (accepts HTML).'
+      instructions: 'Footer content (accepts HTML).',
+      rows: 5
     }
   },
   extraCode: {
@@ -248,7 +252,8 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'extras',
-      instructions: 'Any extra HTML code you want to include on every page.'
+      instructions: 'Any extra HTML code you want to include on every page.',
+      rows: 5
     }
   },
   emailFooter: {
@@ -256,7 +261,8 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'email',
-      instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).'
+      instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).',
+      rows: 5
     }
   },
   notes: {
@@ -264,7 +270,8 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'extras',
-      instructions: 'You can store any notes or extra information here.'
+      instructions: 'You can store any notes or extra information here.',
+      rows: 5
     }
   },
 };
@@ -278,12 +285,16 @@ Settings = new Meteor.Collection("settings");
 SettingsSchema = new SimpleSchema(settingsSchemaObject);
 Settings.attachSchema(SettingsSchema);
 
+// use custom template for checkboxes - not working yet
+// if(Meteor.isClient){
+//   AutoForm.setDefaultTemplateForType('afCheckbox', 'settings');
+// }
+
 Settings.allow({
   insert: isAdminById,
   update: isAdminById,
   remove: isAdminById
 });
-
 
 if (Meteor.isClient){
   var query = Settings.find();
