@@ -1,3 +1,8 @@
+## v0.9.7
+
+* Fixed bug on Twitter sign-in.
+* Splitting up the settings form into sub-sections.
+
 ## v0.9.6
 
 * Fixed security hole in user update. 
