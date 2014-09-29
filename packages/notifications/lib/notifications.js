@@ -1,29 +1,46 @@
 //This is our Global Object. 
 Notifications = {
+  //Notification global settings
+  settings: {
+    overrides: {}, //disable functionality for all users. 
+    defaults: { //default settings for users.
+      onsite: true
+    }
+  },
+
+  media: ['onsite'], //supported mediums, extension packages should push new kinds
+
   //EventTypes allows us to add reusable logic that can be updated
   //without the need for migrations.
   //
   // messageFormat - a function that the package user defines, outputs a message string
   // metadata - useful data like template names that don't need to be in the database
+  // media - where these notifications should be sent. 
   eventTypes: {},
-
   //add an event type
   addEventType: function (key, options) {
     check(key, String);
-    check(options, Match.Optional(Object));
+    check(options, Object);
+    check(options.media, Array);
+    if (options.media.length == 0)
+      throw new Error('Notifications: event type "'+ key+ '" must have at least one medium');
+    options.media.forEach(function (medium) {
+      if (!_.contains(Notifications.media, medium)) 
+        throw new Error('Notifications: medium "' + medium + '" is not a known media');
+    });
 
     if (Notifications.eventTypes[key]) 
-      throw new Error('Notifications: event type already exists!');
+      throw new Error('Notifications: event type "'+key+'"" already exists');
 
     // Package users can define a predefined message from the notification instance.
-    // It requires the user pass a options.message function or object.
+    // It requires the user pass a options.message function, string, or object.
     //
     // If its a function it will be run with the from the instance scope
     //
     // If its a string it will return a template with the instance
     // as its data. 
     //
-    // If its an object it will run run any number of templates or functions based on the optional
+    // If its an object it will run any number of templates or functions based on the optional
     // string argument given at the time of call. If no string is passed it will default 
     // to 'default'. From there it acts the same as ether of the above patterns.
     var message = function (template) {
@@ -59,6 +76,7 @@ Notifications = {
     Notifications.eventTypes[key] = {
       message: message,
       messageFormat: options.message,
+      media: options.media,
       metadata: options.metadata
     };
   }

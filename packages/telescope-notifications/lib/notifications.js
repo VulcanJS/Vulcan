@@ -12,7 +12,8 @@ Notifications.addEventType('newReply', {
   metadata: {
     emailTemplate: 'emailNewReply',
     template: 'notificationNewReply'
-  }
+  },
+  media: ['onsite']
 });
 
 Notifications.addEventType('newComment', {
@@ -22,7 +23,8 @@ Notifications.addEventType('newComment', {
   metadata: {
     emailTemplate: 'emailNewComment',
     template: 'notificationNewComment'
-  }
+  },
+  media: ['onsite']
 });
 
 _createNotification = function(event, params, userToNotify) {

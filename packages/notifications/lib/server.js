@@ -1,6 +1,6 @@
 // only publish notifications belonging to the current user
 Meteor.publish('notifications', function() {
-  return Notifications.collection.find({userId:this.userId});
+  return Notifications.collection.find({userId:this.userId, onsite: true});
 });
 
 //You can insert manually but this should save you some work.
@@ -38,6 +38,11 @@ Notifications.createNotification = function(userIds, params, callback) {
       read: false,
       url: params.url
     };
+
+    if (_.contains(Notifications.eventTypes[params.event].media, 'onsite'))
+      if (!Notifications.settings.overrides.onsite)
+        notification.onsite = true
+
 
     //I figured I would make it work like an insert
     //Given that this is really server only, do we really want to try/catch?
