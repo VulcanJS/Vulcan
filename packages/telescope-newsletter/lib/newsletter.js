@@ -50,7 +50,8 @@ var showBanner = {
     optional: true,
     label: 'Show newsletter sign-up banner',
     autoform: {
-      group: 'newsletter'
+      group: 'newsletter',
+      instructions: 'Show newsletter sign-up form on the front page.'
     }
   }
 }
@@ -74,7 +75,8 @@ var mailChimpListId = {
     type: String,
     optional: true,
     autoform: {
-      group: 'newsletter'
+      group: 'newsletter',
+      instructions: 'The ID of the list you want to send to.'
     }
   }
 }

@@ -10,9 +10,10 @@ settingsSchemaObject = {
   siteUrl: {
     type: String,
     optional: true,
-    label: 'Site URL (with trailing "/")',
+    label: 'Site URL',
     autoform: {
-      group: 'general'
+      group: 'general',
+      instructions: 'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
     }
   },
   tagline: {
@@ -28,7 +29,7 @@ settingsSchemaObject = {
     label: "Require invite to view",
     optional: true,
     autoform: {
-      group: 'access'
+      group: 'invites'
     }
   },
   requirePostInvite: {
@@ -36,7 +37,7 @@ settingsSchemaObject = {
     label: "Require invite to post",
     optional: true,
     autoform: {
-      group: 'access'
+      group: 'invites'
     }
   },
   requirePostsApproval: {
@@ -47,42 +48,37 @@ settingsSchemaObject = {
       group: 'access'
     }
   },
-  emailNotifications: {
-    type: Boolean,
-    label: "Enable email notifications",
-    optional: true,
-    autoform: {
-      group: 'email'
-    }
-  },
-  nestedComments: {
-    type: Boolean,
-    label: "Enable nested comments",
-    optional: true,
-    autoform: {
-      group: 'comments'
-    }
-  },
-  redistributeKarma: {
-    type: Boolean,
-    label: "Enable redistributed karma",
-    optional: true,
-    autoform: {
-      group: 'general'
-    }
-  },
+  // nestedComments: {
+  //   type: Boolean,
+  //   label: "Enable nested comments",
+  //   optional: true,
+  //   autoform: {
+  //     group: 'comments'
+  //   }
+  // },
+  // redistributeKarma: {
+  //   type: Boolean,
+  //   label: "Enable redistributed karma",
+  //   optional: true,
+  //   autoform: {
+  //     group: 'general'
+  //   }
+  // },
   defaultEmail: {
     type: String,
     optional: true,
     autoform: {
-      group: 'email'
+      group: 'email',
+      instructions: 'The address all outgoing emails will be sent from.'
     }
   },
   scoreUpdateInterval: {
     type: Number,
     optional: true,
+    defaultValue: 30,
     autoform: {
-      group: 'scoring'
+      group: 'scoring',
+      instructions: 'How often to recalculate scores, in seconds (default to 30)'
     }
   },
   defaultView: {
@@ -101,22 +97,28 @@ settingsSchemaObject = {
   postInterval: {
     type: Number,
     optional: true,
+    defaultValue: 30,
     autoform: {
-      group: 'posts'
+      group: 'posts',
+      instructions: 'Minimum time between posts, in seconds (defaults to 30)'
     }
   },
   commentInterval: {
     type: Number,
     optional: true,
+    defaultValue: 15,
     autoform: {
-      group: 'comments'
+      group: 'comments',
+      instructions: 'Minimum time between comments, in seconds (defaults to 15)'
     }
   },
   maxPostsPerDay: {
     type: Number,
     optional: true,
+    defaultValue: 30,
     autoform: {
-      group: 'posts'
+      group: 'posts',
+      instructions: 'Maximum number of posts a user can post in a day (default to 30).'
     }
   },
   startInvitesCount: {
@@ -124,7 +126,7 @@ settingsSchemaObject = {
     defaultValue: 3,
     optional: true,
     autoform: {
-      group: 'general'
+      group: 'invites'
     }
   },
   postsPerPage: {
@@ -161,15 +163,16 @@ settingsSchemaObject = {
     defaultValue: 'en',
     optional: true,
     autoform: {
-      group: 'general'
+      group: 'internationalization'
     }
   },
   backgroundCSS: {
     type: String,
     optional: true,
-    label: "Background CSS: color, image, etc.",
+    label: "Background CSS",
     autoform: {
-      group: 'extras'
+      group: 'extras',
+      instructions: 'CSS code for the &lt;body&gt;\'s "background" property'
     }
   },
   // secondaryColor: {
@@ -236,28 +239,32 @@ settingsSchemaObject = {
     type: String,
     optional: true,
     autoform: {
-      group: 'extras'
+      group: 'extras',
+      instructions: 'Footer content (accepts HTML).'
     }
   },
   extraCode: {
     type: String,
     optional: true,
     autoform: {
-      group: 'extras'
+      group: 'extras',
+      instructions: 'Any extra HTML code you want to include on every page.'
     }
   },
   emailFooter: {
     type: String,
     optional: true,
     autoform: {
-      group: 'email'
+      group: 'email',
+      instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).'
     }
   },
   notes: {
     type: String,
     optional: true,
     autoform: {
-      group: 'extras'
+      group: 'extras',
+      instructions: 'You can store any notes or extra information here.'
     }
   },
 };

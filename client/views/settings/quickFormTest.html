@@ -4,7 +4,7 @@
     {{#each afFieldsets}}
       <fieldset>
         <h3 class="fieldset-heading">{{this}}</h3>
-        {{> afQuickFields fields=fieldsForFieldset omitFields=../atts.omitFields template="bootstrap3-horizontal" input-col-class=inputClass label-class=labelClass}}
+        {{> afQuickFields fields=fieldsForFieldset omitFields=../atts.omitFields template="test" input-col-class=inputClass label-class=labelClass}}
       </fieldset>
     {{/each}}
     
@@ -14,9 +14,9 @@
         <div class="{{inputClass}}">
           <button {{submitButtonAtts}}>
           {{#with ../atts.buttonContent}}
-          {{this}}
+            {{this}}
           {{else}}
-          Submit
+            Submit
           {{/with}}
           </button>
         </div>
@@ -36,6 +36,9 @@
     {{/if}}
     <div class="{{rightColumnClass}}">
       {{> afFieldInput afFieldInputAtts}}
+      {{#if afFieldInstructions}}
+        <span class="instructions-block">{{afFieldInstructions}}</span>
+      {{/if}}
       <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
     </div>
   </div>

@@ -322,6 +322,13 @@ input[type="search"] {
 fieldset {
   margin-bottom: 30px; }
 
+/* line 181, ../scss/global/_forms.scss */
+.instructions-block {
+  margin-top: 5px;
+  display: block;
+  font-size: 80%;
+  color: rgba(0, 0, 0, 0.6); }
+
 /* line 1, ../scss/global/_links.scss */
 a {
   text-decoration: none; }

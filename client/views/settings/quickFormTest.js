@@ -17,7 +17,7 @@ Template[getTemplate('quickForm_test')].helpers({
   },
   fieldsForFieldset: function () {
     var fieldset = this.toLowerCase();
-    var schema = Template.parentData(1)._af.ss._schema;
+    var schema = AutoForm.find().ss._schema;
 
     // decorate schema with key names
     schema = _.map(schema, function (field, key) {
@@ -99,6 +99,10 @@ Template["afFormGroup_test"].afEmptyFieldLabelAtts = function () {
 Template["afFormGroup_test"].rightColumnClass = function () {
   var atts = this.afFieldInputAtts || {};
   return atts['input-col-class'] || "";
+};
+
+Template["afFormGroup_test"].afFieldInstructions = function () {
+  return this.afFieldInputAtts.instructions;
 };
 
 Template["afObjectField_test"].rightColumnClass = function () {

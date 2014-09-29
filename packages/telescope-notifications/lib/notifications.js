@@ -101,7 +101,7 @@ Meteor.methods({
 
 // add new post notification callback on post submit
 postAfterSubmitMethodCallbacks.push(function (post) {
-  if(Meteor.isServer && !!getSetting('emailNotifications', false)){
+  if(Meteor.isServer && !!getSetting('emailNotifications', true)){
     // we don't want emails to hold up the post submission, so we make the whole thing async with setTimeout
     Meteor.setTimeout(function () {
       newPostNotification(post, [post.userId])
@@ -112,7 +112,7 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 
 // add new comment notification callback on comment submit
 commentAfterSubmitMethodCallbacks.push(function (comment) {
-  if(Meteor.isServer){
+  if(Meteor.isServer && !!getSetting('emailNotifications', true)){
 
     var parentCommentId = comment.parentCommentId;
     var user = Meteor.user();
@@ -151,3 +151,17 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
 
   return comment;
 });
+
+var emailNotifications = {
+  propertyName: 'emailNotifications',
+  propertySchema: {
+    type: Boolean,
+    optional: true,
+    defaultValue: true,
+    autoform: {
+      group: 'notifications',
+      instructions: 'Enable email notifications for new posts and new comments.'
+    }
+  }
+}
+addToSettingsSchema.push(emailNotifications);
