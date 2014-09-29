@@ -6,7 +6,7 @@ function findAtts() {
   return c && c.atts;
 }
 
-Template[getTemplate('quickForm_test')].helpers({
+Template[getTemplate('quickForm_settings')].helpers({
   afFieldsets: function () {
     var schema = this._af.ss._schema;
     var groups = _.compact(_.uniq(_.pluckDeep(schema, 'autoform.group')));
@@ -69,7 +69,7 @@ Template[getTemplate('quickForm_test')].helpers({
   }
 });
 
-Template["afFormGroup_test"].afFieldInputAtts = function () {
+Template["afFormGroup_settings"].afFieldInputAtts = function () {
   var atts = _.clone(this.afFieldInputAtts || {});
   if ('input-col-class' in atts) {
     delete atts['input-col-class'];
@@ -78,13 +78,13 @@ Template["afFormGroup_test"].afFieldInputAtts = function () {
   return atts;
 };
 
-Template["afFormGroup_test"].afFieldLabelAtts = function () {
+Template["afFormGroup_settings"].afFieldLabelAtts = function () {
   var atts = _.clone(this.afFieldLabelAtts || {});
   atts.template = "bootstrap3";
   return atts;
 };
 
-Template["afFormGroup_test"].afEmptyFieldLabelAtts = function () {
+Template["afFormGroup_settings"].afEmptyFieldLabelAtts = function () {
   var atts = _.clone(this.afFieldLabelAtts || {});
   var labelAtts = _.omit(atts, 'name', 'autoform', 'template');
   // Add bootstrap class if necessary
@@ -96,21 +96,21 @@ Template["afFormGroup_test"].afEmptyFieldLabelAtts = function () {
   return labelAtts;
 };
 
-Template["afFormGroup_test"].rightColumnClass = function () {
+Template["afFormGroup_settings"].rightColumnClass = function () {
   var atts = this.afFieldInputAtts || {};
   return atts['input-col-class'] || "";
 };
 
-Template["afFormGroup_test"].afFieldInstructions = function () {
+Template["afFormGroup_settings"].afFieldInstructions = function () {
   return this.afFieldInputAtts.instructions;
 };
 
-Template["afObjectField_test"].rightColumnClass = function () {
+Template["afObjectField_settings"].rightColumnClass = function () {
   var atts = this.atts || {};
   return atts['input-col-class'] || "";
 };
 
-Template["afObjectField_test"].afFieldLabelAtts = function () {
+Template["afObjectField_settings"].afFieldLabelAtts = function () {
   var atts = this.atts;
   return {
     template: "bootstrap3",
@@ -119,12 +119,12 @@ Template["afObjectField_test"].afFieldLabelAtts = function () {
   };
 };
 
-Template["afArrayField_test"].rightColumnClass = function () {
+Template["afArrayField_settings"].rightColumnClass = function () {
   var atts = this.atts || {};
   return atts['input-col-class'] || "";
 };
 
-Template["afArrayField_test"].afFieldLabelAtts = function () {
+Template["afArrayField_settings"].afFieldLabelAtts = function () {
   var atts = this.atts || {};
   return {
     template: "bootstrap3",

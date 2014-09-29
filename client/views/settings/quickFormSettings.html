@@ -1,10 +1,10 @@
-<template name="quickForm_test">
+<template name="quickForm_settings">
   {{#autoForm qfAutoFormContext}}
 
     {{#each afFieldsets}}
       <fieldset>
         <h3 class="fieldset-heading">{{this}}</h3>
-        {{> afQuickFields fields=fieldsForFieldset omitFields=../atts.omitFields template="test" input-col-class=inputClass label-class=labelClass}}
+        {{> afQuickFields fields=fieldsForFieldset omitFields=../atts.omitFields template="settings" input-col-class=inputClass label-class=labelClass}}
       </fieldset>
     {{/each}}
     
@@ -26,7 +26,7 @@
   {{/autoForm}}
 </template>
 
-<template name="afFormGroup_test">
+<template name="afFormGroup_settings">
   <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
     {{#if this.skipLabel}}
     {{! We include the empty label as the easiest way to keep proper field alignment}}
@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<template name="afObjectField_test">
+<template name="afObjectField_settings">
   <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
     {{> afFieldLabel afFieldLabelAtts}}
     <div class="{{rightColumnClass}}">
@@ -57,7 +57,7 @@
   </div>
 </template>
 
-<template name="afArrayField_test">
+<template name="afArrayField_settings">
   <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
     {{> afFieldLabel afFieldLabelAtts}}
     <div class="{{rightColumnClass}}">
