@@ -1,0 +1,79 @@
+<template name="MedBookMainPage">
+  <div class="posts-wrapper grid">
+    <h2 class="welcome-message">Welcome to MedBook!</h2>
+
+
+    <div id="tabs">
+        <ul class="ui-tabs-div" >
+            <li><a href="#query">Query Data</a></li>
+            <li><a href="#input">Input Data</a></li>
+            <li><a href="#download">Download Data</a></li>
+            <li><a href="#discuss">Discuss Findings</a></li>
+        </ul>
+
+        <div id="query">
+        <!--
+         {{> UI.dynamic template=cbioquery }}
+            -->
+            <div class="queryarea">
+                Select cohorts: <select id="selection"> <option value="wcdt"> West Coast Dream Team</option> </select>
+            </div>
+            <div class="queryarea">
+                Enter Genes or Clincal Phenotypes:
+            </div>
+            <div class="queryarea">
+                See results as:
+                <select id="selection">
+                <option value="oncoprint">Oncoprint</option>
+                <option value="oncoprint">Oncoprint</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="ui-tabs-div" id="input">
+            <select id="crf_form_selection" onchange="change_crf_form_selection()">
+                <option value=""><i>Select one</i></option>
+                <option value="BloodSpecimenform">Blood Specimen form</option>
+                <option value="Pathologyform">Pathology form</option>
+                <option value="PatientEnrollmentform">Patient Enrollment form</option>
+                <option value="RNASeqcompletionform">RNASeq completion form</option>
+                <option value="TissuePreparationform">Tissue Preparation form</option>
+                <option value="TissueSpecimenform">Tissue Specimen form</option>
+                <option value="TreatmentHistory">Treatment History</option>
+            </select>
+
+            <div style="display:none;" class="crf_form" id="BloodSpecimenform" > 
+                {{>quickForm collection="BloodSpecimenform" id="BloodSpecimenform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="Pathologyform" > 
+                {{>quickForm collection="Pathologyform" id="Pathologyform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="PatientEnrollmentform" > 
+                {{>quickForm collection="PatientEnrollmentform" id="PatientEnrollmentform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="RNASeqcompletionform" > 
+                {{>quickForm collection="RNASeqcompletionform" id="RNASeqcompletionform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="TissuePreparationform" > 
+                {{>quickForm collection="TissuePreparationform" id="TissuePreparationform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="TissueSpecimenform" > 
+                {{>quickForm collection="TissueSpecimenform" id="TissueSpecimenform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="TreatmentHistory" > 
+                {{>quickForm collection="TreatmentHistory" id="TreatmentHistory"  type="insert" }} </div>
+
+        </div> 
+
+
+        <div class="ui-tabs-div" id="download"> download </div>
+        <div class="ui-tabs-div" id="discuss"> posts:
+            <div class="posts list">
+              {{#each posts}}
+                {{> UI.dynamic template=post_item}}
+              {{/each}}
+            </div>
+            {{#if hasMorePosts}}
+              <div class="more-button">
+                <a href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
+              </div>
+            {{/if}}
+        </div>
+    </div>
+
+  </div>
+</template>

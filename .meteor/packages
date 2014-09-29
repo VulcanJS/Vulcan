@@ -22,8 +22,6 @@ meteorhacks:fast-render@1.0.0
 meteorhacks:subs-manager@1.1.0
 meteorhacks:npm
 
-aldeed:autoform
-aldeed:collection2
 aldeed:simple-schema
 
 mrt:jquery-hotkeys@0.0.1
@@ -66,9 +64,16 @@ rajit:bootstrap3-datepicker
 telescope-update-prompt
 telescope-notifications
 telescope-kadira
+telescope-theme-medbook
+jquery
 
 # Accounts Templates
 service-configuration
 accounts-ui
 splendido:accounts-templates-unstyled
+telescope-static-pages
+mrt:jquery-ui
+mrt:jquery-ui-bootstrap
+aldeed:collection2
+aldeed:autoform
 

@@ -63,6 +63,8 @@ mongo-livedata@1.0.5
 mongo@1.0.6
 mrt:cookies@0.3.0
 mrt:jquery-hotkeys@0.0.1
+mrt:jquery-ui-bootstrap@1.8.16
+mrt:jquery-ui@1.9.2
 mrt:mailchimp@0.4.0
 mrt:moment@2.8.1
 npm-bcrypt@0.7.7
@@ -106,9 +108,11 @@ telescope-newsletter@0.1.0
 telescope-notifications@0.1.0
 telescope-rss@0.0.0
 telescope-search@0.0.0
+telescope-static-pages@0.1.0
 telescope-tags@0.0.0
 telescope-theme-base@0.0.0
 telescope-theme-hubble@0.0.0
+telescope-theme-medbook@0.0.0
 telescope-update-prompt@0.1.0
 templating@1.0.7
 tmeasday:crypto-base@3.1.2
