@@ -14,29 +14,33 @@ var getPosts = function (date) {
   return posts;
 }
 
-Template[getTemplate('postsDaily')].helpers({
-  postsLoaded: function () {
-    return !!Session.get('postsLoaded');
-  },
-  post_item: function () {
-    return getTemplate('post_item');
-  },
-  days: function () {
-    var daysArray = [];
-    // var days = this.days;
-    var days = Session.get('postsDays');
-    for (i = 0; i < days; i++) {
-      daysArray.push({
-        date: moment().subtract(i, 'days').startOf('day').toDate()
-      });
+Meteor.startup(function () {
+
+  Template[getTemplate('postsDaily')].helpers({
+    postsLoaded: function () {
+      return !!Session.get('postsLoaded');
+    },
+    post_item: function () {
+      return getTemplate('post_item');
+    },
+    days: function () {
+      var daysArray = [];
+      // var days = this.days;
+      var days = Session.get('postsDays');
+      for (i = 0; i < days; i++) {
+        daysArray.push({
+          date: moment().subtract(i, 'days').startOf('day').toDate()
+        });
+      }
+      return daysArray;
+    },
+    posts: function () {
+      return getPosts(this.date);
+    },
+    loadMoreUrl: function () {
+      var count = parseInt(Session.get('postsDays')) + daysPerPage;
+      return '/daily/' + count;
     }
-    return daysArray;
-  },
-  posts: function () {
-    return getPosts(this.date);
-  },
-  loadMoreUrl: function () {
-    var count = parseInt(Session.get('postsDays')) + daysPerPage;
-    return '/daily/' + count;
-  }
+  });
+
 });
