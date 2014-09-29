@@ -1,53 +1,48 @@
-Notifications = new Meteor.Collection('notifications');
-
-// Notifications = new Meteor.Collection("notifications", {
-//   schema: new SimpleSchema({
-//     properties: {
-//       type: Object
-//     },
-//     event: {
-//       type: String
-//     },
-//     read: {
-//       type: Boolean
-//     },
-//     createdAt: {
-//       type: Date
-//     },
-//     userId: {
-//       type: "???"
-//     }
-//   })
-// });
-
-Notifications.allow({
-  insert: function(userId, doc){
-    // new notifications can only be created via a Meteor method
-    return false;
-  },
-  update: can.editById,
-  remove: can.editById
+// --  OPTIONAL  --
+//Insure that notification security is maintained as per telescope standards.
+Notifications.collection.deny({
+  update: ! can.editById,
+  remove: ! can.editById
 });
 
-createNotification = function(event, properties, userToNotify) {
-  // 1. Store notification in database
-  var notification = {
-    timestamp: new Date().getTime(),
-    userId: userToNotify._id,
-    event: event,
-    properties: properties,
-    read: false
-  };
-  var newNotificationId = Notifications.insert(notification);
-
-  // 2. Send notification by email (if on server)
-  if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
-    // put in setTimeout so it doesn't hold up the rest of the method
-    Meteor.setTimeout(function () {
-      notificationEmail = buildEmailNotification(notification);
-      sendEmail(getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
-    }, 1);
+Notifications.addEventType('newReply', {
+  message: function () {
+    return this.properties.comment.author + " has replied to your comment on \"" + this.properties.post.title + "\"";
+  },
+  metadata: {
+    emailTemplate: 'emailNewReply',
+    template: 'notificationNewReply'
   }
+});
+
+Notifications.addEventType('newComment', {
+  message: function () {
+    return this.properties.comment.author + " left a new comment on \"" + this.properties.post.title + "\"";
+  },
+  metadata: {
+    emailTemplate: 'emailNewComment',
+    template: 'notificationNewComment'
+  }
+});
+
+_createNotification = function(event, params, userToNotify) {
+  params = {
+    event: event,
+    properties: params
+  };
+  // 1. Store notification in database
+   Notifications.createNotification(userToNotify._id, params, function (error, notificationId) { 
+    if (error) throw error; //output error like normal
+    // 2. Send notification by email (if on server)
+    if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
+      var notification = Notifications.collection.findOne(notificationId);
+      // put in setTimeout so it doesn't hold up the rest of the method
+      Meteor.setTimeout(function () {
+        notificationEmail = buildEmailNotification(notification);
+        sendEmail(getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
+      }, 1);
+    }
+  })
 };
 
 buildSiteNotification = function (notification) {
@@ -55,7 +50,6 @@ buildSiteNotification = function (notification) {
       comment = notification.properties.comment,
       post = notification.properties.post,
       userToNotify = Meteor.users.findOne(notification.userId),
-      template,
       html;
 
   var properties = {
@@ -65,39 +59,12 @@ buildSiteNotification = function (notification) {
     postTitle: post.title
   };
 
-  switch(event){
-    case 'newReply':
-      template = 'notificationNewReply';
-      break;
-
-    case 'newComment':
-      template = 'notificationNewComment';
-      break; 
-
-    default:
-      break;
-  }
-
   html = Blaze.toHTML(Blaze.With(properties, function(){
-    return Template[getTemplate(template)]
+    return Template[getTemplate(notification.metadata.template)]
   }));
 
   return html;
 };
-
-Meteor.methods({
-  markAllNotificationsAsRead: function() {
-    Notifications.update(
-      {userId: Meteor.userId()},
-      {
-        $set:{
-          read: true
-        }
-      },
-      {multi: true}
-    );
-  }
-});
 
 // add new post notification callback on post submit
 postAfterSubmitMethodCallbacks.push(function (post) {
@@ -134,18 +101,18 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
       // reply notification
       // do not notify users of their own actions (i.e. they're replying to themselves)
       if(parentUser._id != user._id)
-        createNotification('newReply', notificationProperties, parentUser);
+        _createNotification('newReply', notificationProperties, parentUser);
 
       // comment notification
       // if the original poster is different from the author of the parent comment, notify them too
       if(postUser._id != user._id && parentComment.userId != post.userId)
-        createNotification('newComment', notificationProperties, postUser);
+        _createNotification('newComment', notificationProperties, postUser);
 
     }else{
       // root comment
       // don't notify users of their own comments
       if(postUser._id != user._id)
-        createNotification('newComment', notificationProperties, postUser);
+        _createNotification('newComment', notificationProperties, postUser);
     }
   }
 

@@ -7,6 +7,7 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
+    'notifications',
     'telescope-lib',
     'telescope-base',
     'telescope-email',
@@ -30,7 +31,6 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/notifications-client.js',
     'lib/client/templates/notification_item.html',
     'lib/client/templates/notification_item.js',
     'lib/client/templates/notification_new_comment.html',
@@ -42,13 +42,13 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.add_files([
-    'lib/server/notifications-server.js',
-    'lib/server/publication.js'
+    'lib/server/notifications-server.js'
   ], ['server']);
   
   api.export([
     'Notifications',
-    'createNotification',
+    'NotificationsHelpers',
+    '_createNotification',
     'buildSiteNotification',
     'newPostNotification',
     'buildEmailNotification',
