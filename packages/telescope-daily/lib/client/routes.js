@@ -9,37 +9,38 @@ var coreSubscriptions = new SubsManager({
 
 // note: FastRender not defined here?
 
-PostsDailyController = RouteController.extend({
-  template: getTemplate('posts_daily'),
-  onBeforeAction: function() {
-    this.days = this.params.days ? this.params.days : daysPerPage;
-    // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
-
-    var terms = {
-      view: 'daily',
-      days: this.days,
-      after: moment().subtract(this.days, 'days').startOf('day').toDate()
-    };
-
-    this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {
-      Session.set('postsLoaded', true);
-    });
-
-    this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
-
-    return [this.postsSubscription, this.postsUsersSubscription];
-
-  },
-  data: function() {
-    Session.set('postsDays', this.days);
-    return {
-      days: this.days
-    };
-  }
-});
 
 Meteor.startup(function () {
-  
+
+  PostsDailyController = RouteController.extend({
+    template: getTemplate('posts_daily'),
+    onBeforeAction: function() {
+      this.days = this.params.days ? this.params.days : daysPerPage;
+      // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
+
+      var terms = {
+        view: 'daily',
+        days: this.days,
+        after: moment().subtract(this.days, 'days').startOf('day').toDate()
+      };
+
+      this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {
+        Session.set('postsLoaded', true);
+      });
+
+      this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
+
+      return [this.postsSubscription, this.postsUsersSubscription];
+
+    },
+    data: function() {
+      Session.set('postsDays', this.days);
+      return {
+        days: this.days
+      };
+    }
+  });
+
   Router.map(function() {
 
     this.route('postsDaily', {
