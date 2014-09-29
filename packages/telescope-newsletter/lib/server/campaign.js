@@ -74,7 +74,6 @@ scheduleNextCampaign = function (isTest) {
     return scheduleCampaign(buildCampaign(posts), isTest);
   }else{
     var result = 'No posts to schedule today…';
-    console.log(result)
     return result
   }
 }

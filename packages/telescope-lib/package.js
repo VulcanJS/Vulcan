@@ -15,7 +15,8 @@ Package.onUse(function (api) {
   ], 'client');
 
   api.add_files([
-    'lib/lib.js', 
+    'lib/lib.js',
+    'lib/deep.js', 
     'lib/deep_extend.js', 
     'lib/autolink.js', 
     'lib/permissions.js'
@@ -32,6 +33,8 @@ Package.onUse(function (api) {
     'getThemeSetting',
     'getSiteUrl',
     'trimWords',
-    'can'
+    'can',
+    '_',
+    'capitalise'
   ]);
 });
