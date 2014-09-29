@@ -1,3 +1,9 @@
+#### UPDATE
+
+This code now lives at https://github.com/Meteor-Reaction/notifications!
+
+The following is old news. This PR is closed
+
 #Notifications
 
 A notifications pattern strait out of Telescope! (actually still in Telescope >_>) Worth notting that everything in here is open to change. Any refrences to telescope may or may not have been aproved.
