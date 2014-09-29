@@ -29,9 +29,36 @@
                 </select>
             </div>
         </div>
+
         <div class="ui-tabs-div" id="input">
-            {{> crfsMenu}}
+            <select id="crf_form_selection" onchange="change_crf_form_selection()">
+                <option value=""><i>Select one</i></option>
+                <option value="BloodSpecimenform">Blood Specimen form</option>
+                <option value="Pathologyform">Pathology form</option>
+                <option value="PatientEnrollmentform">Patient Enrollment form</option>
+                <option value="RNASeqcompletionform">RNASeq completion form</option>
+                <option value="TissuePreparationform">Tissue Preparation form</option>
+                <option value="TissueSpecimenform">Tissue Specimen form</option>
+                <option value="TreatmentHistory">Treatment History</option>
+            </select>
+
+            <div style="display:none;" class="crf_form" id="BloodSpecimenform" > 
+                {{>quickForm collection="BloodSpecimenform" id="BloodSpecimenform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="Pathologyform" > 
+                {{>quickForm collection="Pathologyform" id="Pathologyform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="PatientEnrollmentform" > 
+                {{>quickForm collection="PatientEnrollmentform" id="PatientEnrollmentform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="RNASeqcompletionform" > 
+                {{>quickForm collection="RNASeqcompletionform" id="RNASeqcompletionform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="TissuePreparationform" > 
+                {{>quickForm collection="TissuePreparationform" id="TissuePreparationform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="TissueSpecimenform" > 
+                {{>quickForm collection="TissueSpecimenform" id="TissueSpecimenform"  type="insert" }} </div>
+            <div style="display:none;" class="crf_form" id="TreatmentHistory" > 
+                {{>quickForm collection="TreatmentHistory" id="TreatmentHistory"  type="insert" }} </div>
+
         </div> 
+
 
         <div class="ui-tabs-div" id="download"> download </div>
         <div class="ui-tabs-div" id="discuss"> posts:
