@@ -6,7 +6,7 @@ var getPosts = function (date) {
     after: moment(date).startOf('day').toDate(),
     before: moment(date).endOf('day').toDate()
   };
-  var parameters = getParameters(terms);
+  var parameters = getPostsParameters(terms);
   var posts = Posts.find(parameters.find, parameters.options).map(function (post, index, cursor) {
     post.rank = index;
     return post;

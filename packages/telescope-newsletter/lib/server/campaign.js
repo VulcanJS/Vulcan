@@ -12,7 +12,7 @@ getCampaignPosts = function (postsCount) {
   var lastWeek = moment().subtract(7, 'days').toDate();
   var after = (typeof lastCampaign != 'undefined') ? lastCampaign.finishedAt : lastWeek
 
-  var params = getParameters({
+  var params = getPostsParameters({
     view: 'campaign',
     limit: postsCount,
     after: after
