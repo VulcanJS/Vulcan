@@ -10,7 +10,9 @@ var coreSubscriptions = new SubsManager({
 // note: FastRender not defined here?
 
 PostsDailyController = RouteController.extend({
-  template: getTemplate('posts_daily'),
+  template: function() {
+    return getTemplate('postsDaily');
+  },
   onBeforeAction: function() {
     this.days = this.params.days ? this.params.days : daysPerPage;
     // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;

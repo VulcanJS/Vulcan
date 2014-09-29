@@ -170,3 +170,17 @@ input[type="search"]{
 .comment-field{
   margin-bottom: 10px;  
 }
+.fieldset-heading{
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #B5B0B0;
+}
+fieldset{
+  margin-bottom: 30px;
+}
+.instructions-block{
+  margin-top: 5px;
+  display: block;
+  font-size: 80%;
+  color: $light-text;
+}

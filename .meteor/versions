@@ -89,8 +89,8 @@ softwarerero:accounts-t9n@1.0.0
 spacebars-compiler@1.0.2
 spacebars@1.0.2
 spiderable@1.0.3
-splendido:accounts-templates-core@0.9.5
-splendido:accounts-templates-unstyled@0.9.5
+splendido:accounts-templates-core@0.9.7
+splendido:accounts-templates-unstyled@0.9.7
 srp@1.0.0
 standard-app-packages@1.0.2
 telescope-api@0.0.0

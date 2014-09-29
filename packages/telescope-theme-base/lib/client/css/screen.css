@@ -312,6 +312,23 @@ input[type="search"] {
 .comment-field {
   margin-bottom: 10px; }
 
+/* line 173, ../scss/global/_forms.scss */
+.fieldset-heading {
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #B5B0B0; }
+
+/* line 178, ../scss/global/_forms.scss */
+fieldset {
+  margin-bottom: 30px; }
+
+/* line 181, ../scss/global/_forms.scss */
+.instructions-block {
+  margin-top: 5px;
+  display: block;
+  font-size: 80%;
+  color: #b3c1c6; }
+
 /* line 1, ../scss/global/_links.scss */
 a {
   text-decoration: none; }

@@ -27,7 +27,10 @@ var embedlyKeyProperty = {
   propertyName: 'embedlyKey',
   propertySchema: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'embedly'
+    }
   }
 }
 addToSettingsSchema.push(embedlyKeyProperty);
