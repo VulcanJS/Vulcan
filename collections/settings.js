@@ -301,11 +301,11 @@ if (Meteor.isClient){
   var handle = query.observeChanges({
     added: function (id, fields) {
       if (fields.language)
-        T9n.language = fields.language;
+        T9n.setLanguage(fields.language);
     },
     changed: function (id, fields) {
       if (fields.language)
-        T9n.language = fields.language;
+        T9n.setLanguage(fields.language);
     }
   });
 }
