@@ -9,6 +9,9 @@ var delay = (function(){
 
 Meteor.startup(function () {
   Template[getTemplate('search')].helpers({
+    canSearch: function () {
+      return canView(Meteor.user());
+    },
     searchQuery: function () {
       return Session.get("searchQuery");
     },
