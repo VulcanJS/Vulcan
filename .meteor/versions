@@ -5,7 +5,7 @@ accounts-password@1.0.2
 accounts-twitter@1.0.1
 accounts-ui-unstyled@1.1.2
 accounts-ui@1.1.1
-aldeed:autoform@2.0.2
+aldeed:autoform@3.1.0
 aldeed:collection2@2.1.0
 aldeed:simple-schema@1.0.3
 application-configuration@1.0.2
@@ -40,9 +40,11 @@ id-map@1.0.0
 iron:core@0.3.4
 iron:dynamic-template@0.4.1
 iron:layout@0.4.1
-iron:router@0.9.3
+iron:router@0.9.4
 jquery@1.0.0
 json@1.0.0
+kestanous:herald-email@0.2.1
+kestanous:herald@0.6.0
 less@1.0.9
 livedata@1.0.10
 localstorage@1.0.0
@@ -52,8 +54,7 @@ meteor-platform@1.1.1
 meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:fast-render@1.1.2
-meteorhacks:kadira-binary-deps@1.0.1
-meteorhacks:kadira@2.9.2
+meteorhacks:kadira@2.5.0
 meteorhacks:npm@1.2.0
 meteorhacks:subs-manager@1.1.0
 minifiers@1.1.0
@@ -89,8 +90,8 @@ softwarerero:accounts-t9n@1.0.0
 spacebars-compiler@1.0.2
 spacebars@1.0.2
 spiderable@1.0.3
-splendido:accounts-templates-core@0.9.5
-splendido:accounts-templates-unstyled@0.9.5
+splendido:accounts-templates-core@0.9.8
+splendido:accounts-templates-unstyled@0.9.8
 srp@1.0.0
 standard-app-packages@1.0.2
 telescope-api@0.0.0
