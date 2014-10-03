@@ -81,7 +81,7 @@ Template[getTemplate('comment_item')].helpers({
   },
   can_edit: function(){
     if(this.userId && Meteor.userId())
-      return Meteor.user().isAdmin || (Meteor.userId() === this.userId);
+      return isAdmin(Meteor.user()) || (Meteor.userId() === this.userId);
     else
       return false;
   },
