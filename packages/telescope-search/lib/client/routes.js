@@ -7,7 +7,12 @@ adminNav.push({
 Meteor.startup(function () {
 
   PostsSearchController = PostsListController.extend({
-    view: 'search'
+    view: 'search',
+    onBeforeAction: function() {
+      if ("q" in this.params) {
+        Session.set("searchQuery", this.params.q);
+      }
+    }
   });
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['logs']});
