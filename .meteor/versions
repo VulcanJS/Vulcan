@@ -12,6 +12,7 @@ application-configuration@1.0.2
 autoupdate@1.1.1
 backbone@1.0.0
 base64@1.0.0
+bengott:avatar@0.1.0
 binary-heap@1.0.0
 blaze-tools@1.0.0
 blaze@2.0.1
@@ -41,6 +42,8 @@ iron:core@0.3.4
 iron:dynamic-template@0.4.1
 iron:layout@0.4.1
 iron:router@0.9.3
+jparker:crypto-core@0.1.0
+jparker:crypto-md5@0.1.1
 jquery@1.0.0
 json@1.0.0
 less@1.0.9
@@ -93,6 +96,7 @@ splendido:accounts-templates-core@0.9.7
 splendido:accounts-templates-unstyled@0.9.7
 srp@1.0.0
 standard-app-packages@1.0.2
+stylus@1.0.4
 telescope-api@0.0.0
 telescope-base@0.0.0
 telescope-daily@0.0.0
