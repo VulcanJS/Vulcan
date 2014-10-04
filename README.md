@@ -5,6 +5,7 @@ Telescope is an open-source, real-time social news site built with [Meteor](http
 Note that Telescope is distributed under the [MIT License](http://opensource.org/licenses/MIT)
 
 ### We Need Your Help!
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/TelescopeJS/Telescope?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A lot of work has already gone into Telescope, but it needs that final push to reach its full potential. 
 
