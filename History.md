@@ -1,3 +1,13 @@
+## v0.9.8
+
+* Fixing #457 (pending posts view not working).
+* Added German translation (thanks @Helmi!).
+* Added `?q=` parameter to searches (thanks @yourcelf!).
+* Abstracting `isAdmin` (thanks @yourcelsf!).
+* Refactoring `getPostsParameters` (thanks @delgermurun!).
+* Using `bengott:avatar` package for avatars (thanks @bengott!).
+* Upgrading to Meteor 0.9.3.1.
+
 ## v0.9.7 “SettingsScope”
 
 * Updating to Meteor 0.9.3.
