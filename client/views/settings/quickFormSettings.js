@@ -69,66 +69,69 @@ Template[getTemplate('quickForm_settings')].helpers({
   }
 });
 
-Template["afFormGroup_settings"].afFieldInputAtts = function () {
-  var atts = _.clone(this.afFieldInputAtts || {});
-  if ('input-col-class' in atts) {
-    delete atts['input-col-class'];
+Template["afFormGroup_settings"].helpers({
+  afFieldInputAtts: function () {
+    var atts = _.clone(this.afFieldInputAtts || {});
+    if ('input-col-class' in atts) {
+      delete atts['input-col-class'];
+    }
+    atts.template = "bootstrap3";
+    return atts;
+  },
+  afFieldLabelAtts: function () {
+    var atts = _.clone(this.afFieldLabelAtts || {});
+    atts.template = "bootstrap3";
+    return atts;
+  },
+  afEmptyFieldLabelAtts: function () {
+    var atts = _.clone(this.afFieldLabelAtts || {});
+    var labelAtts = _.omit(atts, 'name', 'autoform', 'template');
+    // Add bootstrap class if necessary
+    if (typeof labelAtts['class'] === "string") {
+      labelAtts['class'] += " control-label"; //might be added twice but that shouldn't hurt anything
+    } else {
+      labelAtts['class'] = "control-label";
+    }
+    return labelAtts;
+  },
+  rightColumnClass: function () {
+    var atts = this.afFieldInputAtts || {};
+    return atts['input-col-class'] || "";
+  },
+  showField: function () {
+    return "showField" in this.afFieldInputAtts ? this.afFieldInputAtts.showField : true;
+  },
+  afFieldInstructions: function () {
+    return this.afFieldInputAtts.instructions;
   }
-  atts.template = "bootstrap3";
-  return atts;
-};
+});
 
-Template["afFormGroup_settings"].afFieldLabelAtts = function () {
-  var atts = _.clone(this.afFieldLabelAtts || {});
-  atts.template = "bootstrap3";
-  return atts;
-};
-
-Template["afFormGroup_settings"].afEmptyFieldLabelAtts = function () {
-  var atts = _.clone(this.afFieldLabelAtts || {});
-  var labelAtts = _.omit(atts, 'name', 'autoform', 'template');
-  // Add bootstrap class if necessary
-  if (typeof labelAtts['class'] === "string") {
-    labelAtts['class'] += " control-label"; //might be added twice but that shouldn't hurt anything
-  } else {
-    labelAtts['class'] = "control-label";
+Template["afObjectField_settings"].helpers({
+  rightColumnClass: function () {
+    var atts = this.atts || {};
+    return atts['input-col-class'] || "";
+  },
+  afFieldLabelAtts: function () {
+    var atts = this.atts;
+    return {
+      template: "bootstrap3",
+      "class": atts["label-class"],
+      "name": atts.name
+    }
   }
-  return labelAtts;
-};
+});
 
-Template["afFormGroup_settings"].rightColumnClass = function () {
-  var atts = this.afFieldInputAtts || {};
-  return atts['input-col-class'] || "";
-};
-
-Template["afFormGroup_settings"].afFieldInstructions = function () {
-  return this.afFieldInputAtts.instructions;
-};
-
-Template["afObjectField_settings"].rightColumnClass = function () {
-  var atts = this.atts || {};
-  return atts['input-col-class'] || "";
-};
-
-Template["afObjectField_settings"].afFieldLabelAtts = function () {
-  var atts = this.atts;
-  return {
-    template: "bootstrap3",
-    "class": atts["label-class"],
-    "name": atts.name
-  };
-};
-
-Template["afArrayField_settings"].rightColumnClass = function () {
-  var atts = this.atts || {};
-  return atts['input-col-class'] || "";
-};
-
-Template["afArrayField_settings"].afFieldLabelAtts = function () {
-  var atts = this.atts || {};
-  return {
-    template: "bootstrap3",
-    "class": atts["label-class"],
-    "name": atts.name
-  };
-};
+Template["afArrayField_settings"].helpers({
+  rightColumnClass: function () {
+    var atts = this.atts || {};
+    return atts['input-col-class'] || "";
+  },
+  afFieldLabelAtts: function () {
+    var atts = this.atts || {};
+    return {
+      template: "bootstrap3",
+      "class": atts["label-class"],
+      "name": atts.name
+    };
+  }
+});
