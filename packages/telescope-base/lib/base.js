@@ -5,6 +5,31 @@ addToPostSchema = [];
 addToCommentsSchema = [];
 addToSettingsSchema = [];
 
+SimpleSchema.extendOptions({
+  editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner
+  hidden: Match.Optional(Boolean)     // hidden: true means the field is never shown in a form no matter what
+});
+// ----------------------------------- Posts Statuses ------------------------------ //
+
+postStatuses = [
+  {
+    value: 1,
+    label: 'Pending'
+  },
+  {
+    value: 2,
+    label: 'Approved'
+  },
+  {
+    value: 3,
+    label: 'Rejected'
+  }
+]
+
+STATUS_PENDING=1;
+STATUS_APPROVED=2;
+STATUS_REJECTED=3;
+
 // ------------------------------------- Navigation -------------------------------- //
 
 

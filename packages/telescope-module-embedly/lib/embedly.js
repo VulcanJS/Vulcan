@@ -12,7 +12,11 @@ var mediaProperty = {
   propertySchema: {
     type: Object,
     optional: true,
-    blackbox: true
+    blackbox: true,
+    hidden: true,
+    autoform: {
+      hidden: true
+    }
   }
 }
 addToPostSchema.push(mediaProperty);

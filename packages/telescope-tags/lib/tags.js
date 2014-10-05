@@ -41,8 +41,22 @@ addToPostSchema.push(
   {
     propertyName: 'categories',
     propertySchema: {
-      type: [categorySchema],
-      optional: true
+      type: [String],
+      optional: true,
+      editable: true,
+      autoform: {
+        editable: true,
+        noselect: true,
+        options: function () {
+          var categories = Categories.find().map(function (category) {
+            return {
+              value: category.slug,
+              label: category.name
+            }  
+          });
+          return categories;
+        }
+      }
     }
   }
 );

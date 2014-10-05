@@ -1,90 +1,176 @@
+SimpleSchema.extendOptions({
+  editable: Match.Optional(Boolean) // editable: true means the field can be edited by the document's owner
+});
+
 postSchemaObject = {
   _id: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   createdAt: {
     type: Date,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   postedAt: {
     type: Date,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'admin'
+    }
   },    
   title: {
     type: String,
-    label: "Title"
+    label: "Title",
+    editable: true,
+    autoform: {
+      editable: true
+    }
   },
   url: {
     type: String,
     label: "URL",
-    optional: true
+    optional: true,
+    editable: true,
+    autoform: {
+      editable: true
+    }
   },
   body: {
     type: String,
-    optional: true
+    optional: true,
+    editable: true,
+    autoform: {
+      editable: true,
+      rows: 5
+    }
   },
   htmlBody: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   commentsCount: {
     type: Number,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   commenters: {
     type: [String],
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   lastCommentedAt: {
     type: Date,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   clicks: {
     type: Number,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   baseScore: {
     type: Number,
     decimal: true,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   upvotes: {
     type: Number,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   upvoters: {
     type: [String], // XXX
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   downvotes: {
     type: Number,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   downvoters: {
     type: [String], // XXX
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   score: {
     type: Number,
     decimal: true,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   status: {
     type: Number,
-    optional: true
+    optional: true,
+    autoValue: function () {
+      console.log(this)
+      return 2;
+      return getSetting('requirePostsApproval', false) ? STATUS_PENDING: STATUS_APPROVED
+    },
+    autoform: {
+      noselect: true,
+      options: postStatuses,
+      group: 'admin'
+    }
   },
   sticky: {
     type: Boolean,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'admin'
+    }
   },
   inactive: {
     type: Boolean,
-    optional: true
+    optional: true,
+    autoform: {
+      hidden: true
+    }
   },
   userId: {
     type: String, // XXX
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'admin',
+      options: function () {
+        return Meteor.users.find().map(function (user) {
+          return {
+            value: user._id,
+            label: getDisplayName(user)
+          }  
+        });
+      }
+    }
   }
 };
 
@@ -97,10 +183,6 @@ Posts = new Meteor.Collection("posts");
 
 PostSchema = new SimpleSchema(postSchemaObject);
 Posts.attachSchema(PostSchema);
-
-STATUS_PENDING=1;
-STATUS_APPROVED=2;
-STATUS_REJECTED=3;
 
 Posts.deny({
   update: function(userId, post, fieldNames) {

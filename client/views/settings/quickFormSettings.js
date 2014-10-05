@@ -1,4 +1,4 @@
-function findAtts() {
+var findAtts = function () {
   var c, n = 0;
   do {
     c = UI._parentData(n++);
@@ -6,10 +6,45 @@ function findAtts() {
   return c && c.atts;
 }
 
+var getSchema = function () {
+  var schema = AutoForm.find().ss._schema;
+
+  // decorate schema with key names
+  schema = _.map(schema, function (field, key) {
+    field.name = key;
+    return field;
+  });
+
+  return schema;
+}
+
+var showField = function (field) {
+  // if field is marked as hidden, never show it
+  if (!!field.atts.hidden || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.hidden) || field.atts.name == 'media') { // TODO: get rid of "media" exception
+    // console.log('hidden')
+    return false;
+  } else {
+    // console.log('not hidden')
+  // show field only if user is admin or it's marked as editable 
+    return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
+  }
+}
+
 Template[getTemplate('quickForm_settings')].helpers({
+  fieldsToOmit: function () {
+    this.atts.omitFields
+    var schema = AutoForm.find().ss._schema;
+    return ['commenters', 'upvoters']
+  },
+  fieldsWithNoFieldset: function () {
+    // get names of fields who don't have an autoform attribute or don't have a group
+    var fields = _.pluck(_.filter(getSchema(), function (field, key) {
+      return !field.autoform || !field.autoform.group;
+    }), 'name');
+    return fields;
+  },  
   afFieldsets: function () {
-    var schema = this._af.ss._schema;
-    var groups = _.compact(_.uniq(_.pluckDeep(schema, 'autoform.group')));
+    var groups = _.compact(_.uniq(_.pluckDeep(getSchema(), 'autoform.group')));
     groups = groups.map(function (group) {
       return capitalise(group);
     });
@@ -17,16 +52,9 @@ Template[getTemplate('quickForm_settings')].helpers({
   },
   fieldsForFieldset: function () {
     var fieldset = this.toLowerCase();
-    var schema = AutoForm.find().ss._schema;
-
-    // decorate schema with key names
-    schema = _.map(schema, function (field, key) {
-      field.name = key;
-      return field;
-    });
 
     // get names of fields whose group match the current fieldset
-    var fields = _.pluck(_.filter(schema, function (field, key) {
+    var fields = _.pluck(_.filter(getSchema(), function (field, key) {
       return field.autoform && field.autoform.group == fieldset;
     }), 'name');
 
@@ -99,7 +127,8 @@ Template["afFormGroup_settings"].helpers({
     return atts['input-col-class'] || "";
   },
   showField: function () {
-    return "showField" in this.afFieldInputAtts ? this.afFieldInputAtts.showField : true;
+    console.log(this.atts.name)
+    return showField(this);
   },
   afFieldInstructions: function () {
     return this.afFieldInputAtts.instructions;
@@ -118,7 +147,10 @@ Template["afObjectField_settings"].helpers({
       "class": atts["label-class"],
       "name": atts.name
     }
-  }
+  },
+  showField: function () {
+    return showField(this);
+  },
 });
 
 Template["afArrayField_settings"].helpers({
@@ -133,5 +165,10 @@ Template["afArrayField_settings"].helpers({
       "class": atts["label-class"],
       "name": atts.name
     };
-  }
+  },
+  showField: function () {
+    console.log('afArrayField_settings')
+    console.log(this.atts.name)
+    return showField(this);
+  },
 });

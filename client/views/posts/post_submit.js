@@ -1,4 +1,7 @@
 Template[getTemplate('post_submit')].helpers({
+  fieldsToOmit: function () {
+    return ["commenters","upvoters"];
+  },
   categoriesEnabled: function(){
     return Categories.find().count();
   },

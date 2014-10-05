@@ -1,12 +1,20 @@
 {
   "dependencies": [
     [
+      "aldeed:simple-schema",
+      "1.0.3"
+    ],
+    [
       "base64",
       "1.0.0"
     ],
     [
       "blaze",
       "2.0.1"
+    ],
+    [
+      "check",
+      "1.0.1"
     ],
     [
       "deps",
