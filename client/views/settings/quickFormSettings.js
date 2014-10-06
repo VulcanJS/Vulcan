@@ -30,8 +30,10 @@ Template[getTemplate('quickForm_settings')].helpers({
   fieldsWithNoFieldset: function () {
     // get names of fields who don't have an autoform attribute or don't have a group
     var fields = _.pluck(_.filter(getSchema(), function (field, key) {
-      return !field.autoform || !field.autoform.group;
+      // filter out fields with "$" in their name
+      return (field.name.indexOf('$') === -1) && (!field.autoform || !field.autoform.group); // TODO: find cleaner solution
     }), 'name');
+    console.log(fields)
     return fields;
   },  
   afFieldsets: function () {
