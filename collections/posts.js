@@ -147,7 +147,8 @@ postSchemaObject = {
     type: Boolean,
     optional: true,
     autoform: {
-      group: 'admin'
+      group: 'admin',
+      leftLabel: "Sticky"
     }
   },
   inactive: {

@@ -2,13 +2,13 @@
   {{#autoForm qfAutoFormContext}}
 
     <div class='no-fieldset'>
-      {{> afQuickFields fields=fieldsWithNoFieldset omitFields=fieldsToOmit template="settings" input-col-class=inputClass label-class=labelClass}}
+      {{> afQuickFields fields=fieldsWithNoFieldset omitFields=../atts.omitFields template="settings" input-col-class=inputClass label-class=labelClass}}
     </div>
     
     {{#each afFieldsets}}
       <fieldset>
         <h3 class="fieldset-heading">{{this}}</h3>
-        {{> afQuickFields fields=fieldsForFieldset omitFields=../fieldsToOmit template="settings" input-col-class=inputClass label-class=labelClass}}
+        {{> afQuickFields fields=fieldsForFieldset template="settings" input-col-class=inputClass label-class=labelClass}}
       </fieldset>
     {{/each}}
     

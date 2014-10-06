@@ -29,7 +29,8 @@ settingsSchemaObject = {
     label: "Require invite to view",
     optional: true,
     autoform: {
-      group: 'invites'
+      group: 'invites',
+      leftLabel: 'Require View Invite'
     }
   },
   requirePostInvite: {
@@ -37,7 +38,8 @@ settingsSchemaObject = {
     label: "Require invite to post",
     optional: true,
     autoform: {
-      group: 'invites'
+      group: 'invites',
+      leftLabel: 'Require Post Invite'
     }
   },
   requirePostsApproval: {
@@ -45,7 +47,8 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'general',
-      instructions: "Posts must be approved by admin"
+      instructions: "Posts must be approved by admin",
+      leftLabel: "Require Posts Approval"
     }
   },
   // nestedComments: {

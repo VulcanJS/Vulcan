@@ -27,11 +27,6 @@ var canEditField = function (field) {
 }
 
 Template[getTemplate('quickForm_settings')].helpers({
-  fieldsToOmit: function () {
-    this.atts.omitFields
-    var schema = AutoForm.find().ss._schema;
-    return ['commenters', 'upvoters']
-  },
   fieldsWithNoFieldset: function () {
     // get names of fields who don't have an autoform attribute or don't have a group
     var fields = _.pluck(_.filter(getSchema(), function (field, key) {
