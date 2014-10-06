@@ -14,6 +14,7 @@ Package.onUse(function (api) {
     'addToPostSchema', 
     'addToCommentsSchema', 
     'addToSettingsSchema', 
+    'addToUserSchema',
     'preloadSubscriptions', 
     'primaryNav', 
     'secondaryNav', 
@@ -23,7 +24,11 @@ Package.onUse(function (api) {
     'postModules',
     'postHeading',
     'postMeta',
+    'postAuthor',
     'modulePositions',
+    'userProfileDisplay',
+    'userProfileEdit',
+    'userProfileFinishSignup',
 
     'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
@@ -44,6 +49,10 @@ Package.onUse(function (api) {
     'commentEditClientCallbacks',
     'commentEditMethodCallbacks',
     'commentAfterEditMethodCallbacks',
+
+    'userEditRenderedCallbacks',
+    'userEditClientCallbacks',
+    'userProfileCompleteChecks',
     
     'getTemplate',
     'templates',

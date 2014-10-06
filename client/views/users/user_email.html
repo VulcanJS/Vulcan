@@ -16,6 +16,9 @@
           <input name="email" type="text" value="{{profile.email}}" />
         </div>
       </div>
+      {{#each userProfileFinishSignup}}
+        {{> UI.dynamic template=getTemplate data=..}}
+      {{/each}}
       <div class="form-actions">
         <input type="submit" class="button" value="{{i18n "Submit"}}" />
       </div>

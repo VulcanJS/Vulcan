@@ -41,6 +41,9 @@
 						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
 					</tr>
 				{{/if}}
+				{{#each userProfileDisplay}}
+					{{> UI.dynamic template=getTemplate data=..}}
+				{{/each}}
 			</table>
 			{{#if canEditProfile}}
 				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>

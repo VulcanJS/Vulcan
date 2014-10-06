@@ -73,6 +73,12 @@ Template[getTemplate('user_profile')].helpers({
   },
   hasMoreComments: function () {
     return Comments.find({userId: this._id}).count() > Session.get('commentsShown');
+  },
+  getTemplate: function() {
+    return getTemplate(this.template);
+  },
+  userProfileDisplay: function() {
+    return userProfileDisplay;
   }
 });
 
