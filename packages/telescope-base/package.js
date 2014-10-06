@@ -11,6 +11,10 @@ Package.onUse(function (api) {
 
   api.export([
     'postStatuses',
+    'STATUS_PENDING',
+    'STATUS_APPROVED',
+    'STATUS_REJECTED',
+    
     'adminNav', 
     'viewNav', 
     'addToPostSchema', 

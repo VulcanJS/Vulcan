@@ -18,16 +18,12 @@ var getSchema = function () {
   return schema;
 }
 
-var showField = function (field) {
-  // if field is marked as hidden, never show it
-  if (!!field.atts.hidden || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.hidden) || field.atts.name == 'media') { // TODO: get rid of "media" exception
-    // console.log('hidden')
-    return false;
-  } else {
-    // console.log('not hidden')
+var canEditField = function (field) {
+  console.log(field.atts.name)
+  console.log(field)
+  console.log('\n\n')
   // show field only if user is admin or it's marked as editable 
-    return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
-  }
+  return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
 Template[getTemplate('quickForm_settings')].helpers({
@@ -127,8 +123,7 @@ Template["afFormGroup_settings"].helpers({
     return atts['input-col-class'] || "";
   },
   showField: function () {
-    console.log(this.atts.name)
-    return showField(this);
+    return canEditField(this);
   },
   afFieldInstructions: function () {
     return this.afFieldInputAtts.instructions;
@@ -149,7 +144,7 @@ Template["afObjectField_settings"].helpers({
     }
   },
   showField: function () {
-    return showField(this);
+    return canEditField(this);
   },
 });
 
@@ -167,8 +162,6 @@ Template["afArrayField_settings"].helpers({
     };
   },
   showField: function () {
-    console.log('afArrayField_settings')
-    console.log(this.atts.name)
-    return showField(this);
+    return canEditField(this);
   },
 });

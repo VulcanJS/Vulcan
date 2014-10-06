@@ -36,7 +36,7 @@ addToPostSchema.push(
       type: Date,
       optional: true,
       autoform: {
-        hidden: true
+        omit: true
       }
     }
   }

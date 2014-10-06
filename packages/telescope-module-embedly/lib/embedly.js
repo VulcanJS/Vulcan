@@ -2,7 +2,10 @@ var thumbnailProperty = {
   propertyName: 'thumbnailUrl',
   propertySchema: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      omit: true
+    }
   }
 }
 addToPostSchema.push(thumbnailProperty);
@@ -15,7 +18,7 @@ var mediaProperty = {
     blackbox: true,
     hidden: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   }
 }
