@@ -7,14 +7,14 @@ postSchemaObject = {
     type: String,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   createdAt: {
     type: Date,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   postedAt: {
@@ -54,35 +54,35 @@ postSchemaObject = {
     type: String,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   commentsCount: {
     type: Number,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   commenters: {
     type: [String],
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   lastCommentedAt: {
     type: Date,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   clicks: {
     type: Number,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   baseScore: {
@@ -90,35 +90,35 @@ postSchemaObject = {
     decimal: true,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   upvotes: {
     type: Number,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   upvoters: {
     type: [String], // XXX
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   downvotes: {
     type: Number,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   downvoters: {
     type: [String], // XXX
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   score: {
@@ -126,7 +126,7 @@ postSchemaObject = {
     decimal: true,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   status: {
@@ -154,7 +154,7 @@ postSchemaObject = {
     type: Boolean,
     optional: true,
     autoform: {
-      hidden: true
+      omit: true
     }
   },
   userId: {
