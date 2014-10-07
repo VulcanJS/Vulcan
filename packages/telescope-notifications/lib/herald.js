@@ -53,6 +53,8 @@ Herald.addCourier('newComment', {
       var user = Meteor.users.findOne(this.data.comment.userId);
       if(user)
         return getUserName(user);
+      else
+        return this.data.comment.author;
     },
     postTitle: function () {
       return this.data.post.title;
@@ -90,6 +92,8 @@ Herald.addCourier('newReply', {
       var user = Meteor.users.findOne(this.data.comment.userId);
       if(user)
         return getUserName(user);
+      else
+        return this.data.comment.author;
     },
     postTitle: function () {
       return this.data.post.title;
