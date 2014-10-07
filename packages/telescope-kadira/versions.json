@@ -73,6 +73,10 @@
       "1.0.10"
     ],
     [
+      "localstorage",
+      "1.0.0"
+    ],
+    [
       "logging",
       "1.0.3"
     ],
@@ -83,6 +87,10 @@
     [
       "meteorhacks:kadira",
       "2.11.2"
+    ],
+    [
+      "meteorhacks:kadira-binary-deps",
+      "1.2.0"
     ],
     [
       "minimongo",

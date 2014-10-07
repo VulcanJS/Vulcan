@@ -6,10 +6,10 @@ getUnsubscribeLink = function(user){
 buildEmailNotification = function (notification) {
   
   var subject, template;
-  var post = notification.properties.post;
-  var comment = notification.properties.comment;
+  var post = notification.data.post;
+  var comment = notification.data.comment;
   
-  switch(notification.event){
+  switch(notification.courier){
     case 'newReply':
       subject = 'Someone replied to your comment on "'+post.title+'"';
       template = 'emailNewReply';
@@ -24,7 +24,7 @@ buildEmailNotification = function (notification) {
       break;
   }
 
-  var emailProperties = _.extend(notification.properties, {
+  var emailProperties = _.extend(notification.data, {
     body: marked(comment.body),
     profileUrl: getProfileUrlById(comment.userId),
     postCommentUrl: getPostCommentUrl(post._id, comment._id),
@@ -40,20 +40,6 @@ buildEmailNotification = function (notification) {
     subject: subject,
     html: html
   }
-};
-
-newPostNotification = function(post, excludedIDs){
-  var excludedIDs = typeof excludedIDs == 'undefined' ? [] : excludedIDs;
-  var p = getPostProperties(post);
-  var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
-  var html = buildEmailTemplate(getEmailTemplate('emailNewPost')(p));
-
-  // send a notification to every user according to their notifications settings
-  Meteor.users.find({'profile.notifications.posts': 1}).forEach(function(user) {
-    // don't send user a notification if their ID is in excludedIDs
-    if(excludedIDs.indexOf(user._id) == -1)
-      sendEmail(getEmail(user), subject, html);
-  });
 };
 
 Meteor.methods({
