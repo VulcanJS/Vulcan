@@ -46,6 +46,8 @@ jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jquery@1.0.0
 json@1.0.0
+kestanous:herald-email@0.2.1
+kestanous:herald@0.6.0
 less@1.0.9
 livedata@1.0.10
 localstorage@1.0.0

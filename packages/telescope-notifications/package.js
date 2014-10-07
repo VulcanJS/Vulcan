@@ -10,13 +10,14 @@ Package.onUse(function (api) {
     'telescope-lib',
     'telescope-base',
     'telescope-email',
-    'aldeed:simple-schema'
+    'kestanous:herald@0.6.0',
+    'kestanous:herald-email@0.2.1'
   ], ['client', 'server']);
 
   api.use([
+    'iron:router',
     'jquery',
     'underscore',
-    'iron:router',
     'templating',
     'tracker'
   ], 'client');
@@ -27,10 +28,10 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/notifications.js',
+    'lib/herald.js'
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/notifications-client.js',
     'lib/client/templates/notification_item.html',
     'lib/client/templates/notification_item.js',
     'lib/client/templates/notification_new_comment.html',
@@ -42,18 +43,13 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.add_files([
-    'lib/server/notifications-server.js',
-    'lib/server/publication.js'
+    'lib/server/notifications-server.js'
   ], ['server']);
   
   api.export([
-    'Notifications',
-    'createNotification',
-    'buildSiteNotification',
-    'newPostNotification',
+    'Herald',
     'buildEmailNotification',
-    'getUnsubscribeLink',
-    'postSubmitMethodCallbacks'
+    'getUnsubscribeLink'
   ]);
 });
 
