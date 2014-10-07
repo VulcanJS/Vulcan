@@ -3,6 +3,15 @@ Herald.collection.deny({
   remove: ! can.editById
 });
 
+Meteor.startup(function () {
+  // disable all email notifications when "emailNotifications" is set to false
+  if (getSetting('emailNotifications', true)) {
+    Herald.settings.overrides.email = false;
+  } else {
+    Herald.settings.overrides.email = true;
+  };
+});
+
 var commentEmail = function (userToNotify) {
   var notification = this;
   // put in setTimeout so it doesn't hold up the rest of the method

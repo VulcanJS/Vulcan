@@ -1,6 +1,6 @@
 // add new post notification callback on post submit
 postAfterSubmitMethodCallbacks.push(function (post) {
-  if(Meteor.isServer && !!getSetting('emailNotifications', true)){
+  if(Meteor.isServer){
     var userIds = Meteor.users.find({'profile.notifications.posts': 1}, {fields: {}}).map(function (user) {
       return user._id
     });
@@ -11,7 +11,7 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 
 // add new comment notification callback on comment submit
 commentAfterSubmitMethodCallbacks.push(function (comment) {
-  if(Meteor.isServer && !!getSetting('emailNotifications', true)){
+  if(Meteor.isServer){
 
     var parentCommentId = comment.parentCommentId;
     var user = Meteor.user();
@@ -59,7 +59,7 @@ var emailNotifications = {
     defaultValue: true,
     autoform: {
       group: 'notifications',
-      instructions: 'Enable email notifications for new posts and new comments.'
+      instructions: 'Enable email notifications for new posts and new comments (requires restart).'
     }
   }
 }
