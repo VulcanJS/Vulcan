@@ -19,9 +19,6 @@ var getSchema = function () {
 }
 
 var canEditField = function (field) {
-  console.log(field.atts.name)
-  console.log(field)
-  console.log('\n\n')
   // show field only if user is admin or it's marked as editable 
   return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
@@ -33,7 +30,6 @@ Template[getTemplate('quickForm_settings')].helpers({
       // filter out fields with "$" in their name
       return (field.name.indexOf('$') === -1) && (!field.autoform || !field.autoform.group); // TODO: find cleaner solution
     }), 'name');
-    console.log(fields)
     return fields;
   },  
   afFieldsets: function () {
@@ -48,7 +44,7 @@ Template[getTemplate('quickForm_settings')].helpers({
 
     // get names of fields whose group match the current fieldset
     var fields = _.pluck(_.filter(getSchema(), function (field, key) {
-      return field.autoform && field.autoform.group == fieldset;
+      return (field.name.indexOf('$') === -1) && field.autoform && field.autoform.group == fieldset;
     }), 'name');
 
     return fields;
