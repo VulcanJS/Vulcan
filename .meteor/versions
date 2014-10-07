@@ -55,6 +55,7 @@ meteor-platform@1.1.1
 meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:fast-render@1.1.2
+meteorhacks:kadira-binary-deps@1.2.0
 meteorhacks:kadira@2.11.2
 meteorhacks:npm@1.2.0
 meteorhacks:subs-manager@1.1.0
