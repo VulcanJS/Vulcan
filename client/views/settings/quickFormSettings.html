@@ -27,16 +27,18 @@
 </template>
 
 <template name="afFormGroup_settings">
-  <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-    {{> afFieldLabel afFieldLabelAtts}}
-    <div class="{{rightColumnClass}}">
-      {{> afFieldInput afFieldInputAtts}}
-      {{#if afFieldInstructions}}
-        <span class="instructions-block">{{afFieldInstructions}}</span>
-      {{/if}}
-      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+  {{#if showField}}
+    <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+      {{> afFieldLabel afFieldLabelAtts}}
+      <div class="{{rightColumnClass}}">
+        {{> afFieldInput afFieldInputAtts}}
+        {{#if afFieldInstructions}}
+          <span class="instructions-block">{{afFieldInstructions}}</span>
+        {{/if}}
+        <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      </div>
     </div>
-  </div>
+  {{/if}}
 </template>
 
 <template name="afObjectField_settings">

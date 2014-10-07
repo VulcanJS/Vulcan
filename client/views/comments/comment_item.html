@@ -15,7 +15,7 @@
             <span>{{i18n "downvote"}}</span>
           </a>
         </div>
-        <div class="user-avatar">{{>avatar userId=userId class=""}}</div>
+        <div class="user-avatar">{{>avatar userId=userId cssClass="avatar circle"}}</div>
         <div class="comment-main">
           <div class="comment-meta">
             <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
@@ -25,7 +25,7 @@
             {{#if can_edit}}
               | <a class="edit-link" href="/comments/{{_id}}/edit">{{i18n "Edit"}}</a>
             {{/if}}
-            {{#if currentUser.isAdmin}}
+            {{#if isAdmin}}
               | <span>{{full_date}}</span>
             {{/if}}
           </div>

@@ -82,7 +82,7 @@
     ],
     [
       "iron:router",
-      "0.9.3"
+      "0.9.4"
     ],
     [
       "jquery",
@@ -210,6 +210,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.32",
+  "toolVersion": "meteor-tool@1.0.33",
   "format": "1.0"
 }

@@ -30,6 +30,7 @@ Template[getTemplate('newsletterBanner')].helpers({
     // note: should not be reactive
     if(
           getSetting('showBanner', false) == false
+      ||  !canView(Meteor.user())
       ||  Router.current().path != '/' 
       ||  Cookie.get('showBanner') == "no" 
       ||  (Meteor.user() && getUserSetting('showBanner', true) == false) 

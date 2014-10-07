@@ -73,10 +73,6 @@
       "1.0.10"
     ],
     [
-      "localstorage",
-      "1.0.0"
-    ],
-    [
       "logging",
       "1.0.3"
     ],
@@ -86,11 +82,7 @@
     ],
     [
       "meteorhacks:kadira",
-      "2.9.2"
-    ],
-    [
-      "meteorhacks:kadira-binary-deps",
-      "1.0.1"
+      "2.11.2"
     ],
     [
       "minimongo",
@@ -154,6 +146,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.32",
+  "toolVersion": "meteor-tool@1.0.33",
   "format": "1.0"
 }
