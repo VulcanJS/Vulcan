@@ -3,17 +3,17 @@ Template[getTemplate('notificationItem')].helpers({
     return moment(this.timestamp).fromNow();
   },
   properties: function(){
-    return this.properties;
+    return this.data;
   },
   notificationHTML: function(){
-    return buildSiteNotification(this);
+    return this.message();
   }
 });
 
 Template[getTemplate('notificationItem')].events({
   'click .action-link': function(event, instance){
     var notificationId=instance.data._id;
-    Notifications.update(
+    Herald.collection.update(
     {_id: notificationId},
     {
       $set:{
