@@ -285,16 +285,6 @@ var migrationsList = {
     });
     return i;
   },
-  deleteNotifications: function () {
-    var i = 0;
-    Notifications.find().forEach(function (n) {
-      i++;
-      console.log("Notification: "+n._id);
-      Notifications.remove(n._id);
-      console.log("---------------------");
-    });
-    return i;
-  },
   commentsToCommentsCount: function () {
     var i = 0;
     Posts.find({commentsCount: {$exists : false}}).forEach(function (post) {
