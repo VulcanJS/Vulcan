@@ -189,28 +189,32 @@ settingsSchemaObject = {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
     }
   },
   buttonTextColor: {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
     }
   },
   headerColor: {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
     }
   },
   headerTextColor: {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
     }
   },
   twitterAccount: {

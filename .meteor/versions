@@ -5,7 +5,7 @@ accounts-password@1.0.2
 accounts-twitter@1.0.1
 accounts-ui-unstyled@1.1.2
 accounts-ui@1.1.1
-aldeed:autoform@3.1.0
+aldeed:autoform@4.0.0-rc1
 aldeed:collection2@2.1.0
 aldeed:simple-schema@1.0.3
 application-configuration@1.0.2

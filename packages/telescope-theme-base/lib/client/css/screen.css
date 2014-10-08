@@ -198,7 +198,7 @@ form .form-actions, form .form-group, .accounts-dialog .form-actions, .accounts-
   form .form-actions .button, form .form-actions .btn, form .form-group .button, form .form-group .btn, .accounts-dialog .form-actions .button, .accounts-dialog .form-actions .btn, .accounts-dialog .form-group .button, .accounts-dialog .form-group .btn {
     float: right; }
 /* line 74, ../scss/global/_forms.scss */
-form input[type="text"], form input[type="password"], form input[type="number"], form input[type="email"], form textarea, form .login-form input, form input.form-control, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog input[type="number"], .accounts-dialog input[type="email"], .accounts-dialog textarea, .accounts-dialog .login-form input, .accounts-dialog input.form-control {
+form input[type="text"], form input[type="password"], form input[type="number"], form input[type="email"], form textarea, form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog input[type="number"], .accounts-dialog input[type="email"], .accounts-dialog textarea, .accounts-dialog .login-form input {
   display: block;
   padding: 5px 6px;
   width: 100%;
@@ -215,14 +215,14 @@ form input[type="text"], form input[type="password"], form input[type="number"],
   -webkit-transition: border-color 500ms;
   transition: border-color 500ms; }
   /* line 83, ../scss/global/_forms.scss */
-  form input[type="text"]:focus, form input[type="password"]:focus, form input[type="number"]:focus, form input[type="email"]:focus, form textarea:focus, form .login-form input:focus, form input.form-control:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog input[type="number"]:focus, .accounts-dialog input[type="email"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus, .accounts-dialog input.form-control:focus {
+  form input[type="text"]:focus, form input[type="password"]:focus, form input[type="number"]:focus, form input[type="email"]:focus, form textarea:focus, form .login-form input:focus, .accounts-dialog input[type="text"]:focus, .accounts-dialog input[type="password"]:focus, .accounts-dialog input[type="number"]:focus, .accounts-dialog input[type="email"]:focus, .accounts-dialog textarea:focus, .accounts-dialog .login-form input:focus {
     outline: none;
     border-color: #DD3416;
     -moz-box-shadow: 0px 0px 5px 0px rgba(221, 52, 22, 0.3);
     -webkit-box-shadow: 0px 0px 5px 0px rgba(221, 52, 22, 0.3);
     box-shadow: 0px 0px 5px 0px rgba(221, 52, 22, 0.3); }
   /* line 88, ../scss/global/_forms.scss */
-  form input[type="text"][type="number"], form input[type="password"][type="number"], form input[type="number"][type="number"], form input[type="email"][type="number"], form textarea[type="number"], form .login-form input[type="number"], form input.form-control[type="number"], .accounts-dialog input[type="text"][type="number"], .accounts-dialog input[type="password"][type="number"], .accounts-dialog input[type="number"][type="number"], .accounts-dialog input[type="email"][type="number"], .accounts-dialog textarea[type="number"], .accounts-dialog .login-form input[type="number"], .accounts-dialog input.form-control[type="number"] {
+  form input[type="text"][type="number"], form input[type="password"][type="number"], form input[type="number"][type="number"], form input[type="email"][type="number"], form textarea[type="number"], form .login-form input[type="number"], .accounts-dialog input[type="text"][type="number"], .accounts-dialog input[type="password"][type="number"], .accounts-dialog input[type="number"][type="number"], .accounts-dialog input[type="email"][type="number"], .accounts-dialog textarea[type="number"], .accounts-dialog .login-form input[type="number"] {
     width: 30%; }
 /* line 92, ../scss/global/_forms.scss */
 form input[type="text"], form input[type="password"], form input[type="number"], form .login-form input, .accounts-dialog input[type="text"], .accounts-dialog input[type="password"], .accounts-dialog input[type="number"], .accounts-dialog .login-form input {

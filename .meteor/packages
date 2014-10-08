@@ -22,7 +22,7 @@ meteorhacks:fast-render@1.0.0
 meteorhacks:subs-manager@1.1.0
 meteorhacks:npm
 
-aldeed:autoform
+aldeed:autoform@4.0.0-rc1
 aldeed:collection2
 aldeed:simple-schema
 

@@ -21,7 +21,8 @@ postSchemaObject = {
     type: Date,
     optional: true,
     autoform: {
-      group: 'admin'
+      group: 'admin',
+      type: 'custom-datetime'
     }
   },    
   title: {
