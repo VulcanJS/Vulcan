@@ -1,0 +1,10 @@
+<template name="postThumbnail">
+  {{#if thumbnailUrl}}
+    <a class="post-thumbnail-link {{playVideoClass}}" href="{{postLink}}" target="_blank">
+      <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';"/>
+    </a>
+  {{/if}}
+  {{#if media}}
+    {{> UI.dynamic template=videoTemplate data=this}}
+  {{/if}}
+</template>
