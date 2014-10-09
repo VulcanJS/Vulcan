@@ -1,12 +1,12 @@
 {
   "dependencies": [
     [
-      "aldeed:simple-schema",
-      "1.0.3"
-    ],
-    [
       "application-configuration",
       "1.0.2"
+    ],
+    [
+      "autoupdate",
+      "1.1.1"
     ],
     [
       "base64",
@@ -53,6 +53,10 @@
       "1.0.3"
     ],
     [
+      "fastclick",
+      "1.0.0"
+    ],
+    [
       "follower-livedata",
       "1.0.1"
     ],
@@ -71,6 +75,10 @@
     [
       "htmljs",
       "1.0.1"
+    ],
+    [
+      "http",
+      "1.0.6"
     ],
     [
       "id-map",
@@ -101,11 +109,27 @@
       "1.0.0"
     ],
     [
+      "kestanous:herald",
+      "0.6.0"
+    ],
+    [
+      "kestanous:herald-email",
+      "0.2.1"
+    ],
+    [
+      "livedata",
+      "1.0.10"
+    ],
+    [
       "logging",
       "1.0.3"
     ],
     [
       "meteor",
+      "1.1.1"
+    ],
+    [
+      "meteor-platform",
       "1.1.1"
     ],
     [
@@ -115,6 +139,10 @@
     [
       "minimongo",
       "1.0.3"
+    ],
+    [
+      "mobile-status-bar",
+      "1.0.0"
     ],
     [
       "mongo",
@@ -141,6 +169,10 @@
       "1.0.2"
     ],
     [
+      "reload",
+      "1.1.0"
+    ],
+    [
       "retry",
       "1.0.0"
     ],
@@ -149,11 +181,19 @@
       "1.0.1"
     ],
     [
+      "session",
+      "1.0.2"
+    ],
+    [
       "spacebars",
       "1.0.2"
     ],
     [
       "spacebars-compiler",
+      "1.0.2"
+    ],
+    [
+      "standard-app-packages",
       "1.0.2"
     ],
     [
@@ -186,6 +226,10 @@
     ],
     [
       "underscore",
+      "1.0.0"
+    ],
+    [
+      "url",
       "1.0.0"
     ],
     [
