@@ -90,6 +90,14 @@ Template[getTemplate('post_edit')].events({
       return false;
     }
 
+    var title = $('#title').val();
+
+    if(!title){
+      throwError(i18n.t('Please fill in a title'));
+      $(e.target).removeClass('disabled');
+      return false;
+    }
+
     // ------------------------------ Properties ------------------------------ //
 
     // Basic Properties
@@ -98,7 +106,7 @@ Template[getTemplate('post_edit')].events({
       body = instance.editor.exportFile();
 
     var properties = {
-      title:            $('#title').val(),
+      title:            title,
       url:              url,
       body:             body,
       categories:       []
@@ -182,7 +190,7 @@ Template[getTemplate('post_edit')].events({
       }, function(error){
         if(error){
           console.log(error);
-          throwError(error.reason);
+          throwError(error.message);
           clearSeenErrors();
           $(e.target).removeClass('disabled');
         }else{
