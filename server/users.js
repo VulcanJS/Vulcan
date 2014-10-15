@@ -4,9 +4,7 @@ Accounts.onCreateUser(function(options, user){
     karma: 0,
     isInvited: false,
     postCount: 0,
-    data: {
-        commentsCount: 0
-    },
+    commentsCount: 0,
     invitedCount: 0,
     votes: {
       upvotedPosts: [],

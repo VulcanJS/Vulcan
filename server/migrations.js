@@ -357,10 +357,10 @@ var migrationsList = {
   },
   commentCountToCommentsCount: function () {
     var i = 0;
-    Meteor.users.find({"data.commentsCount": {$exists : false}}).forEach(function (user) {
+    Meteor.users.find({"commentsCount": {$exists : false}}).forEach(function (user) {
       i++;
       console.log("User: "+user._id);
-      Meteor.users.update(user._id, { $rename: { 'data.commentCount': 'data.commentsCount'}}, {multi: true, validate: false});
+      Meteor.users.update(user._id, { $rename: { 'commentCount': 'commentsCount'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
