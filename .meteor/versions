@@ -12,7 +12,7 @@ application-configuration@1.0.2
 autoupdate@1.1.1
 backbone@1.0.0
 base64@1.0.0
-bengott:avatar@0.1.2
+bengott:avatar@0.1.4
 binary-heap@1.0.0
 blaze-tools@1.0.0
 blaze@2.0.1
@@ -44,6 +44,7 @@ iron:layout@0.4.1
 iron:router@0.9.4
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
+jparker:gravatar@0.3.0
 jquery@1.0.0
 json@1.0.0
 kestanous:herald-email@0.2.1
