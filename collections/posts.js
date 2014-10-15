@@ -28,9 +28,13 @@ postSchemaObject = {
     type: String,
     optional: true
   },
+  viewsCount: {
+    type: Number,
+    optional: false
+  },
   commentsCount: {
     type: Number,
-    optional: true
+    optional: false
   },
   commenters: {
     type: [String],
@@ -40,9 +44,9 @@ postSchemaObject = {
     type: Date,
     optional: true
   },
-  clicks: {
+  clicksCount: {
     type: Number,
-    optional: true
+    optional: false
   },
   baseScore: {
     type: Number,
@@ -116,7 +120,8 @@ Posts.allow({
   remove: canEditById
 });
 
-clickedPosts = [];
+postClicks = [];
+postViews = [];
 
 getPostProperties = function(post) {
 
@@ -221,6 +226,8 @@ Meteor.methods({
       upvotes: 0,
       downvotes: 0,
       commentsCount: 0,
+      clicksCount: 0,
+      viewsCount: 0,
       baseScore: 0,
       score: 0,
       inactive: false
@@ -310,12 +317,26 @@ Meteor.methods({
       throwError('You need to be an admin to do that.');
     }
   },
-  clickedPost: function(post, sessionId){
+  increasePostViews: function(postId, sessionId){
+    this.unblock();
+
+    // only let users increment a post's view counter once per session
+    var view = {_id: postId, userId: this.userId, sessionId: sessionId};
+
+    if(_.where(postViews, view).length == 0){
+        postViews.push(view);
+        Posts.update(postId, { $inc: { viewsCount: 1 }});
+    }
+  },
+    increasePostClicks: function(postId, sessionId){
+    this.unblock();
+
     // only let clients increment a post's click counter once per session
-    var click = {_id: post._id, sessionId: sessionId};
-    if(_.where(clickedPosts, click).length == 0){
-      clickedPosts.push(click);
-      Posts.update(post._id, { $inc: { clicks: 1 }});
+    var click = {_id: postId, userId: this.userId, sessionId: sessionId};
+
+    if(_.where(postClicks, click).length == 0){
+      postClicks.push(click);
+      Posts.update(postId, { $inc: { clicksCount: 1 }});
     }
   },
   deletePostById: function(postId) {
