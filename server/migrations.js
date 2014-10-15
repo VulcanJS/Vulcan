@@ -132,9 +132,9 @@ var migrationsList = {
       var postsByUser = Posts.find({userId: user._id});
       properties.postCount = postsByUser.count();
       
-      // update commentCount
+      // update commentsCount
       var commentsByUser = Comments.find({userId: user._id});
-      properties.commentCount = commentsByUser.count();
+      properties.commentsCount = commentsByUser.count();
 
       Meteor.users.update(user._id, {$set:properties});
 
