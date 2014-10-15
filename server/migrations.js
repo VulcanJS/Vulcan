@@ -354,5 +354,25 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  commentCountToCommentsCount: function () {
+    var i = 0;
+    Meteor.users.find({"data.commentsCount": {$exists : false}}).forEach(function (user) {
+      i++;
+      console.log("User: "+user._id);
+      Meteor.users.update(user._id, { $rename: { 'data.commentCount': 'data.commentsCount'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  clicksToClicksCount: function () {
+    var i = 0;
+    Posts.find({"clicksCount": {$exists : false}}).forEach(function (post) {
+      i++;
+      console.log("Post: "+post._id);
+      Posts.update(post._id, { $rename: { 'clicks': 'clicksCount'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
   }
 };
