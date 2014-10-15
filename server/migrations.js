@@ -128,9 +128,9 @@ var migrationsList = {
       if(typeof user.isAdmin === 'undefined')
         properties.isAdmin = false;
 
-      // update postCount
+      // update postsCount
       var postsByUser = Posts.find({userId: user._id});
-      properties.postCount = postsByUser.count();
+      properties.postsCount = postsByUser.count();
       
       // update commentsCount
       var commentsByUser = Comments.find({userId: user._id});
@@ -359,7 +359,7 @@ var migrationsList = {
     var i = 0;
     Meteor.users.find({"commentsCount": {$exists : false}}).forEach(function (user) {
       i++;
-      console.log("User: "+user._id);
+      console.log("User: " + user._id);
       Meteor.users.update(user._id, { $rename: { 'commentCount': 'commentsCount'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
@@ -369,9 +369,19 @@ var migrationsList = {
     var i = 0;
     Posts.find({"clicksCount": {$exists : false}}).forEach(function (post) {
       i++;
-      console.log("Post: "+post._id);
+      console.log("Post: " + post._id);
       Posts.update(post._id, { $rename: { 'clicks': 'clicksCount'}}, {multi: true, validate: false});
       console.log("---------------------");
+    });
+    return i;
+  },
+  postCountToPostsCount: function () {
+    var i = 0;
+      Meteor.users.find({"postsCount": {$exists : false}}).forEach(function (user) {
+        i++;
+        console.log("User: " + user._id);
+        Meteor.users.update(user._id, { $rename: { 'postCount': 'postsCount'}}, {multi: true, validate: false});
+        console.log("---------------------");
     });
     return i;
   }
