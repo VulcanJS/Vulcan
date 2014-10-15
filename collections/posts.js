@@ -28,11 +28,11 @@ postSchemaObject = {
     type: String,
     optional: true
   },
-  viewsCount: {
+  viewCount: {
     type: Number,
     optional: false
   },
-  commentsCount: {
+  commentCount: {
     type: Number,
     optional: false
   },
@@ -44,7 +44,7 @@ postSchemaObject = {
     type: Date,
     optional: true
   },
-  clicksCount: {
+  clickCount: {
     type: Number,
     optional: false
   },
@@ -225,9 +225,9 @@ Meteor.methods({
       author: getDisplayNameById(userId),
       upvotes: 0,
       downvotes: 0,
-      commentsCount: 0,
-      clicksCount: 0,
-      viewsCount: 0,
+      commentCount: 0,
+      clickCount: 0,
+      viewCount: 0,
       baseScore: 0,
       score: 0,
       inactive: false
@@ -282,7 +282,7 @@ Meteor.methods({
     // ------------------------------ Post-Insert ------------------------------ //
 
     // increment posts count
-    Meteor.users.update({_id: userId}, {$inc: {postsCount: 1}});
+    Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
 
     var postAuthor =  Meteor.users.findOne(post.userId);
 
@@ -325,7 +325,7 @@ Meteor.methods({
 
     if(_.where(postViews, view).length == 0){
         postViews.push(view);
-        Posts.update(postId, { $inc: { viewsCount: 1 }});
+        Posts.update(postId, { $inc: { viewCount: 1 }});
     }
   },
     increasePostClicks: function(postId, sessionId){
@@ -336,7 +336,7 @@ Meteor.methods({
 
     if(_.where(postClicks, click).length == 0){
       postClicks.push(click);
-      Posts.update(postId, { $inc: { clicksCount: 1 }});
+      Posts.update(postId, { $inc: { clickCount: 1 }});
     }
   },
   deletePostById: function(postId) {
@@ -350,7 +350,7 @@ Meteor.methods({
     var post = Posts.findOne({_id: postId});
     if(!Meteor.userId() || !canEditById(Meteor.userId(), post)) throw new Meteor.Error(606, 'You need permission to edit or delete a post');
     
-    Meteor.users.update({_id: post.userId}, {$inc: {postsCount: -1}});
+    Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
   }
 });

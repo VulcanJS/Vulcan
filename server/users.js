@@ -3,8 +3,8 @@ Accounts.onCreateUser(function(options, user){
     profile: options.profile || {},
     karma: 0,
     isInvited: false,
-    postsCount: 0,
-    commentsCount: 0,
+    postCount: 0,
+    commentCount: 0,
     invitedCount: 0,
     votes: {
       upvotedPosts: [],

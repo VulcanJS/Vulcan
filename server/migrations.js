@@ -128,13 +128,13 @@ var migrationsList = {
       if(typeof user.isAdmin === 'undefined')
         properties.isAdmin = false;
 
-      // update postsCount
+      // update postCount
       var postsByUser = Posts.find({userId: user._id});
-      properties.postsCount = postsByUser.count();
+      properties.postCount = postsByUser.count();
       
-      // update commentsCount
+      // update commentCount
       var commentsByUser = Comments.find({userId: user._id});
-      properties.commentsCount = commentsByUser.count();
+      properties.commentCount = commentsByUser.count();
 
       Meteor.users.update(user._id, {$set:properties});
 
@@ -285,12 +285,12 @@ var migrationsList = {
     });
     return i;
   },
-  commentsToCommentsCount: function () {
+  commentsToCommentCount: function () {
     var i = 0;
-    Posts.find({commentsCount: {$exists : false}}).forEach(function (post) {
+    Posts.find({commentCount: {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
-      Posts.update(post._id, { $rename: { 'comments': 'commentsCount'}}, {multi: true, validate: false});
+      Posts.update(post._id, { $rename: { 'comments': 'commentCount'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -355,33 +355,13 @@ var migrationsList = {
     });
     return i;
   },
-  commentCountToCommentsCount: function () {
+  clicksToClickCount: function () {
     var i = 0;
-    Meteor.users.find({"commentsCount": {$exists : false}}).forEach(function (user) {
-      i++;
-      console.log("User: " + user._id);
-      Meteor.users.update(user._id, { $rename: { 'commentCount': 'commentsCount'}}, {multi: true, validate: false});
-      console.log("---------------------");
-    });
-    return i;
-  },
-  clicksToClicksCount: function () {
-    var i = 0;
-    Posts.find({"clicksCount": {$exists : false}}).forEach(function (post) {
+    Posts.find({"clickCount": {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: " + post._id);
-      Posts.update(post._id, { $rename: { 'clicks': 'clicksCount'}}, {multi: true, validate: false});
+      Posts.update(post._id, { $rename: { 'clicks': 'clickCount'}}, {multi: true, validate: false});
       console.log("---------------------");
-    });
-    return i;
-  },
-  postCountToPostsCount: function () {
-    var i = 0;
-      Meteor.users.find({"postsCount": {$exists : false}}).forEach(function (user) {
-        i++;
-        console.log("User: " + user._id);
-        Meteor.users.update(user._id, { $rename: { 'postCount': 'postsCount'}}, {multi: true, validate: false});
-        console.log("---------------------");
     });
     return i;
   }
