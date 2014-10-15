@@ -10,7 +10,7 @@ postSchemaObject = {
   postedAt: {
     type: Date,
     optional: true
-  },    
+  },
   title: {
     type: String,
     label: "Title"
