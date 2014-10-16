@@ -118,8 +118,6 @@ telescope-theme-base@0.0.0
 telescope-theme-hubble@0.0.0
 telescope-update-prompt@0.1.0
 templating@1.0.7
-tmeasday:crypto-base@3.1.2
-tmeasday:crypto-md5@3.1.2
 tracker@1.0.2
 twitter@1.1.0
 ui@1.0.3

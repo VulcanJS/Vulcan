@@ -32,7 +32,6 @@ mrt:moment
 mrt:mailchimp
 
 cmather:handlebars-server@0.2.0
-tmeasday:crypto-md5@3.1.2
 sacha:spin@2.0.4
 sacha:juice
 chuangbo:marked@0.3.3
@@ -42,6 +41,7 @@ matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
 bengott:avatar
+jparker:gravatar
 
 # Telescope Packages
 
