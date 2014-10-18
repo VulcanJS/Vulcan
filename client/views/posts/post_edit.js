@@ -90,21 +90,30 @@ Template[getTemplate('post_edit')].events({
       return false;
     }
 
+    var title = $('#title').val();
+
+    if(!title){
+      throwError(i18n.t('Please fill in a title'));
+      $(e.target).removeClass('disabled');
+      return false;
+    }
+
     // ------------------------------ Properties ------------------------------ //
 
     // Basic Properties
 
-    var body = instance.editor.exportFile();
+    var url = $('#url').val(),
+      body = instance.editor.exportFile();
 
     var properties = {
-      title:            $('#title').val(),
+      title:            title,
+      url:              url,
       body:             body,
       categories:       []
     };
 
     // URL
 
-    var url = $('#url').val();
     if(!!url){
       properties.url = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
     }
@@ -135,7 +144,7 @@ Template[getTemplate('post_edit')].events({
 
       // PostedAt
 
-      if(adminProperties.status == STATUS_APPROVED){  
+      if(adminProperties.status == STATUS_APPROVED){
 
         var $postedAtDate = $('#postedAtDate');
         var $postedAtTime = $('#postedAtTime');
@@ -175,13 +184,13 @@ Template[getTemplate('post_edit')].events({
 
     // ------------------------------ Update ------------------------------ //
 
-    if (properties) {      
+    if (properties) {
       Posts.update(post._id,{
         $set: properties
       }, function(error){
         if(error){
           console.log(error);
-          throwError(error.reason);
+          throwError(error.message);
           clearSeenErrors();
           $(e.target).removeClass('disabled');
         }else{
@@ -198,7 +207,7 @@ Template[getTemplate('post_edit')].events({
     var post = this;
 
     e.preventDefault();
-    
+
     if(confirm("Are you sure?")){
       Router.go("/");
       Meteor.call("deletePostById", post._id, function(error) {
