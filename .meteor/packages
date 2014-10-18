@@ -56,7 +56,6 @@ telescope-theme-base
 telescope-theme-hubble
 telescope-daily
 telescope-newsletter
-telescope-module-embedly
 telescope-i18n
 telescope-email
 telescope-update-prompt
@@ -70,3 +69,4 @@ telescope-kadira
 service-configuration
 accounts-ui
 splendido:accounts-templates-unstyled
+alivebox:telescope-module-embedly-plus
