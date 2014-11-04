@@ -36,10 +36,11 @@ Template[getTemplate('user_item')].events({
   },
   'click .uninvite-link': function(e, instance){
     e.preventDefault();
-    Meteor.users.update(instance.data._id,{
-      $set:{
-        isInvited: false
-      }
+    var userId = instance.data._id;
+    var userEmail = getEmail(instance.data);
+    Meteor.call('uninviteUser', userId, userEmail, function(err, res) {
+      if (err)
+        throwError(err.reason);
     });
   },
   'click .admin-link': function(e, instance){

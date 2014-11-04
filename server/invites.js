@@ -49,7 +49,10 @@ Meteor.methods({
       });
       
       // update invinting user
-      Meteor.users.update(Meteor.userId(), {$inc:{inviteCount: -1}, $inc:{invitedCount: 1}});
+      Meteor.users.update(Meteor.userId(), {$inc: {
+        inviteCount: -1, 
+        invitedCount: 1
+      }});
 
       if(user){
         // update invited user
@@ -79,5 +82,28 @@ Meteor.methods({
     return {
       newUser : typeof user === 'undefined'
     };
+  },
+  uninviteUser: function(userId, userEmail) {
+    //Method to uninvite a user
+    //we have to both change the isInvited flag on the user as a lot of logic relies on it to verify 
+    //if a user is invited and we also have to remove the document from the Invites collection as the
+    //above inviteUser checks for it and would not allow you to re invite a user if it still existed
+    
+    check(userId, String);
+    check(userEmail, String);
+
+    if (!isAdmin(Meteor.user()))
+      throw new Meteor.Error(403, "Only admins can uninvite users");
+
+    var user = Meteor.users.findOne({ _id: userId, 'profile.email': userEmail });
+
+    if (!user)
+      throw new Meteor.Error(403, "User you want to uninvite doesn't exist");
+
+    Invites.remove({ invitedUserEmail: userEmail });
+
+    Meteor.users.update(user, {$set: {
+      isInvited: false
+    }});
   }
 });
