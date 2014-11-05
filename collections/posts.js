@@ -300,14 +300,14 @@ Meteor.methods({
       var now = new Date();
       Posts.update(post._id, {$set: {status: 2, postedAt: now}});
     }else{
-      throwError('You need to be an admin to do that.');
+      flashMessage('You need to be an admin to do that.', "error");
     }
   },
   unapprovePost: function(post){
     if(isAdmin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
-      throwError('You need to be an admin to do that.');
+      flashMessage('You need to be an admin to do that.', "error");
     }
   },
   clickedPost: function(post, sessionId){

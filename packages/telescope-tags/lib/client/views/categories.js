@@ -24,11 +24,11 @@ Meteor.startup(function () {
       }, function(error, categoryName) {
         if(error){
           console.log(error);
-          throwError(error.reason);
-          clearSeenErrors();
+          flashMessage(error.reason, "error");
+          clearSeenMessages();
         }else{
           $('#name').val('');
-          // throwError('New category "'+categoryName+'" created');
+          // flashMessage('New category "'+categoryName+'" created', "success");
         }
       });
     }

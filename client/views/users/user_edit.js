@@ -38,9 +38,11 @@ Template[getTemplate('user_edit')].events({
   'submit #account-form': function(e){
     e.preventDefault();
 
-    clearSeenErrors();
-    if(!Meteor.user())
-      throwError(i18n.t('You must be logged in.'));
+    clearSeenMessages();
+    if(!Meteor.user()) {
+      flashMessage(i18n.t('You must be logged in.'), "error");
+      return;
+    }
 
     var $target=$(e.target);
     var name = $target.find('[name=name]').val();
@@ -67,7 +69,7 @@ Template[getTemplate('user_edit')].events({
    		Accounts.changePassword(old_password, new_password, function(error){
         // TODO: interrupt update if there's an error at this point
         if(error)
-          throwError(error.reason);
+          flashMessage(error.reason, "error");
       });
     }
 

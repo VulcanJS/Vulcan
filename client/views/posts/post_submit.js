@@ -54,7 +54,7 @@ Template[getTemplate('post_submit')].events({
     // ------------------------------ Checks ------------------------------ //
 
     if(!Meteor.user()){
-      throwError(i18n.t('You must be logged in.'));
+      flashMessage(i18n.t('You must be logged in.'), "error");
       return false;
     }
 
@@ -116,15 +116,15 @@ Template[getTemplate('post_submit')].events({
     if (properties) {
       Meteor.call('post', properties, function(error, post) {
         if(error){
-          throwError(error.reason);
-          clearSeenErrors();
+          flashMessage(error.reason, "error");
+          clearSeenMessages();
           $(e.target).removeClass('disabled');
           if(error.error == 603)
             Router.go('/posts/'+error.details);
         }else{
           trackEvent("new post", {'postId': post._id});
           if(post.status === STATUS_PENDING)
-            throwError('Thanks, your post is awaiting approval.');
+            flashMessage('Thanks, your post is awaiting approval.', "success");
           Router.go('/posts/'+post._id);
         }
       });

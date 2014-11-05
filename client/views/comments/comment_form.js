@@ -17,7 +17,7 @@ Template[getTemplate('comment_form')].events({
   'submit form': function(e, instance){
     e.preventDefault();
     $(e.target).addClass('disabled');
-    clearSeenErrors();
+    clearSeenMessages();
     var content = instance.editor.exportFile();
     if(getCurrentTemplate() == 'comment_reply'){
       // child comment
@@ -25,7 +25,7 @@ Template[getTemplate('comment_form')].events({
       Meteor.call('comment', parentComment.postId, parentComment._id, content, function(error, newComment){
         if(error){
           console.log(error);
-          throwError(error.reason);
+          flashMessage(error.reason, "error");
         }else{
           trackEvent("newComment", newComment);
           Router.go('/posts/'+parentComment.postId+'/comment/'+newComment._id);
@@ -38,7 +38,7 @@ Template[getTemplate('comment_form')].events({
       Meteor.call('comment', post._id, null, content, function(error, newComment){
         if(error){
           console.log(error);
-          throwError(error.reason);
+          flashMessage(error.reason, "error");
         }else{
           trackEvent("newComment", newComment);
           Session.set('scrollToCommentId', newComment._id);

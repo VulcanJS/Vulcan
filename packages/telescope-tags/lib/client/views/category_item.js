@@ -13,7 +13,7 @@ Meteor.startup(function () {
       }
       Meteor.call('updateCategoryInPosts', categoryId, function(error) {
         if (error) {
-          throwError(error.reason);
+          flashMessage(error.reason, "error");
         }
       });
     }

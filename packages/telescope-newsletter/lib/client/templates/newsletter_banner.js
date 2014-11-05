@@ -54,7 +54,7 @@ Meteor.startup(function () {
           $banner.removeClass('show-loader');
           if(error){
             console.log(error);
-            throwError(error.message);
+            flashMessage(error.message, "error");
           }else{
             console.log(result);
             confirmSubscription();
@@ -71,7 +71,7 @@ Meteor.startup(function () {
           $banner.removeClass('show-loader');
           if(error){
             console.log(error);
-            throwError(error.message);
+            flashMessage(error.message, "error");
           }else{
             console.log(result);
             confirmSubscription();

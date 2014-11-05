@@ -153,7 +153,7 @@ Template[getTemplate('comment_item')].events({
     e.preventDefault();
     if(!Meteor.user()){
       Router.go(getSigninUrl());
-      throwError(i18n.t("Please log in first"));
+      flashMessage(i18n.t("Please log in first"), "info");
     }
     Meteor.call('upvoteComment', this, function(error, result){
       trackEvent("post upvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});

@@ -86,7 +86,7 @@ Template[getTemplate('post_edit')].events({
     $(e.target).addClass('disabled');
 
     if(!Meteor.user()){
-      throwError('You must be logged in.');
+      flashMessage('You must be logged in.', "error");
       return false;
     }
 
@@ -181,8 +181,8 @@ Template[getTemplate('post_edit')].events({
       }, function(error){
         if(error){
           console.log(error);
-          throwError(error.reason);
-          clearSeenErrors();
+          flashMessage(error.reason, "error");
+          clearSeenMessages();
           $(e.target).removeClass('disabled');
         }else{
           trackEvent("edit post", {'postId': post._id});
@@ -204,9 +204,9 @@ Template[getTemplate('post_edit')].events({
       Meteor.call("deletePostById", post._id, function(error) {
         if (error) {
           console.log(error);
-          throwError(error.reason);
+          flashMessage(error.reason, "error");
         } else {
-          throwError('Your post has been deleted.');
+          flashMessage('Your post has been deleted.', "success");
         }
       });
     }

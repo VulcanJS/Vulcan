@@ -39,7 +39,7 @@ Template[getTemplate('comment_edit')].events({
     if(confirm(i18n.t("Are you sure?"))){
       Meteor.call('removeComment', comment._id);
       Router.go("/posts/"+comment.postId);
-      throwError("Your comment has been deleted.");
+      flashMessage("Your comment has been deleted.", "success");
 //      Router.go("/comments/deleted");
     }
   }

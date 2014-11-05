@@ -25,18 +25,18 @@ var scrollUp = function(){
 AutoForm.hooks({
   inviteForm: {
     onSuccess: function(operation, result, template) {
-      clearSeenErrors();
+      clearSeenMessages();
 
       if(result && result.newUser){
-        throwError('An invite has been sent out. Thank you!');
+        flashMessage('An invite has been sent out. Thank you!', "success");
       } else {
-        throwError('Thank you!');
+        flashMessage('Thank you!', "info");
       }
       scrollUp();
     },
 
     onError: function(operation, error, template) {
-      clearSeenErrors();
+      clearSeenMessages();
       
       if(error && error.reason){
         throwError(error.reason);
