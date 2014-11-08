@@ -15,8 +15,8 @@ Meteor.startup(function () {
       var name = $('#name').val();
       var numberOfCategories = Categories.find().count();
       var order = parseInt($('#order').val()) || (numberOfCategories + 1);
-      var slug = slugify(name);
-      
+      var slug = slugify(name.replace(/ /g, '-'));
+
       Meteor.call('category', {
         name: name,
         order: order,
