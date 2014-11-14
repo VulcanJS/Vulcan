@@ -1,12 +1,11 @@
 <template name="posts_list">
-  <div class="posts-wrapper grid">
-  	<div class="posts list">
-  		{{#each posts}}
-  			{{> UI.dynamic template=post_item}}
-  		{{/each}}
+  {{> UI.dynamic template=postsListIncoming data=incoming}}
+  <div class="posts-wrapper grid grid-module">
+    <div class="posts list">
+      {{#each posts}}
+        {{> UI.dynamic template=post_item}}
+      {{/each}}
     </div>
-    {{#if hasMorePosts}}
-      <a class="more-button grid-module" href="{{loadMoreUrl}}"><span>{{i18n "Load more"}}</span></a>
-    {{/if}}
   </div>
+  {{> UI.dynamic template=postsLoadMore}}
 </template>

@@ -1,6 +1,6 @@
 Package.describe({summary: "Telescope base theme"});
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
 
   api.use(['telescope-lib', 'telescope-base'], ['client', 'server']);
   

@@ -15,6 +15,9 @@ Template[getTemplate('posts_digest')].helpers({
   post_item: function () {
     return getTemplate('post_item');
   },
+  postsListIncoming: function () {
+    return getTemplate('postsListIncoming');
+  },
   hasPosts: function(){
     if(this.posts) // XXX
       return !!this.posts.count();  
@@ -31,7 +34,7 @@ Template[getTemplate('posts_digest')].helpers({
   },
   previousDateURL: function(){
     var currentDate=moment(Session.get('currentDate'));
-    var newDate=currentDate.subtract('days', 1);
+    var newDate=currentDate.subtract(1, 'days');
     return getDigestURL(newDate);
   },
   showPreviousDate: function(){
@@ -60,3 +63,7 @@ Template[getTemplate('posts_digest')].rendered = function(){
   $('body').css('min-height',distanceFromTop+160);
   $('.more-button').css('top', distanceFromTop+"px");  
 }
+
+Template[getTemplate('posts_digest')].created = function() {
+  Session.set('listPopulatedAt', new Date());
+};

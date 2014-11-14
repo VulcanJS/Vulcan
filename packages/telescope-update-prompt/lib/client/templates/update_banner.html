@@ -1,0 +1,15 @@
+<template name="updateBanner">
+  {{#if showBanner}}
+    <div class="update-banner grid-module grid">
+      <h3 class="update-version">{{version}}</h3>
+      <div class="update-content">
+        <h4 class="update-prompt">A new version of Telescope is available.</h4>
+        <p class="update-message">
+          You have: {{currentVersion}}. Note: this message is only displayed to admins. 
+          <a href="https://github.com/TelescopeJS/Telescope/blob/master/History.md" target="_blank">View changelog</a> | 
+          <a href="http://telesc.pe/docs/updating" target="_blank">View update instructions</a>
+          </p>
+      </div>
+    </div>
+  {{/if}}
+</template>

@@ -1,13 +1,13 @@
 Package.describe({summary: "Telescope search package"});
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
 
-  api.use(['telescope-lib', 'telescope-base', 'simple-schema'], ['client', 'server']);
+  api.use(['telescope-lib', 'telescope-base', 'aldeed:simple-schema'], ['client', 'server']);
 
   api.use([
     'jquery',
     'underscore',
-    'iron-router',
+    'iron:router',
     'templating'
   ], 'client');
 

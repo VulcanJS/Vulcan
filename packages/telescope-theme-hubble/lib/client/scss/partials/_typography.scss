@@ -8,16 +8,6 @@ body, textarea, input{
 .post-title, .header, .post-rank, .button{
 	// font-family:"kulturista-web", Rokkitt, Georgia, serif;
 }
-a{
-	text-decoration:none;
-	font-weight:bold;
-	&:link, &:visited, &:active{
-		color:$medium-text;
-	}
-	&:hover{
-		color:$red;
-	}
-}
 h2{
 	font-size: 36px;
 	margin-bottom: 10px;

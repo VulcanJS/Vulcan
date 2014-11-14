@@ -1,0 +1,97 @@
+<template name="quickForm_settings">
+  {{#autoForm qfAutoFormContext}}
+
+    {{#each afFieldsets}}
+      <fieldset>
+        <h3 class="fieldset-heading">{{this}}</h3>
+        {{> afQuickFields fields=fieldsForFieldset omitFields=../atts.omitFields template="settings" input-col-class=inputClass label-class=labelClass}}
+      </fieldset>
+    {{/each}}
+    
+    {{#if qfShouldRenderButton}}
+      <div class="form-group">
+        <div class="{{labelClass}}"></div>
+        <div class="{{inputClass}}">
+          <button {{submitButtonAtts}}>
+          {{#with ../atts.buttonContent}}
+            {{this}}
+          {{else}}
+            Submit
+          {{/with}}
+          </button>
+        </div>
+      </div>
+    {{/if}}
+
+  {{/autoForm}}
+</template>
+
+<template name="afFormGroup_settings">
+  {{#if showField}}
+    <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+      {{> afFieldLabel afFieldLabelAtts}}
+      <div class="{{rightColumnClass}}">
+        {{> afFieldInput afFieldInputAtts}}
+        {{#if afFieldInstructions}}
+          <span class="instructions-block">{{afFieldInstructions}}</span>
+        {{/if}}
+        <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+      </div>
+    </div>
+  {{/if}}
+</template>
+
+<template name="afObjectField_settings">
+  <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+    {{> afFieldLabel afFieldLabelAtts}}
+    <div class="{{rightColumnClass}}">
+      <div class="panel panel-default autoform-padding-fix">
+        <div class="panel-body">
+        {{> afQuickFields name=this.atts.name fields=this.atts.fields omitFields=this.atts.omitFields template="bootstrap3"}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="afArrayField_settings">
+  <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
+    {{> afFieldLabel afFieldLabelAtts}}
+    <div class="{{rightColumnClass}}">
+      <div class="panel panel-default autoform-padding-fix">
+        {{#if afFieldIsInvalid name=this.atts.name}}
+        <div class="panel-body has-error">
+          <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+        </div>
+        {{/if}}
+        <ul class="list-group">
+          {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+          <li class="list-group-item autoform-array-item">
+            <div class="media">
+              {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+              <button class="btn btn-primary autoform-remove-item pull-left"><span class="glyphicon glyphicon-minus"></span></button>
+              {{/if}}
+              <div class="media-body">
+                {{> afQuickField name=this.name label=false}}
+              </div>
+            </div>
+          </li>
+          {{/afEachArrayItem}}
+          {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+          <li class="list-group-item">
+            <button class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="afCheckbox_settings">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" value="{{this.value}}" {{atts}} />aaaa
+    </label>
+  </div>
+</template>

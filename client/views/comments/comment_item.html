@@ -1,6 +1,9 @@
 <template name="comment_item">
   <li class="comment module comment-displayed" id="{{_id}}">
    <div class="comment-body">
+      {{#if isDeleted}}
+        <div class="comment-deleted">This comment has been deleted.</div>
+      {{else}}
       <div class="comment-content">
         <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
@@ -12,7 +15,7 @@
             <span>{{i18n "downvote"}}</span>
           </a>
         </div>
-        <div class="user-avatar"><img src="{{user_avatar}}" /></div>
+        <div class="user-avatar">{{>avatar userId=userId class="circle"}}</div>
         <div class="comment-main">
           <div class="comment-meta">
             <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
@@ -22,24 +25,25 @@
             {{#if can_edit}}
               | <a class="edit-link" href="/comments/{{_id}}/edit">{{i18n "Edit"}}</a>
             {{/if}}
-            {{#if currentUser.isAdmin}}
+            {{#if isAdmin}}
               | <span>{{full_date}}</span>
             {{/if}}
           </div>
-          <div class="comment-text markdown">{{#markdown}}{{body}}{{/markdown}}</div>
+          <div class="comment-text markdown">{{{htmlBody}}}</div>
           {{#if getSetting "nestedComments" true}}
             <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
           {{/if}}
         </div>
       </div>
+      {{/if}}
       {{#if showChildComments}}
-      <ul class="comment-children comment-list">
-      {{#each child_comments}}
-        {{#with this}}
-          {{> UI.dynamic template=comment_item}}
-        {{/with}}
-      {{/each}}
-      </ul>
+        <ul class="comment-children comment-list">
+        {{#each child_comments}}
+          {{#with this}}
+            {{> UI.dynamic template=comment_item}}
+          {{/with}}
+        {{/each}}
+        </ul>
       {{/if}}
     </div>
   </li>

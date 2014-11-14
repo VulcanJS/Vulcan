@@ -1,0 +1,8 @@
+{
+  "name": "telescope-module-embedly",
+  "description": "The Telescope Embedly module.",
+  "homepage": "https://github.com/TelescopeJS/telescope-module-embedly",
+  "author": "Sacha Greif <info@sachagreif.com> (http://sachagreif.com)",
+  "version": "0.2.8",
+  "git": "https://github.com/TelescopeJS/telescope-module-embedly.git"
+}

@@ -60,7 +60,7 @@ Template[getTemplate('comment_item')].created = function() {
   // if comments are supposed to be queued, then queue this comment on create
   this.isQueued = window.queueComments;
   window.openedComments = [];
-}
+};
 
 Template[getTemplate('comment_item')].helpers({
   comment_item: function () {
@@ -79,13 +79,9 @@ Template[getTemplate('comment_item')].helpers({
   authorName: function(){
     return getAuthorName(this);
   },
-  user_avatar: function(){
-    if(author=Meteor.users.findOne(this.userId))
-      return getAvatarUrl(author);
-  },
   can_edit: function(){
     if(this.userId && Meteor.userId())
-      return Meteor.user().isAdmin || (Meteor.userId() === this.userId);
+      return isAdmin(Meteor.user()) || (Meteor.userId() === this.userId);
     else
       return false;
   },
@@ -107,7 +103,7 @@ Template[getTemplate('comment_item')].helpers({
     var user = Meteor.users.findOne(this.userId);
     if(user)
       return getProfileUrl(user);
-  }  
+  }
 });
 
 Template[getTemplate('comment_item')].rendered=function(){
@@ -122,7 +118,7 @@ Template[getTemplate('comment_item')].rendered=function(){
   //     // note: testing on the class works because Meteor apparently preserves newly assigned CSS classes
   //     // across template renderings
   //     // TODO: save scroll position
-      
+
   //     // get comment author name
   //     var user=Meteor.users.findOne(comment.userId);
   //     var author=getDisplayName(user);
@@ -138,9 +134,9 @@ Template[getTemplate('comment_item')].rendered=function(){
   //     // TODO: take the user back to their previous scroll position
   //   }
   // }
-}
+};
 
-Template.comment_item.events({
+Template[getTemplate('comment_item')].events({
   'click .queue-comment': function(e){
     e.preventDefault();
     var current_comment_id=$(event.target).closest(".comment").attr("id");
@@ -156,7 +152,7 @@ Template.comment_item.events({
   'click .not-upvoted .upvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('upvoteComment', this, function(error, result){
@@ -166,7 +162,7 @@ Template.comment_item.events({
   'click .upvoted .upvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('cancelUpvoteComment', this, function(error, result){
@@ -176,7 +172,7 @@ Template.comment_item.events({
   'click .not-downvoted .downvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('downvoteComment', this, function(error, result){
@@ -186,7 +182,7 @@ Template.comment_item.events({
   'click .downvoted .downvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go('/signin');
+      Router.go(getSigninUrl());
       throwError(i18n.t("Please log in first"));
     }
     Meteor.call('cancelDownvoteComment', this, function(error, result){

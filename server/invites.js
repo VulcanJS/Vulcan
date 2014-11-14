@@ -60,8 +60,7 @@ Meteor.methods({
         }});
       } 
 
-      var emailTemplate = getTemplate('emailInvite'),
-          communityName = getSetting('title','Telescope'),
+      var communityName = getSetting('title','Telescope'),
           emailSubject = 'You are invited to try '+communityName,
           emailProperties = {
             newUser : typeof user === 'undefined',
@@ -69,12 +68,10 @@ Meteor.methods({
             actionLink : user ? getSigninUrl() : getSignupUrl(),
             invitedBy : getDisplayName(currentUser),
             profileUrl : getProfileUrl(currentUser)
-          },
-          notificationHtml = Handlebars.templates[emailTemplate](emailProperties),
-          html = buildEmailTemplate(notificationHtml);
+          };
 
       Meteor.setTimeout(function () {
-        sendEmail(userEmail, emailSubject, html);
+        buildAndSendEmail(userEmail, emailSubject, getTemplate('emailInvite'), emailProperties);
       }, 1);
       
     }

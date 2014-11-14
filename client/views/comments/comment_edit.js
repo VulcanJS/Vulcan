@@ -10,7 +10,7 @@ Template[getTemplate('comment_edit')].rendered = function(){
       });
     }
   }
-}
+};
 
 Template[getTemplate('comment_edit')].events({
   'click input[type=submit]': function(e, instance){
@@ -38,7 +38,7 @@ Template[getTemplate('comment_edit')].events({
     
     if(confirm(i18n.t("Are you sure?"))){
       Meteor.call('removeComment', comment._id);
-      Router.go("/posts/"+comment.postId)
+      Router.go("/posts/"+comment.postId);
       throwError("Your comment has been deleted.");
 //      Router.go("/comments/deleted");
     }

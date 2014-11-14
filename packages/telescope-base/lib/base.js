@@ -1,9 +1,20 @@
-// Initialize common arrays
+// ------------------------------------- Schemas -------------------------------- //
 
 // array containing properties to be added to the post/settings/comments schema on startup.
 addToPostSchema = [];
 addToCommentsSchema = [];
 addToSettingsSchema = [];
+
+// ------------------------------------- Navigation -------------------------------- //
+
+
+// array containing nav items; initialize with views menu and admin menu
+primaryNav = ['viewsMenu', 'adminMenu'];
+
+secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
+
+// array containing items in the admin menu
+adminNav = [];
 
 // array containing items in the views menu
 viewNav = [
@@ -22,19 +33,11 @@ viewNav = [
   {
     route: 'posts_digest',
     label: 'Digest'
-  }   
+  } 
 ];
 
-// array containing items in the admin menu
-adminNav = [];
+// ------------------------------------- Views -------------------------------- //
 
-// array containing subscriptions to be preloaded
-preloadSubscriptions = [];
-
-// array containing nav items; initialize with views menu and admin menu
-primaryNav = ['viewsMenu', 'adminMenu'];
-
-secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
 
 // object containing post list view parameters
 viewParameters = {}
@@ -59,7 +62,10 @@ viewParameters.best = function (terms) {
 
 viewParameters.pending = function (terms) {
   return {
-    find: {status: 1}, 
+    find: {
+      status: 1, 
+      postedAt: {$lte: null}
+    }, 
     options: {sort: {createdAt: -1}}
   };
 }
@@ -73,14 +79,15 @@ viewParameters.digest = function (terms) {
       }
     },
     options: {
-      sort: {sticky: -1, baseScore: -1}
+      sort: {sticky: -1, baseScore: -1, limit: 0}
     }
   };
 }
 
-footerModules = [];
 
 heroModules = [];
+
+footerModules = [];
 
 // array containing post modules
 modulePositions = [
@@ -127,7 +134,7 @@ postHeading = [
 
 postMeta = [
   {
-    template: 'postMeta',
+    template: 'postInfo',
     order: 1
   },
   {
@@ -143,15 +150,23 @@ postMeta = [
 
 postSubmitRenderedCallbacks = [];
 postSubmitClientCallbacks = [];
-postSubmitServerCallbacks = [];
+postSubmitMethodCallbacks = [];
+postAfterSubmitMethodCallbacks = [];
 
 postEditRenderedCallbacks = [];
 postEditClientCallbacks = [];
+postEditMethodCallbacks = []; // not used yet
+postAfterMethodCallbacks = []; // not used yet
 
-commentEditClientCallbacks = []; // not used yet
-commentEditServerCallbacks = []; // not used yet
+commentSubmitRenderedCallbacks = [];
+commentSubmitClientCallbacks = [];
+commentSubmitMethodCallbacks = [];
+commentAfterSubmitMethodCallbacks = [];
 
-commentEditClientCallbacks = []; // not used yet
+commentEditRenderedCallbacks = []; 
+commentEditClientCallbacks = [];
+commentEditMethodCallbacks = []; // not used yet
+commentAfterEditMethodCallbacks = []; // not used yet
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 
@@ -168,3 +183,8 @@ getTemplate = function (name) {
 themeSettings = {
   'useDropdowns': true // whether or not to use dropdown menus in a theme
 };
+
+// ------------------------------ Subscriptions ------------------------------ //
+
+// array containing subscriptions to be preloaded
+preloadSubscriptions = [];

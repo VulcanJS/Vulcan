@@ -16,18 +16,12 @@ Searches = new Meteor.Collection("searches", {
   })
 });
 
-Searches.allow({
-  update: isAdminById
-, remove: isAdminById
+Meteor.startup(function() {
+  Searches.allow({
+    update: isAdminById
+  , remove: isAdminById
+  });
 });
-
-// XXX
-// TODO: find a way to make the package use the same isAdminById as the rest of the app
-isAdminById=function(userId){
-  var user = Meteor.users.findOne(userId);
-  return !!(user && isAdmin(user));
-};
-
 
 // search post list parameters
 viewParameters.search = function (terms, baseParameters) {

@@ -28,16 +28,6 @@ adminNav = adminNav.concat([
   }   
 ]);
 
-// Notifications - only load if user is logged in
-// Not mandatory, because server won't publish anything even if we try to load.
-// Remember about Deps.autorun - user can log in and log out several times
-Deps.autorun(function() {
-  // userId() can be changed before user(), because loading profile takes time
-  if(Meteor.userId()) {
-    Meteor.subscribe('notifications');
-  }
-});
-
 // Sort postModules array position using modulePositions as index
 postModules = _.sortBy(postModules, function(module){return _.indexOf(modulePositions, module.position)});
 
@@ -47,11 +37,4 @@ postMeta = _.sortBy(postMeta, 'order');
 
 Meteor.startup(function () {
   $('#rss-link').attr('title', i18n.t('New Posts'));
-
-  AccountsEntry.config({
-    homeRoute: '/',
-    dashboardRoute: '/',
-    passwordSignupFields: 'USERNAME_AND_EMAIL',
-    profileRoute: 'profile'
-  });
 });

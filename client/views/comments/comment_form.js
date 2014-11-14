@@ -2,7 +2,7 @@ Template[getTemplate('comment_form')].helpers({
   canComment: function(){
     return canComment(Meteor.user());
   }
-})
+});
 
 Template[getTemplate('comment_form')].rendered = function(){
   if(Meteor.user() && !this.editor){
@@ -11,7 +11,7 @@ Template[getTemplate('comment_form')].rendered = function(){
       $(window.editor).closest('form').find('input[type="submit"]').click();
     });
   }
-}
+};
 
 Template[getTemplate('comment_form')].events({
   'submit form': function(e, instance){

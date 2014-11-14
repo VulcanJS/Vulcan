@@ -1,0 +1,14 @@
+html { 
+  padding:10px;
+}
+
+body {
+  border:0;
+  background:#fff;
+  font-family:monospace;
+  font-size:14px;
+  padding:10px;
+  line-height:1.5;
+  margin:0;
+  padding:0;
+}

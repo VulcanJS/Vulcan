@@ -40,7 +40,7 @@ Template[getTemplate('post_submit')].rendered = function(){
 
   // $("#postUser").selectToAutocomplete(); // XXX
 
-}
+};
 
 Template[getTemplate('post_submit')].events({
   'change input[name=status]': function (e, i) {
@@ -72,17 +72,19 @@ Template[getTemplate('post_submit')].events({
 
     // PostedAt
 
+    var $postedAtDate = $('#postedAtDate');
+    var $postedAtTime = $('#postedAtTime');
     var setPostedAt = false;
     var postedAt = new Date(); // default to current browser date and time
-    var postedAtDate = $('#postedAtDate').datepicker('getDate');
-    var postedAtTime = $('#postedAtTime').val();
+    var postedAtDate = $postedAtDate.datepicker('getDate');
+    var postedAtTime = $postedAtTime.val();
 
-    if($('#postedAtDate').exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
+    if ($postedAtDate.exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
       postedAt = postedAtDate;
       setPostedAt = true;
     }
 
-    if($('#postedAtTime').exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
+    if ($postedAtTime.exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
       var hours = postedAtTime.split(':')[0];
       var minutes = postedAtTime.split(':')[1];
       postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
@@ -90,7 +92,7 @@ Template[getTemplate('post_submit')].events({
     }
 
     if(setPostedAt) // if either custom date or time has been set, pass result to properties
-      properties.postedAt = postedAt 
+      properties.postedAt = postedAt;
 
 
     // URL
@@ -122,7 +124,7 @@ Template[getTemplate('post_submit')].events({
         }else{
           trackEvent("new post", {'postId': post._id});
           if(post.status === STATUS_PENDING)
-            throwError('Thanks, your post is awaiting approval.')
+            throwError('Thanks, your post is awaiting approval.');
           Router.go('/posts/'+post._id);
         }
       });
@@ -134,7 +136,8 @@ Template[getTemplate('post_submit')].events({
   'click .get-title-link': function(e){
     e.preventDefault();
     var url=$("#url").val();
-    $(".get-title-link").addClass("loading");
+    var $getTitleLink = $(".get-title-link");
+    $getTitleLink.addClass("loading");
     if(url){
       $.get(url, function(response){
           if ((suggestedTitle=((/<title>(.*?)<\/title>/m).exec(response.responseText))) != null){
@@ -142,11 +145,11 @@ Template[getTemplate('post_submit')].events({
           }else{
               alert("Sorry, couldn't find a title...");
           }
-          $(".get-title-link").removeClass("loading");
+          $getTitleLink.removeClass("loading");
        });
     }else{
       alert("Please fill in an URL first!");
-      $(".get-title-link").removeClass("loading");
+      $getTitleLink.removeClass("loading");
     }
   }
 

@@ -225,7 +225,8 @@
 }
 .posts-wrapper{
 	@extend .has-shadow;
-	border-radius: 3px;	
+	border-radius: 3px;
+	padding: 0;
 }
 .post{
 	position:relative;
@@ -236,7 +237,7 @@
 		border-radius: 3px 3px 0px 0px;
 	}
 	&:last-child{
-		border: none;
+		border-radius: 0px 0px 3px 3px;
 	}
 	&.animate{
 		@include single-transition(ease-out, top, 400ms, 0ms);
@@ -264,7 +265,7 @@
 	}
 }
 .post-info{
-	padding:$grid-padding - 2px 0;
+	padding:$grid-padding - 5px 0;
 }
 .post-content{
 	min-height:$grid-unit - 30px;
@@ -284,6 +285,7 @@
 }
 .post-heading{
 	margin-bottom:3px;
+	line-height: 1.2;
 	@include small{
 		line-height: 1.5;
 	}
@@ -294,14 +296,10 @@
 		@include medium-large{
 			font-size:18px;
 		}
-		color:$text;
 		font-weight:normal;
 		&:visited{
 			color:$grey;
 		}
-		&:hover{
-			color:$red;
-		}	
 	}
 	.post-domain{
 		color:$light-text;
@@ -336,6 +334,12 @@
 	font-size:12px;
 	color:$light-text;
 	line-height:1.5;
+	a{
+		color:$medium-text;
+		&:visited, &:active{
+			color:$medium-text;
+		}
+	}
 }
 
 .post-share, .post-discuss{
@@ -450,9 +454,8 @@
 }
 
 
-@media screen and (max-width: $break-small) {
+@include small {
 	.posts{
-    // margin:0 10px;
     padding:0;
     .post-rank{
       display:none;
@@ -472,12 +475,10 @@
       }
       .post-heading{
         .post-title{
-          line-height:1.2;
-          display:block;
+          display:block;	
           margin-bottom:4px;
         }
         .post-domain{
-          line-height:1;
           display:block;
           margin-bottom:4px;
           font-size:13px;
@@ -485,9 +486,6 @@
       }
       .post-meta{
         font-size:11px;
-        .comments{
-          // display:none;
-        }
         .unit{
           font-size:0;
           &:after{

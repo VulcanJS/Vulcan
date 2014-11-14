@@ -13,7 +13,7 @@ postSchemaObject = {
   },    
   title: {
     type: String,
-    label: "Title",
+    label: "Title"
   },
   url: {
     type: String,
@@ -21,6 +21,10 @@ postSchemaObject = {
     optional: true
   },
   body: {
+    type: String,
+    optional: true
+  },
+  htmlBody: {
     type: String,
     optional: true
   },
@@ -89,9 +93,10 @@ _.each(addToPostSchema, function(item){
   postSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Posts = new Meteor.Collection("posts", {
-  schema: new SimpleSchema(postSchemaObject)
-});
+Posts = new Meteor.Collection("posts");
+
+PostSchema = new SimpleSchema(postSchemaObject);
+Posts.attachSchema(PostSchema);
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
@@ -107,16 +112,15 @@ Posts.deny({
 });
 
 Posts.allow({
-    insert: canPostById
-  , update: canEditById
-  , remove: canEditById
+  update: canEditById,
+  remove: canEditById
 });
 
 clickedPosts = [];
 
 getPostProperties = function(post) {
 
-  var postAuthor = Meteor.users.findOne(post.userId)
+  var postAuthor = Meteor.users.findOne(post.userId);
   var p = {
     postAuthorName : getDisplayName(postAuthor),
     postTitle : cleanUp(post.title),
@@ -129,11 +133,11 @@ getPostProperties = function(post) {
   if(post.url)
     p.url = post.url;
 
-  if(post.body)
-    p.body = marked(post.body);
+  if(post.htmlBody)
+    p.htmlBody = post.htmlBody;
 
   return p;
-}
+};
 
 getPostPageUrl = function(post){
   return getSiteUrl()+'posts/'+post._id;
@@ -146,12 +150,25 @@ getPostEditUrl = function(id){
 // for a given post, return its link if it has one, or else its post page URL
 getPostLink = function (post) {
   return !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post);
-}
+};
+
+Posts.before.insert(function (userId, doc) {
+  if(Meteor.isServer && !!doc.body)
+    doc.htmlBody = sanitize(marked(doc.body));
+});
+
+Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
+  // if body is being modified, update htmlBody too
+  if (Meteor.isServer && modifier.$set && modifier.$set.body) {
+    modifier.$set = modifier.$set || {};
+    modifier.$set.htmlBody = sanitize(marked(modifier.$set.body));
+  }
+});
 
 Meteor.methods({
   post: function(post){
     var title = cleanUp(post.title),
-        body = cleanUp(post.body),
+        body = post.body,
         userId = this.userId,
         user = Meteor.users.findOne(userId),
         timeSinceLastPost=timeSinceLast(user, Posts),
@@ -174,7 +191,7 @@ Meteor.methods({
 
     if(!!post.url){
       // check that there are no previous posts with the same link in the past 6 months
-      var sixMonthsAgo = moment().subtract('months', 6).toDate();
+      var sixMonthsAgo = moment().subtract(6, 'months').toDate();
       var postWithSameLink = Posts.findOne({url: post.url, postedAt: {$gte: sixMonthsAgo}});
 
       if(typeof postWithSameLink !== 'undefined'){
@@ -203,11 +220,11 @@ Meteor.methods({
       author: getDisplayNameById(userId),
       upvotes: 0,
       downvotes: 0,
-      comments: 0,
+      commentsCount: 0,
       baseScore: 0,
       score: 0,
-      inactive: false,
-    }
+      inactive: false
+    };
 
     // UserId    
     if(isAdmin(Meteor.user()) && !!post.userId){ // only let admins post as other users
@@ -239,7 +256,7 @@ Meteor.methods({
     // ------------------------------ Callbacks ------------------------------ //
 
     // run all post submit server callbacks on post object successively
-    post = postSubmitServerCallbacks.reduce(function(result, currentFunction) {
+    post = postSubmitMethodCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(result);
     }, post);
 
@@ -247,6 +264,13 @@ Meteor.methods({
 
     // console.log(post)
     post._id = Posts.insert(post);
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on post object successively
+    post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, post);
 
     // ------------------------------ Post-Insert ------------------------------ //
 
@@ -257,14 +281,6 @@ Meteor.methods({
 
     Meteor.call('upvotePost', post, postAuthor);
 
-    // notify users of new posts
-    if(Meteor.isServer && !!getSetting('emailNotifications', false)){
-      // we don't want emails to hold up the post submission, so we make the whole thing async with setTimeout
-      Meteor.setTimeout(function () {
-        newPostNotification(post, [userId])
-      }, 1);
-    }
-
     return post;
   },
   setPostedAt: function(post, customPostedAt){
@@ -272,7 +288,7 @@ Meteor.methods({
     var postedAt = new Date(); // default to current date and time
         
     if(isAdmin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
-      var postedAt = customPostedAt;
+      postedAt = customPostedAt;
 
     Posts.update(post._id, {$set: {postedAt: postedAt}});
   },
@@ -307,7 +323,7 @@ Meteor.methods({
     // if(!this.isSimulation) {
     //   Comments.remove({post: postId});
     // }
-    // NOTE: actually, keep comments afer all
+    // NOTE: actually, keep comments after all
 
     // decrement post count
     var post = Posts.findOne({_id: postId});

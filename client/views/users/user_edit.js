@@ -32,7 +32,7 @@ Template[getTemplate('user_edit')].helpers({
   hasPassword: function () {
     return hasPassword(Meteor.user());
   }
-})
+});
 
 Template[getTemplate('user_edit')].events({
   'submit #account-form': function(e){
@@ -44,20 +44,20 @@ Template[getTemplate('user_edit')].events({
 
     var $target=$(e.target);
     var name = $target.find('[name=name]').val();
+    var email = $target.find('[name=email]').val();
     var user = this;
     var update = {
       "profile.name": name,
       "profile.slug": slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
-      "profile.email": $target.find('[name=email]').val(),
+      "profile.email": email,
       "profile.twitter": $target.find('[name=twitter]').val(),
       "profile.github": $target.find('[name=github]').val(),
       "profile.site": $target.find('[name=site]').val(),
       "profile.notifications.users": $('input[name=notifications_users]:checked').length, // only actually used for admins
       "profile.notifications.posts": $('input[name=notifications_posts]:checked').length,
       "profile.notifications.comments": $('input[name=notifications_comments]:checked').length,
-      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length,
-      "inviteCount": parseInt($target.find('[name=inviteCount]').val())
+      "profile.notifications.replies": $('input[name=notifications_replies]:checked').length
     };
 
     var old_password = $target.find('[name=old_password]').val();
@@ -84,6 +84,9 @@ Template[getTemplate('user_edit')].events({
         $('html, body').animate({scrollTop: element.offset().top});
       });
     });
+
+    Meteor.call('changeEmail', email);
+
   }
 
 });

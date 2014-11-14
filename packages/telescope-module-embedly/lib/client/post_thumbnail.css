@@ -1,0 +1,79 @@
+.post-thumbnail{
+  margin-right: 0px !important;
+}
+
+.post-thumbnail-link{
+  display: block;
+  margin-right: 10px;
+  position: relative;
+  overflow: hidden;
+  max-width: 80px;
+  max-height: 50px;
+}
+
+.post-thumbnail-image{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.post-thumbnail-has-video:after{
+  content: '‣';
+  font-size: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 36px;
+  width: 36px;
+  margin: -18px 0 0 -18px;
+  line-height: 32px;
+  text-align: center;
+  color: white;
+  display: block;
+  z-index: 10;
+  text-shadow: 0px 1px 2px rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
+  border: 2px solid rgba(255,255,255,0.8);
+  border-radius: 100%;
+}
+
+@media screen and (max-width: 30em) {
+  
+  .post-thumbnail{
+    float: right;
+    margin: 10px;
+  }
+  
+}
+
+
+.post-video-lightbox{
+  position: fixed;
+  background: rgba(0,0,0,0.7);
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 10000;
+}
+.post-video-lightbox-inner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform:translate(-50%, -50%);
+  -moz-transform:translate(-50%, -50%);  
+  transform: translate(-50%, -50%);
+  z-index: 20000;
+}
+.post-video-lightbox-hide, .post-video-lightbox-hide:link, .post-video-lightbox-hide:visited, .post-video-lightbox-hide:hover{
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 40px;
+  width: 40px;
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  line-height: 40px;
+}

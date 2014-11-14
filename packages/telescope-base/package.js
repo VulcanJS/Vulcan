@@ -1,8 +1,8 @@
 Package.describe({summary: "Telescope base package"});
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
 
-  api.use(['telescope-lib'], ['client', 'server']);
+  api.use(['telescope-i18n', 'telescope-lib'], ['client', 'server']);
 
   api.add_files(['lib/base.js'], ['client', 'server']);
   api.add_files(['lib/base_client.js'], ['client']);
@@ -27,14 +27,23 @@ Package.on_use(function (api) {
 
     'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
-    'postSubmitServerCallbacks',
+    'postSubmitMethodCallbacks',
+    'postAfterSubmitMethodCallbacks',
 
     'postEditRenderedCallbacks',
     'postEditClientCallbacks',
+    'postEditMethodCallbacks',
+    'postAfterEditMethodCallbacks',
 
+    'commentSubmitRenderedCallbacks',
     'commentSubmitClientCallbacks',
-    'commentSubmitServerCallbacks',
+    'commentSubmitMethodCallbacks',
+    'commentAfterSubmitMethodCallbacks',
+
+    'commentEditRenderedCallbacks',
     'commentEditClientCallbacks',
+    'commentEditMethodCallbacks',
+    'commentAfterEditMethodCallbacks',
     
     'getTemplate',
     'templates',

@@ -1,10 +1,9 @@
 <template name="user_profile">
-	<div class="grid grid-module">
-		{{#with user}}
-		<div class="user-profile grid-block">
+	{{#with user}}
+		<div class="user-profile grid grid-module">
 			<table>
 				<tr>
-					<td colspan="2"><img class="user-avatar" src="{{avatarUrl}}"/></td>
+					<td colspan="2">{{>avatar user=this class="large circle"}}</td>
 				</tr>
 				{{#if isAdmin}}
 					<tr>
@@ -36,12 +35,12 @@
 						<td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
 					</tr>
 				{{/if}}
-				{{#if site}}
+				{{#if profile.site}}
 					<tr>
 						<td>{{i18n "Site"}}:</td>
 						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
 					</tr>
-				{{/if}}					
+				{{/if}}
 			</table>
 			{{#if canEditProfile}}
 				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>
@@ -54,23 +53,108 @@
 				{{/if}}
 			{{/if}}
 		</div>
-		<div class="user-profile-votes grid-block">
-		<h3>{{i18n "Upvoted Posts"}}</h3>
-		<table>
-		<thead>
-			<tr>
-				<td>Post</td>
-				<td>Upvoted At</td>
-			</tr>
-		</thead>
-		{{#each upvotes}}
-			<tr>
-				<td><a href="/posts/{{_id}}/">{{title}}</a></td>
-				<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
-			</tr>
-		{{/each}}
-		</table>
+
+		<div class="user-profile-posts grid grid-module">
+			<h3>{{i18n "Posts"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Created At</td>
+				</tr>
+			</thead>
+			{{#each posts}}
+				<tr>
+					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			{{#if hasMorePosts}}
+				<tr>
+					<td colspan="2">
+    				<a class="posts-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
+			</table>
 		</div>
-		{{/with}}
-	</div>
+
+		<div class="user-profile-votes grid grid-module">
+			<h3>{{i18n "Upvoted Posts"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Upvoted At</td>
+				</tr>
+			</thead>
+			{{#each upvotedPosts}}
+				<tr>
+					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			{{#if hasMoreUpvotedPosts}}
+				<tr>
+					<td colspan="2">
+    				<a class="upvotedposts-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
+			</table>
+		</div>
+
+		<div class="user-profile-votes grid grid-module">
+			<h3>{{i18n "Downvoted Posts"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Downvoted At</td>
+				</tr>
+			</thead>
+			{{#each downvoted}}
+				<tr>
+					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			{{#if hasMoreDownvotedPosts}}
+				<tr>
+					<td colspan="2">
+    				<a class="downvoted-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
+			</table>
+		</div>
+
+		<div class="user-profile-comments grid grid-module">
+			<h3>{{i18n "Comments"}}</h3>
+			<table>
+			<thead>
+				<tr>
+					<td>Post</td>
+					<td>Comment</td>
+					<td>Commented At</td>
+				</tr>
+			</thead>
+			{{#each comments}}
+				<tr>
+					<td><a href="/posts/{{postId}}/">{{postTitle}}</a></td>
+					<td>{{{htmlBody}}}</td>
+					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
+				</tr>
+			{{/each}}
+			{{#if hasMoreComments}}
+				<tr>
+					<td colspan="2">
+    				<a class="comments-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+					</td>
+				</tr>
+			{{/if}}
+			</table>
+		</div>
+
+	{{/with}}
 </template>

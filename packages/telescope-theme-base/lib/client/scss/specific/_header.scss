@@ -44,7 +44,7 @@ $mobile-header-height: 50px;
     a{
       font-size: 24px;
       display: block;
-      position: absolute;
+      position: static;
       width: 100%;
       height: $mobile-header-height;
       line-height: $mobile-header-height;

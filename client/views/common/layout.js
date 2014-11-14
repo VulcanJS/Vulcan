@@ -15,7 +15,7 @@ Template[getTemplate('layout')].helpers({
     return getTemplate('footer');
   },
   pageName : function(){
-    // getCurrentTemplate();
+    return getCurrentTemplate();
   },
   css: function () {
     return getTemplate('css');
@@ -30,11 +30,11 @@ Template[getTemplate('layout')].helpers({
 
 Template[getTemplate('layout')].created = function(){
   Session.set('currentScroll', null);
-}
+};
 
 Template[getTemplate('layout')].rendered = function(){
   if(currentScroll=Session.get('currentScroll')){
     $('body').scrollTop(currentScroll);
     Session.set('currentScroll', null);
   }
-}
+};

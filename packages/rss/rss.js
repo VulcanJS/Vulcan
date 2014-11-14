@@ -1,1 +1,0 @@
-RSS = Npm.require('rss');
