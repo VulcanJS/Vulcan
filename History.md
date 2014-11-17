@@ -1,3 +1,9 @@
+## v0.9.9
+
+* Updating to Meteor 1.0.
+* Updating to Iron Router 1.0.
+* Adding view counter (thanks @steffenstraetz! See [PR #489](https://github.com/TelescopeJS/Telescope/pull/489))
+
 ## v0.9.8
 
 * Fixing #457 (pending posts view not working).
