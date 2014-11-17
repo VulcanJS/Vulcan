@@ -18,7 +18,7 @@ accounts-ui
 
 # Atmosphere Packages
 
-iron:router@1.0.1
+iron:router
 
 meteorhacks:fast-render
 meteorhacks:subs-manager
@@ -65,8 +65,9 @@ telescope-module-embedly
 telescope-newsletter
 telescope-daily
 telescope-update-prompt
-telescope-notifications
 telescope-kadira
+
+# telescope-notifications
 
 # Accounts Templates
 useraccounts:unstyled
