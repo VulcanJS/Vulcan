@@ -16,10 +16,10 @@ accounts-facebook
 
 # Atmosphere Packages
 
-iron:router@0.9.1
+iron:router
 
-meteorhacks:fast-render@1.0.0
-meteorhacks:subs-manager@1.1.0
+meteorhacks:fast-render
+meteorhacks:subs-manager
 meteorhacks:npm
 
 aldeed:autoform
@@ -31,11 +31,11 @@ mrt:cookies@0.3.0
 mrt:moment
 mrt:mailchimp
 
-cmather:handlebars-server@0.2.0
+cmather:handlebars-server
 sacha:spin@2.0.4
 sacha:juice
 chuangbo:marked@0.3.3
-percolatestudio:synced-cron@0.1.1
+percolatestudio:synced-cron
 npm-container
 matb33:collection-hooks
 djedi:sanitize-html
