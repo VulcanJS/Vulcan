@@ -1,7 +1,7 @@
 Template[getTemplate('postsLoadMore')].helpers({
   hasMorePosts: function(){
     // as long as we ask for N posts and all N posts showed up, then keep showing the "load more" button
-    return parseInt(Session.get('postsLimit')) == this.postsCount
+    return parseInt(Session.get('postsLimit')) == this.postCount
   },
   loadMoreUrl: function () {
     var count = parseInt(Session.get('postsLimit')) + parseInt(getSetting('postsPerPage', 10));

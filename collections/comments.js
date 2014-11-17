@@ -158,11 +158,11 @@ Meteor.methods({
 
     // increment comment count
     Meteor.users.update({_id: user._id}, {
-      $inc:       {'data.commentsCount': 1}
+      $inc:       {'commentCount': 1}
     });
 
     Posts.update(postId, {
-      $inc:       {commentsCount: 1},
+      $inc:       {commentCount: 1},
       $set:       {lastCommentedAt: now},
       $addToSet:  {commenters: user._id}
     });
@@ -176,13 +176,13 @@ Meteor.methods({
     if(canEdit(Meteor.user(), comment)){
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {
-        $inc:   {commentsCount: -1},
+        $inc:   {commentCount: -1},
         $pull:  {commenters: comment.userId}
       });
 
       // decrement user comment count and remove comment ID from user
       Meteor.users.update({_id: comment.userId}, {
-        $inc:   {'data.commentsCount': -1}
+        $inc:   {'commentCount': -1}
       });
 
       // note: should we also decrease user's comment karma ?

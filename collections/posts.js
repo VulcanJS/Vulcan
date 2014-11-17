@@ -10,7 +10,7 @@ postSchemaObject = {
   postedAt: {
     type: Date,
     optional: true
-  },    
+  },
   title: {
     type: String,
     label: "Title"
@@ -28,9 +28,13 @@ postSchemaObject = {
     type: String,
     optional: true
   },
-  commentsCount: {
+  viewCount: {
     type: Number,
-    optional: true
+    optional: false
+  },
+  commentCount: {
+    type: Number,
+    optional: false
   },
   commenters: {
     type: [String],
@@ -40,9 +44,9 @@ postSchemaObject = {
     type: Date,
     optional: true
   },
-  clicks: {
+  clickCount: {
     type: Number,
-    optional: true
+    optional: false
   },
   baseScore: {
     type: Number,
@@ -116,7 +120,8 @@ Posts.allow({
   remove: canEditById
 });
 
-clickedPosts = [];
+postClicks = [];
+postViews = [];
 
 getPostProperties = function(post) {
 
@@ -220,7 +225,9 @@ Meteor.methods({
       author: getDisplayNameById(userId),
       upvotes: 0,
       downvotes: 0,
-      commentsCount: 0,
+      commentCount: 0,
+      clickCount: 0,
+      viewCount: 0,
       baseScore: 0,
       score: 0,
       inactive: false
@@ -310,12 +317,26 @@ Meteor.methods({
       throwError('You need to be an admin to do that.');
     }
   },
-  clickedPost: function(post, sessionId){
+  increasePostViews: function(postId, sessionId){
+    this.unblock();
+
+    // only let users increment a post's view counter once per session
+    var view = {_id: postId, userId: this.userId, sessionId: sessionId};
+
+    if(_.where(postViews, view).length == 0){
+        postViews.push(view);
+        Posts.update(postId, { $inc: { viewCount: 1 }});
+    }
+  },
+    increasePostClicks: function(postId, sessionId){
+    this.unblock();
+
     // only let clients increment a post's click counter once per session
-    var click = {_id: post._id, sessionId: sessionId};
-    if(_.where(clickedPosts, click).length == 0){
-      clickedPosts.push(click);
-      Posts.update(post._id, { $inc: { clicks: 1 }});
+    var click = {_id: postId, userId: this.userId, sessionId: sessionId};
+
+    if(_.where(postClicks, click).length == 0){
+      postClicks.push(click);
+      Posts.update(postId, { $inc: { clickCount: 1 }});
     }
   },
   deletePostById: function(postId) {
