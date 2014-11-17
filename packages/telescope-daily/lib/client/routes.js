@@ -42,13 +42,9 @@ PostsDailyController = RouteController.extend({
 
 Meteor.startup(function () {
   
-  Router.map(function() {
-
-    this.route('postsDaily', {
-      path: '/daily/:days?',
-      controller: PostsDailyController
-    });
-
+  Router.route('/daily/:days?', {
+    name: 'postsDaily',
+    controller: PostsDailyController
   });
 
 });
