@@ -370,6 +370,9 @@ var migrationsList = {
     Posts.find({"commentCount": {$exists : false}}).forEach(function (post) {
         i++;
         console.log("Post: " + post._id);
+        console.log(post.commentsCount)
+
+        console.log(post.commentCount)
         Posts.update(post._id, { $rename: { 'commentsCount': 'commentCount'}}, {multi: true, validate: false});
         console.log("---------------------");
     });
