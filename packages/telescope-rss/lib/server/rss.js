@@ -10,10 +10,13 @@ var getMeta = function(url) {
   };
 };
 
-servePostRSS = function() {
+servePostRSS = function(view) {
   var feed = new RSS(getMeta('feed.xml'));
 
-  Posts.find(getPostsParameters({}).find, {sort: {postedAt: -1}, limit: 20}).forEach(function(post) {
+  var params = getPostsParameters({view: view, limit: 20});
+  delete params['options']['sort']['sticky'];
+
+  Posts.find(params.find, params.options).forEach(function(post) {
     var description = !!post.body ? post.body+'</br></br>' : '';
     feed.item({
      title: post.title,
