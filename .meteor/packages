@@ -65,6 +65,7 @@ telescope-kadira
 telescope-update-prompt
 telescope-notifications
 telescope-kadira
+telescope-seo
 
 # Accounts Templates
 service-configuration
