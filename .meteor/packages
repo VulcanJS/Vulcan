@@ -13,10 +13,12 @@ accounts-twitter
 spiderable
 email
 accounts-facebook
+service-configuration
+accounts-ui
 
 # Atmosphere Packages
 
-iron:router
+iron:router@1.0.1
 
 meteorhacks:fast-render
 meteorhacks:subs-manager
@@ -26,15 +28,15 @@ aldeed:autoform
 aldeed:collection2
 aldeed:simple-schema
 
-mrt:jquery-hotkeys@0.0.1
-mrt:cookies@0.3.0
+mrt:jquery-hotkeys
+mrt:cookies
 mrt:moment
 mrt:mailchimp
 
 cmather:handlebars-server
-sacha:spin@2.0.4
+sacha:spin
 sacha:juice
-chuangbo:marked@0.3.3
+chuangbo:marked
 percolatestudio:synced-cron
 npm-container
 matb33:collection-hooks
@@ -43,30 +45,28 @@ rajit:bootstrap3-datepicker
 bengott:avatar
 jparker:gravatar
 
-# Telescope Packages
+# Telescope Packages (Required)
 
-telescope-tags
 telescope-base
-telescope-search
 telescope-lib
-telescope-rss
-telescope-api
-telescope-module-share
-telescope-theme-base
-telescope-theme-hubble
-telescope-daily
-telescope-newsletter
-telescope-module-embedly
 telescope-i18n
+
+# Telescope Packages (Optional)
+
+telescope-theme-base
+telescope-module-share
+telescope-api
+telescope-rss
+telescope-search
+telescope-tags
+telescope-theme-hubble
 telescope-email
-telescope-update-prompt
-telescope-notifications
-telescope-kadira
+telescope-module-embedly
+telescope-newsletter
+telescope-daily
 telescope-update-prompt
 telescope-notifications
 telescope-kadira
 
 # Accounts Templates
-service-configuration
-accounts-ui
-splendido:accounts-templates-unstyled
+useraccounts:unstyled
