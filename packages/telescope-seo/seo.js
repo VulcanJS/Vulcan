@@ -76,7 +76,7 @@ if (Meteor.isClient) {
         og: {
           title: title,
           description: description,
-          image: getSetting("seo.og.image")
+          image: getSetting("seoOgImage")
         }
       });
     }, {only: ["post_page", "post_page_with_slug"]});
@@ -94,7 +94,7 @@ if (Meteor.isClient) {
           og: {
             title: title,
             description: description,
-            image: getSetting("seo.og.image")
+            image: getSetting("seoOgImage")
           }
         });
       }
