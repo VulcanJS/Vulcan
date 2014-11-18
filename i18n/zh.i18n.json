@@ -1,4 +1,4 @@
-i18n.translations.zh = {
+{
   //Navigation
   "View": "视图",
   "Menu": "菜单",
@@ -192,4 +192,4 @@ i18n.translations.zh = {
 
   "Administration": "管理",
   "Best": "精华"
-};
+}

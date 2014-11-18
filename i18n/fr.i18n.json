@@ -1,4 +1,4 @@
-i18n.translations.fr = {
+{
   //Navigation
   "View": "Vue",
   "Menu": "Menu",
@@ -189,4 +189,4 @@ i18n.translations.fr = {
   "Please log in first": "Vous devez être connecté",
   "Sign In/Sign Up with Twitter": "Connexion/Créer un compte avec Twitter",
   "Load more": "Charger plus"
-};
+}
