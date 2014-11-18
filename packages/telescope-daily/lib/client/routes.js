@@ -13,7 +13,7 @@ PostsDailyController = RouteController.extend({
   template: function() {
     return getTemplate('postsDaily');
   },
-  onBeforeAction: function() {
+  subscriptions: function() {
     this.days = this.params.days ? this.params.days : daysPerPage;
     // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
 
@@ -28,8 +28,6 @@ PostsDailyController = RouteController.extend({
     });
 
     this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
-
-    return [this.postsSubscription, this.postsUsersSubscription];
 
   },
   data: function() {
