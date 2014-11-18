@@ -17,7 +17,7 @@ servePostRSS = function() {
     var description = !!post.body ? post.body+'</br></br>' : '';
     feed.item({
      title: post.title,
-     description: description+'<a href="'+getPostUrl(post._id)+'">Discuss</a>',
+     description: description+'<a href="'+getPostPageUrl(post)+'">Discuss</a>',
      author: post.author,
      date: post.postedAt,
      url: getPostLink(post),

@@ -140,7 +140,7 @@ getPostProperties = function(post) {
 };
 
 getPostPageUrl = function(post){
-  return getSiteUrl()+'posts/'+post._id;
+  return getSiteUrl()+'posts/'+post._id+"/p/"+slugifyPost(post.title);
 };
 
 getPostEditUrl = function(id){
