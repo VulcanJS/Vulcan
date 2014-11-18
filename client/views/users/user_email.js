@@ -4,6 +4,12 @@ Template[getTemplate('user_email')].helpers({
   },
   username: function () {
     return getUserName(Meteor.user());
+  },
+  getTemplate: function() {
+    return getTemplate(this.template);
+  },
+  userProfileFinishSignup: function() {
+    return userProfileFinishSignup;
   }
 });
 

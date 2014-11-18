@@ -31,8 +31,21 @@ Template[getTemplate('user_edit')].helpers({
   },
   hasPassword: function () {
     return hasPassword(Meteor.user());
+  },
+  getTemplate: function() {
+    return getTemplate(this.template);
+  },
+  userProfileEdit: function() {
+    return userProfileEdit;
   }
 });
+
+Template[getTemplate('user_edit')].rendered = function() {
+  var instance = this;
+  userEditRenderedCallbacks.forEach(function(callback) {
+    callback(instance);
+  });
+};
 
 Template[getTemplate('user_edit')].events({
   'submit #account-form': function(e){
@@ -70,6 +83,10 @@ Template[getTemplate('user_edit')].events({
           throwError(error.reason);
       });
     }
+
+    update = userEditClientCallbacks.reduce(function(result, currentFunction) {
+      return currentFunction(user, result);
+    }, update);
 
     Meteor.users.update(user._id, {
       $set: update

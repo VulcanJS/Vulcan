@@ -55,6 +55,9 @@
           <input name="site" type="text" value="{{profile.site}}" />
         </div>
       </div>
+      {{#each userProfileEdit}}
+        {{> UI.dynamic template=getTemplate data=..}}
+      {{/each}}
       {{#if hasPassword}}
         <h3>{{i18n "Change Password?"}}</h3>
         <div class="control-group">

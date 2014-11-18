@@ -35,6 +35,12 @@ postHeading = _.sortBy(postHeading, 'order');
 
 postMeta = _.sortBy(postMeta, 'order');
 
+postAuthor = _.sortBy(postAuthor, 'order');
+
+userProfileDisplay = _.sortBy(userProfileDisplay, 'order');
+userProfileEdit = _.sortBy(userProfileEdit, 'order');
+userProfileFinishSignup = _.sortBy(userProfileFinishSignup, 'order');
+
 Meteor.startup(function () {
   $('#rss-link').attr('title', i18n.t('New Posts'));
 });

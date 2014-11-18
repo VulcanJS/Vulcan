@@ -4,6 +4,7 @@
 addToPostSchema = [];
 addToCommentsSchema = [];
 addToSettingsSchema = [];
+addToUserSchema = [];
 
 // ------------------------------------- Navigation -------------------------------- //
 
@@ -146,6 +147,19 @@ postMeta = [
     order: 5
   }
 ]
+
+postAuthor = [
+  {
+    template: 'postAuthorName',
+    order: 1
+  }
+]
+
+// Additional form fields for display and editing of user profiles.
+userProfileDisplay = [];
+userProfileEdit = [];
+userProfileFinishSignup = [];
+
 // ------------------------------ Callbacks ------------------------------ //
 
 postSubmitRenderedCallbacks = [];
@@ -167,6 +181,16 @@ commentEditRenderedCallbacks = [];
 commentEditClientCallbacks = [];
 commentEditMethodCallbacks = []; // not used yet
 commentAfterEditMethodCallbacks = []; // not used yet
+
+userEditRenderedCallbacks = [];
+userEditClientCallbacks = [];
+
+userProfileCompleteChecks = [
+  function(user) {
+    return !!getEmail(user) && !!user.username;
+  }
+];
+
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 
