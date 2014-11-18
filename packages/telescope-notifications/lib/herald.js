@@ -22,6 +22,24 @@ var commentEmail = function (userToNotify) {
   }, 1);
 }
 
+var getCommenterProfileUrl = function (comment) {
+  var user = Meteor.users.findOne(comment.userId);
+  if(user) {
+    return getProfileUrl(user);
+  } else {
+    return getProfileUrlById(comment.userId)
+  }
+}
+
+var getAuthor = function (comment) {
+  var user = Meteor.users.findOne(comment.userId);
+  if(user) {
+    return getUserName(user);
+  } else {
+    return comment.author;
+  }  
+}
+
 Herald.addCourier('newPost', {
   media: {
     email: {
@@ -52,23 +70,13 @@ Herald.addCourier('newComment', {
   },
   transform: {
     profileUrl: function () {
-      var user = Meteor.users.findOne(this.data.comment.userId);
-      if(user) {
-        return getProfileUrl(user);
-      } else {
-        return getProfileUrlById(this.data.comment.userId)
-      }
+      return getCommenterProfileUrl(this.data.comment);
     },
     postCommentUrl: function () {
       return '/posts/'+ this.data.post._id;
     },
     author: function () {
-      var user = Meteor.users.findOne(this.data.comment.userId);
-      if(user) {
-        return getUserName(user);
-      } else {
-        return this.data.comment.author;
-      }
+      return getAuthor(this.data.comment);
     },
     postTitle: function () {
       return this.data.post.title;
@@ -95,17 +103,13 @@ Herald.addCourier('newReply', {
   },
   transform: {
     profileUrl: function () {
-      var user = Meteor.users.findOne(this.data.comment.userId);
-      if(user)
-        return getProfileUrl(user);
+      return getCommenterProfileUrl(this.data.comment);
     },
     postCommentUrl: function () {
       return '/posts/'+ this.data.post._id;
     },
     author: function () {
-      var user = Meteor.users.findOne(this.data.comment.userId);
-      if(user)
-        return getUserName(user);
+      return getAuthor(this.data.comment);
     },
     postTitle: function () {
       return this.data.post.title;
