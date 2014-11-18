@@ -77,9 +77,9 @@ Template[getTemplate('user_edit')].events({
       $set: update
     }, function(error){
       if(error){
-        throwError(error.reason);
+        flashMessage(error.reason, "error");
       } else {
-        throwError(i18n.t('Profile updated'));
+        flashMessage(i18n.t('Profile updated'), "success");
       }
       Deps.afterFlush(function() {
         var element = $('.grid > .error');

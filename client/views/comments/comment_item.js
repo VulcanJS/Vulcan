@@ -163,7 +163,7 @@ Template[getTemplate('comment_item')].events({
     e.preventDefault();
     if(!Meteor.user()){
       Router.go(getSigninUrl());
-      throwError(i18n.t("Please log in first"));
+      flashMessage(i18n.t("Please log in first"), "info");
     }
     Meteor.call('cancelUpvoteComment', this, function(error, result){
       trackEvent("post upvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
@@ -173,7 +173,7 @@ Template[getTemplate('comment_item')].events({
     e.preventDefault();
     if(!Meteor.user()){
       Router.go(getSigninUrl());
-      throwError(i18n.t("Please log in first"));
+      flashMessage(i18n.t("Please log in first"), "info");
     }
     Meteor.call('downvoteComment', this, function(error, result){
       trackEvent("post downvoted", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});
@@ -183,7 +183,7 @@ Template[getTemplate('comment_item')].events({
     e.preventDefault();
     if(!Meteor.user()){
       Router.go(getSigninUrl());
-      throwError(i18n.t("Please log in first"));
+      flashMessage(i18n.t("Please log in first"), "info");
     }
     Meteor.call('cancelDownvoteComment', this, function(error, result){
       trackEvent("post downvote cancelled", {'commentId':instance.data._id, 'postId': instance.data.post, 'authorId':instance.data.userId});

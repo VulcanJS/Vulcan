@@ -39,7 +39,7 @@ AutoForm.hooks({
       clearSeenMessages();
       
       if(error && error.reason){
-        throwError(error.reason);
+        flashMessage(error.reason, "error");
         scrollUp();
       }
     }
