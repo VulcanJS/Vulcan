@@ -8,7 +8,7 @@ Meteor.startup(function () {
       where: 'server',
       path: '/feed.xml',
       action: function() {
-        this.response.write(servePostRSS('new'));
+        this.response.write(servePostRSS('new', 'feed.xml'));
         this.response.end();
       }
     });
@@ -17,9 +17,9 @@ Meteor.startup(function () {
 
     this.route('feed', {
       where: 'server',
-      path: 'rss/posts/top.xml',
+      path: '/rss/posts/top.xml',
       action: function() {
-        this.response.write(servePostRSS('top'));
+        this.response.write(servePostRSS('top', 'rss/posts/top.xml'));
         this.response.end();
       }
     });
@@ -28,9 +28,9 @@ Meteor.startup(function () {
 
     this.route('feed', {
       where: 'server',
-      path: 'rss/posts/best.xml',
+      path: '/rss/posts/best.xml',
       action: function() {
-        this.response.write(servePostRSS('best'));
+        this.response.write(servePostRSS('best', 'rss/posts/best.xml'));
         this.response.end();
       }
     });

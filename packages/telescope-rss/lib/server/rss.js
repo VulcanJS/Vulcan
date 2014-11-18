@@ -10,8 +10,8 @@ var getMeta = function(url) {
   };
 };
 
-servePostRSS = function(view) {
-  var feed = new RSS(getMeta('feed.xml'));
+servePostRSS = function(view, url) {
+  var feed = new RSS(getMeta(url));
 
   var params = getPostsParameters({view: view, limit: 20});
   delete params['options']['sort']['sticky'];
