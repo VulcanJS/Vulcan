@@ -186,7 +186,7 @@ Template[getTemplate('post_edit')].events({
       Posts.update(post._id, updateObject, function(error){
         if(error){
           console.log(error);
-          throwError(error.reason);
+          throwError(error.message);
           clearSeenErrors();
           $(e.target).removeClass('disabled');
         }else{
