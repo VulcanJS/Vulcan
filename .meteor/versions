@@ -9,6 +9,7 @@ aldeed:autoform@4.0.2
 aldeed:collection2@2.2.0
 aldeed:simple-schema@1.1.0
 application-configuration@1.0.3
+artwells:queue@0.0.3
 autoupdate@1.1.3
 backbone@1.0.0
 base64@1.0.1
@@ -52,6 +53,8 @@ jparker:crypto-md5@0.1.1
 jparker:gravatar@0.3.0
 jquery@1.0.1
 json@1.0.1
+kestanous:herald-email@0.4.2
+kestanous:herald@1.1.3
 launch-screen@1.0.0
 less@1.0.11
 livedata@1.0.11
@@ -113,6 +116,7 @@ telescope-lib@0.2.9
 telescope-module-embedly@0.2.9
 telescope-module-share@0.0.0
 telescope-newsletter@0.1.0
+telescope-notifications@0.1.0
 telescope-rss@0.0.0
 telescope-search@0.0.0
 telescope-tags@0.0.0

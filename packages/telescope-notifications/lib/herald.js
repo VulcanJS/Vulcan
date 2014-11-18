@@ -1,9 +1,10 @@
-Herald.collection.deny({
-  update: ! can.editById,
-  remove: ! can.editById
-});
-
 Meteor.startup(function () {
+  
+  Herald.collection.deny({
+    update: ! can.editById,
+    remove: ! can.editById
+  });
+
   // disable all email notifications when "emailNotifications" is set to false
   if (getSetting('emailNotifications', true)) {
     Herald.settings.overrides.email = false;
@@ -52,16 +53,22 @@ Herald.addCourier('newComment', {
   transform: {
     profileUrl: function () {
       var user = Meteor.users.findOne(this.data.comment.userId);
-      if(user)
+      if(user) {
         return getProfileUrl(user);
+      } else {
+        return getProfileUrlById(this.data.comment.userId)
+      }
     },
     postCommentUrl: function () {
       return '/posts/'+ this.data.post._id;
     },
     author: function () {
       var user = Meteor.users.findOne(this.data.comment.userId);
-      if(user)
+      if(user) {
         return getUserName(user);
+      } else {
+        return this.data.comment.author;
+      }
     },
     postTitle: function () {
       return this.data.post.title;
