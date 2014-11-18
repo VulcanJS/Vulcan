@@ -1,19 +1,19 @@
 i18n = {
-
-  translations: {},
-
-  t: function (str) {
-    var lang = getSetting('language', 'en');
-    if(i18n.translations[lang] && i18n.translations[lang][str]){
-      return i18n.translations[lang][str];
+  t: function (str, options) {
+    if (Meteor.isServer) {
+      return TAPi18n.__(str, options, getSetting('language', 'en')); 
+    } else {
+      return TAPi18n.__(str, options); 
     }
-    return str; 
   }
-
 };
 
-if(Meteor.isClient){
-  UI.registerHelper('i18n', function(str){
-    return i18n.t(str);
-  }); 
-}
+Meteor.startup(function () {
+  if(Meteor.isClient){
+    Session.set("i18n_ready", false);
+    TAPi18n.setLanguage(getSetting('language', 'en'))
+      .done(function () {
+        Session.set("i18n_ready", true);
+      });
+  }
+});
