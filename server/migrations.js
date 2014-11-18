@@ -11,6 +11,15 @@ Meteor.startup(function () {
   });
 });
 
+Meteor.methods({
+  removeMigration: function (name) {
+    if (isAdmin(Meteor.user())) {
+      console.log('// removing migration: '+name)
+      Migrations.remove({name: name});
+    }
+  }
+});
+
 // wrapper function for all migrations
 var runMigration = function (migrationName) {
   var migration = Migrations.findOne({name: migrationName});
@@ -370,10 +379,7 @@ var migrationsList = {
     Posts.find({"commentCount": {$exists : false}}).forEach(function (post) {
         i++;
         console.log("Post: " + post._id);
-        console.log(post.commentsCount)
-
-        console.log(post.commentCount)
-        Posts.update(post._id, { $rename: { 'commentsCount': 'commentCount'}}, {multi: true, validate: false});
+        var result = Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
         console.log("---------------------");
     });
     return i;
