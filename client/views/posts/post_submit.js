@@ -54,7 +54,7 @@ Template[getTemplate('post_submit')].events({
     // ------------------------------ Checks ------------------------------ //
 
     if(!Meteor.user()){
-      throwError(i18n.t('You must be logged in.'));
+      throwError(i18n.t('you_must_be_logged_in'));
       return false;
     }
 

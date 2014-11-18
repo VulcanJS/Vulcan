@@ -1,13 +1,13 @@
 <template name="posts_digest">
   <div class="grid">
     <div class="grid-block">
-      {{i18n "The top 5 posts of each day."}} |
+      {{i18n "the_top_5_posts_of_each_day"}} |
     {{#if showPreviousDate}}
-    <a href="{{previousDateURL}}" class="prev-link">{{i18n "Previous Day"}}</a> |
+    <a href="{{previousDateURL}}" class="prev-link">{{i18n "previous_day"}}</a> |
     {{/if}}
     {{currentDate}} |
     {{#if showNextDate}}
-    <a href="{{nextDateURL}}" class="next-link">{{i18n "Next Day"}}</a>
+    <a href="{{nextDateURL}}" class="next-link">{{i18n "next_day"}}</a>
     {{/if}}
     </div>
   </div>
@@ -22,7 +22,7 @@
     </div>
   {{else}}
     <div class="grid-small grid-block dialog">
-      <p>{{i18n "Sorry, no posts for"}} {{currentDate}}.</p>
+      <p>{{i18n "sorry_no_posts_for"}} {{currentDate}}.</p>
     </div>
   {{/if}}
 </template>
