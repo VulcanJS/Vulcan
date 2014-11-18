@@ -42,5 +42,6 @@ Statuses={
 };
 
 Avatar.options = {
-	emailHashProperty: 'email_hash'
+	emailHashProperty: 'email_hash',
+  defaultAvatarUrl: '/img/default-avatar.png',
 };

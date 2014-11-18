@@ -23,7 +23,7 @@
             <span class="points">{{upvotes}}</span> <span class="unit">points </span>
             <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">{{i18n "link"}}</a>
             {{#if can_edit}}
-              | <a class="edit-link" href="/comments/{{_id}}/edit">{{i18n "Edit"}}</a>
+              | <a class="edit-link" href="/comments/{{_id}}/edit">{{i18n "edit"}}</a>
             {{/if}}
             {{#if isAdmin}}
               | <span>{{full_date}}</span>
@@ -31,7 +31,7 @@
           </div>
           <div class="comment-text markdown">{{{htmlBody}}}</div>
           {{#if getSetting "nestedComments" true}}
-            <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
+            <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{i18n "reply"}}</a>
           {{/if}}
         </div>
       </div>

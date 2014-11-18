@@ -4,7 +4,6 @@ defaultFrequency = 7; // once a week
 
 getSchedule = function (parser) {
   var frequency = getSetting('newsletterFrequency', defaultFrequency);
-  console.log(frequency)
   switch (frequency) {
     case 1: // every day
     // sched = {schedules: [{dw: [1,2,3,4,5,6,0]}]};

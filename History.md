@@ -1,3 +1,12 @@
+## v0.9.9
+
+* Updating to Meteor 1.0.
+* Updating to Iron Router 1.0.
+* Adding view counter (thanks @steffenstraetz! See [PR #489](https://github.com/TelescopeJS/Telescope/pull/489))
+* Splitting out `router.js` in multiple files.
+* URL can now be removed when editing a post (thanks @massimilianomarini! See [PR 484](https://github.com/TelescopeJS/Telescope/pull/484)).
+* Now waiting on `allUsersAdmin` subscription for post submit page (thanks @kai101! See [PR 508](https://github.com/TelescopeJS/Telescope/pull/508))
+
 ## v0.9.8
 
 * Fixing #457 (pending posts view not working).

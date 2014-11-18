@@ -10,8 +10,8 @@ Package.onUse(function (api) {
     'telescope-lib',
     'telescope-base',
     'telescope-email',
-    'kestanous:herald@0.6.0',
-    'kestanous:herald-email@0.2.1'
+    'kestanous:herald@1.1.3',
+    'kestanous:herald-email'
   ], ['client', 'server']);
 
   api.use([

@@ -81,10 +81,8 @@ buildAndSendEmail = function (to, subject, template, properties) {
 
 Meteor.methods({
   testEmail: function () {
-    console.log(Handlebars.templates)
     if(isAdminById(this.userId)){
       var email = buildAndSendEmail (getSetting('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
-      console.log(email);
     }
   }
 })

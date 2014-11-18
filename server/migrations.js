@@ -11,6 +11,15 @@ Meteor.startup(function () {
   });
 });
 
+Meteor.methods({
+  removeMigration: function (name) {
+    if (isAdmin(Meteor.user())) {
+      console.log('// removing migration: '+name)
+      Migrations.remove({name: name});
+    }
+  }
+});
+
 // wrapper function for all migrations
 var runMigration = function (migrationName) {
   var migration = Migrations.findOne({name: migrationName});
@@ -285,12 +294,12 @@ var migrationsList = {
     });
     return i;
   },
-  commentsToCommentsCount: function () {
+  commentsToCommentCount: function () {
     var i = 0;
-    Posts.find({commentsCount: {$exists : false}}).forEach(function (post) {
+    Posts.find({commentCount: {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
-      Posts.update(post._id, { $rename: { 'comments': 'commentsCount'}}, {multi: true, validate: false});
+      Posts.update(post._id, { $rename: { 'comments': 'commentCount'}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -354,5 +363,36 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
-  }
+  },
+  clicksToClickCount: function () {
+    var i = 0;
+    Posts.find({"clickCount": {$exists : false}}).forEach(function (post) {
+      i++;
+      console.log("Post: " + post._id);
+      Posts.update(post._id, { $rename: { 'clicks': 'clickCount'}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  commentsCountToCommentCount: function () {
+    var i = 0;
+    Posts.find({"commentCount": {$exists : false}}).forEach(function (post) {
+        i++;
+        console.log("Post: " + post._id);
+        var result = Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
+        console.log("---------------------");
+    });
+    return i;
+  },
+  userDataCommentsCountToCommentCount: function(){
+    var i = 0;
+    Meteor.users.find({'commentCount': {$exists: false}}).forEach(function(user){
+      i++;
+      var commentCount = Comments.find({userId: user._id}).count();
+      console.log("User: " + user._id);
+      Meteor.users.update(user._id, {$unset: {data: ""}, $set: {'commentCount': commentCount}});
+      console.log("---------------------");
+    });
+    return i;
+   }
 };
