@@ -15,13 +15,13 @@ Package.onUse(function (api) {
     'telescope-lib', 
     'telescope-base', 
     'aldeed:simple-schema',
+    'iron:router',
     'mrt:mailchimp'
   ], ['client', 'server']);
 
   api.use([
     'jquery',
     'underscore',
-    'iron:router',
     'templating',
     'mrt:cookies'
   ], 'client');

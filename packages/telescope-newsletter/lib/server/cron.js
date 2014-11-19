@@ -29,7 +29,7 @@ getSchedule = function (parser) {
 SyncedCron.getNext = function (jobName) {
   var scheduledAt;
   try {
-    this._entries.some(function(entry) {
+    _.some(this._entries, function(entry) {
       if(entry.name === jobName){
         var schedule = entry.schedule(Later.parse);
         scheduledAt = Later.schedule(schedule).next(1);

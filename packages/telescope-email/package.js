@@ -11,11 +11,18 @@ Npm.depends({
 Package.onUse(function (api) {
 
   api.use([
+    'iron:router',
+    'telescope-base',
+    'telescope-lib'
+  ], ['client', 'server']);
+
+  api.use([
     'cmather:handlebars-server'
   ], ['server']);
 
   api.add_files([
     'lib/server/email.js',
+    'lib/server/routes.js',
     'lib/server/templates/emailAccountApproved.handlebars',
     'lib/server/templates/emailInvite.handlebars',
     'lib/server/templates/emailNewComment.handlebars',

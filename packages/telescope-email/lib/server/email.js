@@ -1,8 +1,15 @@
 
 var htmlToText = Npm.require('html-to-text');
 
+// check if server-side template has been customized, and return the correct template
 getEmailTemplate = function (template) {
-  return Handlebars.templates[getTemplate(template)];
+  var emailTemplate = Handlebars.templates[getTemplate(template)];
+  if(typeof emailTemplate === 'function'){
+    return Handlebars.templates[getTemplate(template)];
+  } else {
+    console.log('Cannot find template '+getTemplate(template)+', defaulting to '+template);
+    return Handlebars.templates[template];
+  }
 }
 
 buildEmailTemplate = function (htmlContent) {
