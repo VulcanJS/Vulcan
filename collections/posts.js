@@ -187,11 +187,11 @@ Meteor.methods({
 
     // check that user can post
     if (!user || !canPost(user))
-      throw new Meteor.Error(601, i18n.t('You need to login or be invited to post new stories.'));
+      throw new Meteor.Error(601, i18n.t('you_need_to_login_or_be_invited_to_post_new_stories'));
 
     // check that user provided a title
     if(!post.title)
-      throw new Meteor.Error(602, i18n.t('Please fill in a title'));
+      throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
 
 
     if(!!post.url){
@@ -201,18 +201,18 @@ Meteor.methods({
 
       if(typeof postWithSameLink !== 'undefined'){
         Meteor.call('upvotePost', postWithSameLink);
-        throw new Meteor.Error(603, i18n.t('This link has already been posted'), postWithSameLink._id);
+        throw new Meteor.Error(603, i18n.t('this_link_has_already_been_posted'), postWithSameLink._id);
       }
     }
 
     if(!isAdmin(Meteor.user())){
       // check that user waits more than X seconds between posts
       if(!this.isSimulation && timeSinceLastPost < postInterval)
-        throw new Meteor.Error(604, i18n.t('Please wait ')+(postInterval-timeSinceLastPost)+i18n.t(' seconds before posting again'));
+        throw new Meteor.Error(604, i18n.t('please_wait')+(postInterval-timeSinceLastPost)+i18n.t('seconds_before_posting_again'));
 
       // check that the user doesn't post more than Y posts per day
       if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
-        throw new Meteor.Error(605, i18n.t('Sorry, you cannot submit more than ')+maxPostsPer24Hours+i18n.t(' posts per day'));
+        throw new Meteor.Error(605, i18n.t('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+i18n.t('posts_per_day'));
     }
 
     // ------------------------------ Properties ------------------------------ //
