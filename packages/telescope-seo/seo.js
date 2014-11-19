@@ -46,7 +46,7 @@ addToSettingsSchema.push({
     label: "Generate sitemap",
     autoform: {
       group: "search engine optimization",
-      instructions: "Automatically generate an XML sitemap for search engines, and append the sitemap URL to the output of robots.txt?"
+      instructions: "Automatically generate an XML sitemap for search engines, and append the sitemap URL to the output of robots.txt?  NOTE: Requires restart to reflect change."
     }
   }
 })
