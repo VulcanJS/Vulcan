@@ -13,12 +13,18 @@ Package.onUse(function (api) {
   api.use([
     'iron:router',
     'telescope-base',
-    'telescope-lib'
+    'telescope-lib',
+    'telescope-i18n',
+    'tap:i18n'
   ], ['client', 'server']);
 
   api.use([
     'cmather:handlebars-server'
   ], ['server']);
+
+  api.add_files([
+    'package-tap.i18n'
+  ], ['client', 'server']);
 
   api.add_files([
     'lib/server/email.js',
@@ -33,6 +39,11 @@ Package.onUse(function (api) {
     'lib/server/templates/emailWrapper.handlebars',
   ], ['server']);
   
+  api.add_files([
+    "i18n/en.i18n.json",
+    "i18n/fr.i18n.json",
+  ], ["client", "server"]);
+
   api.export([
     'buildEmailTemplate', 
     'sendEmail',

@@ -1,0 +1,4 @@
+{
+  "translation_function_name": "__", // The name for the translation function that will be available in package's namespace.
+    "helper_name": "_" // the name for the package templates' translation helper
+}

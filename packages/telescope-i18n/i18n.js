@@ -9,9 +9,14 @@ i18n = {
 };
 
 Meteor.startup(function () {
+  
+  var settingsLanguage = getSetting('language', 'en');
+
+  moment.locale(settingsLanguage);
+  
   if(Meteor.isClient){
     Session.set("i18n_ready", false);
-    TAPi18n.setLanguage(getSetting('language', 'en'))
+    TAPi18n.setLanguage(settingsLanguage)
       .done(function () {
         Session.set("i18n_ready", true);
       });
