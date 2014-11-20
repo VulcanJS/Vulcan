@@ -91,7 +91,7 @@ Template[getTemplate('comment_item')].helpers({
     return true;
   },
   ago: function(){
-    return moment(this.createdAt).fromNow();
+    return this.createdAt;
   },
   upvoted: function(){
     return Meteor.user() && _.include(this.upvoters, Meteor.user()._id);

@@ -63,6 +63,10 @@ UI.registerHelper("formatDate", function(datetime, format) {
   return moment(datetime).format(format);
 });
 
+UI.registerHelper("timeAgo", function(datetime) {
+  return moment(datetime).fromNow();
+});
+
 UI.registerHelper("sanitize", function(content) {
   console.log('cleaning up…')
   console.log(content)
