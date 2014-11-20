@@ -4,6 +4,7 @@
   "menu": "Menu",
   "top": "Top",
   "new": "Nouveau",
+  "best": "Meilleur",
   "digest": "Résumé",
   "categories": "Catégories",
   "users": "Utilisateurs",
@@ -180,30 +181,28 @@
   "welcome_to": "Bienvenu sur ",
   "start_posting": "Commencer à poster.",
 
-  // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Please fill in a title",
-  "seconds_before_posting_again": " seconds before posting again",
-  "upvoted": "Upvoted",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
-  "profile": "Profile",
-  "sign_out": "Sign Out",
-  "invitedcount": "InvitedCount",
-  "invites": "Invites",
-  "invited": "Invited?",
-  "admin": "Admin?",
+  // Other
+  "please_fill_in_a_title": "Veuillez remplir un titre.",
+  "seconds_before_posting_again": " secondes avant de poster à nouveau.",
+  "upvoted": "Upvoté",
+  "posted_date": "Date de Soumission",
+  "posted_time": "Heure de Soumission",
+  "profile": "Profil",
+  "sign_out": "Déconnexion",
+  "invitedcount": "Membres Invités",
+  "invites": "Invitations",
+  "invited": "Invité?",
+  "admin": "Admin",
   "actions": "Actions",
-  "invites_left": "invites left",
+  "invites_left": "Invitations restantes",
   "id": "ID",
-  "name": "Name:",
+  "name": "Nom:",
   "bio": "Bio:",
   "github": "GitHub",
   "site": "Site",
-  "upvoted_posts": "Upvoted Posts",
-  "downvoted_posts": "Downvoted Posts",
-  "mark_as_read": "Mark as read",
+  "upvoted_posts": "Posts Upvotés",
+  "downvoted_posts": "Posts Downvotés",
+  "mark_as_read": "Marquer comme lu",
 
   //Common
   "pending": "En attente",
@@ -213,5 +212,8 @@
   "are_you_sure": "Etes-vous sur ?",
   "please_log_in_first": "Vous devez être connecté",
   "sign_in_sign_up_with_twitter": "Connexion/Créer un compte avec Twitter",
-  "load_more": "Charger plus"
+  "load_more": "Charger plus",
+
+  //Search
+  "search": "rechercher"
 }
