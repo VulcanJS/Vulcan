@@ -293,11 +293,11 @@ if (Meteor.isClient){
   var handle = query.observeChanges({
     added: function (id, fields) {
       if (fields.language)
-        T9n.setLanguage(fields.language);
+        setLanguage(fields.language)
     },
     changed: function (id, fields) {
       if (fields.language)
-        T9n.setLanguage(fields.language);
+        setLanguage(fields.language)
     }
   });
 }

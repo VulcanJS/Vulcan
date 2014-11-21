@@ -60,11 +60,13 @@ UI.registerHelper('log', function(context){
 });
 
 UI.registerHelper("formatDate", function(datetime, format) {
+  Session.get('momentLocale'); // depend on session variable to reactively rerun the helper
   return moment(datetime).format(format);
 });
 
 UI.registerHelper("timeAgo", function(datetime) {
-  return moment(datetime).fromNow();
+  Session.get('momentLocale'); // depend on session variable to reactively rerun the helper
+  return moment(datetime).fromNow()
 });
 
 UI.registerHelper("sanitize", function(content) {
