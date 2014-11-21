@@ -1,17 +1,25 @@
 // do this better:
 setLanguage = function (language) {
+  Session.set('i18nReady', false);
+  // console.log('i18n loading… '+language)
 
   // moment
+  Session.set('momentReady', false);
+  // console.log('moment loading…')
   $.getScript("//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/lang/" + language + ".js", function (result) {
     moment.locale(language);
+    Session.set('momentReady', true);
     Session.set('momentLocale', language);
+    // console.log('moment loaded!')
   });
 
   // TAPi18n
   Session.set("i18nReady", false);
+  // console.log('TAPi18n loading…')
   TAPi18n.setLanguage(language)
     .done(function () {
       Session.set("i18nReady", true);
+      // console.log('TAPi18n loaded!')
     });
 
   // T9n
@@ -30,7 +38,21 @@ i18n = {
 
 Meteor.startup(function () {
   
-  if(Meteor.isClient)
+  if (Meteor.isClient) {
+
+    // doesn't quite work yet
+    // Tracker.autorun(function (c) {
+    //   console.log('momentReady',Session.get('momentReady'))
+    //   console.log('i18nReady',Session.get('i18nReady'))
+    //   var ready = Session.get('momentReady') && Session.get('i18nReady');
+    //   if (ready) {
+    //     Session.set('i18nReady', true);
+    //     Session.set('locale', language);
+    //     console.log('i18n ready! '+language)
+    //   }
+    // });
+
     setLanguage(getSetting('language', 'en'));
+  }
 
 });
