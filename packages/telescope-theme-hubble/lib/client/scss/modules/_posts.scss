@@ -31,7 +31,7 @@
 		.cell{
 			// display: table-cell;
 			// vertical-align: middle;		
-			margin-right: $grid-margin;
+			margin-right: $grid-margin*2;
 			@include medium-large{
 				@include flex-shrink(0);
 			}
@@ -348,14 +348,15 @@
 		position:relative;
 		display:inline-block;
 		padding:0;
-		width:$grid-unit;
 		height:$grid-unit;
-		line-height:$grid-unit;
 		vertical-align:baseline;
 		text-align:center;
 		color:$light-text;
-		font-size:36px;
-		line-height:50px;
+		i{
+			font-size: 36px;
+			height: 45px;
+			display: block;
+		}
 		&.edit-link{
 			color:$red;
 		}
@@ -399,9 +400,7 @@
 		.action{
 			display:block;
 			height:20px;
-			width:100%;
 			line-height:20px;
-			position:absolute;
 			bottom:5px;
 			left:0px;
 			font-size:13px;
