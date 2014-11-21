@@ -377,10 +377,10 @@ var migrationsList = {
   commentsCountToCommentCount: function () {
     var i = 0;
     Posts.find({"commentCount": {$exists : false}}).forEach(function (post) {
-        i++;
-        console.log("Post: " + post._id);
-        var result = Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
-        console.log("---------------------");
+      i++;
+      console.log("Post: " + post._id);
+      var result = Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
+      console.log("---------------------");
     });
     return i;
   },
@@ -394,5 +394,15 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
-   }
+   },
+  clicksToClickCountForRealThisTime: function () { // since both fields might be co-existing, add to clickCount instead of overwriting it
+    var i = 0;
+    Posts.find({'clicks': {$exists: true}}).forEach(function (post) {
+      i++;
+      console.log("Post: " + post._id);
+      var result = Posts.update(post._id, { $inc: { 'clickCount': post.clicks}, $unset: {'clicks': ""}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  }
 };
