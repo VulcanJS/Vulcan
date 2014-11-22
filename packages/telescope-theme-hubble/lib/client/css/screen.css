@@ -407,6 +407,7 @@ em {
     width: 100px;
     -webkit-transition: 0.2s all;
     -moz-transition: 0.2s all;
+    -webkit-appearance: textfield;
     background: white; }
     /* line 98, ../scss/modules/_nav.scss */
     .search .search-field:focus {
