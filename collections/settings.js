@@ -1,4 +1,12 @@
 settingsSchemaObject = {
+  title: {
+    type: String,
+    label: "Title",
+    optional: true,
+    autoform: {
+      group: 'general'
+    }
+  },
   siteUrl: {
     type: String,
     optional: true,
