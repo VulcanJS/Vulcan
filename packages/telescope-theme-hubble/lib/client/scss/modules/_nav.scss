@@ -94,6 +94,7 @@
 		width: 100px;
 		-webkit-transition: 0.2s all;
 		-moz-transition: 0.2s all;
+		-webkit-appearance: textfield;
 		background: white;
 		&:focus{
 			outline:none;
