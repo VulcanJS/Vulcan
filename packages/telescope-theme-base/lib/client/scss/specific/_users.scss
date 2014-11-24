@@ -1,15 +1,15 @@
 .user-list, .user-table{
-  font-size: 13px;  
+  font-size: 13px;
   .user{
     .user-avatar{
       height:30px;
       width:30px;
       background-size: 30px 30px;
       display:block;
-      @include border-radius(30px);
+      border-radius: 30px;
     }
     .posts-list{
-      
+
     }
   }
 }
@@ -26,7 +26,7 @@
     &:last-child{
       margin-right: 0;
     }
-  } 
+  }
   .filter{
     float: left;
   }

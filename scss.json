@@ -1,0 +1,6 @@
+{
+  "enableAutoprefixer": true,
+  "outputStyle": "compressed",
+  "sourceComments": true,
+  "sourceMap": true
+}

@@ -1,23 +1,23 @@
-.share-options{
-  position:absolute;  
-  @include small{
+.share-options {
+  position: absolute;
+  @include small {
     left: 0px;
     top: 75px;
   }
-  @include medium-large{
-    left:-180px;
-    top:5px;
+  @include medium-large {
+    left: -180px;
+    top: 5px;
   }
   padding: 10px;
   line-height: 1;
-  a{
+  a {
     display: inline-block;
     line-height: 1;
   }
   @extend .popover;
-  &.hidden{
-    display:block;
-    opacity:0;
+  &.hidden {
+    display: block;
+    opacity: 0;
     pointer-events: none;
     left:-160px;
   }
@@ -33,13 +33,13 @@
   &:after {
     border-color: rgba(255, 255, 255, 0);
     border-width: 10px;
-    @include small{
+    @include small {
       border-bottom-color: #ffffff;
       top: -20px;
       left: 50%;
       margin-left: -11px;
     }
-    @include medium-large{
+    @include medium-large {
       border-left-color: #ffffff;
       top: 20px;
       margin-top: -3px;
@@ -48,27 +48,27 @@
   &:before {
     border-color: rgba(0, 0, 0, 0);
     border-width: 11px;
-    @include small{
+    @include small {
       border-bottom-color: $red;
       top: -22px;
       left: 50%;
       margin-left: -12px;
     }
-    @include medium-large{
+    @include medium-large {
       border-left-color: $red;
       top: 20px;
       margin-top: -4px;
     }
   }
-  .buttons{
+  .buttons {
     @include cf;
-    padding:15px 5px 5px 15px;
-    .button{
-      float:left;
-      margin-right:10px;
-      background:transparent;
-      padding:0px;
-      height:100%;
+    padding: 15px 5px 5px 15px;
+    .button {
+      float: left;
+      margin-right: 10px;
+      background: transparent;
+      padding: 0px;
+      height: 100%;
     }
   }
 }
