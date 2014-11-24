@@ -6,7 +6,6 @@
   "new": "Nouveau",
   "best": "Meilleur",
   "digest": "Résumé",
-  "categories": "Catégories",
   "users": "Utilisateurs",
   "settings": "Paramètres",
   "admin": "Admin",
@@ -40,12 +39,6 @@
   "sorry_you_dont_have_the_rights_to_view_this_page": "Désolé, vous n'avez pas le droit de voir cette page.",
   "not_found": "Oups",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "Désolé, mais ce que vous cherchez ne se trouve pas ici...",
-
-  //Notifications
-  "no_notifications": "Aucune notification",
-  "1_notification": "1 notification",
-  "notifications": "notifications",
-  "mark_all_as_read": "Effacer les notifications",
 
   // Post deleted
   "your_post_has_been_deleted": "Votre post a été supprimé.",
@@ -212,8 +205,6 @@
   "are_you_sure": "Etes-vous sur ?",
   "please_log_in_first": "Vous devez être connecté",
   "sign_in_sign_up_with_twitter": "Connexion/Créer un compte avec Twitter",
-  "load_more": "Charger plus",
+  "load_more": "Charger plus"
 
-  //Search
-  "search": "rechercher"
 }

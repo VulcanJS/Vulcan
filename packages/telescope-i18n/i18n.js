@@ -1,6 +1,6 @@
 // do this better:
 setLanguage = function (language) {
-  Session.set('i18nReady', false);
+  // Session.set('i18nReady', false);
   // console.log('i18n loading… '+language)
 
   // moment
@@ -14,11 +14,11 @@ setLanguage = function (language) {
   });
 
   // TAPi18n
-  Session.set("i18nReady", false);
+  Session.set("TAPi18nReady", false);
   // console.log('TAPi18n loading…')
   TAPi18n.setLanguage(language)
     .done(function () {
-      Session.set("i18nReady", true);
+      Session.set("TAPi18nReady", true);
       // console.log('TAPi18n loaded!')
     });
 
