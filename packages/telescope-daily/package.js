@@ -37,7 +37,7 @@ Package.onUse(function (api) {
     "i18n/es.i18n.json",
     "i18n/fr.i18n.json",
     "i18n/it.i18n.json",
-    "i18n/zh.i18n.json",
+    "i18n/zh-CN.i18n.json",
   ], ["client", "server"]);
 
   api.export(['PostsDailyController']);
