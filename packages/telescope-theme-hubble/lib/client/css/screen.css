@@ -405,33 +405,34 @@ em {
     border-radius: 20px;
     border: 0px;
     width: 120px;
+    -webkit-appearance: textfield;
     -webkit-transition: 0.2s all;
     -moz-transition: 0.2s all;
     background: white; }
-    /* line 98, ../scss/modules/_nav.scss */
+    /* line 99, ../scss/modules/_nav.scss */
     .search .search-field:focus {
       outline: none; }
-  /* line 103, ../scss/modules/_nav.scss */
+  /* line 104, ../scss/modules/_nav.scss */
   .search.empty .search-field {
     background: rgba(255, 255, 255, 0.1); }
-    /* line 105, ../scss/modules/_nav.scss */
+    /* line 106, ../scss/modules/_nav.scss */
     .search.empty .search-field:focus {
       background: white; }
-  /* line 109, ../scss/modules/_nav.scss */
+  /* line 110, ../scss/modules/_nav.scss */
   .search.empty .search-clear {
     display: none; }
 
-/* line 115, ../scss/modules/_nav.scss */
+/* line 116, ../scss/modules/_nav.scss */
 .has-dropdown .user-menu .dropdown-menu {
   left: auto;
   right: 10px; }
 
-/* line 119, ../scss/modules/_nav.scss */
+/* line 120, ../scss/modules/_nav.scss */
 .has-dropdown .notifications-menu .dropdown-menu {
   left: auto;
   right: 10px; }
 
-/* line 123, ../scss/modules/_nav.scss */
+/* line 124, ../scss/modules/_nav.scss */
 .newsletter-dismiss {
   line-height: 30px !important; }
 
