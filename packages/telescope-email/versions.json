@@ -82,19 +82,19 @@
     ],
     [
       "iron:core",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:dynamic-template",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:layout",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:location",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "iron:middleware-stack",
@@ -106,7 +106,7 @@
     ],
     [
       "iron:url",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "jquery",
@@ -182,7 +182,7 @@
     ],
     [
       "tap:i18n",
-      "1.1.0"
+      "1.2.1"
     ],
     [
       "telescope-base",
