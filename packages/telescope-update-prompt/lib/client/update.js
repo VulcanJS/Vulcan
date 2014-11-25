@@ -4,7 +4,7 @@ compareVersions = function (v1, v2) { // return true if v2 is newer than v1
   // go through each segment of v2 and stop if we find one that's higher
   // than the equivalent segment of v1; else return false
   return v2Array.some( function (value, index) {
-    return value > v1Array[index];
+    return parseInt(value) > parseInt(v1Array[index]);
   });
   return false;
 }
