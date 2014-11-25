@@ -22,9 +22,10 @@ Package.onUse(function (api) {
     'cmather:handlebars-server'
   ], ['server']);
 
-  api.add_files([
-    'package-tap.i18n'
-  ], ['client', 'server']);
+  // do not use for now since tap:i18n doesn't support server-side templates yet
+  // api.add_files([
+  //   'package-tap.i18n'
+  // ], ['client', 'server']);
 
   api.add_files([
     'lib/server/email.js',
