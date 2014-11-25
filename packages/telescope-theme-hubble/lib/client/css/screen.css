@@ -1013,10 +1013,10 @@ em {
     position: block;
     float: left; }
     /* line 141, ../scss/modules/_comments.scss */
-    .comment-content .user-avatar img {
+    /*.comment-content .user-avatar img {
       height: 40px;
       width: 40px;
-      display: block; }
+      display: block; }*/
 
 /* line 148, ../scss/modules/_comments.scss */
 .comment-meta {

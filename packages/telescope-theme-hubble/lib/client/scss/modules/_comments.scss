@@ -1,7 +1,7 @@
 .queue-container{
 	position:relative;
 	height:0px;
-	@include single-transition(ease-out, opacity, 400ms, 0ms);	
+	@include single-transition(ease-out, opacity, 400ms, 0ms);
 	ul{
 		position:absolute;
 		// right:0;
@@ -60,7 +60,7 @@
 			// @extend .grid-block;
 			// display:block;
 			// padding:3px 8px;
-			
+
 			// white-space:nowrap;
 
 			// font-size:14px;
@@ -138,11 +138,11 @@
 		overflow:hidden;
 		position:block;
 		float:left;
-		img{
-			height:40px;
-			width:40px;
-			display:block;
-		}
+		// img{
+		//	height:40px;
+		//	width:40px;
+		//	display:block;
+		// }
 	}
 }
 .comment-meta{
