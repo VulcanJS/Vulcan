@@ -24,10 +24,10 @@
 @mixin vcenter {
   position: relative;
   top: 50%;
-  @include translateY(-50%);
+  transform: translateY(-50%);
 }
 @mixin animate($property: all){
-  @include single-transition($property, 300ms, 0ms, ease-out);
+  transition: $property, 300ms, 0ms, ease-out;
 }
 @mixin border-box{
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -108,21 +108,21 @@
 .popover{
   background:white;
   border:1px solid $red;
-  @include border-radius(3px);
-  @include box-shadow(0px 1px 2px 0px black(0.25));
+  border-radius: 3px;
+  box-shadow: 0px 1px 2px 0px black(0.25);
   z-index:100;
-  @include transition(all, 300ms);
+  transition: all, 300ms;
 }
 .grid-block{
   background:#fff;
-  @include border-radius(3px);
+  border-radius: 3px;
   // border:1px solid $light-blue;
   padding:$grid-padding;
   margin-bottom:$grid-margin;
-  @include box-shadow(0 1px 1px black(0.15));
+  box-shadow: 0 1px 1px black(0.15);
 }
 .has-shadow{
-  @include box-shadow(0 1px 1px black(0.15));
+  box-shadow: 0 1px 1px black(0.15);
 }
 .cf{
   @include cf;

@@ -7,13 +7,13 @@
 		left:50%;
 		top:-40px;
 		opacity:0;
-		@include single-transition(ease-out, opacity, 300ms, 0ms);
+		transition: ease-out, opacity, 300ms, 0ms;
 		span{
 			display:block;
 			white-space:nowrap;
 			position:relative;
 			background:black(0.6);
-			@include border-radius(3px);
+			border-radius: 3px;
 			padding:0px 8px;
 			left:-50%;
 			font-size:14px;
