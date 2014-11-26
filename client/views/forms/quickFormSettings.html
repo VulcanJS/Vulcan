@@ -33,7 +33,7 @@
 <template name="afFormGroup_settings">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      {{> afFieldLabel afFieldLabelAtts}}
+      <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
       <div class="{{rightColumnClass}}">
         {{> afFieldInput afFieldInputAtts}}
         {{#if afFieldInstructions}}
@@ -48,7 +48,7 @@
 <template name="afObjectField_settings">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      {{> afFieldLabel afFieldLabelAtts}}
+      <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
       <div class="{{rightColumnClass}}">
         <div class="panel panel-default autoform-padding-fix">
           <div class="panel-body">
@@ -63,7 +63,7 @@
 <template name="afArrayField_settings">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      {{> afFieldLabel afFieldLabelAtts}}
+      <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
       <div class="{{rightColumnClass}}">
         <div class="panel panel-default autoform-padding-fix">
           {{#if afFieldIsInvalid name=this.atts.name}}
