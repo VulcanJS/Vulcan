@@ -404,34 +404,35 @@ em {
     line-height: 1.3;
     border-radius: 20px;
     border: 0px;
-    width: 100px;
+    width: 120px;
+    -webkit-appearance: textfield;
     -webkit-transition: 0.2s all;
     -moz-transition: 0.2s all;
     background: white; }
-    /* line 98, ../scss/modules/_nav.scss */
+    /* line 99, ../scss/modules/_nav.scss */
     .search .search-field:focus {
       outline: none; }
-  /* line 103, ../scss/modules/_nav.scss */
+  /* line 104, ../scss/modules/_nav.scss */
   .search.empty .search-field {
     background: rgba(255, 255, 255, 0.1); }
-    /* line 105, ../scss/modules/_nav.scss */
+    /* line 106, ../scss/modules/_nav.scss */
     .search.empty .search-field:focus {
       background: white; }
-  /* line 109, ../scss/modules/_nav.scss */
+  /* line 110, ../scss/modules/_nav.scss */
   .search.empty .search-clear {
     display: none; }
 
-/* line 115, ../scss/modules/_nav.scss */
+/* line 116, ../scss/modules/_nav.scss */
 .has-dropdown .user-menu .dropdown-menu {
   left: auto;
   right: 10px; }
 
-/* line 119, ../scss/modules/_nav.scss */
+/* line 120, ../scss/modules/_nav.scss */
 .has-dropdown .notifications-menu .dropdown-menu {
   left: auto;
   right: 10px; }
 
-/* line 123, ../scss/modules/_nav.scss */
+/* line 124, ../scss/modules/_nav.scss */
 .newsletter-dismiss {
   line-height: 30px !important; }
 
@@ -470,7 +471,7 @@ em {
       -moz-align-items: center; }
     /* line 31, ../scss/modules/_posts.scss */
     .post .modules-group .cell {
-      margin-right: 10px; }
+      margin-right: 20px; }
       @media screen and (min-width: 30em) {
         /* line 31, ../scss/modules/_posts.scss */
         .post .modules-group .cell {
@@ -766,39 +767,40 @@ em {
     position: relative;
     display: inline-block;
     padding: 0;
-    width: 70px;
     height: 70px;
-    line-height: 70px;
     vertical-align: baseline;
     text-align: center;
-    color: #b3c1c6;
-    font-size: 36px;
-    line-height: 50px; }
-    /* line 359, ../scss/modules/_posts.scss */
+    color: #b3c1c6; }
+    /* line 355, ../scss/modules/_posts.scss */
+    .post-share > a i, .post-discuss > a i {
+      font-size: 36px;
+      height: 45px;
+      display: block; }
+    /* line 360, ../scss/modules/_posts.scss */
     .post-share > a.edit-link, .post-discuss > a.edit-link {
       color: #DD3416; }
-    /* line 362, ../scss/modules/_posts.scss */
+    /* line 363, ../scss/modules/_posts.scss */
     .post-share > a.share-link, .post-discuss > a.share-link {
       color: #7ac0e4;
       color: #f8e121; }
-    /* line 366, ../scss/modules/_posts.scss */
+    /* line 367, ../scss/modules/_posts.scss */
     .post-share > a.discuss-link, .post-discuss > a.discuss-link {
       color: #a3d06d; }
-    /* line 369, ../scss/modules/_posts.scss */
+    /* line 370, ../scss/modules/_posts.scss */
     .post-share > a.more-link, .post-discuss > a.more-link {
       color: #7ac0e4; }
-    /* line 373, ../scss/modules/_posts.scss */
+    /* line 374, ../scss/modules/_posts.scss */
     .post-share > a:hover, .post-share > a:hover .action, .post-discuss > a:hover, .post-discuss > a:hover .action {
       color: #DD3416; }
-    /* line 377, ../scss/modules/_posts.scss */
+    /* line 378, ../scss/modules/_posts.scss */
     .post-share > a.voted, .post-discuss > a.voted {
       background: #4e555d;
       color: white;
       cursor: default; }
-      /* line 381, ../scss/modules/_posts.scss */
+      /* line 382, ../scss/modules/_posts.scss */
       .post-share > a.voted .action, .post-discuss > a.voted .action {
         color: #fff; }
-    /* line 385, ../scss/modules/_posts.scss */
+    /* line 386, ../scss/modules/_posts.scss */
     .post-share > a .count, .post-discuss > a .count {
       position: absolute;
       top: 14px;
@@ -807,40 +809,38 @@ em {
       height: 20px;
       line-height: 20px;
       font-size: 11px; }
-    /* line 394, ../scss/modules/_posts.scss */
+    /* line 395, ../scss/modules/_posts.scss */
     .post-share > a .points, .post-discuss > a .points {
       display: block;
       font-size: 30px;
       line-height: 50px; }
-    /* line 399, ../scss/modules/_posts.scss */
+    /* line 400, ../scss/modules/_posts.scss */
     .post-share > a .action, .post-discuss > a .action {
       display: block;
       height: 20px;
-      width: 100%;
       line-height: 20px;
-      position: absolute;
       bottom: 5px;
       left: 0px;
       font-size: 13px;
       color: #b3c1c6;
       pointer-events: none; }
 
-/* line 414, ../scss/modules/_posts.scss */
+/* line 413, ../scss/modules/_posts.scss */
 .post-body {
   border-radius: 3px;
   margin-bottom: 10px;
   background: white;
   padding: 20px;
   font-size: 16px; }
-  /* line 421, ../scss/modules/_posts.scss */
+  /* line 420, ../scss/modules/_posts.scss */
   .list .post-body {
     display: none; }
 
-/* line 426, ../scss/modules/_posts.scss */
+/* line 425, ../scss/modules/_posts.scss */
 .post.sticky {
   background: #fffce0; }
 
-/* line 430, ../scss/modules/_posts.scss */
+/* line 429, ../scss/modules/_posts.scss */
 .more-button {
   display: block;
   width: 100%;
@@ -853,54 +853,54 @@ em {
   border-radius: 0px 0px 3px 3px;
   text-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
   padding: 0px; }
-  /* line 442, ../scss/modules/_posts.scss */
+  /* line 441, ../scss/modules/_posts.scss */
   .more-button:hover {
     background: rgba(0, 0, 0, 0.15); }
 
-/* line 447, ../scss/modules/_posts.scss */
+/* line 446, ../scss/modules/_posts.scss */
 .inner-table {
   display: table;
   height: 100%; }
 
-/* line 451, ../scss/modules/_posts.scss */
+/* line 450, ../scss/modules/_posts.scss */
 .inner-table-cell {
   display: table-cell;
   vertical-align: middle; }
 
 @media screen and (max-width: 30em) {
-  /* line 458, ../scss/modules/_posts.scss */
+  /* line 457, ../scss/modules/_posts.scss */
   .posts {
     padding: 0; }
-    /* line 460, ../scss/modules/_posts.scss */
+    /* line 459, ../scss/modules/_posts.scss */
     .posts .post-rank {
       display: none; }
 
-  /* line 465, ../scss/modules/_posts.scss */
+  /* line 464, ../scss/modules/_posts.scss */
   .post .post-content {
     margin-right: 50px;
     margin-right: 0px; }
-    /* line 469, ../scss/modules/_posts.scss */
+    /* line 468, ../scss/modules/_posts.scss */
     .post .post-content .upvote-link {
       width: 30px; }
-    /* line 472, ../scss/modules/_posts.scss */
+    /* line 471, ../scss/modules/_posts.scss */
     .post .post-content .post-info {
       padding: 13px 0; }
-    /* line 477, ../scss/modules/_posts.scss */
+    /* line 476, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-title {
       display: block;
       margin-bottom: 4px; }
-    /* line 481, ../scss/modules/_posts.scss */
+    /* line 480, ../scss/modules/_posts.scss */
     .post .post-content .post-heading .post-domain {
       display: block;
       margin-bottom: 4px;
       font-size: 13px; }
-    /* line 487, ../scss/modules/_posts.scss */
+    /* line 486, ../scss/modules/_posts.scss */
     .post .post-content .post-meta {
       font-size: 11px; }
-      /* line 489, ../scss/modules/_posts.scss */
+      /* line 488, ../scss/modules/_posts.scss */
       .post .post-content .post-meta .unit {
         font-size: 0; }
-        /* line 491, ../scss/modules/_posts.scss */
+        /* line 490, ../scss/modules/_posts.scss */
         .post .post-content .post-meta .unit:after {
           font-size: 12px;
           content: "pts "; } }
@@ -1013,10 +1013,10 @@ em {
     position: block;
     float: left; }
     /* line 141, ../scss/modules/_comments.scss */
-    .comment-content .user-avatar img {
+    /*.comment-content .user-avatar img {
       height: 40px;
       width: 40px;
-      display: block; }
+      display: block; }*/
 
 /* line 148, ../scss/modules/_comments.scss */
 .comment-meta {

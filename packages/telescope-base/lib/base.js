@@ -45,19 +45,19 @@ adminNav = [];
 viewNav = [
   {
     route: 'posts_top',
-    label: 'Top'
+    label: 'top'
   },
   {
     route: 'posts_new',
-    label: 'New'
+    label: 'new'
   },
   {
     route: 'posts_best',
-    label: 'Best'
+    label: 'best'
   },
   {
-    route: 'posts_digest',
-    label: 'Digest'
+    route: 'posts_digest_default',
+    label: 'digest'
   } 
 ];
 

@@ -80,6 +80,7 @@ Template[getTemplate('post_edit')].events({
   },
   'click input[type=submit]': function(e, instance){
     var post = this;
+    var updateObject = {};
 
     e.preventDefault();
 
@@ -107,6 +108,9 @@ Template[getTemplate('post_edit')].events({
     var url = $('#url').val();
     if(!!url){
       properties.url = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
+    } else {
+      // if URL is empty, unset it
+      updateObject.$unset = {url: ""};
     }
 
     // ShortURL
@@ -175,13 +179,14 @@ Template[getTemplate('post_edit')].events({
 
     // ------------------------------ Update ------------------------------ //
 
-    if (properties) {      
-      Posts.update(post._id,{
-        $set: properties
-      }, function(error){
+    if (properties) {
+
+      updateObject.$set = properties;
+
+      Posts.update(post._id, updateObject, function(error){
         if(error){
           console.log(error);
-          throwError(error.reason);
+          throwError(error.message);
           clearSeenErrors();
           $(e.target).removeClass('disabled');
         }else{

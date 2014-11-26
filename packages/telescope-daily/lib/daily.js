@@ -1,6 +1,6 @@
 viewNav.push({
   route: 'postsDaily',
-  label: 'Daily'
+  label: 'daily'
 });
 
 viewParameters.daily = function (terms) {

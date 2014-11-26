@@ -1,6 +1,6 @@
 <template name="notificationItem">
   <li class="notification-item {{#if read}}read{{/if}}">
-    <span class="notification-timestamp">{{niceTime}}</span>
+    <span class="notification-timestamp">{{timeAgo timestamp}}</span>
     <div class="notification-html">
       {{{notificationHTML}}}
     </div>

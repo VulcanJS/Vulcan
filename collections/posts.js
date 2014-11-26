@@ -58,9 +58,16 @@ postSchemaObject = {
       omit: true
     }
   },
-  commentsCount: {
+  viewCount: {
     type: Number,
     optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  commentCount: {
+    type: Number,
+    optional: false,
     autoform: {
       omit: true
     }
@@ -79,7 +86,7 @@ postSchemaObject = {
       omit: true
     }
   },
-  clicks: {
+  clickCount: {
     type: Number,
     optional: true,
     autoform: {
@@ -200,7 +207,8 @@ Posts.allow({
   remove: canEditById
 });
 
-clickedPosts = [];
+postClicks = [];
+postViews = [];
 
 getPostProperties = function(post) {
 
@@ -266,11 +274,11 @@ Meteor.methods({
 
     // check that user can post
     if (!user || !canPost(user))
-      throw new Meteor.Error(601, i18n.t('You need to login or be invited to post new stories.'));
+      throw new Meteor.Error(601, i18n.t('you_need_to_login_or_be_invited_to_post_new_stories'));
 
     // check that user provided a title
     if(!post.title)
-      throw new Meteor.Error(602, i18n.t('Please fill in a title'));
+      throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
 
 
     if(!!post.url){
@@ -280,18 +288,18 @@ Meteor.methods({
 
       if(typeof postWithSameLink !== 'undefined'){
         Meteor.call('upvotePost', postWithSameLink);
-        throw new Meteor.Error(603, i18n.t('This link has already been posted'), postWithSameLink._id);
+        throw new Meteor.Error(603, i18n.t('this_link_has_already_been_posted'), postWithSameLink._id);
       }
     }
 
     if(!isAdmin(Meteor.user())){
       // check that user waits more than X seconds between posts
       if(!this.isSimulation && timeSinceLastPost < postInterval)
-        throw new Meteor.Error(604, i18n.t('Please wait ')+(postInterval-timeSinceLastPost)+i18n.t(' seconds before posting again'));
+        throw new Meteor.Error(604, i18n.t('please_wait')+(postInterval-timeSinceLastPost)+i18n.t('seconds_before_posting_again'));
 
       // check that the user doesn't post more than Y posts per day
       if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
-        throw new Meteor.Error(605, i18n.t('Sorry, you cannot submit more than ')+maxPostsPer24Hours+i18n.t(' posts per day'));
+        throw new Meteor.Error(605, i18n.t('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+i18n.t('posts_per_day'));
     }
 
     // ------------------------------ Properties ------------------------------ //
@@ -304,7 +312,9 @@ Meteor.methods({
       author: getDisplayNameById(userId),
       upvotes: 0,
       downvotes: 0,
-      commentsCount: 0,
+      commentCount: 0,
+      clickCount: 0,
+      viewCount: 0,
       baseScore: 0,
       score: 0,
       inactive: false
@@ -394,12 +404,26 @@ Meteor.methods({
       throwError('You need to be an admin to do that.');
     }
   },
-  clickedPost: function(post, sessionId){
+  increasePostViews: function(postId, sessionId){
+    this.unblock();
+
+    // only let users increment a post's view counter once per session
+    var view = {_id: postId, userId: this.userId, sessionId: sessionId};
+
+    if(_.where(postViews, view).length == 0){
+        postViews.push(view);
+        Posts.update(postId, { $inc: { viewCount: 1 }});
+    }
+  },
+    increasePostClicks: function(postId, sessionId){
+    this.unblock();
+
     // only let clients increment a post's click counter once per session
-    var click = {_id: post._id, sessionId: sessionId};
-    if(_.where(clickedPosts, click).length == 0){
-      clickedPosts.push(click);
-      Posts.update(post._id, { $inc: { clicks: 1 }});
+    var click = {_id: postId, userId: this.userId, sessionId: sessionId};
+
+    if(_.where(postClicks, click).length == 0){
+      postClicks.push(click);
+      Posts.update(postId, { $inc: { clickCount: 1 }});
     }
   },
   deletePostById: function(postId) {
