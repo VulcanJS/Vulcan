@@ -296,10 +296,10 @@ var migrationsList = {
   },
   commentsToCommentCount: function () {
     var i = 0;
-    Posts.find({commentCount: {$exists : false}}).forEach(function (post) {
+    Posts.find({comments: {$exists : true}, commentCount: {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
-      Posts.update(post._id, { $rename: { 'comments': 'commentCount'}}, {multi: true, validate: false});
+      Posts.update(post._id, { $set: { 'commentCount': post.comments}, $unset: { 'comments': ''}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -366,10 +366,10 @@ var migrationsList = {
   },
   clicksToClickCount: function () {
     var i = 0;
-    Posts.find({"clickCount": {$exists : false}}).forEach(function (post) {
+    Posts.find({"clicks": {$exists: true}, "clickCount": {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: " + post._id);
-      Posts.update(post._id, { $rename: { 'clicks': 'clickCount'}}, {multi: true, validate: false});
+      Posts.update(post._id, { $set: { 'clickCount': post.clicks}, $unset: { 'clicks': ''}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
