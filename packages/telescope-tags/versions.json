@@ -37,6 +37,10 @@
       "1.0.2"
     ],
     [
+      "coffeescript",
+      "1.0.4"
+    ],
+    [
       "ddp",
       "1.0.11"
     ],
@@ -74,19 +78,19 @@
     ],
     [
       "iron:core",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:dynamic-template",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:layout",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:location",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "iron:middleware-stack",
@@ -98,7 +102,7 @@
     ],
     [
       "iron:url",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "jquery",
@@ -157,12 +161,24 @@
       "1.0.2"
     ],
     [
+      "session",
+      "1.0.4"
+    ],
+    [
       "spacebars",
       "1.0.3"
     ],
     [
       "spacebars-compiler",
       "1.0.3"
+    ],
+    [
+      "tap:http-methods",
+      "0.0.23"
+    ],
+    [
+      "tap:i18n",
+      "1.2.1"
     ],
     [
       "telescope-base",

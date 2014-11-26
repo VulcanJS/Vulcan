@@ -16,7 +16,8 @@ Package.onUse(function (api) {
     'telescope-base', 
     'aldeed:simple-schema',
     'iron:router',
-    'mrt:mailchimp'
+    'mrt:mailchimp',
+    'tap:i18n'
   ], ['client', 'server']);
 
   api.use([
@@ -33,6 +34,7 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.add_files([
+    'package-tap.i18n',
     'lib/newsletter.js'
   ], ['client', 'server']);
 
@@ -51,7 +53,16 @@ Package.onUse(function (api) {
     'lib/server/templates/emailDigestConfirmation.handlebars',
     'lib/server/templates/emailPostItem.handlebars'
   ], ['server']);
-  
+
+  api.add_files([
+    "i18n/de.i18n.json",
+    "i18n/en.i18n.json",
+    "i18n/es.i18n.json",
+    "i18n/fr.i18n.json",
+    "i18n/it.i18n.json",
+    "i18n/zh-CN.i18n.json",
+  ], ["client", "server"]);
+    
   api.export([
 
   ]);

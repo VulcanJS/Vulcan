@@ -3,6 +3,9 @@ Meteor.startup(function () {
     hasCategories: function(){
       return typeof Categories !== 'undefined' && Categories.find().count();
     },
+    cat: function () {
+      return __('categories')
+    },
     categories: function(){
       return Categories.find({}, {sort: {order: 1, name: 1}});
     },

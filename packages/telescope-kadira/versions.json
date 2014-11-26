@@ -17,12 +17,24 @@
       "2.0.3"
     ],
     [
+      "blaze-tools",
+      "1.0.1"
+    ],
+    [
+      "boilerplate-generator",
+      "1.0.1"
+    ],
+    [
       "callback-hook",
       "1.0.1"
     ],
     [
       "check",
       "1.0.2"
+    ],
+    [
+      "coffeescript",
+      "1.0.4"
     ],
     [
       "ddp",
@@ -47,6 +59,10 @@
     [
       "geojson-utils",
       "1.0.1"
+    ],
+    [
+      "html-tools",
+      "1.0.2"
     ],
     [
       "htmljs",
@@ -97,6 +113,10 @@
       "1.2.0"
     ],
     [
+      "minifiers",
+      "1.1.2"
+    ],
+    [
       "minimongo",
       "1.0.5"
     ],
@@ -121,12 +141,40 @@
       "1.0.1"
     ],
     [
+      "reactive-dict",
+      "1.0.4"
+    ],
+    [
       "reactive-var",
       "1.0.3"
     ],
     [
       "retry",
       "1.0.1"
+    ],
+    [
+      "routepolicy",
+      "1.0.2"
+    ],
+    [
+      "session",
+      "1.0.4"
+    ],
+    [
+      "spacebars",
+      "1.0.3"
+    ],
+    [
+      "spacebars-compiler",
+      "1.0.3"
+    ],
+    [
+      "tap:http-methods",
+      "0.0.23"
+    ],
+    [
+      "tap:i18n",
+      "1.2.1"
     ],
     [
       "telescope-base",
@@ -139,6 +187,10 @@
     [
       "telescope-lib",
       "0.2.9"
+    ],
+    [
+      "templating",
+      "1.0.9"
     ],
     [
       "tracker",
@@ -155,6 +207,14 @@
     [
       "url",
       "1.0.2"
+    ],
+    [
+      "webapp",
+      "1.1.4"
+    ],
+    [
+      "webapp-hashing",
+      "1.0.1"
     ]
   ],
   "pluginDependencies": [],

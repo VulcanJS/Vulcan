@@ -3,24 +3,24 @@
 		<div class="user-profile grid grid-module">
 			<table>
 				<tr>
-					<td colspan="2">{{>avatar user=this class="large circle"}}</td>
+					<td colspan="2">{{> avatar user=this size="large" shape="circle"}}</td>
 				</tr>
 				{{#if isAdmin}}
 					<tr>
-						<td>{{i18n "ID"}}: </td>
+						<td>{{_ "id"}}: </td>
 						<td>{{_id}}</td>
 					</tr>
 				{{/if}}
 				<tr>
-					<td>{{i18n "Name:"}}</td>
+					<td>{{_ "name"}}</td>
 					<td>{{profile.name}}</td>
 				</tr>
 				<tr>
-					<td>{{i18n "Member since"}}:</td>
+					<td>{{_ "member_since"}}:</td>
 					<td>{{createdAtFormatted}}</td>
 				</tr>
 				<tr>
-					<td>{{i18n "Bio:"}}</td>
+					<td>{{_ "bio"}}</td>
 					<td>{{profile.bio}}</td>
 				</tr>
 				{{#if getTwitterName}}
@@ -31,31 +31,31 @@
 				{{/if}}
 				{{#if getGitHubName}}
 					<tr>
-						<td>{{i18n "GitHub"}}:</td>
+						<td>{{_ "github"}}:</td>
 						<td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
 					</tr>
 				{{/if}}
 				{{#if profile.site}}
 					<tr>
-						<td>{{i18n "Site"}}:</td>
+						<td>{{_ "site"}}:</td>
 						<td><a href="{{profile.site}}">{{profile.site}}</a></td>
 					</tr>
 				{{/if}}
 			</table>
 			{{#if canEditProfile}}
-				<a class="button inline" href="/users/{{slug}}/edit">{{i18n "Edit profile"}}</a>
+				<a class="button inline" href="/users/{{slug}}/edit">{{_ "edit_profile"}}</a>
 			{{/if}}
 			{{#if canInvite}}
 				{{#if inviteCount}}
-					<a class="button inline invite-link" href="#">{{i18n "Invite"}} ({{inviteCount}} {{i18n "left"}})</a>
+					<a class="button inline invite-link" href="#">{{_ "invite"}} ({{inviteCount}} {{_ "left"}})</a>
 				{{else}}
-					<a class="button inline disabled" href="#">{{i18n "Invite (none left)"}}</a>
+					<a class="button inline disabled" href="#">{{_ "invite_none_left"}}</a>
 				{{/if}}
 			{{/if}}
 		</div>
 
 		<div class="user-profile-posts grid grid-module">
-			<h3>{{i18n "Posts"}}</h3>
+			<h3>{{_ "posts"}}</h3>
 			<table>
 			<thead>
 				<tr>
@@ -72,7 +72,7 @@
 			{{#if hasMorePosts}}
 				<tr>
 					<td colspan="2">
-    				<a class="posts-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+    				<a class="posts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
 					</td>
 				</tr>
 			{{/if}}
@@ -80,7 +80,7 @@
 		</div>
 
 		<div class="user-profile-votes grid grid-module">
-			<h3>{{i18n "Upvoted Posts"}}</h3>
+			<h3>{{_ "upvoted_posts"}}</h3>
 			<table>
 			<thead>
 				<tr>
@@ -97,7 +97,7 @@
 			{{#if hasMoreUpvotedPosts}}
 				<tr>
 					<td colspan="2">
-    				<a class="upvotedposts-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+    				<a class="upvotedposts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
 					</td>
 				</tr>
 			{{/if}}
@@ -105,7 +105,7 @@
 		</div>
 
 		<div class="user-profile-votes grid grid-module">
-			<h3>{{i18n "Downvoted Posts"}}</h3>
+			<h3>{{_ "downvoted_posts"}}</h3>
 			<table>
 			<thead>
 				<tr>
@@ -122,7 +122,7 @@
 			{{#if hasMoreDownvotedPosts}}
 				<tr>
 					<td colspan="2">
-    				<a class="downvoted-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+    				<a class="downvoted-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
 					</td>
 				</tr>
 			{{/if}}
@@ -130,7 +130,7 @@
 		</div>
 
 		<div class="user-profile-comments grid grid-module">
-			<h3>{{i18n "Comments"}}</h3>
+			<h3>{{_ "comments_"}}</h3>
 			<table>
 			<thead>
 				<tr>
@@ -149,7 +149,7 @@
 			{{#if hasMoreComments}}
 				<tr>
 					<td colspan="2">
-    				<a class="comments-more more-button grid-module" href="#"><span>{{i18n "Load more"}}</span></a>
+    				<a class="comments-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
 					</td>
 				</tr>
 			{{/if}}

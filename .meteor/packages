@@ -44,7 +44,7 @@ djedi:sanitize-html
 rajit:bootstrap3-datepicker
 bengott:avatar
 jparker:gravatar
-
+tap:i18n
 # CSS reset (Must come before any other css)
 ccan:cssreset
 
@@ -74,3 +74,4 @@ telescope-notifications
 
 # Accounts Templates
 useraccounts:unstyled
+

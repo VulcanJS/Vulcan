@@ -3,13 +3,13 @@
   	{{#with user}}
     {{#if profileIncomplete}}
     <div>
-      {{i18n "Please complete your profile below before continuing."}}
+      {{_ "please_complete_your_profile_below_before_continuing"}}
     </div>
     {{/if}}
     <form id="account-form">
-      <h2>{{i18n "Account"}}</h2>
+      <h2>{{_ "account"}}</h2>
       <div class="control-group">
-        <label>{{i18n "Username"}}</label>
+        <label>{{_ "username"}}</label>
         <div class="controls">
           <input id="username" name="username" disabled="disabled" type="text" value="{{userName}}" />
         </div>
@@ -22,19 +22,19 @@
         </div>
       </div> -->
       <div class="control-group">
-        <label>{{i18n "Display Name"}}</label>
+        <label>{{_ "display_name"}}</label>
         <div class="controls">
           <input name="name" type="text" value="{{profile.name}}" />
         </div>
       </div>
       <div class="control-group">
-        <label>{{i18n "Email"}}</label>
+        <label>{{_ "email"}}</label>
         <div class="controls">
           <input name="email" type="text" value="{{userEmail}}" />
         </div>
       </div>
       <div class="control-group">
-        <label>{{i18n "Bio"}}</label>
+        <label>{{_ "bio"}}</label>
         <div class="controls"><textarea name="bio" type="text">{{profile.bio}}</textarea></div>
       </div>
       <div class="control-group">
@@ -56,18 +56,18 @@
         </div>
       </div>
       {{#if hasPassword}}
-        <h3>{{i18n "Change Password?"}}</h3>
+        <h3>{{_ "change_password"}}</h3>
         <div class="control-group">
-          <label>{{i18n "Old Password"}}</label>
+          <label>{{_ "old_password"}}</label>
           <div class="controls"><input name="old_password" type="password" value="" /></div>
         </div>
         <div class="control-group">
-          <label>{{i18n "New Password"}}</label>
+          <label>{{_ "new_password"}}</label>
           <div class="controls"><input name="new_password" type="password" value="" /></div>
         </div>
       {{/if}}
       <div class="control-group">
-        <label class="control-label">{{i18n "Email Notifications"}}</label>
+        <label class="control-label">{{_ "email_notifications"}}</label>
         <div class="controls">
           {{#if isAdmin}}
             <label class="checkbox">
@@ -75,13 +75,13 @@
             </label>
           {{/if}}
           <label class="checkbox">
-            <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> {{i18n "New Posts"}}
+            <input id="notifications_posts" type="checkbox" name="notifications_posts" {{hasNotificationsPosts}} /> {{_ "new_posts"}}
           </label>
           <label class="checkbox">
-            <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> {{i18n "Comments on my posts"}}
+            <input id="notifications_comments" type="checkbox" name="notifications_comments" {{hasNotificationsComments}} /> {{_ "comments_on_my_posts"}}
           </label>
           <label class="checkbox">
-            <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> {{i18n "Replies to my comments"}}
+            <input id="notifications_replies" type="checkbox" name="notifications_replies" {{hasNotificationsReplies}} /> {{_ "replies_to_my_comments"}}
           </label>
         </div>
       </div>
@@ -95,8 +95,8 @@
       </div>
       {{/if}}
       <div class="form-actions">
-        <a href="/forgot-password">{{i18n "Forgot password?"}}</a>
-        <input type="submit" class="button" value="{{i18n "Submit"}}" />
+        <a href="/forgot-password">{{_ "forgot_password"}}</a>
+        <input type="submit" class="button" value="{{_ "submit"}}" />
       </div>
     </form>
     {{/with}}

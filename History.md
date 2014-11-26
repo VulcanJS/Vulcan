@@ -1,3 +1,11 @@
+## v0.9.10 “i18nScope”
+
+* Now using [tap:i18n](https://github.com/TAPevents/tap-i18n) for internationalization (thanks a ton to @theosp).
+* Each package is now i18n'd invididually.
+* Chinese i18n code is now `zh-CN`, not `zh`.
+* Various fixes (thanks @anthonymayer).
+* Upgrade Avatar package (thanks @bengott).
+
 ## v0.9.9
 
 * Updating to Meteor 1.0.

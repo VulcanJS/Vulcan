@@ -8,22 +8,22 @@
         <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
             <i class="icon-up"></i>
-            <span>{{i18n "upvote"}}</span>
+            <span>{{_ "upvote"}}</span>
           </a>
           <a class="downvote" href="#">
             <i class="icon-down"></i>
-            <span>{{i18n "downvote"}}</span>
+            <span>{{_ "downvote"}}</span>
           </a>
         </div>
-        <div class="user-avatar">{{>avatar userId=userId class="circle"}}</div>
+        <div class="user-avatar">{{> avatar userId=userId shape="circle"}}</div>
         <div class="comment-main">
           <div class="comment-meta">
             <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
-            <span class="comment-time">{{ago}},</span>
+            <span class="comment-time">{{timeAgo ago}},</span>
             <span class="points">{{upvotes}}</span> <span class="unit">points </span>
-            <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">{{i18n "link"}}</a>
+            <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
             {{#if can_edit}}
-              | <a class="edit-link" href="/comments/{{_id}}/edit">{{i18n "Edit"}}</a>
+              | <a class="edit-link" href="/comments/{{_id}}/edit">{{_ "edit"}}</a>
             {{/if}}
             {{#if isAdmin}}
               | <span>{{full_date}}</span>
@@ -31,7 +31,7 @@
           </div>
           <div class="comment-text markdown">{{{htmlBody}}}</div>
           {{#if getSetting "nestedComments" true}}
-            <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{i18n "Reply"}}</a>
+            <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
           {{/if}}
         </div>
       </div>

@@ -20,7 +20,7 @@ Template[getTemplate('comment_edit')].events({
     e.preventDefault();
 
     if(!Meteor.user())
-      throw i18n.t('You must be logged in.');
+      throw i18n.t('you_must_be_logged_in');
 
     Comments.update(comment._id, {
       $set: {
@@ -36,7 +36,7 @@ Template[getTemplate('comment_edit')].events({
 
     e.preventDefault();
     
-    if(confirm(i18n.t("Are you sure?"))){
+    if(confirm(i18n.t("are_you_sure"))){
       Meteor.call('removeComment', comment._id);
       Router.go("/posts/"+comment.postId);
       throwError("Your comment has been deleted.");

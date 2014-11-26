@@ -11,7 +11,7 @@ Template[getTemplate('postInfo')].helpers({
   ago: function(){
     // if post is approved show submission time, else show creation time. 
     time = this.status == STATUS_APPROVED ? this.postedAt : this.createdAt;
-    return moment(time).fromNow();
+    return time;
   },
   profileUrl: function(){
     // note: we don't want the post to be re-rendered every time user properties change
