@@ -19,6 +19,7 @@ blaze-tools@1.0.1
 blaze@2.0.3
 boilerplate-generator@1.0.1
 callback-hook@1.0.1
+ccan:cssreset@1.0.0
 check@1.0.2
 chuangbo:cookie@1.1.0
 chuangbo:marked@0.3.5
@@ -34,6 +35,7 @@ email@1.0.4
 facebook@1.1.2
 fastclick@1.0.1
 follower-livedata@1.0.2
+fourseven:scss@0.9.4
 geojson-utils@1.0.1
 handlebars@1.0.1
 html-tools@1.0.2

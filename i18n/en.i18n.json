@@ -1,8 +1,10 @@
 {
   //Navigation
   "menu": "Menu",
+  "view": "View",
   "top": "Top",
   "new": "New",
+  "best": "Best",
   "digest": "Digest",
   "users": "Users",
   "settings": "Settings",
