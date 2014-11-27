@@ -64,9 +64,6 @@ Template[getTemplate('post_edit')].rendered = function(){
   if(post && !this.editor){
     this.editor= new EpicEditor(EpicEditorOptions).load();
     this.editor.importFile('editor', post.body);
-
-    $('#postedAtDate').datepicker();
-
   }
 
 

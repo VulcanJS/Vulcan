@@ -36,8 +36,6 @@ Template[getTemplate('post_submit')].rendered = function(){
   if(!this.editor && $('#editor').exists())
     this.editor= new EpicEditor(EpicEditorOptions).load();
 
-  $('#postedAtDate').datepicker();
-
   // $("#postUser").selectToAutocomplete(); // XXX
 
 };

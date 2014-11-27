@@ -22,7 +22,8 @@ postSchemaObject = {
     optional: true,
     autoform: {
       group: 'admin',
-      type: 'custom-datetime'
+      // type: 'custom-datetime', 
+      type: "bootstrap-datepicker"
     }
   },    
   title: {
