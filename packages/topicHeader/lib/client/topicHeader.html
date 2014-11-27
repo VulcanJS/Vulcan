@@ -1,0 +1,20 @@
+<template name="topicHeader">
+
+{{#if isPost }}
+
+  {{#if isTopic }}
+    <div class="flashcardLarge">
+      <h1>{{juicyData.title}}</h1>
+      <h2>{{juicyData.subtitle}}</h2>
+    </div>
+
+  {{else}} {{#if isLesson }}
+    <div class="flashcardLarge">
+      <h1>{{juicyData.title}}</h1>
+    </div>
+  {{/if }}{{/if }}
+
+{{/if }}
+
+
+</template>
