@@ -1,37 +1,37 @@
 <template name="users">
     <div class="grid grid-module">
       <div class="user-table grid-block">
-        <h2>{{i18n "Users"}}</h2>
+        <h2>{{_ "users"}}</h2>
         <div class="filter-sort">
           <p class="filter">
-            <span>{{i18n "Filter by"}}: </span>
-            <a class="{{activeClass 'all'}}" href="{{filterBy 'all'}}">{{i18n "All"}}</a>
-            <a class="{{activeClass 'invited'}}" href="{{filterBy 'invited'}}">{{i18n "Invited"}}</a>
-            <a class="{{activeClass 'uninvited'}}" href="{{filterBy 'uninvited'}}">{{i18n "Uninvited"}}</a>
-            <a class="{{activeClass 'admin'}}" href="{{filterBy 'admin'}}">{{i18n "Admin"}}</a>
+            <span>{{_ "filter_by"}}: </span>
+            <a class="{{activeClass 'all'}}" href="{{filterBy 'all'}}">{{_ "all"}}</a>
+            <a class="{{activeClass 'invited'}}" href="{{filterBy 'invited'}}">{{_ "invited"}}</a>
+            <a class="{{activeClass 'uninvited'}}" href="{{filterBy 'uninvited'}}">{{_ "uninvited"}}</a>
+            <a class="{{activeClass 'admin'}}" href="{{filterBy 'admin'}}">{{_ "admin"}}</a>
           </p>
           <p class="sort">
-            <span>{{i18n "Sort by"}}: </span>
-            <a class="{{activeClass 'createdAt'}}" href="{{sortBy 'createdAt'}}">{{i18n "Created"}}</a>
-            <a class="{{activeClass 'karma'}}" href="{{sortBy 'karma'}}">{{i18n "Karma"}}</a>
-            <a class="{{activeClass 'username'}}" href="{{sortBy 'username'}}">{{i18n "Username"}}</a>
-            <a class="{{activeClass 'postCount'}}" href="{{sortBy 'postCount'}}">{{i18n "Posts"}}</a>
-            <a class="{{activeClass 'commentCount'}}" href="{{sortBy 'commentCount'}}">{{i18n "Comments"}}</a>
-            <a class="{{activeClass 'invitedCount'}}" href="{{sortBy 'invitedCount'}}">{{i18n "InvitedCount"}}</a>
+            <span>{{_ "sort_by"}}: </span>
+            <a class="{{activeClass 'createdAt'}}" href="{{sortBy 'createdAt'}}">{{_ "created"}}</a>
+            <a class="{{activeClass 'karma'}}" href="{{sortBy 'karma'}}">{{_ "karma"}}</a>
+            <a class="{{activeClass 'username'}}" href="{{sortBy 'username'}}">{{_ "username"}}</a>
+            <a class="{{activeClass 'postCount'}}" href="{{sortBy 'postCount'}}">{{_ "posts"}}</a>
+            <a class="{{activeClass 'commentCount'}}" href="{{sortBy 'commentCount'}}">{{_ "comments_"}}</a>
+            <a class="{{activeClass 'invitedCount'}}" href="{{sortBy 'invitedCount'}}">{{_ "invitedcount"}}</a>
           </p>
         </div>
         <table>
           <thead>
             <tr>
-              <td colspan="2">{{i18n "Name"}}</td>
-              <td>{{i18n "Member since"}}</td>
-              <td>{{i18n "Posts"}}</td>
-              <td>{{i18n "Comments"}}</td>
-              <td>{{i18n "Karma"}}</td>
-              <td>{{i18n "Invites"}}</td>
-              <td>{{i18n "Invited?"}}</td>
-              <td>{{i18n "Admin?"}}</td>
-              <td>{{i18n "Actions"}}</td>
+              <td colspan="2">{{_ "name"}}</td>
+              <td>{{_ "member_since"}}</td>
+              <td>{{_ "posts"}}</td>
+              <td>{{_ "comments_"}}</td>
+              <td>{{_ "karma"}}</td>
+              <td>{{_ "invites"}}</td>
+              <td>{{_ "invited"}}</td>
+              <td>{{_ "admin"}}</td>
+              <td>{{_ "actions"}}</td>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +41,7 @@
           </tbody>
         </table>
         <div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}">
-          <a class="more-link" href="{{loadMoreUrl}}">{{i18n "Load more"}}</a>
+          <a class="more-link" href="{{loadMoreUrl}}">{{_ "load_more"}}</a>
         </div>
       </div>
     </div>

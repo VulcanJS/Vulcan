@@ -2,7 +2,7 @@
 
 Meteor.publish('postsList', function(terms) {
   if(canViewById(this.userId)){
-    var parameters = getParameters(terms),
+    var parameters = getPostsParameters(terms),
         posts = Posts.find(parameters.find, parameters.options);
 
     // console.log('//-------- Subscription Parameters:');
@@ -20,7 +20,7 @@ Meteor.publish('postsList', function(terms) {
 
 Meteor.publish('postsListUsers', function(terms) {
   if(canViewById(this.userId)){
-    var parameters = getParameters(terms),
+    var parameters = getPostsParameters(terms),
         posts = Posts.find(parameters.find, parameters.options),
         userIds = _.pluck(posts.fetch(), 'userId');
     return Meteor.users.find({_id: {$in: userIds}}, {fields: privacyOptions, multi: true});

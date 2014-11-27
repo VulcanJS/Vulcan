@@ -11,6 +11,15 @@ Meteor.startup(function () {
   });
 });
 
+Meteor.methods({
+  removeMigration: function (name) {
+    if (isAdmin(Meteor.user())) {
+      console.log('// removing migration: '+name)
+      Migrations.remove({name: name});
+    }
+  }
+});
+
 // wrapper function for all migrations
 var runMigration = function (migrationName) {
   var migration = Migrations.findOne({name: migrationName});
@@ -285,22 +294,12 @@ var migrationsList = {
     });
     return i;
   },
-  deleteNotifications: function () {
+  commentsToCommentCount: function () {
     var i = 0;
-    Notifications.find().forEach(function (n) {
-      i++;
-      console.log("Notification: "+n._id);
-      Notifications.remove(n._id);
-      console.log("---------------------");
-    });
-    return i;
-  },
-  commentsToCommentsCount: function () {
-    var i = 0;
-    Posts.find({commentsCount: {$exists : false}}).forEach(function (post) {
+    Posts.find({comments: {$exists : true}, commentCount: {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
-      Posts.update(post._id, { $rename: { 'comments': 'commentsCount'}}, {multi: true, validate: false});
+      Posts.update(post._id, { $set: { 'commentCount': post.comments}, $unset: { 'comments': ''}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -361,6 +360,47 @@ var migrationsList = {
       var htmlBody = sanitize(marked(comment.body));
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $set: { 'htmlBody': htmlBody}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  clicksToClickCount: function () {
+    var i = 0;
+    Posts.find({"clicks": {$exists: true}, "clickCount": {$exists : false}}).forEach(function (post) {
+      i++;
+      console.log("Post: " + post._id);
+      Posts.update(post._id, { $set: { 'clickCount': post.clicks}, $unset: { 'clicks': ''}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  commentsCountToCommentCount: function () {
+    var i = 0;
+    Posts.find({"commentCount": {$exists : false}}).forEach(function (post) {
+      i++;
+      console.log("Post: " + post._id);
+      var result = Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;
+  },
+  userDataCommentsCountToCommentCount: function(){
+    var i = 0;
+    Meteor.users.find({'commentCount': {$exists: false}}).forEach(function(user){
+      i++;
+      var commentCount = Comments.find({userId: user._id}).count();
+      console.log("User: " + user._id);
+      Meteor.users.update(user._id, {$unset: {data: ""}, $set: {'commentCount': commentCount}});
+      console.log("---------------------");
+    });
+    return i;
+   },
+  clicksToClickCountForRealThisTime: function () { // since both fields might be co-existing, add to clickCount instead of overwriting it
+    var i = 0;
+    Posts.find({'clicks': {$exists: true}}).forEach(function (post) {
+      i++;
+      console.log("Post: " + post._id);
+      var result = Posts.update(post._id, { $inc: { 'clickCount': post.clicks}, $unset: {'clicks': ""}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;

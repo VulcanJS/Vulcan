@@ -13,22 +13,22 @@ Meteor.startup(function () {
     view: 'category'
   });
 
-  Router.map(function() {
 
-    // Categories
+  // Categories
 
-    this.route('posts_category', {
-      path: '/category/:slug/:limit?',
-      controller: PostsCategoryController,
-      onAfterAction: function() {
-        Session.set('categorySlug', this.params.slug);
-      }
-    });
-
-    // Categories Admin
-
-    this.route('categories');
-
+  Router.route('/category/:slug/:limit?', {
+    name: 'posts_category',
+    controller: PostsCategoryController,
+    onAfterAction: function() {
+      Session.set('categorySlug', this.params.slug);
+    }
   });
+
+  // Categories Admin
+
+  Router.route('/categories', {
+    name: 'categories'
+  });
+
 
 });

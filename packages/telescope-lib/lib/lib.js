@@ -37,3 +37,7 @@ trimWords = function(s, numWords) {
     return expString.join(" ")+"…";
   return s;
 };
+
+capitalise = function (string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

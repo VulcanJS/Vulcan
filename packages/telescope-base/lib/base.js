@@ -20,19 +20,19 @@ adminNav = [];
 viewNav = [
   {
     route: 'posts_top',
-    label: 'Top'
+    label: 'top'
   },
   {
     route: 'posts_new',
-    label: 'New'
+    label: 'new'
   },
   {
     route: 'posts_best',
-    label: 'Best'
+    label: 'best'
   },
   {
-    route: 'posts_digest',
-    label: 'Digest'
+    route: 'posts_digest_default',
+    label: 'digest'
   } 
 ];
 
@@ -62,7 +62,10 @@ viewParameters.best = function (terms) {
 
 viewParameters.pending = function (terms) {
   return {
-    find: {status: 1}, 
+    find: {
+      status: 1, 
+      postedAt: {$lte: null}
+    }, 
     options: {sort: {createdAt: -1}}
   };
 }

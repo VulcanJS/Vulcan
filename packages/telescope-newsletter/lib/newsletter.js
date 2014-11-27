@@ -48,7 +48,11 @@ var showBanner = {
   propertySchema: {
     type: Boolean,
     optional: true,
-    label: 'Show newsletter sign-up banner'
+    label: 'Newsletter banner',
+    autoform: {
+      group: 'newsletter',
+      instructions: 'Show newsletter sign-up form on the front page.'
+    }
   }
 }
 addToSettingsSchema.push(showBanner);
@@ -58,6 +62,9 @@ var mailChimpAPIKey = {
   propertySchema: {
     type: String,
     optional: true,
+    autoform: {
+      group: 'newsletter'
+    }
   }
 }
 addToSettingsSchema.push(mailChimpAPIKey);
@@ -67,6 +74,10 @@ var mailChimpListId = {
   propertySchema: {
     type: String,
     optional: true,
+    autoform: {
+      group: 'newsletter',
+      instructions: 'The ID of the list you want to send to.'
+    }
   }
 }
 addToSettingsSchema.push(mailChimpListId);
@@ -75,7 +86,10 @@ var postsPerNewsletter = {
   propertyName: 'postsPerNewsletter',
   propertySchema: {
     type: Number,
-    optional: true
+    optional: true,
+    autoform: {
+      group: 'newsletter'
+    }
   }
 }
 addToSettingsSchema.push(postsPerNewsletter);
@@ -86,6 +100,8 @@ var newsletterFrequency = {
     type: Number,
     optional: true,
     autoform: {
+      group: 'newsletter',
+      instructions: 'Changes require restarting your app to take effect.',
       options: [
         {
           value: 1,
@@ -108,8 +124,7 @@ var newsletterFrequency = {
           label: "Don't send newsletter"
         }
       ]
-    },
-    label: 'Newsletter Frequency (requires restart)'
+    }
   }
 }
 addToSettingsSchema.push(newsletterFrequency);

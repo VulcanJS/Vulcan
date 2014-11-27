@@ -3,7 +3,6 @@ Accounts.onCreateUser(function(options, user){
     profile: options.profile || {},
     karma: 0,
     isInvited: false,
-    isAdmin: false,
     postCount: 0,
     commentCount: 0,
     invitedCount: 0,
@@ -37,8 +36,11 @@ Accounts.onCreateUser(function(options, user){
   user.slug = slugify(getUserName(user));
 
   // if this is the first user ever, make them an admin
-  if (!Meteor.users.find().count() )
-    user.isAdmin = true;
+  if (!Meteor.users.find().count() ) {
+    setAdmin(user, true);
+  } else {
+    setAdmin(user, false);
+  }
 
   // give new users a few invites (default to 3)
   user.inviteCount = getSetting('startInvitesCount', 3);
@@ -73,7 +75,7 @@ Accounts.onCreateUser(function(options, user){
   }
 
   // send notifications to admins
-  var admins = Meteor.users.find({isAdmin: true});
+  var admins = adminUsers();
   admins.forEach(function(admin){
     if(getUserSetting('notifications.users', false, admin)){
       var emailProperties = {
@@ -90,8 +92,17 @@ Accounts.onCreateUser(function(options, user){
 
 
 Meteor.methods({
-  changeEmail: function(newEmail) {
-    Meteor.users.update(Meteor.userId(), {$set: {emails: [{address: newEmail}]}});
+  changeEmail: function (newEmail) {
+    Meteor.users.update(
+      Meteor.userId(),
+      {$set: {
+          emails: [{address: newEmail}],
+          email_hash: Gravatar.hash(newEmail),
+          // Just in case this gets called from somewhere other than /client/views/users/user_edit.js
+          "profile.email": newEmail
+        }
+      }
+    );
   },
   numberOfPostsToday: function(){
     console.log(numberOfItemsInPast24Hours(Meteor.user(), Posts));
@@ -108,9 +119,5 @@ Meteor.methods({
     var ageInHours = (new Date().getTime() - object.submitted) / (60 * 60 * 1000);
     var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
     return Math.abs(object.score - newScore);
-  },
-  setEmailHash: function(user){
-    var hash = getEmailHash(user);
-    Meteor.users.update(user._id, {$set : {email_hash : hash}});
   }
 });

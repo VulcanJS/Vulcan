@@ -10,8 +10,10 @@ var coreSubscriptions = new SubsManager({
 // note: FastRender not defined here?
 
 PostsDailyController = RouteController.extend({
-  template: getTemplate('posts_daily'),
-  onBeforeAction: function() {
+  template: function() {
+    return getTemplate('postsDaily');
+  },
+  subscriptions: function() {
     this.days = this.params.days ? this.params.days : daysPerPage;
     // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
 
@@ -27,8 +29,6 @@ PostsDailyController = RouteController.extend({
 
     this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
 
-    return [this.postsSubscription, this.postsUsersSubscription];
-
   },
   data: function() {
     Session.set('postsDays', this.days);
@@ -40,13 +40,9 @@ PostsDailyController = RouteController.extend({
 
 Meteor.startup(function () {
   
-  Router.map(function() {
-
-    this.route('postsDaily', {
-      path: '/daily/:days?',
-      controller: PostsDailyController
-    });
-
+  Router.route('/daily/:days?', {
+    name: 'postsDaily',
+    controller: PostsDailyController
   });
 
 });

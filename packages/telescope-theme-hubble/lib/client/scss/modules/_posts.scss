@@ -30,8 +30,8 @@
 		}
 		.cell{
 			// display: table-cell;
-			// vertical-align: middle;		
-			margin-right: $grid-margin;
+			// vertical-align: middle;
+			margin-right: $grid-margin*2;
 			@include medium-large{
 				@include flex-shrink(0);
 			}
@@ -40,7 +40,7 @@
 	.left-modules{
 		.inner{
 			margin-left: $grid-margin;
-		}	
+		}
 		@include small{
 			.inner{
 				display: block;
@@ -240,7 +240,7 @@
 		border-radius: 0px 0px 3px 3px;
 	}
 	&.animate{
-		@include single-transition(ease-out, top, 400ms, 0ms);
+		transition: ease-out, top, 400ms, 0ms;
 	}
 	&.inactive{
 		.post-content{
@@ -250,7 +250,7 @@
 }
 .post-rank{
   position: relative;
-  span{	
+  span{
 	position:absolute;
 	top:0px;
 	left:-60px;
@@ -268,23 +268,23 @@
 	padding:$grid-padding - 5px 0;
 }
 .post-content{
-	min-height:$grid-unit - 30px;
+	min-height: $grid-unit - 30px;
 	.post-sticky{
-		display:block;
-		position:absolute;
-		right:-40px;
-		top:16px;
-		font-size:24px;
+		display: block;
+		position: absolute;
+		right: -40px;
+		top: 16px;
+		font-size: 24px;
 		i{
-			color:$light-text;
+			color: $light-text;
 		}
 		span{
-			display:none;
+			display: none;
 		}
 	}
 }
 .post-heading{
-	margin-bottom:3px;
+	margin-bottom: 3px;
 	line-height: 1.2;
 	@include small{
 		line-height: 1.5;
@@ -319,7 +319,7 @@
 .post-category{
 	display:inline-block;
 	font-size:11px;
-	@include border-radius(3px);
+	border-radius: 3px;
 	background:#eee;
 	padding:0px 6px;
 	text-transform:uppercase;
@@ -348,19 +348,19 @@
 		position:relative;
 		display:inline-block;
 		padding:0;
-		width:$grid-unit;
 		height:$grid-unit;
-		line-height:$grid-unit;
 		vertical-align:baseline;
 		text-align:center;
 		color:$light-text;
-		font-size:36px;
-		line-height:50px;
+		i{
+			font-size: 36px;
+			height: 45px;
+			display: block;
+		}
 		&.edit-link{
 			color:$red;
 		}
 		&.share-link{
-			color:$blue;
 			color:$yellow;
 		}
 		&.discuss-link{
@@ -399,9 +399,7 @@
 		.action{
 			display:block;
 			height:20px;
-			width:100%;
 			line-height:20px;
-			position:absolute;
 			bottom:5px;
 			left:0px;
 			font-size:13px;
@@ -450,7 +448,7 @@
 }
 .inner-table-cell{
 	display: table-cell;
-	vertical-align:middle;	
+	vertical-align:middle;
 }
 
 
@@ -475,14 +473,14 @@
       }
       .post-heading{
         .post-title{
-          display:block;	
+          display:block;
           margin-bottom:4px;
         }
         .post-domain{
           display:block;
           margin-bottom:4px;
           font-size:13px;
-        } 
+        }
       }
       .post-meta{
         font-size:11px;
