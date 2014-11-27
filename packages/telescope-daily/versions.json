@@ -134,7 +134,7 @@
     ],
     [
       "meteorhacks:fast-render",
-      "1.2.1"
+      "2.0.2"
     ],
     [
       "meteorhacks:subs-manager",
@@ -151,10 +151,6 @@
     [
       "mongo",
       "1.0.8"
-    ],
-    [
-      "mongo-livedata",
-      "1.0.6"
     ],
     [
       "observe-sequence",
