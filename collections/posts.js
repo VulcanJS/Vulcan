@@ -22,8 +22,7 @@ postSchemaObject = {
     optional: true,
     autoform: {
       group: 'admin',
-      // type: 'custom-datetime', 
-      type: "bootstrap-datepicker"
+      type: "bootstrap-datetimepicker"
     }
   },    
   title: {
@@ -68,7 +67,7 @@ postSchemaObject = {
   },
   commentCount: {
     type: Number,
-    optional: false,
+    optional: true,
     autoform: {
       omit: true
     }
@@ -142,8 +141,6 @@ postSchemaObject = {
     type: Number,
     optional: true,
     autoValue: function () {
-      console.log(this)
-      return 2;
       return getSetting('requirePostsApproval', false) ? STATUS_PENDING: STATUS_APPROVED
     },
     autoform: {

@@ -23,7 +23,7 @@ var canEditField = function (field) {
   return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
-Template[getTemplate('quickForm_settings')].helpers({
+Template[getTemplate('quickForm_telescope')].helpers({
   fieldsWithNoFieldset: function () {
     // get names of fields who don't have an autoform attribute or don't have a group
     var fields = _.pluck(_.filter(getSchema(), function (field, key) {

@@ -1,4 +1,4 @@
-<template name="quickForm_settings">
+<template name="quickForm_telescope">
   {{#autoForm qfAutoFormContext}}
 
     <div class='no-fieldset'>
@@ -17,11 +17,11 @@
         <div class="{{labelClass}}"></div>
         <div class="{{inputClass}}">
           <button {{submitButtonAtts}}>
-          {{#with ../atts.buttonContent}}
-            {{this}}
-          {{else}}
-            Submit
-          {{/with}}
+            {{#with ../atts.buttonContent}}
+              {{this}}
+            {{else}}
+              Submit
+            {{/with}}
           </button>
         </div>
       </div>
