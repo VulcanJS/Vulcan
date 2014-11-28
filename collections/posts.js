@@ -27,6 +27,7 @@ postSchemaObject = {
   },    
   title: {
     type: String,
+    optional: false,
     label: "Title",
     editable: true,
     autoform: {
@@ -39,7 +40,8 @@ postSchemaObject = {
     optional: true,
     editable: true,
     autoform: {
-      editable: true
+      editable: true,
+      type: "bootstrap-url"
     }
   },
   body: {
@@ -159,6 +161,13 @@ postSchemaObject = {
   },
   inactive: {
     type: Boolean,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  author: {
+    type: String,
     optional: true,
     autoform: {
       omit: true
@@ -286,7 +295,8 @@ Meteor.methods({
 
       if(typeof postWithSameLink !== 'undefined'){
         Meteor.call('upvotePost', postWithSameLink);
-        throw new Meteor.Error(603, i18n.t('this_link_has_already_been_posted'), postWithSameLink._id);
+        // note: error.details returns undefined on the client, so add post ID to reason        
+        throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
       }
     }
 

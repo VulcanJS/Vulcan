@@ -16,8 +16,8 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'datetimepicker.scss',
-    'autoform-bs-datepicker.html',
-    'autoform-bs-datepicker.js',
+    'autoform-bs-datetimepicker.html',
+    'autoform-bs-datetimepicker.js',
     'bootstrap-collapse-transitions.js',
     'fonts/glyphicons-halflings-regular.eot',
     'fonts/glyphicons-halflings-regular.svg',

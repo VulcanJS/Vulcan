@@ -1,43 +1,64 @@
 AutoForm.debug()
 AutoForm.hooks({
   insertPostForm: {
-    before: {
-      insert: function(doc, template) {
-        console.log(doc)
-      },
-      update: function(docId, modifier, template) {},
-      "methodName": function(doc, template) {}
-    },
-    after: {
-      insert: function(error, result, template) {
-        console.log(error)
-        console.log(result)
-      },
-      update: function(error, result, template) {},
-      "methodName": function(error, result, template) {}
-    },
-    // Called when form does not have a `type` attribute
     onSubmit: function(insertDoc, updateDoc, currentDoc) {
-      console.log(insertDoc)
-      console.log(updateDoc)
-      console.log(currentDoc)
+
+      var properties = insertDoc;
+      var submit = this;
+
+      // ------------------------------ Checks ------------------------------ //
+
+      if (!Meteor.user()) {
+        throwError(i18n.t('you_must_be_logged_in'));
+        return false;
+      }
+
+      // ------------------------------ Callbacks ------------------------------ //
+
+      // run all post submit client callbacks on properties object successively
+      properties = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
+          return currentFunction(result);
+      }, properties);
+
+      // console.log(properties)
+
+      // ------------------------------ Insert ------------------------------ //
+      if (properties) {
+        Meteor.call('post', properties, function(error, post) {
+          if(error){
+            submit.done(error);
+          }else{
+            // note: find a way to do this in onSuccess instead?
+            trackEvent("new post", {'postId': post._id});
+            if(post.status === STATUS_PENDING)
+              throwError('Thanks, your post is awaiting approval.');
+            Router.go('/posts/'+post._id);
+            submit.done();
+          }
+        });
+      }
+
+      return false
     },
 
-    // Called when any operation succeeds, where operation will be
-    // "insert", "update", "submit", or the method name.
     onSuccess: function(operation, result, template) {
-      console.log(operation)
-      console.log(result)
+      // not used right now because I can't find a way to pass the "post" object to this callback
+      // console.log(post)
+      // trackEvent("new post", {'postId': post._id});
+      // if(post.status === STATUS_PENDING)
+      //   throwError('Thanks, your post is awaiting approval.');
+      // Router.go('/posts/'+post._id);
     }, 
 
-    // Called when any operation fails, where operation will be
-    // "validation", "insert", "update", "submit", or the method name.
     onError: function(operation, error, template) {
-      console.log(operation)
-      console.log(error)
+      throwError(error.reason.split('|')[0]); // workaround because error.details returns undefined
+      clearSeenErrors();
+      // $(e.target).removeClass('disabled');
+      if (error.error == 603) {
+        var dupePostId = error.reason.split('|')[1];
+        Router.go('/posts/'+dupePostId);
+      }
     }
-    // formToDoc: function(doc, ss, formId) {},
-    // docToForm: function(doc, ss, formId) {},
 
     // Called at the beginning and end of submission, respectively.
     // This is the place to disable/enable buttons or the form,
@@ -91,115 +112,115 @@ AutoForm.hooks({
 
 // };
 
-// Template[getTemplate('post_submit')].events({
-//   'change input[name=status]': function (e, i) {
-//     Session.set('currentPostStatus', e.currentTarget.value);
-//   },
-//   'click input[type=submit]': function(e, instance){
-//     e.preventDefault();
+Template[getTemplate('post_submit')].events({
+  // 'change input[name=status]': function (e, i) {
+  //   Session.set('currentPostStatus', e.currentTarget.value);
+  // },
+  // 'click input[type=submit]': function(e, instance){
+  //   e.preventDefault();
 
-//     $(e.target).addClass('disabled');
+  //   $(e.target).addClass('disabled');
 
-//     // ------------------------------ Checks ------------------------------ //
+  //   // ------------------------------ Checks ------------------------------ //
 
-//     if(!Meteor.user()){
-//       throwError(i18n.t('you_must_be_logged_in'));
-//       return false;
-//     }
+  //   if(!Meteor.user()){
+  //     throwError(i18n.t('you_must_be_logged_in'));
+  //     return false;
+  //   }
 
-//     // ------------------------------ Properties ------------------------------ //
+  //   // ------------------------------ Properties ------------------------------ //
 
-//     // Basic Properties
+  //   // Basic Properties
 
-//     var properties = {
-//       title: $('#title').val(),
-//       body: instance.editor.exportFile(),
-//       sticky: $('#sticky').is(':checked'),
-//       userId: $('#postUser').val(),
-//       status: parseInt($('input[name=status]:checked').val())
-//     };
+  //   var properties = {
+  //     title: $('#title').val(),
+  //     body: instance.editor.exportFile(),
+  //     sticky: $('#sticky').is(':checked'),
+  //     userId: $('#postUser').val(),
+  //     status: parseInt($('input[name=status]:checked').val())
+  //   };
 
-//     // PostedAt
+  //   // PostedAt
 
-//     var $postedAtDate = $('#postedAtDate');
-//     var $postedAtTime = $('#postedAtTime');
-//     var setPostedAt = false;
-//     var postedAt = new Date(); // default to current browser date and time
-//     var postedAtDate = $postedAtDate.datepicker('getDate');
-//     var postedAtTime = $postedAtTime.val();
+  //   var $postedAtDate = $('#postedAtDate');
+  //   var $postedAtTime = $('#postedAtTime');
+  //   var setPostedAt = false;
+  //   var postedAt = new Date(); // default to current browser date and time
+  //   var postedAtDate = $postedAtDate.datepicker('getDate');
+  //   var postedAtTime = $postedAtTime.val();
 
-//     if ($postedAtDate.exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
-//       postedAt = postedAtDate;
-//       setPostedAt = true;
-//     }
+  //   if ($postedAtDate.exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
+  //     postedAt = postedAtDate;
+  //     setPostedAt = true;
+  //   }
 
-//     if ($postedAtTime.exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
-//       var hours = postedAtTime.split(':')[0];
-//       var minutes = postedAtTime.split(':')[1];
-//       postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
-//       setPostedAt = true;
-//     }
+  //   if ($postedAtTime.exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
+  //     var hours = postedAtTime.split(':')[0];
+  //     var minutes = postedAtTime.split(':')[1];
+  //     postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
+  //     setPostedAt = true;
+  //   }
 
-//     if(setPostedAt) // if either custom date or time has been set, pass result to properties
-//       properties.postedAt = postedAt;
+  //   if(setPostedAt) // if either custom date or time has been set, pass result to properties
+  //     properties.postedAt = postedAt;
 
 
-//     // URL
+  //   // URL
 
-//     var url = $('#url').val();
-//     if(!!url){
-//       var cleanUrl = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
-//       properties.url = cleanUrl;
-//     }
+  //   var url = $('#url').val();
+  //   if(!!url){
+  //     var cleanUrl = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
+  //     properties.url = cleanUrl;
+  //   }
 
-//     // ------------------------------ Callbacks ------------------------------ //
+  //   // ------------------------------ Callbacks ------------------------------ //
 
-//     // run all post submit client callbacks on properties object successively
-//     properties = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
-//         return currentFunction(result);
-//     }, properties);
+  //   // run all post submit client callbacks on properties object successively
+  //   properties = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
+  //       return currentFunction(result);
+  //   }, properties);
 
-//     // console.log(properties)
+  //   // console.log(properties)
 
-//     // ------------------------------ Insert ------------------------------ //
-//     if (properties) {
-//       Meteor.call('post', properties, function(error, post) {
-//         if(error){
-//           throwError(error.reason);
-//           clearSeenErrors();
-//           $(e.target).removeClass('disabled');
-//           if(error.error == 603)
-//             Router.go('/posts/'+error.details);
-//         }else{
-//           trackEvent("new post", {'postId': post._id});
-//           if(post.status === STATUS_PENDING)
-//             throwError('Thanks, your post is awaiting approval.');
-//           Router.go('/posts/'+post._id);
-//         }
-//       });
-//     } else {
-//       $(e.target).removeClass('disabled');      
-//     }
+  //   // ------------------------------ Insert ------------------------------ //
+  //   if (properties) {
+  //     Meteor.call('post', properties, function(error, post) {
+  //       if(error){
+  //         throwError(error.reason);
+  //         clearSeenErrors();
+  //         $(e.target).removeClass('disabled');
+  //         if(error.error == 603)
+  //           Router.go('/posts/'+error.details);
+  //       }else{
+  //         trackEvent("new post", {'postId': post._id});
+  //         if(post.status === STATUS_PENDING)
+  //           throwError('Thanks, your post is awaiting approval.');
+  //         Router.go('/posts/'+post._id);
+  //       }
+  //     });
+  //   } else {
+  //     $(e.target).removeClass('disabled');      
+  //   }
 
-//   },
-//   'click .get-title-link': function(e){
-//     e.preventDefault();
-//     var url=$("#url").val();
-//     var $getTitleLink = $(".get-title-link");
-//     $getTitleLink.addClass("loading");
-//     if(url){
-//       $.get(url, function(response){
-//           if ((suggestedTitle=((/<title>(.*?)<\/title>/m).exec(response.responseText))) != null){
-//               $("#title").val(suggestedTitle[1]);
-//           }else{
-//               alert("Sorry, couldn't find a title...");
-//           }
-//           $getTitleLink.removeClass("loading");
-//        });
-//     }else{
-//       alert("Please fill in an URL first!");
-//       $getTitleLink.removeClass("loading");
-//     }
-//   }
+  // },
+  // 'click .get-title-link': function(e){
+  //   e.preventDefault();
+  //   var url=$("#url").val();
+  //   var $getTitleLink = $(".get-title-link");
+  //   $getTitleLink.addClass("loading");
+  //   if(url){
+  //     $.get(url, function(response){
+  //         if ((suggestedTitle=((/<title>(.*?)<\/title>/m).exec(response.responseText))) != null){
+  //             $("#title").val(suggestedTitle[1]);
+  //         }else{
+  //             alert("Sorry, couldn't find a title...");
+  //         }
+  //         $getTitleLink.removeClass("loading");
+  //      });
+  //   }else{
+  //     alert("Please fill in an URL first!");
+  //     $getTitleLink.removeClass("loading");
+  //   }
+  // }
 
-// });
+});

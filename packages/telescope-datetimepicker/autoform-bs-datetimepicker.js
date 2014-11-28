@@ -1,5 +1,5 @@
 AutoForm.addInputType("bootstrap-datetimepicker", {
-  template: "afBootstrapDatepicker",
+  template: "afBootstrapDateTimePicker",
   valueOut: function () {
     // var val = this.datepicker('getUTCDate');
     if (!!this.data("DateTimePicker").getDate()) {
@@ -36,7 +36,7 @@ AutoForm.addInputType("bootstrap-datetimepicker", {
   }
 });
 
-Template.afBootstrapDatepicker.helpers({
+Template.afBootstrapDateTimePicker.helpers({
     atts: function addFormControlAtts() {
       var atts = _.clone(this.atts);
       // Add bootstrap class
@@ -45,7 +45,7 @@ Template.afBootstrapDatepicker.helpers({
     }
   });
 
-Template.afBootstrapDatepicker.rendered = function () {
+Template.afBootstrapDateTimePicker.rendered = function () {
   var $input = this.$('input');
   var data = this.data;
 
@@ -84,9 +84,9 @@ Template.afBootstrapDatepicker.rendered = function () {
 
 };
 
-Template.afBootstrapDatepicker.destroyed = function () {
+Template.afBootstrapDateTimePicker.destroyed = function () {
   // this.$('input').datepicker('remove');
-  this.data('DateTimePicker').destroy();
+  this.$('input').data('DateTimePicker').destroy();
 };
 
 function utcToLocal(utcDate) {
