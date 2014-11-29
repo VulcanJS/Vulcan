@@ -1,4 +1,3 @@
-AutoForm.debug()
 AutoForm.hooks({
   editPostForm: {
     onSubmit: function(insertDoc, updateDoc, currentDoc) {
@@ -16,9 +15,9 @@ AutoForm.hooks({
       // ------------------------------ Callbacks ------------------------------ //
 
       // run all post edit client callbacks on updateObject object successively
-      // updateObject = postEditClientCallbacks.reduce(function(result, currentFunction) {
-      //     return currentFunction(result);
-      // }, updateObject);
+      updateObject = postEditClientCallbacks.reduce(function(result, currentFunction) {
+          return currentFunction(result);
+      }, updateObject);
 
       // ------------------------------ Update ------------------------------ //
       Meteor.call('editPost', currentDoc._id, updateObject, function(error, post) {

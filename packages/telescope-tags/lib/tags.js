@@ -50,7 +50,7 @@ addToPostSchema.push(
         options: function () {
           var categories = Categories.find().map(function (category) {
             return {
-              value: category.slug,
+              value: category._id,
               label: category.name
             }  
           });
@@ -60,18 +60,6 @@ addToPostSchema.push(
     }
   }
 );
-
-var getCheckedCategories = function (properties) {
-  properties.categories = [];
-  $('input[name=category]:checked').each(function() {
-    var categoryId = $(this).val();
-    properties.categories.push(Categories.findOne(categoryId));
-  });
-  return properties;
-}
-
-postSubmitClientCallbacks.push(getCheckedCategories);
-postEditClientCallbacks.push(getCheckedCategories);
 
 Meteor.startup(function () {
   Categories.allow({

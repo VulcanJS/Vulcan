@@ -406,3 +406,5 @@ var migrationsList = {
     return i;
   }
 };
+
+// TODO: normalize categories?

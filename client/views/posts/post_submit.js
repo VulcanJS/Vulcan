@@ -1,4 +1,3 @@
-AutoForm.debug()
 AutoForm.hooks({
   submitPostForm: {
     onSubmit: function(insertDoc, updateDoc, currentDoc) {

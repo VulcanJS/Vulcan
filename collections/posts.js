@@ -1,3 +1,8 @@
+
+// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------- Schema ----------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
+
 SimpleSchema.extendOptions({
   editable: Match.Optional(Boolean) // editable: true means the field can be edited by the document's owner
 });
@@ -200,24 +205,25 @@ Posts = new Meteor.Collection("posts");
 PostSchema = new SimpleSchema(postSchemaObject);
 Posts.attachSchema(PostSchema);
 
-Posts.deny({
-  update: function(userId, post, fieldNames) {
-    if(isAdminById(userId))
-      return false;
-    // deny the update if it contains something other than the following fields
-    return (_.without(fieldNames, 'title', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
-  }
-});
+// Posts.deny({
+//   update: function(userId, post, fieldNames) {
+//     if(isAdminById(userId))
+//       return false;
+//     // deny the update if it contains something other than the following fields
+//     return (_.without(fieldNames, 'title', 'url', 'body', 'shortUrl', 'shortTitle', 'categories').length > 0);
+//   }
+// });
 
-Posts.allow({
-  update: canEditById,
-  remove: canEditById
-});
+// Posts.allow({
+//   update: canEditById,
+//   remove: canEditById
+// });
 
-postClicks = [];
-postViews = [];
+// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------- Helpers ----------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
 
-getPostProperties = function(post) {
+getPostProperties = function (post) {
 
   var postAuthor = Meteor.users.findOne(post.userId);
   var p = {
@@ -251,6 +257,23 @@ getPostLink = function (post) {
   return !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post);
 };
 
+checkForPostsWithSameUrl = function (url) {
+
+  // check that there are no previous posts with the same link in the past 6 months
+  var sixMonthsAgo = moment().subtract(6, 'months').toDate();
+  var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
+
+  if(typeof postWithSameLink !== 'undefined'){
+    Meteor.call('upvotePost', postWithSameLink);
+    // note: error.details returns undefined on the client, so add post ID to reason        
+    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
+  }
+}
+
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------ Hooks ------------------------------------------ //
+// ------------------------------------------------------------------------------------------- //
+
 Posts.before.insert(function (userId, doc) {
   if(Meteor.isServer && !!doc.body)
     doc.htmlBody = sanitize(marked(doc.body));
@@ -264,6 +287,13 @@ Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
   }
 });
 
+// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------- Methods ----------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
+
+postClicks = [];
+postViews = [];
+
 Meteor.methods({
 
   submitPost: function(post){
@@ -276,7 +306,6 @@ Meteor.methods({
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
         maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30))),
         postId = '';
-    
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -288,18 +317,11 @@ Meteor.methods({
     if(!post.title)
       throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
 
+    // check that there are no posts with the same URL
+    if(!!post.url)
+      checkForPostsWithSameUrl(post.url);
 
-    if(!!post.url){
-      // check that there are no previous posts with the same link in the past 6 months
-      var sixMonthsAgo = moment().subtract(6, 'months').toDate();
-      var postWithSameLink = Posts.findOne({url: post.url, postedAt: {$gte: sixMonthsAgo}});
-
-      if(typeof postWithSameLink !== 'undefined'){
-        Meteor.call('upvotePost', postWithSameLink);
-        // note: error.details returns undefined on the client, so add post ID to reason        
-        throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
-      }
-    }
+    // --------------------------- Rate Limiting -------------------------- //
 
     if(!isAdmin(Meteor.user())){
       // check that user waits more than X seconds between posts
@@ -389,19 +411,26 @@ Meteor.methods({
 
   editPost: function (postId, updateObject) {
 
+    var user = Meteor.user();
+
     // console.log(updateObject)
 
     // ------------------------------ Checks ------------------------------ //
 
-    // ------------------------------ Properties ------------------------------ //
+    // check that user can edit
+    if (!user || !canEdit(user, Posts.findOne(postId)))
+      throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_post'));
 
+    // check that there are no posts with the same URL
+    if(updateObject.$set && !!updateObject.$set.url)
+      checkForPostsWithSameUrl(updateObject.$set.url);
 
     // ------------------------------ Callbacks ------------------------------ //
 
-    // run all post submit server callbacks on post object successively
-    // post = postEditMethodCallbacks.reduce(function(result, currentFunction) {
-    //     return currentFunction(result);
-    // }, post);
+    // run all post submit server callbacks on updateObject successively
+    updateObject = postEditMethodCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, updateObject);
 
     // ------------------------------ Update ------------------------------ //
 
@@ -409,10 +438,10 @@ Meteor.methods({
 
     // ------------------------------ Callbacks ------------------------------ //
 
-    // run all post submit server callbacks on post object successively
-    // post = postAfterEditMethodCallbacks.reduce(function(result, currentFunction) {
-    //     return currentFunction(result);
-    // }, post);
+    // run all post submit server callbacks on updateObject successively
+    updateObject = postAfterEditMethodCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(result);
+    }, updateObject);
 
     // ------------------------------ After Update ------------------------------ //
 
