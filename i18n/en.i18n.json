@@ -39,6 +39,8 @@
   "sorry_you_dont_have_the_rights_to_view_this_page": "Sorry, you don't have the rights to view this page.",
   "not_found": "Not Found!",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "We're sorry; whatever you were looking for isn't here..",
+  "the_path": "The path",
+  "does_not_exist": "does not exist.",
 
   //Notifications
   "no_notifications": "No notifications",
