@@ -83,6 +83,7 @@
 		}
 	}
 }
+
 .search{
 	position: relative;
 	.search-field{
@@ -99,6 +100,7 @@
 		background: white;
 		&:focus{
 			outline:none;
+			width: 200px;
 		}
 	}
 	&.empty{
@@ -107,9 +109,6 @@
 			&:focus{
 				background: white;
 			}
-		}
-		.search-clear{
-			display: none;
 		}
 	}
 }
