@@ -1,6 +1,10 @@
 {
   "dependencies": [
     [
+      "aldeed:autoform",
+      "4.0.2"
+    ],
+    [
       "aldeed:simple-schema",
       "1.1.0"
     ],
@@ -85,6 +89,10 @@
       "1.0.1"
     ],
     [
+      "livedata",
+      "1.0.11"
+    ],
+    [
       "logging",
       "1.0.5"
     ],
@@ -103,6 +111,10 @@
     [
       "mongo",
       "1.0.8"
+    ],
+    [
+      "mrt:moment",
+      "2.8.1"
     ],
     [
       "observe-sequence",

@@ -29,15 +29,6 @@ postSchemaObject = {
       group: 'admin',
       type: "bootstrap-datetimepicker"
     }
-  },    
-  title: {
-    type: String,
-    optional: false,
-    label: "Title",
-    editable: true,
-    autoform: {
-      editable: true
-    }
   },
   url: {
     type: String,
@@ -47,6 +38,15 @@ postSchemaObject = {
     autoform: {
       editable: true,
       type: "bootstrap-url"
+    }
+  },  
+  title: {
+    type: String,
+    optional: false,
+    label: "Title",
+    editable: true,
+    autoform: {
+      editable: true
     }
   },
   body: {
@@ -421,16 +421,14 @@ Meteor.methods({
     if (!user || !canEdit(user, Posts.findOne(postId)))
       throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_post'));
 
-    // check that there are no posts with the same URL
-    if(updateObject.$set && !!updateObject.$set.url)
-      checkForPostsWithSameUrl(updateObject.$set.url);
-
     // ------------------------------ Callbacks ------------------------------ //
 
     // run all post submit server callbacks on updateObject successively
     updateObject = postEditMethodCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(result);
     }, updateObject);
+
+    console.log(updateObject)
 
     // ------------------------------ Update ------------------------------ //
 

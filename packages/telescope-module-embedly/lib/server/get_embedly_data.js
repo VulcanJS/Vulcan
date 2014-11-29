@@ -18,15 +18,12 @@ getEmbedlyData = function (url) {
       }
     });
 
-    if(!result.data.images.length)
-      throw new Error("Couldn't find an image!");
+    // console.log(result)
 
-    data.thumbnailUrl = result.data.images[0].url;
+    result.data.thumbnailUrl = result.data.images[0].url; // add thumbnailUrl as its own property
 
-    if(typeof result.data.media !== 'undefined')
-      data.media = result.data.media
+    return _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl');
 
-    return data;
   } catch (error) {
     console.log(error)
     return null;
@@ -37,29 +34,30 @@ Meteor.methods({
   testGetEmbedlyData: function (url) {
     console.log(getEmbedlyData(url))
   },
-  setThumbnail: function (post) {
-    var set = {};
-    if(post.url){
-      var data = getEmbedlyData(post.url);
-      if(!!data && !!data.thumbnailUrl)
-        set.thumbnailUrl = data.thumbnailUrl;
-      if(!!data && !!data.media.html)
-        set.media = data.media
-      console.log(set)
-      Posts.update({_id: post._id}, {$set: set});
-    }
+  getEmbedlyData: function (url) {
+    return getEmbedlyData(url);
   }
 });
 
-var extendPost = function (post) {
+// For security reason, we use a separate server-side API call to set the media object
+var addMediaOnSubmit = function (post) {
   if(post.url){
     var data = getEmbedlyData(post.url);
-    if(!!data && !!data.thumbnailUrl)
-      post.thumbnailUrl = data.thumbnailUrl;
     if(!!data && !!data.media.html)
       post.media = data.media
   }
   return post;
 }
+postSubmitMethodCallbacks.push(addMediaOnSubmit);
 
-postSubmitMethodCallbacks.push(extendPost);
+// TODO: find a way to only do this is URL has actually changed?
+var updateMediaOnEdit = function (updateObject) {
+  var post = updateObject.$set
+  if(post.url){
+    var data = getEmbedlyData(post.url);
+    if(!!data && !!data.media.html)
+      updateObject.$set.media = data.media
+  }
+  return updateObject;
+}
+postEditMethodCallbacks.push(updateMediaOnEdit);

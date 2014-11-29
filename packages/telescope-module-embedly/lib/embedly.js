@@ -3,8 +3,9 @@ var thumbnailProperty = {
   propertySchema: {
     type: String,
     optional: true,
+    label: 'thumbnail',
     autoform: {
-      omit: true
+      type: 'bootstrap-postthumbnail'
     }
   }
 }
