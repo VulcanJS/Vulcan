@@ -181,7 +181,7 @@ postAfterSubmitMethodCallbacks = [];
 postEditRenderedCallbacks = [];
 postEditClientCallbacks = [];
 postEditMethodCallbacks = []; // not used yet
-postAfterMethodCallbacks = []; // not used yet
+postAfterEditMethodCallbacks = []; // not used yet
 
 commentSubmitRenderedCallbacks = [];
 commentSubmitClientCallbacks = [];

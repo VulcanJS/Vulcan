@@ -1,6 +1,6 @@
 AutoForm.debug()
 AutoForm.hooks({
-  insertPostForm: {
+  submitPostForm: {
     onSubmit: function(insertDoc, updateDoc, currentDoc) {
 
       var properties = insertDoc;
@@ -23,20 +23,18 @@ AutoForm.hooks({
       // console.log(properties)
 
       // ------------------------------ Insert ------------------------------ //
-      if (properties) {
-        Meteor.call('post', properties, function(error, post) {
-          if(error){
-            submit.done(error);
-          }else{
-            // note: find a way to do this in onSuccess instead?
-            trackEvent("new post", {'postId': post._id});
-            if(post.status === STATUS_PENDING)
-              throwError('Thanks, your post is awaiting approval.');
-            Router.go('/posts/'+post._id);
-            submit.done();
-          }
-        });
-      }
+      Meteor.call('submitPost', properties, function(error, post) {
+        if(error){
+          submit.done(error);
+        }else{
+          // note: find a way to do this in onSuccess instead?
+          trackEvent("new post", {'postId': post._id});
+          if(post.status === STATUS_PENDING)
+            throwError('Thanks, your post is awaiting approval.');
+          Router.go('/posts/'+post._id);
+          submit.done();
+        }
+      });
 
       return false
     },

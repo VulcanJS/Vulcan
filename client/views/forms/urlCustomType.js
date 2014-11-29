@@ -1,5 +1,8 @@
 AutoForm.addInputType("bootstrap-url", {
   template: "afBootstrapUrl",
+  valueIn: function () {
+    // console.log(this)
+  },
   valueOut: function () {
     var url = this.val();
     if(!!url)
@@ -7,7 +10,7 @@ AutoForm.addInputType("bootstrap-url", {
   }
 });
 
-Template.afBootstrapUrl.helpers({
+Template.afBootstrapUrl_bootstrap3.helpers({
   atts: function addFormControlAtts() {
     var atts = _.clone(this.atts);
     // Add bootstrap class

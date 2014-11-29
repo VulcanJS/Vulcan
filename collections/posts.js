@@ -265,7 +265,8 @@ Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
 });
 
 Meteor.methods({
-  post: function(post){
+
+  submitPost: function(post){
     var title = cleanUp(post.title),
         body = post.body,
         userId = this.userId,
@@ -374,7 +375,7 @@ Meteor.methods({
         return currentFunction(result);
     }, post);
 
-    // ------------------------------ Post-Insert ------------------------------ //
+    // ------------------------------ After Insert ------------------------------ //
 
     // increment posts count
     Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
@@ -385,6 +386,40 @@ Meteor.methods({
 
     return post;
   },
+
+  editPost: function (postId, updateObject) {
+
+    // console.log(updateObject)
+
+    // ------------------------------ Checks ------------------------------ //
+
+    // ------------------------------ Properties ------------------------------ //
+
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on post object successively
+    // post = postEditMethodCallbacks.reduce(function(result, currentFunction) {
+    //     return currentFunction(result);
+    // }, post);
+
+    // ------------------------------ Update ------------------------------ //
+
+    Posts.update(postId, updateObject);
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    // run all post submit server callbacks on post object successively
+    // post = postAfterEditMethodCallbacks.reduce(function(result, currentFunction) {
+    //     return currentFunction(result);
+    // }, post);
+
+    // ------------------------------ After Update ------------------------------ //
+
+    return Posts.findOne(postId);
+
+  },
+
   setPostedAt: function(post, customPostedAt){
 
     var postedAt = new Date(); // default to current date and time
@@ -394,9 +429,7 @@ Meteor.methods({
 
     Posts.update(post._id, {$set: {postedAt: postedAt}});
   },
-  post_edit: function(post){
-    // TODO: make post_edit server-side?
-  },
+
   approvePost: function(post){
     if(isAdmin(Meteor.user())){
       var now = new Date();
@@ -405,6 +438,7 @@ Meteor.methods({
       throwError('You need to be an admin to do that.');
     }
   },
+
   unapprovePost: function(post){
     if(isAdmin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
@@ -412,6 +446,7 @@ Meteor.methods({
       throwError('You need to be an admin to do that.');
     }
   },
+
   increasePostViews: function(postId, sessionId){
     this.unblock();
 
@@ -423,7 +458,8 @@ Meteor.methods({
         Posts.update(postId, { $inc: { viewCount: 1 }});
     }
   },
-    increasePostClicks: function(postId, sessionId){
+
+  increasePostClicks: function(postId, sessionId){
     this.unblock();
 
     // only let clients increment a post's click counter once per session
@@ -434,6 +470,7 @@ Meteor.methods({
       Posts.update(postId, { $inc: { clickCount: 1 }});
     }
   },
+
   deletePostById: function(postId) {
     // remove post comments
     // if(!this.isSimulation) {
@@ -448,4 +485,5 @@ Meteor.methods({
     Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
     Posts.remove(postId);
   }
+
 });

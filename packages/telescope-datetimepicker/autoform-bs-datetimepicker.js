@@ -4,7 +4,7 @@ AutoForm.addInputType("bootstrap-datetimepicker", {
     // var val = this.datepicker('getUTCDate');
     if (!!this.data("DateTimePicker").getDate()) {
       var val = this.data("DateTimePicker").getDate().toDate();
-      console.log(val)
+      // console.log(val)
       return (val instanceof Date) ? val : this.val();
     }
   },

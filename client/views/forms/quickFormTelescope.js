@@ -86,7 +86,7 @@ Template[getTemplate('quickForm_telescope')].helpers({
   }
 });
 
-Template["afFormGroup_settings"].helpers({
+Template["afFormGroup_telescope"].helpers({
   afFieldInputAtts: function () {
     var atts = _.clone(this.afFieldInputAtts || {});
     if ('input-col-class' in atts) {
@@ -123,7 +123,7 @@ Template["afFormGroup_settings"].helpers({
   }
 });
 
-Template["afObjectField_settings"].helpers({
+Template["afObjectField_telescope"].helpers({
   rightColumnClass: function () {
     var atts = this.atts || {};
     return atts['input-col-class'] || "";
@@ -141,7 +141,7 @@ Template["afObjectField_settings"].helpers({
   },
 });
 
-Template["afArrayField_settings"].helpers({
+Template["afArrayField_telescope"].helpers({
   rightColumnClass: function () {
     var atts = this.atts || {};
     return atts['input-col-class'] || "";

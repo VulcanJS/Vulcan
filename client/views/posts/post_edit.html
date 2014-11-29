@@ -1,4 +1,9 @@
 <template name="post_edit">
+
+  <div class="grid grid-module">
+    {{> quickForm collection="Posts" doc=post id="editPostForm" template="telescope" label-class="control-label" input-col-class="controls"}}
+  </div>
+  <!-- 
   <div class="grid submit">
     {{#with post}}
       <form class="grid-block form-horizontal">
@@ -90,5 +95,5 @@
         </div>
       </form>
     {{/with}}
-  </div>
+  </div> -->
 </template>

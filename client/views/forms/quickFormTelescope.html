@@ -2,13 +2,13 @@
   {{#autoForm qfAutoFormContext}}
 
     <div class='no-fieldset'>
-      {{> afQuickFields fields=fieldsWithNoFieldset omitFields=../atts.omitFields template="settings" input-col-class=inputClass label-class=labelClass}}
+      {{> afQuickFields fields=fieldsWithNoFieldset omitFields=../atts.omitFields template="telescope" input-col-class=inputClass label-class=labelClass}}
     </div>
     
     {{#each afFieldsets}}
       <fieldset>
         <h3 class="fieldset-heading">{{this}}</h3>
-        {{> afQuickFields fields=fieldsForFieldset template="settings" input-col-class=inputClass label-class=labelClass}}
+        {{> afQuickFields fields=fieldsForFieldset template="telescope" input-col-class=inputClass label-class=labelClass}}
       </fieldset>
     {{/each}}
     
@@ -30,7 +30,7 @@
   {{/autoForm}}
 </template>
 
-<template name="afFormGroup_settings">
+<template name="afFormGroup_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
       <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
@@ -45,7 +45,7 @@
   {{/if}}
 </template>
 
-<template name="afObjectField_settings">
+<template name="afObjectField_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
       <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
@@ -60,7 +60,7 @@
   {{/if}}
 </template>
 
-<template name="afArrayField_settings">
+<template name="afArrayField_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
       <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
@@ -96,7 +96,7 @@
   {{/if}}
 </template>
 
-<template name="afCheckbox_settings">
+<template name="afCheckbox_telescope">
   <div class="checkbox">
     <label>
       <input type="checkbox" value="{{this.value}}" {{atts}} />aaaa
