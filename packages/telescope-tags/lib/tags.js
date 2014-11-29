@@ -1,3 +1,4 @@
+// category schema
 categorySchema = new SimpleSchema({
  _id: {
     type: String,
@@ -19,11 +20,15 @@ Categories = new Meteor.Collection("categories", {
   schema: categorySchema
 });
 
+// we want to wait until categories are all loaded to load the rest of the app
+preloadSubscriptions.push('categories');
+
 // category post list parameters
-viewParameters.category = function (terms) { 
+viewParameters.category = function (terms) {
+  var categoryId = Categories.findOne({slug: terms.category})._id;
   return {
-    find: {'categories.slug': terms.category},
-    options: {sort: {sticky: -1, score: -1}}
+    find: {'categories': {$in: [categoryId]}} ,
+    options: {sort: {sticky: -1, score: -1}} // for now categories views default to the "top" view
   };
 }
 
