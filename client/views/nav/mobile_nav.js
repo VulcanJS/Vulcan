@@ -25,10 +25,6 @@ Template[getTemplate('mobile_nav')].events({
   }
 });
 
-Template[getTemplate('mobile_nav')].rendered = function () {
-  $('.mobile-nav .dropdown-menu').hide();
-};
-
 Template[getTemplate('mobile_nav')].events({
   'click .dropdown-top-level': function (e) {
     e.preventDefault();
