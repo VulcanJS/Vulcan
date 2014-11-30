@@ -10,6 +10,11 @@ Template[getTemplate('post_item')].created = function () {
 };
 
 Template[getTemplate('post_item')].helpers({
+
+  aboveLargePostModules: function () {
+    return filteredModules('aboveLarge');
+  },
+
   leftPostModules: function () {
     return filteredModules('left');
   },

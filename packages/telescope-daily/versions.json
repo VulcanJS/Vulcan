@@ -5,12 +5,64 @@
       "1.1.2"
     ],
     [
+      "accounts-facebook",
+      "1.0.2"
+    ],
+    [
+      "accounts-oauth",
+      "1.1.2"
+    ],
+    [
+      "accounts-password",
+      "1.0.4"
+    ],
+    [
+      "accounts-twitter",
+      "1.0.2"
+    ],
+    [
+      "accounts-ui",
+      "1.1.3"
+    ],
+    [
+      "accounts-ui-unstyled",
+      "1.1.4"
+    ],
+    [
+      "aldeed:autoform",
+      "4.0.2"
+    ],
+    [
+      "aldeed:collection2",
+      "2.2.0"
+    ],
+    [
+      "aldeed:simple-schema",
+      "1.1.0"
+    ],
+    [
       "application-configuration",
       "1.0.3"
     ],
     [
+      "artwells:queue",
+      "0.0.3"
+    ],
+    [
+      "autoupdate",
+      "1.1.3"
+    ],
+    [
+      "backbone",
+      "1.0.0"
+    ],
+    [
       "base64",
       "1.0.1"
+    ],
+    [
+      "bengott:avatar",
+      "0.6.0"
     ],
     [
       "binary-heap",
@@ -33,6 +85,10 @@
       "1.0.1"
     ],
     [
+      "ccan:cssreset",
+      "1.0.0"
+    ],
+    [
       "check",
       "1.0.2"
     ],
@@ -41,8 +97,28 @@
       "1.1.0"
     ],
     [
+      "chuangbo:marked",
+      "0.3.5"
+    ],
+    [
+      "cmather:handlebars-server",
+      "2.0.0"
+    ],
+    [
       "coffeescript",
       "1.0.4"
+    ],
+    [
+      "ctl",
+      "1.0.2"
+    ],
+    [
+      "ctl-helper",
+      "1.0.4"
+    ],
+    [
+      "dcsan:flashcard",
+      "0.0.1"
     ],
     [
       "ddp",
@@ -53,15 +129,39 @@
       "1.0.5"
     ],
     [
+      "djedi:sanitize-html",
+      "1.3.0"
+    ],
+    [
       "ejson",
       "1.0.4"
+    ],
+    [
+      "email",
+      "1.0.4"
+    ],
+    [
+      "facebook",
+      "1.1.2"
+    ],
+    [
+      "fastclick",
+      "1.0.1"
     ],
     [
       "follower-livedata",
       "1.0.2"
     ],
     [
+      "fourseven:scss",
+      "1.0.0"
+    ],
+    [
       "geojson-utils",
+      "1.0.1"
+    ],
+    [
+      "handlebars",
       "1.0.1"
     ],
     [
@@ -71,6 +171,10 @@
     [
       "htmljs",
       "1.0.2"
+    ],
+    [
+      "http",
+      "1.0.8"
     ],
     [
       "id-map",
@@ -109,12 +213,40 @@
       "1.0.3"
     ],
     [
+      "jparker:crypto-core",
+      "0.1.0"
+    ],
+    [
+      "jparker:crypto-md5",
+      "0.1.1"
+    ],
+    [
+      "jparker:gravatar",
+      "0.3.0"
+    ],
+    [
       "jquery",
       "1.0.1"
     ],
     [
       "json",
       "1.0.1"
+    ],
+    [
+      "kestanous:herald",
+      "1.1.3"
+    ],
+    [
+      "kestanous:herald-email",
+      "0.4.2"
+    ],
+    [
+      "launch-screen",
+      "1.0.0"
+    ],
+    [
+      "less",
+      "1.0.11"
     ],
     [
       "livedata",
@@ -129,11 +261,39 @@
       "1.0.5"
     ],
     [
+      "matb33:collection-hooks",
+      "0.7.6"
+    ],
+    [
       "meteor",
       "1.1.3"
     ],
     [
+      "meteor-platform",
+      "1.2.0"
+    ],
+    [
+      "meteorhacks:async",
+      "1.0.0"
+    ],
+    [
       "meteorhacks:fast-render",
+      "1.2.1"
+    ],
+    [
+      "meteorhacks:kadira",
+      "2.14.0"
+    ],
+    [
+      "meteorhacks:kadira-binary-deps",
+      "1.3.1"
+    ],
+    [
+      "meteorhacks:meteorx",
+      "1.2.0"
+    ],
+    [
+      "meteorhacks:npm",
       "1.2.1"
     ],
     [
@@ -149,6 +309,10 @@
       "1.0.5"
     ],
     [
+      "mobile-status-bar",
+      "1.0.1"
+    ],
+    [
       "mongo",
       "1.0.8"
     ],
@@ -157,12 +321,56 @@
       "1.0.6"
     ],
     [
+      "mrt:cookies",
+      "0.3.0"
+    ],
+    [
+      "mrt:jquery-hotkeys",
+      "0.0.1"
+    ],
+    [
+      "mrt:mailchimp",
+      "0.4.0"
+    ],
+    [
+      "mrt:moment",
+      "2.8.1"
+    ],
+    [
+      "npm-bcrypt",
+      "0.7.7"
+    ],
+    [
+      "npm-container",
+      "1.0.0"
+    ],
+    [
+      "oauth",
+      "1.1.2"
+    ],
+    [
+      "oauth1",
+      "1.1.2"
+    ],
+    [
+      "oauth2",
+      "1.1.1"
+    ],
+    [
       "observe-sequence",
       "1.0.3"
     ],
     [
       "ordered-dict",
       "1.0.1"
+    ],
+    [
+      "percolatestudio:synced-cron",
+      "1.0.0"
+    ],
+    [
+      "rajit:bootstrap3-datepicker",
+      "1.3.1"
     ],
     [
       "random",
@@ -177,12 +385,24 @@
       "1.0.3"
     ],
     [
+      "reload",
+      "1.1.1"
+    ],
+    [
       "retry",
       "1.0.1"
     ],
     [
       "routepolicy",
       "1.0.2"
+    ],
+    [
+      "sacha:juice",
+      "0.1.0"
+    ],
+    [
+      "sacha:spin",
+      "2.0.4"
     ],
     [
       "service-configuration",
@@ -193,12 +413,36 @@
       "1.0.4"
     ],
     [
+      "sha",
+      "1.0.1"
+    ],
+    [
+      "softwarerero:accounts-t9n",
+      "1.0.2"
+    ],
+    [
       "spacebars",
       "1.0.3"
     ],
     [
       "spacebars-compiler",
       "1.0.3"
+    ],
+    [
+      "spiderable",
+      "1.0.5"
+    ],
+    [
+      "srp",
+      "1.0.1"
+    ],
+    [
+      "standard-app-packages",
+      "1.0.3"
+    ],
+    [
+      "stylus",
+      "1.0.5"
     ],
     [
       "tap:http-methods",
@@ -209,16 +453,72 @@
       "1.2.1"
     ],
     [
+      "telescope-api",
+      "0.0.0"
+    ],
+    [
       "telescope-base",
       "0.0.0"
+    ],
+    [
+      "telescope-daily",
+      "0.0.0"
+    ],
+    [
+      "telescope-email",
+      "0.2.9"
     ],
     [
       "telescope-i18n",
       "0.0.0"
     ],
     [
+      "telescope-kadira",
+      "0.1.0"
+    ],
+    [
       "telescope-lib",
       "0.2.9"
+    ],
+    [
+      "telescope-module-embedly",
+      "0.2.9"
+    ],
+    [
+      "telescope-module-share",
+      "0.0.0"
+    ],
+    [
+      "telescope-newsletter",
+      "0.1.0"
+    ],
+    [
+      "telescope-notifications",
+      "0.1.0"
+    ],
+    [
+      "telescope-rss",
+      "0.0.0"
+    ],
+    [
+      "telescope-search",
+      "0.0.0"
+    ],
+    [
+      "telescope-tags",
+      "0.0.0"
+    ],
+    [
+      "telescope-theme-base",
+      "0.0.0"
+    ],
+    [
+      "telescope-theme-hubble",
+      "0.0.0"
+    ],
+    [
+      "telescope-update-prompt",
+      "0.1.0"
     ],
     [
       "templating",
@@ -229,12 +529,28 @@
       "1.0.3"
     ],
     [
+      "twitter",
+      "1.1.2"
+    ],
+    [
       "ui",
       "1.0.4"
     ],
     [
       "underscore",
       "1.0.1"
+    ],
+    [
+      "url",
+      "1.0.2"
+    ],
+    [
+      "useraccounts:core",
+      "1.2.3"
+    ],
+    [
+      "useraccounts:unstyled",
+      "1.2.3"
     ],
     [
       "webapp",
