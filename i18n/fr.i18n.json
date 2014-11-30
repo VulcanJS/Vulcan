@@ -63,7 +63,7 @@
   "extras": "Extras",
   "colors": "Couleurs",
   "integrations": "Intégrations",
-  
+
   // Settings Help Text
 
   //Post Schema
@@ -88,7 +88,7 @@
   "sticky": "Mis en Avant",
   "inactive": "Inactif",
   "author": "Auteur",
-  "userId": "ID Utilisateur",
+  "userId": "Utilisateur",
 
   //Commments
   "your_comment_has_been_deleted": "Votre commentaire a été supprimé.",

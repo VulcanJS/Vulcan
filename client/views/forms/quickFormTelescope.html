@@ -9,7 +9,7 @@
     
     {{#each afFieldsets}}
       <fieldset>
-        <h3 class="fieldset-heading">{{_ this}}</h3>
+        <h3 class="fieldset-heading">{{fieldsetName}}</h3>
         {{> afQuickFields fields=fieldsForFieldset template="telescope" input-col-class=inputClass label-class=labelClass}}
       </fieldset>
     {{/each}}

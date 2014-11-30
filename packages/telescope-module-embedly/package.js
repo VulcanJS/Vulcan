@@ -39,6 +39,7 @@ Package.onUse( function(api) {
   ], ['client']);
 
   api.add_files([
-    "i18n/en.i18n.json"
+    "i18n/en.i18n.json",
+    "i18n/fr.i18n.json"
   ], ["client", "server"]);
 });
