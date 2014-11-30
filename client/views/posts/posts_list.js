@@ -1,6 +1,12 @@
 Template[getTemplate('posts_list')].helpers({
+  before_post_item: function () {
+    return getTemplate('before_post_item');
+  },
   post_item: function () {
     return getTemplate('post_item');
+  },
+  after_post_item: function () {
+    return getTemplate('after_post_item');
   },
   posts : function () {
     if(this.postsList){ // XXX
