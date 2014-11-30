@@ -83,6 +83,7 @@
 		}
 	}
 }
+
 .search{
 	position: relative;
 	.search-field{
@@ -107,9 +108,6 @@
 			&:focus{
 				background: white;
 			}
-		}
-		.search-clear{
-			display: none;
 		}
 	}
 }
