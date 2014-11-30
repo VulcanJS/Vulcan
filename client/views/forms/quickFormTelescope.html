@@ -9,7 +9,7 @@
     
     {{#each afFieldsets}}
       <fieldset>
-        <h3 class="fieldset-heading">{{this}}</h3>
+        <h3 class="fieldset-heading">{{_ this}}</h3>
         {{> afQuickFields fields=fieldsForFieldset template="telescope" input-col-class=inputClass label-class=labelClass}}
       </fieldset>
     {{/each}}
@@ -35,7 +35,7 @@
 <template name="afFormGroup_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
+      <label class="control-label">{{_ this.atts.name}}</label>
       <div class="{{rightColumnClass}}">
         {{> afFieldInput afFieldInputAtts}}
         {{#if afFieldInstructions}}
@@ -50,7 +50,7 @@
 <template name="afObjectField_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
+      <label class="control-label">{{_ this.atts.name}}</label>
       <div class="{{rightColumnClass}}">
         <div class="panel panel-default autoform-padding-fix">
           <div class="panel-body">
@@ -65,7 +65,7 @@
 <template name="afArrayField_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      <label class="control-label">{{afFieldLabelText name=this.atts.name}}</label>
+      <label class="control-label">{{_ this.atts.name}}</label>
       <div class="{{rightColumnClass}}">
         <div class="panel panel-default autoform-padding-fix">
           {{#if afFieldIsInvalid name=this.atts.name}}

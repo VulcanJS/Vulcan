@@ -39,9 +39,6 @@ Template[getTemplate('quickForm_telescope')].helpers({
   },  
   afFieldsets: function () {
     var groups = _.compact(_.uniq(_.pluckDeep(getSchema(), 'autoform.group')));
-    groups = groups.map(function (group) {
-      return capitalise(group);
-    });
     return groups;
   },
   fieldsForFieldset: function () {
