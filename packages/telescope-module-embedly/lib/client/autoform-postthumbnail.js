@@ -32,8 +32,15 @@ Template.afPostThumbnail.rendered = function () {
     var url = $urlField.val();
     if (!!url) {
       $thumbnailContainer.addClass('loading');
+      clearSeenErrors();
       console.log('getting embedly data for '+url);
       Meteor.call('getEmbedlyData', url, function (error, data) {
+        if (error) {
+          console.log(error)
+          throwError(error.reason);
+          $thumbnailContainer.removeClass('loading');
+          return
+        }
         if (data) {
           $img.attr('src', data.thumbnailUrl);
           $thumbnailUrlField.val(data.thumbnailUrl);

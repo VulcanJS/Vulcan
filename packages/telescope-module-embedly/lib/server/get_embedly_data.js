@@ -4,12 +4,12 @@ getEmbedlyData = function (url) {
   var embedlyKey = getSetting('embedlyKey');
   var thumbnailWidth = getSetting('thumbnailWidth', 200);
   var thumbnailHeight = getSetting('thumbnailHeight', 125);
+
+  if(!embedlyKey)
+    throw new Meteor.Error("Couldn't find an Embedly API key! Please add it to your Telescope settings.")  
   
   try {
     
-    if(!embedlyKey)
-      throw new Error("Couldn't find an Embedly API key! Please add it to your Telescope settings.")
-
     var result = Meteor.http.get(extractBase, {
       params: {
         key: embedlyKey,
@@ -22,12 +22,16 @@ getEmbedlyData = function (url) {
 
     // console.log(result)
 
-    result.data.thumbnailUrl = result.data.images[0].url; // add thumbnailUrl as its own property
+    if (!!result.data.images && !!result.data.images.length) // there may not always be an image
+      result.data.thumbnailUrl = result.data.images[0].url; // add thumbnailUrl as its own property
 
     return _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl');
 
   } catch (error) {
     console.log(error)
+    // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
+    var errorObject = JSON.parse(error.message.substring(13));
+    throw new Meteor.Error(errorObject.error_code, errorObject.error_message);
     return null;
   }
 }
