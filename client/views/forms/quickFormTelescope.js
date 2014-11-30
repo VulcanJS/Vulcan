@@ -25,10 +25,15 @@ var canEditField = function (field) {
 
 Template[getTemplate('quickForm_telescope')].helpers({
   fieldsWithNoFieldset: function () {
-    // get names of fields who don't have an autoform attribute or don't have a group
+    // get names of fields who don't have an autoform attribute or don't have a group, but are not omitted
     var fields = _.pluck(_.filter(getSchema(), function (field, key) {
-      // filter out fields with "$" in their name
-      return (field.name.indexOf('$') === -1) && (!field.autoform || !field.autoform.group); // TODO: find cleaner solution
+      if (field.name.indexOf('$') !== -1) // filter out fields with "$" in their name
+        return false
+      if (field.autoform && field.autoform.omit) // filter out fields with omit = true
+        return false
+      if (field.autoform && field.autoform.group) // filter out fields with a group
+        return false
+      return true // return remaining fields
     }), 'name');
     return fields;
   },  

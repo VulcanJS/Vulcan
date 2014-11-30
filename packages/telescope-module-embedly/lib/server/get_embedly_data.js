@@ -2,7 +2,9 @@ getEmbedlyData = function (url) {
   var data = {}
   var extractBase = 'http://api.embed.ly/1/extract';
   var embedlyKey = getSetting('embedlyKey');
-
+  var thumbnailWidth = getSetting('thumbnailWidth', 200);
+  var thumbnailHeight = getSetting('thumbnailHeight', 125);
+  
   try {
     
     if(!embedlyKey)
@@ -12,8 +14,8 @@ getEmbedlyData = function (url) {
       params: {
         key: embedlyKey,
         url: url,
-        image_width: 200,
-        image_height: 150,
+        image_width: thumbnailWidth,
+        image_height: thumbnailHeight,
         image_method: 'crop'
       }
     });

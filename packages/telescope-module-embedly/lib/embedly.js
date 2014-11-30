@@ -42,3 +42,27 @@ var embedlyKeyProperty = {
   }
 }
 addToSettingsSchema.push(embedlyKeyProperty);
+
+var thumbnailWidthProperty = {
+  propertyName: 'thumbnailWidth',
+  propertySchema: {
+    type: Number,
+    optional: true,
+    autoform: {
+      group: 'embedly'
+    }
+  }
+}
+addToSettingsSchema.push(thumbnailWidthProperty);
+
+var thumbnailHeightProperty = {
+  propertyName: 'thumbnailHeight',
+  propertySchema: {
+    type: Number,
+    optional: true,
+    autoform: {
+      group: 'embedly'
+    }
+  }
+}
+addToSettingsSchema.push(thumbnailHeightProperty);

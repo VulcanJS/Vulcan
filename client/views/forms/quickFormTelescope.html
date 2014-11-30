@@ -2,7 +2,9 @@
   {{#autoForm qfAutoFormContext}}
 
     <div class='no-fieldset'>
-      {{> afQuickFields fields=fieldsWithNoFieldset omitFields=../atts.omitFields template="telescope" input-col-class=inputClass label-class=labelClass}}
+      {{#each fieldsWithNoFieldset}}
+        {{> afQuickField name=this template="telescope" input-col-class=inputClass label-class=labelClass}}
+      {{/each}}
     </div>
     
     {{#each afFieldsets}}
