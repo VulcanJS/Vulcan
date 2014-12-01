@@ -35,7 +35,8 @@ PostsDailyController = RouteController.extend({
     return {
       days: this.days
     };
-  }
+  },
+  fastRender: true
 });
 
 Meteor.startup(function () {
