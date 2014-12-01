@@ -42,11 +42,19 @@ Template.afPostThumbnail.rendered = function () {
           return
         }
         if (data) {
+
+          // set thumbnail and fill in thumbnailUrl field
           $img.attr('src', data.thumbnailUrl);
           $thumbnailUrlField.val(data.thumbnailUrl);
-          $titleField.val(data.title);
-          $bodyField.val(data.description);
+
+          // remove loading class
           $thumbnailContainer.removeClass('loading');
+
+          if (!$titleField.val()) // if title field is empty, fill in title
+            $titleField.val(data.title);
+          if (!$bodyField.val()) // if body field is empty, fill in body
+            $bodyField.val(data.description);
+          
         }
       });
     }
