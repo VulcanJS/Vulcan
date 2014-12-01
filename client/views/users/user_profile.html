@@ -43,7 +43,7 @@
 				{{/if}}
 			</table>
 			{{#if canEditProfile}}
-				<a class="button inline" href="/users/{{slug}}/edit">{{_ "edit_profile"}}</a>
+				<a class="button inline" href="{{pathFor route='user_edit' slug=slug}}">{{_ "edit_profile"}}</a>
 			{{/if}}
 			{{#if canInvite}}
 				{{#if inviteCount}}

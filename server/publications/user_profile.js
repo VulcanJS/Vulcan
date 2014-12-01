@@ -26,7 +26,7 @@ Meteor.publish('userProfile', function(userIdOrSlug) {
 
     // add downvoted comments ids
     var commentsIds = commentsIds.concat(_.pluck(user.votes.downvotedComments, 'itemId'));
-      
+
     // add commented posts ids
     if(!!userComments.count()){ // there might not be any comments
       var commentedPostIds = _.pluck(userComments.fetch(), 'postId');
