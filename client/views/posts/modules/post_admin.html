@@ -4,12 +4,12 @@
       {{#if postsMustBeApproved}}
         |
         {{#if isApproved}}
-          <a href="#" class="unapprove-link goto-edit">Unapprove</a>
+          <a href="#" class="unapprove-link goto-edit">{{_ "unapprove"}}</a>
         {{else}}
-          <a href="#" class="approve-link goto-edit">Approve</a>
+          <a href="#" class="approve-link goto-edit">{{_ "approve"}}</a>
         {{/if}}
       {{/if}}
-      | {{i18n "score"}}: {{shortScore}}, {{i18n "clicks"}}: {{clicks}}
+      | {{_ "score"}}: {{shortScore}}, {{_ "clicks"}}: {{clickCount}}, {{_ "views"}}: {{viewCount}}
     </div>
   {{/if}}
 </template>

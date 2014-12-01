@@ -4,7 +4,6 @@ defaultFrequency = 7; // once a week
 
 getSchedule = function (parser) {
   var frequency = getSetting('newsletterFrequency', defaultFrequency);
-  console.log(frequency)
   switch (frequency) {
     case 1: // every day
     // sched = {schedules: [{dw: [1,2,3,4,5,6,0]}]};
@@ -30,7 +29,7 @@ getSchedule = function (parser) {
 SyncedCron.getNext = function (jobName) {
   var scheduledAt;
   try {
-    this._entries.some(function(entry) {
+    _.some(this._entries, function(entry) {
       if(entry.name === jobName){
         var schedule = entry.schedule(Later.parse);
         scheduledAt = Later.schedule(schedule).next(1);

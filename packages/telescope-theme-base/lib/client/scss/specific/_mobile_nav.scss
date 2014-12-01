@@ -23,12 +23,12 @@ $mobile-nav-width: 200px;
   bottom: 0px;
   background:#444;
   color:white;
-  @include box-shadow(inset -3px 0px 7px black(0.5));
+  box-shadow: inset -3px 0px 7px black(0.5);
   z-index: 100;
 }
 
 .mobile-nav, .inner-wrapper{
-  @include single-transition(all, 300ms, ease-out, 0ms);
+  transition: all, 300ms, ease-out, 0ms;
 }
 
 .inner-wrapper{
@@ -100,6 +100,7 @@ $mobile-nav-width: 200px;
     padding: 10px;
   }
   .dropdown-menu{
+    display: none;
     background: #333;
     li{
       padding: 10px;

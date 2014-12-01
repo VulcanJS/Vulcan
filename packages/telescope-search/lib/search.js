@@ -26,12 +26,8 @@ Meteor.startup(function() {
 // search post list parameters
 viewParameters.search = function (terms, baseParameters) {
   // if query is empty, just return parameters that will result in an empty collection
-  if(typeof terms.query == 'undefined' || !terms.query)
+  if(typeof terms.query === 'undefined' || !terms.query)
     return {find:{_id: 0}}
-
-  // log current search in the db
-  if(Meteor.isServer)
-    logSearch(terms.query);
 
   var parameters = deepExtend(true, baseParameters, {
     find: {

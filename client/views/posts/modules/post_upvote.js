@@ -16,7 +16,7 @@ Template[getTemplate('postUpvote')].events({
     e.preventDefault();
     if(!Meteor.user()){
       Router.go(getSigninUrl());
-      throwError(i18n.t("Please log in first"));
+      throwError(i18n.t("please_log_in_first"));
     }
     Meteor.call('upvotePost', post, function(error, result){
       trackEvent("post upvoted", {'_id': post._id});

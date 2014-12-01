@@ -3,30 +3,30 @@
     {{#with post}}
       <form class="grid-block form-horizontal">
         <div class="control-group">
-          <label class="control-label post-form-headline">{{i18n "Created"}}</label>
+          <label class="control-label post-form-headline">{{_ "created"}}</label>
           <div class="controls"><p>{{created}}</p></div>
         </div>
         <div class="control-group">
-          <label class="control-label post-form-headline">{{i18n "Title"}}</label>
+          <label class="control-label post-form-headline">{{_ "title"}}</label>
           <div class="controls"><input id="title" type="text" value="{{title}}" /></div>
         </div>
         <div class="control-group">
-          <label class="control-label post-form-url">{{i18n "URL"}}</label>
+          <label class="control-label post-form-url">{{_ "url"}}</label>
           <div class="controls"><input id="url" type="text" value="{{url}}" /></div>
         </div>
         {{#if shorten}}
         <div class="control-group">
-          <label class="control-label post-form-url">{{i18n "Short URL"}}</label>
+          <label class="control-label post-form-url">{{_ "short_url"}}</label>
           <div class="controls"><input id="short-url" type="text" value="{{shortUrl}}" /></div>
         </div>
         {{/if}}
         <div class="control-group">
-          <label class="control-label post-form-body">{{i18n "Body"}}</label>
+          <label class="control-label post-form-body">{{_ "body"}}</label>
           <div class="controls" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
         </div>
         {{#if categoriesEnabled}}
         <div class="control-group post-form-category">
-          <label class="control-label">{{i18n "Categories"}}</label>
+          <label class="control-label">{{_ "categories"}}</label>
           <div class="controls">
             {{#each categories}}
             <label class="radio inline">
@@ -38,19 +38,19 @@
         {{/if}}
         {{#if isAdmin}}
           <div class="control-group post-form-sticky">
-            <label class="control-label">{{i18n "Inactive?"}}</label>
+            <label class="control-label">{{_ "inactive_"}}</label>
             <div class="controls">
               {{inactive}}
             </div>
           </div>
           <div class="control-group post-form-sticky">
-            <label class="control-label">{{i18n "Sticky?"}}</label>
+            <label class="control-label">{{_ "sticky_"}}</label>
             <div class="controls">
               <input type="checkbox" name="sticky" id="sticky" {{isSticky}} />
             </div>
           </div>
           <div class="control-group post-form-user">
-            <label class="control-label">{{i18n "User"}}</label>
+            <label class="control-label">{{_ "user"}}</label>
             <div class="controls">
               <select id="postUser">
                 {{#each users}}
@@ -60,33 +60,33 @@
             </div>
           </div>
           <div class="control-group post-form-status">
-            <label class="control-label">{{i18n "Status"}}</label>
+            <label class="control-label">{{_ "status_"}}</label>
             <div class="controls">
               <label class="radio inline">
-                <input id="status_pending" type="radio" value="1" name="status" {{hasStatusPending}} /> {{i18n "Pending"}}
+                <input id="status_pending" type="radio" value="1" name="status" {{hasStatusPending}} /> {{_ "pending"}}
               </label>
               <label class="radio inline">
-                <input id="status_approved" type="radio" value="2" name="status" {{hasStatusApproved}} /> {{i18n "Approved"}}
+                <input id="status_approved" type="radio" value="2" name="status" {{hasStatusApproved}} /> {{_ "approved"}}
               </label>
               <label class="radio inline">  
-                <input id="status_rejected" type="radio" value="3" name="status" {{hasStatusRejected}} /> {{i18n "Rejected"}}
+                <input id="status_rejected" type="radio" value="3" name="status" {{hasStatusRejected}} /> {{_ "rejected"}}
               </label>
             </div>
           </div>
           <div id="postedAt" class={{showPostedAt}}>
             <div class="control-group">
-              <label class="control-label post-form-date">{{i18n "Posted Date"}}</label>
+              <label class="control-label post-form-date">{{_ "posted_date"}}</label>
               <div class="controls"><input id="postedAtDate" type="text" value="{{postedAtDate}}" /></div>
             </div>
             <div class="control-group">
-              <label class="control-label post-form-time">{{i18n "Posted Time"}}</label>
+              <label class="control-label post-form-time">{{_ "posted_time"}}</label>
               <div class="controls"><input id="postedAtTime" type="text" value="{{postedAtTime}}" /></div>
             </div>
           </div>
         {{/if}}
         <div class="form-actions">
-          <a class="delete-link" href="/posts/deleted">{{i18n "Delete Post"}}</a>
-          <input type="submit" class="button" value="{{i18n "Submit"}}" />
+          <a class="delete-link" href="/posts/deleted">{{_ "delete_post"}}</a>
+          <input type="submit" class="button" value="{{_ "submit"}}" />
         </div>
       </form>
     {{/with}}

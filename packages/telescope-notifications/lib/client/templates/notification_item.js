@@ -1,7 +1,4 @@
 Template[getTemplate('notificationItem')].helpers({
-  niceTime: function(){
-    return moment(this.timestamp).fromNow();
-  },
   properties: function(){
     return this.data;
   },

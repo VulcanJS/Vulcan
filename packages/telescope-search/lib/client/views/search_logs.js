@@ -14,7 +14,7 @@ Meteor.startup(function () {
 
       return Searches.find({
         timestamp: {
-          $gte: after, 
+          $gte: after,
           $lt: before
         }
       }).count();
@@ -22,9 +22,9 @@ Meteor.startup(function () {
     isNewDate: function () {
       return (typeof currentDate === 'undefined') ? true : (currentDate !== moment(this.timestamp).format("MMMM DD"));
     },
-    loadMoreUrl: function(){
+    loadMoreUrl: function() {
       var count = parseInt(Session.get('logsLimit')) + 100;
       return '/logs/' + count;
-    },  
+    },
   });
 });

@@ -25,3 +25,7 @@ scratch
 
 .deploy
 .deploy/*
+### Meteor template
+.meteor/local
+.meteor/meteorite
+mup.json

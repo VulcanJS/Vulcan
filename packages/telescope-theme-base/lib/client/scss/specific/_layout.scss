@@ -1,6 +1,6 @@
 *, *:before, *:after {
-  @include box-sizing(border-box);
-  line-height: 1.5;  
+  box-sizing: border-box;
+  line-height: 1.5;
 }
 
 html, body, .outer-wrapper{

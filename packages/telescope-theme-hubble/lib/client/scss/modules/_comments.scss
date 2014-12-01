@@ -1,15 +1,15 @@
 .queue-container{
 	position:relative;
 	height:0px;
-	@include single-transition(ease-out, opacity, 400ms, 0ms);	
+	transition: ease-out, opacity, 400ms, 0ms;
 	ul{
 		position:absolute;
 		// right:0;
 		margin-left:100%;
 		left:10px;
 		top:-30px;
-		// @include box-shadow(0 1px 1px black(0.15));
-		@include border-radius(3px);
+		// box-shadow: 0 1px 1px black(0.15);
+		border-radius: 3px;
 		background: black(0.05);
 		padding:10px 0 0 10px;
 		max-width:120px;
@@ -37,7 +37,7 @@
 			height:30px;
 			width:30px;
 			background:$red;
-			@include border-radius(100px);
+			border-radius: 100px;
 			line-height:30px;
 			text-align:center;
 			position:relative;
@@ -50,7 +50,7 @@
 				display:block;
 				height:30px;
 				width:30px;
-				@include border-radius(100px);
+				border-radius: 100px;
 				background-size: 30px 30px;
 				// @extend .has-tooltip;
 			}
@@ -60,7 +60,7 @@
 			// @extend .grid-block;
 			// display:block;
 			// padding:3px 8px;
-			
+
 			// white-space:nowrap;
 
 			// font-size:14px;
@@ -73,7 +73,7 @@
 	padding: 0;
 	background: none;
 	.comment-body{
-		@include single-transition(ease-out, opacity, 600ms, 0ms);
+		transition: ease-out, opacity, 600ms, 0ms;
 		opacity:1;
 	}
 	&.comment-queued{
@@ -128,21 +128,21 @@
 .comment-content{
 	position:relative;
 	@extend .grid-block;
-	@include border-radius(0 3px 3px 3px);
+	border-radius: 0 3px 3px 3px;
 	font-size:14px;
 	.comment-main{
 		margin-left:50px;
 	}
 	.user-avatar{
-		@include border-radius(100px);
+		border-radius: 100px;
 		overflow:hidden;
 		position:block;
 		float:left;
-		img{
-			height:40px;
-			width:40px;
-			display:block;
-		}
+		// img{
+		//	height:40px;
+		//	width:40px;
+		//	display:block;
+		// }
 	}
 }
 .comment-meta{
@@ -175,19 +175,19 @@
 	left:-30px;
 	top:0px;
 	a{
-		@include border-radius(0 0 0 3px);
+		border-radius: 0 0 0 3px;
 		position:relative;
 		display:block;
 		height:30px;
 		width:30px;
 		// background:$light-blue;
 		background:white;
-		@include box-shadow(0 1px 1px black(0.15));
+		box-shadow: 0 1px 1px black(0.15);
 		overflow:hidden;
 		@include hide-text;
 		// border-right:1px solid $lightest-grey;
 		&.upvote{
-			@include border-radius(3px 0 0 0);
+			border-radius: 3px 0 0 0;
 			margin-bottom:1px;
 		}
 		i{
