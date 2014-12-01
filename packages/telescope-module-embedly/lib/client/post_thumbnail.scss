@@ -77,13 +77,23 @@
   line-height: 40px;
 }
 
+.post-thumbnail-container{
+  position: relative;
+}
 .post-thumbnail-preview{
   background: #eee;  
 }
 
 .post-thumbnail-loading{
   display: none;
+  position: absolute;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
   .loading & {
+    background: rgba(255,255,255,0.4);
     display: block;
   }
 }
