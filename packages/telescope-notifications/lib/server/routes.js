@@ -6,7 +6,7 @@ Meteor.startup(function () {
     name: 'notification',
     where: 'server',
     action: function() {
-      var notification = Notifications.findOne(this.params.id);
+      var notification = Herald.collection.findOne(this.params.id);
       var notificationContents = buildEmailNotification(notification);
       this.response.write(notificationContents.html);
       this.response.end();
