@@ -64,7 +64,7 @@ telescope-search
 telescope-tags
 telescope-theme-hubble
 telescope-email
-telescope-module-embedly
+telescope-embedly
 telescope-newsletter
 telescope-daily
 telescope-update-prompt
@@ -76,3 +76,4 @@ telescope-notifications
 useraccounts:unstyled
 telescope-datetimepicker
 tsega:bootstrap3-datetimepicker@3.1.3_1
+
