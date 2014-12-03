@@ -1,8 +1,7 @@
 Package.describe({
   name: 'telescope-datetimepicker',
-  summary: 'Custom bootstrap-datepicker input type for AutoForm',
+  summary: 'Custom bootstrap-datetimepicker input type for AutoForm',
   version: '1.0.3',
-  git: 'https://github.com/aldeed/meteor-autoform-bs-datepicker.git'
 });
 
 Package.onUse(function(api) {
@@ -12,7 +11,7 @@ Package.onUse(function(api) {
   api.use('fourseven:scss');
   // api.use('jquery');
   // api.use('tsega:bootstrap3-datetimepicker');
-  api.use('chriswessels:glyphicons-halflings');
+  // api.use('chriswessels:glyphicons-halflings');
 
   api.addFiles([
     'datetimepicker.scss',
