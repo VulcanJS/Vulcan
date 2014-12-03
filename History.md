@@ -3,6 +3,12 @@
 * Now using [Autoform](https://github.com/aldeed/meteor-autoform/)'s **quickform** feature to generate post submit and edit forms. 
 * Various fixes by [@anthonymayer](https://github.com/anthonymayer).
 * Now using [fourseven:scss](https://github.com/fourseven/meteor-scss) to directly compile SCSS files. 
+* Renamed `post` method to `submitPost`. 
+* Post editing now happens via a `postEdit` method.
+* Categories are now normalized (only the `_id` is stored on the post object, not the whole category object).
+* Refactored Embedly package; now fills in description as well (thanks [@kvindasAB](https://github.com/kvindasAB)!).
+* Thumbnail height and width are now customizable in settings panel.
+* Settings and Post forms now i18n'ized.
 
 ## v0.9.10 “i18nScope”
 
