@@ -29,18 +29,17 @@ Template[getTemplate('comment_edit')].events({
     });
 
     trackEvent("edit comment", {'postId': comment.postId, 'commentId': comment._id});
-    Router.go("/posts/"+comment.postId+"/comment/"+comment._id);
+    Router.go('post_page_comment', {_id: comment.postId, commentId: comment._id});
   },
   'click .delete-link': function(e){
     var comment = this;
 
     e.preventDefault();
-    
+
     if(confirm(i18n.t("are_you_sure"))){
       Meteor.call('removeComment', comment._id);
-      Router.go("/posts/"+comment.postId);
+      Router.go('post_page', {_id: comment.postId});
       throwError("Your comment has been deleted.");
-//      Router.go("/comments/deleted");
     }
   }
 });

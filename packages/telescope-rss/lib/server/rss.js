@@ -4,9 +4,9 @@ var getMeta = function(url) {
   return {
     title: getSetting('title'),
     description: getSetting('tagline'),
-    feed_url: Meteor.absoluteUrl()+url,
+    feed_url: Meteor.absoluteUrl(url),
     site_url: Meteor.absoluteUrl(),
-    image_url: Meteor.absoluteUrl()+'img/favicon.png',
+    image_url: Meteor.absoluteUrl('img/favicon.png'),
   };
 };
 
@@ -32,7 +32,7 @@ servePostRSS = function(view, url) {
 };
 
 serveCommentRSS = function() {
-  var feed = new RSS(getMeta('rss/comments.xml'));
+  var feed = new RSS(getMeta(Router.routes['rss_comments'].path()));
 
   Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
     post = Posts.findOne(comment.postId);

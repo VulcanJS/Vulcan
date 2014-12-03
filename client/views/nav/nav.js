@@ -28,7 +28,7 @@ Template[getTemplate('nav')].helpers({
   },
   logo_top: function(){
     return Math.floor((70-getSetting('logoHeight'))/2);
-  },  
+  },
   logo_offset: function(){
     return -Math.floor(getSetting('logoWidth')/2);
   },
@@ -43,30 +43,9 @@ Template[getTemplate('nav')].helpers({
   }
 });
 
-Template[getTemplate('nav')].rendered = function(){
-  if(!Meteor.loggingIn() && !Meteor.user()){
-    $('.login-link-text').text("Sign Up/Sign In");
-  }
-};
-
 Template[getTemplate('nav')].events({
-  'click #logout': function(e){
-    e.preventDefault();
-    Meteor.logout();
-  },
   'click .mobile-menu-button': function(e){
     e.preventDefault();
     $('body').toggleClass('mobile-nav-open');
-  },
-  'click .login-header': function(e){
-    e.preventDefault();
-    Router.go('/account');
-  },
-  'click #login-name-link': function(){
-    if(Meteor.user() && !$('account-link').exists()){
-      var $loginButtonsLogout = $('#login-buttons-logout');
-      $loginButtonsLogout.before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
-      $loginButtonsLogout.before('<a href="/account" class="account-link button">Edit Account</a>');
-    }
   }
 });

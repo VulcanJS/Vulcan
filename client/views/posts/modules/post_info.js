@@ -9,7 +9,7 @@ Template[getTemplate('postInfo')].helpers({
     return getAuthorName(this);
   },
   ago: function(){
-    // if post is approved show submission time, else show creation time. 
+    // if post is approved show submission time, else show creation time.
     time = this.status == STATUS_APPROVED ? this.postedAt : this.createdAt;
     return time;
   },
