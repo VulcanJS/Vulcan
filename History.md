@@ -1,3 +1,9 @@
+## v0.9.11 “FormScope”
+
+* Now using [Autoform](https://github.com/aldeed/meteor-autoform/)'s **quickform** feature to generate post submit and edit forms. 
+* Various fixes by [@anthonymayer](https://github.com/anthonymayer).
+* Now using [fourseven:scss](https://github.com/fourseven/meteor-scss) to directly compile SCSS files. 
+
 ## v0.9.10 “i18nScope”
 
 * Now using [tap:i18n](https://github.com/TAPevents/tap-i18n) for internationalization (thanks a ton to @theosp).
