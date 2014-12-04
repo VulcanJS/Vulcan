@@ -90,7 +90,7 @@ viewParameters.pending = function (terms) {
   return {
     find: {
       status: 1, 
-      postedAt: {$lte: null}
+      postedAt: {$lte: new Date("December 31, 2999")} // for pending view, show future posts too
     }, 
     options: {sort: {createdAt: -1}}
   };
