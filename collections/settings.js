@@ -72,7 +72,8 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'email',
-      instructions: 'The address all outgoing emails will be sent from.'
+      instructions: 'The address all outgoing emails will be sent from.',
+      private: true
     }
   },
   scoreUpdateInterval: {
@@ -81,7 +82,8 @@ settingsSchemaObject = {
     defaultValue: 30,
     autoform: {
       group: 'scoring',
-      instructions: 'How often to recalculate scores, in seconds (default to 30)'
+      instructions: 'How often to recalculate scores, in seconds (default to 30)',
+      private: true
     }
   },
   defaultView: {
@@ -278,7 +280,8 @@ settingsSchemaObject = {
     autoform: {
       group: 'email',
       instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).',
-      rows: 5
+      rows: 5,
+      private: true
     }
   },
   notes: {
@@ -287,7 +290,8 @@ settingsSchemaObject = {
     autoform: {
       group: 'extras',
       instructions: 'You can store any notes or extra information here.',
-      rows: 5
+      rows: 5,
+      private: true
     }
   },
 };
