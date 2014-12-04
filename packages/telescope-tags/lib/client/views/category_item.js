@@ -11,11 +11,6 @@ Meteor.startup(function () {
       }else{
         Categories.remove(categoryId);
       }
-      Meteor.call('updateCategoryInPosts', categoryId, function(error) {
-        if (error) {
-          throwError(error.reason);
-        }
-      });
     }
   });
 });
