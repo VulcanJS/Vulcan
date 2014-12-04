@@ -186,3 +186,9 @@ fieldset{
   font-size: 80%;
   color: $light-text;
 }
+.private-field{
+  color: $red;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: uppercase;
+}

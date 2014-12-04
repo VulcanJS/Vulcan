@@ -35,7 +35,12 @@
 <template name="afFormGroup_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      <label class="control-label">{{_ this.atts.name}}</label>
+      <label class="control-label">
+        {{_ this.atts.name}}
+        {{#if fieldIsPrivate}}
+          <span class="private-field" title="{{_ 'Private'}}">(p)</span>
+        {{/if}}
+      </label>
       <div class="{{rightColumnClass}}">
         {{> afFieldInput afFieldInputAtts}}
         {{#if afFieldInstructions}}
