@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  
+
   Herald.collection.deny({
     update: ! can.editById,
     remove: ! can.editById
@@ -27,7 +27,7 @@ var getCommenterProfileUrl = function (comment) {
   if(user) {
     return getProfileUrl(user);
   } else {
-    return getProfileUrlById(comment.userId)
+    return getProfileUrlBySlugOrId(comment.userId)
   }
 }
 
@@ -37,7 +37,7 @@ var getAuthor = function (comment) {
     return getUserName(user);
   } else {
     return comment.author;
-  }  
+  }
 }
 
 Herald.addCourier('newPost', {

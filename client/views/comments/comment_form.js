@@ -20,7 +20,10 @@ Template[getTemplate('comment_form')].events({
           throwError(error.reason);
         }else{
           trackEvent("newComment", newComment);
-          Router.go('/posts/'+parentComment.postId+'/comment/'+newComment._id);
+          Router.go('post_page_comment', {
+            _id: parentComment.postId,
+            commentId: newComment._id
+          });
         }
       });
     }else{

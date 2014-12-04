@@ -1,14 +1,14 @@
 getUnsubscribeLink = function(user){
-  return Meteor.absoluteUrl()+'unsubscribe/'+user.email_hash;
+  return Router.routes['unsubscribe'].url({hash: user.email_hash});
 };
 
 // given a notification, return the correct subject and html to send an email
 buildEmailNotification = function (notification) {
-  
+
   var subject, template;
   var post = notification.data.post;
   var comment = notification.data.comment;
-  
+
   switch(notification.courier){
     case 'newReply':
       subject = 'Someone replied to your comment on "'+post.title+'"';
@@ -18,7 +18,7 @@ buildEmailNotification = function (notification) {
     case 'newComment':
       subject = 'A new comment on your post "'+post.title+'"';
       template = 'emailNewComment';
-      break; 
+      break;
 
     default:
       break;
@@ -26,7 +26,7 @@ buildEmailNotification = function (notification) {
 
   var emailProperties = _.extend(notification.data, {
     body: marked(comment.body),
-    profileUrl: getProfileUrlById(comment.userId),
+    profileUrl: getProfileUrlBySlugOrId(comment.userId),
     postCommentUrl: getPostCommentUrl(post._id, comment._id),
     postLink: getPostLink(post)
   });

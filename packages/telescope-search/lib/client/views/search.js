@@ -30,7 +30,7 @@ Meteor.startup(function () {
         // if search field is empty, just do nothing and show an empty template
         $search.addClass('empty');
         Session.set('searchQuery', '');
-        Router.go('/search', null, {replaceState: true});
+        Router.go('search', null, {replaceState: true});
       } else {
         $search.removeClass('empty');
         // if search field is not empty, add a delay to avoid firing new searches for every keystroke
@@ -38,10 +38,10 @@ Meteor.startup(function () {
           Session.set('searchQuery', val);
 
           // Update the querystring.
-          var opts = {query: 'q=' + encodeURIComponent(val)};
+          var opts = {query: {q: val}};
           // if we're already on the search page, do a replaceState. Otherwise,
           // just use the pushState default.
-          if(getCurrentRoute().indexOf('/search') === 0) {
+          if(Router.current().route.getName() === 'search') {
             opts.replaceState = true;
           }
           Router.go('search', null, opts);

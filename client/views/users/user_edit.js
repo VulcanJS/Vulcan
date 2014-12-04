@@ -15,7 +15,7 @@ Template[getTemplate('user_edit')].helpers({
     return getGitHubName(this) || "";
   },
   profileUrl: function(){
-    return Meteor.absoluteUrl()+"users/"+this.slug;
+    return getProfileUrlBySlugOrId(this.slug);
   },
   hasNotificationsUsers : function(){
     return getUserSetting('notifications.users', '', this) ? 'checked' : '';
