@@ -71,6 +71,10 @@ Template[getTemplate('user_edit')].events({
       });
     }
 
+    update = userEditClientCallbacks.reduce(function(result, currentFunction) {
+      return currentFunction(user, result);
+    }, update);
+
     Meteor.users.update(user._id, {
       $set: update
     }, function(error){
