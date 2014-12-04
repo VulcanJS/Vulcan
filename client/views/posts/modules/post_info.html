@@ -4,7 +4,7 @@
     <span class="unit">{{pointsUnitDisplayText}}</span>
     <span class="post-time">{{timeAgo ago}}</span>
     {{#if can_edit}}
-      | <a href="/posts/{{_id}}/edit" class="edit-link goto-edit">{{_ "edit"}}</a>
+      | <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link goto-edit">{{_ "edit"}}</a>
     {{/if}}
   </div>
 </template>

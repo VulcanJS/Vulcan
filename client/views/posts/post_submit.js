@@ -28,9 +28,10 @@ AutoForm.hooks({
         }else{
           // note: find a way to do this in onSuccess instead?
           trackEvent("new post", {'postId': post._id});
-          if(post.status === STATUS_PENDING)
+          if (post.status === STATUS_PENDING) {
             throwError('Thanks, your post is awaiting approval.');
-          Router.go('/posts/'+post._id);
+          }
+          Router.go('post_page', {_id: post._id});
           submit.done();
         }
       });
@@ -45,7 +46,7 @@ AutoForm.hooks({
       // if(post.status === STATUS_PENDING)
       //   throwError('Thanks, your post is awaiting approval.');
       // Router.go('/posts/'+post._id);
-    }, 
+    },
 
     onError: function(operation, error, template) {
       throwError(error.reason.split('|')[0]); // workaround because error.details returns undefined
