@@ -122,7 +122,6 @@ Template["afFormGroup_telescope"].helpers({
     return labelAtts;
   },
   fieldIsPrivate: function () {
-    console.log(this)
     return !!this.afFieldInputAtts.private;
   },
   rightColumnClass: function () {
