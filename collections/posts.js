@@ -148,9 +148,10 @@ postSchemaObject = {
     type: Number,
     optional: true,
     autoValue: function () {
-      // only use this if status field is not set in the document being updated
-      // note: should we use defaultValue instead?
-      if(!this.isSet)
+      // only provide a default value
+      // 1) this is an insert operation
+      // 2) status field is not set in the document being inserted
+      if(this.isInsert && !this.isSet)
         return getSetting('requirePostsApproval', false) ? STATUS_PENDING: STATUS_APPROVED
     },
     autoform: {
