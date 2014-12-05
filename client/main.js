@@ -39,4 +39,4 @@ Meteor.startup(function () {
   $('#rss-link').attr('title', i18n.t('new_posts'));
 });
 
-AutoForm.debug();
+// AutoForm.debug();
