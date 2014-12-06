@@ -206,7 +206,7 @@ userEditClientCallbacks = [];
 
 userProfileCompleteChecks = [
   function(user) {
-    return !!getEmail(user) && !!user.username;
+    return !!getEmail(user) && !!getUserName(user);
   }
 ];
 
