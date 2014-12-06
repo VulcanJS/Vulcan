@@ -10,7 +10,8 @@ Template[getTemplate('user_email')].helpers({
 Template[getTemplate('user_email')].events({
   'submit form': function(e){
     e.preventDefault();
-    if(!Meteor.user()) throwError(i18n.t('you_must_be_logged_in'));
+    if(!Meteor.user())
+      flashMessage(i18n.t('you_must_be_logged_in'), 'error');
     var $target=$(e.target);
     var user=Session.get('selectedUserId')? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
     var update = {
@@ -26,9 +27,9 @@ Template[getTemplate('user_email')].events({
       $set: update
     }, function(error){
       if(error){
-        throwError(error.reason);
+        flashMessage(error.reason, "error");
       } else {
-        throwError(i18n.t('thanks_for_signing_up'));
+        flashMessage(i18n.t('thanks_for_signing_up'), "success");
         // Meteor.call('addCurrentUserToMailChimpList');
         trackEvent("new sign-up", {'userId': user._id, 'auth':'twitter'});
         Router.go('/');

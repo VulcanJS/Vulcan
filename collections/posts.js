@@ -465,7 +465,7 @@ Meteor.methods({
       var now = new Date();
       var result = Posts.update(post._id, {$set: {status: 2, postedAt: now}}, {validate: false});
     }else{
-      throwError('You need to be an admin to do that.');
+      flashMessage('You need to be an admin to do that.', "error");
     }
   },
 
@@ -473,7 +473,7 @@ Meteor.methods({
     if(isAdmin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
-      throwError('You need to be an admin to do that.');
+      flashMessage('You need to be an admin to do that.', "error");
     }
   },
 

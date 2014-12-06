@@ -194,7 +194,7 @@ Meteor.methods({
         isDeleted: true
       }});
     }else{
-      throwError("You don't have permission to delete this comment.");
+      flashMessage("You don't have permission to delete this comment.", "error");
     }
   }
 });

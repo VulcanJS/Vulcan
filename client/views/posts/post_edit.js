@@ -8,7 +8,7 @@ AutoForm.hooks({
       // ------------------------------ Checks ------------------------------ //
 
       if (!Meteor.user()) {
-        throwError(i18n.t('you_must_be_logged_in'));
+        flashMessage(i18n.t('you_must_be_logged_in'), "");
         return false;
       }
 
@@ -45,8 +45,8 @@ AutoForm.hooks({
 
     onError: function(operation, error, template) {
       console.log(error)
-      throwError(error.reason.split('|')[0]); // workaround because error.details returns undefined
-      clearSeenErrors();
+      flashMessage(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
+      clearSeenMessages();
     }
 
     // Called at the beginning and end of submission, respectively.

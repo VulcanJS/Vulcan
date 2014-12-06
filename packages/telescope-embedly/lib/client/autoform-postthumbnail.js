@@ -37,7 +37,7 @@ Template.afPostThumbnail.rendered = function () {
       Meteor.call('getEmbedlyData', url, function (error, data) {
         if (error) {
           console.log(error)
-          throwError(error.reason);
+          flashMessage(error.reason, 'error');
           $thumbnailContainer.removeClass('loading');
           return
         }
