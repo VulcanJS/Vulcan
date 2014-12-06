@@ -5,8 +5,8 @@ Template[getTemplate('layout')].helpers({
   nav: function () {
     return getTemplate('nav');
   },
-  error: function () {
-    return getTemplate('error');
+  messages: function () {
+    return getTemplate('messages');
   },
   notifications: function () {
     return getTemplate('notifications');

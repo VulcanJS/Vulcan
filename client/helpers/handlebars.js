@@ -42,7 +42,7 @@ UI.registerHelper('isAdmin', function(showError) {
     return true;
   }else{
     if((typeof showError === "string") && (showError === "true"))
-      throwError(i18n.t('sorry_you_do_not_have_access_to_this_page'));
+      flashMessage(i18n.t('sorry_you_do_not_have_access_to_this_page'), "error");
     return false;
   }
 });

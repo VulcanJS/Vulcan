@@ -8,7 +8,7 @@ AutoForm.hooks({
       // ------------------------------ Checks ------------------------------ //
 
       if (!Meteor.user()) {
-        throwError(i18n.t('you_must_be_logged_in'));
+        flashMessage(i18n.t('you_must_be_logged_in'), 'error');
         return false;
       }
 
@@ -29,7 +29,7 @@ AutoForm.hooks({
           // note: find a way to do this in onSuccess instead?
           trackEvent("new post", {'postId': post._id});
           if (post.status === STATUS_PENDING) {
-            throwError('Thanks, your post is awaiting approval.');
+            flashMessage(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
           }
           Router.go('post_page', {_id: post._id});
           submit.done();
@@ -49,8 +49,8 @@ AutoForm.hooks({
     },
 
     onError: function(operation, error, template) {
-      throwError(error.reason.split('|')[0]); // workaround because error.details returns undefined
-      clearSeenErrors();
+      flashMessage(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
+      clearSeenMessages();
       // $(e.target).removeClass('disabled');
       if (error.error == 603) {
         var dupePostId = error.reason.split('|')[1];
