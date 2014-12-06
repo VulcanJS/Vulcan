@@ -50,7 +50,7 @@ AutoForm.hooks({
 
     onError: function(operation, error, template) {
       flashMessage(error.reason.split('|')[0], 'error'); // workaround because error.details returns undefined
-      clearSeenErrors();
+      clearSeenMessages();
       // $(e.target).removeClass('disabled');
       if (error.error == 603) {
         var dupePostId = error.reason.split('|')[1];

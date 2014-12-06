@@ -3,6 +3,6 @@ Template[getTemplate('error')].helpers({
     return getTemplate('error_item');
   },
   errors: function(){
-    return Errors.find({show: true});
+    return Messages.find({show: true});
   }
 });

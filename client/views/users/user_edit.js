@@ -38,7 +38,7 @@ Template[getTemplate('user_edit')].events({
   'submit #account-form': function(e){
     e.preventDefault();
 
-    clearSeenErrors();
+    clearSeenMessages();
     if(!Meteor.user())
       flashMessage(i18n.t('you_must_be_logged_in'), 'error');
 
