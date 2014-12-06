@@ -2,9 +2,10 @@ var thumbnailProperty = {
   propertyName: 'thumbnailUrl',
   propertySchema: {
     type: String,
-    optional: true,
     label: 'thumbnail',
+    optional: true,
     autoform: {
+      editable: true,
       type: 'bootstrap-postthumbnail'
     }
   }

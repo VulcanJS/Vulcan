@@ -34,7 +34,6 @@ postSchemaObject = {
     type: String,
     label: "URL",
     optional: true,
-    editable: true,
     autoform: {
       editable: true,
       type: "bootstrap-url"
