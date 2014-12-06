@@ -49,7 +49,7 @@ AutoForm.hooks({
     },
 
     onError: function(operation, error, template) {
-      flashMessage(error.reason.split('|')[0], 'error'); // workaround because error.details returns undefined
+      flashMessage(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
       clearSeenMessages();
       // $(e.target).removeClass('disabled');
       if (error.error == 603) {

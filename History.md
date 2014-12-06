@@ -1,3 +1,7 @@
+## v0.10.0
+
+* Renaming Errors to Messages (thanks @yourcelf!).
+
 ## v0.9.11 “FormScope”
 
 * Now using [Autoform](https://github.com/aldeed/meteor-autoform/)'s **quickform** feature to generate post submit and edit forms. 
