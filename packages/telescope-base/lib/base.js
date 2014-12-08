@@ -138,20 +138,20 @@ viewParameters.userPosts = function (terms) {
   };
 }
 
-viewParameters.upvotedPosts = function (terms) {
+viewParameters.userUpvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.votes.upvotedPosts, "itemId");
   return {
-    find: {_id: {$in: postsIds}},
+    find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
   };
 }
 
-viewParameters.downvotedPosts = function (terms) {
+viewParameters.userDownvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.votes.downvotedPosts, "itemId");
   return {
-    find: {_id: {$in: postsIds}},
+    find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
   };
 }

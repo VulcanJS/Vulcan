@@ -29,10 +29,12 @@ Template[getTemplate('userUpvotedPosts')].created = function () {
 
 Template[getTemplate('userUpvotedPosts')].helpers({
   posts: function () {
+    // todo: sort posts based on upvote timestamp, not on postedAt timestamp
+    // todo: extend with votedAt timestamp
     return Template.instance().posts.get();
   },
   hasMorePosts: function () {
-    return Template.instance().posts.get().count() >= Session.get('postsShown');
+    return Template.instance().posts.get().count() >= Template.instance().terms.get().limit;
   }
 });
 

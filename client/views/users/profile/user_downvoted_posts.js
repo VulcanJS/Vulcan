@@ -32,7 +32,7 @@ Template[getTemplate('userDownvotedPosts')].helpers({
     return Template.instance().posts.get();
   },
   hasMorePosts: function () {
-    return Template.instance().posts.get().count() >= Session.get('postsShown');
+    return Template.instance().posts.get().count() >= Template.instance().terms.get().limit;
   }
 });
 
