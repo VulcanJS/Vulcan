@@ -5,6 +5,7 @@ Package.onUse(function (api) {
   api.use([
     'telescope-lib', 
     'telescope-base', 
+    'iron:router',
     'meteorhacks:fast-render', 
     'meteorhacks:subs-manager',
     'tap:i18n'
@@ -13,17 +14,16 @@ Package.onUse(function (api) {
   api.use([
     'jquery',
     'underscore',
-    'iron:router',
     'templating'
   ], 'client');
 
   api.add_files([
     'package-tap.i18n',
-    'lib/daily.js'
+    'lib/daily.js',
+    'lib/routes.js',
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/routes.js',
     'lib/client/templates/posts_daily.html',
     'lib/client/templates/posts_daily.js',
     'lib/client/stylesheets/daily.css',

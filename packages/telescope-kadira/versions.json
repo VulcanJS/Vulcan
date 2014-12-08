@@ -106,7 +106,7 @@
     ],
     [
       "meteorhacks:kadira",
-      "2.14.0"
+      "2.15.1"
     ],
     [
       "meteorhacks:kadira-binary-deps",
@@ -114,7 +114,7 @@
     ],
     [
       "meteorhacks:meteorx",
-      "1.2.0"
+      "1.2.1"
     ],
     [
       "minifiers",
