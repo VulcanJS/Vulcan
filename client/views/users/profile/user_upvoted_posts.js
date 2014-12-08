@@ -1,9 +1,15 @@
 Template[getTemplate('userUpvotedPosts')].created = function () {
   Session.set('upvotedPostsShown', 5);
   var user = this.data;
-  // Tracker.autorun(function () {
-  //   coreSubscriptions.subscribe('userUpvotedPosts', user._id, Session.get('upvotedPostsShown'));
-  // });
+  var terms = {};
+  Tracker.autorun(function () {
+    terms = {
+      view: 'upvotedPosts',
+      userId: user._id,
+      limit: Session.get('upvotedPostsShown')
+    }
+    coreSubscriptions.subscribe('userUpvotedPosts', terms);
+  });
 };
 
 Template[getTemplate('userUpvotedPosts')].helpers({

@@ -1,9 +1,15 @@
 Template[getTemplate('userDownvotedPosts')].created = function () {
   Session.set('downvotedPostsShown', 5);
   var user = this.data;
-  // Tracker.autorun(function () {
-  //   coreSubscriptions.subscribe('userDownvotedPosts', user._id, Session.get('downvotedPostsShown'));
-  // });
+  var terms = {};
+  Tracker.autorun(function () {
+    terms = {
+      view: 'downvotedPosts',
+      userId: user._id,
+      limit: Session.get('downvotedPostsShown')
+    }
+    coreSubscriptions.subscribe('userDownvotedPosts', terms);
+  });
 };
 
 Template[getTemplate('userDownvotedPosts')].helpers({

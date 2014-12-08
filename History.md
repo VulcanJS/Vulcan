@@ -4,6 +4,8 @@
 * Adding `fast-render` (thanks @arunoda!).
 * Extracted digest into its own package.
 * Adding "scheduled" view that shows upcoming scheduled posts.
+* Bringing back "delete post" link that was removed by mistake.
+* Made user profile modular.
 
 ## v0.9.11 “FormScope”
 

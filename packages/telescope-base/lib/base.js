@@ -131,9 +131,28 @@ viewParameters.scheduled = function (terms) {
   };
 }
 
-viewParameters.upvoted = function (terms) {
+viewParameters.userPosts = function (terms) {
   return {
-    options: {sort: {sticky: -1, score: -1}}
+    find: {userId: terms.userId},
+    options: {limit: 5, sort: {postedAt: -1}}
+  };
+}
+
+viewParameters.upvotedPosts = function (terms) {
+  var user = Meteor.users.findOne(terms.userId);
+  var postsIds = _.pluck(user.votes.upvotedPosts, "itemId");
+  return {
+    find: {_id: {$in: postsIds}},
+    options: {limit: 5, sort: {postedAt: -1}}
+  };
+}
+
+viewParameters.downvotedPosts = function (terms) {
+  var user = Meteor.users.findOne(terms.userId);
+  var postsIds = _.pluck(user.votes.downvotedPosts, "itemId");
+  return {
+    find: {_id: {$in: postsIds}},
+    options: {limit: 5, sort: {postedAt: -1}}
   };
 }
 
