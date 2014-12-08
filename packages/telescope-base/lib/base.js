@@ -182,6 +182,31 @@ commentEditClientCallbacks = [];
 commentEditMethodCallbacks = []; // not used yet
 commentAfterEditMethodCallbacks = []; // not used yet
 
+// ------------------------------------- User Profiles -------------------------------- //
+
+userProfileDisplay = [
+  {
+    template: 'userInfo',
+    order: 1
+  },
+  {
+    template: 'userPosts',
+    order: 2
+  },
+  {
+    template: 'userUpvotedPosts',
+    order: 3
+  },  
+  {
+    template: 'userDownvotedPosts', 
+    order: 5
+  },  
+  {
+    template: 'userComments', 
+    order: 5
+  }
+]
+
 userEditRenderedCallbacks = [];
 userEditClientCallbacks = [];
 
@@ -190,7 +215,6 @@ userProfileCompleteChecks = [
     return !!getEmail(user) && !!getUserName(user);
   }
 ];
-
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 

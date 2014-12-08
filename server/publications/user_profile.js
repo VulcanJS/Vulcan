@@ -1,15 +1,20 @@
 // Publish a single user
 
+Meteor.publish('userProfilePosts', function(userId, limit) {
+  return Posts.find({userId: userId}, {limit: limit});
+});
+
 Meteor.publish('userProfile', function(userIdOrSlug) {
   if(canViewById(this.userId)){
     var options = isAdminById(this.userId) ? {limit: 1} : {limit: 1, fields: privacyOptions};
     var findById = Meteor.users.findOne(userIdOrSlug);
     var findBySlug = Meteor.users.findOne({slug: userIdOrSlug});
     var user = typeof findById !== 'undefined' ? findById : findBySlug;
+    var postsIds = [];
 
     // user's own posts
-    var userPosts = Posts.find({userId: user._id});
-    var postsIds = _.pluck(userPosts.fetch(), '_id');
+    // var userPosts = Posts.find({userId: user._id});
+    // var postsIds = _.pluck(userPosts.fetch(), '_id');
 
     // user's own comments
     var userComments = Comments.find({userId: user._id});

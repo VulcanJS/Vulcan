@@ -1,0 +1,55 @@
+<template name="userInfo">
+  <div class="user-profile grid grid-module">
+    <table>
+      <tr>
+        <td colspan="2">{{> avatar user=this size="large" shape="circle"}}</td>
+      </tr>
+      {{#if isAdmin}}
+        <tr>
+          <td>{{_ "id"}}: </td>
+          <td>{{_id}}</td>
+        </tr>
+      {{/if}}
+      <tr>
+        <td>{{_ "name"}}</td>
+        <td>{{profile.name}}</td>
+      </tr>
+      <tr>
+        <td>{{_ "member_since"}}:</td>
+        <td>{{createdAtFormatted}}</td>
+      </tr>
+      <tr>
+        <td>{{_ "bio"}}</td>
+        <td>{{profile.bio}}</td>
+      </tr>
+      {{#if getTwitterName}}
+        <tr>
+          <td>Twitter: </td>
+          <td><a href="http://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
+        </tr>
+      {{/if}}
+      {{#if getGitHubName}}
+        <tr>
+          <td>{{_ "github"}}:</td>
+          <td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
+        </tr>
+      {{/if}}
+      {{#if profile.site}}
+        <tr>
+          <td>{{_ "site"}}:</td>
+          <td><a href="{{profile.site}}">{{profile.site}}</a></td>
+        </tr>
+      {{/if}}
+    </table>
+    {{#if canEditProfile}}
+      <a class="button inline" href="{{pathFor route='user_edit' slug=slug}}">{{_ "edit_profile"}}</a>
+    {{/if}}
+    {{#if canInvite}}
+      {{#if inviteCount}}
+        <a class="button inline invite-link" href="#">{{_ "invite"}} ({{inviteCount}} {{_ "left"}})</a>
+      {{else}}
+        <a class="button inline disabled" href="#">{{_ "invite_none_left"}}</a>
+      {{/if}}
+    {{/if}}
+  </div>
+</template>
