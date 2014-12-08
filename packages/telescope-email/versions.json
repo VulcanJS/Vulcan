@@ -1,6 +1,10 @@
 {
   "dependencies": [
     [
+      "aldeed:simple-schema",
+      "1.1.0"
+    ],
+    [
       "application-configuration",
       "1.0.3"
     ],

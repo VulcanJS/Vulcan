@@ -66,10 +66,10 @@ matb33:collection-hooks@0.7.6
 meteor-platform@1.2.0
 meteor@1.1.3
 meteorhacks:async@1.0.0
-meteorhacks:fast-render@1.2.1
+meteorhacks:fast-render@2.1.0
 meteorhacks:kadira-binary-deps@1.3.1
-meteorhacks:kadira@2.14.0
-meteorhacks:meteorx@1.2.0
+meteorhacks:kadira@2.15.1
+meteorhacks:meteorx@1.2.1
 meteorhacks:npm@1.2.1
 meteorhacks:subs-manager@1.2.0
 minifiers@1.1.2
@@ -113,11 +113,12 @@ tap:i18n@1.2.1
 telescope-api@0.0.0
 telescope-base@0.0.0
 telescope-daily@0.0.0
+telescope-datetimepicker@1.0.3
 telescope-email@0.2.9
+telescope-embedly@0.2.9
 telescope-i18n@0.0.0
 telescope-kadira@0.1.0
 telescope-lib@0.2.9
-telescope-module-embedly@0.2.9
 telescope-module-share@0.0.0
 telescope-newsletter@0.1.0
 telescope-notifications@0.1.0
@@ -129,6 +130,7 @@ telescope-theme-hubble@0.0.0
 telescope-update-prompt@0.1.0
 templating@1.0.9
 tracker@1.0.3
+tsega:bootstrap3-datetimepicker@3.1.3_1
 twitter@1.1.2
 ui@1.0.4
 underscore@1.0.1
