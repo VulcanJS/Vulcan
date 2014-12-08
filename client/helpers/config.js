@@ -2,20 +2,6 @@ Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL'
 });
 
-EpicEditorOptions={
-	container:  'editor',
-	basePath:   '/editor',
-	clientSideStorage: false,
-	autogrow: {
-		minHeight: 100
-	},
-	theme: {
-		base:'/themes/base/epiceditor.css',
-		preview:'/themes/preview/github.css',
-		editor:'/themes/editor/epic-light3.css'
-	}
-};
-
 SharrreOptions={
 	share: {
 	  googlePlus: true,

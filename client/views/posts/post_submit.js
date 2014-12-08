@@ -1,156 +1,69 @@
-Template[getTemplate('post_submit')].helpers({
-  categoriesEnabled: function(){
-    return Categories.find().count();
-  },
-  categories: function(){
-    return Categories.find();
-  },
-  users: function(){
-    return Meteor.users.find({}, {sort: {'profile.name': 1}});
-  },
-  userName: function(){
-    return getDisplayName(this);
-  },
-  isSelected: function(user){
-    return user._id == Meteor.userId() ? "selected" : "";
-  },
-  showPostedAt: function () {
-    if(Session.get('currentPostStatus') == STATUS_APPROVED){
-      return 'visible'
-    }else{
-      return 'hidden'
-    }
-    // return (Session.get('currentPostStatus') || STATUS_APPROVED) == STATUS_APPROVED; // default to approved
-  }
-});
+AutoForm.hooks({
+  submitPostForm: {
+    onSubmit: function(insertDoc, updateDoc, currentDoc) {
 
-Template[getTemplate('post_submit')].rendered = function(){
-  // run all post submit rendered callbacks
-  var instance = this;
-  postSubmitRenderedCallbacks.forEach(function(callback) {
-    callback(instance);
-  });
+      var properties = insertDoc;
+      var submit = this;
 
-  Session.set('currentPostStatus', STATUS_APPROVED);
-  Session.set('selectedPostId', null);
-  if(!this.editor && $('#editor').exists())
-    this.editor= new EpicEditor(EpicEditorOptions).load();
+      // ------------------------------ Checks ------------------------------ //
 
-  $('#postedAtDate').datepicker();
+      if (!Meteor.user()) {
+        flashMessage(i18n.t('you_must_be_logged_in'), 'error');
+        return false;
+      }
 
-  // $("#postUser").selectToAutocomplete(); // XXX
+      // ------------------------------ Callbacks ------------------------------ //
 
-};
+      // run all post submit client callbacks on properties object successively
+      properties = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
+          return currentFunction(result);
+      }, properties);
 
-Template[getTemplate('post_submit')].events({
-  'change input[name=status]': function (e, i) {
-    Session.set('currentPostStatus', e.currentTarget.value);
-  },
-  'click input[type=submit]': function(e, instance){
-    e.preventDefault();
+      // console.log(properties)
 
-    $(e.target).addClass('disabled');
-
-    // ------------------------------ Checks ------------------------------ //
-
-    if(!Meteor.user()){
-      throwError(i18n.t('you_must_be_logged_in'));
-      return false;
-    }
-
-    // ------------------------------ Properties ------------------------------ //
-
-    // Basic Properties
-
-    var properties = {
-      title: $('#title').val(),
-      body: instance.editor.exportFile(),
-      sticky: $('#sticky').is(':checked'),
-      userId: $('#postUser').val(),
-      status: parseInt($('input[name=status]:checked').val())
-    };
-
-    // PostedAt
-
-    var $postedAtDate = $('#postedAtDate');
-    var $postedAtTime = $('#postedAtTime');
-    var setPostedAt = false;
-    var postedAt = new Date(); // default to current browser date and time
-    var postedAtDate = $postedAtDate.datepicker('getDate');
-    var postedAtTime = $postedAtTime.val();
-
-    if ($postedAtDate.exists() && postedAtDate != "Invalid Date"){ // if custom date is set, use it
-      postedAt = postedAtDate;
-      setPostedAt = true;
-    }
-
-    if ($postedAtTime.exists() && postedAtTime.split(':').length==2){ // if custom time is set, use it
-      var hours = postedAtTime.split(':')[0];
-      var minutes = postedAtTime.split(':')[1];
-      postedAt = moment(postedAt).hour(hours).minute(minutes).toDate();
-      setPostedAt = true;
-    }
-
-    if(setPostedAt) // if either custom date or time has been set, pass result to properties
-      properties.postedAt = postedAt;
-
-
-    // URL
-
-    var url = $('#url').val();
-    if(!!url){
-      var cleanUrl = (url.substring(0, 7) == "http://" || url.substring(0, 8) == "https://") ? url : "http://"+url;
-      properties.url = cleanUrl;
-    }
-
-    // ------------------------------ Callbacks ------------------------------ //
-
-    // run all post submit client callbacks on properties object successively
-    properties = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
-        return currentFunction(result);
-    }, properties);
-
-    // console.log(properties)
-
-    // ------------------------------ Insert ------------------------------ //
-    if (properties) {
-      Meteor.call('post', properties, function(error, post) {
+      // ------------------------------ Insert ------------------------------ //
+      Meteor.call('submitPost', properties, function(error, post) {
         if(error){
-          throwError(error.reason);
-          clearSeenErrors();
-          $(e.target).removeClass('disabled');
-          if(error.error == 603)
-            Router.go('/posts/'+error.details);
+          submit.done(error);
         }else{
+          // note: find a way to do this in onSuccess instead?
           trackEvent("new post", {'postId': post._id});
-          if(post.status === STATUS_PENDING)
-            throwError('Thanks, your post is awaiting approval.');
-          Router.go('/posts/'+post._id);
+          if (post.status === STATUS_PENDING) {
+            flashMessage(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
+          }
+          Router.go('post_page', {_id: post._id});
+          submit.done();
         }
       });
-    } else {
-      $(e.target).removeClass('disabled');      
+
+      return false
+    },
+
+    onSuccess: function(operation, result, template) {
+      // not used right now because I can't find a way to pass the "post" object to this callback
+      // console.log(post)
+      // trackEvent("new post", {'postId': post._id});
+      // if(post.status === STATUS_PENDING)
+      //   throwError('Thanks, your post is awaiting approval.');
+      // Router.go('/posts/'+post._id);
+    },
+
+    onError: function(operation, error, template) {
+      flashMessage(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
+      clearSeenMessages();
+      // $(e.target).removeClass('disabled');
+      if (error.error == 603) {
+        var dupePostId = error.reason.split('|')[1];
+        Router.go('/posts/'+dupePostId);
+      }
     }
 
-  },
-  'click .get-title-link': function(e){
-    e.preventDefault();
-    var url=$("#url").val();
-    var $getTitleLink = $(".get-title-link");
-    $getTitleLink.addClass("loading");
-    if(url){
-      $.get(url, function(response){
-          if ((suggestedTitle=((/<title>(.*?)<\/title>/m).exec(response.responseText))) != null){
-              $("#title").val(suggestedTitle[1]);
-          }else{
-              alert("Sorry, couldn't find a title...");
-          }
-          $getTitleLink.removeClass("loading");
-       });
-    }else{
-      alert("Please fill in an URL first!");
-      $getTitleLink.removeClass("loading");
-    }
+    // Called at the beginning and end of submission, respectively.
+    // This is the place to disable/enable buttons or the form,
+    // show/hide a "Please wait" message, etc. If these hooks are
+    // not defined, then by default the submit button is disabled
+    // during submission.
+    // beginSubmit: function(formId, template) {},
+    // endSubmit: function(formId, template) {}
   }
-
 });

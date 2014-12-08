@@ -43,7 +43,7 @@
 				{{/if}}
 			</table>
 			{{#if canEditProfile}}
-				<a class="button inline" href="/users/{{slug}}/edit">{{_ "edit_profile"}}</a>
+				<a class="button inline" href="{{pathFor route='user_edit' slug=slug}}">{{_ "edit_profile"}}</a>
 			{{/if}}
 			{{#if canInvite}}
 				{{#if inviteCount}}
@@ -65,7 +65,7 @@
 			</thead>
 			{{#each posts}}
 				<tr>
-					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
 					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
@@ -90,7 +90,7 @@
 			</thead>
 			{{#each upvotedPosts}}
 				<tr>
-					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
 					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
@@ -115,7 +115,7 @@
 			</thead>
 			{{#each downvoted}}
 				<tr>
-					<td><a href="/posts/{{_id}}/">{{title}}</a></td>
+					<td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
 					<td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>
 			{{/each}}
@@ -141,7 +141,7 @@
 			</thead>
 			{{#each comments}}
 				<tr>
-					<td><a href="/posts/{{postId}}/">{{postTitle}}</a></td>
+					<td><a href="{{pathFor route='post_page' _id=postId}}/">{{postTitle}}</a></td>
 					<td>{{{htmlBody}}}</td>
 					<td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
 				</tr>

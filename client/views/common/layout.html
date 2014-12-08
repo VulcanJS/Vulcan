@@ -6,7 +6,7 @@
     <div class="inner-wrapper template-{{pageName}}">
       {{> UI.dynamic template=nav}}
       <div class="content-wrapper">
-        {{> UI.dynamic template=error}}
+        {{> UI.dynamic template=messages}}
         {{#each heroModules}}
           {{> UI.dynamic template=getTemplate}}
         {{/each}}

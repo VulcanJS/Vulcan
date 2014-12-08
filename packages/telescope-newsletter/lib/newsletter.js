@@ -34,7 +34,10 @@ addToPostSchema.push(
     propertyName: 'scheduledAt',
     propertySchema: {
       type: Date,
-      optional: true
+      optional: true,
+      autoform: {
+        omit: true
+      }
     }
   }
 );
@@ -63,7 +66,8 @@ var mailChimpAPIKey = {
     type: String,
     optional: true,
     autoform: {
-      group: 'newsletter'
+      group: 'newsletter',
+      private: true
     }
   }
 }
@@ -76,7 +80,8 @@ var mailChimpListId = {
     optional: true,
     autoform: {
       group: 'newsletter',
-      instructions: 'The ID of the list you want to send to.'
+      instructions: 'The ID of the list you want to send to.',
+      private: true
     }
   }
 }

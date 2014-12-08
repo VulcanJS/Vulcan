@@ -6,12 +6,16 @@ setLanguage = function (language) {
   // moment
   Session.set('momentReady', false);
   // console.log('moment loading…')
-  $.getScript("//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/lang/" + language.toLowerCase() + ".js", function (result) {
-    moment.locale(language);
+  if (language.toLowerCase() === "en") {
     Session.set('momentReady', true);
-    Session.set('momentLocale', language);
-    // console.log('moment loaded!')
-  });
+  } else {
+    $.getScript("//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/lang/" + language.toLowerCase() + ".js", function (result) {
+      moment.locale(language);
+      Session.set('momentReady', true);
+      Session.set('momentLocale', language);
+      // console.log('moment loaded!')
+    });
+  }
 
   // TAPi18n
   Session.set("TAPi18nReady", false);

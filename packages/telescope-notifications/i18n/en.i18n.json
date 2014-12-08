@@ -6,5 +6,7 @@
   "you_have_been_unsubscribed_from_all_notifications": "You have been unsubscribed from all notifications.",
   "user_not_found": "User not found",
   "1_notification": "1 notification",
-  "notifications": "notifications"
+  "notifications": "notifications",
+  "notifications_fieldset": "Notifications",
+  "emailNotifications": "Email Notifications"
 }

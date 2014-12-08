@@ -71,7 +71,7 @@ form, .accounts-dialog{
       float: right;
     }
   }
-  input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea, .login-form input, input.form-control{
+  input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea, .login-form input{
     display:block;
     padding:5px 6px;
     width:100%;
@@ -110,8 +110,6 @@ form, .accounts-dialog{
 input[type="submit"], button, .button, .btn{
   -webkit-appearance: none;
   border-radius: 3px;
-  background:$red;
-  color:white;
   text-align:center;
   display:block;
   max-width: 300px;
@@ -128,11 +126,15 @@ input[type="submit"], button, .button, .btn{
     background:$lighter-grey;
     pointer-events:none;
   }
-  &:link, &:hover, &:active, &:visited{
-    color:white;
-  }
   &.inline{
     display: inline-block;
+  }
+  &.btn-primary{
+    background:$red;
+    color:white;
+    &:link, &:hover, &:active, &:visited{
+      color:white;
+    }
   }
 }
 input[type="search"]{
@@ -183,4 +185,10 @@ fieldset{
   display: block;
   font-size: 80%;
   color: $light-text;
+}
+.private-field{
+  color: $red;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: uppercase;
 }

@@ -7,5 +7,8 @@ Template[getTemplate('userMenu')].helpers({
   },
   profileUrl: function () {
     return getProfileUrl(Meteor.user());
+  },
+  userEditUrl: function () {
+    return Router.routes['user_edit'].path(Meteor.user());
   }
 });

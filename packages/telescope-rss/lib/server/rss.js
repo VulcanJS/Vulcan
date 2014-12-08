@@ -1,19 +1,22 @@
 var RSS = Npm.require('rss');
 
-var getMeta = function() {
+var getMeta = function(url) {
   return {
     title: getSetting('title'),
     description: getSetting('tagline'),
-    feed_url: Meteor.absoluteUrl()+'feed.xml',
+    feed_url: Meteor.absoluteUrl(url),
     site_url: Meteor.absoluteUrl(),
-    image_url: Meteor.absoluteUrl()+'img/favicon.png',
+    image_url: Meteor.absoluteUrl('img/favicon.png'),
   };
 };
 
-servePostRSS = function() {
-  var feed = new RSS(getMeta());
+servePostRSS = function(view, url) {
+  var feed = new RSS(getMeta(url));
 
-  Posts.find(getPostsParameters({}).find, {sort: {postedAt: -1}, limit: 20}).forEach(function(post) {
+  var params = getPostsParameters({view: view, limit: 20});
+  delete params['options']['sort']['sticky'];
+
+  Posts.find(params.find, params.options).forEach(function(post) {
     var description = !!post.body ? post.body+'</br></br>' : '';
     feed.item({
      title: post.title,
@@ -29,7 +32,7 @@ servePostRSS = function() {
 };
 
 serveCommentRSS = function() {
-  var feed = new RSS(getMeta());
+  var feed = new RSS(getMeta(Router.routes['rss_comments'].path()));
 
   Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
     post = Posts.findOne(comment.postId);

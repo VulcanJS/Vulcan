@@ -1,0 +1,52 @@
+body{
+  .bootstrap-datetimepicker-widget{
+    background: white;
+    width: auto;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+    display: none;
+    .btn{
+    }
+    .collapse{
+      display: none;
+      &.in{
+        display: block;
+      }
+    }
+  }
+}
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('/packages/telescope-datetimepicker/fonts/glyphicons-halflings-regular.eot');
+  src: url('/packages/telescope-datetimepicker/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/packages/telescope-datetimepicker/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/packages/telescope-datetimepicker/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/packages/telescope-datetimepicker/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-chevron-left:before {
+  content: "\e079";
+}
+.glyphicon-chevron-right:before {
+  content: "\e080";
+}
+.glyphicon-chevron-up:before {
+  content: "\e113";
+}
+.glyphicon-chevron-down:before {
+  content: "\e114";
+}
+.glyphicon-time:before {
+  content: "\e023";
+}
+.glyphicon-calendar:before {
+  content: "\e109";
+}

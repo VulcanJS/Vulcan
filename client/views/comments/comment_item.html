@@ -21,9 +21,9 @@
             <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
             <span class="comment-time">{{timeAgo ago}},</span>
             <span class="points">{{upvotes}}</span> <span class="unit">points </span>
-            <a href="/comments/{{_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
+            <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
             {{#if can_edit}}
-              | <a class="edit-link" href="/comments/{{_id}}/edit">{{_ "edit"}}</a>
+              | <a class="edit-link" href="{{pathFor route='comment_edit' _id=_id}}">{{_ "edit"}}</a>
             {{/if}}
             {{#if isAdmin}}
               | <span>{{full_date}}</span>
@@ -31,7 +31,7 @@
           </div>
           <div class="comment-text markdown">{{{htmlBody}}}</div>
           {{#if getSetting "nestedComments" true}}
-            <a href="/comments/{{_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
+            <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
           {{/if}}
         </div>
       </div>

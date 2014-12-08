@@ -1,7 +1,7 @@
 Template[getTemplate('posts_digest')].created = function(){
   $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
   var currentDate=moment(Session.get('currentDate')).startOf('day');
-  var today=moment(new Date()).startOf('daysy');
+  var today=moment(new Date()).startOf('day');
   $(document).bind('keyup', 'left', function(){
     Router.go($('.prev-link').attr('href'));
   });

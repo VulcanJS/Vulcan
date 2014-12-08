@@ -5,6 +5,10 @@
       "1.1.2"
     ],
     [
+      "aldeed:simple-schema",
+      "1.1.0"
+    ],
+    [
       "application-configuration",
       "1.0.3"
     ],

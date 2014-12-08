@@ -6,5 +6,6 @@
   "you_have_been_unsubscribed_from_all_notifications": "Vous avez été désabonné de toutes les notifications.",
   "user_not_found": "Utilisateur non trouvé",
   "1_notification": "1 notification",
-  "notifications": "notifications"
+  "notifications": "notifications",
+  "emailNotifications": "Notifications par Email"
 }

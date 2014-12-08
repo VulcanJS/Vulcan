@@ -18,7 +18,8 @@ var kadiraAppSecretProperty = {
     type: String,
     optional: true,
     autoform: {
-      group: 'kadira'
+      group: 'kadira',
+      private: true
     }
   }
 }

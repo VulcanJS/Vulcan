@@ -5,13 +5,13 @@
       <div class="dropdown-menu">
         <ul role="menu" aria-labelledby="dLabel">
           <li><a href="{{profileUrl}}">{{_ "profile"}}</a></li>
-          <li><a href="/account">{{_ "edit_account"}}</a></li> 
-          <li><a href="/sign-out">{{_ "sign_out"}}</a></li>
+          <li><a href="{{userEditUrl}}">{{_ "edit_account"}}</a></li>
+          <li><a href="{{pathFor route='signOut'}}">{{_ "sign_out"}}</a></li>
         </ul>
       </div>
     </div>
   {{else}}
-    <a class="account-link sign-in" href="/sign-in">{{_ "sign_in"}}</a>
-    <a class="account-link sign-up" href="/sign-up">{{_ "sign_up"}}</a>
+    <a class="account-link sign-in" href="{{pathFor route='atSignIn'}}">{{_ "sign_in"}}</a>
+    <a class="account-link sign-up" href="{{pathFor route='atSignUp'}}">{{_ "sign_up"}}</a>
   {{/if}}
 </template>

@@ -58,7 +58,7 @@ var emailNotifications = {
     optional: true,
     defaultValue: true,
     autoform: {
-      group: 'notifications',
+      group: 'notifications_fieldset',
       instructions: 'Enable email notifications for new posts and new comments (requires restart).'
     }
   }

@@ -15,27 +15,5 @@ Meteor.methods({
   giveInvites: function () {
     if(isAdmin(Meteor.user()))
       Meteor.users.update({}, {$inc:{inviteCount: 1}}, {multi:true});
-  },
-  updateCategoryInPosts: function (categoryId) {
-    check(categoryId, String);
-
-    if (!isAdmin(Meteor.user()))
-      throw new Meteor.Error(403, "Not an admin");
-
-    var category = Categories.findOne(categoryId);
-    if (!category) {
-      Posts.update(
-        {}
-      , {$pull: {categories: {_id: categoryId}}}
-      , {multi: true}
-      );
-    } else {
-      // Such update is server-only, because Minimongo does not support $ yet
-      Posts.update(
-        {'categories._id': categoryId}
-      , {$set: {'categories.$': category}}
-      , {multi: true}
-      );
-    }
   }
 });

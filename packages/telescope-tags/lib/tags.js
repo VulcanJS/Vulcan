@@ -1,3 +1,4 @@
+// category schema
 categorySchema = new SimpleSchema({
  _id: {
     type: String,
@@ -19,11 +20,15 @@ Categories = new Meteor.Collection("categories", {
   schema: categorySchema
 });
 
+// we want to wait until categories are all loaded to load the rest of the app
+preloadSubscriptions.push('categories');
+
 // category post list parameters
-viewParameters.category = function (terms) { 
+viewParameters.category = function (terms) {
+  var categoryId = Categories.findOne({slug: terms.category})._id;
   return {
-    find: {'categories.slug': terms.category},
-    options: {sort: {sticky: -1, score: -1}}
+    find: {'categories': {$in: [categoryId]}} ,
+    options: {sort: {sticky: -1, score: -1}} // for now categories views default to the "top" view
   };
 }
 
@@ -41,23 +46,25 @@ addToPostSchema.push(
   {
     propertyName: 'categories',
     propertySchema: {
-      type: [categorySchema],
-      optional: true
+      type: [String],
+      optional: true,
+      editable: true,
+      autoform: {
+        editable: true,
+        noselect: true,
+        options: function () {
+          var categories = Categories.find().map(function (category) {
+            return {
+              value: category._id,
+              label: category.name
+            }  
+          });
+          return categories;
+        }
+      }
     }
   }
 );
-
-var getCheckedCategories = function (properties) {
-  properties.categories = [];
-  $('input[name=category]:checked').each(function() {
-    var categoryId = $(this).val();
-    properties.categories.push(Categories.findOne(categoryId));
-  });
-  return properties;
-}
-
-postSubmitClientCallbacks.push(getCheckedCategories);
-postEditClientCallbacks.push(getCheckedCategories);
 
 Meteor.startup(function () {
   Categories.allow({
