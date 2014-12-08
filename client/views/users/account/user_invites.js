@@ -1,17 +1,32 @@
+Template[getTemplate('userInvites')].created = function () {
+
+  var user = this.data;
+  var instance = this;
+
+  instance.invites = new ReactiveVar({});
+
+  Meteor.autorun(function () {
+    coreSubscriptions.subscribe('invites', user._id);
+    var invites = Invites.find({invitingUserId: user._id});
+    instance.invites.set(invites);
+  });
+};
+
 Template[getTemplate('userInvites')].helpers({
-  canCurrentUserInvite: function(){
+  canCurrentUserInvite: function () {
     var currentUser = Meteor.user();
     return currentUser && (currentUser.inviteCount > 0 && canInvite(currentUser));
   },
-
-  invitesLeft: function(){
+  invitesLeft: function () {
     var currentUser = Meteor.user();
     return currentUser ? currentUser.inviteCount : 0;
   },
-
-  invitesSchema: function() {
+  invitesSchema: function () {
     // expose schema for Invites (used by AutoForm) 
     return InviteSchema;
+  },
+  invites: function () {
+    return Template.instance().invites.get();
   }
 });
 
