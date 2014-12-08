@@ -29,7 +29,14 @@ Template[getTemplate('userDownvotedPosts')].created = function () {
 
 Template[getTemplate('userDownvotedPosts')].helpers({
   posts: function () {
-    return Template.instance().posts.get();
+    var user = this;
+    var posts = Template.instance().posts.get().fetch();
+    posts = _.map(posts, function (post) {
+      var vote = _.findWhere(user.votes.downvotedPosts, {itemId: post._id});
+      post.votedAt = vote.votedAt;
+      return post;
+    });
+    return posts;
   },
   hasMorePosts: function () {
     return Template.instance().posts.get().count() >= Template.instance().terms.get().limit;

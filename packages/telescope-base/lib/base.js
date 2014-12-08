@@ -150,8 +150,9 @@ viewParameters.userUpvotedPosts = function (terms) {
 viewParameters.userDownvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.votes.downvotedPosts, "itemId");
+  // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {
-    find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
+    find: {_id: {$in: postsIds}},
     options: {limit: 5, sort: {postedAt: -1}}
   };
 }

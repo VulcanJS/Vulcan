@@ -29,9 +29,14 @@ Template[getTemplate('userUpvotedPosts')].created = function () {
 
 Template[getTemplate('userUpvotedPosts')].helpers({
   posts: function () {
-    // todo: sort posts based on upvote timestamp, not on postedAt timestamp
-    // todo: extend with votedAt timestamp
-    return Template.instance().posts.get();
+    var user = this;
+    var posts = Template.instance().posts.get().fetch();
+    posts = _.map(posts, function (post) {
+      var vote = _.findWhere(user.votes.upvotedPosts, {itemId: post._id});
+      post.votedAt = vote.votedAt;
+      return post;
+    });
+    return posts;
   },
   hasMorePosts: function () {
     return Template.instance().posts.get().count() >= Template.instance().terms.get().limit;
