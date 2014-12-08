@@ -162,6 +162,7 @@ postSchemaObject = {
   sticky: {
     type: Boolean,
     optional: true,
+    defaultValue: false,
     autoform: {
       group: 'admin',
       leftLabel: "Sticky"

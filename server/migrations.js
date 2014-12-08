@@ -417,6 +417,16 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;    
+  },
+  cleanUpStickyProperty: function () {
+    var i = 0;
+    Posts.find({'sticky': {$exists: false}}).forEach(function (post) {
+      i++;
+      console.log("Post: " + post._id);
+      var result = Posts.update(post._id, {$set: {sticky: false}}, {multi: true, validate: false});
+      console.log("---------------------");
+    });
+    return i;    
   }
 };
 
