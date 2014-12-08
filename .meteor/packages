@@ -69,8 +69,8 @@ telescope-newsletter
 telescope-daily
 telescope-update-prompt
 telescope-kadira
-
 telescope-notifications
+telescope-digest
 
 # Accounts Templates
 useraccounts:unstyled

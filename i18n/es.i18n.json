@@ -48,14 +48,6 @@
   // Post deleted
   "your_post_has_been_deleted": "Tu post ha sido borrado.",
 
-  // Post digest
-  "the_top_5_posts_of_each_day": "Los 5 mejores posts de cada día",
-  "previous_day": "Dia anterior",
-  "next_day": "Dia siguiente",
-  "sorry_no_posts_for_today": "Lo sentimos, no hay post para hoy",
-  "today": "Hoy",
-  "yesterday": "Ayer",
-
   // Post submit & edit
   "created": "Creado",
   "title": "Título",

@@ -7,8 +7,6 @@ var coreSubscriptions = new SubsManager({
   expireIn: 30
 });
 
-// note: FastRender not defined here?
-
 PostsDailyController = RouteController.extend({
   template: function() {
     return getTemplate('postsDaily');

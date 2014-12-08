@@ -47,15 +47,6 @@
   // Post deleted
   "your_post_has_been_deleted": "Il tuo post è stato rimosso.",
 
-  // Post digest
-  "the_top_5_posts_of_each_day": "I 5 migliori post di ogni giorno.",
-  "previous_day": "Giorno Precedente",
-  "next_day": "Giorno Successivo",
-  "sorry_no_posts_for_today": "Ci spiace, non ci sono post per oggi",
-  "sorry_no_posts_for": "Ci spiace, non ci sono post per",
-  "today": "Oggi",
-  "yesterday": "Ieri",
-
   // Post submit & edit
   "created": "Creato",
   "title": "Titolo",

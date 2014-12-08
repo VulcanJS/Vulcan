@@ -48,14 +48,6 @@
   // Post deleted
   "your_post_has_been_deleted": "你的帖子已经被删除",
 
-  // Post digest
-  "the_top_5_posts_of_each_day": "每天前5名的帖子",
-  "previous_day": "前一天",
-  "next_day": "后一天",
-  "sorry_no_posts_for_today": "抱歉今天没有新的帖子",
-  "today": "今天",
-  "yesterday": "昨天",
-
   // Post submit & edit
   "created": "创建",
   "title": "标题",

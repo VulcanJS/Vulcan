@@ -8,7 +8,8 @@ Package.onUse(function (api) {
     'iron:router',
     'meteorhacks:fast-render', 
     'meteorhacks:subs-manager',
-    'tap:i18n'
+    'tap:i18n',
+    'telescope-digest'
   ], ['client', 'server']);
 
   api.use([
@@ -28,8 +29,6 @@ Package.onUse(function (api) {
     'lib/client/templates/posts_daily.js',
     'lib/client/stylesheets/daily.css',
     ], ['client']);
-
-  api.add_files(['lib/server/publications.js'], ['server']);
 
   api.add_files([
     "i18n/de.i18n.json",

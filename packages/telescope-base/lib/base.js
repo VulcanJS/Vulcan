@@ -55,11 +55,7 @@ viewNav = [
   {
     route: 'posts_best',
     label: 'best'
-  },
-  {
-    route: 'posts_digest_default',
-    label: 'digest'
-  } 
+  }
 ];
 
 // ------------------------------------- Views -------------------------------- //
@@ -98,21 +94,6 @@ viewParameters.pending = function (terms) {
     options: {sort: {createdAt: -1}}
   };
 }
-
-viewParameters.digest = function (terms) {
-  return {
-    find: {
-      postedAt: {
-        $gte: terms.after, 
-        $lt: terms.before
-      }
-    },
-    options: {
-      sort: {sticky: -1, baseScore: -1, limit: 0}
-    }
-  };
-}
-
 
 heroModules = [];
 
