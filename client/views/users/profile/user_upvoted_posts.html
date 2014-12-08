@@ -8,13 +8,13 @@
         <td>Upvoted At</td>
       </tr>
     </thead>
-    {{#each upvotedPosts}}
+    {{#each posts}}
       <tr>
         <td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
         <td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
       </tr>
     {{/each}}
-    {{#if hasMoreUpvotedPosts}}
+    {{#if hasMorePosts}}
       <tr>
         <td colspan="2">
           <a class="upvotedposts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
