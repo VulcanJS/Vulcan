@@ -1,5 +1,9 @@
 Template[getTemplate('userComments')].created = function () {
   Session.set('commentsShown', 5);
+  var user = this.data;
+  Tracker.autorun(function () {
+    coreSubscriptions.subscribe('userComments', user._id, Session.get('commentsShown'));
+  });
 };
 
 Template[getTemplate('userComments')].helpers({
@@ -17,7 +21,7 @@ Template[getTemplate('userComments')].helpers({
     }
   },
   hasMoreComments: function () {
-    return Comments.find({userId: this._id}).count() > Session.get('commentsShown');
+    return Comments.find({userId: this._id}).count() >= Session.get('commentsShown');
   }
 });
 

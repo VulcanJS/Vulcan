@@ -1,10 +1,31 @@
 // Publish a single user
 
-Meteor.publish('userProfilePosts', function(userId, limit) {
+Meteor.publish('userPosts', function(userId, limit) {
   return Posts.find({userId: userId}, {limit: limit});
 });
 
+Meteor.publish('userComments', function(userId, limit) {
+  var comments = Comments.find({userId: userId}, {limit: limit});
+  // if there are comments, find out which posts were commented on
+  var commentedPostIds = comments.count() ? _.pluck(comments.fetch(), 'postId') : [];
+  return [
+    comments,
+    Posts.find({_id: {$in: commentedPostIds}})
+  ]
+});
+
+// Meteor.publish('userUpvotedPosts', function(userId, limit) {
+//   var user = Meteor.users.findOne(userId);
+//   return Posts.find({_id: {$in: user.votes.upvotedPosts}});
+// });
+
+// Meteor.publish('userDownvotedPosts', function(userId, limit) {
+//   var user = Meteor.users.findOne(userId);
+//   return Posts.find({_id: {$in: user.votes.downvotedPosts}});
+// });
+
 Meteor.publish('userProfile', function(userIdOrSlug) {
+  return [];
   if(canViewById(this.userId)){
     var options = isAdminById(this.userId) ? {limit: 1} : {limit: 1, fields: privacyOptions};
     var findById = Meteor.users.findOne(userIdOrSlug);

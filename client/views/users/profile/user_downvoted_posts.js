@@ -1,5 +1,9 @@
 Template[getTemplate('userDownvotedPosts')].created = function () {
   Session.set('downvotedPostsShown', 5);
+  var user = this.data;
+  // Tracker.autorun(function () {
+  //   coreSubscriptions.subscribe('userDownvotedPosts', user._id, Session.get('downvotedPostsShown'));
+  // });
 };
 
 Template[getTemplate('userDownvotedPosts')].helpers({
@@ -14,7 +18,7 @@ Template[getTemplate('userDownvotedPosts')].helpers({
     }
   },
   hasMoreDownvotedPosts: function () {
-    return !!this.votes.downvotedPosts && this.votes.downvotedPosts.length > Session.get('downvotedPostsShown');
+    return !!this.votes.downvotedPosts && this.votes.downvotedPosts.length >= Session.get('downvotedPostsShown');
   }
 });
 

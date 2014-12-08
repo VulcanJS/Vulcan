@@ -1,5 +1,9 @@
 Template[getTemplate('userUpvotedPosts')].created = function () {
   Session.set('upvotedPostsShown', 5);
+  var user = this.data;
+  // Tracker.autorun(function () {
+  //   coreSubscriptions.subscribe('userUpvotedPosts', user._id, Session.get('upvotedPostsShown'));
+  // });
 };
 
 Template[getTemplate('userUpvotedPosts')].helpers({
@@ -14,7 +18,7 @@ Template[getTemplate('userUpvotedPosts')].helpers({
     }
   },
   hasMoreUpvotedPosts: function () {
-    return !!this.votes.upvotedPosts && this.votes.upvotedPosts.length > Session.get('upvotedPostsShown');
+    return !!this.votes.upvotedPosts && this.votes.upvotedPosts.length >= Session.get('upvotedPostsShown');
   }
 });
 
