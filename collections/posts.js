@@ -508,11 +508,14 @@ Meteor.methods({
     // }
     // NOTE: actually, keep comments after all
 
-    // decrement post count
     var post = Posts.findOne({_id: postId});
+    
     if(!Meteor.userId() || !canEditById(Meteor.userId(), post)) throw new Meteor.Error(606, 'You need permission to edit or delete a post');
-
+    
+    // decrement post count
     Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
+    
+    // delete post
     Posts.remove(postId);
   }
 

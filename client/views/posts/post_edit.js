@@ -58,3 +58,23 @@ AutoForm.hooks({
     // endSubmit: function(formId, template) {}
   }
 });
+
+Template[getTemplate('post_edit')].events({
+  'click .delete-link': function(e){
+    var post = this.post;
+
+    e.preventDefault();
+    
+    if(confirm("Are you sure?")){
+      Router.go("/");
+      Meteor.call("deletePostById", post._id, function(error) {
+        if (error) {
+          console.log(error);
+          flashMessage(error.reason, 'error');
+        } else {
+          flashMessage(i18n.t('your_post_has_been_deleted'), 'success');
+        }
+      });
+    }
+  }
+});
