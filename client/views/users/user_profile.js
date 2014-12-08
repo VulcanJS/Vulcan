@@ -1,5 +1,5 @@
 Template[getTemplate('user_profile')].helpers({
-  userProfileBlocks: function () {
+  userProfileDisplay: function () {
     return userProfileDisplay;
   },
   getTemplate: function () {

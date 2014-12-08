@@ -267,6 +267,17 @@ userProfileDisplay = [
     template: 'userComments', 
     order: 5
   }
+];
+
+userProfileEdit = [
+  {
+    template: 'userAccount',
+    order: 1
+  },
+  {
+    template: 'userInvites',
+    order: 2
+  }
 ]
 
 userEditRenderedCallbacks = [];

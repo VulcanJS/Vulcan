@@ -1,4 +1,4 @@
-Template[getTemplate('invites')].helpers({
+Template[getTemplate('userInvites')].helpers({
   canCurrentUserInvite: function(){
     var currentUser = Meteor.user();
     return currentUser && (currentUser.inviteCount > 0 && canInvite(currentUser));
