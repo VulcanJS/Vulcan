@@ -1,30 +1,40 @@
 Template[getTemplate('userPosts')].created = function () {
-  Session.set('postsShown', 5);
+
   var user = this.data;
-  var terms = {};
+  var instance = this;
+
+  // initialize the terms local reactive variable
+  instance.terms = new ReactiveVar({
+    view: 'userPosts',
+    userId: user._id,
+    limit: 5
+  });
+
+  // will re-run when the "terms" local reactive variable changes
   Tracker.autorun(function () {
-    terms = {
-      view: 'userPosts',
-      userId: user._id,
-      limit: Session.get('postsShown')
-    }
-    coreSubscriptions.subscribe('userPosts', terms);
+    coreSubscriptions.subscribe('userPosts', instance.terms.get());
   });
 };
 
 Template[getTemplate('userPosts')].helpers({
   posts: function () {
-    return Posts.find({userId: this._id}, {limit: Session.get('postsShown')});
+    // access the reactive var on the local instance
+    var parameters = getPostsParameters(Template.instance().terms.get());
+    var posts = Posts.find(parameters.find, parameters.options)
+    return posts;
   },
   hasMorePosts: function () {
-    return Posts.find({userId: this._id}).count() >= Session.get('postsShown');
+    var parameters = getPostsParameters(Template.instance().terms.get());
+    var posts = Posts.find(parameters.find, parameters.options)
+    return posts.count() >= Session.get('postsShown');
   }
 });
 
 Template[getTemplate('userPosts')].events({
   'click .posts-more': function (e) {
     e.preventDefault();
-    var postsShown = Session.get('postsShown');
-    Session.set('postsShown', postsShown + 10);
+    var terms = Template.instance().terms.get();
+    terms.limit += 5;
+    Template.instance().terms.set(terms)
   }
 });
