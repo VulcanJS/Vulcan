@@ -70,7 +70,7 @@ telescope-daily
 telescope-update-prompt
 telescope-kadira
 telescope-notifications
-telescope-digest
+telescope-singleday
 
 # Accounts Templates
 useraccounts:unstyled

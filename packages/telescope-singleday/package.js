@@ -1,7 +1,7 @@
 Package.describe({
-  summary: 'Telescope digest package',
+  summary: 'Telescope Single Day package',
   version: '0.1.0',
-  name: 'telescope-digest'
+  name: 'telescope-singleday'
 });
 
 Npm.depends({
@@ -48,7 +48,7 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/routes.js',
-    'lib/digest.js'
+    'lib/singleday.js'
   ], ['client', 'server']);
 
   // client

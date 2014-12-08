@@ -213,16 +213,16 @@
       "0.0.0"
     ],
     [
-      "telescope-digest",
-      "0.1.0"
-    ],
-    [
       "telescope-i18n",
       "0.0.0"
     ],
     [
       "telescope-lib",
       "0.2.9"
+    ],
+    [
+      "telescope-singleday",
+      "0.1.0"
     ],
     [
       "templating",
