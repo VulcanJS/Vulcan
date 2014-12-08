@@ -5,11 +5,6 @@ Template[getTemplate('postInfo')].helpers({
   can_edit: function(){
     return canEdit(Meteor.user(), this);
   },
-  ago: function(){
-    // if post is approved show submission time, else show creation time.
-    time = this.status == STATUS_APPROVED ? this.postedAt : this.createdAt;
-    return time;
-  },
   getTemplate: function() {
     return getTemplate("postAuthor");
   }

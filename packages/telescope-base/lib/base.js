@@ -40,7 +40,28 @@ primaryNav = ['viewsMenu', 'adminMenu'];
 secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
 
 // array containing items in the admin menu
-adminNav = [];
+adminNav = [
+  {
+    route: 'posts_pending',
+    label: 'Pending'
+  },
+  {
+    route: 'posts_scheduled',
+    label: 'Scheduled'
+  },
+  {
+    route: 'all-users',
+    label: 'Users'
+  },
+  {
+    route: 'settings',
+    label: 'Settings'
+  },
+  {
+    route: 'toolbox',
+    label: 'Toolbox'
+  }
+];
 
 // array containing items in the views menu
 viewNav = [
@@ -62,7 +83,17 @@ viewNav = [
 
 
 // object containing post list view parameters
-viewParameters = {}
+viewParameters = {};
+
+// will be common to all other view unless specific properties are overwritten
+viewParameters.baseParameters = {
+  find: {
+    status: STATUS_APPROVED
+  },
+  options: {
+    limit: 10
+  }
+};
 
 viewParameters.top = function (terms) {
   return {
@@ -85,13 +116,24 @@ viewParameters.best = function (terms) {
 viewParameters.pending = function (terms) {
   return {
     find: {
-      status: 1, 
-      $or: [
-        {postedAt: {$lte: new Date("December 31, 2999")}},
-        {postedAt: {$exists: false}}
-      ] // for pending view, show future posts too
+      status: 1
     }, 
-    options: {sort: {createdAt: -1}}
+    options: {sort: {createdAt: -1}},
+    showFuture: true
+  };
+}
+
+viewParameters.scheduled = function (terms) {
+  return {
+    find: {postedAt: {$gte: new Date()}},
+    options: {sort: {postedAt: -1}},
+    showFuture: true
+  };
+}
+
+viewParameters.upvoted = function (terms) {
+  return {
+    options: {sort: {sticky: -1, score: -1}}
   };
 }
 

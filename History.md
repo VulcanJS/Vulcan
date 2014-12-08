@@ -3,6 +3,7 @@
 * Renaming Errors to Messages (thanks @yourcelf!).
 * Adding `fast-render` (thanks @arunoda!).
 * Extracted digest into its own package.
+* Adding "scheduled" view that shows upcoming scheduled posts.
 
 ## v0.9.11 “FormScope”
 

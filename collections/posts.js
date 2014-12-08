@@ -462,8 +462,13 @@ Meteor.methods({
 
   approvePost: function(post){
     if(isAdmin(Meteor.user())){
-      var now = new Date();
-      var result = Posts.update(post._id, {$set: {status: 2, postedAt: now}}, {validate: false});
+      var set = {status: 2};
+
+      // unless post is already scheduled and has a postedAt date, set its postedAt date to now
+      if (!post.postedAt)
+        set.postedAt = new Date();
+      
+      var result = Posts.update(post._id, {$set: set}, {validate: false});
     }else{
       flashMessage('You need to be an admin to do that.', "error");
     }
