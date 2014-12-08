@@ -1,6 +1,7 @@
 ## v0.10.0
 
 * Renaming Errors to Messages (thanks @yourcelf!).
+* Adding `fast-render` (thanks @arunoda!).
 
 ## v0.9.11 “FormScope”
 
