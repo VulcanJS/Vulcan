@@ -1,12 +1,13 @@
 var RSS = Npm.require('rss');
 
 var getMeta = function(url) {
+  var siteUrl = getSetting('siteUrl', Meteor.absoluteUrl());
   return {
     title: getSetting('title'),
     description: getSetting('tagline'),
-    feed_url: Meteor.absoluteUrl(url),
-    site_url: Meteor.absoluteUrl(),
-    image_url: Meteor.absoluteUrl('img/favicon.png'),
+    feed_url: siteUrl+url,
+    site_url: siteUrl,
+    image_url: siteUrl+'img/favicon.png',
   };
 };
 
