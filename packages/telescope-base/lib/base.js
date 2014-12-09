@@ -273,10 +273,6 @@ userProfileEdit = [
   {
     template: 'userAccount',
     order: 1
-  },
-  {
-    template: 'userInvites',
-    order: 2
   }
 ]
 

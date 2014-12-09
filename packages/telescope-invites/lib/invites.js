@@ -20,11 +20,15 @@ InviteSchema = new SimpleSchema({
 Invites = new Meteor.Collection("invites");
 Invites.attachSchema(InviteSchema);
 
-
 // invites are managed through Meteor method
 
 Invites.deny({
   insert: function(){ return true; },
   update: function(){ return true; },
   remove: function(){ return true; }
+});
+
+userProfileEdit.push({
+  template: 'userInvites',
+  order: 2
 });
