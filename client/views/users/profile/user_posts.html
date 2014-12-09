@@ -14,10 +14,20 @@
         <td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
       </tr>
     {{/each}}
-    {{#if hasMorePosts}}
+    {{#if isReady}}
+      {{#if hasMorePosts}}
+        <tr>
+          <td colspan="100">
+            <a class="posts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+          </td>
+        </tr>
+      {{/if}}
+    {{else}}
       <tr>
-        <td colspan="2">
-          <a class="posts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+        <td colspan="100">
+          <div style="position:relative;height:100px;">
+            {{>spinner}}
+          </div>
         </td>
       </tr>
     {{/if}}

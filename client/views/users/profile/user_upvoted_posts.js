@@ -19,7 +19,7 @@ Template[getTemplate('userUpvotedPosts')].created = function () {
     var parameters = getPostsParameters(terms);
 
     // subscribe to the userPosts publication
-    coreSubscriptions.subscribe('userUpvotedPosts', terms);
+    instance.subscription = Meteor.subscribe('userUpvotedPosts', terms);
 
     // update the instance's "posts" cursor
     instance.posts.set(Posts.find(parameters.find, parameters.options));

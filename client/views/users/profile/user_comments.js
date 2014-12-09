@@ -1,14 +1,28 @@
 Template[getTemplate('userComments')].created = function () {
   Session.set('commentsShown', 5);
+
   var user = this.data;
+  var instance = this;
+  
+  instance.commentsShown = new ReactiveVar(5);
+  instance.comments = new ReactiveVar({});
+
   Tracker.autorun(function () {
-    coreSubscriptions.subscribe('userComments', user._id, Session.get('commentsShown'));
+    
+    // get parameters
+    var limit = instance.commentsShown.get();
+    
+    // subscribe
+    instance.subscription = Meteor.subscribe('userComments', user._id, limit);
+
+    // set cursor
+    instance.comments.set(Comments.find({userId: user._id}, {limit: limit}));
   });
 };
 
 Template[getTemplate('userComments')].helpers({
   comments: function () {
-    var comments = Comments.find({userId: this._id}, {limit: Session.get('commentsShown')});
+    var comments = Template.instance().comments.get();
     if(!!comments){
       // extend comments with each commented post
       var extendedComments = comments.map(function (comment) {
@@ -21,14 +35,14 @@ Template[getTemplate('userComments')].helpers({
     }
   },
   hasMoreComments: function () {
-    return Comments.find({userId: this._id}).count() >= Session.get('commentsShown');
+    return Template.instance().comments.get().count() >= Template.instance().commentsShown.get();
   }
 });
 
 Template[getTemplate('userComments')].events({
   'click .comments-more': function (e) {
     e.preventDefault();
-    var commentsShown = Session.get('commentsShown');
-    Session.set('commentsShown', commentsShown + 10);
+    var commentsShown = Template.instance().commentsShown.get();
+    Template.instance().commentsShown.set(commentsShown+5);
   }
 });

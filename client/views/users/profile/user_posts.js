@@ -19,7 +19,7 @@ Template[getTemplate('userPosts')].created = function () {
     var parameters = getPostsParameters(terms);
 
     // subscribe to the userPosts publication
-    coreSubscriptions.subscribe('userPosts', terms);
+    instance.subscription = Meteor.subscribe('userPosts', terms);
 
     // update the instance's "posts" cursor
     instance.posts.set(Posts.find(parameters.find, parameters.options));
@@ -30,6 +30,9 @@ Template[getTemplate('userPosts')].created = function () {
 Template[getTemplate('userPosts')].helpers({
   posts: function () {
     return Template.instance().posts.get();
+  },
+  isReady: function () {
+    return Template.instance().subscription.ready();
   },
   hasMorePosts: function () {
     return Template.instance().posts.get().count() >= Template.instance().terms.get().limit;
