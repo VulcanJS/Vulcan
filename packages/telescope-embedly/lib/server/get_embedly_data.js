@@ -5,9 +5,12 @@ getEmbedlyData = function (url) {
   var thumbnailWidth = getSetting('thumbnailWidth', 200);
   var thumbnailHeight = getSetting('thumbnailHeight', 125);
 
-  if(!embedlyKey)
-    throw new Meteor.Error("Couldn't find an Embedly API key! Please add it to your Telescope settings.")  
-  
+  if(!embedlyKey) {
+    // fail silently to still let the post be submitted as usual
+    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module.");
+    return null;
+  }
+
   try {
     
     var result = Meteor.http.get(extractBase, {
