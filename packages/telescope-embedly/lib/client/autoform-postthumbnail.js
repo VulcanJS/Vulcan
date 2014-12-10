@@ -61,3 +61,10 @@ Template.afPostThumbnail.rendered = function () {
   });
 }
 
+Template.afPostThumbnail.events({
+  'click .remove-thumbnail-link': function (e, t) {
+    e.preventDefault();
+    t.$('.post-thumbnail-preview').attr('src', '');
+    t.$('input').val('');
+  }
+})
