@@ -50,7 +50,7 @@
     ],
     [
       "ddp",
-      "1.0.11"
+      "1.0.12"
     ],
     [
       "deps",
@@ -82,7 +82,7 @@
     ],
     [
       "iron:controller",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:core",
@@ -102,11 +102,11 @@
     ],
     [
       "iron:middleware-stack",
-      "1.0.0"
+      "1.0.3"
     ],
     [
       "iron:router",
-      "1.0.1"
+      "1.0.3"
     ],
     [
       "iron:url",
@@ -142,7 +142,7 @@
     ],
     [
       "meteorhacks:subs-manager",
-      "1.2.0"
+      "1.2.2"
     ],
     [
       "minifiers",
@@ -154,7 +154,7 @@
     ],
     [
       "mongo",
-      "1.0.8"
+      "1.0.9"
     ],
     [
       "observe-sequence",
@@ -250,6 +250,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.35",
+  "toolVersion": "meteor-tool@1.0.36",
   "format": "1.0"
 }
