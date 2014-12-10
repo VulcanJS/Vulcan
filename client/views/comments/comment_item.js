@@ -152,7 +152,7 @@ Template[getTemplate('comment_item')].events({
   'click .not-upvoted .upvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go(getSigninUrl());
+      Router.go('atSignIn');
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
     Meteor.call('upvoteComment', this, function(error, result){
@@ -162,7 +162,7 @@ Template[getTemplate('comment_item')].events({
   'click .upvoted .upvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go(getSigninUrl());
+      Router.go('atSignIn');
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
     Meteor.call('cancelUpvoteComment', this, function(error, result){
@@ -172,7 +172,7 @@ Template[getTemplate('comment_item')].events({
   'click .not-downvoted .downvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go(getSigninUrl());
+      Router.go('atSignIn');
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
     Meteor.call('downvoteComment', this, function(error, result){
@@ -182,7 +182,7 @@ Template[getTemplate('comment_item')].events({
   'click .downvoted .downvote': function(e, instance){
     e.preventDefault();
     if(!Meteor.user()){
-      Router.go(getSigninUrl());
+      Router.go('atSignIn');
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
     Meteor.call('cancelDownvoteComment', this, function(error, result){

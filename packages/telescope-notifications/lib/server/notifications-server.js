@@ -1,5 +1,5 @@
 getUnsubscribeLink = function(user){
-  return Router.routes['unsubscribe'].url({hash: user.email_hash});
+  return getRouteUrl('unsubscribe', {hash: user.email_hash});
 };
 
 // given a notification, return the correct subject and html to send an email
