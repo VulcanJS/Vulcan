@@ -150,8 +150,9 @@ postSchemaObject = {
       // only provide a default value
       // 1) this is an insert operation
       // 2) status field is not set in the document being inserted
-      if(this.isInsert && !this.isSet)
-        return getSetting('requirePostsApproval', false) ? STATUS_PENDING: STATUS_APPROVED
+      var user = Meteor.users.findOne(this.userId);  
+      if (this.isInsert && !this.isSet)
+        return getDefaultPostStatus(user);
     },
     autoform: {
       noselect: true,
@@ -247,6 +248,17 @@ getPostProperties = function (post) {
 
   return p;
 };
+
+// default status for new posts
+getDefaultPostStatus = function (user) {
+  if (isAdmin(user) || !getSetting('requirePostsApproval', false)) {
+    // if user is admin, or else post approval is not required
+    return STATUS_APPROVED
+  } else {
+    // else
+    return STATUS_PENDING
+  }
+}
 
 getPostPageUrl = function(post){
   return getSiteUrl()+'posts/'+post._id;
@@ -361,11 +373,12 @@ Meteor.methods({
     }
 
     // Status
-    var defaultPostStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED;
-    if(isAdmin(Meteor.user()) && !!post.status){ // if user is admin and a custom status has been set
+    if(!!post.status && isAdmin(Meteor.user())){
+      // if a custom status has been set, and user is admin, use that
       properties.status = post.status;
-    }else{ // else use default status
-      properties.status = defaultPostStatus;
+    }else{
+      // else use default status
+      properties.status = getDefaultPostStatus(Meteor.user());
     }
 
     // CreatedAt
