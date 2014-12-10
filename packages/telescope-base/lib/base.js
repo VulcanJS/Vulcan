@@ -126,8 +126,7 @@ viewParameters.pending = function (terms) {
 viewParameters.scheduled = function (terms) {
   return {
     find: {postedAt: {$gte: new Date()}},
-    options: {sort: {postedAt: -1}},
-    showFuture: true
+    options: {sort: {postedAt: -1}}
   };
 }
 
