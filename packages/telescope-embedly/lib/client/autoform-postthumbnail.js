@@ -32,18 +32,21 @@ Template.afPostThumbnail.helpers({
 
 Template.afPostThumbnail.rendered = function () {
 
-  var $img = this.$('.post-thumbnail-preview');
-  var $thumbnailUrlField = this.$('[name="thumbnailUrl"]');
+  var instance = this;
 
   // note: the following fields are *not* in the current template
   var $urlField = $('[name="url"]');
   var $titleField = $('[name="title"]');
   var $bodyField = $('[name="body"]');
-  var $thumbnailContainer = $('.post-thumbnail-container');
-
 
   $urlField.change(function (e) {
+
     var url = $urlField.val();
+
+    var $thumbnailContainer = instance.$('.post-thumbnail-container');
+    var $img = instance.$('.post-thumbnail-preview');
+    var $thumbnailUrlField = instance.$('[name="thumbnailUrl"]');
+
     if (!!url) {
       $thumbnailContainer.addClass('loading');
       clearSeenMessages();
@@ -56,7 +59,6 @@ Template.afPostThumbnail.rendered = function () {
           return
         }
         if (data) {
-
           // set thumbnail and fill in thumbnailUrl field
           $img.attr('src', data.thumbnailUrl);
           $thumbnailUrlField.val(data.thumbnailUrl);
