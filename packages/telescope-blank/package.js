@@ -19,7 +19,8 @@ Package.onUse(function (api) {
     'iron:router',                // routing package
     'telescope-base',             // basic Telescope hooks and objects
     'telescope-lib',              // useful functions
-    'telescope-i18n'              // internationalization wrapper
+    'telescope-i18n',             // internationalization wrapper
+    'fourseven:scss'              // SCSS compilation package
   ]);
 
   // client
@@ -47,19 +48,22 @@ Package.onUse(function (api) {
   // both
 
   api.add_files([
-    'lib/both.js'
+    'lib/both.js',
+    'lib/routes.js'
   ], ['client', 'server']);
 
   // client
 
   api.add_files([
-    'lib/client/client_only.js'
+    'lib/client/templates/template.html',
+    'lib/client/templates/template.js',
+    'lib/client/scss/package.scss'
   ], ['client']);
 
   // server
 
   api.add_files([
-    'lib/server/server_only.js'
+    'lib/server/publications.js'
   ], ['server']);    
 
   // i18n languages (must come last)
@@ -76,7 +80,7 @@ Package.onUse(function (api) {
   // -------------------------------- 3. Variables to export --------------------------------
 
   api.export([
-    //
+    'myFunction'
   ]);
 
 });
