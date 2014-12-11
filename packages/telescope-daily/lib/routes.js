@@ -8,10 +8,12 @@ var coreSubscriptions = new SubsManager({
 });
 
 PostsDailyController = RouteController.extend({
+  
   template: function() {
     return getTemplate('postsDaily');
   },
-  subscriptions: function() {
+
+  subscriptions: function () {
     this.days = this.params.days ? this.params.days : daysPerPage;
     // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
 
@@ -28,12 +30,18 @@ PostsDailyController = RouteController.extend({
     this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
 
   },
-  data: function() {
+
+  data: function () {
     Session.set('postsDays', this.days);
     return {
       days: this.days
     };
   },
+
+  getTitle: function () {
+    return i18n.t('daily') + ' - ' + getSetting('title');
+  },
+
   fastRender: true
 });
 
