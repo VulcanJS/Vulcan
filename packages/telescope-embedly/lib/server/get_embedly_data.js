@@ -45,6 +45,9 @@ Meteor.methods({
   },
   getEmbedlyData: function (url) {
     return getEmbedlyData(url);
+  },
+  embedlyKeyExists: function () {
+    return !!getSetting('embedlyKey');
   }
 });
 

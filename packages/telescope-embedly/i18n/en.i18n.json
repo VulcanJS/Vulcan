@@ -1,5 +1,6 @@
 {
   "thumbnail": "Thumbnail",
   "thumbnailUrl": "Thumbnail",
-  "clear_thumbnail": "Clear Thumbnail"
+  "clear_thumbnail": "Clear Thumbnail",
+  "please_fill_in_embedly_key": "Please fill in your Embedly API key to enable thumbnails."
 }
