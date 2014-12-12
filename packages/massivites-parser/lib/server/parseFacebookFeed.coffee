@@ -1,7 +1,10 @@
+generateUsername = (name) ->
+  name.toLowerCase().replace /\s+|\s+/g, ""
+
 findOrInsertUser = (fbUserData) ->
       # Check if there's already a user with this name
       user = Meteor.users.findOne
-        "fbData.id": fbUserData.id
+        username: generateUsername fbUserData.name
       # if so, use his id
       console.log user
       if user?
@@ -9,7 +12,7 @@ findOrInsertUser = (fbUserData) ->
       # create new user and use this id (post author)
       else
         postAuthorId = Accounts.createUser
-          username: fbUserData.name.toLowerCase().replace /\s+|\s+/g, ""
+          username: generateUsername fbUserData.name
           password: 'letmein'
           profile:
             name: fbUserData.name
@@ -22,10 +25,11 @@ Meteor.methods
     posts = EJSON.parse(jsonFeed).data
     for post in posts
 
-      postAuthorId = findOrInsertUser post.from
+      postAuthor = post.from
+      postAuthorId = findOrInsertUser postAuthor
 
       postDoc =
-        author: post.from.name
+        author: postAuthor.name
         body: post.message
         htmlBody: post.message
         status: 2
@@ -41,6 +45,15 @@ Meteor.methods
         createdAt: post.created_time
         fbData:
           id: post.id
+
+      # insert new post or update an old one
+      postId = Posts.update
+        fbData:
+          id: post.id
+      ,
+        $set: postDoc
+      ,
+        upsert: true
 
       # @todo check whether this actually works
       # if post.place?
@@ -60,26 +73,21 @@ Meteor.methods
         postDoc = _.extend postDoc,
           upvotes: post.likes.data.length
 
-      # insert new post or update an old one
-      postId = Posts.update
-        fbData:
-          id: post.id
-      ,
-        $set: postDoc
-      ,
-        upsert: true
-
       if post.comments?
         comments = post.comments.data
         postDoc = _.extend postDoc,
           commentCount: comments.length
+
         for comment in comments
-          # @todo insert comment
           # @todo insert author
+          commentAuthor = comments.from
+          postAuthorId = findOrInsertUser commentAuthor
+          # @todo insert comment
           commentDoc =
-            author: comment.from.name
+            author: commentAuthor.name
             body: comment.message
             createdAt: comment.created_time
             upvotes: comment.like_count
             fbData:
               id: comment.id
+      
