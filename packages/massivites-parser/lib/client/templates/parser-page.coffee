@@ -3,5 +3,9 @@ Template.parserPage.events
     e.preventDefault()
     jsonFeed = $('#parser-json-feed').val()
 
-    Meteor.call 'parseFacebookFeed', jsonFeed
+    Meteor.call 'parseFacebookFeed', jsonFeed, (error, result) ->
+      if error?
+        console.log 'Something went wrong.'
+      else
+        $('#parser-json-feed').val ''
 
