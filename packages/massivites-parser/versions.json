@@ -1,6 +1,10 @@
 {
   "dependencies": [
     [
+      "accounts-base",
+      "1.1.2"
+    ],
+    [
       "aldeed:simple-schema",
       "1.2.0"
     ],
@@ -57,10 +61,6 @@
       "1.0.2"
     ],
     [
-      "fourseven:scss",
-      "1.0.0"
-    ],
-    [
       "geojson-utils",
       "1.0.1"
     ],
@@ -77,11 +77,47 @@
       "1.0.1"
     ],
     [
+      "iron:controller",
+      "1.0.3"
+    ],
+    [
+      "iron:core",
+      "1.0.3"
+    ],
+    [
+      "iron:dynamic-template",
+      "1.0.3"
+    ],
+    [
+      "iron:layout",
+      "1.0.3"
+    ],
+    [
+      "iron:location",
+      "1.0.3"
+    ],
+    [
+      "iron:middleware-stack",
+      "1.0.3"
+    ],
+    [
+      "iron:router",
+      "1.0.3"
+    ],
+    [
+      "iron:url",
+      "1.0.3"
+    ],
+    [
       "jquery",
       "1.0.1"
     ],
     [
       "json",
+      "1.0.1"
+    ],
+    [
+      "localstorage",
       "1.0.1"
     ],
     [
@@ -130,6 +166,10 @@
     ],
     [
       "routepolicy",
+      "1.0.2"
+    ],
+    [
+      "service-configuration",
       "1.0.2"
     ],
     [
