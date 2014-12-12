@@ -24,9 +24,12 @@ Package.onUse(function(api) {
   ], ['client']);
 
   api.add_files([
-    'lib/client/routes.coffee',
-    'lib/server/parseFacebookFeed.coffee',
+    'lib/client/routes.coffee'
   ], ['server', 'client']);
+
+  api.add_files([
+    'lib/server/parseFacebookFeed.coffee'
+  ], ['server']);
 
   api.export([
     // 'buildEmailTemplate',

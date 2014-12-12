@@ -20,9 +20,7 @@ findOrInsertUser = (fbUserData) ->
       postAuthorId
 
 checkIfNewPost = (fbPostId) ->
-  console.log fbPostId
-  post = Posts.find 'fbData.id': fbPostId
-  console.log post
+  post = Posts.findOne 'fbData.id': fbPostId
   if post? then false else true
 
 Meteor.methods
@@ -35,6 +33,7 @@ Meteor.methods
         console.log "================ Facebook post id: #{post.id} ================"
 
         updatePost = false
+        isNewPost = checkIfNewPost post.id
         postAuthor = post.from
         postAuthorId = findOrInsertUser postAuthor
 
@@ -56,9 +55,6 @@ Meteor.methods
           postedAt: post.created_time
           fbData:
             id: post.id
-
-        isNewPost = checkIfNewPost post.id
-        console.log isNewPost
 
         # insert new post or update an old one
         Posts.update
@@ -124,10 +120,9 @@ Meteor.methods
 
         # Update the postCount of the post's author
         if isNewPost is true
-          console.log postAuthorId
-          # Meteor.users.update postAuthorId,
-          #   $inc:
-          #     postCount: 1
+          Meteor.users.update postAuthorId,
+            $inc:
+              postCount: 1
 
         # @todo check whether this actually works
         # if post.place?
