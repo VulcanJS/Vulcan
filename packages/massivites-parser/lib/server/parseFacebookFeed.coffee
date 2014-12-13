@@ -49,22 +49,22 @@ Meteor.methods
 
       console.log "================ Facebook post id: #{post.id} ================"
 
-      updatePost = false
       isNewPost = checkIfNewPost post.id
       postAuthor = post.from
       postAuthorId = (findOrInsertUser postAuthor).userId
+      postLikes = if post.likes? then post.likes.data.length else 0
 
       postDoc =
         author: postAuthor.name
         body: post.message
         htmlBody: post.message
         status: 2
-        upvotes: 0
+        upvotes: postLikes
+        baseScore: postLikes
         downvotes: 0
         commentCount: 0
         clickCount: 0
         viewCount: 0
-        baseScore: 0
         score: 0
         inactive: false
         userId: postAuthorId
@@ -85,19 +85,16 @@ Meteor.methods
       postDb = Posts.findOne
         fbData:
             id: post.id
-      postDbId = postDb._id
-
-      if post.likes?
-        updatePost = true
-        postDoc = _.extend postDoc,
-          upvotes: post.likes.data.length
 
       if post.comments?
-        updatePost = true
         comments = post.comments.data
         parserStats.changedComments = comments.length
-        postDoc = _.extend postDoc,
-          commentCount: comments.length
+        # update the post's comment count
+        Posts.update postDb._id,
+          $set:
+            commentCount: comments.length
+        ,
+          validate: false
 
         for comment in comments
           # @todo insert author
@@ -117,7 +114,7 @@ Meteor.methods
             createdAt: comment.created_time
             postedAt: comment.created_time
             upvotes: comment.like_count
-            postId: postDbId
+            postId: postDb._id
             userId: commentAuthorId
             fbData:
               id: comment.id
@@ -130,13 +127,6 @@ Meteor.methods
           ,
             validate: false
             upsert: true
-
-      # Update the post with given likes or comments data
-      if updatePost is true
-        Posts.update postDbId,
-          $set: postDoc
-        ,
-          validate: false
 
       # if it's a new post, update the postCount of the author
       if isNewPost is true
