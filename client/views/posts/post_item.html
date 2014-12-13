@@ -1,4 +1,5 @@
 <template name="post_item">
+<a href="posts/{{_id}}">
   <div class="post {{rankClass}} {{#if sticky}}sticky{{/if}} {{inactiveClass}}" id="{{_id}}">
     <div class="modules-group left-modules">
       <div class="inner">
@@ -28,4 +29,5 @@
       </div>
     </div>
   </div>
+</a>
 </template>

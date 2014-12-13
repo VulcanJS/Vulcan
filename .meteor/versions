@@ -53,6 +53,7 @@ iron:url@1.0.3
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.3.1
+jquery-readmore@0.0.1
 jquery@1.0.1
 json@1.0.1
 kestanous:herald-email@0.4.2
