@@ -1,24 +1,30 @@
 generateUsername = (name) ->
   name.toLowerCase().replace /\s+|\s+/g, ""
 
+findUserByFbId = (fbId) ->
+  Meteor.users.findOne
+    "fbData.id": fbId
+
 findOrInsertUser = (fbUserData) ->
       isNewUser = false
       # Check if there's already a user with this name
-      user = Meteor.users.findOne
-        username: generateUsername fbUserData.name
-      # if so, use his id
+      user = findUserByFbId fbUserData.id
+      # if so, use his existing id
       if user?
         userId = user._id
       # create new user and use this id (post author)
       else
         isNewUser = true
+        username = generateUsername fbUserData.name
         userId = Accounts.createUser
-          username: generateUsername fbUserData.name
+          username: username
+          email: "#{username}@massivites.io"
           password: 'letmein'
           profile:
             name: fbUserData.name
           fbData:
             id: fbUserData.id
+            name: fbUserData.name
       userId: userId
       isNewUser: isNewUser
 
