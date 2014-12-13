@@ -106,13 +106,13 @@ Meteor.methods
           commentDoc =
             upvotes: comment.like_count
             downvotes: 0
-            baseScore: 0
             score: 0
             author: commentAuthor.name
             body: comment.message
             htmlBody: comment.message
             createdAt: comment.created_time
             postedAt: comment.created_time
+            baseScore: comment.like_count
             upvotes: comment.like_count
             postId: postDb._id
             userId: commentAuthorId
