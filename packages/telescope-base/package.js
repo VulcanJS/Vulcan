@@ -57,6 +57,7 @@ Package.onUse(function (api) {
     'userProfileCompleteChecks',
     'userProfileDisplay',
     'userProfileEdit',
+    'userCreatedCallbacks',
     
     'getTemplate',
     'templates',

@@ -93,3 +93,20 @@ Meteor.methods({
     }
   }
 })
+
+function adminUserCreationNotification (user) {
+  // send notifications to admins
+  var admins = adminUsers();
+  admins.forEach(function(admin){
+    if(getUserSetting('notifications.users', false, admin)){
+      var emailProperties = {
+        profileUrl: getProfileUrl(user),
+        username: getUserName(user)
+      };
+      var html = getEmailTemplate('emailNewUser')(emailProperties);
+      sendEmail(getEmail(admin), 'New user account: '+getUserName(user), buildEmailTemplate(html));
+    }
+  });
+  return user;
+}
+userCreatedCallbacks.push(adminUserCreationNotification);

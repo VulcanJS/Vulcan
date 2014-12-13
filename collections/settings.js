@@ -294,6 +294,15 @@ settingsSchemaObject = {
       private: true
     }
   },
+  debug: {
+    type: Boolean,
+    optional: true,
+    label: 'Debug Mode',
+    autoform: {
+      group: 'debug',
+      instructions: 'Enable debug mode for more details console logs'
+    }
+  }
 };
 
 // add any extra properties to settingsSchemaObject (provided by packages for example)
@@ -330,7 +339,8 @@ if (Meteor.isClient){
   });
 }
 
-// override Meteor.absoluteUrl() with URL provided in settings
 Meteor.startup(function () {
+  // override Meteor.absoluteUrl() with URL provided in settings
   Meteor.absoluteUrl.defaultOptions.rootUrl = getSetting('siteUrl', Meteor.absoluteUrl());
+  debug = getSetting('debug', false);
 });

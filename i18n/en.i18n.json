@@ -51,6 +51,7 @@
   "extraCode": "Extra Code",
   "emailFooter": "Email Footer",
   "notes": "Notes",
+  "debug": "Debug Mode"
 
   // Settings Fieldsets
   "general": "General",
