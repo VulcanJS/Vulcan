@@ -29,6 +29,7 @@ Package.onUse(function (api) {
     'heroModules',
     'postModules',
     'postHeading',
+    'postBody',
     'postMeta',
     'modulePositions',
 

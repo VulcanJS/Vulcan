@@ -2,6 +2,9 @@ Template[getTemplate('postContent')].helpers({
   postHeading: function () {
     return postHeading;
   },
+  postBody: function () {
+    return postBody;
+  },
   postMeta: function () {
     return postMeta;
   },

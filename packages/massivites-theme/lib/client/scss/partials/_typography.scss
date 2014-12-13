@@ -1,0 +1,29 @@
+body, textarea, input, button, input[type="submit"], input[type="button"]{
+	font-family:"Open Sans", "Proxima Nova Soft", "proxima-nova-soft", "PT SANS", "Helvetica Neue", Helvetica, sans-serif;
+}
+body, textarea, input{
+	color:$text;
+	line-height:1.6;
+}
+.post-title, .header, .post-rank, .button{
+	// font-family:"kulturista-web", Rokkitt, Georgia, serif;
+}
+h2{
+	font-size: 36px;
+	margin-bottom: 10px;
+}
+h3{
+	font-weight:bold;
+	margin-bottom:10px;
+	color:$light-text;
+}
+.small{
+	font-size: 80%;
+	color:$light-text;
+}
+strong{
+	font-weight: bold;
+}
+em{
+	font-style: italic;
+}
