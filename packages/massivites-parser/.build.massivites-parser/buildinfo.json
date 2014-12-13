@@ -1,0 +1,52 @@
+{
+  "builtBy": "meteor/14",
+  "buildDependencies": {
+    "os.json": {
+      "files": {
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/package.js": "ddf8d6958f750166ab4314ee416d9e559577961d",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/both/routes.coffee": "771a588240b21c8fe579ff2d53c0594f68f6f278",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/both/base.coffee": "51323ca132388edea672ecaeb3ca423e2b9e8725",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/server/parseFacebookFeed.coffee": "ff801e332011a0a28839aaea33329ee879062dee"
+      },
+      "directories": []
+    },
+    "web.browser.json": {
+      "files": {
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/package.js": "ddf8d6958f750166ab4314ee416d9e559577961d",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/client/templates/parser-page.html": "65d8c95aea5679c06c9597bbf35aad3da727eda1",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/client/templates/parser-page.coffee": "50d430141efa5e5760a4a2aae22f7ea6a5319724",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/both/routes.coffee": "771a588240b21c8fe579ff2d53c0594f68f6f278",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/both/base.coffee": "51323ca132388edea672ecaeb3ca423e2b9e8725"
+      },
+      "directories": []
+    },
+    "web.cordova.json": {
+      "files": {
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/package.js": "ddf8d6958f750166ab4314ee416d9e559577961d",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/client/templates/parser-page.html": "65d8c95aea5679c06c9597bbf35aad3da727eda1",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/client/templates/parser-page.coffee": "50d430141efa5e5760a4a2aae22f7ea6a5319724",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/both/routes.coffee": "771a588240b21c8fe579ff2d53c0594f68f6f278",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/lib/both/base.coffee": "51323ca132388edea672ecaeb3ca423e2b9e8725"
+      },
+      "directories": []
+    }
+  },
+  "pluginDependencies": {
+    "files": {
+      "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser/package.js": "ddf8d6958f750166ab4314ee416d9e559577961d"
+    },
+    "directories": []
+  },
+  "source": "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-parser",
+  "buildTimeDirectDependencies": {
+    "telescope-lib": "0.2.9+3c5fc781baa945505183378ea284deac3068520b",
+    "templating": "1.0.9",
+    "coffeescript": "1.0.4",
+    "accounts-base": "1.1.2",
+    "iron:router": "1.0.3",
+    "meteor": "1.1.3",
+    "telescope-base": "0.0.0+df50ab2810c1732022f0b2e98d47c43881a7a642"
+  },
+  "buildTimePluginDependencies": {},
+  "cordovaDependencies": null
+}

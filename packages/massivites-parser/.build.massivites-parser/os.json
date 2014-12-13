@@ -1,0 +1,42 @@
+{
+  "format": "unipackage-unibuild-pre1",
+  "packageVariables": [
+    {
+      "name": "adminNav",
+      "export": true
+    },
+    {
+      "name": "__coffeescriptShare"
+    }
+  ],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "iron:router"
+    },
+    {
+      "package": "telescope-base"
+    },
+    {
+      "package": "telescope-lib"
+    },
+    {
+      "package": "coffeescript"
+    },
+    {
+      "package": "accounts-base"
+    }
+  ],
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "os/packages/massivites-parser.js",
+      "length": 7211,
+      "offset": 0,
+      "servePath": "/packages/massivites-parser.js",
+      "sourceMap": "os/packages/massivites-parser.js.map"
+    }
+  ]
+}

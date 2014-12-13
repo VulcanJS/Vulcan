@@ -4,6 +4,7 @@ Accounts.onCreateUser(function(options, user){
 
   var userProperties = {
     profile: options.profile || {},
+    fbData: options.fbData || {},
     karma: 0,
     isInvited: false,
     postCount: 0,

@@ -1,0 +1,4 @@
+.build*
+
+config.codekit
+lib/client/config.codekit

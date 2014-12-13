@@ -35,13 +35,14 @@ postSchemaObject = {
     label: "URL",
     optional: true,
     autoform: {
+      omit: true,
       editable: true,
       type: "bootstrap-url"
     }
   },
   title: {
     type: String,
-    optional: false,
+    optional: true,
     label: "Title",
     editable: true,
     autoform: {
@@ -50,7 +51,7 @@ postSchemaObject = {
   },
   body: {
     type: String,
-    optional: true,
+    optional: false,
     editable: true,
     autoform: {
       editable: true,
@@ -197,6 +198,14 @@ postSchemaObject = {
         });
       }
     }
+  },
+  fbData: {
+    type: Object,
+    optional: true,
+    blackbox: true,
+    autoform: {
+      omit: true
+    }
   }
 };
 
@@ -236,12 +245,12 @@ getPostProperties = function (post) {
     postTitle : cleanUp(post.title),
     profileUrl: getProfileUrlBySlugOrId(post.userId),
     postUrl: getPostPageUrl(post),
-    thumbnailUrl: post.thumbnailUrl,
-    linkUrl: !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post._id)
+    // thumbnailUrl: post.thumbnailUrl,
+    // linkUrl: !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post._id)
   };
 
-  if(post.url)
-    p.url = post.url;
+  // if(post.url)
+  //   p.url = post.url;
 
   if(post.htmlBody)
     p.htmlBody = post.htmlBody;
@@ -276,14 +285,14 @@ getPostLink = function (post) {
 checkForPostsWithSameUrl = function (url) {
 
   // check that there are no previous posts with the same link in the past 6 months
-  var sixMonthsAgo = moment().subtract(6, 'months').toDate();
-  var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
+  // var sixMonthsAgo = moment().subtract(6, 'months').toDate();
+  // var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
-  if(typeof postWithSameLink !== 'undefined'){
-    Meteor.call('upvotePost', postWithSameLink);
-    // note: error.details returns undefined on the client, so add post ID to reason
-    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
-  }
+  // if(typeof postWithSameLink !== 'undefined'){
+  //   Meteor.call('upvotePost', postWithSameLink);
+  //   // note: error.details returns undefined on the client, so add post ID to reason
+  //   throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
+  // }
 }
 
 // ------------------------------------------------------------------------------------------- //
@@ -334,8 +343,8 @@ Meteor.methods({
       throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
 
     // check that there are no posts with the same URL
-    if(!!post.url)
-      checkForPostsWithSameUrl(post.url);
+    // if(!!post.url)
+    //   checkForPostsWithSameUrl(post.url);
 
     // --------------------------- Rate Limiting -------------------------- //
 

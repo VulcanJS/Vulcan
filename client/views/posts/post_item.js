@@ -32,3 +32,9 @@ Template[getTemplate('post_item')].helpers({
     return camelToDash(this.template) + ' ' + this.position + ' cell';
   }
 });
+
+// Template[getTemplate('post_item')].events({
+//   'click .post': function (e) {
+//     Router.go('/posts/' + e.currentTarget.id);
+//   }
+// });

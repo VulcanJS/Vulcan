@@ -63,9 +63,7 @@ telescope-api
 telescope-rss
 telescope-search
 telescope-tags
-telescope-theme-hubble
 telescope-email
-telescope-embedly
 telescope-newsletter
 telescope-daily
 telescope-update-prompt
@@ -78,4 +76,8 @@ telescope-invites
 useraccounts:unstyled
 telescope-datetimepicker
 tsega:bootstrap3-datetimepicker@3.1.3_1
-
+massivites-parser
+percolatestudio:percolatestudio-migrations
+coffeescript
+jquery-readmore
+massivites-theme
