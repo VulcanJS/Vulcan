@@ -1,4 +1,7 @@
 Accounts.onCreateUser(function(options, user){
+
+  // ------------------------------ Properties ------------------------------ //
+
   var userProperties = {
     profile: options.profile || {},
     karma: 0,
@@ -44,6 +47,8 @@ Accounts.onCreateUser(function(options, user){
   clog('// Finished userCreatedCallbacks')
   clog('// User object:')
   clog(user)
+
+  // ------------------------------ Analytics ------------------------------ //
 
   trackEvent('new user', {username: user.username, email: user.profile.email});
 
