@@ -1,0 +1,29 @@
+{
+  "format": "unipackage-unibuild-pre1",
+  "packageVariables": [
+    {
+      "name": "newLink"
+    },
+    {
+      "name": "sectionClass"
+    }
+  ],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "jquery"
+    }
+  ],
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "web.cordova/packages/jquery-readmore.js",
+      "length": 25152,
+      "offset": 0,
+      "servePath": "/packages/jquery-readmore.js",
+      "sourceMap": "web.cordova/packages/jquery-readmore.js.map"
+    }
+  ]
+}

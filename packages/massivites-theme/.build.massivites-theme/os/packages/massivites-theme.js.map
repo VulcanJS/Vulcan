@@ -1,0 +1,1 @@
+{"version":3,"file":"/packages/massivites-theme.js","sources":["massivites-theme/lib/massivites.js"],"names":[],"mappings":";;;;;;;;AAAA,6F","sourcesContent":["themeSettings.useDropdowns = true; // not strictly needed since \"true\" is the current default"]}

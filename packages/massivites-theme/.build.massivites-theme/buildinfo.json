@@ -1,0 +1,71 @@
+{
+  "builtBy": "meteor/14",
+  "buildDependencies": {
+    "os.json": {
+      "files": {
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/package.js": "17254e74fb7196c41db49c88bd56b462a7b0b438",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/massivites.js": "e253125709a0e24fb55972674e8b42e00e12d153"
+      },
+      "directories": []
+    },
+    "web.browser.json": {
+      "files": {
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/package.js": "17254e74fb7196c41db49c88bd56b462a7b0b438",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/massivites.js": "e253125709a0e24fb55972674e8b42e00e12d153",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_accounts.scss": "8644dcad7556e76e9308a1d5d9a4e6d64e4b0d22",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_comments.scss": "6f0b72673497c3d9dc30171e4d8123038d58dda7",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_dialogs.scss": "5c66cff5ee9449f11e8ef91e19025b072a6ac310",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_errors.scss": "157c3c4bce9faa6a200e8e5d0bd439d334944e41",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_nav.scss": "80ca8b9555a7d7eaa6e7b5a8f76c1fde920007ac",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_posts.scss": "2c95814ce29e85ab3d09cb451561a8b0a91506ea",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_share.scss": "38b8feb6ed9b4e055bfa88f0ba77e5118f19d660",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_user-profile.scss": "c49ad9680d552a1267abe80fe9922f40c0597160",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_colors.scss": "b09abc2a2fb327c68ecff688352e1ac29daf82cb",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_grid.scss": "fb62774cfa9f17537a29f05d9c25bc24a2f776f5",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_icons.scss": "4a0c31924838b855a8bf3ecc79994d324d787723",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_mixins.scss": "65fce77e866a0a0c820157ada295a1635963df7d",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_tooltips.scss": "6e72fa0795aad71196ecf339a126598abdefbbc0",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_typography.scss": "fbe3477af3d26d147983207a3a1dc45d20b63d79",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/screen.scss": "aa77830cf222f8ba8f3e375b6dcc9b70e7912e78"
+      },
+      "directories": []
+    },
+    "web.cordova.json": {
+      "files": {
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/package.js": "17254e74fb7196c41db49c88bd56b462a7b0b438",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/massivites.js": "e253125709a0e24fb55972674e8b42e00e12d153",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_accounts.scss": "8644dcad7556e76e9308a1d5d9a4e6d64e4b0d22",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_comments.scss": "6f0b72673497c3d9dc30171e4d8123038d58dda7",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_dialogs.scss": "5c66cff5ee9449f11e8ef91e19025b072a6ac310",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_errors.scss": "157c3c4bce9faa6a200e8e5d0bd439d334944e41",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_nav.scss": "80ca8b9555a7d7eaa6e7b5a8f76c1fde920007ac",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_posts.scss": "2c95814ce29e85ab3d09cb451561a8b0a91506ea",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_share.scss": "38b8feb6ed9b4e055bfa88f0ba77e5118f19d660",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/modules/_user-profile.scss": "c49ad9680d552a1267abe80fe9922f40c0597160",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_colors.scss": "b09abc2a2fb327c68ecff688352e1ac29daf82cb",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_grid.scss": "fb62774cfa9f17537a29f05d9c25bc24a2f776f5",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_icons.scss": "4a0c31924838b855a8bf3ecc79994d324d787723",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_mixins.scss": "65fce77e866a0a0c820157ada295a1635963df7d",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_tooltips.scss": "6e72fa0795aad71196ecf339a126598abdefbbc0",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/partials/_typography.scss": "fbe3477af3d26d147983207a3a1dc45d20b63d79",
+        "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/lib/client/scss/screen.scss": "aa77830cf222f8ba8f3e375b6dcc9b70e7912e78"
+      },
+      "directories": []
+    }
+  },
+  "pluginDependencies": {
+    "files": {
+      "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme/package.js": "17254e74fb7196c41db49c88bd56b462a7b0b438"
+    },
+    "directories": []
+  },
+  "source": "/Users/roelvaneyghen/Data/Git Repos/Massivites-Telescope/packages/massivites-theme",
+  "buildTimeDirectDependencies": {
+    "telescope-lib": "0.2.9+3c5fc781baa945505183378ea284deac3068520b",
+    "fourseven:scss": "1.0.0",
+    "meteor": "1.1.3",
+    "telescope-base": "0.0.0+df50ab2810c1732022f0b2e98d47c43881a7a642"
+  },
+  "buildTimePluginDependencies": {},
+  "cordovaDependencies": null
+}

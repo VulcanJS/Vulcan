@@ -1,0 +1,23 @@
+{
+  "name": "massivites-parser",
+  "summary": "Hanoi Massive Facebook Parser",
+  "version": "0.1.0+1c317b053d3d1a9ef541a158c5886c3c5ebbf421",
+  "earliestCompatibleVersion": "0.0.0",
+  "isTest": false,
+  "plugins": [],
+  "unibuilds": [
+    {
+      "arch": "os",
+      "path": "os.json"
+    },
+    {
+      "arch": "web.browser",
+      "path": "web.browser.json"
+    },
+    {
+      "arch": "web.cordova",
+      "path": "web.cordova.json"
+    }
+  ],
+  "format": "unipackage-pre2"
+}

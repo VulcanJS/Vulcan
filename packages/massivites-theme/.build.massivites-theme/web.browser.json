@@ -1,0 +1,35 @@
+{
+  "format": "unipackage-unibuild-pre1",
+  "packageVariables": [],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "telescope-lib"
+    },
+    {
+      "package": "telescope-base"
+    },
+    {
+      "package": "fourseven:scss"
+    }
+  ],
+  "resources": [
+    {
+      "type": "css",
+      "file": "web.browser/packages/massivites-theme/lib/client/scss/screen.scss.css",
+      "length": 36150,
+      "offset": 0,
+      "servePath": "/packages/massivites-theme/lib/client/scss/screen.scss.css"
+    },
+    {
+      "type": "prelink",
+      "file": "web.browser/packages/massivites-theme.js",
+      "length": 810,
+      "offset": 0,
+      "servePath": "/packages/massivites-theme.js",
+      "sourceMap": "web.browser/packages/massivites-theme.js.map"
+    }
+  ]
+}

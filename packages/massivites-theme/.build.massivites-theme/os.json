@@ -1,0 +1,28 @@
+{
+  "format": "unipackage-unibuild-pre1",
+  "packageVariables": [],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "telescope-lib"
+    },
+    {
+      "package": "telescope-base"
+    },
+    {
+      "package": "fourseven:scss"
+    }
+  ],
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "os/packages/massivites-theme.js",
+      "length": 810,
+      "offset": 0,
+      "servePath": "/packages/massivites-theme.js",
+      "sourceMap": "os/packages/massivites-theme.js.map"
+    }
+  ]
+}
