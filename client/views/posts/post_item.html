@@ -1,31 +1,9 @@
 <template name="post_item">
   <div class="post {{rankClass}} {{#if sticky}}sticky{{/if}} {{inactiveClass}}" id="{{_id}}">
-    <div class="modules-group left-modules">
-      <div class="inner">
-      {{#each leftPostModules}}
+      {{#each postModules}}
         <div class="{{moduleClass}}">
           {{> UI.dynamic template=getTemplate data=..}}
         </div>
       {{/each}}
-      </div>
-    </div>
-    <div class="modules-group center-modules">
-      <div class="inner">
-      {{#each centerPostModules}}
-        <div class="{{moduleClass}}">
-          {{> UI.dynamic template=getTemplate data=..}}
-        </div>
-      {{/each}}
-      </div>
-    </div>
-    <div class="modules-group right-modules">
-      <div class="inner">
-      {{#each rightPostModules}}
-        <div class="{{moduleClass}}">
-          {{> UI.dynamic template=getTemplate data=..}}
-        </div>
-      {{/each}}
-      </div>
-    </div>
   </div>
 </template>

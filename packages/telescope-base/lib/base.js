@@ -160,65 +160,54 @@ heroModules = [];
 
 footerModules = [];
 
-// array containing post modules
-modulePositions = [
-  'left-left',
-  'left-center',
-  'left-right',
-  'center-left',
-  'center-center',
-  'center-right',
-  'right-left',
-  'right-center',
-  'right-right'
-];
-
 postModules = [
   {
     template: 'postUpvote',
-    position: 'left-left'
+    order: 10
   },
   {
     template: 'postActions',
-    position: 'left-right'
+    order: 20
   },
   {
     template: 'postContent', 
-    position: 'center-center'
+    order: 30
   },
   {
     template: 'postDiscuss',
-    position: 'right-right'
+    order: 40
   }
 ];
+
+postThumbnail = [];
 
 postHeading = [
   {
     template: 'postTitle',
-    order: 1
+    order: 10
   },
   {
     template: 'postDomain', 
-    order: 5
+    order: 20
   }
 ];
 
 postMeta = [
   {
     template: 'postAuthor',
-    order: 1
+    order: 10
   },
   {
     template: 'postInfo',
-    order: 2
+    order: 20
   },
   {
     template: 'postCommentsLink',
-    order: 3
+    order: 30
   },  
   {
     template: 'postAdmin', 
-    order: 5
+    order: 40
   }
 ]
 // ------------------------------ Callbacks ------------------------------ //

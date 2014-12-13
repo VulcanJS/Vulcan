@@ -1,4 +1,7 @@
 Template[getTemplate('postContent')].helpers({
+  postThumbnail: function () {
+    return postThumbnail;
+  },
   postHeading: function () {
     return postHeading;
   },

@@ -1,13 +1,14 @@
 .post-thumbnail{
-  margin-right: 0px !important;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: 10px;
 }
 
 .post-thumbnail-link{
   display: block;
-  margin-right: 10px;
   position: relative;
   overflow: hidden;
-  max-width: 80px;
+  width: 80px;
 }
 
 .post-thumbnail-image{
