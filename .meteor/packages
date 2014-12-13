@@ -64,7 +64,6 @@ telescope-rss
 telescope-search
 telescope-tags
 telescope-email
-telescope-embedly
 telescope-newsletter
 telescope-daily
 telescope-update-prompt
@@ -82,4 +81,3 @@ percolatestudio:percolatestudio-migrations
 coffeescript
 jquery-readmore
 massivites-theme
-
