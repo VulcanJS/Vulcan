@@ -24,7 +24,8 @@ Package.onUse(function(api) {
   ], ['client']);
 
   api.add_files([
-    'lib/client/routes.coffee'
+    'lib/both/routes.coffee',
+    'lib/both/base.coffee'
   ], ['server', 'client']);
 
   api.add_files([
@@ -32,6 +33,6 @@ Package.onUse(function(api) {
   ], ['server']);
 
   api.export([
-    // 'buildEmailTemplate',
+    'adminNav'
   ]);
 });
