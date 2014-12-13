@@ -2,22 +2,25 @@ generateUsername = (name) ->
   name.toLowerCase().replace /\s+|\s+/g, ""
 
 findOrInsertUser = (fbUserData) ->
+      isNewUser = false
       # Check if there's already a user with this name
       user = Meteor.users.findOne
         username: generateUsername fbUserData.name
       # if so, use his id
       if user?
-        postAuthorId = user._id
+        userId = user._id
       # create new user and use this id (post author)
       else
-        postAuthorId = Accounts.createUser
+        isNewUser = true
+        userId = Accounts.createUser
           username: generateUsername fbUserData.name
           password: 'letmein'
           profile:
             name: fbUserData.name
           fbData:
             id: fbUserData.id
-      postAuthorId
+      userId: userId
+      isNewUser: isNewUser
 
 checkIfNewPost = (fbPostId) ->
   post = Posts.findOne 'fbData.id': fbPostId
@@ -25,9 +28,17 @@ checkIfNewPost = (fbPostId) ->
 
 Meteor.methods
   parseFacebookFeed: (jsonFeed) ->
+    parserStats =
+      updatedPosts: 0
+      newPosts: 0
+      newUsers: 0
+      updatedUsers: 0
+      changedComments: 0
     posts = EJSON.parse(jsonFeed).data
+
     for post in posts
 
+      # Break the loop and go to the next post if there is no message
       break if not post.message?
 
       console.log "================ Facebook post id: #{post.id} ================"
@@ -35,7 +46,7 @@ Meteor.methods
       updatePost = false
       isNewPost = checkIfNewPost post.id
       postAuthor = post.from
-      postAuthorId = findOrInsertUser postAuthor
+      postAuthorId = (findOrInsertUser postAuthor).userId
 
       postDoc =
         author: postAuthor.name
@@ -78,13 +89,16 @@ Meteor.methods
       if post.comments?
         updatePost = true
         comments = post.comments.data
+        parserStats.changedComments = comments.length
         postDoc = _.extend postDoc,
           commentCount: comments.length
 
         for comment in comments
           # @todo insert author
           commentAuthor = comment.from
-          commentAuthorId = findOrInsertUser commentAuthor
+          user = findOrInsertUser commentAuthor
+          commentAuthorId = user.userId
+          if user.isNewUser then parserStats.newUsers +=1 else parserStats.updatedUsers +=1
           # @todo insert comment
           commentDoc =
             upvotes: comment.like_count
@@ -118,11 +132,16 @@ Meteor.methods
         ,
           validate: false
 
-      # Update the postCount of the post's author
+      # if it's a new post, update the postCount of the author
       if isNewPost is true
+        parserStats.newPosts += 1
         Meteor.users.update postAuthorId,
           $inc:
             postCount: 1
+
+      parserStats.updatedPosts +=1
+
+    parserStats
 
       # @todo check whether this actually works
       # if post.place?

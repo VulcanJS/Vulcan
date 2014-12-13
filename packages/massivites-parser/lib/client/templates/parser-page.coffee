@@ -1,11 +1,12 @@
 Template.parserPage.events
   'submit #parser-form': (e) ->
     e.preventDefault()
-    jsonFeed = $('#parser-json-feed').val()
+    input = $('#parser-json-feed')
+    jsonFeed = input.val()
 
     Meteor.call 'parseFacebookFeed', jsonFeed, (error, result) ->
       if error?
-        console.log 'Something went wrong.'
+        alert "Something went wrong: #{error.reason}"
       else
-        $('#parser-json-feed').val ''
-
+        alert "Done!\n- New users: #{result.newUsers}\n- Updated users: #{result.updatedUsers}\n- New posts: #{result.newPosts}\n- Updated posts: #{result.updatedPosts}\n- Changed/new comments: #{result.changedComments}"
+      input.val ''
