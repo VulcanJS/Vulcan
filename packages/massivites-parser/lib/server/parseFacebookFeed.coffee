@@ -88,7 +88,7 @@ Meteor.methods
 
       if post.comments?
         comments = post.comments.data
-        parserStats.changedComments = comments.length
+        parserStats.changedComments += comments.length
         # update the post's comment count
         Posts.update postDb._id,
           $set:
