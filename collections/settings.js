@@ -329,3 +329,8 @@ if (Meteor.isClient){
     }
   });
 }
+
+// override Meteor.absoluteUrl() with URL provided in settings
+Meteor.startup(function () {
+  Meteor.absoluteUrl.defaultOptions.rootUrl = getSetting('siteUrl', Meteor.absoluteUrl());
+});
