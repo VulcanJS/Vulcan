@@ -29,3 +29,10 @@ Template[getTemplate('posts_list')].helpers({
 Template[getTemplate('posts_list')].created = function() {
   Session.set('listPopulatedAt', new Date());
 };
+
+Template[getTemplate('posts_list')].rendered = function () {
+  $('.post-body-short').readmore({
+    speed: 75,
+    maxHeight: 65
+  });
+};

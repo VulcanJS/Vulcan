@@ -203,6 +203,13 @@ postHeading = [
   }
 ];
 
+postBody = [
+  {
+    template: 'postBodyShort',
+    order: 1
+  }
+];
+
 postMeta = [
   {
     template: 'postAuthor',

@@ -5,6 +5,11 @@
         {{> UI.dynamic template=getTemplate data=..}}
       {{/each}}
     </h3>
+    <div class="post-body-short">
+      {{#each postBody}}
+        {{> UI.dynamic template=getTemplate data=..}}
+      {{/each}}
+    </div>
     <div class="post-meta">
       {{#each postMeta}}
         {{> UI.dynamic template=getTemplate data=..}}

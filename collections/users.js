@@ -26,6 +26,11 @@ var userSchemaObj = {
     optional: true,
     blackbox: true
   },
+  fbData: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   data: { // public but not modifiable
     type: Object,
     optional: true,

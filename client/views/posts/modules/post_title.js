@@ -4,5 +4,8 @@ Template[getTemplate('postTitle')].helpers({
   },
   postTarget: function() {
     return !!this.url ? '_blank' : '';
+  },
+  formattedTitle: function() {
+    return !!this.title ? this.title : getAuthorName(this);
   }
 });

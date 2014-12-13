@@ -41,7 +41,7 @@ postSchemaObject = {
   },
   title: {
     type: String,
-    optional: false,
+    optional: true,
     label: "Title",
     editable: true,
     autoform: {
@@ -50,7 +50,7 @@ postSchemaObject = {
   },
   body: {
     type: String,
-    optional: true,
+    optional: false,
     editable: true,
     autoform: {
       editable: true,
@@ -196,6 +196,14 @@ postSchemaObject = {
           }
         });
       }
+    }
+  },
+  fbData: {
+    type: Object,
+    optional: true,
+    blackbox: true,
+    autoform: {
+      omit: true
     }
   }
 };

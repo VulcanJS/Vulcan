@@ -53,6 +53,7 @@ iron:url@1.0.3
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.3.1
+jquery-readmore@0.0.1
 jquery@1.0.1
 json@1.0.1
 kestanous:herald-email@0.4.2
@@ -62,6 +63,8 @@ less@1.0.11
 livedata@1.0.11
 localstorage@1.0.1
 logging@1.0.5
+massivites-parser@0.1.0
+massivites-theme@0.0.0
 matb33:collection-hooks@0.7.6
 meteor-platform@1.2.0
 meteor@1.1.3
@@ -88,6 +91,7 @@ oauth2@1.1.1
 oauth@1.1.2
 observe-sequence@1.0.3
 ordered-dict@1.0.1
+percolatestudio:percolatestudio-migrations@0.7.2
 percolatestudio:synced-cron@1.1.0
 rajit:bootstrap3-datepicker@1.3.1
 random@1.0.1
@@ -128,7 +132,6 @@ telescope-search@0.0.0
 telescope-singleday@0.1.0
 telescope-tags@0.0.0
 telescope-theme-base@0.0.0
-telescope-theme-hubble@0.0.0
 telescope-update-prompt@0.1.0
 templating@1.0.9
 tracker@1.0.3
