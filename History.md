@@ -2,6 +2,9 @@
 * Added new `debug` setting. 
 * `siteUrl` setting now affects `Meteor.absoluteUrl()`.
 * Added new `clog` function that only logs if `debug` setting is true.
+* Simplified post module system, modules are not split in three zones anymore.
+* Simplified Hubble theme CSS for both desktop and mobile.
+* Many CSS tweaks for Hubble mobile. 
 
 ## v0.10.0 “RefactorScope”
 
