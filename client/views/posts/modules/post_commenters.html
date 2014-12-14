@@ -1,0 +1,9 @@
+<template name="postCommenters">
+  <div class="post-commenters">
+    {{#each commenters}}
+      <a href="{{profileUrl this}}">
+        {{> avatar userId=this shape="circle"}}
+      </a>
+    {{/each}}
+  </div>
+</template>

@@ -204,10 +204,14 @@ postMeta = [
   {
     template: 'postCommentsLink',
     order: 30
-  },  
+  },
+  {
+    template: 'postCommenters',
+    order: 40
+  },
   {
     template: 'postAdmin', 
-    order: 40
+    order: 50
   }
 ]
 // ------------------------------ Callbacks ------------------------------ //
