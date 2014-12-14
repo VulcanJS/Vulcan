@@ -7,7 +7,3 @@ SyncedCron.add({
     fetchUrls();
   }
 });
-
-Meteor.startup(function() {
-  SyncedCron.start();
-});
