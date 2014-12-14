@@ -16,7 +16,7 @@
 	}
 }
 .post{
-	padding: 10px;
+	padding: 10px 0px 10px 10px;
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom:1px solid $lightest-grey;
@@ -43,9 +43,9 @@
 		flex-shrink: 0;
 		flex-grow: 0;
 		margin-right: 10px;
-		&:last-child{
-			margin-right: 0px;
-		}
+		// &:last-child{
+		// 	margin-right: 0px;
+		// }
 	}
 	.post-upvote{
 		order: 1;
@@ -55,11 +55,12 @@
 		width: 100%;
 		// can shrink on mobile or desktop
 		flex-shrink: 1;
-		// but can only grow on desktop
 		@include medium-large{
+			// but can only grow on desktop
 			flex-grow: 1;
+			// only be a flex container on desktop
+			display: flex;
 		}
-		display: flex;
 		align-items: center;
 	}
 	.post-info{

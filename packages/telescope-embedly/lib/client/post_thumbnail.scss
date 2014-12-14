@@ -10,8 +10,8 @@ $small-break: 30em;
   flex-shrink: 0;
   margin-right: 10px;
   @include small{
-    order: 2;
     margin: 0 0 0 10px;
+    float: right;
   }
 }
 
