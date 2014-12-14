@@ -163,19 +163,19 @@ footerModules = [];
 postModules = [
   {
     template: 'postUpvote',
-    order: 10
-  },
-  {
-    template: 'postActions',
-    order: 20
+    order: 1
   },
   {
     template: 'postContent', 
-    order: 30
+    order: 5
   },
   {
     template: 'postDiscuss',
-    order: 40
+    order: 30
+  },
+  {
+    template: 'postActions',
+    order: 50
   }
 ];
 
