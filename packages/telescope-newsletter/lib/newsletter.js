@@ -134,6 +134,19 @@ var newsletterFrequency = {
 }
 addToSettingsSchema.push(newsletterFrequency);
 
+var autoSubscribe = {
+  propertyName: 'autoSubscribe',
+  propertySchema: {
+    type: Boolean,
+    optional: true,
+    autoform: {
+      group: 'newsletter',
+      instructions: 'Automatically subscribe new users on sign-up.'
+    }
+  }
+}
+addToSettingsSchema.push(autoSubscribe);
+
 // create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
 viewParameters.campaign = function (terms) {
   return {
@@ -150,3 +163,14 @@ viewParameters.campaign = function (terms) {
 heroModules.push({
   template: 'newsletterBanner'
 });
+
+ function subscribeUserOnCreation (user) {
+  if (!!getSetting('autoSubscribe') && !!getEmail(user)) {
+    addToMailChimpList(user, false, function (error, result) {
+      console.log(error)
+      console.log(result)
+    });
+  }
+  return user;
+}
+userCreatedCallbacks.push(subscribeUserOnCreation);

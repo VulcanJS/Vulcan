@@ -1,3 +1,8 @@
+* Added new `userCreatedCallbacks` callback hook.
+* Added new `debug` setting. 
+* `siteUrl` setting now affects `Meteor.absoluteUrl()`.
+* Added new `clog` function that only logs if `debug` setting is true.
+
 ## v0.10.0 “RefactorScope”
 
 * Renaming Errors to Messages (thanks @yourcelf!).

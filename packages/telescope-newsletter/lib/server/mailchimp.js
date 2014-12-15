@@ -78,12 +78,15 @@ scheduleCampaign = function (campaign, isTest) {
 }
 
 addToMailChimpList = function(userOrEmail, confirm, done){
+  
   var user, email;
 
-  if(typeof userOrEmail == "string"){
+  var confirm = (typeof confirm === 'undefined') ? false : confirm // default to no confirmation
+
+  if (typeof userOrEmail == "string") {
     user = null;
     email = userOrEmail;
-  }else if(typeof userOrEmail == "object"){
+  } else if (typeof userOrEmail == "object") {
     user = userOrEmail;
     email = getEmail(user);
     if (!email)
@@ -100,16 +103,16 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
     try {
         var api = new MailChimp();
-    } catch ( error ) {
+    } catch (error) {
         console.log( error.message );
     }
 
-    api.call( 'lists', 'subscribe', {
+    api.call('lists', 'subscribe', {
       id: MailChimpOptions.listId,
       email: {"email": email},
       double_optin: confirm
     }, Meteor.bindEnvironment(function ( error, result ) {
-      if ( error ) {
+      if (error) {
         console.log( error.message );
         done(error, null);
       } else {

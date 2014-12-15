@@ -64,3 +64,16 @@ var emailNotifications = {
   }
 }
 addToSettingsSchema.push(emailNotifications);
+
+
+function setNotificationDefaults (user) {
+  // set notifications default preferences
+  user.profile.notifications = {
+    users: false,
+    posts: false,
+    comments: true,
+    replies: true
+  };
+  return user;
+}
+userCreatedCallbacks.push(setNotificationDefaults);

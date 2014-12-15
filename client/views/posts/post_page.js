@@ -15,6 +15,4 @@ Template[getTemplate('post_page')].helpers({
 
 Template[getTemplate('post_page')].rendered = function(){
   $('body').scrollTop(0);
-  if(this.data) // XXX
-    document.title = $(".post-title").text();
 };

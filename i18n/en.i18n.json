@@ -51,6 +51,7 @@
   "extraCode": "Extra Code",
   "emailFooter": "Email Footer",
   "notes": "Notes",
+  "debug": "Debug Mode",
 
   // Settings Fieldsets
   "general": "General",
@@ -253,6 +254,7 @@
   "posted_time": "Posted Time",
   "profile": "Profile",
   "sign_out": "Sign Out",
+  "you_ve_been_signed_out": "You've been signed out. Come back soon!",
   "invitedcount": "InvitedCount",
   "invites": "Invites",
   "invited": "Invited?",
