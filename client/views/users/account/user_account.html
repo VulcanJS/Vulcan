@@ -38,19 +38,19 @@
         <div class="controls"><textarea name="bio" type="text">{{profile.bio}}</textarea></div>
       </div>
       <div class="control-group">
-      <label>Twitter Username</label>
+      <label>{{_ "twitter_username"}}</label>
         <div class="controls">
           <input name="twitter" type="text" value="{{getTwitter}}" />
         </div>
       </div>
       <div class="control-group">
-        <label>GitHub Username</label>
+        <label>{{_ "github_username"}}</label>
         <div class="controls">
           <input name="github" type="text" value="{{getGitHub}}" />
         </div>
       </div>
       <div class="control-group">
-        <label>Site</label>
+        <label>{{_ "site_url"}}</label>
         <div class="controls">
           <input name="site" type="text" value="{{profile.site}}" />
         </div>
@@ -71,7 +71,7 @@
         <div class="controls">
           {{#if isAdmin}}
             <label class="checkbox">
-              <input id="notifications_users" type="checkbox" name="notifications_users" {{hasNotificationsUsers}} /> New Users
+              <input id="notifications_users" type="checkbox" name="notifications_users" {{hasNotificationsUsers}} /> {{_ "new_users"}}
             </label>
           {{/if}}
           <label class="checkbox">
