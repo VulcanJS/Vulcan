@@ -20,6 +20,7 @@ Package.onUse(function (api) {
       'lib/client/scss/includes/_mixins.scss',
 
       // specific
+      'lib/client/scss/specific/_avatars.scss',
       'lib/client/scss/specific/_dropdown.scss',
       'lib/client/scss/specific/_errors.scss',
       'lib/client/scss/specific/_header.scss',
