@@ -5,5 +5,7 @@
   "sorry_no_posts_for_today": "Sorry, no posts for today",
   "sorry_no_posts_for": "Sorry, no posts for",
   "today": "Today",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "single_day": "Single Day",
+  "posts_of_a_single_day": "The posts of a single day."
 }

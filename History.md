@@ -1,10 +1,15 @@
+## v0.11.0 “AvatarScope”
+
 * Added new `userCreatedCallbacks` callback hook.
+* Added new setting to subscribe new user to mailing list automatically.
 * Added new `debug` setting. 
 * `siteUrl` setting now affects `Meteor.absoluteUrl()`.
 * Added new `clog` function that only logs if `debug` setting is true.
 * Simplified post module system, modules are not split in three zones anymore.
 * Simplified Hubble theme CSS for both desktop and mobile.
 * Many CSS tweaks for Hubble mobile. 
+* Show commenters avatars on post item.
+* Adding description to post list pages and showing them in menus. 
 
 ## v0.10.0 “RefactorScope”
 

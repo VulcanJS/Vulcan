@@ -43,23 +43,28 @@ secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
 adminNav = [
   {
     route: 'posts_pending',
-    label: 'Pending'
+    label: 'Pending',
+    description: 'posts_awaiting_moderation'
   },
   {
     route: 'posts_scheduled',
-    label: 'Scheduled'
+    label: 'Scheduled',
+    description: 'future_scheduled_posts'
   },
   {
     route: 'all-users',
-    label: 'Users'
+    label: 'Users',
+    description: 'users_dashboard'
   },
   {
     route: 'settings',
-    label: 'Settings'
+    label: 'Settings',
+    description: 'telescope_settings_panel'
   },
   {
     route: 'toolbox',
-    label: 'Toolbox'
+    label: 'Toolbox',
+    description: 'various_utilities'
   }
 ];
 
@@ -67,15 +72,18 @@ adminNav = [
 viewNav = [
   {
     route: 'posts_top',
-    label: 'top'
+    label: 'top',
+    description: 'most_popular_posts'
   },
   {
     route: 'posts_new',
-    label: 'new'
+    label: 'new',
+    description: 'newest_posts'
   },
   {
     route: 'posts_best',
-    label: 'best'
+    label: 'best',
+    description: 'highest_ranked_posts_ever'
   }
 ];
 

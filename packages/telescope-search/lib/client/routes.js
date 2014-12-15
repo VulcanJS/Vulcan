@@ -1,9 +1,3 @@
-adminNav.push({
-  route: 'searchLogs',
-  label: 'Search Logs'
-});
-
-
 Meteor.startup(function () {
 
   PostsSearchController = PostsListController.extend({
