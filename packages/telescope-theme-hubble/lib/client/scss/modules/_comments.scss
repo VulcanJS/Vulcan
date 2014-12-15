@@ -164,7 +164,9 @@
 }
 .comment-text{
 	p{
-		font-size: 13px;
+		@include small{
+			font-size: 13px;
+		}
 	}
 }
 .comment-meta{
