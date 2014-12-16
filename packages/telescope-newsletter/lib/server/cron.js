@@ -61,12 +61,6 @@ SyncedCron.add({
   }
 });
 
-Meteor.startup(function() {
-  if(getSetting('newsletterFrequency', defaultFrequency) != 0) {
-    SyncedCron.start();
-  };
-});
-
 Meteor.methods({
   getNextJob: function (jobName) {
     var nextJob = getNextCampaignSchedule();
