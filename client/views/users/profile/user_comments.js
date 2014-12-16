@@ -20,6 +20,13 @@ Template[getTemplate('userComments')].created = function () {
   });
 };
 
+Template[getTemplate('userComments')].destroyed = function () {
+
+  var instance = this;
+  instance.subscription && instance.subscription.stop && instance.subscription.stop();
+  
+};
+
 Template[getTemplate('userComments')].helpers({
   comments: function () {
     var comments = Template.instance().comments.get();
