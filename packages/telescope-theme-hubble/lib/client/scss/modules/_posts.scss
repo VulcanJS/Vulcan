@@ -21,7 +21,7 @@
 	}
 }
 .post{
-	padding: 10px 0px 10px 10px;
+	padding: 5px 0px 5px 10px;
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom:1px solid $lightest-grey;
@@ -102,112 +102,6 @@
 			flex-grow: 1;
 		}
 	}
-	// .modules-group{
-	// 	display: table-cell;
-	// 	vertical-align: middle;
-	// 	.inner{
-	// 		@include flex();
-	// 		@include align-items(center);
-	// 	}
-	// 	.cell{
-	// 		// display: table-cell;
-	// 		// vertical-align: middle;
-	// 		margin-right: $grid-margin*2;
-	// 		@include medium-large{
-	// 			@include flex-shrink(0);
-	// 		}
-	// 	}
-	// }
-	// .left-modules{
-	// 	.inner{
-	// 		margin-left: $grid-margin;
-	// 	}
-	// 	@include small{
-	// 		.inner{
-	// 			display: block;
-	// 		}
-	// 		margin-right: $grid-margin;
-
-	// 	}
-	// 	@include medium-large{
-
-	// 	}
-	// }
-	// .center-modules{
-	// 	width: 100%;
-	// 	@include small{
-	// 		.inner{
-	// 			display: block;
-	// 		}
-	// 	}
-	// 	.cell{
-	// 	}
-	// }
-	// .right-modules{
-	// 	@include small{
-	// 		display: none;
-	// 		background: #333;
-	// 		padding: 10px;
-	// 		&.visible{
-	// 			display: block;
-	// 		}
-	// 		.inner{
-	// 			@include justify-content(center);
-	// 		}
-	// 		.cell{
-	// 			@include flex-grow(1);
-	// 			flex: 1;
-	// 			text-align: center;
-	// 		}
-	// 	}
-	// 	@include medium-large{
-	// 		.inner{
-	// 			@include justify-content(flex-end);
-	// 		}
-	// 	}
-	// 	.cell{
-	// 		&:last-child{
-	// 			// margin-right: 0px;
-	// 		}
-	// 	}
-	// }
-	// .post-content{
-	// 	@include small{
-	// 		@include flex-grow(1);
-	// 		flex: 1;
-	// 	}
-	// 	@include medium-large{
-	// 		@include flex-shrink(1 !important);
-	// 	}
-	// }
-	// display: flex;
-	// display: -webkit-flex;
-	// display: -moz-flex;
-	// .leftmost{
-	// 	@include order(1);
-	// 	@include flex-grow(1);
-	// 	// width: 1px;
-	// }
-	// .left{
-	// 	@include order(2);
-	// 	@include flex-grow(1);
-	// 	// width: 1px;
-	// }
-	// .center{
-	// 	@include order(3);
-	// 	@include flex-grow(30);
-	// 	// width: 1px;
-	// }
-	// .right{
-	// 	@include order(4);
-	// 	@include flex-grow(1);
-	// 	// width: 1px;
-	// }
-	// .rightmost{
-	// 	@include order(5);
-	// 	@include flex-grow(1);
-	// 	// width: 1px;
-	// }
 }
 
 .post-actions{
