@@ -79,22 +79,30 @@
 		order: 3;
 	}
 	.post-discuss{
-		order: 4;
+		order: 7;
+		@include small{
+			display: none;
+		}
+		.action-label{
+			@include medium-large{
+				display: none;
+			}
+		}
 	}
 	.post-share, .post-discuss{
-		width: 60px;
+		// width: 60px;
 		text-align: center;
-		height: 60px;
-		position: relative;
-		top: -5px;
+		// height: 60px;
+		// position: relative;
+		// top: -5px;
 	}
 	.post-actions{
-		order: 5;
+		order: 8;
 	}
 	.post-avatars{
 		order: 6
 	}
-	.post-share, .post-discuss{
+	.post-share{
 		display: none;
 	}
 	&.show-actions{
@@ -127,7 +135,7 @@
 			border: 1px solid rgba($red, 0.3);
 			color: rgba($red, 0.8);
 			text-align: center;
-			line-height: 10px;
+			line-height: 14px;
 			font-weight: bold;
 			font-size: 20px;
 		}
@@ -154,6 +162,10 @@
 			color:rgba($red, 0.8);
 			text-shadow:0px 1px 0px white;
 			line-height: 2.3;
+			margin: 5px;
+			&:before{
+				top: 0px;
+			}
 			&.icon-check{
 				display:none;
 			}
@@ -162,8 +174,6 @@
 			display:none;
 			@include small{
 				display: block;
-				position: relative;
-				top: 7px;
 			}
 		}
 		&.not-voted:hover{
@@ -297,19 +307,18 @@
 }
 .action{
 	position:relative;
-	display:inline-block;
+	display:block;
 	padding:0;
-	vertical-align:baseline;
 	text-align:center;
 	color:$light-text;
 	&.edit-link{
 		color:$red;
 	}
 	&.share-link{
-		color:$yellow;
+		color:$light-text;
 	}
 	&.discuss-link{
-		color:$green;
+		color:$light-text;
 	}
 	&.more-link{
 		color:$blue;
@@ -332,8 +341,12 @@
 }
 .action-icon{
 	font-size: 36px;
-	height: 45px;
+	height: 36px;
 	display: block;
+	&:before{
+		position: relative;
+		top: -10px;
+	}
 }
 .action-label{
 	font-weight: bold;
@@ -349,12 +362,12 @@
 }
 .action-count{
 	position:absolute;
-	top:14px;
+	top:4px;
 	display:block;
 	width:100%;
 	height:20px;
 	line-height:20px;
-	font-size:11px;
+	font-size:14px;
 }
 .post-body{
 	@extend .has-shadow;

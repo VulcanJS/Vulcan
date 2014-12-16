@@ -163,7 +163,8 @@
 	}
 }
 .comment-text{
-	p{
+	&, p{
+		font-size: 16px;
 		@include small{
 			font-size: 13px;
 		}

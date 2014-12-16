@@ -178,11 +178,11 @@ postModules = [
     order: 5
   },
   {
-    template: 'postDiscuss',
+    template: 'postAvatars',
     order: 30
   },
   {
-    template: 'postAvatars',
+    template: 'postDiscuss',
     order: 40
   },
   {
