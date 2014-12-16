@@ -162,18 +162,22 @@
   "point": "point",
   "points": "points",
 
-  //User
+  //User /client/views/users/account/user_account.html
   "please_complete_your_profile_below_before_continuing": "Please complete your profile below before continuing.",
   "account": "Account",
   "username": "Username",
   "display_name": "Display Name",
   "email": "Email",
   "bio": "Bio",
+  "twitter_username": "Twitter Username",
+  "github_username": "GitHub Username",
+  "site_url" : "Site URL",
   "password": "Password",
   "change_password": "Change Password?",
   "old_password": "Old Password",
   "new_password": "New Password",
   "email_notifications": "Email Notifications",
+  "new_users" : "New users",
   "new_posts": "New Posts",
   "comments_on_my_posts": "Comments on my posts",
   "replies_to_my_comments": "Replies to my comments",
