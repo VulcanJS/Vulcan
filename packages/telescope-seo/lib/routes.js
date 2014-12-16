@@ -30,7 +30,7 @@ Meteor.startup(function() {
     return (this.getDescription && this.getDescription()) || getSetting("seoDescription");
   };
 
-  var frontPage = ["posts_" + getSetting("frontPage", "top").toLowerCase()];
+  var frontPage = ["posts_" + getSetting("defaultView", "top").toLowerCase()];
   var postPage = ["post_page", "post_page_with_slug"];
 
   // Front page
