@@ -153,7 +153,7 @@
 			// line-height:$grid-unit;
 			color:rgba($red, 0.8);
 			text-shadow:0px 1px 0px white;
-			line-height: 2.1;
+			line-height: 2.3;
 			&.icon-check{
 				display:none;
 			}
@@ -269,22 +269,8 @@
 	text-align: right;
 
 }
-.post-category{
-	display:inline-block;
-	font-size:11px;
-	border-radius: 3px;
-	background:#eee;
-	padding:0px 6px;
-	text-transform:uppercase;
-	font-weight:normal;
-	vertical-align:middle;
-	&:hover{
-		background:$red;
-		color:white;
-	}
-}
 .post-meta{
-	font-size:12px;
+	font-size:13px;
 	color:$light-text;
 	line-height:1.5;
 	@include small{
@@ -292,9 +278,11 @@
 		line-height: 1.7;
 	}
 	a{
-		color:$medium-text;
-		&:visited, &:active{
+		&:link, &:visited, &:active{
 			color:$medium-text;
+		}
+		&:hover{
+			color: $red;
 		}
 	}
 }

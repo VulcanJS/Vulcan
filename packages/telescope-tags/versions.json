@@ -57,6 +57,10 @@
       "1.0.2"
     ],
     [
+      "fourseven:scss",
+      "1.0.0"
+    ],
+    [
       "geojson-utils",
       "1.0.1"
     ],
