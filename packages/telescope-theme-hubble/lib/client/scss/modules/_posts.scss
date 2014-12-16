@@ -21,7 +21,7 @@
 	}
 }
 .post{
-	padding: 5px 0px 5px 10px;
+	padding: 10px 0px 10px 10px;
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom:1px solid $lightest-grey;
@@ -55,6 +55,9 @@
 	.post-upvote{
 		order: 1;
 		padding: 0 5px;
+		@include small{
+			display: none;
+		}
 	}
 	.post-content{
 		order: 2;
@@ -88,10 +91,11 @@
 	.post-actions{
 		order: 5;
 	}
-	.post-share, .post-discuss, .post-upvote{
-		@include small{
-			display: none;
-		}
+	.post-avatars{
+		order: 6
+	}
+	.post-share, .post-discuss{
+		display: none;
 	}
 	&.show-actions{
 		.post-content{
@@ -141,7 +145,7 @@
 		i{
 			display: inline-block;
 			border-radius: 50%;
-			border: 2px solid rgba($red, 0.3);
+			border: 1px solid rgba($red, 0.3);
 			font-size:10px;
 			width: 24px;
 			height: 24px;
@@ -149,7 +153,7 @@
 			// line-height:$grid-unit;
 			color:rgba($red, 0.8);
 			text-shadow:0px 1px 0px white;
-			line-height: 1.9;
+			line-height: 2.1;
 			&.icon-check{
 				display:none;
 			}
@@ -175,7 +179,7 @@
 				display:none;
 			}
 			i.icon-check{
-				border: 2px solid rgba($blue, 0.6);
+				border: 1px solid rgba($blue, 0.6);
 				display: inline-block;
 				color:rgba($blue, 0.8);
 				opacity: 0.5;
@@ -280,7 +284,7 @@
 	}
 }
 .post-meta{
-	font-size:13px;
+	font-size:12px;
 	color:$light-text;
 	line-height:1.5;
 	@include small{
@@ -450,12 +454,31 @@
     }
   }
  }
- .post-commenters{
+ .post-avatars{
  	display: inline-block;
+ 	display: flex;
+ 	@include small{
+ 		display: none;
+ 	}
+ 	.author-avatar{
+ 		display: block;
+ 	}
+ 	.post-commenters{
+ 		display: block;
+ 		border-left: 1px solid black(0.2);
+ 		padding-left: 5px;
+ 	}
+ 	.avatar-link{
+ 		display: inline-block;
+ 		margin-right: 5px;
+ 		&:last-child{
+ 			margin-right: 0px;
+ 		}
+ 	}
  	.avatar{
  		display: inline-block;
- 		height: 20px;
- 		width: 20px;
+ 		height: 24px;
+ 		width: 24px;
  		vertical-align: middle;
  	}
  }
