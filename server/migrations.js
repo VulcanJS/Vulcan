@@ -412,8 +412,9 @@ var migrationsList = {
       i++;
       console.log("Post: " + post._id);
       var justCategoryIds = post.categories.map(function (category){
-        return category._id;
+        return category && category._id;
       });
+      justCategoryIds = _.reject(justCategoryIds, function(id) { return id === null; });
       var result = Posts.update(post._id, {$set: {categories: justCategoryIds, oldCategories: post.categories}}, {multi: true, validate: false});
       console.log("---------------------");
     });
