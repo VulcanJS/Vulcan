@@ -10,7 +10,7 @@ STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 
 // Sort postModules array position using modulePositions as index
-postModules = _.sortBy(postModules, function(module){return _.indexOf(modulePositions, module.position)});
+postModules = _.sortBy(postModules, 'order');
 
 postHeading = _.sortBy(postHeading, 'order');
 

@@ -2,9 +2,10 @@
 	<li>      
 		<form>
         <div class="control-group inline">
-          <a class="button submit edit-link" href="#">Save</a>
+          <a class="button submit edit-link btn" href="#">Save</a>
           <div class="controls">
             <input class="category-name" id="name_{{_id}}" type="text" value="{{name}}" placeholder="Name"/>
+            <textarea class="category-description" id="description_{{_id}}">{{description}}</textarea>
             <input class="category-number" id="order_{{_id}}" type="number" value="{{order}}" placeholder="0"/>
           </div>
           <span class="category-slug small">Slug: /{{slug}}</span>

@@ -43,23 +43,28 @@ secondaryNav = ['userMenu', 'notificationsMenu', 'submitButton'];
 adminNav = [
   {
     route: 'posts_pending',
-    label: 'Pending'
+    label: 'Pending',
+    description: 'posts_awaiting_moderation'
   },
   {
     route: 'posts_scheduled',
-    label: 'Scheduled'
+    label: 'Scheduled',
+    description: 'future_scheduled_posts'
   },
   {
     route: 'all-users',
-    label: 'Users'
+    label: 'Users',
+    description: 'users_dashboard'
   },
   {
     route: 'settings',
-    label: 'Settings'
+    label: 'Settings',
+    description: 'telescope_settings_panel'
   },
   {
     route: 'toolbox',
-    label: 'Toolbox'
+    label: 'Toolbox',
+    description: 'various_utilities'
   }
 ];
 
@@ -67,15 +72,18 @@ adminNav = [
 viewNav = [
   {
     route: 'posts_top',
-    label: 'top'
+    label: 'top',
+    description: 'most_popular_posts'
   },
   {
     route: 'posts_new',
-    label: 'new'
+    label: 'new',
+    description: 'newest_posts'
   },
   {
     route: 'posts_best',
-    label: 'best'
+    label: 'best',
+    description: 'highest_ranked_posts_ever'
   }
 ];
 
@@ -160,65 +168,58 @@ heroModules = [];
 
 footerModules = [];
 
-// array containing post modules
-modulePositions = [
-  'left-left',
-  'left-center',
-  'left-right',
-  'center-left',
-  'center-center',
-  'center-right',
-  'right-left',
-  'right-center',
-  'right-right'
-];
-
 postModules = [
   {
     template: 'postUpvote',
-    position: 'left-left'
-  },
-  {
-    template: 'postActions',
-    position: 'left-right'
+    order: 1
   },
   {
     template: 'postContent', 
-    position: 'center-center'
+    order: 5
+  },
+  {
+    template: 'postAvatars',
+    order: 30
   },
   {
     template: 'postDiscuss',
-    position: 'right-right'
+    order: 40
+  },
+  {
+    template: 'postActions',
+    order: 50
   }
 ];
+
+postThumbnail = [];
 
 postHeading = [
   {
     template: 'postTitle',
-    order: 1
+    order: 10
   },
   {
     template: 'postDomain', 
-    order: 5
+    order: 20
   }
 ];
 
 postMeta = [
   {
     template: 'postAuthor',
-    order: 1
+    order: 10
   },
   {
     template: 'postInfo',
-    order: 2
+    order: 20
   },
   {
     template: 'postCommentsLink',
-    order: 3
-  },  
+    order: 30
+  },
   {
     template: 'postAdmin', 
-    order: 5
+    order: 50
   }
 ]
 // ------------------------------ Callbacks ------------------------------ //

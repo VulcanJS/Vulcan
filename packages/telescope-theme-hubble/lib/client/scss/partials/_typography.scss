@@ -1,5 +1,7 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic);
+
 body, textarea, input, button, input[type="submit"], input[type="button"]{
-	font-family:"Open Sans", "Proxima Nova Soft", "proxima-nova-soft", "PT SANS", "Helvetica Neue", Helvetica, sans-serif;
+	font-family:"Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
 }
 body, textarea, input{
 	color:$text;

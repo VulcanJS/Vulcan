@@ -1,13 +1,28 @@
+$small-break: 30em;
+@mixin small(){
+  @media screen and (max-width: $small-break) {
+    @content;
+  }
+}
+
 .post-thumbnail{
-  margin-right: 0px !important;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: 10px;
+  @include small{
+    margin: 0 0 0 10px;
+    float: right;
+  }
 }
 
 .post-thumbnail-link{
   display: block;
-  margin-right: 10px;
   position: relative;
   overflow: hidden;
-  max-width: 80px;
+  width: 80px;
+  @include small{
+    width: 50px;
+  }
 }
 
 .post-thumbnail-image{
@@ -34,15 +49,9 @@
   background: rgba(0,0,0,0.4);
   border: 2px solid rgba(255,255,255,0.8);
   border-radius: 100%;
-}
-
-@media screen and (max-width: 30em) {
-  
-  .post-thumbnail{
-    float: right;
-    margin: 10px;
+  @include small{
+    display: none;
   }
-  
 }
 
 

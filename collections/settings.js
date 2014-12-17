@@ -24,6 +24,16 @@ settingsSchemaObject = {
       group: 'general'
     }
   },
+  description: {
+    type: String,
+    label: "Description",
+    optional: true,
+    autoform: {
+      group: 'general',
+      rows: 5,
+      instructions: 'A short description used for SEO purposes.'
+    }
+  },
   requireViewInvite: {
     type: Boolean,
     label: "Require invite to view",

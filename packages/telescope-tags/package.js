@@ -6,7 +6,8 @@ Package.onUse(function (api) {
     'telescope-lib', 
     'telescope-base', 
     'aldeed:simple-schema',
-    'tap:i18n'
+    'tap:i18n',
+    'fourseven:scss'
   ], ['client', 'server']);
 
   api.use([
@@ -23,6 +24,7 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/client/routes.js',
+    'lib/client/scss/categories.scss',
     'lib/client/views/categories.html',
     'lib/client/views/categories.js',
     'lib/client/views/category_item.html',

@@ -13,7 +13,13 @@ categorySchema = new SimpleSchema({
   },
   name: {
     type: String
-  },    
+  },
+  description: {
+    type: String,
+    autoform: {
+      rows: 5
+    }
+  }   
 });
 
 Categories = new Meteor.Collection("categories", {
@@ -22,6 +28,12 @@ Categories = new Meteor.Collection("categories", {
 
 // we want to wait until categories are all loaded to load the rest of the app
 preloadSubscriptions.push('categories');
+
+adminNav.push({
+  route: 'categories',
+  label: 'Categories',
+  description: 'add_and_remove_categories'
+});
 
 // category post list parameters
 viewParameters.category = function (terms) {
@@ -35,7 +47,7 @@ viewParameters.category = function (terms) {
 // push "categories" modules to postHeading
 postHeading.push({
   template: 'postCategories',
-  order: 3
+  order: 30
 });
   
 // push "categoriesMenu" template to primaryNav

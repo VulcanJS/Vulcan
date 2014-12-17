@@ -68,13 +68,25 @@
 	}
 }
 .comment{
-	margin-left:30px;
+	margin-left:10px;
 	position:relative;
 	padding: 0;
 	background: none;
+	margin-bottom: 0px;
 	.comment-body{
 		transition: ease-out, opacity, 600ms, 0ms;
 		opacity:1;
+		position: relative;
+		// &:after{
+		// 	position: absolute;
+		// 	content: " ";
+		// 	border-left: 1px solid #ccc;
+		// 	width: 1px;
+		// 	top: 0px;
+		// 	bottom: 0px;
+		// 	left: 10px;
+		// 	z-index: 1;
+		// }
 	}
 	&.comment-queued{
 		.comment-body{
@@ -128,16 +140,34 @@
 .comment-content{
 	position:relative;
 	@extend .grid-block;
-	border-radius: 0 3px 3px 3px;
+	border-radius: 3px;
 	font-size:14px;
+	z-index: 10;
+	margin-bottom:10px;
 	.comment-main{
-		margin-left:60px;
+		@include medium-large{
+			margin-left:60px;
+		}
 	}
 	.user-avatar{
 		border-radius: 100px;
 		overflow:hidden;
-		display:block;
+		position:block;
 		float:left;
+		margin: 0 10px 0 10px;
+		// img{
+		//	height:40px;
+		//	width:40px;
+		//	display:block;
+		// }
+	}
+}
+.comment-text{
+	&, p{
+		font-size: 16px;
+		@include small{
+			font-size: 13px;
+		}
 	}
 }
 .comment-meta{
@@ -167,10 +197,10 @@
 }
 .comment-actions{
 	position:absolute;
-	left:-30px;
-	top:0px;
+	left:-10px;
+	top:5px;
 	a{
-		border-radius: 0 0 0 3px;
+		border-radius: 0 0 3px 3px;
 		position:relative;
 		display:block;
 		height:30px;
@@ -182,7 +212,7 @@
 		@include hide-text;
 		// border-right:1px solid $lightest-grey;
 		&.upvote{
-			border-radius: 3px 0 0 0;
+			border-radius: 3px 3px 0 0;
 			margin-bottom:1px;
 		}
 		i{

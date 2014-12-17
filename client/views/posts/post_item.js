@@ -1,8 +1,3 @@
-var filteredModules = function (group) {
-  // return the modules whose positions start with group
-  return _.filter(postModules, function(module){return module.position.indexOf(group) == 0});
-};
-
 var post = {};
 
 Template[getTemplate('post_item')].created = function () {
@@ -10,14 +5,8 @@ Template[getTemplate('post_item')].created = function () {
 };
 
 Template[getTemplate('post_item')].helpers({
-  leftPostModules: function () {
-    return filteredModules('left');
-  },
-  centerPostModules: function () {
-    return filteredModules('center');
-  },
-  rightPostModules: function () {
-    return filteredModules('right');
+  postModules: function () {
+    return postModules;
   },
   getTemplate: function () {
     return getTemplate(this.template);
@@ -29,6 +18,6 @@ Template[getTemplate('post_item')].helpers({
     return module;
   },
   moduleClass: function () {
-    return camelToDash(this.template) + ' ' + this.position + ' cell';
+    return camelToDash(this.template) + ' post-module';
   }
 });

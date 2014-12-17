@@ -1,10 +1,3 @@
-preloadSubscriptions.push('categories');
-
-adminNav.push({
-  route: 'categories',
-  label: 'Categories'
-});
-
 Meteor.startup(function () {
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['categories']});
@@ -13,9 +6,17 @@ Meteor.startup(function () {
     
     view: 'category',
 
+    getCurrentCategory: function () {
+      return Categories.findOne({slug: this.params.slug});
+    },
+
     getTitle: function () {
-      var category = Categories.findOne({slug: this.params.slug});
+      var category = this.getCurrentCategory();
       return category.name + ' - ' + getSetting('title');
+    },
+
+    getDescription: function () {
+      return this.getCurrentCategory().description;    
     }
 
   });

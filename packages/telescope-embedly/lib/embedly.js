@@ -27,9 +27,9 @@ var mediaProperty = {
 addToPostSchema.push(mediaProperty);
 
 
-postModules.push({
+postThumbnail.push({
   template: 'postThumbnail', 
-  position: 'center-left'
+  order: 15
 });
 
 var embedlyKeyProperty = {

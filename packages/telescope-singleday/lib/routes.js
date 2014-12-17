@@ -1,7 +1,9 @@
 // Controller for post digest
 
 PostsDigestController = RouteController.extend({
+
   template: getTemplate('posts_digest'),
+  
   waitOn: function() {
     // if day is set, use that. If not default to today
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : new Date(),
@@ -15,6 +17,7 @@ PostsDigestController = RouteController.extend({
       coreSubscriptions.subscribe('postsListUsers', terms)
     ];
   },
+
   data: function() {
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today'),
         terms = {
@@ -37,7 +40,17 @@ PostsDigestController = RouteController.extend({
       posts: posts
     };
   },
+
+  getTitle: function () {
+    return i18n.t('single_day') + ' - ' + getSetting('title');
+  },
+
+  getDescription: function () {
+    return i18n.t('posts_of_a_single_day');
+  },
+
   fastRender: true
+
 });
 
 Meteor.startup(function () {

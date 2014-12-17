@@ -32,7 +32,7 @@
   ul{
     background:white;
     padding:10px;
-    min-width:140px;
+    min-width:180px;
     border-radius: 3px;
     box-shadow: 0 1px 3px black(0.35);
     list-style-type: none;
@@ -47,6 +47,16 @@
       }
       a{
         font-size:14px;
+      }
+      .menu-label{
+        display: block;
+      }
+      .menu-description{
+        display: block;
+        font-weight: normal;
+        font-size: 12px;
+        margin-top: 2px;
+        color: $medium-text;
       }
     }
   }

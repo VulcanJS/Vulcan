@@ -42,6 +42,10 @@ PostsDailyController = RouteController.extend({
     return i18n.t('daily') + ' - ' + getSetting('title');
   },
 
+  getDescription: function () {
+    return i18n.t('day_by_day_view');
+  },
+
   fastRender: true
 });
 

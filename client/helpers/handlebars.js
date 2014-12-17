@@ -79,3 +79,15 @@ UI.registerHelper('pluralize', function(count, string) {
   string = count === 1 ? string : string + 's';
   return i18n.t(string);
 });
+
+UI.registerHelper("profileUrl", function(userOrUserId) {
+  var user = (typeof userOrUserId === "string") ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+  if (!!user)
+    return getProfileUrl(user);
+});
+
+UI.registerHelper("userName", function(userOrUserId) {
+  var user = (typeof userOrUserId === "string") ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+  if (!!user)
+    return getUserName(user);
+});
