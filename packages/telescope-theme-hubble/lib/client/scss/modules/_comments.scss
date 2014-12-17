@@ -131,18 +131,13 @@
 	border-radius: 0 3px 3px 3px;
 	font-size:14px;
 	.comment-main{
-		margin-left:50px;
+		margin-left:60px;
 	}
 	.user-avatar{
 		border-radius: 100px;
 		overflow:hidden;
-		position:block;
+		display:block;
 		float:left;
-		// img{
-		//	height:40px;
-		//	width:40px;
-		//	display:block;
-		// }
 	}
 }
 .comment-meta{
