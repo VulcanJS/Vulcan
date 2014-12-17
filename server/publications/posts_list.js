@@ -26,14 +26,13 @@ Meteor.publish('postsListUsers', function(terms) {
         postsIds = _.pluck(posts.fetch(), '_id'),
         userIds = _.pluck(posts.fetch(), 'userId');
 
-    // for each post, get first four comments and add commenter's userIds to userIds array
+    // for each post, add first four commenter's userIds to userIds array
     posts.forEach(function (post) {
-      var commenterIds = _.pluck(Comments.find({postId: post._id}, {limit: 4}).fetch(), 'userId');
-      userIds = userIds.concat(commenterIds)
+      userIds = userIds.concat(_.first(post.commenters,4));
     });
 
     userIds = _.unique(userIds);
-    
+
     return Meteor.users.find({_id: {$in: userIds}}, {fields: avatarOptions, multi: true});
   }
   return [];
