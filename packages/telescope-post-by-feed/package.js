@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Auto post via RSS to Telescope',
   version: '0.0.1',
-  name: 'telescope-post-by-rss'
+  name: 'telescope-post-by-feed'
 });
 
 Npm.depends({

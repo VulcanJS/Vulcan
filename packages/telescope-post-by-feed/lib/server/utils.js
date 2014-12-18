@@ -78,10 +78,10 @@ var handleFeed = function(error, feed) {
   });
 };
 
-fetchUrls = function() {
+fetchFeeds = function() {
   var content;
 
-  RssUrls.find().forEach(function(rssUrl) {
+  Feeds.find().forEach(function(rssUrl) {
     try {
       content = HTTP.get(rssUrl.url).content;
     } catch (e) {

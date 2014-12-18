@@ -1,9 +1,9 @@
 <template name="rssUrls">
   <div class="grid-small grid-module dialog admin">
-    <h2>RSS Urls</h2>
+    <h2>Feeds</h2>
 
     <form class="form-block">
-      <h3>Add new RSS Url</h3>
+      <h3>Add New Feed</h3>
       <div class="control-group">
         <label>Url</label>
         <div class="controls"><input id="url" type="text" value="" /></div>
@@ -13,8 +13,8 @@
       </div>
     </form>
     <ul>
-      {{#each rssUrls}}
-        {{> UI.dynamic template=rssUrlItem}}
+      {{#each feeds}}
+        {{> UI.dynamic template=feedItem}}
       {{/each}}
     </ul>
   </div>
