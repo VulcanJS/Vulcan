@@ -12,7 +12,7 @@ Template[getTemplate('userUpvotedPosts')].created = function () {
   instance.posts = new ReactiveVar({});
 
   // will re-run when the "terms" local reactive variable changes
-  Tracker.autorun(function () {
+  this.autorun(function () {
 
     // get the new terms and generate new parameters from them
     var terms = instance.terms.get();

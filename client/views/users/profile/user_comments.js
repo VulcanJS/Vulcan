@@ -7,7 +7,7 @@ Template[getTemplate('userComments')].created = function () {
   instance.commentsShown = new ReactiveVar(5);
   instance.comments = new ReactiveVar({});
 
-  Tracker.autorun(function () {
+  this.autorun(function () {
     
     // get parameters
     var limit = instance.commentsShown.get();

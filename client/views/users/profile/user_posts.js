@@ -18,7 +18,7 @@ Template[getTemplate('userPosts')].created = function () {
   instance.subscription = new ReactiveVar({});
 
   // will re-run when the "terms" or "subscription" reactive variables change
-  Tracker.autorun(function () {
+  this.autorun(function () {
 
     // get the new terms and generate new parameters from them
     var terms = instance.terms.get();
