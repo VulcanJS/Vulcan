@@ -11,7 +11,7 @@ var handleFeed = function(error, feed) {
 
   var feedItems = _.first(feed.items, 20); // limit feed to 20 items just in case
 
-  clog('// Parsing RSS feed: '+ feed.id)
+  clog('// Parsing RSS feed: '+ feed.title)
 
   var newItemsCount = 0;
 
@@ -19,7 +19,7 @@ var handleFeed = function(error, feed) {
     
     // check if post already exists
     if (!!Posts.findOne({feedItemId: item.id})) {
-      clog('// Feed item already imported')
+      // clog('// Feed item already imported')
     } else {
       newItemsCount++;
 
@@ -36,7 +36,7 @@ var handleFeed = function(error, feed) {
         submitPost(post);
       } catch (error) {
         // catch errors so they don't stop the loop
-        console.log(error);
+        clog(error);
       }
 
     }
