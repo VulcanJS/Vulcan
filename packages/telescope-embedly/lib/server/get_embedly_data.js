@@ -51,12 +51,19 @@ Meteor.methods({
   }
 });
 
-// For security reason, we use a separate server-side API call to set the media object
+// For security reason, we use a separate server-side API call to set the media object,
+// and the thumbnail object if it hasn't already been set
 var addMediaOnSubmit = function (post) {
   if(post.url){
     var data = getEmbedlyData(post.url);
-    if(!!data && !!data.media.html)
-      post.media = data.media
+    if (!!data) {
+      // only add a thumbnailUrl if there isn't one already
+      if(!post.thumbnailUrl && !!data.thumbnailUrl)
+        post.thumbnailUrl = data.thumbnailUrl
+      // add media if necessary
+      if(!!data.media.html)
+        post.media = data.media
+    }
   }
   return post;
 }
