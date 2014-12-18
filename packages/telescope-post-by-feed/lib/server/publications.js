@@ -1,6 +1,6 @@
-Meteor.publish('rssUrls', function() {
+Meteor.publish('feeds', function() {
   if(isAdminById(this.userId)){
-    return RssUrls.find();
+    return Feeds.find();
   }
   return [];
 });

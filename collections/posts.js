@@ -309,7 +309,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
 // ------------------------------------------------------------------------------------------- //
 
 submitPost = function (post) {
-  console.log(post)
+
   var userId = post.userId, // at this stage, a userId is expected
       user = Meteor.users.findOne(userId);
   // ------------------------------ Checks ------------------------------ //
@@ -372,7 +372,7 @@ submitPost = function (post) {
   var postAuthor =  Meteor.users.findOne(userId);
 
   Meteor.call('upvotePost', post, postAuthor);
-  console.log(post)
+
   return post;
 }
 

@@ -14,6 +14,34 @@ Feeds = new Meteor.Collection("feeds", {
   schema: feedSchema
 });
 
+// used to keep track of which feed a post was imported from
+var feedIdProperty = {
+  propertyName: 'feedId',
+  propertySchema: {
+    type: String,
+    label: 'feedId',
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  }
+}
+addToPostSchema.push(feedIdProperty);
+
+// the RSS ID of the post in its original feed
+var feedItemIdProperty = {
+  propertyName: 'feedItemId',
+  propertySchema: {
+    type: String,
+    label: 'feedItemId',
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  }
+}
+addToPostSchema.push(feedItemIdProperty);
+
 Meteor.startup(function () {
   Feeds.allow({
     remove: isAdminById

@@ -1,20 +1,21 @@
 adminNav.push({
-  route: 'rssUrls',
-  label: 'RSS Urls'
+  route: 'feeds',
+  label: 'Feeds',
+  description: 'import_new_posts_from_feeds'
 });
 
 Meteor.startup(function () {
 
-  Router.onBeforeAction(Router._filters.isAdmin, {only: ['rssUrls']});
+  Router.onBeforeAction(Router._filters.isAdmin, {only: ['feeds']});
   
   // RSS Urls Admin
 
-  Router.route('/rss-urls', {
-    name: 'rssUrls',
+  Router.route('/feeds', {
+    name: 'feeds',
     waitOn: function() {
-      return Meteor.subscribe('rssUrls');
+      return Meteor.subscribe('feeds');
     },
-    template: getTemplate('rssUrls')
+    template: getTemplate('feeds')
   });
 
 });

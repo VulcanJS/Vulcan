@@ -6,7 +6,8 @@ Package.describe({
 
 Npm.depends({
   'htmlparser2': '3.8.2',
-  'html-to-text': '0.1.0',
+  'to-markdown': '0.0.2',
+  'he': '0.5.0'
 });
 
 Package.onUse(function(api) {
@@ -29,19 +30,19 @@ Package.onUse(function(api) {
   ], 'server');
 
   api.add_files([
-    'lib/rssUrls.js'
+    'lib/feeds.js'
   ], ['client', 'server']);
 
   api.add_files([
     'lib/client/routes.js',
-    'lib/client/templates/rss_urls.js',
-    'lib/client/templates/rss_urls.html',
-    'lib/client/templates/rss_url_item.js',
-    'lib/client/templates/rss_url_item.html',
+    'lib/client/templates/feeds.js',
+    'lib/client/templates/feeds.html',
+    'lib/client/templates/feed_item.js',
+    'lib/client/templates/feed_item.html',
   ], 'client');
 
   api.add_files([
-    'lib/server/utils.js',
+    'lib/server/fetch_feeds.js',
     'lib/server/cron.js',
     'lib/server/publications.js'
   ], ['server']);
