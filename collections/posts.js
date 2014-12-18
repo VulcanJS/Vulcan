@@ -251,7 +251,8 @@ getPostProperties = function (post) {
 
 // default status for new posts
 getDefaultPostStatus = function (user) {
-  if (isAdmin(user) || !getSetting('requirePostsApproval', false)) {
+  var hasAdminRights = typeof user === 'undefined' ? false : isAdmin(user);
+  if (hasAdminRights || !getSetting('requirePostsApproval', false)) {
     // if user is admin, or else post approval is not required
     return STATUS_APPROVED
   } else {
@@ -304,6 +305,78 @@ Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
 });
 
 // ------------------------------------------------------------------------------------------- //
+// --------------------------------------- Submit Post --------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
+
+submitPost = function (post) {
+  console.log(post)
+  var userId = post.userId, // at this stage, a userId is expected
+      user = Meteor.users.findOne(userId);
+  // ------------------------------ Checks ------------------------------ //
+
+  // check that a title was provided
+  if(!post.title)
+    throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
+
+  // check that there are no posts with the same URL
+  if(!!post.url)
+    checkForPostsWithSameUrl(post.url);
+
+  // ------------------------------ Properties ------------------------------ //
+
+  defaultProperties = {
+    createdAt: new Date(),
+    author: getDisplayNameById(userId),
+    upvotes: 0,
+    downvotes: 0,
+    commentCount: 0,
+    clickCount: 0,
+    viewCount: 0,
+    baseScore: 0,
+    score: 0,
+    inactive: false,
+    sticky: false,
+    status: getDefaultPostStatus(),
+    postedAt: new Date()
+  };
+
+  post = _.extend(defaultProperties, post);
+
+  // clean up post title
+  post.title = cleanUp(post.title);
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  // run all post submit server callbacks on post object successively
+  post = postSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+      return currentFunction(result);
+  }, post);
+
+  // ------------------------------ Insert ------------------------------ //
+
+  // console.log(post)
+  post._id = Posts.insert(post);
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  // run all post submit server callbacks on post object successively
+  post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+      return currentFunction(result);
+  }, post);
+
+  // ------------------------------ After Insert ------------------------------ //
+
+  // increment posts count
+  Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
+
+  var postAuthor =  Meteor.users.findOne(userId);
+
+  Meteor.call('upvotePost', post, postAuthor);
+  console.log(post)
+  return post;
+}
+
+// ------------------------------------------------------------------------------------------- //
 // ----------------------------------------- Methods ----------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
@@ -313,15 +386,19 @@ postViews = [];
 Meteor.methods({
 
   submitPost: function(post){
-    var title = cleanUp(post.title),
-        body = post.body,
-        userId = this.userId,
-        user = Meteor.users.findOne(userId),
-        timeSinceLastPost=timeSinceLast(user, Posts),
-        numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
-        postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
-        maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30))),
-        postId = '';
+
+    // required properties:
+    // title
+
+    // optional properties
+    // URL
+    // body
+    // categories
+    // thumbnailUrl
+
+    // NOTE: the current user and the post author user might be two different users!
+    var user = Meteor.user(),
+        hasAdminRights = isAdmin(user);
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -329,17 +406,14 @@ Meteor.methods({
     if (!user || !canPost(user))
       throw new Meteor.Error(601, i18n.t('you_need_to_login_or_be_invited_to_post_new_stories'));
 
-    // check that user provided a title
-    if(!post.title)
-      throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
-
-    // check that there are no posts with the same URL
-    if(!!post.url)
-      checkForPostsWithSameUrl(post.url);
-
     // --------------------------- Rate Limiting -------------------------- //
 
-    if(!isAdmin(Meteor.user())){
+    var timeSinceLastPost=timeSinceLast(user, Posts),
+        numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
+        postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
+        maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30)));
+
+    if(!hasAdminRights){
       // check that user waits more than X seconds between posts
       if(!this.isSimulation && timeSinceLastPost < postInterval)
         throw new Meteor.Error(604, i18n.t('please_wait')+(postInterval-timeSinceLastPost)+i18n.t('seconds_before_posting_again'));
@@ -351,79 +425,31 @@ Meteor.methods({
 
     // ------------------------------ Properties ------------------------------ //
 
-    // Basic Properties
-    properties = {
-      title: title,
-      body: body,
-      userId: userId,
-      author: getDisplayNameById(userId),
-      upvotes: 0,
-      downvotes: 0,
-      commentCount: 0,
-      clickCount: 0,
-      viewCount: 0,
-      baseScore: 0,
-      score: 0,
-      inactive: false
-    };
+    // admin-only properties
+    // status
+    // postedAt
+    // userId
+    // sticky (default to false)
 
-    // UserId
-    if(isAdmin(Meteor.user()) && !!post.userId){ // only let admins post as other users
-      properties.userId = post.userId;
+    // if user is not admin, clear restricted properties
+    if (!hasAdminRights) {
+      delete post.status;
+      delete post.postedAt;
+      delete post.userId;
+      delete post.sticky;
     }
 
-    // Status
-    if(!!post.status && isAdmin(Meteor.user())){
-      // if a custom status has been set, and user is admin, use that
-      properties.status = post.status;
-    }else{
-      // else use default status
-      properties.status = getDefaultPostStatus(Meteor.user());
+    // if no post status has been set, set it now
+    if (!post.status) {
+      post.status = getDefaultPostStatus(user);
     }
 
-    // CreatedAt
-    properties.createdAt = new Date();
-
-    // PostedAt
-    if(properties.status == 2){ // only set postedAt if post is approved
-      if(isAdmin(Meteor.user()) && !!post.postedAt){ // if user is admin and a custom postDate has been set
-        properties.postedAt = post.postedAt;
-      }else{ // else use current time
-        properties.postedAt = new Date();
-      }
+    // if no userId has been set, default to current user id
+    if (!post.userId) {
+      post.userId = user._id
     }
-
-    post = _.extend(post, properties);
-
-    // ------------------------------ Callbacks ------------------------------ //
-
-    // run all post submit server callbacks on post object successively
-    post = postSubmitMethodCallbacks.reduce(function(result, currentFunction) {
-        return currentFunction(result);
-    }, post);
-
-    // ------------------------------ Insert ------------------------------ //
-
-    // console.log(post)
-    post._id = Posts.insert(post);
-
-    // ------------------------------ Callbacks ------------------------------ //
-
-    // run all post submit server callbacks on post object successively
-    post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
-        return currentFunction(result);
-    }, post);
-
-    // ------------------------------ After Insert ------------------------------ //
-
-    // increment posts count
-    Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
-
-    var postAuthor =  Meteor.users.findOne(post.userId);
-
-    Meteor.call('upvotePost', post, postAuthor);
-
-    return post;
+   
+    return submitPost(post);
   },
 
   editPost: function (postId, updateObject) {
