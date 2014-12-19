@@ -1,29 +1,41 @@
 // category schema
 categorySchema = new SimpleSchema({
- _id: {
+  name: {
+    type: String
+  },
+  description: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      rows: 3
+    }
   },
   order: {
     type: Number,
     optional: true
   },
   slug: {
-    type: String
-  },
-  name: {
-    type: String
-  },
-  description: {
     type: String,
+    optional: true,
     autoform: {
-      rows: 5
+      omit: true
     }
-  }   
+  }
 });
 
-Categories = new Meteor.Collection("categories", {
-  schema: categorySchema
+Categories = new Meteor.Collection("categories");
+Categories.attachSchema(categorySchema);
+
+Categories.before.insert(function (userId, doc) {
+  doc.slug = slugify(doc.name);
+});
+
+Categories.before.update(function (userId, doc, fieldNames, modifier, options) {
+  // if body is being modified, update htmlBody too
+  if (Meteor.isServer && modifier.$set && modifier.$set.name) {
+    modifier.$set = modifier.$set || {};
+    modifier.$set.slug = slugify(doc.name);
+  }
 });
 
 // we want to wait until categories are all loaded to load the rest of the app
