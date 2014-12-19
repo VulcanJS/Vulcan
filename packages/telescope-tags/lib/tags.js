@@ -92,9 +92,9 @@ addToPostSchema.push(
 
 Meteor.startup(function () {
   Categories.allow({
-    insert: isAdminById
-  , update: isAdminById
-  , remove: isAdminById
+    insert: isAdminById,
+    update: isAdminById,
+    remove: isAdminById
   });
 
   Meteor.methods({

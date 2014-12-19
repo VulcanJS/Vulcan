@@ -38,6 +38,7 @@ addToPostSchema.push(feedItemIdProperty);
 
 Meteor.startup(function () {
   Feeds.allow({
+    insert: isAdminById,
     update: isAdminById,
     remove: isAdminById
   });
