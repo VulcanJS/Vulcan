@@ -15,7 +15,9 @@ Package.onUse(function(api) {
   api.use([
     'telescope-base', 
     'aldeed:simple-schema',
-    'tap:i18n'
+    'aldeed:autoform',
+    'tap:i18n',
+    'fourseven:scss'
   ], ['client', 'server']);
 
   api.use([
@@ -35,6 +37,7 @@ Package.onUse(function(api) {
 
   api.add_files([
     'lib/client/routes.js',
+    'lib/client/scss/feeds.scss',
     'lib/client/templates/feeds.js',
     'lib/client/templates/feeds.html',
     'lib/client/templates/feed_item.js',
@@ -50,6 +53,10 @@ Package.onUse(function(api) {
   api.add_files([
     "i18n/en.i18n.json"
   ], ["client", "server"]);
+
+  api.export([
+    'Feeds'
+  ]);
 });
 
 Package.onTest(function(api) {

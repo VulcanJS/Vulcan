@@ -1,6 +1,10 @@
 {
   "dependencies": [
     [
+      "aldeed:autoform",
+      "4.2.0"
+    ],
+    [
       "aldeed:simple-schema",
       "1.2.0"
     ],
@@ -55,6 +59,10 @@
     [
       "follower-livedata",
       "1.0.2"
+    ],
+    [
+      "fourseven:scss",
+      "1.0.0"
     ],
     [
       "geojson-utils",
@@ -115,6 +123,10 @@
     [
       "json",
       "1.0.1"
+    ],
+    [
+      "livedata",
+      "1.0.11"
     ],
     [
       "logging",

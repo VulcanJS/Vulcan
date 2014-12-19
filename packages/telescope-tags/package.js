@@ -48,5 +48,12 @@ Package.onUse(function (api) {
     "i18n/zh-CN.i18n.json",
   ], ["client", "server"]);
  
-  api.export(['preloadSubscriptions', 'adminNav', 'Categories', 'addToPostSchema', 'primaryNav', 'postModules']);
+  api.export([
+    'preloadSubscriptions', 
+    'adminNav', 
+    'Categories', 
+    'addToPostSchema', 
+    'primaryNav', 
+    'postModules'
+  ]);
 });

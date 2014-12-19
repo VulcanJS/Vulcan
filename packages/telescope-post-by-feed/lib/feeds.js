@@ -1,18 +1,12 @@
-// feedSchema schema
-feedSchema = new SimpleSchema({
- _id: {
-    type: String,
-    optional: true
-  },
+var feedSchema = new SimpleSchema({
   url: {
     type: String,
     regEx: SimpleSchema.RegEx.Url
   }
 });
 
-Feeds = new Meteor.Collection("feeds", {
-  schema: feedSchema
-});
+Feeds = new Meteor.Collection("feeds");
+Feeds.attachSchema(feedSchema);
 
 // used to keep track of which feed a post was imported from
 var feedIdProperty = {
@@ -44,6 +38,7 @@ addToPostSchema.push(feedItemIdProperty);
 
 Meteor.startup(function () {
   Feeds.allow({
+    update: isAdminById,
     remove: isAdminById
   });
 

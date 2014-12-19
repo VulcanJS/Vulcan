@@ -1,10 +1,16 @@
 Meteor.startup(function () {
-  Template[getTemplate('feedItem')].events({
-    'click .delete-feed': function(e, instance){
-      e.preventDefault();
+  Template[getTemplate('feedItem')].helpers({
+    formId: function () {
+      return 'updateFeed-'+ this._id
+    }
+  });
 
-      if (confirm(i18n.t('are_you_sure')))
+  Template[getTemplate('feedItem')].events({
+    'click .delete-link': function(e, instance){
+      e.preventDefault();
+      if (confirm("Delete feed?")) {
         Feeds.remove(instance.data._id);
+      }
     }
   });
 });
