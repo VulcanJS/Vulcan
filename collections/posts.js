@@ -287,6 +287,10 @@ checkForPostsWithSameUrl = function (url) {
   }
 }
 
+// when on a post page, return the current post
+currentPost = function () {
+  return Posts.findOne(Router.current().data()._id);
+}
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------ Hooks ------------------------------------------ //
 // ------------------------------------------------------------------------------------------- //
@@ -365,14 +369,13 @@ submitPost = function (post) {
   }, post);
 
   // ------------------------------ After Insert ------------------------------ //
-
   // increment posts count
   Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
 
   var postAuthor =  Meteor.users.findOne(userId);
 
-  Meteor.call('upvotePost', post, postAuthor);
-
+  upvoteItem(Posts, post, postAuthor);
+  
   return post;
 }
 
