@@ -30,6 +30,7 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/notifications.js',
     'lib/herald.js',
+    'lib/subscribe.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
@@ -42,10 +43,15 @@ Package.onUse(function (api) {
     'lib/client/templates/notifications_menu.js',
     'lib/client/templates/unsubscribe.html',
     'lib/client/templates/unsubscribe.js',
+    'lib/client/templates/post_subscribe.html',
+    'lib/client/templates/post_subscribe.js',
+    'lib/client/templates/user_subscribed_posts.html',
+    'lib/client/templates/user_subscribed_posts.js',
   ], ['client']);
 
   api.add_files([
     'lib/server/notifications-server.js',
+    'lib/server/publications.js',
     'lib/server/routes.js'
   ], ['server']);
   

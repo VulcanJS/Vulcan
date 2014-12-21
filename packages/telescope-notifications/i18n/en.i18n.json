@@ -8,5 +8,8 @@
   "1_notification": "1 notification",
   "notifications": "notifications",
   "notifications_fieldset": "Notifications",
-  "emailNotifications": "Email Notifications"
+  "emailNotifications": "Email Notifications",
+  "subscribed_posts": "Subscribed Posts",
+  "subscribe": "Subscribe",
+  "unsubscribe": "Unsubscribe"
 }

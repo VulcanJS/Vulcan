@@ -3,11 +3,13 @@ getUnsubscribeLink = function(user){
 };
 
 // given a notification, return the correct subject and html to send an email
-buildEmailNotification = function (notification) {
+buildEmailNotification = function (notification, user) {
 
-  var subject, template;
-  var post = notification.data.post;
-  var comment = notification.data.comment;
+  var subject,
+      template,
+      post = notification.data.post,
+      comment = notification.data.comment,
+      subscribeText = post.userId === user._id ? '' : 'subscribed ';
 
   switch(notification.courier){
     case 'newReply':
@@ -16,7 +18,7 @@ buildEmailNotification = function (notification) {
       break;
 
     case 'newComment':
-      subject = 'A new comment on your post "'+post.title+'"';
+      subject = 'A new comment on your ' + subscribeText + 'post "' + post.title + '"';
       template = 'emailNewComment';
       break;
 

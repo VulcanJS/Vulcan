@@ -17,7 +17,7 @@ var commentEmail = function (userToNotify) {
   var notification = this;
   // put in setTimeout so it doesn't hold up the rest of the method
   Meteor.setTimeout(function () {
-    notificationEmail = buildEmailNotification(notification);
+    notificationEmail = buildEmailNotification(notification, userToNotify);
     sendEmail(getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
   }, 1);
 }

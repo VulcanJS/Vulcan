@@ -1,0 +1,15 @@
+<template name="postSubcribe">
+  {{#if canSubscribe}}
+    <div class="post-meta-item">
+      {{#if subscribed}}
+        <a class="unsubscribe-link" href="#">
+          <span>{{_ 'unsubscribe'}}</span>
+        </a>
+      {{else}}
+        <a class="subscribe-link" href="#">
+          <span>{{_ 'subscribe'}}</span>
+        </a>
+      {{/if}}
+    </div>
+  {{/if}}
+</template>

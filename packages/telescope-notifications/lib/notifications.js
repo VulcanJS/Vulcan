@@ -13,20 +13,31 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 commentAfterSubmitMethodCallbacks.push(function (comment) {
   if(Meteor.isServer){
 
-    var parentCommentId = comment.parentCommentId;
-    var user = Meteor.user();
-    var post = Posts.findOne(comment.postId);
-    var postUser = Meteor.users.findOne(post.userId);
+    var parentCommentId = comment.parentCommentId,
+        user = Meteor.user(),
+        post = Posts.findOne(comment.postId),
+        postUser = Meteor.users.findOne(post.userId),
+        userIdsToNotify = post.subscribers && _.clone(post.subscribers) || [];
 
     var notificationData = {
       comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
-      post: _.pick(post, '_id', 'title', 'url')
+      post: _.pick(post, '_id', 'userId', 'title', 'url')
     };
 
-    if(parentCommentId){
+    var i = userIdsToNotify.indexOf(user._id);
+    if (i != -1)
+      // do not notify author of comment
+      userIdsToNotify.splice(i, 1);
+
+    i = userIdsToNotify.indexOf(postUser._id);
+    if (i != -1)
+      // remove author of post, decide whether to nofity or not below
+      userIdsToNotify.splice(i, 1);
+
+    if (parentCommentId) {
       // child comment
-      var parentComment = Comments.findOne(parentCommentId);
-      var parentUser = Meteor.users.findOne(parentComment.userId);
+      var parentComment = Comments.findOne(parentCommentId),
+          parentUser = Meteor.users.findOne(parentComment.userId);
 
       notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
 
@@ -38,14 +49,17 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
       // comment notification
       // if the original poster is different from the author of the parent comment, notify them too
       if(postUser._id != user._id && parentComment.userId != post.userId)
-        Herald.createNotification(postUser._id, {courier: 'newComment', data: notificationData})
+        userIdsToNotify.push(postUser._id);
 
-    }else{
+    } else {
       // root comment
       // don't notify users of their own comments
       if(postUser._id != user._id)
-        Herald.createNotification(postUser._id, {courier: 'newComment', data: notificationData})
+        userIdsToNotify.push(postUser._id);
     }
+
+    if (userIdsToNotify.length > 0)
+      Herald.createNotification(userIdsToNotify, {courier: 'newComment', data: notificationData});
   }
 
   return comment;
