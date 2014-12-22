@@ -455,11 +455,10 @@ Meteor.methods({
     return submitPost(post);
   },
 
-  editPost: function (postId, updateObject) {
+  editPost: function (post, updateObject) {
 
     var user = Meteor.user();
-
-    // console.log(updateObject)
+    var postId = post._id;
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -473,8 +472,6 @@ Meteor.methods({
     updateObject = postEditMethodCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(result);
     }, updateObject);
-
-    console.log(updateObject)
 
     // ------------------------------ Update ------------------------------ //
 

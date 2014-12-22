@@ -1,3 +1,6 @@
+* Post submit and edit forms now submit to their respective methods directly.
+* Removed `postSubmitRenderedCallbacks` and `postEditRenderedCallbacks`.
+
 ## v0.11.0 “AvatarScope”
 
 * Added new `userCreatedCallbacks` callback hook.
