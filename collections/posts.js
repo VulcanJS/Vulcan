@@ -455,7 +455,7 @@ Meteor.methods({
     return submitPost(post);
   },
 
-  editPost: function (post, updateObject) {
+  editPost: function (post, modifier) {
 
     var user = Meteor.user();
     var postId = post._id;
@@ -468,21 +468,21 @@ Meteor.methods({
 
     // ------------------------------ Callbacks ------------------------------ //
 
-    // run all post submit server callbacks on updateObject successively
-    updateObject = postEditMethodCallbacks.reduce(function(result, currentFunction) {
+    // run all post submit server callbacks on modifier successively
+    modifier = postEditMethodCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(result);
-    }, updateObject);
+    }, modifier);
 
     // ------------------------------ Update ------------------------------ //
 
-    Posts.update(postId, updateObject);
+    Posts.update(postId, modifier);
 
     // ------------------------------ Callbacks ------------------------------ //
 
-    // run all post submit server callbacks on updateObject successively
-    updateObject = postAfterEditMethodCallbacks.reduce(function(result, currentFunction) {
+    // run all post submit server callbacks on modifier object successively
+    modifier = postAfterEditMethodCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(result);
-    }, updateObject);
+    }, modifier);
 
     // ------------------------------ After Update ------------------------------ //
 
