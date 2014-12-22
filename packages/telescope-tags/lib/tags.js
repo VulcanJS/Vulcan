@@ -18,7 +18,6 @@ categorySchema = new SimpleSchema({
     type: String,
     optional: true,
     autoform: {
-      omit: true
     }
   }
 });
@@ -27,15 +26,9 @@ Categories = new Meteor.Collection("categories");
 Categories.attachSchema(categorySchema);
 
 Categories.before.insert(function (userId, doc) {
-  doc.slug = slugify(doc.name);
-});
-
-Categories.before.update(function (userId, doc, fieldNames, modifier, options) {
-  // if body is being modified, update htmlBody too
-  if (Meteor.isServer && modifier.$set && modifier.$set.name) {
-    modifier.$set = modifier.$set || {};
-    modifier.$set.slug = slugify(doc.name);
-  }
+  // if no slug has been provided, generate one
+  if (!doc.slug)
+    doc.slug = slugify(doc.name);
 });
 
 // we want to wait until categories are all loaded to load the rest of the app
