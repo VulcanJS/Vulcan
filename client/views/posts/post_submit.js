@@ -41,6 +41,6 @@ AutoForm.hooks({
         Router.go('/posts/'+dupePostId);
       }
     }
-    
+
   }
 });

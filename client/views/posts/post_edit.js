@@ -5,7 +5,6 @@ AutoForm.hooks({
       editPost: function(doc, template) {
 
         var post = doc;
-        post._id = template.data.doc._id; // decorate with post _id
 
         // ------------------------------ Checks ------------------------------ //
 

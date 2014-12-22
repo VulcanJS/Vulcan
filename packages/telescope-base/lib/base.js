@@ -226,7 +226,7 @@ postMeta = [
 
 postSubmitClientCallbacks = [];
 postSubmitMethodCallbacks = [];
-postAfterSubmitMethodCallbacks = [];
+postAfterSubmitMethodCallbacks = []; // runs on server only
 
 postEditClientCallbacks = []; // loops over post object
 postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object

@@ -308,6 +308,19 @@ Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
   }
 });
 
+postAfterSubmitMethodCallbacks.push(function (post) {
+
+  var userId = post.userId,
+      postAuthor = Meteor.users.findOne(userId);
+
+  // increment posts count
+  Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
+  upvoteItem(Posts, post, postAuthor);
+  
+  return post;
+
+});
+
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------- Submit Post --------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
@@ -361,21 +374,17 @@ submitPost = function (post) {
   // console.log(post)
   post._id = Posts.insert(post);
 
-  // ------------------------------ Callbacks ------------------------------ //
 
-  // run all post submit server callbacks on post object successively
-  post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
-      return currentFunction(result);
-  }, post);
+  // ------------------------------ Server-Side Callbacks ------------------------------ //
 
-  // ------------------------------ After Insert ------------------------------ //
-  // increment posts count
-  Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
+  if (Meteor.isServer) {
+    Meteor.setTimeout(function () { // use setTimeout to avoid holding up client
+      // run all post submit server callbacks on post object successively
+      post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+          return currentFunction(result);
+      }, post);
+    }, 1);}
 
-  var postAuthor =  Meteor.users.findOne(userId);
-
-  upvoteItem(Posts, post, postAuthor);
-  
   return post;
 }
 
@@ -388,7 +397,7 @@ postViews = [];
 
 Meteor.methods({
 
-  submitPost: function(post){
+  submitPost: function(post, modifier, id){
 
     // required properties:
     // title
@@ -455,10 +464,9 @@ Meteor.methods({
     return submitPost(post);
   },
 
-  editPost: function (post, modifier) {
+  editPost: function (post, modifier, postId) {
 
     var user = Meteor.user();
-    var postId = post._id;
 
     // ------------------------------ Checks ------------------------------ //
 
