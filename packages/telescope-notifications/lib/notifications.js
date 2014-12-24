@@ -14,7 +14,7 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
   if(Meteor.isServer){
 
     var parentCommentId = comment.parentCommentId;
-    var user = Meteor.user();
+    var user = Meteor.users.findOne(comment.userId);
     var post = Posts.findOne(comment.postId);
     var postUser = Meteor.users.findOne(post.userId);
 

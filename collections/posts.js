@@ -291,6 +291,7 @@ checkForPostsWithSameUrl = function (url) {
 currentPost = function () {
   return Posts.findOne(Router.current().data()._id);
 }
+
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------ Hooks ------------------------------------------ //
 // ------------------------------------------------------------------------------------------- //
@@ -329,6 +330,7 @@ submitPost = function (post) {
 
   var userId = post.userId, // at this stage, a userId is expected
       user = Meteor.users.findOne(userId);
+
   // ------------------------------ Checks ------------------------------ //
 
   // check that a title was provided
@@ -369,12 +371,12 @@ submitPost = function (post) {
       return currentFunction(result);
   }, post);
 
-  // ------------------------------ Insert ------------------------------ //
+  // -------------------------------- Insert ------------------------------- //
 
   // console.log(post)
   post._id = Posts.insert(post);
 
-  // ------------------------------ Server-Side Callbacks ------------------------------ //
+  // --------------------- Server-Side Async Callbacks --------------------- //
 
   if (Meteor.isServer) {
     Meteor.setTimeout(function () { // use setTimeout to avoid holding up client
@@ -382,7 +384,8 @@ submitPost = function (post) {
       post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
           return currentFunction(result);
       }, post);
-    }, 1);}
+    }, 1);
+  }
 
   return post;
 }
@@ -419,19 +422,21 @@ Meteor.methods({
 
     // --------------------------- Rate Limiting -------------------------- //
 
-    var timeSinceLastPost=timeSinceLast(user, Posts),
+    if(!hasAdminRights){
+    
+      var timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
         maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30)));
 
-    if(!hasAdminRights){
       // check that user waits more than X seconds between posts
-      if(!this.isSimulation && timeSinceLastPost < postInterval)
+      if(timeSinceLastPost < postInterval)
         throw new Meteor.Error(604, i18n.t('please_wait')+(postInterval-timeSinceLastPost)+i18n.t('seconds_before_posting_again'));
 
       // check that the user doesn't post more than Y posts per day
-      if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
+      if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
         throw new Meteor.Error(605, i18n.t('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+i18n.t('posts_per_day'));
+    
     }
 
     // ------------------------------ Properties ------------------------------ //
