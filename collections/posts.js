@@ -374,7 +374,6 @@ submitPost = function (post) {
   // console.log(post)
   post._id = Posts.insert(post);
 
-
   // ------------------------------ Server-Side Callbacks ------------------------------ //
 
   if (Meteor.isServer) {
