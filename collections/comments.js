@@ -222,7 +222,7 @@ Meteor.methods({
 
     // if user is not admin, clear restricted properties
     if (!hasAdminRights) {
-      delete post.userId;
+      delete comment.userId;
     }
 
     // if no userId has been set, default to current user id
