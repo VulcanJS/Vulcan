@@ -21,6 +21,8 @@ Template[getTemplate('comment_form')].events({
 
     if(getCurrentTemplate() == 'comment_reply'){
     
+      var parentComment = this.comment;
+    
       // child comment
       
       comment = {
@@ -28,8 +30,6 @@ Template[getTemplate('comment_form')].events({
         parentCommentId: parentComment._id, 
         body: body
       };
-
-      var parentComment = this.comment;
 
       Meteor.call('submitComment', comment, function(error, newComment){
 
