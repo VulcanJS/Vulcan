@@ -6,7 +6,7 @@ Meteor.startup(function () {
       var name = $('#name_'+categoryId).val();
       var description = $('#description_'+categoryId).val();
       var order = parseInt($('#order_'+categoryId).val());
-      var slug = slugify(name);
+      var slug = slugify(name.replace(/ /g, '-'));
       if(name){
         Categories.update(categoryId,{ $set: {name: name, slug: slug, order: order, description: description}});
       }else{
