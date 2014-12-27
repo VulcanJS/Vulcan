@@ -78,14 +78,19 @@ var addMediaAfterSubmit = function (post) {
     var data = getEmbedlyData(post.url);
     if (!!data) {
       // only add a thumbnailUrl if there isn't one already
-      if(!post.thumbnailUrl && !!data.thumbnailUrl)
-        set.thumbnailUrl = data.thumbnailUrl
+      if (!post.thumbnailUrl && !!data.thumbnailUrl) {
+        post.thumbnailUrl = data.thumbnailUrl;
+        set.thumbnailUrl = data.thumbnailUrl;
+      }
       // add media if necessary
-      if(!!data.media.html)
-        set.media = data.media
+      if (!!data.media.html) {
+        post.media = data.media;
+        set.media = data.media;
+      }
     }
   }
   Posts.update(post._id, {$set: set});
+  return post;
 }
 postAfterSubmitMethodCallbacks.push(addMediaAfterSubmit);
 
