@@ -58,11 +58,12 @@ var migrationsList = {
       Posts.update(post._id, {$set: {status: 2}});
       console.log("---------------------");
       console.log("Post: "+post.title);
-      console.log("Updating status to approved");  
+      console.log("Updating status to approved");
     });
     return i;
   },
   updateCategories: function () {
+    if (typeof Categories === "undefined" || Categories === null) return;
     var i = 0;
     Categories.find({slug: {$exists : false}}).forEach(function (category) {
         i++;
@@ -71,11 +72,11 @@ var migrationsList = {
         console.log("---------------------");
         console.log("Category: "+category.name);
         console.log("Updating category with new slug: "+slug);
-    
     });
     return i;
   },
   updatePostCategories: function () {
+    if (typeof Categories === "undefined" || Categories === null) return;
     var i = 0;
     Posts.find().forEach(function (post) {
       i++;
@@ -140,7 +141,7 @@ var migrationsList = {
       // update postCount
       var postsByUser = Posts.find({userId: user._id});
       properties.postCount = postsByUser.count();
-      
+
       // update commentCount
       var commentsByUser = Comments.find({userId: user._id});
       properties.commentCount = commentsByUser.count();
@@ -282,7 +283,7 @@ var migrationsList = {
   addLastCommentedAt: function () {
     var i = 0;
     Posts.find({$and: [
-      {comments: {$gt: 0}}, 
+      {comments: {$gt: 0}},
       {lastCommentedAt: {$exists : false}}
     ]}).forEach(function (post) {
       i++;
@@ -416,7 +417,7 @@ var migrationsList = {
       var result = Posts.update(post._id, {$set: {categories: justCategoryIds, oldCategories: post.categories}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    return i;    
+    return i;
   },
   cleanUpStickyProperty: function () {
     var i = 0;
@@ -426,7 +427,7 @@ var migrationsList = {
       var result = Posts.update(post._id, {$set: {sticky: false}}, {multi: true, validate: false});
       console.log("---------------------");
     });
-    return i;    
+    return i;
   }
 };
 
