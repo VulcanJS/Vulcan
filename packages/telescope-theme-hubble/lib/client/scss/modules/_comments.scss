@@ -263,7 +263,9 @@
 	.comment-field{
 	}
 	.comment-submit{
-		@extend .cf;
+	}
+	.comment-submit-button{
+		display: inline-block;
 	}
 	.comment-page &{
 		margin-left:30px;

@@ -4,6 +4,8 @@ AutoForm.hooks({
     before: {
       submitPost: function(doc, template) {
 
+        template.$('button[type=submit]').addClass('loading');
+
         var post = doc;
 
         // ------------------------------ Checks ------------------------------ //
@@ -24,7 +26,8 @@ AutoForm.hooks({
       }
     },
 
-    onSuccess: function(operation, post, template) {
+    onSuccess: function(operation, post, template) {      
+      template.$('button[type=submit]').removeClass('loading');
       trackEvent("new post", {'postId': post._id});
       if (post.status === STATUS_PENDING) {
         flashMessage(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
@@ -33,6 +36,7 @@ AutoForm.hooks({
     },
 
     onError: function(operation, error, template) {
+      template.$('button[type=submit]').removeClass('loading');
       flashMessage(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
       clearSeenMessages();
       // $(e.target).removeClass('disabled');

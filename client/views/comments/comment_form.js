@@ -11,9 +11,13 @@ Template[getTemplate('comment_form')].events({
     $(e.target).addClass('disabled');
     clearSeenMessages();
 
+
     var comment = {};
     var $commentForm = instance.$('#comment');
+    var $submitButton = instance.$('.btn-submit');
     var body = $commentForm.val();
+
+    $submitButton.addClass('loading');
 
     if(getCurrentTemplate() == 'comment_reply'){
     
@@ -28,6 +32,8 @@ Template[getTemplate('comment_form')].events({
       var parentComment = this.comment;
 
       Meteor.call('submitComment', comment, function(error, newComment){
+
+        $submitButton.removeClass('loading');
 
         if (error) {
 
@@ -59,6 +65,10 @@ Template[getTemplate('comment_form')].events({
       
       Meteor.call('submitComment', comment, function(error, newComment){
       
+        $commentForm.val('');
+
+        $submitButton.removeClass('loading');
+
         if(error){
       
           console.log(error);
@@ -68,7 +78,6 @@ Template[getTemplate('comment_form')].events({
       
           trackEvent("newComment", newComment);
           Session.set('scrollToCommentId', newComment._id);
-          $commentForm.val('');
       
         }
       

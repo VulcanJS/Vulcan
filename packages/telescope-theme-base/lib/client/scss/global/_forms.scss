@@ -100,6 +100,7 @@ form, .accounts-dialog{
   textarea{
     min-height:50px;
     line-height:1.4;
+    font-size: 16px;
   }
   .note{
     padding: 5px 0;
@@ -122,8 +123,8 @@ input[type="submit"], button, .button, .btn{
   // line-height:26px;
   // height:26px;
   font-weight:normal;
-  &.disabled{
-    background:$lighter-grey;
+  &.disabled, &.loading{
+    background:$lighter-grey !important;
     pointer-events:none;
   }
   &.inline{
@@ -134,6 +135,22 @@ input[type="submit"], button, .button, .btn{
     color:white;
     &:link, &:hover, &:active, &:visited{
       color:white;
+    }
+  }
+  &.loading {
+    position: relative;
+    color: $lighter-grey !important;
+    &:after{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -10px 0 0 -10px;
+      content: " ";
+      display: block;
+      background:  url('/img/loading.svg');
+      height: 20px;
+      width: 20px;
+      background-size: 20px 20px;
     }
   }
 }
