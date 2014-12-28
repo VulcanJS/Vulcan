@@ -17,7 +17,11 @@ Template[getTemplate('comment_form')].events({
     var $submitButton = instance.$('.btn-submit');
     var body = $commentForm.val();
 
-    $submitButton.addClass('loading');
+    // now that the form is latency compensated, we don't actually need to show this
+    // $commentForm.prop('disabled', true);
+    // $submitButton.addClass('loading');
+
+    $commentForm.val('');
 
     if(getCurrentTemplate() == 'comment_reply'){
     
@@ -33,22 +37,14 @@ Template[getTemplate('comment_form')].events({
 
       Meteor.call('submitComment', comment, function(error, newComment){
 
+        $commentForm.prop('disabled', false);
         $submitButton.removeClass('loading');
 
         if (error) {
-
           console.log(error);
           flashMessage(error.reason, "error");
-        
         } else {
-        
           trackEvent("newComment", newComment);
-        
-          Router.go('post_page_comment', {
-            _id: parentComment.postId,
-            commentId: newComment._id
-          });
-        
         }
 
       });
@@ -65,20 +61,14 @@ Template[getTemplate('comment_form')].events({
       
       Meteor.call('submitComment', comment, function(error, newComment){
       
-        $commentForm.val('');
-
+        $commentForm.prop('disabled', false);
         $submitButton.removeClass('loading');
 
         if(error){
-      
           console.log(error);
           flashMessage(error.reason, "error");
-      
         }else{
-      
           trackEvent("newComment", newComment);
-          Session.set('scrollToCommentId', newComment._id);
-      
         }
       
       });

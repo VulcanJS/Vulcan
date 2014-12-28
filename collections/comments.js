@@ -92,8 +92,8 @@ Comments.allow({
 // ------------------------------------------------------------------------------------------- //
 
 Comments.before.insert(function (userId, doc) {
-  if(Meteor.isServer)
-    doc.htmlBody = sanitize(marked(doc.body));
+  // note: only actually sanitizes on the server
+  doc.htmlBody = sanitize(marked(doc.body));
 });
 
 Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
@@ -131,6 +131,10 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
 // ------------------------------------------------------------------------------------------- //
 
 submitComment = function (comment) {
+  console.log(comment)
+  if (Meteor.isServer) {
+    Meteor._sleepForMs(4000)
+  }
 
   var userId = comment.userId; // at this stage, a userId is expected
 
