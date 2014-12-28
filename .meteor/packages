@@ -80,7 +80,6 @@ telescope-post-by-feed
 # Testing
 
 sanjo:jasmine
-velocity:core
 velocity:html-reporter
 
 # Custom Packages

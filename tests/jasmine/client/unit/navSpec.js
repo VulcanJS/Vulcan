@@ -165,7 +165,7 @@ describe('test nav template', function() {
       expect(renderedSecondaryNav.length).toEqual(0);
     });
 
-    it('should render secondary nav directly after primary nav', function () {
+    var setupAndRenderNavs = function () {
       primaryNav = ['testPrimaryNavTemplate'];
       secondaryNav = ['testSecondaryNavTemplate'];
 
@@ -178,6 +178,10 @@ describe('test nav template', function() {
       );
 
       render();
+    };
+
+    it('should render secondary nav directly after primary nav', function () {
+      setupAndRenderNavs();
 
       var renderedPrimaryNav = $div.find('ul.nav.primary-nav');
       expect(renderedPrimaryNav.length).toEqual(1);
@@ -192,18 +196,7 @@ describe('test nav template', function() {
         return true;
       });
 
-      primaryNav = ['testPrimaryNavTemplate'];
-      secondaryNav = ['testSecondaryNavTemplate'];
-
-      var getNavContent = function (templateName) {
-        return templateName;
-      };
-      setupNavTemplatesWithSpies(
-        primaryNav.concat(secondaryNav),
-        getNavContent
-      );
-
-      render();
+      setupAndRenderNavs();
 
       var renderedPrimaryNav = $div.find('ul.nav.primary-nav.has-dropdown');
       expect(renderedPrimaryNav.length).toEqual(1);
@@ -216,18 +209,7 @@ describe('test nav template', function() {
         return false;
       });
 
-      primaryNav = ['testPrimaryNavTemplate'];
-      secondaryNav = ['testSecondaryNavTemplate'];
-
-      var getNavContent = function (templateName) {
-        return templateName;
-      };
-      setupNavTemplatesWithSpies(
-        primaryNav.concat(secondaryNav),
-        getNavContent
-      );
-
-      render();
+      setupAndRenderNavs();
 
       var renderedPrimaryNav = $div.find('ul.nav.primary-nav.no-dropdown');
       expect(renderedPrimaryNav.length).toEqual(1);
