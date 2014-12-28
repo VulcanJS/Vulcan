@@ -22,56 +22,29 @@ Template[getTemplate('comment_form')].events({
     // $submitButton.addClass('loading');
 
     $commentForm.val('');
-
-    if(getCurrentTemplate() == 'comment_reply'){
-    
-      var parentComment = this.comment;
-    
-      // child comment
       
-      comment = {
-        postId: parentComment.postId, 
-        parentCommentId: parentComment._id, 
-        body: body
-      };
+    var post = postObject;
 
-      Meteor.call('submitComment', comment, function(error, newComment){
-
-        $commentForm.prop('disabled', false);
-        $submitButton.removeClass('loading');
-
-        if (error) {
-          console.log(error);
-          flashMessage(error.reason, "error");
-        } else {
-          trackEvent("newComment", newComment);
-        }
-
-      });
-
-    }else{
-      
-      // root comment
-      var post = postObject;
-
-      comment = {
-        postId: post._id,
-        body: body
-      }
-      
-      Meteor.call('submitComment', comment, function(error, newComment){
-      
-        $commentForm.prop('disabled', false);
-        $submitButton.removeClass('loading');
-
-        if(error){
-          console.log(error);
-          flashMessage(error.reason, "error");
-        }else{
-          trackEvent("newComment", newComment);
-        }
-      
-      });
+    comment = {
+      postId: post._id,
+      body: body
     }
+    
+    // child comment
+    if (getCurrentTemplate() == 'comment_reply') {
+      comment.parentCommentId = this.comment._id;
+    }
+
+    Meteor.call('submitComment', comment, function(error, newComment){
+      // $commentForm.prop('disabled', false);
+      // $submitButton.removeClass('loading');
+      if(error){
+        console.log(error);
+        flashMessage(error.reason, "error");
+      }else{
+        trackEvent("newComment", newComment);
+      }
+    });
+    
   }
 });

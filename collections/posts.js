@@ -274,14 +274,16 @@ getPostLink = function (post) {
   return !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post);
 };
 
-checkForPostsWithSameUrl = function (url) {
+// we need the current user so we know who to upvote the existing post as
+checkForPostsWithSameUrl = function (url, currentUser) {
 
   // check that there are no previous posts with the same link in the past 6 months
   var sixMonthsAgo = moment().subtract(6, 'months').toDate();
   var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
   if(typeof postWithSameLink !== 'undefined'){
-    Meteor.call('upvotePost', postWithSameLink);
+    upvoteItem(Posts, postWithSameLink, currentUser);
+
     // note: error.details returns undefined on the client, so add post ID to reason
     throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
   }
@@ -339,7 +341,7 @@ submitPost = function (post) {
 
   // check that there are no posts with the same URL
   if(!!post.url)
-    checkForPostsWithSameUrl(post.url);
+    checkForPostsWithSameUrl(post.url, user);
 
   // ------------------------------ Properties ------------------------------ //
 

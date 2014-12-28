@@ -68,7 +68,15 @@
 	}
 }
 .comment{
-	margin-left:10px;
+	margin-left:0px;
+	.comment{
+		@include small{
+			margin-left: 10px;
+		}
+		@include medium-large{
+			margin-left: 20px;
+		}
+	}
 	position:relative;
 	padding: 0;
 	background: none;

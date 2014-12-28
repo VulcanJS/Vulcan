@@ -122,7 +122,7 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
   });
 
   // upvote comment
-  Meteor.call('upvoteComment', comment);
+  upvoteItem(Comments, comment, commentAuthor);
 
 });
 
@@ -131,10 +131,6 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
 // ------------------------------------------------------------------------------------------- //
 
 submitComment = function (comment) {
-  console.log(comment)
-  if (Meteor.isServer) {
-    Meteor._sleepForMs(4000)
-  }
 
   var userId = comment.userId; // at this stage, a userId is expected
 
