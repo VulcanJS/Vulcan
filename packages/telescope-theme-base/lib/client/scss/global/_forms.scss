@@ -88,6 +88,10 @@ form, .accounts-dialog{
     &[type="number"]{
       width: 30%;
     }
+    &:disabled{
+      background: #eee;
+      color: $light-text;
+    }
   }
   input[type="text"], input[type="password"], input[type="number"], .login-form input{
     height:30px;
@@ -98,8 +102,9 @@ form, .accounts-dialog{
     background:$lightest-grey;
   }
   textarea{
-    min-height:100px;
+    min-height:50px;
     line-height:1.4;
+    font-size: 16px;
   }
   .note{
     padding: 5px 0;
@@ -119,21 +124,38 @@ input[type="submit"], button, .button, .btn{
   font-size:15px;
   cursor:pointer;
   margin:0;
+  color: white;
   // line-height:26px;
   // height:26px;
   font-weight:normal;
-  &.disabled{
-    background:$lighter-grey;
+  &.disabled, &.loading{
+    background:$lighter-grey !important;
     pointer-events:none;
+    color: $medium-text;
   }
   &.inline{
     display: inline-block;
   }
   &.btn-primary{
     background:$red;
-    color:white;
     &:link, &:hover, &:active, &:visited{
       color:white;
+    }
+  }
+  &.loading {
+    position: relative;
+    color: $lighter-grey !important;
+    &:after{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -10px 0 0 -10px;
+      content: " ";
+      display: block;
+      background:  url('/img/loading.svg');
+      height: 20px;
+      width: 20px;
+      background-size: 20px 20px;
     }
   }
 }

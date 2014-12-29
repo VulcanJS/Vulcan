@@ -224,15 +224,13 @@ postMeta = [
 ]
 // ------------------------------ Callbacks ------------------------------ //
 
-postSubmitRenderedCallbacks = [];
 postSubmitClientCallbacks = [];
 postSubmitMethodCallbacks = [];
-postAfterSubmitMethodCallbacks = [];
+postAfterSubmitMethodCallbacks = []; // runs on server only in a timeout
 
-postEditRenderedCallbacks = [];
-postEditClientCallbacks = [];
-postEditMethodCallbacks = []; // not used yet
-postAfterEditMethodCallbacks = []; // not used yet
+postEditClientCallbacks = []; // loops over post object
+postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object
+postAfterEditMethodCallbacks = []; // loops over modifier object
 
 commentSubmitRenderedCallbacks = [];
 commentSubmitClientCallbacks = [];

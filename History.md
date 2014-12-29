@@ -1,3 +1,12 @@
+## v0.11.1 “FeedScope”
+
+* Post submit and edit forms now submit to their respective methods directly.
+* Removed `postSubmitRenderedCallbacks` and `postEditRenderedCallbacks`.
+* `telescope-post-by-feed` package now lets you import posts from RSS feeds.
+* Adding limit of 200 posts to post list request.
+* Refactoring post and comment submit to fix latency compensation issues.
+* Tags package now using Autoform. 
+
 ## v0.11.0 “AvatarScope”
 
 * Added new `userCreatedCallbacks` callback hook.

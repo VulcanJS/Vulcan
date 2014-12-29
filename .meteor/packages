@@ -25,7 +25,7 @@ meteorhacks:fast-render
 meteorhacks:subs-manager
 meteorhacks:npm
 
-aldeed:autoform@4.0.0-rc1
+aldeed:autoform
 aldeed:collection2
 aldeed:simple-schema
 
@@ -75,6 +75,6 @@ telescope-kadira
 telescope-notifications
 telescope-singleday
 telescope-invites
+telescope-post-by-feed
 
 # Custom Packages
-

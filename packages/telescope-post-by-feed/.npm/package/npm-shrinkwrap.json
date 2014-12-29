@@ -1,0 +1,44 @@
+{
+  "dependencies": {
+    "he": {
+      "version": "0.5.0"
+    },
+    "htmlparser2": {
+      "version": "3.8.2",
+      "dependencies": {
+        "domhandler": {
+          "version": "2.3.0"
+        },
+        "domutils": {
+          "version": "1.5.0"
+        },
+        "domelementtype": {
+          "version": "1.1.3"
+        },
+        "readable-stream": {
+          "version": "1.1.13",
+          "dependencies": {
+            "core-util-is": {
+              "version": "1.0.1"
+            },
+            "isarray": {
+              "version": "0.0.1"
+            },
+            "string_decoder": {
+              "version": "0.10.31"
+            },
+            "inherits": {
+              "version": "2.0.1"
+            }
+          }
+        },
+        "entities": {
+          "version": "1.0.0"
+        }
+      }
+    },
+    "to-markdown": {
+      "version": "0.0.2"
+    }
+  }
+}

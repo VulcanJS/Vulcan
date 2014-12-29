@@ -68,7 +68,15 @@
 	}
 }
 .comment{
-	margin-left:10px;
+	margin-left:0px;
+	.comment{
+		@include small{
+			margin-left: 10px;
+		}
+		@include medium-large{
+			margin-left: 20px;
+		}
+	}
 	position:relative;
 	padding: 0;
 	background: none;
@@ -155,6 +163,10 @@
 		position:block;
 		float:left;
 		margin: 0 10px 0 10px;
+		.avatar{
+			height: 40px;
+			width: 40px;
+		}
 		// img{
 		//	height:40px;
 		//	width:40px;
@@ -259,7 +271,9 @@
 	.comment-field{
 	}
 	.comment-submit{
-		@extend .cf;
+	}
+	.comment-submit-button{
+		display: inline-block;
 	}
 	.comment-page &{
 		margin-left:30px;

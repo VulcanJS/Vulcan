@@ -1,0 +1,9 @@
+<template name="feeds">
+  <div class="grid-small grid-module dialog admin add-feed">
+    <h3>Add new feed:</h3>
+    {{> quickForm collection="Feeds" id="insertFeedForm" type="insert" label-class="control-label" input-col-class="controls" template="telescope"}}
+  </div>
+  {{#each feeds}}
+    {{> UI.dynamic template=feedItem}}
+  {{/each}}
+</template>

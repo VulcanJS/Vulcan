@@ -87,9 +87,13 @@ Comments.allow({
   remove: canEditById
 });
 
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------ Hooks ------------------------------------------ //
+// ------------------------------------------------------------------------------------------- //
+
 Comments.before.insert(function (userId, doc) {
-  if(Meteor.isServer)
-    doc.htmlBody = sanitize(marked(doc.body));
+  // note: only actually sanitizes on the server
+  doc.htmlBody = sanitize(marked(doc.body));
 });
 
 Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
@@ -100,76 +104,133 @@ Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
   }
 });
 
+commentAfterSubmitMethodCallbacks.push(function (comment) {
+
+  var userId = comment.userId,
+    commentAuthor = Meteor.users.findOne(userId);
+
+  // increment comment count
+  Meteor.users.update({_id: userId}, {
+    $inc:       {'commentCount': 1}
+  });
+
+  // update post
+  Posts.update(comment.postId, {
+    $inc:       {commentCount: 1},
+    $set:       {lastCommentedAt: new Date()},
+    $addToSet:  {commenters: userId}
+  });
+
+  // upvote comment
+  upvoteItem(Comments, comment, commentAuthor);
+
+});
+
+// ------------------------------------------------------------------------------------------- //
+// -------------------------------------- Submit Comment ------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
+
+submitComment = function (comment) {
+
+  var userId = comment.userId; // at this stage, a userId is expected
+
+  // ------------------------------ Checks ------------------------------ //
+
+  // Don't allow empty comments
+  if (!comment.body)
+    throw new Meteor.Error(704,i18n.t('your_comment_is_empty'));
+        
+  // ------------------------------ Properties ------------------------------ //
+
+  var defaultProperties = {
+    createdAt: new Date(),
+    postedAt: new Date(),
+    upvotes: 0,
+    downvotes: 0,
+    baseScore: 0,
+    score: 0,
+    author: getDisplayNameById(userId)
+  };
+
+  comment = _.extend(defaultProperties, comment);
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  // run all post submit server callbacks on comment object successively
+  comment = commentSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+      return currentFunction(result);
+  }, comment);
+
+  // -------------------------------- Insert -------------------------------- //
+
+  comment._id = Comments.insert(comment);
+
+  // --------------------- Server-side Async Callbacks --------------------- //
+
+  // run all post submit server callbacks on comment object successively
+  if (Meteor.isServer) {
+    Meteor.setTimeout(function () { // use setTimeout to avoid holding up client
+      comment = commentAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
+          return currentFunction(result);
+      }, comment);
+    }, 1);
+  }
+
+  return comment;
+}
+
+// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------- Methods ----------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
+
 Meteor.methods({
-  comment: function(postId, parentCommentId, text){
+  submitComment: function(comment){
+   
+    // required properties:
+    // postId
+    // content
+
+    // optional properties:
+    // parentCommentId
+
     var user = Meteor.user(),
-        post = Posts.findOne(postId),
-        postUser = Meteor.users.findOne(post.userId),
-        timeSinceLastComment = timeSinceLast(user, Comments),
-        commentInterval = Math.abs(parseInt(getSetting('commentInterval',15))),
-        now = new Date();
+        hasAdminRights = isAdmin(user);
+
+    // ------------------------------ Checks ------------------------------ //
 
     // check that user can comment
     if (!user || !canComment(user))
       throw new Meteor.Error(i18n.t('you_need_to_login_or_be_invited_to_post_new_comments'));
     
-    // check that user waits more than 15 seconds between comments
-    if(!this.isSimulation && (timeSinceLastComment < commentInterval))
-      throw new Meteor.Error(704, i18n.t('please_wait')+(commentInterval-timeSinceLastComment)+i18n.t('seconds_before_commenting_again'));
-
-    // Don't allow empty comments
-    if (!text)
-      throw new Meteor.Error(704,i18n.t('your_comment_is_empty'));
-          
-    var comment = {
-      postId: postId,
-      body: text,
-      userId: user._id,
-      createdAt: now,
-      postedAt: now,
-      upvotes: 0,
-      downvotes: 0,
-      baseScore: 0,
-      score: 0,
-      author: getDisplayName(user)
-    };
+    // ------------------------------ Rate Limiting ------------------------------ //
     
-    if(parentCommentId)
-      comment.parentCommentId = parentCommentId;
+    if (!hasAdminRights) {
+    
+      var timeSinceLastComment = timeSinceLast(user, Comments),
+          commentInterval = Math.abs(parseInt(getSetting('commentInterval',15)));
 
+      // check that user waits more than 15 seconds between comments
+      if((timeSinceLastComment < commentInterval))
+        throw new Meteor.Error(704, i18n.t('please_wait')+(commentInterval-timeSinceLastComment)+i18n.t('seconds_before_commenting_again'));
+      
+    }
 
-    // ------------------------------ Callbacks ------------------------------ //
+    // ------------------------------ Properties ------------------------------ //
 
-    // run all post submit server callbacks on comment object successively
-    comment = commentSubmitMethodCallbacks.reduce(function(result, currentFunction) {
-        return currentFunction(result);
-    }, comment);
+    // admin-only properties
+    // userId
 
-    // -------------------------------- Insert ------------------------------- //
+    // if user is not admin, clear restricted properties
+    if (!hasAdminRights) {
+      delete comment.userId;
+    }
 
-    comment._id = Comments.insert(comment);
+    // if no userId has been set, default to current user id
+    if (!comment.userId) {
+      comment.userId = user._id
+    }
 
-    // ------------------------------ Callbacks ------------------------------ //
-
-    // run all post submit server callbacks on comment object successively
-    comment = commentAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
-        return currentFunction(result);
-    }, comment);
-
-    // increment comment count
-    Meteor.users.update({_id: user._id}, {
-      $inc:       {'commentCount': 1}
-    });
-
-    Posts.update(postId, {
-      $inc:       {commentCount: 1},
-      $set:       {lastCommentedAt: now},
-      $addToSet:  {commenters: user._id}
-    });
-
-    Meteor.call('upvoteComment', comment);
-
-    return comment;
+    return submitComment(comment);
   },
   removeComment: function(commentId){
     var comment = Comments.findOne(commentId);

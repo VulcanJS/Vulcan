@@ -1,29 +1,34 @@
 // category schema
 categorySchema = new SimpleSchema({
- _id: {
+  name: {
+    type: String
+  },
+  description: {
     type: String,
-    optional: true
+    optional: true,
+    autoform: {
+      rows: 3
+    }
   },
   order: {
     type: Number,
     optional: true
   },
   slug: {
-    type: String
-  },
-  name: {
-    type: String
-  },
-  description: {
     type: String,
+    optional: true,
     autoform: {
-      rows: 5
     }
-  }   
+  }
 });
 
-Categories = new Meteor.Collection("categories", {
-  schema: categorySchema
+Categories = new Meteor.Collection("categories");
+Categories.attachSchema(categorySchema);
+
+Categories.before.insert(function (userId, doc) {
+  // if no slug has been provided, generate one
+  if (!doc.slug)
+    doc.slug = slugify(doc.name);
 });
 
 // we want to wait until categories are all loaded to load the rest of the app
@@ -80,9 +85,9 @@ addToPostSchema.push(
 
 Meteor.startup(function () {
   Categories.allow({
-    insert: isAdminById
-  , update: isAdminById
-  , remove: isAdminById
+    insert: isAdminById,
+    update: isAdminById,
+    remove: isAdminById
   });
 
   Meteor.methods({

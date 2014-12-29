@@ -6,40 +6,45 @@ Template[getTemplate('comment_form')].helpers({
 
 Template[getTemplate('comment_form')].events({
   'submit form': function(e, instance){
-    var $commentForm = instance.$('#comment');
+
     e.preventDefault();
     $(e.target).addClass('disabled');
     clearSeenMessages();
-    var content = $commentForm.val();
-    if(getCurrentTemplate() == 'comment_reply'){
-      // child comment
-      var parentComment = this.comment;
-      Meteor.call('comment', parentComment.postId, parentComment._id, content, function(error, newComment){
-        if(error){
-          console.log(error);
-          flashMessage(error.reason, "error");
-        }else{
-          trackEvent("newComment", newComment);
-          Router.go('post_page_comment', {
-            _id: parentComment.postId,
-            commentId: newComment._id
-          });
-        }
-      });
-    }else{
-      // root comment
-      var post = postObject;
 
-      Meteor.call('comment', post._id, null, content, function(error, newComment){
-        if(error){
-          console.log(error);
-          flashMessage(error.reason, "error");
-        }else{
-          trackEvent("newComment", newComment);
-          Session.set('scrollToCommentId', newComment._id);
-          $commentForm.val('');
-        }
-      });
+
+    var comment = {};
+    var $commentForm = instance.$('#comment');
+    var $submitButton = instance.$('.btn-submit');
+    var body = $commentForm.val();
+
+    // now that the form is latency compensated, we don't actually need to show this
+    // $commentForm.prop('disabled', true);
+    // $submitButton.addClass('loading');
+
+    $commentForm.val('');
+      
+    var post = postObject;
+
+    comment = {
+      postId: post._id,
+      body: body
     }
+    
+    // child comment
+    if (getCurrentTemplate() == 'comment_reply') {
+      comment.parentCommentId = this.comment._id;
+    }
+
+    Meteor.call('submitComment', comment, function(error, newComment){
+      // $commentForm.prop('disabled', false);
+      // $submitButton.removeClass('loading');
+      if(error){
+        console.log(error);
+        flashMessage(error.reason, "error");
+      }else{
+        trackEvent("newComment", newComment);
+      }
+    });
+    
   }
 });

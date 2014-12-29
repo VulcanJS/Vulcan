@@ -1,4 +1,5 @@
 $red: #DD3416;
+$light-yellow:#fffcea;
 
 .post-category{
   display:inline-block;
@@ -12,4 +13,8 @@ $red: #DD3416;
     background:$red;
     color:white;
   }
+}
+
+.add-category{
+  background: $light-yellow;
 }
