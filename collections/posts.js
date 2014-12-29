@@ -375,18 +375,17 @@ submitPost = function (post) {
 
   // -------------------------------- Insert ------------------------------- //
 
-  // console.log(post)
   post._id = Posts.insert(post);
 
   // --------------------- Server-Side Async Callbacks --------------------- //
 
   if (Meteor.isServer) {
-    Meteor.setTimeout(function () { // use setTimeout to avoid holding up client
+    Meteor.defer(function () { // use defer to avoid holding up client
       // run all post submit server callbacks on post object successively
       post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
           return currentFunction(result);
       }, post);
-    }, 1);
+    });
   }
 
   return post;
@@ -401,7 +400,7 @@ postViews = [];
 
 Meteor.methods({
 
-  submitPost: function(post, modifier, id){
+  submitPost: function(post){
 
     // required properties:
     // title
