@@ -1,3 +1,5 @@
+* Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled.
+
 ## v0.11.1 “FeedScope”
 
 * Post submit and edit forms now submit to their respective methods directly.

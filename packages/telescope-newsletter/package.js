@@ -64,6 +64,6 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
     
   api.export([
-
+    'resetNewsletterSchedule'
   ]);
 });
