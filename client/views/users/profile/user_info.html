@@ -42,13 +42,13 @@
       {{/if}}
     </table>
     {{#if canEditProfile}}
-      <a class="button inline" href="{{pathFor route='user_edit' slug=slug}}">{{_ "edit_profile"}}</a>
+      <a class="button btn btn-primary inline" href="{{pathFor route='user_edit' slug=slug}}">{{_ "edit_profile"}}</a>
     {{/if}}
     {{#if canInvite}}
       {{#if inviteCount}}
-        <a class="button inline invite-link" href="#">{{_ "invite"}} ({{inviteCount}} {{_ "left"}})</a>
+        <a class="button btn btn-primary inline invite-link" href="#">{{_ "invite"}} ({{inviteCount}} {{_ "left"}})</a>
       {{else}}
-        <a class="button inline disabled" href="#">{{_ "invite_none_left"}}</a>
+        <a class="button btn inline disabled" href="#">{{_ "invite_none_left"}}</a>
       {{/if}}
     {{/if}}
   </div>
