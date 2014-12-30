@@ -1,0 +1,1 @@
+Versions = new Meteor.Collection('versions');
