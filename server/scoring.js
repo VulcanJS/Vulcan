@@ -1,4 +1,3 @@
-
 Meteor.startup(function () {
   var scoreInterval = getSetting("scoreUpdateInterval") || 30;
   if (scoreInterval > 0) {

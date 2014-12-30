@@ -36,10 +36,10 @@ Meteor.methods({
 
 resetNewsletterSchedule = function () {
   SyncedCron.stop();
-  startSchedule();
+  addSchedule();
 }
 
-var startSchedule = function () {
+var addSchedule = function () {
   SyncedCron.add({
     name: 'scheduleNewsletter',
     schedule: function(parser) {
@@ -54,6 +54,6 @@ var startSchedule = function () {
 }
 Meteor.startup(function () {
   if (getSetting('enableNewsletter', false)) {
-    startSchedule();
+    addSchedule();
   }
 });

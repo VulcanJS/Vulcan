@@ -1,13 +1,5 @@
 // Session variables
-Session.set('initialLoad', true);
-Session.set('today', new Date());
-Session.set('view', 'top');
 Session.set('postsLimit', getSetting('postsPerPage', 10));
-Session.set('sessionId', Meteor.default_connection._lastSessionId);
-
-STATUS_PENDING=1;
-STATUS_APPROVED=2;
-STATUS_REJECTED=3;
 
 // Sort postModules array position using modulePositions as index
 postModules = _.sortBy(postModules, 'order');

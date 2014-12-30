@@ -1,4 +1,4 @@
-* Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled.
+* Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled. 
 
 ## v0.11.1 “FeedScope”
 
