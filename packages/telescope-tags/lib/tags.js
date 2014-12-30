@@ -56,7 +56,10 @@ postHeading.push({
 });
   
 // push "categoriesMenu" template to primaryNav
-primaryNav.push('categoriesMenu');
+primaryNav.push({
+  template: 'categoriesMenu',
+  order: 50
+});
 
 // push "categories" property to addToPostSchema, so that it's later added to postSchema
 addToPostSchema.push(
