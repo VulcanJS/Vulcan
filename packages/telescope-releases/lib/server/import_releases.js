@@ -1,6 +1,8 @@
 importRelease = function (number) {
+  var releaseNotes = Assets.getText("releases/" + number + ".md");
+
   if (!Releases.findOne({number: number})) {
-    var releaseNotes = Assets.getText("releases/" + number + ".md");
+
     release = {
       number: number,
       notes: releaseNotes,
@@ -8,6 +10,12 @@ importRelease = function (number) {
       read: false
     }
     Releases.insert(release);
+
+  } else {
+
+    // if release note already exists, update its content in case it's been updated
+    Releases.update({number: number}, {$set: {notes: releaseNotes}})
+  
   }
 };
 
