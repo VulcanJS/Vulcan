@@ -82,11 +82,6 @@ adminNav = [
     route: 'settings',
     label: 'Settings',
     description: 'telescope_settings_panel'
-  },
-  {
-    route: 'toolbox',
-    label: 'Toolbox',
-    description: 'various_utilities'
   }
 ];
 
