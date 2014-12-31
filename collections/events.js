@@ -26,8 +26,8 @@ Events.attachSchema(eventSchema);
 if (Meteor.isServer) {
   logEvent = function (event) {
 
+    // if event is supposed to be unique, check if it has already been logged
     if (!!event.unique && !!Events.findOne({name: event.name})) {
-      throw new Meteor.Error('// Event "' + event.name + '" already logged');
       return
     }
 

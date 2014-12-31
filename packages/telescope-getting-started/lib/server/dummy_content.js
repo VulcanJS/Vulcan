@@ -99,10 +99,11 @@ Meteor.methods({
 })
 
 Meteor.startup(function () {
-  if (!Events.findOne({name: 'createDummyContent'})) {
+  // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db
+  if (!Events.findOne({name: 'createDummyContent'}) && !Posts.find().count()) {
     createDummyUsers();
     createDummyPosts();
     createDummyComments();
-    logEvent({name: 'createDummyContent', important: true});
+    logEvent({name: 'createDummyContent', unique: true, important: true});
   }
 });
