@@ -4,7 +4,10 @@ Meteor.publish('singleUser', function(idOrSlug) {
   var findBySlug = Meteor.users.findOne({slug: idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
   var options = isAdminById(this.userId) ? {} : {fields: privacyOptions};
-  return Meteor.users.find({_id: user._id}, options);
+  if (user) {
+    return Meteor.users.find({_id: user._id}, options);
+  }
+  return [];
 });
 
 Meteor.publish('userPosts', function(terms) {
