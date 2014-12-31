@@ -19,6 +19,7 @@ Package.onUse(function (api) {
     [
       // modules
       'lib/client/scss/modules/_accounts.scss',
+      'lib/client/scss/modules/_banners.scss',
       'lib/client/scss/modules/_comments.scss',
       'lib/client/scss/modules/_dialogs.scss',
       'lib/client/scss/modules/_errors.scss',

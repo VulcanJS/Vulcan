@@ -5,3 +5,11 @@ heroModules.push({
 });
 
 preloadSubscriptions.push('currentRelease');
+
+Meteor.startup(function () {
+  Releases.allow({
+    insert: isAdminById,
+    update: isAdminById,
+    remove: isAdminById
+  });
+});

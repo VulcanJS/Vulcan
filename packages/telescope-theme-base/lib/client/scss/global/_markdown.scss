@@ -2,9 +2,12 @@
   img{
     max-width: 100%;
   }
-  ul, ol, p, pre, blockquote{
+  ul, ol, p, pre, blockquote, h1, h2, h3, h4, h5{
     margin-bottom: 1em;
     line-height: 1.7;
+    &:last-child{
+      margin-bottom:0;
+    }
   }
   strong{
     font-weight:bold;
@@ -29,14 +32,8 @@
       color:$red;
     }
   }
-  p{
-    &:last-child{
-      margin-bottom:0;
-    }
-  }
   h1, h2, h3, h4, h5{
     font-weight:bold;
-    margin-bottom:0;
   }
   h1{
     font-size:36px;
