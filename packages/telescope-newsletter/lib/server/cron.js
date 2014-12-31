@@ -34,12 +34,12 @@ Meteor.methods({
   }
 });
 
-resetNewsletterSchedule = function () {
+resetNewsletterJob = function () {
   SyncedCron.stop();
-  addSchedule();
+  addJob();
 }
 
-var addSchedule = function () {
+var addJob = function () {
   SyncedCron.add({
     name: 'scheduleNewsletter',
     schedule: function(parser) {
@@ -54,6 +54,6 @@ var addSchedule = function () {
 }
 Meteor.startup(function () {
   if (getSetting('enableNewsletter', false)) {
-    addSchedule();
+    addJob();
   }
 });
