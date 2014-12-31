@@ -1,4 +1,3 @@
-
 importRelease = function (number) {
   if (!Releases.findOne({number: number})) {
     var releaseNotes = Assets.getText("releases/" + number + ".md");
