@@ -4,6 +4,7 @@ var toTitleCase = function (str) {
 
 var createPost = function (slug, postedAt, username, thumbnail) {
   var post = {
+    postedAt: postedAt,
     body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
@@ -17,9 +18,10 @@ var createPost = function (slug, postedAt, username, thumbnail) {
   submitPost(post);
 }
 
-var createComment = function (dummySlug, username, body, parentBody) {
+var createComment = function (slug, username, body, parentBody) {
+
   var comment = {
-    postId: Posts.findOne({dummySlug: dummySlug})._id,
+    postId: Posts.findOne({dummySlug: slug})._id,
     userId: Meteor.users.findOne({username: username})._id,
     body: body,
     isDummy: true,
@@ -79,7 +81,7 @@ var createDummyComments = function () {
   createComment("customizing_telescope", "Julia", "I can't wait to make my app pretty. Get it? *Pretty*?");
 
   createComment("removing_getting_started_posts", "Bruce", "Yippee ki-yay, motherfucker!");
-  createComment("deploying_telescope", "Arnold", "I don't think you're supposed to swear in here…", "Yippee ki-yay, motherfucker!");
+  createComment("removing_getting_started_posts", "Arnold", "I don't think you're supposed to swear in here…", "Yippee ki-yay, motherfucker!");
 
 }
 

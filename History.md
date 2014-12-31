@@ -1,4 +1,9 @@
+## v0.11.2 “DummyScope”
+
 * Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled. 
+* Added "Enable Feeds" settings. Note: existing feeds must be re-enabled.
+* Now showing release notes for latest version right inside the app.
+* Added dummy posts, users, and comments.
 
 ## v0.11.1 “FeedScope”
 
