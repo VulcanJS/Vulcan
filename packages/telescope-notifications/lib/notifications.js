@@ -11,7 +11,7 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 
 // add new comment notification callback on comment submit
 commentAfterSubmitMethodCallbacks.push(function (comment) {
-  if(Meteor.isServer){
+  if(Meteor.isServer && !comment.disableNotifications){
 
     var parentCommentId = comment.parentCommentId;
     var user = Meteor.users.findOne(comment.userId);
@@ -65,6 +65,19 @@ var emailNotifications = {
 }
 addToSettingsSchema.push(emailNotifications);
 
+// make it possible to disable notifications on a per-comment basis
+addToCommentsSchema.push(
+  {
+    propertyName: 'disableNotifications',
+    propertySchema: {
+      type: Boolean,
+      optional: true,
+      autoform: {
+        omit: true
+      }
+    }
+  }
+);
 
 function setNotificationDefaults (user) {
   // set notifications default preferences

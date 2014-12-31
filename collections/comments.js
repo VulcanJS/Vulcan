@@ -1,4 +1,4 @@
-CommentSchema = new SimpleSchema({
+CommentSchemaObject = {
   _id: {
       type: String,
       optional: true
@@ -68,9 +68,17 @@ CommentSchema = new SimpleSchema({
       type: Boolean,
       optional: true
   }
+};
+
+// add any extra properties to CommentSchemaObject (provided by packages for example)
+_.each(addToCommentsSchema, function(item){
+  CommentSchemaObject[item.propertyName] = item.propertySchema;
 });
 
 Comments = new Meteor.Collection("comments");
+
+CommentSchema = new SimpleSchema(CommentSchemaObject);
+
 Comments.attachSchema(CommentSchema);
 
 Comments.deny({
@@ -188,7 +196,7 @@ Meteor.methods({
    
     // required properties:
     // postId
-    // content
+    // body
 
     // optional properties:
     // parentCommentId

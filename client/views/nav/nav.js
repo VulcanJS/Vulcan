@@ -21,7 +21,7 @@ Template[getTemplate('nav')].helpers({
     return getTemplate('userMenu');
   },
   site_title: function(){
-    return getSetting('title');
+    return getSetting('title', "Telescope");
   },
   logo_url: function(){
     return getSetting('logoUrl');

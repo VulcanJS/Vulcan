@@ -208,6 +208,7 @@ _.each(addToPostSchema, function(item){
 Posts = new Meteor.Collection("posts");
 
 PostSchema = new SimpleSchema(postSchemaObject);
+
 Posts.attachSchema(PostSchema);
 
 // Posts.deny({
