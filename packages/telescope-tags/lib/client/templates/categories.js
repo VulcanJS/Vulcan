@@ -17,7 +17,7 @@ Meteor.startup(function () {
       var order = parseInt($('#order').val()) || (numberOfCategories + 1);
       var slug = slugify(name);
       
-      Meteor.call('category', {
+      Meteor.call('submitCategory', {
         name: name,
         order: order,
         slug: slug
