@@ -48,8 +48,11 @@ Package.onUse(function (api) {
   // both
 
   api.add_files([
-    'lib/both.js',
-    'lib/routes.js'
+    'lib/custom_fields.js',
+    'lib/hooks.js',
+    'lib/main.js',
+    'lib/routes.js',
+    'lib/settings.js'
   ], ['client', 'server']);
 
   // client
