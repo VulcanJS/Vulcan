@@ -52,7 +52,8 @@ Package.onUse(function (api) {
     'lib/hooks.js',
     'lib/main.js',
     'lib/routes.js',
-    'lib/settings.js'
+    'lib/settings.js',
+    'lib/templates.js'
   ], ['client', 'server']);
 
   // client
@@ -60,6 +61,7 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/client/templates/template.html',
     'lib/client/templates/template.js',
+    'lib/client/templates/customPostTitle.html',
     'lib/client/scss/package.scss'
   ], ['client']);
 
@@ -72,12 +74,7 @@ Package.onUse(function (api) {
   // i18n languages (must come last)
 
   api.add_files([
-    'i18n/de.i18n.json',
     'i18n/en.i18n.json',
-    'i18n/es.i18n.json',
-    'i18n/fr.i18n.json',
-    'i18n/it.i18n.json',
-    'i18n/zh-CN.i18n.json'
   ], ['client', 'server']);
 
   // -------------------------------- 3. Variables to export --------------------------------

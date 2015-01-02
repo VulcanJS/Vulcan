@@ -1,3 +1,5 @@
 {
-  "translation_key": "translation string"
+  "translation_key": "translation string",
+  "customViewLink": "Custom View Link",
+  "customAdminLink": "Custom Admin Link"
 }

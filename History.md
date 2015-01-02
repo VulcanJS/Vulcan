@@ -1,4 +1,4 @@
-## v0.11.2 “DummyScope”
+## v0.12.0 “DummyScope”
 
 **Important: existing newsletters and feeds need to be manually enabled in the Settings panel** 
 

@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------- //
 
 // add a subscription to be preloaded before the rest of the app
-preloadSubscriptions.push('');
+preloadSubscriptions.push('customPublication');
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------- Nav ------------------------------------------- //
@@ -11,28 +11,28 @@ preloadSubscriptions.push('');
 
 // add templates to the primary nav bar  
 primaryNav.push({
-  template: '',
+  template: 'customNav',
   order: 99
 });
 
 // add templates to the secondary nav bar
 secondaryNav.push({
-  template: '',
+  template: 'customNav',
   order: 99
 });
 
 // add items to the view menu
 viewNav.push({
-  route: '',
-  label: '',
-  description: ''
+  route: 'customRoute',
+  label: 'customViewLink',
+  description: '' // optional
 });
 
 // add items to the admin menu
 adminNav.push({
-  route: '',
-  label: '',
-  description: ''
+  route: 'customRoute',
+  label: 'customAdminLink',
+  description: '' // optional
 });
 
 // ------------------------------------------------------------------------------------------- //
@@ -41,13 +41,13 @@ adminNav.push({
 
 // add templates to the hero zone (before posts list)
 heroModules.push({
-  template: '',
+  template: 'customHero',
   order: 99
 });
   
 // add templates to the footer (after posts list)
 footerModules.push({
-  template: '',
+  template: 'customFooter',
   order: 99
 });
 
@@ -57,19 +57,19 @@ footerModules.push({
 
 // add templates to the post items
 postModules.push({
-  template: '',
+  template: 'customModule',
   order: 99
 });
 
 // add templates to the post heading zone
 postHeading.push({
-  template: '',
+  template: 'customHeading',
   order: 99
 });
 
 // add templates to the post meta zone
 postMeta.push({
-  template: '',
+  template: 'customMeta',
   order: 99 
 });
 
@@ -78,11 +78,11 @@ postMeta.push({
 // ------------------------------------------------------------------------------------------- //
 
 userProfileDisplay.push({
-  template: '',
+  template: 'customTemplate',
   order: 99 
 });
 
 userProfileEdit.push({
-  template: '',
+  template: 'customTemplate',
   order: 99 
 });
