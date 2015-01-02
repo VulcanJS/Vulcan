@@ -86,6 +86,15 @@ settingsSchemaObject = {
       private: true
     }
   },
+  mailUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'email',
+      instructions: 'MAIL_URL environment variable (requires restart).',
+      private: true
+    }
+  },  
   scoreUpdateInterval: {
     type: Number,
     optional: true,

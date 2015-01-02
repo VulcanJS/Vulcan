@@ -8,6 +8,7 @@
 * Added dummy posts, users, and comments.
 * Added new Events collection for keeping track of important events.
 * Log first run event.
+* `MAIL_URL` environment variable can now be set from Settings.
 
 ## v0.11.1 “FeedScope”
 
