@@ -59,10 +59,10 @@ Package.onUse(function (api) {
   // client
 
   api.add_files([
-    'lib/client/templates/template.html',
-    'lib/client/templates/template.js',
+    'lib/client/templates/custom_template.html',
+    'lib/client/templates/custom_template.js',
     'lib/client/templates/customPostTitle.html',
-    'lib/client/scss/package.scss'
+    'lib/client/scss/custom.scss'
   ], ['client']);
 
   // server
