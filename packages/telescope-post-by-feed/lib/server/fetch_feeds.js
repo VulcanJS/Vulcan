@@ -32,6 +32,9 @@ var handleFeed = function(error, feed) {
         userId: getFirstAdminUser()._id
       }
 
+      if (item.pubDate)
+        post.postedAt = moment(item.pubDate).toDate();
+
       try {
         submitPost(post);
       } catch (error) {
