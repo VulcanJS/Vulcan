@@ -7,8 +7,11 @@
         background-color: {{getSetting "buttonColor"}} !important;
         color: {{getSetting "buttonTextColor"}} !important;
       }
-      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover{
+      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover, .post-upvote .upvote-link i{
         color: {{getSetting "buttonColor"}};
+      }
+      .post-upvote .upvote-link i{
+        border-color: {{getSetting "buttonColor"}};
       }
       .toggle-actions-link{
         border-color: {{getSetting "buttonColor"}};
@@ -18,7 +21,9 @@
       }
       .header{
         background-color: {{getSetting "headerColor"}};
-        color: {{getSetting "headerTextColor"}};
+      }
+      .header, .header .logo a, .header .logo a:visited{
+        color: {{getSetting "headerTextColor"}};        
       }
     .logo-image a{
       height:{{getSetting "logoHeight"}}px;

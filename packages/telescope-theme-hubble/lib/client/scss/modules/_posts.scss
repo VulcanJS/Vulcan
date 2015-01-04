@@ -151,6 +151,7 @@
 		display: block;
 		text-align: center;
 		i{
+			opacity: 0.4;
 			display: inline-block;
 			border-radius: 50%;
 			border: 1px solid rgba($red, 0.3);
@@ -178,8 +179,7 @@
 		}
 		&.not-voted:hover{
 			i{
-				background: rgba($red, 0.1);
-				color:$red;
+				opacity: 1;
 				text-shadow:none;
 			}
 		}
