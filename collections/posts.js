@@ -208,6 +208,7 @@ _.each(addToPostSchema, function(item){
 Posts = new Meteor.Collection("posts");
 
 PostSchema = new SimpleSchema(postSchemaObject);
+
 Posts.attachSchema(PostSchema);
 
 // Posts.deny({
@@ -299,7 +300,7 @@ currentPost = function () {
 // ------------------------------------------------------------------------------------------- //
 
 Posts.before.insert(function (userId, doc) {
-  if(Meteor.isServer && !!doc.body)
+  if(!!doc.body)
     doc.htmlBody = sanitize(marked(doc.body));
 });
 

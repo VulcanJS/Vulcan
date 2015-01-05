@@ -21,27 +21,39 @@ getSchedule = function (parser) {
     // sched = {schedules: [{dw: [2]}]};
     return parser.recur().on(2).dayOfWeek();
 
-    default: // Don't send
-    return null;
+    default: // Once a week (Mondays)
+    return parser.recur().on(2).dayOfWeek();
   }  
 }
-
-SyncedCron.add({
-  name: 'scheduleNewsletter',
-  schedule: function(parser) {
-    // parser is a later.parse object
-    // var sched;
-    return getSchedule(parser)
-  }, 
-  job: function() {
-    scheduleNextCampaign();
-  }
-});
 
 Meteor.methods({
   getNextJob: function () {
     var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
     console.log(nextJob);
     return nextJob;
+  }
+});
+
+resetNewsletterJob = function () {
+  SyncedCron.stop();
+  addJob();
+}
+
+var addJob = function () {
+  SyncedCron.add({
+    name: 'scheduleNewsletter',
+    schedule: function(parser) {
+      // parser is a later.parse object
+      // var sched;
+      return getSchedule(parser)
+    }, 
+    job: function() {
+      scheduleNextCampaign();
+    }
+  });
+}
+Meteor.startup(function () {
+  if (getSetting('enableNewsletter', false)) {
+    addJob();
   }
 });

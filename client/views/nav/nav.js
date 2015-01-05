@@ -1,12 +1,12 @@
 Template[getTemplate('nav')].helpers({
   primaryNav: function () {
-    return primaryNav;
+    return _.sortBy(primaryNav, 'order');
   },
   hasPrimaryNav: function () {
     return !!primaryNav.length;
   },
   secondaryNav: function () {
-    return secondaryNav;
+    return _.sortBy(secondaryNav, 'order');
   },
   hasSecondaryNav: function () {
     return !!secondaryNav.length;
@@ -15,13 +15,13 @@ Template[getTemplate('nav')].helpers({
     return getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
   },
   getTemplate: function () {
-    return getTemplate(this);
+    return getTemplate(this.template);
   },
   userMenu: function () {
     return getTemplate('userMenu');
   },
   site_title: function(){
-    return getSetting('title');
+    return getSetting('title', "Telescope");
   },
   logo_url: function(){
     return getSetting('logoUrl');

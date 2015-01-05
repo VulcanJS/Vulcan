@@ -78,7 +78,8 @@ Package.onUse(function (api) {
   // -------------------------------- 3. Variables to export --------------------------------
 
   api.export([
-    'getDigestURL'
+    'getDigestURL',
+    'PostsDigestController'
   ]);
 
 });

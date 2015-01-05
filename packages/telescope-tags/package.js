@@ -20,21 +20,23 @@ Package.onUse(function (api) {
   ], 'client');
 
   api.add_files([
-    'lib/tags.js',
+    'lib/categories.js',
+    'lib/custom_fields.js',
+    'lib/hooks.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
   api.add_files([
     'lib/client/routes.js',
     'lib/client/scss/categories.scss',
-    'lib/client/views/categories.html',
-    'lib/client/views/categories.js',
-    'lib/client/views/category_item.html',
-    'lib/client/views/category_item.js',
-    'lib/client/views/categories_menu.html',
-    'lib/client/views/categories_menu.js',
-    'lib/client/views/post_categories.html',
-    'lib/client/views/post_categories.js'
+    'lib/client/templates/categories.html',
+    'lib/client/templates/categories.js',
+    'lib/client/templates/category_item.html',
+    'lib/client/templates/category_item.js',
+    'lib/client/templates/categories_menu.html',
+    'lib/client/templates/categories_menu.js',
+    'lib/client/templates/post_categories.html',
+    'lib/client/templates/post_categories.js'
     ], ['client']);
 
   api.add_files(['lib/server/publications.js'], ['server']);
@@ -50,7 +52,7 @@ Package.onUse(function (api) {
  
   api.export([
     'preloadSubscriptions', 
-    'adminNav', 
+    'adminMenu', 
     'Categories', 
     'addToPostSchema', 
     'primaryNav', 

@@ -86,6 +86,15 @@ settingsSchemaObject = {
       private: true
     }
   },
+  mailUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'email',
+      instructions: 'MAIL_URL environment variable (requires restart).',
+      private: true
+    }
+  },  
   scoreUpdateInterval: {
     type: Number,
     optional: true,
@@ -102,7 +111,7 @@ settingsSchemaObject = {
     autoform: {
       group: 'posts',
       instructions: 'The view used for the front page',
-      options: _.map(viewNav, function (view) {
+      options: _.map(viewsMenu, function (view) {
         return {
           value: camelCaseify(view.label),
           label: view.label

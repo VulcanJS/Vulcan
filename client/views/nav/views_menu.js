@@ -3,6 +3,6 @@ Template[getTemplate('viewsMenu')].helpers({
     return getTemplate('menuItem');
   },
   views: function () {
-    return viewNav;
+    return viewsMenu;
   }
 });

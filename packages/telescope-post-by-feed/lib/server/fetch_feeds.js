@@ -32,6 +32,16 @@ var handleFeed = function(error, feed) {
         userId: getFirstAdminUser()._id
       }
 
+      // if RSS item link is a 301 or 302 redirect, follow the redirect
+      var get = HTTP.get(item.link, {followRedirects: false});
+      if (!!get.statusCode && (get.statusCode === 301 || get.statusCode === 302) && !!get.headers && !!get.headers.location) {
+        post.url = get.headers.location;
+      }
+
+      // if RSS item has a date, use it
+      if (item.pubDate)
+        post.postedAt = moment(item.pubDate).toDate();
+
       try {
         submitPost(post);
       } catch (error) {

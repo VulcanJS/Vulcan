@@ -26,6 +26,8 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/client/templates/posts_daily.html',
+    'lib/client/templates/after_day.html',
+    'lib/client/templates/before_day.html',
     'lib/client/templates/posts_daily.js',
     'lib/client/stylesheets/daily.css',
     ], ['client']);

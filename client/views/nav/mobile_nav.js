@@ -6,7 +6,7 @@ Template[getTemplate('mobile_nav')].helpers({
     return secondaryNav;
   },
   getTemplate: function () {
-    return getTemplate(this);
+    return getTemplate(this).template;
   },
   canPost: function(){
     return canPost(Meteor.user());

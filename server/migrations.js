@@ -428,6 +428,15 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  show0112ReleaseNotes: function () {
+    var i = 0;
+    // if this is the 0.11.2 update, the first run event will not exist yet.
+    // if that's the case, make sure to still show release notes
+    if (!Events.findOne({name: 'firstRun'})) {
+      Releases.update({number:'0.11.2'}, {$set: {read:false}});
+    }
+    return i;
   }
 };
 

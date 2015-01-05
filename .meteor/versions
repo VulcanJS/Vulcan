@@ -115,6 +115,7 @@ telescope-daily@0.0.0
 telescope-datetimepicker@1.0.3
 telescope-email@0.2.9
 telescope-embedly@0.2.9
+telescope-getting-started@0.1.0
 telescope-i18n@0.0.0
 telescope-invites@0.1.0
 telescope-kadira@0.1.0
@@ -123,6 +124,7 @@ telescope-module-share@0.0.0
 telescope-newsletter@0.1.0
 telescope-notifications@0.1.0
 telescope-post-by-feed@0.0.1
+telescope-releases@0.1.0
 telescope-rss@0.0.0
 telescope-search@0.0.0
 telescope-singleday@0.1.0

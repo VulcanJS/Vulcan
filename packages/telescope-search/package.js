@@ -40,5 +40,5 @@ Package.onUse(function (api) {
     "i18n/zh-CN.i18n.json",
   ], ["client", "server"]);
 
-  api.export(['adminNav', 'viewParameters']);
+  api.export(['adminMenu', 'viewParameters']);
 });

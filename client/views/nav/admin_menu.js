@@ -3,6 +3,6 @@ Template[getTemplate('adminMenu')].helpers({
     return getTemplate('menuItem');
   },
   menu: function () {
-    return adminNav;
+    return adminMenu;
   }
 });

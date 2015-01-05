@@ -1,3 +1,19 @@
+## v0.12.0 “DummyScope”
+
+**Important: existing newsletters and feeds need to be manually enabled in the Settings panel** 
+
+* Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled. 
+* Added "Enable Feeds" settings. Note: existing feeds must be re-enabled.
+* Now showing release notes for latest version right inside the app.
+* Added dummy posts, users, and comments.
+* Added new Events collection for keeping track of important events.
+* Log first run event.
+* `MAIL_URL` environment variable can now be set from Settings.
+* Renamed `viewNav` to `viewsMenu`.
+* Renamed `adminNav` to `adminMenu`.
+* Improvements to the Post by Feed package.
+* **New and improved [documentation](http://telesc.pe/docs).**
+
 ## v0.11.1 “FeedScope”
 
 * Post submit and edit forms now submit to their respective methods directly.

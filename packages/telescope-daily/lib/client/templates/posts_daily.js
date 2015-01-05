@@ -29,10 +29,17 @@ Meteor.startup(function () {
       var days = Session.get('postsDays');
       for (i = 0; i < days; i++) {
         daysArray.push({
-          date: moment().subtract(i, 'days').startOf('day').toDate()
+          date: moment().subtract(i, 'days').startOf('day').toDate(),
+          index: i
         });
       }
       return daysArray;
+    },
+    before_day: function () {
+      return getTemplate('beforeDay');
+    },
+    after_day: function () {
+      return getTemplate('afterDay');
     },
     posts: function () {
       return getPosts(this.date);

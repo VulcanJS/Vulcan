@@ -8,5 +8,7 @@
   "mailChimpAPIKey": "MailChimp API Key",
   "mailChimpListId": "MailChimp List ID",
   "postsPerNewsletter": "Posts per Newsletter",
-  "newsletterFrequency": "Newsletter Frequency"
+  "newsletterFrequency": "Newsletter Frequency",
+  "enableNewsletter": "Enable Newsletter",
+  "autoSubscribe": "Auto Subscribe"
 }

@@ -125,6 +125,7 @@ input[type="submit"], button, .button, .btn{
   cursor:pointer;
   margin:0;
   color: white;
+  font-weight: normal;
   // line-height:26px;
   // height:26px;
   font-weight:normal;
@@ -198,6 +199,7 @@ input[type="search"]{
   padding-bottom: 5px;
   margin-bottom: 15px;
   border-bottom: 1px solid #B5B0B0;
+  color: $light-text;
 }
 fieldset{
   margin-bottom: 30px;
