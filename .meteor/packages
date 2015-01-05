@@ -78,6 +78,11 @@ telescope-singleday
 telescope-invites
 telescope-post-by-feed
 
+# Testing
+
+sanjo:jasmine
+velocity:html-reporter
+
 # Custom Packages
 telescope-releases
 telescope-getting-started

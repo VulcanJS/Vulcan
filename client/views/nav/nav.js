@@ -17,29 +17,11 @@ Template[getTemplate('nav')].helpers({
   getTemplate: function () {
     return getTemplate(this.template);
   },
-  userMenu: function () {
-    return getTemplate('userMenu');
-  },
   site_title: function(){
     return getSetting('title', "Telescope");
   },
   logo_url: function(){
     return getSetting('logoUrl');
-  },
-  logo_top: function(){
-    return Math.floor((70-getSetting('logoHeight'))/2);
-  },
-  logo_offset: function(){
-    return -Math.floor(getSetting('logoWidth')/2);
-  },
-  intercom: function(){
-    return !!getSetting('intercomId');
-  },
-  canPost: function(){
-    return canPost(Meteor.user());
-  },
-  requirePostsApproval: function(){
-    return getSetting('requirePostsApproval');
   }
 });
 
