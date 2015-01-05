@@ -32,9 +32,9 @@ var handleFeed = function(error, feed) {
         userId: getFirstAdminUser()._id
       }
 
-      // if RSS item link is a 301 redirect, follow the redirect
+      // if RSS item link is a 301 or 302 redirect, follow the redirect
       var get = HTTP.get(item.link, {followRedirects: false});
-      if (!!get.statusCode && get.statusCode === 301 && !!get.headers && !!get.headers.location) {
+      if (!!get.statusCode && (get.statusCode === 301 || get.statusCode === 302) && !!get.headers && !!get.headers.location) {
         post.url = get.headers.location;
       }
 
