@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'aldeed:simple-schema',
     'aldeed:autoform',
     'tap:i18n',
-    'fourseven:scss'
+    'fourseven:scss',
   ], ['client', 'server']);
 
   api.use([

@@ -16,6 +16,7 @@ accounts-facebook
 service-configuration
 accounts-ui
 reactive-var
+http
 
 # Atmosphere Packages
 
