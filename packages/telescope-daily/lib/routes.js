@@ -39,7 +39,7 @@ PostsDailyController = RouteController.extend({
   },
 
   getTitle: function () {
-    return i18n.t('daily') + ' - ' + getSetting('title');
+    return i18n.t('daily') + ' - ' + getSetting('title', "Telescope");
   },
 
   getDescription: function () {
