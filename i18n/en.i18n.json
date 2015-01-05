@@ -109,6 +109,7 @@
   "thanks_for_signing_up": "Thanks for signing up!",
   "the_site_is_currently_invite_only_but_we_will_let_you_know_as_soon_as_a_spot_opens_up": "The site is currently invite-only, but we will let you know as soon as a spot opens up.",
   "sorry_you_dont_have_the_rights_to_view_this_page": "Sorry, you don't have the rights to view this page.",
+  "sorry_you_do_not_have_the_rights_to_comments": "Sorry, you do not have the rights to leave comments at this time.",
   "not_found": "Not Found!",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "We're sorry; whatever you were looking for isn't here..",
 
@@ -280,7 +281,8 @@
   "submit": "Submit",
   "you_must_be_logged_in": "You must be logged in.",
   "are_you_sure": "Are you sure?",
-  "please_log_in_first": "Please log in first",
+  "please_log_in_first": "Please log in first.",
+  "please_log_in_to_comment": "Please log in to comment.",
   "sign_in_sign_up_with_twitter": "Sign In/Sign Up with Twitter",
   "load_more": "Load more",
 
