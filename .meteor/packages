@@ -51,6 +51,11 @@ useraccounts:unstyled@1.4.0
 tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
 
+# Testing
+
+sanjo:jasmine
+velocity:html-reporter
+
 # Telescope Packages (Required)
 
 telescope-base
@@ -77,12 +82,7 @@ telescope-notifications
 telescope-singleday
 telescope-invites
 telescope-post-by-feed
-
-# Testing
-
-sanjo:jasmine
-velocity:html-reporter
-
-# Custom Packages
 telescope-releases
 telescope-getting-started
+
+# Custom Packages
