@@ -11,6 +11,7 @@
 * `MAIL_URL` environment variable can now be set from Settings.
 * Renamed `viewNav` to `viewsMenu`.
 * Renamed `adminNav` to `adminMenu`.
+* Improvements to the Post by Feed package.
 * **New and improved [documentation](http://telesc.pe/docs).**
 
 ## v0.11.1 “FeedScope”
