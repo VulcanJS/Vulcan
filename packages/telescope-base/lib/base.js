@@ -62,7 +62,7 @@ secondaryNav = [
 ];
 
 // array containing items in the admin menu
-adminNav = [
+adminMenu = [
   {
     route: 'posts_pending',
     label: 'Pending',
@@ -86,7 +86,7 @@ adminNav = [
 ];
 
 // array containing items in the views menu
-viewNav = [
+viewsMenu = [
   {
     route: 'posts_top',
     label: 'top',

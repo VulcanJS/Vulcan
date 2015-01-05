@@ -1,4 +1,4 @@
-adminNav.push({
+adminMenu.push({
   route: 'categories',
   label: 'Categories',
   description: 'add_and_remove_categories'

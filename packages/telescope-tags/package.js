@@ -52,7 +52,7 @@ Package.onUse(function (api) {
  
   api.export([
     'preloadSubscriptions', 
-    'adminNav', 
+    'adminMenu', 
     'Categories', 
     'addToPostSchema', 
     'primaryNav', 

@@ -1,4 +1,4 @@
-viewNav.push({
+viewsMenu.push({
   route: 'posts_digest_default',
   label: 'digest',
   description: 'posts_of_a_single_day'

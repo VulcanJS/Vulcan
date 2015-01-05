@@ -22,14 +22,14 @@ secondaryNav.push({
 });
 
 // add items to the view menu
-viewNav.push({
+viewsMenu.push({
   route: 'customRoute',
   label: 'customViewLink',
   description: '' // optional
 });
 
 // add items to the admin menu
-adminNav.push({
+adminMenu.push({
   route: 'customRoute',
   label: 'customAdminLink',
   description: '' // optional
