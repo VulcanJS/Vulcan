@@ -12,7 +12,7 @@ can.view = function(user) {
 
     if (Meteor.isClient) {
       // on client only, default to the current user
-      var user = (typeof user === 'undefined') ? Meteor.user() : user;
+      user = (typeof user === 'undefined') ? Meteor.user() : user;
     }
 
     return (!!user && (isAdmin(user) || isInvited(user)));
@@ -27,7 +27,7 @@ can.viewById = function(userId) {
   return true;
 };
 can.post = function(user, returnError) {
-  var user = (typeof user === 'undefined') ? Meteor.user() : user;
+  user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user) {
     return returnError ? "no_account" : false;
@@ -57,7 +57,7 @@ can.downvote = function(user, collection, returnError) {
   return can.post(user, returnError);
 };
 can.edit = function(user, item, returnError) {
-  var user = (typeof user === 'undefined') ? Meteor.user() : user;
+  user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user || !item || (user._id !== item.userId && !isAdmin(user))) {
     return returnError ? "no_rights" : false;

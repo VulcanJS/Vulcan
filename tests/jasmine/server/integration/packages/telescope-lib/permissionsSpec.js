@@ -12,7 +12,7 @@ Jasmine.onTest(function () {
     describe('test can.view()', function () {
 
       var testCanView = function (requireViewInviteEnabled, mockUser, expected) {
-        testCanViewMeta(can.view, requireViewInviteEnabled, mockUser, expected)
+        testCanViewMeta(can.view, requireViewInviteEnabled, mockUser, expected);
       };
 
       it('should return true when requireViewInvite setting is false', function () {
@@ -38,7 +38,7 @@ Jasmine.onTest(function () {
 
     describe('test can.viewById()', function () {
        var testCanViewById = function (requireViewInviteEnabled, mockUserId, expected) {
-        testCanViewMeta(can.viewById, requireViewInviteEnabled, mockUserId, expected)
+        testCanViewMeta(can.viewById, requireViewInviteEnabled, mockUserId, expected);
       };
 
       it('should return true when requireViewInvite setting is false', function () {

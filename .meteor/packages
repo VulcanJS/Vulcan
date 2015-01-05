@@ -53,8 +53,8 @@ momentjs:moment
 
 # Testing
 
-# sanjo:jasmine
-# velocity:html-reporter
+sanjo:jasmine
+velocity:html-reporter
 
 # Telescope Packages (Required)
 
