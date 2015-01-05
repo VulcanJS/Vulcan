@@ -12,6 +12,7 @@
 * Renamed `viewNav` to `viewsMenu`.
 * Renamed `adminNav` to `adminMenu`.
 * Improvements to the Post by Feed package.
+* Added tests for nav bar (thanks @anthonymayer!).
 * **New and improved [documentation](http://telesc.pe/docs).**
 
 ## v0.11.1 “FeedScope”
