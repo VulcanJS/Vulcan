@@ -2,7 +2,7 @@
 
 PostsDigestController = RouteController.extend({
 
-  template: getTemplate('posts_digest'),
+  template: getTemplate('singleDay'),
   
   waitOn: function() {
     // if day is set, use that. If not default to today
@@ -37,7 +37,7 @@ PostsDigestController = RouteController.extend({
 
     return {
       incoming: postsIncoming,
-      posts: posts
+      postsList: posts
     };
   },
 
