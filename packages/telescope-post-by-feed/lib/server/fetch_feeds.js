@@ -16,21 +16,27 @@ var handleFeed = function(error, feed) {
   var newItemsCount = 0;
 
   feedItems.forEach(function(item, index, array) {
-    
+
     // check if post already exists
     if (!!Posts.findOne({feedItemId: item.id})) {
       // clog('// Feed item already imported')
     } else {
       newItemsCount++;
 
+      var body = '';
+
+      if (item.description) {
+       body = toMarkdown(he.decode(item.description));
+      }
+
       var post = {
         title: item.title,
-        body: toMarkdown(he.decode(item.description)),
+        body: body,
         url: item.link,
         feedId: feed.id,
         feedItemId: item.id,
         userId: getFirstAdminUser()._id
-      }
+      };
 
       // if RSS item link is a 301 or 302 redirect, follow the redirect
       var get = HTTP.get(item.link, {followRedirects: false});
@@ -83,5 +89,5 @@ Meteor.methods({
   },
   testToMarkdown: function (text) {
     console.log(toMarkdown(text));
-  } 
+  }
 })
