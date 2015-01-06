@@ -13,7 +13,8 @@ viewParameters.digest = function (terms) {
       }
     },
     options: {
-      sort: {sticky: -1, baseScore: -1, limit: 0}
+      sort: {sticky: -1, score: -1},
+      limit: 0
     }
   };
 }
