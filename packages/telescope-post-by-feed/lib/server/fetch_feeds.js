@@ -24,13 +24,15 @@ var handleFeed = function(error, feed) {
       newItemsCount++;
 
       var post = {
-        title: item.title,
-        body: toMarkdown(he.decode(item.description)),
+        title: he.decode(item.title),
         url: item.link,
         feedId: feed.id,
         feedItemId: item.id,
         userId: getFirstAdminUser()._id
       }
+
+      if (item.description)
+        post.body = toMarkdown(he.decode(item.description));
 
       // if RSS item link is a 301 or 302 redirect, follow the redirect
       var get = HTTP.get(item.link, {followRedirects: false});
@@ -60,17 +62,19 @@ fetchFeeds = function() {
 
   Feeds.find().forEach(function(feed) {
     try {
+
       content = HTTP.get(feed.url).content;
-    } catch (e) {
-      // just go to next url
-      return true;
+      var feedHandler = new htmlParser.FeedHandler(handleFeed);
+      var parser = new htmlParser.Parser(feedHandler, {xmlMode: true});
+      parser.write(content);
+      parser.end();
+
+    } catch (error) {
+
+      console.log(error);
+      return true; // just go to next url
+      
     }
-
-    var feedHandler = new htmlParser.FeedHandler(handleFeed);
-
-    var parser = new htmlParser.Parser(feedHandler, {xmlMode: true});
-    parser.write(content);
-    parser.end()
   });
 }
 
