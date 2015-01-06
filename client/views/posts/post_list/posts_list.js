@@ -1,3 +1,7 @@
+Template[getTemplate('posts_list')].created = function() {
+  Session.set('listPopulatedAt', new Date());
+};
+
 Template[getTemplate('posts_list')].helpers({
   description: function () {
     var controller = Iron.controller();
@@ -14,14 +18,12 @@ Template[getTemplate('posts_list')].helpers({
     return getTemplate('after_post_item');
   },
   posts : function () {
-    if(this.postsList){ // XXX
-      this.postsList.rewind();    
-      var posts = this.postsList.map(function (post, index, cursor) {
-        post.rank = index;
-        return post;
-      });
-      return posts;
-    }
+    this.postsList.rewind();    
+    var posts = this.postsList.map(function (post, index, cursor) {
+      post.rank = index;
+      return post;
+    });
+    return posts;
   },
   postsLoadMore: function () {
     return getTemplate('postsLoadMore');
@@ -30,7 +32,3 @@ Template[getTemplate('posts_list')].helpers({
     return getTemplate('postsListIncoming');
   }
 });
-
-Template[getTemplate('posts_list')].created = function() {
-  Session.set('listPopulatedAt', new Date());
-};
