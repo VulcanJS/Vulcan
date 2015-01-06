@@ -25,7 +25,7 @@ var handleFeed = function(error, feed) {
 
       var post = {
         title: item.title,
-        body: toMarkdown(he.decode(item.description)),
+        body: item.description ? toMarkdown(he.decode(item.description)) : '',
         url: item.link,
         feedId: feed.id,
         feedItemId: item.id,
