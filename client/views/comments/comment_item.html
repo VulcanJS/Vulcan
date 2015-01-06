@@ -30,9 +30,7 @@
             {{/if}}
           </div>
           <div class="comment-text markdown">{{{htmlBody}}}</div>
-          {{#if getSetting "nestedComments" true}}
-            <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
-          {{/if}}
+          <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
         </div>
       </div>
       {{/if}}

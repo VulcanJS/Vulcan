@@ -42,7 +42,7 @@ PostsDigestController = RouteController.extend({
   },
 
   getTitle: function () {
-    return i18n.t('single_day') + ' - ' + getSetting('title');
+    return i18n.t('single_day') + ' - ' + getSetting('title', 'Telescope');
   },
 
   getDescription: function () {
