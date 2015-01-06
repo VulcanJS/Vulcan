@@ -36,21 +36,6 @@ var feedItemIdProperty = {
 }
 addToPostSchema.push(feedItemIdProperty);
 
-// Settings
-
-var enableFeeds = {
-  propertyName: 'enableFeeds',
-  propertySchema: {
-    type: Boolean,
-    optional: true,
-    autoform: {
-      group: 'feeds',
-      instructions: 'Enable posting from RSS feeds (requires restart).'
-    }
-  }
-}
-addToSettingsSchema.push(enableFeeds);
-
 Meteor.startup(function () {
   Feeds.allow({
     insert: isAdminById,
