@@ -7,15 +7,6 @@ Template[getTemplate('mobile_nav')].helpers({
   },
   getTemplate: function () {
     return getTemplate(this).template;
-  },
-  canPost: function(){
-    return canPost(Meteor.user());
-  },
-  requirePostsApproval: function(){
-    return getSetting('requirePostsApproval');
-  },
-  userMenu: function () {
-    return getTemplate('userMenu');
   }
 });
 

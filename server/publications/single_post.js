@@ -1,7 +1,7 @@
 // Publish a single post
 
 Meteor.publish('singlePost', function(id) {
-  if(canViewById(this.userId)){
+  if (can.viewById(this.userId)){
     return Posts.find(id);
   }
   return [];
@@ -10,12 +10,12 @@ Meteor.publish('singlePost', function(id) {
 // Publish authors of the current post and its comments
 
 Meteor.publish('postUsers', function(postId) {
-  if(canViewById(this.userId)){
+  if (can.viewById(this.userId)){
     // publish post author and post commenters
     var post = Posts.findOne(postId),
         users = [];
 
-    if(post) {
+    if (post) {
       var comments = Comments.find({postId: post._id}).fetch();
       // get IDs from all commenters on the post, plus post author's ID
       users = _.pluck(comments, "userId");
@@ -31,7 +31,7 @@ Meteor.publish('postUsers', function(postId) {
 // Publish comments for a specific post
 
 Meteor.publish('postComments', function(postId) {
-  if(canViewById(this.userId)){
+  if (can.viewById(this.userId)){
     return Comments.find({postId: postId});
   }
   return [];

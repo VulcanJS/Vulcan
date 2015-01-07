@@ -1,3 +1,5 @@
+'use strict';
+
 describe('test nav template', function() {
   var $div;
   // Setting layoutTemplate to null to avoid stubbing the template completely.
@@ -114,9 +116,7 @@ describe('test nav template', function() {
       };
       var navSpies = setupNavTemplatesWithSpies(templateNames, getNavContent);
 
-      spyOn(window, 'getThemeSetting').and.callFake(function (settingName) {
-        return true;
-      });
+      spyOn(window, 'getThemeSetting').and.returnValue(true);
 
       render();
 
@@ -192,9 +192,7 @@ describe('test nav template', function() {
     });
 
     it('should have "has-dropdown" class if useDropdowns theme setting is true', function () {
-      spyOn(window, 'getThemeSetting').and.callFake(function (settingName) {
-        return true;
-      });
+      spyOn(window, 'getThemeSetting').and.returnValue(true);
 
       setupAndRenderNavs();
 
@@ -205,9 +203,7 @@ describe('test nav template', function() {
     });
 
     it('should have "no-dropdown" class if useDropdowns theme setting is true', function () {
-      spyOn(window, 'getThemeSetting').and.callFake(function (settingName) {
-        return false;
-      });
+      spyOn(window, 'getThemeSetting').and.returnValue(false);
 
       setupAndRenderNavs();
 

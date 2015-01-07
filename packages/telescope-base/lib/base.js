@@ -142,7 +142,7 @@ viewParameters.pending = function (terms) {
   return {
     find: {
       status: 1
-    }, 
+    },
     options: {sort: {createdAt: -1}},
     showFuture: true
   };
@@ -191,7 +191,7 @@ postModules = [
     order: 1
   },
   {
-    template: 'postContent', 
+    template: 'postContent',
     order: 5
   },
   {
@@ -216,7 +216,7 @@ postHeading = [
     order: 10
   },
   {
-    template: 'postDomain', 
+    template: 'postDomain',
     order: 20
   }
 ];
@@ -235,7 +235,7 @@ postMeta = [
     order: 30
   },
   {
-    template: 'postAdmin', 
+    template: 'postAdmin',
     order: 50
   }
 ]
@@ -254,7 +254,7 @@ commentSubmitClientCallbacks = [];
 commentSubmitMethodCallbacks = [];
 commentAfterSubmitMethodCallbacks = [];
 
-commentEditRenderedCallbacks = []; 
+commentEditRenderedCallbacks = [];
 commentEditClientCallbacks = [];
 commentEditMethodCallbacks = []; // not used yet
 commentAfterEditMethodCallbacks = []; // not used yet
@@ -278,13 +278,13 @@ userProfileDisplay = [
   {
     template: 'userUpvotedPosts',
     order: 3
-  },  
+  },
   {
-    template: 'userDownvotedPosts', 
+    template: 'userDownvotedPosts',
     order: 5
-  },  
+  },
   {
-    template: 'userComments', 
+    template: 'userComments',
     order: 5
   }
 ];
