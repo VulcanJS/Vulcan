@@ -22,7 +22,7 @@
             <span class="comment-time">{{timeAgo ago}},</span>
             <span class="points">{{upvotes}}</span> <span class="unit">points </span>
             <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
-            {{#if can_edit}}
+            {{#if canEdit this}}
               | <a class="edit-link" href="{{pathFor route='comment_edit' _id=_id}}">{{_ "edit"}}</a>
             {{/if}}
             {{#if isAdmin}}

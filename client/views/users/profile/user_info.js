@@ -8,7 +8,7 @@ Template[getTemplate('userInfo')].helpers({
   },
   canInvite: function() {
     // if the user is logged in, the target user hasn't been invited yet, invites are enabled, and user is not viewing their own profile
-    return Meteor.user() && Meteor.user()._id != this._id && !isInvited(this) && invitesEnabled() && canInvite(Meteor.user());
+    return Meteor.user() && Meteor.user()._id != this._id && !isInvited(this) && invitesEnabled() && can.invite(Meteor.user());
   },
   inviteCount: function() {
     return Meteor.user().inviteCount;
