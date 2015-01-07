@@ -8,7 +8,7 @@ AutoForm.hooks({
       }
     },
 
-    onSuccess: function(operation, result, template) { 
+    onSuccess: function(operation, result, template) {
       template.$('button[type=submit]').removeClass('loading');
     },
 
@@ -16,10 +16,7 @@ AutoForm.hooks({
       template.$('button[type=submit]').removeClass('loading');
     }
 
-  }
-});
-
-AutoForm.hooks({
+  },
   insertSettingsForm: {
 
     before: {
@@ -29,7 +26,7 @@ AutoForm.hooks({
       }
     },
 
-    onSuccess: function(operation, result, template) { 
+    onSuccess: function(operation, result, template) {
       template.$('button[type=submit]').removeClass('loading');
     },
 

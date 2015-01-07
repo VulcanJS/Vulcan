@@ -11,7 +11,7 @@ Meteor.startup(function () {
 
   Template[getTemplate('search')].helpers({
     canSearch: function () {
-      return canView(Meteor.user());
+      return can.view(Meteor.user());
     },
     searchQuery: function () {
       return Session.get("searchQuery");

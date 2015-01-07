@@ -91,8 +91,8 @@ Comments.deny({
 });
 
 Comments.allow({
-  update: canEditById,
-  remove: canEditById
+  update: can.editById,
+  remove: can.editById
 });
 
 // ------------------------------------------------------------------------------------------- //
@@ -147,7 +147,7 @@ submitComment = function (comment) {
   // Don't allow empty comments
   if (!comment.body)
     throw new Meteor.Error(704,i18n.t('your_comment_is_empty'));
-        
+
   // ------------------------------ Properties ------------------------------ //
 
   var defaultProperties = {
@@ -193,7 +193,7 @@ submitComment = function (comment) {
 
 Meteor.methods({
   submitComment: function(comment){
-   
+
     // required properties:
     // postId
     // body
@@ -207,20 +207,20 @@ Meteor.methods({
     // ------------------------------ Checks ------------------------------ //
 
     // check that user can comment
-    if (!user || !canComment(user))
+    if (!user || !can.comment(user))
       throw new Meteor.Error(i18n.t('you_need_to_login_or_be_invited_to_post_new_comments'));
-    
+
     // ------------------------------ Rate Limiting ------------------------------ //
-    
+
     if (!hasAdminRights) {
-    
+
       var timeSinceLastComment = timeSinceLast(user, Comments),
           commentInterval = Math.abs(parseInt(getSetting('commentInterval',15)));
 
       // check that user waits more than 15 seconds between comments
       if((timeSinceLastComment < commentInterval))
         throw new Meteor.Error(704, i18n.t('please_wait')+(commentInterval-timeSinceLastComment)+i18n.t('seconds_before_commenting_again'));
-      
+
     }
 
     // ------------------------------ Properties ------------------------------ //
@@ -242,7 +242,7 @@ Meteor.methods({
   },
   removeComment: function(commentId){
     var comment = Comments.findOne(commentId);
-    if(canEdit(Meteor.user(), comment)){
+    if(can.edit(Meteor.user(), comment)){
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {
         $inc:   {commentCount: -1},

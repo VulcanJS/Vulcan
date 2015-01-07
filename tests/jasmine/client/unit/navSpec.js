@@ -1,3 +1,5 @@
+'use strict';
+
 describe('test nav template', function() {
   var $div;
   // Setting layoutTemplate to null to avoid stubbing the template completely.
@@ -31,7 +33,7 @@ describe('test nav template', function() {
 
     render();
 
-    var h1 = $div.find('h1.logo')
+    var h1 = $div.find('h1.logo');
     expect(h1.length).toEqual(1);
     var link = h1.find('a');
     expect(link.length).toEqual(1);
@@ -52,7 +54,7 @@ describe('test nav template', function() {
 
     render();
 
-    var h1 = $div.find('h1.logo')
+    var h1 = $div.find('h1.logo');
     expect(h1.length).toEqual(1);
     var link = h1.find('a');
     expect(link.length).toEqual(1);
@@ -90,12 +92,12 @@ describe('test nav template', function() {
       return navSpies;
     };
 
-    var checkNavLisAndDeleteTemplates = function (renderedNav, templateNames, navSpies, contentFunction) {
-      var lis = renderedNav.find('li');
-      expect(lis.length).toEqual(templateNames.length);
+    var checkNavListAndDeleteTemplates = function (renderedNav, templateNames, navSpies, contentFunction) {
+      var list = renderedNav.find('li');
+      expect(list.length).toEqual(templateNames.length);
       // Check that each of the <li>s contains the expected content and that the corresponding
       // renderFunction was called.
-      lis.each(function (index, el) {
+      list.each(function (index, el) {
         var templateName = templateNames[index];
         var navSpy = navSpies[templateName];
         expect(navSpy.calls.count()).toEqual(1);
@@ -114,9 +116,7 @@ describe('test nav template', function() {
       };
       var navSpies = setupNavTemplatesWithSpies(templateNames, getNavContent);
 
-      spyOn(window, 'getThemeSetting').and.callFake(function (settingName) {
-        return true;
-      });
+      spyOn(window, 'getThemeSetting').and.returnValue(true);
 
       render();
 
@@ -125,7 +125,7 @@ describe('test nav template', function() {
       // Check that dropdownClass was added
       renderedNav.hasClass('has-dropdown');
 
-      checkNavLisAndDeleteTemplates(
+      checkNavListAndDeleteTemplates(
         renderedNav,
         templateNames,
         navSpies,
@@ -134,9 +134,15 @@ describe('test nav template', function() {
     };
 
     it('should render primary nav from global primaryNav array of template names', function () {
-      primaryNav = ['testNavTemplate1', 'testNavTemplate2'];
+      var templateNames = ['testNavTemplate1', 'testNavTemplate2'];
+      primaryNav = templateNames.map(function (templateName, index) {
+        return {
+          template: templateName,
+          order: index
+        };
+      });
 
-      testNav(primaryNav, 'ul.nav.primary-nav.desktop-nav');
+      testNav(templateNames, 'ul.nav.primary-nav.desktop-nav');
     });
 
     it('should not render primary nav if global primaryNav array is empty', function () {
@@ -150,9 +156,15 @@ describe('test nav template', function() {
     });
 
     it('should render secondary nav from global secondaryNav array of template names', function () {
-      secondaryNav = ['testNavTemplate1', 'testNavTemplate2'];
+      var templateNames = ['testNavTemplate1', 'testNavTemplate2'];
+      secondaryNav = templateNames.map(function (templateName, index) {
+        return {
+          template: templateName,
+          order: index
+        };
+      });
 
-      testNav(secondaryNav, 'ul.nav.secondary-nav.desktop-nav');
+      testNav(templateNames, 'ul.nav.secondary-nav.desktop-nav');
     });
 
     it('should not render secondary nav if global secondaryNav array is empty', function () {
@@ -166,14 +178,20 @@ describe('test nav template', function() {
     });
 
     var setupAndRenderNavs = function () {
-      primaryNav = ['testPrimaryNavTemplate'];
-      secondaryNav = ['testSecondaryNavTemplate'];
+      primaryNav = [{
+        template: 'testPrimaryNavTemplate',
+        order: 10
+      }];
+      secondaryNav = [{
+        template: 'testSecondaryNavTemplate',
+        order: 10
+      }];
 
       var getNavContent = function (templateName) {
         return templateName;
       };
       setupNavTemplatesWithSpies(
-        primaryNav.concat(secondaryNav),
+        [primaryNav[0].template, secondaryNav[0].template],
         getNavContent
       );
 
@@ -192,9 +210,7 @@ describe('test nav template', function() {
     });
 
     it('should have "has-dropdown" class if useDropdowns theme setting is true', function () {
-      spyOn(window, 'getThemeSetting').and.callFake(function (settingName) {
-        return true;
-      });
+      spyOn(window, 'getThemeSetting').and.returnValue(true);
 
       setupAndRenderNavs();
 
@@ -205,9 +221,7 @@ describe('test nav template', function() {
     });
 
     it('should have "no-dropdown" class if useDropdowns theme setting is true', function () {
-      spyOn(window, 'getThemeSetting').and.callFake(function (settingName) {
-        return false;
-      });
+      spyOn(window, 'getThemeSetting').and.returnValue(false);
 
       setupAndRenderNavs();
 

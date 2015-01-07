@@ -14,8 +14,8 @@ getSetting = function(setting, defaultValue){
   } else if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection
     return settings[setting];
 
-  } else if (typeof defaultValue !== 'undefined') { // fallback to default 
-    return  defaultValue; 
+  } else if (typeof defaultValue !== 'undefined') { // fallback to default
+    return  defaultValue;
 
   } else { // or return undefined
     return undefined;

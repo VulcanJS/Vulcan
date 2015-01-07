@@ -23,19 +23,13 @@ UI.registerHelper('isLoggedIn', function() {
   return !!Meteor.user();
 });
 UI.registerHelper('canView', function() {
-  return canView(Meteor.user());
+  return can.view(Meteor.user());
 });
 UI.registerHelper('canPost', function() {
-  return canPost(Meteor.user());
+  return can.post(Meteor.user());
 });
 UI.registerHelper('canComment', function() {
-  return canComment(Meteor.user());
-});
-UI.registerHelper('canUpvote', function(collection) {
-  return canUpvote(Meteor.user(), collection);
-});
-UI.registerHelper('canDownvote', function(collection) {
-  return canDownvote(Meteor.user(), collection);
+  return can.comment(Meteor.user());
 });
 UI.registerHelper('isAdmin', function(showError) {
   if(isAdmin(Meteor.user())){
@@ -46,13 +40,8 @@ UI.registerHelper('isAdmin', function(showError) {
     return false;
   }
 });
-UI.registerHelper('canEdit', function(collectionName, item, action) {
-  var action = (typeof action !== 'string') ? null : action;
-  var collection = (typeof collectionName !== 'string') ? Posts : eval(collectionName);
-  // console.log(item);
-  // var itemId = (collectionName==="Posts") ? Session.get('selectedPostId') : Session.get('selectedCommentId');
-  // var item=collection.findOne(itemId);
-  return item && canEdit(Meteor.user(), item, action);
+UI.registerHelper('canEdit', function(item) {
+  return can.edit(Meteor.user(), item, false);
 });
 
 UI.registerHelper('log', function(context){

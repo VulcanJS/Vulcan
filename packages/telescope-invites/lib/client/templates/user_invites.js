@@ -15,14 +15,14 @@ Template[getTemplate('userInvites')].created = function () {
 Template[getTemplate('userInvites')].helpers({
   canCurrentUserInvite: function () {
     var currentUser = Meteor.user();
-    return currentUser && (currentUser.inviteCount > 0 && canInvite(currentUser));
+    return currentUser && (currentUser.inviteCount > 0 && can.invite(currentUser));
   },
   invitesLeft: function () {
     var currentUser = Meteor.user();
     return currentUser ? currentUser.inviteCount : 0;
   },
   invitesSchema: function () {
-    // expose schema for Invites (used by AutoForm) 
+    // expose schema for Invites (used by AutoForm)
     return InviteSchema;
   },
   invites: function () {
@@ -52,7 +52,7 @@ AutoForm.hooks({
 
     onError: function(operation, error, template) {
       clearSeenMessages();
-      
+
       if(error && error.reason){
         flashMessage(error.reason, "error");
         scrollUp();
