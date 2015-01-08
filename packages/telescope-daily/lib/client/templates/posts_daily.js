@@ -17,8 +17,13 @@ var getPosts = function (date) {
 Meteor.startup(function () {
 
   Template[getTemplate('postsDaily')].helpers({
-    postsLoaded: function () {
-      return !!Session.get('postsLoaded');
+    singleDay: function () {
+      return getTemplate('singleDay');
+    },
+    context: function () {
+      var context = this;
+      context.showDateNav = false;
+      return context;
     },
     post_item: function () {
       return getTemplate('post_item');

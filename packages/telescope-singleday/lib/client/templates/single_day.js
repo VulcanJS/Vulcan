@@ -15,7 +15,8 @@ Template[getTemplate('singleDay')].created = function () {
   instance.postsReady = new ReactiveVar(false);
 
   instance.getTerms = function () {
-    var currentDate = Session.get('currentDate');
+    // if instance has a set date use this, else depend on Session variable
+    var currentDate = !!instance.data.date ? instance.data.date: Session.get('currentDate');
     return {
       view: 'digest',
       after: moment(currentDate).startOf('day').toDate(),
@@ -33,7 +34,7 @@ Template[getTemplate('singleDay')].created = function () {
     // get the postsLimit
     terms.limit = instance.postsLimit.get();
 
-    console.log("Asking for " + terms.limit + " posts…")
+    // console.log("Asking for " + terms.limit + " posts…")
 
     // subscribe
     var postsSubscription = Meteor.subscribe('postsList', terms);
@@ -41,12 +42,16 @@ Template[getTemplate('singleDay')].created = function () {
 
     // if subscriptions are ready, set limit to newLimit
     if (postsSubscription.ready() && usersSubscription.ready()) {
-      console.log("> Received "+terms.limit+" posts. \n\n")
+
+      // console.log("> Received "+terms.limit+" posts. \n\n")
       instance.postsLoaded.set(terms.limit);
       instance.postsReady.set(true);
+
     } else {
+      
       instance.postsReady.set(false);
-      console.log("> Subscription is not ready yet. \n\n");
+      // console.log("> Subscription is not ready yet. \n\n");
+    
     }
   });
 
@@ -69,6 +74,10 @@ Template[getTemplate('singleDay')].created = function () {
 }
 
 Template[getTemplate('singleDay')].helpers({
+  showDateNav: function () {
+    console.log(this)
+    return (typeof this.showDateNav === 'undefined') ? true : this.showDateNav;
+  },
   singleDayNav: function () {
     return getTemplate('singleDayNav');
   },

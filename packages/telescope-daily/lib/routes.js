@@ -17,17 +17,17 @@ PostsDailyController = RouteController.extend({
     this.days = this.params.days ? this.params.days : daysPerPage;
     // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
 
-    var terms = {
-      view: 'daily',
-      days: this.days,
-      after: moment().subtract(this.days, 'days').startOf('day').toDate()
-    };
+    // var terms = {
+    //   view: 'daily',
+    //   days: this.days,
+    //   after: moment().subtract(this.days, 'days').startOf('day').toDate()
+    // };
 
-    this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {
-      Session.set('postsLoaded', true);
-    });
+    // this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {
+    //   Session.set('postsLoaded', true);
+    // });
 
-    this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
+    // this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
 
   },
 
