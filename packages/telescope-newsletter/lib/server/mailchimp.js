@@ -43,7 +43,7 @@ scheduleCampaign = function (campaign, isTest) {
 
         var cid = result.id;
         var archive_url = result.archive_url;
-        var scheduledTime = moment().zone(0).add('hours', 1).format("YYYY-MM-DD HH:mm:ss");
+        var scheduledTime = moment().zone(0).add(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
 
         api.call('campaigns', 'schedule', {
           cid: cid,

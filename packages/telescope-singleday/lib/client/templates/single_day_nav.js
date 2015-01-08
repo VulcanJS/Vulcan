@@ -30,7 +30,7 @@ Template[getTemplate('singleDayNav')].helpers({
   previousDateURL: function(){
     var currentDate=moment(Session.get('currentDate'));
     var newDate=currentDate.subtract(1, 'days');
-    return getDigestURL(newDate);
+    return getDateURL(newDate);
   },
   showPreviousDate: function(){
     // TODO
@@ -38,8 +38,8 @@ Template[getTemplate('singleDayNav')].helpers({
   },
   nextDateURL: function(){
     var currentDate=moment(Session.get('currentDate'));
-    var newDate=currentDate.add('days', 1);
-    return getDigestURL(newDate);
+    var newDate=currentDate.add(1, 'days');
+    return getDateURL(newDate);
   },
   showNextDate: function(){
     var currentDate=moment(Session.get('currentDate')).startOf('day');

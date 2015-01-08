@@ -14,8 +14,6 @@ Template[getTemplate('postsLoadMore')].helpers({
 Template[getTemplate('postsLoadMore')].events({
   'click .more-button': function (event, instance) {
     event.preventDefault();
-    console.log(this)
     this.loadMoreHandler(event, this.controllerInstance);
-    console.log(instance)
   }
 })

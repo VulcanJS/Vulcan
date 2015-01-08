@@ -14,12 +14,14 @@ Template[getTemplate('singleDay')].created = function () {
   instance.postsLimit = new ReactiveVar(getSetting('postsPerPage', 10));
   instance.postsReady = new ReactiveVar(false);
 
-  var currentDate = Session.get('currentDate');
-  var terms = {
-    view: 'digest',
-    after: moment(currentDate).startOf('day').toDate(),
-    before: moment(currentDate).endOf('day').toDate(),
-    limit: instance.postsLimit
+  instance.getTerms = function () {
+    var currentDate = Session.get('currentDate');
+    return {
+      view: 'digest',
+      after: moment(currentDate).startOf('day').toDate(),
+      before: moment(currentDate).endOf('day').toDate(),
+      limit: instance.postsLimit
+    }
   };
 
   // 2. Autorun
@@ -27,14 +29,16 @@ Template[getTemplate('singleDay')].created = function () {
   // will re-run when the "postsLimit" reactive variables changes
   instance.autorun(function () {
 
+    var terms = instance.getTerms();
+
     // get the postsLimit
     terms.limit = instance.postsLimit.get();
 
     console.log("Asking for " + terms.limit + " posts…")
 
     // subscribe
-    var postsSubscription = coreSubscriptions.subscribe('postsList', terms);
-    var usersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
+    var postsSubscription = Meteor.subscribe('postsList', terms);
+    var usersSubscription = Meteor.subscribe('postsListUsers', terms);
 
     // if subscriptions are ready, set limit to newLimit
     if (postsSubscription.ready() && usersSubscription.ready()) {
@@ -50,7 +54,7 @@ Template[getTemplate('singleDay')].created = function () {
   // 3. Cursor
 
   instance.getPostsCursor = function() {
-    var termsLoaded = _.extend(terms, {limit: instance.postsLoaded.get()});
+    var termsLoaded = _.extend(instance.getTerms(), {limit: instance.postsLoaded.get()});
     var parameters = getPostsParameters(termsLoaded);
     return Posts.find(parameters.find, parameters.options);
   }
