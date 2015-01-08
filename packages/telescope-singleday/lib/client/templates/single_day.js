@@ -19,14 +19,13 @@ Template[getTemplate('singleDay')].created = function () {
     return {
       view: 'digest',
       after: moment(currentDate).startOf('day').toDate(),
-      before: moment(currentDate).endOf('day').toDate(),
-      limit: instance.postsLimit
+      before: moment(currentDate).endOf('day').toDate()
     }
   };
 
   // 2. Autorun
 
-  // will re-run when the "postsLimit" reactive variables changes
+  // will re-run when postsLimit or currentDate change
   instance.autorun(function () {
 
     var terms = instance.getTerms();
@@ -49,6 +48,14 @@ Template[getTemplate('singleDay')].created = function () {
       instance.postsReady.set(false);
       console.log("> Subscription is not ready yet. \n\n");
     }
+  });
+
+  // this second autorun is there just to reset the post limit
+  // when current date changes (i.e. we're switching page)
+  instance.autorun(function () {
+    // just by including this session variable in the autorun, we automatically make it depend on it
+    var currentDate = Session.get('currentDate');
+    instance.postsLimit.set(getSetting('postsPerPage', 10));
   });
 
   // 3. Cursor

@@ -5,13 +5,7 @@ PostsSingleDayController = RouteController.extend({
   template: getTemplate('singleDay'),
 
   data: function() {
-    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today'),
-        terms = {
-          view: 'digest',
-          after: moment(currentDate).startOf('day').toDate(),
-          before: moment(currentDate).endOf('day').toDate()
-        },
-        parameters = getPostsParameters(terms);
+    var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
     Session.set('currentDate', currentDate);
   },
 
