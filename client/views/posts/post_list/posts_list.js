@@ -17,9 +17,9 @@ Template[getTemplate('posts_list')].helpers({
   after_post_item: function () {
     return getTemplate('after_post_item');
   },
-  posts : function () {
-    this.postsList.rewind();    
-    var posts = this.postsList.map(function (post, index, cursor) {
+  postsCursor : function () {
+    this.postsCursor.rewind();    
+    var posts = this.postsCursor.map(function (post, index, cursor) {
       post.rank = index;
       return post;
     });
