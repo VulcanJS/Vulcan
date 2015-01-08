@@ -75,7 +75,6 @@ Template[getTemplate('singleDay')].created = function () {
 
 Template[getTemplate('singleDay')].helpers({
   showDateNav: function () {
-    console.log(this)
     return (typeof this.showDateNav === 'undefined') ? true : this.showDateNav;
   },
   singleDayNav: function () {
