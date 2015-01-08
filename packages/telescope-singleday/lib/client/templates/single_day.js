@@ -92,7 +92,7 @@ Template[getTemplate('singleDay')].helpers({
       hasMorePosts: postsCursor.count() >= instance.postsLimit.get(),
 
       // what to do when user clicks "load more"
-      loadMoreHandler: function (event, instance) {
+      loadMoreHandler: function (instance) {
         event.preventDefault();
 
         // get current value for limit, i.e. how many posts are currently displayed
