@@ -26,6 +26,14 @@ Template[getTemplate('singleDay')].created = function () {
 
   // 2. Autorun
 
+  // this autorun is there just to reset the post limit
+  // when current date changes (i.e. we're switching page)
+  instance.autorun(function () {
+    // just by including this session variable in the autorun, we automatically make it depend on it
+    var currentDate = Session.get('currentDate');
+    instance.postsLimit.set(getSetting('postsPerPage', 10));
+  });
+
   // will re-run when postsLimit or currentDate change
   instance.autorun(function () {
 
@@ -55,17 +63,10 @@ Template[getTemplate('singleDay')].created = function () {
     }
   });
 
-  // this second autorun is there just to reset the post limit
-  // when current date changes (i.e. we're switching page)
-  instance.autorun(function () {
-    // just by including this session variable in the autorun, we automatically make it depend on it
-    var currentDate = Session.get('currentDate');
-    instance.postsLimit.set(getSetting('postsPerPage', 10));
-  });
-
   // 3. Cursor
 
   instance.getPostsCursor = function() {
+    // console.log('loaded ' + instance.postsLoaded.get() + ' posts')
     var termsLoaded = _.extend(instance.getTerms(), {limit: instance.postsLoaded.get()});
     var parameters = getPostsParameters(termsLoaded);
     return Posts.find(parameters.find, parameters.options);

@@ -483,3 +483,11 @@
  		vertical-align: middle;
  	}
  }
+.no-posts{
+	padding: 20px;
+	border: 1px solid black(0.1);
+	font-size: 16px;
+	border-radius: 3px;
+	// @extend .has-shadow;
+	margin-bottom: 10px;
+}

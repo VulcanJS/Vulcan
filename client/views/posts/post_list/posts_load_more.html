@@ -2,10 +2,14 @@
   {{#if hasMorePosts}}
     <a class="more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
   {{else}}
-    {{#unless postsReady}}
+    {{#if postsReady}}
+      <div class="no-posts">
+      {{_ "sorry_we_couldnt_find_any_posts"}}
+      </div>
+    {{else}}
       <div class="grid loading-module">
         {{> spinner}}
       </div>
-    {{/unless}}
+    {{/if}}
   {{/if}}
 </template>

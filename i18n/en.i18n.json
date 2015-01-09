@@ -90,6 +90,7 @@
   "inactive": "Inactive",
   "author": "Author",
   "userId": "User",
+  "sorry_we_couldnt_find_any_posts": "Sorry, we couldn't find any posts.",
 
   //Commments
   "your_comment_has_been_deleted": "Your comment has been deleted.",
@@ -284,7 +285,7 @@
   "please_log_in_first": "Please log in first.",
   "please_log_in_to_comment": "Please log in to comment.",
   "sign_in_sign_up_with_twitter": "Sign In/Sign Up with Twitter",
-  "load_more": "Load more",
+  "load_more": "Load More",
 
   "most_popular_posts": "The most popular posts right now.",
   "newest_posts": "The newest posts.",
