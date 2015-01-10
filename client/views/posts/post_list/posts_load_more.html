@@ -3,9 +3,9 @@
     <a class="more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
   {{else}}
     {{#if postsReady}}
-      <div class="no-posts">
-      {{_ "sorry_we_couldnt_find_any_posts"}}
-      </div>
+      {{#unless postsCount}}
+        <div class="no-posts">{{_ "sorry_we_couldnt_find_any_posts"}}</div>
+      {{/unless}}
     {{else}}
       <div class="grid loading-module">
         {{> spinner}}

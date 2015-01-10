@@ -1,3 +1,9 @@
+Template[getTemplate('postsLoadMore')].helpers({
+  postsCount: function () {
+    return this.postsCursor.count();
+  }  
+});
+
 Template[getTemplate('postsLoadMore')].events({
   'click .more-button': function (event, instance) {
     event.preventDefault();
@@ -9,4 +15,4 @@ Template[getTemplate('postsLoadMore')].events({
       this.loadMoreHandler();
     }
   }
-})
+});
