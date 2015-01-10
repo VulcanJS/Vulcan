@@ -1,6 +1,9 @@
 Template[getTemplate('postsLoadMore')].helpers({
-  postsCount: function () {
-    return this.postsCursor.count();
+  postsReady: function () {
+    return this.postsReady;
+  },
+  hasPosts: function () {
+    return !!this.postsCursor.count();
   }  
 });
 

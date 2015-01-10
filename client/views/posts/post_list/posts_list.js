@@ -18,7 +18,6 @@ Template[getTemplate('posts_list')].helpers({
     return getTemplate('after_post_item');
   },
   postsCursor : function () {
-    this.postsCursor.rewind();    
     var posts = this.postsCursor.map(function (post, index, cursor) {
       post.rank = index;
       return post;

@@ -1,15 +1,13 @@
 <template name="postsLoadMore">
-  {{#if hasMorePosts}}
-    <a class="more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
-  {{else}}
-    {{#if postsReady}}
-      {{#unless postsCount}}
-        <div class="no-posts">{{_ "sorry_we_couldnt_find_any_posts"}}</div>
-      {{/unless}}
+  {{#if postsReady}}
+    {{#if hasPosts}}
+      {{#if hasMorePosts}}
+        <a class="more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+      {{/if}}
     {{else}}
-      <div class="grid loading-module">
-        {{> spinner}}
-      </div>
+      <div class="no-posts">{{_ "sorry_we_couldnt_find_any_posts"}}</div>
     {{/if}}
+  {{else}}
+    <div class="loading-module">{{> spinner}}</div>
   {{/if}}
 </template>

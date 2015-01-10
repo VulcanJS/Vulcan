@@ -1,6 +1,6 @@
 <template name="posts_list">
-  {{> UI.dynamic template=postsListIncoming data=incoming}}
   <div class="posts-wrapper grid grid-module">
+    {{> UI.dynamic template=postsListIncoming data=incoming}}
     <div class="posts list">
       {{#each postsCursor}}
         {{> UI.dynamic template=before_post_item}}
@@ -8,6 +8,6 @@
         {{> UI.dynamic template=after_post_item}}
       {{/each}}
     </div>
+    {{> UI.dynamic template=postsLoadMore}}
   </div>
-  {{> UI.dynamic template=postsLoadMore}}
 </template>
