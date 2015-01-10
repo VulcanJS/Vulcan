@@ -18,11 +18,15 @@ Template[getTemplate('posts_list')].helpers({
     return getTemplate('after_post_item');
   },
   postsCursor : function () {
-    var posts = this.postsCursor.map(function (post, index, cursor) {
-      post.rank = index;
-      return post;
-    });
-    return posts;
+    if (this.postsCursor) { // not sure why this should ever be undefined, but it can apparently
+      var posts = this.postsCursor.map(function (post, index, cursor) {
+        post.rank = index;
+        return post;
+      });
+      return posts;
+    } else {
+      console.log('postsCursor not defined')
+    }
   },
   postsLoadMore: function () {
     return getTemplate('postsLoadMore');
