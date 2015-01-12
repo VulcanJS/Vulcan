@@ -39,6 +39,7 @@ $mobile-header-height: 50px;
 .logo{
   vertical-align: middle;
   line-height: 1;
+  padding: 0 60px; // leave space for nav button on mobile
   @include small{
     margin-right: 0;
     a{

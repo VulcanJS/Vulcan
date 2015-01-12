@@ -280,7 +280,7 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'extras',
-      instructions: 'Footer content (accepts HTML).',
+      instructions: 'Footer content (accepts Markdown).',
       rows: 5
     }
   },
