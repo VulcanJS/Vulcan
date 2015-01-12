@@ -1,3 +1,7 @@
+## v0.12.1
+
+* Footer field now accepts Markdown instead of HTML.
+
 ## v0.12.0 “DummyScope”
 
 **Important: existing newsletters and feeds need to be manually enabled in the Settings panel** 
