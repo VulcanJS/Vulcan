@@ -1,5 +1,13 @@
-## v0.12.1
+## v0.13.0 “ComponentScope”
 
+* Tweaked comments layout in Hubbble theme.
+* Added Bulgarian translation (thanks @toome123!).
+* Cleaned up permission functions (thanks @anthonymayer!).
+* Various fixes (thanks @comerc and @Kikobeats!).
+* Stopped synced-cron message logging.
+* Limit all posts lists to 200 posts.
+* Refactored posts lists to use the template-level subscription pattern when appropriate.
+* Refactored `single day` and `daily` packages.
 * Footer field now accepts Markdown instead of HTML.
 
 ## v0.12.0 “DummyScope”

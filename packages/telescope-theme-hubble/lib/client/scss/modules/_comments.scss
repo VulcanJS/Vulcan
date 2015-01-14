@@ -169,6 +169,9 @@
 	margin-bottom:10px;
 	@include cf;
 	font-size: 14px;
+	@include small{
+		padding-left: 15px;
+	}
 	.user-avatar, .comment-username, .comment-time, .comment-permalink{
 		display:inline-block;
 		margin-right:6px;
