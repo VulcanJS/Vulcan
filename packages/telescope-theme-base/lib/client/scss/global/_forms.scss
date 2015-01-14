@@ -137,7 +137,7 @@ input[type="submit"], button, .button, .btn{
   &.inline{
     display: inline-block;
   }
-  &.btn-primary{
+  &.btn-primary, &.submit{
     background:$red;
     &:link, &:hover, &:active, &:visited{
       color:white;

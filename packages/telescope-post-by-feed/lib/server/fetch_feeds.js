@@ -10,6 +10,7 @@ var handleFeed = function(error, feed) {
   if (error) return;
 
   var feedItems = _.first(feed.items, 20); // limit feed to 20 items just in case
+  var userId = this._parser._options.userId;
 
   clog('// Parsing RSS feed: '+ feed.title)
 
@@ -28,11 +29,13 @@ var handleFeed = function(error, feed) {
         url: item.link,
         feedId: feed.id,
         feedItemId: item.id,
-        userId: getFirstAdminUser()._id
+        userId: userId
       }
 
       if (item.description)
         post.body = toMarkdown(he.decode(item.description));
+
+      // console.log(feed)
 
       // if RSS item link is a 301 or 302 redirect, follow the redirect
       var get = HTTP.get(item.link, {followRedirects: false});
@@ -61,11 +64,15 @@ fetchFeeds = function() {
   var content;
 
   Feeds.find().forEach(function(feed) {
+
+    // if feed doesn't specify a user, default to admin
+    var userId = !!feed.userId ? feed.userId : getFirstAdminUser()._id;
+
     try {
 
       content = HTTP.get(feed.url).content;
       var feedHandler = new htmlParser.FeedHandler(handleFeed);
-      var parser = new htmlParser.Parser(feedHandler, {xmlMode: true});
+      var parser = new htmlParser.Parser(feedHandler, {xmlMode: true, userId: userId});
       parser.write(content);
       parser.end();
 
