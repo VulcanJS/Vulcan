@@ -29,6 +29,8 @@ Template[getTemplate('quickForm_telescope')].helpers({
     var fields = _.pluck(_.filter(getSchema(), function (field, key) {
       if (field.name.indexOf('$') !== -1) // filter out fields with "$" in their name
         return false
+      if (field.name.indexOf('poll') !== -1 ) // filter out poll's sub fields
+        return false
       if (field.autoform && field.autoform.omit) // filter out fields with omit = true
         return false
       if (field.autoform && field.autoform.group) // filter out fields with a group
@@ -168,6 +170,6 @@ Template["afArrayField_telescope"].helpers({
     };
   },
   showField: function () {
-    return canEditField(this);
+    return canEditField(this) ;
   },
 });

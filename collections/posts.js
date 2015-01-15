@@ -57,6 +57,52 @@ postSchemaObject = {
       rows: 5
     }
   },
+  poll: {
+    type: Object
+  },
+  'poll.type': {
+    type: String,
+    allowedValues: ["binary", "multiple"],
+    autoform: {
+      noselect: true,
+      options: [
+        {label: "Yes or No answer", value: "binary"}, 
+        {label: "Multiple options", value: "multiple"}
+      ]
+    } 
+  },
+  'poll.options': {
+    type: Array,
+    maxCount: 5,
+    minCount: 2,
+    optional: true,
+    custom: function () {
+      if ( this.field('poll.type').value === "multiple" && !this.isSet && (!this.operator || (this.value === null || this.value === ""))) {
+        return "required";
+      }
+    }
+  },
+  'poll.options.$': {
+    type: Object
+  },
+  'poll.options.$.name': {
+    type: String,
+    label: "Option text"
+  },
+  'poll.options.$.votes': {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  'poll.options.$.voters': {
+    type: [String], // XXX
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
   htmlBody: {
     type: String,
     optional: true,

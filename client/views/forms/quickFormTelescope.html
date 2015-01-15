@@ -5,8 +5,15 @@
       {{#each fieldsWithNoFieldset}}
         {{> afQuickField name=this template="telescope" input-col-class=inputClass label-class=labelClass}}
       {{/each}}
+
+      {{> afQuickField name="poll.type" input-col-class=inputClass label-class=labelClass}}
+
+      {{#if afFieldValueIs name="poll.type" value="multiple"}}
+        {{> afQuickField name="poll.options" input-col-class=inputClass label-class=labelClass}}
+      {{/if}}
+
     </div>
-    
+
     {{#each afFieldsets}}
       <fieldset>
         <h3 class="fieldset-heading">{{fieldsetName}}</h3>
