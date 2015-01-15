@@ -120,6 +120,29 @@ var migrationsList = {
     });
     return i;
   },
+  updateUserNames: function () {
+    var i = 0;
+    var allUsers = Meteor.users.find();
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      i++;
+      console.log('> Updating user '+user._id+' ('+user.username+' -> ' + user.username.toLowerCase() + ')');
+
+      try {
+        Meteor.users.update(user._id, {
+          $set: {
+            username: user.username.toLowerCase()
+          }
+        });
+      }
+      catch (err) {
+        console.warn('> Unable to convert username ' + user.username + ' to lowercase!');
+        console.warn('> Please try to fix it by hands!! :(');
+      }
+    });
+    return i;
+  },
   updateUserProfiles: function () {
     var i = 0;
     var allUsers = Meteor.users.find();
