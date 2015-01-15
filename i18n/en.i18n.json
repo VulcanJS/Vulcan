@@ -9,7 +9,7 @@
   "users": "Users",
   "settings": "Settings",
   "admin": "Admin",
-  "post": "Post",
+  "post": "Add Question",
   "toolbox": "Toolbox",
   "sign_up_sign_in": "Sign Up/Sign In",
   "my_account": "My Account",
@@ -17,23 +17,23 @@
   "edit_account": "Edit Account",
 
   //Main
-  "new_posts": "New Posts",
+  "new_posts": "New Questions",
 
   // Settings Schema
   "title": "Title",
   "siteUrl": "Site URL",
   "tagline": "Tagline",
   "requireViewInvite": "Require Invite to View",
-  "requirePostInvite": "Require Invite to Post",
-  "requirePostsApproval": "Require Posts to be Approved",
+  "requireQuestionInvite": "Require Invite to Question",
+  "requireQuestionsApproval": "Require Questions to be Approved",
   "defaultEmail": "Default Email",
   "scoreUpdateInterval": "Score Update Interval",
   "defaultView": "Default View",
-  "postInterval": "Post Interval",
+  "postInterval": "Question Interval",
   "commentInterval": "Comment Interval",
-  "maxPostsPerDay": "Max Posts Per Day",
+  "maxQuestionsPerDay": "Max Questions Per Day",
   "startInvitesCount": "Invites Start Count",
-  "postsPerPage": "Posts Per Page",
+  "postsPerPage": "Questions Per Page",
   "logoUrl": "Logo URL",
   "logoHeight": "Logo Height",
   "logoWidth": "Logo Width",
@@ -58,7 +58,7 @@
   "invites": "Invites",
   "email": "Email", 
   "scoring": "Scoring",
-  "posts": "Posts",
+  "posts": "Questions",
   "comments": "Comments", 
   "logo": "Logo",
   "extras": "Extras",
@@ -67,9 +67,9 @@
 
   // Settings Help Text
 
-  // Post Schema
+  // Question Schema
   "createdAt": "Created At",
-  "postedAt": "Posted At",
+  "postedAt": "Questioned At",
   "url": "URL",  
   "title": "Title",
   "body": "Body",
@@ -119,10 +119,10 @@
   "notifications": "notifications",
   "mark_all_as_read": "Mark all as read",
 
-  // Post deleted
+  // Question deleted
   "your_post_has_been_deleted": "Your post has been deleted.",
 
-  // Post submit & edit
+  // Question submit & edit
   "created": "Created",
   "title": "Title",
   "suggest_title": "Suggest title",
@@ -141,12 +141,12 @@
   "status_": "Status",
   "approved": "Approved",
   "rejected": "Rejected",
-  "delete_post": "Delete Post",
+  "delete_post": "Delete Question",
   "thanks_your_post_is_awaiting_approval": "Thanks, your post is awaiting approval.",
   "sorry_couldnt_find_a_title": "Sorry, couldn't find a title...",
   "please_fill_in_an_url_first": "Please fill in an URL first!",
 
-  // Post item
+  // Question item
   "share": "Share",
   "discuss": "Discuss",
   "upvote_": "Upvote",
@@ -179,8 +179,8 @@
   "new_password": "New Password",
   "email_notifications": "Email Notifications",
   "new_users" : "New users",
-  "new_posts": "New Posts",
-  "comments_on_my_posts": "Comments on my posts",
+  "new_posts": "New Questions",
+  "comments_on_my_posts": "Comments on my questions",
   "replies_to_my_comments": "Replies to my comments",
   "forgot_password": "Forgot password?",
   "profile_updated": "Profile updated",
@@ -194,7 +194,7 @@
   "reset_password": "Reset Password",
   "password_reset_link_sent": "Password reset link sent!",
   "name": "Name",
-  "posts": "Posts",
+  "posts": "Questions",
   "comments_": "Comments",
   "karma": "Karma",
   "is_invited": "Is Invited?",
@@ -237,7 +237,7 @@
   "please_fill_in_a_headline": "Please fill in a headline",
   "this_link_has_already_been_posted": "This link has already been posted",
   "sorry_you_cannot_submit_more_than": "Sorry, you cannot submit more than ",
-  "posts_per_day": " posts per day",
+  "posts_per_day": " questions per day",
   "someone_replied_to_your_comment_on": "Someone replied to your comment on",
   "has_replied_to_your_comment_on": " has replied to your comment on",
   "read_more": "Read more",
@@ -253,10 +253,10 @@
   "please_fill_in_a_title": "Please fill in a title",
   "seconds_before_posting_again": " seconds before posting again",
   "upvoted": "Upvoted",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
+  "posted_date": "Questioned Date",
+  "posted_time": "Questioned Time",
+  "posted_date": "Questioned Date",
+  "posted_time": "Questioned Time",
   "profile": "Profile",
   "sign_out": "Sign Out",
   "you_ve_been_signed_out": "You've been signed out. Come back soon!",
@@ -271,8 +271,8 @@
   "bio": "Bio:",
   "github": "GitHub",
   "site": "Site",
-  "upvoted_posts": "Upvoted Posts",
-  "downvoted_posts": "Downvoted Posts",
+  "upvoted_posts": "Upvoted Questions",
+  "downvoted_posts": "Downvoted Questions",
   "mark_as_read": "Mark as read",
 
   //Common
@@ -286,14 +286,14 @@
   "sign_in_sign_up_with_twitter": "Sign In/Sign Up with Twitter",
   "load_more": "Load more",
 
-  "most_popular_posts": "The most popular posts right now.",
-  "newest_posts": "The newest posts.",
-  "highest_ranked_posts_ever": "The all-time highest-ranked posts.",
+  "most_popular_posts": "The most popular questions right now.",
+  "newest_posts": "The newest questions.",
+  "highest_ranked_posts_ever": "The all-time highest-ranked questions.",
 
   "the_profile_of": "The profile of",
   
-  "posts_awaiting_moderation": "Posts awaiting moderation.",
-  "future_scheduled_posts": "Future scheduled posts.",
+  "posts_awaiting_moderation": "Questions awaiting moderation.",
+  "future_scheduled_posts": "Future scheduled questions.",
   "users_dashboard": "Users dashboard.",
   "telescope_settings_panel": "Telescope settings panel.",
   "various_utilities": "Various utilities."

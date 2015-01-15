@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "rss": {
-      "version": "0.3.2",
+      "version": "http://registry.npmjs.org/rss/-/rss-0.3.2.tgz",
       "dependencies": {
         "xml": {
-          "version": "0.0.12"
+          "version": "http://registry.npmjs.org/xml/-/xml-0.0.12.tgz"
         },
         "mime": {
           "version": "1.2.11"
