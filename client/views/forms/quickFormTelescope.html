@@ -6,10 +6,10 @@
         {{> afQuickField name=this template="telescope" input-col-class=inputClass label-class=labelClass}}
       {{/each}}
 
-      {{> afQuickField name="poll.type" input-col-class=inputClass label-class=labelClass}}
+      {{> afQuickField name="poll.type" template="telescope" input-col-class=inputClass label-class=labelClass}}
 
       {{#if afFieldValueIs name="poll.type" value="multiple"}}
-        {{> afQuickField name="poll.options" input-col-class=inputClass label-class=labelClass}}
+        {{> afQuickField name="poll.options" template="telescope" input-col-class=inputClass label-class=labelClass}}
       {{/if}}
 
     </div>
@@ -77,7 +77,7 @@
 <template name="afArrayField_telescope">
   {{#if showField}}
     <div class="form-group {{#if afFieldIsInvalid name=this.atts.name}}has-error{{/if}}">
-      <label class="control-label">{{_ this.atts.name}}</label>
+      <label class="control-label">{{_ this.atts.label}}</label>
       <div class="{{rightColumnClass}}">
         <div class="panel panel-default autoform-padding-fix">
           {{#if afFieldIsInvalid name=this.atts.name}}
@@ -90,7 +90,7 @@
             <li class="list-group-item autoform-array-item">
               <div class="media">
                 {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-                <button class="btn btn-primary autoform-remove-item pull-left"><span class="glyphicon glyphicon-minus"></span></button>
+                <button class="btn btn-primary autoform-remove-item pull-left"><span style="font-size:40px;line-height: 10px;">-</span></button>
                 {{/if}}
                 <div class="media-body">
                   {{> afQuickField name=this.name label=false}}
@@ -100,7 +100,7 @@
             {{/afEachArrayItem}}
             {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
             <li class="list-group-item">
-              <button class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
+              <button class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span><i class="icon icon-plus"></i></span></button>
             </li>
             {{/if}}
           </ul>

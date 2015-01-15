@@ -10,7 +10,13 @@ var thumbnailProperty = {
     }
   }
 }
-addToPostSchema.push(thumbnailProperty);
+
+Meteor.call('embedlyKeyExists', function(err,result){
+  if (result) {
+    addToPostSchema.push(thumbnailProperty);
+  }
+});
+
 
 var mediaProperty = {
   propertyName: 'media',

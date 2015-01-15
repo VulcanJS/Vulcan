@@ -58,12 +58,21 @@ postSchemaObject = {
     }
   },
   poll: {
-    type: Object
+    type: Object,
+    editable: true,
+    autoform: {
+      editable: true
+    }
   },
   'poll.type': {
     type: String,
+    label: "Poll Types",
+    editable: true,
     allowedValues: ["binary", "multiple"],
+    defaultValue: "binary",
     autoform: {
+      label: "Poll Types",
+      editable: true,
       noselect: true,
       options: [
         {label: "Yes or No answer", value: "binary"}, 
@@ -73,6 +82,8 @@ postSchemaObject = {
   },
   'poll.options': {
     type: Array,
+    // label: "Poll Options",
+    editable: true,
     maxCount: 5,
     minCount: 2,
     optional: true,
@@ -80,14 +91,25 @@ postSchemaObject = {
       if ( this.field('poll.type').value === "multiple" && !this.isSet && (!this.operator || (this.value === null || this.value === ""))) {
         return "required";
       }
+    },
+    autoform: {
+      editable: true
     }
   },
   'poll.options.$': {
-    type: Object
+    type: Object,
+    editable: true,
+    autoform: {
+      editable: true
+    }
   },
   'poll.options.$.name': {
     type: String,
-    label: "Option text"
+    label: " ",
+    editable: true,
+    autoform: {
+      editable: true
+    }
   },
   'poll.options.$.votes': {
     type: Number,
