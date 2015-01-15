@@ -91,3 +91,17 @@ UI.registerHelper("userName", function(userOrUserId) {
   if (!!user)
     return getUserName(user);
 });
+
+UI.registerHelper("humanURL", function(url) {
+  Meteor.call("humanizeUrl", url, function(err, result){
+    Session.set(url, result);
+  });
+  return Session.get(url);
+});
+
+UI.registerHelper("prependURL", function(url) {
+  Meteor.call("prependHttp", url, function(err, result){
+    Session.set(url, result);
+  });
+  return Session.get(url);
+});
