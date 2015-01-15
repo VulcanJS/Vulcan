@@ -131,6 +131,7 @@ Template["afFormGroup_telescope"].helpers({
     return atts['input-col-class'] || "";
   },
   showField: function () {
+    this.atts.label = capitalise(i18n.t(this.atts.name.replace(".", "_")));
     return canEditField(this);
   },
   afFieldInstructions: function () {
@@ -152,6 +153,7 @@ Template["afObjectField_telescope"].helpers({
     }
   },
   showField: function () {
+    this.atts.label = " ";
     return canEditField(this);
   },
 });
@@ -170,6 +172,7 @@ Template["afArrayField_telescope"].helpers({
     };
   },
   showField: function () {
+    this.atts.label = capitalise(i18n.t(this.atts.name.replace(".", "_")));
     return canEditField(this) ;
   },
 });

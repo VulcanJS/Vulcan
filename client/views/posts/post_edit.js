@@ -39,6 +39,11 @@ AutoForm.hooks({
 });
 
 // delete link
+Template[getTemplate('post_edit')].helpers({
+
+});
+
+// delete link
 Template[getTemplate('post_edit')].events({
   'click .delete-link': function(e){
     var post = this.post;

@@ -30,19 +30,10 @@ postSchemaObject = {
       type: "bootstrap-datetimepicker"
     }
   },
-  url: {
-    type: String,
-    label: "URL",
-    optional: true,
-    autoform: {
-      editable: true,
-      type: "bootstrap-url"
-    }
-  },
   title: {
     type: String,
     optional: false,
-    label: "Title",
+    label: "Question",
     editable: true,
     autoform: {
       editable: true
@@ -55,6 +46,15 @@ postSchemaObject = {
     autoform: {
       editable: true,
       rows: 5
+    }
+  },
+  url: {
+    type: String,
+    label: "Referring URL",
+    optional: true,
+    autoform: {
+      editable: true,
+      type: "bootstrap-url"
     }
   },
   poll: {
@@ -75,7 +75,7 @@ postSchemaObject = {
       editable: true,
       noselect: true,
       options: [
-        {label: "Yes or No answer", value: "binary"}, 
+        {label: "Yes/No choice", value: "binary"}, 
         {label: "Multiple options", value: "multiple"}
       ]
     } 
@@ -292,6 +292,7 @@ getPostProperties = function (post) {
     profileUrl: getProfileUrlBySlugOrId(post.userId),
     postUrl: getPostPageUrl(post),
     // thumbnailUrl: post.thumbnailUrl,
+    poll: post.poll,
     linkUrl: !!post.url ? getOutgoingUrl(post.url) : getPostPageUrl(post._id)
   };
 
@@ -525,7 +526,8 @@ Meteor.methods({
 
   editPost: function (post, modifier, postId) {
 
-    var user = Meteor.user();
+    var user = Meteor.user(),
+        hasAdminRights = isAdmin(user);
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -537,6 +539,7 @@ Meteor.methods({
 
     // run all post submit server callbacks on modifier successively
     modifier = postEditMethodCallbacks.reduce(function(result, currentFunction) {
+        console.log(result);
         return currentFunction(result);
     }, modifier);
 
