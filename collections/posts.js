@@ -105,6 +105,7 @@ postSchemaObject = {
   },
   'poll.options.$.name': {
     type: String,
+    max: 140,
     label: " ",
     editable: true,
     autoform: {

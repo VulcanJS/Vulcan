@@ -10,7 +10,11 @@ Template[getTemplate('post_page')].helpers({
   },
   comment_list: function () {
     return getTemplate('comment_list');
+  },
+  poll_form: function () {
+    return getTemplate('poll_form');
   }
+
 });
 
 Template[getTemplate('post_page')].rendered = function(){

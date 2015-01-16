@@ -1,0 +1,34 @@
+<template name="poll_form">
+	<div class="comment-new module">
+		
+	{{#if binaryPoll}}
+        <div class="row">
+        	<div class="col-md-6">
+        		<button type="button" class="btn btn-success">Yes</button>
+        	</div>
+        	<div class="col-md-6">
+        		<button type="button" class="btn btn-primary btn-submit">No</button>
+        	</div>
+        </div>
+	{{/if}}
+
+	{{#if multiplePoll}}
+        <div class="row">
+        	<div class="col-md-6">
+        		<button type="button" class="btn btn-success">Yes</button>
+        	</div>
+        	<div class="col-md-6">
+        		<button type="button" class="btn btn-primary btn-submit">No</button>
+        	</div>
+        	<div class="col-md-6">
+        		<button type="button" class="btn btn-primary btn-submit">Maybe</button>
+        	</div>
+        </div>
+	{{/if}}
+
+	{{#if votated}}
+
+	{{/if}}
+
+	</div>
+</template>
