@@ -210,8 +210,12 @@
 	padding: 0;
 	margin-bottom: 20px;
 }
-.post-rank{
+.post-module.post-rank{
+	margin: 0;
+}
+.post-rank-inner{
   position: relative;
+  height: 25px;
   span{
 	position:absolute;
 	top:0px;
