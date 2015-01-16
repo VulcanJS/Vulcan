@@ -94,14 +94,14 @@ UI.registerHelper("userName", function(userOrUserId) {
 
 UI.registerHelper("humanURL", function(url) {
   Meteor.call("humanizeUrl", url, function(err, result){
-    Session.set(url, result);
+    Session.set("humanizeUrl_" + url, result);
   });
-  return Session.get(url);
+  return Session.get("humanizeUrl_" + url);
 });
 
 UI.registerHelper("prependURL", function(url) {
   Meteor.call("prependHttp", url, function(err, result){
-    Session.set(url, result);
+    Session.set("preprendHttp_" + url, result);
   });
-  return Session.get(url);
+  return Session.get("preprendHttp_" + url);
 });
