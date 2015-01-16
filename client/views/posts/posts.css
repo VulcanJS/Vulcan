@@ -1,0 +1,22 @@
+h1, h2, h3, h4, h5 {
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 1.33em;
+  margin: -webkit-calc(1rem - 0.165em ) 0em 1rem;
+  margin: calc(1rem - 0.165em ) 0em 1rem;
+  font-weight: bold;
+  padding: 0em;
+}
+
+.ui.basic.green.buttons .button, .ui.basic.green.button {
+	width: 100%;
+	max-width: 100%;
+}
+
+.poll-option {
+	text-align: center;
+}
+
+.poll-option .ui.green.button {
+	width: 100%;
+	max-width: 100%;
+}

@@ -64,6 +64,13 @@ postSchemaObject = {
       editable: true
     }
   },
+  'poll.voteCount': {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
   'poll.type': {
     type: String,
     label: "Poll Types",
@@ -110,6 +117,13 @@ postSchemaObject = {
     editable: true,
     autoform: {
       editable: true
+    }
+  },
+  'poll.options.$.voteOrder': {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
     }
   },
   'poll.options.$.votes': {
@@ -416,6 +430,39 @@ submitPost = function (post) {
     status: getDefaultPostStatus(),
     postedAt: new Date()
   };
+
+
+  // // ------------------------------ Set default for binary poll ------------------------------ //
+
+  post.poll.voteCount = 0;
+
+  if (post.poll.type === "binary") {
+    post.poll.options = [
+      {
+        name: "Yes",
+        voteOrder: 1,
+        votes: 0,
+        voters: []
+      },{
+        name: "No",
+        voteOrder: 2,
+        votes: 0,
+        voters: []
+      }
+    ]
+  }
+
+  if (post.poll.type === "multiple") {
+    var pollOptionsCount = post.poll.options.length;
+    for (var i = 0; i < pollOptionsCount; i++) {
+      post.poll.options[i] = {
+        name: post.poll.options[i].name,
+        voteOrder: i + 1,
+        votes: 0,
+        voters: []
+      }
+    };
+  }
 
   post = _.extend(defaultProperties, post);
 

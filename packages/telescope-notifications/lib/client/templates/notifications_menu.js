@@ -11,11 +11,11 @@ Template[getTemplate('notificationsMenu')].helpers({
   notificationCount: function(){
     var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}).fetch();
     if(notifications.length==0){
-      return __('no_notifications');
-    }else if(notifications.length==1){
-      return __('1_notification');
+      return '<i class="alarm outline icon"></i>';
+    // }else if(notifications.length==1){
+    //   return __('1_notification');
     }else{
-      return notifications.length+' '+__('notifications');
+      return '<i class="alarm icon"></i>'+ ' ' +' <a class="ui green circular label">'+ notifications.length + '</a>';
     }
   },
   notification_class: function(){

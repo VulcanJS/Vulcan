@@ -2,28 +2,34 @@
 	<div class="comment-new module">
 		
 	{{#if binaryPoll}}
-        <div class="row">
-        	<div class="col-md-6">
-        		<button type="button" class="btn btn-success">Yes</button>
-        	</div>
-        	<div class="col-md-6">
-        		<button type="button" class="btn btn-primary btn-submit">No</button>
-        	</div>
-        </div>
+
+		<div class="ui large form">
+			<div class="two fields">
+				<div class="field">
+        			<div class="positive ui button">Positive</div>
+				</div>
+				<div class="field">
+					<div class="negative ui button">Negative</div>
+				</div>
+			</div>
+		</div>
+
 	{{/if}}
 
 	{{#if multiplePoll}}
-        <div class="row">
-        	<div class="col-md-6">
-        		<button type="button" class="btn btn-success">Yes</button>
-        	</div>
-        	<div class="col-md-6">
-        		<button type="button" class="btn btn-primary btn-submit">No</button>
-        	</div>
-        	<div class="col-md-6">
-        		<button type="button" class="btn btn-primary btn-submit">Maybe</button>
-        	</div>
-        </div>
+		<form class="ui form">
+		<div class="grouped fields center aligned">
+			<div class="ui list">
+		{{#each this.poll.options}}
+  				<div class="item poll-option">
+  					<div class="ui green button">
+					<label>{{name}}</label>
+					</div>
+				</div>
+		{{/each}}
+			</div>
+		</div>
+		</form>
 	{{/if}}
 
 	{{#if votated}}

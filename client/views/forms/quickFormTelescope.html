@@ -90,7 +90,11 @@
             <li class="list-group-item autoform-array-item">
               <div class="media">
                 {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-                <button class="btn btn-primary autoform-remove-item pull-left"><span style="font-size:40px;line-height: 10px;">-</span></button>
+                <button class="autoform-remove-item pull-left ui compact labeled icon button">
+                    <i class="caret down icon"></i>
+                    Remove
+                </button>
+
                 {{/if}}
                 <div class="media-body">
                   {{> afQuickField name=this.name label=false}}
@@ -100,7 +104,10 @@
             {{/afEachArrayItem}}
             {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
             <li class="list-group-item">
-              <button class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span><i class="icon icon-plus"></i></span></button>
+              <button class="autoform-add-item ui compact labeled icon button" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}">
+                  <i class="plus icon"></i>
+                  Add an option
+              </button>
             </li>
             {{/if}}
           </ul>

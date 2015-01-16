@@ -124,16 +124,16 @@
 	}
 	a{
 		display: block;
-		width: 36px;
-		height: 36px;
+		width: 40px;
+		height: 40px;
 		padding: 6px;
 		span{
 			display: block;
 			height: 100%;
 			width: 100%;
 			border-radius: 3px;
-			border: 1px solid rgba($red, 0.3);
-			color: rgba($red, 0.8);
+			border: 1px solid rgba($grey, 0.3);
+			color: rgba($grey, 0.8);
 			text-align: center;
 			line-height: 14px;
 			font-weight: bold;
@@ -254,7 +254,7 @@
 	line-height: 1.2;
 	.post-title{
 		@include small{
-			font-size: 15px;
+			font-size: 21px;
 		}
 		@include medium-large{
 			font-size:18px;
