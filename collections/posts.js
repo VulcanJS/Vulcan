@@ -32,7 +32,6 @@ postSchemaObject = {
   },
   url: {
     type: String,
-    label: "URL",
     optional: true,
     autoform: {
       editable: true,
@@ -42,7 +41,6 @@ postSchemaObject = {
   title: {
     type: String,
     optional: false,
-    label: "Title",
     editable: true,
     autoform: {
       editable: true
