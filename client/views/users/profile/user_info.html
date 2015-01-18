@@ -25,19 +25,19 @@
       {{#if getTwitterName}}
         <tr>
           <td>Twitter: </td>
-          <td><a href="http://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
+          <td><a href="https://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
         </tr>
       {{/if}}
       {{#if getGitHubName}}
         <tr>
           <td>{{_ "github"}}:</td>
-          <td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
+          <td><a href="https://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
         </tr>
       {{/if}}
       {{#if profile.site}}
         <tr>
           <td>{{_ "site"}}:</td>
-          <td><a href="{{profile.site}}">{{profile.site}}</a></td>
+          <td><a href="{{prependURL profile.site}}">{{humanURL profile.site}}</a></td>
         </tr>
       {{/if}}
     </table>
