@@ -133,6 +133,19 @@ Template["afFormGroup_telescope"].helpers({
   },
   afFieldInstructions: function () {
     return this.afFieldInputAtts.instructions;
+  },
+  label: function () {
+
+    var name = this.atts.name;
+    var label = name; // default to field name
+
+    // ugly hack to figure out if schema is Post (the only one that's modifiable right now)
+    if (getCurrentTemplate().indexOf("post") !== -1 && !!postSchemaObject[name].label) {
+      var label = postSchemaObject[name].label;
+    }
+
+    return i18n.t(label);
+
   }
 });
 

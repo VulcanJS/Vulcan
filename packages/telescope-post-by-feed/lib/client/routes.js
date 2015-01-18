@@ -13,7 +13,10 @@ Meteor.startup(function () {
   Router.route('/feeds', {
     name: 'feeds',
     waitOn: function() {
-      return Meteor.subscribe('feeds');
+      return [
+        Meteor.subscribe('feeds'),
+        Meteor.subscribe('allUsersAdmin')
+      ];
     },
     template: getTemplate('feeds')
   });

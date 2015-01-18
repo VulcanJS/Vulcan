@@ -1,6 +1,6 @@
 Template[getTemplate('comment_form')].helpers({
-  canComment: function(){
-    return canComment(Meteor.user());
+  reason: function () {
+    return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');
   }
 });
 
@@ -22,14 +22,14 @@ Template[getTemplate('comment_form')].events({
     // $submitButton.addClass('loading');
 
     $commentForm.val('');
-      
+
     var post = postObject;
 
     comment = {
       postId: post._id,
       body: body
     }
-    
+
     // child comment
     if (getCurrentTemplate() == 'comment_reply') {
       comment.parentCommentId = this.comment._id;
@@ -45,6 +45,6 @@ Template[getTemplate('comment_form')].events({
         trackEvent("newComment", newComment);
       }
     });
-    
+
   }
 });

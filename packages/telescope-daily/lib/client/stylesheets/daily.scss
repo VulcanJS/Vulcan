@@ -1,0 +1,21 @@
+.posts-day-heading{
+  font-size: 16px;
+  color: rgba(0,0,0,0.5);
+  margin: 0 0 10px 0;
+}
+.empty-day-notice{
+  padding: 15px;
+}
+.posts-day .post:last-child{
+  border-radius: 0 0 3px 3px;
+}
+.load-more-days-button{
+  display: block;
+  background: none;
+  width:100%;
+  text-align:center;
+  font-size:18px;
+  padding: 0px;
+  text-align: center;
+  margin: 20px 0;
+}

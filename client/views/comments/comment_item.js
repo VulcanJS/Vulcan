@@ -79,12 +79,6 @@ Template[getTemplate('comment_item')].helpers({
   authorName: function(){
     return getAuthorName(this);
   },
-  can_edit: function(){
-    if(this.userId && Meteor.userId())
-      return isAdmin(Meteor.user()) || (Meteor.userId() === this.userId);
-    else
-      return false;
-  },
   showChildComments: function(){
     // TODO: fix this
     // return Session.get('showChildComments');

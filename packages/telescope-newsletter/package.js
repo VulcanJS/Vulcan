@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'telescope-base', 
     'aldeed:simple-schema',
     'iron:router',
-    'mrt:mailchimp',
+    'miro:mailchimp',
     'tap:i18n',
     'fourseven:scss'
   ], ['client', 'server']);

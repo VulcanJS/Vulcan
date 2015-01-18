@@ -207,12 +207,15 @@
 	padding:10px 0;
 }
 .posts-wrapper{
-	@extend .has-shadow;
-	border-radius: 3px;
 	padding: 0;
+	margin-bottom: 20px;
 }
-.post-rank{
+.post-module.post-rank{
+	margin: 0;
+}
+.post-rank-inner{
   position: relative;
+  height: 25px;
   span{
 	position:absolute;
 	top:0px;
@@ -483,3 +486,12 @@
  		vertical-align: middle;
  	}
  }
+.no-posts{
+	padding: 20px;
+	border: 1px solid black(0.1);
+	font-size: 14px;
+	border-radius: 3px;
+	// @extend .has-shadow;
+	margin-bottom: 10px;
+	color: black(0.5);
+}

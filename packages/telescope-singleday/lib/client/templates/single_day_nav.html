@@ -1,0 +1,13 @@
+<template name="singleDayNav">
+  <div class="grid">
+    <div class="grid-block">
+    {{#if showPreviousDate}}
+    <a href="{{previousDateURL}}" class="prev-link">{{_ "previous_day"}}</a> |
+    {{/if}}
+    {{currentDate}} |
+    {{#if showNextDate}}
+    <a href="{{nextDateURL}}" class="next-link">{{_ "next_day"}}</a>
+    {{/if}}
+    </div>
+  </div>
+</template>
