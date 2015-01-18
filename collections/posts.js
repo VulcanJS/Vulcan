@@ -100,7 +100,13 @@ postSchemaObject = {
       }
     },
     autoform: {
-      editable: true
+      editable: true,
+      optional: true,
+      custom: function () {
+        if ( this.field('poll.type').value === "multiple" && !this.isSet && (!this.operator || (this.value === null || this.value === ""))) {
+          return "required";
+        }
+      }
     }
   },
   'poll.options.$': {

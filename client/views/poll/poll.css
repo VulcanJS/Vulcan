@@ -3,3 +3,7 @@
 	width: 100%;
 	max-width: 100%;
 }
+.ui.progress {
+	border: none;
+	background: none;
+}

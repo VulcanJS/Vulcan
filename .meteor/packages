@@ -37,7 +37,8 @@ mrt:mailchimp
 ccan:cssreset # CSS reset (Must come before any other css)
 cmather:handlebars-server
 sacha:spin
-sacha:juice
+#sacha:juice
+meteor-juice
 chuangbo:marked
 percolatestudio:synced-cron
 npm-container

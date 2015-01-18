@@ -1,39 +1,52 @@
 <template name="poll_form">
 	<div class="comment-new module">
 		
-	{{#if binaryPoll}}
 
-		<div class="ui large form">
-			<div class="two fields">
-				<div class="field">
-        			<div class="positive ui button">Positive</div>
-				</div>
-				<div class="field">
-					<div class="negative ui button">Negative</div>
-				</div>
-			</div>
-		</div>
 
-	{{/if}}
-
-	{{#if multiplePoll}}
-		<form class="ui form">
-		<div class="grouped fields center aligned">
-			<div class="ui list">
+	{{#if pollVoted}}
+			
 		{{#each this.poll.options}}
-  				<div class="item poll-option">
-  					<div class="ui green button">
-					<label>{{name}}</label>
+
+			<div class="ui progress"  data-value="{{votes}}" data-total="3" id="vote-result-bar-{{voteOrder}}">
+				<div class="bar">
+					<div class="progress"> {{totalVotes}}</div>
+				</div>
+				<div class="label">{{votes}} voted {{name}}</div>
+			</div>
+
+		{{/each}}
+
+	{{else}}
+		{{#if binaryPoll}}
+
+			<div class="ui large form">
+				<div class="two fields">
+					<div class="field">
+	        			<div class="positive ui button poll-vote-btn" order="1">{{this.poll.options.[0].name}}</div>
+					</div>
+					<div class="field">
+						<div class="negative ui button poll-vote-btn" order="2">{{this.poll.options.[1].name}}</div>
 					</div>
 				</div>
-		{{/each}}
 			</div>
-		</div>
-		</form>
-	{{/if}}
 
-	{{#if votated}}
+		{{/if}}
 
+		{{#if multiplePoll}}
+			<form class="ui form">
+			<div class="grouped fields center aligned">
+				<div class="ui list">
+			{{#each this.poll.options}}
+	  				<div class="item poll-option">
+	  					<div class="ui green button poll-vote-btn" order="{{voteOrder}}">
+						<label>{{name}}</label>
+						</div>
+					</div>
+			{{/each}}
+				</div>
+			</div>
+			</form>
+		{{/if}}
 	{{/if}}
 
 	</div>
