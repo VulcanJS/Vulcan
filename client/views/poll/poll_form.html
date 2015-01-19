@@ -4,28 +4,63 @@
 
 
 	{{#if pollVoted}}
-			
-		{{#each this.poll.options}}
 
-			<div class="ui progress"  data-value="{{votes}}" data-total="3" id="vote-result-bar-{{voteOrder}}">
-				<div class="bar">
-					<div class="ui green progress" style="width:30%;"> {{totalVotes}}</div>
+		{{#if binaryPoll}}
+			<div class="progress-bs">
+				<div class="progress-bar progress-bar-success" style="width: {{votePercentage order=1}}%">
+					<span class="label">{{votePercentage order=1}}%</span>
 				</div>
-				<div class="label">{{votes}} voted {{name}}</div>
+				<div class="progress-bar progress-bar-danger" style="width: {{votePercentage order=2}}%">
+					<span class="label">{{votePercentage order=2}}%</span>
+				</div>
+	 		</div>
+
+			<div class="ui divided selection list">
+				<a class="item">
+					<div class="ui green circular horizontal label result-label">{{this.poll.options.[0].votes}}</div>
+					 voted {{this.poll.options.[0].name}}
+					 <div class="result-label poll-voters-avatars">
+					 	{{> poll_avatars data=this.poll.options.[0]}}
+					 </div>
+				</a>
+				<a class="item">
+					<div class="ui red circular horizontal label result-label">{{this.poll.options.[1].votes}}</div>
+					 voted {{this.poll.options.[1].name}}
+					 <div class="result-label poll-voters-avatars">
+					 	{{> poll_avatars data=this.poll.options.[1]}}
+					 </div>
+				</a>
 			</div>
 
-		{{/each}}
+	 		<div class="bar-label inline">
+	 			<div class="left pull-left inline"> </div> 
+	 			<div class="right pull-right inline"></div>
+	 		</div>
 
+		{{/if}}
+
+		{{#if multiplePoll}}
+
+			{{#each this.poll.options}}
+				<div class="ui indicating progress"  data-value="{{votes}}" data-total="{{../poll.voteCount}}" id="vote-result-bar-{{voteOrder}}">
+					<div class="bar">
+						<div class="progress"> </div>
+					</div>
+					<div class="label">{{votes}} voted {{name}}</div>
+				</div>
+			{{/each}}
+
+		{{/if}}
 	{{else}}
 		{{#if binaryPoll}}
 
 			<div class="ui large form">
 				<div class="two fields">
 					<div class="field">
-	        			<div class="positive ui button poll-vote-btn" order="1">{{this.poll.options.[0].name}}</div>
+	        			<div class="positive ui button poll-binary-vote-btn" id="1">{{this.poll.options.[0].name}}</div>
 					</div>
 					<div class="field">
-						<div class="negative ui button poll-vote-btn" order="2">{{this.poll.options.[1].name}}</div>
+						<div class="negative ui button poll-binary-vote-btn" id="2">{{this.poll.options.[1].name}}</div>
 					</div>
 				</div>
 			</div>
@@ -36,13 +71,13 @@
 			<form class="ui form">
 			<div class="grouped fields center aligned">
 				<div class="ui list">
-			{{#each this.poll.options}}
-	  				<div class="item poll-option">
-	  					<div class="ui green button poll-vote-btn" order="{{voteOrder}}">
-						<label>{{name}}</label>
+					{{#each this.poll.options}}
+		  				<div class="item poll-option">
+		  					<div class="ui green button poll-multiple-vote-btn" order="{{voteOrder}}">
+							<label>{{name}}</label>
+							</div>
 						</div>
-					</div>
-			{{/each}}
+					{{/each}}
 				</div>
 			</div>
 			</form>

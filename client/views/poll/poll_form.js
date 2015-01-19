@@ -16,20 +16,16 @@ Template[getTemplate('poll_form')].helpers ({
 		}
 		return false;
 	},
-	totalVotes: function () {
-		console.log(this);
-		return this.poll.voteCount;
+	votePercentage: function (order) {
+		return Math.floor(this.poll.options[order.hash.order-1].votes / this.poll.voteCount * 100);
 	}
 });
 
 Template[getTemplate('poll_form')].events({
-  'click .poll-vote-btn': function(e, instance){
+  'click .poll-multiple-vote-btn': function(e, instance){
     e.preventDefault();
     var order = this.voteOrder,
     	post = instance.data;
-
-    console.log(this);
-    console.log(order);
 
     if(!Meteor.user()){
       Router.go('atSignIn');
@@ -38,11 +34,27 @@ Template[getTemplate('poll_form')].events({
     Meteor.call('pollVote', post, this, function(error, result){
       trackEvent("post poll-voted", {'_id': post._id});
     });
+  },
+  'click .poll-binary-vote-btn': function(e, instance){
+    e.preventDefault();
+    var order = e.currentTarget.id;
+    var option = instance.data.poll.options[order-1];
+
+    if(!Meteor.user()){
+      Router.go('atSignIn');
+      flashMessage(i18n.t("please_log_in_first"), "info");
+    }
+
+    Meteor.call('pollVote', this, option, function(error, result){
+      trackEvent("post poll-voted", {'_id': post._id});
+    });
   }
 });
 
-
-
 Template[getTemplate('poll_form')].rendered = function(){
-	this.$('#binary-vote-result-bar').progress('increment');
+	this.$('#vote-result-bar-1').progress();
+	this.$('#vote-result-bar-2').progress();
+	this.$('#vote-result-bar-3').progress();
+	this.$('#vote-result-bar-4').progress();
+	this.$('#vote-result-bar-5').progress();
 }
