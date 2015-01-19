@@ -17,7 +17,10 @@ Template[getTemplate('poll_form')].helpers ({
 		return false;
 	},
 	votePercentage: function (order) {
-		return Math.floor(this.poll.options[order.hash.order-1].votes / this.poll.voteCount * 100);
+		return Math.round(this.poll.options[order.hash.order-1].votes / this.poll.voteCount * 100, -1);
+	},
+	hasVotes: function() {
+		return this.votes > 0;
 	}
 });
 

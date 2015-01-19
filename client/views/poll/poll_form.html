@@ -43,10 +43,18 @@
 
 			{{#each this.poll.options}}
 				<div class="ui indicating progress"  data-value="{{votes}}" data-total="{{../poll.voteCount}}" id="vote-result-bar-{{voteOrder}}">
+					{{#if hasVotes}}
 					<div class="bar">
 						<div class="progress"> </div>
 					</div>
-					<div class="label">{{votes}} voted {{name}}</div>
+					{{/if}}
+					<a class="item">
+						<div class="ui circular horizontal label result-label">{{votes}}</div>
+						 voted {{name}}
+						 <div class="result-label poll-voters-avatars">
+						 	{{> poll_avatars data=this}}
+						 </div>
+					</a>
 				</div>
 			{{/each}}
 

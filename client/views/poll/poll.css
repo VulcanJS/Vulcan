@@ -18,6 +18,9 @@
 .poll-voters-avatars {
 	float: right;
 }
+.bar {
+	margin-bottom: 10px;
+}
 progress {
   display: inline-block;
   vertical-align: baseline;
