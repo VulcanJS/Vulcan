@@ -59,7 +59,7 @@ Meteor.startup(function () {
 });
 
 getPostCategories = function (post) {
-  return Categories.find({_id: {$in: post.categories}});
+  return !!post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
 }
 
 getCategoryUrl = function(slug){
@@ -68,6 +68,6 @@ getCategoryUrl = function(slug){
 
 // add callback that adds categories CSS classes
 postClassCallbacks.push(function (post, postClass){
-  var classArray = _.map(getPostCategories(post).fetch(), function (category){return "category-"+category.slug});
+  var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug});
   return postClass + " " + classArray.join(' ');
 });

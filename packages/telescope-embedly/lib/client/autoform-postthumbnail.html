@@ -5,6 +5,7 @@
     <div class="post-thumbnail-loading">{{>spinner}}</div>
   </div>
   <input type="hidden" value="{{this.value}}" {{this.atts}}/>
+  <a href="#" class="regenerate-thumbnail-link">{{_ 'regenerate_thumbnail'}}</a>
   <a href="#" class="remove-thumbnail-link">{{_ 'clear_thumbnail'}}</a>
   {{else}}
     <p>{{_ "please_fill_in_embedly_key"}}</p>
