@@ -8,7 +8,7 @@ viewParameters.digest = function (terms) {
   return {
     find: {
       postedAt: {
-        $gte: terms.after, 
+        $gte: terms.after,
         $lt: terms.before
       }
     },
@@ -16,10 +16,10 @@ viewParameters.digest = function (terms) {
       sort: {sticky: -1, score: -1}
     }
   };
-}
+};
 
 getDateURL = function(moment){
-  return Router.routes['postsSingleDay'].path({
+  return Router.path('postsSingleDay', {
     year: moment.year(),
     month: moment.month() + 1,
     day: moment.date()

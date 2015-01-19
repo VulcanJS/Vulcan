@@ -19,16 +19,16 @@ describe('test clicking vote buttons', function () {
   var shouldRedirectIfLoggedOut = function (selector) {
     render();
 
-    var userSpy = spyOn(Meteor, 'user').and.returnValue(false);
+    spyOn(Meteor, 'user').and.returnValue(false);
     var routerSpy = spyOn(Router, 'go');
     var flashMessageSpy = spyOn(window, 'flashMessage');
-    var meteorCallSpy = spyOn(Meteor, 'call')
+    var meteorCallSpy = spyOn(Meteor, 'call');
 
     $div.find(selector).click();
 
     expect(routerSpy.calls.count()).toEqual(1);
     expect(routerSpy).toHaveBeenCalledWith('atSignIn');
-    expect(flashMessage.calls.count()).toEqual(1);
+    expect(flashMessageSpy.calls.count()).toEqual(1);
     expect(meteorCallSpy.calls.count()).toEqual(0);
   };
 
@@ -59,7 +59,7 @@ describe('test clicking vote buttons', function () {
 
     render(data);
 
-    var userSpy = spyOn(Meteor, 'user').and.returnValue(true);
+    spyOn(Meteor, 'user').and.returnValue(true);
     var routerSpy = spyOn(Router, 'go');
     var flashMessageSpy = spyOn(window, 'flashMessage');
     var trackEventSpy = spyOn(window, 'trackEvent').and.stub();
@@ -70,7 +70,7 @@ describe('test clicking vote buttons', function () {
     $div.find(selector).click();
 
     expect(routerSpy.calls.count()).toEqual(0);
-    expect(flashMessage.calls.count()).toEqual(0);
+    expect(flashMessageSpy.calls.count()).toEqual(0);
     expect(meteorCallSpy.calls.count()).toEqual(1);
     expect(meteorCallSpy.calls.first().args[0]).toEqual(meteorMethodName);
     expect(trackEventSpy.calls.count()).toEqual(1);
