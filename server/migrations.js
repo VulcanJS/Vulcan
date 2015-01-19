@@ -14,7 +14,7 @@ Meteor.startup(function () {
 Meteor.methods({
   removeMigration: function (name) {
     if (isAdmin(Meteor.user())) {
-      console.log('// removing migration: '+name)
+      console.log('// removing migration: ' + name);
       Migrations.remove({name: name});
     }
   }
@@ -32,7 +32,7 @@ var runMigration = function (migrationName) {
     }else{
       // do nothing
       // console.log('Migration "'+migrationName+'" already exists, doing nothing.')
-      return
+      return;
     }
   }
 
