@@ -33,6 +33,8 @@ Package.onUse(function (api) {
     'postMeta',
     'modulePositions',
 
+    'postClassCallbacks',
+
     'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
     'postSubmitMethodCallbacks',
@@ -42,6 +44,8 @@ Package.onUse(function (api) {
     'postEditClientCallbacks',
     'postEditMethodCallbacks',
     'postAfterEditMethodCallbacks',
+
+    'commentClassCallbacks',
 
     'commentSubmitRenderedCallbacks',
     'commentSubmitClientCallbacks',

@@ -245,6 +245,8 @@ postMeta = [
 ]
 // ------------------------------ Callbacks ------------------------------ //
 
+postClassCallbacks = [];
+
 postSubmitClientCallbacks = [];
 postSubmitMethodCallbacks = [];
 postAfterSubmitMethodCallbacks = []; // runs on server only in a timeout
@@ -252,6 +254,8 @@ postAfterSubmitMethodCallbacks = []; // runs on server only in a timeout
 postEditClientCallbacks = []; // loops over post object
 postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object
 postAfterEditMethodCallbacks = []; // loops over modifier object
+
+commentClassCallbacks = [];
 
 commentSubmitRenderedCallbacks = [];
 commentSubmitClientCallbacks = [];
