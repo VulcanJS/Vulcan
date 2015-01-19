@@ -48,7 +48,7 @@ primaryNav = [
 
 secondaryNav = [
   {
-    template: 'userMenu', 
+    template: 'userMenu',
     order: 10
   },
   {

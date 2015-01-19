@@ -1,16 +1,12 @@
 Meteor.startup(function () {
 
   Herald.collection.deny({
-    update: ! can.editById,
-    remove: ! can.editById
+    update: !can.editById,
+    remove: !can.editById
   });
 
   // disable all email notifications when "emailNotifications" is set to false
-  if (getSetting('emailNotifications', true)) {
-    Herald.settings.overrides.email = false;
-  } else {
-    Herald.settings.overrides.email = true;
-  };
+  Herald.settings.overrides.email = !getSetting('emailNotifications', true);
 });
 
 var commentEmail = function (userToNotify) {
@@ -24,16 +20,16 @@ var commentEmail = function (userToNotify) {
 
 var getCommenterProfileUrl = function (comment) {
   var user = Meteor.users.findOne(comment.userId);
-  if(user) {
+  if (user) {
     return getProfileUrl(user);
   } else {
-    return getProfileUrlBySlugOrId(comment.userId)
+    return getProfileUrlBySlugOrId(comment.userId);
   }
 }
 
 var getAuthor = function (comment) {
   var user = Meteor.users.findOne(comment.userId);
-  if(user) {
+  if (user) {
     return getUserName(user);
   } else {
     return comment.author;
@@ -63,8 +59,8 @@ Herald.addCourier('newComment', {
   },
   message: {
     default: function (user) {
-       return Blaze.toHTML(Blaze.With(this, function(){
-        return Template[getTemplate('notificationNewComment')]
+      return Blaze.toHTML(Blaze.With(this, function () {
+        return Template[getTemplate('notificationNewComment')];
       }));
     }
   },
@@ -73,7 +69,7 @@ Herald.addCourier('newComment', {
       return getCommenterProfileUrl(this.data.comment);
     },
     postCommentUrl: function () {
-      return '/posts/'+ this.data.post._id;
+      return Router.path('post_page', {_id: this.data.post._id});
     },
     author: function () {
       return getAuthor(this.data.comment);
@@ -82,7 +78,7 @@ Herald.addCourier('newComment', {
       return this.data.post.title;
     },
     url: function () {
-      return /comments/ + this.comment._id;
+      return Router.path('comment_reply', {_id: this.parentComment._id});
     }
   }
 });
@@ -96,8 +92,8 @@ Herald.addCourier('newReply', {
   },
   message: {
     default: function (user) {
-      return Blaze.toHTML(Blaze.With(this, function(){
-        return Template[getTemplate('notificationNewReply')]
+      return Blaze.toHTML(Blaze.With(this, function () {
+        return Template[getTemplate('notificationNewReply')];
       }));
     }
   },
@@ -106,7 +102,7 @@ Herald.addCourier('newReply', {
       return getCommenterProfileUrl(this.data.comment);
     },
     postCommentUrl: function () {
-      return '/posts/'+ this.data.post._id;
+      return Router.path('post_page', {_id: this.data.post._id});
     },
     author: function () {
       return getAuthor(this.data.comment);
@@ -115,7 +111,7 @@ Herald.addCourier('newReply', {
       return this.data.post.title;
     },
     url: function () {
-      return /comments/ + this.parentComment._id;
+      return Router.path('comment_reply', {_id: this.parentComment._id});
     }
   }
 });
