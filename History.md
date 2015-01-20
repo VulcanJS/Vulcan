@@ -1,3 +1,8 @@
+## v0.14.0 “GridScope”
+
+* Adeed Grid Layout option.
+* Cleaned up vote click handling functions and added tests (thanks @anthonymayer!).
+
 ## v0.13.0 “ComponentScope”
 
 * Tweaked comments layout in Hubbble theme.

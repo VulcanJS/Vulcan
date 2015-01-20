@@ -1,25 +1,138 @@
-.posts-list-description{
-	text-align: center;
-	margin-bottom: 10px;
+
+// ------------------------------------ posts ------------------------------------ //
+
+.posts-wrapper{
+	padding: 0;
+	margin-bottom: 20px;
 }
 
-.module{
-	border-radius: 3px;
+.single-post .posts{
+	margin-bottom: 10px;
+	.post{
+		border-radius: 3px;
+		@extend .has-shadow;
+	}
 }
-// modules layout
-.posts{
-	// display: table;
-	// border-collapse: collapse;
-	// width: 100%;
-	// position: relative;
-	.single-post &{
-		margin-bottom: 10px;
-		.post{
-			border-radius: 3px;
-			@extend .has-shadow;
+
+// ------------------------------------ post ------------------------------------ //
+
+.post{
+	padding: 10px 0px 10px 10px;
+	border-radius: 0px;
+	margin-bottom: 0px;
+	border-bottom:1px solid $lightest-grey;
+	display: flex;
+	align-items: center;
+	position:relative;
+	width:100%;
+	background: white;
+	&:first-child{
+		border-radius: 3px 3px 0px 0px;
+	}
+	&:last-child{
+		border-radius: 0px 0px 3px 3px;
+	}
+	&.animate{
+		transition: ease-out, top, 400ms, 0ms;
+	}
+	&.inactive{
+		.post-content{
+			background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
+		}
+	}
+	.post-share{
+		display: none;
+	}
+	&.show-actions{
+		.post-content{
+			display: none;
+		}
+		.post-share, .post-discuss, .post-upvote{
+			display: block;
+		}
+	}	
+}
+
+// ------------------------------ posts-list layout ------------------------------ //
+
+.posts-list{
+	.post-module{
+		flex-shrink: 0;
+		flex-grow: 0;
+		margin-right: 10px;
+	}
+	.post-rank{
+		@include small{
+			display: none;
+		}
+	.post-rank-inner{
+  		height: 25px;
+		  position: relative;
+		}
+		span{
+			position:absolute;
+			top:0px;
+			left:-60px;
+			display:block;
+			height:25px;
+			line-height:25px;
+			width:30px;
+			text-align:right;
+			font-size:18px;
+			// font-weight:bold;
+			color:black(0.2);
+		}
+	}
+	.post-upvote{
+		order: 1;
+		@include small{
+			display: none;
+		}
+	}
+	.post-content{
+		order: 2;
+		width: 100%;
+		// can shrink on mobile or desktop
+		flex-shrink: 1;
+		@include medium-large{
+			// but can only grow on desktop
+			flex-grow: 1;
+			// only be a flex container on desktop
+			display: flex;
+		}
+		align-items: center;
+	}
+	.post-info{
+		flex-grow: 1;
+	}
+	.post-share{
+		order: 3;
+	}
+	.post-discuss{
+		order: 7;
+		padding-top: 6px;
+	}
+	.post-share, .post-discuss{
+		// width: 60px;
+		text-align: center;
+		// height: 60px;
+		// position: relative;
+		// top: -5px;
+	}
+	.post-actions{
+		order: 8;
+	}
+	.post-avatars{
+		order: 6
+	}
+	&.show-actions{
+		.post-share, .post-discuss, .post-upvote{
+			flex-grow: 1;
 		}
 	}
 }
+
+// ------------------------------ posts-grid layout ------------------------------ //
 
 .posts-grid{
 	display: flex;
@@ -97,153 +210,11 @@
 	}
 }
 
-.posts-list{
-	.post-module{
-		flex-shrink: 0;
-		flex-grow: 0;
-		margin-right: 10px;
-	}
-	.post-rank{
-		@include small{
-			display: none;
-		}
-	.post-rank-inner{
-  		height: 25px;
-		  position: relative;
-		}
-		span{
-			position:absolute;
-			top:0px;
-			left:-60px;
-			display:block;
-			height:25px;
-			line-height:25px;
-			width:30px;
-			text-align:right;
-			font-size:18px;
-			// font-weight:bold;
-			color:black(0.2);
-		}
-	}
-	.post-upvote{
-		order: 1;
-		@include small{
-			display: none;
-		}
-	}
-	.post-content{
-		order: 2;
-		width: 100%;
-		// can shrink on mobile or desktop
-		flex-shrink: 1;
-		@include medium-large{
-			// but can only grow on desktop
-			flex-grow: 1;
-			// only be a flex container on desktop
-			display: flex;
-		}
-		align-items: center;
-	}
-	.post-info{
-		flex-grow: 1;
-	}
-	.post-share{
-		order: 3;
-	}
-	.post-discuss{
-		order: 7;
-	}
-	.post-share, .post-discuss{
-		// width: 60px;
-		text-align: center;
-		// height: 60px;
-		// position: relative;
-		// top: -5px;
-	}
-	.post-actions{
-		order: 8;
-	}
-	.post-avatars{
-		order: 6
-	}
-	&.show-actions{
-		.post-share, .post-discuss, .post-upvote{
-			flex-grow: 1;
-		}
-	}
-}
+// -------------------------------- post modules --------------------------------- //
 
-.post-discuss{
-	.action-label{
-		@include medium-large{
-			display: none;
-		}
-	}
+.post-module.post-rank{
+	margin: 0;
 }
-
-.post{
-	padding: 10px 0px 10px 10px;
-	border-radius: 0px;
-	margin-bottom: 0px;
-	border-bottom:1px solid $lightest-grey;
-	display: flex;
-	align-items: center;
-	position:relative;
-	width:100%;
-	background: white;
-	&:first-child{
-		border-radius: 3px 3px 0px 0px;
-	}
-	&:last-child{
-		border-radius: 0px 0px 3px 3px;
-	}
-	&.animate{
-		transition: ease-out, top, 400ms, 0ms;
-	}
-	&.inactive{
-		.post-content{
-			background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
-		}
-	}
-	.post-share{
-		display: none;
-	}
-	&.show-actions{
-		.post-content{
-			display: none;
-		}
-		.post-share, .post-discuss, .post-upvote{
-			display: block;
-		}
-	}	
-}
-
-.post-actions{
-	display: none;
-	text-align: right;
-	@include small{
-		display: block;
-	}
-	a{
-		display: block;
-		width: 36px;
-		height: 36px;
-		padding: 6px;
-		span{
-			display: block;
-			height: 100%;
-			width: 100%;
-			border-radius: 3px;
-			border: 1px solid rgba($red, 0.3);
-			color: rgba($red, 0.8);
-			text-align: center;
-			line-height: 14px;
-			font-weight: bold;
-			font-size: 20px;
-		}
-	}
-}
-
 
 .post-upvote{
 	.upvote-link{
@@ -300,24 +271,6 @@
 	}
 }
 
-.post-meta-item{
-	display: inline-block;
-}
-
-.empty-notice{
-	text-align:center;
-	padding:10px 0;
-}
-.posts-wrapper{
-	padding: 0;
-	margin-bottom: 20px;
-}
-.post-module.post-rank{
-	margin: 0;
-}
-// .post-info{
-// 	padding:$grid-padding - 5px 0;
-// }
 .post-content{
 	min-height: $grid-unit - 30px;
 	.post-sticky{
@@ -334,6 +287,81 @@
 		}
 	}
 }
+
+.post-avatars{
+ 	display: inline-block;
+ 	display: flex;
+ 	@include small{
+ 		display: none;
+ 	}
+ 	.author-avatar{
+ 		display: block;
+ 	}
+ 	.post-commenters{
+ 		display: block;
+ 		border-left: 1px solid black(0.2);
+ 		padding-left: 5px;
+ 	}
+ 	.avatar-link{
+ 		display: inline-block;
+ 		margin-right: 5px;
+ 		&:last-child{
+ 			margin-right: 0px;
+ 		}
+ 	}
+ 	.avatar{
+ 		display: inline-block;
+ 		height: 24px;
+ 		width: 24px;
+ 		vertical-align: middle;
+ 	}
+}
+.post-author{
+	.avatar{
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		vertical-align: middle;
+		margin-right: 5px;
+	}
+}
+
+.post-discuss{
+	.action-label{
+		@include medium-large{
+			display: none;
+		}
+	}
+}
+
+.post-actions{
+	display: none;
+	text-align: right;
+	@include small{
+		display: block;
+	}
+	a{
+		display: block;
+		width: 36px;
+		height: 36px;
+		padding: 6px;
+		span{
+			display: block;
+			height: 100%;
+			width: 100%;
+			border-radius: 3px;
+			border: 1px solid rgba($red, 0.3);
+			color: rgba($red, 0.8);
+			text-align: center;
+			line-height: 14px;
+			font-weight: bold;
+			font-size: 20px;
+		}
+	}
+}
+
+// -------------------------------- post content --------------------------------- //
+
 .post-heading{
 	margin-bottom: 3px;
 	line-height: 1.2;
@@ -360,10 +388,7 @@
 		font-weight:normal;
 	}
 }
-.post-categories{
-	text-align: right;
 
-}
 .post-meta{
 	font-size:13px;
 	color:$light-text;
@@ -381,79 +406,10 @@
 		}
 	}
 }
-.post-author{
-	.avatar{
-		display: inline-block;
-		width: 20px;
-		height: 20px;
-		vertical-align: middle;
-		margin-right: 5px;
-	}
+.post-meta-item{
+	display: inline-block;
 }
-.action{
-	position:relative;
-	display:block;
-	padding:0;
-	text-align:center;
-	color:$light-text;
-	&.edit-link{
-		color:$red;
-	}
-	&.share-link{
-		color:$light-text;
-	}
-	&.discuss-link{
-		color:$light-text;
-	}
-	&.more-link{
-		color:$blue;
-	}
-	&:hover{
-		&, .action{
-			color:$red;
-		}
-	}
-	&.voted{
-		color:white;
-		cursor: default;
-	}
 
-	.points{
-		display:block;
-		font-size:30px;
-		line-height:50px;
-	}
-}
-.action-icon{
-	font-size: 30px;
-	height: 30px;
-	display: block;
-	&:before{
-		position: relative;
-		top: -10px;
-	}
-}
-.action-label{
-	font-weight: bold;
-	display:block;
-	height:20px;
-	line-height:20px;
-	bottom:5px;
-	left:0px;
-	font-size:13px;
-	color:$light-text;
-	pointer-events:none;
-	// color:$red;
-}
-.action-count{
-	position:absolute;
-	top:4px;
-	display:block;
-	width:100%;
-	height:11px;
-	line-height:11px;
-	font-size:14px;
-}
 .post-body{
 	@extend .has-shadow;
 	border-radius: 3px;
@@ -470,31 +426,7 @@
 	background:$light-yellow;
 }
 
-.more-button{
-	display: block;
-	width:100%;
-	height:$grid-unit;
-	background:black(0.05);
-	text-align:center;
-	color:white;
-	line-height:$grid-unit;
-	font-size:18px;
-	border-radius: 0px 0px 3px 3px;
-	text-shadow: 0px 1px 1px 0px black(0.25);
-	padding: 0px;
-	&:hover{
-		background: black(0.15);
-	}
-}
-
-.inner-table{
-	display: table;
-	height: 100%;
-}
-.inner-table-cell{
-	display: table-cell;
-	vertical-align:middle;
-}
+// -------------------------------- mobile view --------------------------------- //
 
 
 @include small {
@@ -540,34 +472,9 @@
     }
   }
  }
- .post-avatars{
- 	display: inline-block;
- 	display: flex;
- 	@include small{
- 		display: none;
- 	}
- 	.author-avatar{
- 		display: block;
- 	}
- 	.post-commenters{
- 		display: block;
- 		border-left: 1px solid black(0.2);
- 		padding-left: 5px;
- 	}
- 	.avatar-link{
- 		display: inline-block;
- 		margin-right: 5px;
- 		&:last-child{
- 			margin-right: 0px;
- 		}
- 	}
- 	.avatar{
- 		display: inline-block;
- 		height: 24px;
- 		width: 24px;
- 		vertical-align: middle;
- 	}
- }
+
+// -------------------------------- other --------------------------------- //
+
 .no-posts{
 	padding: 20px;
 	border: 1px solid black(0.1);
@@ -576,4 +483,66 @@
 	// @extend .has-shadow;
 	margin-bottom: 10px;
 	color: black(0.5);
+}
+
+.empty-notice{
+	text-align:center;
+	padding:10px 0;
+}
+
+.action{
+	position:relative;
+	display:block;
+	padding:0;
+	text-align:center;
+	color:$light-text;
+	&.edit-link{
+		color:$red;
+	}
+	&.share-link{
+		color:$light-text;
+	}
+	&.discuss-link{
+		color:$light-text;
+	}
+	&.more-link{
+		color:$blue;
+	}
+	&:hover{
+		&, .action{
+			color:$red;
+		}
+	}
+	&.voted{
+		color:white;
+		cursor: default;
+	}
+
+	.points{
+		display:block;
+		font-size:30px;
+		line-height:50px;
+	}
+}
+
+.more-button{
+	display: block;
+	width:100%;
+	height:$grid-unit;
+	background:black(0.05);
+	text-align:center;
+	color:white;
+	line-height:$grid-unit;
+	font-size:18px;
+	border-radius: 0px 0px 3px 3px;
+	text-shadow: 0px 1px 1px 0px black(0.25);
+	padding: 0px;
+	&:hover{
+		background: black(0.15);
+	}
+}
+
+
+.module{
+	border-radius: 3px;
 }
