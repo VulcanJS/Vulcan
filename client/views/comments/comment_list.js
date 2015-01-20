@@ -1,7 +1,3 @@
-Template[getTemplate('comment_list')].created = function(){
-  postObject = this.data;
-};
-
 Template[getTemplate('comment_list')].helpers({
   comment_item: function () {
     return getTemplate('comment_item');
