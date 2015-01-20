@@ -69,7 +69,7 @@ Template[getTemplate('comment_item')].helpers({
   full_date: function(){
     return this.createdAt.toString();
   },
-  child_comments: function(){
+  childComments: function(){
     // return only child comments
     return Comments.find({parentCommentId: this._id});
   },

@@ -1,6 +1,6 @@
 // Publish a single comment
 
-Meteor.publish('singleComment', function(commentId) {
+Meteor.publish('singleCommentAndChildren', function(commentId) {
   if(can.viewById(this.userId)){
     // publish both current comment and child comments
     var commentIds = [commentId];

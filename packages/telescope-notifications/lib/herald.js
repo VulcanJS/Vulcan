@@ -7,6 +7,11 @@ Meteor.startup(function () {
 
   // disable all email notifications when "emailNotifications" is set to false
   Herald.settings.overrides.email = !getSetting('emailNotifications', true);
+
+  // send emails every second when in dev environment
+  if (Meteor.absoluteUrl().indexOf('localhost') !== -1)
+    Herald.settings.queueTimer = 1000;
+
 });
 
 var commentEmail = function (userToNotify) {

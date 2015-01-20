@@ -13,17 +13,17 @@ buildEmailNotification = function (notification) {
   switch(notification.courier){
 
     case 'newComment':
-      subject = 'A new comment on your post "' + post.title + '"';
+      subject = notification.author()+' left a new comment on your post "' + post.title + '"';
       template = 'emailNewComment';
       break;
 
     case 'newReply':
-      subject = 'Someone replied to your comment on "'+post.title+'"';
+      subject = notification.author()+' replied to your comment on "'+post.title+'"';
       template = 'emailNewReply';
       break;
 
     case 'newCommentSubscribed':
-      subject = 'A new comment on "' + post.title + '"';
+      subject = notification.author()+' left a new comment on "' + post.title + '"';
       template = 'emailNewComment';
       break;
 
