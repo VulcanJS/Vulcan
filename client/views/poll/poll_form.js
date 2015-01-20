@@ -29,12 +29,14 @@ Template[getTemplate('poll_form')].helpers ({
 Template[getTemplate('poll_form')].events({
   'click .poll-multiple-vote-btn': function(e, instance){
     e.preventDefault();
-    var order = this.voteOrder,
-    	post = instance.data;
+    var post = instance.data;
 
     if(!Meteor.user()){
       Router.go('atSignIn');
       flashMessage(i18n.t("please_log_in_first"), "info");
+    }
+    if(_.isUndefined(this.voteOrder)) {
+    	console.log("this is undefined");
     }
     Meteor.call('pollVote', post, this, function(error, result){
       trackEvent("post poll-voted", {'_id': post._id});

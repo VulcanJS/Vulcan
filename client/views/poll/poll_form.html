@@ -80,8 +80,8 @@
 			<div class="grouped fields center aligned">
 				<div class="ui list">
 					{{#each this.poll.options}}
-		  				<div class="item poll-option">
-		  					<div class="ui green button poll-multiple-vote-btn" order="{{voteOrder}}">
+		  				<div class="item poll-option poll-multiple-vote-btn">
+		  					<div class="ui green button" id="{{voteOrder}}" order="{{voteOrder}}">
 							<label>{{name}}</label>
 							</div>
 						</div>
