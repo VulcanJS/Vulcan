@@ -3,10 +3,14 @@
 	width: 100%;
 	max-width: 100%;
 }
+
+.ui.progress:first-child,
 .ui.progress {
 	border: none;
 	background: none;
+  	margin: 1em 0em 1em;
 }
+
 
 .poll-result-bar {
 	height: 28px;
