@@ -24,9 +24,10 @@ Template[getTemplate('userInfo')].helpers({
       return 0;
     }
     var other = this.votes.pollvotedPosts,
-        self = Meteor.user().votes.pollvotedPosts;
-    var common = _.pluck(self.concat(other), 'itemId');
-    return Math.round( (_.union(common).length / common.length) * 100 );
+        self = Meteor.user().votes.pollvotedPosts,
+        togetherIds = _.pluck(self.concat(other), 'itemId'),
+        togetherLength = togetherIds.length;
+    return Math.round( ( ( togetherLength - (_.uniq(togetherIds).length ) ) / togetherLength) * 100 );
   },
   sharedOpinion: function () {
     if (_.isUndefined(this.votes.pollvotedPosts)) {
@@ -34,22 +35,23 @@ Template[getTemplate('userInfo')].helpers({
     }
     var other = this.votes.pollvotedPosts,
         self = Meteor.user().votes.pollvotedPosts,
-        common = self.concat(other),
-        itemIds = _.pluck(self.concat(other), 'itemId'),
-        sameIds = _.union(itemIds),
-        cleanCommon = [];
+        together = self.concat(other),
+        selfItemIds = _.pluck(self, 'itemId'),
+        otherItemIds = _.pluck(other, 'itemId'),
+        sameIds = _.intersection(selfItemIds, otherItemIds),
+        sameVotes = [];
 
-    for (var i=0, l=common.length; i<l; i++) {
-      if ( _.contains(sameIds,common[i].itemId) && !_.isUndefined(common[i].voteOrder) ) {
-        cleanCommon.push(common[i].itemId+"-"+common[i].voteOrder);
+    for (var i=0, l=together.length; i<l; i++) {
+      if ( _.contains(sameIds,together[i].itemId) && !_.isUndefined(together[i].voteOrder) ) {
+        sameVotes.push(together[i].itemId+"-"+together[i].voteOrder);
       }
     } 
 
-    if (_.isEmpty(cleanCommon)) {
+    if (_.isEmpty(sameVotes)) {
       return 0;
     }
 
-    return Math.round( (_.union(cleanCommon).length / (sameIds.length / 2) ) * 100 );
+    return Math.round( ( (sameVotes.length - _.uniq(sameVotes).length) / sameIds.length ) * 100 );
 
   },
   notSelf: function () {

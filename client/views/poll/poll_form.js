@@ -9,11 +9,13 @@ Template[getTemplate('poll_form')].helpers ({
 		var userId = Meteor.userId(),
 			options = this.poll.options,
 			optionsLength = options.length;
-		for (var i=0; i < optionsLength; i++) {
-			if (this.poll.options[i].voters.indexOf(userId) > -1) {
-				return true;
+		if (optionsLength > 0) {
+			for (var i=0; i < optionsLength; i++) {
+				if (_.contains(options[i].voters, userId)) {
+					return true;
+				}
 			}
-		}
+		}	
 		return false;
 	},
 	votePercentage: function (order) {

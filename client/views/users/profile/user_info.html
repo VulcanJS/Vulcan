@@ -23,18 +23,22 @@
           </div>
         </td>
         {{else}}
-        <td>
-          <div class="ui statistic small">
-              <div class="value">{{karma}}</div>
-              <div class="label">{{_ "karma"}}</div>
-          </div>
-        </td>
-        <td>
-          <div class="ui statistic small">
-              <div class="value">{{pollVoteCount}}</div>
-              <div class="label">{{_ "poll_vote_count"}}</div>
-          </div>
-        </td>
+          {{#if karma}}
+          <td>
+            <div class="ui statistic small">
+                <div class="value">{{karma}}</div>
+                <div class="label">{{_ "karma"}}</div>
+            </div>
+          </td>
+          {{/if}}
+          {{#if pollVoteCount}}
+          <td>
+            <div class="ui statistic small">
+                <div class="value">{{pollVoteCount}}</div>
+                <div class="label">{{_ "poll_vote_count"}}</div>
+            </div>
+          </td>
+          {{/if}}
         {{/if}}
       </tr>
     </table>
