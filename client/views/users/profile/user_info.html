@@ -2,18 +2,49 @@
   <div class="user-profile grid grid-module">
     <table>
       <tr>
-        <td colspan="2">{{> avatar user=this size="large" shape="circle"}}</td>
+        <td>
+          <div class="ui statistic small">
+              <div class="value">{{> avatar user=this size="large" shape="circle"}}</div>
+              <div class="label">{{profile.name}}</div>
+          </div>
+
+        </td>
+        {{#if notSelf}}
+        <td>
+          <div class="ui statistic small">
+              <div class="value">{{sameWonder}}%</div>
+              <div class="label">{{_ "wondered_the_same_as_me"}}</div>
+          </div>
+        </td>
+        <td>
+          <div class="ui statistic small">
+              <div class="value">{{sharedOpinion}}%</div>
+              <div class="label">{{_ "similar_to_my_opinions"}}</div>
+          </div>
+        </td>
+        {{else}}
+        <td>
+          <div class="ui statistic small">
+              <div class="value">{{karma}}</div>
+              <div class="label">{{_ "karma"}}</div>
+          </div>
+        </td>
+        <td>
+          <div class="ui statistic small">
+              <div class="value">{{pollVoteCount}}</div>
+              <div class="label">{{_ "poll_vote_count"}}</div>
+          </div>
+        </td>
+        {{/if}}
       </tr>
+    </table>
+    <table>
       {{#if isAdmin}}
         <tr>
           <td>{{_ "id"}}: </td>
           <td>{{_id}}</td>
         </tr>
       {{/if}}
-      <tr>
-        <td>{{_ "name"}}</td>
-        <td>{{profile.name}}</td>
-      </tr>
       <tr>
         <td>{{_ "member_since"}}:</td>
         <td>{{createdAtFormatted}}</td>
