@@ -1,0 +1,26 @@
+<template name="userSubscribedPosts">
+  <div class="grid-small grid-block dialog admin">
+    <h3>{{_ "subscribed_posts"}}</h3>
+    <table>
+    <thead>
+      <tr>
+        <td>Post</td>
+        <td>Subscribed At</td>
+      </tr>
+    </thead>
+    {{#each posts}}
+      <tr>
+        <td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
+        <td>{{formatDate subscribedAt "MM/DD/YYYY, HH:mm"}}</td>
+      </tr>
+    {{/each}}
+    {{#if hasMorePosts}}
+      <tr>
+        <td colspan="2">
+          <a class="subscribedposts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+        </td>
+      </tr>
+    {{/if}}
+    </table>
+  </div>
+</template>
