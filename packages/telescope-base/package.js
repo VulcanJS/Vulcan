@@ -27,6 +27,7 @@ Package.onUse(function (api) {
     'viewParameters',
     'footerModules',
     'heroModules',
+    'threadModules',
     'postModules',
     'postThumbnail',
     'postHeading',

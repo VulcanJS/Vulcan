@@ -185,6 +185,8 @@ heroModules = [];
 
 footerModules = [];
 
+threadModules = [];
+
 postModules = [
   {
     template: 'postRank',

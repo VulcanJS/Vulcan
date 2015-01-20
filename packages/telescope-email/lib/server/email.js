@@ -51,7 +51,7 @@ sendEmail = function(to, subject, html, text){
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
   
   var from = getSetting('defaultEmail', 'noreply@example.com');
-  var siteName = getSetting('title');
+  var siteName = getSetting('title', 'Telescope');
   var subject = '['+siteName+'] '+subject;
 
   if (typeof text == 'undefined'){

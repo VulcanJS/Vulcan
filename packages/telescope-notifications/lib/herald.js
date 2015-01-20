@@ -50,6 +50,25 @@ Herald.addCourier('newPost', {
   // message: function (user) { return 'email template?' }
 });
 
+// specify how to get properties used in template from comment data
+var commentCourierTransform = {
+  profileUrl: function () {
+    return getCommenterProfileUrl(this.data.comment);
+  },
+  postCommentUrl: function () {
+    return Router.path('post_page', {_id: this.data.post._id});
+  },
+  author: function () {
+    return getAuthor(this.data.comment);
+  },
+  postTitle: function () {
+    return this.data.post.title;
+  },
+  url: function () {
+    return Router.path('comment_reply', {_id: this.parentComment._id});
+  }
+};
+
 Herald.addCourier('newComment', {
   media: {
     onsite: {},
@@ -64,23 +83,7 @@ Herald.addCourier('newComment', {
       }));
     }
   },
-  transform: {
-    profileUrl: function () {
-      return getCommenterProfileUrl(this.data.comment);
-    },
-    postCommentUrl: function () {
-      return Router.path('post_page', {_id: this.data.post._id});
-    },
-    author: function () {
-      return getAuthor(this.data.comment);
-    },
-    postTitle: function () {
-      return this.data.post.title;
-    },
-    url: function () {
-      return Router.path('comment_reply', {_id: this.parentComment._id});
-    }
-  }
+  transform: commentCourierTransform
 });
 
 Herald.addCourier('newReply', {
@@ -97,21 +100,22 @@ Herald.addCourier('newReply', {
       }));
     }
   },
-  transform: {
-    profileUrl: function () {
-      return getCommenterProfileUrl(this.data.comment);
-    },
-    postCommentUrl: function () {
-      return Router.path('post_page', {_id: this.data.post._id});
-    },
-    author: function () {
-      return getAuthor(this.data.comment);
-    },
-    postTitle: function () {
-      return this.data.post.title;
-    },
-    url: function () {
-      return Router.path('comment_reply', {_id: this.parentComment._id});
+  transform: commentCourierTransform
+});
+
+Herald.addCourier('newCommentSubscribed', {
+  media: {
+    onsite: {},
+    email: {
+      emailRunner: commentEmail
     }
-  }
+  },
+  message: {
+    default: function (user) {
+      return Blaze.toHTML(Blaze.With(this, function () {
+        return Template[getTemplate('notificationNewReply')];
+      }));
+    }
+  },
+  transform: commentCourierTransform
 });
