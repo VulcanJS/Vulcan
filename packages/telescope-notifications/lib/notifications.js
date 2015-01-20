@@ -13,31 +13,36 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 commentAfterSubmitMethodCallbacks.push(function (comment) {
   if(Meteor.isServer && !comment.disableNotifications){
 
-    var user = Meteor.users.findOne(comment.userId),
-        post = Posts.findOne(comment.postId),
+    var post = Posts.findOne(comment.postId),
         notificationData = {
           comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
           post: _.pick(post, '_id', 'userId', 'title', 'url')
         },
-        alreadyNotified = [];
+        userIdsNotified = [];
 
     // 1. Notify author of post
-    Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
-    alreadyNotified.push(post.userId);
+    // do not notify author of post if they're the ones posting the comment
+    if (comment.userId !== post.userId) {
+
+      Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
+      userIdsNotified.push(post.userId);
+
+    }
 
     // 2. Notify author of comment being replied to
     if (!!comment.parentCommentId) {
   
       var parentComment = Comments.findOne(comment.parentCommentId);
 
-      // do not notify author of parent comment if they're also post author
-      if (parentComment.userId !== post.userId) {
+      // do not notify author of parent comment if they're also post author or comment author
+      // (someone could be replying to their own comment)
+      if (parentComment.userId !== post.userId || parentComment.userId !== comment.userId) {
         
         // add parent comment to notification data
         notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
         
-        Herald.createNotification(parentComment.userId, {courier: 'newComment', data: notificationData});
-        alreadyNotified.push(parentComment.userId);
+        Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
+        userIdsNotified.push(parentComment.userId);
       
       }
 
@@ -48,12 +53,18 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
     if (!!post.subscribers) {
 
       // remove userIds of users that have already been notified
-      var userIdsToNotify = _.difference(post.subscribers, alreadyNotified);
-      Herald.createNotification(userIdsToNotify, {courier: 'newCommentSubscribed', data: notificationData});
+      // and of comment author (they could be replying in a thread they're subscribed to)
+      var subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
+      Herald.createNotification(subscriberIdsToNotify, {courier: 'newCommentSubscribed', data: notificationData});
 
+      userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
+    
     }
 
   }
+
+  console.log(userIdsNotified)
+  console.log(comment.body)
 
   return comment;
 
