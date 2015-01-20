@@ -2,9 +2,9 @@
 postAfterSubmitMethodCallbacks.push(function (post) {
   if(Meteor.isServer){
     var userIds = Meteor.users.find({'profile.notifications.posts': 1}, {fields: {}}).map(function (user) {
-      return user._id
+      return user._id;
     });
-    Herald.createNotification(userIds, {courier: 'newPost', data: post})
+    Herald.createNotification(userIds, {courier: 'newPost', data: post});
   }
   return post;
 });
@@ -13,42 +13,50 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 commentAfterSubmitMethodCallbacks.push(function (comment) {
   if(Meteor.isServer && !comment.disableNotifications){
 
-    var parentCommentId = comment.parentCommentId;
-    var user = Meteor.users.findOne(comment.userId);
-    var post = Posts.findOne(comment.postId);
-    var postUser = Meteor.users.findOne(post.userId);
+    var user = Meteor.users.findOne(comment.userId),
+        post = Posts.findOne(comment.postId),
+        notificationData = {
+          comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
+          post: _.pick(post, '_id', 'userId', 'title', 'url')
+        },
+        alreadyNotified = [];
 
-    var notificationData = {
-      comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
-      post: _.pick(post, '_id', 'title', 'url')
-    };
+    // 1. Notify author of post
+    Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
+    alreadyNotified.push(post.userId);
 
-    if(parentCommentId){
-      // child comment
-      var parentComment = Comments.findOne(parentCommentId);
-      var parentUser = Meteor.users.findOne(parentComment.userId);
+    // 2. Notify author of comment being replied to
+    if (!!comment.parentCommentId) {
+  
+      var parentComment = Comments.findOne(comment.parentCommentId);
 
-      notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
+      // do not notify author of parent comment if they're also post author
+      if (parentComment.userId !== post.userId) {
+        
+        // add parent comment to notification data
+        notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
+        
+        Herald.createNotification(parentComment.userId, {courier: 'newComment', data: notificationData});
+        alreadyNotified.push(parentComment.userId);
+      
+      }
 
-      // reply notification
-      // do not notify users of their own actions (i.e. they're replying to themselves)
-      if(parentUser._id != user._id)
-        Herald.createNotification(parentUser._id, {courier: 'newReply', data: notificationData})
-
-      // comment notification
-      // if the original poster is different from the author of the parent comment, notify them too
-      if(postUser._id != user._id && parentComment.userId != post.userId)
-        Herald.createNotification(postUser._id, {courier: 'newComment', data: notificationData})
-
-    }else{
-      // root comment
-      // don't notify users of their own comments
-      if(postUser._id != user._id)
-        Herald.createNotification(postUser._id, {courier: 'newComment', data: notificationData})
     }
+
+    // 3. Notify users subscribed to the thread 
+    // TODO: ideally this would be injected from the telescope-subscribe-to-posts package
+    if (!!post.subscribers) {
+
+      // remove userIds of users that have already been notified
+      var userIdsToNotify = _.difference(post.subscribers, alreadyNotified);
+      Herald.createNotification(userIdsToNotify, {courier: 'newCommentSubscribed', data: notificationData});
+
+    }
+
   }
 
   return comment;
+
 });
 
 var emailNotifications = {
@@ -62,7 +70,7 @@ var emailNotifications = {
       instructions: 'Enable email notifications for new posts and new comments (requires restart).'
     }
   }
-}
+};
 addToSettingsSchema.push(emailNotifications);
 
 // make it possible to disable notifications on a per-comment basis
