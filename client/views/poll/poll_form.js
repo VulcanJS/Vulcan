@@ -77,7 +77,7 @@ Template[getTemplate('poll_form')].events({
     }
 
     Meteor.call('pollVote', this, option, function(error, result){
-      trackEvent("post poll-voted", {'_id': post._id});
+      trackEvent("post poll-voted", {'_id': this._id});
     });
   }
 });
