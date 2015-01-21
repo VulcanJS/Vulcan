@@ -30,3 +30,8 @@ body{
     overflow-y: hidden;
   }
 }
+.grid-module, .at-form{
+  background: white;
+  padding: $grid-padding;
+  margin-bottom: $grid-margin;
+}

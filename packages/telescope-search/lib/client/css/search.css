@@ -3,4 +3,5 @@
 }
 .search-field{
   color: #4a4444;
+  border: 1px solid rgba(0,0,0,0.2);
 }

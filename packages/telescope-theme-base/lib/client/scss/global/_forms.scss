@@ -104,7 +104,6 @@ form, .accounts-dialog{
   textarea{
     min-height:50px;
     line-height:1.4;
-    font-size: 16px;
   }
   .note{
     padding: 5px 0;
@@ -137,7 +136,7 @@ input[type="submit"], button, .button, .btn{
   &.inline{
     display: inline-block;
   }
-  &.btn-primary{
+  &.btn-primary, &.submit{
     background:$red;
     &:link, &:hover, &:active, &:visited{
       color:white;
@@ -215,4 +214,9 @@ fieldset{
   font-weight: normal;
   font-size: 12px;
   text-transform: uppercase;
+}
+.finish-signup-message{
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 16px;
 }

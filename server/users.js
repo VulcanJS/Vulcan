@@ -33,8 +33,8 @@ Accounts.onCreateUser(function(options, user){
   // create slug from username
   user.slug = slugify(getUserName(user));
 
-  // if this is the first user ever, make them an admin
-  user.isAdmin = Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0 ? true : false;
+  // if this is not a dummy account, and is the first user ever, make them an admin
+  user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
   // ------------------------------ Callbacks ------------------------------ //
 

@@ -1,3 +1,7 @@
+Template[getTemplate('posts_list')].created = function() {
+  Session.set('listPopulatedAt', new Date());
+};
+
 Template[getTemplate('posts_list')].helpers({
   description: function () {
     var controller = Iron.controller();
@@ -13,14 +17,15 @@ Template[getTemplate('posts_list')].helpers({
   after_post_item: function () {
     return getTemplate('after_post_item');
   },
-  posts : function () {
-    if(this.postsList){ // XXX
-      this.postsList.rewind();    
-      var posts = this.postsList.map(function (post, index, cursor) {
+  postsCursor : function () {
+    if (this.postsCursor) { // not sure why this should ever be undefined, but it can apparently
+      var posts = this.postsCursor.map(function (post, index, cursor) {
         post.rank = index;
         return post;
       });
       return posts;
+    } else {
+      console.log('postsCursor not defined')
     }
   },
   postsLoadMore: function () {
@@ -30,7 +35,3 @@ Template[getTemplate('posts_list')].helpers({
     return getTemplate('postsListIncoming');
   }
 });
-
-Template[getTemplate('posts_list')].created = function() {
-  Session.set('listPopulatedAt', new Date());
-};

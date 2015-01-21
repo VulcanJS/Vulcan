@@ -1,7 +1,6 @@
 settingsSchemaObject = {
   title: {
     type: String,
-    label: "Title",
     optional: true,
     autoform: {
       group: 'general'
@@ -10,7 +9,6 @@ settingsSchemaObject = {
   siteUrl: {
     type: String,
     optional: true,
-    label: 'Site URL',
     autoform: {
       group: 'general',
       instructions: 'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
@@ -18,7 +16,6 @@ settingsSchemaObject = {
   },
   tagline: {
     type: String,
-    label: "Tagline",
     optional: true,
     autoform: {
       group: 'general'
@@ -26,7 +23,6 @@ settingsSchemaObject = {
   },
   description: {
     type: String,
-    label: "Description",
     optional: true,
     autoform: {
       group: 'general',
@@ -36,7 +32,6 @@ settingsSchemaObject = {
   },
   requireViewInvite: {
     type: Boolean,
-    label: "Require invite to view",
     optional: true,
     autoform: {
       group: 'invites',
@@ -45,7 +40,6 @@ settingsSchemaObject = {
   },
   requirePostInvite: {
     type: Boolean,
-    label: "Require invite to post",
     optional: true,
     autoform: {
       group: 'invites',
@@ -61,22 +55,6 @@ settingsSchemaObject = {
       leftLabel: "Require Posts Approval"
     }
   },
-  // nestedComments: {
-  //   type: Boolean,
-  //   label: "Enable nested comments",
-  //   optional: true,
-  //   autoform: {
-  //     group: 'comments'
-  //   }
-  // },
-  // redistributeKarma: {
-  //   type: Boolean,
-  //   label: "Enable redistributed karma",
-  //   optional: true,
-  //   autoform: {
-  //     group: 'general'
-  //   }
-  // },
   defaultEmail: {
     type: String,
     optional: true,
@@ -204,7 +182,6 @@ settingsSchemaObject = {
   backgroundCSS: {
     type: String,
     optional: true,
-    label: "Background CSS",
     autoform: {
       group: 'extras',
       instructions: 'CSS code for the <body>\'s "background" property',
@@ -280,7 +257,7 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'extras',
-      instructions: 'Footer content (accepts HTML).',
+      instructions: 'Footer content (accepts Markdown).',
       rows: 5
     }
   },
@@ -316,7 +293,6 @@ settingsSchemaObject = {
   debug: {
     type: Boolean,
     optional: true,
-    label: 'Debug Mode',
     autoform: {
       group: 'debug',
       instructions: 'Enable debug mode for more details console logs'

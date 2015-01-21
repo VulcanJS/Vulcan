@@ -1,10 +1,10 @@
 $mobile-header-height: 50px;
 
 .header{
-  background: $dark-grey;
+  background: white;
   margin-bottom: $grid-margin;
   padding: $grid-padding;
-  color: white;
+  color: $dark-grey;
   @include small{
     height: $mobile-header-height;
     padding: 10px;
@@ -39,6 +39,7 @@ $mobile-header-height: 50px;
 .logo{
   vertical-align: middle;
   line-height: 1;
+  padding: 0 60px; // leave space for nav button on mobile
   @include small{
     margin-right: 0;
     a{

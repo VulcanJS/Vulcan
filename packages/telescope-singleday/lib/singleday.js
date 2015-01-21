@@ -1,5 +1,5 @@
 viewsMenu.push({
-  route: 'posts_digest_default',
+  route: 'postsSingleDayDefault',
   label: 'digest',
   description: 'posts_of_a_single_day'
 });
@@ -13,13 +13,13 @@ viewParameters.digest = function (terms) {
       }
     },
     options: {
-      sort: {sticky: -1, baseScore: -1, limit: 0}
+      sort: {sticky: -1, score: -1}
     }
   };
 }
 
-getDigestURL = function(moment){
-  return Router.routes['posts_digest'].path({
+getDateURL = function(moment){
+  return Router.routes['postsSingleDay'].path({
     year: moment.year(),
     month: moment.month() + 1,
     day: moment.date()

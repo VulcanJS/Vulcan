@@ -1,80 +1,70 @@
+var htmlToText = Npm.require('html-to-text');
+
 scheduleCampaign = function (campaign, isTest) {
   var isTest = typeof isTest === 'undefined' ? false : isTest;
 
-  MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
-  MailChimpOptions.listId = getSetting('mailChimpListId');
+  var apiKey = getSetting('mailChimpAPIKey');
+  var listId = getSetting('mailChimpListId');
 
-  var htmlToText = Npm.require('html-to-text');
-  var text = htmlToText.fromString(campaign.html, {
-      wordwrap: 130
-  });
-  var defaultEmail = getSetting('defaultEmail');
-  var result= '';
-
-  if(!!MailChimpOptions.apiKey && !!MailChimpOptions.listId){
-
-    console.log( 'Creating campaign…');
+  if(!!apiKey && !!listId){
 
     try {
-        var api = new MailChimp();
-    } catch ( error ) {
-        console.log( error.message );
+
+      var api = new MailChimp(apiKey);
+      var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
+      var defaultEmail = getSetting('defaultEmail');
+      var campaignOptions = {
+        type: 'regular',
+        options: {
+          list_id: listId,
+          subject: campaign.subject,
+          from_email: defaultEmail,
+          from_name: getSetting('title')+ ' Top Posts',
+        },
+        content: {
+          html: campaign.html,
+          text: text
+        }
+      };
+
+      console.log( '// Creating campaign…');
+
+      // create campaign
+      var campaign = api.call( 'campaigns', 'create', campaignOptions);
+      
+      console.log( '// Campaign created');
+      // console.log(campaign)
+
+      var scheduledTime = moment().zone(0).add(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
+
+      var scheduleOptions = {
+        cid: campaign.id,
+        schedule_time: scheduledTime
+      };
+
+      // schedule campaign
+      var schedule = api.call('campaigns', 'schedule', scheduleOptions);
+      
+      console.log('// Campaign scheduled for '+scheduledTime);
+      // console.log(schedule)
+
+      // if this is not a test, mark posts as sent
+      if (!isTest)
+        Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+
+      // send confirmation email
+      var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
+        time: scheduledTime,
+        newsletterLink: campaign.archive_url,
+        subject: campaign.subject
+      });
+      sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
+
+    } catch (error) {
+      console.log(error);
     }
-
-    api.call( 'campaigns', 'create', {
-      type: 'regular',
-      options: {
-        list_id: MailChimpOptions.listId,
-        subject: campaign.subject,
-        from_email: getSetting('defaultEmail'),
-        from_name: getSetting('title')+ ' Top Posts',
-      },
-      content: {
-        html: campaign.html,
-        text: text
-      }
-    }, Meteor.bindEnvironment(function ( error, result ) {
-      if ( error ) {
-        console.log( error.message );
-        result = error.message;
-      } else {
-        console.log( 'Campaign created');
-        // console.log( JSON.stringify( result ) );
-
-        var cid = result.id;
-        var archive_url = result.archive_url;
-        var scheduledTime = moment().zone(0).add('hours', 1).format("YYYY-MM-DD HH:mm:ss");
-
-        api.call('campaigns', 'schedule', {
-          cid: cid,
-          schedule_time: scheduledTime
-        }, Meteor.bindEnvironment(function ( error, result) {
-          if (error) {
-            console.log( error.message );
-            result = error.message;
-          }else{
-            console.log('Campaign scheduled for '+scheduledTime);
-            console.log(campaign.subject)
-            // console.log( JSON.stringify( result ) );
-
-            // if this is not a test, mark posts as sent
-            if (!isTest)
-              Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
-
-            // send confirmation email
-            var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
-              time: scheduledTime,
-              newsletterLink: archive_url,
-              subject: campaign.subject
-            });
-            sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
-            result = campaign.subject;
-          }
-        }));
-      }
-    }));
+    return campaign.subject;
   }
-  return result;
 }
 
 addToMailChimpList = function(userOrEmail, confirm, done){
@@ -83,6 +73,7 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
   var confirm = (typeof confirm === 'undefined') ? false : confirm // default to no confirmation
 
+  // not sure if it's really necessary that the function take both user and email?
   if (typeof userOrEmail == "string") {
     user = null;
     email = userOrEmail;
@@ -93,37 +84,37 @@ addToMailChimpList = function(userOrEmail, confirm, done){
       throw 'User must have an email address';
   }
 
-  MailChimpOptions.apiKey = getSetting('mailChimpAPIKey');
-  MailChimpOptions.listId = getSetting('mailChimpListId');
+  var apiKey = getSetting('mailChimpAPIKey');
+  var listId = getSetting('mailChimpListId');
+
   // add a user to a MailChimp list.
   // called when a new user is created, or when an existing user fills in their email
-  if(!!MailChimpOptions.apiKey && !!MailChimpOptions.listId){
-
-    console.log('adding "'+email+'" to MailChimp list…');
+  if(!!apiKey && !!listId){
 
     try {
-        var api = new MailChimp();
+
+      console.log('// Adding "'+email+'" to MailChimp list…');
+
+      var api = new MailChimp(apiKey);
+      var subscribeOptions = {
+        id: listId,
+        email: {"email": email},
+        double_optin: confirm
+      };
+
+      // subscribe user
+      var subscribe = api.call('lists', 'subscribe', subscribeOptions);
+
+      // mark user as subscribed
+      if(!!user)
+        setUserSetting('subscribedToNewsletter', true, user);
+
+      console.log("// User subscribed");
+      
     } catch (error) {
-        console.log( error.message );
+      console.log( error.message );
     }
-
-    api.call('lists', 'subscribe', {
-      id: MailChimpOptions.listId,
-      email: {"email": email},
-      double_optin: confirm
-    }, Meteor.bindEnvironment(function ( error, result ) {
-      if (error) {
-        console.log( error.message );
-        done(error, null);
-      } else {
-        console.log( JSON.stringify( result ) );
-        if(!!user)
-          setUserSetting('subscribedToNewsletter', true, user);
-        done(null, result);
-      }
-    }));
   }
-
 };
 
 syncAddToMailChimpList = Async.wrap(addToMailChimpList);
@@ -144,4 +135,4 @@ Meteor.methods({
       throw new Meteor.Error(500, error.message);
     }
   }
-})
+});

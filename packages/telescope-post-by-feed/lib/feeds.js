@@ -2,6 +2,22 @@ var feedSchema = new SimpleSchema({
   url: {
     type: String,
     regEx: SimpleSchema.RegEx.Url
+  },
+  userId: {
+    type: String,
+    label: 'feedUser',
+    autoform: {
+      instructions: 'Posts will be assigned to this user.',
+      options: function () {
+        var users = Meteor.users.find().map(function (user) {
+          return {
+            value: user._id,
+            label: getDisplayName(user)
+          }  
+        });
+        return users;
+      }
+    }
   }
 });
 
@@ -35,21 +51,6 @@ var feedItemIdProperty = {
   }
 }
 addToPostSchema.push(feedItemIdProperty);
-
-// Settings
-
-var enableFeeds = {
-  propertyName: 'enableFeeds',
-  propertySchema: {
-    type: Boolean,
-    optional: true,
-    autoform: {
-      group: 'feeds',
-      instructions: 'Enable posting from RSS feeds (requires restart).'
-    }
-  }
-}
-addToSettingsSchema.push(enableFeeds);
 
 Meteor.startup(function () {
   Feeds.allow({

@@ -19,16 +19,16 @@
           "version": "http://registry.npmjs.org/readable-stream/-/readable-stream-1.1.13.tgz",
           "dependencies": {
             "core-util-is": {
-              "version": "1.0.1"
+              "version": "http://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
             },
             "isarray": {
-              "version": "0.0.1"
+              "version": "http://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
             },
             "string_decoder": {
-              "version": "0.10.31"
+              "version": "http://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
             },
             "inherits": {
-              "version": "2.0.1"
+              "version": "http://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
             }
           }
         },
@@ -38,7 +38,12 @@
       }
     },
     "to-markdown": {
-      "version": "http://registry.npmjs.org/to-markdown/-/to-markdown-0.0.2.tgz"
+      "version": "http://registry.npmjs.org/to-markdown/-/to-markdown-0.0.2.tgz",
+      "dependencies": {
+        "he": {
+          "version": "http://registry.npmjs.org/he/-/he-0.5.0.tgz"
+        }
+      }
     }
   }
 }
