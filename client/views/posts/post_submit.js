@@ -29,10 +29,10 @@ AutoForm.hooks({
     onSuccess: function(operation, post, template) {
       template.$('button[type=submit]').removeClass('loading');
       trackEvent("new post", {'postId': post._id});
+      Router.go('post_page', {_id: post._id});
       if (post.status === STATUS_PENDING) {
         flashMessage(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
       }
-      Router.go('post_page', {_id: post._id});
     },
 
     onError: function(operation, error, template) {

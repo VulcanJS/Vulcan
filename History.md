@@ -2,6 +2,9 @@
 
 * Adeed Grid Layout option.
 * Cleaned up vote click handling functions and added tests (thanks @anthonymayer!).
+* Added `threadModules` zone.
+* Added `upvoteCallbacks` and `downvoteCallbacks` callback arrays.
+* Fix “post awaiting moderation” message bug.
 
 ## v0.13.0 “ComponentScope”
 
