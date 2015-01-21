@@ -25,11 +25,16 @@ h1, h2, h3, h4, h5 {
   cursor:pointer;
 }
 
-.ui.post.modal {
+.ui.post.modal,
+.ui.fullscreen.modal {
   height: 90%;
 }
 
 .post-modal-content {
   height: 100%;
   width: 99%;
+}
+
+.fullscreen-post-modal-content {
+  height: 100%;
 }
