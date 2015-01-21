@@ -41,6 +41,10 @@ var getAuthor = function (comment) {
   }
 }
 
+// ------------------------------------------------------------------------------------------- //
+// -----------------------------------------  Posts ------------------------------------------ //
+// ------------------------------------------------------------------------------------------- //
+
 Herald.addCourier('newPost', {
   media: {
     email: {
@@ -54,6 +58,54 @@ Herald.addCourier('newPost', {
   }
   // message: function (user) { return 'email template?' }
 });
+
+Herald.addCourier('newPendingPost', {
+  media: {
+    email: {
+      emailRunner: function (user) {
+        var p = getPostProperties(this.data);
+        var subject = p.postAuthorName+' has a new post pending approval: '+p.postTitle;
+        var html = buildEmailTemplate(getEmailTemplate('emailNewPendingPost')(p));
+        sendEmail(getEmail(user), subject, html);
+      }
+    }
+  }
+});
+
+Herald.addCourier('postApproved', {
+  media: {
+    onsite: {},
+    email: {
+      emailRunner: function (user) {
+        var p = getPostProperties(this.data);
+        var subject = 'Your post “'+p.postTitle+'” has been approved';
+        var html = buildEmailTemplate(getEmailTemplate('emailPostApproved')(p));
+        sendEmail(getEmail(user), subject, html);
+      }
+    }
+  },
+  message: {
+    default: function (user) {
+      return Blaze.toHTML(Blaze.With(this, function () {
+        return Template[getTemplate('notificationPostApproved')];
+      }));
+    }
+  },
+  transform: {
+    postUrl: function () {
+      var p = getPostProperties(this.data);
+      return p.postUrl;
+    },
+    postTitle: function () {
+      var p = getPostProperties(this.data);
+      return p.postTitle;
+    }
+  }
+});
+
+// ------------------------------------------------------------------------------------------- //
+// ---------------------------------------- Comments ----------------------------------------- //
+// ------------------------------------------------------------------------------------------- //
 
 // specify how to get properties used in template from comment data
 var commentCourierTransform = {

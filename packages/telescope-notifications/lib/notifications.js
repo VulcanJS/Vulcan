@@ -1,11 +1,26 @@
 // add new post notification callback on post submit
 postAfterSubmitMethodCallbacks.push(function (post) {
-  if(Meteor.isServer){
-    var userIds = Meteor.users.find({'profile.notifications.posts': 1}, {fields: {}}).map(function (user) {
-      return user._id;
-    });
-    Herald.createNotification(userIds, {courier: 'newPost', data: post});
+
+  var adminIds = _.pluck(Meteor.users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
+  var notifiedUserIds = _.pluck(Meteor.users.find({'profile.notifications.posts': 1}, {fields: {_id:1}}).fetch(), '_id');
+  
+  console.log(adminIds)
+  console.log(notifiedUserIds)
+
+  if (post.status === STATUS_PENDING && !!adminIds.length) { 
+    // if post is pending, only notify admins
+    Herald.createNotification(adminIds, {courier: 'newPendingPost', data: post});
+  } else if (!!notifiedUserIds.length) { 
+    // if post is approved, notify everybody
+    Herald.createNotification(notifiedUserIds, {courier: 'newPost', data: post});
   }
+  return post;
+
+});
+
+// notify users that their pending post has been approved
+postApproveCallbacks.push(function (post) {
+  Herald.createNotification(post.userId, {courier: 'postApproved', data: post});
   return post;
 });
 
