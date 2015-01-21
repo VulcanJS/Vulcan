@@ -58,6 +58,16 @@ Meteor.startup(function () {
   });
 });
 
+getPostCategories = function (post) {
+  return !!post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
+}
+
 getCategoryUrl = function(slug){
   return getSiteUrl()+'category/'+slug;
 };
+
+// add callback that adds categories CSS classes
+postClassCallbacks.push(function (post, postClass){
+  var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug});
+  return postClass + " " + classArray.join(' ');
+});

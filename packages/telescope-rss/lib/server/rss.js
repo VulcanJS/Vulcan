@@ -33,7 +33,7 @@ servePostRSS = function(view, url) {
 };
 
 serveCommentRSS = function() {
-  var feed = new RSS(getMeta(Router.routes['rss_comments'].path()));
+  var feed = new RSS(getMeta(Router.path('rss_comments')));
 
   Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
     post = Posts.findOne(comment.postId);

@@ -11,7 +11,6 @@ Template[getTemplate('comment_form')].events({
     $(e.target).addClass('disabled');
     clearSeenMessages();
 
-
     var comment = {};
     var $commentForm = instance.$('#comment');
     var $submitButton = instance.$('.btn-submit');
@@ -23,7 +22,9 @@ Template[getTemplate('comment_form')].events({
 
     $commentForm.val('');
 
-    var post = postObject;
+    // context can be either post, or comment property
+    var postId = !!this._id ? this._id: this.comment.postId;
+    var post = Posts.findOne(postId);
 
     comment = {
       postId: post._id,

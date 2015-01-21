@@ -43,17 +43,10 @@ can.post = function(user, returnError) {
     return true;
   }
 };
-can.postById = function(userId, returnError) {
-  var user = Meteor.users.findOne(userId);
-  return can.post(user, returnError);
-};
 can.comment = function(user, returnError) {
   return can.post(user, returnError);
 };
-can.upvote = function(user, collection, returnError) {
-  return can.post(user, returnError);
-};
-can.downvote = function(user, collection, returnError) {
+can.vote = function(user, returnError) {
   return can.post(user, returnError);
 };
 can.edit = function(user, item, returnError) {

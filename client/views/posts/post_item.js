@@ -19,5 +19,15 @@ Template[getTemplate('post_item')].helpers({
   },
   moduleClass: function () {
     return camelToDash(this.template) + ' post-module';
+  },
+  postClass: function () {
+    var post = this;
+    var postAuthorClass = "author-"+post.author;
+
+    var postClass = postClassCallbacks.reduce(function(result, currentFunction) {
+        return currentFunction(post, result);
+    }, postAuthorClass);
+    
+    return postClass;
   }
 });

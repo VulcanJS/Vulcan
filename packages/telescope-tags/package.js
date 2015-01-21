@@ -56,6 +56,7 @@ Package.onUse(function (api) {
     'Categories', 
     'addToPostSchema', 
     'primaryNav', 
-    'postModules'
+    'postModules',
+    'getPostCategories'
   ]);
 });

@@ -38,6 +38,7 @@ Package.onUse(function (api) {
     'lib/client/templates/notification_item.js',
     'lib/client/templates/notification_new_comment.html',
     'lib/client/templates/notification_new_reply.html',
+    'lib/client/templates/notification_post_approved.html',
     'lib/client/templates/notifications_menu.html',
     'lib/client/templates/notifications_menu.js',
     'lib/client/templates/unsubscribe.html',

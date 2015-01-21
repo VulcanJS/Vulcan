@@ -16,7 +16,7 @@
           </a>
         </div>
         <div class="comment-meta">
-          <div class="user-avatar">{{> avatar userId=userId shape="circle"}}</div>
+          <div class="user-avatar avatar-medium">{{> avatar userId=userId shape="circle"}}</div>
           <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
           <span class="comment-time">{{timeAgo ago}},</span>
           <span class="points">{{upvotes}}</span> <span class="unit">points </span>
@@ -36,7 +36,7 @@
       {{/if}}
       {{#if showChildComments}}
         <ul class="comment-children comment-list">
-        {{#each child_comments}}
+        {{#each childComments}}
           {{#with this}}
             {{> UI.dynamic template=comment_item}}
           {{/with}}
