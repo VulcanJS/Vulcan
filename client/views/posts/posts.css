@@ -32,9 +32,24 @@ h1, h2, h3, h4, h5 {
 
 .post-modal-content {
   height: 100%;
-  width: 99%;
+  width: 100%;
 }
 
 .fullscreen-post-modal-content {
   height: 100%;
+}
+
+.scroll-wrapper {
+  position: fixed; 
+  right: 0; 
+  bottom: 0; 
+  left: 0;
+  top: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+.scroll-wrapper iframe {
+  height: 100%;
+  width: 100%;
 }

@@ -21,7 +21,7 @@ Template[getTemplate('postDomain')].helpers({
 Template[getTemplate('postDomain')].events({
     'click .post-read-overlay': function(url){
       var url= this.url;
-      var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" frameborder="0" seamless></iframe>'
+      var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
       $('.fullscreen-post-modal-content').html(iframe);
       $('.ui.fullscreen.modal')
         .modal('show');
