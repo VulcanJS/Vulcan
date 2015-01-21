@@ -15,20 +15,20 @@
             <span>{{_ "downvote"}}</span>
           </a>
         </div>
-        <div class="user-avatar">{{> avatar userId=userId shape="circle"}}</div>
-        <div class="comment-main">
-          <div class="comment-meta">
-            <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
-            <span class="comment-time">{{timeAgo ago}},</span>
-            <span class="points">{{upvotes}}</span> <span class="unit">points </span>
-            <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
-            {{#if canEdit this}}
-              | <a class="edit-link" href="{{pathFor route='comment_edit' _id=_id}}">{{_ "edit"}}</a>
-            {{/if}}
-            {{#if isAdmin}}
-              | <span>{{full_date}}</span>
-            {{/if}}
-          </div>
+        <div class="comment-meta">
+          <div class="user-avatar">{{> avatar userId=userId shape="circle"}}</div>
+          <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
+          <span class="comment-time">{{timeAgo ago}},</span>
+          <span class="points">{{upvotes}}</span> <span class="unit">points </span>
+          <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
+          {{#if canEdit this}}
+            | <a class="edit-link" href="{{pathFor route='comment_edit' _id=_id}}">{{_ "edit"}}</a>
+          {{/if}}
+          {{#if isAdmin}}
+            | <span>{{full_date}}</span>
+          {{/if}}
+        </div>
+        <div class="comment-main"> 
           <div class="comment-text markdown">{{{htmlBody}}}</div>
           <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
         </div>

@@ -203,7 +203,7 @@ var migrationsList = {
   },
   commentsSubmittedToCreatedAt: function () {
     var i = 0;
-    Comments.find().forEach(function (comment) {
+    Comments.find({createdAt: {$exists: false}}).forEach(function (comment) {
       i++;
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $rename: { 'submitted': 'createdAt'}}, {multi: true, validate: false});
@@ -272,7 +272,7 @@ var migrationsList = {
   },
   parentToParentCommentId: function () {
     var i = 0;
-    Comments.find({parentCommentId: {$exists : false}}).forEach(function (comment) {
+    Comments.find({parent: {$exists: true}, parentCommentId: {$exists : false}}).forEach(function (comment) {
       i++;
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $set: { 'parentCommentId': comment.parent}}, {multi: true, validate: false});

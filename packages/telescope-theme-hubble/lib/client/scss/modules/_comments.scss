@@ -68,14 +68,11 @@
 	}
 }
 .comment{
-	margin-left:0px;
-	.comment{
-		@include small{
-			margin-left: 10px;
-		}
-		@include medium-large{
-			margin-left: 20px;
-		}
+	@include small{
+		margin-left: 10px;
+	}
+	@include medium-large{
+		margin-left: 30px;
 	}
 	position:relative;
 	padding: 0;
@@ -148,31 +145,15 @@
 .comment-content{
 	position:relative;
 	@extend .grid-block;
-	border-radius: 3px;
+	@include small{
+		border-radius: 3px;
+	}
+	@include medium-large{
+		border-radius: 0 3px 3px 3px;
+	}
 	font-size:14px;
 	z-index: 10;
 	margin-bottom:10px;
-	.comment-main{
-		@include medium-large{
-			margin-left:60px;
-		}
-	}
-	.user-avatar{
-		border-radius: 100px;
-		overflow:hidden;
-		position:block;
-		float:left;
-		margin: 0 10px 0 10px;
-		.avatar{
-			height: 40px;
-			width: 40px;
-		}
-		// img{
-		//	height:40px;
-		//	width:40px;
-		//	display:block;
-		// }
-	}
 }
 .comment-text{
 	&, p{
@@ -183,12 +164,27 @@
 	}
 }
 .comment-meta{
-	margin-bottom:5px;
-	.comment-username, .comment-time, .comment-permalink{
+	padding-bottom: 10px;
+	border-bottom: 1px $lightest-grey solid;
+	margin-bottom:10px;
+	@include cf;
+	font-size: 14px;
+	@include small{
+		padding-left: 15px;
+	}
+	.user-avatar, .comment-username, .comment-time, .comment-permalink{
 		display:inline-block;
-		margin-right:4px;
+		margin-right:6px;
+		vertical-align: middle;
 	}
 	color:$light-text;
+	.user-avatar{
+		border-radius: 100px;
+		.avatar{
+			height: 30px;
+			width: 30px;
+		}
+	}
 	.comment-permalink{
 		position:relative;
 		@include hide-text;
@@ -209,10 +205,21 @@
 }
 .comment-actions{
 	position:absolute;
-	left:-10px;
-	top:5px;
+	@include small{
+		left:-10px;
+		top:5px;
+	}
+	@include medium-large{
+		left:-30px;
+		top:0px;
+	}
 	a{
-		border-radius: 0 0 3px 3px;
+		@include small{
+			border-radius: 0 0 3px 3px;
+		}
+		@include medium-large{
+			border-radius: 0 0 0 3px;			
+		}
 		position:relative;
 		display:block;
 		height:30px;
@@ -224,7 +231,12 @@
 		@include hide-text;
 		// border-right:1px solid $lightest-grey;
 		&.upvote{
-			border-radius: 3px 3px 0 0;
+			@include small{
+				border-radius: 3px 3px 0 0;
+			}
+			@include medium-large{
+				border-radius: 3px 0 0 0;
+			}
 			margin-bottom:1px;
 		}
 		i{
@@ -301,4 +313,7 @@
 	margin-bottom: 10px;
 	padding: 10px 15px;
 	color: $light-text;
+}
+#comment{
+	font-size: 16px;
 }

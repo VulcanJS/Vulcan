@@ -1,3 +1,10 @@
+SyncedCron.options = {
+  log: false,
+  collectionName: 'cronHistory',
+  utc: false, 
+  collectionTTL: 172800
+}
+
 Later = Npm.require('later');
 
 defaultFrequency = 7; // once a week
@@ -44,8 +51,7 @@ var addJob = function () {
     name: 'scheduleNewsletter',
     schedule: function(parser) {
       // parser is a later.parse object
-      // var sched;
-      return getSchedule(parser)
+      return getSchedule(parser);
     }, 
     job: function() {
       scheduleNextCampaign();

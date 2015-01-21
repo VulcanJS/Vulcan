@@ -39,6 +39,7 @@
   display: inline-block;
   float: none;
   vertical-align: middle;
+  position: relative;
 }
 .show-loader{
   pointer-events:none;
@@ -60,6 +61,7 @@
   left: 0px;
   right: 0px;
   display: block;
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 30em) {
