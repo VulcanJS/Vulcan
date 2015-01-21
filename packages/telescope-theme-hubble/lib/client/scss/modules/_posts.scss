@@ -136,7 +136,8 @@
 
 .posts-grid{
 	display: flex;
-  flex-wrap: wrap;
+  	flex-wrap: wrap;
+  	justify-content: center;
 	.post{
 		width: calc((100% - 20px)/3);
 		margin-right: 10px;
