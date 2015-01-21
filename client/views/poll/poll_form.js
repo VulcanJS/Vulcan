@@ -18,8 +18,34 @@ Template[getTemplate('poll_form')].helpers ({
 		}	
 		return false;
 	},
-	votePercentage: function (order) {
-		return Math.round(this.poll.options[order.hash.order-1].votes / this.poll.voteCount * 100, -1);
+	multiplePollBarPercentage: function (options) {
+		var pollOptions = options.hash.options,
+			optionsLength = pollOptions.length,
+			biggist = 0;
+		for(var i=0; i< optionsLength; i++) {
+			var optionVotes = pollOptions[i].votes;
+
+			if (optionVotes > biggist) {
+				biggist = optionVotes;
+			} else {
+				biggist = biggist;
+			}
+			
+		}
+
+		if (!_.isUndefined(options.hash.voteCount)) {
+			var percentage = Math.round((options.hash.votes / biggist) * 100, -1);
+			if (percentage > 100) {
+				return 100;
+			}
+			return percentage;
+		}
+	},
+	votePercentage: function (options) {
+		if (!_.isUndefined(options.hash.voteCount)) {
+			return Math.round(options.hash.votes / options.hash.voteCount * 100, -1);
+		}
+		return Math.round(this.poll.options[options.hash.order-1].votes / this.poll.voteCount * 100, -1);
 	},
 	hasVotes: function() {
 		return this.votes > 0;

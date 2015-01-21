@@ -41,8 +41,10 @@
 
 		{{#if multiplePoll}}
 
+			<div class="ui divided selection list">
+
 			{{#each this.poll.options}}
-				<div class="ui indicating progress"  data-value="{{votes}}" data-total="{{../poll.voteCount}}" id="vote-result-bar-{{voteOrder}}">
+<!-- 				<div class="ui indicating progress"  data-value="{{votes}}" data-total="{{../poll.voteCount}}" id="vote-result-bar-{{voteOrder}}">
 					{{#if hasVotes}}
 					<div class="bar">
 						<div class="progress"> </div>
@@ -55,8 +57,24 @@
 						 	{{> poll_avatars data=this}}
 						 </div>
 					</a>
-				</div>
+				</div> -->
+				<a class="item">
+					{{#if hasVotes}}
+					<div class="progress-bs progress-bs-multiple">
+						<div class="progress-bar progress-bar-success progress-bar-multiple" style="width: {{multiplePollBarPercentage order=voteOrder votes=votes voteCount=../poll.voteCount options=../poll.options}}%">
+							<span class="label">{{votePercentage order=voteOrder votes=votes voteCount=../poll.voteCount}}%</span>
+						</div>
+			 		</div>
+			 		{{/if}}
+					<div class="ui circular horizontal label result-label">{{votes}}</div>
+					 voted {{name}}
+					 <div class="result-label poll-voters-avatars">
+					 	{{> poll_avatars data=this}}
+					 </div>
+				</a>
+
 			{{/each}}
+			</div>
 
 		{{/if}}
 	{{else}}
