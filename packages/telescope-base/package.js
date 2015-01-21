@@ -41,6 +41,8 @@ Package.onUse(function (api) {
     'postSubmitMethodCallbacks',
     'postAfterSubmitMethodCallbacks',
 
+    'postApproveCallbacks',
+    
     'postEditRenderedCallbacks',
     'postEditClientCallbacks',
     'postEditMethodCallbacks',

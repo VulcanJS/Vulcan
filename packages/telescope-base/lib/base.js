@@ -257,6 +257,8 @@ postEditClientCallbacks = []; // loops over post object
 postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object
 postAfterEditMethodCallbacks = []; // loops over modifier object
 
+postApproveCallbacks = [];
+
 commentClassCallbacks = [];
 
 commentSubmitRenderedCallbacks = [];
