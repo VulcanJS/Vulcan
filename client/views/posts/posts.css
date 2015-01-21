@@ -20,3 +20,16 @@ h1, h2, h3, h4, h5 {
 	width: 100%;
 	max-width: 100%;
 }
+
+.post-title {
+  cursor:pointer;
+}
+
+.ui.post.modal {
+  height: 90%;
+}
+
+.post-modal-content {
+  height: 100%;
+  width: 99%;
+}

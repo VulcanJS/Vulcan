@@ -1,10 +1,21 @@
 <template name="layout">
 
 {{> UI.dynamic template=css}}
+
+  <div class="ui post modal">
+    <i class="close icon"></i>
+    <div class="post-modal-content">
+    </div>
+  </div>
+
   <div class="outer-wrapper {{currentPage}}">
     {{> UI.dynamic template=mobile_nav}}
     <div class="inner-wrapper template-{{pageName}}">
+    {{#if notInIframe}}
       {{> UI.dynamic template=nav}}
+    {{else}}
+      <div style="height:40px"></div>
+    {{/if}}
       <div class="content-wrapper">
         {{> UI.dynamic template=messages}}
         {{#each heroModules}}

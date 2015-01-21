@@ -17,3 +17,13 @@ Template[getTemplate('postDomain')].helpers({
     return !!this.url ? '_blank' : '';
   }
 });
+
+Template[getTemplate('postDomain')].events({
+    'click .post-read-overlay': function(url){
+      var url= this.url;
+      var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" frameborder="0" seamless></iframe>'
+      $('.post-modal-content').html(iframe);
+      $('.ui.post.modal')
+        .modal('show');
+    }
+});

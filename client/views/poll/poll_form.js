@@ -30,9 +30,7 @@ Template[getTemplate('poll_form')].helpers ({
 			} else {
 				biggist = biggist;
 			}
-			
 		}
-
 		if (!_.isUndefined(options.hash.voteCount)) {
 			var percentage = Math.round((options.hash.votes / biggist) * 100, -1);
 			if (percentage > 100) {

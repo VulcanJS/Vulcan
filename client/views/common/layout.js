@@ -1,3 +1,11 @@
+function inIframe () {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
+}
+
 Template[getTemplate('layout')].helpers({
   mobile_nav: function () {
     return getTemplate('mobile_nav');
@@ -25,6 +33,9 @@ Template[getTemplate('layout')].helpers({
   },
   getTemplate: function () {
     return getTemplate(this.template);
+  },
+  notInIframe: function() {
+    return !inIframe();
   }
 });
 
