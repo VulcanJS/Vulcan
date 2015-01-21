@@ -274,6 +274,9 @@ userEditClientCallbacks = [];
 userCreatedCallbacks = [];
 userProfileCompleteChecks = [];
 
+upvoteCallbacks = [];
+downvoteCallbacks = [];
+
 // ------------------------------------- User Profiles -------------------------------- //
 
 userProfileDisplay = [

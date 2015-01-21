@@ -73,11 +73,10 @@ var removeSubscribedItem = function (userId, itemId, collection) {
   });
 };
 
-var subscribeItem = function (collection, itemId) {
-  var user = Meteor.user(),
-      item = collection.findOne(itemId),
+subscribeItem = function (collection, itemId, user) {
+  var item = collection.findOne(itemId),
       collectionName = collection._name.slice(0,1).toUpperCase() + collection._name.slice(1);
-
+      
   if (!user || !item || hasSubscribedItem(item, user))
     return false;
 
@@ -103,7 +102,7 @@ var subscribeItem = function (collection, itemId) {
   return true;
 };
 
-var unsubscribeItem = function (collection, itemId) {
+unsubscribeItem = function (collection, itemId, user) {
   var user = Meteor.user(),
       item = collection.findOne(itemId),
       collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
@@ -126,9 +125,9 @@ var unsubscribeItem = function (collection, itemId) {
 
 Meteor.methods({
   subscribePost: function(postId) {
-    return subscribeItem.call(this, Posts, postId);
+    return subscribeItem.call(this, Posts, postId, Meteor.user());
   },
   unsubscribePost: function(postId) {
-    return unsubscribeItem.call(this, Posts, postId);
+    return unsubscribeItem.call(this, Posts, postId, Meteor.user());
   }
 });

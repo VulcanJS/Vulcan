@@ -58,6 +58,9 @@ Package.onUse(function (api) {
     'commentEditMethodCallbacks',
     'commentAfterEditMethodCallbacks',
 
+    'upvoteCallbacks',
+    'downvoteCallbacks',
+    
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
     'userProfileCompleteChecks',

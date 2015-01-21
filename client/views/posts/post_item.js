@@ -22,8 +22,7 @@ Template[getTemplate('post_item')].helpers({
   },
   postClass: function () {
     var post = this;
-    var author = Meteor.users.findOne(post.userId);
-    var postAuthorClass =  "author-"+author.slug;
+    var postAuthorClass = "author-"+post.author;
 
     var postClass = postClassCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(post, result);

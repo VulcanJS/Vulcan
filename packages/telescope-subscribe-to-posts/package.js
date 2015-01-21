@@ -33,19 +33,19 @@ Package.onUse(function (api) {
 
   // i18n config (must come first)
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
 
-  api.add_files([
+  api.addFiles([
     'lib/subscribe-to-posts.js',
   ], ['client', 'server']);
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/post_subscribe.html',
     'lib/client/templates/post_subscribe.js',
     'lib/client/templates/user_subscribed_posts.html',
@@ -55,14 +55,19 @@ Package.onUse(function (api) {
 
   // server
 
-  api.add_files([
+  api.addFiles([
     'lib/server/publications.js'
   ], ['server']);    
 
   // i18n languages (must come last)
 
-  api.add_files([
+  api.addFiles([
     'i18n/en.i18n.json',
   ], ['client', 'server']);
+
+  api.export([
+    'subscribeItem', 
+    'unsubscribeItem'
+  ]);
 
 });
