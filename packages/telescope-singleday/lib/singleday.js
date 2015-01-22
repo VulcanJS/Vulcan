@@ -4,7 +4,7 @@ viewsMenu.push({
   description: 'posts_of_a_single_day'
 });
 
-viewParameters.digest = function (terms) {
+viewParameters.singleday = function (terms) {
   return {
     find: {
       postedAt: {

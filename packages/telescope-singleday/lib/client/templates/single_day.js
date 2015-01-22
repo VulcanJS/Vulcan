@@ -18,7 +18,7 @@ Template[getTemplate('singleDay')].created = function () {
     // if instance has a set date use this, else depend on Session variable
     var currentDate = (!!instance.data && !!instance.data.date) ? instance.data.date: Session.get('currentDate');
     return {
-      view: 'digest',
+      view: 'singleday',
       after: moment(currentDate).startOf('day').toDate(),
       before: moment(currentDate).endOf('day').toDate()
     };

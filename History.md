@@ -7,6 +7,7 @@
 * Fix “post awaiting moderation” message bug.
 * Added `postApproveCallbacks` callback array.
 * Added notifications for pending and approved posts, for admins and end users.
+* Renaming "digest" view to "singleday".
 
 ## v0.13.0 “ComponentScope”
 
