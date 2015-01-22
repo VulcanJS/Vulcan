@@ -230,7 +230,13 @@ Meteor.methods({
 
     // if user is not admin, clear restricted properties
     if (!hasAdminRights) {
-      delete comment.userId;
+      _.keys(comment).forEach(function (propertyName) {
+        var property = CommentSchemaObject[propertyName];
+        if (!property || !property.autoform || !property.autoform.editable) {
+          console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
+          delete comment[propertyName]
+        }
+      });
     }
 
     // if no userId has been set, default to current user id

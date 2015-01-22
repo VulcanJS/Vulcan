@@ -3,11 +3,7 @@
 // ----------------------------------------- Schema ----------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-SimpleSchema.extendOptions({
-  editable: Match.Optional(Boolean) // editable: true means the field can be edited by the document's owner
-});
-
-postSchemaObject = {
+PostSchemaObject = {
   _id: {
     type: String,
     optional: true,
@@ -41,7 +37,6 @@ postSchemaObject = {
   title: {
     type: String,
     optional: false,
-    editable: true,
     autoform: {
       editable: true
     }
@@ -49,7 +44,6 @@ postSchemaObject = {
   body: {
     type: String,
     optional: true,
-    editable: true,
     autoform: {
       editable: true,
       rows: 5
@@ -200,12 +194,12 @@ postSchemaObject = {
 
 // add any extra properties to postSchemaObject (provided by packages for example)
 _.each(addToPostSchema, function(item){
-  postSchemaObject[item.propertyName] = item.propertySchema;
+  PostSchemaObject[item.propertyName] = item.propertySchema;
 });
 
 Posts = new Meteor.Collection("posts");
 
-PostSchema = new SimpleSchema(postSchemaObject);
+PostSchema = new SimpleSchema(PostSchemaObject);
 
 Posts.attachSchema(PostSchema);
 
@@ -433,12 +427,15 @@ Meteor.methods({
     // userId
     // sticky (default to false)
 
-    // if user is not admin, clear restricted properties
+    // if user is not admin, go over each schema property and clear it if it's not editable
     if (!hasAdminRights) {
-      delete post.status;
-      delete post.postedAt;
-      delete post.userId;
-      delete post.sticky;
+      _.keys(post).forEach(function (propertyName) {
+        var property = PostSchemaObject[propertyName];
+        if (!property || !property.autoform || !property.autoform.editable) {
+          console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
+          delete post[propertyName]
+        }
+      });
     }
 
     // if no post status has been set, set it now
