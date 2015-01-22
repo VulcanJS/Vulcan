@@ -3,7 +3,7 @@
 // ----------------------------------------- Schema ----------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-PostSchemaObject = {
+postSchemaObject = {
   _id: {
     type: String,
     optional: true,
@@ -193,15 +193,15 @@ PostSchemaObject = {
 };
 
 // add any extra properties to postSchemaObject (provided by packages for example)
-_.each(addToPostSchema, function(item){
-  PostSchemaObject[item.propertyName] = item.propertySchema;
+_.each(addTopostSchema, function(item){
+  postSchemaObject[item.propertyName] = item.propertySchema;
 });
 
 Posts = new Meteor.Collection("posts");
 
-PostSchema = new SimpleSchema(PostSchemaObject);
+postSchema = new SimpleSchema(postSchemaObject);
 
-Posts.attachSchema(PostSchema);
+Posts.attachSchema(postSchema);
 
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------- Helpers ----------------------------------------- //
@@ -430,7 +430,7 @@ Meteor.methods({
     // if user is not admin, go over each schema property and clear it if it's not editable
     if (!hasAdminRights) {
       _.keys(post).forEach(function (propertyName) {
-        var property = PostSchemaObject[propertyName];
+        var property = postSchemaObject[propertyName];
         if (!property || !property.autoform || !property.autoform.editable) {
           console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
           delete post[propertyName]

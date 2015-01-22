@@ -1,4 +1,4 @@
-CommentSchemaObject = {
+commentSchemaObject = {
   _id: {
     type: String,
     optional: true
@@ -81,16 +81,16 @@ CommentSchemaObject = {
   }
 };
 
-// add any extra properties to CommentSchemaObject (provided by packages for example)
+// add any extra properties to commentSchemaObject (provided by packages for example)
 _.each(addToCommentsSchema, function(item){
-  CommentSchemaObject[item.propertyName] = item.propertySchema;
+  commentSchemaObject[item.propertyName] = item.propertySchema;
 });
 
 Comments = new Meteor.Collection("comments");
 
-CommentSchema = new SimpleSchema(CommentSchemaObject);
+commentSchema = new SimpleSchema(commentSchemaObject);
 
-Comments.attachSchema(CommentSchema);
+Comments.attachSchema(commentSchema);
 
 Comments.deny({
   update: function(userId, post, fieldNames) {
@@ -242,7 +242,7 @@ Meteor.methods({
     // if user is not admin, clear restricted properties
     if (!hasAdminRights) {
       _.keys(comment).forEach(function (propertyName) {
-        var property = CommentSchemaObject[propertyName];
+        var property = commentSchemaObject[propertyName];
         if (!property || !property.autoform || !property.autoform.editable) {
           console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
           delete comment[propertyName]
