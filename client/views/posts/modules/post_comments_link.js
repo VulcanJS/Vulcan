@@ -2,6 +2,16 @@ function getHostName() {
 	return window.location.host;
 }
 
+Template[getTemplate('postCommentsLink')].helpers({
+	hasComment: function (count) {
+		// console.log(count.hash.count);
+		return this.commentCount > 0;
+	},
+	singleComment: function () {
+		return this.commentCount === 1;
+	}
+});
+
 Template[getTemplate('postCommentsLink')].events({
 	'click .comments-link': function () {
   		var url= 'http://'+getHostName()+'/posts/'+this._id;

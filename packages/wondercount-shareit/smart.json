@@ -1,0 +1,11 @@
+{
+  "name": "shareit",
+  "description": "A meteorite package that makes social sharing easy",
+  "homepage": "https://github.com/Differential/shareit",
+  "author": "Differential (http://differential.io)",
+  "version": "0.1.0",
+  "git": "https://github.com/Differential/shareit.git",
+  "packages": {
+    "phantomjs": {}
+  }
+}

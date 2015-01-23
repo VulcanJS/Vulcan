@@ -1,0 +1,18 @@
+<template name="shareit">
+<div class="share-buttons">
+	<a href="" class="show-share-btns">Share</a>
+	<div class="ui flowing popup">
+	  {{#if useFB}}
+	    {{> shareit_fb}}
+	  {{/if}}
+	  {{#if useTwitter}}
+	    {{> shareit_twitter}}
+	  {{/if}}
+	  {{#if useGoogle}}
+	    {{> shareit_google}}
+	  {{/if}}
+	</div>
+</div>
+</template>
+
+

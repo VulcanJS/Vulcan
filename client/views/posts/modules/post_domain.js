@@ -21,8 +21,17 @@ Template[getTemplate('postDomain')].helpers({
 Template[getTemplate('postDomain')].events({
     'click .post-read-overlay': function(url){
       var url= this.url;
-      var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
-      $('.fullscreen-post-modal-content').html(iframe);
+
+      if (url.indexOf('youtube.com/watch') > -1 || url.indexOf('youtu.be/i_') > -1) {
+        var youtubeVid = url.slice(-11);
+        var youtube = '<div class="ui video video-play-overlay" data-source="youtube" data-id="'+youtubeVid+'""></div>'
+        $('.fullscreen-post-modal-content').html(youtube);
+        $('.ui.video').video();
+      } else {
+        var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
+        $('.fullscreen-post-modal-content').html(iframe);
+      }
+
       $('.ui.fullscreen.modal')
         .modal('show');
     }

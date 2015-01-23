@@ -226,16 +226,20 @@ postHeading = [
 ];
 
 postMeta = [
-  {
-    template: 'postAuthor',
-    order: 10
-  },
+  // {
+  //   template: 'postAuthor',
+  //   order: 10
+  // },
   {
     template: 'postInfo',
     order: 20
   },
   {
     template: 'postCommentsLink',
+    order: 30
+  },
+  {
+    template: 'postShareLink',
     order: 30
   },
   {

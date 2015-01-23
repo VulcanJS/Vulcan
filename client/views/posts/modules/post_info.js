@@ -4,5 +4,8 @@ Template[getTemplate('postInfo')].helpers({
   },
   getTemplate: function() {
     return getTemplate("postAuthor");
+  },
+  hasVote: function () {
+  	return this.poll.voteCount > 1;
   }
 });

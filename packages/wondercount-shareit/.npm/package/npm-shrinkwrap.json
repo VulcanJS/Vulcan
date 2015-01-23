@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "bitly": {
+      "version": "http://registry.npmjs.org/bitly/-/bitly-1.2.4.tgz"
+    }
+  }
+}

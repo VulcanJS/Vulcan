@@ -1,5 +1,8 @@
 <template name="postInfo">
   <div class="post-meta-item">
+  	{{#if hasVote}}
+    	<span class="points">{{poll.voteCount}} votes</span>
+    {{/if}}
     <span class="points">{{baseScore}}</span>
     <span class="unit">{{pointsUnitDisplayText}}</span>
     {{#if postedAt}}<span class="post-time">{{timeAgo postedAt}}</span>{{/if}}

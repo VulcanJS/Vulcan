@@ -80,6 +80,7 @@ mobile-status-bar@1.0.2
 momentjs:moment@2.9.0
 mongo@1.0.11
 mongo-livedata@1.0.7
+mrt:bitlywrap@0.1.0
 mrt:cookies@0.3.0
 mrt:jquery-hotkeys@0.0.1
 mrt:moment@2.8.1
@@ -144,3 +145,4 @@ useraccounts:core@1.4.1
 useraccounts:unstyled@1.4.1
 webapp@1.1.6
 webapp-hashing@1.0.2
+wondercount-shareit@0.3.1
