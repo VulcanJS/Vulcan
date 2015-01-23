@@ -63,21 +63,31 @@ Template[getTemplate('poll_form')].events({
     	console.log("this is undefined");
     }
     Meteor.call('pollVote', post, this, function(error, result){
-      trackEvent("post poll-voted", {'_id': post._id});
+      	trackEvent("post poll-voted", {'_id': post._id});
+
+	    Meteor.call('upvotePost', post, function(error, result){
+	      trackEvent("post upvoted", {'_id': post._id});
+	    });
     });
+
+
   },
   'click .poll-binary-vote-btn': function(e, instance){
     e.preventDefault();
     var order = e.currentTarget.id;
     var option = instance.data.poll.options[order-1];
+    var post = this;
 
     if(!Meteor.user()){
       Router.go('atSignIn');
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
 
-    Meteor.call('pollVote', this, option, function(error, result){
-      trackEvent("post poll-voted", {'_id': this._id});
+    Meteor.call('pollVote', post, option, function(error, result){
+      	trackEvent("post poll-voted", {'_id': this._id});
+	    Meteor.call('upvotePost', post, function(error, result){
+	      trackEvent("post upvoted", {'_id': post._id});
+	    });
     });
   }
 });
