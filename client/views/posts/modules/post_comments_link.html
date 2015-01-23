@@ -1,0 +1,16 @@
+<template name="postCommentsLink">
+  <div class="post-meta-item">
+    <a class="comments-link" href="">
+    {{#if hasComment count=commentCount}} 
+      <span class="comments-count">{{commentCount}}</span>
+      {{#if singleComment}}
+      	<span class="comments-action">{{_ 'comment_'}} </span>
+      {{else}}
+      	<span class="comments-action">{{_ 'comments_'}} </span>
+      {{/if}}
+    {{else}}
+      <span class="comments-action">{{_ 'discuss'}}</span>
+    {{/if}}
+    </a>
+  </div>
+</template>
