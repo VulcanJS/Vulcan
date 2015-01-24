@@ -63,14 +63,9 @@ Template[getTemplate('poll_form')].events({
     	console.log("this is undefined");
     }
     Meteor.call('pollVote', post, this, function(error, result){
+	    Meteor.call('upvotePost', post, function(error, result){});
       	trackEvent("post poll-voted", {'_id': post._id});
-
-	    Meteor.call('upvotePost', post, function(error, result){
-	      trackEvent("post upvoted", {'_id': post._id});
-	    });
     });
-
-
   },
   'click .poll-binary-vote-btn': function(e, instance){
     e.preventDefault();
@@ -84,10 +79,8 @@ Template[getTemplate('poll_form')].events({
     }
 
     Meteor.call('pollVote', post, option, function(error, result){
+	    Meteor.call('upvotePost', post, function(error, result){});
       	trackEvent("post poll-voted", {'_id': this._id});
-	    Meteor.call('upvotePost', post, function(error, result){
-	      trackEvent("post upvoted", {'_id': post._id});
-	    });
     });
   }
 });
