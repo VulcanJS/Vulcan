@@ -261,6 +261,7 @@
 
   // Translation needed (found during migration to tap:i18n)
   "please_fill_in_a_title": "Please fill in a title",
+  "please_select_a_question_type": "Please select a question type",
   "seconds_before_posting_again": " seconds before posting again",
   "upvoted": "Upvoted",
   "posted_date": "Questioned Date",

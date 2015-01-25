@@ -442,7 +442,10 @@ submitPost = function (post) {
 
   post.poll.voteCount = 0;
 
-  if (post.poll.type === "binary") {
+  if(!post.poll.type)
+    throw new Meteor.Error(602, i18n.t('please_select_a_question_type'));
+
+  if (post.poll.type == "binary") {
     post.poll.options = [
       {
         name: "Yes",
@@ -458,7 +461,7 @@ submitPost = function (post) {
     ]
   }
 
-  if (post.poll.type === "multiple") {
+  if (post.poll.type == "multiple") {
     var pollOptionsCount = post.poll.options.length;
     for (var i = 0; i < pollOptionsCount; i++) {
       post.poll.options[i] = {
