@@ -602,6 +602,58 @@ Meteor.methods({
 
     // ------------------------------ Update ------------------------------ //
 
+    var beforeEditPost = Posts.findOne(postId),
+        newData = post,
+        updateOptions = [];
+        
+    if (newData.poll.type == 'binary') {
+      var answerLength = 2;
+      newData.poll.options = [{
+        name: "Yes",
+        voteOrder: 1
+      },{
+        name: "No",
+        voteOrder: 2
+      }];
+
+    } else {
+      var answerLength = newData.poll.options.length;
+    }
+
+    for (var i=0; i<answerLength; i++) {
+      var option = {};
+      option.name = newData.poll.options[i].name;
+      try {
+        !_.isUndefined(beforeEditPost.poll.options[i].voteOrder);
+
+        option.voteOrder = beforeEditPost.poll.options[i].voteOrder;
+      } catch( e ) {
+        option.voteOrder = i + 1;
+      }
+      try {
+        !_.isUndefined(beforeEditPost.poll.options[i].voters);
+
+        option.voters = beforeEditPost.poll.options[i].voters;
+        option.votes = beforeEditPost.poll.options[i].voters.length;
+      } catch( e ) {
+        option.voters = [];
+        option.votes = 0;
+      }
+      updateOptions.push(option);
+    }
+
+    modifier.$set = {
+      'poll.options':updateOptions,
+      'poll.type':newData.poll.type, 
+      'title':newData.title
+    }
+    if (newData.body) {
+      modifier.$set.body = newData.body;
+    }
+    if (newData.url) {
+      modifier.$set.url = newData.url;
+    }
+
     Posts.update(postId, modifier);
 
     // ------------------------------ Callbacks ------------------------------ //
