@@ -107,7 +107,7 @@
   //Errors
   "you_are_already_logged_in": "You are already logged in",
   "sorry_this_is_a_private_site_please_sign_up_first": "Sorry, this is a private site. Please register first.",
-  "thanks_for_signing_up": "Thanks for register!",
+  "thanks_for_signing_up": "Thanks for registering!",
   "the_site_is_currently_invite_only_but_we_will_let_you_know_as_soon_as_a_spot_opens_up": "The site is currently invite-only, but we will let you know as soon as a spot opens up.",
   "sorry_you_dont_have_the_rights_to_view_this_page": "Sorry, you don't have the rights to view this page.",
   "sorry_you_do_not_have_the_rights_to_comments": "Sorry, you do not have the rights to leave comments at this time.",
