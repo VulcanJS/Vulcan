@@ -596,7 +596,6 @@ Meteor.methods({
 
     // run all post submit server callbacks on modifier successively
     modifier = postEditMethodCallbacks.reduce(function(result, currentFunction) {
-        console.log(result);
         return currentFunction(result);
     }, modifier);
 
@@ -623,23 +622,29 @@ Meteor.methods({
     for (var i=0; i<answerLength; i++) {
       var option = {};
       option.name = newData.poll.options[i].name;
-      try {
-        !_.isUndefined(beforeEditPost.poll.options[i].voteOrder);
 
-        option.voteOrder = beforeEditPost.poll.options[i].voteOrder;
+      try {
+        if (!_.isUndefined(beforeEditPost.poll.options[i]) && !_.isUndefined(beforeEditPost.poll.options[i].voteOrder)) {
+          option.voteOrder = beforeEditPost.poll.options[i].voteOrder;
+        }
       } catch( e ) {
-        option.voteOrder = i + 1;
+        if (e instanceof TypeError) {
+          option.voteOrder = i + 1;
+        }
       }
       try {
-        !_.isUndefined(beforeEditPost.poll.options[i].voters);
-
-        option.voters = beforeEditPost.poll.options[i].voters;
-        option.votes = beforeEditPost.poll.options[i].voters.length;
+        if (!_.isUndefined(beforeEditPost.poll.options[i]) && !_.isUndefined(beforeEditPost.poll.options[i].voters)) {
+          option.voters = beforeEditPost.poll.options[i].voters;
+          option.votes = beforeEditPost.poll.options[i].voters.length;
+        }
       } catch( e ) {
-        option.voters = [];
-        option.votes = 0;
+        if (e instanceof TypeError) {
+          option.voters = [];
+          option.votes = 0;
+        }
       }
       updateOptions.push(option);
+
     }
 
     modifier.$set = {
