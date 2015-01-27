@@ -1,85 +1,96 @@
-CommentSchemaObject = {
+commentSchemaObject = {
   _id: {
-      type: String,
-      optional: true
+    type: String,
+    optional: true
   },
   parentCommentId: {
-      type: String,
-      optional: true
+    type: String,
+    optional: true,
+    autoform: {
+      editable: true,
+      omit: true
+    }
   },
   createdAt: {
-      type: Date,
-      optional: true
+    type: Date,
+    optional: true
   },
   postedAt: { // for now, comments are always created and posted at the same time
-      type: Date,
-      optional: true
+    type: Date,
+    optional: true
   },
   body: {
-      type: String
+    type: String,
+    autoform: {
+      editable: true
+    }
   },
   htmlBody: {
-      type: String,
-      optional: true
+    type: String,
+    optional: true
   },
   baseScore: {
-      type: Number,
-      decimal: true,
-      optional: true
+    type: Number,
+    decimal: true,
+    optional: true
   },
   score: {
-      type: Number,
-      decimal: true,
-      optional: true
+    type: Number,
+    decimal: true,
+    optional: true
   },
   upvotes: {
-      type: Number,
-      optional: true
+    type: Number,
+    optional: true
   },
   upvoters: {
-      type: [String], // XXX
-      optional: true
+    type: [String], // XXX
+    optional: true
   },
   downvotes: {
       type: Number,
       optional: true
   },
   downvoters: {
-      type: [String], // XXX
-      optional: true
+    type: [String], // XXX
+    optional: true
   },
   author: {
-      type: String,
-      optional: true
+    type: String,
+    optional: true
   },
   inactive: {
-      type: Boolean,
-      optional: true
+    type: Boolean,
+    optional: true
   },
   postId: {
-      type: String, // XXX
-      optional: true
+    type: String, // XXX
+    optional: true,
+    autoform: {
+      editable: true,
+      omit: true
+    }
   },
   userId: {
-      type: String, // XXX
-      optional: true
+    type: String, // XXX
+    optional: true
   },
   isDeleted: {
-      type: Boolean,
-      optional: true
+    type: Boolean,
+    optional: true
   }
 };
 
-// add any extra properties to CommentSchemaObject (provided by packages for example)
+// add any extra properties to commentSchemaObject (provided by packages for example)
 _.each(addToCommentsSchema, function(item){
-  CommentSchemaObject[item.propertyName] = item.propertySchema;
+  commentSchemaObject[item.propertyName] = item.propertySchema;
 });
 
 Comments = new Meteor.Collection("comments");
 
-CommentSchema = new SimpleSchema(CommentSchemaObject);
+commentSchema = new SimpleSchema(commentSchemaObject);
 
-Comments.attachSchema(CommentSchema);
+Comments.attachSchema(commentSchema);
 
 Comments.deny({
   update: function(userId, post, fieldNames) {
@@ -230,7 +241,13 @@ Meteor.methods({
 
     // if user is not admin, clear restricted properties
     if (!hasAdminRights) {
-      delete comment.userId;
+      _.keys(comment).forEach(function (propertyName) {
+        var property = commentSchemaObject[propertyName];
+        if (!property || !property.autoform || !property.autoform.editable) {
+          console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
+          delete comment[propertyName]
+        }
+      });
     }
 
     // if no userId has been set, default to current user id

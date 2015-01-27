@@ -5,7 +5,7 @@ $small-break: 30em;
   }
 }
 
-.post-thumbnail{
+.posts-list .post-thumbnail{
   flex-grow: 0;
   flex-shrink: 0;
   margin-right: 10px;
@@ -105,4 +105,8 @@ $small-break: 30em;
     background: rgba(255,255,255,0.4);
     display: block;
   }
+}
+
+.regenerate-thumbnail-link{
+  margin-right: 10px;
 }

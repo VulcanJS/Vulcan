@@ -1,7 +1,3 @@
-Template[getTemplate('comment_list')].created = function(){
-  postObject = this.data;
-};
-
 Template[getTemplate('comment_list')].helpers({
   comment_item: function () {
     return getTemplate('comment_item');
@@ -10,6 +6,12 @@ Template[getTemplate('comment_list')].helpers({
     var post = this;
     var comments = Comments.find({postId: post._id, parentCommentId: null}, {sort: {score: -1, postedAt: -1}});
     return comments;
+  },
+  threadModules: function () {
+    return threadModules;
+  },
+  getTemplate: function () {
+    return getTemplate(this.template);
   }
 });
 

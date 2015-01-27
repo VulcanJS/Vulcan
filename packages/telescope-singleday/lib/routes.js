@@ -25,12 +25,12 @@ Meteor.startup(function () {
 
   // Digest
 
-  Router.route('/digest/:year/:month/:day', {
+  Router.route('/day/:year/:month/:day', {
     name: 'postsSingleDay',
     controller: PostsSingleDayController
   });
 
-  Router.route('/digest', {
+  Router.route('/day', {
     name: 'postsSingleDayDefault',
     controller: PostsSingleDayController
   });

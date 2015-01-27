@@ -5,15 +5,14 @@ Package.describe({
 });
 
 Npm.depends({
-  "html-to-text": "0.1.0",
-  "later": "1.1.6"
+  "html-to-text": "0.1.0"
 });
 
 Package.onUse(function (api) {
 
   api.use([
-    'telescope-lib', 
-    'telescope-base', 
+    'telescope-lib',
+    'telescope-base',
     'aldeed:simple-schema',
     'iron:router',
     'miro:mailchimp',
@@ -48,7 +47,7 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/server/campaign.js',
     'lib/server/cron.js',
-    'lib/server/mailchimp.js',    
+    'lib/server/mailchimp.js',
     'lib/server/routes.js',
     'lib/server/templates/emailDigest.handlebars',
     'lib/server/templates/emailDigestConfirmation.handlebars',
@@ -63,7 +62,7 @@ Package.onUse(function (api) {
     "i18n/it.i18n.json",
     "i18n/zh-CN.i18n.json",
   ], ["client", "server"]);
-    
+
   api.export([
     'resetNewsletterSchedule'
   ]);

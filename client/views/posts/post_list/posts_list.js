@@ -3,6 +3,9 @@ Template[getTemplate('posts_list')].created = function() {
 };
 
 Template[getTemplate('posts_list')].helpers({
+  postsLayout: function () {
+    return getSetting('postsLayout', 'posts-list');
+  },
   description: function () {
     var controller = Iron.controller();
     if (typeof controller.getDescription === 'function')

@@ -1,13 +1,42 @@
+$small-break: 30em;
+
+@mixin small(){
+  @media screen and (max-width: $small-break) {
+    @content;
+  }
+}
+
+$red: #DD3416;
+
+@mixin cf{
+  /* For modern browsers */
+  &:before,&:after {
+    content:"";
+    display:table;
+  }
+  &:after {
+  clear:both;
+  }
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom:1;
+}
+
+.post-share{
+  position: relative;
+}
+
 .share-options {
   position: absolute;
   @include small {
-    left: 0px;
-    top: 75px;
+    left: 50% !important;
+    top: 40px !important;
+    width: 185px;
+    margin-left: -92px;
   }
-  @include medium-large {
-    left: -180px;
-    top: 5px;
-  }
+  // @include medium-large {
+  //   left: -180px;
+  //   top: 5px;
+  // }
   padding: 10px;
   line-height: 1;
   a {
@@ -39,11 +68,11 @@
       left: 50%;
       margin-left: -11px;
     }
-    @include medium-large {
-      border-left-color: #ffffff;
-      top: 20px;
-      margin-top: -3px;
-    }
+    // @include medium-large {
+    //   border-left-color: #ffffff;
+    //   top: 20px;
+    //   margin-top: -3px;
+    // }
   }
   &:before {
     border-color: rgba(0, 0, 0, 0);
@@ -54,11 +83,11 @@
       left: 50%;
       margin-left: -12px;
     }
-    @include medium-large {
-      border-left-color: $red;
-      top: 20px;
-      margin-top: -4px;
-    }
+    // @include medium-large {
+    //   border-left-color: $red;
+    //   top: 20px;
+    //   margin-top: -4px;
+    // }
   }
   .buttons {
     @include cf;

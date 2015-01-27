@@ -71,8 +71,9 @@ Meteor.startup(function () {
           $banner.removeClass('show-loader');
           if(error){
             console.log(error);
-            flashMessage(error.message, "error");
+            flashMessage(error.reason, "error");
           }else{
+            clearSeenMessages();
             console.log(result);
             confirmSubscription();
           }

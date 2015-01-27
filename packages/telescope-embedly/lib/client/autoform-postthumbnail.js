@@ -2,6 +2,47 @@ AutoForm.addInputType("bootstrap-postthumbnail", {
   template: "afPostThumbnail"
 });
 
+var fillEmbedlyData = function (instance) {
+  
+  // note: the following fields are *not* in the current template
+  var $urlField = $('[name="url"]');
+  var $titleField = $('[name="title"]');
+  var $bodyField = $('[name="body"]');
+  var url = $urlField.val();
+
+  var $thumbnailContainer = instance.$('.post-thumbnail-container');
+  var $img = instance.$('.post-thumbnail-preview');
+  var $thumbnailUrlField = instance.$('[name="thumbnailUrl"]');
+
+  if (!!url) {
+    $thumbnailContainer.addClass('loading');
+    clearSeenMessages();
+    console.log('getting embedly data for '+url);
+    Meteor.call('getEmbedlyData', url, function (error, data) {
+      if (error) {
+        console.log(error)
+        flashMessage(error.message, 'error');
+        $thumbnailContainer.removeClass('loading');
+        return
+      }
+      if (data) {
+        // set thumbnail and fill in thumbnailUrl field
+        $img.attr('src', data.thumbnailUrl);
+        $thumbnailUrlField.val(data.thumbnailUrl);
+
+        // remove loading class
+        $thumbnailContainer.removeClass('loading');
+
+        if (!$titleField.val()) // if title field is empty, fill in title
+          $titleField.val(data.title);
+        if (!$bodyField.val()) // if body field is empty, fill in body
+          $bodyField.val(data.description);
+        
+      }
+    });
+  }
+}
+
 Template.afPostThumbnail.created = function () {
   var instance = this;
   instance.embedlyKeyExists = new ReactiveVar(false);
@@ -33,48 +74,12 @@ Template.afPostThumbnail.helpers({
 Template.afPostThumbnail.rendered = function () {
 
   var instance = this;
-
-  // note: the following fields are *not* in the current template
   var $urlField = $('[name="url"]');
-  var $titleField = $('[name="title"]');
-  var $bodyField = $('[name="body"]');
 
   $urlField.change(function (e) {
-
-    var url = $urlField.val();
-
-    var $thumbnailContainer = instance.$('.post-thumbnail-container');
-    var $img = instance.$('.post-thumbnail-preview');
-    var $thumbnailUrlField = instance.$('[name="thumbnailUrl"]');
-
-    if (!!url) {
-      $thumbnailContainer.addClass('loading');
-      clearSeenMessages();
-      console.log('getting embedly data for '+url);
-      Meteor.call('getEmbedlyData', url, function (error, data) {
-        if (error) {
-          console.log(error)
-          flashMessage(error.message, 'error');
-          $thumbnailContainer.removeClass('loading');
-          return
-        }
-        if (data) {
-          // set thumbnail and fill in thumbnailUrl field
-          $img.attr('src', data.thumbnailUrl);
-          $thumbnailUrlField.val(data.thumbnailUrl);
-
-          // remove loading class
-          $thumbnailContainer.removeClass('loading');
-
-          if (!$titleField.val()) // if title field is empty, fill in title
-            $titleField.val(data.title);
-          if (!$bodyField.val()) // if body field is empty, fill in body
-            $bodyField.val(data.description);
-          
-        }
-      });
-    }
+    fillEmbedlyData(instance);
   });
+
 }
 
 Template.afPostThumbnail.events({
@@ -82,5 +87,9 @@ Template.afPostThumbnail.events({
     e.preventDefault();
     t.$('.post-thumbnail-preview').attr('src', '');
     t.$('input').val('');
+  },
+  'click .regenerate-thumbnail-link': function (e, instance) {
+    e.preventDefault();
+    fillEmbedlyData(instance);
   }
 })
