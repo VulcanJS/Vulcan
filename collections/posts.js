@@ -3,10 +3,6 @@
 // ----------------------------------------- Schema ----------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-SimpleSchema.extendOptions({
-  editable: Match.Optional(Boolean) // editable: true means the field can be edited by the document's owner
-});
-
 postSchemaObject = {
   _id: {
     type: String,
@@ -41,7 +37,6 @@ postSchemaObject = {
   title: {
     type: String,
     optional: false,
-    editable: true,
     autoform: {
       editable: true
     }
@@ -49,7 +44,6 @@ postSchemaObject = {
   body: {
     type: String,
     optional: true,
-    editable: true,
     autoform: {
       editable: true,
       rows: 5
@@ -205,9 +199,9 @@ _.each(addToPostSchema, function(item){
 
 Posts = new Meteor.Collection("posts");
 
-PostSchema = new SimpleSchema(postSchemaObject);
+postSchema = new SimpleSchema(postSchemaObject);
 
-Posts.attachSchema(PostSchema);
+Posts.attachSchema(postSchema);
 
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------- Helpers ----------------------------------------- //
@@ -432,12 +426,15 @@ Meteor.methods({
     // userId
     // sticky (default to false)
 
-    // if user is not admin, clear restricted properties
+    // if user is not admin, go over each schema property and clear it if it's not editable
     if (!hasAdminRights) {
-      delete post.status;
-      delete post.postedAt;
-      delete post.userId;
-      delete post.sticky;
+      _.keys(post).forEach(function (propertyName) {
+        var property = postSchemaObject[propertyName];
+        if (!property || !property.autoform || !property.autoform.editable) {
+          console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
+          delete post[propertyName]
+        }
+      });
     }
 
     // if no post status has been set, set it now
@@ -506,6 +503,17 @@ Meteor.methods({
         set.postedAt = new Date();
 
       var result = Posts.update(post._id, {$set: set}, {validate: false});
+
+      // --------------------- Server-Side Async Callbacks --------------------- //
+      if (Meteor.isServer) {
+        Meteor.defer(function () { // use defer to avoid holding up client
+          // run all post submit server callbacks on post object successively
+          post = postApproveCallbacks.reduce(function(result, currentFunction) {
+              return currentFunction(result);
+          }, post);
+        });
+      }
+
     }else{
       flashMessage('You need to be an admin to do that.', "error");
     }

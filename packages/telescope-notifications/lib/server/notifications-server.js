@@ -5,18 +5,25 @@ getUnsubscribeLink = function(user){
 // given a notification, return the correct subject and html to send an email
 buildEmailNotification = function (notification) {
 
-  var subject, template;
-  var post = notification.data.post;
-  var comment = notification.data.comment;
+  var subject,
+      template,
+      post = notification.data.post,
+      comment = notification.data.comment;
 
   switch(notification.courier){
+
+    case 'newComment':
+      subject = notification.author()+' left a new comment on your post "' + post.title + '"';
+      template = 'emailNewComment';
+      break;
+
     case 'newReply':
-      subject = 'Someone replied to your comment on "'+post.title+'"';
+      subject = notification.author()+' replied to your comment on "'+post.title+'"';
       template = 'emailNewReply';
       break;
 
-    case 'newComment':
-      subject = 'A new comment on your post "'+post.title+'"';
+    case 'newCommentSubscribed':
+      subject = notification.author()+' left a new comment on "' + post.title + '"';
       template = 'emailNewComment';
       break;
 

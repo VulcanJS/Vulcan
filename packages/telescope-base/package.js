@@ -27,21 +27,28 @@ Package.onUse(function (api) {
     'viewParameters',
     'footerModules',
     'heroModules',
+    'threadModules',
     'postModules',
     'postThumbnail',
     'postHeading',
     'postMeta',
     'modulePositions',
 
+    'postClassCallbacks',
+
     'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
     'postSubmitMethodCallbacks',
     'postAfterSubmitMethodCallbacks',
 
+    'postApproveCallbacks',
+    
     'postEditRenderedCallbacks',
     'postEditClientCallbacks',
     'postEditMethodCallbacks',
     'postAfterEditMethodCallbacks',
+
+    'commentClassCallbacks',
 
     'commentSubmitRenderedCallbacks',
     'commentSubmitClientCallbacks',
@@ -53,6 +60,9 @@ Package.onUse(function (api) {
     'commentEditMethodCallbacks',
     'commentAfterEditMethodCallbacks',
 
+    'upvoteCallbacks',
+    'downvoteCallbacks',
+    
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
     'userProfileCompleteChecks',

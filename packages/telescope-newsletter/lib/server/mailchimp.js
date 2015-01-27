@@ -111,26 +111,27 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
       console.log("// User subscribed");
       
+      return subscribe;
+
     } catch (error) {
+      throw new Meteor.Error("subscription-failed", error.message);
       console.log( error.message );
     }
   }
 };
 
-syncAddToMailChimpList = Async.wrap(addToMailChimpList);
-
 Meteor.methods({
   addCurrentUserToMailChimpList: function(){
     var currentUser = Meteor.users.findOne(this.userId);
     try {
-      return syncAddToMailChimpList(currentUser, false);
+      return addToMailChimpList(currentUser, false);
     } catch (error) {
       throw new Meteor.Error(500, error.message);
     }
   },
   addEmailToMailChimpList: function (email) {
     try {
-      return syncAddToMailChimpList(email, true);
+      return addToMailChimpList(email, true);
     } catch (error) {
       throw new Meteor.Error(500, error.message);
     }

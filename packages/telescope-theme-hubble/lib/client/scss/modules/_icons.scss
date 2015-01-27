@@ -1,0 +1,30 @@
+.action-icon{
+  font-size: 30px;
+  height: 30px;
+  display: block;
+  &:before{
+    position: relative;
+    top: -10px;
+  }
+}
+.action-label{
+  font-weight: bold;
+  display:block;
+  height:20px;
+  line-height:20px;
+  bottom:5px;
+  left:0px;
+  font-size:13px;
+  color:$light-text;
+  pointer-events:none;
+  // color:$red;
+}
+.action-count{
+  position:absolute;
+  top:4px;
+  display:block;
+  width:100%;
+  height:11px;
+  line-height:11px;
+  font-size:14px;
+}

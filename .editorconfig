@@ -4,20 +4,16 @@ root = true
 
 [*.{js,html}]
 
-# Change these settings to your own preference
-indent_style = space
-indent_size = 2
-
-# We recommend you to keep these unchanged
-end_of_line = lf
 charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
-trim_trailing_whitespace = true
-max_line_length = 80
+end_of_line = lf
 indent_brace_style = 1TBS
-spaces_around_operators = true
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+max_line_length = 80
 quote_type = auto
+spaces_around_operators = true
+trim_trailing_whitespace = true
 
 [*.md]
 

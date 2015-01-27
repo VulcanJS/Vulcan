@@ -7,5 +7,7 @@
   "user_not_found": "Utilisateur non trouvé",
   "1_notification": "1 notification",
   "notifications": "notifications",
-  "emailNotifications": "Notifications par Email"
+  "emailNotifications": "Notifications par Email",
+  "your_post": "Votre post",
+  "has_been_approved": "a été approuvé"
 }

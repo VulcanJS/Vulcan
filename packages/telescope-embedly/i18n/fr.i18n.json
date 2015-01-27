@@ -1,6 +1,7 @@
 {
   "thumbnail": "Aperçu",
   "thumbnailUrl": "Aperçu",
+  "regenerate_thumbnail": "Regenerer l'aperçu",
   "clear_thumbnail": "Effacer l'aperçu",
   "please_fill_in_embedly_key": "Veuillez fournir une clé API Embedly pour activer les aperçus."
 }

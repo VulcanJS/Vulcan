@@ -97,6 +97,18 @@ settingsSchemaObject = {
       })
     }
   },
+  postsLayout: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'posts',
+      instructions: 'The layout used for post lists',
+      options: [
+        {value: 'posts-list', label: 'List'},
+        {value: 'posts-grid', label: 'Grid'}
+      ]
+    }
+  },
   postInterval: {
     type: Number,
     optional: true,

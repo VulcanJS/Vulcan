@@ -1,6 +1,6 @@
 // see https://www.discovermeteor.com/blog/template-level-subscriptions/
 
-// this template acts as the controller that sets and 
+// this template acts as the controller that sets and
 // manages the reactive context for the embedded postsList template
 
 Template[getTemplate('singleDay')].created = function () {
@@ -18,10 +18,10 @@ Template[getTemplate('singleDay')].created = function () {
     // if instance has a set date use this, else depend on Session variable
     var currentDate = (!!instance.data && !!instance.data.date) ? instance.data.date: Session.get('currentDate');
     return {
-      view: 'digest',
+      view: 'singleday',
       after: moment(currentDate).startOf('day').toDate(),
       before: moment(currentDate).endOf('day').toDate()
-    }
+    };
   };
 
   // 2. Autorun
@@ -56,10 +56,10 @@ Template[getTemplate('singleDay')].created = function () {
       instance.postsReady.set(true);
 
     } else {
-      
+
       instance.postsReady.set(false);
       // console.log("> Subscription is not ready yet. \n\n");
-    
+
     }
   });
 
@@ -70,9 +70,9 @@ Template[getTemplate('singleDay')].created = function () {
     var termsLoaded = _.extend(instance.getTerms(), {limit: instance.postsLoaded.get()});
     var parameters = getPostsParameters(termsLoaded);
     return Posts.find(parameters.find, parameters.options);
-  }
+  };
 
-}
+};
 
 Template[getTemplate('singleDay')].helpers({
   showDateNav: function () {
@@ -114,7 +114,7 @@ Template[getTemplate('singleDay')].helpers({
       // the current instance
       controllerInstance: instance
 
-    }
+    };
 
     return context;
   }
