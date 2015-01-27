@@ -5,6 +5,7 @@
 * Added `threadModules` zone.
 * Added `upvoteCallbacks` and `downvoteCallbacks` callback arrays.
 * Fix “post awaiting moderation” message bug.
+* You can now subscribe to comment threads (thanks @delgermurun!).
 * Added `postApproveCallbacks` callback array.
 * Added notifications for pending and approved posts, for admins and end users.
 * Renaming "digest" view to "singleday".

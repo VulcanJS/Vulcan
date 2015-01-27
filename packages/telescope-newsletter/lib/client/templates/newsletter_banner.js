@@ -73,6 +73,7 @@ Meteor.startup(function () {
             console.log(error);
             flashMessage(error.reason, "error");
           }else{
+            clearSeenMessages();
             console.log(result);
             confirmSubscription();
           }
