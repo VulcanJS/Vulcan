@@ -371,7 +371,7 @@ currentPost = function () {
   return Posts.findOne(Router.current().data()._id);
 }
 
-// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------------- // 
 // ------------------------------------------ Hooks ------------------------------------------ //
 // ------------------------------------------------------------------------------------------- //
 
@@ -603,7 +603,8 @@ Meteor.methods({
 
     var beforeEditPost = Posts.findOne(postId),
         newData = post,
-        updateOptions = [];
+        updateOptions = [],
+        voteCount = 0;
         
     if (newData.poll.type == 'binary') {
       var answerLength = 2;
@@ -614,7 +615,6 @@ Meteor.methods({
         name: "No",
         voteOrder: 2
       }];
-
     } else {
       var answerLength = newData.poll.options.length;
     }
@@ -623,32 +623,25 @@ Meteor.methods({
       var option = {};
       option.name = newData.poll.options[i].name;
 
-      try {
-        if (!_.isUndefined(beforeEditPost.poll.options[i]) && !_.isUndefined(beforeEditPost.poll.options[i].voteOrder)) {
-          option.voteOrder = beforeEditPost.poll.options[i].voteOrder;
-        }
-      } catch( e ) {
-        if (e instanceof TypeError) {
+      if (!_.isUndefined(beforeEditPost.poll.options[i]) && !_.isUndefined(beforeEditPost.poll.options[i].voteOrder)) {
+        option.voteOrder = beforeEditPost.poll.options[i].voteOrder;
+      } else {
           option.voteOrder = i + 1;
-        }
       }
-      try {
-        if (!_.isUndefined(beforeEditPost.poll.options[i]) && !_.isUndefined(beforeEditPost.poll.options[i].voters)) {
-          option.voters = beforeEditPost.poll.options[i].voters;
-          option.votes = beforeEditPost.poll.options[i].voters.length;
-        }
-      } catch( e ) {
-        if (e instanceof TypeError) {
-          option.voters = [];
-          option.votes = 0;
-        }
+      if (!_.isUndefined(beforeEditPost.poll.options[i]) && !_.isUndefined(beforeEditPost.poll.options[i].voters)) {
+        option.voters = beforeEditPost.poll.options[i].voters;
+        option.votes = beforeEditPost.poll.options[i].voters.length;
+      } else {
+        option.voters = [];
+        option.votes = 0;
       }
+      voteCount += option.votes;
       updateOptions.push(option);
-
     }
 
     modifier.$set = {
       'poll.options':updateOptions,
+      'poll.voteCount':voteCount,
       'poll.type':newData.poll.type, 
       'title':newData.title
     }
@@ -658,7 +651,6 @@ Meteor.methods({
     if (newData.url) {
       modifier.$set.url = newData.url;
     }
-
     Posts.update(postId, modifier);
 
     // ------------------------------ Callbacks ------------------------------ //
