@@ -32,7 +32,6 @@ var mediaProperty = {
 }
 addToPostSchema.push(mediaProperty);
 
-
 postThumbnail.push({
   template: 'postThumbnail', 
   order: 15
@@ -74,3 +73,9 @@ var thumbnailHeightProperty = {
   }
 }
 addToSettingsSchema.push(thumbnailHeightProperty);
+
+// add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
+postClassCallbacks.push(function (post, postClass){
+  var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";
+  return postClass + " " + thumbnailClass;
+});

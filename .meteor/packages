@@ -83,6 +83,7 @@ telescope-invites
 telescope-post-by-feed
 telescope-releases
 telescope-getting-started
+telescope-subscribe-to-posts
 
 # Custom Packages
 nooitaf:semantic-ui

@@ -39,18 +39,6 @@ getEmbedlyData = function (url) {
   }
 }
 
-Meteor.methods({
-  testGetEmbedlyData: function (url) {
-    console.log(getEmbedlyData(url))
-  },
-  getEmbedlyData: function (url) {
-    return getEmbedlyData(url);
-  },
-  embedlyKeyExists: function () {
-    return !!getSetting('embedlyKey');
-  }
-});
-
 // For security reason, we use a separate server-side API call to set the media object,
 // and the thumbnail object if it hasn't already been set
 
@@ -105,3 +93,21 @@ var updateMediaOnEdit = function (updateObject) {
   return updateObject;
 }
 postEditMethodCallbacks.push(updateMediaOnEdit);
+
+
+Meteor.methods({
+  testGetEmbedlyData: function (url) {
+    console.log(getEmbedlyData(url))
+  },
+  getEmbedlyData: function (url) {
+    return getEmbedlyData(url);
+  },
+  embedlyKeyExists: function () {
+    return !!getSetting('embedlyKey');
+  },
+  regenerateEmbedlyData: function (post) {
+    if (can.edit(Meteor.user(), post)) {
+      addMediaAfterSubmit(post);
+    }
+  }
+});

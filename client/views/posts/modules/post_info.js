@@ -6,6 +6,6 @@ Template[getTemplate('postInfo')].helpers({
     return getTemplate("postAuthor");
   },
   hasVote: function () {
-  	return this.poll.voteCount > 1;
+  	return this.poll && this.poll.voteCount > 1;
   }
 });

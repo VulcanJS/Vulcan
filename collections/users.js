@@ -1,5 +1,5 @@
 var Schema = {};
-var userSchemaObj = { 
+var userSchemaObject = { 
   _id: {
     type: String,
     optional: true
@@ -44,11 +44,10 @@ var userSchemaObj = {
 };
 
 
-// add any extra properties to postSchemaObject (provided by packages for example)
 _.each(addToUserSchema, function(item){
-  userSchemaObj[item.propertyName] = item.propertySchema;
+  userSchemaObject[item.propertyName] = item.propertySchema;
 });
-Schema.User = new SimpleSchema(userSchemaObj);
+Schema.User = new SimpleSchema(userSchemaObject);
 
 // Meteor.users.attachSchema(Schema.User);
 
