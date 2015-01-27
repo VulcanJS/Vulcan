@@ -3,6 +3,7 @@
 // array containing properties to be added to the post/settings/comments schema on startup.
 addToPostSchema = [];
 addToCommentsSchema = [];
+addToFriendsSchema = [];
 addToSettingsSchema = [];
 addToUserSchema = [];
 
