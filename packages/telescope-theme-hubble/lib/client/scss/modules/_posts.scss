@@ -40,17 +40,7 @@
 			background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 		}
 	}
-	.post-share{
-		display: none;
-	}
-	&.show-actions{
-		.post-content{
-			display: none;
-		}
-		.post-share, .post-discuss, .post-upvote{
-			display: block;
-		}
-	}	
+
 }
 
 // ------------------------------ posts-list layout ------------------------------ //
@@ -111,6 +101,9 @@
 	.post-discuss{
 		order: 7;
 		padding-top: 6px;
+		@include small{
+			display: none;
+		}
 	}
 	.post-share, .post-discuss{
 		// width: 60px;
@@ -121,13 +114,28 @@
 	}
 	.post-actions{
 		order: 8;
+		@include small{
+			display: block;
+		}
 	}
 	.post-avatars{
-		order: 6
+		order: 6;
+	 	@include small{
+	 		display: none;
+	 	}
 	}
-	&.show-actions{
+	.show-actions{
+		.post-content{
+			display: none;
+		}
 		.post-share, .post-discuss, .post-upvote{
 			flex-grow: 1;
+			display: block;
+		}
+	}	
+	.action-label{
+		@include small{
+			display: block;
 		}
 	}
 }
@@ -135,19 +143,23 @@
 // ------------------------------ posts-grid layout ------------------------------ //
 
 .posts-grid{
-	display: flex;
-  flex-wrap: wrap;
+	@include medium-large{
+		display: flex;
+	  flex-wrap: wrap;
+  }
 	.post{
-		width: calc((100% - 20px)/3);
-		margin-right: 10px;
+		@include medium-large{
+			width: calc((100% - 20px)/3);
+			margin-right: 10px;
+			&:nth-of-type(3n){
+				margin-right: 0;
+			}
+		}
 		margin-bottom: 10px;
 		display: block;
 		padding: 0;
 		position: relative;
 		padding-bottom: 40px;
-		&:nth-of-type(3n){
-			margin-right: 0;
-		}
 		&:after{
 			content: " ";
 			display: block;
@@ -246,9 +258,6 @@
 		}
 		.action-label{
 			display:none;
-			@include small{
-				display: block;
-			}
 		}
 		&.not-voted:hover{
 			i{
@@ -291,9 +300,6 @@
 .post-avatars{
  	display: inline-block;
  	display: flex;
- 	@include small{
- 		display: none;
- 	}
  	.author-avatar{
  		display: block;
  	}
@@ -328,18 +334,13 @@
 
 .post-discuss{
 	.action-label{
-		@include medium-large{
-			display: none;
-		}
+		display: none;
 	}
 }
 
 .post-actions{
 	display: none;
 	text-align: right;
-	@include small{
-		display: block;
-	}
 	a{
 		display: block;
 		width: 36px;
@@ -360,6 +361,9 @@
 	}
 }
 
+.post-share{
+	display: none;
+}
 // -------------------------------- post content --------------------------------- //
 
 .post-heading{

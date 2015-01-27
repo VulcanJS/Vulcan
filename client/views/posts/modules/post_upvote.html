@@ -1,13 +1,11 @@
 <template name="postUpvote">
   {{#if upvoted}}
-    <span class="upvote-link voted action">
+    <span class="upvote-link voted action" title="{{_ "upvoted"}}">
       <i class="icon-check action-icon"></i>
-      <span class="action-label">{{_ "upvoted"}}</span>
     </span>
   {{else}}
-    <a class="upvote-link not-voted action" href="#">
+    <a class="upvote-link not-voted action" href="#" title="{{_ "upvote_"}}">
       <i class="icon-up action-icon"></i>
-      <span class="action-label">{{_ "upvote_"}}</span>
     </a>
   {{/if}}
 </template>

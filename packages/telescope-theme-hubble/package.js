@@ -26,7 +26,6 @@ Package.onUse(function (api) {
       'lib/client/scss/modules/_icons.scss',
       'lib/client/scss/modules/_nav.scss',
       'lib/client/scss/modules/_posts.scss',
-      'lib/client/scss/modules/_share.scss',
       'lib/client/scss/modules/_user-profile.scss',
 
       // partials
