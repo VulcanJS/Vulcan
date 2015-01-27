@@ -14,8 +14,11 @@ describe('test mobile nav', function() {
   it('should close when clicked outside', function (done) {
     $('.inner-wrapper').click();
     setTimeout(function () {
-      // Checking against 60px, because the left is width - 60px, but the width during testing is 0.
-      expect($('.mobile-nav').css('left')).toBe('60px');
+      var width = $('.mobile-nav').width();
+      // This is a pretty hacky check that's necessary because different testing environments
+      // change the width of .mobile-nav which in turn changes the left value.
+      var expectedLeft = width === 0 ? '60px' : '-200px';
+      expect($('.mobile-nav').css('left')).toBe(expectedLeft);
       done();
     }, 500);
   });
