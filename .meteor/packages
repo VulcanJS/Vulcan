@@ -22,13 +22,13 @@ http
 
 iron:router
 
-meteorhacks:fast-render
-meteorhacks:subs-manager
+meteorhacks:fast-render@2.1.5
+meteorhacks:subs-manager@1.2.2
 meteorhacks:npm
 
 aldeed:autoform
-aldeed:collection2
-aldeed:simple-schema
+aldeed:collection2@2.3.0
+aldeed:simple-schema@1.2.0
 
 mrt:jquery-hotkeys
 mrt:cookies
@@ -41,15 +41,14 @@ sacha:juice
 chuangbo:marked
 percolatestudio:synced-cron
 npm-container
-matb33:collection-hooks
+matb33:collection-hooks@0.7.7
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
 bengott:avatar
 jparker:gravatar
-tap:i18n
-useraccounts:unstyled@1.4.0
+tap:i18n@1.2.1
 tsega:bootstrap3-datetimepicker@3.1.3_1
-momentjs:moment
+momentjs:moment@2.8.4
 
 # Testing
 
@@ -86,3 +85,4 @@ telescope-releases
 telescope-getting-started
 
 # Custom Packages
+useraccounts:unstyled@1.6.1
