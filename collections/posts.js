@@ -206,6 +206,20 @@ postSchemaObject = {
       omit: true
     }
   },
+  facebookVoters: {
+    type: [String], // XXX
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  facebookCommenters: {
+    type: [String], // XXX
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
   downvotes: {
     type: Number,
     optional: true,

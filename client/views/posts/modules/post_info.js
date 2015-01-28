@@ -7,5 +7,12 @@ Template[getTemplate('postInfo')].helpers({
   },
   hasVote: function () {
   	return this.poll && this.poll.voteCount > 1;
+  },
+  friendsVotes: function () {
+  	var user = Meteor.user();
+  	if (!user.services.facebook || !user.services.facebook.friendsIds || !this.facebookVoters) {
+  		return false;
+  	}
+  	return _.intersection(user.services.facebook.friendsIds, this.facebookVoters).length;
   }
 });

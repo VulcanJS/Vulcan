@@ -1,7 +1,10 @@
 <template name="postInfo">
   <div class="post-meta-item">
-  	{{#if hasVote}}
-    	<span class="points">{{poll.voteCount}} votes</span>
+  	{{#if friendsVotes}}
+    	<span class="points">{{friendsVotes}} friends </span>
+    {{/if}}
+    {{#if hasVote}}
+      <span class="points">{{poll.voteCount}} votes</span>
     {{/if}}
     <span class="points">{{baseScore}}</span>
     <span class="unit">{{pointsUnitDisplayText}}</span>
