@@ -121,6 +121,7 @@ Meteor.methods({
     var newScore = baseScore / Math.pow(ageInHours + 2, 1.3);
     return Math.abs(object.score - newScore);
   },
+  // Not in use
   updateFriendsListL: function(facebookFriendsIds) {
     var friendsIds =  Meteor.users.find({'services.facebook.id': {$in: facebookFriendsIds}}, {fields: '_id', multi: true});
     console.log(friendsIds);

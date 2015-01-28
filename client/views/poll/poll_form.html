@@ -20,7 +20,7 @@
 					<div class="ui green circular horizontal label result-label">{{this.poll.options.[0].votes}}</div>
 					 voted {{this.poll.options.[0].name}}
 					 <div class="result-label poll-voters-avatars">
-					 	{{> poll_avatars data=this.poll.options.[0]}}
+					 	{{> poll_avatars data=this.poll.options.[0] upvoters=this.upvoters}}
 					 </div>
 				</a>
 				<a class="item">

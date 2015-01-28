@@ -31,6 +31,14 @@ var userSchemaObject = {
     optional: true,
     blackbox: true
   },
+  friendsIds: {
+    type: [String],
+    optional: true
+  },
+  friendsWonders: {
+    type: [Object],
+    blackbox: true
+  },
   votes: { // used for votes only
     type: Object,
     optional: true,

@@ -27,7 +27,7 @@ Template[getTemplate('userInfo')].helpers({
         self = Meteor.user().votes.pollvotedPosts,
         togetherIds = _.pluck(self.concat(other), 'itemId'),
         togetherLength = togetherIds.length;
-    return Math.round( ( ( togetherLength - (_.uniq(togetherIds).length ) ) / togetherLength) * 100 );
+    return Math.round( ( 1- ( (_.uniq(togetherIds).length  - other.length ) / _.uniq(togetherIds).length )) * 100 );
   },
   sharedOpinion: function () {
     if (_.isUndefined(this.votes.pollvotedPosts)) {

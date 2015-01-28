@@ -5,11 +5,11 @@ Template[getTemplate('postAvatars')].helpers({
     // TODO: show a "..." sign or something
 
     var user = Meteor.user();
-  	if (!user.services.facebook || !user.services.facebook.friendsIds || !this.facebookVoters) {
+  	if (!user.services || !user.services.facebook || !user.services.facebook.friendsIds || !this.facebookVoters) {
   		return _.first(_.without(this.commenters, this.userId), 4);
   	}
   	var friendsVotes = _.intersection(user.friendsIds, this.commenters);
-  	
+
   	if (friendsVotes.length >= 4) {
   		return _.first(friendsVotes, 4);
   	} else {
