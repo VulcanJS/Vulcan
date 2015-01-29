@@ -1,6 +1,6 @@
 <template name="postCommentsLink">
   <div class="post-meta-item">
-    <a class="comments-link" href="">
+    <a class="comments-link{{#if postPage}}-disable{{/if}}" href="">
     {{#if hasComment count=commentCount}} 
       <span class="comments-count">{{commentCount}}</span>
       {{#if singleComment}}

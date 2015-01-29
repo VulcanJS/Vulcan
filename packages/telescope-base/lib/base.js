@@ -189,10 +189,10 @@ footerModules = [];
 threadModules = [];
 
 postModules = [
-  {
-    template: 'postRank',
-    order: 1
-  },
+  // {
+  //   template: 'postRank',
+  //   order: 1
+  // },
   {
     template: 'postUpvote',
     order: 10
