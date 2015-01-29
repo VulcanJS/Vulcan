@@ -178,7 +178,7 @@ input::selection {
     margin-left: 200px;
   }
   .dropdown-menu-view.dropdown-menu {
-    display: flex;
+    display: block !important;
     top: 20px!important; 
     left: 0px!important;
     padding-top: 15px!important;

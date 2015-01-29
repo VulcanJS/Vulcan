@@ -1,5 +1,9 @@
 var post = {};
 
+function getPathname () {
+  return window.location.pathname;
+}
+
 Template[getTemplate('post_item')].created = function () {
   post = this.data;
 };
@@ -33,6 +37,10 @@ Template[getTemplate('post_item')].helpers({
     }, postAuthorClass);
     
     return postClass;
+  },
+  notPostPage: function () {
+    var pathname = getPathname();
+    return pathname.indexOf('/posts/') === -1;
   }
 });
 
