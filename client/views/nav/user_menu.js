@@ -12,3 +12,9 @@ Template[getTemplate('userMenu')].helpers({
     return Router.path('user_edit', {slug: Meteor.user().slug});
   }
 });
+
+Template[getTemplate('userMenu')].events({
+  'click #facebook-login-btn': function () {
+    Meteor.loginWithFacebook();
+  }
+});

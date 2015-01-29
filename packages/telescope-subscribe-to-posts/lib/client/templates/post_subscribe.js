@@ -20,7 +20,7 @@ Template[getTemplate('postSubscribe')].events({
     var post = this;
 
     if (!Meteor.user()) {
-      Router.go('atSignIn');
+      Meteor.loginWithFacebook();
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
 
@@ -35,7 +35,7 @@ Template[getTemplate('postSubscribe')].events({
     var post = this;
 
     if (!Meteor.user()) {
-      Router.go('atSignIn');
+      Meteor.loginWithFacebook();
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
 

@@ -56,7 +56,7 @@ Template[getTemplate('poll_form')].events({
     var post = instance.data;
 
     if(!Meteor.user()){
-      Router.go('atSignIn');
+      Meteor.loginWithFacebook();
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
     if(_.isUndefined(this.voteOrder)) {
@@ -74,7 +74,7 @@ Template[getTemplate('poll_form')].events({
     var post = this;
 
     if(!Meteor.user()){
-      Router.go('atSignIn');
+      Meteor.loginWithFacebook();
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
 
@@ -84,11 +84,3 @@ Template[getTemplate('poll_form')].events({
     });
   }
 });
-
-Template[getTemplate('poll_form')].rendered = function(){
-	this.$('#vote-result-bar-1').progress();
-	this.$('#vote-result-bar-2').progress();
-	this.$('#vote-result-bar-3').progress();
-	this.$('#vote-result-bar-4').progress();
-	this.$('#vote-result-bar-5').progress();
-}
