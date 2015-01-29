@@ -19,3 +19,22 @@ Meteor.publish('allUsersAdmin', function() {
   }
   return [];
 });
+
+// Publish all the users that have posted the currently displayed list of posts
+// plus the commenters for each post
+
+Meteor.publish('friendsWonders', function(slug) {
+  var user = Meteor.users.findOne({slug: slug});
+
+  var selector =  {_id: {$in: user.friendsIds}} // only users that has friends
+  if (typeof user.friendsWonders !== "undefined") {
+    return Meteor.users.find(selector, {fields: {
+      _id: true,
+      'profile.name': true,
+      'services.facebook.id': true,
+      'services.facebook.name': true,
+      slug: true
+    }});
+  }
+  return [];
+});

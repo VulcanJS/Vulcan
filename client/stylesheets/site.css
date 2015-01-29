@@ -151,3 +151,11 @@ input::selection {
     top: 0.05rem;
   }
 }
+
+.friend-name-link {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: -0.165em;
+  line-height: 1.33em;
+  color: rgba(0, 0, 0, 0.85);
+}

@@ -4,5 +4,8 @@ Template[getTemplate('viewsMenu')].helpers({
   },
   views: function () {
     return viewsMenu;
+  },
+  friendsUrl: function () {
+    return Router.path('user_friends', {slug: Meteor.user().slug});
   }
 });

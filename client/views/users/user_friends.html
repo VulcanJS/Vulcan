@@ -1,0 +1,27 @@
+<template name="user_friends">
+	{{#with user}}
+		<div class="ui six doubling cards">
+		  {{#each friendsWonders}}
+		  <div class="card">
+			    <div class="image" href="{{profileUrl friendId}}">
+		            {{> avatar userId=friendId shape="square" size="extra-large" }}
+			    </div>
+			    <div class="content">
+      				<a class="friend-name-link" href="{{profileUrl friendId}}">{{friendName}}</a>
+			    </div>
+
+				<div class="extra content">
+					<a class="right floated created">
+						<i class="star icon"></i>
+						{{wonderCount}}%
+					</a>
+					<a class="friends">
+						<i class="heart icon"></i>
+						{{sharedOpinionCount}}%
+					</a>
+				</div>
+			</div>
+	      {{/each}}
+		</div>
+	{{/with}}
+</template>

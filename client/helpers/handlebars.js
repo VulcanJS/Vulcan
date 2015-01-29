@@ -83,48 +83,48 @@ UI.registerHelper('userName', function(userOrUserId) {
   }
 });
 
-UI.registerHelper('wonderCount', function(userOrUserId) {
-  var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+// UI.registerHelper('wonderCount', function(userOrUserId) {
+//   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
 
-    if (_.isUndefined(this.votes.pollvotedPosts)) {
-      return 0;
-    }
-    var other = this.votes.pollvotedPosts,
-        self = Meteor.user().votes.pollvotedPosts,
-        togetherIds = _.pluck(self.concat(other), 'itemId'),
-        togetherLength = togetherIds.length;
-    return Math.round( ( ( togetherLength - (_.uniq(togetherIds).length ) ) / togetherLength) * 100 );
-});
+//     if (_.isUndefined(this.votes.pollvotedPosts)) {
+//       return 0;
+//     }
+//     var other = this.votes.pollvotedPosts,
+//         self = Meteor.user().votes.pollvotedPosts,
+//         togetherIds = _.pluck(self.concat(other), 'itemId'),
+//         togetherLength = togetherIds.length;
+//     return Math.round( ( ( togetherLength - (_.uniq(togetherIds).length ) ) / togetherLength) * 100 );
+// });
 
-UI.registerHelper('sharedOpinionCount', function(userOrUserId) {
-  var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+// UI.registerHelper('sharedOpinionCount', function(userOrUserId) {
+//   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
 
-  console.log(userOrUserId);
+//   console.log(userOrUserId);
   
-  console.log(Meteor.users.findOne(userOrUserId));
+//   console.log(Meteor.users.findOne(userOrUserId));
 
-    // if (_.isUndefined(this.votes.pollvotedPosts)) {
-    //   return 0;
-    // }
-    // var other = this.votes.pollvotedPosts,
-    //     self = Meteor.user().votes.pollvotedPosts,
-    //     together = self.concat(other),
-    //     selfItemIds = _.pluck(self, 'itemId'),
-    //     otherItemIds = _.pluck(other, 'itemId'),
-    //     sameIds = _.intersection(selfItemIds, otherItemIds),
-    //     sameVotes = [];
+//     if (_.isUndefined(this.votes.pollvotedPosts)) {
+//       return 0;
+//     }
+//     // var other = this.votes.pollvotedPosts,
+//         // self = Meteor.user().votes.pollvotedPosts,
+//         together = self.concat(other),
+//         selfItemIds = _.pluck(self, 'itemId'),
+//         otherItemIds = _.pluck(other, 'itemId'),
+//         sameIds = _.intersection(selfItemIds, otherItemIds),
+//         sameVotes = [];
 
-    // for (var i=0, l=together.length; i<l; i++) {
-    //   if ( _.contains(sameIds,together[i].itemId) && !_.isUndefined(together[i].voteOrder) ) {
-    //     sameVotes.push(together[i].itemId+"-"+together[i].voteOrder);
-    //   }
-    // } 
+//     for (var i=0, l=together.length; i<l; i++) {
+//       if ( _.contains(sameIds,together[i].itemId) && !_.isUndefined(together[i].voteOrder) ) {
+//         sameVotes.push(together[i].itemId+"-"+together[i].voteOrder);
+//       }
+//     } 
 
-    // if (_.isEmpty(sameVotes)) {
-    //   return 0;
-    // }
+//     if (_.isEmpty(sameVotes)) {
+//       return 0;
+//     }
 
-    // return Math.round( ( (sameVotes.length - _.uniq(sameVotes).length) / sameIds.length ) * 100 );
-});
+//     return Math.round( ( (sameVotes.length - _.uniq(sameVotes).length) / sameIds.length ) * 100 );
+// });
 
 

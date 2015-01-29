@@ -1,0 +1,75 @@
+@import "nib"
+
+.avatar
+  height 50px
+  width 50px
+
+  .avatar-image, .avatar-initials
+    height 100%
+    width 100%
+
+  .avatar-initials
+    display block
+    background-size 100% 100%
+    background-color #aaa
+    color #fff
+    font-size 25px
+    line-height 50px
+    font-family "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif
+    text-align center
+
+.avatar-large
+  height 80px
+  width 80px
+  .avatar-initials
+    font-size 40px
+    line-height 80px
+
+.avatar-extra-large
+  height 100%
+  width 100%
+  .avatar-initials
+    font-size 40px
+    line-height 100%
+
+.avatar-small
+  height 30px
+  width 30px
+  .avatar-initials
+    font-size 15px
+    line-height 30px
+
+.avatar-extra-small
+  height 20px
+  width 20px
+  .avatar-initials
+    font-size 10px
+    line-height 20px
+
+.avatar-rounded
+  .avatar-image, .avatar-initials
+    border-radius 5px
+
+.avatar-circle
+  .avatar-image, .avatar-initials
+    border-radius 50%
+
+.avatar-square
+  .avatar-image, .avatar-initials
+    border-radius 0px
+
+.avatar-hide-image
+  .avatar-image
+    display none
+
+.avatar-hide-initials
+  .avatar-initials
+    display none
+
+.card 
+  .avatar 
+    img
+      width: 100% !important
+      height: 100% !important
+      border-radius: .2857rem .2857rem 0 0 !important
+      border: none

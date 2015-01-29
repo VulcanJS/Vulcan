@@ -44,7 +44,6 @@ npm-container
 matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
-bengott:avatar
 jparker:gravatar
 tap:i18n
 useraccounts:unstyled@1.4.0
@@ -89,3 +88,4 @@ telescope-subscribe-to-posts
 nooitaf:semantic-ui
 wondercount-shareit
 mrt:bitlywrap
+wondercount-avatar

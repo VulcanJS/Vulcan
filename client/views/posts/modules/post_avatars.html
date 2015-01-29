@@ -5,7 +5,8 @@
   {{#if commenters}}
     <div class="post-commenters">
     {{#each commenters}}
-      <a href="{{profileUrl this}}" class="avatar-link avatar-small commenter-avatar" data-title="Elliot Fu" data-content="{{sharedOpinionCount this}}" data-position="top right">
+      <a href="{{profileUrl this}}" class="avatar-link avatar-small commenter-avatar">
+      <!-- <a href="{{profileUrl this}}" class="avatar-link avatar-small commenter-avatar" data-title="Elliot Fu" data-content="{{sharedOpinionCount this}}" data-position="top right"> -->
         {{> avatar userId=this shape="circle"}}
       </a>
 

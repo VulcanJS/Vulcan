@@ -13,7 +13,6 @@ artwells:queue@0.0.3
 autoupdate@1.1.5
 backbone@1.0.0
 base64@1.0.2
-bengott:avatar@0.7.3
 binary-heap@1.0.2
 blaze@2.0.4
 blaze-tools@1.0.2
@@ -146,4 +145,5 @@ useraccounts:core@1.4.1
 useraccounts:unstyled@1.4.1
 webapp@1.1.6
 webapp-hashing@1.0.2
+wondercount-avatar@0.7.3
 wondercount-shareit@0.3.1
