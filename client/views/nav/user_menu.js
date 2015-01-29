@@ -16,5 +16,8 @@ Template[getTemplate('userMenu')].helpers({
 Template[getTemplate('userMenu')].events({
   'click #facebook-login-btn': function () {
     Meteor.loginWithFacebook();
+  },
+  'click .sign-out-link': function () {
+    Meteor.logout(function() {});
   }
 });

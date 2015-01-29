@@ -4,6 +4,33 @@
 //   }).data.data, 'id').concat(user.services.facebook.id);
 // }
 
+var checkFcebookFriends = function(user) {
+    var userId = user._id,
+      facebook = user.services.facebook,
+      facebookId = facebook.id,
+      facebookName = facebook.name,
+      facebookFriendsIds = _.unique(_.pluck(HTTP.get('https://graph.facebook.com/v2.2/' + facebookId + '/friends', {
+                          params: {access_token: facebook.accessToken, limit: 1000}
+                          }).data.data, 'id'));
+
+  console.log(facebookId+'==='+facebookName+'==='+facebookFriendsIds+'==='+userId );
+
+  var friendsIds =  _.pluck(Meteor.users.find({'services.facebook.id': {$in: facebookFriendsIds}}, 
+                                                  {fields: {'_id': 1}}).fetch(), '_id');
+
+  console.log(friendsIds);
+
+  user.services.facebook.friendsIds = facebookFriendsIds;
+  user.services.facebook.updatedAt = new Date();
+  user.friendsIds = friendsIds;
+
+  for (var i=0; i<friendsIds.length; i++) {
+    Meteor.users.update({_id: friendsIds[i]},{
+      $addToSet: {friendsIds:userId, 'services.facebook.friendsIds':facebookId}
+    });
+  }
+}
+
 Accounts.onCreateUser(function(options, user){
 
   // ------------------------------ Properties ------------------------------ //
@@ -59,38 +86,25 @@ Accounts.onCreateUser(function(options, user){
   trackEvent('new user', {username: user.username, email: user.profile.email});
 
   // ------------------------------ Insert friends ------------------------------ //
-  if (user && user.services.facebook) {
-
-    var userId = user._id,
-        facebook = user.services.facebook,
-        facebookId = facebook.id,
-        facebookName = facebook.name,
-        facebookFriendsIds = _.unique(_.pluck(HTTP.get('https://graph.facebook.com/v2.2/' + facebookId + '/friends', {
-                            params: {access_token: facebook.accessToken, limit: 1000}
-                            }).data.data, 'id'));
-
-    console.log(facebookId+'==='+facebookName+'==='+facebookFriendsIds+'==='+userId );
-
-    var friendsIds =  _.pluck(Meteor.users.find({'services.facebook.id': {$in: facebookFriendsIds}}, 
-                                                    {fields: {'_id': 1}}).fetch(), '_id');
-
-    console.log(friendsIds);
-
-    user.services.facebook.friendsIds = facebookFriendsIds;
-    user.services.facebook.updatedAt = new Date();
-    user.friendsIds = friendsIds;
-
-    for (var i=0; i<friendsIds.length; i++) {
-      Meteor.users.update({_id: friendsIds[i]},{
-        $addToSet: {friendsIds:userId, 'services.facebook.friendsIds':facebookId}
-      });
-    }
-
+  if (!!user && !!user.services.facebook) {
+    checkFcebookFriends(user);
+    console.log("on create user facebook friends checked");
   }
 
   return user;
 });
 
+
+Accounts.onLogin(function(result){
+  // ------------------------------ Insert friends ------------------------------ //
+  var user = result.user;
+
+  if (!!user && !!user.services.facebook) {
+    checkFcebookFriends(user);
+    console.log("facebook login friends checked");
+  }
+  return user;
+});
 
 Meteor.methods({
   changeEmail: function (newEmail) {
