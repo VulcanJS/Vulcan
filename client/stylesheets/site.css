@@ -163,3 +163,17 @@ input::selection {
 .friend-votes-avatar {
   display: inline-block;
 }
+.ui.red.ribbon.label {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  left: -2.5rem;
+}
+
+@media only screen and (min-width: 992px) {
+  .content-wrapper {
+    margin-left: 230px;
+  }
+  .dropdown-menu-view.dropdown-menu {
+    display: flex;
+  }
+}

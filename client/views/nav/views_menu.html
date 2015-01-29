@@ -2,7 +2,7 @@
   {{#if canView}}
     <div class="dropdown header-submodule views-menu">
       <a class="view dropdown-top-level" href="/">{{_ "view"}}</a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu dropdown-menu-view">
         <ul role="menu" aria-labelledby="dLabel">
           {{#each views}}
             {{> UI.dynamic template=menuItem data=this}}
@@ -12,7 +12,7 @@
     </div>
     {{#if isLoggedIn}}
     <div class="header-submodule views-menu">
-      <a class="view dropdown-top-level" href="{{friendsUrl}}">{{_ "friends"}}</a>
+      <a class="view dropdown-top-level" href="{{friendsUrl}}">{{_ "friends"}}</a> 
     </div>
     {{/if}}
   {{/if}}

@@ -1,7 +1,7 @@
 <template name="postInfo">
   <div class="post-meta-item">
   	{{#if friendsVotes}}
-    	<span class="points">{{friendsVotes}} friends </span>
+    	<span class="points">{{friendsVotes}} {{friends friendsVotes}} </span>
     {{/if}}
     {{#if hasVote}}
       <span class="points">{{poll.voteCount}} votes</span>

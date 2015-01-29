@@ -14,5 +14,11 @@ Template[getTemplate('postInfo')].helpers({
   		return false;
   	}
   	return _.intersection(user.services.facebook.friendsIds, this.facebookVoters).length;
+  },
+  friends: function (data) {
+    if (data > 1) {
+      return "friends";
+    }
+    return "friend";
   }
 });
