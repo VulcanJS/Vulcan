@@ -38,3 +38,12 @@ Meteor.publish('friendsWonders', function(slug) {
   }
   return [];
 });
+
+Meteor.publish('friendVotes', function(friendId) {
+  var user = Meteor.users.findOne(friendId);
+  var options = isAdminById(this.userId) ? {} : {fields: friendVotesOptions};
+  if (user) {
+    return Meteor.users.find({_id: user._id}, options);
+  }
+  return [];
+});

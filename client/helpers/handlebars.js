@@ -76,6 +76,13 @@ UI.registerHelper('profileUrl', function(userOrUserId) {
   }
 });
 
+UI.registerHelper('friendVotesUrl', function(friendId) {
+  var user = Meteor.user();
+  if (!!user) {
+    return getFriendVotesUrl(user, friendId);
+  }
+});
+
 UI.registerHelper('userName', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {

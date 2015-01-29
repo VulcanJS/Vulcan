@@ -1,0 +1,40 @@
+<template name="user_friend_votes">
+  <div class="user-profile-votes grid grid-module">
+    <h3>{{friend.profile.name}} {{_ "voted_polls"}}</h3>
+    <table>
+    <thead>
+      <tr>
+        <td></td>
+      </tr>
+    </thead>
+    {{#each posts}}
+		<tr>
+			<td>
+			  	<div class="item">
+					<div class="content">
+						<a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a>
+					</div>
+					{{#if userVotedOption  user=../user}}
+					<div class="extra content">
+						{{> avatar userId=../friend._id shape="circle" size="extra-small" class="friend-votes-avatar"}} <span class="friend-answer">{{friendVotedOption friend=../friend}}</span>
+					</div>
+					<div class="extra content">
+						{{> avatar userId=../user._id shape="circle" size="extra-small" class="friend-votes-avatar"}} <span style="{{#if diffAnswer friend=../friend user=../user}}color:red{{/if}}" class="user-answer">{{userVotedOption user=../user}}</span>
+					</div>
+					{{else}}
+						Vote to see friend's answer.
+					{{/if}}
+				</div>
+			</td>
+		</tr>
+    {{/each}}
+    {{#if hasMorePosts}}
+      <tr>
+        <td colspan="2">
+          <a class="upvotedposts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+        </td>
+      </tr>
+    {{/if}}
+    </table>
+  </div>
+</template>

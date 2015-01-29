@@ -159,3 +159,7 @@ input::selection {
   line-height: 1.33em;
   color: rgba(0, 0, 0, 0.85);
 }
+
+.friend-votes-avatar {
+  display: inline-block;
+}
