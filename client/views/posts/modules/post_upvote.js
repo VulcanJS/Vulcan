@@ -11,7 +11,7 @@ Template[getTemplate('postUpvote')].events({
     var post = this;
     e.preventDefault();
     if(!Meteor.user()){
-      Meteor.loginWithFacebook();
+      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
     Meteor.call('upvotePost', post, function(error, result){

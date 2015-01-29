@@ -20,7 +20,7 @@ Template[getTemplate('postSubscribe')].events({
     var post = this;
 
     if (!Meteor.user()) {
-      Meteor.loginWithFacebook();
+      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
 
@@ -35,7 +35,7 @@ Template[getTemplate('postSubscribe')].events({
     var post = this;
 
     if (!Meteor.user()) {
-      Meteor.loginWithFacebook();
+      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
       flashMessage(i18n.t("please_log_in_first"), "info");
     }
 

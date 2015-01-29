@@ -4,6 +4,13 @@ Template[getTemplate('user_email')].helpers({
   },
   username: function () {
     return getUserName(Meteor.user());
+  },
+  facebookEmail: function () {
+    var user = Meteor.user();
+    if (typeof user.services === "undefined" || typeof user.services.facebook === "undefined") {
+      return "";
+    }
+    return user.services.facebook.email;
   }
 });
 

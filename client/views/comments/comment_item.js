@@ -104,7 +104,7 @@ Template[getTemplate('comment_item')].helpers({
 var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
   e.preventDefault();
   if (!Meteor.user()){
-    Meteor.loginWithFacebook();
+    Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
     flashMessage(i18n.t('please_log_in_first'), 'info');
   } else {
     Meteor.call(meteorMethodName, this, function(error, result){

@@ -10,6 +10,9 @@ Template[getTemplate('postInfo')].helpers({
   },
   friendsVotes: function () {
   	var user = Meteor.user();
+    if (!user || _.isUndefined(user.services)) {
+      return false;
+    }
   	if (!user.services.facebook || !user.services.facebook.friendsIds || !this.facebookVoters) {
   		return false;
   	}

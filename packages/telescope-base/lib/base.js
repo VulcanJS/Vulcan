@@ -165,6 +165,9 @@ viewParameters.userPosts = function (terms) {
 
 viewParameters.userUpvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
+  if (typeof user.votes === "undefined") {
+    return [];
+  }
   var postsIds = _.pluck(user.votes.upvotedPosts, "itemId");
   return {
     find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts

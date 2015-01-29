@@ -5,31 +5,110 @@
 // }
 
 var checkFcebookFriends = function(user) {
-    var userId = user._id,
-      facebook = user.services.facebook,
-      facebookId = facebook.id,
-      facebookName = facebook.name,
-      facebookFriendsIds = _.unique(_.pluck(HTTP.get('https://graph.facebook.com/v2.2/' + facebookId + '/friends', {
-                          params: {access_token: facebook.accessToken, limit: 1000}
-                          }).data.data, 'id'));
+  if (typeof user._id === "undefined" || typeof user.services.facebook === "undefined") {
+    return;
+  }
 
-  console.log(facebookId+'==='+facebookName+'==='+facebookFriendsIds+'==='+userId );
+  var userId = user._id,
+    facebook = user.services.facebook,
+    facebookId = facebook.id,
+    facebookName = facebook.name,
+    appsecret_proof = 
+    facebookFriendsIds = _.unique(_.pluck(HTTP.get('https://graph.facebook.com/v2.2/' + facebookId + '/friends', {
+                        params: {access_token: facebook.accessToken, limit: 1000}
+                        }).data.data, 'id'));
+
+  console.log('===>facebookId: '+facebookId+' ===>facebookName: '+facebookName+' ===>facebookFriendsIds: '+facebookFriendsIds+' ===>userId: '+userId );
 
   var friendsIds =  _.pluck(Meteor.users.find({'services.facebook.id': {$in: facebookFriendsIds}}, 
                                                   {fields: {'_id': 1}}).fetch(), '_id');
 
   console.log(friendsIds);
 
-  user.services.facebook.friendsIds = facebookFriendsIds;
-  user.services.facebook.updatedAt = new Date();
-  user.friendsIds = friendsIds;
+  if (typeof friendsIds !== "undefined") {
+    user.services.facebook.friendsIds = facebookFriendsIds;
+    user.services.facebook.updatedAt = new Date();
+    user.friendsIds = friendsIds;
 
-  for (var i=0; i<friendsIds.length; i++) {
-    Meteor.users.update({_id: friendsIds[i]},{
-      $addToSet: {friendsIds:userId, 'services.facebook.friendsIds':facebookId}
-    });
+    for (var i=0; i<friendsIds.length; i++) {
+      Meteor.users.update({_id: friendsIds[i]},{
+        $addToSet: {friendsIds:userId, 'services.facebook.friendsIds':facebookId}
+      });
+    }
+
   }
-}
+};
+
+var friendsWonders = function (user) {
+  user = typeof user === "undefined" ? Meteor.user() : user;
+
+  if (typeof user.friendsIds === "undefined" || typeof user.votes.pollvotedPosts === "undefined") {
+    return;
+  }
+
+  var friends = user.friendsIds,
+      userPollVotes = user.votes.pollvotedPosts,
+      userUpvotes = user.votes.upvotedPosts,
+      userPollItemIds = _.pluck(userPollVotes, 'itemId'),
+      userUpvotesItemIds = _.pluck(userUpvotes, 'itemId'),
+      userVotes = _.union(userPollItemIds, userUpvotesItemIds),
+      friendsWonders = [];
+
+  for (var i=0, fl=friends.length; i<fl; i++) {
+
+    var friendId = friends[i],
+        friend = Meteor.users.findOne(friendId);
+
+    if (typeof friend === "undefined") {
+      Meteor.users.update({_id:user._id},{$pull:{friendIds:friendId}});
+      continue;
+    }
+    if (typeof friend.votes.pollvotedPosts === "undefined") {
+      continue;
+    }
+
+    var friendPollVotes = friend.votes.pollvotedPosts,
+        friendUpvotes = friend.votes.upvotedPosts,
+        together = userPollVotes.concat(friendPollVotes),
+        friendPollItemIds = _.pluck(friendPollVotes, 'itemId'),
+        friendUpvotesItemIds = _.pluck(friendUpvotes, 'itemId'),
+        sameIds = _.intersection(userPollItemIds, friendPollItemIds),
+        friendVotes = _.union(friendPollItemIds, friendUpvotesItemIds),
+        togetherIds = userVotes.concat(friendVotes),
+        togetherUniqLength = _.uniq(togetherIds).length,
+        sameVotes = [];
+
+    if (!_.isUndefined(friendPollVotes)) {
+      var wonderCount = Math.round( ( 1- ( ( togetherUniqLength  - friendVotes.length ) / togetherUniqLength ) ) * 100 );
+    } else {
+      var wonderCount = 0;
+    }
+
+    for (var j=0, tl=together.length; j<tl; j++) {
+      if ( _.contains(sameIds,together[j].itemId) && !_.isUndefined(together[j].voteOrder) ) {
+        sameVotes.push(together[j].itemId+"-"+together[j].voteOrder);
+      }
+    } 
+
+    if (!_.isEmpty(sameVotes)) {
+      var sharedOpinionCount = Math.round( ( (sameVotes.length - _.uniq(sameVotes).length) / sameIds.length ) * 100 );
+    } else {
+      var sharedOpinionCount = 0;
+    }
+
+    var friendWonders = {friendId: friendId,
+                          friendName: friend.services.facebook.name,
+                          wonderCount: wonderCount,
+                          sharedOpinionCount: sharedOpinionCount};
+
+    friendsWonders.push(friendWonders);
+
+  }
+
+  Meteor.users.update({_id: user._id}, {
+    $set: {friendsWonders: friendsWonders}
+  });
+};
 
 Accounts.onCreateUser(function(options, user){
 
@@ -47,7 +126,9 @@ Accounts.onCreateUser(function(options, user){
       downvotedPosts: [],
       upvotedComments: [],
       downvotedComments: []
-    }
+    },
+    friendsIds:[],
+    friendsWonders : []
   };
   user = _.extend(user, userProperties);
 
@@ -85,23 +166,15 @@ Accounts.onCreateUser(function(options, user){
 
   trackEvent('new user', {username: user.username, email: user.profile.email});
 
-  // ------------------------------ Insert friends ------------------------------ //
-  if (!!user && !!user.services.facebook) {
-    checkFcebookFriends(user);
-    console.log("on create user facebook friends checked");
-  }
-
   return user;
 });
-
 
 Accounts.onLogin(function(result){
   // ------------------------------ Insert friends ------------------------------ //
   var user = result.user;
-
   if (!!user && !!user.services.facebook) {
     checkFcebookFriends(user);
-    console.log("facebook login friends checked");
+    console.log("facebook login friends checked: " + user.friendsIds);
   }
   return user;
 });
@@ -136,9 +209,14 @@ Meteor.methods({
     return Math.abs(object.score - newScore);
   },
   // Not in use
-  updateFriendsListL: function(facebookFriendsIds) {
-    var friendsIds =  Meteor.users.find({'services.facebook.id': {$in: facebookFriendsIds}}, {fields: '_id', multi: true});
-    console.log(friendsIds);
+  updateFriendsListL: function(user) {
+    checkFcebookFriends(user);
+    console.log('updateFriendsListL called');
+  },
+  updateFriendsWonders: function (user) {
+    checkFcebookFriends(user);
+    friendsWonders(user);
+    console.log('updateFriendsListL called');
   }
 
 });

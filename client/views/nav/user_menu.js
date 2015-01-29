@@ -15,7 +15,7 @@ Template[getTemplate('userMenu')].helpers({
 
 Template[getTemplate('userMenu')].events({
   'click #facebook-login-btn': function () {
-    Meteor.loginWithFacebook();
+    Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
   },
   'click .sign-out-link': function () {
     Meteor.logout(function() {});
