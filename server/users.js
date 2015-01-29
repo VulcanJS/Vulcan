@@ -39,14 +39,14 @@ Accounts.onCreateUser(function(options, user){
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit client callbacks on properties object successively
-  clog('// Start userCreatedCallbacks')
+  clog('// Start userCreatedCallbacks');
   user = userCreatedCallbacks.reduce(function(result, currentFunction) {
-    clog('// Running '+currentFunction.name+'…')
+    clog('// Running '+currentFunction.name+'…');
     return currentFunction(result);
   }, user);
-  clog('// Finished userCreatedCallbacks')
-  clog('// User object:')
-  clog(user)
+  clog('// Finished userCreatedCallbacks');
+  clog('// User object:');
+  clog(user);
 
   // ------------------------------ Analytics ------------------------------ //
 
@@ -70,7 +70,7 @@ Meteor.methods({
     );
   },
   numberOfPostsToday: function(){
-    console.log(numberOfItemsInPast24Hours(Meteor.user(), Posts));
+    console.log(numberOfItemsInPast24Hours(Meteor.user(), Posts)); //does anyone know why is it here?!
   },
   numberOfCommentsToday: function(){
     console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
