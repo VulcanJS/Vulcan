@@ -168,12 +168,19 @@ input::selection {
   font-size: 1.2em;
   left: -2.5rem;
 }
+.posts-list .post-module,
+.post-upvote .upvote-link {
+  margin-left: 10px;
+}
 
 @media only screen and (min-width: 992px) {
   .content-wrapper {
-    margin-left: 230px;
+    margin-left: 200px;
   }
   .dropdown-menu-view.dropdown-menu {
     display: flex;
+    top: 20px!important; 
+    left: 0px!important;
+    padding-top: 15px!important;
   }
 }

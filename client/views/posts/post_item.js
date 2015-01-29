@@ -4,6 +4,10 @@ Template[getTemplate('post_item')].created = function () {
   post = this.data;
 };
 
+Template[getTemplate('post_item')].rendered = function () {
+  $('.ui.accordion').accordion();
+};
+
 Template[getTemplate('post_item')].helpers({
   postModules: function () {
     return postModules;
@@ -31,3 +35,6 @@ Template[getTemplate('post_item')].helpers({
     return postClass;
   }
 });
+
+
+
