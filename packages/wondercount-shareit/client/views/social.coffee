@@ -16,8 +16,8 @@ Template.shareit.events
 			position : 'bottom left',
 			transition :'fade down',
 			delay: {
-				show: 200,
-				hide: 500
+				show: 100,
+				hide: 300
 			}
 		})
 	'mouseenter .show-share-btns': () ->
@@ -27,8 +27,8 @@ Template.shareit.events
 			position : 'bottom left',
 			transition :'fade down',
 			delay: {
-				show: 200,
-				hide: 500
+				show: 100,
+				hide: 300
 			}
 		})
 	'click .facebook.icon.button': () ->

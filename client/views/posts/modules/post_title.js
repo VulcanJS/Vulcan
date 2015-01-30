@@ -29,5 +29,32 @@ Template[getTemplate('postTitle')].events({
 	    $('.post-modal-content').html(iframe);
 	    $('.ui.post.modal')
 	  		.modal('show');
-  	}
+  	},
+    'click .post-title-list': function(){
+
+    },
+    'mouseenter .post-title-list': function(e) {
+      $(e.target).parent().parent().find('.post-domain').addClass('ui button');
+    },
+    'mouseleave .post-title-list': function(e) {
+      setTimeout(
+        function() 
+        {
+          $(e.target).parent().parent().find('.post-domain').removeClass('ui button');
+        }, 5000);
+    }
 });
+
+Template[getTemplate('postTitle')].rendered = function () {
+  if (! localStorage.noFirstVisit) {
+    var pathname = getPathname();
+    if (pathname.indexOf('/posts/') === -1) {
+      $('.post-title-list').popup({
+          inline: true
+        });
+    }
+    localStorage.noFirstVisit = "1";
+  }
+
+};
+

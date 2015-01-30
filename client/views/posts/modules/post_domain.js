@@ -36,3 +36,9 @@ Template[getTemplate('postDomain')].events({
         .modal('show');
     }
 });
+
+Template[getTemplate('postDomain')].rendered = function () {
+  
+};
+
+

@@ -176,6 +176,9 @@ input::selection {
 .button.view-friend-link {
   width: 100%;
 }
+h3.post-heading .title{
+  display: inline-flex;
+}
 
 @media only screen and (min-width: 992px) {
   .content-wrapper {

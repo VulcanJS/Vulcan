@@ -57,3 +57,12 @@ h1, h2, h3, h4, h5 {
 .video-play-overlay {
   margin-top: 50px;
 }
+
+.post.title.active {
+  -moz-transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  -webkit-transition: all .3s ease-in;
+  transition: all .3s ease-in;
+  background-color: #f7f7f7;
+  border-bottom: none;
+}

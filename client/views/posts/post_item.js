@@ -9,7 +9,11 @@ Template[getTemplate('post_item')].created = function () {
 };
 
 Template[getTemplate('post_item')].rendered = function () {
-  $('.ui.accordion').accordion();
+  $('.ui.accordion').accordion({
+        onOpen:function() {
+           $(this).prev().addClass('active');
+        }
+      });
 };
 
 Template[getTemplate('post_item')].helpers({
@@ -44,5 +48,26 @@ Template[getTemplate('post_item')].helpers({
   }
 });
 
+Template[getTemplate('post_item')].events({
+  'click .post-list-info': function (e) {
 
+    if ($('.content.active').length === 0) {
+      $('.ui.accordion').accordion({
+        duration:500,
+        onOpen:function() {
+           $(this).prev().addClass('active');
+        }
+      });
+    } else {
+      $('.content.active').removeClass('active');
+      $('.post.title.active').removeClass('active');
+      $('.ui.accordion').accordion({
+        duration:300,
+        onOpen:function() {
+           $(this).prev().addClass('active');
+        }
+      });
+    }
+  }
+});
 

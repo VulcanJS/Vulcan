@@ -6,7 +6,6 @@
         <ul role="menu" aria-labelledby="dLabel">
           <li> 
             <a class="ui red button view dropdown-top-level view-friend-link" href="{{friendsUrl}}">{{_ "friends_alike"}}</a> 
-            <!-- <div class="ui red button">Friends alike</div> -->
           </li>
           {{#each views}}
             {{> UI.dynamic template=menuItem data=this}}
