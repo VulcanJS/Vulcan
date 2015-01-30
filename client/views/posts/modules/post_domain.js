@@ -26,7 +26,7 @@ Template[getTemplate('postDomain')].helpers({
     return !!this.url ? '_blank' : '';
   },
   iframeableLink: function (url) {
-    if (this.url.indexOf('http://stackoverflow.com/') > -1 ) {
+    if (url.indexOf('http://stackoverflow.com/') > -1 ) {
       return false;
     }
     return true;

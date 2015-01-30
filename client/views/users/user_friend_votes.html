@@ -22,8 +22,10 @@
 						{{> avatar userId=../user._id shape="circle" size="extra-small" class="friend-votes-avatar"}} <span style="{{#if diffAnswer friend=../friend user=../user}}color:red{{/if}}" class="user-answer">{{userVotedOption user=../user}}</span>
 					</div>
 					{{else}}
+					<div class="friend-voted-poll-list-unvoted-item">
 						<a style="color:red">Vote to see friend's answer.</a>
 						{{> post_item}}
+					</div>
 					{{/if}}
 				</div>
 			</td>

@@ -182,6 +182,24 @@ h3.post-heading .title{
 .standard-post-modal-content {
   max-width: 991px;
 }
+.friend-voted-poll-list-unvoted-item .post-avatars {
+  display: none;
+}
+.friend-voted-poll-list-unvoted-item .post-avatars {
+  display: none;
+}
+.friend-voted-poll-list-unvoted-item .post-list-info {
+  border-bottom: none;
+}
+.friend-voted-poll-list-unvoted-item h3 {
+  margin: calc(0.8rem - 0.165em ) 0em 0.8rem;
+}
+.friend-voted-poll-list-unvoted-item .label {
+  display: none;
+}
+.friend-voted-poll-list-unvoted-item i {
+  display: inline-flex;
+}
 
 @media only screen and (min-width: 992px) {
   .content-wrapper {

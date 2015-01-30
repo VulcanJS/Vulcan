@@ -13,15 +13,6 @@ Template[getTemplate('post_item')].rendered = function () {
            $(this).prev().addClass('active');
         }
       });
-
-  var user = Meteor.user();
-  var slug = user.slug;
-  var pathname = getPathname;
-  if (pathname.indexOf('/'+slug+'/friend/') > -1) {
-    $('.post-avatars').hide();
-    $('.post-list-info').css('border-bottom','none');
-  }
-
 };
 
 Template[getTemplate('post_item')].helpers({
