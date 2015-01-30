@@ -26,7 +26,7 @@ Template[getTemplate('postCommentsLink')].events({
 		}
   		var url= 'http://'+getHostName()+'/posts/'+this._id;
   		var iframe = '<iframe id="post-modal" src="'+url+'" max-width="991px" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
-	    $('.post-modal-content').html(iframe);
+	    $('.standard-post-modal-content').html(iframe);
 	    $('.ui.post.modal')
 	  		.modal('show');
   	}

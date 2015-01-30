@@ -1,3 +1,12 @@
+function toggleVideo(state) {
+    // if state == 'hide', hide. Else: show video
+    var div = document.getElementsByClassName("embed")[0];
+    var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+    div.style.display = state == 'hide' ? 'none' : '';
+    func = state == 'hide' ? 'pauseVideo' : 'playVideo';
+    iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
+}
+
 Template[getTemplate('postDomain')].helpers({
   domain: function(){
     var a = document.createElement('a');
@@ -15,6 +24,12 @@ Template[getTemplate('postDomain')].helpers({
   },
   postTarget: function() {
     return !!this.url ? '_blank' : '';
+  },
+  iframeableLink: function (url) {
+    if (this.url.indexOf('http://stackoverflow.com/') > -1 ) {
+      return false;
+    }
+    return true;
   }
 });
 
@@ -27,18 +42,25 @@ Template[getTemplate('postDomain')].events({
         var youtube = '<div class="ui video video-play-overlay" data-source="youtube" data-id="'+youtubeVid+'""></div>'
         $('.basic-post-modal-content').html(youtube);
         $('.ui.video').video();
-
-      $('.ui.basic.modal')
-        .modal('show');
-
+        $('.ui.basic.modal').modal('show',{
+          onHide: toggleVideo('hide'),
+          onVisible: toggleVideo('none')
+        });
       } else {
         var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
         $('.fullscreen-post-modal-content').html(iframe);
-      
-      $('.ui.fullscreen.modal')
-        .modal('show');
-
+        $('.ui.fullscreen.modal').modal('show');
       }
+    },
+    'mouseenter .post-domain': function(e) {
+      $(e.target).addClass('ui button').fadeIn( 100 );
+    },
+    'mouseleave .post-domain': function(e) {
+      setTimeout(
+        function() 
+        {
+          $(e.target).removeClass('ui button');
+        }, 5000);
     }
 });
 

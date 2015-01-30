@@ -179,6 +179,9 @@ input::selection {
 h3.post-heading .title{
   display: inline-flex;
 }
+.standard-post-modal-content {
+  max-width: 991px;
+}
 
 @media only screen and (min-width: 992px) {
   .content-wrapper {

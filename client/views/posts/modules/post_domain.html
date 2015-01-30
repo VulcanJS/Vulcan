@@ -1,3 +1,8 @@
 <template name="postDomain">
-  {{#if domain}}<a href="{{postLink}}" class="post-domain" target="_blank">{{domain}} </a><a href="" link="{{postLink}}" class="post-domain post-read-overlay"> Check it out</a>{{/if}}
+  {{#if domain}}
+  	{{#if iframeableLink postLink}}
+  		<a href="" link="{{postLink}}" class="post-domain post-read-overlay red mini"> View {{domain}} </a>
+  	{{/if}}
+  	<a href="{{postLink}}" class="post-domain basic mini" target="_blank"> New tab view</a>
+  {{/if}}
 </template>

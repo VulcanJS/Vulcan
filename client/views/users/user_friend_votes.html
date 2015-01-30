@@ -11,10 +11,10 @@
 		<tr>
 			<td>
 			  	<div class="item">
-					<div class="content">
-						<a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a>
-					</div>
 					{{#if userVotedOption  user=../user}}
+					<div class="content">
+						<h3><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></h3>
+					</div>
 					<div class="extra content">
 						{{> avatar userId=../friend._id shape="circle" size="extra-small" class="friend-votes-avatar"}} <span class="friend-answer">{{friendVotedOption friend=../friend}}</span>
 					</div>
@@ -22,7 +22,8 @@
 						{{> avatar userId=../user._id shape="circle" size="extra-small" class="friend-votes-avatar"}} <span style="{{#if diffAnswer friend=../friend user=../user}}color:red{{/if}}" class="user-answer">{{userVotedOption user=../user}}</span>
 					</div>
 					{{else}}
-						Vote to see friend's answer.
+						<a style="color:red">Vote to see friend's answer.</a>
+						{{> post_item}}
 					{{/if}}
 				</div>
 			</td>

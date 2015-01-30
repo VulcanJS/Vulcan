@@ -84,3 +84,7 @@ Template[getTemplate('user_friend_votes')].events({
     Template.instance().terms.set(terms)
   }
 });
+
+Template[getTemplate('user_friend_votes')].rendered = function () {
+
+};

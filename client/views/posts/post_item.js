@@ -1,12 +1,11 @@
 var post = {};
 
-function getPathname () {
-  return window.location.pathname;
-}
+var getPathname = window.location.pathname;
 
 Template[getTemplate('post_item')].created = function () {
   post = this.data;
 };
+
 
 Template[getTemplate('post_item')].rendered = function () {
   $('.ui.accordion').accordion({
@@ -14,6 +13,15 @@ Template[getTemplate('post_item')].rendered = function () {
            $(this).prev().addClass('active');
         }
       });
+
+  var user = Meteor.user();
+  var slug = user.slug;
+  var pathname = getPathname;
+  if (pathname.indexOf('/'+slug+'/friend/') > -1) {
+    $('.post-avatars').hide();
+    $('.post-list-info').css('border-bottom','none');
+  }
+
 };
 
 Template[getTemplate('post_item')].helpers({
@@ -43,7 +51,7 @@ Template[getTemplate('post_item')].helpers({
     return postClass;
   },
   notPostPage: function () {
-    var pathname = getPathname();
+    var pathname = getPathname;
     return pathname.indexOf('/posts/') === -1;
   }
 });

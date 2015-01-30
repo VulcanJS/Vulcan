@@ -1,25 +1,41 @@
 <template name="user_friends">
 	{{#with user}}
-		<div class="ui six doubling cards">
+		<div class="ui five doubling cards friends">
 		  {{#each friendsWonders}}
-		  <div class="card">
-			    <div class="image" href="{{profileUrl friendId}}">
-		            {{> avatar userId=friendId shape="square" size="extra-large" }}
-			    </div>
-			    <div class="content">
-      				<a class="friend-name-link" href="{{profileUrl friendId}}">{{friendName}}</a>
-			    </div>
+		  <div class="ui card">
 
+				<div class="image dimmable">
+					<div class="ui dimmer">
+						<div class="content">
+							<div class="center">
+								<a href="{{profileUrl friendId}}"><div class="ui inverted button">View Profile</div></a>
+								<div class="ui horizontal divider"></div>
+								<a href="{{friendVotesUrl friendId}}"><div class="ui inverted red button">Check Answers</div></a>
+							</div>
+						</div>
+					</div>
+					{{> avatar userId=friendId shape="square" size="extra-large" }}
+				</div>
+				<div class="content">
+					<div class="friend-name-link">{{friendName}}</div>
+<!-- 					<div class="meta">
+						<a class="group">Meta</a>
+					</div>
+					<div class="description">One or two sentence description</div> -->
+				</div>
 				<div class="extra content">
 					<a class="right floated created" href="{{friendVotesUrl friendId}}">
-						<i class="star icon"></i>
-						{{wonderCount}}%
+						<div class="ui mini statistic shared-opinion-count" data-content="Wondered the same as me" data-variation="large">
+							<div class="value">{{wonderCount}}%</div>
+						</div>
 					</a>
 					<a class="friends" href="{{friendVotesUrl friendId}}">
-						<i class="heart icon"></i>
-						{{sharedOpinionCount}}%
+						<div class="ui mini statistic shared-opinion-count" data-content="Similar to my opinions" data-variation="large">
+							<div class="value">{{sharedOpinionCount}}%</div>
+						</div>
 					</a>
 				</div>
+
 			</div>
 	      {{/each}}
 		</div>
