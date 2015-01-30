@@ -173,6 +173,10 @@ input::selection {
   margin-left: 10px;
 }
 
+.button.view-friend-link {
+  width: 100%;
+}
+
 @media only screen and (min-width: 992px) {
   .content-wrapper {
     margin-left: 200px;

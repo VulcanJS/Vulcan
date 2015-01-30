@@ -4,16 +4,15 @@
       <a class="view dropdown-top-level" href="/">{{_ "view"}}</a>
       <div class="dropdown-menu dropdown-menu-view">
         <ul role="menu" aria-labelledby="dLabel">
+          <li> 
+            <a class="ui red button view dropdown-top-level view-friend-link" href="{{friendsUrl}}">{{_ "friends_alike"}}</a> 
+            <!-- <div class="ui red button">Friends alike</div> -->
+          </li>
           {{#each views}}
             {{> UI.dynamic template=menuItem data=this}}
           {{/each}}
         </ul>
       </div>
     </div>
-    {{#if isLoggedIn}}
-    <div class="header-submodule views-menu">
-      <a class="view dropdown-top-level view-friend-link" href="{{friendsUrl}}">{{_ "friends"}}</a> 
-    </div>
-    {{/if}}
   {{/if}}
 </template>
