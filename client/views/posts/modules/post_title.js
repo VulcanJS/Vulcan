@@ -30,9 +30,6 @@ Template[getTemplate('postTitle')].events({
 	    $('.ui.post.modal')
 	  		.modal('show');
   	},
-    'click .post-title-list': function(){
-
-    },
     'mouseenter .post-title-list': function(e) {
       $(e.target).parent().parent().find('.post-domain').addClass('ui button');
     },
@@ -41,7 +38,7 @@ Template[getTemplate('postTitle')].events({
         function() 
         {
           $(e.target).parent().parent().find('.post-domain').removeClass('ui button');
-        }, 5000);
+        }, 500);
     }
 });
 

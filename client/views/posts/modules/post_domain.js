@@ -26,7 +26,7 @@ Template[getTemplate('postDomain')].helpers({
     return !!this.url ? '_blank' : '';
   },
   iframeableLink: function (url) {
-    if (url.indexOf('http://stackoverflow.com/') > -1 ) {
+    if (url.indexOf('stackoverflow.com') > -1 ) {
       return false;
     }
     return true;
@@ -53,14 +53,14 @@ Template[getTemplate('postDomain')].events({
       }
     },
     'mouseenter .post-domain': function(e) {
-      $(e.target).addClass('ui button').fadeIn( 100 );
+      $(e.target).addClass('ui button');
     },
     'mouseleave .post-domain': function(e) {
       setTimeout(
         function() 
         {
           $(e.target).removeClass('ui button');
-        }, 5000);
+        }, 500);
     }
 });
 
