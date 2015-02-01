@@ -12,7 +12,7 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.use([
-    'meteorhacks:kadira@2.14.0'
+    'meteorhacks:kadira@2.17.2'
   ], ['server']);
 
   api.add_files([
