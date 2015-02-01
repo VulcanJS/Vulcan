@@ -49,10 +49,10 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
     if (!!comment.parentCommentId) {
   
       var parentComment = Comments.findOne(comment.parentCommentId);
-
+      
       // do not notify author of parent comment if they're also post author or comment author
       // (someone could be replying to their own comment)
-      if (parentComment.userId !== post.userId || parentComment.userId !== comment.userId) {
+      if (parentComment.userId !== post.userId && parentComment.userId !== comment.userId) {
         
         // add parent comment to notification data
         notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
@@ -78,9 +78,6 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
     }
 
   }
-
-  console.log(userIdsNotified)
-  console.log(comment.body)
 
   return comment;
 
