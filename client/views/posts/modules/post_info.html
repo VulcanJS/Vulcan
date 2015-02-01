@@ -1,7 +1,13 @@
 <template name="postInfo">
   <div class="post-meta-item">
-  	{{#if friendsVotes}}
-    	<span class="points">{{friendsVotes}} {{friends friendsVotes}} </span>
+    {{#if friendsNames this}}
+      {{#each friendsNames this}}
+        <a class="post-author" href="{{friendVotesUrl friendId}}">{{friendName}}</a>
+      {{/each}}
+      {{#if friendsVotes}}
+        <span class="points"> and {{friendsVotes}} {{friends friendsVotes}} </span>
+      {{/if}}
+      <span class="points">voted</span>
     {{/if}}
     {{#if hasVote}}
       <span class="points">{{poll.voteCount}} votes</span>

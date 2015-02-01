@@ -133,8 +133,11 @@ Accounts.onCreateUser(function(options, user){
   user = _.extend(user, userProperties);
 
   // set email on profile
-  if (options.email)
+  if (options.email) {
     user.profile.email = options.email;
+  } else if(options && options.services && options.services.facebook && options.services.facebook.email) {
+    user.profile.email = options.services.facebook.email;
+  }
     
   // if email is set, use it to generate email hash
   if (getEmail(user))
