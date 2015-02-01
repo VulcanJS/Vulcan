@@ -17,7 +17,11 @@ var handleFeed = function(error, feed) {
   var newItemsCount = 0;
 
   feedItems.forEach(function(item, index, array) {
-    
+
+    // if item has no id, use the URL to give it one
+    if (!item.id)
+      item.id = item.link;
+
     // check if post already exists
     if (!!Posts.findOne({feedItemId: item.id})) {
       // clog('// Feed item already imported')
