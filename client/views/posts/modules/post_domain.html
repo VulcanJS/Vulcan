@@ -1,8 +1,8 @@
 <template name="postDomain">
   {{#if domain}}
   	{{#if iframeableLink postLink}}
-  		<a href="" link="{{postLink}}" class="post-domain post-read-overlay red mini"> Glance {{domain}} </a>
+  		<a href="" link="{{postLink}}" class="post-domain post-domain-link post-read-overlay"> Glance {{domain}}</a>&nbsp;
   	{{/if}}
-  	<a href="{{postLink}}" class="post-domain basic mini" target="_blank"> View in new tab</a>
+  	<a href="{{postLink}}" class="post-domain post-domain-link" target="_blank">Open the page</a>
   {{/if}}
 </template>

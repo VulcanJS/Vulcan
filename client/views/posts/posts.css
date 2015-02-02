@@ -66,3 +66,8 @@ h1, h2, h3, h4, h5 {
   background-color: #f7f7f7;
   border-bottom: none;
 }
+a.post-domain-link:hover,
+a.post-domain-link.hovered {
+  background-color: #DD3416;
+  color: white;
+}

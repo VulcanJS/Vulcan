@@ -31,14 +31,10 @@ Template[getTemplate('postTitle')].events({
 	  		.modal('show');
   	},
     'mouseenter .post-title-list': function(e) {
-      $(e.target).parent().parent().find('.post-domain').addClass('ui button');
+      $(e.target).parent().parent().find('.post-domain').toggleClass('hovered');
     },
     'mouseleave .post-title-list': function(e) {
-      setTimeout(
-        function() 
-        {
-          $(e.target).parent().parent().find('.post-domain').removeClass('ui button');
-        }, 500);
+      $(e.target).parent().parent().find('.post-domain').removeClass('hovered');
     }
 });
 

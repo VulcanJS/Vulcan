@@ -51,16 +51,16 @@ Template[getTemplate('postDomain')].events({
         $('.fullscreen-post-modal-content').html(iframe);
         $('.ui.fullscreen.modal').modal('show');
       }
-    },
-    'mouseenter .post-domain': function(e) {
-      $(e.target).addClass('ui button');
-    },
-    'mouseleave .post-domain': function(e) {
-      setTimeout(
-        function() 
-        {
-          $(e.target).removeClass('ui button');
-        }, 500);
+    // },
+    // 'mouseenter .post-domain': function(e) {
+    //   $(e.target).addClass('ui button');
+    // },
+    // 'mouseleave .post-domain': function(e) {
+    //   setTimeout(
+    //     function() 
+    //     {
+    //       $(e.target).removeClass('ui button');
+    //     }, 500);
     }
 });
 
