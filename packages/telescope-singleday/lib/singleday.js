@@ -1,8 +1,8 @@
-viewsMenu.push({
-  route: 'postsSingleDayDefault',
-  label: 'digest',
-  description: 'posts_of_a_single_day'
-});
+// viewsMenu.push({
+//   route: 'postsSingleDayDefault',
+//   label: 'digest',
+//   description: 'posts_of_a_single_day'
+// });
 
 viewParameters.singleday = function (terms) {
   return {

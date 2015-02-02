@@ -1,7 +1,7 @@
 <template name="postAvatars">
   {{#if friendWonder userId}}
-    <a href="{{friendVotesUrl userId}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName userId}} {{wonderCount userId}}% same wonders and {{sharedOpinionCount userId}}% shared opinions" data-position="top center">
-      {{> avatar userId=userId shape="circle"}}
+    <a href="{{friendVotesUrl userId}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName userId}} {{wonderCount userId}}% same wonders and {{sharedOpinionCount userId}}% shared opinions" data-position="top right">
+      {{> avatar userId=userId shape="circle"}} 
     </a>
   {{else}}
     <a href="{{profileUrl userId}}" class="avatar-link avatar-small author-avatar">
@@ -12,7 +12,7 @@
     <div class="post-commenters">
     {{#each commenters}}
       {{#if friendWonder this}}
-        <a href="{{friendVotesUrl this}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName this}} {{wonderCount this}}% same wonders and {{sharedOpinionCount this}}% shared opinions" data-position="top center">
+        <a href="{{friendVotesUrl this}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName this}} {{wonderCount this}}% same wonders and {{sharedOpinionCount this}}% shared opinions" data-position="top right">
         {{> avatar userId=this shape="circle"}}
       </a>
       {{else}}
