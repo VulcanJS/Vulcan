@@ -32,16 +32,16 @@ Template[getTemplate('postInfo')].helpers({
         friendsFacebookNames = [];
 
     for (var i=0; i<friendsNamesLength; i++) {
-      if(_.indexOf(upvoters, friendsNames[i].friendId)) {
+      if(_.indexOf(upvoters, friendsNames[i].friendId) > -1) {
         var friendName = _.first(friendsNames[i].friendName.split(" "), 1);
         friendsFacebookNames.push({friendName:friendName, friendId: friendsNames[i].friendId});
       }
-      if (friendsFacebookNames.length > 2) {
+      if (friendsFacebookNames.length > 5) {
         break;
       }
     }
     // need more work on this
-    return _.first(friendsFacebookNames, 2);
+    return _.sample(friendsFacebookNames, 2);
   },
   friends: function (data) {
     if (data > 1) {
