@@ -15,22 +15,33 @@ App.icons({
   'iphone_2x': 'public/icons/ios/appiconset/icon-60@2x.png',
   'iphone_3x' : 'public/icons/ios/appiconset/icon-60@3x.png',
   'ipad' : 'public/icons/ios/appiconset/icon-76.png',
-  'ipad_2x' : 'public/icons/ios/appiconset/icon-76@2x.png'
+  'ipad_2x' : 'public/icons/ios/appiconset/icon-76@2x.png',
+  'android_ldpi' : 'public/icons/android/drawable-ldpi/ic_launcher.png',
+  'android_mdpi' : 'public/icons/android/drawable-mdpi/ic_launcher.png',
+  'android_hdpi' : 'public/icons/android/drawable-hdpi/ic_launcher.png',
+  'android_xhdpi' : 'public/icons/android/drawable-xhdpi/ic_launcher.png'
   // ... more screen sizes and platforms ...
 });
 
 App.launchScreens({
-  'iphone' :'public/splash/Default.png',
-  'iphone_2x' :'public/splash/Default@2x.png',
-  'iphone5' :'public/splash/Default-568h@2x.png',
-  'iphone6' :'public/splash/Default-667h@2x.png',
-  'iphone6p_portrait' :'public/splash/Default-Portrait-736h@3x.png',
-  'iphone6p_landscape' :'public/splash/Default-Landscape-736h@3x.png',
-  'ipad_portrait' :'public/splash/Default-Portrait.png',
-  'ipad_portrait_2x' :'public/splash/Default-Portrait@2x.png',
-  'ipad_landscape' :'public/splash/Default-Landscape.png',
-  'ipad_landscape_2x' :'public/splash/Default-Landscape@2x.png'
-
+  'iphone' : 'public/splash/Default.png',
+  'iphone_2x' : 'public/splash/Default@2x.png',
+  'iphone5' : 'public/splash/Default-568h@2x.png',
+  'iphone6' : 'public/splash/Default-667h@2x.png',
+  'iphone6p_portrait' : 'public/splash/Default-Portrait-736h@3x.png',
+  'iphone6p_landscape' : 'public/splash/Default-Landscape-736h@3x.png',
+  'ipad_portrait' : 'public/splash/Default-Portrait.png',
+  'ipad_portrait_2x' : 'public/splash/Default-Portrait@2x.png',
+  'ipad_landscape' : 'public/splash/Default-Landscape.png',
+  'ipad_landscape_2x' : 'public/splash/Default-Landscape@2x.png',
+  'android_ldpi_portrait' : 'public/splash/res-long-port-ldpi/default.png',
+  'android_ldpi_landscape' : 'public/splash/res-long-land-ldpi/default.png',
+  'android_mdpi_portrait' : 'public/splash/res-long-port-mdpi/default.png',
+  'android_mdpi_landscape' : 'public/splash/res-long-land-mdpi/default.png',
+  'android_hdpi_portrait' : 'public/splash/res-long-port-hdpi/default.png',
+  'android_hdpi_landscape' : 'public/splash/res-long-land-hdpi/default.png',
+  'android_xhdpi_portrait' : 'public/splash/res-long-port-xhdpi/default.png',
+  'android_xhdpi_landscape' : 'public/splash/res-long-land-xhdpi/default.png'
   // ... more screen sizes and platforms ...
 });
 
