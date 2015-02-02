@@ -1,14 +1,30 @@
 <template name="postAvatars">
-  <a href="{{profileUrl userId}}" class="avatar-link avatar-small author-avatar">
-    {{> avatar userId=userId shape="circle"}}
-  </a>
+
+  {{#if friendWonder userId}}
+    <a href="{{friendVotesUrl userId}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName userId}} {{wonderCount userId}}% same wonders and {{sharedOpinionCount userId}}% shared opinions" data-position="top center">
+      {{> avatar userId=userId shape="circle"}}
+    </a>
+  {{else}}
+
+    <a href="{{profileUrl userId}}" class="avatar-link avatar-small author-avatar">
+      {{> avatar userId=userId shape="circle"}}
+    </a>
+
+  {{/if}}
+
   {{#if commenters}}
     <div class="post-commenters">
     {{#each commenters}}
-      <a href="{{profileUrl this}}" class="avatar-link avatar-small commenter-avatar">
-      <!-- <a href="{{profileUrl this}}" class="avatar-link avatar-small commenter-avatar" data-title="Elliot Fu" data-content="{{sharedOpinionCount this}}" data-position="top right"> -->
+      {{#if friendWonder this}}
+        <a href="{{friendVotesUrl this}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName this}} {{wonderCount this}}% same wonders and {{sharedOpinionCount this}}% shared opinions" data-position="top center">
         {{> avatar userId=this shape="circle"}}
       </a>
+      {{else}}
+        <a href="{{profileUrl this}}" class="avatar-link avatar-small commenter-avatar">
+        {{> avatar userId=this shape="circle"}}
+      </a>
+
+      {{/if}}
 
     {{/each}}
     </div>

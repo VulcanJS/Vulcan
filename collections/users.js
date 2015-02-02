@@ -51,7 +51,6 @@ var userSchemaObject = {
   }
 };
 
-
 _.each(addToUserSchema, function(item){
   userSchemaObject[item.propertyName] = item.propertySchema;
 });
