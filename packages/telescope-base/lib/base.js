@@ -302,10 +302,10 @@ userProfileDisplay = [
     template: 'userUpvotedPosts',
     order: 3
   },
-  {
-    template: 'userDownvotedPosts',
-    order: 5
-  },
+  // {
+  //   template: 'userDownvotedPosts',
+  //   order: 5
+  // },
   {
     template: 'userComments',
     order: 5

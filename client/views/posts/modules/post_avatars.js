@@ -1,4 +1,4 @@
-var friendWonder = function(id) {
+friendWonder = function(id) {
   var user = Meteor.user();
   if (user && user.friendsWonders) {
     return _.findWhere(user.friendsWonders, {friendId: id});

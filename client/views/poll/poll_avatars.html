@@ -2,9 +2,15 @@
   {{#if pollVoters}}
     <div class="post-avatars post-module">
     {{#each pollVoters}}
+      {{#if friendWonder this}}
+      <a href="{{friendVotesUrl this}}" class="avatar-link avatar-small commenter-avatar avatar-link-popup" data-content="{{friendName this}} {{wonderCount this}}% same wonders and {{sharedOpinionCount this}}% shared opinions" data-position="top center">
+        {{> avatar userId=this shape="circle"}}
+    </a>
+  {{else}}
       <a href="{{profileUrl this}}" class="avatar-link avatar-small author-avatar">
         {{> avatar userId=this shape="circle"}}
       </a>
+   {{/if}}
     {{/each}}
     </div>
   {{/if}}

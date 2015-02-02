@@ -17,6 +17,18 @@ Template[getTemplate('poll_avatars')].helpers({
   		return _.union(friendsVotes, _.first(this.data.voters, 5-friendsVotes.length));
   	}
 
+  },
+  friendWonder: function(data) {
+    return friendWonder(data);
+  },
+  friendName: function(data) {
+    return friendWonder(data).friendName;
+  },
+  wonderCount: function(data) {
+    return friendWonder(data).wonderCount;
+  },
+  sharedOpinionCount: function(data) {
+    return friendWonder(data).sharedOpinionCount;
   }
 });
 
