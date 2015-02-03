@@ -1,0 +1,7 @@
+{
+  "thumbnail": "Miniatura",
+  "thumbnailUrl": "Miniatura",
+  "regenerate_thumbnail": "Przeładuj miniaturę",
+  "clear_thumbnail": "Usuń miniaturę",
+  "please_fill_in_embedly_key": "Podaj swój klucz API z Embedly aby włączyć miniatury obrazków."
+}
