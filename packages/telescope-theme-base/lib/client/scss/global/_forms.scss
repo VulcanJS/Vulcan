@@ -136,12 +136,6 @@ input[type="submit"], button, .button, .btn{
   &.inline{
     display: inline-block;
   }
-  &.btn-primary, &.submit{
-    background:$red;
-    &:link, &:hover, &:active, &:visited{
-      color:white;
-    }
-  }
   &.loading {
     position: relative;
     color: $lighter-grey !important;
@@ -157,6 +151,12 @@ input[type="submit"], button, .button, .btn{
       width: 20px;
       background-size: 20px 20px;
     }
+  }
+}
+.btn-primary, .submit{
+  background:$red;
+  &:link, &:hover, &:active, &:visited{
+    color:white;
   }
 }
 input[type="search"]{
