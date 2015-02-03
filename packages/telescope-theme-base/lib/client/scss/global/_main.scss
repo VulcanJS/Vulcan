@@ -41,7 +41,11 @@
   margin-bottom: $grid-margin;
   padding: $grid-padding;
 }
-
+.centered {
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+}
 .search-date-header{
   background: $lightest-grey;
   th{
