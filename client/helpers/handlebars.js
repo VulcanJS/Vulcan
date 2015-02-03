@@ -82,3 +82,10 @@ UI.registerHelper('userName', function(userOrUserId) {
     return getUserName(user);
   }
 });
+
+UI.registerHelper('displayName', function(userOrUserId) {
+  var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+  if (!!user) {
+    return getDisplayName(user);
+  }
+});
