@@ -1,13 +1,15 @@
 <template name="post_page">
   <div class="single-post grid">
-    <div class="posts posts-list">
-      {{> UI.dynamic template=post_item}}
-    </div>
-    {{#if body}}
-      {{> UI.dynamic template=post_body}}
-    {{/if}}
-    {{> UI.dynamic template=poll_form}}
-    {{> UI.dynamic template=comment_form}}
-    {{> UI.dynamic template=comment_list}}
+    {{#if displayInfoPoll}}
+        <div class="posts posts-list">
+          {{> UI.dynamic template=post_item}}
+        </div>
+        {{#if body}}
+          {{> UI.dynamic template=post_body}}
+        {{/if}}
+        {{> UI.dynamic template=poll_form}}
+      {{/if}}
+      {{> UI.dynamic template=comment_form}}
+      {{> UI.dynamic template=comment_list}}
   </div>
 </template>

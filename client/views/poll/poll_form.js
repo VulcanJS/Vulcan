@@ -51,6 +51,12 @@ Template[getTemplate('poll_form')].helpers ({
 	},
 	hasVotes: function() {
 		return this.votes > 0;
+	},
+	comment_form: function () {
+		return getTemplate('comment_form');
+	},
+	comment_list: function () {
+		return getTemplate('comment_list');
 	}
 });
 
@@ -86,5 +92,22 @@ Template[getTemplate('poll_form')].events({
 	    Meteor.call('upvotePost', post, function(error, result){});
       	trackEvent("post poll-voted", {'_id': this._id});
     });
+  },
+	'click .custom-answer-btn': function (e) {
+		var pathname = getPathname();
+		if (pathname.indexOf('/posts/') !== -1) {
+			$(e.target).addClass('green').html('<p>Please submit your answer in comment <i class="arrow down icon"></i></p>')
+			return;
+		}
+  		var url= 'http://'+getHostName()+'/posts/'+this._id+'?display=comment-only';
+  		var iframe = '<iframe id="comment-modal" src="'+url+'" max-width="991px" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
+	    $('.standard-post-modal-content').html(iframe);
+
+	    $('.ui.post.modal')
+	  		.modal('show');
   }
 });
+
+Template[getTemplate('poll_form')].rendered = function () {
+
+};

@@ -13,6 +13,14 @@ Template[getTemplate('post_page')].helpers({
   },
   poll_form: function () {
     return getTemplate('poll_form');
+  },
+  displayInfoPoll: function () {
+    var displayQuery = window.location.search;
+    console.log(displayQuery);
+    if(displayQuery && displayQuery.indexOf('comment-only')>-1) {
+      return false;
+    }
+    return true;
   }
 
 });

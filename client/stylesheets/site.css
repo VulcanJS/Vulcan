@@ -212,3 +212,8 @@ h3.post-heading .title{
     padding-top: 15px!important;
   }
 }
+
+#comment-modal #document body .posts-list,
+#comment-modal #document body .poll-new {
+  display: none;
+}

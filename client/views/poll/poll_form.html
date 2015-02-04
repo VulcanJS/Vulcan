@@ -1,8 +1,6 @@
 <template name="poll_form">
-	<div class="comment-new module">
+	<div class="poll-new module">
 		
-
-
 	{{#if pollVoted}}
 
 		{{#if binaryPoll}}
@@ -64,6 +62,10 @@
 			</div>
 
 		{{/if}}
+
+		<div class="ui divider"></div>
+		<p>{{> shareit_fb}} {{> shareit_twitter}} Share to see what your fiends think of this question.  </p>
+
 	{{else}}
 		<a class="ui red ribbon label">Vote to see friends' votes</a>
 		{{#if binaryPoll}}
@@ -96,6 +98,10 @@
 			</div>
 			</form>
 		{{/if}}
+		<div class="ui divider"></div>
+		<div class="circular ui icon button custom-answer-btn">
+		  	<i class="icon comment"></i> I have a different answer.
+		</div>
 	{{/if}}
 
 	</div>

@@ -1,7 +1,7 @@
-function getHostName() {
+getHostName = function () {
 	return window.location.host;
 }
-function getPathname() {
+getPathname = function () {
 	return window.location.pathname;
 }
 Template[getTemplate('postCommentsLink')].helpers({

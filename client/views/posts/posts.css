@@ -66,6 +66,14 @@ h1, h2, h3, h4, h5 {
   background-color: #f7f7f7;
   border-bottom: none;
 }
+
+a.post-domain-link {
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
 a.post-domain-link:hover,
 a.post-domain-link.hovered {
   background-color: #DD3416;
