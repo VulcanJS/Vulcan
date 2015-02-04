@@ -16,13 +16,19 @@ Template[getTemplate('viewsMenu')].helpers({
 Template[getTemplate('viewsMenu')].events({
   'click .view-friend-link': function () {
   	if (!Meteor.user()) {
-  		return Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
+  		Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']}, function(err, result){
+        if(err) {
+          toastr.error(i18n.t("you_are_not_logged_in"), "error");
+        } else {
+          toastr.success(i18n.t("you_have_successfully_logged_in"), "success");
+          var user = Meteor.user();
+          Meteor.call('updateFriendsWonders', user, function (error, result) {
+            if (error) {
+              throw error;
+            }
+          });
+        }
+      });
   	}
-  	var user = Meteor.user();
-    Meteor.call('updateFriendsWonders', user, function (error, result) {
-    	if (error) {
-    		throw error;
-    	}
-    });
   }
 });

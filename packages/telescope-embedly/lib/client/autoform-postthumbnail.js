@@ -21,7 +21,7 @@ var fillEmbedlyData = function (instance) {
     Meteor.call('getEmbedlyData', url, function (error, data) {
       if (error) {
         console.log(error)
-        flashMessage(error.message, 'error');
+        toastr.error(error.message, 'error');
         $thumbnailContainer.removeClass('loading');
         return
       }

@@ -104,8 +104,14 @@ Template[getTemplate('comment_item')].helpers({
 var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
   e.preventDefault();
   if (!Meteor.user()){
-    Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
-    flashMessage(i18n.t('please_log_in_first'), 'info');
+    Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']}, function(err, result){
+      if(err) {
+        toastr.error(i18n.t("you_are_not_logged_in"), "error");
+      } else {
+        toastr.success(i18n.t("you_have_successfully_logged_in"), "success");
+      }
+    });
+    toastr.info(i18n.t('please_log_in_first'), 'info');
   } else {
     Meteor.call(meteorMethodName, this, function(error, result){
       trackEvent(eventName, {

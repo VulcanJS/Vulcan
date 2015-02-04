@@ -21,6 +21,7 @@ callback-hook@1.0.2
 ccan:cssreset@1.0.0
 cfs:http-methods@0.0.27
 check@1.0.4
+chrismbeckett:toastr@2.1.0
 chuangbo:cookie@1.1.0
 chuangbo:marked@0.3.5
 cmather:handlebars-server@2.0.0

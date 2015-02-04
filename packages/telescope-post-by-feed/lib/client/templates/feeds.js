@@ -17,7 +17,7 @@ Meteor.startup(function () {
       Meteor.call('insertFeed', {url: url}, function(error, result) {
         if(error){
           console.log(error);
-          flashMessage(error.reason, "error");
+          toastr.error(error.reason, "error");
           clearSeenMessages();
         }else{
           $('#url').val('');

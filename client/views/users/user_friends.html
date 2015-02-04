@@ -1,5 +1,6 @@
 <template name="user_friends">
 	{{#with user}}
+		{{#if friendsWonders}}
 		<div class="ui five doubling cards friends">
 		  {{#each friendsWonders}}
 		  <div class="ui card">
@@ -39,5 +40,8 @@
 			</div>
 	      {{/each}}
 		</div>
+		{{else}}
+			{{> userInvites}}
+		{{/if}}
 	{{/with}}
 </template>

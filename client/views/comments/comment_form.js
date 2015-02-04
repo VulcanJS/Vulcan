@@ -41,11 +41,22 @@ Template[getTemplate('comment_form')].events({
       // $submitButton.removeClass('loading');
       if(error){
         console.log(error);
-        flashMessage(error.reason, "error");
+        toastr.error(error.reason, "error");
       }else{
         trackEvent("newComment", newComment);
       }
     });
 
+  },
+  'click .login-to-vote':function() {
+    if(!Meteor.user()){
+      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']}, function(err, result){
+        if(err) {
+          toastr.error(i18n.t("you_are_not_logged_in"), "error");
+        } else {
+          toastr.success(i18n.t("you_have_successfully_logged_in"), "success");
+        }
+      });
+    }
   }
 });

@@ -280,7 +280,7 @@ Meteor.methods({
         isDeleted: true
       }});
     }else{
-      flashMessage("You don't have permission to delete this comment.", "error");
+      toastr.error("You don't have permission to delete this comment.", "error");
     }
   }
 });

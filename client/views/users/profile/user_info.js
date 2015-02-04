@@ -62,6 +62,6 @@ Template[getTemplate('userInfo')].helpers({
 Template[getTemplate('userInfo')].events({
   'click .invite-link': function(e, instance){
     Meteor.call('inviteUser', instance.data.user._id);
-    flashMessage('Thanks, user has been invited.', "success");
+    toastr.success('Thanks, user has been invited.', "success");
   }
 });

@@ -31,13 +31,15 @@ AutoForm.hooks({
       trackEvent("new post", {'postId': post._id});
       Router.go('post_page', {_id: post._id});
       if (post.status === STATUS_PENDING) {
-        flashMessage(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
+        toastr.success(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
+      } else {
+        toastr.success(i18n.t('thanks_for_for_your_question'), 'success');
       }
     },
 
     onError: function(operation, error, template) {
       template.$('button[type=submit]').removeClass('loading');
-      flashMessage(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
+      toastr.error(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
       clearSeenMessages();
       // $(e.target).removeClass('disabled');
       if (error.error == 603) {

@@ -43,9 +43,9 @@ AutoForm.hooks({
       clearSeenMessages();
 
       if(result && result.newUser){
-        flashMessage('An invite has been sent out. Thank you!', "success");
+        toastr.success('An invite has been sent out. Thank you!', "success");
       } else {
-        flashMessage('Thank you!', "info");
+        toastr.info('Thank you!', "info");
       }
       scrollUp();
     },
@@ -54,7 +54,7 @@ AutoForm.hooks({
       clearSeenMessages();
 
       if(error && error.reason){
-        flashMessage(error.reason, "error");
+        toastr.error(error.reason, "error");
         scrollUp();
       }
     }

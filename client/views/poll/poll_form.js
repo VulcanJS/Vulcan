@@ -66,8 +66,14 @@ Template[getTemplate('poll_form')].events({
     var post = instance.data;
 
     if(!Meteor.user()){
-      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
-      flashMessage(i18n.t("please_log_in_first"), "info");
+      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']}, function(err, result){
+        if(err) {
+          toastr.error(i18n.t("you_are_not_logged_in"), "error");
+        } else {
+          toastr.success(i18n.t("you_have_successfully_logged_in"), "success");
+        }
+      });
+      toastr.info(i18n.t("please_log_in_first"), "info");
     }
     if(_.isUndefined(this.voteOrder)) {
     	console.log("this is undefined");
@@ -84,8 +90,14 @@ Template[getTemplate('poll_form')].events({
     var post = this;
 
     if(!Meteor.user()){
-      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
-      flashMessage(i18n.t("please_log_in_first"), "info");
+      Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']}, function(err, result){
+        if(err) {
+          toastr.error(i18n.t("you_are_not_logged_in"), "error");
+        } else {
+          toastr.success(i18n.t("you_have_successfully_logged_in"), "success");
+        }
+      });
+      toastr.info(i18n.t("please_log_in_first"), "info");
     }
 
     Meteor.call('pollVote', post, option, function(error, result){

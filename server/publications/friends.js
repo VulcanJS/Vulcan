@@ -1,4 +1,7 @@
 Meteor.publish('friends', function () {
-	return Friends.find({facebookId: {$in: facebookIds}}, {fields: friendsOptions, multi: true});
+  if (typeof facebookIds === "undefined") {
+    return [];
+  }
+  return Friends.find({facebookId: {$in: facebookIds}}, {fields: friendsOptions, multi: true});
 });
 

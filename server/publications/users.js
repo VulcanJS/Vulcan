@@ -25,7 +25,9 @@ Meteor.publish('allUsersAdmin', function() {
 
 Meteor.publish('friendsWonders', function(slug) {
   var user = Meteor.users.findOne({slug: slug});
-
+  if (typeof user.friendsIds === "undefined") {
+    return [];
+  }
   var selector =  {_id: {$in: user.friendsIds}} // only users that has friends
   if (typeof user.friendsWonders !== "undefined") {
     return Meteor.users.find(selector, {fields: {

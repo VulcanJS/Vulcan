@@ -18,12 +18,14 @@ var checkFcebookFriends = function(user) {
                         params: {access_token: facebook.accessToken, limit: 1000}
                         }).data.data, 'id'));
 
-  console.log('===>facebookId: '+facebookId+' ===>facebookName: '+facebookName+' ===>facebookFriendsIds: '+facebookFriendsIds+' ===>userId: '+userId );
+  if (typeof facebookFriendsIds == 'undefined') {
+    return;
+  }
 
   var friendsIds =  _.pluck(Meteor.users.find({'services.facebook.id': {$in: facebookFriendsIds}}, 
                                                   {fields: {'_id': 1}}).fetch(), '_id');
 
-  console.log(friendsIds);
+  console.log('===>facebookId: '+facebookId+' ===>facebookName: '+facebookName+' ===>facebookFriendsIds: '+facebookFriendsIds+' ===>userId: '+userId );
 
   if (typeof friendsIds !== "undefined") {
     user.services.facebook.friendsIds = facebookFriendsIds;

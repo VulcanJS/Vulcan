@@ -15,9 +15,21 @@ Template[getTemplate('userMenu')].helpers({
 
 Template[getTemplate('userMenu')].events({
   'click #facebook-login-btn': function () {
-    Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']});
+    Meteor.loginWithFacebook({requestPermissions: ['email', 'public_profile', 'user_friends']}, function(err, result){
+      if(err) {
+        toastr.error(i18n.t("you_are_not_logged_in"), "error");
+      } else {
+        toastr.success(i18n.t("you_have_successfully_logged_in"), "success");
+      }
+    });
   },
   'click .sign-out-link': function () {
-    Meteor.logout(function() {});
+    Meteor.logout(function(err, result) {
+      if(err) {
+        toastr.error(i18n.t("you_are_not_logged_out"), "error");
+      } else {
+        toastr.success(i18n.t("you_have_successfully_logged_out"), "success");
+      }
+    });
   }
 });

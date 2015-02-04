@@ -40,7 +40,7 @@ Template[getTemplate('userAccount')].events({
 
     clearSeenMessages();
     if(!Meteor.user())
-      flashMessage(i18n.t('you_must_be_logged_in'), 'error');
+      toastr.error(i18n.t('you_must_be_logged_in'), 'error');
 
     var $target=$(e.target);
     var name = $target.find('[name=name]').val();
@@ -67,7 +67,7 @@ Template[getTemplate('userAccount')].events({
       Accounts.changePassword(old_password, new_password, function(error){
         // TODO: interrupt update if there's an error at this point
         if(error)
-          flashMessage(error.reason, "error");
+          toastr.error(error.reason, "error");
       });
     }
 
@@ -79,9 +79,9 @@ Template[getTemplate('userAccount')].events({
       $set: update
     }, function(error){
       if(error){
-        flashMessage(error.reason, "error");
+        toastr.error(error.reason, "error");
       } else {
-        flashMessage(i18n.t('profile_updated'), 'success');
+        toastr.success(i18n.t('profile_updated'), 'success');
       }
       Deps.afterFlush(function() {
         var element = $('.grid > .error');

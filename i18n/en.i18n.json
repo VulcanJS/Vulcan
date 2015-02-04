@@ -152,6 +152,8 @@
   "rejected": "Rejected",
   "delete_post": "Delete Question",
   "thanks_your_post_is_awaiting_approval": "Thanks, your post is awaiting approval.",
+  "thanks_for_your_vote": "Thanks for your vote.",
+  "thanks_for_for_your_question":"Thanks, your question is added.",
   "sorry_couldnt_find_a_title": "Sorry, couldn't find a title...",
   "please_fill_in_an_url_first": "Please fill in an URL first!",
 
@@ -261,6 +263,10 @@
   "your_account_has_been_approved": "Your account has been approved.",
   "welcome_to": "Welcome to ",
   "start_posting": "Start posting.",
+  "you_have_successfully_logged_in": "You have successfully logged in.",
+  "you_are_not_logged_in": "You are not logged in.",
+  "you_are_not_logged_out": "You are not logged out.",
+  "you_have_successfully_logged_out": "You have successfully logged out.",
 
   // Translation needed (found during migration to tap:i18n)
   "please_fill_in_a_title": "Please fill in a title",
