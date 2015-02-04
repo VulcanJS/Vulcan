@@ -213,6 +213,9 @@ h3.post-heading .title{
   }
 }
 
+.at-form .at-pwd-form,
+.at-form .at-sep,
+.at-form #at-twitter,
 #comment-modal #document body .posts-list,
 #comment-modal #document body .poll-new {
   display: none;

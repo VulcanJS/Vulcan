@@ -26,17 +26,17 @@ Meteor.methods({
 
     // check if the person is already invited
     if(user && can.invite(user)){
-      throw new Meteor.Error(403, "This person is already invited.");
+      toastr.error('403', "This person is already invited.");
     } else {
       if (!currentUserCanInvite){
-        throw new Meteor.Error(701, "You can't invite this user, sorry.");
+        toastr.error('701', "You can't invite this user, sorry.");
       }
 
       // don't allow duplicate multpile invite for the same person
       var existingInvite = Invites.findOne({ invitedUserEmail : userEmail });
 
       if (existingInvite) {
-        throw new Meteor.Error(403, "Somebody has already invited this person.");
+        toastr.error('403', "Somebody has already invited this person.");
       }
 
       // create an invite
