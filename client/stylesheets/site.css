@@ -220,3 +220,7 @@ h3.post-heading .title{
 #comment-modal #document body .poll-new {
   display: none;
 }
+
+form.form-block {
+  background-color: #F2F2F2;
+}
