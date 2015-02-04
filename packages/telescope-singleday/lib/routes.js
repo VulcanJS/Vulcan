@@ -1,6 +1,6 @@
 // Controller for post digest
 
-PostsSingleDayController = RouteController.extend({
+PostsSingledayController = RouteController.extend({
 
   template: getTemplate('singleDay'),
 
@@ -27,12 +27,12 @@ Meteor.startup(function () {
 
   Router.route('/day/:year/:month/:day', {
     name: 'postsSingleDay',
-    controller: PostsSingleDayController
+    controller: PostsSingledayController
   });
 
   Router.route('/day', {
     name: 'postsSingleDayDefault',
-    controller: PostsSingleDayController
+    controller: PostsSingledayController
   });
 
 });

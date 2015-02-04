@@ -81,7 +81,7 @@ Package.onUse(function (api) {
 
   api.export([
     'getDigestURL',
-    'PostsDigestController'
+    'PostsSingledayController'
   ]);
 
 });
