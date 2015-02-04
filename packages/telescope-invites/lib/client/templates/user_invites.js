@@ -26,7 +26,10 @@ Template[getTemplate('userInvites')].helpers({
     return InviteSchema;
   },
   invites: function () {
-    return Template.instance().invites.get();
+    if(Template.instance().invites.get().fetch().length > 0) {
+      return Template.instance().invites.get();
+    }
+    return;
   }
 });
 

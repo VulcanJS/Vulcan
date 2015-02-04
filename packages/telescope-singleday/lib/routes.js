@@ -10,7 +10,7 @@ PostsSingleDayController = RouteController.extend({
   },
 
   getTitle: function () {
-    return i18n.t('single_day') + ' - ' + getSetting('title', 'Telescope');
+    return i18n.t('single_day') + ' - ' + getSetting('title', 'WonderCount');
   },
 
   getDescription: function () {

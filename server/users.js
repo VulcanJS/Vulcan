@@ -119,6 +119,7 @@ Accounts.onCreateUser(function(options, user){
   var userProperties = {
     profile: options.profile || {},
     karma: 0,
+    isInvited: true,
     postCount: 0,
     commentCount: 0,
     invitedCount: 0,
@@ -132,12 +133,6 @@ Accounts.onCreateUser(function(options, user){
     friendsWonders : []
   };
   user = _.extend(user, userProperties);
-
-  if(!!options.services && !!options.services.facebook) {
-    user.isInvited = false;
-  } else {
-    user.isInvited = true;
-  }
 
   // set email on profile
   if (options.email) {

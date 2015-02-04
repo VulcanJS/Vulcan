@@ -1,13 +1,13 @@
 <template name="userInvites">
   <div class="grid-small grid-block dialog admin">
-  <div class="ui warning message">
-    <h2>Facebook friends are not here?</h2>
-    <ul class="list">
-      <li>Invite them to answer some questions.</li>
-      <li>Refresh to see how similar are you to your friends.</li>
-    </ul>
-  </div>
     {{#if canCurrentUserInvite}}
+    <div class="ui warning message">
+      <h2>Facebook friends are not here?</h2>
+      <ul class="list">
+        <li>Invite them to answer some questions.</li>
+        <li>Refresh to see how similar are you to your friends.</li>
+      </ul>
+    </div>
       {{#autoForm schema=invitesSchema id="inviteForm" class="form-block" type="method" meteormethod="inviteUser"}}
         <h3>Invite a friend to continue.</h3>
         <div class="ui divider"></div>
@@ -29,6 +29,7 @@
         </div>
       {{/autoForm}}
     {{/if}}
+
     {{#if invites}}
     <table>
       <thead>
@@ -41,7 +42,7 @@
           {{#each invites}}
           <tr>
             <td>{{invitedUserEmail}}</td>
-            <td>{{#if accepted}}<i class="icon-check"></i>{{/if}}</td>
+            <td>{{#if accepted}}<i class="checkmark icon"></i>{{else}}<i class="wait icon"></i>{{/if}}</td>
           </tr>
           {{/each}}
       </tbody>

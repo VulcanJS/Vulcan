@@ -66,5 +66,5 @@ can.currentUserEdit = function(item) {
   return can.edit(Meteor.user(), item);
 };
 can.invite = function(user) {
-  return isInvited(user) || isAdmin(user);
+  return isInvited(user) || isAdmin(user) || isFacebookUser(user);
 };
