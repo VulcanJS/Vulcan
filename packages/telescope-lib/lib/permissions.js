@@ -7,7 +7,7 @@ can = {};
 // user:                Defaults to Meteor.user()
 //
 // return true if all is well, false
-can.view = function(user) {
+can.view = function (user) {
   if (getSetting('requireViewInvite', false)) {
 
     if (Meteor.isClient) {
@@ -19,14 +19,20 @@ can.view = function(user) {
   }
   return true;
 };
-can.viewById = function(userId) {
+
+can.viewPendingPosts = function (user) {
+  user = (typeof user === 'undefined') ? Meteor.user() : user;
+  return isAdmin(user);
+};
+
+can.viewById = function (userId) {
   // if an invite is required to view, run permission check, else return true
   if (getSetting('requireViewInvite', false)) {
     return !!userId ? can.view(Meteor.users.findOne(userId)) : false;
   }
   return true;
 };
-can.post = function(user, returnError) {
+can.post = function (user, returnError) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user) {
@@ -43,13 +49,13 @@ can.post = function(user, returnError) {
     return true;
   }
 };
-can.comment = function(user, returnError) {
+can.comment = function (user, returnError) {
   return can.post(user, returnError);
 };
-can.vote = function(user, returnError) {
+can.vote = function (user, returnError) {
   return can.post(user, returnError);
 };
-can.edit = function(user, item, returnError) {
+can.edit = function (user, item, returnError) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user || !item || (user._id !== item.userId && !isAdmin(user))) {
@@ -58,13 +64,13 @@ can.edit = function(user, item, returnError) {
     return true;
   }
 };
-can.editById = function(userId, item) {
+can.editById = function (userId, item) {
   var user = Meteor.users.findOne(userId);
   return can.edit(user, item);
 };
-can.currentUserEdit = function(item) {
+can.currentUserEdit = function (item) {
   return can.edit(Meteor.user(), item);
 };
-can.invite = function(user) {
+can.invite = function (user) {
   return isInvited(user) || isAdmin(user);
 };

@@ -1,6 +1,7 @@
 * Fix double notification bug. 
 * Fix singleday view bug.
 * Fix post approval date bug.
+* Don't let non-admins access pending posts.
 
 ## v0.14.0 “GridScope”
 
