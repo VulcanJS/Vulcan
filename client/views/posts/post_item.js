@@ -14,9 +14,11 @@ shortDescription = function(id) {
 
     if (contentLength > showChar) {
       var con = content.substr(0, showChar),
-      hcon = content.substr(showChar, contentLength - showChar);
-
-      var txt= con +  '<span class="dots">...</span> <span class="morecontent"> <span>' + hcon + '</span> <a href="" class="moretxt">' + showtxt + '</a> </span>';
+          hcon = content.substr(showChar, contentLength - showChar);
+      if (hcon.indexOf('...') === 0) {
+        hcon = hcon.slice(3,-4);
+      } 
+      var txt= con + '<span class="dots">...</span><span class="morecontent"><span>' + hcon + '</span><a href="" class="moretxt">' + showtxt + '</a></span>';
       $(this).html(txt);
     }
   });
