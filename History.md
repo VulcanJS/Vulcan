@@ -1,3 +1,7 @@
+* Fix double notification bug. 
+* Fix singleday view bug.
+* Fix post approval date bug.
+
 ## v0.14.0 “GridScope”
 
 * Adeed Grid Layout option.

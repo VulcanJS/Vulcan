@@ -335,11 +335,15 @@ submitPost = function (post) {
     score: 0,
     inactive: false,
     sticky: false,
-    status: getDefaultPostStatus(),
-    postedAt: new Date()
+    status: getDefaultPostStatus()
   };
 
   post = _.extend(defaultProperties, post);
+
+  // if post is approved but doesn't have a postedAt date, give it a default date
+  // note: pending posts get their postedAt date only once theyre approved
+  if (post.status == STATUS_APPROVED && !post.postedAt)
+    post.postedAt = new Date();
 
   // clean up post title
   post.title = cleanUp(post.title);
