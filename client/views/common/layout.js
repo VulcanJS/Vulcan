@@ -38,3 +38,12 @@ Template[getTemplate('layout')].rendered = function(){
     Session.set('currentScroll', null);
   }
 };
+
+Template[getTemplate('layout')].events({
+  'click .inner-wrapper': function (e) {
+    if ($('body').hasClass('mobile-nav-open')) {
+      e.preventDefault();
+      $('body').removeClass('mobile-nav-open');
+    }
+  }
+});
