@@ -7,6 +7,11 @@ function toggleVideo(state) {
     iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
 }
 
+youtubeVid = function(url){
+  var vIdStarts = url.indexOf("?v=") + 3;
+  return url.slice(vIdStarts, vIdStarts + 11);
+}
+
 Template[getTemplate('postDomain')].helpers({
   domain: function(){
     var a = document.createElement('a');
@@ -26,7 +31,7 @@ Template[getTemplate('postDomain')].helpers({
     return !!this.url ? '_blank' : '';
   },
   iframeableLink: function (url) {
-    if (url.indexOf('stackoverflow.com') > -1 ) {
+    if (url.indexOf('stackoverflow.com') > -1 || url.indexOf('forbes.com') > -1 ) {
       return false;
     }
     return true;
@@ -37,10 +42,10 @@ Template[getTemplate('postDomain')].events({
     'click .post-read-overlay': function(url){
       var url= this.url;
 
-      if (url.indexOf('youtube.com/watch') > -1 || url.indexOf('youtu.be/i_') > -1) {
-        var youtubeVid = url.slice(-11);
-        var youtube = '<div class="ui video video-play-overlay" data-source="youtube" data-id="'+youtubeVid+'""></div>'
+      if (url.indexOf('youtube.com/watch') > -1 || url.indexOf('youtu.be/i_') > -1 ) {
+        var youtube = '<div class="ui video video-play-overlay" data-source="youtube" data-id="'+youtubeVid(url)+'""></div>'
         $('.basic-post-modal-content').html(youtube);
+        $('.basic-modal-header').html(this.title);
         $('.ui.video').video();
         $('.ui.basic.modal').modal('show',{
           onHide: toggleVideo('hide'),
@@ -49,6 +54,7 @@ Template[getTemplate('postDomain')].events({
       } else {
         var iframe = '<iframe id="post-modal" src="'+url+'" width="100%" height="100%" scrolling="auto" frameborder="0" seamless></iframe>'
         $('.fullscreen-post-modal-content').html(iframe);
+        $('.fullscreen-modal-header').html(this.title);
         $('.ui.fullscreen.modal').modal('show');
       }
     }
