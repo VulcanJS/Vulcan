@@ -16,7 +16,6 @@ Template[getTemplate('post_page')].helpers({
   },
   displayInfoPoll: function () {
     var displayQuery = window.location.search;
-    console.log(displayQuery);
     if(displayQuery && displayQuery.indexOf('comment-only')>-1) {
       return false;
     }
