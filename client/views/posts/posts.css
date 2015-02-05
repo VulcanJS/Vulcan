@@ -79,3 +79,7 @@ a.post-domain-link.hovered {
   background-color: #DD3416;
   color: white;
 }
+
+.morecontent span {
+    display: none;
+}

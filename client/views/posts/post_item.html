@@ -9,6 +9,9 @@
 		</div>
 		{{#if notPostPage}}
 		<div class="content">
+	        {{#if body}}
+	        	<div class="post-body markdown post-list-body" id="{{_id}}-more">{{{htmlBody}}}</div>
+	        {{/if}}
 			{{> poll_form}}
 		</div>
 		{{/if}}

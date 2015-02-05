@@ -2,6 +2,39 @@ var post = {};
 
 var getPathname = window.location.pathname;
 
+shortDescription = function(id) {
+  var selector ='#'+ id + '-more p';
+  $(selector).addClass('more');
+  var showChar = 205, 
+      showtxt = "more", 
+      hidetxt = "less";
+  $('.more').each(function() {
+    var content = $(this).text(),
+        contentLength = content.length;
+
+    if (contentLength > showChar) {
+      var con = content.substr(0, showChar),
+      hcon = content.substr(showChar, contentLength - showChar);
+
+      var txt= con +  '<span class="dots">...</span> <span class="morecontent"> <span>' + hcon + '</span> <a href="" class="moretxt">' + showtxt + '</a> </span>';
+      $(this).html(txt);
+    }
+  });
+
+  $(".moretxt").click(function() {
+    if ($(this).hasClass("sample")) {
+      $(this).removeClass("sample");
+      $(this).text(showtxt);
+    } else {
+      $(this).addClass("sample");
+      $(this).text(hidetxt);
+    }
+    $(this).parent().prev().toggle();
+    $(this).prev().toggle();
+    return false;
+  });
+}
+
 Template[getTemplate('post_item')].created = function () {
   post = this.data;
 };
@@ -9,13 +42,16 @@ Template[getTemplate('post_item')].created = function () {
 
 Template[getTemplate('post_item')].rendered = function () {
   $('.ui.accordion').accordion({
-        onOpen:function() {
-           $(this).prev().addClass('active');
-        }
-      });
+    onOpen:function() {
+       $(this).prev().addClass('active');
+    }
+  });
 };
 
 Template[getTemplate('post_item')].helpers({
+  post_body: function () {
+    return getTemplate('post_body');
+  },
   postModules: function () {
     return postModules;
   },
@@ -49,6 +85,9 @@ Template[getTemplate('post_item')].helpers({
 
 Template[getTemplate('post_item')].events({
   'click .post-list-info': function (e) {
+    e.proventDefault;
+
+    shortDescription(this._id);
 
     if ($('.content.active').length === 0) {
       $('.ui.accordion').accordion({
