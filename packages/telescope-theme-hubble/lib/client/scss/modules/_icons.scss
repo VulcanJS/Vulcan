@@ -4,10 +4,13 @@
   padding: 0;
   text-align: center;
   color: $light-text;
+  &.discuss-link {
+    color: $blue-grey;
+  }
 }
 .action-icon {
-  font-size: 30px;
-  height: 30px;
+  font-size: 36px;
+  height: 36px;
   display: block;
   &:before {
     position: relative;
@@ -31,7 +34,7 @@
   top: 4px;
   display: block;
   width: 100%;
-  height: 11px;
-  line-height: 11px;
+  height: 20px;
+  line-height: 20px;
   font-size: 14px;
 }
