@@ -33,7 +33,7 @@ var handleFeed = function(error, feed) {
       var post = {
         title: he.decode(item.title),
         url: item.link,
-        feedId: feed.id,
+        feedId: feedId,
         feedItemId: item.id,
         userId: userId,
         categories:categories
