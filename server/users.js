@@ -45,8 +45,8 @@ Accounts.onCreateUser(function(options, user){
     return currentFunction(result);
   }, user);
   clog('// Finished userCreatedCallbacks');
-  clog('// User object:');
-  clog(user);
+  // clog('// User object:');
+  // clog(user);
 
   // ------------------------------ Analytics ------------------------------ //
 
