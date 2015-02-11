@@ -1,0 +1,42 @@
+$small-break: 30em;
+$medium-break: 50em;
+
+@mixin small(){
+  @media screen and (max-width: $small-break) {
+    @content;
+  }
+}
+@mixin medium-large(){
+  @media screen and (min-width: 50em) {
+    @content;
+  }
+}
+
+.tagline{
+  text-align: center;
+  margin: 30px 0 20px 0;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  font-size: 19px;
+  font-weight: normal;
+  span{
+    position: relative;
+    display: inline-block;
+    background: #EEEEEE;
+    margin: 0 auto;
+    z-index: 100;
+    padding: 0 15px;
+  }
+  &:after{
+    position: absolute;
+    content: " ";
+    display: block;
+    top: 50%;
+    left: 0px;
+    height: 1px;
+    background: rgba(0,0,0,0.2);
+    width: 100%;
+    z-index: 10;
+  }
+}
