@@ -1,0 +1,15 @@
+{
+  "receive_the_best_of": "Otrzymuj najlepsze z",
+  "right_in_your_inbox": "prosto do twojej skrzynki.",
+  "get_newsletter": "Zapisz się do Newslettera",
+  "thanks_for_subscribing": "Dziękujemy!",
+  "newsletter": "newsletter",
+  "showBanner": "Pokaż Baner",
+  "mailChimpAPIKey": "MailChimp API Key",
+  "mailChimpListId": "MailChimp List ID",
+  "postsPerNewsletter": "Liczba postów przypadająca na jeden Newsletter",
+  "newsletterFrequency": "Częstotliwość Newslettera",
+  "newsletterTime": "Godzina, w której ma być wysłany Newsletter",
+  "enableNewsletter": "Włącz Newsletter",
+  "autoSubscribe": "Auto Subskrybcja"
+}
