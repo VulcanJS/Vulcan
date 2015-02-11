@@ -14,6 +14,7 @@ Package.onUse(function (api) {
     'telescope-base',             // basic Telescope hooks and objects
     'telescope-lib',              // useful functions
     'fourseven:scss',             // SCSS compilation package
+    'tap:i18n'
   ]);
 
   // client
@@ -28,7 +29,8 @@ Package.onUse(function (api) {
   // ---------------------------------- 2. Files to include ----------------------------------
 
   api.add_files([
-    'lib/banner.js',
+    'lib/tagline.js',
+    'package-tap.i18n'
   ], ['client', 'server']);
 
   // client
@@ -38,5 +40,9 @@ Package.onUse(function (api) {
     'lib/client/templates/tagline_banner.js',
     'lib/client/stylesheets/tagline_banner.scss'
   ], ['client']);
+
+  api.add_files([
+    "i18n/en.i18n.json"
+  ], ["client", "server"]);
 
 });

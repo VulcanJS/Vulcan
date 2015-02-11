@@ -1,7 +1,14 @@
+## v0.14.1
+
 * Fix double notification bug. 
 * Fix singleday view bug.
 * Fix post approval date bug.
 * Don't let non-admins access pending posts.
+* Give search field a border on white backgrounds.
+* Spanish, Brazilian, Turkish, Vietnamese, Polish translations.
+* Do not put comment reply page behind log-in wall.
+* Various CSS tweaks.
+* Added tagline banner package.
 
 ## v0.14.0 “GridScope”
 
