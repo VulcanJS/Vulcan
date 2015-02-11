@@ -34,7 +34,6 @@ var feedSchema = new SimpleSchema({
               label: category.name
             }  
         });
-        console.log('selected category'+categories)
         return categories;
       }
     }
