@@ -9,6 +9,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   # Add testing package since it's not currently enabled in Telescope
   - printf "sanjo:jasmine@0.11.0" >> .meteor/packages
+  - printf "xolvio:cucumber@0.3.8" >> .meteor/packages
 
 script:
-  - JASMINE_BROWSER=Firefox meteor --test
+  - JASMINE_BROWSER=Firefox meteor --test --once

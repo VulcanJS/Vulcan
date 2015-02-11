@@ -54,6 +54,7 @@ momentjs:moment
 
 # sanjo:jasmine
 # velocity:html-reporter
+# xolvio:cucumber
 
 # Telescope Packages (Required)
 
