@@ -113,7 +113,8 @@
   "sorry_you_do_not_have_the_rights_to_comments": "Sorry, you do not have the rights to leave comments at this time.",
   "not_found": "Not Found!",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "We're sorry; whatever you were looking for isn't here..",
-
+  "disallowed_property_detected": "Disallowed property detected",
+  
   //Notifications
   "no_notifications": "No notifications",
   "1_notification": "1 notification",
