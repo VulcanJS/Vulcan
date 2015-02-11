@@ -3,8 +3,8 @@ heroModules.push({
   order: 0
 });
 
-var showTagline = {
-  propertyName: 'showTagline',
+var showTaglineBanner = {
+  propertyName: 'showTaglineBanner',
   propertySchema: {
     type: Boolean,
     optional: true,
@@ -15,4 +15,4 @@ var showTagline = {
     }
   }
 }
-addToSettingsSchema.push(showTagline);
+addToSettingsSchema.push(showTaglineBanner);
