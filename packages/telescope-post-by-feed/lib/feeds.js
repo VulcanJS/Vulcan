@@ -18,6 +18,26 @@ var feedSchema = new SimpleSchema({
         return users;
       }
     }
+  },
+   categories: {
+    type: [String],
+    label: 'categories',
+    optional: true,
+    autoform: {
+      instructions: 'Posts will be assigned to this category.',
+      noselect: true,
+      editable: true,
+      options: function () {
+          var categories = Categories.find().map(function (category) {
+            return {
+              value: category._id,
+              label: category.name
+            }  
+        });
+        console.log('selected category'+categories)
+        return categories;
+      }
+    }
   }
 });
 

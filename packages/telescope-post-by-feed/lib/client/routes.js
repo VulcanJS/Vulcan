@@ -15,7 +15,8 @@ Meteor.startup(function () {
     waitOn: function() {
       return [
         Meteor.subscribe('feeds'),
-        Meteor.subscribe('allUsersAdmin')
+        Meteor.subscribe('allUsersAdmin'),
+        Meteor.subscribe('categories')
       ];
     },
     template: getTemplate('feeds')
