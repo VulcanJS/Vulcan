@@ -3,7 +3,13 @@
       body{
         background: {{getSetting "backgroundCSS"}};
       }
-      input[type="submit"], button, .button, button.submit, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
+      .header{
+        background-color: {{getSetting "headerColor"}};
+      }
+      .header, .header .logo a, .header .logo a:visited{
+        color: {{getSetting "headerTextColor"}};        
+      }
+      input[type="submit"], button, .button, button.submit, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .header .btn-primary, .header .btn-primary:link, .header .btn-primary:visited, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
         background-color: {{getSetting "buttonColor"}};
         color: {{getSetting "buttonTextColor"}};
       }
@@ -18,14 +24,7 @@
       }
       .post-content .post-upvote .upvote-link.voted i.icon-check{
         /*color: {{getSetting "secondaryColor"}};*/
-      }
-      .header{
-        background-color: {{getSetting "headerColor"}};
-      }
-      .header, .header .logo a, .header .logo a:visited{
-        color: {{getSetting "headerTextColor"}};        
-      }
-    .logo-image a{
+      }    .logo-image a{
       max-height:{{getSetting "logoHeight"}}px;
       max-width:{{getSetting "logoWidth"}}px;
     }
