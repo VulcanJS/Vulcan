@@ -22,6 +22,10 @@ Template[getTemplate('nav')].helpers({
   },
   logo_url: function(){
     return getSetting('logoUrl');
+  },
+  headerClass: function () {
+    var color = getSetting('headerColor');
+    return (color == 'white' || color == '#fff' || color == '#ffffff') ? "white-background" : '';
   }
 });
 
