@@ -51,15 +51,20 @@
   td {
     border: solid $grey 1px;
     text-align: center;
-  }
 
-  td.actions {
+    .time-ago {
+      font-size: .9em;
+      color: lighten($text, 15%);
+    }
 
-    li {
-      margin-bottom: .25em;
+    &.actions {
 
-      &:last-child {
-        margin-bottom: .15em;
+      li {
+        margin-bottom: .25em;
+
+        &:last-child {
+          margin-bottom: .15em;
+        }
       }
     }
   }

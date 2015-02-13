@@ -9,7 +9,7 @@ Template[getTemplate('users')].helpers({
         { key: 'username', label: 'Username', tmpl: Template.users_list_username },
         { key: 'profile.name', label: 'Display Name' },
         { key: 'profile.email', label: 'Email', tmpl: Template.users_list_email },
-        { key: 'createdAt', label: 'Member Since', fn: function(val){return moment(val).fromNow()}, sort: 'descending' },
+        { key: 'createdAt', label: 'Member Since', tmpl: Template.users_list_created_at, sort: 'descending' },
         { key: 'postCount', label: 'Posts' },
         { key: 'commentCount', label: 'Comments' },
         { key: 'karma', label: 'Karma', fn: function(val){return Math.round(100*val)/100} },
