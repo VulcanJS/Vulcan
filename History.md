@@ -12,6 +12,7 @@
 * You can now assign a category to posts generated from feeds (thanks @Accentax!).
 * Use tagline as title on homepage.
 * Refactor default view route controller code. 
+* Fixed security issue with post editing.
 
 ## v0.14.0 “GridScope”
 
