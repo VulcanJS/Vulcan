@@ -1,8 +1,8 @@
 <template name="postThumbnail">
   {{#if thumbnailUrl}}
-    <div class="post-thumbnail">
+    <div class="post-thumbnail" aria-hidden="true">
       <a class="post-thumbnail-link {{playVideoClass}}" href="{{postLink}}" target="_blank">
-        <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';"/>
+        <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';" aria-hidden="true"/>
       </a>
     </div>
   {{/if}}
