@@ -1,3 +1,6 @@
+body, textarea, input, button, input[type="submit"], input[type="button"]{
+	font-family:"Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
+}
 body, textarea, input{
 	color:$text;
 	line-height:1.6;

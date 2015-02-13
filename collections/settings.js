@@ -233,7 +233,7 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'fonts',
-      instructions: '@import URL (defaults to https://fonts.googleapis.com/css?family=Source+Sans+Pro)'
+      instructions: '@import URL (e.g. https://fonts.googleapis.com/css?family=Source+Sans+Pro)'
     }
   },
   fontFamily: {
@@ -241,7 +241,7 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'fonts',
-      instructions: 'font-family (defaults to "Source Sans Pro", sans-serif)'
+      instructions: 'font-family (e.g. "Source Sans Pro", sans-serif)'
     }
   },
   headerTextColor: {
