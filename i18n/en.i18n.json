@@ -52,6 +52,8 @@
   "emailFooter": "Email Footer",
   "notes": "Notes",
   "debug": "Debug Mode",
+  "fontUrl": "Font URL",
+  "fontFamily": "Font Family",
 
   // Settings Fieldsets
   "general": "General",

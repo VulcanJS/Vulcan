@@ -15,7 +15,6 @@ UI.registerHelper('eachWithRank', function(items, options) {
 });
 
 UI.registerHelper('getSetting', function(setting, defaultArgument){
-  defaultArgument = defaultArgument || '';
   setting = getSetting(setting, defaultArgument);
   return setting;
 });

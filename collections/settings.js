@@ -228,12 +228,27 @@ settingsSchemaObject = {
       // type: 'color'
     }
   },
+  fontUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'fonts',
+      instructions: '@import URL (defaults to https://fonts.googleapis.com/css?family=Source+Sans+Pro)'
+    }
+  },
+  fontFamily: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'fonts',
+      instructions: 'font-family (defaults to "Source Sans Pro", sans-serif)'
+    }
+  },
   headerTextColor: {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors',
-      // type: 'color'
+      group: 'colors'
     }
   },
   twitterAccount: {
