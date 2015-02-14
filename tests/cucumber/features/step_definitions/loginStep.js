@@ -48,7 +48,7 @@ module.exports = function () {
   this.Then(/^I should be logged in$/, function (callback) {
     helper.world.browser.
       waitForExist('.user-menu', 7000).
-      waitForVisible('.user-menu', 5000).
+      waitForVisible('.user-menu', 9000).
       getText('.user-menu .dropdown-top-level', function (err, username) {
         assert.equal(username[0], 'Josh Owens');
       }).
