@@ -1,3 +1,10 @@
+## v0.14.2 “FaviconScope”
+
+* Added settings for auth methods.
+* Added setting for external fonts.
+* Use site tagline as homepage title.
+* Make favicon customizable.
+
 ## v0.14.1 “TaglineScope”
 
 * Fix double notification bug. 

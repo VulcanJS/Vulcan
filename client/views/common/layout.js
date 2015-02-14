@@ -37,6 +37,14 @@ Template[getTemplate('layout')].rendered = function(){
     $('body').scrollTop(currentScroll);
     Session.set('currentScroll', null);
   }
+
+  // favicon
+  var link = document.createElement('link');
+  link.type = 'image/x-icon';
+  link.rel = 'shortcut icon';
+  link.href = getSetting('faviconUrl', '/img/favicon.ico');
+  document.getElementsByTagName('head')[0].appendChild(link);
+
 };
 
 Template[getTemplate('layout')].events({

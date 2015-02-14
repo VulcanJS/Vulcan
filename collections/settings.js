@@ -173,6 +173,13 @@ settingsSchemaObject = {
       group: 'logo'
     }
   },
+  faviconUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'logo'
+    }
+  },
   language: {
     type: String,
     defaultValue: 'en',
