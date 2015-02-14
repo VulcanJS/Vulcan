@@ -324,6 +324,30 @@ settingsSchemaObject = {
       group: 'debug',
       instructions: 'Enable debug mode for more details console logs'
     }
+  },
+  authMethods: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'auth',
+      editable: true,
+      noselect: true,
+      options: [
+        {
+          value: 'email',
+          label: 'Email/Password'
+        },
+        {
+          value: 'twitter',
+          label: 'Twitter'
+        },
+        {
+          value: 'facebook',
+          label: 'Facebook'
+        }
+      ],
+      instructions: 'Authentication methods (default to email only)'
+    }    
   }
 };
 

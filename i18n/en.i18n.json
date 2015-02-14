@@ -54,6 +54,7 @@
   "debug": "Debug Mode",
   "fontUrl": "Font URL",
   "fontFamily": "Font Family",
+  "authMethods": "Authentication Methods",
 
   // Settings Fieldsets
   "general": "General",
