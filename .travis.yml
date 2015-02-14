@@ -11,6 +11,7 @@ before_script:
   - export PHANTOM_PATH=`which phantomjs`
   # Add testing package since it's not currently enabled in Telescope
   - printf "sanjo:jasmine@0.11.0" >> .meteor/packages
+  - printf "\nxolvio:webdriver@0.2.2" >> .meteor/packages
   - printf "\nxolvio:cucumber@0.3.8" >> .meteor/packages
 
 
