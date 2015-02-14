@@ -7,8 +7,8 @@ module.exports = function () {
   this.Given(/^I am signed out$/, function (callback) {
     helper.world.browser.
       url(helper.world.cucumber.mirror.rootUrl + "sign-out").
-      waitForExist('.account-link', 1000).
-      waitForVisible('.account-link', 1000).
+      waitForExist('.account-link', 2000).
+      waitForVisible('.account-link', 2000).
       call(callback);
   });
 
