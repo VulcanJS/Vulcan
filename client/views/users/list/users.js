@@ -1,7 +1,7 @@
 Template[getTemplate('users')].helpers({
   settings: function() {
     return {
-      collection: Meteor.users.find(),
+      collection: 'all-users',
       rowsPerPage: 20,
       showFilter: true,
       fields: [
