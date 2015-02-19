@@ -1,0 +1,36 @@
+<template name="userPosts">
+  <div class="user-profile-posts grid grid-module">
+    <h3>{{_ "posts"}}</h3>
+    <table>
+    <thead>
+      <tr>
+        <td>Post</td>
+        <td>Created At</td>
+      </tr>
+    </thead>
+    {{#each posts}}
+      <tr>
+        <td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
+        <td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
+      </tr>
+    {{/each}}
+    {{#if isReady}}
+      {{#if hasMorePosts}}
+        <tr>
+          <td colspan="100">
+            <a class="posts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+          </td>
+        </tr>
+      {{/if}}
+    {{else}}
+      <tr>
+        <td colspan="100">
+          <div style="position:relative;height:100px;">
+            {{>spinner}}
+          </div>
+        </td>
+      </tr>
+    {{/if}}
+    </table>
+  </div>
+</template>

@@ -1,0 +1,7 @@
+<template name="user_edit">
+	{{#with user}}
+    {{#each userProfileEdit}}
+      {{> UI.dynamic template=getTemplate data=..}}
+    {{/each}}
+  {{/with}}
+</template>

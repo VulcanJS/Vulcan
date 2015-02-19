@@ -1,0 +1,48 @@
+<template name="users">
+    <div class="grid grid-module">
+      <div class="user-table grid-block">
+        <h2>{{_ "users"}}</h2>
+        <div class="filter-sort">
+          <p class="filter">
+            <span>{{_ "filter_by"}}: </span>
+            <a class="{{activeClass 'all'}}" href="{{filterBy 'all'}}">{{_ "all"}}</a>
+            <a class="{{activeClass 'invited'}}" href="{{filterBy 'invited'}}">{{_ "invited"}}</a>
+            <a class="{{activeClass 'uninvited'}}" href="{{filterBy 'uninvited'}}">{{_ "uninvited"}}</a>
+            <a class="{{activeClass 'admin'}}" href="{{filterBy 'admin'}}">{{_ "admin"}}</a>
+          </p>
+          <p class="sort">
+            <span>{{_ "sort_by"}}: </span>
+            <a class="{{activeClass 'createdAt'}}" href="{{sortBy 'createdAt'}}">{{_ "created"}}</a>
+            <a class="{{activeClass 'karma'}}" href="{{sortBy 'karma'}}">{{_ "karma"}}</a>
+            <a class="{{activeClass 'username'}}" href="{{sortBy 'username'}}">{{_ "username"}}</a>
+            <a class="{{activeClass 'postCount'}}" href="{{sortBy 'postCount'}}">{{_ "posts"}}</a>
+            <a class="{{activeClass 'commentCount'}}" href="{{sortBy 'commentCount'}}">{{_ "comments_"}}</a>
+            <a class="{{activeClass 'invitedCount'}}" href="{{sortBy 'invitedCount'}}">{{_ "invitedcount"}}</a>
+          </p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <td colspan="2">{{_ "name"}}</td>
+              <td>{{_ "member_since"}}</td>
+              <td>{{_ "posts"}}</td>
+              <td>{{_ "comments_"}}</td>
+              <td>{{_ "karma"}}</td>
+              <td>{{_ "invites"}}</td>
+              <td>{{_ "invited"}}</td>
+              <td>{{_ "admin"}}</td>
+              <td>{{_ "actions"}}</td>
+            </tr>
+          </thead>
+          <tbody>
+              {{#each users}}
+                {{> UI.dynamic template=user_item}}
+              {{/each}}
+          </tbody>
+        </table>
+        <div class="grid more-button {{#if allPostsLoaded}} hidden {{/if}}">
+          <a class="more-link" href="{{loadMoreUrl}}">{{_ "load_more"}}</a>
+        </div>
+      </div>
+    </div>
+</template>

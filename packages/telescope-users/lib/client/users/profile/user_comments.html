@@ -1,0 +1,28 @@
+<template name="userComments">
+  <div class="user-profile-comments grid grid-module">
+    <h3>{{_ "comments_"}}</h3>
+    <table>
+    <thead>
+      <tr>
+        <td>Post</td>
+        <td>Comment</td>
+        <td>Commented At</td>
+      </tr>
+    </thead>
+    {{#each comments}}
+      <tr>
+        <td><a href="{{pathFor route='post_page' _id=postId}}/">{{postTitle}}</a></td>
+        <td>{{{htmlBody}}}</td>
+        <td>{{formatDate createdAt "MM/DD/YYYY, HH:mm"}}</td>
+      </tr>
+    {{/each}}
+    {{#if hasMoreComments}}
+      <tr>
+        <td colspan="10">
+          <a class="comments-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+        </td>
+      </tr>
+    {{/if}}
+    </table>
+  </div>
+</template>
