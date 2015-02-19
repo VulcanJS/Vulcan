@@ -86,3 +86,7 @@ telescope-getting-started
 telescope-subscribe-to-posts
 
 # Custom Packages
+cfs:standard-packages
+cfs:filesystem
+cfs:autoform
+telescope-module-photo

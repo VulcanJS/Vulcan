@@ -192,6 +192,7 @@ postSchemaObject = {
   }
 };
 
+
 // add any extra properties to postSchemaObject (provided by packages for example)
 _.each(addToPostSchema, function(item){
   postSchemaObject[item.propertyName] = item.propertySchema;
