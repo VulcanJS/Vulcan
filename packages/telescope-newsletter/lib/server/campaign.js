@@ -57,7 +57,7 @@ buildCampaign = function (postsArray) {
     content: postsHTML
   });
 
-  // 3. wrap digest HTML in email wrapper tempalte
+  // 3. wrap digest HTML in email wrapper template
   var emailHTML = buildEmailTemplate(digestHTML);
 
   return {

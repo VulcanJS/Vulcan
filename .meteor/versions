@@ -6,7 +6,7 @@ accounts-twitter@1.0.3
 accounts-ui@1.1.4
 accounts-ui-unstyled@1.1.6
 aldeed:autoform@4.2.2
-aldeed:collection2@2.3.1
+aldeed:collection2@2.3.2
 aldeed:simple-schema@1.3.0
 application-configuration@1.0.4
 artwells:queue@0.0.3
@@ -28,7 +28,7 @@ cmather:handlebars-server@2.0.0
 coffeescript@1.0.5
 ddp@1.0.14
 deps@1.0.6
-djedi:sanitize-html@1.3.0
+djedi:sanitize-html@1.6.1
 ejson@1.0.5
 email@1.0.5
 facebook@1.1.3
@@ -65,14 +65,13 @@ matb33:collection-hooks@0.7.9
 meteor@1.1.4
 meteor-platform@1.2.1
 meteorhacks:async@1.0.0
-meteorhacks:fast-render@2.3.0
-meteorhacks:inject-data@1.2.1
-meteorhacks:kadira@2.17.2
-meteorhacks:kadira-binary-deps@1.3.1
-meteorhacks:meteorx@1.2.1
+meteorhacks:fast-render@2.3.1
+meteorhacks:inject-data@1.2.2
+meteorhacks:kadira@2.18.3
+meteorhacks:meteorx@1.3.1
 meteorhacks:npm@1.2.2
 meteorhacks:picker@1.0.1
-meteorhacks:subs-manager@1.2.4
+meteorhacks:subs-manager@1.3.0
 minifiers@1.1.3
 minimongo@1.0.6
 miro:mailchimp@1.0.2
@@ -98,7 +97,7 @@ reactive-var@1.0.4
 reload@1.1.2
 retry@1.0.2
 routepolicy@1.0.4
-sacha:juice@0.1.1
+sacha:juice@0.1.2
 sacha:spin@2.0.4
 service-configuration@1.0.3
 session@1.0.5
@@ -110,7 +109,7 @@ spiderable@1.0.6
 srp@1.0.2
 standard-app-packages@1.0.4
 stylus@1.0.6
-tap:i18n@1.3.2
+tap:i18n@1.4.0
 telescope-api@0.0.0
 telescope-base@0.0.0
 telescope-daily@0.0.0
@@ -143,7 +142,7 @@ twitter@1.1.3
 ui@1.0.5
 underscore@1.0.2
 url@1.0.3
-useraccounts:core@1.6.1
-useraccounts:unstyled@1.6.1
+useraccounts:core@1.8.1
+useraccounts:unstyled@1.8.1
 webapp@1.1.6
 webapp-hashing@1.0.2
