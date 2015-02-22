@@ -25,6 +25,11 @@ can.viewPendingPosts = function (user) {
   return isAdmin(user);
 };
 
+can.viewRejectedPosts = function (user) {
+  user = (typeof user === 'undefined') ? Meteor.user() : user;
+  return isAdmin(user);
+};
+
 can.viewById = function (userId) {
   // if an invite is required to view, run permission check, else return true
   if (getSetting('requireViewInvite', false)) {
