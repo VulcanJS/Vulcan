@@ -21,6 +21,7 @@
 
   // Settings Schema
   "title": "Title",
+  "description": "Description",
   "siteUrl": "Site URL",
   "tagline": "Tagline",
   "requireViewInvite": "Require Invite to View",
@@ -56,6 +57,8 @@
   "fontFamily": "Font Family",
   "authMethods": "Authentication Methods",
   "faviconUrl": "Favicon URL",
+  "mailURL": "MailURL",
+  "postsLayout": "Posts Layout",
   
   // Settings Fieldsets
   "general": "General",
