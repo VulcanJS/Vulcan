@@ -4,6 +4,10 @@
 * Added setting for external fonts.
 * Use site tagline as homepage title.
 * Make favicon customizable.
+* Making webfont customizable. To get previous font back, use: `https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic`.
+* Fix juice issue.
+* Non-admins should not be able to access rejected posts.
+* Bulgarian translation (thanks @durrrr91!)
 
 ## v0.14.1 “TaglineScope”
 
