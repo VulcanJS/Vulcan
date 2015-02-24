@@ -3,5 +3,8 @@
   "thumbnailUrl": "Thumbnail",
   "regenerate_thumbnail": "Regenerate Thumbnail",
   "clear_thumbnail": "Clear Thumbnail",
-  "please_fill_in_embedly_key": "Please fill in your Embedly API key to enable thumbnails."
+  "please_fill_in_embedly_key": "Please fill in your Embedly API key to enable thumbnails.",
+  "embedlyKey": "Embedly API Key",
+  "thumbnailWidth": "Thumbnail Width",
+  "thumbnailHeight": "Thumbnail Height"
 }
