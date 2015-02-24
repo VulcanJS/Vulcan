@@ -20,6 +20,9 @@ Template[getTemplate('layout')].helpers({
   css: function () {
     return getTemplate('css');
   },
+  extraCode: function() {
+    return getSetting('extraCode');
+  },
   heroModules: function () {
     return heroModules;
   },
