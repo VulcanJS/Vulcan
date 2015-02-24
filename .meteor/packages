@@ -49,6 +49,7 @@ tap:i18n
 useraccounts:unstyled@1.4.0
 tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
+aslagle:reactive-table
 
 # Testing
 
