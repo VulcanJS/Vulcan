@@ -11,7 +11,7 @@ Package.onUse(function (api) {
     'telescope-base',
     'telescope-email',
     'iron:router',
-    'kestanous:herald@1.2.0',
+    'kestanous:herald@1.3.0',
     'kestanous:herald-email',
     'tap:i18n'
   ], ['client', 'server']);
