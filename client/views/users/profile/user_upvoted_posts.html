@@ -1,0 +1,26 @@
+<template name="userUpvotedPosts">
+  <div class="user-profile-votes grid grid-module">
+    <h3>{{_ "upvoted_posts"}}</h3>
+    <table>
+    <thead>
+      <tr>
+        <td>Post</td>
+        <td>Upvoted At</td>
+      </tr>
+    </thead>
+    {{#each posts}}
+      <tr>
+        <td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
+        <td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+      </tr>
+    {{/each}}
+    {{#if hasMorePosts}}
+      <tr>
+        <td colspan="2">
+          <a class="upvotedposts-more more-button grid-module" href="#"><span>{{_ "load_more"}}</span></a>
+        </td>
+      </tr>
+    {{/if}}
+    </table>
+  </div>
+</template>

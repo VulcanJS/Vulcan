@@ -71,22 +71,26 @@ form, .accounts-dialog{
       float: right;
     }
   }
-  input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea, .login-form input, input.form-control{
+  input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea, .login-form input{
     display:block;
     padding:5px 6px;
     width:100%;
     font-size:14px;
     @include border-box;
-    border:1px solid $grey;
-    @include single-transition(border-color, 500ms);  
-    // @include box-shadow(inset 0px 0px 0px 1px black(0.2));
+    border: 1px solid $grey;
+    transition: $border-color, 500ms;
+    // box-shadow: inset 0px 0px 0px 1px black(0.2);
     &:focus{
       outline: none;
       border-color:$red;
-      @include box-shadow(0px 0px 5px 0px rgba($red,0.3));
+      box-shadow: 0px 0px 5px 0px rgba($red,0.3);
     }
     &[type="number"]{
       width: 30%;
+    }
+    &:disabled{
+      background: #eee;
+      color: $light-text;
     }
   }
   input[type="text"], input[type="password"], input[type="number"], .login-form input{
@@ -98,7 +102,7 @@ form, .accounts-dialog{
     background:$lightest-grey;
   }
   textarea{
-    min-height:100px;
+    min-height:50px;
     line-height:1.4;
   }
   .note{
@@ -110,8 +114,6 @@ form, .accounts-dialog{
 input[type="submit"], button, .button, .btn{
   -webkit-appearance: none;
   border-radius: 3px;
-  background:$red;
-  color:white;
   text-align:center;
   display:block;
   max-width: 300px;
@@ -121,18 +123,40 @@ input[type="submit"], button, .button, .btn{
   font-size:15px;
   cursor:pointer;
   margin:0;
+  color: white;
+  font-weight: normal;
   // line-height:26px;
   // height:26px;
   font-weight:normal;
-  &.disabled{
-    background:$lighter-grey;
+  &.disabled, &.loading{
+    background:$lighter-grey !important;
     pointer-events:none;
-  }
-  &:link, &:hover, &:active, &:visited{
-    color:white;
+    color: $medium-text;
   }
   &.inline{
     display: inline-block;
+  }
+  &.loading {
+    position: relative;
+    color: $lighter-grey !important;
+    &:after{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -10px 0 0 -10px;
+      content: " ";
+      display: block;
+      background:  url('/img/loading.svg');
+      height: 20px;
+      width: 20px;
+      background-size: 20px 20px;
+    }
+  }
+}
+.btn-primary, .submit{
+  background:$red;
+  &:link, &:hover, &:active, &:visited{
+    color:white;
   }
 }
 input[type="search"]{
@@ -157,7 +181,7 @@ input[type="search"]{
   width: 200px!important;
   padding:10px;
   font-size:14px;
-  @include box-shadow(0 1px 1px black(0.15));
+  box-shadow: 0 1px 1px black(0.15);
 }
 
 .help-block{
@@ -168,12 +192,13 @@ input[type="search"]{
   border: 1px solid #B5B0B0;
 }
 .comment-field{
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
 }
 .fieldset-heading{
   padding-bottom: 5px;
   margin-bottom: 15px;
   border-bottom: 1px solid #B5B0B0;
+  color: $light-text;
 }
 fieldset{
   margin-bottom: 30px;
@@ -183,4 +208,15 @@ fieldset{
   display: block;
   font-size: 80%;
   color: $light-text;
+}
+.private-field{
+  color: $red;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.finish-signup-message{
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 16px;
 }

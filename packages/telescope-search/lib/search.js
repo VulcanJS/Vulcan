@@ -1,5 +1,15 @@
 // push "search" template to primaryNav
-primaryNav.push('search');
+primaryNav.push({
+  template: 'search',
+  order: 100
+});
+
+adminMenu.push({
+  route: 'searchLogs',
+  label: 'search_logs',
+  description: 'see_what_people_are_searching_for'
+});
+
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({
@@ -26,12 +36,8 @@ Meteor.startup(function() {
 // search post list parameters
 viewParameters.search = function (terms, baseParameters) {
   // if query is empty, just return parameters that will result in an empty collection
-  if(typeof terms.query == 'undefined' || !terms.query)
+  if(typeof terms.query === 'undefined' || !terms.query)
     return {find:{_id: 0}}
-
-  // log current search in the db
-  if(Meteor.isServer)
-    logSearch(terms.query);
 
   var parameters = deepExtend(true, baseParameters, {
     find: {

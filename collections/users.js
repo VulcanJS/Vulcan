@@ -1,6 +1,5 @@
 var Schema = {};
-
-Schema.User = new SimpleSchema({
+var userSchemaObject = { 
   _id: {
     type: String,
     optional: true
@@ -42,13 +41,18 @@ Schema.User = new SimpleSchema({
     optional: true,
     blackbox: true
   }
+};
+
+
+_.each(addToUserSchema, function(item){
+  userSchemaObject[item.propertyName] = item.propertySchema;
 });
+Schema.User = new SimpleSchema(userSchemaObject);
 
 // Meteor.users.attachSchema(Schema.User);
 
 Meteor.users.deny({
   update: function(userId, post, fieldNames) {
-    console.log(fieldNames)
     if(isAdminById(userId))
       return false;
     // deny the update if it contains something other than the profile field

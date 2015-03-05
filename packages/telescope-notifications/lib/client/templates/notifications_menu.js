@@ -8,14 +8,14 @@ Template[getTemplate('notificationsMenu')].helpers({
   hasNotifications: function () {
     return !!Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).count();    
   },
-  notification_count: function(){
+  notificationCount: function(){
     var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}).fetch();
     if(notifications.length==0){
-      return i18n.t('No notifications');
+      return __('no_notifications');
     }else if(notifications.length==1){
-      return i18n.t('1 notification');
+      return __('1_notification');
     }else{
-      return notifications.length+' '+i18n.t('notifications');
+      return notifications.length+' '+__('notifications');
     }
   },
   notification_class: function(){
@@ -31,7 +31,7 @@ Template[getTemplate('notificationsMenu')].events({
     $('body').toggleClass('notifications-open');
   },
   'click .mark-as-read': function(){
-    Meteor.call('markAllNotificationsAsRead', 
+    Meteor.call('heraldMarkAllAsRead', 
       function(error, result){
         error && console.log(error);
       }

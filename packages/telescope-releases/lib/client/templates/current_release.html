@@ -1,0 +1,11 @@
+<template name="currentRelease">
+  {{#with currentRelease}}
+    <div class="current-release grid-module grid banner">
+      <h4 class="banner-heading">{{_ "telescope_has_been_updated"}}</h4>
+      <div class="markdown">
+        {{#markdown}}{{notes}}{{/markdown}}
+      </div>
+      <a href="#" class="release-dismiss banner-dismiss">×</a>
+    </div>
+  {{/with}}
+</template>

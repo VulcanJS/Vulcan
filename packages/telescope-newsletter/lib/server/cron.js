@@ -1,77 +1,62 @@
-Later = Npm.require('later');
+SyncedCron.options = {
+  log: false,
+  collectionName: 'cronHistory',
+  utc: false,
+  collectionTTL: 172800
+}
 
 defaultFrequency = 7; // once a week
+defaultTime = '00:00';
 
-getSchedule = function (parser) {
+var getSchedule = function (parser) {
   var frequency = getSetting('newsletterFrequency', defaultFrequency);
-  console.log(frequency)
+  var recur = parser.recur();
+  var schedule;
   switch (frequency) {
     case 1: // every day
-    // sched = {schedules: [{dw: [1,2,3,4,5,6,0]}]};
-    return parser.recur().on(1,2,3,4,5,6,0).dayOfWeek();
+      // sched = {schedules: [{dw: [1,2,3,4,5,6,0]}]};
+      schedule = recur.on(1,2,3,4,5,6,0).dayOfWeek();
 
     case 2: // Mondays, Wednesdays, Fridays
-    // sched = {schedules: [{dw: [2,4,6]}]};
-    return parser.recur().on(2,4,6).dayOfWeek();
+      // sched = {schedules: [{dw: [2,4,6]}]};
+      schedule = recur.on(2,4,6).dayOfWeek();
 
     case 3: // Mondays, Thursdays
-    // sched = {schedules: [{dw: [2,5]}]};
-    return parser.recur().on(2,5).dayOfWeek();
+      // sched = {schedules: [{dw: [2,5]}]};
+      schedule = recur.on(2,5).dayOfWeek();
 
     case 7: // Once a week (Mondays)
-    // sched = {schedules: [{dw: [2]}]};
-    return parser.recur().on(2).dayOfWeek();
+      // sched = {schedules: [{dw: [2]}]};
+      schedule = recur.on(2).dayOfWeek();
 
-    default: // Don't send
-    return null;
-  }  
-}
-
-SyncedCron.getNext = function (jobName) {
-  var scheduledAt;
-  try {
-    this._entries.some(function(entry) {
-      if(entry.name === jobName){
-        var schedule = entry.schedule(Later.parse);
-        scheduledAt = Later.schedule(schedule).next(1);
-        return true;
-      }
-    });
-  } 
-  catch (error) {
-    console.log(error)
-    scheduledAt = 'No job scheduled';
+    default: // Once a week (Mondays)
+      schedule = recur.on(2).dayOfWeek();
   }
-  return scheduledAt;
+  return schedule.on(getSetting('newsletterTime', defaultTime)).time();
 }
-
-getNextCampaignSchedule = function () {
-  return SyncedCron.getNext('Schedule newsletter');
-}
-
-SyncedCron.add({
-  name: 'Schedule newsletter',
-  schedule: function(parser) {
-    // parser is a later.parse object
-    // var sched;
-    return getSchedule(parser)
-    
-  }, 
-  job: function() {
-    scheduleNextCampaign();
-  }
-});
-
-Meteor.startup(function() {
-  if(getSetting('newsletterFrequency', defaultFrequency) != 0) {
-    SyncedCron.start();
-  };
-});
 
 Meteor.methods({
-  getNextJob: function (jobName) {
-    var nextJob = getNextCampaignSchedule();
+  getNextJob: function () {
+    var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
     console.log(nextJob);
     return nextJob;
+  }
+});
+
+var addJob = function () {
+  SyncedCron.add({
+    name: 'scheduleNewsletter',
+    schedule: function(parser) {
+      // parser is a later.parse object
+      return getSchedule(parser);
+    },
+    job: function() {
+      scheduleNextCampaign();
+    }
+  });
+}
+Meteor.startup(function () {
+  if (getSetting('enableNewsletter', false)) {
+    addJob();
   }
 });

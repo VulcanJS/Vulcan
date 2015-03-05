@@ -1,34 +1,42 @@
-preloadSubscriptions.push('categories');
-
-adminNav.push({
-  route: 'categories',
-  label: 'Categories'
-});
-
 Meteor.startup(function () {
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['categories']});
 
   PostsCategoryController = PostsListController.extend({
-    view: 'category'
-  });
+    
+    view: 'category',
 
-  Router.map(function() {
+    getCurrentCategory: function () {
+      return Categories.findOne({slug: this.params.slug});
+    },
 
-    // Categories
+    getTitle: function () {
+      var category = this.getCurrentCategory();
+      return category.name + ' - ' + getSetting('title', 'Telescope');
+    },
 
-    this.route('posts_category', {
-      path: '/category/:slug/:limit?',
-      controller: PostsCategoryController,
-      onAfterAction: function() {
-        Session.set('categorySlug', this.params.slug);
-      }
-    });
-
-    // Categories Admin
-
-    this.route('categories');
+    getDescription: function () {
+      return this.getCurrentCategory().description;    
+    }
 
   });
+
+  // Categories
+
+  Router.route('/category/:slug/:limit?', {
+    name: 'posts_category',
+    controller: PostsCategoryController,
+    onAfterAction: function() {
+      this.slug = this.params.slug;
+      Session.set('categorySlug', this.params.slug);
+    }
+  });
+
+  // Categories Admin
+
+  Router.route('/categories', {
+    name: 'categories'
+  });
+
 
 });

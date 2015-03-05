@@ -1,0 +1,7 @@
+<template name="search">
+  {{#if canSearch}}
+    <div class="search {{searchQueryEmpty}} header-submodule">
+      <input id="search" type="search" class="search-field" placeholder="{{_ 'search'}}" value="{{searchQuery}}">
+    </div>
+  {{/if}}
+</template>

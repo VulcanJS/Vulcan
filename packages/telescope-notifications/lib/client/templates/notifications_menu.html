@@ -1,16 +1,16 @@
 <template name="notificationsMenu">
   {{#if isLoggedIn}}
     <div class="dropdown notifications-menu header-submodule">
-      <a class="view  dropdown-top-level" href="/">{{notification_count}}</a>
+      <a class="view dropdown-top-level" href="/">{{notificationCount}}</a>
       <div class="dropdown-menu">
         <ul role="menu" aria-labelledby="dLabel">
           {{#if hasNotifications}}
-            <li><a href="#" class="button mark-as-read">{{i18n "Mark as read"}}</a></li>  
+            <li><a href="#" class="button mark-as-read btn btn-primary">{{_ "mark_as_read"}}</a></li>  
             {{#each notifications}}
               {{> UI.dynamic template=notificationItem}}
             {{/each}}
           {{else}}
-            <li>No notifications</li>
+            <li>{{_ "no_notifications"}}</li>
           {{/if}}
         </ul>
       </div>

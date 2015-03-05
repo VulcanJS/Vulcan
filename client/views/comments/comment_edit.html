@@ -3,12 +3,12 @@
     {{#with comment}}
     <form class="grid-block form-horizontal">
       <div class="control-group">
-        <label class="control-label">{{i18n "Comment"}}</label>
+        <label class="control-label">{{_ "comment_"}}</label>
         <div class="controls comment-field" id="editor"><textarea id="body" value="" class="input-xlarge">{{body}}</textarea></div>
       </div>
       <div class="form-actions">
-        <a class="delete-link" href="/comments/deleted">{{i18n "Delete Comment"}}</a>
-        <input type="submit" class="button" value="{{i18n "Submit"}}" title="(⌘+enter)" />
+        <a class="delete-link" href="/comments/deleted">{{_ "delete_comment"}}</a>
+        <input type="submit" class="button" value="{{_ "submit"}}" title="(⌘+enter)" />
       </div>
     </form>
     {{/with}}

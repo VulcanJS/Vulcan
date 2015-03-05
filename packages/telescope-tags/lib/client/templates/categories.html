@@ -1,0 +1,9 @@
+<template name="categories">
+  <div class="grid-small grid-module dialog admin add-category">
+    <h3>Add new category:</h3>
+    {{> quickForm collection="Categories" id="insertCategoryForm" type="insert" label-class="control-label" input-col-class="controls" template="telescope"}}
+  </div>
+  {{#each categories}}
+    {{> UI.dynamic template=categoryItem}}
+  {{/each}}
+</template>

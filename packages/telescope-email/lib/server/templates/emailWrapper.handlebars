@@ -57,7 +57,7 @@
           color: white;
           font-family: Helvetica, sans-serif;
           font-weight: bold;
-          font-size: 20px;          
+          font-size: 20px;
         }
         .main-container{
           line-height: 1.7;
@@ -106,11 +106,13 @@
       <table border="0" width="600" cellpadding="0" cellspacing="0" class="container" bgcolor="#ffffff">
         <tr>
           <td class="heading-container">
-            {{#if logoUrl}}
-              <img class="logo" src="{{logoUrl}}" height="{{logoHeight}}" width="{{logoWidth}}" alt="{{siteName}}"/>
-            {{else}}
-              {{siteName}}
-            {{/if}}
+            <a href="{{siteUrl}}">
+              {{#if logoUrl}}
+                <img class="logo" src="{{logoUrl}}" height="{{logoHeight}}" width="{{logoWidth}}" alt="{{siteName}}"/>
+              {{else}}
+                {{siteName}}
+              {{/if}}
+            </a>
           </td>
         </tr>
         <tr>

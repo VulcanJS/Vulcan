@@ -1,0 +1,9 @@
+<template name="settingsForm">
+  <div class="grid-small grid-module dialog settings">
+    {{#if this.hasSettings}}
+      {{> quickForm collection="Settings" id="updateSettingsForm" type="update" doc=this.settings label-class="control-label" input-col-class="controls" template="telescope"}}
+    {{else}}
+      {{> quickForm collection="Settings" id="insertSettingsForm" type="insert" template="telescope" label-class="control-label" input-col-class="controls"}}
+    {{/if}}
+  </div>
+</template>

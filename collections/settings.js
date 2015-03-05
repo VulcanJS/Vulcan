@@ -1,7 +1,6 @@
 settingsSchemaObject = {
   title: {
     type: String,
-    label: "Title",
     optional: true,
     autoform: {
       group: 'general'
@@ -10,7 +9,6 @@ settingsSchemaObject = {
   siteUrl: {
     type: String,
     optional: true,
-    label: 'Site URL',
     autoform: {
       group: 'general',
       instructions: 'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
@@ -18,26 +16,34 @@ settingsSchemaObject = {
   },
   tagline: {
     type: String,
-    label: "Tagline",
     optional: true,
     autoform: {
       group: 'general'
     }
   },
-  requireViewInvite: {
-    type: Boolean,
-    label: "Require invite to view",
+  description: {
+    type: String,
     optional: true,
     autoform: {
-      group: 'invites'
+      group: 'general',
+      rows: 5,
+      instructions: 'A short description used for SEO purposes.'
+    }
+  },
+  requireViewInvite: {
+    type: Boolean,
+    optional: true,
+    autoform: {
+      group: 'invites',
+      leftLabel: 'Require View Invite'
     }
   },
   requirePostInvite: {
     type: Boolean,
-    label: "Require invite to post",
     optional: true,
     autoform: {
-      group: 'invites'
+      group: 'invites',
+      leftLabel: 'Require Post Invite'
     }
   },
   requirePostsApproval: {
@@ -45,40 +51,36 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'general',
-      instructions: "Posts must be approved by admin"
+      instructions: "Posts must be approved by admin",
+      leftLabel: "Require Posts Approval"
     }
   },
-  // nestedComments: {
-  //   type: Boolean,
-  //   label: "Enable nested comments",
-  //   optional: true,
-  //   autoform: {
-  //     group: 'comments'
-  //   }
-  // },
-  // redistributeKarma: {
-  //   type: Boolean,
-  //   label: "Enable redistributed karma",
-  //   optional: true,
-  //   autoform: {
-  //     group: 'general'
-  //   }
-  // },
   defaultEmail: {
     type: String,
     optional: true,
     autoform: {
       group: 'email',
-      instructions: 'The address all outgoing emails will be sent from.'
+      instructions: 'The address all outgoing emails will be sent from.',
+      private: true
     }
   },
+  mailUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'email',
+      instructions: 'MAIL_URL environment variable (requires restart).',
+      private: true
+    }
+  },  
   scoreUpdateInterval: {
     type: Number,
     optional: true,
     defaultValue: 30,
     autoform: {
       group: 'scoring',
-      instructions: 'How often to recalculate scores, in seconds (default to 30)'
+      instructions: 'How often to recalculate scores, in seconds (default to 30)',
+      private: true
     }
   },
   defaultView: {
@@ -87,12 +89,24 @@ settingsSchemaObject = {
     autoform: {
       group: 'posts',
       instructions: 'The view used for the front page',
-      options: _.map(viewNav, function (view) {
+      options: _.map(viewsMenu, function (view) {
         return {
           value: camelCaseify(view.label),
           label: view.label
         };
       })
+    }
+  },
+  postsLayout: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'posts',
+      instructions: 'The layout used for post lists',
+      options: [
+        {value: 'posts-list', label: 'List'},
+        {value: 'posts-grid', label: 'Grid'}
+      ]
     }
   },
   postInterval: {
@@ -159,19 +173,34 @@ settingsSchemaObject = {
       group: 'logo'
     }
   },
+  faviconUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'logo'
+    }
+  },
   language: {
     type: String,
     defaultValue: 'en',
     optional: true,
     autoform: {
       group: 'general',
-      instructions: 'The two-letter code for the app\'s language. Defaults to "en".'
+      instructions: 'The app\'s language. Defaults to English.',
+      options: function () {
+        var languages = _.map(TAPi18n.getLanguages(), function (item, key) {
+          return {
+            value: key,
+            label: item.name
+          }
+        });
+        return languages
+      }
     }
   },
   backgroundCSS: {
     type: String,
     optional: true,
-    label: "Background CSS",
     autoform: {
       group: 'extras',
       instructions: 'CSS code for the <body>\'s "background" property',
@@ -186,21 +215,40 @@ settingsSchemaObject = {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
     }
   },
   buttonTextColor: {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
     }
   },
   headerColor: {
     type: String,
     optional: true,
     autoform: {
-      group: 'colors'
+      group: 'colors',
+      // type: 'color'
+    }
+  },
+  fontUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'fonts',
+      instructions: '@import URL (e.g. https://fonts.googleapis.com/css?family=Source+Sans+Pro)'
+    }
+  },
+  fontFamily: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'fonts',
+      instructions: 'font-family (e.g. "Source Sans Pro", sans-serif)'
     }
   },
   headerTextColor: {
@@ -243,7 +291,7 @@ settingsSchemaObject = {
     optional: true,
     autoform: {
       group: 'extras',
-      instructions: 'Footer content (accepts HTML).',
+      instructions: 'Footer content (accepts Markdown).',
       rows: 5
     }
   },
@@ -262,7 +310,8 @@ settingsSchemaObject = {
     autoform: {
       group: 'email',
       instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).',
-      rows: 5
+      rows: 5,
+      private: true
     }
   },
   notes: {
@@ -271,9 +320,42 @@ settingsSchemaObject = {
     autoform: {
       group: 'extras',
       instructions: 'You can store any notes or extra information here.',
-      rows: 5
+      rows: 5,
+      private: true
     }
   },
+  debug: {
+    type: Boolean,
+    optional: true,
+    autoform: {
+      group: 'debug',
+      instructions: 'Enable debug mode for more details console logs'
+    }
+  },
+  authMethods: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'auth',
+      editable: true,
+      noselect: true,
+      options: [
+        {
+          value: 'email',
+          label: 'Email/Password'
+        },
+        {
+          value: 'twitter',
+          label: 'Twitter'
+        },
+        {
+          value: 'facebook',
+          label: 'Facebook'
+        }
+      ],
+      instructions: 'Authentication methods (default to email only)'
+    }    
+  }
 };
 
 // add any extra properties to settingsSchemaObject (provided by packages for example)
@@ -301,11 +383,17 @@ if (Meteor.isClient){
   var handle = query.observeChanges({
     added: function (id, fields) {
       if (fields.language)
-        T9n.setLanguage(fields.language);
+        setLanguage(fields.language)
     },
     changed: function (id, fields) {
       if (fields.language)
-        T9n.setLanguage(fields.language);
+        setLanguage(fields.language)
     }
   });
 }
+
+Meteor.startup(function () {
+  // override Meteor.absoluteUrl() with URL provided in settings
+  Meteor.absoluteUrl.defaultOptions.rootUrl = getSetting('siteUrl', Meteor.absoluteUrl());
+  debug = getSetting('debug', false);
+});

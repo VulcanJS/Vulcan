@@ -1,0 +1,26 @@
+.avatar-xsmall {
+  .avatar-initials{
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+.avatar-small {
+  height: 24px;
+  width: 24px;
+  .avatar-initials{
+    font-size: 13px;
+    line-height: 24px;
+  }
+}
+.avatar-medium {
+  height: 30px;
+  width: 30px;
+  .avatar-initials{
+    font-size: 14px;
+    line-height: 30px;
+  }
+}
+
+.avatar-initials{
+  font-weight: normal;
+}

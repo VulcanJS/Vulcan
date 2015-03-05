@@ -1,0 +1,15 @@
+<template name="postSubscribe">
+  {{#if canSubscribe}}
+    <div class="post-subscribe module grid-block">
+      {{#if subscribed}}
+        <a class="unsubscribe-link" href="#">
+          <span>{{_ 'unsubscribe_from_thread'}}</span>
+        </a>
+      {{else}}
+        <a class="subscribe-link" href="#">
+          <span>{{_ 'subscribe_to_thread'}}</span>
+        </a>
+      {{/if}}
+    </div>
+  {{/if}}
+</template>

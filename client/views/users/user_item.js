@@ -52,7 +52,7 @@ Template[getTemplate('user_item')].events({
   },
   'click .delete-link': function(e, instance){
     e.preventDefault();
-    if(confirm(i18n.t("Are you sure you want to delete ")+getDisplayName(instance.data)+"?"))
+    if(confirm(i18n.t("are_you_sure_you_want_to_delete")+getDisplayName(instance.data)+"?"))
       Meteor.users.remove(instance.data._id);
   }
 });

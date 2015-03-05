@@ -1,12 +1,12 @@
 Template[getTemplate('nav')].helpers({
   primaryNav: function () {
-    return primaryNav;
+    return _.sortBy(primaryNav, 'order');
   },
   hasPrimaryNav: function () {
     return !!primaryNav.length;
   },
   secondaryNav: function () {
-    return secondaryNav;
+    return _.sortBy(secondaryNav, 'order');
   },
   hasSecondaryNav: function () {
     return !!secondaryNav.length;
@@ -15,58 +15,24 @@ Template[getTemplate('nav')].helpers({
     return getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
   },
   getTemplate: function () {
-    return getTemplate(this);
-  },
-  userMenu: function () {
-    return getTemplate('userMenu');
+    return getTemplate(this.template);
   },
   site_title: function(){
-    return getSetting('title');
+    return getSetting('title', "Telescope");
   },
   logo_url: function(){
     return getSetting('logoUrl');
   },
-  logo_top: function(){
-    return Math.floor((70-getSetting('logoHeight'))/2);
-  },  
-  logo_offset: function(){
-    return -Math.floor(getSetting('logoWidth')/2);
-  },
-  intercom: function(){
-    return !!getSetting('intercomId');
-  },
-  canPost: function(){
-    return canPost(Meteor.user());
-  },
-  requirePostsApproval: function(){
-    return getSetting('requirePostsApproval');
+  headerClass: function () {
+    var color = getSetting('headerColor');
+    return (color == 'white' || color == '#fff' || color == '#ffffff') ? "white-background" : '';
   }
 });
 
-Template[getTemplate('nav')].rendered = function(){
-  if(!Meteor.loggingIn() && !Meteor.user()){
-    $('.login-link-text').text("Sign Up/Sign In");
-  }
-};
-
 Template[getTemplate('nav')].events({
-  'click #logout': function(e){
-    e.preventDefault();
-    Meteor.logout();
-  },
   'click .mobile-menu-button': function(e){
     e.preventDefault();
+    e.stopPropagation(); // Make sure we don't immediately close the mobile nav again. See layout.js event handler.
     $('body').toggleClass('mobile-nav-open');
-  },
-  'click .login-header': function(e){
-    e.preventDefault();
-    Router.go('/account');
-  },
-  'click #login-name-link': function(){
-    if(Meteor.user() && !$('account-link').exists()){
-      var $loginButtonsLogout = $('#login-buttons-logout');
-      $loginButtonsLogout.before('<a href="/users/'+Meteor.user().slug+'" class="account-link button">View Profile</a>');
-      $loginButtonsLogout.before('<a href="/account" class="account-link button">Edit Account</a>');
-    }
   }
 });

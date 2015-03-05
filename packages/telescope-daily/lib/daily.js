@@ -1,18 +1,7 @@
-viewNav.push({
-  route: 'postsDaily',
-  label: 'Daily'
-});
+daysPerPage = 5;
 
-viewParameters.daily = function (terms) {
-  return {
-    find: {
-      postedAt: {
-        $gte: terms.after
-      }
-    },
-    options: {
-      sort: {createdAt: -1, sticky: -1, baseScore: -1},
-      limit: 0
-    }
-  };
-}
+viewsMenu.push({
+  route: 'postsDaily',
+  label: 'daily',
+  description: 'day_by_day_view'
+});

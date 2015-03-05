@@ -1,4 +1,7 @@
 Template[getTemplate('postContent')].helpers({
+  postThumbnail: function () {
+    return postThumbnail;
+  },
   postHeading: function () {
     return postHeading;
   },
@@ -29,16 +32,5 @@ Template[getTemplate('postContent')].helpers({
   },
   commentsDisplayText: function(){
     return this.comments == 1 ? i18n.t('comment') : i18n.t('comments');
-  }
-});
-
-Template[getTemplate('postContent')].events({
-  'click .approve-link': function(e, instance){
-    Meteor.call('approvePost', this);
-    e.preventDefault();
-  },  
-  'click .unapprove-link': function(e, instance){
-    Meteor.call('unapprovePost', this);
-    e.preventDefault();
   }
 });

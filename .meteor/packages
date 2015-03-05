@@ -13,60 +13,77 @@ accounts-twitter
 spiderable
 email
 accounts-facebook
+service-configuration
+accounts-ui
+reactive-var
+http
 
 # Atmosphere Packages
 
-iron:router@0.9.1
+iron:router
 
-meteorhacks:fast-render@1.0.0
-meteorhacks:subs-manager@1.1.0
+meteorhacks:fast-render
+meteorhacks:subs-manager
 meteorhacks:npm
 
 aldeed:autoform
 aldeed:collection2
 aldeed:simple-schema
 
-mrt:jquery-hotkeys@0.0.1
-mrt:cookies@0.3.0
-mrt:moment
-mrt:mailchimp
+mrt:jquery-hotkeys
+mrt:cookies
 
-cmather:handlebars-server@0.2.0
-sacha:spin@2.0.4
+ccan:cssreset # CSS reset (Must come before any other css)
+cmather:handlebars-server
+sacha:spin
 sacha:juice
-chuangbo:marked@0.3.3
-percolatestudio:synced-cron@0.1.1
+chuangbo:marked
+percolatestudio:synced-cron
 npm-container
 matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
 bengott:avatar
 jparker:gravatar
+tap:i18n
+useraccounts:unstyled@1.4.0
+tsega:bootstrap3-datetimepicker@3.1.3_1
+momentjs:moment
 
-# Telescope Packages
+# Testing
 
-telescope-tags
+# sanjo:jasmine
+# velocity:html-reporter
+
+# Telescope Packages (Required)
+
 telescope-base
-telescope-search
 telescope-lib
-telescope-rss
-telescope-api
-telescope-module-share
-telescope-theme-base
-telescope-theme-hubble
-telescope-daily
-telescope-newsletter
-telescope-module-embedly
 telescope-i18n
-telescope-email
-telescope-update-prompt
-telescope-notifications
-telescope-kadira
-telescope-update-prompt
-telescope-notifications
-telescope-kadira
 
-# Accounts Templates
-service-configuration
-accounts-ui
-splendido:accounts-templates-unstyled
+# Telescope Packages (Optional)
+
+telescope-datetimepicker
+telescope-theme-base
+telescope-module-share
+telescope-api
+telescope-rss
+telescope-search
+telescope-tags
+telescope-theme-hubble
+telescope-email
+telescope-embedly
+telescope-newsletter
+telescope-daily
+telescope-update-prompt
+telescope-kadira
+telescope-notifications
+telescope-singleday
+telescope-invites
+telescope-post-by-feed
+telescope-releases
+telescope-getting-started
+telescope-subscribe-to-posts
+telescope-tagline-banner
+
+# Custom Packages

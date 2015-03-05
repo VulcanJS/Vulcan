@@ -18,11 +18,11 @@ campaignSchema = new SimpleSchema({
   posts: {
     type: [String],
     optional: true
-  }, 
+  },
   webHits: {
     type: Number,
     optional: true
-  }, 
+  },
 });
 
 Campaigns = new Meteor.Collection("campaigns", {
@@ -34,14 +34,28 @@ addToPostSchema.push(
     propertyName: 'scheduledAt',
     propertySchema: {
       type: Date,
-      optional: true
+      optional: true,
+      autoform: {
+        omit: true
+      }
     }
   }
 );
 
 // Settings
 
-// note for next two fields: need to add a way to tell app not to publish field to client except for admins
+var enableNewsletter = {
+  propertyName: 'enableNewsletter',
+  propertySchema: {
+    type: Boolean,
+    optional: true,
+    autoform: {
+      group: 'newsletter',
+      instructions: 'Enable newsletter (requires restart).'
+    }
+  }
+}
+addToSettingsSchema.push(enableNewsletter);
 
 var showBanner = {
   propertyName: 'showBanner',
@@ -63,7 +77,8 @@ var mailChimpAPIKey = {
     type: String,
     optional: true,
     autoform: {
-      group: 'newsletter'
+      group: 'newsletter',
+      private: true
     }
   }
 }
@@ -76,7 +91,8 @@ var mailChimpListId = {
     optional: true,
     autoform: {
       group: 'newsletter',
-      instructions: 'The ID of the list you want to send to.'
+      instructions: 'The ID of the list you want to send to.',
+      private: true
     }
   }
 }
@@ -101,7 +117,7 @@ var newsletterFrequency = {
     optional: true,
     autoform: {
       group: 'newsletter',
-      instructions: 'Changes require restarting your app to take effect.',
+      instructions: 'Defaults to once a week. Changes require restarting your app to take effect.',
       options: [
         {
           value: 1,
@@ -118,10 +134,6 @@ var newsletterFrequency = {
         {
           value: 7,
           label: 'Once a week (Mondays)'
-        },
-        {
-          value: 0,
-          label: "Don't send newsletter"
         }
       ]
     }
@@ -129,15 +141,43 @@ var newsletterFrequency = {
 }
 addToSettingsSchema.push(newsletterFrequency);
 
+var newsletterTime = {
+  propertyName: 'newsletterTime',
+  propertySchema: {
+    type: String,
+    optional: true,
+    defaultValue: '00:00',
+    autoform: {
+      group: 'newsletter',
+      instructions: 'Defaults to 00:00/12:00 AM. Time to send out newsletter if enabled.',
+      type: 'time'
+    }
+  }
+}
+addToSettingsSchema.push(newsletterTime);
+
+var autoSubscribe = {
+  propertyName: 'autoSubscribe',
+  propertySchema: {
+    type: Boolean,
+    optional: true,
+    autoform: {
+      group: 'newsletter',
+      instructions: 'Automatically subscribe new users on sign-up.'
+    }
+  }
+}
+addToSettingsSchema.push(autoSubscribe);
+
 // create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
 viewParameters.campaign = function (terms) {
   return {
     find: {
       scheduledAt: {$exists: false},
       postedAt: {
-        $gte: terms.after 
+        $gte: terms.after
       }
-    }, 
+    },
     options: {sort: {sticky: -1, score: -1}}
   };
 }
@@ -145,3 +185,14 @@ viewParameters.campaign = function (terms) {
 heroModules.push({
   template: 'newsletterBanner'
 });
+
+ function subscribeUserOnCreation (user) {
+  if (!!getSetting('autoSubscribe') && !!getEmail(user)) {
+    addToMailChimpList(user, false, function (error, result) {
+      console.log(error)
+      console.log(result)
+    });
+  }
+  return user;
+}
+userCreatedCallbacks.push(subscribeUserOnCreation);
