@@ -280,6 +280,10 @@ upvoteCallbacks = [];
 downvoteCallbacks = [];
 cancelUpvoteCallbacks = [];
 cancelDownvoteCallbacks = [];
+upvoteMethodCallbacks = [];
+downvoteMethodCallbacks = [];
+cancelUpvoteMethodCallbacks = [];
+cancelDownvoteMethodCallbacks = [];
 
 // ------------------------------------- User Profiles -------------------------------- //
 

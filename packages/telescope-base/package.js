@@ -64,6 +64,10 @@ Package.onUse(function (api) {
     'downvoteCallbacks',
     'cancelUpvoteCallbacks',
     'cancelDownvoteCallbacks',
+    'upvoteMethodCallbacks',
+    'downvoteMethodCallbacks',
+    'cancelUpvoteMethodCallbacks',
+    'cancelDownvoteMethodCallbacks',
     
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
