@@ -343,3 +343,8 @@ themeSettings = {
 
 // array containing subscriptions to be preloaded
 preloadSubscriptions = [];
+
+// ------------------------------- Vote Power -------------------------------- //
+
+// The equation to determine Vote Power
+votePowerEq = null;

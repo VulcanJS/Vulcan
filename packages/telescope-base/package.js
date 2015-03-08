@@ -79,6 +79,8 @@ Package.onUse(function (api) {
     'getTemplate',
     'templates',
 
-    'themeSettings'
+    'themeSettings',
+
+    'votePowerEq'
     ]);
 });
