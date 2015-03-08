@@ -278,6 +278,8 @@ userProfileCompleteChecks = [];
 
 upvoteCallbacks = [];
 downvoteCallbacks = [];
+cancelUpvoteCallbacks = [];
+cancelDownvoteCallbacks = [];
 
 // ------------------------------------- User Profiles -------------------------------- //
 
