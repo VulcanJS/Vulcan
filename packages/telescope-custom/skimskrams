@@ -1,0 +1,5 @@
+{{baseScore}}
+
+.post-module.post-share {
+   display: block;
+}

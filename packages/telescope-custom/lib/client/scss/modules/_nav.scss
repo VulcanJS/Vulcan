@@ -1,0 +1,88 @@
+.header{
+	background-color:$highlight-color;
+	margin-bottom:$grid-margin;
+	position:relative;
+	height: 60px;
+	@include cf;
+	padding: 0 20px;
+	z-index: 100;
+	@include small{
+		padding: 0 10px;
+	}
+	.primary-nav{
+		float:left;
+		z-index: 20;
+		position: relative;
+	}
+	.logo{
+		@extend %vcenter;
+		position:absolute;
+		display:block;
+		text-align:center;
+		color:white;
+		@include small{
+			font-size: 18px;
+			a{
+				position: static;
+			}
+		}
+		@include medium-large{
+			font-size:24px;
+		}
+		left: 0px;
+		right: 0px;
+		a, a:visited{
+			color:white;
+		}
+	}
+	.logo-image{
+		line-height: 1;
+		a{
+			display:inline-block;
+			background: no-repeat center center;
+			font: 0/0 a;
+			text-shadow: none;
+			color: transparent;
+		}
+	}
+	.secondary-nav{
+		z-index: 20;
+		position: relative;
+		float:right;
+		.submit{
+			// background:$red;
+			// display:block;
+			// padding:0px 10px;
+		}
+	}
+}
+.sign-in{
+	margin-right: 10px;
+}
+.nav{
+	@include cf;
+	@extend %vcenter;
+	>li{
+		line-height: 2;
+		&:last-child{
+			margin-right: 0px;
+		}
+		>a, >div >a{
+			color:white;
+			font-size:15px;
+			font-weight:normal;
+		}
+	}
+}
+
+.has-dropdown .user-menu .dropdown-menu{
+  left: auto;
+  right: 10px;
+ }
+ .has-dropdown .notifications-menu .dropdown-menu{
+  left: auto;
+  right: 10px;
+ }
+ .newsletter-dismiss{
+ 	line-height: 30px !important;
+ }

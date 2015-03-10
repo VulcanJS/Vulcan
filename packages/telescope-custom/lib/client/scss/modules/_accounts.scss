@@ -1,0 +1,55 @@
+.at-oauth{
+  text-align: center;
+  .at-social-btn{
+    margin: 0 auto 15px auto;
+  }
+}
+
+.at-sep{
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px;
+  &:before, &:after{
+    display: block;
+    content: " ";
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    position: absolute;
+    top: 48%;
+  }
+  &:before{
+    left: -55%;
+  }
+  &:after{
+    right: -55%;
+  }
+}
+
+.at-input{
+  label{
+    margin-bottom: 5px;
+  }
+}
+
+#at-forgotPwd{
+  font-size: 13px;
+  float: right;
+  margin-top: -8px;
+}
+
+#at-btn{
+  margin: 0 auto;
+}
+.at-title{
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+.at-signup-link, .at-signin-link{
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding-top: 15px;
+  text-align: center;
+}

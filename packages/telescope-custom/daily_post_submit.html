@@ -1,0 +1,11 @@
+<template name="daily_post_submit">
+
+  <h2>Style Deal posten</h2>
+
+  <div class="grid grid-module">
+    {{#autoForm collection="Posts" id="submitPostForm" type="method" meteormethod="submitPost"}}
+      {{> daily_post_submit_form}}
+    {{/autoForm}}
+  </div>
+
+</template>

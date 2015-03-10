@@ -1,0 +1,1 @@
+templates["postsDaily"] = "postsDailydeutsch";
