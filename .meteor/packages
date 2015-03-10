@@ -26,7 +26,7 @@ meteorhacks:fast-render
 meteorhacks:subs-manager
 meteorhacks:npm
 
-aldeed:autoform
+aldeed:autoform@4.2.2
 aldeed:collection2
 aldeed:simple-schema
 
@@ -49,6 +49,7 @@ tap:i18n
 useraccounts:unstyled@1.4.0
 tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
+aslagle:reactive-table
 
 # Testing
 

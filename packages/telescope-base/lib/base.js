@@ -278,6 +278,12 @@ userProfileCompleteChecks = [];
 
 upvoteCallbacks = [];
 downvoteCallbacks = [];
+cancelUpvoteCallbacks = [];
+cancelDownvoteCallbacks = [];
+upvoteMethodCallbacks = [];
+downvoteMethodCallbacks = [];
+cancelUpvoteMethodCallbacks = [];
+cancelDownvoteMethodCallbacks = [];
 
 // ------------------------------------- User Profiles -------------------------------- //
 
@@ -337,3 +343,8 @@ themeSettings = {
 
 // array containing subscriptions to be preloaded
 preloadSubscriptions = [];
+
+// ------------------------------- Vote Power -------------------------------- //
+
+// The equation to determine Vote Power
+votePowerEq = null;
