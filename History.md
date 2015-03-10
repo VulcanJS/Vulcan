@@ -3,6 +3,9 @@
 * Implemented Reactive Table for users dashboard (thanks @jshimko!).
 * Upgraded Herald package (thanks @kestanous!).
 * Upgraded Avatar package (thanks @bengott!).
+* Added Greek translation (thanks @portokallidis!).
+* Improved Spanish translation (thanks @brayancruces!).
+* Added new callbacks for upvoting and downvoting (thanks @Baxter900 !).
 
 ## v0.14.2 “FaviconScope”
 
