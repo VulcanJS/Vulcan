@@ -62,6 +62,12 @@ Package.onUse(function (api) {
 
     'upvoteCallbacks',
     'downvoteCallbacks',
+    'cancelUpvoteCallbacks',
+    'cancelDownvoteCallbacks',
+    'upvoteMethodCallbacks',
+    'downvoteMethodCallbacks',
+    'cancelUpvoteMethodCallbacks',
+    'cancelDownvoteMethodCallbacks',
     
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
@@ -73,6 +79,8 @@ Package.onUse(function (api) {
     'getTemplate',
     'templates',
 
-    'themeSettings'
+    'themeSettings',
+
+    'votePowerEq'
     ]);
 });
