@@ -8,7 +8,9 @@ accounts-ui-unstyled@1.1.6
 aldeed:autoform@4.2.2
 aldeed:collection2@2.3.2
 aldeed:simple-schema@1.3.1
+anti:i18n@0.4.3
 application-configuration@1.0.4
+aslagle:reactive-table@0.6.15
 autoupdate@1.1.5
 backbone@1.0.0
 base64@1.0.2

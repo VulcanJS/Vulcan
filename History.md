@@ -1,3 +1,9 @@
+## v0.14.3 “TableScope”
+
+* Implemented Reactive Table for users dashboard (thanks @jshimko!).
+* Upgraded Herald package (thanks @kestanous!).
+* Upgraded Avatar package (thanks @bengott!).
+
 ## v0.14.2 “FaviconScope”
 
 * Added settings for auth methods.
