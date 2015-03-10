@@ -8,7 +8,7 @@
     {{/with}}
 
     {{#with comment}}
-      <ul class="selected-comment">
+      <ul class="selected-comment" aria-live="polite">
        {{> UI.dynamic template=comment_item}}
       </ul>
     {{/with}}
