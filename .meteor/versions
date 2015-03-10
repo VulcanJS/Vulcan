@@ -35,6 +35,7 @@ email@1.0.5
 facebook@1.1.3
 fastclick@1.0.2
 follower-livedata@1.0.3
+fortawesome:fontawesome@4.2.0_2
 fourseven:scss@1.0.0
 geojson-utils@1.0.2
 handlebars@1.0.2
@@ -50,6 +51,7 @@ iron:location@1.0.7
 iron:middleware-stack@1.0.7
 iron:router@1.0.7
 iron:url@1.0.7
+jameslefrere:autoform-semantic-ui@0.1.10
 jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.3.1
@@ -73,6 +75,9 @@ meteorhacks:meteorx@1.3.1
 meteorhacks:npm@1.2.2
 meteorhacks:picker@1.0.1
 meteorhacks:subs-manager@1.3.0
+meteoric:ionic@0.1.17
+meteoric:ionic-sass@0.1.8
+meteoric:ionicons-sass@0.1.5
 minifiers@1.1.3
 minimongo@1.0.6
 miro:mailchimp@1.0.2
@@ -100,6 +105,12 @@ retry@1.0.2
 routepolicy@1.0.4
 sacha:juice@0.1.2
 sacha:spin@2.0.4
+semantic:ui-card@1.11.4
+semantic:ui-checkbox@1.11.4
+semantic:ui-css@1.11.2
+semantic:ui-icon@1.11.4
+semantic:ui-input@1.11.4
+semantic:ui-label@1.11.4
 service-configuration@1.0.3
 session@1.0.5
 sha@1.0.2
@@ -113,6 +124,7 @@ stylus@1.0.6
 tap:i18n@1.4.1
 telescope-api@0.0.0
 telescope-base@0.0.0
+telescope-custom@1.0.0
 telescope-daily@0.0.0
 telescope-datetimepicker@1.0.3
 telescope-email@0.2.9
@@ -134,7 +146,6 @@ telescope-subscribe-to-posts@0.1.0
 telescope-tagline-banner@0.1.0
 telescope-tags@0.0.0
 telescope-theme-base@0.0.0
-telescope-theme-hubble@0.0.0
 telescope-update-prompt@0.1.0
 templating@1.0.11
 tracker@1.0.5
@@ -144,6 +155,7 @@ ui@1.0.5
 underscore@1.0.2
 url@1.0.3
 useraccounts:core@1.8.1
+useraccounts:semantic-ui@1.8.1
 useraccounts:unstyled@1.8.1
 webapp@1.1.6
 webapp-hashing@1.0.2
