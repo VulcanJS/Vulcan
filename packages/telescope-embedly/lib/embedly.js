@@ -2,7 +2,6 @@ var thumbnailProperty = {
   propertyName: 'thumbnailUrl',
   propertySchema: {
     type: String,
-    label: 'thumbnail',
     optional: true,
     autoform: {
       editable: true,
