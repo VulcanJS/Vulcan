@@ -7,7 +7,7 @@ accounts-ui@1.1.4
 accounts-ui-unstyled@1.1.6
 aldeed:autoform@4.2.2
 aldeed:collection2@2.3.2
-aldeed:simple-schema@1.3.0
+aldeed:simple-schema@1.3.1
 application-configuration@1.0.4
 autoupdate@1.1.5
 backbone@1.0.0
@@ -60,7 +60,7 @@ less@1.0.12
 livedata@1.0.12
 localstorage@1.0.2
 logging@1.0.6
-matb33:collection-hooks@0.7.9
+matb33:collection-hooks@0.7.11
 meteor@1.1.4
 meteor-platform@1.2.1
 meteorhacks:async@1.0.0
@@ -89,7 +89,7 @@ oauth2@1.1.2
 observe-sequence@1.0.4
 ordered-dict@1.0.2
 percolatestudio:synced-cron@1.1.0
-rajit:bootstrap3-datepicker@1.3.1
+rajit:bootstrap3-datepicker@1.4.1
 random@1.0.2
 reactive-dict@1.0.5
 reactive-var@1.0.4
@@ -108,7 +108,7 @@ spiderable@1.0.6
 srp@1.0.2
 standard-app-packages@1.0.4
 stylus@1.0.6
-tap:i18n@1.4.0
+tap:i18n@1.4.1
 telescope-api@0.0.0
 telescope-base@0.0.0
 telescope-daily@0.0.0
