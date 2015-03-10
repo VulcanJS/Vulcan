@@ -2,9 +2,9 @@ AutoForm.hooks({
   submitPostForm: {
 
     before: {
-      submitPost: function(doc, template) {
+      submitPost: function(doc) {
 
-        template.$('button[type=submit]').addClass('loading');
+        this.template.$('button[type=submit]').addClass('loading');
 
         var post = doc;
 
@@ -26,8 +26,8 @@ AutoForm.hooks({
       }
     },
 
-    onSuccess: function(operation, post, template) {
-      template.$('button[type=submit]').removeClass('loading');
+    onSuccess: function(operation, post) {
+      this.template.$('button[type=submit]').removeClass('loading');
       trackEvent("new post", {'postId': post._id});
       Router.go('post_page', {_id: post._id});
       if (post.status === STATUS_PENDING) {
@@ -35,8 +35,8 @@ AutoForm.hooks({
       }
     },
 
-    onError: function(operation, error, template) {
-      template.$('button[type=submit]').removeClass('loading');
+    onError: function(operation, error) {
+      this.template.$('button[type=submit]').removeClass('loading');
       flashMessage(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
       clearSeenMessages();
       // $(e.target).removeClass('disabled');

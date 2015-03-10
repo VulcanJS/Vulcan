@@ -253,7 +253,7 @@ postSubmitClientCallbacks = [];
 postSubmitMethodCallbacks = [];
 postAfterSubmitMethodCallbacks = []; // runs on server only in a timeout
 
-postEditClientCallbacks = []; // loops over post object
+postEditClientCallbacks = []; // loops over modifier object
 postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object
 postAfterEditMethodCallbacks = []; // loops over modifier object
 

@@ -453,7 +453,7 @@ Meteor.methods({
     return submitPost(post);
   },
 
-  editPost: function (post, modifier, postId) {
+  editPost: function (modifier, postId) {
 
     var user = Meteor.user(),
         hasAdminRights = isAdmin(user);

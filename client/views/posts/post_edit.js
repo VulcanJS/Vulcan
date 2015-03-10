@@ -2,8 +2,9 @@ AutoForm.hooks({
   editPostForm: {
 
     before: {
-      editPost: function(doc, template) {
-
+      editPost: function(modifier, template) {
+        console.log(modifier)
+        console.log(template)
         var post = doc;
 
         // ------------------------------ Checks ------------------------------ //
@@ -15,7 +16,7 @@ AutoForm.hooks({
 
         // ------------------------------ Callbacks ------------------------------ //
 
-        // run all post edit client callbacks on post object successively
+        // run all post edit client callbacks on modifier object successively
         post = postEditClientCallbacks.reduce(function(result, currentFunction) {
             return currentFunction(result);
         }, post);
