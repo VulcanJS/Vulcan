@@ -8,7 +8,7 @@ var findAtts = function () {
 
 var canEditField = function (field) {
   // show field only if user is admin or it's marked as editable 
-  return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
+  return isAdmin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
 Template[getTemplate('quickForm_telescope')].helpers({
