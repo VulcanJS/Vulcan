@@ -347,4 +347,4 @@ preloadSubscriptions = [];
 // ------------------------------- Vote Power -------------------------------- //
 
 // The equation to determine Vote Power
-votePowerEq = null;
+getVotePower = 1;
