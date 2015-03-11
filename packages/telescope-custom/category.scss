@@ -1,0 +1,15 @@
+.post-category{
+  display:inline-block;
+  font-size:12px;
+  background:#fff;
+  padding:3px 5px 1px 5px;
+  text-transform:uppercase;
+  font-weight:normal;
+border:1px solid #000;
+  vertical-align:middle;
+}
+
+  input[type="text"], input[type="password"], input[type="number"], .login-form input{
+    height:40px !important;
+    line-height:20px;
+  }

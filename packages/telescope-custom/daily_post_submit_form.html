@@ -1,0 +1,143 @@
+<template name="daily_post_submit_form">
+
+     <div class="control-group">
+    <label class="control-label">Website</label>
+    <div class="controls">
+      {{> afFieldInput name='url' placeholder='Project website' template='bootstrap3'}}
+    </div>
+  </div>
+
+
+    <div class="control-group">
+    <label class="control-label">Preis</label>
+    <div class="controls">
+      {{> afFieldInput name='Preis' placeholder='Der Preis'}}
+    </div>
+  </div>
+
+
+  <div class="ui left icon input">
+ {{> afFieldInput name='Preis' placeholder='Der Preis'}}
+  <i class="euro icon"></i>
+</div>
+
+
+<h2 class="ui header">
+  <i class="plug icon"></i>
+  <div class="content">
+    Preis
+  </div>
+</h2>
+
+<h3 class="ui top attached header">
+  Top Attached
+</h3>
+<div class="ui attached segment">
+<div class="ui labeled input">
+  <div class="ui label">
+     <i class="euro icon"></i>
+  </div>
+ {{> afFieldInput name='Preis' placeholder='Der Preis'}}
+</div>
+</div>
+
+
+
+
+  <div class="inline field">
+    <div class="ui toggle checkbox">
+     {{> afFieldInput name='categories'}}
+    </div>
+  </div>
+
+
+
+
+    <div class="control-group">
+    <label class="control-label">Categories</label>
+    <div class="controls">
+      {{> afFieldInput name='categories'}}
+    </div>
+  </div>
+
+
+
+<div class="ui fluid card">
+  <div class="image">
+ {{> afPostThumbnail}}
+  </div>
+  <div class="content">
+     <div class="control-group">
+    <label class="control-label">Title</label>
+    <div class="controls">
+      {{> afFieldInput name='title' placeholder='Project title'}}
+    </div>
+  </div>
+    <div class="meta">
+      <span class="date">{{> afFieldInput name='Preis' placeholder='Der Preis'}}</span>
+    </div>
+    <div class="description">
+      Stevie Feliciano is a library scientist living in New York City. She likes to spend her time reading, running, and writing.
+    </div>
+  </div>
+  <div class="extra content">
+    <a>
+      <i class="user icon"></i>
+      {{> afFieldInput name='Preis' placeholder='Der Preis'}}
+    </a>
+  </div>
+</div>
+
+
+  <div class="control-group">
+    <label class="control-label">Tagline<span class="helper-text">(max. 100 characters)</span></label>
+    <div class="controls">
+      {{> afFieldInput name='tagline' placeholder='A short tagline that summarizes the project'}}
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Description<span class="helper-text">(<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a> supported)</span></label>
+    <div class="controls" id="editor">
+      {{> afFieldInput name='body' rows=6 class='input-xlarge'}}
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Categories</label>
+    <div class="controls">
+      {{> afFieldInput name='categories'}}
+    </div>
+  </div>
+
+  {{#if isAdmin}}
+    <div class="control-group">
+      <label class="control-label">Sticky?</label>
+      <div class="controls">
+        {{> afFieldInput name='sticky'}}
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Post Status</label>
+      <div class="controls">
+        {{> afFieldInput name='status'}}
+      </div>
+    </div>
+
+    {{#if isPostEdit}}
+      <div class="post-created-meta">
+        <h4>Post originally submitted</h4>
+        <p>{{formattedDatetime post.createdAt}} ({{fromNow post.createdAt}})</p>
+      </div>
+    {{/if}}
+  {{/if}}
+
+  <div class="form-actions">
+    {{#if isPostEdit}}
+      <a class="delete-link" href="/posts/deleted">Delete Project</a>
+    {{/if}}
+    <input type="submit" class="button" value="Submit" />
+  </div>
+
+</template>

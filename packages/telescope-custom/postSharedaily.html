@@ -1,0 +1,10 @@
+<template name="postSharedaily">
+  <a href="#" class="share-link action" title="{{_ 'share'}}">
+    <i class="share alternate icon"></i>
+  </a>
+  <div class="share-options hidden">
+    <a class="mt-facebook mt-share-inline-square-sm" href="https://www.facebook.com/sharer/sharer.php?u=http://dailycollection.de/posts/{{_id}}" target="_blank"><img src="//mojotech-static.s3.amazonaws.com/facebook@2x.png"></a>
+    <a class="mt-twitter mt-share-inline-square-sm" href="//twitter.com/intent/tweet?text={{title}}&url=http://dailycollection.de/posts/{{_id}}&{{viaTwitter}}" target="_blank"><img src="//mojotech-static.s3.amazonaws.com/twitter@2x.png"></a>
+    <a class="mt-linkedin mt-share-inline-square-sm" href="//pinterest.com/pin/create/button/?url=&url=http://dailycollection.de/posts/{{_id}}&media={{thumbnailUrl}}&description={{title}}" target="_blank"><img src="//mojotech-static.s3.amazonaws.com/pinterest@2x.png"></a>
+  </div>
+</template>
