@@ -81,6 +81,6 @@ Package.onUse(function (api) {
 
     'themeSettings',
 
-    'votePowerEq'
+    'getVotePower'
     ]);
 });
