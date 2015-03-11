@@ -8,6 +8,10 @@
   <a href="#" class="regenerate-thumbnail-link">{{_ 'regenerate_thumbnail'}}</a>
   <a href="#" class="remove-thumbnail-link">{{_ 'clear_thumbnail'}}</a>
   {{else}}
-    <p>{{_ "please_fill_in_embedly_key"}}</p>
+    {{#if isAdmin}}
+      <p>{{_ "please_fill_in_embedly_key"}}</p>
+    {{else}}
+      <p>{{_ "please_ask_your_admin_to_fill_in_embedly_key"}}</p>
+    {{/if}}
   {{/if}}
 </template>
