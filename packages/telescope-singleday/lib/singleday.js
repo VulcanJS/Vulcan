@@ -1,25 +1,25 @@
 viewsMenu.push({
-  route: 'posts_digest_default',
-  label: 'digest',
+  route: 'postsSingleDayDefault',
+  label: 'singleday',
   description: 'posts_of_a_single_day'
 });
 
-viewParameters.digest = function (terms) {
+viewParameters.singleday = function (terms) {
   return {
     find: {
       postedAt: {
-        $gte: terms.after, 
+        $gte: terms.after,
         $lt: terms.before
       }
     },
     options: {
-      sort: {sticky: -1, baseScore: -1, limit: 0}
+      sort: {sticky: -1, score: -1}
     }
   };
-}
+};
 
-getDigestURL = function(moment){
-  return Router.routes['posts_digest'].path({
+getDateURL = function(moment){
+  return Router.path('postsSingleDay', {
     year: moment.year(),
     month: moment.month() + 1,
     day: moment.date()

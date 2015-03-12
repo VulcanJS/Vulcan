@@ -62,7 +62,7 @@ Package.onUse(function (api) {
     'lib/client/templates/custom_template.html',
     'lib/client/templates/custom_template.js',
     'lib/client/templates/customPostTitle.html',
-    'lib/client/scss/custom.scss'
+    'lib/client/stylesheets/custom.scss'
   ], ['client']);
 
   // server

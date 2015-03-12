@@ -57,7 +57,7 @@ buildCampaign = function (postsArray) {
     content: postsHTML
   });
 
-  // 3. wrap digest HTML in email wrapper tempalte
+  // 3. wrap digest HTML in email wrapper template
   var emailHTML = buildEmailTemplate(digestHTML);
 
   return {
@@ -81,6 +81,6 @@ scheduleNextCampaign = function (isTest) {
 Meteor.methods({
   testCampaign: function () {
     if(isAdminById(this.userId))
-      scheduleNextCampaign(true);
+      return scheduleNextCampaign(true);
   }
 });

@@ -26,7 +26,7 @@ getEmbedlyData = function (url) {
     // console.log(result)
 
     if (!!result.data.images && !!result.data.images.length) // there may not always be an image
-      result.data.thumbnailUrl = result.data.images[0].url; // add thumbnailUrl as its own property
+      result.data.thumbnailUrl = result.data.images[0].url.replace("http:", ""); // add thumbnailUrl as its own property and remove "http"
 
     return _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl');
 
@@ -38,18 +38,6 @@ getEmbedlyData = function (url) {
     return null;
   }
 }
-
-Meteor.methods({
-  testGetEmbedlyData: function (url) {
-    console.log(getEmbedlyData(url))
-  },
-  getEmbedlyData: function (url) {
-    return getEmbedlyData(url);
-  },
-  embedlyKeyExists: function () {
-    return !!getSetting('embedlyKey');
-  }
-});
 
 // For security reason, we use a separate server-side API call to set the media object,
 // and the thumbnail object if it hasn't already been set
@@ -105,3 +93,21 @@ var updateMediaOnEdit = function (updateObject) {
   return updateObject;
 }
 postEditMethodCallbacks.push(updateMediaOnEdit);
+
+
+Meteor.methods({
+  testGetEmbedlyData: function (url) {
+    console.log(getEmbedlyData(url))
+  },
+  getEmbedlyData: function (url) {
+    return getEmbedlyData(url);
+  },
+  embedlyKeyExists: function () {
+    return !!getSetting('embedlyKey');
+  },
+  regenerateEmbedlyData: function (post) {
+    if (can.edit(Meteor.user(), post)) {
+      addMediaAfterSubmit(post);
+    }
+  }
+});

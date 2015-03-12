@@ -31,15 +31,8 @@ buildEmailTemplate = function (htmlContent) {
 
   var emailHTML = Handlebars.templates[getTemplate('emailWrapper')](emailProperties);
 
-  var inlinedHTML = Async.runSync(function(done) {
-    juice.juiceContent(emailHTML, {
-      url: getSiteUrl(),
-      removeStyleTags: false
-    }, function (error, result) {
-      done(null, result);
-    });
-  }).result;
-
+  var inlinedHTML = juice(emailHTML);
+  
   var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
   
   return doctype+inlinedHTML;
@@ -51,7 +44,7 @@ sendEmail = function(to, subject, html, text){
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
   
   var from = getSetting('defaultEmail', 'noreply@example.com');
-  var siteName = getSetting('title');
+  var siteName = getSetting('title', 'Telescope');
   var subject = '['+siteName+'] '+subject;
 
   if (typeof text == 'undefined'){

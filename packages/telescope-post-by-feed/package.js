@@ -14,6 +14,7 @@ Package.onUse(function(api) {
 
   api.use([
     'telescope-base', 
+    'telescope-tags',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'tap:i18n',

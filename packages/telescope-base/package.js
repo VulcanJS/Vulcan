@@ -27,21 +27,28 @@ Package.onUse(function (api) {
     'viewParameters',
     'footerModules',
     'heroModules',
+    'threadModules',
     'postModules',
     'postThumbnail',
     'postHeading',
     'postMeta',
     'modulePositions',
 
+    'postClassCallbacks',
+
     'postSubmitRenderedCallbacks',
     'postSubmitClientCallbacks',
     'postSubmitMethodCallbacks',
     'postAfterSubmitMethodCallbacks',
 
+    'postApproveCallbacks',
+    
     'postEditRenderedCallbacks',
     'postEditClientCallbacks',
     'postEditMethodCallbacks',
     'postAfterEditMethodCallbacks',
+
+    'commentClassCallbacks',
 
     'commentSubmitRenderedCallbacks',
     'commentSubmitClientCallbacks',
@@ -53,6 +60,15 @@ Package.onUse(function (api) {
     'commentEditMethodCallbacks',
     'commentAfterEditMethodCallbacks',
 
+    'upvoteCallbacks',
+    'downvoteCallbacks',
+    'cancelUpvoteCallbacks',
+    'cancelDownvoteCallbacks',
+    'upvoteMethodCallbacks',
+    'downvoteMethodCallbacks',
+    'cancelUpvoteMethodCallbacks',
+    'cancelDownvoteMethodCallbacks',
+    
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
     'userProfileCompleteChecks',
@@ -63,6 +79,8 @@ Package.onUse(function (api) {
     'getTemplate',
     'templates',
 
-    'themeSettings'
+    'themeSettings',
+
+    'getVotePower'
     ]);
 });

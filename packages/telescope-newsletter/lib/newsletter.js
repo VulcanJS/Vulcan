@@ -18,11 +18,11 @@ campaignSchema = new SimpleSchema({
   posts: {
     type: [String],
     optional: true
-  }, 
+  },
   webHits: {
     type: Number,
     optional: true
-  }, 
+  },
 });
 
 Campaigns = new Meteor.Collection("campaigns", {
@@ -141,6 +141,21 @@ var newsletterFrequency = {
 }
 addToSettingsSchema.push(newsletterFrequency);
 
+var newsletterTime = {
+  propertyName: 'newsletterTime',
+  propertySchema: {
+    type: String,
+    optional: true,
+    defaultValue: '00:00',
+    autoform: {
+      group: 'newsletter',
+      instructions: 'Defaults to 00:00/12:00 AM. Time to send out newsletter if enabled.',
+      type: 'time'
+    }
+  }
+}
+addToSettingsSchema.push(newsletterTime);
+
 var autoSubscribe = {
   propertyName: 'autoSubscribe',
   propertySchema: {
@@ -160,9 +175,9 @@ viewParameters.campaign = function (terms) {
     find: {
       scheduledAt: {$exists: false},
       postedAt: {
-        $gte: terms.after 
+        $gte: terms.after
       }
-    }, 
+    },
     options: {sort: {sticky: -1, score: -1}}
   };
 }

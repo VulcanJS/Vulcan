@@ -22,12 +22,17 @@ Template[getTemplate('nav')].helpers({
   },
   logo_url: function(){
     return getSetting('logoUrl');
+  },
+  headerClass: function () {
+    var color = getSetting('headerColor');
+    return (color == 'white' || color == '#fff' || color == '#ffffff') ? "white-background" : '';
   }
 });
 
 Template[getTemplate('nav')].events({
   'click .mobile-menu-button': function(e){
     e.preventDefault();
+    e.stopPropagation(); // Make sure we don't immediately close the mobile nav again. See layout.js event handler.
     $('body').toggleClass('mobile-nav-open');
   }
 });

@@ -24,7 +24,12 @@ Meteor.startup(function () {
   importRelease('0.11.0');
   importRelease('0.11.1');
   importRelease('0.12.0');
-
+  importRelease('0.13.0');
+  importRelease('0.14.0');
+  importRelease('0.14.1');
+  importRelease('0.14.2');
+  importRelease('0.14.3');
+  
   // if this is before the first run, mark all release notes as read to avoid showing them
   if (!Events.findOne({name: 'firstRun'})) {
     var r = Releases.update({}, {$set: {read: true}}, {multi: true});

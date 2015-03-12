@@ -26,13 +26,12 @@ meteorhacks:fast-render@2.1.5
 meteorhacks:subs-manager@1.2.2
 meteorhacks:npm
 
-aldeed:autoform
-aldeed:collection2@2.3.0
-aldeed:simple-schema@1.2.0
+aldeed:autoform@5.0.0
+aldeed:collection2
+aldeed:simple-schema
 
 mrt:jquery-hotkeys
 mrt:cookies
-mrt:mailchimp
 
 ccan:cssreset # CSS reset (Must come before any other css)
 cmather:handlebars-server
@@ -48,7 +47,8 @@ bengott:avatar
 jparker:gravatar
 tap:i18n@1.2.1
 tsega:bootstrap3-datetimepicker@3.1.3_1
-momentjs:moment@2.8.4
+momentjs:moment
+aslagle:reactive-table
 
 # Testing
 
@@ -83,6 +83,8 @@ telescope-invites
 telescope-post-by-feed
 telescope-releases
 telescope-getting-started
+telescope-subscribe-to-posts
+telescope-tagline-banner
 
 # Custom Packages
-useraccounts:unstyled@1.6.1
+useraccounts:unstyled@1.8.1

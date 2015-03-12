@@ -1,9 +1,8 @@
 // Publish a list of posts
 
 Meteor.publish('postsList', function(terms) {
-  var user = Meteor.users.findOne(this.userId);
   if(can.viewById(this.userId)){
-    var parameters = getPostsParameters(terms, user),
+    var parameters = getPostsParameters(terms),
         posts = Posts.find(parameters.find, parameters.options);
 
     return posts;

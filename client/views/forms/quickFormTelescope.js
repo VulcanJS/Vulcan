@@ -6,27 +6,20 @@ var findAtts = function () {
   return c && c.atts;
 }
 
-var getSchema = function () {
-  var schema = AutoForm.find().ss._schema;
-
-  // decorate schema with key names
-  schema = _.map(schema, function (field, key) {
-    field.name = key;
-    return field;
-  });
-
-  return schema;
-}
-
 var canEditField = function (field) {
   // show field only if user is admin or it's marked as editable 
-  return isAdmin(Meteor.user()) || !!field.atts.editable || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
+  return isAdmin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
 Template[getTemplate('quickForm_telescope')].helpers({
   fieldsWithNoFieldset: function () {
+
     // get names of fields who don't have an autoform attribute or don't have a group, but are not omitted
-    var fields = _.pluck(_.filter(getSchema(), function (field, key) {
+    // note: we need to _.map() first to assign the field key to the "name" property to preserve it. 
+    var fields = _.pluck(_.filter(_.map(AutoForm.getFormSchema()._schema, function (field, key) {
+      field.name = key;
+      return field;
+    }), function (field) {
       if (field.name.indexOf('$') !== -1) // filter out fields with "$" in their name
         return false
       if (field.autoform && field.autoform.omit) // filter out fields with omit = true
@@ -34,11 +27,12 @@ Template[getTemplate('quickForm_telescope')].helpers({
       if (field.autoform && field.autoform.group) // filter out fields with a group
         return false
       return true // return remaining fields
-    }), 'name');
+    }), "name");
+
     return fields;
   },  
   afFieldsets: function () {
-    var groups = _.compact(_.uniq(_.pluckDeep(getSchema(), 'autoform.group')));
+    var groups = _.compact(_.uniq(_.pluckDeep(AutoForm.getFormSchema()._schema, 'autoform.group')));
     
     // if user is not admin, exclude "admin" group from fieldsets
     if (!isAdmin(Meteor.user()))
@@ -53,7 +47,7 @@ Template[getTemplate('quickForm_telescope')].helpers({
     var fieldset = this.toLowerCase();
 
     // get names of fields whose group match the current fieldset
-    var fields = _.pluck(_.filter(getSchema(), function (field, key) {
+    var fields = _.pluck(_.filter(AutoForm.getFormSchema()._schema, function (field, key) {
       return (field.name.indexOf('$') === -1) && field.autoform && field.autoform.group == fieldset;
     }), 'name');
 
@@ -133,6 +127,15 @@ Template["afFormGroup_telescope"].helpers({
   },
   afFieldInstructions: function () {
     return this.afFieldInputAtts.instructions;
+  },
+  label: function () {
+    var fieldName = this.name;
+    var fieldSchema = AutoForm.getFormSchema().schema(fieldName);
+
+    // if a label has been explicitely specified, use it; else default to i18n of the field name
+    var label = !!fieldSchema.label ? fieldSchema.label: i18n.t(fieldName);
+
+    return label;
   }
 });
 

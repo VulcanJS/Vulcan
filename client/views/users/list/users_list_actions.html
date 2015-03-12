@@ -1,0 +1,21 @@
+<template name="users_list_actions">
+  <ul>
+    <li>
+      {{#if isInvited}}
+      <a class="uninvite-link" href="#">{{_ "uninvite"}}</a>
+      {{else}}
+      <a href="#" class="invite-link">{{_ "invite"}}</a>
+      {{/if}}
+    </li>
+    <li>
+      {{#if userIsAdmin}}
+        <a class="unadmin-link" href="#">{{_ "unadmin"}}</a>
+      {{else}}
+        <a href="#" class="admin-link">{{_ "make_admin"}}</a>
+      {{/if}}
+    </li>
+    <li>
+      <a class="delete-link" href="#">{{_ "delete_user"}}</a>
+    </li>
+  </ul>
+</template>

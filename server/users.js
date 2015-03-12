@@ -21,11 +21,11 @@ Accounts.onCreateUser(function(options, user){
   // set email on profile
   if (options.email)
     user.profile.email = options.email;
-    
+
   // if email is set, use it to generate email hash
   if (getEmail(user))
     user.email_hash = getEmailHash(user);
-  
+
   // set username on profile
   if (!user.profile.name)
     user.profile.name = user.username;
@@ -33,20 +33,20 @@ Accounts.onCreateUser(function(options, user){
   // create slug from username
   user.slug = slugify(getUserName(user));
 
-  // if this is the first user ever, make them an admin
-  user.isAdmin = Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0 ? true : false;
+  // if this is not a dummy account, and is the first user ever, make them an admin
+  user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit client callbacks on properties object successively
-  clog('// Start userCreatedCallbacks')
+  clog('// Start userCreatedCallbacks');
   user = userCreatedCallbacks.reduce(function(result, currentFunction) {
-    clog('// Running '+currentFunction.name+'…')
+    clog('// Running '+currentFunction.name+'…');
     return currentFunction(result);
   }, user);
-  clog('// Finished userCreatedCallbacks')
-  clog('// User object:')
-  clog(user)
+  clog('// Finished userCreatedCallbacks');
+  // clog('// User object:');
+  // clog(user);
 
   // ------------------------------ Analytics ------------------------------ //
 
@@ -69,12 +69,12 @@ Meteor.methods({
       }
     );
   },
-  numberOfPostsToday: function(){
-    console.log(numberOfItemsInPast24Hours(Meteor.user(), Posts));
-  },
-  numberOfCommentsToday: function(){
-    console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
-  },
+  // numberOfPostsToday: function(){
+  //   console.log(numberOfItemsInPast24Hours(Meteor.user(), Posts));
+  // },
+  // numberOfCommentsToday: function(){
+  //   console.log(numberOfItemsInPast24Hours(Meteor.user(), Comments));
+  // },
   testBuffer: function(){
     // TODO
   },

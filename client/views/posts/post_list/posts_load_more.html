@@ -1,0 +1,13 @@
+<template name="postsLoadMore">
+  {{#if postsReady}}
+    {{#if hasPosts}}
+      {{#if hasMorePosts}}
+        <a class="more-button" href="#"><span>{{_ "load_more"}}</span></a>
+      {{/if}}
+    {{else}}
+      <div class="no-posts">{{_ "sorry_we_couldnt_find_any_posts"}}</div>
+    {{/if}}
+  {{else}}
+    <div class="loading-module">{{> spinner}}</div>
+  {{/if}}
+</template>

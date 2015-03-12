@@ -8,5 +8,7 @@
   "1_notification": "1 notification",
   "notifications": "notifications",
   "notifications_fieldset": "Notifications",
-  "emailNotifications": "Email Notifications"
+  "emailNotifications": "Email Notifications",
+  "your_post": "Your post",
+  "has_been_approved": "has been approved"
 }

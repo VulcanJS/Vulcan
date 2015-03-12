@@ -10,13 +10,20 @@ var handleFeed = function(error, feed) {
   if (error) return;
 
   var feedItems = _.first(feed.items, 20); // limit feed to 20 items just in case
-
+  var userId = this._parser._options.userId;
+  var feedId = this._parser._options.feedId;
+  var categories = this._parser._options.categories;
+ 
   clog('// Parsing RSS feed: '+ feed.title)
 
   var newItemsCount = 0;
 
   feedItems.forEach(function(item, index, array) {
-    
+
+    // if item has no id, use the URL to give it one
+    if (!item.id)
+      item.id = item.link;
+
     // check if post already exists
     if (!!Posts.findOne({feedItemId: item.id})) {
       // clog('// Feed item already imported')
@@ -24,13 +31,18 @@ var handleFeed = function(error, feed) {
       newItemsCount++;
 
       var post = {
-        title: item.title,
-        body: toMarkdown(he.decode(item.description)),
+        title: he.decode(item.title),
         url: item.link,
-        feedId: feed.id,
+        feedId: feedId,
         feedItemId: item.id,
-        userId: getFirstAdminUser()._id
+        userId: userId,
+        categories:categories
       }
+
+      if (item.description)
+        post.body = toMarkdown(he.decode(item.description));
+
+      // console.log(feed)
 
       // if RSS item link is a 301 or 302 redirect, follow the redirect
       var get = HTTP.get(item.link, {followRedirects: false});
@@ -59,18 +71,26 @@ fetchFeeds = function() {
   var content;
 
   Feeds.find().forEach(function(feed) {
+
+    // if feed doesn't specify a user, default to admin
+    var userId = !!feed.userId ? feed.userId : getFirstAdminUser()._id;
+    var categories =feed.categories;
+    var feedId = feed._id;
+    
     try {
+
       content = HTTP.get(feed.url).content;
-    } catch (e) {
-      // just go to next url
-      return true;
+      var feedHandler = new htmlParser.FeedHandler(handleFeed);
+      var parser = new htmlParser.Parser(feedHandler, {xmlMode: true, userId: userId, categories:categories, feedId:feedId});
+      parser.write(content);
+      parser.end();
+
+    } catch (error) {
+
+      console.log(error);
+      return true; // just go to next url
+      
     }
-
-    var feedHandler = new htmlParser.FeedHandler(handleFeed);
-
-    var parser = new htmlParser.Parser(feedHandler, {xmlMode: true});
-    parser.write(content);
-    parser.end()
   });
 }
 

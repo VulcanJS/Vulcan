@@ -1,8 +1,77 @@
+## v0.14.3 “TableScope”
+
+* Implemented Reactive Table for the Users dashboard (thanks @jshimko!).
+* Upgraded Herald package (thanks @kestanous!).
+* Upgraded Avatar package (thanks @bengott!).
+* Upgraded Autoform package.
+* Added Greek translation (thanks @portokallidis!).
+* Improved Spanish translation (thanks @brayancruces!).
+* Added new callbacks for upvoting and downvoting (thanks @Baxter900 !).
+
+## v0.14.2 “FaviconScope”
+
+* Added settings for auth methods.
+* Added setting for external fonts.
+* Use site tagline as homepage title.
+* Make favicon customizable.
+* Making webfont customizable. To get previous font back, use: `https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic`.
+* Fix juice issue.
+* Non-admins should not be able to access rejected posts.
+* Bulgarian translation (thanks @durrrr91!)
+
+## v0.14.1 “TaglineScope”
+
+* Fix double notification bug. 
+* Fix singleday view bug.
+* Fix post approval date bug.
+* Don't let non-admins access pending posts.
+* Give search field a border on white backgrounds.
+* Spanish, Brazilian, Turkish, Vietnamese, Polish translations (thanks everybody!).
+* Do not put comment reply page behind log-in wall.
+* Various CSS tweaks.
+* Added tagline banner package.
+* You can now assign a category to posts generated from feeds (thanks @Accentax!).
+* Use tagline as title on homepage.
+* Refactor default view route controller code. 
+* Fixed security issue with post editing.
+
+## v0.14.0 “GridScope”
+
+* Added Grid Layout option.
+* Cleaned up vote click handling functions and added tests (thanks @anthonymayer!).
+* Added `threadModules` zone.
+* Added `upvoteCallbacks` and `downvoteCallbacks` callback arrays.
+* Fix “post awaiting moderation” message bug.
+* You can now subscribe to comment threads (thanks @delgermurun!).
+* Added `postApproveCallbacks` callback array.
+* Added notifications for pending and approved posts, for admins and end users.
+* Renaming "digest" view to "singleday".
+* Make sure only valid properties can be added to posts and comments.
+* Added newsletter time setting (thanks @anthonymayer!).
+* Change "sign up" to "register" (thanks @Kikobeats!).
+
+## v0.13.0 “ComponentScope”
+
+* Tweaked comments layout in Hubbble theme.
+* Added Bulgarian translation (thanks @toome123!).
+* Cleaned up permission functions (thanks @anthonymayer!).
+* Various fixes (thanks @comerc and @Kikobeats!).
+* Stopped synced-cron message logging.
+* Limit all posts lists to 200 posts.
+* Refactored posts lists to use the template-level subscription pattern when appropriate.
+* Refactored `single day` and `daily` packages.
+* Footer field now accepts Markdown instead of HTML.
+* Feeds can now be assigned to a user.
+* Various CSS tweaks.
+* Fixing newsletter issue.
+* Post rank now has its own module.
+* Changed how field label i18n works.
+
 ## v0.12.0 “DummyScope”
 
-**Important: existing newsletters and feeds need to be manually enabled in the Settings panel** 
+**Important: existing newsletters and feeds need to be manually enabled in the Settings panel**
 
-* Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled. 
+* Added "Enable Newsletter" setting. Note: existing newsletters must be re-enabled.
 * Added "Enable Feeds" settings. Note: existing feeds must be re-enabled.
 * Now showing release notes for latest version right inside the app.
 * Added dummy posts, users, and comments.
@@ -22,21 +91,21 @@
 * `telescope-post-by-feed` package now lets you import posts from RSS feeds.
 * Adding limit of 200 posts to post list request.
 * Refactoring post and comment submit to fix latency compensation issues.
-* Tags package now using Autoform. 
+* Tags package now using Autoform.
 
 ## v0.11.0 “AvatarScope”
 
 * Added new `userCreatedCallbacks` callback hook.
 * Added new setting to subscribe new user to mailing list automatically.
-* Added new `debug` setting. 
+* Added new `debug` setting.
 * `siteUrl` setting now affects `Meteor.absoluteUrl()`.
 * Added new `clog` function that only logs if `debug` setting is true.
 * Simplified post module system, modules are not split in three zones anymore.
-* Added new `postThumbnail` hook to show Embedly thumbnail. 
+* Added new `postThumbnail` hook to show Embedly thumbnail.
 * Simplified Hubble theme CSS for both desktop and mobile.
-* Many CSS tweaks for Hubble mobile. 
+* Many CSS tweaks for Hubble mobile.
 * Show author and commenters avatars on post item.
-* Adding description to post list pages and showing them in menus. 
+* Adding description to post list pages and showing them in menus.
 * Improved Russian translation (thanks @Viktorminator!).
 * Now using `editorconfig` (thanks @erasaur!).
 * Upgraded to `useraccounts:unstyled@1.4.0` (thanks @splendido!).
@@ -54,10 +123,10 @@
 
 ## v0.9.11 “FormScope”
 
-* Now using [Autoform](https://github.com/aldeed/meteor-autoform/)'s **quickform** feature to generate post submit and edit forms. 
+* Now using [Autoform](https://github.com/aldeed/meteor-autoform/)'s **quickform** feature to generate post submit and edit forms.
 * Various fixes by [@anthonymayer](https://github.com/anthonymayer).
-* Now using [fourseven:scss](https://github.com/fourseven/meteor-scss) to directly compile SCSS files. 
-* Renamed `post` method to `submitPost`. 
+* Now using [fourseven:scss](https://github.com/fourseven/meteor-scss) to directly compile SCSS files.
+* Renamed `post` method to `submitPost`.
 * Post editing now happens via a `postEdit` method.
 * Categories are now normalized (only the `_id` is stored on the post object, not the whole category object).
 * Refactored Embedly package; now fills in description as well (thanks [@kvindasAB](https://github.com/kvindasAB)!).
@@ -101,12 +170,12 @@
 * Splitting up the settings form into sub-sections.
 * Adding help text to settings form.
 * Fixing problem with daily view theming.
-* Improving avatar stuff (thanks @shaialon and @bengott!). 
+* Improving avatar stuff (thanks @shaialon and @bengott!).
 
 ## v0.9.6
 
-* Fixed security hole in user update. 
-* Kadira is now included by default. 
+* Fixed security hole in user update.
+* Kadira is now included by default.
 * Comments now have their own feed (thanks @delgermurun!).
 * Fixed URL collision bug (thanks @GoodEveningMiss!).
 * Now using [`account-templates`](https://github.com/splendido/accounts-templates-core) (thanks @splendido!).
@@ -124,7 +193,7 @@
 
 ## v0.9.4 “UpdateScope”
 
-* Removed unneeded allow insert on Posts and Comments. 
+* Removed unneeded allow insert on Posts and Comments.
 * Renaming `postMeta` template to `postInfo` to avoid ambiguity.
 * Fixing avatar code.
 * Adding update prompt package.
@@ -134,24 +203,24 @@
 
 ## v0.9.3 “DailyScope”
 
-* Show user comments on user profile page. 
+* Show user comments on user profile page.
 * Move votes to their own `user.votes` object.
 * Add daily view.
-* Default root view is now customizable. 
+* Default root view is now customizable.
 * Updated app to 0.9.0.
 * Updated all packages to be 0.9.0-compatible.
 * Fixed XSS bug (CVE ID: CVE-2014-5144) by sanitizing user input server-side.
-* Now storing both markdown and HTML versions of content. 
+* Now storing both markdown and HTML versions of content.
 
 ## v0.9.2.6 “InviteScope”
 
 * Added new invite features (thanks [@callmephilip](https://github.com/callmephilip)!)
-* Changed `navItems` to `primaryNav` and added `secondaryNav`. 
+* Changed `navItems` to `primaryNav` and added `secondaryNav`.
 * Added new `themeSettings` object for storing theme-level settings.
-* Notifications is now a nav menu item. 
+* Notifications is now a nav menu item.
 * Renamed `comments` to `commentsCount` on `Post` model.
 * Now tracking list of commenters `_id`s on `Post` model.
-* Rerun interrupted migrations. 
+* Rerun interrupted migrations.
 
 ## v0.9.2.5 “AccountScope”
 
@@ -161,19 +230,19 @@
 
 ## v0.9.2 “MailScope”
 
-* Use [handlebars-server](https://github.com/EventedMind/meteor-handlebars-server) for all email templates. 
+* Use [handlebars-server](https://github.com/EventedMind/meteor-handlebars-server) for all email templates.
 * Refactored email system to use global HTML email wrapper.
-* Added routes to preview email templates. 
+* Added routes to preview email templates.
 * Changed how notifications are stored in db.
 * Added `deleteNotifications` migration to delete all existing notifications.
 * Now using templates for on-site notifications too.
 * Added `heroModules` and `footerModules` hooks.
-* Added [telescope-newsletter](https://github.com/TelescopeJS/Telescope-Newsletter) package. 
-* Sending emails from within `setTimeout`s to fix latency compensation issue. 
+* Added [telescope-newsletter](https://github.com/TelescopeJS/Telescope-Newsletter) package.
+* Sending emails from within `setTimeout`s to fix latency compensation issue.
 
 ## v0.9.1.2
 
-* Added `lastCommentedAt` property to posts. 
+* Added `lastCommentedAt` property to posts.
 * Added hooks to `post_edit` and `post_submit`'s `rendered` callback.
 * Embedly module now supports video embedding in a lightbox.
 * Updated to Meteor 0.8.3.
@@ -183,16 +252,16 @@
 
 * Using Arunoda's [Subscription Manager](https://github.com/meteorhacks/subs-manager).
 * Updating mobile version.
-* Made the background color setting into a more general background CSS setting. 
-* Added `postHeading` and `postMeta` hooks. 
+* Made the background color setting into a more general background CSS setting.
+* Added `postHeading` and `postMeta` hooks.
 
 ## v0.9
 
-* See [blog post](http://telesc.pe/blog/telescope-v09-modulescope) for changelog. 
+* See [blog post](http://telesc.pe/blog/telescope-v09-modulescope) for changelog.
 
 ## v0.8.3 “CleanScope”
 
-* Refactored the way dating and timestamping works with pending/approved posts. 
+* Refactored the way dating and timestamping works with pending/approved posts.
 * Cleaned up unused/old third-party code.
 * Migrated "submitted" property to "postedAt".
 * Added a "postedAt" property to comments.
@@ -202,24 +271,24 @@
 * Improved migrations with timestamps and number of rows affected.
 * Created `telescope-lib` and `telescope-base` pacakge.
 * Pulled out search into its own `telescope-search` package.
-* Made menu and views modular. 
+* Made menu and views modular.
 * Using SimpleSchema and Collection2 for models.
 
 ## v0.8.1 “FlexScope”
 
-* Extracted part of the tags feature into its own package. 
+* Extracted part of the tags feature into its own package.
 * Made subscription preloader more flexible.
-* Made navigation menu dynamic. 
+* Made navigation menu dynamic.
 
 ## v0.8 “BlazeScope”
 
 * Updated for Meteor 0.8.1.1/Blaze compatibility.
-* Using Collection2/SimpleSchema/Autoforms for Settings form. 
+* Using Collection2/SimpleSchema/Autoforms for Settings form.
 
 ## v0.7.4 “InterScope”
 
 * Added basic internationalization (thanks Toam!).
-* Added search logging. 
+* Added search logging.
 
 ## v0.7.3
 
@@ -234,9 +303,9 @@
 
 * Added karma redistribution.
 * Improved user dashboard.
-* Improved user profiles. 
+* Improved user profiles.
 
-Note: run the "update user profile" script from the toolbox after updating. 
+Note: run the "update user profile" script from the toolbox after updating.
 
 ## v0.7 “IronScope”
 
@@ -252,7 +321,7 @@ Note: run the "update user profile" script from the toolbox after updating.
 * Paginating users dashboard.
 * Filtering users dashboard.
 
-Note: If you're upgrading from a previous version of Telescope, you'll need to run the "update user slugs" method from within the Admin Toolbox panel inside the web app to get user profiles to work. 
+Note: If you're upgrading from a previous version of Telescope, you'll need to run the "update user slugs" method from within the Admin Toolbox panel inside the web app to get user profiles to work.
 
 ## v0.6.2
 

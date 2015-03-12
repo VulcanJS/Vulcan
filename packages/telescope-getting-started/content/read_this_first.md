@@ -8,7 +8,7 @@ To make your first run a bit easier, we've taken the liberty of preloading your 
 
 The first thing you'll need to do is create your account. Since this will be the first ever account created in this app, it will automatically be assigned admin rights, and you'll then be able to access Telescope's settings panel.
 
-Click the “Sign Up” link in the top menu and come back here once you're done!
+Click the “Register” link in the top menu and come back here once you're done!
 
 ### 2. Configuring Settings
 

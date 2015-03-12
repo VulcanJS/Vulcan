@@ -1,5 +1,3 @@
-var daysPerPage = 5;
-
 var coreSubscriptions = new SubsManager({
   // cache recent 50 subscriptions
   cacheLimit: 50,
@@ -10,28 +8,17 @@ var coreSubscriptions = new SubsManager({
 PostsDailyController = RouteController.extend({
   
   template: function() {
+    // use a function to make sure the template is evaluated *after* any template overrides
     return getTemplate('postsDaily');
   },
 
   subscriptions: function () {
-    this.days = this.params.days ? this.params.days : daysPerPage;
-    // this.days = Session.get('postsDays') ? Session.get('postsDays') : 3;
-
-    var terms = {
-      view: 'daily',
-      days: this.days,
-      after: moment().subtract(this.days, 'days').startOf('day').toDate()
-    };
-
-    this.postsSubscription = coreSubscriptions.subscribe('postsList', terms, function() {
-      Session.set('postsLoaded', true);
-    });
-
-    this.postsUsersSubscription = coreSubscriptions.subscribe('postsListUsers', terms);
-
+    // this.days = this.params.days ? this.params.days : daysPerPage;
+    // TODO: find a way to preload the first n posts of the first 5 days?
   },
 
   data: function () {
+    this.days = this.params.days ? this.params.days : daysPerPage;
     Session.set('postsDays', this.days);
     return {
       days: this.days

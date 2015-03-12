@@ -54,8 +54,10 @@ Package.onUse(function (api) {
   // client
 
   api.add_files([
-    'lib/client/templates/posts_digest.html',
-    'lib/client/templates/posts_digest.js'
+    'lib/client/templates/single_day.html',
+    'lib/client/templates/single_day.js',
+    'lib/client/templates/single_day_nav.html',
+    'lib/client/templates/single_day_nav.js'
   ], ['client']);
 
   // server
@@ -66,6 +68,7 @@ Package.onUse(function (api) {
   // i18n languages (must come last)
 
   api.add_files([
+    'i18n/bg.i18n.json',
     'i18n/de.i18n.json',
     'i18n/en.i18n.json',
     'i18n/es.i18n.json',
@@ -79,7 +82,7 @@ Package.onUse(function (api) {
 
   api.export([
     'getDigestURL',
-    'PostsDigestController'
+    'PostsSingledayController'
   ]);
 
 });

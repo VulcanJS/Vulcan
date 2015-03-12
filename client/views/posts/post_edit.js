@@ -2,8 +2,9 @@ AutoForm.hooks({
   editPostForm: {
 
     before: {
-      editPost: function(doc, template) {
-
+      editPost: function(modifier) {
+        console.log(modifier)
+        console.log(template)
         var post = doc;
 
         // ------------------------------ Checks ------------------------------ //
@@ -15,7 +16,7 @@ AutoForm.hooks({
 
         // ------------------------------ Callbacks ------------------------------ //
 
-        // run all post edit client callbacks on post object successively
+        // run all post edit client callbacks on modifier object successively
         post = postEditClientCallbacks.reduce(function(result, currentFunction) {
             return currentFunction(result);
         }, post);
@@ -24,12 +25,12 @@ AutoForm.hooks({
       }
     },
 
-    onSuccess: function(operation, post, template) {
+    onSuccess: function(operation, post) {
       trackEvent("edit post", {'postId': post._id});
       Router.go('post_page', {_id: post._id});
     },
 
-    onError: function(operation, error, template) {
+    onError: function(operation, error) {
       console.log(error)
       flashMessage(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
       clearSeenMessages();

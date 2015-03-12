@@ -12,8 +12,15 @@
     line-height: 24px;
   }
 }
-.user-avatar {
-  .avatar-initials {
-    line-height: 40px;
+.avatar-medium {
+  height: 30px;
+  width: 30px;
+  .avatar-initials{
+    font-size: 14px;
+    line-height: 30px;
   }
+}
+
+.avatar-initials{
+  font-weight: normal;
 }

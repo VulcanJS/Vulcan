@@ -1,11 +1,23 @@
 <template name="css">
   <style>
+      @import url({{getSetting 'fontUrl'}});
+      
+      body, textarea, input, button, input[type="submit"], input[type="button"]{
+        font-family: {{getSetting 'fontFamily'}};
+      }
+
       body{
         background: {{getSetting "backgroundCSS"}};
       }
-      input[type="submit"], button, .button, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
-        background-color: {{getSetting "buttonColor"}} !important;
-        color: {{getSetting "buttonTextColor"}} !important;
+      .header{
+        background-color: {{getSetting "headerColor"}};
+      }
+      .header, .header .logo a, .header .logo a:visited{
+        color: {{getSetting "headerTextColor"}};        
+      }
+      input[type="submit"], button, .button, button.submit, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .header .btn-primary, .header .btn-primary:link, .header .btn-primary:visited, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
+        background-color: {{getSetting "buttonColor"}};
+        color: {{getSetting "buttonTextColor"}};
       }
       a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover, .post-upvote .upvote-link i{
         color: {{getSetting "buttonColor"}};
@@ -18,16 +30,14 @@
       }
       .post-content .post-upvote .upvote-link.voted i.icon-check{
         /*color: {{getSetting "secondaryColor"}};*/
+      }    
+
+      .logo-image a{
+        max-height:{{getSetting "logoHeight"}}px;
+        max-width:{{getSetting "logoWidth"}}px;
       }
-      .header{
-        background-color: {{getSetting "headerColor"}};
-      }
-      .header, .header .logo a, .header .logo a:visited{
-        color: {{getSetting "headerTextColor"}};        
-      }
-    .logo-image a{
-      height:{{getSetting "logoHeight"}}px;
-      width:{{getSetting "logoWidth"}}px;
-    }
+
+      {{hideAuthClass}}
+
   </style>
 </template>
