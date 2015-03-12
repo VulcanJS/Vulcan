@@ -127,13 +127,31 @@ var migrationsList = {
 
     allUsers.forEach(function(user){
       i++;
-      console.log('> Updating user '+user._id+' ('+user.username+' -> ' + user.username.toLowerCase() + ')');
+
+    // Perform the same transforms done by useraccounts with `lowercaseUsernames` set to `true`
+    var oldUsername = user.username;
+    var username = user.username;
+    username = username.trim().replace(/\s+/gm, ' ');
+    user.profile.username = user.profile.name || username;
+    delete user.profile.name;
+    username = username.toLowerCase().replace(/\s+/gm, '');
+    user.username = username;
+
+    if (user.emails.length > 0) {
+      _.each(user.emails, function(email){
+        email.address = email.address.toLowerCase().replace(/\s+/gm, '');
+      });
+    }
+
+    console.log('> Updating user '+user._id+' ('+oldUsername+' -> ' + user.username + ')');
 
       try {
         Meteor.users.update(user._id, {
           $set: {
-            username: user.username.toLowerCase()
-          }
+            emails: user.emails,
+            profile: user.profile,
+            username: user.username,
+          },
         });
       }
       catch (err) {
