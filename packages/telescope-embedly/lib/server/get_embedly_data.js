@@ -76,8 +76,8 @@ var addMediaAfterSubmit = function (post) {
         set.media = data.media;
       }
     }
+    Posts.update(post._id, {$set: set});
   }
-  Posts.update(post._id, {$set: set});
   return post;
 }
 postAfterSubmitMethodCallbacks.push(addMediaAfterSubmit);
