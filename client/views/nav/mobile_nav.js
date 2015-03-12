@@ -5,6 +5,9 @@ Template[getTemplate('mobile_nav')].helpers({
   secondaryNav: function () {
     return secondaryNav;
   },
+  logoTemplate: function () {
+    return getTemplate('logo');
+  },
   getTemplate: function () {
     return getTemplate(this.template);
   }

@@ -33,7 +33,6 @@ $medium-break: 50em;
 }
 
 .content-wrapper{
-	padding: 0 10px;
   @include small{
     overflow-x: hidden;
   }

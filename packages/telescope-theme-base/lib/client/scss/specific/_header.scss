@@ -23,6 +23,11 @@ $mobile-header-height: 50px;
       }
     }
   }
+  .side-nav &{
+    @include medium-large{
+      display: none;
+    }
+  }
 }
 .header-module, .header-submodule{
   display: inline-block;
@@ -33,10 +38,10 @@ $mobile-header-height: 50px;
     margin-right: 0px;
   }
 }
+
 .logo{
   vertical-align: middle;
   line-height: 1;
-  padding: 0 60px; // leave space for nav button on mobile
   @include small{
     margin-right: 0;
     a{
@@ -51,6 +56,19 @@ $mobile-header-height: 50px;
       top: 0px;
       z-index: 10;
       margin-right: 0;
+    }
+  }
+  .header &{
+    padding: 0 60px; // leave space for nav button on mobile
+  }
+  .mobile-nav &{
+    padding: 20px;
+    font-size: 30px;
+    &, a{
+      color: white;
+    }
+    @include small{
+      display: none;
     }
   }
 }

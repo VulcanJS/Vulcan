@@ -30,6 +30,18 @@ settingsSchemaObject = {
       instructions: 'A short description used for SEO purposes.'
     }
   },
+  navLayout: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'general',
+      instructions: 'The layout used for the main menu',
+      options: [
+        {value: 'top-nav', label: 'Top'},
+        {value: 'side-nav', label: 'Side'}
+      ]
+    }
+  },
   requireViewInvite: {
     type: Boolean,
     optional: true,

@@ -1,7 +1,7 @@
 <template name="layout">
 
 {{> UI.dynamic template=css}}
-  <div class="outer-wrapper {{currentPage}}">
+  <div class="outer-wrapper {{currentPage}} {{navLayout}}">
     {{> UI.dynamic template=mobile_nav}}
     <div class="inner-wrapper template-{{pageName}}">
       {{> UI.dynamic template=nav}}

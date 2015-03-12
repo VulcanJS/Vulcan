@@ -14,14 +14,11 @@ Template[getTemplate('nav')].helpers({
   dropdownClass: function () {
     return getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
   },
+  logoTemplate: function () {
+    return getTemplate('logo');
+  },
   getTemplate: function () {
     return getTemplate(this.template);
-  },
-  site_title: function(){
-    return getSetting('title', "Telescope");
-  },
-  logo_url: function(){
-    return getSetting('logoUrl');
   },
   headerClass: function () {
     var color = getSetting('headerColor');
