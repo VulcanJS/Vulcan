@@ -22,8 +22,8 @@ http
 
 iron:router
 
-meteorhacks:fast-render@2.1.5
-meteorhacks:subs-manager@1.2.2
+meteorhacks:fast-render
+meteorhacks:subs-manager
 meteorhacks:npm
 
 aldeed:autoform@5.0.0
@@ -40,12 +40,13 @@ sacha:juice
 chuangbo:marked
 percolatestudio:synced-cron
 npm-container
-matb33:collection-hooks@0.7.7
+matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
 bengott:avatar
 jparker:gravatar
-tap:i18n@1.2.1
+useraccounts:unstyled@1.8.1
+tap:i18n
 tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
 aslagle:reactive-table
@@ -87,4 +88,3 @@ telescope-subscribe-to-posts
 telescope-tagline-banner
 
 # Custom Packages
-useraccounts:unstyled@1.8.1
