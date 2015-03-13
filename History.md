@@ -7,6 +7,7 @@
 * Added Greek translation (thanks @portokallidis!).
 * Improved Spanish translation (thanks @brayancruces!).
 * Added new callbacks for upvoting and downvoting (thanks @Baxter900 !).
+* OP comments now get the `author-comment` CSS class.
 
 ## v0.14.2 “FaviconScope”
 

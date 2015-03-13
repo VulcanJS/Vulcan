@@ -36,13 +36,13 @@ var handleFeed = function(error, feed) {
         feedId: feedId,
         feedItemId: item.id,
         userId: userId,
-        categories:categories
+        categories: categories
       }
 
       if (item.description)
         post.body = toMarkdown(he.decode(item.description));
 
-      // console.log(feed)
+      // console.log(item)
 
       // if RSS item link is a 301 or 302 redirect, follow the redirect
       var get = HTTP.get(item.link, {followRedirects: false});
@@ -74,7 +74,7 @@ fetchFeeds = function() {
 
     // if feed doesn't specify a user, default to admin
     var userId = !!feed.userId ? feed.userId : getFirstAdminUser()._id;
-    var categories =feed.categories;
+    var categories = feed.categories;
     var feedId = feed._id;
     
     try {
