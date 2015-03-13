@@ -12,7 +12,8 @@ Template[getTemplate('nav')].helpers({
     return !!secondaryNav.length;
   },
   dropdownClass: function () {
-    return getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
+    // only use dropdowns for top nav
+    return getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
   },
   logoTemplate: function () {
     return getTemplate('logo');

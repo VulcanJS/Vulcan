@@ -1,3 +1,7 @@
+// 1. Neutral
+// 2. Mobile
+// 3. Desktop
+
 $mobile-header-height: 50px;
 
 .header{
@@ -17,21 +21,18 @@ $mobile-header-height: 50px;
     list-style-type: none;
     >li{
       margin-bottom: 0;
-      display: inline-block;
+      // display: inline-block;
       &:last-child .header-submodule{
         margin-right: 0px;
       }
     }
   }
-  .side-nav &{
-    @include medium-large{
-      display: none;
-    }
-  }
 }
 .header-module, .header-submodule{
-  display: inline-block;
-  margin-right: 20px;
+  .top-nav &{
+    display: inline-block;
+    margin-right: 20px;
+  }
 }
 .header-module{
   &:last-child{
@@ -59,7 +60,9 @@ $mobile-header-height: 50px;
     }
   }
   .header &{
-    padding: 0 60px; // leave space for nav button on mobile
+    @include small{
+      padding: 0 60px; // leave space for nav button on mobile
+    }
   }
   .mobile-nav &{
     padding: 20px;

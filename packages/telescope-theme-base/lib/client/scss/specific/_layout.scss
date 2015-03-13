@@ -17,20 +17,12 @@ body{
 
 .outer-wrapper{
   position:relative;
-  &.side-nav{
-    @include medium-large{
-      margin-left: 200px;
-    }
-  }
 }
+
 .content-wrapper{
   padding:0 10px 20px 10px;
-  .side-nav &{
-    @include medium-large{
-      padding-top: 20px;
-    }
-  }
 }
+
 .content-wrapper{
   max-width: 1000px;
   margin: 0 auto;

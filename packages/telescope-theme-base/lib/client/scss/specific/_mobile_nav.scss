@@ -26,12 +26,6 @@ $mobile-nav-width: 200px;
   left: calc((100% - 60px) * -1);
   width: $mobile-nav-width;
   width: calc(100% - 60px);
-  .side-nav &{
-    @include medium-large{
-      left: 0px;
-      width: 200px;
-    }
-  }
 }
 
 .mobile-nav, .inner-wrapper{
