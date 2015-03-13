@@ -66,6 +66,12 @@ Template[getTemplate('comment_item')].helpers({
   comment_item: function () {
     return getTemplate('comment_item');
   },
+  commentClass: function () {
+    // if this comment was made by the post author
+    if (Posts.findOne(this.postId).userId == this.userId) {
+      return 'author-comment';
+    }
+  },
   full_date: function(){
     return this.createdAt.toString();
   },
