@@ -1,5 +1,5 @@
 <template name="postInfo">
-  <div class="post-meta-item">
+  <div class="post-meta-item" aria-live="off">
     <span class="points">{{baseScore}}</span>
     <span class="unit">{{pointsUnitDisplayText}}</span>
     {{#if postedAt}}<span class="post-time">{{timeAgo postedAt}}</span>{{/if}}
