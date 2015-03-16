@@ -37,7 +37,7 @@ scheduleCampaign = function (campaign, isTest) {
       console.log( '// Creating campaign…');
 
       // create campaign
-      var campaign = api.call( 'campaigns', 'create', campaignOptions);
+      var mailchimpCampaign = api.call( 'campaigns', 'create', campaignOptions);
       
       console.log( '// Campaign created');
       // console.log(campaign)
@@ -45,7 +45,7 @@ scheduleCampaign = function (campaign, isTest) {
       var scheduledTime = moment().utcOffset(0).add(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
 
       var scheduleOptions = {
-        cid: campaign.id,
+        cid: mailchimpCampaign.id,
         schedule_time: scheduledTime
       };
 
@@ -57,12 +57,12 @@ scheduleCampaign = function (campaign, isTest) {
 
       // if this is not a test, mark posts as sent
       if (!isTest)
-        Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
       var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
         time: scheduledTime,
-        newsletterLink: campaign.archive_url,
+        newsletterLink: mailchimpCampaign.archive_url,
         subject: subject
       });
       sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
