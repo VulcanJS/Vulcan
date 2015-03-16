@@ -7,7 +7,7 @@ Template[getTemplate('users')].helpers({
       fields: [
         { key: 'avatar', label: '', tmpl: Template.users_list_avatar, sortable: false },
         { key: 'username', label: 'Username', tmpl: Template.users_list_username },
-        { key: 'profile.name', label: 'Display Name' },
+        { key: 'profile.username', label: 'Display Name' },
         { key: 'profile.email', label: 'Email', tmpl: Template.users_list_email },
         { key: 'createdAt', label: 'Member Since', tmpl: Template.users_list_created_at, sort: 'descending' },
         { key: 'postCount', label: 'Posts' },
