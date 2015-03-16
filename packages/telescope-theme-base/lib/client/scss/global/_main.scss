@@ -4,6 +4,9 @@
 .visible{
   display: block;
 }
+.sr-only{
+  display: none;
+}
 .overlay{
   position:fixed;
   top:0;
