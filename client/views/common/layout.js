@@ -24,7 +24,7 @@ Template[getTemplate('layout')].helpers({
     return getSetting('extraCode');
   },
   heroModules: function () {
-    return heroModules;
+    return _.sortBy(heroModules, 'order');
   },
   getTemplate: function () {
     return getTemplate(this.template);
