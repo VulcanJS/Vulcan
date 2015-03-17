@@ -283,13 +283,18 @@ var migrationsList = {
   addLastCommentedAt: function () {
     var i = 0;
     Posts.find({$and: [
-      {comments: {$gt: 0}},
+      {$or: [{comments: {$gt: 0}}, {commentCount: {$gt: 0}}]},
       {lastCommentedAt: {$exists : false}}
     ]}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
-      var postComments = Comments.find({postId: post._id}, {sort: {postedAt: -1}}).fetch();
-      var lastComment = postComments[0];
+      var postComments = Comments.find({$or: [{postId: post._id}, {post: post._id}]}, {sort: {postedAt: -1}}).fetch();
+      var lastComment;
+      if (_.isEmpty(postComments)) {
+        console.log('postComments from post '+post._id+' is empty. Skipping.');
+        return;
+      }
+      lastComment = postComments[0];
       Posts.update(post._id, { $set: { lastCommentedAt: lastComment.postedAt}}, {multi: false, validate: false});
       console.log("---------------------");
     });
