@@ -27,8 +27,8 @@ Accounts.onCreateUser(function(options, user){
     user.email_hash = getEmailHash(user);
 
   // set username on profile
-  if (!user.profile.name)
-    user.profile.name = user.username;
+  if (!user.profile.username)
+    user.profile.username = user.username;
 
   // create slug from username
   user.slug = slugify(getUserName(user));

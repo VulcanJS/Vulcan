@@ -47,7 +47,7 @@ Template[getTemplate('userAccount')].events({
     var email = $target.find('[name=email]').val();
     var user = this;
     var update = {
-      "profile.name": name,
+      "profile.username": name,
       "profile.slug": slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.email": email,
