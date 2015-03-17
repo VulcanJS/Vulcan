@@ -1,11 +1,16 @@
-<div class="post-thumbnail" style="display:inline-block;">
+<div class="post-thumbnail">
   <a class="post-thumbnail-link" href="{{postLink}}">
     <img class="post-thumbnail-image" src="{{thumbnailUrl}}">
   </a>
 </div>
-<div class="post-info" style="display:inline-block;vertical-align:top;">
+<div class="post-info">
   <h3 class="post-heading">
     <a href="{{postLink}}" class="post-title">{{title}}</a>
+    {{> postDomain}}
   </h3>
-  <a href="/posts/{{_id}}">Comment this post on {{siteTitle}}</a>
+  <div class="post-meta">
+    {{> postAuthor}}
+    {{> postInfo}}
+    {{> postCommentsLink}}
+  </div>
 </div>

@@ -29,23 +29,6 @@ function twitterMetaProperties(post,protocol){
   };
 }
 
-var fs=Npm.require("fs");
-var fsReadFileSync=Meteor.wrapAsync(fs.readFile,fs);
-
-function addInlineCss(html){
-  var cssName = _.find(Object.keys(WebAppInternals.staticFiles), function (fileName) {
-    return /.css$/.test(fileName);
-  });
-  var cssPath = WebAppInternals.staticFiles[cssName].absolutePath;
-  var css = fsReadFileSync(cssPath,{
-    encoding: "utf8"
-  });
-  //
-  return juice(html,{
-    extraCss: css
-  });
-}
-
 function postSharePageHandler(req, res, next) {
   var urlRegexp=/^\/posts\/(\w+)\/share\??/;
   var matches=req.url.match(urlRegexp);
@@ -68,8 +51,7 @@ function postSharePageHandler(req, res, next) {
     "Content-Type": "text/html; charset=UTF-8"
   });
   var html=SSR.render("main",dataContext);
-  var htmlWithInlineCss=addInlineCss(html);
-  res.end(htmlWithInlineCss);
+  res.end(html);
 }
 
 WebApp.connectHandlers.stack.splice(1,0,{

@@ -8,10 +8,7 @@ Package.onUse(function(api) {
 	//
 	api.use("webapp","server");
 	//
-	api.use([
-		"sacha:juice@0.1.2",
-		"meteorhacks:ssr@2.1.1"
-	],"server");
+	api.use("meteorhacks:ssr@2.1.1","server");
 	// private
 	api.addFiles([
 		"private/views/common/css.html",
@@ -19,7 +16,11 @@ Package.onUse(function(api) {
 		"private/views/common/open-graph.html",
 		"private/views/common/twitter-card.html",
 		"private/views/nav/nav.html",
+		"private/views/posts/modules/post-author.html",
+		"private/views/posts/modules/post-comments-link.html",
 		"private/views/posts/modules/post-content.html",
+		"private/views/posts/modules/post-domain.html",
+		"private/views/posts/modules/post-info.html",
 		"private/views/posts/post-body.html",
 		"private/views/posts/post-item.html",
 		"private/views/posts/post-share-page.html",
@@ -35,7 +36,11 @@ Package.onUse(function(api) {
 		"server/views/common/open-graph.js",
 		"server/views/common/twitter-card.js",
 		"server/views/nav/nav.js",
+		"server/views/posts/modules/post-author.js",
+		"server/views/posts/modules/post-comments-link.js",
 		"server/views/posts/modules/post-content.js",
+		"server/views/posts/modules/post-domain.js",
+		"server/views/posts/modules/post-info.js",
 		"server/views/posts/post-body.js",
 		"server/views/posts/post-item.js",
 		"server/views/posts/post-share-page.js",
