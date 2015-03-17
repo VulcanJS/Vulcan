@@ -8,16 +8,23 @@ scheduleCampaign = function (campaign, isTest) {
 
   if(!!apiKey && !!listId){
 
+		var wordCount = 15;
+		var subject = campaign.subject;
+		while (subject.length >= 150){
+			subject = trimWords(subject, wordCount);
+			wordCount--;
+		}
+		
     try {
 
       var api = new MailChimp(apiKey);
       var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = getSetting('defaultEmail');
+      var defaultEmail = getSetting('defaultEmail');			
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
-          subject: campaign.subject,
+          subject: subject,
           from_email: defaultEmail,
           from_name: getSetting('title')+ ' Top Posts',
         },
@@ -56,14 +63,14 @@ scheduleCampaign = function (campaign, isTest) {
       var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
         time: scheduledTime,
         newsletterLink: campaign.archive_url,
-        subject: campaign.subject
+        subject: subject
       });
       sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
 
     } catch (error) {
       console.log(error);
     }
-    return campaign.subject;
+    return subject;
   }
 }
 

@@ -17,5 +17,9 @@
       {{> UI.dynamic template=comment_form}}
     {{/if}}
 
+    {{#if isLoggedIn}}
+    {{else}}
+      <p><a href="/sign-in">{{_ "please_sign_in_to_reply"}}</a></p>
+    {{/if}}
   </div>
 </template>

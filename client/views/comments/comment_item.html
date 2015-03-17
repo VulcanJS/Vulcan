@@ -1,5 +1,5 @@
 <template name="comment_item">
-  <li class="comment module comment-displayed" id="{{_id}}">
+  <li class="comment module comment-displayed {{commentClass}}" id="{{_id}}">
    <div class="comment-body">
       {{#if isDeleted}}
         <div class="comment-deleted">This comment has been deleted.</div>
