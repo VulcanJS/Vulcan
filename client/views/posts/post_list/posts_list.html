@@ -1,7 +1,7 @@
 <template name="posts_list">
   <div class="posts-wrapper grid grid-module">
     {{> UI.dynamic template=postsListIncoming data=incoming}}
-    <div class="posts list {{postsLayout}}">
+    <div class="posts list {{postsLayout}}" aria-live="polite">
       {{#each postsCursor}}
         {{> UI.dynamic template=before_post_item}}
         {{> UI.dynamic template=post_item}}

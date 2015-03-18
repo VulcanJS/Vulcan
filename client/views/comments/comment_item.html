@@ -7,16 +7,16 @@
       <div class="comment-content">
         <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
-            <i class="icon-up"></i>
+            <i class="icon-up" aria-hidden="true"></i>
             <span>{{_ "upvote"}}</span>
           </a>
           <a class="downvote" href="#">
-            <i class="icon-down"></i>
+            <i class="icon-down" aria-hidden="true"></i>
             <span>{{_ "downvote"}}</span>
           </a>
         </div>
         <div class="comment-meta">
-          <div class="user-avatar avatar-medium">{{> avatar userId=userId shape="circle"}}</div>
+          <div class="user-avatar avatar-medium" aria-hidden="true">{{> avatar userId=userId shape="circle"}}</div>
           <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
           <span class="comment-time">{{timeAgo ago}},</span>
           <span class="points">{{upvotes}}</span> <span class="unit">points </span>

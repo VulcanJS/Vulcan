@@ -1,6 +1,7 @@
 <template name="postDiscuss">
   <a class="discuss-link go-to-comments action" href="/posts/{{_id}}" title="{{_ 'discuss'}}">
-    <i class="action-icon icon-comment"></i>
+    <i class="action-icon icon-comment" aria-hidden="true"></i>
     <span class="action-count">{{commentCount}}</span>
+    <span class="sr-only"> {{_ "comments"}}</span>
   </a>
 </template>
