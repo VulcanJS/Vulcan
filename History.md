@@ -1,3 +1,7 @@
+## v0.14.4
+
+* Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
+
 ## v0.14.3 “TableScope”
 
 * Implemented Reactive Table for the Users dashboard (thanks @jshimko!).

@@ -19,7 +19,7 @@ var feedSchema = new SimpleSchema({
       }
     }
   },
-   categories: {
+  categories: {
     type: [String],
     label: 'categories',
     optional: true,

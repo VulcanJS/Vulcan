@@ -120,47 +120,6 @@ var migrationsList = {
     });
     return i;
   },
-  updateUserNames: function () {
-    var i = 0;
-    var allUsers = Meteor.users.find();
-    console.log('> Found '+allUsers.count()+' users.\n');
-
-    allUsers.forEach(function(user){
-      i++;
-
-    // Perform the same transforms done by useraccounts with `lowercaseUsernames` set to `true`
-    var oldUsername = user.username;
-    var username = user.username;
-    username = username.trim().replace(/\s+/gm, ' ');
-    user.profile.username = user.profile.name || username;
-    delete user.profile.name;
-    username = username.toLowerCase().replace(/\s+/gm, '');
-    user.username = username;
-
-    if (user.emails.length > 0) {
-      _.each(user.emails, function(email){
-        email.address = email.address.toLowerCase().replace(/\s+/gm, '');
-      });
-    }
-
-    console.log('> Updating user '+user._id+' ('+oldUsername+' -> ' + user.username + ')');
-
-      try {
-        Meteor.users.update(user._id, {
-          $set: {
-            emails: user.emails,
-            profile: user.profile,
-            username: user.username,
-          },
-        });
-      }
-      catch (err) {
-        console.warn('> Unable to convert username ' + user.username + ' to lowercase!');
-        console.warn('> Please try to fix it by hands!! :(');
-      }
-    });
-    return i;
-  },
   updateUserProfiles: function () {
     var i = 0;
     var allUsers = Meteor.users.find();
@@ -487,6 +446,47 @@ var migrationsList = {
       console.log("Post: "+post._id);
       Posts.update(post._id, { $set: { 'thumbnailUrl': newThumbnailUrl}}, {multi: true, validate: false});
       console.log("---------------------");
+    });
+    return i;
+  },
+  updateUserNames: function () {
+    var i = 0;
+    var allUsers = Meteor.users.find();
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      i++;
+
+    // Perform the same transforms done by useraccounts with `lowercaseUsernames` set to `true`
+    var oldUsername = user.username;
+    var username = user.username;
+    username = username.trim().replace(/\s+/gm, ' ');
+    user.profile.username = user.profile.name || username;
+    delete user.profile.name;
+    username = username.toLowerCase().replace(/\s+/gm, '');
+    user.username = username;
+
+    if (user.emails.length > 0) {
+      _.each(user.emails, function(email){
+        email.address = email.address.toLowerCase().replace(/\s+/gm, '');
+      });
+    }
+
+    console.log('> Updating user '+user._id+' ('+oldUsername+' -> ' + user.username + ')');
+
+      try {
+        Meteor.users.update(user._id, {
+          $set: {
+            emails: user.emails,
+            profile: user.profile,
+            username: user.username,
+          },
+        });
+      }
+      catch (err) {
+        console.warn('> Unable to convert username ' + user.username + ' to lowercase!');
+        console.warn('> Please try to fix it by hand!! :(');
+      }
     });
     return i;
   }
