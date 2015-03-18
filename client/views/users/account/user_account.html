@@ -1,6 +1,6 @@
 <template name="userAccount">
   <div class="grid-small grid-module dialog user-edit">
-  
+
   {{#if profileIncomplete}}
     <div>
       {{_ "please_complete_your_profile_below_before_continuing"}}
@@ -24,7 +24,7 @@
       <div class="control-group">
         <label>{{_ "display_name"}}</label>
         <div class="controls">
-          <input name="name" type="text" value="{{profile.name}}" />
+          <input name="name" type="text" value="{{profile.username}}" />
         </div>
       </div>
       <div class="control-group">

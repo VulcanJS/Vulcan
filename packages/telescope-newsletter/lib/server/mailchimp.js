@@ -8,16 +8,23 @@ scheduleCampaign = function (campaign, isTest) {
 
   if(!!apiKey && !!listId){
 
+		var wordCount = 15;
+		var subject = campaign.subject;
+		while (subject.length >= 150){
+			subject = trimWords(subject, wordCount);
+			wordCount--;
+		}
+		
     try {
 
       var api = new MailChimp(apiKey);
       var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = getSetting('defaultEmail');
+      var defaultEmail = getSetting('defaultEmail');			
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
-          subject: campaign.subject,
+          subject: subject,
           from_email: defaultEmail,
           from_name: getSetting('title')+ ' Top Posts',
         },
@@ -30,7 +37,7 @@ scheduleCampaign = function (campaign, isTest) {
       console.log( '// Creating campaign…');
 
       // create campaign
-      var campaign = api.call( 'campaigns', 'create', campaignOptions);
+      var mailchimpCampaign = api.call( 'campaigns', 'create', campaignOptions);
       
       console.log( '// Campaign created');
       // console.log(campaign)
@@ -38,7 +45,7 @@ scheduleCampaign = function (campaign, isTest) {
       var scheduledTime = moment().utcOffset(0).add(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
 
       var scheduleOptions = {
-        cid: campaign.id,
+        cid: mailchimpCampaign.id,
         schedule_time: scheduledTime
       };
 
@@ -50,20 +57,20 @@ scheduleCampaign = function (campaign, isTest) {
 
       // if this is not a test, mark posts as sent
       if (!isTest)
-        Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
       var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
         time: scheduledTime,
-        newsletterLink: campaign.archive_url,
-        subject: campaign.subject
+        newsletterLink: mailchimpCampaign.archive_url,
+        subject: subject
       });
       sendEmail(defaultEmail, 'Newsletter scheduled', buildEmailTemplate(confirmationHtml));
 
     } catch (error) {
       console.log(error);
     }
-    return campaign.subject;
+    return subject;
   }
 }
 

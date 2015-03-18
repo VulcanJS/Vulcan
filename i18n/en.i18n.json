@@ -110,6 +110,7 @@
   "edit": "Edit",
   "reply": "Reply",
   "no_comments": "No comments.",
+  "please_sign_in_to_reply": "Please sign in to reply",
 
   //Errors
   "you_are_already_logged_in": "You are already logged in",
