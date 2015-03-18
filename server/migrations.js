@@ -456,28 +456,28 @@ var migrationsList = {
   },
   updateUserNames: function () {
     var i = 0;
-    var allUsers = Meteor.users.find();
+    var allUsers = Meteor.users.find({username: {$exists: true}});
     console.log('> Found '+allUsers.count()+' users.\n');
 
     allUsers.forEach(function(user){
       i++;
 
-    // Perform the same transforms done by useraccounts with `lowercaseUsernames` set to `true`
-    var oldUsername = user.username;
-    var username = user.username;
-    username = username.trim().replace(/\s+/gm, ' ');
-    user.profile.username = user.profile.name || username;
-    delete user.profile.name;
-    username = username.toLowerCase().replace(/\s+/gm, '');
-    user.username = username;
+      // Perform the same transforms done by useraccounts with `lowercaseUsernames` set to `true`
+      var oldUsername = user.username;
+      var username = user.username;
+      username = username.trim().replace(/\s+/gm, ' ');
+      user.profile.username = user.profile.name || username;
+      delete user.profile.name;
+      username = username.toLowerCase().replace(/\s+/gm, '');
+      user.username = username;
 
-    if (user.emails.length > 0) {
-      _.each(user.emails, function(email){
-        email.address = email.address.toLowerCase().replace(/\s+/gm, '');
-      });
-    }
+      if (user.emails && user.emails.length > 0) {
+        _.each(user.emails, function(email){
+          email.address = email.address.toLowerCase().replace(/\s+/gm, '');
+        });
+      }
 
-    console.log('> Updating user '+user._id+' ('+oldUsername+' -> ' + user.username + ')');
+      console.log('> Updating user '+user._id+' ('+oldUsername+' -> ' + user.username + ')');
 
       try {
         Meteor.users.update(user._id, {
