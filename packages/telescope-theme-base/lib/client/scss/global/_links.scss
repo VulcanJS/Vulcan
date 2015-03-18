@@ -3,6 +3,7 @@ a{
   &, &:link, &:visited, &:active{
     color: $text;
     font-weight: bold;
+    font-size: 20px;
   }
   &:hover{
     color: $red;

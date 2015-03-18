@@ -30,10 +30,12 @@ $mobile-header-height: 50px;
 .header-module, .header-submodule{
   display: inline-block;
   margin-right: 20px;
+
 }
 .header-module{
   &:last-child{
     margin-right: 0px;
+
   }
 }
 .logo{
@@ -43,7 +45,7 @@ $mobile-header-height: 50px;
   @include small{
     margin-right: 0;
     a{
-      font-size: 24px;
+      font-size: 84px;
       display: block;
       position: static;
       width: 100%;

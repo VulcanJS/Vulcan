@@ -5,12 +5,22 @@ $small-break: 30em;
   }
 }
 
-.posts-list .post-thumbnail{
+.posts-list{
   flex-grow: 0;
   flex-shrink: 0;
   margin-right: 10px;
   @include small{
-    margin: 0 0 0 10px;
+    margin: 0 0 0 40px;
+    float: right;
+  }
+}
+
+.post-thumbnail{
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: 250px;
+  @include small{
+    margin: 0 0 0 40px;
     float: right;
   }
 }
@@ -18,7 +28,7 @@ $small-break: 30em;
 .post-thumbnail-link{
   display: block;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: 80px;
   @include small{
     width: 50px;
@@ -26,8 +36,9 @@ $small-break: 30em;
 }
 
 .post-thumbnail-image{
-  width: 100%;
-  height: 100%;
+  style: float;
+  width: 350%;
+  height: 350%;
   display: block;
 }
 
@@ -82,7 +93,7 @@ $small-break: 30em;
   width: 40px;
   color: white;
   font-size: 40px;
-  text-align: center;
+  text-align: right-center;
   line-height: 40px;
 }
 

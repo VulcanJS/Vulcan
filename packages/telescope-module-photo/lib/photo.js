@@ -7,16 +7,16 @@ var photo = {
     autoform:{
       editable: true,
       omit: false,
-      afFieldInput: {
-        type: "cfs-file"
-      }
+        type: "cfs-file",
+        collection: "files"
     }
   }
 }
+
 addToPostSchema.push(photo);
+
 
 postModules.push({
   template: 'postPhoto',
   position: 'center-center'
 });
-

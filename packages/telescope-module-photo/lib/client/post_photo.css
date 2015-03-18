@@ -1,0 +1,8 @@
+.post-photo{
+  margin-right: 0px !important;
+}
+.post-photo img{
+  width: 80px;
+  display: inline-block;
+  margin-right: 10px;
+}
