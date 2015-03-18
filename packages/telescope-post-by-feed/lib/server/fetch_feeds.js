@@ -16,32 +16,32 @@ var feedHandler = {
     return stream;
   },
 
-  getItemCategories: function(categories, item) {
-    var itemCategories = [],
-    category;
-
+  getItemCategories: function(item, feedCategories) {
+    
+    var itemCategories = [];
+    
+    // loop over RSS categories for the current item if it has any
     if (item.categories && item.categories.length > 0) {
       item.categories.forEach(function(name) {
-        category = Categories.findOne({name: name}, {fields: {_id: 1}});
 
+        // if the RSS category corresponds to a Telescope cateogry, add it
+        var category = Categories.findOne({name: name}, {fields: {_id: 1}});
         if (category) {
           itemCategories.push(category._id);
         }
+
       });
     }
 
-    if (itemCategories.length > 0) {
-      if (categories) {
-        itemCategories = itemCategories.concat(categories);
-      }
-    } else {
-      itemCategories = categories;
+    // add predefined feed categories if there are any and remove any duplicates
+    if (!!feedCategories) {
+      itemCategories = _.uniq(itemCategories.concat(feedCategories));
     }
 
     return itemCategories;
   },
 
-  handle: function(content, userId, categories, feedId) {
+  handle: function(content, userId, feedCategories, feedId) {
     var stream = this.getStream(content),
     feedParser = new FeedParser(),
     newItemsCount = 0,
@@ -68,7 +68,7 @@ var feedHandler = {
 
         // check if post already exists
         if (!!Posts.findOne({feedItemId: item.guid})) {
-          // clog('// Feed item already imported');
+          clog('// Feed item already imported');
           continue;
         }
 
@@ -80,7 +80,7 @@ var feedHandler = {
           feedId: feedId,
           feedItemId: item.guid,
           userId: userId,
-          categories: self.getItemCategories(categories, item)
+          categories: self.getItemCategories(item, feedCategories)
         };
 
         if (item.description)
@@ -121,15 +121,15 @@ var fetchFeeds = function() {
 
     // if feed doesn't specify a user, default to admin
     var userId = !!feed.userId ? feed.userId : getFirstAdminUser()._id;
-    var categories = feed.categories;
+    var feedCategories = feed.categories;
     var feedId = feed._id;
 
     try {
       content = HTTP.get(feed.url).content;
-      feedHandler.handle(content, userId, categories, feedId);
+      feedHandler.handle(content, userId, feedCategories, feedId);
     } catch (error) {
       console.log(error);
-      return true; // just go to next url
+      return true; // just go to next feed URL
     }
   });
 };

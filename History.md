@@ -1,7 +1,10 @@
 ## v0.14.4
 
 * Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
-
+* Romanian translation (thanks @razvansky!).
+* Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun).
+* Now supporting RSS categories (thanks @delgermurun).
+ 
 ## v0.14.3 “TableScope”
 
 * Implemented Reactive Table for the Users dashboard (thanks @jshimko!).
