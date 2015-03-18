@@ -10,6 +10,7 @@
         {{#each heroModules}}
           {{> UI.dynamic template=getTemplate}}
         {{/each}}
+        {{> yield "adminMenu"}}
         {{> yield}}
         {{> UI.dynamic template=footer}}
       </div>

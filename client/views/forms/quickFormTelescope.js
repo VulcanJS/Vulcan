@@ -13,7 +13,7 @@ var canEditField = function (field) {
 
 Template[getTemplate('quickForm_telescope')].helpers({
   fieldsWithNoFieldset: function () {
-
+    console.log(AutoForm.getFormSchema(this.atts.id))
     // get names of fields who don't have an autoform attribute or don't have a group, but are not omitted
     // note: we need to _.map() first to assign the field key to the "name" property to preserve it. 
     var fields = _.pluck(_.filter(_.map(AutoForm.getFormSchema()._schema, function (field, key) {
