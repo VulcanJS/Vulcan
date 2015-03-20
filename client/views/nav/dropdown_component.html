@@ -1,0 +1,43 @@
+<!-- 
+
+Dropdown Component
+
+dropdownName (String)
+
+dropdownItems (Array)
+- route (String/Function) [optional]
+- label (String/Function) [optional]
+- description (String) [optional]
+
+dropdownLabel (String) [optional]
+
+dropdownItemLabel (Function) [optional]
+(Will default to "label" property)
+
+dropdownItemPath (Function) [optional]
+(Will default to "route" property)
+
+-->
+
+<template name="dropdownComponent">
+  <div class="dropdown header-submodule {{dropdownClass}}">
+    <a class="view dropdown-top-level" href="/">{{dropdownLabel}}</a>
+    <div class="dropdown-menu">
+      <ul role="menu" aria-labelledby="dLabel">
+        {{#with dropdownItems}}
+          {{#each this}}
+            <li>
+              <a class="dropdown-sub-level" href="{{itemPath}}">
+                <span class="menu-label">{{itemLabel}}</span>
+                {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+              </a>
+            </li>
+          {{/each}}
+          {{#if hasMoreThanThreeItems}}
+            <li><a href="#">{{_ "Show More"}}</a></li>
+          {{/if}}
+        {{/with}}
+      </ul>
+    </div>
+  </div>
+</template>

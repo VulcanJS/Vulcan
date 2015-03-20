@@ -15,8 +15,9 @@ Package.onUse(function (api) {
     'STATUS_APPROVED',
     'STATUS_REJECTED',
     
-    'adminMenu', 
-    'viewsMenu', 
+    'adminMenu',
+    'viewsMenu',
+    'userMenu',
     'addToPostSchema', 
     'addToCommentsSchema', 
     'addToSettingsSchema', 

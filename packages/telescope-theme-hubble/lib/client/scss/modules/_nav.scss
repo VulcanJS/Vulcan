@@ -99,10 +99,14 @@
  	line-height: 30px !important;
  }
 
-
+$nav-width: 250px;
 .side-nav{
+  .inner-wrapper{
+    margin-left: $nav-width;
+    padding-top: 20px;
+  }
 	.header{
-		width: 200px;
+		width: $nav-width;
 		position: fixed;
 		top: 0px;
 		bottom: 0px;
@@ -128,5 +132,10 @@
 			display: block;
 			font-weight: bold;
 		}
+	}
+	.dropdown-menu{
+		max-height: 90px;
+		overflow: hidden;
+		margin-bottom: $grid-margin;
 	}
 }

@@ -12,11 +12,27 @@ Template[getTemplate('nav')].helpers({
     return !!secondaryNav.length;
   },
   dropdownClass: function () {
+    var dropdownClass = "";
     // only use dropdowns for top nav
-    return getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true) ? 'has-dropdown' : 'no-dropdown';
+    if (this.length > 3) {
+      dropdownClass += "long-dropdown";
+    }
+    if (getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true)) {
+      dropdownClass += "has-dropdown";
+    } else {
+      dropdownClass += "no-dropdown";
+    }
+    return dropdownClass;
+  },
+  hasMoreThanThreeItems: function () {
+    console.log(this)
+    return this.length > 3;
   },
   logoTemplate: function () {
     return getTemplate('logo');
+  },
+  navZoneTemplate: function () {
+    return getTemplate('navZone');
   },
   getTemplate: function () {
     return getTemplate(this.template);

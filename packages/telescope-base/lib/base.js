@@ -104,6 +104,27 @@ viewsMenu = [
   }
 ];
 
+userMenu = [
+  {
+    route: function () {
+      return Router.path('user_profile', {_idOrSlug: Meteor.user().slug});
+    },
+    label: 'profile',
+    description: 'view_your_profile'
+  },
+  {
+    route: function () {
+      return Router.path('user_edit', {slug: Meteor.user().slug});
+    },
+    label: 'edit_account',
+    description: 'edit_your_profile'
+  },
+  {
+    route: 'signOut',
+    label: 'sign_out',
+    description: 'sign_out'
+  }
+]
 // ------------------------------------- Views -------------------------------- //
 
 

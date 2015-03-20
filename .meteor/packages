@@ -29,6 +29,7 @@ meteorhacks:npm
 aldeed:autoform@5.0.0
 aldeed:collection2
 aldeed:simple-schema
+aldeed:template-extension
 
 mrt:jquery-hotkeys
 mrt:cookies
