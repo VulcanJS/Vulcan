@@ -25,7 +25,7 @@ Package.onUse(function (api) {
       'lib/client/scss/modules/_errors.scss',
       'lib/client/scss/modules/_icons.scss',
       'lib/client/scss/modules/_layout.scss',
-      'lib/client/scss/modules/_header.scss',
+      'lib/client/scss/modules/_nav.scss',
       'lib/client/scss/modules/_posts.scss',
       'lib/client/scss/modules/_user-profile.scss',
 

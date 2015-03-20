@@ -11,7 +11,7 @@ Package.onUse(function (api) {
     'telescope-lib', 
     'telescope-base',
     'tap:i18n',
-    'meteorhacks:kadira@2.17.2'
+    'meteorhacks:kadira@2.20.1'
   ], ['client', 'server']);
 
   api.add_files([

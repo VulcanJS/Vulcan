@@ -60,34 +60,6 @@
 			}
 		}
 	}
-	.side-nav &{
-		width: 200px;
-		position: fixed;
-		top: 0px;
-		bottom: 0px;
-		left: 0px;
-		height: 100%;
-		background: #e1e4e5;
-
-		.dropdown-top-level{
-			display: block;
-			border-bottom: 1px solid #ccc;
-			padding-bottom: 5px;
-			margin-bottom: 5px;
-		}
-		.menu-label{
-			display: block;
-		}
-		.menu-description{
-			// display: block;
-			display: none;
-			font-weight: normal;
-		}
-		.account-link{
-			display: block;
-			font-weight: bold;
-		}
-	}
 }
 .logo{
 	a, a:visited{
@@ -126,3 +98,35 @@
  .newsletter-dismiss{
  	line-height: 30px !important;
  }
+
+
+.side-nav{
+	.header{
+		width: 200px;
+		position: fixed;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		height: 100%;
+		background: #e1e4e5;
+		overflow-y: auto;
+		.dropdown-top-level{
+			display: block;
+			border-bottom: 1px solid #ccc;
+			padding-bottom: 5px;
+			margin-bottom: 5px;
+		}
+		.menu-label{
+			display: block;
+		}
+		.menu-description{
+			// display: block;
+			display: none;
+			font-weight: normal;
+		}
+		.account-link{
+			display: block;
+			font-weight: bold;
+		}
+	}
+}
