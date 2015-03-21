@@ -32,7 +32,10 @@ dropdownLabel (String) [optional]
           {{/each}}
         </ul>
         {{#if showMore}}
-          <a class="show-more" href="#">{{_ "Show More"}}</a>
+          <a class="show-more" href="#">
+            <img class="show-more-plus" src="/img/plus.svg" alt="{{_ "Show More"}}" />
+            <img class="show-more-minus" src="/img/minus.svg" alt="{{_ "Show Less"}}" />
+          </a>
         {{/if}}
       {{/with}}
     </div>

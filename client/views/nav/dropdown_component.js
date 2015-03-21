@@ -40,6 +40,11 @@ Template[getTemplate('dropdownComponent')].helpers({
   }
 });
 
+Template[getTemplate('dropdownComponent')].onRendered(function () {
+  var $dropdown = this.$('.dropdown');
+  var height = $dropdown.height();
+});
+
 Template[getTemplate('dropdownComponent')].events({
   'click .show-more': function (e, t) {
     e.preventDefault();

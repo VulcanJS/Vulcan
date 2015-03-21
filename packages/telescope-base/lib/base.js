@@ -34,12 +34,8 @@ STATUS_REJECTED=3;
 // ------------------------------------- Navigation -------------------------------- //
 
 
-// array containing nav items; initialize with views menu and admin menu
+// array containing nav items;
 primaryNav = [
-  {
-    template: 'viewsMenu',
-    order: 10
-  }
 ];
 
 secondaryNav = [
