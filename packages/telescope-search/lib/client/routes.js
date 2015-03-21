@@ -5,7 +5,13 @@ Meteor.startup(function () {
     onBeforeAction: function() {
       var query = this.params.query;
       if ('q' in query) {
-        Session.set('searchQuery', query.q);
+        // if search box has 'empty' class, that means user just deleted last character in search keyword
+        // but router hasn't updated url, so params.query still has '?q=<LAST CHARACTER>'
+        // if we set searchQuery in this case, user will see last character pops up again unexpectedly
+        // so add this check to fix the bug. issue #825
+        if (!$('.search').hasClass('empty'))  {
+          Session.set('searchQuery', query.q);
+        }
         if (query.q) {
           Meteor.call('logSearch', query.q)
         }
