@@ -19,6 +19,10 @@ categorySchema = new SimpleSchema({
     optional: true,
     autoform: {
     }
+  },
+  image: {
+    type: String,
+    optional: true
   }
 });
 
