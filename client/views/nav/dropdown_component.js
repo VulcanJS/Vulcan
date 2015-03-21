@@ -43,6 +43,11 @@ Template[getTemplate('dropdownComponent')].helpers({
 Template[getTemplate('dropdownComponent')].onRendered(function () {
   var $dropdown = this.$('.dropdown');
   var height = $dropdown.height();
+
+  var mySVGsToInject = $dropdown.find('.svg');
+  SVGInjector(mySVGsToInject, {}, function () {
+    $dropdown.find('.svg').css('visibility', 'visible');
+  });
 });
 
 Template[getTemplate('dropdownComponent')].events({

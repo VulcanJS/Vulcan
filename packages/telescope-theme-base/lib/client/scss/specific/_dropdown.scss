@@ -79,17 +79,18 @@
   padding: 8px 0;
   display: block;
   text-align: center;
-  img{
+  .show-more-icon{
     display: block;
+    visibility: hidden; // hide until SVG injection is
     height: 20px;
     width: 20px;
-    opacity: 0.2;
+    opacity: 0.4;
     margin: 0 auto;
   }
   &:hover{
     background: white(0.3);
-    img{
-      opacity: 0.5;
+    .show-more-icon{
+      opacity: 1;
     }
   }
   .show-more-minus{
