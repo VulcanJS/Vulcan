@@ -39,10 +39,6 @@ primaryNav = [
   {
     template: 'viewsMenu',
     order: 10
-  },
-  {
-    template: 'adminMenu',
-    order: 20
   }
 ];
 
@@ -58,30 +54,6 @@ secondaryNav = [
   {
     template: 'submitButton',
     order: 30
-  }
-];
-
-// array containing items in the admin menu
-adminMenu = [
-  {
-    route: 'posts_pending',
-    label: 'Pending',
-    description: 'posts_awaiting_moderation'
-  },
-  {
-    route: 'posts_scheduled',
-    label: 'Scheduled',
-    description: 'future_scheduled_posts'
-  },
-  {
-    route: 'all-users',
-    label: 'Users',
-    description: 'users_dashboard'
-  },
-  {
-    route: 'settings',
-    label: 'Settings',
-    description: 'telescope_settings_panel'
   }
 ];
 
@@ -101,6 +73,32 @@ viewsMenu = [
     route: 'posts_best',
     label: 'best',
     description: 'highest_ranked_posts_ever'
+  },
+  {
+    route: 'posts_pending',
+    label: 'Pending',
+    description: 'posts_awaiting_moderation',
+    adminOnly: true
+  },
+  {
+    route: 'posts_scheduled',
+    label: 'Scheduled',
+    description: 'future_scheduled_posts',
+    adminOnly: true
+  },  
+];
+
+// array containing items in the admin menu
+adminMenu = [
+  {
+    route: 'settings',
+    label: 'Settings',
+    description: 'telescope_settings_panel'
+  },
+  {
+    route: 'all-users',
+    label: 'Users',
+    description: 'users_dashboard'
   }
 ];
 
@@ -118,6 +116,12 @@ userMenu = [
     },
     label: 'edit_account',
     description: 'edit_your_profile'
+  },
+  {
+    route: 'settings',
+    label: 'settings',
+    description: 'settings',
+    adminOnly: true
   },
   {
     route: 'signOut',

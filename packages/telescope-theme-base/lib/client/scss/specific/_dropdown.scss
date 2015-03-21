@@ -61,3 +61,15 @@
     }
   }
 }
+.admin-item{
+  .menu-label:after{
+    content: "[A]";
+    font-size: 10px;
+    color: $red;
+    display: inline-block;
+    margin-left: 3px;
+  }
+}
+.dropdown-top-label{
+  cursor: pointer;
+}

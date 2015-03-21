@@ -8,6 +8,7 @@ dropdownItems (Array)
 - route (String/Function) [optional]
 - label (String/Function) [optional]
 - description (String) [optional]
+- adminOnly (Boolean) [optional]
 
 dropdownLabel (String) [optional]
 
@@ -15,23 +16,25 @@ dropdownLabel (String) [optional]
 
 <template name="dropdownComponent">
   <div class="dropdown header-submodule {{dropdownClass}}">
-    <a class="view dropdown-top-level" href="/">{{dropdownLabel}}</a>
+    <div class="dropdown-top-level" href="/">{{dropdownLabel}}</div>
     <div class="dropdown-menu">
-      <ul role="menu" aria-labelledby="dLabel">
-        {{#with dropdownItems}}
+      {{#with dropdownItems}}
+        <ul class="dropdown-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
-            <li>
-              <a class="dropdown-sub-level" href="{{itemPath}}">
-                <span class="menu-label">{{itemLabel}}</span>
-                {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
-              </a>
-            </li>
+            {{#if showDropdownItem}}
+              <li class="{{itemClass}}">
+                <a class="dropdown-sub-level" href="{{itemRoute}}">
+                  <span class="menu-label">{{itemLabel}}</span>
+                  {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+                </a>
+              </li>
+            {{/if}}
           {{/each}}
-          {{#if hasMoreThanThreeItems}}
-            <li><a href="#">{{_ "Show More"}}</a></li>
-          {{/if}}
-        {{/with}}
-      </ul>
+        </ul>
+        {{#if showMore}}
+          <a class="show-more" href="#">{{_ "Show More"}}</a>
+        {{/if}}
+      {{/with}}
     </div>
   </div>
 </template>

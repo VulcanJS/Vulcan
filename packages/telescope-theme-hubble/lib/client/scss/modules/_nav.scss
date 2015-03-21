@@ -100,6 +100,7 @@
  }
 
 $nav-width: 250px;
+
 .side-nav{
   .inner-wrapper{
     margin-left: $nav-width;
@@ -114,6 +115,7 @@ $nav-width: 250px;
 		height: 100%;
 		background: #e1e4e5;
 		overflow-y: auto;
+		padding-bottom: 30px;
 		.dropdown-top-level{
 			display: block;
 			border-bottom: 1px solid #ccc;
@@ -133,9 +135,21 @@ $nav-width: 250px;
 			font-weight: bold;
 		}
 	}
-	.dropdown-menu{
+	.header-submodule{
+		margin-bottom: $grid-margin*3;
+	}
+	.dropdown-top-level{
+		cursor: default;
+	}
+	.dropdown-contents{
 		max-height: 90px;
 		overflow: hidden;
 		margin-bottom: $grid-margin;
+	}
+	.dropdown-open .dropdown-contents{
+		max-height: none;
+	}
+	.notifications-menu{
+		display: none;
 	}
 }
