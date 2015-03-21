@@ -3,13 +3,14 @@ Meteor.startup(function () {
     categoriesMenuData: function () {
       return {
         dropdownName: 'categories',
-        dropdownItems: Categories.find({}, {sort: {order: 1, name: 1}}).fetch(),
-        dropdownItemLabel: function (category) {
-          return category.name;
-        },
-        dropdownItemPath: function (category) {
-          return getCategoryUrl(category.slug);
-        }
+        dropdownItems: _.map(Categories.find({}, {sort: {order: 1, name: 1}}).fetch(), function (category) {
+          return {
+            route: function () {
+              return getCategoryUrl(category.slug);
+            },
+            label: category.name
+          }
+        })
       }
     }
   });

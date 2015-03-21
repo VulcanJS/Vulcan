@@ -20,32 +20,22 @@ Template[getTemplate('dropdownComponent')].helpers({
     return this.length > 3;
   },
   itemLabel: function () {
-    var dropdown = Template.parentData(2);
-    // case 1: if a dropdown label function is provided, use it
-    if (!!dropdown.dropdownItemLabel) {
-      return dropdown.dropdownItemLabel(this);
-    }
-    // case 2: if label is a String, return it
+    // case 1: if label is a String, return it
     if (typeof this.label == "string") {
       return i18n.t(this.label);
     }
-    // case 3: if label is a Function return its result
+    // case 2: if label is a Function return its result
     if (typeof this.label == "function") {
       return this.label()
     } 
   },
   itemPath: function () {
-    var dropdown = Template.parentData(2);
-    // case 1: if a dropdown path function is provided, use it
-    if (!!dropdown.dropdownItemPath) {
-      return dropdown.dropdownItemPath(this);
-    }
-    // case 2: if route is a String, apply Router.path() to it
+    // case 1: if route is a String, apply Router.path() to it
     if (typeof this.route == "string") {
       return Router.path(this.route);
     }
-    // case 3: if route is a Function return its result
-    if (typeof this.route == "string") {
+    // case 2: if route is a Function return its result
+    if (typeof this.route == "function") {
       return this.route()
     }
   }
