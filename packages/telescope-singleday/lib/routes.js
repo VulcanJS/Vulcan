@@ -5,7 +5,7 @@ PostsSingledayController = RouteController.extend({
   template: getTemplate('singleDay'),
 
   onBeforeAction: function () {
-    this.render(getTemplate('postsViewsNav'), {to: 'postsViewsNavZone'});
+    this.render(getTemplate('postListTop'), {to: 'postListTop'});
     this.next();
   },
   

@@ -26,14 +26,15 @@ Package.onUse(function (api) {
     'primaryNav', 
     'secondaryNav', 
     'viewParameters',
+
     'footerModules',
     'heroModules',
     'threadModules',
+    'postListTopModules',
     'postModules',
     'postThumbnail',
     'postHeading',
     'postMeta',
-    'modulePositions',
 
     'postClassCallbacks',
 

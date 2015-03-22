@@ -8,7 +8,7 @@ var coreSubscriptions = new SubsManager({
 PostsDailyController = RouteController.extend({
   
   onBeforeAction: function () {
-    this.render(getTemplate('postsViewsNav'), {to: 'postsViewsNavZone'});
+    this.render(getTemplate('postListTop'), {to: 'postListTop'});
     this.next();
   },
 

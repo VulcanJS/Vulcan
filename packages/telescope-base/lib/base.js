@@ -208,6 +208,13 @@ footerModules = [];
 
 threadModules = [];
 
+postListTopModules = [
+  {
+    template: 'postViewsNav',
+    order: 99
+  }
+];
+
 postModules = [
   {
     template: 'postRank',

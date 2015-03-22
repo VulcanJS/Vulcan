@@ -4,7 +4,9 @@
 * Romanian translation (thanks @razvansky!).
 * Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun).
 * Now supporting RSS categories (thanks @delgermurun).
- 
+* Added new `postListTop` zone that only appears on post lists. 
+* Now showing tagline on every post list. 
+
 ## v0.14.3 “TableScope”
 
 * Implemented Reactive Table for the Users dashboard (thanks @jshimko!).
