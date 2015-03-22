@@ -103,21 +103,27 @@ $nav-width: 250px;
 
 .side-nav{
   .inner-wrapper{
-    margin-left: $nav-width;
-    padding-top: 20px;
-  }
+		@include medium-large{
+	    margin-left: $nav-width;
+	    padding-top: 20px;
+    }
+	}
 	.header{
-		width: $nav-width;
-		position: fixed;
-		top: 0px;
-		bottom: 0px;
-		left: 0px;
-		height: 100%;
-		overflow-y: auto;
-		padding-bottom: 30px;
+		@include medium-large{
+			width: $nav-width;
+			position: fixed;
+			top: 0px;
+			bottom: 0px;
+			left: 0px;
+			height: 100%;
+			overflow-y: auto;
+			padding-bottom: 30px;
+		}
 	}
 	.logo{
-		margin-bottom: 30px;
+		@include medium-large{
+			margin-bottom: 30px;
+		}
 	}
 	.header-submodule{
 		margin-bottom: 30px;

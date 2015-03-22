@@ -11,7 +11,7 @@ $mobile-header-height: 50px;
   color: white;
   @include small{
     height: $mobile-header-height;
-    padding: 10px;
+    padding: 0 10px;
     position: relative;
   }
   a, a:link, a:visited{
