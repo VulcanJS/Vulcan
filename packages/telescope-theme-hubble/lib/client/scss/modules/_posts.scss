@@ -38,6 +38,25 @@
 		}
 	}
 }
+
+// ------------------------------------ posts views nav ------------------------------------ //
+.posts-list-views{
+	background: white(0.6);
+	border-radius: 3px;
+	span, a{
+		display: inline-block;
+		margin-right: 10px;
+	}
+	.admin-item{
+	  &:after{
+	    content: "[A]";
+	    font-size: 10px;
+	    color: $red;
+	    display: inline-block;
+	    margin-left: 3px;
+	  }
+	}
+}
 // ------------------------------ posts-list layout ------------------------------ //
 
 .posts-list {

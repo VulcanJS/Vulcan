@@ -1,0 +1,8 @@
+<template name="postsViewsNav">
+  <div class="posts-list-views grid-module">
+    <span>View:</span>
+    {{#each viewsMenu}}
+      <a class="{{itemClass}}" href="{{itemRoute}}">{{_ label}}</a>
+    {{/each}}
+  </div>
+</template>

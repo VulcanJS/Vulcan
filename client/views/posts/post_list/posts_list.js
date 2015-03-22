@@ -36,5 +36,8 @@ Template[getTemplate('posts_list')].helpers({
   },
   postsListIncoming: function () {
     return getTemplate('postsListIncoming');
+  },
+  postsListSort: function () {
+    return getTemplate('postsListSort');
   }
 });
