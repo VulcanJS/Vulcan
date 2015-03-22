@@ -23,6 +23,18 @@ getSetting = function(setting, defaultValue){
 
 };
 
+
+removeSetting = function (setting) {
+  var settings = Settings.find().fetch()[0];
+  console.log(settings._id)
+  console.log(setting)
+  if(isAdmin(Meteor.user())) {
+    var unsetObject = {};
+    unsetObject[setting] = true;
+    var update = Settings.update(settings._id, {$unset: unsetObject});
+  }
+};
+
 getThemeSetting = function(setting, defaultValue){
   if(typeof themeSettings[setting] !== 'undefined'){
     return themeSettings[setting];

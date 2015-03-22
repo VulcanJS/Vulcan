@@ -121,6 +121,23 @@ settingsSchemaObject = {
       ]
     }
   },
+  postsViews: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'posts',
+      instructions: 'Posts views enabled',
+      editable: true,
+      noselect: true,
+      options: _.map(viewsMenu, function (item){
+        return {
+          value: item.route,
+          label: item.label
+        }
+      })
+    },
+    defaultValue: ['top', 'new', 'pending', 'scheduled']
+  },  
   postInterval: {
     type: Number,
     optional: true,

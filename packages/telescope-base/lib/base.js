@@ -72,13 +72,13 @@ viewsMenu = [
   },
   {
     route: 'posts_pending',
-    label: 'Pending',
+    label: 'pending',
     description: 'posts_awaiting_moderation',
     adminOnly: true
   },
   {
     route: 'posts_scheduled',
-    label: 'Scheduled',
+    label: 'scheduled',
     description: 'future_scheduled_posts',
     adminOnly: true
   },  
