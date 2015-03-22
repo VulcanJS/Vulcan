@@ -23,5 +23,8 @@ Template[getTemplate('css')].helpers({
 
     return authClass.slice(0, - 2) + "{display:none !important}";
 
+  },
+  headerTextColorHalfOpacity: function () {
+    return tinycolor(getSetting("headerTextColor")).setAlpha(0.5);
   }
 });

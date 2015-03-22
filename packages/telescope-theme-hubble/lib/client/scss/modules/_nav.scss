@@ -160,7 +160,6 @@ $nav-width: 250px;
 		display: block;
 		border-bottom: 1px solid #ccc;
 		padding-bottom: 5px;
-		margin-bottom: 5px;
 	}
 	.menu-label{
 		display: block;
@@ -175,15 +174,26 @@ $nav-width: 250px;
 		font-weight: bold;
 	}
 	.dropdown-contents{
-		max-height: 90px;
+		max-height: 103px;
 		overflow: hidden;
 		@include animate(max-height);
+		li{
+			margin: 10px 0;
+		}
+	}
+	.account-link{
+		margin: 10px 0;
+	}
+	.notifications{
+		.dropdown-contents{
+			max-height: 0px;
+		}
+		.show-more{
+			margin-top: -1px;
+		}
 	}
 	.dropdown-open .dropdown-contents{
 		max-height: 999px;
-	}
-	.notifications-menu{
-		display: none;
 	}
 	.tagline{
 		margin-top: 0px;

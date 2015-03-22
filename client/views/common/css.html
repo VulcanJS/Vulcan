@@ -9,12 +9,24 @@
       body{
         background: {{getSetting "backgroundCSS"}};
       }
+
+      /* Header */
+
       .header{
         background-color: {{getSetting "headerColor"}};
       }
       .header, .header .logo a, .header .logo a:visited{
         color: {{getSetting "headerTextColor"}};        
       }
+
+      .side-nav .dropdown-top-level, .show-more{
+        border-color: {{headerTextColorHalfOpacity}};
+      }
+
+      .header .svg-buttoncolor path{
+        fill: {{getSetting "headerTextColor"}};
+      }
+
       input[type="submit"], button, .button, button.submit, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .header .btn-primary, .header .btn-primary:link, .header .btn-primary:visited, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
         background-color: {{getSetting "buttonColor"}};
         color: {{getSetting "buttonTextColor"}};
@@ -37,9 +49,7 @@
         max-width:{{getSetting "logoWidth"}}px;
       }
 
-      .svg-buttoncolor path{
-        fill: {{getSetting "buttonColor"}};
-      }
+
 
       {{hideAuthClass}}
 

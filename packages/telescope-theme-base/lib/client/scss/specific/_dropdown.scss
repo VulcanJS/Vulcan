@@ -82,14 +82,14 @@
   text-align: center;
   .show-more-icon{
     display: block;
-    visibility: hidden; // hide until SVG injection is
+    visibility: hidden; // hide until SVG injection
     height: 20px;
     width: 20px;
-    opacity: 0.4;
+    opacity: 0.5;
     margin: 0 auto;
   }
   &:hover{
-    background: white(0.3);
+    background: white(0.2);
     .show-more-icon{
       opacity: 1;
     }

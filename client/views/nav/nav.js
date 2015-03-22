@@ -1,4 +1,20 @@
 Template[getTemplate('nav')].helpers({
+  headerClass: function () {
+    var headerClass = "";
+    var bgBrightness = tinycolor(getSetting('headerColor')).getBrightness();
+    if (bgBrightness < 50) {
+      headerClass += " dark-bg";
+    } else if (bgBrightness < 100) {
+      headerClass += " medium-dark-bg";
+    } else if (bgBrightness < 200) {
+      headerClass += " medium-light-bg";
+    } else if (bgBrightness < 255) {
+      headerClass += " light-bg";
+    } else {
+      headerClass += " white-bg";
+    }
+    return headerClass;
+  },
   primaryNav: function () {
     return _.sortBy(primaryNav, 'order');
   },
@@ -36,10 +52,6 @@ Template[getTemplate('nav')].helpers({
   },
   getTemplate: function () {
     return getTemplate(this.template);
-  },
-  headerClass: function () {
-    var color = getSetting('headerColor');
-    return (color == 'white' || color == '#fff' || color == '#ffffff') ? "white-background" : '';
   }
 });
 
