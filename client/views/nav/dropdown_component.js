@@ -43,19 +43,12 @@ Template[getTemplate('dropdownComponent')].helpers({
 Template[getTemplate('dropdownComponent')].onRendered(function () {
   var $dropdown = this.$('.dropdown');
   var height = $dropdown.height();
-
-  var mySVGsToInject = $dropdown.find('.svg');
-  SVGInjector(mySVGsToInject, {}, function () {
-    $dropdown.find('.svg').css('visibility', 'visible');
-  });
 });
 
 Template[getTemplate('dropdownComponent')].events({
   'click .show-more': function (e, t) {
     e.preventDefault();
-
     $dropdown = t.$('.dropdown');
-    console.log($dropdown);
     $dropdown.toggleClass('dropdown-open');
   }
 });
