@@ -9,6 +9,8 @@ dropdownItems (Array)
 - label (String/Function) [optional]
 - description (String) [optional]
 - adminOnly (Boolean) [optional]
+- template (String) [optional]
+- data (Object) [optional]
 
 dropdownLabel (String) [optional]
 
@@ -22,12 +24,16 @@ dropdownLabel (String) [optional]
         <ul class="dropdown-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
             {{#if showDropdownItem}}
-              <li class="{{itemClass}}">
-                <a class="dropdown-sub-level" href="{{itemRoute}}">
-                  <span class="menu-label">{{itemLabel}}</span>
-                  {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
-                </a>
-              </li>
+              {{#if hasTemplate}}
+                {{> Template.dynamic template=template data=data}}
+              {{else}}
+                <li class="{{itemClass}}">
+                  <a class="dropdown-sub-level" href="{{itemRoute}}">
+                    <span class="menu-label">{{itemLabel}}</span>
+                    {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+                  </a>
+                </li>
+              {{/if}}
             {{/if}}
           {{/each}}
         </ul>

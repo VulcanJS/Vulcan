@@ -1,11 +1,11 @@
 Template[getTemplate('dropdownComponent')].helpers({
   dropdownClass: function () {
     var dropdownClass = this.dropdownName;
-    // only use dropdowns for top nav
     if (this.length > 3) {
       dropdownClass += " long-dropdown";
     }
-    if (getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true)) {
+    // enable dropdown if top-nav layout is enabled, if themes supports dropdowns, and if dropdown isn't empty
+    if (getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true) && this.dropdownItems.length) {
       dropdownClass += " has-dropdown";
     } else {
       dropdownClass += " no-dropdown";
@@ -22,6 +22,9 @@ Template[getTemplate('dropdownComponent')].helpers({
   },
   showMore: function () {
     return getSetting('navLayout', 'top-nav') == 'side-nav' && this.length > 3;
+  },
+  hasTemplate: function () {
+    return !!this.template;
   },
   itemClass: function () {
     var itemClass = "";

@@ -1,6 +1,7 @@
-.has-dropdown .dropdown{
+.has-dropdown{
   position:relative;
-  >a{
+  .dropdown-top-level{
+    cursor: pointer;
     &:after{
       display:inline-block;
       position:relative;
