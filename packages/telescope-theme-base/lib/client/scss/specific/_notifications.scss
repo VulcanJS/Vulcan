@@ -9,4 +9,7 @@
   .show-more{
     margin-top: -1px;
   }
+  &.dropdown-has-items .show-more{
+    display: block; // show the "show more" button if the dropdown has any items
+  }
 }
