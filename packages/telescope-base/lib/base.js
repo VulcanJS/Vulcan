@@ -92,7 +92,7 @@ adminMenu = [
     description: 'telescope_settings_panel'
   },
   {
-    route: 'all-users',
+    route: 'usersDashboard',
     label: 'Users',
     description: 'users_dashboard'
   }

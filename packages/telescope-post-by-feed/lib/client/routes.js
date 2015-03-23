@@ -12,6 +12,7 @@ Meteor.startup(function () {
 
   Router.route('/feeds', {
     name: 'feeds',
+    controller: AdminController,
     waitOn: function() {
       return [
         Meteor.subscribe('feeds'),
@@ -19,7 +20,7 @@ Meteor.startup(function () {
         Meteor.subscribe('categories')
       ];
     },
-    template: getTemplate('feeds')
+    // template: getTemplate('feeds')
   });
 
 });

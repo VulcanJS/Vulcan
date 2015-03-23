@@ -30,7 +30,8 @@ Template[getTemplate('notificationsMenu')].helpers({
     return {
       dropdownName: 'notifications',
       dropdownLabel: notificationsCount,
-      dropdownItems: dropdownItems
+      dropdownItems: dropdownItems,
+      dropdownClass: 'header-submodule'
     }
   }
 });

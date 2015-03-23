@@ -2,7 +2,8 @@ Template[getTemplate('adminMenu')].helpers({
   adminMenuData: function () {
     return {
       dropdownName: 'admin',
-      dropdownItems: adminMenu
+      dropdownItems: adminMenu,
+      dropdownExpanded: true
     }
   }
 });

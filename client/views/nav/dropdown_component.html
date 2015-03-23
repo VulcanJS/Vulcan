@@ -14,10 +14,14 @@ dropdownItems (Array)
 
 dropdownLabel (String) [optional]
 
+dropdownExpanded (Boolean) [optional]
+
+dropdownClass (String) [optional]
+
 -->
 
 <template name="dropdownComponent">
-  <div class="dropdown header-submodule {{dropdownClass}}">
+  <div class="dropdown {{dropdownClass}}">
     <div class="dropdown-top-level" href="/">{{dropdownLabel}}</div>
     <div class="dropdown-menu">
       {{#with dropdownItems}}

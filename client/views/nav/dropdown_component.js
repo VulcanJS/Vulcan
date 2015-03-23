@@ -1,16 +1,27 @@
 Template[getTemplate('dropdownComponent')].helpers({
   dropdownClass: function () {
-    var dropdownClass = this.dropdownName;
-    if (this.length > 3) {
-      dropdownClass += " long-dropdown";
+
+    var classes = [this.dropdownName+"-menu"];
+
+    if(!!this.dropdownClass) {
+      classes.push(this.dropdownClass)
+    }
+
+    if (this.dropdownItems.length > 3) {
+      classes.push("long-dropdown");
+    }
+    if (!!this.dropdownExpanded) {
+      classes.push("dropdown-expanded");
+    } else {
+      classes.push("dropdown-collapsed");
     }
     // enable dropdown if top-nav layout is enabled, if themes supports dropdowns, and if dropdown isn't empty
     if (getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true) && this.dropdownItems.length) {
-      dropdownClass += " has-dropdown";
+      classes.push("has-dropdown");
     } else {
-      dropdownClass += " no-dropdown";
+      classes.push("no-dropdown");
     }
-    return dropdownClass;
+    return classes.join(" ");
   },
   dropdownLabel: function () {
     // if label is defined, use this. Else default to dropdown name
@@ -21,7 +32,7 @@ Template[getTemplate('dropdownComponent')].helpers({
     return this.adminOnly ? isAdmin(Meteor.user()) : true;
   },
   showMore: function () {
-    return getSetting('navLayout', 'top-nav') == 'side-nav' && this.length > 3;
+    return getSetting('navLayout', 'top-nav') == 'side-nav' && this.length > 3 && !Template.parentData(1).dropdownExpanded;
   },
   hasTemplate: function () {
     return !!this.template;
@@ -41,11 +52,6 @@ Template[getTemplate('dropdownComponent')].helpers({
     // if route is a Function return its result, else apply Router.path() to it
     return typeof this.route == "function" ? this.route() : Router.path(this.route);
   }
-});
-
-Template[getTemplate('dropdownComponent')].onRendered(function () {
-  var $dropdown = this.$('.dropdown');
-  var height = $dropdown.height();
 });
 
 Template[getTemplate('dropdownComponent')].events({

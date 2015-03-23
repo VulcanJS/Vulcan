@@ -1,9 +1,10 @@
 Template[getTemplate('userMenu')].helpers({
   userMenuData: function () {
     return {
-      dropdownName: 'userMenu',
+      dropdownName: 'user',
       dropdownLabel: getDisplayName(Meteor.user()),
-      dropdownItems: userMenu
+      dropdownItems: userMenu,
+      dropdownClass: 'header-submodule'
     }
   }
 });

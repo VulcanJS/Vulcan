@@ -10,7 +10,8 @@ Meteor.startup(function () {
             },
             label: category.name
           }
-        })
+        }),
+        dropdownClass: 'header-submodule'
       }
     }
   });
