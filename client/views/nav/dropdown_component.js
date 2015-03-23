@@ -2,25 +2,25 @@ Template[getTemplate('dropdownComponent')].helpers({
   dropdownClass: function () {
 
     var classes = [this.dropdownName+"-menu"];
+    var mode = this.dropdownMode == "undefined" ? "list" : this.dropdownMode;
+    var count = this.dropdownItems.length;
+
+    classes.push("dropdown-"+mode);
 
     if(!!this.dropdownClass) {
       classes.push(this.dropdownClass)
     }
 
-    if (this.dropdownItems.length > 3) {
-      classes.push("long-dropdown");
-    }
-    if (!!this.dropdownExpanded) {
-      classes.push("dropdown-expanded");
-    } else {
-      classes.push("dropdown-collapsed");
-    }
     // enable dropdown if top-nav layout is enabled, if themes supports dropdowns, and if dropdown isn't empty
-    if (getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true) && this.dropdownItems.length) {
-      classes.push("has-dropdown");
+    if (count) {
+      classes.push("dropdown-has-items");
+      if (count > 3) {
+        classes.push("dropdown-long");
+      }
     } else {
-      classes.push("no-dropdown");
+      classes.push("dropdown-no-items");
     }
+
     return classes.join(" ");
   },
   dropdownLabel: function () {
@@ -30,9 +30,6 @@ Template[getTemplate('dropdownComponent')].helpers({
   showDropdownItem: function () {
     // if this is an admin item, only show it if current user is admin
     return this.adminOnly ? isAdmin(Meteor.user()) : true;
-  },
-  showMore: function () {
-    return getSetting('navLayout', 'top-nav') == 'side-nav' && this.length > 3 && !Template.parentData(1).dropdownExpanded;
   },
   hasTemplate: function () {
     return !!this.template;

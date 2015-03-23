@@ -3,7 +3,6 @@ Template[getTemplate('adminWrapper')].helpers({
     return getTemplate("adminMenu");
   },
   contents: function () {
-    console.log(Router.current().route.getName())
     return Router.current().route.getName();
   },
   contentsClass: function () {

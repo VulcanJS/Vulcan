@@ -4,7 +4,8 @@ Template[getTemplate('userMenu')].helpers({
       dropdownName: 'user',
       dropdownLabel: getDisplayName(Meteor.user()),
       dropdownItems: userMenu,
-      dropdownClass: 'header-submodule'
+      dropdownClass: 'header-submodule',
+      dropdownMode: getSetting('navLayout', 'top-nav') == 'top-nav' ? 'hover' : 'accordion'
     }
   }
 });

@@ -3,7 +3,7 @@ Template[getTemplate('adminMenu')].helpers({
     return {
       dropdownName: 'admin',
       dropdownItems: adminMenu,
-      dropdownExpanded: true
+      dropdownMode: 'list'
     }
   }
 });

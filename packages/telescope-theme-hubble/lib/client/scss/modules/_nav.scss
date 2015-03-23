@@ -170,32 +170,11 @@ $nav-width: 250px;
 		display: block;
 		font-weight: bold;
 	}
-	.dropdown-contents{
-		li{
-			margin: 10px 0;
-		}
-	}
+
 	.account-link{
 		margin: 10px 0;
-	}
-	.notifications{
-		.dropdown-contents{
-			max-height: 0px;
-		}
-		.show-more{
-			margin-top: -1px;
-		}
 	}
 	.tagline{
 		margin-top: 0px;
 	}
-	/* dropdown expand/collapse */
-	.dropdown-collapsed .dropdown-contents{
-		max-height: 103px;
-		overflow: hidden;
-		@include animate(max-height);
-	}
-	.dropdown-open .dropdown-contents{
-		max-height: 999px;
-	}	
 }

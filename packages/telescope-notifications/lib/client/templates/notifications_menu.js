@@ -31,7 +31,8 @@ Template[getTemplate('notificationsMenu')].helpers({
       dropdownName: 'notifications',
       dropdownLabel: notificationsCount,
       dropdownItems: dropdownItems,
-      dropdownClass: 'header-submodule'
+      dropdownClass: 'header-submodule',
+      dropdownMode: getSetting('navLayout', 'top-nav') == 'top-nav' ? 'hover' : 'accordion'
     }
   }
 });

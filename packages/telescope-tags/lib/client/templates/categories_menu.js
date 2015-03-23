@@ -11,7 +11,8 @@ Meteor.startup(function () {
             label: category.name
           }
         }),
-        dropdownClass: 'header-submodule'
+        dropdownClass: 'header-submodule',
+        dropdownMode: getSetting('navLayout', 'top-nav') == 'top-nav' ? 'hover' : 'accordion'
       }
     }
   });

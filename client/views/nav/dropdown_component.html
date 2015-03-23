@@ -19,11 +19,11 @@ dropdownItems (Array)
 
 dropdownLabel (String) [optional]
 
-dropdownExpanded (Boolean) [optional]
-| If true, the dropdown is always expanded
-
 dropdownClass (String) [optional]
 | An optional default CSS class given to the dropdown
+
+dropdownMode (String) [optional]
+| "accordion", "hover", or "list" (defaults to "list")
 
 -->
 
@@ -48,13 +48,11 @@ dropdownClass (String) [optional]
             {{/if}}
           {{/each}}
         </ul>
-        {{#if showMore}}
-          <a class="show-more" href="#">
-            <img class="show-more-icon show-more-plus svg svg-buttoncolor" data-src="/img/plus.svg" aria-hidden="true"/>
-            <img class="show-more-icon show-more-minus svg svg-buttoncolor" data-src="/img/minus.svg" aria-hidden="true"/>
-          </a>
-        {{/if}}
       {{/with}}
+      <a class="show-more" href="#">
+        <img class="show-more-icon show-more-plus svg svg-buttoncolor" data-src="/img/plus.svg" aria-hidden="true"/>
+        <img class="show-more-icon show-more-minus svg svg-buttoncolor" data-src="/img/minus.svg" aria-hidden="true"/>
+      </a>
     </div>
   </div>
 </template>
