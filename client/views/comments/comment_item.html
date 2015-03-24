@@ -7,11 +7,11 @@
       <div class="comment-content">
         <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
-            <i class="icon-up" aria-hidden="true"></i>
+            {{{icon "upvote"}}}
             <span>{{_ "upvote"}}</span>
           </a>
           <a class="downvote" href="#">
-            <i class="icon-down" aria-hidden="true"></i>
+            {{{icon "downvote"}}}
             <span>{{_ "downvote"}}</span>
           </a>
         </div>
