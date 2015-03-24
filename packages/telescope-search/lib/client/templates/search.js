@@ -22,7 +22,7 @@ Meteor.startup(function () {
   });
 
   Template[getTemplate('search')].events({
-    'keyup, search .search-field': function(e){
+    'keyup .search-field, search .search-field': function(e){
       e.preventDefault();
       var val = $(e.target).val(),
           $search = $('.search');
