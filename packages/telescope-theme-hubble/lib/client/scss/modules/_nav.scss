@@ -8,7 +8,6 @@
 	background-color:$highlight-color;
 	position:relative;
 	z-index: 100;
-	
 }
 .logo{
 	a, a:visited{
@@ -155,8 +154,20 @@ $nav-width: 250px;
 	.dropdown-top-level{
 		cursor: default;
 		display: block;
-		border-bottom: 1px solid #ccc;
 		padding-bottom: 5px;
+		position: relative;
+		/* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
+    &:after{
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.5;
+    }
 	}
 	.menu-label{
 		display: block;

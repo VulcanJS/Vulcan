@@ -94,7 +94,20 @@
 
   /* ------- Show More Button ------- */
   .show-more{
-    border-top: 1px solid #ccc;
+    // border-top: 1px solid #ccc;
+    position: relative;
+    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
+    &:before{
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      top: 0px;
+      left: 0px;
+      opacity: 0.5;
+    }
     padding: 8px 0;
     display: none;
     text-align: center;

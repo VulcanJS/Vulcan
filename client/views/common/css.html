@@ -1,5 +1,8 @@
 <template name="css">
   <style>
+      
+      {{elementColors}}
+
       @import url({{getSetting 'fontUrl'}});
       
       body, textarea, input, button, input[type="submit"], input[type="button"]{
@@ -10,57 +13,19 @@
         background: {{getSetting "backgroundCSS"}};
       }
 
-      /* Header */
-
-      .header{
-        background-color: {{getSetting "headerColor"}};
-      }
-      .header, .header .logo a, .header .logo a:visited{
-        color: {{getSetting "headerTextColor"}};        
-      }
-
-      .header .dropdown-top-level, .header .dropdown-accordion .show-more{
-        border-color: {{headerTextColorHalfOpacity}};
-      }
-
-      .header .svg-buttoncolor path{
-        fill: {{getSetting "headerTextColor"}};
-      }
-
-      input[type="submit"], button, .button, button.submit, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .header .btn-primary, .header .btn-primary:link, .header .btn-primary:visited, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
-        background-color: {{getSetting "buttonColor"}};
-        color: {{getSetting "buttonTextColor"}};
-      }
-      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .icon, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover, .post-upvote .upvote-link i, .post-actions .icon, .post-share .icon-share{
-        color: {{getSetting "buttonColor"}};
-      }
-      @media screen and (max-width: 600px) {
-        .post-discuss .icon, .post-discuss .action-count{
-          color: {{getSetting "buttonColor"}};
-        }
-      }
-      .post-upvote .upvote-link i{
-        border-color: {{getSetting "buttonColor"}};
-      }
-      .toggle-actions-link{
-        border-color: {{getSetting "buttonColor"}};
-      }
-      .post-content .post-upvote .upvote-link.voted i.icon-check{
-        /*color: {{getSetting "secondaryColor"}};*/
-      }    
-
-      .xyz{
-        color: {{getSetting "buttonColorHalfOpacity"}};
-      }
-
       .logo-image a{
         max-height:{{getSetting "logoHeight"}}px;
         max-width:{{getSetting "logoWidth"}}px;
       }
 
-
-
       {{hideAuthClass}}
+
+      @media screen and (max-width: 600px) {
+        /* find a way to get rid of this */
+        .post-discuss .icon, .post-discuss .action-count{
+          color: {{getSetting "buttonColor"}};
+        }
+      }
 
   </style>
 </template>
