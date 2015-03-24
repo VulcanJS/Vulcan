@@ -35,6 +35,7 @@ ejson@1.0.6
 email@1.0.6
 facebook@1.1.4
 fastclick@1.0.3
+fortawesome:fontawesome@4.2.0_2
 fourseven:scss@1.0.0
 geojson-utils@1.0.3
 handlebars@1.0.3
@@ -110,7 +111,6 @@ spiderable@1.0.7
 srp@1.0.3
 standard-app-packages@1.0.5
 stylus@1.0.7
-svg-injector@0.0.1
 tap:i18n@1.4.1
 telescope-api@0.0.0
 telescope-base@0.0.0

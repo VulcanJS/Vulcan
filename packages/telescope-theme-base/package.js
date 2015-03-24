@@ -9,6 +9,7 @@ Package.onUse(function (api) {
       // global
       'lib/client/scss/global/_forms.scss',
       'lib/client/scss/global/_links.scss',
+      'lib/client/scss/global/_icons.scss',
       'lib/client/scss/global/_main.scss',
       'lib/client/scss/global/_markdown.scss',
       'lib/client/scss/global/_tables.scss',

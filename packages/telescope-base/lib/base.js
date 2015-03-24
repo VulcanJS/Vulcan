@@ -353,7 +353,6 @@ userProfileCompleteChecks.push(
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 
-
 templates = {}
 
 getTemplate = function (name) {

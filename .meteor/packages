@@ -52,6 +52,7 @@ tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
 aslagle:reactive-table
 aramk:tinycolor
+fortawesome:fontawesome
 
 # Testing
 
@@ -90,4 +91,3 @@ telescope-subscribe-to-posts
 telescope-tagline-banner
 
 # Custom Packages
-svg-injector

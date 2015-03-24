@@ -113,7 +113,6 @@
 	}
 	.post-discuss {
 		order: 7;
-		padding-top: 6px;
 		@include small {
 			display: none;
 		}
@@ -241,54 +240,38 @@
 .post-module.post-rank {
 	margin: 0;
 }
+.post{
+	.icon{
+	}
+}
 .post-upvote {
-	.upvote-link {
-		position: relative;
-		// top: 17px;
-		// transform: translateY(-50%);
-		display: block;
+	@include small{
 		text-align: center;
-		i {
-			opacity: 0.4;
-			display: inline-block;
-			border-radius: 50%;
-			border: 1px solid rgba($red,
-			0.3);
-			font-size: 10px;
-			width: 24px;
-			height: 24px;
-			text-align: center;
-			// line-height: $grid-unit;
-			color: rgba($red,
-			0.8);
-			text-shadow: 0px 1px 0px white;
-			line-height: 2.3;
-			margin: 5px;
+	}
+	.upvote-link {
+		display: block;
+		.icon-upvote{
 			&:before {
-				top: 0px;
+				top: -1px;
+				position: relative;
 			}
-			&.icon-check {
-				display: none;
-			}
-		}
-		.action-label {
-			display: none;
 		}
 		&.not-voted:hover {
-			i{opacity: 1;
+			i{
+				// opacity: 1;
 				text-shadow: none;
 			}
 		}
 		&.voted {
 			cursor: default;
-			i.icon-up {
+			i.icon-upvote {
 				display: none;
 			}
-			i.icon-check {
-				border: 1px solid rgba($blue, 0.6);
+			i.icon-voted {
+				border: 1px solid $lighter-text;
 				display: inline-block;
-				color: rgba($blue, 0.8);
-				opacity: 0.5;
+				color: $lighter-text;
+				// opacity: 0.5;
 			}
 		}
 	}
@@ -344,30 +327,34 @@
 	}
 }
 .post-discuss {
-	.action-label {
-		display: none;
+	.action {
+	  position: relative;
+	  display: block;
+	  padding: 0;
+	  text-align: center;
+	  color: $light-text;
+	   margin-top: -4px;
+	}
+	.action-count {
+	  position: absolute;
+	  top: 13px;
+	  display: block;
+	  width: 100%;
+	  height: 20px;
+	  line-height: 20px;
+	  font-size: 13px;
+	}
+	.icon-comment{
+  	font-size: 30px;
 	}
 }
+
 .post-actions {
 	display: none;
 	text-align: right;
 	a {
 		display: block;
-		width: 36px;
-		height: 36px;
 		padding: 6px;
-		span {
-			display: block;
-			height: 100%;
-			width: 100%;
-			border-radius: 3px;
-			border: 1px solid rgba($red, 0.3);
-			color: rgba($red, 0.8);
-			text-align: center;
-			line-height: 14px;
-			font-weight: bold;
-			font-size: 20px;
-		}
 	}
 }
 .post-share {
@@ -546,3 +533,5 @@
 .module {
 	border-radius: 3px;
 }
+
+

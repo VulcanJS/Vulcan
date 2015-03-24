@@ -26,5 +26,8 @@ Template[getTemplate('css')].helpers({
   },
   headerTextColorHalfOpacity: function () {
     return tinycolor(getSetting("headerTextColor")).setAlpha(0.5);
+  },
+  buttonColorHalfOpacity: function () {
+    return tinycolor(getSetting("buttonColor")).setAlpha(0.5);
   }
 });

@@ -13,14 +13,3 @@ Meteor.startup(function () {
 });
 
 // AutoForm.debug();
-
-Template.onRendered(function () {
-  var $svgs = this.$('img.svg');
-  if ($svgs.length) {
-    SVGInjector($svgs, {
-      each: function (svg) {
-        $(svg).css('visibility', 'visible');
-      }
-    });
-  }
-});

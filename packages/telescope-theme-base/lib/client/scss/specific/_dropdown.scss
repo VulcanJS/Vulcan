@@ -98,9 +98,8 @@
     padding: 8px 0;
     display: none;
     text-align: center;
-    .show-more-icon{
+    .icon{
       display: block;
-      visibility: hidden; // hide until SVG injection
       height: 20px;
       width: 20px;
       opacity: 0.5;
@@ -112,7 +111,7 @@
         opacity: 1;
       }
     }
-    .show-more-minus{
+    .icon-close{
       display: none;
     }
   }
@@ -120,10 +119,10 @@
     display: block; // only show the "show more" button if the dropdown has more than three items
   }
   &.dropdown-open{
-    .show-more-minus{
+    .icon-close{
       display: block;
     }
-    .show-more-plus{
+    .icon-open{
       display: none;
     }    
   }

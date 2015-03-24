@@ -31,8 +31,13 @@
         background-color: {{getSetting "buttonColor"}};
         color: {{getSetting "buttonTextColor"}};
       }
-      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover, .post-upvote .upvote-link i{
+      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .icon, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover, .post-upvote .upvote-link i, .post-actions .icon, .post-share .icon-share{
         color: {{getSetting "buttonColor"}};
+      }
+      @media screen and (max-width: 600px) {
+        .post-discuss .icon, .post-discuss .action-count{
+          color: {{getSetting "buttonColor"}};
+        }
       }
       .post-upvote .upvote-link i{
         border-color: {{getSetting "buttonColor"}};
@@ -43,6 +48,10 @@
       .post-content .post-upvote .upvote-link.voted i.icon-check{
         /*color: {{getSetting "secondaryColor"}};*/
       }    
+
+      .xyz{
+        color: {{getSetting "buttonColorHalfOpacity"}};
+      }
 
       .logo-image a{
         max-height:{{getSetting "logoHeight"}}px;
