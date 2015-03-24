@@ -471,6 +471,12 @@ Meteor.methods({
         // loop over each property being operated on
         _.keys(operation).forEach(function (propertyName) {
           var property = postSchemaObject[propertyName];
+          // If we're handed an array index instead of a top-level property,
+          // try looking up by the parent array key.
+          if (!property) {
+            var parentKey = propertyName.split(/\.\d+/)[0];
+            property = postSchemaObject[parentKey];
+          }
           if (!property || !property.autoform || !property.autoform.editable) {
             console.log('//' + i18n.t('disallowed_property_detected') + ": " + propertyName);
             throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + propertyName);
