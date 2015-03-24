@@ -1,6 +1,6 @@
 <template name="postAdmin">
   {{#if isAdmin}}
-    <div class="post-meta-item">
+    <div class="post-meta-item" aria-live="off">
       {{#if showApprove}}
         | <a href="#" class="approve-link goto-edit">{{_ "approve"}}</a>
       {{/if}}

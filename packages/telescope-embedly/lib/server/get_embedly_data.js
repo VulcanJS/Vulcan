@@ -76,8 +76,11 @@ var addMediaAfterSubmit = function (post) {
         set.media = data.media;
       }
     }
+    // make sure set object is not empty (Embedly call could have failed)
+    if(!_.isEmpty(set)) {
+      Posts.update(post._id, {$set: set});
+    }
   }
-  Posts.update(post._id, {$set: set});
   return post;
 }
 postAfterSubmitMethodCallbacks.push(addMediaAfterSubmit);

@@ -2,7 +2,7 @@
   <div class="user-profile grid grid-module">
     <table>
       <tr>
-        <td colspan="2">{{> avatar user=this size="large" shape="circle"}}</td>
+        <td colspan="2" aria-hidden="true">{{> avatar user=this size="large" shape="circle"}}</td>
       </tr>
       {{#if isAdmin}}
         <tr>
@@ -12,7 +12,7 @@
       {{/if}}
       <tr>
         <td>{{_ "name"}}</td>
-        <td>{{profile.name}}</td>
+        <td>{{profile.username}}</td>
       </tr>
       <tr>
         <td>{{_ "member_since"}}:</td>

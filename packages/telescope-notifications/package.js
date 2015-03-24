@@ -36,6 +36,8 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/client/templates/notification_item.html',
     'lib/client/templates/notification_item.js',
+    'lib/client/templates/notifications_mark_as_read.html',
+    'lib/client/templates/notifications_mark_as_read.js',
     'lib/client/templates/notification_new_comment.html',
     'lib/client/templates/notification_new_reply.html',
     'lib/client/templates/notification_post_approved.html',

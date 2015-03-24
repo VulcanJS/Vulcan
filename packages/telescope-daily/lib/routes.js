@@ -7,6 +7,11 @@ var coreSubscriptions = new SubsManager({
 
 PostsDailyController = RouteController.extend({
   
+  onBeforeAction: function () {
+    this.render(getTemplate('postListTop'), {to: 'postListTop'});
+    this.next();
+  },
+
   template: function() {
     // use a function to make sure the template is evaluated *after* any template overrides
     return getTemplate('postsDaily');

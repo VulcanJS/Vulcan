@@ -5,7 +5,7 @@ Package.describe({
 });
 
 Npm.depends({
-  'htmlparser2': '3.8.2',
+  'feedparser': '1.0.0',
   'to-markdown': '0.0.2',
   'he': '0.5.0'
 });
@@ -13,7 +13,7 @@ Npm.depends({
 Package.onUse(function(api) {
 
   api.use([
-    'telescope-base', 
+    'telescope-base',
     'telescope-tags',
     'aldeed:simple-schema',
     'aldeed:autoform',

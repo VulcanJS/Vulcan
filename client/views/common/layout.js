@@ -5,6 +5,9 @@ Template[getTemplate('layout')].helpers({
   nav: function () {
     return getTemplate('nav');
   },
+  navLayout: function () {
+    return getSetting('navLayout', 'top-nav');
+  },
   messages: function () {
     return getTemplate('messages');
   },
@@ -24,7 +27,7 @@ Template[getTemplate('layout')].helpers({
     return getSetting('extraCode');
   },
   heroModules: function () {
-    return heroModules;
+    return _.sortBy(heroModules, 'order');
   },
   getTemplate: function () {
     return getTemplate(this.template);

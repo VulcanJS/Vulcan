@@ -1,3 +1,17 @@
+## v0.14.4 “SideScope”
+
+* Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
+* Romanian translation (thanks @razvansky!).
+* Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun).
+* Now supporting RSS categories (thanks @delgermurun).
+* Added new `postListTop` zone that only appears on post lists. 
+* Now showing tagline on every post list. 
+* Refactored dropdowns into dropdown components.
+* Now using SVG for some icons and [SVGInjector]https://github.com/iconic/SVGInjector() to substitute `<img>` tags with `<svg>` elements.
+* Added the Side Nav layout.
+* Added the Post Views setting.
+* New Admin menu layout.
+
 ## v0.14.3 “TableScope”
 
 * Implemented Reactive Table for the Users dashboard (thanks @jshimko!).
@@ -7,6 +21,7 @@
 * Added Greek translation (thanks @portokallidis!).
 * Improved Spanish translation (thanks @brayancruces!).
 * Added new callbacks for upvoting and downvoting (thanks @Baxter900 !).
+* OP comments now get the `author-comment` CSS class.
 
 ## v0.14.2 “FaviconScope”
 

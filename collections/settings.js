@@ -30,6 +30,18 @@ settingsSchemaObject = {
       instructions: 'A short description used for SEO purposes.'
     }
   },
+  navLayout: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'general',
+      instructions: 'The layout used for the main menu',
+      options: [
+        {value: 'top-nav', label: 'Top'},
+        {value: 'side-nav', label: 'Side'}
+      ]
+    }
+  },
   requireViewInvite: {
     type: Boolean,
     optional: true,
@@ -109,6 +121,23 @@ settingsSchemaObject = {
       ]
     }
   },
+  postsViews: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'posts',
+      instructions: 'Posts views enabled',
+      editable: true,
+      noselect: true,
+      options: _.map(viewsMenu, function (item){
+        return {
+          value: item.route,
+          label: item.label
+        }
+      })
+    },
+    defaultValue: ['top', 'new', 'pending', 'scheduled']
+  },  
   postInterval: {
     type: Number,
     optional: true,

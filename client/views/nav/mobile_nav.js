@@ -1,9 +1,12 @@
 Template[getTemplate('mobile_nav')].helpers({
   primaryNav: function () {
-    return primaryNav;
+    return _.sortBy(primaryNav, 'order');
   },
   secondaryNav: function () {
-    return secondaryNav;
+    return _.sortBy(secondaryNav, 'order');
+  },
+  logoTemplate: function () {
+    return getTemplate('logo');
   },
   getTemplate: function () {
     return getTemplate(this.template);
