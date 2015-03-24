@@ -1,6 +1,14 @@
 Template[getTemplate('notificationsMenu')].helpers({
   notifications: function(){
 
+    if (!!this.mobile) {
+      var dropdownMode = 'list';
+    } else if (getSetting('navLayout', 'top-nav') === 'top-nav') {
+      var dropdownMode = 'hover';
+    } else {
+      var dropdownMode = 'accordion';
+    }
+
     var notificationsCount;
     var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
     
@@ -32,7 +40,7 @@ Template[getTemplate('notificationsMenu')].helpers({
       dropdownLabel: notificationsCount,
       dropdownItems: dropdownItems,
       dropdownClass: 'header-submodule',
-      dropdownMode: getSetting('navLayout', 'top-nav') == 'top-nav' ? 'hover' : 'accordion'
+      dropdownMode: dropdownMode
     }
   }
 });

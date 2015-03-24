@@ -1,15 +1,15 @@
 Template[getTemplate('mobile_nav')].helpers({
-  primaryNav: function () {
-    return _.sortBy(primaryNav, 'order');
-  },
-  secondaryNav: function () {
-    return _.sortBy(secondaryNav, 'order');
+  mobileNav: function () {
+    return _.sortBy(mobileNav, 'order');
   },
   logoTemplate: function () {
     return getTemplate('logo');
   },
   getTemplate: function () {
     return getTemplate(this.template);
+  },
+  mobileContext: function () {
+    return {mobile: true};
   }
 });
 

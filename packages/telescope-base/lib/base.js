@@ -53,6 +53,21 @@ secondaryNav = [
   }
 ];
 
+mobileNav = [
+  {
+    template: 'userMenu',
+    order: 10
+  },
+  {
+    template:'notificationsMenu',
+    order: 20
+  },
+  {
+    template: 'submitButton',
+    order: 30
+  }
+];
+
 // array containing items in the views menu
 viewsMenu = [
   {

@@ -25,6 +25,7 @@ Package.onUse(function (api) {
     'preloadSubscriptions', 
     'primaryNav', 
     'secondaryNav', 
+    'mobileNav',
     'viewParameters',
 
     'footerModules',
@@ -86,7 +87,7 @@ Package.onUse(function (api) {
 
     'colorTable',
     'registerElementColor',
-    
+
     'themeSettings',
 
     'getVotePower'
