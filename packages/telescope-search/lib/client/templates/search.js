@@ -23,7 +23,6 @@ Meteor.startup(function () {
 
   Template[getTemplate('search')].events({
     'keyup .search-field, search .search-field': function(e){
-      console.log("telescope-handler");
       e.preventDefault();
       var val = $(e.target).val(),
           $search = $('.search');
