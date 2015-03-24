@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope-seo",
   summary: "SEO extensions for Telescope",
-  version: "0.0.4"
+  version: "0.0.5"
 });
 
 Package.onUse(function(api) {

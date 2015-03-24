@@ -36,6 +36,8 @@ facebook@1.1.3
 fastclick@1.0.2
 follower-livedata@1.0.3
 fourseven:scss@1.0.0
+gadicohen:robots-txt@0.0.8
+gadicohen:sitemaps@0.0.20
 geojson-utils@1.0.2
 handlebars@1.0.2
 html-tools@1.0.3
@@ -62,6 +64,7 @@ less@1.0.12
 livedata@1.0.12
 localstorage@1.0.2
 logging@1.0.6
+manuelschoebel:ms-seo@0.4.1
 matb33:collection-hooks@0.7.11
 meteor@1.1.4
 meteor-platform@1.2.1
@@ -129,6 +132,7 @@ telescope-post-by-feed@0.0.1
 telescope-releases@0.1.0
 telescope-rss@0.0.0
 telescope-search@0.0.0
+telescope-seo@0.0.5
 telescope-singleday@0.1.0
 telescope-subscribe-to-posts@0.1.0
 telescope-tagline-banner@0.1.0
