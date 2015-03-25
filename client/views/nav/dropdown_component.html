@@ -10,6 +10,8 @@ dropdownItems (Array)
 - route (String/Function) [optional]
 - label (String/Function) [optional]
 - description (String) [optional]
+- itemClass (String) [optional]
+  | an optional CSS class
 - adminOnly (Boolean) [optional]
   | whether to only show the item to admins
 - template (String) [optional]
@@ -38,7 +40,7 @@ dropdownMode (String) [optional]
               {{#if hasTemplate}}
                 {{> Template.dynamic template=template data=data}}
               {{else}}
-                <li class="{{itemClass}}">
+                <li class="dropdown-item {{itemClass}}">
                   <a class="dropdown-sub-level" href="{{itemRoute}}">
                     <span class="menu-label">{{itemLabel}}</span>
                     {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}

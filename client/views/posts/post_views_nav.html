@@ -1,10 +1,7 @@
 <template name="postViewsNav">
-  <div class="posts-list-views grid-module">
-    <span>View:</span>
-    {{#each viewsMenu}}
-      {{#if showItem}}
-        <a class="{{itemClass}}" href="{{itemRoute}}">{{_ label}}</a>
-      {{/if}}
-    {{/each}}
-  </div>
+  {{#if showNav}}
+    <div class="posts-list-views grid-module">
+      {{> dropdownComponent viewsMenuData}}
+    </div>
+  {{/if}}
 </template>

@@ -4,9 +4,9 @@ Template[getTemplate('nav')].helpers({
     var bgBrightness = tinycolor(getSetting('headerColor')).getBrightness();
     if (bgBrightness < 50) {
       headerClass += " dark-bg";
-    } else if (bgBrightness < 100) {
+    } else if (bgBrightness < 130) {
       headerClass += " medium-dark-bg";
-    } else if (bgBrightness < 200) {
+    } else if (bgBrightness < 220) {
       headerClass += " medium-light-bg";
     } else if (bgBrightness < 255) {
       headerClass += " light-bg";

@@ -1,8 +1,13 @@
+getRoute = function (item) {
+  // if route is a Function return its result, else apply Router.path() to it
+  return typeof item.route == "function" ? item.route() : Router.path(item.route);
+}
+
 Template[getTemplate('dropdownComponent')].helpers({
   dropdownClass: function () {
 
     var classes = [this.dropdownName+"-menu"];
-    var mode = this.dropdownMode == "undefined" ? "list" : this.dropdownMode;
+    var mode = (typeof this.dropdownMode === "undefined") ? "list" : this.dropdownMode;
     var count = this.dropdownItems.length;
 
     classes.push("dropdown-"+mode);
@@ -36,9 +41,19 @@ Template[getTemplate('dropdownComponent')].helpers({
   },
   itemClass: function () {
     var itemClass = "";
+    var currentPath = Router.current().location.get().path ;
+    
     if (this.adminOnly) {
-      itemClass += " admin-item";
+      itemClass += " item-admin";
     }
+    if (getRoute(this) === currentPath || getRoute(this) === Meteor.absoluteUrl() + currentPath.substr(1)) {
+      // substr(1) is to avoid having two "/" in the URL
+      itemClass += " item-active";
+    }
+    if (this.itemClass) {
+      itemClass += " "+this.itemClass;
+    }
+
     return itemClass;
   },
   itemLabel: function () {
@@ -46,8 +61,7 @@ Template[getTemplate('dropdownComponent')].helpers({
     return typeof this.label == "function" ? this.label() :  i18n.t(this.label);
   },
   itemRoute: function () {
-    // if route is a Function return its result, else apply Router.path() to it
-    return typeof this.route == "function" ? this.route() : Router.path(this.route);
+    return getRoute(this);
   }
 });
 

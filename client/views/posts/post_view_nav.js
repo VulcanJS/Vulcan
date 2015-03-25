@@ -1,24 +1,21 @@
 Template[getTemplate('postViewsNav')].helpers({
-  viewsMenu: function () {
-    return viewsMenu;
+  showNav: function () {
+    var navElements = getSetting('postViews', _.pluck(viewsMenu, 'route'));
+    var navCount = (typeof navElements === "array") ? navElements.length : _.keys(navElements).length;
+    return navCount > 1;
   },
-  itemRoute: function () {
-    return Router.path(this.route);
-  },
-  itemClass: function () {
-    var itemClass = "";
-    if (this.adminOnly) {
-      itemClass += " admin-item";
-    }
-    return itemClass;
-  },
-  showItem: function () {
+  viewsMenuData: function () {
     var defaultViews = _.pluck(viewsMenu, 'route');
-    // if item is not in postsViews setting, or item is adminOnly but current user is not admin
-    if (!_.contains(getSetting('postViews', defaultViews), this.route) || (this.adminOnly && !isAdmin(Meteor.user()))) {
-      // don't show the item
-      return false
+    var dropdownItems = _.filter(viewsMenu, function (item) {
+      if (!_.contains(getSetting('postViews', defaultViews), item.route) || (item.adminOnly && !isAdmin(Meteor.user()))) {
+        // don't show the item
+        return false;
+      }
+      return true;
+    });
+    return {
+      dropdownName: 'view',
+      dropdownItems: dropdownItems
     }
-    return true;
   }
 });

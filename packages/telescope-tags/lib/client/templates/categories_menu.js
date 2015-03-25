@@ -23,6 +23,7 @@ Meteor.startup(function () {
         dropdownItems: [{
           route: 'posts_default',
           label: 'all_categories',
+          itemClass: 'item-never-active'
         }].concat(dropdownItems),
         dropdownClass: 'header-submodule',
         dropdownMode: dropdownMode
