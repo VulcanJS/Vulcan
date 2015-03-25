@@ -1,8 +1,8 @@
 colorTable = {
-  headerColor: [],
-  headerTextColor: [],
-  buttonColor: [],
-  buttonTextColor: []
+  accentColor: [],
+  accentContrastColor: [],
+  secondaryColor: [],
+  secondaryContrastColor: []
 }
 
 registerElementColor = function (selector, color, property) {
@@ -16,69 +16,68 @@ registerElementColor = function (selector, color, property) {
 
 // shortcuts
 
-headerColor = function (selector, property) {registerElementColor(selector, "headerColor", property);}
-headerTextColor = function (selector, property) {registerElementColor(selector, "headerTextColor", property);}
-buttonColor = function (selector, property) {registerElementColor(selector, "buttonColor", property);}
-buttonTextColor = function (selector, property) {registerElementColor(selector, "buttonTextColor", property);}
+accent = function (selector, property) {registerElementColor(selector, "accentColor", property);}
+accentContrast = function (selector, property) {registerElementColor(selector, "accentContrastColor", property);}
+secondary = function (selector, property) {registerElementColor(selector, "secondaryColor", property);}
+secondaryContrast = function (selector, property) {registerElementColor(selector, "secondaryContrastColor", property);}
 
-// headerColor
+// accentColor
 
-headerColor(".header", "background-color");
+accent("a:hover");
+accent(".post-content .post-heading .post-title:hover");
+accent(".post-content .post-upvote .icon");
+accent(".comment-actions a i");
+accent(".comment-actions.upvoted .upvote i");
+accent(".comment-actions.downvoted .downvote i");
+accent(".toggle-actions-link");
+accent(".post-meta a:hover");
+accent(".action:hover");
+accent(".post-upvote .upvote-link i");
+accent(".post-actions .icon");
+accent(".post-share .icon-share");
 
-// headerTextColor
+accent('input[type="submit"]', 'background-color');
+accent("button", 'background-color');
+accent(".button", 'background-color');
+accent("button.submit", 'background-color');
+accent(".auth-buttons #login-buttons #login-buttons-password", 'background-color');
+accent(".btn-primary", 'background-color');
+accent(".header .btn-primary", 'background-color');
+accent(".header .btn-primary:link", 'background-color');
+accent(".header .btn-primary:visited", 'background-color');
+accent(".error", 'background-color');
+accent(".mobile-menu-button", 'background-color');
+accent(".login-link-text", 'background-color');
+accent(".post-category:hover", 'background-color');
 
-headerTextColor(".header");
-headerTextColor(".header .logo a");
-headerTextColor(".header .logo a:visited");
+accent(".icon-upvote", "border-color");
+accent(".icon-more", "border-color");
 
-headerTextColor(".header .dropdown-top-level", "border-color");
-headerTextColor(".header .dropdown-accordion .show-more", "border-color");
+// accentContrastColor
 
-// buttonColor
+accentContrast('input[type="submit"]');
+accentContrast("button");
+accentContrast(".button");
+accentContrast("button.submit");
+accentContrast(".auth-buttons #login-buttons #login-buttons-password");
+accentContrast(".btn-primary");
+accentContrast(".header .btn-primary");
+accentContrast(".header .btn-primary:link");
+accentContrast(".header .btn-primary:visited");
+accentContrast(".error");
+accentContrast(".mobile-menu-button");
+accentContrast("login-link-text");
+accentContrast(".post-category:hover");
 
-buttonColor("a:hover");
-buttonColor(".post-content .post-heading .post-title:hover");
-buttonColor(".post-content .post-upvote .icon");
-buttonColor(".comment-actions a i");
-buttonColor(".comment-actions.upvoted .upvote i");
-buttonColor(".comment-actions.downvoted .downvote i");
-buttonColor(".toggle-actions-link");
-buttonColor(".post-meta a:hover");
-buttonColor(".action:hover");
-buttonColor(".post-upvote .upvote-link i");
-buttonColor(".post-actions .icon");
-buttonColor(".post-share .icon-share");
+// secondaryColor
 
-buttonColor('input[type="submit"]', 'background-color');
-buttonColor("button", 'background-color');
-buttonColor(".button", 'background-color');
-buttonColor("button.submit", 'background-color');
-buttonColor(".auth-buttons #login-buttons #login-buttons-password", 'background-color');
-buttonColor(".btn-primary", 'background-color');
-buttonColor(".header .btn-primary", 'background-color');
-buttonColor(".header .btn-primary:link", 'background-color');
-buttonColor(".header .btn-primary:visited", 'background-color');
-buttonColor(".error", 'background-color');
-buttonColor(".mobile-menu-button", 'background-color');
-buttonColor(".login-link-text", 'background-color');
-buttonColor(".post-category:hover", 'background-color');
+secondary(".header", "background-color");
 
-buttonColor(".icon-upvote", "border-color");
-buttonColor(".icon-more", "border-color");
+// secondaryContrastColor
 
-// buttonTextColor
+secondaryContrast(".header");
+secondaryContrast(".header .logo a");
+secondaryContrast(".header .logo a:visited");
 
-buttonTextColor('input[type="submit"]');
-buttonTextColor("button");
-buttonTextColor(".button");
-buttonTextColor("button.submit");
-buttonTextColor(".auth-buttons #login-buttons #login-buttons-password");
-buttonTextColor(".btn-primary");
-buttonTextColor(".header .btn-primary");
-buttonTextColor(".header .btn-primary:link");
-buttonTextColor(".header .btn-primary:visited");
-buttonTextColor(".error");
-buttonTextColor(".mobile-menu-button");
-buttonTextColor("login-link-text");
-buttonTextColor(".post-category:hover");
-
+secondaryContrast(".header .dropdown-top-level", "border-color");
+secondaryContrast(".header .dropdown-accordion .show-more", "border-color");

@@ -1,4 +1,4 @@
-## v0.14.4 “SideScope”
+## v0.15 “SideScope”
 
 * Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
 * Romanian translation (thanks @razvansky!).
@@ -11,6 +11,10 @@
 * Added the Side Nav layout.
 * Added the Post Views setting.
 * New Admin menu layout.
+* Now using FontAwesome.
+* New `{{{icon}}}` helper for icons.
+* New accent color customization API. 
+* Changed color settings names.
 
 ## v0.14.3 “TableScope”
 

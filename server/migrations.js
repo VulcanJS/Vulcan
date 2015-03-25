@@ -494,7 +494,28 @@ var migrationsList = {
       }
     });
     return i;
-  }
+  },
+  changeColorNames: function () {
+    var i = 0;
+    var settings = Settings.findOne();
+    var set = {};
+
+    if (!!settings.buttonColor)
+      set.accentColor = settings.buttonColor;
+
+    if (!!settings.buttonTextColor)
+      set.accentContrastColor = settings.buttonTextColor;
+
+    if (!!settings.buttonColor)
+      set.secondaryColor = settings.headerColor;
+
+    if (!!settings.buttonColor)
+      set.secondaryContrastColor = settings.headerTextColor;
+    if (!_.isEmpty(set)) {
+      Settings.update(settings._id, {$set: set}, {validate: false});
+    }
+    return i;
+  },
 };
 
 // TODO: normalize categories?
