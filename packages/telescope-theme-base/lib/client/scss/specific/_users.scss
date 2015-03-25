@@ -1,4 +1,8 @@
-.template-users {
+.users-dashboard-heading {
+  margin-bottom: -50px;
+}
+
+.users-dashboard {
 
   a {
     color: lighten($text, 10%);
@@ -7,10 +11,6 @@
     &:hover {
       color: $red;
     }
-  }
-
-  .user-table-heading {
-    margin-bottom: -50px;
   }
 
   .reactive-table-filter {
