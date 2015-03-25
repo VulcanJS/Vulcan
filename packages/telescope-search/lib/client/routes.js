@@ -2,6 +2,7 @@ Meteor.startup(function () {
 
   PostsSearchController = PostsListController.extend({
     view: 'search',
+    showViewsNav: false,
     onBeforeAction: function() {
       var query = this.params.query;
       if ('q' in query) {

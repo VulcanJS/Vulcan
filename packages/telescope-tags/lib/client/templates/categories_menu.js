@@ -10,16 +10,20 @@ Meteor.startup(function () {
         var dropdownMode = 'accordion';
       }
 
+      var dropdownItems = _.map(Categories.find({}, {sort: {order: 1, name: 1}}).fetch(), function (category) {
+        return {
+          route: function () {
+            return getCategoryUrl(category.slug);
+          },
+          label: category.name
+        }
+      });
       return {
         dropdownName: 'categories',
-        dropdownItems: _.map(Categories.find({}, {sort: {order: 1, name: 1}}).fetch(), function (category) {
-          return {
-            route: function () {
-              return getCategoryUrl(category.slug);
-            },
-            label: category.name
-          }
-        }),
+        dropdownItems: [{
+          route: 'posts_default',
+          label: 'all_categories',
+        }].concat(dropdownItems),
         dropdownClass: 'header-submodule',
         dropdownMode: dropdownMode
       }
