@@ -121,12 +121,12 @@ settingsSchemaObject = {
       ]
     }
   },
-  postsViews: {
+  postViews: {
     type: [String],
     optional: true,
     autoform: {
       group: 'posts',
-      instructions: 'Posts views enabled',
+      instructions: 'Posts views showed in the views menu',
       editable: true,
       noselect: true,
       options: _.map(viewsMenu, function (item){
@@ -135,8 +135,7 @@ settingsSchemaObject = {
           label: item.label
         }
       })
-    },
-    defaultValue: ['top', 'new', 'pending', 'scheduled']
+    }
   },  
   postInterval: {
     type: Number,
@@ -236,32 +235,36 @@ settingsSchemaObject = {
       rows: 5
     }
   },
-  // secondaryColor: {
-  //   type: String,
-  //   optional: true
-  // },
-  buttonColor: {
+  accentColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for button backgrounds.'
     }
   },
-  buttonTextColor: {
+  accentContrastColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for button text.'
     }
   },
-  headerColor: {
+  secondaryColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for the navigation background.'
+    }
+  },
+  secondaryContrastColor: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'colors',
+      instructions: 'Used for header text.'
     }
   },
   fontUrl: {
@@ -278,13 +281,6 @@ settingsSchemaObject = {
     autoform: {
       group: 'fonts',
       instructions: 'font-family (e.g. "Source Sans Pro", sans-serif)'
-    }
-  },
-  headerTextColor: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'colors'
     }
   },
   twitterAccount: {
