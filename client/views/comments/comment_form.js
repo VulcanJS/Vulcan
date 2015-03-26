@@ -20,8 +20,6 @@ Template[getTemplate('comment_form')].events({
     // $commentForm.prop('disabled', true);
     // $submitButton.addClass('loading');
 
-    $commentForm.val('');
-
     // context can be either post, or comment property
     var postId = !!this._id ? this._id: this.comment.postId;
     var post = Posts.findOne(postId);
@@ -44,6 +42,7 @@ Template[getTemplate('comment_form')].events({
         flashMessage(error.reason, "error");
       }else{
         trackEvent("newComment", newComment);
+        $commentForm.val('');
       }
     });
 
