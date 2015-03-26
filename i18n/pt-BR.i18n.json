@@ -21,8 +21,9 @@
 
   // Settings Schema
   "title": "Título",
+  "description": "Descrição",
   "siteUrl": "URL do site",
-  "tagline": "Descrição",
+  "tagline": "Tagline",
   "requireViewInvite": "Exigir Convite para Ver",
   "requirePostInvite": "Exigir Convite para Postar",
   "requirePostsApproval": "Exigir Postagens serem Aprovadas",
@@ -52,6 +53,12 @@
   "emailFooter": "Rodapé do Email",
   "notes": "Notas",
   "debug": "Modo de Debug",
+  "fontUrl": "URL da Fonte",
+  "fontFamily": "Família da Fonte",
+  "authMethods": "Métodos de Autenticação",
+  "faviconUrl": "URL do Favicon",
+  "mailURL": "MailURL",
+  "postsLayout": "Layout dos Posts",
 
   // Settings Fieldsets
   "general": "Geral",
@@ -103,6 +110,7 @@
   "edit": "Editar",
   "reply": "Responder",
   "no_comments": "Sem comentários.",
+  "please_sign_in_to_reply": "Por favor, registre-se para responder",
 
   //Errors
   "you_are_already_logged_in": "Você já está logado",
@@ -113,6 +121,7 @@
   "sorry_you_do_not_have_the_rights_to_comments": "Desculpe, você não pode comentar neste momento.",
   "not_found": "Não Encontrado!",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "Nos desculpe; o que estava procurando não se encontra aqui...",
+  "disallowed_property_detected": "Propriedade não permitida detectada",
 
   //Notifications
   "no_notifications": "Sem notificações",
@@ -254,8 +263,6 @@
   "please_fill_in_a_title": "Por favor preencha um título",
   "seconds_before_posting_again": " segundos antes de postar novamente",
   "upvoted": "Votado",
-  "posted_date": "Data da Postagem",
-  "posted_time": "Hora da da Postagem",
   "posted_date": "Data da Postagem",
   "posted_time": "Hora da da Postagem",
   "profile": "Perfil",
