@@ -3,6 +3,12 @@ Meteor.startup(function () {
   PostsSearchController = PostsListController.extend({
     view: 'search',
     showViewsNav: false,
+    getTitle: function() {
+      return i18n.t("Search") + ' - ' + getSetting('title', "Telescope");
+    },
+    getDescription: function() {
+      return getSetting('description');
+    },
     onBeforeAction: function() {
       var query = this.params.query;
       if ('q' in query) {
