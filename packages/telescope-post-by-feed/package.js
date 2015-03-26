@@ -28,7 +28,7 @@ Package.onUse(function(api) {
 
   api.use([
     'http',
-    'mrt:moment',
+    'momentjs:moment',
     'percolatestudio:synced-cron'
   ], 'server');
 
