@@ -130,8 +130,8 @@ Template["afFormGroup_telescope"].helpers({
     var fieldName = this.name;
     var fieldSchema = AutoForm.getFormSchema().schema(fieldName);
 
-    // if a label has been explicitely specified, use it; else default to i18n of the field name
-    var label = !!fieldSchema.label ? fieldSchema.label: i18n.t(fieldName);
+    // if a label has been explicitely specified, use it; else default to capitalization of i18n of the field name
+    var label = !!fieldSchema.label ? fieldSchema.label: capitalise(i18n.t(fieldName));
 
     return label;
   }
