@@ -59,7 +59,7 @@ Accounts.onCreateUser(function(options, user){
 Meteor.methods({
   changeEmail: function (userId, newEmail) {
     var user = Meteor.users.findOne(userId);
-    if (can.edit(user) !== true) {
+    if (can.edit(Meteor.user(), user) !== true) {
       throw new Meteor.Error("Permission denied");
     }
     Meteor.users.update(
