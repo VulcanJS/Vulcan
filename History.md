@@ -15,6 +15,11 @@
 * New `{{{icon}}}` helper for icons.
 * New accent color customization API. 
 * Changed color settings names.
+* Added `telescope-seo` package (thanks @yourcelf!).
+* Added Arabic translation (thanks @nwabdou85!).
+* Added field for optional category image (thanks @dtsepelev!).
+* Added missing translations in Brazilian Portuguese (thanks @alanmeira!).
+* Fixed various bugs (thanks @webyak, @yourcelf, @ywang28, @delgermurun!).
 
 ## v0.14.3 “TableScope”
 
