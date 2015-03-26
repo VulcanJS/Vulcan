@@ -3,9 +3,9 @@
 @import "partials/colors";
 @import "partials/mixins";
 @import "partials/typography";
-@import "partials/icons";
 @import "partials/tooltips";
 
+@import "modules/layout";
 @import "modules/accounts";
 @import "modules/banners";
 @import "modules/nav";
@@ -14,4 +14,3 @@
 @import "modules/dialogs";
 @import "modules/user-profile";
 @import "modules/errors";
-@import "modules/icons";

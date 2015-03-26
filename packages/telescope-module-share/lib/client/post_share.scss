@@ -23,10 +23,21 @@ $red: #DD3416;
 
 .post-share{
   position: relative;
+  .icon-share{
+    &:before{
+      font-size: 24px;
+    }
+  }
 }
 
 .share-options {
   position: absolute;
+  z-index: 10000;
+  background: rgba(0,0,0,0.4);
+  border-radius: 3px;
+  .icon{
+    color: white;
+  }
   @include small {
     left: 50% !important;
     top: 40px !important;
@@ -50,7 +61,7 @@ $red: #DD3416;
     pointer-events: none;
     left:-160px;
   }
-  &:after, &:before {
+  &:after{
     left: 100%;
     border: solid transparent;
     content: " ";
@@ -60,10 +71,10 @@ $red: #DD3416;
     pointer-events: none;
   }
   &:after {
-    border-color: rgba(255, 255, 255, 0);
+    border-color: rgba(0, 0, 0, 0);
     border-width: 10px;
     @include small {
-      border-bottom-color: #ffffff;
+      border-bottom-color: rgba(0,0,0,0.4);
       top: -20px;
       left: 50%;
       margin-left: -11px;
@@ -72,21 +83,6 @@ $red: #DD3416;
     //   border-left-color: #ffffff;
     //   top: 20px;
     //   margin-top: -3px;
-    // }
-  }
-  &:before {
-    border-color: rgba(0, 0, 0, 0);
-    border-width: 11px;
-    @include small {
-      border-bottom-color: $red;
-      top: -22px;
-      left: 50%;
-      margin-left: -12px;
-    }
-    // @include medium-large {
-    //   border-left-color: $red;
-    //   top: 20px;
-    //   margin-top: -4px;
     // }
   }
   .buttons {
@@ -111,39 +107,22 @@ a.mt-share-inline-square-sm {
   display: inline-block;
   width: 34px;
   height: 34px;
+  line-height: 34px;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   margin-right: 4px;
 }
-.mt-google:hover {
-  background-color: rgb(225, 95, 79);
-}
 .mt-google {
   background-color: rgb(221, 75, 57);
-}
-.mt-linkedin:hover {
-  background-color: rgb(16, 135, 192);
 }
 .mt-linkedin {
   background-color: rgb(14, 118, 168);
 }
-.mt-twitter:hover {
-  background-color: rgb(8, 187, 255);
-}
 .mt-twitter {
   background-color: rgb(0, 172, 238);
 }
-.mt-facebook:hover {
-  background-color: rgb(66, 100, 170);
-}
 .mt-facebook {
   background-color: rgb(59, 89, 152);
-}
-.mt-pinterest:hover {
-  background-color: rgb(221, 42, 48);
-}
-.mt-pinterest {
-  background-color: rgb(204, 33, 39);
 }

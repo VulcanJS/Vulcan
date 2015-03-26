@@ -30,6 +30,18 @@ settingsSchemaObject = {
       instructions: 'A short description used for SEO purposes.'
     }
   },
+  navLayout: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'general',
+      instructions: 'The layout used for the main menu',
+      options: [
+        {value: 'top-nav', label: 'Top'},
+        {value: 'side-nav', label: 'Side'}
+      ]
+    }
+  },
   requireViewInvite: {
     type: Boolean,
     optional: true,
@@ -109,6 +121,22 @@ settingsSchemaObject = {
       ]
     }
   },
+  postViews: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'posts',
+      instructions: 'Posts views showed in the views menu',
+      editable: true,
+      noselect: true,
+      options: _.map(viewsMenu, function (item){
+        return {
+          value: item.route,
+          label: item.label
+        }
+      })
+    }
+  },  
   postInterval: {
     type: Number,
     optional: true,
@@ -207,32 +235,36 @@ settingsSchemaObject = {
       rows: 5
     }
   },
-  // secondaryColor: {
-  //   type: String,
-  //   optional: true
-  // },
-  buttonColor: {
+  accentColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for button backgrounds.'
     }
   },
-  buttonTextColor: {
+  accentContrastColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for button text.'
     }
   },
-  headerColor: {
+  secondaryColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for the navigation background.'
+    }
+  },
+  secondaryContrastColor: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'colors',
+      instructions: 'Used for header text.'
     }
   },
   fontUrl: {
@@ -249,13 +281,6 @@ settingsSchemaObject = {
     autoform: {
       group: 'fonts',
       instructions: 'font-family (e.g. "Source Sans Pro", sans-serif)'
-    }
-  },
-  headerTextColor: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'colors'
     }
   },
   twitterAccount: {

@@ -29,4 +29,10 @@ Package.onUse(function(api) {
   api.addFiles([
     "lib/server/sitemaps.js"
   ], ["server"]);
+
+  // i18n
+  api.add_files([
+    "i18n/en.i18n.json"
+  ], ["client", "server"]);
+
 });

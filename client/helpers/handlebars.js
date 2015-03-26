@@ -88,3 +88,7 @@ UI.registerHelper('displayName', function(userOrUserId) {
     return getDisplayName(user);
   }
 });
+
+UI.registerHelper('icon', function(iconName, iconClass) {
+  return getIcon(iconName, iconClass);
+});

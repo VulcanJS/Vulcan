@@ -1,3 +1,7 @@
+// 1. Neutral
+// 2. Mobile
+// 3. Desktop
+
 $mobile-header-height: 50px;
 
 .header{
@@ -7,7 +11,7 @@ $mobile-header-height: 50px;
   color: white;
   @include small{
     height: $mobile-header-height;
-    padding: 10px;
+    padding: 0 10px;
     position: relative;
   }
   a, a:link, a:visited{
@@ -17,26 +21,17 @@ $mobile-header-height: 50px;
     list-style-type: none;
     >li{
       margin-bottom: 0;
-      display: inline-block;
+      // display: inline-block;
       &:last-child .header-submodule{
         margin-right: 0px;
       }
     }
   }
 }
-.header-module, .header-submodule{
-  display: inline-block;
-  margin-right: 20px;
-}
-.header-module{
-  &:last-child{
-    margin-right: 0px;
-  }
-}
+
 .logo{
   vertical-align: middle;
   line-height: 1;
-  padding: 0 60px; // leave space for nav button on mobile
   @include small{
     margin-right: 0;
     a{
@@ -51,6 +46,21 @@ $mobile-header-height: 50px;
       top: 0px;
       z-index: 10;
       margin-right: 0;
+    }
+  }
+  .header &{
+    @include small{
+      padding: 0 60px; // leave space for nav button on mobile
+    }
+  }
+  .mobile-nav &{
+    padding: 20px;
+    font-size: 30px;
+    &, a{
+      color: white;
+    }
+    @include small{
+      display: none;
     }
   }
 }
@@ -68,9 +78,8 @@ $mobile-header-height: 50px;
   padding: 4px;
   top: 50%;
   margin-top: -17px;
-  .hamburger{
-    fill: white;
-  }
+  text-align: center;
+  width: 30px;
   z-index:100;
 
 }

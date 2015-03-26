@@ -1,15 +1,6 @@
 <template name="userMenu">
   {{#if isLoggedIn}}
-    <div class="user-menu dropdown header-submodule">
-      <a class="view dropdown-top-level" href="/">{{name}}</a>
-      <div class="dropdown-menu">
-        <ul role="menu" aria-labelledby="dLabel">
-          <li><a href="{{profileUrl}}">{{_ "profile"}}</a></li>
-          <li><a href="{{userEditUrl}}">{{_ "edit_account"}}</a></li>
-          <li><a href="{{pathFor route='signOut'}}">{{_ "sign_out"}}</a></li>
-        </ul>
-      </div>
-    </div>
+    {{> dropdownComponent userMenuData}}
   {{else}}
     <a class="account-link sign-in" href="{{pathFor route='atSignUp'}}">{{_ "sign_up"}}</a>
     <a class="account-link sign-up" href="{{pathFor route='atSignIn'}}">{{_ "sign_in"}}</a>

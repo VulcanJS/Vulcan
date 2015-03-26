@@ -1,4 +1,4 @@
-heroModules.push({
+postListTopModules.push({
   template: 'taglineBanner',
   order: 1
 });

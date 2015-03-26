@@ -1,5 +1,8 @@
 <template name="css">
   <style>
+      
+      {{elementColors}}
+
       @import url({{getSetting 'fontUrl'}});
       
       body, textarea, input, button, input[type="submit"], input[type="button"]{
@@ -9,28 +12,6 @@
       body{
         background: {{getSetting "backgroundCSS"}};
       }
-      .header{
-        background-color: {{getSetting "headerColor"}};
-      }
-      .header, .header .logo a, .header .logo a:visited{
-        color: {{getSetting "headerTextColor"}};        
-      }
-      input[type="submit"], button, .button, button.submit, .auth-buttons #login-buttons #login-buttons-password, .btn-primary, .header .btn-primary, .header .btn-primary:link, .header .btn-primary:visited, .error, .mobile-menu-button, .login-link-text, .post-category:hover{
-        background-color: {{getSetting "buttonColor"}};
-        color: {{getSetting "buttonTextColor"}};
-      }
-      a:hover, .post-content .post-heading .post-title:hover, .post-content .post-upvote .upvote-link i, .comment-actions a i, .comment-actions.upvoted .upvote i, .comment-actions.downvoted .downvote i, .toggle-actions-link, .post-meta a:hover, .action:hover, .post-upvote .upvote-link i{
-        color: {{getSetting "buttonColor"}};
-      }
-      .post-upvote .upvote-link i{
-        border-color: {{getSetting "buttonColor"}};
-      }
-      .toggle-actions-link{
-        border-color: {{getSetting "buttonColor"}};
-      }
-      .post-content .post-upvote .upvote-link.voted i.icon-check{
-        /*color: {{getSetting "secondaryColor"}};*/
-      }    
 
       .logo-image a{
         max-height:{{getSetting "logoHeight"}}px;
@@ -38,6 +19,13 @@
       }
 
       {{hideAuthClass}}
+
+      @media screen and (max-width: 600px) {
+        /* find a way to get rid of this */
+        .post-discuss .icon, .post-discuss .action-count{
+          color: {{getSetting "buttonColor"}};
+        }
+      }
 
   </style>
 </template>

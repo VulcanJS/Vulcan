@@ -1,0 +1,60 @@
+<!-- 
+
+Dropdown Component
+
+dropdownName (String)
+| The name of the dropdown
+
+dropdownItems (Array)
+| An array containing the contents of the dropdown
+- route (String/Function) [optional]
+- label (String/Function) [optional]
+- description (String) [optional]
+- itemClass (String) [optional]
+  | an optional CSS class
+- adminOnly (Boolean) [optional]
+  | whether to only show the item to admins
+- template (String) [optional]
+  | if a template is provided, it will override the route/label/description
+- data (Object) [optional]
+  | data contexnt for the template
+
+dropdownLabel (String) [optional]
+
+dropdownClass (String) [optional]
+| An optional default CSS class given to the dropdown
+
+dropdownMode (String) [optional]
+| "accordion", "hover", or "list" (defaults to "list")
+
+-->
+
+<template name="dropdownComponent">
+  <div class="dropdown {{dropdownClass}}">
+    <div class="dropdown-top-level" href="/">{{dropdownLabel}}</div>
+    <div class="dropdown-menu">
+      {{#with dropdownItems}}
+        <ul class="dropdown-contents" role="menu" aria-labelledby="dLabel">
+          {{#each this}}
+            {{#if showDropdownItem}}
+              {{#if hasTemplate}}
+                {{> Template.dynamic template=template data=data}}
+              {{else}}
+                <li class="dropdown-item {{itemClass}}">
+                  <a class="dropdown-sub-level" href="{{itemRoute}}">
+                    <span class="menu-label">{{itemLabel}}</span>
+                    {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+                  </a>
+                </li>
+              {{/if}}
+            {{/if}}
+          {{/each}}
+        </ul>
+      {{/with}}
+      <a class="show-more" href="#">
+        {{{icon "open"}}}
+        {{{icon "close"}}}
+      </a>
+    </div>
+  </div>
+</template>

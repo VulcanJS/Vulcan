@@ -4,12 +4,18 @@ primaryNav.push({
   order: 100
 });
 
+mobileNav.push({
+  template: 'search',
+  order: 1
+});
+
 adminMenu.push({
   route: 'searchLogs',
   label: 'search_logs',
   description: 'see_what_people_are_searching_for'
 });
 
+registerElementColor('.search-field', 'secondaryContrastColor');
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({

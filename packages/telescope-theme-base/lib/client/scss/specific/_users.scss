@@ -1,15 +1,8 @@
+.users-dashboard-heading {
+  margin-bottom: -50px;
+}
 
-.template-users {
-
-  .content-wrapper {
-    max-width: 95%;
-    padding: 20px 35px 45px 35px;
-    margin-top: 10px;
-    margin-bottom: 50px;
-    background: #fff;
-    border-radius: 1px;
-    box-shadow: 0 2px 1px 1px rgba(0, 0, 0, .15);
-  }
+.users-dashboard {
 
   a {
     color: lighten($text, 10%);
@@ -18,10 +11,6 @@
     &:hover {
       color: $red;
     }
-  }
-
-  .user-table-heading {
-    margin-bottom: -50px;
   }
 
   .reactive-table-filter {

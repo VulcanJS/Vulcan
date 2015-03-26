@@ -5,6 +5,8 @@
         <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';" aria-hidden="true"/>
       </a>
     </div>
+  {{else}}
+    <div class="post-thumbnail-empty"></div>
   {{/if}}
   {{#if media}}
     {{> UI.dynamic template=videoTemplate data=this}}

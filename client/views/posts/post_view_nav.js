@@ -1,0 +1,21 @@
+Template[getTemplate('postViewsNav')].helpers({
+  showNav: function () {
+    var navElements = getSetting('postViews', _.pluck(viewsMenu, 'route'));
+    var navCount = (typeof navElements === "array") ? navElements.length : _.keys(navElements).length;
+    return navCount > 1;
+  },
+  viewsMenuData: function () {
+    var defaultViews = _.pluck(viewsMenu, 'route');
+    var dropdownItems = _.filter(viewsMenu, function (item) {
+      if (!_.contains(getSetting('postViews', defaultViews), item.route) || (item.adminOnly && !isAdmin(Meteor.user()))) {
+        // don't show the item
+        return false;
+      }
+      return true;
+    });
+    return {
+      dropdownName: 'view',
+      dropdownItems: dropdownItems
+    }
+  }
+});

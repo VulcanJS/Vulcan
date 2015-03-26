@@ -2,38 +2,26 @@
   <header class="header {{headerClass}}">
 
     <a href="#menu" class="mobile-only mobile-menu-button button">
-      <svg height="24px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path class="hamburger" d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"/></svg>
+      {{{icon "menu"}}}
     </a>
 
-    {{#if logo_url}}
-      <h1 class="logo logo-image header-module">
-        <a href="/">
-          <img src="{{logo_url}}" alt="{{site_title}}"/>
-        </a>
-      </h1>
-    {{else}}
-      <h1 class="logo header-module"><a href="/">{{site_title}}</a></h1>
-    {{/if}}
+    {{> Template.dynamic template=logoTemplate}}
 
-    {{#if hasPrimaryNav}}
-      <ul class="nav primary-nav desktop-nav {{dropdownClass}} header-module desktop-only">
-        {{#each primaryNav}}
-          <li>
-            {{> UI.dynamic template=getTemplate}}
-          </li>
+    {{#with primaryNav}}
+      <div class="nav primary-nav desktop-nav header-module desktop-only">
+        {{#each this}}
+          {{> UI.dynamic template=getTemplate}}
         {{/each}}
-      </ul>
-    {{/if}}
+      </div>
+    {{/with}}
 
-    {{#if hasSecondaryNav}}
-      <ul class="nav secondary-nav desktop-nav {{dropdownClass}} header-module desktop-only">
-        {{#each secondaryNav}}
-          <li>
-            {{> UI.dynamic template=getTemplate}}
-          </li>
+    {{#with secondaryNav}}
+      <div class="nav secondary-nav desktop-nav header-module desktop-only">
+        {{#each this}}
+          {{> UI.dynamic template=getTemplate}}
         {{/each}}
-      </ul>
-    {{/if}}
-
+      </div>
+    {{/with}}
+      
   </header>
 </template>

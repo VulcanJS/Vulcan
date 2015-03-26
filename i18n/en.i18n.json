@@ -6,6 +6,7 @@
   "new": "New",
   "best": "Best",
   "digest": "Digest",
+  "scheduled": "Scheduled",
   "users": "Users",
   "settings": "Settings",
   "admin": "Admin",
@@ -15,7 +16,9 @@
   "my_account": "My Account",
   "view_profile": "View Profile",
   "edit_account": "Edit Account",
-
+  "view_your_profile": "View your profile.",
+  "edit_your_profile": "Edit your profile",
+  
   //Main
   "new_posts": "New Posts",
 
@@ -71,6 +74,13 @@
   "extras": "Extras",
   "colors": "Colors",
   "integrations": "Integrations",
+  "accentColor": "Accent Color",
+  "accentContrastColor": "Accent Contrast Color",
+  "secondaryColor": "Secondary Color",
+  "secondaryContrastColor": "Secondary Contrast Color",
+  "postViews": "Post Views",
+  "navLayout": "Navigation Layout",
+  "mailUrl": "Mail URL",
 
   // Settings Help Text
 

@@ -1,0 +1,8 @@
+<template name="adminWrapper">
+  <div class="grid admin-wrapper">
+    {{> Template.dynamic template=adminMenu}}
+    <div class="admin-contents {{contentsClass}}">
+      {{> Template.dynamic template=contents data=this}}
+    </div>
+  </div>
+</template>

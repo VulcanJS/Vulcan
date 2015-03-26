@@ -1,13 +1,12 @@
 // Add SEO settings.
 addToSettingsSchema.push({
-  propertyName: "seoOgImage",
+  propertyName: "siteImage",
   propertySchema: {
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Url,
-    label: "og image",
     autoform: {
-      group: "search engine optimization",
+      group: "general",
       instructions: "URL to an image for the open graph image tag for all pages"
     }
   }

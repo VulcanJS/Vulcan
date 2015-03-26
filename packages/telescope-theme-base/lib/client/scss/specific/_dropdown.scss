@@ -1,63 +1,179 @@
-.has-dropdown .dropdown{
-  position:relative;
-  >a{
-    &:after{
-      display:inline-block;
-      position:relative;
-      top:-1px;
-      margin-left:4px;
-      content:"▼";
-      font-size:8px;
+
+// ------------------------------------ Base ------------------------------------ //
+.dropdown{
+  .dropdown-item{
+    padding: 5px;
+    margin: 0;
+    a{
+      font-size:14px;
     }
   }
-  &:hover{
-    .dropdown-menu{
-      display:block;
+  .menu-label{
+    display: block;
+  }
+  .menu-description{
+    display: block;
+    font-weight: normal;
+    font-size: 12px;
+    margin-top: 2px;
+    color: $medium-text;
+  }
+  .item-admin{
+    .menu-label:after{
+      content: "[A]";
+      font-size: 10px;
+      color: $red;
+      display: inline-block;
+      margin-left: 3px;
     }
+  }
+  .item-active{
+    .dark-bg &, .medium-dark-bg &{
+      background: white(0.1);
+    }
+    .light-bg &, .medium-light-bg &, white-bg &{
+      background: black(0.1);
+    }
+  }
+  .item-active.item-never-active{
+    background: none;
+  }
+  .dropdown-top-label{
+    cursor: pointer;
   }
 }
-.has-dropdown .dropdown-menu{
-  display:none;
-  top:10px;
-  left:10px;
-  position:absolute;
-  padding-top:20px;
-  z-index: 10000;
-  &, a, a:link, a:visited{
-    color: $text;
+// ------------------------------------ List ------------------------------------ //
+
+.dropdown-list{
+  .show-more{
+    display: none;
   }
-  a.button{
-    color: white;
-  }
-  ul{
-    background:white;
-    padding:10px;
-    min-width:180px;
-    border-radius: 3px;
-    box-shadow: 0 1px 3px black(0.35);
-    list-style-type: none;
-    li{
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #eeeeee;
-      &:last-child{
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-      a{
-        font-size:14px;
-      }
-      .menu-label{
-        display: block;
-      }
-      .menu-description{
-        display: block;
-        font-weight: normal;
-        font-size: 12px;
-        margin-top: 2px;
-        color: $medium-text;
+}
+// ------------------------------------ Hover ------------------------------------ //
+
+.dropdown-hover{
+  position:relative;
+  &.dropdown-has-items{
+    .dropdown-top-level{
+      cursor: pointer;
+      &:after{
+        display:inline-block;
+        position:relative;
+        top:-1px;
+        margin-left:4px;
+        content:"▼";
+        font-size:8px;
       }
     }
+    &:hover{
+      .dropdown-menu{
+        display:block;
+      }
+    }
+  }
+  .dropdown-menu{
+    display:none;
+    top:10px;
+    left:10px;
+    position:absolute;
+    padding-top:20px;
+    z-index: 10000;
+    &, a, a:link, a:visited{
+      color: $text;
+    }
+    a.button{
+      color: white;
+    }
+    ul{
+      background:white;
+      padding:1px 10px;
+      min-width:180px;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px black(0.35);
+      list-style-type: none;
+    }
+  }
+  .show-more{
+    display: none;
+  }
+}
+
+// ------------------------------------ Accordion ------------------------------------ //
+
+.dropdown-accordion{
+  .dropdown-top-level{
+    cursor: default;
+    display: block;
+    padding: 5px;
+    position: relative;
+    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
+    &:after{
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.5;
+    }
+  }
+  /* ------- Show More Button ------- */
+  .show-more{
+    // border-top: 1px solid #ccc;
+    position: relative;
+    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
+    &:before{
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      top: 0px;
+      left: 0px;
+      opacity: 0.5;
+    }
+    padding: 8px 0;
+    display: none;
+    text-align: center;
+    .icon{
+      display: block;
+      height: 20px;
+      width: 20px;
+      opacity: 0.5;
+      margin: 0 auto;
+    }
+    &:hover{
+      background: white(0.2);
+      .show-more-icon{
+        opacity: 1;
+      }
+    }
+    .icon-close{
+      display: none;
+    }
+  }
+  &.dropdown-long .show-more{
+    display: block; // only show the "show more" button if the dropdown has more than three items
+  }
+  &.dropdown-open{
+    .icon-close{
+      display: block;
+    }
+    .icon-open{
+      display: none;
+    }    
+  }
+
+  /* expand/collapse animation */
+  .dropdown-contents{
+    max-height: 93px;
+    overflow: hidden;
+    @include animate(max-height);
+  }
+  &.dropdown-open .dropdown-contents{
+    max-height: 999px !important;
   }
 }

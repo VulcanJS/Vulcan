@@ -26,9 +26,10 @@ meteorhacks:fast-render
 meteorhacks:subs-manager
 meteorhacks:npm
 
-aldeed:autoform@5.0.0
+aldeed:autoform@5.0.3
 aldeed:collection2
 aldeed:simple-schema
+aldeed:template-extension
 
 mrt:jquery-hotkeys
 mrt:cookies
@@ -46,10 +47,12 @@ rajit:bootstrap3-datepicker
 bengott:avatar
 jparker:gravatar
 tap:i18n
-useraccounts:unstyled@1.4.0
+useraccounts:unstyled@1.8.1
 tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
 aslagle:reactive-table
+aramk:tinycolor
+fortawesome:fontawesome
 
 # Testing
 

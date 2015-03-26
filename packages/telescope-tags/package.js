@@ -33,6 +33,8 @@ Package.onUse(function (api) {
     'lib/client/templates/categories.js',
     'lib/client/templates/category_item.html',
     'lib/client/templates/category_item.js',
+    'lib/client/templates/category_title.html',
+    'lib/client/templates/category_title.js',
     'lib/client/templates/categories_menu.html',
     'lib/client/templates/categories_menu.js',
     'lib/client/templates/post_categories.html',
