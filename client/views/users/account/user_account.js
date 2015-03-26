@@ -89,7 +89,7 @@ Template[getTemplate('userAccount')].events({
       });
     });
 
-    Meteor.call('changeEmail', email);
+    Meteor.call('changeEmail', user._id, email);
 
   }
 
