@@ -26,7 +26,8 @@ Package.onUse(function (api) {
   api.use([
     'jquery',                     // useful for DOM interactions
     'underscore',                 // JavaScript swiss army knife library
-    'templating'                  // required for client-side templates
+    'templating',                 // required for client-side templates
+    'telescope-messages'
   ], ['client']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
@@ -57,7 +58,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/publications.js'
-  ], ['server']);    
+  ], ['server']);
 
   // i18n languages (must come last)
 
@@ -66,7 +67,7 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.export([
-    'subscribeItem', 
+    'subscribeItem',
     'unsubscribeItem'
   ]);
 
