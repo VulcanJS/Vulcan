@@ -9,7 +9,7 @@ Template[getTemplate('comment_form')].events({
 
     e.preventDefault();
     $(e.target).addClass('disabled');
-    clearSeenMessages();
+    Messages.clearSeen();
 
     var comment = {};
     var $commentForm = instance.$('#comment');
@@ -39,7 +39,7 @@ Template[getTemplate('comment_form')].events({
       // $submitButton.removeClass('loading');
       if(error){
         console.log(error);
-        flashMessage(error.reason, "error");
+        Messages.flash(error.reason, "error");
       }else{
         trackEvent("newComment", newComment);
         $commentForm.val('');

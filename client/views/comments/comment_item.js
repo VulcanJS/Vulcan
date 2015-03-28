@@ -111,7 +111,7 @@ var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
   e.preventDefault();
   if (!Meteor.user()){
     Router.go('atSignIn');
-    flashMessage(i18n.t('please_log_in_first'), 'info');
+    Messages.flash(i18n.t('please_log_in_first'), 'info');
   } else {
     Meteor.call(meteorMethodName, this, function(error, result){
       trackEvent(eventName, {

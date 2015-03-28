@@ -24,6 +24,7 @@ Package.onUse(function (api) {
     'jquery',
     'underscore',
     'templating',
+    'telescope-messages',
     'mrt:cookies'
   ], 'client');
 
