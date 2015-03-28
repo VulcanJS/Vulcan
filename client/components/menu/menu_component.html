@@ -1,12 +1,12 @@
 <!-- 
 
-Dropdown Component
+Menu Component
 
-dropdownName (String)
-| The name of the dropdown
+menuName (String)
+| The name of the menu
 
-dropdownItems (Array)
-| An array containing the contents of the dropdown
+menuItems (Array)
+| An array containing the contents of the menu
 - route (String/Function) [optional]
 - label (String/Function) [optional]
 - description (String) [optional]
@@ -19,29 +19,29 @@ dropdownItems (Array)
 - data (Object) [optional]
   | data contexnt for the template
 
-dropdownLabel (String) [optional]
+menuLabel (String) [optional]
 
-dropdownClass (String) [optional]
-| An optional default CSS class given to the dropdown
+menuClass (String) [optional]
+| An optional default CSS class given to the menu
 
-dropdownMode (String) [optional]
-| "accordion", "hover", or "list" (defaults to "list")
+menuMode (String) [optional]
+| "accordion", "dropdown", or "list" (defaults to "list")
 
 -->
 
-<template name="dropdownComponent">
-  <div class="dropdown {{dropdownClass}}">
-    <div class="dropdown-top-level" href="/">{{dropdownLabel}}</div>
-    <div class="dropdown-menu">
-      {{#with dropdownItems}}
-        <ul class="dropdown-contents" role="menu" aria-labelledby="dLabel">
+<template name="menuComponent">
+  <div class="menu {{menuClass}}">
+    <div class="menu-top-level" href="/">{{menuLabel}}</div>
+    <div class="menu-menu">
+      {{#with menuItems}}
+        <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
-            {{#if showDropdownItem}}
+            {{#if showMenuItem}}
               {{#if hasTemplate}}
                 {{> Template.dynamic template=template data=data}}
               {{else}}
-                <li class="dropdown-item {{itemClass}}">
-                  <a class="dropdown-sub-level" href="{{itemRoute}}">
+                <li class="menu-item {{itemClass}}">
+                  <a class="menu-sub-level" href="{{itemRoute}}">
                     <span class="menu-label">{{itemLabel}}</span>
                     {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
                   </a>

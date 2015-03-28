@@ -1,7 +1,7 @@
 
 // ------------------------------------ Base ------------------------------------ //
-.dropdown{
-  .dropdown-item{
+.menu{
+  .menu-item{
     padding: 5px;
     margin: 0;
     a{
@@ -38,23 +38,26 @@
   .item-active.item-never-active{
     background: none;
   }
-  .dropdown-top-label{
+  .menu-top-label{
     cursor: pointer;
   }
 }
 // ------------------------------------ List ------------------------------------ //
 
-.dropdown-list{
+.menu-list{
   .show-more{
     display: none;
+  }
+  .item-active{
+    background: black(0.05);
   }
 }
 // ------------------------------------ Hover ------------------------------------ //
 
-.dropdown-hover{
+.menu-dropdown{
   position:relative;
-  &.dropdown-has-items{
-    .dropdown-top-level{
+  &.menu-has-items{
+    .menu-top-level{
       cursor: pointer;
       &:after{
         display:inline-block;
@@ -66,12 +69,12 @@
       }
     }
     &:hover{
-      .dropdown-menu{
+      .menu-menu{
         display:block;
       }
     }
   }
-  .dropdown-menu{
+  .menu-menu{
     display:none;
     top:10px;
     left:10px;
@@ -84,7 +87,7 @@
     a.button{
       color: white;
     }
-    .dropdown-contents{
+    .menu-contents{
       background:white;
       padding: 10px;
       min-width:180px;
@@ -100,8 +103,8 @@
 
 // ------------------------------------ Accordion ------------------------------------ //
 
-.dropdown-accordion{
-  .dropdown-top-level{
+.menu-accordion{
+  .menu-top-level{
     cursor: default;
     display: block;
     padding: 5px;
@@ -155,10 +158,10 @@
       display: none;
     }
   }
-  &.dropdown-long .show-more{
-    display: block; // only show the "show more" button if the dropdown has more than three items
+  &.menu-long .show-more{
+    display: block; // only show the "show more" button if the menu has more than three items
   }
-  &.dropdown-open{
+  &.menu-open{
     .icon-close{
       display: block;
     }
@@ -168,12 +171,12 @@
   }
 
   /* expand/collapse animation */
-  .dropdown-contents{
+  .menu-contents{
     max-height: 93px;
     overflow: hidden;
     @include animate(max-height);
   }
-  &.dropdown-open .dropdown-contents{
+  &.menu-open .menu-contents{
     max-height: 999px !important;
   }
 }

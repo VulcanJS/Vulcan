@@ -3,36 +3,36 @@ getRoute = function (item) {
   return typeof item.route == "function" ? item.route() : Router.path(item.route);
 }
 
-Template[getTemplate('dropdownComponent')].helpers({
-  dropdownClass: function () {
+Template[getTemplate('menuComponent')].helpers({
+  menuClass: function () {
 
-    var classes = [this.dropdownName+"-menu"];
-    var mode = (typeof this.dropdownMode === "undefined") ? "list" : this.dropdownMode;
-    var count = this.dropdownItems.length;
+    var classes = [this.menuName+"-menu"];
+    var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
+    var count = this.menuItems.length;
 
-    classes.push("dropdown-"+mode);
+    classes.push("menu-"+mode);
 
-    if(!!this.dropdownClass) {
-      classes.push(this.dropdownClass)
+    if(!!this.menuClass) {
+      classes.push(this.menuClass)
     }
 
-    // enable dropdown if top-nav layout is enabled, if themes supports dropdowns, and if dropdown isn't empty
+    // enable menu if top-nav layout is enabled, if themes supports menus, and if menu isn't empty
     if (count) {
-      classes.push("dropdown-has-items");
+      classes.push("menu-has-items");
       if (count > 3) {
-        classes.push("dropdown-long");
+        classes.push("menu-long");
       }
     } else {
-      classes.push("dropdown-no-items");
+      classes.push("menu-no-items");
     }
 
     return classes.join(" ");
   },
-  dropdownLabel: function () {
-    // if label is defined, use this. Else default to dropdown name
-    return !!this.dropdownLabel ? this.dropdownLabel : i18n.t(this.dropdownName);
+  menuLabel: function () {
+    // if label is defined, use this. Else default to menu name
+    return !!this.menuLabel ? this.menuLabel : i18n.t(this.menuName);
   },
-  showDropdownItem: function () {
+  showMenuItem: function () {
     // if this is an admin item, only show it if current user is admin
     return this.adminOnly ? isAdmin(Meteor.user()) : true;
   },
@@ -65,10 +65,10 @@ Template[getTemplate('dropdownComponent')].helpers({
   }
 });
 
-Template[getTemplate('dropdownComponent')].events({
+Template[getTemplate('menuComponent')].events({
   'click .show-more': function (e, t) {
     e.preventDefault();
-    $dropdown = t.$('.dropdown');
-    $dropdown.toggleClass('dropdown-open');
+    $menu = t.$('.menu');
+    $menu.toggleClass('menu-open');
   }
 });

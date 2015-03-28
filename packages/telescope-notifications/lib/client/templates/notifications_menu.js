@@ -1,14 +1,5 @@
 Template[getTemplate('notificationsMenu')].helpers({
-  notifications: function(){
-
-    if (!!this.mobile) {
-      var dropdownMode = 'list';
-    } else if (getSetting('navLayout', 'top-nav') === 'top-nav') {
-      var dropdownMode = 'hover';
-    } else {
-      var dropdownMode = 'accordion';
-    }
-
+  menuLabel: function () {
     var notificationsCount;
     var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
     
@@ -20,27 +11,32 @@ Template[getTemplate('notificationsMenu')].helpers({
       notificationsCount = notifications.length+' '+__('notifications');
     }
 
+    return notificationsCount;
+  },
+  menuItems: function () {
+    var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
     var markAllAsRead = [{
       template: 'notificationsMarkAsRead'
     }];
-
     if (notifications.length) {
-      var dropdownItems = markAllAsRead.concat(_.map(notifications, function (notification) {
+      var menuItems = markAllAsRead.concat(_.map(notifications, function (notification) {
         return {
           template: "notificationItem",
           data: notification
         }
       }));
     } else {
-      var dropdownItems = [];
+      var menuItems = [];
     }
-
-    return {
-      dropdownName: 'notifications',
-      dropdownLabel: notificationsCount,
-      dropdownItems: dropdownItems,
-      dropdownClass: 'header-submodule',
-      dropdownMode: dropdownMode
-    }
+    return menuItems;
+  },
+  menuMode: function () {
+    if (!!this.mobile) {
+      return 'list';
+    } else if (getSetting('navLayout', 'top-nav') === 'top-nav') {
+      return 'dropdown';
+    } else {
+      return 'accordion';
+    }   
   }
 });

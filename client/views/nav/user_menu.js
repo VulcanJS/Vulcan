@@ -1,20 +1,17 @@
 Template[getTemplate('userMenu')].helpers({
-  userMenuData: function () {
-
+  menuLabel: function () {
+    return getDisplayName(Meteor.user());
+  },
+  menuItems: function () {
+    return userMenu;
+  },
+  menuMode: function () {
     if (!!this.mobile) {
-      var dropdownMode = 'list';
+      return 'list';
     } else if (getSetting('navLayout', 'top-nav') === 'top-nav') {
-      var dropdownMode = 'hover';
+      return 'dropdown';
     } else {
-      var dropdownMode = 'accordion';
-    }
-
-    return {
-      dropdownName: 'user',
-      dropdownLabel: getDisplayName(Meteor.user()),
-      dropdownItems: userMenu,
-      dropdownClass: 'header-submodule',
-      dropdownMode: dropdownMode
+      return 'accordion';
     }
   }
 });

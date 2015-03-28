@@ -1,7 +1,7 @@
 <template name="postViewsNav">
   {{#if showNav}}
     <div class="posts-list-views grid-module">
-      {{> dropdownComponent viewsMenuData}}
+      {{> menuComponent menuName="view" menuItems=menuItems mode="list"}}
     </div>
   {{/if}}
 </template>

@@ -47,16 +47,16 @@
 .posts-list-views{
 	background: white(0.6);
 	border-radius: 3px;
-	.dropdown-top-level, .dropdown-menu, .dropdown-contents, .dropdown-item{
+	.menu-top-level, .menu-menu, .menu-contents, .menu-item{
 		display: inline-block;
 	}
-	.dropdown-top-level{
+	.menu-top-level{
 		margin-right: 10px;
 		&:after{
 			content: ": ";
 		}
 	}
-	.dropdown-item{
+	.menu-item{
 		padding: 0;
 		margin-right: 10px;
 		&.item-active{
