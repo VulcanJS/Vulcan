@@ -47,7 +47,7 @@ Meteor.publish('postUsers', function(postId) {
 
 Meteor.publish('postComments', function(postId) {
   if (can.viewById(this.userId)){
-    return Comments.find({postId: postId});
+    return Comments.find({postId: postId}, {sort: {score: -1, postedAt: -1}});
   }
   return [];
 });

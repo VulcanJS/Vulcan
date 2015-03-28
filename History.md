@@ -1,8 +1,9 @@
 ## v0.15 “SideScope”
 
+* Improved performance when loading comments for long threads (thanks @dandv!).
 * Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
 * Romanian translation (thanks @razvansky!).
-* Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun).
+* Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun!).
 * Now supporting RSS categories (thanks @delgermurun).
 * Added new `postListTop` zone that only appears on post lists. 
 * Now showing tagline on every post list. 

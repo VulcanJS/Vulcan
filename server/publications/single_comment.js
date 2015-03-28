@@ -6,7 +6,7 @@ Meteor.publish('singleCommentAndChildren', function(commentId) {
     var commentIds = [commentId];
     var childCommentIds = _.pluck(Comments.find({parentCommentId: commentId}, {fields: {_id: 1}}).fetch(), '_id');
     commentIds = commentIds.concat(childCommentIds);
-    return Comments.find({_id: {$in: commentIds}});
+    return Comments.find({_id: {$in: commentIds}}, {sort: {score: -1, postedAt: -1}});
   }
   return [];
 });
