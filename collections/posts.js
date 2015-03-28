@@ -534,7 +534,7 @@ Meteor.methods({
       }
 
     }else{
-      flashMessage('You need to be an admin to do that.', "error");
+      Messages.flash('You need to be an admin to do that.', "error");
     }
   },
 
@@ -542,7 +542,7 @@ Meteor.methods({
     if(isAdmin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
-      flashMessage('You need to be an admin to do that.', "error");
+      Messages.flash('You need to be an admin to do that.', "error");
     }
   },
 

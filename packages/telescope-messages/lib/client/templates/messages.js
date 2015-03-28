@@ -3,6 +3,6 @@ Template[getTemplate('messages')].helpers({
     return getTemplate('message_item');
   },
   messages: function(){
-    return Messages.find({show: true});
+    return Messages.collection.find({show: true});
   }
 });

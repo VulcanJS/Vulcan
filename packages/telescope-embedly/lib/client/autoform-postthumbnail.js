@@ -3,7 +3,7 @@ AutoForm.addInputType("bootstrap-postthumbnail", {
 });
 
 var fillEmbedlyData = function (instance) {
-  
+
   // note: the following fields are *not* in the current template
   var $urlField = $('[name="url"]');
   var $titleField = $('[name="title"]');
@@ -16,12 +16,12 @@ var fillEmbedlyData = function (instance) {
 
   if (!!url) {
     $thumbnailContainer.addClass('loading');
-    clearSeenMessages();
+    Messages.clearSeen();
     console.log('getting embedly data for '+url);
     Meteor.call('getEmbedlyData', url, function (error, data) {
       if (error) {
         console.log(error)
-        flashMessage(error.message, 'error');
+        Messages.flash(error.message, 'error');
         $thumbnailContainer.removeClass('loading');
         return
       }
@@ -37,7 +37,7 @@ var fillEmbedlyData = function (instance) {
           $titleField.val(data.title);
         if (!$bodyField.val()) // if body field is empty, fill in body
           $bodyField.val(data.description);
-        
+
       }
     });
   }
