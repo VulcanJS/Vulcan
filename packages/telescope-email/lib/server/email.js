@@ -15,26 +15,26 @@ getEmailTemplate = function (template) {
 buildEmailTemplate = function (htmlContent) {
 
   var emailProperties = {
-    headerColor: getSetting('headerColor', '#444444'),
-    buttonColor: getSetting('buttonColor', '#DD3416'),
-    siteName: getSetting('title'),
-    tagline: getSetting('tagline'),
+    headerColor: Settings.get('headerColor', '#444444'),
+    buttonColor: Settings.get('buttonColor', '#DD3416'),
+    siteName: Settings.get('title'),
+    tagline: Settings.get('tagline'),
     siteUrl: getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
     accountLink: getSiteUrl()+'account',
-    footer: getSetting('emailFooter'),
-    logoUrl: getSetting('logoUrl'),
-    logoHeight: getSetting('logoHeight'),
-    logoWidth: getSetting('logoWidth')
+    footer: Settings.get('emailFooter'),
+    logoUrl: Settings.get('logoUrl'),
+    logoHeight: Settings.get('logoHeight'),
+    logoWidth: Settings.get('logoWidth')
   }
 
   var emailHTML = Handlebars.templates[getTemplate('emailWrapper')](emailProperties);
 
   var inlinedHTML = juice(emailHTML);
-  
+
   var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
-  
+
   return doctype+inlinedHTML;
 }
 
@@ -42,13 +42,13 @@ sendEmail = function(to, subject, html, text){
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
-  
-  var from = getSetting('defaultEmail', 'noreply@example.com');
-  var siteName = getSetting('title', 'Telescope');
+
+  var from = Settings.get('defaultEmail', 'noreply@example.com');
+  var siteName = Settings.get('title', 'Telescope');
   var subject = '['+siteName+'] '+subject;
 
   if (typeof text == 'undefined'){
-    // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough. 
+    // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
     var text = htmlToText.fromString(html, {
         wordwrap: 130
     });
@@ -62,9 +62,9 @@ sendEmail = function(to, subject, html, text){
   // console.log('text: '+text);
 
   var email = {
-    from: from, 
-    to: to, 
-    subject: subject, 
+    from: from,
+    to: to,
+    subject: subject,
     text: text,
     html: html
   }
@@ -82,7 +82,7 @@ buildAndSendEmail = function (to, subject, template, properties) {
 Meteor.methods({
   testEmail: function () {
     if(isAdminById(this.userId)){
-      var email = buildAndSendEmail (getSetting('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
+      var email = buildAndSendEmail (Settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
     }
   }
 })

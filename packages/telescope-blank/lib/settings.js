@@ -11,4 +11,4 @@ var customSetting = {
     }
   }
 }
-addToSettingsSchema.push(customSetting);
+Settings.addToSchema(customSetting);

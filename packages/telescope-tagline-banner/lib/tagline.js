@@ -14,5 +14,5 @@ var showTaglineBanner = {
       instructions: 'Show tagline on homepage.'
     }
   }
-}
-addToSettingsSchema.push(showTaglineBanner);
+};
+Settings.addToSchema(showTaglineBanner);

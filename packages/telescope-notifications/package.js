@@ -9,6 +9,7 @@ Package.onUse(function (api) {
   api.use([
     'telescope-lib',
     'telescope-base',
+    'telescope-settings',
     'telescope-email',
     'iron:router',
     'kestanous:herald@1.3.0',
@@ -51,7 +52,7 @@ Package.onUse(function (api) {
     'lib/server/notifications-server.js',
     'lib/server/routes.js'
   ], ['server']);
-  
+
   api.add_files([
     "i18n/de.i18n.json",
     "i18n/en.i18n.json",

@@ -231,7 +231,7 @@ getPostProperties = function (post) {
 // default status for new posts
 getDefaultPostStatus = function (user) {
   var hasAdminRights = typeof user === 'undefined' ? false : isAdmin(user);
-  if (hasAdminRights || !getSetting('requirePostsApproval', false)) {
+  if (hasAdminRights || !Settings.get('requirePostsApproval', false)) {
     // if user is admin, or else post approval is not required
     return STATUS_APPROVED
   } else {
@@ -408,8 +408,8 @@ Meteor.methods({
 
       var timeSinceLastPost=timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
-        postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
-        maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30)));
+        postInterval = Math.abs(parseInt(Settings.get('postInterval', 30))),
+        maxPostsPer24Hours = Math.abs(parseInt(Settings.get('maxPostsPerDay', 30)));
 
       // check that user waits more than X seconds between posts
       if(timeSinceLastPost < postInterval)

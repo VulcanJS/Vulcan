@@ -11,7 +11,7 @@ Template[getTemplate('singleDay')].created = function () {
 
   // initialize the reactive variables
   instance.postsLoaded = new ReactiveVar(0);
-  instance.postsLimit = new ReactiveVar(getSetting('postsPerPage', 10));
+  instance.postsLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
   instance.postsReady = new ReactiveVar(false);
 
   instance.getTerms = function () {
@@ -31,7 +31,7 @@ Template[getTemplate('singleDay')].created = function () {
   instance.autorun(function () {
     // just by including this session variable in the autorun, we automatically make it depend on it
     var currentDate = Session.get('currentDate');
-    instance.postsLimit.set(getSetting('postsPerPage', 10));
+    instance.postsLimit.set(Settings.get('postsPerPage', 10));
   });
 
   // will re-run when postsLimit or currentDate change
@@ -107,7 +107,7 @@ Template[getTemplate('singleDay')].helpers({
         // get current value for limit, i.e. how many posts are currently displayed
         var limit = instance.postsLimit.get();
         // increase limit by 5 and update it
-        limit += getSetting('postsPerPage', 10);
+        limit += Settings.get('postsPerPage', 10);
         instance.postsLimit.set(limit);
       },
 

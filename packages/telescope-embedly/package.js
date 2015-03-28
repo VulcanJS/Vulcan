@@ -12,6 +12,7 @@ Package.onUse( function(api) {
   api.use([
     'telescope-lib',
     'telescope-base',
+    'telescope-settings',
     'aldeed:autoform',
     'tap:i18n',
     'fourseven:scss',

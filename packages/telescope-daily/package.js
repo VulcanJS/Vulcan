@@ -3,10 +3,11 @@ Package.describe({summary: "Telescope daily view"});
 Package.onUse(function (api) {
 
   api.use([
-    'telescope-lib', 
-    'telescope-base', 
+    'telescope-lib',
+    'telescope-base',
+    'telescope-settings',
     'iron:router',
-    'meteorhacks:fast-render', 
+    'meteorhacks:fast-render',
     'meteorhacks:subs-manager',
     'tap:i18n',
     'telescope-singleday',
