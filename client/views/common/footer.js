@@ -1,7 +1,7 @@
 Template[getTemplate('footer')].helpers({
   footerCode: function(){
-    return getSetting('footerCode');
-  }, 
+    return Settings.get('footerCode');
+  },
   footerClass: function(){
     return Session.get('isPostsList') ? 'absolute' : 'static';
   },

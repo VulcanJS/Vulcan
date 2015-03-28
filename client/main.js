@@ -1,5 +1,5 @@
 // Session variables
-Session.set('postsLimit', getSetting('postsPerPage', 10));
+Session.set('postsLimit', Settings.get('postsPerPage', 10));
 
 // Sort postModules array position using modulePositions as index
 postModules = _.sortBy(postModules, 'order');

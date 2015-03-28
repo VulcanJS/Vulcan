@@ -4,7 +4,7 @@ Meteor.startup(function() {
     var props = {meta: {}, og: {}};
     var title = this.getTitle && this.getTitle();
     var description = this.getDescription && this.getDescription();
-    var image = getSetting("siteImage");
+    var image = Settings.get("siteImage");
     if (title) {
       props.og.title = title;
     }

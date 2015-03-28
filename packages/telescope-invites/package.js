@@ -18,6 +18,7 @@ Package.onUse(function (api) {
     'tap:i18n',
     'iron:router',
     'telescope-base',
+    'telescope-settings',
     'telescope-lib',
     'telescope-i18n',
     'aldeed:simple-schema',

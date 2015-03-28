@@ -16,7 +16,7 @@ Meteor.startup(function() {
 
     // Posts list pages
     var paths = [
-      {page: "/", lastmod: _getLatest(getSetting("defaultView", "top")), changefreq: "hourly"},
+      {page: "/", lastmod: _getLatest(Settings.get("defaultView", "top")), changefreq: "hourly"},
       {page: "/top", lastmod: _getLatest("top"), changefreq: "hourly"},
       {page: "/new", lastmod: _getLatest("new"), changefreq: "hourly"},
       {page: "/best", lastmod: _getLatest("best"), changefreq: "daily"},

@@ -2,7 +2,7 @@ Template[getTemplate('notificationsMenu')].helpers({
   menuLabel: function () {
     var notificationsCount;
     var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
-    
+
     if(notifications.length==0){
       notificationsCount = __('no_notifications');
     }else if(notifications.length==1){
@@ -33,10 +33,10 @@ Template[getTemplate('notificationsMenu')].helpers({
   menuMode: function () {
     if (!!this.mobile) {
       return 'list';
-    } else if (getSetting('navLayout', 'top-nav') === 'top-nav') {
+    } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
       return 'dropdown';
     } else {
       return 'accordion';
-    }   
+    }
   }
 });

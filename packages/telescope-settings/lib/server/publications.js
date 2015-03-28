@@ -2,8 +2,8 @@ Meteor.publish('settings', function() {
   var options = {};
   var privateFields = {};
 
-  // look at SettingsSchema to see which fields should be kept private
-  _.each(SettingsSchema._schema, function( val, key ) {
+  // look at Settings.schema to see which fields should be kept private
+  _.each(Settings.schema._schema, function( val, key ) {
     if (val.autoform && !!val.autoform.private)
       privateFields[key] = false;
   });
@@ -13,5 +13,6 @@ Meteor.publish('settings', function() {
       fields: privateFields
     });
   }
-  return Settings.find({}, options);
+
+  return Settings.collection.find({}, options);
 });

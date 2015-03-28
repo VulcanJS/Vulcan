@@ -1,7 +1,7 @@
 Template[getTemplate('nav')].helpers({
   headerClass: function () {
     var headerClass = "";
-    var bgBrightness = tinycolor(getSetting('headerColor')).getBrightness();
+    var bgBrightness = tinycolor(Settings.get('headerColor')).getBrightness();
     if (bgBrightness < 50) {
       headerClass += " dark-bg";
     } else if (bgBrightness < 130) {
@@ -33,7 +33,7 @@ Template[getTemplate('nav')].helpers({
     if (this.length > 3) {
       dropdownClass += "long-dropdown";
     }
-    if (getSetting('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true)) {
+    if (Settings.get('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true)) {
       dropdownClass += "has-dropdown";
     } else {
       dropdownClass += "no-dropdown";

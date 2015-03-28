@@ -9,7 +9,7 @@ defaultFrequency = 7; // once a week
 defaultTime = '00:00';
 
 var getSchedule = function (parser) {
-  var frequency = getSetting('newsletterFrequency', defaultFrequency);
+  var frequency = Settings.get('newsletterFrequency', defaultFrequency);
   var recur = parser.recur();
   var schedule;
   switch (frequency) {
@@ -32,7 +32,7 @@ var getSchedule = function (parser) {
     default: // Once a week (Mondays)
       schedule = recur.on(2).dayOfWeek();
   }
-  return schedule.on(getSetting('newsletterTime', defaultTime)).time();
+  return schedule.on(Settings.get('newsletterTime', defaultTime)).time();
 }
 
 Meteor.methods({
@@ -56,7 +56,7 @@ var addJob = function () {
   });
 }
 Meteor.startup(function () {
-  if (getSetting('enableNewsletter', false)) {
+  if (Settings.get('enableNewsletter', false)) {
     addJob();
   }
 });

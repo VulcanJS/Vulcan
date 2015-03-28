@@ -3,8 +3,8 @@ var htmlToText = Npm.require('html-to-text');
 scheduleCampaign = function (campaign, isTest) {
   var isTest = typeof isTest === 'undefined' ? false : isTest;
 
-  var apiKey = getSetting('mailChimpAPIKey');
-  var listId = getSetting('mailChimpListId');
+  var apiKey = Settings.get('mailChimpAPIKey');
+  var listId = Settings.get('mailChimpListId');
 
   if(!!apiKey && !!listId){
 
@@ -14,19 +14,19 @@ scheduleCampaign = function (campaign, isTest) {
 			subject = trimWords(subject, wordCount);
 			wordCount--;
 		}
-		
+
     try {
 
       var api = new MailChimp(apiKey);
       var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = getSetting('defaultEmail');			
+      var defaultEmail = Settings.get('defaultEmail');
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
           subject: subject,
           from_email: defaultEmail,
-          from_name: getSetting('title')+ ' Top Posts',
+          from_name: Settings.get('title')+ ' Top Posts',
         },
         content: {
           html: campaign.html,
@@ -38,7 +38,7 @@ scheduleCampaign = function (campaign, isTest) {
 
       // create campaign
       var mailchimpCampaign = api.call( 'campaigns', 'create', campaignOptions);
-      
+
       console.log( '// Campaign created');
       // console.log(campaign)
 
@@ -51,7 +51,7 @@ scheduleCampaign = function (campaign, isTest) {
 
       // schedule campaign
       var schedule = api.call('campaigns', 'schedule', scheduleOptions);
-      
+
       console.log('// Campaign scheduled for '+scheduledTime);
       // console.log(schedule)
 
@@ -75,7 +75,7 @@ scheduleCampaign = function (campaign, isTest) {
 }
 
 addToMailChimpList = function(userOrEmail, confirm, done){
-  
+
   var user, email;
 
   var confirm = (typeof confirm === 'undefined') ? false : confirm // default to no confirmation
@@ -91,8 +91,8 @@ addToMailChimpList = function(userOrEmail, confirm, done){
       throw 'User must have an email address';
   }
 
-  var apiKey = getSetting('mailChimpAPIKey');
-  var listId = getSetting('mailChimpListId');
+  var apiKey = Settings.get('mailChimpAPIKey');
+  var listId = Settings.get('mailChimpListId');
 
   // add a user to a MailChimp list.
   // called when a new user is created, or when an existing user fills in their email
@@ -117,7 +117,7 @@ addToMailChimpList = function(userOrEmail, confirm, done){
         setUserSetting('subscribedToNewsletter', true, user);
 
       console.log("// User subscribed");
-      
+
       return subscribe;
 
     } catch (error) {

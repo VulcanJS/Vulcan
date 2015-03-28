@@ -1,5 +1,5 @@
 // Add SEO settings.
-addToSettingsSchema.push({
+Settings.addToSchema({
   propertyName: "siteImage",
   propertySchema: {
     type: String,

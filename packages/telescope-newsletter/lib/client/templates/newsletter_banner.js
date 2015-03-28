@@ -22,7 +22,7 @@ var dismissBanner = function () {
 Meteor.startup(function () {
   Template[getTemplate('newsletterBanner')].helpers({
     siteName: function () {
-      return getSetting('title');
+      return Settings.get('title');
     },
     isNotConnected: function () {
       return !Meteor.user()
@@ -30,7 +30,7 @@ Meteor.startup(function () {
     showBanner: function () {
       // note: should not be reactive
       if(
-            getSetting('showBanner', false) == false
+            Settings.get('showBanner', false) == false
         ||  !can.view(Meteor.user())
         ||  Router.current().location.get().path != '/'
         ||  Cookie.get('showBanner') == "no"

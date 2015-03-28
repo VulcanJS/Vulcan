@@ -61,8 +61,8 @@ Template.afPostThumbnail.helpers({
     return atts;
   },
   style: function () {
-    var thumbnailWidth = getSetting('thumbnailWidth', 200);
-    var thumbnailHeight = getSetting('thumbnailHeight', 125);
+    var thumbnailWidth = Settings.get('thumbnailWidth', 200);
+    var thumbnailHeight = Settings.get('thumbnailHeight', 125);
     return "width: "+thumbnailWidth+"px; height: "+thumbnailHeight+"px;"
   },
   embedlyKeyExists: function () {
