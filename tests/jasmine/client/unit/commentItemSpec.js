@@ -21,7 +21,7 @@ describe('test clicking vote buttons', function () {
 
     spyOn(Meteor, 'user').and.returnValue(false);
     var routerSpy = spyOn(Router, 'go');
-    var flashMessageSpy = spyOn(window, 'flashMessage');
+    var flashMessageSpy = spyOn(window, 'Messages.flash');
     var meteorCallSpy = spyOn(Meteor, 'call');
 
     $div.find(selector).click();
@@ -61,7 +61,7 @@ describe('test clicking vote buttons', function () {
 
     spyOn(Meteor, 'user').and.returnValue(true);
     var routerSpy = spyOn(Router, 'go');
-    var flashMessageSpy = spyOn(window, 'flashMessage');
+    var flashMessageSpy = spyOn(window, 'Messages.flash');
     var trackEventSpy = spyOn(window, 'trackEvent').and.stub();
     var meteorCallSpy = spyOn(Meteor, 'call').and.callFake(function (methodName, context, callback) {
       callback();
