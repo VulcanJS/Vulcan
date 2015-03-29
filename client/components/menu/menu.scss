@@ -1,46 +1,54 @@
+@function black($opacity){
+  @return rgba(0,0,0,$opacity);
+}
+@function white($opacity){
+  @return rgba(255,255,255,$opacity);
+}
+
+$medium-text: #a4a9ab;
+$red: #DD3416;
+$text: #444444;
 
 // ------------------------------------ Base ------------------------------------ //
-.menu{
-  .menu-item{
-    padding: 5px;
-    margin: 0;
-    a{
-      font-size:14px;
-    }
+.menu-item{
+  padding: 5px;
+  margin: 0;
+  a{
+    font-size:14px;
   }
-  .menu-label{
-    display: block;
+}
+.menu-label{
+  display: block;
+}
+.menu-description{
+  display: block;
+  font-weight: normal;
+  font-size: 12px;
+  margin-top: 2px;
+  color: $medium-text;
+}
+.item-admin{
+  .menu-label:after{
+    content: "[A]";
+    font-size: 10px;
+    color: $red;
+    display: inline-block;
+    margin-left: 3px;
   }
-  .menu-description{
-    display: block;
-    font-weight: normal;
-    font-size: 12px;
-    margin-top: 2px;
-    color: $medium-text;
+}
+.item-active{
+  .dark-bg &, .medium-dark-bg &{
+    background: white(0.1);
   }
-  .item-admin{
-    .menu-label:after{
-      content: "[A]";
-      font-size: 10px;
-      color: $red;
-      display: inline-block;
-      margin-left: 3px;
-    }
+  .light-bg &, .medium-light-bg &, white-bg &{
+    background: black(0.1);
   }
-  .item-active{
-    .dark-bg &, .medium-dark-bg &{
-      background: white(0.1);
-    }
-    .light-bg &, .medium-light-bg &, white-bg &{
-      background: black(0.1);
-    }
-  }
-  .item-active.item-never-active{
-    background: none;
-  }
-  .menu-top-label{
-    cursor: pointer;
-  }
+}
+.item-active.item-never-active{
+  background: none;
+}
+.menu-top-label{
+  cursor: pointer;
 }
 // ------------------------------------ List ------------------------------------ //
 
@@ -174,7 +182,7 @@
   .menu-contents{
     max-height: 93px;
     overflow: hidden;
-    @include animate(max-height);
+    transition: max-height ease-out 300ms;
   }
   &.menu-open .menu-contents{
     max-height: 999px !important;
