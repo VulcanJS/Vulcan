@@ -22,6 +22,7 @@
 * Added missing translations in Brazilian Portuguese (thanks @alanmeira!).
 * Fixed various bugs (thanks @webyak, @yourcelf, @ywang28, @delgermurun!).
 * Now publishing upvoters and downvoters on single post page. 
+* Improved French translation (thanks @klamzo!).
 
 ## v0.14.3 “TableScope”
 
