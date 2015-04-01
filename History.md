@@ -1,28 +1,42 @@
 ## v0.15 “SideScope”
 
-* Improved performance when loading comments for long threads (thanks @dandv!).
-* Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
-* Romanian translation (thanks @razvansky!).
-* Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun!).
-* Now supporting RSS categories (thanks @delgermurun).
+#### Layout
+
 * Added new `postListTop` zone that only appears on post lists. 
 * Now showing tagline on every post list. 
-* Refactored dropdowns into dropdown components.
-* Now using SVG for some icons and [SVGInjector]https://github.com/iconic/SVGInjector() to substitute `<img>` tags with `<svg>` elements.
 * Added the Side Nav layout.
-* Added the Post Views setting.
 * New Admin menu layout.
-* Now using FontAwesome.
-* New `{{{icon}}}` helper for icons.
-* New accent color customization API. 
+
+#### Settings
+
+* Added the Post Views setting.
 * Changed color settings names.
-* Added `telescope-seo` package (thanks @yourcelf!).
-* Added Arabic translation (thanks @nwabdou85!).
 * Added field for optional category image (thanks @dtsepelev!).
-* Added missing translations in Brazilian Portuguese (thanks @alanmeira!).
+
+#### SEO
+
+* Added `telescope-sitemap` package (thanks @yourcelf!).
+* Added improved SEO support (thanks @yourcelf!).
+* Added field for SEO site image.
+
+#### Other
+
+* Improved performance when loading comments for long threads (thanks @dandv!).
+* Usernames are now case and space insensitive. `John Smith`, `JohnSmith`, and `johnsmith` are now all considered to be the same username (thanks @splendido!). 
+* Now using `feedparser` instead of `htmlparser2` to parse RSS feeds (thanks @delgermurun!).
+* Now supporting RSS categories (thanks @delgermurun).
+* Refactored dropdowns into menu components.
+* New `{{{icon}}}` helper for icons, using FontAwesome.
+* New accent color customization API. 
 * Fixed various bugs (thanks @webyak, @yourcelf, @ywang28, @delgermurun!).
 * Now publishing upvoters and downvoters on single post page. 
+
+#### Internationalization
+
+* Added Arabic translation (thanks @nwabdou85!).
+* Added missing translations in Brazilian Portuguese (thanks @alanmeira!).
 * Improved French translation (thanks @klamzo!).
+* Romanian translation (thanks @razvansky!).
 * Added Dutch translation (thanks @reneras!).
 
 ## v0.14.3 “TableScope”
