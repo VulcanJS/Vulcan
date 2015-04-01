@@ -13,3 +13,30 @@ Meteor.startup(function () {
 });
 
 // AutoForm.debug();
+
+Meteor.startup(function() {
+
+  var seoProperties = {
+    meta: {},
+    og: {}
+  }
+  
+  var title = getSetting("title", "Telescope");
+  if (!!getSetting("tagline")) {
+    title += ": "+getSetting("tagline");
+  }
+
+  seoProperties.title = title;
+
+  if (!!getSetting("description")) {
+    seoProperties.meta.description = getSetting("description");
+    seoProperties.og.description = getSetting("description");
+  }
+
+  if (!!getSetting("siteImage")) {
+    seoProperties.og.image = getSetting("siteImage");
+  }
+
+  SEO.config(seoProperties);
+
+});

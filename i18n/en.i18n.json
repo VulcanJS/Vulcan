@@ -62,6 +62,7 @@
   "faviconUrl": "Favicon URL",
   "mailURL": "MailURL",
   "postsLayout": "Posts Layout",
+  "siteImage": "Site Image",
   
   // Settings Fieldsets
   "general": "General",

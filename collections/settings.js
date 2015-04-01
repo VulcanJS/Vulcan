@@ -30,6 +30,15 @@ settingsSchemaObject = {
       instructions: 'A short description used for SEO purposes.'
     }
   },
+  siteImage: {
+    type: String,
+    optional: true,
+    regEx: SimpleSchema.RegEx.Url,
+    autoform: {
+      group: "general",
+      instructions: "URL to an image for the open graph image tag for all pages"
+    }
+  },
   navLayout: {
     type: String,
     optional: true,

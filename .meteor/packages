@@ -54,6 +54,7 @@ aslagle:reactive-table
 aramk:tinycolor
 fortawesome:fontawesome
 fourseven:scss
+manuelschoebel:ms-seo
 
 # Testing
 
@@ -90,7 +91,7 @@ telescope-releases
 telescope-getting-started
 telescope-subscribe-to-posts
 telescope-tagline-banner
+telescope-sitemap
+telescope-messages
 
 # Custom Packages
-telescope-seo
-telescope-messages
