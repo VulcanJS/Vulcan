@@ -102,7 +102,7 @@ form, .accounts-dialog{
     background:$lightest-grey;
   }
   textarea{
-    min-height:50px;
+    min-height:100px;
     line-height:1.4;
   }
   .note{
@@ -219,4 +219,15 @@ fieldset{
   text-align: center;
   margin-bottom: 10px;
   font-size: 16px;
+}
+
+.form-well {
+  background: $light-yellow;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+.form-module {
+  border-bottom: 1px solid #B5B0B0;
+  padding-bottom: 40px;
+  margin: 0 auto 40px auto;
 }

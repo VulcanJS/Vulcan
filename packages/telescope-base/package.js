@@ -6,8 +6,8 @@ Package.onUse(function (api) {
   api.imply(['aldeed:simple-schema']);
 
   api.add_files(['lib/base.js'], ['client', 'server']);
-  api.add_files(['lib/base_client.js'], ['client']);
-  api.add_files(['lib/base_server.js'], ['server']);
+  api.add_files(['lib/colors.js'], ['client', 'server']);
+  api.add_files(['lib/icons.js'], ['client', 'server']);
 
   api.export([
     'postStatuses',
@@ -15,8 +15,9 @@ Package.onUse(function (api) {
     'STATUS_APPROVED',
     'STATUS_REJECTED',
     
-    'adminMenu', 
-    'viewsMenu', 
+    'adminMenu',
+    'viewsMenu',
+    'userMenu',
     'addToPostSchema', 
     'addToCommentsSchema', 
     'addToSettingsSchema', 
@@ -24,15 +25,17 @@ Package.onUse(function (api) {
     'preloadSubscriptions', 
     'primaryNav', 
     'secondaryNav', 
+    'mobileNav',
     'viewParameters',
+
     'footerModules',
     'heroModules',
     'threadModules',
+    'postListTopModules',
     'postModules',
     'postThumbnail',
     'postHeading',
     'postMeta',
-    'modulePositions',
 
     'postClassCallbacks',
 
@@ -78,6 +81,12 @@ Package.onUse(function (api) {
     
     'getTemplate',
     'templates',
+
+    'getIcon',
+    'icons',
+
+    'colorTable',
+    'registerElementColor',
 
     'themeSettings',
 

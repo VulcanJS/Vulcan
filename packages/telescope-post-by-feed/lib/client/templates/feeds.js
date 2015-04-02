@@ -13,12 +13,12 @@ Meteor.startup(function () {
       e.preventDefault();
 
       var url = $('#url').val();
-      
+
       Meteor.call('insertFeed', {url: url}, function(error, result) {
         if(error){
           console.log(error);
-          flashMessage(error.reason, "error");
-          clearSeenMessages();
+          Messages.flash(error.reason, "error");
+          Messages.clearSeen();
         }else{
           $('#url').val('');
         }

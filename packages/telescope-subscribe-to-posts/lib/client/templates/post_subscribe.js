@@ -21,7 +21,7 @@ Template[getTemplate('postSubscribe')].events({
 
     if (!Meteor.user()) {
       Router.go('atSignIn');
-      flashMessage(i18n.t("please_log_in_first"), "info");
+      Messages.flash(i18n.t("please_log_in_first"), "info");
     }
 
     Meteor.call('subscribePost', post._id, function(error, result) {
@@ -36,7 +36,7 @@ Template[getTemplate('postSubscribe')].events({
 
     if (!Meteor.user()) {
       Router.go('atSignIn');
-      flashMessage(i18n.t("please_log_in_first"), "info");
+      Messages.flash(i18n.t("please_log_in_first"), "info");
     }
 
     Meteor.call('unsubscribePost', post._id, function(error, result) {

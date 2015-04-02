@@ -13,7 +13,6 @@ var canEditField = function (field) {
 
 Template[getTemplate('quickForm_telescope')].helpers({
   fieldsWithNoFieldset: function () {
-
     // get names of fields who don't have an autoform attribute or don't have a group, but are not omitted
     // note: we need to _.map() first to assign the field key to the "name" property to preserve it. 
     var fields = _.pluck(_.filter(_.map(AutoForm.getFormSchema()._schema, function (field, key) {
@@ -45,7 +44,6 @@ Template[getTemplate('quickForm_telescope')].helpers({
   },
   fieldsForFieldset: function () {
     var fieldset = this.toLowerCase();
-
     // get names of fields whose group match the current fieldset
     var fields = _.pluck(_.filter(AutoForm.getFormSchema()._schema, function (field, key) {
       return (field.name.indexOf('$') === -1) && field.autoform && field.autoform.group == fieldset;
@@ -132,8 +130,8 @@ Template["afFormGroup_telescope"].helpers({
     var fieldName = this.name;
     var fieldSchema = AutoForm.getFormSchema().schema(fieldName);
 
-    // if a label has been explicitely specified, use it; else default to i18n of the field name
-    var label = !!fieldSchema.label ? fieldSchema.label: i18n.t(fieldName);
+    // if a label has been explicitely specified, use it; else default to capitalization of i18n of the field name
+    var label = !!fieldSchema.label ? fieldSchema.label: capitalise(i18n.t(fieldName));
 
     return label;
   }

@@ -10,7 +10,7 @@ AutoForm.hooks({
         // ------------------------------ Checks ------------------------------ //
 
         if (!Meteor.user()) {
-          flashMessage(i18n.t('you_must_be_logged_in'), "");
+          Messages.flash(i18n.t('you_must_be_logged_in'), "");
           return false;
         }
 
@@ -32,8 +32,8 @@ AutoForm.hooks({
 
     onError: function(operation, error) {
       console.log(error)
-      flashMessage(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
-      clearSeenMessages();
+      Messages.flash(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
+      Messages.clearSeen();
     }
 
   }
@@ -45,15 +45,15 @@ Template[getTemplate('post_edit')].events({
     var post = this.post;
 
     e.preventDefault();
-    
+
     if(confirm("Are you sure?")){
       Router.go("/");
       Meteor.call("deletePostById", post._id, function(error) {
         if (error) {
           console.log(error);
-          flashMessage(error.reason, 'error');
+          Messages.flash(error.reason, 'error');
         } else {
-          flashMessage(i18n.t('your_post_has_been_deleted'), 'success');
+          Messages.flash(i18n.t('your_post_has_been_deleted'), 'success');
         }
       });
     }

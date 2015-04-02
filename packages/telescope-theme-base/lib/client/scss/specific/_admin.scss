@@ -1,0 +1,28 @@
+.admin-wrapper{
+  padding: 0;
+  margin-bottom: 10px;
+  @include medium-large{
+    display: flex;
+  }
+}
+.admin-menu{
+  background: white(0.8);
+  @include medium-large{
+    width: 200px;
+  }
+  padding: 20px;
+  .menu-top-level{
+    display: none;
+  }
+  .menu-item{
+    margin-bottom: 10px;
+  }
+}
+.admin-contents{
+  background: white;
+  @include medium-large{
+    border-left: 1px solid #ccc;
+    width: 100%;
+  }
+  padding: 20px;
+}

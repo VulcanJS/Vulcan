@@ -63,7 +63,9 @@ can.vote = function (user, returnError) {
 can.edit = function (user, item, returnError) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
-  if (!user || !item || (user._id !== item.userId && !isAdmin(user))) {
+  if (!user || !item || (user._id !== item.userId &&
+                         user._id !== item._id &&
+                         !isAdmin(user))) {
     return returnError ? "no_rights" : false;
   } else {
     return true;

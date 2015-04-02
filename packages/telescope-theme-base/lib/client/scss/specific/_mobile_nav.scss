@@ -14,10 +14,6 @@ $mobile-nav-width: 200px;
 .mobile-nav{
   position:fixed;
   overflow:auto;
-  left: -$mobile-nav-width;
-  left: calc((100% - 60px) * -1);
-  width: $mobile-nav-width;
-  width: calc(100% - 60px);
   height: 100%;
   top: 0px;
   bottom: 0px;
@@ -25,6 +21,21 @@ $mobile-nav-width: 200px;
   color:white;
   box-shadow: inset -3px 0px 7px black(0.5);
   z-index: 100;
+
+  left: -$mobile-nav-width;
+  left: calc((100% - 60px) * -1);
+  width: $mobile-nav-width;
+  width: calc(100% - 60px);
+  .dropdown-top-level{
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .header-submodule.dropdown{
+    display: block;
+  }
+  .dropdown-contents li{
+    margin: 0;
+  }
 }
 
 .mobile-nav, .inner-wrapper{

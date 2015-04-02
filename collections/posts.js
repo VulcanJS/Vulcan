@@ -364,9 +364,9 @@ submitPost = function (post) {
   if (Meteor.isServer) {
     Meteor.defer(function () { // use defer to avoid holding up client
       // run all post submit server callbacks on post object successively
-      post = postAfterSubmitMethodCallbacks.reduce(function(result, currentFunction) {
-          return currentFunction(result);
-      }, post);
+      postAfterSubmitMethodCallbacks.forEach(function(currentFunction) {
+          currentFunction(post);
+      });
     });
   }
 
@@ -492,10 +492,14 @@ Meteor.methods({
 
     // ------------------------------ Callbacks ------------------------------ //
 
-    // run all post after edit method callbacks successively
-    postAfterEditMethodCallbacks.forEach(function(currentFunction) {
-      currentFunction(modifier, postId);
-    });
+    if (Meteor.isServer) {
+      Meteor.defer(function () { // use defer to avoid holding up client
+        // run all post after edit method callbacks successively
+        postAfterEditMethodCallbacks.forEach(function(currentFunction) {
+          currentFunction(modifier, post);
+        });
+      });
+    }
 
     // ------------------------------ After Update ------------------------------ //
 
@@ -534,7 +538,7 @@ Meteor.methods({
       }
 
     }else{
-      flashMessage('You need to be an admin to do that.', "error");
+      Messages.flash('You need to be an admin to do that.', "error");
     }
   },
 
@@ -542,7 +546,7 @@ Meteor.methods({
     if(isAdmin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
-      flashMessage('You need to be an admin to do that.', "error");
+      Messages.flash('You need to be an admin to do that.', "error");
     }
   },
 

@@ -27,8 +27,8 @@ Accounts.onCreateUser(function(options, user){
     user.email_hash = getEmailHash(user);
 
   // set username on profile
-  if (!user.profile.name)
-    user.profile.name = user.username;
+  if (!user.profile.username)
+    user.profile.username = user.username;
 
   // create slug from username
   user.slug = slugify(getUserName(user));
@@ -57,11 +57,15 @@ Accounts.onCreateUser(function(options, user){
 
 
 Meteor.methods({
-  changeEmail: function (newEmail) {
+  changeEmail: function (userId, newEmail) {
+    var user = Meteor.users.findOne(userId);
+    if (can.edit(Meteor.user(), user) !== true) {
+      throw new Meteor.Error("Permission denied");
+    }
     Meteor.users.update(
-      Meteor.userId(),
+      userId,
       {$set: {
-          emails: [{address: newEmail}],
+          emails: [{address: newEmail, verified: false}],
           email_hash: Gravatar.hash(newEmail),
           // Just in case this gets called from somewhere other than /client/views/users/user_edit.js
           "profile.email": newEmail
