@@ -191,6 +191,7 @@
   "display_name": "Display Name",
   "email": "Email",
   "bio": "Bio",
+  "city": "City",
   "twitter_username": "Twitter Username",
   "github_username": "GitHub Username",
   "site_url" : "Site URL",
