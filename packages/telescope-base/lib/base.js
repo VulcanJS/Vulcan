@@ -6,6 +6,22 @@ addToCommentsSchema = [];
 addToSettingsSchema = [];
 addToUserSchema = [];
 
+registerPostProperty = function (property) {
+  addToPostSchema.push(property);
+}
+
+registerCommentProperty = function (property) {
+  addToCommentsSchema.push(property);
+}
+
+registerSetting = function (property) {
+  addToSettingsSchema.push(property);
+}
+
+registerUserProperty = function (property) {
+  addToUserSchema.push(property);
+}
+
 SimpleSchema.extendOptions({
   editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner
   hidden: Match.Optional(Boolean)     // hidden: true means the field is never shown in a form no matter what

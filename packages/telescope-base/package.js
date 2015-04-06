@@ -18,10 +18,17 @@ Package.onUse(function (api) {
     'adminMenu',
     'viewsMenu',
     'userMenu',
+
     'addToPostSchema', 
     'addToCommentsSchema', 
     'addToSettingsSchema', 
     'addToUserSchema',
+    
+    'registerPostProperty',
+    'registerCommentProperty',
+    'registerSetting',
+    'registerUserProperty',
+
     'preloadSubscriptions', 
     'primaryNav', 
     'secondaryNav', 
