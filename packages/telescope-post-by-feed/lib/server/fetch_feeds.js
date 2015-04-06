@@ -17,9 +17,9 @@ var feedHandler = {
   },
 
   getItemCategories: function(item, feedCategories) {
-    
+
     var itemCategories = [];
-    
+
     // loop over RSS categories for the current item if it has any
     if (item.categories && item.categories.length > 0) {
       item.categories.forEach(function(name) {
@@ -114,7 +114,7 @@ var feedHandler = {
   }
 };
 
-var fetchFeeds = function() {
+fetchFeeds = function() {
   var content;
 
   Feeds.find().forEach(function(feed) {
@@ -144,4 +144,4 @@ Meteor.methods({
   testToMarkdown: function (text) {
     console.log(toMarkdown(text));
   }
-})
+});
