@@ -16,7 +16,7 @@ aslagle:reactive-table@0.7.2
 autoupdate@1.2.1
 backbone@1.0.0
 base64@1.0.3
-bengott:avatar@0.7.5
+bengott:avatar@0.7.6
 binary-heap@1.0.3
 blaze@2.1.1
 blaze-tools@1.0.3
@@ -127,7 +127,7 @@ telescope-invites@0.1.0
 telescope-kadira@0.1.0
 telescope-lib@0.2.9
 telescope-messages@0.0.0
-telescope-module-share@0.0.0
+telescope-module-share@0.1.0
 telescope-newsletter@0.1.0
 telescope-notifications@0.1.0
 telescope-post-by-feed@0.0.1

@@ -44,7 +44,7 @@ npm-container
 matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
-bengott:avatar
+bengott:avatar@0.7.6
 jparker:gravatar
 tap:i18n
 useraccounts:unstyled@1.8.1
