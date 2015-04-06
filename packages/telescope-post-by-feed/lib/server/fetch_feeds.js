@@ -144,4 +144,4 @@ Meteor.methods({
   testToMarkdown: function (text) {
     console.log(toMarkdown(text));
   }
-})
+});
