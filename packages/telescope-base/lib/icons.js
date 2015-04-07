@@ -4,7 +4,7 @@
 getIcon = function (iconName, iconClass) {
   var iconCode = !!icons[iconName] ? icons[iconName] : iconName;
   var iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
-  return '<i class="icon fa fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden></i>';
+  return '<i class="icon fa fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
 }
 
 icons = {
