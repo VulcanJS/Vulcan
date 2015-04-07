@@ -9,7 +9,8 @@ Package.onUse(function (api) {
     'underscore',
     'iron:router',
     'templating',
-    'tap:i18n'
+    'tap:i18n',
+    'fourseven:scss'
   ], 'client');
 
   api.add_files([
@@ -19,11 +20,11 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/client/routes.js',
-    'lib/client/views/search.html',
-    'lib/client/views/search.js',
-    'lib/client/css/search.css',
-    'lib/client/views/search_logs.html',
-    'lib/client/views/search_logs.js'
+    'lib/client/templates/search.html',
+    'lib/client/templates/search.js',
+    'lib/client/templates/search_logs.html',
+    'lib/client/templates/search_logs.js',
+    'lib/client/stylesheets/search.scss'
     ], ['client']);
 
   api.add_files([

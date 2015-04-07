@@ -34,16 +34,8 @@ STATUS_REJECTED=3;
 // ------------------------------------- Navigation -------------------------------- //
 
 
-// array containing nav items; initialize with views menu and admin menu
+// array containing nav items;
 primaryNav = [
-  {
-    template: 'viewsMenu',
-    order: 10
-  },
-  {
-    template: 'adminMenu',
-    order: 20
-  }
 ];
 
 secondaryNav = [
@@ -61,27 +53,18 @@ secondaryNav = [
   }
 ];
 
-// array containing items in the admin menu
-adminMenu = [
+mobileNav = [
   {
-    route: 'posts_pending',
-    label: 'Pending',
-    description: 'posts_awaiting_moderation'
+    template: 'userMenu',
+    order: 10
   },
   {
-    route: 'posts_scheduled',
-    label: 'Scheduled',
-    description: 'future_scheduled_posts'
+    template:'notificationsMenu',
+    order: 20
   },
   {
-    route: 'all-users',
-    label: 'Users',
-    description: 'users_dashboard'
-  },
-  {
-    route: 'settings',
-    label: 'Settings',
-    description: 'telescope_settings_panel'
+    template: 'submitButton',
+    order: 30
   }
 ];
 
@@ -101,9 +84,62 @@ viewsMenu = [
     route: 'posts_best',
     label: 'best',
     description: 'highest_ranked_posts_ever'
+  },
+  {
+    route: 'posts_pending',
+    label: 'pending',
+    description: 'posts_awaiting_moderation',
+    adminOnly: true
+  },
+  {
+    route: 'posts_scheduled',
+    label: 'scheduled',
+    description: 'future_scheduled_posts',
+    adminOnly: true
+  },  
+];
+
+// array containing items in the admin menu
+adminMenu = [
+  {
+    route: 'settings',
+    label: 'Settings',
+    description: 'telescope_settings_panel'
+  },
+  {
+    route: 'usersDashboard',
+    label: 'Users',
+    description: 'users_dashboard'
   }
 ];
 
+userMenu = [
+  {
+    route: function () {
+      return Router.path('user_profile', {_idOrSlug: Meteor.user().slug});
+    },
+    label: 'profile',
+    description: 'view_your_profile'
+  },
+  {
+    route: function () {
+      return Router.path('user_edit', {slug: Meteor.user().slug});
+    },
+    label: 'edit_account',
+    description: 'edit_your_profile'
+  },
+  {
+    route: 'settings',
+    label: 'settings',
+    description: 'settings',
+    adminOnly: true
+  },
+  {
+    route: 'signOut',
+    label: 'sign_out',
+    description: 'sign_out'
+  }
+]
 // ------------------------------------- Views -------------------------------- //
 
 
@@ -187,6 +223,13 @@ footerModules = [];
 
 threadModules = [];
 
+postListTopModules = [
+  {
+    template: 'postViewsNav',
+    order: 99
+  }
+];
+
 postModules = [
   {
     template: 'postRank',
@@ -253,7 +296,7 @@ postSubmitClientCallbacks = [];
 postSubmitMethodCallbacks = [];
 postAfterSubmitMethodCallbacks = []; // runs on server only in a timeout
 
-postEditClientCallbacks = []; // loops over post object
+postEditClientCallbacks = []; // loops over modifier object
 postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object
 postAfterEditMethodCallbacks = []; // loops over modifier object
 
@@ -278,6 +321,12 @@ userProfileCompleteChecks = [];
 
 upvoteCallbacks = [];
 downvoteCallbacks = [];
+cancelUpvoteCallbacks = [];
+cancelDownvoteCallbacks = [];
+upvoteMethodCallbacks = [];
+downvoteMethodCallbacks = [];
+cancelUpvoteMethodCallbacks = [];
+cancelDownvoteMethodCallbacks = [];
 
 // ------------------------------------- User Profiles -------------------------------- //
 
@@ -319,7 +368,6 @@ userProfileCompleteChecks.push(
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 
-
 templates = {}
 
 getTemplate = function (name) {
@@ -337,3 +385,12 @@ themeSettings = {
 
 // array containing subscriptions to be preloaded
 preloadSubscriptions = [];
+
+// ------------------------------- Vote Power -------------------------------- //
+
+// The equation to determine voting power
+// Default to returning 1 for everybody
+
+getVotePower = function (user) {
+  return 1;
+};

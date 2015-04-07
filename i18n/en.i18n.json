@@ -6,21 +6,25 @@
   "new": "New",
   "best": "Best",
   "digest": "Digest",
+  "scheduled": "Scheduled",
   "users": "Users",
   "settings": "Settings",
   "admin": "Admin",
   "post": "Post",
   "toolbox": "Toolbox",
-  "sign_up_sign_in": "Sign Up/Sign In",
+  "sign_up_sign_in": "Register/Sign In",
   "my_account": "My Account",
   "view_profile": "View Profile",
   "edit_account": "Edit Account",
-
+  "view_your_profile": "View your profile.",
+  "edit_your_profile": "Edit your profile",
+  
   //Main
   "new_posts": "New Posts",
 
   // Settings Schema
   "title": "Title",
+  "description": "Description",
   "siteUrl": "Site URL",
   "tagline": "Tagline",
   "requireViewInvite": "Require Invite to View",
@@ -52,25 +56,39 @@
   "emailFooter": "Email Footer",
   "notes": "Notes",
   "debug": "Debug Mode",
-
+  "fontUrl": "Font URL",
+  "fontFamily": "Font Family",
+  "authMethods": "Authentication Methods",
+  "faviconUrl": "Favicon URL",
+  "mailURL": "MailURL",
+  "postsLayout": "Posts Layout",
+  "siteImage": "Site Image",
+  
   // Settings Fieldsets
   "general": "General",
   "invites": "Invites",
-  "email": "Email", 
+  "email": "Email",
   "scoring": "Scoring",
   "posts": "Posts",
-  "comments": "Comments", 
+  "comments": "Comments",
   "logo": "Logo",
   "extras": "Extras",
   "colors": "Colors",
   "integrations": "Integrations",
+  "accentColor": "Accent Color",
+  "accentContrastColor": "Accent Contrast Color",
+  "secondaryColor": "Secondary Color",
+  "secondaryContrastColor": "Secondary Contrast Color",
+  "postViews": "Post Views",
+  "navLayout": "Navigation Layout",
+  "mailUrl": "Mail URL",
 
   // Settings Help Text
 
   // Post Schema
   "createdAt": "Created At",
   "postedAt": "Posted At",
-  "url": "URL",  
+  "url": "URL",
   "title": "Title",
   "body": "Body",
   "htmlBody": "HTML Body",
@@ -103,17 +121,19 @@
   "edit": "Edit",
   "reply": "Reply",
   "no_comments": "No comments.",
+  "please_sign_in_to_reply": "Please sign in to reply",
 
   //Errors
   "you_are_already_logged_in": "You are already logged in",
-  "sorry_this_is_a_private_site_please_sign_up_first": "Sorry, this is a private site. Please sign up first.",
-  "thanks_for_signing_up": "Thanks for signing up!",
+  "sorry_this_is_a_private_site_please_sign_up_first": "Sorry, this is a private site. Please register first.",
+  "thanks_for_signing_up": "Thanks for registering!",
   "the_site_is_currently_invite_only_but_we_will_let_you_know_as_soon_as_a_spot_opens_up": "The site is currently invite-only, but we will let you know as soon as a spot opens up.",
   "sorry_you_dont_have_the_rights_to_view_this_page": "Sorry, you don't have the rights to view this page.",
   "sorry_you_do_not_have_the_rights_to_comments": "Sorry, you do not have the rights to leave comments at this time.",
   "not_found": "Not Found!",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "We're sorry; whatever you were looking for isn't here..",
-
+  "disallowed_property_detected": "Disallowed property detected",
+  
   //Notifications
   "no_notifications": "No notifications",
   "1_notification": "1 notification",
@@ -171,6 +191,7 @@
   "display_name": "Display Name",
   "email": "Email",
   "bio": "Bio",
+  "city": "City",
   "twitter_username": "Twitter Username",
   "github_username": "GitHub Username",
   "site_url" : "Site URL",
@@ -185,7 +206,7 @@
   "replies_to_my_comments": "Replies to my comments",
   "forgot_password": "Forgot password?",
   "profile_updated": "Profile updated",
-  "please_fill_in_your_email_below_to_finish_signing_up": "Please fill in your email below to finish signing up.",
+  "please_fill_in_your_email_below_to_finish_signing_up": "Please fill in your email below to finish the registration.",
   "invite": "Invite",
   "uninvite": "Uninvite",
   "make_admin": "Make admin",
@@ -205,10 +226,10 @@
   "edit_profile": "Edit profile",
   "sign_in": "Sign In",
   "sign_in_": "Sign in!",
-  "sign_up_": "Sign up!",
+  "sign_up_": "Register!",
   "dont_have_an_account": "Don't have an account?",
   "already_have_an_account": "Already have an account?",
-  "sign_up": "Sign Up",
+  "sign_up": "Register",
   "please_fill_in_all_fields": "Please fill in all fields",
   "invite_": "Invite ",
   "left": " left",
@@ -256,8 +277,6 @@
   "upvoted": "Upvoted",
   "posted_date": "Posted Date",
   "posted_time": "Posted Time",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
   "profile": "Profile",
   "sign_out": "Sign Out",
   "you_ve_been_signed_out": "You've been signed out. Come back soon!",
@@ -284,7 +303,7 @@
   "are_you_sure": "Are you sure?",
   "please_log_in_first": "Please log in first.",
   "please_log_in_to_comment": "Please log in to comment.",
-  "sign_in_sign_up_with_twitter": "Sign In/Sign Up with Twitter",
+  "sign_in_sign_up_with_twitter": "Register/Sign Up with Twitter",
   "load_more": "Load More",
 
   "most_popular_posts": "The most popular posts right now.",
@@ -292,7 +311,7 @@
   "highest_ranked_posts_ever": "The all-time highest-ranked posts.",
 
   "the_profile_of": "The profile of",
-  
+
   "posts_awaiting_moderation": "Posts awaiting moderation.",
   "future_scheduled_posts": "Future scheduled posts.",
   "users_dashboard": "Users dashboard.",

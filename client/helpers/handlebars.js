@@ -15,7 +15,6 @@ UI.registerHelper('eachWithRank', function(items, options) {
 });
 
 UI.registerHelper('getSetting', function(setting, defaultArgument){
-  defaultArgument = defaultArgument || '';
   setting = getSetting(setting, defaultArgument);
   return setting;
 });
@@ -36,7 +35,7 @@ UI.registerHelper('isAdmin', function(showError) {
     return true;
   }
   if ((typeof showError === 'string') && (showError === 'true')) {
-    flashMessage(i18n.t('sorry_you_do_not_have_access_to_this_page'), 'error');
+    Messages.flash(i18n.t('sorry_you_do_not_have_access_to_this_page'), 'error');
   }
   return false;
 });
@@ -81,4 +80,15 @@ UI.registerHelper('userName', function(userOrUserId) {
   if (!!user) {
     return getUserName(user);
   }
+});
+
+UI.registerHelper('displayName', function(userOrUserId) {
+  var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+  if (!!user) {
+    return getDisplayName(user);
+  }
+});
+
+UI.registerHelper('icon', function(iconName, iconClass) {
+  return getIcon(iconName, iconClass);
 });

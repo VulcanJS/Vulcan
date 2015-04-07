@@ -1,0 +1,60 @@
+<!-- 
+
+Menu Component
+
+menuName (String)
+| The name of the menu
+
+menuItems (Array)
+| An array containing the contents of the menu
+- route (String/Function) [optional]
+- label (String/Function) [optional]
+- description (String) [optional]
+- itemClass (String) [optional]
+  | an optional CSS class
+- adminOnly (Boolean) [optional]
+  | whether to only show the item to admins
+- template (String) [optional]
+  | if a template is provided, it will override the route/label/description
+- data (Object) [optional]
+  | data contexnt for the template
+
+menuLabel (String) [optional]
+
+menuClass (String) [optional]
+| An optional default CSS class given to the menu
+
+menuMode (String) [optional]
+| "accordion", "dropdown", or "list" (defaults to "list")
+
+-->
+
+<template name="menuComponent">
+  <div class="menu {{menuClass}}">
+    <div class="menu-top-level" href="/">{{menuLabel}}</div>
+    <div class="menu-menu">
+      {{#with menuItems}}
+        <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
+          {{#each this}}
+            {{#if showMenuItem}}
+              {{#if hasTemplate}}
+                {{> Template.dynamic template=template data=data}}
+              {{else}}
+                <li class="menu-item {{itemClass}}">
+                  <a class="menu-sub-level" href="{{itemRoute}}">
+                    <span class="menu-label">{{itemLabel}}</span>
+                    {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+                  </a>
+                </li>
+              {{/if}}
+            {{/if}}
+          {{/each}}
+        </ul>
+      {{/with}}
+      <a class="show-more" href="#">
+        {{{icon "open"}}}
+        {{{icon "close"}}}
+      </a>
+    </div>
+  </div>
+</template>

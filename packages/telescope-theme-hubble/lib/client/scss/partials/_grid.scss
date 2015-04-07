@@ -3,8 +3,8 @@ $grid-margin:10px;
 $grid-padding:15px;
 $break-small:500px;
 
-$small-break: 30em;
-$medium-break: 50em;
+$small-break: 600px;
+$medium-break: 800px;
 
 @mixin small(){
   @media screen and (max-width: $small-break) {
@@ -33,14 +33,12 @@ $medium-break: 50em;
 }
 
 .content-wrapper{
-	padding: 0 10px;
   @include small{
     overflow-x: hidden;
   }
 }
 .grid{
 	width:100%;
-	max-width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
 }

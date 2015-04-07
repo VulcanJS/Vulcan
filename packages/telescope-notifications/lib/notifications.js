@@ -3,9 +3,10 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 
   var adminIds = _.pluck(Meteor.users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
   var notifiedUserIds = _.pluck(Meteor.users.find({'profile.notifications.posts': 1}, {fields: {_id:1}}).fetch(), '_id');
-  
-  console.log(adminIds)
-  console.log(notifiedUserIds)
+
+  // remove post author ID from arrays
+  var adminIds = _.without(adminIds, post.userId);
+  var notifiedUserIds = _.without(notifiedUserIds, post.userId);
 
   if (post.status === STATUS_PENDING && !!adminIds.length) { 
     // if post is pending, only notify admins
@@ -48,10 +49,10 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
     if (!!comment.parentCommentId) {
   
       var parentComment = Comments.findOne(comment.parentCommentId);
-
+      
       // do not notify author of parent comment if they're also post author or comment author
       // (someone could be replying to their own comment)
-      if (parentComment.userId !== post.userId || parentComment.userId !== comment.userId) {
+      if (parentComment.userId !== post.userId && parentComment.userId !== comment.userId) {
         
         // add parent comment to notification data
         notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
@@ -77,9 +78,6 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
     }
 
   }
-
-  console.log(userIdsNotified)
-  console.log(comment.body)
 
   return comment;
 

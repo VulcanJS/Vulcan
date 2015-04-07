@@ -1,0 +1,14 @@
+.icon-circle{
+  border-radius: 100%;
+  border: 1px solid currentColor;
+  padding: 6px;
+  line-height: 0;
+  &:before{
+    height: 12px;
+    width: 12px;
+    text-align: center;
+    line-height: 12px;
+    font-size: 10px;
+    display: inline-block;
+  }
+}

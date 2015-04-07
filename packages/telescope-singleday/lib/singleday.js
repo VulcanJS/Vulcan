@@ -1,6 +1,6 @@
 viewsMenu.push({
   route: 'postsSingleDayDefault',
-  label: 'digest',
+  label: 'singleday',
   description: 'posts_of_a_single_day'
 });
 

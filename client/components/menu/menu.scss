@@ -1,0 +1,190 @@
+@function black($opacity){
+  @return rgba(0,0,0,$opacity);
+}
+@function white($opacity){
+  @return rgba(255,255,255,$opacity);
+}
+
+$medium-text: #a4a9ab;
+$red: #DD3416;
+$text: #444444;
+
+// ------------------------------------ Base ------------------------------------ //
+.menu-item{
+  padding: 5px;
+  margin: 0;
+  a{
+    font-size:14px;
+  }
+}
+.menu-label{
+  display: block;
+}
+.menu-description{
+  display: block;
+  font-weight: normal;
+  font-size: 12px;
+  margin-top: 2px;
+  color: $medium-text;
+}
+.item-admin{
+  .menu-label:after{
+    content: "[A]";
+    font-size: 10px;
+    color: $red;
+    display: inline-block;
+    margin-left: 3px;
+  }
+}
+.item-active{
+  .dark-bg &, .medium-dark-bg &{
+    background: white(0.1);
+  }
+  .light-bg &, .medium-light-bg &, white-bg &{
+    background: black(0.1);
+  }
+}
+.item-active.item-never-active{
+  background: none;
+}
+.menu-top-label{
+  cursor: pointer;
+}
+// ------------------------------------ List ------------------------------------ //
+
+.menu-list{
+  .show-more{
+    display: none;
+  }
+  .item-active{
+    background: black(0.05);
+  }
+}
+// ------------------------------------ Hover ------------------------------------ //
+
+.menu-dropdown{
+  position:relative;
+  &.menu-has-items{
+    .menu-top-level{
+      cursor: pointer;
+      &:after{
+        display:inline-block;
+        position:relative;
+        top:-1px;
+        margin-left:4px;
+        content:"▼";
+        font-size:8px;
+      }
+    }
+    &:hover{
+      .menu-menu{
+        display:block;
+      }
+    }
+  }
+  .menu-menu{
+    display:none;
+    top:10px;
+    left:10px;
+    position:absolute;
+    padding-top:20px;
+    z-index: 10000;
+    &, a, a:link, a:visited{
+      color: $text;
+    }
+    a.button{
+      color: white;
+    }
+    .menu-contents{
+      background:white;
+      padding: 10px;
+      min-width:180px;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px black(0.35);
+      list-style-type: none;
+    }
+  }
+  .show-more{
+    display: none;
+  }
+}
+
+// ------------------------------------ Accordion ------------------------------------ //
+
+.menu-accordion{
+  .menu-top-level{
+    cursor: default;
+    display: block;
+    padding: 5px;
+    position: relative;
+    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
+    &:after{
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.5;
+    }
+  }
+  /* ------- Show More Button ------- */
+  .show-more{
+    // border-top: 1px solid #ccc;
+    position: relative;
+    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
+    &:before{
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      top: 0px;
+      left: 0px;
+      opacity: 0.5;
+    }
+    padding: 8px 0;
+    display: none;
+    text-align: center;
+    .icon{
+      display: block;
+      height: 20px;
+      width: 20px;
+      opacity: 0.5;
+      margin: 0 auto;
+    }
+    &:hover{
+      background: white(0.2);
+      .show-more-icon{
+        opacity: 1;
+      }
+    }
+    .icon-close{
+      display: none;
+    }
+  }
+  &.menu-long .show-more{
+    display: block; // only show the "show more" button if the menu has more than three items
+  }
+  &.menu-open{
+    .icon-close{
+      display: block;
+    }
+    .icon-open{
+      display: none;
+    }    
+  }
+
+  /* expand/collapse animation */
+  .menu-contents{
+    max-height: 93px;
+    overflow: hidden;
+    transition: max-height ease-out 300ms;
+  }
+  &.menu-open .menu-contents{
+    max-height: 999px !important;
+  }
+}

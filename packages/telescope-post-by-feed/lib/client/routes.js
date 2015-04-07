@@ -12,13 +12,15 @@ Meteor.startup(function () {
 
   Router.route('/feeds', {
     name: 'feeds',
+    controller: AdminController,
     waitOn: function() {
       return [
         Meteor.subscribe('feeds'),
-        Meteor.subscribe('allUsersAdmin')
+        Meteor.subscribe('allUsersAdmin'),
+        Meteor.subscribe('categories')
       ];
     },
-    template: getTemplate('feeds')
+    // template: getTemplate('feeds')
   });
 
 });

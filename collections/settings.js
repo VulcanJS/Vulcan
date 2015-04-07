@@ -30,6 +30,27 @@ settingsSchemaObject = {
       instructions: 'A short description used for SEO purposes.'
     }
   },
+  siteImage: {
+    type: String,
+    optional: true,
+    regEx: SimpleSchema.RegEx.Url,
+    autoform: {
+      group: "general",
+      instructions: "URL to an image for the open graph image tag for all pages"
+    }
+  },
+  navLayout: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'general',
+      instructions: 'The layout used for the main menu',
+      options: [
+        {value: 'top-nav', label: 'Top'},
+        {value: 'side-nav', label: 'Side'}
+      ]
+    }
+  },
   requireViewInvite: {
     type: Boolean,
     optional: true,
@@ -109,6 +130,22 @@ settingsSchemaObject = {
       ]
     }
   },
+  postViews: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'posts',
+      instructions: 'Posts views showed in the views menu',
+      editable: true,
+      noselect: true,
+      options: _.map(viewsMenu, function (item){
+        return {
+          value: item.route,
+          label: item.label
+        }
+      })
+    }
+  },  
   postInterval: {
     type: Number,
     optional: true,
@@ -173,6 +210,13 @@ settingsSchemaObject = {
       group: 'logo'
     }
   },
+  faviconUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'logo'
+    }
+  },
   language: {
     type: String,
     defaultValue: 'en',
@@ -181,10 +225,10 @@ settingsSchemaObject = {
       group: 'general',
       instructions: 'The app\'s language. Defaults to English.',
       options: function () {
-        var languages = _.map(TAPi18n.languages_available_for_project, function (item, key) {
+        var languages = _.map(TAPi18n.getLanguages(), function (item, key) {
           return {
             value: key,
-            label: item[0]
+            label: item.name
           }
         });
         return languages
@@ -200,40 +244,52 @@ settingsSchemaObject = {
       rows: 5
     }
   },
-  // secondaryColor: {
-  //   type: String,
-  //   optional: true
-  // },
-  buttonColor: {
+  accentColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for button backgrounds.'
     }
   },
-  buttonTextColor: {
+  accentContrastColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for button text.'
     }
   },
-  headerColor: {
+  secondaryColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for the navigation background.'
     }
   },
-  headerTextColor: {
+  secondaryContrastColor: {
     type: String,
     optional: true,
     autoform: {
       group: 'colors',
-      // type: 'color'
+      instructions: 'Used for header text.'
+    }
+  },
+  fontUrl: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'fonts',
+      instructions: '@import URL (e.g. https://fonts.googleapis.com/css?family=Source+Sans+Pro)'
+    }
+  },
+  fontFamily: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'fonts',
+      instructions: 'font-family (e.g. "Source Sans Pro", sans-serif)'
     }
   },
   twitterAccount: {
@@ -309,6 +365,30 @@ settingsSchemaObject = {
       group: 'debug',
       instructions: 'Enable debug mode for more details console logs'
     }
+  },
+  authMethods: {
+    type: [String],
+    optional: true,
+    autoform: {
+      group: 'auth',
+      editable: true,
+      noselect: true,
+      options: [
+        {
+          value: 'email',
+          label: 'Email/Password'
+        },
+        {
+          value: 'twitter',
+          label: 'Twitter'
+        },
+        {
+          value: 'facebook',
+          label: 'Facebook'
+        }
+      ],
+      instructions: 'Authentication methods (default to email only)'
+    }    
   }
 };
 

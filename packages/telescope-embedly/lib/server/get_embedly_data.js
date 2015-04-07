@@ -26,7 +26,7 @@ getEmbedlyData = function (url) {
     // console.log(result)
 
     if (!!result.data.images && !!result.data.images.length) // there may not always be an image
-      result.data.thumbnailUrl = result.data.images[0].url; // add thumbnailUrl as its own property
+      result.data.thumbnailUrl = result.data.images[0].url.replace("http:", ""); // add thumbnailUrl as its own property and remove "http"
 
     return _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl');
 
@@ -76,8 +76,11 @@ var addMediaAfterSubmit = function (post) {
         set.media = data.media;
       }
     }
+    // make sure set object is not empty (Embedly call could have failed)
+    if(!_.isEmpty(set)) {
+      Posts.update(post._id, {$set: set});
+    }
   }
-  Posts.update(post._id, {$set: set});
   return post;
 }
 postAfterSubmitMethodCallbacks.push(addMediaAfterSubmit);

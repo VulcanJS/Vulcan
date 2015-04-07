@@ -38,18 +38,19 @@ Template[getTemplate('userAccount')].events({
   'submit #account-form': function(e){
     e.preventDefault();
 
-    clearSeenMessages();
+    Messages.clearSeen();
     if(!Meteor.user())
-      flashMessage(i18n.t('you_must_be_logged_in'), 'error');
+      Messages.flash(i18n.t('you_must_be_logged_in'), 'error');
 
     var $target=$(e.target);
     var name = $target.find('[name=name]').val();
     var email = $target.find('[name=email]').val();
     var user = this;
     var update = {
-      "profile.name": name,
+      "profile.username": name,
       "profile.slug": slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
+      "profile.city": $target.find('[name=city]').val(),
       "profile.email": email,
       "profile.twitter": $target.find('[name=twitter]').val(),
       "profile.github": $target.find('[name=github]').val(),
@@ -67,7 +68,7 @@ Template[getTemplate('userAccount')].events({
       Accounts.changePassword(old_password, new_password, function(error){
         // TODO: interrupt update if there's an error at this point
         if(error)
-          flashMessage(error.reason, "error");
+          Messages.flash(error.reason, "error");
       });
     }
 
@@ -79,9 +80,9 @@ Template[getTemplate('userAccount')].events({
       $set: update
     }, function(error){
       if(error){
-        flashMessage(error.reason, "error");
+        Messages.flash(error.reason, "error");
       } else {
-        flashMessage(i18n.t('profile_updated'), 'success');
+        Messages.flash(i18n.t('profile_updated'), 'success');
       }
       Deps.afterFlush(function() {
         var element = $('.grid > .error');
@@ -89,7 +90,7 @@ Template[getTemplate('userAccount')].events({
       });
     });
 
-    Meteor.call('changeEmail', email);
+    Meteor.call('changeEmail', user._id, email);
 
   }
 

@@ -30,6 +30,7 @@ Package.onUse(function (api) {
     'dashToCamel',
     'camelCaseify',
     'getSetting',
+    'removeSetting',
     'getThemeSetting',
     'getSiteUrl',
     'trimWords',

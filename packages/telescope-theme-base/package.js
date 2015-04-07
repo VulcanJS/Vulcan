@@ -9,6 +9,7 @@ Package.onUse(function (api) {
       // global
       'lib/client/scss/global/_forms.scss',
       'lib/client/scss/global/_links.scss',
+      'lib/client/scss/global/_icons.scss',
       'lib/client/scss/global/_main.scss',
       'lib/client/scss/global/_markdown.scss',
       'lib/client/scss/global/_tables.scss',
@@ -20,10 +21,10 @@ Package.onUse(function (api) {
       'lib/client/scss/includes/_mixins.scss',
 
       // specific
+      'lib/client/scss/specific/_admin.scss',
       'lib/client/scss/specific/_avatars.scss',
-      'lib/client/scss/specific/_dropdown.scss',
       'lib/client/scss/specific/_errors.scss',
-      'lib/client/scss/specific/_header.scss',
+      'lib/client/scss/specific/_nav.scss',
       'lib/client/scss/specific/_layout.scss',
       'lib/client/scss/specific/_loading.scss',
       'lib/client/scss/specific/_mobile_nav.scss',

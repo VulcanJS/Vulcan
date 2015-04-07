@@ -1,0 +1,7 @@
+{
+  "thumbnail": "Thumbnail",
+  "thumbnailUrl": "Thumbnail",
+  "regenerate_thumbnail": "Regenerar Thumbnail",
+  "clear_thumbnail": "Limpar Thumbnail",
+  "please_fill_in_embedly_key": "Por fabor, coloque sua API Embedly para permitir thumbnails."
+}

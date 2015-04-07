@@ -2,20 +2,21 @@ AutoForm.hooks({
   editPostForm: {
 
     before: {
-      editPost: function(doc, template) {
-
+      editPost: function(modifier) {
+        console.log(modifier)
+        console.log(template)
         var post = doc;
 
         // ------------------------------ Checks ------------------------------ //
 
         if (!Meteor.user()) {
-          flashMessage(i18n.t('you_must_be_logged_in'), "");
+          Messages.flash(i18n.t('you_must_be_logged_in'), "");
           return false;
         }
 
         // ------------------------------ Callbacks ------------------------------ //
 
-        // run all post edit client callbacks on post object successively
+        // run all post edit client callbacks on modifier object successively
         post = postEditClientCallbacks.reduce(function(result, currentFunction) {
             return currentFunction(result);
         }, post);
@@ -24,15 +25,15 @@ AutoForm.hooks({
       }
     },
 
-    onSuccess: function(operation, post, template) {
+    onSuccess: function(operation, post) {
       trackEvent("edit post", {'postId': post._id});
       Router.go('post_page', {_id: post._id});
     },
 
-    onError: function(operation, error, template) {
+    onError: function(operation, error) {
       console.log(error)
-      flashMessage(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
-      clearSeenMessages();
+      Messages.flash(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
+      Messages.clearSeen();
     }
 
   }
@@ -44,15 +45,15 @@ Template[getTemplate('post_edit')].events({
     var post = this.post;
 
     e.preventDefault();
-    
+
     if(confirm("Are you sure?")){
       Router.go("/");
       Meteor.call("deletePostById", post._id, function(error) {
         if (error) {
           console.log(error);
-          flashMessage(error.reason, 'error');
+          Messages.flash(error.reason, 'error');
         } else {
-          flashMessage(i18n.t('your_post_has_been_deleted'), 'success');
+          Messages.flash(i18n.t('your_post_has_been_deleted'), 'success');
         }
       });
     }

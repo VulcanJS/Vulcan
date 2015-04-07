@@ -1,16 +1,21 @@
 // Controller for post digest
 
-PostsSingleDayController = RouteController.extend({
+PostsSingledayController = RouteController.extend({
 
   template: getTemplate('singleDay'),
 
+  onBeforeAction: function () {
+    this.render(getTemplate('postListTop'), {to: 'postListTop'});
+    this.next();
+  },
+  
   data: function() {
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
     Session.set('currentDate', currentDate);
   },
 
   getTitle: function () {
-    return i18n.t('single_day') + ' - ' + getSetting('title', 'Telescope');
+    return i18n.t('single_day');
   },
 
   getDescription: function () {
@@ -27,12 +32,12 @@ Meteor.startup(function () {
 
   Router.route('/day/:year/:month/:day', {
     name: 'postsSingleDay',
-    controller: PostsSingleDayController
+    controller: PostsSingledayController
   });
 
   Router.route('/day', {
     name: 'postsSingleDayDefault',
-    controller: PostsSingleDayController
+    controller: PostsSingledayController
   });
 
 });

@@ -13,15 +13,34 @@ var feedSchema = new SimpleSchema({
           return {
             value: user._id,
             label: getDisplayName(user)
-          }  
+          };
         });
         return users;
+      }
+    }
+  },
+  categories: {
+    type: [String],
+    label: 'categories',
+    optional: true,
+    autoform: {
+      instructions: 'Posts will be assigned to this category.',
+      noselect: true,
+      editable: true,
+      options: function () {
+        var categories = Categories.find().map(function (category) {
+          return {
+            value: category._id,
+            label: category.name
+          };
+        });
+        return categories;
       }
     }
   }
 });
 
-Feeds = new Meteor.Collection("feeds");
+Feeds = new Meteor.Collection('feeds');
 Feeds.attachSchema(feedSchema);
 
 // used to keep track of which feed a post was imported from
