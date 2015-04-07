@@ -171,6 +171,7 @@
   "display_name": "Visningsnamn",
   "email": "E-post",
   "bio": "Biografi",
+  "city": "Stad",
   "twitter_username": "Twitter-konto",
   "github_username": "GitHub-konto",
   "site_url" : "Hemside-adress",
