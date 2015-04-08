@@ -28,21 +28,25 @@ Template[getTemplate('menuComponent')].helpers({
 
     classes.push("menu-"+mode);
 
-    if(!!this.menuClass) {
+    if (!!this.menuClass) {
       classes.push(this.menuClass)
     }
 
-    // enable menu if top-nav layout is enabled, if themes supports menus, and if menu isn't empty
+    if (this.menuCollapsed) {
+      classes.push("menu-collapsed");
+      classes.push("menu-show-more");
+    }
+
     if (count) {
       classes.push("menu-has-items");
       if (count > 3) {
-        classes.push("menu-long");
+        classes.push("menu-show-more");
       }
     } else {
       classes.push("menu-no-items");
     }
 
-    return classes.join(" ");
+    return _.unique(classes).join(" ");
   },
   menuLabel: function () {
     // if label is defined, use this. Else default to menu name

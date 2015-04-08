@@ -50,6 +50,7 @@ $text: #444444;
 .menu-top-label{
   cursor: pointer;
 }
+
 // ------------------------------------ List ------------------------------------ //
 
 .menu-list{
@@ -166,7 +167,7 @@ $text: #444444;
       display: none;
     }
   }
-  &.menu-long .show-more{
+  &.menu-show-more .show-more{
     display: block; // only show the "show more" button if the menu has more than three items
   }
   &.menu-open{
@@ -186,5 +187,19 @@ $text: #444444;
   }
   &.menu-open .menu-contents{
     max-height: 999px !important;
+  }
+  &.menu-collapsed{
+    .menu-contents{
+      max-height: 0px;
+      .dropdown-item:first-child{
+        padding-top: 10px;
+      }
+    }
+    .show-more{
+      margin-top: -1px;
+    }
+    &.menu-has-items .show-more{
+      display: block; // show the "show more" button if the menu has any items
+    }
   }
 }
