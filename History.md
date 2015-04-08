@@ -1,3 +1,9 @@
+## v0.15.1 “FixesScope”
+
+* Settings now have their own `telescope-settings` package (thanks @delgermurun!).
+* Swedish translation (thanks @Alekzanther!)
+* Various fixes (thanks @azizur, @ndarilek, @kai101, @saimeunt, @Kikobeats!).
+
 ## v0.15 “SideScope”
 
 #### Layout
