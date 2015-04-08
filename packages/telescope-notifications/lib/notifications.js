@@ -8,10 +8,10 @@ postAfterSubmitMethodCallbacks.push(function (post) {
   var adminIds = _.without(adminIds, post.userId);
   var notifiedUserIds = _.without(notifiedUserIds, post.userId);
 
-  if (post.status === STATUS_PENDING && !!adminIds.length) { 
+  if (post.status === STATUS_PENDING && !!adminIds.length) {
     // if post is pending, only notify admins
     Herald.createNotification(adminIds, {courier: 'newPendingPost', data: post});
-  } else if (!!notifiedUserIds.length) { 
+  } else if (!!notifiedUserIds.length) {
     // if post is approved, notify everybody
     Herald.createNotification(notifiedUserIds, {courier: 'newPost', data: post});
   }
@@ -47,24 +47,24 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
 
     // 2. Notify author of comment being replied to
     if (!!comment.parentCommentId) {
-  
+
       var parentComment = Comments.findOne(comment.parentCommentId);
-      
+
       // do not notify author of parent comment if they're also post author or comment author
       // (someone could be replying to their own comment)
       if (parentComment.userId !== post.userId && parentComment.userId !== comment.userId) {
-        
+
         // add parent comment to notification data
         notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
-        
+
         Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
         userIdsNotified.push(parentComment.userId);
-      
+
       }
 
     }
 
-    // 3. Notify users subscribed to the thread 
+    // 3. Notify users subscribed to the thread
     // TODO: ideally this would be injected from the telescope-subscribe-to-posts package
     if (!!post.subscribers) {
 
@@ -74,7 +74,7 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
       Herald.createNotification(subscriberIdsToNotify, {courier: 'newCommentSubscribed', data: notificationData});
 
       userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
-    
+
     }
 
   }
@@ -95,7 +95,7 @@ var emailNotifications = {
     }
   }
 };
-addToSettingsSchema.push(emailNotifications);
+Settings.addToSchema(emailNotifications);
 
 // make it possible to disable notifications on a per-comment basis
 addToCommentsSchema.push(

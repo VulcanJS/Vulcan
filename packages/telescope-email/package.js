@@ -13,6 +13,7 @@ Package.onUse(function (api) {
   api.use([
     'iron:router',
     'telescope-base',
+    'telescope-settings',
     'telescope-lib',
     'telescope-i18n',
     'tap:i18n'
@@ -41,7 +42,7 @@ Package.onUse(function (api) {
     'lib/server/templates/emailTest.handlebars',
     'lib/server/templates/emailWrapper.handlebars',
   ], ['server']);
-  
+
   api.add_files([
     "i18n/de.i18n.json",
     "i18n/en.i18n.json",
@@ -52,7 +53,7 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.export([
-    'buildEmailTemplate', 
+    'buildEmailTemplate',
     'sendEmail',
     'buildAndSendEmail',
     'getEmailTemplate'

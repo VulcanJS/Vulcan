@@ -14,7 +14,7 @@ Package.onUse(function (api) {
     'STATUS_PENDING',
     'STATUS_APPROVED',
     'STATUS_REJECTED',
-    
+
     'adminMenu',
     'viewsMenu',
     'userMenu',
@@ -52,7 +52,7 @@ Package.onUse(function (api) {
     'postAfterSubmitMethodCallbacks',
 
     'postApproveCallbacks',
-    
+
     'postEditRenderedCallbacks',
     'postEditClientCallbacks',
     'postEditMethodCallbacks',
@@ -78,14 +78,14 @@ Package.onUse(function (api) {
     'downvoteMethodCallbacks',
     'cancelUpvoteMethodCallbacks',
     'cancelDownvoteMethodCallbacks',
-    
+
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
     'userProfileCompleteChecks',
     'userProfileDisplay',
     'userProfileEdit',
     'userCreatedCallbacks',
-    
+
     'getTemplate',
     'templates',
 

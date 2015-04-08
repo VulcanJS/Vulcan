@@ -8,7 +8,7 @@ PostsSingledayController = RouteController.extend({
     this.render(getTemplate('postListTop'), {to: 'postListTop'});
     this.next();
   },
-  
+
   data: function() {
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
     Session.set('currentDate', currentDate);

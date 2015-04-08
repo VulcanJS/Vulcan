@@ -1,4 +1,8 @@
-settingsSchemaObject = {
+Settings = {
+  collection: new Meteor.Collection("settings")
+};
+
+Settings.schema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
@@ -93,7 +97,7 @@ settingsSchemaObject = {
       instructions: 'MAIL_URL environment variable (requires restart).',
       private: true
     }
-  },  
+  },
   scoreUpdateInterval: {
     type: Number,
     optional: true,
@@ -145,7 +149,7 @@ settingsSchemaObject = {
         }
       })
     }
-  },  
+  },
   postInterval: {
     type: Number,
     optional: true,
@@ -388,46 +392,55 @@ settingsSchemaObject = {
         }
       ],
       instructions: 'Authentication methods (default to email only)'
-    }    
+    }
   }
-};
-
-// add any extra properties to settingsSchemaObject (provided by packages for example)
-_.each(addToSettingsSchema, function(item){
-  settingsSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Settings = new Meteor.Collection("settings");
-SettingsSchema = new SimpleSchema(settingsSchemaObject);
-Settings.attachSchema(SettingsSchema);
+Settings.collection.attachSchema(Settings.schema);
+
+Settings.addToSchema = function(item) {
+  var itemSchema = {};
+  itemSchema[item.propertyName] = item.propertySchema;
+
+  Settings.collection.attachSchema(itemSchema);
+  Settings.schema = new SimpleSchema(Settings.schema, itemSchema);
+};
+
+Settings.get = function(setting, defaultValue) {
+  var settings = Settings.collection.find().fetch()[0];
+
+  if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // if on the server, look in Meteor.settings
+    return Meteor.settings[setting];
+
+  } else if (Meteor.settings && Meteor.settings.public && !!Meteor.settings.public[setting]) { // look in Meteor.settings.public
+    return Meteor.settings.public[setting];
+
+  } else if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection
+    return settings[setting];
+
+  } else if (typeof defaultValue !== 'undefined') { // fallback to default
+    return  defaultValue;
+
+  } else { // or return undefined
+    return undefined;
+  }
+};
 
 // use custom template for checkboxes - not working yet
 // if(Meteor.isClient){
 //   AutoForm.setDefaultTemplateForType('afCheckbox', 'settings');
 // }
 
-Settings.allow({
-  insert: isAdminById,
-  update: isAdminById,
-  remove: isAdminById
-});
-
-if (Meteor.isClient){
-  var query = Settings.find();
-  var handle = query.observeChanges({
-    added: function (id, fields) {
-      if (fields.language)
-        setLanguage(fields.language)
-    },
-    changed: function (id, fields) {
-      if (fields.language)
-        setLanguage(fields.language)
-    }
+Meteor.startup(function () {
+  Settings.collection.allow({
+    insert: isAdminById,
+    update: isAdminById,
+    remove: isAdminById
   });
-}
+});
 
 Meteor.startup(function () {
   // override Meteor.absoluteUrl() with URL provided in settings
-  Meteor.absoluteUrl.defaultOptions.rootUrl = getSetting('siteUrl', Meteor.absoluteUrl());
-  debug = getSetting('debug', false);
+  Meteor.absoluteUrl.defaultOptions.rootUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
+  debug = Settings.get('debug', false);
 });
