@@ -140,7 +140,7 @@ var feedHandler = {
   }
 };
 
-var fetchFeeds = function() {
+fetchFeeds = function() {
   var contentBuffer;
 
   Feeds.find().forEach(function(feed) {
