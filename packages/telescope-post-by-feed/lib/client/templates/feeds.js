@@ -7,22 +7,4 @@ Meteor.startup(function () {
       return getTemplate('feedItem');
     }
   });
-
-  Template[getTemplate('feeds')].events({
-    'click input[type=submit]': function(e){
-      e.preventDefault();
-
-      var url = $('#url').val();
-
-      Meteor.call('insertFeed', {url: url}, function(error, result) {
-        if(error){
-          console.log(error);
-          Messages.flash(error.reason, "error");
-          Messages.clearSeen();
-        }else{
-          $('#url').val('');
-        }
-      });
-    }
-  });
 });

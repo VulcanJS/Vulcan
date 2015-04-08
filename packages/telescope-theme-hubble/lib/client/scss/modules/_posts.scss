@@ -38,7 +38,7 @@
 	}
 }
 
-.post-list-title{
+.post-list-title, .page-title{
 	text-align: center;
 	font-size: 22px;
 }
@@ -434,7 +434,7 @@
 .post-meta-item {
 	display: inline-block;
 }
-.post-body {
+.post-body, .page-body {
 	@extend .has-shadow;
 	border-radius: 3px;
 	margin-bottom: 10px;
