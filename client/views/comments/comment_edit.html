@@ -1,5 +1,5 @@
 <template name="comment_edit">
-  <div class="grid submit">
+  <div class="grid">
     {{#with comment}}
     <form class="grid-block form-horizontal">
       <div class="control-group">
@@ -8,7 +8,7 @@
       </div>
       <div class="form-actions">
         <a class="delete-link" href="/comments/deleted">{{_ "delete_comment"}}</a>
-        <input type="submit" class="button" value="{{_ "submit"}}" title="(⌘+enter)" />
+        <input type="submit" class="button btn-primary" value="{{_ "submit"}}" title="(⌘+enter)" />
       </div>
     </form>
     {{/with}}
