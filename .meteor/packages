@@ -44,7 +44,7 @@ npm-container
 matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
-bengott:avatar
+bengott:avatar@0.7.6
 jparker:gravatar
 tap:i18n
 useraccounts:unstyled@1.8.1
@@ -91,7 +91,9 @@ telescope-releases
 telescope-getting-started
 telescope-subscribe-to-posts
 telescope-tagline-banner
+telescope-settings
 telescope-sitemap
 telescope-messages
+telescope-pages
 
 # Custom Packages

@@ -18,8 +18,7 @@ Meteor.startup(function () {
     },
 
     getTitle: function () {
-      var category = this.getCurrentCategory();
-      return category.name;
+      return this.getCurrentCategory().name;
     },
 
     getDescription: function () {

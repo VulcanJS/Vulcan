@@ -13,11 +13,6 @@ UI.registerHelper('eachWithRank', function(items, options) {
   });
   return out;
 });
-
-UI.registerHelper('getSetting', function(setting, defaultArgument){
-  setting = getSetting(setting, defaultArgument);
-  return setting;
-});
 UI.registerHelper('isLoggedIn', function() {
   return !!Meteor.user();
 });

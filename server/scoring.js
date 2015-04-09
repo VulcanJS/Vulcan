@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  var scoreInterval = getSetting("scoreUpdateInterval") || 30;
+  var scoreInterval = Settings.get("scoreUpdateInterval") || 30;
   if (scoreInterval > 0) {
 
     // active items get updated every N seconds

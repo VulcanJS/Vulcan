@@ -50,6 +50,7 @@ Template[getTemplate('userAccount')].events({
       "profile.username": name,
       "profile.slug": slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
+      "profile.city": $target.find('[name=city]').val(),
       "profile.email": email,
       "profile.twitter": $target.find('[name=twitter]').val(),
       "profile.github": $target.find('[name=github]').val(),

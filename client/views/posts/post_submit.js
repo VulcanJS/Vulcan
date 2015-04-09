@@ -2,7 +2,7 @@ AutoForm.hooks({
   submitPostForm: {
 
     before: {
-      submitPost: function(doc) {
+      method: function(doc) {
 
         this.template.$('button[type=submit]').addClass('loading');
 

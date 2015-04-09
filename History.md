@@ -1,3 +1,10 @@
+## v0.15.1 “PageScope”
+
+* Settings now have their own `telescope-settings` package (thanks @delgermurun!).
+* Swedish translation (thanks @Alekzanther!)
+* Various fixes (thanks @azizur, @ndarilek, @kai101, @saimeunt, @Kikobeats!).
+* Added `telescope-pages` module for managing static pages. 
+
 ## v0.15 “SideScope”
 
 #### Layout

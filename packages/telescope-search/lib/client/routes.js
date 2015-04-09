@@ -4,10 +4,10 @@ Meteor.startup(function () {
     view: 'search',
     showViewsNav: false,
     getTitle: function() {
-      return i18n.t("Search") + ' - ' + getSetting('title', "Telescope");
+      return i18n.t("Search") + ' - ' + Settings.get('title', "Telescope");
     },
     getDescription: function() {
-      return getSetting('description');
+      return Settings.get('description');
     },
     onBeforeAction: function() {
       var query = this.params.query;

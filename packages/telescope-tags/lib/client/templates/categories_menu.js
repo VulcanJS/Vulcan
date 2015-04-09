@@ -19,7 +19,7 @@ Meteor.startup(function () {
     menuMode: function () {
       if (!!this.mobile) {
         return 'list';
-      } else if (getSetting('navLayout', 'top-nav') === 'top-nav') {
+      } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
         return 'dropdown';
       } else {
         return 'accordion';

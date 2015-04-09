@@ -15,21 +15,21 @@ Template[getTemplate('css')].helpers({
 
       // loop over all properties, and add the relevant selectors
       _.each(properties, function (selector, property) {
-        css += selector + "{\n  " + property + ": " + getSetting(color) + ";\n}\n";
+        css += selector + "{\n  " + property + ": " + Settings.get(color) + ";\n}\n";
       });
     });
     return css;
   },
   headerTextColorHalfOpacity: function () {
-    return tinycolor(getSetting("headerTextColor")).setAlpha(0.5);
+    return tinycolor(Settings.get("headerTextColor")).setAlpha(0.5);
   },
   buttonColorHalfOpacity: function () {
-    return tinycolor(getSetting("buttonColor")).setAlpha(0.5);
+    return tinycolor(Settings.get("buttonColor")).setAlpha(0.5);
   },
   hideAuthClass: function () {
-    
+
     var authClass = '';
-    var authMethods = getSetting('authMethods', ["email"]);
+    var authMethods = Settings.get('authMethods', ["email"]);
     var selectors = [
       {name: 'email', selector: ".at-pwd-form"},
       {name: 'twitter', selector: "#at-twitter"},
@@ -50,5 +50,5 @@ Template[getTemplate('css')].helpers({
 
     return authClass.slice(0, - 2) + "{display:none !important}";
 
-  }  
+  }
 });

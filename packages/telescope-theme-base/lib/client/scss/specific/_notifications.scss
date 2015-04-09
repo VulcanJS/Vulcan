@@ -1,17 +1,3 @@
 .notification-item{
   margin-bottom: 10px;
 }
-.notifications-menu.menu-accordion{
-  .menu-contents{
-    max-height: 0px;
-    .dropdown-item:first-child{
-      padding-top: 10px;
-    }
-  }
-  .show-more{
-    margin-top: -1px;
-  }
-  &.menu-has-items .show-more{
-    display: block; // show the "show more" button if the menu has any items
-  }
-}

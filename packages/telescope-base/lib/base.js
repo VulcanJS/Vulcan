@@ -3,8 +3,23 @@
 // array containing properties to be added to the post/settings/comments schema on startup.
 addToPostSchema = [];
 addToCommentsSchema = [];
-addToSettingsSchema = [];
 addToUserSchema = [];
+
+registerPostProperty = function (property) {
+  addToPostSchema.push(property);
+}
+
+registerCommentProperty = function (property) {
+  addToCommentsSchema.push(property);
+}
+
+registerSetting = function (property) {
+  addToSettingsSchema.push(property);
+}
+
+registerUserProperty = function (property) {
+  addToUserSchema.push(property);
+}
 
 SimpleSchema.extendOptions({
   editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner
@@ -25,7 +40,7 @@ postStatuses = [
     value: 3,
     label: 'Rejected'
   }
-]
+];
 
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
@@ -96,7 +111,7 @@ viewsMenu = [
     label: 'scheduled',
     description: 'future_scheduled_posts',
     adminOnly: true
-  },  
+  },
 ];
 
 // array containing items in the admin menu
@@ -139,7 +154,7 @@ userMenu = [
     label: 'sign_out',
     description: 'sign_out'
   }
-]
+];
 // ------------------------------------- Views -------------------------------- //
 
 
@@ -160,19 +175,19 @@ viewParameters.top = function (terms) {
   return {
     options: {sort: {sticky: -1, score: -1}}
   };
-}
+};
 
 viewParameters.new = function (terms) {
   return {
     options: {sort: {sticky: -1, postedAt: -1}}
   };
-}
+};
 
 viewParameters.best = function (terms) {
   return {
     options: {sort: {sticky: -1, baseScore: -1}}
   };
-}
+};
 
 viewParameters.pending = function (terms) {
   return {
@@ -182,21 +197,21 @@ viewParameters.pending = function (terms) {
     options: {sort: {createdAt: -1}},
     showFuture: true
   };
-}
+};
 
 viewParameters.scheduled = function (terms) {
   return {
     find: {postedAt: {$gte: new Date()}},
     options: {sort: {postedAt: -1}}
   };
-}
+};
 
 viewParameters.userPosts = function (terms) {
   return {
     find: {userId: terms.userId},
     options: {limit: 5, sort: {postedAt: -1}}
   };
-}
+};
 
 viewParameters.userUpvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
@@ -205,7 +220,7 @@ viewParameters.userUpvotedPosts = function (terms) {
     find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
   };
-}
+};
 
 viewParameters.userDownvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
@@ -215,7 +230,7 @@ viewParameters.userDownvotedPosts = function (terms) {
     find: {_id: {$in: postsIds}},
     options: {limit: 5, sort: {postedAt: -1}}
   };
-}
+};
 
 heroModules = [];
 
@@ -287,7 +302,7 @@ postMeta = [
     template: 'postAdmin',
     order: 50
   }
-]
+];
 // ------------------------------ Callbacks ------------------------------ //
 
 postClassCallbacks = [];
@@ -358,7 +373,7 @@ userProfileEdit = [
     template: 'userAccount',
     order: 1
   }
-]
+];
 
 userProfileCompleteChecks.push(
   function(user) {
@@ -373,7 +388,7 @@ templates = {}
 getTemplate = function (name) {
   // if template has been overwritten, return this; else return template name
   return !!templates[name] ? templates[name] : name;
-}
+};
 
 // ------------------------------ Theme Settings ------------------------------ //
 

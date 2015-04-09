@@ -33,15 +33,15 @@ setLanguage = function (language) {
 i18n = {
   t: function (str, options) {
     if (Meteor.isServer) {
-      return TAPi18n.__(str, options, getSetting('language', 'en')); 
+      return TAPi18n.__(str, options, Settings.get('language', 'en'));
     } else {
-      return TAPi18n.__(str, options); 
+      return TAPi18n.__(str, options);
     }
   }
 };
 
 Meteor.startup(function () {
-  
+
   if (Meteor.isClient) {
 
     // doesn't quite work yet
@@ -56,7 +56,7 @@ Meteor.startup(function () {
     //   }
     // });
 
-    setLanguage(getSetting('language', 'en'));
+    setLanguage(Settings.get('language', 'en'));
   }
 
 });

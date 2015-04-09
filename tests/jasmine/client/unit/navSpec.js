@@ -27,7 +27,7 @@ describe('test nav template', function() {
   });
 
   it('should render the logo from the setting', function () {
-    spyOn(window, 'getSetting').and.callFake(function (settingName) {
+    spyOn(window, 'Settings.get').and.callFake(function (settingName) {
       return settingName;
     });
 
@@ -44,7 +44,7 @@ describe('test nav template', function() {
   });
 
   it('should render the site title if logo_url setting is empty', function () {
-    spyOn(window, 'getSetting').and.callFake(function (settingName) {
+    spyOn(window, 'Settings.get').and.callFake(function (settingName) {
       if (settingName === 'logoUrl') {
         return null;
       }

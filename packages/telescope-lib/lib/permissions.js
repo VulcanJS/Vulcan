@@ -8,7 +8,7 @@ can = {};
 //
 // return true if all is well, false
 can.view = function (user) {
-  if (getSetting('requireViewInvite', false)) {
+  if (Settings.get('requireViewInvite', false)) {
 
     if (Meteor.isClient) {
       // on client only, default to the current user
@@ -32,7 +32,7 @@ can.viewRejectedPosts = function (user) {
 
 can.viewById = function (userId) {
   // if an invite is required to view, run permission check, else return true
-  if (getSetting('requireViewInvite', false)) {
+  if (Settings.get('requireViewInvite', false)) {
     return !!userId ? can.view(Meteor.users.findOne(userId)) : false;
   }
   return true;
@@ -44,7 +44,7 @@ can.post = function (user, returnError) {
     return returnError ? "no_account" : false;
   } else if (isAdmin(user)) {
     return true;
-  } else if (getSetting('requirePostInvite')) {
+  } else if (Settings.get('requirePostInvite')) {
     if (user.isInvited) {
       return true;
     } else {

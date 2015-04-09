@@ -35,19 +35,19 @@ userProfileEdit.push({
 
  function setStartingInvites (user) {
   // give new users a few invites (default to 3)
-  user.inviteCount = getSetting('startInvitesCount', 3);
+  user.inviteCount = Settings.get('startInvitesCount', 3);
   return user;
 }
 userCreatedCallbacks.push(setStartingInvites);
 
 function checkIfInvited (user) {
-  // if the new user has been invited 
+  // if the new user has been invited
   // set her status accordingly and update invitation info
   if(invitesEnabled() && getEmail(user)){
     var invite = Invites.findOne({ invitedUserEmail : getEmail(user) });
     if(invite){
       var invitedBy = Meteor.users.findOne({ _id : invite.invitingUserId });
-      
+
       user = _.extend(user, {
         isInvited: true,
         invitedBy: invitedBy._id,

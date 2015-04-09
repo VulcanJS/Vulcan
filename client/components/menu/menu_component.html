@@ -24,6 +24,9 @@ menuLabel (String) [optional]
 menuClass (String) [optional]
 | An optional default CSS class given to the menu
 
+- menuCollapsed (Boolean) [optional]
+| whether the menu should start out collapsed (only useful for accordion menus)
+
 menuMode (String) [optional]
 | "accordion", "dropdown", or "list" (defaults to "list")
 
@@ -33,20 +36,18 @@ menuMode (String) [optional]
   <div class="menu {{menuClass}}">
     <div class="menu-top-level" href="/">{{menuLabel}}</div>
     <div class="menu-menu">
-      {{#with menuItems}}
+      {{#with getMenuItems}}
         <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
-            {{#if showMenuItem}}
-              {{#if hasTemplate}}
-                {{> Template.dynamic template=template data=data}}
-              {{else}}
-                <li class="menu-item {{itemClass}}">
-                  <a class="menu-sub-level" href="{{itemRoute}}">
-                    <span class="menu-label">{{itemLabel}}</span>
-                    {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
-                  </a>
-                </li>
-              {{/if}}
+            {{#if hasTemplate}}
+              {{> Template.dynamic template=template data=data}}
+            {{else}}
+              <li class="menu-item {{itemClass}}">
+                <a class="menu-sub-level" href="{{itemRoute}}">
+                  <span class="menu-label">{{itemLabel}}</span>
+                  {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+                </a>
+              </li>
             {{/if}}
           {{/each}}
         </ul>

@@ -3,38 +3,54 @@ getRoute = function (item) {
   return typeof item.route == "function" ? item.route() : Router.path(item.route);
 }
 
+// filter out admin-only items if needed
+getMenuItems = function (menu) {
+  var menuItems = menu.menuItems;
+
+  if (!isAdmin(Meteor.user())) {
+    menuItems = _.reject(menuItems, function (item) {
+      return item.adminOnly;
+    });
+  }
+
+  return menuItems;
+}
+
 Template[getTemplate('menuComponent')].helpers({
+  getMenuItems: function () {
+    return getMenuItems(this);
+  },
   menuClass: function () {
 
     var classes = [this.menuName+"-menu"];
     var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
-    var count = this.menuItems.length;
+    var count = getMenuItems(this).length;
 
     classes.push("menu-"+mode);
 
-    if(!!this.menuClass) {
+    if (!!this.menuClass) {
       classes.push(this.menuClass)
     }
 
-    // enable menu if top-nav layout is enabled, if themes supports menus, and if menu isn't empty
+    if (this.menuCollapsed) {
+      classes.push("menu-collapsed");
+      classes.push("menu-show-more");
+    }
+
     if (count) {
       classes.push("menu-has-items");
       if (count > 3) {
-        classes.push("menu-long");
+        classes.push("menu-show-more");
       }
     } else {
       classes.push("menu-no-items");
     }
 
-    return classes.join(" ");
+    return _.unique(classes).join(" ");
   },
   menuLabel: function () {
     // if label is defined, use this. Else default to menu name
     return !!this.menuLabel ? this.menuLabel : i18n.t(this.menuName);
-  },
-  showMenuItem: function () {
-    // if this is an admin item, only show it if current user is admin
-    return this.adminOnly ? isAdmin(Meteor.user()) : true;
   },
   hasTemplate: function () {
     return !!this.template;

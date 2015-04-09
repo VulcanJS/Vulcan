@@ -38,7 +38,7 @@
 	}
 }
 
-.post-list-title{
+.post-list-title, .page-title{
 	text-align: center;
 	font-size: 22px;
 }
@@ -226,8 +226,8 @@
 	}
 	.post-upvote {
 		position: absolute;
-		left: 3px;
-		bottom: 3px;
+		left: 7px;
+		bottom: 7px;
 	}
 	.post-content {
 		display: block;
@@ -321,13 +321,13 @@
 		display: block;
 	}
 	.post-commenters {
-		display: block;
+		display: inline-block;
 		border-left: 1px solid black(0.2);
 		padding-left: 5px;
 	}
 	.avatar-link {
 		display: inline-block;
-		margin-right: 5px;
+		margin-right: 2px;
 		&:last-child {
 			margin-right: 0px;
 		}
@@ -434,7 +434,7 @@
 .post-meta-item {
 	display: inline-block;
 }
-.post-body {
+.post-body, .page-body {
 	@extend .has-shadow;
 	border-radius: 3px;
 	margin-bottom: 10px;
@@ -465,10 +465,6 @@
 			// min-height: 90px;
 			.upvote-link {
 				width: 30px;
-			}
-			.post-info {
-				// margin-left: 30px;
-				padding: 13px 0;
 			}
 			.post-heading {
 				.post-title {

@@ -2,8 +2,6 @@
   <style>
       
       {{elementColors}}
-
-      @import url({{getSetting 'fontUrl'}});
       
       body, textarea, input, button, input[type="submit"], input[type="button"]{
         font-family: {{getSetting 'fontFamily'}};
@@ -28,4 +26,5 @@
       }
 
   </style>
+  <link href='{{getSetting 'fontUrl'}}' rel='stylesheet' type='text/css'>
 </template>

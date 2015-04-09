@@ -65,7 +65,7 @@ accentContrast(".header .btn-primary");
 accentContrast(".header .btn-primary:link");
 accentContrast(".header .btn-primary:visited");
 accentContrast(".error");
-accentContrast(".mobile-menu-button");
+accentContrast(".header a.mobile-menu-button");
 accentContrast("login-link-text");
 accentContrast(".post-category:hover");
 

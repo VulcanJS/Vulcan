@@ -16,20 +16,19 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/lib.js',
-    'lib/deep.js', 
-    'lib/deep_extend.js', 
-    'lib/autolink.js', 
+    'lib/deep.js',
+    'lib/deep_extend.js',
+    'lib/autolink.js',
     'lib/permissions.js'
   ], ['client', 'server']);
 
   api.add_files(['lib/client/jquery.exists.js'], ['client']);
-  
+
   api.export([
-    'deepExtend', 
+    'deepExtend',
     'camelToDash',
     'dashToCamel',
     'camelCaseify',
-    'getSetting',
     'removeSetting',
     'getThemeSetting',
     'getSiteUrl',

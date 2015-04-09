@@ -1,5 +1,5 @@
 // Session variables
-Session.set('postsLimit', getSetting('postsPerPage', 10));
+Session.set('postsLimit', Settings.get('postsPerPage', 10));
 
 // Sort postModules array position using modulePositions as index
 postModules = _.sortBy(postModules, 'order');
@@ -21,20 +21,20 @@ Meteor.startup(function() {
     og: {}
   }
   
-  var title = getSetting("title", "Telescope");
-  if (!!getSetting("tagline")) {
-    title += ": "+getSetting("tagline");
+  var title = Settings.get("title", "Telescope");
+  if (!!Settings.get("tagline")) {
+    title += ": "+Settings.get("tagline");
   }
 
   seoProperties.title = title;
 
-  if (!!getSetting("description")) {
-    seoProperties.meta.description = getSetting("description");
-    seoProperties.og.description = getSetting("description");
+  if (!!Settings.get("description")) {
+    seoProperties.meta.description = Settings.get("description");
+    seoProperties.og.description = Settings.get("description");
   }
 
-  if (!!getSetting("siteImage")) {
-    seoProperties.og.image = getSetting("siteImage");
+  if (!!Settings.get("siteImage")) {
+    seoProperties.og.image = Settings.get("siteImage");
   }
 
   SEO.config(seoProperties);
