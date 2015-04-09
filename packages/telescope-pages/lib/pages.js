@@ -31,8 +31,13 @@ Pages.collection.before.insert(function (userId, doc) {
 
 primaryNav.push({
   template: "pagesMenu",
-  order: 10
-})
+  order: 5
+});
+
+mobileNav.push({
+  template: 'pagesMenu',
+  order: 5
+});
 
 Meteor.startup(function () {
   Pages.collection.allow({

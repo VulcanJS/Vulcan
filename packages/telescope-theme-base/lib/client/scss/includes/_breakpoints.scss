@@ -3,8 +3,15 @@ $grid-margin:10px;
 $grid-padding:15px;
 $break-small:500px;
 
+$xsmall-break: 300px;
 $small-break: 600px;
 $medium-break: 800px;
+
+@mixin xsmall(){
+  @media screen and (max-width: $xsmall-break) {
+    @content;
+  }
+}
 
 @mixin small(){
   @media screen and (max-width: $small-break) {

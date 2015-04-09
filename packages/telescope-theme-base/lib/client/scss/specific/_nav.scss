@@ -32,9 +32,14 @@ $mobile-header-height: 50px;
 .logo{
   @include small{
     @include vcenter;
+    font-size: 24px;
+    white-space: nowrap;
     a{
       margin: 0 auto;
     }
+  }
+  @include xsmall{
+    font-size: 18px;
   }
   .header &{
     @include small{

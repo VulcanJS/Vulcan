@@ -25,6 +25,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/client/routes.js',
+    'lib/client/stylesheets/pages.scss',
     'lib/client/templates/page.html',
     'lib/client/templates/page.js',
     'lib/client/templates/page_item.html',
