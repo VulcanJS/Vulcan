@@ -1,6 +1,3 @@
 Meteor.publish('pages', function() {
-  if(isAdminById(this.userId)){
-    return Pages.collection.find();
-  }
-  return [];
+  return Pages.collection.find({});
 });

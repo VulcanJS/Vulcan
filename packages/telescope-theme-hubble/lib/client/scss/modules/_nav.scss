@@ -144,6 +144,7 @@ $nav-width: 250px;
 			padding-bottom: 30px;
 		}
 		.logo{
+			text-align: left;
 			@include medium-large{
 				margin-bottom: 30px;
 			}
