@@ -145,6 +145,12 @@ $nav-width: 250px;
 		}
 		.logo{
 			text-align: left;
+			&.logo-image{
+				text-align: center;
+				a{
+					margin: 0 auto;
+				}
+			}
 			@include medium-large{
 				margin-bottom: 30px;
 			}

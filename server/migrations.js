@@ -515,7 +515,7 @@ var migrationsList = {
         set.secondaryContrastColor = settings.headerTextColor;
 
       if (!_.isEmpty(set)) {
-        Settings.update(settings._id, {$set: set}, {validate: false});
+        Settings.collection.update(settings._id, {$set: set}, {validate: false});
       }
 
     }
