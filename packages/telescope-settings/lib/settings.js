@@ -142,12 +142,14 @@ Settings.schema = new SimpleSchema({
       instructions: 'Posts views showed in the views menu',
       editable: true,
       noselect: true,
-      options: _.map(viewsMenu, function (item){
-        return {
-          value: item.route,
-          label: item.label
-        }
-      })
+      options: function () {
+        return _.map(viewsMenu, function (item){
+          return {
+            value: item.route,
+            label: item.label
+          }
+        });
+      }
     }
   },
   postInterval: {
