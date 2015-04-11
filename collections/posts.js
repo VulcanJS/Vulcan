@@ -457,6 +457,7 @@ Meteor.methods({
 
     var user = Meteor.user(),
         hasAdminRights = isAdmin(user);
+    var post = Posts.findOne(postId);
 
     // ------------------------------ Checks ------------------------------ //
 
