@@ -1,5 +1,8 @@
 Meteor.startup(function () {
   Template[getTemplate('categoriesMenu')].helpers({
+    hasCategories: function () {
+      return Categories.find().count();
+    },
     menuItems: function () {
       var defaultItem = [{
         route: 'posts_default',
