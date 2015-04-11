@@ -15,7 +15,7 @@ adminMenu.push({
   description: 'see_what_people_are_searching_for'
 });
 
-registerElementColor('.search-field', 'secondaryContrastColor');
+registerElementColor('.search .search-field', 'secondaryContrastColor');
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({
