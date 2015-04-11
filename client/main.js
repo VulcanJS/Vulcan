@@ -40,3 +40,9 @@ Meteor.startup(function() {
   SEO.config(seoProperties);
 
 });
+
+// Template extension stuff for backwards compatibility
+
+_.each(templates, function (replacement, original) {
+  Template[replacement].replaces(original);
+});
