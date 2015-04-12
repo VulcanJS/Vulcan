@@ -31,7 +31,6 @@ aldeed:collection2
 aldeed:simple-schema@1.3.2
 aldeed:template-extension
 
-mrt:jquery-hotkeys
 mrt:cookies
 
 ccan:cssreset # CSS reset (Must come before any other css)

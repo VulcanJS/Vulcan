@@ -1,3 +1,5 @@
+* Added `ctrl/cmd+enter` shortcut to submit comments (thanks @delgermurun!).
+
 ## v0.15.1 “PageScope”
 
 * Settings now have their own `telescope-settings` package (thanks @delgermurun!).

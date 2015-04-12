@@ -18,13 +18,10 @@ var editComment = function(instance) {
 
 Template[getTemplate('comment_edit')].onRendered(function() {
   var self = this;
-
-  this.$('#body').bind('keypress', 'ctrl+return', function() {
-    editComment(self);
-  });
-
-  this.$('#body').bind('keypress', 'meta+return', function() {
-    editComment(self);
+  this.$("#comment").keydown(function (e) {
+    if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
+      editComment(self);
+    }
   });
 });
 

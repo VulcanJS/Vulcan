@@ -86,7 +86,6 @@ momentjs:moment@2.10.0
 mongo@1.1.0
 mongo-livedata@1.0.8
 mrt:cookies@0.3.0
-mrt:jquery-hotkeys@0.0.1
 npm-bcrypt@0.7.8_2
 npm-container@1.0.0
 oauth@1.1.4

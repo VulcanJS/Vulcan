@@ -42,13 +42,10 @@ var submitComment = function(instance) {
 
 Template[getTemplate('comment_form')].onRendered(function() {
   var self = this;
-
-  this.$('#comment').bind('keypress', 'ctrl+return', function() {
-    submitComment(self);
-  });
-
-  this.$('#comment').bind('keypress', 'meta+return', function() {
-    submitComment(self);
+  this.$("#comment").keydown(function (e) {
+    if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
+      submitComment(self);
+    }
   });
 });
 
