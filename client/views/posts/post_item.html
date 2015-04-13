@@ -2,7 +2,7 @@
   <div class="post {{#if sticky}}sticky{{/if}} {{inactiveClass}} {{postClass}}" id="{{_id}}">
       {{#each postModules}}
         <div class="{{moduleClass}}">
-          {{> UI.dynamic template=getTemplate data=..}}
+          {{> Template.dynamic template=template data=..}}
         </div>
       {{/each}}
   </div>

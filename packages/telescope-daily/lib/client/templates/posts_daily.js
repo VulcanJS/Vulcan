@@ -13,19 +13,10 @@ Meteor.startup(function () {
       }
       return daysArray;
     },
-    before_day: function () {
-      return getTemplate('beforeDay');
-    },
-    singleDay: function () {
-      return getTemplate('singleDay');
-    },
     context: function () {
       var context = this;
       context.showDateNav = false;
       return context;
-    },
-    after_day: function () {
-      return getTemplate('afterDay');
     },
     loadMoreDaysUrl: function () {
       var count = parseInt(Session.get('postsDays')) + daysPerPage;

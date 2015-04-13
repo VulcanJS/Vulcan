@@ -4,9 +4,6 @@ Template.postThumbnail.helpers({
   },
   playVideoClass: function () {
     return !!this.media ? 'post-thumbnail-has-video': '';
-  },
-  videoTemplate: function () {
-    return getTemplate('postVideo');
   }
 });
 
@@ -16,4 +13,4 @@ Template.postThumbnail.events({
     $('body').addClass('showing-lightbox');
     $(e.target).parents('.post').find('.post-video-lightbox').fadeIn('fast');
   }
-})
+});

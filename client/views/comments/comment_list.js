@@ -1,7 +1,4 @@
 Template.comment_list.helpers({
-  comment_item: function () {
-    return getTemplate('comment_item');
-  },
   child_comments: function(){
     var post = this;
     var comments = Comments.find({postId: post._id, parentCommentId: null}, {sort: {score: -1, postedAt: -1}});
@@ -9,9 +6,6 @@ Template.comment_list.helpers({
   },
   threadModules: function () {
     return threadModules;
-  },
-  getTemplate: function () {
-    return getTemplate(this.template);
   }
 });
 

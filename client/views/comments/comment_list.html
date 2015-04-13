@@ -1,10 +1,10 @@
 <template name="comment_list">
   <ul class="comments comment-list" aria-live="polite">
     {{#each child_comments}}
-      {{> UI.dynamic template=comment_item}}
+      {{> comment_item}}
     {{/each}}
   </ul>
   {{#each threadModules}}
-    {{> UI.dynamic template=getTemplate data=..}}
+    {{> Template.dynamic template=template data=..}}
   {{/each}}
 </template>

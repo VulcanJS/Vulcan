@@ -13,15 +13,6 @@ Template.posts_list.helpers({
     if (typeof controller.getDescription === 'function')
       return Iron.controller().getDescription();
   },
-  before_post_item: function () {
-    return getTemplate('before_post_item');
-  },
-  post_item: function () {
-    return getTemplate('post_item');
-  },
-  after_post_item: function () {
-    return getTemplate('after_post_item');
-  },
   postsCursor : function () {
     if (this.postsCursor) { // not sure why this should ever be undefined, but it can apparently
       var posts = this.postsCursor.map(function (post, index, cursor) {
@@ -32,15 +23,6 @@ Template.posts_list.helpers({
     } else {
       console.log('postsCursor not defined')
     }
-  },
-  postsLoadMore: function () {
-    return getTemplate('postsLoadMore');
-  },
-  postsListIncoming: function () {
-    return getTemplate('postsListIncoming');
-  },
-  postsListSort: function () {
-    return getTemplate('postsListSort');
   }
 });
 
@@ -60,7 +42,7 @@ Template.postsLoadMore.helpers({
   },
   hasPosts: function () {
     return !!this.postsCursor.count();
-  }  
+  }
 });
 
 Template.postsLoadMore.events({

@@ -2,12 +2,6 @@ Template.mobile_nav.helpers({
   mobileNav: function () {
     return _.sortBy(mobileNav, 'order');
   },
-  logoTemplate: function () {
-    return getTemplate('logo');
-  },
-  getTemplate: function () {
-    return getTemplate(this.template);
-  },
   mobileContext: function () {
     return {mobile: true};
   }

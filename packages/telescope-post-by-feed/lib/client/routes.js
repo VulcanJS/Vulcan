@@ -7,7 +7,7 @@ adminMenu.push({
 Meteor.startup(function () {
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['feeds']});
-  
+
   // RSS Urls Admin
 
   Router.route('/feeds', {
@@ -20,7 +20,7 @@ Meteor.startup(function () {
         Meteor.subscribe('categories')
       ];
     },
-    // template: getTemplate('feeds')
+    // template: 'feeds'
   });
 
 });

@@ -21,7 +21,6 @@ Template.menuComponent.helpers({
     return getMenuItems(this);
   },
   menuClass: function () {
-
     var classes = [this.menuName+"-menu"];
     var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
     var count = getMenuItems(this).length;
@@ -58,7 +57,7 @@ Template.menuComponent.helpers({
   itemClass: function () {
     var itemClass = "";
     var currentPath = Router.current().location.get().path ;
-    
+
     if (this.adminOnly) {
       itemClass += " item-admin";
     }

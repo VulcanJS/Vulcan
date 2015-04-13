@@ -1,36 +1,15 @@
 Template.layout.helpers({
-  mobile_nav: function () {
-    return getTemplate('mobile_nav');
-  },
-  nav: function () {
-    return getTemplate('nav');
-  },
   navLayout: function () {
     return Settings.get('navLayout', 'top-nav');
   },
-  messages: function () {
-    return getTemplate('messages');
-  },
-  notifications: function () {
-    return getTemplate('notifications');
-  },
-  footer: function () {
-    return getTemplate('footer');
-  },
   pageName : function(){
     return getCurrentTemplate();
-  },
-  css: function () {
-    return getTemplate('css');
   },
   extraCode: function() {
     return Settings.get('extraCode');
   },
   heroModules: function () {
     return _.sortBy(heroModules, 'order');
-  },
-  getTemplate: function () {
-    return getTemplate(this.template);
   }
 });
 

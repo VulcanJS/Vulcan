@@ -44,15 +44,6 @@ Template.nav.helpers({
     console.log(this)
     return this.length > 3;
   },
-  logoTemplate: function () {
-    return getTemplate('logo');
-  },
-  navZoneTemplate: function () {
-    return getTemplate('navZone');
-  },
-  getTemplate: function () {
-    return getTemplate(this.template);
-  }
 });
 
 Template.nav.events({
