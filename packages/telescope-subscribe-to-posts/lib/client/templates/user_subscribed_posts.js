@@ -1,4 +1,4 @@
-Template[getTemplate('userSubscribedPosts')].created = function () {
+Template.userSubscribedPosts.created = function () {
   var user = this.data,
       instance = this;
 
@@ -26,7 +26,7 @@ Template[getTemplate('userSubscribedPosts')].created = function () {
   });
 };
 
-Template[getTemplate('userSubscribedPosts')].helpers({
+Template.userSubscribedPosts.helpers({
   posts: function () {
     var user = this,
         posts = Template.instance().posts.get().fetch();
@@ -42,7 +42,7 @@ Template[getTemplate('userSubscribedPosts')].helpers({
   }
 });
 
-Template[getTemplate('userSubscribedPosts')].events({
+Template.userSubscribedPosts.events({
   'click .subscribedposts-more': function (e) {
     e.preventDefault();
     var terms = Template.instance().terms.get();

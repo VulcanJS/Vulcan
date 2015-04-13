@@ -1,4 +1,4 @@
-Template[getTemplate('users_list_actions')].helpers({
+Template.users_list_actions.helpers({
   isInvited: function() {
     return this.isInvited;
   },
@@ -7,7 +7,7 @@ Template[getTemplate('users_list_actions')].helpers({
   },
 });
 
-Template[getTemplate('users_list_actions')].events({
+Template.users_list_actions.events({
   'click .invite-link': function(e){
     e.preventDefault();
     Meteor.call('inviteUser', { userId : this._id });

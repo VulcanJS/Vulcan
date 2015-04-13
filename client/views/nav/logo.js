@@ -1,4 +1,4 @@
-Template[getTemplate('logo')].helpers({
+Template.logo.helpers({
   site_title: function(){
     return Settings.get('title', "Telescope");
   },

@@ -4,6 +4,6 @@
     {{> quickForm collection="Pages.collection" id="insertPageForm" type="insert" label-class="control-label" input-col-class="controls" template="bootstrap-horizontal"}}
   </div>
   {{#each pages}}
-    {{> UI.dynamic template=pageItem}}
+    {{> pageItem}}
   {{/each}}
 </template>

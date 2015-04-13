@@ -1,4 +1,4 @@
-Template[getTemplate('userDownvotedPosts')].created = function () {
+Template.userDownvotedPosts.created = function () {
 
   var user = this.data;
   var instance = this;
@@ -27,7 +27,7 @@ Template[getTemplate('userDownvotedPosts')].created = function () {
   });
 };
 
-Template[getTemplate('userDownvotedPosts')].helpers({
+Template.userDownvotedPosts.helpers({
   posts: function () {
     var user = this;
     var posts = Template.instance().posts.get().fetch();
@@ -43,7 +43,7 @@ Template[getTemplate('userDownvotedPosts')].helpers({
   }
 });
 
-Template[getTemplate('userDownvotedPosts')].events({
+Template.userDownvotedPosts.events({
   'click .downvotedposts-more': function (e) {
     e.preventDefault();
     var terms = Template.instance().terms.get();

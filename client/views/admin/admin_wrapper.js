@@ -1,7 +1,4 @@
-Template[getTemplate('adminWrapper')].helpers({
-  adminMenu: function () {
-    return getTemplate("adminMenu");
-  },
+Template.adminWrapper.helpers({
   contents: function () {
     return Router.current().route.getName();
   },

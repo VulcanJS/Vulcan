@@ -16,12 +16,11 @@ getMenuItems = function (menu) {
   return menuItems;
 }
 
-Template[getTemplate('menuComponent')].helpers({
+Template.menuComponent.helpers({
   getMenuItems: function () {
     return getMenuItems(this);
   },
   menuClass: function () {
-
     var classes = [this.menuName+"-menu"];
     var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
     var count = getMenuItems(this).length;
@@ -58,7 +57,7 @@ Template[getTemplate('menuComponent')].helpers({
   itemClass: function () {
     var itemClass = "";
     var currentPath = Router.current().location.get().path ;
-    
+
     if (this.adminOnly) {
       itemClass += " item-admin";
     }
@@ -81,7 +80,7 @@ Template[getTemplate('menuComponent')].helpers({
   }
 });
 
-Template[getTemplate('menuComponent')].events({
+Template.menuComponent.events({
   'click .show-more': function (e, t) {
     e.preventDefault();
     $menu = t.$('.menu');

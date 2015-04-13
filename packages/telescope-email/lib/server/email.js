@@ -3,11 +3,11 @@ var htmlToText = Npm.require('html-to-text');
 
 // check if server-side template has been customized, and return the correct template
 getEmailTemplate = function (template) {
-  var emailTemplate = Handlebars.templates[getTemplate(template)];
+  var emailTemplate = Handlebars.templates[template];
   if(typeof emailTemplate === 'function'){
-    return Handlebars.templates[getTemplate(template)];
+    return Handlebars.templates[template];
   } else {
-    console.log('Cannot find template '+getTemplate(template)+', defaulting to '+template);
+    console.log('Cannot find template '+template+', defaulting to '+template);
     return Handlebars.templates[template];
   }
 }
@@ -29,7 +29,7 @@ buildEmailTemplate = function (htmlContent) {
     logoWidth: Settings.get('logoWidth')
   }
 
-  var emailHTML = Handlebars.templates[getTemplate('emailWrapper')](emailProperties);
+  var emailHTML = Handlebars.templates['emailWrapper'](emailProperties);
 
   var inlinedHTML = juice(emailHTML);
 

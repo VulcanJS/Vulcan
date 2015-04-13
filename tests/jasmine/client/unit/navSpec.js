@@ -13,7 +13,7 @@ describe('test nav template', function() {
   });
 
   var render = function () {
-    Blaze.render(Template[getTemplate('nav')], $div.get(0));
+    Blaze.render(Template.nav, $div.get(0));
   };
 
   it('should render mobile menu button', function () {

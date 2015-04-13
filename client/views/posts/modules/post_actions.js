@@ -1,8 +1,8 @@
-Template[getTemplate('postActions')].helpers({
+Template.postActions.helpers({
 
 });
 
-Template[getTemplate('postActions')].events({
+Template.postActions.events({
   'click .toggle-actions-link': function(e, instance){
     e.preventDefault();
     var $post = $(e.target).parents('.post');

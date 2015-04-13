@@ -1,4 +1,4 @@
-Template[getTemplate('notificationItem')].helpers({
+Template.notificationItem.helpers({
   properties: function(){
     return this.data;
   },
@@ -7,7 +7,7 @@ Template[getTemplate('notificationItem')].helpers({
   }
 });
 
-Template[getTemplate('notificationItem')].events({
+Template.notificationItem.events({
   'click .action-link': function(event, instance){
     var notificationId=instance.data._id;
     Herald.collection.update(

@@ -1,4 +1,4 @@
-Template[getTemplate('postAvatars')].helpers({
+Template.postAvatars.helpers({
   commenters: function () {
     // remove post author ID from commenters to avoid showing author's avatar again
     // limit to 4 commenters in case there's more

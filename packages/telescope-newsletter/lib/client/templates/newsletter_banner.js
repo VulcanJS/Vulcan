@@ -20,7 +20,7 @@ var dismissBanner = function () {
 }
 
 Meteor.startup(function () {
-  Template[getTemplate('newsletterBanner')].helpers({
+  Template.newsletterBanner.helpers({
     siteName: function () {
       return Settings.get('title');
     },
@@ -44,7 +44,7 @@ Meteor.startup(function () {
     }
   });
 
-  Template[getTemplate('newsletterBanner')].events({
+  Template.newsletterBanner.events({
     'click .newsletter-button': function (e) {
       e.preventDefault();
       var $banner = $('.newsletter-banner');

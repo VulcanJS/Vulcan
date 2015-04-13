@@ -27,15 +27,15 @@ loadMoreHandler (Function)
 
 <template name="posts_list">
   <div class="posts-wrapper grid grid-module">
-    {{> Template.dynamic template=postsListIncoming data=incoming}}
+    {{> postsListIncoming data=incoming}}
     <div class="posts list {{postsLayout}}" aria-live="polite">
       {{#each postsCursor}}
-        {{> Template.dynamic template=before_post_item}}
-        {{> Template.dynamic template=post_item}}
-        {{> Template.dynamic template=after_post_item}}
+        {{> before_post_item}}
+        {{> post_item}}
+        {{> after_post_item}}
       {{/each}}
     </div>
-    {{> Template.dynamic template=postsLoadMore}}
+    {{> postsLoadMore}}
   </div>
 </template>
 

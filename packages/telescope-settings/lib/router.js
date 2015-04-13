@@ -4,7 +4,7 @@ Meteor.startup(function () {
   Router.route('/settings', {
     controller: AdminController,
     name: 'settings',
-    // layoutTemplate: getTemplate('adminLayout'),
+    // layoutTemplate: 'adminLayout',
     data: function () {
       // we only have one set of settings for now
 
