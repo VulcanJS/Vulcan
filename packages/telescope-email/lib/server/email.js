@@ -15,8 +15,8 @@ getEmailTemplate = function (template) {
 buildEmailTemplate = function (htmlContent) {
 
   var emailProperties = {
-    headerColor: Settings.get('headerColor', '#444444'),
-    buttonColor: Settings.get('buttonColor', '#DD3416'),
+    secondaryColor: Settings.get('secondaryColor', '#444444'),
+    accentColor: Settings.get('accentColor', '#DD3416'),
     siteName: Settings.get('title'),
     tagline: Settings.get('tagline'),
     siteUrl: getSiteUrl(),
