@@ -1,4 +1,4 @@
-Template[getTemplate('user_item')].helpers({
+Template.user_item.helpers({
   createdAtFormatted: function(){
     return this.createdAt ? moment(this.createdAt).fromNow() : '–';
   },
@@ -29,7 +29,7 @@ Template[getTemplate('user_item')].helpers({
   }
 });
 
-Template[getTemplate('user_item')].events({
+Template.user_item.events({
   'click .invite-link': function(e, instance){
     e.preventDefault();
     Meteor.call('inviteUser', { userId : instance.data._id });

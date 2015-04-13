@@ -1,4 +1,4 @@
-Template[getTemplate('message_item')].onCreated(function(){
+Template.message_item.onCreated(function(){
 	var messageId=this.data._id;
 
 	Meteor.setTimeout(function(){

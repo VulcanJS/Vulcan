@@ -1,4 +1,4 @@
-Template[getTemplate('comment_edit')].events({
+Template.comment_edit.events({
   'click input[type=submit]': function(e, instance){
     var comment = this;
     var content = instance.$('#body').val();

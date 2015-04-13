@@ -1,4 +1,4 @@
-Template[getTemplate('comment_reply')].helpers({
+Template.comment_reply.helpers({
   post_item: function () {
     return getTemplate('post_item');
   },

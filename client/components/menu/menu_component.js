@@ -16,7 +16,7 @@ getMenuItems = function (menu) {
   return menuItems;
 }
 
-Template[getTemplate('menuComponent')].helpers({
+Template.menuComponent.helpers({
   getMenuItems: function () {
     return getMenuItems(this);
   },
@@ -81,7 +81,7 @@ Template[getTemplate('menuComponent')].helpers({
   }
 });
 
-Template[getTemplate('menuComponent')].events({
+Template.menuComponent.events({
   'click .show-more': function (e, t) {
     e.preventDefault();
     $menu = t.$('.menu');

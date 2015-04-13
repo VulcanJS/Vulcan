@@ -1,4 +1,4 @@
-Template[getTemplate('footer')].helpers({
+Template.footer.helpers({
   footerCode: function(){
     return Settings.get('footerCode');
   },

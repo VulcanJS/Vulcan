@@ -1,4 +1,4 @@
-Template[getTemplate('post_page')].helpers({
+Template.post_page.helpers({
   post_item: function () {
     return getTemplate('post_item');
   },
@@ -13,6 +13,6 @@ Template[getTemplate('post_page')].helpers({
   }
 });
 
-Template[getTemplate('post_page')].rendered = function(){
+Template.post_page.rendered = function(){
   $('body').scrollTop(0);
 };

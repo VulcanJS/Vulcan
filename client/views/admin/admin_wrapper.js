@@ -1,4 +1,4 @@
-Template[getTemplate('adminWrapper')].helpers({
+Template.adminWrapper.helpers({
   adminMenu: function () {
     return getTemplate("adminMenu");
   },

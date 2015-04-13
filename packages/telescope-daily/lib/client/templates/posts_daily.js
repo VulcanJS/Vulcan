@@ -1,6 +1,6 @@
 Meteor.startup(function () {
 
-  Template[getTemplate('postsDaily')].helpers({
+  Template.postsDaily.helpers({
     days: function () {
       var daysArray = [];
       // var days = this.days;

@@ -1,4 +1,4 @@
-Template[getTemplate('postContent')].helpers({
+Template.postContent.helpers({
   postThumbnail: function () {
     return postThumbnail;
   },

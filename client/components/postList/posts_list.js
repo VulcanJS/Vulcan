@@ -1,10 +1,10 @@
 // ----------------------------------- Post List -----------------------------------//
 
-Template[getTemplate('posts_list')].created = function() {
+Template.posts_list.created = function() {
   Session.set('listPopulatedAt', new Date());
 };
 
-Template[getTemplate('posts_list')].helpers({
+Template.posts_list.helpers({
   postsLayout: function () {
     return Settings.get('postsLayout', 'posts-list');
   },
@@ -46,7 +46,7 @@ Template[getTemplate('posts_list')].helpers({
 
 // ----------------------------------- Incoming -----------------------------------//
 
-Template[getTemplate('postsListIncoming')].events({
+Template.postsListIncoming.events({
   'click .show-new': function(e, instance) {
     Session.set('listPopulatedAt', new Date());
   }
@@ -54,7 +54,7 @@ Template[getTemplate('postsListIncoming')].events({
 
 // ----------------------------------- Load More -----------------------------------//
 
-Template[getTemplate('postsLoadMore')].helpers({
+Template.postsLoadMore.helpers({
   postsReady: function () {
     return this.postsReady;
   },
@@ -63,7 +63,7 @@ Template[getTemplate('postsLoadMore')].helpers({
   }  
 });
 
-Template[getTemplate('postsLoadMore')].events({
+Template.postsLoadMore.events({
   'click .more-button': function (event, instance) {
     event.preventDefault();
     if (this.controllerInstance) {

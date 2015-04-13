@@ -1,4 +1,4 @@
-Template[getTemplate('userAccount')].helpers({
+Template.userAccount.helpers({
   profileIncomplete : function() {
     return this && !this.loading && !userProfileComplete(this);
   },
@@ -34,7 +34,7 @@ Template[getTemplate('userAccount')].helpers({
   }
 });
 
-Template[getTemplate('userAccount')].events({
+Template.userAccount.events({
   'submit #account-form': function(e){
     e.preventDefault();
 

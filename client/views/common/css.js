@@ -1,4 +1,4 @@
-Template[getTemplate('css')].helpers({
+Template.css.helpers({
   elementColors: function () {
     var css = "";
 

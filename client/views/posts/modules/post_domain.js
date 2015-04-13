@@ -1,4 +1,4 @@
-Template[getTemplate('postDomain')].helpers({
+Template.postDomain.helpers({
   domain: function(){
     var a = document.createElement('a');
     a.href = this.url;

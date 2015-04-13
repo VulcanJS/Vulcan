@@ -1,4 +1,4 @@
-Template[getTemplate('comment_list')].helpers({
+Template.comment_list.helpers({
   comment_item: function () {
     return getTemplate('comment_item');
   },
@@ -15,7 +15,7 @@ Template[getTemplate('comment_list')].helpers({
   }
 });
 
-Template[getTemplate('comment_list')].rendered = function(){
+Template.comment_list.rendered = function(){
   // once all comments have been rendered, activate comment queuing for future real-time comments
   window.queueComments = true;
 };

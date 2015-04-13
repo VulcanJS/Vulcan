@@ -1,4 +1,4 @@
-Template[getTemplate('userInfo')].helpers({
+Template.userInfo.helpers({
   canEditProfile: function() {
     var currentUser = Meteor.user();
     return currentUser && (this._id == currentUser._id || isAdmin(currentUser));
@@ -21,7 +21,7 @@ Template[getTemplate('userInfo')].helpers({
   }
 });
 
-Template[getTemplate('userInfo')].events({
+Template.userInfo.events({
   'click .invite-link': function(e, instance){
     Meteor.call('inviteUser', instance.data.user._id);
     Messages.flash('Thanks, user has been invited.', "success");

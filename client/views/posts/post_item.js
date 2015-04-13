@@ -1,10 +1,10 @@
 var post = {};
 
-Template[getTemplate('post_item')].created = function () {
+Template.post_item.created = function () {
   post = this.data;
 };
 
-Template[getTemplate('post_item')].helpers({
+Template.post_item.helpers({
   postModules: function () {
     return postModules;
   },

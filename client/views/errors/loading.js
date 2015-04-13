@@ -1,4 +1,4 @@
-Template[getTemplate('loading')].helpers({
+Template.loading.helpers({
   log: function () {
     console.log('loading…')
   }  

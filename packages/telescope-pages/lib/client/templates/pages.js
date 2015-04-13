@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  Template[getTemplate('pages')].helpers({
+  Template.pages.helpers({
     pages: function(){
       return Pages.collection.find({}, {sort: {order: 1}});
     },

@@ -1,4 +1,4 @@
-Template[getTemplate('postThumbnail')].helpers({
+Template.postThumbnail.helpers({
   postLink: function () {
     return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
@@ -10,7 +10,7 @@ Template[getTemplate('postThumbnail')].helpers({
   }
 });
 
-Template[getTemplate('postThumbnail')].events({
+Template.postThumbnail.events({
   'click .post-thumbnail-has-video': function (e) {
     e.preventDefault();
     $('body').addClass('showing-lightbox');

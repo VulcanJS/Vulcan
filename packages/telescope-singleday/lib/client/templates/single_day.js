@@ -3,7 +3,7 @@
 // this template acts as the controller that sets and
 // manages the reactive context for the embedded postsList template
 
-Template[getTemplate('singleDay')].created = function () {
+Template.singleDay.created = function () {
 
   // 1. Initialization
 
@@ -74,7 +74,7 @@ Template[getTemplate('singleDay')].created = function () {
 
 };
 
-Template[getTemplate('singleDay')].helpers({
+Template.singleDay.helpers({
   showDateNav: function () {
     return (typeof this.showDateNav === 'undefined') ? true : this.showDateNav;
   },

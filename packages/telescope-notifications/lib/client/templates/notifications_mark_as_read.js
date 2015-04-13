@@ -1,4 +1,4 @@
-Template[getTemplate('notificationsMarkAsRead')].events({
+Template.notificationsMarkAsRead.events({
   'click .mark-as-read': function(e, t){
     e.preventDefault();
     t.$('li').parents('.dropdown').removeClass('dropdown-open');

@@ -1,4 +1,4 @@
-Template[getTemplate('userUpvotedPosts')].created = function () {
+Template.userUpvotedPosts.created = function () {
 
   var user = this.data;
   var instance = this;
@@ -27,7 +27,7 @@ Template[getTemplate('userUpvotedPosts')].created = function () {
   });
 };
 
-Template[getTemplate('userUpvotedPosts')].helpers({
+Template.userUpvotedPosts.helpers({
   posts: function () {
     var user = this;
     var posts = Template.instance().posts.get().fetch();
@@ -43,7 +43,7 @@ Template[getTemplate('userUpvotedPosts')].helpers({
   }
 });
 
-Template[getTemplate('userUpvotedPosts')].events({
+Template.userUpvotedPosts.events({
   'click .upvotedposts-more': function (e) {
     e.preventDefault();
     var terms = Template.instance().terms.get();

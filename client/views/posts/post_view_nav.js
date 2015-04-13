@@ -1,4 +1,4 @@
-Template[getTemplate('postViewsNav')].helpers({
+Template.postViewsNav.helpers({
   showNav: function () {
     var navElements = Settings.get('postViews', _.pluck(viewsMenu, 'route'));
     var navCount = (typeof navElements === "array") ? navElements.length : _.keys(navElements).length;

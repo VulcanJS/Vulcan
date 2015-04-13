@@ -13,7 +13,7 @@ describe('test clicking vote buttons', function () {
   });
 
   var render = function (data) {
-    return Blaze.renderWithData(Template[getTemplate('comment_item')], data || {}, $div.get(0));
+    return Blaze.renderWithData(Template.comment_item, data || {}, $div.get(0));
   };
 
   var shouldRedirectIfLoggedOut = function (selector) {

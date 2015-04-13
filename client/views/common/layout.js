@@ -1,4 +1,4 @@
-Template[getTemplate('layout')].helpers({
+Template.layout.helpers({
   mobile_nav: function () {
     return getTemplate('mobile_nav');
   },
@@ -34,11 +34,11 @@ Template[getTemplate('layout')].helpers({
   }
 });
 
-Template[getTemplate('layout')].created = function(){
+Template.layout.created = function(){
   Session.set('currentScroll', null);
 };
 
-Template[getTemplate('layout')].rendered = function(){
+Template.layout.rendered = function(){
   if(currentScroll=Session.get('currentScroll')){
     $('body').scrollTop(currentScroll);
     Session.set('currentScroll', null);
@@ -53,7 +53,7 @@ Template[getTemplate('layout')].rendered = function(){
 
 };
 
-Template[getTemplate('layout')].events({
+Template.layout.events({
   'click .inner-wrapper': function (e) {
     if ($('body').hasClass('mobile-nav-open')) {
       e.preventDefault();

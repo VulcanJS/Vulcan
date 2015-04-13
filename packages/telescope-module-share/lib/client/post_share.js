@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  Template[getTemplate('postShare')].helpers({
+  Template.postShare.helpers({
     sourceLink: function(){
       return !!this.url ? this.url : getSiteUrl() + "posts/"+this._id;
     },
@@ -8,7 +8,7 @@ Meteor.startup(function () {
     }
   });
 
-  Template[getTemplate('postShare')].events({
+  Template.postShare.events({
     'click .share-link': function(e){
       var $this = $(e.target).parents('.post-share').find('.share-link');
       var $share = $this.parents('.post-share').find('.share-options');

@@ -1,4 +1,4 @@
-Template[getTemplate('messages')].helpers({
+Template.messages.helpers({
   message_item: function () {
     return getTemplate('message_item');
   },

@@ -1,4 +1,4 @@
-Template[getTemplate('adminMenu')].helpers({
+Template.adminMenu.helpers({
   adminMenuItems: function () {
     return adminMenu;
   }
