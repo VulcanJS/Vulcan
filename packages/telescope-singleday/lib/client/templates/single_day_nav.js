@@ -1,4 +1,4 @@
-Template[getTemplate('singleDayNav')].created = function(){
+Template.singleDayNav.created = function(){
 
   $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
 
@@ -16,7 +16,7 @@ Template[getTemplate('singleDayNav')].created = function(){
 
 };
 
-Template[getTemplate('singleDayNav')].helpers({
+Template.singleDayNav.helpers({
   currentDate: function(){
     var currentDate = moment(Session.get('currentDate'));
     var today = moment(new Date());

@@ -1,4 +1,4 @@
-Template[getTemplate('viewsMenu')].helpers({
+Template.viewsMenu.helpers({
   viewsMenuData: function () {
     return {
       dropdownName: 'view',

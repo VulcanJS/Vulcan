@@ -1,4 +1,4 @@
-Template[getTemplate('userInvites')].created = function () {
+Template.userInvites.created = function () {
 
   var user = this.data;
   var instance = this;
@@ -12,7 +12,7 @@ Template[getTemplate('userInvites')].created = function () {
   });
 };
 
-Template[getTemplate('userInvites')].helpers({
+Template.userInvites.helpers({
   canCurrentUserInvite: function () {
     var currentUser = Meteor.user();
     return currentUser && (currentUser.inviteCount > 0 && can.invite(currentUser));

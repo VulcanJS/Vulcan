@@ -70,7 +70,7 @@ Meteor.methods({
           };
 
       Meteor.setTimeout(function () {
-        buildAndSendEmail(userEmail, emailSubject, getTemplate('emailInvite'), emailProperties);
+        buildAndSendEmail(userEmail, emailSubject, 'emailInvite', emailProperties);
       }, 1);
 
     }

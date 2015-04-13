@@ -5,12 +5,12 @@
       {{{icon "menu"}}}
     </a>
 
-    {{> Template.dynamic template=logoTemplate}}
+    {{> logo}}
 
     {{#with primaryNav}}
       <div class="nav primary-nav desktop-nav header-module desktop-only">
         {{#each this}}
-          {{> UI.dynamic template=getTemplate}}
+          {{> Template.dynamic template=template}}
         {{/each}}
       </div>
     {{/with}}
@@ -18,10 +18,10 @@
     {{#with secondaryNav}}
       <div class="nav secondary-nav desktop-nav header-module desktop-only">
         {{#each this}}
-          {{> UI.dynamic template=getTemplate}}
+          {{> Template.dynamic template=template}}
         {{/each}}
       </div>
     {{/with}}
-      
+
   </header>
 </template>

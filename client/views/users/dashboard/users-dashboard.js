@@ -1,4 +1,4 @@
-Template[getTemplate('usersDashboard')].helpers({
+Template.usersDashboard.helpers({
   settings: function() {
     return {
       collection: 'all-users',

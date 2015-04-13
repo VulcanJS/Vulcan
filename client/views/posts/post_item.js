@@ -1,15 +1,12 @@
 var post = {};
 
-Template[getTemplate('post_item')].created = function () {
+Template.post_item.created = function () {
   post = this.data;
 };
 
-Template[getTemplate('post_item')].helpers({
+Template.post_item.helpers({
   postModules: function () {
     return postModules;
-  },
-  getTemplate: function () {
-    return getTemplate(this.template);
   },
   moduleContext: function () { // not used for now
     var module = this;
@@ -27,7 +24,7 @@ Template[getTemplate('post_item')].helpers({
     var postClass = postClassCallbacks.reduce(function(result, currentFunction) {
         return currentFunction(post, result);
     }, postAuthorClass);
-    
+
     return postClass;
   }
 });

@@ -56,16 +56,13 @@ findQueueContainer = function($comment) {
   return $container;
 };
 
-Template[getTemplate('comment_item')].created = function() {
+Template.comment_item.created = function() {
   // if comments are supposed to be queued, then queue this comment on create
   this.isQueued = window.queueComments;
   window.openedComments = [];
 };
 
-Template[getTemplate('comment_item')].helpers({
-  comment_item: function () {
-    return getTemplate('comment_item');
-  },
+Template.comment_item.helpers({
   commentClass: function () {
     // if this comment was made by the post author
     if (Posts.findOne(this.postId).userId == this.userId) {
@@ -124,7 +121,7 @@ var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
   }
 };
 
-Template[getTemplate('comment_item')].events({
+Template.comment_item.events({
   'click .not-upvoted .upvote': _.partial(handleVoteClick, 'upvoteComment', 'post upvoted'),
   'click .upvoted .upvote': _.partial(handleVoteClick, 'cancelUpvoteComment', 'post upvote cancelled'),
   'click .not-downvoted .downvote': _.partial(handleVoteClick, 'downvoteComment', 'post downvoted'),

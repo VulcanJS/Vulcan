@@ -1,4 +1,4 @@
-Template[getTemplate('userPosts')].created = function () {
+Template.userPosts.created = function () {
 
   var user = this.data;
   var instance = this;
@@ -37,7 +37,7 @@ Template[getTemplate('userPosts')].created = function () {
   });
 };
 
-Template[getTemplate('userPosts')].helpers({
+Template.userPosts.helpers({
   posts: function () {
     return Template.instance().posts.get();
   },
@@ -49,7 +49,7 @@ Template[getTemplate('userPosts')].helpers({
   }
 });
 
-Template[getTemplate('userPosts')].events({
+Template.userPosts.events({
   'click .posts-more': function (e) {
     e.preventDefault();
     var terms = Template.instance().terms.get();

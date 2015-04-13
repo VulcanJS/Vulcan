@@ -1,4 +1,4 @@
-Template[getTemplate('userComments')].created = function () {
+Template.userComments.created = function () {
   Session.set('commentsShown', 5);
 
   var user = this.data;
@@ -20,7 +20,7 @@ Template[getTemplate('userComments')].created = function () {
   });
 };
 
-Template[getTemplate('userComments')].helpers({
+Template.userComments.helpers({
   comments: function () {
     var comments = Template.instance().comments.get();
     if(!!comments){
@@ -39,7 +39,7 @@ Template[getTemplate('userComments')].helpers({
   }
 });
 
-Template[getTemplate('userComments')].events({
+Template.userComments.events({
   'click .comments-more': function (e) {
     e.preventDefault();
     var commentsShown = Template.instance().commentsShown.get();

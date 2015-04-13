@@ -40,7 +40,7 @@ var submitComment = function(instance) {
   });
 };
 
-Template[getTemplate('comment_form')].onRendered(function() {
+Template.comment_form.onRendered(function() {
   var self = this;
   this.$("#comment").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
@@ -49,13 +49,13 @@ Template[getTemplate('comment_form')].onRendered(function() {
   });
 });
 
-Template[getTemplate('comment_form')].helpers({
+Template.comment_form.helpers({
   reason: function () {
     return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');
   }
 });
 
-Template[getTemplate('comment_form')].events({
+Template.comment_form.events({
   'submit form': function(e, instance){
     e.preventDefault();
     submitComment(instance);

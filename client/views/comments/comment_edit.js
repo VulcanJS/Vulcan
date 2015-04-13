@@ -16,7 +16,7 @@ var editComment = function(instance) {
   Router.go('post_page_comment', {_id: comment.postId, commentId: comment._id});
 };
 
-Template[getTemplate('comment_edit')].onRendered(function() {
+Template.comment_edit.onRendered(function() {
   var self = this;
   this.$("#comment").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
@@ -25,7 +25,7 @@ Template[getTemplate('comment_edit')].onRendered(function() {
   });
 });
 
-Template[getTemplate('comment_edit')].events({
+Template.comment_edit.events({
   'click input[type=submit]': function(e, instance){
     e.preventDefault();
     editComment(instance);

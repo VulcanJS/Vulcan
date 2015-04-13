@@ -4,6 +4,6 @@
     {{> quickForm collection="Categories" id="insertCategoryForm" type="insert" label-class="control-label" input-col-class="controls" template="telescope"}}
   </div>
   {{#each categories}}
-    {{> UI.dynamic template=categoryItem}}
+    {{> categoryItem}}
   {{/each}}
 </template>

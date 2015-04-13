@@ -1,4 +1,4 @@
-Template[getTemplate('notificationsMenu')].helpers({
+Template.notificationsMenu.helpers({
   menuLabel: function () {
     var notificationsCount;
     var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();

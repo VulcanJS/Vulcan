@@ -1,7 +1,4 @@
-Template[getTemplate('messages')].helpers({
-  message_item: function () {
-    return getTemplate('message_item');
-  },
+Template.messages.helpers({
   messages: function(){
     return Messages.collection.find({show: true});
   }

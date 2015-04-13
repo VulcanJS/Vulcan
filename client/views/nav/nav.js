@@ -1,4 +1,4 @@
-Template[getTemplate('nav')].helpers({
+Template.nav.helpers({
   headerClass: function () {
     var headerClass = "";
     var bgBrightness = tinycolor(Settings.get('headerColor')).getBrightness();
@@ -44,18 +44,9 @@ Template[getTemplate('nav')].helpers({
     console.log(this)
     return this.length > 3;
   },
-  logoTemplate: function () {
-    return getTemplate('logo');
-  },
-  navZoneTemplate: function () {
-    return getTemplate('navZone');
-  },
-  getTemplate: function () {
-    return getTemplate(this.template);
-  }
 });
 
-Template[getTemplate('nav')].events({
+Template.nav.events({
   'click .mobile-menu-button': function(e){
     e.preventDefault();
     e.stopPropagation(); // Make sure we don't immediately close the mobile nav again. See layout.js event handler.

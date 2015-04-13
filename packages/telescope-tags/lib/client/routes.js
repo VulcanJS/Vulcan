@@ -3,13 +3,13 @@ Meteor.startup(function () {
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['categories']});
 
   PostsCategoryController = PostsListController.extend({
-    
+
     view: 'category',
 
     showViewsNav: false,
 
     onBeforeAction: function () {
-      this.render(getTemplate('categoryTitle'), {to: 'postListTop'});
+      this.render('categoryTitle', {to: 'postListTop'});
       this.next();
     },
 
@@ -22,7 +22,7 @@ Meteor.startup(function () {
     },
 
     getDescription: function () {
-      return this.getCurrentCategory().description;    
+      return this.getCurrentCategory().description;
     }
 
   });

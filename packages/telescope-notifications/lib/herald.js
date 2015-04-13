@@ -88,7 +88,7 @@ Herald.addCourier('postApproved', {
   message: {
     default: function (user) {
       return Blaze.toHTML(Blaze.With(this, function () {
-        return Template[getTemplate('notificationPostApproved')];
+        return Template.notificationPostApproved;
       }));
     }
   },
@@ -137,7 +137,7 @@ Herald.addCourier('newComment', {
   message: {
     default: function (user) {
       return Blaze.toHTML(Blaze.With(this, function () {
-        return Template[getTemplate('notificationNewComment')];
+        return Template.notificationNewComment;
       }));
     }
   },
@@ -154,7 +154,7 @@ Herald.addCourier('newReply', {
   message: {
     default: function (user) {
       return Blaze.toHTML(Blaze.With(this, function () {
-        return Template[getTemplate('notificationNewReply')];
+        return Template.notificationNewReply;
       }));
     }
   },
@@ -171,7 +171,7 @@ Herald.addCourier('newCommentSubscribed', {
   message: {
     default: function (user) {
       return Blaze.toHTML(Blaze.With(this, function () {
-        return Template[getTemplate('notificationNewReply')];
+        return Template.notificationNewReply;
       }));
     }
   },

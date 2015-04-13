@@ -1,4 +1,4 @@
-Template[getTemplate('postAdmin')].helpers({
+Template.postAdmin.helpers({
   showApprove: function () {
     return this.status == STATUS_PENDING;
   },
@@ -10,7 +10,7 @@ Template[getTemplate('postAdmin')].helpers({
   }
 });
 
-Template[getTemplate('postAdmin')].events({
+Template.postAdmin.events({
   'click .approve-link': function(e, instance){
     Meteor.call('approvePost', this);
     e.preventDefault();

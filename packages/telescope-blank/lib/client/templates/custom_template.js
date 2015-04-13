@@ -1,6 +1,6 @@
 Meteor.startup(function () {
 
-  Template[getTemplate('customTemplate')].helpers({
+  Template.customTemplate.helpers({
     name: function () {
       return "Bruce Willis";
     }

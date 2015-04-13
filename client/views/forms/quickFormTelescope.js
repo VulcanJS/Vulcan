@@ -11,7 +11,7 @@ var canEditField = function (field) {
   return isAdmin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
-Template[getTemplate('quickForm_telescope')].helpers({
+Template.quickForm_telescope.helpers({
   fieldsWithNoFieldset: function () {
     // get names of fields who don't have an autoform attribute or don't have a group, but are not omitted
     // note: we need to _.map() first to assign the field key to the "name" property to preserve it. 
