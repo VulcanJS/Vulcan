@@ -2,9 +2,9 @@
   //Navigation
   "menu": "Menu",
   "view": "Classement",
-  "top": "Populaires",
-  "new": "Nouveaux",
-  "best": "Meilleurs",
+  "top": "Populaire",
+  "new": "Nouveau",
+  "best": "Meilleur",
   "digest": "Résumé",
   "scheduled": "Planifié",
   "users": "Utilisateurs",
