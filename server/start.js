@@ -11,14 +11,14 @@ Meteor.startup(function () {
   Categories.insert({'name' : 'Arts & Entertainment',
   'description' : 'Movies, Music, Celbs',
   'order' : 1,
-  'slug' : 'arts-entertainment',
+  'slug' : 'arts_&_entertainment',
   'image' : null
   });
 
   Categories.insert({'name' : 'Health & Fitness',
   'description' : 'Get Lean. Get Pumped',
   'order' : 2,
-  'slug' : 'health-fitness',
+  'slug' : 'beauty_&_fitness',
   'image' : null
   });
 
