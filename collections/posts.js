@@ -41,6 +41,13 @@ postSchemaObject = {
       editable: true
     }
   },
+  category: {
+    type: String,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  },
   body: {
     type: String,
     optional: true,
