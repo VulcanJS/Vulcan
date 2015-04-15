@@ -5,7 +5,6 @@ var toTitleCase = function (str) {
 var createPost = function (slug, postedAt, username, thumbnail, category, u) {
   var post = {
     postedAt: postedAt,
-    //body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
