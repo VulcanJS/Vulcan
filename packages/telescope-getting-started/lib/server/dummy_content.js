@@ -2,16 +2,20 @@ var toTitleCase = function (str) {
   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
-var createPost = function (slug, postedAt, username, thumbnail) {
+var createPost = function (slug, postedAt, username, thumbnail, category) {
   var post = {
     postedAt: postedAt,
     body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
+    category:category,
     userId: Meteor.users.findOne({username: username})._id
   }
 
+  if (category !== "undefined") {
+    post.category = category;
+  }
   if (typeof thumbnail !== "undefined")
     post.thumbnailUrl = "/packages/telescope-getting-started/content/images/" + thumbnail
 
@@ -55,11 +59,18 @@ var createDummyUsers = function () {
       isDummy: true
     }
   });
+  Accounts.createUser({
+    username: 'Ishika',
+    email: 'ish3@telescopeapp.org',
+    profile: {
+      isDummy: true
+    }
+  })
 }
 
 var createDummyPosts = function () {
-
-  createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
+  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Ishika");
+  /*createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
 
   createPost("deploying_telescope", moment().subtract(10, 'minutes').toDate(), "Arnold");
 
@@ -68,12 +79,13 @@ var createDummyPosts = function () {
   createPost("getting_help", moment().subtract(1, 'days').toDate(), "Bruce", "stackoverflow.png");
 
   createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Julia");
+  */
 
 }
 
 var createDummyComments = function () {
 
-  createComment("read_this_first", "Bruce", "What an awesome app!");
+  /*createComment("read_this_first", "Bruce", "What an awesome app!");
 
   createComment("deploying_telescope", "Arnold", "Deploy to da choppah!");
   createComment("deploying_telescope", "Julia", "Do you really need to say this all the time?", "Deploy to the choppah!");
@@ -82,7 +94,7 @@ var createDummyComments = function () {
 
   createComment("removing_getting_started_posts", "Bruce", "Yippee ki-yay, motherfucker!");
   createComment("removing_getting_started_posts", "Arnold", "I don't think you're supposed to swear in here…", "Yippee ki-yay, motherfucker!");
-
+  */
 }
 
 deleteDummyContent = function () {
@@ -107,8 +119,9 @@ Meteor.methods({
 
 Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db
-  if (!Events.findOne({name: 'createDummyContent'}) && !Posts.find().count()) {
-    createDummyUsers();
+  deleteDummyContent();
+  if (!Posts.find().count()) {
+    createDummyUsers(); 
     createDummyPosts();
     createDummyComments();
     logEvent({name: 'createDummyContent', unique: true, important: true});
