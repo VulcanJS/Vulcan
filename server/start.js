@@ -22,6 +22,20 @@ Meteor.startup(function () {
   'image' : null
   });
 
+  Categories.insert({'name' : 'Computers & Electronics',
+  'description' : 'Gadgets are the new toys',
+  'order' : 2,
+  'slug' : 'computers_&_electronics',
+  'image' : null
+  });
+
+  Categories.insert({'name' : 'Technology',
+  'description' : 'Silicon Valley Life',
+  'order' : 2,
+  'slug' : 'internet_&_telecom',
+  'image' : null
+  });
+
   Categories.insert({'name' : 'Games',
   'description' : 'Game away',
   'order' : 1,
