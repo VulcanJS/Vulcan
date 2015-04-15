@@ -69,7 +69,7 @@ var createDummyUsers = function () {
 }
 
 var createDummyPosts = function () {
-  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Ishika");
+  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Ishika", "arts_&_entertainment");
   /*createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
 
   createPost("deploying_telescope", moment().subtract(10, 'minutes').toDate(), "Arnold");
