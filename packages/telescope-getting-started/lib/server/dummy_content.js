@@ -111,8 +111,8 @@ Meteor.methods({
 
 Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db
-  deleteDummyContent();
   if (!Posts.find().count()) {
+    deleteDummyContent();
     createDummyUsers(); 
     createDummyPosts();
     createDummyComments();
