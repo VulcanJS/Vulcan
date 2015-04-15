@@ -5,7 +5,7 @@ var toTitleCase = function (str) {
 var createPost = function (slug, postedAt, username, thumbnail, category, u) {
   var post = {
     postedAt: postedAt,
-    body: Assets.getText("content/" + slug + ".md"),
+    //body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
@@ -68,7 +68,7 @@ var createDummyUsers = function () {
 }
 
 var createDummyPosts = function () {
-  createPost("removing_getting_started_posts",
+  createPost("Batman vs. Robin Movie - Watch Batman vs. Robin Movie online in high quality",
              moment().subtract(2, 'days').toDate(),
              "Ishika", "20150331/199924e8c78a91370e4299e67c299723",
              "beauty_&_fitness",
