@@ -2,22 +2,21 @@ var toTitleCase = function (str) {
   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
-var createPost = function (slug, postedAt, username, thumbnail, category) {
+var createPost = function (slug, postedAt, username, thumbnail, category, u) {
   var post = {
     postedAt: postedAt,
     body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
-    category:category,
+    thumbnailUrl:thumbnail,
+    url: u,
     userId: Meteor.users.findOne({username: username})._id
   }
-
+  console.log(post);
   if (category !== "undefined") {
     post.category = category;
   }
-  if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/telescope-getting-started/content/images/" + thumbnail
 
   submitPost(post);
 }
@@ -69,17 +68,11 @@ var createDummyUsers = function () {
 }
 
 var createDummyPosts = function () {
-  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Ishika", "arts_&_entertainment");
-  /*createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
-
-  createPost("deploying_telescope", moment().subtract(10, 'minutes').toDate(), "Arnold");
-
-  createPost("customizing_telescope", moment().subtract(3, 'hours').toDate(), "Julia");
-
-  createPost("getting_help", moment().subtract(1, 'days').toDate(), "Bruce", "stackoverflow.png");
-
-  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Julia");
-  */
+  createPost("removing_getting_started_posts",
+             moment().subtract(2, 'days').toDate(),
+             "Ishika", "20150331/199924e8c78a91370e4299e67c299723",
+             "beauty_&_fitness",
+             "http://kisscartoon.me/cartoon/batman-vs-robin/movie?id=47669");
 
 }
 
