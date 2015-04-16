@@ -73,6 +73,18 @@ var createDummyPosts = function () {
              "beauty_&_fitness",
              "http://kisscartoon.me/cartoon/batman-vs-robin/movie?id=47669");
 
+ createPost("Firstpost",
+            moment().subtract(2, 'days').toDate(),
+            "Ishika", "20150331/199924e8c78a91370e4299e679723",
+            "news",
+            "http://www.firstpost.com");
+createPost("Rottentomatoes",
+     moment().subtract(2, 'days').toDate(),
+     "Ishika", "20150331/199924e8c78a91370e4299c299723",
+     "arts_&_entertainment",
+     "http://rottentomatoes.com");
+
+
 }
 
 var createDummyComments = function () {
@@ -91,7 +103,7 @@ var createDummyComments = function () {
 
 deleteDummyContent = function () {
   Meteor.users.remove({'profile.isDummy': true});
-  Posts.remove({isDummy: true});
+  Posts.remove({});
   Comments.remove({isDummy: true});
 }
 
@@ -113,7 +125,7 @@ Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db
   if (!Posts.find().count()) {
     deleteDummyContent();
-    createDummyUsers(); 
+    createDummyUsers();
     createDummyPosts();
     createDummyComments();
     logEvent({name: 'createDummyContent', unique: true, important: true});

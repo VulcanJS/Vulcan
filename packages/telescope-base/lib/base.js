@@ -176,6 +176,11 @@ viewParameters.baseParameters = {
   }
 };
 
+viewParameters.categories = function (terms) {
+  console.log("Terms Obj", terms);
+   return { find:{ 'category': terms.category}}
+};
+
 viewParameters.health = function (terms) {
    return { find:{ 'category': 'beauty_&_fitness'}}
 };
