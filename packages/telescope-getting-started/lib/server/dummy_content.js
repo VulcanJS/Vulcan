@@ -2,18 +2,20 @@ var toTitleCase = function (str) {
   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
-var createPost = function (slug, postedAt, username, thumbnail) {
+var createPost = function (slug, postedAt, username, thumbnail, category, u) {
   var post = {
     postedAt: postedAt,
-    body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
+    thumbnailUrl:thumbnail,
+    url: u,
     userId: Meteor.users.findOne({username: username})._id
   }
-
-  if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/telescope-getting-started/content/images/" + thumbnail
+  console.log(post);
+  if (category !== "undefined") {
+    post.category = category;
+  }
 
   submitPost(post);
 }
@@ -55,25 +57,39 @@ var createDummyUsers = function () {
       isDummy: true
     }
   });
+  Accounts.createUser({
+    username: 'Ishika',
+    email: 'ish3@telescopeapp.org',
+    profile: {
+      isDummy: true
+    }
+  })
 }
 
 var createDummyPosts = function () {
+  createPost("Batman vs. Robin Movie - Watch Batman vs. Robin Movie online in high quality",
+             moment().subtract(2, 'days').toDate(),
+             "Ishika", "20150331/199924e8c78a91370e4299e67c299723",
+             "beauty_&_fitness",
+             "http://kisscartoon.me/cartoon/batman-vs-robin/movie?id=47669");
 
-  createPost("read_this_first", moment().toDate(), "Bruce", "telescope.png");
+ createPost("Firstpost",
+            moment().subtract(2, 'days').toDate(),
+            "Ishika", "20150331/199924e8c78a91370e4299e679723",
+            "news",
+            "http://www.firstpost.com");
+createPost("Rottentomatoes",
+     moment().subtract(2, 'days').toDate(),
+     "Ishika", "20150331/199924e8c78a91370e4299c299723",
+     "arts_&_entertainment",
+     "http://rottentomatoes.com");
 
-  createPost("deploying_telescope", moment().subtract(10, 'minutes').toDate(), "Arnold");
-
-  createPost("customizing_telescope", moment().subtract(3, 'hours').toDate(), "Julia");
-
-  createPost("getting_help", moment().subtract(1, 'days').toDate(), "Bruce", "stackoverflow.png");
-
-  createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Julia");
 
 }
 
 var createDummyComments = function () {
 
-  createComment("read_this_first", "Bruce", "What an awesome app!");
+  /*createComment("read_this_first", "Bruce", "What an awesome app!");
 
   createComment("deploying_telescope", "Arnold", "Deploy to da choppah!");
   createComment("deploying_telescope", "Julia", "Do you really need to say this all the time?", "Deploy to the choppah!");
@@ -82,12 +98,12 @@ var createDummyComments = function () {
 
   createComment("removing_getting_started_posts", "Bruce", "Yippee ki-yay, motherfucker!");
   createComment("removing_getting_started_posts", "Arnold", "I don't think you're supposed to swear in here…", "Yippee ki-yay, motherfucker!");
-
+  */
 }
 
 deleteDummyContent = function () {
   Meteor.users.remove({'profile.isDummy': true});
-  Posts.remove({isDummy: true});
+  Posts.remove({});
   Comments.remove({isDummy: true});
 }
 
@@ -107,7 +123,8 @@ Meteor.methods({
 
 Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db
-  if (!Events.findOne({name: 'createDummyContent'}) && !Posts.find().count()) {
+  if (!Posts.find().count()) {
+    deleteDummyContent();
     createDummyUsers();
     createDummyPosts();
     createDummyComments();

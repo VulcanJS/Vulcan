@@ -41,6 +41,13 @@ postSchemaObject = {
       editable: true
     }
   },
+  category: {
+    type: String,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  },
   body: {
     type: String,
     optional: true,
@@ -348,6 +355,9 @@ submitPost = function (post) {
   // clean up post title
   post.title = cleanUp(post.title);
 
+  /*if (post.thumbnail) {
+    post.thumbnail ="http://img.sharethis.com/" + post.thumbnail + "/100_100.jpg";
+  }*/
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit server callbacks on post object successively

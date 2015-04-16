@@ -171,6 +171,10 @@ viewParameters.baseParameters = {
   }
 };
 
+viewParameters.categories = function (terms) {
+   return { find:{ 'category': terms.category}}
+};
+
 viewParameters.top = function (terms) {
   return {
     options: {sort: {sticky: -1, score: -1}}
