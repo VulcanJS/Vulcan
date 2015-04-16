@@ -97,3 +97,5 @@ telescope-messages
 telescope-pages
 
 # Custom Packages
+telescope-theme-loupe
+msavin:mongol
