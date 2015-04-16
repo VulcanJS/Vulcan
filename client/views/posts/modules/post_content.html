@@ -8,10 +8,12 @@
           {{> UI.dynamic template=getTemplate data=..}}
         {{/each}}
       </h3>
+      {{#if canEdit this}}
       <div class="post-meta">
         {{#each postMeta}}
           {{> UI.dynamic template=getTemplate data=..}}
         {{/each}}
       </div>
+      {{/if}}
     </div>
 </template>
