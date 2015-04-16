@@ -96,11 +96,6 @@ viewsMenu = [
     description: 'newest_posts'
   },
   {
-    route: 'posts_health',
-    label: 'health',
-    description: 'health_and_fitness'
-  },
-  {
     route: 'posts_best',
     label: 'best',
     description: 'highest_ranked_posts_ever'
@@ -177,12 +172,7 @@ viewParameters.baseParameters = {
 };
 
 viewParameters.categories = function (terms) {
-  console.log("Terms Obj", terms);
    return { find:{ 'category': terms.category}}
-};
-
-viewParameters.health = function (terms) {
-   return { find:{ 'category': 'beauty_&_fitness'}}
 };
 
 viewParameters.top = function (terms) {
