@@ -333,6 +333,7 @@ userEditRenderedCallbacks = [];
 userEditClientCallbacks = [];
 userCreatedCallbacks = [];
 userProfileCompleteChecks = [];
+userProfileCompletedCallbacks = [];
 
 upvoteCallbacks = [];
 downvoteCallbacks = [];

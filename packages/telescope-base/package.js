@@ -82,6 +82,7 @@ Package.onUse(function (api) {
     'userEditRenderedCallbacks',
     'userEditClientCallbacks',
     'userProfileCompleteChecks',
+    'userProfileCompletedCallbacks',
     'userProfileDisplay',
     'userProfileEdit',
     'userCreatedCallbacks',
