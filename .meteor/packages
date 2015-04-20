@@ -62,6 +62,8 @@ manuelschoebel:ms-seo
 
 # Telescope Packages (Required)
 
+# note: eventually, the following packages will all be replaced by telescope:core, which will depend on them
+
 telescope:i18n
 telescope:posts
 telescope:lib
