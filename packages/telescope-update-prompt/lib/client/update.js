@@ -26,7 +26,7 @@ Meteor.startup(function () {
     // console.log(error)
     // console.log(result)
     if(result){
-      var currentVersion = telescopeVersion;
+      var currentVersion = Telescope.VERSION;
       var newVersion = result.content;
       var message = "";
       if (compareVersions(currentVersion, newVersion)){

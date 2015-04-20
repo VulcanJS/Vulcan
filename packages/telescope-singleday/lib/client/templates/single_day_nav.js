@@ -10,7 +10,7 @@ Template.singleDayNav.created = function(){
   });
 
   $(document).bind('keyup', 'right', function(){
-    if(isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
+    if(Users.isAdmin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
       Router.go($('.next-link').attr('href'));
   });
 
@@ -46,6 +46,6 @@ Template.singleDayNav.helpers({
   showNextDate: function(){
     var currentDate = moment(Session.get('currentDate')).startOf('day');
     var today = moment(new Date()).startOf('day');
-    return isAdmin(Meteor.user()) || (today.diff(currentDate, 'days') > 0);
+    return Users.isAdmin(Meteor.user()) || (today.diff(currentDate, 'days') > 0);
   }
 })

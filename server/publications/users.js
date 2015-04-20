@@ -1,7 +1,7 @@
 // Publish the current user
 
 Meteor.publish('currentUser', function() {
-  var user = Meteor.users.find({_id: this.userId}, {fields: ownUserOptions});
+  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.ownUserOptions});
   return user;
 });
 
@@ -10,7 +10,7 @@ Meteor.publish('currentUser', function() {
 
 Meteor.publish('allUsersAdmin', function() {
   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
-  if (isAdminById(this.userId)) {
+  if (Users.isAdminById(this.userId)) {
     return Meteor.users.find(selector, {fields: {
       _id: true,
       profile: true,

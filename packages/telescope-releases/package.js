@@ -18,7 +18,7 @@ Package.onUse(function (api) {
     'tap:i18n',                   // internationalization package
     'iron:router',                // routing package
     'telescope-base',             // basic Telescope hooks and objects
-    'telescope-lib',              // useful functions
+    'telescope:telescope-lib',              // useful functions
     'telescope-i18n',             // internationalization wrapper
     'fourseven:scss'              // SCSS compilation package
   ]);
@@ -64,7 +64,7 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/server/publications.js',
     'lib/server/import_releases.js'
-  ], ['server']);    
+  ], ['server']);
 
   api.addFiles('releases/0.11.0.md', 'server', { isAsset: true });
   api.addFiles('releases/0.11.1.md', 'server', { isAsset: true });

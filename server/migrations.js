@@ -13,7 +13,7 @@ Meteor.startup(function () {
 
 Meteor.methods({
   removeMigration: function (name) {
-    if (isAdmin(Meteor.user())) {
+    if (Users.isAdmin(Meteor.user())) {
       console.log('// removing migration: ' + name);
       Migrations.remove({name: name});
     }
@@ -67,7 +67,7 @@ var migrationsList = {
     var i = 0;
     Categories.find({slug: {$exists : false}}).forEach(function (category) {
         i++;
-        var slug = slugify(category.name);
+        var slug = Telescope.utils.slugify(category.name);
         Categories.update(category._id, {$set: {slug: slug}});
         console.log("---------------------");
         console.log("Category: "+category.name);
@@ -131,8 +131,8 @@ var migrationsList = {
 
       var properties = {};
       // update user slug
-      if(getUserName(user))
-        properties.slug = slugify(getUserName(user));
+      if(Users.getUserName(user))
+        properties.slug = Telescope.utils.slugify(Users.getUserName(user));
 
       // update user isAdmin flag
       if(typeof user.isAdmin === 'undefined')
@@ -352,7 +352,7 @@ var migrationsList = {
     var i = 0;
     Posts.find({body: {$exists : true}}).forEach(function (post) {
       i++;
-      var htmlBody = sanitize(marked(post.body));
+      var htmlBody = Telescope.utils.sanitize(marked(post.body));
       console.log("Post: "+post._id);
       Posts.update(post._id, { $set: { 'htmlBody': htmlBody}}, {multi: true, validate: false});
       console.log("---------------------");
@@ -363,7 +363,7 @@ var migrationsList = {
     var i = 0;
     Comments.find({body: {$exists : true}}).forEach(function (comment) {
       i++;
-      var htmlBody = sanitize(marked(comment.body));
+      var htmlBody = Telescope.utils.sanitize(marked(comment.body));
       console.log("Comment: "+comment._id);
       Comments.update(comment._id, { $set: { 'htmlBody': htmlBody}}, {multi: true, validate: false});
       console.log("---------------------");

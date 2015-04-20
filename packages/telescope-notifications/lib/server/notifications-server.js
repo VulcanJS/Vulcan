@@ -1,5 +1,5 @@
 getUnsubscribeLink = function(user){
-  return getRouteUrl('unsubscribe', {hash: user.email_hash});
+  return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.email_hash});
 };
 
 // given a notification, return the correct subject and html to send an email
@@ -33,9 +33,9 @@ buildEmailNotification = function (notification) {
 
   var emailProperties = _.extend(notification.data, {
     body: marked(comment.body),
-    profileUrl: getProfileUrlBySlugOrId(comment.userId),
-    postCommentUrl: getPostCommentUrl(post._id, comment._id),
-    postLink: getPostLink(post)
+    profileUrl: Users.getProfileUrlBySlugOrId(comment.userId),
+    postCommentUrl: Telescope.utils.getPostCommentUrl(post._id, comment._id),
+    postLink: Posts.getLink(post)
   });
 
   // console.log(emailProperties)

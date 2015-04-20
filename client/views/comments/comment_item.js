@@ -44,7 +44,7 @@ findQueueContainer = function($comment) {
         // add comment ID to global array to avoid queuing it again
         window.openedComments.push(target.substr(1));
       });
-      // scrollPageTo(links.first().attr("href"));
+      // Telescope.utils.scrollPageTo(links.first().attr("href"));
       $(this).hide("slow").remove();
     });
   }
@@ -80,7 +80,7 @@ Template.comment_item.helpers({
     return Meteor.users.findOne(this.userId);
   },
   authorName: function(){
-    return getAuthorName(this);
+    return Users.getAuthorName(this);
   },
   showChildComments: function(){
     // TODO: fix this
@@ -99,7 +99,7 @@ Template.comment_item.helpers({
   profileUrl: function(){
     var user = Meteor.users.findOne(this.userId);
     if (user) {
-      return getProfileUrl(user);
+      return Users.getProfileUrl(user);
     }
   }
 });

@@ -7,14 +7,14 @@ var findAtts = function () {
 }
 
 var canEditField = function (field) {
-  // show field only if user is admin or it's marked as editable 
-  return isAdmin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
+  // show field only if user is admin or it's marked as editable
+  return Users.isAdmin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
 Template.quickForm_telescope.helpers({
   fieldsWithNoFieldset: function () {
     // get names of fields who don't have an autoform attribute or don't have a group, but are not omitted
-    // note: we need to _.map() first to assign the field key to the "name" property to preserve it. 
+    // note: we need to _.map() first to assign the field key to the "name" property to preserve it.
     var fields = _.pluck(_.filter(_.map(AutoForm.getFormSchema()._schema, function (field, key) {
       field.name = key;
       return field;
@@ -29,18 +29,18 @@ Template.quickForm_telescope.helpers({
     }), "name");
 
     return fields;
-  },  
+  },
   afFieldsets: function () {
     var groups = _.compact(_.uniq(_.pluckDeep(AutoForm.getFormSchema()._schema, 'autoform.group')));
-    
+
     // if user is not admin, exclude "admin" group from fieldsets
-    if (!isAdmin(Meteor.user()))
+    if (!Users.isAdmin(Meteor.user()))
       groups = _.without(groups, 'admin')
-    
+
     return groups;
   },
   fieldsetName: function () {
-    return capitalise(i18n.t(this));
+    return Telescope.utils.capitalise(i18n.t(this));
   },
   fieldsForFieldset: function () {
     var fieldset = this.toLowerCase();
@@ -131,7 +131,7 @@ Template["afFormGroup_telescope"].helpers({
     var fieldSchema = AutoForm.getFormSchema().schema(fieldName);
 
     // if a label has been explicitely specified, use it; else default to capitalization of i18n of the field name
-    var label = !!fieldSchema.label ? fieldSchema.label: capitalise(i18n.t(fieldName));
+    var label = !!fieldSchema.label ? fieldSchema.label: Telescope.utils.capitalise(i18n.t(fieldName));
 
     return label;
   }

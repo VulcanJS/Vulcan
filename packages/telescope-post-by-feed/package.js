@@ -16,10 +16,12 @@ Package.onUse(function(api) {
   api.use([
     'telescope-base',
     'telescope-tags',
+    'telescope:telescope-lib',
+    'telescope:telescope-posts',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'tap:i18n',
-    'fourseven:scss',
+    'fourseven:scss'
   ], ['client', 'server']);
 
   api.use([

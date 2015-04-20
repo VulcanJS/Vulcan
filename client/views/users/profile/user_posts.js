@@ -22,12 +22,12 @@ Template.userPosts.created = function () {
 
     // get the new terms and generate new parameters from them
     var terms = instance.terms.get();
-    var parameters = getPostsParameters(terms);
+    var parameters = Posts.getSubParams(terms);
 
     // subscribe to the userPosts publication
     instance.subscription.set(Meteor.subscribe('userPosts', terms));
 
-    // until subscription is ready, overwrite limit to restrict number of posts to previousLimit  
+    // until subscription is ready, overwrite limit to restrict number of posts to previousLimit
     if (!instance.subscription.get().ready())
       parameters.options.limit = terms.previousLimit
 

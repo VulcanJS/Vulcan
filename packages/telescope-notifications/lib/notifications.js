@@ -1,5 +1,5 @@
 // add new post notification callback on post submit
-postAfterSubmitMethodCallbacks.push(function (post) {
+Posts.hooks.afterSubmitMethodCallbacks.push(function (post) {
 
   var adminIds = _.pluck(Meteor.users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
   var notifiedUserIds = _.pluck(Meteor.users.find({'profile.notifications.posts': 1}, {fields: {_id:1}}).fetch(), '_id');
@@ -8,7 +8,7 @@ postAfterSubmitMethodCallbacks.push(function (post) {
   var adminIds = _.without(adminIds, post.userId);
   var notifiedUserIds = _.without(notifiedUserIds, post.userId);
 
-  if (post.status === STATUS_PENDING && !!adminIds.length) {
+  if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
     // if post is pending, only notify admins
     Herald.createNotification(adminIds, {courier: 'newPendingPost', data: post});
   } else if (!!notifiedUserIds.length) {
@@ -20,7 +20,7 @@ postAfterSubmitMethodCallbacks.push(function (post) {
 });
 
 // notify users that their pending post has been approved
-postApproveCallbacks.push(function (post) {
+Posts.hooks.approvedCallbacks.push(function (post) {
   Herald.createNotification(post.userId, {courier: 'postApproved', data: post});
   return post;
 });
@@ -121,4 +121,4 @@ function setNotificationDefaults (user) {
   };
   return user;
 }
-userCreatedCallbacks.push(setNotificationDefaults);
+Users.hooks.userCreatedCallbacks.push(setNotificationDefaults);

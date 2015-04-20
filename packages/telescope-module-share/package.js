@@ -14,8 +14,8 @@ Package.onUse(function (api) {
   ], 'client');
 
   api.use([
-    'telescope-lib', 
-    'telescope-base', 
+    'telescope:telescope-lib',
+    'telescope-base',
   ]);
 
   api.add_files([
@@ -23,10 +23,10 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/post_share.html', 
-    'lib/client/post_share.js', 
+    'lib/client/post_share.html',
+    'lib/client/post_share.js',
     'lib/client/post_share.scss'
   ], ['client']);
-  
+
   // api.export();
 });

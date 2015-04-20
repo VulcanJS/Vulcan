@@ -11,7 +11,7 @@ var dismissBanner = function () {
   $('.newsletter-banner').fadeOut('fast', function () {
     if(Meteor.user()){
       // if user is connected, change setting in their account
-      setUserSetting('showBanner', false);
+      Users.setUserSetting('showBanner', false);
     }else{
       // set cookie
       Cookie.set('showBanner', "no");
@@ -31,11 +31,11 @@ Meteor.startup(function () {
       // note: should not be reactive
       if(
             Settings.get('showBanner', false) == false
-        ||  !can.view(Meteor.user())
+        ||  !Users.can.view(Meteor.user())
         ||  Router.current().location.get().path != '/'
         ||  Cookie.get('showBanner') == "no"
-        ||  (Meteor.user() && getUserSetting('showBanner', true) == false)
-        ||  (Meteor.user() && getUserSetting('subscribedToNewsletter', false) == true)
+        ||  (Meteor.user() && Users.getUserSetting('showBanner', true) == false)
+        ||  (Meteor.user() && Users.getUserSetting('subscribedToNewsletter', false) == true)
       ){
         return false;
       }else{

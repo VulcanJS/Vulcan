@@ -23,7 +23,7 @@ var submitComment = function(instance) {
   };
 
   // child comment
-  if (getCurrentTemplate() === 'comment_reply') {
+  if (Telescope.utils.getCurrentTemplate() === 'comment_reply') {
     comment.parentCommentId = data.comment._id;
   }
 

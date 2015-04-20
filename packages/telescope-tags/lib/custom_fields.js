@@ -1,4 +1,4 @@
-addToPostSchema.push(
+Posts.addToSchema(
   {
     propertyName: 'categories',
     propertySchema: {
@@ -13,7 +13,7 @@ addToPostSchema.push(
             return {
               value: category._id,
               label: category.name
-            }  
+            }
           });
           return categories;
         }

@@ -1,0 +1,24 @@
+{
+  "isopack-1": {
+    "name": "telescope-lib",
+    "summary": "Telescope library package",
+    "version": "0.2.9+3c5fc781baa945505183378ea284deac3068520b",
+    "earliestCompatibleVersion": "0.0.0",
+    "isTest": false,
+    "builds": [
+      {
+        "arch": "os",
+        "path": "os.json"
+      },
+      {
+        "arch": "web.browser",
+        "path": "web.browser.json"
+      },
+      {
+        "arch": "web.cordova",
+        "path": "web.cordova.json"
+      }
+    ],
+    "plugins": []
+  }
+}

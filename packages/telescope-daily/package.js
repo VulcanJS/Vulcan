@@ -3,7 +3,7 @@ Package.describe({summary: "Telescope daily view"});
 Package.onUse(function (api) {
 
   api.use([
-    'telescope-lib',
+    'telescope:telescope-lib',
     'telescope-base',
     'telescope-settings',
     'iron:router',

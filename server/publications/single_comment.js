@@ -1,7 +1,7 @@
 // Publish a single comment
 
 Meteor.publish('singleCommentAndChildren', function(commentId) {
-  if(can.viewById(this.userId)){
+  if(Users.can.viewById(this.userId)){
     // publish both current comment and child comments
     var commentIds = [commentId];
     var childCommentIds = _.pluck(Comments.find({parentCommentId: commentId}, {fields: {_id: 1}}).fetch(), '_id');
@@ -14,7 +14,7 @@ Meteor.publish('singleCommentAndChildren', function(commentId) {
 // Publish the post related to the current comment
 
 Meteor.publish('commentPost', function(commentId) {
-  if(can.viewById(this.userId)){
+  if(Users.can.viewById(this.userId)){
     var comment = Comments.findOne(commentId);
     return Posts.find({_id: comment && comment.postId});
   }
@@ -24,19 +24,19 @@ Meteor.publish('commentPost', function(commentId) {
 // Publish author of the current comment, and author of the post related to the current comment
 
 Meteor.publish('commentUsers', function(commentId) {
-  
+
   var userIds = [];
-  
-  if(can.viewById(this.userId)){
+
+  if(Users.can.viewById(this.userId)){
 
     var comment = Comments.findOne(commentId);
     userIds.push(comment.userId);
-    
+
     var post = Posts.findOne(comment.postId);
     userIds.push(post.userId);
 
-    return Meteor.users.find({_id: {$in: userIds}}, {fields: privacyOptions});
-    
+    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.privacyOptions});
+
   }
 
   return [];

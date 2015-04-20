@@ -18,14 +18,14 @@ Meteor.methods({
           Meteor.users.findOne({ emails : { $elemMatch: { address: invitation.invitedUserEmail } } }) :
           Meteor.users.findOne({ _id : invitation.userId }),
         userEmail = invitation.invitedUserEmail ? invitation.invitedUserEmail :
-          getEmail(user),
+          Users.getEmail(user),
         currentUser = Meteor.user(),
         currentUserCanInvite = currentUserIsAdmin ||
-          (currentUser.inviteCount > 0 && can.invite(currentUser)),
-        currentUserIsAdmin = isAdmin(currentUser);
+          (currentUser.inviteCount > 0 && Users.can.invite(currentUser)),
+        currentUserIsAdmin = Users.isAdmin(currentUser);
 
     // check if the person is already invited
-    if(user && can.invite(user)){
+    if(user && Users.can.invite(user)){
       throw new Meteor.Error(403, "This person is already invited.");
     } else {
       if (!currentUserCanInvite){
@@ -55,7 +55,7 @@ Meteor.methods({
         Meteor.users.update(user._id, {$set: {
           isInvited: true,
           invitedBy: Meteor.userId(),
-          invitedByName: getDisplayName(currentUser)
+          invitedByName: Users.getDisplayName(currentUser)
         }});
       }
 
@@ -64,9 +64,9 @@ Meteor.methods({
           emailProperties = {
             newUser : typeof user === 'undefined',
             communityName : communityName,
-            actionLink : user ? getSigninUrl() : getSignupUrl(),
-            invitedBy : getDisplayName(currentUser),
-            profileUrl : getProfileUrl(currentUser)
+            actionLink : user ? Telescope.utils.getSigninUrl() : Telescope.utils.getSignupUrl(),
+            invitedBy : Users.getDisplayName(currentUser),
+            profileUrl : Users.getProfileUrl(currentUser)
           };
 
       Meteor.setTimeout(function () {

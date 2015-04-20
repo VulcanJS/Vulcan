@@ -63,7 +63,6 @@ manuelschoebel:ms-seo
 # Telescope Packages (Required)
 
 telescope-base
-telescope-lib
 telescope-i18n
 
 # Telescope Packages (Optional)
@@ -94,5 +93,9 @@ telescope-settings
 telescope-sitemap
 telescope-messages
 telescope-pages
+
+telescope:telescope-posts
+telescope:telescope-lib
+telescope:telescope-users
 
 # Custom Packages

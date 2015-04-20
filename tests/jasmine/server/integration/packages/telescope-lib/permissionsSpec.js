@@ -9,10 +9,10 @@ Jasmine.onTest(function () {
         var canView = testFunc(mockValue);
         expect(canView).toEqual(expected);
     };
-    describe('test can.view()', function () {
+    describe('test Users.can.view()', function () {
 
       var testCanView = function (requireViewInviteEnabled, mockUser, expected) {
-        testCanViewMeta(can.view, requireViewInviteEnabled, mockUser, expected);
+        testCanViewMeta(Users.can.view, requireViewInviteEnabled, mockUser, expected);
       };
 
       it('should return true when requireViewInvite setting is false', function () {
@@ -36,9 +36,9 @@ Jasmine.onTest(function () {
       });
     });
 
-    describe('test can.viewById()', function () {
+    describe('test Users.can.viewById()', function () {
        var testCanViewById = function (requireViewInviteEnabled, mockUserId, expected) {
-        testCanViewMeta(can.viewById, requireViewInviteEnabled, mockUserId, expected);
+        testCanViewMeta(Users.can.viewById, requireViewInviteEnabled, mockUserId, expected);
       };
 
       it('should return true when requireViewInvite setting is false', function () {

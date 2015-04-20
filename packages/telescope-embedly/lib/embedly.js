@@ -9,7 +9,7 @@ var thumbnailProperty = {
     }
   }
 }
-addToPostSchema.push(thumbnailProperty);
+Posts.addToSchema(thumbnailProperty);
 
 var mediaProperty = {
   propertyName: 'media',
@@ -23,7 +23,7 @@ var mediaProperty = {
     }
   }
 }
-addToPostSchema.push(mediaProperty);
+Posts.addToSchema(mediaProperty);
 
 postThumbnail.push({
   template: 'postThumbnail',
@@ -68,7 +68,7 @@ var thumbnailHeightProperty = {
 Settings.addToSchema(thumbnailHeightProperty);
 
 // add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
-postClassCallbacks.push(function (post, postClass){
+Posts.hooks.classCallbacks.push(function (post, postClass){
   var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";
   return postClass + " " + thumbnailClass;
 });

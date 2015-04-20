@@ -8,7 +8,7 @@ Package.onUse(function (api) {
 
   api.use([
     'templating',
-    'telescope-lib',
+    'telescope:telescope-lib',
     'telescope-base',
     'telescope-settings',
     'tap:i18n',

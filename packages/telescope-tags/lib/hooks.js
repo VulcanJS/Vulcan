@@ -1,4 +1,4 @@
-adminMenu.push({
+Telescope.config.adminMenu.push({
   route: 'categories',
   label: 'Categories',
   description: 'add_and_remove_categories'
@@ -9,17 +9,17 @@ postHeading.push({
   template: 'postCategories',
   order: 30
 });
-  
+
 // push "categoriesMenu" template to primaryNav
-primaryNav.push({
+Telescope.config.primaryNav.push({
   template: 'categoriesMenu',
   order: 50
 });
 
-mobileNav.push({
+Telescope.config.mobileNav.push({
   template: 'categoriesMenu',
   order: 10
 });
 
 // we want to wait until categories are all loaded to load the rest of the app
-preloadSubscriptions.push('categories');
+Telescope.config.preloadSubscriptions.push('categories');

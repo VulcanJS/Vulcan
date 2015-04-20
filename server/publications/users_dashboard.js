@@ -3,7 +3,7 @@
 // https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
 
 ReactiveTable.publish("all-users", function() {
-  if(isAdminById(this.userId)){
+  if(Users.isAdminById(this.userId)){
     return Meteor.users;
   } else {
     return [];

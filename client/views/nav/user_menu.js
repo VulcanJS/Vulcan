@@ -1,9 +1,9 @@
 Template.userMenu.helpers({
   menuLabel: function () {
-    return getDisplayName(Meteor.user());
+    return Users.getDisplayName(Meteor.user());
   },
   menuItems: function () {
-    return userMenu;
+    return Telescope.config.userMenu;
   },
   menuMode: function () {
     if (!!this.mobile) {

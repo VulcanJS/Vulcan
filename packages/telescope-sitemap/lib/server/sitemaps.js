@@ -4,7 +4,7 @@ Meteor.startup(function() {
    */
   sitemaps.add("/sitemap.xml", function() {
     var _getLatest = function(viewParamKey, terms) {
-      var params = getPostsParameters(
+      var params = Posts.getSubParams(
         viewParameters[viewParamKey.toLowerCase()](terms)
       );
       var post = Posts.findOne(params.find, {
@@ -40,8 +40,8 @@ Meteor.startup(function() {
     // "best". Aggregate them to avoid duplication.
     var postPages = {};
     _.each(["top", "new", "best"], function(key) {
-      var siteUrl = getSiteUrl();
-      var params = getPostsParameters(viewParameters[key]());
+      var siteUrl = Telescope.utils.getSiteUrl();
+      var params = Posts.getSubParams(viewParameters[key]());
       var posts = Posts.find(params.find, {
         fields: {postedAt: 1, title: 1, _id: 1},
         limit: 100,

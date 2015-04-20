@@ -1,15 +1,15 @@
 // push "search" template to primaryNav
-primaryNav.push({
+Telescope.config.primaryNav.push({
   template: 'search',
   order: 100
 });
 
-mobileNav.push({
+Telescope.config.mobileNav.push({
   template: 'search',
   order: 1
 });
 
-adminMenu.push({
+Telescope.config.adminMenu.push({
   route: 'searchLogs',
   label: 'search_logs',
   description: 'see_what_people_are_searching_for'
@@ -34,8 +34,8 @@ Searches = new Meteor.Collection("searches", {
 
 Meteor.startup(function() {
   Searches.allow({
-    update: isAdminById
-  , remove: isAdminById
+    update: Users.isAdminById
+  , remove: Users.isAdminById
   });
 });
 
@@ -45,7 +45,7 @@ viewParameters.search = function (terms, baseParameters) {
   if(typeof terms.query === 'undefined' || !terms.query)
     return {find:{_id: 0}}
 
-  var parameters = deepExtend(true, baseParameters, {
+  var parameters = Telescope.utils.deepExtend(true, baseParameters, {
     find: {
       $or: [
         {title: {$regex: terms.query, $options: 'i'}},

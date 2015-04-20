@@ -3,33 +3,33 @@
 // ------------------------------------------------------------------------------------------- //
 
 // add a subscription to be preloaded before the rest of the app
-preloadSubscriptions.push('customPublication');
+Telescope.config.preloadSubscriptions.push('customPublication');
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------- Nav ------------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-// add templates to the primary nav bar  
-primaryNav.push({
+// add templates to the primary nav bar
+Telescope.config.primaryNav.push({
   template: 'customNav',
   order: 99
 });
 
 // add templates to the secondary nav bar
-secondaryNav.push({
+Telescope.config.secondaryNav.push({
   template: 'customNav',
   order: 99
 });
 
 // add items to the view menu
-viewsMenu.push({
+Telescope.config.viewsMenu.push({
   route: 'customRoute',
   label: 'customViewLink',
   description: '' // optional
 });
 
 // add items to the admin menu
-adminMenu.push({
+Telescope.config.adminMenu.push({
   route: 'customRoute',
   label: 'customAdminLink',
   description: '' // optional
@@ -40,13 +40,13 @@ adminMenu.push({
 // ------------------------------------------------------------------------------------------- //
 
 // add templates to the hero zone (before posts list)
-heroModules.push({
+Telescope.config.heroModules.push({
   template: 'customHero',
   order: 99
 });
-  
+
 // add templates to the footer (after posts list)
-footerModules.push({
+Telescope.config.footerModules.push({
   template: 'customFooter',
   order: 99
 });
@@ -56,33 +56,33 @@ footerModules.push({
 // ------------------------------------------------------------------------------------------- //
 
 // add templates to the post items
-postModules.push({
+Telescope.config.postModules.push({
   template: 'customModule',
   order: 99
 });
 
 // add templates to the post heading zone
-postHeading.push({
+Telescope.config.postHeading.push({
   template: 'customHeading',
   order: 99
 });
 
 // add templates to the post meta zone
-postMeta.push({
+Telescope.config.postMeta.push({
   template: 'customMeta',
-  order: 99 
+  order: 99
 });
 
 // ------------------------------------------------------------------------------------------- //
 // -------------------------------------- User Profiles -------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-userProfileDisplay.push({
+Telescope.config.userProfileDisplay.push({
   template: 'customTemplate',
-  order: 99 
+  order: 99
 });
 
-userProfileEdit.push({
+Telescope.config.userProfileEdit.push({
   template: 'customTemplate',
-  order: 99 
+  order: 99
 });

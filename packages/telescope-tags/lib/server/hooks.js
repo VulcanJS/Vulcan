@@ -14,13 +14,13 @@ var checkCategories = function (post) {
   }
 };
 
-postSubmitMethodCallbacks.push(function (post) {
+Posts.hooks.submitMethodCallbacks.push(function (post) {
   checkCategories(post);
 
   return post;
 });
 
-postEditMethodCallbacks.push(function (updateObject) {
+Posts.hooks.editMethodCallbacks.push(function (updateObject) {
   var post = updateObject.$set;
   checkCategories(post);
 

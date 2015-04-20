@@ -1,5 +1,5 @@
 Meteor.publish('feeds', function() {
-  if(isAdminById(this.userId)){
+  if(Users.isAdminById(this.userId)){
     return Feeds.find();
   }
   return [];

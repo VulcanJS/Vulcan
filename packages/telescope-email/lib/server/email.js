@@ -15,14 +15,14 @@ getEmailTemplate = function (template) {
 buildEmailTemplate = function (htmlContent) {
 
   var emailProperties = {
-    headerColor: Settings.get('headerColor', '#444444'),
-    buttonColor: Settings.get('buttonColor', '#DD3416'),
+    secondaryColor: Settings.get('secondaryColor', '#444444'),
+    accentColor: Settings.get('accentColor', '#DD3416'),
     siteName: Settings.get('title'),
     tagline: Settings.get('tagline'),
-    siteUrl: getSiteUrl(),
+    siteUrl: Telescope.utils.getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
-    accountLink: getSiteUrl()+'account',
+    accountLink: Telescope.utils.getSiteUrl()+'account',
     footer: Settings.get('emailFooter'),
     logoUrl: Settings.get('logoUrl'),
     logoHeight: Settings.get('logoHeight'),
@@ -81,7 +81,7 @@ buildAndSendEmail = function (to, subject, template, properties) {
 
 Meteor.methods({
   testEmail: function () {
-    if(isAdminById(this.userId)){
+    if(Users.isAdminById(this.userId)){
       var email = buildAndSendEmail (Settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
     }
   }
@@ -89,17 +89,17 @@ Meteor.methods({
 
 function adminUserCreationNotification (user) {
   // send notifications to admins
-  var admins = adminUsers();
+  var admins = Users.adminUsers();
   admins.forEach(function(admin){
-    if(getUserSetting('notifications.users', false, admin)){
+    if(Users.getUserSetting('notifications.users', false, admin)){
       var emailProperties = {
-        profileUrl: getProfileUrl(user),
-        username: getUserName(user)
+        profileUrl: Users.getProfileUrl(user),
+        username: Users.getUserName(user)
       };
       var html = getEmailTemplate('emailNewUser')(emailProperties);
-      sendEmail(getEmail(admin), 'New user account: '+getUserName(user), buildEmailTemplate(html));
+      sendEmail(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), buildEmailTemplate(html));
     }
   });
   return user;
 }
-userCreatedCallbacks.push(adminUserCreationNotification);
+Users.hooks.userCreatedCallbacks.push(adminUserCreationNotification);

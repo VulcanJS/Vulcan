@@ -8,7 +8,7 @@ Meteor.publish('settings', function() {
       privateFields[key] = false;
   });
 
-  if(!isAdminById(this.userId)){
+  if(!Users.isAdminById(this.userId)){
     options = _.extend(options, {
       fields: privateFields
     });

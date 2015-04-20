@@ -12,7 +12,7 @@ getCampaignPosts = function (postsCount) {
   var lastWeek = moment().subtract(7, 'days').toDate();
   var after = (typeof lastCampaign != 'undefined') ? lastCampaign.finishedAt : lastWeek
 
-  var params = getPostsParameters({
+  var params = Posts.getSubParams({
     view: 'campaign',
     limit: postsCount,
     after: after
@@ -34,18 +34,18 @@ buildCampaign = function (postsArray) {
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
-      authorName: getAuthorName(post),
-      postLink: getPostLink(post),
-      profileUrl: getProfileUrl(postUser),
-      postPageLink: getPostPageUrl(post),
+      authorName: Users.getAuthorName(post),
+      postLink: Posts.getLink(post),
+      profileUrl: Users.getProfileUrl(postUser),
+      postPageLink: Posts.getPageUrl(post),
       date: moment(post.postedAt).format("MMMM D YYYY")
     });
 
     if (post.body)
-      properties.body = marked(trimWords(post.body, 20)).replace('<p>', '').replace('</p>', ''); // remove p tags
+      properties.body = marked(Telescope.utils.trimWords(post.body, 20)).replace('<p>', '').replace('</p>', ''); // remove p tags
 
     if(post.url)
-      properties.domain = getDomain(post.url)
+      properties.domain = Telescope.utils.getDomain(post.url)
 
     postsHTML += getEmailTemplate('emailPostItem')(properties);
   });
@@ -62,7 +62,7 @@ buildCampaign = function (postsArray) {
 
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
-    subject: trimWords(subject, 15),
+    subject: Telescope.utils.trimWords(subject, 15),
     html: emailHTML
   }
 
@@ -82,11 +82,11 @@ scheduleNextCampaign = function (isTest) {
 
 Meteor.methods({
   sendCampaign: function () {
-    if(isAdminById(this.userId))
+    if(Users.isAdminById(this.userId))
       return scheduleNextCampaign(false);
   },
   testCampaign: function () {
-    if(isAdminById(this.userId))
+    if(Users.isAdminById(this.userId))
       return scheduleNextCampaign(true);
   }
 });

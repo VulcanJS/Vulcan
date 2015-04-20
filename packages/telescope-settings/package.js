@@ -6,11 +6,9 @@ Package.onUse(function(api) {
   api.use([
     'mongo',
     'underscore',
-
     'aldeed:simple-schema',
-
     'telescope-base',
-    'telescope-lib'
+    'telescope:telescope-lib'
   ], both);
 
   api.use([

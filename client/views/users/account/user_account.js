@@ -1,36 +1,36 @@
 Template.userAccount.helpers({
   profileIncomplete : function() {
-    return this && !this.loading && !userProfileComplete(this);
+    return this && !this.loading && !Users.userProfileComplete(this);
   },
   userName: function(){
-    return getUserName(this);
+    return Users.getUserName(this);
   },
   userEmail : function(){
-    return getEmail(this);
+    return Users.getEmail(this);
   },
   getTwitter: function(){
-    return getTwitterName(this) || "";
+    return Users.getTwitterName(this) || "";
   },
   getGitHub: function(){
-    return getGitHubName(this) || "";
+    return Users.getGitHubName(this) || "";
   },
   profileUrl: function(){
-    return getProfileUrlBySlugOrId(this.slug);
+    return Users.getProfileUrlBySlugOrId(this.slug);
   },
   hasNotificationsUsers : function(){
-    return getUserSetting('notifications.users', '', this) ? 'checked' : '';
+    return Users.getUserSetting('notifications.users', '', this) ? 'checked' : '';
   },
   hasNotificationsPosts : function(){
-    return getUserSetting('notifications.posts', '', this) ? 'checked' : '';
+    return Users.getUserSetting('notifications.posts', '', this) ? 'checked' : '';
   },
   hasNotificationsComments : function(){
-    return getUserSetting('notifications.comments', '', this) ? 'checked' : '';
+    return Users.getUserSetting('notifications.comments', '', this) ? 'checked' : '';
   },
   hasNotificationsReplies : function(){
-    return getUserSetting('notifications.replies', '', this) ? 'checked' : '';
+    return Users.getUserSetting('notifications.replies', '', this) ? 'checked' : '';
   },
   hasPassword: function () {
-    return hasPassword(Meteor.user());
+    return Users.hasPassword(Meteor.user());
   }
 });
 
@@ -48,7 +48,7 @@ Template.userAccount.events({
     var user = this;
     var update = {
       "profile.username": name,
-      "profile.slug": slugify(name),
+      "profile.slug": Telescope.utils.slugify(name),
       "profile.bio": $target.find('[name=bio]').val(),
       "profile.city": $target.find('[name=city]').val(),
       "profile.email": email,
@@ -72,7 +72,7 @@ Template.userAccount.events({
       });
     }
 
-    update = userEditClientCallbacks.reduce(function(result, currentFunction) {
+    update = Users.hooks.userEditClientCallbacks.reduce(function(result, currentFunction) {
       return currentFunction(user, result);
     }, update);
 

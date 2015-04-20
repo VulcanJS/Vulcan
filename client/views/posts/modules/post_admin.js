@@ -1,9 +1,9 @@
 Template.postAdmin.helpers({
   showApprove: function () {
-    return this.status == STATUS_PENDING;
+    return this.status == Posts.config.STATUS_PENDING;
   },
   showUnapprove: function(){
-    return !!Settings.get('requirePostsApproval') && this.status == STATUS_APPROVED;
+    return !!Settings.get('requirePostsApproval') && this.status == Posts.config.STATUS_APPROVED;
   },
   shortScore: function(){
     return Math.floor(this.score*1000)/1000;

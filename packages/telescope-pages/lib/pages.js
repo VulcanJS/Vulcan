@@ -26,24 +26,24 @@ Pages.collection.attachSchema(Pages.schema);
 Pages.collection.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one
   if (!doc.slug)
-    doc.slug = slugify(doc.title);
+    doc.slug = Telescope.utils.slugify(doc.title);
 });
 
-primaryNav.push({
+Telescope.config.primaryNav.push({
   template: "pagesMenu",
   order: 5
 });
 
-mobileNav.push({
+Telescope.config.mobileNav.push({
   template: 'pagesMenu',
   order: 5
 });
 
 Meteor.startup(function () {
   Pages.collection.allow({
-    insert: isAdminById,
-    update: isAdminById,
-    remove: isAdminById
+    insert: Users.isAdminById,
+    update: Users.isAdminById,
+    remove: Users.isAdminById
   });
 
   Meteor.methods({

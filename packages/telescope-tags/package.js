@@ -3,8 +3,9 @@ Package.describe({summary: "Telescope tags package"});
 Package.onUse(function (api) {
 
   api.use([
-    'telescope-lib',
+    'telescope:telescope-lib',
     'telescope-base',
+    'telescope:telescope-posts',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'tap:i18n',
@@ -57,12 +58,7 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.export([
-    'preloadSubscriptions',
-    'adminMenu',
     'Categories',
-    'addToPostSchema',
-    'primaryNav',
-    'postModules',
     'getPostCategories'
   ]);
 });

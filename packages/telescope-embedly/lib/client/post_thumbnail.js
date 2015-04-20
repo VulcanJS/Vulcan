@@ -1,6 +1,6 @@
 Template.postThumbnail.helpers({
   postLink: function () {
-    return !!this.url ? getOutgoingUrl(this.url) : "/posts/"+this._id;
+    return !!this.url ? Posts.getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
   playVideoClass: function () {
     return !!this.media ? 'post-thumbnail-has-video': '';

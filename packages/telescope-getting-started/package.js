@@ -18,8 +18,9 @@ Package.onUse(function (api) {
     'tap:i18n',                   // internationalization package
     'iron:router',                // routing package
     'telescope-base',             // basic Telescope hooks and objects
-    'telescope-lib',              // useful functions
+    'telescope:telescope-lib',              // useful functions
     'telescope-i18n',             // internationalization wrapper
+    'telescope:telescope-posts',
     'momentjs:moment'
   ]);
 
@@ -62,7 +63,7 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/server/dummy_content.js'
-  ], ['server']);    
+  ], ['server']);
 
   api.addFiles('content/read_this_first.md', 'server', { isAsset: true });
   api.addFiles('content/deploying_telescope.md', 'server', { isAsset: true });

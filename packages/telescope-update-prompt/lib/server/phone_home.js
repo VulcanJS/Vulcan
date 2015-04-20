@@ -4,15 +4,15 @@ Meteor.methods({
     var url = 'http://version.telescopeapp.org/';
 
     var params = {
-      currentVersion: telescopeVersion,
+      currentVersion: Telescope.VERSION,
       siteTitle: Settings.get('title'),
-      siteUrl: getSiteUrl(),
+      siteUrl: Telescope.utils.getSiteUrl(),
       users: Meteor.users.find().count(),
       posts: Posts.find().count(),
       comments: Comments.find().count()
     }
 
-    if(Meteor.user() && isAdmin(Meteor.user())){
+    if(Meteor.user() && Users.isAdmin(Meteor.user())){
 
       this.unblock();
       try {

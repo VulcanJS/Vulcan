@@ -14,7 +14,8 @@ Package.onUse(function (api) {
     'iron:router',
     'telescope-base',
     'telescope-settings',
-    'telescope-lib',
+    'telescope:telescope-lib',
+    'telescope:telescope-users',
     'telescope-i18n',
     'tap:i18n'
   ], ['client', 'server']);

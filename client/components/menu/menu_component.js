@@ -7,7 +7,7 @@ getRoute = function (item) {
 getMenuItems = function (menu) {
   var menuItems = menu.menuItems;
 
-  if (!isAdmin(Meteor.user())) {
+  if (!Users.isAdmin(Meteor.user())) {
     menuItems = _.reject(menuItems, function (item) {
       return item.adminOnly;
     });

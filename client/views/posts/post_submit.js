@@ -18,7 +18,7 @@ AutoForm.hooks({
         // ------------------------------ Callbacks ------------------------------ //
 
         // run all post submit client callbacks on properties object successively
-        post = postSubmitClientCallbacks.reduce(function(result, currentFunction) {
+        post = Posts.hooks.submitClientCallbacks.reduce(function(result, currentFunction) {
             return currentFunction(result);
         }, post);
 
@@ -30,7 +30,7 @@ AutoForm.hooks({
       this.template.$('button[type=submit]').removeClass('loading');
       trackEvent("new post", {'postId': post._id});
       Router.go('post_page', {_id: post._id});
-      if (post.status === STATUS_PENDING) {
+      if (post.status === Posts.config.STATUS_PENDING) {
         Messages.flash(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
       }
     },

@@ -1,4 +1,4 @@
-addToPostSchema.push(
+Posts.addToSchema(
   {
     propertyName: 'dummySlug',
     propertySchema: {
@@ -11,7 +11,7 @@ addToPostSchema.push(
   }
 );
 
-addToPostSchema.push(
+Posts.addToSchema(
   {
     propertyName: 'isDummy',
     propertySchema: {

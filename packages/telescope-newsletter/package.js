@@ -11,8 +11,10 @@ Npm.depends({
 Package.onUse(function (api) {
 
   api.use([
-    'telescope-lib',
+    'telescope:telescope-lib',
     'telescope-base',
+    'telescope:telescope-posts',
+    'telescope:telescope-users',
     'telescope-settings',
     'aldeed:simple-schema',
     'iron:router',

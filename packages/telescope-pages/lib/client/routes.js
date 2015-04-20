@@ -1,10 +1,10 @@
-adminMenu.push({
+Telescope.config.adminMenu.push({
   route: 'pages',
   label: 'Pages',
   description: 'manage_static_pages'
 });
 
-preloadSubscriptions.push('pages');
+Telescope.config.preloadSubscriptions.push('pages');
 
 PageController = RouteController.extend({
   getTitle: function () {

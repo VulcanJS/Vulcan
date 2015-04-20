@@ -17,7 +17,7 @@ AutoForm.hooks({
         // ------------------------------ Callbacks ------------------------------ //
 
         // run all post edit client callbacks on modifier object successively
-        post = postEditClientCallbacks.reduce(function(result, currentFunction) {
+        post = Posts.hooks.editClientCallbacks.reduce(function(result, currentFunction) {
             return currentFunction(result);
         }, post);
 

@@ -16,16 +16,16 @@ Template.nav.helpers({
     return headerClass;
   },
   primaryNav: function () {
-    return _.sortBy(primaryNav, 'order');
+    return _.sortBy(Telescope.config.primaryNav, 'order');
   },
   hasPrimaryNav: function () {
-    return !!primaryNav.length;
+    return !!Telescope.config.primaryNav.length;
   },
   secondaryNav: function () {
-    return _.sortBy(secondaryNav, 'order');
+    return _.sortBy(Telescope.config.secondaryNav, 'order');
   },
   hasSecondaryNav: function () {
-    return !!secondaryNav.length;
+    return !!Telescope.config.secondaryNav.length;
   },
   dropdownClass: function () {
     var dropdownClass = "";

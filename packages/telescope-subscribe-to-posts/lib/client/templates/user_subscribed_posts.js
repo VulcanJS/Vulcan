@@ -15,14 +15,14 @@ Template.userSubscribedPosts.created = function () {
 
     // get the new terms and generate new parameters from them
     var terms = instance.terms.get();
-    var parameters = getPostsParameters(terms);
+    var parameters = Posts.getSubParams(terms);
 
     // subscribe to the userPosts publication
     instance.subscription = Meteor.subscribe('userSubscribedPosts', terms);
 
     // update the instance's "posts" cursor
     instance.posts.set(Posts.find(parameters.find, parameters.options));
-    
+
   });
 };
 

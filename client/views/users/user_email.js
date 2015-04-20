@@ -3,7 +3,7 @@ Template.user_email.helpers({
     return Meteor.user();
   },
   username: function () {
-    return getUserName(Meteor.user());
+    return Users.getUserName(Meteor.user());
   }
 });
 
@@ -17,7 +17,7 @@ Template.user_email.events({
     var update = {
       "profile.email": $target.find('[name=email]').val(),
       "username": $target.find('[name=username]').val(),
-        "slug": slugify($target.find('[name=username]').val())
+        "slug": Telescope.utils.slugify($target.find('[name=username]').val())
     };
 
     // TODO: enable change email

@@ -68,7 +68,7 @@ Template.singleDay.created = function () {
   instance.getPostsCursor = function() {
     // console.log('loaded ' + instance.postsLoaded.get() + ' posts')
     var termsLoaded = _.extend(instance.getTerms(), {limit: instance.postsLoaded.get()});
-    var parameters = getPostsParameters(termsLoaded);
+    var parameters = Posts.getSubParams(termsLoaded);
     return Posts.find(parameters.find, parameters.options);
   };
 

@@ -3,7 +3,7 @@ Package.describe({summary: "Telescope search package"});
 Package.onUse(function (api) {
 
   api.use([
-    'telescope-lib',
+    'telescope:telescope-lib',
     'telescope-base',
     'telescope-settings',
     'aldeed:simple-schema'
@@ -46,5 +46,5 @@ Package.onUse(function (api) {
     "i18n/zh-CN.i18n.json",
   ], ["client", "server"]);
 
-  api.export(['adminMenu', 'viewParameters']);
+  api.export(['Telescope', 'viewParameters']);
 });

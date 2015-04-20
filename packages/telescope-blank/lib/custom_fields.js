@@ -13,4 +13,4 @@ var customProperty = {
     }
   }
 }
-addToPostSchema.push(customProperty);
+Posts.addToSchema(customProperty);

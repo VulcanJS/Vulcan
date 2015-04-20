@@ -6,7 +6,7 @@ Template.updateBanner.helpers({
     return Session.get('updateVersion');
   },
   currentVersion: function () {
-    return telescopeVersion;
+    return Telescope.VERSION;
   },
   message: function () {
     return Session.get('updateMessage');

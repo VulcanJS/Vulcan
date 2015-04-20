@@ -3,7 +3,7 @@ Template.layout.helpers({
     return Settings.get('navLayout', 'top-nav');
   },
   pageName : function(){
-    return getCurrentTemplate();
+    return Telescope.utils.getCurrentTemplate();
   },
   extraCode: function() {
     return Settings.get('extraCode');

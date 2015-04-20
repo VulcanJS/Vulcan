@@ -29,7 +29,7 @@ Campaigns = new Meteor.Collection("campaigns", {
   schema: campaignSchema
 });
 
-addToPostSchema.push(
+Posts.addToSchema(
   {
     propertyName: 'scheduledAt',
     propertySchema: {
@@ -188,7 +188,7 @@ heroModules.push({
 });
 
  function subscribeUserOnCreation (user) {
-  if (!!Settings.get('autoSubscribe') && !!getEmail(user)) {
+  if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user)) {
     addToMailChimpList(user, false, function (error, result) {
       console.log(error)
       console.log(result)
@@ -196,4 +196,4 @@ heroModules.push({
   }
   return user;
 }
-userCreatedCallbacks.push(subscribeUserOnCreation);
+Users.hooks.userCreatedCallbacks.push(subscribeUserOnCreation);

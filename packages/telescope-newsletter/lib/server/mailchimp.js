@@ -11,7 +11,7 @@ scheduleCampaign = function (campaign, isTest) {
 		var wordCount = 15;
 		var subject = campaign.subject;
 		while (subject.length >= 150){
-			subject = trimWords(subject, wordCount);
+			subject = Telescope.utils.trimWords(subject, wordCount);
 			wordCount--;
 		}
 
@@ -86,7 +86,7 @@ addToMailChimpList = function(userOrEmail, confirm, done){
     email = userOrEmail;
   } else if (typeof userOrEmail == "object") {
     user = userOrEmail;
-    email = getEmail(user);
+    email = Users.getEmail(user);
     if (!email)
       throw 'User must have an email address';
   }
@@ -114,7 +114,7 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if(!!user)
-        setUserSetting('subscribedToNewsletter', true, user);
+        Users.setUserSetting('subscribedToNewsletter', true, user);
 
       console.log("// User subscribed");
 

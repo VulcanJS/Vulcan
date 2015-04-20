@@ -1,160 +1,18 @@
 // ------------------------------------- Schemas -------------------------------- //
 
 // array containing properties to be added to the post/settings/comments schema on startup.
-addToPostSchema = [];
 addToCommentsSchema = [];
-addToUserSchema = [];
-
-registerPostProperty = function (property) {
-  addToPostSchema.push(property);
-}
 
 registerCommentProperty = function (property) {
   addToCommentsSchema.push(property);
-}
-
-registerSetting = function (property) {
-  addToSettingsSchema.push(property);
-}
-
-registerUserProperty = function (property) {
-  addToUserSchema.push(property);
 }
 
 SimpleSchema.extendOptions({
   editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner
   hidden: Match.Optional(Boolean)     // hidden: true means the field is never shown in a form no matter what
 });
-// ----------------------------------- Posts Statuses ------------------------------ //
-
-postStatuses = [
-  {
-    value: 1,
-    label: 'Pending'
-  },
-  {
-    value: 2,
-    label: 'Approved'
-  },
-  {
-    value: 3,
-    label: 'Rejected'
-  }
-];
-
-STATUS_PENDING=1;
-STATUS_APPROVED=2;
-STATUS_REJECTED=3;
-
-// ------------------------------------- Navigation -------------------------------- //
 
 
-// array containing nav items;
-primaryNav = [
-];
-
-secondaryNav = [
-  {
-    template: 'userMenu',
-    order: 10
-  },
-  {
-    template:'notificationsMenu',
-    order: 20
-  },
-  {
-    template: 'submitButton',
-    order: 30
-  }
-];
-
-mobileNav = [
-  {
-    template: 'userMenu',
-    order: 10
-  },
-  {
-    template:'notificationsMenu',
-    order: 20
-  },
-  {
-    template: 'submitButton',
-    order: 30
-  }
-];
-
-// array containing items in the views menu
-viewsMenu = [
-  {
-    route: 'posts_top',
-    label: 'top',
-    description: 'most_popular_posts'
-  },
-  {
-    route: 'posts_new',
-    label: 'new',
-    description: 'newest_posts'
-  },
-  {
-    route: 'posts_best',
-    label: 'best',
-    description: 'highest_ranked_posts_ever'
-  },
-  {
-    route: 'posts_pending',
-    label: 'pending',
-    description: 'posts_awaiting_moderation',
-    adminOnly: true
-  },
-  {
-    route: 'posts_scheduled',
-    label: 'scheduled',
-    description: 'future_scheduled_posts',
-    adminOnly: true
-  },
-];
-
-// array containing items in the admin menu
-adminMenu = [
-  {
-    route: 'settings',
-    label: 'Settings',
-    description: 'telescope_settings_panel'
-  },
-  {
-    route: 'usersDashboard',
-    label: 'Users',
-    description: 'users_dashboard'
-  }
-];
-
-userMenu = [
-  {
-    route: function () {
-      return Router.path('user_profile', {_idOrSlug: Meteor.user().slug});
-    },
-    label: 'profile',
-    description: 'view_your_profile'
-  },
-  {
-    route: function () {
-      return Router.path('user_edit', {slug: Meteor.user().slug});
-    },
-    label: 'edit_account',
-    description: 'edit_your_profile'
-  },
-  {
-    route: 'settings',
-    label: 'settings',
-    description: 'settings',
-    adminOnly: true
-  },
-  {
-    route: 'signOut',
-    label: 'sign_out',
-    description: 'sign_out'
-  }
-];
 // ------------------------------------- Views -------------------------------- //
 
 
@@ -164,7 +22,7 @@ viewParameters = {};
 // will be common to all other view unless specific properties are overwritten
 viewParameters.baseParameters = {
   find: {
-    status: STATUS_APPROVED
+    status: Posts.config.STATUS_APPROVED
   },
   options: {
     limit: 10
@@ -303,19 +161,8 @@ postMeta = [
     order: 50
   }
 ];
+
 // ------------------------------ Callbacks ------------------------------ //
-
-postClassCallbacks = [];
-
-postSubmitClientCallbacks = [];
-postSubmitMethodCallbacks = [];
-postAfterSubmitMethodCallbacks = []; // runs on server only in a timeout
-
-postEditClientCallbacks = []; // loops over modifier object
-postEditMethodCallbacks = []; // loops over modifier (i.e. "{$set: {foo: bar}}") object
-postAfterEditMethodCallbacks = []; // loops over modifier object
-
-postApproveCallbacks = [];
 
 commentClassCallbacks = [];
 
@@ -376,11 +223,6 @@ userProfileEdit = [
   }
 ];
 
-userProfileCompleteChecks.push(
-  function(user) {
-    return !!getEmail(user) && !!getUserName(user);
-  }
-);
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 
@@ -396,16 +238,6 @@ getTemplate = function (name) {
   // return !!templates[name] ? templates[name] : name;
 };
 
-// ------------------------------ Theme Settings ------------------------------ //
-
-themeSettings = {
-  'useDropdowns': true // whether or not to use dropdown menus in a theme
-};
-
-// ------------------------------ Subscriptions ------------------------------ //
-
-// array containing subscriptions to be preloaded
-preloadSubscriptions = [];
 
 // ------------------------------- Vote Power -------------------------------- //
 

@@ -30,7 +30,7 @@ Categories.attachSchema(categorySchema);
 Categories.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one
   if (!doc.slug)
-    doc.slug = slugify(doc.name);
+    doc.slug = Telescope.utils.slugify(doc.name);
 });
 
 // category post list parameters
@@ -44,9 +44,9 @@ viewParameters.category = function (terms) {
 
 Meteor.startup(function () {
   Categories.allow({
-    insert: isAdminById,
-    update: isAdminById,
-    remove: isAdminById
+    insert: Users.isAdminById,
+    update: Users.isAdminById,
+    remove: Users.isAdminById
   });
 });
 
@@ -55,11 +55,11 @@ getPostCategories = function (post) {
 }
 
 getCategoryUrl = function(slug){
-  return getSiteUrl()+'category/'+slug;
+  return Telescope.utils.getSiteUrl()+'category/'+slug;
 };
 
 // add callback that adds categories CSS classes
-postClassCallbacks.push(function (post, postClass){
+Posts.hooks.classCallbacks.push(function (post, postClass){
   var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug});
   return postClass + " " + classArray.join(' ');
 });

@@ -2,7 +2,7 @@ Package.describe({summary: "Telescope base package"});
 
 Package.onUse(function (api) {
 
-  api.use(['telescope-i18n', 'telescope-lib', 'aldeed:simple-schema', 'check']);
+  api.use(['telescope-i18n', 'telescope:telescope-lib', 'telescope:telescope-posts', 'aldeed:simple-schema', 'check']);
   api.imply(['aldeed:simple-schema']);
 
   api.add_files(['lib/base.js'], ['client', 'server']);
@@ -10,29 +10,10 @@ Package.onUse(function (api) {
   api.add_files(['lib/icons.js'], ['client', 'server']);
 
   api.export([
-    'postStatuses',
-    'STATUS_PENDING',
-    'STATUS_APPROVED',
-    'STATUS_REJECTED',
 
-    'adminMenu',
-    'viewsMenu',
-    'userMenu',
-
-    'addToPostSchema', 
-    'addToCommentsSchema', 
-    'addToSettingsSchema', 
-    'addToUserSchema',
-    
-    'registerPostProperty',
+    'addToCommentsSchema',
     'registerCommentProperty',
-    'registerSetting',
-    'registerUserProperty',
 
-    'preloadSubscriptions', 
-    'primaryNav', 
-    'secondaryNav', 
-    'mobileNav',
     'viewParameters',
 
     'footerModules',
@@ -44,19 +25,8 @@ Package.onUse(function (api) {
     'postHeading',
     'postMeta',
 
-    'postClassCallbacks',
-
     'postSubmitRenderedCallbacks',
-    'postSubmitClientCallbacks',
-    'postSubmitMethodCallbacks',
-    'postAfterSubmitMethodCallbacks',
-
-    'postApproveCallbacks',
-
     'postEditRenderedCallbacks',
-    'postEditClientCallbacks',
-    'postEditMethodCallbacks',
-    'postAfterEditMethodCallbacks',
 
     'commentClassCallbacks',
 
@@ -79,10 +49,10 @@ Package.onUse(function (api) {
     'cancelUpvoteMethodCallbacks',
     'cancelDownvoteMethodCallbacks',
 
-    'userEditRenderedCallbacks',
     'userEditClientCallbacks',
     'userProfileCompleteChecks',
     'userProfileCompletedCallbacks',
+
     'userProfileDisplay',
     'userProfileEdit',
     'userCreatedCallbacks',

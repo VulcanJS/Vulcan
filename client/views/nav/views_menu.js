@@ -2,7 +2,7 @@ Template.viewsMenu.helpers({
   viewsMenuData: function () {
     return {
       dropdownName: 'view',
-      dropdownItems: viewsMenu
+      dropdownItems: Telescope.config.viewsMenu
     }
   }
 });

@@ -2,7 +2,7 @@ Package.describe({summary: "Telescope base theme"});
 
 Package.onUse(function (api) {
 
-  api.use(['telescope-lib', 'telescope-base', 'fourseven:scss'], ['client', 'server']);
+  api.use(['telescope:telescope-lib', 'telescope-base', 'fourseven:scss'], ['client', 'server']);
 
   api.addFiles(
     [

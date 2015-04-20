@@ -115,9 +115,9 @@ Settings.schema = new SimpleSchema({
       group: 'posts',
       instructions: 'The view used for the front page',
       options: function () {
-        return _.map(viewsMenu, function (view) {
+        return _.map(Telescope.config.viewsMenu, function (view) {
           return {
-            value: camelCaseify(view.label),
+            value: Telescope.utils.camelCaseify(view.label),
             label: view.label
           };
         });
@@ -145,7 +145,7 @@ Settings.schema = new SimpleSchema({
       editable: true,
       noselect: true,
       options: function () {
-        return _.map(viewsMenu, function (item){
+        return _.map(Telescope.config.viewsMenu, function (item){
           return {
             value: item.route,
             label: item.label
@@ -437,9 +437,9 @@ Settings.get = function(setting, defaultValue) {
 
 Meteor.startup(function () {
   Settings.collection.allow({
-    insert: isAdminById,
-    update: isAdminById,
-    remove: isAdminById
+    insert: Users.isAdminById,
+    update: Users.isAdminById,
+    remove: Users.isAdminById
   });
 });
 

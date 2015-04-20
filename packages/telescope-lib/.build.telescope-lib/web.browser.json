@@ -1,0 +1,73 @@
+{
+  "format": "unipackage-unibuild-pre1",
+  "packageVariables": [
+    {
+      "name": "deepExtend",
+      "export": true
+    },
+    {
+      "name": "camelToDash",
+      "export": true
+    },
+    {
+      "name": "dashToCamel",
+      "export": true
+    },
+    {
+      "name": "camelCaseify",
+      "export": true
+    },
+    {
+      "name": "getSetting",
+      "export": true
+    },
+    {
+      "name": "getThemeSetting",
+      "export": true
+    },
+    {
+      "name": "getSiteUrl",
+      "export": true
+    },
+    {
+      "name": "trimWords",
+      "export": true
+    },
+    {
+      "name": "can",
+      "export": true
+    },
+    {
+      "name": "_",
+      "export": true
+    },
+    {
+      "name": "capitalise",
+      "export": true
+    },
+    {
+      "name": "expString"
+    }
+  ],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "underscore"
+    },
+    {
+      "package": "jquery"
+    }
+  ],
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "web.browser/packages/telescope-lib.js",
+      "length": 47110,
+      "offset": 0,
+      "servePath": "/packages/telescope-lib.js",
+      "sourceMap": "web.browser/packages/telescope-lib.js.map"
+    }
+  ]
+}

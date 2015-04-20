@@ -1,7 +1,7 @@
 // Publish a single post
 
 Meteor.publish('singlePost', function(id) {
-  if (can.viewById(this.userId)){
+  if (Users.can.viewById(this.userId)){
     return Posts.find(id);
   }
   return [];
@@ -10,7 +10,7 @@ Meteor.publish('singlePost', function(id) {
 // Publish author of the current post, authors of its comments, and upvoters of the post
 
 Meteor.publish('postUsers', function(postId) {
-  if (can.viewById(this.userId)){
+  if (Users.can.viewById(this.userId)){
     // publish post author and post commenters
     var post = Posts.findOne(postId),
         users = [post.userId]; // publish post author's ID
@@ -37,8 +37,8 @@ Meteor.publish('postUsers', function(postId) {
 
     // remove any duplicate IDs
     users = _.unique(users);
-    
-    return Meteor.users.find({_id: {$in: users}}, {fields: privacyOptions});
+
+    return Meteor.users.find({_id: {$in: users}}, {fields: Users.pubsub.privacyOptions});
   }
   return [];
 });
@@ -46,7 +46,7 @@ Meteor.publish('postUsers', function(postId) {
 // Publish comments for a specific post
 
 Meteor.publish('postComments', function(postId) {
-  if (can.viewById(this.userId)){
+  if (Users.can.viewById(this.userId)){
     return Comments.find({postId: postId}, {sort: {score: -1, postedAt: -1}});
   }
   return [];

@@ -3,10 +3,10 @@ Template.user_item.helpers({
     return this.createdAt ? moment(this.createdAt).fromNow() : '–';
   },
   displayName: function(){
-    return getDisplayName(this);
+    return Users.getDisplayName(this);
   },
   getEmail: function(){
-    return getEmail(this);
+    return Users.getEmail(this);
   },
   posts: function(){
     return Posts.find({'userId':this._id});
@@ -15,17 +15,17 @@ Template.user_item.helpers({
     return Comments.find({'userId':this._id});
   },
   userIsAdmin: function(){
-    return isAdmin(this);
+    return Users.isAdmin(this);
   },
   getProfileUrl: function () {
-    return getProfileUrl(this);
+    return Users.getProfileUrl(this);
   },
   getKarma: function() {
     return Math.round(100*this.karma)/100;
   },
   getInvitedUserProfileUrl: function () {
     var user = Meteor.users.findOne(this.invitedId);
-    return getProfileUrl(user);
+    return Users.getProfileUrl(user);
   }
 });
 
@@ -44,15 +44,15 @@ Template.user_item.events({
   },
   'click .admin-link': function(e, instance){
     e.preventDefault();
-    updateAdmin(instance.data._id, true);
+    Users.updateAdmin(instance.data._id, true);
   },
   'click .unadmin-link': function(e, instance){
     e.preventDefault();
-    updateAdmin(instance.data._id, false);
+    Users.updateAdmin(instance.data._id, false);
   },
   'click .delete-link': function(e, instance){
     e.preventDefault();
-    if(confirm(i18n.t("are_you_sure_you_want_to_delete")+getDisplayName(instance.data)+"?"))
+    if(confirm(i18n.t("are_you_sure_you_want_to_delete")+Users.getDisplayName(instance.data)+"?"))
       Meteor.users.remove(instance.data._id);
   }
 });

@@ -17,16 +17,16 @@ UI.registerHelper('isLoggedIn', function() {
   return !!Meteor.user();
 });
 UI.registerHelper('canView', function() {
-  return can.view(Meteor.user());
+  return Users.can.view(Meteor.user());
 });
 UI.registerHelper('canPost', function() {
-  return can.post(Meteor.user());
+  return Users.can.post(Meteor.user());
 });
 UI.registerHelper('canComment', function() {
-  return can.comment(Meteor.user());
+  return Users.can.comment(Meteor.user());
 });
 UI.registerHelper('isAdmin', function(showError) {
-  if (isAdmin(Meteor.user())) {
+  if (Users.isAdmin(Meteor.user())) {
     return true;
   }
   if ((typeof showError === 'string') && (showError === 'true')) {
@@ -35,7 +35,7 @@ UI.registerHelper('isAdmin', function(showError) {
   return false;
 });
 UI.registerHelper('canEdit', function(item) {
-  return can.edit(Meteor.user(), item, false);
+  return Users.can.edit(Meteor.user(), item, false);
 });
 
 UI.registerHelper('log', function(context){
@@ -55,7 +55,7 @@ UI.registerHelper('timeAgo', function(datetime) {
 UI.registerHelper('sanitize', function(content) {
   console.log('cleaning up…');
   console.log(content);
-  return cleanUp(content);
+  return Telescope.utils.cleanUp(content);
 });
 
 UI.registerHelper('pluralize', function(count, string) {
@@ -66,21 +66,21 @@ UI.registerHelper('pluralize', function(count, string) {
 UI.registerHelper('profileUrl', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
-    return getProfileUrl(user);
+    return Users.getProfileUrl(user);
   }
 });
 
 UI.registerHelper('userName', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
-    return getUserName(user);
+    return Users.getUserName(user);
   }
 });
 
 UI.registerHelper('displayName', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
-    return getDisplayName(user);
+    return Users.getDisplayName(user);
   }
 });
 
