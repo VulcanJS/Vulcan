@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   ], 'client');
 
   api.use([
-    'telescope:telescope-lib',
+    'telescope:lib',
     'telescope-base',
   ]);
 

@@ -18,9 +18,9 @@ Package.onUse(function (api) {
     'tap:i18n',
     'iron:router',
     'telescope-base',
-    'telescope-settings',
-    'telescope:telescope-lib',
-    'telescope:telescope-users',
+    'telescope:settings',
+    'telescope:lib',
+    'telescope:users',
     'telescope-i18n',
     'aldeed:simple-schema',
     'aldeed:autoform'

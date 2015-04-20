@@ -1,9 +1,0 @@
-[submodule "packages/telescope-lib"]
-	path = packages/telescope-lib
-	url = git@github.com:TelescopeJS/telescope-lib.git
-[submodule "packages/telescope-posts"]
-	path = packages/telescope-posts
-	url = git@github.com:TelescopeJS/telescope-posts.git
-[submodule "packages/telescope-users"]
-	path = packages/telescope-users
-	url = git@github.com:TelescopeJS/telescope-users.git

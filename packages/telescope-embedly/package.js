@@ -10,10 +10,10 @@ Package.onUse( function(api) {
   api.versionsFrom("METEOR@0.9.0");
 
   api.use([
-    'telescope:telescope-lib',
+    'telescope:lib',
     'telescope-base',
-    'telescope:telescope-posts',
-    'telescope-settings',
+    'telescope:posts',
+    'telescope:settings',
     'aldeed:autoform',
     'tap:i18n',
     'fourseven:scss',

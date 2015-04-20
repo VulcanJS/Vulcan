@@ -15,11 +15,11 @@ Package.onUse(function (api) {
     'tap:i18n',
     'iron:router',
     'telescope-base',
-    'telescope:telescope-lib',
+    'telescope:lib',
     'telescope-i18n',
     'fourseven:scss',
     'telescope-notifications',
-    'telescope:telescope-posts'
+    'telescope:posts'
   ]);
 
   // client

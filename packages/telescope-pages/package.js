@@ -15,7 +15,7 @@ Package.onUse(function(api) {
     'iron:router',
     'templating',
     'telescope-messages',
-    'telescope:telescope-lib',
+    'telescope:lib',
     'matb33:collection-hooks',
     'chuangbo:marked'
   ]);

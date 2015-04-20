@@ -3,9 +3,9 @@ Package.describe({summary: "Telescope tags package"});
 Package.onUse(function (api) {
 
   api.use([
-    'telescope:telescope-lib',
+    'telescope:lib',
     'telescope-base',
-    'telescope:telescope-posts',
+    'telescope:posts',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'tap:i18n',

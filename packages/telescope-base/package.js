@@ -2,72 +2,74 @@ Package.describe({summary: "Telescope base package"});
 
 Package.onUse(function (api) {
 
-  api.use(['telescope-i18n', 'telescope:telescope-lib', 'telescope:telescope-posts', 'aldeed:simple-schema', 'check']);
-  api.imply(['aldeed:simple-schema']);
+// doesn't do anything anymore
 
-  api.add_files(['lib/base.js'], ['client', 'server']);
-  api.add_files(['lib/colors.js'], ['client', 'server']);
-  api.add_files(['lib/icons.js'], ['client', 'server']);
+  // api.use(['telescope-i18n', 'telescope:telescope-lib', 'telescope:telescope-posts', 'aldeed:simple-schema', 'check']);
+  // api.imply(['aldeed:simple-schema']);
 
-  api.export([
+  // api.add_files(['lib/base.js'], ['client', 'server']);
+  // api.add_files(['lib/colors.js'], ['client', 'server']);
+  // api.add_files(['lib/icons.js'], ['client', 'server']);
 
-    'addToCommentsSchema',
-    'registerCommentProperty',
+  // api.export([
 
-    'viewParameters',
+  //   'addToCommentsSchema',
+  //   'registerCommentProperty',
 
-    'footerModules',
-    'heroModules',
-    'threadModules',
-    'postListTopModules',
-    'postModules',
-    'postThumbnail',
-    'postHeading',
-    'postMeta',
+  //   'viewParameters',
 
-    'postSubmitRenderedCallbacks',
-    'postEditRenderedCallbacks',
+  //   'footerModules',
+  //   'heroModules',
+  //   'threadModules',
+  //   'postListTopModules',
+  //   'postModules',
+  //   'postThumbnail',
+  //   'postHeading',
+  //   'postMeta',
 
-    'commentClassCallbacks',
+  //   'postSubmitRenderedCallbacks',
+  //   'postEditRenderedCallbacks',
 
-    'commentSubmitRenderedCallbacks',
-    'commentSubmitClientCallbacks',
-    'commentSubmitMethodCallbacks',
-    'commentAfterSubmitMethodCallbacks',
+  //   'commentClassCallbacks',
 
-    'commentEditRenderedCallbacks',
-    'commentEditClientCallbacks',
-    'commentEditMethodCallbacks',
-    'commentAfterEditMethodCallbacks',
+  //   'commentSubmitRenderedCallbacks',
+  //   'commentSubmitClientCallbacks',
+  //   'commentSubmitMethodCallbacks',
+  //   'commentAfterSubmitMethodCallbacks',
 
-    'upvoteCallbacks',
-    'downvoteCallbacks',
-    'cancelUpvoteCallbacks',
-    'cancelDownvoteCallbacks',
-    'upvoteMethodCallbacks',
-    'downvoteMethodCallbacks',
-    'cancelUpvoteMethodCallbacks',
-    'cancelDownvoteMethodCallbacks',
+  //   'commentEditRenderedCallbacks',
+  //   'commentEditClientCallbacks',
+  //   'commentEditMethodCallbacks',
+  //   'commentAfterEditMethodCallbacks',
 
-    'userEditClientCallbacks',
-    'userProfileCompleteChecks',
-    'userProfileCompletedCallbacks',
+  //   'upvoteCallbacks',
+  //   'downvoteCallbacks',
+  //   'cancelUpvoteCallbacks',
+  //   'cancelDownvoteCallbacks',
+  //   'upvoteMethodCallbacks',
+  //   'downvoteMethodCallbacks',
+  //   'cancelUpvoteMethodCallbacks',
+  //   'cancelDownvoteMethodCallbacks',
 
-    'userProfileDisplay',
-    'userProfileEdit',
-    'userCreatedCallbacks',
+  //   'userEditClientCallbacks',
+  //   'userProfileCompleteChecks',
+  //   'userProfileCompletedCallbacks',
 
-    'getTemplate',
-    'templates',
+  //   'userProfileDisplay',
+  //   'userProfileEdit',
+  //   'userCreatedCallbacks',
 
-    'getIcon',
-    'icons',
+  //   'getTemplate',
+  //   'templates',
 
-    'colorTable',
-    'registerElementColor',
+  //   'getIcon',
+  //   'icons',
 
-    'themeSettings',
+  //   'colorTable',
+  //   'registerElementColor',
 
-    'getVotePower'
-    ]);
+  //   'themeSettings',
+
+  //   'getVotePower'
+  //   ]);
 });

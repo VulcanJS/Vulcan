@@ -3,9 +3,9 @@ Package.describe({summary: "Telescope search package"});
 Package.onUse(function (api) {
 
   api.use([
-    'telescope:telescope-lib',
+    'telescope:lib',
     'telescope-base',
-    'telescope-settings',
+    'telescope:settings',
     'aldeed:simple-schema'
   ], ['client', 'server']);
 

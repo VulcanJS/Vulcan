@@ -7,12 +7,12 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'telescope:telescope-lib',
-    'telescope:telescope-users',
+    'telescope:lib',
+    'telescope:users',
     'telescope-base',
-    'telescope-settings',
+    'telescope:settings',
     'telescope-email',
-    'telescope:telescope-posts',
+    'telescope:posts',
     'iron:router',
     'kestanous:herald@1.3.0',
     'kestanous:herald-email',

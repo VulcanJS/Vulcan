@@ -13,7 +13,7 @@ Package.onUse(function(api) {
     "iron:router",
     "telescope-lib",
     "telescope-base",
-    "telescope-settings",
+    "telescope:settings",
     "telescope-i18n",
     "manuelschoebel:ms-seo@0.4.1",
     "gadicohen:sitemaps@0.0.20"

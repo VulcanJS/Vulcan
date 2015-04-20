@@ -16,8 +16,8 @@ Package.onUse(function(api) {
   api.use([
     'telescope-base',
     'telescope-tags',
-    'telescope:telescope-lib',
-    'telescope:telescope-posts',
+    'telescope:lib',
+    'telescope:posts',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'tap:i18n',

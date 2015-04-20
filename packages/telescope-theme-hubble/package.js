@@ -4,7 +4,7 @@ Package.onUse(function (api) {
 
   api.use(
     [
-      'telescope:telescope-lib',
+      'telescope:lib',
       'telescope-base',
       'fourseven:scss'
     ],

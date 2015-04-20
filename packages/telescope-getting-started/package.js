@@ -18,9 +18,9 @@ Package.onUse(function (api) {
     'tap:i18n',                   // internationalization package
     'iron:router',                // routing package
     'telescope-base',             // basic Telescope hooks and objects
-    'telescope:telescope-lib',              // useful functions
+    'telescope:lib',              // useful functions
     'telescope-i18n',             // internationalization wrapper
-    'telescope:telescope-posts',
+    'telescope:posts',
     'momentjs:moment'
   ]);
 

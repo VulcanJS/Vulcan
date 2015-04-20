@@ -6,9 +6,9 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope-base',
-    'telescope:telescope-lib',
-    'telescope-settings',
-    'telescope:telescope-posts'
+    'telescope:lib',
+    'telescope:settings',
+    'telescope:posts'
   ], ['server']);
 
   api.add_files(['lib/server/rss.js', 'lib/server/routes.js'], ['server']);

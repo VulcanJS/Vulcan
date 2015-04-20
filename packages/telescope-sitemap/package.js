@@ -9,9 +9,9 @@ Package.onUse(function(api) {
     "templating",
     "underscore",
     "iron:router",
-    "telescope:telescope-lib",
+    "telescope:lib",
     "telescope-base",
-    "telescope:telescope-posts",
+    "telescope:posts",
     "gadicohen:sitemaps@0.0.20"
   ]);
 
