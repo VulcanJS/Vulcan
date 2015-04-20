@@ -388,8 +388,11 @@ templates = {}
 
 // note: not used anymore, but keep for backwards compatibility
 getTemplate = function (name) {
+  // for now, always point back to the original template
+  var originalTemplate = (_.invert(templates))[name];
+  return !!originalTemplate ? originalTemplate : name;
+
   // if template has been overwritten, return this; else return template name
-  return name;
   // return !!templates[name] ? templates[name] : name;
 };
 
