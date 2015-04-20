@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'telescope:settings',
     'telescope:lib',
     'telescope:users',
-    'telescope-i18n',
+    'telescope:i18n',
     'tap:i18n'
   ], ['client', 'server']);
 

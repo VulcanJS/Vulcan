@@ -62,8 +62,7 @@ manuelschoebel:ms-seo
 
 # Telescope Packages (Required)
 
-telescope-i18n
-
+telescope:i18n
 telescope:posts
 telescope:lib
 telescope:users

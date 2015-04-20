@@ -21,7 +21,7 @@ Package.onUse(function (api) {
     'telescope:settings',
     'telescope:lib',
     'telescope:users',
-    'telescope-i18n',
+    'telescope:i18n',
     'aldeed:simple-schema',
     'aldeed:autoform'
   ]);

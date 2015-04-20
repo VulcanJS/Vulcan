@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'iron:router',
     'telescope-base',
     'telescope:lib',
-    'telescope-i18n',
+    'telescope:i18n',
     'fourseven:scss',
     'telescope-notifications',
     'telescope:posts'

@@ -4,7 +4,7 @@ Package.onUse(function (api) {
 
 // doesn't do anything anymore
 
-  // api.use(['telescope-i18n', 'telescope:telescope-lib', 'telescope:telescope-posts', 'aldeed:simple-schema', 'check']);
+  // api.use(['telescope:i18n', 'telescope:telescope-lib', 'telescope:telescope-posts', 'aldeed:simple-schema', 'check']);
   // api.imply(['aldeed:simple-schema']);
 
   // api.add_files(['lib/base.js'], ['client', 'server']);
