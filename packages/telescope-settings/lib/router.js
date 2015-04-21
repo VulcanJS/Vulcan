@@ -2,7 +2,7 @@ Meteor.startup(function () {
   // Settings
 
   Router.route('/settings', {
-    controller: AdminController,
+    controller: Telescope.controllers.admin,
     name: 'settings',
     // layoutTemplate: 'adminLayout',
     data: function () {

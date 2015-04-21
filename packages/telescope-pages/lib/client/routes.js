@@ -26,7 +26,7 @@ Meteor.startup(function () {
 
   Router.route('/pages', {
     name: 'pages',
-    controller: AdminController
+    controller: Telescope.controllers.admin
   });
 
 });

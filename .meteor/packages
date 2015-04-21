@@ -66,6 +66,7 @@ telescope:users
 telescope:settings
 telescope:comments
 telescope:events
+telescope:core
 
 # Telescope Packages (Optional)
 

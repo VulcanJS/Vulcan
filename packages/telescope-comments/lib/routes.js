@@ -1,6 +1,6 @@
 // Controller for comment pages
 
-CommentPageController = RouteController.extend({
+Comments.controllers.page = RouteController.extend({
   waitOn: function() {
     return [
       coreSubscriptions.subscribe('singleCommentAndChildren', this.params._id),
@@ -26,7 +26,7 @@ Meteor.startup( function () {
   Router.route('/comments/:_id', {
     name: 'comment_reply',
     template: 'comment_reply',
-    controller: CommentPageController,
+    controller: Comments.controllers.page,
     onAfterAction: function() {
       window.queueComments = false;
     }
@@ -37,7 +37,7 @@ Meteor.startup( function () {
   Router.route('/comments/:_id/edit', {
     name: 'comment_edit',
     template: 'comment_edit',
-    controller: CommentPageController,
+    controller: Comments.controllers.page,
     onAfterAction: function() {
       window.queueComments = false;
     }

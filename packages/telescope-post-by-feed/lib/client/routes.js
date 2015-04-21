@@ -12,7 +12,7 @@ Meteor.startup(function () {
 
   Router.route('/feeds', {
     name: 'feeds',
-    controller: AdminController,
+    controller: Telescope.controllers.admin,
     waitOn: function() {
       return [
         Meteor.subscribe('feeds'),

@@ -39,7 +39,7 @@ Meteor.startup(function () {
   // Search Logs
 
   Router.route('/logs/:limit?', {
-    controller: AdminController,
+    controller: Telescope.controllers.admin,
     name: 'searchLogs',
     waitOn: function () {
       var limit = this.params.limit || 100;

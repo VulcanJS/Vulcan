@@ -30,3 +30,5 @@ if(Meteor.isServer) {
     });
   });
 }
+
+Telescope.controllers = {};

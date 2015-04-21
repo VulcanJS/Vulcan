@@ -1,4 +1,4 @@
-AdminController = RouteController.extend({
+Telescope.controllers.admin = RouteController.extend({
 
   template: "adminWrapper"
 

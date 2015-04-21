@@ -107,7 +107,7 @@ Meteor.startup(function () {
   // All Users
 
   Router.route('/users-dashboard', {
-    controller: AdminController,
+    controller: Telescope.controllers.admin,
     name: 'usersDashboard'
     // template: 'users'
   });
