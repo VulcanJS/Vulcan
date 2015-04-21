@@ -1,0 +1,233 @@
+form, .accounts-dialog{
+  &.form-block{
+    background:$lightest-grey;
+    border-radius: 3px;
+    margin-bottom:10px;
+    padding:10px;
+  }
+  // @extend .grid-block;
+  >div{
+    @include cf;
+  }
+  .control-group, .form-group, .at-input{
+    @include cf;
+    margin-bottom:$grid-padding;
+    >label{
+      font-weight: bold;
+      display: block;
+      @include small{
+        margin-bottom: 5px;
+      }
+      @include medium-large{
+        float:left;
+        margin-right:10px;
+      }
+    }
+    .controls{
+      @include medium-large{
+        margin-left: 200px;
+      }
+      position:relative;
+      .inline-link{
+        position:absolute;
+        display:block;
+        top:2px;
+        right:8px;
+        &.loading{
+          background:url(/img/loading.gif) center center no-repeat;
+          height:22px;
+          width:18px;
+          @include hide-text2;
+        }
+      }
+      label{
+        display:block;
+        margin-bottom:5px;
+      }
+      label.inline{
+        display:inline-block;
+        margin-bottom:0;
+      }
+    }
+    &.inline{
+      .controls{
+        margin-left:0px;
+        width:80%;
+        float:left;
+      }
+      .submit{
+        float:right;
+      }
+      margin-bottom:10px;
+    }
+  }
+  .form-actions, .form-group{
+    @include cf;
+    a{
+      float:left;
+      display:block;
+    }
+    .button, .btn{
+      float: right;
+    }
+  }
+  input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea, .login-form input{
+    display:block;
+    padding:5px 6px;
+    width:100%;
+    font-size:14px;
+    @include border-box;
+    border: 1px solid $grey;
+    transition: $border-color, 500ms;
+    // box-shadow: inset 0px 0px 0px 1px black(0.2);
+    &:focus{
+      outline: none;
+      border-color:$red;
+      box-shadow: 0px 0px 5px 0px rgba($red,0.3);
+    }
+    &[type="number"]{
+      width: 30%;
+    }
+    &:disabled{
+      background: #eee;
+      color: $light-text;
+    }
+  }
+  input[type="text"], input[type="password"], input[type="number"], .login-form input{
+    height:30px;
+    line-height:20px;
+  }
+  input[disabled='disabled']{
+    color:$light-text;
+    background:$lightest-grey;
+  }
+  textarea{
+    min-height:100px;
+    line-height:1.4;
+  }
+  .note{
+    padding: 5px 0;
+    color: $light-text;
+    font-size: 80%;
+  }
+}
+input[type="submit"], button, .button, .btn{
+  -webkit-appearance: none;
+  border-radius: 3px;
+  text-align:center;
+  display:block;
+  max-width: 300px;
+  padding:10px 12px;
+  line-height: 1;
+  border:none;
+  font-size:15px;
+  cursor:pointer;
+  margin:0;
+  color: white;
+  font-weight: normal;
+  // line-height:26px;
+  // height:26px;
+  font-weight:normal;
+  &.disabled, &.loading{
+    background:$lighter-grey !important;
+    pointer-events:none;
+    color: $medium-text;
+  }
+  &.inline{
+    display: inline-block;
+  }
+  &.loading {
+    position: relative;
+    color: $lighter-grey !important;
+    &:after{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -10px 0 0 -10px;
+      content: " ";
+      display: block;
+      background:  url('/img/loading.svg');
+      height: 20px;
+      width: 20px;
+      background-size: 20px 20px;
+    }
+  }
+}
+.btn-primary, .submit{
+  background:$red;
+  &:link, &:hover, &:active, &:visited{
+    color:white;
+  }
+}
+input[type="search"]{
+  font-size:14px;
+}
+.twitter-signup{
+  margin-bottom:20px;
+  padding-bottom:20px;
+  border-bottom:1px solid $lighter-grey;
+  .twitter-button{
+    background:#00aced;
+  }
+}
+.category-slug{
+  font-size:12px;
+  float:left;
+  width:80%;
+  display:block;
+}
+.ui-autocomplete{
+  background: white;
+  width: 200px!important;
+  padding:10px;
+  font-size:14px;
+  box-shadow: 0 1px 1px black(0.15);
+}
+
+.help-block{
+  color: $light-text;
+  margin-bottom:$grid-padding;
+}
+#editor>iframe{
+  border: 1px solid #B5B0B0;
+}
+.comment-field{
+  margin-bottom: 10px;
+}
+.fieldset-heading{
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #B5B0B0;
+  color: $light-text;
+}
+fieldset{
+  margin-bottom: 30px;
+}
+.instructions-block{
+  margin-top: 5px;
+  display: block;
+  font-size: 80%;
+  color: $light-text;
+}
+.private-field{
+  color: $red;
+  font-weight: normal;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.finish-signup-message{
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.form-well {
+  background: $light-yellow;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+.form-module {
+  border-bottom: 1px solid #B5B0B0;
+  padding-bottom: 40px;
+  margin: 0 auto 40px auto;
+}

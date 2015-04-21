@@ -1,0 +1,10 @@
+a{
+  text-decoration: none;
+  &, &:link, &:visited, &:active{
+    color: $text;
+    font-weight: bold;
+  }
+  &:hover{
+    color: $red;
+  }
+}

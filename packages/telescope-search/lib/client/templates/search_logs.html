@@ -1,0 +1,30 @@
+<template name="searchLogs">
+  <h2>Search Logs</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Keyword</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each this}}
+        {{#if isNewDate}}
+          <tr class='search-date-header'>
+            <th colspan="2">
+              <span class="search-date">{{getDate}}</span>
+              <span class="search-count">{{searchCount}}</span>
+            </th>
+          </tr>
+        {{/if}}
+        <tr>
+          <td>{{keyword}}</td>
+          <td>{{getTime}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="grid more-button">
+    <a class="more-link" href="{{loadMoreUrl}}">{{_ "load_more"}}</a>
+  </div>
+</template>

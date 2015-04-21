@@ -1,0 +1,13 @@
+<template name="postsDaily">
+  <div class="grid">
+    {{#each days}}
+      {{> beforeDay}}
+      <h2 class="posts-day-heading">{{formatDate date "dddd, MMMM Do YYYY"}}</h2>
+
+      {{> singleDay data=context}}
+
+      {{> afterDay}}
+    {{/each}}
+    <a class="load-more-days-button grid-module" href="{{loadMoreDaysUrl}}"><span>{{_ "load_next_days"}}</span></a>
+  </div>
+</template>

@@ -1,0 +1,63 @@
+.users-dashboard-heading {
+  margin-bottom: -50px;
+}
+
+.users-dashboard {
+
+  a {
+    color: lighten($text, 10%);
+    transition: color .5s;
+
+    &:hover {
+      color: $red;
+    }
+  }
+
+  .reactive-table-filter {
+    margin: 5px 7px 25px 0;
+
+    span {
+      font-size: 1.15em;
+      color: $text;
+      font-weight: bold;
+    }
+
+    input {
+      width: 170px;
+      height: 30px;
+      font-size: 1em;
+      padding: .7em;
+      margin-left: .3em;
+      transition: width .7s ease-in-out;
+
+      &:focus {
+        width: 220px;
+        outline: none;
+      }
+    }
+  }
+
+  td {
+    text-align: center;
+
+    .time-ago {
+      font-size: .9em;
+      color: lighten($text, 15%);
+    }
+
+    &.actions {
+
+      li {
+        margin-bottom: .25em;
+
+        &:last-child {
+          margin-bottom: .15em;
+        }
+      }
+    }
+  }
+
+  .reactive-table-navigation {
+    margin-top: 30px;
+  }
+}

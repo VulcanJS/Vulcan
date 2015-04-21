@@ -1,0 +1,142 @@
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">    <!-- So that mobile webkit will display zoomed in -->
+    <meta name="format-detection" content="telephone=no"> <!-- disable auto telephone linking in iOS -->
+
+    <title>{{siteName}}</title>
+    <style type="text/css">
+
+        /* Resets: see reset.css for details */
+        .ReadMsgBody { width: 100%; background-color: #ebebeb;}
+        .ExternalClass {width: 100%; background-color: #ebebeb;}
+        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height:100%;}
+        body {-webkit-text-size-adjust:none; -ms-text-size-adjust:none;}
+        body {margin:0; padding:0;}
+        table {border-spacing:0;}
+        table td {border-collapse:collapse;}
+        .yshortcuts a {border-bottom: none !important;}
+
+
+        /* Constrain email width for small screens */
+        @media screen and (max-width: 600px) {
+            table[class="container"] {
+                width: 95% !important;
+            }
+            .main-container{
+              font-size: 14px !important;
+            }
+        }
+
+        /* Give content more room on mobile */
+        @media screen and (max-width: 480px) {
+            td[class="container-padding"] {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+        }
+        a{
+          color: {{accentColor}};
+          font-weight: bold;
+          text-decoration: none;
+        }
+        .wrapper{
+          padding: 20px 0;
+        }
+        .container{
+          border-radius: 3px;
+        }
+        .heading-container{
+          background: {{secondaryColor}};
+          padding: 15px;
+          text-align: center;
+          border-radius: 3px 3px 0px 0px;
+        }
+        .heading-container, .logo{
+          text-align: center;
+          color: white;
+          font-family: Helvetica, sans-serif;
+          font-weight: bold;
+          font-size: 20px;
+        }
+        .main-container{
+          line-height: 1.7;
+          background: white;
+          padding: 0 30px;
+          font-size: 15px;
+          font-family: Helvetica, sans-serif;
+          color: #555;
+        }
+        .heading{
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 1.5;
+          margin: 0;
+        }
+        .footer-container{
+          background: #ddd;
+          font-family: Helvetica, sans-serif;
+          padding: 30px;
+          color: #777;
+          border-radius: 0px 0px 3px 3px;
+          font-size: 13px;
+        }
+        .post-thumbnail{
+          height: 28px;
+          width: 37px;
+          vertical-align: top;
+        }
+        .post-body, .comment-body{
+          border-top: 1px solid #ddd;
+          border-bottom: 1px solid #ddd;
+          padding: 10px 0;
+        }
+    </style>
+</head>
+<body style="margin:0; padding:10px 0;" bgcolor="#ebebeb" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<br>
+
+<!-- 100% wrapper (grey background) -->
+<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#ebebeb">
+  <tr>
+    <td class="wrapper" align="center" valign="top" bgcolor="#ebebeb" style="background-color: #ebebeb;">
+
+      <!-- 600px container (white background) -->
+      <table border="0" width="600" cellpadding="0" cellspacing="0" class="container" bgcolor="#ffffff">
+        <tr>
+          <td class="heading-container">
+            <a href="{{siteUrl}}">
+              {{#if logoUrl}}
+                <img class="logo" src="{{logoUrl}}" height="{{logoHeight}}" width="{{logoWidth}}" alt="{{siteName}}"/>
+              {{else}}
+                {{siteName}}
+              {{/if}}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="main-container container-padding" bgcolor="#ffffff">
+            <br>
+
+            {{{body}}}
+
+          </td>
+        </tr>
+        <tr>
+          <td class="footer-container">
+            <a href="{{accountLink}}">Change your notifications settings</a><br/><br/>
+            {{{footer}}}
+          </td>
+        </tr>
+      </table>
+      <!--/600px container -->
+
+    </td>
+  </tr>
+</table>
+<!--/100% wrapper-->
+<br>
+<br>
+</body>
+</html>

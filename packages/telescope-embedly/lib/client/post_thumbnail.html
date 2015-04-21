@@ -1,0 +1,14 @@
+<template name="postThumbnail">
+  {{#if thumbnailUrl}}
+    <div class="post-thumbnail" aria-hidden="true">
+      <a class="post-thumbnail-link {{playVideoClass}}" href="{{postLink}}" target="_blank">
+        <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';" aria-hidden="true"/>
+      </a>
+    </div>
+  {{else}}
+    <div class="post-thumbnail-empty"></div>
+  {{/if}}
+  {{#if media}}
+    {{> postVideo data=this}}
+  {{/if}}
+</template>

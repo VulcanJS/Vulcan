@@ -1,0 +1,11 @@
+{
+  "thumbnail": "Thumbnail",
+  "thumbnailUrl": "Thumbnail",
+  "regenerate_thumbnail": "Regenerate Thumbnail",
+  "clear_thumbnail": "Clear Thumbnail",
+  "please_fill_in_embedly_key": "Please fill in your Embedly API key to enable thumbnails.",
+  "please_ask_your_admin_to_fill_in_embedly_key": "Please ask your site admin to fill in an Embedly API key to enable thumbnails.",
+  "embedlyKey": "Embedly API Key",
+  "thumbnailWidth": "Thumbnail Width",
+  "thumbnailHeight": "Thumbnail Height"
+}

@@ -1,0 +1,84 @@
+// 1. Neutral
+// 2. Mobile
+// 3. Desktop
+
+$mobile-header-height: 50px;
+
+.header{
+  background: $dark-grey;
+  margin-bottom: $grid-margin;
+  padding: $grid-padding;
+  color: white;
+  @include small{
+    height: $mobile-header-height;
+    padding: 0 10px;
+    position: relative;
+  }
+  a, a:link, a:visited{
+    color: inherit;
+  }
+  .nav{
+    list-style-type: none;
+    >li{
+      margin-bottom: 0;
+      // display: inline-block;
+      &:last-child .header-submodule{
+        margin-right: 0px;
+      }
+    }
+  }
+}
+
+.logo{
+  @include small{
+    @include vcenter;
+    font-size: 24px;
+    white-space: nowrap;
+    a{
+      margin: 0 auto;
+    }
+  }
+  @include xsmall{
+    font-size: 18px;
+  }
+  .header &{
+    @include small{
+      padding: 0 60px; // leave space for nav button on mobile
+    }
+  }
+  .mobile-nav &{
+    padding: 20px;
+    font-size: 30px;
+    &, a{
+      color: white;
+    }
+    @include small{
+      display: none;
+    }
+  }
+}
+.logo-image{
+  a, img{
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.mobile-menu-button{
+  position: absolute;
+  display: inline-block;
+  padding: 4px;
+  top: 50%;
+  margin-top: -17px;
+  text-align: center;
+  width: 30px;
+  z-index:100;
+
+}
+.account-link{
+  display: inline-block;
+}
+.sign-in{
+  margin-right: 20px;
+}

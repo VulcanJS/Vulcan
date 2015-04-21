@@ -1,0 +1,75 @@
+.markdown{
+  img{
+    max-width: 100%;
+  }
+  ul, ol, p, pre, blockquote, h1, h2, h3, h4, h5{
+    margin-bottom: 1em;
+    line-height: 1.7;
+    &:last-child{
+      margin-bottom:0;
+    }
+  }
+  strong{
+    font-weight:bold;
+  }
+  em{
+    font-style:italic;
+  }
+  ul, ol{
+    padding-left:18px;
+  }
+  ul{
+    list-style-type:disc;
+  }
+  ol{
+    list-style-type:decimal;
+  }
+  a{
+    &:link, &:visited, &:active{
+      color:$blue;
+    }
+    &:hover{
+      color:$red;
+    }
+  }
+  h1, h2, h3, h4, h5{
+    font-weight:bold;
+  }
+  h1{
+    font-size:36px;
+  }
+  h2{
+    font-size:24px;
+  }
+  h3{
+    font-size:18px;
+  }
+  h4{
+    font-size:16px;
+  }
+  h5{
+    font-size:14px;
+  }
+  code{
+    font-family: monospace;
+    margin: 0 2px;
+    padding: 0px 5px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+  }
+  pre{
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    overflow-x: scroll;
+    code{
+      border: none;
+      background: none;
+    } 
+  }
+  blockquote{
+    border-left: 3px solid #eee;
+    padding-left: 20px;
+  }
+}

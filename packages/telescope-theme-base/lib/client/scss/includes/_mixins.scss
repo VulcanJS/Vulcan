@@ -1,0 +1,166 @@
+$grid-padding: 15px;
+$grid-margin: 10px;
+
+@mixin cf{
+  /* For modern browsers */
+  &:before,&:after {
+    content:"";
+    display:table;
+  }
+  &:after {
+  clear:both;
+  }
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom:1;
+}
+/*================ FUNCTIONS =================*/
+@function black($opacity){
+  @return rgba(0,0,0,$opacity);
+}
+@function white($opacity){
+  @return rgba(255,255,255,$opacity);
+}
+@function red($opacity){
+  @return rgba($red,$opacity);
+}
+/*================ MIXINS =================*/
+@mixin vcenter {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@mixin animate($property: all){
+  transition: $property, 300ms, 0ms, ease-out;
+}
+@mixin border-box{
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+@mixin nav-ul {
+  list-style-type:none;
+  padding:0;
+  margin:0;
+  @include cf;
+  & li{
+    display:block;
+    float:left;
+    &:last-child{
+      margin-right:0px;
+    }
+  }
+}
+@mixin hide-text{
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@mixin hide-text2{
+  font: 0/0 a;
+  text-shadow: none;
+  color: transparent;
+}
+@mixin letterpress($opacity){
+  text-shadow:white($opacity) 0 1px 0;
+}
+@mixin box-emboss($opacity, $opacity2){
+  box-shadow:white($opacity) 0 1px 0, inset black($opacity2) 0 1px 0;
+}
+
+@mixin breakpoint($point) {
+  @if $point == wide {
+    @media (max-width: 9999px) { @content; }
+  }
+  @if $point == large {
+    @media (max-width: 1200px) { @content; }
+  }
+  @if $point == tablet {
+    @media (max-width: 800px) { @content; }
+  }
+  @else if $point == phone {
+    @media (max-width: 320px)  { @content; }
+  }
+}
+
+// http://blackbe.lt/useful-sass-mixins-css-trangle/
+@mixin triangle($dir, $size, $color) {
+    border: $size transparent solid;
+
+    @if ($dir == "top" or $dir == "up" or $dir == "left" or $dir == "before") {
+        &:before {
+            @if ($dir == "top" or $dir == "up") {
+                border-bottom-color: $color;
+            }
+            @else if ($dir == "right" or $dir == "after") {
+                border-left-color: $color;
+            }
+        }
+    }
+    @else if ($dir == "bottom" or $dir == "down" or $dir == "left" or $dir == "before") {
+        &:after {
+            @if ($dir == "bottom" or $dir == "down") {
+                border-top-color: $color;
+            }
+            @else if ($dir == "left" or $dir == "before") {
+                border-right-color: $color;
+            }
+        }
+    }
+}
+/*================ CLASSES =================*/
+.popover{
+  background:white;
+  border:1px solid $red;
+  border-radius: 3px;
+  box-shadow: 0px 1px 2px 0px black(0.25);
+  z-index:100;
+  transition: all, 300ms;
+}
+// .grid-block{
+//   background:#fff;
+//   border-radius: 3px;
+//   // border:1px solid $light-blue;
+//   padding:$grid-padding;
+//   margin-bottom:$grid-margin;
+//   box-shadow: 0 1px 1px black(0.15);
+// }
+.has-shadow{
+  box-shadow: 0 1px 1px black(0.15);
+}
+.cf{
+  @include cf;
+}
+%vcenter {
+  @include vcenter;
+}
+/*================ FLEXBOX =================*/
+@mixin flex(){
+  display: flex;
+  display: -webkit-flex;
+  display: -moz-flex;
+}
+@mixin align-items($i){
+  align-items: $i;
+  -webkit-align-items: $i;
+  -moz-align-items: $i;
+}
+@mixin justify-content($i){
+  justify-content: $i;
+  -webkit-justify-content: $i;
+  -moz-justify-content: $i;
+}
+@mixin order($order){
+  order: $order;
+  -webkit-order: $order;
+  -moz-order: $order;
+}
+@mixin flex-grow($i){
+  flex-grow: $i;
+  -webkit-flex-grow: $i;
+  -moz-flex-grow: $i;
+}
+@mixin flex-shrink($i){
+  flex-shrink: $i;
+  -webkit-flex-shrink: $i;
+  -moz-flex-shrink: $i;
+}

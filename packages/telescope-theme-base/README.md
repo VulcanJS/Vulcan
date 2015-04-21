@@ -1,0 +1,1 @@
+Telescope base theme package, used internally. 

@@ -1,0 +1,85 @@
+
+/**
+ * Telescope Users namespace]
+ * @namespace Users
+ */
+Users = Meteor.users;
+
+
+/**
+ * Users collection permissions
+ */
+Users.deny({
+  update: function(userId, post, fieldNames) {
+    if(Users.isAdminById(userId))
+      return false;
+    // deny the update if it contains something other than the profile field
+    return (_.without(fieldNames, 'profile', 'username', 'slug').length > 0);
+  }
+});
+
+Users.allow({
+  update: function(userId, doc){
+    return Users.isAdminById(userId) || userId == doc._id;
+  },
+  remove: function(userId, doc){
+    return Users.isAdminById(userId) || userId == doc._id;
+  }
+});
+
+
+/**
+ * TODO:  User schema
+ */
+// var Schema = {};
+// var userSchemaObject = {
+//   _id: {
+//     type: String,
+//     optional: true
+//   },
+//   username: {
+//     type: String,
+//     regEx: /^[a-z0-9A-Z_]{3,15}$/
+//   },
+//   emails: {
+//     type: [Object]
+//   },
+//   "emails.$.address": {
+//     type: String,
+//     regEx: SimpleSchema.RegEx.Email
+//   },
+//   "emails.$.verified": {
+//     type: Boolean
+//   },
+//   createdAt: {
+//     type: Date
+//   },
+//   profile: { // public and modifiable
+//     type: Object,
+//     optional: true,
+//     blackbox: true
+//   },
+//   data: { // public but not modifiable
+//     type: Object,
+//     optional: true,
+//     blackbox: true
+//   },
+//   votes: { // used for votes only
+//     type: Object,
+//     optional: true,
+//     blackbox: true
+//   },
+//   services: {
+//     type: Object,
+//     optional: true,
+//     blackbox: true
+//   }
+// };
+
+
+// _.each(addToUserSchema, function(item){
+//   userSchemaObject[item.propertyName] = item.propertySchema;
+// });
+// Schema.User = new SimpleSchema(userSchemaObject);
+
+// Meteor.users.attachSchema(Schema.User);

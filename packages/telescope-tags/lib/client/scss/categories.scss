@@ -1,0 +1,19 @@
+$red: #DD3416;
+
+.post-category{
+  display:inline-block;
+  font-size:12px;
+  background:#eee;
+  padding:3px 5px 1px 5px;
+  text-transform:uppercase;
+  font-weight:normal;
+  vertical-align:middle;
+  &:hover{
+    background:$red;
+    color:white;
+  }
+}
+
+.post-categories{
+  text-align: right;
+}

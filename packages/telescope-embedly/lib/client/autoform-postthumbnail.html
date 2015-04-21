@@ -1,0 +1,17 @@
+<template name="afPostThumbnail">
+  {{#if embedlyKeyExists}}
+  <div class="post-thumbnail-container" style="{{style}}">
+    <img src="{{this.value}}" class="post-thumbnail-preview" style="{{style}}"/>
+    <div class="post-thumbnail-loading">{{>spinner}}</div>
+  </div>
+  <input type="hidden" value="{{this.value}}" {{this.atts}}/>
+  <a href="#" class="regenerate-thumbnail-link">{{_ 'regenerate_thumbnail'}}</a>
+  <a href="#" class="remove-thumbnail-link">{{_ 'clear_thumbnail'}}</a>
+  {{else}}
+    {{#if isAdmin}}
+      <p>{{_ "please_fill_in_embedly_key"}}</p>
+    {{else}}
+      <p>{{_ "please_ask_your_admin_to_fill_in_embedly_key"}}</p>
+    {{/if}}
+  {{/if}}
+</template>

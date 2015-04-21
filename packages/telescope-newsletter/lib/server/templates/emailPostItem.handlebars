@@ -1,0 +1,34 @@
+<div class="post-item">
+<br >
+
+<span class="post-title">
+  {{#if thumbnailUrl}}
+    <img class="post-thumbnail" src="http:{{thumbnailUrl}}"/>&nbsp;
+  {{/if}}
+
+  <a href="{{postLink}}" target="_blank">{{title}}</a>
+</span>
+
+<div class="post-meta">
+  {{#if domain}}
+    <a class="post-domain" href="">{{domain}}</a>
+    | 
+  {{/if}}
+  <span class="post-submitted">Submitted by <a href="{{profileUrl}}" class="comment-link" target="_blank">{{authorName}}</a></span>
+  <span class="post-date">on {{date}}</span>
+  |
+  <a href="{{postPageLink}}" class="comment-link" target="_blank">{{commentCount}} Comments</a>
+</div>
+
+
+{{#if body}}
+  <div class="post-body-excerpt">
+    {{{htmlBody}}}
+    <a href="{{postPageLink}}" class="comment-link" target="_blank">Read more</a>
+  </div>
+{{/if}}
+
+
+<br>
+</div>
+

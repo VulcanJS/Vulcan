@@ -1,0 +1,144 @@
+$mobile-nav-width: 200px;
+
+.mobile-only{
+  @include medium-large{
+    display: none !important;
+  }
+}
+.desktop-only{
+  @include small{
+    display: none !important;
+  }
+}
+
+.mobile-nav{
+  position:fixed;
+  overflow:auto;
+  height: 100%;
+  top: 0px;
+  bottom: 0px;
+  background:#444;
+  color:white;
+  box-shadow: inset -3px 0px 7px black(0.5);
+  z-index: 100;
+
+  left: -$mobile-nav-width;
+  left: calc((100% - 60px) * -1);
+  width: $mobile-nav-width;
+  width: calc(100% - 60px);
+  .menu-top-level{
+    cursor: pointer;
+    font-weight: bold;
+    &:after{
+      display:inline-block;
+      position:relative;
+      top:-1px;
+      margin-left:4px;
+      content:"▼";
+      font-size:8px;
+    }
+  }
+  .header-submodule.menu{
+    display: block;
+  }
+  .menu-contents li{
+    margin: 0;
+  }
+}
+
+.mobile-nav, .inner-wrapper{
+  transition: all, 300ms, ease-out, 0ms;
+}
+
+.inner-wrapper{
+  position: relative;
+  left: 0px;
+}
+
+.mobile-nav-open{
+  overflow: hidden;
+  .mobile-nav{
+    left:0px;
+  }
+  .outer-wrapper{
+    overflow:hidden;
+    .inner-wrapper{
+      left:$mobile-nav-width;
+      left: calc(100% - 60px);
+    }
+  }
+}
+
+
+
+
+.desktop-nav{
+  @include small{
+    display: none;
+  }
+}
+
+.mobile-menu{
+  .header-module, .header-submodule{
+    display: block;
+    margin-right: 0px;
+  }
+  >li{
+    margin-bottom: 0;
+    border-bottom:1px white(0.2) solid;
+    &:last-child{
+      border:none;
+    }
+  }
+  .menu-description{
+    display: none;
+  }
+  .sign-in{
+    border-bottom:1px white(0.2) solid;
+    margin-right: 0px;
+  }
+  a{
+    display: block;
+    height: auto;
+    line-height: inherit;
+    font-size: 15px;
+    &, &:link, &:visited{
+      color: white;
+    }
+  }
+  .menu{
+    >a{
+      &:after{
+        display:inline-block;
+        position:relative;
+        top:-1px;
+        margin-left:4px;
+        content:"▼";
+        font-size:8px;
+      }
+    }
+  }
+  .header-submodule>a, .menu-top-level, .sign-in, .sign-up{
+    padding: 10px;
+  }
+  .menu-menu{
+    display: none;
+    background: #333;
+    li{
+      padding: 10px;
+      margin-bottom: 0;
+      border-top:1px white(0.2) solid;
+    }
+  }
+  .submit{
+    margin: 10px;
+  }
+}
+
+.mobile-submit{
+  padding: 10px;
+  border-bottom:1px white(0.2) solid;
+  .button{
+    max-width: none;
+  }
+}

@@ -1,0 +1,38 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+html, body, .outer-wrapper{
+  height:100%;
+}
+
+body{
+  background:#eee;
+  font-size: 14px;
+  @include small{
+    overflow-x: hidden;
+  }
+}
+
+.outer-wrapper{
+  position:relative;
+}
+
+.content-wrapper{
+  padding:0 10px;
+  max-width: 1200px;
+}
+
+.content-wrapper{
+  margin: 0 auto;
+  @include small{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}
+.grid-module, .at-form{
+  background: white;
+  padding: $grid-padding;
+  margin-bottom: $grid-margin;
+}

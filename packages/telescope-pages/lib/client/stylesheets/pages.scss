@@ -1,0 +1,15 @@
+@function white($opacity){
+  @return rgba(255,255,255,$opacity);
+}
+
+.mobile-nav{
+  .pages-menu{
+    a{
+      border-bottom:1px white(0.2) solid;
+      margin: 0;
+      &:last-child{
+        border: none;
+      }
+    }
+  }
+}

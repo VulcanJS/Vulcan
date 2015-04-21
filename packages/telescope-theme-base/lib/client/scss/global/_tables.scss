@@ -1,0 +1,24 @@
+table{
+  width: 100%;
+  tr{
+    border-bottom: 1px solid #eee;
+    td, th{
+      padding:4px;
+      vertical-align: middle;
+    } 
+  }
+  thead{
+    tr{
+      td, th{
+        font-weight:bold;
+      }
+    }
+  }
+  tbody{
+    tr{
+      td{
+        
+      }     
+    }
+  }
+}

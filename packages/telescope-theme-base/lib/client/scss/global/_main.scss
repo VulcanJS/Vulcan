@@ -1,0 +1,79 @@
+.hidden{
+  display:none;
+}
+.visible{
+  display: block;
+}
+.sr-only{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+position: static;
+width: auto;
+height: auto;
+margin: 0;
+overflow: visible;
+clip: auto;
+}
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  z-index:50;
+}
+
+#spinner{
+  margin: 100px 0;
+}
+.debug{
+  display:none;
+}
+
+.footer{
+  text-align:center;
+  padding:10px 0 70px 0;
+  color:black(0.4);
+  font-size:14px;
+  &.absolute{
+    position:absolute;
+  }
+}
+#login-buttons .loading{
+  display:none;
+}
+#loading, .loading-page{
+  height:300px;
+}
+
+.notifications-toggle{
+  background: white;
+  margin-bottom: $grid-margin;
+  padding: $grid-padding;
+}
+
+.search-date-header{
+  background: $lightest-grey;
+  th{
+    @include cf;
+  }
+  .search-date{
+    display: block;
+    float: left;
+    font-weight: bold;
+  }
+  .search-count{
+    font-size: 13px;
+    display: block;
+    float: right;
+  }
+}

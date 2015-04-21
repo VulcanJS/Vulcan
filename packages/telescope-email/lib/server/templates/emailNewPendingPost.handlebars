@@ -1,0 +1,18 @@
+<span class="heading">
+<a href="{{profileUrl}}">{{postAuthorName}}</a>
+has a new post pending approval:
+{{#if url}}
+  <a href="{{linkUrl}}" class="action-link">{{postTitle}}}</a>
+{{else}}
+  {{postTitle}}}
+{{/if}}
+</span><br><br>
+
+{{#if htmlBody}}
+  <div class="post-body">
+  {{{htmlBody}}}
+  </div>
+  <br>
+{{/if}}
+
+<a href="{{postUrl}}">Go to post</a><br><br>

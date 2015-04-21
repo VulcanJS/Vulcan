@@ -1,0 +1,11 @@
+<template name="postShare">
+  <a href="#" class="share-link action" title="{{_ 'share'}}">
+    {{{icon "share"}}}
+  </a>
+  <div class="share-options hidden">
+    <a class="mt-facebook mt-share-inline-square-sm" href="https://www.facebook.com/sharer/sharer.php?u={{sourceLink}}" target="_blank">{{{icon "facebook"}}}</a>
+    <a class="mt-twitter mt-share-inline-square-sm" href="//twitter.com/intent/tweet?text={{title}}&url={{sourceLink}}&{{viaTwitter}}" target="_blank">{{{icon "twitter"}}}</a>
+    <a class="mt-linkedin mt-share-inline-square-sm" href="//www.linkedin.com/shareArticle?mini=true&url={{sourceLink}}&amp;summary={{title}}" target="_blank">{{{icon "linkedin"}}}</a>
+    <a class="mt-google mt-share-inline-square-sm" href="https://plus.google.com/share?url={{sourceLink}}" target="_blank">{{{icon "googleplus"}}}</a>
+  </div>
+</template>

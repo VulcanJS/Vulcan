@@ -1,0 +1,22 @@
+.update-banner{
+  overflow: hidden;
+}
+.update-content{
+  float: left;
+}
+.update-version{
+  float: left;
+  background: #DD3416;
+  color: white;
+  text-align: center;
+  padding: 5px 10px;
+  margin: 0px 15px 0px 0px;
+}
+.update-prompt{
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.update-message{
+  font-size: 14px;
+}
