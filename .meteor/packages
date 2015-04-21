@@ -82,21 +82,20 @@ telescope:getting-started
 telescope:kadira
 telescope:releases
 telescope:rss
-
-telescope-datetimepicker
-telescope-theme-base
-telescope-module-share
-telescope-search
-telescope-tags
-telescope-theme-hubble
-telescope-newsletter
-telescope-update-prompt
-telescope-notifications
-telescope-invites
-telescope-post-by-feed
-telescope-subscribe-to-posts
-telescope-tagline-banner
-telescope-sitemap
+telescope:sitemap
+telescope:subscribe-to-posts
+telescope:notifications
+telescope:tags
+telescope:post-by-feed
+telescope:tagline-banner
+telescope:newsletter
+telescope:datetimepicker
+telescope:search
+telescope:update-prompt
+telescope:share
+telescope:theme-base
+telescope:theme-hubble
+telescope:invites
 
 
 # Custom Packages

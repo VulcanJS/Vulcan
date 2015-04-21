@@ -1,9 +1,0 @@
-<template name="feeds">
-  <div class="form-well add-feed">
-    <h3>Add new feed:</h3>
-    {{> quickForm collection="Feeds" id="insertFeedForm" type="insert" label-class="control-label" input-col-class="controls" template="telescope"}}
-  </div>
-  {{#each feeds}}
-    {{> feedItem}}
-  {{/each}}
-</template>
