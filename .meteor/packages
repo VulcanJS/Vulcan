@@ -45,7 +45,6 @@ tap:i18n
 useraccounts:unstyled@1.8.1
 tsega:bootstrap3-datetimepicker@3.1.3_1
 momentjs:moment
-aslagle:reactive-table
 aramk:tinycolor
 fortawesome:fontawesome
 fourseven:scss
@@ -66,6 +65,7 @@ telescope:lib
 telescope:users
 telescope:settings
 telescope:comments
+telescope:events
 
 # Telescope Packages (Optional)
 
@@ -94,7 +94,7 @@ telescope:share
 telescope:theme-base
 telescope:theme-hubble
 telescope:invites
-
+telescope:scoring
 
 # Your Custom Packages
 

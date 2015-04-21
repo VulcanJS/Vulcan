@@ -11,15 +11,17 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:lib@0.3.0',
-    'telescope:posts@0.3.2'
+    'telescope:posts@0.1.2',
+    'telescope:comments@0.1.0',
+    'telescope:settings@0.1.0'
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/server/scoring.js',
-  ], ['server']);
+    'lib/scoring.js',
+  ], ['client','server']);
 
   api.add_files([
-    'lib/server/phone_home.js'
+    'lib/server/cron.js',
   ], ['server']);
 
   

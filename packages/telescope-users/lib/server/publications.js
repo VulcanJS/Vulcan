@@ -37,3 +37,38 @@ Meteor.publish('userComments', function(userId, limit) {
     Posts.find({_id: {$in: commentedPostIds}})
   ]
 });
+
+
+// Publish the current user
+
+Meteor.publish('currentUser', function() {
+  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.ownUserOptions});
+  return user;
+});
+
+// publish all users for admins to make autocomplete work
+// TODO: find a better way
+
+Meteor.publish('allUsersAdmin', function() {
+  var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
+  if (Users.isAdminById(this.userId)) {
+    return Meteor.users.find(selector, {fields: {
+      _id: true,
+      profile: true,
+      slug: true
+    }});
+  }
+  return [];
+});
+
+// Publish all users to reactive-table (if admin)
+// Limit, filter, and sort handled by reactive-table.
+// https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
+
+ReactiveTable.publish("all-users", function() {
+  if(Users.isAdminById(this.userId)){
+    return Meteor.users;
+  } else {
+    return [];
+  }
+});
