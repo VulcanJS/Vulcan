@@ -456,7 +456,7 @@ var migrationsList = {
   },
   updateUserNames: function () {
     var i = 0;
-    var allUsers = Meteor.users.find({username: {$exists: true}, 'profile.isDummy': {$ne: true}});
+    var allUsers = Meteor.users.find({username: {$exists: true}, profile: {$exists: true}, 'profile.isDummy': {$ne: true}});
 
     console.log('> Found '+allUsers.count()+' users.\n');
 
