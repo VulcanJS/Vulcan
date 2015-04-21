@@ -225,7 +225,7 @@
       "0.0.0"
     ],
     [
-      "telescope-email",
+      "telescope:email",
       "0.2.9"
     ],
     [

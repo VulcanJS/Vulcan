@@ -27,14 +27,13 @@ Package.onUse(function (api) {
     'jquery',
     'underscore',
     'templating',
-    'telescope-messages',
+    'telescope:messages',
     'mrt:cookies'
   ], 'client');
 
   api.use([
     'percolatestudio:synced-cron',
-    'cmather:handlebars-server',
-    'meteorhacks:npm'
+    'cmather:handlebars-server'
   ], ['server']);
 
   api.add_files([

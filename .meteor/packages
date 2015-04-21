@@ -34,7 +34,6 @@ aldeed:template-extension
 mrt:cookies
 
 ccan:cssreset # CSS reset (Must come before any other css)
-cmather:handlebars-server
 sacha:spin
 sacha:juice
 chuangbo:marked
@@ -74,30 +73,30 @@ telescope:settings
 
 telescope:daily
 telescope:singleday
+telescope:email
+telescope:api
+telescope:embedly
+telescope:messages
+telescope:pages
+telescope:getting-started
+telescope:kadira
+telescope:releases
+telescope:rss
 
 telescope-datetimepicker
 telescope-theme-base
 telescope-module-share
-telescope-api
-telescope-rss
 telescope-search
 telescope-tags
 telescope-theme-hubble
-telescope-email
-telescope-embedly
 telescope-newsletter
 telescope-update-prompt
-telescope-kadira
 telescope-notifications
 telescope-invites
 telescope-post-by-feed
-telescope-releases
-telescope-getting-started
 telescope-subscribe-to-posts
 telescope-tagline-banner
 telescope-sitemap
-telescope-messages
-telescope-pages
 
 
 # Custom Packages

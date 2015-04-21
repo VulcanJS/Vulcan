@@ -28,7 +28,7 @@ Package.onUse(function (api) {
     'jquery',                     // useful for DOM interactions
     'underscore',                 // JavaScript swiss army knife library
     'templating',                 // required for client-side templates
-    'telescope-messages'
+    'telescope:messages'
   ], ['client']);
 
   // ---------------------------------- 2. Files to include ----------------------------------

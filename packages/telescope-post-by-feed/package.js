@@ -27,7 +27,7 @@ Package.onUse(function(api) {
   api.use([
     'iron:router',
     'templating',
-    'telescope-messages'
+    'telescope:messages'
   ], 'client');
 
   api.use([

@@ -32,7 +32,7 @@ Package.onUse(function (api) {
     'jquery',
     'underscore',
     'templating',
-    'telescope-messages'
+    'telescope:messages'
   ], ['client']);
 
   // server
