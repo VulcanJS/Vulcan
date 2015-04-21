@@ -24,7 +24,6 @@ iron:router
 
 meteorhacks:fast-render
 meteorhacks:subs-manager
-meteorhacks:npm
 
 aldeed:autoform@5.1.2
 aldeed:collection2
@@ -35,10 +34,8 @@ mrt:cookies
 
 ccan:cssreset # CSS reset (Must come before any other css)
 sacha:spin
-sacha:juice
 chuangbo:marked
 percolatestudio:synced-cron
-npm-container
 matb33:collection-hooks
 djedi:sanitize-html
 rajit:bootstrap3-datepicker
@@ -98,4 +95,6 @@ telescope:theme-hubble
 telescope:invites
 
 
-# Custom Packages
+# Your Custom Packages
+
+# custom
