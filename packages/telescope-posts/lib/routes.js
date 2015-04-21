@@ -1,6 +1,8 @@
+Posts.controllers = {};
+
 // Controller for all posts lists
 
-PostsListController = RouteController.extend({
+Posts.controllers.list = RouteController.extend({
 
   template: 'posts_list',
 
@@ -87,14 +89,12 @@ PostsListController = RouteController.extend({
 
 var getDefaultViewController = function () {
   var defaultView = Settings.get('defaultView', 'top');
-  defaultView = defaultView.charAt(0).toUpperCase() + defaultView.slice(1);
-  return eval("Posts"+defaultView+"Controller");
+  return Posts.controllers[defaultView];
 };
 
 // wrap in startup block to make sure Settings collection is defined
 Meteor.startup(function () {
-
-  PostsDefaultController = getDefaultViewController().extend({
+  Posts.controllers.default = getDefaultViewController().extend({
     getTitle: function () {
       var title = Settings.get('title', 'Telescope');
       var tagline = Settings.get('tagline');
@@ -105,29 +105,29 @@ Meteor.startup(function () {
 
 });
 
-PostsTopController = PostsListController.extend({
+Posts.controllers.top = Posts.controllers.list.extend({
   view: 'top',
 });
 
-PostsNewController = PostsListController.extend({
+Posts.controllers.new = Posts.controllers.list.extend({
   view: 'new'
 });
 
-PostsBestController = PostsListController.extend({
+Posts.controllers.best = Posts.controllers.list.extend({
   view: 'best'
 });
 
-PostsPendingController = PostsListController.extend({
+Posts.controllers.view = Posts.controllers.list.extend({
   view: 'pending'
 });
 
-PostsScheduledController = PostsListController.extend({
+Posts.controllers.scheduled = Posts.controllers.list.extend({
   view: 'scheduled'
 });
 
 // Controller for post pages
 
-PostPageController = RouteController.extend({
+Posts.controllers.page = RouteController.extend({
 
   template: 'post_page',
 
@@ -174,52 +174,52 @@ Meteor.startup(function () {
 
   Router.route('/', {
     name: 'posts_default',
-    controller: PostsDefaultController
+    controller: Posts.controllers.default
   });
 
   Router.route('/top/:limit?', {
     name: 'posts_top',
-    controller: PostsTopController
+    controller: Posts.controllers.top
   });
 
   // New
 
   Router.route('/new/:limit?', {
     name: 'posts_new',
-    controller: PostsNewController
+    controller: Posts.controllers.new
   });
 
   // Best
 
   Router.route('/best/:limit?', {
     name: 'posts_best',
-    controller: PostsBestController
+    controller: Posts.controllers.best
   });
 
   // Pending
 
   Router.route('/pending/:limit?', {
     name: 'posts_pending',
-    controller: PostsPendingController
+    controller: Posts.controllers.pending
   });
 
   // Scheduled
 
   Router.route('/scheduled/:limit?', {
     name: 'posts_scheduled',
-    controller: PostsScheduledController
+    controller: Posts.controllers.scheduled
   });
 
   // Post Page
 
   Router.route('/posts/:_id', {
     name: 'post_page',
-    controller: PostPageController
+    controller: Posts.controllers.page
   });
 
   Router.route('/posts/:_id/comment/:commentId', {
     name: 'post_page_comment',
-    controller: PostPageController,
+    controller: Posts.controllers.page,
     onAfterAction: function () {
       // TODO: scroll to comment position
     }

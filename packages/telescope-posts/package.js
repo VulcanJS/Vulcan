@@ -14,7 +14,10 @@ Package.onUse(function (api) {
     'underscore',
     'mongo',
     'aldeed:simple-schema@1.3.2',
-    'telescope:lib@0.3.0'
+    'telescope:lib@0.3.0',
+    'telescope:users@0.1.0',
+    'telescope:comments@0.1.0',
+    'iron:router@1.0.5'
   ]);
 
   api.add_files([
@@ -22,7 +25,8 @@ Package.onUse(function (api) {
     'lib/config.js',
     'lib/helpers.js',
     'lib/hooks.js',
-    'lib/methods.js'
+    'lib/methods.js',
+    'lib/routes.js'
   ], ['client', 'server']);
 
   api.add_files([

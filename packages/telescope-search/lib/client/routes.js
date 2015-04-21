@@ -1,6 +1,6 @@
 Meteor.startup(function () {
 
-  PostsSearchController = PostsListController.extend({
+  Posts.controllers.search = Posts.controllers.list.extend({
     view: 'search',
     showViewsNav: false,
     getTitle: function() {
@@ -33,7 +33,7 @@ Meteor.startup(function () {
 
   Router.route('/search/:limit?', {
     name: 'search',
-    controller: PostsSearchController
+    controller: Posts.controllers.search
   });
 
   // Search Logs

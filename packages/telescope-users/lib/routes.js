@@ -1,6 +1,8 @@
 // Controller for user pages
 
-UserPageController = RouteController.extend({
+Users.controllers = {};
+
+Users.controllers.page = RouteController.extend({
 
   waitOn: function() {
     return [
@@ -39,7 +41,7 @@ UserPageController = RouteController.extend({
 
 // Controller for user account editing
 
-UserEditController = RouteController.extend({
+Users.controllers.edit = RouteController.extend({
   waitOn: function() {
     return [
       coreSubscriptions.subscribe('singleUser', this.params.slug)
@@ -74,7 +76,7 @@ Meteor.startup(function () {
   Router.route('/users/:_idOrSlug', {
     name: 'user_profile',
     template: 'user_profile',
-    controller: UserPageController
+    controller: Users.controllers.page
   });
 
   // User Edit
@@ -82,7 +84,7 @@ Meteor.startup(function () {
   Router.route('/users/:slug/edit', {
     name: 'user_edit',
     template: 'user_edit',
-    controller: UserEditController,
+    controller: Users.controllers.edit,
     onBeforeAction: function () {
       // Only allow users with permissions to see the user edit page.
       if (Meteor.user() && (
@@ -99,7 +101,7 @@ Meteor.startup(function () {
   Router.route('/account', {
     name: 'userAccountShortcut',
     template: 'user_edit',
-    controller: UserEditController
+    controller: Users.controllers.edit
   });
 
   // All Users

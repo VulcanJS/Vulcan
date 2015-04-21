@@ -26,6 +26,6 @@ Package.onUse(function (api) {
     'lib/server/publications.js',
   ], ['server']);
 
-  api.export('Posts');
+  api.export('Comments');
 
 });

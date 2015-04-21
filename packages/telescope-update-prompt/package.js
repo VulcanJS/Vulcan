@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:lib@0.3.0',
-    'telescope:posts@0.3.2',
+    'telescope:posts@0.1.2',
     'telescope:comments@0.1.0',
     'http'
   ], ['client', 'server']);

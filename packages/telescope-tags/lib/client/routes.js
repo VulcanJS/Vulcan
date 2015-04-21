@@ -2,7 +2,7 @@ Meteor.startup(function () {
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['categories']});
 
-  PostsCategoryController = PostsListController.extend({
+  Posts.controllers.category = Posts.controllers.list.extend({
 
     view: 'category',
 
@@ -31,7 +31,7 @@ Meteor.startup(function () {
 
   Router.route('/category/:slug/:limit?', {
     name: 'posts_category',
-    controller: PostsCategoryController,
+    controller: Posts.controllers.category,
     onAfterAction: function() {
       this.slug = this.params.slug;
       Session.set('categorySlug', this.params.slug);
