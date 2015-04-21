@@ -112,6 +112,7 @@ standard-app-packages@1.0.5
 stylus@1.0.7
 tap:i18n@1.4.1
 telescope:api@0.1.0
+telescope:comments@0.1.0
 telescope:daily@0.1.0
 telescope:datetimepicker@0.1.0
 telescope:email@0.3.0

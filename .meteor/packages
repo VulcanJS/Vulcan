@@ -65,6 +65,7 @@ telescope:posts
 telescope:lib
 telescope:users
 telescope:settings
+telescope:comments
 
 # Telescope Packages (Optional)
 
