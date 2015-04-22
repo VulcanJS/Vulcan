@@ -8,3 +8,7 @@ Meteor.startup(function () {
 
 if (Settings.get('mailUrl'))
   process.env.MAIL_URL = Settings.get('mailUrl');
+
+Meteor.startup(function() {
+  SyncedCron.start();
+});

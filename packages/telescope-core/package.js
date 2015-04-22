@@ -21,7 +21,10 @@ Package.onUse(function(api) {
     'matb33:collection-hooks@0.7.11',
     'chuangbo:marked@0.3.5',
     'meteorhacks:fast-render@2.3.2',
-    'meteorhacks:subs-manager@1.3.0'
+    'meteorhacks:subs-manager@1.3.0',
+    'telescope:events@0.1.0',
+    'telescope:settings@0.1.0',
+    'percolatestudio:synced-cron@1.1.0'
   ]);
 
   api.addFiles([
@@ -36,11 +39,27 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    // 'lib/server/publications.js'
+    'lib/server/start.js'
   ], ['server']);
 
   api.addFiles([
-    "i18n/en.i18n.json"
+    "i18n/ar.i18n.json",
+    "i18n/bg.i18n.json",
+    "i18n/de.i18n.json",
+    "i18n/el.i18n.json",
+    "i18n/en.i18n.json",
+    "i18n/es.i18n.json",
+    "i18n/fr.i18n.json",
+    "i18n/it.i18n.json",
+    "i18n/nl.i18n.json",
+    "i18n/pl.i18n.json",
+    "i18n/pt-BR.i18n.json",
+    "i18n/ro.i18n.json",
+    "i18n/ru.i18n.json",
+    "i18n/se.i18n.json",
+    "i18n/tr.i18n.json",
+    "i18n/vn.i18n.json",
+    "i18n/zh-CN.i18n.json"
   ], ["client", "server"]);
 
   api.export([
