@@ -17,7 +17,8 @@ Package.onUse(function (api) {
     'aldeed:simple-schema@1.3.2',
     'iron:router@1.0.5',
     'telescope:lib@0.3.0',
-    'telescope:users@0.1.0'
+    'telescope:users@0.1.0',
+    'matb33:collection-hooks@0.7.11'
   ]);
 
   api.add_files([

@@ -13,6 +13,8 @@ Package.onUse(function(api) {
     'mongo',
     'underscore',
     'aldeed:simple-schema@1.3.2',
+    'aldeed:collection2@2.3.3',
+    'iron:router@1.0.5',
     'telescope:lib@0.3.1'
   ], both);
 

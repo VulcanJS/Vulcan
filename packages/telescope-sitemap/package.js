@@ -12,6 +12,7 @@ Package.onUse(function(api) {
   api.use([
     "templating",
     "underscore",
+    "check",
     "iron:router@1.0.5",
     "telescope:lib@0.3.0",
     "telescope:posts@0.1.2",

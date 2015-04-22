@@ -10,6 +10,9 @@ Package.onUse(function (api) {
 
   api.use([
     'accounts-base',
+    'accounts-base',
+    'accounts-password',
+    'accounts-twitter',
     'templating',
     'telescope:lib@0.3.1',
     'telescope:settings@0.1.0',

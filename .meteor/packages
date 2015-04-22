@@ -5,55 +5,7 @@
 
 # Meteor Packages
 
-standard-app-packages
-backbone
-accounts-base
-accounts-password
-accounts-twitter
-spiderable
-email
-accounts-facebook
-service-configuration
-accounts-ui
-reactive-var
-http
 
-# Atmosphere Packages
-
-iron:router
-
-meteorhacks:fast-render
-meteorhacks:subs-manager
-
-aldeed:autoform@5.1.2
-aldeed:collection2
-aldeed:simple-schema@1.3.2
-aldeed:template-extension
-
-mrt:cookies
-
-ccan:cssreset # CSS reset (Must come before any other css)
-sacha:spin
-chuangbo:marked
-percolatestudio:synced-cron
-matb33:collection-hooks
-djedi:sanitize-html
-rajit:bootstrap3-datepicker
-bengott:avatar@0.7.6
-jparker:gravatar
-tap:i18n
-useraccounts:unstyled@1.8.1
-tsega:bootstrap3-datetimepicker@3.1.3_1
-momentjs:moment
-aramk:tinycolor
-fortawesome:fontawesome
-fourseven:scss
-manuelschoebel:ms-seo
-
-# Testing
-
-# sanjo:jasmine
-# velocity:html-reporter
 
 # Telescope Packages (Required)
 
@@ -81,7 +33,7 @@ telescope:getting-started
 telescope:kadira
 telescope:releases
 telescope:rss
-telescope:sitemap
+# telescope:sitemap
 telescope:subscribe-to-posts
 telescope:notifications
 telescope:tags
