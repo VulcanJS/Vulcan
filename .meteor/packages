@@ -3,10 +3,6 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-# Meteor Packages
-
-
-
 # Telescope Packages (Required)
 
 # note: eventually, the following packages will all be replaced by telescope:core, which will depend on them
@@ -22,32 +18,7 @@ telescope:core
 
 # Telescope Packages (Optional)
 
-telescope:daily
-telescope:singleday
-telescope:email
-telescope:api
-telescope:embedly
-telescope:messages
-telescope:pages
-telescope:getting-started
-telescope:kadira
-telescope:releases
-telescope:rss
-# telescope:sitemap
-telescope:subscribe-to-posts
-telescope:notifications
-telescope:tags
-telescope:post-by-feed
-telescope:tagline-banner
-telescope:newsletter
-telescope:datetimepicker
-telescope:search
-telescope:update-prompt
-telescope:share
-telescope:theme-base
-telescope:theme-hubble
-telescope:invites
-telescope:scoring
+
 
 # Your Custom Packages
 

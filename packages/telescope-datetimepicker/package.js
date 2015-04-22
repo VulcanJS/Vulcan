@@ -9,6 +9,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
+  api.use('telescope:core@0.1.0');
   api.use('templating');
   api.use('blaze');
   api.use('aldeed:autoform@5.1.2');

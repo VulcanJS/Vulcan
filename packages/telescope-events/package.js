@@ -11,6 +11,7 @@ Package.onUse(function(api) {
   
   api.use([
     'aldeed:simple-schema@1.3.2',
+    'aldeed:collection2@2.3.3',
     'tap:i18n@1.4.1',
     'telescope:lib@0.3.0'
   ]);
