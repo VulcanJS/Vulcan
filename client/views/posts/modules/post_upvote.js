@@ -15,7 +15,7 @@ Template.postUpvote.events({
       Messages.flash(i18n.t("please_log_in_first"), "info");
     }
     Meteor.call('upvotePost', post, function(error, result){
-      trackEvent("post upvoted", {'_id': post._id});
+      Events.track("post upvoted", {'_id': post._id});
     });
   }
 });

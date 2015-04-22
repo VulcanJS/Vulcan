@@ -34,7 +34,7 @@ var submitComment = function(instance) {
       console.log(error);
       Messages.flash(error.reason, "error");
     }else{
-      trackEvent("newComment", newComment);
+      Events.track("newComment", newComment);
       $commentForm.val('');
     }
   });

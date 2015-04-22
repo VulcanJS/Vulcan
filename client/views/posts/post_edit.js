@@ -26,7 +26,7 @@ AutoForm.hooks({
     },
 
     onSuccess: function(operation, post) {
-      trackEvent("edit post", {'postId': post._id});
+      Events.track("edit post", {'postId': post._id});
       Router.go('post_page', {_id: post._id});
     },
 

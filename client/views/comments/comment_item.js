@@ -112,7 +112,7 @@ var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
     Messages.flash(i18n.t('please_log_in_first'), 'info');
   } else {
     Meteor.call(meteorMethodName, this, function(error, result){
-      trackEvent(eventName, {
+      Events.track(eventName, {
         'commentId': instance.data._id,
         'postId': instance.data.post,
         'authorId': instance.data.userId

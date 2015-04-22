@@ -1,4 +1,4 @@
-analyticsInit = _.once(function() {
+Events.analyticsInit = _.once(function() {
 
   // Mixpanel
   if (mixpanelId=Settings.get("mixpanelId")){
@@ -71,7 +71,7 @@ analyticsInit = _.once(function() {
 
 });
 
-analyticsRequest = function() {
+Events.analyticsRequest = function() {
 
   // Google Analytics
   if (typeof window.ga !== 'undefined'){

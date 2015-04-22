@@ -214,8 +214,8 @@ Meteor.startup( function (){
     // After Hooks
 
     // Router.onAfterAction(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'posts_category', 'all-users']});
-    Router.onAfterAction(analyticsInit); // will only run once thanks to _.once()
-    Router.onAfterAction(analyticsRequest); // log this request with mixpanel, etc
+    Router.onAfterAction(Events.analyticsInit); // will only run once thanks to _.once()
+    Router.onAfterAction(Events.analyticsRequest); // log this request with mixpanel, etc
     Router.onAfterAction(filters.setSEOProperties);
     Router.onAfterAction(filters.setCanonical, {only: ["post_page", "post_page_with_slug"]});
 

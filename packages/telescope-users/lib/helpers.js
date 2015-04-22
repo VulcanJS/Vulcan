@@ -41,7 +41,7 @@ Users.getUserName = function (user) {
 };
 
 Users.getDisplayName = function (user) {
-  return (user.profile && user.profile.username) ? user.profile.username : getUserName(user);
+  return (user.profile && user.profile.username) ? user.profile.username : Users.getUserName(user);
 };
 
 Users.getDisplayNameById = function (userId) {
@@ -166,7 +166,7 @@ Users.setUserSetting = function (setting, value, userArgument) {
   if(!user)
     throw new Meteor.Error(500, 'User not defined');
 
-  console.log('Setting user setting "'+setting+'" to "'+value+'" for '+getUserName(user));
+  console.log('Setting user setting "' + setting + '" to "' + value + '" for ' + Users.getUserName(user));
   var find = {_id: user._id};
   var field = {};
   field['profile.'+setting] = value;

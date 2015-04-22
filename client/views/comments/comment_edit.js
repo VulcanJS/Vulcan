@@ -12,7 +12,7 @@ var editComment = function(instance) {
     }
   });
 
-  trackEvent("edit comment", {'postId': comment.postId, 'commentId': comment._id});
+  Events.track("edit comment", {'postId': comment.postId, 'commentId': comment._id});
   Router.go('post_page_comment', {_id: comment.postId, commentId: comment._id});
 };
 

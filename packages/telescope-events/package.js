@@ -19,6 +19,10 @@ Package.onUse(function(api) {
     'lib/events.js'
   ], ['client', 'server']);
 
+  api.addFiles([
+    'lib/client/analytics.js'
+  ], ['client']);
+
   api.export([
     'Events'
   ]);

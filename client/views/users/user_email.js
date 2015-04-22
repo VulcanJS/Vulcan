@@ -31,7 +31,7 @@ Template.user_email.events({
       } else {
         Messages.flash(i18n.t('thanks_for_signing_up'), "success");
         // Meteor.call('addCurrentUserToMailChimpList');
-        trackEvent("new sign-up", {'userId': user._id, 'auth':'twitter'});
+        Events.track("new sign-up", {'userId': user._id, 'auth':'twitter'});
         Router.go('/');
       }
     });

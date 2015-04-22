@@ -7,7 +7,7 @@ Template.unsubscribe.created = function(){
       Session.set('unsubscribedMessage', __('user_not_found'));
     }
   });
-  trackEvent('notificationsUnsubcribe', {hash: hash});
+  Events.track('notificationsUnsubcribe', {hash: hash});
 };
 
 Template.unsubscribe.helpers({

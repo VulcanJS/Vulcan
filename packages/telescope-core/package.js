@@ -24,18 +24,22 @@ Package.onUse(function(api) {
     'meteorhacks:subs-manager@1.3.0',
     'telescope:events@0.1.0',
     'telescope:settings@0.1.0',
-    'percolatestudio:synced-cron@1.1.0'
+    'telescope:events@0.1.0',
+    'percolatestudio:synced-cron@1.1.0',
+    'useraccounts:unstyled@1.8.1'
   ]);
 
   api.addFiles([
     'lib/router/config.js',
     'lib/router/filters.js',
     'lib/router/admin.js',
-    'lib/router/server.js'
+    'lib/router/server.js',
+    'lib/vote.js',
+    'lib/config.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    // 'lib/client/templates/page.html',
+    'lib/client/handlebars.js',
   ], 'client');
 
   api.addFiles([

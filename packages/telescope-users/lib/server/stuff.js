@@ -50,7 +50,7 @@ Accounts.onCreateUser(function(options, user){
 
   // ------------------------------ Analytics ------------------------------ //
 
-  trackEvent('new user', {username: user.username, email: user.profile.email});
+  Events.track('new user', {username: user.username, email: user.profile.email});
 
   return user;
 });

@@ -26,7 +26,7 @@ Template.postSubscribe.events({
 
     Meteor.call('subscribePost', post._id, function(error, result) {
       if (result)
-        trackEvent("post subscribed", {'_id': post._id});
+        Events.track("post subscribed", {'_id': post._id});
     });
   },
 
@@ -41,7 +41,7 @@ Template.postSubscribe.events({
 
     Meteor.call('unsubscribePost', post._id, function(error, result) {
       if (result)
-        trackEvent("post unsubscribed", {'_id': post._id});
+        Events.track("post unsubscribed", {'_id': post._id});
     });
   }
 });
