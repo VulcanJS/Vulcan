@@ -9,18 +9,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:core@0.1.0',
-    'accounts-base',
-    'accounts-base',
-    'accounts-password',
-    'accounts-twitter',
-    'templating',
-    'deps',
     'telescope:lib@0.3.1',
-    'telescope:settings@0.1.0',
-    'iron:router@1.0.5',
-    'aslagle:reactive-table@0.7.3',
-    'bengott:avatar@0.7.6'
+    'telescope:settings@0.1.0'
   ]);
 
   api.addFiles([

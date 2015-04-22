@@ -10,53 +10,27 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
   
   api.use([
-    'aldeed:simple-schema@1.3.2',
-    'aldeed:collection2@2.3.3',
-    'aldeed:autoform@5.1.2',
-    'tap:i18n@1.4.1',
-    'fourseven:scss@2.1.1',
-    'iron:router@1.0.5',
-    'standard-app-packages',
-    'telescope:messages@0.1.0',
-    'telescope:lib@0.3.0',
-    'matb33:collection-hooks@0.7.11',
-    'chuangbo:marked@0.3.5',
-    'meteorhacks:fast-render@2.3.2',
-    'meteorhacks:subs-manager@1.3.0',
-    'telescope:events@0.1.0',
-    'telescope:settings@0.1.0',
-    'telescope:events@0.1.0',
-    'percolatestudio:synced-cron@1.1.0',
-    'useraccounts:unstyled@1.8.1',
-    'manuelschoebel:ms-seo@0.4.1',
-    'aramk:tinycolor@1.1.0_1',
-    'momentjs:moment@2.10.3',
-    'sacha:spin@0.2.4'
+    'telescope:lib@0.3.0', //  no dependencies
+    'telescope:messages@0.1.0', // lib
+    'telescope:events@0.1.0', // lib
+    'telescope:events@0.1.0', // lib
+    'telescope:i18n@0.1.0', // lib
+    'telescope:settings@0.1.0', // lib
+    'telescope:users@0.1.0', // lib, settings
+    'telescope:comments@0.1.0', // lib, settings, users
+    'telescope:posts@0.1.2' // lib, settings, users, comments
   ]);
   
   api.imply([ // export these packages to all other packages that depend on telescope:core
-    'aldeed:simple-schema@1.3.2',
-    'aldeed:collection2@2.3.3',
-    'aldeed:autoform@5.1.2',
-    'tap:i18n@1.4.1',
-    'fourseven:scss@2.1.1',
-    'iron:router@1.0.5',
-    'standard-app-packages',
-    'telescope:messages@0.1.0',
     'telescope:lib@0.3.0',
-    'matb33:collection-hooks@0.7.11',
-    'chuangbo:marked@0.3.5',
-    'meteorhacks:fast-render@2.3.2',
-    'meteorhacks:subs-manager@1.3.0',
+    'telescope:messages@0.1.0',
     'telescope:events@0.1.0',
     'telescope:settings@0.1.0',
     'telescope:events@0.1.0',
-    'percolatestudio:synced-cron@1.1.0',
-    'useraccounts:unstyled@1.8.1',
-    'manuelschoebel:ms-seo@0.4.1',
-    'aramk:tinycolor@1.1.0_1',
-    'momentjs:moment@2.10.3',
-    'sacha:spin@0.2.4'
+    'telescope:i18n@0.1.0',
+    'telescope:users@0.1.0',
+    'telescope:comments@0.1.0',
+    'telescope:posts@0.1.2' 
   ]);
 
   api.addFiles([

@@ -10,18 +10,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:core@0.1.0',
-    'session',
-    'jquery',
-    'underscore',
-    'mongo',
-    'templating',
-    'aldeed:simple-schema@1.3.2',
-    'aldeed:autoform@5.1.2',
     'telescope:lib@0.3.0',
+    'telescope:settings@0.1.0',
     'telescope:users@0.1.0',
-    'telescope:comments@0.1.0',
-    'iron:router@1.0.5'
+    'telescope:comments@0.1.0'
   ]);
 
   api.add_files([

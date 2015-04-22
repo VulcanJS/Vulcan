@@ -8,11 +8,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
-  api.use([
-    'telescope:core@0.1.0',
-    'tap:i18n@1.4.1',
-    'momentjs:moment@2.10.3'
-  ], ["client", "server"]);
+  api.use(['telescope:lib@0.3.1']);
 
   api.use(["session"], "client");
 

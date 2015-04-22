@@ -9,10 +9,7 @@ Package.onUse(function(api) {
   
   api.versionsFrom("METEOR@1.0");
 
-  api.use([
-    'minimongo',
-    'templating'
-  ], 'client');
+  api.use(['telescope:lib@0.3.0']);
 
   api.addFiles([
     'lib/client/messages.js',
