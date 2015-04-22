@@ -14,11 +14,13 @@ Package.onUse(function (api) {
     'telescope:lib@0.3.1',
     'telescope:settings@0.1.0',
     'iron:router@1.0.5',
-    'aslagle:reactive-table@0.7.3'
+    'aslagle:reactive-table@0.7.3',
+    'bengott:avatar@0.7.6'
   ]);
 
   api.addFiles([
     'lib/users.js',
+    'lib/avatars.js',
     'lib/hooks.js',
     'lib/helpers.js',
     'lib/permissions.js',
