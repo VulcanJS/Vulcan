@@ -68,6 +68,8 @@ Package.onUse(function (api) {
     'lib/client/templates/post_submit.js',
     'lib/client/templates/post_views_nav.html',
     'lib/client/templates/post_view_nav.js',
+    'lib/client/templates/postList/posts_list.html',
+    'lib/client/templates/postList/posts_list.js',
   ], ['client']);
 
   api.add_files([
