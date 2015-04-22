@@ -13,6 +13,7 @@ Package.onUse(function (api) {
     'jquery',
     'underscore',
     'mongo',
+    'templating',
     'aldeed:simple-schema@1.3.2',
     'iron:router@1.0.5',
     'telescope:lib@0.3.0',
@@ -22,6 +23,19 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/comments.js',
   ], ['client', 'server']);
+
+  api.add_files([
+    'lib/client/templates/comment_edit.html',
+    'lib/client/templates/comment_edit.js',
+    'lib/client/templates/comment_form.html',
+    'lib/client/templates/comment_form.js',
+    'lib/client/templates/comment_item.html',
+    'lib/client/templates/comment_item.js',
+    'lib/client/templates/comment_list.html',
+    'lib/client/templates/comment_list.js',
+    'lib/client/templates/comment_reply.html',
+    'lib/client/templates/comment_reply.js'
+  ], ['client']);
 
   api.add_files([
     'lib/server/publications.js',
