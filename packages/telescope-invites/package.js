@@ -17,17 +17,8 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use([
-    'tap:i18n@1.4.1',
-    'iron:router@1.0.5',
-    'telescope:settings@0.1.0',
-    'telescope:lib@0.3.0',
-    'telescope:users@0.1.0',
-    'telescope:i18n@0.1.0',
-    'aldeed:simple-schema@1.3.2',
-    'aldeed:autoform@5.1.2'
-  ]);
-
+  api.use(['telescope:core@0.1.0']);
+  
   // client
 
   api.use([

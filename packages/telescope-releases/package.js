@@ -11,29 +11,7 @@ Package.onUse(function (api) {
 
   // --------------------------- 1. Meteor packages dependencies ---------------------------
 
-  // automatic (let the package specify where it's needed)
-
-  api.use([
-    'tap:i18n@1.4.1',                   // internationalization package
-    'iron:router@1.0.5',                // routing package
-    'telescope:lib@0.3.0',              // useful functions
-    'telescope:i18n@0.1.0',             // internationalization wrapper
-    'fourseven:scss@2.1.1'              // SCSS compilation package
-  ]);
-
-  // client
-
-  api.use([
-    'jquery',                     // useful for DOM interactions
-    'underscore',                 // JavaScript swiss army knife library
-    'templating'                  // required for client-side templates
-  ], ['client']);
-
-  // server
-
-  api.use([
-    //
-  ], ['server']);
+  api.use(['telescope:core@0.1.0']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 

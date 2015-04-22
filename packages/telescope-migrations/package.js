@@ -9,12 +9,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
   
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:users@0.1.0',
-    'telescope:comments@0.1.0',
-    'telescope:posts@0.1.2'
-  ]);
+  api.use(['telescope:core@0.1.0']);
 
   api.addFiles([
     'lib/server/migrations.js'

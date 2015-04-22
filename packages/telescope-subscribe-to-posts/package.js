@@ -14,24 +14,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use([
-    'tap:i18n@1.4.1',
-    'iron:router@1.0.5',
-    'telescope:lib@0.3.0',
-    'telescope:i18n@0.1.0',
-    'fourseven:scss@2.1.1',
-    'telescope:notifications@0.1.0',
-    'telescope:posts@0.1.2'
-  ]);
-
-  // client
-
-  api.use([
-    'jquery',                     // useful for DOM interactions
-    'underscore',                 // JavaScript swiss army knife library
-    'templating',                 // required for client-side templates
-    'telescope:messages@0.1.0'
-  ], ['client']);
+  api.use(['telescope:core@0.1.0']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 

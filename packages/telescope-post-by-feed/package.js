@@ -16,15 +16,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use([
-    'telescope:tags@0.1.0',
-    'telescope:lib@0.3.0',
-    'telescope:posts@0.1.2',
-    'aldeed:simple-schema@1.3.2',
-    'aldeed:autoform@5.1.2',
-    'tap:i18n@1.4.1',
-    'fourseven:scss@2.1.1'
-  ], ['client', 'server']);
+  api.use(['telescope:core@0.1.0']);
 
   api.use([
     'iron:router@1.0.5',

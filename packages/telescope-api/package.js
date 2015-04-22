@@ -9,11 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:users@0.1.0',
-    'iron:router@1.0.5'
-  ], ['server']);
+  api.use(['telescope:core@0.1.0']);
 
   api.add_files(['lib/server/api.js', 'lib/server/routes.js'], ['server']);
 

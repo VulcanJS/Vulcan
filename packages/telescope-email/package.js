@@ -14,18 +14,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'iron:router@1.0.5',
-    'telescope:settings@0.1.0',
-    'telescope:lib@0.3.0',
-    'telescope:users@0.1.0',
-    'telescope:i18n@0.1.0',
-    'tap:i18n@1.4.1',
-    'sacha:juice@0.1.4'
-  ], ['client', 'server']);
-
-  api.use([
+    'telescope:core@0.1.0',
+    'sacha:juice@0.1.4',
     'cmather:handlebars-server@0.2.0'
-  ], ['server']);
+  ]);
 
   // do not use for now since tap:i18n doesn't support server-side templates yet
   // api.add_files([

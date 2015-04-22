@@ -17,14 +17,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use([
-    'tap:i18n@1.4.1',                   // internationalization package
-    'iron:router@1.0.5',                // routing package
-    'telescope:lib@0.3.0',              // useful functions
-    'telescope:i18n@0.1.0',             // internationalization wrapper
-    'telescope:posts@0.1.2',
-    'momentjs:moment@2.10.0'
-  ]);
+  api.use(['telescope:core@0.1.0']);
 
   // client
 

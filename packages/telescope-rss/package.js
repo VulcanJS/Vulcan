@@ -9,12 +9,7 @@ Npm.depends({rss: "0.3.2"});
 
 Package.onUse(function (api) {
 
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:settings@0.1.0',
-    'telescope:posts@0.1.2',
-    'iron:router@1.0.5'
-  ], ['server']);
+  api.use(['telescope:core@0.1.0']);
 
   api.add_files(['lib/server/rss.js', 'lib/server/routes.js'], ['server']);
 

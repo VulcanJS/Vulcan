@@ -10,10 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'templating',
-    'telescope:lib@0.3.0',
-    'telescope:settings@0.1.0',
-    'tap:i18n@1.4.1',
+    'telescope:core@0.1.0',
     'meteorhacks:kadira@2.20.1'
   ], ['client', 'server']);
 

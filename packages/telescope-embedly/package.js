@@ -9,16 +9,7 @@ Package.onUse( function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:posts@0.1.2',
-    'telescope:settings@0.1.0',
-    'aldeed:autoform@5.1.2',
-    'tap:i18n@1.4.1',
-    'fourseven:scss@2.1.1',
-    'templating',
-    'http'
-  ]);
+  api.use(['telescope:core@0.1.0']);
 
   api.use([
     'telescope:messages@0.1.0'

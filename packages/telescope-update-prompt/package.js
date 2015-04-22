@@ -9,20 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:posts@0.1.2',
-    'telescope:comments@0.1.0',
-    'http'
-  ], ['client', 'server']);
-
-  api.use([
-    'jquery',
-    'underscore',
-    'iron:router@1.0.5',
-    'templating'
-  ], 'client');
-
+  api.use(['telescope:core@0.1.0']);
 
   api.add_files([
     'lib/client/update.js',

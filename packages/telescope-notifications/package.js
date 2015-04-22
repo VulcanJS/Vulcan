@@ -10,27 +10,11 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:lib@0.3.0',
-    'telescope:users@0.1.0',
-    'telescope:settings@0.1.0',
-    'telescope:email@0.1.0',
-    'telescope:posts@0.1.2',
-    'iron:router@1.0.5',
+    'telescope:core@0.1.0',
     'kestanous:herald@1.3.0',
     'kestanous:herald-email@0.5.0',
-    'tap:i18n@1.4.1'
-  ], ['client', 'server']);
-
-  api.use([
-    'jquery',
-    'underscore',
-    'templating',
-    'tracker'
-  ], ['client']);
-
-  api.use([
     'cmather:handlebars-server@0.2.0'
-  ], ['server']);
+  ]);
 
   api.add_files([
     'lib/notifications.js',

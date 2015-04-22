@@ -3,16 +3,41 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-# Telescope Packages (Required)
-
-# note: eventually, the following packages will all be replaced by telescope:core, which will depend on them
+############ Telescope Core ############
 
 telescope:core
 
-# Telescope Packages (Optional)
+############ Telescope Packages (Optional) ############
 
+# Note: all following packages depend on telescope:core; Additional internal dependencies are mentioned
 
+telescope:api
+telescope:daily # singleday
+telescope:datetimepicker
+telescope:email
+telescope:embedly
+telescope:getting-started
+telescope:invites
+telescope:kadira
+telescope:migrations
+telescope:newsletter
+telescope:notifications
+telescope:pages
+telescope:post-by-feed
+telescope:releases
+telescope:rss
+telescope:scoring
+telescope:search
+telescope:share
+telescope:singleday
+# telescope:sitemap
+telescope:subscribe-to-posts # notifications
+telescope:tagline-banner
+telescope:tags
+telescope:theme-base
+telescope:theme-hubble
+telescope:update-prompt
 
-# Your Custom Packages
+############ Your Custom Packages ############
 
 # custom

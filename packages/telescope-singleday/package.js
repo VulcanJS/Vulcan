@@ -14,29 +14,7 @@ Package.onUse(function (api) {
 
   // --------------------------- 1. Meteor packages dependencies ---------------------------
 
-  // automatic (let the package specify where it's needed)
-
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:i18n@0.1.0',
-    'telescope:posts@0.1.2',
-    'tap:i18n@1.4.1',
-    'iron:router@1.0.5'
-  ]);
-
-  // client
-
-  api.use([
-    'jquery',
-    'underscore',
-    'templating'
-  ], ['client']);
-
-  // server
-
-  api.use([
-    //
-  ], ['server']);
+  api.use(['telescope:core@0.1.0']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 

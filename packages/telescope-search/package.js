@@ -9,20 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use([
-    'telescope:lib@0.3.0',
-    'telescope:settings@0.1.0',
-    'aldeed:simple-schema@1.3.2'
-  ], ['client', 'server']);
-
-  api.use([
-    'jquery',
-    'underscore',
-    'iron:router@1.0.5',
-    'templating',
-    'tap:i18n@1.4.1',
-    'fourseven:scss@2.1.1'
-  ], 'client');
+  api.use(['telescope:core@0.1.0']);
 
   api.add_files([
     'lib/search.js',

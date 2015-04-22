@@ -8,10 +8,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use([
-    'telescope:lib@0.3.0',
-    'fourseven:scss@2.1.1'
-  ], ['client', 'server']);
+  api.use(['telescope:core@0.1.0']);
 
   api.addFiles(
     [

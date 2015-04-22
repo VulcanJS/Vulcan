@@ -9,18 +9,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
   
-  api.use([
-    'aldeed:simple-schema@1.3.2',
-    'aldeed:autoform@5.1.2',
-    'tap:i18n@1.4.1',
-    'fourseven:scss@2.1.1',
-    'iron:router@1.0.5',
-    'templating',
-    'telescope:messages@0.1.0',
-    'telescope:lib@0.3.0',
-    'matb33:collection-hooks@0.7.11',
-    'chuangbo:marked@0.3.5'
-  ]);
+  api.use(['telescope:core@0.1.0']);
 
   api.addFiles([
     'lib/pages.js'
