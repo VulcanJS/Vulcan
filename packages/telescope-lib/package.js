@@ -32,7 +32,8 @@ Package.onUse(function (api) {
     'momentjs:moment@2.10.3',
     'sacha:spin@0.2.4',
     'aslagle:reactive-table@0.7.3',
-    'bengott:avatar@0.7.6'
+    'bengott:avatar@0.7.6',
+    'fortawesome:fontawesome@4.3.0'
   ]);
 
   api.imply([ // make the following packages available to the other core packages
@@ -59,7 +60,8 @@ Package.onUse(function (api) {
     'momentjs:moment@2.10.3',
     'sacha:spin@0.2.4',
     'aslagle:reactive-table@0.7.3',
-    'bengott:avatar@0.7.6'
+    'bengott:avatar@0.7.6',
+    'fortawesome:fontawesome@4.3.0'
   ]);
 
   api.addFiles([
