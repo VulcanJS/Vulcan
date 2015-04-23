@@ -33,7 +33,8 @@ Package.onUse(function (api) {
     'sacha:spin@0.2.4',
     'aslagle:reactive-table@0.7.3',
     'bengott:avatar@0.7.6',
-    'fortawesome:fontawesome@4.3.0'
+    'fortawesome:fontawesome@4.3.0',
+    'ccan:cssreset@1.0.0'
   ]);
 
   api.imply([ // make the following packages available to the other core packages

@@ -17,6 +17,7 @@ blaze@2.1.2
 blaze-tools@1.0.3
 boilerplate-generator@1.0.3
 callback-hook@1.0.3
+ccan:cssreset@1.0.0
 cfs:http-methods@0.0.27
 check@1.0.5
 chuangbo:cookie@1.1.0
