@@ -9,8 +9,7 @@ Telescope.modules = [];
  * @param {number} module.order - The order of the template in the zone
  */
 Telescope.registerModule = function (zone, module) {
-  console.log(zone)
-  console.log(module)
+  
   // if module zone array doesn't exist yet, initialize it
   if (typeof Telescope.modules[zone] === "undefined") {
     Telescope.modules[zone] = [];
