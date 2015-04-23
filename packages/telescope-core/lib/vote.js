@@ -33,7 +33,7 @@ var removeVote = function (userId, itemId, collection, upOrDown) {
   });
 };
 
-upvoteItem = function (collection, item, user) {
+Telescope.upvoteItem = function (collection, item, user) {
   user = typeof user === "undefined" ? Meteor.user() : user;
   collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
 
@@ -53,7 +53,7 @@ upvoteItem = function (collection, item, user) {
   votePower = getVotePower(user);
 
   // in case user is upvoting a previously downvoted item, cancel downvote first
-  cancelDownvote(collection, item, user);
+  Telescope.cancelDownvote(collection, item, user);
 
   // Votes & Score
   var result = collection.update({_id: item && item._id, upvoters: { $ne: user._id }},{
@@ -74,7 +74,7 @@ upvoteItem = function (collection, item, user) {
 
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-    updateScore({collection: collection, item: item, forceUpdate: true});
+    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 
     // if the item is being upvoted by its own author, don't give karma
     if (item.userId != user._id) {
@@ -108,7 +108,7 @@ upvoteItem = function (collection, item, user) {
   return true;
 };
 
-downvoteItem = function (collection, item, user) {
+Telescope.downvoteItem = function (collection, item, user) {
   user = typeof user === "undefined" ? Meteor.user() : user;
   collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
 
@@ -148,7 +148,7 @@ downvoteItem = function (collection, item, user) {
 
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore - votePower)});
-    updateScore({collection: collection, item: item, forceUpdate: true});
+    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 
     // if the item is being upvoted by its own author, don't give karma
     if (item.userId != user._id)
@@ -170,7 +170,7 @@ downvoteItem = function (collection, item, user) {
   return true;
 };
 
-cancelUpvote = function (collection, item, user) {
+Telescope.cancelUpvote = function (collection, item, user) {
   user = typeof user === "undefined" ? Meteor.user() : user;
   collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
 
@@ -202,7 +202,7 @@ cancelUpvote = function (collection, item, user) {
 
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore - votePower)});
-    updateScore({collection: collection, item: item, forceUpdate: true});
+    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 
     // if the item is being upvoted by its own author, don't give karma
     if (item.userId != user._id)
@@ -225,7 +225,7 @@ cancelUpvote = function (collection, item, user) {
   return true;
 };
 
-cancelDownvote = function (collection, item, user) {
+Telescope.cancelDownvote = function (collection, item, user) {
   user = typeof user === "undefined" ? Meteor.user() : user;
   collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
 
@@ -257,7 +257,7 @@ cancelDownvote = function (collection, item, user) {
 
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-    updateScore({collection: collection, item: item, forceUpdate: true});
+    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 
     // if the item is being upvoted by its own author, don't give karma
     if (item.userId != user._id)
@@ -289,27 +289,27 @@ var getUser = function (user) {
 
 Meteor.methods({
   upvotePost: function (post) {
-    return upvoteItem.call(this, Posts, post);
+    return Telescope.upvoteItem.call(this, Posts, post);
   },
   downvotePost: function (post) {
-    return downvoteItem.call(this, Posts, post);
+    return Telescope.downvoteItem.call(this, Posts, post);
   },
   cancelUpvotePost: function (post) {
-    return cancelUpvote.call(this, Posts, post);
+    return Telescope.cancelUpvote.call(this, Posts, post);
   },
   cancelDownvotePost: function (post) {
-    return cancelDownvote.call(this, Posts, post);
+    return Telescope.cancelDownvote.call(this, Posts, post);
   },
   upvoteComment: function (comment) {
-    return upvoteItem.call(this, Comments, comment);
+    return Telescope.upvoteItem.call(this, Comments, comment);
   },
   downvoteComment: function (comment) {
-    return downvoteItem.call(this, Comments, comment);
+    return Telescope.downvoteItem.call(this, Comments, comment);
   },
   cancelUpvoteComment: function (comment) {
-    return cancelUpvote.call(this, Comments, comment);
+    return Telescope.cancelUpvote.call(this, Comments, comment);
   },
   cancelDownvoteComment: function (comment) {
-    return cancelDownvote.call(this, Comments, comment);
+    return Telescope.cancelDownvote.call(this, Comments, comment);
   }
 });

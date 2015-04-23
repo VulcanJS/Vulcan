@@ -141,7 +141,7 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
   });
 
   // upvote comment
-  upvoteItem(Comments, comment, commentAuthor);
+  Telescope.upvoteItem(Comments, comment, commentAuthor);
 
 });
 

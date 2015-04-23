@@ -1,4 +1,4 @@
-updateScore = function (args) {
+Telescope.updateScore = function (args) {
   var collection = args.collection;
   var item = args.item;
   var forceUpdate = args.forceUpdate;

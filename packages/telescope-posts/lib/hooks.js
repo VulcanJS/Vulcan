@@ -27,6 +27,6 @@ Posts.hooks.afterSubmitMethodCallbacks.push(function (post) {
       postAuthor = Meteor.users.findOne(userId);
 
   Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
-  upvoteItem(Posts, post, postAuthor);
+  Telescope.upvoteItem(Posts, post, postAuthor);
   return post;
 });

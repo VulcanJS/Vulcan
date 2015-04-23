@@ -78,12 +78,3 @@ Meteor.publish('postUsers', function(postId) {
   }
   return [];
 });
-
-// Publish comments for a specific post
-
-Meteor.publish('postComments', function(postId) {
-  if (Users.can.viewById(this.userId)){
-    return Comments.find({postId: postId}, {sort: {score: -1, postedAt: -1}});
-  }
-  return [];
-});
