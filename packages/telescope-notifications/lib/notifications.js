@@ -1,5 +1,5 @@
 // add new post notification callback on post submit
-Posts.hooks.afterSubmitMethodCallbacks.push(function (post) {
+function postSubmitNotification (post) {
 
   var adminIds = _.pluck(Meteor.users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
   var notifiedUserIds = _.pluck(Meteor.users.find({'profile.notifications.posts': 1}, {fields: {_id:1}}).fetch(), '_id');
@@ -17,13 +17,14 @@ Posts.hooks.afterSubmitMethodCallbacks.push(function (post) {
   }
   return post;
 
-});
+}
+Telescope.registerCallback("postSubmitAsync", postSubmitNotification);
 
-// notify users that their pending post has been approved
-Posts.hooks.approvedCallbacks.push(function (post) {
+function postApprovedNotification (post) {
   Herald.createNotification(post.userId, {courier: 'postApproved', data: post});
   return post;
-});
+}
+Telescope.registerCallback("postApprovedAsync", postApprovedNotification);
 
 // add new comment notification callback on comment submit
 function addCommentNotification (comment) {

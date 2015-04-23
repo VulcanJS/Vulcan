@@ -68,7 +68,7 @@ var thumbnailHeightProperty = {
 Settings.addToSchema(thumbnailHeightProperty);
 
 // add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
-Posts.hooks.classCallbacks.push(function (post, postClass){
+Telescope.registerCallback("postClass", function (post, postClass){
   var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";
   return postClass + " " + thumbnailClass;
 });

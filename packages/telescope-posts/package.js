@@ -20,7 +20,7 @@ Package.onUse(function (api) {
     'lib/posts.js',
     'lib/config.js',
     'lib/helpers.js',
-    'lib/hooks.js',
+    'lib/callbacks.js',
     'lib/methods.js',
     'lib/routes.js'
   ], ['client', 'server']);

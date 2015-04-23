@@ -83,10 +83,10 @@ var addMediaAfterSubmit = function (post) {
   }
   return post;
 }
-Posts.hooks.afterSubmitMethodCallbacks.push(addMediaAfterSubmit);
+Telescope.registerCallback("postSubmitAsync", addMediaAfterSubmit);
 
 // TODO: find a way to only do this is URL has actually changed?
-var updateMediaOnEdit = function (updateObject) {
+function updateMediaOnEdit (updateObject) {
   var post = updateObject.$set
   if(post.url){
     var data = getEmbedlyData(post.url);
@@ -95,7 +95,7 @@ var updateMediaOnEdit = function (updateObject) {
   }
   return updateObject;
 }
-Posts.hooks.editMethodCallbacks.push(updateMediaOnEdit);
+Telescope.registerCallback("postEdit", updateMediaOnEdit);
 
 
 Meteor.methods({

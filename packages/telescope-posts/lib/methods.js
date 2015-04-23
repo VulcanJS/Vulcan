@@ -49,9 +49,7 @@ Posts.submit = function (post) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit server callbacks on post object successively
-  post = Posts.hooks.submitMethodCallbacks.reduce(function(result, currentFunction) {
-      return currentFunction(result);
-  }, post);
+  post = Telescope.runCallbacks("postSubmit", post);
 
   // -------------------------------- Insert ------------------------------- //
 
@@ -59,14 +57,7 @@ Posts.submit = function (post) {
 
   // --------------------- Server-Side Async Callbacks --------------------- //
 
-  if (Meteor.isServer) {
-    Meteor.defer(function () { // use defer to avoid holding up client
-      // run all post submit server callbacks on post object successively
-      Posts.hooks.afterSubmitMethodCallbacks.forEach(function(currentFunction) {
-          currentFunction(post);
-      });
-    });
-  }
+  Telescope.runCallbacks("postSubmitAsync", post, true);
 
   return post;
 }
@@ -181,7 +172,7 @@ Meteor.methods({
     // ------------------------------ Callbacks ------------------------------ //
 
     // run all post submit server callbacks on modifier successively
-    modifier = Posts.hooks.editMethodCallbacks.reduce(function(result, currentFunction) {
+    modifier = Telescope.callbacks.postEdit.reduce(function(result, currentFunction) {
         return currentFunction(result);
     }, modifier);
 
@@ -194,7 +185,7 @@ Meteor.methods({
     if (Meteor.isServer) {
       Meteor.defer(function () { // use defer to avoid holding up client
         // run all post after edit method callbacks successively
-        Posts.hooks.afterEditMethodCallbacks.forEach(function(currentFunction) {
+        Telescope.callbacks.postEditAsync.forEach(function(currentFunction) {
           currentFunction(modifier, post);
         });
       });
@@ -227,14 +218,7 @@ Meteor.methods({
       var result = Posts.update(post._id, {$set: set}, {validate: false});
 
       // --------------------- Server-Side Async Callbacks --------------------- //
-      if (Meteor.isServer) {
-        Meteor.defer(function () { // use defer to avoid holding up client
-          // run all post submit server callbacks on post object successively
-          post = Posts.hooks.approveCallbacks.reduce(function(result, currentFunction) {
-              return currentFunction(result);
-          }, post);
-        });
-      }
+      Telescope.runCallbacks("postApprovedAsync", post, true);
 
     }else{
       Messages.flash('You need to be an admin to do that.', "error");

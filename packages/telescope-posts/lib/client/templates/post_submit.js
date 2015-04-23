@@ -18,7 +18,7 @@ AutoForm.hooks({
         // ------------------------------ Callbacks ------------------------------ //
 
         // run all post submit client callbacks on properties object successively
-        post = Posts.hooks.submitClientCallbacks.reduce(function(result, currentFunction) {
+        post = Telescope.callbacks.postSubmitClient.reduce(function(result, currentFunction) {
             return currentFunction(result);
         }, post);
 

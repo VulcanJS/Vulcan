@@ -44,6 +44,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/core.js',
+    'lib/callbacks.js',
     'lib/utils.js',
     'lib/config.js',
     'lib/deep.js',

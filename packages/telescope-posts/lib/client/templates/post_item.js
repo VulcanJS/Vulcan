@@ -21,9 +21,8 @@ Template.post_item.helpers({
     var post = this;
     var postAuthorClass = "author-"+post.author;
 
-    var postClass = Posts.hooks.classCallbacks.reduce(function(result, currentFunction) {
-        return currentFunction(post, result);
-    }, postAuthorClass);
+
+    var postClass = Telescope.runCallbacks("postClass", postAuthorClass);
 
     return postClass;
   }

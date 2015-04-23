@@ -14,15 +14,15 @@ var checkCategories = function (post) {
   }
 };
 
-Posts.hooks.submitMethodCallbacks.push(function (post) {
+function postSubmitCheckCategories (post) {
   checkCategories(post);
-
   return post;
-});
+}
+Telescope.registerCallback("submitPost", postSubmitCheckCategories);
 
-Posts.hooks.editMethodCallbacks.push(function (updateObject) {
+function postEditCheckCategories (updateObject) {
   var post = updateObject.$set;
   checkCategories(post);
-
   return updateObject;
-});
+}
+Telescope.registerCallback("submitPost", postEditCheckCategories);
