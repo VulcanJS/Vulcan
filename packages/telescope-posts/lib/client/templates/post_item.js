@@ -5,8 +5,8 @@ Template.post_item.created = function () {
 };
 
 Template.post_item.helpers({
-  postModules: function () {
-    return postModules;
+  postComponents: function () {
+    return Telescope.getModules("postComponents");
   },
   moduleContext: function () { // not used for now
     var module = this;

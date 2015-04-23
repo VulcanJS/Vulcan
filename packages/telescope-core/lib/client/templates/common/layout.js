@@ -9,7 +9,7 @@ Template.layout.helpers({
     return Settings.get('extraCode');
   },
   heroModules: function () {
-    return _.sortBy(heroModules, 'order');
+    return Telescope.getModules("hero");
   }
 });
 

@@ -5,7 +5,7 @@ Template.comment_list.helpers({
     return comments;
   },
   threadModules: function () {
-    return threadModules;
+    return Telescope.getModules("thread");
   }
 });
 

@@ -45,6 +45,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/core.js',
     'lib/callbacks.js',
+    'lib/modules.js',
     'lib/utils.js',
     'lib/config.js',
     'lib/deep.js',
@@ -69,21 +70,9 @@ Package.onUse(function (api) {
 
     'viewParameters',
 
-    'footerModules',
-    'heroModules',
-    'threadModules',
-    'postListTopModules',
-    'postModules',
-    'postThumbnail',
-    'postHeading',
-    'postMeta',
-
     'userEditClientCallbacks',
     'userProfileCompleteChecks',
     'userProfileCompletedCallbacks',
-
-    'userProfileDisplay',
-    'userProfileEdit',
     'userCreatedCallbacks',
 
     'getTemplate',

@@ -6,6 +6,6 @@ Template.footer.helpers({
     return Session.get('isPostsList') ? 'absolute' : 'static';
   },
   footerModules: function () {
-    return footerModules;
+    return Telescope.getModules("footer");
   }
 });

@@ -1,9 +1,7 @@
-threadModules.push(
-  {
-    template: 'postSubscribe',
-    order: 10
-  }
-);
+Telescope.registerModule("thread", {
+  template: 'postSubscribe',
+  order: 10
+});
 
 Posts.addToSchema(
   {
@@ -31,12 +29,10 @@ Posts.addToSchema(
   }
 );
 
-userProfileEdit.push(
-  {
-    template: 'userSubscribedPosts',
-    order: 5
-  }
-);
+Telescope.registerModule("profileEdit", {
+  template: 'userSubscribedPosts',
+  order: 5
+});
 
 viewParameters.userSubscribedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId),

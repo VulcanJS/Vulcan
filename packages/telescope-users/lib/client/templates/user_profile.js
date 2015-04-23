@@ -1,5 +1,5 @@
 Template.user_profile.helpers({
   userProfileDisplay: function () {
-    return userProfileDisplay;
+    return Telescope.getModules("profileDisplay");
   }
 });

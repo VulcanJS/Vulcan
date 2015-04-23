@@ -125,4 +125,4 @@ function setNotificationDefaults (user) {
   };
   return user;
 }
-Users.hooks.userCreatedCallbacks.push(setNotificationDefaults);
+Telescope.registerCallback("userCreated", setNotificationDefaults);

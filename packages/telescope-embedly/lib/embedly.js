@@ -25,7 +25,7 @@ var mediaProperty = {
 }
 Posts.addToSchema(mediaProperty);
 
-postThumbnail.push({
+Telescope.registerModule("postThumbnail", {
   template: 'postThumbnail',
   order: 15
 });

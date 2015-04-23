@@ -3,10 +3,10 @@ Template.postContent.helpers({
     return postThumbnail;
   },
   postHeading: function () {
-    return postHeading;
+    return Telescope.getModules("postHeading");
   },
   postMeta: function () {
-    return postMeta;
+    return Telescope.getModules("postMeta");
   },
   sourceLink: function(){
     return !!this.url ? this.url : "/posts/"+this._id;

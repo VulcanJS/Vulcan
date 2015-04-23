@@ -182,7 +182,7 @@ viewParameters.campaign = function (terms) {
   };
 }
 
-heroModules.push({
+Telescope.registerModule("hero", {
   template: 'newsletterBanner',
   order: 10
 });
@@ -196,4 +196,4 @@ heroModules.push({
   }
   return user;
 }
-Users.hooks.userCreatedCallbacks.push(subscribeUserOnCreation);
+Telescope.registerCallback("userCreated", subscribeUserOnCreation);

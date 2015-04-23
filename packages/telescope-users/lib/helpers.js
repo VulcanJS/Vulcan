@@ -114,8 +114,8 @@ Users.getCurrentUserEmail = function () {
 };
 
 Users.userProfileComplete = function (user) {
-  for (var i = 0; i < Users.hooks.userProfileCompleteChecks.length; i++) {
-    if (!Users.hooks.userProfileCompleteChecks[i](user)) {
+  for (var i = 0; i < Telescope.callbacks.profileCompletedChecks.length; i++) {
+    if (!Telescope.callbacks.profileCompletedChecks[i](user)) {
       return false;
     }
   }

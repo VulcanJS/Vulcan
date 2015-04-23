@@ -16,7 +16,8 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/users.js',
     'lib/avatars.js',
-    'lib/hooks.js',
+    'lib/callbacks.js',
+    'lib/modules.js',
     'lib/helpers.js',
     'lib/permissions.js',
     'lib/pubsub.js',

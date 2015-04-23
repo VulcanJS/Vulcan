@@ -39,14 +39,7 @@ Accounts.onCreateUser(function(options, user){
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit client callbacks on properties object successively
-  Telescope.log('// Start userCreatedCallbacks');
-  user = Users.hooks.userCreatedCallbacks.reduce(function(result, currentFunction) {
-    Telescope.log('// Running '+currentFunction.name+'…');
-    return currentFunction(result);
-  }, user);
-  Telescope.log('// Finished userCreatedCallbacks');
-  // Telescope.log('// User object:');
-  // Telescope.log(user);
+  user = Telescope.runCallbacks("userCreated", user);
 
   // ------------------------------ Analytics ------------------------------ //
 
