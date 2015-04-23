@@ -78,30 +78,6 @@ Package.onUse(function (api) {
     'postHeading',
     'postMeta',
 
-    'postSubmitRenderedCallbacks',
-    'postEditRenderedCallbacks',
-
-    'commentClassCallbacks',
-
-    'commentSubmitRenderedCallbacks',
-    'commentSubmitClientCallbacks',
-    'commentSubmitMethodCallbacks',
-    'commentAfterSubmitMethodCallbacks',
-
-    'commentEditRenderedCallbacks',
-    'commentEditClientCallbacks',
-    'commentEditMethodCallbacks',
-    'commentAfterEditMethodCallbacks',
-
-    'upvoteCallbacks',
-    'downvoteCallbacks',
-    'cancelUpvoteCallbacks',
-    'cancelDownvoteCallbacks',
-    'upvoteMethodCallbacks',
-    'downvoteMethodCallbacks',
-    'cancelUpvoteMethodCallbacks',
-    'cancelDownvoteMethodCallbacks',
-
     'userEditClientCallbacks',
     'userProfileCompleteChecks',
     'userProfileCompletedCallbacks',

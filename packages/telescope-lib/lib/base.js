@@ -165,32 +165,29 @@ postMeta = [
 
 // ------------------------------ Callbacks ------------------------------ //
 
-commentClassCallbacks = [];
+// commentSubmitClientCallbacks = [];
+// commentSubmitMethodCallbacks = [];
+// commentAfterSubmitMethodCallbacks = [];
 
-commentSubmitRenderedCallbacks = [];
-commentSubmitClientCallbacks = [];
-commentSubmitMethodCallbacks = [];
-commentAfterSubmitMethodCallbacks = [];
+// commentEditRenderedCallbacks = [];
+// commentEditClientCallbacks = [];
+// commentEditMethodCallbacks = []; // not used yet
+// commentAfterEditMethodCallbacks = []; // not used yet
 
-commentEditRenderedCallbacks = [];
-commentEditClientCallbacks = [];
-commentEditMethodCallbacks = []; // not used yet
-commentAfterEditMethodCallbacks = []; // not used yet
+// userEditRenderedCallbacks = [];
+// userEditClientCallbacks = [];
+// userCreatedCallbacks = [];
+// userProfileCompleteChecks = [];
+// userProfileCompletedCallbacks = [];
 
-userEditRenderedCallbacks = [];
-userEditClientCallbacks = [];
-userCreatedCallbacks = [];
-userProfileCompleteChecks = [];
-userProfileCompletedCallbacks = [];
-
-upvoteCallbacks = [];
-downvoteCallbacks = [];
-cancelUpvoteCallbacks = [];
-cancelDownvoteCallbacks = [];
-upvoteMethodCallbacks = [];
-downvoteMethodCallbacks = [];
-cancelUpvoteMethodCallbacks = [];
-cancelDownvoteMethodCallbacks = [];
+// upvoteCallbacks = [];
+// downvoteCallbacks = [];
+// cancelUpvoteCallbacks = [];
+// cancelDownvoteCallbacks = [];
+// upvoteMethodCallbacks = [];
+// downvoteMethodCallbacks = [];
+// cancelUpvoteMethodCallbacks = [];
+// cancelDownvoteMethodCallbacks = [];
 
 // ------------------------------------- User Profiles -------------------------------- //
 

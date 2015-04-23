@@ -85,7 +85,7 @@ function addCommentNotification (comment) {
 
 }
 
-commentAfterSubmitMethodCallbacks.push(addCommentNotification);
+Telescope.registerCallback("commentSubmitAsync", addCommentNotification);
 
 var emailNotifications = {
   propertyName: 'emailNotifications',

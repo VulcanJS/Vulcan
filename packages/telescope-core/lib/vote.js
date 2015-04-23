@@ -44,9 +44,8 @@ Telescope.upvoteItem = function (collection, item, user) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all upvote callbacks on item successively
-  item = upvoteMethodCallbacks.reduce(function(result, currentFunction) {
-    return currentFunction(collection, result, user);
-  }, item);
+
+  item = Telescope.runCallbacks("upvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -94,14 +93,8 @@ Telescope.upvoteItem = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    if (Meteor.isServer) {
-      Meteor.defer(function () { // use defer to avoid holding up client
-        // run all post submit server callbacks on post object successively
-        result = upvoteCallbacks.reduce(function(result, currentFunction) {
-            return currentFunction(collection, result, user);
-        }, item);
-      });
-    }
+    Telescope.runCallbacks("upvoteAsync", item, true);
+
     // ----------------------------------------------------------------------- //
   }
   // console.log(collection.findOne(item._id));
@@ -119,9 +112,7 @@ Telescope.downvoteItem = function (collection, item, user) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all downvote callbacks on item successively
-  item = downvoteMethodCallbacks.reduce(function(result, currentFunction) {
-    return currentFunction(collection, result, user);
-  }, item);
+  item = Telescope.runCallbacks("downvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -156,14 +147,8 @@ Telescope.downvoteItem = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    if (Meteor.isServer) {
-      Meteor.defer(function () { // use defer to avoid holding up client
-        // run all post submit server callbacks on post object successively
-        result = downvoteCallbacks.reduce(function(result, currentFunction) {
-            return currentFunction(collection, result, user);
-        }, result);
-      });
-    }
+    Telescope.runCallbacks("downvoteAsync", item, true);
+
     // ----------------------------------------------------------------------- //
   }
   // console.log(collection.findOne(item._id));
@@ -181,9 +166,7 @@ Telescope.cancelUpvote = function (collection, item, user) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all cancel upvote callbacks on item successively
-  item = cancelUpvoteMethodCallbacks.reduce(function(result, currentFunction) {
-    return currentFunction(collection, result, user);
-  }, item);
+  item = Telescope.runCallbacks("cancelUpvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -211,14 +194,8 @@ Telescope.cancelUpvote = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    if (Meteor.isServer) {
-      Meteor.defer(function () { // use defer to avoid holding up client
-        // run all post submit server callbacks on post object successively
-        result = cancelUpvoteCallbacks.reduce(function(result, currentFunction) {
-            return currentFunction(collection, result, user);
-        }, result);
-      });
-    }
+    Telescope.runCallbacks("cancelUpvoteAsync", item, true);
+    
     // ----------------------------------------------------------------------- //
   }
   // console.log(collection.findOne(item._id));
@@ -236,9 +213,8 @@ Telescope.cancelDownvote = function (collection, item, user) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all cancel downvote callbacks on item successively
-  item = cancelDownvoteMethodCallbacks.reduce(function(result, currentFunction) {
-    return currentFunction(collection, result, user);
-  }, item);
+  
+  item = Telescope.runCallbacks("cancelDownvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -266,14 +242,8 @@ Telescope.cancelDownvote = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    if (Meteor.isServer) {
-      Meteor.defer(function () { // use defer to avoid holding up client
-        // run all post submit server callbacks on post object successively
-        result = cancelDownvoteCallbacks.reduce(function(result, currentFunction) {
-            return currentFunction(collection, result, user);
-        }, result);
-      });
-    }
+    Telescope.runCallbacks("cancelDownvoteAsync", item, true);
+
     // ----------------------------------------------------------------------- //
   }
   // console.log(collection.findOne(item._id));

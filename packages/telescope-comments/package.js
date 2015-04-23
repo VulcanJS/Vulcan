@@ -17,6 +17,8 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/comments.js',
+    'lib/methods.js',
+    'lib/callbacks.js',
     'lib/routes.js'
   ], ['client', 'server']);
 
