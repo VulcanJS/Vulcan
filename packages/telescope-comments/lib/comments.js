@@ -123,7 +123,7 @@ Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
   }
 });
 
-commentAfterSubmitMethodCallbacks.push(function (comment) {
+function afterCommentOperations (comment) {
 
   var userId = comment.userId,
     commentAuthor = Meteor.users.findOne(userId);
@@ -143,7 +143,11 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
   // upvote comment
   Telescope.upvoteItem(Comments, comment, commentAuthor);
 
-});
+  return comment;
+
+};
+
+commentAfterSubmitMethodCallbacks.push(afterCommentOperations);
 
 // ------------------------------------------------------------------------------------------- //
 // -------------------------------------- Submit Comment ------------------------------------- //

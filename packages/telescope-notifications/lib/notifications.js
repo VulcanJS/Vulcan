@@ -26,7 +26,8 @@ Posts.hooks.approvedCallbacks.push(function (post) {
 });
 
 // add new comment notification callback on comment submit
-commentAfterSubmitMethodCallbacks.push(function (comment) {
+function addCommentNotification (comment) {
+
   if(Meteor.isServer && !comment.disableNotifications){
 
     var post = Posts.findOne(comment.postId),
@@ -81,7 +82,9 @@ commentAfterSubmitMethodCallbacks.push(function (comment) {
 
   return comment;
 
-});
+}
+
+commentAfterSubmitMethodCallbacks.push(addCommentNotification);
 
 var emailNotifications = {
   propertyName: 'emailNotifications',
