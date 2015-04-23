@@ -107,7 +107,7 @@ Posts.getEditUrl = function(id){
  * @param {Object} post
  */
 Posts.getLink = function (post) {
-  return !!post.url ? Telescope.utils.getOutgoingUrl(post.url) : this.getPageUrl(post);
+  return !!post.url ? Posts.getOutgoingUrl(post.url) : this.getPageUrl(post);
 };
 
 /**

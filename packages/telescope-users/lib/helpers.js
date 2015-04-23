@@ -88,7 +88,7 @@ Users.getGitHubName = function (user) {
 Users.getTwitterNameById = function (userId) {
   var user = Meteor.users.findOne(userId);
   if (user)
-    return getTwitterName(user);
+    return Users.getTwitterName(user);
 };
 
 Users.getEmail = function (user) {

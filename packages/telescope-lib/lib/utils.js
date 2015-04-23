@@ -214,7 +214,7 @@ Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
   return true;
 };
 
-clog = function (s) {
+Telescope.log = function (s) {
   if(Settings.get('debug', false))
     console.log(s);
 };
