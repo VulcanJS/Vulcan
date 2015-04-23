@@ -7,11 +7,14 @@ Telescope.config.adminMenu.push({
 Telescope.config.preloadSubscriptions.push('pages');
 
 PageController = RouteController.extend({
+  currentPage: function () {
+    return Pages.collection.findOne({slug: this.params.slug});
+  },
   getTitle: function () {
-    return Pages.collection.findOne({slug: this.params.slug}).title;
+    return this.currentPage() && this.currentPage().title;
   },
   data: function () {
-    return Pages.collection.findOne({slug: this.params.slug});
+    return this.currentPage();
   }
 });
 
