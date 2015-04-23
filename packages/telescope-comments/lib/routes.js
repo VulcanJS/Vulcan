@@ -1,5 +1,7 @@
 // Controller for comment pages
 
+Comments.controllers = {};
+
 Comments.controllers.page = RouteController.extend({
   waitOn: function() {
     return [
