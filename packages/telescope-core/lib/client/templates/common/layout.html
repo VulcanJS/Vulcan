@@ -6,9 +6,7 @@
       {{> nav}}
       <div class="content-wrapper">
         {{> messages}}
-        {{#each heroModules}}
-          {{> Template.dynamic template=template}}
-        {{/each}}
+        {{> modules "hero"}}
         {{> yield "adminMenu"}}
         {{> yield "postListTop"}}
         {{> yield}}

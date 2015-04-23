@@ -1,0 +1,5 @@
+<template name="modules">
+  {{#each getModules}}
+    {{> Template.dynamic template=template data=../..}}
+  {{/each}}
+</template>

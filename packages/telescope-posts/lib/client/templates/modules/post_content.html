@@ -1,17 +1,11 @@
 <template name="postContent">
-    {{#each postThumbnail}}
-      {{> Template.dynamic template=template data=..}}
-    {{/each}}
+    {{> modules "postThumbnail"}}
     <div class="post-info">
       <h3 class="post-heading">
-        {{#each postHeading}}
-          {{> Template.dynamic template=template data=..}}
-        {{/each}}
+        {{> modules "postHeading"}}
       </h3>
       <div class="post-meta">
-        {{#each postMeta}}
-          {{> Template.dynamic template=template data=..}}
-        {{/each}}
+        {{> modules "postMeta"}}
       </div>
     </div>
 </template>

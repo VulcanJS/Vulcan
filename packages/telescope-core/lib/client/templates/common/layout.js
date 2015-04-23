@@ -7,9 +7,6 @@ Template.layout.helpers({
   },
   extraCode: function() {
     return Settings.get('extraCode');
-  },
-  heroModules: function () {
-    return Telescope.getModules("hero");
   }
 });
 

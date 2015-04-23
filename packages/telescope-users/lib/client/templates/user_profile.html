@@ -1,7 +1,5 @@
 <template name="user_profile">
 	{{#with user}}
-		{{#each userProfileDisplay}}
-			{{> Template.dynamic template=template data=..}}
-		{{/each}}
+    {{> modules "profileDisplay"}}
 	{{/with}}
 </template>

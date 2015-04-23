@@ -4,7 +4,5 @@
       {{#markdown}}{{footerCode}}{{/markdown}}
     </div>
   {{/if}}
-  {{#each footerModules}}
-    {{> Template.dynamic template=template}}
-  {{/each}}
+  {{> modules "footer"}}
 </template>

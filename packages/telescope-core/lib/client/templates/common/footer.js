@@ -4,8 +4,5 @@ Template.footer.helpers({
   },
   footerClass: function(){
     return Session.get('isPostsList') ? 'absolute' : 'static';
-  },
-  footerModules: function () {
-    return Telescope.getModules("footer");
   }
 });

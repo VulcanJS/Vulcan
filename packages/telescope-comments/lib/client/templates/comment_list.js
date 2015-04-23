@@ -3,9 +3,6 @@ Template.comment_list.helpers({
     var post = this;
     var comments = Comments.find({postId: post._id, parentCommentId: null}, {sort: {score: -1, postedAt: -1}});
     return comments;
-  },
-  threadModules: function () {
-    return Telescope.getModules("thread");
   }
 });
 

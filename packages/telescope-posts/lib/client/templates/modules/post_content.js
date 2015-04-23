@@ -1,13 +1,4 @@
 Template.postContent.helpers({
-  postThumbnail: function () {
-    return postThumbnail;
-  },
-  postHeading: function () {
-    return Telescope.getModules("postHeading");
-  },
-  postMeta: function () {
-    return Telescope.getModules("postMeta");
-  },
   sourceLink: function(){
     return !!this.url ? this.url : "/posts/"+this._id;
   },
