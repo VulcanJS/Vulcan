@@ -1,15 +1,15 @@
 // push "search" template to primaryNav
-Telescope.config.primaryNav.push({
+Telescope.modules.register("primaryNav", {
   template: 'search',
   order: 100
 });
 
-Telescope.config.mobileNav.push({
+Telescope.modules.register("mobileNav", {
   template: 'search',
   order: 1
 });
 
-Telescope.config.adminMenu.push({
+Telescope.modules.register("adminMenu", {
   route: 'searchLogs',
   label: 'search_logs',
   description: 'see_what_people_are_searching_for'

@@ -38,8 +38,9 @@ Package.onUse(function(api) {
     'lib/router/filters.js',
     'lib/router/admin.js',
     'lib/router/server.js',
-    'lib/vote.js',
-    'lib/config.js'
+    'lib/config.js',
+    'lib/modules.js',
+    'lib/vote.js'
   ], ['client', 'server']);
 
   api.addFiles([

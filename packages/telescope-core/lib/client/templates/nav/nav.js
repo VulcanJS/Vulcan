@@ -15,17 +15,11 @@ Template.nav.helpers({
     }
     return headerClass;
   },
-  primaryNav: function () {
-    return _.sortBy(Telescope.config.primaryNav, 'order');
-  },
   hasPrimaryNav: function () {
-    return !!Telescope.config.primaryNav.length;
-  },
-  secondaryNav: function () {
-    return _.sortBy(Telescope.config.secondaryNav, 'order');
+    return !!Telescope.modules.get("primaryNav").length;
   },
   hasSecondaryNav: function () {
-    return !!Telescope.config.secondaryNav.length;
+    return !!Telescope.modules.get("secondaryNav").length;
   },
   dropdownClass: function () {
     var dropdownClass = "";

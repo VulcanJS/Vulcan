@@ -2,11 +2,9 @@
   <div class="mobile-nav">
     <div class="mobile-nav-inner">
       <ul class="mobile-menu">
-        {{#each mobileNav}}
-          <li>
-            {{> Template.dynamic template=template data=mobileContext}}
-          </li>
-        {{/each}}
+        {{#with mobileContext}}
+          {{> modules zone="mobileNav" moduleClass="mobile-menu-item"}}
+        {{/with}}
       </ul>
     </div>
   </div>

@@ -1,7 +1,4 @@
 Template.mobile_nav.helpers({
-  mobileNav: function () {
-    return _.sortBy(Telescope.config.mobileNav, 'order');
-  },
   mobileContext: function () {
     return {mobile: true};
   }

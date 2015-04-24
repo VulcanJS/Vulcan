@@ -7,21 +7,17 @@
 
     {{> logo}}
 
-    {{#with primaryNav}}
+    {{#if hasPrimaryNav}}
       <div class="nav primary-nav desktop-nav header-module desktop-only">
-        {{#each this}}
-          {{> Template.dynamic template=template}}
-        {{/each}}
+        {{> modules "primaryNav"}}
       </div>
-    {{/with}}
+    {{/if}}
 
-    {{#with secondaryNav}}
+    {{#if hasSecondaryNav}}
       <div class="nav secondary-nav desktop-nav header-module desktop-only">
-        {{#each this}}
-          {{> Template.dynamic template=template}}
-        {{/each}}
+        {{> modules "secondaryNav"}}
       </div>
-    {{/with}}
+    {{/if}}
 
   </header>
 </template>
