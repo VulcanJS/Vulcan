@@ -1,4 +1,4 @@
-Telescope.config.adminMenu.push({
+Telescope.menus.register("adminMenu", {
   route: 'feeds',
   label: 'Feeds',
   description: 'import_new_posts_from_feeds'

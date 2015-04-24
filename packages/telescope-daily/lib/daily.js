@@ -1,6 +1,6 @@
 daysPerPage = 5;
 
-Telescope.config.viewsMenu.push({
+Telescope.menus.register("viewsMenu", {
   route: 'postsDaily',
   label: 'daily',
   description: 'day_by_day_view'

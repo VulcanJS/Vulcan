@@ -3,7 +3,7 @@ Template.userMenu.helpers({
     return Users.getDisplayName(Meteor.user());
   },
   menuItems: function () {
-    return Telescope.config.userMenu;
+    return Telescope.menus.get("userMenu");
   },
   menuMode: function () {
     if (!!this.mobile) {

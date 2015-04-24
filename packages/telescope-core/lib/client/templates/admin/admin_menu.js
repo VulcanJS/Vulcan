@@ -1,5 +1,5 @@
 Template.adminMenu.helpers({
   adminMenuItems: function () {
-    return Telescope.config.adminMenu;
+    return Telescope.menus.get("adminMenu");
   }
 });

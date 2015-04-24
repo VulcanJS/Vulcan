@@ -1,4 +1,4 @@
-Telescope.config.viewsMenu.push({
+Telescope.menus.register("viewsMenu", {
   route: 'postsSingleDayDefault',
   label: 'singleday',
   description: 'posts_of_a_single_day'

@@ -1,4 +1,4 @@
-Telescope.config.adminMenu.push({
+Telescope.menus.register("adminMenu", {
   route: 'pages',
   label: 'Pages',
   description: 'manage_static_pages'

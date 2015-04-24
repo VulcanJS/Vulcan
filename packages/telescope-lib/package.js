@@ -54,6 +54,7 @@ Package.onUse(function (api) {
     'lib/deep_extend.js',
     'lib/autolink.js',
     'lib/themes.js',
+    'lib/menus.js',
     'lib/alias.js',
     'lib/base.js',
     'lib/colors.js',
