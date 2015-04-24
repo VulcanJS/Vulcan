@@ -45,7 +45,7 @@ Telescope.upvoteItem = function (collection, item, user) {
 
   // run all upvote callbacks on item successively
 
-  item = Telescope.runCallbacks("upvote", item);
+  item = Telescope.callbacks.run("upvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -93,7 +93,7 @@ Telescope.upvoteItem = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.runCallbacks("upvoteAsync", item, true);
+    Telescope.callbacks.run("upvoteAsync", item, true);
 
     // ----------------------------------------------------------------------- //
   }
@@ -112,7 +112,7 @@ Telescope.downvoteItem = function (collection, item, user) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all downvote callbacks on item successively
-  item = Telescope.runCallbacks("downvote", item);
+  item = Telescope.callbacks.run("downvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -147,7 +147,7 @@ Telescope.downvoteItem = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.runCallbacks("downvoteAsync", item, true);
+    Telescope.callbacks.run("downvoteAsync", item, true);
 
     // ----------------------------------------------------------------------- //
   }
@@ -166,7 +166,7 @@ Telescope.cancelUpvote = function (collection, item, user) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all cancel upvote callbacks on item successively
-  item = Telescope.runCallbacks("cancelUpvote", item);
+  item = Telescope.callbacks.run("cancelUpvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -194,7 +194,7 @@ Telescope.cancelUpvote = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.runCallbacks("cancelUpvoteAsync", item, true);
+    Telescope.callbacks.run("cancelUpvoteAsync", item, true);
     
     // ----------------------------------------------------------------------- //
   }
@@ -214,7 +214,7 @@ Telescope.cancelDownvote = function (collection, item, user) {
 
   // run all cancel downvote callbacks on item successively
   
-  item = Telescope.runCallbacks("cancelDownvote", item);
+  item = Telescope.callbacks.run("cancelDownvote", item);
 
   // ----------------------------------------------------------------------- //
 
@@ -242,7 +242,7 @@ Telescope.cancelDownvote = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.runCallbacks("cancelDownvoteAsync", item, true);
+    Telescope.callbacks.run("cancelDownvoteAsync", item, true);
 
     // ----------------------------------------------------------------------- //
   }

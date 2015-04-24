@@ -25,7 +25,7 @@ var mediaProperty = {
 }
 Posts.registerField(mediaProperty);
 
-Telescope.registerModule("postThumbnail", {
+Telescope.modules.register("postThumbnail", {
   template: 'postThumbnail',
   order: 15
 });
@@ -68,7 +68,7 @@ var thumbnailHeightProperty = {
 Settings.addToSchema(thumbnailHeightProperty);
 
 // add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
-Telescope.registerCallback("postClass", function (post, postClass){
+Telescope.callbacks.register("postClass", function (post, postClass){
   var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";
   return postClass + " " + thumbnailClass;
 });

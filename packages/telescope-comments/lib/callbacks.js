@@ -40,4 +40,4 @@ function afterCommentOperations (comment) {
 
 };
 
-Telescope.registerCallback("commentSubmitAsync", afterCommentOperations);
+Telescope.callbacks.register("commentSubmitAsync", afterCommentOperations);

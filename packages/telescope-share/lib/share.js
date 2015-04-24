@@ -1,4 +1,4 @@
-Telescope.registerModule("postComponents", {
+Telescope.modules.register("postComponents", {
   template: 'postShare', 
   order: 25
 });

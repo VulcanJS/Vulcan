@@ -1,4 +1,4 @@
-Telescope.registerModule("thread", {
+Telescope.modules.register("thread", {
   template: 'postSubscribe',
   order: 10
 });
@@ -29,7 +29,7 @@ Posts.registerField(
   }
 );
 
-Telescope.registerModule("profileEdit", {
+Telescope.modules.register("profileEdit", {
   template: 'userSubscribedPosts',
   order: 5
 });

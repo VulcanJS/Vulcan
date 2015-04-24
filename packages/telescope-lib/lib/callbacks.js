@@ -6,7 +6,7 @@ Telescope.callbacks = [];
  * @param {String} hook - The name of the hook
  * @param {Function} callback - The callback function
  */
-Telescope.registerCallback = function (hook, callback) {
+Telescope.callbacks.register = function (hook, callback) {
 
   // if callback array doesn't exist yet, initialize it
   if (typeof Telescope.callbacks[hook] === "undefined") {
@@ -22,7 +22,7 @@ Telescope.registerCallback = function (hook, callback) {
  * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
  * @param {Boolean} async - Whether to run the callback in async mode or not
  */
-Telescope.runCallbacks = function (hook, item, async) {
+Telescope.callbacks.run = function (hook, item, async) {
 
   var async = typeof async === "undefined" ? false : async; // default to sync
   var callbacks = Telescope.callbacks[hook];
@@ -49,5 +49,7 @@ Telescope.runCallbacks = function (hook, item, async) {
 
     }
 
+  } else { // else, just return the item unchanged
+    return item;
   }
 }

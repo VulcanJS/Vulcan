@@ -83,7 +83,7 @@ var addMediaAfterSubmit = function (post) {
   }
   return post;
 }
-Telescope.registerCallback("postSubmitAsync", addMediaAfterSubmit);
+Telescope.callbacks.register("postSubmitAsync", addMediaAfterSubmit);
 
 // TODO: find a way to only do this is URL has actually changed?
 function updateMediaOnEdit (updateObject) {
@@ -95,7 +95,7 @@ function updateMediaOnEdit (updateObject) {
   }
   return updateObject;
 }
-Telescope.registerCallback("postEdit", updateMediaOnEdit);
+Telescope.callbacks.register("postEdit", updateMediaOnEdit);
 
 
 Meteor.methods({

@@ -6,4 +6,4 @@
 function hasCompletedProfile (user) {
   return !!Users.getEmail(user) && !!Users.getUserName(user);
 }
-Telescope.registerCallback("profileCompletedChecks", hasCompletedProfile);
+Telescope.callbacks.register("profileCompletedChecks", hasCompletedProfile);

@@ -6,7 +6,7 @@ Template.post_item.created = function () {
 
 Template.post_item.helpers({
   postComponents: function () {
-    return Telescope.getModules("postComponents");
+    return Telescope.modules.get("postComponents");
   },
   moduleContext: function () { // not used for now
     var module = this;
@@ -22,7 +22,7 @@ Template.post_item.helpers({
     var postAuthorClass = "author-"+post.author;
 
 
-    var postClass = Telescope.runCallbacks("postClass", postAuthorClass);
+    var postClass = Telescope.callbacks.run("postClass", postAuthorClass);
 
     return postClass;
   }

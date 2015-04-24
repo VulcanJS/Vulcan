@@ -18,13 +18,13 @@ function postSubmitNotification (post) {
   return post;
 
 }
-Telescope.registerCallback("postSubmitAsync", postSubmitNotification);
+Telescope.callbacks.register("postSubmitAsync", postSubmitNotification);
 
 function postApprovedNotification (post) {
   Herald.createNotification(post.userId, {courier: 'postApproved', data: post});
   return post;
 }
-Telescope.registerCallback("postApprovedAsync", postApprovedNotification);
+Telescope.callbacks.register("postApprovedAsync", postApprovedNotification);
 
 // add new comment notification callback on comment submit
 function addCommentNotification (comment) {
@@ -85,7 +85,7 @@ function addCommentNotification (comment) {
 
 }
 
-Telescope.registerCallback("commentSubmitAsync", addCommentNotification);
+Telescope.callbacks.register("commentSubmitAsync", addCommentNotification);
 
 var emailNotifications = {
   propertyName: 'emailNotifications',
@@ -125,4 +125,4 @@ function setNotificationDefaults (user) {
   };
   return user;
 }
-Telescope.registerCallback("userCreated", setNotificationDefaults);
+Telescope.callbacks.register("userCreated", setNotificationDefaults);

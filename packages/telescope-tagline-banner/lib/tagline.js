@@ -1,4 +1,4 @@
-Telescope.registerModule("postListTop", {
+Telescope.modules.register("postListTop", {
   template: 'taglineBanner',
   order: 1
 });

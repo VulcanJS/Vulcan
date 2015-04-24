@@ -1,22 +1,22 @@
-Telescope.registerModule("adminMenu", {
+Telescope.modules.register("adminMenu", {
   route: 'categories',
   label: 'Categories',
   description: 'add_and_remove_categories'
 });
 
 // push "categories" modules to postHeading
-Telescope.registerModule("postHeading", {
+Telescope.modules.register("postHeading", {
   template: 'postCategories',
   order: 30
 });
 
 // push "categoriesMenu" template to primaryNav
-Telescope.registerModule("primaryNav", {
+Telescope.modules.register("primaryNav", {
   template: 'categoriesMenu',
   order: 50
 });
 
-Telescope.registerModule("mobileNav", {
+Telescope.modules.register("mobileNav", {
   template: 'categoriesMenu',
   order: 10
 });

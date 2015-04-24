@@ -8,7 +8,7 @@ Telescope.modules = [];
  * @param {string} module.template - The template to include
  * @param {number} module.order - The order of the template in the zone
  */
-Telescope.registerModule = function (zone, module) {
+Telescope.modules.register = function (zone, module) {
   
   // if module zone array doesn't exist yet, initialize it
   if (typeof Telescope.modules[zone] === "undefined") {
@@ -33,6 +33,6 @@ Telescope.registerModule = function (zone, module) {
  * Retrieve an array containing all modules for a zone
  * @param {string} zone - The name of the zone
  */
-Telescope.getModules = function (zone) {
+Telescope.modules.get = function (zone) {
   return _.sortBy(Telescope.modules[zone], "order");
 }

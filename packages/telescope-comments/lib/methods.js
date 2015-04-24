@@ -28,18 +28,18 @@ submitComment = function (comment) {
   comment = _.extend(defaultProperties, comment);
 
   // ------------------------------ Callbacks ------------------------------ //
-
+  
   // run all post submit server callbacks on comment object successively
-  comment = Telescope.runCallbacks("commentSubmit", comment);
+  comment = Telescope.callbacks.run("commentSubmit", comment);
 
   // -------------------------------- Insert -------------------------------- //
-
+  
   comment._id = Comments.insert(comment);
 
   // --------------------- Server-side Async Callbacks --------------------- //
 
   // run all post submit server callbacks on comment object successively
-  Telescope.runCallbacks("commentSubmitAsync", comment, true);
+  Telescope.callbacks.run("commentSubmitAsync", comment, true);
 
   return comment;
 }

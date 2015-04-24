@@ -49,7 +49,7 @@ Posts.submit = function (post) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit server callbacks on post object successively
-  post = Telescope.runCallbacks("postSubmit", post);
+  post = Telescope.callbacks.run("postSubmit", post);
 
   // -------------------------------- Insert ------------------------------- //
 
@@ -57,7 +57,7 @@ Posts.submit = function (post) {
 
   // --------------------- Server-Side Async Callbacks --------------------- //
 
-  Telescope.runCallbacks("postSubmitAsync", post, true);
+  Telescope.callbacks.run("postSubmitAsync", post, true);
 
   return post;
 }
@@ -218,7 +218,7 @@ Meteor.methods({
       var result = Posts.update(post._id, {$set: set}, {validate: false});
 
       // --------------------- Server-Side Async Callbacks --------------------- //
-      Telescope.runCallbacks("postApprovedAsync", post, true);
+      Telescope.callbacks.run("postApprovedAsync", post, true);
 
     }else{
       Messages.flash('You need to be an admin to do that.', "error");

@@ -102,4 +102,4 @@ function adminUserCreationNotification (user) {
   });
   return user;
 }
-Telescope.registerCallback("userCreated", adminUserCreationNotification)
+Telescope.callbacks.register("userCreated", adminUserCreationNotification)
