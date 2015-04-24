@@ -85,5 +85,5 @@ UI.registerHelper('displayName', function(userOrUserId) {
 });
 
 UI.registerHelper('icon', function(iconName, iconClass) {
-  return getIcon(iconName, iconClass);
+  return Telescope.utils.getIcon(iconName, iconClass);
 });

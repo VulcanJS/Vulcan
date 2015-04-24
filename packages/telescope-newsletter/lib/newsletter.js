@@ -29,7 +29,7 @@ Campaigns = new Meteor.Collection("campaigns", {
   schema: campaignSchema
 });
 
-Posts.addToSchema(
+Posts.registerField(
   {
     propertyName: 'scheduledAt',
     propertySchema: {

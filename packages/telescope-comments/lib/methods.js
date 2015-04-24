@@ -30,7 +30,7 @@ submitComment = function (comment) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit server callbacks on comment object successively
-  comment = runCallbacks("commentSubmit", comment);
+  comment = Telescope.runCallbacks("commentSubmit", comment);
 
   // -------------------------------- Insert -------------------------------- //
 
@@ -39,7 +39,7 @@ submitComment = function (comment) {
   // --------------------- Server-side Async Callbacks --------------------- //
 
   // run all post submit server callbacks on comment object successively
-  runCallbacks("commentSubmitAsync", comment, true);
+  Telescope.runCallbacks("commentSubmitAsync", comment, true);
 
   return comment;
 }

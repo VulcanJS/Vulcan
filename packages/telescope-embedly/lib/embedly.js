@@ -9,7 +9,7 @@ var thumbnailProperty = {
     }
   }
 }
-Posts.addToSchema(thumbnailProperty);
+Posts.registerField(thumbnailProperty);
 
 var mediaProperty = {
   propertyName: 'media',
@@ -23,7 +23,7 @@ var mediaProperty = {
     }
   }
 }
-Posts.addToSchema(mediaProperty);
+Posts.registerField(mediaProperty);
 
 Telescope.registerModule("postThumbnail", {
   template: 'postThumbnail',

@@ -1,4 +1,4 @@
-Posts.addToSchema(
+Posts.registerField(
   {
     propertyName: 'categories',
     propertySchema: {

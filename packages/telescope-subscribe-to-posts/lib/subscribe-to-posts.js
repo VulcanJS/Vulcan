@@ -3,7 +3,7 @@ Telescope.registerModule("thread", {
   order: 10
 });
 
-Posts.addToSchema(
+Posts.registerField(
   {
     propertyName: 'subscribers',
     propertySchema: {
@@ -16,7 +16,7 @@ Posts.addToSchema(
   }
 );
 
-Posts.addToSchema(
+Posts.registerField(
   {
     propertyName: 'subscriberCount',
     propertySchema: {

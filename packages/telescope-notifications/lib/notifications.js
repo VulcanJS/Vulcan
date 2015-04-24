@@ -102,7 +102,7 @@ var emailNotifications = {
 Settings.addToSchema(emailNotifications);
 
 // make it possible to disable notifications on a per-comment basis
-addToCommentsSchema.push(
+Comments.registerField(
   {
     propertyName: 'disableNotifications',
     propertySchema: {

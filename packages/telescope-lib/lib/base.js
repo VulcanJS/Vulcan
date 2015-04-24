@@ -1,11 +1,5 @@
 // ------------------------------------- Schemas -------------------------------- //
 
-// array containing properties to be added to the post/settings/comments schema on startup.
-addToCommentsSchema = [];
-
-registerCommentProperty = function (property) {
-  addToCommentsSchema.push(property);
-}
 
 SimpleSchema.extendOptions({
   editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner

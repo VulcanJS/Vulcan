@@ -1,7 +1,7 @@
-// Custom Post Property
+// Custom Post Field
 
-var customProperty = {
-  propertyName: 'customProperty',
+var customField = {
+  propertyName: 'customField',
   propertySchema: {
     type: String,                           // property type
     label: 'customLabel',                   // key string used for internationalization
@@ -13,4 +13,4 @@ var customProperty = {
     }
   }
 }
-Posts.addToSchema(customProperty);
+Posts.registerField(customField);

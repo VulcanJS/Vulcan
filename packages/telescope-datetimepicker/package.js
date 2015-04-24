@@ -9,7 +9,10 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.1.0']);
+  api.use([
+    'telescope:core@0.1.0',
+    'tsega:bootstrap3-datetimepicker@3.1.3_1'
+  ]);
 
   api.addFiles([
     'datetimepicker.scss',

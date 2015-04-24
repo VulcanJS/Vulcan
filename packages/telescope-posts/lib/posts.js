@@ -8,7 +8,7 @@ Posts = new Mongo.Collection("posts");
  * Posts schema
  * @type {SimpleSchema}
  */
-Posts.schema = new SimpleSchema({
+var postsSchema = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
@@ -200,20 +200,7 @@ Posts.schema = new SimpleSchema({
 /**
  * Attach schema to Posts collection
  */
-Posts.attachSchema(Posts.schema);
-
-/**
- * Add an additional schema item to the Posts schema.
- * @param {Object} item
- */
-Posts.addToSchema = function(item) {
-  var itemSchema = {};
-  itemSchema[item.propertyName] = item.propertySchema;
-
-  Posts.attachSchema(itemSchema);
-  Posts.schema = new SimpleSchema(Posts.schema, itemSchema);
-};
-
+Posts.attachSchema(postsSchema);
 
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //

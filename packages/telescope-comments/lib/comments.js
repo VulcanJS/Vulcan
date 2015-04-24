@@ -1,4 +1,14 @@
-commentSchemaObject = {
+/**
+ * The global namespace for Comments.
+ * @namespace Comments
+ */
+Comments = new Mongo.Collection("comments");
+
+/**
+ * Comments schema
+ * @type {SimpleSchema}
+ */
+var commentsSchema = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -79,18 +89,15 @@ commentSchemaObject = {
     type: Boolean,
     optional: true
   }
-};
-
-// add any extra properties to commentSchemaObject (provided by packages for example)
-_.each(addToCommentsSchema, function(item){
-  commentSchemaObject[item.propertyName] = item.propertySchema;
 });
 
-Comments = new Meteor.Collection("comments");
+/**
+ * Attach schema to Posts collection
+ */
+Comments.attachSchema(commentsSchema);
 
-commentSchema = new SimpleSchema(commentSchemaObject);
 
-Comments.attachSchema(commentSchema);
+// Note: is the allow/deny code still needed?
 
 Comments.deny({
   update: function(userId, post, fieldNames) {

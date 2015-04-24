@@ -14,6 +14,7 @@ Package.onUse(function (api) {
     'accounts-base',
     'accounts-password',
     'accounts-twitter',
+    'reactive-var',
     'http',
     'aldeed:simple-schema@1.3.2',
     'aldeed:collection2@2.3.3',
@@ -44,9 +45,10 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/core.js',
-    'lib/callbacks.js',
-    'lib/modules.js',
     'lib/utils.js',
+    'lib/callbacks.js',
+    'lib/collections.js',
+    'lib/modules.js',
     'lib/config.js',
     'lib/deep.js',
     'lib/deep_extend.js',
@@ -65,24 +67,13 @@ Package.onUse(function (api) {
     'T',
     '_',
 
-    'addToCommentsSchema',
-    'registerCommentProperty',
-
     'viewParameters',
-
-    'userEditClientCallbacks',
-    'userProfileCompleteChecks',
-    'userProfileCompletedCallbacks',
-    'userCreatedCallbacks',
 
     'getTemplate',
     'templates',
 
     'getIcon',
     'icons',
-
-    'colorTable',
-    'registerElementColor',
 
     'themeSettings',
 

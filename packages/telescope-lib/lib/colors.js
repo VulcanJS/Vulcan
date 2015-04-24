@@ -1,25 +1,25 @@
-colorTable = {
+Telescope.utils.colorTable = {
   accentColor: [],
   accentContrastColor: [],
   secondaryColor: [],
   secondaryContrastColor: []
 }
 
-registerElementColor = function (selector, color, property) {
+Telescope.utils.registerElementColor = function (selector, color, property) {
   var element = {selector: selector};
 
   if (typeof property !== "undefined")
     element.property = property
 
-  colorTable[color].push(element);
+  Telescope.utils.colorTable[color].push(element);
 }
 
 // shortcuts
 
-accent = function (selector, property) {registerElementColor(selector, "accentColor", property);}
-accentContrast = function (selector, property) {registerElementColor(selector, "accentContrastColor", property);}
-secondary = function (selector, property) {registerElementColor(selector, "secondaryColor", property);}
-secondaryContrast = function (selector, property) {registerElementColor(selector, "secondaryContrastColor", property);}
+accent = function (selector, property) {Telescope.utils.registerElementColor(selector, "accentColor", property);}
+accentContrast = function (selector, property) {Telescope.utils.registerElementColor(selector, "accentContrastColor", property);}
+secondary = function (selector, property) {Telescope.utils.registerElementColor(selector, "secondaryColor", property);}
+secondaryContrast = function (selector, property) {Telescope.utils.registerElementColor(selector, "secondaryContrastColor", property);}
 
 // accentColor
 

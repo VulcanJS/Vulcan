@@ -15,7 +15,7 @@ Telescope.config.adminMenu.push({
   description: 'see_what_people_are_searching_for'
 });
 
-registerElementColor('.search .search-field', 'secondaryContrastColor');
+Telescope.utils.registerElementColor('.search .search-field', 'secondaryContrastColor');
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({
