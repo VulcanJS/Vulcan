@@ -16,6 +16,7 @@ Template[getTemplate('user_email')].events({
     var user=Session.get('selectedUserId')? Meteor.users.findOne(Session.get('selectedUserId')) : Meteor.user();
     var update = {
       "profile.email": $target.find('[name=email]').val(),
+      "emails": [ { address : $target.find('[name=email]').val() } ],
       "username": $target.find('[name=username]').val(),
         "slug": slugify($target.find('[name=username]').val())
     };
