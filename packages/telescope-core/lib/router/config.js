@@ -1,14 +1,14 @@
 Router.setTemplateNameConverter(function (str) { return str; });
 
-Telescope.config.preloadSubscriptions.push('settings');
-Telescope.config.preloadSubscriptions.push('currentUser');
+Telescope.subscriptions.preload('settings');
+Telescope.subscriptions.preload('currentUser');
 
 Router.configure({
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'notFound',
   waitOn: function () {
-    return _.map(Telescope.config.preloadSubscriptions, function(sub){
+    return _.map(Telescope.subscriptions, function(sub){
       // can either pass strings or objects with subName and subArguments properties
       if (typeof sub === 'object'){
         Meteor.subscribe(sub.subName, sub.subArguments);
@@ -25,7 +25,7 @@ Router.configure({
 if(Meteor.isServer) {
   FastRender.onAllRoutes(function() {
     var router = this;
-    _.each(Telescope.config.preloadSubscriptions, function(sub){
+    _.each(Telescope.subscriptions, function(sub){
       router.subscribe(sub);
     });
   });

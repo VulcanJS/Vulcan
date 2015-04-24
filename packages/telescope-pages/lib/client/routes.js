@@ -4,7 +4,7 @@ Telescope.config.adminMenu.push({
   description: 'manage_static_pages'
 });
 
-Telescope.config.preloadSubscriptions.push('pages');
+Telescope.subscriptions.preload('pages');
 
 PageController = RouteController.extend({
   currentPage: function () {

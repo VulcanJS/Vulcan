@@ -22,4 +22,4 @@ Telescope.modules.register("mobileNav", {
 });
 
 // we want to wait until categories are all loaded to load the rest of the app
-Telescope.config.preloadSubscriptions.push('categories');
+Telescope.subscriptions.preload('categories');

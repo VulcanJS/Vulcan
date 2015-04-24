@@ -9,45 +9,21 @@ Telescope.config = {};
  * Array containing subscriptions to be preloaded
  * @type {Array}
  */
-Telescope.config.preloadSubscriptions = [];
+Telescope.subscriptions = [];
 
+/**
+ * Add a subscription to be preloaded
+ * @param {string} subscription - The name of the subscription
+ */
+Telescope.subscriptions.preload = function (subscription) {
+  Telescope.subscriptions.push(subscription);
+};
 
 ////////////////
 // Navigation //
 ////////////////
 
-// array containing nav items;
-Telescope.config.primaryNav = [];
 
-Telescope.config.secondaryNav = [
-  {
-    template: 'userMenu',
-    order: 10
-  },
-  {
-    template:'notificationsMenu',
-    order: 20
-  },
-  {
-    template: 'submitButton',
-    order: 30
-  }
-];
-
-Telescope.config.mobileNav = [
-  {
-    template: 'userMenu',
-    order: 10
-  },
-  {
-    template:'notificationsMenu',
-    order: 20
-  },
-  {
-    template: 'submitButton',
-    order: 30
-  }
-];
 
 // array containing items in the views menu
 Telescope.config.viewsMenu = [

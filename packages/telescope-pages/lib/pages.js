@@ -29,12 +29,12 @@ Pages.collection.before.insert(function (userId, doc) {
     doc.slug = Telescope.utils.slugify(doc.title);
 });
 
-Telescope.config.primaryNav.push({
+Telescope.modules.register("primaryNav", {
   template: "pagesMenu",
   order: 5
 });
 
-Telescope.config.mobileNav.push({
+Telescope.modules.register("mobileNav", {
   template: 'pagesMenu',
   order: 5
 });

@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------- //
 
 // add a subscription to be preloaded before the rest of the app
-Telescope.config.preloadSubscriptions.push('customPublication');
+Telescope.subscriptions.preload('customPublication');
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------- Nav ------------------------------------------- //
