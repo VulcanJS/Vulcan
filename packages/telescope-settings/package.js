@@ -9,7 +9,10 @@ Package.onUse(function(api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
-  api.use(['telescope:lib@0.3.1']);
+  api.use([
+    'telescope:lib@0.3.1', 
+    'telescope:i18n@0.1.0'
+  ]);
 
   api.addFiles([
     'lib/settings.js',

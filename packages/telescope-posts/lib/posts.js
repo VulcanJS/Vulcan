@@ -200,10 +200,14 @@ var postsSchema = new SimpleSchema({
   }
 });
 
+i18n.internationalizeSchema(postsSchema);
+
 /**
  * Attach schema to Posts collection
  */
 Posts.attachSchema(postsSchema);
+
+
 
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //

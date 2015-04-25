@@ -11,6 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:lib@0.3.0',
+    'telescope:i18n@0.1.0',
     'telescope:settings@0.1.0',
     'telescope:users@0.1.0'
   ]);

@@ -91,6 +91,8 @@ var commentsSchema = new SimpleSchema({
   }
 });
 
+i18n.internationalizeSchema(commentsSchema);
+
 /**
  * Attach schema to Posts collection
  */

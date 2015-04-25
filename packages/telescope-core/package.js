@@ -15,10 +15,10 @@ Package.onUse(function(api) {
     'telescope:events@0.1.0', // lib
     'telescope:events@0.1.0', // lib
     'telescope:i18n@0.1.0', // lib
-    'telescope:settings@0.1.0', // lib
-    'telescope:users@0.1.0', // lib, settings
-    'telescope:comments@0.1.0', // lib, settings, users
-    'telescope:posts@0.1.2' // lib, settings, users, comments
+    'telescope:settings@0.1.0', // lib, i18n
+    'telescope:users@0.1.0', // lib, i18n, settings
+    'telescope:comments@0.1.0', // lib, i18n, settings, users
+    'telescope:posts@0.1.2' // lib, i18n, settings, users, comments
   ]);
   
   api.imply([ // export these packages to all other packages that depend on telescope:core

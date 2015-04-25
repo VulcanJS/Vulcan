@@ -1,8 +1,6 @@
-Settings = {
-  collection: new Meteor.Collection("settings")
-};
+Settings = new Meteor.Collection("settings");
 
-Settings.schema = new SimpleSchema({
+var settingsSchema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
@@ -405,15 +403,10 @@ Settings.schema = new SimpleSchema({
   }
 });
 
-Settings.collection.attachSchema(Settings.schema);
 
-Settings.addToSchema = function(item) {
-  var itemSchema = {};
-  itemSchema[item.propertyName] = item.propertySchema;
+i18n.internationalizeSchema(settingsSchema);
 
-  Settings.collection.attachSchema(itemSchema);
-  Settings.schema = new SimpleSchema(Settings.schema, itemSchema);
-};
+Settings.attachSchema(settingsSchema);
 
 Settings.get = function(setting, defaultValue) {
   var settings = Settings.collection.find().fetch()[0];
