@@ -99,7 +99,7 @@ var emailNotifications = {
     }
   }
 };
-Settings.addToSchema(emailNotifications);
+Settings.registerField(emailNotifications);
 
 // make it possible to disable notifications on a per-comment basis
 Comments.registerField(

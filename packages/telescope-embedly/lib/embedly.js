@@ -43,7 +43,7 @@ var embedlyKeyProperty = {
     }
   }
 }
-Settings.addToSchema(embedlyKeyProperty);
+Settings.registerField(embedlyKeyProperty);
 
 var thumbnailWidthProperty = {
   propertyName: 'thumbnailWidth',
@@ -55,7 +55,7 @@ var thumbnailWidthProperty = {
     }
   }
 }
-Settings.addToSchema(thumbnailWidthProperty);
+Settings.registerField(thumbnailWidthProperty);
 
 var thumbnailHeightProperty = {
   propertyName: 'thumbnailHeight',
@@ -67,7 +67,7 @@ var thumbnailHeightProperty = {
     }
   }
 }
-Settings.addToSchema(thumbnailHeightProperty);
+Settings.registerField(thumbnailHeightProperty);
 
 // add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
 Telescope.callbacks.register("postClass", function (post, postClass){

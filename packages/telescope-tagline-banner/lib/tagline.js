@@ -15,4 +15,4 @@ var showTaglineBanner = {
     }
   }
 };
-Settings.addToSchema(showTaglineBanner);
+Settings.registerField(showTaglineBanner);

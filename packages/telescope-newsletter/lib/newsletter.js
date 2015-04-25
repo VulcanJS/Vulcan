@@ -55,7 +55,7 @@ var enableNewsletter = {
     }
   }
 }
-Settings.addToSchema(enableNewsletter);
+Settings.registerField(enableNewsletter);
 
 var showBanner = {
   propertyName: 'showBanner',
@@ -69,7 +69,7 @@ var showBanner = {
     }
   }
 }
-Settings.addToSchema(showBanner);
+Settings.registerField(showBanner);
 
 var mailChimpAPIKey = {
   propertyName: "mailChimpAPIKey",
@@ -83,7 +83,7 @@ var mailChimpAPIKey = {
     }
   }
 }
-Settings.addToSchema(mailChimpAPIKey);
+Settings.registerField(mailChimpAPIKey);
 
 var mailChimpListId = {
   propertyName: 'mailChimpListId',
@@ -98,7 +98,7 @@ var mailChimpListId = {
     }
   }
 }
-Settings.addToSchema(mailChimpListId);
+Settings.registerField(mailChimpListId);
 
 var postsPerNewsletter = {
   propertyName: 'postsPerNewsletter',
@@ -110,7 +110,7 @@ var postsPerNewsletter = {
     }
   }
 }
-Settings.addToSchema(postsPerNewsletter);
+Settings.registerField(postsPerNewsletter);
 
 var newsletterFrequency = {
   propertyName: 'newsletterFrequency',
@@ -141,7 +141,7 @@ var newsletterFrequency = {
     }
   }
 }
-Settings.addToSchema(newsletterFrequency);
+Settings.registerField(newsletterFrequency);
 
 var newsletterTime = {
   propertyName: 'newsletterTime',
@@ -156,7 +156,7 @@ var newsletterTime = {
     }
   }
 }
-Settings.addToSchema(newsletterTime);
+Settings.registerField(newsletterTime);
 
 var autoSubscribe = {
   propertyName: 'autoSubscribe',
@@ -169,7 +169,7 @@ var autoSubscribe = {
     }
   }
 }
-Settings.addToSchema(autoSubscribe);
+Settings.registerField(autoSubscribe);
 
 // create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
 viewParameters.campaign = function (terms) {

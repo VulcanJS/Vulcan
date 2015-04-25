@@ -13,6 +13,10 @@ Users.isAdmin = function (user) {
   return !!user && !!user.isAdmin;
 };
 
+Users.isOwner = function (user, document) {
+  return user._id === document.userId;
+};
+
 Users.updateAdmin = function (userId, admin) {
   this.update(userId, {$set: {isAdmin: admin}});
 };

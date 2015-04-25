@@ -12,4 +12,4 @@ var customSetting = {
     }
   }
 }
-Settings.addToSchema(customSetting);
+Settings.registerField(customSetting);
