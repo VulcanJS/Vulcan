@@ -10,7 +10,7 @@ var showTaglineBanner = {
     optional: true,
     label: 'Tagline banner',
     autoform: {
-      group: 'general',
+      group: '01_general',
       instructions: 'Show tagline on homepage.'
     }
   }
