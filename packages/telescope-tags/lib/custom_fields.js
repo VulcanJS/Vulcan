@@ -5,6 +5,7 @@ Posts.registerField(
       type: [String],
       optional: true,
       editable: true,
+      editableBy: ['owner'],
       autoform: {
         editable: true,
         noselect: true,

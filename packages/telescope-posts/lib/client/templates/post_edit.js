@@ -1,3 +1,26 @@
+Template[getTemplate('post_edit')].helpers({
+  postFields: function () {
+    var post = this.post;
+    var fields = [];
+    _.each(postSchemaObject, function (property, key) {
+      if ((property.autoform && !!property.autoform.omit) || key.indexOf('$') != -1) {
+        // if field is set to "omit" or contains a "$", stop right here
+        // this is not actually necessary since these fields will be omitted anyway, but this way 
+        // the "fields" array will reflect what gets displayed
+        return
+      }
+      if (isAdmin(Meteor.user())) {
+        // if user is admin, display field
+        fields.push(key);
+      } else if (property.editableBy && _.contains(property.editableBy, "owner") && isOwner(Meteor.user(), post)) {
+        // else, if a field is editable by its owner display it
+        fields.push(key);
+      }
+    });
+    return fields;
+  }
+});
+
 AutoForm.hooks({
   editPostForm: {
 

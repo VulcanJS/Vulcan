@@ -34,6 +34,7 @@ var postsSchema = new SimpleSchema({
   url: {
     type: String,
     optional: true,
+    editableBy: ['owner'],
     autoform: {
       editable: true,
       type: "bootstrap-url"
@@ -42,6 +43,7 @@ var postsSchema = new SimpleSchema({
   title: {
     type: String,
     optional: false,
+    editableBy: ['owner'],
     autoform: {
       editable: true
     }
@@ -49,6 +51,7 @@ var postsSchema = new SimpleSchema({
   body: {
     type: String,
     optional: true,
+    editableBy: ['owner'],
     autoform: {
       editable: true,
       rows: 5

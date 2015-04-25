@@ -3,6 +3,7 @@ var thumbnailProperty = {
   propertySchema: {
     type: String,
     optional: true,
+    editableBy: ['owner'],
     autoform: {
       editable: true,
       type: 'bootstrap-postthumbnail'
@@ -35,9 +36,10 @@ var embedlyKeyProperty = {
   propertySchema: {
     type: String,
     optional: true,
+    private: true,
     autoform: {
       group: 'embedly',
-      private: true
+      class: 'private-field'
     }
   }
 }

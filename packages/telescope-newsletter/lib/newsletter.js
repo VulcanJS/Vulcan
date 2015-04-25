@@ -72,13 +72,14 @@ var showBanner = {
 Settings.addToSchema(showBanner);
 
 var mailChimpAPIKey = {
-  propertyName: 'mailChimpAPIKey',
+  propertyName: "mailChimpAPIKey",
   propertySchema: {
     type: String,
     optional: true,
+    private: true,
     autoform: {
-      group: 'newsletter',
-      private: true
+      group: "newsletter",
+      class: "private-field"
     }
   }
 }
@@ -89,10 +90,11 @@ var mailChimpListId = {
   propertySchema: {
     type: String,
     optional: true,
+    private: true,
     autoform: {
       group: 'newsletter',
       instructions: 'The ID of the list you want to send to.',
-      private: true
+      class: "private-field"
     }
   }
 }

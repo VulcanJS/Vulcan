@@ -3,8 +3,8 @@ Meteor.publish('settings', function() {
   var privateFields = {};
 
   // look at Settings.schema to see which fields should be kept private
-  _.each(Settings.schema._schema, function( val, key ) {
-    if (val.autoform && !!val.autoform.private)
+  _.each(Settings.schema._schema, function (property, key) {
+    if (property.private)
       privateFields[key] = false;
   });
 

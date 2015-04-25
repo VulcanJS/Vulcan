@@ -1,4 +1,7 @@
 Template.userAccount.helpers({
+  user: function  () {
+    return Meteor.user();
+  },
   profileIncomplete : function() {
     return this && !this.loading && !Users.userProfileComplete(this);
   },
