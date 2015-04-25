@@ -14,5 +14,5 @@ Meteor.publish('settings', function() {
     });
   }
 
-  return Settings.collection.find({}, options);
+  return Settings.find({}, options);
 });

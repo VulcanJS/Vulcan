@@ -8,7 +8,7 @@ Meteor.startup(function () {
     data: function () {
       // we only have one set of settings for now
 
-      var settings = Settings.collection.findOne();
+      var settings = Settings.findOne();
       return {
         hasSettings: !!settings,
         settings: settings

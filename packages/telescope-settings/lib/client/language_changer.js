@@ -1,4 +1,4 @@
-var query = Settings.collection.find();
+var query = Settings.find();
 
 query.observeChanges({
   added: function (id, fields) {

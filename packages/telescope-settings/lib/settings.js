@@ -409,7 +409,7 @@ i18n.internationalizeSchema(settingsSchema);
 Settings.attachSchema(settingsSchema);
 
 Settings.get = function(setting, defaultValue) {
-  var settings = Settings.collection.find().fetch()[0];
+  var settings = Settings.find().fetch()[0];
 
   if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // if on the server, look in Meteor.settings
     return Meteor.settings[setting];
@@ -434,7 +434,7 @@ Settings.get = function(setting, defaultValue) {
 // }
 
 Meteor.startup(function () {
-  Settings.collection.allow({
+  Settings.allow({
     insert: Users.isAdminById,
     update: Users.isAdminById,
     remove: Users.isAdminById
