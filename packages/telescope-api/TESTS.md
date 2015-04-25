@@ -1,0 +1,2 @@
+- Test that `/api/` returns the 20 latest approved posts.
+- Test that `/api/:limit` returns `:limit` items. 
