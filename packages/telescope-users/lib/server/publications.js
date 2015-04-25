@@ -3,7 +3,7 @@ Meteor.publish('singleUser', function(idOrSlug) {
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({slug: idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var options = Users.isAdminById(this.userId) ? {} : {fields: Users.pubsub.privacyOptions};
+  var options = Users.isAdminById(this.userId) ? {} : {fields: Users.pubsub.publicProperties};
   if (user) {
     return Meteor.users.find({_id: user._id}, options);
   }
@@ -42,7 +42,7 @@ Meteor.publish('userComments', function(userId, limit) {
 // Publish the current user
 
 Meteor.publish('currentUser', function() {
-  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.ownUserOptions});
+  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.privateProperties});
   return user;
 });
 

@@ -29,7 +29,7 @@ Meteor.publish('postsListUsers', function(terms) {
 
     userIds = _.unique(userIds);
 
-    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.avatarOptions, multi: true});
+    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.avatarProperties, multi: true});
   }
   return [];
 });
@@ -74,7 +74,7 @@ Meteor.publish('postUsers', function(postId) {
     // remove any duplicate IDs
     users = _.unique(users);
 
-    return Meteor.users.find({_id: {$in: users}}, {fields: Users.pubsub.privacyOptions});
+    return Meteor.users.find({_id: {$in: users}}, {fields: Users.pubsub.publicProperties});
   }
   return [];
 });

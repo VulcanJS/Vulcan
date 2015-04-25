@@ -12,7 +12,7 @@ Users.pubsub = {};
  * Default user object fields in publication
  * @type {Object}
  */
-Users.pubsub.privacyOptions = { // true means exposed
+Users.pubsub.publicProperties = { // true means exposed
   _id: true,
   commentCount: true,
   createdAt: true,
@@ -43,7 +43,7 @@ Users.pubsub.privacyOptions = { // true means exposed
  * Options for your own user account (for security reasons, block certain properties)
  * @type {Object}
  */
-Users.pubsub.ownUserOptions = {
+Users.pubsub.privateProperties = {
   'services.password.bcrypt': false
 }
 
@@ -51,7 +51,7 @@ Users.pubsub.ownUserOptions = {
  * Minimum required properties to display avatars
  * @type {Object}
  */
-Users.pubsub.avatarOptions = {
+Users.pubsub.avatarProperties = {
   _id: true,
   email_hash: true,
   slug: true,

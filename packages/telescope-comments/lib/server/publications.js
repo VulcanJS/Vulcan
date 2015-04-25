@@ -37,7 +37,7 @@ Meteor.publish('commentUsers', function(commentId) {
     var post = Posts.findOne(comment.postId);
     userIds.push(post.userId);
 
-    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.privacyOptions});
+    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
 
   }
 
