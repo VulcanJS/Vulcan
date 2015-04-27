@@ -34,7 +34,7 @@ Telescope.modules.register("profileEdit", {
   order: 5
 });
 
-viewParameters.userSubscribedPosts = function (terms) {
+Telescope.viewParameters.userSubscribedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId),
       postsIds = [];
 

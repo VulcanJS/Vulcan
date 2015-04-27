@@ -37,7 +37,7 @@ Categories.before.insert(function (userId, doc) {
 });
 
 // category post list parameters
-viewParameters.category = function (terms) {
+Telescope.viewParameters.category = function (terms) {
   var categoryId = Categories.findOne({slug: terms.category})._id;
   return {
     find: {'categories': {$in: [categoryId]}} ,

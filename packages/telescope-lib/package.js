@@ -56,6 +56,7 @@ Package.onUse(function (api) {
     'lib/themes.js',
     'lib/menus.js',
     'lib/alias.js',
+    'lib/parameters.js',
     'lib/base.js',
     'lib/colors.js',
     'lib/icons.js'
@@ -68,13 +69,8 @@ Package.onUse(function (api) {
     'T',
     '_',
 
-    'viewParameters',
-
     'getTemplate',
     'templates',
-
-    'getIcon',
-    'icons',
 
     'themeSettings',
 

@@ -5,7 +5,7 @@ Meteor.startup(function() {
   sitemaps.add("/sitemap.xml", function() {
     var _getLatest = function(viewParamKey, terms) {
       var params = Posts.getSubParams(
-        viewParameters[viewParamKey.toLowerCase()](terms)
+        Telescope.viewParameters[viewParamKey.toLowerCase()](terms)
       );
       var post = Posts.findOne(params.find, {
         'fields': {'postedAt': 1},
@@ -41,7 +41,7 @@ Meteor.startup(function() {
     var postPages = {};
     _.each(["top", "new", "best"], function(key) {
       var siteUrl = Telescope.utils.getSiteUrl();
-      var params = Posts.getSubParams(viewParameters[key]());
+      var params = Posts.getSubParams(Telescope.viewParameters[key]());
       var posts = Posts.find(params.find, {
         fields: {postedAt: 1, title: 1, _id: 1},
         limit: 100,

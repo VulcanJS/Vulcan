@@ -41,14 +41,14 @@ Posts.getSubParams = function (terms) {
   // see: http://api.jquery.com/jQuery.extend/
 
   // initialize parameters by extending baseParameters object, to avoid passing it by reference
-  var parameters = Telescope.utils.deepExtend(true, {}, viewParameters.baseParameters);
+  var parameters = Telescope.utils.deepExtend(true, {}, Telescope.viewParameters.baseParameters);
 
   // if view is not defined, default to "top"
   var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'top';
 
   // get query parameters according to current view
-  if (typeof viewParameters[view] !== 'undefined')
-    parameters = Telescope.utils.deepExtend(true, parameters, viewParameters[view](terms));
+  if (typeof Telescope.viewParameters[view] !== 'undefined')
+    parameters = Telescope.utils.deepExtend(true, parameters, Telescope.viewParameters[view](terms));
 
   // extend sort to sort posts by _id to break ties
   Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
