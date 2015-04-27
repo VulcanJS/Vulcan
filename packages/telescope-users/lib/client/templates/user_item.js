@@ -15,7 +15,7 @@ Template.user_item.helpers({
     return Comments.find({'userId':this._id});
   },
   userIsAdmin: function(){
-    return Users.isAdmin(this);
+    return Users.is.admin(this);
   },
   getProfileUrl: function () {
     return Users.getProfileUrl(this);

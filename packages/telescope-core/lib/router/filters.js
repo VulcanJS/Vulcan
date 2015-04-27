@@ -51,7 +51,7 @@ Router._filters = {
 
   isAdmin: function () {
     if(!this.ready()) return;
-    if(!Users.isAdmin()){
+    if(!Users.is.admin()){
       this.render('no_rights');
     } else {
       this.next();

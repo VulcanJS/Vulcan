@@ -59,7 +59,7 @@ Meteor.methods({
     // parentCommentId
 
     var user = Meteor.user(),
-        hasAdminRights = Users.isAdmin(user);
+        hasAdminRights = Users.is.admin(user);
 
     // ------------------------------ Checks ------------------------------ //
 

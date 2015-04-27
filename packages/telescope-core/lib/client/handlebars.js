@@ -26,7 +26,7 @@ UI.registerHelper('canComment', function() {
   return Users.can.comment(Meteor.user());
 });
 UI.registerHelper('isAdmin', function(showError) {
-  if (Users.isAdmin(Meteor.user())) {
+  if (Users.is.admin(Meteor.user())) {
     return true;
   }
   if ((typeof showError === 'string') && (showError === 'true')) {

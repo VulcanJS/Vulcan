@@ -83,7 +83,7 @@ Meteor.methods({
 
     // NOTE: the current user and the post author user might be two different users!
     var user = Meteor.user(),
-        hasAdminRights = Users.isAdmin(user);
+        hasAdminRights = Users.is.admin(user);
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -145,7 +145,7 @@ Meteor.methods({
   editPost: function (modifier, postId) {
 
     var user = Meteor.user(),
-        hasAdminRights = Users.isAdmin(user),
+        hasAdminRights = Users.is.admin(user),
         post = Posts.findOne(postId);
 
     // ------------------------------ Checks ------------------------------ //
@@ -201,14 +201,14 @@ Meteor.methods({
 
     var postedAt = new Date(); // default to current date and time
 
-    if(Users.isAdmin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
+    if(Users.is.admin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
       postedAt = customPostedAt;
 
     Posts.update(post._id, {$set: {postedAt: postedAt}});
   },
 
   approvePost: function(post){
-    if(Users.isAdmin(Meteor.user())){
+    if(Users.is.admin(Meteor.user())){
       var set = {status: 2};
 
       // unless post is already scheduled and has a postedAt date, set its postedAt date to now
@@ -226,7 +226,7 @@ Meteor.methods({
   },
 
   unapprovePost: function(post){
-    if(Users.isAdmin(Meteor.user())){
+    if(Users.is.admin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
       Messages.flash('You need to be an admin to do that.', "error");

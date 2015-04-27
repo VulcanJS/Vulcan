@@ -254,7 +254,7 @@ Telescope.cancelDownvote = function (collection, item, user) {
 var getUser = function (user) {
   // only let admins specify different users for voting
   // if no user is specified, use current user by default
-  return (Users.isAdmin(Meteor.user()) && typeof user !== 'undefined') ? user : Meteor.user();
+  return (Users.is.admin(Meteor.user()) && typeof user !== 'undefined') ? user : Meteor.user();
 };
 
 Meteor.methods({

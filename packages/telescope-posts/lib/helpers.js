@@ -76,7 +76,7 @@ Posts.getSubParams = function (terms) {
  * @param {Object} user
  */
 Posts.getDefaultStatus = function (user) {
-  var hasAdminRights = typeof user === 'undefined' ? false : Users.isAdmin(user);
+  var hasAdminRights = typeof user === 'undefined' ? false : Users.is.admin(user);
   if (hasAdminRights || !Settings.get('requirePostsApproval', false)) {
     // if user is admin, or else post approval is not required
     return Posts.config.STATUS_APPROVED

@@ -22,7 +22,7 @@ Telescope.schemas.pages = new SimpleSchema({
 
 Pages.collection = new Meteor.Collection('pages');
 
-i18n.internationalizeSchema(Telescope.schemas.pages);
+Telescope.schemas.pages.internationalize();
 
 Pages.collection.attachSchema(Telescope.schemas.pages);
 
@@ -44,9 +44,9 @@ Telescope.modules.register("mobileNav", {
 
 Meteor.startup(function () {
   Pages.collection.allow({
-    insert: Users.isAdminById,
-    update: Users.isAdminById,
-    remove: Users.isAdminById
+    insert: Users.is.adminById,
+    update: Users.is.adminById,
+    remove: Users.is.adminById
   });
 
   Meteor.methods({

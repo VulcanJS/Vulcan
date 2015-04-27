@@ -88,7 +88,7 @@ Meteor.startup(function () {
     onBeforeAction: function () {
       // Only allow users with permissions to see the user edit page.
       if (Meteor.user() && (
-        Users.isAdmin(Meteor.user()) ||
+        Users.is.admin(Meteor.user()) ||
         this.params.slug === Meteor.user().slug
       )) {
         this.next();

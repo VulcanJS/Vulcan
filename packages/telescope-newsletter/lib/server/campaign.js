@@ -82,11 +82,11 @@ scheduleNextCampaign = function (isTest) {
 
 Meteor.methods({
   sendCampaign: function () {
-    if(Users.isAdminById(this.userId))
+    if(Users.is.adminById(this.userId))
       return scheduleNextCampaign(false);
   },
   testCampaign: function () {
-    if(Users.isAdminById(this.userId))
+    if(Users.is.adminById(this.userId))
       return scheduleNextCampaign(true);
   }
 });

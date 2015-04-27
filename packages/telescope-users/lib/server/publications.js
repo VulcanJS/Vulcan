@@ -3,7 +3,7 @@ Meteor.publish('singleUser', function(idOrSlug) {
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({slug: idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var options = Users.isAdminById(this.userId) ? {} : {fields: Users.pubsub.publicProperties};
+  var options = Users.is.adminById(this.userId) ? {} : {fields: Users.pubsub.publicProperties};
   if (user) {
     return Meteor.users.find({_id: user._id}, options);
   }
@@ -51,7 +51,7 @@ Meteor.publish('currentUser', function() {
 
 Meteor.publish('allUsersAdmin', function() {
   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
-  if (Users.isAdminById(this.userId)) {
+  if (Users.is.adminById(this.userId)) {
     return Meteor.users.find(selector, {fields: {
       _id: true,
       profile: true,
@@ -66,7 +66,7 @@ Meteor.publish('allUsersAdmin', function() {
 // https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
 
 ReactiveTable.publish("all-users", function() {
-  if(Users.isAdminById(this.userId)){
+  if(Users.is.adminById(this.userId)){
     return Meteor.users;
   } else {
     return [];

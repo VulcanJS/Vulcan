@@ -13,7 +13,7 @@ Meteor.startup(function () {
 
 Meteor.methods({
   removeMigration: function (name) {
-    if (Users.isAdmin(Meteor.user())) {
+    if (Users.is.admin(Meteor.user())) {
       console.log('// removing migration: ' + name);
       Migrations.remove({name: name});
     }

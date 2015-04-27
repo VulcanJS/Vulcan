@@ -404,7 +404,7 @@ Telescope.schemas.settings = new SimpleSchema({
 });
 
 
-i18n.internationalizeSchema(Telescope.schemas.settings);
+Telescope.schemas.settings.internationalize();
 
 Settings.attachSchema(Telescope.schemas.settings);
 
@@ -435,9 +435,9 @@ Settings.get = function(setting, defaultValue) {
 
 Meteor.startup(function () {
   Settings.allow({
-    insert: Users.isAdminById,
-    update: Users.isAdminById,
-    remove: Users.isAdminById
+    insert: Users.is.adminById,
+    update: Users.is.adminById,
+    remove: Users.is.adminById
   });
 });
 

@@ -8,7 +8,7 @@ var findAtts = function () {
 
 var canEditField = function (field) {
   // show field only if user is admin or it's marked as editable
-  return Users.isAdmin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
+  return Users.is.admin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
 }
 
 Template.quickForm_telescope.helpers({
@@ -34,7 +34,7 @@ Template.quickForm_telescope.helpers({
     var groups = _.compact(_.uniq(_.pluckDeep(AutoForm.getFormSchema()._schema, 'autoform.group')));
 
     // if user is not admin, exclude "admin" group from fieldsets
-    if (!Users.isAdmin(Meteor.user()))
+    if (!Users.is.admin(Meteor.user()))
       groups = _.without(groups, 'admin')
 
     return groups;

@@ -3,7 +3,7 @@ Template.users_list_actions.helpers({
     return this.isInvited;
   },
   userIsAdmin: function(){
-    return Users.isAdmin(this);
+    return Users.is.admin(this);
   },
 });
 
