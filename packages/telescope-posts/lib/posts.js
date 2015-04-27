@@ -8,7 +8,7 @@ Posts = new Mongo.Collection("posts");
  * Posts schema
  * @type {SimpleSchema}
  */
-var postsSchema = new SimpleSchema({
+Telescope.schemas.posts = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
@@ -200,12 +200,12 @@ var postsSchema = new SimpleSchema({
   }
 });
 
-i18n.internationalizeSchema(postsSchema);
+i18n.internationalizeSchema(Telescope.schemas.posts);
 
 /**
  * Attach schema to Posts collection
  */
-Posts.attachSchema(postsSchema);
+Posts.attachSchema(Telescope.schemas.posts);
 
 
 

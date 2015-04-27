@@ -521,6 +521,43 @@ var migrationsList = {
     }
     return i;
   },
+  migrateUserProfiles: function () {
+    var i = 0;
+    var allUsers = Meteor.users.find({telescope: {$exists: false}});
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      i++;
+
+      console.log('> Updating user '+user._id+' (' + user.username + ')');
+
+      var telescopeUserData = {};
+
+      // look for user data on root of user object and in user.votes
+      _.each(Telescope.schemas.userData._schema, function (property, key) {
+        if (!!user[key]) {
+          telescopeUserData[key] = user[key];
+        }
+        if (!!user.votes[key]) {
+          telescopeUserData[key] = user.votes[key];
+        }
+      });
+
+      // console.log(telescopeUserData);
+
+      try {
+        Meteor.users.update(user._id, {
+          $set: {
+            telescope: telescopeUserData
+          }
+        });
+      } catch (err) {
+        console.log(err)
+        console.warn('> Unable to migrate profile for user ' + user.username);
+      }
+    });
+    return i;
+  },
 };
 
 // TODO: normalize categories?

@@ -12,3 +12,9 @@ Meteor.Collection.prototype.registerField = function (field) {
   // add field schema to collection schema
   collection.attachSchema(fieldSchema);
 }
+
+/**
+ * Global schemas object
+ * @namespace Telescope.schemas
+ */
+Telescope.schemas = {};

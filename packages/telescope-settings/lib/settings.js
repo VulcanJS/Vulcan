@@ -1,6 +1,6 @@
 Settings = new Meteor.Collection("settings");
 
-var settingsSchema = new SimpleSchema({
+Telescope.schemas.settings = new SimpleSchema({
   title: {
     type: String,
     optional: true,
@@ -404,9 +404,9 @@ var settingsSchema = new SimpleSchema({
 });
 
 
-i18n.internationalizeSchema(settingsSchema);
+i18n.internationalizeSchema(Telescope.schemas.settings);
 
-Settings.attachSchema(settingsSchema);
+Settings.attachSchema(Telescope.schemas.settings);
 
 Settings.get = function(setting, defaultValue) {
   var settings = Settings.find().fetch()[0];

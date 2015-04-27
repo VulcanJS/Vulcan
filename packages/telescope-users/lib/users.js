@@ -4,11 +4,167 @@
  */
 Users = Meteor.users;
 
+
+
+/**
+ * Vote schema
+ * @type {SimpleSchema}
+ */
+Telescope.schemas.votes = new SimpleSchema({
+  itemId: {
+    type: String
+  },
+  power: {
+    type: Number,
+    optional: true
+  },
+  votedAt: {
+    type: Date, 
+    optional: true
+  }
+});
+
+/**
+ * User Data schema
+ * @type {SimpleSchema}
+ */
+Telescope.schemas.userData = new SimpleSchema({
+  bio: {
+    type: String,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  },
+  commentCount: {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  displayName: {
+    type: String,
+    regEx: /^[a-zA-Z-]{2,25}$/,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  },
+  downvotedComments: {
+    type: [Telescope.schemas.votes],
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  downvotedPosts: {
+    type: [Telescope.schemas.votes],
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  email: {
+    type: String,
+    regEx: /^[a-zA-Z]{2,25}$/,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  },
+  emailHash: {
+    type: String,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  htmlBio: {
+    type: String,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  inviteCount: {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  invitedCount: {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  isInvited: {
+    type: Boolean,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  karma: {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  postCount: {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  slug: {
+    type: String,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  twitterUsername: {
+    type: String,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  },
+  upvotedComments: {
+    type: [Telescope.schemas.votes],
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  upvotedPosts: {
+    type: [Telescope.schemas.votes],
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  },
+  website: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true,
+    autoform: {
+      editable: true
+    }
+  }
+});
+
 /**
  * Users schema
  * @type {SimpleSchema}
  */
- var usersSchema = new SimpleSchema({ 
+Telescope.schemas.users = new SimpleSchema({ 
   _id: {
     type: String,
     optional: true,
@@ -64,7 +220,7 @@ Users = Meteor.users;
     }
   },
   telescope: { // telescope-specific data
-    type: telescopeUserDataSchema,
+    type: Telescope.schemas.userData,
     optional: true
   },
   services: {
@@ -77,155 +233,14 @@ Users = Meteor.users;
   }
 });
 
-/**
- * Users schema
- * @type {SimpleSchema}
- */
-var telescopeUserDataSchema = new SimpleSchema({
-  displayName: {
-    type: String,
-    regEx: /^[a-zA-Z-]{2,25}$/,
-    optional: true,
-    autoform: {
-      editable: true
-    }
-  },
-  email: {
-    type: String,
-    regEx: /^[a-zA-Z]{2,25}$/,
-    optional: true,
-    autoform: {
-      editable: true
-    }
-  },
-  website: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-    optional: true,
-    autoform: {
-      editable: true
-    }
-  },
-  twitterUsername: {
-    type: String,
-    optional: true,
-    autoform: {
-      editable: true
-    }
-  },
-  bio: {
-    type: String,
-    optional: true,
-    autoform: {
-      editable: true
-    }
-  },
-  htmlBio: {
-    type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  city: {
-    type: String,
-    optional: true,
-    autoform: {
-      editable: true
-    }
-  },
-  commentCount: {
-    type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  emailHash: {
-    type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  inviteCount: {
-    type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  invitedCount: {
-    type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  isInvited: {
-    type: Boolean,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  karma: {
-    type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  postCount: {
-    type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  slug: {
-    type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  downvotedComments: {
-    type: [String],
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  downvotedPosts: {
-    type: [String],
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  upvotedComments: {
-    type: [String],
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  },
-  upvotedPosts: {
-    type: [String],
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  }
-});
 
-i18n.internationalizeSchema(usersSchema);
+
+i18n.internationalizeSchema(Telescope.schemas.users);
 
 /**
  * Attach schema to Meteor.users collection
  */
-Meteor.users.attachSchema(usersSchema);
+Meteor.users.attachSchema(Telescope.schemas.users);
 
 
 /**

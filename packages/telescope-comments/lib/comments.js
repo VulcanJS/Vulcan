@@ -8,7 +8,7 @@ Comments = new Mongo.Collection("comments");
  * Comments schema
  * @type {SimpleSchema}
  */
-var commentsSchema = new SimpleSchema({
+Telescope.schemas.comments = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -91,12 +91,12 @@ var commentsSchema = new SimpleSchema({
   }
 });
 
-i18n.internationalizeSchema(commentsSchema);
+i18n.internationalizeSchema(Telescope.schemas.comments);
 
 /**
  * Attach schema to Posts collection
  */
-Comments.attachSchema(commentsSchema);
+Comments.attachSchema(Telescope.schemas.comments);
 
 
 // Note: is the allow/deny code still needed?

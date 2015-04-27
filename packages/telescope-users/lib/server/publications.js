@@ -42,7 +42,7 @@ Meteor.publish('userComments', function(userId, limit) {
 // Publish the current user
 
 Meteor.publish('currentUser', function() {
-  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.privateProperties});
+  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.hiddenProperties});
   return user;
 });
 

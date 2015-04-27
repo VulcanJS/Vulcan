@@ -1,6 +1,6 @@
 Pages = {};
 
-Pages.schema = new SimpleSchema({
+Telescope.schemas.pages = new SimpleSchema({
   title: {
     type: String
   },
@@ -21,7 +21,10 @@ Pages.schema = new SimpleSchema({
 });
 
 Pages.collection = new Meteor.Collection('pages');
-Pages.collection.attachSchema(Pages.schema);
+
+i18n.internationalizeSchema(Telescope.schemas.pages);
+
+Pages.collection.attachSchema(Telescope.schemas.pages);
 
 Pages.collection.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one

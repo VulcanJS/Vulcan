@@ -1,5 +1,5 @@
 // category schema
-categorySchema = new SimpleSchema({
+Telescope.schemas.categories = new SimpleSchema({
   name: {
     type: String
   },
@@ -25,7 +25,10 @@ categorySchema = new SimpleSchema({
 });
 
 Categories = new Meteor.Collection("categories");
-Categories.attachSchema(categorySchema);
+
+i18n.internationalizeSchema(Telescope.schemas.categories);
+
+Categories.attachSchema(Telescope.schemas.categories);
 
 Categories.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one

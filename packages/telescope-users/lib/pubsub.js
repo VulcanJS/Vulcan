@@ -43,7 +43,7 @@ Users.pubsub.publicProperties = { // true means exposed
  * Options for your own user account (for security reasons, block certain properties)
  * @type {Object}
  */
-Users.pubsub.privateProperties = {
+Users.pubsub.hiddenProperties = {
   'services.password.bcrypt': false
 }
 

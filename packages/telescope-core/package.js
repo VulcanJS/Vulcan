@@ -12,9 +12,8 @@ Package.onUse(function(api) {
   api.use([
     'telescope:lib@0.3.0', //  no dependencies
     'telescope:messages@0.1.0', // lib
-    'telescope:events@0.1.0', // lib
-    'telescope:events@0.1.0', // lib
     'telescope:i18n@0.1.0', // lib
+    'telescope:events@0.1.0', // lib, i18n
     'telescope:settings@0.1.0', // lib, i18n
     'telescope:users@0.1.0', // lib, i18n, settings
     'telescope:comments@0.1.0', // lib, i18n, settings, users

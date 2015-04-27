@@ -1,4 +1,4 @@
-var feedSchema = new SimpleSchema({
+Telescope.schemas.feeds = new SimpleSchema({
   url: {
     type: String,
     regEx: SimpleSchema.RegEx.Url
@@ -41,7 +41,10 @@ var feedSchema = new SimpleSchema({
 });
 
 Feeds = new Meteor.Collection('feeds');
-Feeds.attachSchema(feedSchema);
+
+i18n.internationalizeSchema(Telescope.schemas.feeds);
+
+Feeds.attachSchema(Telescope.schemas.feeds);
 
 // used to keep track of which feed a post was imported from
 var feedIdProperty = {
