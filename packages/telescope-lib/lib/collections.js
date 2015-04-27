@@ -14,6 +14,19 @@ Meteor.Collection.prototype.registerField = function (field) {
 }
 
 /**
+ * Remove a field from a schema.
+ * @param {String} fieldName
+ */
+Meteor.Collection.prototype.removeField = function (fieldName) {
+
+  var collection = this;
+  var schema = _.omit(collection.simpleSchema()._schema, fieldName);
+
+  // add field schema to collection schema
+  collection.attachSchema(schema, {replace: true});
+}
+
+/**
  * Global schemas object
  * @namespace Telescope.schemas
  */
