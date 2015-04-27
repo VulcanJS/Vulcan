@@ -62,7 +62,8 @@ getCategoryUrl = function(slug){
 };
 
 // add callback that adds categories CSS classes
-Telescope.callbacks.register("postClass", function (post, postClass){
+function addCategoryClass (post, postClass){
   var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug});
   return postClass + " " + classArray.join(' ');
-});
+}
+Telescope.callbacks.register("postClass", addCategoryClass);
