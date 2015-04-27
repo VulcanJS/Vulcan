@@ -15,12 +15,14 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
+    'lib/namespace.js',
+    'lib/roles.js',
+    'lib/permissions.js',
     'lib/users.js',
     'lib/avatars.js',
     'lib/callbacks.js',
     'lib/modules.js',
     'lib/helpers.js',
-    'lib/permissions.js',
     'lib/pubsub.js',
     'lib/routes.js'
   ], ['client', 'server']);

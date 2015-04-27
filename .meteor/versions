@@ -24,6 +24,7 @@ chuangbo:cookie@1.1.0
 chuangbo:marked@0.3.5
 cmather:handlebars-server@0.2.0
 coffeescript@1.0.6
+dburles:collection-helpers@1.0.3
 ddp@1.1.0
 deps@1.0.7
 djedi:sanitize-html@1.6.1

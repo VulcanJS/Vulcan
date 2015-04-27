@@ -11,21 +11,16 @@ Posts = new Mongo.Collection("posts");
 Telescope.schemas.posts = new SimpleSchema({
   _id: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   createdAt: {
     type: Date,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   postedAt: {
     type: Date,
     optional: true,
+    editableBy: ["admin"],
     autoform: {
       group: 'admin',
       type: "bootstrap-datetimepicker"
@@ -34,118 +29,78 @@ Telescope.schemas.posts = new SimpleSchema({
   url: {
     type: String,
     optional: true,
-    editableBy: ['owner'],
+    editableBy: ["owner", "admin"],
     autoform: {
-      editable: true,
       type: "bootstrap-url"
     }
   },
   title: {
     type: String,
     optional: false,
-    editableBy: ['owner'],
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   },
   body: {
     type: String,
     optional: true,
-    editableBy: ['owner'],
+    editableBy: ["owner", "admin"],
     autoform: {
-      editable: true,
       rows: 5
     }
   },
   htmlBody: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   viewCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   commentCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   commenters: {
     type: [String],
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   lastCommentedAt: {
     type: Date,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   clickCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   baseScore: {
     type: Number,
     decimal: true,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   upvotes: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   upvoters: {
-    type: [String], // XXX
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    type: [String],
+    optional: true
   },
   downvotes: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   downvoters: {
-    type: [String], // XXX
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    type: [String],
+    optional: true
   },
   score: {
     type: Number,
     decimal: true,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   status: {
     type: Number,
     optional: true,
+    editableBy: ["admin"],
     autoValue: function () {
       // only provide a default value
       // 1) this is an insert operation
@@ -164,6 +119,7 @@ Telescope.schemas.posts = new SimpleSchema({
     type: Boolean,
     optional: true,
     defaultValue: false,
+    editableBy: ["admin"],
     autoform: {
       group: 'admin',
       leftLabel: "Sticky"
@@ -171,21 +127,16 @@ Telescope.schemas.posts = new SimpleSchema({
   },
   inactive: {
     type: Boolean,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   author: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   userId: {
     type: String, // XXX
     optional: true,
+    editableBy: ["admin"],
     autoform: {
       group: 'admin',
       options: function () {
@@ -200,7 +151,9 @@ Telescope.schemas.posts = new SimpleSchema({
   }
 });
 
-i18n.internationalizeSchema(Telescope.schemas.posts);
+// schema transforms
+Telescope.schemas.posts.internationalize().setPermissions();
+
 
 /**
  * Attach schema to Posts collection

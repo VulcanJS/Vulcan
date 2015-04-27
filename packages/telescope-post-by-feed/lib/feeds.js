@@ -1,11 +1,13 @@
 Telescope.schemas.feeds = new SimpleSchema({
   url: {
     type: String,
-    regEx: SimpleSchema.RegEx.Url
+    regEx: SimpleSchema.RegEx.Url,
+    editableBy: ["admin"]
   },
   userId: {
     type: String,
     label: 'feedUser',
+    editableBy: ["admin"],
     autoform: {
       instructions: 'Posts will be assigned to this user.',
       options: function () {
@@ -23,6 +25,7 @@ Telescope.schemas.feeds = new SimpleSchema({
     type: [String],
     label: 'categories',
     optional: true,
+    editableBy: ["admin"],
     autoform: {
       instructions: 'Posts will be assigned to this category.',
       noselect: true,
@@ -42,7 +45,7 @@ Telescope.schemas.feeds = new SimpleSchema({
 
 Feeds = new Meteor.Collection('feeds');
 
-i18n.internationalizeSchema(Telescope.schemas.feeds);
+Telescope.schemas.feeds.internationalize().setPermissions();
 
 Feeds.attachSchema(Telescope.schemas.feeds);
 
@@ -76,9 +79,9 @@ Posts.registerField(feedItemIdProperty);
 
 Meteor.startup(function () {
   Feeds.allow({
-    insert: Users.isAdminById,
-    update: Users.isAdminById,
-    remove: Users.isAdminById
+    insert: Users.is.adminById,
+    update: Users.is.adminById,
+    remove: Users.is.adminById
   });
 
   Meteor.methods({
@@ -88,7 +91,7 @@ Meteor.startup(function () {
       if (Feeds.findOne({url: feedSchema.url}))
         throw new Meteor.Error('already-exists', i18n.t('feed_already_exists'));
 
-      if (!Meteor.user() || !Users.isAdmin(Meteor.user()))
+      if (!Meteor.user() || !Users.is.admin(Meteor.user()))
         throw new Meteor.Error('login-required', i18n.t('you_need_to_login_and_be_an_admin_to_add_a_new_feed'));
 
       return Feeds.insert(feedUrl);

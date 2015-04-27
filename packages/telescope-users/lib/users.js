@@ -1,12 +1,4 @@
 /**
- * Telescope Users namespace
- * @namespace Users
- */
-Users = Meteor.users;
-
-
-
-/**
  * Vote schema
  * @type {SimpleSchema}
  */
@@ -32,131 +24,82 @@ Telescope.schemas.userData = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   },
   commentCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   displayName: {
     type: String,
     regEx: /^[a-zA-Z-]{2,25}$/,
     optional: true,
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   },
   downvotedComments: {
     type: [Telescope.schemas.votes],
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   downvotedPosts: {
     type: [Telescope.schemas.votes],
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   email: {
     type: String,
     regEx: /^[a-zA-Z]{2,25}$/,
     optional: true,
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   },
   emailHash: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   htmlBio: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   inviteCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   invitedCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   isInvited: {
     type: Boolean,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   karma: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   postCount: {
     type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   slug: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   twitterUsername: {
     type: String,
     optional: true,
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   },
   upvotedComments: {
     type: [Telescope.schemas.votes],
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   upvotedPosts: {
     type: [Telescope.schemas.votes],
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     optional: true,
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   }
 });
 
@@ -167,57 +110,33 @@ Telescope.schemas.userData = new SimpleSchema({
 Telescope.schemas.users = new SimpleSchema({ 
   _id: {
     type: String,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   username: {
     type: String,
-    regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    autoform: {
-      omit: true
-    }
+    regEx: /^[a-z0-9A-Z_]{3,15}$/
   },
   emails: {
-    type: [Object],
-    autoform: {
-      omit: true
-    }
+    type: [Object]
   },
   "emails.$.address": {
     type: String,
-    regEx: SimpleSchema.RegEx.Email,
-    autoform: {
-      omit: true
-    }
+    regEx: SimpleSchema.RegEx.Email
   },
   "emails.$.verified": {
-    type: Boolean,
-    autoform: {
-      omit: true
-    }
+    type: Boolean
   },
   createdAt: {
-    type: Date,
-    autoform: {
-      omit: true
-    }
+    type: Date
   },
   isAdmin: {
     type: Boolean,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   },
   profile: {
     type: Object,
     optional: true,
-    blackbox: true,
-    autoform: {
-      omit: true
-    }
+    blackbox: true
   },
   telescope: { // telescope-specific data
     type: Telescope.schemas.userData,
@@ -226,16 +145,15 @@ Telescope.schemas.users = new SimpleSchema({
   services: {
     type: Object,
     optional: true,
-    blackbox: true,
-    autoform: {
-      omit: true
-    }
+    blackbox: true
   }
 });
 
 
 
-i18n.internationalizeSchema(Telescope.schemas.users);
+Telescope.schemas.users.internationalize();
+
+Telescope.schemas.users.setPermissions();
 
 /**
  * Attach schema to Meteor.users collection
@@ -248,7 +166,7 @@ Meteor.users.attachSchema(Telescope.schemas.users);
  */
 Users.deny({
   update: function(userId, post, fieldNames) {
-    if(Users.isAdminById(userId))
+    if(Users.is.adminById(userId))
       return false;
     // deny the update if it contains something other than the profile field
     return (_.without(fieldNames, 'profile', 'username', 'slug').length > 0);
@@ -257,9 +175,9 @@ Users.deny({
 
 Users.allow({
   update: function(userId, doc){
-    return Users.isAdminById(userId) || userId == doc._id;
+    return Users.is.adminById(userId) || userId == doc._id;
   },
   remove: function(userId, doc){
-    return Users.isAdminById(userId) || userId == doc._id;
+    return Users.is.adminById(userId) || userId == doc._id;
   }
 });

@@ -40,14 +40,17 @@ i18n.t = function (str, options) {
   }
 };
 
-i18n.internationalizeSchema = function (schema) {
-  _.each(schema._schema, function (property, key) {
+SimpleSchema.prototype.internationalize = function () {
+  var schema = this._schema;
+
+  _.each(schema, function (property, key) {
     if (!property.label) {
-      schema._schema[key].label = function () {
+      schema[key].label = function () {
         return i18n.t(key)
       };
     }
   });
+  return this;
 }
 
 Meteor.startup(function () {

@@ -3,29 +3,11 @@
 ///////////////////
 
 
-Users.isAdminById = function (userId) {
-  var user = Meteor.users.findOne(userId);
-  return !!(user && Users.isAdmin(user));
-};
-
-Users.isAdmin = function (user) {
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
-  return !!user && !!user.isAdmin;
-};
-
-Users.isOwner = function (user, document) {
-  return user._id === document.userId;
-};
 
 Users.updateAdmin = function (userId, admin) {
   this.update(userId, {$set: {isAdmin: admin}});
 };
 
-Users.isInvited = function (user) {
-  if(!user || typeof user === 'undefined')
-    return false;
-  return this.isAdmin(user) || !!user.isInvited;
-};
 
 Users.adminUsers = function () {
   return this.find({isAdmin : true}).fetch();

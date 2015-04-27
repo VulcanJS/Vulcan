@@ -1,32 +1,37 @@
 // category schema
 Telescope.schemas.categories = new SimpleSchema({
   name: {
-    type: String
+    type: String,
+    editableBy: ["admin"]
   },
   description: {
     type: String,
     optional: true,
+    editableBy: ["admin"],
     autoform: {
       rows: 3
     }
   },
   order: {
     type: Number,
-    optional: true
+    optional: true,
+    editableBy: ["admin"]
   },
   slug: {
     type: String,
-    optional: true
+    optional: true,
+    editableBy: ["admin"]
   },
   image: {
     type: String,
-    optional: true
+    optional: true,
+    editableBy: ["admin"]
   }
 });
 
 Categories = new Meteor.Collection("categories");
 
-i18n.internationalizeSchema(Telescope.schemas.categories);
+Telescope.schemas.categories.internationalize().setPermissions();
 
 Categories.attachSchema(Telescope.schemas.categories);
 
@@ -47,9 +52,9 @@ Telescope.viewParameters.category = function (terms) {
 
 Meteor.startup(function () {
   Categories.allow({
-    insert: Users.isAdminById,
-    update: Users.isAdminById,
-    remove: Users.isAdminById
+    insert: Users.is.adminById,
+    update: Users.is.adminById,
+    remove: Users.is.adminById
   });
 });
 

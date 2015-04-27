@@ -3,7 +3,7 @@ var thumbnailProperty = {
   propertySchema: {
     type: String,
     optional: true,
-    editableBy: ['owner'],
+    editableBy: ["owner", "admin"],
     autoform: {
       editable: true,
       type: 'bootstrap-postthumbnail'

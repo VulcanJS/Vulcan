@@ -15,11 +15,7 @@ Telescope.schemas.comments = new SimpleSchema({
   },
   parentCommentId: {
     type: String,
-    optional: true,
-    autoform: {
-      editable: true,
-      omit: true
-    }
+    optional: true
   },
   createdAt: {
     type: Date,
@@ -31,9 +27,7 @@ Telescope.schemas.comments = new SimpleSchema({
   },
   body: {
     type: String,
-    autoform: {
-      editable: true
-    }
+    editableBy: ["owner", "admin"]
   },
   htmlBody: {
     type: String,
@@ -54,15 +48,15 @@ Telescope.schemas.comments = new SimpleSchema({
     optional: true
   },
   upvoters: {
-    type: [String], // XXX
+    type: [String],
     optional: true
   },
   downvotes: {
-      type: Number,
-      optional: true
+    type: Number,
+    optional: true
   },
   downvoters: {
-    type: [String], // XXX
+    type: [String],
     optional: true
   },
   author: {
@@ -75,11 +69,7 @@ Telescope.schemas.comments = new SimpleSchema({
   },
   postId: {
     type: String, // XXX
-    optional: true,
-    autoform: {
-      editable: true,
-      omit: true
-    }
+    optional: true
   },
   userId: {
     type: String, // XXX
@@ -91,7 +81,7 @@ Telescope.schemas.comments = new SimpleSchema({
   }
 });
 
-i18n.internationalizeSchema(Telescope.schemas.comments);
+Telescope.schemas.comments.internationalize().setPermissions();
 
 /**
  * Attach schema to Posts collection
@@ -103,7 +93,7 @@ Comments.attachSchema(Telescope.schemas.comments);
 
 Comments.deny({
   update: function(userId, post, fieldNames) {
-    if(Users.isAdminById(userId))
+    if(Users.is.adminById(userId))
       return false;
     // deny the update if it contains something other than the following fields
     return (_.without(fieldNames, 'body').length > 0);

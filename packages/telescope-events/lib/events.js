@@ -27,7 +27,7 @@ Telescope.schemas.events = new SimpleSchema({
 
 Events = new Meteor.Collection('events');
 
-i18n.internationalizeSchema(Telescope.schemas.events);
+Telescope.schemas.events.internationalize();
 
 Events.attachSchema(Telescope.schemas.events);
 
