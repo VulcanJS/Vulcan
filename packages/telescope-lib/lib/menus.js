@@ -1,5 +1,5 @@
 
-Telescope.menus = [];
+Telescope.menus = {};
 
 /**
  * Add one or more items to a menu
@@ -25,6 +25,17 @@ Telescope.menus.register = function (menu, item) {
     Telescope.menus[menu].push(item);
   
   }
+}
+
+/**
+ * Remove an item from a menu
+ * @param {string} menu - The name of the menu
+ * @param {string} label - The label of the item to remove
+ */
+Telescope.menus.remove = function (menu, label) {
+  Telescope.menus[menu] = _.reject(Telescope.menus[menu], function (menu) {
+    return menu.label === label;
+  });
 }
 
 /**

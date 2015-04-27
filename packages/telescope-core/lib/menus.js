@@ -39,12 +39,12 @@ Telescope.menus.register("viewsMenu", [
 Telescope.menus.register("adminMenu", [
   {
     route: 'settings',
-    label: 'Settings',
+    label: 'settings',
     description: 'telescope_settings_panel'
   },
   {
     route: 'usersDashboard',
-    label: 'Users',
+    label: 'users',
     description: 'users_dashboard'
   }
 ]);
