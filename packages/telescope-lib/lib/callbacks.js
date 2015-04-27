@@ -1,5 +1,5 @@
 
-Telescope.callbacks = [];
+Telescope.callbacks = {};
 
 /**
  * Add a callback function to a hook
@@ -14,6 +14,17 @@ Telescope.callbacks.register = function (hook, callback) {
   }
 
   Telescope.callbacks[hook].push(callback);
+}
+
+/**
+ * Remove a callback from a hook
+ * @param {string} hook - The name of the hook
+ * @param {string} functionName - The name of the function to remove
+ */
+Telescope.callbacks.remove = function (hook, functionName) {
+  Telescope.callbacks[hook] = _.reject(Telescope.callbacks[hook], function (callback) {
+    return callback.name === functionName;
+  });
 }
 
 /**

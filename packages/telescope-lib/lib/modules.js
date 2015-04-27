@@ -1,5 +1,5 @@
 
-Telescope.modules = [];
+Telescope.modules = {};
 
 /**
  * Add a module to a template zone
@@ -27,6 +27,17 @@ Telescope.modules.register = function (zone, module) {
     Telescope.modules[zone].push(module);
   
   }
+}
+
+/**
+ * Remove a module from a zone
+ * @param {string} zone - The name of the zone
+ * @param {string} template - The name of the template to remove
+ */
+Telescope.modules.remove = function (zone, template) {
+  Telescope.modules[zone] = _.reject(Telescope.modules[zone], function (module) {
+    return module.template === template;
+  });
 }
 
 /**
