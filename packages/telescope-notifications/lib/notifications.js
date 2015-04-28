@@ -117,7 +117,7 @@ Comments.registerField(
 
 function setNotificationDefaults (user) {
   // set notifications default preferences
-  user.profile.notifications = {
+  user.telescope.notifications = {
     users: false,
     posts: false,
     comments: true,

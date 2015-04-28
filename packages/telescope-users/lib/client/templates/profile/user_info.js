@@ -11,7 +11,7 @@ Template.userInfo.helpers({
     return Meteor.user() && Meteor.user()._id != this._id && !Users.is.invited(this) && Telescope.utils.invitesEnabled() && Users.can.invite(Meteor.user());
   },
   inviteCount: function() {
-    return Meteor.user().inviteCount;
+    return Meteor.user().telescope.inviteCount;
   },
   getTwitterName: function () {
     return Users.getTwitterName(this);

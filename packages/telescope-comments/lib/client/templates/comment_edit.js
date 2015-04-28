@@ -1,44 +1,78 @@
-var editComment = function(instance) {
-  var comment = instance.data.comment;
-  var content = instance.$('#body').val();
+Template.comment_edit.helpers({
+  commentFields: function () {
+    var schema = Comments.simpleSchema()._schema;
+    var comment = this.comment;
+    var fields = _.filter(_.keys(schema), function (fieldName) {
+      var field = schema[fieldName];
+      return Users.can.editField(Meteor.user(), field, comment);
+    });
+    return fields;
+  }
+});
 
+AutoForm.hooks({
+  editCommentForm: {
 
-  if(!Meteor.user())
-    throw i18n.t('you_must_be_logged_in');
+    before: {
+      editComment: function(modifier) {
+        var comment = doc;
 
-  Comments.update(comment._id, {
-    $set: {
-      body: content
+        // ------------------------------ Checks ------------------------------ //
+
+        if (!Meteor.user()) {
+          Messages.flash(i18n.t('you_must_be_logged_in'), "");
+          return false;
+        }
+
+        // ------------------------------ Callbacks ------------------------------ //
+
+        // run all post edit client callbacks on modifier object successively
+        comment = Telescope.callbacks.run("postEditClient", comment);
+
+        return comment;
+      }
+    },
+
+    onSuccess: function(operation, comment) {
+      Events.track("edit comment", {'commentId': comment._id});
+      Router.go('post_page', {_id: comment.postId});
+    },
+
+    onError: function(operation, error) {
+      console.log(error)
+      Messages.flash(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
+      Messages.clearSeen();
     }
-  });
 
-  Events.track("edit comment", {'postId': comment.postId, 'commentId': comment._id});
-  Router.go('post_page_comment', {_id: comment.postId, commentId: comment._id});
-};
+  }
+});
+
+// delete link
+Template.comment_edit.events({
+  'click .delete-link': function(e){
+    var comment = this.comment;
+
+    e.preventDefault();
+
+    if(confirm("Are you sure?")){
+      Router.go("/");
+      Meteor.call("deleteCommentById", comment._id, function(error) {
+        if (error) {
+          console.log(error);
+          Messages.flash(error.reason, 'error');
+        } else {
+          Messages.flash(i18n.t('your_comment_has_been_deleted'), 'success');
+        }
+      });
+    }
+  }
+});
 
 Template.comment_edit.onRendered(function() {
   var self = this;
   this.$("#comment").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
-      editComment(self);
+      // editComment(self);
     }
   });
-});
-
-Template.comment_edit.events({
-  'click input[type=submit]': function(e, instance){
-    e.preventDefault();
-    editComment(instance);
-  },
-  'click .delete-link': function(e){
-    var comment = this;
-
-    e.preventDefault();
-
-    if(confirm(i18n.t("are_you_sure"))){
-      Meteor.call('removeComment', comment._id);
-      Router.go('post_page', {_id: comment.postId});
-      Messages.flash("Your comment has been deleted.", "success");
-    }
-  }
 });

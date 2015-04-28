@@ -72,7 +72,11 @@ Telescope.schemas.comments = new SimpleSchema({
   },
   postId: {
     type: String,
-    optional: true
+    optional: true,
+    editableBy: ["owner", "admin"], // TODO: should users be able to set postId, but not modify it?
+    autoform: {
+      omit: true // never show this
+    }
   },
   userId: {
     type: String,

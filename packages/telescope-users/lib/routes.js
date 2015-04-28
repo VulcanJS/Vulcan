@@ -49,7 +49,7 @@ Users.controllers.edit = RouteController.extend({
   },
   data: function() {
     // if there is no slug, default to current user
-    var user = !!this.params.slug ? Meteor.users.findOne({slug: this.params.slug}) : Meteor.user();
+    var user = !!this.params.slug ? Meteor.users.findOne({"telescope.slug": this.params.slug}) : Meteor.user();
     return {
       user: user
     };
@@ -89,7 +89,7 @@ Meteor.startup(function () {
       // Only allow users with permissions to see the user edit page.
       if (Meteor.user() && (
         Users.is.admin(Meteor.user()) ||
-        this.params.slug === Meteor.user().slug
+        this.params.slug === Meteor.user().telescope.slug
       )) {
         this.next();
       } else {

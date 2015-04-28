@@ -14,29 +14,29 @@ Users.pubsub = {};
  */
 Users.pubsub.publicProperties = { // true means exposed
   _id: true,
-  commentCount: true,
   createdAt: true,
-  email_hash: true,
-  isInvited: true,
-  karma: true,
-  postCount: true,
-  slug: true,
   username: true,
-  'profile.username': true,
-  'profile.notifications': true,
-  'profile.bio': true,
-  'profile.github': true,
-  'profile.site': true,
-  'profile.twitter': true,
   'services.twitter.profile_image_url': true,
   'services.twitter.profile_image_url_https': true,
   'services.facebook.id': true,
   'services.twitter.screenName': true,
   'services.github.screenName': true, // Github is not really used, but there are some mentions to it in the code
-  'votes.downvotedComments': true,
-  'votes.downvotedPosts': true,
-  'votes.upvotedComments': true,
-  'votes.upvotedPosts': true
+  'telescope.commentCount': true,
+  'telescope.email_hash': true,
+  'telescope.isInvited': true,
+  'telescope.karma': true,
+  'telescope.postCount': true,
+  'telescope.slug': true,
+  'telescope.username': true,
+  'telescope.notifications': true,
+  'telescope.bio': true,
+  'telescope.github': true,
+  'telescope.site': true,
+  'telescope.twitter': true,
+  'telescope.downvotedComments': true,
+  'telescope.downvotedPosts': true,
+  'telescope.upvotedComments': true,
+  'telescope.upvotedPosts': true
 };
 
 /**
@@ -53,8 +53,8 @@ Users.pubsub.hiddenProperties = {
  */
 Users.pubsub.avatarProperties = {
   _id: true,
-  email_hash: true,
-  slug: true,
+  'telescope.email_hash': true,
+  'telescope.slug': true,
   username: true,
   'profile.username': true,
   'profile.github': true,

@@ -32,7 +32,7 @@ Template.userDownvotedPosts.helpers({
     var user = this;
     var posts = Template.instance().posts.get().fetch();
     posts = _.map(posts, function (post) {
-      var vote = _.findWhere(user.votes.downvotedPosts, {itemId: post._id});
+      var vote = _.findWhere(user.telescope.downvotedPosts, {itemId: post._id});
       post.votedAt = vote.votedAt;
       return post;
     });

@@ -16,6 +16,7 @@ Package.onUse(function (api) {
     'accounts-twitter',
     'reactive-var',
     'http',
+    'email',
     'aldeed:simple-schema@1.3.2',
     'aldeed:collection2@2.3.3',
     'aldeed:autoform@5.1.2',

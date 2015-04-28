@@ -59,7 +59,8 @@ Meteor.methods({
     // parentCommentId
 
     var user = Meteor.user(),
-        hasAdminRights = Users.is.admin(user);
+        hasAdminRights = Users.is.admin(user),
+        schema = Comments.simpleSchema()._schema;
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -88,8 +89,8 @@ Meteor.methods({
     // clear restricted properties
     _.keys(comment).forEach(function (fieldName) {
 
-      var field = commentSchemaObject[fieldName];
-      if (!Users.can.editField(user, comment, field)) {
+      var field = schema[fieldName];
+      if (!Users.can.submitField(user, field)) {
         throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
       }
 
@@ -107,7 +108,8 @@ Meteor.methods({
 
     var user = Meteor.user(),
         hasAdminRights = Users.is.admin(user),
-        comment = Comments.findOne(commentId);
+        comment = Comments.findOne(commentId), 
+        schema = Comments.simpleSchema()._schema;
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -122,8 +124,8 @@ Meteor.methods({
       // loop over each property being operated on
       _.keys(operation).forEach(function (fieldName) {
 
-        var field = Posts.schema._schema[fieldName];
-        if (!Users.can.editField(user, comment, field)) {
+        var field = schema[fieldName];
+        if (!Users.can.editField(user, field, comment)) {
           throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
         }
 
@@ -136,7 +138,7 @@ Meteor.methods({
 
     // ------------------------------ Update ------------------------------ //
 
-    Posts.update(postId, modifier);
+    Comments.update(commentId, modifier);
 
     // ------------------------------ Callbacks ------------------------------ //
 
@@ -147,9 +149,13 @@ Meteor.methods({
     return Comments.findOne(commentId);
   },
 
-  removeComment: function (commentId) {
+  deleteCommentById: function (commentId) {
+
     var comment = Comments.findOne(commentId);
-    if(Users.can.edit(Meteor.user(), comment)){
+    var user = Meteor.user();
+
+    if(Users.can.edit(user, comment)){
+
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {
         $inc:   {commentCount: -1},
@@ -158,7 +164,7 @@ Meteor.methods({
 
       // decrement user comment count and remove comment ID from user
       Meteor.users.update({_id: comment.userId}, {
-        $inc:   {'commentCount': -1}
+        $inc:   {'telescope.commentCount': -1}
       });
 
       // note: should we also decrease user's comment karma ?
@@ -169,8 +175,11 @@ Meteor.methods({
         htmlBody: 'Deleted',
         isDeleted: true
       }});
+
     }else{
+      
       Messages.flash("You don't have permission to delete this comment.", "error");
+    
     }
   }
 });

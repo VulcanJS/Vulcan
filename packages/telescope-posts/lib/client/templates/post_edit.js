@@ -1,10 +1,20 @@
+Template.post_edit.helpers({
+  postFields: function () {
+    var schema = Posts.simpleSchema()._schema;
+    var post = this.post;
+    var fields = _.filter(_.keys(schema), function (fieldName) {
+      var field = schema[fieldName];
+      return Users.can.editField(Meteor.user(), field, post);
+    });
+    return fields;
+  }
+});
+
 AutoForm.hooks({
   editPostForm: {
 
     before: {
       editPost: function(modifier) {
-        console.log(modifier)
-        console.log(template)
         var post = doc;
 
         // ------------------------------ Checks ------------------------------ //
@@ -17,9 +27,8 @@ AutoForm.hooks({
         // ------------------------------ Callbacks ------------------------------ //
 
         // run all post edit client callbacks on modifier object successively
-        post = Telescope.callbacks.postEditClient.reduce(function(result, currentFunction) {
-            return currentFunction(result);
-        }, post);
+        post = Telescope.callbacks.run("postEditClient", post);
+
 
         return post;
       }

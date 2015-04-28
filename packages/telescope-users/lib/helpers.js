@@ -40,7 +40,7 @@ Users.getAuthorName = function(item) {
 };
 
 Users.getProfileUrl = function (user) {
-  return this.getProfileUrlBySlugOrId(user.slug);
+  return this.getProfileUrlBySlugOrId(user.telescope.slug);
 };
 
 Users.getProfileUrlBySlugOrId = function (slugOrId) {
@@ -134,7 +134,7 @@ Users.numberOfItemsInPast24Hours = function (user, collection) {
 Users.getUserSetting = function (setting, defaultValue, user) {
   var user = (typeof user == 'undefined') ? Meteor.user() : user;
   var defaultValue = (typeof defaultValue == "undefined") ? null: defaultValue;
-  var settingValue = this.getProperty(user.profile, setting);
+  var settingValue = this.getProperty(user.telescope, setting);
   return (settingValue == null) ? defaultValue : settingValue;
 };
 
@@ -155,7 +155,7 @@ Users.setUserSetting = function (setting, value, userArgument) {
   console.log('Setting user setting "' + setting + '" to "' + value + '" for ' + Users.getUserName(user));
   var find = {_id: user._id};
   var field = {};
-  field['profile.'+setting] = value;
+  field['telescope.'+setting] = value;
   var options = {$set: field};
   var result = Meteor.users.update(find, options, {validate: false});
 };

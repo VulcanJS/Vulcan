@@ -4,12 +4,12 @@ Accounts.onCreateUser(function(options, user){
 
   var userProperties = {
     profile: options.profile || {},
-    karma: 0,
-    isInvited: false,
-    postCount: 0,
-    commentCount: 0,
-    invitedCount: 0,
-    votes: {
+    telescope: {
+      karma: 0,
+      isInvited: false,
+      postCount: 0,
+      commentCount: 0,
+      invitedCount: 0,
       upvotedPosts: [],
       downvotedPosts: [],
       upvotedComments: [],
@@ -24,14 +24,14 @@ Accounts.onCreateUser(function(options, user){
 
   // if email is set, use it to generate email hash
   if (Users.getEmail(user))
-    user.email_hash = Users.getEmailHash(user);
+    user.telescope.email_hash = Users.getEmailHash(user);
 
   // set username on profile
   if (!user.profile.username)
     user.profile.username = user.username;
 
   // create slug from username
-  user.slug = Telescope.utils.slugify(Users.getUserName(user));
+  user.telescope.slug = Telescope.utils.slugify(Users.getUserName(user));
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;

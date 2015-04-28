@@ -96,8 +96,8 @@ Meteor.methods({
 
     if(!hasAdminRights){
 
-      var timeSinceLastPost=timeSinceLast(user, Posts),
-        numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
+      var timeSinceLastPost = Users.timeSinceLast(user, Posts),
+        numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
         postInterval = Math.abs(parseInt(Settings.get('postInterval', 30))),
         maxPostsPer24Hours = Math.abs(parseInt(Settings.get('maxPostsPerDay', 30)));
 
@@ -123,7 +123,7 @@ Meteor.methods({
     _.keys(post).forEach(function (fieldName) {
 
       var field = schema[fieldName];
-      if (!Users.can.editField(user, post, field)) {
+      if (!Users.can.submitField(user, field)) {
         throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
       }
 
@@ -163,7 +163,7 @@ Meteor.methods({
       _.keys(operation).forEach(function (fieldName) {
 
         var field = schema[fieldName];
-        if (!Users.can.editField(user, post, field)) {
+        if (!Users.can.editField(user, field, post)) {
           throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
         }
 

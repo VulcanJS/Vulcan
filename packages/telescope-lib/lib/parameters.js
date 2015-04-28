@@ -57,7 +57,7 @@ Telescope.viewParameters.userPosts = function (terms) {
 
 Telescope.viewParameters.userUpvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
-  var postsIds = _.pluck(user.votes.upvotedPosts, "itemId");
+  var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
   return {
     find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
@@ -66,7 +66,7 @@ Telescope.viewParameters.userUpvotedPosts = function (terms) {
 
 Telescope.viewParameters.userDownvotedPosts = function (terms) {
   var user = Meteor.users.findOne(terms.userId);
-  var postsIds = _.pluck(user.votes.downvotedPosts, "itemId");
+  var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");
   // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {
     find: {_id: {$in: postsIds}},
