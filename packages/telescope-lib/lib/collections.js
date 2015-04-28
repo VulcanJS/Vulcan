@@ -39,11 +39,17 @@ Telescope.allowCheck = function (collection, userId, document, fieldNames, modif
   var schema = collection.simpleSchema();
   var user = Meteor.users.findOne(userId);
   var allowedFields = schema.getEditableFields(user);
+  var fields = [];
+
+  // fieldNames only contains top-level fields, so loop over modifier to get real list of fields
+  _.each(modifier, function (operation) {
+    fields = fields.concat(_.keys(operation));
+  });
 
   // allow update only if:
   // 1. user has rights to edit the document
   // 2. there is no fields in fieldNames that are not also in allowedFields
-  return Users.can.edit(userId, document) && _.difference(fieldNames, allowedFields).length == 0;
+  return Users.can.edit(userId, document) && _.difference(fields, allowedFields).length == 0;
 
 }
 
