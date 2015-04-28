@@ -27,7 +27,7 @@ Meteor.Collection.prototype.removeField = function (fieldName) {
 }
 
 /**
- * Global schemas object
+ * Global schemas object. Note: not reactive, won't be updated after initialization
  * @namespace Telescope.schemas
  */
 Telescope.schemas = {};

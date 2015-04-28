@@ -83,7 +83,8 @@ Meteor.methods({
 
     // NOTE: the current user and the post author user might be two different users!
     var user = Meteor.user(),
-        hasAdminRights = Users.is.admin(user);
+        hasAdminRights = Users.is.admin(user),
+        schema = Posts.simpleSchema()._schema;
 
     // ------------------------------ Checks ------------------------------ //
 
@@ -118,16 +119,15 @@ Meteor.methods({
     // userId
     // sticky (default to false)
 
-    // if user is not admin, go over each schema property and throw an error if it's not editable
-    if (!hasAdminRights) {
-      _.keys(post).forEach(function (propertyName) {
-        var property = Posts.schema._schema[propertyName];
-        if (!property || !property.autoform || !property.autoform.editable) {
-          console.log('//' + i18n.t('disallowed_property_detected') + ": " + propertyName);
-          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + propertyName);
-        }
-      });
-    }
+    // go over each schema field and throw an error if it's not editable
+    _.keys(post).forEach(function (fieldName) {
+
+      var field = schema[fieldName];
+      if (!Users.can.editField(user, field)) {
+        throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+      }
+      
+    });
 
     // if no post status has been set, set it now
     if (!post.status) {
@@ -146,35 +146,34 @@ Meteor.methods({
 
     var user = Meteor.user(),
         hasAdminRights = Users.is.admin(user),
-        post = Posts.findOne(postId);
+        post = Posts.findOne(postId),
+        schema = Posts.simpleSchema()._schema;
 
     // ------------------------------ Checks ------------------------------ //
 
-    // check that user can edit
-    if (!user || !Users.can.edit(user, Posts.findOne(postId)))
+    // check that user can edit document
+    if (!user || !Users.can.edit(user, post)) {
       throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_post'));
-
-    // if user is not admin, go over each schema property and throw an error if it's not editable
-    if (!hasAdminRights) {
-      // loop over each operation ($set, $unset, etc.)
-      _.each(modifier, function (operation) {
-        // loop over each property being operated on
-        _.keys(operation).forEach(function (propertyName) {
-          var property = Posts.schema._schema[propertyName];
-          if (!property || !property.autoform || !property.autoform.editable) {
-            console.log('//' + i18n.t('disallowed_property_detected') + ": " + propertyName);
-            throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + propertyName);
-          }
-        });
-      });
     }
+
+    // go over each field and throw an error if it's not editable
+    // loop over each operation ($set, $unset, etc.)
+    _.each(modifier, function (operation) {
+      // loop over each property being operated on
+      _.keys(operation).forEach(function (fieldName) {
+
+        var field = schema[fieldName];
+        if (!Users.can.editField(user, field)) {
+          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+        }
+
+      });
+    });
 
     // ------------------------------ Callbacks ------------------------------ //
 
     // run all post submit server callbacks on modifier successively
-    modifier = Telescope.callbacks.postEdit.reduce(function(result, currentFunction) {
-        return currentFunction(result);
-    }, modifier);
+    modifier = Telescope.callbacks.run("postEdit", modifier);
 
     // ------------------------------ Update ------------------------------ //
 
@@ -182,14 +181,7 @@ Meteor.methods({
 
     // ------------------------------ Callbacks ------------------------------ //
 
-    if (Meteor.isServer) {
-      Meteor.defer(function () { // use defer to avoid holding up client
-        // run all post after edit method callbacks successively
-        Telescope.callbacks.postEditAsync.forEach(function(currentFunction) {
-          currentFunction(modifier, post);
-        });
-      });
-    }
+    Telescope.callbacks.run("postEditAsync", postId, true);
 
     // ------------------------------ After Update ------------------------------ //
 

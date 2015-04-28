@@ -85,16 +85,15 @@ Meteor.methods({
     // admin-only properties
     // userId
 
-    // if user is not admin, clear restricted properties
-    if (!hasAdminRights) {
-      _.keys(comment).forEach(function (propertyName) {
-        var property = commentSchemaObject[propertyName];
-        if (!property || !property.autoform || !property.autoform.editable) {
-          console.log("// Disallowed property detected: "+propertyName+" (nice try!)");
-          delete comment[propertyName]
-        }
-      });
-    }
+    // clear restricted properties
+    _.keys(comment).forEach(function (fieldName) {
+
+      var field = commentSchemaObject[fieldName];
+      if (!Users.can.editField(user, field)) {
+        throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+      }
+      
+    });
 
     // if no userId has been set, default to current user id
     if (!comment.userId) {
@@ -103,7 +102,52 @@ Meteor.methods({
 
     return submitComment(comment);
   },
-  removeComment: function(commentId){
+
+  editComment: function (modifier, commentId) {
+
+    var user = Meteor.user(),
+        hasAdminRights = Users.is.admin(user),
+        comment = Comments.findOne(commentId);
+
+    // ------------------------------ Checks ------------------------------ //
+
+    // check that user can edit
+    if (!user || !Users.can.edit(user, comment)) {
+      throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_comment'));
+    }
+
+    // go over each field and throw an error if it's not editable
+    // loop over each operation ($set, $unset, etc.)
+    _.each(modifier, function (operation) {
+      // loop over each property being operated on
+      _.keys(operation).forEach(function (fieldName) {
+
+        var field = Posts.schema._schema[fieldName];
+        if (!Users.can.editField(user, field)) {
+          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+        }
+
+      });
+    });
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    modifier = Telescope.callbacks.run("commentEdit", modifier);
+
+    // ------------------------------ Update ------------------------------ //
+
+    Posts.update(postId, modifier);
+
+    // ------------------------------ Callbacks ------------------------------ //
+
+    Telescope.callbacks.run("commentEditAsync", commentId, true);
+
+    // ------------------------------ After Update ------------------------------ //
+
+    return Comments.findOne(commentId);
+  },
+
+  removeComment: function (commentId) {
     var comment = Comments.findOne(commentId);
     if(Users.can.edit(Meteor.user(), comment)){
       // decrement post comment count and remove user ID from post
