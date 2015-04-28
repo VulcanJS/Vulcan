@@ -24,7 +24,7 @@ Accounts.onCreateUser(function(options, user){
 
   // if email is set, use it to generate email hash
   if (Users.getEmail(user))
-    user.email_hash = getEmailHash(user);
+    user.email_hash = Users.getEmailHash(user);
 
   // set username on profile
   if (!user.profile.username)

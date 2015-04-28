@@ -152,7 +152,7 @@ Telescope.schemas.posts = new SimpleSchema({
 });
 
 // schema transforms
-Telescope.schemas.posts.internationalize().setPermissions();
+Telescope.schemas.posts.internationalize();
 
 
 /**

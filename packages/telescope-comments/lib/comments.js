@@ -84,11 +84,8 @@ Telescope.schemas.comments = new SimpleSchema({
   }
 });
 
-Meteor.startup(function () {
-  // do this on Meteor.startup to make sure Meteor.user() is defined and we're able to set permissions
-  Telescope.schemas.comments.internationalize().setPermissions();
-  Comments.attachSchema(Telescope.schemas.comments);
-});
+Telescope.schemas.comments.internationalize();
+Comments.attachSchema(Telescope.schemas.comments);
 
 /**
  * Attach schema to Posts collection

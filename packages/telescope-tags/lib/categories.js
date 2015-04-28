@@ -31,7 +31,7 @@ Telescope.schemas.categories = new SimpleSchema({
 
 Categories = new Meteor.Collection("categories");
 
-Telescope.schemas.categories.internationalize().setPermissions();
+Telescope.schemas.categories.internationalize();
 
 Categories.attachSchema(Telescope.schemas.categories);
 

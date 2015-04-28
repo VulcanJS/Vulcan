@@ -45,7 +45,7 @@ Telescope.schemas.feeds = new SimpleSchema({
 
 Feeds = new Meteor.Collection('feeds');
 
-Telescope.schemas.feeds.internationalize().setPermissions();
+Telescope.schemas.feeds.internationalize();
 
 Feeds.attachSchema(Telescope.schemas.feeds);
 

@@ -77,23 +77,43 @@ Users.can.edit = function (user, item, returnError) {
   }
 };
 
-Users.can.editField = function (user, field) {
+/**
+ * Check if a user can submit a field
+ * @param {Object} user - The user performing the action
+ * @param {Object} field - The field being edited or inserted
+ */
+Users.can.submitField = function (user, field) {
 
   if (!field.editableBy || !user) {
     return false;
   }
 
-  if (Users.is.admin(user)) {
-    return field.editableBy.indexOf("admin") !== -1;
-  }
+  var adminCheck = _.contains(field.editableBy, "admin") && Users.is.admin(user);
+  var ownerCheck = _.contains(field.editableBy, "owner");
 
-  if (Users.is.owner(user)) {
-    return field.editableBy.indexOf("owner") !== -1;
-  }
-
-  return false;
+  return adminCheck || ownerCheck;
   
 }
+
+/**
+ * Check if a user can edit a field on a specific document
+ * @param {Object} user - The user performing the action
+ * @param {Object} field - The field being edited or inserted
+ * @param {Object} document - The document being modified
+ */
+Users.can.editField = function (user, field, document) {
+
+  if (!field.editableBy || !user) {
+    return false;
+  }
+
+  var adminCheck = _.contains(field.editableBy, "admin") && Users.is.admin(user);
+  var ownerCheck = _.contains(field.editableBy, "owner") && Users.is.owner(user, document);
+
+  return adminCheck || ownerCheck;
+  
+}
+
 
 Users.can.editById = function (userId, item) {
   var user = Meteor.users.findOne(userId);
@@ -107,26 +127,3 @@ Users.can.currentUserEdit = function (item) {
 Users.can.invite = function (user) {
   return Users.is.invited(user) || Users.is.admin(user);
 };
-
-
-// this only makes sense on the client, because we set permissions relative to the current user
-SimpleSchema.prototype.setPermissions = function () {
-
-  if (Meteor.isClient) {
-    var schema = this._schema;
-    var user = Meteor.user();
-
-    // loop over each field of the schema
-    _.each(schema, function (field, key) {
-
-      // if the current user cannot edit field, add autoform.omit = true
-      // add exception for the "telescope" field of the user object
-      if (!Users.can.editField(user, field) && key !== "telescope") {
-        this[key] = _.extend(field, {autoform: {omit: true}});
-      }
-
-    });
-
-  }
-  return this;
-}

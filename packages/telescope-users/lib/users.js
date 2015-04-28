@@ -149,11 +149,7 @@ Telescope.schemas.users = new SimpleSchema({
   }
 });
 
-
-
 Telescope.schemas.users.internationalize();
-
-Telescope.schemas.users.setPermissions();
 
 /**
  * Attach schema to Meteor.users collection

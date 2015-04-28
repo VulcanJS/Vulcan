@@ -31,10 +31,3 @@ Meteor.Collection.prototype.removeField = function (fieldName) {
  * @namespace Telescope.schemas
  */
 Telescope.schemas = {};
-
-Telescope.schemas.toArray = function (schema) {
-  return _.map(schema, function (field, key) {
-    field.fieldName = key;
-    return field;
-  });
-}

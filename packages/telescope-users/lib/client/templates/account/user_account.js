@@ -15,7 +15,7 @@ Template.userAccount.helpers({
 
     // filter out uneditable fields and only keep "fieldName"
     var fields = _.pluck(_.filter(userDataSchema, function(field){
-        return Users.can.editField(user, field);
+        return Users.can.editField(user, user, field);
     }), "fieldName");
 
     return fields;

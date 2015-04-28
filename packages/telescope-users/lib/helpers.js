@@ -87,7 +87,7 @@ Users.getEmail = function (user) {
 
 Users.getEmailHash = function (user) {
   // has to be this way to work with Gravatar
-  return Gravatar.hash(getEmail(user));
+  return Gravatar.hash(Users.getEmail(user));
 };
 
 Users.getAvatarUrl = function (user) {
@@ -96,7 +96,7 @@ Users.getAvatarUrl = function (user) {
 };
 
 Users.getCurrentUserEmail = function () {
-  return Meteor.user() ? getEmail(Meteor.user()) : '';
+  return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
 };
 
 Users.userProfileComplete = function (user) {

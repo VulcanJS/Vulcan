@@ -123,10 +123,10 @@ Meteor.methods({
     _.keys(post).forEach(function (fieldName) {
 
       var field = schema[fieldName];
-      if (!Users.can.editField(user, field)) {
+      if (!Users.can.editField(user, post, field)) {
         throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
       }
-      
+
     });
 
     // if no post status has been set, set it now
@@ -163,7 +163,7 @@ Meteor.methods({
       _.keys(operation).forEach(function (fieldName) {
 
         var field = schema[fieldName];
-        if (!Users.can.editField(user, field)) {
+        if (!Users.can.editField(user, post, field)) {
           throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
         }
 

@@ -26,8 +26,8 @@ Package.onUse(function (api) {
   api.add_files([
     'lib/client/templates/comment_edit.html',
     'lib/client/templates/comment_edit.js',
-    'lib/client/templates/comment_form.html',
-    'lib/client/templates/comment_form.js',
+    'lib/client/templates/comment_submit.html',
+    'lib/client/templates/comment_submit.js',
     'lib/client/templates/comment_item.html',
     'lib/client/templates/comment_item.js',
     'lib/client/templates/comment_list.html',

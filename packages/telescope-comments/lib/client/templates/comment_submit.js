@@ -1,3 +1,17 @@
+Template.comment_submit.helpers({
+  commentFields: function () {
+    var schema = Comments.simpleSchema()._schema;
+    var fields = _.filter(_.keys(schema), function (fieldName) {
+      var field = schema[fieldName];
+      return Users.can.submitField(Meteor.user(), field);
+    });
+    return fields;
+  },
+  reason: function () {
+    return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');
+  }
+});
+
 AutoForm.hooks({
   submitCommentForm: {
 
@@ -52,7 +66,7 @@ AutoForm.hooks({
   }
 });
 
-Template.comment_form.onRendered(function() {
+Template.comment_submit.onRendered(function() {
   var self = this;
   this.$("#comment").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
@@ -60,10 +74,4 @@ Template.comment_form.onRendered(function() {
       // TODO: find a way to trigger autoform submission here
     }
   });
-});
-
-Template.comment_form.helpers({
-  reason: function () {
-    return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');
-  }
 });

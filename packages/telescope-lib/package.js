@@ -37,7 +37,8 @@ Package.onUse(function (api) {
     'fortawesome:fontawesome@4.3.0',
     'ccan:cssreset@1.0.0',
     'djedi:sanitize-html@1.6.1',
-    'dburles:collection-helpers@1.0.3'
+    'dburles:collection-helpers@1.0.3',
+    'jparker:gravatar@0.3.1'
   ];
 
   api.use(packages);

@@ -89,10 +89,10 @@ Meteor.methods({
     _.keys(comment).forEach(function (fieldName) {
 
       var field = commentSchemaObject[fieldName];
-      if (!Users.can.editField(user, field)) {
+      if (!Users.can.editField(user, comment, field)) {
         throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
       }
-      
+
     });
 
     // if no userId has been set, default to current user id
@@ -123,7 +123,7 @@ Meteor.methods({
       _.keys(operation).forEach(function (fieldName) {
 
         var field = Posts.schema._schema[fieldName];
-        if (!Users.can.editField(user, field)) {
+        if (!Users.can.editField(user, comment, field)) {
           throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
         }
 
