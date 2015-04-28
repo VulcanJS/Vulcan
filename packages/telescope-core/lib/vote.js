@@ -4,7 +4,7 @@
 // The default is found in base.js in the base package, and returns 1.
 
 var modifyKarma = function (userId, karma) {
-  Meteor.users.update({_id: userId}, {$inc: {karma: karma}});
+  Meteor.users.update({_id: userId}, {$inc: {"telescope.karma": karma}});
 };
 
 var hasUpvotedItem = function (item, user) {
@@ -16,7 +16,7 @@ var hasDownvotedItem = function (item, user) {
 };
 
 var addVote = function (userId, vote, collection, upOrDown) {
-  var field = 'votes.' + upOrDown + 'voted' + collection;
+  var field = 'telescope.' + upOrDown + 'voted' + collection;
   var add = {};
   add[field] = vote;
   var result = Meteor.users.update({_id: userId}, {
@@ -25,7 +25,7 @@ var addVote = function (userId, vote, collection, upOrDown) {
 };
 
 var removeVote = function (userId, itemId, collection, upOrDown) {
-  var field = 'votes.' + upOrDown + 'voted' + collection;
+  var field = 'telescope.' + upOrDown + 'voted' + collection;
   var remove = {};
   remove[field] = {itemId: itemId};
   Meteor.users.update({_id: userId}, {

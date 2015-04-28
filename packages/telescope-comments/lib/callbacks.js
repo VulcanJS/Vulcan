@@ -23,7 +23,7 @@ function afterCommentOperations (comment) {
 
   // increment comment count
   Meteor.users.update({_id: userId}, {
-    $inc:       {'commentCount': 1}
+    $inc:       {'telescope.commentCount': 1}
   });
 
   // update post
@@ -37,7 +37,6 @@ function afterCommentOperations (comment) {
   Telescope.upvoteItem(Comments, comment, commentAuthor);
 
   return comment;
-
 };
 
 Telescope.callbacks.register("commentSubmitAsync", afterCommentOperations);
