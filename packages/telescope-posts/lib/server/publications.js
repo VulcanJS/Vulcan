@@ -48,10 +48,12 @@ Meteor.publish('singlePost', function(id) {
 Meteor.publish('postUsers', function(postId) {
   if (Users.can.viewById(this.userId)){
     // publish post author and post commenters
-    var post = Posts.findOne(postId),
-        users = [post.userId]; // publish post author's ID
-
+    var post = Posts.findOne(postId);
+    var users = [];
+    
     if (post) {
+
+      users.push(post.userId); // publish post author's ID
 
       // get IDs from all commenters on the post
       var comments = Comments.find({postId: post._id}).fetch();

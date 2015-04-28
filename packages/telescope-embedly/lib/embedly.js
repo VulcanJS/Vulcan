@@ -5,7 +5,6 @@ var thumbnailProperty = {
     optional: true,
     editableBy: ["owner", "admin"],
     autoform: {
-      editable: true,
       type: 'bootstrap-postthumbnail'
     }
   }
@@ -17,11 +16,7 @@ var mediaProperty = {
   propertySchema: {
     type: Object,
     optional: true,
-    blackbox: true,
-    hidden: true,
-    autoform: {
-      omit: true
-    }
+    blackbox: true
   }
 }
 Posts.registerField(mediaProperty);

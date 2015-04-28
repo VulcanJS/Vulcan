@@ -78,6 +78,7 @@ Users.can.edit = function (user, item, returnError) {
 };
 
 Users.can.editField = function (user, field) {
+
   if (!field.editableBy || !user) {
     return false;
   }
@@ -85,9 +86,13 @@ Users.can.editField = function (user, field) {
   if (Users.is.admin(user)) {
     return field.editableBy.indexOf("admin") !== -1;
   }
+
   if (Users.is.owner(user)) {
     return field.editableBy.indexOf("owner") !== -1;
   }
+
+  return false;
+  
 }
 
 Users.can.editById = function (userId, item) {
@@ -106,12 +111,14 @@ Users.can.invite = function (user) {
 
 // this only makes sense on the client, because we set permissions relative to the current user
 SimpleSchema.prototype.setPermissions = function () {
+
   if (Meteor.isClient) {
     var schema = this._schema;
     var user = Meteor.user();
 
     // loop over each field of the schema
     _.each(schema, function (field, key) {
+
       // if the current user cannot edit field, add autoform.omit = true
       // add exception for the "telescope" field of the user object
       if (!Users.can.editField(user, field) && key !== "telescope") {

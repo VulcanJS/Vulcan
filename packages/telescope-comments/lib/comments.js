@@ -27,7 +27,10 @@ Telescope.schemas.comments = new SimpleSchema({
   },
   body: {
     type: String,
-    editableBy: ["owner", "admin"]
+    editableBy: ["owner", "admin"],
+    autoform: {
+      rows: 5
+    }
   },
   htmlBody: {
     type: String,
@@ -68,11 +71,11 @@ Telescope.schemas.comments = new SimpleSchema({
     optional: true
   },
   postId: {
-    type: String, // XXX
+    type: String,
     optional: true
   },
   userId: {
-    type: String, // XXX
+    type: String,
     optional: true
   },
   isDeleted: {
@@ -81,12 +84,15 @@ Telescope.schemas.comments = new SimpleSchema({
   }
 });
 
-Telescope.schemas.comments.internationalize().setPermissions();
+Meteor.startup(function () {
+  // do this on Meteor.startup to make sure Meteor.user() is defined and we're able to set permissions
+  Telescope.schemas.comments.internationalize().setPermissions();
+  Comments.attachSchema(Telescope.schemas.comments);
+});
 
 /**
  * Attach schema to Posts collection
  */
-Comments.attachSchema(Telescope.schemas.comments);
 
 
 // Note: is the allow/deny code still needed?

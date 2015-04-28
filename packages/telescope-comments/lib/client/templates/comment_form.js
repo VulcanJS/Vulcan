@@ -1,50 +1,63 @@
-var submitComment = function(instance) {
-  var data = instance.data;
+AutoForm.hooks({
+  submitCommentForm: {
 
-  instance.$('form').addClass('disabled');
-  Messages.clearSeen();
+    before: {
+      method: function(doc) {
 
-  var comment = {};
-  var $commentForm = instance.$('#comment');
-  var $submitButton = instance.$('.btn-submit');
-  var body = $commentForm.val();
+        this.template.$('button[type=submit]').addClass('loading');
 
-  // now that the form is latency compensated, we don't actually need to show this
-  // $commentForm.prop('disabled', true);
-  // $submitButton.addClass('loading');
+        var comment = doc;
+        var parent = Template.parentData(5); // TODO: find a less brittle way to do this
 
-  // context can be either post, or comment property
-  var postId = !!data._id ? data._id: data.comment.postId;
-  var post = Posts.findOne(postId);
+        if (!!parent.comment) { // child comment
+          var parentComment = parent.comment;
+          comment.parentCommentId = parentComment._id;
+          comment.postId = parentComment.postId;
+        } else { // root comment
+          var post = parent;
+          comment.postId = post._id;
+        }
 
-  comment = {
-    postId: post._id,
-    body: body
-  };
+        // ------------------------------ Checks ------------------------------ //
 
-  // child comment
-  if (Telescope.utils.getCurrentTemplate() === 'comment_reply') {
-    comment.parentCommentId = data.comment._id;
-  }
+        if (!Meteor.user()) {
+          Messages.flash(i18n.t('you_must_be_logged_in'), 'error');
+          return false;
+        }
 
-  Meteor.call('submitComment', comment, function(error, newComment){
-    // $commentForm.prop('disabled', false);
-    // $submitButton.removeClass('loading');
-    if(error){
-      console.log(error);
-      Messages.flash(error.reason, "error");
-    }else{
-      Events.track("newComment", newComment);
-      $commentForm.val('');
+        // ------------------------------ Callbacks ------------------------------ //
+
+        // run all comment submit client callbacks on properties object successively
+        comment = Telescope.callbacks.run("commentSubmitClient", comment);
+
+        return comment;
+      }
+    },
+
+    onSuccess: function(operation, comment) {
+      this.template.$('button[type=submit]').removeClass('loading');
+      Events.track("new comment", {'commentId': comment._id});
+      Router.go('post_page', {_id: comment.postId});
+      if (comment.status === Posts.config.STATUS_PENDING) {
+        Messages.flash(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
+      }
+    },
+
+    onError: function(operation, error) {
+      this.template.$('button[type=submit]').removeClass('loading');
+      Messages.flash(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
+      Messages.clearSeen();
     }
-  });
-};
+
+  }
+});
 
 Template.comment_form.onRendered(function() {
   var self = this;
   this.$("#comment").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
-      submitComment(self);
+      // submitComment(self);
+      // TODO: find a way to trigger autoform submission here
     }
   });
 });
@@ -52,12 +65,5 @@ Template.comment_form.onRendered(function() {
 Template.comment_form.helpers({
   reason: function () {
     return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');
-  }
-});
-
-Template.comment_form.events({
-  'submit form': function(e, instance){
-    e.preventDefault();
-    submitComment(instance);
   }
 });

@@ -4,10 +4,8 @@ Posts.registerField(
     propertySchema: {
       type: [String],
       optional: true,
-      editable: true,
       editableBy: ["owner", "admin"],
       autoform: {
-        editable: true,
         noselect: true,
         options: function () {
           var categories = Categories.find().map(function (category) {
