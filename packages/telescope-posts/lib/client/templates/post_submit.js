@@ -1,11 +1,6 @@
 Template.post_submit.helpers({
   postFields: function () {
-    var schema = Posts.simpleSchema()._schema;
-    var fields = _.filter(_.keys(schema), function (fieldName) {
-      var field = schema[fieldName];
-      return Users.can.submitField(Meteor.user(), field);
-    });
-    return fields;
+    return Posts.simpleSchema().getEditableFields(Meteor.user());
   }
 });
 

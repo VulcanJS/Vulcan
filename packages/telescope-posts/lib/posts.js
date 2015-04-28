@@ -29,7 +29,7 @@ Telescope.schemas.posts = new SimpleSchema({
   url: {
     type: String,
     optional: true,
-    editableBy: ["owner", "admin"],
+    editableBy: ["member", "admin"],
     autoform: {
       type: "bootstrap-url"
     }
@@ -37,12 +37,12 @@ Telescope.schemas.posts = new SimpleSchema({
   title: {
     type: String,
     optional: false,
-    editableBy: ["owner", "admin"]
+    editableBy: ["member", "admin"]
   },
   body: {
     type: String,
     optional: true,
-    editableBy: ["owner", "admin"],
+    editableBy: ["member", "admin"],
     autoform: {
       rows: 5
     }
@@ -160,7 +160,10 @@ Telescope.schemas.posts.internationalize();
  */
 Posts.attachSchema(Telescope.schemas.posts);
 
-
+Posts.allow({
+  update: _.partial(Telescope.allowCheck, Posts),
+  remove: _.partial(Telescope.allowCheck, Posts)
+});
 
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //

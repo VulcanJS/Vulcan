@@ -1,12 +1,6 @@
 Template.comment_edit.helpers({
   commentFields: function () {
-    var schema = Comments.simpleSchema()._schema;
-    var comment = this.comment;
-    var fields = _.filter(_.keys(schema), function (fieldName) {
-      var field = schema[fieldName];
-      return Users.can.editField(Meteor.user(), field, comment);
-    });
-    return fields;
+    return Comments.simpleSchema().getEditableFields(Meteor.user());
   }
 });
 

@@ -21,6 +21,14 @@ Users.can.view = function (user) {
   return true;
 };
 
+Users.can.viewById = function (userId) {
+  // if an invite is required to view, run permission check, else return true
+  if (Settings.get('requireViewInvite', false)) {
+    return !!userId ? Users.can.view(Meteor.users.findOne(userId)) : false;
+  }
+  return true;
+};
+
 Users.can.viewPendingPosts = function (user) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
   return Users.is.admin(user);
@@ -31,13 +39,6 @@ Users.can.viewRejectedPosts = function (user) {
   return Users.is.admin(user);
 };
 
-Users.can.viewById = function (userId) {
-  // if an invite is required to view, run permission check, else return true
-  if (Settings.get('requireViewInvite', false)) {
-    return !!userId ? Users.can.view(Meteor.users.findOne(userId)) : false;
-  }
-  return true;
-};
 
 Users.can.post = function (user, returnError) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
@@ -65,16 +66,27 @@ Users.can.vote = function (user, returnError) {
   return Users.can.post(user, returnError);
 };
 
-Users.can.edit = function (user, item, returnError) {
+/**
+ * Check if a user can edit a document
+ * @param {Object} user - The user performing the action
+ * @param {Object} document - The document being edited
+ */
+Users.can.edit = function (user, document) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
-  if (!user || !item || (user._id !== item.userId &&
-                         user._id !== item._id &&
-                         !Users.is.admin(user))) {
-    return returnError ? "no_rights" : false;
-  } else {
-    return true;
+  if (!user || !document) {
+    return false;
   }
+
+  var adminCheck = Users.is.admin(user);
+  var ownerCheck = Users.is.owner(user, document);
+
+  return adminCheck || ownerCheck;
+};
+
+Users.can.editById = function (userId, document) {
+  var user = Meteor.users.findOne(userId);
+  return Users.can.edit(user, document);
 };
 
 /**
@@ -88,37 +100,19 @@ Users.can.submitField = function (user, field) {
     return false;
   }
 
-  var adminCheck = _.contains(field.editableBy, "admin") && Users.is.admin(user);
-  var ownerCheck = _.contains(field.editableBy, "owner");
+  var adminCheck = _.contains(field.editableBy, "admin") && Users.is.admin(user); // is the field editable by admins?
+  var memberCheck = _.contains(field.editableBy, "member"); // is the field editable by regular users?
 
-  return adminCheck || ownerCheck;
+  return adminCheck || memberCheck;
   
 }
 
 /**
- * Check if a user can edit a field on a specific document
+ * Check if a user can edit a field – for now, identical to Users.can.submitField
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
- * @param {Object} document - The document being modified
  */
-Users.can.editField = function (user, field, document) {
-
-  if (!field.editableBy || !user) {
-    return false;
-  }
-
-  var adminCheck = _.contains(field.editableBy, "admin") && Users.is.admin(user);
-  var ownerCheck = _.contains(field.editableBy, "owner") && Users.is.owner(user, document);
-
-  return adminCheck || ownerCheck;
-  
-}
-
-
-Users.can.editById = function (userId, item) {
-  var user = Meteor.users.findOne(userId);
-  return Users.can.edit(user, item);
-};
+Users.can.editField = Users.can.submitField
 
 Users.can.currentUserEdit = function (item) {
   return Users.can.edit(Meteor.user(), item);

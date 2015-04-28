@@ -27,7 +27,7 @@ Telescope.schemas.comments = new SimpleSchema({
   },
   body: {
     type: String,
-    editableBy: ["owner", "admin"],
+    editableBy: ["member", "admin"],
     autoform: {
       rows: 5
     }
@@ -73,7 +73,7 @@ Telescope.schemas.comments = new SimpleSchema({
   postId: {
     type: String,
     optional: true,
-    editableBy: ["owner", "admin"], // TODO: should users be able to set postId, but not modify it?
+    editableBy: ["member", "admin"], // TODO: should users be able to set postId, but not modify it?
     autoform: {
       omit: true // never show this
     }
@@ -91,23 +91,7 @@ Telescope.schemas.comments = new SimpleSchema({
 Telescope.schemas.comments.internationalize();
 Comments.attachSchema(Telescope.schemas.comments);
 
-/**
- * Attach schema to Posts collection
- */
-
-
-// Note: is the allow/deny code still needed?
-
-Comments.deny({
-  update: function(userId, post, fieldNames) {
-    if(Users.is.adminById(userId))
-      return false;
-    // deny the update if it contains something other than the following fields
-    return (_.without(fieldNames, 'body').length > 0);
-  }
-});
-
 Comments.allow({
-  update: Users.can.editById,
-  remove: Users.can.editById
+  update: _.partial(Telescope.allowCheck, Comments),
+  remove: _.partial(Telescope.allowCheck, Comments)
 });

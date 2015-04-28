@@ -1,12 +1,6 @@
 Template.post_edit.helpers({
   postFields: function () {
-    var schema = Posts.simpleSchema()._schema;
-    var post = this.post;
-    var fields = _.filter(_.keys(schema), function (fieldName) {
-      var field = schema[fieldName];
-      return Users.can.editField(Meteor.user(), field, post);
-    });
-    return fields;
+    return Posts.simpleSchema().getEditableFields(Meteor.user());
   }
 });
 

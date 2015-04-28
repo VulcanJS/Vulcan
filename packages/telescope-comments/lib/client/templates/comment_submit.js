@@ -1,11 +1,6 @@
 Template.comment_submit.helpers({
   commentFields: function () {
-    var schema = Comments.simpleSchema()._schema;
-    var fields = _.filter(_.keys(schema), function (fieldName) {
-      var field = schema[fieldName];
-      return Users.can.submitField(Meteor.user(), field);
-    });
-    return fields;
+    return Comments.simpleSchema().getEditableFields(Meteor.user());
   },
   reason: function () {
     return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');

@@ -4,7 +4,7 @@ Posts.registerField(
     propertySchema: {
       type: [String],
       optional: true,
-      editableBy: ["owner", "admin"],
+      editableBy: ["member", "admin"],
       autoform: {
         noselect: true,
         options: function () {

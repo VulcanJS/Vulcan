@@ -24,7 +24,7 @@ Telescope.schemas.userData = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
-    editableBy: ["owner", "admin"]
+    editableBy: ["member", "admin"]
   },
   commentCount: {
     type: Number,
@@ -34,7 +34,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     regEx: /^[a-zA-Z-]{2,25}$/,
     optional: true,
-    editableBy: ["owner", "admin"]
+    editableBy: ["member", "admin"]
   },
   downvotedComments: {
     type: [Telescope.schemas.votes],
@@ -48,7 +48,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     regEx: /^[a-zA-Z]{2,25}$/,
     optional: true,
-    editableBy: ["owner", "admin"]
+    editableBy: ["member", "admin"]
   },
   emailHash: {
     type: String,
@@ -85,7 +85,7 @@ Telescope.schemas.userData = new SimpleSchema({
   twitterUsername: {
     type: String,
     optional: true,
-    editableBy: ["owner", "admin"]
+    editableBy: ["member", "admin"]
   },
   upvotedComments: {
     type: [Telescope.schemas.votes],
@@ -99,7 +99,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     optional: true,
-    editableBy: ["owner", "admin"]
+    editableBy: ["member", "admin"]
   }
 });
 
@@ -156,24 +156,11 @@ Telescope.schemas.users.internationalize();
  */
 Meteor.users.attachSchema(Telescope.schemas.users);
 
-
 /**
  * Users collection permissions
  */
-Users.deny({
-  update: function(userId, post, fieldNames) {
-    if(Users.is.adminById(userId))
-      return false;
-    // deny the update if it contains something other than the profile field
-    return (_.without(fieldNames, 'profile', 'username', 'slug').length > 0);
-  }
-});
 
 Users.allow({
-  update: function(userId, doc){
-    return Users.is.adminById(userId) || userId == doc._id;
-  },
-  remove: function(userId, doc){
-    return Users.is.adminById(userId) || userId == doc._id;
-  }
+  update: _.partial(Telescope.allowCheck, Meteor.users),
+  remove: _.partial(Telescope.allowCheck, Meteor.users)
 });

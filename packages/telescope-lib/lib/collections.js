@@ -27,7 +27,46 @@ Meteor.Collection.prototype.removeField = function (fieldName) {
 }
 
 /**
+ * Check if an operation is allowed
+ * @param {Object} collection – the collection to which the document belongs
+ * @param {String} userId – the userId of the user performing the operation
+ * @param {Object} document – the document being modified
+ * @param {[String]} fieldNames – the names of the fields being modified
+ * @param {Object} modifier – the modifier
+ */
+Telescope.allowCheck = function (collection, userId, document, fieldNames, modifier) {
+
+  var schema = collection.simpleSchema();
+  var user = Meteor.users.findOne(userId);
+  var allowedFields = schema.getEditableFields(user);
+
+  // allow update only if:
+  // 1. user has rights to edit the document
+  // 2. there is no fields in fieldNames that are not also in allowedFields
+  return Users.can.edit(userId, document) && _.difference(fieldNames, allowedFields).length == 0;
+
+}
+
+// Note: using the prototype doesn't work in allow/deny for some reason
+Meteor.Collection.prototype.allowCheck = function (userId, document, fieldNames, modifier) {
+  Telescope.allowCheck(this, userId, document, fieldNames, modifier);
+}
+
+/**
  * Global schemas object. Note: not reactive, won't be updated after initialization
  * @namespace Telescope.schemas
  */
 Telescope.schemas = {};
+
+/**
+ * Get a list of all fields editable by a specific user for a given schema
+ * @param {Object} user – the user for which to check field permissions
+ */
+SimpleSchema.prototype.getEditableFields = function (user) {
+  var schema = this._schema;
+  var fields = _.filter(_.keys(schema), function (fieldName) {
+    var field = schema[fieldName];
+    return Users.can.editField(user, field);
+  });
+  return fields;
+}
