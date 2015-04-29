@@ -12,6 +12,9 @@ PostsSingledayController = RouteController.extend({
   data: function() {
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
     Session.set('currentDate', currentDate);
+    return {
+      date: currentDate
+    }
   },
 
   getTitle: function () {

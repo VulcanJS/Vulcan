@@ -4,7 +4,7 @@ Posts.controllers = {};
 
 Posts.controllers.list = RouteController.extend({
 
-  template: 'posts_list',
+  template: 'postsListController',
 
   onBeforeAction: function () {
     var showViewsNav = (typeof this.showViewsNav === 'undefined') ? true : this.showViewsNav;
@@ -15,61 +15,28 @@ Posts.controllers.list = RouteController.extend({
     this.next();
   },
 
-  subscriptions: function () {
-    // take the first segment of the path to get the view, unless it's '/' in which case the view default to 'top'
-    // note: most of the time this.params.slug will be empty
-    this._terms = {
+  data: function () {
+
+    var terms = {
       view: this.view,
       limit: this.params.limit || Settings.get('postsPerPage', 10),
       category: this.params.slug
     };
 
     if(Meteor.isClient) {
-      this._terms.query = Session.get("searchQuery");
+      terms.query = Session.get("searchQuery");
     }
 
-    this.postsListSub = coreSubscriptions.subscribe('postsList', this._terms);
-    this.postsListUsersSub = coreSubscriptions.subscribe('postsListUsers', this._terms);
-  },
-
-  data: function () {
-
-    if(Meteor.isClient) {
-      this._terms.query = Session.get("searchQuery");
-    }
-
-    var parameters = Posts.getSubParams(this._terms),
-      postsCount = Posts.find(parameters.find, parameters.options).count();
-
-    parameters.find.createdAt = { $lte: Session.get('listPopulatedAt') };
-    var posts = Posts.find(parameters.find, parameters.options);
-
-    // Incoming posts
-    parameters.find.createdAt = { $gt: Session.get('listPopulatedAt') };
-    var postsIncoming = Posts.find(parameters.find, parameters.options);
-
-    Session.set('postsLimit', this._terms.limit);
-
+    console.log('-----------------\nrouter running')
+    console.log(terms)
+    // note: the post list controller template will handle all subscriptions, so we just need to pass in the terms
     return {
-      title: this.getTitle(),
-      incoming: postsIncoming,
-      postsCursor: posts,
-      postsCount: postsCount,
-      postsReady: this.postsListSub.ready(),
-      hasMorePosts: this._terms.limit == postsCount,
-      loadMoreHandler: function () {
-
-        var count = parseInt(Session.get('postsLimit')) + parseInt(Settings.get('postsPerPage', 10));
-        var categorySegment = Session.get('categorySlug') ? Session.get('categorySlug') + '/' : '';
-
-        // TODO: use Router.path here?
-        Router.go('/' + Session.get('view') + '/' + categorySegment + count);
-      }
-    };
+      terms: terms
+    }
   },
 
   getTitle: function () {
-    return i18n.t(this.view);
+    return i18n.t("this.view");
   },
 
   getDescription: function () {
@@ -78,10 +45,6 @@ Posts.controllers.list = RouteController.extend({
     } else {
       return i18n.t(_.findWhere(Telescope.menus.get("viewsMenu"), {label: this.view}).description);
     }
-  },
-
-  onAfterAction: function() {
-    Session.set('view', this.view);
   },
 
   fastRender: true
