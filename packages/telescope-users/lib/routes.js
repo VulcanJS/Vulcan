@@ -11,12 +11,14 @@ Users.controllers.page = RouteController.extend({
   },
 
   getUser: function () {
-    return Meteor.users.findOne({slug: this.params._idOrSlug});
+    return Meteor.users.findOne({"telescope.slug": this.params._idOrSlug});
   },
 
   data: function() {
+    
     var findById = Meteor.users.findOne(this.params._idOrSlug);
-    var findBySlug = Meteor.users.findOne({slug: this.params._idOrSlug});
+    var findBySlug = Meteor.users.findOne({"telescope.slug": this.params._idOrSlug});
+
     if (typeof findById !== 'undefined') {
       // redirect to slug-based URL
       Router.go(Users.getProfileUrl(findById), {replaceState: true});
@@ -25,6 +27,7 @@ Users.controllers.page = RouteController.extend({
         user: (typeof findById == 'undefined') ? findBySlug : findById
       };
     }
+
   },
 
   getTitle: function () {

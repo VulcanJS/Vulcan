@@ -12,7 +12,6 @@ Template.singleDay.created = function () {
   // initialize the reactive variables
   instance.postsLoaded = new ReactiveVar(0);
   instance.postsLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
-  instance.postsReady = new ReactiveVar(false);
 
   instance.getTerms = function () {
     // if instance has a set date use this, else depend on Session variable
@@ -45,21 +44,17 @@ Template.singleDay.created = function () {
     // console.log("Asking for " + terms.limit + " posts…")
 
     // subscribe
-    var postsSubscription = Meteor.subscribe('postsList', terms);
-    var usersSubscription = Meteor.subscribe('postsListUsers', terms);
+    var postsSubscription = instance.subscribe('postsList', terms);
+    var usersSubscription = instance.subscribe('postsListUsers', terms);
 
     // if subscriptions are ready, set limit to newLimit
-    if (postsSubscription.ready() && usersSubscription.ready()) {
+    if (instance.subscriptionsReady()) {
 
       // console.log("> Received "+terms.limit+" posts. \n\n")
       instance.postsLoaded.set(terms.limit);
-      instance.postsReady.set(true);
 
     } else {
-
-      instance.postsReady.set(false);
       // console.log("> Subscription is not ready yet. \n\n");
-
     }
   });
 
@@ -89,7 +84,7 @@ Template.singleDay.helpers({
       postsCursor: postsCursor,
 
       // posts subscription readiness, used to show spinner
-      postsReady: instance.postsReady.get(),
+      postsReady: instance.subscriptionsReady(),
 
       // whether to show the load more button or not
       hasMorePosts: postsCursor.count() >= instance.postsLimit.get(),
@@ -109,7 +104,6 @@ Template.singleDay.helpers({
       controllerInstance: instance
 
     };
-
     return context;
   }
 });

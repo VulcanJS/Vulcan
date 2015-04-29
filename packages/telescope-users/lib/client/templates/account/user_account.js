@@ -3,21 +3,7 @@ Template.userAccount.helpers({
     return Meteor.user();
   },
   userFields: function () {
-    var userDataSchema = Telescope.schemas.userData._schema;
-    var user = Meteor.user();
-
-    // for easier manipulation, transform schema into array of objects, each with fieldName property
-    userDataSchema = _.map(userDataSchema, function (value, key) {
-      var field = value;
-      field.fieldName = "telescope." + key;
-      return field;
-    });
-
-    // filter out uneditable fields and only keep "fieldName"
-    var fields = _.pluck(_.filter(userDataSchema, function(field){
-        return Users.can.editField(user, field, user);
-    }), "fieldName");
-
+    var fields = Meteor.users.simpleSchema().getEditableFields(Meteor.user());
     return fields;
   },
   profileIncomplete : function() {
