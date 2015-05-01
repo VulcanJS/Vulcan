@@ -15,13 +15,13 @@ Template.posts_list.helpers({
   },
   postsCursor : function () {
     if (this.postsCursor) { // not sure why this should ever be undefined, but it can apparently
-      var posts = this.postsCursor.map(function (post, index, cursor) {
+      var posts = this.postsCursor.map(function (post, index) {
         post.rank = index;
         return post;
       });
       return posts;
     } else {
-      console.log('postsCursor not defined')
+      console.log('postsCursor not defined');
     }
   }
 });
@@ -29,7 +29,7 @@ Template.posts_list.helpers({
 // ----------------------------------- Incoming -----------------------------------//
 
 Template.postsListIncoming.events({
-  'click .show-new': function(e, instance) {
+  'click .show-new': function() {
     Session.set('listPopulatedAt', new Date());
   }
 });
@@ -46,7 +46,7 @@ Template.postsLoadMore.helpers({
 });
 
 Template.postsLoadMore.events({
-  'click .more-button': function (event, instance) {
+  'click .more-button': function (event) {
     event.preventDefault();
     if (this.controllerInstance) {
       // controller is a template

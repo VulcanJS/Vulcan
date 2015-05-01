@@ -3,7 +3,7 @@
 // -------------------------------------- Submit Comment ------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-submitComment = function (comment) {
+function submitComment (comment) {
 
   var userId = comment.userId; // at this stage, a userId is expected
 
@@ -28,12 +28,12 @@ submitComment = function (comment) {
   comment = _.extend(defaultProperties, comment);
 
   // ------------------------------ Callbacks ------------------------------ //
-  
+
   // run all post submit server callbacks on comment object successively
   comment = Telescope.callbacks.run("commentSubmit", comment);
 
   // -------------------------------- Insert -------------------------------- //
-  
+
   comment._id = Comments.insert(comment);
 
   // --------------------- Server-side Async Callbacks --------------------- //
@@ -98,7 +98,7 @@ Meteor.methods({
 
     // if no userId has been set, default to current user id
     if (!comment.userId) {
-      comment.userId = user._id
+      comment.userId = user._id;
     }
 
     return submitComment(comment);
@@ -107,8 +107,7 @@ Meteor.methods({
   editComment: function (modifier, commentId) {
 
     var user = Meteor.user(),
-        hasAdminRights = Users.is.admin(user),
-        comment = Comments.findOne(commentId), 
+        comment = Comments.findOne(commentId),
         schema = Comments.simpleSchema()._schema;
 
     // ------------------------------ Checks ------------------------------ //
@@ -177,9 +176,9 @@ Meteor.methods({
       }});
 
     }else{
-      
+
       Messages.flash("You don't have permission to delete this comment.", "error");
-    
+
     }
   }
 });

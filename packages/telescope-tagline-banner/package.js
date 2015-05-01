@@ -14,20 +14,20 @@ Package.onUse(function (api) {
 
   // ---------------------------------- 2. Files to include ----------------------------------
 
-  api.add_files([
+  api.addFiles([
     'lib/tagline.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/tagline_banner.html',
     'lib/client/templates/tagline_banner.js',
     'lib/client/stylesheets/tagline_banner.scss'
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/en.i18n.json"
   ], ["client", "server"]);
 

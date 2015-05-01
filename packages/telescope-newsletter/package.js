@@ -31,18 +31,18 @@ Package.onUse(function (api) {
     'cmather:handlebars-server@0.2.0'
   ], ['server']);
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n',
     'lib/newsletter.js'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/newsletter_banner.html',
     'lib/client/templates/newsletter_banner.js',
     'lib/client/stylesheets/newsletter_banner.scss'
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/campaign.js',
     'lib/server/cron.js',
     'lib/server/mailchimp.js',
@@ -52,7 +52,7 @@ Package.onUse(function (api) {
     'lib/server/templates/emailPostItem.handlebars'
   ], ['server']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/de.i18n.json",
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",

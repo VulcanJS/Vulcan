@@ -18,7 +18,7 @@ Package.onUse(function (api) {
   // automatic (let the package specify where it's needed)
 
   api.use(['telescope:core@0.1.0']);
-  
+
   // client
 
   api.use([
@@ -38,33 +38,33 @@ Package.onUse(function (api) {
 
   // i18n config (must come first)
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
 
-  api.add_files([
+  api.addFiles([
     'lib/invites.js'
   ], ['client', 'server']);
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/user_invites.html',
     'lib/client/templates/user_invites.js'
   ], ['client']);
 
   // server
 
-  api.add_files([
+  api.addFiles([
     'lib/server/invites.js',
     'lib/server/publications.js'
   ], ['server']);
 
   // i18n languages (must come last)
 
-  api.add_files([
+  api.addFiles([
     'i18n/de.i18n.json',
     'i18n/en.i18n.json',
     'i18n/es.i18n.json',

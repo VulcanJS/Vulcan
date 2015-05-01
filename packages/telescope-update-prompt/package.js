@@ -11,14 +11,14 @@ Package.onUse(function (api) {
 
   api.use(['telescope:core@0.1.0']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/update.js',
     'lib/client/templates/update_banner.html',
     'lib/client/templates/update_banner.js',
     'lib/client/templates/update_banner.css'
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/phone_home.js'
   ], ['server']);
 

@@ -39,7 +39,7 @@ var scrollUp = function(){
 
 AutoForm.hooks({
   inviteForm: {
-    onSuccess: function(operation, result, template) {
+    onSuccess: function(operation, result) {
       Messages.clearSeen();
 
       if(result && result.newUser){
@@ -50,7 +50,7 @@ AutoForm.hooks({
       scrollUp();
     },
 
-    onError: function(operation, error, template) {
+    onError: function(operation, error) {
       Messages.clearSeen();
 
       if(error && error.reason){

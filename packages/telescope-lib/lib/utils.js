@@ -9,7 +9,7 @@ Telescope.utils = {};
  */
 Telescope.utils.getSiteUrl = function() {
   return Settings.get('siteUrl', Meteor.absoluteUrl());
-}
+};
 
 /**
  * Convert a camelCase string to dash-separated string
@@ -17,7 +17,7 @@ Telescope.utils.getSiteUrl = function() {
  */
 Telescope.utils.camelToDash = function(str) {
   return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
-}
+};
 
 /**
  * Convert a dash separated string to camelCase.
@@ -25,7 +25,7 @@ Telescope.utils.camelToDash = function(str) {
  */
 Telescope.utils.dashToCamel = function(str) {
   return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
-}
+};
 
 /**
  * Convert a string to camelCase and remove spaces.
@@ -33,7 +33,7 @@ Telescope.utils.dashToCamel = function(str) {
  */
 Telescope.utils.camelCaseify = function(str) {
   return this.dashToCamel(str.replace(' ', '-'));
-}
+};
 
 /**
  * Trim a sentence to a specified amount of words and append an ellipsis.
@@ -41,7 +41,7 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Telescope.utils.trimWords = function(s, numWords) {
-  expString = s.split(/\s+/,numWords);
+  var expString = s.split(/\s+/,numWords);
   if(expString.length >= numWords)
     return expString.join(" ")+"…";
   return s;
@@ -53,7 +53,7 @@ Telescope.utils.trimWords = function(s, numWords) {
  */
 Telescope.utils.capitalise = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 
 Telescope.utils.getCurrentTemplate = function() {
   var template = Router.current().lookupTemplate();
@@ -177,7 +177,7 @@ Telescope.utils.sanitize = function(s) {
   // console.log('// before sanitization:')
   // console.log(s)
   if(Meteor.isServer){
-    var s = sanitizeHtml(s, {
+    s = sanitizeHtml(s, {
       allowedTags: [
         'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul',
         'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike',
@@ -202,8 +202,8 @@ Telescope.utils.stripMarkdown = function(s) {
 
 // http://stackoverflow.com/questions/2631001/javascript-test-for-existence-of-nested-object-key
 Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
-  var args = Array.prototype.slice.call(arguments),
-      obj = args.shift();
+  var args = Array.prototype.slice.call(arguments);
+  obj = args.shift();
 
   for (var i = 0; i < args.length; i++) {
     if (!obj.hasOwnProperty(args[i])) {

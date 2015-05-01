@@ -22,7 +22,7 @@ var commentEmail = function (userToNotify) {
     notificationEmail = buildEmailNotification(notification);
     sendEmail(Users.getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
   }, 1);
-}
+};
 
 var getCommenterProfileUrl = function (comment) {
   var user = Meteor.users.findOne(comment.userId);
@@ -31,7 +31,7 @@ var getCommenterProfileUrl = function (comment) {
   } else {
     return Users.getProfileUrlBySlugOrId(comment.userId);
   }
-}
+};
 
 var getAuthor = function (comment) {
   var user = Meteor.users.findOne(comment.userId);
@@ -40,7 +40,7 @@ var getAuthor = function (comment) {
   } else {
     return comment.author;
   }
-}
+};
 
 // ------------------------------------------------------------------------------------------- //
 // -----------------------------------------  Posts ------------------------------------------ //
@@ -86,7 +86,7 @@ Herald.addCourier('postApproved', {
     }
   },
   message: {
-    default: function (user) {
+    default: function () {
       return Blaze.toHTML(Blaze.With(this, function () {
         return Template.notificationPostApproved;
       }));
@@ -135,7 +135,7 @@ Herald.addCourier('newComment', {
     }
   },
   message: {
-    default: function (user) {
+    default: function () {
       return Blaze.toHTML(Blaze.With(this, function () {
         return Template.notificationNewComment;
       }));
@@ -152,7 +152,7 @@ Herald.addCourier('newReply', {
     }
   },
   message: {
-    default: function (user) {
+    default: function () {
       return Blaze.toHTML(Blaze.With(this, function () {
         return Template.notificationNewReply;
       }));
@@ -169,7 +169,7 @@ Herald.addCourier('newCommentSubscribed', {
     }
   },
   message: {
-    default: function (user) {
+    default: function () {
       return Blaze.toHTML(Blaze.With(this, function () {
         return Template.notificationNewReply;
       }));

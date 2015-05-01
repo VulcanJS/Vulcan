@@ -5,7 +5,7 @@ Meteor.startup(function () {
       var daysArray = [];
       // var days = this.days;
       var days = Session.get('postsDays');
-      for (i = 0; i < days; i++) {
+      for (var i = 0; i < days; i++) {
         daysArray.push({
           date: moment().subtract(i, 'days').startOf('day').toDate(),
           index: i

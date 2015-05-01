@@ -70,7 +70,7 @@ Router._filters = {
 
   canViewPendingPosts: function () {
     var post = this.data();
-    if (!!post && post.status == Posts.config.STATUS_PENDING && !Users.can.viewPendingPosts()) {
+    if (!!post && post.status === Posts.config.STATUS_PENDING && !Users.can.viewPendingPosts()) {
       this.render('no_rights');
     } else {
       this.next();
@@ -79,7 +79,7 @@ Router._filters = {
 
   canViewRejectedPosts: function () {
     var post = this.data();
-    if (!!post && post.status == Posts.config.STATUS_REJECTED && !Users.can.viewRejectedPosts()) {
+    if (!!post && post.status === Posts.config.STATUS_REJECTED && !Users.can.viewRejectedPosts()) {
       this.render('no_rights');
     } else {
       this.next();
@@ -162,7 +162,7 @@ Router._filters = {
 
 };
 
-filters = Router._filters;
+var filters = Router._filters;
 coreSubscriptions = new SubsManager({
   // cache recent 50 subscriptions
   cacheLimit: 50,

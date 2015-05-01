@@ -48,4 +48,4 @@ Template.singleDayNav.helpers({
     var today = moment(new Date()).startOf('day');
     return Users.is.admin(Meteor.user()) || (today.diff(currentDate, 'days') > 0);
   }
-})
+});

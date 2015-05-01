@@ -46,7 +46,7 @@ Posts.submit = function (post) {
 
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
-  if (post.status == Posts.config.STATUS_APPROVED && !post.postedAt)
+  if (post.status === Posts.config.STATUS_APPROVED && !post.postedAt)
     post.postedAt = new Date();
 
   // clean up post title
@@ -66,7 +66,7 @@ Posts.submit = function (post) {
   Telescope.callbacks.run("postSubmitAsync", post, true);
 
   return post;
-}
+};
 
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------- Methods ----------------------------------------- //
@@ -142,7 +142,7 @@ Meteor.methods({
 
     // if no userId has been set, default to current user id
     if (!post.userId) {
-      post.userId = user._id
+      post.userId = user._id;
     }
 
     return Posts.submit(post);
@@ -151,7 +151,6 @@ Meteor.methods({
   editPost: function (modifier, postId) {
 
     var user = Meteor.user(),
-        hasAdminRights = Users.is.admin(user),
         post = Posts.findOne(postId),
         schema = Posts.simpleSchema()._schema;
 
@@ -213,7 +212,7 @@ Meteor.methods({
       if (!post.postedAt)
         set.postedAt = new Date();
 
-      var result = Posts.update(post._id, {$set: set}, {validate: false});
+      Posts.update(post._id, {$set: set}, {validate: false});
 
       // --------------------- Server-Side Async Callbacks --------------------- //
       Telescope.callbacks.run("postApprovedAsync", post, true);
@@ -237,7 +236,7 @@ Meteor.methods({
     // only let users increment a post's view counter once per session
     var view = {_id: postId, userId: this.userId, sessionId: sessionId};
 
-    if(_.where(postViews, view).length == 0){
+    if(_.where(postViews, view).length === 0){
       postViews.push(view);
       Posts.update(postId, { $inc: { viewCount: 1 }});
     }

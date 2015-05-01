@@ -12,7 +12,7 @@ Posts.registerField(
             return {
               value: category._id,
               label: category.name
-            }
+            };
           });
           return categories;
         }

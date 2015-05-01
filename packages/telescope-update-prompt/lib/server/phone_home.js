@@ -10,7 +10,7 @@ Meteor.methods({
       users: Meteor.users.find().count(),
       posts: Posts.find().count(),
       comments: Comments.find().count()
-    }
+    };
 
     if(Meteor.user() && Users.is.admin(Meteor.user())){
 
@@ -18,7 +18,7 @@ Meteor.methods({
       try {
         var result = HTTP.get(url, {
           params: params
-        })
+        });
         return result;
       } catch (e) {
         // Got a network error, time-out or HTTP error in the 400 or 500 range.
@@ -26,4 +26,4 @@ Meteor.methods({
       }
     }
   }
-})
+});

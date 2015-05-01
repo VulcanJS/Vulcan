@@ -1,7 +1,7 @@
 Meteor.startup(function () {
   Template.feedItem.helpers({
     formId: function () {
-      return 'updateFeed-'+ this._id
+      return 'updateFeed-'+ this._id;
     }
   });
 

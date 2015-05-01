@@ -10,12 +10,12 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use(['telescope:core@0.1.0']);
-  
-  api.add_files([
+
+  api.addFiles([
     'lib/share.js'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/post_share.html',
     'lib/client/post_share.js',
     'lib/client/post_share.scss'

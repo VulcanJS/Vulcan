@@ -45,7 +45,7 @@ Users.pubsub.publicProperties = { // true means exposed
  */
 Users.pubsub.hiddenProperties = {
   'services.password.bcrypt': false
-}
+};
 
 /**
  * Minimum required properties to display avatars
@@ -64,7 +64,7 @@ Users.pubsub.avatarProperties = {
   'services.facebook.id': true,
   'services.twitter.screenName': true,
   'services.github.screenName': true, // Github is not really used, but there are some mentions to it in the code
-}
+};
 
 
 /**
@@ -102,6 +102,7 @@ Users.pubsub.getSubParams = function(filterBy, sortBy, limit) {
       break;
     case 'commentCount':
       sort = { commentCount: -1 };
+      break;
     case 'invitedCount':
       sort = { invitedCount: -1 };
   }

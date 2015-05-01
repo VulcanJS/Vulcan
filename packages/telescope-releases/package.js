@@ -17,19 +17,19 @@ Package.onUse(function (api) {
 
   // i18n config (must come first)
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
 
-  api.add_files([
+  api.addFiles([
     'lib/releases.js',
   ], ['client', 'server']);
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/current_release.html',
     'lib/client/templates/current_release.js',
     'lib/client/scss/releases.scss'
@@ -37,7 +37,7 @@ Package.onUse(function (api) {
 
   // server
 
-  api.add_files([
+  api.addFiles([
     'lib/server/publications.js',
     'lib/server/import_releases.js'
   ], ['server']);
@@ -55,7 +55,7 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  api.add_files([
+  api.addFiles([
     'i18n/en.i18n.json'
   ], ['client', 'server']);
 

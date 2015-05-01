@@ -31,7 +31,7 @@ Meteor.startup(function() {
             page: "/category/" + category.slug,
             lastmod: lastMod,
             changefreq: "hourly"
-          })
+          });
         }
       });
     }
@@ -54,7 +54,7 @@ Meteor.startup(function() {
     });
 
     paths = paths.concat(_.values(postPages));
-    paths = _.reject(paths, function(p) { return p.lastmod === null });
+    paths = _.reject(paths, function(p) { return p.lastmod === null; });
     return paths;
   });
 });

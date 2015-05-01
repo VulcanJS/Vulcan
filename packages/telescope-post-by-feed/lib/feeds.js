@@ -60,7 +60,7 @@ var feedIdProperty = {
       omit: true
     }
   }
-}
+};
 Posts.registerField(feedIdProperty);
 
 // the RSS ID of the post in its original feed
@@ -74,7 +74,7 @@ var feedItemIdProperty = {
       omit: true
     }
   }
-}
+};
 Posts.registerField(feedItemIdProperty);
 
 Meteor.startup(function () {
@@ -86,9 +86,9 @@ Meteor.startup(function () {
 
   Meteor.methods({
     insertFeed: function(feedUrl){
-      check(feedUrl, feedSchema);
+      check(feedUrl, Telescope.schemas.feeds);
 
-      if (Feeds.findOne({url: feedSchema.url}))
+      if (Feeds.findOne({url: feedUrl.url}))
         throw new Meteor.Error('already-exists', i18n.t('feed_already_exists'));
 
       if (!Meteor.user() || !Users.is.admin(Meteor.user()))

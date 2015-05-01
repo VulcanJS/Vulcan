@@ -43,7 +43,7 @@ Meteor.startup(function() {
 Telescope.viewParameters.search = function (terms, baseParameters) {
   // if query is empty, just return parameters that will result in an empty collection
   if(typeof terms.query === 'undefined' || !terms.query)
-    return {find:{_id: 0}}
+    return {find:{_id: 0}};
 
   var parameters = Telescope.utils.deepExtend(true, baseParameters, {
     find: {
@@ -55,4 +55,4 @@ Telescope.viewParameters.search = function (terms, baseParameters) {
     }
   });
   return parameters;
-}
+};

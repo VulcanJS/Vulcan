@@ -18,7 +18,7 @@ Users.getUserName = function (user) {
     if (user.username)
       return user.username;
     if (user && user.services && user.services.twitter && user.services.twitter.screenName)
-      return user.services.twitter.screenName
+      return user.services.twitter.screenName;
   }
   catch (error){
     console.log(error);
@@ -91,7 +91,7 @@ Users.getEmailHash = function (user) {
 };
 
 Users.getAvatarUrl = function (user) {
-  console.warn('FUNCTION getAvatarUrl() IS DEPRECATED -- package bengott:avatar is used instead.')
+  console.warn('FUNCTION getAvatarUrl() IS DEPRECATED -- package bengott:avatar is used instead.');
   return Avatar.getUrl(user);
 };
 
@@ -132,10 +132,10 @@ Users.numberOfItemsInPast24Hours = function (user, collection) {
 };
 
 Users.getUserSetting = function (setting, defaultValue, user) {
-  var user = (typeof user == 'undefined') ? Meteor.user() : user;
-  var defaultValue = (typeof defaultValue == "undefined") ? null: defaultValue;
+  user = user || Meteor.user();
+  defaultValue = defaultValue || null;
   var settingValue = this.getProperty(user.telescope, setting);
-  return (settingValue == null) ? defaultValue : settingValue;
+  return (settingValue === null) ? defaultValue : settingValue;
 };
 
 Users.setUserSetting = function (setting, value, userArgument) {
@@ -157,7 +157,7 @@ Users.setUserSetting = function (setting, value, userArgument) {
   var field = {};
   field['telescope.'+setting] = value;
   var options = {$set: field};
-  var result = Meteor.users.update(find, options, {validate: false});
+  Meteor.users.update(find, options, {validate: false});
 };
 
 Users.getProperty = function (object, property) {
@@ -166,7 +166,7 @@ Users.getProperty = function (object, property) {
   if(array.length > 1){
     var parent = array.shift();
     // if our property is not at this level, call function again one level deeper if we can go deeper, else return null
-    return (typeof object[parent] == "undefined") ? null : this.getProperty(object[parent], array.join('.'));
+    return (typeof object[parent] === "undefined") ? null : this.getProperty(object[parent], array.join('.'));
   }else{
     // else return property
     return object[array[0]];
@@ -208,6 +208,7 @@ Users.getSubParams = function(filterBy, sortBy, limit) {
       break;
     case 'commentCount':
       sort = { commentCount: -1 };
+      break;
     case 'invitedCount':
       sort = { invitedCount: -1 };
   }

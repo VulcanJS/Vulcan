@@ -12,8 +12,8 @@ Meteor.startup(function() {
   var seoProperties = {
     meta: {},
     og: {}
-  }
-  
+  };
+
   var title = Settings.get("title", "Telescope");
   if (!!Settings.get("tagline")) {
     title += ": "+Settings.get("tagline");

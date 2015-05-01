@@ -17,7 +17,7 @@ compareVersions = function (v1, v2) { // return true if v2 is newer than v1
     return false; // continue comparison as long as both values are equal
   });
   return isGreater;
-}
+};
 
 Meteor.startup(function () {
   Session.set('updateVersion', null);
@@ -28,7 +28,6 @@ Meteor.startup(function () {
     if(result){
       var currentVersion = Telescope.VERSION;
       var newVersion = result.content;
-      var message = "";
       if (compareVersions(currentVersion, newVersion)){
         Session.set('updateVersion', newVersion);
       }
