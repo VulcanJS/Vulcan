@@ -14,8 +14,15 @@ Meteor.startup(function () {
       return daysArray;
     },
     context: function () {
-      var context = this;
-      context.showDateNav = false;
+      var context = {
+        terms: {
+          view: "singleday",
+          date: this.date,
+          after: moment(this.date).startOf('day').toDate(),
+          before: moment(this.date).endOf('day').toDate(),
+          showDateNav: false
+        }
+      };
       return context;
     },
     loadMoreDaysUrl: function () {
