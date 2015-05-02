@@ -20,11 +20,11 @@ Package.onUse(function (api) {
   ]);
 
   // do not use for now since tap:i18n doesn't support server-side templates yet
-  // api.add_files([
+  // api.addFiles([
   //   'package-tap.i18n'
   // ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/email.js',
     'lib/server/routes.js',
     'lib/server/templates/emailAccountApproved.handlebars',
@@ -39,7 +39,7 @@ Package.onUse(function (api) {
     'lib/server/templates/emailWrapper.handlebars',
   ], ['server']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/de.i18n.json",
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",

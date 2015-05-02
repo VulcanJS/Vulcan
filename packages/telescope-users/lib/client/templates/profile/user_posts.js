@@ -29,7 +29,7 @@ Template.userPosts.created = function () {
 
     // until subscription is ready, overwrite limit to restrict number of posts to previousLimit
     if (!instance.subscription.get().ready())
-      parameters.options.limit = terms.previousLimit
+      parameters.options.limit = terms.previousLimit;
 
     // update the instance's "posts" cursor
     instance.posts.set(Posts.find(parameters.find, parameters.options));
@@ -56,6 +56,6 @@ Template.userPosts.events({
     // previousLimit starts at 0, so by increasing both values by 5 we keep them 5 apart
     terms.previousLimit += 5;
     terms.limit += 5;
-    Template.instance().terms.set(terms)
+    Template.instance().terms.set(terms);
   }
 });

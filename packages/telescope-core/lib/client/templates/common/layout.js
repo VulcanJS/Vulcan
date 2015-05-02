@@ -15,7 +15,8 @@ Template.layout.created = function(){
 };
 
 Template.layout.rendered = function(){
-  if(currentScroll=Session.get('currentScroll')){
+  var currentScroll = Session.get('currentScroll');
+  if(currentScroll){
     $('body').scrollTop(currentScroll);
     Session.set('currentScroll', null);
   }

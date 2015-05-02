@@ -10,7 +10,7 @@ getEmailTemplate = function (template) {
     console.log('Cannot find template '+template+', defaulting to '+template);
     return Handlebars.templates[template];
   }
-}
+};
 
 buildEmailTemplate = function (htmlContent) {
 
@@ -27,16 +27,16 @@ buildEmailTemplate = function (htmlContent) {
     logoUrl: Settings.get('logoUrl'),
     logoHeight: Settings.get('logoHeight'),
     logoWidth: Settings.get('logoWidth')
-  }
+  };
 
-  var emailHTML = Handlebars.templates['emailWrapper'](emailProperties);
+  var emailHTML = Handlebars.templates.emailWrapper(emailProperties);
 
   var inlinedHTML = juice(emailHTML);
 
   var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
 
   return doctype+inlinedHTML;
-}
+};
 
 sendEmail = function(to, subject, html, text){
 
@@ -45,9 +45,9 @@ sendEmail = function(to, subject, html, text){
 
   var from = Settings.get('defaultEmail', 'noreply@example.com');
   var siteName = Settings.get('title', 'Telescope');
-  var subject = '['+siteName+'] '+subject;
+  subject = '['+siteName+'] '+subject;
 
-  if (typeof text == 'undefined'){
+  if (typeof text === 'undefined'){
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
     var text = htmlToText.fromString(html, {
         wordwrap: 130
@@ -67,7 +67,7 @@ sendEmail = function(to, subject, html, text){
     subject: subject,
     text: text,
     html: html
-  }
+  };
 
   Email.send(email);
 
@@ -77,7 +77,7 @@ sendEmail = function(to, subject, html, text){
 buildAndSendEmail = function (to, subject, template, properties) {
   var html = buildEmailTemplate(getEmailTemplate(template)(properties));
   return sendEmail (to, subject, html);
-}
+};
 
 Meteor.methods({
   testEmail: function () {
@@ -85,7 +85,7 @@ Meteor.methods({
       var email = buildAndSendEmail (Settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
     }
   }
-})
+});
 
 function adminUserCreationNotification (user) {
   // send notifications to admins
@@ -102,4 +102,4 @@ function adminUserCreationNotification (user) {
   });
   return user;
 }
-Telescope.callbacks.register("userCreated", adminUserCreationNotification)
+Telescope.callbacks.register("userCreated", adminUserCreationNotification);

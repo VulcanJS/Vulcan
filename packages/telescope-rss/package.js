@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use(['telescope:core@0.1.0']);
 
-  api.add_files(['lib/server/rss.js', 'lib/server/routes.js'], ['server']);
+  api.addFiles(['lib/server/rss.js', 'lib/server/routes.js'], ['server']);
 
   api.export(['serveRSS']);
 });

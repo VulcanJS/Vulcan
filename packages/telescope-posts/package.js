@@ -17,7 +17,7 @@ Package.onUse(function (api) {
     'telescope:comments@0.1.0'
   ]);
 
-  api.add_files([
+  api.addFiles([
     'lib/posts.js',
     'lib/config.js',
     'lib/helpers.js',
@@ -27,7 +27,7 @@ Package.onUse(function (api) {
     'lib/routes.js'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/after_post_item.html',
     'lib/client/templates/before_post_item.html',
     'lib/client/templates/modules/post_actions.html',
@@ -70,7 +70,7 @@ Package.onUse(function (api) {
     'lib/client/templates/postList/postsListController.js'
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/publications.js'
   ], ['server']);
 

@@ -13,13 +13,13 @@ Package.onUse(function (api) {
     'telescope:singleday@0.1.0',
   ]);
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n',
     'lib/daily.js',
     'lib/routes.js',
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/posts_daily.html',
     'lib/client/templates/after_day.html',
     'lib/client/templates/before_day.html',
@@ -27,7 +27,7 @@ Package.onUse(function (api) {
     'lib/client/stylesheets/daily.scss',
     ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/de.i18n.json",
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",

@@ -6,7 +6,7 @@ Telescope.menus.register("adminMenu", {
 
 Telescope.subscriptions.preload('pages');
 
-PageController = RouteController.extend({
+var PageController = RouteController.extend({
   currentPage: function () {
     return Pages.collection.findOne({slug: this.params.slug});
   },

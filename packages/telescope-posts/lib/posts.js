@@ -144,7 +144,7 @@ Telescope.schemas.posts = new SimpleSchema({
           return {
             value: user._id,
             label: Users.getDisplayName(user)
-          }
+          };
         });
       }
     }
@@ -181,7 +181,7 @@ Posts.before.insert(function (userId, doc) {
 /**
  * Generate HTML body from Markdown when post body is updated
  */
-Posts.before.update(function (userId, doc, fieldNames, modifier, options) {
+Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if body is being modified, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));

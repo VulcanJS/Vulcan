@@ -11,13 +11,13 @@ Package.onUse(function (api) {
 
   api.use(['telescope:core@0.1.0']);
 
-  api.add_files([
+  api.addFiles([
     'lib/scoring.js',
   ], ['client','server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/cron.js',
   ], ['server']);
 
-  
+
 });

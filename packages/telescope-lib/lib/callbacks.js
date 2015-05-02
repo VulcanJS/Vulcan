@@ -14,7 +14,7 @@ Telescope.callbacks.register = function (hook, callback) {
   }
 
   Telescope.callbacks[hook].push(callback);
-}
+};
 
 /**
  * Remove a callback from a hook
@@ -25,7 +25,7 @@ Telescope.callbacks.remove = function (hook, functionName) {
   Telescope.callbacks[hook] = _.reject(Telescope.callbacks[hook], function (callback) {
     return callback.name === functionName;
   });
-}
+};
 
 /**
  * Successively run all of a hook's callbacks on an item
@@ -35,13 +35,13 @@ Telescope.callbacks.remove = function (hook, functionName) {
  */
 Telescope.callbacks.run = function (hook, item, async) {
 
-  var async = typeof async === "undefined" ? false : async; // default to sync
+  async = async || false; // default to sync
   var callbacks = Telescope.callbacks[hook];
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
     if (async) { // run callbacks in async mode, without returning anything
-      
+
       if (Meteor.isServer) {
         // use defer to avoid holding up client
         Meteor.defer(function () {
@@ -63,4 +63,4 @@ Telescope.callbacks.run = function (hook, item, async) {
   } else { // else, just return the item unchanged
     return item;
   }
-}
+};

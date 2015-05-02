@@ -14,7 +14,7 @@ PostsSingledayController = RouteController.extend({
     Session.set('currentDate', currentDate);
     return {
       date: currentDate
-    }
+    };
   },
 
   getTitle: function () {

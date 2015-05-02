@@ -6,7 +6,7 @@ Telescope.utils.getIcon = function (iconName, iconClass) {
   var iconCode = !!icons[iconName] ? icons[iconName] : iconName;
   var iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
   return '<i class="icon fa fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
-}
+};
 
 Telescope.utils.icons = {
   open: "plus",
@@ -29,4 +29,4 @@ Telescope.utils.icons = {
   time: "clock-o",
   best: "star",
   search: "search"
-}
+};

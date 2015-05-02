@@ -7,7 +7,7 @@ var increasePostClicks = function(postId, ip){
       postId: postId,
       ip: ip
     }
-  }
+  };
 
   // make sure this IP hasn't previously clicked on this post
   var existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
@@ -16,7 +16,7 @@ var increasePostClicks = function(postId, ip){
     logEvent(clickEvent);
     Posts.update(postId, { $inc: { clickCount: 1 }});
   }
-}
+};
 
 
 Meteor.startup(function (){
@@ -56,7 +56,7 @@ Meteor.startup(function (){
         siteTitle: Settings.get('title'),
         siteUrl: Telescope.utils.getSiteUrl()
       };
-      html = Handlebars.templates['emailAccountApproved'](emailProperties);
+      var html = Handlebars.templates.emailAccountApproved(emailProperties);
       this.response.write(buildEmailTemplate(html));
       this.response.end();
     }

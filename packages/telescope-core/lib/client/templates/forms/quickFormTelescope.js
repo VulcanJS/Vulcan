@@ -4,12 +4,12 @@ var findAtts = function () {
     c = UI._parentData(n++);
   } while (c && !c.atts);
   return c && c.atts;
-}
+};
 
 var canEditField = function (field) {
   // show field only if user is admin or it's marked as editable
   return Users.is.admin(Meteor.user()) || (!!field.atts && !!field.atts.editable) || (!!field.afFieldInputAtts && !!field.afFieldInputAtts.editable)
-}
+};
 
 Template.quickForm_telescope.helpers({
   fieldsWithNoFieldset: function () {
@@ -20,12 +20,12 @@ Template.quickForm_telescope.helpers({
       return field;
     }), function (field) {
       if (field.name.indexOf('$') !== -1) // filter out fields with "$" in their name
-        return false
+        return false;
       if (field.autoform && field.autoform.omit) // filter out fields with omit = true
-        return false
+        return false;
       if (field.autoform && field.autoform.group) // filter out fields with a group
-        return false
-      return true // return remaining fields
+        return false;
+      return true; // return remaining fields
     }), "name");
 
     return fields;
@@ -35,7 +35,7 @@ Template.quickForm_telescope.helpers({
 
     // if user is not admin, exclude "admin" group from fieldsets
     if (!Users.is.admin(Meteor.user()))
-      groups = _.without(groups, 'admin')
+      groups = _.without(groups, 'admin');
 
     return groups;
   },
@@ -45,8 +45,8 @@ Template.quickForm_telescope.helpers({
   fieldsForFieldset: function () {
     var fieldset = this.toLowerCase();
     // get names of fields whose group match the current fieldset
-    var fields = _.pluck(_.filter(AutoForm.getFormSchema()._schema, function (field, key) {
-      return (field.name.indexOf('$') === -1) && field.autoform && field.autoform.group == fieldset;
+    var fields = _.pluck(_.filter(AutoForm.getFormSchema()._schema, function (field) {
+      return (field.name.indexOf('$') === -1) && field.autoform && field.autoform.group === fieldset;
     }), 'name');
 
     return fields;
@@ -88,7 +88,7 @@ Template.quickForm_telescope.helpers({
   }
 });
 
-Template["afFormGroup_telescope"].helpers({
+Template.afFormGroup_telescope.helpers({
   afFieldInputAtts: function () {
     var atts = _.clone(this.afFieldInputAtts || {});
     if ('input-col-class' in atts) {
@@ -137,7 +137,7 @@ Template["afFormGroup_telescope"].helpers({
   }
 });
 
-Template["afObjectField_telescope"].helpers({
+Template.afObjectField_telescope.helpers({
   rightColumnClass: function () {
     var atts = this.atts || {};
     return atts['input-col-class'] || "";
@@ -148,14 +148,14 @@ Template["afObjectField_telescope"].helpers({
       template: "bootstrap3",
       "class": atts["label-class"],
       "name": atts.name
-    }
+    };
   },
   showField: function () {
     return canEditField(this);
   },
 });
 
-Template["afArrayField_telescope"].helpers({
+Template.afArrayField_telescope.helpers({
   rightColumnClass: function () {
     var atts = this.atts || {};
     return atts['input-col-class'] || "";

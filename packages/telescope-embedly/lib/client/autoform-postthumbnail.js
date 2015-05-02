@@ -20,10 +20,10 @@ var fillEmbedlyData = function (instance) {
     console.log('getting embedly data for '+url);
     Meteor.call('getEmbedlyData', url, function (error, data) {
       if (error) {
-        console.log(error)
+        console.log(error);
         Messages.flash(error.message, 'error');
         $thumbnailContainer.removeClass('loading');
-        return
+        return;
       }
       if (data) {
         // set thumbnail and fill in thumbnailUrl field
@@ -41,7 +41,7 @@ var fillEmbedlyData = function (instance) {
       }
     });
   }
-}
+};
 
 Template.afPostThumbnail.created = function () {
   var instance = this;
@@ -51,7 +51,7 @@ Template.afPostThumbnail.created = function () {
     if (result)
       instance.embedlyKeyExists.set(result);
   });
-}
+};
 
 Template.afPostThumbnail.helpers({
   atts: function addFormControlAtts() {
@@ -63,7 +63,7 @@ Template.afPostThumbnail.helpers({
   style: function () {
     var thumbnailWidth = Settings.get('thumbnailWidth', 200);
     var thumbnailHeight = Settings.get('thumbnailHeight', 125);
-    return "width: "+thumbnailWidth+"px; height: "+thumbnailHeight+"px;"
+    return "width: "+thumbnailWidth+"px; height: "+thumbnailHeight+"px;";
   },
   embedlyKeyExists: function () {
     // haven't found a better way to do this yet…
@@ -76,11 +76,11 @@ Template.afPostThumbnail.rendered = function () {
   var instance = this;
   var $urlField = $('[name="url"]');
 
-  $urlField.change(function (e) {
+  $urlField.change(function () {
     fillEmbedlyData(instance);
   });
 
-}
+};
 
 Template.afPostThumbnail.events({
   'click .remove-thumbnail-link': function (e, t) {
@@ -92,4 +92,4 @@ Template.afPostThumbnail.events({
     e.preventDefault();
     fillEmbedlyData(instance);
   }
-})
+});

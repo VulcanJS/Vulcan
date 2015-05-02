@@ -7,7 +7,7 @@ Users.controllers.page = RouteController.extend({
   waitOn: function() {
     return [
       coreSubscriptions.subscribe('singleUser', this.params._idOrSlug)
-    ]
+    ];
   },
 
   getUser: function () {
@@ -15,7 +15,7 @@ Users.controllers.page = RouteController.extend({
   },
 
   data: function() {
-    
+
     var findById = Meteor.users.findOne(this.params._idOrSlug);
     var findBySlug = Meteor.users.findOne({"telescope.slug": this.params._idOrSlug});
 
@@ -24,7 +24,7 @@ Users.controllers.page = RouteController.extend({
       Router.go(Users.getProfileUrl(findById), {replaceState: true});
     } else {
       return {
-        user: (typeof findById == 'undefined') ? findBySlug : findById
+        user: findById || findBySlug
       };
     }
 
@@ -48,7 +48,7 @@ Users.controllers.edit = RouteController.extend({
   waitOn: function() {
     return [
       coreSubscriptions.subscribe('singleUser', this.params.slug)
-    ]
+    ];
   },
   data: function() {
     // if there is no slug, default to current user

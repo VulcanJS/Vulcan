@@ -1,5 +1,5 @@
 Template.loading.helpers({
   log: function () {
-    console.log('loading…')
-  }  
+    console.log('loading…');
+  }
 });

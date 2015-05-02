@@ -16,7 +16,7 @@ Template.mobile_nav.events({
     $(e.currentTarget).next().slideToggle('fast');
   },
   'click .mobile-nav a': function (e) {
-    if (e.target.className.indexOf('menu-top-level') == -1){
+    if (e.target.className.indexOf('menu-top-level') === -1){
       $('body').removeClass('mobile-nav-open');
     }
   }

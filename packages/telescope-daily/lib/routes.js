@@ -1,11 +1,4 @@
-var coreSubscriptions = new SubsManager({
-  // cache recent 50 subscriptions
-  cacheLimit: 50,
-  // expire any subscription after 30 minutes
-  expireIn: 30
-});
-
-PostsDailyController = RouteController.extend({
+var PostsDailyController = RouteController.extend({
 
   onBeforeAction: function () {
     this.render('postListTop', {to: 'postListTop'});

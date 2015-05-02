@@ -12,7 +12,7 @@ Package.onUse(function (api) {
 
   api.use(["session"], "client");
 
-  api.add_files(['i18n.js'], ['client', 'server']);
+  api.addFiles(['i18n.js'], ['client', 'server']);
 
   api.export([
     'i18n',

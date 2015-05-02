@@ -16,14 +16,14 @@ Package.onUse(function (api) {
     'telescope:users@0.1.0'
   ]);
 
-  api.add_files([
+  api.addFiles([
     'lib/comments.js',
     'lib/methods.js',
     'lib/callbacks.js',
     'lib/routes.js'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/comment_edit.html',
     'lib/client/templates/comment_edit.js',
     'lib/client/templates/comment_submit.html',
@@ -36,7 +36,7 @@ Package.onUse(function (api) {
     'lib/client/templates/comment_reply.js'
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/publications.js',
   ], ['server']);
 

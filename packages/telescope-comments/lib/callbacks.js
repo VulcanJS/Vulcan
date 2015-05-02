@@ -8,7 +8,7 @@ Comments.before.insert(function (userId, doc) {
   doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
 });
 
-Comments.before.update(function (userId, doc, fieldNames, modifier, options) {
+Comments.before.update(function (userId, doc, fieldNames, modifier) {
   // if body is being modified, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set = modifier.$set || {};
@@ -37,6 +37,6 @@ function afterCommentOperations (comment) {
   Telescope.upvoteItem(Comments, comment, commentAuthor);
 
   return comment;
-};
+}
 
 Telescope.callbacks.register("commentSubmitAsync", afterCommentOperations);

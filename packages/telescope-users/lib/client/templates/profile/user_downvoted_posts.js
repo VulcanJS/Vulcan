@@ -48,6 +48,6 @@ Template.userDownvotedPosts.events({
     e.preventDefault();
     var terms = Template.instance().terms.get();
     terms.limit += 5;
-    Template.instance().terms.set(terms)
+    Template.instance().terms.set(terms);
   }
 });

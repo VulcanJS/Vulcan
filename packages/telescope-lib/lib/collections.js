@@ -6,12 +6,12 @@ Meteor.Collection.prototype.registerField = function (field) {
 
   var collection = this;
   var fieldSchema = {};
-  
+
   fieldSchema[field.propertyName] = field.propertySchema;
 
   // add field schema to collection schema
   collection.attachSchema(fieldSchema);
-}
+};
 
 /**
  * Remove a field from a schema.
@@ -24,7 +24,7 @@ Meteor.Collection.prototype.removeField = function (fieldName) {
 
   // add field schema to collection schema
   collection.attachSchema(schema, {replace: true});
-}
+};
 
 /**
  * Check if an operation is allowed
@@ -51,12 +51,12 @@ Telescope.allowCheck = function (collection, userId, document, fieldNames, modif
   // 2. there is no fields in fieldNames that are not also in allowedFields
   return Users.can.edit(userId, document) && _.difference(fields, allowedFields).length == 0;
 
-}
+};
 
 // Note: using the prototype doesn't work in allow/deny for some reason
 Meteor.Collection.prototype.allowCheck = function (userId, document, fieldNames, modifier) {
   Telescope.allowCheck(this, userId, document, fieldNames, modifier);
-}
+};
 
 /**
  * Global schemas object. Note: not reactive, won't be updated after initialization
@@ -75,4 +75,4 @@ SimpleSchema.prototype.getEditableFields = function (user) {
     return Users.can.editField(user, field);
   });
   return fields;
-}
+};

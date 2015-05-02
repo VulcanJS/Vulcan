@@ -20,7 +20,7 @@ Meteor.startup(function () {
           Session.set('searchQuery', query.q);
         }
         if (query.q) {
-          Meteor.call('logSearch', query.q)
+          Meteor.call('logSearch', query.q);
         }
       }
       this.next();

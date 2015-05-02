@@ -42,13 +42,13 @@ Package.onUse(function (api) {
 
   // i18n config (must come first)
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
 
-  api.add_files([
+  api.addFiles([
     'lib/custom_fields.js',
     'lib/hooks.js',
     'lib/main.js',
@@ -59,7 +59,7 @@ Package.onUse(function (api) {
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/custom_template.html',
     'lib/client/templates/custom_template.js',
     'lib/client/templates/customPostTitle.html',
@@ -68,13 +68,13 @@ Package.onUse(function (api) {
 
   // server
 
-  api.add_files([
+  api.addFiles([
     'lib/server/publications.js'
   ], ['server']);
 
   // i18n languages (must come last)
 
-  api.add_files([
+  api.addFiles([
     'i18n/en.i18n.json',
   ], ['client', 'server']);
 

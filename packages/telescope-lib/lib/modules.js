@@ -9,7 +9,7 @@ Telescope.modules = {};
  * @param {number} module.order - The order of the template in the zone
  */
 Telescope.modules.register = function (zone, module) {
-  
+
   // if module zone array doesn't exist yet, initialize it
   if (typeof Telescope.modules[zone] === "undefined") {
     Telescope.modules[zone] = [];
@@ -21,13 +21,13 @@ Telescope.modules.register = function (zone, module) {
     modules.forEach( function (module) {
       Telescope.modules[zone].push(module);
     });
-  
+
   } else {
-  
+
     Telescope.modules[zone].push(module);
-  
+
   }
-}
+};
 
 /**
  * Remove a module from a zone
@@ -38,7 +38,7 @@ Telescope.modules.remove = function (zone, template) {
   Telescope.modules[zone] = _.reject(Telescope.modules[zone], function (module) {
     return module.template === template;
   });
-}
+};
 
 /**
  * Retrieve an array containing all modules for a zone
@@ -46,4 +46,4 @@ Telescope.modules.remove = function (zone, template) {
  */
 Telescope.modules.get = function (zone) {
   return _.sortBy(Telescope.modules[zone], "order");
-}
+};

@@ -1,6 +1,6 @@
 var toTitleCase = function (str) {
   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-}
+};
 
 var createPost = function (slug, postedAt, username, thumbnail) {
   var post = {
@@ -10,13 +10,13 @@ var createPost = function (slug, postedAt, username, thumbnail) {
     dummySlug: slug,
     isDummy: true,
     userId: Meteor.users.findOne({username: username})._id
-  }
+  };
 
   if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/telescope-getting-started/content/images/" + thumbnail
+    post.thumbnailUrl = "/packages/telescope-getting-started/content/images/" + thumbnail;
 
   Posts.submit(post);
-}
+};
 
 var createComment = function (slug, username, body, parentBody) {
 
@@ -26,12 +26,13 @@ var createComment = function (slug, username, body, parentBody) {
     body: body,
     isDummy: true,
     disableNotifications: true
-  }
-  if (parentComment = Comments.findOne({body: parentBody}))
+  };
+  var parentComment = Comments.findOne({body: parentBody});
+  if (parentComment)
     comment.parentCommentId = parentComment._id;
 
-  submitComment(comment);
-}
+  Meteor.call('submitComment', comment);
+};
 
 var createDummyUsers = function () {
   Accounts.createUser({
@@ -55,7 +56,7 @@ var createDummyUsers = function () {
       isDummy: true
     }
   });
-}
+};
 
 var createDummyPosts = function () {
 
@@ -69,7 +70,7 @@ var createDummyPosts = function () {
 
   createPost("removing_getting_started_posts", moment().subtract(2, 'days').toDate(), "Julia");
 
-}
+};
 
 var createDummyComments = function () {
 
@@ -83,13 +84,13 @@ var createDummyComments = function () {
   createComment("removing_getting_started_posts", "Bruce", "Yippee ki-yay, motherfucker!");
   createComment("removing_getting_started_posts", "Arnold", "I don't think you're supposed to swear in here…", "Yippee ki-yay, motherfucker!");
 
-}
+};
 
 deleteDummyContent = function () {
   Meteor.users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
-}
+};
 
 Meteor.methods({
   addGettingStartedContent: function () {
@@ -103,7 +104,7 @@ Meteor.methods({
     if (Users.is.admin(Meteor.user()))
       deleteDummyContent();
   }
-})
+});
 
 Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db

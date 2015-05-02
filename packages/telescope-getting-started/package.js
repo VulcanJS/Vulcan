@@ -37,26 +37,26 @@ Package.onUse(function (api) {
 
   // i18n config (must come first)
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
 
-  api.add_files([
+  api.addFiles([
     'lib/getting_started.js'
   ], ['client', 'server']);
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'content/images/stackoverflow.png',
     'content/images/telescope.png'
   ], ['client']);
 
   // server
 
-  api.add_files([
+  api.addFiles([
     'lib/server/dummy_content.js'
   ], ['server']);
 
@@ -68,7 +68,7 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  api.add_files([
+  api.addFiles([
     'i18n/en.i18n.json',
   ], ['client', 'server']);
 
