@@ -7,12 +7,13 @@ for the embedded postsList template. It receives its parameters from a "caller" 
 
 */
 
-Template.postsListController.created = function () {
+
+Template.postsListController.onCreated(function () {
 
   // 1. Initialization (*not* reactive!)
-
   var instance = this;
   var terms = instance.data.terms; // provided by the caller template
+
 
   // if terms doesn't have a limit, set one
   if (!terms.limit) {
@@ -25,26 +26,30 @@ Template.postsListController.created = function () {
 
   // 2. Autorun
 
-  // will re-run when terms changes
+  // will re-run when terms are changed, either by the router or by the template itself
   instance.autorun(function () {
 
+    // console.log('// ⚡ autorun ------------------------');
+
     // ⚡ reactive variables ⚡
-    var termsGet = instance.terms.get();
+    var routerTerms = Router.current().data().terms; // get terms from router (category, date, etc.)
+    var instanceTerms = instance.terms.get(); // get terms from instance (posts limit)
+
+    var terms = _.extend(instanceTerms, routerTerms); // merge both
 
     var subsReady = instance.subscriptionsReady();
 
-    // console.log('// ⚡ autorun ------------------------')
-    // console.log("> Asking for " + termsGet.limit + " posts…")
+    // console.log("> Asking for " + terms.limit + " posts…");
 
     // subscribe
-    var postsSubscription = instance.subscribe('postsList', termsGet);
-    var usersSubscription = instance.subscribe('postsListUsers', termsGet);
+    var postsSubscription = instance.subscribe('postsList', terms);
+    var usersSubscription = instance.subscribe('postsListUsers', terms);
 
     // if subscriptions are ready, set limit to newLimit
     if (subsReady) {
 
-      // console.log("> Received "+termsGet.limit+" posts.")
-      instance.postsLoaded.set(termsGet.limit);
+      // console.log("> Received "+terms.limit+" posts.");
+      instance.postsLoaded.set(terms.limit);
 
     } else {
       // console.log("> Subscriptions are not ready yet.");
@@ -66,7 +71,7 @@ Template.postsListController.created = function () {
     return Posts.find(parameters.find, parameters.options);
   };
 
-};
+});
 
 Template.postsListController.helpers({
   context: function () {

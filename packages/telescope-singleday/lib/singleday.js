@@ -17,11 +17,3 @@ Telescope.viewParameters.singleday = function (terms) {
     }
   };
 };
-
-getDateURL = function(moment){
-  return Router.path('postsSingleDay', {
-    year: moment.year(),
-    month: moment.month() + 1,
-    day: moment.date()
-  });
-};

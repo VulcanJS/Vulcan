@@ -29,6 +29,7 @@ Package.onUse(function (api) {
     'lib/client/templates/category_title.js',
     'lib/client/templates/categories_menu.html',
     'lib/client/templates/categories_menu.js',
+    'lib/client/templates/posts_category.html',
     'lib/client/templates/post_categories.html',
     'lib/client/templates/post_categories.js'
     ], ['client']);

@@ -67,17 +67,7 @@ Package.onUse(function (api) {
     'lib/client/templates/posts_list/posts_list.html',
     'lib/client/templates/posts_list/posts_list.js',
     'lib/client/templates/posts_list/posts_list_controller.html',
-    'lib/client/templates/posts_list/posts_list_controller.js',
-    'lib/client/templates/posts_views/posts_top.html',
-    'lib/client/templates/posts_views/posts_top.js',
-    'lib/client/templates/posts_views/posts_new.html',
-    'lib/client/templates/posts_views/posts_new.js',
-    'lib/client/templates/posts_views/posts_best.html',
-    'lib/client/templates/posts_views/posts_best.js',
-    'lib/client/templates/posts_views/posts_pending.html',
-    'lib/client/templates/posts_views/posts_pending.js',
-    'lib/client/templates/posts_views/posts_scheduled.html',
-    'lib/client/templates/posts_views/posts_scheduled.js',
+    'lib/client/templates/posts_list/posts_list_controller.js'
   ], ['client']);
 
   api.addFiles([
