@@ -1,6 +1,6 @@
 // ** Handlebars helpers **
 
-UI.registerHelper('eachWithRank', function(items, options) {
+Template.registerHelper('eachWithRank', function(items, options) {
   // not used, forces multiple renders
   // note: cannot use this because it would delete and recreate all nodes
   items.rewind();
@@ -13,19 +13,19 @@ UI.registerHelper('eachWithRank', function(items, options) {
   });
   return out;
 });
-UI.registerHelper('isLoggedIn', function() {
+Template.registerHelper('isLoggedIn', function() {
   return !!Meteor.user();
 });
-UI.registerHelper('canView', function() {
+Template.registerHelper('canView', function() {
   return Users.can.view(Meteor.user());
 });
-UI.registerHelper('canPost', function() {
+Template.registerHelper('canPost', function() {
   return Users.can.post(Meteor.user());
 });
-UI.registerHelper('canComment', function() {
+Template.registerHelper('canComment', function() {
   return Users.can.comment(Meteor.user());
 });
-UI.registerHelper('isAdmin', function(showError) {
+Template.registerHelper('isAdmin', function(showError) {
   if (Users.is.admin(Meteor.user())) {
     return true;
   }
@@ -34,56 +34,56 @@ UI.registerHelper('isAdmin', function(showError) {
   }
   return false;
 });
-UI.registerHelper('canEdit', function(item) {
+Template.registerHelper('canEdit', function(item) {
   return Users.can.edit(Meteor.user(), item, false);
 });
 
-UI.registerHelper('log', function(context){
+Template.registerHelper('log', function(context){
   console.log(context);
 });
 
-UI.registerHelper('formatDate', function(datetime, format) {
+Template.registerHelper('formatDate', function(datetime, format) {
   Session.get('momentLocale'); // depend on session variable to reactively rerun the helper
   return moment(datetime).format(format);
 });
 
-UI.registerHelper('timeAgo', function(datetime) {
+Template.registerHelper('timeAgo', function(datetime) {
   Session.get('momentLocale'); // depend on session variable to reactively rerun the helper
   return moment(datetime).fromNow();
 });
 
-UI.registerHelper('sanitize', function(content) {
+Template.registerHelper('sanitize', function(content) {
   console.log('cleaning up…');
   console.log(content);
   return Telescope.utils.cleanUp(content);
 });
 
-UI.registerHelper('pluralize', function(count, string) {
+Template.registerHelper('pluralize', function(count, string) {
   string = count === 1 ? string : string + 's';
   return i18n.t(string);
 });
 
-UI.registerHelper('profileUrl', function(userOrUserId) {
+Template.registerHelper('profileUrl', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
     return Users.getProfileUrl(user);
   }
 });
 
-UI.registerHelper('userName', function(userOrUserId) {
+Template.registerHelper('userName', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
     return Users.getUserName(user);
   }
 });
 
-UI.registerHelper('displayName', function(userOrUserId) {
+Template.registerHelper('displayName', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
     return Users.getDisplayName(user);
   }
 });
 
-UI.registerHelper('icon', function(iconName, iconClass) {
+Template.registerHelper('icon', function(iconName, iconClass) {
   return Telescope.utils.getIcon(iconName, iconClass);
 });
