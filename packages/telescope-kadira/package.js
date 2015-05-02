@@ -14,16 +14,16 @@ Package.onUse(function (api) {
     'meteorhacks:kadira@2.20.1'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n',
     'lib/kadira-settings.js'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/kadira.js'
   ], ['server']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/en.i18n.json"
   ], ["client", "server"]);
 

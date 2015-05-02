@@ -36,19 +36,19 @@ if (Meteor.isServer) {
 
     // if event is supposed to be unique, check if it has already been logged
     if (!!event.unique && !!Events.findOne({name: event.name})) {
-      return
+      return;
     }
 
     event.createdAt = new Date();
 
     Events.insert(event);
 
-  }
+  };
 }
 
 Events.track = function(event, properties){
   // console.log('trackevent: ', event, properties);
-  var properties= (typeof properties === 'undefined') ? {} : properties;
+  properties = properties || {};
   //TODO
   // add event to an Events collection for logging and buffering purposes
   if(Meteor.isClient){

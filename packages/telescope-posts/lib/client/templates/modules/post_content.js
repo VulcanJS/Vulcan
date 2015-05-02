@@ -6,7 +6,7 @@ Template.postContent.helpers({
     return "http://"+document.domain;
   },
   timestamp: function(){
-    time = this.status == Posts.config.STATUS_APPROVED ? this.postedAt : this.createdAt;
+    var time = this.status === Posts.config.STATUS_APPROVED ? this.postedAt : this.createdAt;
     return moment(time).format("MMMM Do, h:mm:ss a");
   },
   userAvatar: function(){
@@ -19,6 +19,6 @@ Template.postContent.helpers({
     return (Users.is.admin(Meteor.user()) && this.inactive) ? i18n.t('inactive') : "";
   },
   commentsDisplayText: function(){
-    return this.comments == 1 ? i18n.t('comment') : i18n.t('comments');
+    return this.comments === 1 ? i18n.t('comment') : i18n.t('comments');
   }
 });

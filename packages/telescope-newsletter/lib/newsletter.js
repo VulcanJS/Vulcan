@@ -1,4 +1,4 @@
-campaignSchema = new SimpleSchema({
+var campaignSchema = new SimpleSchema({
  _id: {
     type: String,
     optional: true
@@ -54,7 +54,7 @@ var enableNewsletter = {
       instructions: 'Enable newsletter (requires restart).'
     }
   }
-}
+};
 Settings.registerField(enableNewsletter);
 
 var showBanner = {
@@ -68,7 +68,7 @@ var showBanner = {
       instructions: 'Show newsletter sign-up form on the front page.'
     }
   }
-}
+};
 Settings.registerField(showBanner);
 
 var mailChimpAPIKey = {
@@ -82,7 +82,7 @@ var mailChimpAPIKey = {
       class: "private-field"
     }
   }
-}
+};
 Settings.registerField(mailChimpAPIKey);
 
 var mailChimpListId = {
@@ -97,7 +97,7 @@ var mailChimpListId = {
       class: "private-field"
     }
   }
-}
+};
 Settings.registerField(mailChimpListId);
 
 var postsPerNewsletter = {
@@ -109,7 +109,7 @@ var postsPerNewsletter = {
       group: 'newsletter'
     }
   }
-}
+};
 Settings.registerField(postsPerNewsletter);
 
 var newsletterFrequency = {
@@ -140,7 +140,7 @@ var newsletterFrequency = {
       ]
     }
   }
-}
+};
 Settings.registerField(newsletterFrequency);
 
 var newsletterTime = {
@@ -155,7 +155,7 @@ var newsletterTime = {
       type: 'time'
     }
   }
-}
+};
 Settings.registerField(newsletterTime);
 
 var autoSubscribe = {
@@ -168,7 +168,7 @@ var autoSubscribe = {
       instructions: 'Automatically subscribe new users on sign-up.'
     }
   }
-}
+};
 Settings.registerField(autoSubscribe);
 
 // create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
@@ -182,7 +182,7 @@ Telescope.viewParameters.campaign = function (terms) {
     },
     options: {sort: {sticky: -1, score: -1}}
   };
-}
+};
 
 Telescope.modules.register("hero", {
   template: 'newsletterBanner',
@@ -192,8 +192,8 @@ Telescope.modules.register("hero", {
  function subscribeUserOnCreation (user) {
   if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user)) {
     addToMailChimpList(user, false, function (error, result) {
-      console.log(error)
-      console.log(result)
+      console.log(error);
+      console.log(result);
     });
   }
   return user;

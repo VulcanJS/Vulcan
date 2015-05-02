@@ -6,10 +6,6 @@ Telescope.utils.deepExtend = function () {
       deep = false,
       toString = Object.prototype.toString,
       hasOwn = Object.prototype.hasOwnProperty,
-      push = Array.prototype.push,
-      slice = Array.prototype.slice,
-      trim = String.prototype.trim,
-      indexOf = Array.prototype.indexOf,
       class2type = {
         "[object Boolean]": "boolean",
         "[object Number]": "number",
@@ -29,13 +25,13 @@ Telescope.utils.deepExtend = function () {
           return jQuery.type(obj) === "array";
         },
         isWindow: function (obj) {
-          return obj != null && obj == obj.window;
+          return obj !== null && obj === obj.window;
         },
         isNumeric: function (obj) {
           return !isNaN(parseFloat(obj)) && isFinite(obj);
         },
         type: function (obj) {
-          return obj == null ? String(obj) : class2type[toString.call(obj)] || "object";
+          return obj === null ? String(obj) : class2type[toString.call(obj)] || "object";
         },
         isPlainObject: function (obj) {
           if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
@@ -66,7 +62,7 @@ Telescope.utils.deepExtend = function () {
       --i;
     }
     for (i; i < length; i++) {
-      if ((options = arguments[i]) != null) {
+      if ((options = arguments[i]) !== null) {
         for (name in options) {
           src = target[name];
           copy = options[name];

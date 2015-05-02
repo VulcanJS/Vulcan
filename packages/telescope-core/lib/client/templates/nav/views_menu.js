@@ -3,6 +3,6 @@ Template.viewsMenu.helpers({
     return {
       dropdownName: 'view',
       dropdownItems: Telescope.menus.get("viewsMenu")
-    }
+    };
   }
 });

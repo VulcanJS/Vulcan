@@ -46,7 +46,7 @@ buildEmailNotification = function (notification) {
   return {
     subject: subject,
     html: html
-  }
+  };
 };
 
 Meteor.methods({
@@ -55,7 +55,7 @@ Meteor.methods({
     // A user-specific salt should be added to the hashing method to prevent this
     var user = Meteor.users.findOne({email_hash: hash});
     if(user){
-      var update = Meteor.users.update(user._id, {
+      Meteor.users.update(user._id, {
         $set: {
           'profile.notifications.users' : 0,
           'profile.notifications.posts' : 0,

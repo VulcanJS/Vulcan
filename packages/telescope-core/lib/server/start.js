@@ -3,7 +3,7 @@ Meteor.startup(function () {
     name: "firstRun",
     unique: true, // will only get logged a single time
     important: true
-  })
+  });
 });
 
 if (Settings.get('mailUrl'))

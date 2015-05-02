@@ -19,7 +19,6 @@ Meteor.publish('postsListUsers', function(terms) {
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.getSubParams(terms),
         posts = Posts.find(parameters.find, parameters.options),
-        postsIds = _.pluck(posts.fetch(), '_id'),
         userIds = _.pluck(posts.fetch(), 'userId');
 
     // for each post, add first four commenter's userIds to userIds array
@@ -50,7 +49,7 @@ Meteor.publish('postUsers', function(postId) {
     // publish post author and post commenters
     var post = Posts.findOne(postId);
     var users = [];
-    
+
     if (post) {
 
       users.push(post.userId); // publish post author's ID

@@ -25,11 +25,13 @@ Posts.controllers.list = RouteController.extend({
       terms.query = Session.get("searchQuery");
     }
 
-    console.log('//-------------------------- router running --------------------------//')
+
+    console.log('-----------------\nrouter running');
+
     // note: the post list controller template will handle all subscriptions, so we just need to pass in the terms
     return {
       terms: terms
-    }
+    };
   },
 
   getTitle: function () {
@@ -37,7 +39,7 @@ Posts.controllers.list = RouteController.extend({
   },
 
   getDescription: function () {
-    if (Router.current().route.getName() == 'posts_default') { // return site description on root path
+    if (Router.current().route.getName() === 'posts_default') { // return site description on root path
       return Settings.get('description');
     } else {
       return i18n.t(_.findWhere(Telescope.menus.get("viewsMenu"), {label: this.view}).description);

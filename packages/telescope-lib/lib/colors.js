@@ -3,23 +3,28 @@ Telescope.utils.colorTable = {
   accentContrastColor: [],
   secondaryColor: [],
   secondaryContrastColor: []
-}
+};
 
 Telescope.utils.registerElementColor = function (selector, color, property) {
   var element = {selector: selector};
 
   if (typeof property !== "undefined")
-    element.property = property
+    element.property = property;
 
   Telescope.utils.colorTable[color].push(element);
-}
+};
 
 // shortcuts
+var setShortcut = function(name) {
+  return function (selector, property) {
+    Telescope.utils.registerElementColor(selector, name, property);
+  };
+};
 
-accent = function (selector, property) {Telescope.utils.registerElementColor(selector, "accentColor", property);}
-accentContrast = function (selector, property) {Telescope.utils.registerElementColor(selector, "accentContrastColor", property);}
-secondary = function (selector, property) {Telescope.utils.registerElementColor(selector, "secondaryColor", property);}
-secondaryContrast = function (selector, property) {Telescope.utils.registerElementColor(selector, "secondaryContrastColor", property);}
+var accent = setShortcut('accentColor');
+var accentContrast = setShortcut('accentContrastColor');
+var secondary = setShortcut('secondaryColor');
+var secondaryContrast = setShortcut('secondaryContrastColor');
 
 // accentColor
 

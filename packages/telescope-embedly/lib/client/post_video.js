@@ -4,4 +4,4 @@ Template.postVideo.events({
     $(e.target).parents('.post').find('.post-video-lightbox').fadeOut('fast');
     $('body').removeClass('showing-lightbox');
   }
-})
+});

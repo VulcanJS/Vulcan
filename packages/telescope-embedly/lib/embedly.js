@@ -8,7 +8,7 @@ var thumbnailProperty = {
       type: 'bootstrap-postthumbnail'
     }
   }
-}
+};
 Posts.registerField(thumbnailProperty);
 
 var mediaProperty = {
@@ -18,7 +18,7 @@ var mediaProperty = {
     optional: true,
     blackbox: true
   }
-}
+};
 Posts.registerField(mediaProperty);
 
 Telescope.modules.register("postThumbnail", {
@@ -37,7 +37,7 @@ var embedlyKeyProperty = {
       class: 'private-field'
     }
   }
-}
+};
 Settings.registerField(embedlyKeyProperty);
 
 var thumbnailWidthProperty = {
@@ -49,7 +49,7 @@ var thumbnailWidthProperty = {
       group: 'embedly'
     }
   }
-}
+};
 Settings.registerField(thumbnailWidthProperty);
 
 var thumbnailHeightProperty = {
@@ -61,7 +61,7 @@ var thumbnailHeightProperty = {
       group: 'embedly'
     }
   }
-}
+};
 Settings.registerField(thumbnailHeightProperty);
 
 function addThumbnailClass (post, postClass) {

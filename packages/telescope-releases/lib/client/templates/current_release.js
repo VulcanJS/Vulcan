@@ -3,7 +3,7 @@ Meteor.startup(function () {
   Template.currentRelease.created = function () {
     this.release = function () {
       return Releases.find({read: false}).fetch()[0];
-    }
+    };
   };
 
   Template.currentRelease.helpers({
@@ -17,6 +17,6 @@ Meteor.startup(function () {
       event.preventDefault();
       Releases.update(instance.release()._id, {$set: {read: true}});
     }
-  })
+  });
 
 });

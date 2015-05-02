@@ -20,20 +20,20 @@ Package.onUse(function (api) {
 
   // i18n config (must come first)
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
 
-  api.add_files([
+  api.addFiles([
     'lib/routes.js',
     'lib/singleday.js'
   ], ['client', 'server']);
 
   // client
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/single_day.html',
     'lib/client/templates/single_day.js',
     'lib/client/templates/single_day_nav.html',
@@ -42,12 +42,12 @@ Package.onUse(function (api) {
 
   // server
 
-  api.add_files([
+  api.addFiles([
   ], ['server']);
 
   // i18n languages (must come last)
 
-  api.add_files([
+  api.addFiles([
     'i18n/bg.i18n.json',
     'i18n/de.i18n.json',
     'i18n/en.i18n.json',

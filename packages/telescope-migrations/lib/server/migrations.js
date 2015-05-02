@@ -87,7 +87,7 @@ var migrationsList = {
 
       // iterate over the post.categories array
       // if the post has no categories then nothing will happen
-      _.each(oldCategories, function(value, key, list){
+      _.each(oldCategories, function(value){
         // make sure the categories are strings
         if((typeof value === "string") && (category = Categories.findOne({name: value}))){
           // if value is a string, then look for the matching category object
@@ -160,11 +160,11 @@ var migrationsList = {
       console.log("Post: "+post.title);
       if(post.upvoters){
         upvotes = post.upvoters.length;
-        console.log("Found "+upvotes+" upvotes.")
+        console.log("Found "+upvotes+" upvotes.");
       }
       if(post.downvoters){
         downvotes = post.downvoters.length;
-        console.log("Found "+downvotes+" downvotes.")
+        console.log("Found "+downvotes+" downvotes.");
       }
       Posts.update(post._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
@@ -180,11 +180,11 @@ var migrationsList = {
       console.log("Comment: "+comment._id);
       if(comment.upvoters){
         upvotes = comment.upvoters.length;
-        console.log("Found "+upvotes+" upvotes.")
+        console.log("Found "+upvotes+" upvotes.");
       }
       if(comment.downvoters){
         downvotes = comment.downvoters.length;
-        console.log("Found "+downvotes+" downvotes.")
+        console.log("Found "+downvotes+" downvotes.");
       }
       Comments.update(comment._id, {$set: {upvotes: upvotes, downvotes: downvotes}});
       console.log("---------------------");
@@ -224,7 +224,7 @@ var migrationsList = {
   createdAtSubmittedToDate: function () {
     var i = 0;
     Posts.find().forEach(function (post) {
-      if(typeof post.submitted == "number" || typeof post.createdAt == "number"){
+      if(typeof post.submitted === "number" || typeof post.createdAt === "number"){
         i++;
         console.log("Posts: "+post.title);
         var createdAt = new Date(post.createdAt);
@@ -239,11 +239,11 @@ var migrationsList = {
   commentsCreatedAtToDate: function () {
     var i = 0;
     Comments.find().forEach(function (comment) {
-      if(typeof comment.createdAt == "number"){
+      if(typeof comment.createdAt === "number"){
         i++;
         console.log("Comment: "+comment._id);
         var createdAt = new Date(comment.createdAt);
-        console.log(createdAt)
+        console.log(createdAt);
         Comments.update(comment._id, { $set: { 'createdAt': createdAt}}, {multi: true, validate: false});
         console.log("---------------------");
       }
@@ -385,7 +385,7 @@ var migrationsList = {
     Posts.find({"commentCount": {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: " + post._id);
-      var result = Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
+      Posts.update({_id: post._id}, { $set: { 'commentCount': post.commentsCount}, $unset: {'commentsCount': ""}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -406,7 +406,7 @@ var migrationsList = {
     Posts.find({'clicks': {$exists: true}}).forEach(function (post) {
       i++;
       console.log("Post: " + post._id);
-      var result = Posts.update(post._id, { $inc: { 'clickCount': post.clicks}, $unset: {'clicks': ""}}, {multi: true, validate: false});
+      Posts.update(post._id, { $inc: { 'clickCount': post.clicks}, $unset: {'clicks': ""}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -419,7 +419,7 @@ var migrationsList = {
       var justCategoryIds = post.categories.map(function (category){
         return category._id;
       });
-      var result = Posts.update(post._id, {$set: {categories: justCategoryIds, oldCategories: post.categories}}, {multi: true, validate: false});
+      Posts.update(post._id, {$set: {categories: justCategoryIds, oldCategories: post.categories}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -429,7 +429,7 @@ var migrationsList = {
     Posts.find({'sticky': {$exists: false}}).forEach(function (post) {
       i++;
       console.log("Post: " + post._id);
-      var result = Posts.update(post._id, {$set: {sticky: false}}, {multi: true, validate: false});
+      Posts.update(post._id, {$set: {sticky: false}}, {multi: true, validate: false});
       console.log("---------------------");
     });
     return i;
@@ -552,7 +552,7 @@ var migrationsList = {
           }
         });
       } catch (err) {
-        console.log(err)
+        console.log(err);
         console.warn('> Unable to migrate profile for user ' + user.username);
       }
     });

@@ -1,7 +1,7 @@
 Template.postViewsNav.helpers({
   showNav: function () {
     var navElements = Settings.get('postViews', _.pluck(Telescope.config.viewsMenu, 'route'));
-    var navCount = (typeof navElements === "array") ? navElements.length : _.keys(navElements).length;
+    var navCount = _.isArray(navElements) ? navElements.length : _.keys(navElements).length;
     return navCount > 1;
   },
   menuItems: function () {

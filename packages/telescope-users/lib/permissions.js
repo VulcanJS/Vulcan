@@ -104,15 +104,15 @@ Users.can.submitField = function (user, field) {
   var memberCheck = _.contains(field.editableBy, "member"); // is the field editable by regular users?
 
   return adminCheck || memberCheck;
-  
-}
+
+};
 
 /**
  * Check if a user can edit a field – for now, identical to Users.can.submitField
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.can.editField = Users.can.submitField
+Users.can.editField = Users.can.submitField;
 
 Users.can.currentUserEdit = function (item) {
   return Users.can.edit(Meteor.user(), item);

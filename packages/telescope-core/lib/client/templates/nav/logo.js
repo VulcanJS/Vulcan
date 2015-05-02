@@ -1,8 +1,8 @@
 Template.logo.helpers({
-  site_title: function(){
+  siteTitle: function(){
     return Settings.get('title', "Telescope");
   },
-  logo_url: function(){
+  logoUrl: function(){
     return Settings.get('logoUrl');
   }
 });

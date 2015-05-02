@@ -15,16 +15,16 @@ Package.onUse( function(api) {
     'telescope:messages@0.1.0'
   ], 'client');
 
-  api.add_files([
+  api.addFiles([
     'package-tap.i18n',
     'lib/embedly.js'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/get_embedly_data.js'
   ], ['server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/autoform-postthumbnail.html',
     'lib/client/autoform-postthumbnail.js',
     'lib/client/post_thumbnail.html',
@@ -34,7 +34,7 @@ Package.onUse( function(api) {
     'lib/client/post_video.js'
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/en.i18n.json",
     "i18n/fr.i18n.json"
   ], ["client", "server"]);

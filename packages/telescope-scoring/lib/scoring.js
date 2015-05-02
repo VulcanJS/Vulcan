@@ -7,7 +7,7 @@ Telescope.updateScore = function (args) {
 
   // Status Check
 
-  if (!!item.status && item.status !=2) // if item has a status and is not approved, don't update its score
+  if (!!item.status && item.status !== 2) // if item has a status and is not approved, don't update its score
     return 0;
 
   // Age Check
@@ -27,7 +27,7 @@ Telescope.updateScore = function (args) {
   // For performance reasons, the database is only updated if the difference between the old score and the new score
   // is meaningful enough. To find out, we calculate the "power" of a single vote after n days.
   // We assume that after n days, a single vote will not be powerful enough to affect posts' ranking order.
-  // Note: sites whose posts regularly get a lot of votes can afford to use a lower n. 
+  // Note: sites whose posts regularly get a lot of votes can afford to use a lower n.
 
   // n =  number of days after which a single vote will not have a big enough effect to trigger a score update
   //      and posts can become inactive

@@ -150,7 +150,7 @@ Telescope.schemas.settings = new SimpleSchema({
           return {
             value: item.route,
             label: item.label
-          }
+          };
         });
       }
     }
@@ -238,9 +238,9 @@ Telescope.schemas.settings = new SimpleSchema({
           return {
             value: key,
             label: item.name
-          }
+          };
         });
-        return languages
+        return languages;
       }
     }
   },

@@ -27,7 +27,7 @@ Template.nav.helpers({
     if (this.length > 3) {
       dropdownClass += "long-dropdown";
     }
-    if (Settings.get('navLayout', 'top-nav') == 'top-nav' && getThemeSetting('useDropdowns', true)) {
+    if (Settings.get('navLayout', 'top-nav') === 'top-nav' && getThemeSetting('useDropdowns', true)) {
       dropdownClass += "has-dropdown";
     } else {
       dropdownClass += "no-dropdown";
@@ -35,7 +35,7 @@ Template.nav.helpers({
     return dropdownClass;
   },
   hasMoreThanThreeItems: function () {
-    console.log(this)
+    console.log(this);
     return this.length > 3;
   },
 });

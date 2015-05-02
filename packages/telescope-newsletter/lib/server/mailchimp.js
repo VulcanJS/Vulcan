@@ -72,19 +72,19 @@ scheduleCampaign = function (campaign, isTest) {
     }
     return subject;
   }
-}
+};
 
 addToMailChimpList = function(userOrEmail, confirm, done){
 
   var user, email;
 
-  var confirm = (typeof confirm === 'undefined') ? false : confirm // default to no confirmation
+  var confirm = (typeof confirm === 'undefined') ? false : confirm; // default to no confirmation
 
   // not sure if it's really necessary that the function take both user and email?
-  if (typeof userOrEmail == "string") {
+  if (typeof userOrEmail === "string") {
     user = null;
     email = userOrEmail;
-  } else if (typeof userOrEmail == "object") {
+  } else if (typeof userOrEmail === "object") {
     user = userOrEmail;
     email = Users.getEmail(user);
     if (!email)
@@ -122,7 +122,6 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
     } catch (error) {
       throw new Meteor.Error("subscription-failed", error.message);
-      console.log( error.message );
     }
   }
 };

@@ -16,4 +16,4 @@ Users.getUser = function (userOrUserId) {
   } else {
     return userOrUserId;
   }
-}
+};

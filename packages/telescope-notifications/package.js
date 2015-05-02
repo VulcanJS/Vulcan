@@ -16,13 +16,13 @@ Package.onUse(function (api) {
     'cmather:handlebars-server@0.2.0'
   ]);
 
-  api.add_files([
+  api.addFiles([
     'lib/notifications.js',
     'lib/herald.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
-  api.add_files([
+  api.addFiles([
     'lib/client/templates/notification_item.html',
     'lib/client/templates/notification_item.js',
     'lib/client/templates/notifications_mark_as_read.html',
@@ -36,12 +36,12 @@ Package.onUse(function (api) {
     'lib/client/templates/unsubscribe.js',
   ], ['client']);
 
-  api.add_files([
+  api.addFiles([
     'lib/server/notifications-server.js',
     'lib/server/routes.js'
   ], ['server']);
 
-  api.add_files([
+  api.addFiles([
     "i18n/de.i18n.json",
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",
