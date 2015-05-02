@@ -4,8 +4,6 @@ Posts.controllers = {};
 
 Posts.controllers.list = RouteController.extend({
 
-  template: 'postsListController',
-
   onBeforeAction: function () {
     var showViewsNav = (typeof this.showViewsNav === 'undefined') ? true : this.showViewsNav;
 
@@ -27,8 +25,7 @@ Posts.controllers.list = RouteController.extend({
       terms.query = Session.get("searchQuery");
     }
 
-    console.log('-----------------\nrouter running')
-    console.log(terms)
+    console.log('//-------------------------- router running --------------------------//')
     // note: the post list controller template will handle all subscriptions, so we just need to pass in the terms
     return {
       terms: terms
@@ -70,22 +67,27 @@ Meteor.startup(function () {
 
 Posts.controllers.top = Posts.controllers.list.extend({
   view: 'top',
+  template: 'postsTop'
 });
 
 Posts.controllers.new = Posts.controllers.list.extend({
-  view: 'new'
+  view: 'new',
+  template: 'postsNew'
 });
 
 Posts.controllers.best = Posts.controllers.list.extend({
-  view: 'best'
+  view: 'best',
+  template: 'postsBest'
 });
 
 Posts.controllers.view = Posts.controllers.list.extend({
-  view: 'pending'
+  view: 'pending',
+  template: 'postsPending'
 });
 
 Posts.controllers.scheduled = Posts.controllers.list.extend({
-  view: 'scheduled'
+  view: 'scheduled',
+  template: 'postsScheduled'
 });
 
 // Controller for post pages

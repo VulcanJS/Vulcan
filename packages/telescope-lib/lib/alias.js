@@ -1,5 +1,0 @@
-/**
- * Telescope aliases
- */
-
-T = Telescope;

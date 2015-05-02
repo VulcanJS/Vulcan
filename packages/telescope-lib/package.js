@@ -23,6 +23,8 @@ Package.onUse(function (api) {
     'tap:i18n@1.4.1',
     'fourseven:scss@2.1.1',
     'iron:router@1.0.5',
+    // 'meteorhacks:flow-router@1.5.0',
+    // 'meteorhacks:flow-layout@1.1.1',
     'matb33:collection-hooks@0.7.11',
     'chuangbo:marked@0.3.5',
     'meteorhacks:fast-render@2.3.2',
@@ -58,7 +60,6 @@ Package.onUse(function (api) {
     'lib/autolink.js',
     'lib/themes.js',
     'lib/menus.js',
-    'lib/alias.js',
     'lib/parameters.js',
     'lib/base.js',
     'lib/colors.js',
@@ -69,7 +70,6 @@ Package.onUse(function (api) {
 
   api.export([
     'Telescope',
-    'T',
     '_',
 
     'getTemplate',

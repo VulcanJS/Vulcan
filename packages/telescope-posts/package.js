@@ -64,10 +64,20 @@ Package.onUse(function (api) {
     'lib/client/templates/post_submit.js',
     'lib/client/templates/post_views_nav.html',
     'lib/client/templates/post_view_nav.js',
-    'lib/client/templates/postList/posts_list.html',
-    'lib/client/templates/postList/posts_list.js',
-    'lib/client/templates/postList/postsListController.html',
-    'lib/client/templates/postList/postsListController.js'
+    'lib/client/templates/postsList/posts_list.html',
+    'lib/client/templates/postsList/posts_list.js',
+    'lib/client/templates/postsList/posts_list_controller.html',
+    'lib/client/templates/postsList/posts_list_controller.js',
+    'lib/client/templates/postsViews/posts_top.html',
+    'lib/client/templates/postsViews/posts_top.js',
+    'lib/client/templates/postsViews/posts_new.html',
+    'lib/client/templates/postsViews/posts_new.js',
+    'lib/client/templates/postsViews/posts_best.html',
+    'lib/client/templates/postsViews/posts_best.js',
+    'lib/client/templates/postsViews/posts_pending.html',
+    'lib/client/templates/postsViews/posts_pending.js',
+    'lib/client/templates/postsViews/posts_scheduled.html',
+    'lib/client/templates/postsViews/posts_scheduled.js',
   ], ['client']);
 
   api.add_files([

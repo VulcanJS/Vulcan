@@ -33,7 +33,7 @@ Posts.getProperties = function (post) {
  */
 Posts.getSubParams = function (terms) {
 
-  var maxLimit = 20;
+  var maxLimit = 200;
 
   // console.log(terms)
 

@@ -64,7 +64,7 @@ var thumbnailHeightProperty = {
 }
 Settings.registerField(thumbnailHeightProperty);
 
-function addThumbnailClass (post, postClass){
+function addThumbnailClass (post, postClass) {
   var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";
   return postClass + " " + thumbnailClass;
 }
