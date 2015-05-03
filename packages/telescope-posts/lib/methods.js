@@ -13,7 +13,7 @@
 Posts.submit = function (post) {
 
   var userId = post.userId, // at this stage, a userId is expected
-      user = Meteor.users.findOne(userId);
+      user = Users.findOne(userId);
 
   // ------------------------------ Checks ------------------------------ //
 
@@ -254,7 +254,7 @@ Meteor.methods({
     if(!Meteor.userId() || !Users.can.editById(Meteor.userId(), post)) throw new Meteor.Error(606, 'You need permission to edit or delete a post');
 
     // decrement post count
-    Meteor.users.update({_id: post.userId}, {$inc: {postCount: -1}});
+    Users.update({_id: post.userId}, {$inc: {postCount: -1}});
 
     // delete post
     Posts.remove(postId);

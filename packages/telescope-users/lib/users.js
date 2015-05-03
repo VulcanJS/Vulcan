@@ -154,7 +154,7 @@ Telescope.schemas.users.internationalize();
 /**
  * Attach schema to Meteor.users collection
  */
-Meteor.users.attachSchema(Telescope.schemas.users);
+Users.attachSchema(Telescope.schemas.users);
 
 /**
  * Users collection permissions
