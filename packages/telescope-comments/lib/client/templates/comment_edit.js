@@ -8,8 +8,10 @@ AutoForm.hooks({
   editCommentForm: {
 
     before: {
-      editComment: function(modifier) {
-        var comment = doc;
+      "method-update": function() {
+        
+        var comment = this.currentDoc;
+        var modifier = this.updateDoc;
 
         // ------------------------------ Checks ------------------------------ //
 
@@ -21,7 +23,7 @@ AutoForm.hooks({
         // ------------------------------ Callbacks ------------------------------ //
 
         // run all post edit client callbacks on modifier object successively
-        comment = Telescope.callbacks.run("postEditClient", comment);
+        comment = Telescope.callbacks.run("commentEditClient", modifier, comment);
 
         return comment;
       }
@@ -33,7 +35,7 @@ AutoForm.hooks({
     },
 
     onError: function(operation, error) {
-      console.log(error)
+      console.log(error);
       Messages.flash(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
       Messages.clearSeen();
     }

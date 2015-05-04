@@ -8,8 +8,10 @@ AutoForm.hooks({
   editPostForm: {
 
     before: {
-      editPost: function(modifier) {
-        var post = doc;
+      "method-update": function() {
+        
+        var post = this.currentDoc;
+        var modifier = this.updateDoc;
 
         // ------------------------------ Checks ------------------------------ //
 
@@ -20,8 +22,7 @@ AutoForm.hooks({
 
         // ------------------------------ Callbacks ------------------------------ //
 
-        // run all post edit client callbacks on modifier object successively
-        post = Telescope.callbacks.run("postEditClient", post);
+        post = Telescope.callbacks.run("postEditClient", modifier, post);
 
 
         return post;

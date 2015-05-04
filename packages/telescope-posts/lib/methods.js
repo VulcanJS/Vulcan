@@ -63,9 +63,34 @@ Posts.submit = function (post) {
 
   // --------------------- Server-Side Async Callbacks --------------------- //
 
-  Telescope.callbacks.run("postSubmitAsync", post, true);
+  Telescope.callbacks.runAsync("postSubmitAsync", post);
 
   return post;
+};
+
+Posts.edit = function (postId, modifier, post) {
+
+  if (typeof post === "undefined") {
+    post = Posts.findOne(postId);
+  }
+
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  // run all post edit server callbacks on modifier successively
+  modifier = Telescope.callbacks.run("postEdit", modifier, post);
+
+  // ------------------------------ Update ------------------------------ //
+
+  Posts.update(postId, modifier);
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  Telescope.callbacks.runAsync("postEditAsync", modifier, post);
+
+  // ------------------------------ After Update ------------------------------ //
+
+  return Posts.findOne(postId);
 };
 
 // ------------------------------------------------------------------------------------------- //
@@ -175,22 +200,7 @@ Meteor.methods({
       });
     });
 
-    // ------------------------------ Callbacks ------------------------------ //
-
-    // run all post submit server callbacks on modifier successively
-    modifier = Telescope.callbacks.run("postEdit", modifier);
-
-    // ------------------------------ Update ------------------------------ //
-
-    Posts.update(postId, modifier);
-
-    // ------------------------------ Callbacks ------------------------------ //
-
-    Telescope.callbacks.run("postEditAsync", postId, true);
-
-    // ------------------------------ After Update ------------------------------ //
-
-    return Posts.findOne(postId);
+    return Posts.edit(postId, modifier, post);
 
   },
 
@@ -214,8 +224,7 @@ Meteor.methods({
 
       Posts.update(post._id, {$set: set}, {validate: false});
 
-      // --------------------- Server-Side Async Callbacks --------------------- //
-      Telescope.callbacks.run("postApprovedAsync", post, true);
+      Telescope.callbacks.runAsync("postApprovedAsync", post);
 
     }else{
       Messages.flash('You need to be an admin to do that.', "error");

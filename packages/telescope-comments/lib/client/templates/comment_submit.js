@@ -13,9 +13,10 @@ AutoForm.hooks({
     before: {
       method: function(doc) {
 
+        var comment = doc;
+
         this.template.$('button[type=submit]').addClass('loading');
 
-        var comment = doc;
         var parent = Template.parentData(5); // TODO: find a less brittle way to do this
 
         if (!!parent.comment) { // child comment

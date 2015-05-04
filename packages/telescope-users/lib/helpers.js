@@ -175,9 +175,9 @@ Users.getProperty = function (object, property) {
 
 /**
  * Build Users subscription with filter, sort, and limit args.
- * @param  {String} filterBy
- * @param  {String} sortBy
- * @param  {Number} limit
+ * @param {String} filterBy
+ * @param {String} sortBy
+ * @param {Number} limit
  */
 Users.getSubParams = function(filterBy, sortBy, limit) {
   var find = {},

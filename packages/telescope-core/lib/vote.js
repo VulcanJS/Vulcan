@@ -93,7 +93,7 @@ Telescope.upvoteItem = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.callbacks.run("upvoteAsync", item, true);
+    Telescope.callbacks.runAsync("upvoteAsync", item);
 
     // ----------------------------------------------------------------------- //
   }
@@ -147,7 +147,7 @@ Telescope.downvoteItem = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.callbacks.run("downvoteAsync", item, true);
+    Telescope.callbacks.runAsync("downvoteAsync", item);
 
     // ----------------------------------------------------------------------- //
   }
@@ -194,7 +194,7 @@ Telescope.cancelUpvote = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.callbacks.run("cancelUpvoteAsync", item, true);
+    Telescope.callbacks.runAsync("cancelUpvoteAsync", item);
 
     // ----------------------------------------------------------------------- //
   }
@@ -242,7 +242,7 @@ Telescope.cancelDownvote = function (collection, item, user) {
 
     // --------------------- Server-Side Async Callbacks --------------------- //
 
-    Telescope.callbacks.run("cancelDownvoteAsync", item, true);
+    Telescope.callbacks.runAsync("cancelDownvoteAsync", item);
 
     // ----------------------------------------------------------------------- //
   }

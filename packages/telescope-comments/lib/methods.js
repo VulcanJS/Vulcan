@@ -3,7 +3,7 @@
 // -------------------------------------- Submit Comment ------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-function submitComment (comment) {
+Comments.submit = function (comment) {
 
   var userId = comment.userId; // at this stage, a userId is expected
 
@@ -39,9 +39,28 @@ function submitComment (comment) {
   // --------------------- Server-side Async Callbacks --------------------- //
 
   // run all post submit server callbacks on comment object successively
-  Telescope.callbacks.run("commentSubmitAsync", comment, true);
+  Telescope.callbacks.runAsync("commentSubmitAsync", comment);
 
   return comment;
+}
+
+Comments.edit = function (commentId, modifier, comment) {
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  modifier = Telescope.callbacks.run("commentEdit", modifier, comment);
+
+  // ------------------------------ Update ------------------------------ //
+
+  Comments.update(commentId, modifier);
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  Telescope.callbacks.runAsync("commentEditAsync", modifier, comment);
+
+  // ------------------------------ After Update ------------------------------ //
+
+  return Comments.findOne(commentId);
 }
 
 // ------------------------------------------------------------------------------------------- //
@@ -101,7 +120,7 @@ Meteor.methods({
       comment.userId = user._id;
     }
 
-    return submitComment(comment);
+    return Comments.submit(comment);
   },
 
   editComment: function (modifier, commentId) {
@@ -131,21 +150,7 @@ Meteor.methods({
       });
     });
 
-    // ------------------------------ Callbacks ------------------------------ //
-
-    modifier = Telescope.callbacks.run("commentEdit", modifier);
-
-    // ------------------------------ Update ------------------------------ //
-
-    Comments.update(commentId, modifier);
-
-    // ------------------------------ Callbacks ------------------------------ //
-
-    Telescope.callbacks.run("commentEditAsync", commentId, true);
-
-    // ------------------------------ After Update ------------------------------ //
-
-    return Comments.findOne(commentId);
+    Comments.edit(commentId, modifier, comment);
   },
 
   deleteCommentById: function (commentId) {
