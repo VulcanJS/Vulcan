@@ -68,16 +68,15 @@ var addMediaAfterSubmit = function (post) {
 };
 Telescope.callbacks.register("postSubmitAsync", addMediaAfterSubmit);
 
-function updateMediaOnEdit (options) {
-  var oldPost = options.post;
-  var post = options.modifier.$set;
-  if(post.url && post.url !== oldPost.url){
-    var data = getEmbedlyData(post.url);
+function updateMediaOnEdit (modifier, post) {
+  var newUrl = modifier.$set.url;
+  if(newUrl && newUrl !== post.url){
+    var data = getEmbedlyData(newUrl);
     if(!!data && !!data.media.html) {
-      options.$set.media = data.media;
+      modifier.$set.media = data.media;
     }
   }
-  return options;
+  return modifier;
 }
 Telescope.callbacks.register("postEdit", updateMediaOnEdit);
 
