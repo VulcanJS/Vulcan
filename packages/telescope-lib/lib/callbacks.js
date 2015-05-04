@@ -40,7 +40,8 @@ Telescope.callbacks.run = function (hook, item, constant) {
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
     return callbacks.reduce(function(result, callback) {
-      return callback(result);
+      // console.log(callback.name);
+      return callback(result, constant);
     }, item);
 
   } else { // else, just return the item unchanged
@@ -64,6 +65,7 @@ Telescope.callbacks.runAsync = function (hook, item, constant) {
     Meteor.defer(function () {
       // run all post submit server callbacks on post object successively
       callbacks.forEach(function(callback) {
+        // console.log(callback.name);
         callback(item, constant);
       });
     });

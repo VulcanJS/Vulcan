@@ -43,7 +43,7 @@ getEmbedlyData = function (url) {
 // and the thumbnail object if it hasn't already been set
 
 // Async variant that directly modifies the post object with update()
-var addMediaAfterSubmit = function (post) {
+function addMediaAfterSubmit (post) {
   var set = {};
   if(post.url){
     var data = getEmbedlyData(post.url);

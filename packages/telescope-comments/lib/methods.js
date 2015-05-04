@@ -59,9 +59,8 @@ Comments.edit = function (commentId, modifier, comment) {
   Telescope.callbacks.runAsync("commentEditAsync", modifier, comment);
 
   // ------------------------------ After Update ------------------------------ //
-
   return Comments.findOne(commentId);
-}
+};
 
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------- Methods ----------------------------------------- //

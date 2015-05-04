@@ -23,18 +23,18 @@ AutoForm.hooks({
         // ------------------------------ Callbacks ------------------------------ //
 
         // run all post edit client callbacks on modifier object successively
-        comment = Telescope.callbacks.run("commentEditClient", modifier, comment);
-
-        return comment;
+        modifier = Telescope.callbacks.run("commentEditClient", modifier, comment);
+        return modifier;
       }
     },
 
-    onSuccess: function(operation, comment) {
+    onSuccess: function(formType, comment) {
+      comment = this.currentDoc;
       Events.track("edit comment", {'commentId': comment._id});
       Router.go('post_page', {_id: comment.postId});
     },
 
-    onError: function(operation, error) {
+    onError: function(formType, error) {
       console.log(error);
       Messages.flash(error.reason.split('|')[0], "error"); // workaround because error.details returns undefined
       Messages.clearSeen();
