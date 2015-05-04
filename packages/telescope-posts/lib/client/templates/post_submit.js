@@ -10,9 +10,9 @@ AutoForm.hooks({
     before: {
       method: function(doc) {
 
-        this.template.$('button[type=submit]').addClass('loading');
-
         var post = doc;
+
+        this.template.$('button[type=submit]').addClass('loading');
 
         // ------------------------------ Checks ------------------------------ //
 

@@ -1,5 +1,5 @@
 getEmbedlyData = function (url) {
-  var data = {}
+  var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
   var embedlyKey = Settings.get('embedlyKey');
   var thumbnailWidth = Settings.get('thumbnailWidth', 200);
@@ -65,25 +65,26 @@ var addMediaAfterSubmit = function (post) {
     }
   }
   return post;
-}
+};
 Telescope.callbacks.register("postSubmitAsync", addMediaAfterSubmit);
 
-// TODO: find a way to only do this is URL has actually changed?
-function updateMediaOnEdit (updateObject) {
-  var post = updateObject.$set
-  if(post.url){
+function updateMediaOnEdit (options) {
+  var oldPost = options.post;
+  var post = options.modifier.$set;
+  if(post.url && post.url !== oldPost.url){
     var data = getEmbedlyData(post.url);
-    if(!!data && !!data.media.html)
-      updateObject.$set.media = data.media
+    if(!!data && !!data.media.html) {
+      options.$set.media = data.media;
+    }
   }
-  return updateObject;
+  return options;
 }
 Telescope.callbacks.register("postEdit", updateMediaOnEdit);
 
 
 Meteor.methods({
   testGetEmbedlyData: function (url) {
-    console.log(getEmbedlyData(url))
+    console.log(getEmbedlyData(url));
   },
   getEmbedlyData: function (url) {
     return getEmbedlyData(url);

@@ -31,36 +31,44 @@ Telescope.callbacks.remove = function (hook, functionName) {
  * Successively run all of a hook's callbacks on an item
  * @param {String} hook - The name of the hook
  * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
- * @param {Boolean} async - Whether to run the callback in async mode or not
+ * @param {Object} [constant] - An optional constant that will be passed along to each callback 
  */
-Telescope.callbacks.run = function (hook, item, async) {
+Telescope.callbacks.run = function (hook, item, constant) {
 
-  async = async || false; // default to sync
   var callbacks = Telescope.callbacks[hook];
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
-    if (async) { // run callbacks in async mode, without returning anything
-
-      if (Meteor.isServer) {
-        // use defer to avoid holding up client
-        Meteor.defer(function () {
-          // run all post submit server callbacks on post object successively
-          callbacks.forEach(function(callback) {
-            callback(item);
-          });
-        });
-      }
-
-    } else { // else run callbacks in sync mode, and return the modified item
-
-      return callbacks.reduce(function(result, callback) {
-        return callback(result);
-      }, item);
-
-    }
+    return callbacks.reduce(function(result, callback) {
+      return callback(result);
+    }, item);
 
   } else { // else, just return the item unchanged
+    return item;
+  }
+};
+
+/**
+ * Successively run all of a hook's callbacks on an item, in async mode (only works on server)
+ * @param {String} hook - The name of the hook
+ * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
+ * @param {Object} [constant] - An optional constant that will be passed along to each callback 
+ */
+Telescope.callbacks.runAsync = function (hook, item, constant) {
+  
+  var callbacks = Telescope.callbacks[hook];
+
+  if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
+
+    // use defer to avoid holding up client
+    Meteor.defer(function () {
+      // run all post submit server callbacks on post object successively
+      callbacks.forEach(function(callback) {
+        callback(item, constant);
+      });
+    });
+  
+  } else {
     return item;
   }
 };

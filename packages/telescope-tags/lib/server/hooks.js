@@ -20,9 +20,9 @@ function postSubmitCheckCategories (post) {
 }
 Telescope.callbacks.register("submitPost", postSubmitCheckCategories);
 
-function postEditCheckCategories (updateObject) {
-  var post = updateObject.$set;
+function postEditCheckCategories (options) {
+  var post = options.modifier.$set;
   checkCategories(post);
-  return updateObject;
+  return options;
 }
-Telescope.callbacks.register("submitPost", postEditCheckCategories);
+Telescope.callbacks.register("editPost", postEditCheckCategories);
