@@ -1,4 +1,4 @@
-Telescope.modules.register("adminMenu", {
+Telescope.menus.register("adminMenu", {
   route: 'categories',
   label: 'Categories',
   description: 'add_and_remove_categories'
