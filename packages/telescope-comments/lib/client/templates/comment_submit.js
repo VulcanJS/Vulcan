@@ -23,6 +23,12 @@ AutoForm.hooks({
           var parentComment = parent.comment;
           comment.parentCommentId = parentComment._id;
           comment.postId = parentComment.postId;
+
+          if(!parentComment.topLevelCommentId) { // root comment
+            comment.topLevelCommentId = parentComment._id;
+          } else { // nested comment
+            comment.topLevelCommentId = parentComment.topLevelCommentId;
+          }
         } else { // root comment
           var post = parent;
           comment.postId = post._id;
