@@ -66,7 +66,8 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.addFiles([
-    "i18n/en.i18n.json"
+    "i18n/en.i18n.json",
+    "i18n/fr.i18n.json"
   ], ["client", "server"]);
 
   api.export('Users');
