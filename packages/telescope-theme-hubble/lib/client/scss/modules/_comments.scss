@@ -323,3 +323,22 @@
 		padding: 1px 5px;
 	}
 }
+
+.comment-new-heading{
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+.comment-new{
+	.af-defaultFieldGroup{
+		margin-bottom: 0;
+		.form-group{
+			label{
+				display: none;
+			}
+			.controls{
+				margin-left: 0;
+			}
+		}
+	}
+}
