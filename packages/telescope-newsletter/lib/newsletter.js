@@ -172,7 +172,7 @@ var autoSubscribe = {
 Settings.registerField(autoSubscribe);
 
 // create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
-Telescope.viewParameters.campaign = function (terms) {
+Posts.views.register("campaign", function (terms) {
   return {
     find: {
       scheduledAt: {$exists: false},
@@ -182,7 +182,7 @@ Telescope.viewParameters.campaign = function (terms) {
     },
     options: {sort: {sticky: -1, score: -1}}
   };
-};
+});
 
 Telescope.modules.register("hero", {
   template: 'newsletterBanner',

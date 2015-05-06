@@ -34,7 +34,7 @@ Telescope.modules.register("profileEdit", {
   order: 5
 });
 
-Telescope.viewParameters.userSubscribedPosts = function (terms) {
+Posts.views.register("userSubscribedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId),
       postsIds = [];
 
@@ -45,7 +45,7 @@ Telescope.viewParameters.userSubscribedPosts = function (terms) {
     find: {_id: {$in: postsIds}},
     options: {limit: 5, sort: {postedAt: -1}}
   };
-}
+});
 
 var hasSubscribedItem = function (item, user) {
   return item.subscribers && item.subscribers.indexOf(user._id) != -1;

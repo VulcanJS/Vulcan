@@ -60,7 +60,6 @@ Package.onUse(function (api) {
     'lib/autolink.js',
     'lib/themes.js',
     'lib/menus.js',
-    'lib/parameters.js',
     'lib/base.js',
     'lib/colors.js',
     'lib/icons.js'

@@ -40,7 +40,7 @@ Meteor.startup(function() {
 });
 
 // search post list parameters
-Telescope.viewParameters.search = function (terms, baseParameters) {
+Posts.views.register("search", function (terms, baseParameters) {
   // if query is empty, just return parameters that will result in an empty collection
   if(typeof terms.query === 'undefined' || !terms.query)
     return {find:{_id: 0}};
@@ -55,4 +55,4 @@ Telescope.viewParameters.search = function (terms, baseParameters) {
     }
   });
   return parameters;
-};
+});

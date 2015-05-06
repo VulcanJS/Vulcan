@@ -13,6 +13,19 @@ Meteor.startup(function () {
       this.next();
     },
 
+    data: function () {
+      var terms = {
+        view: "category",
+        limit: this.params.limit || Settings.get('postsPerPage', 10),
+        category: this.params.slug
+      };
+
+      // note: the post list controller template will handle all subscriptions, so we just need to pass in the terms
+      return {
+        terms: terms
+      };
+    },
+
     getCurrentCategory: function () {
       return Categories.findOne({slug: this.params.slug});
     },

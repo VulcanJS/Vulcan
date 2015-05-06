@@ -1,14 +1,19 @@
 Meteor.startup(function () {
 
   Posts.controllers.search = Posts.controllers.list.extend({
+
     view: 'search',
+    
     showViewsNav: false,
+    
     getTitle: function() {
       return i18n.t("Search") + ' - ' + Settings.get('title', "Telescope");
     },
+    
     getDescription: function() {
       return Settings.get('description');
     },
+    
     onBeforeAction: function() {
       var query = this.params.query;
       if ('q' in query) {
@@ -24,6 +29,17 @@ Meteor.startup(function () {
         }
       }
       this.next();
+    },
+
+    data: function () {
+      
+      var terms = {
+        view: "search",
+        limit: this.params.limit || Settings.get('postsPerPage', 10),
+        query: Session.get("searchQuery")
+      };
+      
+      return terms;
     }
   });
 

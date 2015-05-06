@@ -19,13 +19,8 @@ Posts.controllers.list = RouteController.extend({
 
     var terms = {
       view: this.view,
-      limit: this.params.limit || Settings.get('postsPerPage', 10),
-      category: this.params.slug
+      limit: this.params.limit || Settings.get('postsPerPage', 10)
     };
-
-    if(Meteor.isClient) {
-      terms.query = Session.get("searchQuery");
-    }
 
     // console.log('----------------- router running');
 

@@ -4,7 +4,7 @@ Telescope.menus.register("viewsMenu", {
   description: 'posts_of_a_single_day'
 });
 
-Telescope.viewParameters.singleday = function (terms) {
+Posts.views.register("singleday", function (terms) {
   return {
     find: {
       postedAt: {
@@ -16,4 +16,4 @@ Telescope.viewParameters.singleday = function (terms) {
       sort: {sticky: -1, score: -1}
     }
   };
-};
+});

@@ -42,13 +42,13 @@ Categories.before.insert(function (userId, doc) {
 });
 
 // category post list parameters
-Telescope.viewParameters.category = function (terms) {
+Posts.views.register("category", function (terms) {
   var categoryId = Categories.findOne({slug: terms.category})._id;
   return {
     find: {'categories': {$in: [categoryId]}} ,
     options: {sort: {sticky: -1, score: -1}} // for now categories views default to the "top" view
   };
-};
+});
 
 Meteor.startup(function () {
   Categories.allow({

@@ -11,11 +11,6 @@ SimpleSchema.extendOptions({
   // editableBy: Match.Optional(String)
 });
 
-
-// ------------------------------------- Views -------------------------------- //
-
-STATUS_APPROVED = 2;
-
 // ------------------------------ Dynamic Templates ------------------------------ //
 
 templates = {}
