@@ -25,6 +25,7 @@ Package.onUse(function (api) {
     'lib/helpers.js',
     'lib/menu.js',
     'lib/pubsub.js',
+    'lib/methods.js',
     'lib/routes.js'
   ], ['client', 'server']);
 
@@ -60,7 +61,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/publications.js',
-    'lib/server/stuff.js'
+    'lib/server/create_user.js'
   ], ['server']);
 
   api.export('Users');
