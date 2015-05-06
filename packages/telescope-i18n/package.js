@@ -15,7 +15,6 @@ Package.onUse(function (api) {
   api.addFiles(['i18n.js'], ['client', 'server']);
 
   api.export([
-    'i18n',
-    'setLanguage'
+    'i18n'
   ]);
 });
