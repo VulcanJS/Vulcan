@@ -18,20 +18,17 @@ Accounts.onCreateUser(function(options, user){
   };
   user = _.extend(user, userProperties);
 
-  // set email on profile
-  if (options.email)
-    user.profile.email = options.email;
+  // set email on profile, and use it to generate email hash
+  if (options.email) {
+    user.telescope.email = options.email;
+    user.telescope.emailHash = Gravatar.hash(options.email);
+  }
 
-  // if email is set, use it to generate email hash
-  if (Users.getEmail(user))
-    user.telescope.email_hash = Users.getEmailHash(user);
-
-  // set username on profile
-  if (!user.profile.username)
-    user.profile.username = user.username;
+  // set username on telescope
+  user.telescope.username = user.username;
 
   // create slug from username
-  user.telescope.slug = Telescope.utils.slugify(Users.getUserName(user));
+  user.telescope.slug = Telescope.utils.slugify(user.telescope.username);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
@@ -59,7 +56,7 @@ Meteor.methods({
       userId,
       {$set: {
           emails: [{address: newEmail, verified: false}],
-          email_hash: Gravatar.hash(newEmail),
+          emailHash: Gravatar.hash(newEmail),
           // Just in case this gets called from somewhere other than /client/views/users/user_edit.js
           "profile.email": newEmail
         }

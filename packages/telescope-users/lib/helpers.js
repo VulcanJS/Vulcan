@@ -78,8 +78,8 @@ Users.getTwitterNameById = function (userId) {
 };
 
 Users.getEmail = function (user) {
-  if(user.profile && user.profile.email){
-    return user.profile.email;
+  if(user.telescope && user.telescope.email){
+    return user.telescope.email;
   }else{
     return null;
   }

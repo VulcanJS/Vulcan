@@ -1,4 +1,4 @@
 Avatar.options = {
   fallbackType: 'initials',
-  emailHashProperty: 'email_hash'
+  emailHashProperty: 'telescope.emailHash'
 };

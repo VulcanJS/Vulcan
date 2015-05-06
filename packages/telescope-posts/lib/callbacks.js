@@ -27,7 +27,7 @@ function afterPostSubmitOperations (post) {
   var userId = post.userId,
       postAuthor = Meteor.users.findOne(userId);
 
-  Meteor.users.update({_id: userId}, {$inc: {postCount: 1}});
+  Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
   Telescope.upvoteItem(Posts, post, postAuthor);
   return post;
 }

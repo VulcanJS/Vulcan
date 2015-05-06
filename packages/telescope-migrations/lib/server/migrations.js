@@ -558,6 +558,23 @@ var migrationsList = {
     });
     return i;
   },
+  migrateEmailHash: function () {
+    var i = 0;
+    var allUsers = Meteor.users.find({$and: [{"email_hash": {$exists: true}}, {"telescope.emailHash": {$exists: false}}]});
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      i++;
+
+      console.log('> Updating user '+user._id+' (' + user.username + ')');
+
+      var emailHash = user.email_hash;
+      if (!!emailHash) {
+        Meteor.users.update(user._id, {$set: {"telescope.emailHash": emailHash}});
+      }
+    });
+    return i;
+  },
 };
 
 // TODO: normalize categories?

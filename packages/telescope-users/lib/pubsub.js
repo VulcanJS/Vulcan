@@ -22,7 +22,7 @@ Users.pubsub.publicProperties = { // true means exposed
   'services.twitter.screenName': true,
   'services.github.screenName': true, // Github is not really used, but there are some mentions to it in the code
   'telescope.commentCount': true,
-  'telescope.email_hash': true,
+  'telescope.emailHash': true,
   'telescope.isInvited': true,
   'telescope.karma': true,
   'telescope.postCount': true,
@@ -53,7 +53,7 @@ Users.pubsub.hiddenProperties = {
  */
 Users.pubsub.avatarProperties = {
   _id: true,
-  'telescope.email_hash': true,
+  'telescope.emailHash': true,
   'telescope.slug': true,
   username: true,
   'profile.username': true,

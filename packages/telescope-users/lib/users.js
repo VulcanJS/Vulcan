@@ -46,7 +46,6 @@ Telescope.schemas.userData = new SimpleSchema({
   },
   email: {
     type: String,
-    regEx: /^[a-zA-Z]{2,25}$/,
     optional: true,
     editableBy: ["member", "admin"]
   },

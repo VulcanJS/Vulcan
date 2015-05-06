@@ -1,5 +1,5 @@
 getUnsubscribeLink = function(user){
-  return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.email_hash});
+  return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.telescope.emailHash});
 };
 
 // given a notification, return the correct subject and html to send an email
@@ -53,7 +53,7 @@ Meteor.methods({
   unsubscribeUser : function(hash){
     // TO-DO: currently, if you have somebody's email you can unsubscribe them
     // A user-specific salt should be added to the hashing method to prevent this
-    var user = Meteor.users.findOne({email_hash: hash});
+    var user = Meteor.users.findOne({"telescope.emailHash": hash});
     if(user){
       Meteor.users.update(user._id, {
         $set: {
