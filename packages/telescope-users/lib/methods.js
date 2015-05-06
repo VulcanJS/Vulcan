@@ -1,19 +1,40 @@
+var completeUserProfile = function (modifier, userId, user) {
+
+  Meteor.users.update(userId, modifier);
+
+  Telescope.callbacks.runAsync("profileCompletedAsync", modifier, user);
+
+  return Meteor.users.findOne(userId);
+
+};
+
 Meteor.methods({
-  // not used for now
-  changeEmail: function (userId, newEmail) {
-    var user = Meteor.users.findOne(userId);
-    if (Users.can.edit(Meteor.user(), user) !== true) {
-      throw new Meteor.Error("Permission denied");
+  completeUserProfile: function (modifier, userId) {
+    var currentUser = Meteor.user(),
+        user = Users.findOne(userId),
+        schema = Users.simpleSchema()._schema;
+
+    // ------------------------------ Checks ------------------------------ //
+
+    // check that user can edit document
+    if (!user || !Users.can.edit(currentUser, user)) {
+      throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_user'));
     }
-    Meteor.users.update(
-      userId,
-      {$set: {
-          emails: [{address: newEmail, verified: false}],
-          emailHash: Gravatar.hash(newEmail),
-          // Just in case this gets called from somewhere other than /client/views/users/user_edit.js
-          "profile.email": newEmail
+
+    // go over each field and throw an error if it's not editable
+    // loop over each operation ($set, $unset, etc.)
+    _.each(modifier, function (operation) {
+      // loop over each property being operated on
+      _.keys(operation).forEach(function (fieldName) {
+        console.log(fieldName);
+        var field = schema[fieldName];
+        if (!Users.can.editField(user, field, user)) {
+          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
         }
-      }
-    );
+
+      });
+    });
+
+    completeUserProfile(modifier, userId, user);
   }
 });

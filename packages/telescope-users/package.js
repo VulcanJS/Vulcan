@@ -15,6 +15,7 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
+    'package-tap.i18n',
     'lib/namespace.js',
     'lib/roles.js',
     'lib/permissions.js',
@@ -63,6 +64,10 @@ Package.onUse(function (api) {
     'lib/server/publications.js',
     'lib/server/create_user.js'
   ], ['server']);
+
+  api.addFiles([
+    "i18n/en.i18n.json"
+  ], ["client", "server"]);
 
   api.export('Users');
 

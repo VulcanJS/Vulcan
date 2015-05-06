@@ -24,6 +24,7 @@ Telescope.schemas.userData = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
+    required: true,
     editableBy: ["member", "admin"],
     autoform: {
       rows: 5

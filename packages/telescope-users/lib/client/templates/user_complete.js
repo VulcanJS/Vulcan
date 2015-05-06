@@ -13,3 +13,4 @@ Template.user_complete.helpers({
   }
 });
 
+// TODO: handle error case when user validates form with blank fields
