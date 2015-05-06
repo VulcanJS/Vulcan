@@ -21,6 +21,14 @@ Telescope.schemas.comments = new SimpleSchema({
       omit: true // never show this
     }
   },
+  topLevelCommentId: {
+    type: String,
+    editableBy: ["member", "admin"],
+    optional: true,
+    autoform: {
+      omit: true // never show this
+    }
+  },
   createdAt: {
     type: Date,
     optional: true
