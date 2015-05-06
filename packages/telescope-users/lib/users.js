@@ -24,7 +24,10 @@ Telescope.schemas.userData = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
-    editableBy: ["member", "admin"]
+    editableBy: ["member", "admin"],
+    autoform: {
+      rows: 5
+    }
   },
   commentCount: {
     type: Number,
@@ -47,6 +50,7 @@ Telescope.schemas.userData = new SimpleSchema({
   email: {
     type: String,
     optional: true,
+    required: true,
     editableBy: ["member", "admin"]
   },
   emailHash: {

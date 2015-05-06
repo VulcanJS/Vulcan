@@ -5,9 +5,6 @@ Template.userAccount.helpers({
   userFields: function () {
     var fields = Meteor.users.simpleSchema().getEditableFields(Meteor.user());
     return fields;
-  },
-  profileIncomplete : function() {
-    return this && !this.loading && !Users.userProfileComplete(this);
   }
 });
 

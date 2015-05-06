@@ -52,8 +52,8 @@ Package.onUse(function (api) {
     'lib/client/templates/profile/user_upvoted_posts.js',
     'lib/client/templates/sign_out.html',
     'lib/client/templates/user_edit.html',
-    'lib/client/templates/user_email.html',
-    'lib/client/templates/user_email.js',
+    'lib/client/templates/user_complete.html',
+    'lib/client/templates/user_complete.js',
     'lib/client/templates/user_item.html',
     'lib/client/templates/user_item.js',
     'lib/client/templates/user_profile.html'

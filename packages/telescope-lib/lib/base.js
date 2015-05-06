@@ -6,7 +6,8 @@ SimpleSchema.extendOptions({
   editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner
   hidden: Match.Optional(Boolean),     // hidden: true means the field is never shown in a form no matter what
   editableBy: Match.Optional([String]),
-  publishedTo: Match.Optional([String])
+  publishedTo: Match.Optional([String]),
+  required: Match.Optional(Boolean) // required: true means the field is required to have a complete profile
   // editableBy: Match.Optional(String)
 });
 

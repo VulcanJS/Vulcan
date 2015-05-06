@@ -125,7 +125,7 @@ Router._filters = {
     if(!this.ready()) return;
     var user = Meteor.user();
     if (user && ! Users.userProfileComplete(user)){
-      this.render('user_email');
+      this.render('user_complete');
     } else {
       this.next();
     }
