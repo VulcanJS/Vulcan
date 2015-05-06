@@ -7,7 +7,6 @@ for the embedded postsList template. It receives its parameters from a "caller" 
 
 */
 
-
 Template.postsListController.onCreated(function () {
 
   // 1. Initialization (*not* reactive!)
@@ -19,7 +18,14 @@ Template.postsListController.onCreated(function () {
 
   // 2. Autorun
 
-  // will re-run when terms are changed, either by the router or by the template itself
+  // Autorun 1: when terms change, reset the limit
+  instance.autorun(function () {
+    // add a dependency on data context to trigger the autorun
+    var terms = Template.currentData().terms; // ⚡ reactive ⚡
+    instance.postsLimit.set(Settings.get('postsPerPage', 10));
+  });
+
+  // Autorun 2: will re-run when limit or terms are changed
   instance.autorun(function () {
 
     // get terms from data context
@@ -38,10 +44,10 @@ Template.postsListController.onCreated(function () {
     var subscriptionsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
 
     // console.log('// ------ autorun running ------ //');
-    // Tracker.onInvalidate(console.trace.bind(console));
     // console.log("terms: ", terms);
     // console.log("limit: ", postsLimit);
     // console.log("ready: ", subscriptionsReady);
+    // Tracker.onInvalidate(console.trace.bind(console));
 
     // if subscriptions are ready, set terms to subscriptionsTerms
     if (subscriptionsReady) {
