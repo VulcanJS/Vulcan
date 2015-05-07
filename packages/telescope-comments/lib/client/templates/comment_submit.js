@@ -16,8 +16,7 @@ AutoForm.hooks({
         var comment = doc;
 
         this.template.$('button[type=submit]').addClass('loading');
-
-        var parent = Template.parentData(5); // TODO: find a less brittle way to do this
+        var parent = this.formAttributes.parentContext;
 
         if (!!parent.comment) { // child comment
           var parentComment = parent.comment;

@@ -2,7 +2,7 @@
   {{#if canComment}}
     <div class="comment-new module">
       <h4 class="comment-new-heading">{{_ "add_comment"}}</h4>
-      {{> quickForm collection="Comments" id="submitCommentForm" template="bootstrap3-horizontal" input-col-class="controls" type="method" meteormethod="submitComment" fields=commentFields}}
+      {{> quickForm collection="Comments" id="submitCommentForm" template="bootstrap3-horizontal" input-col-class="controls" type="method" meteormethod="submitComment" fields=commentFields parentContext=this}}
     </div>
   {{else}}
     <p>{{reason}}</p>
