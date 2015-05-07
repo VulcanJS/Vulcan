@@ -29,9 +29,9 @@ Meteor.Collection.prototype.removeField = function (fieldName) {
 /**
  * Check if an operation is allowed
  * @param {Object} collection – the collection to which the document belongs
- * @param {String} userId – the userId of the user performing the operation
+ * @param {string} userId – the userId of the user performing the operation
  * @param {Object} document – the document being modified
- * @param {[String]} fieldNames – the names of the fields being modified
+ * @param {string[]} fieldNames – the names of the fields being modified
  * @param {Object} modifier – the modifier
  */
 Telescope.allowCheck = function (collection, userId, document, fieldNames, modifier) {

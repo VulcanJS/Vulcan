@@ -1,3 +1,7 @@
+/**
+ * Template modules let you insert templates in specific zones in the app's layout. 
+ * @namespace Telescope.modules
+ */
 
 Telescope.modules = {};
 
@@ -43,6 +47,7 @@ Telescope.modules.remove = function (zone, template) {
 /**
  * Retrieve an array containing all modules for a zone
  * @param {string} zone - The name of the zone
+ * @returns {Object[]} Returns a sorted array of the zone's modules
  */
 Telescope.modules.get = function (zone) {
   return _.sortBy(Telescope.modules[zone], "order");

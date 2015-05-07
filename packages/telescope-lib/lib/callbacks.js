@@ -1,4 +1,7 @@
-
+/**
+ * Callback hooks provide an easy way to add extra steps to common operations. 
+ * @namespace Telescope.callbacks
+ */
 Telescope.callbacks = {};
 
 /**
@@ -31,7 +34,8 @@ Telescope.callbacks.remove = function (hook, functionName) {
  * Successively run all of a hook's callbacks on an item
  * @param {String} hook - The name of the hook
  * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
- * @param {Object} [constant] - An optional constant that will be passed along to each callback 
+ * @param {Object} [constant] - An optional constant that will be passed along to each callback
+ * @returns {Object} Returns the item after it's been through all the callbacks for this hook
  */
 Telescope.callbacks.run = function (hook, item, constant) {
 
