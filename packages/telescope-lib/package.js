@@ -10,7 +10,8 @@ Package.onUse(function (api) {
   
   var packages = [
     'standard-app-packages',
-    'accounts-base',
+    'service-configuration',
+    'accounts-ui',
     'accounts-base',
     'accounts-password',
     'accounts-twitter',

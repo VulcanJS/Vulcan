@@ -596,6 +596,21 @@ var migrationsList = {
     }
     console.log("---------------------");
     return i;
+  },
+  migrateDisplayName: function () {
+    var i = 0;
+    var allUsers = Meteor.users.find({"telescope.displayName": {$exists: false}});
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      i++;
+
+      console.log('> Updating user '+user._id+' (' + user.username + ')');
+      var displayName = user.profile.name || user.profile.username;
+      console.log('name: ', displayName);
+      Meteor.users.update(user._id, {$set: {"telescope.displayName": displayName}});
+    });
+    return i;
   }
 };
 

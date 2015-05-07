@@ -28,8 +28,8 @@ function setupUser (user, options) {
     user.telescope.emailHash = Gravatar.hash(options.email);
   }
 
-  // set username on telescope
-  user.telescope.username = user.username;
+  // set displayName on telescope
+  user.telescope.displayName = user.username;
 
   // create slug from username
   user.telescope.slug = Telescope.utils.slugify(user.telescope.username);

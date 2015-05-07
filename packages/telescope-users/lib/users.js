@@ -34,9 +34,8 @@ Telescope.schemas.userData = new SimpleSchema({
     type: Number,
     optional: true
   },
-  displayName: {
+  displayName: { // can contain spaces and special characters, doesn't need to be unique
     type: String,
-    regEx: /^[a-zA-Z-]{2,25}$/,
     optional: true,
     editableBy: ["member", "admin"]
   },
