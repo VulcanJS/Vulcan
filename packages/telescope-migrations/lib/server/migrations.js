@@ -130,6 +130,7 @@ var migrationsList = {
       console.log('> Updating user '+user._id+' ('+user.username+')');
 
       var properties = {};
+      properties.telescope = {};
       // update user slug
       if(Users.getUserName(user))
         properties.slug = Telescope.utils.slugify(Users.getUserName(user));
@@ -140,11 +141,11 @@ var migrationsList = {
 
       // update postCount
       var postsByUser = Posts.find({userId: user._id});
-      properties.postCount = postsByUser.count();
+      properties.telescope.postCount = postsByUser.count();
 
       // update commentCount
       var commentsByUser = Comments.find({userId: user._id});
-      properties.commentCount = commentsByUser.count();
+      properties.telescope.commentCount = commentsByUser.count();
 
       Meteor.users.update(user._id, {$set:properties});
 
@@ -321,16 +322,6 @@ var migrationsList = {
     });
     return i;
   },
-  createVotes: function () { // create empty user.votes object
-    var i = 0;
-    Meteor.users.find({votes: {$exists : false}}).forEach(function (user) {
-      i++;
-      console.log("User: "+user._id);
-      Meteor.users.update(user._id, {$set: {votes: {}}}, {multi: true, validate: false});
-      console.log("---------------------");
-    });
-    return i;
-  },
   moveVotesFromProfile: function () {
     var i = 0;
     Meteor.users.find().forEach(function (user) {
@@ -338,10 +329,10 @@ var migrationsList = {
       console.log("User: "+user._id);
       Meteor.users.update(user._id, {
         $rename: {
-          'profile.upvotedPosts': 'votes.upvotedPosts',
-          'profile.downvotedPosts': 'votes.downvotedPosts',
-          'profile.upvotedComments': 'votes.upvotedComments',
-          'profile.downvotedComments': 'votes.downvotedComments'
+          'profile.upvotedPosts': 'telescope.upvotedPosts',
+          'profile.downvotedPosts': 'telescope.downvotedPosts',
+          'profile.upvotedComments': 'telescope.upvotedComments',
+          'profile.downvotedComments': 'telescope.downvotedComments'
         }
       }, {multi: true, validate: false});
       console.log("---------------------");
@@ -396,7 +387,7 @@ var migrationsList = {
       i++;
       var commentCount = Comments.find({userId: user._id}).count();
       console.log("User: " + user._id);
-      Meteor.users.update(user._id, {$unset: {data: ""}, $set: {'commentCount': commentCount}});
+      Meteor.users.update(user._id, {$set: { telescope : {'commentCount': commentCount}}});
       console.log("---------------------");
     });
     return i;

@@ -13,7 +13,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
   };
 
   if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/telescope-getting-started/content/images/" + thumbnail;
+    post.thumbnailUrl = "/packages/telescope_getting-started/content/images/" + thumbnail;
 
   Posts.submit(post);
 };
@@ -31,7 +31,7 @@ var createComment = function (slug, username, body, parentBody) {
   if (parentComment)
     comment.parentCommentId = parentComment._id;
 
-  Meteor.call('submitComment', comment);
+  Comments.submit(comment);
 };
 
 var createDummyUsers = function () {
@@ -112,6 +112,6 @@ Meteor.startup(function () {
     createDummyUsers();
     createDummyPosts();
     createDummyComments();
-    logEvent({name: 'createDummyContent', unique: true, important: true});
+    Events.log({name: 'createDummyContent', unique: true, important: true});
   }
 });
