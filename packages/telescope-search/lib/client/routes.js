@@ -39,7 +39,7 @@ Meteor.startup(function () {
         query: Session.get("searchQuery")
       };
       
-      return terms;
+      return {terms: terms};
     }
   });
 
