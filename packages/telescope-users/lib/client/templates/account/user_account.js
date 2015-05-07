@@ -1,4 +1,4 @@
-Template.userAccount.helpers({
+Template.user_account.helpers({
   user: function  () {
     return Meteor.user();
   },

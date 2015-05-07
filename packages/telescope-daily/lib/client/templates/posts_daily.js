@@ -19,8 +19,7 @@ Meteor.startup(function () {
           view: "singleday",
           date: this.date,
           after: moment(this.date).startOf('day').toDate(),
-          before: moment(this.date).endOf('day').toDate(),
-          showDateNav: false
+          before: moment(this.date).endOf('day').toDate()
         }
       };
       return context;

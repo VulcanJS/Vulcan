@@ -1,53 +1,13 @@
-Template.userUpvotedPosts.created = function () {
-
-  var user = this.data;
-  var instance = this;
-
-  // initialize the terms and posts local reactive variables
-  instance.terms = new ReactiveVar({
-    view: 'userUpvotedPosts',
-    userId: user._id,
-    limit: 5
-  });
-  instance.posts = new ReactiveVar({});
-
-  // will re-run when the "terms" local reactive variable changes
-  this.autorun(function () {
-
-    // get the new terms and generate new parameters from them
-    var terms = instance.terms.get();
-    var parameters = Posts.getSubParams(terms);
-
-    // subscribe to the userPosts publication
-    instance.subscription = Meteor.subscribe('userUpvotedPosts', terms);
-
-    // update the instance's "posts" cursor
-    instance.posts.set(Posts.find(parameters.find, parameters.options));
-
-  });
-};
-
-Template.userUpvotedPosts.helpers({
-  posts: function () {
+Template.user_upvoted_posts.helpers({
+  arguments: function () {
     var user = this;
-    var posts = Template.instance().posts.get().fetch();
-    posts = _.map(posts, function (post) {
-      var vote = _.findWhere(user.telescope.upvotedPosts, {itemId: post._id});
-      post.votedAt = vote.votedAt;
-      return post;
-    });
-    return posts;
-  },
-  hasMorePosts: function () {
-    return Template.instance().posts.get().count() >= Template.instance().terms.get().limit;
-  }
-});
-
-Template.userUpvotedPosts.events({
-  'click .upvotedposts-more': function (e) {
-    e.preventDefault();
-    var terms = Template.instance().terms.get();
-    terms.limit += 5;
-    Template.instance().terms.set(terms)
+    return {
+      template: "posts_list_compact",
+      terms: {
+        view: 'userUpvotedPosts',
+        userId: user._id,
+        limit: 5
+      }
+    }
   }
 });

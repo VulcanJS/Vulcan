@@ -68,6 +68,8 @@ Package.onUse(function (api) {
     'lib/client/templates/post_view_nav.js',
     'lib/client/templates/posts_list/posts_list.html',
     'lib/client/templates/posts_list/posts_list.js',
+    'lib/client/templates/posts_list/posts_list_compact.html',
+    'lib/client/templates/posts_list/posts_list_compact.js',
     'lib/client/templates/posts_list/posts_list_controller.html',
     'lib/client/templates/posts_list/posts_list_controller.js'
   ], ['client']);

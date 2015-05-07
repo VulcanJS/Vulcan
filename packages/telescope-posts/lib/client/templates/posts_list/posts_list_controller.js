@@ -59,6 +59,9 @@ Template.postsListController.onCreated(function () {
 });
 
 Template.postsListController.helpers({
+  template: function () {
+    return !!this.template? this.template: "posts_list";
+  },
   context: function () {
 
     var instance = Template.instance();

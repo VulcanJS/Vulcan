@@ -1,30 +1,30 @@
 
 Telescope.modules.register("profileDisplay", [
   {
-    template: 'userInfo',
+    template: 'user_info',
     order: 1
   },
   {
-    template: 'userPosts',
+    template: 'user_posts',
     order: 2
   },
   {
-    template: 'userUpvotedPosts',
+    template: 'user_upvoted_posts',
     order: 3
   },
   {
-    template: 'userDownvotedPosts',
+    template: 'user_downvoted_posts',
     order: 5
   },
   {
-    template: 'userComments',
+    template: 'user_comments',
     order: 5
   }
 ]);
 
 Telescope.modules.register("profileEdit", [
   {
-    template: 'userAccount',
+    template: 'user_account',
     order: 1
   }
 ]);
