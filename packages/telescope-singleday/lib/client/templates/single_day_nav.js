@@ -7,7 +7,7 @@ var getDateURL = function (moment) {
 };
 
 
-Template.singleDayNav.onCreated(function(){
+Template.single_day_nav.onCreated(function(){
 
   $(document).unbind('keyup'); //remove any potential existing bindings to avoid duplicates
 
@@ -25,7 +25,7 @@ Template.singleDayNav.onCreated(function(){
 
 });
 
-Template.singleDayNav.helpers({
+Template.single_day_nav.helpers({
   currentDate: function(){
     var currentDate = moment(this.terms.date);
     var today = moment(new Date());

@@ -1,35 +1,21 @@
 // Controller for post digest
 
-PostsSingledayController = RouteController.extend({
+Posts.controllers.singleday = Posts.controllers.list.extend({
 
-  template: 'singleDay',
-
-  onBeforeAction: function () {
-    this.render('postListTop', {to: 'postListTop'});
-    this.next();
-  },
+  view: 'singleday',
+  
+  template: 'single_day', // use single_day template to get prev/next day navigation
 
   data: function() {
     var currentDate = this.params.day ? new Date(this.params.year, this.params.month-1, this.params.day) : Session.get('today');
-    return {
-      terms: {
-        view: 'singleday',
-        date: currentDate,
-        after: moment(currentDate).startOf('day').toDate(),
-        before: moment(currentDate).endOf('day').toDate()
-      }
+    var terms = {
+      view: 'singleday',
+      date: currentDate,
+      after: moment(currentDate).startOf('day').toDate(),
+      before: moment(currentDate).endOf('day').toDate()
     };
+    return {terms: terms};
   },
-
-  getTitle: function () {
-    return i18n.t('single_day');
-  },
-
-  getDescription: function () {
-    return i18n.t('posts_of_a_single_day');
-  },
-
-  fastRender: true
 
 });
 
@@ -39,12 +25,12 @@ Meteor.startup(function () {
 
   Router.route('/day/:year/:month/:day', {
     name: 'postsSingleDay',
-    controller: PostsSingledayController
+    controller: Posts.controllers.singleday
   });
 
   Router.route('/day', {
     name: 'postsSingleDayDefault',
-    controller: PostsSingledayController
+    controller: Posts.controllers.singleday
   });
 
 });
