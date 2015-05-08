@@ -8,7 +8,7 @@ Template.user_subscribed_posts.helpers({
         fieldLabel: i18n.t("subscribedAt"),
         fieldValue: function (post) {
           var user = this.currentUser;
-          var item = _.findWhere(user.subscribedItems.Posts, {itemId: post._id});
+          var item = _.findWhere(user.telescope.subscribedItems.Posts, {itemId: post._id});
           return moment(item.subscribedAt).format("MM/DD/YYYY, HH:mm");
         }
       },

@@ -1,6 +1,6 @@
 <template name="userInvites">
   <div class="grid-small grid-block dialog admin">
-    <h2>Invites</h2>
+    <h3>Invites</h3>
     
     {{#if canCurrentUserInvite}}
       {{#autoForm schema=invitesSchema id="inviteForm" class="form-block" type="method" meteormethod="inviteUser"}}
