@@ -22,12 +22,14 @@ Comments.views.baseParameters = {
 
 Comments.views.register("postComments", function (terms) {
   return {
-    find: {postId: terms.postId}
+    find: {postId: terms.postId},
+    options: {sort: {score: -1, postedAt: -1}}
   };
 });
 
 Comments.views.register("userComments", function (terms) {
   return {
-    find: {userId: terms.userId}
+    find: {userId: terms.userId},
+    options: {sort: {postedAt: -1}}
   };
 });

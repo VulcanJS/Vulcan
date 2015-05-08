@@ -20,6 +20,8 @@ Package.onUse(function (api) {
     'lib/comments.js',
     'lib/methods.js',
     'lib/callbacks.js',
+    'lib/views.js',
+    'lib/parameters.js',
     'lib/routes.js'
   ], ['client', 'server']);
 
@@ -33,7 +35,13 @@ Package.onUse(function (api) {
     'lib/client/templates/comment_list.html',
     'lib/client/templates/comment_list.js',
     'lib/client/templates/comment_reply.html',
-    'lib/client/templates/comment_reply.js'
+    'lib/client/templates/comment_reply.js',
+    'lib/client/templates/comments_list/comments_list.html',
+    'lib/client/templates/comments_list/comments_list.js',
+    'lib/client/templates/comments_list/comments_list_compact.html',
+    'lib/client/templates/comments_list/comments_list_compact.js',
+    'lib/client/templates/comments_list/comments_list_controller.html',
+    'lib/client/templates/comments_list/comments_list_controller.js',
   ], ['client']);
 
   api.addFiles([

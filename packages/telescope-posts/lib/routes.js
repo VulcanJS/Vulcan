@@ -92,7 +92,7 @@ Posts.controllers.page = RouteController.extend({
   waitOn: function() {
     this.postSubscription = coreSubscriptions.subscribe('singlePost', this.params._id);
     this.postUsersSubscription = coreSubscriptions.subscribe('postUsers', this.params._id);
-    this.commentSubscription = coreSubscriptions.subscribe('postComments', this.params._id);
+    this.commentSubscription = coreSubscriptions.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
   },
 
   post: function() {

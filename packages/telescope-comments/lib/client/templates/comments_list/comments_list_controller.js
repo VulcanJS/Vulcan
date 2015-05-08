@@ -14,7 +14,7 @@ Template.commentsListController.onCreated(function () {
 
   // initialize the reactive variables
   instance.terms = new ReactiveVar(instance.data.terms);
-  instance.commentsLimit = new ReactiveVar(Settings.get('commentsPerPage', 10));
+  instance.commentsLimit = new ReactiveVar(Settings.get('commentsPerPage', 5));
 
   // 2. Autorun
 
@@ -22,7 +22,7 @@ Template.commentsListController.onCreated(function () {
   instance.autorun(function () {
     // add a dependency on data context to trigger the autorun
     var terms = Template.currentData().terms; // ⚡ reactive ⚡
-    instance.commentsLimit.set(Settings.get('commentsPerPage', 10));
+    instance.commentsLimit.set(Settings.get('commentsPerPage', 5));
   });
 
   // Autorun 2: will re-run when limit or terms are changed
@@ -38,14 +38,14 @@ Template.commentsListController.onCreated(function () {
     var subscriptionTerms = _.extend(_.clone(terms), {limit: commentsLimit}); // extend terms with limit
 
     // use this new object to subscribe
-    var commentsSubscription = instance.subscribe('userComments', subscriptionTerms);
+    var commentsSubscription = instance.subscribe('commentsList', subscriptionTerms);
 
     var subscriptionsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
 
-    console.log('// ------ autorun running ------ //');
-    console.log("terms: ", terms);
-    console.log("limit: ", commentsLimit);
-    console.log("ready: ", subscriptionsReady);
+    // console.log('// ------ autorun running ------ //');
+    // console.log("terms: ", terms);
+    // console.log("limit: ", commentsLimit);
+    // console.log("ready: ", subscriptionsReady);
     // Tracker.onInvalidate(console.trace.bind(console));
 
     // if subscriptions are ready, set terms to subscriptionsTerms
@@ -91,7 +91,7 @@ Template.commentsListController.helpers({
 
         // increase limit by 5 and update it
         var limit = instance.commentsLimit.get();
-        limit += Settings.get('commentsPerPage', 10);
+        limit += Settings.get('commentsPerPage', 5);
         instance.commentsLimit.set(limit);
 
       },
@@ -103,7 +103,7 @@ Template.commentsListController.helpers({
 
     };
 
-    console.log(data)
+    // console.log(data)
     return data;
   }
 });
