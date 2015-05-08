@@ -23,6 +23,9 @@ hasMorePosts (Boolean)
 loadMoreHandler (Function)
 | What to do when the user clicks "load more"
 
+postsField (Object)
+| An object cont
+
 -->
 
 <template name="posts_list_compact">
@@ -30,13 +33,13 @@ loadMoreHandler (Function)
     <thead>
       <tr>
         <td>Post</td>
-        <td>Downvoted At</td>
+        <td>{{fieldLabel}}</td>
       </tr>
     </thead>
     {{#each postsCursor}}
       <tr>
         <td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
-        <td>{{formatDate votedAt "MM/DD/YYYY, HH:mm"}}</td>
+        <td>{{fieldValue}}</td>
       </tr>
     {{/each}}
     {{#if hasMorePosts}}

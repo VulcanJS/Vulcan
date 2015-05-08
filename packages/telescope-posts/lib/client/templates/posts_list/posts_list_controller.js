@@ -62,7 +62,9 @@ Template.postsListController.helpers({
   template: function () {
     return !!this.template? this.template: "posts_list";
   },
-  context: function () {
+  data: function () {
+
+    var context = this;
 
     var instance = Template.instance();
 
@@ -73,7 +75,7 @@ Template.postsListController.helpers({
     var parameters = Posts.getSubParams(terms);
     var postsCursor = Posts.find(parameters.find, parameters.options);
 
-    var context = {
+    var data = {
 
       // posts cursor
       postsCursor: postsCursor,
@@ -96,10 +98,12 @@ Template.postsListController.helpers({
       },
 
       // the current instance
-      controllerInstance: instance
+      controllerInstance: instance,
+
+      controllerOptions: context.options // pass any options on to the template
 
     };
 
-    return context;
+    return data;
   }
 });

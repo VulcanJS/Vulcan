@@ -1,11 +1,12 @@
-
-
-// object containing post list view parameters
+/**
+ * Post views are filters used for subscribing to and viewing posts
+ * @namespace Posts.views
+ */
 Posts.views = {};
 
 /**
- * Add a module to a template zone
- * @param {string} viewName - The name of the zone
+ * Add a post view
+ * @param {string} viewName - The name of the view
  * @param {function} [viewFunction] - The function used to calculate query terms. Takes terms and baseParameters arguments
  */
 Posts.views.register = function (viewName, viewFunction) {
