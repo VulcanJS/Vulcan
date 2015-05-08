@@ -3,31 +3,39 @@ Telescope.modules.register("thread", {
   order: 10
 });
 
-Posts.registerField(
-  {
-    propertyName: 'subscribers',
-    propertySchema: {
-      type: [String],
-      optional: true,
-      autoform: {
-        omit: true
-      }
+Users.registerField({
+  propertyName: 'telescope.subscribedItems',
+  propertySchema: {
+    type: [Object],
+    optional: true,
+    blackbox: true,
+    autoform: {
+      omit: true
     }
   }
-);
+});
 
-Posts.registerField(
-  {
-    propertyName: 'subscriberCount',
-    propertySchema: {
-      type: Number,
-      optional: true,
-      autoform: {
-        omit: true
-      }
+Posts.registerField({
+  propertyName: 'subscribers',
+  propertySchema: {
+    type: [String],
+    optional: true,
+    autoform: {
+      omit: true
     }
   }
-);
+});
+
+Posts.registerField({
+  propertyName: 'subscriberCount',
+  propertySchema: {
+    type: Number,
+    optional: true,
+    autoform: {
+      omit: true
+    }
+  }
+});
 
 Telescope.modules.register("profileEdit", {
   template: 'userSubscribedPosts',
