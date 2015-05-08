@@ -1,7 +1,7 @@
 // accept either an ID or a slug
 Meteor.publish('singleUser', function(idOrSlug) {
   var findById = Meteor.users.findOne(idOrSlug);
-  var findBySlug = Meteor.users.findOne({slug: idOrSlug});
+  var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
   var options = Users.is.adminById(this.userId) ? {} : {fields: Users.pubsub.publicProperties};
   if (user) {

@@ -4,8 +4,7 @@
  * @param {Object} options – user options
  */
 function setupUser (user, options) {
-   // ------------------------------ Properties ------------------------------ //
-
+  // ------------------------------ Properties ------------------------------ //
   var userProperties = {
     profile: options.profile || {},
     telescope: {
@@ -22,7 +21,7 @@ function setupUser (user, options) {
   };
   user = _.extend(user, userProperties);
 
-  // set email on profile, and use it to generate email hash
+  // set email on user.telescope, and use it to generate email hash
   if (options.email) {
     user.telescope.email = options.email;
     user.telescope.emailHash = Gravatar.hash(options.email);
@@ -32,7 +31,7 @@ function setupUser (user, options) {
   user.telescope.displayName = user.username;
 
   // create slug from username
-  user.telescope.slug = Telescope.utils.slugify(user.telescope.username);
+  user.telescope.slug = Telescope.utils.slugify(user.username);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
@@ -41,7 +40,7 @@ function setupUser (user, options) {
 
   return user;
 }
-Telescope.callbacks.register("userCreated", setupUser);
+Telescope.callbacks.register("onCreateUser", setupUser);
 
 
 /**

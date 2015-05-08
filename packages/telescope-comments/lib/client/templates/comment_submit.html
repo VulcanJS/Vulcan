@@ -5,6 +5,6 @@
       {{> quickForm collection="Comments" id="submitCommentForm" template="bootstrap3-horizontal" input-col-class="controls" type="method" meteormethod="submitComment" fields=commentFields parentContext=this}}
     </div>
   {{else}}
-    <p>{{reason}}</p>
+    <p class="cannot-comment-message">{{reason}}</p>
   {{/if}}  
 </template>

@@ -12,7 +12,7 @@ Template.comments_list_compact.helpers({
   },
   postTitle: function () {
     var post = Posts.findOne(this.postId);
-    return post.title;
+    return !!post && post.title;
   },
   fieldLabel: function () {
     return this.controllerOptions.fieldLabel;

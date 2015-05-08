@@ -27,7 +27,7 @@ Users.getUserName = function (user) {
 };
 
 Users.getDisplayName = function (user) {
-  return (user.profile && user.profile.username) ? user.profile.username : Users.getUserName(user);
+  return (user.telescope && user.telescope.displayName) ? user.telescope.displayName : Users.getUserName(user);
 };
 
 Users.getDisplayNameById = function (userId) {

@@ -38,7 +38,7 @@ Telescope.modules.register("profileEdit", {
   user.inviteCount = Settings.get('startInvitesCount', 3);
   return user;
 }
-Telescope.callbacks.register("userCreated", setStartingInvites);
+Telescope.callbacks.register("onCreateUser", setStartingInvites);
 
 function checkIfInvited (user) {
   // if the new user has been invited
@@ -61,4 +61,4 @@ function checkIfInvited (user) {
   }
   return user;
 }
-Telescope.callbacks.register("userCreated", checkIfInvited);
+Telescope.callbacks.register("onCreateUser", checkIfInvited);
