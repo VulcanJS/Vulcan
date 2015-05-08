@@ -1,5 +1,5 @@
 Telescope.modules.register("postListTop", {
-  template: 'taglineBanner',
+  template: 'tagline_banner',
   order: 1
 });
 
@@ -8,7 +8,6 @@ var showTaglineBanner = {
   propertySchema: {
     type: Boolean,
     optional: true,
-    label: 'Tagline banner',
     autoform: {
       group: '01_general',
       instructions: 'Show tagline on homepage.'

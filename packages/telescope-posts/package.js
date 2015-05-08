@@ -59,7 +59,6 @@ Package.onUse(function (api) {
     'lib/client/templates/post_item.html',
     'lib/client/templates/post_item.js',
     'lib/client/templates/post_list_top.html',
-    'lib/client/templates/post_list_top.js',
     'lib/client/templates/post_page.html',
     'lib/client/templates/post_page.js',
     'lib/client/templates/post_submit.html',
