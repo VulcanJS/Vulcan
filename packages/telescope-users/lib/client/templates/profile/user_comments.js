@@ -15,6 +15,6 @@ Template.user_comments.helpers({
         userId: user._id,
         limit: 5
       }
-    }
+    };
   }
 });

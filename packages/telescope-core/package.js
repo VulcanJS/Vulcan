@@ -68,8 +68,6 @@ Package.onUse(function(api) {
     'lib/client/templates/errors/no_invite.js',
     'lib/client/templates/errors/no_rights.html',
     'lib/client/templates/errors/not_found.html',
-    'lib/client/templates/forms/quickFormTelescope.html',
-    'lib/client/templates/forms/quickFormTelescope.js',
     'lib/client/templates/forms/urlCustomType.html',
     'lib/client/templates/forms/urlCustomType.js',
     'lib/client/templates/nav/logo.html',
