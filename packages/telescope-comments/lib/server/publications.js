@@ -23,6 +23,22 @@ Meteor.publish('commentPost', function(commentId) {
   return [];
 });
 
+// Publish a user's comments and the posts that were commented on
+
+Meteor.publish('userComments', function(terms) {
+  if(Users.can.viewById(this.userId)){
+    var parameters = Comments.getSubParams(terms);
+    var comments = Comments.find(parameters.find, parameters.options);
+  
+    // if there are comments, find out which posts were commented on
+    var commentedPostIds = comments.count() ? _.pluck(comments.fetch(), 'postId') : [];
+    return [
+      comments,
+      Posts.find({_id: {$in: commentedPostIds}})
+    ];
+  }
+});
+
 // Publish author of the current comment, and author of the post related to the current comment
 
 Meteor.publish('commentUsers', function(commentId) {

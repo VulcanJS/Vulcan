@@ -28,17 +28,6 @@ Meteor.publish('userDownvotedPosts', function(terms) {
   return posts;
 });
 
-Meteor.publish('userComments', function(userId, limit) {
-  var comments = Comments.find({userId: userId}, {limit: limit});
-  // if there are comments, find out which posts were commented on
-  var commentedPostIds = comments.count() ? _.pluck(comments.fetch(), 'postId') : [];
-  return [
-    comments,
-    Posts.find({_id: {$in: commentedPostIds}})
-  ]
-});
-
-
 // Publish the current user
 
 Meteor.publish('currentUser', function() {
