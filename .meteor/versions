@@ -2,6 +2,8 @@ accounts-base@1.2.0
 accounts-oauth@1.1.5
 accounts-password@1.1.1
 accounts-twitter@1.0.4
+accounts-ui@1.1.5
+accounts-ui-unstyled@1.1.7
 aldeed:autoform@5.1.2
 aldeed:collection2@2.3.3
 aldeed:http@0.2.2
@@ -11,7 +13,7 @@ aramk:tinycolor@1.1.0_1
 aslagle:reactive-table@0.7.3
 autoupdate@1.2.1
 base64@1.0.3
-bengott:avatar@0.7.6
+bengott:avatar@0.7.7
 binary-heap@1.0.3
 blaze@2.1.2
 blaze-tools@1.0.3
