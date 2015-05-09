@@ -111,7 +111,9 @@ Telescope.schemas.posts = new SimpleSchema({
     },
     autoform: {
       noselect: true,
-      options: Telescope.config.postStatuses,
+      options: function () {//Telescope.config.postStatuses
+        return [{value:1,label:'Pending'},{value:2,label:'Approved'},{value:3,label:'Deleted'}]// is this the correct values ??
+      },
       group: 'admin'
     }
   },
