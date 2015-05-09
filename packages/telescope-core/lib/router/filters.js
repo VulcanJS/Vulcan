@@ -70,7 +70,8 @@ Router._filters = {
 
   canViewPendingPosts: function () {
     var post = this.data();
-    if (!!post && post.status === Posts.config.STATUS_PENDING && !Users.can.viewPendingPosts()) {
+    var user = Meteor.user();
+    if (!!post && post.status === Posts.config.STATUS_PENDING && !Users.can.viewPendingPost(user, post)) {
       this.render('no_rights');
     } else {
       this.next();
@@ -79,7 +80,7 @@ Router._filters = {
 
   canViewRejectedPosts: function () {
     var post = this.data();
-    if (!!post && post.status === Posts.config.STATUS_REJECTED && !Users.can.viewRejectedPosts()) {
+    if (!!post && post.status === Posts.config.STATUS_REJECTED && !Users.can.viewRejectedPost(user, post)) {
       this.render('no_rights');
     } else {
       this.next();

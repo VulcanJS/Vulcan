@@ -1,7 +1,12 @@
+/**
+ * The Posts.controllers namespace
+ * @namespace Posts.controllers
+ */
 Posts.controllers = {};
 
-// Controller for all posts lists
-
+/**
+ * Controller for all posts lists
+ */
 Posts.controllers.list = RouteController.extend({
 
   template: "posts_list_controller",
@@ -63,28 +68,44 @@ Meteor.startup(function () {
 
 });
 
+/**
+ * Controller for top view
+ */
 Posts.controllers.top = Posts.controllers.list.extend({
   view: 'top',
 });
 
+/**
+ * Controller for new view
+ */
 Posts.controllers.new = Posts.controllers.list.extend({
   view: 'new',
 });
 
+/**
+ * Controller for best view
+ */
 Posts.controllers.best = Posts.controllers.list.extend({
   view: 'best',
 });
 
-Posts.controllers.view = Posts.controllers.list.extend({
+/**
+ * Controller for pending view
+ */
+Posts.controllers.pending = Posts.controllers.list.extend({
   view: 'pending',
 });
 
+/**
+ * Controller for scheduled view
+ */
 Posts.controllers.scheduled = Posts.controllers.list.extend({
   view: 'scheduled',
 });
 
-// Controller for post pages
-
+/**
+ * Controller for single post page
+ */
 Posts.controllers.page = RouteController.extend({
 
   template: 'post_page',
