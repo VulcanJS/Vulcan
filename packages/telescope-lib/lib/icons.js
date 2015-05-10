@@ -1,6 +1,10 @@
 // ------------------------------ Dynamic Icons ------------------------------ //
 
-// take an icon name (such as "open") and return the HTML code to display the icon
+/**
+ * Take an icon name (such as "open") and return the HTML code to display the icon
+ * @param {string} iconName - the name of the icon
+ * @param {string} [iconClass] - an optional class to assign to the icon
+ */
 Telescope.utils.getIcon = function (iconName, iconClass) {
   var icons = Telescope.utils.icons;
   var iconCode = !!icons[iconName] ? icons[iconName] : iconName;
@@ -8,6 +12,9 @@ Telescope.utils.getIcon = function (iconName, iconClass) {
   return '<i class="icon fa fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
 };
 
+/**
+ * A directory of icon keys and icon codes
+ */
 Telescope.utils.icons = {
   open: "plus",
   close: "minus",

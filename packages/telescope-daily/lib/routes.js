@@ -1,3 +1,6 @@
+/**
+ * Controller for daily view
+ */
 Posts.controllers.daily = Posts.controllers.list.extend({
 
   view: "daily",

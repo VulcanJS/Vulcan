@@ -1,8 +1,13 @@
 /**
+ * Meteor Collections.
+ * @class Mongo.Collection
+ */
+
+/**
  * Add an additional field to a schema.
  * @param {Object} field
  */
-Meteor.Collection.prototype.registerField = function (field) {
+Mongo.Collection.prototype.registerField = function (field) {
 
   var collection = this;
   var fieldSchema = {};
@@ -17,7 +22,7 @@ Meteor.Collection.prototype.registerField = function (field) {
  * Remove a field from a schema.
  * @param {String} fieldName
  */
-Meteor.Collection.prototype.removeField = function (fieldName) {
+Mongo.Collection.prototype.removeField = function (fieldName) {
 
   var collection = this;
   var schema = _.omit(collection.simpleSchema()._schema, fieldName);
@@ -65,6 +70,7 @@ Meteor.Collection.prototype.allowCheck = function (userId, document, fieldNames,
 Telescope.schemas = {};
 
 /**
+ * @method SimpleSchema.getEditableFields
  * Get a list of all fields editable by a specific user for a given schema
  * @param {Object} user – the user for which to check field permissions
  */

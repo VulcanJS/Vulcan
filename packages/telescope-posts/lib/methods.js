@@ -6,8 +6,8 @@
 
 /**
  * Insert a post in the database (note: optional post properties not listed here)
- * @param {Object} post – the post being inserted
- * @param {string} post.userId – the id of the user the post belongs to
+ * @param {Object} post - the post being inserted
+ * @param {string} post.userId - the id of the user the post belongs to
  * @param {string} post.title - the post's title
  */
 Posts.submit = function (post) {
@@ -68,6 +68,12 @@ Posts.submit = function (post) {
   return post;
 };
 
+/**
+ * Edit a post in the database
+ * @param {string} postId – the ID of the post being edited
+ * @param {Object} modifier – the modifier object
+ * @param {Object} post - the current post object
+ */
 Posts.edit = function (postId, modifier, post) {
 
   if (typeof post === "undefined") {
@@ -100,6 +106,11 @@ var postViews = [];
 
 Meteor.methods({
 
+  /**
+   * Meteor method for submitting a post from the client
+   * @memberof Posts
+   * @param {Object} post - the post being inserted
+   */
   submitPost: function(post){
 
     // required properties:
@@ -172,6 +183,12 @@ Meteor.methods({
     return Posts.submit(post);
   },
 
+  /**
+   * Meteor method for editing a post from the client
+   * @memberof Posts
+   * @param {Object} modifier - the update modifier
+   * @param {Object} postId - the id of the post being updated
+   */
   editPost: function (modifier, postId) {
 
     var user = Meteor.user(),
@@ -262,7 +279,7 @@ Meteor.methods({
     if(!Meteor.userId() || !Users.can.editById(Meteor.userId(), post)) throw new Meteor.Error(606, 'You need permission to edit or delete a post');
 
     // decrement post count
-    Users.update({_id: post.userId}, {$inc: {postCount: -1}});
+    Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
 
     // delete post
     Posts.remove(postId);

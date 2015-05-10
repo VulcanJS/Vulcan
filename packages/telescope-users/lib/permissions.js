@@ -34,11 +34,19 @@ Users.can.viewPendingPosts = function (user) {
   return Users.is.admin(user);
 };
 
+Users.can.viewPendingPost = function (user, post) {
+  return Users.is.owner(user, post) || Users.can.viewPendingPosts(user);
+};
+
+
 Users.can.viewRejectedPosts = function (user) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
   return Users.is.admin(user);
 };
 
+Users.can.viewRejectedPost = function (user, post) {
+  return Users.is.owner(user, post) || Users.can.viewRejectedPosts(user);
+};
 
 Users.can.post = function (user, returnError) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
@@ -107,7 +115,7 @@ Users.can.submitField = function (user, field) {
 
 };
 
-/**
+/** @function
  * Check if a user can edit a field – for now, identical to Users.can.submitField
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted

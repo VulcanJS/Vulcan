@@ -33,7 +33,7 @@ Telescope.modules.register("postComponents", [
 
 Telescope.modules.register("postHeading", [
   {
-    template: 'postTitle',
+    template: 'post_title',
     order: 10
   },
   {

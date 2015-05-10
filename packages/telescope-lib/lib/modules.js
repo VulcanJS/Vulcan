@@ -11,6 +11,12 @@ Telescope.modules = {};
  * @param {Object|Object[]} module - The module object (or an array of modules)
  * @param {string} module.template - The template to include
  * @param {number} module.order - The order of the template in the zone
+ *
+ * @example
+ * Telescope.modules.register("hero", {
+ *   template: "newsletterBanner",
+ *   order: 10
+ * });
  */
 Telescope.modules.register = function (zone, module) {
 

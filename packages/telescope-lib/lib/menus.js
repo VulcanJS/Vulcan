@@ -1,10 +1,30 @@
-
+/**
+ * Menus namespace
+ * @namespace Telescope.menus
+ */
 Telescope.menus = {};
 
 /**
  * Add one or more items to a menu
  * @param {string} menu - The name of the menu
- * @param {Object|Object[]} menu - The menu item object (or an array of items)
+ * @param {Object|Object[]} item - The menu item object (or an array of items)
+ *
+ * @example <caption>Using a named route</caption>
+ * Telescope.menus.register("viewsMenu", {
+ *   route: 'postsDaily',
+ *   label: 'daily',
+ *   description: 'day_by_day_view'
+ * });
+ *
+ * @example <caption>Using a route function</caption>
+ * Telescope.menus.register("userMenu", {
+ *   route: function () {
+ *     return Router.path('user_profile', {_idOrSlug: Meteor.user().telescope.slug});
+ *   },
+ *   label: 'profile',
+ *   description: 'view_your_profile'
+ * });
+ *
  */
 Telescope.menus.register = function (menu, item) {
 

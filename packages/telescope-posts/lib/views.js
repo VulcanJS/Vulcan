@@ -13,7 +13,9 @@ Posts.views.register = function (viewName, viewFunction) {
   Posts.views[viewName] = viewFunction;
 };
 
-// will be common to all other view unless specific properties are overwritten
+/**
+ * Base parameters that will be common to all other view unless specific properties are overwritten
+ */
 Posts.views.baseParameters = {
   find: {
     status: Posts.config.STATUS_APPROVED
@@ -23,24 +25,36 @@ Posts.views.baseParameters = {
   }
 };
 
+/**
+ * Top view
+ */
 Posts.views.register("top", function (terms) {
   return {
     options: {sort: {sticky: -1, score: -1}}
   };
 });
 
+/**
+ * New view
+ */
 Posts.views.register("new", function (terms) {
   return {
     options: {sort: {sticky: -1, postedAt: -1}}
   };
 });
 
+/**
+ * Best view
+ */
 Posts.views.register("best", function (terms) {
   return {
     options: {sort: {sticky: -1, baseScore: -1}}
   };
 });
 
+/**
+ * Pending view
+ */
 Posts.views.register("pending", function (terms) {
   return {
     find: {
@@ -51,6 +65,9 @@ Posts.views.register("pending", function (terms) {
   };
 });
 
+/**
+ * Scheduled view
+ */
 Posts.views.register("scheduled", function (terms) {
   return {
     find: {postedAt: {$gte: new Date()}},
@@ -58,6 +75,9 @@ Posts.views.register("scheduled", function (terms) {
   };
 });
 
+/**
+ * User posts view
+ */
 Posts.views.register("userPosts", function (terms) {
   return {
     find: {userId: terms.userId},
@@ -65,6 +85,9 @@ Posts.views.register("userPosts", function (terms) {
   };
 });
 
+/**
+ * User upvoted posts view
+ */
 Posts.views.register("userUpvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
@@ -74,6 +97,9 @@ Posts.views.register("userUpvotedPosts", function (terms) {
   };
 });
 
+/**
+ * User downvoted posts view
+ */
 Posts.views.register("userDownvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");

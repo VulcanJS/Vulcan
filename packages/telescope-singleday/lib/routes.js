@@ -1,5 +1,6 @@
-// Controller for post digest
-
+/**
+ * Controller for single day view
+ */
 Posts.controllers.singleday = Posts.controllers.list.extend({
 
   view: 'singleday',

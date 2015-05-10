@@ -1,3 +1,6 @@
+/**
+ * A dictionnary of all the elements that use custom colors
+ */
 Telescope.utils.colorTable = {
   accentColor: [],
   accentContrastColor: [],
@@ -5,6 +8,12 @@ Telescope.utils.colorTable = {
   secondaryContrastColor: []
 };
 
+/**
+ * Register an element to use a custom color
+ * @param {string} selector - the CSS selector of the element
+ * @param {string} color - the color. Either `accentColor`, `accentContrastColor`, `secondaryColor`, or `secondaryContrastColor`
+ * @param {string} [property=color] - the property to colorize. Usually `color`, `background-color`, `border-color`, etc. 
+ */
 Telescope.utils.registerElementColor = function (selector, color, property) {
   var element = {selector: selector};
 

@@ -1,5 +1,5 @@
 Telescope.modules.register("postListTop", {
-  template: 'tagline_banner',
+  template: "tagline_banner",
   order: 1
 });
 

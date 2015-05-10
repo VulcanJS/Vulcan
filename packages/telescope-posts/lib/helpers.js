@@ -11,7 +11,7 @@ Posts.getProperties = function (post) {
   var p = {
     postAuthorName : Users.getDisplayName(postAuthor),
     postTitle : Telescope.utils.cleanUp(post.title),
-    profileUrl: getProfileUrlBySlugOrId(post.userId),
+    profileUrl: Users.getProfileUrlBySlugOrId(post.userId),
     postUrl: Posts.getPageUrl(post),
     thumbnailUrl: post.thumbnailUrl,
     linkUrl: !!post.url ? Posts.getOutgoingUrl(post.url) : Posts.getPageUrl(post._id)

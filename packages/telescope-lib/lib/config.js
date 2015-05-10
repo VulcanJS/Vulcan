@@ -1,13 +1,12 @@
 /**
- * Telescope config namespace
- * @type {Object}
+ * Telescope configuration namespace
+ * @namespace Telescope.config
  */
 Telescope.config = {};
 
-
-/**
- * Array containing subscriptions to be preloaded
- * @type {Array}
+ /**
+ * Subscriptions namespace
+ * @namespace Telescope.subscriptions
  */
 Telescope.subscriptions = [];
 

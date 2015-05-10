@@ -1,4 +1,8 @@
-Settings = new Meteor.Collection("settings");
+/**
+ * The global namespace for Settings.
+ * @namespace Settings
+ */
+Settings = new Mongo.Collection("settings");
 
 Telescope.schemas.settings = new SimpleSchema({
   title: {

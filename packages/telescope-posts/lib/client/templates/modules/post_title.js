@@ -1,4 +1,4 @@
-Template.postTitle.helpers({
+Template.post_title.helpers({
   postLink: function(){
     return !!this.url ? Posts.getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
