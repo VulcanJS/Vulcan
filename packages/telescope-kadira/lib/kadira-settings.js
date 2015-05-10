@@ -1,7 +1,7 @@
 var kadiraAppIdProperty = {
-  propertyName: "kadiraAppId",
+  fieldName: "kadiraAppId",
   propertyGroup: "kadira",
-  propertySchema: {
+  fieldSchema: {
     type: String,
     optional: true,
     autoform: {
@@ -12,9 +12,9 @@ var kadiraAppIdProperty = {
 Settings.registerField(kadiraAppIdProperty);
 
 var kadiraAppSecretProperty = {
-  propertyName: "kadiraAppSecret",
+  fieldName: "kadiraAppSecret",
   propertyGroup: "kadira",
-  propertySchema: {
+  fieldSchema: {
     type: String,
     optional: true,
     private: true,

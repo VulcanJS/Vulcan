@@ -1,6 +1,6 @@
 var thumbnailProperty = {
-  propertyName: 'thumbnailUrl',
-  propertySchema: {
+  fieldName: 'thumbnailUrl',
+  fieldSchema: {
     type: String,
     optional: true,
     editableBy: ["member", "admin"],
@@ -12,8 +12,8 @@ var thumbnailProperty = {
 Posts.registerField(thumbnailProperty);
 
 var mediaProperty = {
-  propertyName: 'media',
-  propertySchema: {
+  fieldName: 'media',
+  fieldSchema: {
     type: Object,
     optional: true,
     blackbox: true
@@ -27,8 +27,8 @@ Telescope.modules.register("postThumbnail", {
 });
 
 var embedlyKeyProperty = {
-  propertyName: 'embedlyKey',
-  propertySchema: {
+  fieldName: 'embedlyKey',
+  fieldSchema: {
     type: String,
     optional: true,
     private: true,
@@ -41,8 +41,8 @@ var embedlyKeyProperty = {
 Settings.registerField(embedlyKeyProperty);
 
 var thumbnailWidthProperty = {
-  propertyName: 'thumbnailWidth',
-  propertySchema: {
+  fieldName: 'thumbnailWidth',
+  fieldSchema: {
     type: Number,
     optional: true,
     autoform: {
@@ -53,8 +53,8 @@ var thumbnailWidthProperty = {
 Settings.registerField(thumbnailWidthProperty);
 
 var thumbnailHeightProperty = {
-  propertyName: 'thumbnailHeight',
-  propertySchema: {
+  fieldName: 'thumbnailHeight',
+  fieldSchema: {
     type: Number,
     optional: true,
     autoform: {

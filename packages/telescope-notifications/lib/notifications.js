@@ -88,8 +88,8 @@ function addCommentNotification (comment) {
 Telescope.callbacks.register("commentSubmitAsync", addCommentNotification);
 
 var emailNotifications = {
-  propertyName: 'emailNotifications',
-  propertySchema: {
+  fieldName: 'emailNotifications',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     defaultValue: true,
@@ -104,8 +104,8 @@ Settings.registerField(emailNotifications);
 // make it possible to disable notifications on a per-comment basis
 Comments.registerField(
   {
-    propertyName: 'disableNotifications',
-    propertySchema: {
+    fieldName: 'disableNotifications',
+    fieldSchema: {
       type: Boolean,
       optional: true,
       autoform: {

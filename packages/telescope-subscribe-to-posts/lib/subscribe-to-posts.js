@@ -1,6 +1,6 @@
 Users.registerField({
-  propertyName: 'telescope.subscribedItems',
-  propertySchema: {
+  fieldName: 'telescope.subscribedItems',
+  fieldSchema: {
     type: Object,
     optional: true,
     blackbox: true,
@@ -11,8 +11,8 @@ Users.registerField({
 });
 
 Posts.registerField({
-  propertyName: 'subscribers',
-  propertySchema: {
+  fieldName: 'subscribers',
+  fieldSchema: {
     type: [String],
     optional: true,
     autoform: {
@@ -22,8 +22,8 @@ Posts.registerField({
 });
 
 Posts.registerField({
-  propertyName: 'subscriberCount',
-  propertySchema: {
+  fieldName: 'subscriberCount',
+  fieldSchema: {
     type: Number,
     optional: true,
     autoform: {

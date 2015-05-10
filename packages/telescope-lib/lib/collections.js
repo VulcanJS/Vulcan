@@ -12,7 +12,7 @@ Mongo.Collection.prototype.registerField = function (field) {
   var collection = this;
   var fieldSchema = {};
 
-  fieldSchema[field.propertyName] = field.propertySchema;
+  fieldSchema[field.fieldName] = field.fieldSchema;
 
   // add field schema to collection schema
   collection.attachSchema(fieldSchema);

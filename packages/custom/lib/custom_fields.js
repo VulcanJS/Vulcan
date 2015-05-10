@@ -1,8 +1,8 @@
 // Custom Post Field
 
 var customField = {
-  propertyName: 'customField',
-  propertySchema: {
+  fieldName: 'customField',
+  fieldSchema: {
     type: String,                           // property type
     label: 'customLabel',                   // key string used for internationalization
     optional: true,                         // make this property optional

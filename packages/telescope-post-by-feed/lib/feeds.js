@@ -51,8 +51,8 @@ Feeds.attachSchema(Telescope.schemas.feeds);
 
 // used to keep track of which feed a post was imported from
 var feedIdProperty = {
-  propertyName: 'feedId',
-  propertySchema: {
+  fieldName: 'feedId',
+  fieldSchema: {
     type: String,
     label: 'feedId',
     optional: true,
@@ -65,8 +65,8 @@ Posts.registerField(feedIdProperty);
 
 // the RSS ID of the post in its original feed
 var feedItemIdProperty = {
-  propertyName: 'feedItemId',
-  propertySchema: {
+  fieldName: 'feedItemId',
+  fieldSchema: {
     type: String,
     label: 'feedItemId',
     optional: true,

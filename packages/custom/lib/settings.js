@@ -1,8 +1,8 @@
 // Custom Setting
 
 var customSetting = {
-  propertyName: "customSetting",
-  propertySchema: {
+  fieldName: "customSetting",
+  fieldSchema: {
     type: String,
     optional: true,
     private: true,                         // mark as private (not published to client)

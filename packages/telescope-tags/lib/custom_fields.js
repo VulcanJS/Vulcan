@@ -1,7 +1,7 @@
 Posts.registerField(
   {
-    propertyName: 'categories',
-    propertySchema: {
+    fieldName: 'categories',
+    fieldSchema: {
       type: [String],
       optional: true,
       editableBy: ["member", "admin"],

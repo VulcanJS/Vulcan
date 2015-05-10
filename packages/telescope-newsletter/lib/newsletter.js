@@ -31,8 +31,8 @@ Campaigns = new Meteor.Collection("campaigns", {
 
 Posts.registerField(
   {
-    propertyName: 'scheduledAt',
-    propertySchema: {
+    fieldName: 'scheduledAt',
+    fieldSchema: {
       type: Date,
       optional: true,
       autoform: {
@@ -45,8 +45,8 @@ Posts.registerField(
 // Settings
 
 var enableNewsletter = {
-  propertyName: 'enableNewsletter',
-  propertySchema: {
+  fieldName: 'enableNewsletter',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     autoform: {
@@ -58,8 +58,8 @@ var enableNewsletter = {
 Settings.registerField(enableNewsletter);
 
 var showBanner = {
-  propertyName: 'showBanner',
-  propertySchema: {
+  fieldName: 'showBanner',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     label: 'Newsletter banner',
@@ -72,8 +72,8 @@ var showBanner = {
 Settings.registerField(showBanner);
 
 var mailChimpAPIKey = {
-  propertyName: "mailChimpAPIKey",
-  propertySchema: {
+  fieldName: "mailChimpAPIKey",
+  fieldSchema: {
     type: String,
     optional: true,
     private: true,
@@ -86,8 +86,8 @@ var mailChimpAPIKey = {
 Settings.registerField(mailChimpAPIKey);
 
 var mailChimpListId = {
-  propertyName: 'mailChimpListId',
-  propertySchema: {
+  fieldName: 'mailChimpListId',
+  fieldSchema: {
     type: String,
     optional: true,
     private: true,
@@ -101,8 +101,8 @@ var mailChimpListId = {
 Settings.registerField(mailChimpListId);
 
 var postsPerNewsletter = {
-  propertyName: 'postsPerNewsletter',
-  propertySchema: {
+  fieldName: 'postsPerNewsletter',
+  fieldSchema: {
     type: Number,
     optional: true,
     autoform: {
@@ -113,8 +113,8 @@ var postsPerNewsletter = {
 Settings.registerField(postsPerNewsletter);
 
 var newsletterFrequency = {
-  propertyName: 'newsletterFrequency',
-  propertySchema: {
+  fieldName: 'newsletterFrequency',
+  fieldSchema: {
     type: Number,
     optional: true,
     autoform: {
@@ -144,8 +144,8 @@ var newsletterFrequency = {
 Settings.registerField(newsletterFrequency);
 
 var newsletterTime = {
-  propertyName: 'newsletterTime',
-  propertySchema: {
+  fieldName: 'newsletterTime',
+  fieldSchema: {
     type: String,
     optional: true,
     defaultValue: '00:00',
@@ -159,8 +159,8 @@ var newsletterTime = {
 Settings.registerField(newsletterTime);
 
 var autoSubscribe = {
-  propertyName: 'autoSubscribe',
-  propertySchema: {
+  fieldName: 'autoSubscribe',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     autoform: {

@@ -1,6 +1,6 @@
 Users.registerField({
-  propertyName: 'telescope.isDummy',
-  propertySchema: {
+  fieldName: 'telescope.isDummy',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     autoform: {
@@ -10,8 +10,8 @@ Users.registerField({
 });
 
 Posts.registerField({
-  propertyName: 'dummySlug',
-  propertySchema: {
+  fieldName: 'dummySlug',
+  fieldSchema: {
     type: String,
     optional: true,
     autoform: {
@@ -21,8 +21,8 @@ Posts.registerField({
 });
 
 Posts.registerField({
-  propertyName: 'isDummy',
-  propertySchema: {
+  fieldName: 'isDummy',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     autoform: {
@@ -32,8 +32,8 @@ Posts.registerField({
 });
 
 Comments.registerField({
-propertyName: 'isDummy',
-propertySchema: {
+fieldName: 'isDummy',
+fieldSchema: {
   type: Boolean,
   optional: true,
   autoform: {

@@ -24,9 +24,9 @@ Telescope.callbacks.register = function (hook, callback) {
  * @param {string} hook - The name of the hook
  * @param {string} functionName - The name of the function to remove
  */
-Telescope.callbacks.remove = function (hook, functionName) {
-  Telescope.callbacks[hook] = _.reject(Telescope.callbacks[hook], function (callback) {
-    return callback.name === functionName;
+Telescope.callbacks.remove = function (hookName, callbackName) {
+  Telescope.callbacks[hookName] = _.reject(Telescope.callbacks[hookName], function (callback) {
+    return callback.name === callbackName;
   });
 };
 

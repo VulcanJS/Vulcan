@@ -4,8 +4,8 @@ Telescope.modules.register("postListTop", {
 });
 
 var showTaglineBanner = {
-  propertyName: 'showTaglineBanner',
-  propertySchema: {
+  fieldName: 'showTaglineBanner',
+  fieldSchema: {
     type: Boolean,
     optional: true,
     autoform: {
