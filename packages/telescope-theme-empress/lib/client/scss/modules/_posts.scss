@@ -1,0 +1,555 @@
+// ------------------------------------ posts ------------------------------------ //
+
+.posts-wrapper {
+	padding: 0;
+}
+.single-post .posts {
+	margin-bottom: 10px;
+	.post {
+		border-radius: 3px;
+		@extend .has-shadow;
+	}
+}
+// ------------------------------------ post ------------------------------------ //
+
+.post {
+	padding: 10px 0px 10px 10px;
+	border-radius: 0px;
+	margin-bottom: 0px;
+	border-bottom: 1px solid $lightest-grey;
+	display: flex;
+	align-items: center;
+	position: relative;
+	width: 100%;
+	background: white;
+	&:first-child {
+		border-radius: 3px 3px 0px 0px;
+	}
+	&:last-child {
+		border-radius: 0px 0px 3px 3px;
+	}
+	&.animate {
+		transition: ease-out, top, 400ms, 0ms;
+	}
+	&.inactive {
+		.post-content {
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
+		}
+	}
+}
+
+.post-list-title, .page-title{
+	text-align: center;
+	font-size: 22px;
+}
+
+// ------------------------------------ posts views nav ------------------------------------ //
+.posts-list-views{
+	background: white(0.6);
+	border-radius: 3px;
+	.menu-top-level, .menu-menu, .menu-contents, .menu-item{
+		display: inline-block;
+	}
+	.menu-top-level{
+		margin-right: 10px;
+		&:after{
+			content: ": ";
+		}
+	}
+	.menu-item{
+		padding: 0;
+		margin-right: 10px;
+		&.item-active{
+			position: relative;
+			&:after{
+				content: " ";
+				display: block;
+				position: absolute;
+				border-bottom: 2px solid currentColor;
+				width: 100%;
+				height: 0px;
+				left: 0px;
+				bottom: 0px;
+				opacity: 0.2;
+			}
+		}
+	}
+	.menu-description{
+		display: none;
+	}
+}
+// ------------------------------ posts-list layout ------------------------------ //
+
+.posts-list {
+	.post-module {
+		flex-shrink: 0;
+		flex-grow: 0;
+		margin-right: 10px;
+	}
+	.post-rank {
+		@include small {
+			display: none;
+		}
+		.post-rank-inner {
+			height: 25px;
+			position: relative;
+		}
+		span {
+			position: absolute;
+			top: 0px;
+			left: -60px;
+			display: block;
+			height: 25px;
+			line-height: 25px;
+			width: 30px;
+			text-align: right;
+			font-size: 18px;
+			// font-weight: bold;
+			color: black(0.2);
+		}
+	}
+	.post-upvote {
+		order: 1;
+		@include small {
+			display: none;
+		}
+	}
+	.post-content {
+		order: 2;
+		width: 100%;
+		// can shrink on mobile or desktop
+		flex-shrink: 1;
+		@include medium-large {
+			// but can only grow on desktop
+			flex-grow: 1;
+			// only be a flex container on desktop
+			display: flex;
+		}
+		align-items: center;
+	}
+	.post-info {
+		flex-grow: 1;
+	}
+	.post-share {
+		order: 3;
+	}
+	.post-discuss {
+		order: 7;
+		@include small {
+			display: none;
+		}
+	}
+	.post-share,
+	.post-discuss {
+		// width: 60px;
+		text-align: center;
+		// height: 60px;
+		// position: relative;
+		// top: -5px;
+	}
+	.post-actions {
+		order: 8;
+		@include small {
+			display: block;
+		}
+	}
+	.post-avatars {
+		order: 6;
+		@include small {
+			display: none;
+		}
+	}
+	.show-actions {
+		.post-content {
+			display: none;
+		}
+		.post-share,
+		.post-discuss,
+		.post-upvote {
+			flex-grow: 1;
+			display: block;
+		}
+	}
+	.action-label {
+		@include small {
+			display: block;
+		}
+	}
+}
+// ------------------------------ posts-grid layout ------------------------------ //
+
+.posts-grid {
+	@include medium-large {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.post {
+		@include medium-large {
+			width: calc((100% - 20px)/3);
+			margin-right: 10px;
+			&:nth-of-type(3n) {
+				margin-right: 0;
+			}
+		}
+		margin-bottom: 10px;
+		display: block;
+		padding: 0;
+		position: relative;
+		padding-bottom: 40px;
+		&:after {
+			content: " ";
+			display: block;
+			position: absolute;
+			bottom: 40px;
+			left: 0px;
+			width: 100%;
+			border-bottom: 1px solid $lightest-grey;
+		}
+	}
+	.post-rank {
+		span {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			z-index: 1;
+			background: black(0.4);
+			color: white;
+			height: 24px;
+			width: 24px;
+			line-height: 24px;
+			vertical-align: middle;
+			text-align: center;
+			font-size: 14px;
+			// border-radius: 100%;
+			// box-shadow: 0px 0px 2px white(0.5);
+		}
+	}
+	.post-upvote {
+		position: absolute;
+		left: 7px;
+		bottom: 7px;
+	}
+	.post-content {
+		display: block;
+	}
+	.post-thumbnail {
+		margin-right: 0px;
+		a {
+			width: 100%;
+		}
+	}
+	.post-info {
+		padding: 10px;
+	}
+	.no-thumbnail .post-info {
+		padding-right: 35px;
+	}
+	.post-avatars {
+		position: absolute;
+		right: 48px;
+		bottom: 0px;
+		padding: 8px 0px;
+	}
+	.post-discuss {
+		position: absolute;
+		right: 8px;
+		bottom: 0px;
+		padding: 8px 0px 2px 0px;
+	}
+}
+// -------------------------------- post modules --------------------------------- //
+
+.post-module.post-rank {
+	margin: 0;
+}
+.post{
+	.icon{
+	}
+}
+.post-upvote {
+	@include small{
+		text-align: center;
+	}
+	.upvote-link {
+		display: block;
+		.icon-upvote{
+			&:before {
+				top: -1px;
+				position: relative;
+			}
+		}
+		&.not-voted:hover {
+			i{
+				// opacity: 1;
+				text-shadow: none;
+			}
+		}
+		&.voted {
+			cursor: default;
+			i.icon-upvote {
+				display: none;
+			}
+			i.icon-voted {
+				border: 1px solid $lighter-text;
+				display: inline-block;
+				color: $lighter-text;
+				// opacity: 0.5;
+			}
+		}
+	}
+}
+.post-content {
+	min-height: $grid-unit - 30px;
+	.post-sticky {
+		display: block;
+		position: absolute;
+		right: -40px;
+		top: 16px;
+		font-size: 24px;
+		i {
+			color: $light-text;
+		}
+		span {
+			display: none;
+		}
+	}
+}
+.post-avatars {
+	display: inline-block;
+	display: flex;
+	.author-avatar {
+		display: block;
+	}
+	.post-commenters {
+		display: inline-block;
+		border-left: 1px solid black(0.2);
+		padding-left: 5px;
+	}
+	.avatar-link {
+		display: inline-block;
+		margin-right: 2px;
+		&:last-child {
+			margin-right: 0px;
+		}
+	}
+	.avatar {
+		display: inline-block;
+		height: 24px;
+		width: 24px;
+		vertical-align: middle;
+	}
+}
+.post-author {
+	.avatar {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		vertical-align: middle;
+		margin-right: 5px;
+	}
+}
+.post-discuss {
+	.action {
+	  position: relative;
+	  display: block;
+	  padding: 0;
+	  text-align: center;
+	  color: $light-text;
+	   margin-top: -4px;
+	}
+	.action-count {
+	  position: absolute;
+	  top: 13px;
+	  display: block;
+	  width: 100%;
+	  height: 20px;
+	  line-height: 20px;
+	  font-size: 13px;
+	}
+	.icon-comment{
+  	font-size: 30px;
+	}
+}
+
+.post-actions {
+	display: none;
+	text-align: right;
+	a {
+		display: block;
+		padding: 6px;
+	}
+}
+.post-share {
+	display: none;
+}
+// -------------------------------- post content --------------------------------- //
+
+
+
+.post-heading {
+	margin-bottom: 3px;
+	line-height: 1.2;
+	.post-title {
+		@include small {
+			font-size: 15px;
+		}
+		@include medium-large {
+			font-size: 18px;
+		}
+		font-weight: normal;
+		&:visited {
+			color: $grey;
+		}
+	}
+	.post-domain {
+		color: $light-text;
+		@include small {
+			font-size: 13px;
+		}
+		@include medium-large {
+			font-size: 14px;
+		}
+		font-weight: normal;
+	}
+}
+.post-meta {
+	font-size: 13px;
+	color: $light-text;
+	line-height: 1.5;
+	@include small {
+		font-size: 11px;
+		line-height: 1.7;
+	}
+	a {
+		&:link,
+		&:visited,
+		&:active {
+			color: $medium-text;
+		}
+		&:hover {
+			color: $red;
+		}
+	}
+}
+.post-meta-item {
+	display: inline-block;
+}
+.post-body, .page-body {
+	@extend .has-shadow;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	background: white;
+	padding: 20px;
+	font-size: 16px;
+	.list & {
+		display: none;
+	}
+}
+.post.sticky {
+	background: $light-yellow;
+}
+// -------------------------------- mobile view --------------------------------- //
+
+
+@include small {
+	.posts {
+		padding: 0;
+		.post-rank {
+			display: none;
+		}
+	}
+	.post {
+		.post-content {
+			margin-right: 50px;
+			margin-right: 0px;
+			// min-height: 90px;
+			.upvote-link {
+				width: 30px;
+			}
+			.post-heading {
+				.post-title {
+					display: block;
+					margin-bottom: 4px;
+				}
+				.post-domain {
+					display: block;
+					margin-bottom: 4px;
+					font-size: 13px;
+				}
+			}
+			.post-meta {
+				font-size: 11px;
+				.unit {
+					font-size: 0;
+					&:after {
+						font-size: 12px;
+						content: "pts ";
+					}
+				}
+			}
+		}
+	}
+}
+// -------------------------------- other --------------------------------- //
+
+.no-posts {
+	padding: 20px;
+	border: 1px solid black(0.1);
+	font-size: 14px;
+	border-radius: 3px;
+	// @extend .has-shadow;
+	margin-bottom: 10px;
+	color: black(0.5);
+}
+.empty-notice {
+	text-align: center;
+	padding: 10px 0;
+	&.edit-link {
+		color: $red;
+	}
+	&.share-link {
+		color: $light-text;
+	}
+	&.discuss-link {
+		color: $light-text;
+	}
+	&.more-link {
+		color: $blue;
+	}
+	&:hover {
+		&,
+		.action {
+			color: $red;
+		}
+	}
+	&.voted {
+		color: white;
+		cursor: default;
+	}
+	.points {
+		display: block;
+		font-size: 30px;
+		line-height: 50px;
+	}
+}
+.more-button {
+	display: block;
+	width: 100%;
+	height: $grid-unit;
+	background: black(0.05);
+	text-align: center;
+	color: white;
+	line-height: $grid-unit;
+	font-size: 18px;
+	border-radius: 0px 0px 3px 3px;
+	text-shadow: 0px 1px 1px 0px black(0.25);
+	padding: 0px;
+	&:hover {
+		background: black(0.15);
+	}
+}
+.module {
+	border-radius: 3px;
+}
+
+
