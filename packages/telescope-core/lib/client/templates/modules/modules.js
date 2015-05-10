@@ -1,15 +1,17 @@
 Template.modules.helpers({
-  hasWrapper: function () {
-    return !!this.moduleClass; // only add a wrapper if a class has been specified
+  isDebug: function () {
+    return Session.get('debug');
   },
-  wrapperClass: function () {
-    var zone = Template.parentData(1);
-    var module = this;
-    return Telescope.utils.camelToDash(module.template) + " " + zone.moduleClass;
+  getZone: function () {
+    return this.zone || this.toString();
   },
   getModules: function () {
     // look for the zone name in either the zone variable, or the data context itself
     var zone = this.zone || this.toString();
-    return Telescope.modules.get(zone);
+    var moduleClass = this.moduleClass;
+    return _.map(Telescope.modules.get(zone), function (module){
+      module.moduleClass = moduleClass;
+      return module;
+    });
   }
 });
