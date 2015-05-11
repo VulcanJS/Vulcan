@@ -11,6 +11,7 @@ telescope:core
 
 # Note: all following packages depend on telescope:core; Additional internal dependencies are mentioned
 
+telescope:migrations
 telescope:api
 telescope:daily # singleday
 telescope:datetimepicker
@@ -19,7 +20,6 @@ telescope:embedly
 telescope:getting-started
 telescope:invites
 telescope:kadira
-telescope:migrations
 telescope:newsletter
 telescope:notifications
 telescope:pages

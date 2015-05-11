@@ -220,17 +220,14 @@ Posts.schema = new SimpleSchema({
   }
 });
 
-Meteor.startup(function () {
 // schema transforms
 Posts.schema.internationalize();
-
 
 /**
  * Attach schema to Posts collection
  */
 Posts.attachSchema(Posts.schema);
 
-});
 Posts.allow({
   update: _.partial(Telescope.allowCheck, Posts),
   remove: _.partial(Telescope.allowCheck, Posts)
