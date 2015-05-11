@@ -4,7 +4,6 @@ accounts-password@1.1.1
 accounts-twitter@1.0.4
 accounts-ui@1.1.5
 accounts-ui-unstyled@1.1.7
-aldeed:autoform@5.1.2
 aldeed:collection2@2.3.3
 aldeed:http@0.2.2
 aldeed:simple-schema@1.3.2
@@ -92,6 +91,7 @@ reactive-var@1.0.5
 reload@1.1.3
 retry@1.0.3
 routepolicy@1.0.5
+sacha:autoform@5.1.2
 sacha:juice@0.1.4
 sacha:spin@0.2.4
 service-configuration@1.0.4

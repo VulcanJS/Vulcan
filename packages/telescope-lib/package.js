@@ -20,7 +20,7 @@ Package.onUse(function (api) {
     'email',
     'aldeed:simple-schema@1.3.2',
     'aldeed:collection2@2.3.3',
-    'aldeed:autoform@5.1.2',
+    'sacha:autoform@5.1.2',
     'aldeed:template-extension@3.4.3',
     'tap:i18n@1.4.1',
     'fourseven:scss@2.1.1',
