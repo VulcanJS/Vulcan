@@ -127,7 +127,10 @@ Telescope.schemas.userData = new SimpleSchema({
     type: Object,
     optional: true,
     editableBy: ["member", "admin"],
-    blackbox: true
+    blackbox: true,
+    autoform: {
+      omit: true
+    }
   },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
