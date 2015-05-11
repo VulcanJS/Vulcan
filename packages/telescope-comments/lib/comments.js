@@ -8,7 +8,7 @@ Comments = new Mongo.Collection("comments");
  * Comments schema
  * @type {SimpleSchema}
  */
-Telescope.schemas.comments = new SimpleSchema({
+Comments.schema = new SimpleSchema({
   /**
     ID
   */
@@ -154,8 +154,8 @@ Telescope.schemas.comments = new SimpleSchema({
   }
 });
 
-Telescope.schemas.comments.internationalize();
-Comments.attachSchema(Telescope.schemas.comments);
+Comments.schema.internationalize();
+Comments.attachSchema(Comments.schema);
 
 Comments.allow({
   update: _.partial(Telescope.allowCheck, Comments),

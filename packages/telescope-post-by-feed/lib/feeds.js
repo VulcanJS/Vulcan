@@ -1,4 +1,6 @@
-Telescope.schemas.feeds = new SimpleSchema({
+Feeds = new Mongo.Collection('feeds');
+
+Feeds.schema = new SimpleSchema({
   url: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
@@ -43,11 +45,10 @@ Telescope.schemas.feeds = new SimpleSchema({
   }
 });
 
-Feeds = new Meteor.Collection('feeds');
 
-Telescope.schemas.feeds.internationalize();
+Feeds.schema.internationalize();
 
-Feeds.attachSchema(Telescope.schemas.feeds);
+Feeds.attachSchema(Feeds.schema);
 
 // used to keep track of which feed a post was imported from
 var feedIdProperty = {
@@ -86,7 +87,7 @@ Meteor.startup(function () {
 
   Meteor.methods({
     insertFeed: function(feedUrl){
-      check(feedUrl, Telescope.schemas.feeds);
+      check(feedUrl, Feeds.schema);
 
       if (Feeds.findOne({url: feedUrl.url}))
         throw new Meteor.Error('already-exists', i18n.t('feed_already_exists'));

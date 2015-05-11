@@ -1,4 +1,6 @@
-Telescope.schemas.events = new SimpleSchema({
+Events = new Mongo.Collection('events');
+
+Events.schema = new SimpleSchema({
   createdAt: {
     type: Date
   },
@@ -24,12 +26,9 @@ Telescope.schemas.events = new SimpleSchema({
   }
 });
 
+Events.schema.internationalize();
 
-Events = new Meteor.Collection('events');
-
-Telescope.schemas.events.internationalize();
-
-Events.attachSchema(Telescope.schemas.events);
+Events.attachSchema(Events.schema);
 
 if (Meteor.isServer) {
   Events.log = function (event) {

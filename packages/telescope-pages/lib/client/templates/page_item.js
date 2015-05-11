@@ -9,7 +9,7 @@ Meteor.startup(function () {
     'click .delete-link': function(e, instance){
       e.preventDefault();
       if (confirm("Delete page?")) {
-        Pages.collection.remove(instance.data._id);
+        Pages.remove(instance.data._id);
       }
     }
   });

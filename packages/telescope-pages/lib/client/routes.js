@@ -8,7 +8,7 @@ Telescope.subscriptions.preload('pages');
 
 var PageController = RouteController.extend({
   currentPage: function () {
-    return Pages.collection.findOne({slug: this.params.slug});
+    return Pages.findOne({slug: this.params.slug});
   },
   getTitle: function () {
     return this.currentPage() && this.currentPage().title;

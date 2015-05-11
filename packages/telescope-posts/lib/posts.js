@@ -8,7 +8,7 @@ Posts = new Mongo.Collection("posts");
  * Posts schema
  * @type {SimpleSchema}
  */
-Telescope.schemas.posts = new SimpleSchema({
+Posts.schema = new SimpleSchema({
   /**
     ID
   */
@@ -220,15 +220,17 @@ Telescope.schemas.posts = new SimpleSchema({
   }
 });
 
+Meteor.startup(function () {
 // schema transforms
-Telescope.schemas.posts.internationalize();
+Posts.schema.internationalize();
 
 
 /**
  * Attach schema to Posts collection
  */
-Posts.attachSchema(Telescope.schemas.posts);
+Posts.attachSchema(Posts.schema);
 
+});
 Posts.allow({
   update: _.partial(Telescope.allowCheck, Posts),
   remove: _.partial(Telescope.allowCheck, Posts)

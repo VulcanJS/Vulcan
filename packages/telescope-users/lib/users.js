@@ -173,7 +173,7 @@ Telescope.schemas.userData = new SimpleSchema({
  * Users schema
  * @type {SimpleSchema}
  */
-Telescope.schemas.users = new SimpleSchema({ 
+Users.schema = new SimpleSchema({ 
   _id: {
     type: String,
     optional: true
@@ -215,12 +215,12 @@ Telescope.schemas.users = new SimpleSchema({
   }
 });
 
-Telescope.schemas.users.internationalize();
+Users.schema.internationalize();
 
 /**
  * Attach schema to Meteor.users collection
  */
-Users.attachSchema(Telescope.schemas.users);
+Users.attachSchema(Users.schema);
 
 /**
  * Users collection permissions

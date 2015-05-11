@@ -1,8 +1,8 @@
 Template.pagesMenu.helpers({
   hasPages: function () {
-    return Pages.collection.find().count();
+    return Pages.find().count();
   },
   pages: function () {
-    return Pages.collection.find();
+    return Pages.find();
   }
 });
