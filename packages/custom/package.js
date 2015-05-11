@@ -1,42 +1,14 @@
 Package.describe({
-  summary: 'Telescope blank package – use as template for your own packages',
+  summary: 'Telescope custom package – use as template for your own packages',
   version: '0.1.0',
-  name: 'telescope-blank'
-});
-
-Npm.depends({
-  // NPM package dependencies
+  name: 'my-custom-package'
 });
 
 Package.onUse(function (api) {
 
-  // --------------------------- 1. Meteor packages dependencies ---------------------------
+  // ---------------------------------- 1. Core dependency -----------------------------------
 
-  // automatic (let the package specify where it's needed)
-
-  api.use([
-    'tap:i18n',                   // internationalization package
-    'iron:router',                // routing package
-    'telescope-base',             // basic Telescope hooks and objects
-    'telescope:lib',              // useful functions
-    'telescope:settings',
-    'telescope:i18n',             // internationalization wrapper
-    'fourseven:scss'              // SCSS compilation package
-  ]);
-
-  // client
-
-  api.use([
-    'jquery',                     // useful for DOM interactions
-    'underscore',                 // JavaScript swiss army knife library
-    'templating'                  // required for client-side templates
-  ], ['client']);
-
-  // server
-
-  api.use([
-    //
-  ], ['server']);
+  api.use("telescope:core");
 
   // ---------------------------------- 2. Files to include ----------------------------------
 
@@ -46,42 +18,35 @@ Package.onUse(function (api) {
     'package-tap.i18n'
   ], ['client', 'server']);
 
-  // both
+  // client & server
 
   api.addFiles([
     'lib/custom_fields.js',
-    'lib/hooks.js',
-    'lib/main.js',
-    'lib/routes.js',
-    'lib/settings.js',
-    'lib/templates.js'
+    'lib/template_modules.js',
+    'lib/callbacks.js'
   ], ['client', 'server']);
 
   // client
 
   api.addFiles([
-    'lib/client/templates/custom_template.html',
-    'lib/client/templates/custom_template.js',
-    'lib/client/templates/customPostTitle.html',
-    'lib/client/stylesheets/custom.scss'
+    'lib/client/templates/hello.html',
+    'lib/client/templates/hello.js',
+    'lib/client/templates/custom_post_title.html',
+    'lib/client/templates/custom_post_title.js',
+    'lib/client/stylesheets/custom.scss',
+    'lib/client/custom_templates.js'
   ], ['client']);
 
   // server
 
   api.addFiles([
-    'lib/server/publications.js'
+    //...
   ], ['server']);
 
   // i18n languages (must come last)
 
   api.addFiles([
-    'i18n/en.i18n.json',
+    'i18n/en.i18n.json'
   ], ['client', 'server']);
-
-  // -------------------------------- 3. Variables to export --------------------------------
-
-  api.export([
-    'myFunction'
-  ]);
 
 });

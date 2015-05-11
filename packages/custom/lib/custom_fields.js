@@ -1,16 +1,45 @@
 // Custom Post Field
 
-var customField = {
-  fieldName: 'customField',
+Posts.registerField({
+  fieldName: 'customPostField',
   fieldSchema: {
-    type: String,                           // property type
-    label: 'customLabel',                   // key string used for internationalization
-    optional: true,                         // make this property optional
+    type: String,
+    optional: true,
+    editableBy: ["member", "admin"]
+  }
+});
+
+// Custom Comment Field
+
+Comments.registerField({
+  fieldName: 'customCommentField',
+  fieldSchema: {
+    type: String,
+    optional: true,
+    editableBy: ["member", "admin"]
+  }
+});
+
+// Custom User Field
+
+Users.registerField({
+  fieldName: 'customUserField',
+  fieldSchema: {
+    type: String,
+    optional: true,
+    editableBy: ["member", "admin"]
+  }
+});
+
+// Custom Setting Field
+
+Settings.registerField({
+  fieldName: "customSettingsField",
+  fieldSchema: {
+    type: String,
+    optional: true,
     autoform: {
-      editable: true,                       // make this property editable by users
-      type: "bootstrap-datetimepicker",     // assign a custom input type
-      omit: false                           // set to true to omit field from form entirely
+      group: "customGroup"
     }
   }
-}
-Posts.registerField(customField);
+});
