@@ -7,7 +7,7 @@ for the embedded postsList template. It receives its parameters from a "caller" 
 
 */
 
-Template.postsListController.onCreated(function () {
+Template.posts_list_controller.onCreated(function () {
 
   // 1. Initialization (*not* reactive!)
   var instance = this;
@@ -58,7 +58,7 @@ Template.postsListController.onCreated(function () {
 
 });
 
-Template.postsListController.helpers({
+Template.posts_list_controller.helpers({
   template: function () {
     return !!this.template? this.template: "posts_list";
   },
