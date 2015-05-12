@@ -27,7 +27,7 @@ Users.pubsub.publicProperties = { // true means exposed
   'telescope.karma': true,
   'telescope.postCount': true,
   'telescope.slug': true,
-  'telescope.username': true,
+  'telescope.displayName': true,
   'telescope.notifications': true,
   'telescope.bio': true,
   'telescope.github': true,
@@ -48,13 +48,14 @@ Users.pubsub.hiddenProperties = {
 };
 
 /**
- * Minimum required properties to display avatars
+ * Minimum required properties to display avatars and display names
  * @type {Object}
  */
 Users.pubsub.avatarProperties = {
   _id: true,
   'telescope.emailHash': true,
   'telescope.slug': true,
+  'telescope.displayName': true,
   username: true,
   'profile.username': true,
   'profile.github': true,
