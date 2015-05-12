@@ -65,6 +65,10 @@ manuelschoebel:ms-seo@0.4.1
 matb33:collection-hooks@0.7.11
 meteor@1.1.6
 meteor-platform@1.2.2
+<<<<<<< HEAD
+=======
+meteorhacks:async@1.0.0
+>>>>>>> f8a817aa5c7561d1804f480ef566e14ed69141ef
 meteorhacks:fast-render@2.3.2
 meteorhacks:inject-data@1.2.3
 meteorhacks:kadira@2.20.1
