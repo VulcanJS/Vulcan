@@ -41,11 +41,7 @@ Meteor.publish('currentUser', function() {
 Meteor.publish('allUsersAdmin', function() {
   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
   if (Users.is.adminById(this.userId)) {
-    return Meteor.users.find(selector, {fields: {
-      _id: true,
-      profile: true,
-      slug: true
-    }});
+    return Meteor.users.find(selector, {fields: Users.pubsub.avatarProperties});
   }
   return [];
 });

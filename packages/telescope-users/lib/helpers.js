@@ -131,34 +131,42 @@ Users.numberOfItemsInPast24Hours = function (user, collection) {
   return items.count();
 };
 
-Users.getUserSetting = function (setting, defaultValue, user) {
+Users.getUserSetting = function (settingName, defaultValue, user) {
   user = user || Meteor.user();
   defaultValue = defaultValue || null;
-  var settingValue = this.getProperty(user.telescope, setting);
-  return (settingValue === null) ? defaultValue : settingValue;
+  if (user.telescope && user.telescope.settings) {
+    var settingValue = this.getProperty(user.telescope.settings, settingName);
+    return (settingValue === null) ? defaultValue : settingValue;
+  } else {
+    return defaultValue;
+  }
 };
 
-Users.setUserSetting = function (setting, value, userArgument) {
+Users.setUserSetting = function (settingName, value, userArgument) {
   // note: for some very weird reason, doesn't work when called from Accounts.onCreateUser
 
   var user;
 
   if(Meteor.isClient){
-    user = Meteor.user(); // on client, default to current user
+    user = (typeof userArgument === "undefined") ? Meteor.user() : userArgument; // on client, default to current user
   }else if (Meteor.isServer){
     user = userArgument; // on server, use argument
   }
-
   if(!user)
     throw new Meteor.Error(500, 'User not defined');
 
-  console.log('Setting user setting "' + setting + '" to "' + value + '" for ' + Users.getUserName(user));
-  var find = {_id: user._id};
-  var field = {};
-  field['telescope.'+setting] = value;
-  var options = {$set: field};
-  Meteor.users.update(find, options, {validate: false});
+  Meteor.call('setUserSetting', settingName, value, user);
 };
+
+Meteor.methods({
+  setUserSetting: function (settingName, value, user) {
+    // console.log('Setting user setting "' + setting + '" to "' + value + '" for ' + Users.getUserName(user));
+    var field = 'telescope.settings.'+settingName;
+    var modifier = {$set: {}};
+    modifier.$set[field] = value;
+    Meteor.users.update(user._id, modifier);
+  }
+});
 
 Users.getProperty = function (object, property) {
   // recursive function to get nested properties

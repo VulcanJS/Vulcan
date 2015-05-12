@@ -1,5 +1,7 @@
+Categories = new Mongo.Collection("categories");
+
 // category schema
-Telescope.schemas.categories = new SimpleSchema({
+Categories.schema = new SimpleSchema({
   name: {
     type: String,
     editableBy: ["admin"]
@@ -29,11 +31,9 @@ Telescope.schemas.categories = new SimpleSchema({
   }
 });
 
-Categories = new Meteor.Collection("categories");
+Categories.schema.internationalize();
 
-Telescope.schemas.categories.internationalize();
-
-Categories.attachSchema(Telescope.schemas.categories);
+Categories.attachSchema(Categories.schema);
 
 Categories.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one

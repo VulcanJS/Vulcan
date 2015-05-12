@@ -1,6 +1,6 @@
-Pages = {};
+Pages = new Mongo.Collection('pages');
 
-Telescope.schemas.pages = new SimpleSchema({
+Pages.schema = new SimpleSchema({
   title: {
     type: String
   },
@@ -20,13 +20,12 @@ Telescope.schemas.pages = new SimpleSchema({
   }
 });
 
-Pages.collection = new Meteor.Collection('pages');
 
-Telescope.schemas.pages.internationalize();
+Pages.schema.internationalize();
 
-Pages.collection.attachSchema(Telescope.schemas.pages);
+Pages.attachSchema(Pages.schema);
 
-Pages.collection.before.insert(function (userId, doc) {
+Pages.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one
   if (!doc.slug)
     doc.slug = Telescope.utils.slugify(doc.title);
@@ -43,7 +42,7 @@ Telescope.modules.register("mobileNav", {
 });
 
 Meteor.startup(function () {
-  Pages.collection.allow({
+  Pages.allow({
     insert: Users.is.adminById,
     update: Users.is.adminById,
     remove: Users.is.adminById

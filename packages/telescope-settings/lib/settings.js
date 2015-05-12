@@ -4,7 +4,7 @@
  */
 Settings = new Mongo.Collection("settings");
 
-Telescope.schemas.settings = new SimpleSchema({
+Settings.schema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
@@ -408,9 +408,9 @@ Telescope.schemas.settings = new SimpleSchema({
 });
 
 
-Telescope.schemas.settings.internationalize();
+Settings.schema.internationalize();
 
-Settings.attachSchema(Telescope.schemas.settings);
+Settings.attachSchema(Settings.schema);
 
 Settings.get = function(setting, defaultValue) {
   var settings = Settings.find().fetch()[0];

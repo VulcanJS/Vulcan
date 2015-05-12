@@ -13,7 +13,7 @@ var increasePostClicks = function(postId, ip){
   var existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
 
   if(!existingClickEvent){
-    logEvent(clickEvent);
+    Events.log(clickEvent);
     Posts.update(postId, { $inc: { clickCount: 1 }});
   }
 };
