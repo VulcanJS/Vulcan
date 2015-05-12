@@ -5,9 +5,27 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 Meteor.publish('postsList', function(terms) {
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.getSubParams(terms),
-        posts = Posts.find(parameters.find, parameters.options);
+        posts = Posts.find(parameters.find, parameters.options),
+        totalPostsCount = posts.count();
 
-    return posts;
+    var publish = this;
+    var postsObserve = posts.observe({
+      added: function (post) {
+        publish.added('posts', post._id, _.extend(post, {'totalPostsCount': totalPostsCount}));
+      },
+      changed: function (post) {
+        publish.changed('posts', post._id, post);
+      },
+      removed: function (post) {
+        publish.removed('posts', post._id);
+      }
+    });
+
+    publish.ready();
+
+    publish.onStop(function () {
+      postsObserve.stop();
+    });
   }
   return [];
 });
