@@ -9,12 +9,14 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-
+    'telescope:lib@0.3.1'
   ]);
 
   // client + server
   api.addFiles([
-    'lib/namespace.js'
+    'lib/namespace.js',
+    'lib/users.js',
+    'lib/pubsub.js'
   ], ['client', 'server']);
 
   // client

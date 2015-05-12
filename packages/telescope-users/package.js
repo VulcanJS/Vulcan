@@ -19,13 +19,11 @@ Package.onUse(function (api) {
     'package-tap.i18n',
     'lib/roles.js',
     'lib/permissions.js',
-    'lib/users.js',
     'lib/avatars.js',
     'lib/callbacks.js',
     'lib/modules.js',
     'lib/helpers.js',
     'lib/menu.js',
-    'lib/pubsub.js',
     'lib/methods.js',
     'lib/routes.js'
   ], ['client', 'server']);
