@@ -9,6 +9,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
+    'telescope:users-base@0.0.1',
     'telescope:lib@0.3.1',
     'telescope:settings@0.1.0',
     'telescope:i18n@0.1.0'
@@ -16,7 +17,6 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'package-tap.i18n',
-    'lib/namespace.js',
     'lib/roles.js',
     'lib/permissions.js',
     'lib/users.js',
