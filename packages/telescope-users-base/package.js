@@ -16,6 +16,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/namespace.js',
     'lib/users.js',
+    'lib/helpers.js',
     'lib/pubsub.js'
   ], ['client', 'server']);
 

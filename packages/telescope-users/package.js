@@ -22,7 +22,6 @@ Package.onUse(function (api) {
     'lib/avatars.js',
     'lib/callbacks.js',
     'lib/modules.js',
-    'lib/helpers.js',
     'lib/menu.js',
     'lib/methods.js',
     'lib/routes.js'
