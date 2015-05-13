@@ -58,11 +58,4 @@ Package.onUse(function (api) {
     'i18n/zh-CN.i18n.json'
   ], ['client', 'server']);
 
-  // -------------------------------- 3. Variables to export --------------------------------
-
-  api.export([
-    'getDigestURL',
-    'PostsSingledayController'
-  ]);
-
 });

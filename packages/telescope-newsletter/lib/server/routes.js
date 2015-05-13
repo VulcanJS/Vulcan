@@ -17,12 +17,12 @@ Meteor.startup(function () {
     name: 'digestConfirmation',
     where: 'server',
     action: function() {
-      var confirmationHtml = getEmailTemplate('emailDigestConfirmation')({
+      var confirmationHtml = Telescope.email.getTemplate('emailDigestConfirmation')({
         time: 'January 1st, 1901',
         newsletterLink: 'http://example.com',
         subject: 'Lorem ipsum dolor sit amet'
       });
-      this.response.write(buildEmailTemplate(confirmationHtml));
+      this.response.write(Telescope.email.buildTemplate(confirmationHtml));
       this.response.end();
     }
   });

@@ -57,7 +57,7 @@ Meteor.startup(function (){
         siteUrl: Telescope.utils.getSiteUrl()
       };
       var html = Handlebars.templates.emailAccountApproved(emailProperties);
-      this.response.write(buildEmailTemplate(html));
+      this.response.write(Telescope.email.buildTemplate(html));
       this.response.end();
     }
   });

@@ -1,8 +1,13 @@
+/**
+ * Telescope Email namespace
+ * @namespace Email
+ */
+Telescope.email = {};
 
 var htmlToText = Npm.require('html-to-text');
 
 // check if server-side template has been customized, and return the correct template
-getEmailTemplate = function (template) {
+Telescope.email.getTemplate = function (template) {
   var emailTemplate = Handlebars.templates[template];
   if(typeof emailTemplate === 'function'){
     return Handlebars.templates[template];
@@ -12,7 +17,7 @@ getEmailTemplate = function (template) {
   }
 };
 
-buildEmailTemplate = function (htmlContent) {
+Telescope.email.buildTemplate = function (htmlContent) {
 
   var emailProperties = {
     secondaryColor: Settings.get('secondaryColor', '#444444'),
@@ -38,7 +43,7 @@ buildEmailTemplate = function (htmlContent) {
   return doctype+inlinedHTML;
 };
 
-sendEmail = function(to, subject, html, text){
+Telescope.email.send = function(to, subject, html, text){
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -74,15 +79,15 @@ sendEmail = function(to, subject, html, text){
   return email;
 };
 
-buildAndSendEmail = function (to, subject, template, properties) {
-  var html = buildEmailTemplate(getEmailTemplate(template)(properties));
-  return sendEmail (to, subject, html);
+Telescope.email.buildAndSend = function (to, subject, template, properties) {
+  var html = Telescope.email.buildTemplate(Telescope.email.getTemplate(template)(properties));
+  return Telescope.email.send (to, subject, html);
 };
 
 Meteor.methods({
   testEmail: function () {
     if(Users.is.adminById(this.userId)){
-      var email = buildAndSendEmail (Settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
+      var email = Telescope.email.buildAndSend (Settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
     }
   }
 });
@@ -96,8 +101,8 @@ function adminUserCreationNotification (user) {
         profileUrl: Users.getProfileUrl(user),
         username: Users.getUserName(user)
       };
-      var html = getEmailTemplate('emailNewUser')(emailProperties);
-      sendEmail(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), buildEmailTemplate(html));
+      var html = Telescope.email.getTemplate('emailNewUser')(emailProperties);
+      Telescope.email.send(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), Telescope.email.buildTemplate(html));
     }
   });
   return user;

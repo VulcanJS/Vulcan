@@ -70,7 +70,7 @@ Meteor.methods({
           };
 
       Meteor.setTimeout(function () {
-        buildAndSendEmail(userEmail, emailSubject, 'emailInvite', emailProperties);
+        Telescope.email.buildAndSend(userEmail, emailSubject, 'emailInvite', emailProperties);
       }, 1);
 
     }
