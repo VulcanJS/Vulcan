@@ -183,20 +183,25 @@ Users.schema = new SimpleSchema({
   },
   username: {
     type: String,
-    regEx: /^[a-z0-9A-Z_]{3,15}$/
+    regEx: /^[a-z0-9A-Z_]{3,15}$/,
+    optional: true
   },
   emails: {
-    type: [Object]
+    type: [Object],
+    optional: true
   },
   "emails.$.address": {
     type: String,
-    regEx: SimpleSchema.RegEx.Email
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true
   },
   "emails.$.verified": {
-    type: Boolean
+    type: Boolean,
+    optional: true
   },
   createdAt: {
-    type: Date
+    type: Date,
+    optional: true
   },
   isAdmin: {
     type: Boolean,
