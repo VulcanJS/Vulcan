@@ -51,9 +51,7 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.export([
-    'Herald',
-    'buildEmailNotification',
-    'getUnsubscribeLink'
+    'Herald'
   ]);
 });
 

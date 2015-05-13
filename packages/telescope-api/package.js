@@ -13,6 +13,4 @@ Package.onUse(function (api) {
 
   api.addFiles(['lib/server/api.js', 'lib/server/routes.js'], ['server']);
 
-  api.export(['serveAPI']);
-
 });
