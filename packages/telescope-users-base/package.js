@@ -16,6 +16,9 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/namespace.js',
     'lib/users.js',
+    'lib/roles.js',
+    'lib/callbacks.js',
+    'lib/permissions.js',
     'lib/helpers.js',
     'lib/pubsub.js'
   ], ['client', 'server']);
@@ -27,7 +30,7 @@ Package.onUse(function (api) {
 
   // server
   api.addFiles([
-
+    'lib/server/create_user.js'
   ], ['server']);
 
   api.export('Users');

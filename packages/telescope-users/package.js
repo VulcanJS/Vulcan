@@ -17,10 +17,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'package-tap.i18n',
-    'lib/roles.js',
-    'lib/permissions.js',
     'lib/avatars.js',
-    'lib/callbacks.js',
     'lib/modules.js',
     'lib/menu.js',
     'lib/methods.js',
@@ -58,8 +55,7 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    'lib/server/publications.js',
-    'lib/server/create_user.js'
+    'lib/server/publications.js'
   ], ['server']);
 
   api.addFiles([
