@@ -80,7 +80,7 @@ Template.comment_item.helpers({
     return Meteor.users.findOne(this.userId);
   },
   authorName: function(){
-    return Users.getAuthorName(this);
+    return Users.getDisplayName(this);
   },
   showChildComments: function(){
     // TODO: fix this

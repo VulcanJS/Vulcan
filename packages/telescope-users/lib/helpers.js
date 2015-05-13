@@ -1,18 +1,11 @@
-///////////////////
-// Users Helpers //
-///////////////////
+////////////////////
+//  User Getters  //
+////////////////////
 
-
-
-Users.updateAdmin = function (userId, admin) {
-  this.update(userId, {$set: {isAdmin: admin}});
-};
-
-
-Users.adminUsers = function () {
-  return this.find({isAdmin : true}).fetch();
-};
-
+/**
+ * Get a user's username (unique, no special characters or spaces)
+ * @param {Object} user
+ */
 Users.getUserName = function (user) {
   try{
     if (user.username)
@@ -25,32 +18,44 @@ Users.getUserName = function (user) {
     return null;
   }
 };
+Users.helpers({getUserName: function () {return Users.getUserName(this);}});
+Users.getUserNameById = function (userId) {return Users.getUserName(Meteor.users.findOne(userId))}; 
 
+/**
+ * Get a user's display name (not unique, can take special characters and spaces)
+ * @param {Object} user
+ */
 Users.getDisplayName = function (user) {
-  return (user.telescope && user.telescope.displayName) ? user.telescope.displayName : Users.getUserName(user);
+  if (typeof user === "undefined") {
+    return "";
+  } else {
+    return (user.telescope && user.telescope.displayName) ? user.telescope.displayName : Users.getUserName(user);
+  }
 };
+Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}});
+Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor.users.findOne(userId));};
 
-Users.getDisplayNameById = function (userId) {
-  return this.getDisplayName(Meteor.users.findOne(userId));
-};
-
-Users.getAuthorName = function(item) {
-  var user = Meteor.users.findOne(item.userId);
-  return typeof user === 'undefined' ? '' : Users.getDisplayName(user);
-};
-
+/**
+ * Get a user's profile URL
+ * @param {Object} user
+ */
 Users.getProfileUrl = function (user) {
   return this.getProfileUrlBySlugOrId(user.telescope.slug);
 };
+Users.helpers({getProfileUrl: function () {return Users.getProfileUrl(this);}});
 
+/**
+ * Get a user's profile URL by slug or Id
+ * @param {String} slugOrId
+ */
 Users.getProfileUrlBySlugOrId = function (slugOrId) {
   return Telescope.utils.getRouteUrl('user_profile', {_idOrSlug: slugOrId});
 };
 
-Users.hasPassword = function (user) {
-  return !!user.services.password;
-};
-
+/**
+ * Get a user's Twitter name
+ * @param {Object} user
+ */
 Users.getTwitterName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
   if(Telescope.utils.checkNested(user, 'profile', 'twitter')){
@@ -60,7 +65,13 @@ Users.getTwitterName = function (user) {
   }
   return null;
 };
+Users.helpers({getTwitterName: function () {return Users.getTwitterName(this);}});
+Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Meteor.users.findOne(userId));};
 
+/**
+ * Get a user's GitHub name
+ * @param {Object} user
+ */
 Users.getGitHubName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
   if(Telescope.utils.checkNested(user, 'profile', 'github')){
@@ -70,13 +81,13 @@ Users.getGitHubName = function (user) {
   }
   return null;
 };
+Users.helpers({getGitHubName: function () {return Users.getGitHubName(this);}});
+Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Meteor.users.findOne(userId));};
 
-Users.getTwitterNameById = function (userId) {
-  var user = Meteor.users.findOne(userId);
-  if (user)
-    return Users.getTwitterName(user);
-};
-
+/**
+ * Get a user's email
+ * @param {Object} user
+ */
 Users.getEmail = function (user) {
   if(user.telescope && user.telescope.email){
     return user.telescope.email;
@@ -84,21 +95,24 @@ Users.getEmail = function (user) {
     return null;
   }
 };
+Users.helpers({getEmail: function () {return Users.getEmail(this);}});
+Users.getEmailById = function (userId) {return Users.getEmail(Meteor.users.findOne(userId));};
 
+/**
+ * Get a user's email hash
+ * @param {Object} user
+ */
 Users.getEmailHash = function (user) {
   // has to be this way to work with Gravatar
   return Gravatar.hash(Users.getEmail(user));
 };
+Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
+Users.getEmailHashById = function (userId) {return Users.getEmailHash(Meteor.users.findOne(userId));};
 
-Users.getAvatarUrl = function (user) {
-  console.warn('FUNCTION getAvatarUrl() IS DEPRECATED -- package bengott:avatar is used instead.');
-  return Avatar.getUrl(user);
-};
-
-Users.getCurrentUserEmail = function () {
-  return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
-};
-
+/**
+ * Check if a user's profile is complete
+ * @param {Object} user
+ */
 Users.userProfileComplete = function (user) {
   for (var i = 0; i < Telescope.callbacks.profileCompletedChecks.length; i++) {
     if (!Telescope.callbacks.profileCompletedChecks[i](user)) {
@@ -107,6 +121,12 @@ Users.userProfileComplete = function (user) {
   }
   return true;
 };
+Users.helpers({userProfileComplete: function () {return Users.userProfileComplete(this);}});
+Users.userProfileCompleteById = function (userId) {return Users.userProfileComplete(Meteor.users.findOne(userId));};
+
+///////////////////
+// Other Helpers //
+///////////////////
 
 Users.findLast = function (user, collection) {
   return collection.findOne({userId: user._id}, {sort: {createdAt: -1}});
@@ -224,4 +244,17 @@ Users.getSubParams = function(filterBy, sortBy, limit) {
     find: find,
     options: { sort: sort, limit: limit }
   };
+};
+
+
+Users.updateAdmin = function (userId, admin) {
+  this.update(userId, {$set: {isAdmin: admin}});
+};
+
+Users.adminUsers = function () {
+  return this.find({isAdmin : true}).fetch();
+};
+
+Users.getCurrentUserEmail = function () {
+  return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
 };

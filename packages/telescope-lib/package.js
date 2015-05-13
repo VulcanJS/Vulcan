@@ -26,6 +26,7 @@ Package.onUse(function (api) {
     'tap:i18n@1.4.1',
     'fourseven:scss@2.1.1',
     'iron:router@1.0.5',
+    'dburles:collection-helpers@1.0.3',
     // 'meteorhacks:flow-router@1.5.0',
     // 'meteorhacks:flow-layout@1.1.1',
     'matb33:collection-hooks@0.7.11',

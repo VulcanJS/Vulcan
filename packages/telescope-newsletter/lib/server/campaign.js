@@ -32,7 +32,7 @@ buildCampaign = function (postsArray) {
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
-      authorName: Users.getAuthorName(post),
+      authorName: Users.getDisplayName(post),
       postLink: Posts.getLink(post),
       profileUrl: Users.getProfileUrl(postUser),
       postPageLink: Posts.getPageUrl(post),
