@@ -5,7 +5,10 @@
   "logo": "http://www.telescopeapp.org/images/logo.png",
   "keywords": ["meteor", "social", "community"],
   "env": {
-    "BUILDPACK_URL": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
+    "BUILDPACK_URL": "https://github.com/AdmitHub/meteor-buildpack-horse.git",
+    "ROOT_URL": {
+      "description": "The full URL of your Telescope app."
+    }
   },
   "addons": [
     "mongolab"
