@@ -186,21 +186,8 @@
 		}
 	}
 	.comment-permalink{
-		position:relative;
-		@include hide-text;
-		width:20px;
-		color:$light-text;
-		margin:0;
-		&:before{
-			position:absolute;
-			display:block;
-			top:1px;
-			left:0;
-			text-indent:0;
-		}
-		&:hover:before{
-			color:$red;
-		}
+		font-weight: normal;
+		color: $light-text;
 	}
 }
 .comment-actions{
@@ -329,7 +316,7 @@
 	font-weight: bold;
 }
 
-.comment-new{
+.comment-form{
 	.af-defaultFieldGroup{
 		margin-bottom: 0;
 		.form-group{

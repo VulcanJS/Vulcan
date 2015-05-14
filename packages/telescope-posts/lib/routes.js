@@ -72,35 +72,35 @@ Meteor.startup(function () {
  * Controller for top view
  */
 Posts.controllers.top = Posts.controllers.list.extend({
-  view: 'top',
+  view: 'top'
 });
 
 /**
  * Controller for new view
  */
 Posts.controllers.new = Posts.controllers.list.extend({
-  view: 'new',
+  view: 'new'
 });
 
 /**
  * Controller for best view
  */
 Posts.controllers.best = Posts.controllers.list.extend({
-  view: 'best',
+  view: 'best'
 });
 
 /**
  * Controller for pending view
  */
 Posts.controllers.pending = Posts.controllers.list.extend({
-  view: 'pending',
+  view: 'pending'
 });
 
 /**
  * Controller for scheduled view
  */
 Posts.controllers.scheduled = Posts.controllers.list.extend({
-  view: 'scheduled',
+  view: 'scheduled'
 });
 
 /**

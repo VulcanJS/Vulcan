@@ -1,10 +1,4 @@
 /**
- * The global namespace for Posts.
- * @namespace Posts
- */
-Posts = new Mongo.Collection("posts");
-
-/**
  * Posts schema
  * @type {SimpleSchema}
  */
@@ -168,7 +162,7 @@ Posts.schema = new SimpleSchema({
     },
     autoform: {
       noselect: true,
-      options: Telescope.config.postStatuses,
+      options: Posts.config.postStatuses,
       group: 'admin'
     }
   },

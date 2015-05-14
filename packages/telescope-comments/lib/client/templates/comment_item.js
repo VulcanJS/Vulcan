@@ -80,7 +80,8 @@ Template.comment_item.helpers({
     return Meteor.users.findOne(this.userId);
   },
   authorName: function(){
-    return Users.getAuthorName(this);
+    var user = Meteor.users.findOne(this.userId);
+    return Users.getDisplayName(user);
   },
   showChildComments: function(){
     // TODO: fix this
@@ -95,12 +96,6 @@ Template.comment_item.helpers({
   },
   downvoted: function(){
     return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
-  },
-  profileUrl: function(){
-    var user = Meteor.users.findOne(this.userId);
-    if (user) {
-      return Users.getProfileUrl(user);
-    }
   }
 });
 

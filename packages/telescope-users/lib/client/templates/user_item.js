@@ -2,9 +2,6 @@ Template.user_item.helpers({
   createdAtFormatted: function(){
     return this.createdAt ? moment(this.createdAt).fromNow() : '–';
   },
-  displayName: function(){
-    return Users.getDisplayName(this);
-  },
   getEmail: function(){
     return Users.getEmail(this);
   },

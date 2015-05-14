@@ -17,10 +17,9 @@
         </div>
         <div class="comment-meta">
           <div class="user-avatar avatar-medium" aria-hidden="true" aria-live="off">{{> avatar userId=userId shape="circle"}}</div>
-          <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
-          <span class="comment-time">{{timeAgo ago}},</span>
+          <a class="comment-username" href="{{getProfileUrl userId}}">{{authorName}}</a>
+          <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink comment-time">{{timeAgo ago}},</a>
           <span class="points">{{upvotes}}</span> <span class="unit">points </span>
-          <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink icon-link goto-comment">{{_ "link"}}</a>
           {{#if canEdit this}}
             | <a class="edit-link" href="{{pathFor route='comment_edit' _id=_id}}">{{_ "edit"}}</a>
           {{/if}}
@@ -30,7 +29,7 @@
         </div>
         <div class="comment-main"> 
           <div class="comment-text markdown">{{{htmlBody}}}</div>
-          <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-reply goto-comment">{{_ "reply"}}</a>
+          <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-reply">{{_ "reply"}}</a>
         </div>
       </div>
       {{/if}}

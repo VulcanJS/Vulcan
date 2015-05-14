@@ -11,8 +11,8 @@ Meteor.startup(function () {
         profileUrl: Users.getProfileUrl(user),
         username: Users.getUserName(user)
       };
-      html = getEmailTemplate('emailNewUser')(emailProperties);
-      this.response.write(buildEmailTemplate(html));
+      html = Telescope.email.getTemplate('emailNewUser')(emailProperties);
+      this.response.write(Telescope.email.buildTemplate(html));
       this.response.end();
     }
   });
@@ -25,11 +25,11 @@ Meteor.startup(function () {
     action: function() {
       var post = Posts.findOne(this.params.id);
       if (!!post) {
-        html = getEmailTemplate('emailNewPost')(Posts.getProperties(post));
+        html = Telescope.email.getTemplate('emailNewPost')(Posts.getProperties(post));
       } else {
         html = "<h3>No post found.</h3>"
       }
-      this.response.write(buildEmailTemplate(html));
+      this.response.write(Telescope.email.buildTemplate(html));
       this.response.end();
     }
   });

@@ -11,15 +11,15 @@ Posts.config = {};
 Posts.config.postStatuses = [
   {
     value: 1,
-    label: 'Pending'
+    label: function(){return i18n.t('pending');}
   },
   {
     value: 2,
-    label: 'Approved'
+    label: function(){return i18n.t('approved');}
   },
   {
     value: 3,
-    label: 'Rejected'
+    label: function(){return i18n.t('rejected');}
   }
 ];
 

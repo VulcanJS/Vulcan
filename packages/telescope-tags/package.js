@@ -50,7 +50,6 @@ Package.onUse(function (api) {
   ], ["client", "server"]);
 
   api.export([
-    'Categories',
-    'getPostCategories'
+    'Categories'
   ]);
 });

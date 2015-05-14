@@ -69,10 +69,9 @@ AutoForm.hooks({
 
 Template.comment_submit.onRendered(function() {
   var self = this;
-  this.$("#comment").keydown(function (e) {
+  this.$("textarea").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
-      // submitComment(self);
-      // TODO: find a way to trigger autoform submission here
+      self.$('#submitCommentForm').submit();
     }
   });
 });

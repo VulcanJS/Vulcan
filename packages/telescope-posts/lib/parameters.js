@@ -38,6 +38,10 @@ Posts.getSubParams = function (terms) {
   if (!parameters.showFuture && !parameters.find.postedAt)
     parameters.find.postedAt = {$lte: new Date()};
 
+  // filter by category if category _id is provided
+  if(!!terms.category)
+    parameters.find.categories = {$in: [terms.category]};
+  
   // console.log(parameters);
 
   return parameters;

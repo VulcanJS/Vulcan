@@ -32,7 +32,7 @@ buildCampaign = function (postsArray) {
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
-      authorName: Users.getAuthorName(post),
+      authorName: Users.getDisplayName(post),
       postLink: Posts.getLink(post),
       profileUrl: Users.getProfileUrl(postUser),
       postPageLink: Posts.getPageUrl(post),
@@ -45,18 +45,18 @@ buildCampaign = function (postsArray) {
     if(post.url)
       properties.domain = Telescope.utils.getDomain(post.url);
 
-    postsHTML += getEmailTemplate('emailPostItem')(properties);
+    postsHTML += Telescope.email.getTemplate('emailPostItem')(properties);
   });
 
   // 2. Wrap posts HTML in digest template
-  var digestHTML = getEmailTemplate('emailDigest')({
+  var digestHTML = Telescope.email.getTemplate('emailDigest')({
     siteName: Settings.get('title'),
     date: moment().format("dddd, MMMM Do YYYY"),
     content: postsHTML
   });
 
   // 3. wrap digest HTML in email wrapper template
-  var emailHTML = buildEmailTemplate(digestHTML);
+  var emailHTML = Telescope.email.buildTemplate(digestHTML);
 
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),

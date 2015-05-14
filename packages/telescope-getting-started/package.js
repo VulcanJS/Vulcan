@@ -72,10 +72,4 @@ Package.onUse(function (api) {
     'i18n/en.i18n.json',
   ], ['client', 'server']);
 
-  // -------------------------------- 3. Variables to export --------------------------------
-
-  api.export([
-    'deleteDummyContent'
-  ]);
-
 });

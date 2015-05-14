@@ -20,7 +20,7 @@ var commentEmail = function (userToNotify) {
   // put in setTimeout so it doesn't hold up the rest of the method
   Meteor.setTimeout(function () {
     notificationEmail = buildEmailNotification(notification);
-    sendEmail(Users.getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
+    Telescope.email.send(Users.getEmail(userToNotify), notificationEmail.subject, notificationEmail.html);
   }, 1);
 };
 
@@ -52,8 +52,8 @@ Herald.addCourier('newPost', {
       emailRunner: function (user) {
         var p = Posts.getProperties(this.data);
         var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
-        var html = buildEmailTemplate(getEmailTemplate('emailNewPost')(p));
-        sendEmail(Users.getEmail(user), subject, html);
+        var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailNewPost')(p));
+        Telescope.email.send(Users.getEmail(user), subject, html);
       }
     }
   }
@@ -66,8 +66,8 @@ Herald.addCourier('newPendingPost', {
       emailRunner: function (user) {
         var p = Posts.getProperties(this.data);
         var subject = p.postAuthorName+' has a new post pending approval: '+p.postTitle;
-        var html = buildEmailTemplate(getEmailTemplate('emailNewPendingPost')(p));
-        sendEmail(Users.getEmail(user), subject, html);
+        var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailNewPendingPost')(p));
+        Telescope.email.send(Users.getEmail(user), subject, html);
       }
     }
   }
@@ -80,8 +80,8 @@ Herald.addCourier('postApproved', {
       emailRunner: function (user) {
         var p = Posts.getProperties(this.data);
         var subject = 'Your post “'+p.postTitle+'” has been approved';
-        var html = buildEmailTemplate(getEmailTemplate('emailPostApproved')(p));
-        sendEmail(Users.getEmail(user), subject, html);
+        var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailPostApproved')(p));
+        Telescope.email.send(Users.getEmail(user), subject, html);
       }
     }
   },

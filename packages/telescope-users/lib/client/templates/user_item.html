@@ -2,7 +2,7 @@
 <tr class="user">
 	<td aria-hidden="true">{{> avatar user=this shape="circle"}}</td>
 	<td>
-		<a href="{{getProfileUrl}}">{{displayName}}</a>
+		<a href="{{getProfileUrl}}">{{getDisplayName this}}</a>
 		<br/>
 		<a href="mailto:{{getEmail}}">{{getEmail}}</a>
 	</td>

@@ -40,8 +40,8 @@ buildEmailNotification = function (notification) {
 
   // console.log(emailProperties)
 
-  var notificationHtml = getEmailTemplate(template)(emailProperties);
-  var html = buildEmailTemplate(notificationHtml);
+  var notificationHtml = Telescope.email.getTemplate(template)(emailProperties);
+  var html = Telescope.email.buildTemplate(notificationHtml);
 
   return {
     subject: subject,
