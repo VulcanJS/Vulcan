@@ -41,6 +41,7 @@ Package.onUse(function (api) {
     'lib/client/templates/dashboard/users_list_created_at.html',
     'lib/client/templates/dashboard/users_list_email.html',
     'lib/client/templates/dashboard/users_list_username.html',
+    'lib/client/templates/dashboard/users_list_display_name.html',
     'lib/client/templates/profile/user_comments.html',
     'lib/client/templates/profile/user_comments.js',
     'lib/client/templates/profile/user_downvoted_posts.html',

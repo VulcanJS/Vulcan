@@ -62,7 +62,7 @@ Router._filters = {
     if(!this.ready() || Meteor.loggingIn()){
       this.render('loading');
     } else if (!Users.can.view()) {
-      this.render('no_rights');
+      this.render('no_invite');
     } else {
       this.next();
     }
@@ -200,10 +200,10 @@ Meteor.startup( function (){
     // Before Hooks
 
     Router.onBeforeAction(filters.isReady);
+    Router.onBeforeAction(filters.hasCompletedProfile);
     Router.onBeforeAction(filters.canView, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
     Router.onBeforeAction(filters.canViewPendingPosts, {only: ['post_page']});
     Router.onBeforeAction(filters.canViewRejectedPosts, {only: ['post_page']});
-    Router.onBeforeAction(filters.hasCompletedProfile);
     Router.onBeforeAction(filters.isLoggedOut, {only: []});
     Router.onBeforeAction(filters.canPost, {only: ['posts_pending', 'post_submit']});
     Router.onBeforeAction(filters.canEditPost, {only: ['post_edit']});

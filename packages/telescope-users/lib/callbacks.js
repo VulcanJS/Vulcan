@@ -31,7 +31,7 @@ function setupUser (user, options) {
   user.telescope.displayName = user.username;
 
   // create slug from username
-  user.telescope.slug = Telescope.utils.slugify(user.username);
+  user.telescope.slug = Telescope.utils.slugify(Users.getUserName(user));
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;

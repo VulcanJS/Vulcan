@@ -63,21 +63,21 @@ Template.registerHelper('pluralize', function(count, string) {
   return i18n.t(string);
 });
 
-Template.registerHelper('profileUrl', function(userOrUserId) {
+Template.registerHelper('getProfileUrl', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
     return Users.getProfileUrl(user);
   }
 });
 
-Template.registerHelper('userName', function(userOrUserId) {
+Template.registerHelper('getUsername', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
     return Users.getUserName(user);
   }
 });
 
-Template.registerHelper('displayName', function(userOrUserId) {
+Template.registerHelper('getDisplayName', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
   if (!!user) {
     return Users.getDisplayName(user);

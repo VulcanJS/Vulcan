@@ -9,7 +9,7 @@ Template.usersDashboard.helpers({
         { key: 'createdAt', label: 'Member Since', tmpl: Template.users_list_created_at, sort: 'descending' },
         { key: 'isAdmin', label: 'Admin', fn: function(val){return val ? 'Yes':'No'} },
         { key: 'username', label: 'Username', tmpl: Template.users_list_username },
-        { key: 'telescope.displayName', label: 'Display Name' },
+        { key: 'telescope.displayName', label: 'Display Name', tmpl: Template.users_list_display_name },
         { key: 'telescope.email', label: 'Email', tmpl: Template.users_list_email },
         { key: 'telescope.postCount', label: 'Posts' },
         { key: 'telescope.commentCount', label: 'Comments' },

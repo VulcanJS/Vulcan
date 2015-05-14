@@ -17,7 +17,7 @@
         </div>
         <div class="comment-meta">
           <div class="user-avatar avatar-medium" aria-hidden="true" aria-live="off">{{> avatar userId=userId shape="circle"}}</div>
-          <a class="comment-username" href="{{profileUrl}}">{{authorName}}</a>
+          <a class="comment-username" href="{{getProfileUrl userId}}">{{authorName}}</a>
           <a href="{{pathFor route='comment_reply' _id=_id}}" class="comment-permalink comment-time">{{timeAgo ago}},</a>
           <span class="points">{{upvotes}}</span> <span class="unit">points </span>
           {{#if canEdit this}}
