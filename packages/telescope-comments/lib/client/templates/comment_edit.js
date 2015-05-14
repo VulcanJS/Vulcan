@@ -66,9 +66,9 @@ Template.comment_edit.events({
 
 Template.comment_edit.onRendered(function() {
   var self = this;
-  this.$("#comment").keydown(function (e) {
+  this.$("textarea").keydown(function (e) {
     if(((e.metaKey || e.ctrlKey) && e.keyCode == 13) || (e.ctrlKey && e.keyCode == 13)){
-      // editComment(self);
+      self.$('#editCommentForm').submit();
     }
   });
 });

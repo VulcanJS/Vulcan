@@ -14,7 +14,6 @@ aramk:tinycolor@1.1.0_1
 aslagle:reactive-table@0.7.3
 autoupdate@1.2.1
 base64@1.0.3
-bengott:avatar@0.7.6
 binary-heap@1.0.3
 blaze@2.1.2
 blaze-tools@1.0.3
@@ -150,5 +149,6 @@ underscore@1.0.3
 url@1.0.4
 useraccounts:core@1.8.1
 useraccounts:unstyled@1.8.1
+utilities:avatar@0.7.8
 webapp@1.2.0
 webapp-hashing@1.0.3
