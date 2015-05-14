@@ -8,6 +8,6 @@
     "BUILDPACK_URL": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
   },
   "addons": [
-    "mongolab:shared-single-small"
+    "mongolab"
   ]
 }
