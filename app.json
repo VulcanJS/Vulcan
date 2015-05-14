@@ -1,0 +1,13 @@
+{
+  "name": "Telescope",
+  "description": "An open-source community app built with Meteor",
+  "repository": "https://github.com/TelescopeJS/Telescope/",
+  "logo": "http://www.telescopeapp.org/images/logo.png",
+  "keywords": ["meteor", "social", "community"],
+  "env": {
+    "BUILDPACK_URL": "https://github.com/AdmitHub/meteor-buildpack-horse.git"
+  },
+  "addons": [
+    "mongolab:shared-single-small"
+  ]
+}
