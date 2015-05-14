@@ -1,6 +1,6 @@
 Package.describe({
   name: 'telescope:users-base',
-  summary: 'Telescope users base functionality.',
+  summary: 'Users base functionality.',
   version: '0.0.1'
 });
 
