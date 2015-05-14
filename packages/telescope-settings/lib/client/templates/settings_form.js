@@ -1,10 +1,14 @@
 AutoForm.addHooks(['updateSettingsForm', 'insertSettingsForm'], {
     onSuccess: function(operation, result) {
       this.template.$('button[type=submit]').removeClass('loading');
+      Messages.flash(i18n.t('settings_saved'), 'success');
+      $('body').scrollTop(0);
     },
 
-    onError: function(operation, result, template) {
+    onError: function(operation, error) {
       this.template.$('button[type=submit]').removeClass('loading');
+      Messages.flash(error, 'error');
+      $('body').scrollTop(0);
     }
 });
 

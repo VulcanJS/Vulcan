@@ -16,7 +16,8 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/settings.js',
-    'lib/router.js'
+    'lib/router.js',
+    'package-tap.i18n'
   ], both);
 
   api.addFiles([
@@ -29,6 +30,10 @@ Package.onUse(function(api) {
     'lib/client/templates/settings_form.html',
     'lib/client/templates/settings_form.js'
   ], 'client');
+
+  api.addFiles([
+    "i18n/en.i18n.json"
+  ], both);
 
   api.export('Settings', both);
 });
