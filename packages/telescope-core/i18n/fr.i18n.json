@@ -1,11 +1,12 @@
 {
   //Navigation
-  "view": "Vue",
   "menu": "Menu",
-  "top": "Top",
+  "view": "Classement",
+  "top": "Populaire",
   "new": "Nouveau",
   "best": "Meilleur",
   "digest": "Résumé",
+  "scheduled": "Planifié",
   "users": "Utilisateurs",
   "settings": "Paramètres",
   "admin": "Admin",
@@ -15,7 +16,9 @@
   "my_account": "Mon compte",
   "view_profile": "Voir le profil",
   "edit_account": "Modifier le compte",
-
+  "view_your_profile": "Voir votre profil",
+  "edit_your_profile": "Editer votre profil",
+  
   //Main
   "new_posts": "Nouveaux Posts",
 
@@ -23,8 +26,8 @@
   "title": "Titre",
   "siteUrl": "URL du site",
   "tagline": "Slogan",
-  "requireViewInvite": "Consultation restrainte",
-  "requirePostInvite": "Participation restrainte",
+  "requireViewInvite": "Consultation restreinte",
+  "requirePostInvite": "Participation restreinte",
   "requirePostsApproval": "Modération obligatoire",
   "defaultEmail": "Email par défaut",
   "scoreUpdateInterval": "Mise à jour du score",
@@ -51,7 +54,14 @@
   "extraCode": "Code en plus",
   "emailFooter": "Pied de page des mails",
   "notes": "Notes",
-
+  "debug": "Mode Debug",
+  "fontUrl": "URL de font",
+  "fontFamily": "Famille de font",
+  "authMethods": "Méthode d'authentification",
+  "faviconUrl": "URL de la favicon",
+  "postsLayout": "Layout des posts",
+  "siteImage": "Image du site",
+  
   // Settings Fieldsets
   "general": "Général",
   "invites": "Invitations",
@@ -63,10 +73,17 @@
   "extras": "Extras",
   "colors": "Couleurs",
   "integrations": "Intégrations",
+  "accentColor": "Couleur des accents",
+  "accentContrastColor": "Couleur du contraste des accents",
+  "secondaryColor": "Couleur secondaire",
+  "secondaryContrastColor": "Couleur de contraste secondaire",
+  "postViews": "Nombre de vue",
+  "navLayout": "Layout de navigation ",
+  "mailUrl": "Mail URL",
 
   // Settings Help Text
 
-  //Post Schema
+  // Post Schema
   "createdAt": "Créé le",
   "postedAt": "Posté le",
   "url": "Lien",  
@@ -85,10 +102,11 @@
   "downvoters": "Downvoteurs",
   "score": "Score",
   "status": "Statut",
-  "sticky": "Mis en exergue",
+  "sticky": "Epinglé",
   "inactive": "Inactif",
   "author": "Auteur",
   "userId": "Utilisateur",
+  "sorry_we_couldnt_find_any_posts": "Aucun post n'a été trouvé",
 
   //Commments
   "your_comment_has_been_deleted": "Votre commentaire a été supprimé.",
@@ -101,6 +119,7 @@
   "edit": "Modifier",
   "reply": "Répondre",
   "no_comments": "Aucun commentaire.",
+  "please_sign_in_to_reply": "Connectez vous pour répondre",
 
   //Errors
   "you_are_already_logged_in": "Vous êtes déjà connecté",
@@ -108,8 +127,16 @@
   "thanks_for_signing_up": "Merci pour votre inscription !",
   "the_site_is_currently_invite_only_but_we_will_let_you_know_as_soon_as_a_spot_opens_up": "L'accès au site se fait uniquement par invitation. Nous vous informerons dès qu'une place se libère.",
   "sorry_you_dont_have_the_rights_to_view_this_page": "Désolé, vous n'avez pas le droit de voir cette page.",
+  "sorry_you_do_not_have_the_rights_to_comments": "Désolé, vous n'avez pas le droit de commenter",
   "not_found": "Oups ! La page est introuvable.",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "Désolé, mais ce que vous cherchiez ne se trouve pas là...",
+  "disallowed_property_detected": "Opération interdite",
+  
+  //Notifications
+  "no_notifications": "Aucune notification",
+  "1_notification": "1 notification",
+  "notifications": "notifications",
+  "mark_all_as_read": "Tout marquer comme lu",
 
   // Post deleted
   "your_post_has_been_deleted": "Votre post a été supprimé.",
@@ -120,9 +147,10 @@
   "suggest_title": "Suggérer un titre",
   "url": "URL",
   "short_url": "URL Courte",
+  "body": "Description",
   "category": "Catégorie",
   "inactive_": "Inactif ? ",
-  "sticky_": "Mis en exergue ? ",
+  "sticky_": "Epinglé ? ",
   "submission_date": "Date de soumission",
   "submission_time": "Heure de soumission",
   "date": "Date",
@@ -141,7 +169,7 @@
   "share": "Partager",
   "discuss": "Discuter",
   "upvote_": "Voter",
-  "sticky": "Mis en exergue",
+  "sticky": "Epinglé",
   "status": "statut",
   "votes": "votes",
   "basescore": "Score de base",
@@ -154,18 +182,22 @@
   "point": "point",
   "points": "points",
 
-  //User
+  //User /client/views/users/account/user_account.html
   "please_complete_your_profile_below_before_continuing": "Merci de compléter votre profil avant de continuer.",
   "account": "Compte",
   "username": "Nom d'utilisateur",
   "display_name": "Nom réel",
   "email": "Adresse mail",
   "bio": "Bio",
+  "twitter_username": "Pseudo sur Twitter",
+  "github_username": "Pseudo sur GitHub",
+  "site_url" : "Url du site",
   "password": "Mot de passe",
   "change_password": "Changer le mot de passe",
   "old_password": "Ancien mot de passe",
   "new_password": "Nouveau mot de passe",
   "email_notifications": "Notifications par mail",
+  "new_users" : "Nouvel utilisateur",
   "new_posts": "Nouveau post",
   "comments_on_my_posts": "Commentaires sur mes posts",
   "replies_to_my_comments": "Reponses à mes commentaires",
@@ -205,7 +237,7 @@
   "filter_by": "Filtrer par",
   "sort_by": "Trier par",
 
-  //Helpers
+  //helpers
   "sorry_you_do_not_have_access_to_this_page": "Désolé, vous n'avez pas accès à cette page",
   "please_sign_in_first": "Vous devez d'abord vous connecter.",
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Désolé, vous devez être administrateur pour voir cette page.",
@@ -236,22 +268,24 @@
   "welcome_to": "Bienvenu sur ",
   "start_posting": "Commencer à poster.",
 
-  // Other
-  "please_fill_in_a_title": "Veuillez remplir un titre.",
-  "seconds_before_posting_again": " secondes avant de poster à nouveau.",
-  "upvoted": "Upvoté",
-  "posted_date": "Date de Soumission",
-  "posted_time": "Heure de Soumission",
-  "profile": "Profil",
-  "sign_out": "Déconnexion",
-  "invitedcount": "Membres Invités",
+  // Translation needed (found during migration to tap:i18n)
+  "please_fill_in_a_title": "Please fill in a title",
+  "seconds_before_posting_again": " seconds before posting again",
+  "upvoted": "Upvoted",
+  "posted_date": "Posted Date",
+  "posted_time": "Posted Time",
+  "profile": "Profile",
+  "sign_out": "Sign Out",
+  "you_ve_been_signed_out": "Vous avez été déconnecté",
+  "invitedcount": "InvitedCount",
   "invites": "Invitations",
   "invited": "Invité(e) ?",
   "admin": "Admin",
   "actions": "Actions",
   "invites_left": "Invitations restantes",
   "id": "ID",
-  "name": "Nom",
+  "name": "Nom:",
+  "bio": "Bio:",
   "github": "GitHub",
   "site": "Site",
   "upvoted_posts": "Posts upvotés",
@@ -264,8 +298,20 @@
   "submit": "Envoyer",
   "you_must_be_logged_in": "Vous devez être connecté.",
   "are_you_sure": "Etes-vous sur ?",
-  "please_log_in_first": "Vous devez être connecté.",
+  "please_log_in_first": "Connectez vous d'abord.",
+  "please_log_in_to_comment": "Connectez vous pour commenter.",
   "sign_in_sign_up_with_twitter": "Connexion/Créer un compte avec Twitter",
-  "load_more": "Charger plus"
+  "load_more": "En voir plus",
 
+  "most_popular_posts": "Posts les plus populaire.",
+  "newest_posts": "Posts les plus récents",
+  "highest_ranked_posts_ever": "Posts les plus populaire de tous les temps.",
+
+  "the_profile_of": "Le profil de",
+
+  "posts_awaiting_moderation": "Posts en attente de moderation.",
+  "future_scheduled_posts": "Posts planifiés.",
+  "users_dashboard": "Tableau de bord utilisateur.",
+  "telescope_settings_panel": "Page de configuration de Telescope.",
+  "various_utilities": "Outils divers"
 }

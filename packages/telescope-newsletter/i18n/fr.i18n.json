@@ -1,8 +1,8 @@
 {
-  "receive_the_best_of": "Receive the best of",
-  "right_in_your_inbox": "right in your inbox.",
-  "get_newsletter": "Get Newsletter",
-  "thanks_for_subscribing": "Thanks for subscribing!",
+  "receive_the_best_of": "Recevez le meilleur de",
+  "right_in_your_inbox": "par email.",
+  "get_newsletter": "S'abonner à la newsletter",
+  "thanks_for_subscribing": "Merci pour votre abonnement!",
   "newsletter": "newsletter",
   "showBanner": "Afficher la Bannière",
   "mailChimpAPIKey": "Clé API MailChimp",
