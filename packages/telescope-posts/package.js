@@ -18,8 +18,9 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/posts.js',
+    'lib/namespace.js',
     'lib/config.js',
+    'lib/posts.js',
     'lib/parameters.js',
     'lib/views.js',
     'lib/helpers.js',
