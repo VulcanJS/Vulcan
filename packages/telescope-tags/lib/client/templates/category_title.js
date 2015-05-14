@@ -1,6 +1,6 @@
 Template.category_title.helpers({
   title: function () {
     var category = Categories.findOne({slug: this.terms.category});
-    return category.name;
+    return category && category.name;
   }
 });
