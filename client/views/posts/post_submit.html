@@ -3,5 +3,26 @@
   <div class="grid grid-module">
     {{> quickForm collection="Posts" id="submitPostForm" template="telescope" label-class="control-label" input-col-class="controls" type="method" meteormethod="submitPost"}}
   </div>
+	<div>
+      	Drag this link into your bookmarks bar to quickly post anything on CRE.BUZZ ->
+      	<a href="javascript:location.href='http://'{YOUR_URL_HERE}'/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title)">Share on CRE.buzz</a>
+   </div> 
+
+   <script type="text/javascript">
+	var urlParams;
+        (window.onpopstate = function () {
+          var match,
+              pl     = /\+/g,  // Regex for replacing addition symbol with a space
+              search = /([^&=]+)=?([^&]*)/g,
+              decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+              query  = window.location.search.substring(1);
+          urlParams = {};
+          while (match = search.exec(query))
+               urlParams[decode(match[1])] = decode(match[2]);
+		        $('input[name=url]').val(urlParams["url"]);
+		        $('input[name=title]').val(urlParams["title"]);
+        })();
+        
+	</script>
   
 </template>
