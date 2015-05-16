@@ -183,6 +183,8 @@ Meteor.startup( function (){
       if(Router.current().route.getName() !== 'search'){
         Session.set('searchQuery', '');
         $('.search-field').val('').blur();
+        Session.set("searchByCat",'');
+        //console.log('Category cleared');
       }
 
       this.next();
