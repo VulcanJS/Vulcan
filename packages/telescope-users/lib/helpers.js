@@ -258,3 +258,7 @@ Users.adminUsers = function () {
 Users.getCurrentUserEmail = function () {
   return Meteor.user() ? Users.getEmail(Meteor.user()) : '';
 };
+
+Users.findByEmail = function (email) {
+  return Meteor.users.findOne({"emails.address": email});
+}

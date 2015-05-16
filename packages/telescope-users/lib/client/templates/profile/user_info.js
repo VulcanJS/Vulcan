@@ -36,6 +36,9 @@ Template.user_info.helpers({
       }
     }));
     return publicData;
+  },
+  isUsingPassword: function  () {
+    return !!this.services.password
   }
 });
 

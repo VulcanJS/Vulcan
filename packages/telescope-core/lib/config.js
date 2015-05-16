@@ -58,14 +58,14 @@ AccountsTemplates.configureRoute('signUp', {
 });
 AccountsTemplates.configureRoute('forgotPwd');
 AccountsTemplates.configureRoute('resetPwd');
-//AccountsTemplates.configureRoute('changePwd');
+AccountsTemplates.configureRoute('changePwd');
 //AccountsTemplates.configureRoute('enrollAccount');
 //AccountsTemplates.configureRoute('verifyEmail');
 
 
 // Options
 AccountsTemplates.configure({
-    enablePasswordChange: false,
+    enablePasswordChange: true,
     showForgotPasswordLink: true,
     confirmPassword: false,
     overrideLoginErrors: true,

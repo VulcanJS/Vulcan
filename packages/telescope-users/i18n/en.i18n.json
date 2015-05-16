@@ -1,9 +1,11 @@
 {
   "please_fill_in_missing_information_to_finish_signing_up": "Please fill in missing information below to finish signing up.",
   "bio": "Bio",
-  "displayName": "Display Name",
+  "displayName": "Name",
   "email": "Email",
   "twitterUsername": "Twitter Username",
   "website": "Website",
-  "htmlBio": "Bio"
+  "htmlBio": "Bio",
+  "user_profile_saved": "User profile saved",
+  "this_email_is_already_taken": "This email is already taken"
 }
