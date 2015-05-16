@@ -45,14 +45,42 @@ Posts.views.register("search", function (terms, baseParameters) {
   if(typeof terms.query === 'undefined' || !terms.query)
     return {find:{_id: 0}};
 
-  var parameters = Telescope.utils.deepExtend(true, baseParameters, {
-    find: {
+
+  paramOpts = {find: {
+    $or: [
+      {title: {$regex: terms.query, $options: 'i'}},
+      {url: {$regex: terms.query, $options: 'i'}},
+      {body: {$regex: terms.query, $options: 'i'}}
+    ]}
+  };
+
+  if(typeof terms.currentCat !== 'undefined' && terms.currentCat !== '' && !!terms.query ){
+    var categoryId = Categories.findOne({slug: terms.currentCat})._id;
+   console.log('terms.currentCat '+terms.currentCat );
+    paramOpts = {find: {
       $or: [
-        {title: {$regex: terms.query, $options: 'i'}},
-        {url: {$regex: terms.query, $options: 'i'}},
-        {body: {$regex: terms.query, $options: 'i'}}
-      ]
-    }
-  });
+        { $and: [
+                {title: {$regex: terms.query, $options: 'i'}},
+                {'categories':  {$in: [categoryId]}  }//, $options: {sort: {sticky: -1, score: -1} } this give an error an error if you add it
+               ]
+        },
+        { $and: [
+                {url: {$regex: terms.query, $options: 'i'}},
+                {'categories':  {$in: [categoryId]}  }//, $options: {sort: {sticky: -1, score: -1} }
+               ]
+        },
+        { $and: [
+                {body: {$regex: terms.query, $options: 'i'}},
+                {'categories':  {$in: [categoryId]} }//, $options: {sort: {sticky: -1, score: -1} }
+               ]
+        }
+      ]}
+    };
+
+  }
+
+
+
+  var parameters = Telescope.utils.deepExtend(true, baseParameters, paramOpts);
   return parameters;
 });
