@@ -36,7 +36,8 @@ Meteor.startup(function () {
       var terms = {
         view: "search",
         limit: this.params.limit || Settings.get('postsPerPage', 10),
-        query: Session.get("searchQuery")
+        query: Session.get("searchQuery"),
+        currentCat: Session.get("searchByCat")
       };
       
       return {terms: terms};
