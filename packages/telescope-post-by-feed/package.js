@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:post-by-feed",
   summary: "Auto post via RSS to Telescope",
-  version: "0.1.0",
+  version: "0.2.0",
   git: "https://github.com/TelescopeJS/telescope-post-by-feed.git"
 });
 

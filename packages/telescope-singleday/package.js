@@ -1,7 +1,8 @@
 Package.describe({
   name: 'telescope:singleday',
   summary: 'Telescope Single Day package',
-  version: '0.1.1'
+  version: '0.2.0',
+  git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
 Npm.depends({

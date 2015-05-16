@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:embedly",
   summary: "Telescope Embedly module package",
-  version: "0.3.1",
+  version: "0.4.0",
   git: 'https://github.com/TelescopeJS/telescope-embedly.git'
 });
 

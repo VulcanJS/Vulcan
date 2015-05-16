@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:getting-started",
   summary: "Getting started posts",
-  version: '0.1.0',
+  version: '0.2.0',
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 

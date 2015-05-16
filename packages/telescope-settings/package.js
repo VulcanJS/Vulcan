@@ -1,7 +1,8 @@
 Package.describe({
   name: "telescope:settings",
   summary: "Telescope settings package",
-  version: "0.1.0"
+  version: "0.2.0",
+  git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
 Package.onUse(function(api) {

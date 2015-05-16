@@ -28,6 +28,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     editableBy: ["member", "admin"],
+    public: true,
     autoform: {
       rows: 5
     }
@@ -45,6 +46,7 @@ Telescope.schemas.userData = new SimpleSchema({
   displayName: {
     type: String,
     optional: true,
+    public: true,
     editableBy: ["member", "admin"]
   },
   /**
@@ -82,6 +84,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   htmlBio: {
     type: String,
+    public: true,
     optional: true
   },
   /**
@@ -145,6 +148,7 @@ Telescope.schemas.userData = new SimpleSchema({
   twitterUsername: {
     type: String,
     optional: true,
+    public: true,
     editableBy: ["member", "admin"]
   },
   /**
@@ -167,6 +171,7 @@ Telescope.schemas.userData = new SimpleSchema({
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
+    public: true,
     optional: true,
     editableBy: ["member", "admin"]
   }

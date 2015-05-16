@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:datetimepicker",
   summary: "Custom bootstrap-datetimepicker input type for AutoForm",
-  version: "0.1.0",
+  version: "0.2.0",
   git: "https://github.com/TelescopeJS/telescope-datetimepicker.git"
 });
 

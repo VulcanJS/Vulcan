@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:subscribe-to-posts",
   summary: "Subscribe to posts to be notified when they get new comments",
-  version: "0.1.0",
+  version: "0.2.0",
   git: "https://github.com/TelescopeJS/telescope-subscribe-to-posts.git"
 });
 

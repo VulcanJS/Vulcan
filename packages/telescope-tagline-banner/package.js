@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:tagline-banner",
   summary: "Show a banner containing your site's tagline on the homepage",
-  version: "0.1.0",
+  version: "0.2.0",
 });
 
 Package.onUse(function (api) {

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:core",
   summary: "Telescope core package",
-  version: "0.1.0",
+  version: "0.4.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -9,28 +9,20 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
   
-  api.use([
-    'telescope:lib@0.3.0', //  no dependencies
-    'telescope:messages@0.1.0', // lib
-    'telescope:i18n@0.1.0', // lib
-    'telescope:events@0.1.0', // lib, i18n
-    'telescope:settings@0.1.0', // lib, i18n
-    'telescope:users@0.1.0', // lib, i18n, settings
-    'telescope:comments@0.1.0', // lib, i18n, settings, users
-    'telescope:posts@0.1.2' // lib, i18n, settings, users, comments
-  ]);
+  var packages = [
+    'telescope:lib@0.4.0', //  no dependencies
+    'telescope:messages@0.2.0', // lib
+    'telescope:i18n@0.2.0', // lib
+    'telescope:events@0.2.0', // lib, i18n
+    'telescope:settings@0.2.0', // lib, i18n
+    'telescope:users@0.2.0', // lib, i18n, settings
+    'telescope:comments@0.2.0', // lib, i18n, settings, users
+    'telescope:posts@0.2.0' // lib, i18n, settings, users, comments
+  ];
+
+  api.use(packages);
   
-  api.imply([ // export these packages to all other packages that depend on telescope:core
-    'telescope:lib@0.3.0',
-    'telescope:messages@0.1.0',
-    'telescope:events@0.1.0',
-    'telescope:settings@0.1.0',
-    'telescope:events@0.1.0',
-    'telescope:i18n@0.1.0',
-    'telescope:users@0.1.0',
-    'telescope:comments@0.1.0',
-    'telescope:posts@0.1.2' 
-  ]);
+  api.imply(packages);
 
   api.addFiles([
     'lib/router/config.js',
