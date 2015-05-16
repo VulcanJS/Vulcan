@@ -28,7 +28,6 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     editableBy: ["member", "admin"],
-    public: true,
     autoform: {
       rows: 5
     }
@@ -85,7 +84,11 @@ Telescope.schemas.userData = new SimpleSchema({
   htmlBio: {
     type: String,
     public: true,
-    optional: true
+    optional: true,
+    autoform: {
+      omit: true
+    },
+    template: "user_profile_bio"
   },
   /**
     A count of the user's remaining invites
@@ -149,7 +152,8 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     public: true,
-    editableBy: ["member", "admin"]
+    editableBy: ["member", "admin"],
+    template: "user_profile_twitter"
   },
   /**
     An array containing comments upvotes
@@ -242,4 +246,28 @@ Users.attachSchema(Users.schema);
 Users.allow({
   update: _.partial(Telescope.allowCheck, Meteor.users),
   remove: _.partial(Telescope.allowCheck, Meteor.users)
+});
+
+
+//////////////////////////////////////////////////////
+// Collection Hooks                                 //
+// https://atmospherejs.com/matb33/collection-hooks //
+//////////////////////////////////////////////////////
+
+/**
+ * Generate HTML body from Markdown on post insert
+ */
+Users.before.insert(function (userId, doc) {
+  if(!!doc[".telescope.bio"])
+    doc["telescope.htmlBio"] = Telescope.utils.sanitize(marked(doc["telescope.bio"]));
+});
+
+/**
+ * Generate HTML body from Markdown when post body is updated
+ */
+Users.before.update(function (userId, doc, fieldNames, modifier) {
+  // if bio is being modified, update htmlBio too
+  if (Meteor.isServer && modifier.$set && modifier.$set["telescope.bio"]) {
+    modifier.$set["telescope.htmlBio"] = Telescope.utils.sanitize(marked(modifier.$set["telescope.bio"]));
+  }
 });

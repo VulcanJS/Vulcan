@@ -1,48 +1,28 @@
 <template name="user_info">
   <div class="user-profile grid grid-module">
-    <table>
-      <tr>
-        <td colspan="2" aria-hidden="true">{{> avatar user=this size="large" shape="circle"}}</td>
-      </tr>
+    <div class="user-avatar">{{> avatar user=this size="large" shape="circle"}}</div>
+    <table class="user-info">
       {{#if isAdmin}}
         <tr>
           <td>{{_ "id"}}: </td>
           <td>{{_id}}</td>
         </tr>
       {{/if}}
-      <tr>
-        <td>{{_ "name"}}</td>
-        <td>{{profile.username}}</td>
-      </tr>
-      <tr>
-        <td>{{_ "member_since"}}:</td>
-        <td>{{createdAtFormatted}}</td>
-      </tr>
-      <tr>
-        <td>{{_ "bio"}}</td>
-        <td>{{profile.bio}}</td>
-      </tr>
-      {{#if getTwitterName}}
+      {{#each publicProfileFields}}
         <tr>
-          <td>Twitter: </td>
-          <td><a href="http://twitter.com/{{getTwitterName}}">{{getTwitterName}}</a></td>
+          <td>{{label}}</td>
+          <td>
+            {{#if template}}
+              {{>Template.dynamic template=template data=value}}
+            {{else}}
+              {{value}}
+            {{/if}}
+          </td>
         </tr>
-      {{/if}}
-      {{#if getGitHubName}}
-        <tr>
-          <td>{{_ "github"}}:</td>
-          <td><a href="http://github.com/{{getGitHubName}}">{{getGitHubName}}</a></td>
-        </tr>
-      {{/if}}
-      {{#if profile.site}}
-        <tr>
-          <td>{{_ "site"}}:</td>
-          <td><a href="{{profile.site}}">{{profile.site}}</a></td>
-        </tr>
-      {{/if}}
+      {{/each}}
     </table>
     {{#if canEditProfile}}
-      <a class="button btn btn-primary inline" href="{{pathFor route='user_edit' slug=telescope.slug}}">{{_ "edit_profile"}}</a>
+      <a class="edit-profile-button button btn btn-primary inline" href="{{pathFor route='user_edit' slug=telescope.slug}}">{{_ "edit_profile"}}</a>
     {{/if}}
     {{#if canInvite}}
       {{#if inviteCount}}

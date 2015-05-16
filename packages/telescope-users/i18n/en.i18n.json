@@ -4,5 +4,6 @@
   "displayName": "Display Name",
   "email": "Email",
   "twitterUsername": "Twitter Username",
-  "website": "Website"
+  "website": "Website",
+  "htmlBio": "Bio"
 }

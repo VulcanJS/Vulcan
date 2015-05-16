@@ -18,6 +18,24 @@ Template.user_info.helpers({
   },
   getGitHubName: function () {
     return Users.getGitHubName(this);
+  },
+  publicProfileFields: function () {
+    var user = this;
+    var schema = Users.simpleSchema();
+    var publicData = _.compact(_.map(schema.getPublicFields(), function (fieldName) {
+      if (Telescope.getNestedProperty(user, fieldName)) {
+        var field = schema._schema[fieldName];
+        var item = {
+          label: i18n.t(fieldName.replace("telescope.", "")),
+          value: Telescope.getNestedProperty(user, fieldName)
+        };
+        if (!!field.template) {
+          item.template = field.template;
+        }
+        return item;
+      }
+    }));
+    return publicData;
   }
 });
 
