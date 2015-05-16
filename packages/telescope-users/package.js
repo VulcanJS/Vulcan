@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:users',
   summary: 'Telescope permissions.',
-  version: '0.2.0',
+  version: '0.2.1',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 

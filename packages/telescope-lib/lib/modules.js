@@ -51,6 +51,14 @@ Telescope.modules.remove = function (zone, template) {
 };
 
 /**
+ * Removes all modules from a zone
+ * @param {string} zone - The name of the zone
+ */
+Telescope.modules.removeAll = function (zone) {
+  Telescope.modules[zone] = [];
+};
+
+/**
  * Retrieve an array containing all modules for a zone
  * @param {string} zone - The name of the zone
  * @returns {Object[]} Returns a sorted array of the zone's modules

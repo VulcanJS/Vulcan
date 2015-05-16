@@ -76,9 +76,12 @@ Telescope.schemas = {};
  */
 SimpleSchema.prototype.getEditableFields = function (user) {
   var schema = this._schema;
-  var fields = _.filter(_.keys(schema), function (fieldName) {
+  var fields = _.sortBy(_.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return Users.can.editField(user, field);
+  }), function (fieldName) {
+    var field = schema[fieldName];
+    return field.autoform && field.autoform.order;
   });
   return fields;
 };
