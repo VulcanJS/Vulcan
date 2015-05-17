@@ -42,7 +42,7 @@ Categories.before.insert(function (userId, doc) {
 });
 
 // category post list parameters
-Posts.views.register("category", function (terms) {
+Posts.views.add("category", function (terms) {
   var categoryId = Categories.findOne({slug: terms.category})._id;
   return {
     find: {'categories': {$in: [categoryId]}} ,
@@ -71,4 +71,4 @@ function addCategoryClass (post, postClass){
   var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug;});
   return postClass + " " + classArray.join(' ');
 }
-Telescope.callbacks.register("postClass", addCategoryClass);
+Telescope.callbacks.add("postClass", addCategoryClass);

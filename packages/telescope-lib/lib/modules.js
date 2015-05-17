@@ -13,12 +13,12 @@ Telescope.modules = {};
  * @param {number} module.order - The order of the template in the zone
  *
  * @example
- * Telescope.modules.register("hero", {
+ * Telescope.modules.add("hero", {
  *   template: "newsletterBanner",
  *   order: 10
  * });
  */
-Telescope.modules.register = function (zone, module) {
+Telescope.modules.add = function (zone, module) {
 
   // if module zone array doesn't exist yet, initialize it
   if (typeof Telescope.modules[zone] === "undefined") {

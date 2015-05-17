@@ -9,7 +9,7 @@ var kadiraAppIdProperty = {
     }
   }
 };
-Settings.registerField(kadiraAppIdProperty);
+Settings.addField(kadiraAppIdProperty);
 
 var kadiraAppSecretProperty = {
   fieldName: "kadiraAppSecret",
@@ -24,4 +24,4 @@ var kadiraAppSecretProperty = {
     }
   }
 };
-Settings.registerField(kadiraAppSecretProperty);
+Settings.addField(kadiraAppSecretProperty);

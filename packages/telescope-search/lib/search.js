@@ -1,21 +1,21 @@
 // push "search" template to primaryNav
-Telescope.modules.register("primaryNav", {
+Telescope.modules.add("primaryNav", {
   template: 'search',
   order: 100
 });
 
-Telescope.modules.register("mobileNav", {
+Telescope.modules.add("mobileNav", {
   template: 'search',
   order: 1
 });
 
-Telescope.modules.register("adminMenu", {
+Telescope.modules.add("adminMenu", {
   route: 'searchLogs',
   label: 'search_logs',
   description: 'see_what_people_are_searching_for'
 });
 
-Telescope.utils.registerElementColor('.search .search-field', 'secondaryContrastColor');
+Telescope.utils.addElementColor('.search .search-field', 'secondaryContrastColor');
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({
@@ -40,7 +40,7 @@ Meteor.startup(function() {
 });
 
 // search post list parameters
-Posts.views.register("search", function (terms, baseParameters) {
+Posts.views.add("search", function (terms, baseParameters) {
   // if query is empty, just return parameters that will result in an empty collection
   if(typeof terms.query === 'undefined' || !terms.query)
     return {find:{_id: 0}};

@@ -14,7 +14,7 @@ Telescope.utils.colorTable = {
  * @param {string} color - the color. Either `accentColor`, `accentContrastColor`, `secondaryColor`, or `secondaryContrastColor`
  * @param {string} [property=color] - the property to colorize. Usually `color`, `background-color`, `border-color`, etc. 
  */
-Telescope.utils.registerElementColor = function (selector, color, property) {
+Telescope.utils.addElementColor = function (selector, color, property) {
   var element = {selector: selector};
 
   if (typeof property !== "undefined")
@@ -26,7 +26,7 @@ Telescope.utils.registerElementColor = function (selector, color, property) {
 // shortcuts
 var setShortcut = function(name) {
   return function (selector, property) {
-    Telescope.utils.registerElementColor(selector, name, property);
+    Telescope.utils.addElementColor(selector, name, property);
   };
 };
 

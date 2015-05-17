@@ -9,4 +9,4 @@ function afterPostSubmitOperations (post) {
   Telescope.upvoteItem(Posts, post, postAuthor);
   return post;
 }
-Telescope.callbacks.register("postSubmitAsync", afterPostSubmitOperations);
+Telescope.callbacks.add("postSubmitAsync", afterPostSubmitOperations);

@@ -1,10 +1,10 @@
-Telescope.menus.register("viewsMenu", {
+Telescope.menus.add("viewsMenu", {
   route: 'postsSingleDayDefault',
   label: 'singleday',
   description: 'posts_of_a_single_day'
 });
 
-Posts.views.register("singleday", function (terms) {
+Posts.views.add("singleday", function (terms) {
   return {
     find: {
       postedAt: {

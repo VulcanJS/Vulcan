@@ -1,4 +1,4 @@
-Telescope.modules.register("postListTop", {
+Telescope.modules.add("postListTop", {
   template: "tagline_banner",
   order: 1
 });
@@ -14,4 +14,4 @@ var showTaglineBanner = {
     }
   }
 };
-Settings.registerField(showTaglineBanner);
+Settings.addField(showTaglineBanner);

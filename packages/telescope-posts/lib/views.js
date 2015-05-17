@@ -9,7 +9,7 @@ Posts.views = {};
  * @param {string} viewName - The name of the view
  * @param {function} [viewFunction] - The function used to calculate query terms. Takes terms and baseParameters arguments
  */
-Posts.views.register = function (viewName, viewFunction) {
+Posts.views.add = function (viewName, viewFunction) {
   Posts.views[viewName] = viewFunction;
 };
 
@@ -28,7 +28,7 @@ Posts.views.baseParameters = {
 /**
  * Top view
  */
-Posts.views.register("top", function (terms) {
+Posts.views.add("top", function (terms) {
   return {
     options: {sort: {sticky: -1, score: -1}}
   };
@@ -37,7 +37,7 @@ Posts.views.register("top", function (terms) {
 /**
  * New view
  */
-Posts.views.register("new", function (terms) {
+Posts.views.add("new", function (terms) {
   return {
     options: {sort: {sticky: -1, postedAt: -1}}
   };
@@ -46,7 +46,7 @@ Posts.views.register("new", function (terms) {
 /**
  * Best view
  */
-Posts.views.register("best", function (terms) {
+Posts.views.add("best", function (terms) {
   return {
     options: {sort: {sticky: -1, baseScore: -1}}
   };
@@ -55,7 +55,7 @@ Posts.views.register("best", function (terms) {
 /**
  * Pending view
  */
-Posts.views.register("pending", function (terms) {
+Posts.views.add("pending", function (terms) {
   return {
     find: {
       status: 1
@@ -68,7 +68,7 @@ Posts.views.register("pending", function (terms) {
 /**
  * Scheduled view
  */
-Posts.views.register("scheduled", function (terms) {
+Posts.views.add("scheduled", function (terms) {
   return {
     find: {postedAt: {$gte: new Date()}},
     options: {sort: {postedAt: -1}}
@@ -78,7 +78,7 @@ Posts.views.register("scheduled", function (terms) {
 /**
  * User posts view
  */
-Posts.views.register("userPosts", function (terms) {
+Posts.views.add("userPosts", function (terms) {
   return {
     find: {userId: terms.userId},
     options: {limit: 5, sort: {postedAt: -1}}
@@ -88,7 +88,7 @@ Posts.views.register("userPosts", function (terms) {
 /**
  * User upvoted posts view
  */
-Posts.views.register("userUpvotedPosts", function (terms) {
+Posts.views.add("userUpvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
   return {
@@ -100,7 +100,7 @@ Posts.views.register("userUpvotedPosts", function (terms) {
 /**
  * User downvoted posts view
  */
-Posts.views.register("userDownvotedPosts", function (terms) {
+Posts.views.add("userDownvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");
   // TODO: sort based on votedAt timestamp and not postedAt, if possible

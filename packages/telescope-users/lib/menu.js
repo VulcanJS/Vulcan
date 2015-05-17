@@ -1,4 +1,4 @@
-Telescope.menus.register("userMenu", [
+Telescope.menus.add("userMenu", [
   {
     route: function () {
       return Router.path('user_profile', {_idOrSlug: Meteor.user().telescope.slug});

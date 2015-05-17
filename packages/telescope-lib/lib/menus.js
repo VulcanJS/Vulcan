@@ -10,14 +10,14 @@ Telescope.menus = {};
  * @param {Object|Object[]} item - The menu item object (or an array of items)
  *
  * @example <caption>Using a named route</caption>
- * Telescope.menus.register("viewsMenu", {
+ * Telescope.menus.add("viewsMenu", {
  *   route: 'postsDaily',
  *   label: 'daily',
  *   description: 'day_by_day_view'
  * });
  *
  * @example <caption>Using a route function</caption>
- * Telescope.menus.register("userMenu", {
+ * Telescope.menus.add("userMenu", {
  *   route: function () {
  *     return Router.path('user_profile', {_idOrSlug: Meteor.user().telescope.slug});
  *   },
@@ -26,7 +26,7 @@ Telescope.menus = {};
  * });
  *
  */
-Telescope.menus.register = function (menu, item) {
+Telescope.menus.add = function (menu, item) {
 
   // if menu items array doesn't exist yet, initialize it
   if (typeof Telescope.menus[menu] === "undefined") {

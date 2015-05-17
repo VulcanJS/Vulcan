@@ -9,7 +9,7 @@ Telescope.callbacks = {};
  * @param {String} hook - The name of the hook
  * @param {Function} callback - The callback function
  */
-Telescope.callbacks.register = function (hook, callback) {
+Telescope.callbacks.add = function (hook, callback) {
 
   // if callback array doesn't exist yet, initialize it
   if (typeof Telescope.callbacks[hook] === "undefined") {

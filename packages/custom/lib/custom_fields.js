@@ -1,6 +1,6 @@
 // Custom Post Field
 
-Posts.registerField({
+Posts.addField({
   fieldName: 'customPostField',
   fieldSchema: {
     type: String,
@@ -11,7 +11,7 @@ Posts.registerField({
 
 // Custom Comment Field
 
-Comments.registerField({
+Comments.addField({
   fieldName: 'customCommentField',
   fieldSchema: {
     type: String,
@@ -22,7 +22,7 @@ Comments.registerField({
 
 // Custom User Field
 
-Users.registerField({
+Users.addField({
   fieldName: 'customUserField',
   fieldSchema: {
     type: String,
@@ -33,7 +33,7 @@ Users.registerField({
 
 // Custom Setting Field
 
-Settings.registerField({
+Settings.addField({
   fieldName: "customSettingsField",
   fieldSchema: {
     type: String,

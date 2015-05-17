@@ -28,7 +28,7 @@ Invites.deny({
   remove: function(){ return true; }
 });
 
-Telescope.modules.register("profileEdit", {
+Telescope.modules.add("profileEdit", {
   template: 'userInvites',
   order: 2
 });
@@ -38,7 +38,7 @@ Telescope.modules.register("profileEdit", {
   user.inviteCount = Settings.get('startInvitesCount', 3);
   return user;
 }
-Telescope.callbacks.register("onCreateUser", setStartingInvites);
+Telescope.callbacks.add("onCreateUser", setStartingInvites);
 
 function checkIfInvited (user) {
   // if the new user has been invited
@@ -61,4 +61,4 @@ function checkIfInvited (user) {
   }
   return user;
 }
-Telescope.callbacks.register("onCreateUser", checkIfInvited);
+Telescope.callbacks.add("onCreateUser", checkIfInvited);

@@ -31,12 +31,12 @@ Pages.before.insert(function (userId, doc) {
     doc.slug = Telescope.utils.slugify(doc.title);
 });
 
-Telescope.modules.register("primaryNav", {
+Telescope.modules.add("primaryNav", {
   template: "pagesMenu",
   order: 5
 });
 
-Telescope.modules.register("mobileNav", {
+Telescope.modules.add("mobileNav", {
   template: 'pagesMenu',
   order: 5
 });

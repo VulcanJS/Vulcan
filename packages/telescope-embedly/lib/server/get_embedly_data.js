@@ -66,7 +66,7 @@ function addMediaAfterSubmit (post) {
   }
   return post;
 };
-Telescope.callbacks.register("postSubmitAsync", addMediaAfterSubmit);
+Telescope.callbacks.add("postSubmitAsync", addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   var newUrl = modifier.$set.url;
@@ -78,7 +78,7 @@ function updateMediaOnEdit (modifier, post) {
   }
   return modifier;
 }
-Telescope.callbacks.register("postEdit", updateMediaOnEdit);
+Telescope.callbacks.add("postEdit", updateMediaOnEdit);
 
 
 Meteor.methods({

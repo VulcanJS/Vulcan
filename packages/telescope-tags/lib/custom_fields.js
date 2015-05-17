@@ -1,4 +1,4 @@
-Posts.registerField(
+Posts.addField(
   {
     fieldName: 'categories',
     fieldSchema: {

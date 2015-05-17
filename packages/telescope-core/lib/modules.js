@@ -1,6 +1,6 @@
 // array containing nav items;
 
-Telescope.modules.register("secondaryNav", [
+Telescope.modules.add("secondaryNav", [
   {
     template: 'userMenu',
     order: 10
@@ -15,7 +15,7 @@ Telescope.modules.register("secondaryNav", [
   }
 ]);
 
-Telescope.modules.register("mobileNav", [
+Telescope.modules.add("mobileNav", [
   {
     template: 'userMenu',
     order: 10

@@ -62,7 +62,7 @@ var feedIdProperty = {
     }
   }
 };
-Posts.registerField(feedIdProperty);
+Posts.addField(feedIdProperty);
 
 // the RSS ID of the post in its original feed
 var feedItemIdProperty = {
@@ -76,7 +76,7 @@ var feedItemIdProperty = {
     }
   }
 };
-Posts.registerField(feedItemIdProperty);
+Posts.addField(feedItemIdProperty);
 
 Meteor.startup(function () {
   Feeds.allow({

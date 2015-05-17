@@ -35,6 +35,6 @@ Meteor.startup(function () {
   });
 });
 
-Telescope.modules.register("hero", {
+Telescope.modules.add("hero", {
   template: 'updateBanner'
 });

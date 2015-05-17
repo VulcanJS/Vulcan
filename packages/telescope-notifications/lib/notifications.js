@@ -18,13 +18,13 @@ function postSubmitNotification (post) {
   return post;
 
 }
-Telescope.callbacks.register("postSubmitAsync", postSubmitNotification);
+Telescope.callbacks.add("postSubmitAsync", postSubmitNotification);
 
 function postApprovedNotification (post) {
   Herald.createNotification(post.userId, {courier: 'postApproved', data: post});
   return post;
 }
-Telescope.callbacks.register("postApprovedAsync", postApprovedNotification);
+Telescope.callbacks.add("postApprovedAsync", postApprovedNotification);
 
 // add new comment notification callback on comment submit
 function addCommentNotification (comment) {
@@ -85,7 +85,7 @@ function addCommentNotification (comment) {
 
 }
 
-Telescope.callbacks.register("commentSubmitAsync", addCommentNotification);
+Telescope.callbacks.add("commentSubmitAsync", addCommentNotification);
 
 var emailNotifications = {
   fieldName: 'emailNotifications',
@@ -99,10 +99,10 @@ var emailNotifications = {
     }
   }
 };
-Settings.registerField(emailNotifications);
+Settings.addField(emailNotifications);
 
 // make it possible to disable notifications on a per-comment basis
-Comments.registerField(
+Comments.addField(
   {
     fieldName: 'disableNotifications',
     fieldSchema: {
@@ -125,4 +125,4 @@ function setNotificationDefaults (user) {
   };
   return user;
 }
-Telescope.callbacks.register("onCreateUser", setNotificationDefaults);
+Telescope.callbacks.add("onCreateUser", setNotificationDefaults);

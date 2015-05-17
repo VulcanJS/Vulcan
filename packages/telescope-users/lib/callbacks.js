@@ -46,7 +46,7 @@ function setupUser (user, options) {
 
   return user;
 }
-Telescope.callbacks.register("onCreateUser", setupUser);
+Telescope.callbacks.add("onCreateUser", setupUser);
 
 
 /**
@@ -56,4 +56,4 @@ Telescope.callbacks.register("onCreateUser", setupUser);
 function hasCompletedProfile (user) {
   return !!Users.getEmail(user) && !!Users.getUserName(user);
 }
-Telescope.callbacks.register("profileCompletedChecks", hasCompletedProfile);
+Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);

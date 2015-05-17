@@ -1,10 +1,10 @@
 
-Telescope.modules.register("postListTop", {
+Telescope.modules.add("postListTop", {
   template: 'postViewsNav',
   order: 99
 });
 
-Telescope.modules.register("postComponents", [
+Telescope.modules.add("postComponents", [
   {
     template: 'postRank',
     order: 1
@@ -31,7 +31,7 @@ Telescope.modules.register("postComponents", [
   }
 ]);
 
-Telescope.modules.register("postHeading", [
+Telescope.modules.add("postHeading", [
   {
     template: 'post_title',
     order: 10
@@ -42,7 +42,7 @@ Telescope.modules.register("postHeading", [
   }
 ]);
 
-Telescope.modules.register("postMeta", [
+Telescope.modules.add("postMeta", [
   {
     template: 'postAuthor',
     order: 10

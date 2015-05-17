@@ -29,7 +29,7 @@ Campaigns = new Meteor.Collection("campaigns", {
   schema: campaignSchema
 });
 
-Posts.registerField(
+Posts.addField(
   {
     fieldName: 'scheduledAt',
     fieldSchema: {
@@ -55,7 +55,7 @@ var enableNewsletter = {
     }
   }
 };
-Settings.registerField(enableNewsletter);
+Settings.addField(enableNewsletter);
 
 var showBanner = {
   fieldName: 'showBanner',
@@ -69,7 +69,7 @@ var showBanner = {
     }
   }
 };
-Settings.registerField(showBanner);
+Settings.addField(showBanner);
 
 var mailChimpAPIKey = {
   fieldName: "mailChimpAPIKey",
@@ -83,7 +83,7 @@ var mailChimpAPIKey = {
     }
   }
 };
-Settings.registerField(mailChimpAPIKey);
+Settings.addField(mailChimpAPIKey);
 
 var mailChimpListId = {
   fieldName: 'mailChimpListId',
@@ -98,7 +98,7 @@ var mailChimpListId = {
     }
   }
 };
-Settings.registerField(mailChimpListId);
+Settings.addField(mailChimpListId);
 
 var postsPerNewsletter = {
   fieldName: 'postsPerNewsletter',
@@ -110,7 +110,7 @@ var postsPerNewsletter = {
     }
   }
 };
-Settings.registerField(postsPerNewsletter);
+Settings.addField(postsPerNewsletter);
 
 var newsletterFrequency = {
   fieldName: 'newsletterFrequency',
@@ -141,7 +141,7 @@ var newsletterFrequency = {
     }
   }
 };
-Settings.registerField(newsletterFrequency);
+Settings.addField(newsletterFrequency);
 
 var newsletterTime = {
   fieldName: 'newsletterTime',
@@ -156,7 +156,7 @@ var newsletterTime = {
     }
   }
 };
-Settings.registerField(newsletterTime);
+Settings.addField(newsletterTime);
 
 var autoSubscribe = {
   fieldName: 'autoSubscribe',
@@ -169,10 +169,10 @@ var autoSubscribe = {
     }
   }
 };
-Settings.registerField(autoSubscribe);
+Settings.addField(autoSubscribe);
 
 // create new "campaign" lens for all posts from the past X days that haven't been scheduled yet
-Posts.views.register("campaign", function (terms) {
+Posts.views.add("campaign", function (terms) {
   return {
     find: {
       scheduledAt: {$exists: false},
@@ -184,7 +184,7 @@ Posts.views.register("campaign", function (terms) {
   };
 });
 
-Telescope.modules.register("hero", {
+Telescope.modules.add("hero", {
   template: 'newsletterBanner',
   order: 10
 });
@@ -198,4 +198,4 @@ Telescope.modules.register("hero", {
   }
   return user;
 }
-Telescope.callbacks.register("onCreateUser", subscribeUserOnCreation);
+Telescope.callbacks.add("onCreateUser", subscribeUserOnCreation);

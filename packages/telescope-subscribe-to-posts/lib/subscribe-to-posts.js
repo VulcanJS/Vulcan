@@ -1,4 +1,4 @@
-Users.registerField({
+Users.addField({
   fieldName: 'telescope.subscribedItems',
   fieldSchema: {
     type: Object,
@@ -10,7 +10,7 @@ Users.registerField({
   }
 });
 
-Posts.registerField({
+Posts.addField({
   fieldName: 'subscribers',
   fieldSchema: {
     type: [String],
@@ -21,7 +21,7 @@ Posts.registerField({
   }
 });
 
-Posts.registerField({
+Posts.addField({
   fieldName: 'subscriberCount',
   fieldSchema: {
     type: Number,
@@ -32,17 +32,17 @@ Posts.registerField({
   }
 });
 
-Telescope.modules.register("profileEdit", {
+Telescope.modules.add("profileEdit", {
   template: 'user_subscribed_posts',
   order: 5
 });
 
-Telescope.modules.register("commentThreadBottom", {
+Telescope.modules.add("commentThreadBottom", {
   template: 'postSubscribe',
   order: 10
 });
 
-Posts.views.register("userSubscribedPosts", function (terms) {
+Posts.views.add("userSubscribedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId),
       postsIds = [];
 

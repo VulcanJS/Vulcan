@@ -1,4 +1,4 @@
-Users.registerField({
+Users.addField({
   fieldName: 'telescope.isDummy',
   fieldSchema: {
     type: Boolean,
@@ -9,7 +9,7 @@ Users.registerField({
   }
 });
 
-Posts.registerField({
+Posts.addField({
   fieldName: 'dummySlug',
   fieldSchema: {
     type: String,
@@ -20,7 +20,7 @@ Posts.registerField({
   }
 });
 
-Posts.registerField({
+Posts.addField({
   fieldName: 'isDummy',
   fieldSchema: {
     type: Boolean,
@@ -31,7 +31,7 @@ Posts.registerField({
   }
 });
 
-Comments.registerField({
+Comments.addField({
 fieldName: 'isDummy',
 fieldSchema: {
   type: Boolean,
@@ -53,4 +53,4 @@ function copyDummyProperty (user, options) {
   }
   return user;
 }
-Telescope.callbacks.register("onCreateUser", copyDummyProperty);
+Telescope.callbacks.add("onCreateUser", copyDummyProperty);

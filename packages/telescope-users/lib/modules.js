@@ -1,5 +1,5 @@
 
-Telescope.modules.register("profileDisplay", [
+Telescope.modules.add("profileDisplay", [
   {
     template: 'user_info',
     order: 1
@@ -22,7 +22,7 @@ Telescope.modules.register("profileDisplay", [
   }
 ]);
 
-Telescope.modules.register("profileEdit", [
+Telescope.modules.add("profileEdit", [
   {
     template: 'user_account',
     order: 1

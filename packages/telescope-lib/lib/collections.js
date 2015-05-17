@@ -7,7 +7,7 @@
  * Add an additional field to a schema.
  * @param {Object} field
  */
-Mongo.Collection.prototype.registerField = function (field) {
+Mongo.Collection.prototype.addField = function (field) {
 
   var collection = this;
   var fieldSchema = {};

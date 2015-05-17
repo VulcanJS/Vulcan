@@ -9,7 +9,7 @@ Comments.views = {};
  * @param {string} viewName - The name of the view
  * @param {function} [viewFunction] - The function used to calculate query terms. Takes terms and baseParameters arguments
  */
-Comments.views.register = function (viewName, viewFunction) {
+Comments.views.add = function (viewName, viewFunction) {
   Comments.views[viewName] = viewFunction;
 };
 
@@ -20,14 +20,14 @@ Comments.views.baseParameters = {
   }
 };
 
-Comments.views.register("postComments", function (terms) {
+Comments.views.add("postComments", function (terms) {
   return {
     find: {postId: terms.postId},
     options: {sort: {score: -1, postedAt: -1}}
   };
 });
 
-Comments.views.register("userComments", function (terms) {
+Comments.views.add("userComments", function (terms) {
   return {
     find: {userId: terms.userId},
     options: {sort: {postedAt: -1}}
