@@ -248,7 +248,7 @@ Users.getSubParams = function(filterBy, sortBy, limit) {
 
 
 Users.updateAdmin = function (userId, admin) {
-  this.update(userId, {$set: {isAdmin: admin}});
+  Users.update(userId, {$set: {isAdmin: admin}});
 };
 
 Users.adminUsers = function () {
