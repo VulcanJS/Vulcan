@@ -48,7 +48,7 @@ Users.can.viewRejectedPost = function (user, post) {
   return Users.is.owner(user, post) || Users.can.viewRejectedPosts(user);
 };
 
-Users.can.post = function (user) {
+Users.can.post = function (user, returnError) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user) {
