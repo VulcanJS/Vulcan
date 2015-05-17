@@ -48,7 +48,7 @@ Users.can.viewRejectedPost = function (user, post) {
   return Users.is.owner(user, post) || Users.can.viewRejectedPosts(user);
 };
 
-Users.can.post = function (user, returnError) {
+Users.can.post = function (user) {
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user) {
@@ -56,10 +56,10 @@ Users.can.post = function (user, returnError) {
   } else if (Users.is.admin(user)) {
     return true;
   } else if (Settings.get('requirePostInvite')) {
-    if (user.isInvited) {
+    if (user.telescope.isInvited) {
       return true;
     } else {
-      return returnError ? "no_invite" : false;
+      return false;
     }
   } else {
     return true;

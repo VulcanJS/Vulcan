@@ -43,7 +43,7 @@ Users.is.ownerById = Users.is.owner;
 Users.is.invited = function (userOrUserId) {
   try {
     var user = Users.getUser(userOrUserId);
-    return Users.is.admin(user) || Users.is.invited(user);
+    return Users.is.admin(user) || user.telescope.isInvited;
   } catch (e) {
     return false; // user not logged in
   }

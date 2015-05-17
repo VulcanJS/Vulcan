@@ -205,12 +205,13 @@ Meteor.startup( function (){
     Router.onBeforeAction(filters.canViewPendingPosts, {only: ['post_page']});
     Router.onBeforeAction(filters.canViewRejectedPosts, {only: ['post_page']});
     Router.onBeforeAction(filters.isLoggedOut, {only: []});
-    Router.onBeforeAction(filters.canPost, {only: ['posts_pending', 'post_submit']});
     Router.onBeforeAction(filters.canEditPost, {only: ['post_edit']});
     Router.onBeforeAction(filters.canEditComment, {only: ['comment_edit']});
     Router.onBeforeAction(filters.isAdmin, {only: ['posts_pending', 'all-users', 'settings', 'toolbox', 'logs']});
 
     Router.plugin('ensureSignedIn', {only: ['post_submit', 'post_edit', 'comment_edit']});
+
+    Router.onBeforeAction(filters.canPost, {only: ['posts_pending', 'post_submit']});
 
     // After Hooks
 
