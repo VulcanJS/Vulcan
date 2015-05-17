@@ -529,7 +529,7 @@ var migrationsList = {
         if (!!user[key]) {
           telescopeUserData[key] = user[key];
         }
-        if (!!user.votes[key]) {
+        if (user.votes && !!user.votes[key]) {
           telescopeUserData[key] = user.votes[key];
         }
       });
