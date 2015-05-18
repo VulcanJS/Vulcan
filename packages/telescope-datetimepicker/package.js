@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:datetimepicker",
   summary: "Custom bootstrap-datetimepicker input type for AutoForm",
-  version: "0.2.0",
+  version: "0.20.0",
   git: "https://github.com/TelescopeJS/telescope-datetimepicker.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:core@0.1.0',
+    'telescope:core@0.20.0',
     'tsega:bootstrap3-datetimepicker@3.1.3_1'
   ]);
 

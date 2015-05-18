@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:i18n",
   summary: "Telescope i18n package",
-  version: "0.2.0",
+  version: "0.20.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
-  api.use(['telescope:lib@0.3.1']);
+  api.use(['telescope:lib@0.20.0']);
 
   api.use(["session"], "client");
 

@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:users',
   summary: 'Telescope permissions.',
-  version: '0.2.1',
+  version: '0.20.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,9 +10,9 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.3.1',
-    'telescope:settings@0.1.0',
-    'telescope:i18n@0.1.0'
+    'telescope:lib@0.20.0',
+    'telescope:settings@0.20.0',
+    'telescope:i18n@0.20.0'
   ]);
 
   api.addFiles([
