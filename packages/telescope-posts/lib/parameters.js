@@ -39,8 +39,11 @@ Posts.getSubParams = function (terms) {
     parameters.find.postedAt = {$lte: new Date()};
 
   // filter by category if category _id is provided
-  if(!!terms.category)
-    parameters.find.categories = {$in: [terms.category]};
+  // NOTE: this is a temporary fix because views cannot currently be combined
+  if (!!terms.category) {
+    var categoryId = Categories.findOne({slug: terms.category})._id;
+    parameters.find.categories = {$in: [categoryId]};
+  }
   
   // console.log(parameters);
 
