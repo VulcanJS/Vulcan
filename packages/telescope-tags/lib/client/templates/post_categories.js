@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  Template.postCategories.helpers({
+  Template.post_categories.helpers({
     categoriesArray: function(){
       return _.map(this.categories, function (categoryId) { // note: this.categories maybe be undefined
         return Categories.findOne(categoryId);

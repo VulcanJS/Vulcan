@@ -38,7 +38,7 @@ Telescope.modules.add("profileEdit", {
 });
 
 Telescope.modules.add("commentThreadBottom", {
-  template: 'postSubscribe',
+  template: 'post_subscribe',
   order: 10
 });
 

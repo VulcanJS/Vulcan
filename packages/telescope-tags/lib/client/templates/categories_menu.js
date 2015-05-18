@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  Template.categoriesMenu.helpers({
+  Template.categories_menu.helpers({
     hasCategories: function () {
       return Categories.find().count();
     },

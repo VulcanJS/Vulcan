@@ -1,4 +1,4 @@
-Template.postSubscribe.helpers({
+Template.post_subscribe.helpers({
   canSubscribe: function() {
     // you cannot subscribe to your own posts
     return Meteor.userId() && this.userId !== Meteor.userId();
@@ -11,7 +11,7 @@ Template.postSubscribe.helpers({
   }
 });
 
-Template.postSubscribe.events({
+Template.post_subscribe.events({
   'click .subscribe-link': function(e, instance) {
     e.preventDefault();
     if (this.userId === Meteor.userId())

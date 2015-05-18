@@ -6,18 +6,18 @@ Telescope.menus.add("adminMenu", {
 
 // push "categories" modules to postHeading
 Telescope.modules.add("postHeading", {
-  template: 'postCategories',
+  template: 'post_categories',
   order: 30
 });
 
-// push "categoriesMenu" template to primaryNav
+// push "categories_menu" template to primaryNav
 Telescope.modules.add("primaryNav", {
-  template: 'categoriesMenu',
+  template: 'categories_menu',
   order: 50
 });
 
 Telescope.modules.add("mobileNav", {
-  template: 'categoriesMenu',
+  template: 'categories_menu',
   order: 10
 });
 

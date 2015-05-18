@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-  Template.searchLogs.helpers({
+  Template.search_logs.helpers({
     getTime: function () {
       return moment(this.timestamp).format("HH:mm:ss");
     },

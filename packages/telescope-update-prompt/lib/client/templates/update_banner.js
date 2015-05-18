@@ -1,4 +1,4 @@
-Template.updateBanner.helpers({
+Template.update_banner.helpers({
   showBanner: function () {
     return Session.get('updateVersion');
   },

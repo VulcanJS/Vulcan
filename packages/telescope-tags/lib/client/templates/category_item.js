@@ -1,11 +1,11 @@
 Meteor.startup(function () {
-  Template.categoryItem.helpers({
+  Template.category_item.helpers({
     formId: function () {
       return 'updateCategory-'+ this._id;
     }
   });
 
-  Template.categoryItem.events({
+  Template.category_item.events({
     'click .delete-link': function(e, instance){
       e.preventDefault();
       if (confirm("Delete category?")) {
