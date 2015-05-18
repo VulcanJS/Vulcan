@@ -44,7 +44,15 @@ Template.user_info.helpers({
 
 Template.user_info.events({
   'click .invite-link': function(e, instance){
-    Meteor.call('inviteUser', instance.data.user._id);
-    Messages.flash('Thanks, user has been invited.', "success");
+    var user = this;
+    Meteor.call('inviteUser', {userId: user._id}, function(error, success){
+      if (error) {
+        Messages.flash(error, "error");
+        Messages.clearSeen();
+      } else {
+        Messages.flash('Thanks, user has been invited.', "success");
+        Messages.clearSeen();
+      }
+    });
   }
 });

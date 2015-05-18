@@ -16,13 +16,12 @@ Meteor.methods({
 
     var user = invitation.invitedUserEmail ?
           Meteor.users.findOne({ emails : { $elemMatch: { address: invitation.invitedUserEmail } } }) :
-          Meteor.users.findOne({ _id : invitation.userId }),
-        userEmail = invitation.invitedUserEmail ? invitation.invitedUserEmail :
-          Users.getEmail(user),
-        currentUser = Meteor.user(),
-        currentUserCanInvite = currentUserIsAdmin ||
-          (currentUser.inviteCount > 0 && Users.can.invite(currentUser)),
-        currentUserIsAdmin = Users.is.admin(currentUser);
+          Meteor.users.findOne({ _id : invitation.userId });
+    
+    var userEmail = invitation.invitedUserEmail ? invitation.invitedUserEmail :Users.getEmail(user);
+    var currentUser = Meteor.user();
+    var currentUserIsAdmin = Users.is.admin(currentUser);
+    var currentUserCanInvite = currentUserIsAdmin || (currentUser.inviteCount > 0 && Users.can.invite(currentUser));
 
     // check if the person is already invited
     if(user && Users.can.invite(user)){
@@ -32,7 +31,7 @@ Meteor.methods({
         throw new Meteor.Error(701, "You can't invite this user, sorry.");
       }
 
-      // don't allow duplicate multpile invite for the same person
+      // don't allow duplicate multiple invite for the same person
       var existingInvite = Invites.findOne({ invitedUserEmail : userEmail });
 
       if (existingInvite) {
@@ -48,15 +47,17 @@ Meteor.methods({
       });
 
       // update invinting user
-      Meteor.users.update(Meteor.userId(), {$inc:{inviteCount: -1}});
+      Meteor.users.update(Meteor.userId(), {$inc:{"telescope.inviteCount": -1}, $inc:{"telescope.invitedCount": 1}});
 
       if(user){
         // update invited user
-        Meteor.users.update(user._id, {$set: {
-          isInvited: true,
-          invitedBy: Meteor.userId(),
-          invitedByName: Users.getDisplayName(currentUser)
-        }});
+        Meteor.users.update(user._id, {
+          $set: {
+            "telescope.isInvited": true,
+            "telescope.invitedBy": Meteor.userId(),
+            "telescope.invitedByName": Users.getDisplayName(currentUser)
+          }
+        });
       }
 
       var communityName = Settings.get('title','Telescope'),

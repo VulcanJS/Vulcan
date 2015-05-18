@@ -1,4 +1,4 @@
-InviteSchema = new SimpleSchema({
+var InviteSchema = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -19,6 +19,69 @@ InviteSchema = new SimpleSchema({
 
 Invites = new Meteor.Collection("invites");
 Invites.attachSchema(InviteSchema);
+
+Users.addField([
+  /**
+    A count of the user's remaining invites
+  */
+  {
+    fieldName: "telescope.inviteCount",
+    fieldSchema: {
+      type: Number,
+      optional: true
+    }
+  },
+  /**
+    A count of how many users have been invited by the user
+  */
+  {
+    fieldName: "telescope.invitedCount",
+    fieldSchema: {
+      type: Number,
+      optional: true
+    }
+  },
+  /**
+    Whether the user is invited or not
+  */
+  {
+    fieldName: "telescope.isInvited",
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      editableBy: ["admin"],
+      autoform: {
+        omit: true
+      }
+    }
+  },
+  /**
+    The _id of the user who invited the current user
+  */
+  {
+    fieldName: "telescope.invitedBy",
+    fieldSchema: {
+      type: String,
+      optional: true,
+      autoform: {
+        omit: true
+      }
+    }
+  },
+  /**
+    The name of the user who invited the current user
+  */
+  {
+    fieldName: "telescope.invitedByName",
+    fieldSchema: {
+      type: String,
+      optional: true,
+      autoform: {
+        omit: true
+      }
+    }
+  }
+]);
 
 // invites are managed through Meteor method
 

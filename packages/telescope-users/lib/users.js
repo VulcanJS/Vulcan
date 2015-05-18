@@ -91,31 +91,6 @@ Telescope.schemas.userData = new SimpleSchema({
     template: "user_profile_bio"
   },
   /**
-    A count of the user's remaining invites
-  */
-  inviteCount: {
-    type: Number,
-    optional: true
-  },
-  /**
-    A count of how many users have been invited by the user
-  */
-  invitedCount: {
-    type: Number,
-    optional: true
-  },
-  /**
-    Whether the user is invited or not
-  */
-  isInvited: {
-    type: Boolean,
-    optional: true,
-    editableBy: ["admin"],
-    autoform: {
-      omit: true
-    }
-  },
-  /**
     The user's karma
   */
   karma: {

@@ -25,12 +25,10 @@ Template.registerHelper('canPost', function() {
 Template.registerHelper('canComment', function() {
   return Users.can.comment(Meteor.user());
 });
-Template.registerHelper('isAdmin', function(showError) {
+Template.registerHelper('isAdmin', function(user) {
+  var user = typeof user === "undefined" ? Meteor.user() : user;
   if (Users.is.admin(Meteor.user())) {
     return true;
-  }
-  if ((typeof showError === 'string') && (showError === 'true')) {
-    Messages.flash(i18n.t('sorry_you_do_not_have_access_to_this_page'), 'error');
   }
   return false;
 });

@@ -4,15 +4,20 @@
  */
 
 /**
- * Add an additional field to a schema.
- * @param {Object} field
+ * Add an additional field (or an array of fields) to a schema.
+ * @param {Object|Object[]} field
  */
-Mongo.Collection.prototype.addField = function (field) {
+Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
 
   var collection = this;
   var fieldSchema = {};
 
-  fieldSchema[field.fieldName] = field.fieldSchema;
+  var fieldArray = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
+
+  // loop over fields and add them to schema
+  fieldArray.forEach(function (field) {
+    fieldSchema[field.fieldName] = field.fieldSchema;
+  });
 
   // add field schema to collection schema
   collection.attachSchema(fieldSchema);
