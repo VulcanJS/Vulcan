@@ -5,7 +5,7 @@
 
 
 // array containing items in the views menu
-Telescope.menus.add("viewsMenu", [
+Telescope.menuItems.add("viewsMenu", [
   {
     route: 'posts_top',
     label: 'top',
@@ -36,7 +36,7 @@ Telescope.menus.add("viewsMenu", [
 ]);
 
 // array containing items in the admin menu
-Telescope.menus.add("adminMenu", [
+Telescope.menuItems.add("adminMenu", [
   {
     route: 'settings',
     label: 'settings',

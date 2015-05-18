@@ -10,14 +10,14 @@ Telescope.menus = {};
  * @param {Object|Object[]} item - The menu item object (or an array of items)
  *
  * @example <caption>Using a named route</caption>
- * Telescope.menus.add("viewsMenu", {
+ * Telescope.menuItems.add("viewsMenu", {
  *   route: 'postsDaily',
  *   label: 'daily',
  *   description: 'day_by_day_view'
  * });
  *
  * @example <caption>Using a route function</caption>
- * Telescope.menus.add("userMenu", {
+ * Telescope.menuItems.add("userMenu", {
  *   route: function () {
  *     return Router.path('user_profile', {_idOrSlug: Meteor.user().telescope.slug});
  *   },
@@ -26,7 +26,7 @@ Telescope.menus = {};
  * });
  *
  */
-Telescope.menus.add = function (menu, item) {
+Telescope.menuItems.add = function (menu, item) {
 
   // if menu items array doesn't exist yet, initialize it
   if (typeof Telescope.menus[menu] === "undefined") {
@@ -52,7 +52,7 @@ Telescope.menus.add = function (menu, item) {
  * @param {string} menu - The name of the menu
  * @param {string} label - The label of the item to remove
  */
-Telescope.menus.remove = function (menu, label) {
+Telescope.menuItems.remove = function (menu, label) {
   Telescope.menus[menu] = _.reject(Telescope.menus[menu], function (menu) {
     return menu.label === label;
   });
@@ -62,6 +62,6 @@ Telescope.menus.remove = function (menu, label) {
  * Retrieve an array containing all items for a menu
  * @param {string} menu - The name of the menu
  */
-Telescope.menus.get = function (menu) {
+Telescope.menuItems.get = function (menu) {
   return _.sortBy(Telescope.menus[menu], "order");
 };

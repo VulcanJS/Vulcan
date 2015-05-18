@@ -1,4 +1,4 @@
-Telescope.menus.add("viewsMenu", {
+Telescope.menuItems.add("viewsMenu", {
   route: 'postsSingleDayDefault',
   label: 'singleday',
   description: 'posts_of_a_single_day'

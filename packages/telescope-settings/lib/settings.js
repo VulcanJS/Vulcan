@@ -120,7 +120,7 @@ Settings.schema = new SimpleSchema({
       group: "02_posts",
       instructions: 'The view used for the front page',
       options: function () {
-        return _.map(Telescope.menus.get("viewsMenu"), function (view) {
+        return _.map(Telescope.menuItems.get("viewsMenu"), function (view) {
           return {
             value: Telescope.utils.camelCaseify(view.label),
             label: view.label
@@ -150,7 +150,7 @@ Settings.schema = new SimpleSchema({
       editable: true,
       noselect: true,
       options: function () {
-        return _.map(Telescope.menus.get("viewsMenu"), function (item){
+        return _.map(Telescope.menuItems.get("viewsMenu"), function (item){
           return {
             value: item.route,
             label: item.label
