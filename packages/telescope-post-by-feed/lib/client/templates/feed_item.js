@@ -1,11 +1,11 @@
 Meteor.startup(function () {
-  Template.feedItem.helpers({
+  Template.feed_item.helpers({
     formId: function () {
       return 'updateFeed-'+ this._id;
     }
   });
 
-  Template.feedItem.events({
+  Template.feed_item.events({
     'click .delete-link': function(e, instance){
       e.preventDefault();
       if (confirm("Delete feed?")) {

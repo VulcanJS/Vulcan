@@ -1,4 +1,4 @@
-Template.postContent.helpers({
+Template.post_content.helpers({
   sourceLink: function(){
     return !!this.url ? this.url : "/posts/"+this._id;
   },

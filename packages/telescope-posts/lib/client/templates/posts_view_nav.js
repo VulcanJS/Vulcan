@@ -1,4 +1,4 @@
-Template.postViewsNav.helpers({
+Template.posts_views_nav.helpers({
   showNav: function () {
     var navElements = Settings.get('postViews', _.pluck(Telescope.config.viewsMenu, 'route'));
     var navCount = _.isArray(navElements) ? navElements.length : _.keys(navElements).length;

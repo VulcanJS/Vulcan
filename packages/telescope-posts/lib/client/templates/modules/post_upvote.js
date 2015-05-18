@@ -1,4 +1,4 @@
-Template.postUpvote.helpers({
+Template.post_upvote.helpers({
   upvoted: function(){
     var user = Meteor.user();
     if(!user) return false;
@@ -6,7 +6,7 @@ Template.postUpvote.helpers({
   }
 });
 
-Template.postUpvote.events({
+Template.post_upvote.events({
   'click .upvote-link': function(e){
     var post = this;
     e.preventDefault();

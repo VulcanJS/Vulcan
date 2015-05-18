@@ -20,6 +20,14 @@ Telescope.utils.camelToDash = function(str) {
 };
 
 /**
+ * Convert an underscore-separated string to dash-separated string
+ * @param {String} str
+ */
+Telescope.utils.underscoreToDash = function(str) {
+  return str.replace('_', '-');
+};
+
+/**
  * Convert a dash separated string to camelCase.
  * @param {String} str
  */

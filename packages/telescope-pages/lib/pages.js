@@ -32,12 +32,12 @@ Pages.before.insert(function (userId, doc) {
 });
 
 Telescope.modules.add("primaryNav", {
-  template: "pagesMenu",
+  template: "pages_menu",
   order: 5
 });
 
 Telescope.modules.add("mobileNav", {
-  template: 'pagesMenu',
+  template: 'pages_menu',
   order: 5
 });
 

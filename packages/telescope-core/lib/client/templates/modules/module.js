@@ -4,6 +4,6 @@ Template.module.helpers({
   },
   wrapperClass: function () {
     var module = this;
-    return Telescope.utils.camelToDash(module.template) + " " + module.moduleClass;
+    return Telescope.utils.underscoreToDash(module.template) + " " + module.moduleClass;
   }
 });

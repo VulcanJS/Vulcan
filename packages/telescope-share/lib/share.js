@@ -1,4 +1,4 @@
 Telescope.modules.add("postComponents", {
-  template: 'postShare', 
+  template: 'post_share', 
   order: 25
 });

@@ -1,4 +1,4 @@
-Template.pagesMenu.helpers({
+Template.pages_menu.helpers({
   hasPages: function () {
     return Pages.find().count();
   },
