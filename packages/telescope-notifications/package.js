@@ -19,6 +19,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/notifications.js',
     'lib/herald.js',
+    'lib/modules.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 

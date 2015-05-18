@@ -29,7 +29,7 @@ Invites.deny({
 });
 
 Telescope.modules.add("profileEdit", {
-  template: 'userInvites',
+  template: 'user_invites',
   order: 2
 });
 

@@ -22,7 +22,7 @@ var mediaProperty = {
 Posts.addField(mediaProperty);
 
 Telescope.modules.add("postThumbnail", {
-  template: 'postThumbnail',
+  template: 'post_thumbnail',
   order: 15
 });
 

@@ -20,7 +20,7 @@ var dismissBanner = function () {
 };
 
 Meteor.startup(function () {
-  Template.newsletterBanner.helpers({
+  Template.newsletter_banner.helpers({
     siteName: function () {
       return Settings.get('title');
     },
@@ -44,7 +44,7 @@ Meteor.startup(function () {
     }
   });
 
-  Template.newsletterBanner.events({
+  Template.newsletter_banner.events({
     'click .newsletter-button': function (e) {
       e.preventDefault();
       var $banner = $('.newsletter-banner');

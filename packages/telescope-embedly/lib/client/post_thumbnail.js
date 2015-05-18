@@ -1,4 +1,4 @@
-Template.postThumbnail.helpers({
+Template.post_thumbnail.helpers({
   postLink: function () {
     return !!this.url ? Posts.getOutgoingUrl(this.url) : "/posts/"+this._id;
   },
@@ -7,7 +7,7 @@ Template.postThumbnail.helpers({
   }
 });
 
-Template.postThumbnail.events({
+Template.post_thumbnail.events({
   'click .post-thumbnail-has-video': function (e) {
     e.preventDefault();
     $('body').addClass('showing-lightbox');
