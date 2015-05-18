@@ -25,6 +25,7 @@ Meteor.startup(function () {
 
   Router.route('/daily/:days?', {
     name: 'postsDaily',
+    template: 'posts_daily',
     controller: Posts.controllers.daily
   });
 

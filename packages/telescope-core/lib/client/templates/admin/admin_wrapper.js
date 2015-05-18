@@ -1,4 +1,4 @@
-Template.adminWrapper.helpers({
+Template.admin_wrapper.helpers({
   contents: function () {
     return Router.current().route.getName();
   },

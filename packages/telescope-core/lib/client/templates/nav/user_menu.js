@@ -1,4 +1,4 @@
-Template.userMenu.helpers({
+Template.user_menu.helpers({
   menuLabel: function () {
     return Users.getDisplayName(Meteor.user());
   },

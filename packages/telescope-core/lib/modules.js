@@ -2,7 +2,7 @@
 
 Telescope.modules.add("secondaryNav", [
   {
-    template: 'userMenu',
+    template: 'user_menu',
     order: 10
   },
   {
@@ -10,14 +10,14 @@ Telescope.modules.add("secondaryNav", [
     order: 20
   },
   {
-    template: 'submitButton',
+    template: 'submit_button',
     order: 30
   }
 ]);
 
 Telescope.modules.add("mobileNav", [
   {
-    template: 'userMenu',
+    template: 'user_menu',
     order: 10
   },
   {
@@ -25,7 +25,7 @@ Telescope.modules.add("mobileNav", [
     order: 20
   },
   {
-    template: 'submitButton',
+    template: 'submit_button',
     order: 30
   }
 ]);

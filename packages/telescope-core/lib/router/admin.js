@@ -1,6 +1,6 @@
 Telescope.controllers.admin = RouteController.extend({
 
-  template: "adminWrapper"
+  template: "admin_wrapper"
 
 });
 
