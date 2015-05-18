@@ -25,3 +25,12 @@ Telescope.menuItems.add("userMenu", [
     description: 'sign_out'
   }
 ]);
+
+// array containing items in the admin menu
+Telescope.menuItems.add("adminMenu", [
+  {
+    route: 'users_dashboard',
+    label: 'users',
+    description: 'users_dashboard'
+  }
+]);

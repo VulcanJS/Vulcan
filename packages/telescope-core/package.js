@@ -31,7 +31,6 @@ Package.onUse(function(api) {
     'lib/router/server.js',
     'lib/config.js',
     'lib/modules.js',
-    'lib/menus.js',
     'lib/vote.js'
   ], ['client', 'server']);
 

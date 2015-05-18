@@ -1,7 +1,10 @@
 /**
  * A dictionnary of all the elements that use custom colors
  */
-Telescope.utils.colorTable = {
+
+Telescope.colorElements = {};
+
+Telescope.colorElements.colorTable = {
   accentColor: [],
   accentContrastColor: [],
   secondaryColor: [],
@@ -14,19 +17,19 @@ Telescope.utils.colorTable = {
  * @param {string} color - the color. Either `accentColor`, `accentContrastColor`, `secondaryColor`, or `secondaryContrastColor`
  * @param {string} [property=color] - the property to colorize. Usually `color`, `background-color`, `border-color`, etc. 
  */
-Telescope.utils.addElementColor = function (selector, color, property) {
+Telescope.colorElements.add = function (selector, color, property) {
   var element = {selector: selector};
 
   if (typeof property !== "undefined")
     element.property = property;
 
-  Telescope.utils.colorTable[color].push(element);
+  Telescope.colorElements.colorTable[color].push(element);
 };
 
 // shortcuts
 var setShortcut = function(name) {
   return function (selector, property) {
-    Telescope.utils.addElementColor(selector, name, property);
+    Telescope.colorElements.add(selector, name, property);
   };
 };
 

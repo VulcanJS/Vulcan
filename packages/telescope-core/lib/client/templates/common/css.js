@@ -3,7 +3,7 @@ Template.css.helpers({
     var css = "";
 
     // first loop over each of the four color
-    _.each(Telescope.utils.colorTable, function (elements, color) {
+    _.each(Telescope.colorElements.colorTable, function (elements, color) {
       var properties = {};
 
       // for each color, loop over the items to build the selector

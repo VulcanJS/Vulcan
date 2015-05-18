@@ -9,7 +9,7 @@ Meteor.startup(function () {
     showViewsNav: false,
 
     onBeforeAction: function () {
-      this.render('category_title', {to: 'postListTop'});
+      this.render('category_title', {to: 'postsListTop'});
       this.next();
     },
 

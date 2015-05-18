@@ -18,6 +18,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/settings.js',
     'lib/router.js',
+    'lib/menus.js',
     'package-tap.i18n'
   ], both);
 
@@ -28,8 +29,8 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/client/language_changer.js',
     'lib/client/helpers.js',
-    'lib/client/templates/settings_form.html',
-    'lib/client/templates/settings_form.js'
+    'lib/client/templates/settings.html',
+    'lib/client/templates/settings.js'
   ], 'client');
 
   api.addFiles([

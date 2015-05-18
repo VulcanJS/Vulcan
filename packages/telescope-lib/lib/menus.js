@@ -1,8 +1,8 @@
 /**
  * Menus namespace
- * @namespace Telescope.menus
+ * @namespace Telescope.menuItems
  */
-Telescope.menus = {};
+Telescope.menuItems = {};
 
 /**
  * Add one or more items to a menu
@@ -29,20 +29,20 @@ Telescope.menus = {};
 Telescope.menuItems.add = function (menu, item) {
 
   // if menu items array doesn't exist yet, initialize it
-  if (typeof Telescope.menus[menu] === "undefined") {
-    Telescope.menus[menu] = [];
+  if (typeof Telescope.menuItems[menu] === "undefined") {
+    Telescope.menuItems[menu] = [];
   }
 
   if (Array.isArray(item)) {
 
     var items = item; // we're dealing with an Array, so let's add an "s"
     items.forEach( function (item) {
-      Telescope.menus[menu].push(item);
+      Telescope.menuItems[menu].push(item);
     });
 
   } else {
 
-    Telescope.menus[menu].push(item);
+    Telescope.menuItems[menu].push(item);
 
   }
 };
@@ -53,7 +53,7 @@ Telescope.menuItems.add = function (menu, item) {
  * @param {string} label - The label of the item to remove
  */
 Telescope.menuItems.remove = function (menu, label) {
-  Telescope.menus[menu] = _.reject(Telescope.menus[menu], function (menu) {
+  Telescope.menuItems[menu] = _.reject(Telescope.menuItems[menu], function (menu) {
     return menu.label === label;
   });
 };
@@ -63,5 +63,5 @@ Telescope.menuItems.remove = function (menu, label) {
  * @param {string} menu - The name of the menu
  */
 Telescope.menuItems.get = function (menu) {
-  return _.sortBy(Telescope.menus[menu], "order");
+  return _.sortBy(Telescope.menuItems[menu], "order");
 };

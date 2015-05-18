@@ -110,7 +110,10 @@ Telescope.schemas.userData = new SimpleSchema({
   isInvited: {
     type: Boolean,
     optional: true,
-    editableBy: ["admin"]
+    editableBy: ["admin"],
+    autoform: {
+      omit: true
+    }
   },
   /**
     The user's karma
@@ -216,7 +219,10 @@ Users.schema = new SimpleSchema({
   isAdmin: {
     type: Boolean,
     optional: true,
-    editableBy: ["admin"]
+    editableBy: ["admin"],
+    autoform: {
+      omit: true
+    }
   },
   profile: {
     type: Object,

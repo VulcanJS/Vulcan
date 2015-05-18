@@ -15,7 +15,7 @@ Telescope.modules.add("adminMenu", {
   description: 'see_what_people_are_searching_for'
 });
 
-Telescope.utils.addElementColor('.search .search-field', 'secondaryContrastColor');
+Telescope.colorElements.add('.search .search-field', 'secondaryContrastColor');
 
 Searches = new Meteor.Collection("searches", {
   schema: new SimpleSchema({

@@ -15,7 +15,7 @@ Posts.controllers.list = RouteController.extend({
     var showViewsNav = (typeof this.showViewsNav === 'undefined') ? true : this.showViewsNav;
 
     if (showViewsNav) {
-      this.render('post_list_top', {to: 'postListTop'});
+      this.render('posts_list_top', {to: 'postsListTop'});
     }
     this.next();
   },
