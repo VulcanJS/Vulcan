@@ -54,6 +54,8 @@ Telescope.callbacks.add("onCreateUser", setupUser);
  * @param {Object} user
  */
 function hasCompletedProfile (user) {
-  return !!Users.getEmail(user);
+  return _.every(Users.getRequiredFields(), function (fieldName) {
+    return !!Telescope.getNestedProperty(user, fieldName);
+  });
 }
 Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);

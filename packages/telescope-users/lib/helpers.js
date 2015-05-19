@@ -262,3 +262,17 @@ Users.getCurrentUserEmail = function () {
 Users.findByEmail = function (email) {
   return Meteor.users.findOne({"emails.address": email});
 }
+
+
+/**
+ * @method Users.getRequiredFields
+ * Get a list of all fields required for a profile to be complete
+ */
+Users.getRequiredFields = function () {
+  var schema = Users.simpleSchema()._schema;
+  var fields = _.filter(_.keys(schema), function (fieldName) {
+    var field = schema[fieldName];
+    return !!field.required;
+  });
+  return fields;
+};
