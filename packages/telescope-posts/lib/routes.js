@@ -52,7 +52,12 @@ Posts.controllers.list = RouteController.extend({
 
 var getDefaultViewController = function () {
   var defaultView = Settings.get('defaultView', 'top');
-  return Posts.controllers[defaultView];
+  // if view we got from settings is available in Posts.views object, use it
+  if (!!Posts.controllers[defaultView]) {
+    return Posts.controllers[defaultView];
+  } else {
+    return Posts.controllers.top;
+  }
 };
 
 // wrap in startup block to make sure Settings collection is defined
