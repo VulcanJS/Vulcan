@@ -531,7 +531,7 @@ var migrationsList = {
           telescopeUserData[key] = user[key];
         } else if (user.votes && !!user.votes[key]) { // look for it in user.votes object
           telescopeUserData[key] = user.votes[key];
-        } else if (user.profile[key]) { // look for it in user.profile object
+        } else if (user.profile && user.profile[key]) { // look for it in user.profile object
           telescopeUserData[key] = user.profile[key];
         }
         
@@ -615,6 +615,7 @@ var migrationsList = {
   // },
   migrateDisplayName: function () {
     var i = 0;
+    var displayName;
     var allUsers = Meteor.users.find({"telescope.displayName": {$exists: false}});
     console.log('> Found '+allUsers.count()+' users.\n');
 
@@ -622,9 +623,18 @@ var migrationsList = {
       i++;
 
       console.log('> Updating user '+user._id+' (' + user.username + ')');
-      var displayName = user.profile.name || user.profile.username || user.username;
+      if (!!user.profile) {
+        displayName = user.profile.name || user.profile.username;
+      } else {
+        displayName = user.username;
+      }
+
       console.log('name: ', displayName);
-      Meteor.users.update(user._id, {$set: {"telescope.displayName": displayName}});
+      if (!!displayName) {
+        Meteor.users.update(user._id, {$set: {"telescope.displayName": displayName}});
+      } else {
+        "displayName not found :("
+      }
     });
     return i;
   }
