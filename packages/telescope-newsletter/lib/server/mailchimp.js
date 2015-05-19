@@ -136,10 +136,12 @@ Meteor.methods({
     }
   },
   addEmailToMailChimpList: function (email) {
-    try {
-      return addToMailChimpList(email, true);
-    } catch (error) {
-      throw new Meteor.Error(500, error.message);
+    if (Users.is.adminById(this.userId)) {
+      try {
+        return addToMailChimpList(email, true);
+      } catch (error) {
+        throw new Meteor.Error(500, error.message);
+      }
     }
   }
 });

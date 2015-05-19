@@ -198,4 +198,4 @@ Telescope.modules.add("hero", {
   }
   return user;
 }
-Telescope.callbacks.add("onCreateUser", subscribeUserOnCreation);
+Telescope.callbacks.add("onCreateUserAsync", subscribeUserOnCreation);
