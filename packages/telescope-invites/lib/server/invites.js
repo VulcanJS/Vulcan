@@ -79,5 +79,8 @@ Meteor.methods({
     return {
       newUser : typeof user === 'undefined'
     };
+  },
+  unInviteUser: function (userId) {
+    Meteor.users.update(userId, {$set: {"telescope.isInvited": false}});
   }
 });

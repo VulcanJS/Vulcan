@@ -1,6 +1,6 @@
 Template.users_list_actions.helpers({
   isInvited: function() {
-    return this.isInvited;
+    return this.telescope.isInvited;
   },
   userIsAdmin: function(){
     return Users.is.admin(this);
@@ -10,15 +10,12 @@ Template.users_list_actions.helpers({
 Template.users_list_actions.events({
   'click .invite-link': function(e){
     e.preventDefault();
-    Meteor.call('inviteUser', { userId : this._id });
+    Meteor.users.update(this._id, {$set: {"telescope.isInvited": true}});
+
   },
   'click .uninvite-link': function(e){
     e.preventDefault();
-    Meteor.users.update(this._id,{
-      $set:{
-        isInvited: false
-      }
-    });
+    Meteor.users.update(this._id, {$set: {"telescope.isInvited": false}});
   },
   'click .admin-link': function(e){
     e.preventDefault();
