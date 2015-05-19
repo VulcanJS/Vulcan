@@ -50,10 +50,10 @@ Telescope.callbacks.add("onCreateUser", setupUser);
 
 
 /**
- * Check if the user has completed their profile with an email and username.
+ * Check if the user has completed their profile with an email.
  * @param {Object} user
  */
 function hasCompletedProfile (user) {
-  return !!Users.getEmail(user) && !!Users.getUserName(user);
+  return !!Users.getEmail(user);
 }
 Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);
