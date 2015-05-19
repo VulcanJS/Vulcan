@@ -266,7 +266,7 @@ Users.findByEmail = function (email) {
 
 /**
  * @method Users.getRequiredFields
- * Get a list of all fields required for a profile to be complete
+ * Get a list of all fields required for a profile to be complete.
  */
 Users.getRequiredFields = function () {
   var schema = Users.simpleSchema()._schema;
@@ -276,3 +276,15 @@ Users.getRequiredFields = function () {
   });
   return fields;
 };
+
+/**
+ * Check if the user has completed their profile.
+ * @param {Object} user
+ */
+Users.hasCompletedProfile = function (user) {
+  return _.every(Users.getRequiredFields(), function (fieldName) {
+    return !!Telescope.getNestedProperty(user, fieldName);
+  });
+};
+Users.helpers({hasCompletedProfile: function () {return Users.hasCompletedProfile(this);}});
+Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Meteor.users.findOne(userId));};

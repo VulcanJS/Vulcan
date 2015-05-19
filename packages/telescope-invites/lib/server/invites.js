@@ -24,7 +24,7 @@ Meteor.methods({
     var currentUserCanInvite = currentUserIsAdmin || (currentUser.inviteCount > 0 && Users.can.invite(currentUser));
 
     // check if the person is already invited
-    if(user && Users.can.invite(user)){
+    if(user && Users.is.invited(user)){
       throw new Meteor.Error(403, "This person is already invited.");
     } else {
       if (!currentUserCanInvite){

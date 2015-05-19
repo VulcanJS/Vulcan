@@ -238,15 +238,22 @@ Users.allow({
 //////////////////////////////////////////////////////
 
 /**
- * Generate HTML body from Markdown on post insert
+ * Generate HTML body from Markdown on user bio insert
  */
-Users.before.insert(function (userId, doc) {
-  if(!!doc[".telescope.bio"])
-    doc["telescope.htmlBio"] = Telescope.utils.sanitize(marked(doc["telescope.bio"]));
+Users.after.insert(function (userId, user) {
+
+  // run create user async callbacks
+  Telescope.callbacks.runAsync("onCreateUserAsync", user, options);
+
+  // check if all required fields have been filled in. If so, run profile completion callbacks
+  if (Users.hasCompletedProfile(user)) {
+    Telescope.callbacks.runAsync("profileCompletedAsync", user);
+  }
+  
 });
 
 /**
- * Generate HTML body from Markdown when post body is updated
+ * Generate HTML body from Markdown when user bio is updated
  */
 Users.before.update(function (userId, doc, fieldNames, modifier) {
   // if bio is being modified, update htmlBio too

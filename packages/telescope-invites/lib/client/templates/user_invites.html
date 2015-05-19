@@ -31,7 +31,7 @@
           {{#each invites}}
           <tr>
             <td>{{invitedUserEmail}}</td>
-            <td>{{#if accepted}}<i class="icon-check"></i>{{/if}}</td>
+            <td>{{#if accepted}}{{{icon "voted"}}}{{/if}}</td>
           </tr>
           {{/each}}
       </tbody>

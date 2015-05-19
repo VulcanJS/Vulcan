@@ -15,7 +15,7 @@ Template.user_invites.created = function () {
 Template.user_invites.helpers({
   canCurrentUserInvite: function () {
     var currentUser = Meteor.user();
-    return currentUser && (currentUser.inviteCount > 0 && Users.can.invite(currentUser));
+    return currentUser && (Users.is.admin(currentUser) || currentUser.inviteCount > 0 && Users.can.invite(currentUser));
   },
   invitesLeft: function () {
     var currentUser = Meteor.user();
@@ -23,7 +23,7 @@ Template.user_invites.helpers({
   },
   invitesSchema: function () {
     // expose schema for Invites (used by AutoForm)
-    return InviteSchema;
+    return Invites.simpleSchema();
   },
   invites: function () {
     return Template.instance().invites.get();

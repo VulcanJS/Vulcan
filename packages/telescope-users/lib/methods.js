@@ -1,10 +1,10 @@
 var completeUserProfile = function (modifier, userId, user) {
 
-  Meteor.users.update(userId, modifier);
+  Users.update(userId, modifier);
 
-  Telescope.callbacks.runAsync("profileCompletedAsync", modifier, user);
+  Telescope.callbacks.runAsync("profileCompletedAsync", Users.findOne(userId));
 
-  return Meteor.users.findOne(userId);
+  return Users.findOne(userId);
 
 };
 
