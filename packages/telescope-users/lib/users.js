@@ -243,7 +243,7 @@ Users.allow({
 Users.after.insert(function (userId, user) {
 
   // run create user async callbacks
-  Telescope.callbacks.runAsync("onCreateUserAsync", user, options);
+  Telescope.callbacks.runAsync("onCreateUserAsync", user);
 
   // check if all required fields have been filled in. If so, run profile completion callbacks
   if (Users.hasCompletedProfile(user)) {
