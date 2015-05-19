@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:tagline-banner",
   summary: "Show a banner containing your site's tagline on the homepage",
-  version: "0.20.0",
+  version: "0.20.1",
 });
 
 Package.onUse(function (api) {
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
 
   // --------------------------- 1. Meteor packages dependencies ---------------------------
 
-  api.use(['telescope:core@0.20.0']);
+  api.use(['telescope:core@0.20.1']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 
