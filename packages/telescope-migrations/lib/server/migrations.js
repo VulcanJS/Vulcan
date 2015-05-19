@@ -524,14 +524,17 @@ var migrationsList = {
 
       var telescopeUserData = {};
 
-      // look for user data on root of user object and in user.votes
+      // loop over user data schema
       _.each(Telescope.schemas.userData._schema, function (property, key) {
-        if (!!user[key]) {
+
+        if (!!user[key]) { // look for property on root of user object
           telescopeUserData[key] = user[key];
-        }
-        if (user.votes && !!user.votes[key]) {
+        } else if (user.votes && !!user.votes[key]) { // look for it in user.votes object
           telescopeUserData[key] = user.votes[key];
+        } else if (user.profile[key]) { // look for it in user.profile object
+          telescopeUserData[key] = user.profile[key];
         }
+        
       });
 
       // console.log(telescopeUserData);
