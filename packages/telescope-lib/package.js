@@ -48,7 +48,8 @@ Package.onUse(function (api) {
     'djedi:sanitize-html@1.6.1',
     'dburles:collection-helpers@1.0.3',
     'jparker:gravatar@0.3.1',
-    'sanjo:meteor-files-helpers@1.1.0_4'
+    'sanjo:meteor-files-helpers@1.1.0_4',
+    'cmather:handlebars-server@0.2.0'
   ];
 
   api.use(packages);

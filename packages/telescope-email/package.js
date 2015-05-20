@@ -15,8 +15,7 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:core@0.20.4',
-    'sacha:juice@0.1.4',
-    'cmather:handlebars-server@0.2.0'
+    'sacha:juice@0.1.4'
   ]);
 
   // do not use for now since tap:i18n doesn't support server-side templates yet

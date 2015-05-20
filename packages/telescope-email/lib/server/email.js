@@ -6,13 +6,12 @@ Telescope.email = {};
 
 var htmlToText = Npm.require('html-to-text');
 
-// check if server-side template has been customized, and return the correct template
+// for template "foo", check if "custom_foo" exists. If it does, use it instead
 Telescope.email.getTemplate = function (template) {
-  var emailTemplate = Handlebars.templates[template];
-  if(typeof emailTemplate === 'function'){
-    return Handlebars.templates[template];
+  var customEmailTemplate = Handlebars.templates["custom_"+template];
+  if(typeof customEmailTemplate === 'function'){
+    return customEmailTemplate;
   } else {
-    console.log('Cannot find template '+template+', defaulting to '+template);
     return Handlebars.templates[template];
   }
 };
@@ -34,7 +33,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
     logoWidth: Settings.get('logoWidth')
   };
 
-  var emailHTML = Handlebars.templates.emailWrapper(emailProperties);
+  var emailHTML = Telescope.email.getTemplate("emailWrapper")(emailProperties);
 
   var inlinedHTML = juice(emailHTML);
 
