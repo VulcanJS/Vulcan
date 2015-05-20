@@ -263,16 +263,25 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * If user.telescope.email has changed, also change user.emails
+ * If user.telescope.email has changed, check for existing emails and change user.emails if needed
  */
 Users.before.update(function (userId, doc, fieldNames, modifier) {
-  // if bio is being modified, update htmlBio too
+  var user = doc;
+  // if email is being modified, update user.emails too
   if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
     var newEmail = modifier.$set["telescope.email"];
+
+    // check for existing emails and throw error if necessary
     var userWithSameEmail = Users.findByEmail(newEmail);
     if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
       throw new Meteor.Error(i18n.t("this_email_is_already_taken") + " (" + newEmail + ")");
     }
-    // modifier.$set["telescope.htmlBio"] = Telescope.utils.sanitize(marked(modifier.$set["telescope.bio"]));
+
+    // if user.emails exists, change it too
+    if (!!user.emails) {
+      user.emails[0].address = newEmail;
+      modifier.$set.emails = user.emails;
+    }
+
   }
 });
