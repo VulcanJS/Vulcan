@@ -1,4 +1,6 @@
-* Added `ctrl/cmd+enter` shortcut to submit comments (thanks @delgermurun!).
+## v0.20.4 “RefactorScope”
+
+See [blog](http://telescopeapp.org/blog/telescope-v020-refactorscope/) for more details. 
 
 ## v0.15.1 “PageScope”
 
