@@ -96,6 +96,9 @@ Template.comment_item.helpers({
   },
   downvoted: function(){
     return Meteor.user() && _.include(this.downvoters, Meteor.user()._id);
+  },
+  pointsUnitDisplayText: function(){
+    return this.upvotes === 1 ? i18n.t('point') : i18n.t('points');
   }
 });
 
