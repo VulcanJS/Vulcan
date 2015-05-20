@@ -17,7 +17,7 @@ So if you'd like to be part of the project, please check out the [roadmap](https
 
 - [Telescope Homepage](http://telesc.pe)
 - [Telescope Demo](http://demo2.telescopeapp.org)
-- [Telescope Documentation](http://telesc.pe/docs)
+- [Telescope Documentation](http://telescope.readme.io/)
 - [Telescope Roadmap](https://trello.com/b/oLMMqjVL/telescope-roadmap)
 - [Telescope Meta](http://meta.telesc.pe/) – Discussions about Telescope
 
