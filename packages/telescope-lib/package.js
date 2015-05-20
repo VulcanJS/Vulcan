@@ -20,6 +20,7 @@ Package.onUse(function (api) {
     'reactive-var',
     'http',
     'email',
+    'spiderable',
     'aldeed:simple-schema@1.3.3',
     'aldeed:collection2@2.3.3',
     'sacha:autoform@5.1.2',
