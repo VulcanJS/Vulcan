@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:migrations",
   summary: "Telescope migrations package",
-  version: "0.20.2",
+  version: "0.20.3",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
