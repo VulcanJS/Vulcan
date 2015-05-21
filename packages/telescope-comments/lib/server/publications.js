@@ -49,16 +49,18 @@ Meteor.publish('commentUsers', function(commentId) {
   if(Users.can.viewById(this.userId)){
 
     var comment = Comments.findOne(commentId);
+
     if (!!comment) {
       userIds.push(comment.userId);
-    }
 
-    var post = Posts.findOne(comment.postId);
-    if (!!post) {
-      userIds.push(post.userId);
-    }
+      var post = Posts.findOne(comment.postId);
+      if (!!post) {
+        userIds.push(post.userId);
+      }
 
-    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
+      return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
+    
+    }
 
   }
 
