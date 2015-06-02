@@ -260,8 +260,8 @@ Users.getCurrentUserEmail = function () {
 };
 
 Users.findByEmail = function (email) {
-  return Meteor.users.findOne({"emails.address": email});
-}
+  return Meteor.users.findOne({"telescope.email": email});
+};
 
 
 /**

@@ -63,13 +63,15 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true
   },
   /**
-    The user's email. Modifiable. // TODO: enforce uniqueness and use for login
+    The user's email. Modifiable.
   */
   email: {
     type: String,
     optional: true,
+    regEx: SimpleSchema.RegEx.Email,
     required: true,
     editableBy: ["member", "admin"]
+    // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
     A hash of the email, used for Gravatar // TODO: change this when email changes
@@ -265,23 +267,24 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 /**
  * If user.telescope.email has changed, check for existing emails and change user.emails if needed
  */
-Users.before.update(function (userId, doc, fieldNames, modifier) {
-  var user = doc;
-  // if email is being modified, update user.emails too
-  if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
-    var newEmail = modifier.$set["telescope.email"];
+ if (Meteor.isServer) {
+  Users.before.update(function (userId, doc, fieldNames, modifier) {
+    var user = doc;
+    // if email is being modified, update user.emails too
+    if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
+      var newEmail = modifier.$set["telescope.email"];
+      // check for existing emails and throw error if necessary
+      var userWithSameEmail = Users.findByEmail(newEmail);
+      if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
+        throw new Meteor.Error("email_taken2", i18n.t("this_email_is_already_taken") + " (" + newEmail + ")");
+      }
 
-    // check for existing emails and throw error if necessary
-    var userWithSameEmail = Users.findByEmail(newEmail);
-    if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
-      throw new Meteor.Error(i18n.t("this_email_is_already_taken") + " (" + newEmail + ")");
+      // if user.emails exists, change it too
+      if (!!user.emails) {
+        user.emails[0].address = newEmail;
+        modifier.$set.emails = user.emails;
+      }
+
     }
-
-    // if user.emails exists, change it too
-    if (!!user.emails) {
-      user.emails[0].address = newEmail;
-      modifier.$set.emails = user.emails;
-    }
-
-  }
-});
+  });
+}

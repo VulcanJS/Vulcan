@@ -7,5 +7,6 @@
   "website": "Website",
   "htmlBio": "Bio",
   "user_profile_saved": "User profile saved",
-  "this_email_is_already_taken": "This email is already taken"
+  "this_email_is_already_taken": "This email is already taken",
+  "all_fields_are_required": "All fields are required"
 }
