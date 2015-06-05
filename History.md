@@ -6,6 +6,8 @@ Just a couple minor bug fixes.
 * Ensure email uniqueness and keep it in sync.
 * Improve profile completion screen validation & errors.
 * Generate public user properties list from schema.
+* Fixed video lightbox issue.
+* Updated Getting Started content.
 
 ## v0.20.4 “RefactorScope”
 

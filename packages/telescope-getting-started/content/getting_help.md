@@ -1,11 +1,15 @@
-### Stack Overflow
-
-The best place to ask for help with specific Telescope questions is [Stack Overflow](http://stackoverflow.com/questions/tagged/telescope). Just make sure you use the `telescope` tag!
-
 ### Telescope Meta
 
-If you don't have a question, but instead want to discuss a specific aspect of Telescope (or show the world your new Telescope site!), feel free to open a topic on [Telescope Meta](http://meta.telesc.pe).
+If you have a question, the best place to ask is [Telescope Meta](http://meta.telescopeapp.org).
+
+### Slack Chatroom
+
+You can also drop by the [Slack chatroom](http://slack.telescopeapp.org) to get help or just say hello!
+
+### Stack Overflow
+
+Another good place to ask Telescope questions is [Stack Overflow](http://stackoverflow.com/questions/tagged/telescope). Just make sure you use the `telescope` tag!
 
 ### GitHub Issues
 
-Finally, if you've found a bug in Telescope, then you should [leave an issue on GitHub](https://github.com/TelescopeJS/Telescope/issues).
+Finally, if you've found a bug in Telescope, then please [leave an issue on GitHub](https://github.com/TelescopeJS/Telescope/issues).
