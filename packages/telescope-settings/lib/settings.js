@@ -15,9 +15,10 @@ Settings.schema = new SimpleSchema({
   siteUrl: {
     type: String,
     optional: true,
-    regEx: SimpleSchema.RegEx.Url,
+    // regEx: SimpleSchema.RegEx.Url,
     autoform: {
       group: "01_general",
+      type: "bootstrap-url",
       instructions: 'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
     }
   },

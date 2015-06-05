@@ -8,6 +8,7 @@ Just a couple minor bug fixes.
 * Generate public user properties list from schema.
 * Fixed video lightbox issue.
 * Updated Getting Started content.
+* Enforcing better URL formatting for Site URL setting.
 
 ## v0.20.4 “RefactorScope”
 
