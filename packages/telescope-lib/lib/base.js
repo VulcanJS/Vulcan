@@ -8,7 +8,8 @@ SimpleSchema.extendOptions({
   editableBy: Match.Optional([String]),
   publishedTo: Match.Optional([String]),
   required: Match.Optional(Boolean), // required: true means the field is required to have a complete profile
-  public: Match.Optional(Boolean), // public: true means the field is shown on user profiles
+  public: Match.Optional(Boolean), // public: true means the field is published freely
+  profile: Match.Optional(Boolean), // profile: true means the field is shown on user profiles
   template: Match.Optional(String) // template used to display the field
   // editableBy: Match.Optional(String)
 });

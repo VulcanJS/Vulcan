@@ -12,32 +12,19 @@ Users.pubsub = {};
  * Default user object fields in publication
  * @type {Object}
  */
-Users.pubsub.publicProperties = { // true means exposed
-  _id: true,
-  createdAt: true,
-  username: true,
+
+var publicFields = Users.simpleSchema().getPublicFields();
+
+// add public fields as specified in schema
+Users.pubsub.publicProperties = _.object(publicFields, _.map(publicFields, function () {return true}));
+
+// add a few more fields
+Users.pubsub.publicProperties = _.extend(Users.pubsub.publicProperties, {
   'services.twitter.profile_image_url': true,
   'services.twitter.profile_image_url_https': true,
   'services.facebook.id': true,
   'services.twitter.screenName': true,
-  'services.github.screenName': true, // Github is not really used, but there are some mentions to it in the code
-  'telescope.commentCount': true,
-  'telescope.emailHash': true,
-  'telescope.isInvited': true,
-  'telescope.karma': true,
-  'telescope.postCount': true,
-  'telescope.slug': true,
-  'telescope.displayName': true,
-  'telescope.notifications': true,
-  'telescope.bio': true,
-  'telescope.github': true,
-  'telescope.site': true,
-  'telescope.twitter': true,
-  'telescope.downvotedComments': true,
-  'telescope.downvotedPosts': true,
-  'telescope.upvotedComments': true,
-  'telescope.upvotedPosts': true
-};
+});
 
 /**
  * Options for your own user account (for security reasons, block certain properties)

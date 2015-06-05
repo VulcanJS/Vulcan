@@ -197,7 +197,7 @@ Posts.schema = new SimpleSchema({
     The post author's `_id`. 
   */
   userId: {
-    type: String, // XXX
+    type: String,
     optional: true,
     editableBy: ["admin"],
     autoform: {

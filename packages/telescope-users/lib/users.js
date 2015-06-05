@@ -37,6 +37,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   commentCount: {
     type: Number,
+    public: true,
     optional: true
   },
   /**
@@ -46,6 +47,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     public: true,
+    profile: true,
     editableBy: ["member", "admin"]
   },
   /**
@@ -53,6 +55,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedComments: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -60,6 +63,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedPosts: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -78,6 +82,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   emailHash: {
     type: String,
+    public: true,
     optional: true
   },
   /**
@@ -86,6 +91,7 @@ Telescope.schemas.userData = new SimpleSchema({
   htmlBio: {
     type: String,
     public: true,
+    profile: true,
     optional: true,
     autoform: {
       omit: true
@@ -98,6 +104,7 @@ Telescope.schemas.userData = new SimpleSchema({
   karma: {
     type: Number,
     decimal: true,
+    public: true,
     optional: true
   },
   /**
@@ -105,6 +112,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   postCount: {
     type: Number,
+    public: true,
     optional: true
   },
   /**
@@ -124,6 +132,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   slug: {
     type: String,
+    public: true,
     optional: true
   },
   /**
@@ -133,6 +142,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     public: true,
+    profile: true,
     editableBy: ["member", "admin"],
     template: "user_profile_twitter"
   },
@@ -141,6 +151,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedComments: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -148,6 +159,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedPosts: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -157,6 +169,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     public: true,
+    profile: true,
     optional: true,
     editableBy: ["member", "admin"]
   }
@@ -169,11 +182,13 @@ Telescope.schemas.userData = new SimpleSchema({
 Users.schema = new SimpleSchema({ 
   _id: {
     type: String,
+    public: true,
     optional: true
   },
   username: {
     type: String,
     regEx: /^[a-z0-9A-Z_]{3,15}$/,
+    public: true,
     optional: true
   },
   emails: {
@@ -191,6 +206,7 @@ Users.schema = new SimpleSchema({
   },
   createdAt: {
     type: Date,
+    public: true,
     optional: true
   },
   isAdmin: {

@@ -91,11 +91,20 @@ SimpleSchema.prototype.getEditableFields = function (user) {
   return fields;
 };
 
-SimpleSchema.prototype.getPublicFields = function (user) {
+SimpleSchema.prototype.getPublicFields = function () {
   var schema = this._schema;
   var fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return !!field.public;
+  });
+  return fields;
+};
+
+SimpleSchema.prototype.getProfileFields = function () {
+  var schema = this._schema;
+  var fields = _.filter(_.keys(schema), function (fieldName) {
+    var field = schema[fieldName];
+    return !!field.profile;
   });
   return fields;
 };
