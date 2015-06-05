@@ -1,3 +1,12 @@
+## v0.20.5 “MinorScope”
+
+Just a couple minor bug fixes.
+
+* Changed how email template customization works (see [documentation](http://docs.telescopeapp.org/v0.20/docs/custom-templates#email-templates)).
+* Ensure email uniqueness and keep it in sync.
+* Improve profile completion screen validation & errors.
+* Generate public user properties list from schema.
+
 ## v0.20.4 “RefactorScope”
 
 See [blog](http://telescopeapp.org/blog/telescope-v020-refactorscope/) for more details. 
