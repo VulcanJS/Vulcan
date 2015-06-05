@@ -1,6 +1,6 @@
 ### Changing Colors
 
-Telescope is fairly flexible out of the box. You can tweak colors for the header and buttons in the [Settings](/settings) panel.
+Telescope is fairly flexible out of the box. You can tweak colors for the header and buttons in the [Settings](/settings) panel (just make sure you've created a user account first).
 
 ### Enabling Thumbnails
 
