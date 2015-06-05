@@ -53,7 +53,18 @@ Template.menuComponent.helpers({
   },
   hasTemplate: function () {
     return !!this.template;
-  },
+  }
+});
+
+Template.menuComponent.events({
+  'click .show-more': function (e, t) {
+    e.preventDefault();
+    $menu = t.$('.menu');
+    $menu.toggleClass('menu-open');
+  }
+});
+
+Template.menuItem.helpers({
   itemClass: function () {
     var itemClass = "";
     var currentPath = Router.current().location.get().path ;
@@ -77,13 +88,5 @@ Template.menuComponent.helpers({
   },
   itemRoute: function () {
     return getRoute(this);
-  }
-});
-
-Template.menuComponent.events({
-  'click .show-more': function (e, t) {
-    e.preventDefault();
-    $menu = t.$('.menu');
-    $menu.toggleClass('menu-open');
   }
 });
