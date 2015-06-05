@@ -1,18 +1,21 @@
+var getMenuItems = function () {
+  var defaultItems = Telescope.menuItems.get("viewsMenu");
+
+  // reject an item if the item is admin only and the current user is not an admin
+  // or if views have been configured in the settings and the item is not part of them
+  var viewableItems = _.reject(defaultItems, function (item) {
+    return (item.adminOnly && !Users.is.admin(Meteor.user())) || (!!Settings.get('postViews') && !_.contains(Settings.get('postViews'), item.route));
+  });
+
+  return viewableItems; 
+};
+
 Template.posts_views_nav.helpers({
-  showNav: function () {
-    var navElements = Settings.get('postViews', _.pluck(Telescope.config.viewsMenu, 'route'));
-    var navCount = _.isArray(navElements) ? navElements.length : _.keys(navElements).length;
-    return navCount > 1;
-  },
   menuItems: function () {
-    var defaultViews = _.pluck(Telescope.menuItems.get("viewsMenu"), 'route');
-    var menuItems = _.filter(Telescope.menuItems.get("viewsMenu"), function (item) {
-      if (!_.contains(Settings.get('postViews', defaultViews), item.route) || (item.adminOnly && !Users.is.admin(Meteor.user()))) {
-        // don't show the item
-        return false;
-      }
-      return true;
-    });
-    return menuItems;
+    return getMenuItems();
+  },
+  showNav: function () {
+    // only show menu when there are at least 2 items
+    return getMenuItems().length >= 2;
   }
 });
