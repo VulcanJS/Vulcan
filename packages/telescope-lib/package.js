@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:lib',
   summary: 'Telescope libraries.',
-  version: '0.20.4',
+  version: '0.20.5',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
