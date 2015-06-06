@@ -115,6 +115,59 @@ Comments.addField(
   }
 );
 
+// Add notifications options to user profile settings
+Users.addField({
+  fieldName: 'telescope.notifications.users',
+  fieldSchema: {
+    label: 'New users',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
+Users.addField({
+  fieldName: 'telescope.notifications.posts',
+  fieldSchema: {
+    label: 'New posts',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin', 'member'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
+Users.addField({
+  fieldName: 'telescope.notifications.comments',
+  fieldSchema: {
+    label: 'Comments on my posts',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin', 'member'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
+Users.addField({
+  fieldName: 'telescope.notifications.replies',
+  fieldSchema: {
+    label: 'Replies to my comments',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin', 'member'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
 function setNotificationDefaults (user) {
   // set notifications default preferences
   user.telescope.notifications = {
