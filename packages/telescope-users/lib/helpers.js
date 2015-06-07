@@ -124,6 +124,24 @@ Users.userProfileComplete = function (user) {
 Users.helpers({userProfileComplete: function () {return Users.userProfileComplete(this);}});
 Users.userProfileCompleteById = function (userId) {return Users.userProfileComplete(Meteor.users.findOne(userId));};
 
+/**
+ * Get a user setting
+ * @param {Object} user
+ * @param {String} settingName
+ * @param {Object} defaultValue
+ */
+Users.getSetting = function (user, settingName, defaultValue) {
+  user = user || Meteor.user();
+  defaultValue = defaultValue || null;
+  if (user.telescope && user.telescope.settings) {
+    var settingValue = this.getProperty(user.telescope.settings, settingName);
+    return (settingValue === null) ? defaultValue : settingValue;
+  } else {
+    return defaultValue;
+  }
+};
+Users.helpers({getSetting: function () {return Users.getSetting(this);}});
+
 ///////////////////
 // Other Helpers //
 ///////////////////
@@ -149,17 +167,6 @@ Users.numberOfItemsInPast24Hours = function (user, collection) {
     }
   });
   return items.count();
-};
-
-Users.getUserSetting = function (settingName, defaultValue, user) {
-  user = user || Meteor.user();
-  defaultValue = defaultValue || null;
-  if (user.telescope && user.telescope.settings) {
-    var settingValue = this.getProperty(user.telescope.settings, settingName);
-    return (settingValue === null) ? defaultValue : settingValue;
-  } else {
-    return defaultValue;
-  }
 };
 
 Users.setUserSetting = function (settingName, value, userArgument) {

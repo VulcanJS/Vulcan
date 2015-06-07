@@ -634,8 +634,53 @@ var migrationsList = {
       if (!!displayName) {
         Meteor.users.update(user._id, {$set: {"telescope.displayName": displayName}});
       } else {
-        "displayName not found :("
+        console.log("displayName not found :(");
       }
+    });
+    return i;
+  },  
+  migrateNewsletterSettings: function () {
+    var i = 0;
+    var allUsers = Meteor.users.find({
+      $or: [
+        {"profile.showBanner": {$exists: true}},
+        {"profile.subscribedToNewsletter": {$exists: true}}
+      ]
+    });
+    console.log('> Found '+allUsers.count()+' users.\n');
+
+    allUsers.forEach(function(user){
+      i++;
+      var displayName;
+
+      if (!!user.profile) {
+        displayName = user.profile.name || user.profile.username;
+      } else {
+        displayName = user.username;
+      }
+
+      console.log('> Updating user '+user._id+' (' + displayName + ')');
+
+      if (user.profile) {
+
+        var set = {};
+
+        var showBanner = user.profile.showBanner;
+        if (typeof showBanner !== "undefined") {
+          set["telescope.newsletter.showBanner"] = showBanner;
+        }
+
+        var subscribeToNewsletter = user.profile.subscribedToNewsletter;
+        if (typeof subscribeToNewsletter !== "undefined") {
+          set["telescope.newsletter.subscribeToNewsletter"] = subscribeToNewsletter;
+        }
+        console.log(set)
+        if (!_.isEmpty(set)) {
+          Meteor.users.update(user._id, {$set: set});
+        }
+
+      }
+
     });
     return i;
   }

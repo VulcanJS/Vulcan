@@ -5,8 +5,8 @@ function postSubmitNotification (post) {
   var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
 
   // remove post author ID from arrays
-  var adminIds = _.without(adminIds, post.userId);
-  var notifiedUserIds = _.without(notifiedUserIds, post.userId);
+  adminIds = _.without(adminIds, post.userId);
+  notifiedUserIds = _.without(notifiedUserIds, post.userId);
 
   if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
     // if post is pending, only notify admins
@@ -41,11 +41,9 @@ function addCommentNotification (comment) {
 
     // 1. Notify author of post (if they have new comment notifications turned on)
     //    but do not notify author of post if they're the ones posting the comment
-    if (!!postAuthor.telescope.notifications.comments && comment.userId !== postAuthor._id) {
-
+    if (Users.getSetting(postAuthor, "telescope.notifications.comments", true) && comment.userId !== postAuthor._id) {
       Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
       userIdsNotified.push(post.userId);
-
     }
 
     // 2. Notify author of comment being replied to
@@ -60,7 +58,7 @@ function addCommentNotification (comment) {
         var parentCommentAuthor = Users.findOne(parentComment.userId);
 
         // do not notify parent comment author if they have reply notifications turned off
-        if (!!parentCommentAuthor.telescope.notifications.replies) {
+        if (Users.getSetting(parentCommentAuthor, "telescope.notifications.replies", true)) {
 
           // add parent comment to notification data
           notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
@@ -122,57 +120,60 @@ Comments.addField(
 );
 
 // Add notifications options to user profile settings
-Users.addField({
-  fieldName: 'telescope.notifications.users',
-  fieldSchema: {
-    label: 'New users',
-    type: Boolean,
-    optional: true,
-    editableBy: ['admin'],
-    autoform: {
-      group: 'Email Notifications'
+Users.addField([
+  {
+    fieldName: 'telescope.notifications.users',
+    fieldSchema: {
+      label: 'New users',
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      editableBy: ['admin'],
+      autoform: {
+        group: 'Email Notifications'
+      }
+    }
+  },
+  {
+    fieldName: 'telescope.notifications.posts',
+    fieldSchema: {
+      label: 'New posts',
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      editableBy: ['admin', 'member'],
+      autoform: {
+        group: 'Email Notifications'
+      }
+    }
+  },
+  {
+    fieldName: 'telescope.notifications.comments',
+    fieldSchema: {
+      label: 'Comments on my posts',
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      editableBy: ['admin', 'member'],
+      autoform: {
+        group: 'Email Notifications'
+      }
+    }
+  },
+  {
+    fieldName: 'telescope.notifications.replies',
+    fieldSchema: {
+      label: 'Replies to my comments',
+      type: Boolean,
+      optional: true,
+      defaultValue: true,
+      editableBy: ['admin', 'member'],
+      autoform: {
+        group: 'Email Notifications'
+      }
     }
   }
-});
-
-Users.addField({
-  fieldName: 'telescope.notifications.posts',
-  fieldSchema: {
-    label: 'New posts',
-    type: Boolean,
-    optional: true,
-    editableBy: ['admin', 'member'],
-    autoform: {
-      group: 'Email Notifications'
-    }
-  }
-});
-
-Users.addField({
-  fieldName: 'telescope.notifications.comments',
-  fieldSchema: {
-    label: 'Comments on my posts',
-    type: Boolean,
-    optional: true,
-    editableBy: ['admin', 'member'],
-    autoform: {
-      group: 'Email Notifications'
-    }
-  }
-});
-
-Users.addField({
-  fieldName: 'telescope.notifications.replies',
-  fieldSchema: {
-    label: 'Replies to my comments',
-    type: Boolean,
-    optional: true,
-    editableBy: ['admin', 'member'],
-    autoform: {
-      group: 'Email Notifications'
-    }
-  }
-});
+]);
 
 function setNotificationDefaults (user) {
   // set notifications default preferences

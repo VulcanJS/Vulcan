@@ -34,8 +34,8 @@ Meteor.startup(function () {
         ||  !Users.can.view(Meteor.user())
         ||  Router.current().location.get().path !== '/'
         ||  Cookie.get('showBanner') === "no"
-        ||  (Meteor.user() && Users.getUserSetting('showBanner', true) === false)
-        ||  (Meteor.user() && Users.getUserSetting('subscribedToNewsletter', false) === true)
+        ||  (Meteor.user() && Meteor.user().getSetting('telescope.newsletter.showBanner', true) === false)
+        ||  (Meteor.user() && Meteor.user().getSetting('telescope.newsletter.subscribeToNewsletter', false) === true)
       ){
         return false;
       }else{
