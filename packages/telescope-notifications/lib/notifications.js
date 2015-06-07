@@ -1,8 +1,8 @@
 // add new post notification callback on post submit
 function postSubmitNotification (post) {
 
-  var adminIds = _.pluck(Meteor.users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
-  var notifiedUserIds = _.pluck(Meteor.users.find({'profile.notifications.posts': 1}, {fields: {_id:1}}).fetch(), '_id');
+  var adminIds = _.pluck(Users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
+  var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
 
   // remove post author ID from arrays
   var adminIds = _.without(adminIds, post.userId);
@@ -36,11 +36,12 @@ function addCommentNotification (comment) {
           comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
           post: _.pick(post, '_id', 'userId', 'title', 'url')
         },
+        postAuthor = Users.findOne(post.userId),
         userIdsNotified = [];
 
-    // 1. Notify author of post
-    // do not notify author of post if they're the ones posting the comment
-    if (comment.userId !== post.userId) {
+    // 1. Notify author of post (if they have new comment notifications turned on)
+    //    but do not notify author of post if they're the ones posting the comment
+    if (!!postAuthor.telescope.notifications.comments && comment.userId !== postAuthor._id) {
 
       Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
       userIdsNotified.push(post.userId);
@@ -56,12 +57,17 @@ function addCommentNotification (comment) {
       // (someone could be replying to their own comment)
       if (parentComment.userId !== post.userId && parentComment.userId !== comment.userId) {
 
-        // add parent comment to notification data
-        notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
+        var parentCommentAuthor = Users.findOne(parentComment.userId);
 
-        Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
-        userIdsNotified.push(parentComment.userId);
+        // do not notify parent comment author if they have reply notifications turned off
+        if (!!parentCommentAuthor.telescope.notifications.replies) {
 
+          // add parent comment to notification data
+          notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
+
+          Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
+          userIdsNotified.push(parentComment.userId);
+        }
       }
 
     }
@@ -114,6 +120,59 @@ Comments.addField(
     }
   }
 );
+
+// Add notifications options to user profile settings
+Users.addField({
+  fieldName: 'telescope.notifications.users',
+  fieldSchema: {
+    label: 'New users',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
+Users.addField({
+  fieldName: 'telescope.notifications.posts',
+  fieldSchema: {
+    label: 'New posts',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin', 'member'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
+Users.addField({
+  fieldName: 'telescope.notifications.comments',
+  fieldSchema: {
+    label: 'Comments on my posts',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin', 'member'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
+
+Users.addField({
+  fieldName: 'telescope.notifications.replies',
+  fieldSchema: {
+    label: 'Replies to my comments',
+    type: Boolean,
+    optional: true,
+    editableBy: ['admin', 'member'],
+    autoform: {
+      group: 'Email Notifications'
+    }
+  }
+});
 
 function setNotificationDefaults (user) {
   // set notifications default preferences
