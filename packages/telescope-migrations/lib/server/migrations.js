@@ -638,23 +638,7 @@ var migrationsList = {
       }
     });
     return i;
-  },
-  defaultEmailNotificationSettings: function(){
-    var i = 0;
-    Meteor.users.find({'telescope.notifications': {$exists : false}}).forEach(function(user){
-      i++;
-      var defaultNotifications = {
-        users: false,
-        posts: false,
-        comments: true,
-        replies: true
-      };
-      console.log("User: " + user._id);
-      Meteor.users.update(user._id, {$set: { telescope: { notifications: defaultNotifications }}});
-      console.log("---------------------");
-    });
-    return i;
-   }
+  }
 };
 
 // TODO: normalize categories?
