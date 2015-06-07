@@ -23,8 +23,6 @@ Template.user_info.helpers({
     var user = this;
     var schema = Users.simpleSchema();
     var publicData = _.compact(_.map(schema.getProfileFields(), function (fieldName) {
-      console.log(fieldName)
-      console.log(Telescope.getNestedProperty(user, fieldName))
       if (Telescope.getNestedProperty(user, fieldName)) {
         var field = schema._schema[fieldName];
         var item = {
