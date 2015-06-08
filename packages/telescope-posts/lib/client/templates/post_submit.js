@@ -4,6 +4,14 @@ Template.post_submit.helpers({
   }
 });
 
+Template.post_submit.events({
+  "keydown" : function(event, template) {
+    if(event.ctrlKey && event.keyCode === 13) {
+      template.$('#submitPostForm').submit();
+    }
+  }
+});
+
 AutoForm.hooks({
   submitPostForm: {
 
