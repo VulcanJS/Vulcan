@@ -114,7 +114,7 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if(!!user)
-        Users.setUserSetting('subscribedToNewsletter', true, user);
+        Users.setSetting(user, 'newsletter.subscribeToNewsletter', true);
 
       console.log("// User subscribed");
 

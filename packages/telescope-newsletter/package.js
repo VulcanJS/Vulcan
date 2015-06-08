@@ -16,20 +16,7 @@ Package.onUse(function (api) {
   api.use([
     'telescope:core@0.20.5',
     'miro:mailchimp@1.0.4',
-  ], ['client', 'server']);
-
-  api.use([
-    'jquery',
-    'underscore',
-    'templating',
-    'telescope:messages@0.1.0',
-    'mrt:cookies@0.3.0'
-  ], 'client');
-
-  api.use([
-    'percolatestudio:synced-cron@1.1.0',
-    'cmather:handlebars-server@0.2.0'
-  ], ['server']);
+  ]);
 
   api.addFiles([
     'package-tap.i18n',

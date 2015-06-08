@@ -9,6 +9,8 @@ Just a couple minor bug fixes.
 * Fixed video lightbox issue.
 * Updated Getting Started content.
 * Enforcing better URL formatting for Site URL setting.
+* Fixed notification settings.
+* Reworked user settings.
 
 ## v0.20.4 “RefactorScope”
 

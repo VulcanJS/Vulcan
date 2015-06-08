@@ -41,7 +41,7 @@ function addCommentNotification (comment) {
 
     // 1. Notify author of post (if they have new comment notifications turned on)
     //    but do not notify author of post if they're the ones posting the comment
-    if (Users.getSetting(postAuthor, "telescope.notifications.comments", true) && comment.userId !== postAuthor._id) {
+    if (Users.getSetting(postAuthor, "notifications.comments", true) && comment.userId !== postAuthor._id) {
       Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
       userIdsNotified.push(post.userId);
     }
@@ -58,7 +58,7 @@ function addCommentNotification (comment) {
         var parentCommentAuthor = Users.findOne(parentComment.userId);
 
         // do not notify parent comment author if they have reply notifications turned off
-        if (Users.getSetting(parentCommentAuthor, "telescope.notifications.replies", true)) {
+        if (Users.getSetting(parentCommentAuthor, "notifications.replies", true)) {
 
           // add parent comment to notification data
           notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
