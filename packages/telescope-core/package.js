@@ -79,27 +79,11 @@ Package.onUse(function(api) {
 
   // static assets; needs cleanup
 
-  // api.addFiles([
-  //   'public/img/bg-black.png',
-  //   'public/img/bg-black@2x.png',
-  //   'public/img/bg-header.png',
-  //   'public/img/bg-header@2x.png',
-  //   'public/img/bg.png',
-  //   'public/img/bg@2x.png',
-  //   'public/img/default-avatar.png',
-  //   'public/img/favicon.ico',
-  //   'public/img/loading-balls.svg',
-  //   'public/img/loading.gif',
-  //   'public/img/loading.svg',
-  //   'public/img/logo.png',
-  //   'public/img/logo@2x.png',
-  //   'public/img/minus.svg',
-  //   'public/img/plus.svg',
-  //   'public/img/telescope-logo.png',
-  //   'public/img/telescope-logo2.png',
-  //   'public/img/telescope-logo@2x.png',
-  //   'public/img/thegrid.svg'
-  // ], 'client');
+  api.addFiles([
+    'public/img/default-avatar.png',
+    'public/img/loading-balls.svg',
+    'public/img/loading.svg',
+  ], 'client');
 
   api.addFiles([
     'lib/server/start.js'
