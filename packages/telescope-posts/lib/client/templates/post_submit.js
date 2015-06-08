@@ -6,7 +6,7 @@ Template.post_submit.helpers({
 
 Template.post_submit.events({
   "keydown" : function(event, template) {
-    if(event.ctrlKey && event.keyCode === 13) {
+    if(event.ctrlKey && (event.keyCode === 13 || event.keyCode === 10)) {
       template.$('#submitPostForm').submit();
     }
   }
