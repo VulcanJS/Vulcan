@@ -61,22 +61,11 @@ Users.addField([
       optional: true,
       editableBy: ['admin', 'member'],
       autoform: {
-        group: 'Newsletter'
+        omit: true
       }
     }
   }
 ]);
-// Users
-// TODO: add "subscribe to newsletter" checkbox or setting to account page
-
-// Users.addField({
-//   fieldName: 'subscribeToNewsletter',
-//   fieldSchema: {
-//     type: Boolean,
-//     optional: true, 
-//     editableBy: ["member", "admin"]
-//   }
-// });
 
 // Settings
 

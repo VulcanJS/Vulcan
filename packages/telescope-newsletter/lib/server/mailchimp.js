@@ -113,8 +113,9 @@ addToMailChimpList = function(userOrEmail, confirm, done){
       var subscribe = api.call('lists', 'subscribe', subscribeOptions);
 
       // mark user as subscribed
-      if(!!user)
+      if (!!user) {
         Users.setSetting(user, 'newsletter.subscribeToNewsletter', true);
+      }
 
       console.log("// User subscribed");
 

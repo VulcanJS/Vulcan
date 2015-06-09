@@ -152,36 +152,19 @@ Users.helpers({getSetting: function (settingName, defaultValue) {return Users.ge
  * @param {String} settingName
  * @param {Object} defaultValue
  */
-Users.setSetting = function (userArgument, settingName, value) {
-  // note: for some very weird reason, doesn't work when called from Accounts.onCreateUser
-
-  var user;
-
-  if(Meteor.isClient){
-    user = (typeof userArgument === "undefined") ? Meteor.user() : userArgument; // on client, default to current user
-  }else if (Meteor.isServer){
-    user = userArgument; // on server, use argument
-  }
-  if(!user)
-    throw new Meteor.Error(500, 'User not defined');
-
-  Meteor.call('setUserSetting', settingName, value, user);
-};
-Users.helpers({setSetting: function () {return Users.setSetting(this);}});
-
-
-Meteor.methods({
-  setUserSetting: function (settingName, value, user) {
-    console.log('Setting user setting "' + settingName + '" to "' + value + '" for ' + Users.getUserName(user));
-
+Users.setSetting = function (user, settingName, value) {
+  if (user) {
+    
     // all settings should be in the user.telescope namespace, so add "telescope." if needed
     var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
 
     var modifier = {$set: {}};
     modifier.$set[field] = value;
-    Meteor.users.update(user._id, modifier);
+    Users.update(user._id, modifier);
+
   }
-});
+};
+Users.helpers({setSetting: function () {return Users.setSetting(this);}});
 
 ///////////////////
 // Other Helpers //
