@@ -14,14 +14,29 @@ Template.single_day_nav.onCreated(function(){
   var currentDate = moment(this.data.terms.date).startOf('day');
   var today = moment(new Date()).startOf('day');
 
-  $(document).bind('keyup', 'left', function(){
-    Router.go($('.prev-link').attr('href'));
+  $(document).bind('keyup', function(event){
+    switch (event.which) {
+      // left arrow
+      case 37:
+        Router.go($('.prev-link').attr('href'));
+        currentDate.subtract(1, 'day');
+        break;
+      // right arrow
+      case 39:
+        if(Users.is.admin(Meteor.user()) || today.diff(currentDate, 'days') > 0) {
+          Router.go($('.next-link').attr('href'));
+          currentDate.add(1, 'day');
+        }
+        break;
+    }
+    event.preventDefault();
   });
 
-  $(document).bind('keyup', 'right', function(){
-    if(Users.is.admin(Meteor.user()) || today.diff(currentDate, 'days') > 0)
-      Router.go($('.next-link').attr('href'));
-  });
+});
+
+Template.single_day_nav.onDestroyed(function(){
+
+  $(document).unbind('keyup'); //clean up to prevent errors on other pages
 
 });
 
