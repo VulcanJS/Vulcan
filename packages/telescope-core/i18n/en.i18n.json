@@ -53,6 +53,7 @@
   "clickyId": "Clicky ID",
   "footerCode": "Footer Code",
   "extraCode": "Extra Code",
+  "extraCSS": "Extra CSS",
   "emailFooter": "Email Footer",
   "notes": "Notes",
   "debug": "Debug Mode",
