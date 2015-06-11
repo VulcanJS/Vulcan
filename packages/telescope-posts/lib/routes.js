@@ -196,7 +196,7 @@ Meteor.startup(function () {
 
   // Post Page
 
-  Router.route('/posts/:_id', {
+  Router.route('/posts/:slug/:_id', {
     name: 'post_page',
     controller: Posts.controllers.page
   });
@@ -211,7 +211,7 @@ Meteor.startup(function () {
 
   // Post Edit
 
-  Router.route('/posts/:_id/edit', {
+  Router.route('/posts/:slug/:_id/edit', {
     name: 'post_edit',
     template: 'post_edit',
     waitOn: function () {
