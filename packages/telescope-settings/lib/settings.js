@@ -353,6 +353,15 @@ Settings.schema = new SimpleSchema({
       rows: 5
     }
   },
+  extraCSS: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'extras',
+      instructions: 'Any extra CSS you want to include on every page.',
+      rows: 5
+    }
+  },
   emailFooter: {
     type: String,
     optional: true,
