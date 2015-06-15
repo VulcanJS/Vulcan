@@ -3,9 +3,10 @@ Meteor.publish('settings', function() {
   var privateFields = {};
 
   // look at Settings.simpleSchema._schema to see which fields should be kept private
-  _.each(Settings.simpleSchema._schema, function (property, key) {
-    if (property.private)
+  _.each(Settings.schema._schema, function (property, key) {
+    if (property.autoform && property.autoform.private) {
       privateFields[key] = false;
+    }
   });
 
   if(!Users.is.adminById(this.userId)){
