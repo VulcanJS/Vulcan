@@ -1,0 +1,45 @@
+{
+  // Post deleted
+  "your_post_has_been_deleted": "Postarea ta a fost ștersă.",
+
+  // Post submit & edit
+  "created": "Creat",
+  "title": "Titlu",
+  "suggest_title": "Propune un titlu",
+  "url": "URL",
+  "short_url": "Prescurtare-URL",
+  "body": "Descriere",
+  "category": "Categorie",
+  "inactive_": "Inactiv?",
+  "sticky_": "Arhivează?",
+  "submission_date": "Data înregistrării",
+  "submission_time": "Ora înregistrării",
+  "date": "Data",
+  "submission": "Înregistrare",
+  "note_this_post_is_still_pending_so_it_has_no_submission_timestamp_yet": "Informare: Această contribuție este încă în curs de aprobare, de aceea nu există o dată și o oră de înregistrare.",
+  "user": "Utilizator",
+  "status_": "Status",
+  "approved": "Aprobat",
+  "rejected": "Respins",
+  "delete_post": "Șterge postarea",
+  "thanks_your_post_is_awaiting_approval": "Mulțumim, postarea ta este în curs de verificare.",
+  "sorry_couldnt_find_a_title": "Ai uitat oare să specifici un titlu?",
+  "please_fill_in_an_url_first": "Trebuie să specifici un URL/Link!",
+
+  // Post item
+  "share": "Share",
+  "discuss": "Comentarii",
+  "upvote_": "Votează",
+  "sticky": "Actual",
+  "status": "Status",
+  "votes": "Voturi",
+  "basescore": "Scor de bază",
+  "score": "Punctaj",
+  "clicks": "Click-uri",
+  "views": "Afișări",
+  "inactive": "Inactiv",
+  "comment": "Comentariu",
+  "comments": "Comentarii",
+  "point": "Punct",
+  "points": "Puncte"
+}

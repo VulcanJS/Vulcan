@@ -1,0 +1,56 @@
+{
+
+  // Post deleted
+  "your_post_has_been_deleted": "Публикацията ви е изтритa.",
+
+  // Post digest
+  "the_top_5_posts_of_each_day": "В топ 5 публикации на всеки ден.",
+  "previous_day": "Предишен ден",
+  "next_day": "Следващ ден",
+  "sorry_no_posts_for_today": "За съжаление, няма публикации за днес",
+  "sorry_no_posts_for": "За съжаление, няма публикации за ",
+  "today": "Днес",
+  "yesterday": "Вчера",
+
+  // Post submit & edit
+  "created": "Създаден",
+  "title": "Заглавие",
+  "suggest_title": "Предложи заглавие",
+  "url": "URL",
+  "short_url": "кратко URL",
+  "body": "тяло",
+  "category": "Категория",
+  "inactive_": "Неактивен?",
+  "sticky_": "Закачи?",
+  "submission_date": "Дата на подаване",
+  "submission_time": "Време на подаване",
+  "date": "Дата",
+  "submission": "Подаване",
+  "note_this_post_is_still_pending_so_it_has_no_submission_timestamp_yet": "Забележка: тази публикация все още е висяща, така че няма дата на подаване.",
+  "user": "Потребител",
+  "status_": "Статус",
+  "approved": "Одобрен",
+  "rejected": "Отхвърлен",
+  "delete_post": "Изтрий публикацията",
+  "thanks_your_post_is_awaiting_approval": "Благодаря,  публикацията ви чака одобрение.",
+  "sorry_couldnt_find_a_title": "За съжаление, не можах да намеря заглавие...",
+  "please_fill_in_an_url_first": "Моля попълни URL първо!",
+
+  // Post item
+  "share": "Сподели",
+  "discuss": "Обсъждане",
+  "upvote_": "Upvote",
+  "sticky": "Закачи",
+  "status": "статус",
+  "votes": "гласували",
+  "basescore": "Основен резултат",
+  "score": "резултат",
+  "clicks": "Кликания",
+  "views": "Видяна",
+  "inactive": "неактивена",
+  "comment": "коментар",
+  "comments": "коментари",
+  "point": "точка",
+  "points": "точки"
+
+}

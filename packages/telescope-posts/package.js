@@ -79,6 +79,16 @@ Package.onUse(function (api) {
     'lib/server/publications.js'
   ], ['server']);
 
+  api.addFiles([
+    "i18n/ar.i18n.json",
+    "i18n/bg.i18n.json",
+    "i18n/de.i18n.json",
+    "i18n/el.i18n.json",
+    "i18n/en.i18n.json",
+    "i18n/it.i18n.json",
+    "i18n/es.i18n.json"
+  ], ["client", "server"]);
+
   api.export('Posts');
 
 });

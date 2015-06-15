@@ -1,0 +1,45 @@
+{
+  // Post deleted
+  "your_post_has_been_deleted": "Dein Link wurde gelöscht.",
+
+  // Post submit & edit
+  "created": "Erstellt",
+  "title": "Titel",
+  "suggest_title": "Titelvorschlag",
+  "url": "URL",
+  "short_url": "Kurz-URL",
+  "body": "Beschreibung",
+  "category": "Kategorie",
+  "inactive_": "Inaktiv?",
+  "sticky_": "Anheften?",
+  "submission_date": "Eintragsdatum",
+  "submission_time": "Eintragszeit",
+  "date": "Datum",
+  "submission": "Eintragung",
+  "note_this_post_is_still_pending_so_it_has_no_submission_timestamp_yet": "Hinweis: Dieser Beitrag wartet noch auf Freischaltung, daher gibt es noch kein Datum und keine Uhrzeit.",
+  "user": "Benutzer",
+  "status_": "Status",
+  "approved": "Genehmigt",
+  "rejected": "Abgelehnt",
+  "delete_post": "Link löschen",
+  "thanks_your_post_is_awaiting_approval": "Vielen Dank, Dein Beitrag wartet auf Freischaltung.",
+  "sorry_couldnt_find_a_title": "Du hast vergessen einen Titel anzugeben...",
+  "please_fill_in_an_url_first": "Du musst eine URL/einen Link angeben!",
+
+  // Post item
+  "share": "Teilen",
+  "discuss": "Kommentare",
+  "upvote_": "Abstimmen",
+  "sticky": "Angeheftet",
+  "status": "status",
+  "votes": "Stimmen",
+  "basescore": "Punktebasis",
+  "score": "Punkte",
+  "clicks": "klicks",
+  "views": "views",
+  "inactive": "inaktiv",
+  "comment": "Kommentar",
+  "comments": "Kommentare",
+  "point": "Punkt",
+  "points": "Punkte"
+}

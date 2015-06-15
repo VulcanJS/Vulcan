@@ -43,7 +43,10 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.addFiles([
+    "i18n/ar.i18n.json",
+    "i18n/bg.i18n.json",
     "i18n/de.i18n.json",
+    "i18n/el.i18n.json",
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",
     "i18n/fr.i18n.json",
