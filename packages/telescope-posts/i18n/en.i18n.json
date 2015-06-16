@@ -2,8 +2,6 @@
   "postedAt": "Posted At",
   "upvotedAt": "Upvoted At",
   "downvotedAt": "Downvoted At",
-
-  // Post Schema
   "createdAt": "Created At",
   "postedAt": "Posted At",
   "url": "URL",
@@ -27,11 +25,7 @@
   "author": "Author",
   "userId": "User",
   "sorry_we_couldnt_find_any_posts": "Sorry, we couldn't find any posts.",
-
-   // Post deleted
   "your_post_has_been_deleted": "Your post has been deleted.",
-
-  // Post submit & edit
   "created": "Created",
   "title": "Title",
   "suggest_title": "Suggest title",
@@ -54,8 +48,6 @@
   "thanks_your_post_is_awaiting_approval": "Thanks, your post is awaiting approval.",
   "sorry_couldnt_find_a_title": "Sorry, couldn't find a title...",
   "please_fill_in_an_url_first": "Please fill in an URL first!",
-
-  // Post item
   "share": "Share",
   "discuss": "Discuss",
   "upvote_": "Upvote",

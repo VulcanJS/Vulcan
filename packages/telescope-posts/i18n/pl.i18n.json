@@ -1,5 +1,4 @@
 {
-  // Post Schema
   "createdAt": "Utworzony",
   "postedAt": "Dodany",
   "url": "URL",
@@ -23,11 +22,7 @@
   "author": "Autor",
   "userId": "Użytkownik",
   "sorry_we_couldnt_find_any_posts": "Przepraszamy, ale w tej chwili nie ma tutaj żadnych postów.",
-
-  // Post deleted
   "your_post_has_been_deleted": "Twój post został usunięty.",
-
-  // Post submit & edit
   "created": "Utworzone",
   "title": "Tytuł",
   "suggest_title": "Zasugeruj tytuł",
@@ -51,8 +46,6 @@
   "thanks_your_post_is_awaiting_approval": "Twój post czeka na zatwierdzenie.",
   "sorry_couldnt_find_a_title": "Podaj tytuł...",
   "please_fill_in_an_url_first": "Podaj URL",
-
-  // Post item
   "share": "Udostępnij",
   "discuss": "Komentuj",
   "upvote_": "Plus",

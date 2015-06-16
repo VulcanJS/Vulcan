@@ -1,5 +1,4 @@
 {
-  // Settings Schema
   "title": "Название",
   "siteUrl": "URL сайта",
   "tagline": "Теги",
@@ -32,8 +31,6 @@
   "emailFooter": "Email футер",
   "notes": "Замечания",
   "debug": "Режим отладки",
-
-  // Settings Fieldsets
   "general": "Главная",
   "invites": "Инвайты",
   "email": "Email", 

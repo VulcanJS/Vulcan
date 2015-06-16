@@ -22,10 +22,7 @@
   "author": "Δημιουργός",
   "userId": "Χρήστης",
   "sorry_we_couldnt_find_any_posts": "Μας συγχωρείτε, δεν βρήκαμε καμιά δημοσίευση.",
-
   "your_post_has_been_deleted": "Η δημοσίευση σου έχει διαγραφεί.",
-
-  // Post submit & edit
   "created": "Δημιουργήθηκε",
   "title": "Τίτλος",
   "suggest_title": "Πρότεινε ενα τίτλο",
@@ -48,8 +45,6 @@
   "thanks_your_post_is_awaiting_approval": "Ευχαριστούμε, η δημοσίευση αναμένει εγκριση.",
   "sorry_couldnt_find_a_title": "Συγγνώμη, ο τίτλος δεν βρέθηκε ",
   "please_fill_in_an_url_first": "Παρακαλώ συμπληρώστε το URL πρώτα!",
-
-  // Post item
   "share": "Μοιράσου",
   "discuss": "Συζύτησε",
   "upvote_": "Μου αρέσει",

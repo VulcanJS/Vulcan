@@ -22,11 +22,7 @@
   "author": "Auteur",
   "userId": "Gebruiker",
   "sorry_we_couldnt_find_any_posts": "Sorry, geen artikelen gevonden.",
-  
-   // Post deleted
   "your_post_has_been_deleted": "Jouw artikel is verwijderd.",
-
-  // Post submit & edit
   "created": "Ingestuurd",
   "title": "Titel",
   "suggest_title": "Titel suggestie",
@@ -49,8 +45,6 @@
   "thanks_your_post_is_awaiting_approval": "Bedankt, je bericht wacht op goedkeuring.",
   "sorry_couldnt_find_a_title": "Sorry, kon geen titel vinden..",
   "please_fill_in_an_url_first": "Vul eerst een URL in!",
-
-  // Post item
   "share": "Delen",
   "discuss": "Discusieer",
   "upvote_": "Omhoog",

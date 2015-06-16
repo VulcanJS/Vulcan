@@ -1,5 +1,4 @@
 {
-  //Post Schema
   "createdAt": "كتب على ",
   "postedAt": "ارسل على",
   "url": "رابط",  
@@ -23,10 +22,7 @@
   "author": "كاتب",
   "userId": "مستخدم",
   "sorry_we_couldnt_find_any_posts": "ﻻ توجد اي مشاركة",
-
   "your_post_has_been_deleted": "مشاركتك قد تم حذفها.",
-
-  // Post submit & edit
   "created": "استحدث",
   "title": "عنوان",
   "suggest_title": "اقترح عنوان",
@@ -49,8 +45,6 @@
   "thanks_your_post_is_awaiting_approval": "شكرا, مشاركتك قيد العاينة",
   "sorry_couldnt_find_a_title": "ﻻ يمكننا ايجاد عنوان واحد",
   "please_fill_in_an_url_first": "يجب عليك كتابة الرابط",
-
-  // Post item
   "share": "شارك",
   "discuss": "ناقش",
   "upvote_": "صوت",
@@ -66,5 +60,4 @@
   "comments": "تعليقات",
   "point": "نقطة",
   "points": "نقاط"
-
 }

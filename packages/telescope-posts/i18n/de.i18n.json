@@ -1,8 +1,5 @@
 {
-  // Post deleted
   "your_post_has_been_deleted": "Dein Link wurde gelöscht.",
-
-  // Post submit & edit
   "created": "Erstellt",
   "title": "Titel",
   "suggest_title": "Titelvorschlag",
@@ -25,8 +22,6 @@
   "thanks_your_post_is_awaiting_approval": "Vielen Dank, Dein Beitrag wartet auf Freischaltung.",
   "sorry_couldnt_find_a_title": "Du hast vergessen einen Titel anzugeben...",
   "please_fill_in_an_url_first": "Du musst eine URL/einen Link angeben!",
-
-  // Post item
   "share": "Teilen",
   "discuss": "Kommentare",
   "upvote_": "Abstimmen",

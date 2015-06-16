@@ -22,11 +22,7 @@
   "author": "Autor",
   "userId": "Usuário",
   "sorry_we_couldnt_find_any_posts": "Desculpe, não conseguimos encontrar nenhuma postagem.",
-  
-  // Post deleted
   "your_post_has_been_deleted": "Sua postagem foi deletada.",
-
-  // Post submit & edit
   "created": "Criado",
   "title": "Título",
   "suggest_title": "Sugerir título",
@@ -49,8 +45,6 @@
   "thanks_your_post_is_awaiting_approval": "Obrigado, sua postagem está aguardando aprovação.",
   "sorry_couldnt_find_a_title": "Desculpe, não encontramos um título...",
   "please_fill_in_an_url_first": "Por favor, inclua a URL antes!",
-
-  // Post item
   "share": "Compartilhar",
   "discuss": "Discutir",
   "upvote_": "Votar",

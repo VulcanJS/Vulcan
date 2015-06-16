@@ -1,5 +1,4 @@
 {
-  // Settings Schema
   "title": "العنوان",
   "siteUrl": "رابط الموقع",
   "tagline": "شعار",
@@ -38,8 +37,6 @@
   "faviconUrl": "رابط فافيكون",
   "mailURL": "رابط اﻻيميل",
   "postsLayout": "مشاركات ﻻيوت",
-
-  // Settings Fieldsets
   "general": "عام",
   "invites": "دعوة",
   "email": "البريد اﻻلكتروني", 

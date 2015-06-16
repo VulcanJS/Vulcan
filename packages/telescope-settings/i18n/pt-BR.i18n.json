@@ -1,5 +1,4 @@
 {
-  // Settings Schema
   "title": "Título",
   "description": "Descrição",
   "siteUrl": "URL do site",
@@ -39,8 +38,6 @@
   "faviconUrl": "URL do Favicon",
   "mailURL": "MailURL",
   "postsLayout": "Layout dos Posts",
-
-  // Settings Fieldsets
   "general": "Geral",
   "invites": "Convites",
   "email": "Email",

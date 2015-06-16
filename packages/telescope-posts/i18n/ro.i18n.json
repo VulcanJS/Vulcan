@@ -1,8 +1,5 @@
 {
-  // Post deleted
   "your_post_has_been_deleted": "Postarea ta a fost ștersă.",
-
-  // Post submit & edit
   "created": "Creat",
   "title": "Titlu",
   "suggest_title": "Propune un titlu",
@@ -25,8 +22,6 @@
   "thanks_your_post_is_awaiting_approval": "Mulțumim, postarea ta este în curs de verificare.",
   "sorry_couldnt_find_a_title": "Ai uitat oare să specifici un titlu?",
   "please_fill_in_an_url_first": "Trebuie să specifici un URL/Link!",
-
-  // Post item
   "share": "Share",
   "discuss": "Comentarii",
   "upvote_": "Votează",

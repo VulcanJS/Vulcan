@@ -1,7 +1,5 @@
 {
   "your_post_has_been_deleted": "Tu post ha sido borrado.",
-
-  // Post submit & edit
   "created": "Creado",
   "title": "Título",
   "suggest_title": "Proponer un titulo",
@@ -24,8 +22,6 @@
   "thanks_your_post_is_awaiting_approval": "Gracias, su post esta esperando aprobación.",
   "sorry_couldnt_find_a_title": "Lo sentimos, imposible de encontrar este título.",
   "please_fill_in_an_url_first": "Tienes que introducir una URL.",
-
-  // Post item
   "share": "Compartir",
   "discuss": "Comentar",
   "upvote_": "Votar",

@@ -38,8 +38,6 @@
   "faviconUrl": "Favicon URL",
   "mailURL": "MailURL",
   "postsLayout": "Στύλ Δημοσιεύσεων",
-  
-  // Settings Fieldsets
   "general": "Γενικά",
   "invites": "Προσκλήσεις",
   "email": "Email",

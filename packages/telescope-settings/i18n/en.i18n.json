@@ -1,7 +1,5 @@
 {
   "settings_saved": "Settings saved",
-
-  // Settings Schema
   "title": "Title",
   "description": "Description",
   "siteUrl": "Site URL",
@@ -50,8 +48,6 @@
   "postViews": "Post Views",
   "navLayout": "Navigation Layout",
   "mailUrl": "Mail URL",
-
-  // Settings Fieldsets
   "general": "General",
   "invites": "Invites",
   "email": "Email",

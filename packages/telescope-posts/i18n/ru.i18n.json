@@ -1,5 +1,4 @@
 {
-  // Post Schema
   "createdAt": "Создан",
   "postedAt": "Опубликован",
   "url": "URL",  
@@ -22,11 +21,7 @@
   "inactive": "Неактивно",
   "author": "Автор",
   "userId": "Пользователь",
-
-  // Post deleted
   "your_post_has_been_deleted": "Ваш пост удалён.",
-
-  // Post submit & edit
   "created": "Создан",
   "title": "Заголовок",
   "suggest_title": "Предложите название",
@@ -49,8 +44,6 @@
   "thanks_your_post_is_awaiting_approval": "Спасибо, пост ожидает утверждения.",
   "sorry_couldnt_find_a_title": "Извините, не смог найти название...",
   "please_fill_in_an_url_first": "Вначале укажите URL!",
-
-  // Post item
   "share": "Поделится",
   "discuss": "Обсудить",
   "upvote_": "Проголосовать за",

@@ -1,5 +1,4 @@
 {
-  // Settings Schema
   "title": "Tytuł",
   "siteUrl": "URL strony",
   "tagline": "Podtytuł",
@@ -32,8 +31,6 @@
   "emailFooter": "Stopka Email",
   "notes": "Notatki",
   "debug": "Debug Mode",
-
-  // Settings Fieldsets
   "general": "Główne",
   "invites": "Zaproszenia",
   "email": "Email",
