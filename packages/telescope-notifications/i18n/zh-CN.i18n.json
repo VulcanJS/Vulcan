@@ -1,2 +1,6 @@
 {
+  "no_notifications": "无消息",
+  "1_notification": "1 个消息",
+  "notifications": "消息",
+  "mark_all_as_read": "标记所有"
 }
