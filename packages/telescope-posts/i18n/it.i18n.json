@@ -1,4 +1,8 @@
 {
+  "please_fill_in_a_title": "Per favore inserisci un titolo",
+  "this_link_has_already_been_posted": "Questo link è già stato postato",
+  "sorry_you_cannot_submit_more_than": "Ci spiace, non puoi inviare più di ",
+  "posts_per_day": " post al giorno",
   "new_posts": "Nuovi Post",
   "your_post_has_been_deleted": "Il tuo post è stato rimosso.",
   "created": "Creato",

@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Este enlace ya ha sido publicado",
+  "sorry_you_cannot_submit_more_than": "Lo sentimos, usted no puede presentar más de ",
+  "posts_per_day": " posts por dia",
   "please_fill_in_a_title": "Por favor, agrega un título",
   "seconds_before_posting_again": "segundos antes de postear de nuevo",
   "upvoted": "Voto a favor",

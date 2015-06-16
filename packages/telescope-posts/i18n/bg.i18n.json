@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Тази връзка вече е публикувана",
+  "sorry_you_cannot_submit_more_than": "Съжаляваме, неможете да предадете повече от ",
+  "posts_per_day": " публикации на ден",
   "please_fill_in_a_title": "Моля въведете заглавие",
   "seconds_before_posting_again": " секунди преди да публикувате отново",
   "upvoted": "Харесан",

@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Acest link a fost deja publicat",
+  "sorry_you_cannot_submit_more_than": "Ne pare rău insă nu poți publica mai mult de ",
+  "posts_per_day": " postări pe zi",
   "please_fill_in_a_title": "Te rugăm să alegi un titlu",
   "seconds_before_posting_again": " secunde până să poți publica iar",
   "upvoted": "Votat",

@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "This link has already been posted",
+  "sorry_you_cannot_submit_more_than": "Sorry, you cannot submit more than ",
+  "posts_per_day": " posts per day",
   "please_fill_in_a_title": "Please fill in a title",
   "seconds_before_posting_again": " seconds before posting again",
   "upvoted": "Upvoted",

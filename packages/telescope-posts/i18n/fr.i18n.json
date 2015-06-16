@@ -1,5 +1,8 @@
 {
-  "please_fill_in_a_title": "Veuillez remplir un titre",
+  "this_link_has_already_been_posted": "Ce lien a déjà été posté",
+  "sorry_you_cannot_submit_more_than": "Désolé, vous ne pouvez pas créer plus de ",
+  "posts_per_day": " posts par jour",
+  "please_fill_in_a_title": "Veuillez saisir un titre",
   "seconds_before_posting_again": " secondes avant de poster à nouveau",
   "upvoted": "Upvoté",
   "posted_date": "Posté le",

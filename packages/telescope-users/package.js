@@ -79,9 +79,18 @@ Package.onUse(function (api) {
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",
     "i18n/fr.i18n.json",
-    "i18n/it.i18n.json"
+    "i18n/it.i18n.json",
+    "i18n/nl.i18n.json",
+    "i18n/pl.i18n.json",
+    "i18n/pt-BR.i18n.json",
+    "i18n/ro.i18n.json",
+    "i18n/ru.i18n.json",
+    "i18n/se.i18n.json",
+    "i18n/tr.i18n.json",
+    "i18n/vn.i18n.json",
+    "i18n/zh-CN.i18n.json"
   ], ["client", "server"]);
-
+  
   api.export('Users');
 
 });

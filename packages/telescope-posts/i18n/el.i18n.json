@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Αυτός ο σύνδεσμος υπάρχει ήδη",
+  "sorry_you_cannot_submit_more_than": "Δεν μπορείς να υποβάλεις περισσότερα από ",
+  "posts_per_day": " σχόλια την ημέρα",
   "please_fill_in_a_title": "Παρακαλώ συμπληρώστε τον τίτλο",
   "seconds_before_posting_again": " δευτερόλεπτα πριν ξανα δημοσιεύσετε",
   "upvoted": "Υπερψηφισμένο",

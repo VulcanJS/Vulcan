@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "هذا الرابط موجود",
+  "sorry_you_cannot_submit_more_than": "ﻻ يمكنك اضافة اكثر من ",
+  "posts_per_day": "--",
   "please_fill_in_a_title": "قم باضافة عنوان",
   "seconds_before_posting_again": " ثواني قبل نشر مشاركة جديدة.",
   "upvoted": "مصوت لهذه",

@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "这个链接已发布",
+  "sorry_you_cannot_submit_more_than": "对不起, 内容不能超过",
+  "posts_per_day": " 评价每日发帖",
   "please_fill_in_a_title": "请填写标题",
   "seconds_before_posting_again": "秒前发布",
   "upvoted": "最多投票",

@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Denna länk är redan inlagd",
+  "sorry_you_cannot_submit_more_than": "Tyvärr får du inte skapa mer än ",
+  "posts_per_day": " inlägg per dag",
   "please_fill_in_a_title": "Vänligen fyll i en titel",
   "seconds_before_posting_again": " sekunder innan nästa inlägg",
   "upvoted": "Uppröstad",

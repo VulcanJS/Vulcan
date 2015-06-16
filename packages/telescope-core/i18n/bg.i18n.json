@@ -40,10 +40,6 @@
   "your_comment_is_empty": "Коментара ви е празен.",
   "you_dont_have_permission_to_delete_this_comment": "Нямате права за да изтриете този коментар.",
   "you_need_to_login_or_be_invited_to_post_new_stories": "Трябва да влезете в системата или да бъде поканен да публикувате нови истории.",
-  "please_fill_in_a_headline": "Моля въведете заглавие",
-  "this_link_has_already_been_posted": "Тази връзка вече е публикувана",
-  "sorry_you_cannot_submit_more_than": "Съжаляваме, неможете да предадете повече от ",
-  "posts_per_day": " публикации на ден",
   "someone_replied_to_your_comment_on": "Някой отговори на коментара ви относно",
   "has_replied_to_your_comment_on": " е отговорил на коментара ви за",
   "read_more": "Прочетете повече",
@@ -54,7 +50,6 @@
   "your_account_has_been_approved": "Профилът ви е одобрен.",
   "welcome_to": "Добре дошли в ",
   "start_posting": "Започнете да публикувате.",
-
 
   // Translation needed (found during migration to tap:i18n)
   "profile": "Профил",

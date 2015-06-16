@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Эта ссылка уже была опубликована",
+  "sorry_you_cannot_submit_more_than": "Извините, вы не можете отправлять больше, чем ",
+  "posts_per_day": " постов за день",
   "please_fill_in_a_title": "Заполните заголовок",
   "seconds_before_posting_again": " секунд перед новым постом",
   "upvoted": "За",
@@ -64,5 +67,5 @@
   "comment": "комментарий",
   "comments": "комментариев",
   "point": "бал",
-  "points": "баллов",
+  "points": "баллов"
 }

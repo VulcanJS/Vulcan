@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Đường dẫn này đã được đăng",
+  "sorry_you_cannot_submit_more_than": "Xin lỗi, bạn không thể đăng nhiều hơn ",
+  "posts_per_day": " bài mỗi ngày",
   "please_fill_in_a_title": "xin nhập tiêu đề",
   "seconds_before_posting_again": " một vài giây để đăng lại",
   "upvoted": "Thích",

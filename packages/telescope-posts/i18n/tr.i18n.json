@@ -1,4 +1,7 @@
 {
+  "this_link_has_already_been_posted": "Bu bağlantı daha önce paylaşılmıştı",
+  "sorry_you_cannot_submit_more_than": "Özür dileriz, bu sayıdan daha fazla paylaşamazsınız: ",
+  "posts_per_day": " paylaşım / gün",
   "please_fill_in_a_title": "Lütfen bir başlık girin",
   "seconds_before_posting_again": " saniye daha beklemeniz lazım tekrar paylaşım yapmadan önce",
   "upvoted": "Yukarı oylandı",
