@@ -16,10 +16,6 @@
   "view_profile": "Se Profil",
   "edit_account": "Ändra Konto",
 
-  //Main
-  "new_posts": "Nya inlägg",
-
-
   //Errors
   "you_are_already_logged_in": "Du är redan inloggad",
   "sorry_this_is_a_private_site_please_sign_up_first": "Tyvärr, detta är en privat sida. Vänligen bli medlem.",
@@ -30,16 +26,12 @@
   "not_found": "Ej funnen!",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "Ursäkta, vad du letar efter verkar inte finnas här...",
 
-
-  
-
   //helpers
   "sorry_you_do_not_have_access_to_this_page": "Tyvärr, du har inte tillgång till denna sida",
   "please_sign_in_first": "Vänligen logga in först.",
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Tyvärr måste du vara adminstratör för att se denna sida.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Tyvärr har du inte rättigheter att lägga till saker.",
   "sorry_you_cannot_edit_this_post": "Tyvärr, du kan inte redigera detta inlägg.",
-  "sorry_you_cannot_edit_this_comment": "Tyvärr, du kan inte redigera denna kommentar.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Du måste vara inloggad som administratör för att lägga till nya kategorier.",
@@ -65,11 +57,6 @@
   "start_posting": "Börja skapa inlägg.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Vänligen fyll i en titel",
-  "seconds_before_posting_again": " sekunder innan nästa inlägg",
-  "upvoted": "Uppröstad",
-  "posted_date": "Inlagt datum",
-  "posted_time": "Inlagt tid",
   "profile": "Konto",
   "sign_out": "Logga ut",
   "you_ve_been_signed_out": "Du har loggat ut. Välkommen åter!",
@@ -98,13 +85,10 @@
   "please_log_in_to_comment": "Vänligen logga in för att kommentera.",
   "sign_in_sign_up_with_twitter": "Logga in eller bli medlem med Twitter",
   "load_more": "Ladda mer",
-
   "most_popular_posts": "De mest populära inläggen just nu.",
   "newest_posts": "De nyaste inläggen just nu.",
   "highest_ranked_posts_ever": "De högst rankade inläggen någonsin.",
-
   "the_profile_of": "Kontot tillhörande",
-
   "posts_awaiting_moderation": "Inlägg väntar på administration.",
   "future_scheduled_posts": "Framtida schemalagda inlägg.",
   "users_dashboard": "Användarnas inställningspanel.",

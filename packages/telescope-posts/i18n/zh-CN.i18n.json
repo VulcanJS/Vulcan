@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "请填写标题",
+  "seconds_before_posting_again": "秒前发布",
+  "upvoted": "最多投票",
+  "posted_date": "发布日期",
+  "posted_time": "发布时间",
+  "new_posts": "最新提交",
   "your_post_has_been_deleted": "你的帖子已经被删除",
   "created": "创建",
   "title": "标题",

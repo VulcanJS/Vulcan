@@ -16,9 +16,6 @@
   "view_profile": "Преглед на профил",
   "edit_account": "Редактиране на профила",
 
-  //Main
-  "new_posts": "Нови публикации",
-
   //Errors
   "you_are_already_logged_in": "Вече сте влезли в системата",
   "sorry_this_is_a_private_site_please_sign_up_first": "За съжаление, това е частен сайт. Моля, регистрирайте се първо.",
@@ -34,7 +31,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Съжаляваме, трябва да сте администратор за да видите тази страница.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Съжаляваме, нямате права за да добавяте нови елементи.",
   "sorry_you_cannot_edit_this_post": "Съжаляваме, неможете да променяте тази публикация.",
-  "sorry_you_cannot_edit_this_comment": "Съжаляваме, неможете да променяте този коментар.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Трябва да сте влезнали в системата и да сте администратор за да добавяте нова категория.",
@@ -61,13 +57,6 @@
 
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Моля въведете заглавие",
-  "seconds_before_posting_again": " секунди преди да публикувате отново",
-  "upvoted": "Харесан",
-  "posted_date": "Дата на публикуване",
-  "posted_time": "Време на публикуване",
-  "posted_date": "Дата на публикуване",
-  "posted_time": "Време на публикуване",
   "profile": "Профил",
   "sign_out": "Излизане",
   "invitedcount": "Брой пъти поканен",
@@ -94,13 +83,10 @@
   "please_log_in_first": "Моля първо влезте в системата",
   "sign_in_sign_up_with_twitter": "Влезте/Регистрирайте се с Twitter",
   "load_more": "Зареди повече",
-
   "most_popular_posts": "Най-популярни публикации в момента.",
   "newest_posts": "Най-нови публикации.",
   "highest_ranked_posts_ever": "Топ публикации за всички времена.",
-
   "the_profile_of": "Профилът на",
-
   "posts_awaiting_moderation": "Публикации очакващи модерация.",
   "future_scheduled_posts": "Планирани публикации.",
   "users_dashboard": "Потребителски панел.",

@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Vul een titel in",
+  "seconds_before_posting_again": " voor het opnieuw kunnen plaatsen.",
+  "upvoted": "Omhoog gestemd",
+  "posted_date": "Datum plaatsing",
+  "posted_time": "Tijd plaatsing",
+  "new_posts": "Nieuw artikel",
   "createdAt": "Geschreven",
   "postedAt": "Ingestuurd",
   "url": "URL",

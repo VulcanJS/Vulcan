@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "قم باضافة عنوان",
+  "seconds_before_posting_again": " ثواني قبل نشر مشاركة جديدة.",
+  "upvoted": "مصوت لهذه",
+  "posted_date": "تاريخ التقديم",
+  "posted_time": "توقيت التقديم",
+  "new_posts": "مشاركات جديدة",
   "createdAt": "كتب على ",
   "postedAt": "ارسل على",
   "url": "رابط",  

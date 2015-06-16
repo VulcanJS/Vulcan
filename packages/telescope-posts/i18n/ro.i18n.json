@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Te rugăm să alegi un titlu",
+  "seconds_before_posting_again": " secunde până să poți publica iar",
+  "upvoted": "Votat",
+  "posted_date": "Data Postării",
+  "posted_time": "Ora Postării",
+  "new_posts": "Postări Noi",
   "your_post_has_been_deleted": "Postarea ta a fost ștersă.",
   "created": "Creat",
   "title": "Titlu",

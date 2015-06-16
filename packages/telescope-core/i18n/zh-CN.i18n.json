@@ -15,9 +15,6 @@
   "view_profile": "个人资料",
   "edit_account": "编辑帐号",
 
-  //Main
-  "new_posts": "最新提交",
-
   //Errors
   "you_are_already_logged_in": "你已经登录",
   "sorry_this_is_a_private_site_please_sign_up_first": "对不起, 请先注册再进行后续操作",
@@ -27,14 +24,12 @@
   "not_found": "页面不存在",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "抱歉没有你要查看的内容!",
 
-
   //helpers
   "sorry_you_do_not_have_access_to_this_page": "抱歉你没有权限访问此页面",
   "please_sign_in_first": "请先登录.",
   "sorry_you_have_to_be_an_admin_to_view_this_page": "抱歉你必须是管理员才能查看此页面",
   "sorry_you_dont_have_permissions_to_add_new_items": "抱歉你没有权限添加新项.",
   "sorry_you_cannot_edit_this_post": "对不起你不能编辑这个帖子",
-  "sorry_you_cannot_edit_this_comment": "对不起你不能编辑这个评论",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "你必须登录并且是管理员才能添加新类别.",
@@ -60,13 +55,6 @@
   "start_posting": "开始发布.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "请填写标题",
-  "seconds_before_posting_again": "秒前发布",
-  "upvoted": "最多投票",
-  "posted_date": "发布日期",
-  "posted_time": "发布时间",
-  "posted_date": "发布日期",
-  "posted_time": "发布时间",
   "profile": "个人中心",
   "sign_out": "登出",
   "invitedcount": "邀请总数",
@@ -93,7 +81,6 @@
   "please_log_in_first": "请先登录",
   "sign_in_sign_up_with_twitter": "使用微博等/注册",
   "load_more": "加载更多",
-
   "administration": "管理",
   "best": "精华"
 }

@@ -16,9 +16,6 @@
   "view_profile": "Προβολή προφίλ",
   "edit_account": "Επεξεργασία λογαριασμού",
 
-  //Main
-  "new_posts": "Νέες δημοσιέυσεις",
-
   //Errors
   "you_are_already_logged_in": "Είστε ήδη συνδεδεμένος",
   "sorry_this_is_a_private_site_please_sign_up_first": "Μας συγχωρείτε αλλα πρέπει να εγγραφείτε για να συνεχίσετε.",
@@ -36,7 +33,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Συγγνώμη, πρέπει να είσαι διαχειριστής για να δείς αυτήν τη σελίδα.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Συγγνώμη, Συγγνώμη, δεν έχετε δικαίωμα να προσθέσετε νέα στοιχεία.",
   "sorry_you_cannot_edit_this_post": "Συγγνώμη, δεν μπορείς να επεξεργαστείς αυτήν την δημοσίευση.",
-  "sorry_you_cannot_edit_this_comment": "Συγγνώμη, δεν μπορείς να επεξεργαστείς συτό το σχόλιο.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Πρέπει να συνδεθείς για να προσθέσεις νέα κατηγορία.",
@@ -62,11 +58,6 @@
   "start_posting": "Ξεκινήστε να δημοσιεύετε.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Παρακαλώ συμπληρώστε τον τίτλο",
-  "seconds_before_posting_again": " δευτερόλεπτα πριν ξανα δημοσιεύσετε",
-  "upvoted": "Υπερψηφισμένο",
-  "posted_date": "Ημερομηνία δημοσίευσης",
-  "posted_time": "Ωρα δημοσίευσης",
   "profile": "Προφίλ",
   "sign_out": "Αποσύνδεση",
   "you_ve_been_signed_out": "Εχετε αποσυνδεθεί!",
@@ -95,13 +86,10 @@
   "please_log_in_to_comment": "Πρέπει να συνδεθείτε για να κάνετε σχόλιο.",
   "sign_in_sign_up_with_twitter": "Εγγραφείτε με το Twitter σας",
   "load_more": "Περισσότερα",
-
   "most_popular_posts": "Οι πιο δημοφιλής δημοσιεύσεις.",
   "newest_posts": "Οι πιο καινούριες δημοσιεύσεις.",
   "highest_ranked_posts_ever": "Οι πιο υπερψηφισμένες δημοσιεύσεις.",
-
   "the_profile_of": "Το προφίλ του",
-
   "posts_awaiting_moderation": "Δημοσιεύσεις που αναμένουν έγγριση.",
   "future_scheduled_posts": "Μελλοντικές δημοσιεύσεις.",
   "users_dashboard": "Πίνακας Χρηστών.",

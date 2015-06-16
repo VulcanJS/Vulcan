@@ -13,10 +13,6 @@
   "my_account": "Hesabım",
   "view_profile": "Profili gör",
   "edit_account": "Hesabı Ayarla",
-
-  //Main
-  "new_posts": "Yeni Paylaşımlar",
-
  
   //Errors
   "you_are_already_logged_in": "Zaten giriş yapmış durumdasınız",
@@ -33,7 +29,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Özür dileriz, sadece adminler bu sayfayı görebilir",
   "sorry_you_dont_have_permissions_to_add_new_items": "Özür dileriz, yeni bir şeyler eklemeye yetkiniz yok",
   "sorry_you_cannot_edit_this_post": "Özür dileriz, bu paylaşımı değiştiremezsiniz",
-  "sorry_you_cannot_edit_this_comment": "Özür dileriz, bu yorumu değiştiremezsiniz",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Yeni kategori eklemek için admin olarak giriş yapmanız lazım",
@@ -59,11 +54,6 @@
   "start_posting": "Paylaşıma başlayın",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Lütfen bir başlık girin",
-  "seconds_before_posting_again": " saniye daha beklemeniz lazım tekrar paylaşım yapmadan önce",
-  "upvoted": "Yukarı oylandı",
-  "posted_date": "Paylaşım Tarihi",
-  "posted_time": "Paylaşım Zamanı",
   "profile": "Profil",
   "sign_out": "Çıkış Yap",
   "invitedcount": "Davetiye Sayısı",
@@ -81,7 +71,6 @@
   "downvoted_posts": "Aşağı oy alan paylaşımlar",
   "mark_as_read": "Okundu olarak işaretle",
 
-
   //Common
   "pending": "Onay bekliyor",
   "loading": "Yüklüyor",
@@ -91,5 +80,4 @@
   "please_log_in_first": "Lütfen önce giriş yapın",
   "sign_in_sign_up_with_twitter": "Twitter ile kayıt ol/giriş yap",
   "load_more": "Daha fazla yükle"
-
 }

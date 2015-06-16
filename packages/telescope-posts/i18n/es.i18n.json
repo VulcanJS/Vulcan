@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Por favor, agrega un título",
+  "seconds_before_posting_again": "segundos antes de postear de nuevo",
+  "upvoted": "Voto a favor",
+  "posted_date": "Fecha de publicación",
+  "posted_time": "Tiempo de publicación",
+  "new_posts": "Nuevos Posts",
   "your_post_has_been_deleted": "Tu post ha sido borrado.",
   "created": "Creado",
   "title": "Título",

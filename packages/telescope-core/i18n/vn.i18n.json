@@ -16,14 +16,6 @@
   "view_profile": "Xem hồ sơ",
   "edit_account": "Chỉnh sửa",
 
-  //Main
-  "new_posts": "Bài mới",
-
- 
-
-
- 
-
   //Errors
   "you_are_already_logged_in": "Bạn đã đăng nhập",
   "sorry_this_is_a_private_site_please_sign_up_first": "Xin lỗi, bạn cần đăng ký để xem thông tin.",
@@ -40,7 +32,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Xin lỗi, bản phải có quyền Admin để xem trang này.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Xin lỗi, bạn không có quyền thêm.",
   "sorry_you_cannot_edit_this_post": "Xin lỗi, bạn không thể sửa bài này.",
-  "sorry_you_cannot_edit_this_comment": "Xin lỗi, bạn không thể sửa ý kiến này.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Bạn phải đăng nhập và là Admin để tạo thẻ.",
@@ -66,13 +57,6 @@
   "start_posting": "Bắt đầu đăng bài.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "xin nhập tiêu đề",
-  "seconds_before_posting_again": " một vài giây để đăng lại",
-  "upvoted": "Thích",
-  "posted_date": "Ngày đăng",
-  "posted_time": "Giờ đăng",
-  "posted_date": "Ngày đăng",
-  "posted_time": "Giờ đăng",
   "profile": "Hồ sơ",
   "sign_out": "Đăng xuất",
   "you_ve_been_signed_out": "Bạn đã đăng xuất, hẹn sớm gặp lại",
@@ -101,13 +85,10 @@
   "please_log_in_to_comment": "Đăng nhập để bình luận",
   "sign_in_sign_up_with_twitter": "Đăng ký/Đăng nhập với Twitter",
   "load_more": "Xem thêm",
-
   "most_popular_posts": "Những bài được xem nhiều nhất",
   "newest_posts": "Những bài mới nhất.",
   "highest_ranked_posts_ever": "Những bài được thích nhất.",
-
   "the_profile_of": "Hồ sơ của",
-
   "posts_awaiting_moderation": "Bài đang đợi để sửa",
   "future_scheduled_posts": "Bài đăng theo lịch",
   "users_dashboard": "Bảng người dùng.",

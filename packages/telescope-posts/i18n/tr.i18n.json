@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Lütfen bir başlık girin",
+  "seconds_before_posting_again": " saniye daha beklemeniz lazım tekrar paylaşım yapmadan önce",
+  "upvoted": "Yukarı oylandı",
+  "posted_date": "Paylaşım Tarihi",
+  "posted_time": "Paylaşım Zamanı",
+  "new_posts": "Yeni Paylaşımlar",
   "your_post_has_been_deleted": "Paylaşımınız silindi",
   "created": "Oluşturuldu",
   "title": "Başlık",

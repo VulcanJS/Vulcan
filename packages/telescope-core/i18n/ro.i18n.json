@@ -14,9 +14,6 @@
   "view_profile": "Afiseaza profil",
   "edit_account": "Modifica profil",
 
-  //Main
-  "new_posts": "Postări Noi",
-
   //Errors
   "you_are_already_logged_in": "Sunteți deja logat.",
   "sorry_this_is_a_private_site_please_sign_up_first": "Ne cerem scuze, acesta este un site care necesită înscriere.",
@@ -32,7 +29,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Ne pare rău, trebuie să ai drepturi de administrare pentru a accesa această pagină.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Ne pare rău, nu ai drepturi de a adăuga înregistrări.",
   "sorry_you_cannot_edit_this_post": "Ne pare rău, nu poți edita această postare.",
-  "sorry_you_cannot_edit_this_comment": "Ne pare rău, nu poți edita aceast comentariu.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Trebuie să fi autentificat și să ai drepturi de administrare pentru a adăuga noi categorii.",
@@ -58,13 +54,6 @@
   "start_posting": "Poți începe să publici.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Te rugăm să alegi un titlu",
-  "seconds_before_posting_again": " secunde până să poți publica iar",
-  "upvoted": "Votat",
-  "posted_date": "Data Postării",
-  "posted_time": "Ora Postării",
-  "posted_date": "Data Postării",
-  "posted_time": "Ora Postării",
   "profile": "Profil",
   "sign_out": "De-logare",
   "invitedcount": "Număr de invitați",

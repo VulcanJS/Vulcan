@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Заполните заголовок",
+  "seconds_before_posting_again": " секунд перед новым постом",
+  "upvoted": "За",
+  "posted_date": "Дата поста",
+  "posted_time": "Время поста",
+  "new_posts": "Новые посты",
   "createdAt": "Создан",
   "postedAt": "Опубликован",
   "url": "URL",  

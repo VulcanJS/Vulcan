@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Vänligen fyll i en titel",
+  "seconds_before_posting_again": " sekunder innan nästa inlägg",
+  "upvoted": "Uppröstad",
+  "posted_date": "Inlagt datum",
+  "posted_time": "Inlagt tid",
+  "new_posts": "Nya inlägg",
   "createdAt": "Skapad",
   "postedAt": "Tillagd",
   "url": "URL",

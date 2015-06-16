@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Моля въведете заглавие",
+  "seconds_before_posting_again": " секунди преди да публикувате отново",
+  "upvoted": "Харесан",
+  "posted_date": "Дата на публикуване",
+  "posted_time": "Време на публикуване",
+  "new_posts": "Нови публикации",
   "your_post_has_been_deleted": "Публикацията ви е изтритa.",
   "the_top_5_posts_of_each_day": "В топ 5 публикации на всеки ден.",
   "previous_day": "Предишен ден",

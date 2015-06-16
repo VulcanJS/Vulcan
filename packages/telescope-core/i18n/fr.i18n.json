@@ -18,9 +18,6 @@
   "edit_account": "Modifier le compte",
   "view_your_profile": "Voir votre profil",
   "edit_your_profile": "Editer votre profil",
-  
-  //Main
-  "new_posts": "Nouveaux Posts",
 
   //Errors
   "you_are_already_logged_in": "Vous êtes déjà connecté",
@@ -32,7 +29,6 @@
   "not_found": "Oups ! La page est introuvable.",
   "were_sorry_whatever_you_were_looking_for_isnt_here": "Désolé, mais ce que vous cherchiez ne se trouve pas là...",
   "disallowed_property_detected": "Opération interdite",
- 
 
   //helpers
   "sorry_you_do_not_have_access_to_this_page": "Désolé, vous n'avez pas accès à cette page",
@@ -40,7 +36,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Désolé, vous devez être administrateur pour voir cette page.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Désolé, vous n'avez pas la permission d'ajouter de nouveaux posts.",
   "sorry_you_cannot_edit_this_post": "Désolé, vous ne pouvez pas modifier ce post.",
-  "sorry_you_cannot_edit_this_comment": "Désolé, vous ne pouvez pas modifier ce commentaire.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Vous devez être administrateur et connecté pour ajouter une catégorie",
@@ -66,11 +61,6 @@
   "start_posting": "Commencer à poster.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Please fill in a title",
-  "seconds_before_posting_again": " seconds before posting again",
-  "upvoted": "Upvoted",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
   "profile": "Profile",
   "sign_out": "Sign Out",
   "you_ve_been_signed_out": "Vous avez été déconnecté",
@@ -99,13 +89,10 @@
   "please_log_in_to_comment": "Connectez vous pour commenter.",
   "sign_in_sign_up_with_twitter": "Connexion/Créer un compte avec Twitter",
   "load_more": "En voir plus",
-
   "most_popular_posts": "Posts les plus populaire.",
   "newest_posts": "Posts les plus récents",
   "highest_ranked_posts_ever": "Posts les plus populaire de tous les temps.",
-
   "the_profile_of": "Le profil de",
-
   "posts_awaiting_moderation": "Posts en attente de moderation.",
   "future_scheduled_posts": "Posts planifiés.",
   "users_dashboard": "Tableau de bord utilisateur.",

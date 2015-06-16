@@ -16,13 +16,6 @@
   "view_profile": "Просмотр профиля",
   "edit_account": "Редактирование аккаунта",
 
-  //Main
-  "new_posts": "Новые посты",
-
-  
-  // Settings Help Text
-
-
   //Errors
   "you_are_already_logged_in": "Вы уже вошли",
   "sorry_this_is_a_private_site_please_sign_up_first": "Извините, это частный сайт. Вначале зарегистрируйтесь.",
@@ -38,7 +31,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Извините, вы должны быть админом для просмотра этой страницы.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Извините, у вас нет прав для добавления новых элементов.",
   "sorry_you_cannot_edit_this_post": "Извините, вы не можете редактировать этот пост.",
-  "sorry_you_cannot_edit_this_comment": "Извините, вы не можете редактировать это.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Вам нужно войти и быть админом для создания новой категории.",
@@ -64,13 +56,6 @@
   "start_posting": "Начать пост.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Заполните заголовок",
-  "seconds_before_posting_again": " секунд перед новым постом",
-  "upvoted": "За",
-  "posted_date": "Дата поста",
-  "posted_time": "Время поста",
-  "posted_date": "Дата поста",
-  "posted_time": "Время поста",
   "profile": "Профиль",
   "sign_out": "Выйти",
   "you_ve_been_signed_out": "Вы вышли. Возвращайтесь снова!",

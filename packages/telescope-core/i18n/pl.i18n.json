@@ -16,9 +16,6 @@
   "view_profile": "Profil",
   "edit_account": "Edytuj konto",
 
-  //Main
-  "new_posts": "Nowe Posty",
-
   //Errors
   "you_are_already_logged_in": "Jesteś już zalogowany",
   "sorry_this_is_a_private_site_please_sign_up_first": "Musisz się najpierw zarejestrować.",
@@ -36,7 +33,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Musisz być adminem żeby to zobaczyć.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Nie masz uprawnień do dodawania.",
   "sorry_you_cannot_edit_this_post": "Nie możesz edytować tego postu.",
-  "sorry_you_cannot_edit_this_comment": "Nie możesz edytować tego komentarza.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Musisz się zalogować jako admin aby móc dodawać nowe kategorie.",
@@ -62,13 +58,6 @@
   "start_posting": "Zacznij pisać.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Wypełnij tytuł",
-  "seconds_before_posting_again": " sekund zanim znowu będziesz mógł napisać",
-  "upvoted": "minus",
-  "posted_date": "Data",
-  "posted_time": "Godzina",
-  "posted_date": "Data",
-  "posted_time": "Godzina",
   "profile": "Profil",
   "sign_out": "Wyloguj się",
   "you_ve_been_signed_out": "Zostałeś prawidłowo wylogowany!",
@@ -97,13 +86,10 @@
   "please_log_in_to_comment": "Aby komentować musisz być zalogowany.",
   "sign_in_sign_up_with_twitter": "Zarejestruj/Zaloguj się przez Twitter",
   "load_more": "Więcej",
-
   "most_popular_posts": "Aktualnie najpopularniejsze posty.",
   "newest_posts": "Najnowsze posty.",
   "highest_ranked_posts_ever": "Najwyżej oceniane posty wszechczasów.",
-
   "the_profile_of": "Profil",
-
   "posts_awaiting_moderation": "Posty czekające na moderację.",
   "future_scheduled_posts": "Posty na przyszłość.",
   "users_dashboard": "Pulpit użytkowników.",

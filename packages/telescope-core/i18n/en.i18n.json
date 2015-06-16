@@ -18,9 +18,6 @@
   "edit_account": "Edit Account",
   "view_your_profile": "View your profile",
   "edit_your_profile": "Edit your profile",
-  
-  //Main
-  "new_posts": "New Posts",
 
   //Errors
   "you_are_already_logged_in": "You are already logged in",
@@ -40,7 +37,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Sorry, you  have to be an admin to view this page.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Sorry, you don't have permissions to add new items.",
   "sorry_you_cannot_edit_this_post": "Sorry, you cannot edit this post.",
-  "sorry_you_cannot_edit_this_comment": "Sorry, you cannot edit this comment.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "You need to login and be an admin to add a new category.",
@@ -66,11 +62,6 @@
   "start_posting": "Start posting.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Please fill in a title",
-  "seconds_before_posting_again": " seconds before posting again",
-  "upvoted": "Upvoted",
-  "posted_date": "Posted Date",
-  "posted_time": "Posted Time",
   "profile": "Profile",
   "sign_out": "Sign Out",
   "you_ve_been_signed_out": "You've been signed out. Come back soon!",
@@ -98,13 +89,10 @@
   "please_log_in_to_comment": "Please log in to comment.",
   "sign_in_sign_up_with_twitter": "Register/Sign Up with Twitter",
   "load_more": "Load More",
-
   "most_popular_posts": "The most popular posts right now.",
   "newest_posts": "The newest posts.",
   "highest_ranked_posts_ever": "The all-time highest-ranked posts.",
-
   "the_profile_of": "The profile of",
-
   "posts_awaiting_moderation": "Posts awaiting moderation.",
   "future_scheduled_posts": "Future scheduled posts.",
   "users_dashboard": "Users dashboard.",

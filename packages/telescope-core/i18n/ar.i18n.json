@@ -17,11 +17,6 @@
   "edit_account": "تعديل الحساب",
   "pending": "معلق",
 
-  //Main
-  "new_posts": "مشاركات جديدة",
-
-  // Settings Help Text
-
   //Errors
   "you_are_already_logged_in": "انت اﻻن متصل",
   "sorry_this_is_a_private_site_please_sign_up_first": "يتوجب عليك الدخول",
@@ -37,7 +32,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "عذرا, يتوجب عليك ان تكون مشرف لرؤية هذه الصفحة",
   "sorry_you_dont_have_permissions_to_add_new_items": "ليس ليدك الصلحيات ﻻضافة مشاركات",
   "sorry_you_cannot_edit_this_post": "ﻻ سنكنك التعديل على هذه المشاركة",
-  "sorry_you_cannot_edit_this_comment": "ﻻ يمكنك تعديل هذا التعليق",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "يجب أن تكون مشرف ومسجلا لإضافة مجموعة",
@@ -63,11 +57,6 @@
   "start_posting": "قم باضافة جديدة",
 
   // Other
-  "please_fill_in_a_title": "قم باضافة عنوان",
-  "seconds_before_posting_again": " ثواني قبل نشر مشاركة جديدة.",
-  "upvoted": "مصوت لهذه",
-  "posted_date": "تاريخ التقديم",
-  "posted_time": "توقيت التقديم",
   "profile": "الملف الشخصي",
   "sign_out": "خروج",
   "invitedcount": "اعضاء المدعون",
@@ -94,17 +83,13 @@
   "please_log_in_first": "يتوجب عليك الدخول",
   "sign_in_sign_up_with_twitter": "تسجيل الدخول / تسجيل عبر تويتر",
   "load_more": "تحميل أكثر",
-
-   "most_popular_posts": "اﻻكثر شعبية اﻻن",
+  "most_popular_posts": "اﻻكثر شعبية اﻻن",
   "newest_posts": "أحدث المشاركات.",
   "highest_ranked_posts_ever": "اﻻفضل في كل اﻻوقات",
-
   "the_profile_of": "الملف الشخصى ل",
-
   "posts_awaiting_moderation": "مشاركات تنتظر المصادقة",
   "future_scheduled_posts": "المشاركات المقرر مستقبﻻ.",
   "users_dashboard": "لوحة قيادة الخاصة بالمستخدمين",
   "telescope_settings_panel": "لوحة اﻻعدادات",
   "various_utilities": "المرافق المختلفة."
-
 }

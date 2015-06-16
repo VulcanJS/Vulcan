@@ -15,9 +15,6 @@
   "view_profile": "Ver perfil",
   "edit_account": "Editar cuenta",
 
-  //Main
-  "new_posts": "Nuevos Posts",
-
   //Errors
   "you_are_already_logged_in": "Ya estás conectado",
   "sorry_this_is_a_private_site_please_sign_up_first": "Lo sentimos pero esta pagina es privada. Por favor, conéctese para verla",
@@ -33,7 +30,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Lo sentimos, tienes que ser un administrador para ver esta página.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Lo sentimos, no tiene permisos para agregar nuevos elementos.",
   "sorry_you_cannot_edit_this_post": "Lo sentimos, no puede editar este post.",
-  "sorry_you_cannot_edit_this_comment": "Lo sentimos, no puede editar este comentario.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Usted tiene que entrar y ser un administrador para añadir una nueva categoría",
@@ -58,11 +54,6 @@
   "start_posting": "Empezar a publicar",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Por favor, agrega un título",
-  "seconds_before_posting_again": "segundos antes de postear de nuevo",
-  "upvoted": "Voto a favor",
-  "posted_date": "Fecha de publicación",
-  "posted_time": "Tiempo de publicación",
   "profile": "Perfil",
   "sign_out": "Cerrar sesión",
   "invitedcount": "Total de invitados",

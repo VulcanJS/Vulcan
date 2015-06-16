@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Veuillez remplir un titre",
+  "seconds_before_posting_again": " secondes avant de poster à nouveau",
+  "upvoted": "Upvoté",
+  "posted_date": "Posté le",
+  "posted_time": "Posté a",
+  "new_posts": "Nouveaux Posts",
   "postedAt": "Posté le",
   "upvotedAt": "Upvoté le",
   "downvotedAt": "Downvoté le",

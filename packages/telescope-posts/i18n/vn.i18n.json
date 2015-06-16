@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "xin nhập tiêu đề",
+  "seconds_before_posting_again": " một vài giây để đăng lại",
+  "upvoted": "Thích",
+  "posted_date": "Ngày đăng",
+  "posted_time": "Giờ đăng",
+  "new_posts": "Bài mới",
   "createdAt": "Tạo lúc",
   "postedAt": "Đăng lúc",
   "url": "URL",

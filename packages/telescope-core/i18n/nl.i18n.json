@@ -16,27 +16,6 @@
   "view_profile": "Profiel bekijken",
   "edit_account": "Profiel bewerken",
 
-  //Main
-  "new_posts": "Nieuw artikel",
-
-  
-
-  // Settings Help Text
-
-  
-  //Commments
-  "your_comment_has_been_deleted": "Jouw reactie is verwijderd.",
-  "comment_": "Reactie",
-  "delete_comment": "Verwijder reactie",
-  "add_comment": "Reactie toevoegen",
-  "upvote": "omhoog",
-  "downvote": "omlaag",
-  "link": "link",
-  "edit": "Bewerk",
-  "reply": "Reageer",
-  "no_comments": "Geen reacties.",
-  "please_sign_in_to_reply": "Login om te kunnen reageren.",
-
   //Errors
   "you_are_already_logged_in": "Je bent al ingelogd",
   "sorry_this_is_a_private_site_please_sign_up_first": "Sorry, dit is een privé website. Eerst registreren alstublieft.",
@@ -54,7 +33,6 @@
   "sorry_you_have_to_be_an_admin_to_view_this_page": "Sorry, alleen beheerders kunnen deze pagina bekijken.",
   "sorry_you_dont_have_permissions_to_add_new_items": "Sorry, je hebt geen rechten om toe te voegen.",
   "sorry_you_cannot_edit_this_post": "Sorry, je kan dit artikel niet bewerken.",
-  "sorry_you_cannot_edit_this_comment": "Sorry, je kan deze reactie niet bewerken.",
 
   //Collections
   "you_need_to_login_and_be_an_admin_to_add_a_new_category": "Je moet eerst inloggen en een beheerder zijn om een categorie aan te maken.",
@@ -80,11 +58,6 @@
   "start_posting": "Begin met plaatsen.",
 
   // Translation needed (found during migration to tap:i18n)
-  "please_fill_in_a_title": "Vul een titel in",
-  "seconds_before_posting_again": " voor het opnieuw kunnen plaatsen.",
-  "upvoted": "Omhoog gestemd",
-  "posted_date": "Datum plaatsing",
-  "posted_time": "Tijd plaatsing",
   "profile": "Profiel",
   "sign_out": "Uitloggen",
   "you_ve_been_signed_out": "Je bent uitgelogd. Tot snel!",
@@ -113,13 +86,10 @@
   "please_log_in_to_comment": "Log eerst in om een reactie te kunnen plaatsen.",
   "sign_in_sign_up_with_twitter": "Registreer/Registreer met Twitter",
   "load_more": "Meer laden",
-
   "most_popular_posts": "De meest populaire artikelen.",
   "newest_posts": "De nieuwste artikelen.",
   "highest_ranked_posts_ever": "Artikelen met de meeste stemmen.",
-
   "the_profile_of": "Profiel van",
-
   "posts_awaiting_moderation": "Artikelen die op goedkeuring wachten.",
   "future_scheduled_posts": "Ingeplande artikelen.",
   "users_dashboard": "Gebruikers dashboard.",

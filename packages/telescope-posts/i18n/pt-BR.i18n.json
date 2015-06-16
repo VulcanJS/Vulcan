@@ -1,4 +1,10 @@
 {
+  "please_fill_in_a_title": "Por favor preencha um título",
+  "seconds_before_posting_again": " segundos antes de postar novamente",
+  "upvoted": "Votado",
+  "posted_date": "Data da Postagem",
+  "posted_time": "Hora da da Postagem",
+  "new_posts": "Novas Postagens",
   "createdAt": "Criado em",
   "postedAt": "Postado em",
   "url": "URL",
