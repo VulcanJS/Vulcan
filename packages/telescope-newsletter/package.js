@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:newsletter",
   summary: "Telescope email newsletter package",
-  version: "0.20.5",
+  version: "0.20.6",
   git: "https://github.com/TelescopeJS/telescope-newsletter.git"
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:core@0.20.5',
+    'telescope:core@0.20.6',
     'miro:mailchimp@1.0.4',
   ]);
 
