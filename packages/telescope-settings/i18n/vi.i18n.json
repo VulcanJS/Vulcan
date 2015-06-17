@@ -1,4 +1,5 @@
 {
-  "title": "Tiêu đề",
-  "siteUrl": "Địa chỉ URL"
+  "title" : "Tiêu đề",
+  "siteUrl" : "Địa chỉ URL",
+  "invites" : "Mời"
 }

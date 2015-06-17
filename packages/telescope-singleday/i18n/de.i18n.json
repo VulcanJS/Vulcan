@@ -1,9 +1,9 @@
 {
-  "the_top_5_posts_of_each_day": "Die Top-5-Links eines jeden Tages.",
-  "previous_day": "Einen Tag zurück",
-  "next_day": "Einen Tag vor",
-  "sorry_no_posts_for_today": "Heute gibt es keine Links.",
-  "sorry_no_posts_for": "Keine Links für",
-  "today": "Heute",
-  "yesterday": "Gestern"
+  "the_top_5_posts_of_each_day" : "Die Top-5-Links eines jeden Tages.",
+  "previous_day" : "Einen Tag zurück",
+  "next_day" : "Einen Tag vor",
+  "sorry_no_posts_for_today" : "Heute gibt es keine Links.",
+  "sorry_no_posts_for" : "Keine Links für",
+  "today" : "Heute",
+  "yesterday" : "Gestern"
 }
