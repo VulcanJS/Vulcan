@@ -1,3 +1,9 @@
+## v0.20.6 “AutoScope”
+
+* Add Extra CSS field (thanks @johnthepink!)
+* Fix security issue with Settings (thanks @jshimko!)
+* Add automatic template replacement
+
 ## v0.20.5 “MinorScope”
 
 Just a couple minor bug fixes.
