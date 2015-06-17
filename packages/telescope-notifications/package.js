@@ -56,7 +56,7 @@ Package.onUse(function (api) {
     "i18n/pt-BR.i18n.json",
     "i18n/ro.i18n.json",
     "i18n/ru.i18n.json",
-    "i18n/se.i18n.json",
+    "i18n/sv.i18n.json",
     "i18n/tr.i18n.json",
     "i18n/vi.i18n.json",
     "i18n/zh-CN.i18n.json"
