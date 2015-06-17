@@ -1,4 +1,11 @@
 {
+  "a_new_comment_on_your_post": "Un nouveau commentaire sur votre post",
+  "you_have_a_new_comment_by": "Vous avez un nouveau commentaire de ",
+  "on_your_post": " sur votre post",
+  "has_created_a_new_post": " a créé un nouveau post",
+  "mark_as_read": "Marquer comme lu",
+  "someone_replied_to_your_comment_on": "Quelqu'un à répondu à votre commentaire sur",
+  "has_replied_to_your_comment_on": " a répondu à votre commentaire sur",
   "mark_all_as_read": "Tout marquer comme lu",
   "left_a_new_comment_on": "a laissé un nouveau commentaire sur",
   "has_replied_to_your_comment_on": "a répondu à",

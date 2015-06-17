@@ -40,13 +40,7 @@
   "your_comment_is_empty": "Коментара ви е празен.",
   "you_dont_have_permission_to_delete_this_comment": "Нямате права за да изтриете този коментар.",
   "you_need_to_login_or_be_invited_to_post_new_stories": "Трябва да влезете в системата или да бъде поканен да публикувате нови истории.",
-  "someone_replied_to_your_comment_on": "Някой отговори на коментара ви относно",
-  "has_replied_to_your_comment_on": " е отговорил на коментара ви за",
   "read_more": "Прочетете повече",
-  "a_new_comment_on_your_post": "Нов коментар на ваша публикация",
-  "you_have_a_new_comment_by": "Имате нов коментар от ",
-  "on_your_post": " на ваша публикация",
-  "has_created_a_new_post": " е създадена нова публикация",
   "your_account_has_been_approved": "Профилът ви е одобрен.",
   "welcome_to": "Добре дошли в ",
   "start_posting": "Започнете да публикувате.",
@@ -67,7 +61,6 @@
   "site": "Сайт",
   "upvoted_posts": "Харесвани публикации",
   "downvoted_posts": "Нехаресвани публикации",
-  "mark_as_read": "Маркирай като прочетено",
 
   //Common
   "pending": "в очакване",

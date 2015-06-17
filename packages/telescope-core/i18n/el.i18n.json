@@ -42,13 +42,7 @@
   "your_comment_is_empty": "Το σχόλιό σας είναι άδειο.",
   "you_dont_have_permission_to_delete_this_comment": "Συγγνώμη, Συγγνώμη, δεν έχετε δικαίωμα να διαγράψετε αυτό το σχόλιο.",
   "you_need_to_login_or_be_invited_to_post_new_stories": "Πρέπει να συνδεθείς ή να έχεις πρόσκληση για να δημοσιέυσεις.",
-  "someone_replied_to_your_comment_on": "Κάποιος απάντησε στο σχόλιό σου",
-  "has_replied_to_your_comment_on": " απάντησε στο σχόλιό σου",
   "read_more": "Διάβασε περισσότερα",
-  "a_new_comment_on_your_post": "Νέο σχόλιο στη δημοσίευση σου",
-  "you_have_a_new_comment_by": "Νέο σχόλιο από",
-  "on_your_post": " στη δημοσίευση σου",
-  "has_created_a_new_post": " έκανε μια νέα δημοσίευση",
   "your_account_has_been_approved": "Ο λογαριασμό σου έχει εγκριθεί.",
   "welcome_to": "Καλωσορίσατε στο ",
   "start_posting": "Ξεκινήστε να δημοσιεύετε.",
@@ -70,7 +64,6 @@
   "site": "Site",
   "upvoted_posts": "Δημοσιεύσεις που μου αρέσουν",
   "downvoted_posts": "Δημοσιεύσεις που ΔΕΝ μου αρέσουν",
-  "mark_as_read": "To διάβασα",
 
   //Common
   "pending": "Εκκρεμούν",

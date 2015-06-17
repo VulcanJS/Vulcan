@@ -1,4 +1,10 @@
 {
+  "a_new_comment_on_your_post": "Un nuovo commento sul tuo post",
+  "you_have_a_new_comment_by": "Hai un nuovo commento di ",
+  "on_your_post": " sul tuo post",
+  "has_created_a_new_post": " ha creato un nuovo post",
+  "someone_replied_to_your_comment_on": "Qualcuno ha risposto al tuo commento su",
+  "has_replied_to_your_comment_on": " ha risposto al tuo commento su",
   "no_notifications": "Nessuna notifica",
   "1_notification": "1 notifica",
   "notifications": "notifiche",

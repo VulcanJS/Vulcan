@@ -1,4 +1,11 @@
 {
+  "a_new_comment_on_your_post": "Nieuwe reactie op je artikel",
+  "you_have_a_new_comment_by": "Nieuwe reactie van ",
+  "on_your_post": " op jouw artikel",
+  "has_created_a_new_post": " heeft een nieuw artikel geplaatst",  
+  "mark_as_read": "Markeer als gelezen",
+  "someone_replied_to_your_comment_on": "Iemand heeft gereageerd op ",
+  "has_replied_to_your_comment_on": " heeft gereageerd op jouw reactie op ",
   "no_notifications": "Geen berichten",
   "1_notification": "1 bericht",
   "notifications": "notificaties",

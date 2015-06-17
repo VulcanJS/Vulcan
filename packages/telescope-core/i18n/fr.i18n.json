@@ -45,13 +45,7 @@
   "your_comment_is_empty": "Votre commentaire est vide",
   "you_dont_have_permission_to_delete_this_comment": "Vous n'avez pas la permission de supprimer ce commentaire",
   "you_need_to_login_or_be_invited_to_post_new_stories": "Vous devez être connecté ou invité pour créer un nouveau post",
-  "someone_replied_to_your_comment_on": "Quelqu'un à répondu à votre commentaire sur",
-  "has_replied_to_your_comment_on": " a répondu à votre commentaire sur",
   "read_more": "Lire la suite.",
-  "a_new_comment_on_your_post": "Un nouveau commentaire sur votre post",
-  "you_have_a_new_comment_by": "Vous avez un nouveau commentaire de ",
-  "on_your_post": " sur votre post",
-  "has_created_a_new_post": " a créer un nouveau post",
   "your_account_has_been_approved": "Votre compte a été validé.",
   "welcome_to": "Bienvenu sur ",
   "start_posting": "Commencer à poster.",
@@ -73,7 +67,6 @@
   "site": "Site",
   "upvoted_posts": "Posts upvotés",
   "downvoted_posts": "Posts downvotés",
-  "mark_as_read": "Marquer comme lu",
 
   //Common
   "pending": "En attente",

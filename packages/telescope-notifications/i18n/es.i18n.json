@@ -1,4 +1,11 @@
 {
+  "a_new_comment_on_your_post": "Un nuevo comentario en su post",
+  "you_have_a_new_comment_by": "Usted tiene un nuevo comentario de ",
+  "on_your_post": " en su post",
+  "has_created_a_new_post": " ha creado un nuevo post",  
+  "mark_as_read": "Marcar como leído",
+  "someone_replied_to_your_comment_on": "Alguien respondió a tu comentario en",
+  "has_replied_to_your_comment_on": " ha respondido a su comentario sobre",
   "no_notifications": "Ninguna notificación",
   "1_notification": "1 notificación",
   "notifications": "notificaciones",
