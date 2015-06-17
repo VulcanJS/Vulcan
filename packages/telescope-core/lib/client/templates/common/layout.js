@@ -15,6 +15,17 @@ Template.layout.created = function(){
 };
 
 Template.layout.rendered = function(){
+//Infinite Scroll
+    $(window).on("scroll", function() {
+    var scrollHeight = $(document).height();
+    var scrollPosition = $(window).height() + $(window).scrollTop();
+    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+      $('.more-button').click();
+      console.log("bottom!");
+    }
+  });
+
+  
   var currentScroll = Session.get('currentScroll');
   if(currentScroll){
     $('body').scrollTop(currentScroll);
