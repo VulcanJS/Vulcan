@@ -74,7 +74,10 @@ Package.onUse(function (api) {
     'lib/icons.js'
   ], ['client', 'server']);
 
-  api.addFiles(['lib/client/jquery.exists.js'], ['client']);
+  api.addFiles([
+    'lib/client/jquery.exists.js',
+    'lib/client/template_replacement.js'
+  ], ['client']);
 
   api.export([
     'Telescope',

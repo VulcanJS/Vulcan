@@ -4,6 +4,8 @@
  */
 Telescope.config = {};
 
+Telescope.config.customPrefix = "custom_";
+
  /**
  * Subscriptions namespace
  * @namespace Telescope.subscriptions
