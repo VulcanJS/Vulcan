@@ -49,6 +49,14 @@ Posts.schema = new SimpleSchema({
     editableBy: ["member", "admin"]
   },
   /**
+    slug
+  */
+  slug: {
+    type: String,
+    optional: true,
+    editableBy: ["admin"]
+  },
+  /**
     Post body (markdown)
   */
   body: {
@@ -248,4 +256,9 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
   }
+});
+
+Posts.before.insert(function (userId, doc) {
+  if (!doc.slug)
+    doc.slug = Telescope.utils.slugify(doc.title);
 });
