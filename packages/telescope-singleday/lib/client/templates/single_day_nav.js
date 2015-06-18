@@ -43,7 +43,7 @@ Template.single_day_nav.onDestroyed(function(){
 Template.single_day_nav.helpers({
   currentDate: function(){
     var currentDate = moment(this.terms.date);
-    var today = moment(new Date());
+    var today = moment(new Date()).startOf('day');
     var diff = today.diff(currentDate, 'days');
     if (diff === 0) {
       return i18n.t("today");
