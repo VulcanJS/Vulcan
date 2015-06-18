@@ -42,27 +42,27 @@ Posts.getDefaultStatus = function (user) {
 };
 
 /**
+ * Return a post's link if it has one, else return its post page URL
+ * @param {Object} post
+ */
+Posts.getLink = function (post) {
+  return !!post.url ? Posts.getOutgoingUrl(post.url) : this.getPageUrl(post);
+};
+
+/**
  * Get URL of a post page.
  * @param {Object} post
  */
 Posts.getPageUrl = function(post){
-  return Telescope.utils.getSiteUrl()+'posts/'+post._id;
+  return Router.path("post_page", post);
 };
 
 /**
  * Get post edit page URL.
  * @param {String} id
  */
-Posts.getEditUrl = function(id){
-  return Telescope.utils.getSiteUrl()+'posts/'+id+'/edit';
-};
-
-/**
- * Return a post's link if it has one, else return its post page URL
- * @param {Object} post
- */
-Posts.getLink = function (post) {
-  return !!post.url ? Posts.getOutgoingUrl(post.url) : this.getPageUrl(post);
+Posts.getEditUrl = function(post){
+  return Router.path("post_edit", post);
 };
 
 /**

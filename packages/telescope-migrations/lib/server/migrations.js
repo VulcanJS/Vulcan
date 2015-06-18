@@ -683,6 +683,17 @@ var migrationsList = {
 
     });
     return i;
+  },
+  addSlugsToPosts: function () {
+    var i = 0;
+    Posts.find({slug: {$exists : false}}).forEach(function (post) {
+      i++;
+      var slug = Telescope.utils.slugify(post.title);
+      console.log("Post: "+post._id + " | "+slug);
+      Posts.update(post._id, { $set: { 'slug': slug}});
+      console.log("---------------------");
+    });
+    return i;
   }
 };
 

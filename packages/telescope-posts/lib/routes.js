@@ -130,7 +130,7 @@ Posts.controllers.page = RouteController.extend({
       return this.post().title;
   },
 
-  onBeforeAction: function() {
+  onBeforeAction: function () {
     if (! this.post()) {
       if (this.postSubscription.ready()) {
         this.render('not_found');
@@ -151,6 +151,14 @@ Posts.controllers.page = RouteController.extend({
   data: function() {
     return this.post();
   },
+
+  onAfterAction: function () {
+    var post = this.post();
+    if (post && post.slug !== this.params.slug) {
+      Router.go("post_page", post);
+    }
+  },
+
   fastRender: true
 });
 
@@ -196,7 +204,19 @@ Meteor.startup(function () {
 
   // Post Page
 
+  // legacy route
   Router.route('/posts/:_id', {
+    name: 'post_page_id',
+    onBeforeAction: function () {
+      var post = {
+        slug: '_',
+        _id: this.params._id
+      };
+      Router.go("post_page", post);
+    }
+  });
+
+  Router.route('/p/:slug/:_id', {
     name: 'post_page',
     controller: Posts.controllers.page
   });

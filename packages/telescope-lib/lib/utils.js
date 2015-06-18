@@ -140,13 +140,10 @@ Telescope.utils.getPostCommentUrl = function(postId, commentId) {
   });
 };
 
-Telescope.utils.slugify = function(text) {
-  if(text){
-    text = text.replace(/[^-_a-zA-Z0-9,&\s]+/ig, '');
-    text = text.replace(/\s/gi, "-");
-    text = text.toLowerCase();
-  }
-  return text;
+Telescope.utils.slugify = function (s) {
+  return getSlug(s, {
+    truncate: 60
+  });
 };
 
 Telescope.utils.getShortUrl = function(post) {
