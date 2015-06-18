@@ -13,8 +13,8 @@ Template.post_item.helpers({
   },
   postClass: function () {
     var post = this;
-    var postClass = "author-"+post.author;
-    postClass = Telescope.callbacks.run("postClass", postClass);
+    var postClass = "author-"+Telescope.utils.slugify(post.author);
+    postClass = Telescope.callbacks.run(post, postClass);
     return postClass;
   }
 });

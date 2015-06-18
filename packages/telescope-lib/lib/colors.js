@@ -42,14 +42,14 @@ var secondaryContrast = setShortcut('secondaryContrastColor');
 
 accent("a:hover");
 accent(".post-content .post-heading .post-title:hover");
-accent(".post-content .post-upvote .icon");
+accent(".post-vote .upvoted .upvote-link");
+accent(".post-vote .downvoted .downvote-link");
 accent(".comment-actions a i");
 accent(".comment-actions.upvoted .upvote i");
 accent(".comment-actions.downvoted .downvote i");
 accent(".toggle-actions-link");
 accent(".post-meta a:hover");
 accent(".action:hover");
-accent(".post-upvote .upvote-link i");
 accent(".post-actions .icon");
 accent(".post-share .icon-share");
 
@@ -67,7 +67,6 @@ accent(".mobile-menu-button", 'background-color');
 accent(".login-link-text", 'background-color');
 accent(".post-category:hover", 'background-color');
 
-accent(".icon-upvote", "border-color");
 accent(".icon-more", "border-color");
 
 // accentContrastColor

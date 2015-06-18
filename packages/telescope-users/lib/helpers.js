@@ -166,6 +166,26 @@ Users.setSetting = function (user, settingName, value) {
 };
 Users.helpers({setSetting: function () {return Users.setSetting(this);}});
 
+/**
+ * Check if a user has upvoted a post
+ * @param {Object} user
+ * @param {Object} post
+ */
+Users.hasUpvoted = function (user, post) {
+  return user && _.include(post.upvoters, user._id);
+};
+Users.helpers({hasUpvoted: function (post) {return Users.hasUpvoted(this, post);}});
+
+/**
+ * Check if a user has downvoted a post
+ * @param {Object} user
+ * @param {Object} post
+ */
+Users.hasDownvoted = function (user, post) {
+  return user && _.include(post.downvoters, user._id);
+};
+Users.helpers({hasDownvoted: function (post) {return Users.hasDownvoted(this, post);}});
+
 ///////////////////
 // Other Helpers //
 ///////////////////

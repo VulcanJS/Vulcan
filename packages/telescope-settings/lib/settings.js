@@ -84,6 +84,16 @@ Settings.schema = new SimpleSchema({
       leftLabel: "Require Posts Approval"
     }
   },
+  enableDownvotes: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+    autoform: {
+      group: "01_general",
+      instructions: 'Enable downvotes',
+      leftLabel: "Enable downvotes"
+    }
+  },
   defaultEmail: {
     type: String,
     optional: true,
@@ -110,7 +120,7 @@ Settings.schema = new SimpleSchema({
     defaultValue: 30,
     private: true,
     autoform: {
-      group: 'scoring',
+      group: '01_general',
       instructions: 'How often to recalculate scores, in seconds (default to 30)',
       class: "private-field"
     }
