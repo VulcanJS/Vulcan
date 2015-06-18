@@ -47,7 +47,6 @@ Meteor.startup(function () {
     controller: Posts.controllers.category,
     onAfterAction: function() {
       this.slug = this.params.slug;
-      Session.set('categorySlug', this.params.slug);
     }
   });
 

@@ -1,10 +1,12 @@
 {
-  "left_a_new_comment_on": "left a new comment on",
-  "has_replied_to_your_comment_on": "has replied to your comment on",
-  "mark_as_read": "Mark as read",
-  "no_notifications": "No notifications",
-  "you_have_been_unsubscribed_from_all_notifications": "You have been unsubscribed from all notifications.",
-  "user_not_found": "User not found",
-  "1_notification": "1 notification",
-  "notifications": "notifications"
+  "a_new_comment_on_your_post" : "你发表的主题有新的评论",
+  "you_have_a_new_comment_by" : "你有一个新的评论在 ",
+  "on_your_post" : " 在你的帖子",
+  "has_created_a_new_post" : " 发一个新帖",
+  "someone_replied_to_your_comment_on" : "有人回复了你的评论",
+  "no_notifications" : "无消息",
+  "1_notification" : "1 个消息",
+  "notifications" : "消息",
+  "mark_all_as_read" : "标记所有",
+  "has_replied_to_your_comment_on" : " 已经有人回复了你的评论"
 }

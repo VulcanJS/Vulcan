@@ -1,0 +1,13 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "Nie możesz edytować tego komentarza.",
+  "your_comment_has_been_deleted" : "Twój komentarz został usunięty.",
+  "comment_" : "Komentuj",
+  "delete_comment" : "Usuń komentarz",
+  "add_comment" : "Dodaj komentarz",
+  "upvote" : "plus",
+  "downvote" : "minus",
+  "link" : "link",
+  "edit" : "Edytuj",
+  "reply" : "Odpowiedz",
+  "no_comments" : "Brak komentarzy."
+}

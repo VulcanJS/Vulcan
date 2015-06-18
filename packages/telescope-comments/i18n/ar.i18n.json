@@ -1,0 +1,14 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "ﻻ يمكنك تعديل هذا التعليق",
+  "your_comment_has_been_deleted" : "قد تم حذف تعليقك",
+  "comment_" : "تعليق",
+  "delete_comment" : "احذف التعليق",
+  "add_comment" : "اضف تعليق",
+  "upvote" : "صوت مع",
+  "downvote" : "صوت ضد",
+  "link" : "رابط",
+  "edit" : "تعديل",
+  "reply" : "رد",
+  "no_comments" : "ﻻ يوجد تعليق",
+  "please_sign_in_to_reply" : "يتوجب الدخول ﻻضافة رد"
+}

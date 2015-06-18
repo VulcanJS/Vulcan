@@ -1,10 +1,13 @@
 {
-  "left_a_new_comment_on": "left a new comment on",
-  "has_replied_to_your_comment_on": "has replied to your comment on",
-  "mark_as_read": "Mark as read",
-  "no_notifications": "No notifications",
-  "you_have_been_unsubscribed_from_all_notifications": "You have been unsubscribed from all notifications.",
-  "user_not_found": "User not found",
-  "1_notification": "1 notification",
-  "notifications": "notifications"
+  "a_new_comment_on_your_post" : "Un nuevo comentario en su post",
+  "you_have_a_new_comment_by" : "Usted tiene un nuevo comentario de ",
+  "on_your_post" : " en su post",
+  "has_created_a_new_post" : " ha creado un nuevo post",
+  "someone_replied_to_your_comment_on" : "Alguien respondió a tu comentario en",
+  "no_notifications" : "Ninguna notificación",
+  "1_notification" : "1 notificación",
+  "notifications" : "notificaciones",
+  "mark_all_as_read" : "Marcar todas como leídas",
+  "has_replied_to_your_comment_on" : " ha respondido a su comentario sobre",
+  "mark_as_read" : "Marcar como leído"
 }

@@ -1,0 +1,13 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "Извините, вы не можете редактировать это.",
+  "your_comment_has_been_deleted" : "Ваш комментарий удалили.",
+  "comment_" : "Комментарий",
+  "delete_comment" : "Удалить комментарий",
+  "add_comment" : "Добавить комментарий",
+  "upvote" : "за",
+  "downvote" : "против",
+  "link" : "ссылка",
+  "edit" : "Редактировать",
+  "reply" : "Ответить",
+  "no_comments" : "Без комментариев."
+}

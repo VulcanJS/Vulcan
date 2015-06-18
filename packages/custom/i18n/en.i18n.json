@@ -1,9 +1,8 @@
 {
-  "translation_key": "translation string",
-  "customViewLink": "Custom View Link",
-  "customAdminLink": "Custom Admin Link",
-  "customPostField": "My Custom Post Field",
-  "customCommentField": "My Custom Comment Field",
-  "customUserField": "My Custom User Field",
-  "customSettingsField": "My Custom Settings Field"
+  "customViewLink" : "Custom View Link",
+  "customAdminLink" : "Custom Admin Link",
+  "customPostField" : "My Custom Post Field",
+  "customCommentField" : "My Custom Comment Field",
+  "customUserField" : "My Custom User Field",
+  "customSettingsField" : "My Custom Settings Field"
 }
