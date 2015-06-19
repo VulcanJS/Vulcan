@@ -9,5 +9,6 @@
   "link" : "link",
   "edit" : "editează",
   "reply" : "răspunde",
-  "no_comments" : "Nici un comentariu."
+  "no_comments" : "Nici un comentariu.",
+  "please_sign_in_to_reply" : "Este nevoie să te autentifici pentru a răspunde"
 }
