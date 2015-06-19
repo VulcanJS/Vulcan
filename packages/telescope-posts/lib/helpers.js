@@ -12,7 +12,7 @@ Posts.getProperties = function (post) {
     postAuthorName : Users.getDisplayName(postAuthor),
     postTitle : Telescope.utils.cleanUp(post.title),
     profileUrl: Users.getProfileUrlBySlugOrId(post.userId),
-    postUrl: Posts.getPageUrl(post),
+    postUrl: Posts.getPageUrl(post, true),
     thumbnailUrl: post.thumbnailUrl,
     linkUrl: !!post.url ? Posts.getOutgoingUrl(post.url) : Posts.getPageUrl(post._id)
   };
@@ -45,24 +45,28 @@ Posts.getDefaultStatus = function (user) {
  * Return a post's link if it has one, else return its post page URL
  * @param {Object} post
  */
-Posts.getLink = function (post) {
-  return !!post.url ? Posts.getOutgoingUrl(post.url) : this.getPageUrl(post);
+Posts.getLink = function (post, isAbsolute) {
+  return !!post.url ? Posts.getOutgoingUrl(post.url) : this.getPageUrl(post, isAbsolute);
 };
 
 /**
  * Get URL of a post page.
  * @param {Object} post
  */
-Posts.getPageUrl = function(post){
-  return Router.path("post_page", post);
+Posts.getPageUrl = function(post, isAbsolute){
+  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  return prefix + Router.path("post_page", post);
 };
 
 /**
  * Get post edit page URL.
  * @param {String} id
  */
-Posts.getEditUrl = function(post){
-  return Router.path("post_edit", post);
+Posts.getEditUrl = function(post, isAbsolute){
+  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  return prefix + Router.path("post_edit", post);
 };
 
 /**

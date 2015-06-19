@@ -62,8 +62,8 @@ getPostCategories = function (post) {
   return !!post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
 };
 
-getCategoryUrl = function(slug){
-  return Telescope.utils.getSiteUrl()+'category/'+slug;
+Categories.getUrl = function(slug){
+  return Router.path("posts_category", {slug: slug});
 };
 
 // add callback that adds categories CSS classes
