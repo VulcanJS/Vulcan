@@ -7,8 +7,8 @@ AutoForm.addInputType("bootstrap-url", {
       if (url.substring(0, 7) !== "http://" && url.substring(0, 8) !== "https://") {
         url = "http://"+url;
       }
-      // add trailing / if missing (unless URL contains a "?")
-      if (url.slice(-1) !== "/" && url.indexOf("?") === -1) {
+      // if URL only contains the two "/"" from "http://", then add trailing slash
+      if (url.match(/\//g).length === 2) {
         url = url + "/";
       }
       return url;
