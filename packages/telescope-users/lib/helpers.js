@@ -43,7 +43,7 @@ Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor
 Users.getProfileUrl = function (user, isAbsolute) {
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + Router.path("user_profile", {_idOrSlug: user.slug || user._id});
+  return prefix + Router.path("user_profile", {_idOrSlug: user.telescope.slug || user._id});
 };
 Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 

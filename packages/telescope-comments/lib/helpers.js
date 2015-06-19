@@ -3,14 +3,15 @@
 //////////////////////////
 
 /**
- * Grab common comment properties (for notifications).
+ * Grab common comment properties (for email notifications, only used on server).
  * @param {Object} post
  */
 Comments.getProperties = function (comment) {
   var commentAuthor = Meteor.users.findOne(comment.userId);
+  var post = Posts.findOne(comment.postId);
   var c = {
     profileUrl: commentAuthor && commentAuthor.getProfileUrl(true),
-    postUrl: Posts.getPageUrl({_id: comment.postId}, true),
+    postUrl: Posts.getPageUrl(post, true),
     authorName : comment.getAuthorName(true),
     postTitle: Posts.findOne(comment.postId).title,
     htmlBody: comment.htmlBody,
