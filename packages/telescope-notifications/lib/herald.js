@@ -24,24 +24,6 @@ var commentEmail = function (userToNotify) {
   }, 1);
 };
 
-var getCommenterProfileUrl = function (comment) {
-  var user = Meteor.users.findOne(comment.userId);
-  if (user) {
-    return Users.getProfileUrl(user);
-  } else {
-    return Users.getProfileUrlBySlugOrId(comment.userId);
-  }
-};
-
-var getAuthor = function (comment) {
-  var user = Meteor.users.findOne(comment.userId);
-  if (user) {
-    return Users.getUserName(user);
-  } else {
-    return comment.author;
-  }
-};
-
 // ------------------------------------------------------------------------------------------- //
 // -----------------------------------------  Posts ------------------------------------------ //
 // ------------------------------------------------------------------------------------------- //
@@ -92,7 +74,7 @@ Herald.addCourier('postApproved', {
       }));
     }
   },
-  transform: {
+  transform: { // used for on-site notifications
     postUrl: function () {
       var p = Posts.getProperties(this.data);
       return p.postUrl;
@@ -108,22 +90,20 @@ Herald.addCourier('postApproved', {
 // ---------------------------------------- Comments ----------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-// specify how to get properties used in template from comment data
+// specify how to get properties used in template from comment data, used for on-site notifications
 var commentCourierTransform = {
   profileUrl: function () {
-    return getCommenterProfileUrl(this.data.comment);
+    var user = Meteor.users.findOne(this.data.comment.userId);
+    return user && user.getProfileUrl();
   },
-  postCommentUrl: function () {
-    return Router.path('post_page', {_id: this.data.post._id});
+  authorName: function () {
+    return Comments.getAuthorName(this.data.comment);
   },
-  author: function () {
-    return getAuthor(this.data.comment);
+  commentUrl: function () {
+    return Posts.getPageUrl({_id: this.data.post._id});
   },
   postTitle: function () {
     return this.data.post.title;
-  },
-  url: function () {
-    return Router.path('comment_reply', {_id: this.parentComment._id});
   }
 };
 

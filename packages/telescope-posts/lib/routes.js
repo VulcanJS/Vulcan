@@ -216,7 +216,7 @@ Meteor.startup(function () {
     }
   });
 
-  Router.route('/p/:slug/:_id', {
+  Router.route('/p/:_id/:slug?', {
     name: 'post_page',
     controller: Posts.controllers.page
   });

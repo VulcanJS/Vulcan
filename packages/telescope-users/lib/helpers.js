@@ -37,20 +37,15 @@ Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor
 
 /**
  * Get a user's profile URL
- * @param {Object} user
+ * @param {Object} user (note: we only actually need either the _id or slug properties)
+ * @param {Boolean} isAbsolute
  */
-Users.getProfileUrl = function (user) {
-  return Users.getProfileUrlBySlugOrId(user.telescope.slug);
+Users.getProfileUrl = function (user, isAbsolute) {
+  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  return prefix + Router.path("user_profile", {_idOrSlug: user.slug || user._id});
 };
-Users.helpers({getProfileUrl: function () {return Users.getProfileUrl(this);}});
-
-/**
- * Get a user's profile URL by slug or Id
- * @param {String} slugOrId
- */
-Users.getProfileUrlBySlugOrId = function (slugOrId) {
-  return Telescope.utils.getRouteUrl('user_profile', {_idOrSlug: slugOrId});
-};
+Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
 /**
  * Get a user's Twitter name

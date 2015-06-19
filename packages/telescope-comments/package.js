@@ -22,6 +22,7 @@ Package.onUse(function (api) {
     'lib/callbacks.js',
     'lib/views.js',
     'lib/parameters.js',
+    'lib/helpers.js',
     'lib/routes.js'
   ], ['client', 'server']);
 
