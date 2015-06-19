@@ -155,7 +155,7 @@ Posts.controllers.page = RouteController.extend({
   onAfterAction: function () {
     var post = this.post();
     if (post && post.slug !== this.params.slug) {
-      Router.go("post_page", post);
+      window.history.replaceState({}, "", post.getPageUrl());
     }
   },
 
