@@ -72,7 +72,7 @@ Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, 
 Posts.getAuthorName = function (post) {
   var user = Meteor.users.findOne(post.userId);
   if (user) {
-    return user.getUserName();
+    return user.getDisplayName();
   } else {
     return post.author;
   }
