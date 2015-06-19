@@ -154,8 +154,11 @@ Posts.controllers.page = RouteController.extend({
 
   onAfterAction: function () {
     var post = this.post();
-    if (post && post.slug !== this.params.slug) {
-      window.history.replaceState({}, "", post.getPageUrl());
+    if (post) {
+      if (post.slug !== this.params.slug) {
+        window.history.replaceState({}, "", post.getPageUrl());
+      }
+      $('link[rel="canonical"]').attr("href", post.getPageUrl(true));
     }
   },
 
