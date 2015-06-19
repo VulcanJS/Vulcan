@@ -5,7 +5,7 @@
         <div class="comment-deleted">This comment has been deleted.</div>
       {{else}}
       <div class="comment-content">
-        <div class="comment-actions {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
+        <div class="comment-actions comment-vote {{#if upvoted}}upvoted{{else}}not-upvoted{{/if}} {{#if downvoted}}downvoted{{else}}not-downvoted{{/if}}">
           <a class="upvote" href="#">
             {{{icon "upvote"}}}
             <span>{{_ "upvote"}}</span>
