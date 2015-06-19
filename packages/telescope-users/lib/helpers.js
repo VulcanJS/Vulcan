@@ -40,7 +40,11 @@ Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor
  * @param {Object} user
  */
 Users.getProfileUrl = function (user) {
-  return Users.getProfileUrlBySlugOrId(user.telescope.slug);
+  if (typeof user === "undefined") {
+    return "";
+  } else {
+    return (user.telescope && user.telescope.slug) ? Users.getProfileUrlBySlugOrId(user.telescope.slug) : "";
+  }
 };
 Users.helpers({getProfileUrl: function () {return Users.getProfileUrl(this);}});
 
