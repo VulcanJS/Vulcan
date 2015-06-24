@@ -207,19 +207,7 @@ Meteor.startup(function () {
 
   // Post Page
 
-  // legacy route
-  Router.route('/posts/:_id', {
-    name: 'post_page_id',
-    onBeforeAction: function () {
-      var post = {
-        slug: '_',
-        _id: this.params._id
-      };
-      Router.go("post_page", post);
-    }
-  });
-
-  Router.route('/p/:_id/:slug?', {
+  Router.route('/posts/:_id/:slug?', {
     name: 'post_page',
     controller: Posts.controllers.page
   });

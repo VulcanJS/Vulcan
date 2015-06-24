@@ -12,13 +12,15 @@ Package.onUse(function (api) {
   api.use([
     'telescope:core@0.20.6',
     'kestanous:herald@1.3.0',
-    'kestanous:herald-email@0.5.0',
-    'cmather:handlebars-server@0.2.0'
+    'kestanous:herald-email@0.5.0'
   ]);
 
   api.addFiles([
-    'lib/notifications.js',
     'lib/herald.js',
+    'lib/helpers.js',
+    'lib/custom_fields.js',
+    'lib/notifications.js',
+    'lib/callbacks.js',
     'lib/modules.js',
     'package-tap.i18n'
   ], ['client', 'server']);
@@ -39,7 +41,14 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/notifications-server.js',
-    'lib/server/routes.js'
+    'lib/server/routes.js',
+    'lib/server/templates/emailAccountApproved.handlebars',
+    'lib/server/templates/emailNewComment.handlebars',
+    'lib/server/templates/emailNewPost.handlebars',
+    'lib/server/templates/emailNewPendingPost.handlebars',
+    'lib/server/templates/emailPostApproved.handlebars',
+    'lib/server/templates/emailNewReply.handlebars',
+    'lib/server/templates/emailNewUser.handlebars'
   ], ['server']);
 
   api.addFiles([

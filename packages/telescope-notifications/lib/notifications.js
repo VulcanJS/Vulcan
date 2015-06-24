@@ -1,188 +1,289 @@
-// add new post notification callback on post submit
-function postSubmitNotification (post) {
+var notifications = {
 
-  var adminIds = _.pluck(Users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
-  var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
+  newPost: {
+    subject: function () {
+      return this.postAuthorName+' has created a new post: '+this.postTitle;
+    },
+    emailTemplate: "emailNewPost"
+  },
 
-  // remove post author ID from arrays
-  adminIds = _.without(adminIds, post.userId);
-  notifiedUserIds = _.without(notifiedUserIds, post.userId);
+  newPendingPost: {
+    subject: function () {
+      return this.postAuthorName+' has a new post pending approval: '+this.postTitle;
+    },
+    emailTemplate: "emailNewPendingPost"
+  },
 
-  if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
-    // if post is pending, only notify admins
-    Herald.createNotification(adminIds, {courier: 'newPendingPost', data: post});
-  } else if (!!notifiedUserIds.length) {
-    // if post is approved, notify everybody
-    Herald.createNotification(notifiedUserIds, {courier: 'newPost', data: post});
+  postApproved: {
+    subject: function () {
+      return this.postAuthorName+' has a new post pending approval: '+this.postTitle;
+    },
+    emailTemplate: "emailPostApproved",
+    onsiteTemplate: "notification_post_approved"
+  },
+
+  newComment: {
+    subject: function () {
+      return this.authorName+' left a new comment on your post "' + this.postTitle + '"';
+    },
+    emailTemplate: "emailNewComment",
+    onsiteTemplate: "notification_new_comment"
+  },
+
+  newReply: {
+    subject: function () {
+      return this.authorName+' replied to your comment on "'+this.postTitle+'"';
+    },
+    emailTemplate: "emailNewReply",
+    onsiteTemplate: "notification_new_reply"
+  },
+
+  newCommentSubscribed: {
+    subject: function () {
+      return this.authorName+' left a new comment on "' + this.postTitle + '"';
+    },
+    emailTemplate: "notification_new_comment",
+    onsite: "notification_new_comment"
   }
-  return post;
 
-}
-Telescope.callbacks.add("postSubmitAsync", postSubmitNotification);
+};
 
-function postApprovedNotification (post) {
-  Herald.createNotification(post.userId, {courier: 'postApproved', data: post});
-  return post;
-}
-Telescope.callbacks.add("postApprovedAsync", postApprovedNotification);
+_.each(notifications, function (notification, notificationName) {
 
-// add new comment notification callback on comment submit
-function addCommentNotification (comment) {
-
-  if(Meteor.isServer && !comment.disableNotifications){
-
-    var post = Posts.findOne(comment.postId),
-        notificationData = {
-          comment: _.pick(comment, '_id', 'userId', 'author', 'body'),
-          post: _.pick(post, '_id', 'userId', 'title', 'url')
-        },
-        postAuthor = Users.findOne(post.userId),
-        userIdsNotified = [];
-
-    // 1. Notify author of post (if they have new comment notifications turned on)
-    //    but do not notify author of post if they're the ones posting the comment
-    if (Users.getSetting(postAuthor, "notifications.comments", true) && comment.userId !== postAuthor._id) {
-      Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
-      userIdsNotified.push(post.userId);
-    }
-
-    // 2. Notify author of comment being replied to
-    if (!!comment.parentCommentId) {
-
-      var parentComment = Comments.findOne(comment.parentCommentId);
-
-      // do not notify author of parent comment if they're also post author or comment author
-      // (someone could be replying to their own comment)
-      if (parentComment.userId !== post.userId && parentComment.userId !== comment.userId) {
-
-        var parentCommentAuthor = Users.findOne(parentComment.userId);
-
-        // do not notify parent comment author if they have reply notifications turned off
-        if (Users.getSetting(parentCommentAuthor, "notifications.replies", true)) {
-
-          // add parent comment to notification data
-          notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
-
-          Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
-          userIdsNotified.push(parentComment.userId);
+  var courier = {
+    media: {
+      onsite: {},
+      email: {
+        emailRunner: function (user) {
+          var notificationProperties = this.data;
+          var html = Telescope.email.buildTemplate(Telescope.email.getTemplate(notification.emailTemplate)(notificationProperties));
+          Telescope.email.send(Users.getEmail(user), _.bind(notification.subject, notificationProperties)(), html);
         }
       }
-
     }
-
-    // 3. Notify users subscribed to the thread
-    // TODO: ideally this would be injected from the telescope-subscribe-to-posts package
-    if (!!post.subscribers) {
-
-      // remove userIds of users that have already been notified
-      // and of comment author (they could be replying in a thread they're subscribed to)
-      var subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
-      Herald.createNotification(subscriberIdsToNotify, {courier: 'newCommentSubscribed', data: notificationData});
-
-      userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
-
-    }
-
-  }
-
-  return comment;
-
-}
-
-Telescope.callbacks.add("commentSubmitAsync", addCommentNotification);
-
-var emailNotifications = {
-  fieldName: 'emailNotifications',
-  fieldSchema: {
-    type: Boolean,
-    optional: true,
-    defaultValue: true,
-    autoform: {
-      group: 'notifications',
-      instructions: 'Enable email notifications for new posts and new comments (requires restart).'
-    }
-  }
-};
-Settings.addField(emailNotifications);
-
-// make it possible to disable notifications on a per-comment basis
-Comments.addField(
-  {
-    fieldName: 'disableNotifications',
-    fieldSchema: {
-      type: Boolean,
-      optional: true,
-      autoform: {
-        omit: true
-      }
-    }
-  }
-);
-
-// Add notifications options to user profile settings
-Users.addField([
-  {
-    fieldName: 'telescope.notifications.users',
-    fieldSchema: {
-      label: 'New users',
-      type: Boolean,
-      optional: true,
-      defaultValue: false,
-      editableBy: ['admin'],
-      autoform: {
-        group: 'Email Notifications'
-      }
-    }
-  },
-  {
-    fieldName: 'telescope.notifications.posts',
-    fieldSchema: {
-      label: 'New posts',
-      type: Boolean,
-      optional: true,
-      defaultValue: false,
-      editableBy: ['admin', 'member'],
-      autoform: {
-        group: 'Email Notifications'
-      }
-    }
-  },
-  {
-    fieldName: 'telescope.notifications.comments',
-    fieldSchema: {
-      label: 'Comments on my posts',
-      type: Boolean,
-      optional: true,
-      defaultValue: true,
-      editableBy: ['admin', 'member'],
-      autoform: {
-        group: 'Email Notifications'
-      }
-    }
-  },
-  {
-    fieldName: 'telescope.notifications.replies',
-    fieldSchema: {
-      label: 'Replies to my comments',
-      type: Boolean,
-      optional: true,
-      defaultValue: true,
-      editableBy: ['admin', 'member'],
-      autoform: {
-        group: 'Email Notifications'
-      }
-    }
-  }
-]);
-
-function setNotificationDefaults (user) {
-  // set notifications default preferences
-  user.telescope.notifications = {
-    users: false,
-    posts: false,
-    comments: true,
-    replies: true
   };
-  return user;
-}
-Telescope.callbacks.add("onCreateUser", setNotificationDefaults);
+
+  if (!!notification.onsiteTemplate) {
+    courier.message = {
+      default: function () {
+        return Blaze.toHTML(Blaze.With(this.data, function () {
+          return Template[notification.onsiteTemplate];
+        }));
+      }
+    };
+  }
+
+  Herald.addCourier(notificationName, courier);
+
+});
+
+// var commentHerald = {
+//   media: {
+//     onsite: {},
+//     email: {
+//       emailRunner: commentEmailRunner
+//     }
+//   },
+//   message: {
+//     default: defaultMessage
+//   }
+// };
+
+// Herald.addCourier('newComment', commentHerald);
+
+// var postEmailRunner = function (user) {
+//   var p = Posts.getNotificationProperties(this.data);
+//   var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
+//   var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailNewPost')(p));
+//   Telescope.email.send(Users.getEmail(user), subject, html);
+// };
+
+// var postHerald = {
+//   media: {
+//     email: {
+//       emailRunner: function (user) {
+
+//         var notification = this,
+//             subject,
+//             template,
+//             properties = Posts.getNotificationProperties(this.data);
+
+//         // change the template and subject based on the notification type
+//         switch(notification.courier){
+//           case 'newPost':
+//             subject = properties.postAuthorName+' has created a new post: '+properties.postTitle;
+//             template = 'emailNewPost';
+//             break;
+//           case 'newPendingPost':
+//             subject = properties.postAuthorName+' has a new post pending approval: '+properties.postTitle;
+//             template = 'emailNewPendingPost';
+//             break;
+//           case 'postApproved':
+//             subject = 'Your post “'+properties.postTitle+'” has been approved';
+//             template = 'emailPostApproved';
+//             break;
+//           default:
+//             break;
+//         }
+//         var html = Telescope.email.buildTemplate(Telescope.email.getTemplate(template)(properties));
+//         Telescope.email.send(Users.getEmail(user), subject, html);
+
+//       }
+//     }
+//   },
+//   message: {
+//     default: function () {
+
+//         var notification = this,
+//             template,
+//             properties = Posts.getNotificationProperties(this.data);
+
+//         // change the template based on the notification type
+//         switch(notification.courier){
+//           case 'postApproved':
+//             subject = 'Your post “'+properties.postTitle+'” has been approved';
+//             template = 'notification_post_approved';
+//             break;
+//           default:
+//             break;
+//         }
+
+//       return Blaze.toHTML(Blaze.With(this, function () {
+//         return Template[template];
+//       }));
+//     }
+//   }
+// };
+
+
+// Herald.addCourier('newPost', {
+//   media: {
+//     email: {
+//       emailRunner: function (user) {
+//         var p = Posts.getNotificationProperties(this.data);
+//         var subject = p.postAuthorName+' has created a new post: '+p.postTitle;
+//         var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailNewPost')(p));
+//         Telescope.email.send(Users.getEmail(user), subject, html);
+//       }
+//     }
+//   }
+//   // message: function (user) { return 'email template?' }
+// });
+
+// Herald.addCourier('newPendingPost', {
+//   media: {
+//     email: {
+//       emailRunner: function (user) {
+//         var p = Posts.getNotificationProperties(this.data);
+//         var subject = p.postAuthorName+' has a new post pending approval: '+p.postTitle;
+//         var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailNewPendingPost')(p));
+//         Telescope.email.send(Users.getEmail(user), subject, html);
+//       }
+//     }
+//   }
+// });
+
+// Herald.addCourier('postApproved', {
+//   media: {
+//     onsite: {},
+//     email: {
+//       emailRunner: function (user) {
+//         var p = Posts.getNotificationProperties(this.data);
+//         var subject = 'Your post “'+p.postTitle+'” has been approved';
+//         var html = Telescope.email.buildTemplate(Telescope.email.getTemplate('emailPostApproved')(p));
+//         Telescope.email.send(Users.getEmail(user), subject, html);
+//       }
+//     }
+//   },
+//   message: {
+//     default: function () {
+//       return Blaze.toHTML(Blaze.With(this, function () {
+//         return Template.notification_post_approved;
+//       }));
+//     }
+//   }
+// });
+
+// // email runner for all comment-related notifications
+// var commentEmailRunner = function (userToNotify) {
+
+//   var notification = this,
+//       post = notification.data.post,
+//       comment = notification.data.comment,
+//       template,
+//       subject;
+
+//   // change the template and subject based on the notification type
+//   switch(notification.courier){
+//     case 'newComment':
+//       subject = notification.authorName()+' left a new comment on your post "' + post.title + '"';
+//       template = 'emailNewComment';
+//       break;
+//     case 'newReply':
+//       subject = notification.authorName()+' replied to your comment on "'+post.title+'"';
+//       template = 'emailNewReply';
+//       break;
+//     case 'newCommentSubscribed':
+//       subject = notification.authorName()+' left a new comment on "' + post.title + '"';
+//       template = 'emailNewComment';
+//       break;
+//     default:
+//       break;
+//   }
+
+//   // apply comment properties to comment notification template
+//   var notificationHtml = Telescope.email.getTemplate(template)(Comments.getNotificationProperties(comment));
+
+//   // wrap notification template with email wrapper to get the final HTML
+//   notificationHtml = Telescope.email.buildTemplate(notificationHtml);
+
+//   // send the email on the server using defer
+//   if (Meteor.isServer) {
+//     Meteor.defer(function () {
+//       Telescope.email.send(Users.getEmail(userToNotify), subject, notificationHtml);
+//     });
+//   }
+
+// };
+
+// // on-site message for all comment-related notifications
+// var defaultMessage = function () {
+
+//   var notification = this,
+//       template;
+  
+//   switch(notification.courier){
+//     case 'newComment':
+//       template = 'notification_new_comment';
+//       break;
+//     case 'newReply':
+//       template = 'emailNewReply';
+//       break;
+//     case 'newCommentSubscribed':
+//       template = 'notification_new_reply';
+//       break;
+//     default:
+//       break;
+//   }
+
+//   return Blaze.toHTML(Blaze.With(this, function () {
+//     return Template[template];
+//   }));
+
+// };
+
+// var commentHerald = {
+//   media: {
+//     onsite: {},
+//     email: {
+//       emailRunner: commentEmailRunner
+//     }
+//   },
+//   message: {
+//     default: defaultMessage
+//   }
+// };
+
+// Herald.addCourier('newComment', commentHerald);
+// Herald.addCourier('newReply', commentHerald);
+// Herald.addCourier('newCommentSubscribed', commentHerald);

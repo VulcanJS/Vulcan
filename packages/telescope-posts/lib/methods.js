@@ -66,7 +66,8 @@ Posts.submit = function (post) {
 
   // --------------------- Server-Side Async Callbacks --------------------- //
 
-  Telescope.callbacks.runAsync("postSubmitAsync", post);
+  // note: query for post to get fresh document with collection-hooks effects applied
+  Telescope.callbacks.runAsync("postSubmitAsync", Posts.findOne(post._id));
 
   return post;
 };

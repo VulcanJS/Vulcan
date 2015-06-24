@@ -39,7 +39,8 @@ Comments.submit = function (comment) {
   // --------------------- Server-side Async Callbacks --------------------- //
 
   // run all post submit server callbacks on comment object successively
-  Telescope.callbacks.runAsync("commentSubmitAsync", comment);
+  // note: query for comment to get fresh document with collection-hooks effects applied
+  Telescope.callbacks.runAsync("commentSubmitAsync", Comments.findOne(comment._id));
 
   return comment;
 }
