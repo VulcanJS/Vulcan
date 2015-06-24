@@ -53,7 +53,6 @@ _.each(notifications, function (notification, notificationName) {
 
   var courier = {
     media: {
-      onsite: {},
       email: {
         emailRunner: function (user) {
           var notificationProperties = this.data;
@@ -65,15 +64,13 @@ _.each(notifications, function (notification, notificationName) {
   };
 
   if (!!notification.onsiteTemplate) {
-    courier.message = {
-      default: function () {
-        return Blaze.toHTML(Blaze.With(this.data, function () {
-          return Template[notification.onsiteTemplate];
-        }));
-      }
+    courier.media.onsite = {};
+    courier.message = function () {
+      return Blaze.toHTML(Blaze.With(this.data, function () {
+        return Template[notification.onsiteTemplate];
+      }));
     };
   }
-
   Herald.addCourier(notificationName, courier);
 
 });
