@@ -92,10 +92,6 @@ _.each(notifications, function (notification, notificationName) {
     };
   }
 
-  // create transforms
-
-
-
   Herald.addCourier(notificationName, courier);
 
 });
