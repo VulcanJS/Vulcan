@@ -1,8 +1,18 @@
+## v0.21 “SlugScope”
+
+* Added URL slugs for posts (i.e. `/posts/xyz/my-post-slug`).
+* i18n files clean-up.
+* Added post downvote setting.
+* Refactored notifications code.
+* Added `kadira-debug` package.
+* Fixed avatar bug.
+* Fixed screen refresh bug on post page.
+
 ## v0.20.6 “AutoScope”
 
-* Add Extra CSS field (thanks @johnthepink!)
-* Fix security issue with Settings (thanks @jshimko!)
-* Add automatic template replacement
+* Added Extra CSS field (thanks @johnthepink!).
+* Fixed security issue with Settings (thanks @jshimko!).
+* Added automatic template replacement.
 
 ## v0.20.5 “MinorScope”
 
