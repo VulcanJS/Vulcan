@@ -115,7 +115,7 @@ Posts.controllers.page = RouteController.extend({
 
   template: 'post_page',
 
-  waitOn: function() {
+  waitOn: function () {
     this.postSubscription = coreSubscriptions.subscribe('singlePost', this.params._id);
     this.postUsersSubscription = coreSubscriptions.subscribe('postUsers', this.params._id);
     this.commentSubscription = coreSubscriptions.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
@@ -131,11 +131,9 @@ Posts.controllers.page = RouteController.extend({
   },
 
   onBeforeAction: function () {
-    if (! this.post()) {
+    if (!this.post()) {
       if (this.postSubscription.ready()) {
         this.render('not_found');
-      } else {
-        this.render('loading');
       }
     } else {
       this.next();
