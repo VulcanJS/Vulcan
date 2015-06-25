@@ -75,8 +75,9 @@ Meteor.startup(function () {
     action: function() {
       var html;
       var comment = Comments.findOne(this.params.id);
+      var post = Posts.findOne(comment.postId);
       if (!!comment) {
-        html = Telescope.email.getTemplate('emailNewComment')(Comments.getNotificationProperties(comment));
+        html = Telescope.email.getTemplate('emailNewComment')(Comments.getNotificationProperties(comment, post));
       } else {
         html = "<h3>No post found.</h3>"
       }
@@ -93,8 +94,9 @@ Meteor.startup(function () {
     action: function() {
       var html;
       var comment = Comments.findOne(this.params.id);
+      var post = Posts.findOne(comment.postId);
       if (!!comment) {
-        html = Telescope.email.getTemplate('emailNewReply')(Comments.getNotificationProperties(comment));
+        html = Telescope.email.getTemplate('emailNewReply')(Comments.getNotificationProperties(comment, post));
       } else {
         html = "<h3>No post found.</h3>"
       }
