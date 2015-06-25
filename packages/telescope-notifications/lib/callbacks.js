@@ -7,7 +7,9 @@ function postSubmitNotification (post) {
 
   var adminIds = _.pluck(Users.find({'isAdmin': true}, {fields: {_id:1}}).fetch(), '_id');
   var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
-  var notificationData = Posts.getNotificationProperties(post);
+  var notificationData = {
+    post: _.pick(post, '_id', 'userId', 'title', 'url')
+  };
 
   // remove post author ID from arrays
   adminIds = _.without(adminIds, post.userId);
@@ -25,7 +27,10 @@ function postSubmitNotification (post) {
 Telescope.callbacks.add("postSubmitAsync", postSubmitNotification);
 
 function postApprovedNotification (post) {
-  var notificationData = Posts.getNotificationProperties(post);
+  
+  var notificationData = {
+    post: _.pick(post, '_id', 'userId', 'title', 'url')
+  };
 
   Herald.createNotification(post.userId, {courier: 'postApproved', data: notificationData});
 }
@@ -41,9 +46,13 @@ function commentSubmitNotifications (comment) {
   if(Meteor.isServer && !comment.disableNotifications){
 
     var post = Posts.findOne(comment.postId),
-        notificationData = Comments.getNotificationProperties(comment),
         postAuthor = Users.findOne(post.userId),
-        userIdsNotified = [];
+        userIdsNotified = [],
+        notificationData = {
+          comment: _.pick(comment, '_id', 'userId', 'author', 'htmlBody'),
+          post: _.pick(post, '_id', 'userId', 'title', 'url')
+        };
+
 
     // 1. Notify author of post (if they have new comment notifications turned on)
     //    but do not notify author of post if they're the ones posting the comment
@@ -67,7 +76,7 @@ function commentSubmitNotifications (comment) {
         if (Users.getSetting(parentCommentAuthor, "notifications.replies", true)) {
 
           // add parent comment to notification data
-          notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author');
+          notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author', 'htmlBody');
 
           Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
           userIdsNotified.push(parentComment.userId);

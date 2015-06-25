@@ -1,10 +1,8 @@
 <template name="notification_item">
-  {{#if showItem}}
-    <li class="dropdown-item notification-item {{#if read}}read{{/if}}">
-      <span class="notification-timestamp">{{timeAgo timestamp}}</span>
-      <div class="notification-html">
-        {{{notificationHTML}}}
-      </div>
-    </li>
-  {{/if}}
+  <li class="dropdown-item notification-item {{#if read}}read{{/if}}">
+    <span class="notification-timestamp">{{timeAgo timestamp}}</span>
+    <div class="notification-html">
+      {{{notificationHTML}}}
+    </div>
+  </li>
 </template>

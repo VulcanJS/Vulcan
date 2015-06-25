@@ -26,14 +26,13 @@ Posts.getNotificationProperties = function (post) {
  * Use comment, user, and post properties to populate comment notifications objects.
  * @param {Object} comment
  */
-Comments.getNotificationProperties = function (comment) {
+Comments.getNotificationProperties = function (comment, post) {
   var commentAuthor = Meteor.users.findOne(comment.userId);
-  var post = Posts.findOne(comment.postId);
   var properties = {
     profileUrl: commentAuthor && commentAuthor.getProfileUrl(true),
     postUrl: Posts.getPageUrl(post, true),
     authorName : Comments.getAuthorName(comment),
-    postTitle: Posts.findOne(comment.postId).title,
+    postTitle: post.title,
     htmlBody: comment.htmlBody,
     commentUrl: Comments.getPageUrl(comment, true)
   };

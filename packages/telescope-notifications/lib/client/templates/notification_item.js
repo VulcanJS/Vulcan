@@ -1,12 +1,4 @@
 Template.notification_item.helpers({
-  showItem: function () {
-    try {
-      this.message();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  },
   properties: function(){
     return this.data;
   },
