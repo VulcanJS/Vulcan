@@ -203,21 +203,6 @@ Meteor.startup(function () {
     controller: Posts.controllers.scheduled
   });
 
-  // Post Page
-
-  Router.route('/posts/:_id/:slug?', {
-    name: 'post_page',
-    controller: Posts.controllers.page
-  });
-
-  Router.route('/posts/:_id/comment/:commentId', {
-    name: 'post_page_comment',
-    controller: Posts.controllers.page,
-    onAfterAction: function () {
-      // TODO: scroll to comment position
-    }
-  });
-
   // Post Edit
 
   Router.route('/posts/:_id/edit', {
@@ -236,6 +221,21 @@ Meteor.startup(function () {
       };
     },
     fastRender: true
+  });
+
+  // Post Page
+
+  Router.route('/posts/:_id/:slug?', {
+    name: 'post_page',
+    controller: Posts.controllers.page
+  });
+
+  Router.route('/posts/:_id/comment/:commentId', {
+    name: 'post_page_comment',
+    controller: Posts.controllers.page,
+    onAfterAction: function () {
+      // TODO: scroll to comment position
+    }
   });
 
   // Post Submit

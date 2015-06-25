@@ -453,10 +453,25 @@ Settings.get = function(setting, defaultValue) {
   }
 };
 
-// use custom template for checkboxes - not working yet
-// if(Meteor.isClient){
-//   AutoForm.setDefaultTemplateForType('afCheckbox', 'settings');
-// }
+
+
+/**
+ * Add trailing slash if needed on insert
+ */
+Settings.before.insert(function (userId, doc) {
+  if(doc.siteUrl && doc.siteUrl.match(/\//g).length === 2) {
+    doc.siteUrl = doc.siteUrl + "/";
+  }
+});
+
+/**
+ * Add trailing slash if needed on update
+ */
+Settings.before.update(function (userId, doc, fieldNames, modifier) {
+  if(modifier.$set && modifier.$set.siteUrl && modifier.$set.siteUrl.match(/\//g).length === 2) {
+    modifier.$set.siteUrl = modifier.$set.siteUrl + "/";
+  }
+});
 
 Meteor.startup(function () {
   Settings.allow({
