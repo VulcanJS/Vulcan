@@ -694,6 +694,29 @@ var migrationsList = {
       console.log("---------------------");
     });
     return i;
+  },
+  updateNewsletterFrequency: function () {
+    var i = 0;
+    Settings.find().forEach(function (setting) {
+      i++;
+      var days;
+      switch (setting.newsletterFrequency) {
+        case 1:
+          days = [1,2,3,4,5,6,7];
+          break;
+        case 2:
+          days = [2,4,6];
+          break;
+        case 3:
+          days = [2,5];
+          break;
+        default:
+          days = [2];
+          break;
+      }
+      Settings.update(setting._id, { $set: { newsletterFrequency: days } });
+    });
+    return i;
   }
 };
 
