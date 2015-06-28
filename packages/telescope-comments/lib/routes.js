@@ -26,7 +26,7 @@ Meteor.startup( function () {
   // Comment Reply
 
   Router.route('/comments/:_id', {
-    name: 'comment_reply',
+    name: 'comment_page',
     template: 'comment_reply',
     controller: Comments.controllers.page,
     onAfterAction: function() {

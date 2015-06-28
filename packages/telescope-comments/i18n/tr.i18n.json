@@ -1,0 +1,13 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "Özür dileriz, bu yorumu değiştiremezsiniz",
+  "your_comment_has_been_deleted" : "Yorumunuz silindi",
+  "comment_" : "Yorum",
+  "delete_comment" : "Yorumu Sil",
+  "add_comment" : "Yorum Ekle",
+  "upvote" : "1",
+  "downvote" : "-1",
+  "link" : "link",
+  "edit" : "Düzenle",
+  "reply" : "Cevap",
+  "no_comments" : "Yorum yok"
+}

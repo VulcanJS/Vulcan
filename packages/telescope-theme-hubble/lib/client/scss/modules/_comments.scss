@@ -235,33 +235,15 @@
 			line-height:30px;
 			text-align:center;
 			text-indent:0;
-			// color:$light-blue2;
-			color:$red;
-		}
-		&:hover{
-			background:$highlight-color;
-			i{
-				color:white;
-			}
 		}
 	}
-	&.upvoted .upvote, &.downvoted .downvote{
+	.upvoted .upvote, .downvoted .downvote{
 		cursor:default;
-		i{
-			color:$blue;
-		}
-		&:hover{
-			background:white;
-		}
+		color:$red;
 	}
-	&.downvoted .upvote, &.upvoted .downvote{
+	.downvoted .upvote, .upvoted .downvote{
 		cursor:default;
-		i{
-			color:$light-text;
-		}
-		&:hover{
-			background:white;
-		}
+		color:$light-text;
 	}
 }
 .comment-new{

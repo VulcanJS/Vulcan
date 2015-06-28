@@ -1,6 +1,6 @@
 Template.post_title.helpers({
   postLink: function(){
-    return !!this.url ? Posts.getOutgoingUrl(this.url) : "/posts/"+this._id;
+    return Posts.getLink(this);
   },
   postTarget: function() {
     return !!this.url ? '_blank' : '';

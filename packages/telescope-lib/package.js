@@ -50,7 +50,8 @@ Package.onUse(function (api) {
     'jparker:gravatar@0.3.1',
     'sanjo:meteor-files-helpers@1.1.0_4',
     'cmather:handlebars-server@0.2.0',
-    'chuangbo:cookie@1.1.0'
+    'chuangbo:cookie@1.1.0',
+    'ongoworks:speakingurl@5.0.1'
   ];
 
   api.use(packages);

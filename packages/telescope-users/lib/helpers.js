@@ -37,20 +37,18 @@ Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor
 
 /**
  * Get a user's profile URL
- * @param {Object} user
+ * @param {Object} user (note: we only actually need either the _id or slug properties)
+ * @param {Boolean} isAbsolute
  */
-Users.getProfileUrl = function (user) {
-  return Users.getProfileUrlBySlugOrId(user.telescope.slug);
+Users.getProfileUrl = function (user, isAbsolute) {
+  if (typeof user === "undefined") {
+    return "";
+  }
+  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  return prefix + Router.path("user_profile", {_idOrSlug: user.telescope.slug || user._id});
 };
-Users.helpers({getProfileUrl: function () {return Users.getProfileUrl(this);}});
-
-/**
- * Get a user's profile URL by slug or Id
- * @param {String} slugOrId
- */
-Users.getProfileUrlBySlugOrId = function (slugOrId) {
-  return Telescope.utils.getRouteUrl('user_profile', {_idOrSlug: slugOrId});
-};
+Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
 /**
  * Get a user's Twitter name
@@ -165,6 +163,26 @@ Users.setSetting = function (user, settingName, value) {
   }
 };
 Users.helpers({setSetting: function () {return Users.setSetting(this);}});
+
+/**
+ * Check if a user has upvoted a post
+ * @param {Object} user
+ * @param {Object} post
+ */
+Users.hasUpvoted = function (user, post) {
+  return user && _.include(post.upvoters, user._id);
+};
+Users.helpers({hasUpvoted: function (post) {return Users.hasUpvoted(this, post);}});
+
+/**
+ * Check if a user has downvoted a post
+ * @param {Object} user
+ * @param {Object} post
+ */
+Users.hasDownvoted = function (user, post) {
+  return user && _.include(post.downvoters, user._id);
+};
+Users.helpers({hasDownvoted: function (post) {return Users.hasDownvoted(this, post);}});
 
 ///////////////////
 // Other Helpers //

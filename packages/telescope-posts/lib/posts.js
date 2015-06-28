@@ -49,6 +49,13 @@ Posts.schema = new SimpleSchema({
     editableBy: ["member", "admin"]
   },
   /**
+    Slug
+  */
+  slug: {
+    type: String,
+    optional: true
+  },
+  /**
     Post body (markdown)
   */
   body: {
@@ -247,5 +254,15 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if body is being modified, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+  }
+});
+
+/**
+ * Generate slug when post title is updated
+ */
+Posts.before.update(function (userId, doc, fieldNames, modifier) {
+  // if title is being modified, update slug too
+  if (Meteor.isServer && modifier.$set && modifier.$set.title) {
+    modifier.$set.slug = Telescope.utils.slugify(marked(modifier.$set.title));
   }
 });

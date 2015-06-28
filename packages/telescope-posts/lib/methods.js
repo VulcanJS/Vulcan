@@ -52,6 +52,9 @@ Posts.submit = function (post) {
   // clean up post title
   post.title = Telescope.utils.cleanUp(post.title);
 
+  // generate slug
+  post.slug = Telescope.utils.slugify(post.title);
+
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit server callbacks on post object successively
@@ -79,7 +82,6 @@ Posts.edit = function (postId, modifier, post) {
   if (typeof post === "undefined") {
     post = Posts.findOne(postId);
   }
-
 
   // ------------------------------ Callbacks ------------------------------ //
 

@@ -1,0 +1,13 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "对不起你不能编辑这个评论",
+  "your_comment_has_been_deleted" : "你的评论已经被删除",
+  "comment_" : "评论",
+  "delete_comment" : "删除评论",
+  "add_comment" : "评论",
+  "upvote" : "顶",
+  "downvote" : "踩",
+  "link" : "链接",
+  "edit" : "编辑",
+  "reply" : "回复",
+  "no_comments" : "暂时没有评论"
+}
