@@ -281,6 +281,15 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
+ * Disallow $rename
+ */
+Users.before.update(function (userId, doc, fieldNames, modifier) {
+  if (!!modifier.$rename) {
+    throw new Meteor.Error("illegal $rename operator detected!");
+  }
+});
+
+/**
  * If user.telescope.email has changed, check for existing emails and change user.emails if needed
  */
  if (Meteor.isServer) {

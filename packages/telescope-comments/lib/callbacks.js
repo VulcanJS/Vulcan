@@ -16,6 +16,15 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
   }
 });
 
+/**
+ * Disallow $rename
+ */
+Comments.before.update(function (userId, doc, fieldNames, modifier) {
+  if (!!modifier.$rename) {
+    throw new Meteor.Error("illegal $rename operator detected!");
+  }
+});
+
 function afterCommentOperations (comment) {
 
   var userId = comment.userId;

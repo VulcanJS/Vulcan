@@ -31,6 +31,14 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
   }
 });
 
+/**
+ * Disallow $rename
+ */
+Posts.before.update(function (userId, doc, fieldNames, modifier) {
+  if (!!modifier.$rename) {
+    throw new Meteor.Error("illegal $rename operator detected!");
+  }
+});
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
