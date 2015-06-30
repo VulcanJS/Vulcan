@@ -27,7 +27,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if title is being modified, update slug too
   if (Meteor.isServer && modifier.$set && modifier.$set.title) {
-    modifier.$set.slug = Telescope.utils.slugify(marked(modifier.$set.title));
+    modifier.$set.slug = Telescope.utils.slugify(modifier.$set.title);
   }
 });
 
