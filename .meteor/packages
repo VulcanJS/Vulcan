@@ -38,6 +38,11 @@ telescope:theme-base
 telescope:theme-hubble
 telescope:update-prompt
 
+
+############ Atmosphere Packages (Optional) ############
+useraccounts:unstyled
+
+
 ############ Your Custom Packages ############
 
 # my-custom-package
