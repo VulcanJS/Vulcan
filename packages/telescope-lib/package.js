@@ -36,7 +36,7 @@ Package.onUse(function (api) {
     'meteorhacks:fast-render@2.3.2',
     'meteorhacks:subs-manager@1.3.0',
     'percolatestudio:synced-cron@1.1.0',
-    'useraccounts:unstyled@1.8.1',
+    'useraccounts:core@1.11.1',
     'manuelschoebel:ms-seo@0.4.1',
     'aramk:tinycolor@1.1.0_1',
     'momentjs:moment@2.10.3',
