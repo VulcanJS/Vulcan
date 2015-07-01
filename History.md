@@ -1,4 +1,4 @@
-## v0.21 “SlugScope”
+## v0.21.1 “SlugScope”
 
 * Added URL slugs for posts (i.e. `/posts/xyz/my-post-slug`).
 * i18n files clean-up.
