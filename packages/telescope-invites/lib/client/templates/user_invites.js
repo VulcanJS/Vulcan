@@ -19,7 +19,7 @@ Template.user_invites.helpers({
   },
   invitesLeft: function () {
     var currentUser = Meteor.user();
-    return currentUser ? currentUser.telescope.inviteCount : 0;
+    return (currentUser && !(Users.is.admin(currentUser))) ? (currentUser.telescope.inviteCount - currentUser.telescope.invitedCount) : 0
   },
   invitesSchema: function () {
     // expose schema for Invites (used by AutoForm)
