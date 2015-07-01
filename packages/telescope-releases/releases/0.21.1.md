@@ -3,7 +3,7 @@
 * Added URL slugs for posts (i.e. `/posts/xyz/my-post-slug`).
 * i18n files clean-up.
 * Added post downvote setting.
-* Removed `post_upvote` template to `post_vote`.
+* Renamed `post_upvote` template to `post_vote`.
 * Refactored notifications code.
 * Added `kadira-debug` package.
 * Fixed avatar bug.
