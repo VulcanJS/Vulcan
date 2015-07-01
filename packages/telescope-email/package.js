@@ -25,15 +25,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/email.js',
-    'lib/server/routes.js',
-    'lib/server/templates/emailAccountApproved.handlebars',
     'lib/server/templates/emailInvite.handlebars',
-    'lib/server/templates/emailNewComment.handlebars',
-    'lib/server/templates/emailNewPost.handlebars',
-    'lib/server/templates/emailNewPendingPost.handlebars',
-    'lib/server/templates/emailPostApproved.handlebars',
-    'lib/server/templates/emailNewReply.handlebars',
-    'lib/server/templates/emailNewUser.handlebars',
     'lib/server/templates/emailTest.handlebars',
     'lib/server/templates/emailWrapper.handlebars',
   ], ['server']);

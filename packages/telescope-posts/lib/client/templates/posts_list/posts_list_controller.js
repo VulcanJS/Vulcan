@@ -88,8 +88,6 @@ Template.posts_list_controller.helpers({
 
       // what to do when user clicks "load more"
       loadMoreHandler: function (instance) {
-        event.preventDefault();
-
         // increase limit by 5 and update it
         var limit = instance.postsLimit.get();
         limit += Settings.get('postsPerPage', 10);

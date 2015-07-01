@@ -33,6 +33,7 @@ Meteor.startup(function () {
   importRelease('0.20.4');
   importRelease('0.20.5');
   importRelease('0.20.6');
+  importRelease('0.21');
 
   // if this is before the first run, mark all release notes as read to avoid showing them
   if (!Events.findOne({name: 'firstRun'})) {

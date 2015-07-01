@@ -1,31 +1,3 @@
-///////////////////////////
-// Notifications Helpers //
-///////////////////////////
-
-/**
- * Grab common post properties (for email notifications, only used on server).
- * @param {Object} post
- */
-Posts.getProperties = function (post) {
-  var postAuthor = Meteor.users.findOne(post.userId);
-  var p = {
-    postAuthorName : post.getAuthorName(),
-    postTitle : Telescope.utils.cleanUp(post.title),
-    profileUrl: Users.getProfileUrl(postAuthor, true),
-    postUrl: post.getPageUrl(true),
-    thumbnailUrl: post.thumbnailUrl,
-    linkUrl: !!post.url ? Telescope.utils.getOutgoingUrl(post.url) : post.getPageUrl(true)
-  };
-
-  if(post.url)
-    p.url = post.url;
-
-  if(post.htmlBody)
-    p.htmlBody = post.htmlBody;
-
-  return p;
-};
-
 //////////////////
 // Link Helpers //
 //////////////////

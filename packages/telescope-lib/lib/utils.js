@@ -140,9 +140,16 @@ Telescope.utils.getPostCommentUrl = function(postId, commentId) {
 };
 
 Telescope.utils.slugify = function (s) {
-  return getSlug(s, {
+  var slug = getSlug(s, {
     truncate: 60
   });
+
+  // can't have posts with an "edit" slug
+  if (slug === "edit") {
+    slug = "edit-1";
+  }
+
+  return slug;
 };
 
 Telescope.utils.getShortUrl = function(post) {

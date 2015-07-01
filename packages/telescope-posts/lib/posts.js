@@ -234,35 +234,3 @@ Posts.allow({
   remove: _.partial(Telescope.allowCheck, Posts)
 });
 
-//////////////////////////////////////////////////////
-// Collection Hooks                                 //
-// https://atmospherejs.com/matb33/collection-hooks //
-//////////////////////////////////////////////////////
-
-/**
- * Generate HTML body from Markdown on post insert
- */
-Posts.before.insert(function (userId, doc) {
-  if(!!doc.body)
-    doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
-});
-
-/**
- * Generate HTML body from Markdown when post body is updated
- */
-Posts.before.update(function (userId, doc, fieldNames, modifier) {
-  // if body is being modified, update htmlBody too
-  if (Meteor.isServer && modifier.$set && modifier.$set.body) {
-    modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
-  }
-});
-
-/**
- * Generate slug when post title is updated
- */
-Posts.before.update(function (userId, doc, fieldNames, modifier) {
-  // if title is being modified, update slug too
-  if (Meteor.isServer && modifier.$set && modifier.$set.title) {
-    modifier.$set.slug = Telescope.utils.slugify(marked(modifier.$set.title));
-  }
-});

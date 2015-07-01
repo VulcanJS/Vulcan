@@ -30,7 +30,7 @@ Posts.getSubParams = function (terms) {
     _.extend(parameters.options, {limit: parseInt(terms.limit)});
 
   // limit to "maxLimit" posts at most when limit is undefined, equal to 0, or superior to maxLimit
-  if(!parameters.options.limit || parameters.options.limit == 0 || parameters.options.limit > maxLimit) {
+  if(!parameters.options.limit || parameters.options.limit === 0 || parameters.options.limit > maxLimit) {
     parameters.options.limit = maxLimit;
   }
 

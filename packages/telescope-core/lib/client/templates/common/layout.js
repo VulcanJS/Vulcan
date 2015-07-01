@@ -28,6 +28,10 @@ Template.layout.rendered = function(){
   link.href = Settings.get('faviconUrl', '/img/favicon.ico');
   document.getElementsByTagName('head')[0].appendChild(link);
 
+  // canonical
+  var canonicalLink = document.createElement('link');
+  canonicalLink.rel = 'canonical';
+  document.getElementsByTagName('head')[0].appendChild(canonicalLink);
 };
 
 Template.layout.events({
