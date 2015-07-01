@@ -43,7 +43,7 @@ Comments.submit = function (comment) {
   Telescope.callbacks.runAsync("commentSubmitAsync", Comments.findOne(comment._id));
 
   return comment;
-}
+};
 
 Comments.edit = function (commentId, modifier, comment) {
 
