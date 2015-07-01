@@ -8,6 +8,13 @@
   "1_notification" : "En notifikation",
   "notifications" : "notifikationer",
   "mark_all_as_read" : "Markera alla som lästa",
+  "left_a_new_comment_on" : "lämnade en ny kommentar på",
   "has_replied_to_your_comment_on" : " har svarat på din kommentar gällande",
-  "mark_as_read" : "Markera som läst"
+  "mark_as_read" : "Markera som läst",
+  "you_have_been_unsubscribed_from_all_notifications" : "Du har avregistrerat dig från alla notifikationer.",
+  "user_not_found" : "Användaren hittades inte",
+  "notifications_fieldset" : "Notifikationer",
+  "emailNotifications" : "E",
+  "your_post" : "Ditt inlägg",
+  "has_been_approved" : "har godkänts"
 }

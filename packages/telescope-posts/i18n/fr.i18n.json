@@ -48,7 +48,7 @@
   "approved" : "Approuvé",
   "rejected" : "Rejeté",
   "delete_post" : "Supprimer le post",
-  "thanks_your_post_is_awaiting_approval" : "Merci, votre post est en cours de validation",
+  "thanks_your_post_is_awaiting_approval" : "Merci, votre post est en cours de validation.",
   "sorry_couldnt_find_a_title" : "Désolé, impossible de trouver un titre...",
   "please_fill_in_an_url_first" : "Vous devez saisir une URL.",
   "share" : "Partager",
