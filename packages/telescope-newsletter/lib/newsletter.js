@@ -131,27 +131,40 @@ Settings.addField([
   {
     fieldName: 'newsletterFrequency',
     fieldSchema: {
-      type: Number,
+      type: [Number],
       optional: true,
       autoform: {
         group: 'newsletter',
-        instructions: 'Defaults to once a week. Changes require restarting your app to take effect.',
+        instructions: 'Defaults to once a week on Monday. Changes require restarting your app to take effect.',
+        noselect: true,
         options: [
           {
             value: 1,
-            label: 'Every Day'
+            label: 'Sunday'
           },
           {
             value: 2,
-            label: 'Mondays, Wednesdays, Fridays'
+            label: 'Monday'
           },
           {
             value: 3,
-            label: 'Mondays & Thursdays'
+            label: 'Tuesday'
+          },
+          {
+            value: 4,
+            label: 'Wednesday'
+          },
+          {
+            value: 5,
+            label: 'Thursday'
+          },
+          {
+            value: 6,
+            label: 'Friday'
           },
           {
             value: 7,
-            label: 'Once a week (Mondays)'
+            label: 'Saturday'
           }
         ]
       }
