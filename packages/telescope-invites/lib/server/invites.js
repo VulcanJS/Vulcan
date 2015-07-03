@@ -47,7 +47,7 @@ Meteor.methods({
       });
 
       // update invinting user
-      Meteor.users.update(Meteor.userId(), {$inc:{"telescope.inviteCount": -1}, $inc:{"telescope.invitedCount": 1}});
+      Meteor.users.update(Meteor.userId(), {$inc:{"telescope.inviteCount": -1, "telescope.invitedCount": 1}});
 
       if(user){
         // update invited user
