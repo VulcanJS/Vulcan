@@ -224,11 +224,6 @@
 			// box-shadow: 0px 0px 2px white(0.5);
 		}
 	}
-	.post-vote {
-		position: absolute;
-		left: 7px;
-		bottom: 7px;
-	}
 	.post-content {
 		display: block;
 	}
@@ -255,6 +250,21 @@
 		right: 8px;
 		bottom: 0px;
 		padding: 8px 0px 2px 0px;
+	}
+	.post-vote{
+		position: absolute;
+		left: 7px;
+		bottom: 10px;
+		.vote-actions{
+			display: flex;
+		}
+		.vote-action{
+			flex: 1;
+		}
+		.downvote-link{
+			border-top: none;
+			border-left: 1px solid $lighter-text;
+		}
 	}
 }
 // -------------------------------- post modules --------------------------------- //
