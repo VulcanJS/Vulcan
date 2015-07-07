@@ -25,9 +25,7 @@ Package.onUse( function(api) {
     'lib/client/autoform-postthumbnail.js',
     'lib/client/post_thumbnail.html',
     'lib/client/post_thumbnail.js',
-    'lib/client/post_thumbnail.scss',
-    'lib/client/post_video.html',
-    'lib/client/post_video.js'
+    'lib/client/post_thumbnail.scss'
   ], ['client']);
 
   api.addFiles([
