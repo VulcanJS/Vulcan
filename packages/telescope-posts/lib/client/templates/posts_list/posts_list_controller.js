@@ -15,6 +15,7 @@ Template.posts_list_controller.onCreated(function () {
   // initialize the reactive variables
   instance.terms = new ReactiveVar(instance.data.terms);
   instance.postsLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
+  instance.ready = new ReactiveVar(false);
 
   // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
   var enableCache = (typeof instance.data.terms.enableCache === "undefined") ? false : instance.data.terms.enableCache;
@@ -56,6 +57,7 @@ Template.posts_list_controller.onCreated(function () {
     // if subscriptions are ready, set terms to subscriptionsTerms
     if (subscriptionsReady) {
       instance.terms.set(subscriptionTerms);
+      instance.ready.set(true);
     }
   
   });
@@ -73,7 +75,7 @@ Template.posts_list_controller.helpers({
     var instance = Template.instance();
 
     var terms = instance.terms.get(); // ⚡ reactive ⚡
-    var postsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
+    var postsReady = instance.ready.get(); // ⚡ reactive ⚡
 
     var postsLimit = terms.limit;
     var parameters = Posts.getSubParams(terms);
