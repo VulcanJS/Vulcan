@@ -5,9 +5,9 @@ Comments.controllers = {};
 Comments.controllers.page = RouteController.extend({
   waitOn: function() {
     return [
-      coreSubscriptions.subscribe('singleCommentAndChildren', this.params._id),
-      coreSubscriptions.subscribe('commentUsers', this.params._id),
-      coreSubscriptions.subscribe('commentPost', this.params._id)
+      Telescope.subsManager.subscribe('singleCommentAndChildren', this.params._id),
+      Telescope.subsManager.subscribe('commentUsers', this.params._id),
+      Telescope.subsManager.subscribe('commentPost', this.params._id)
     ];
   },
   data: function() {

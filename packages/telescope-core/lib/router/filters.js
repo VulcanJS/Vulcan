@@ -165,12 +165,6 @@ Router._filters = {
 };
 
 var filters = Router._filters;
-coreSubscriptions = new SubsManager({
-  // cache recent 50 subscriptions
-  cacheLimit: 50,
-  // expire any subscription after 30 minutes
-  expireIn: 30
-});
 
 Meteor.startup( function (){
 

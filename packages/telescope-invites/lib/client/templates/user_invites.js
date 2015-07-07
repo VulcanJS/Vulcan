@@ -6,7 +6,7 @@ Template.user_invites.created = function () {
   instance.invites = new ReactiveVar({});
 
   Meteor.autorun(function () {
-    coreSubscriptions.subscribe('invites', user._id);
+    Telescope.subsManager.subscribe('invites', user._id);
     var invites = Invites.find({invitingUserId: user._id});
     instance.invites.set(invites);
   });

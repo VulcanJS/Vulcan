@@ -24,7 +24,8 @@ Posts.controllers.list = RouteController.extend({
 
     var terms = {
       view: this.view,
-      limit: this.params.limit || Settings.get('postsPerPage', 10)
+      limit: this.params.limit || Settings.get('postsPerPage', 10),
+      enableCache: true
     };
 
     // console.log('----------------- router running');
@@ -115,10 +116,10 @@ Posts.controllers.page = RouteController.extend({
 
   template: 'post_page',
 
-  waitOn: function () {
-    this.postSubscription = coreSubscriptions.subscribe('singlePost', this.params._id);
-    this.postUsersSubscription = coreSubscriptions.subscribe('postUsers', this.params._id);
-    this.commentSubscription = coreSubscriptions.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
+  subscriptions: function () {
+    this.postSubscription = Telescope.subsManager.subscribe('singlePost', this.params._id);
+    this.postUsersSubscription = Telescope.subsManager.subscribe('postUsers', this.params._id);
+    this.commentSubscription = Telescope.subsManager.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
   },
 
   post: function() {
@@ -210,8 +211,8 @@ Meteor.startup(function () {
     template: 'post_edit',
     waitOn: function () {
       return [
-        coreSubscriptions.subscribe('singlePost', this.params._id),
-        coreSubscriptions.subscribe('allUsersAdmin')
+        Telescope.subsManager.subscribe('singlePost', this.params._id),
+        Telescope.subsManager.subscribe('allUsersAdmin')
       ];
     },
     data: function() {
@@ -244,7 +245,7 @@ Meteor.startup(function () {
     name: 'post_submit',
     template: 'post_submit',
     waitOn: function () {
-      return coreSubscriptions.subscribe('allUsersAdmin');
+      return Telescope.subsManager.subscribe('allUsersAdmin');
     }
   });
 

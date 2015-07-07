@@ -16,6 +16,10 @@ Template.posts_list_controller.onCreated(function () {
   instance.terms = new ReactiveVar(instance.data.terms);
   instance.postsLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
 
+  // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
+  var enableCache = (typeof instance.data.terms.enableCache === "undefined") ? false : instance.data.terms.enableCache;
+  var subscriber = enableCache ? Telescope.subsManager : instance;
+
   // 2. Autorun
 
   // Autorun 1: when terms change, reset the limit
@@ -38,10 +42,10 @@ Template.posts_list_controller.onCreated(function () {
     var subscriptionTerms = _.extend(_.clone(terms), {limit: postsLimit}); // extend terms with limit
 
     // use this new object to subscribe
-    var postsSubscription = instance.subscribe('postsList', subscriptionTerms);
-    var usersSubscription = instance.subscribe('postsListUsers', subscriptionTerms);
+    var postsSubscription = subscriber.subscribe('postsList', subscriptionTerms);
+    var usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
 
-    var subscriptionsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
+    var subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
 
     // console.log('// ------ autorun running ------ //');
     // console.log("terms: ", terms);

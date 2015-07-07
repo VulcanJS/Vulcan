@@ -6,7 +6,7 @@ Users.controllers.page = RouteController.extend({
 
   waitOn: function() {
     return [
-      coreSubscriptions.subscribe('singleUser', this.params._idOrSlug)
+      Telescope.subsManager.subscribe('singleUser', this.params._idOrSlug)
     ];
   },
 
@@ -47,7 +47,7 @@ Users.controllers.page = RouteController.extend({
 Users.controllers.edit = RouteController.extend({
   waitOn: function() {
     return [
-      coreSubscriptions.subscribe('singleUser', this.params.slug)
+      Telescope.subsManager.subscribe('singleUser', this.params.slug)
     ];
   },
   data: function() {

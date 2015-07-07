@@ -109,7 +109,4 @@ Package.onUse(function(api) {
     "i18n/zh-CN.i18n.json"
   ], ["client", "server"]);
 
-  api.export([
-    'coreSubscriptions'
-  ]);
 });

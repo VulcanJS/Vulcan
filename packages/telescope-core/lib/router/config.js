@@ -32,3 +32,10 @@ if(Meteor.isServer) {
 }
 
 Telescope.controllers = {};
+
+Telescope.subsManager = new SubsManager({
+  // cache recent 50 subscriptions
+  cacheLimit: 50,
+  // expire any subscription after 30 minutes
+  expireIn: 30
+});
