@@ -28,16 +28,12 @@ Posts.fastRenderRoutes = [
 Posts.fastRenderSubscribe = function (view, params) {
   var subscriptionTerms = {
     view: view,
-    limit: params.limit || Settings.get('postsPerPage', 10),
-    enableCache: true
+    limit: params.limit || Settings.get('postsPerPage', 10)
   };
-  
-  this.subscribe('postsList', subscriptionTerms);
-  this.subscribe('postsListUsers', subscriptionTerms);
 };
 
 Meteor.startup(function () {
   Posts.fastRenderRoutes.forEach(function (route) {
-    FastRender.route(route.path, _.partial(Posts.fastRenderSubscribe, route.path));
+    FastRender.route(route.path, _.partial(Posts.fastRenderSubscribe, route.view));
   });
 });
