@@ -3,9 +3,7 @@ Meteor.startup(function () {
   Template.posts_daily.helpers({
     days: function () {
       var daysArray = [];
-      // var days = this.days;
-      var days = Session.get('postsDays');
-      for (var i = 0; i < days; i++) {
+      for (var i = 0; i < this.daysCount; i++) {
         daysArray.push({
           date: moment().subtract(i, 'days').startOf('day').toDate(),
           index: i
@@ -26,7 +24,7 @@ Meteor.startup(function () {
       return context;
     },
     loadMoreDaysUrl: function () {
-      var count = parseInt(Session.get('postsDays')) + daysPerPage;
+      var count = parseInt(this.daysCount) + daysPerPage;
       return '/daily/' + count;
     }
   });

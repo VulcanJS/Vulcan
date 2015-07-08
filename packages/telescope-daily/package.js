@@ -29,6 +29,10 @@ Package.onUse(function (api) {
     ], ['client']);
 
   api.addFiles([
+    'lib/server/fastrender.js'
+  ], ['server']);
+
+  api.addFiles([
     "i18n/ar.i18n.json",
     "i18n/bg.i18n.json",
     "i18n/de.i18n.json",

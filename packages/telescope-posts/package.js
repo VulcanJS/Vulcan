@@ -76,7 +76,8 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+    'lib/server/fastrender.js'
   ], ['server']);
 
   api.addFiles([

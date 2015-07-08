@@ -46,9 +46,8 @@ Posts.controllers.list = RouteController.extend({
     } else {
       return i18n.t(_.findWhere(Telescope.menuItems.get("viewsMenu"), {label: this.view}).description);
     }
-  },
+  }
 
-  fastRender: true
 });
 
 var getDefaultViewController = function () {
@@ -71,7 +70,6 @@ Meteor.startup(function () {
       return fullTitle;
     }
   });
-
 });
 
 /**
