@@ -3,7 +3,6 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 // Publish a list of posts
 
 Meteor.publish('postsList', function(terms) {
-  Meteor._sleepForMs(2000)
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.getSubParams(terms),
         posts = Posts.find(parameters.find, parameters.options);
