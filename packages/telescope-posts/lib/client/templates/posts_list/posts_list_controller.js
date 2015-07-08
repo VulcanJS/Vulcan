@@ -14,7 +14,7 @@ Template.posts_list_controller.onCreated(function () {
 
   // initialize the reactive variables
   instance.terms = new ReactiveVar(instance.data.terms);
-  instance.postsLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
+  instance.postsLimit = new ReactiveVar(instance.data.terms.limit || Settings.get('postsPerPage', 10));
   instance.ready = new ReactiveVar(false);
 
   // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
@@ -27,7 +27,7 @@ Template.posts_list_controller.onCreated(function () {
   instance.autorun(function () {
     // add a dependency on data context to trigger the autorun
     var terms = Template.currentData().terms; // ⚡ reactive ⚡
-    instance.postsLimit.set(Settings.get('postsPerPage', 10));
+    instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
   });
 
   // Autorun 2: will re-run when limit or terms are changed

@@ -11,7 +11,7 @@ var getDays = function (daysCount) {
   return daysArray;
 };
 
-FastRender.route('/daily/:days?',function (params) {
+FastRender.route('/daily/:daysCount?',function (params) {
 
   var fr = this;
   var daysCount = params.daysCount ? params.daysCount : daysPerPage;
