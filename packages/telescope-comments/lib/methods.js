@@ -162,6 +162,8 @@ Meteor.methods({
 
   deleteCommentById: function (commentId) {
 
+    check(commentId, String);
+    
     var comment = Comments.findOne(commentId);
     var user = Meteor.user();
 

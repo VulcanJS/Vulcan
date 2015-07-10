@@ -2,6 +2,8 @@ Meteor.methods({
 
   inviteUser: function(invitation){
 
+    check(invitation, Match.Any);
+    
     // invite user returns the following hash
     // { newUser : true|false }
     // newUser is true if the person being invited is not on the site yet

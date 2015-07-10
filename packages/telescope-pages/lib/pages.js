@@ -51,6 +51,8 @@ Meteor.startup(function () {
 
   Meteor.methods({
     insertPage: function(pageTitle, pageContent){
+      check(pageTitle, String);
+      check(pageContent, String);
       return Feeds.insert({title: pageTitle, content: pageContent});
     }
   });

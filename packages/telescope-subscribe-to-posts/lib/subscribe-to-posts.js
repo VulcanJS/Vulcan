@@ -129,9 +129,11 @@ unsubscribeItem = function (collection, itemId, user) {
 
 Meteor.methods({
   subscribePost: function(postId) {
+    check(postId, String);
     return subscribeItem.call(this, Posts, postId, Meteor.user());
   },
   unsubscribePost: function(postId) {
+    check(postId, String);
     return unsubscribeItem.call(this, Posts, postId, Meteor.user());
   }
 });

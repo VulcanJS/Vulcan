@@ -231,6 +231,11 @@ Meteor.methods({
 
   setPostedAt: function(post, customPostedAt){
 
+    // this method is not actually used?
+
+    check(post, Posts.simpleSchema());
+    check(customPostedAt, Date);
+
     var postedAt = new Date(); // default to current date and time
 
     if(Users.is.admin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
@@ -240,6 +245,9 @@ Meteor.methods({
   },
 
   approvePost: function(post){
+
+    check(post, Posts.simpleSchema());
+
     if(Users.is.admin(Meteor.user())){
       var set = {status: 2};
 
@@ -257,6 +265,9 @@ Meteor.methods({
   },
 
   unapprovePost: function(post){
+
+    check(post, Posts.simpleSchema());
+
     if(Users.is.admin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
@@ -281,6 +292,9 @@ Meteor.methods({
   },
 
   deletePostById: function(postId) {
+
+    check(postId, String);
+
     // remove post comments
     // if(!this.isSimulation) {
     //   Comments.remove({post: postId});
