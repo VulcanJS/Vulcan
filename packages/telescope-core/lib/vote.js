@@ -33,9 +33,11 @@ var removeVote = function (userId, itemId, collection, upOrDown) {
   });
 };
 
-Telescope.upvoteItem = function (collection, item, user) {
+Telescope.upvoteItem = function (collection, itemId, user) {
+
   user = typeof user === "undefined" ? Meteor.user() : user;
   var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
+  var item = collection.findOne(itemId);
 
   // make sure user has rights to upvote first
   if (!user || !Users.can.vote(user, true) || hasUpvotedItem(item, user))
@@ -101,9 +103,11 @@ Telescope.upvoteItem = function (collection, item, user) {
   return true;
 };
 
-Telescope.downvoteItem = function (collection, item, user) {
+Telescope.downvoteItem = function (collection, itemId, user) {
+
   user = typeof user === "undefined" ? Meteor.user() : user;
   var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
+  var item = collection.findOne(itemId);
 
   // make sure user has rights to downvote first
   if (!user || !Users.can.vote(user, true)  || hasDownvotedItem(item, user))
@@ -155,9 +159,11 @@ Telescope.downvoteItem = function (collection, item, user) {
   return true;
 };
 
-Telescope.cancelUpvote = function (collection, item, user) {
+Telescope.cancelUpvote = function (collection, itemId, user) {
+
   user = typeof user === "undefined" ? Meteor.user() : user;
   var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
+  var item = collection.findOne(itemId);
 
   // if user isn't among the upvoters, abort
   if (!hasUpvotedItem(item, user))
@@ -202,9 +208,11 @@ Telescope.cancelUpvote = function (collection, item, user) {
   return true;
 };
 
-Telescope.cancelDownvote = function (collection, item, user) {
+Telescope.cancelDownvote = function (collection, itemId, user) {
+
   user = typeof user === "undefined" ? Meteor.user() : user;
   var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
+  var item = collection.findOne(itemId);
 
   // if user isn't among the downvoters, abort
   if (!hasDownvotedItem(item, user))
@@ -251,28 +259,36 @@ Telescope.cancelDownvote = function (collection, item, user) {
 };
 
 Meteor.methods({
-  upvotePost: function (post) {
-    return Telescope.upvoteItem.call(this, Posts, post);
+  upvotePost: function (postId) {
+    check(postId, String);
+    return Telescope.upvoteItem.call(this, Posts, postId);
   },
-  downvotePost: function (post) {
-    return Telescope.downvoteItem.call(this, Posts, post);
+  downvotePost: function (postId) {
+    check(postId, String);
+    return Telescope.downvoteItem.call(this, Posts, postId);
   },
-  cancelUpvotePost: function (post) {
-    return Telescope.cancelUpvote.call(this, Posts, post);
+  cancelUpvotePost: function (postId) {
+    check(postId, String);
+    return Telescope.cancelUpvote.call(this, Posts, postId);
   },
-  cancelDownvotePost: function (post) {
-    return Telescope.cancelDownvote.call(this, Posts, post);
+  cancelDownvotePost: function (postId) {
+    check(postId, String);
+    return Telescope.cancelDownvote.call(this, Posts, postId);
   },
-  upvoteComment: function (comment) {
-    return Telescope.upvoteItem.call(this, Comments, comment);
+  upvoteComment: function (commentId) {
+    check(commentId, String);
+    return Telescope.upvoteItem.call(this, Comments, commentId);
   },
-  downvoteComment: function (comment) {
-    return Telescope.downvoteItem.call(this, Comments, comment);
+  downvoteComment: function (commentId) {
+    check(commentId, String);
+    return Telescope.downvoteItem.call(this, Comments, commentId);
   },
-  cancelUpvoteComment: function (comment) {
-    return Telescope.cancelUpvote.call(this, Comments, comment);
+  cancelUpvoteComment: function (commentId) {
+    check(commentId, String);
+    return Telescope.cancelUpvote.call(this, Comments, commentId);
   },
-  cancelDownvoteComment: function (comment) {
-    return Telescope.cancelDownvote.call(this, Comments, comment);
+  cancelDownvoteComment: function (commentId) {
+    check(commentId, String);
+    return Telescope.cancelDownvote.call(this, Comments, commentId);
   }
 });

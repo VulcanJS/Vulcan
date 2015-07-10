@@ -17,6 +17,8 @@ Package.onUse(function (api) {
     'accounts-password',
     'accounts-twitter',
     'accounts-facebook',
+    'check',
+    'audit-argument-checks',
     'reactive-var',
     'http',
     'email',

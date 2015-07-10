@@ -116,6 +116,8 @@ Meteor.methods({
    */
   submitPost: function(post){
 
+    check(post, Posts.simpleSchema());
+
     // required properties:
     // title
 
@@ -194,6 +196,10 @@ Meteor.methods({
    */
   editPost: function (modifier, postId) {
 
+    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
+    check(modifier, {$set: Posts.simpleSchema(), $unset: Object});
+    check(postId, String);
+
     var user = Meteor.user(),
         post = Posts.findOne(postId),
         schema = Posts.simpleSchema()._schema;
@@ -259,6 +265,10 @@ Meteor.methods({
   },
 
   increasePostViews: function(postId, sessionId){
+
+    check(postId, String);
+    check(sessionId, String);
+
     this.unblock();
 
     // only let users increment a post's view counter once per session
