@@ -1,12 +1,12 @@
 <template name="post_avatars">
   <div aria-hidden="true" aria-live="off">
-    <a href="{{getProfileUrl userId}}" class="avatar-link avatar-small author-avatar">
+    <a href="{{getProfileUrl userId}}" title="{{getDisplayName userId}}" class="avatar-link avatar-small author-avatar">
       {{> avatar userId=userId shape="circle"}}
     </a>
     {{#if commenters}}
       <div class="post-commenters">
       {{#each commenters}}
-        <a href="{{getProfileUrl this}}" class="avatar-link avatar-small commenter-avatar">
+        <a href="{{getProfileUrl this}}" title="{{getDisplayName this}}" class="avatar-link avatar-small commenter-avatar">
           {{> avatar userId=this shape="circle"}}
         </a>
       {{/each}}
