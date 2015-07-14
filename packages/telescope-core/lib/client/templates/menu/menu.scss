@@ -181,6 +181,7 @@ $text: #444444;
 
   /* expand/collapse animation */
   .menu-contents{
+    position: relative; // use this to hide absolutely positioned elements
     max-height: 93px;
     overflow: hidden;
     transition: max-height ease-out 300ms;

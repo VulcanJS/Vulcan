@@ -1,5 +1,7 @@
 <template name="notifications_menu">
-  {{#if isLoggedIn}}
-    {{> menuComponent menuName="notifications" menuLabel=menuLabel menuItems=menuItems menuClass="header-submodule" menuMode=menuMode menuCollapsed=true}}
-  {{/if}}
+  <div class="notifications-menu header-submodule">
+    {{#if isLoggedIn}}
+      {{> menuComponent menuName="notifications" menuLabel=menuLabel menuItems=menuItems menuMode=menuMode menuCollapsed=true}}
+    {{/if}}
+  </div>
 </template>

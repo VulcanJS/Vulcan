@@ -14,7 +14,7 @@ var createHighlighter = function (template, $node) {
     // console.log(template, h, w, l, t);
     // console.log(offsetParent, offsetParentLeft, offsetParentTop)
 
-    var div = $(document.createElement("div"));
+    var div = $(document.createElement("section"));
 
     div.addClass("template-highlighter");
     div.css("height", h);

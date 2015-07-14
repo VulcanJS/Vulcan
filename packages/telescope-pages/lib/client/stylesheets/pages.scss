@@ -7,9 +7,21 @@
     a{
       border-bottom:1px white(0.2) solid;
       margin: 0;
-      &:last-child{
+      &:last-of-type{
         border: none;
       }
     }
+  }
+}
+
+.top-nav{
+  .pages-menu{
+    a{
+      font-weight: normal;
+      margin-right: 20px;
+      &:last-of-type{
+        margin: 0;
+      }
+    } 
   }
 }
