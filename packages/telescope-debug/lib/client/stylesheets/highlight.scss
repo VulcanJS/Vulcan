@@ -1,0 +1,34 @@
+.template-highlighter{
+  position: absolute;
+  border: 1px solid rgba(255,0,0,0.3);
+  display: none;
+  .show-highlighters &{
+    display: block;
+  }
+  &:hover{
+    background: rgba(255,0,0,0.15);
+  }
+}
+
+.template-highlighter:hover:after{
+  display: inline-block;
+  content: attr(data-template);
+  background:red;
+  color:white;
+  font-size:12px;
+  position: absolute;
+  top: 100%;
+  right: 0px;
+  z-index: 20000;
+  padding: 2px 8px;
+}
+
+.zone-highlighter{
+  border-color: rgba(0,0,255,0.3);
+  &:hover{
+    background: rgba(0,0,255,0.15);
+  }
+}
+.zone-highlighter:hover:after{
+  background: blue;
+}

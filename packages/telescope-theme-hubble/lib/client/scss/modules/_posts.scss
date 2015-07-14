@@ -17,8 +17,6 @@
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom: 1px solid $lightest-grey;
-	display: flex;
-	align-items: center;
 	position: relative;
 	width: 100%;
 	background: white;
@@ -35,6 +33,10 @@
 		.post-content {
 			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 		}
+	}
+	.zone-wrapper{
+		display: flex;
+		align-items: center;
 	}
 }
 

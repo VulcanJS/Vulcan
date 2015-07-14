@@ -77,22 +77,3 @@ clip: auto;
     float: right;
   }
 }
-
-.zone-wrapper{
-  display: inherit;
-  border: 2px solid #7076FF;
-  position: relative;
-  &:after{
-    background: #7076FF;
-    font-weight: normal;
-    z-index: 10000;
-    position: absolute;
-    display: block;
-    padding: 3px 8px;
-    font-size: 11px;
-    content: attr(data-zone);
-    color: white;
-    bottom:0px;
-    right: 0px;
-  }
-}

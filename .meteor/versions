@@ -118,6 +118,7 @@ telescope:comments@0.21.1
 telescope:core@0.21.1
 telescope:daily@0.21.1
 telescope:datetimepicker@0.21.1
+telescope:debug@0.21.1
 telescope:email@0.21.1
 telescope:embedly@0.21.1
 telescope:events@0.21.1

@@ -1,13 +1,7 @@
 <template name="modules">
-  {{#if isDebug}}
-    <div class="zone-wrapper" data-zone="{{getZone}}">
-      {{#each getModules}}
-        {{> module}}
-      {{/each}}
-    </div>
-  {{else}}
+  <div class="zone-wrapper" data-zone="{{getZone}}">
     {{#each getModules}}
       {{> module}}
     {{/each}}
-  {{/if}}
+  </div>
 </template>

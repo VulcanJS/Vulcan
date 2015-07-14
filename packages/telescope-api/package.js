@@ -2,7 +2,7 @@ Package.describe({
   name: "telescope:api",
   summary: "Telescope API package",
   version: "0.21.1",
-  git: "https://github.com/TelescopeJS/telescope-api.git"
+  git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
 Package.onUse(function (api) {
