@@ -42,6 +42,10 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Telescope.utils.trimWords = function(s, numWords) {
+  
+  if (!s)
+    return s;
+
   var expString = s.split(/\s+/,numWords);
   if(expString.length >= numWords)
     return expString.join(" ")+"…";
