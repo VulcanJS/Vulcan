@@ -1,11 +1,9 @@
 <template name="post_content">
+  <div class="post-content">
     {{> modules "postThumbnail"}}
     <div class="post-info">
-      <h3 class="post-heading">
-        {{> modules "postHeading"}}
-      </h3>
-      <div class="post-meta">
-        {{> modules "postMeta"}}
-      </div>
+      {{> modules zone="postHeading" wrapperClass="post-heading"}}
+      {{> modules zone="postMeta" wrapperClass="post-meta"}}
     </div>
+  </div>
 </template>

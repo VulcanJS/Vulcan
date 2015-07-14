@@ -1,5 +1,5 @@
 <template name="posts_daily">
-  <div class="grid">
+  <div class="posts-daily">
     {{#each days}}
       {{> before_day}}
       <h2 class="posts-day-heading">{{formatDate date "dddd, MMMM Do YYYY"}}</h2>
@@ -8,6 +8,6 @@
 
       {{> after_day}}
     {{/each}}
-    <a class="load-more-days-button grid-module" href="{{loadMoreDaysUrl}}"><span>{{_ "load_next_days"}}</span></a>
+    {{> load_more_days}}
   </div>
 </template>

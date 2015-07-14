@@ -1,5 +1,3 @@
 <template name="post_item">
-  <div class="post {{#if sticky}}sticky{{/if}} {{postClass}}" id="{{_id}}">
-    {{> modules zone="postComponents" moduleClass="post-module"}}
-  </div>
+  {{> modules zone="postComponents" moduleClass="post-module" wrapperClass=postClass wrapperId=_id}}
 </template>

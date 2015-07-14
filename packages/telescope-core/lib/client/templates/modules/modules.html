@@ -1,5 +1,5 @@
 <template name="modules">
-  <div class="zone-wrapper" data-zone="{{getZone}}">
+  <div class="{{getClass}}" data-zone="{{getZone}}" id="{{getId}}">
     {{#each getModules}}
       {{> module}}
     {{/each}}

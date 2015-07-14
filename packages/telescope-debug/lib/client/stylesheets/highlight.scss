@@ -6,7 +6,8 @@
     display: block;
   }
   &:hover{
-    background: rgba(255,0,0,0.15);
+    // background: rgba(255,0,0,0.15);
+    box-shadow: 0 0 0 99999px rgba(0, 0, 0, .2);
   }
 }
 
@@ -26,7 +27,7 @@
 .zone-highlighter{
   border-color: rgba(0,0,255,0.3);
   &:hover{
-    background: rgba(0,0,255,0.15);
+    // background: rgba(0,0,255,0.15);
   }
 }
 .zone-highlighter:hover:after{

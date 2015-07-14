@@ -5,6 +5,15 @@ Template.modules.helpers({
   getZone: function () {
     return this.zone || this.toString();
   },
+  getClass: function () {
+    var wrapperClass = "zone-wrapper ";
+    if (this.wrapperClass)
+      wrapperClass += this.wrapperClass;
+    return wrapperClass;
+  },
+  getId: function () {
+    return this.wrapperId;
+  },
   getModules: function () {
     // look for the zone name in either the zone variable, or the data context itself
     var zone = this.zone || this.toString();

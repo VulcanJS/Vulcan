@@ -43,13 +43,22 @@ var createHighlighter = function (template, $node) {
 Template.onRendered(function () {
 
   var node = this.firstNode;
+  var template = this.view.name.replace("Template.", "");
 
-  // filter out text nodes
-  if (node && $(node)[0].toString() !== "[object Text]") {
-    var $node = $(node);
-    var div = createHighlighter(this.view.name.replace("Template.", ""), $node);
-    $node.append(div);
-  }
+  // put this in setTimeout so app has the time to load in content
+  Meteor.setTimeout(function () {
+    try {
+      // filter out text nodes
+      if (node && $(node)[0].toString() !== "[object Text]") {
+        var $node = $(node);
+        var div = createHighlighter(template, $node);
+        $node.append(div);
+      }
+    } catch (error) {
+      console.log(template);
+      console.log(error);
+    }
+  }, 1000);
 
 });
 

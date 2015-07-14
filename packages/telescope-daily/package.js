@@ -21,10 +21,12 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/templates/posts_daily.html',
     'lib/client/templates/after_day.html',
     'lib/client/templates/before_day.html',
+    'lib/client/templates/posts_daily.html',
     'lib/client/templates/posts_daily.js',
+    'lib/client/templates/load_more_days.html',
+    'lib/client/templates/load_more_days.js',
     'lib/client/stylesheets/daily.scss',
     ], ['client']);
 

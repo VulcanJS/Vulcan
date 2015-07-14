@@ -8,15 +8,11 @@
     {{> logo}}
 
     {{#if hasPrimaryNav}}
-      <div class="nav primary-nav desktop-nav header-module desktop-only">
-        {{> modules "primaryNav"}}
-      </div>
+      {{> modules zone="primaryNav" wrapperClass="nav primary-nav desktop-nav header-module desktop-only"}}
     {{/if}}
 
     {{#if hasSecondaryNav}}
-      <div class="nav secondary-nav desktop-nav header-module desktop-only">
-        {{> modules "secondaryNav"}}
-      </div>
+      {{> modules zone="secondaryNav" wrapperClass="nav secondary-nav desktop-nav header-module desktop-only"}}
     {{/if}}
 
   </header>

@@ -21,3 +21,10 @@ Telescope.modules.add("mobileNav", [
     order: 30
   }
 ]);
+
+Telescope.modules.add("footer", [
+  {
+    template: 'footer_code',
+    order: 10
+  }
+]);

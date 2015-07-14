@@ -50,6 +50,8 @@ Package.onUse(function(api) {
     'lib/client/templates/common/css.js',
     'lib/client/templates/common/footer.html',
     'lib/client/templates/common/footer.js',
+    'lib/client/templates/common/footer_code.html',
+    'lib/client/templates/common/footer_code.js',
     'lib/client/templates/common/layout.html',
     'lib/client/templates/common/layout.js',
     'lib/client/templates/errors/already_logged_in.html',
