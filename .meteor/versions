@@ -12,7 +12,6 @@ aldeed:template-extension@3.4.3
 anti:i18n@0.4.3
 aramk:tinycolor@1.1.0_1
 aslagle:reactive-table@0.7.3
-audit-argument-checks@1.0.3
 autoupdate@1.2.1
 base64@1.0.3
 binary-heap@1.0.3
@@ -157,6 +156,6 @@ underscore@1.0.3
 url@1.0.4
 useraccounts:core@1.8.1
 useraccounts:unstyled@1.8.1
-utilities:avatar@0.7.13
+utilities:avatar@0.7.14
 webapp@1.2.0
 webapp-hashing@1.0.3

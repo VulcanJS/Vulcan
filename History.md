@@ -1,3 +1,10 @@
+## v0.21.2 “FastScope”
+
+* Added day by day settings for newsletter frequency (thanks @johnthepink!).
+* Implemented Subs Manager.
+* Implemented FastRender.
+* Now using `check` for methods. 
+
 ## v0.21.1 “SlugScope”
 
 * Added URL slugs for posts (i.e. `/posts/xyz/my-post-slug`).
