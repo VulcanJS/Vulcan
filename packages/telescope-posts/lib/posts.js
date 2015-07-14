@@ -209,7 +209,7 @@ Posts.schema = new SimpleSchema({
   userId: {
     type: String,
     optional: true,
-    regEx: SimpleSchema.RegEx.Id,
+    // regEx: SimpleSchema.RegEx.Id,
     editableBy: ["admin"],
     autoform: {
       group: 'admin',
