@@ -153,7 +153,7 @@ input[type="submit"], button, .button, .btn{
     }
   }
 }
-.btn-primary, .submit{
+.btn-primary{
   background:$red;
   &:link, &:hover, &:active, &:visited{
     color:white;
