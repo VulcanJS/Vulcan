@@ -1,10 +1,10 @@
 <template name="user_menu">
-  <div class="user-menu header-submodule">
-    {{#if isLoggedIn}}
-      {{> menuComponent menuName="user" menuLabel=menuLabel menuItems=menuItems menuMode=menuMode menuCollapsed=true}}
-    {{else}}
+  {{#if isLoggedIn}}
+    {{> menuComponent menuName="user" menuLabel=menuLabel menuItems=menuItems menuMode=menuMode menuCollapsed=true menuClass="header-submodule"}}
+  {{else}}
+    <div class="signin-signup header-submodule">
       <a class="account-link sign-in" href="{{pathFor route='atSignUp'}}">{{_ "sign_up"}}</a>
       <a class="account-link sign-up" href="{{pathFor route='atSignIn'}}">{{_ "sign_in"}}</a>
-    {{/if}}
-  </div>
+    </div>
+  {{/if}}
 </template>

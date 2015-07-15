@@ -42,23 +42,36 @@ var createHighlighter = function (template, $node) {
 
 Template.onRendered(function () {
 
+
   var node = this.firstNode;
   var template = this.view.name.replace("Template.", "");
 
-  // put this in setTimeout so app has the time to load in content
-  Meteor.setTimeout(function () {
+  // exclude weird Blaze stuff and special templates
+  var excludedTemplates = ["__dynamicWithDataContext", "__dynamic", "module", "menuComponent", "menuItem", "avatar"];
+
+  if (node && !_.contains(excludedTemplates, template)) {
+
+    // console.log(this);
+
     try {
-      // filter out text nodes
-      if (node && $(node)[0].toString() !== "[object Text]") {
+
+      // if this is a text node, try using nextElementSibling instead
+      if (node.nodeName === "#text") {
+        node = node.nextElementSibling;
+      }
+
+      // put this in setTimeout so app has the time to load in content
+      Meteor.setTimeout(function () {
         var $node = $(node);
         var div = createHighlighter(template, $node);
         $node.append(div);
-      }
+      }, 1000);
+
     } catch (error) {
       console.log(template);
       console.log(error);
     }
-  }, 1000);
+  }
 
 });
 
