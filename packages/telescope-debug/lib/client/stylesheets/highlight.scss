@@ -7,6 +7,7 @@
   }
   &:hover{
     // background: rgba(255,0,0,0.15);
+    border: 2px solid rgba(255,0,0,0.6);
     box-shadow: 0 0 0 99999px rgba(0, 0, 0, .2);
   }
 }
@@ -29,8 +30,17 @@
 
 .zone-highlighter{
   border-color: rgba(0,0,255,0.3);
-  &:after, &:hover:after{
+  &:hover{
+    border-color: rgba(0,0,255,0.6);
+  }
+  &:after{
     display: inline-block;
     background: blue;
+    opacity: 0.6;
+  }
+  &:hover:after{
+    display: inline-block;
+    background: blue;
+    opacity: 1;
   }
 }
