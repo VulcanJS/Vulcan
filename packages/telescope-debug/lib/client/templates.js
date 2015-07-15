@@ -1,3 +1,5 @@
+var templatesDep = new Tracker.Dependency;
+
 var createHighlighter = function (template, $node) {
 
     var h = $node.outerHeight();
@@ -40,8 +42,19 @@ var createHighlighter = function (template, $node) {
     $node.append(div);  
 };
 
-Template.onRendered(function () {
+Router.configure({
+  onRun: function () {
+    console.log("route changed")
 
+    // clear out all previous template highlighters
+    $(".template-highlighter").remove();
+
+    // trigger autorun to re-run
+    templatesDep.changed();
+  }
+});
+
+Template.onRendered(function () {
 
   var node = this.firstNode;
   var template = this.view.name.replace("Template.", "");
@@ -51,26 +64,32 @@ Template.onRendered(function () {
 
   if (node && !_.contains(excludedTemplates, template)) {
 
-    // console.log(this);
+    Meteor.autorun(function () {
 
-    try {
+      templatesDep.depend() ;
 
-      // if this is a text node, try using nextElementSibling instead
-      if (node.nodeName === "#text") {
-        node = node.nextElementSibling;
+      // console.log("highlighting template: "+ template);
+      // console.log(this);
+
+      try {
+
+        // if this is a text node, try using nextElementSibling instead
+        if (node.nodeName === "#text") {
+          node = node.nextElementSibling;
+        }
+
+        // put this in setTimeout so app has the time to load in content
+        Meteor.setTimeout(function () {
+          var $node = $(node);
+          var div = createHighlighter(template, $node);
+          $node.append(div);
+        }, 1000);
+
+      } catch (error) {
+        console.log(template);
+        console.log(error);
       }
-
-      // put this in setTimeout so app has the time to load in content
-      Meteor.setTimeout(function () {
-        var $node = $(node);
-        var div = createHighlighter(template, $node);
-        $node.append(div);
-      }, 1000);
-
-    } catch (error) {
-      console.log(template);
-      console.log(error);
-    }
+    });
   }
 
 });
