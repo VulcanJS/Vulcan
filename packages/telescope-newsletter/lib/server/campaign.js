@@ -39,6 +39,12 @@ buildCampaign = function (postsArray) {
       date: moment(post.postedAt).format("MMMM D YYYY")
     });
 
+    if (post.commentCount > 0)
+      properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
+        comment.body = Telescope.utils.trimWords(comment.body, 20);
+        return comment;
+      }}).fetch();
+
     if (post.body) {
       var bodyText = Telescope.utils.stripHTML(post.htmlBody);
       properties.body = Telescope.utils.trimWords(bodyText, 20).replace('<p>', '').replace('</p>', ''); // remove p tags
