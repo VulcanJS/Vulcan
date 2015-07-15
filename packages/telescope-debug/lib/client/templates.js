@@ -42,22 +42,12 @@ var createHighlighter = function (templateName, $node) {
     $node.append(div);  
 };
 
-Router.configure({
-  onBeforeAction: function () {
-    // clear out all previous template highlighters
-    this.next();
-  },
-  onRun: function () {
-    // console.log("route changed");
-    $(".template-highlighter").remove();
-
-    // trigger autorun to re-run
-    templatesDep.changed();
-  }
-});
-
 Telescope.debug.refresh = function () {
   console.log('refreshing…')
+
+  $(".template-highlighter").remove();
+
+  // trigger autorun to re-run
   templatesDep.changed();
 };
 
@@ -67,7 +57,7 @@ Template.onRendered(function () {
   var templateName = template.view.name.replace("Template.", "");
 
   // exclude weird Blaze stuff and special templates
-  var excludedTemplates = ["__dynamicWithDataContext", "__dynamic", "module", "menuComponent", "menuItem", "avatar"];
+  var excludedTemplates = ["__dynamicWithDataContext", "__dynamic", "module", "menuComponent", "menuItem", "avatar", "posts_list_controller"];
 
   if (!_.contains(excludedTemplates, templateName)) {
 
@@ -75,13 +65,14 @@ Template.onRendered(function () {
 
       templatesDep.depend() ;
 
-      // console.log(templateName)
-      // console.log(template)
-      // console.log("-------------")
+      console.log(templateName)
+      console.log(_.clone(template))
+      console.log("-------------")
 
       // put this in setTimeout so app has the time to load in and render content
       Meteor.setTimeout(function () {
 
+        // TODO: when using {{#if}}, template.firstNode stays empty even after it's rendered
         var node = template.firstNode;
 
         if (node) {
@@ -93,8 +84,8 @@ Template.onRendered(function () {
 
             // if this is a text node, try using nextElementSibling instead
             if (node.nodeName === "#text") {
-              if (node.nextElementSibling) {
-                node = node.nextElementSibling;
+              if (node.nextSibling && node.nextSibling.nodeName !== "#text") {
+                node = node.nextSibling;
               } else {
                 throw new Error("Node has no content");
               }
@@ -110,7 +101,7 @@ Template.onRendered(function () {
             console.log(error);
           }
         }
-      }, 1000);
+      }, 100);
 
     });
   }
@@ -124,11 +115,8 @@ $(function () {
     if (!allowKeydown) return;
 
     if(e.keyCode === 192){
-      $("body").addClass("show-highlighters");
-    }
-
-    if(e.keyCode === 27){
       Telescope.debug.refresh();
+      $("body").addClass("show-highlighters");
     }
 
     allowKeydown = false;

@@ -11,8 +11,8 @@
   }
 }
 
-.template-highlighter:hover:after{
-  display: inline-block;
+.template-highlighter:after{
+  display: none;
   content: attr(data-template);
   background:red;
   color:white;
@@ -23,13 +23,14 @@
   z-index: 20000;
   padding: 2px 8px;
 }
+.template-highlighter:hover:after{
+  display: inline-block;
+}
 
 .zone-highlighter{
   border-color: rgba(0,0,255,0.3);
-  &:hover{
-    // background: rgba(0,0,255,0.15);
+  &:after, &:hover:after{
+    display: inline-block;
+    background: blue;
   }
-}
-.zone-highlighter:hover:after{
-  background: blue;
 }
