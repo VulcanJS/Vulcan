@@ -57,6 +57,7 @@ Router.configure({
 });
 
 Telescope.debug.refresh = function () {
+  console.log('refreshing…')
   templatesDep.changed();
 };
 
@@ -105,7 +106,7 @@ Template.onRendered(function () {
 
           } catch (error) {
             console.log(templateName);
-            console.log(node);
+            // console.log(node);
             console.log(error);
           }
         }
@@ -125,6 +126,11 @@ $(function () {
     if(e.keyCode === 192){
       $("body").addClass("show-highlighters");
     }
+
+    if(e.keyCode === 27){
+      Telescope.debug.refresh();
+    }
+
     allowKeydown = false;
   });
 
