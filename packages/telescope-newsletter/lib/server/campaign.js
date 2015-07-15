@@ -39,8 +39,10 @@ buildCampaign = function (postsArray) {
       date: moment(post.postedAt).format("MMMM D YYYY")
     });
 
-    if (post.body)
-      properties.body = marked(Telescope.utils.trimWords(post.body, 20)).replace('<p>', '').replace('</p>', ''); // remove p tags
+    if (post.body) {
+      var bodyText = Telescope.utils.stripHTML(post.htmlBody);
+      properties.body = Telescope.utils.trimWords(bodyText, 20).replace('<p>', '').replace('</p>', ''); // remove p tags
+    }
 
     if(post.url)
       properties.domain = Telescope.utils.getDomain(post.url);

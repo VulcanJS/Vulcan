@@ -12,9 +12,9 @@
 <div class="post-meta">
   {{#if domain}}
     <a class="post-domain" href="">{{domain}}</a>
-    | 
+    |
   {{/if}}
-  
+
   <span class="post-submitted">
     {{#if profileUrl}}
       Submitted by <a href="{{profileUrl}}" class="comment-link" target="_blank">{{authorName}}</a>
@@ -31,7 +31,7 @@
 
 {{#if body}}
   <div class="post-body-excerpt">
-    {{{htmlBody}}}
+    {{body}}
     <a href="{{postPageLink}}" class="comment-link" target="_blank">Read more</a>
   </div>
 {{/if}}
@@ -39,4 +39,3 @@
 
 <br>
 </div>
-
