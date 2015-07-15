@@ -1,6 +1,6 @@
 var templatesDep = new Tracker.Dependency;
 
-var createHighlighter = function (template, $node) {
+var createHighlighter = function (templateName, $node) {
 
     var h = $node.outerHeight();
     var w = $node.outerWidth();
@@ -24,7 +24,7 @@ var createHighlighter = function (template, $node) {
     
     if ($node.hasClass("zone-wrapper")) {
       div.addClass("zone-highlighter");
-      template = $node.attr("data-zone");
+      templateName = $node.attr("data-zone");
     }
 
     // if node's position is already relative or absolute, position highlighter at 0,0
@@ -37,16 +37,18 @@ var createHighlighter = function (template, $node) {
     }
 
     div.css("z-index", 10000+depth);
-    div.attr("data-template", template);
+    div.attr("data-template", templateName);
 
     $node.append(div);  
 };
 
 Router.configure({
-  onRun: function () {
-    console.log("route changed")
-
+  onBeforeAction: function () {
     // clear out all previous template highlighters
+    this.next();
+  },
+  onRun: function () {
+    // console.log("route changed");
     $(".template-highlighter").remove();
 
     // trigger autorun to re-run
@@ -54,44 +56,63 @@ Router.configure({
   }
 });
 
+Telescope.debug.refresh = function () {
+  templatesDep.changed();
+};
+
 Template.onRendered(function () {
 
-  var node = this.firstNode;
-  var template = this.view.name.replace("Template.", "");
+  var template = this;
+  var templateName = template.view.name.replace("Template.", "");
 
   // exclude weird Blaze stuff and special templates
   var excludedTemplates = ["__dynamicWithDataContext", "__dynamic", "module", "menuComponent", "menuItem", "avatar"];
 
-  if (node && !_.contains(excludedTemplates, template)) {
+  if (!_.contains(excludedTemplates, templateName)) {
 
     Meteor.autorun(function () {
 
       templatesDep.depend() ;
 
-      // console.log("highlighting template: "+ template);
-      // console.log(this);
+      // console.log(templateName)
+      // console.log(template)
+      // console.log("-------------")
 
-      try {
+      // put this in setTimeout so app has the time to load in and render content
+      Meteor.setTimeout(function () {
 
-        // if this is a text node, try using nextElementSibling instead
-        if (node.nodeName === "#text") {
-          node = node.nextElementSibling;
+        var node = template.firstNode;
+
+        if (node) {
+
+          // console.log("highlighting template: "+ template);
+          // console.log(this);
+
+          try {
+
+            // if this is a text node, try using nextElementSibling instead
+            if (node.nodeName === "#text") {
+              if (node.nextElementSibling) {
+                node = node.nextElementSibling;
+              } else {
+                throw new Error("Node has no content");
+              }
+            }
+
+            // do the thing 
+            var div = createHighlighter(templateName, $(node));
+            $(node).append(div);
+
+          } catch (error) {
+            console.log(templateName);
+            console.log(node);
+            console.log(error);
+          }
         }
+      }, 1000);
 
-        // put this in setTimeout so app has the time to load in content
-        Meteor.setTimeout(function () {
-          var $node = $(node);
-          var div = createHighlighter(template, $node);
-          $node.append(div);
-        }, 1000);
-
-      } catch (error) {
-        console.log(template);
-        console.log(error);
-      }
     });
   }
-
 });
 
 $(function () {

@@ -13,6 +13,10 @@ Package.onUse(function (api) {
   api.use(['telescope:core@0.21.1']);
 
   api.addFiles([
+    'lib/debug.js'
+  ], ['client', 'server']);
+
+  api.addFiles([
     'lib/client/templates.js',
     'lib/client/stylesheets/highlight.scss'
   ], ['client']);

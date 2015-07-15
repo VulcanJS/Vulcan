@@ -1,6 +1,6 @@
 <template name="newsletter_banner">
-  {{#if showBanner}}
-    <div class="newsletter-banner-wrapper content-wrapper">
+  <div class="newsletter-banner-wrapper content-wrapper">
+    {{#if showBanner}}
       <div class="newsletter-banner grid-module grid banner">
         <form>
           <h4 class="newsletter-tagline">{{_ "receive_the_best_of"}} {{siteName}} {{_ "right_in_your_inbox"}}</h4>
@@ -12,6 +12,6 @@
         <h4 class="newsletter-subscribed">{{_ "thanks_for_subscribing"}}</h4>
         <a href="#" class="newsletter-dismiss banner-dismiss">×</a>
       </div>
-    </div>
-  {{/if}}
+    {{/if}}
+  </div>
 </template>

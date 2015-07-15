@@ -8,9 +8,9 @@
       <div class="content-wrapper">
         {{> messages}}
         {{> yield "adminMenu"}}
-        {{> yield "postsListTop"}}
+        {{> modules zone="top" wrapperClass="top"}}
         {{> yield}}
-        {{> modules zone="footer" wrapperClass="footer grid"}}
+        {{> modules zone="footer" wrapperClass="footer"}}
       </div>
       <div class="overlay hidden"></div>
     </div>
