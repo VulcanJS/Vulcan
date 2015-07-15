@@ -1,7 +1,7 @@
 .template-highlighter{
   position: absolute;
   border: 1px solid rgba(255,0,0,0.3);
-  display: none;
+  display: block;
   .show-highlighters &{
     display: block;
   }

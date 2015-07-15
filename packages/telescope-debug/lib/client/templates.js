@@ -45,8 +45,6 @@ var createHighlighter = function (templateName, $node) {
 Telescope.debug.refresh = function () {
   console.log('refreshing…')
 
-  $(".template-highlighter").remove();
-
   // trigger autorun to re-run
   templatesDep.changed();
 };
@@ -61,16 +59,16 @@ Template.onRendered(function () {
 
   if (!_.contains(excludedTemplates, templateName)) {
 
-    Meteor.autorun(function () {
+    Meteor.autorun(function (comp) {
 
       templatesDep.depend() ;
 
-      console.log(templateName)
-      console.log(_.clone(template))
-      console.log("-------------")
+      // do nothing the first time (instead, wait to be triggered by hotkey)
+      if (!comp.firstRun) {
 
-      // put this in setTimeout so app has the time to load in and render content
-      Meteor.setTimeout(function () {
+        // console.log(templateName)
+        // console.log(template)
+        // console.log("-------------")
 
         // TODO: when using {{#if}}, template.firstNode stays empty even after it's rendered
         var node = template.firstNode;
@@ -82,7 +80,8 @@ Template.onRendered(function () {
 
           try {
 
-            // if this is a text node, try using nextElementSibling instead
+            // if this is a text node, try using nextSibling instead
+            // TODO: kinda hacky
             if (node.nodeName === "#text") {
               if (node.nextSibling && node.nextSibling.nodeName !== "#text") {
                 node = node.nextSibling;
@@ -96,12 +95,12 @@ Template.onRendered(function () {
             $(node).append(div);
 
           } catch (error) {
+            // catch errors (usually text-only nodes, or empty templates)
             console.log(templateName);
-            // console.log(node);
             console.log(error);
           }
         }
-      }, 100);
+      }
 
     });
   }
@@ -116,7 +115,7 @@ $(function () {
 
     if(e.keyCode === 192){
       Telescope.debug.refresh();
-      $("body").addClass("show-highlighters");
+      // $("body").addClass("show-highlighters");
     }
 
     allowKeydown = false;
@@ -125,7 +124,8 @@ $(function () {
   $(document).keyup(function (e) {
     allowKeydown = true;
     if(e.keyCode === 192){
-      $("body").removeClass("show-highlighters");
+      // $("body").removeClass("show-highlighters");
+      $(".template-highlighter").remove();
     }
   });
 
