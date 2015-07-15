@@ -57,24 +57,25 @@
 		padding: 0 20px;
 		margin-bottom:$grid-margin;
 		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
 		@include small{
 			padding: 0 10px;
 		}
-		.primary-nav, .secondary-nav{
-			position: relative;
-			top: 50%;
+		.primary-nav, .secondary-nav, .logo{
+			flex-basis: 0;
+			flex-grow: 1;
 		}
 		.primary-nav{
-			float:left;
-			// z-index: 20;
+			order: 1;
 		}
 		.logo{
+			// background: pink;
 			text-align:center;
 			color:white;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			// transform: translate(-50%, -50%);
+			order: 2;
 			.logo-text{
 				@include small{
 					font-size: 18px;
@@ -98,8 +99,9 @@
 			}
 		}
 		.secondary-nav{
-			// z-index: 20;
-			float:right;
+			// background: rebeccapurple;
+			order: 3;
+			text-align: right;
 		}
 		.header-submodule{
 	  	display: inline-block;

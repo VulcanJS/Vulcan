@@ -39,24 +39,6 @@ Template.header.helpers({
   }
 });
 
-Template.header.onRendered(function () {
-  if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
-    var $logo = Template.instance().$('.logo');
-    var offsetX = $logo.outerWidth() * -0.5;
-    var offsetY = $logo.outerHeight() * -0.5;
-    $logo.css("margin-left", offsetX);
-    $logo.css("margin-top", offsetY);
-
-    var $primaryNav = Template.instance().$('.primary-nav');
-    offsetY = $primaryNav.outerHeight() * -0.5;
-    $primaryNav.css("margin-top", offsetY);
-
-    var $secondaryNav = Template.instance().$('.secondary-nav');
-    offsetY = $secondaryNav.outerHeight() * -0.5;
-    $secondaryNav.css("margin-top", offsetY);
-  }
-});
-
 Template.header.events({
   'click .mobile-menu-button': function(e){
     e.preventDefault();
