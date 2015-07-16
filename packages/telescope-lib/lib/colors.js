@@ -49,8 +49,8 @@ var secondaryContrast = setShortcut('secondaryContrastColor');
 
 accent("a:hover");
 accent(".post-content .post-heading .post-title:hover");
-accent(".post-vote .upvoted .upvote-link");
-accent(".post-vote .downvoted .downvote-link");
+accent(".upvoted .upvote-link");
+accent(".downvoted .downvote-link");
 accent(".upvoted .upvote");
 accent(".downvoted .downvote");
 accent(".toggle-actions-link");

@@ -194,7 +194,7 @@ Meteor.startup( function (){
     // Before Hooks
 
     Router.onBeforeAction(filters.isReady);
-    Router.onBeforeAction(filters.hasCompletedProfile);
+    Router.onBeforeAction(filters.hasCompletedProfile, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
     Router.onBeforeAction(filters.canView, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
     Router.onBeforeAction(filters.canViewPendingPosts, {only: ['post_page']});
     Router.onBeforeAction(filters.canViewRejectedPosts, {only: ['post_page']});
