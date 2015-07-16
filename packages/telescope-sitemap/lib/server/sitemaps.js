@@ -19,7 +19,7 @@ Meteor.startup(function() {
       {page: "/", lastmod: _getLatest(Settings.get("defaultView", "top")), changefreq: "hourly"},
       {page: "/top", lastmod: _getLatest("top"), changefreq: "hourly"},
       {page: "/new", lastmod: _getLatest("new"), changefreq: "hourly"},
-      {page: "/best", lastmod: _getLatest("best"), changefreq: "daily"},
+      {page: "/best", lastmod: _getLatest("best"), changefreq: "daily"}
     ];
 
     // Categories (if telescope-tags is included)
@@ -40,7 +40,6 @@ Meteor.startup(function() {
     // "best". Aggregate them to avoid duplication.
     var postPages = {};
     _.each(["top", "new", "best"], function(key) {
-      var siteUrl = Telescope.utils.getSiteUrl();
       var params = Posts.getSubParams(Posts.views[key]());
       var posts = Posts.find(params.find, {
         fields: {postedAt: 1, title: 1, _id: 1},
@@ -48,8 +47,7 @@ Meteor.startup(function() {
         sort: params.options.sort
       });
       posts.forEach(function(post) {
-        var url = getPostPageUrl(post).replace(siteUrl, "");
-        postPages[url] = {page: url, lastmod: post.postedAt, changefreq: "daily"};
+        postPages[url] = {page: post.getPageUrl(), lastmod: post.postedAt, changefreq: "daily"};
       });
     });
 

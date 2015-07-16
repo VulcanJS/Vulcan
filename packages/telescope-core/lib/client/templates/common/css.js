@@ -4,21 +4,41 @@ Template.css.helpers({
 
     // first loop over each of the four color
     _.each(Telescope.colorElements.colorTable, function (elements, color) {
-      var properties = {};
+      if (typeof Settings.get(color) !== "undefined") {
+        var properties = {};
 
-      // for each color, loop over the items to build the selector
-      _.each(elements, function (element) {
-        var elementSelector = element.selector;
-        var elementProperty = !!element.property ? element.property : "color"; // default to color property
-        properties[elementProperty] += ", "+elementSelector;
-      });
+        // for each color, loop over the items to build the selector
+        _.each(elements, function (element) {
+          var elementSelector = element.selector;
+          var elementProperty = !!element.property ? element.property : "color"; // default to color property
+          properties[elementProperty] += ", "+elementSelector;
+        });
 
-      // loop over all properties, and add the relevant selectors
-      _.each(properties, function (selector, property) {
-        css += selector + "{\n  " + property + ": " + Settings.get(color) + ";\n}\n";
-      });
+        // loop over all properties, and add the relevant selectors
+        _.each(properties, function (selector, property) {
+          css += selector + "{\n  " + property + ": " + Settings.get(color) + ";\n}\n";
+        });
+      }
     });
     return css;
+  },
+  fontFamily: function () {
+    return Settings.get('fontFamily', false);
+  },
+  fontUrl: function () {
+    return Settings.get('fontUrl', false);
+  },
+  backgroundCSS: function () {
+    return Settings.get('backgroundCSS', false);
+  },
+  buttonColor: function () {
+    return Settings.get('buttonColor', false);
+  },
+  logoHeight: function () {
+    return Settings.get('logoHeight', false);
+  },
+  logoWidth: function () {
+    return Settings.get('logoWidth', false);
   },
   headerTextColorHalfOpacity: function () {
     return tinycolor(Settings.get("headerTextColor")).setAlpha(0.5);
