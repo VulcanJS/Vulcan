@@ -11,6 +11,13 @@ Telescope.colorElements.colorTable = {
   secondaryContrastColor: []
 };
 
+Telescope.colorElements.defaultColors = {
+  accentColor: "#DD3416", // red
+  accentContrastColor: "#ffffff", // white
+  secondaryColor: "#4e555d", // slate
+  secondaryContrastColor: "#ffffff" // white
+};
+
 /**
  * Register an element to use a custom color
  * @param {string} selector - the CSS selector of the element

@@ -47,6 +47,9 @@ Template.menuComponent.helpers({
 
     return _.unique(classes).join(" ");
   },
+  labelIsTemplate: function () {
+    return typeof Template[this.menuLabel] !== "undefined"
+  },
   menuLabel: function () {
     // if label is defined, use this. Else default to menu name
     return !!this.menuLabel ? this.menuLabel : i18n.t(this.menuName);
