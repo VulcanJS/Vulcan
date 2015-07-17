@@ -63,7 +63,7 @@ Template.afPostThumbnail.helpers({
   style: function () {
     var thumbnailWidth = Settings.get('thumbnailWidth', 200);
     var thumbnailHeight = Settings.get('thumbnailHeight', 125);
-    return "width: "+thumbnailWidth+"px; height: "+thumbnailHeight+"px;";
+    return "max-width: "+thumbnailWidth+"px; max-height: "+thumbnailHeight+"px;";
   },
   embedlyKeyExists: function () {
     // haven't found a better way to do this yet…

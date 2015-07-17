@@ -88,9 +88,12 @@ $small-break: 600px;
 
 .post-thumbnail-container{
   position: relative;
+  margin-bottom: 10px;
 }
+
 .post-thumbnail-preview{
-  background: #eee;  
+  background: #eee;
+  width: 100%; 
 }
 
 .post-thumbnail-loading{

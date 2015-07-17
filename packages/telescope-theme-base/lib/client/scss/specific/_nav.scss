@@ -31,7 +31,6 @@ $mobile-header-height: 50px;
 
 .logo{
   @include small{
-    @include vcenter;
     font-size: 24px;
     white-space: nowrap;
     a{

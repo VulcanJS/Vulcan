@@ -15,13 +15,15 @@
 }
 
 .top-nav{
-  .pages-menu{
-    a{
-      font-weight: normal;
-      margin-right: 20px;
-      &:last-of-type{
-        margin: 0;
-      }
-    } 
+  .desktop-nav{
+    .pages-menu{
+      a{
+        font-weight: normal;
+        margin-right: 20px;
+        &:last-of-type{
+          margin: 0;
+        }
+      } 
+    }
   }
 }
