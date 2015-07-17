@@ -178,16 +178,57 @@
 }
 // ------------------------------ posts-grid layout ------------------------------ //
 
+@mixin onecol(){
+  @media screen and (min-width: 600px) and (max-width: 800px) {
+    @content;
+  }
+}
+@mixin twocol(){
+  @media screen and (min-width: 800px) and (max-width: 1000px) {
+    @content;
+  }
+}
+@mixin threecol(){
+  @media screen and (min-width: 1000px) and (max-width: 1200px) {
+    @content;
+  }
+}
+@mixin fourcol(){
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+}
+
+
 .posts-grid {
 	@include medium-large {
 		display: flex;
 		flex-wrap: wrap;
 	}
 	.post {
-		@include medium-large {
+
+		@include onecol {
+			width: 100%;
+			margin-right: 0px;
+		}
+		@include twocol {
+			width: calc((100% - 10px)/2);
+			margin-right: 10px;
+			&:nth-of-type(2n) {
+				margin-right: 0;
+			}
+		}
+		@include threecol {
 			width: calc((100% - 20px)/3);
 			margin-right: 10px;
 			&:nth-of-type(3n) {
+				margin-right: 0;
+			}
+		}
+		@include fourcol {
+			width: calc((100% - 30px)/4);
+			margin-right: 10px;
+			&:nth-of-type(4n) {
 				margin-right: 0;
 			}
 		}
