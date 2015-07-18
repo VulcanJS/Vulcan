@@ -20,13 +20,13 @@ servePostRSS = function(view, url) {
   Posts.find(params.find, params.options).forEach(function(post) {
 
     var description = !!post.body ? post.body+'</br></br>' : '';
-    var postItem = {
-     title: post.title,
-     description: description + '<a href="' + post.getPageUrl(true) + '">Discuss</a>',
-     author: post.author,
-     date: post.postedAt,
-     url: Posts.getLink(post),
-     guid: post._id
+    var feedItem = {
+      title: post.title,
+      description: description + '<a href="' + post.getPageUrl(true) + '">Discuss</a>',
+      author: post.author,
+      date: post.postedAt,
+      guid: post._id,
+      url: Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true)
     };
 
     if (post.thumbnailUrl) {
@@ -34,10 +34,10 @@ servePostRSS = function(view, url) {
       if (post.thumbnailUrl.substring(0, 5) !== "http:" && post.thumbnailUrl.substring(0, 6) !== "https:") {
         post.thumbnailUrl = "http:"+post.thumbnailUrl;
       }
-      postItem.custom_elements = [{"imageUrl": post.thumbnailUrl}, {"content": post.thumbnailUrl}];
+      feedItem.custom_elements = [{"imageUrl": post.thumbnailUrl}, {"content": post.thumbnailUrl}];
     }
 
-    feed.item(postItem);
+    feed.item(feedItem);
   });
 
   return feed.xml();

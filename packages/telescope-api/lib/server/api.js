@@ -10,6 +10,7 @@ serveAPI = function(limitSegment){
       author: post.author,
       date: post.postedAt,
       url: url,
+      pageUrl: Posts.getPageUrl(post, true),
       guid: post._id
     };
 
