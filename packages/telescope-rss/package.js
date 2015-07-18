@@ -5,7 +5,7 @@ Package.describe({
   git: "https://github.com/TelescopeJS/telescope-rss.git"
 });
 
-Npm.depends({rss: "0.3.2"});
+Npm.depends({rss: "1.1.1"});
 
 Package.onUse(function (api) {
 
@@ -13,5 +13,4 @@ Package.onUse(function (api) {
 
   api.addFiles(['lib/server/rss.js', 'lib/server/routes.js'], ['server']);
 
-  api.export(['serveRSS']);
 });
