@@ -28,6 +28,7 @@ Template.post_thumbnail.events({
     Meteor.defer(function () {
       $('body').addClass('showing-lightbox');
       $(e.target).parents('.post').find('.post-video-lightbox').fadeIn('fast');
+      $(".js-video").fitVids();
     });
   
   },

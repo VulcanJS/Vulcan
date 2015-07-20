@@ -72,6 +72,8 @@ $small-break: 600px;
   -moz-transform:translate(-50%, -50%);  
   transform: translate(-50%, -50%);
   z-index: 20000;
+  width: 100%;
+  max-width: 800px;
 }
 .post-video-lightbox-hide, .post-video-lightbox-hide:link, .post-video-lightbox-hide:visited, .post-video-lightbox-hide:hover{
   display: block;

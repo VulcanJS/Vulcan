@@ -21,6 +21,7 @@ Package.onUse( function(api) {
   ], ['server']);
 
   api.addFiles([
+    'lib/client/js/jquery.fitvids.js',
     'lib/client/autoform-postthumbnail.html',
     'lib/client/autoform-postthumbnail.js',
     'lib/client/post_thumbnail.html',
