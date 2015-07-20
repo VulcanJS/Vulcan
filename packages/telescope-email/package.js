@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:email",
   summary: "Telescope email package",
-  version: "0.21.1",
+  version: "0.21.2",
   git: "https://github.com/TelescopeJS/telescope-email.git"
 });
 
