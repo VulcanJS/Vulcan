@@ -6,10 +6,10 @@ Template.modules.helpers({
     return this.zone || this.toString();
   },
   getClass: function () {
-    var wrapperClass = "zone-wrapper ";
-    if (this.wrapperClass)
-      wrapperClass += this.wrapperClass;
-    return wrapperClass;
+    var zoneClass = "zone-wrapper ";
+    if (this.zoneClass)
+      zoneClass += this.zoneClass;
+    return zoneClass;
   },
   getId: function () {
     return this.wrapperId;
@@ -22,5 +22,13 @@ Template.modules.helpers({
       module.moduleClass = moduleClass;
       return module;
     });
+  },
+  moduleData: function () {
+    var zoneData = this;
+    var moduleData = Template.parentData(2);
+    if (zoneData.moduleClass) {
+      moduleData.moduleClass = zoneData.moduleClass;
+    }
+    return moduleData;
   }
 });

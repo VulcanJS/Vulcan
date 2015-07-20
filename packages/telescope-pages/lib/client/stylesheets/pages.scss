@@ -2,18 +2,6 @@
   @return rgba(255,255,255,$opacity);
 }
 
-.mobile-nav{
-  .pages-menu{
-    a{
-      border-bottom:1px white(0.2) solid;
-      margin: 0;
-      &:last-of-type{
-        border: none;
-      }
-    }
-  }
-}
-
 .top-nav{
   .desktop-nav{
     .pages-menu{
@@ -24,6 +12,32 @@
           margin: 0;
         }
       } 
+    }
+  }
+}
+
+.side-nav{
+  .pages-menu{
+    order: 2;
+    a{
+      display: block;
+      margin-bottom: 10px;
+      &:last-child{
+        margin: 0;
+      }
+    } 
+  }
+}
+
+
+.mobile-nav{
+  .pages-menu{
+    a{
+      border-bottom:1px white(0.2) solid;
+      margin: 0;
+      &:last-of-type{
+        border: none;
+      }
     }
   }
 }

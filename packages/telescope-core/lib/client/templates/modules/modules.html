@@ -1,7 +1,7 @@
 <template name="modules">
   <div class="{{getClass}}" data-zone="{{getZone}}" id="{{getId}}">
     {{#each getModules}}
-      {{> module}}
+      {{> Template.dynamic template=template data=moduleData}}
     {{/each}}
   </div>
 </template>

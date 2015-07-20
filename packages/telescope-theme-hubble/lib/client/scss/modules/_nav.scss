@@ -48,7 +48,6 @@
 .newsletter-dismiss{
 	line-height: 30px !important;
 }
-
 // ------------------------------------ Top Nav Layout ------------------------------------ //
 
 .top-nav{
@@ -182,14 +181,14 @@ $nav-width: 250px;
 	.tagline{
 		margin-top: 10px;
 	}
-	.pages-menu{
-		order: 2;
-		a{
-			display: block;
-			margin-bottom: 10px;
-			&:last-child{
-				margin: 0;
-			}
-		}	
+}
+
+// ---------------------------------------- Mobile ---------------------------------------- //
+
+@include small{
+	.header{
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 }

@@ -1,9 +1,0 @@
-<template name="module">
-  {{#if hasWrapper}}
-    <div class="{{wrapperClass}}">
-      {{> Template.dynamic template=template data=../..}}
-    </div>
-  {{else}}
-    {{> Template.dynamic template=template data=../..}}
-  {{/if}}
-</template>

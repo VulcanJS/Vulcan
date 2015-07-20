@@ -164,7 +164,7 @@ $text: #444444;
         opacity: 1;
       }
     }
-    .icon-close{
+    .icon-collapse{
       display: none;
     }
   }
@@ -172,10 +172,10 @@ $text: #444444;
     display: block; // only show the "show more" button if the menu has more than three items
   }
   &.menu-open{
-    .icon-close{
+    .icon-collapse{
       display: block;
     }
-    .icon-open{
+    .icon-expand{
       display: none;
     }    
   }

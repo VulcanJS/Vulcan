@@ -189,12 +189,12 @@
   }
 }
 @mixin threecol(){
-  @media screen and (min-width: 1000px) and (max-width: 1200px) {
+  @media screen and (min-width: 1000px) and (max-width: 1400px) {
     @content;
   }
 }
 @mixin fourcol(){
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     @content;
   }
 }
