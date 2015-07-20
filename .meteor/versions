@@ -129,7 +129,7 @@ telescope:kadira@0.21.1
 telescope:lib@0.21.1
 telescope:messages@0.21.1
 telescope:migrations@0.21.1
-telescope:newsletter@0.21.1
+telescope:newsletter@0.21.2
 telescope:notifications@0.21.1
 telescope:pages@0.21.1
 telescope:post-by-feed@0.21.1

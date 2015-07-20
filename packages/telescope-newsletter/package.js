@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:newsletter",
   summary: "Telescope email newsletter package",
-  version: "0.21.1",
+  version: "0.21.2",
   git: "https://github.com/TelescopeJS/telescope-newsletter.git"
 });
 
