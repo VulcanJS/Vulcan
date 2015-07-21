@@ -50,5 +50,8 @@ Template.css.helpers({
 
     return authClass.slice(0, - 2) + "{display:none !important}";
 
+  },
+  extraCSS: function () {
+    return Settings.get("extraCSS");
   }
 });

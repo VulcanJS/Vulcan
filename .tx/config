@@ -1,0 +1,15 @@
+[main]
+host = https://www.transifex.com
+
+[telescope.daily]
+file_filter = packages/telescope-daily/i18n/<lang>.i18n.json
+source_file = packages/telescope-daily/i18n/en.i18n.json
+source_lang = en
+type = KEYVALUEJSON
+
+[telescope.email]
+file_filter = packages/telescope-email/i18n/<lang>.i18n.json
+source_file = packages/telescope-email/i18n/en.i18n.json
+source_lang = en
+type = KEYVALUEJSON
+

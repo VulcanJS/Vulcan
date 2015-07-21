@@ -1,0 +1,23 @@
+{
+  "scheduled" : "Planlagt",
+  "users" : "Brugere",
+  "settings" : "Indstillinger",
+  "admin" : "Admin",
+  "post" : "Indlæg",
+  "toolbox" : "Værktøjskasse",
+  "sign_up_sign_in" : "Tilmeld / Log ind",
+  "my_account" : "Min konto",
+  "view_profile" : "Profil",
+  "edit_account" : "Rediger konto",
+  "you_are_already_logged_in" : "Du er allerede logget ind",
+  "read_more" : "Læs mere",
+  "welcome_to" : "Velkommen til",
+  "profile" : "Profil",
+  "sign_out" : "Log ud",
+  "actions" : "Handlinger",
+  "id" : "ID",
+  "github" : "GitHub",
+  "sign_in_sign_up_with_twitter" : "Tilmeld / Log ind med Twitter",
+  "newest_posts" : "De nyeste indlæg.",
+  "telescope_settings_panel" : " "
+}

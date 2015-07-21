@@ -1,0 +1,13 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "Συγγνώμη, δεν μπορείς να επεξεργαστείς συτό το σχόλιο.",
+  "your_comment_has_been_deleted" : "Το σχόλιο σας έχει διαγραφεί.",
+  "comment_" : "Σχόλιο",
+  "delete_comment" : "Διαγραφή σχολίου",
+  "add_comment" : "Νέο σχόλιο",
+  "upvote" : "Υπερ",
+  "downvote" : "Κατά",
+  "link" : "Σύνδεσμος",
+  "edit" : "Επεξεργασία",
+  "reply" : "Απάντηση",
+  "no_comments" : "Κανένα σχόλιο."
+}

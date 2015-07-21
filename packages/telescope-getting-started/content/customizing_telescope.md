@@ -1,6 +1,6 @@
 ### Changing Colors
 
-Telescope is fairly flexible out of the box. You can tweak colors for the header and buttons in the [Settings](/settings) panel.
+Telescope is fairly flexible out of the box. You can tweak colors for the header and buttons in the [Settings](/settings) panel (just make sure you've created a user account first).
 
 ### Enabling Thumbnails
 
@@ -10,10 +10,10 @@ If you'd like, you can also enable post thumbnails. You'll need to get an [Embed
 
 Telescope can also automatically generate and send a newsletter of the best posts of the day or week. All you need to do is provide your MailChimp API key and list ID in the Settings screen, choose the sending frequency, and then enable the newsletter. 
 
-If you want to learn more, be sure to check out the [Email](http://www.telesc.pe/docs/packages/email/) section of the documentation as well. 
+If you want to learn more, be sure to check out the [Email](http://docs.telescopeapp.org/docs/email) section of the documentation as well. 
 
 ### Customizing Your Templates
 
 Telescope also makes it possible to completely override any part of your app with your own custom templates.
 
-As usual, you'll learn more about this in [the documentation](http://www.telesc.pe/docs/customizing/theming-telescope/).
+As usual, you'll learn more about this in [the documentation](http://docs.telescopeapp.org/docs/overview).

@@ -42,12 +42,7 @@ menuMode (String) [optional]
             {{#if hasTemplate}}
               {{> Template.dynamic template=template data=data}}
             {{else}}
-              <li class="menu-item {{itemClass}}">
-                <a class="menu-sub-level" href="{{itemRoute}}">
-                  <span class="menu-label">{{itemLabel}}</span>
-                  {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
-                </a>
-              </li>
+              {{> menuItem}}
             {{/if}}
           {{/each}}
         </ul>
@@ -58,4 +53,13 @@ menuMode (String) [optional]
       </a>
     </div>
   </div>
+</template>
+
+<template name="menuItem">
+  <li class="menu-item {{itemClass}}">
+    <a class="menu-sub-level" href="{{itemRoute}}">
+      <span class="menu-label">{{itemLabel}}</span>
+      {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+    </a>
+  </li>
 </template>

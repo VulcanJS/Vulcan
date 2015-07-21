@@ -1,0 +1,12 @@
+{
+  "singleday" : "Enskild dag",
+  "the_top_5_posts_of_each_day" : "Fem toppinlägg varje dag.",
+  "previous_day" : "Föregående dag",
+  "next_day" : "Nästa dag",
+  "sorry_no_posts_for_today" : "Tyvärr, inga inlägg idag",
+  "sorry_no_posts_for" : "Tyvärr, inga inlägg för",
+  "today" : "I dag",
+  "yesterday" : "I går",
+  "single_day" : "Enkild dag",
+  "posts_of_a_single_day" : "Inlägg för en enstaka dag."
+}

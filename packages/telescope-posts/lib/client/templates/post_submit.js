@@ -33,7 +33,7 @@ AutoForm.hooks({
     onSuccess: function(operation, post) {
       this.template.$('button[type=submit]').removeClass('loading');
       Events.track("new post", {'postId': post._id});
-      Router.go('post_page', {_id: post._id});
+      Router.go('post_page', post);
     },
 
     onError: function(operation, error) {
@@ -43,7 +43,7 @@ AutoForm.hooks({
       // $(e.target).removeClass('disabled');
       if (error.error === 603) {
         var dupePostId = error.reason.split('|')[1];
-        Router.go('post_page', {_id: dupePostId});
+        Router.go('post_page', {slug: '_', _id: dupePostId});
       }
     }
 

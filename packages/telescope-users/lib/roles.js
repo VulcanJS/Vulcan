@@ -51,13 +51,14 @@ Users.is.invited = function (userOrUserId) {
 Users.is.invitedById = Users.is.invited;
 
 Meteor.users.helpers({
-  isAdmin: function() {
-    return Users.is.admin(this);
+  // conflicts with user.isAdmin property
+  // isAdmin: function () {
+  //   return Users.is.admin(this);
+  // },
+  isOwner: function (document) {
+    return Users.is.owner(this, document);
   },
-  isOwner: function() {
-    return Users.is.owner(this);
-  },
-  isInvited: function() {
+  isInvited: function () {
     return Users.is.invited(this);
   }
 });

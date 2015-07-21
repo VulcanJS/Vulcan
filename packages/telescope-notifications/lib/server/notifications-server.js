@@ -2,53 +2,6 @@ getUnsubscribeLink = function(user){
   return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.telescope.emailHash});
 };
 
-// given a notification, return the correct subject and html to send an email
-buildEmailNotification = function (notification) {
-
-  var subject,
-      template,
-      post = notification.data.post,
-      comment = notification.data.comment;
-
-  switch(notification.courier){
-
-    case 'newComment':
-      subject = notification.author()+' left a new comment on your post "' + post.title + '"';
-      template = 'emailNewComment';
-      break;
-
-    case 'newReply':
-      subject = notification.author()+' replied to your comment on "'+post.title+'"';
-      template = 'emailNewReply';
-      break;
-
-    case 'newCommentSubscribed':
-      subject = notification.author()+' left a new comment on "' + post.title + '"';
-      template = 'emailNewComment';
-      break;
-
-    default:
-      break;
-  }
-
-  var emailProperties = _.extend(notification.data, {
-    body: marked(comment.body),
-    profileUrl: Users.getProfileUrlBySlugOrId(comment.userId),
-    postCommentUrl: Telescope.utils.getPostCommentUrl(post._id, comment._id),
-    postLink: Posts.getLink(post)
-  });
-
-  // console.log(emailProperties)
-
-  var notificationHtml = Telescope.email.getTemplate(template)(emailProperties);
-  var html = Telescope.email.buildTemplate(notificationHtml);
-
-  return {
-    subject: subject,
-    html: html
-  };
-};
-
 Meteor.methods({
   unsubscribeUser : function(hash){
     // TO-DO: currently, if you have somebody's email you can unsubscribe them

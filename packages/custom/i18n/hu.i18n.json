@@ -1,0 +1,8 @@
+{
+  "customViewLink" : "Egyéni nézet link",
+  "customAdminLink" : "Egyéni Adminisztrátor link",
+  "customPostField" : "Egyéni bejegyzés mezőm",
+  "customCommentField" : "Egyéni hozzászólás mezőm",
+  "customUserField" : "Egyéni felhasználói mezőm",
+  "customSettingsField" : "Egyéni beállítás mezőm"
+}

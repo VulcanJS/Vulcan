@@ -37,6 +37,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   commentCount: {
     type: Number,
+    public: true,
     optional: true
   },
   /**
@@ -46,6 +47,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     public: true,
+    profile: true,
     editableBy: ["member", "admin"]
   },
   /**
@@ -53,6 +55,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedComments: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -60,22 +63,26 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedPosts: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
-    The user's email. Modifiable. // TODO: enforce uniqueness and use for login
+    The user's email. Modifiable.
   */
   email: {
     type: String,
     optional: true,
+    regEx: SimpleSchema.RegEx.Email,
     required: true,
     editableBy: ["member", "admin"]
+    // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
     A hash of the email, used for Gravatar // TODO: change this when email changes
   */
   emailHash: {
     type: String,
+    public: true,
     optional: true
   },
   /**
@@ -84,6 +91,7 @@ Telescope.schemas.userData = new SimpleSchema({
   htmlBio: {
     type: String,
     public: true,
+    profile: true,
     optional: true,
     autoform: {
       omit: true
@@ -96,6 +104,7 @@ Telescope.schemas.userData = new SimpleSchema({
   karma: {
     type: Number,
     decimal: true,
+    public: true,
     optional: true
   },
   /**
@@ -103,6 +112,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   postCount: {
     type: Number,
+    public: true,
     optional: true
   },
   /**
@@ -122,6 +132,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   slug: {
     type: String,
+    public: true,
     optional: true
   },
   /**
@@ -131,6 +142,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     public: true,
+    profile: true,
     editableBy: ["member", "admin"],
     template: "user_profile_twitter"
   },
@@ -139,6 +151,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedComments: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -146,6 +159,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedPosts: {
     type: [Telescope.schemas.votes],
+    public: true,
     optional: true
   },
   /**
@@ -155,6 +169,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     public: true,
+    profile: true,
     optional: true,
     editableBy: ["member", "admin"]
   }
@@ -167,11 +182,13 @@ Telescope.schemas.userData = new SimpleSchema({
 Users.schema = new SimpleSchema({ 
   _id: {
     type: String,
+    public: true,
     optional: true
   },
   username: {
     type: String,
-    regEx: /^[a-z0-9A-Z_]{3,15}$/,
+    // regEx: /^[a-z0-9A-Z_]{3,15}$/,
+    public: true,
     optional: true
   },
   emails: {
@@ -189,6 +206,7 @@ Users.schema = new SimpleSchema({
   },
   createdAt: {
     type: Date,
+    public: true,
     optional: true
   },
   isAdmin: {
@@ -231,57 +249,3 @@ Users.allow({
   remove: _.partial(Telescope.allowCheck, Meteor.users)
 });
 
-
-//////////////////////////////////////////////////////
-// Collection Hooks                                 //
-// https://atmospherejs.com/matb33/collection-hooks //
-//////////////////////////////////////////////////////
-
-/**
- * Generate HTML body from Markdown on user bio insert
- */
-Users.after.insert(function (userId, user) {
-
-  // run create user async callbacks
-  Telescope.callbacks.runAsync("onCreateUserAsync", user);
-
-  // check if all required fields have been filled in. If so, run profile completion callbacks
-  if (Users.hasCompletedProfile(user)) {
-    Telescope.callbacks.runAsync("profileCompletedAsync", user);
-  }
-  
-});
-
-/**
- * Generate HTML body from Markdown when user bio is updated
- */
-Users.before.update(function (userId, doc, fieldNames, modifier) {
-  // if bio is being modified, update htmlBio too
-  if (Meteor.isServer && modifier.$set && modifier.$set["telescope.bio"]) {
-    modifier.$set["telescope.htmlBio"] = Telescope.utils.sanitize(marked(modifier.$set["telescope.bio"]));
-  }
-});
-
-/**
- * If user.telescope.email has changed, check for existing emails and change user.emails if needed
- */
-Users.before.update(function (userId, doc, fieldNames, modifier) {
-  var user = doc;
-  // if email is being modified, update user.emails too
-  if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
-    var newEmail = modifier.$set["telescope.email"];
-
-    // check for existing emails and throw error if necessary
-    var userWithSameEmail = Users.findByEmail(newEmail);
-    if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
-      throw new Meteor.Error(i18n.t("this_email_is_already_taken") + " (" + newEmail + ")");
-    }
-
-    // if user.emails exists, change it too
-    if (!!user.emails) {
-      user.emails[0].address = newEmail;
-      modifier.$set.emails = user.emails;
-    }
-
-  }
-});

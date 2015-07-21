@@ -21,7 +21,7 @@ servePostRSS = function(view, url) {
     var description = !!post.body ? post.body+'</br></br>' : '';
     feed.item({
      title: post.title,
-     description: description + '<a href="' + Telescope.utils.getPostUrl(post._id) + '">Discuss</a>',
+     description: description + '<a href="' + post.getPageUrl(true) + '">Discuss</a>',
      author: post.author,
      date: post.postedAt,
      url: Posts.getLink(post),
@@ -42,7 +42,7 @@ serveCommentRSS = function() {
      description: comment.body+'</br></br>'+'<a href="'+Telescope.utils.getPostCommentUrl(post._id, comment._id)+'">Discuss</a>',
      author: comment.author,
      date: comment.postedAt,
-     url: Telescope.utils.getCommentUrl(comment._id),
+     url: comment.getPageUrl(true),
      guid: comment._id
     });
   });

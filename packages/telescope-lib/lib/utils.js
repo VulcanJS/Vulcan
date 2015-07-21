@@ -5,17 +5,10 @@
 Telescope.utils = {};
 
 /**
- * Returns the user defined site URL or Meteor.absoluteUrl
- */
-Telescope.utils.getSiteUrl = function() {
-  return Settings.get('siteUrl', Meteor.absoluteUrl());
-};
-
-/**
  * Convert a camelCase string to dash-separated string
  * @param {String} str
  */
-Telescope.utils.camelToDash = function(str) {
+Telescope.utils.camelToDash = function (str) {
   return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
 };
 
@@ -23,7 +16,7 @@ Telescope.utils.camelToDash = function(str) {
  * Convert an underscore-separated string to dash-separated string
  * @param {String} str
  */
-Telescope.utils.underscoreToDash = function(str) {
+Telescope.utils.underscoreToDash = function (str) {
   return str.replace('_', '-');
 };
 
@@ -31,7 +24,7 @@ Telescope.utils.underscoreToDash = function(str) {
  * Convert a dash separated string to camelCase.
  * @param {String} str
  */
-Telescope.utils.dashToCamel = function(str) {
+Telescope.utils.dashToCamel = function (str) {
   return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
 };
 
@@ -102,10 +95,25 @@ Telescope.utils.getDateRange = function(pageNumber) {
 // URL Helper Functions //
 //////////////////////////
 
+/**
+ * Returns the user defined site URL or Meteor.absoluteUrl
+ */
+Telescope.utils.getSiteUrl = function () {
+  return Settings.get('siteUrl', Meteor.absoluteUrl());
+};
+
+/**
+ * The global namespace for Telescope utils.
+ * @param {String} url - the URL to redirect
+ */
+Telescope.utils.getOutgoingUrl = function (url) {
+  return Telescope.utils.getRouteUrl('out', {}, {query: {url: url}});
+};
+
 // This function should only ever really be necessary server side
 // Client side using .path() is a better option since it's relative
 // and shouldn't care about the siteUrl.
-Telescope.utils.getRouteUrl = function(routeName, params, options) {
+Telescope.utils.getRouteUrl = function (routeName, params, options) {
   options = options || {};
   var route = Router.url(
     routeName,
@@ -121,17 +129,8 @@ Telescope.utils.getSignupUrl = function() {
 Telescope.utils.getSigninUrl = function() {
   return this.getRouteUrl('atSignIn');
 };
-Telescope.utils.getPostUrl = function(id) {
-  return this.getRouteUrl('post_page', {_id: id});
-};
-Telescope.utils.getPostEditUrl = function(id) {
-  return this.getRouteUrl('post_edit', {_id: id});
-};
 
-Telescope.utils.getCommentUrl = function(id) {
-  return this.getRouteUrl('comment_reply', {_id: id});
-};
-
+//TODO: fix this
 Telescope.utils.getPostCommentUrl = function(postId, commentId) {
   // get link to a comment on a post page
   return this.getRouteUrl('post_page_comment', {
@@ -140,13 +139,17 @@ Telescope.utils.getPostCommentUrl = function(postId, commentId) {
   });
 };
 
-Telescope.utils.slugify = function(text) {
-  if(text){
-    text = text.replace(/[^-_a-zA-Z0-9,&\s]+/ig, '');
-    text = text.replace(/\s/gi, "-");
-    text = text.toLowerCase();
+Telescope.utils.slugify = function (s) {
+  var slug = getSlug(s, {
+    truncate: 60
+  });
+
+  // can't have posts with an "edit" slug
+  if (slug === "edit") {
+    slug = "edit-1";
   }
-  return text;
+
+  return slug;
 };
 
 Telescope.utils.getShortUrl = function(post) {

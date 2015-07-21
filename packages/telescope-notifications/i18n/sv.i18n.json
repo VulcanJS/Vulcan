@@ -1,0 +1,20 @@
+{
+  "a_new_comment_on_your_post" : "En ny kommentar på ditt inlägg",
+  "you_have_a_new_comment_by" : "Du har en ny kommentar från ",
+  "on_your_post" : " på ditt inlägg",
+  "has_created_a_new_post" : " har skapat ett nytt inlägg",
+  "someone_replied_to_your_comment_on" : "Någon svarade på din kommentar gällande",
+  "no_notifications" : "Inga notifikationer",
+  "1_notification" : "En notifikation",
+  "notifications" : "notifikationer",
+  "mark_all_as_read" : "Markera alla som lästa",
+  "left_a_new_comment_on" : "lämnade en ny kommentar på",
+  "has_replied_to_your_comment_on" : " har svarat på din kommentar gällande",
+  "mark_as_read" : "Markera som läst",
+  "you_have_been_unsubscribed_from_all_notifications" : "Du har avregistrerat dig från alla notifikationer.",
+  "user_not_found" : "Användaren hittades inte",
+  "notifications_fieldset" : "Notifikationer",
+  "emailNotifications" : "E",
+  "your_post" : "Ditt inlägg",
+  "has_been_approved" : "har godkänts"
+}

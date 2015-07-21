@@ -108,7 +108,7 @@
 			color: black(0.2);
 		}
 	}
-	.post-upvote {
+	.post-vote {
 		order: 1;
 		@include small {
 			display: none;
@@ -165,7 +165,7 @@
 		}
 		.post-share,
 		.post-discuss,
-		.post-upvote {
+		.post-vote {
 			flex-grow: 1;
 			display: block;
 		}
@@ -224,7 +224,7 @@
 			// box-shadow: 0px 0px 2px white(0.5);
 		}
 	}
-	.post-upvote {
+	.post-vote {
 		position: absolute;
 		left: 7px;
 		bottom: 7px;
@@ -266,10 +266,37 @@
 	.icon{
 	}
 }
-.post-upvote {
+.post-vote {
 	@include small{
 		text-align: center;
 	}
+	.voted{
+		.vote-action{
+			color: $lighter-text;
+		}
+	}
+	.upvoted{
+		.upvote-link{
+			color: $red;
+		}
+	}
+	.downvoted{
+		.downvote-link{
+			color: $red;
+		}
+	}
+	.vote-actions{
+		border: 1px solid $lighter-text;
+		border-radius: 100px;
+	}
+	.downvote-link{
+		border-top: 1px solid $lighter-text;
+	}
+	.vote-action{
+		padding: 2px 5px;
+		font-size: 10px;
+	}
+
 	.upvote-link {
 		display: block;
 		.icon-upvote{
@@ -285,16 +312,6 @@
 			}
 		}
 		&.voted {
-			cursor: default;
-			i.icon-upvote {
-				display: none;
-			}
-			i.icon-voted {
-				border: 1px solid $lighter-text;
-				display: inline-block;
-				color: $lighter-text;
-				// opacity: 0.5;
-			}
 		}
 	}
 }

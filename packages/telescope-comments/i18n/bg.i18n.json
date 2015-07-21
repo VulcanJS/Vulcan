@@ -1,0 +1,13 @@
+{
+  "sorry_you_cannot_edit_this_comment" : "Съжаляваме, неможете да променяте този коментар.",
+  "your_comment_has_been_deleted" : "Вашият коментар беше изтрит.",
+  "comment_" : "Коментар",
+  "delete_comment" : "Изтриване на коментар",
+  "add_comment" : "Добави коментар",
+  "upvote" : "Харесвам",
+  "downvote" : "Не харесвам",
+  "link" : "връзка",
+  "edit" : "редактирай",
+  "reply" : "отговор",
+  "no_comments" : "Няма коментари."
+}

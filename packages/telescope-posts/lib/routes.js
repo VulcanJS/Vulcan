@@ -115,7 +115,7 @@ Posts.controllers.page = RouteController.extend({
 
   template: 'post_page',
 
-  waitOn: function() {
+  waitOn: function () {
     this.postSubscription = coreSubscriptions.subscribe('singlePost', this.params._id);
     this.postUsersSubscription = coreSubscriptions.subscribe('postUsers', this.params._id);
     this.commentSubscription = coreSubscriptions.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
@@ -130,12 +130,10 @@ Posts.controllers.page = RouteController.extend({
       return this.post().title;
   },
 
-  onBeforeAction: function() {
-    if (! this.post()) {
+  onBeforeAction: function () {
+    if (!this.post()) {
       if (this.postSubscription.ready()) {
         this.render('not_found');
-      } else {
-        this.render('loading');
       }
     } else {
       this.next();
@@ -151,6 +149,17 @@ Posts.controllers.page = RouteController.extend({
   data: function() {
     return this.post();
   },
+
+  onAfterAction: function () {
+    var post = this.post();
+    if (post) {
+      if (post.slug !== this.params.slug) {
+        window.history.replaceState({}, "", post.getPageUrl());
+      }
+      $('link[rel="canonical"]').attr("href", post.getPageUrl(true));
+    }
+  },
+
   fastRender: true
 });
 
@@ -194,21 +203,6 @@ Meteor.startup(function () {
     controller: Posts.controllers.scheduled
   });
 
-  // Post Page
-
-  Router.route('/posts/:_id', {
-    name: 'post_page',
-    controller: Posts.controllers.page
-  });
-
-  Router.route('/posts/:_id/comment/:commentId', {
-    name: 'post_page_comment',
-    controller: Posts.controllers.page,
-    onAfterAction: function () {
-      // TODO: scroll to comment position
-    }
-  });
-
   // Post Edit
 
   Router.route('/posts/:_id/edit', {
@@ -227,6 +221,21 @@ Meteor.startup(function () {
       };
     },
     fastRender: true
+  });
+
+  // Post Page
+
+  Router.route('/posts/:_id/:slug?', {
+    name: 'post_page',
+    controller: Posts.controllers.page
+  });
+
+  Router.route('/posts/:_id/comment/:commentId', {
+    name: 'post_page_comment',
+    controller: Posts.controllers.page,
+    onAfterAction: function () {
+      // TODO: scroll to comment position
+    }
   });
 
   // Post Submit

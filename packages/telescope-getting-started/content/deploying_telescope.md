@@ -18,4 +18,4 @@ Note that deploying does *not* copy over your database, which contains your post
 
 Hosting on `*.meteor.com` is fine for small apps and prototypes, but if you want to deploy your app in production you'll need something better. 
 
-Check out [the Telescope documentation](http://www.telesc.pe/docs/getting-started/deploying/) to learn more about this topic.
+Check out [the Telescope documentation](http://docs.telescopeapp.org/docs/deploying) to learn more about this topic.

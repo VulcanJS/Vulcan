@@ -1,0 +1,11 @@
+{
+  "description" : "Beskrivelse",
+  "logoHeight" : "Logo Højde",
+  "logoWidth" : "Logo Bredde",
+  "language" : "Sprog",
+  "backgroundCSS" : "Baggrund CSS",
+  "footerCode" : "Footer kode",
+  "extraCode" : "Ekstra kode",
+  "emailFooter" : "Email Footer",
+  "extras" : "Ekstra"
+}

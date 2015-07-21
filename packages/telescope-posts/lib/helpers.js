@@ -1,30 +1,55 @@
 //////////////////
-// Post Helpers //
+// Link Helpers //
 //////////////////
 
 /**
- * Grab common post properties.
+ * Return a post's link if it has one, else return its post page URL
  * @param {Object} post
  */
-Posts.getProperties = function (post) {
-  var postAuthor = Meteor.users.findOne(post.userId);
-  var p = {
-    postAuthorName : Users.getDisplayName(postAuthor),
-    postTitle : Telescope.utils.cleanUp(post.title),
-    profileUrl: Users.getProfileUrlBySlugOrId(post.userId),
-    postUrl: Posts.getPageUrl(post),
-    thumbnailUrl: post.thumbnailUrl,
-    linkUrl: !!post.url ? Posts.getOutgoingUrl(post.url) : Posts.getPageUrl(post._id)
-  };
-
-  if(post.url)
-    p.url = post.url;
-
-  if(post.htmlBody)
-    p.htmlBody = post.htmlBody;
-
-  return p;
+Posts.getLink = function (post, isAbsolute) {
+  return !!post.url ? Telescope.utils.getOutgoingUrl(post.url) : this.getPageUrl(post, isAbsolute);
 };
+Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
+
+/**
+ * Get URL of a post page.
+ * @param {Object} post
+ */
+Posts.getPageUrl = function(post, isAbsolute){
+  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  return prefix + Router.path("post_page", post);
+};
+Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
+
+/**
+ * Get post edit page URL.
+ * @param {String} id
+ */
+Posts.getEditUrl = function(post, isAbsolute){
+  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  return prefix + Router.path("post_edit", post);
+};
+Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
+
+///////////////////
+// Other Helpers //
+///////////////////
+
+/**
+ * Get a post author's name
+ * @param {Object} post
+ */
+Posts.getAuthorName = function (post) {
+  var user = Meteor.users.findOne(post.userId);
+  if (user) {
+    return user.getDisplayName();
+  } else {
+    return post.author;
+  }
+};
+Posts.helpers({getAuthorName: function () {return Posts.getAuthorName(this);}});
 
 /**
  * Get default status for new posts.
@@ -39,30 +64,6 @@ Posts.getDefaultStatus = function (user) {
     // else
     return Posts.config.STATUS_PENDING
   }
-};
-
-/**
- * Get URL of a post page.
- * @param {Object} post
- */
-Posts.getPageUrl = function(post){
-  return Telescope.utils.getSiteUrl()+'posts/'+post._id;
-};
-
-/**
- * Get post edit page URL.
- * @param {String} id
- */
-Posts.getEditUrl = function(id){
-  return Telescope.utils.getSiteUrl()+'posts/'+id+'/edit';
-};
-
-/**
- * Return a post's link if it has one, else return its post page URL
- * @param {Object} post
- */
-Posts.getLink = function (post) {
-  return !!post.url ? Posts.getOutgoingUrl(post.url) : this.getPageUrl(post);
 };
 
 /**
@@ -90,8 +91,4 @@ Posts.checkForSameUrl = function (url, currentUser) {
  */
 Posts.current = function () {
   return Posts.findOne(Router.current().data()._id);
-};
-
-Posts.getOutgoingUrl = function(url) {
-  return Telescope.utils.getRouteUrl('out', {}, {query: {url: url}});
 };

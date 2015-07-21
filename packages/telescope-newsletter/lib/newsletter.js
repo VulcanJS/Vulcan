@@ -40,17 +40,32 @@ Posts.addField({
   }
 });
 
-// Users
-// TODO: add "subscribe to newsletter" checkbox or setting to account page
-
-// Users.addField({
-//   fieldName: 'subscribeToNewsletter',
-//   fieldSchema: {
-//     type: Boolean,
-//     optional: true, 
-//     editableBy: ["member", "admin"]
-//   }
-// });
+Users.addField([
+  {
+    fieldName: 'telescope.newsletter.showBanner',
+    fieldSchema: {
+      label: 'Show banner',
+      type: Boolean,
+      optional: true,
+      editableBy: ['admin', 'member'],
+      autoform: {
+        omit: true
+      }
+    }
+  },
+  {
+    fieldName: 'telescope.newsletter.subscribeToNewsletter',
+    fieldSchema: {
+      label: 'Subscribe to newsletter',
+      type: Boolean,
+      optional: true,
+      editableBy: ['admin', 'member'],
+      autoform: {
+        omit: true
+      }
+    }
+  }
+]);
 
 // Settings
 

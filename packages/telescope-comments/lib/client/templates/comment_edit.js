@@ -29,6 +29,7 @@ AutoForm.hooks({
     },
 
     onSuccess: function(formType, comment) {
+      // TODO: find out why comment is undefined here
       comment = this.currentDoc;
       Events.track("edit comment", {'commentId': comment._id});
       Router.go('post_page', {_id: comment.postId});

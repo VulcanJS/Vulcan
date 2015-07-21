@@ -1,0 +1,5 @@
+{
+  "feed_already_exists" : "Ett flöde med samma webbaddress finns redan.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Du måste logga in och vara en admin för att lägga till en ny ström.",
+  "import_new_posts_from_feeds" : "Importera nya inlägg från flöden."
+}

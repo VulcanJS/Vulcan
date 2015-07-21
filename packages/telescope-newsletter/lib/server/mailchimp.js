@@ -113,8 +113,9 @@ addToMailChimpList = function(userOrEmail, confirm, done){
       var subscribe = api.call('lists', 'subscribe', subscribeOptions);
 
       // mark user as subscribed
-      if(!!user)
-        Users.setUserSetting('subscribedToNewsletter', true, user);
+      if (!!user) {
+        Users.setSetting(user, 'newsletter.subscribeToNewsletter', true);
+      }
 
       console.log("// User subscribed");
 
@@ -136,12 +137,10 @@ Meteor.methods({
     }
   },
   addEmailToMailChimpList: function (email) {
-    if (Users.is.adminById(this.userId)) {
-      try {
-        return addToMailChimpList(email, true);
-      } catch (error) {
-        throw new Meteor.Error(500, error.message);
-      }
+    try {
+      return addToMailChimpList(email, true);
+    } catch (error) {
+      throw new Meteor.Error(500, error.message);
     }
   }
 });

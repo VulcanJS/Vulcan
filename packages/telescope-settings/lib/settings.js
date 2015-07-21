@@ -15,8 +15,10 @@ Settings.schema = new SimpleSchema({
   siteUrl: {
     type: String,
     optional: true,
+    // regEx: SimpleSchema.RegEx.Url,
     autoform: {
       group: "01_general",
+      type: "bootstrap-url",
       instructions: 'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
     }
   },
@@ -82,6 +84,16 @@ Settings.schema = new SimpleSchema({
       leftLabel: "Require Posts Approval"
     }
   },
+  enableDownvotes: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+    autoform: {
+      group: "01_general",
+      instructions: 'Enable downvotes',
+      leftLabel: "Enable downvotes"
+    }
+  },
   defaultEmail: {
     type: String,
     optional: true,
@@ -108,7 +120,7 @@ Settings.schema = new SimpleSchema({
     defaultValue: 30,
     private: true,
     autoform: {
-      group: 'scoring',
+      group: '01_general',
       instructions: 'How often to recalculate scores, in seconds (default to 30)',
       class: "private-field"
     }
@@ -351,6 +363,15 @@ Settings.schema = new SimpleSchema({
       rows: 5
     }
   },
+  extraCSS: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: 'extras',
+      instructions: 'Any extra CSS you want to include on every page.',
+      rows: 5
+    }
+  },
   emailFooter: {
     type: String,
     optional: true,
@@ -432,10 +453,25 @@ Settings.get = function(setting, defaultValue) {
   }
 };
 
-// use custom template for checkboxes - not working yet
-// if(Meteor.isClient){
-//   AutoForm.setDefaultTemplateForType('afCheckbox', 'settings');
-// }
+
+
+/**
+ * Add trailing slash if needed on insert
+ */
+Settings.before.insert(function (userId, doc) {
+  if(doc.siteUrl && doc.siteUrl.match(/\//g).length === 2) {
+    doc.siteUrl = doc.siteUrl + "/";
+  }
+});
+
+/**
+ * Add trailing slash if needed on update
+ */
+Settings.before.update(function (userId, doc, fieldNames, modifier) {
+  if(modifier.$set && modifier.$set.siteUrl && modifier.$set.siteUrl.match(/\//g).length === 2) {
+    modifier.$set.siteUrl = modifier.$set.siteUrl + "/";
+  }
+});
 
 Meteor.startup(function () {
   Settings.allow({

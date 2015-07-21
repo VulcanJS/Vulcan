@@ -1,7 +1,6 @@
-
-// ------------------------------------------------------------------------------------------- //
-// ------------------------------------------ Hooks ------------------------------------------ //
-// ------------------------------------------------------------------------------------------- //
+//////////////////////////////////////////////////////
+// Collection Hooks                                 //
+//////////////////////////////////////////////////////
 
 Comments.before.insert(function (userId, doc) {
   // note: only actually sanitizes on the server
@@ -16,10 +15,22 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
   }
 });
 
+/**
+ * Disallow $rename
+ */
+Comments.before.update(function (userId, doc, fieldNames, modifier) {
+  if (!!modifier.$rename) {
+    throw new Meteor.Error("illegal $rename operator detected!");
+  }
+});
+
+//////////////////////////////////////////////////////
+// Callbacks                                        //
+//////////////////////////////////////////////////////
+
 function afterCommentOperations (comment) {
 
-  var userId = comment.userId,
-    commentAuthor = Meteor.users.findOne(userId);
+  var userId = comment.userId;
 
   // increment comment count
   Meteor.users.update({_id: userId}, {
@@ -33,10 +44,17 @@ function afterCommentOperations (comment) {
     $addToSet:  {commenters: userId}
   });
 
+  return comment;
+}
+Telescope.callbacks.add("commentSubmitAsync", afterCommentOperations);
+
+function upvoteOwnComment (comment) {
+
+  var commentAuthor = Meteor.users.findOne(comment.userId);
+
   // upvote comment
   Telescope.upvoteItem(Comments, comment, commentAuthor);
 
   return comment;
 }
-
-Telescope.callbacks.add("commentSubmitAsync", afterCommentOperations);
+Telescope.callbacks.add("commentSubmitAsync", upvoteOwnComment);

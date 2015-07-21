@@ -1,0 +1,5 @@
+{
+  "feed_already_exists" : "Un flux avec la même URL existe déjà.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Vous devez vous connecter et être un administrateur pour ajouter un nouveau flux.",
+  "import_new_posts_from_feeds" : "Importez de nouveaux posts à partir de flux."
+}

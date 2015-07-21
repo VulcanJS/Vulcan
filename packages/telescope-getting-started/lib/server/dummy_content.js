@@ -77,12 +77,12 @@ var createDummyComments = function () {
   createComment("read_this_first", "Bruce", "What an awesome app!");
 
   createComment("deploying_telescope", "Arnold", "Deploy to da choppah!");
-  createComment("deploying_telescope", "Julia", "Do you really need to say this all the time?", "Deploy to the choppah!");
+  createComment("deploying_telescope", "Julia", "Do you really need to say this all the time?", "Deploy to da choppah!");
 
-  createComment("customizing_telescope", "Julia", "I can't wait to make my app pretty. Get it? *Pretty*?");
+  createComment("customizing_telescope", "Julia", "This is really cool!");
 
-  createComment("removing_getting_started_posts", "Bruce", "Yippee ki-yay, motherfucker!");
-  createComment("removing_getting_started_posts", "Arnold", "I don't think you're supposed to swear in here…", "Yippee ki-yay, motherfucker!");
+  createComment("removing_getting_started_posts", "Bruce", "Yippee ki-yay!");
+  createComment("removing_getting_started_posts", "Arnold", "I'll be back.", "Yippee ki-yay!");
 
 };
 

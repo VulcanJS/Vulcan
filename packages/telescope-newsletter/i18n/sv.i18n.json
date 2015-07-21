@@ -1,0 +1,15 @@
+{
+  "receive_the_best_of" : "Få det bästa av",
+  "right_in_your_inbox" : "direkt i din inkorg.",
+  "get_newsletter" : "Få Nyhetsbrev",
+  "thanks_for_subscribing" : "Tack för att du prenumererar!",
+  "newsletter" : "nyhetsbrev",
+  "showBanner" : "Visa Banner",
+  "mailChimpAPIKey" : "MailChimp API-nyckel",
+  "mailChimpListId" : "Mailchimp List-ID",
+  "postsPerNewsletter" : "Inlägg per Nyhetsbrev",
+  "newsletterFrequency" : "Nyhetsbrevsfrekvens",
+  "newsletterTime" : "Nyhetsbrevstid",
+  "enableNewsletter" : "Aktivera Nyhetsbrev",
+  "autoSubscribe" : "Auto-registrera"
+}

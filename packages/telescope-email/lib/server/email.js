@@ -95,9 +95,9 @@ function adminUserCreationNotification (user) {
   // send notifications to admins
   var admins = Users.adminUsers();
   admins.forEach(function(admin){
-    if(Users.getUserSetting('notifications.users', false, admin)){
+    if (Users.getSetting(admin, "notifications.users", false)) {
       var emailProperties = {
-        profileUrl: Users.getProfileUrl(user),
+        profileUrl: Users.getProfileUrl(user, true),
         username: Users.getUserName(user)
       };
       var html = Telescope.email.getTemplate('emailNewUser')(emailProperties);

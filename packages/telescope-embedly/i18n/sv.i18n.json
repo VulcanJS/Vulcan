@@ -1,0 +1,11 @@
+{
+  "thumbnail" : "Miniatyrbild",
+  "thumbnailUrl" : "Miniatyrbild",
+  "regenerate_thumbnail" : "Skapa om miniatyrbild",
+  "clear_thumbnail" : "Rensa miniatyrbild",
+  "please_fill_in_embedly_key" : "Fyll i din Embedly API-nyckel för att göra det möjligt för miniatyrer.",
+  "please_ask_your_admin_to_fill_in_embedly_key" : "Be din webbadministratör att fylla i en Embedly API-nyckel för att tillgängliggöra miniatyrbilder.",
+  "embedlyKey" : "Em",
+  "thumbnailWidth" : "Miniatyrbildsbredd",
+  "thumbnailHeight" : "Miniatyrbildshöjd"
+}

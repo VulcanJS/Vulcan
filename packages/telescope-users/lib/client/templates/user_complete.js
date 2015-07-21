@@ -1,3 +1,13 @@
+AutoForm.hooks({
+  completeUserForm: {
+    onError: function(operation, error) {
+      this.template.$('button[type=submit]').removeClass('loading');
+      Messages.flash(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
+      Messages.clearSeen();
+    }
+  }
+});
+
 Template.user_complete.helpers({
   user: function () {
     return Meteor.user();

@@ -2,8 +2,13 @@ AutoForm.addInputType("bootstrap-url", {
   template: "afBootstrapUrl",
   valueOut: function () {
     var url = this.val();
-    if(!!url)
-      return (url.substring(0, 7) === "http://" || url.substring(0, 8) === "https://") ? url : "http://"+url;
+    if (!!url) {
+      // add http:// if missing
+      if (url.substring(0, 7) !== "http://" && url.substring(0, 8) !== "https://") {
+        url = "http://"+url;
+      }
+      return url;
+    }
   }
 });
 
