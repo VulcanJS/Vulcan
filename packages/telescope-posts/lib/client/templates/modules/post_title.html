@@ -1,3 +1,6 @@
 <template name="post_title">
-  <a href="{{postLink}}" class="post-title" target="{{postTarget}}">{{title}}</a>
+<a href="{{pathFor 'post_page'}}" class="post-title" target="">{{title}}</a>
+<a class="post-thumbnail-link {{playVideoClass}}" href="{{pathFor 'post_page'}}" target="">
+       <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';" aria-hidden="true"/>
+   </a>
 </template>
