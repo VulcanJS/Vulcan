@@ -1,3 +1,21 @@
+## v0.22.1 “DebugScope”
+
+* Introduced new [template debug mode](http://docs.telescopeapp.org/docs/debug-mode).
+* Fixed invites bugs (thanks @badibouteraa!).
+* Made hero modules full width (thanks @jshimko!).
+* Renamed `nav` template to `header`.
+* Renamed `postsListTop` zone to `top`.
+* Any template can now be used as menu label in menu component.
+* Added `Telescope.menuItems.removeAll()`
+* Number of columns in Hubble grid layout now adapts to viewport width.
+* Added image support to RSS feed and API.
+* Added setting for pointing RSS feed to discussion pages.
+* Made video lightbox responsive and made video stop on lightbox close.
+* Simplified template modules markup structure.
+* Fixed bug preventing non-logged-in users from signing up to newsletter (thanks @frabrunelle!).
+* Moved errors and banners styles to base theme.
+* Updated Kadira package.
+
 ## v0.21.2 “FastScope”
 
 * Added day by day settings for newsletter frequency (thanks @johnthepink!).
