@@ -13,7 +13,6 @@
 // ------------------------------------ post ------------------------------------ //
 
 .post{
-	padding: 10px;
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom: 1px solid $lightest-grey;
@@ -81,6 +80,7 @@
 
 .posts-list {
 	.post{
+		padding: 10px 0 10px 10px;
 		display: flex;
 		justify-content: space-between;
 	}
