@@ -12,7 +12,7 @@ Package.onUse(function (api) {
   api.use([
     'telescope:core@0.21.1',
     'meteorhacks:kadira@2.20.6',
-    'meteorhacks:kadira-debug@1.3.3'
+    'kadira:debug@2.1.0'
   ], ['client', 'server']);
 
   api.addFiles([
