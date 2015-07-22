@@ -25,7 +25,7 @@ Template.modules.helpers({
   },
   moduleData: function () {
     var zoneData = this;
-    var moduleData = Template.parentData(2);
+    var moduleData = Template.parentData(2) || {}; // parent template might not always have data context
     if (zoneData.moduleClass) {
       moduleData.moduleClass = zoneData.moduleClass;
     }

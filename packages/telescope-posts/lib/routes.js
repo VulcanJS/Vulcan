@@ -139,7 +139,7 @@ Posts.controllers.page = RouteController.extend({
   },
 
   data: function() {
-    return this.post();
+    return {post: this.post()};
   },
 
   onAfterAction: function () {
