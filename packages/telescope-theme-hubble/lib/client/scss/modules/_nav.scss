@@ -63,12 +63,29 @@
 		@include small{
 			padding: 0 10px;
 		}
+		.header-submodule{
+			flex-shrink: 0;
+	    margin-right: 20px;
+		  &:last-of-type{
+	  	  margin-right: 0px;
+	  	}
+		}
 		.primary-nav, .secondary-nav, .logo{
 			flex-basis: 0;
 			flex-grow: 1;
 		}
 		.primary-nav{
 			order: 1;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+		}
+		.secondary-nav{
+			// background: rebeccapurple;
+			order: 3;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
 		}
 		.logo{
 			// background: pink;
@@ -96,18 +113,6 @@
 				text-shadow: none;
 				color: transparent;
 			}
-		}
-		.secondary-nav{
-			// background: rebeccapurple;
-			order: 3;
-			text-align: right;
-		}
-		.header-submodule{
-	  	display: inline-block;
-	    margin-right: 20px;
-		  &:last-of-type{
-	  	  margin-right: 0px;
-	  	}
 		}
 	}
 }

@@ -13,7 +13,7 @@
 // ------------------------------------ post ------------------------------------ //
 
 .post{
-	padding: 10px 0px 10px 10px;
+	padding: 10px;
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom: 1px solid $lightest-grey;
@@ -34,7 +34,6 @@
 			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 		}
 	}
-	display: flex;
 	align-items: center;
 }
 
@@ -81,6 +80,10 @@
 // ------------------------------ posts-list layout ------------------------------ //
 
 .posts-list {
+	.post{
+		display: flex;
+		justify-content: space-between;
+	}
 	.post-module {
 		flex-shrink: 0;
 		flex-grow: 0;
@@ -110,9 +113,7 @@
 	}
 	.post-vote {
 		order: 1;
-		@include small {
-			display: none;
-		}
+		flex-grow: 0;
 	}
 	.post-content {
 		order: 2;
@@ -164,9 +165,7 @@
 			display: none;
 		}
 		.post-share,
-		.post-discuss,
-		.post-vote {
-			flex-grow: 1;
+		.post-discuss {
 			display: block;
 		}
 	}
@@ -544,7 +543,6 @@
 					margin-bottom: 4px;
 				}
 				.post-domain {
-					display: block;
 					margin-bottom: 4px;
 					font-size: 13px;
 				}
