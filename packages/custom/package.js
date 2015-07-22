@@ -40,6 +40,7 @@ Package.onUse(function (api) {
   // server
 
   api.addFiles([
+    'lib/client/templates/custom_post_title.html',
     'lib/server/templates/custom_emailPostItem.handlebars'
   ], ['server']);
 
