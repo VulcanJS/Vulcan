@@ -60,10 +60,14 @@ Template.afPostThumbnail.helpers({
     atts = AutoForm.Utility.addClass(atts, "form-control");
     return atts;
   },
-  style: function () {
+  outerStyle: function () {
     var thumbnailWidth = Settings.get('thumbnailWidth', 200);
     var thumbnailHeight = Settings.get('thumbnailHeight', 125);
     return "max-width: "+thumbnailWidth+"px; max-height: "+thumbnailHeight+"px;";
+  },
+  innerStyle: function () {
+    var padding = Settings.get('thumbnailHeight', 125) * 100 / Settings.get('thumbnailWidth', 200);
+    return "padding-bottom: " + padding + "%";
   },
   embedlyKeyExists: function () {
     // haven't found a better way to do this yet…

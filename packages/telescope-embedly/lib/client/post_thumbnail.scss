@@ -88,14 +88,23 @@ $small-break: 600px;
   line-height: 40px;
 }
 
-.post-thumbnail-container{
+.post-thumbnail-outer-wrapper{
   position: relative;
   margin-bottom: 10px;
 }
 
-.post-thumbnail-preview{
+.post-thumbnail-inner-wrapper{
+  width: 100%;
   background: #eee;
-  width: 100%; 
+}
+
+.post-thumbnail-preview{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
 }
 
 .post-thumbnail-loading{
