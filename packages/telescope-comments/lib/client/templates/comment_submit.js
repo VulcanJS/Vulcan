@@ -2,8 +2,8 @@ Template.comment_submit.helpers({
   commentFields: function () {
     return Comments.simpleSchema().getEditableFields(Meteor.user());
   },
-  reason: function () {
-    return !!Meteor.user() ? i18n.t('sorry_you_do_not_have_the_rights_to_comments'): i18n.t('please_log_in_to_comment');
+  isLoggedIn: function () {
+    return !!Meteor.user();
   }
 });
 

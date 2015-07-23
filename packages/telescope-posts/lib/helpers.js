@@ -90,5 +90,5 @@ Posts.checkForSameUrl = function (url, currentUser) {
  * When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(Router.current().data()._id);
+  return Posts.findOne(Router.current().data().post._id);
 };
