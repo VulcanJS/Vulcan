@@ -1,4 +1,4 @@
-Telescope.modules.add("postsListTop", {
+Telescope.modules.add("top", {
   template: "tagline_banner",
   order: 1
 });

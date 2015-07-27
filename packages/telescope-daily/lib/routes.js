@@ -12,10 +12,9 @@ Posts.controllers.daily = Posts.controllers.list.extend({
   },
 
   data: function () {
-    this.days = this.params.days ? this.params.days : daysPerPage;
-    Session.set('postsDays', this.days);
+    var daysCount = this.params.daysCount ? this.params.daysCount : daysPerPage;
     return {
-      days: this.days
+      daysCount: daysCount
     };
   }
 
@@ -23,7 +22,7 @@ Posts.controllers.daily = Posts.controllers.list.extend({
 
 Meteor.startup(function () {
 
-  Router.route('/daily/:days?', {
+  Router.route('/daily/:daysCount?', {
     name: 'postsDaily',
     template: 'posts_daily',
     controller: Posts.controllers.daily

@@ -11,6 +11,13 @@ Telescope.colorElements.colorTable = {
   secondaryContrastColor: []
 };
 
+Telescope.colorElements.defaultColors = {
+  accentColor: "#DD3416", // red
+  accentContrastColor: "#ffffff", // white
+  secondaryColor: "#4e555d", // slate
+  secondaryContrastColor: "#ffffff" // white
+};
+
 /**
  * Register an element to use a custom color
  * @param {string} selector - the CSS selector of the element
@@ -42,8 +49,8 @@ var secondaryContrast = setShortcut('secondaryContrastColor');
 
 accent("a:hover");
 accent(".post-content .post-heading .post-title:hover");
-accent(".post-vote .upvoted .upvote-link");
-accent(".post-vote .downvoted .downvote-link");
+accent(".upvoted .upvote-link");
+accent(".downvoted .downvote-link");
 accent(".upvoted .upvote");
 accent(".downvoted .downvote");
 accent(".toggle-actions-link");
@@ -55,7 +62,6 @@ accent(".post-share .icon-share");
 accent('input[type="submit"]', 'background-color');
 accent("button", 'background-color');
 accent(".button", 'background-color');
-accent("button.submit", 'background-color');
 accent(".auth-buttons #login-buttons #login-buttons-password", 'background-color');
 accent(".btn-primary", 'background-color');
 accent(".header .btn-primary", 'background-color');
@@ -73,7 +79,6 @@ accent(".icon-more", "border-color");
 accentContrast('input[type="submit"]');
 accentContrast("button");
 accentContrast(".button");
-accentContrast("button.submit");
 accentContrast(".auth-buttons #login-buttons #login-buttons-password");
 accentContrast(".btn-primary");
 accentContrast(".header .btn-primary");

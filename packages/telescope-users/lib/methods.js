@@ -10,6 +10,10 @@ var completeUserProfile = function (modifier, userId, user) {
 
 Meteor.methods({
   completeUserProfile: function (modifier, userId) {
+    
+    check(modifier, Match.OneOf({$set: Object}, {$unset: Object}, {$set: Object, $unset: Object}));
+    check(userId, String);
+
     var currentUser = Meteor.user(),
         user = Users.findOne(userId),
         schema = Users.simpleSchema()._schema;

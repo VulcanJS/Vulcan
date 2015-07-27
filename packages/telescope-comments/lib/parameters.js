@@ -5,6 +5,9 @@
  */
 Comments.getSubParams = function (terms) {
 
+  // add this to ensure all post publications pass audit-arguments-check
+  check(terms, Match.Any);
+  
   var maxLimit = 200;
 
   // console.log(terms)

@@ -15,9 +15,12 @@ Posts.before.insert(function (userId, doc) {
  * Generate HTML body from Markdown when post body is updated
  */
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
-  // if body is being modified, update htmlBody too
+  // if body is being modified or $unset, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+  }
+  if (Meteor.isServer && modifier.$unset && (typeof modifier.$unset.body !== "undefined")) {
+    modifier.$unset.htmlBody = "";
   }
 });
 

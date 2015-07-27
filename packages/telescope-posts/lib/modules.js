@@ -1,5 +1,5 @@
 
-Telescope.modules.add("postsListTop", {
+Telescope.modules.add("top", {
   template: 'posts_views_nav',
   order: 99
 });

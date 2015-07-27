@@ -50,6 +50,7 @@
   "id" : "ID",
   "github" : "GitHub",
   "site" : "Site",
+  "submitted_posts": "Submitted Posts",
   "upvoted_posts" : "Upvoted Posts",
   "downvoted_posts" : "Downvoted Posts",
   "pending" : "Pending",

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:embedly",
   summary: "Telescope Embedly module package",
-  version: "0.21.1",
+  version: "0.22.1",
   git: 'https://github.com/TelescopeJS/telescope-embedly.git'
 });
 
@@ -9,7 +9,7 @@ Package.onUse( function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.21.1']);
+  api.use(['telescope:core@0.22.1']);
 
   api.addFiles([
     'package-tap.i18n',
@@ -21,13 +21,12 @@ Package.onUse( function(api) {
   ], ['server']);
 
   api.addFiles([
+    'lib/client/js/jquery.fitvids.js',
     'lib/client/autoform-postthumbnail.html',
     'lib/client/autoform-postthumbnail.js',
     'lib/client/post_thumbnail.html',
     'lib/client/post_thumbnail.js',
-    'lib/client/post_thumbnail.scss',
-    'lib/client/post_video.html',
-    'lib/client/post_video.js'
+    'lib/client/post_thumbnail.scss'
   ], ['client']);
 
   api.addFiles([

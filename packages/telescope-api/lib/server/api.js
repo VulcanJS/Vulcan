@@ -10,6 +10,7 @@ serveAPI = function(limitSegment){
       author: post.author,
       date: post.postedAt,
       url: url,
+      pageUrl: Posts.getPageUrl(post, true),
       guid: post._id
     };
 
@@ -18,6 +19,10 @@ serveAPI = function(limitSegment){
 
     if(post.url)
       properties.domain = Telescope.utils.getDomain(url);
+
+    if (post.thumbnailUrl) {
+      properties.thumbnailUrl = Telescope.utils.addHttp(post.thumbnailUrl);
+    }
 
     var twitterName = Users.getTwitterNameById(post.userId);
     if(twitterName)

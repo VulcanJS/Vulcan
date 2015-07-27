@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:lib',
   summary: 'Telescope libraries.',
-  version: '0.21.1',
+  version: '0.22.1',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -17,6 +17,8 @@ Package.onUse(function (api) {
     'accounts-password',
     'accounts-twitter',
     'accounts-facebook',
+    'check',
+    // 'audit-argument-checks',
     'reactive-var',
     'http',
     'email',
@@ -34,7 +36,7 @@ Package.onUse(function (api) {
     'matb33:collection-hooks@0.7.11',
     'chuangbo:marked@0.3.5',
     'meteorhacks:fast-render@2.3.2',
-    'meteorhacks:subs-manager@1.3.0',
+    'meteorhacks:subs-manager@1.4.0',
     'percolatestudio:synced-cron@1.1.0',
     'useraccounts:unstyled@1.8.1',
     'manuelschoebel:ms-seo@0.4.1',

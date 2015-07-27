@@ -21,6 +21,8 @@ Comments.schema = new SimpleSchema({
   */
   parentCommentId: {
     type: String,
+    // regEx: SimpleSchema.RegEx.Id,
+    max: 500,
     editableBy: ["member", "admin"],
     optional: true,
     autoform: {
@@ -32,6 +34,8 @@ Comments.schema = new SimpleSchema({
   */
   topLevelCommentId: {
     type: String,
+    // regEx: SimpleSchema.RegEx.Id,
+    max: 500,
     editableBy: ["member", "admin"],
     optional: true,
     autoform: {
@@ -57,6 +61,7 @@ Comments.schema = new SimpleSchema({
   */
   body: {
     type: String,
+    max: 3000,
     editableBy: ["member", "admin"],
     autoform: {
       rows: 5
@@ -133,6 +138,8 @@ Comments.schema = new SimpleSchema({
   postId: {
     type: String,
     optional: true,
+    // regEx: SimpleSchema.RegEx.Id,
+    max: 500,
     editableBy: ["member", "admin"], // TODO: should users be able to set postId, but not modify it?
     autoform: {
       omit: true // never show this

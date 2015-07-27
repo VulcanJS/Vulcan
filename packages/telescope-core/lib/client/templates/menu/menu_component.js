@@ -1,7 +1,7 @@
 getRoute = function (item) {
   // if route is a Function return its result, else apply Router.path() to it
-  return typeof item.route == "function" ? item.route() : Router.path(item.route);
-}
+  return typeof item.route === "function" ? item.route() : Router.path(item.route);
+};
 
 // filter out admin-only items if needed
 getMenuItems = function (menu) {
@@ -14,7 +14,7 @@ getMenuItems = function (menu) {
   }
 
   return menuItems;
-}
+};
 
 Template.menuComponent.helpers({
   getMenuItems: function () {
@@ -46,6 +46,9 @@ Template.menuComponent.helpers({
     }
 
     return _.unique(classes).join(" ");
+  },
+  labelIsTemplate: function () {
+    return typeof Template[this.menuLabel] !== "undefined"
   },
   menuLabel: function () {
     // if label is defined, use this. Else default to menu name

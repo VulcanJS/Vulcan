@@ -1,14 +1,14 @@
 Package.describe({
   name: "telescope:theme-base",
   summary: "Telescope base theme package",
-  version: "0.21.1",
+  version: "0.22.1",
   git: "https://github.com/TelescopeJS/telescope-theme-base.git"
 });
 Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.21.1']);
+  api.use(['telescope:core@0.22.1']);
 
   api.addFiles(
     [
@@ -29,6 +29,7 @@ Package.onUse(function (api) {
       // specific
       'lib/client/scss/specific/_admin.scss',
       'lib/client/scss/specific/_avatars.scss',
+      'lib/client/scss/specific/_banners.scss',
       'lib/client/scss/specific/_errors.scss',
       'lib/client/scss/specific/_nav.scss',
       'lib/client/scss/specific/_layout.scss',

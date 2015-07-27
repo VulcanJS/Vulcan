@@ -1,4 +1,4 @@
-Template.nav.helpers({
+Template.header.helpers({
   headerClass: function () {
     var headerClass = "";
     var bgBrightness = tinycolor(Settings.get('headerColor')).getBrightness();
@@ -35,12 +35,11 @@ Template.nav.helpers({
     return dropdownClass;
   },
   hasMoreThanThreeItems: function () {
-    console.log(this);
     return this.length > 3;
-  },
+  }
 });
 
-Template.nav.events({
+Template.header.events({
   'click .mobile-menu-button': function(e){
     e.preventDefault();
     e.stopPropagation(); // Make sure we don't immediately close the mobile nav again. See layout.js event handler.

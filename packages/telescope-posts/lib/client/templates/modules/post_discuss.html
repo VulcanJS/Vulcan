@@ -1,7 +1,9 @@
 <template name="post_discuss">
-  <a class="discuss-link go-to-comments action" href="{{pathFor 'post_page'}}" title="{{_ 'discuss'}}">
-    {{{icon "comment"}}}
-    <span class="action-count">{{commentCount}}</span>
-    <span class="sr-only"> {{_ "comments"}}</span>
-  </a>
+  <div class="post-discuss {{moduleClass}}">
+    <a class="discuss-link go-to-comments action" href="{{pathFor 'post_page'}}" title="{{_ 'discuss'}}">
+      {{{icon "comment"}}}
+      <span class="action-count">{{commentCount}}</span>
+      <span class="sr-only"> {{_ "comments"}}</span>
+    </a>
+  </div>
 </template>

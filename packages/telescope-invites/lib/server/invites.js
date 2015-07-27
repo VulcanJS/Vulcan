@@ -2,6 +2,8 @@ Meteor.methods({
 
   inviteUser: function(invitation){
 
+    check(invitation, Match.Any);
+    
     // invite user returns the following hash
     // { newUser : true|false }
     // newUser is true if the person being invited is not on the site yet
@@ -21,7 +23,7 @@ Meteor.methods({
     var userEmail = invitation.invitedUserEmail ? invitation.invitedUserEmail :Users.getEmail(user);
     var currentUser = Meteor.user();
     var currentUserIsAdmin = Users.is.admin(currentUser);
-    var currentUserCanInvite = currentUserIsAdmin || (currentUser.inviteCount > 0 && Users.can.invite(currentUser));
+    var currentUserCanInvite = currentUserIsAdmin || (currentUser.telescope.inviteCount > 0 && Users.can.invite(currentUser));
 
     // check if the person is already invited
     if(user && Users.is.invited(user)){
@@ -47,7 +49,7 @@ Meteor.methods({
       });
 
       // update invinting user
-      Meteor.users.update(Meteor.userId(), {$inc:{"telescope.inviteCount": -1}, $inc:{"telescope.invitedCount": 1}});
+      Meteor.users.update(Meteor.userId(), {$inc:{"telescope.inviteCount": -1, "telescope.invitedCount": 1}});
 
       if(user){
         // update invited user

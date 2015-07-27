@@ -10,11 +10,11 @@ Template.layout.helpers({
   }
 });
 
-Template.layout.created = function(){
+Template.layout.onCreated( function () {
   Session.set('currentScroll', null);
-};
+});
 
-Template.layout.rendered = function(){
+Template.layout.onRendered( function () {
   var currentScroll = Session.get('currentScroll');
   if(currentScroll){
     $('body').scrollTop(currentScroll);
@@ -32,7 +32,7 @@ Template.layout.rendered = function(){
   var canonicalLink = document.createElement('link');
   canonicalLink.rel = 'canonical';
   document.getElementsByTagName('head')[0].appendChild(canonicalLink);
-};
+});
 
 Template.layout.events({
   'click .inner-wrapper': function (e) {

@@ -43,6 +43,7 @@ Telescope.callbacks.add("postApprovedAsync", postApprovedNotification);
 // add new comment notification callback on comment submit
 function commentSubmitNotifications (comment) {
 
+  // note: dummy content has disableNotifications set to true
   if(Meteor.isServer && !comment.disableNotifications){
 
     var post = Posts.findOne(comment.postId),
