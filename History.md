@@ -5,6 +5,7 @@
 * Made hero modules full width (thanks @jshimko!).
 * Renamed `nav` template to `header`.
 * Renamed `postsListTop` zone to `top`.
+* Renamed `footer` template to `footer_code`, which is part of the `footer` module zone. 
 * Any template can now be used as menu label in menu component.
 * Added `Telescope.menuItems.removeAll()`
 * Number of columns in Hubble grid layout now adapts to viewport width.
