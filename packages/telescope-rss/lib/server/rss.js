@@ -30,11 +30,8 @@ servePostRSS = function(view, url) {
     };
 
     if (post.thumbnailUrl) {
-      // add http: if missing
-      if (post.thumbnailUrl.substring(0, 5) !== "http:" && post.thumbnailUrl.substring(0, 6) !== "https:") {
-        post.thumbnailUrl = "http:"+post.thumbnailUrl;
-      }
-      feedItem.custom_elements = [{"imageUrl": post.thumbnailUrl}, {"content": post.thumbnailUrl}];
+      var url = Telescope.utils.addHttp(post.thumbnailUrl);
+      feedItem.custom_elements = [{"imageUrl":url}, {"content": url}];
     }
 
     feed.item(feedItem);

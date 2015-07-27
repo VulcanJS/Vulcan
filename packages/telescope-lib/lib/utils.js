@@ -169,6 +169,14 @@ Telescope.utils.invitesEnabled = function() {
   return Settings.get("requireViewInvite") || Settings.get("requirePostInvite");
 };
 
+// add http: if missing
+Telescope.utils.addHttp = function (url) {
+  if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
+    url = "http:"+url;
+  }
+  return url;
+};
+
 /////////////////////////////
 // String Helper Functions //
 /////////////////////////////
@@ -228,5 +236,4 @@ Telescope.getNestedProperty = function (obj, desc) {
   var arr = desc.split(".");
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
-}
-
+};

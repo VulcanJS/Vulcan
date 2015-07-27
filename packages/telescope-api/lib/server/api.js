@@ -21,11 +21,7 @@ serveAPI = function(limitSegment){
       properties.domain = Telescope.utils.getDomain(url);
 
     if (post.thumbnailUrl) {
-      // add http: if missing
-      if (post.thumbnailUrl.substring(0, 5) !== "http:" && post.thumbnailUrl.substring(0, 6) !== "https:") {
-        post.thumbnailUrl = "http:"+post.thumbnailUrl;
-      }
-      properties.thumbnailUrl = post.thumbnailUrl;
+      properties.thumbnailUrl = Telescope.utils.addHttp(post.thumbnailUrl);
     }
 
     var twitterName = Users.getTwitterNameById(post.userId);
