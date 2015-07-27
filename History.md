@@ -16,6 +16,7 @@
 * Fixed bug preventing non-logged-in users from signing up to newsletter (thanks @frabrunelle!).
 * Moved errors and banners styles to base theme.
 * Updated Kadira package.
+* Implemented post-specific SEO logic for generating Open Graph and Twitter meta tags.
 
 ## v0.21.2 “FastScope”
 
