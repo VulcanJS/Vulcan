@@ -144,12 +144,50 @@ Posts.controllers.page = RouteController.extend({
 
   onAfterAction: function () {
     var post = this.post();
+
+    // Replace URL
     if (post) {
       if (post.slug !== this.params.slug) {
         window.history.replaceState({}, "", post.getPageUrl());
       }
       $('link[rel="canonical"]').attr("href", post.getPageUrl(true));
     }
+
+    // Set SEO properties
+    
+    var props = {meta: {}, og: {}, twitter: {}};
+
+    // Set site name
+    props.og.site_name = Settings.get("title");
+
+    // Set title
+    props.title = post.title;
+
+    // Set description
+    if (!!post.body) {
+      var description = Telescope.utils.trimWords(post.body, 100);
+      props.meta.description = description;
+      props.og.description = description;
+    }
+
+    // Set image
+    if (!!post.thumbnailUrl) {
+      var image = Telescope.utils.addHttp(post.thumbnailUrl);
+      props.meta.image = image;
+      props.og.image = image;
+      props.twitter.image = image;
+      props.twitter.card = "summary_large_image";
+    }
+
+    // Set Twitter username
+    if (!!Settings.get("twitterAccount")) {
+      props.twitter.site = Settings.get("twitterAccount");
+    }
+    
+    SEO.set(props);
+
+    $('title').text(post.title);
+
   },
 
   fastRender: true
