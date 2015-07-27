@@ -30,11 +30,8 @@ Posts.fastRenderSubscribe = function (view, params) {
     view: view,
     limit: params.limit || Settings.get('postsPerPage', 10)
   };
-  // console.log('////////////// fastrender ////////////////')
-  // console.log(subscriptionTerms)
-  // this.subscribe('postsList', subscriptionTerms);
-  // this.subscribe('postsListUsers', subscriptionTerms);
-  // console.log('//////////////////////////////////////////')
+  this.subscribe('postsList', subscriptionTerms);
+  this.subscribe('postsListUsers', subscriptionTerms);
 };
 
 Meteor.startup(function () {
