@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:messages",
   summary: "Telescope messages package",
-  version: "0.22.1",
+  version: "0.22.2",
   git: "https://github.com/TelescopeJS/telescope-messages.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function(api) {
   
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:lib@0.22.1']);
+  api.use(['telescope:lib@0.22.2']);
 
   api.addFiles([
     'lib/client/messages.js',

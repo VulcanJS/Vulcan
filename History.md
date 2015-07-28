@@ -1,3 +1,7 @@
+## v0.22.2
+
+* Made `approvePost` and `unapprovePost` methods take `postId` instead of `post` as argument and fixed approve/unapprove bug. 
+
 ## v0.22.1 “DebugScope”
 
 * Introduced new [template debug mode](http://docs.telescopeapp.org/docs/debug-mode).

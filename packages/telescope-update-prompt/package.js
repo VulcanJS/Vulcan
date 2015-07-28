@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:update-prompt",
   summary: "Telescope update prompt package.",
-  version: "0.22.1",
+  version: "0.22.2",
   git: "https://github.com/TelescopeJS/telescope-update-prompt.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.22.1']);
+  api.use(['telescope:core@0.22.2']);
 
 
   api.addFiles([
