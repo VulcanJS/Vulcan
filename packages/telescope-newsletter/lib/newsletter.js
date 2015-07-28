@@ -205,7 +205,7 @@ Posts.views.add("campaign", function (terms) {
         $gte: terms.after
       }
     },
-    options: {sort: {sticky: -1, score: -1}}
+    options: {sort: {baseScore: -1}}
   };
 });
 

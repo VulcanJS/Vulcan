@@ -1,6 +1,7 @@
 ## v0.22.2
 
 * Made `approvePost` and `unapprovePost` methods take `postId` instead of `post` as argument and fixed approve/unapprove bug. 
+* Now sorting email newsletter posts by `baseScore` (time-independent), not `score`.
 
 ## v0.22.1 “DebugScope”
 
