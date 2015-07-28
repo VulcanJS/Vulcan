@@ -244,9 +244,10 @@ Meteor.methods({
     Posts.update(post._id, {$set: {postedAt: postedAt}});
   },
 
-  approvePost: function(post){
+  approvePost: function(postId){
 
-    check(post, Posts.simpleSchema());
+    check(postId, String);
+    var post = Posts.findOne(postId);
 
     if(Users.is.admin(Meteor.user())){
       var set = {status: 2};
@@ -255,7 +256,7 @@ Meteor.methods({
       if (!post.postedAt)
         set.postedAt = new Date();
 
-      Posts.update(post._id, {$set: set}, {validate: false});
+      Posts.update(post._id, {$set: set});
 
       Telescope.callbacks.runAsync("postApprovedAsync", post);
 
@@ -264,10 +265,11 @@ Meteor.methods({
     }
   },
 
-  unapprovePost: function(post){
+  unapprovePost: function(postId){
 
-    check(post, Posts.simpleSchema());
-
+    check(postId, String);
+    var post = Posts.findOne(postId);
+    
     if(Users.is.admin(Meteor.user())){
       Posts.update(post._id, {$set: {status: 1}});
     }else{
