@@ -1,0 +1,22 @@
+{
+  "menu" : "메뉴",
+  "view" : "보기",
+  "top" : "위로",
+  "new" : "새글",
+  "best" : "최고",
+  "digest" : "다이제스트",
+  "users" : "사용자",
+  "settings" : "설정",
+  "admin" : "관리자",
+  "post" : "글",
+  "toolbox" : "도구 상자",
+  "sign_up_sign_in" : "가입/로그인",
+  "my_account" : "내 계정",
+  "view_profile" : "프로필보기",
+  "edit_account" : "계정 수정",
+  "you_are_already_logged_in" : "이미 로그인되었습니다.",
+  "sorry_this_is_a_private_site_please_sign_up_first" : "죄송합니다. 비공개 사이트입니다. 가입이 필요합니다.",
+  "thanks_for_signing_up" : "가입해주셔서 감사합니다!",
+  "the_site_is_currently_invite_only_but_we_will_let_you_know_as_soon_as_a_spot_opens_up" : " ",
+  "pending" : "보류"
+}
