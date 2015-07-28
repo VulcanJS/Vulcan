@@ -4,7 +4,7 @@ defaultPosts = 5;
 getCampaignPosts = function (postsCount) {
 
   // look for last scheduled campaign in the database
-  var lastCampaign = SyncedCron._collection.findOne({name: 'Schedule newsletter'}, {sort: {finishedAt: -1}, limit: 1});
+  var lastCampaign = SyncedCron._collection.findOne({name: 'scheduleNewsletter'}, {sort: {finishedAt: -1}, limit: 1});
 
   // if there is a last campaign use its date, else default to posts from the last 7 days
   var lastWeek = moment().subtract(7, 'days').toDate();
