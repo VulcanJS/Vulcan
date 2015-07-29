@@ -26,8 +26,10 @@ Template.posts_list_controller.onCreated(function () {
   // Autorun 1: when terms change, reset the limit
   instance.autorun(function () {
     // add a dependency on data context to trigger the autorun
-    var terms = Template.currentData().terms; // ⚡ reactive ⚡
-    instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+    var newTerms = Template.currentData().terms; // ⚡ reactive ⚡
+    if (!_.isEqual(newTerms, instance.data.terms)) {
+      instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+    }
   });
 
   // Autorun 2: will re-run when limit or terms are changed
