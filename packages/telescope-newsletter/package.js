@@ -15,7 +15,7 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:core@0.22.2',
-    'miro:mailchimp@1.0.4',
+    'miro:mailchimp@1.1.0',
   ]);
 
   api.addFiles([

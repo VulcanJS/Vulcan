@@ -11,7 +11,7 @@ Package.onUse(function(api) {
 
   api.use([
     'telescope:core@0.22.2',
-    'tsega:bootstrap3-datetimepicker@3.1.3_1'
+    'tsega:bootstrap3-datetimepicker@4.14.30_4'
   ]);
 
   api.addFiles([

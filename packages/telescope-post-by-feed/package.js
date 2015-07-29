@@ -18,13 +18,6 @@ Package.onUse(function(api) {
 
   api.use(['telescope:core@0.22.2']);
 
-  api.use([
-    'http',
-    'aldeed:http@0.2.2',
-    'momentjs:moment@2.10.0',
-    'percolatestudio:synced-cron@1.1.0'
-  ], 'server');
-
   api.addFiles([
     'lib/feeds.js'
   ], ['client', 'server']);
