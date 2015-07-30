@@ -12,13 +12,14 @@ Meteor.startup(function () {
       return daysArray;
     },
     context: function () {
+      var days = Template.parentData(1);
       var context = {
         terms: {
           view: "singleday",
           date: this.date,
           after: moment(this.date).startOf('day').toDate(),
           before: moment(this.date).endOf('day').toDate(),
-          enableCache: true
+          enableCache: days.daysCount <= 15 ? true : false // only cache first 15 days
         }
       };
       return context;
