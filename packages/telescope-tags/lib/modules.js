@@ -21,5 +21,11 @@ Telescope.modules.add("mobileNav", {
   order: 10
 });
 
+Telescope.modules.add("top", {
+  template: 'category_title',
+  order: 10,
+  only: ["posts_category"]
+});
+
 // we want to wait until categories are all loaded to load the rest of the app
 Telescope.subscriptions.preload('categories');

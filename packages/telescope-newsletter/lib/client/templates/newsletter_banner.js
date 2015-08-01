@@ -32,7 +32,6 @@ Meteor.startup(function () {
       if(
             Settings.get('showBanner', false) === false
         ||  !Users.can.view(Meteor.user())
-        ||  Router.current().location.get().path !== '/'
         ||  Cookie.get('showBanner') === "no"
         ||  (Meteor.user() && Meteor.user().getSetting('newsletter.showBanner', true) === false)
         ||  (Meteor.user() && Meteor.user().getSetting('newsletter.subscribeToNewsletter', false) === true)
