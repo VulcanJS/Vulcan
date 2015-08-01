@@ -9,7 +9,7 @@ $dark-grey:#444444;
 
   position: relative;
   .search-field {
-    color: rgba(255, 255, 255, 0.6);
+    color: $dark-grey;
     font-size: 14px;
     padding: 4px 12px;
     line-height: 1.3;
@@ -26,7 +26,6 @@ $dark-grey:#444444;
     &:focus {
       outline: none;
       background: white;
-      color: $dark-grey;
     }
     &::-webkit-input-placeholder{
       color: currentColor;
@@ -39,6 +38,7 @@ $dark-grey:#444444;
     .search-field {
       max-width: $compressed-width;
       background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
       &:focus {
         background: white;
         max-width: $expanded-width;
