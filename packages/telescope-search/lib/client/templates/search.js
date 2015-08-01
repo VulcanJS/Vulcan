@@ -22,13 +22,27 @@ Meteor.startup(function () {
   });
 
   Template.search.events({
-    'keyup .search-field': function (e) {
+    'search .search-field': function(e){
+      var $searchField = $(e.target);
+      if($searchField.val() === ''){
+        Router.back();
+        Tracker.afterFlush(function(){
+          $searchField.focus();
+        });
+      }
+    },
+    'input .search-field': function (e) {
       e.preventDefault();
-      var val = $(e.target).val(),
+      var $searchField = $(e.target),
+          val = $searchField.val(),
           $search = $('.search');
       if (val === '') {
         // if search field is empty, just do nothing and show an empty template
         $search.addClass('empty');
+        Router.back();
+        Tracker.afterFlush(function(){
+          $searchField.focus();
+        });
         // Router.go('search', null, {replaceState: true});
       } else {
         $search.removeClass('empty');
@@ -42,7 +56,10 @@ Meteor.startup(function () {
           if(Router.current().route.getName() === 'search') {
             opts.replaceState = true;
           }
-          Router.go('search', null, opts);
+          // don't change route when the search field was just cleared
+          if($searchField.val() !== ''){
+            Router.go('search', null, opts);
+          }
 
         }, 700 );
       }

@@ -45,6 +45,19 @@ Meteor.startup(function () {
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['logs']});
 
+  // Implement Router back functionality
+
+  Router.back = function(){
+    Router.go(this.previousUrl || "/");
+  };
+
+  Router.onStop(function(){
+    // don't go back to previous search
+    if(this.route.getName() != "search"){
+      Router.previousUrl = this.url;
+    }
+  });
+
   // Search
 
   Router.route('/search', {
