@@ -12,6 +12,15 @@ Posts.getLink = function (post, isAbsolute) {
 Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
 /**
+ * Whether a post's link should open in a new tab or not
+ * @param {Object} post
+ */
+Posts.getLinkTarget = function (post) {
+  return !!post.url ? "_blank" : "";
+};
+Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
+
+/**
  * Get URL of a post page.
  * @param {Object} post
  */
