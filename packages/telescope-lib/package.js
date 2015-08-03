@@ -69,6 +69,7 @@ Package.onUse(function (api) {
     'lib/collections.js',
     'lib/modules.js',
     'lib/config.js',
+    'lib/templates.js',
     'lib/deep.js',
     'lib/deep_extend.js',
     'lib/autolink.js',
