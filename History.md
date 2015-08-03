@@ -1,3 +1,18 @@
+## v0.23
+
+* Template modules now take `only` and `except` options to only display on specific routes.
+* Now only caching first 15 days of `posts_daily` view.
+* Added `okgrow:iron-router-autoscroll` package.
+* Small tweaks to search UX.
+* [BREAKING] Use collection helpers instead of `postLink` and `target` in `post_title` and `post_thumbnail`.
+* [BREAKING] Use collection helpers instead of `pathFor` in `post_comments_link` and `post_discuss`.
+* Added new i18n strings.
+* Modified custom template prefix system to accept multiple prefixes.
+* [BREAKING] Changed `Telescope.config.customPrefix = "foo"` to `Telescope.config.addCustomPrefix("foo")`.
+* Added new `facebookPage` setting.
+* Added category description to category menu, when it exists.
+* Fixed post category and post thumbnail CSS classes. 
+
 ## v0.22.2
 
 * Made `approvePost` and `unapprovePost` methods take `postId` instead of `post` as argument and fixed approve/unapprove bug. 
