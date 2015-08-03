@@ -14,7 +14,8 @@ Meteor.startup(function () {
           route: function () {
             return Categories.getUrl(category.slug);
           },
-          label: category.name
+          label: category.name,
+          description: category.description
         };
       });
       return defaultItem.concat(menuItems);
