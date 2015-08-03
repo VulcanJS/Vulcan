@@ -67,7 +67,7 @@ Categories.getUrl = function(slug){
 };
 
 // add callback that adds categories CSS classes
-function addCategoryClass (post, postClass) {
+function addCategoryClass (postClass, post) {
   var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug;});
   return postClass + " " + classArray.join(' ');
 }
