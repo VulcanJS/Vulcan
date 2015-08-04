@@ -194,13 +194,14 @@ input[type="search"]{
 .comment-field{
   margin-bottom: 10px;
 }
-.af-fieldgroup-heading{
+.af-fieldgroup-heading, .af-fieldGroup-heading{
   display: block;
   width: 100%;
   padding-bottom: 5px;
   margin-bottom: 15px;
   border-bottom: 1px solid #B5B0B0;
   color: $light-text;
+  font-size: 20px;
 }
 fieldset{
   margin-bottom: 30px;

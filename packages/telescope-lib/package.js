@@ -26,7 +26,7 @@ Package.onUse(function (api) {
     'aldeed:simple-schema@1.3.3',
     'aldeed:collection2@2.3.3',
     'aldeed:http@0.2.2',
-    'sacha:autoform@5.1.2',
+    'aldeed:autoform@5.4.0',
     'aldeed:template-extension@3.4.3',
     'tap:i18n@1.5.1',
     'fourseven:scss@3.2.0',
