@@ -12,6 +12,10 @@
 * Added new `facebookPage` setting.
 * Added category description to category menu, when it exists.
 * Fixed post category and post thumbnail CSS classes. 
+* Switched back to `aldeed:autoform` instead of `sacha:autoform`.
+* Updated to Meteor 1.1.0.3.
+* Added support for menu hierarchies.
+* Added hierarchical categories. 
 
 ## v0.22.2
 

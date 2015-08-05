@@ -15,7 +15,9 @@ Meteor.startup(function () {
             return Categories.getUrl(category.slug);
           },
           label: category.name,
-          description: category.description
+          description: category.description,
+          _id: category._id,
+          parentId: category.parentId
         };
       });
       return defaultItem.concat(menuItems);
