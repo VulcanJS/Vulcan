@@ -43,12 +43,12 @@ Meteor.startup(function() {
       var siteUrl = Telescope.utils.getSiteUrl();
       var params = Posts.getSubParams(Posts.views[key]());
       var posts = Posts.find(params.find, {
-        fields: {postedAt: 1, title: 1, _id: 1},
+        fields: {postedAt: 1, slug: 1, _id: 1},
         limit: 100,
         sort: params.options.sort
       });
       posts.forEach(function(post) {
-        var url = getPostPageUrl(post).replace(siteUrl, "");
+        var url = Posts.getLink(post);
         postPages[url] = {page: url, lastmod: post.postedAt, changefreq: "daily"};
       });
     });
