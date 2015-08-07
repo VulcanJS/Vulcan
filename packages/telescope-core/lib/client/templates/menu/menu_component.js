@@ -38,7 +38,7 @@ Template.menuComponent.helpers({
     return filterMenuItems(this.menuItems, 0);
   },
   showMenuLabel: function () {
-    return !!this.menuLabel;
+    return !this.hideMenuLabel;
   },
   menuClass: function () {
     var classes = [this.menuName+"-menu"];
