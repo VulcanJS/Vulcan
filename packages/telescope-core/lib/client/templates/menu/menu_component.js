@@ -37,6 +37,9 @@ Template.menuComponent.helpers({
   rootMenuItems: function () {
     return filterMenuItems(this.menuItems, 0);
   },
+  showMenuLabel: function () {
+    return !!this.menuLabel;
+  },
   menuClass: function () {
     var classes = [this.menuName+"-menu"];
     var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
@@ -92,7 +95,7 @@ Template.menuItem.helpers({
     if (this.adminOnly) {
       itemClass += " item-admin";
     }
-    if (getRoute(this) === currentPath || getRoute(this) === Meteor.absoluteUrl() + currentPath.substr(1)) {
+    if (this.route && (getRoute(this) === currentPath || getRoute(this) === Meteor.absoluteUrl() + currentPath.substr(1))) {
       // substr(1) is to avoid having two "/" in the URL
       itemClass += " item-active";
     }
@@ -110,7 +113,6 @@ Template.menuItem.helpers({
     return getRoute(this);
   },
   childMenuItems: function () {
-    console.log(this)
     var currentLevel = this.level;
 
     // note: for some reason, we need to go back one level to go from child to root, but 

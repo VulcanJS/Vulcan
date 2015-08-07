@@ -35,13 +35,15 @@ menuMode (String) [optional]
 
 <template name="menuComponent">
   <div class="menu {{menuClass}}">
-    <div class="menu-top-level" href="/">
-      {{#if labelIsTemplate}}
-        {{> Template.dynamic template=menuLabel}}
-      {{else}}
-        {{menuLabel}}
-      {{/if}}
-    </div>
+    {{#if showMenuLabel}}
+      <div class="menu-top-level" href="/">
+        {{#if labelIsTemplate}}
+          {{> Template.dynamic template=menuLabel}}
+        {{else}}
+          {{menuLabel}}
+        {{/if}}
+      </div>
+    {{/if}}
     <div class="menu-menu">
       {{#with rootMenuItems}}
         <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
