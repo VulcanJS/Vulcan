@@ -4,9 +4,11 @@ Meteor.startup(function() {
    */
   sitemaps.add("/sitemap.xml", function() {
     var _getLatest = function(viewParamKey, terms) {
-      var params = Posts.getSubParams(
-        Posts.views[viewParamKey.toLowerCase()](terms)
-      );
+      var postView = Posts.views[viewParamKey.toLowerCase()];
+
+      if (!_.isFunction(postView)) return null;
+
+      var params = Posts.getSubParams(postView(terms));
       var post = Posts.findOne(params.find, {
         'fields': {'postedAt': 1},
         'sort': params.options.sort
