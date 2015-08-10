@@ -13,10 +13,12 @@ var userSchemaObject = {
   },
   "emails.$.address": {
     type: String,
-    regEx: SimpleSchema.RegEx.Email
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true
   },
   "emails.$.verified": {
-    type: Boolean
+    type: Boolean,
+    optional: true
   },
   createdAt: {
     type: Date
@@ -59,12 +61,12 @@ Schema.User = new SimpleSchema(userSchemaObject);
 // Meteor.users.attachSchema(Schema.User);
 
 Meteor.users.deny({
-  update: function(userId, post, fieldNames) {
-    if(isAdminById(userId))
-      return false;
-    // deny the update if it contains something other than the profile field
-    return (_.without(fieldNames, 'profile', 'username', 'slug').length > 0);
-  }
+  // update: function(userId, post, fieldNames) {
+  //   if(isAdminById(userId))
+  //     return false;
+  //   // deny the update if it contains something other than the profile field
+  //   return (_.without(fieldNames, 'profile', 'username', 'slug').length > 0);
+  // }
 });
 
 Meteor.users.allow({

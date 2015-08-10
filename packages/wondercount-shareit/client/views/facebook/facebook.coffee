@@ -25,7 +25,6 @@ Template.shareit_fb.rendered = ->
         img = location.origin + img
       $('<meta>', { property: 'og:image', content: img }).appendTo 'head'
 
-
   #
   # Facebook share button
   #
