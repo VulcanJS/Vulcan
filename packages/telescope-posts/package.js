@@ -51,6 +51,7 @@ Package.onUse(function (api) {
     'lib/client/templates/modules/post_info.js',
     'lib/client/templates/modules/post_rank.html',
     'lib/client/templates/modules/post_rank.js',
+    'lib/client/templates/modules/custom_post_title.html',
     'lib/client/templates/modules/post_title.html',
     'lib/client/templates/modules/post_title.js',
     'lib/client/templates/modules/post_vote.html',
@@ -72,8 +73,7 @@ Package.onUse(function (api) {
     'lib/client/templates/posts_list/posts_list_compact.html',
     'lib/client/templates/posts_list/posts_list_compact.js',
     'lib/client/templates/posts_list/posts_list_controller.html',
-    'lib/client/templates/posts_list/posts_list_controller.js',
-    'lib/client/templates/modules/custom_page_title.html'
+    'lib/client/templates/posts_list/posts_list_controller.js'
   ], ['client']);
 
   api.addFiles([
