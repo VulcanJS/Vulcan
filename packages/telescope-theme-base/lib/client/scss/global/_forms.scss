@@ -23,6 +23,14 @@ form, .accounts-dialog{
         margin-right:10px;
       }
     }
+    &.hide-label{
+      label{
+        display: none;
+      }
+      .controls{
+        margin-left: 0;
+      }
+    }
     .controls{
       @include medium-large{
         margin-left: 200px;
