@@ -1,4 +1,4 @@
-## v0.23
+## v0.23 “SubScope”
 
 * Template modules now take `only` and `except` options to only display on specific routes.
 * Now only caching first 15 days of `posts_daily` view.
@@ -16,6 +16,11 @@
 * Updated to Meteor 1.1.0.3.
 * Added support for menu hierarchies.
 * Added hierarchical categories. 
+* Now only showing "play" button for actual videos.
+* Not subscribing to `postsListUsers` on user profile page anymore.
+* Added per-category RSS routes (thanks @lewisnyman!)
+* Now showing top comments in email newsletter (thanks @sungwoncho!)
+* Fixed blank URL edit bug (thanks @johnthepink!)
 
 ## v0.22.2
 
