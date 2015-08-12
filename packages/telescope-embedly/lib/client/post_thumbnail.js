@@ -5,7 +5,7 @@ Template.post_thumbnail.onCreated(function () {
 
 Template.post_thumbnail.helpers({
   playVideoClass: function () {
-    return !!this.media ? 'post-thumbnail-has-video': '';
+    return (this.media && this.media.type === "video") ? 'post-thumbnail-has-video': '';
   },
   showVideo: function () {
     return Template.instance().showVideo.get();
