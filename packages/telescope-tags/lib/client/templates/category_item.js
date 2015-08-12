@@ -10,6 +10,9 @@ Meteor.startup(function () {
       e.preventDefault();
       if (confirm("Delete category?")) {
         Categories.remove(instance.data._id);
+        Categories.find({parentId: instance.data._id}).forEach(function (category) {
+          Categories.update(category._id, {$unset: {parentId: ""}})
+        });
       }
     }
   });
