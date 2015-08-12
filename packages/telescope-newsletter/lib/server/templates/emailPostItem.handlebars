@@ -12,9 +12,9 @@
 <div class="post-meta">
   {{#if domain}}
     <a class="post-domain" href="">{{domain}}</a>
-    | 
+    |
   {{/if}}
-  
+
   <span class="post-submitted">
     {{#if profileUrl}}
       Submitted by <a href="{{profileUrl}}" class="comment-link" target="_blank">{{authorName}}</a>
@@ -31,12 +31,23 @@
 
 {{#if body}}
   <div class="post-body-excerpt">
-    {{{htmlBody}}}
+    {{body}}
     <a href="{{postPageLink}}" class="comment-link" target="_blank">Read more</a>
   </div>
 {{/if}}
 
+{{#if popularComments}}
+  <div class="post-comments">
+    <div class="post-comments-title">Top Comments</div>
+    {{#each popularComments}}
+      <div class="post-comment">
+        <div class="post-comment-author">{{author}}</div>
+        <div class="post-comment-body">{{body}}</div>
+      </div>
+    {{/each}}
+
+  </div>
+{{/if}}
 
 <br>
 </div>
-
