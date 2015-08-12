@@ -37,15 +37,15 @@
 {{/if}}
 
 {{#if popularComments}}
-  <div class="post-popular-comments">
-    <h1>Popular comments</h1>
-
+  <div class="post-comments">
+    <div class="post-comments-title">Top Comments</div>
     {{#each popularComments}}
-      <div class="post-comment-excerpt">
-        {{body}}
+      <div class="post-comment">
         <div class="post-comment-author">{{author}}</div>
+        <div class="post-comment-body">{{body}}</div>
       </div>
     {{/each}}
+
   </div>
 {{/if}}
 
