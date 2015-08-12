@@ -30,7 +30,7 @@ servePostRSS = function(view, url, category) {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true)
+      url: Posts.getShareableLink(post)
     };
 
     if (post.thumbnailUrl) {

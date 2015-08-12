@@ -41,17 +41,6 @@
 	font-size: 22px;
 }
 
-.single-post {
-	@include medium-large {
-		.post-discuss {
-  			display: none;
-		}
-		.post-share {
-  			display: block;
-		}
-	}
-}
-
 // ------------------------------------ posts views nav ------------------------------------ //
 .posts-views-nav{
 	background: white(0.6);
@@ -141,9 +130,6 @@
 	}
 	.post-info {
 		flex-grow: 1;
-	}
-	.post-share {
-		order: 3;
 	}
 	.post-discuss {
 		order: 7;
@@ -457,9 +443,7 @@
 		padding: 6px;
 	}
 }
-.post-share {
-	display: none;
-}
+
 // -------------------------------- post content --------------------------------- //
 
 
