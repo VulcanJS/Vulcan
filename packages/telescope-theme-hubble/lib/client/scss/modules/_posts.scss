@@ -41,6 +41,17 @@
 	font-size: 22px;
 }
 
+.single-post {
+	@include medium-large {
+		.post-discuss {
+  			display: none;
+		}
+		.post-share {
+  			display: block;
+		}
+	}
+}
+
 // ------------------------------------ posts views nav ------------------------------------ //
 .posts-views-nav{
 	background: white(0.6);
