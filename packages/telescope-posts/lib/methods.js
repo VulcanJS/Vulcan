@@ -280,7 +280,7 @@ Meteor.methods({
   increasePostViews: function(postId, sessionId){
 
     check(postId, String);
-    check(sessionId, Match.OneOf(String, Object));
+    check(sessionId, Match.Any);
 
     this.unblock();
 
