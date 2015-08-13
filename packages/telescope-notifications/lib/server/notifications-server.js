@@ -1,3 +1,7 @@
+Meteor.startup(function () {
+  Herald.collection._ensureIndex({userId: 1, "media.email.send": 1, "media.email.sent": 1});
+});
+
 getUnsubscribeLink = function(user){
   return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.telescope.emailHash});
 };
