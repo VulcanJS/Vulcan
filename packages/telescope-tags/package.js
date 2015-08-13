@@ -14,6 +14,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/categories.js',
     'lib/custom_fields.js',
+    'lib/methods.js',
     'lib/modules.js',
     'package-tap.i18n'
   ], ['client', 'server']);
