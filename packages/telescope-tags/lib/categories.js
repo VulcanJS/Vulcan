@@ -57,11 +57,51 @@ Categories.before.insert(function (userId, doc) {
     doc.slug = Telescope.utils.slugify(doc.name);
 });
 
+/**
+ * Get all of a category's parents
+ * @param {Object} category
+ */
+Categories.getParents = function (category) {
+  var categoriesArray = [];
+
+  var getParents = function recurse (category) {
+    var parent;
+    if (parent = Categories.findOne(category.parentId)) {
+      categoriesArray.push(parent);
+      recurse(parent);
+    }
+  }(category);
+
+  return categoriesArray;
+};
+Categories.helpers({getParents: function () {return Categories.getParents(this);}});
+
+/**
+ * Get all of a category's children
+ * @param {Object} category
+ */
+Categories.getChildren = function (category) {
+  var categoriesArray = [];
+
+  var getChildren = function recurse (categories) {
+    var children = Categories.find({parentId: {$in: _.pluck(categories, "_id")}}).fetch()
+    if (children.length > 0) {
+      categoriesArray = categoriesArray.concat(children);
+      recurse(children);
+    }
+  }([category]);
+
+  return categoriesArray;
+};
+Categories.helpers({getChildren: function () {return Categories.getChildren(this);}});
+
 // category post list parameters
 Posts.views.add("category", function (terms) {
-  var categoryId = Categories.findOne({slug: terms.category})._id;
+  var category = Categories.findOne({slug: terms.category});
+  var childCategories = category.getChildren(category);
+  var categoriesIds = [category._id].concat(_.pluck(childCategories, "_id"));
   return {
-    find: {'categories': {$in: [categoryId]}} ,
+    find: {'categories': {$in: categoriesIds}} ,
     options: {sort: {sticky: -1, score: -1}} // for now categories views default to the "top" view
   };
 });
