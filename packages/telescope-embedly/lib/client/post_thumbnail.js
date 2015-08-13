@@ -5,7 +5,11 @@ Template.post_thumbnail.onCreated(function () {
 
 Template.post_thumbnail.helpers({
   playVideoClass: function () {
-    return (this.media && this.media.type === "video") ? 'post-thumbnail-has-video': '';
+    var url = this.url;
+    var isVideoSite = url && _.some(["youtube", "vimeo"], function (site) {
+      return url.indexOf(site) !== -1;
+    });
+    return (this.media && this.media.type === "video" && isVideoSite) ? 'post-thumbnail-has-video': '';
   },
   showVideo: function () {
     return Template.instance().showVideo.get();
