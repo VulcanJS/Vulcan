@@ -36,12 +36,25 @@ buildCampaign = function (postsArray) {
       postLink: Posts.getLink(post, true),
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
-      date: moment(post.postedAt).format("MMMM D YYYY")
+      date: moment(post.postedAt).format("MMMM D YYYY"),
+      authorAvatarUrl: Avatar.getUrl(postUser)
     });
+
+    try {
+      HTTP.get(post.authorAvatarUrl);
+    } catch (error) {
+      post.authorAvatarUrl = false;
+    }
 
     if (post.commentCount > 0)
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
         comment.body = Telescope.utils.trimWords(comment.body, 20);
+        comment.authorAvatarUrl = Avatar.getUrl(Meteor.users.findOne(comment.userId));
+        try {
+          HTTP.get(comment.authorAvatarUrl);
+        } catch (error) {
+          comment.authorAvatarUrl = false;
+        }
         return comment;
       }}).fetch();
 

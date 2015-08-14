@@ -41,7 +41,14 @@
     <div class="post-comments-title">Top Comments</div>
     {{#each popularComments}}
       <div class="post-comment">
-        <div class="post-comment-author">{{author}}</div>
+        <div class="post-comment-author">
+          {{#if authorAvatarUrl}}
+            <img class="post-comment-avatar avatar" src="{{authorAvatarUrl}}"/>
+          {{/if}}
+          <span class="post-comment-author-name">
+            {{author}}
+          </span>
+        </div>
         <div class="post-comment-body">{{body}}</div>
       </div>
     {{/each}}
