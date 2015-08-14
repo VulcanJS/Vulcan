@@ -40,7 +40,6 @@ Package.onUse(function(api) {
     "i18n/el.i18n.json",
     "i18n/en.i18n.json",
     "i18n/es.i18n.json",
-    "i18n/en.i18n.json",
     "i18n/fr.i18n.json"
   ], both);
 
