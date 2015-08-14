@@ -50,7 +50,18 @@ $text: #444444;
 .menu-top-label{
   cursor: pointer;
 }
-
+.menu-child-items{
+  margin-top: 5px;
+  margin-left: 5px;
+  padding-left: 5px;
+  border-left: 1px solid rgba(0,0,0,0.3);
+  .medium-dark-bg &, .dark-bg & {
+    border-color: rgba(255,255,255,0.3);
+  }
+  .light-bg &, .menu-dropdown & {
+    border-color: rgba(0,0,0,0.15);
+  }
+}
 // ------------------------------------ List ------------------------------------ //
 
 .menu-list{

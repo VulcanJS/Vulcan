@@ -14,7 +14,8 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/categories.js',
     'lib/custom_fields.js',
-    'lib/hooks.js',
+    'lib/methods.js',
+    'lib/modules.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
@@ -31,7 +32,9 @@ Package.onUse(function (api) {
     'lib/client/templates/categories_menu.js',
     'lib/client/templates/posts_category.html',
     'lib/client/templates/post_categories.html',
-    'lib/client/templates/post_categories.js'
+    'lib/client/templates/post_categories.js',
+    'lib/client/templates/autoform_category.html',
+    'lib/client/templates/autoform_category.js'
     ], ['client']);
 
   api.addFiles([

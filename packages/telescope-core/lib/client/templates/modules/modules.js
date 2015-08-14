@@ -23,6 +23,21 @@ Template.modules.helpers({
       return module;
     });
   },
+  showModule: function () {
+    var module = this;
+
+    // if module should only run on specific routes, test for them
+    if (module.only) {
+      return _.contains(module.only, Router.current().route.getName());
+    }
+
+    // if module should *not* run on specific routes, test for them
+    if (module.except) {
+      return !_.contains(module.except, Router.current().route.getName());
+    }
+
+    return true;
+  },
   moduleData: function () {
     var zoneData = this;
     var moduleData = Template.parentData(2) || {}; // parent template might not always have data context

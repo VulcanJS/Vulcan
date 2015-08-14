@@ -12,7 +12,7 @@ Posts.controllers.daily = Posts.controllers.list.extend({
   },
 
   data: function () {
-    var daysCount = this.params.daysCount ? this.params.daysCount : daysPerPage;
+    var daysCount = this.params.query.days ? this.params.query.days : daysPerPage;
     return {
       daysCount: daysCount
     };

@@ -11,10 +11,14 @@ getMeta = function(url) {
   };
 };
 
-servePostRSS = function(view, url) {
+servePostRSS = function(view, url, category) {
   var feed = new RSS(getMeta(url));
 
-  var params = Posts.getSubParams({view: view, limit: 20});
+  var terms = {view: view, limit: 20};
+  if (category) {
+    terms.category = category;
+  };
+  var params = Posts.getSubParams(terms);
   delete params['options']['sort']['sticky'];
 
   Posts.find(params.find, params.options).forEach(function(post) {
@@ -26,7 +30,7 @@ servePostRSS = function(view, url) {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true)
+      url: Posts.getShareableLink(post)
     };
 
     if (post.thumbnailUrl) {

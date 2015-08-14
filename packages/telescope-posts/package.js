@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:posts",
   summary: "Telescope posts package",
-  version: "0.22.2",
+  version: "0.22.3",
   git: "https://github.com/TelescopeJS/telescope-posts.git"
 });
 
@@ -52,7 +52,6 @@ Package.onUse(function (api) {
     'lib/client/templates/modules/post_rank.html',
     'lib/client/templates/modules/post_rank.js',
     'lib/client/templates/modules/post_title.html',
-    'lib/client/templates/modules/post_title.js',
     'lib/client/templates/modules/post_vote.html',
     'lib/client/templates/modules/post_vote.js',
     'lib/client/templates/post_body.html',

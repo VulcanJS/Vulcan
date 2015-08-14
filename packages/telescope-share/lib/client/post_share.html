@@ -4,10 +4,10 @@
       {{{icon "share"}}}
     </a>
     <div class="share-options hidden">
-      <a class="mt-facebook mt-share-inline-square-sm" href="https://www.facebook.com/sharer/sharer.php?u={{sourceLink}}" target="_blank">{{{icon "facebook"}}}</a>
-      <a class="mt-twitter mt-share-inline-square-sm" href="//twitter.com/intent/tweet?text={{title}}&url={{sourceLink}}&{{viaTwitter}}" target="_blank">{{{icon "twitter"}}}</a>
-      <a class="mt-linkedin mt-share-inline-square-sm" href="//www.linkedin.com/shareArticle?mini=true&url={{sourceLink}}&amp;summary={{title}}" target="_blank">{{{icon "linkedin"}}}</a>
-      <a class="mt-google mt-share-inline-square-sm" href="https://plus.google.com/share?url={{sourceLink}}" target="_blank">{{{icon "googleplus"}}}</a>
+      <a class="share-option-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{this.getShareableLink}}" target="_blank">{{{icon "facebook"}}}</a>
+      <a class="share-option-twitter" href="//twitter.com/intent/tweet?text={{encodedTitle}}&url={{this.getShareableLink}}&{{viaTwitter}}" target="_blank">{{{icon "twitter"}}}</a>
+      <a class="share-option-linkedin" href="//www.linkedin.com/shareArticle?mini=true&url={{this.getShareableLink}}&amp;summary={{encodedTitle}}" target="_blank">{{{icon "linkedin"}}}</a>
+      <a class="share-option-google" href="https://plus.google.com/share?url={{this.getShareableLink}}" target="_blank">{{{icon "googleplus"}}}</a>
     </div>
   </div>
 </template>

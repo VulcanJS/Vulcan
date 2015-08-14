@@ -13,8 +13,10 @@ Template.user_posts.helpers({
       terms: {
         view: 'userPosts',
         userId: user._id,
-        limit: 5
+        limit: 5,
+        enableCache: false,
+        subscribeToUsers: false
       }
-    }
+    };
   }
 });

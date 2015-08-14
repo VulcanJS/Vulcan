@@ -7,6 +7,7 @@ Posts.addField(
       editableBy: ["member", "admin"],
       autoform: {
         noselect: true,
+        type: "bootstrap-category",
         options: function () {
           var categories = Categories.find().map(function (category) {
             return {

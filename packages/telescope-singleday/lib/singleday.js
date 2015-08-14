@@ -17,3 +17,5 @@ Posts.views.add("singleday", function (terms) {
     }
   };
 });
+
+_.findWhere(Telescope.modules.top,{template: "posts_views_nav"}).only.push("postsSingleDay");

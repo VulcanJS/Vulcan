@@ -35,22 +35,20 @@ menuMode (String) [optional]
 
 <template name="menuComponent">
   <div class="menu {{menuClass}}">
-    <div class="menu-top-level" href="/">
-      {{#if labelIsTemplate}}
-        {{> Template.dynamic template=menuLabel}}
-      {{else}}
-        {{menuLabel}}
-      {{/if}}
-    </div>
+    {{#if showMenuLabel}}
+      <div class="menu-top-level" href="/">
+        {{#if labelIsTemplate}}
+          {{> Template.dynamic template=menuLabel}}
+        {{else}}
+          {{menuLabel}}
+        {{/if}}
+      </div>
+    {{/if}}
     <div class="menu-menu">
-      {{#with getMenuItems}}
+      {{#with rootMenuItems}}
         <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
-            {{#if hasTemplate}}
-              {{> Template.dynamic template=template data=data}}
-            {{else}}
-              {{> menuItem}}
-            {{/if}}
+            {{> menuItem}}
           {{/each}}
         </ul>
       {{/with}}
@@ -64,9 +62,25 @@ menuMode (String) [optional]
 
 <template name="menuItem">
   <li class="menu-item {{itemClass}}">
-    <a class="menu-sub-level" href="{{itemRoute}}">
-      <span class="menu-label">{{itemLabel}}</span>
-      {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
-    </a>
+  
+    <div class="menu-item-wrapper">
+      {{#if hasTemplate}}
+        {{> Template.dynamic template=template data=data}}
+      {{else}}
+        <a class="menu-sub-level" href="{{itemRoute}}">
+          <span class="menu-label">{{itemLabel}}</span>
+          {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+        </a>
+      {{/if}}
+    </div>
+
+    {{#with childMenuItems}}
+      <ul class="menu-child-items">
+        {{#each this}}
+          {{> menuItem}}
+        {{/each}}
+      </ul>
+    {{/with}}
+
   </li>
 </template>

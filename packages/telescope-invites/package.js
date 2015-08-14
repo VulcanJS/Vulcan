@@ -24,8 +24,7 @@ Package.onUse(function (api) {
   api.use([
     'jquery',
     'underscore',
-    'templating',
-    'telescope:messages@0.1.0'
+    'templating'
   ], ['client']);
 
   // server

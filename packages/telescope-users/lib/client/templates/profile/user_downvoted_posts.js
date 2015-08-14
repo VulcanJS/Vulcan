@@ -15,8 +15,10 @@ Template.user_downvoted_posts.helpers({
       terms: {
         view: 'userDownvotedPosts',
         userId: user._id,
-        limit: 5
+        limit: 5,
+        enableCache: false,
+        subscribeToUsers: false
       }
-    }
+    };
   }
 });
