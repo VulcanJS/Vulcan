@@ -68,8 +68,10 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  api.addFiles([
-    'i18n/en.i18n.json',
-  ], ['client', 'server']);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "se", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
 });

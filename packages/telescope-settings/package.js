@@ -33,16 +33,11 @@ Package.onUse(function(api) {
     'lib/client/templates/settings.js'
   ], 'client');
 
-  api.addFiles([
-    "i18n/ar.i18n.json",
-    "i18n/bg.i18n.json",
-    "i18n/de.i18n.json",
-    "i18n/el.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/es.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/fr.i18n.json"
-  ], both);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "se", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export('Settings', both);
 });
