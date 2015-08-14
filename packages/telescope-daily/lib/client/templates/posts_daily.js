@@ -12,11 +12,6 @@ Meteor.startup(function () {
       return daysArray;
     },
     context: function () {
-      //if the post is in the future and we aren't showing future, cap at current moment. Else use usual end of day
-      var beforeDate = !Posts.views.baseParameters.showFuture && moment().isBefore(moment(this.date).endOf('day')) ?
-              moment().toDate()
-            : moment(this.date).endOf('day').toDate();
-            
       var context = {
         terms: {
           view: "singleday",
