@@ -2,8 +2,10 @@
   <div class="posts-daily">
     {{#each days}}
       {{> before_day}}
-      {{> day_heading date=date}}
-      {{> posts_list_controller context}}
+      <div class="posts-day">
+        {{> day_heading date=date}}
+        {{> posts_list_controller context}}
+      </div>
       {{> after_day}}
     {{/each}}
     {{> load_more_days handler=loadMoreHandler}}

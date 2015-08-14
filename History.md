@@ -21,6 +21,7 @@
 * Added per-category RSS routes (thanks @lewisnyman!)
 * Now showing top comments in email newsletter (thanks @sungwoncho!)
 * Fixed blank URL edit bug (thanks @johnthepink!)
+* Added `.posts-day` wrapper in `posts-daily` template.
 
 ## v0.22.2
 

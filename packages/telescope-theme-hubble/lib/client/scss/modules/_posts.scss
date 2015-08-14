@@ -24,6 +24,7 @@
 	}
 	&:last-child {
 		border-radius: 0px 0px 3px 3px;
+		border-bottom: none;
 	}
 	&.animate {
 		transition: ease-out, top, 400ms, 0ms;
