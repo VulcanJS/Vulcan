@@ -46,12 +46,18 @@ buildCampaign = function (postsArray) {
       post.authorAvatarUrl = false;
     }
 
+    if (post.body) {
+      properties.body = Telescope.utils.trimHTML(post.htmlBody, 20);
+    }
+
     if (post.commentCount > 0)
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
         var user = Meteor.users.findOne(comment.userId);
-        comment.body = Telescope.utils.trimWords(comment.body, 20);
-        comment.authorAvatarUrl = Avatar.getUrl(user);
+
+        comment.body = Telescope.utils.trimHTML(comment.htmlBody, 20);
         comment.authorProfileUrl = Users.getProfileUrl(user, true);
+        comment.authorAvatarUrl = Avatar.getUrl(user);
+
         try {
           HTTP.get(comment.authorAvatarUrl);
         } catch (error) {
@@ -59,11 +65,6 @@ buildCampaign = function (postsArray) {
         }
         return comment;
       }}).fetch();
-
-    if (post.body) {
-      var bodyText = Telescope.utils.stripHTML(post.htmlBody);
-      properties.body = Telescope.utils.trimWords(bodyText, 20).replace('<p>', '').replace('</p>', ''); // remove p tags
-    }
 
     if(post.url)
       properties.domain = Telescope.utils.getDomain(post.url);

@@ -53,6 +53,15 @@ Telescope.utils.trimWords = function(s, numWords) {
 };
 
 /**
+ * Trim a block of HTML code to get a clean text excerpt
+ * @param {String} html - HTML to trim.
+ */
+Telescope.utils.trimHTML = function (html, numWords) {
+  var text = Telescope.utils.stripHTML(html);
+  return Telescope.utils.trimWords(text, numWords);
+};
+
+/**
  * Capitalize a string.
  * @param {String} str
  */
@@ -208,8 +217,8 @@ Telescope.utils.stripHTML = function(s) {
 };
 
 Telescope.utils.stripMarkdown = function(s) {
-  var html_body = marked(s);
-  return stripHTML(html_body);
+  var htmlBody = marked(s);
+  return Telescope.utils.stripHTML(htmlBody);
 };
 
 // http://stackoverflow.com/questions/2631001/javascript-test-for-existence-of-nested-object-key
