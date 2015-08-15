@@ -22,6 +22,11 @@
 * Now showing top comments in email newsletter (thanks @sungwoncho!)
 * Fixed blank URL edit bug (thanks @johnthepink!)
 * Added `.posts-day` wrapper in `posts-daily` template.
+* [BREAKING] menu label template must now be specified using `menuLabelTemplate` option in menu component.
+* Menu label template data context can now be specified using `menuLabelData` option. 
+* `user_menu` template and its helpers moved from `telescope:core` to `telescope:users`.
+* Now recalculating email hash whenever email changes.
+* Added user avatar to user menu in nav. 
 
 ## v0.22.2
 
