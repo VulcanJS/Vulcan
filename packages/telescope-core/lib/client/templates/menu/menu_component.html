@@ -20,7 +20,13 @@ menuItems (Array)
   | data contexnt for the template
 
 menuLabel (String) [optional]
-| The name of a template to use as menu label, or a string
+| The menu label
+
+menuLabelTemplate (String) [optional]
+| The name of a template to use as menu label
+
+menuLabelData (Object) [optional]
+| The data context for the label template
 
 menuClass (String) [optional]
 | An optional default CSS class given to the menu
@@ -38,7 +44,7 @@ menuMode (String) [optional]
     {{#if showMenuLabel}}
       <div class="menu-top-level" href="/">
         {{#if labelIsTemplate}}
-          {{> Template.dynamic template=menuLabel}}
+          {{> Template.dynamic template=menuLabelTemplate data=menuLabelData}}
         {{else}}
           {{menuLabel}}
         {{/if}}
