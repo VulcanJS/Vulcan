@@ -48,8 +48,10 @@ buildCampaign = function (postsArray) {
 
     if (post.commentCount > 0)
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
+        var user = Meteor.users.findOne(comment.userId);
         comment.body = Telescope.utils.trimWords(comment.body, 20);
-        comment.authorAvatarUrl = Avatar.getUrl(Meteor.users.findOne(comment.userId));
+        comment.authorAvatarUrl = Avatar.getUrl(user);
+        comment.authorProfileUrl = Users.getProfileUrl(user, true);
         try {
           HTTP.get(comment.authorAvatarUrl);
         } catch (error) {
