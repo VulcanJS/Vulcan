@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:daily",
   summary: "Telescope daily view",
-  version: "0.22.2",
+  version: "0.23",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,8 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:core@0.22.2',
-    'telescope:singleday@0.22.2',
+    'telescope:core@0.23',
+    'telescope:singleday@0.23',
   ]);
 
   api.addFiles([
