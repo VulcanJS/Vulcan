@@ -5,4 +5,4 @@
 
 Telescope = {};
 
-Telescope.VERSION = '0.23';
+Telescope.VERSION = '0.23.0';
