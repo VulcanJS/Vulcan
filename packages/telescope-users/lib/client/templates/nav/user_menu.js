@@ -1,6 +1,6 @@
 Template.user_menu.helpers({
-  menuLabel: function () {
-    return Users.getDisplayName(Meteor.user());
+  user: function () {
+    return Meteor.user();
   },
   menuItems: function () {
     return Telescope.menuItems.get("userMenu");

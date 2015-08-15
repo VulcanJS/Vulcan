@@ -1,3 +1,17 @@
+Telescope.modules.add("secondaryNav", [
+  {
+    template: 'user_menu',
+    order: 10
+  }
+]);
+
+Telescope.modules.add("mobileNav", [
+  {
+    template: 'user_menu',
+    order: 20
+  }
+]);
+
 Telescope.menuItems.add("userMenu", [
   {
     route: function () {
