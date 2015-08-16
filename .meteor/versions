@@ -132,7 +132,7 @@ telescope:getting-started@0.23.0
 telescope:i18n@0.23.0
 telescope:invites@0.23.0
 telescope:kadira@0.23.0
-telescope:lib@0.23.0
+telescope:lib@0.23.1
 telescope:messages@0.23.0
 telescope:migrations@0.23.0
 telescope:newsletter@0.23.0

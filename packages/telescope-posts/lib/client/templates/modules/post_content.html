@@ -1,9 +1,9 @@
 <template name="post_content">
   <div class="post-content {{moduleClass}}">
-    {{> modules "postThumbnail"}}
+    {{> modules zone="postThumbnail" moduleData=this}}
     <div class="post-info">
-      {{> modules zone="postHeading" zoneClass="post-heading"}}
-      {{> modules zone="postMeta" zoneClass="post-meta"}}
+      {{> modules zone="postHeading" zoneClass="post-heading" moduleData=this}}
+      {{> modules zone="postMeta" zoneClass="post-meta" moduleClass="post-meta-item" moduleData=this}}
     </div>
   </div>
 </template>

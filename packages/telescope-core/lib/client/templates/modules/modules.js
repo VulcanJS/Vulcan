@@ -7,8 +7,11 @@ Template.modules.helpers({
   },
   getClass: function () {
     var zoneClass = "zone-wrapper ";
-    if (this.zoneClass)
+    if (this.zoneClass) {
       zoneClass += this.zoneClass;
+    } else {
+      zoneClass += this.zone;
+    }
     return zoneClass;
   },
   getId: function () {
@@ -17,11 +20,7 @@ Template.modules.helpers({
   getModules: function () {
     // look for the zone name in either the zone variable, or the data context itself
     var zone = this.zone || this.toString();
-    var moduleClass = this.moduleClass;
-    return _.map(Telescope.modules.get(zone), function (module){
-      module.moduleClass = moduleClass;
-      return module;
-    });
+    return Telescope.modules.get(zone);
   },
   showModule: function () {
     var module = this;
@@ -39,11 +38,8 @@ Template.modules.helpers({
     return true;
   },
   moduleData: function () {
-    var zoneData = this;
-    var moduleData = Template.parentData(2) || {}; // parent template might not always have data context
-    if (zoneData.moduleClass) {
-      moduleData.moduleClass = zoneData.moduleClass;
-    }
+    var zoneData = Template.parentData(1) || {}; // might not always have data context
+    var moduleData = zoneData.moduleData || {};
     return moduleData;
   }
 });
