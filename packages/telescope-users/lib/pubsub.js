@@ -54,7 +54,6 @@ Users.pubsub.avatarProperties = {
   'services.github.screenName': true, // Github is not really used, but there are some mentions to it in the code
 };
 
-
 /**
  * Build Users subscription with filter, sort, and limit args.
  * @param {String} filterBy

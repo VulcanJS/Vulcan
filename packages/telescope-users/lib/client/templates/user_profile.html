@@ -1,5 +1,5 @@
 <template name="user_profile">
 	{{#with user}}
-    {{> modules "profileDisplay"}}
+    {{> modules zone="profileDisplay" moduleData=this}}
 	{{/with}}
 </template>
