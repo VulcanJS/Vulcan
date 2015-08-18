@@ -1,3 +1,5 @@
 <template name="category_title">
-  <h2 class="category-title post-list-title">{{title}}</h2>
+  {{#with category}}
+    <h2 class="category-title post-list-title">{{title}}</h2>
+  {{/with}}
 </template>

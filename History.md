@@ -1,3 +1,7 @@
+## v0.23.1
+
+* [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 
+
 ## v0.23 “SubScope”
 
 * Template modules now take `only` and `except` options to only display on specific routes.

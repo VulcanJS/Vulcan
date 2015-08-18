@@ -1,6 +1,9 @@
 Template.category_title.helpers({
+  category: function () {
+    return Router.current().getCurrentCategory();
+  },
   title: function () {
-    var category = Categories.findOne({slug: this.terms.category});
+    var category = this;
     return category && category.name;
   }
 });
