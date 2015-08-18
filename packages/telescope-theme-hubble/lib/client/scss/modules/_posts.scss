@@ -26,6 +26,9 @@
 		border-radius: 0px 0px 3px 3px;
 		border-bottom: none;
 	}
+	&:first-child:last-child{
+		border-radius: 3px;
+	}
 	&.animate {
 		transition: ease-out, top, 400ms, 0ms;
 	}
@@ -265,6 +268,9 @@
 	.post-content {
 		display: block;
 	}
+	.post-admin{
+		margin-top: 5px;
+	}
 	.post-thumbnail {
 		margin-right: 0px;
 		a {
@@ -379,6 +385,37 @@
 		}
 	}
 }
+.post-admin{
+	display: flex;
+	align-items: center;
+	.post-admin-actions, .post-admin-stats{
+		background: $lightest-grey;
+		display: inline-block;
+		border-radius: 3px;
+		margin-right: 3px;
+		display: flex;
+		align-items: center;
+		span, a{
+			display: inline-block;
+			padding: 2px 6px;
+			border-right: 1px solid white;
+			&:first-child{
+				border-radius: 3px 0 0 3px;
+			}
+			&:last-child{
+				border-radius: 0px 3px 3px 0px;
+				border: none;
+			}
+		}
+	}
+	.post-admin-stats{
+		background: none;
+		border: 1px solid $lightest-grey;
+		span{
+			border-right: 1px solid $lightest-grey;
+		}
+	}
+}
 .post-avatars {
 	display: inline-block;
 	display: flex;
@@ -468,7 +505,6 @@
 	}
 	.post-domain {
 		color: $light-text;
-		margin-left: 5px;
 		@include small {
 			font-size: 13px;
 		}
@@ -482,6 +518,9 @@
 	font-size: 13px;
 	color: $light-text;
 	line-height: 1.5;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
 	@include small {
 		font-size: 11px;
 		line-height: 1.7;
@@ -497,8 +536,7 @@
 		}
 	}
 }
-.post-meta-item {
-	display: inline-block;
+.postMeta-module {
 	margin-right: 5px;
 }
 .post-body, .page-body {

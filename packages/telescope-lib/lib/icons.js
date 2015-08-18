@@ -36,5 +36,11 @@ Telescope.utils.icons = {
   popularity: "fire",
   time: "clock-o",
   best: "star",
-  search: "search"
+  search: "search",
+  edit: "pencil",
+  approve: "check-circle-o",
+  unapprove: "times-circle-o",
+  views: "eye",
+  clicks: "mouse-pointer", 
+  score: "line-chart"
 };

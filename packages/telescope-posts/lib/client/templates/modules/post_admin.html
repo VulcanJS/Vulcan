@@ -1,16 +1,34 @@
 <template name="post_admin">
   <div class="{{moduleClass}} post-admin" aria-live="off">
+
     {{#if isAdmin}}
-      {{#if showApprove}}
-        <span>|</span>
-        <a href="#" class="approve-link goto-edit">{{_ "approve"}}</a>
+
+      <div class="post-admin-stats">
+        <span>{{{icon "score"}}} {{shortScore}}</span>
+        <span>{{{icon "clicks"}}} {{clickCount}}</span>
+        <span>{{{icon "views"}}} {{viewCount}}</span>
+      </div>
+      
+      <div class="post-admin-actions">
+        <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link goto-edit">{{{icon "edit"}}}</a>
+        {{#if showApprove}}
+          <a href="#" class="approve-link">{{{icon "approve"}}}</a>
+        {{/if}}
+        {{#if showUnapprove}}
+          <a href="#" class="unapprove-link">{{{icon "unapprove"}}}</a>
+        {{/if}}
+        <a href="#" class="delete-link">{{{icon "delete"}}}</a>
+      </div>
+
+    {{else}}
+
+      {{#if canEdit this}}
+        <div class="post-admin-actions">
+          <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link goto-edit">{{{icon "edit"}}}</a>
+        </div>
       {{/if}}
-      {{#if showUnapprove}}
-        <span>|</span>
-        <a href="#" class="unapprove-link goto-edit">{{_ "unapprove"}}</a>
-      {{/if}}
-      <span>|</span>
-      <span>{{_ "score"}}: {{shortScore}}, {{_ "clicks"}}: {{clickCount}}, {{_ "views"}}: {{viewCount}}</span>
+
     {{/if}}
+  
   </div>
 </template>

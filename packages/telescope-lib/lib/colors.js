@@ -72,6 +72,7 @@ accent(".login-link-text", 'background-color');
 accent(".post-category:hover", 'background-color');
 
 accent(".icon-more", "border-color");
+accent(".post-admin a:hover", "background-color");
 
 // accentContrastColor
 
@@ -87,6 +88,7 @@ accentContrast(".error");
 accentContrast(".header a.mobile-menu-button");
 accentContrast("login-link-text");
 accentContrast(".post-category:hover");
+accentContrast(".post-admin a:hover", "color");
 
 // secondaryColor
 

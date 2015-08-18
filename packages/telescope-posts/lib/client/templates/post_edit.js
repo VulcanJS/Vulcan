@@ -49,12 +49,12 @@ Template.post_edit.events({
     e.preventDefault();
 
     if(confirm("Are you sure?")){
-      Router.go("/");
       Meteor.call("deletePostById", post._id, function(error) {
         if (error) {
           console.log(error);
           Messages.flash(error.reason, 'error');
         } else {
+          Router.go("/");
           Messages.flash(i18n.t('your_post_has_been_deleted'), 'success');
         }
       });
