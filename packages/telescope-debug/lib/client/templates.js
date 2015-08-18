@@ -1,6 +1,6 @@
 var templatesDep = new Tracker.Dependency;
 
-var createHighlighter = function (templateName, $node, context) {
+var createHighlighter = function (templateName, $node, data) {
 
     var h = $node.outerHeight();
     var w = $node.outerWidth();
@@ -47,7 +47,8 @@ var createHighlighter = function (templateName, $node, context) {
         name: templateName,
         helpers: _.keys(template.__helpers),
         events: template.__eventMaps[0] && _.keys(template.__eventMaps[0]),
-        data: context,
+        data: data,
+        // html: Blaze.toHTMLWithData(template, data),
         template: template
       });
     });
