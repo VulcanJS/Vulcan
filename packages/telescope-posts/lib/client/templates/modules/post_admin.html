@@ -4,27 +4,27 @@
     {{#if isAdmin}}
 
       <div class="post-admin-stats">
-        <span>{{{icon "score"}}} {{shortScore}}</span>
-        <span>{{{icon "clicks"}}} {{clickCount}}</span>
-        <span>{{{icon "views"}}} {{viewCount}}</span>
+        <span title="{{_ 'score'}}">{{{icon "score"}}} {{shortScore}} <span class="sr-only">{{_ "score"}}</span></span>
+        <span title="{{_ 'clicks'}}">{{{icon "clicks"}}} {{clickCount}} <span class="sr-only">{{_ "clicks"}}</span></span>
+        <span title="{{_ 'views'}}">{{{icon "views"}}} {{viewCount}} <span class="sr-only">{{_ "views"}}</span></span>
       </div>
-      
+
       <div class="post-admin-actions">
-        <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link goto-edit">{{{icon "edit"}}}</a>
+        <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
         {{#if showApprove}}
-          <a href="#" class="approve-link">{{{icon "approve"}}}</a>
+          <a href="#" class="approve-link" title="{{_ 'approve'}}">{{{icon "approve"}}} <span class="sr-only">{{_ "approve"}}</span></a>
         {{/if}}
         {{#if showUnapprove}}
-          <a href="#" class="unapprove-link">{{{icon "unapprove"}}}</a>
+          <a href="#" class="unapprove-link" title="{{_ 'unapprove'}}">{{{icon "unapprove"}}} <span class="sr-only">{{_ "unapprove"}}</span></a>
         {{/if}}
-        <a href="#" class="delete-link">{{{icon "delete"}}}</a>
+        <a href="#" class="delete-link" title="{{_ 'delete'}}">{{{icon "delete"}}} <span class="sr-only">{{_ "delete"}}</span></a>
       </div>
 
     {{else}}
 
       {{#if canEdit this}}
         <div class="post-admin-actions">
-          <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link goto-edit">{{{icon "edit"}}}</a>
+          <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
         </div>
       {{/if}}
 

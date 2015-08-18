@@ -8,6 +8,9 @@ $red: #DD3416;
   text-transform:uppercase;
   font-weight:normal;
   vertical-align:middle;
+  border-radius: 3px;
+  position: relative;
+  top: -2px;
   &:hover{
     background:$red;
     color:white;
