@@ -90,9 +90,12 @@ Template.registerHelper('moduleClass', function() {
   // to get the module class from within a module, we go back up 
   // four steps to access the zone data
   var zoneData = Template.parentData(4);
-  var moduleClass = zoneData.zone + "-module ";
-  if (zoneData.moduleClass) {
-    moduleClass += zoneData.moduleClass;
+  if (zoneData) {
+    // node: modules may not always be included from within a zone
+    var moduleClass = zoneData.zone + "-module ";
+    if (zoneData.moduleClass) {
+      moduleClass += zoneData.moduleClass;
+    }
+    return moduleClass;
   }
-  return moduleClass;
 });

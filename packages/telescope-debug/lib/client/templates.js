@@ -1,6 +1,6 @@
 var templatesDep = new Tracker.Dependency;
 
-var createHighlighter = function (templateName, $node) {
+var createHighlighter = function (templateName, $node, context) {
 
     var h = $node.outerHeight();
     var w = $node.outerWidth();
@@ -39,6 +39,19 @@ var createHighlighter = function (templateName, $node) {
     div.css("z-index", 10000+depth);
     div.attr("data-template", templateName);
 
+
+    // add click event on the template highlighter that logs out template info to the console
+    var template = Template[templateName];
+    div.click(function () {
+      console.log({
+        name: templateName,
+        helpers: _.keys(template.__helpers),
+        events: template.__eventMaps[0] && _.keys(template.__eventMaps[0]),
+        data: context,
+        template: template
+      });
+    });
+
     $node.append(div);  
 };
 
@@ -53,6 +66,7 @@ Template.onRendered(function () {
 
   var template = this;
   var templateName = template.view.name.replace("Template.", "");
+  var context = this.data;
 
   // exclude weird Blaze stuff and special templates
   var excludedTemplates = ["__dynamicWithDataContext", "__dynamic", "module", "menuComponent", "menuItem", "avatar", "posts_list_controller"];
@@ -91,13 +105,12 @@ Template.onRendered(function () {
             }
 
             // do the thing 
-            var div = createHighlighter(templateName, $(node));
-            $(node).append(div);
+            createHighlighter(templateName, $(node), context);
 
           } catch (error) {
             // catch errors (usually text-only nodes, or empty templates)
-            console.log(templateName);
-            console.log(error);
+            // console.log(templateName);
+            // console.log(error);
           }
         }
       }
