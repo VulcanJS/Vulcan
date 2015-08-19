@@ -1,13 +1,9 @@
 <template name="modules">
-  {{#if isDebug}}
-    <div class="zone-wrapper" data-zone="{{getZone}}">
-      {{#each getModules}}
-        {{> module}}
-      {{/each}}
-    </div>
-  {{else}}
+  <div class="{{getClass}}" data-zone="{{getZone}}" id="{{getId}}">
     {{#each getModules}}
-      {{> module}}
+      {{#if showModule}}
+        {{> Template.dynamic template=template data=moduleData}}
+      {{/if}}
     {{/each}}
-  {{/if}}
+  </div>
 </template>

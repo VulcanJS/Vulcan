@@ -37,14 +37,18 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * If user.telescope.email has changed, check for existing emails and change user.emails if needed
+ * If user.telescope.email has changed, check for existing emails and change user.emails and email hash if needed
  */
  if (Meteor.isServer) {
   Users.before.update(function (userId, doc, fieldNames, modifier) {
+
     var user = doc;
+    
     // if email is being modified, update user.emails too
     if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
+
       var newEmail = modifier.$set["telescope.email"];
+
       // check for existing emails and throw error if necessary
       var userWithSameEmail = Users.findByEmail(newEmail);
       if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
@@ -56,6 +60,9 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
         user.emails[0].address = newEmail;
         modifier.$set.emails = user.emails;
       }
+
+      // update email hash
+      modifier.$set["telescope.emailHash"] = Gravatar.hash(newEmail);
 
     }
   });

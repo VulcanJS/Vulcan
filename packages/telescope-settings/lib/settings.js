@@ -180,6 +180,17 @@ Settings.schema = new SimpleSchema({
       instructions: 'Minimum time between posts, in seconds (defaults to 30)'
     }
   },
+  outsideLinksPointTo: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: "02_posts",
+      options: [
+        {value: 'page', label: 'Discussion page'},
+        {value: 'link', label: 'Outgoing link'}
+      ]
+    }
+  },
   commentInterval: {
     type: Number,
     optional: true,
@@ -324,6 +335,13 @@ Settings.schema = new SimpleSchema({
       group: "07_integrations"
     }
   },
+  facebookPage: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: "07_integrations"
+    }
+  },
   googleAnalyticsId: {
     type: String,
     optional: true,
@@ -436,14 +454,14 @@ Settings.attachSchema(Settings.schema);
 Settings.get = function(setting, defaultValue) {
   var settings = Settings.find().fetch()[0];
 
-  if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // if on the server, look in Meteor.settings
+  if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection first
+    return settings[setting];
+
+  } else if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // else if on the server, look in Meteor.settings
     return Meteor.settings[setting];
 
   } else if (Meteor.settings && Meteor.settings.public && !!Meteor.settings.public[setting]) { // look in Meteor.settings.public
     return Meteor.settings.public[setting];
-
-  } else if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection
-    return settings[setting];
 
   } else if (typeof defaultValue !== 'undefined') { // fallback to default
     return  defaultValue;

@@ -135,24 +135,31 @@ Router._filters = {
 
   setSEOProperties: function () {
 
-    var props = {meta: {}, og: {}};
+    var props = {meta: {}, og: {}, twitter: {}};
     var title = this.getTitle && this.getTitle();
     var description = this.getDescription && this.getDescription();
     var image = Settings.get("siteImage");
 
     if (!!title) {
-      props.title = title + " | " + Settings.get("title");
+      props.title = title;
     }
+    
     if (!!description) {
       props.meta.description = description;
       props.og.description = description;
     }
+    
     if (!!image) {
       props.og.image = image;
     }
 
+    if (!!Settings.get("twitterAccount")) {
+      props.twitter.site = Settings.get("twitterAccount");
+    }
+
     SEO.set(props);
 
+    $('title').text(title);
   },
 
   setCanonical: function () {
@@ -165,12 +172,6 @@ Router._filters = {
 };
 
 var filters = Router._filters;
-coreSubscriptions = new SubsManager({
-  // cache recent 50 subscriptions
-  cacheLimit: 50,
-  // expire any subscription after 30 minutes
-  expireIn: 30
-});
 
 Meteor.startup( function (){
 
@@ -200,7 +201,7 @@ Meteor.startup( function (){
     // Before Hooks
 
     Router.onBeforeAction(filters.isReady);
-    Router.onBeforeAction(filters.hasCompletedProfile);
+    Router.onBeforeAction(filters.hasCompletedProfile, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
     Router.onBeforeAction(filters.canView, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
     Router.onBeforeAction(filters.canViewPendingPosts, {only: ['post_page']});
     Router.onBeforeAction(filters.canViewRejectedPosts, {only: ['post_page']});
@@ -218,7 +219,7 @@ Meteor.startup( function (){
     // Router.onAfterAction(filters.resetScroll, {except:['posts_top', 'posts_new', 'posts_best', 'posts_pending', 'posts_category', 'all-users']});
     Router.onAfterAction(Events.analyticsInit); // will only run once thanks to _.once()
     Router.onAfterAction(Events.analyticsRequest); // log this request with mixpanel, etc
-    Router.onAfterAction(filters.setSEOProperties);
+    Router.onAfterAction(filters.setSEOProperties, {except: ["post_page", "post_page_with_slug"]}); // post pages have their own SEO logic
     Router.onAfterAction(filters.setCanonical, {only: ["post_page", "post_page_with_slug"]});
 
     // Unload Hooks

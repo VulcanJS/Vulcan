@@ -14,15 +14,25 @@ Template.posts_list_controller.onCreated(function () {
 
   // initialize the reactive variables
   instance.terms = new ReactiveVar(instance.data.terms);
-  instance.postsLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
+  instance.postsLimit = new ReactiveVar(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+  instance.ready = new ReactiveVar(false);
+
+  // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
+  var enableCache = (typeof instance.data.terms.enableCache === "undefined") ? false : instance.data.terms.enableCache;
+  var subscriber = enableCache ? Telescope.subsManager : instance;
+
+  // enable not subscribing to users on a per-controller basis
+  var subscribeToUsers = (typeof instance.data.terms.subscribeToUsers === "undefined") ? true : instance.data.terms.subscribeToUsers;
 
   // 2. Autorun
 
   // Autorun 1: when terms change, reset the limit
   instance.autorun(function () {
     // add a dependency on data context to trigger the autorun
-    var terms = Template.currentData().terms; // ⚡ reactive ⚡
-    instance.postsLimit.set(Settings.get('postsPerPage', 10));
+    var newTerms = Template.currentData().terms; // ⚡ reactive ⚡
+    if (!_.isEqual(newTerms, instance.data.terms)) {
+      instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+    }
   });
 
   // Autorun 2: will re-run when limit or terms are changed
@@ -38,10 +48,14 @@ Template.posts_list_controller.onCreated(function () {
     var subscriptionTerms = _.extend(_.clone(terms), {limit: postsLimit}); // extend terms with limit
 
     // use this new object to subscribe
-    var postsSubscription = instance.subscribe('postsList', subscriptionTerms);
-    var usersSubscription = instance.subscribe('postsListUsers', subscriptionTerms);
+    var postsSubscription = subscriber.subscribe('postsList', subscriptionTerms);
 
-    var subscriptionsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
+    if (subscribeToUsers) {
+      var usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
+      var subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+    } else {
+      var subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
+    }
 
     // console.log('// ------ autorun running ------ //');
     // console.log("terms: ", terms);
@@ -52,6 +66,7 @@ Template.posts_list_controller.onCreated(function () {
     // if subscriptions are ready, set terms to subscriptionsTerms
     if (subscriptionsReady) {
       instance.terms.set(subscriptionTerms);
+      instance.ready.set(true);
     }
   
   });
@@ -69,7 +84,7 @@ Template.posts_list_controller.helpers({
     var instance = Template.instance();
 
     var terms = instance.terms.get(); // ⚡ reactive ⚡
-    var postsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
+    var postsReady = instance.ready.get(); // ⚡ reactive ⚡
 
     var postsLimit = terms.limit;
     var parameters = Posts.getSubParams(terms);

@@ -12,6 +12,24 @@ Posts.getLink = function (post, isAbsolute) {
 Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
 /**
+ * Depending on the settings, return either a post's URL link (if it has one) or its page URL.
+ * @param {Object} post
+ */
+Posts.getShareableLink = function (post) {
+  return Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+};
+Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this);}});
+
+/**
+ * Whether a post's link should open in a new tab or not
+ * @param {Object} post
+ */
+Posts.getLinkTarget = function (post) {
+  return !!post.url ? "_blank" : "";
+};
+Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
+
+/**
  * Get URL of a post page.
  * @param {Object} post
  */
@@ -90,5 +108,14 @@ Posts.checkForSameUrl = function (url, currentUser) {
  * When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(Router.current().data()._id);
+  return Posts.findOne(Router.current().data().post._id);
 };
+
+/**
+ * Check to see if a post is a link to a video
+ * @param {Object} post
+ */
+Posts.isVideo = function (post) {
+  return post.media && post.media.type === "video";
+};
+Posts.helpers({isVideo: function () {return Posts.isVideo(this);}});

@@ -7,6 +7,7 @@ var logSearch = function (keyword) {
 
 Meteor.methods({
   logSearch: function (keyword) {
+    check(keyword, String);
     logSearch.call(this, keyword);
   }
 });

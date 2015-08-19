@@ -1,0 +1,12 @@
+{
+  "singleday" : "Päev",
+  "the_top_5_posts_of_each_day" : "Top 5 postitust iga päev.",
+  "previous_day" : "Eelmine päev",
+  "next_day" : "Järgmine päev",
+  "sorry_no_posts_for_today" : "Vabandame, tänasel päeval pole ühtegi postitust",
+  "sorry_no_posts_for" : "Vabandame, pole postitusi",
+  "today" : "Täna",
+  "yesterday" : "E",
+  "single_day" : "Päev",
+  "posts_of_a_single_day" : "Ühe päeva postitused."
+}

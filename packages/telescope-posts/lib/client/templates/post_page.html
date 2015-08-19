@@ -1,19 +1,21 @@
 <template name="post_page">
-  {{#if isPending}}
-    <div class="grid">
-      <div class="error pending-message module">
-        {{_ "thanks_your_post_is_awaiting_approval"}}
+  {{#with post}}
+    {{#if isPending}}
+      <div class="grid">
+        <div class="error pending-message module">
+          {{_ "thanks_your_post_is_awaiting_approval"}}
+        </div>
       </div>
-    </div>
-  {{/if}}
-  <div class="single-post grid">
-    <div class="posts posts-list">
-      {{> post_item}}
-    </div>
-    {{#if body}}
-      {{> post_body}}
     {{/if}}
-    {{> comment_submit}}
-    {{> comment_list}}
-  </div>
+    <div class="single-post grid">
+      <div class="posts posts-list">
+        {{> post_item}}
+      </div>
+      {{#if body}}
+        {{> post_body}}
+      {{/if}}
+      {{> comment_submit}}
+      {{> comment_list}}
+    </div>
+  {{/with}}
 </template>

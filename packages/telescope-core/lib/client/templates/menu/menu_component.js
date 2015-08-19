@@ -1,29 +1,49 @@
 getRoute = function (item) {
   // if route is a Function return its result, else apply Router.path() to it
-  return typeof item.route == "function" ? item.route() : Router.path(item.route);
-}
+  return typeof item.route === "function" ? item.route() : Router.path(item.route);
+};
 
-// filter out admin-only items if needed
-getMenuItems = function (menu) {
-  var menuItems = menu.menuItems;
 
+filterMenuItems = function (menuItems, level, parentId) {
+  var childLevel = level + 1; 
+
+  // filter out admin-only items if needed
   if (!Users.is.admin(Meteor.user())) {
     menuItems = _.reject(menuItems, function (item) {
       return item.adminOnly;
     });
   }
 
+  menuItems = _.filter(menuItems, function (item) {
+    if (level === 0) {
+      // if this is the root level, return elements with no parentId
+      return typeof item.parentId === "undefined";
+    } else {
+      // else, return elements with the correct parentId
+      return item.parentId === parentId;
+    }
+  });
+
+  // decorate child item with their level
+  menuItems = _.map(menuItems, function (item) {
+    item.level = childLevel;
+    return item;
+  });
+
   return menuItems;
-}
+};
 
 Template.menuComponent.helpers({
-  getMenuItems: function () {
-    return getMenuItems(this);
+  rootMenuItems: function () {
+    return filterMenuItems(this.menuItems, 0);
+  },
+  showMenuLabel: function () {
+    return !this.hideMenuLabel;
   },
   menuClass: function () {
     var classes = [this.menuName+"-menu"];
     var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
-    var count = getMenuItems(this).length;
+    var count = filterMenuItems(this.menuItems, 0).length;
 
     classes.push("menu-"+mode);
 
@@ -51,8 +71,8 @@ Template.menuComponent.helpers({
     // if label is defined, use this. Else default to menu name
     return !!this.menuLabel ? this.menuLabel : i18n.t(this.menuName);
   },
-  hasTemplate: function () {
-    return !!this.template;
+  labelIsTemplate: function () {
+    return !!this.menuLabelTemplate;
   }
 });
 
@@ -65,6 +85,9 @@ Template.menuComponent.events({
 });
 
 Template.menuItem.helpers({
+  hasTemplate: function () {
+    return !!this.template;
+  },
   itemClass: function () {
     var itemClass = "";
     var currentPath = Router.current().location.get().path ;
@@ -72,7 +95,7 @@ Template.menuItem.helpers({
     if (this.adminOnly) {
       itemClass += " item-admin";
     }
-    if (getRoute(this) === currentPath || getRoute(this) === Meteor.absoluteUrl() + currentPath.substr(1)) {
+    if (this.route && (getRoute(this) === currentPath || getRoute(this) === Meteor.absoluteUrl() + currentPath.substr(1))) {
       // substr(1) is to avoid having two "/" in the URL
       itemClass += " item-active";
     }
@@ -88,5 +111,18 @@ Template.menuItem.helpers({
   },
   itemRoute: function () {
     return getRoute(this);
+  },
+  childMenuItems: function () {
+    var currentLevel = this.level;
+
+    // note: for some reason, we need to go back one level to go from child to root, but 
+    // two levels to go from grandchild to child
+    var levelIncrement = this.level === 1 ? 1 : 2;
+
+    var allMenuItems = Template.parentData(currentLevel+levelIncrement).menuItems;
+
+    if (this._id) { // don't try to find child menu items if current element doesn't have an id
+      return filterMenuItems(allMenuItems, currentLevel, this._id);
+    }
   }
 });

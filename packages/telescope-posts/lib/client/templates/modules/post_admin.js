@@ -12,11 +12,11 @@ Template.post_admin.helpers({
 
 Template.post_admin.events({
   'click .approve-link': function(e){
-    Meteor.call('approvePost', this);
+    Meteor.call('approvePost', this._id);
     e.preventDefault();
   },
   'click .unapprove-link': function(e){
-    Meteor.call('unapprovePost', this);
+    Meteor.call('unapprovePost', this._id);
     e.preventDefault();
   }
 });

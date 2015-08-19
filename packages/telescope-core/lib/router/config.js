@@ -6,7 +6,7 @@ Telescope.subscriptions.preload('currentUser');
 Router.configure({
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
-  not_foundTemplate: 'not_found',
+  notFoundTemplate: 'not_found',
   waitOn: function () {
     return _.map(Telescope.subscriptions, function(sub){
       // can either pass strings or objects with subName and subArguments properties
@@ -19,16 +19,11 @@ Router.configure({
   }
 });
 
-// adding common subscriptions that's need to be loaded on all the routes
-// notification does not included here since it is not much critical and
-// it might have considerable amount of docs
-if(Meteor.isServer) {
-  FastRender.onAllRoutes(function() {
-    var router = this;
-    _.each(Telescope.subscriptions, function(sub){
-      router.subscribe(sub);
-    });
-  });
-}
-
 Telescope.controllers = {};
+
+Telescope.subsManager = new SubsManager({
+  // cache recent 50 subscriptions
+  cacheLimit: 50,
+  // expire any subscription after 30 minutes
+  expireIn: 30
+});

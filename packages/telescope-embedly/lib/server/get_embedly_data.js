@@ -83,15 +83,18 @@ Telescope.callbacks.add("postEdit", updateMediaOnEdit);
 
 Meteor.methods({
   testGetEmbedlyData: function (url) {
+    check(url, String);
     console.log(getEmbedlyData(url));
   },
   getEmbedlyData: function (url) {
+    check(url, String);
     return getEmbedlyData(url);
   },
   embedlyKeyExists: function () {
     return !!Settings.get('embedlyKey');
   },
   regenerateEmbedlyData: function (post) {
+    check(post, Posts.simpleSchema());
     if (Users.can.edit(Meteor.user(), post)) {
       addMediaAfterSubmit(post);
     }

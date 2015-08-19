@@ -3,14 +3,14 @@
   <div class="outer-wrapper {{currentPage}} {{navLayout}}">
     {{> mobile_nav}}
     <div class="inner-wrapper template-{{pageName}}">
-      {{> nav}}
+      {{> header}}
+      {{> modules zone="hero"}}
       <div class="content-wrapper">
         {{> messages}}
-        {{> modules "hero"}}
         {{> yield "adminMenu"}}
-        {{> yield "postsListTop"}}
+        {{> modules zone="top" zoneClass="top"}}
         {{> yield}}
-        {{> footer}}
+        {{> modules zone="footer" zoneClass="footer"}}
       </div>
       <div class="overlay hidden"></div>
     </div>

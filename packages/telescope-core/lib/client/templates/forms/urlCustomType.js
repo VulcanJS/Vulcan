@@ -9,6 +9,9 @@ AutoForm.addInputType("bootstrap-url", {
       }
       return url;
     }
+    else {
+      return null;
+    }
   }
 });
 

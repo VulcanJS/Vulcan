@@ -15,6 +15,7 @@ telescope:migrations
 telescope:api
 telescope:daily # singleday
 telescope:datetimepicker
+telescope:debug
 telescope:email
 telescope:embedly
 telescope:getting-started

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:core",
   summary: "Telescope core package",
-  version: "0.21.1",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,14 +10,14 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
   
   var packages = [
-    'telescope:lib@0.21.1', //  no dependencies
-    'telescope:messages@0.21.1', // lib
-    'telescope:i18n@0.21.1', // lib
-    'telescope:events@0.21.1', // lib, i18n
-    'telescope:settings@0.21.1', // lib, i18n
-    'telescope:users@0.21.1', // lib, i18n, settings
-    'telescope:comments@0.21.1', // lib, i18n, settings, users
-    'telescope:posts@0.21.1' // lib, i18n, settings, users, comments
+    'telescope:lib@0.23.0', //  no dependencies
+    'telescope:messages@0.23.0', // lib
+    'telescope:i18n@0.23.0', // lib
+    'telescope:events@0.23.0', // lib, i18n
+    'telescope:settings@0.23.0', // lib, i18n
+    'telescope:users@0.23.0', // lib, i18n, settings
+    'telescope:comments@0.23.0', // lib, i18n, settings, users
+    'telescope:posts@0.23.0' // lib, i18n, settings, users, comments
   ];
 
   api.use(packages);
@@ -38,8 +38,6 @@ Package.onUse(function(api) {
     'lib/client/handlebars.js',
     'lib/client/main.html',
     'lib/client/main.js',
-    'lib/client/templates/modules/module.html',
-    'lib/client/templates/modules/module.js',
     'lib/client/templates/modules/modules.html',
     'lib/client/templates/modules/modules.js',
     'lib/client/templates/admin/admin_menu.html',
@@ -48,8 +46,8 @@ Package.onUse(function(api) {
     'lib/client/templates/admin/admin_wrapper.js',
     'lib/client/templates/common/css.html',
     'lib/client/templates/common/css.js',
-    'lib/client/templates/common/footer.html',
-    'lib/client/templates/common/footer.js',
+    'lib/client/templates/common/footer_code.html',
+    'lib/client/templates/common/footer_code.js',
     'lib/client/templates/common/layout.html',
     'lib/client/templates/common/layout.js',
     'lib/client/templates/errors/already_logged_in.html',
@@ -67,11 +65,9 @@ Package.onUse(function(api) {
     'lib/client/templates/nav/logo.js',
     'lib/client/templates/nav/mobile_nav.html',
     'lib/client/templates/nav/mobile_nav.js',
-    'lib/client/templates/nav/nav.html',
-    'lib/client/templates/nav/nav.js',
+    'lib/client/templates/nav/header.html',
+    'lib/client/templates/nav/header.js',
     'lib/client/templates/nav/submit_button.html',
-    'lib/client/templates/nav/user_menu.html',
-    'lib/client/templates/nav/user_menu.js',
     'lib/client/templates/menu/menu.scss',
     'lib/client/templates/menu/menu_component.html',
     'lib/client/templates/menu/menu_component.js'
@@ -89,27 +85,10 @@ Package.onUse(function(api) {
     'lib/server/start.js'
   ], ['server']);
 
-  api.addFiles([
-    "i18n/ar.i18n.json",
-    "i18n/bg.i18n.json",
-    "i18n/de.i18n.json",
-    "i18n/el.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/es.i18n.json",
-    "i18n/fr.i18n.json",
-    "i18n/it.i18n.json",
-    "i18n/nl.i18n.json",
-    "i18n/pl.i18n.json",
-    "i18n/pt-BR.i18n.json",
-    "i18n/ro.i18n.json",
-    "i18n/ru.i18n.json",
-    "i18n/sv.i18n.json",
-    "i18n/tr.i18n.json",
-    "i18n/vi.i18n.json",
-    "i18n/zh-CN.i18n.json"
-  ], ["client", "server"]);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
-  api.export([
-    'coreSubscriptions'
-  ]);
 });

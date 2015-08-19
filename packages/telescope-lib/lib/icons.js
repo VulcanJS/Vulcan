@@ -16,8 +16,9 @@ Telescope.utils.getIcon = function (iconName, iconClass) {
  * A directory of icon keys and icon codes
  */
 Telescope.utils.icons = {
-  open: "plus",
-  close: "minus",
+  expand: "plus",
+  collapse: "minus",
+  close: "times",
   upvote: "chevron-up",
   voted: "check",
   downvote: "chevron-down",

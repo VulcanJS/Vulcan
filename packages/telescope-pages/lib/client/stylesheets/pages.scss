@@ -2,12 +2,40 @@
   @return rgba(255,255,255,$opacity);
 }
 
+.top-nav{
+  .desktop-nav{
+    .pages-menu{
+      a{
+        font-weight: normal;
+        margin-right: 20px;
+        &:last-of-type{
+          margin: 0;
+        }
+      } 
+    }
+  }
+}
+
+.side-nav{
+  .pages-menu{
+    order: 2;
+    a{
+      display: block;
+      margin-bottom: 10px;
+      &:last-child{
+        margin: 0;
+      }
+    } 
+  }
+}
+
+
 .mobile-nav{
   .pages-menu{
     a{
       border-bottom:1px white(0.2) solid;
       margin: 0;
-      &:last-child{
+      &:last-of-type{
         border: none;
       }
     }

@@ -42,10 +42,23 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Telescope.utils.trimWords = function(s, numWords) {
+  
+  if (!s)
+    return s;
+
   var expString = s.split(/\s+/,numWords);
   if(expString.length >= numWords)
     return expString.join(" ")+"…";
   return s;
+};
+
+/**
+ * Trim a block of HTML code to get a clean text excerpt
+ * @param {String} html - HTML to trim.
+ */
+Telescope.utils.trimHTML = function (html, numWords) {
+  var text = Telescope.utils.stripHTML(html);
+  return Telescope.utils.trimWords(text, numWords);
 };
 
 /**
@@ -165,6 +178,14 @@ Telescope.utils.invitesEnabled = function() {
   return Settings.get("requireViewInvite") || Settings.get("requirePostInvite");
 };
 
+// add http: if missing
+Telescope.utils.addHttp = function (url) {
+  if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
+    url = "http:"+url;
+  }
+  return url;
+};
+
 /////////////////////////////
 // String Helper Functions //
 /////////////////////////////
@@ -196,8 +217,8 @@ Telescope.utils.stripHTML = function(s) {
 };
 
 Telescope.utils.stripMarkdown = function(s) {
-  var html_body = marked(s);
-  return stripHTML(html_body);
+  var htmlBody = marked(s);
+  return Telescope.utils.stripHTML(htmlBody);
 };
 
 // http://stackoverflow.com/questions/2631001/javascript-test-for-existence-of-nested-object-key
@@ -224,5 +245,4 @@ Telescope.getNestedProperty = function (obj, desc) {
   var arr = desc.split(".");
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
-}
-
+};

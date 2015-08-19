@@ -1,0 +1,9 @@
+<template name="afCategory_bootstrap3">
+  <div class="category-input" {{this.atts}}>
+    {{> menuComponent menuName="categories" menuItems=menuItems menuMode="list" hideMenuLabel=true}}
+  </div>
+</template>
+
+<template name="category_input_item">
+  <div><label><input type="checkbox" value="{{_id}}" {{atts}} /> {{name}}</label></div>
+</template>

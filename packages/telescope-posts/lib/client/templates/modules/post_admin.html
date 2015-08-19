@@ -1,13 +1,16 @@
 <template name="post_admin">
-  {{#if isAdmin}}
-    <div class="post-meta-item" aria-live="off">
+  <div class="post-meta-item post-admin" aria-live="off">
+    {{#if isAdmin}}
       {{#if showApprove}}
-        | <a href="#" class="approve-link goto-edit">{{_ "approve"}}</a>
+        <span>|</span>
+        <a href="#" class="approve-link goto-edit">{{_ "approve"}}</a>
       {{/if}}
       {{#if showUnapprove}}
-        | <a href="#" class="unapprove-link goto-edit">{{_ "unapprove"}}</a>
+        <span>|</span>
+        <a href="#" class="unapprove-link goto-edit">{{_ "unapprove"}}</a>
       {{/if}}
-      | {{_ "score"}}: {{shortScore}}, {{_ "clicks"}}: {{clickCount}}, {{_ "views"}}: {{viewCount}}
-    </div>
-  {{/if}}
+      <span>|</span>
+      <span>{{_ "score"}}: {{shortScore}}, {{_ "clicks"}}: {{clickCount}}, {{_ "views"}}: {{viewCount}}</span>
+    {{/if}}
+  </div>
 </template>

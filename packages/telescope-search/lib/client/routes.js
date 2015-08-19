@@ -35,11 +35,11 @@ Meteor.startup(function () {
       
       var terms = {
         view: "search",
-        limit: this.params.limit || Settings.get('postsPerPage', 10),
-        query: Session.get("searchQuery")
+        limit: this.params.query.limit || Settings.get('postsPerPage', 10),
+        query: this.params.query.q
       };
       
-      return {terms: terms};
+      return {searchQuery: this.params.query.q, terms: terms};
     }
   });
 
@@ -47,7 +47,7 @@ Meteor.startup(function () {
 
   // Search
 
-  Router.route('/search/:limit?', {
+  Router.route('/search', {
     name: 'search',
     controller: Posts.controllers.search
   });

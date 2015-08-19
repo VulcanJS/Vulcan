@@ -1,3 +1,6 @@
 {
-  "categories" : "Categorías"
+  "categories" : "Categorías",
+  "add_and_remove_categories" : "Agregar y eliminar categorías",
+  "all_categories" : "Todos",
+  "invalid_category" : "Lo sentimos, esa no es una categoría válida"
 }
