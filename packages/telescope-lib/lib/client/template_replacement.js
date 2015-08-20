@@ -1,5 +1,7 @@
 Meteor.startup(function () {
-  // var prefix  = Telescope.config.customPrefix;
+
+  // "custom_" is always loaded last, so it takes priority over every other prefix
+  Telescope.config.addCustomPrefix("custom_");
 
   // loop over custom prefixes
   Telescope.config.customPrefixes.forEach(function (prefix) {

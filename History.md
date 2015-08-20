@@ -5,6 +5,7 @@
 * [BREAKING] Refactored `post_admin` template. Added delete link, now using icons, and moved post edit link from `post_info` to `post_admin`. 
 * When in debug mode, you can now log out information about a template to the console by clicking on it. 
 * Improved category slug generation logic to avoid duplicate slugs.
+* [BREAKING] `custom_` prefix is now always loaded last, and takes priority over every other prefix. 
 
 ## v0.23 “SubScope”
 
