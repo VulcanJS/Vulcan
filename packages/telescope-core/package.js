@@ -38,6 +38,7 @@ Package.onUse(function(api) {
     'lib/client/handlebars.js',
     'lib/client/main.html',
     'lib/client/main.js',
+    'lib/client/scripts/jquery.quickfit.js',
     'lib/client/templates/modules/modules.html',
     'lib/client/templates/modules/modules.js',
     'lib/client/templates/admin/admin_menu.html',

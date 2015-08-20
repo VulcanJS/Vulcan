@@ -4,10 +4,10 @@ Template.logo.helpers({
   }
 });
 
-Template.logo.onRendered(function () {
-  // var $logo = $(Template.instance().firstNode);
-  // var offsetX = $logo.outerWidth() * -0.5;
-  // var offsetY = $logo.outerHeight() * -0.5;
-  // $logo.css("margin-left", offsetX);
-  // $logo.css("margin-top", offsetY);
+Template.logo.onRendered(function  () {
+  $('.logo-text').quickfit({
+    min: 24,
+    max: 100,
+    truncate: false
+  });
 });
