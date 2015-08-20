@@ -6,7 +6,7 @@ Meteor.startup(function () {
       });
     },
     categoryLink: function(){
-      return Categories.getUrl(this.slug);
+      return Categories.getUrl(this);
     }
   });
 });

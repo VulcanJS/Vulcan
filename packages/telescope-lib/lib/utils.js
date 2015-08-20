@@ -165,6 +165,19 @@ Telescope.utils.slugify = function (s) {
   return slug;
 };
 
+Telescope.utils.getUnusedSlug = function (collection, slug) {
+  var suffix = "";
+  var index = 0;
+
+  // test if slug is already in use
+  while (!!collection.findOne({slug: slug+suffix})) {
+    index++;
+    suffix = "-"+index;
+  }
+
+  return slug+suffix;
+};
+
 Telescope.utils.getShortUrl = function(post) {
   return post.shortUrl || post.url;
 };

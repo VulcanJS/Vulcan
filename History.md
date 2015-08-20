@@ -1,9 +1,10 @@
-## v0.23.1
+## v0.23.2
 
 * [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 
 * [BREAKING] Updated `category_title` template.
 * [BREAKING] Refactored `post_admin` template. Added delete link, now using icons, and moved post edit link from `post_info` to `post_admin`. 
 * When in debug mode, you can now log out information about a template to the console by clicking on it. 
+* Improved category slug generation logic to avoid duplicate slugs.
 
 ## v0.23 “SubScope”
 
