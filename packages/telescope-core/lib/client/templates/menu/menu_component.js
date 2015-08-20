@@ -1,3 +1,5 @@
+menuItemsGlobal= [];
+
 getRoute = function (item) {
   // if route is a Function return its result, else apply Router.path() to it
   return typeof item.route === "function" ? item.route() : Router.path(item.route);
@@ -32,6 +34,10 @@ filterMenuItems = function (menuItems, level, parentId) {
 
   return menuItems;
 };
+
+Template.menuComponent.onCreated(function () {
+  menuItemsGlobal = this.data.menuItems;
+});
 
 Template.menuComponent.helpers({
   rootMenuItems: function () {
@@ -114,15 +120,8 @@ Template.menuItem.helpers({
   },
   childMenuItems: function () {
     var currentLevel = this.level;
-
-    // note: for some reason, we need to go back one level to go from child to root, but 
-    // two levels to go from grandchild to child
-    var levelIncrement = this.level === 1 ? 1 : 2;
-
-    var allMenuItems = Template.parentData(currentLevel+levelIncrement).menuItems;
-
     if (this._id) { // don't try to find child menu items if current element doesn't have an id
-      return filterMenuItems(allMenuItems, currentLevel, this._id);
+      return filterMenuItems(menuItemsGlobal, currentLevel, this._id);
     }
   }
 });
