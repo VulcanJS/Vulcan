@@ -79,9 +79,20 @@ Template.menuComponent.events({
   }
 });
 
+Template.menuItem.onCreated(function () {
+  // if menu item has a custom template specified, make that template inherit helpers from menuItem
+  if (this.data.template) {
+    Template[this.data.template].inheritsHelpersFrom("menuItem");
+  }
+});
+
 Template.menuItem.helpers({
   hasTemplate: function () {
     return !!this.template;
+  },
+  menuItemData: function () {
+    // if a data property is defined, use it for data context. Else default to current item
+    return this.data ? this.data : this;
   },
   itemClass: function () {
     var itemClass = "";

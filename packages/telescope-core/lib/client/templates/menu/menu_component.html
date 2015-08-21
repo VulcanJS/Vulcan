@@ -17,7 +17,7 @@ menuItems (Array)
 - template (String) [optional]
   | if a template is provided, it will override the route/label/description
 - data (Object) [optional]
-  | data contexnt for the template
+  | data context for the template
 
 menuLabel (String) [optional]
 | The menu label
@@ -67,7 +67,7 @@ menuClass (String) [optional]
   
     <div class="menu-item-wrapper">
       {{#if hasTemplate}}
-        {{> Template.dynamic template=template data=data}}
+        {{> Template.dynamic template=template data=menuItemData}}
       {{else}}
         <a class="menu-sub-level" href="{{itemRoute}}">
           <span class="menu-label">{{itemLabel}}</span>
