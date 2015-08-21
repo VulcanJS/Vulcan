@@ -26,23 +26,15 @@ $mobile-nav-width: 200px;
   left: calc((100% - 60px) * -1);
   width: $mobile-nav-width;
   width: calc(100% - 60px);
-  .menu-top-level{
-    cursor: pointer;
-    font-weight: bold;
-    &:after{
-      display:inline-block;
-      position:relative;
-      top:-1px;
-      margin-left:4px;
-      content:"▼";
-      font-size:8px;
-    }
-  }
+  
   .mobile-menu-item.menu{
     display: block;
   }
   .menu-contents li{
     margin: 0;
+  }
+  .button, .btn{
+    max-width: none;
   }
 }
 
@@ -89,6 +81,9 @@ $mobile-nav-width: 200px;
     &:last-child{
       border:none;
     }
+    .menu-expanded{
+      background: white(0.1);
+    }
   }
   .menu-description{
     display: none;
@@ -106,18 +101,6 @@ $mobile-nav-width: 200px;
       color: white;
     }
   }
-  .menu{
-    >a{
-      &:after{
-        display:inline-block;
-        position:relative;
-        top:-1px;
-        margin-left:4px;
-        content:"▼";
-        font-size:8px;
-      }
-    }
-  }
   .mobile-menu-item>a, .menu-top-level, .sign-in, .sign-up{
     padding: 10px;
   }
@@ -130,7 +113,6 @@ $mobile-nav-width: 200px;
     border-top:1px white(0.2) solid;
     padding: 0;
     .menu-item-wrapper{
-      display: block;
       padding: 10px;
     }
   }

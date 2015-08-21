@@ -11,11 +11,16 @@ $text: #444444;
 
 // ------------------------------------ Base ------------------------------------ //
 .menu-item{
-  padding: 5px;
-  margin: 0;
+  margin: 10px 0;
   a{
     font-size:14px;
   }
+}
+.menu-items-toggle{
+  display: none;
+}
+.menu-item-wrapper{
+  // padding: 5px 0px;
 }
 .menu-label{
   display: block;
@@ -50,16 +55,14 @@ $text: #444444;
 .menu-top-label{
   cursor: pointer;
 }
-.menu-child-items{
-  margin-top: 5px;
-  margin-left: 5px;
-  padding-left: 5px;
-  border-left: 1px solid rgba(0,0,0,0.3);
+.menu-child-items, .menu-collapsible .menu-wrapper{
+  padding-left: 10px;
+  border-left: 5px solid rgba(0,0,0,0.1);
   .medium-dark-bg &, .dark-bg & {
-    border-color: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.1);
   }
   .light-bg &, .menu-dropdown & {
-    border-color: rgba(0,0,0,0.15);
+    border-color: rgba(0,0,0,0.1);
   }
 }
 // ------------------------------------ List ------------------------------------ //
@@ -72,7 +75,7 @@ $text: #444444;
     background: black(0.05);
   }
 }
-// ------------------------------------ Hover ------------------------------------ //
+// ------------------------------------ Dropdown ------------------------------------ //
 
 .menu-dropdown{
   text-align: left;
@@ -80,6 +83,9 @@ $text: #444444;
   &.menu-has-items{
     .menu-top-level{
       cursor: pointer;
+      .menu-top-level-link{
+        font-weight: normal;
+      }
       &:after{
         display:inline-block;
         position:relative;
@@ -90,12 +96,12 @@ $text: #444444;
       }
     }
     &:hover{
-      .menu-menu{
+      .menu-wrapper{
         display:block;
       }
     }
   }
-  .menu-menu{
+  .menu-wrapper{
     display:none;
     top:10px;
     left:10px;
@@ -110,7 +116,8 @@ $text: #444444;
     }
     .menu-contents{
       background:white;
-      padding: 10px;
+      padding: 0 10px;
+      overflow: hidden; // prevent margin collapsing
       min-width:180px;
       border-radius: 3px;
       box-shadow: 0 1px 3px black(0.35);
@@ -122,97 +129,61 @@ $text: #444444;
   }
 }
 
-// ------------------------------------ Accordion ------------------------------------ //
 
-.menu-accordion{
-  .menu-top-level{
-    cursor: default;
-    display: block;
-    padding: 5px;
-    position: relative;
-    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
-    &:after{
-      content: " ";
+// ------------------------------------ Collapsible ------------------------------------ //
+
+.menu-collapsible{
+  .menu-top-level-link{
+    display: flex;
+    justify-content: space-between;
+    >span{
       display: block;
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      bottom: 0px;
-      left: 0px;
-      opacity: 0.5;
     }
   }
-  /* ------- Show More Button ------- */
-  .show-more{
-    // border-top: 1px solid #ccc;
-    position: relative;
-    /* note: we use a pseudo-element for the border so we can control the opacity indepdently from the color */
-    &:before{
-      content: " ";
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      top: 0px;
-      left: 0px;
-      opacity: 0.5;
-    }
-    padding: 8px 0;
+  .menu-wrapper{
     display: none;
-    text-align: center;
-    .icon{
-      display: block;
-      height: 20px;
-      width: 20px;
-      opacity: 0.5;
-      margin: 0 auto;
-    }
+  }
+  .menu-item-wrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+  .menu-sub-level{
+    display: block;
+  }
+  .menu-items-toggle{
+    display: block;
+    border-radius: 100%;
+    border: 1px solid white(0.3);
     &:hover{
-      background: white(0.2);
-      .show-more-icon{
-        opacity: 1;
-      }
-    }
-    .icon-collapse{
-      display: none;
-    }
-  }
-  &.menu-show-more .show-more{
-    display: block; // only show the "show more" button if the menu has more than three items
-  }
-  &.menu-open{
-    .icon-collapse{
-      display: block;
+      background: white(0.1);
     }
     .icon-expand{
+      display: block;
+    }
+    .icon-collapse{
       display: none;
-    }    
-  }
-
-  /* expand/collapse animation */
-  .menu-contents{
-    position: relative; // use this to hide absolutely positioned elements
-    max-height: 93px;
-    overflow: hidden;
-    transition: max-height ease-out 300ms;
-  }
-  &.menu-open .menu-contents{
-    max-height: 999px !important;
-  }
-  &.menu-collapsed{
-    .menu-contents{
-      max-height: 0px;
-      .dropdown-item:first-child{
-        padding-top: 10px;
+    }
+    &.toggle-expanded{
+      .icon-expand{
+        display: none;
+      }
+      .icon-collapse{
+        display: block;
       }
     }
-    .show-more{
-      margin-top: -1px;
-    }
-    &.menu-has-items .show-more{
-      display: block; // show the "show more" button if the menu has any items
-    }
+  }
+  .menu-child-items{
+    display: none;
+  }
+}
+
+.menu-always-expanded{
+  .menu-wrapper{
+    display: block;
+    padding-left: 0px;
+    border: none;
+  }
+  .menu-top-level-link .menu-items-toggle{
+    display: none;
   }
 }

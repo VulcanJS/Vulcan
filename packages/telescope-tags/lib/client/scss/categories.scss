@@ -39,3 +39,18 @@ $red: #DD3416;
     padding: 0;
   }
 }
+
+.side-nav{
+  .categories-menu{
+    .menu-top-level{
+      display: none;
+    }
+  }
+}
+.mobile-nav{
+  .categories-menu{
+    .menu-top-level{
+      display: block;
+    }
+  }
+}

@@ -5,13 +5,13 @@ Template.user_menu.helpers({
   menuItems: function () {
     return Telescope.menuItems.get("userMenu");
   },
-  menuMode: function () {
+  menuClass: function () {
     if (!!this.mobile) {
-      return 'list';
+      return 'menu-collapsible';
     } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
-      return 'dropdown';
+      return 'menu-dropdown';
     } else {
-      return 'accordion';
+      return 'menu-collapsible';
     }
   }
 });

@@ -6,6 +6,13 @@
 * When in debug mode, you can now log out information about a template to the console by clicking on it. 
 * Improved category slug generation logic to avoid duplicate slugs.
 * [BREAKING] `custom_` prefix is now always loaded last, and takes priority over every other prefix. 
+* Added Quickfit script to auto-fit site title to sidebar width in side nav layout.
+* [BREAKING] Removed menu component's `menuMode` argument, now doing menu variants via CSS and `menuClass`.
+* [BREAKING] Got rid of accordion menu variant.
+* [BREAKING] Tweaked markup of menu component.
+* Now showing "Post" button to logged out users, too. 
+* Icons are now always displayed square with fixed width.
+* [BREAKING] Added wrapper `div` to notification, user, and categories menus
 
 ## v0.23 “SubScope”
 

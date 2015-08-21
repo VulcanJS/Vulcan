@@ -34,9 +34,6 @@ menuClass (String) [optional]
 - menuCollapsed (Boolean) [optional]
 | whether the menu should start out collapsed (only useful for accordion menus)
 
-menuMode (String) [optional]
-| "accordion", "dropdown", or "list" (defaults to "list")
-
 -->
 
 <template name="menuComponent">
@@ -46,11 +43,14 @@ menuMode (String) [optional]
         {{#if labelIsTemplate}}
           {{> Template.dynamic template=menuLabelTemplate data=menuLabelData}}
         {{else}}
-          {{menuLabel}}
+          <a class="menu-top-level-link" href="#">
+            <span class="menu-top-level-label">{{menuLabel}}</span>
+            <span class="menu-items-toggle">{{{icon "expand"}}}{{{icon "collapse"}}}</span>
+          </a>
         {{/if}}
       </div>
     {{/if}}
-    <div class="menu-menu">
+    <div class="menu-wrapper">
       {{#with rootMenuItems}}
         <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
@@ -58,10 +58,6 @@ menuMode (String) [optional]
           {{/each}}
         </ul>
       {{/with}}
-      <a class="show-more" href="#">
-        {{{icon "expand"}}}
-        {{{icon "collapse"}}}
-      </a>
     </div>
   </div>
 </template>
@@ -77,6 +73,9 @@ menuMode (String) [optional]
           <span class="menu-label">{{itemLabel}}</span>
           {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
         </a>
+        {{#if childMenuItems}}
+          <a class="menu-items-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
+        {{/if}}
       {{/if}}
     </div>
 

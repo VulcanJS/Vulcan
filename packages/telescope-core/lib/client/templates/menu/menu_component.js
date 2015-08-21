@@ -48,25 +48,14 @@ Template.menuComponent.helpers({
   },
   menuClass: function () {
     var classes = [this.menuName+"-menu"];
-    var mode = (typeof this.menuMode === "undefined") ? "list" : this.menuMode;
     var count = filterMenuItems(this.menuItems, 0).length;
-
-    classes.push("menu-"+mode);
 
     if (!!this.menuClass) {
       classes.push(this.menuClass)
     }
 
-    if (this.menuCollapsed) {
-      classes.push("menu-collapsed");
-      classes.push("menu-show-more");
-    }
-
     if (count) {
       classes.push("menu-has-items");
-      if (count > 3) {
-        classes.push("menu-show-more");
-      }
     } else {
       classes.push("menu-no-items");
     }
@@ -123,5 +112,25 @@ Template.menuItem.helpers({
     if (this._id) { // don't try to find child menu items if current element doesn't have an id
       return filterMenuItems(menuItemsGlobal, currentLevel, this._id);
     }
+  }
+});
+
+Template.menuComponent.events({
+  'click .menu-collapsible .menu-top-level-link': function (e) {
+    e.preventDefault();
+    var $menu = $(e.currentTarget).closest(".menu-collapsible");
+    $menu.toggleClass("menu-expanded");
+    $menu.find(".menu-items-toggle").first().toggleClass("toggle-expanded");
+    $menu.find(".menu-wrapper").first().slideToggle('fast');
+  },
+  'click .menu-collapsible .menu-items-toggle': function (e) {
+    e.preventDefault();
+    var $menuItem = $(e.currentTarget).closest(".menu-item");
+    $menuItem.toggleClass("menu-expanded");
+
+    // menu item could contain multiple nested sub-menus, so always use first()
+    $menuItem.find(".menu-items-toggle").first().toggleClass("toggle-expanded");
+    $menuItem.find(".menu-child-items").first().slideToggle('fast');
+  
   }
 });

@@ -5,7 +5,7 @@ Template.logo.helpers({
 });
 
 Template.logo.onRendered(function  () {
-  $('.logo-text').quickfit({
+  $('.side-nav .logo-text').quickfit({
     min: 24,
     max: 100,
     truncate: false
