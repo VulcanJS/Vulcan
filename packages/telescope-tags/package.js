@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:tags",
   summary: "Telescope tags package",
-  version: "0.22.2",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/telescope-tags.git"
 });
 
@@ -9,12 +9,13 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.23.0']);
 
   api.addFiles([
     'lib/categories.js',
     'lib/custom_fields.js',
-    'lib/hooks.js',
+    'lib/methods.js',
+    'lib/modules.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
@@ -31,7 +32,9 @@ Package.onUse(function (api) {
     'lib/client/templates/categories_menu.js',
     'lib/client/templates/posts_category.html',
     'lib/client/templates/post_categories.html',
-    'lib/client/templates/post_categories.js'
+    'lib/client/templates/post_categories.js',
+    'lib/client/templates/autoform_category.html',
+    'lib/client/templates/autoform_category.js'
     ], ['client']);
 
   api.addFiles([
@@ -39,15 +42,11 @@ Package.onUse(function (api) {
     'lib/server/hooks.js',
   ], ['server']);
 
-  api.addFiles([
-    "i18n/bg.i18n.json",
-    "i18n/de.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/es.i18n.json",
-    "i18n/fr.i18n.json",
-    "i18n/it.i18n.json",
-    "i18n/zh-CN.i18n.json",
-  ], ["client", "server"]);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export([
     'Categories'

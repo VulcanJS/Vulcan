@@ -13,7 +13,9 @@ Template.user_comments.helpers({
       terms: {
         view: 'userComments',
         userId: user._id,
-        limit: 5
+        limit: 5,
+        enableCache: false,
+        subscribeToUsers: false
       }
     };
   }

@@ -1,7 +1,7 @@
 a{
   text-decoration: none;
   &, &:link, &:visited, &:active{
-    color: $text;
+    color: currentColor;
     font-weight: bold;
   }
   &:hover{

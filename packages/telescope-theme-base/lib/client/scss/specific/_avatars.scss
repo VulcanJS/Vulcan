@@ -7,6 +7,7 @@
 .avatar-small {
   height: 24px;
   width: 24px;
+  min-width: 0px;
   .avatar-initials{
     font-size: 13px;
     line-height: 24px;
@@ -23,4 +24,5 @@
 
 .avatar-initials{
   font-weight: normal;
+  overflow: hidden;
 }

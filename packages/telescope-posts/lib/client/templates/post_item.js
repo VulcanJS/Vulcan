@@ -20,8 +20,7 @@ Template.post_item.helpers({
     if (this.sticky) {
       postClass += "sticky ";
     }
-
-    postClass = Telescope.callbacks.run(post, postClass);
+    postClass = Telescope.callbacks.run("postClass", postClass, post);
     return postClass;
   }
 });

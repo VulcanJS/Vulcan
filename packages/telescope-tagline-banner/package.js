@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:tagline-banner",
   summary: "Show a banner containing your site's tagline on the homepage",
-  version: "0.22.2",
+  version: "0.23.0",
 });
 
 Package.onUse(function (api) {
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
 
   // --------------------------- 1. Meteor packages dependencies ---------------------------
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.23.0']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 
@@ -27,9 +27,10 @@ Package.onUse(function (api) {
     'lib/client/stylesheets/tagline_banner.scss'
   ], ['client']);
 
-  api.addFiles([
-    "i18n/en.i18n.json",
-    "i18n/fr.i18n.json"
-  ], ["client", "server"]);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
 });

@@ -16,5 +16,23 @@ $red: #DD3416;
 
 .post-categories{
   display: inline;
-  margin-left: 5px;
+}
+
+.categories-list{
+  .form-module{
+    background: #eee;
+    max-width: 600px;
+    padding: 20px;
+    margin: 0 0 10px 0;
+    border-bottom: none;
+  }
+  .menu-child-items{
+    margin-left: 0;
+    margin-top: 0;
+    border: none;
+    padding-left: 40px;
+  }
+  .menu-item{
+    padding: 0;
+  }
 }

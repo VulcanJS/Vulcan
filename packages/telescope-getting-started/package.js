@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:getting-started",
   summary: "Getting started posts",
-  version: '0.22.2',
+  version: '0.23.0',
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 
@@ -17,7 +17,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.23.0']);
 
   // client
 
@@ -68,8 +68,10 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  api.addFiles([
-    'i18n/en.i18n.json',
-  ], ['client', 'server']);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
 });

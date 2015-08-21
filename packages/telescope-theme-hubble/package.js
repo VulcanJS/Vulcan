@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:theme-hubble",
   summary: "Telescope Hubble theme package",
-  version: "0.22.2",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/telescope-theme-hubble.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.23.0']);
 
   api.addFiles([
     'lib/hubble.js',
@@ -24,6 +24,7 @@ Package.onUse(function (api) {
       'lib/client/scss/modules/_nav.scss',
       'lib/client/scss/modules/_posts.scss',
       'lib/client/scss/modules/_user-profile.scss',
+      'lib/client/scss/modules/_banners.scss',
 
       // partials
       'lib/client/scss/partials/_colors.scss',

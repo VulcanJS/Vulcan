@@ -36,11 +36,35 @@ buildCampaign = function (postsArray) {
       postLink: Posts.getLink(post, true),
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
-      date: moment(post.postedAt).format("MMMM D YYYY")
+      date: moment(post.postedAt).format("MMMM D YYYY"),
+      authorAvatarUrl: Avatar.getUrl(postUser)
     });
 
-    if (post.body)
-      properties.body = marked(Telescope.utils.trimWords(post.body, 20)).replace('<p>', '').replace('</p>', ''); // remove p tags
+    try {
+      HTTP.get(post.authorAvatarUrl);
+    } catch (error) {
+      post.authorAvatarUrl = false;
+    }
+
+    if (post.body) {
+      properties.body = Telescope.utils.trimHTML(post.htmlBody, 20);
+    }
+
+    if (post.commentCount > 0)
+      properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
+        var user = Meteor.users.findOne(comment.userId);
+
+        comment.body = Telescope.utils.trimHTML(comment.htmlBody, 20);
+        comment.authorProfileUrl = Users.getProfileUrl(user, true);
+        comment.authorAvatarUrl = Avatar.getUrl(user);
+
+        try {
+          HTTP.get(comment.authorAvatarUrl);
+        } catch (error) {
+          comment.authorAvatarUrl = false;
+        }
+        return comment;
+      }}).fetch();
 
     if(post.url)
       properties.domain = Telescope.utils.getDomain(post.url);

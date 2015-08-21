@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:email",
   summary: "Telescope email package",
-  version: "0.22.2",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/telescope-email.git"
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:core@0.22.2',
+    'telescope:core@0.23.0',
     'sacha:juice@0.1.4'
   ]);
 
@@ -30,13 +30,10 @@ Package.onUse(function (api) {
     'lib/server/templates/emailWrapper.handlebars',
   ], ['server']);
 
-  api.addFiles([
-    "i18n/de.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/es.i18n.json",
-    "i18n/fr.i18n.json",
-    "i18n/it.i18n.json",
-    "i18n/zh-CN.i18n.json",
-  ], ["client", "server"]);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
 });

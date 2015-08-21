@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:invites",
   summary: "Telescope invites package",
-  version: "0.22.2",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/telescope-invites.git"
 });
 
@@ -17,15 +17,14 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.23.0']);
 
   // client
 
   api.use([
     'jquery',
     'underscore',
-    'templating',
-    'telescope:messages@0.1.0'
+    'templating'
   ], ['client']);
 
   // server
@@ -64,14 +63,11 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  api.addFiles([
-    'i18n/de.i18n.json',
-    'i18n/en.i18n.json',
-    'i18n/es.i18n.json',
-    'i18n/fr.i18n.json',
-    'i18n/it.i18n.json',
-    'i18n/zh-CN.i18n.json'
-  ], ['client', 'server']);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   // -------------------------------- 3. Variables to export --------------------------------
 

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:releases",
   summary: "Show Telescope release notes and phone home with some stats.",
-  version: "0.22.2",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/telescope-releases.git"
 });
 
@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   // --------------------------- 1. Meteor packages dependencies ---------------------------
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.23.0']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 
@@ -57,12 +57,15 @@ Package.onUse(function (api) {
   api.addFiles('releases/0.21.1.md', 'server', { isAsset: true });
   api.addFiles('releases/0.22.1.md', 'server', { isAsset: true });
   api.addFiles('releases/0.22.2.md', 'server', { isAsset: true });
+  api.addFiles('releases/0.23.0.md', 'server', { isAsset: true });
 
   // i18n languages (must come last)
 
-  api.addFiles([
-    'i18n/en.i18n.json'
-  ], ['client', 'server']);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   // -------------------------------- 3. Variables to export --------------------------------
 

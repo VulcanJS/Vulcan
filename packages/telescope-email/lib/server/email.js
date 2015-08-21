@@ -7,13 +7,19 @@ Telescope.email = {};
 var htmlToText = Npm.require('html-to-text');
 
 // for template "foo", check if "custom_foo" exists. If it does, use it instead
-Telescope.email.getTemplate = function (template) {
-  var customEmailTemplate = Handlebars.templates["custom_"+template];
-  if(typeof customEmailTemplate === 'function'){
-    return customEmailTemplate;
-  } else {
-    return Handlebars.templates[template];
-  }
+Telescope.email.getTemplate = function (templateName) {
+
+  var template = templateName;
+
+  // go through prefixes and keep the last one (if any) that points to a valid template
+  Telescope.config.customPrefixes.forEach(function (prefix) {
+    if(typeof Handlebars.templates[prefix+templateName] === 'function'){
+      template = prefix + templateName;
+    }
+  });
+
+  return Handlebars.templates[template];
+
 };
 
 Telescope.email.buildTemplate = function (htmlContent) {

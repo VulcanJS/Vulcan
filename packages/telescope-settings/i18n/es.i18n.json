@@ -7,5 +7,10 @@
   "requirePostsApproval" : "Requerir que los Posts sean Aprobados",
   "defaultEmail" : "Correo electrónico predeterminado",
   "defaultView" : "Vista Predeterminada",
+  "maxPostsPerDay" : "Número máximo de posts por día",
+  "postsPerPage" : "Posts por página",
+  "language" : "Idioma",
+  "headerColor" : "Color de la cabecera",
+  "headerTextColor" : "Color del texto en la cabecera\n",
   "invites" : "Invitaciones"
 }

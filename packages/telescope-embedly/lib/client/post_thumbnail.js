@@ -4,14 +4,12 @@ Template.post_thumbnail.onCreated(function () {
 });
 
 Template.post_thumbnail.helpers({
-  postLink: function () {
-    return Posts.getLink(this);
-  },
-  target: function () {
-    return !!this.url? "_blank" : "";
-  },
   playVideoClass: function () {
-    return !!this.media ? 'post-thumbnail-has-video': '';
+    var url = this.url;
+    var isVideoSite = url && _.some(["youtube", "vimeo"], function (site) {
+      return url.indexOf(site) !== -1;
+    });
+    return (this.media && this.media.type === "video" && isVideoSite) ? 'post-thumbnail-has-video': '';
   },
   showVideo: function () {
     return Template.instance().showVideo.get();

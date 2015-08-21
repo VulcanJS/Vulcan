@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:settings",
   summary: "Telescope settings package",
-  version: "0.22.2",
+  version: "0.23.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -11,8 +11,8 @@ Package.onUse(function(api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.22.2', 
-    'telescope:i18n@0.22.2'
+    'telescope:lib@0.23.0', 
+    'telescope:i18n@0.23.0'
   ]);
 
   api.addFiles([
@@ -33,16 +33,11 @@ Package.onUse(function(api) {
     'lib/client/templates/settings.js'
   ], 'client');
 
-  api.addFiles([
-    "i18n/ar.i18n.json",
-    "i18n/bg.i18n.json",
-    "i18n/de.i18n.json",
-    "i18n/el.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/es.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/fr.i18n.json"
-  ], both);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export('Settings', both);
 });
