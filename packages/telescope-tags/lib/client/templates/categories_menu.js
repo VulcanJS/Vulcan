@@ -9,12 +9,20 @@ Meteor.startup(function () {
         label: 'all_categories',
         itemClass: 'item-never-active'
       }];
-      var menuItems = _.map(Categories.find({}, {sort: {order: 1, name: 1}}).fetch(), function (category) {
+
+      var categories = Categories.find({}, {sort: {order: 1, name: 1}}).fetch();
+
+      // filter out categories with no items
+      var menuItems = _.filter(categories, function (category){
+        return !!category.postsCount;
+      });
+
+      menuItems = _.map(menuItems, function (category) {
         return {
           route: function () {
             return Categories.getUrl(category);
           },
-          label: category.name+" <span class=\"category-posts-count\">("+category.postsCount+")</span>",
+          label: category.name+=" <span class=\"category-posts-count\">("+category.postsCount+")</span>",
           description: category.description,
           _id: category._id,
           parentId: category.parentId
