@@ -1,9 +1,12 @@
 <template name="afCategory_bootstrap3">
   <div class="category-input" {{this.atts}}>
-    {{> menuComponent menuName="categories" menuItems=menuItems menuMode="list" hideMenuLabel=true}}
+    {{> menuComponent menuName="categories" menuItems=menuItems menuClass="menu-collapsible menu-always-expanded" hideMenuLabel=true}}
   </div>
 </template>
 
 <template name="category_input_item">
-  <div><label><input type="checkbox" value="{{_id}}" {{atts}} /> {{name}}</label></div>
+  <div class="category-input-item"><label><input type="checkbox" value="{{_id}}" {{atts}} /> {{label}}</label></div>
+  {{#if childMenuItems}}
+    <a class="menu-items-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
+  {{/if}}
 </template>

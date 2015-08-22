@@ -59,3 +59,9 @@ $red: #DD3416;
   display: inline-block;
   font-size: 22px;
 }
+
+.category-input{
+  .menu-item-wrapper{
+    justify-content: flex-start;
+  }
+}

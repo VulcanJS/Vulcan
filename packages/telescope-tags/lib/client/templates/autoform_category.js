@@ -18,7 +18,7 @@ Template.afCategory_bootstrap3.helpers({
         _id: category._id,
         parentId: category.parentId,
         template: "category_input_item",
-        data: category
+        label: category.name
       };
     });
     return menuItems;

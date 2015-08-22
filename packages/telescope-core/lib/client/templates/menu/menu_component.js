@@ -13,7 +13,7 @@ var filterMenuItems = function (menuItems) {
   return menuItems;  
 };
 
-var getChildMenuItems = function (node) {
+Telescope.utils.getChildMenuItems = function (node) {
 
   var level = node.level;
   var childLevel = level + 1;
@@ -130,15 +130,14 @@ Template.menuItem.helpers({
   },
   itemLabel: function () {
     // if label is a Function return its result, else return i18n'd version of label
-    return typeof this.label == "function" ? this.label() :  i18n.t(this.label);
+    return typeof this.label === "function" ? this.label() :  i18n.t(this.label);
   },
   itemRoute: function () {
     return getRoute(this);
   },
-  childMenuItems: function () {
-    var currentLevel = this.level;
+  childMenuItems: function () {    
     if (this._id) { // don't try to find child menu items if current element doesn't have an id
-      var childMenuItems = getChildMenuItems(this);
+      var childMenuItems = Telescope.utils.getChildMenuItems(this);
       return childMenuItems;
     }
   }
