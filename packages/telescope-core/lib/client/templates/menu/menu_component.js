@@ -1,54 +1,71 @@
-menuItemsGlobal= [];
-
-getRoute = function (item) {
+var getRoute = function (item) {
   // if route is a Function return its result, else apply Router.path() to it
   return typeof item.route === "function" ? item.route() : Router.path(item.route);
 };
 
-
-filterMenuItems = function (menuItems, level, parentId) {
-  var childLevel = level + 1; 
-
+var filterMenuItems = function (menuItems) {
   // filter out admin-only items if needed
   if (!Users.is.admin(Meteor.user())) {
     menuItems = _.reject(menuItems, function (item) {
       return item.adminOnly;
     });
   }
+  return menuItems;  
+};
+
+var getChildMenuItems = function (node) {
+
+  var level = node.level;
+  var childLevel = level + 1;
+  var menuItems = node.allMenuItems;
+
+  menuItems = filterMenuItems(menuItems);
 
   menuItems = _.filter(menuItems, function (item) {
-    if (level === 0) {
-      // if this is the root level, return elements with no parentId
-      return typeof item.parentId === "undefined";
-    } else {
-      // else, return elements with the correct parentId
-      return item.parentId === parentId;
-    }
+    // return elements with the correct parentId
+    return item.parentId === node._id;
   });
 
-  // decorate child item with their level
+  // decorate child item with their level and a reference to the root level
   menuItems = _.map(menuItems, function (item) {
     item.level = childLevel;
+    item.allMenuItems = node.allMenuItems
     return item;
   });
 
   return menuItems;
 };
 
-Template.menuComponent.onCreated(function () {
-  menuItemsGlobal = this.data.menuItems;
-});
+// Template.menuComponent.onCreated(function () {
+//   menuItemsGlobal = this.data.menuItems;
+// });
 
 Template.menuComponent.helpers({
   rootMenuItems: function () {
-    return filterMenuItems(this.menuItems, 0);
+
+    var allMenuItems = this.menuItems;
+    var menuItems = filterMenuItems(allMenuItems); // filter out admin items if needed
+
+    // get root elements
+    menuItems = _.filter(menuItems, function(item) {
+      return typeof item.parentId === "undefined";
+    });
+    
+    menuItems = _.map(menuItems, function (item) {
+      item.level = 0;
+      item.allMenuItems = allMenuItems;
+      return item;
+    });
+    
+    return menuItems;
+
   },
   showMenuLabel: function () {
     return !this.hideMenuLabel;
   },
   menuClass: function () {
     var classes = [this.menuName+"-menu"];
-    var count = filterMenuItems(this.menuItems, 0).length;
+    var count = filterMenuItems(this.menuItems).length;
 
     if (!!this.menuClass) {
       classes.push(this.menuClass)
@@ -121,7 +138,8 @@ Template.menuItem.helpers({
   childMenuItems: function () {
     var currentLevel = this.level;
     if (this._id) { // don't try to find child menu items if current element doesn't have an id
-      return filterMenuItems(menuItemsGlobal, currentLevel, this._id);
+      var childMenuItems = getChildMenuItems(this);
+      return childMenuItems;
     }
   }
 });
