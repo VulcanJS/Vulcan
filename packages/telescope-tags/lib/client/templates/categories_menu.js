@@ -14,7 +14,7 @@ Meteor.startup(function () {
           route: function () {
             return Categories.getUrl(category);
           },
-          label: category.name,
+          label: category.name+" <span class=\"category-posts-count\">("+category.postsCount+")</span>",
           description: category.description,
           _id: category._id,
           parentId: category.parentId

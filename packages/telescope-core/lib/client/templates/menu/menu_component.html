@@ -70,7 +70,7 @@ menuClass (String) [optional]
         {{> Template.dynamic template=template data=menuItemData}}
       {{else}}
         <a class="menu-sub-level" href="{{itemRoute}}">
-          <span class="menu-label">{{itemLabel}}</span>
+          <span class="menu-label">{{{itemLabel}}}</span>
           {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
         </a>
         {{#if childMenuItems}}
