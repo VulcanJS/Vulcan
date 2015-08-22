@@ -18,3 +18,19 @@ function addCategoryClass (postClass, post) {
   return postClass + " " + classArray.join(' ');
 }
 Telescope.callbacks.add("postClass", addCategoryClass);
+
+// when a category is added to a post, increment counter
+function updateCategoryCountOnSubmit (post) {
+  Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": 1}}, {multi: true});
+}
+Telescope.callbacks.add("postSubmitAsync", updateCategoryCountOnSubmit);
+
+function updateCategoryCountOnEdit (newPost, oldPost) {
+  
+  var categoriesAdded = _.difference(newPost.categories, oldPost.categories);
+  var categoriesRemoved = _.difference(oldPost.categories, newPost.categories);
+
+  Categories.update({_id: {$in: categoriesAdded}}, {$inc: {"postsCount": 1}}, {multi: true});
+  Categories.update({_id: {$in: categoriesRemoved}}, {$inc: {"postsCount": -1}}, {multi: true});
+}
+Telescope.callbacks.add("postEditAsync", updateCategoryCountOnEdit);

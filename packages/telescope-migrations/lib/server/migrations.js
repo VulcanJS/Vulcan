@@ -721,7 +721,18 @@ var migrationsList = {
       }
     });
     return i;
-  }
+  },
+  setCategoryPostsCounts: function () {
+    var i = 0;
+    // see http://stackoverflow.com/questions/7811163/how-to-query-for-documents-where-array-size-is-greater-than-one-1-in-mongodb
+    Posts.find({"categories.0": {$exists: true,}}).forEach(function (post) {
+      i++;
+      console.log("Post: "+post._id+", found "+post.categories.length+" categories.");
+      Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": 1}}, {multi: true});
+      console.log("---------------------");
+    });
+    return i;
+  },
 };
 
 // TODO: normalize categories?
