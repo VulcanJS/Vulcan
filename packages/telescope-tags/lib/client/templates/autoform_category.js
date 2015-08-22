@@ -13,12 +13,12 @@ Template.afCategory_bootstrap3.helpers({
   menuItems: function () {
     var selectedCategories = this.value;
     var menuItems = _.map(Categories.find({}, {sort: {order: 1, name: 1}}).fetch(), function (category) {
-      category.isSelected = _.contains(selectedCategories, category._id);
       return {
         _id: category._id,
         parentId: category.parentId,
         template: "category_input_item",
-        label: category.name
+        label: category.name,
+        isSelected: _.contains(selectedCategories, category._id)
       };
     });
     return menuItems;
