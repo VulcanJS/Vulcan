@@ -28,7 +28,15 @@ getEmbedlyData = function (url) {
     if (!!result.data.images && !!result.data.images.length) // there may not always be an image
       result.data.thumbnailUrl = result.data.images[0].url.replace("http:", ""); // add thumbnailUrl as its own property and remove "http"
 
-    return _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl');
+    if (result.data.authors && result.data.authors.length > 0) {
+      result.data.sourceName = result.data.authors[0].name;
+      result.data.sourceUrl = result.data.authors[0].url;
+    }
+
+    var embedlyData = _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl', 'sourceName', 'sourceUrl');
+    console.log(embedlyData);
+
+    return embedlyData;
 
   } catch (error) {
     console.log(error)
@@ -39,8 +47,8 @@ getEmbedlyData = function (url) {
   }
 }
 
-// For security reason, we use a separate server-side API call to set the media object,
-// and the thumbnail object if it hasn't already been set
+// For security reason, we make the media property non-modifiable by the client and
+// we use a separate server-side API call to set it (and the thumbnail object if it hasn't already been set)
 
 // Async variant that directly modifies the post object with update()
 function addMediaAfterSubmit (post) {
@@ -50,13 +58,16 @@ function addMediaAfterSubmit (post) {
     if (!!data) {
       // only add a thumbnailUrl if there isn't one already
       if (!post.thumbnailUrl && !!data.thumbnailUrl) {
-        post.thumbnailUrl = data.thumbnailUrl;
         set.thumbnailUrl = data.thumbnailUrl;
       }
       // add media if necessary
       if (!!data.media.html) {
-        post.media = data.media;
         set.media = data.media;
+      }
+      // add source name & url if they exist
+      if (!!data.sourceName && !!data.sourceUrl) {
+        set.sourceName = data.sourceName;
+        set.sourceUrl = data.sourceUrl;
       }
     }
     // make sure set object is not empty (Embedly call could have failed)
@@ -64,16 +75,23 @@ function addMediaAfterSubmit (post) {
       Posts.update(post._id, {$set: set});
     }
   }
-  return post;
-};
+}
 Telescope.callbacks.add("postSubmitAsync", addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   var newUrl = modifier.$set.url;
   if(newUrl && newUrl !== post.url){
     var data = getEmbedlyData(newUrl);
-    if(!!data && !!data.media.html) {
-      modifier.$set.media = data.media;
+    if(!!data) {
+      if (!!data.media.html) {
+        modifier.$set.media = data.media;
+      }
+
+      // add source name & url if they exist
+      if (!!data.sourceName && !!data.sourceUrl) {
+        modifier.$set.sourceName = data.sourceName;
+        modifier.$set.sourceUrl = data.sourceUrl;
+      }
     }
   }
   return modifier;
