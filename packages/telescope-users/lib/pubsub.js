@@ -54,6 +54,12 @@ Users.pubsub.avatarProperties = {
   'services.github.screenName': true, // Github is not really used, but there are some mentions to it in the code
 };
 
+// note: to work around nested fields subscription bug, we'll publish
+// all public user properties at all times for now
+// see https://github.com/meteor/meteor/issues/998
+
+Users.pubsub.avatarProperties = Users.pubsub.publicProperties;
+
 /**
  * Build Users subscription with filter, sort, and limit args.
  * @param {String} filterBy
