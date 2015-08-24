@@ -34,10 +34,11 @@ Posts.controllers.list = RouteController.extend({
   },
 
   getDescription: function () {
-    if (Router.current().route.getName() === 'posts_default') { // return site description on root path
+    var currentRoute = Router.current().route.getName();
+    if (currentRoute === 'posts_default') { // return site description on root path
       return Settings.get('description');
     } else {
-      return i18n.t(_.findWhere(Telescope.menuItems.get("viewsMenu"), {label: this.view}).description);
+      return i18n.t(_.findWhere(Telescope.menuItems.get("viewsMenu"), {route: currentRoute}).description);
     }
   }
 

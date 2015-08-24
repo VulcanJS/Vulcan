@@ -14,26 +14,32 @@ var filterMenuItems = function (menuItems) {
 };
 
 Telescope.utils.getChildMenuItems = function (node) {
+  // don't try to find child menu items if current element doesn't have an id
+  if (node.item._id) {
 
-  var level = node.level;
-  var childLevel = level + 1;
-  var menuItems = node.allMenuItems;
+    var level = node.level;
+    var childLevel = level + 1;
+    var menuItems = filterMenuItems(node.allItems);
 
-  menuItems = filterMenuItems(menuItems);
+    menuItems = _.filter(menuItems, function (item) {
+      // return elements with the correct parentId
+      return item.parentId === node.item._id;
+    });
 
-  menuItems = _.filter(menuItems, function (item) {
-    // return elements with the correct parentId
-    return item.parentId === node._id;
-  });
+    // build "node container" object
+    menuItems = _.map(menuItems, function (item) {
+      return {
+        allItems: node.allItems,
+        level: childLevel,
+        item: item
+      };
+    });
 
-  // decorate child item with their level and a reference to the root level
-  menuItems = _.map(menuItems, function (item) {
-    item.level = childLevel;
-    item.allMenuItems = node.allMenuItems
-    return item;
-  });
+    return menuItems;
 
-  return menuItems;
+  } else {
+    return [];
+  }
 };
 
 // Template.menuComponent.onCreated(function () {
@@ -51,10 +57,13 @@ Template.menuComponent.helpers({
       return typeof item.parentId === "undefined";
     });
     
+    // build "node container" object
     menuItems = _.map(menuItems, function (item) {
-      item.level = 0;
-      item.allMenuItems = allMenuItems;
-      return item;
+      return {
+        allItems: allMenuItems,
+        level: 0,
+        item: item
+      };
     });
     
     return menuItems;
@@ -97,49 +106,47 @@ Template.menuComponent.events({
 });
 
 Template.menuItem.onCreated(function () {
+  var context = this.data;
   // if menu item has a custom template specified, make that template inherit helpers from menuItem
-  if (this.data.template) {
-    Template[this.data.template].inheritsHelpersFrom("menuItem");
+  if (context.item.template) {
+    Template[context.item.template].inheritsHelpersFrom("menuItem");
   }
 });
 
 Template.menuItem.helpers({
   hasTemplate: function () {
-    return !!this.template;
+    return !!this.item.template;
   },
   menuItemData: function () {
     // if a data property is defined, use it for data context. Else default to current item
-    return this.data ? this.data : this;
+    return this.item.data ? this.item.data : this.item;
   },
   itemClass: function () {
     var itemClass = "";
     var currentPath = Router.current().location.get().path ;
 
-    if (this.adminOnly) {
+    if (this.item.adminOnly) {
       itemClass += " item-admin";
     }
-    if (this.route && (getRoute(this) === currentPath || getRoute(this) === Meteor.absoluteUrl() + currentPath.substr(1))) {
+    if (this.item.route && (getRoute(this.item) === currentPath || getRoute(this.item) === Meteor.absoluteUrl() + currentPath.substr(1))) {
       // substr(1) is to avoid having two "/" in the URL
       itemClass += " item-active";
     }
-    if (this.itemClass) {
-      itemClass += " "+this.itemClass;
+    if (this.item.itemClass) {
+      itemClass += " "+this.item.itemClass;
     }
 
     return itemClass;
   },
   itemLabel: function () {
     // if label is a Function return its result, else return i18n'd version of label
-    return typeof this.label === "function" ? this.label() :  i18n.t(this.label);
+    return typeof this.item.label === "function" ? this.item.label() :  i18n.t(this.item.label);
   },
   itemRoute: function () {
-    return getRoute(this);
+    return getRoute(this.item);
   },
   childMenuItems: function () {    
-    if (this._id) { // don't try to find child menu items if current element doesn't have an id
-      var childMenuItems = Telescope.utils.getChildMenuItems(this);
-      return childMenuItems;
-    }
+    return Telescope.utils.getChildMenuItems(this);
   }
 });
 

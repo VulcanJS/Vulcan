@@ -1,12 +1,14 @@
 <!--
 
-Menu Component
+menuComponent
 
 menuName (String)
 | The name of the menu
 
 menuItems (Array)
 | An array containing the contents of the menu
+_ _id (String) [optional] used in nested menus
+_ parentId (String) [optional] used in nested menus
 - route (String/Function) [optional]
 - label (String/Function) [optional]
 - description (String) [optional]
@@ -61,6 +63,21 @@ menuClass (String) [optional]
     </div>
   </div>
 </template>
+
+<!--
+
+menuItem
+
+allItems (Array)
+| A reference pointing back to an array containing *all* menu items
+
+level (Number)
+| The current hierarchical depth level, starting with 0
+
+item (Object)
+| The current item to display
+
+-->
 
 <template name="menuItem">
   <li class="menu-item {{itemClass}}">
