@@ -34,3 +34,10 @@ function updateCategoryCountOnEdit (newPost, oldPost) {
   Categories.update({_id: {$in: categoriesRemoved}}, {$inc: {"postsCount": -1}}, {multi: true});
 }
 Telescope.callbacks.add("postEditAsync", updateCategoryCountOnEdit);
+
+// when a post is deleted, decrement counter
+function updateCategoryCountOnDelete (post) {
+  Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": -1}}, {multi: true});
+}
+Telescope.callbacks.add("postDeleteAsync", updateCategoryCountOnDelete);
+

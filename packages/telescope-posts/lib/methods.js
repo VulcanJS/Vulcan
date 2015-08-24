@@ -312,6 +312,9 @@ Meteor.methods({
 
     // delete post
     Posts.remove(postId);
+
+    Telescope.callbacks.runAsync("postDeleteAsync", post);
+
   }
 
 });
