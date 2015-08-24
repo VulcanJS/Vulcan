@@ -1,4 +1,4 @@
-## v0.23.2
+## v0.24 “SubScope2”
 
 * [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 
 * [BREAKING] Updated `category_title` template.
@@ -22,7 +22,8 @@
 * Now filtering out categories with no posts from the categories menu. 
 * Added `postDeleteAsync` callback hook. 
 * Now publishing all public user data all the time to work around nested fields subscriptions bug. 
-
+* Categories with same name now get different, unique slugs. 
+* Now getting link source name and URL from Embedly if available.
 
 ## v0.23 “SubScope”
 

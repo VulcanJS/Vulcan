@@ -34,7 +34,6 @@ getEmbedlyData = function (url) {
     }
 
     var embedlyData = _.pick(result.data, 'title', 'media', 'description', 'thumbnailUrl', 'sourceName', 'sourceUrl');
-    console.log(embedlyData);
 
     return embedlyData;
 
