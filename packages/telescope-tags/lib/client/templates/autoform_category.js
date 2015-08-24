@@ -43,7 +43,7 @@ Template.afCategory_bootstrap3.events({
 
 Template.category_input_item.helpers({
   atts: function () {
-    if (this.isSelected) {
+    if (this.item.isSelected) {
       return "checked";
     }
   }
