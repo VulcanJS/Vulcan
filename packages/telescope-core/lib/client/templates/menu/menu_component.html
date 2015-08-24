@@ -84,7 +84,7 @@ item (Object)
   
     <div class="menu-item-wrapper">
       {{#if hasTemplate}}
-        {{> Template.dynamic template=template data=menuItemData}}
+        {{> Template.dynamic template=item.template data=menuItemData}}
       {{else}}
         <a class="menu-sub-level" href="{{itemRoute}}">
           <span class="menu-label">{{{itemLabel}}}</span>
