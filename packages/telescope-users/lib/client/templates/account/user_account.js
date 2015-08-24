@@ -7,7 +7,7 @@ Template.user_account.helpers({
     return fields;
   },
   isUsingPassword: function  () {
-    return !!this.services.password
+    return this.services && !!this.services.password;
   }
 });
 
