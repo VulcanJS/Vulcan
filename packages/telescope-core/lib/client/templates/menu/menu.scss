@@ -65,6 +65,14 @@ $text: #444444;
     border-color: rgba(0,0,0,0.1);
   }
 }
+.menu-no-items{
+  .menu-top-level-link{
+    pointer-events: none;
+    .menu-items-toggle{
+      display: none;
+    }
+  }
+}
 // ------------------------------------ List ------------------------------------ //
 
 .menu-list{

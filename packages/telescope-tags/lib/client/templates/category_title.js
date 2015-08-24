@@ -5,7 +5,6 @@ Template.category_title.helpers({
   categoryParents: function () {
     var category = this;
     var parents = category.getParents().reverse();
-    console.log(parents)
     return parents;
   },
   title: function () {

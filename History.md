@@ -13,6 +13,16 @@
 * Now showing "Post" button to logged out users, too. 
 * Icons are now always displayed square with fixed width.
 * [BREAKING] Added wrapper `div` to notification, user, and categories menus
+* Improved debug mode: you can now click any template to log out its information to the console. 
+* Custom menu item templates now inherit helpers from `menuItem` template. 
+* Added category hierarchy breadcrumbs to `category_title` template.
+* Post submit form now uses collapsible categories menu.
+* When adding a category to a post, all parents are now automatically added by default. 
+* Added `Category.postsCount` to keep track of how many posts are in a category. 
+* Now filtering out categories with no posts from the categories menu. 
+* Added `postDeleteAsync` callback hook. 
+* Now publishing all public user data all the time to work around nested fields subscriptions bug. 
+
 
 ## v0.23 “SubScope”
 
