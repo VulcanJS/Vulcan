@@ -33,7 +33,9 @@ Telescope.utils.dashToCamel = function (str) {
  * @param {String} str
  */
 Telescope.utils.camelCaseify = function(str) {
-  return this.dashToCamel(str.replace(' ', '-'));
+  str = this.dashToCamel(str.replace(' ', '-'));
+  str = str.slice(0,1).toLowerCase() + str.slice(1);
+  return str;
 };
 
 /**
