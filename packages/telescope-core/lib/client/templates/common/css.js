@@ -15,7 +15,7 @@ Template.css.helpers({
 
       // loop over all properties, and add the relevant selectors
       _.each(properties, function (selector, property) {
-        css += selector + "{\n  " + property + ": " + Settings.get(color) + ";\n}\n";
+        css += selector + "{\n  " + property + ": " + Settings.get(color, Telescope.colorElements.defaultColors[color]) + ";\n}\n";
       });
     });
     return css;

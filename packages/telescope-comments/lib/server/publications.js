@@ -20,6 +20,9 @@ Meteor.publish('commentsList', function(terms) {
 // Publish a single comment
 
 Meteor.publish('singleCommentAndChildren', function(commentId) {
+
+  check(commentId, String);
+
   if(Users.can.viewById(this.userId)){
     // publish both current comment and child comments
     var commentIds = [commentId];
@@ -33,6 +36,9 @@ Meteor.publish('singleCommentAndChildren', function(commentId) {
 // Publish the post related to the current comment
 
 Meteor.publish('commentPost', function(commentId) {
+
+  check(commentId, String);
+
   if(Users.can.viewById(this.userId)){
     var comment = Comments.findOne(commentId);
     return Posts.find({_id: comment && comment.postId});
@@ -44,6 +50,8 @@ Meteor.publish('commentPost', function(commentId) {
 
 Meteor.publish('commentUsers', function(commentId) {
 
+  check(commentId, String);
+  
   var userIds = [];
 
   if(Users.can.viewById(this.userId)){

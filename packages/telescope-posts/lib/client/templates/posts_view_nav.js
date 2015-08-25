@@ -15,7 +15,7 @@ Template.posts_views_nav.helpers({
     return getMenuItems();
   },
   showNav: function () {
-    // only show menu when there are at least 2 items
-    return getMenuItems().length >= 2;
+    // only show menu when we're on the right pages, and there are at least 2 items
+    return !!Router.current().showViewsNav && getMenuItems().length >= 2;
   }
 });

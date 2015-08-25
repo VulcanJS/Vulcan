@@ -90,5 +90,14 @@ Posts.checkForSameUrl = function (url, currentUser) {
  * When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(Router.current().data()._id);
+  return Posts.findOne(Router.current().data().post._id);
 };
+
+/**
+ * Check to see if a post is a link to a video
+ * @param {Object} post
+ */
+Posts.isVideo = function (post) {
+  return post.media && post.media.type === "video";
+};
+Posts.helpers({isVideo: function () {return Posts.isVideo(this);}});

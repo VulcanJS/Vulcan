@@ -4,8 +4,6 @@ Telescope.menuItems.add("adminMenu", {
   description: 'manage_static_pages'
 });
 
-Telescope.subscriptions.preload('pages');
-
 var PageController = RouteController.extend({
   currentPage: function () {
     return Pages.findOne({slug: this.params.slug});

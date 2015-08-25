@@ -64,6 +64,7 @@ $text: #444444;
 // ------------------------------------ Hover ------------------------------------ //
 
 .menu-dropdown{
+  text-align: left;
   position:relative;
   &.menu-has-items{
     .menu-top-level{
@@ -163,7 +164,7 @@ $text: #444444;
         opacity: 1;
       }
     }
-    .icon-close{
+    .icon-collapse{
       display: none;
     }
   }
@@ -171,16 +172,17 @@ $text: #444444;
     display: block; // only show the "show more" button if the menu has more than three items
   }
   &.menu-open{
-    .icon-close{
+    .icon-collapse{
       display: block;
     }
-    .icon-open{
+    .icon-expand{
       display: none;
     }    
   }
 
   /* expand/collapse animation */
   .menu-contents{
+    position: relative; // use this to hide absolutely positioned elements
     max-height: 93px;
     overflow: hidden;
     transition: max-height ease-out 300ms;

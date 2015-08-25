@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:posts",
   summary: "Telescope posts package",
-  version: "0.21.1",
+  version: "0.22.1",
   git: "https://github.com/TelescopeJS/telescope-posts.git"
 });
 
@@ -10,11 +10,11 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.21.1',
-    'telescope:i18n@0.21.1',
-    'telescope:settings@0.21.1',
-    'telescope:users@0.21.1',
-    'telescope:comments@0.21.1'
+    'telescope:lib@0.22.1',
+    'telescope:i18n@0.22.1',
+    'telescope:settings@0.22.1',
+    'telescope:users@0.22.1',
+    'telescope:comments@0.22.1'
   ]);
 
   api.addFiles([
@@ -51,6 +51,7 @@ Package.onUse(function (api) {
     'lib/client/templates/modules/post_info.js',
     'lib/client/templates/modules/post_rank.html',
     'lib/client/templates/modules/post_rank.js',
+    'lib/client/templates/modules/custom_post_title.html',
     'lib/client/templates/modules/post_title.html',
     'lib/client/templates/modules/post_title.js',
     'lib/client/templates/modules/post_vote.html',
@@ -76,7 +77,8 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+    'lib/server/fastrender.js'
   ], ['server']);
 
   api.addFiles([

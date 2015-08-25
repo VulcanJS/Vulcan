@@ -59,6 +59,14 @@ Telescope.menuItems.remove = function (menu, label) {
 };
 
 /**
+ * Remove all items from a menu
+ * @param {string} menu - The name of the menu
+ */
+Telescope.menuItems.removeAll = function (menu) {
+  Telescope.menuItems[menu] = [];
+};
+
+/**
  * Retrieve an array containing all items for a menu
  * @param {string} menu - The name of the menu
  */

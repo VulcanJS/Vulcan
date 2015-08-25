@@ -13,12 +13,9 @@
 // ------------------------------------ post ------------------------------------ //
 
 .post{
-	padding: 10px 0px 10px 10px;
 	border-radius: 0px;
 	margin-bottom: 0px;
 	border-bottom: 1px solid $lightest-grey;
-	display: flex;
-	align-items: center;
 	position: relative;
 	width: 100%;
 	background: white;
@@ -36,6 +33,7 @@
 			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALMnDlTkpGQOpCi9PT053gVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQC5OyXvW/4BHwAAAABJRU5ErkJggg==');
 		}
 	}
+	align-items: center;
 }
 
 .post-list-title, .page-title{
@@ -44,7 +42,7 @@
 }
 
 // ------------------------------------ posts views nav ------------------------------------ //
-.posts-list-views{
+.posts-views-nav{
 	background: white(0.6);
 	border-radius: 3px;
 	.menu-top-level, .menu-menu, .menu-contents, .menu-item{
@@ -81,6 +79,11 @@
 // ------------------------------ posts-list layout ------------------------------ //
 
 .posts-list {
+	.post{
+		padding: 10px 0 10px 10px;
+		display: flex;
+		justify-content: space-between;
+	}
 	.post-module {
 		flex-shrink: 0;
 		flex-grow: 0;
@@ -110,9 +113,7 @@
 	}
 	.post-vote {
 		order: 1;
-		@include small {
-			display: none;
-		}
+		flex-grow: 0;
 	}
 	.post-content {
 		order: 2;
@@ -164,9 +165,7 @@
 			display: none;
 		}
 		.post-share,
-		.post-discuss,
-		.post-vote {
-			flex-grow: 1;
+		.post-discuss {
 			display: block;
 		}
 	}
@@ -178,16 +177,57 @@
 }
 // ------------------------------ posts-grid layout ------------------------------ //
 
+@mixin onecol(){
+  @media screen and (min-width: 600px) and (max-width: 800px) {
+    @content;
+  }
+}
+@mixin twocol(){
+  @media screen and (min-width: 800px) and (max-width: 1000px) {
+    @content;
+  }
+}
+@mixin threecol(){
+  @media screen and (min-width: 1000px) and (max-width: 1400px) {
+    @content;
+  }
+}
+@mixin fourcol(){
+  @media screen and (min-width: 1400px) {
+    @content;
+  }
+}
+
+
 .posts-grid {
 	@include medium-large {
 		display: flex;
 		flex-wrap: wrap;
 	}
 	.post {
-		@include medium-large {
+
+		@include onecol {
+			width: 100%;
+			margin-right: 0px;
+		}
+		@include twocol {
+			width: calc((100% - 10px)/2);
+			margin-right: 10px;
+			&:nth-of-type(2n) {
+				margin-right: 0;
+			}
+		}
+		@include threecol {
 			width: calc((100% - 20px)/3);
 			margin-right: 10px;
 			&:nth-of-type(3n) {
+				margin-right: 0;
+			}
+		}
+		@include fourcol {
+			width: calc((100% - 30px)/4);
+			margin-right: 10px;
+			&:nth-of-type(4n) {
 				margin-right: 0;
 			}
 		}
@@ -224,11 +264,6 @@
 			// box-shadow: 0px 0px 2px white(0.5);
 		}
 	}
-	.post-vote {
-		position: absolute;
-		left: 7px;
-		bottom: 7px;
-	}
 	.post-content {
 		display: block;
 	}
@@ -255,6 +290,21 @@
 		right: 8px;
 		bottom: 0px;
 		padding: 8px 0px 2px 0px;
+	}
+	.post-vote{
+		position: absolute;
+		left: 7px;
+		bottom: 10px;
+		.vote-actions{
+			display: flex;
+		}
+		.vote-action{
+			flex: 1;
+		}
+		.downvote-link{
+			border-top: none;
+			border-left: 1px solid $lighter-text;
+		}
 	}
 }
 // -------------------------------- post modules --------------------------------- //
@@ -407,6 +457,8 @@
 	margin-bottom: 3px;
 	line-height: 1.2;
 	.post-title {
+		display: inline-block;
+		margin-bottom: 0px;
 		@include small {
 			font-size: 15px;
 		}
@@ -420,6 +472,7 @@
 	}
 	.post-domain {
 		color: $light-text;
+		margin-left: 5px;
 		@include small {
 			font-size: 13px;
 		}
@@ -450,6 +503,7 @@
 }
 .post-meta-item {
 	display: inline-block;
+	margin-right: 5px;
 }
 .post-body, .page-body {
 	@extend .has-shadow;
@@ -489,7 +543,6 @@
 					margin-bottom: 4px;
 				}
 				.post-domain {
-					display: block;
 					margin-bottom: 4px;
 					font-size: 13px;
 				}

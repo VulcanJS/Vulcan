@@ -21,7 +21,7 @@
 }
 .nav{
 	.top-nav &{
-		@extend %vcenter;
+		// @extend %vcenter;
 	}
 	@include cf;
 	>li{
@@ -48,7 +48,6 @@
 .newsletter-dismiss{
 	line-height: 30px !important;
 }
-
 // ------------------------------------ Top Nav Layout ------------------------------------ //
 
 .top-nav{
@@ -56,32 +55,54 @@
 		height: 60px;
 		padding: 0 20px;
 		margin-bottom:$grid-margin;
-		@include cf;
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
 		@include small{
 			padding: 0 10px;
 		}
+		.header-submodule{
+			flex-shrink: 0;
+	    margin-right: 20px;
+		  &:last-of-type{
+	  	  margin-right: 0px;
+	  	}
+		}
+		.primary-nav, .secondary-nav, .logo{
+			flex-basis: 0;
+			flex-grow: 1;
+		}
 		.primary-nav{
-			float:left;
-			z-index: 20;
-			position: relative;
+			order: 1;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+		}
+		.secondary-nav{
+			// background: rebeccapurple;
+			order: 3;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
 		}
 		.logo{
-			@extend %vcenter;
-			position:absolute;
-			display:block;
+			// background: pink;
 			text-align:center;
 			color:white;
-			@include small{
-				font-size: 18px;
-				a{
-					position: static;
+			order: 2;
+			.logo-text{
+				@include small{
+					font-size: 18px;
+					a{
+						position: static;
+					}
+				}
+				@include medium-large{
+					font-size:24px;
 				}
 			}
-			@include medium-large{
-				font-size:24px;
-			}
-			left: 0px;
-			right: 0px;
 		}
 		.logo-image{
 			line-height: 1;
@@ -93,32 +114,6 @@
 				color: transparent;
 			}
 		}
-		.secondary-nav{
-			z-index: 20;
-			position: relative;
-			float:right;
-			.submit{
-				// background:$red;
-				// display:block;
-				// padding:0px 10px;
-			}
-		}
-		.header-submodule{
-	  	display: inline-block;
-	    margin-right: 20px;
-		  &:last-child{
-	  	  margin-right: 0px;
-	  	}
-		}
-	}
-	.pages-menu{
-		a{
-			font-weight: normal;
-			margin-right: 20px;
-			&:last-child{
-				margin: 0;
-			}
-		}	
 	}
 }
 // ------------------------------------ Side Nav Layout ------------------------------------ //
@@ -157,6 +152,9 @@ $nav-width: 250px;
 		}
 		.header-submodule{
 			margin-bottom: 30px;
+			// &:last-of-type{
+			// 	margin-bottom: 0px;
+			// }
 		}
 		.primary-nav{
 			display: flex;
@@ -188,14 +186,14 @@ $nav-width: 250px;
 	.tagline{
 		margin-top: 10px;
 	}
-	.pages-menu{
-		order: 2;
-		a{
-			display: block;
-			margin-bottom: 10px;
-			&:last-child{
-				margin: 0;
-			}
-		}	
+}
+
+// ---------------------------------------- Mobile ---------------------------------------- //
+
+@include small{
+	.header{
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 }

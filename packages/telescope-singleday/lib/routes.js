@@ -13,7 +13,8 @@ Posts.controllers.singleday = Posts.controllers.list.extend({
       view: 'singleday',
       date: currentDate,
       after: moment(currentDate).startOf('day').toDate(),
-      before: moment(currentDate).endOf('day').toDate()
+      before: moment(currentDate).endOf('day').toDate(),
+      enableCache: true
     };
     return {terms: terms};
   },

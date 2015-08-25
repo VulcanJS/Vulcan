@@ -180,6 +180,17 @@ Settings.schema = new SimpleSchema({
       instructions: 'Minimum time between posts, in seconds (defaults to 30)'
     }
   },
+  outsideLinksPointTo: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: "02_posts",
+      options: [
+        {value: 'page', label: 'Discussion page'},
+        {value: 'link', label: 'Outgoing link'}
+      ]
+    }
+  },
   commentInterval: {
     type: Number,
     optional: true,

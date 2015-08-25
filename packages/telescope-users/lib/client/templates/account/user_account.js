@@ -17,7 +17,7 @@ AutoForm.hooks({
 
     onSuccess: function(operation, result) {
       this.template.$('button[type=submit]').removeClass('loading');
-      Messages.flash(i18n.t("user_profile_saved", 'success'));
+      Messages.flash(i18n.t("user_profile_saved"), 'success');
       Messages.clearSeen();
     },
 

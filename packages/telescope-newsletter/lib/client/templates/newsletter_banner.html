@@ -1,15 +1,17 @@
 <template name="newsletter_banner">
-  {{#if showBanner}}
-    <div class="newsletter-banner grid-module grid banner">
-      <form>
-        <h4 class="newsletter-tagline">{{_ "receive_the_best_of"}} {{siteName}} {{_ "right_in_your_inbox"}}</h4>
-        {{#if isNotConnected}}
-          <input class="newsletter-email" type="email" placeholder="Your Email">
-        {{/if}}
-        <button class="button newsletter-button btn btn-primary">{{_ "get_newsletter"}}<span class="button-loader"><img src="/packages/telescope_core/public/img/loading-balls.svg"/></span></button>
-      </form>
-      <h4 class="newsletter-subscribed">{{_ "thanks_for_subscribing"}}</h4>
-      <a href="#" class="newsletter-dismiss banner-dismiss">×</a>
-    </div>
-  {{/if}}
+  <div class="newsletter-banner-wrapper content-wrapper">
+    {{#if showBanner}}
+      <div class="newsletter-banner grid-module grid banner">
+        <form>
+          <h4 class="newsletter-tagline">{{_ "receive_the_best_of"}} {{siteName}} {{_ "right_in_your_inbox"}}</h4>
+          {{#if isNotConnected}}
+            <input class="newsletter-email" type="email" placeholder="Your Email">
+          {{/if}}
+          <button class="button newsletter-button btn btn-primary">{{_ "get_newsletter"}}<span class="button-loader"><img src="/packages/telescope_core/public/img/loading-balls.svg"/></span></button>
+        </form>
+        <h4 class="newsletter-subscribed">{{_ "thanks_for_subscribing"}}</h4>
+        <a href="#" class="newsletter-dismiss banner-dismiss">{{{icon "close"}}}</a>
+      </div>
+    {{/if}}
+  </div>
 </template>

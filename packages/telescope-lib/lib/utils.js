@@ -42,6 +42,10 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Telescope.utils.trimWords = function(s, numWords) {
+  
+  if (!s)
+    return s;
+
   var expString = s.split(/\s+/,numWords);
   if(expString.length >= numWords)
     return expString.join(" ")+"…";
@@ -165,6 +169,14 @@ Telescope.utils.invitesEnabled = function() {
   return Settings.get("requireViewInvite") || Settings.get("requirePostInvite");
 };
 
+// add http: if missing
+Telescope.utils.addHttp = function (url) {
+  if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
+    url = "http:"+url;
+  }
+  return url;
+};
+
 /////////////////////////////
 // String Helper Functions //
 /////////////////////////////
@@ -224,5 +236,4 @@ Telescope.getNestedProperty = function (obj, desc) {
   var arr = desc.split(".");
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
-}
-
+};

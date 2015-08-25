@@ -4,6 +4,7 @@ getUnsubscribeLink = function(user){
 
 Meteor.methods({
   unsubscribeUser : function(hash){
+    check(hash, String);
     // TO-DO: currently, if you have somebody's email you can unsubscribe them
     // A user-specific salt should be added to the hashing method to prevent this
     var user = Meteor.users.findOne({"telescope.emailHash": hash});

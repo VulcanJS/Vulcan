@@ -1,4 +1,8 @@
 .error, .at-error{
   background: $red;
-  color: white;
+  @extend .grid-block;
+  margin-bottom:$grid-margin;
+  text-align:center;
+  color:white;
+  padding: 20px;
 }

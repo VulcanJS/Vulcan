@@ -1,11 +1,13 @@
 <template name="logo">
-  {{#if logoUrl}}
-    <h1 class="logo logo-image header-module">
-      <a href="/">
-        <img src="{{logoUrl}}" alt="{{getSetting "title" "Telescope"}}"/>
-      </a>
-    </h1>
-  {{else}}
-    <h1 class="logo header-module"><a href="/">{{getSetting "title" "Telescope"}}</a></h1>
-  {{/if}}
+  <div class="logo header-module">
+    {{#if logoUrl}}
+      <h1 class="logo-image ">
+        <a href="/">
+          <img src="{{logoUrl}}" alt="{{getSetting "title" "Telescope"}}"/>
+        </a>
+      </h1>
+    {{else}}
+      <h1 class="logo-text"><a href="/">{{getSetting "title" "Telescope"}}</a></h1>
+    {{/if}}
+  </div>
 </template>

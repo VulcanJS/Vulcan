@@ -1,7 +1,15 @@
+var getNotifications = function () {
+  return Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
+};
+
 Template.notifications_menu.helpers({
+  hasNotifications: function () {
+    var notifications = getNotifications();
+    return notifications.length;
+  },
   menuLabel: function () {
     var notificationsCount;
-    var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
+    var notifications = getNotifications();
 
     if(notifications.length === 0){
       notificationsCount = __('no_notifications');
@@ -14,7 +22,7 @@ Template.notifications_menu.helpers({
     return notificationsCount;
   },
   menuItems: function () {
-    var notifications=Herald.collection.find({userId: Meteor.userId(), read: false}, {sort: {timestamp: -1}}).fetch();
+    var notifications = getNotifications();
     var markAllAsRead = [{
       template: 'notifications_mark_as_read'
     }];

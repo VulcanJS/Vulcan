@@ -11,20 +11,14 @@ Posts.controllers.list = RouteController.extend({
 
   template: "posts_list_controller",
 
-  onBeforeAction: function () {
-    var showViewsNav = (typeof this.showViewsNav === 'undefined') ? true : this.showViewsNav;
-
-    if (showViewsNav) {
-      this.render('posts_list_top', {to: 'postsListTop'});
-    }
-    this.next();
-  },
+  showViewsNav: true,
 
   data: function () {
 
     var terms = {
       view: this.view,
-      limit: this.params.limit || Settings.get('postsPerPage', 10)
+      limit: this.params.limit || Settings.get('postsPerPage', 10),
+      enableCache: true
     };
 
     // console.log('----------------- router running');
@@ -45,9 +39,8 @@ Posts.controllers.list = RouteController.extend({
     } else {
       return i18n.t(_.findWhere(Telescope.menuItems.get("viewsMenu"), {label: this.view}).description);
     }
-  },
+  }
 
-  fastRender: true
 });
 
 var getDefaultViewController = function () {
@@ -70,7 +63,6 @@ Meteor.startup(function () {
       return fullTitle;
     }
   });
-
 });
 
 /**
@@ -115,10 +107,10 @@ Posts.controllers.page = RouteController.extend({
 
   template: 'post_page',
 
-  waitOn: function () {
-    this.postSubscription = coreSubscriptions.subscribe('singlePost', this.params._id);
-    this.postUsersSubscription = coreSubscriptions.subscribe('postUsers', this.params._id);
-    this.commentSubscription = coreSubscriptions.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
+  subscriptions: function () {
+    this.postSubscription = Telescope.subsManager.subscribe('singlePost', this.params._id);
+    this.postUsersSubscription = Telescope.subsManager.subscribe('postUsers', this.params._id);
+    this.commentSubscription = Telescope.subsManager.subscribe('commentsList', {view: 'postComments', postId: this.params._id});
   },
 
   post: function() {
@@ -147,17 +139,55 @@ Posts.controllers.page = RouteController.extend({
   },
 
   data: function() {
-    return this.post();
+    return {post: this.post()};
   },
 
   onAfterAction: function () {
     var post = this.post();
+
+    // Replace URL
     if (post) {
       if (post.slug !== this.params.slug) {
         window.history.replaceState({}, "", post.getPageUrl());
       }
       $('link[rel="canonical"]').attr("href", post.getPageUrl(true));
     }
+
+    // Set SEO properties
+    
+    var props = {meta: {}, og: {}, twitter: {}};
+
+    // Set site name
+    props.og.site_name = Settings.get("title");
+
+    // Set title
+    props.title = post.title;
+
+    // Set description
+    if (!!post.body) {
+      var description = Telescope.utils.trimWords(post.body, 100);
+      props.meta.description = description;
+      props.og.description = description;
+    }
+
+    // Set image
+    if (!!post.thumbnailUrl) {
+      var image = Telescope.utils.addHttp(post.thumbnailUrl);
+      props.meta.image = image;
+      props.og.image = image;
+      props.twitter.image = image;
+      props.twitter.card = "summary_large_image";
+    }
+
+    // Set Twitter username
+    if (!!Settings.get("twitterAccount")) {
+      props.twitter.site = Settings.get("twitterAccount");
+    }
+    
+    SEO.set(props);
+
+    $('title').text(post.title);
+
   },
 
   fastRender: true
@@ -210,8 +240,8 @@ Meteor.startup(function () {
     template: 'post_edit',
     waitOn: function () {
       return [
-        coreSubscriptions.subscribe('singlePost', this.params._id),
-        coreSubscriptions.subscribe('allUsersAdmin')
+        Telescope.subsManager.subscribe('singlePost', this.params._id),
+        Telescope.subsManager.subscribe('allUsersAdmin')
       ];
     },
     data: function() {
@@ -244,7 +274,7 @@ Meteor.startup(function () {
     name: 'post_submit',
     template: 'post_submit',
     waitOn: function () {
-      return coreSubscriptions.subscribe('allUsersAdmin');
+      return Telescope.subsManager.subscribe('allUsersAdmin');
     }
   });
 

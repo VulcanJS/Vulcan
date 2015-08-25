@@ -70,6 +70,9 @@ Comments.edit = function (commentId, modifier, comment) {
 Meteor.methods({
   submitComment: function(comment){
 
+    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
+    check(comment, Comments.simpleSchema());
+
     // required properties:
     // postId
     // body
@@ -125,6 +128,10 @@ Meteor.methods({
 
   editComment: function (modifier, commentId) {
 
+    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
+    check(modifier, {$set: Comments.simpleSchema()});
+    check(commentId, String);
+
     var user = Meteor.user(),
         comment = Comments.findOne(commentId),
         schema = Comments.simpleSchema()._schema;
@@ -155,6 +162,8 @@ Meteor.methods({
 
   deleteCommentById: function (commentId) {
 
+    check(commentId, String);
+    
     var comment = Comments.findOne(commentId);
     var user = Meteor.user();
 

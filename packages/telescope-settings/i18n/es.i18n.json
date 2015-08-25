@@ -1,4 +1,11 @@
 {
   "title" : "Título",
+  "siteUrl" : "URL del sitio web",
+  "tagline" : "Lema",
+  "requireViewInvite" : "Requerir Invitación para Ver",
+  "requirePostInvite" : "Requerir invitación para Publicar",
+  "requirePostsApproval" : "Requerir que los Posts sean Aprobados",
+  "defaultEmail" : "Correo electrónico predeterminado",
+  "defaultView" : "Vista Predeterminada",
   "invites" : "Invitaciones"
 }
