@@ -1,6 +1,6 @@
 
 Telescope.modules.add("top", {
-  template: 'posts_views_nav',
+  template: 'views_menu',
   order: 99,
   only: ["posts_default", "posts_top", "posts_new", "posts_best", "posts_pending", "posts_scheduled"]
 });

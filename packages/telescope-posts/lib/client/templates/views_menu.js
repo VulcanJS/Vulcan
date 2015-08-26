@@ -10,7 +10,7 @@ var getMenuItems = function () {
   return viewableItems; 
 };
 
-Template.posts_views_nav.helpers({
+Template.views_menu.helpers({
   menuItems: function () {
     return getMenuItems();
   },
