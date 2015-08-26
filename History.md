@@ -24,6 +24,8 @@
 * Now publishing all public user data all the time to work around nested fields subscriptions bug. 
 * Categories with same name now get different, unique slugs. 
 * Now getting link source name and URL from Embedly if available.
+* [BREAKING] Renamed `posts_views_nav` to `views_menu`. 
+* Added `Telescope.modules.addRoute` to add new routes to existing modules.
 
 ## v0.23 “SubScope”
 

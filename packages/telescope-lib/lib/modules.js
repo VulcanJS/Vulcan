@@ -15,7 +15,8 @@ Telescope.modules = {};
  * @example
  * Telescope.modules.add("hero", {
  *   template: "newsletterBanner",
- *   order: 10
+ *   order: 10,
+ *   only: ["posts_default"]
  * });
  */
 Telescope.modules.add = function (zone, module) {
@@ -65,4 +66,14 @@ Telescope.modules.removeAll = function (zone) {
  */
 Telescope.modules.get = function (zone) {
   return _.sortBy(Telescope.modules[zone], "order");
+};
+
+/**
+ * Add a route to the list of routes a module should be displayed on
+ * @param {string} zone - The name of the zone
+ * @param {string} template - The name of the module
+ * @param {string} route - The name of the route on which to display the module
+ */
+Telescope.modules.addRoute = function (zone, template, route) {
+  _.findWhere(Telescope.modules[zone], {template: template}).only.push(route);
 };
