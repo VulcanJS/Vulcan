@@ -30,9 +30,10 @@ $mobile-header-height: 50px;
 }
 
 .logo{
+  white-space: nowrap;
   @include small{
     font-size: 24px;
-    white-space: nowrap;
+    overflow: hidden;
     a{
       margin: 0 auto;
     }
@@ -42,7 +43,7 @@ $mobile-header-height: 50px;
   }
   .header &{
     @include small{
-      padding: 0 60px; // leave space for nav button on mobile
+      padding: 0 50px; // leave space for nav button on mobile
     }
   }
   .mobile-nav &{

@@ -1,13 +1,13 @@
 Template.logo.helpers({
   logoUrl: function(){
-    return Settings.get('logoUrl');
+    return Settings.get("logoUrl");
   }
 });
 
 Template.logo.onRendered(function  () {
-  $('.side-nav .logo-text').quickfit({
-    min: 24,
-    max: 100,
+  $(".logo-text").quickfit({
+    min: 16,
+    max: 40,
     truncate: false
   });
 });
