@@ -50,6 +50,7 @@
   "id" : "ID",
   "github" : "GitHub",
   "site" : "Hemsida",
+  "submitted_posts" : "Skapade inlägg",
   "upvoted_posts" : "Uppröstade Inlägg",
   "downvoted_posts" : "Nedröstade Inlägg",
   "pending" : "Väntar",

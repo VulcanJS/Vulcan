@@ -57,7 +57,6 @@ accent(".toggle-actions-link");
 accent(".post-meta a:hover");
 accent(".action:hover");
 accent(".post-actions .icon");
-accent(".post-share .icon-share");
 
 accent('input[type="submit"]', 'background-color');
 accent("button", 'background-color');

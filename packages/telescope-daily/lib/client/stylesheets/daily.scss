@@ -6,8 +6,8 @@
 .empty-day-notice{
   padding: 15px;
 }
-.posts-day .post:last-child{
-  border-radius: 0 0 3px 3px;
+.posts-day{
+  margin-bottom: 10px;
 }
 .load-more-days-button{
   display: block;
@@ -18,4 +18,5 @@
   padding: 0px;
   text-align: center;
   margin: 20px 0;
+  border-radius: 3px;
 }

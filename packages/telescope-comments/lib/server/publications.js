@@ -1,5 +1,5 @@
-Comments._ensureIndex({"postId": 1});
-
+Comments._ensureIndex({postId: 1});
+Comments._ensureIndex({parentCommentId: 1});
 
 // Publish a list of comments
 

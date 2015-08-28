@@ -48,6 +48,20 @@
 .newsletter-dismiss{
 	line-height: 30px !important;
 }
+
+.user-menu{
+	.avatar{
+		height: 20px;
+		width: 20px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-top: -3px;
+		margin-right: 3px;
+	}
+	.user-menu-username{
+		vertical-align: middle;
+	}
+}
 // ------------------------------------ Top Nav Layout ------------------------------------ //
 
 .top-nav{

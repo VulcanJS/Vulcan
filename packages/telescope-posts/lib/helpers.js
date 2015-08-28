@@ -12,6 +12,24 @@ Posts.getLink = function (post, isAbsolute) {
 Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
 /**
+ * Depending on the settings, return either a post's URL link (if it has one) or its page URL.
+ * @param {Object} post
+ */
+Posts.getShareableLink = function (post) {
+  return Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+};
+Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this);}});
+
+/**
+ * Whether a post's link should open in a new tab or not
+ * @param {Object} post
+ */
+Posts.getLinkTarget = function (post) {
+  return !!post.url ? "_blank" : "";
+};
+Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
+
+/**
  * Get URL of a post page.
  * @param {Object} post
  */

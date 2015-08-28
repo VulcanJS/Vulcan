@@ -177,7 +177,7 @@
 		margin-right:6px;
 		vertical-align: middle;
 	}
-	color:$light-text;
+	// color:$light-text;
 	.user-avatar{
 		border-radius: 100px;
 		.avatar{
@@ -187,7 +187,7 @@
 	}
 	.comment-permalink{
 		font-weight: normal;
-		color: $light-text;
+		// color: $light-text;
 	}
 }
 .comment-actions{
@@ -243,7 +243,7 @@
 	}
 	.downvoted .upvote, .upvoted .downvote{
 		cursor:default;
-		color:$light-text;
+		// color:$light-text;
 	}
 }
 .comment-new{
@@ -281,7 +281,7 @@
 	border-radius: 3px;
 	margin-bottom: 10px;
 	padding: 10px 15px;
-	color: $light-text;
+	// color: $light-text;
 }
 #comment{
 	font-size: 16px;

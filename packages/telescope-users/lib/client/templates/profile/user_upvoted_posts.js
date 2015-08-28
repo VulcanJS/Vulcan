@@ -15,8 +15,10 @@ Template.user_upvoted_posts.helpers({
       terms: {
         view: 'userUpvotedPosts',
         userId: user._id,
-        limit: 5
+        limit: 5,
+        enableCache: false,
+        subscribeToUsers: false
       }
-    }
+    };
   }
 });

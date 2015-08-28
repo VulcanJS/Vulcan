@@ -3,7 +3,7 @@
     <h3>Add new category:</h3>
     {{> quickForm collection="Categories" id="insertCategoryForm" type="insert" label-class="control-label" input-col-class="controls" template="bootstrap3-horizontal"}}
   </div>
-  {{#each categories}}
-    {{> category_item}}
-  {{/each}}
+  <div class="categories-list">
+    {{> menuComponent menuName="categories" menuItems=menuItems menuMode="list" hideMenuLabel=true}}
+  </div>
 </template>

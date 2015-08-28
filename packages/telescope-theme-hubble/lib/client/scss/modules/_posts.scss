@@ -24,6 +24,7 @@
 	}
 	&:last-child {
 		border-radius: 0px 0px 3px 3px;
+		border-bottom: none;
 	}
 	&.animate {
 		transition: ease-out, top, 400ms, 0ms;
@@ -130,9 +131,6 @@
 	}
 	.post-info {
 		flex-grow: 1;
-	}
-	.post-share {
-		order: 3;
 	}
 	.post-discuss {
 		order: 7;
@@ -394,7 +392,7 @@
 	}
 	.avatar-link {
 		display: inline-block;
-		margin-right: 2px;
+		margin-right: 5px;
 		&:last-child {
 			margin-right: 0px;
 		}
@@ -446,9 +444,7 @@
 		padding: 6px;
 	}
 }
-.post-share {
-	display: none;
-}
+
 // -------------------------------- post content --------------------------------- //
 
 
@@ -457,7 +453,7 @@
 	margin-bottom: 3px;
 	line-height: 1.2;
 	.post-title {
-		display: inline-block;
+		display: inline;
 		margin-bottom: 0px;
 		@include small {
 			font-size: 15px;

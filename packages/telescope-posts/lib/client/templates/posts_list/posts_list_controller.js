@@ -21,13 +21,18 @@ Template.posts_list_controller.onCreated(function () {
   var enableCache = (typeof instance.data.terms.enableCache === "undefined") ? false : instance.data.terms.enableCache;
   var subscriber = enableCache ? Telescope.subsManager : instance;
 
+  // enable not subscribing to users on a per-controller basis
+  var subscribeToUsers = (typeof instance.data.terms.subscribeToUsers === "undefined") ? true : instance.data.terms.subscribeToUsers;
+
   // 2. Autorun
 
   // Autorun 1: when terms change, reset the limit
   instance.autorun(function () {
     // add a dependency on data context to trigger the autorun
-    var terms = Template.currentData().terms; // ⚡ reactive ⚡
-    instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+    var newTerms = Template.currentData().terms; // ⚡ reactive ⚡
+    if (!_.isEqual(newTerms, instance.data.terms)) {
+      instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+    }
   });
 
   // Autorun 2: will re-run when limit or terms are changed
@@ -44,9 +49,13 @@ Template.posts_list_controller.onCreated(function () {
 
     // use this new object to subscribe
     var postsSubscription = subscriber.subscribe('postsList', subscriptionTerms);
-    var usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
 
-    var subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+    if (subscribeToUsers) {
+      var usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
+      var subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+    } else {
+      var subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
+    }
 
     // console.log('// ------ autorun running ------ //');
     // console.log("terms: ", terms);

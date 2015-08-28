@@ -2,8 +2,8 @@ AutoForm.addInputType("bootstrap-datetimepicker", {
   template: "afBootstrapDateTimePicker",
   valueOut: function () {
     // var val = this.datepicker('getUTCDate');
-    if (!!this.data("DateTimePicker").getDate()) {
-      var val = this.data("DateTimePicker").getDate().toDate();
+    if (!!this.data("DateTimePicker").date()) {
+      var val = this.data("DateTimePicker").date().toDate();
       // console.log(val)
       return (val instanceof Date) ? val : this.val();
     }
@@ -59,10 +59,11 @@ Template.afBootstrapDateTimePicker.rendered = function () {
     // set field value
     if (data.value instanceof Date) {
       // $input.datepicker('setUTCDate', data.value);
-      $input.data("DateTimePicker").setDate(data.value);
+
+      $input.data("DateTimePicker").date(data.value);
     } else if (typeof data.value === "string") {
       // $input.datepicker('update', data.value);
-      $input.data("DateTimePicker").setDate(moment(data.value).toDate());
+      $input.data("DateTimePicker").date(moment(data.value).toDate());
     }
 
     // set start date if there's a min in the schema

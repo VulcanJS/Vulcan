@@ -1,9 +1,9 @@
 <template name="post_thumbnail">
   {{#if thumbnailUrl}}
     <div class="post-thumbnail" aria-hidden="true">
-<a class="post-thumbnail-link {{playVideoClass}}" href="{{pathFor 'post_page'}}" target="">
-       <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';" aria-hidden="true"/>
-   </a>
+      <a class="post-thumbnail-link {{playVideoClass}}" href="{{this.getLink}}" target="{{this.getLinkTarget}}">
+        <img class="post-thumbnail-image" src="{{thumbnailUrl}}" onerror="this.style.display='none';" aria-hidden="true"/>
+      </a>
     </div>
   {{else}}
     <div class="post-thumbnail-empty"></div>

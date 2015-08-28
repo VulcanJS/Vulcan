@@ -205,13 +205,14 @@ Posts.views.add("campaign", function (terms) {
         $gte: terms.after
       }
     },
-    options: {sort: {sticky: -1, score: -1}}
+    options: {sort: {baseScore: -1}}
   };
 });
 
 Telescope.modules.add("hero", {
   template: 'newsletter_banner',
-  order: 10
+  order: 10,
+  only: ["posts_default"]
 });
 
  function subscribeUserOnProfileCompletion (user) {

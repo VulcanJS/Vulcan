@@ -1,0 +1,5 @@
+{
+  "feed_already_exists" : "Feed sama URLiga on juba olemas.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Sa pead sisse logima ja olema admin, et lisada uus feed.",
+  "import_new_posts_from_feeds" : "Import uusi postitusi feedist."
+}

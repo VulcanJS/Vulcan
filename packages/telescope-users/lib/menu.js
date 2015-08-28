@@ -1,8 +1,22 @@
+Telescope.modules.add("secondaryNav", [
+  {
+    template: 'user_menu',
+    order: 10
+  }
+]);
+
+Telescope.modules.add("mobileNav", [
+  {
+    template: 'user_menu',
+    order: 20
+  }
+]);
+
 Telescope.menuItems.add("userMenu", [
   {
     route: function () {
       var user = Meteor.user();
-      return Router.path('user_profile', {_idOrSlug: user && user.telescope.slug});
+      return Router.path('user_profile', {_idOrSlug: user && user.telescope && user.telescope.slug});
     },
     label: 'profile',
     description: 'view_your_profile'
@@ -10,7 +24,7 @@ Telescope.menuItems.add("userMenu", [
   {
     route: function () {
       var user = Meteor.user();
-      return Router.path('user_edit', {slug: user && user.telescope.slug});
+      return Router.path('user_edit', {slug: user && user.telescope && user.telescope.slug});
     },
     label: 'edit_account',
     description: 'edit_your_profile'

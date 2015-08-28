@@ -1,0 +1,5 @@
+{
+  "feed_already_exists" : "Feed s toutu URL již existuje.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Pro přidání nového feedu musíte být přihlášený administrátor.",
+  "import_new_posts_from_feeds" : "Importovat nové příspěvky z feedů."
+}

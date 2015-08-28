@@ -1,0 +1,8 @@
+{
+  "customViewLink" : "Vlastní odkaz pro zobrazení",
+  "customAdminLink" : "Vlastní odkaz administrátora",
+  "customPostField" : "Vlastní pole příspěvku",
+  "customCommentField" : "Vlastní pole komentáře",
+  "customUserField" : "Vlastní pole uživatele",
+  "customSettingsField" : "Vlastní pole nastavení"
+}

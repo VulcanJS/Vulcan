@@ -4,9 +4,11 @@ Meteor.startup(function() {
    */
   sitemaps.add("/sitemap.xml", function() {
     var _getLatest = function(viewParamKey, terms) {
-      var params = Posts.getSubParams(
-        Posts.views[viewParamKey.toLowerCase()](terms)
-      );
+      var postView = Posts.views[viewParamKey.toLowerCase()];
+
+      if (!_.isFunction(postView)) return null;
+
+      var params = Posts.getSubParams(postView(terms));
       var post = Posts.findOne(params.find, {
         'fields': {'postedAt': 1},
         'sort': params.options.sort
@@ -43,12 +45,12 @@ Meteor.startup(function() {
       var siteUrl = Telescope.utils.getSiteUrl();
       var params = Posts.getSubParams(Posts.views[key]());
       var posts = Posts.find(params.find, {
-        fields: {postedAt: 1, title: 1, _id: 1},
+        fields: {postedAt: 1, slug: 1, _id: 1},
         limit: 100,
         sort: params.options.sort
       });
       posts.forEach(function(post) {
-        var url = getPostPageUrl(post).replace(siteUrl, "");
+        var url = Posts.getLink(post);
         postPages[url] = {page: url, lastmod: post.postedAt, changefreq: "daily"};
       });
     });

@@ -1,1 +1,5 @@
-{ }
+{
+  "subscribed_posts" : "Posts suscritos",
+  "subscribe_to_thread" : "Suscribirse a esta conversación",
+  "unsubscribe_from_thread" : "Cancelar la suscripción a esta conversación"
+}

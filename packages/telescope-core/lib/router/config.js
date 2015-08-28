@@ -6,7 +6,7 @@ Telescope.subscriptions.preload('currentUser');
 Router.configure({
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
-  not_foundTemplate: 'not_found',
+  notFoundTemplate: 'not_found',
   waitOn: function () {
     return _.map(Telescope.subscriptions, function(sub){
       // can either pass strings or objects with subName and subArguments properties
