@@ -45,7 +45,7 @@ function breakTies (parameters, terms) {
 }
 Telescope.callbacks.add("postsParameters", breakTies);
 
-// limit the number of posts that can be requested at once
+// limit the number of items that can be requested at once
 function limitPosts (parameters, terms) {
   var maxLimit = 200;
   // if a limit was provided with the terms, add it too (note: limit=0 means "no limit")
@@ -53,7 +53,7 @@ function limitPosts (parameters, terms) {
     _.extend(parameters.options, {limit: parseInt(terms.limit)});
   }
 
-  // limit to "maxLimit" posts at most when limit is undefined, equal to 0, or superior to maxLimit
+  // limit to "maxLimit" items at most when limit is undefined, equal to 0, or superior to maxLimit
   if(!parameters.options.limit || parameters.options.limit === 0 || parameters.options.limit > maxLimit) {
     parameters.options.limit = maxLimit;
   }

@@ -71,7 +71,7 @@ Template.commentsListController.helpers({
     var commentsReady = instance.subscriptionsReady(); // ⚡ reactive ⚡
 
     var commentsLimit = terms.limit;
-    var parameters = Comments.getSubParams(terms);
+    var parameters = Comments.parameters.get(terms);
     var commentsCursor = Comments.find(parameters.find, parameters.options);
 
     var data = {
