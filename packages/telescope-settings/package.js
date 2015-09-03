@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:settings",
   summary: "Telescope settings package",
-  version: "0.23.0",
+  version: "0.24.0",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -11,8 +11,8 @@ Package.onUse(function(api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.23.0', 
-    'telescope:i18n@0.23.0'
+    'telescope:lib@0.24.0', 
+    'telescope:i18n@0.24.0'
   ]);
 
   api.addFiles([

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:share",
   summary: "Telescope share module package",
-  version: "0.23.0",
+  version: "0.24.0",
   git: "https://github.com/TelescopeJS/telescope-share.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.23.0']);
+  api.use(['telescope:core@0.24.0']);
 
   api.addFiles([
     'lib/share.js'
