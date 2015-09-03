@@ -14,7 +14,7 @@ Users.after.insert(function (userId, user) {
   if (Users.hasCompletedProfile(user)) {
     Telescope.callbacks.runAsync("profileCompletedAsync", user);
   }
-  
+
 });
 
 /**
@@ -43,7 +43,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
   Users.before.update(function (userId, doc, fieldNames, modifier) {
 
     var user = doc;
-    
+
     // if email is being modified, update user.emails too
     if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
 
@@ -116,7 +116,7 @@ function setupUser (user, options) {
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
-  Events.track('new user', {username: user.username, email: user.profile.email});
+  Events.track('new user', {username: user.username, email: user.telescope.email});
 
   return user;
 }

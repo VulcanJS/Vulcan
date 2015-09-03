@@ -19,7 +19,7 @@ Users.getUserName = function (user) {
   }
 };
 Users.helpers({getUserName: function () {return Users.getUserName(this);}});
-Users.getUserNameById = function (userId) {return Users.getUserName(Meteor.users.findOne(userId))}; 
+Users.getUserNameById = function (userId) {return Users.getUserName(Meteor.users.findOne(userId))};
 
 /**
  * Get a user's display name (not unique, can take special characters and spaces)
@@ -152,7 +152,7 @@ Users.helpers({getSetting: function (settingName, defaultValue) {return Users.ge
  */
 Users.setSetting = function (user, settingName, value) {
   if (user) {
-    
+
     // all settings should be in the user.telescope namespace, so add "telescope." if needed
     var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
 
@@ -274,8 +274,8 @@ Users.updateAdmin = function (userId, admin) {
   Users.update(userId, {$set: {isAdmin: admin}});
 };
 
-Users.adminUsers = function () {
-  return this.find({isAdmin : true}).fetch();
+Users.adminUsers = function (options) {
+  return this.find({isAdmin : true}, options).fetch();
 };
 
 Users.getCurrentUserEmail = function () {
