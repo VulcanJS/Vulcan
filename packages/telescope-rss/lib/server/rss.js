@@ -18,7 +18,7 @@ servePostRSS = function(view, url, category) {
   if (category) {
     terms.category = category;
   };
-  var params = Posts.getSubParams(terms);
+  var params = Posts.parameters.get(terms);
   delete params['options']['sort']['sticky'];
 
   Posts.find(params.find, params.options).forEach(function(post) {

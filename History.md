@@ -1,3 +1,6 @@
+* Changed `Posts.getSubParams` to `Posts.parameters.get`.
+* `Posts.parameters.get` now iterates over the `postsParameters` callback hook to build parameters object. 
+
 ## v0.24 “SubScope2”
 
 * [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 

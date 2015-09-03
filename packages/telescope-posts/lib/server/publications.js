@@ -4,7 +4,7 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 
 Meteor.publish('postsList', function(terms) {
   if(Users.can.viewById(this.userId)){
-    var parameters = Posts.getSubParams(terms),
+    var parameters = Posts.parameters.get(terms),
         posts = Posts.find(parameters.find, parameters.options);
 
     return posts;
@@ -17,7 +17,7 @@ Meteor.publish('postsList', function(terms) {
 
 Meteor.publish('postsListUsers', function(terms) {
   if(Users.can.viewById(this.userId)){
-    var parameters = Posts.getSubParams(terms),
+    var parameters = Posts.parameters.get(terms),
         posts = Posts.find(parameters.find, parameters.options),
         userIds = _.pluck(posts.fetch(), 'userId');
 

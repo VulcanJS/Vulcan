@@ -87,7 +87,7 @@ Template.posts_list_controller.helpers({
     var postsReady = instance.ready.get(); // ⚡ reactive ⚡
 
     var postsLimit = terms.limit;
-    var parameters = Posts.getSubParams(terms);
+    var parameters = Posts.parameters.get(terms);
     var postsCursor = Posts.find(parameters.find, parameters.options);
 
     var data = {
