@@ -1,12 +1,12 @@
 Package.describe({
   name: "telescope:newsletter",
   summary: "Telescope email newsletter package",
-  version: "0.24.0",
+  version: "0.24.1",
   git: "https://github.com/TelescopeJS/telescope-newsletter.git"
 });
 
 Npm.depends({
-  "html-to-text": "0.1.0"
+  "html-to-text": "1.3.1"
 });
 
 Package.onUse(function (api) {
