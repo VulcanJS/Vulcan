@@ -119,21 +119,29 @@ $mobile-nav-width: 200px;
   .submit{
     margin: 10px;
   }
+  .menu-wrapper{
+    border: 0;
+    padding-left: 0;
+  }
+  .menu-item-wrapper{
+    border-left: 15px solid rgba(255,255,255, 0.1);
+    padding-left: 0;
+  }
   .menu-child-items{
-    padding: 0;
     margin: 0;
+    padding: 0;
     border: none;
     .menu-item-wrapper{
-      border-left: 15px solid rgba(255,255,255, 0.1);
-    }
-    .menu-child-items .menu-item-wrapper{
       border-width: 30px;
     }
-    .menu-child-items .menu-child-items .menu-item-wrapper{
+    .menu-child-items .menu-item-wrapper{
       border-width: 45px;
     }
-    .menu-child-items .menu-child-items .menu-child-items .menu-item-wrapper{
+    .menu-child-items .menu-child-items .menu-item-wrapper{
       border-width: 60px;
+    }
+    .menu-child-items .menu-child-items .menu-child-items .menu-item-wrapper{
+      border-width: 75px;
     }
   }
 }

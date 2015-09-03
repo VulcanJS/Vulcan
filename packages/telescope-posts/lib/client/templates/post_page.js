@@ -1,6 +1,6 @@
 Template.post_page.helpers({
   isPending: function () {
-    return this.post && this.post.status === Posts.config.STATUS_PENDING;
+    return this.status === Posts.config.STATUS_PENDING;
   }
 });
 
