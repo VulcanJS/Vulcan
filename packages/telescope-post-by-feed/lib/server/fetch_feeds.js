@@ -5,7 +5,7 @@ var Readable = Npm.require('stream').Readable;
 var iconv = Npm.require('iconv-lite');
 
 var getFirstAdminUser = function() {
-  return Meteor.users.findOne({isAdmin: true}, {sort: {createdAt: 1}});
+  return Users.adminUsers({sort: {createdAt: 1}, limit: 1})[0];
 };
 
 var normalizeEncoding = function (contentBuffer) {
