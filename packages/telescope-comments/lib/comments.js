@@ -166,7 +166,7 @@ Comments.schema = new SimpleSchema({
 
 Meteor.startup(function(){
   // needs to happen after every fields are added
-  Events.internationalize();
+  Comments.internationalize();
 });
 
 Comments.attachSchema(Comments.schema);
