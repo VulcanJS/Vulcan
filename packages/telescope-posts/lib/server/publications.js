@@ -3,6 +3,9 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 // Publish a list of posts
 
 Meteor.publish('postsList', function(terms) {
+
+  terms.userId = this.userId; // add userId to terms
+  
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.parameters.get(terms),
         posts = Posts.find(parameters.find, parameters.options);
@@ -16,6 +19,9 @@ Meteor.publish('postsList', function(terms) {
 // plus the commenters for each post
 
 Meteor.publish('postsListUsers', function(terms) {
+
+  terms.userId = this.userId; // add userId to terms
+  
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.parameters.get(terms),
         posts = Posts.find(parameters.find, parameters.options),

@@ -11,18 +11,27 @@ Meteor.publish('singleUser', function(idOrSlug) {
 });
 
 Meteor.publish('userPosts', function(terms) {
+
+  terms.userId = this.userId; // add userId to terms
+
   var parameters = Posts.parameters.get(terms);
   var posts = Posts.find(parameters.find, parameters.options);
   return posts;
 });
 
 Meteor.publish('userUpvotedPosts', function(terms) {
+
+  terms.userId = this.userId; // add userId to terms
+
   var parameters = Posts.parameters.get(terms);
   var posts = Posts.find(parameters.find, parameters.options);
   return posts;
 });
 
 Meteor.publish('userDownvotedPosts', function(terms) {
+
+  terms.userId = this.userId; // add userId to terms
+
   var parameters = Posts.parameters.get(terms);
   var posts = Posts.find(parameters.find, parameters.options);
   return posts;

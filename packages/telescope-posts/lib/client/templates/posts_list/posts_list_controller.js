@@ -41,6 +41,9 @@ Template.posts_list_controller.onCreated(function () {
     // get terms from data context
     var terms = Template.currentData().terms; // ⚡ reactive ⚡
 
+    // add current userId to terms
+    terms.userId = Meteor.userId();
+    
     // get limit from local template variable
     var postsLimit = instance.postsLimit.get(); // ⚡ reactive ⚡
 
