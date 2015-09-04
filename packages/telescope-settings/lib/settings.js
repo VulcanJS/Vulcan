@@ -447,7 +447,9 @@ Settings.schema = new SimpleSchema({
 });
 
 
-Settings.schema.internationalize();
+Meteor.startup(function(){
+  Settings.internationalize();
+});
 
 Settings.attachSchema(Settings.schema);
 

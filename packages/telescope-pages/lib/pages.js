@@ -22,7 +22,9 @@ Pages.schema = new SimpleSchema({
   }
 });
 
-Pages.schema.internationalize();
+Meteor.startup(function(){
+  Pages.internationalize();
+});
 
 Pages.attachSchema(Pages.schema);
 

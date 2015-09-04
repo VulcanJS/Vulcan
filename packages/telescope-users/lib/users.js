@@ -233,7 +233,9 @@ Users.schema = new SimpleSchema({
   }
 });
 
-Users.schema.internationalize();
+Meteor.startup(function(){
+  Users.internationalize();
+});
 
 /**
  * Attach schema to Meteor.users collection
