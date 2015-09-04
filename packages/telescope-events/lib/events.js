@@ -26,7 +26,10 @@ Events.schema = new SimpleSchema({
   }
 });
 
-Events.schema.internationalize();
+Meteor.startup(function(){
+  // needs to happen after every fields are added
+  Events.internationalize();
+});
 
 Events.attachSchema(Events.schema);
 

@@ -46,7 +46,9 @@ Feeds.schema = new SimpleSchema({
 });
 
 
-Feeds.schema.internationalize();
+Meteor.startup(function(){
+  Feeds.internationalize();
+});
 
 Feeds.attachSchema(Feeds.schema);
 

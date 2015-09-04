@@ -164,7 +164,11 @@ Comments.schema = new SimpleSchema({
   }
 });
 
-Comments.schema.internationalize();
+Meteor.startup(function(){
+  // needs to happen after every fields are added
+  Events.internationalize();
+});
+
 Comments.attachSchema(Comments.schema);
 
 Comments.allow({

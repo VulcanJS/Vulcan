@@ -51,7 +51,9 @@ Categories.schema = new SimpleSchema({
   }
 });
 
-Categories.schema.internationalize();
+Meteor.startup(function(){
+  Categories.internationalize();
+});
 
 Categories.attachSchema(Categories.schema);
 
