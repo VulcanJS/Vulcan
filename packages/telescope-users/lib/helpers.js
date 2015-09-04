@@ -224,52 +224,6 @@ Users.getProperty = function (object, property) {
   }
 };
 
-/**
- * Build Users subscription with filter, sort, and limit args.
- * @param {String} filterBy
- * @param {String} sortBy
- * @param {Number} limit
- */
-Users.getSubParams = function(filterBy, sortBy, limit) {
-  var find = {},
-      sort = {createdAt: -1};
-
-  switch(filterBy){
-    case 'invited':
-      // consider admins as invited
-      find = { $or: [{ isInvited: true }, { isAdmin: true }]};
-      break;
-    case 'uninvited':
-      find = { $and: [{ isInvited: false }, { isAdmin: false }]};
-      break;
-    case 'admin':
-      find = { isAdmin: true };
-      break;
-  }
-
-  switch(sortBy){
-    case 'username':
-      sort = { username: 1 };
-      break;
-    case 'karma':
-      sort = { karma: -1 };
-      break;
-    case 'postCount':
-      sort = { postCount: -1 };
-      break;
-    case 'commentCount':
-      sort = { commentCount: -1 };
-      break;
-    case 'invitedCount':
-      sort = { invitedCount: -1 };
-  }
-  return {
-    find: find,
-    options: { sort: sort, limit: limit }
-  };
-};
-
-
 Users.updateAdmin = function (userId, admin) {
   Users.update(userId, {$set: {isAdmin: admin}});
 };
