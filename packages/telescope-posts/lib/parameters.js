@@ -69,3 +69,12 @@ function hideFuturePosts (parameters, terms) {
   return parameters;
 }
 Telescope.callbacks.add("postsParameters", hideFuturePosts);
+
+// if options are not provided, default to "top" sort
+function defaultSort (parameters, terms) {
+  if (_.isEmpty(parameters.options.sort)) {
+    parameters.options.sort = {sort: {sticky: -1, score: -1}};
+  }
+  return parameters;
+}
+Telescope.callbacks.add("postsParameters", defaultSort);

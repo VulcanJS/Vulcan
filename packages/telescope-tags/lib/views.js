@@ -1,15 +1,17 @@
-// category post list parameters
+// Category View
+// Add a view that will be specifically triggered by setting "view" to "category" 
+// in a route or template controller
 Posts.views.add("category", function (terms) {
   var category = Categories.findOne({slug: terms.category});
   var childCategories = category.getChildren(category);
   var categoriesIds = [category._id].concat(_.pluck(childCategories, "_id"));
   return {
-    find: {'categories': {$in: categoriesIds}} ,
-    options: {sort: {sticky: -1, score: -1}} // for now categories views default to the "top" view
+    find: {'categories': {$in: categoriesIds}}
   };
 });
 
-// add category parameter to publications/subscriptions
+// Category Parameter
+// Add a "categories" property which will be used to filter *all* existing Posts views. 
 function addCategoryParameter (parameters, terms) {
   // filter by category if category _id is provided (unless categories parameter already specificed)
   if (!!terms.category && !parameters.find.categories) {
