@@ -41,8 +41,7 @@ Package.onUse(function (api) {
     ], ['client']);
 
   api.addFiles([
-    'lib/server/publications.js',
-    'lib/server/hooks.js',
+    'lib/server/publications.js'
   ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];

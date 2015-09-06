@@ -86,7 +86,6 @@ Posts.edit = function (postId, modifier, post) {
 
   // ------------------------------ Callbacks ------------------------------ //
 
-  // run all post edit server callbacks on modifier successively
   modifier = Telescope.callbacks.run("postEdit", modifier, post);
 
   // ------------------------------ Update ------------------------------ //

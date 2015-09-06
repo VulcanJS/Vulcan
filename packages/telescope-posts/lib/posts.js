@@ -160,8 +160,8 @@ Posts.schema = new SimpleSchema({
   */
   status: {
     type: Number,
-    optional: true,
-    editableBy: ["admin"]
+    optional: true
+    // editableBy: ["admin"],
     // autoValue: function () {
     //   // only provide a default value
     //   // 1) this is an insert operation
