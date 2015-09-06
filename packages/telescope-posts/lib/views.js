@@ -58,7 +58,20 @@ Posts.views.add("best", function (terms) {
 Posts.views.add("pending", function (terms) {
   return {
     find: {
-      status: 1
+      status: Posts.config.STATUS_PENDING
+    },
+    options: {sort: {createdAt: -1}},
+    showFuture: true
+  };
+});
+
+/**
+ * Rejected view
+ */
+Posts.views.add("rejected", function (terms) {
+  return {
+    find: {
+      status: Posts.config.STATUS_REJECTED
     },
     options: {sort: {createdAt: -1}},
     showFuture: true

@@ -27,6 +27,7 @@ Package.onUse(function (api) {
     'lib/modules.js',
     'lib/callbacks.js',
     'lib/methods.js',
+    'lib/transitions.js',
     'lib/menus.js',
     'lib/routes.js'
   ], ['client', 'server']);

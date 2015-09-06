@@ -34,7 +34,7 @@ function postApprovedNotification (post) {
 
   Herald.createNotification(post.userId, {courier: 'postApproved', data: notificationData});
 }
-Telescope.callbacks.add("postApprovedAsync", postApprovedNotification);
+Telescope.callbacks.add("postApproveAsync", postApprovedNotification);
 
 // ------------------------------------------------------------------------------------------- //
 // ---------------------------------------- Comments ----------------------------------------- //

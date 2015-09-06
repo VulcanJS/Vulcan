@@ -22,6 +22,12 @@ Telescope.menuItems.add("viewsMenu", [
     adminOnly: true
   },
   {
+    route: 'posts_rejected',
+    label: 'rejected',
+    description: 'rejected_posts',
+    adminOnly: true
+  },
+  {
     route: 'posts_scheduled',
     label: 'scheduled',
     description: 'future_scheduled_posts',

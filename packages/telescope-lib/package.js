@@ -34,7 +34,7 @@ Package.onUse(function (api) {
     'dburles:collection-helpers@1.0.3',
     // 'meteorhacks:flow-router@1.5.0',
     // 'meteorhacks:flow-layout@1.1.1',
-    'matb33:collection-hooks@0.7.13',
+    'matb33:collection-hooks@0.8.0',
     'chuangbo:marked@0.3.5',
     'meteorhacks:fast-render@2.7.1',
     'meteorhacks:subs-manager@1.5.2',
@@ -55,7 +55,8 @@ Package.onUse(function (api) {
     'cmather:handlebars-server@2.0.0',
     'chuangbo:cookie@1.1.0',
     'ongoworks:speakingurl@5.0.1',
-    'okgrow:iron-router-autoscroll@0.0.8'
+    'okgrow:iron-router-autoscroll@0.0.8',
+    'utilities:state-transitions@0.1.0'
   ];
 
   api.use(packages);

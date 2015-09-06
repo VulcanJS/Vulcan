@@ -1,5 +1,8 @@
 * Changed `Posts.getSubParams` to `Posts.parameters.get`.
 * `Posts.parameters.get` now iterates over the `postsParameters` callback hook to build parameters object. 
+* [BREAKING] New post approval/rejection workflow: pending posts can be approved or rejected; approved posts can only be rejected; rejected posts can only be approved. 
+* Removed `status` radio button from post edit form.
+* Added `rejected` view to show all rejected posts. 
 
 ## v0.24 “SubScope2”
 

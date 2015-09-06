@@ -40,7 +40,7 @@ Telescope.utils.icons = {
   search: "search",
   edit: "pencil",
   approve: "check-circle-o",
-  unapprove: "times-circle-o",
+  reject: "times-circle-o",
   views: "eye",
   clicks: "mouse-pointer", 
   score: "line-chart"

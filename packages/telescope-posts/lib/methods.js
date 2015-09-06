@@ -250,28 +250,27 @@ Meteor.methods({
     var post = Posts.findOne(postId);
 
     if(Users.is.admin(Meteor.user())){
-      var set = {status: 2};
 
-      // unless post is already scheduled and has a postedAt date, set its postedAt date to now
-      if (!post.postedAt)
-        set.postedAt = new Date();
+      Posts.update(post._id, {$set: {status: Posts.config.STATUS_APPROVED}});
 
-      Posts.update(post._id, {$set: set});
-
-      Telescope.callbacks.runAsync("postApprovedAsync", post);
+      Telescope.callbacks.runAsync("postApproveAsync", post);
 
     }else{
       Messages.flash('You need to be an admin to do that.', "error");
     }
   },
 
-  unapprovePost: function(postId){
+  rejectPost: function(postId){
 
     check(postId, String);
     var post = Posts.findOne(postId);
     
     if(Users.is.admin(Meteor.user())){
-      Posts.update(post._id, {$set: {status: 1}});
+
+      Posts.update(post._id, {$set: {status: Posts.config.STATUS_REJECTED}});
+
+      Telescope.callbacks.runAsync("postRejectAsync", post);
+    
     }else{
       Messages.flash('You need to be an admin to do that.', "error");
     }

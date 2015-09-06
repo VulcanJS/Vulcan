@@ -19,25 +19,40 @@ function addCategoryClass (postClass, post) {
 }
 Telescope.callbacks.add("postClass", addCategoryClass);
 
-// when a category is added to a post, increment counter
-function updateCategoryCountOnSubmit (post) {
+// ------- PostsCount --------- //
+
+// when a post is submitted, increment counter (assuming it's approved)
+function updatePostsCountOnSubmit (post) {
+  if (post.isApproved() && !_.isEmpty(post.categories))
+    Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": 1}}, {multi: true});
+}
+Telescope.callbacks.add("postSubmitAsync", updatePostsCountOnSubmit);
+
+// when a post is approved, increment counter
+function updatePostsCountOnApprove (post) {
   if (!_.isEmpty(post.categories))
     Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": 1}}, {multi: true});
 }
-Telescope.callbacks.add("postSubmitAsync", updateCategoryCountOnSubmit);
+Telescope.callbacks.add("postApproveAsync", updatePostsCountOnApprove);
 
-function updateCategoryCountOnEdit (newPost, oldPost) {
-  
-  var categoriesAdded = _.difference(newPost.categories, oldPost.categories);
-  var categoriesRemoved = _.difference(oldPost.categories, newPost.categories);
-
-  if (!_.isEmpty(categoriesAdded))
-    Categories.update({_id: {$in: categoriesAdded}}, {$inc: {"postsCount": 1}}, {multi: true});
-  
-  if (!_.isEmpty(categoriesRemoved))
-    Categories.update({_id: {$in: categoriesRemoved}}, {$inc: {"postsCount": -1}}, {multi: true});
+// when a post is unapproved, decrement counter
+function updatePostsCountOnReject (post) {
+  if (!_.isEmpty(post.categories))
+    Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": -1}}, {multi: true});
 }
-Telescope.callbacks.add("postEditAsync", updateCategoryCountOnEdit);
+Telescope.callbacks.add("postRejectAsync", updatePostsCountOnReject);
+
+function updatePostsCountOnEdit (newPost, oldPost) {
+    var categoriesAdded = _.difference(newPost.categories, oldPost.categories);
+    var categoriesRemoved = _.difference(oldPost.categories, newPost.categories);
+
+    if (!_.isEmpty(categoriesAdded))
+      Categories.update({_id: {$in: categoriesAdded}}, {$inc: {"postsCount": 1}}, {multi: true});
+    
+    if (!_.isEmpty(categoriesRemoved))
+      Categories.update({_id: {$in: categoriesRemoved}}, {$inc: {"postsCount": -1}}, {multi: true});
+}
+Telescope.callbacks.add("postEditAsync", updatePostsCountOnEdit);
 
 // when a post is deleted, decrement counter
 function updateCategoryCountOnDelete (post) {
