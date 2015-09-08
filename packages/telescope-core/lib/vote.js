@@ -54,7 +54,7 @@ Telescope.upvoteItem = function (collection, itemId, user) {
   var votePower = getVotePower(user);
 
   // in case user is upvoting a previously downvoted item, cancel downvote first
-  Telescope.cancelDownvote(collection, item, user);
+  Telescope.cancelDownvote(collection, itemId, user);
 
   // Votes & Score
   var result = collection.update({_id: item && item._id, upvoters: { $ne: user._id }},{
