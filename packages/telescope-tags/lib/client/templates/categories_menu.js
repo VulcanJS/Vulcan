@@ -14,7 +14,7 @@ Meteor.startup(function () {
 
       // filter out categories with no items
       var menuItems = _.filter(categories, function (category){
-        return !!category.postsCount;
+        return !!Counts.get(category.getCounterName());
       });
 
       menuItems = _.map(menuItems, function (category) {
@@ -22,7 +22,7 @@ Meteor.startup(function () {
           route: function () {
             return Categories.getUrl(category);
           },
-          label: category.name+=" <span class=\"category-posts-count\">("+category.postsCount+")</span>",
+          label: category.name+=" <span class=\"category-posts-count\">("+Counts.get(category.getCounterName())+")</span>",
           description: category.description,
           _id: category._id,
           parentId: category.parentId

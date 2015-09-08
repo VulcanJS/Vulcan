@@ -50,9 +50,18 @@ Posts.helpers({getCategories: function () {return Posts.getCategories(this);}});
  * Get a category's URL
  * @param {Object} category
  */
-Categories.getUrl = function(category, isAbsolute){
+Categories.getUrl = function (category, isAbsolute) {
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
   return prefix + Router.path("posts_category", category);
 };
 Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
+
+/**
+ * Get a category's counter name
+ * @param {Object} category
+ */
+ Categories.getCounterName = function (category) {
+  return category.slug + "-postsCount";
+ }
+ Categories.helpers({getCounterName: function () {return Categories.getCounterName(this);}});

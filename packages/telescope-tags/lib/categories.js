@@ -29,10 +29,6 @@ Categories.schema = new SimpleSchema({
     optional: true,
     editableBy: ["admin"]
   },
-  postsCount: {
-    type: Number,
-    optional: true,
-  },
   parentId: {
     type: String,
     optional: true,
