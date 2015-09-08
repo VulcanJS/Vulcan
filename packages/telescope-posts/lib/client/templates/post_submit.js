@@ -31,9 +31,12 @@ AutoForm.hooks({
     },
 
     onSuccess: function(operation, post) {
-      this.template.$('button[type=submit]').removeClass('loading');
       Events.track("new post", {'postId': post._id});
-      Router.go('post_page', post);
+      var template = this.template;
+      Telescope.subsManager.subscribe('singlePost', post._id, function () {
+        template.$('button[type=submit]').removeClass('loading');
+        Router.go('post_page', post);
+      });
     },
 
     onError: function(operation, error) {

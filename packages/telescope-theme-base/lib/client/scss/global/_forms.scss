@@ -42,7 +42,7 @@ form, .accounts-dialog{
         top:2px;
         right:8px;
         &.loading{
-          background:url(/img/loading.gif) center center no-repeat;
+          background:url("/packages/telescope_core/public/img/loading.svg") center center no-repeat;
           height:22px;
           width:18px;
           @include hide-text2;
@@ -154,7 +154,7 @@ input[type="submit"], button, .button, .btn{
       margin: -10px 0 0 -10px;
       content: " ";
       display: block;
-      background:  url('/img/loading.svg');
+      background:  url("/packages/telescope_core/public/img/loading.svg");
       height: 20px;
       width: 20px;
       background-size: 20px 20px;

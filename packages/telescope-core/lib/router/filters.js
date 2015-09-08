@@ -113,7 +113,6 @@ Meteor.startup( function (){
     // Load Hooks
 
     Router.onBeforeAction( function () {
-      console.log("t:"+moment().format('hh:mm:ss'))
 
       // if we're not on the search page itself, clear search query and field
       if(Router.current().route.getName() !== 'search'){

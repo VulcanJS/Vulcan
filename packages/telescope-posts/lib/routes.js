@@ -131,9 +131,11 @@ Posts.controllers.page = RouteController.extend({
   },
 
   onBeforeAction: function () {
-    if (!this.post()) {
+    if (typeof this.post() === "undefined") {
       if (this.postSubscription.ready()) {
         this.render('not_found');
+      } else {
+        this.render('loading');
       }
     } else {
       this.next();
