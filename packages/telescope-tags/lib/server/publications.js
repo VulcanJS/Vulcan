@@ -5,7 +5,7 @@ Meteor.publish('categories', function() {
 
     categories.forEach(function (category) {
       var cursor = Posts.find({$and: [{categories: {$in: [category._id]}}, {status: Posts.config.STATUS_APPROVED}]});
-      Counts.publish(publication, category.getCounterName(), cursor);
+      Counts.publish(publication, category.getCounterName(), cursor, { noReady: true });
     });
 
     return categories;

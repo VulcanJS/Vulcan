@@ -56,7 +56,8 @@ Package.onUse(function (api) {
     'chuangbo:cookie@1.1.0',
     'ongoworks:speakingurl@5.0.1',
     'okgrow:iron-router-autoscroll@0.0.8',
-    'utilities:state-transitions@0.1.0'
+    // 'utilities:state-transitions@0.1.0',
+    'tmeasday:publish-counts@0.7.1'
   ];
 
   api.use(packages);
