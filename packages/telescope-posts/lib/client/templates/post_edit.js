@@ -1,4 +1,8 @@
 Template.post_edit.helpers({
+  canEdit: function () {
+    var post = this;
+    return Users.can.edit(Meteor.user(), post);
+  },
   postFields: function () {
     return Posts.simpleSchema().getEditableFields(Meteor.user());
   }

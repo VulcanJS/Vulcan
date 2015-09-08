@@ -122,10 +122,6 @@ Users.can.submitField = function (user, field) {
  */
 Users.can.editField = Users.can.submitField;
 
-Users.can.currentUserEdit = function (item) {
-  return Users.can.edit(Meteor.user(), item);
-};
-
 Users.can.invite = function (user) {
   return Users.is.invited(user) || Users.is.admin(user);
 };

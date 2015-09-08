@@ -1,14 +1,17 @@
 <template name="comment_edit">
-
-  <div class="grid grid-module">
-    <div class="comment-form comment-edit">
-      {{> quickForm collection="Comments" doc=comment id="editCommentForm" template="bootstrap3-horizontal" label-class="control-label" input-col-class="controls" type="method-update" meteormethod="editComment" fields=commentFields}}
-    </div>
+  <div class="comment-edit">
+    {{#if canEdit}}
+      <div class="grid grid-module">
+        <div class="comment-form">
+          {{> quickForm collection="Comments" doc=comment id="editCommentForm" template="bootstrap3-horizontal" label-class="control-label" input-col-class="controls" type="method-update" meteormethod="editComment" fields=commentFields}}
+        </div>
+      </div>
+      
+      <div class="grid grid-module">
+        <a class="delete-link" href="/">{{_ "delete_comment"}}</a>
+      </div>
+    {{else}}
+      {{> no_rights message="sorry_you_cannot_edit_this_comment"}}
+    {{/if}}
   </div>
-  
-  <div class="grid grid-module">
-    <a class="delete-link" href="/">{{_ "delete_comment"}}</a>
-  </div>
-
-
 </template>
