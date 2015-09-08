@@ -30,7 +30,6 @@ $mobile-header-height: 50px;
 }
 
 .logo{
-  white-space: nowrap;
   @include small{
     font-size: 24px;
     overflow: hidden;
@@ -56,6 +55,9 @@ $mobile-header-height: 50px;
       display: none;
     }
   }
+}
+.logo-text{
+  white-space: nowrap;
 }
 .logo-image{
   a, img{
