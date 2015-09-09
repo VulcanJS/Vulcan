@@ -61,9 +61,22 @@ $red: #DD3416;
   }
 }
 
+.category-title{
+  margin-bottom: 10px;
+}
+
+.category-title-wrapper{
+}
+
 .main-category-title{
   display: inline-block;
   font-size: 22px;
+  margin-bottom: 0;
+}
+
+.category-description{
+  font-weight: normal;
+  font-size: 15px;
 }
 
 .category-input{
