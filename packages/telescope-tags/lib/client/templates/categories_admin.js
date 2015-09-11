@@ -1,4 +1,4 @@
-Template.categories.helpers({
+Template.categories_admin.helpers({
   categories: function(){
     return Categories.find({}, {sort: {order: 1, name: 1}});
   },

@@ -84,3 +84,12 @@ $red: #DD3416;
     justify-content: flex-start;
   }
 }
+
+.menu-label{
+  input, label{
+    cursor: pointer;
+  }
+  input{
+    pointer-events: none;
+  }
+}

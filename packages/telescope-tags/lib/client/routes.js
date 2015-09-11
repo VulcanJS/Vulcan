@@ -2,6 +2,14 @@ Meteor.startup(function () {
 
   Router.onBeforeAction(Router._filters.isAdmin, {only: ['categories']});
 
+  // clear any categories checkboxes
+  Router.onBeforeAction(function () {
+    if (this.route.getName() !== "posts_categories") {
+      $(".categories-menu input:checkbox").prop("checked", false);
+    }
+    this.next();
+  });
+
   Posts.controllers.category = Posts.controllers.list.extend({
 
     view: 'category',
@@ -9,10 +17,11 @@ Meteor.startup(function () {
     showViewsNav: false,
 
     data: function () {
+
       var terms = {
         view: "category",
         limit: this.params.limit || Settings.get('postsPerPage', 10),
-        category: this.params.slug
+        categorySlugs: this.getSlugs()
       };
 
       // note: the post list controller template will handle all subscriptions, so we just need to pass in the terms
@@ -21,16 +30,32 @@ Meteor.startup(function () {
       };
     },
 
-    getCurrentCategory: function () {
-      return Categories.findOne({slug: this.params.slug});
+    getSlugs: function () {
+      var slugs = [];
+      if (typeof this.params.slug !== "undefined") {
+        slugs = [this.params.slug];
+      } else if (typeof this.params.query.cat !== "undefined") {
+        slugs = this.params.query.cat;
+      }
+      return slugs;
+    },
+
+    getCurrentCategories: function () {
+      return Categories.find({slug: {$in: this.getSlugs()}}).fetch();
     },
 
     getTitle: function () {
-      return this.getCurrentCategory().name;
+      var title = "";
+      this.getCurrentCategories().forEach(function (category){
+        title += category.name + " | ";
+      });
+      return title.substring(0, title.length - 3); // remove last three characters
     },
 
     getDescription: function () {
-      return this.getCurrentCategory().description;
+      // just keep description of first category
+      var firstCategory = this.getCurrentCategories()[0];
+      return firstCategory && firstCategory.description;
     }
 
   });
@@ -45,11 +70,17 @@ Meteor.startup(function () {
     }
   });
 
+  Router.route('/categories/:limit?', {
+    name: 'posts_categories',
+    controller: Posts.controllers.category
+  });
+
   // Categories Admin
 
-  Router.route('/categories', {
+  Router.route('/admin/categories', {
     controller: Telescope.controllers.admin,
-    name: 'categories'
+    name: 'admin/categories',
+    template: 'categories_admin'
   });
 
 });

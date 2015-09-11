@@ -3,7 +3,7 @@ Template.notification_item.helpers({
     return this.data;
   },
   notificationHTML: function(){
-    return this.message();
+    return this.item.data.message();
   }
 });
 

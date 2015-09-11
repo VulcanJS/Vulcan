@@ -119,7 +119,7 @@ Template.menuItem.helpers({
   },
   menuItemData: function () {
     // if a data property is defined, use it for data context. Else default to current node
-    return this.item.data ? this.item.data : this;
+    return this;
   },
   itemClass: function () {
     var itemClass = "";

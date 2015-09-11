@@ -57,7 +57,8 @@ Package.onUse(function (api) {
     'ongoworks:speakingurl@5.0.1',
     'okgrow:iron-router-autoscroll@0.0.8',
     // 'utilities:state-transitions@0.1.0',
-    'tmeasday:publish-counts@0.7.1'
+    'tmeasday:publish-counts@0.7.1',
+    'dburles:iron-router-query-array@1.0.1'
   ];
 
   api.use(packages);

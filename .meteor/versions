@@ -31,6 +31,7 @@ cmather:handlebars-server@2.0.0
 coffeescript@1.0.6
 cosmos:browserify@0.4.0
 dburles:collection-helpers@1.0.3
+dburles:iron-router-query-array@1.0.1
 ddp@1.1.0
 deps@1.0.7
 djedi:sanitize-html@1.7.0

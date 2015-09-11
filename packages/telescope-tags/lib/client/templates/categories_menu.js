@@ -25,7 +25,9 @@ Meteor.startup(function () {
           label: category.name+=" <span class=\"category-posts-count\">("+Counts.get(category.getCounterName())+")</span>",
           description: category.description,
           _id: category._id,
-          parentId: category.parentId
+          parentId: category.parentId,
+          template: 'category_menu_item',
+          data: category
         };
       });
       return defaultItem.concat(menuItems);

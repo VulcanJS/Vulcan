@@ -60,3 +60,24 @@ Meteor.startup(function () {
     remove: Users.is.adminById
   });
 });
+
+
+Settings.addField([
+  {
+    fieldName: 'categoriesBehavior',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      autoform: {
+        group: 'categories',
+        instructions: 'Let users filter by one or multiple categories at a time.', 
+        options: function () {
+          return [
+            {value: "single", label: i18n.t("categories_behavior_one_at_a_time")},
+            {value: "multiple", label: i18n.t("categories_behavior_multiple")}
+          ];
+        }
+      }
+    }
+  }
+]);
