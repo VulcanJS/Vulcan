@@ -19,3 +19,4 @@ Posts.views.add("singleday", function (terms) {
 });
 
 Telescope.modules.addRoute("top", "views_menu", "postsSingleDay");
+Telescope.modules.addRoute("top", "views_menu", "postsSingleDayDefault");
