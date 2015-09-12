@@ -3,9 +3,13 @@
     {{#each categories}}
       <div class="category-heading">
         <div class="category-title">
-          {{#each categoryParents}}
-            <a href="{{this.getUrl}}">{{title}}</a> {{{icon "next"}}}
-          {{/each}}
+          {{#with categoryParents}}
+            <div class="category-parents">
+              {{#each this}}
+                <a href="{{this.getUrl}}">{{title}}</a> {{{icon "next"}}}
+              {{/each}}
+            </div>
+          {{/with}}
           <h2 class="main-category-title">{{title}}</h2>
         </div>
         {{#if description}}
