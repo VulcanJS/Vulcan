@@ -136,7 +136,7 @@ Template.menuItem.helpers({
       itemClass += " "+this.item.itemClass;
     }
 
-    itemClass += "menu-level-" + this.level;
+    itemClass += " menu-level-" + this.level;
     
     return itemClass;
   },
