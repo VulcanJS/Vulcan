@@ -1,7 +1,10 @@
 Meteor.startup(function () {
   Template.category_item.helpers({
+    category: function () {
+      return this.item.data;
+    },
     formId: function () {
-      return 'updateCategory-'+ this._id;
+      return 'updateCategory-'+ this.item.data._id;
     }
   });
 

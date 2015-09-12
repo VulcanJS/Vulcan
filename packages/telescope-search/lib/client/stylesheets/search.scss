@@ -3,11 +3,13 @@ $dark-grey:#444444;
 .mobile-nav .search{
   padding: 10px;
 }
+
 .side-nav{
   .search.empty .search-field{
     max-width: none;
   }
 }
+
 .search {
   $compressed-width: 120px;
   $expanded-width: 250px;
