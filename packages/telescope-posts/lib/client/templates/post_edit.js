@@ -1,8 +1,4 @@
 Template.post_edit.helpers({
-  canEdit: function () {
-    var post = this;
-    return Users.can.edit(Meteor.user(), post);
-  },
   postFields: function () {
     return Posts.simpleSchema().getEditableFields(Meteor.user());
   }
@@ -42,26 +38,5 @@ AutoForm.hooks({
       Messages.clearSeen();
     }
 
-  }
-});
-
-// delete link
-Template.post_edit.events({
-  'click .delete-link': function(e){
-    var post = this.post;
-
-    e.preventDefault();
-
-    if(confirm("Are you sure?")){
-      Meteor.call("deletePostById", post._id, function(error) {
-        if (error) {
-          console.log(error);
-          Messages.flash(error.reason, 'error');
-        } else {
-          Router.go("/");
-          Messages.flash(i18n.t('your_post_has_been_deleted'), 'success');
-        }
-      });
-    }
   }
 });

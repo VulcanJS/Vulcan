@@ -25,6 +25,7 @@
       {{#if canEdit this}}
         <div class="post-admin-actions">
           <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
+          <a href="#" class="delete-link" title="{{_ 'delete'}}">{{{icon "delete"}}} <span class="sr-only">{{_ "delete"}}</span></a>
         </div>
       {{/if}}
 
