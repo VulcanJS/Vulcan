@@ -1,15 +1,17 @@
 <template name="category_title">
-  <div class="category-title post-list-title">
-    {{#with category}}
-      <div class="category-title-wrapper">
-        {{#each categoryParents}}
-          <a href="{{this.getUrl}}">{{title}}</a> {{{icon "next"}}}
-        {{/each}}
-        <h2 class="main-category-title">{{title}}</h2>
+  <div class="category-heading-wrapper post-list-title">
+    {{#each categories}}
+      <div class="category-heading">
+        <div class="category-title">
+          {{#each categoryParents}}
+            <a href="{{this.getUrl}}">{{title}}</a> {{{icon "next"}}}
+          {{/each}}
+          <h2 class="main-category-title">{{title}}</h2>
+        </div>
+        {{#if description}}
+          <h3 class="category-description">{{description}}</h3>
+        {{/if}}
       </div>
-      {{#if description}}
-        <h3 class="category-description">{{description}}</h3>
-      {{/if}}
-    {{/with}}
+    {{/each}}
   </div>
 </template>

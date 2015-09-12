@@ -1,6 +1,6 @@
 Template.category_title.helpers({
-  category: function () {
-    return Router.current().getCurrentCategory();
+  categories: function () {
+    return Router.current().getCurrentCategories();
   },
   categoryParents: function () {
     var category = this;
