@@ -1,6 +1,12 @@
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //
 //////////////////////////////////////////////////////
+/**
+ * Hook to fire before deletion of user.
+ */
+Users.before.remove(function (userId, user) {
+  Telescope.callbacks.runAsync("onRemoveUserAsync", user);
+});
 
 /**
  * Generate HTML body from Markdown on user bio insert
