@@ -27,12 +27,18 @@ Template.posts_list_controller.onCreated(function () {
   // 2. Autorun
 
   // Autorun 1: when terms change, reset the limit
+  instance.nonReactiveTerms = instance.data.terms;
   instance.autorun(function () {
+    
     // add a dependency on data context to trigger the autorun
     var newTerms = Template.currentData().terms; // ⚡ reactive ⚡
-    if (!_.isEqual(newTerms, instance.data.terms)) {
+    
+    // compare new terms with previous ones
+    if (!_.isEqual(newTerms, instance.nonReactiveTerms)) {
+      instance.nonReactiveTerms = newTerms;
       instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
     }
+
   });
 
   // Autorun 2: will re-run when limit or terms are changed
@@ -41,8 +47,8 @@ Template.posts_list_controller.onCreated(function () {
     // get terms from data context
     var terms = Template.currentData().terms; // ⚡ reactive ⚡
 
-    // add current userId to terms
-    terms.userId = Meteor.userId();
+    // add current userId to terms // why do we need to do this?
+    // terms.userId = Meteor.userId();
     
     // get limit from local template variable
     var postsLimit = instance.postsLimit.get(); // ⚡ reactive ⚡
