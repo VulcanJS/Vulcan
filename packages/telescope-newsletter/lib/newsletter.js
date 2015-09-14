@@ -241,7 +241,10 @@ Telescope.modules.add("hero", {
 Telescope.callbacks.add("profileCompletedAsync", subscribeUserOnProfileCompletion);
 
 /*
+//because updateMailchipList and removeFromMailchimpList arn't defined this is commented
+//also both userAccountRemoved and profileUpdatedAsync aren't defined!
 
+//if email updated we updated in mailchimp as well
  function subscribeUserOnProfileUpdate (user) {
   if( !user.telescope.newsletter.subscribe )//user want to unsub or alread unsubcribed
     removeFromMailChimpList(user, false, function (error, result) {//try removing his email if he didn't unsub earlier
@@ -257,6 +260,17 @@ Telescope.callbacks.add("profileCompletedAsync", subscribeUserOnProfileCompletio
   return user;
 }
 Telescope.callbacks.add("profileUpdatedAsync", subscribeUserOnProfileUpdate);
+
+//if user is removed reomve it from mailchimp as well
+
+ function subscribeUserOnUserRemove (user) {
+    removeFromMailChimpList(user, false, function (error, result) {//try removing his email
+      //console.log(error);
+      //console.log(result);
+    });
+  return user;
+}
+Telescope.callbacks.add("userAccountRemoved", subscribeUserOnUserRemove);
 
 */
 
