@@ -53,6 +53,20 @@ Users.addField([
       }
     }
   },
+    {
+    fieldName: 'telescope.newsletter.subscribe',
+    fieldSchema: {
+      label: 'Newsletter',
+      type: Boolean,
+      optional: true,
+      editableBy: ['admin', 'member'],
+      autoform: {
+         options: function () {
+            return [{label: "Subscribe", value: true}]//though is should return the current value no this default! just for testing 
+         }
+      }
+    }
+  },
   {
     fieldName: 'telescope.newsletter.subscribeToNewsletter',
     fieldSchema: {
@@ -216,7 +230,7 @@ Telescope.modules.add("hero", {
 });
 
  function subscribeUserOnProfileCompletion (user) {
-  if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user)) {
+  if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user) && user.telescope.newsletter.subscribe ) {//if user checked it it will we subscribe him/her otherwise no
     addToMailChimpList(user, false, function (error, result) {
       console.log(error);
       console.log(result);
@@ -225,3 +239,38 @@ Telescope.modules.add("hero", {
   return user;
 }
 Telescope.callbacks.add("profileCompletedAsync", subscribeUserOnProfileCompletion);
+
+/*
+//because updateMailchipList and removeFromMailchimpList arn't defined this is commented
+//also both userAccountRemoved and profileUpdatedAsync aren't defined!
+
+//if email updated we updated in mailchimp as well
+ function subscribeUserOnProfileUpdate (user) {
+  if( !user.telescope.newsletter.subscribe )//user want to unsub or alread unsubcribed
+    removeFromMailChimpList(user, false, function (error, result) {//try removing his email if he didn't unsub earlier
+      //console.log(error);
+      //console.log(result);
+    });
+  else if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user) && user.telescope.newsletter.subscribe ) {//if user checked it it will be sent
+    updateToMailChimpList(user, false, function (error, result) {
+      console.log(error);
+      console.log(result);
+    });
+  }
+  return user;
+}
+Telescope.callbacks.add("profileUpdatedAsync", subscribeUserOnProfileUpdate);
+
+//if user is removed reomve it from mailchimp as well
+
+ function subscribeUserOnUserRemove (user) {
+    removeFromMailChimpList(user, false, function (error, result) {//try removing his email
+      //console.log(error);
+      //console.log(result);
+    });
+  return user;
+}
+Telescope.callbacks.add("userAccountRemoved", subscribeUserOnUserRemove);
+
+*/
+
