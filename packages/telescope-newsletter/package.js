@@ -37,7 +37,7 @@ Package.onUse(function (api) {
     'lib/server/templates/emailDigest.handlebars',
     'lib/server/templates/emailDigestConfirmation.handlebars',
     'lib/server/templates/emailPostItem.handlebars',
-    'lib/callbacks.js'
+    'lib/server/callbacks.js'
   ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];

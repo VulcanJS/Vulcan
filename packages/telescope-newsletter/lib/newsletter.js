@@ -61,7 +61,10 @@ Users.addField([
       optional: true,
       editableBy: ['admin', 'member'],
       autoform: {
-        omit: true
+        options: function () {
+          return [{label: "Subscribe", value: true},
+                  {label: "Unsubscribe", value: false}]
+        }
       }
     }
   }
@@ -214,14 +217,3 @@ Telescope.modules.add("hero", {
   order: 10,
   only: ["posts_default"]
 });
-
- function subscribeUserOnProfileCompletion (user) {
-  if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user)) {
-    addToMailChimpList(user, false, function (error, result) {
-      console.log(error);
-      console.log(result);
-    });
-  }
-  return user;
-}
-Telescope.callbacks.add("profileCompletedAsync", subscribeUserOnProfileCompletion);

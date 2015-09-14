@@ -9,6 +9,17 @@ Users.before.remove(function (userId, user) {
 });
 
 /**
+ * Hook to fire after modification of a user.
+ */
+
+Users.after.update(function (userId, doc, fieldNames, modifier, options) {
+  var oldDoc = this.previous;
+  var data = {oldUser: oldDoc, newUser: doc};
+  Telescope.callbacks.runAsync("onUpdateUserAsync", data);
+});
+
+
+/**
  * Generate HTML body from Markdown on user bio insert
  */
 Users.after.insert(function (userId, user) {

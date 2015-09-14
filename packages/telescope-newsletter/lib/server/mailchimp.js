@@ -80,7 +80,6 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 
   var confirm = (typeof confirm === 'undefined') ? false : confirm; // default to no confirmation
 
-  // not sure if it's really necessary that the function take both user and email?
   if (typeof userOrEmail === "string") {
     user = null;
     email = userOrEmail;
@@ -127,7 +126,57 @@ addToMailChimpList = function(userOrEmail, confirm, done){
   }
 };
 
+// remove a user to a MailChimp list.
+// called when a user is deleted, when a user unsubscribes or when a user changes e-mail (and then the old is removed and new added).
+removeFromMailChimpList = function (userOrEmail) {
+
+  var user, email;
+  var apiKey = Settings.get('mailChimpAPIKey');
+  var listId = Settings.get('mailChimpListId');
+
+  if (typeof userOrEmail === "string") {
+    user = null;
+    email = userOrEmail;
+  } else if (typeof userOrEmail === "object") {
+    user = userOrEmail;
+    email = Users.getEmail(user);
+    if (!email)
+      throw 'User must have an email address';
+  }
+
+  if(!!apiKey && !!listId) {
+
+    try {
+      console.log('// removing "'+email+'" from MailChimp list…');
+
+      var api = new MailChimp(apiKey);
+      var subscribeOptions = {
+        id: listId,
+        email: {"email": email},
+      };
+
+      // unsubscribe user
+      var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
+
+      console.log("// User unsubscribed");
+
+      return subscribe;
+
+    } catch (error) {
+      throw new Meteor.Error("un-subscribe-failed", error.message);
+    }
+  }
+};
+
 Meteor.methods({
+  removeCurrentUserFromMailChimpList: function () {
+    var currentUser = Meteor.users.findOne(this.userId);
+    try {
+      return removeFromMailChimpList(currentUser);
+    } catch (error) {
+      throw new Meteor.Error(500, error.message);
+    }
+  },
   addCurrentUserToMailChimpList: function(){
     var currentUser = Meteor.users.findOne(this.userId);
     try {
