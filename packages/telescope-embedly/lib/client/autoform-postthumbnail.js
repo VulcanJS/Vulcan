@@ -38,6 +38,8 @@ var fillEmbedlyData = function (instance) {
         if (!$bodyField.val()) // if body field is empty, fill in body
           $bodyField.val(data.description);
 
+        Telescope.callbacks.run("afterEmbedlyPrefill", data);
+
       }
     });
   }
