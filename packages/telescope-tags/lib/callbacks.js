@@ -48,3 +48,33 @@ function postEditCheckCategories (post) {
   return post;
 }
 Telescope.callbacks.add("postEdit", postEditCheckCategories);
+
+function addParentCategoriesOnSubmit (post) {
+  var categories = post.categories;
+  var newCategories = [];
+  if (categories) {
+    categories.forEach(function (categoryId) {
+      var category = Categories.findOne(categoryId);
+      newCategories = newCategories.concat(_.pluck(category.getParents().reverse(), "_id"));
+      newCategories.push(category._id);
+    });
+  }
+  post.categories = _.unique(newCategories);
+  return post;
+}
+Telescope.callbacks.add("postSubmit", addParentCategoriesOnSubmit);
+
+function addParentCategoriesOnEdit (modifier, post) {
+  var categories = modifier.$set.categories;
+  var newCategories = [];
+  if (categories) {
+    categories.forEach(function (categoryId) {
+      var category = Categories.findOne(categoryId);
+      newCategories = newCategories.concat(_.pluck(category.getParents().reverse(), "_id"));
+      newCategories.push(category._id);
+    });
+  }
+  modifier.$set.categories = _.unique(newCategories);
+  return modifier;
+}
+Telescope.callbacks.add("postEdit", addParentCategoriesOnEdit);
