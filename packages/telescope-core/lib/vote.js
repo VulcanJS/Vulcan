@@ -92,7 +92,6 @@ Telescope.upvoteItem = function (collection, itemId, user) {
       }
     }
 
-
     // --------------------- Server-Side Async Callbacks --------------------- //
 
     Telescope.callbacks.runAsync("upvoteAsync", item);

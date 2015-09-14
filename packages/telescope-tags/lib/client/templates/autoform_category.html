@@ -5,8 +5,8 @@
 </template>
 
 <template name="category_input_item">
-  <div class="category-input-item"><label><input type="checkbox" value="{{item._id}}" {{atts}} /> {{item.label}}</label></div>
+  <div class="category-input-item" id="{{item._id}}"><label><input class="category-checkbox" type="checkbox" value="{{item._id}}" {{atts}} /> {{item.label}}</label></div>
   {{#if childMenuItems}}
-    <a class="menu-items-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
+    <a class="menu-items-toggle js-menu-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
   {{/if}}
 </template>

@@ -166,24 +166,31 @@ $text: #444444;
     &:hover{
       background: white(0.1);
     }
-    .icon-expand{
-      display: block;
-    }
-    .icon-collapse{
-      display: none;
-    }
-    &.toggle-expanded{
-      .icon-expand{
-        display: none;
-      }
-      .icon-collapse{
-        display: block;
-      }
-    }
+  }
+  .icon-expand{
+    display: block;
+  }
+  .icon-collapse{
+    display: none;
   }
   .menu-child-items{
     display: none;
   }
+}
+
+.menu-expanded{
+  &>.menu-item-wrapper{
+    .icon-expand{
+      display: none;
+    }
+    .icon-collapse{
+      display: block;
+    }
+  }
+  &>.menu-child-items{
+    display: block;
+  }
+
 }
 
 .menu-always-expanded{

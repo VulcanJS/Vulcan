@@ -12,6 +12,7 @@ _ parentId (String) [optional] used in nested menus
 - route (String/Function) [optional]
 - label (String/Function) [optional]
 - description (String) [optional]
+- isExpanded (Boolean) [optional] whether the item's sub-menu should be expanded
 - itemClass (String) [optional]
   | an optional CSS class
 - adminOnly (Boolean) [optional]
@@ -45,7 +46,7 @@ menuClass (String) [optional]
         {{#if labelIsTemplate}}
           {{> Template.dynamic template=menuLabelTemplate data=menuLabelData}}
         {{else}}
-          <a class="menu-top-level-link" href="#">
+          <a class="menu-top-level-link js-menu-top-toggle" href="#">
             <span class="menu-top-level-label">{{menuLabel}}</span>
             <span class="menu-items-toggle">{{{icon "expand"}}}{{{icon "collapse"}}}</span>
           </a>
@@ -91,7 +92,7 @@ item (Object)
           {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
         </a>
         {{#if childMenuItems}}
-          <a class="menu-items-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
+          <a class="menu-items-toggle js-menu-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
         {{/if}}
       {{/if}}
     </div>
