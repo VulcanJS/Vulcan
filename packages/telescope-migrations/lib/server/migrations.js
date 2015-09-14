@@ -728,7 +728,9 @@ var migrationsList = {
     Posts.find({"categories.0": {$exists: true,}}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id+", found "+post.categories.length+" categories.");
-      Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": 1}}, {multi: true});
+      if (post.categories && post.categories.length > 0) {
+        Categories.update({_id: {$in: post.categories}}, {$inc: {"postsCount": 1}}, {multi: true});
+      }
       console.log("---------------------");
     });
     return i;

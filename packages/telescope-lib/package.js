@@ -55,7 +55,7 @@ Package.onUse(function (api) {
     'cmather:handlebars-server@2.0.0',
     'chuangbo:cookie@1.1.0',
     'ongoworks:speakingurl@5.0.1',
-    'okgrow:iron-router-autoscroll@0.0.8',
+    'okgrow:router-autoscroll@0.0.12',
     // 'utilities:state-transitions@0.1.0',
     'tmeasday:publish-counts@0.7.1',
     'dburles:iron-router-query-array@1.0.1'

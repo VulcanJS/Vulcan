@@ -14,8 +14,6 @@ anti:i18n@0.4.3
 aramk:tinycolor@1.1.0_1
 aslagle:reactive-table@0.8.11
 autoupdate@1.2.1
-babel-compiler@5.8.3_1
-babel-runtime@0.1.3
 base64@1.0.3
 binary-heap@1.0.3
 blaze@2.1.2
@@ -29,7 +27,6 @@ chuangbo:cookie@1.1.0
 chuangbo:marked@0.3.5
 cmather:handlebars-server@2.0.0
 coffeescript@1.0.6
-cosmos:browserify@0.4.0
 dburles:collection-helpers@1.0.3
 dburles:iron-router-query-array@1.0.1
 ddp@1.1.0
@@ -60,8 +57,6 @@ jparker:crypto-md5@0.1.1
 jparker:gravatar@0.3.1
 jquery@1.11.3_2
 json@1.0.3
-jsx@0.1.5
-kadira:debug@2.2.1
 kestanous:herald@1.3.0
 kestanous:herald-email@0.5.0
 launch-screen@1.0.2
@@ -93,14 +88,14 @@ oauth@1.1.4
 oauth1@1.1.4
 oauth2@1.1.3
 observe-sequence@1.0.6
-okgrow:iron-router-autoscroll@0.0.8
+okgrow:router-autoscroll@0.0.12
 ongoworks:speakingurl@5.0.1
 ordered-dict@1.0.3
 package-version-parser@3.0.3
 percolatestudio:synced-cron@1.1.0
+promise@0.4.1
 raix:eventemitter@0.1.3
 random@1.0.3
-react-meteor-data@0.1.2
 reactive-dict@1.1.0
 reactive-var@1.0.5
 reload@1.1.3
@@ -135,7 +130,7 @@ telescope:invites@0.24.0
 telescope:kadira@0.24.0
 telescope:lib@0.24.0
 telescope:messages@0.24.0
-telescope:migrations@0.24.0
+telescope:migrations@0.24.1
 telescope:newsletter@0.24.1
 telescope:notifications@0.24.0
 telescope:pages@0.24.0
@@ -165,6 +160,6 @@ underscore@1.0.3
 url@1.0.4
 useraccounts:core@1.11.1
 useraccounts:unstyled@1.11.1
-utilities:avatar@0.8.3
+utilities:avatar@0.9.0
 webapp@1.2.0
 webapp-hashing@1.0.3
