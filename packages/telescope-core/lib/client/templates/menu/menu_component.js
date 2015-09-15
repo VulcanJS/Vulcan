@@ -155,21 +155,9 @@ Template.menuItem.helpers({
 });
 
 Template.menuComponent.events({
-  'click .menu-collapsible .js-menu-top-toggle': function (e) {
-    e.preventDefault();
-    var $menu = $(e.currentTarget).closest(".menu-collapsible");
-    $menu.toggleClass("menu-expanded");
-    // $menu.find(".js-menu-top-toggle").first().toggleClass("toggle-expanded");
-    // $menu.find(".menu-wrapper").first().slideToggle('fast');
-  },
   'click .menu-collapsible .js-menu-toggle': function (e) {
     e.preventDefault();
-    var $menuItem = $(e.currentTarget).closest(".menu-item");
+    var $menuItem = $(e.currentTarget).closest(".menu-item, .menu-collapsible");
     $menuItem.toggleClass("menu-expanded");
-
-    // menu item could contain multiple nested sub-menus, so always use first()
-    // $menuItem.find(".js-menu-toggle").first().toggleClass("toggle-expanded");
-    // $menuItem.find(".menu-child-items").first().slideToggle('fast');
-  
   }
 });

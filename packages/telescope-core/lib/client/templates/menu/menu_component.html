@@ -46,7 +46,7 @@ menuClass (String) [optional]
         {{#if labelIsTemplate}}
           {{> Template.dynamic template=menuLabelTemplate data=menuLabelData}}
         {{else}}
-          <a class="menu-top-level-link js-menu-top-toggle" href="#">
+          <a class="menu-top-level-link js-menu-toggle" href="#">
             <span class="menu-top-level-label">{{menuLabel}}</span>
             <span class="menu-items-toggle">{{{icon "expand"}}}{{{icon "collapse"}}}</span>
           </a>

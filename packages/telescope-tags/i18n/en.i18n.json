@@ -5,5 +5,6 @@
   "invalid_category" : "Sorry, this is not a valid category",
   "categoriesBehavior": "Let users filter by…",
   "categories_behavior_one_at_a_time": "one category at a time",
-  "categories_behavior_multiple": "multiple categories at the same time"
+  "categories_behavior_multiple": "multiple categories at the same time",
+  "hideEmptyCategories": "Hide empty categories"
 }

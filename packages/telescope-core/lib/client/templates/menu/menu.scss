@@ -179,7 +179,10 @@ $text: #444444;
 }
 
 .menu-expanded{
-  &>.menu-item-wrapper{
+  .menu-wrapper{
+    display: block;
+  }
+  &>.menu-item-wrapper, &>.menu-top-level{
     .icon-expand{
       display: none;
     }

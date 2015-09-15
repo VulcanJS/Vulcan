@@ -79,5 +79,16 @@ Settings.addField([
         }
       }
     }
+  },
+  {
+    fieldName: 'hideEmptyCategories',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      autoform: {
+        group: 'categories',
+        instructions: 'Hide empty categories in navigation'
+      }
+    }
   }
 ]);
