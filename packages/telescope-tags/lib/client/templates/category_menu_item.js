@@ -1,13 +1,9 @@
-Template.category_menu_item.onCreated(function () {
-  this.data.isChecked = _.contains(Router.current().params.query.cat, this.data.item.data.slug) ? "checked": "";
-});
-
 Template.category_menu_item.helpers({
   showMultiple: function () {
     return Settings.get("categoriesBehavior", "single") === "multiple";
   },
   isChecked: function () {
-    return this.isChecked;
+    return this.item.isActive ? "checked": "";
   }
 });
 

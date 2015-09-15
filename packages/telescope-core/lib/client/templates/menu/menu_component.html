@@ -40,7 +40,7 @@ menuClass (String) [optional]
 -->
 
 <template name="menuComponent">
-  <div class="menu {{menuClass}}">
+  <div class="menu {{menuClass}} js-menu-container">
     {{#if showMenuLabel}}
       <div class="menu-top-level" href="/">
         {{#if labelIsTemplate}}
@@ -53,7 +53,7 @@ menuClass (String) [optional]
         {{/if}}
       </div>
     {{/if}}
-    <div class="menu-wrapper">
+    <div class="menu-wrapper js-menu-items">
       {{#with rootMenuItems}}
         <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
           {{#each this}}
@@ -81,7 +81,7 @@ item (Object)
 -->
 
 <template name="menuItem">
-  <li class="menu-item {{itemClass}}">
+  <li class="menu-item {{itemClass}} js-menu-container">
   
     <div class="menu-item-wrapper">
       {{#if hasTemplate}}
@@ -98,7 +98,7 @@ item (Object)
     </div>
 
     {{#with childMenuItems}}
-      <ul class="menu-child-items">
+      <ul class="menu-child-items js-menu-items">
         {{#each this}}
           {{> menuItem}}
         {{/each}}

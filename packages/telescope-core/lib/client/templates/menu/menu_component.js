@@ -157,7 +157,18 @@ Template.menuItem.helpers({
 Template.menuComponent.events({
   'click .menu-collapsible .js-menu-toggle': function (e) {
     e.preventDefault();
-    var $menuItem = $(e.currentTarget).closest(".menu-item, .menu-collapsible");
-    $menuItem.toggleClass("menu-expanded");
+    var $menuItem = $(e.currentTarget).closest(".js-menu-container");
+
+    if ($menuItem.hasClass("menu-expanded")) {
+      $menuItem.find(".js-menu-items").first().slideUp('fast', function () {
+        $menuItem.removeClass("menu-expanded");
+      });
+      
+    } else {
+      $menuItem.find(".js-menu-items").first().slideDown('fast', function () {
+        $menuItem.addClass("menu-expanded");
+      });
+    }
+
   }
 });
