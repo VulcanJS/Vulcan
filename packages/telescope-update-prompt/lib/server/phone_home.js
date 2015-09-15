@@ -3,17 +3,17 @@ Meteor.methods({
 
     var url = 'http://version.telescopeapp.org/';
 
-    var params = {
-      currentVersion: Telescope.VERSION,
-      siteTitle: Settings.get('title'),
-      siteUrl: Telescope.utils.getSiteUrl(),
-      users: Meteor.users.find().count(),
-      posts: Posts.find().count(),
-      comments: Comments.find().count()
-    };
-
     if(Meteor.user() && Users.is.admin(Meteor.user())){
-
+    
+      var params = {
+        currentVersion: Telescope.VERSION,
+        siteTitle: Settings.get('title'),
+        siteUrl: Telescope.utils.getSiteUrl(),
+        users: Meteor.users.find().count(),
+        posts: Posts.find().count(),
+        comments: Comments.find().count()
+      };
+    
       this.unblock();
       try {
         var result = HTTP.get(url, {
