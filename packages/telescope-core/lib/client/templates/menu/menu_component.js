@@ -111,6 +111,8 @@ Template.menuItem.onCreated(function () {
   if (context.item.template) {
     Template[context.item.template].inheritsHelpersFrom("menuItem");
   }
+  // this should not be reactive, as we only want to set it once on template creation
+  this.expand = this.data.item.isExpanded;
 });
 
 Template.menuItem.helpers({
@@ -120,6 +122,9 @@ Template.menuItem.helpers({
   menuItemData: function () {
     // if a data property is defined, use it for data context. Else default to current node
     return this;
+  },
+  expandedClass: function () {
+    return Template.instance().expand ? "menu-expanded" : "";
   },
   itemClass: function () {
     var itemClass = "";
@@ -134,9 +139,6 @@ Template.menuItem.helpers({
     }
     if (this.item.itemClass) {
       itemClass += " "+this.item.itemClass;
-    }
-    if (this.item.isExpanded) {
-      itemClass += " menu-expanded";
     }
     itemClass += " menu-level-" + this.level;
     
