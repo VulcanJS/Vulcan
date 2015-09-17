@@ -1,7 +1,5 @@
 <template name="user_controller">
-  {{#if Template.subscriptionsReady}}
+  {{#loader ready=Template.subscriptionsReady}}
     {{> Template.dynamic template=userTemplate data=data}}
-  {{else}}
-    {{> loading}}
-  {{/if}}
+  {{/loader}}
 </template>
