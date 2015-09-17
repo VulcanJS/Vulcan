@@ -16,7 +16,7 @@ Telescope.menuItems.add("userMenu", [
   {
     route: function () {
       var user = Meteor.user();
-      return FlowRouter.path('user_profile', {_idOrSlug: user && user.telescope && user.telescope.slug});
+      return FlowRouter.path('userProfile', {_idOrSlug: user && user.telescope && user.telescope.slug});
     },
     label: 'profile',
     description: 'view_your_profile'
@@ -24,7 +24,7 @@ Telescope.menuItems.add("userMenu", [
   {
     route: function () {
       var user = Meteor.user();
-      return FlowRouter.path('user_edit', {slug: user && user.telescope && user.telescope.slug});
+      return FlowRouter.path('userEdit', {_idOrSlug: user && user.telescope && user.telescope.slug});
     },
     label: 'edit_account',
     description: 'edit_your_profile'
