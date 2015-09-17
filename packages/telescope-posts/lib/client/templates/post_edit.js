@@ -1,4 +1,32 @@
+Template.post_edit.onCreated(function () {
+
+  var template = this;
+
+  // initialize the reactive variables
+  template.ready = new ReactiveVar(false);
+
+  var postSubscription = Telescope.subsManager.subscribe('singlePost', FlowRouter.getParam("_id"));
+  
+  // Autorun 3: when subscription is ready, update the data helper's terms
+  template.autorun(function () {
+
+    var subscriptionsReady = postSubscription.ready(); // ⚡ reactive ⚡
+
+    // if subscriptions are ready, set terms to subscriptionsTerms
+    if (subscriptionsReady) {
+      template.ready.set(true);
+    }
+  });
+
+});
+
 Template.post_edit.helpers({
+  ready: function () {
+    return Template.instance().ready.get();
+  },
+  post: function () {
+    return Posts.findOne(FlowRouter.getParam("_id"));
+  },
   postFields: function () {
     return Posts.simpleSchema().getEditableFields(Meteor.user());
   }

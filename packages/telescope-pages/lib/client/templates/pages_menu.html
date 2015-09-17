@@ -2,7 +2,7 @@
   {{#if hasPages}}
     <div class="pages-menu {{moduleClass}}">
       {{#each pages}}
-        <a href="{{pathFor route='page'}}">{{title}}</a>
+        <a href="{{pathFor 'page' slug=this.slug}}">{{title}}</a>
       {{/each}}
     </div>
   {{/if}}

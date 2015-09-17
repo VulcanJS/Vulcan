@@ -3,7 +3,11 @@
     <h3>Add new feed:</h3>
     {{> quickForm collection="Feeds" id="insertFeedForm" type="insert" label-class="control-label" input-col-class="controls" template="bootstrap3-horizontal"}}
   </div>
-  {{#each feeds}}
-    {{> feed_item}}
-  {{/each}}
+  {{#if Template.subscriptionsReady}}
+    {{#each feeds}}
+      {{> feed_item}}
+    {{/each}}
+  {{else}}
+    {{> loading}}
+  {{/if}}
 </template>

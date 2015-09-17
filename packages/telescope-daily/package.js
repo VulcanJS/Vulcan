@@ -10,8 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:core@0.24.0',
-    'telescope:singleday@0.24.0',
+    'telescope:core@0.24.0'
   ]);
 
   api.addFiles([

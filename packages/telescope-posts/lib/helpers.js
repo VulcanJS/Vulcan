@@ -36,7 +36,7 @@ Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
 Posts.getPageUrl = function(post, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + Router.path("post_page", post);
+  return prefix + FlowRouter.path("postPage", post);
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
 
@@ -47,7 +47,7 @@ Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, 
 Posts.getEditUrl = function(post, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + Router.path("post_edit", post);
+  return prefix + FlowRouter.path("postEdit", post);
 };
 Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
 

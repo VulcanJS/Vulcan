@@ -10,39 +10,47 @@ for the embedded postsList template. It receives its parameters from a "caller" 
 Template.posts_list_controller.onCreated(function () {
 
   // 1. Initialization (*not* reactive!)
-  var instance = this;
+  var template = this;
 
   // initialize the reactive variables
-  instance.terms = new ReactiveVar(instance.data.terms);
-  instance.postsLimit = new ReactiveVar(instance.data.terms.limit || Settings.get('postsPerPage', 10));
-  instance.ready = new ReactiveVar(false);
+  template.terms = new ReactiveVar(template.data.terms);
+  template.postsLimit = new ReactiveVar(template.data.terms.limit || Settings.get('postsPerPage', 10));
+  template.ready = new ReactiveVar(false);
 
   // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
-  var enableCache = (typeof instance.data.terms.enableCache === "undefined") ? false : instance.data.terms.enableCache;
-  var subscriber = enableCache ? Telescope.subsManager : instance;
+  var enableCache = (typeof template.data.terms.enableCache === "undefined") ? false : template.data.terms.enableCache;
+  var subscriber = enableCache ? Telescope.subsManager : template;
 
   // enable not subscribing to users on a per-controller basis
-  var subscribeToUsers = (typeof instance.data.terms.subscribeToUsers === "undefined") ? true : instance.data.terms.subscribeToUsers;
+  var subscribeToUsers = (typeof template.data.terms.subscribeToUsers === "undefined") ? true : template.data.terms.subscribeToUsers;
 
   // 2. Autorun
 
   // Autorun 1: when terms change, reset the limit
-  instance.nonReactiveTerms = instance.data.terms;
-  instance.autorun(function () {
+  template.nonReactiveTerms = template.data.terms;
+  template.autorun(function () {
     
+    // console.log('// ------ autorun 1 ------ //');
+
     // add a dependency on data context to trigger the autorun
     var newTerms = Template.currentData().terms; // ⚡ reactive ⚡
     
     // compare new terms with previous ones
-    if (!_.isEqual(newTerms, instance.nonReactiveTerms)) {
-      instance.nonReactiveTerms = newTerms;
-      instance.postsLimit.set(instance.data.terms.limit || Settings.get('postsPerPage', 10));
+    if (!_.isEqual(newTerms, template.nonReactiveTerms)) {
+      template.nonReactiveTerms = newTerms;
+      template.postsLimit.set(template.data.terms.limit || Settings.get('postsPerPage', 10));
     }
 
   });
 
-  // Autorun 2: will re-run when limit or terms are changed
-  instance.autorun(function () {
+  // Autorun 2: will re-subscribe when limit or terms are changed
+  template.autorun(function () {
+
+    // console.log('// ------ autorun 2 ------ //');
+
+    // set ready to false
+    template.ready.set(false);
+    var subscriptionsReady = false;
 
     // get terms from data context
     var terms = Template.currentData().terms; // ⚡ reactive ⚡
@@ -51,32 +59,37 @@ Template.posts_list_controller.onCreated(function () {
     // terms.userId = Meteor.userId();
     
     // get limit from local template variable
-    var postsLimit = instance.postsLimit.get(); // ⚡ reactive ⚡
+    var postsLimit = template.postsLimit.get(); // ⚡ reactive ⚡
 
     // create new subscriptionTerms object using the new limit
     var subscriptionTerms = _.extend(_.clone(terms), {limit: postsLimit}); // extend terms with limit
 
     // use this new object to subscribe
     var postsSubscription = subscriber.subscribe('postsList', subscriptionTerms);
-
     if (subscribeToUsers) {
       var usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
-      var subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
-    } else {
-      var subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
     }
 
-    // console.log('// ------ autorun running ------ //');
-    // console.log("terms: ", terms);
-    // console.log("limit: ", postsLimit);
-    // console.log("ready: ", subscriptionsReady);
-    // Tracker.onInvalidate(console.trace.bind(console));
+    // Autorun 3: when subscription is ready, update the data helper's terms
+    Tracker.autorun(function () {
 
-    // if subscriptions are ready, set terms to subscriptionsTerms
-    if (subscriptionsReady) {
-      instance.terms.set(subscriptionTerms);
-      instance.ready.set(true);
-    }
+      if (subscribeToUsers) {
+        subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+      } else {
+        subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
+      }
+
+      // console.log('// ------ autorun 3 ------ //');
+      // console.log("terms: ", terms);
+      // console.log("limit: ", postsLimit);
+      // console.log("ready: ", subscriptionsReady);
+
+      // if subscriptions are ready, set terms to subscriptionsTerms
+      if (subscriptionsReady) {
+        template.terms.set(subscriptionTerms);
+        template.ready.set(true);
+      }
+    });
   
   });
 
@@ -87,6 +100,8 @@ Template.posts_list_controller.helpers({
     return !!this.template? this.template: "posts_list";
   },
   data: function () {
+
+    // console.log("// -------- data -------- //")
 
     var context = this;
 

@@ -1,74 +1,74 @@
-Meteor.startup(function () {
+// Meteor.startup(function () {
 
-  Posts.controllers.search = Posts.controllers.list.extend({
+//   Posts.controllers.search = Posts.controllers.list.extend({
 
-    view: 'search',
+//     view: 'search',
     
-    showViewsNav: false,
+//     showViewsNav: false,
     
-    getTitle: function() {
-      return i18n.t("Search") + ' - ' + Settings.get('title', "Telescope");
-    },
+//     getTitle: function() {
+//       return i18n.t("Search") + ' - ' + Settings.get('title', "Telescope");
+//     },
     
-    getDescription: function() {
-      return Settings.get('description');
-    },
+//     getDescription: function() {
+//       return Settings.get('description');
+//     },
     
-    onBeforeAction: function() {
-      var query = this.params.query;
-      if ('q' in query) {
-        // if search box has 'empty' class, that means user just deleted last character in search keyword
-        // but router hasn't updated url, so params.query still has '?q=<LAST CHARACTER>'
-        // if we set searchQuery in this case, user will see last character pops up again unexpectedly
-        // so add this check to fix the bug. issue #825
-        if (!$('.search').hasClass('empty'))  {
-          Session.set('searchQuery', query.q);
-        }
-        if (query.q) {
-          Meteor.call('logSearch', query.q);
-        }
-      }
-      this.next();
-    },
+//     onBeforeAction: function() {
+//       var query = this.params.query;
+//       if ('q' in query) {
+//         // if search box has 'empty' class, that means user just deleted last character in search keyword
+//         // but router hasn't updated url, so params.query still has '?q=<LAST CHARACTER>'
+//         // if we set searchQuery in this case, user will see last character pops up again unexpectedly
+//         // so add this check to fix the bug. issue #825
+//         if (!$('.search').hasClass('empty'))  {
+//           Session.set('searchQuery', query.q);
+//         }
+//         if (query.q) {
+//           Meteor.call('logSearch', query.q);
+//         }
+//       }
+//       this.next();
+//     },
 
-    data: function () {
+//     data: function () {
       
-      var terms = {
-        view: "search",
-        limit: this.params.query.limit || Settings.get('postsPerPage', 10),
-        query: this.params.query.q
-      };
+//       var terms = {
+//         view: "search",
+//         limit: this.params.query.limit || Settings.get('postsPerPage', 10),
+//         query: this.params.query.q
+//       };
       
-      return {searchQuery: this.params.query.q, terms: terms};
-    }
-  });
+//       return {searchQuery: this.params.query.q, terms: terms};
+//     }
+//   });
 
-  Router.onBeforeAction(Router._filters.isAdmin, {only: ['logs']});
+//   Router.onBeforeAction(Router._filters.isAdmin, {only: ['logs']});
 
-  // Search
+//   // Search
 
-  Router.route('/search', {
-    name: 'search',
-    controller: Posts.controllers.search
-  });
+//   Router.route('/search', {
+//     name: 'search',
+//     controller: Posts.controllers.search
+//   });
 
-  // Search Logs
+//   // Search Logs
 
-  Router.route('/logs/:limit?', {
-    controller: Telescope.controllers.admin,
-    name: 'searchLogs',
-    template: 'search_logs',
-    waitOn: function () {
-      var limit = this.params.limit || 100;
-      if(Meteor.isClient) {
-        Session.set('logsLimit', limit);
-      }
-      return Meteor.subscribe('searches', limit);
-    },
-    data: function () {
-      return Searches.find({}, {sort: {timestamp: -1}});
-    },
-    fastRender: true
-  });
+//   Router.route('/logs/:limit?', {
+//     controller: Telescope.controllers.admin,
+//     name: 'searchLogs',
+//     template: 'search_logs',
+//     waitOn: function () {
+//       var limit = this.params.limit || 100;
+//       if(Meteor.isClient) {
+//         Session.set('logsLimit', limit);
+//       }
+//       return Meteor.subscribe('searches', limit);
+//     },
+//     data: function () {
+//       return Searches.find({}, {sort: {timestamp: -1}});
+//     },
+//     fastRender: true
+//   });
 
-});
+// });

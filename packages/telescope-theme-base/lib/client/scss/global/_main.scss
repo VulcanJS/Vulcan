@@ -1,3 +1,20 @@
+.app-loading{
+  height: 100vh;
+}
+.loader{
+  min-height: 70px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  div{
+    background:url("/packages/telescope_core/public/img/loading.svg") center center no-repeat;
+    @include hide-text2;
+    width: 24px;
+    height: 30px;
+    margin: 10px 0;    
+  }
+}
 .hidden{
   display:none;
 }

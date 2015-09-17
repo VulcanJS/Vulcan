@@ -16,7 +16,7 @@ Telescope.modules = {};
  * Telescope.modules.add("hero", {
  *   template: "newsletterBanner",
  *   order: 10,
- *   only: ["posts_default"]
+ *   only: ["postsDefault"]
  * });
  */
 Telescope.modules.add = function (zone, module) {

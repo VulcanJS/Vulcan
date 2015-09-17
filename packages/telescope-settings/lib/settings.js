@@ -134,8 +134,8 @@ Settings.schema = new SimpleSchema({
       options: function () {
         return _.map(Telescope.menuItems.get("viewsMenu"), function (view) {
           return {
-            value: Telescope.utils.camelCaseify(view.label),
-            label: view.label
+            value: view.label,
+            label: i18n.t(view.label)
           };
         });
       }
@@ -164,8 +164,8 @@ Settings.schema = new SimpleSchema({
       options: function () {
         return _.map(Telescope.menuItems.get("viewsMenu"), function (item){
           return {
-            value: item.route,
-            label: item.label
+            value: item.label,
+            label: i18n.t(item.label)
           };
         });
       }

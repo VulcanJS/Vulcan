@@ -19,7 +19,7 @@ Meteor.publish('postsList', function(terms) {
 // plus the commenters for each post
 
 Meteor.publish('postsListUsers', function(terms) {
-
+  
   terms.userId = this.userId; // add userId to terms
   
   if(Users.can.viewById(this.userId)){

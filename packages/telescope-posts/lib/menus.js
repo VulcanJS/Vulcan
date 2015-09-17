@@ -1,34 +1,42 @@
+Posts.getRoute = function () {
+  FlowRouter.watchPathChange()
+  var viewName = this.label;
+  var currentQuery = _.clone(FlowRouter.current().queryParams);
+  var newQuery = _.extend(currentQuery, {view: viewName});
+  return FlowRouter.path("postsDefault", FlowRouter.current().params, newQuery);
+};
+
 // array containing items in the views menu
 Telescope.menuItems.add("viewsMenu", [
   {
-    route: 'posts_top',
+    route: Posts.getRoute,
     label: 'top',
     description: 'most_popular_posts'
   },
   {
-    route: 'posts_new',
+    route: Posts.getRoute,
     label: 'new',
     description: 'newest_posts'
   },
   {
-    route: 'posts_best',
+    route: Posts.getRoute,
     label: 'best',
     description: 'highest_ranked_posts_ever'
   },
   {
-    route: 'posts_pending',
+    route: Posts.getRoute,
     label: 'pending',
     description: 'posts_awaiting_moderation',
     adminOnly: true
   },
   {
-    route: 'posts_rejected',
+    route: Posts.getRoute,
     label: 'rejected',
     description: 'rejected_posts',
     adminOnly: true
   },
   {
-    route: 'posts_scheduled',
+    route: Posts.getRoute,
     label: 'scheduled',
     description: 'future_scheduled_posts',
     adminOnly: true

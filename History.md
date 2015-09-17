@@ -3,6 +3,11 @@
 * [BREAKING] New post approval/rejection workflow: pending posts can be approved or rejected; approved posts can only be rejected; rejected posts can only be approved. 
 * Removed `status` radio button from post edit form.
 * Added `rejected` view to show all rejected posts. 
+* [BREAKING] `postApprovedAsync` hook renamed to `postApproveAsync`, added `postRejectAsync`.
+* 
+
+* Removed `Telescope.utils.getCurrentTemplate()`;
+*
 
 ## v0.24 “SubScope2”
 

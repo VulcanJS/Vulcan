@@ -22,16 +22,18 @@ Posts.parameters.get = function (terms) {
   // initialize parameters by extending baseParameters object, to avoid passing it by reference
   var parameters = Telescope.utils.deepExtend(true, {}, Posts.views.baseParameters);
 
-  // if view is not defined, default to "top"
-  var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'top';
-
-  // get query parameters according to current view
-  if (typeof Posts.views[view] !== 'undefined')
-    parameters = Telescope.utils.deepExtend(true, parameters, Posts.views[view](terms));
-
   // iterate over postsParameters callbacks
   parameters = Telescope.callbacks.run("postsParameters", parameters, terms);
   
+  // if sort options are not provided, default to "top" sort
+  if (_.isEmpty(parameters.options.sort)) {
+    parameters.options.sort = {sticky: -1, score: -1};
+  }
+ 
+  // extend sort to sort posts by _id to break ties
+  // NOTE: always do this last to avoid _id sort overriding another sort
+  parameters = Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+
   // console.log(parameters);
 
   return parameters;
@@ -39,11 +41,46 @@ Posts.parameters.get = function (terms) {
 
 // Parameter callbacks
 
-// extend sort to sort posts by _id to break ties
-function breakTies (parameters, terms) {
-  return Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+// View Parameter
+// Add a "view" property to terms which can be used to filter posts. 
+function addViewParameter (parameters, terms) {
+
+  // if view is not defined, default to "top"
+  var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'top';
+
+  // get query parameters according to current view
+  if (typeof Posts.views[view] !== 'undefined')
+    parameters = Telescope.utils.deepExtend(true, parameters, Posts.views[view](terms));
+
+  return parameters;
 }
-Telescope.callbacks.add("postsParameters", breakTies);
+Telescope.callbacks.add("postsParameters", addViewParameter);
+
+// View Parameter
+// Add "after" and "before" properties to terms which can be used to limit posts in time. 
+function addTimeParameter (parameters, terms) {
+
+  if (typeof parameters.find.postedAt === "undefined") {
+  
+    var postedAt = {};
+
+    if (terms.after) {
+      postedAt.$gte = moment(terms.after, "YYYY-MM-DD").startOf('day').toDate();
+    }
+
+    if (terms.before) {
+      postedAt.$lt = moment(terms.before, "YYYY-MM-DD").endOf('day').toDate();
+    }
+
+    if (!_.isEmpty(postedAt)) {
+      parameters.find.postedAt = postedAt;
+    }
+
+  }
+
+  return parameters;
+}
+Telescope.callbacks.add("postsParameters", addTimeParameter);
 
 // limit the number of items that can be requested at once
 function limitPosts (parameters, terms) {
@@ -69,12 +106,3 @@ function hideFuturePosts (parameters, terms) {
   return parameters;
 }
 Telescope.callbacks.add("postsParameters", hideFuturePosts);
-
-// if options are not provided, default to "top" sort
-function defaultSort (parameters, terms) {
-  if (_.isEmpty(parameters.options.sort)) {
-    parameters.options.sort = {sort: {sticky: -1, score: -1}};
-  }
-  return parameters;
-}
-Telescope.callbacks.add("postsParameters", defaultSort);

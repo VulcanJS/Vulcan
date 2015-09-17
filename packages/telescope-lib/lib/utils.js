@@ -71,16 +71,6 @@ Telescope.utils.capitalise = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-Telescope.utils.getCurrentTemplate = function() {
-  var template = Router.current().lookupTemplate();
-  // on postsDaily route, template is a function
-  if (typeof template === "function") {
-    return template();
-  } else {
-    return template;
-  }
-};
-
 Telescope.utils.t = function(message) {
   var d = new Date();
   console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());
@@ -122,7 +112,7 @@ Telescope.utils.getSiteUrl = function () {
  * @param {String} url - the URL to redirect
  */
 Telescope.utils.getOutgoingUrl = function (url) {
-  return Telescope.utils.getRouteUrl('out', {}, {query: {url: url}});
+  return Telescope.utils.getSiteUrl() + "out?url=" + encodeURIComponent(url);
 };
 
 // This function should only ever really be necessary server side

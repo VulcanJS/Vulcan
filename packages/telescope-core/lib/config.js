@@ -52,13 +52,13 @@ AccountsTemplates.addField({
 
 
 //Routes
-AccountsTemplates.configureRoute('signIn');
-AccountsTemplates.configureRoute('signUp', {
-  path: '/register'
-});
-AccountsTemplates.configureRoute('forgotPwd');
-AccountsTemplates.configureRoute('resetPwd');
-AccountsTemplates.configureRoute('changePwd');
+// AccountsTemplates.configureRoute('signIn');
+// AccountsTemplates.configureRoute('signUp', {
+//   path: '/register'
+// });
+// AccountsTemplates.configureRoute('forgotPwd');
+// AccountsTemplates.configureRoute('resetPwd');
+// AccountsTemplates.configureRoute('changePwd');
 //AccountsTemplates.configureRoute('enrollAccount');
 //AccountsTemplates.configureRoute('verifyEmail');
 

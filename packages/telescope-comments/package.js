@@ -43,6 +43,8 @@ Package.onUse(function (api) {
     'lib/client/templates/comments_list/comments_list_compact.js',
     'lib/client/templates/comments_list/comments_list_controller.html',
     'lib/client/templates/comments_list/comments_list_controller.js',
+    'lib/client/templates/comment_controller/comment_controller.html',
+    'lib/client/templates/comment_controller/comment_controller.js'
   ], ['client']);
 
   api.addFiles([

@@ -53,7 +53,7 @@ Posts.helpers({getCategories: function () {return Posts.getCategories(this);}});
 Categories.getUrl = function (category, isAbsolute) {
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + Router.path("posts_category", category);
+  return prefix + FlowRouter.path("posts_category", category);
 };
 Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
 

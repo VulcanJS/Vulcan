@@ -38,7 +38,7 @@ postsField (Object)
     </thead>
     {{#each postsCursor}}
       <tr>
-        <td><a href="{{pathFor route='post_page' _id=_id}}">{{title}}</a></td>
+        <td><a href="{{pathFor 'postPage' _id=_id}}">{{title}}</a></td>
         <td>{{fieldValue}}</td>
       </tr>
     {{/each}}

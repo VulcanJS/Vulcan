@@ -19,11 +19,11 @@ Package.onUse(function (api) {
     'lib/custom_fields.js',
     'lib/methods.js',
     'lib/modules.js',
+    'lib/routes.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/routes.js',
     'lib/client/scss/categories.scss',
     'lib/client/templates/categories_admin.html',
     'lib/client/templates/categories_admin.js',

@@ -10,7 +10,7 @@
       </div>
 
       <div class="post-admin-actions">
-        <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
+        <a href="{{pathFor 'postEdit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
         {{#if showApprove}}
           <a href="#" class="approve-link" title="{{_ 'approve'}}">{{{icon "approve"}}} <span class="sr-only">{{_ "approve"}}</span></a>
         {{/if}}
@@ -24,7 +24,7 @@
 
       {{#if canEdit this}}
         <div class="post-admin-actions">
-          <a href="{{pathFor route='post_edit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
+          <a href="{{pathFor 'postEdit' _id=_id}}" class="edit-link" title="{{_ 'edit'}}">{{{icon "edit"}}} <span class="sr-only">{{_ "edit"}}</span></a>
           <a href="#" class="delete-link" title="{{_ 'delete'}}">{{{icon "delete"}}} <span class="sr-only">{{_ "delete"}}</span></a>
         </div>
       {{/if}}

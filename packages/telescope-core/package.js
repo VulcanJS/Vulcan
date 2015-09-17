@@ -44,7 +44,6 @@ Package.onUse(function(api) {
     'lib/client/templates/admin/admin_menu.html',
     'lib/client/templates/admin/admin_menu.js',
     'lib/client/templates/admin/admin_wrapper.html',
-    'lib/client/templates/admin/admin_wrapper.js',
     'lib/client/templates/common/css.html',
     'lib/client/templates/common/css.js',
     'lib/client/templates/common/footer_code.html',

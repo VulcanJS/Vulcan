@@ -64,9 +64,12 @@ Package.onUse(function (api) {
     'lib/client/templates/user_item.html',
     'lib/client/templates/user_item.js',
     'lib/client/templates/user_profile.html',
+    'lib/client/templates/user_profile.js',
     'lib/client/templates/nav/user_menu.html',
     'lib/client/templates/nav/user_menu.js',
-    'lib/client/templates/nav/user_menu_label.html'
+    'lib/client/templates/nav/user_menu_label.html',
+    'lib/client/templates/user_controller/user_controller.html',
+    'lib/client/templates/user_controller/user_controller.js'
   ], ['client']);
 
   api.addFiles([

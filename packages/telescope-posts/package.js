@@ -66,6 +66,8 @@ Package.onUse(function (api) {
     'lib/client/templates/post_submit.js',
     'lib/client/templates/views_menu.html',
     'lib/client/templates/views_menu.js',
+    'lib/client/templates/main_posts_list.html',
+    'lib/client/templates/main_posts_list.js',
     'lib/client/templates/posts_list/posts_list.html',
     'lib/client/templates/posts_list/posts_list.js',
     'lib/client/templates/posts_list/posts_list_compact.html',

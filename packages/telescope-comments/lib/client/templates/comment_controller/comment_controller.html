@@ -1,0 +1,7 @@
+<template name="comment_controller">
+  {{#if Template.subscriptionsReady}}
+    {{> Template.dynamic template=commentTemplate data=data}}
+  {{else}}
+    {{> loading}}
+  {{/if}}
+</template>

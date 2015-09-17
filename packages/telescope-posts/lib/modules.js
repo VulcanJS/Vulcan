@@ -1,10 +1,3 @@
-
-Telescope.modules.add("top", {
-  template: 'views_menu',
-  order: 99,
-  only: ["posts_default", "posts_top", "posts_new", "posts_best", "posts_pending", "posts_rejected", "posts_scheduled"]
-});
-
 Telescope.modules.add("postComponents", [
   {
     template: 'post_rank',

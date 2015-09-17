@@ -30,7 +30,7 @@ telescope:rss
 telescope:scoring
 telescope:search
 telescope:share
-telescope:singleday
+# telescope:singleday
 # telescope:sitemap
 telescope:subscribe-to-posts # notifications
 telescope:tagline-banner

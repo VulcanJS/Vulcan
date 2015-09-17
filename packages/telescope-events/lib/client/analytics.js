@@ -102,12 +102,12 @@ Events.analyticsRequest = function() {
 
   // GoSquared
   if (typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined') {
-    GoSquared.DefaultTracker.TrackView(window.location.pathname, Telescope.utils.getCurrentTemplate());
+    GoSquared.DefaultTracker.TrackView(window.location.pathname, FlowRouter.current().route.name);
   }
 
   // Clicky
   if(typeof clicky !== 'undefined'){
-    clicky.log(encodeURIComponent(window.location.pathname), Telescope.utils.getCurrentTemplate(), "pageview");
+    clicky.log(encodeURIComponent(window.location.pathname), FlowRouter.current().route.name, "pageview");
   }
 
 };

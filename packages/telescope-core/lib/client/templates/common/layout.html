@@ -1,19 +1,23 @@
 <template name="layout">
-  {{> css}}
-  <div class="outer-wrapper {{currentPage}} {{navLayout}}">
-    {{> mobile_nav}}
-    <div class="inner-wrapper template-{{pageName}}">
-      {{> header}}
-      {{> modules zone="hero"}}
-      <div class="content-wrapper">
-        {{> messages}}
-        {{> yield "adminMenu"}}
-        {{> modules zone="top"}}
-        {{> yield}}
-        {{> modules zone="footer"}}
+  {{#if appIsReady}}
+    {{> css}}
+    <div class="outer-wrapper {{currentPage}} {{navLayout}}">
+      {{> mobile_nav}}
+      <div class="inner-wrapper template-{{pageName}}">
+        {{> header}}
+        {{> modules zone="hero"}}
+        <div class="content-wrapper">
+          {{> messages}}
+          {{> Template.dynamic template=adminMenu}}
+          {{> modules zone="top"}}
+          {{> Template.dynamic template=main}}
+          {{> modules zone="footer"}}
+        </div>
+        <div class="overlay hidden"></div>
       </div>
-      <div class="overlay hidden"></div>
+      {{{extraCode}}}
     </div>
-    {{{extraCode}}}
-  </div>
+  {{else}}
+    <div class="app-loading">{{> loading}}</div>
+  {{/if}}
 </template>

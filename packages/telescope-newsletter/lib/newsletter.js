@@ -212,7 +212,7 @@ Posts.views.add("campaign", function (terms) {
 Telescope.modules.add("hero", {
   template: 'newsletter_banner',
   order: 10,
-  only: ["posts_default"]
+  only: ["postsDefault"]
 });
 
  function subscribeUserOnProfileCompletion (user) {

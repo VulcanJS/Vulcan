@@ -17,7 +17,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/settings.js',
-    'lib/router.js',
+    'lib/routes.js',
     'lib/menus.js',
     'package-tap.i18n'
   ], both);

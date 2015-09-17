@@ -17,16 +17,16 @@ Template.category_menu_item.events({
 
     input.prop("checked", !input.prop("checked"))    
     
-    if (Router.current().route.getName() !== "posts_categories") {
+    if (FlowRouter.getRouteName() !== "postsDefault") {
 
-      Router.go("posts_categories", {}, {query: 'cat[]='+slug});
-    
+      FlowRouter.go("postsDefault", {}, {cat:[slug]});
+
     } else {
 
       if (input.prop("checked")) {
-        Router.query.add('cat', slug);
+        FlowRouter.addToQueryArray('cat', slug);
       } else {
-        Router.query.remove('cat', slug);
+        FlowRouter.removeFromQueryArray('cat', slug);
       }
       
     }

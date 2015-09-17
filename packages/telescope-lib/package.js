@@ -30,7 +30,10 @@ Package.onUse(function (api) {
     'aldeed:template-extension@3.4.3',
     'tap:i18n@1.5.1',
     'fourseven:scss@3.2.0',
-    'iron:router@1.0.9',
+    // 'iron:router@1.0.9',
+    'kadira:flow-router@2.6.0',
+    'kadira:blaze-layout@2.1.0',
+    'arillo:flow-router-helpers@0.4.5',
     'dburles:collection-helpers@1.0.3',
     // 'meteorhacks:flow-router@1.5.0',
     // 'meteorhacks:flow-layout@1.1.1',
@@ -40,7 +43,9 @@ Package.onUse(function (api) {
     'meteorhacks:subs-manager@1.5.2',
     'percolatestudio:synced-cron@1.1.0',
     'useraccounts:unstyled@1.11.1',
-    'manuelschoebel:ms-seo@0.4.1',
+    'useraccounts:flow-routing@1.12.3',
+    // 'manuelschoebel:ms-seo@0.4.1',
+    'tomwasd:flow-router-seo@0.0.3',
     'aramk:tinycolor@1.1.0_1',
     'momentjs:moment@2.10.6',
     'sacha:spin@2.3.1',
@@ -58,7 +63,7 @@ Package.onUse(function (api) {
     'okgrow:router-autoscroll@0.0.12',
     // 'utilities:state-transitions@0.1.0',
     'tmeasday:publish-counts@0.7.1',
-    'dburles:iron-router-query-array@1.0.1'
+    // 'dburles:iron-router-query-array@1.0.1'
   ];
 
   api.use(packages);
@@ -80,7 +85,9 @@ Package.onUse(function (api) {
     'lib/menus.js',
     'lib/base.js',
     'lib/colors.js',
-    'lib/icons.js'
+    'lib/icons.js',
+    'lib/router/admin.js',
+    'lib/router/query_arrays.js'
   ], ['client', 'server']);
 
   api.addFiles([

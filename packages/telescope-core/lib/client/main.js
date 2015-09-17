@@ -1,5 +1,5 @@
 // Session variables
-Session.set('postsLimit', Settings.get('postsPerPage', 10));
+Session.set('appIsReady', false);
 
 Meteor.startup(function () {
   $('#rss-link').attr('title', i18n.t('new_posts'));
@@ -7,32 +7,22 @@ Meteor.startup(function () {
 
 // AutoForm.debug();
 
-Meteor.startup(function() {
 
-  var seoProperties = {
-    meta: {},
-    og: {}
-  };
+// Global Subscriptions
 
-  var title = Settings.get("title", "Telescope");
-  if (!!Settings.get("tagline")) {
-    title += ": "+Settings.get("tagline");
-  }
+Telescope.subscriptions.preload('settings');
+Telescope.subscriptions.preload('currentUser');
 
-  seoProperties.title = title;
-
-  if (!!Settings.get("description")) {
-    seoProperties.meta.description = Settings.get("description");
-    seoProperties.og.description = Settings.get("description");
-  }
-
-  if (!!Settings.get("siteImage")) {
-    seoProperties.og.image = Settings.get("siteImage");
-  }
-
-  SEO.config(seoProperties);
-
-});
+FlowRouter.subscriptions = function() {
+  var flow = this;
+  Telescope.subscriptions.forEach(function (sub) {
+    if (typeof sub === 'object'){
+      flow.register(sub.subName, Meteor.subscribe(sub.subName, sub.subArguments));
+    }else{
+      flow.register(sub, Meteor.subscribe(sub));
+    }
+  });
+};
 
 // Template extension stuff for backwards compatibility
 

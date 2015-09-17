@@ -1,3 +1,9 @@
+Template.settings.helpers({
+  settings: function () {
+    return Settings.findOne();
+  }
+});
+
 AutoForm.addHooks(['updateSettingsForm', 'insertSettingsForm'], {
     onSuccess: function(operation, result) {
       this.template.$('button[type=submit]').removeClass('loading');

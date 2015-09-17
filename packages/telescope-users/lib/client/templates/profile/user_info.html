@@ -22,7 +22,7 @@
       {{/each}}
     </table>
     {{#if canEditProfile}}
-      <a class="edit-profile-button button btn btn-primary inline" href="{{pathFor route='user_edit' slug=telescope.slug}}">{{_ "edit_profile"}}</a>
+      <a class="edit-profile-button button btn btn-primary inline" href="{{pathFor 'userEdit' _idOrSlug=this.telescope.slug}}">{{_ "edit_profile"}}</a>
     {{/if}}
     {{#if canInvite}}
       {{#if isAdmin}}

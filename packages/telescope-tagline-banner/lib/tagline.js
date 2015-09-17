@@ -1,7 +1,7 @@
 Telescope.modules.add("top", {
   template: "tagline_banner",
   order: 1,
-  only: ["posts_default"]
+  only: ["postsDefault"]
 });
 
 var showTaglineBanner = {

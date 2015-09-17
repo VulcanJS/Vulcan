@@ -1,5 +1,5 @@
 Telescope.menuItems.add("adminMenu", {
-  route: 'admin/categories',
+  route: 'adminCategories',
   label: 'Categories',
   description: 'add_and_remove_categories'
 });
