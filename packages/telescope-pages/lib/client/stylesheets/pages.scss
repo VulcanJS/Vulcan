@@ -5,12 +5,15 @@
 .top-nav{
   .desktop-nav{
     .pages-menu{
-      a{
-        font-weight: normal;
+      .pages-menu-item{
+        display: inline-block;
         margin-right: 20px;
         &:last-of-type{
           margin: 0;
         }
+      }
+      a{
+        font-weight: normal;
       } 
     }
   }
@@ -19,8 +22,7 @@
 .side-nav{
   .pages-menu{
     order: 2;
-    a{
-      display: block;
+    .pages-menu-item{
       margin-bottom: 10px;
       &:last-child{
         margin: 0;
@@ -31,7 +33,7 @@
 
 .mobile-nav{
   .pages-menu{
-    a{
+    .pages-menu-item{
       border-bottom:1px white(0.2) solid;
       margin: 0;
       &:last-of-type{

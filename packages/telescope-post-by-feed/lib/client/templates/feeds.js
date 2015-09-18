@@ -4,6 +4,10 @@ Template.feeds.onCreated(function () {
   template.subscribe('allUsersAdmin');
 });
 
+Template.feeds.onSubscribed(function () {
+  console.log("subscription done!");
+});
+
 Template.feeds.helpers({
   feeds: function(){
     return Feeds.find({}, {sort: {url: 1}});

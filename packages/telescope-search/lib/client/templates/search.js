@@ -7,46 +7,44 @@ var delay = (function(){
   };
 })();
 
-Meteor.startup(function () {
-
-  Template.search.helpers({
-    canSearch: function () {
-      return Users.can.view(Meteor.user());
-    },
-    searchQuery: function () {
-      return this.searchQuery;
-    },
-    searchQueryEmpty: function () {
-      return this.searchQuery ? "" : "empty";
-    }
-  });
-
-  Template.search.events({
-    'keyup .search-field': function (e) {
-      e.preventDefault();
-      var val = $(e.target).val(),
-          $search = $('.search');
-      if (val === '') {
-        // if search field is empty, just do nothing and show an empty template
-        $search.addClass('empty');
-        // Router.go('search', null, {replaceState: true});
-      } else {
-        $search.removeClass('empty');
-        // if search field is not empty, add a delay to avoid firing new searches for every keystroke
-        delay(function(){
-
-          // Update the querystring.
-          var opts = {query: {q: val}};
-          // if we're already on the search page, do a replaceState. Otherwise,
-          // just use the pushState default.
-          if(Router.current().route.getName() === 'search') {
-            opts.replaceState = true;
-          }
-          Router.go('search', null, opts);
-
-        }, 700 );
-      }
-    }
-  });
-
+Template.search.helpers({
+  canSearch: function () {
+    return Users.can.view(Meteor.user());
+  },
+  searchQuery: function () {
+    return FlowRouter.getQueryParam("query");
+  },
+  searchQueryEmpty: function () {
+    return !!FlowRouter.getQueryParam("query") ? "" : "empty";
+  }
 });
+
+Template.search.events({
+  'keyup .search-field': function (e) {
+    
+    e.preventDefault();
+    
+    var val = $(e.target).val(),
+        $search = $('.search');
+
+    // if we're not on search route, go to it
+
+    if (FlowRouter.getRouteName() !== "postsDefault") {
+      FlowRouter.go("postsDefault");
+    }
+
+    if (val === '') {
+      // if search field is empty
+      $search.addClass('empty');
+      val = null;
+    } else {
+      $search.removeClass('empty');
+    }
+
+    delay(function(){
+      FlowRouter.setQueryParams({query: val});
+    }, 700 );
+
+  }
+});
+

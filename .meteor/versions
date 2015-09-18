@@ -157,6 +157,7 @@ useraccounts:core@1.12.3
 useraccounts:flow-routing@1.12.3
 useraccounts:unstyled@1.11.1
 utilities:avatar@0.9.0
+utilities:onsubscribed@0.1.0
 webapp@1.2.0
 webapp-hashing@1.0.3
 zimme:active-route@2.3.2

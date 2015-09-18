@@ -11,13 +11,9 @@ getMeta = function(url) {
   };
 };
 
-servePostRSS = function(view, url, category) {
+servePostRSS = function(terms, url) {
   var feed = new RSS(getMeta(url));
 
-  var terms = {view: view, limit: 20};
-  if (category) {
-    terms.category = category;
-  };
   var params = Posts.parameters.get(terms);
   delete params['options']['sort']['sticky'];
 

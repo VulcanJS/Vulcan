@@ -13,11 +13,12 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/search.js',
+    'lib/routes.js',
+    'lib/parameters.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/routes.js',
     'lib/client/templates/search.html',
     'lib/client/templates/search.js',
     'lib/client/templates/search_logs.html',

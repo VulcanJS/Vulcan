@@ -9,6 +9,8 @@
 * Removed `Telescope.utils.getCurrentTemplate()`;
 *
 
+* RSS feed and API can now both accept any post query parameter (`limit`, `view`, `cat`, `before`, `after`, etc.)
+
 ## v0.24 “SubScope2”
 
 * [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 

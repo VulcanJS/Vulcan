@@ -34,6 +34,7 @@ Package.onUse(function (api) {
     'kadira:flow-router@2.6.0',
     'kadira:blaze-layout@2.1.0',
     'arillo:flow-router-helpers@0.4.5',
+    'meteorhacks:picker@1.0.3',
     'dburles:collection-helpers@1.0.3',
     // 'meteorhacks:flow-router@1.5.0',
     // 'meteorhacks:flow-layout@1.1.1',
@@ -64,6 +65,7 @@ Package.onUse(function (api) {
     // 'utilities:state-transitions@0.1.0',
     'tmeasday:publish-counts@0.7.1',
     // 'dburles:iron-router-query-array@1.0.1'
+    'utilities:onsubscribed@0.1.0'
   ];
 
   api.use(packages);

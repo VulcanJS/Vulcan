@@ -1,10 +1,11 @@
-serveAPI = function(limitSegment){
+serveAPI = function(terms){
   var posts = [];
-  var limit = isNaN(limitSegment) ? 20 : limitSegment; // default limit: 20 posts
 
-  Posts.find({status: Posts.config.STATUS_APPROVED}, {sort: {postedAt: -1}, limit: limit}).forEach(function(post) {
+  var parameters = Posts.parameters.get(terms);
+
+  Posts.find(parameters.find, parameters.options).forEach(function(post) {
     var url = Posts.getLink(post);
-    var properties = {
+    var postOutput = {
       title: post.title,
       headline: post.title, // for backwards compatibility
       author: post.author,
@@ -15,18 +16,18 @@ serveAPI = function(limitSegment){
     };
 
     if(post.body)
-      properties.body = post.body;
+      postOutput.body = post.body;
 
     if(post.url)
-      properties.domain = Telescope.utils.getDomain(url);
+      postOutput.domain = Telescope.utils.getDomain(url);
 
     if (post.thumbnailUrl) {
-      properties.thumbnailUrl = Telescope.utils.addHttp(post.thumbnailUrl);
+      postOutput.thumbnailUrl = Telescope.utils.addHttp(post.thumbnailUrl);
     }
 
     var twitterName = Users.getTwitterNameById(post.userId);
     if(twitterName)
-      properties.twitterName = twitterName;
+      postOutput.twitterName = twitterName;
 
     var comments = [];
 
@@ -60,9 +61,9 @@ serveAPI = function(limitSegment){
       comments.splice(index,1);
     });
 
-    properties.comments = comments;
+    postOutput.comments = comments;
 
-    posts.push(properties);
+    posts.push(postOutput);
   });
 
   return JSON.stringify(posts);

@@ -15,7 +15,7 @@ Package.onUse(function (api) {
     'lib/categories.js',
     'lib/helpers.js',
     'lib/callbacks.js',
-    'lib/views.js',
+    'lib/parameters.js',
     'lib/custom_fields.js',
     'lib/methods.js',
     'lib/modules.js',
