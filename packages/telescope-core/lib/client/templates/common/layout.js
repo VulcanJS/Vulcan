@@ -1,34 +1,25 @@
 Template.layout.onCreated(function (){
 
-  Telescope.SEO.set({
-    title: i18n.t("loading")
-  });
+  DocHead.setTitle(i18n.t("loading"));
 
   Tracker.autorun(function () {
 
     if (FlowRouter.subsReady()) {
 
-      var seoProperties = {
-        meta: {}
-      };
-
       var title = Settings.get("title", "Telescope");
       if (!!Settings.get("tagline")) {
         title += ": "+Settings.get("tagline");
       }
-      seoProperties.title = title;
+      DocHead.setTitle(title);
 
       if (!!Settings.get("description")) {
-        seoProperties.description = Settings.get("description");
-        seoProperties.meta['property="og:description"'] = Settings.get("description");
+        DocHead.addMeta({name: "description", content: Settings.get("description")});
+        DocHead.addMeta({property: "og:description", content: Settings.get("description")});
       }
 
       if (!!Settings.get("siteImage")) {
-        seoProperties.meta['property="og:image"'] = Settings.get("siteImage");
+        DocHead.addMeta({property: "og:image", content: Settings.get("siteImage")});
       }
-
-      Telescope.SEO.setDefaults(seoProperties);
-      Telescope.SEO.set(seoProperties);
 
     }
   

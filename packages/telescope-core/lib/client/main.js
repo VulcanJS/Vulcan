@@ -1,5 +1,3 @@
-Telescope.SEO = new FlowRouterSEO();
-
 // Session variables
 Session.set('appIsReady', false);
 

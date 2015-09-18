@@ -1,3 +1,37 @@
+var doSEOStuff = function (post) {
+
+  $('link[rel="canonical"]').attr("href", post.getPageUrl(true));
+
+  // Set SEO properties
+  
+  var seoProperties = {meta: {}};
+
+  // Set site name
+  DocHead.addMeta({property: "og:site_name", content: Settings.get("title")});
+
+  // Set title
+  Telescope.SEO.setTitle(post.title);
+
+  // Set description
+  if (!!post.body) {
+    var description = Telescope.utils.trimWords(post.body, 100);
+    Telescope.SEO.setDescription(description);
+  }
+
+  // Set image
+  if (!!post.thumbnailUrl) {
+    var image = Telescope.utils.addHttp(post.thumbnailUrl);
+    DocHead.addMeta({property: "twitter:card", content: "summary_large_image"});
+    Telescope.SEO.setImage(image);
+  }
+
+  // Set Twitter username
+  if (!!Settings.get("twitterAccount")) {
+    DocHead.addMeta({property: "twitter:site", content: Settings.get("twitterAccount")});
+  }
+  
+};
+
 Template.post_page.onCreated(function () {
 
   var template = this;
@@ -15,9 +49,10 @@ Template.post_page.onCreated(function () {
 
     var subscriptionsReady = postSubscription.ready(); // ⚡ reactive ⚡
 
-    // if subscriptions are ready, set terms to subscriptionsTerms
+    // if subscriptions are ready, set terms to subscriptionsTerms and update SEO stuff
     if (subscriptionsReady) {
       template.ready.set(true);
+      doSEOStuff(Posts.findOne(FlowRouter.getParam("_id")));
     }
   });
 

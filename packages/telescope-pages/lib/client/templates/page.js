@@ -1,7 +1,5 @@
 Template.page.onCreated(function () {
-  Telescope.SEO.set({
-    title: Pages.findOne({slug: FlowRouter.getParam("slug")}).title
-  });
+  Telescope.SEO.setTitle(Pages.findOne({slug: FlowRouter.getParam("slug")}).title);
 });
 
 Template.page.helpers({
