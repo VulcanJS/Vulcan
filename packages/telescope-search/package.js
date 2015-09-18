@@ -13,7 +13,6 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/search.js',
-    'lib/routes.js',
     'lib/parameters.js',
     'package-tap.i18n'
   ], ['client', 'server']);
@@ -21,14 +20,10 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/client/templates/search.html',
     'lib/client/templates/search.js',
-    'lib/client/templates/search_logs.html',
-    'lib/client/templates/search_logs.js',
     'lib/client/stylesheets/search.scss'
     ], ['client']);
 
   api.addFiles([
-    'lib/server/log_search.js',
-    'lib/server/publications.js'
     ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];
