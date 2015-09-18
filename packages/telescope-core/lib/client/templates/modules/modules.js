@@ -27,12 +27,12 @@ Template.modules.helpers({
 
     // if module should only run on specific routes, test for them
     if (module.only) {
-      return _.contains(module.only, FlowRouter.current().route.name);
+      return _.contains(module.only, FlowRouter.getRouteName());
     }
 
     // if module should *not* run on specific routes, test for them
     if (module.except) {
-      return !_.contains(module.except, FlowRouter.current().route.name);
+      return !_.contains(module.except, FlowRouter.getRouteName());
     }
 
     return true;

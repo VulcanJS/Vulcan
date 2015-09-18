@@ -22,5 +22,5 @@ Picker.route('/rss/category/:slug/feed.xml', function(params, req, res, next) {
 });
 
 Picker.route('/rss/comments.xml', function(params, req, res, next) {
-  res.end(serveCommentRSS());
+  res.end(serveCommentRSS({}, '/rss/comments.xml'));
 });

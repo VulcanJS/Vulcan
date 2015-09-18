@@ -120,7 +120,7 @@ Telescope.utils.getOutgoingUrl = function (url) {
 // and shouldn't care about the siteUrl.
 Telescope.utils.getRouteUrl = function (routeName, params, options) {
   options = options || {};
-  var route = Router.url(
+  var route = FlowRouter.path(
     routeName,
     params || {},
     options

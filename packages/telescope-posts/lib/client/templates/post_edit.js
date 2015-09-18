@@ -57,7 +57,7 @@ AutoForm.hooks({
 
     onSuccess: function(formType, post) {
       Events.track("edit post", {'postId': post._id});
-      Router.go('post_page', post);
+      FlowRouter.go('postPage', post);
     },
 
     onError: function(formType, error) {

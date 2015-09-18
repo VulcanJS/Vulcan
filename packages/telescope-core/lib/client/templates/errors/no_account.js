@@ -6,7 +6,7 @@ Template.no_account.helpers({
 Template.no_account.events({
   'click .twitter-button': function(){
     Meteor.loginWithTwitter(function(){
-		Router.go('/');
+  		FlowRouter.go("postsDefault");
     });
   }
 });

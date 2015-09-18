@@ -7,7 +7,8 @@
 * 
 
 * Removed `Telescope.utils.getCurrentTemplate()`;
-*
+* Removed search logging.
+* Disabled single day view. 
 
 * RSS feed and API can now both accept any post query parameter (`limit`, `view`, `cat`, `before`, `after`, etc.)
 

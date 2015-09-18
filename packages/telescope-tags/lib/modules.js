@@ -24,7 +24,7 @@ Telescope.modules.add("mobileNav", {
 Telescope.modules.add("top", {
   template: 'category_title',
   order: 10,
-  only: ["posts_category", "posts_categories"]
+  only: ["postsDefault"]
 });
 
 // we want to wait until categories are all loaded to load the rest of the app

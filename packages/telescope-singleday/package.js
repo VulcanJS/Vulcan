@@ -28,7 +28,6 @@ Package.onUse(function (api) {
   // both
 
   api.addFiles([
-    'lib/routes.js',
     'lib/singleday.js'
   ], ['client', 'server']);
 

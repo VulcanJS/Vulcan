@@ -22,6 +22,7 @@ Package.onUse(function (api) {
     'lib/notifications.js',
     'lib/callbacks.js',
     'lib/modules.js',
+    'lib/routes.js',
     'package-tap.i18n'
   ], ['client', 'server']);
 

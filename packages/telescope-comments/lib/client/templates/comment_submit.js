@@ -52,7 +52,7 @@ AutoForm.hooks({
     onSuccess: function(operation, comment) {
       this.template.$('button[type=submit]').removeClass('loading');
       Events.track("new comment", {'commentId': comment._id});
-      Router.go('post_page', {_id: comment.postId});
+      FlowRouter.go('postPage', {_id: comment.postId});
       if (comment.status === Posts.config.STATUS_PENDING) {
         Messages.flash(i18n.t('thanks_your_post_is_awaiting_approval'), 'success');
       }

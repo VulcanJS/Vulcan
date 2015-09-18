@@ -25,11 +25,7 @@ Package.onUse(function(api) {
   api.imply(packages);
 
   api.addFiles([
-    'lib/router/config.js',
     'lib/router/filters.js',
-    'lib/router/admin.js',
-    'lib/router/server.js',
-    'lib/config.js',
     'lib/modules.js',
     'lib/vote.js'
   ], ['client', 'server']);
@@ -84,7 +80,8 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    'lib/server/start.js'
+    'lib/server/start.js',
+    'lib/server/routes.js'
   ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "it", "ja", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sv", "th", "tr", "vi", "zh-CN"];

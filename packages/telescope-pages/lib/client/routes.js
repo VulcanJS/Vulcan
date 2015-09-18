@@ -17,31 +17,3 @@ FlowRouter.route('/page/:slug', {
     BlazeLayout.render("layout", {main: "page"});
   }
 });
-
-// var PageController = RouteController.extend({
-//   currentPage: function () {
-//     return Pages.findOne({slug: this.params.slug});
-//   },
-//   getTitle: function () {
-//     return this.currentPage() && this.currentPage().title;
-//   },
-//   data: function () {
-//     return this.currentPage();
-//   }
-// });
-
-// Meteor.startup(function () {
-
-//   Router.onBeforeAction(Router._filters.isAdmin, {only: ['pages']});
-
-//   Router.route('/page/:slug', {
-//     name: 'page',
-//     controller: PageController
-//   });
-
-//   Router.route('/pages', {
-//     name: 'pages',
-//     controller: Telescope.controllers.admin
-//   });
-
-// });

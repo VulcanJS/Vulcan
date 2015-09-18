@@ -19,7 +19,7 @@ Telescope.menuItems = {};
  * @example <caption>Using a route function</caption>
  * Telescope.menuItems.add("userMenu", {
  *   route: function () {
- *     return Router.path('user_profile', {_idOrSlug: Meteor.user().telescope.slug});
+ *     return FlowRouter.path('user_profile', {_idOrSlug: Meteor.user().telescope.slug});
  *   },
  *   label: 'profile',
  *   description: 'view_your_profile'

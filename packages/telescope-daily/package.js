@@ -15,8 +15,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'package-tap.i18n',
-    'lib/daily.js',
-    'lib/routes.js',
+    'lib/daily.js'
   ], ['client', 'server']);
 
   api.addFiles([

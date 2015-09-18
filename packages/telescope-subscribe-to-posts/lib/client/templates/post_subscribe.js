@@ -20,7 +20,7 @@ Template.post_subscribe.events({
     var post = this;
 
     if (!Meteor.user()) {
-      Router.go('atSignIn');
+      FlowRouter.go('atSignIn');
       Messages.flash(i18n.t("please_log_in_first"), "info");
     }
 
@@ -35,7 +35,7 @@ Template.post_subscribe.events({
     var post = this;
 
     if (!Meteor.user()) {
-      Router.go('atSignIn');
+      FlowRouter.go('atSignIn');
       Messages.flash(i18n.t("please_log_in_first"), "info");
     }
 

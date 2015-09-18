@@ -1,5 +1,5 @@
 Template.unsubscribe.created = function(){
-  var hash = this.data.hash;
+  var hash = FlowRouter.getParam("hash");
   Meteor.call('unsubscribeUser', hash, function(error, result){
     if(result){
       Session.set('unsubscribedMessage', __('you_have_been_unsubscribed_from_all_notifications'));

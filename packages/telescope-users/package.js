@@ -19,6 +19,7 @@ Package.onUse(function (api) {
     'package-tap.i18n',
     'lib/namespace.js',
     'lib/roles.js',
+    'lib/config.js',
     'lib/permissions.js',
     'lib/users.js',
     'lib/avatars.js',

@@ -39,7 +39,7 @@ AutoForm.hooks({
       var template = this.template;
       Telescope.subsManager.subscribe('singlePost', post._id, function () {
         template.$('button[type=submit]').removeClass('loading');
-        Router.go('post_page', post);
+        FlowRouter.go('postPage', post);
       });
     },
 
@@ -50,7 +50,7 @@ AutoForm.hooks({
       // $(e.target).removeClass('disabled');
       if (error.error === 603) {
         var dupePostId = error.reason.split('|')[1];
-        Router.go('post_page', {slug: '_', _id: dupePostId});
+        FlowRouter.go('postPage', {slug: '_', _id: dupePostId});
       }
     }
 

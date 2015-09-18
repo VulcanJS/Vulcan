@@ -1,6 +1,6 @@
 RSS = Npm.require('rss');
 
-getMeta = function(url) {
+getMeta = function (url) {
   var siteUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
   return {
     title: Settings.get('title'),
@@ -11,7 +11,7 @@ getMeta = function(url) {
   };
 };
 
-servePostRSS = function(terms, url) {
+servePostRSS = function (terms, url) {
   var feed = new RSS(getMeta(url));
 
   var params = Posts.parameters.get(terms);
@@ -40,8 +40,8 @@ servePostRSS = function(terms, url) {
   return feed.xml();
 };
 
-serveCommentRSS = function() {
-  var feed = new RSS(getMeta(Router.path('rss_comments')));
+serveCommentRSS = function (terms, url) {
+  var feed = new RSS(getMeta(url));
 
   Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
     post = Posts.findOne(comment.postId);

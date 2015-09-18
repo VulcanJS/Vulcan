@@ -13,9 +13,5 @@ var getMenuItems = function () {
 Template.views_menu.helpers({
   menuItems: function () {
     return getMenuItems();
-  },
-  showNav: function () {
-    // only show menu when we're on the right pages, and there are at least 2 items
-    return !!Router.current().showViewsNav && getMenuItems().length >= 2;
   }
 });

@@ -33,17 +33,3 @@ FlowRouter.route('/sign-out', {
     BlazeLayout.render("layout", {main: "sign_out"});
   }
 });
-
-//   // Unsubscribe (from notifications)
-
-//   Router.route('/unsubscribe/:hash', {
-//     name: 'unsubscribe',
-//     template: 'unsubscribe',
-//     data: function() {
-//       return {
-//         hash: this.params.hash
-//       };
-//     }
-//   });
-
-// });

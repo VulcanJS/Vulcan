@@ -1,3 +1,4 @@
+
 // Notification email
 Picker.route('/email/notification/:id?', function(params, req, res, next) {
   var notification = Herald.collection.findOne(params.id);
@@ -64,5 +65,18 @@ Picker.route('/email/new-comment/:id?', function(params, req, res, next) {
   } else {
     html = "<h3>No post found.</h3>"
   }
+  res.end(Telescope.email.buildTemplate(html));
+});
+
+// Account approved email
+Picker.route('/email/account-approved/:id?', function(params, req, res, next) {
+  var user = Meteor.users.findOne(this.params.id);
+  var emailProperties = {
+    profileUrl: Users.getProfileUrl(user),
+    username: Users.getUserName(user),
+    siteTitle: Settings.get('title'),
+    siteUrl: Telescope.utils.getSiteUrl()
+  };
+  var html = Handlebars.templates.emailAccountApproved(emailProperties);
   res.end(Telescope.email.buildTemplate(html));
 });

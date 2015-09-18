@@ -25,7 +25,7 @@ Template.post_vote.events({
     var user = Meteor.user();
     e.preventDefault();
     if(!user){
-      Router.go('atSignIn');
+      FlowRouter.go('atSignIn');
       Messages.flash(i18n.t("please_log_in_first"), "info");
     }
     if (user.hasUpvoted(post)) {
@@ -43,7 +43,7 @@ Template.post_vote.events({
     var user = Meteor.user();
     e.preventDefault();
     if(!user){
-      Router.go('atSignIn');
+      FlowRouter.go('atSignIn');
       Messages.flash(i18n.t("please_log_in_first"), "info");
     }
     if (user.hasDownvoted(post)) {

@@ -1,3 +1,5 @@
+Telescope.SEO = new FlowRouterSEO();
+
 // Session variables
 Session.set('appIsReady', false);
 
@@ -5,10 +7,14 @@ Meteor.startup(function () {
   $('#rss-link').attr('title', i18n.t('new_posts'));
 });
 
-// AutoForm.debug();
-
-
 // Global Subscriptions
+
+Telescope.subsManager = new SubsManager({
+  // cache recent 50 subscriptions
+  cacheLimit: 50,
+  // expire any subscription after 30 minutes
+  expireIn: 30
+});
 
 Telescope.subscriptions.preload('settings');
 Telescope.subscriptions.preload('currentUser');
@@ -24,8 +30,8 @@ FlowRouter.subscriptions = function() {
   });
 };
 
-// Template extension stuff for backwards compatibility
-
-_.each(templates, function (replacement, original) {
-  Template[replacement].replaces(original);
-});
+FlowRouter.notFound = {
+  action: function() {
+    BlazeLayout.render("layout", {main: "not_found"});
+  }
+};
