@@ -7,6 +7,11 @@ Template.main_posts_list.helpers({
     FlowRouter.watchPathChange();
     var terms = _.clone(FlowRouter.current().queryParams);
     terms.enableCache = true;
+
+    if (!terms.view) {
+      terms.view = Settings.get('defaultView', 'top');
+    }
+
     return {
       terms: terms
     };
