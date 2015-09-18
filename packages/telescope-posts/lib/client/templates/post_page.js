@@ -1,7 +1,8 @@
 var doSEOStuff = function (post) {
 
-  $('link[rel="canonical"]').attr("href", post.getPageUrl(true));
-
+  var link = {rel: "canonical", href: "post.getPageUrl(true)"};
+  DocHead.addLink(link);
+  
   // Set SEO properties
   
   var seoProperties = {meta: {}};

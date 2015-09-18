@@ -2,7 +2,8 @@
 Session.set('appIsReady', false);
 
 Meteor.startup(function () {
-  $('#rss-link').attr('title', i18n.t('new_posts'));
+  var link = {rel: "alternate", type: "application/rss+xml", href: "/feed.xml", title: i18n.t("new_posts")};
+  DocHead.addLink(link);
 });
 
 // Global Subscriptions
