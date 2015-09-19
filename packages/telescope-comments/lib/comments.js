@@ -153,10 +153,22 @@ Comments.schema = new SimpleSchema({
   */
   userId: {
     type: String,
-    optional: true
+    optional: true,
+    editableBy: ["admin"],
+    autoform: {
+      group: 'admin',
+      options: function () {
+        return Meteor.users.find().map(function (user) {
+          return {
+            value: user._id,
+            label: Users.getDisplayName(user)
+          };
+        });
+      }
+    }
   },
   /**
-    Whether the comment is deleted. Delete comments' content doesn't appear on the site. 
+    Whether the comment is deleted. Delete comments' content doesn't appear on the site.
   */
   isDeleted: {
     type: Boolean,

@@ -7,7 +7,8 @@ Comments.controllers.page = RouteController.extend({
     return [
       Telescope.subsManager.subscribe('singleCommentAndChildren', this.params._id),
       Telescope.subsManager.subscribe('commentUsers', this.params._id),
-      Telescope.subsManager.subscribe('commentPost', this.params._id)
+      Telescope.subsManager.subscribe('commentPost', this.params._id),
+      Telescope.subsManager.subscribe('allUsersAdmin')
     ];
   },
   data: function() {
