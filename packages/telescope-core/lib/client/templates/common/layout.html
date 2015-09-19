@@ -8,9 +8,13 @@
         {{> modules zone="hero"}}
         <div class="content-wrapper">
           {{> messages}}
-          {{> Template.dynamic template=adminMenu}}
-          {{> modules zone="top"}}
-          {{> Template.dynamic template=main}}
+          {{#if notAllowed}}
+            {{> Template.dynamic template=notAllowed.template data=notAllowed.data}}
+          {{else}}
+            {{> Template.dynamic template=adminMenu}}
+            {{> modules zone="top"}}
+            {{> Template.dynamic template=main}}
+          {{/if}}
           {{> modules zone="footer"}}
         </div>
         <div class="overlay hidden"></div>

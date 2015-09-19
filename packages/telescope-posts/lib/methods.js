@@ -313,6 +313,10 @@ Meteor.methods({
 
     Telescope.callbacks.runAsync("postDeleteAsync", post);
 
+  },
+
+  checkForDuplicates: function (url) {
+    Posts.checkForSameUrl(url);  
   }
 
 });

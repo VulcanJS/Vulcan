@@ -23,13 +23,13 @@ FlowRouter.route('/account', {
   name: "userAccountShortcut",
   triggersEnter: [function(context, redirect) {
     redirect("userEdit", {_idOrSlug: Meteor.userId()});
-  }],
+  }]
 });
 
 FlowRouter.route('/sign-out', {
   name: "signOut",
-  action: function(params, queryParams) {
-    Meteor.logout();
-    BlazeLayout.render("layout", {main: "sign_out"});
-  }
+  triggersEnter: [function(context, redirect) {
+    AccountsTemplates.logout();
+    Messages.flash(i18n.t("you_have_been_logged_out"));
+  }]
 });

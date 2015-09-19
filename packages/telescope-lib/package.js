@@ -90,8 +90,7 @@ Package.onUse(function (api) {
     'lib/base.js',
     'lib/colors.js',
     'lib/icons.js',
-    'lib/router/admin.js',
-    'lib/router/query_arrays.js'
+    'lib/router.js',
   ], ['client', 'server']);
 
   api.addFiles([

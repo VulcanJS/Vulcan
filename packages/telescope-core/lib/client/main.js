@@ -28,9 +28,3 @@ FlowRouter.subscriptions = function() {
     }
   });
 };
-
-FlowRouter.notFound = {
-  action: function() {
-    BlazeLayout.render("layout", {main: "not_found"});
-  }
-};

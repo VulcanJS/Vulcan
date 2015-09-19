@@ -25,7 +25,6 @@ Package.onUse(function(api) {
   api.imply(packages);
 
   api.addFiles([
-    'lib/router/filters.js',
     'lib/modules.js',
     'lib/vote.js'
   ], ['client', 'server']);
@@ -45,6 +44,8 @@ Package.onUse(function(api) {
     'lib/client/templates/common/footer_code.html',
     'lib/client/templates/common/footer_code.js',
     'lib/client/templates/common/loader.html',
+    'lib/client/templates/common/checker.html',
+    'lib/client/templates/common/checker.js',
     'lib/client/templates/common/layout.html',
     'lib/client/templates/common/layout.js',
     'lib/client/templates/errors/already_logged_in.html',

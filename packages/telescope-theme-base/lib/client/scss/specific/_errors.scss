@@ -5,4 +5,9 @@
   text-align:center;
   color:white;
   padding: 20px;
+  a{
+    &:link, &:hover{
+      color: white;
+    }
+  }
 }

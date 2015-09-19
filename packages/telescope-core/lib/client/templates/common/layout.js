@@ -31,6 +31,33 @@ Template.layout.helpers({
   appIsReady: function () {
     return FlowRouter.subsReady();
   },
+  notAllowed: function () {
+
+    FlowRouter.watchPathChange();
+    var user = Meteor.user();
+    var userRoutes = ['signIn', 'signUp', 'changePwd', 'forgotPwd', 'resetPwd', 'enrollAccount', 'verifyEmail', 'signOut'];
+    var isOnUserRoute = !_.contains(userRoutes, FlowRouter.getRouteName());
+
+//     Router.onBeforeAction(filters.canView, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
+
+    if (!isOnUserRoute && user && ! Users.userProfileComplete(user)){
+      return {template: "user_complete"};
+    }
+
+    if (FlowRouter.current().route.group && FlowRouter.current().route.group.name === "admin" && !Users.is.admin(user)) {
+      return {template: "no_rights", data: {message: i18n.t("sorry_you_need_to_be_an_admin_to_view_this_page")}};
+    }
+
+    if (!isOnUserRoute && !Users.can.view(user)) {
+      return {template: "no_rights", data: {message: i18n.t("sorry_you_dont_have_the_rights_to_view_this_page")}};
+    }
+
+    if (FlowRouter.getRouteName() === "postSubmit" && !Users.can.post(user)) {
+      return {template: "no_rights", data: {message: i18n.t("sorry_you_dont_have_permissions_to_add_new_items")}};
+    }
+
+    return false;
+  },
   navLayout: function () {
     return Settings.get('navLayout', 'top-nav');
   },

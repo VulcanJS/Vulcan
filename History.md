@@ -9,7 +9,7 @@
 * Removed `Telescope.utils.getCurrentTemplate()`;
 * Removed search logging.
 * Disabled single day view. 
-
+* `Posts.checkForSameUrl` doesn't auto-upvote the existing post anymore. 
 * RSS feed and API can now both accept any post query parameter (`limit`, `view`, `cat`, `before`, `after`, etc.)
 
 ## v0.24 “SubScope2”

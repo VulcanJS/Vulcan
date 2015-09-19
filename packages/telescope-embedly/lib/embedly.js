@@ -80,3 +80,13 @@ function addThumbnailClass (postClass, post) {
 }
 // add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
 Telescope.callbacks.add("postClass", addThumbnailClass);
+
+function checkIfPreviouslyPosted (data) {
+  Meteor.call("checkForDuplicates", data.url, function (error, result) {
+    if (error) {
+      Messages.flash(error.reason + '. <a href="'+FlowRouter.path("postPage", {_id: error.details})+'">'+i18n.t("go_to_post")+'</a>');  
+    }
+  });
+}
+Telescope.callbacks.add("afterEmbedlyPrefill", checkIfPreviouslyPosted);
+

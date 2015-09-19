@@ -97,19 +97,15 @@ Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
  * Check to see if post URL is unique.
  * We need the current user so we know who to upvote the existing post as.
  * @param {String} url
- * @param {Object} currentUser
  */
-Posts.checkForSameUrl = function (url, currentUser) {
+Posts.checkForSameUrl = function (url) {
 
   // check that there are no previous posts with the same link in the past 6 months
   var sixMonthsAgo = moment().subtract(6, 'months').toDate();
   var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
   if (typeof postWithSameLink !== 'undefined') {
-    Telescope.upvoteItem(Posts, postWithSameLink._id, currentUser);
-
-    // note: error.details returns undefined on the client, so add post ID to reason
-    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
+    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted'), postWithSameLink._id);
   }
 };
 
