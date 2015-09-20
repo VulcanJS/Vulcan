@@ -9,7 +9,6 @@ Messages = {
   },
 
   clearSeen: function() {
-    console.log("clearing messages…")
     this.collection.update({seen:true}, {$set: {show:false}}, {multi:true});
   }
 };
