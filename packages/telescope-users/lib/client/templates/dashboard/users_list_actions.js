@@ -29,9 +29,17 @@ Template.users_list_actions.events({
     e.preventDefault();
     if(confirm(i18n.t("are_you_sure_you_want_to_delete")+Users.getDisplayName(this)+"?")) {
       if(confirm(i18n.t("delete_users_posts_comments_as_well"))) {
-        Meteor.call("removeUser", this._id, true);
+        Meteor.call("removeUser", this._id, true, function (error, result) {
+          if (result) {
+            Messages.flash(result);
+          }
+        });
       } else {
-        Meteor.call("removeUser", this._id, false);
+        Meteor.call("removeUser", this._id, false, function (error, result) {
+          if (result) {
+            Messages.flash(result);
+          }
+        });
       }
     }
   }

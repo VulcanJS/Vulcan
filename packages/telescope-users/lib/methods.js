@@ -65,8 +65,9 @@ Meteor.methods({
       Meteor.users.remove(userId);
 
       if (removePosts) {
-        Posts.remove({userId: userId}, {}, {multi: true});
-        Comments.remove({userId: userId}, {}, {multi: true});
+        var deletedPosts = Posts.remove({userId: userId});
+        var deletedComments = Comments.remove({userId: userId});
+        return "Deleted "+deletedPosts+" posts and "+deletedComments+" comments";
       } else {
         // not sure if anything should be done in that scenario yet
         // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
