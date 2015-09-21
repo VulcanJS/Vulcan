@@ -40,6 +40,7 @@ Package.onUse(function (api) {
     'lib/client/templates/modules/post_admin.html',
     'lib/client/templates/modules/post_admin.js',
     'lib/client/templates/modules/post_author.html',
+    'lib/client/templates/modules/post_author.js',
     'lib/client/templates/modules/post_avatars.html',
     'lib/client/templates/modules/post_avatars.js',
     'lib/client/templates/modules/post_comments_link.html',

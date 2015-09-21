@@ -27,7 +27,12 @@ Template.users_list_actions.events({
   },
   'click .delete-link': function(e){
     e.preventDefault();
-    if(confirm(i18n.t("are_you_sure_you_want_to_delete")+Users.getDisplayName(this)+"?"))
-      Meteor.users.remove(this._id);
+    if(confirm(i18n.t("are_you_sure_you_want_to_delete")+Users.getDisplayName(this)+"?")) {
+      if(confirm(i18n.t("delete_users_posts_comments_as_well"))) {
+        Meteor.call("removeUser", this._id, true);
+      } else {
+        Meteor.call("removeUser", this._id, false);
+      }
+    }
   }
 });
