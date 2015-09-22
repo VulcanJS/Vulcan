@@ -56,10 +56,12 @@ Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(
  */
 Users.getTwitterName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
-  if(Telescope.utils.checkNested(user, 'profile', 'twitter')){
-    return user.profile.twitter;
-  }else if(Telescope.utils.checkNested(user, 'services', 'twitter', 'screenName')){
-    return user.services.twitter.screenName;
+  if (typeof user !== "undefined") {
+    if (Telescope.utils.checkNested(user, 'profile', 'twitter')) {
+      return user.profile.twitter;
+    } else if(Telescope.utils.checkNested(user, 'services', 'twitter', 'screenName')) {
+      return user.services.twitter.screenName;
+    }
   }
   return null;
 };
