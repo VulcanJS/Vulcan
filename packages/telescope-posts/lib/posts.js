@@ -160,21 +160,21 @@ Posts.schema = new SimpleSchema({
   */
   status: {
     type: Number,
-    optional: true
-    // editableBy: ["admin"],
-    // autoValue: function () {
-    //   // only provide a default value
-    //   // 1) this is an insert operation
-    //   // 2) status field is not set in the document being inserted
-    //   var user = Meteor.users.findOne(this.userId);
-    //   if (this.isInsert && !this.isSet)
-    //     return Posts.getDefaultStatus(user);
-    // },
-    // autoform: {
-    //   noselect: true,
-    //   options: Posts.config.postStatuses,
-    //   group: 'admin'
-    // }
+    optional: true,
+    editableBy: ["admin"],
+    autoValue: function () {
+      // only provide a default value
+      // 1) this is an insert operation
+      // 2) status field is not set in the document being inserted
+      var user = Meteor.users.findOne(this.userId);
+      if (this.isInsert && !this.isSet)
+        return Posts.getDefaultStatus(user);
+    },
+    autoform: {
+      noselect: true,
+      options: Posts.config.postStatuses,
+      group: 'admin'
+    }
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)

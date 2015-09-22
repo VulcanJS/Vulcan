@@ -17,6 +17,7 @@ AutoForm.hooks({
         var post = doc;
 
         this.template.$('button[type=submit]').addClass('loading');
+        this.template.$('input').not(":disabled").addClass("disabled").prop("disabled", true);
 
         // ------------------------------ Checks ------------------------------ //
 
@@ -45,6 +46,8 @@ AutoForm.hooks({
 
     onError: function(operation, error) {
       this.template.$('button[type=submit]').removeClass('loading');
+      this.template.$('input.disabled').removeClass("disabled").prop("disabled", false);
+
       Messages.flash(error.message.split('|')[0], 'error'); // workaround because error.details returns undefined
       Messages.clearSeen();
       // $(e.target).removeClass('disabled');
