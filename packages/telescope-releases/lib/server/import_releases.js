@@ -21,23 +21,7 @@ var importRelease = function (number) {
 
 Meteor.startup(function () {
 
-  importRelease('0.11.0');
-  importRelease('0.11.1');
-  importRelease('0.12.0');
-  importRelease('0.13.0');
-  importRelease('0.14.0');
-  importRelease('0.14.1');
-  importRelease('0.14.2');
-  importRelease('0.14.3');
-  importRelease('0.15.0');
-  importRelease('0.20.4');
-  importRelease('0.20.5');
-  importRelease('0.20.6');
-  importRelease('0.21.1');
-  importRelease('0.22.1');
-  importRelease('0.22.2');
-  importRelease('0.23.0');
-  importRelease('0.24.0');
+  importRelease('0.25.0');
 
   // if this is before the first run, mark all release notes as read to avoid showing them
   if (!Events.findOne({name: 'firstRun'})) {

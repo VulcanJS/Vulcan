@@ -49,7 +49,7 @@ Package.onUse(function (api) {
 
   // client
 
-  api.addFiles([
+  api.addAssets([
     'content/images/stackoverflow.png',
     'content/images/telescope.png'
   ], ['client']);
@@ -60,11 +60,11 @@ Package.onUse(function (api) {
     'lib/server/dummy_content.js'
   ], ['server']);
 
-  api.addFiles('content/read_this_first.md', 'server', { isAsset: true });
-  api.addFiles('content/deploying_telescope.md', 'server', { isAsset: true });
-  api.addFiles('content/customizing_telescope.md', 'server', { isAsset: true });
-  api.addFiles('content/getting_help.md', 'server', { isAsset: true });
-  api.addFiles('content/removing_getting_started_posts.md', 'server', { isAsset: true });
+  api.addAssets('content/read_this_first.md', 'server');
+  api.addAssets('content/deploying_telescope.md', 'server');
+  api.addAssets('content/customizing_telescope.md', 'server');
+  api.addAssets('content/getting_help.md', 'server', 'server');
+  api.addAssets('content/removing_getting_started_posts.md', 'server');
 
   // i18n languages (must come last)
 

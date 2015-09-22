@@ -42,23 +42,8 @@ Package.onUse(function (api) {
     'lib/server/import_releases.js'
   ], ['server']);
 
-  api.addFiles('releases/0.11.0.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.11.1.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.12.0.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.13.0.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.14.0.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.14.1.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.14.2.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.14.3.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.15.0.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.20.4.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.20.5.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.20.6.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.21.1.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.22.1.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.22.2.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.23.0.md', 'server', { isAsset: true });
-  api.addFiles('releases/0.24.0.md', 'server', { isAsset: true });
+
+  api.addAssets('releases/0.25.0.md', 'server');
 
   // i18n languages (must come last)
 

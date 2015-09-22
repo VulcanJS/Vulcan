@@ -72,11 +72,7 @@ Package.onUse(function(api) {
     'lib/client/templates/menu/menu_component.js'
   ], 'client');
 
-  // static assets; needs cleanup
-
-  api.addFiles([
-    'public/img/default-avatar.png',
-    'public/img/loading-balls.svg',
+  api.addAssets([
     'public/img/loading.svg',
   ], 'client');
 
