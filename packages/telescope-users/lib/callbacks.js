@@ -95,10 +95,16 @@ function setupUser (user, options) {
   };
   user = _.extend(user, userProperties);
 
-  // set email on user.telescope, and use it to generate email hash
+  // look in a few places for the user email
   if (options.email) {
     user.telescope.email = options.email;
-    user.telescope.emailHash = Gravatar.hash(options.email);
+  } else if (user.services.facebook && user.services.facebook.email) {
+    user.telescope.email = user.services.facebook.email;
+  }
+
+  // generate email hash
+  if (!!user.telescope.email) {
+    user.telescope.emailHash = Gravatar.hash(user.telescope.email);
   }
 
   // look in a few places for the displayName
