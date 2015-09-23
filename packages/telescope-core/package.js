@@ -26,7 +26,8 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/modules.js',
-    'lib/vote.js'
+    'lib/vote.js',
+    'lib/subscriptions.js'
   ], ['client', 'server']);
 
   api.addFiles([
@@ -78,6 +79,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/server/start.js',
+    'lib/server/fastrender.js',
     'lib/server/routes.js'
   ], ['server']);
 

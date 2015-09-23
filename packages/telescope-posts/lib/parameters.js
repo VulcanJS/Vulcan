@@ -103,10 +103,6 @@ function hideFuturePosts (parameters, terms) {
 
   var now = new Date();
 
-  if (!parameters.showFuture && !parameters.find.postedAt) {
-    parameters.find.postedAt = {$lte: new Date()};
-  }
-
   if (!parameters.showFuture) {
 
     if (!!parameters.find.postedAt) {
@@ -132,7 +128,6 @@ function hideFuturePosts (parameters, terms) {
     }
 
   }
-
 
   return parameters;
 }

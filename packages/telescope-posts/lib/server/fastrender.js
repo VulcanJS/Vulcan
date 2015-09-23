@@ -1,41 +1,27 @@
-// Posts.fastRenderRoutes = [
-//   {
-//     path: "/",
-//     view: Settings.get('defaultView', 'top')
-//   },
-//   {
-//     path: "/top/:limit?",
-//     view: "top"
-//   },
-//   {
-//     path: "/new/:limit?",
-//     view: "new"
-//   },
-//   {
-//     path: "/best/:limit?",
-//     view: "best"
-//   },
-//   {
-//     path: "/pending/:limit?",
-//     view: "pending"
-//   },
-//   {
-//     path: "/scheduled/:limit?",
-//     view: "scheduled"
-//   }
-// ];
+Posts.fastRenderSubscribe = function (params) {
 
-// Posts.fastRenderSubscribe = function (view, params) {
-//   var subscriptionTerms = {
-//     view: view,
-//     limit: params.limit || Settings.get('postsPerPage', 10)
-//   };
-//   this.subscribe('postsList', subscriptionTerms);
-//   this.subscribe('postsListUsers', subscriptionTerms);
-// };
+  // generate cat array
+  var categories = [];
+  var index = 0;
+  while (!!params.query["cat["+index+"]"]) {
+    categories.push(params.query["cat["+index+"]"]);
+    delete params.query["cat["+index+"]"];
+    index++;
+  }
+  if (categories.length) {
+    params.query.cat = categories;
+  }
 
-// Meteor.startup(function () {
-//   Posts.fastRenderRoutes.forEach(function (route) {
-//     FastRender.route(route.path, _.partial(Posts.fastRenderSubscribe, route.view));
-//   });
-// });
+  this.subscribe('postsList', params.query);
+  this.subscribe('postsListUsers', params.query);
+};
+
+Meteor.startup(function () {
+  FastRender.route("/", Posts.fastRenderSubscribe);
+  FastRender.route("/posts/:_id/:slug?", function (params) {
+    var postId = params._id;
+    this.subscribe('singlePost', postId);
+    this.subscribe('postUsers', postId);
+    this.subscribe('commentsList', {view: 'postComments', postId: postId});
+  });
+});

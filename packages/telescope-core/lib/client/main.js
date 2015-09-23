@@ -14,17 +14,3 @@ Telescope.subsManager = new SubsManager({
   // expire any subscription after 30 minutes
   expireIn: 30
 });
-
-Telescope.subscriptions.preload('settings');
-Telescope.subscriptions.preload('currentUser');
-
-FlowRouter.subscriptions = function() {
-  var flow = this;
-  Telescope.subscriptions.forEach(function (sub) {
-    if (typeof sub === 'object'){
-      flow.register(sub.subName, Meteor.subscribe(sub.subName, sub.subArguments));
-    }else{
-      flow.register(sub, Meteor.subscribe(sub));
-    }
-  });
-};
