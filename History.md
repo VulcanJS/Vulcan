@@ -58,6 +58,12 @@
 * Fixed Subscribe to Comments feature. 
 * Fixed Safari CSS issues by enabling autoprefixer.
 
+### i18n
+
+* Korean translation.
+* Slovenian translation.
+* Italian translation.
+
 ## v0.24 “SubScope2”
 
 * [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 
