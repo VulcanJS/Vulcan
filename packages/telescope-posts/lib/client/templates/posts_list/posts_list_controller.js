@@ -44,7 +44,7 @@ Template.posts_list_controller.onCreated(function () {
   // enable not subscribing to users on a per-controller basis
   var subscribeToUsers = (typeof terms.subscribeToUsers === "undefined") ? true : terms.subscribeToUsers;
 
-  // Autorun 1: reruns when Template.currentData().terms changes
+  // Autorun 1: reruns when Template.currentData().terms changes *and* terms have actually changed
   template.autorun(function (computation) {
 
     // add a dependency on data context to trigger the autorun
@@ -56,10 +56,10 @@ Template.posts_list_controller.onCreated(function () {
     
     if (!computation.firstRun) {
 
-      console.log('// ------ autorun 1 ------ //');
-      console.log("newTerms: ", _.clone(newTerms));
-      console.log("oldTerms: ", _.clone(oldTerms));
-      console.log("isEqual?: ", _.isEqual(newTerms, oldTerms));
+      // console.log('// ------ autorun 1 ------ //');
+      // console.log("newTerms: ", _.clone(newTerms));
+      // console.log("oldTerms: ", _.clone(oldTerms));
+      // console.log("isEqual?: ", _.isEqual(newTerms, oldTerms));
 
       // compare new terms with previous ones (minus userId and limit)
       if (!_.isEqual(newTerms, oldTerms)) {
@@ -86,7 +86,7 @@ Template.posts_list_controller.onCreated(function () {
 
     if (!computation.firstRun) {
 
-      console.log('// ------ autorun 2 ------ //');
+      // console.log('// ------ autorun 2 ------ //');
 
       // update limit
       terms.limit = postsLimit;
@@ -105,8 +105,8 @@ Template.posts_list_controller.onCreated(function () {
     // if ready is false, (re)subscribe
     if (!ready) {
       
-      console.log('// ------ autorun 3 ------ //');
-      console.log("terms: ", terms);
+      // console.log('// ------ autorun 3 ------ //');
+      // console.log("terms: ", terms);
 
       // subscribe to posts and (optionally) users
       postsSubscription = subscriber.subscribe('postsList', terms);
@@ -114,29 +114,28 @@ Template.posts_list_controller.onCreated(function () {
         usersSubscription = subscriber.subscribe('postsListUsers', terms);
       }
 
-    }
+      // Autorun 4: when subscription is ready, update the data helper's terms
+      Tracker.autorun(function () {
+      
+        var subscriptionsReady;
 
-  });
+        if (subscribeToUsers) {
+          subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+        } else {
+          subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
+        }
 
-  // Autorun 4: when subscription is ready, update the data helper's terms
-  template.autorun(function () {
-  
-    var subscriptionsReady;
+        // console.log('// ------ autorun 4 ------ //');
+        // console.log("terms: ", terms);
+        // console.log("ready: ", subscriptionsReady);
 
-    if (subscribeToUsers) {
-      subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
-    } else {
-      subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
-    }
+        // if subscriptions are ready, set terms to subscriptionsTerms
+        if (subscriptionsReady) {
+          template.terms.set(terms);
+          template.ready.set(true);
+        }
 
-    console.log('// ------ autorun 4 ------ //');
-    console.log("terms: ", terms);
-    console.log("ready: ", subscriptionsReady);
-
-    // if subscriptions are ready, set terms to subscriptionsTerms
-    if (subscriptionsReady) {
-      template.terms.set(terms);
-      template.ready.set(true);
+      });
     }
 
   });
