@@ -45,6 +45,7 @@ Template.posts_list_controller.onCreated(function () {
   var subscribeToUsers = (typeof terms.subscribeToUsers === "undefined") ? true : terms.subscribeToUsers;
 
   // Autorun 1: reruns when Template.currentData().terms changes *and* terms have actually changed
+  // when terms change, reset postsLimit
   template.autorun(function (computation) {
 
     // add a dependency on data context to trigger the autorun
@@ -66,12 +67,10 @@ Template.posts_list_controller.onCreated(function () {
 
         // if terms have changed, reset postsLimit
         newTerms.limit = Settings.get('postsPerPage', 10);
+        template.postsLimit.set(newTerms.limit);
 
         // update terms
         terms = newTerms;
-
-        // set template.ready to false to trigger Autorun 3
-        template.ready.set(false);
 
       }
     }
@@ -79,22 +78,21 @@ Template.posts_list_controller.onCreated(function () {
   });
 
   // Autorun 2: reruns when template.postsLimit changes
+  // when postsLimit changes, set ready to false
   template.autorun(function (computation) {
 
     // get limit from local template variable
     var postsLimit = template.postsLimit.get(); // ⚡ reactive ⚡
 
-    if (!computation.firstRun) {
+    // console.log('// ------ autorun 2 ------ //');
+    // console.log("limit: ", postsLimit);
 
-      // console.log('// ------ autorun 2 ------ //');
+    // update terms with new limit
+    terms.limit = postsLimit;
 
-      // update limit
-      terms.limit = postsLimit;
+    // set template.ready to false to trigger Autorun 3
+    template.ready.set(false);
 
-      // set template.ready to false to trigger Autorun 3
-      template.ready.set(false);
-
-    }
   });
 
   // Autorun 3: runs once on load, then reruns when template.ready changes
@@ -107,6 +105,7 @@ Template.posts_list_controller.onCreated(function () {
       
       // console.log('// ------ autorun 3 ------ //');
       // console.log("terms: ", terms);
+      // console.log("template.ready: ", ready);
 
       // subscribe to posts and (optionally) users
       postsSubscription = subscriber.subscribe('postsList', terms);
@@ -127,7 +126,7 @@ Template.posts_list_controller.onCreated(function () {
 
         // console.log('// ------ autorun 4 ------ //');
         // console.log("terms: ", terms);
-        // console.log("ready: ", subscriptionsReady);
+        // console.log("subscriptionsReady: ", subscriptionsReady);
 
         // if subscriptions are ready, set terms to subscriptionsTerms
         if (subscriptionsReady) {
