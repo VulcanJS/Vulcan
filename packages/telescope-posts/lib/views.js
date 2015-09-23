@@ -84,7 +84,8 @@ Posts.views.add("rejected", function (terms) {
 Posts.views.add("scheduled", function (terms) {
   return {
     find: {postedAt: {$gte: new Date()}},
-    options: {sort: {postedAt: -1}}
+    options: {sort: {postedAt: -1}},
+    showFuture: true
   };
 });
 

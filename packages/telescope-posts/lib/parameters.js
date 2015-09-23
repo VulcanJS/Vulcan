@@ -100,9 +100,40 @@ Telescope.callbacks.add("postsParameters", limitPosts);
 
 // hide future scheduled posts unless "showFuture" is set to true or postedAt is already defined
 function hideFuturePosts (parameters, terms) {
+
+  var now = new Date();
+
   if (!parameters.showFuture && !parameters.find.postedAt) {
     parameters.find.postedAt = {$lte: new Date()};
   }
+
+  if (!parameters.showFuture) {
+
+    if (!!parameters.find.postedAt) {
+    
+      if (!!parameters.find.postedAt.$lt) {
+
+        // if postedAt.$lt is defined, use it or current date, whichever is earlier in time
+        var lt = parameters.find.postedAt.$lt;
+        parameters.find.postedAt.$lt = lt < now ? lt : now;
+      
+      } else {
+
+        // if postedAt.$lt doesn't exist, use current date
+       parameters.find.postedAt.$lt = now;
+
+      }
+
+    } else {
+
+      // if postedAt doesn't exist at all, set it to {$lt: now}
+      parameters.find.postedAt = { $lt: now };
+
+    }
+
+  }
+
+
   return parameters;
 }
 Telescope.callbacks.add("postsParameters", hideFuturePosts);
