@@ -1,6 +1,8 @@
 <template name="user_downvoted_posts">
-  <div class="user-profile-votes grid grid-module">
-    <h3>{{_ "downvoted_posts"}}</h3>
-    {{> posts_list_controller arguments}}
-  </div>
+  {{#if getSetting "enableDownvotes"}}
+    <div class="user-profile-votes grid grid-module">
+      <h3>{{_ "downvoted_posts"}}</h3>
+      {{> posts_list_controller arguments}}
+    </div>
+  {{/if}}
 </template>
