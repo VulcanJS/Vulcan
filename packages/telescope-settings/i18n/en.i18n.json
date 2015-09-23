@@ -54,5 +54,6 @@
   "logo" : "Logo",
   "extras" : "Extras",
   "colors" : "Colors",
-  "integrations" : "Integrations"
+  "integrations" : "Integrations",
+  "enableDownvotes": "Enable Downvotes"
 }
