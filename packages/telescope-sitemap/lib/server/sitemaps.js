@@ -21,7 +21,7 @@ Meteor.startup(function() {
       {page: "/", lastmod: _getLatest(Settings.get("defaultView", "top")), changefreq: "hourly"},
       {page: "/top", lastmod: _getLatest("top"), changefreq: "hourly"},
       {page: "/new", lastmod: _getLatest("new"), changefreq: "hourly"},
-      {page: "/best", lastmod: _getLatest("best"), changefreq: "daily"},
+      {page: "/best", lastmod: _getLatest("best"), changefreq: "daily"}
     ];
 
     // Categories (if telescope-tags is included)
@@ -50,8 +50,7 @@ Meteor.startup(function() {
         sort: params.options.sort
       });
       posts.forEach(function(post) {
-        var url = Posts.getLink(post);
-        postPages[url] = {page: url, lastmod: post.postedAt, changefreq: "daily"};
+        postPages[url] = {page: post.getPageUrl(), lastmod: post.postedAt, changefreq: "daily"};
       });
     });
 
