@@ -1,0 +1,5 @@
+{
+  "feed_already_exists" : "Pregled objav z istim URL že obstaja.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Morate se prijaviti in biti admin, da dodate nov pregled objav.",
+  "import_new_posts_from_feeds" : "Uvozi nove objave iz pregleda objav."
+}

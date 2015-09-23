@@ -2,6 +2,7 @@
   "title" : "제목",
   "siteUrl" : "사이트 URL",
   "tagline" : "태그 라인",
+  "defaultEmail" : "기본 이메일",
   "logoUrl" : "로고 URL",
   "logoHeight" : "로고 세로길이",
   "logoWidth" : "로고 가로길이",

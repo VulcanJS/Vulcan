@@ -4,10 +4,11 @@
   "comment_" : "Commenta",
   "delete_comment" : "Elimina Commento",
   "add_comment" : "Aggiungi Commento",
-  "upvote" : "promuovi",
+  "upvote" : "consiglia",
   "downvote" : "sconsiglia",
   "link" : "link",
   "edit" : "Modifica",
   "reply" : "Rispondi",
-  "no_comments" : "Nessun commento."
+  "no_comments" : "Nessun commento.",
+  "please_sign_in_to_reply" : "Per favore accedi per rispondere"
 }
