@@ -101,6 +101,11 @@ function setupUser (user, options) {
     user.telescope.emailHash = Gravatar.hash(options.email);
   }
 
+   if (user.services.facebook.email) {
+    user.telescope.email = user.services.facebook.email;
+    user.telescope.emailHash = Gravatar.hash(user.services.facebook.email);
+  }
+
   // look in a few places for the displayName
   if (user.profile.username) {
     user.telescope.displayName = user.profile.username;
