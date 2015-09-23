@@ -1,19 +1,30 @@
 <template name="css">
   <style>
 
-      {{elementColors}}
+      {{#if elementColors}}
+        {{elementColors}}
+      {{/if}}
 
-      body, textarea, input, button, input[type="submit"], input[type="button"]{
-        font-family: {{getSetting 'fontFamily'}};
-      }
+      {{#if getSetting "fontFamily"}}
+        body, textarea, input, button, input[type="submit"], input[type="button"]{
+          font-family: {{getSetting 'fontFamily'}};
+        }
+      {{/if}}
 
-      body{
-        background: {{getSetting "backgroundCSS"}};
-      }
+      {{#if getSetting "backgroundCSS"}}
+        body{
+          background: {{getSetting "backgroundCSS"}};
+        }
+      {{/if}}
+
 
       .logo-image a{
-        max-height:{{getSetting "logoHeight"}}px;
-        max-width:{{getSetting "logoWidth"}}px;
+        {{#if getSetting "logoHeight"}}
+          max-height:{{getSetting "logoHeight"}}px;
+        {{/if}}
+        {{#if getSetting "logoWidth"}}
+          max-width:{{getSetting "logoWidth"}}px;
+        {{/if}}
       }
 
       {{hideAuthClass}}
@@ -25,8 +36,12 @@
         }
       }
 
-      {{extraCSS}}
-
+      {{#if extraCSS}}
+        {{extraCSS}}
+      {{/if}}
+  
   </style>
-  <link href='{{getSetting "fontUrl"}}' rel='stylesheet' type='text/css'>
+  {{#if getSetting "fontUrl"}}
+    <link href='{{getSetting "fontUrl"}}' rel='stylesheet' type='text/css'>
+  {{/if}}
 </template>
