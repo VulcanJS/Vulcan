@@ -8,6 +8,11 @@ Template.main_posts_list.helpers({
     var terms = _.clone(FlowRouter.current().queryParams);
     terms.enableCache = true;
 
+    // if user is logged in, add their id to terms
+    if (Meteor.userId()) {
+      terms.userId = Meteor.userId();
+    }
+
     if (!terms.view) {
       terms.view = Settings.get('defaultView', 'top');
     }
