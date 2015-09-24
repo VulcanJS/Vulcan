@@ -70,6 +70,7 @@ Template.posts_list_controller.onCreated(function () {
 
         // reset limit
         limit = Settings.get('postsPerPage', 10);
+        template.rLimit.set(limit);
 
       } else if (rLimit !== limit) {
         // Case 2: limit has changed
