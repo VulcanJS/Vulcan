@@ -109,37 +109,40 @@ Template.posts_list_controller.onCreated(function () {
         usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
       }
 
+      // Autorun 3: when subscription is ready, update the data helper's terms
+      // On the first run, the subscription won't be ready yet so there is no need to update the terms
+      // Note: this needs to be nested inside Autorun 2 because it needs to re-run even when
+      // subscription.ready() is already ready (because of subscription caching)
+      Tracker.autorun(function (computation) {
+
+        var subscriptionsReady;
+
+        if (subscribeToUsers) {
+          subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+        } else {
+          subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
+        }
+
+        // if (!computation.firstRun) {
+
+          if (debug) {
+            console.log('// ------ autorun 3 ------ //');
+            console.log("subscriptionsReady: ", subscriptionsReady);
+          }
+
+          // if subscriptions are ready, set terms to subscriptionsTerms
+          if (subscriptionsReady) {
+            template.rTerms.set(subscriptionTerms);
+            template.rReady.set(true);
+          }
+
+        // }
+      });
     }
 
   });
 
-  // Autorun 3: when subscription is ready, update the data helper's terms
-  // On the first run, the subscription won't be ready yet so there is no need to update the terms
-  template.autorun(function (computation) {
-  
-    var subscriptionsReady;
-
-    if (subscribeToUsers) {
-      subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
-    } else {
-      subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
-    }
-
-    if (!computation.firstRun) {
-
-      if (debug) {
-        console.log('// ------ autorun 3 ------ //');
-        console.log("subscriptionsReady: ", subscriptionsReady);
-      }
-
-      // if subscriptions are ready, set terms to subscriptionsTerms
-      if (subscriptionsReady) {
-        template.rTerms.set(subscriptionTerms);
-        template.rReady.set(true);
-      }
-
-    }
-  });
+ 
 
 });
 

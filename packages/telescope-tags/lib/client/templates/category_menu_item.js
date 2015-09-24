@@ -23,11 +23,9 @@ Template.category_menu_item.events({
       } else {
 
         if (input.prop("checked")) {
-
           FlowRouter.addToQueryArray('cat', slug);
 
         } else {
-
           FlowRouter.removeFromQueryArray('cat', slug);
 
         }

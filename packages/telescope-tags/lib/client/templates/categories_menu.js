@@ -50,6 +50,7 @@ Meteor.startup(function () {
           data: category
         };
       });
+
       return defaultItem.concat(menuItems);
     },
     menuClass: function () {

@@ -134,6 +134,7 @@ Template.menuItem.helpers({
     return this;
   },
   expandedClass: function () {
+    // return this.item.isExpanded? "menu-expanded" : "";
     return Template.instance().expand ? "menu-expanded" : "";
   },
   itemClass: function () {
@@ -172,11 +173,13 @@ Template.menuComponent.events({
     var $menuItem = $(e.currentTarget).closest(".js-menu-container");
 
     if ($menuItem.hasClass("menu-expanded")) {
+      // $menuItem.removeClass("menu-expanded");
       $menuItem.find(".js-menu-items").first().slideUp('fast', function () {
         $menuItem.removeClass("menu-expanded");
       });
       
     } else {
+      // $menuItem.addClass("menu-expanded");
       $menuItem.find(".js-menu-items").first().slideDown('fast', function () {
         $menuItem.addClass("menu-expanded");
       });
