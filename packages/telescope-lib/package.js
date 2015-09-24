@@ -67,7 +67,7 @@ Package.onUse(function (api) {
     // 'utilities:state-transitions@0.1.0',
     'tmeasday:publish-counts@0.7.1',
     // 'dburles:iron-router-query-array@1.0.1'
-    'utilities:onsubscribed@0.1.0'
+    'utilities:onsubscribed@0.1.1'
   ];
 
   api.use(packages);

@@ -1,7 +1,5 @@
 // see https://www.discovermeteor.com/blog/template-level-subscriptions/
 
-var debug = false;
-
 /*
 
 This template acts as the controller that sets and manages the reactive context 
@@ -21,14 +19,11 @@ Template.posts_list_controller.onCreated(function () {
   // 1. Initialization (*not* reactive!)
   var template = this;
   var terms = _.clone(template.data.terms);
-  var limit = Settings.get('postsPerPage', 10);
-  var postsSubscription;
-  var usersSubscription;
-  var subscriptionTerms;
-
+  template.terms = terms;
+  
   // initialize the reactive variables
   template.rTerms = new ReactiveVar(terms);
-  template.rLimit = new ReactiveVar(limit);
+  template.rLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
   template.rReady = new ReactiveVar(false);
 
   // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
@@ -38,113 +33,66 @@ Template.posts_list_controller.onCreated(function () {
   // enable not subscribing to users on a per-controller basis
   var subscribeToUsers = (typeof terms.subscribeToUsers === "undefined") ? true : terms.subscribeToUsers;
 
-  // Autorun 1: reruns when Template.currentData().terms changes (and new terms are different from old ones),
-  // or when post limit changes. On first run, terms and limit won't have had time to change yet, so just
-  // do nothing
-  template.autorun(function (computation) {
-
-
-    // add a dependency on data context to trigger the autorun
-    var newTerms = Template.currentData().terms; // ⚡ reactive ⚡
-
-    // get limit from local template variable
-    var rLimit = template.rLimit.get(); // ⚡ reactive ⚡
-        
-    if (!computation.firstRun) {
-
-      if (debug) {
-        console.log('// ------ autorun 1 ------ //');
-        console.log("terms: ", _.clone(terms));
-        console.log("newTerms: ", _.clone(newTerms));
-        console.log("isEqual?: ", _.isEqual(newTerms, terms));
-        console.log("oldLimit: ", limit);
-        console.log("newLimit: ", rLimit);
-      }
-
-      if (!_.isEqual(newTerms, terms)) {
-        // Case 1: terms have changed
-        // Note: if terms have changed, we reset the limit no matter its value
-
-        // update terms
-        terms = newTerms;
-
-        // reset limit
-        limit = Settings.get('postsPerPage', 10);
-        template.rLimit.set(limit);
-
-      } else if (rLimit !== limit) {
-        // Case 2: limit has changed
-
-        // update limit
-        limit = rLimit;
-      
-      }
-
-      // set template.rReady to false to trigger Autorun 2
-      template.rReady.set(false);
-    }
-
-  });
-
-  // Autorun 2: runs once on load, then reruns when template.rReady changes
-  // On first run, we subscribe with the original terms andlimit
   template.autorun(function () {
 
-    var ready = template.rReady.get(); // ⚡ reactive ⚡
+    // set controller as not ready
+    template.rReady.set(false);
 
-    // if ready is false, (re)subscribe
-    if (!ready) {
-      
-      subscriptionTerms = _.clone(terms);
-      subscriptionTerms.limit = limit;
+    // depend on terms
+    var newTerms = _.clone(Template.currentData().terms); // ⚡ reactive ⚡
 
-      if (debug) {
-        console.log('// ------ autorun 2 ------ //');
-        console.log("subscriptionTerms: ", subscriptionTerms);
-        console.log("template.rReady: ", ready);
-      }
+    // depend on rLimit
+    var rLimit = template.rLimit.get(); // ⚡ reactive ⚡
 
-      // subscribe to posts and (optionally) users
-      postsSubscription = subscriber.subscribe('postsList', subscriptionTerms);
-      if (subscribeToUsers) {
-        usersSubscription = subscriber.subscribe('postsListUsers', subscriptionTerms);
-      }
+    // complete terms with rLimit
+    newTerms.limit = rLimit;
 
-      // Autorun 3: when subscription is ready, update the data helper's terms
-      // On the first run, the subscription won't be ready yet so there is no need to update the terms
-      // Note: this needs to be nested inside Autorun 2 because it needs to re-run even when
-      // subscription.ready() is already ready (because of subscription caching)
-      Tracker.autorun(function (computation) {
+    // subscribe to posts and (optionally) users
+    var postsSubscription = subscriber.subscribe('postsList', newTerms);
+    if (subscribeToUsers) {
+      var usersSubscription = subscriber.subscribe('postsListUsers', newTerms);
+    }
 
-        var subscriptionsReady;
+    // check if subscriptions are ready
+    var subscriptionsReady;
+    if (subscribeToUsers) {
+      subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
+    } else {
+      subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
+    }
 
-        if (subscribeToUsers) {
-          subscriptionsReady = postsSubscription.ready() && usersSubscription.ready(); // ⚡ reactive ⚡
-        } else {
-          subscriptionsReady = postsSubscription.ready(); // ⚡ reactive ⚡
-        }
+    // console.log('// ------ autorun ------ //');
+    // console.log("newTerms: ", newTerms);
+    // console.log("rLimit: ", rLimit);
+    // console.log("subscriptionsReady: ", subscriptionsReady);
 
-        // if (!computation.firstRun) {
-
-          if (debug) {
-            console.log('// ------ autorun 3 ------ //');
-            console.log("subscriptionsReady: ", subscriptionsReady);
-          }
-
-          // if subscriptions are ready, set terms to subscriptionsTerms
-          if (subscriptionsReady) {
-            template.rTerms.set(subscriptionTerms);
-            template.rReady.set(true);
-          }
-
-        // }
-      });
+    // if subscriptions are ready, set terms to newTerms
+    if (subscriptionsReady) {
+      template.rTerms.set(newTerms);
+      template.rReady.set(true);
     }
 
   });
 
- 
+});
 
+// runs whenever the template's data context changes to reset rLimit
+Template.posts_list_controller.onDataChanged(function (data) {
+
+  var template = this;
+  var oldTerms = template.terms;
+  var newTerms = data.terms;
+  
+  // console.log("// ------ onDataChanged ------ //")
+  // console.log("oldTerms: ", _.clone(oldTerms));
+  // console.log("newTerms: ", _.clone(newTerms));
+  // console.log("isEqual?: ", _.isEqual(newTerms, oldTerms));
+
+  // if terms have changed, we reset rLimit
+  if (!_.isEqual(oldTerms, newTerms)) {
+    template.terms = newTerms;
+    template.rLimit.set(Settings.get('postsPerPage', 10));
+  }
 });
 
 Template.posts_list_controller.helpers({
