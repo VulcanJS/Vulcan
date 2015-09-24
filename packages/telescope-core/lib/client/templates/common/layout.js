@@ -52,8 +52,12 @@ Template.layout.helpers({
       return {template: "no_rights", data: {message: i18n.t("sorry_you_dont_have_the_rights_to_view_this_page")}};
     }
 
-    if (FlowRouter.getRouteName() === "postSubmit" && !Users.can.post(user)) {
-      return {template: "no_rights", data: {message: i18n.t("sorry_you_dont_have_permissions_to_add_new_items")}};
+    if (FlowRouter.getRouteName() === "postSubmit") {
+      if (!user) {
+        return {template: "no_rights", data: {message: i18n.t("please_sign_in_first"), link: FlowRouter.path("signIn")}};
+      } else if (!Users.can.post(user)) {
+        return {template: "no_rights", data: {message: i18n.t("sorry_you_dont_have_permissions_to_add_new_items")}};
+      }
     }
 
     return false;
