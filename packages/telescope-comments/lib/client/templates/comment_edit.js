@@ -1,8 +1,4 @@
 Template.comment_edit.helpers({
-  canEdit: function () {
-    var comment = this;
-    return Users.can.edit(Meteor.user(), comment);
-  },
   commentFields: function () {
     return Comments.simpleSchema().getEditableFields(Meteor.user());
   }
