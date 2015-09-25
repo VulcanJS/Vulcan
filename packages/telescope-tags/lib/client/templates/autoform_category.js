@@ -21,6 +21,7 @@ Template.afCategory_bootstrap3.helpers({
         label: category.name,
         isSelected: isSelected,
         isExpanded: isSelected,
+        itemClass: "category-"+category.slug,
         data: category
       };
     });
