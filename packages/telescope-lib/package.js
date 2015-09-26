@@ -32,7 +32,7 @@ Package.onUse(function (api) {
     'tap:i18n@1.6.1',
     'fourseven:scss@3.2.0',
     // 'iron:router@1.0.9',
-    'kadira:flow-router@2.6.0',
+    'kadira:flow-router@2.6.2',
     'kadira:blaze-layout@2.1.0',
     'arillo:flow-router-helpers@0.4.5',
     'meteorhacks:picker@1.0.3',
@@ -41,7 +41,7 @@ Package.onUse(function (api) {
     // 'meteorhacks:flow-router@1.5.0',
     // 'meteorhacks:flow-layout@1.1.1',
     'matb33:collection-hooks@0.8.0',
-    'chuangbo:marked@0.3.5',
+    'chuangbo:marked@0.3.5_1',
     'meteorhacks:fast-render@2.10.0',
     'meteorhacks:subs-manager@1.6.2',
     'percolatestudio:synced-cron@1.1.0',
@@ -52,8 +52,8 @@ Package.onUse(function (api) {
     'aramk:tinycolor@1.1.0_1',
     'momentjs:moment@2.10.6',
     'sacha:spin@2.3.1',
-    'aslagle:reactive-table@0.8.11',
-    'utilities:avatar@0.8.2',
+    'aslagle:reactive-table@0.8.12',
+    'utilities:avatar@0.9.1',
     'fortawesome:fontawesome@4.4.0',
     'ccan:cssreset@1.0.0',
     'djedi:sanitize-html@1.10.0',
@@ -63,11 +63,11 @@ Package.onUse(function (api) {
     'cmather:handlebars-server@2.0.0',
     'chuangbo:cookie@1.1.0',
     'ongoworks:speakingurl@5.0.1',
-    'okgrow:router-autoscroll@0.0.12',
+    'okgrow:router-autoscroll@0.1.0',
     // 'utilities:state-transitions@0.1.0',
-    'tmeasday:publish-counts@0.7.1',
+    'tmeasday:publish-counts@0.7.2',
     // 'dburles:iron-router-query-array@1.0.1'
-    'utilities:onsubscribed@0.1.1'
+    'utilities:onsubscribed@0.1.2'
   ];
 
   api.use(packages);

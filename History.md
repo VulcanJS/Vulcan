@@ -1,5 +1,9 @@
 ## v0.25 “FlowScope”
 
+### Meteor 1.2
+
+* Updated for Meteor 1.2
+
 ### Flow Router
 
 * Switched from Iron Router to Flow Router.
