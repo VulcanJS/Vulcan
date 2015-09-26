@@ -7,6 +7,5 @@
   "please_ask_your_admin_to_fill_in_embedly_key" : "Please ask your site admin to fill in an Embedly API key to enable thumbnails.",
   "embedlyKey" : "Embedly API Key",
   "thumbnailWidth" : "Thumbnail Width",
-  "thumbnailHeight" : "Thumbnail Height",
-  "go_to_post": "Go to post"
+  "thumbnailHeight" : "Thumbnail Height"
 }

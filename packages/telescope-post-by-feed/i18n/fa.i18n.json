@@ -1,0 +1,5 @@
+{
+  "feed_already_exists" : "یک فید با پیوند مشابه قبلا وجود داشته است.",
+  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "برای اضافه کردن فید جدید, شما نیاز به ورود به سامانه به صورت مدیر را دارید.",
+  "import_new_posts_from_feeds" : "پستهای جدید از فیدها وارد شوند."
+}
