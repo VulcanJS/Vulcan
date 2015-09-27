@@ -11,7 +11,7 @@ Package.onUse(function (api) {
   
   var packages = [
     'standard-app-packages',
-    'standard-minifiers',
+    'standard-minifiers@1.0.0',
     'service-configuration',
     'accounts-ui',
     'accounts-base',
@@ -23,7 +23,7 @@ Package.onUse(function (api) {
     'reactive-var',
     'http',
     'email',
-    'ecmascript',
+    'ecmascript@0.1.4',
     'aldeed:simple-schema@1.3.3',
     'aldeed:collection2@2.5.0',
     'aldeed:http@0.2.2',
