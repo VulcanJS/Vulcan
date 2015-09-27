@@ -9,7 +9,7 @@ Categories.before.insert(function (userId, doc) {
 Categories.before.update(function (userId, doc, fieldNames, modifier) {
   if (modifier.$set && modifier.$set.slug) {
     modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, modifier.$set.slug);
-  }  
+  }
 });
 
 // add callback that adds categories CSS classes
@@ -65,6 +65,10 @@ function addParentCategoriesOnSubmit (post) {
 Telescope.callbacks.add("postSubmit", addParentCategoriesOnSubmit);
 
 function addParentCategoriesOnEdit (modifier, post) {
+  if (modifier.$unset && modifier.$unset.categories !== undefined) {
+    return modifier;
+  }
+
   var categories = modifier.$set.categories;
   var newCategories = [];
   if (categories) {
