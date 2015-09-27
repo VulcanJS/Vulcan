@@ -154,6 +154,7 @@ telescope:scoring@0.25.0
 telescope:search@0.25.0
 telescope:settings@0.25.0
 telescope:share@0.25.0
+telescope:spiderable@0.25.0
 telescope:subscribe-to-posts@0.25.0
 telescope:tagline-banner@0.25.0
 telescope:tags@0.25.0

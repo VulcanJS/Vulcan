@@ -23,7 +23,7 @@ Package.onUse(function (api) {
     'reactive-var',
     'http',
     'email',
-    'spiderable',
+    'ecmascript',
     'aldeed:simple-schema@1.3.3',
     'aldeed:collection2@2.5.0',
     'aldeed:http@0.2.2',

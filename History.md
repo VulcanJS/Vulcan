@@ -61,6 +61,7 @@
 * Updated `category_title` template to handle multiple categories.
 * Fixed Subscribe to Comments feature. 
 * Fixed Safari CSS issues by enabling autoprefixer.
+* Extracted Spiderable into its own `telescope:spiderable` package. 
 
 ### i18n
 
