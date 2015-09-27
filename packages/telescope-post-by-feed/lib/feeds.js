@@ -4,83 +4,67 @@ Feeds.schema = new SimpleSchema({
   url: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
-    editableBy: ["admin"]
+    editableBy: ['admin']
   },
+
   userId: {
     type: String,
     label: 'feedUser',
-    editableBy: ["admin"],
+    editableBy: ['admin'],
     autoform: {
       instructions: 'Posts will be assigned to this user.',
-      options: function () {
-        var users = Meteor.users.find().map(function (user) {
+      options: function() {
+        var users = Meteor.users.find().map(function(user) {
           return {
             value: user._id,
             label: Users.getDisplayName(user)
           };
         });
+
         return users;
       }
     }
   },
+
+  feedHandler: {
+    type: String,
+    label: 'feedHandler',
+    optional: true,
+    editableBy: ['admin'],
+    defaultValue: 'DefaultFeedHandler',
+    autoform: {
+      instructions: 'If you have a custom feed handler, put its class name here'
+    }
+  },
+
   categories: {
     type: [String],
     label: 'categories',
     optional: true,
-    editableBy: ["admin"],
+    editableBy: ['admin'],
     autoform: {
       instructions: 'Posts will be assigned to this category.',
       noselect: true,
       editable: true,
-      options: function () {
-        var categories = Categories.find().map(function (category) {
+      options: function() {
+        var categories = Categories.find().map(function(category) {
           return {
             value: category._id,
             label: category.name
           };
         });
+
         return categories;
       }
     }
   }
 });
 
-
-Meteor.startup(function(){
-  Feeds.internationalize();
-});
-
 Feeds.attachSchema(Feeds.schema);
 
-// used to keep track of which feed a post was imported from
-var feedIdProperty = {
-  fieldName: 'feedId',
-  fieldSchema: {
-    type: String,
-    label: 'feedId',
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  }
-};
-Posts.addField(feedIdProperty);
+Meteor.startup(function() {
+  Feeds.internationalize();
 
-// the RSS ID of the post in its original feed
-var feedItemIdProperty = {
-  fieldName: 'feedItemId',
-  fieldSchema: {
-    type: String,
-    label: 'feedItemId',
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  }
-};
-Posts.addField(feedItemIdProperty);
-
-Meteor.startup(function () {
   Feeds.allow({
     insert: Users.is.adminById,
     update: Users.is.adminById,
@@ -88,7 +72,7 @@ Meteor.startup(function () {
   });
 
   Meteor.methods({
-    insertFeed: function(feedUrl){
+    insertFeed: function(feedUrl) {
       check(feedUrl, Feeds.schema);
 
       if (Feeds.findOne({url: feedUrl.url}))
