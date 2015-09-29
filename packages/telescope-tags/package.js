@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:tags",
   summary: "Telescope tags package",
-  version: "0.25.0",
+  version: "0.25.1",
   git: "https://github.com/TelescopeJS/telescope-tags.git"
 });
 
