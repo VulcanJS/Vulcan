@@ -27,4 +27,4 @@ FlowRouter.notFound = {
 
 FlowRouter.triggers.exit([function () {Messages.clearSeen()}]);
 FlowRouter.triggers.exit([function () {Events.analyticsInit()}]); // will only run once thanks to _.once()
-FlowRouter.triggers.exit([function () {Events.analyticsRequest}]);
+FlowRouter.triggers.exit([function () {Events.analyticsRequest()}]);
