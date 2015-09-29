@@ -5,7 +5,7 @@
  * Hook to fire before deletion of user.
  */
 Users.before.remove(function (userId, user) {
-  Telescope.callbacks.runAsync("onRemoveUserAsync", user);
+  Telescope.callbacks.runAsync("userDeleteAsync", user);
 });
 
 /**
@@ -15,7 +15,7 @@ Users.before.remove(function (userId, user) {
 Users.after.update(function (userId, doc, fieldNames, modifier, options) {
   var oldDoc = this.previous;
   var data = {oldUser: oldDoc, newUser: doc};
-  Telescope.callbacks.runAsync("onUpdateUserAsync", data);
+  Telescope.callbacks.runAsync("userEditAsync", data);
 });
 
 

@@ -8,7 +8,7 @@ function removeUserFromList (user) {
   }
 };
 
-Telescope.callbacks.add("onRemoveUserAsync", removeUserFromList);
+Telescope.callbacks.add("userDeleteAsync", removeUserFromList);
 
 function updateUserOnList (data) {
   oldUser = data.oldUser;
@@ -35,7 +35,7 @@ function updateUserOnList (data) {
   }
 };
 
-Telescope.callbacks.add("onUpdateUserAsync", updateUserOnList);
+Telescope.callbacks.add("userEditAsync", updateUserOnList);
 
 function subscribeUserOnProfileCompletion (user) {
   if (!!Settings.get('autoSubscribe') && !!Users.getEmail(user)) {
