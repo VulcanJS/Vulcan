@@ -97,6 +97,13 @@ function updateMediaOnEdit (modifier, post) {
 }
 Telescope.callbacks.add("postEdit", updateMediaOnEdit);
 
+var regenerateThumbnail = function (post) {
+  delete post.thumbnailUrl;
+  delete post.media;
+  delete post.sourceName;
+  delete post.sourceUrl;
+  addMediaAfterSubmit(post);
+};
 
 Meteor.methods({
   testGetEmbedlyData: function (url) {
@@ -110,10 +117,26 @@ Meteor.methods({
   embedlyKeyExists: function () {
     return !!Settings.get('embedlyKey');
   },
-  regenerateEmbedlyData: function (post) {
+  regenerateThumbnail: function (post) {
     check(post, Posts.simpleSchema());
     if (Users.can.edit(Meteor.user(), post)) {
-      addMediaAfterSubmit(post);
+      regenerateThumbnail(post);
+    }
+  },
+  regenerateAllThumbnails: function () {
+    if (Users.is.admin(Meteor.user())) {
+      var posts = Posts.find({thumbnailUrl: {$exists: true}});
+      console.log("// regenerating thumbnails for "+posts.count()+" posts…");
+      posts.forEach(function (post, index) {
+        Meteor.setTimeout(function () {
+          console.log(index+". "+post.title);
+          try {
+            regenerateThumbnail(post);
+          } catch (error) {
+            console.log(error);
+          }
+        }, index * 1000);
+      });
     }
   }
 });
