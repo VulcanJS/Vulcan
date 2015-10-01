@@ -29,4 +29,4 @@ Comments.getAuthorName = function (comment) {
     return comment.author;
   }
 };
-Comments.helpers({getAuthorName: function () {return Comments.getDisplayName(this);}});
+Comments.helpers({getAuthorName: function () {return Comments.getAuthorName(this);}});
