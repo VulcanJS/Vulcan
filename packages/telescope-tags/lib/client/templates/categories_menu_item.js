@@ -1,4 +1,4 @@
-Template.category_menu_item.helpers({
+Template.categories_menu_item.helpers({
   showMultiple: function () {
     return Settings.get("categoriesBehavior", "single") === "multiple";
   },
@@ -7,7 +7,7 @@ Template.category_menu_item.helpers({
   }
 });
 
-Template.category_menu_item.events({
+Template.categories_menu_item.events({
   "change .js-category-toggle": function (event, instance) {
     
     var slug = instance.data.item.data.slug;

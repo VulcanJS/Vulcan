@@ -44,7 +44,7 @@ Meteor.startup(function () {
           description: category.description,
           _id: category._id,
           parentId: category.parentId,
-          template: "category_menu_item",
+          template: "categories_menu_item",
           isExpanded: isExpanded,
           isActive: isActive,
           itemClass: "category-"+category.slug,
