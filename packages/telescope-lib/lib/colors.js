@@ -79,6 +79,7 @@ accent(".post-admin a:hover", "background-color");
 accentContrast('input[type="submit"]');
 accentContrast("button");
 accentContrast(".button");
+accentContrast(".menu-dropdown .menu-wrapper a.button");
 accentContrast(".auth-buttons #login-buttons #login-buttons-password");
 accentContrast(".btn-primary");
 accentContrast(".header .btn-primary");

@@ -11,7 +11,6 @@ var getMenuItems = function () {
     item.itemClass = "view-"+item.label;
     return item;
   });
-  console.log(viewableItems)
   return viewableItems; 
 };
 
