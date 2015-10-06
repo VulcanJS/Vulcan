@@ -16,9 +16,10 @@ Meteor.startup(function () {
       var activeCategories = FlowRouter.getQueryParam("cat");
 
       var defaultItem = [{
-        route: 'postsDefault',
-        label: 'all_categories',
-        itemClass: 'item-never-active'
+        route: "postsDefault",
+        label: "all_categories",
+        itemClass: "item-never-active",
+        template: "defaultMenuItem"
       }];
 
       var menuItems = Categories.find({}, {sort: {order: 1, name: 1}}).fetch();
@@ -44,7 +45,6 @@ Meteor.startup(function () {
           description: category.description,
           _id: category._id,
           parentId: category.parentId,
-          template: "categories_menu_item",
           isExpanded: isExpanded,
           isActive: isActive,
           itemClass: "category-"+category.slug,

@@ -1,3 +1,14 @@
+## v0.25.1
+
+* Created `postsListTop` zone and moved `messages`, `category_title`, and `views_menu` modules to it.
+* Renamed `category_menu_item` template to `categories_menu_item`.
+* Added `itemTemplate` option to menu to enable setting a custom template for all elements.
+* Created new `defaultMenuItem` template.
+* Now passing reference to whole `menu` object to each node instead of just `menuItems`.
+* Renamed `top` zone to `contentTop`.
+* Created new `contentBottom`, `postsListTop`, `postsListBottom` zones. 
+* Newsletter banner is now included in `contentTop` zone, not `hero`. 
+
 ## v0.25 “FlowScope”
 
 ### Meteor 1.2

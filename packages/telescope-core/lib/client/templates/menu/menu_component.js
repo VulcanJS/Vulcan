@@ -57,6 +57,7 @@ Template.menuComponent.onCreated(function () {
   // if menu has a custom item template specified, make that template inherit helpers from menuItem
   if (menu.itemTemplate) {
     Template[menu.itemTemplate].inheritsHelpersFrom("defaultMenuItem");
+    Template[menu.itemTemplate].inheritsEventsFrom("defaultMenuItem");
   }
 });
 
@@ -125,6 +126,7 @@ Template.menuItem.onCreated(function () {
   // if menu item has a custom template specified, make that template inherit helpers from menuItem
   if (context.item.template) {
     Template[context.item.template].inheritsHelpersFrom("defaultMenuItem");
+    Template[context.item.template].inheritsEventsFrom("defaultMenuItem");
   }
   // this should not be reactive, as we only want to set it once on template creation
   this.expand = this.data.item.isExpanded;
@@ -137,16 +139,6 @@ Template.menuItem.helpers({
   menuItemData: function () {
     // if a data property is defined, use it for data context. Else default to current node
     return this;
-  },
-  childMenuItems: function () {    
-    return Telescope.utils.getChildMenuItems(this);
-  }
-});
-
-Template.defaultMenuItem.helpers({
-  expandedClass: function () {
-    // return this.item.isExpanded? "menu-expanded" : "";
-    return Template.instance().expand ? "menu-expanded" : "";
   },
   itemClass: function () {
     var itemClass = "";
@@ -166,17 +158,30 @@ Template.defaultMenuItem.helpers({
     
     return itemClass;
   },
+  childMenuItems: function () {    
+    return Telescope.utils.getChildMenuItems(this);
+  }
+});
+
+Template.defaultMenuItem.helpers({
+  expandedClass: function () {
+    // return this.item.isExpanded? "menu-expanded" : "";
+    return Template.instance().expand ? "menu-expanded" : "";
+  },
   itemLabel: function () {
     // if label is a Function return its result, else return i18n'd version of label
     return typeof this.item.label === "function" ? this.item.label() :  i18n.t(this.item.label);
   },
   itemRoute: function () {
     return getRoute(this.item);
+  },
+  childMenuItems: function () {    
+    return Telescope.utils.getChildMenuItems(this);
   }
 });
 
 Template.defaultMenuItem.events({
-  'click .menu-collapsible .js-menu-toggle': function (e) {
+  'click .js-menu-toggle': function (e) {
     e.preventDefault();
     var $menuItem = $(e.currentTarget).closest(".js-menu-container");
 
@@ -192,6 +197,5 @@ Template.defaultMenuItem.events({
         $menuItem.addClass("menu-expanded");
       });
     }
-
   }
 });

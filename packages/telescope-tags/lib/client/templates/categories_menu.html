@@ -1,7 +1,7 @@
 <template name="categories_menu">
   <div class="categories-menu-wrapper {{moduleClass}}">
     {{#if hasCategories}}
-      {{> menuComponent menuName="categories" menuItems=menuItems menuClass=menuClass}}
+      {{> menuComponent menuName="categories" itemTemplate="categories_menu_item" menuItems=menuItems menuClass=menuClass}}
     {{/if}}
   </div>
 </template>

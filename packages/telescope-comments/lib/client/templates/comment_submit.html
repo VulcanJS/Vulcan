@@ -8,7 +8,7 @@
     {{#if isLoggedIn}}
       <p class="cannot-comment-message">{{_ "sorry_you_do_not_have_the_rights_to_comments"}}</p>
     {{else}}
-      <p class="cannot-comment-message"><a href="{{pathFor route='atSignIn'}}">{{_ "please_log_in_to_comment"}}</a></p>
+      <p class="cannot-comment-message"><a href="{{pathFor route='signIn'}}">{{_ "please_log_in_to_comment"}}</a></p>
     {{/if}}
   {{/if}}  
 </template>
