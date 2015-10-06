@@ -12,6 +12,10 @@ Package.onUse(function(api) {
   api.use(['telescope:lib@0.25.0']);
 
   api.addFiles([
+    'lib/modules.js'
+  ], ['client', 'server']);
+
+  api.addFiles([
     'lib/client/messages.js',
 
     'lib/client/templates/messages.html',

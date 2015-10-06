@@ -1,8 +1,10 @@
 <template name="main_posts_list">
-  {{> views_menu}}
-  {{#if customTemplate}}
-    {{> Template.dynamic template=customTemplate data=arguments}}
-  {{else}}
-    {{> posts_list_controller arguments}}
-  {{/if}}
+  <div class="main-posts-list">
+    {{> modules zone="postsListTop"}}
+    {{#if customTemplate}}
+      {{> Template.dynamic template=customTemplate data=arguments}}
+    {{else}}
+      {{> posts_list_controller arguments}}
+    {{/if}}
+  </div>
 </template>
