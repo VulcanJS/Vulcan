@@ -29,7 +29,7 @@ Telescope.utils.getChildMenuItems = function (node) {
 
     var level = node.level;
     var childLevel = level + 1;
-    var menuItems = filterMenuItems(node.allItems);
+    var menuItems = filterMenuItems(node.menu.menuItems);
 
     menuItems = _.filter(menuItems, function (item) {
       // return elements with the correct parentId
@@ -39,7 +39,7 @@ Telescope.utils.getChildMenuItems = function (node) {
     // build "node container" object
     menuItems = _.map(menuItems, function (item) {
       return {
-        allItems: node.allItems,
+        menu: node.menu,
         level: childLevel,
         item: item
       };
@@ -52,14 +52,19 @@ Telescope.utils.getChildMenuItems = function (node) {
   }
 };
 
-// Template.menuComponent.onCreated(function () {
-//   menuItemsGlobal = this.data.menuItems;
-// });
+Template.menuComponent.onCreated(function () {
+  var menu = this.data;
+  // if menu has a custom item template specified, make that template inherit helpers from menuItem
+  if (menu.itemTemplate) {
+    Template[menu.itemTemplate].inheritsHelpersFrom("defaultMenuItem");
+  }
+});
 
 Template.menuComponent.helpers({
   rootMenuItems: function () {
 
-    var allMenuItems = this.menuItems;
+    var menu = this;
+    var allMenuItems = menu.menuItems;
     var menuItems = filterMenuItems(allMenuItems); // filter out admin items if needed
 
     // get root elements
@@ -70,7 +75,7 @@ Template.menuComponent.helpers({
     // build "node container" object
     menuItems = _.map(menuItems, function (item) {
       return {
-        allItems: allMenuItems,
+        menu: menu,
         level: 0,
         item: item
       };
@@ -119,20 +124,26 @@ Template.menuItem.onCreated(function () {
   var context = this.data;
   // if menu item has a custom template specified, make that template inherit helpers from menuItem
   if (context.item.template) {
-    Template[context.item.template].inheritsHelpersFrom("menuItem");
+    Template[context.item.template].inheritsHelpersFrom("defaultMenuItem");
   }
   // this should not be reactive, as we only want to set it once on template creation
   this.expand = this.data.item.isExpanded;
 });
 
 Template.menuItem.helpers({
-  hasTemplate: function () {
-    return !!this.item.template;
+  getTemplate: function () {
+    return this.item.template || this.menu.itemTemplate;
   },
   menuItemData: function () {
     // if a data property is defined, use it for data context. Else default to current node
     return this;
   },
+  childMenuItems: function () {    
+    return Telescope.utils.getChildMenuItems(this);
+  }
+});
+
+Template.defaultMenuItem.helpers({
   expandedClass: function () {
     // return this.item.isExpanded? "menu-expanded" : "";
     return Template.instance().expand ? "menu-expanded" : "";
@@ -161,13 +172,10 @@ Template.menuItem.helpers({
   },
   itemRoute: function () {
     return getRoute(this.item);
-  },
-  childMenuItems: function () {    
-    return Telescope.utils.getChildMenuItems(this);
   }
 });
 
-Template.menuComponent.events({
+Template.defaultMenuItem.events({
   'click .menu-collapsible .js-menu-toggle': function (e) {
     e.preventDefault();
     var $menuItem = $(e.currentTarget).closest(".js-menu-container");

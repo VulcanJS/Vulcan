@@ -5,6 +5,9 @@ menuComponent
 menuName (String)
 | The name of the menu
 
+itemTemplate
+| The template to use to display menu items (defaults to "defaultMenuItem")
+
 menuItems (Array)
 | An array containing the contents of the menu
 _ _id (String) [optional] used in nested menus
@@ -84,16 +87,10 @@ item (Object)
   <li class="menu-item {{itemClass}} {{expandedClass}} js-menu-container">
   
     <div class="menu-item-wrapper">
-      {{#if hasTemplate}}
-        {{> Template.dynamic template=item.template data=menuItemData}}
+      {{#if getTemplate}}
+        {{> Template.dynamic template=getTemplate data=menuItemData}}
       {{else}}
-        <a class="menu-sub-level" href="{{itemRoute}}">
-          <span class="menu-label">{{{itemLabel}}}</span>
-          {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
-        </a>
-        {{#if childMenuItems}}
-          <a class="menu-items-toggle js-menu-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
-        {{/if}}
+        {{> defaultMenuItem}}
       {{/if}}
     </div>
 
@@ -106,4 +103,14 @@ item (Object)
     {{/with}}
 
   </li>
+</template>
+
+<template name="defaultMenuItem">
+  <a class="menu-sub-level" href="{{itemRoute}}">
+    <span class="menu-label">{{{itemLabel}}}</span>
+    {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+  </a>
+  {{#if childMenuItems}}
+    <a class="menu-items-toggle js-menu-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
+  {{/if}}
 </template>
