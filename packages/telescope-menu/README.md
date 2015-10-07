@@ -72,10 +72,6 @@ The menu item's CSS class.
 
 An optional custom template. Overrides both the default template and the `itemTemplate` menu-level option. 
 
-##### `isHidden` (Function)
-
-If this function returns `true`, the menu item will not be shown. 
-
 ### Nested Menu Items Properties
 
 Additionally, menu items take a few additional properties to generate nested menus. 
@@ -112,15 +108,15 @@ The current item to display.
 
 Out of the box, the menu component accepts a few classes
 
-#### `menu-list` (default)
+##### `menu-list` (default)
 
 A simple list. Serves as the base for the other styles.
 
-#### `menu-dropdown`
+##### `menu-dropdown`
 
 A dropdown menu.
 
-#### `menu-collapsible`
+##### `menu-collapsible`
 
 A collapsible menu. 
 
@@ -128,6 +124,6 @@ A collapsible menu.
 
 The menu component includes a few events. Classes used for JS event targeting start with the `js-` prefix. 
 
-#### `click .js-menu-toggle`
+##### `click .js-menu-toggle`
 
 Makes the current node's child menu expand and collapse.
