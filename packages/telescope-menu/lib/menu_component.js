@@ -74,6 +74,14 @@ Template.menuComponent.events({
 
 });
 
+// ------------------------------- defaultMenuLabel ------------------------------- //
+
+Template.defaultMenuLabel.helpers({
+  getMenuLabel: function () {
+    return typeof this.menuLabel === "function" ? this.menuLabel() :  this.menuLabel;
+  }
+});
+
 // ------------------------------- menuItem ------------------------------- //
 
 Template.menuItem.onCreated(function () {
@@ -85,7 +93,7 @@ Template.menuItem.onCreated(function () {
   }
 
   // this should not be reactive, as we only want to set it once on template creation
-  this.expand = this.data.item.isExpanded;
+  this.expanded = this.data.item.isExpanded;
 
 });
 
@@ -105,9 +113,15 @@ Template.menuItem.helpers({
       // substr(1) is to avoid having two "/" in the URL
       itemClass += " item-active";
     }
+
+    if (Template.instance().expanded) {
+      itemClass += " item-expanded";
+    }
+
     if (this.item.itemClass) {
       itemClass += " "+this.item.itemClass;
     }
+
     itemClass += " menu-level-" + this.level;
     
     return itemClass;
@@ -124,15 +138,14 @@ Template.menuItem.helpers({
 
 Template.defaultMenuItem.helpers({
 
-  // set a CSS class to expand the item or not
-  expandedClass: function () {
-    // return this.item.isExpanded? "menu-expanded" : "";
-    return Template.instance().expand ? "menu-expanded" : "";
-  },
-
   // the item's label
   getItemLabel: function () {
     return typeof this.item.label === "function" ? this.item.label() :  this.item.label;
+  },
+
+  // the item's description
+  getItemDescription: function () {
+    return typeof this.item.description === "function" ? this.item.description() :  this.item.description;
   },
 
   // the item's route

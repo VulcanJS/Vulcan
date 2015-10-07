@@ -7,10 +7,12 @@ This is a component for generating flexible, nestable menus. It can generates ne
 Just include the `menuComponent` template while passing the necessary arguments:
 
 ```
-{{> menuComponent menuItems=menuItems}}
+{{> menuComponent menuItems=menuItems menuLabel="My Menu" menuClass="my-menu-class"}}
 ```
 
 ### Arguments
+
+All arguments are optional unless specified otherwise. 
 
 ##### `menuItems` (Array) [required]
 
@@ -20,9 +22,9 @@ An array containing the menu's contents (see below).
 
 The name of the menu. Used to set a `*name*-menu` CSS class on the menu. 
 
-##### `menuLabel` (String)
+##### `menuLabel` (String/Function)
 
-The menu title label.
+The menu title label, or a function that returns a label. 
 
 ##### `menuLabelTemplate` (String)
 
@@ -43,6 +45,10 @@ Menu items can have the following properties:
 ##### `label` (String/Function)
 
 The menu item's label, or a function that returns a label. 
+
+##### `description` (String/Function)
+
+The menu item's description, or a function that returns a description. 
 
 ##### `route` (String/Function)
 
@@ -90,10 +96,38 @@ The menu item template is called with the following data context:
 
 A reference pointing back to the menu object.
 
-#### `level` (Number)
+##### `level` (Number)
 
 The current nesting level.
 
-#### `item` (Object)
+##### `item` (Object)
 
 The current item to display. 
+
+### Styling
+
+Out of the box, the menu component accepts a few classes
+
+#### No Class
+
+If you pass no class to the menu, it will not receive any styling at all.
+
+#### `menu-list`
+
+A simple list. Serves as the base for the other styles.
+
+#### `menu-dropdown`
+
+A dropdown menu.
+
+#### `menu-collapsible`
+
+A collapsible menu. 
+
+### Events
+
+The menu component includes a few events. Classes used for JS event targeting start with the `js-` prefix. 
+
+#### `click .js-menu-toggle`
+
+Makes the current node's child menu expand and collapse.

@@ -1,7 +1,7 @@
 Telescope.menuItems.add("adminMenu", {
-  route: 'adminFeeds',
-  label: 'Feeds',
-  description: 'import_new_posts_from_feeds'
+  route: "adminFeeds",
+  label: _.partial(i18n.t, "feeds"),
+  description: _.partial(i18n.t, "import_new_posts_from_feeds")
 });
 
 Telescope.adminRoutes.route('/feeds', {

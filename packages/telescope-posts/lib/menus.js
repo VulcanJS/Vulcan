@@ -7,44 +7,47 @@ Posts.getRoute = function () {
 };
 
 // array containing items in the views menu
-Telescope.menuItems.add("viewsMenu", [
+var viewsMenuItems = [
   {
     route: Posts.getRoute,
     name: 'top',
-    label: function (){ return i18n.t('top'); },
     description: 'most_popular_posts'
   },
   {
     route: Posts.getRoute,
     name: 'new',
-    label: function (){ return i18n.t('new'); },
     description: 'newest_posts'
   },
   {
     route: Posts.getRoute,
     name: 'best',
-    label: function (){ return i18n.t('best'); },
     description: 'highest_ranked_posts_ever'
   },
   {
     route: Posts.getRoute,
     name: 'pending',
-    label: function (){ return i18n.t('pending'); },
     description: 'posts_awaiting_moderation',
     adminOnly: true
   },
   {
     route: Posts.getRoute,
     name: 'rejected',
-    label: function (){ return i18n.t('rejected'); },
     description: 'rejected_posts',
     adminOnly: true
   },
   {
     route: Posts.getRoute,
     name: 'scheduled',
-    label: function (){ return i18n.t('scheduled'); },
     description: 'future_scheduled_posts',
     adminOnly: true
   },
-]);
+];
+
+// add label & description i18n functions
+viewsMenuItems = viewsMenuItems.map(function (item) {
+  item.label = _.partial(i18n.t, item.name);
+  item.description = _.partial(i18n.t, item.description);
+  return item;
+});
+
+Telescope.menuItems.add("viewsMenu", viewsMenuItems);

@@ -26,7 +26,7 @@ Package.onUse(function (api) {
     'lib/callbacks.js',
     'lib/modules.js',
     'lib/helpers.js',
-    'lib/menu.js',
+    'lib/menus.js',
     'lib/pubsub.js',
     'lib/methods.js',
     'lib/routes.js'

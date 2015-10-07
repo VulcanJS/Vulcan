@@ -1,7 +1,7 @@
 Telescope.menuItems.add("adminMenu", [
   {
     route: 'adminSettings',
-    label: 'settings',
-    description: 'telescope_settings_panel'
+    label: _.partial(i18n.t, 'settings'),
+    description: _.partial(i18n.t, 'telescope_settings_panel')
   }
 ]);

@@ -24,16 +24,13 @@ getRoute = function (item) {
 };
 
 toggleMenu = function ($menuItem) {
-  if ($menuItem.hasClass("menu-expanded")) {
-    // $menuItem.removeClass("menu-expanded");
+  if ($menuItem.hasClass("item-expanded")) {
     $menuItem.find(".js-menu-items").first().slideUp('fast', function () {
-      $menuItem.removeClass("menu-expanded");
+      $menuItem.removeClass("item-expanded");
     });
-    
   } else {
-    // $menuItem.addClass("menu-expanded");
     $menuItem.find(".js-menu-items").first().slideDown('fast', function () {
-      $menuItem.addClass("menu-expanded");
+      $menuItem.addClass("item-expanded");
     });
   }
 };
@@ -59,7 +56,6 @@ getChildMenuItems = function (node) {
         item: item
       };
     });
-
     return menuItems;
 
   } else {

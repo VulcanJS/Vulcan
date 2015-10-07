@@ -1,7 +1,7 @@
 Telescope.menuItems.add("adminMenu", {
   route: 'adminCategories',
-  label: 'Categories',
-  description: 'add_and_remove_categories'
+  label: _.partial(i18n.t, 'categories'),
+  description: _.partial(i18n.t, 'add_and_remove_categories')
 });
 
 // push "categories" modules to postHeading

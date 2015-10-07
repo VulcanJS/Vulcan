@@ -1,21 +1,31 @@
 <template name="categories_menu_item">
+
   {{#if showMultiple}}
-    <span class="menu-sub-level">
-      <span class="menu-label js-category-toggle">
+
+    <span class="menu-item-label">
+      <span class="menu-item-label-text js-category-toggle">
         <label class="category-label">
           <input type="checkbox" {{isChecked}} class="category-checkbox" name="{{item.data._id}}"/> 
           {{{getItemLabel}}}
         </label>
       </span>
-      {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+      {{#if description}}<span class="menu-item-description">{{{getDescription}}}</span>{{/if}}
     </span>
+
   {{else}}
-    <a class="menu-sub-level" href="{{itemRoute}}">
-      <span class="menu-label">{{{getItemLabel}}}</span>
-      {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+
+    <a class="menu-item-label" href="{{itemRoute}}">
+      <span class="menu-item-label-text">{{{getItemLabel}}}</span>
+      {{#if description}}<span class="menu-item-description">{{{getDescription}}}</span>{{/if}}
+    </a>
+
+  {{/if}}
+
+  {{#if childMenuItems}}
+    <a class="menu-items-toggle js-menu-toggle" href="#">
+      {{> menuIconExpand}}
+      {{> menuIconCollapse}}
     </a>
   {{/if}}
-  {{#if childMenuItems}}
-    <a class="menu-items-toggle js-menu-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
-  {{/if}}
+  
 </template>
