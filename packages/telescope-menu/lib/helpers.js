@@ -24,13 +24,13 @@ getRoute = function (item) {
 };
 
 toggleMenu = function ($menuItem) {
-  if ($menuItem.hasClass("item-expanded")) {
+  if ($menuItem.hasClass("js-expanded")) {
     $menuItem.find(".js-menu-items").first().slideUp('fast', function () {
-      $menuItem.removeClass("item-expanded");
+      $menuItem.removeClass("js-expanded").addClass("js-collapsed");
     });
   } else {
     $menuItem.find(".js-menu-items").first().slideDown('fast', function () {
-      $menuItem.addClass("item-expanded");
+      $menuItem.addClass("js-expanded").removeClass("js-collapsed");
     });
   }
 };

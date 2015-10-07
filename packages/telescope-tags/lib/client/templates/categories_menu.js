@@ -11,6 +11,9 @@ Meteor.startup(function () {
     hasCategories: function () {
       return Categories.find().count();
     },
+    menuLabel: function () {
+      return i18n.t("categories");
+    },
     menuItems: function () {
 
       var activeCategories = FlowRouter.getQueryParam("cat");

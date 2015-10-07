@@ -21,13 +21,25 @@ Template.menuComponent.helpers({
     var count = this.menuItems.length;
 
     if (!!this.menuClass) {
-      classes.push(this.menuClass)
+      classes.push(this.menuClass);
+    } else {
+      classes.push("menu-list");
     }
 
     if (count) {
       classes.push("menu-has-items");
     } else {
       classes.push("menu-no-items");
+    }
+
+    if (!!this.startPosition) {
+      if (this.startPosition === "expanded") {
+        classes.push("js-expanded");
+      } else {
+        classes.push("js-collapsed");
+      }
+    } else {
+      classes.push("js-collapsed");
     }
 
     return _.unique(classes).join(" ");
@@ -115,7 +127,9 @@ Template.menuItem.helpers({
     }
 
     if (Template.instance().expanded) {
-      itemClass += " item-expanded";
+      itemClass += " js-expanded";
+    } else {
+      itemClass += " js-collapsed";
     }
 
     if (this.item.itemClass) {

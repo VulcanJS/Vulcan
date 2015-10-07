@@ -51,6 +51,11 @@ $red: #DD3416;
     font-weight: normal;
     opacity: 0.5;
   }
+  .side-nav & .menu-items{
+    padding-left: 0;
+    border-left: none;
+    margin: 0;
+  }
 }
 .side-nav{
   .categories-menu{

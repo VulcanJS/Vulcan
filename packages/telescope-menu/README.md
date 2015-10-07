@@ -24,7 +24,7 @@ The name of the menu. Used to set a `*name*-menu` CSS class on the menu.
 
 ##### `menuLabel` (String/Function)
 
-The menu title label, or a function that returns a label. 
+The menu title label, or a function that returns a label. Note that this is required for dropdown menus. 
 
 ##### `menuLabelTemplate` (String)
 
@@ -37,6 +37,10 @@ An optional CSS class given to the menu
 ##### `itemTemplate` (String)
 
 A custom template used to display individual menu items (defaults to "defaultMenuItem")
+
+##### `startPosition` (String)
+
+For collapsible menus only, defines whether the menu should start off as `expanded` or `collapsed`. Defaults to `collapsed`.
 
 ### Menu Items Properties
 
@@ -86,7 +90,7 @@ The parent node's id.
 
 ##### `isExpanded` (Boolean)
 
-Whether the item's sub-menu should be expanded
+Whether the item's sub-menu should start off expanded
 
 ### The Menu Item Template
 
@@ -108,11 +112,7 @@ The current item to display.
 
 Out of the box, the menu component accepts a few classes
 
-#### No Class
-
-If you pass no class to the menu, it will not receive any styling at all.
-
-#### `menu-list`
+#### `menu-list` (default)
 
 A simple list. Serves as the base for the other styles.
 

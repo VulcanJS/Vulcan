@@ -8,7 +8,7 @@ var getMenuItems = function () {
   });
 
   viewableItems = _.map(viewableItems, function (item) {
-    item.itemClass = "view-"+item.label;
+    item.itemClass = "view-"+item.name;
     return item;
   });
 
