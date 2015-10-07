@@ -18,7 +18,7 @@ Telescope.menuItems.add("userMenu", [
       var user = Meteor.user();
       return FlowRouter.path('userProfile', {_idOrSlug: user && user.telescope && user.telescope.slug});
     },
-    label: 'profile',
+    label: function () { return i18n.t('profile'); },
     description: 'view_your_profile'
   },
   {
@@ -26,18 +26,18 @@ Telescope.menuItems.add("userMenu", [
       var user = Meteor.user();
       return FlowRouter.path('userEdit', {_idOrSlug: user && user.telescope && user.telescope.slug});
     },
-    label: 'edit_account',
+    label: function () { return i18n.t('edit_account'); },
     description: 'edit_your_profile'
   },
   {
     route: 'adminSettings',
-    label: 'settings',
+    label: function () { return i18n.t('settings'); },
     description: 'settings',
     adminOnly: true
   },
   {
     route: 'signOut',
-    label: 'sign_out',
+    label: function () { return i18n.t('sign_out'); },
     description: 'sign_out'
   }
 ]);
@@ -46,7 +46,7 @@ Telescope.menuItems.add("userMenu", [
 Telescope.menuItems.add("adminMenu", [
   {
     route: 'adminUsers',
-    label: 'users',
+    label: function () { return i18n.t('users'); },
     description: 'users_dashboard'
   }
 ]);

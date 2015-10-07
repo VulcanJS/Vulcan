@@ -2,7 +2,7 @@ Package.describe({
   name: "telescope:messages",
   summary: "Telescope messages package",
   version: "0.25.0",
-  git: "https://github.com/TelescopeJS/telescope-messages.git"
+  git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
 Package.onUse(function(api) {

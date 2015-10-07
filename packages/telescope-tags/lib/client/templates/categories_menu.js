@@ -17,7 +17,7 @@ Meteor.startup(function () {
 
       var defaultItem = [{
         route: "postsDefault",
-        label: "all_categories",
+        label: i18n.t("all_categories"),
         itemClass: "item-never-active",
         template: "defaultMenuItem"
       }];

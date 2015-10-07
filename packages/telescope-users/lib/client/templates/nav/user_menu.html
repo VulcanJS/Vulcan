@@ -1,7 +1,7 @@
 <template name="user_menu">
   <div class="user-menu-wrapper {{moduleClass}}">
     {{#if isLoggedIn}}
-      {{> menuComponent menuName="user" menuLabelTemplate="user_menu_label" menuLabelData=user menuItems=menuItems menuClass=menuClass}}
+      {{> menuComponent menuName="user" menuLabelTemplate="user_menu_label" menuItems=menuItems menuClass=menuClass}}
     {{else}}
       <div class="signin-signup">
         <a class="account-link sign-up" href="{{pathFor 'signUp'}}">{{_ "sign_up"}}</a>

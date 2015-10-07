@@ -3,7 +3,10 @@ Template.user_menu.helpers({
     return Meteor.user();
   },
   menuItems: function () {
-    return Telescope.menuItems.get("userMenu");
+    var viewableItems = _.reject(Telescope.menuItems.get("userMenu"), function (item) {
+      return (item.adminOnly && !Users.is.admin(Meteor.user()));
+    });
+    return viewableItems;
   },
   menuClass: function () {
     if (!!this.mobile) {

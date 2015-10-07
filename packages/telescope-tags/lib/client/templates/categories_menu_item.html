@@ -4,14 +4,14 @@
       <span class="menu-label js-category-toggle">
         <label class="category-label">
           <input type="checkbox" {{isChecked}} class="category-checkbox" name="{{item.data._id}}"/> 
-          {{{itemLabel}}}
+          {{{getItemLabel}}}
         </label>
       </span>
       {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
     </span>
   {{else}}
     <a class="menu-sub-level" href="{{itemRoute}}">
-      <span class="menu-label">{{{itemLabel}}}</span>
+      <span class="menu-label">{{{getItemLabel}}}</span>
       {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
     </a>
   {{/if}}

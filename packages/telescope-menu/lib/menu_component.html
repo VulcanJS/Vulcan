@@ -1,0 +1,57 @@
+<template name="menuComponent">
+  <div class="menu {{menuClass}} js-menu-container">
+    {{#if showMenuLabel}}
+      <div class="menu-top-level" href="/">
+        {{#if menuLabelTemplate}}
+          {{> Template.dynamic template=menuLabelTemplate data=menuLabelData}}
+        {{else}}
+          <a class="menu-top-level-link js-menu-toggle" href="#">
+            <span class="menu-top-level-label">{{menuLabel}}</span>
+            <span class="menu-items-toggle">{{{icon "expand"}}}{{{icon "collapse"}}}</span>
+          </a>
+        {{/if}}
+      </div>
+    {{/if}}
+    <div class="menu-wrapper js-menu-items">
+      {{#with rootMenuItems}}
+        <ul class="menu-contents" role="menu" aria-labelledby="dLabel">
+          {{#each this}}
+            {{> menuItem}}
+          {{/each}}
+        </ul>
+      {{/with}}
+    </div>
+  </div>
+</template>
+
+<template name="menuItem">
+  <li class="menu-item {{itemClass}} {{expandedClass}} js-menu-container">
+  
+    <div class="menu-item-wrapper">
+      {{#if getTemplate}}
+        {{> Template.dynamic template=getTemplate}}
+      {{else}}
+        {{> defaultMenuItem}}
+      {{/if}}
+    </div>
+
+    {{#with childMenuItems}}
+      <ul class="menu-child-items js-menu-items">
+        {{#each this}}
+          {{> menuItem}}
+        {{/each}}
+      </ul>
+    {{/with}}
+
+  </li>
+</template>
+
+<template name="defaultMenuItem">
+  <a class="menu-sub-level" href="{{itemRoute}}">
+    <span class="menu-label">{{{getItemLabel}}}</span>
+    {{#if description}}<span class="menu-description">{{_ description}}</span>{{/if}}
+  </a>
+  {{#if childMenuItems}}
+    <a class="menu-items-toggle js-menu-toggle" href="#">{{{icon "expand"}}}{{{icon "collapse"}}}</a>
+  {{/if}}
+</template>

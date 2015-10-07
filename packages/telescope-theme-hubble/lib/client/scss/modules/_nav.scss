@@ -172,18 +172,21 @@ $nav-width: 250px;
 		// 		margin-bottom: 0px;
 		// 	}
 		// }
-		.header-submodule{
-			margin-bottom: 15px;
-		}
 		.primary-nav{
 			flex-grow: 2;
 			display: flex;
 			flex-direction: column;
 			margin-bottom: 15px;
+			.header-submodule{
+				margin-bottom: 20px;
+			}
 		}
 		.secondary-nav{
-			.header-submodule:last-of-type{
-				margin-bottom: 0;
+			.header-submodule{
+				margin-bottom: 10px;
+				&:last-of-type{
+					margin-bottom: 0;
+				}
 			}
 		}
 		.search{
