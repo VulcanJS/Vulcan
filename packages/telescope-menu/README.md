@@ -2,6 +2,7 @@
 
 This is a component for generating flexible, nestable menus. It can generates nested menus from a flat list with node `id`s and `parentId`s. 
 
+![http://g.recordit.co/VfQPLSITdg.gif](http://g.recordit.co/VfQPLSITdg.gif)
 
 ### Demo
 
