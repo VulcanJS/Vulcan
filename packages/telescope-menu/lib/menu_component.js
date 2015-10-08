@@ -118,27 +118,33 @@ Template.menuItem.helpers({
   
   // generate item's CSS class
   itemClass: function () {
-    var itemClass = "";
+    var classes = [];
     var currentPath = getCurrentPath();
 
     if (this.item.route && (getRoute(this.item) === currentPath || getRoute(this.item) === Meteor.absoluteUrl() + currentPath.substr(1))) {
       // substr(1) is to avoid having two "/" in the URL
-      itemClass += " item-active";
+      classes.push("item-active");
+    }
+
+    if (getChildMenuItems(this).length) {
+      classes.push("menu-item-has-children");
+    } else {
+      classes.push("menu-item-no-children");
     }
 
     if (Template.instance().expanded) {
-      itemClass += " js-expanded";
+      classes.push("js-expanded");
     } else {
-      itemClass += " js-collapsed";
+      classes.push("js-collapsed");
     }
 
     if (this.item.itemClass) {
-      itemClass += " "+this.item.itemClass;
+      classes.push(this.item.itemClass);
     }
 
-    itemClass += " menu-level-" + this.level;
+    classes.push("menu-level-" + this.level);
     
-    return itemClass;
+    return _.unique(classes).join(" ");;
   },
 
   // generate array of child menu items

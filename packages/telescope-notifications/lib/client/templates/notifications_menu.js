@@ -40,7 +40,7 @@ Template.notifications_menu.helpers({
     return menuItems;
   },
   menuClass: function () {
-    if (!!this.mobile) {
+    if (this.zone === "mobileNav") {
       return 'menu-collapsible';
     } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
       return 'menu-dropdown';

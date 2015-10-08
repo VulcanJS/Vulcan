@@ -4,7 +4,13 @@ This is a component for generating flexible, nestable menus. It can generates ne
 
 ### Usage
 
-Just include the `menuComponent` template while passing the necessary arguments:
+Install with: 
+
+```
+meteor add telescope:menu
+```
+
+Then just include the `menuComponent` template while passing the necessary arguments:
 
 ```
 {{> menuComponent menuItems=menuItems menuLabel="My Menu" menuClass="my-menu-class"}}

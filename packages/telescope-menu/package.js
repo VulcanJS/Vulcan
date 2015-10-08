@@ -16,10 +16,15 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
-    "lib/menu.scss",
     "lib/helpers.js",
     "lib/menu_component.html",
     "lib/menu_component.js",
+
+    "lib/stylesheets/menu.scss",
+    "lib/stylesheets/_common.scss",
+    "lib/stylesheets/_collapsible.scss",
+    "lib/stylesheets/_dropdown.scss"
+
   ], 'client');
 
 });

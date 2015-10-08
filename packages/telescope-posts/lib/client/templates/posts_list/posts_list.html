@@ -32,7 +32,7 @@ showFilters (Boolean)
     <div class="posts list {{postsLayout}}" aria-live="polite">
       {{#each postsCursor}}
         {{> before_post_item}}
-        {{> post_item}}
+        {{> post_item post=this}}
         {{> after_post_item}}
       {{/each}}
     </div>
