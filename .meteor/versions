@@ -141,7 +141,7 @@ telescope:i18n@0.25.0
 telescope:invites@0.25.0
 telescope:kadira@0.25.0
 telescope:lib@0.25.1
-telescope:menu@0.25.0
+telescope:menu@0.25.2
 telescope:messages@0.25.0
 telescope:migrations@0.25.0
 telescope:newsletter@0.25.0

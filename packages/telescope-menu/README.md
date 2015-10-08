@@ -2,6 +2,11 @@
 
 This is a component for generating flexible, nestable menus. It can generates nested menus from a flat list with node `id`s and `parentId`s. 
 
+
+### Demo
+
+[http://menu-demo.meteor.com](http://menu-demo.meteor.com)
+
 ### Usage
 
 Install with: 

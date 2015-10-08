@@ -10,6 +10,7 @@
 
 .menu-list, .menu-dropdown, .menu-collapsible{
 
+
   // active item
 
   .item-active{
@@ -23,12 +24,7 @@
   // menu item
 
   .menu-item-label-wrapper{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .menu-item-label-text, .menu-items-toggle{
-    display: block;
+    display: inline-block;
   }
 
   // toggle icons

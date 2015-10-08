@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:menu",
   summary: "Telescope menu component package",
-  version: "0.25.0",
+  version: "0.25.2",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 

@@ -61,6 +61,7 @@
     box-shadow: 0 1px 3px black(0.35);
     list-style-type: none;
     padding: 5px 0;
+    margin: 0;
   }
 
   // menu item
@@ -95,6 +96,12 @@
       }
     }
 
+  }
+
+  .menu-item-label-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .menu-item-label{
