@@ -53,7 +53,10 @@ Template.post_page.onCreated(function () {
     // if subscriptions are ready, set terms to subscriptionsTerms and update SEO stuff
     if (subscriptionsReady) {
       template.ready.set(true);
-      doSEOStuff(Posts.findOne(FlowRouter.getParam("_id")));
+      var post = Posts.findOne(FlowRouter.getParam("_id"));
+      if (post) {
+        doSEOStuff();
+      }
     }
   });
 

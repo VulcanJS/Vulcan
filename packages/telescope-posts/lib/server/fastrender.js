@@ -22,10 +22,15 @@ Posts.fastRenderSubscribe = function (params) {
     delete params.query["cat["+index+"]"];
     index++;
   }
+
   if (categories.length) {
     params.query.cat = categories;
   }
   
+  if (!params.query.limit) {
+    params.query.limit = Settings.get('postsPerPage', 10);
+  }
+
   // special case for daily view
   if (params.query.view === "daily") {
 
