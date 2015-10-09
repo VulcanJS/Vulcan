@@ -16,11 +16,17 @@ Template.modules.helpers({
   },
   getModules: function () {
     var modules = this;
-    var modules = Telescope.modules.get(modules.zone).map(function (module) {
-      module.modules = modules;
-      return module;
+
+    var zoneModules = Telescope.modules.get(modules.zone).map(function (module) {
+
+      // use deep copy to avoid modifying original module when extending it with modules property
+      var newModule = jQuery.extend(true, {}, module);
+      newModule.modules = modules;
+      return newModule;
+
     });
-    return modules;
+
+    return zoneModules;
   },
   showModule: function () {
     var module = this;
