@@ -55,7 +55,7 @@ Template.post_page.onCreated(function () {
       template.ready.set(true);
       var post = Posts.findOne(FlowRouter.getParam("_id"));
       if (post) {
-        doSEOStuff();
+        doSEOStuff(post);
       }
     }
   });
