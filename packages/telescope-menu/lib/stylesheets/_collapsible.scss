@@ -32,6 +32,12 @@
     }
   }
 
+ .menu-item-label-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   // expanded menu
 
   &.menu-component.js-expanded{

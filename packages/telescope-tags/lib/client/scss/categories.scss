@@ -112,6 +112,19 @@ $red: #DD3416;
   .menu-item-wrapper{
     justify-content: flex-start;
   }
+  .menu-item{
+    margin-bottom: 15px;
+  }
+  label{
+    margin-bottom: 0;
+  }
+  .menu-item-label-wrapper{
+    justify-content: flex-start;
+  }
+  .menu-items-toggle{
+    border-color: #ccc;
+    margin-left: 5px;
+  }
 }
 
 .menu-label{
