@@ -35,7 +35,7 @@ Template.layout.helpers({
 
     FlowRouter.watchPathChange();
     var user = Meteor.user();
-    var userRoutes = ['signIn', 'signUp', 'changePwd', 'forgotPwd', 'resetPwd', 'enrollAccount', 'verifyEmail', 'signOut'];
+    var userRoutes = ['signIn', 'signUp', 'changePwd', 'forgotPwd', 'resetPwd', 'enrollAccount', 'verifyEmail', 'signOut', 'userEdit', 'userProfile'];
     var isOnUserRoute = _.contains(userRoutes, FlowRouter.getRouteName());
 
     if (!isOnUserRoute && user && ! Users.userProfileComplete(user)){
