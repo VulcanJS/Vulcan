@@ -63,3 +63,10 @@ function upvoteOwnPost (post) {
   return post;
 }
 Telescope.callbacks.add("postSubmitAsync", upvoteOwnPost);
+
+function setPostedAt (post) {
+  if (post.isApproved() && !post.postedAt) {
+    Posts.update(post._id, {$set: {postedAt: new Date()}});
+  }
+}
+Telescope.callbacks.add("postEditAsync", setPostedAt);
