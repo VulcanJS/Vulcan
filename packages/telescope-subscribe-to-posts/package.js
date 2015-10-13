@@ -36,8 +36,7 @@ Package.onUse(function (api) {
     'lib/client/templates/post_subscribe.html',
     'lib/client/templates/post_subscribe.js',
     'lib/client/templates/user_subscribed_posts.html',
-    'lib/client/templates/user_subscribed_posts.js',
-    'lib/client/stylesheets/subscribe-to-posts.scss'
+    'lib/client/templates/user_subscribed_posts.js'
   ], ['client']);
 
   // server

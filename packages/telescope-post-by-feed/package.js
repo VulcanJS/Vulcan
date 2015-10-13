@@ -24,7 +24,6 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/client/routes.js',
-    'lib/client/scss/feeds.scss',
     'lib/client/templates/feeds.html',
     'lib/client/templates/feeds.js',
     'lib/client/templates/feed_item.html',

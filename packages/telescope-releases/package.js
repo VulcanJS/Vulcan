@@ -31,8 +31,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/client/templates/current_release.html',
-    'lib/client/templates/current_release.js',
-    'lib/client/scss/releases.scss'
+    'lib/client/templates/current_release.js'
   ], ['client']);
 
   // server
