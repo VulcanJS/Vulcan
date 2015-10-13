@@ -97,6 +97,7 @@ Package.onUse(function (api) {
     'lib/colors.js',
     'lib/icons.js',
     'lib/router.js',
+    'lib/custom_template_prefix.js'
   ], ['client', 'server']);
 
   api.addFiles([
