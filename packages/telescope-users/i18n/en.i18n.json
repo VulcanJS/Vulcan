@@ -63,5 +63,9 @@
   "filter_by" : "Filter by",
   "sort_by" : "Sort by",
   "you_have_been_logged_out": "You have been logged out",
-  "delete_users_posts_comments_as_well": "Delete user's posts and comments as well?"
+  "delete_users_posts_comments_as_well": "Delete user's posts and comments as well?",
+  "commentedAt": "Commented at",
+  "downvotedAt": "Downvoted at",
+  "postedAt": "Posted at",
+  "upvotedAt": "Upvoted at"
 }

@@ -24,7 +24,7 @@ Comments.helpers({getPageUrl: function () {return Comments.getPageUrl(this);}});
 Comments.getAuthorName = function (comment) {
   var user = Meteor.users.findOne(comment.userId);
   if (user) {
-    return user.getUserName();
+    return user.getDisplayName();
   } else {
     return comment.author;
   }

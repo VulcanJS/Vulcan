@@ -22,7 +22,7 @@ Template.layout.onCreated(function (){
       }
 
     }
-  
+
   });
 
 });
@@ -65,7 +65,8 @@ Template.layout.helpers({
   navLayout: function () {
     return Settings.get('navLayout', 'top-nav');
   },
-  pageName : function(){
+  pageName : function() {
+    FlowRouter.watchPathChange();
     return FlowRouter.current().route.name;
   },
   extraCode: function() {
