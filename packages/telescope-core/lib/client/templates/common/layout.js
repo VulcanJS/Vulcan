@@ -36,9 +36,7 @@ Template.layout.helpers({
     FlowRouter.watchPathChange();
     var user = Meteor.user();
     var userRoutes = ['signIn', 'signUp', 'changePwd', 'forgotPwd', 'resetPwd', 'enrollAccount', 'verifyEmail', 'signOut'];
-    var isOnUserRoute = !_.contains(userRoutes, FlowRouter.getRouteName());
-
-//     Router.onBeforeAction(filters.canView, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
+    var isOnUserRoute = _.contains(userRoutes, FlowRouter.getRouteName());
 
     if (!isOnUserRoute && user && ! Users.userProfileComplete(user)){
       return {template: "user_complete"};
