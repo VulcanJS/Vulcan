@@ -8,6 +8,7 @@
 * Renamed `top` zone to `contentTop`.
 * Created new `contentBottom`, `postsListTop`, `postsListBottom` zones. 
 * Newsletter banner is now included in `contentTop` zone, not `hero`. 
+* Renamed "Outside Links Point To" setting to "RSS Links Point To".
 
 ## v0.25 “FlowScope”
 

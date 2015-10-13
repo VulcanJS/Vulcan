@@ -55,5 +55,6 @@
   "extras" : "Extras",
   "colors" : "Colors",
   "integrations" : "Integrations",
-  "enableDownvotes": "Enable Downvotes"
+  "enableDownvotes": "Enable Downvotes",
+  "RSSLinksPointTo": "RSS Links Point To"
 }

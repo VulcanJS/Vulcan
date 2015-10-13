@@ -180,7 +180,7 @@ Settings.schema = new SimpleSchema({
       instructions: 'Minimum time between posts, in seconds (defaults to 30)'
     }
   },
-  outsideLinksPointTo: {
+  RSSLinksPointTo: {
     type: String,
     optional: true,
     autoform: {

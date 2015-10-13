@@ -721,6 +721,14 @@ var migrationsList = {
       }
     });
     return i;
+  },
+  changeOutsideLinksPointTo: function () {
+    var i = 0;
+    Settings.find().forEach(function (setting) {
+      i++;
+      Settings.update({_id: setting._id}, {$rename: {'outsideLinksPointTo': 'RSSLinksPointTo'}}, {validate: false});
+    });
+    return i;
   }
 };
 
