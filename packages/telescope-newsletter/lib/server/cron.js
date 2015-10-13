@@ -41,7 +41,10 @@ var addJob = function () {
       return getSchedule(parser);
     },
     job: function() {
-      scheduleNextCampaign();
+      // only schedule newsletter campaigns in production
+      if (process.env.NODE_ENV === "production") {
+        scheduleNextCampaign();
+      }
     }
   });
 };
