@@ -120,8 +120,9 @@ Template.menuItem.helpers({
   itemClass: function () {
     var classes = [];
     var currentPath = getCurrentPath();
+    var isActive = this.item.route && (getRoute(this.item) === currentPath || getRoute(this.item) === Meteor.absoluteUrl() + currentPath.substr(1));
 
-    if (this.item.route && (getRoute(this.item) === currentPath || getRoute(this.item) === Meteor.absoluteUrl() + currentPath.substr(1))) {
+    if (isActive) {
       // substr(1) is to avoid having two "/" in the URL
       classes.push("item-active");
     }

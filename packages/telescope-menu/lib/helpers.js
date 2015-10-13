@@ -2,6 +2,7 @@ getCurrentPath = function () {
   if (typeof Router !== "undefined") {
     return Router.current().path;
   } else if (typeof FlowRouter !== "undefined") {
+    FlowRouter.watchPathChange()
     return FlowRouter.current().path;
   } else {
     throw new Error("Please use Flow Router or Iron Router");
