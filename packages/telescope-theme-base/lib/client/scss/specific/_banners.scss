@@ -1,7 +1,12 @@
 .banner.banner{
   background: rgba(255,255,255,0.7);
   margin-bottom: 10px;
-  padding: 20px;
+  @include small{
+    padding: 20px;
+  }
+  @include medium-large{
+    padding: 20px 60px;
+  }
   position: relative;
   overflow: hidden;
 }
@@ -24,7 +29,7 @@
   color: white;
   top: 50%;
   margin-top: -15px;
-  right: 20px;
+  right: 15px;
   font-size: 16px;
   text-align: center;
   vertical-align: middle;
