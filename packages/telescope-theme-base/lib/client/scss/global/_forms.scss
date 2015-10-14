@@ -132,6 +132,7 @@ input[type="submit"], button, .button, .btn{
   margin:0;
   color: white;
   font-weight: bold;
+  white-space: nowrap;
   // line-height:26px;
   // height:26px;
   &.disabled, &.loading{

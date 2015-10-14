@@ -72,6 +72,9 @@ Template.comment_item.helpers({
   full_date: function(){
     return this.createdAt.toString();
   },
+  commentListClass: function () {
+    return !!Comments.find({parentCommentId: this._id}).count() ? "has-comments" : "no-comments";
+  },
   childComments: function(){
     // return only child comments
     return Comments.find({parentCommentId: this._id});
