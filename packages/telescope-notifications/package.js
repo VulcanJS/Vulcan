@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:notifications",
   summary: "Telescope notifications package",
-  version: "0.25.0",
+  version: "0.25.2",
   git: "https://github.com/TelescopeJS/telescope-notifications.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:core@0.25.0',
+    'telescope:core@0.25.2',
     'kestanous:herald@1.3.0',
     'kestanous:herald-email@0.5.0'
   ]);

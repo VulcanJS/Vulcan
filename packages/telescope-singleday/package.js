@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:singleday',
   summary: 'Telescope Single Day package',
-  version: '0.25.0',
+  version: '0.25.2',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -15,7 +15,7 @@ Package.onUse(function (api) {
 
   // --------------------------- 1. Meteor packages dependencies ---------------------------
 
-  api.use(['telescope:core@0.25.0']);
+  api.use(['telescope:core@0.25.2']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 

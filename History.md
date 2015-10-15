@@ -1,4 +1,4 @@
-## v0.25.1
+## v0.25.2 “MenuScope”
 
 * Added `regenerateAllThumbnails` method.
 * Fixed `postedAt` issue with pending posts. 

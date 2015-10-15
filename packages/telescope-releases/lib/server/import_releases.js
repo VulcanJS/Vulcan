@@ -21,7 +21,7 @@ var importRelease = function (number) {
 
 Meteor.startup(function () {
 
-  importRelease('0.25.0');
+  importRelease('0.25.2');
 
   // if this is before the first run, mark all release notes as read to avoid showing them
   if (!Events.findOne({name: 'firstRun'})) {
