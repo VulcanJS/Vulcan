@@ -133,7 +133,6 @@ Template.posts_list_controller.helpers({
         var limit = template.rLimit.get();
         limit += Settings.get('postsPerPage', 10);
         template.rLimit.set(limit);
-
       },
 
       // the current instance

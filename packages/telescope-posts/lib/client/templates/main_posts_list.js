@@ -19,7 +19,10 @@ Template.main_posts_list.helpers({
     }
 
     return {
-      terms: terms
+      terms: terms,
+      options: {
+        loadMoreBehavior: Settings.get("loadMoreBehavior", "button")
+      }
     };
   }
 });

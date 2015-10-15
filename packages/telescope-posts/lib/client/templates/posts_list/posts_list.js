@@ -40,20 +40,43 @@ Template.postsLoadMore.helpers({
   postsReady: function () {
     return this.postsReady;
   },
+  showInfiniteScroll: function () {
+    if (this.controllerOptions && this.controllerOptions.loadMoreBehavior === "button") {
+      return false;
+    } else {
+      return this.hasMorePosts;
+    }
+  },
+  showLoadMoreButton: function () {
+    if (this.controllerOptions && this.controllerOptions.loadMoreBehavior === "scroll") {
+      return false;
+    } else {
+      return this.hasMorePosts;
+    }
+  },
   hasPosts: function () {
     return !!this.postsCursor.count();
+  }
+});
+
+Template.postsLoadMore.onCreated(function () {
+
+  var context = Template.currentData();
+
+  if (context.controllerOptions && context.controllerOptions.loadMoreBehavior === "scroll") {
+
+    $(window).scroll(function() {
+      if($(window).scrollTop() + $(window).height() === $(document).height()) {
+        context.loadMoreHandler(context.controllerInstance);
+      }
+    });
+
   }
 });
 
 Template.postsLoadMore.events({
   'click .more-button': function (event) {
     event.preventDefault();
-    if (this.controllerInstance) {
-      // controller is a template
-      this.loadMoreHandler(this.controllerInstance);
-    } else {
-      // controller is router
-      this.loadMoreHandler();
-    }
+    this.loadMoreHandler(this.controllerInstance);
   }
 });

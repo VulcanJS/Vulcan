@@ -191,6 +191,17 @@ Settings.schema = new SimpleSchema({
       ]
     }
   },
+  loadMoreBehavior: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: "02_posts",
+      options: [
+        {value: 'button', label: '”Load More” button'},
+        {value: 'scroll', label: 'Infinite scroll'}
+      ]
+    }
+  },
   commentInterval: {
     type: Number,
     optional: true,
