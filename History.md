@@ -13,6 +13,7 @@
 * Newsletter banner is now included in `contentTop` zone, not `hero`. 
 * Renamed "Outside Links Point To" setting to "RSS Links Point To".
 * Added infinite scrolling option.
+* Added one hour offset to show future posts to fix real-time bug. 
 
 ## v0.25 “FlowScope”
 
