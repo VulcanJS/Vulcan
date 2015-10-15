@@ -197,8 +197,8 @@ Settings.schema = new SimpleSchema({
     autoform: {
       group: "02_posts",
       options: [
-        {value: 'button', label: '”Load More” button'},
-        {value: 'scroll', label: 'Infinite scroll'}
+        {value: 'button', label: _.partial(i18n.t, "loadMoreButton")},
+        {value: 'scroll', label: _.partial(i18n.t, "infiniteScroll")}
       ]
     }
   },

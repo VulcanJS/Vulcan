@@ -56,5 +56,8 @@
   "colors" : "Colors",
   "integrations" : "Integrations",
   "enableDownvotes": "Enable Downvotes",
-  "RSSLinksPointTo": "RSS Links Point To"
+  "RSSLinksPointTo": "RSS Links Point To",
+  "loadMoreBehavior": "“Load More” Behavior",
+  "loadMoreButton": "”Load More” button",
+  "infiniteScroll": "Infinite scroll"
 }
