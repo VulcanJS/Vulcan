@@ -724,12 +724,10 @@ var migrationsList = {
   },
   changeOutsideLinksPointTo: function () {
     var i = 0;
-    Settings.find().forEach(function (setting) {
+    Settings.find({outsideLinksPointTo: {$exists : true}}).forEach(function (setting) {
       i++;
-      Settings.update({_id: setting._id}, {$rename: {'outsideLinksPointTo': 'RSSLinksPointTo'}}, {validate: false});
+      Settings.update(setting._id, {$set: {RSSLinksPointTo: setting.outsideLinksPointTo}});
     });
     return i;
   }
 };
-
-// TODO: normalize categories?
