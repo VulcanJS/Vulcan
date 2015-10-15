@@ -11,7 +11,6 @@ Package.onUse(function(api) {
   
   var packages = [
     'telescope:lib@0.25.0', //  no dependencies
-    'telescope:menu@0.25.2', // lib
     'telescope:messages@0.25.0', // lib
     'telescope:i18n@0.25.0', // lib
     'telescope:events@0.25.0', // lib, i18n

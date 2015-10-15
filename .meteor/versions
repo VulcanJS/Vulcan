@@ -144,7 +144,6 @@ telescope:i18n@0.25.0
 telescope:invites@0.25.0
 telescope:kadira@0.25.0
 telescope:lib@0.25.1
-telescope:menu@0.25.2
 telescope:messages@0.25.0
 telescope:migrations@0.25.0
 telescope:newsletter@0.25.0
@@ -179,6 +178,7 @@ useraccounts:core@1.12.4
 useraccounts:flow-routing@1.12.4
 useraccounts:unstyled@1.12.4
 utilities:avatar@0.9.2
+utilities:menu@0.1.0
 utilities:onsubscribed@0.1.2
 webapp@1.2.2
 webapp-hashing@1.0.5
