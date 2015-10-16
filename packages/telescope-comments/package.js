@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:comments",
   summary: "Telescope comments package",
-  version: "0.25.2",
+  version: "0.25.3",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,10 +10,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.25.2',
-    'telescope:i18n@0.25.2',
-    'telescope:settings@0.25.2',
-    'telescope:users@0.25.2'
+    'telescope:lib@0.25.3',
+    'telescope:i18n@0.25.3',
+    'telescope:settings@0.25.3',
+    'telescope:users@0.25.3'
   ]);
 
   api.addFiles([
