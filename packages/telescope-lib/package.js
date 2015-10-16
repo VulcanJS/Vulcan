@@ -10,13 +10,13 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
   
   var packages = [
-    'meteor-base',
+    'meteor-base@1.0.1',
     'mongo',
-    'blaze-html-templates',
+    'blaze-html-templates@1.0.1',
     'jquery',
     'session',
     'tracker',
-    'standard-minifiers',
+    'standard-minifiers@1.0.1',
     'service-configuration',
     'accounts-ui',
     'accounts-base',
