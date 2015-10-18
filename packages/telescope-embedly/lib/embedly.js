@@ -87,6 +87,7 @@ function checkIfPreviouslyPosted (data) {
       Messages.flash(error.reason + '. <a href="'+FlowRouter.path("postPage", {_id: error.details})+'">'+i18n.t("go_to_post")+'</a>');  
     }
   });
+  return data;
 }
 Telescope.callbacks.add("afterEmbedlyPrefill", checkIfPreviouslyPosted);
 
