@@ -11,8 +11,9 @@ $mobile-header-height: 50px;
   color: white;
   @include small{
     height: $mobile-header-height;
-    padding: 0 10px;
-    position: relative;
+    padding: 5px 10px;
+    position: fixed;
+    width: 100%;
   }
   a, a:link, a:visited{
     color: inherit;
@@ -33,6 +34,7 @@ $mobile-header-height: 50px;
   @include small{
     font-size: 24px;
     overflow: hidden;
+    height: 100%;
     a{
       margin: 0 auto;
     }
@@ -60,10 +62,18 @@ $mobile-header-height: 50px;
   white-space: nowrap;
 }
 .logo-image{
-  a, img{
+  @include small{
+    height: 100%;
+  }
+  a{
     display: block;
     height: 100%;
-    width: 100%;
+    // width: 100%;
+  }
+  img{
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
   }
 }
 
