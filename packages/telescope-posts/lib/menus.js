@@ -2,7 +2,17 @@ Posts.getRoute = function () {
   FlowRouter.watchPathChange()
   var viewName = this.name;
   var currentQuery = _.clone(FlowRouter.current().queryParams);
-  var newQuery = _.extend(currentQuery, {view: viewName});
+  var defaultView = Settings.get("defaultView", "top");
+  var newQuery;
+
+  if (viewName === defaultView) {
+    // for the default view, just remove the "view" parameter altogether
+    delete currentQuery.view;
+    newQuery = currentQuery;
+  } else {
+    newQuery = _.extend(currentQuery, {view: viewName});
+  }
+  
   return FlowRouter.path("postsDefault", FlowRouter.current().params, newQuery);
 };
 
