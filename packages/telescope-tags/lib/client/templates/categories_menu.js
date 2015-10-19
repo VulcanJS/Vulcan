@@ -57,20 +57,20 @@ Meteor.startup(function () {
 
       return defaultItem.concat(menuItems);
     },
-    startPosition: function () {
+    expandLevel: function () {
       if (this.zone === "mobileNav") {
-        return "collapsed";
+        return 0;
       } else {
-        return "expanded";
+        return 1;
       }
     },
-    menuClass: function () {
+    menuType: function () {
       if (this.zone === "mobileNav") {
-        return 'menu-collapsible';
+        return 'collapsible';
       } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
-        return 'menu-dropdown';
+        return 'dropdown';
       } else {
-        return 'menu-collapsible';
+        return 'collapsible';
       }
     }
   });
