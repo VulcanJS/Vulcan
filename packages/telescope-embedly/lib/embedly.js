@@ -6,7 +6,8 @@ Posts.addField([
       optional: true,
       editableBy: ["member", "admin"],
       autoform: {
-        type: 'bootstrap-postthumbnail'
+        type: 'bootstrap-postthumbnail',
+        order: 40
       }
     }
   },
