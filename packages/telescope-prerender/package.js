@@ -18,11 +18,18 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
+    'package-tap.i18n',
     'lib/prerender-setting.js'
   ], ['client','server']);
 
   api.addFiles([
     'lib/server/prerender.js'
   ], ['server']);
+
+  var languages = ["en"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
 });
