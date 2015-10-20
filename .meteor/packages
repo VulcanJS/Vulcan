@@ -25,6 +25,7 @@ telescope:newsletter
 telescope:notifications
 telescope:pages
 telescope:post-by-feed
+telescope:prerender
 telescope:releases
 telescope:rss
 telescope:scoring
