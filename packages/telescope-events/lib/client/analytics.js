@@ -65,7 +65,9 @@ Events.analyticsInit = function() {
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    window.ga('create', googleAnalyticsId, 'auto');
+    var cookieDomain = document.domain === "localhost" ? "none" : "auto";
+
+    window.ga('create', googleAnalyticsId, cookieDomain);
 
   }
 
@@ -79,7 +81,7 @@ Events.analyticsRequest = function() {
   // Google Analytics
   if (typeof window.ga !== 'undefined'){
     window.ga('send', 'pageview', {
-      'page': window.location.pathname+window.location.search
+      'page': FlowRouter.current().path
     });
   }
 
@@ -105,12 +107,12 @@ Events.analyticsRequest = function() {
 
   // GoSquared
   if (typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined') {
-    GoSquared.DefaultTracker.TrackView(window.location.pathname, FlowRouter.current().route.name);
+    GoSquared.DefaultTracker.TrackView(FlowRouter.current().path, FlowRouter.current().route.name);
   }
 
   // Clicky
   if(typeof clicky !== 'undefined'){
-    clicky.log(encodeURIComponent(window.location.pathname), FlowRouter.current().route.name, "pageview");
+    clicky.log(encodeURIComponent(FlowRouter.current().path), FlowRouter.current().route.name, "pageview");
   }
 
 };
