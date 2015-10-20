@@ -33,12 +33,20 @@ Template.modules.helpers({
 
     // if module should only run on specific routes, test for them
     if (module.only) {
-      return _.contains(module.only, FlowRouter.getRouteName());
+      if (Array.isArray(module.only)) {
+        return _.contains(module.only, FlowRouter.getRouteName());
+      } else {
+        return module.only();
+      }
     }
 
     // if module should *not* run on specific routes, test for them
     if (module.except) {
-      return !_.contains(module.except, FlowRouter.getRouteName());
+      if (Array.isArray(module.except)) {
+        return !_.contains(module.except, FlowRouter.getRouteName());
+      } else {
+        return module.except();
+      }
     }
 
     return true;
