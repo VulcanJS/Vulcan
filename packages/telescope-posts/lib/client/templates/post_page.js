@@ -56,6 +56,17 @@ Template.post_page.onCreated(function () {
       var post = Posts.findOne(FlowRouter.getParam("_id"));
       if (post) {
         doSEOStuff(post);
+      } else {
+        DocHead.addMeta({
+          name: "name",
+          property: "prerender-status-code",
+          content: "404"
+        });
+        DocHead.addMeta({
+          name: "name",
+          property: "robots",
+          content: "noindex, nofollow"
+        });
       }
     }
   });
