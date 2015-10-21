@@ -50,7 +50,7 @@ Meteor.startup(function() {
         sort: params.options.sort
       });
       posts.forEach(function(post) {
-        postPages[url] = {page: post.getPageUrl(), lastmod: post.postedAt, changefreq: "daily"};
+        postPages[post.url] = {page: post.getPageUrl(), lastmod: post.postedAt, changefreq: "daily"};
       });
     });
 
