@@ -1,7 +1,7 @@
 Template.main_posts_list.helpers({
   customTemplate: function () {
     var currentView = FlowRouter.getQueryParam("view") || Settings.get("defaultView", "top");
-    var currentMenuItem = _.findWhere(Telescope.menuItems.viewsMenu, {label: currentView});
+    var currentMenuItem = _.findWhere(Telescope.menuItems.viewsMenu, {name: currentView});
     return currentMenuItem && currentMenuItem.viewTemplate;
   },
   arguments: function () {
@@ -19,7 +19,10 @@ Template.main_posts_list.helpers({
     }
 
     return {
-      terms: terms
+      terms: terms,
+      options: {
+        loadMoreBehavior: Settings.get("loadMoreBehavior", "button")
+      }
     };
   }
 });

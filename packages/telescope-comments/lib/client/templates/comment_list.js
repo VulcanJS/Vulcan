@@ -1,5 +1,10 @@
 Template.comment_list.helpers({
-  child_comments: function(){
+  commentListClass: function () {
+    var post = this;
+    var comments = Comments.find({postId: post._id, parentCommentId: null}, {sort: {score: -1, postedAt: -1}});
+    return !!comments.count() ? "has-comments" : "no-comments";
+  },
+  childComments: function(){
     var post = this;
     var comments = Comments.find({postId: post._id, parentCommentId: null}, {sort: {score: -1, postedAt: -1}});
     return comments;

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:post-by-feed",
   summary: "Auto post via RSS to Telescope",
-  version: "0.25.0",
+  version: "0.25.3",
   git: "https://github.com/TelescopeJS/telescope-post-by-feed.git"
 });
 
@@ -16,15 +16,14 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.25.0']);
+  api.use(['telescope:core@0.25.3']);
 
   api.addFiles([
-    'lib/feeds.js'
+    'lib/feeds.js',
+    'lib/routes.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/routes.js',
-    'lib/client/scss/feeds.scss',
     'lib/client/templates/feeds.html',
     'lib/client/templates/feeds.js',
     'lib/client/templates/feed_item.html',

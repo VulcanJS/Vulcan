@@ -9,5 +9,8 @@
     {{else}}
       <h1 class="logo-text"><a href="/">{{getSetting "title" "Telescope"}}</a></h1>
     {{/if}}
+    {{#if getSetting "tagline"}}
+      <h2 class="tagline">{{getSetting "tagline"}}</h2>
+    {{/if}}
   </div>
 </template>

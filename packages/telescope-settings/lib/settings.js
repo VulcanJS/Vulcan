@@ -134,8 +134,8 @@ Settings.schema = new SimpleSchema({
       options: function () {
         return _.map(Telescope.menuItems.get("viewsMenu"), function (view) {
           return {
-            value: view.label,
-            label: i18n.t(view.label)
+            value: view.name,
+            label: view.label()
           };
         });
       }
@@ -162,10 +162,10 @@ Settings.schema = new SimpleSchema({
       editable: true,
       noselect: true,
       options: function () {
-        return _.map(Telescope.menuItems.get("viewsMenu"), function (item){
+        return _.map(Telescope.menuItems.get("viewsMenu"), function (view){
           return {
-            value: item.label,
-            label: i18n.t(item.label)
+            value: view.name,
+            label: view.label()
           };
         });
       }
@@ -180,7 +180,7 @@ Settings.schema = new SimpleSchema({
       instructions: 'Minimum time between posts, in seconds (defaults to 30)'
     }
   },
-  outsideLinksPointTo: {
+  RSSLinksPointTo: {
     type: String,
     optional: true,
     autoform: {
@@ -188,6 +188,17 @@ Settings.schema = new SimpleSchema({
       options: [
         {value: 'page', label: 'Discussion page'},
         {value: 'link', label: 'Outgoing link'}
+      ]
+    }
+  },
+  loadMoreBehavior: {
+    type: String,
+    optional: true,
+    autoform: {
+      group: "02_posts",
+      options: [
+        {value: 'button', label: _.partial(i18n.t, "loadMoreButton")},
+        {value: 'scroll', label: _.partial(i18n.t, "infiniteScroll")}
       ]
     }
   },

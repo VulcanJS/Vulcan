@@ -1,3 +1,22 @@
+var init = _.once(function () {
+  var title = Settings.get("title", "Telescope");
+  if (!!Settings.get("tagline")) {
+    title += ": "+Settings.get("tagline");
+  }
+  DocHead.setTitle(title);
+
+  if (!!Settings.get("description")) {
+    DocHead.addMeta({name: "description", content: Settings.get("description")});
+    DocHead.addMeta({property: "og:description", content: Settings.get("description")});
+  }
+
+  if (!!Settings.get("siteImage")) {
+    DocHead.addMeta({property: "og:image", content: Settings.get("siteImage")});
+  }
+
+  Events.analyticsInit();
+});
+
 Template.layout.onCreated(function (){
 
   DocHead.setTitle(i18n.t("loading"));
@@ -5,25 +24,11 @@ Template.layout.onCreated(function (){
   Tracker.autorun(function () {
 
     if (FlowRouter.subsReady()) {
-
-      var title = Settings.get("title", "Telescope");
-      if (!!Settings.get("tagline")) {
-        title += ": "+Settings.get("tagline");
-      }
-      DocHead.setTitle(title);
-
-      if (!!Settings.get("description")) {
-        DocHead.addMeta({name: "description", content: Settings.get("description")});
-        DocHead.addMeta({property: "og:description", content: Settings.get("description")});
-      }
-
-      if (!!Settings.get("siteImage")) {
-        DocHead.addMeta({property: "og:image", content: Settings.get("siteImage")});
-      }
-
+      init();
     }
-  
+
   });
+
 
 });
 
@@ -35,10 +40,8 @@ Template.layout.helpers({
 
     FlowRouter.watchPathChange();
     var user = Meteor.user();
-    var userRoutes = ['signIn', 'signUp', 'changePwd', 'forgotPwd', 'resetPwd', 'enrollAccount', 'verifyEmail', 'signOut'];
-    var isOnUserRoute = !_.contains(userRoutes, FlowRouter.getRouteName());
-
-//     Router.onBeforeAction(filters.canView, {except: ['atSignIn', 'atSignUp', 'atForgotPwd', 'atResetPwd', 'signOut']});
+    var userRoutes = ['signIn', 'signUp', 'changePwd', 'forgotPwd', 'resetPwd', 'enrollAccount', 'verifyEmail', 'signOut', 'userEdit', 'userProfile'];
+    var isOnUserRoute = _.contains(userRoutes, FlowRouter.getRouteName());
 
     if (!isOnUserRoute && user && ! Users.userProfileComplete(user)){
       return {template: "user_complete"};
@@ -65,7 +68,8 @@ Template.layout.helpers({
   navLayout: function () {
     return Settings.get('navLayout', 'top-nav');
   },
-  pageName : function(){
+  pageName : function() {
+    FlowRouter.watchPathChange();
     return FlowRouter.current().route.name;
   },
   extraCode: function() {

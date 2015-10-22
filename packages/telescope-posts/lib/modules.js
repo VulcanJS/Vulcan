@@ -1,3 +1,8 @@
+Telescope.modules.add("postsListTop", {
+  template: "views_menu",
+  order: 1
+});
+
 Telescope.modules.add("postComponents", [
   {
     template: 'post_rank',

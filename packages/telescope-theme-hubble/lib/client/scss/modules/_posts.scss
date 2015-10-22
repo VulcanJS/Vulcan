@@ -49,10 +49,12 @@
 .views-menu-wrapper{
 	background: white(0.6);
 	border-radius: 3px;
-	.menu-top-level, .menu-wrapper, .menu-contents, .menu-item{
+	padding: 10px;
+	margin-bottom: 10px;
+	.menu-label-wrapper, .menu-items, .menu-item{
 		display: inline-block;
 	}
-	.menu-top-level{
+	.menu-label-wrapper{
 		margin-right: 10px;
 		&:after{
 			content: ": ";
@@ -74,6 +76,12 @@
 				bottom: 0px;
 				opacity: 0.2;
 			}
+		}
+		.menu-item-label-text{
+			display: inline-block;
+		}
+		.menu-item-label-description{
+			display: none;
 		}
 	}
 	.menu-description{

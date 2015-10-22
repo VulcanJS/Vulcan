@@ -1,3 +1,20 @@
+## v0.25.2 “MenuScope”
+
+* Added `regenerateAllThumbnails` method.
+* Fixed `postedAt` issue with pending posts. 
+* Created `postsListTop` zone and moved `messages`, `category_title`, and `views_menu` modules to it.
+* Renamed `category_menu_item` template to `categories_menu_item`.
+* Added `itemTemplate` option to menu to enable setting a custom template for all elements.
+* Created new `defaultMenuItem` template.
+* Now passing reference to whole `menu` object to each node instead of just `menuItems`.
+* Renamed `top` zone to `contentTop`.
+* Created new `contentBottom`, `postsListTop`, `postsListBottom` zones.
+* Extracted menu component into its own `utilities:menu` package.
+* Newsletter banner is now included in `contentTop` zone, not `hero`. 
+* Renamed "Outside Links Point To" setting to "RSS Links Point To".
+* Added infinite scrolling option.
+* Added one hour offset to show future posts to fix real-time bug. 
+
 ## v0.25 “FlowScope”
 
 ### Meteor 1.2
@@ -61,6 +78,7 @@
 * Updated `category_title` template to handle multiple categories.
 * Fixed Subscribe to Comments feature. 
 * Fixed Safari CSS issues by enabling autoprefixer.
+* Extracted Spiderable into its own `telescope:spiderable` package. 
 
 ### i18n
 

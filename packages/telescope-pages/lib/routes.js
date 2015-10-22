@@ -1,8 +1,3 @@
-Telescope.menuItems.add("adminMenu", {
-  route: 'adminPages',
-  label: 'Pages',
-  description: 'manage_static_pages'
-});
 
 Telescope.adminRoutes.route('/pages', {
   name: "adminPages",

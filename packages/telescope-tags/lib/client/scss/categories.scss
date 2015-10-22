@@ -51,10 +51,15 @@ $red: #DD3416;
     font-weight: normal;
     opacity: 0.5;
   }
+  .side-nav & .menu-items{
+    padding-left: 0;
+    border-left: none;
+    margin: 0;
+  }
 }
-.side-nav{
+.side-nav .desktop-nav{
   .categories-menu{
-    .menu-top-level{
+    .menu-label-wrapper{
       display: none;
     }
   }
@@ -106,6 +111,19 @@ $red: #DD3416;
 .category-input{
   .menu-item-wrapper{
     justify-content: flex-start;
+  }
+  .menu-item{
+    margin-bottom: 15px;
+  }
+  label{
+    margin-bottom: 0;
+  }
+  .menu-item-label-wrapper{
+    justify-content: flex-start;
+  }
+  .menu-items-toggle{
+    border-color: #ccc;
+    margin-left: 5px;
   }
 }
 

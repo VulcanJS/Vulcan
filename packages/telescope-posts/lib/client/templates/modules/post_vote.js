@@ -25,10 +25,9 @@ Template.post_vote.events({
     var user = Meteor.user();
     e.preventDefault();
     if(!user){
-      FlowRouter.go('atSignIn');
+      FlowRouter.go('signIn');
       Messages.flash(i18n.t("please_log_in_first"), "info");
-    }
-    if (user.hasUpvoted(post)) {
+    } else if (user.hasUpvoted(post)) {
       Meteor.call('cancelUpvotePost', post._id, function(){
         Events.track("post upvote cancelled", {'_id': post._id});
       });        

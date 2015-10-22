@@ -2,9 +2,6 @@ Template.modules.helpers({
   isDebug: function () {
     return Session.get('debug');
   },
-  getZone: function () {
-    return this.zone || this.toString();
-  },
   getClass: function () {
     var zoneClass = "zone-wrapper ";
     if (this.zoneClass) {
@@ -18,28 +15,47 @@ Template.modules.helpers({
     return this.wrapperId;
   },
   getModules: function () {
-    // look for the zone name in either the zone variable, or the data context itself
-    var zone = this.zone || this.toString();
-    return Telescope.modules.get(zone);
+    var modules = this;
+
+    var zoneModules = Telescope.modules.get(modules.zone).map(function (module) {
+
+      // use deep copy to avoid modifying original module when extending it with modules property
+      var newModule = jQuery.extend(true, {}, module);
+      newModule.modules = modules;
+      return newModule;
+
+    });
+
+    return zoneModules;
   },
   showModule: function () {
     var module = this;
 
     // if module should only run on specific routes, test for them
     if (module.only) {
-      return _.contains(module.only, FlowRouter.getRouteName());
+      if (Array.isArray(module.only)) {
+        return _.contains(module.only, FlowRouter.getRouteName());
+      } else {
+        return module.only();
+      }
     }
 
     // if module should *not* run on specific routes, test for them
     if (module.except) {
-      return !_.contains(module.except, FlowRouter.getRouteName());
+      if (Array.isArray(module.except)) {
+        return !_.contains(module.except, FlowRouter.getRouteName());
+      } else {
+        return module.except();
+      }
     }
 
     return true;
   },
   moduleData: function () {
-    var zoneData = Template.parentData(1) || {}; // might not always have data context
-    var moduleData = zoneData.moduleData || {};
-    return moduleData;
+    var data = _.extend({
+      zone: this.modules.zone,
+      moduleClass: this.modules.moduleClass
+    }, this.modules.moduleData);
+    return data;
   }
 });

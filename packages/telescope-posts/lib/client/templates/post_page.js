@@ -53,7 +53,21 @@ Template.post_page.onCreated(function () {
     // if subscriptions are ready, set terms to subscriptionsTerms and update SEO stuff
     if (subscriptionsReady) {
       template.ready.set(true);
-      doSEOStuff(Posts.findOne(FlowRouter.getParam("_id")));
+      var post = Posts.findOne(FlowRouter.getParam("_id"));
+      if (post) {
+        doSEOStuff(post);
+      } else {
+        DocHead.addMeta({
+          name: "name",
+          property: "prerender-status-code",
+          content: "404"
+        });
+        DocHead.addMeta({
+          name: "name",
+          property: "robots",
+          content: "noindex, nofollow"
+        });
+      }
     }
   });
 

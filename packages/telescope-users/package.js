@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:users',
   summary: 'Telescope permissions.',
-  version: '0.25.0',
+  version: '0.25.3',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,9 +10,9 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.25.0',
-    'telescope:settings@0.25.0',
-    'telescope:i18n@0.25.0'
+    'telescope:lib@0.25.3',
+    'telescope:settings@0.25.3',
+    'telescope:i18n@0.25.3'
   ]);
 
   api.addFiles([
@@ -26,7 +26,7 @@ Package.onUse(function (api) {
     'lib/callbacks.js',
     'lib/modules.js',
     'lib/helpers.js',
-    'lib/menu.js',
+    'lib/menus.js',
     'lib/pubsub.js',
     'lib/methods.js',
     'lib/routes.js'
@@ -69,6 +69,7 @@ Package.onUse(function (api) {
     'lib/client/templates/nav/user_menu.html',
     'lib/client/templates/nav/user_menu.js',
     'lib/client/templates/nav/user_menu_label.html',
+    'lib/client/templates/nav/user_menu_label.js',
     'lib/client/templates/user_controller/user_controller.html',
     'lib/client/templates/user_controller/user_controller.js'
   ], ['client']);

@@ -39,13 +39,13 @@ Template.notifications_menu.helpers({
     }
     return menuItems;
   },
-  menuClass: function () {
-    if (!!this.mobile) {
-      return 'menu-collapsible';
+  menuType: function () {
+    if (this.zone === "mobileNav") {
+      return 'collapsible';
     } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
-      return 'menu-dropdown';
+      return 'dropdown';
     } else {
-      return 'menu-collapsible';
+      return 'collapsible';
     }
   }
 });

@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:tags",
   summary: "Telescope tags package",
-  version: "0.25.0",
+  version: "0.25.3",
   git: "https://github.com/TelescopeJS/telescope-tags.git"
 });
 
@@ -9,7 +9,7 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.25.0']);
+  api.use(['telescope:core@0.25.3']);
 
   api.addFiles([
     'lib/categories.js',
@@ -29,12 +29,12 @@ Package.onUse(function (api) {
     'lib/client/templates/categories_admin.js',
     'lib/client/templates/category_item.html',
     'lib/client/templates/category_item.js',
-    'lib/client/templates/category_menu_item.html',
-    'lib/client/templates/category_menu_item.js',
-    'lib/client/templates/category_title.html',
-    'lib/client/templates/category_title.js',
     'lib/client/templates/categories_menu.html',
     'lib/client/templates/categories_menu.js',
+    'lib/client/templates/categories_menu_item.html',
+    'lib/client/templates/categories_menu_item.js',
+    'lib/client/templates/category_title.html',
+    'lib/client/templates/category_title.js',
     'lib/client/templates/posts_category.html',
     'lib/client/templates/post_categories.html',
     'lib/client/templates/post_categories.js',

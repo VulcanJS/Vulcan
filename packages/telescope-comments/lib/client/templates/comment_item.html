@@ -34,7 +34,7 @@
       </div>
       {{/if}}
       {{#if showChildComments}}
-        <ul class="comment-children comment-list">
+        <ul class="comment-children comment-list {{commentListClass}}">
         {{#each childComments}}
           {{#with this}}
             {{> comment_item}}

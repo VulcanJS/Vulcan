@@ -721,7 +721,13 @@ var migrationsList = {
       }
     });
     return i;
+  },
+  changeOutsideLinksPointTo: function () {
+    var i = 0;
+    Settings.find({outsideLinksPointTo: {$exists : true}}).forEach(function (setting) {
+      i++;
+      Settings.update(setting._id, {$set: {RSSLinksPointTo: setting.outsideLinksPointTo}});
+    });
+    return i;
   }
 };
-
-// TODO: normalize categories?

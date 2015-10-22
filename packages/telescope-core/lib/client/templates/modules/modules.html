@@ -20,7 +20,7 @@ wrapperId (String) [optional]
 -->
 
 <template name="modules">
-  <div class="{{getClass}}" data-zone="{{getZone}}" id="{{getId}}">
+  <div class="{{getClass}}" data-zone="{{zone}}" id="{{getId}}">
     {{#each getModules}}
       {{#if showModule}}
         {{> Template.dynamic template=template data=moduleData}}

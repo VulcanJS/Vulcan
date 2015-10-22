@@ -11,14 +11,18 @@ Meteor.startup(function () {
     hasCategories: function () {
       return Categories.find().count();
     },
+    menuLabel: function () {
+      return i18n.t("categories");
+    },
     menuItems: function () {
 
       var activeCategories = FlowRouter.getQueryParam("cat");
 
       var defaultItem = [{
-        route: 'postsDefault',
-        label: 'all_categories',
-        itemClass: 'item-never-active'
+        route: "postsDefault",
+        label: i18n.t("all_categories"),
+        itemClass: "item-never-active",
+        template: "defaultMenuItem"
       }];
 
       var menuItems = Categories.find({}, {sort: {order: 1, name: 1}}).fetch();
@@ -44,7 +48,6 @@ Meteor.startup(function () {
           description: category.description,
           _id: category._id,
           parentId: category.parentId,
-          template: "category_menu_item",
           isExpanded: isExpanded,
           isActive: isActive,
           itemClass: "category-"+category.slug,
@@ -54,14 +57,20 @@ Meteor.startup(function () {
 
       return defaultItem.concat(menuItems);
     },
-    menuClass: function () {
-      // go back up 4 levels to get the zone that's including the menu
-      if (Template.parentData(4).zone === "mobileNav") {
-        return 'menu-collapsible';
-      } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
-        return 'menu-dropdown';
+    expandLevel: function () {
+      if (this.zone === "mobileNav") {
+        return 0;
       } else {
-        return 'menu-collapsible menu-always-expanded';
+        return 1;
+      }
+    },
+    menuType: function () {
+      if (this.zone === "mobileNav") {
+        return 'collapsible';
+      } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
+        return 'dropdown';
+      } else {
+        return 'collapsible';
       }
     }
   });

@@ -209,9 +209,9 @@ Posts.views.add("campaign", function (terms) {
   };
 });
 
-Telescope.modules.add("hero", {
+Telescope.modules.add("contentTop", {
   template: 'newsletter_banner',
-  order: 10,
+  order: 1,
   only: ["postsDefault"]
 });
 

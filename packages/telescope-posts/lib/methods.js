@@ -246,11 +246,19 @@ Meteor.methods({
   approvePost: function(postId){
 
     check(postId, String);
+    
     var post = Posts.findOne(postId);
+    var now = new Date();
 
     if(Users.is.admin(Meteor.user())){
 
-      Posts.update(post._id, {$set: {status: Posts.config.STATUS_APPROVED}});
+      var set = {status: Posts.config.STATUS_APPROVED};
+
+      if (!post.postedAt) {
+        set.postedAt = now;
+      }
+      
+      Posts.update(post._id, {$set: set});
 
       Telescope.callbacks.runAsync("postApproveAsync", post);
 

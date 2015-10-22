@@ -1,3 +1,6 @@
 {
-  "load_more" : "Зареди повече"
+  "load_more" : "Зареди още",
+  "search" : "Търси",
+  "search_logs" : "История на търсенето",
+  "see_what_people_are_searching_for" : "Виж какво търсят потребителите"
 }

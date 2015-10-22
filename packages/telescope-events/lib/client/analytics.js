@@ -1,4 +1,4 @@
-Events.analyticsInit = _.once(function() {
+Events.analyticsInit = function() {
 
   // Mixpanel
   if (mixpanelId=Settings.get("mixpanelId")){
@@ -65,18 +65,23 @@ Events.analyticsInit = _.once(function() {
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', googleAnalyticsId, 'auto');
+    var cookieDomain = document.domain === "localhost" ? "none" : "auto";
+
+    window.ga('create', googleAnalyticsId, cookieDomain);
 
   }
 
-});
+  // trigger first request once analytics are initialized
+  Events.analyticsRequest();
+
+};
 
 Events.analyticsRequest = function() {
 
   // Google Analytics
   if (typeof window.ga !== 'undefined'){
-    ga('send', 'pageview', {
-      'page': window.location.pathname
+    window.ga('send', 'pageview', {
+      'page': FlowRouter.current().path
     });
   }
 
@@ -102,12 +107,12 @@ Events.analyticsRequest = function() {
 
   // GoSquared
   if (typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined') {
-    GoSquared.DefaultTracker.TrackView(window.location.pathname, FlowRouter.current().route.name);
+    GoSquared.DefaultTracker.TrackView(FlowRouter.current().path, FlowRouter.current().route.name);
   }
 
   // Clicky
   if(typeof clicky !== 'undefined'){
-    clicky.log(encodeURIComponent(window.location.pathname), FlowRouter.current().route.name, "pageview");
+    clicky.log(encodeURIComponent(FlowRouter.current().path), FlowRouter.current().route.name, "pageview");
   }
 
 };

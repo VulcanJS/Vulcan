@@ -20,7 +20,7 @@ Template.posts_list_controller.onCreated(function () {
   var template = this;
   var terms = _.clone(template.data.terms);
   template.terms = terms;
-  
+
   // initialize the reactive variables
   template.rTerms = new ReactiveVar(terms);
   template.rLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
@@ -133,7 +133,6 @@ Template.posts_list_controller.helpers({
         var limit = template.rLimit.get();
         limit += Settings.get('postsPerPage', 10);
         template.rLimit.set(limit);
-
       },
 
       // the current instance

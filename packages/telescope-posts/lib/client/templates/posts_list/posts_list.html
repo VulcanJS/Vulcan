@@ -32,7 +32,7 @@ showFilters (Boolean)
     <div class="posts list {{postsLayout}}" aria-live="polite">
       {{#each postsCursor}}
         {{> before_post_item}}
-        {{> post_item}}
+        {{> post_item post=this}}
         {{> after_post_item}}
       {{/each}}
     </div>
@@ -54,8 +54,11 @@ showFilters (Boolean)
   <div class="posts-load-more">
     {{#if postsReady}}
       {{#if hasPosts}}
-        {{#if hasMorePosts}}
+        {{#if showLoadMoreButton}}
           <a class="more-button" href="#"><span>{{_ "load_more"}}</span></a>
+        {{/if}}
+        {{#if showInfiniteScroll}}
+          <div class="posts-loading">{{> loading}}</div>
         {{/if}}
       {{else}}
         <div class="no-posts">{{_ "sorry_we_couldnt_find_any_posts"}}</div>

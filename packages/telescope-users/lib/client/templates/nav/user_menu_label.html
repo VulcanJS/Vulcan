@@ -1,9 +1,12 @@
 <template name="user_menu_label">
-  <a class="menu-top-level-link" href="#">
-    <span class="user-menu-label menu-top-level-label">
-      {{> avatar userId=this._id shape="circle"}} 
-      <span class="user-menu-username">{{this.getDisplayName}}</span>
+  <a class="menu-label js-menu-toggle" href="#">
+    <span class="menu-label-text user-menu-label">
+      {{> avatar userId=user._id shape="circle"}} 
+      <span class="user-menu-username">{{user.getDisplayName}}</span>
     </span>
-    <span class="menu-items-toggle js-menu-toggle">{{{icon "expand"}}}{{{icon "collapse"}}}</span>
+    <span class="menu-items-toggle">
+      {{> menuIconExpand}}
+      {{> menuIconCollapse}}
+    </span>
   </a>
 </template>

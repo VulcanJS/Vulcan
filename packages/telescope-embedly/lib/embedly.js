@@ -6,7 +6,8 @@ Posts.addField([
       optional: true,
       editableBy: ["member", "admin"],
       autoform: {
-        type: 'bootstrap-postthumbnail'
+        type: 'bootstrap-postthumbnail',
+        order: 40
       }
     }
   },
@@ -87,6 +88,7 @@ function checkIfPreviouslyPosted (data) {
       Messages.flash(error.reason + '. <a href="'+FlowRouter.path("postPage", {_id: error.details})+'">'+i18n.t("go_to_post")+'</a>');  
     }
   });
+  return data;
 }
 Telescope.callbacks.add("afterEmbedlyPrefill", checkIfPreviouslyPosted);
 

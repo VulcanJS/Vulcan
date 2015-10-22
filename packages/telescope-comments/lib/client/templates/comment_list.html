@@ -1,6 +1,6 @@
 <template name="comment_list">
-  <ul class="comments comment-list" aria-live="polite">
-    {{#each child_comments}}
+  <ul class="comments comment-list {{commentListClass}}" aria-live="polite">
+    {{#each childComments}}
       {{> comment_item}}
     {{/each}}
   </ul>
