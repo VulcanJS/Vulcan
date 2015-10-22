@@ -77,6 +77,12 @@
 				opacity: 0.2;
 			}
 		}
+		.menu-item-label-text{
+			display: inline-block;
+		}
+		.menu-item-label-description{
+			display: none;
+		}
 	}
 	.menu-description{
 		display: none;

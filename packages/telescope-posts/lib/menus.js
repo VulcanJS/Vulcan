@@ -21,43 +21,42 @@ var viewsMenuItems = [
   {
     route: Posts.getRoute,
     name: 'top',
+    label: 'top',
     description: 'most_popular_posts'
   },
   {
     route: Posts.getRoute,
     name: 'new',
+    label: 'new',
     description: 'newest_posts'
   },
   {
     route: Posts.getRoute,
     name: 'best',
+    label: 'best',
     description: 'highest_ranked_posts_ever'
   },
   {
     route: Posts.getRoute,
     name: 'pending',
+    label: 'pending',
     description: 'posts_awaiting_moderation',
     adminOnly: true
   },
   {
     route: Posts.getRoute,
     name: 'rejected',
+    label: 'rejected',
     description: 'rejected_posts',
     adminOnly: true
   },
   {
     route: Posts.getRoute,
     name: 'scheduled',
+    label: 'scheduled',
     description: 'future_scheduled_posts',
     adminOnly: true
   },
 ];
-
-// add label & description i18n functions
-viewsMenuItems = viewsMenuItems.map(function (item) {
-  item.label = _.partial(i18n.t, item.name);
-  item.description = _.partial(i18n.t, item.description);
-  return item;
-});
 
 Telescope.menuItems.add("viewsMenu", viewsMenuItems);

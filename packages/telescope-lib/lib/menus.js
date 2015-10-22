@@ -37,12 +37,12 @@ Telescope.menuItems.add = function (menu, item) {
 
     var items = item; // we're dealing with an Array, so let's add an "s"
     items.forEach( function (item) {
-      Telescope.menuItems[menu].push(item);
+      Telescope.menuItems[menu].push(Telescope.menuItems.internationalize(item));
     });
 
   } else {
 
-    Telescope.menuItems[menu].push(item);
+    Telescope.menuItems[menu].push(Telescope.menuItems.internationalize(item));
 
   }
 };
@@ -72,4 +72,24 @@ Telescope.menuItems.removeAll = function (menu) {
  */
 Telescope.menuItems.get = function (menu) {
   return _.sortBy(Telescope.menuItems[menu], "order");
+};
+
+/**
+ * Replace label and description strings by a function that calls
+ * i18n.t on said string
+ * @param {Object} item - The menu item
+ */
+Telescope.menuItems.internationalize = function (item) {
+  var i18nItem = _.clone(item);
+  if (item.label && typeof item.label === "string") {
+    i18nItem.label = function () {
+      return i18n.t(item.label);
+    };
+  }
+  if (item.description && typeof item.description === "string") {
+    i18nItem.description = function () {
+      return i18n.t(item.description);
+    };
+  }
+  return i18nItem;
 };

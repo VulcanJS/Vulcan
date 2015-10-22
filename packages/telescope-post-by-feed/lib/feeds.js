@@ -103,7 +103,6 @@ Meteor.startup(function () {
 
 Telescope.menuItems.add("adminMenu", {
   route: "adminFeeds",
-  name: "feeds",
-  label: _.partial(i18n.t, "feeds"),
-  description: _.partial(i18n.t, "import_new_posts_from_feeds")
+  label: "feeds",
+  description: "import_new_posts_from_feeds"
 });
