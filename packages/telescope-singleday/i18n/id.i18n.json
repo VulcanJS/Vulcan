@@ -1,5 +1,5 @@
 {
-  "singleday" : "Harian",
+  "singleday" : "Per Hari",
   "the_top_5_posts_of_each_day" : "Top 5 postingan per hari.",
   "previous_day" : "Hari sebelumnya",
   "next_day" : "Hari berikutnya",
@@ -7,6 +7,6 @@
   "sorry_no_posts_for" : "Maaf, tidak ada postingan untuk",
   "today" : "Hari ini",
   "yesterday" : "Kemarin",
-  "single_day" : "Harian",
+  "single_day" : "Per Hari",
   "posts_of_a_single_day" : "Postingan per Hari"
 }
