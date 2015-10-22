@@ -12,11 +12,11 @@ Package.onUse(function(api) {
   api.use(['telescope:core@0.25.3']);
 
   api.addFiles([
-    'lib/pages.js'
+    'lib/pages.js',
+    'lib/routes.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/routes.js',
     'lib/client/stylesheets/pages.scss',
     'lib/client/templates/page.html',
     'lib/client/templates/page.js',

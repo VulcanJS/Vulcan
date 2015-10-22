@@ -19,11 +19,11 @@ Package.onUse(function(api) {
   api.use(['telescope:core@0.25.3']);
 
   api.addFiles([
-    'lib/feeds.js'
+    'lib/feeds.js',
+    'lib/routes.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/routes.js',
     'lib/client/templates/feeds.html',
     'lib/client/templates/feeds.js',
     'lib/client/templates/feed_item.html',

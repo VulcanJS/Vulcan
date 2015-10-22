@@ -59,3 +59,10 @@ Meteor.startup(function () {
     }
   });
 });
+
+Telescope.menuItems.add("adminMenu", {
+  route: 'adminPages',
+  name: "pages",
+  label: _.partial(i18n.t, "pages"),
+  description: _.partial(i18n.t, "manage_static_pages"),
+});
