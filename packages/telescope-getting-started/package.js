@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:getting-started",
   summary: "Getting started posts",
-  version: '0.25.3',
+  version: '0.25.4',
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 
@@ -17,7 +17,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['telescope:core@0.25.3']);
+  api.use(['telescope:core@0.25.4']);
 
   // client
 
