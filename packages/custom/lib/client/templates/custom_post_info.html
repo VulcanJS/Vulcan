@@ -1,0 +1,5 @@
+<template name="custom_post_info">
+    <div class="{{moduleClass}}" aria-live="off">
+        {{#if postedAt}}<span class="post-time"><i class="fa fa-clock-o"></i> {{timeAgo postedAt}}</span>{{/if}}
+    </div>
+</template>

@@ -1,0 +1,22 @@
+<template name="custom_header">
+    <header class="header {{headerClass}}">
+
+        <a href="#menu" class="mobile-only mobile-menu-button button">
+            {{{icon "menu"}}}
+        </a>
+
+        {{> logo}}
+
+        {{> tagline_banner}}
+
+        {{#if hasPrimaryNav}}
+        {{> modules zone="primaryNav" zoneClass="nav primary-nav desktop-nav header-module desktop-only" moduleClass="header-submodule"}}
+        {{/if}}
+
+
+        {{#if hasSecondaryNav}}
+        {{> modules zone="secondaryNav" zoneClass="nav secondary-nav desktop-nav header-module desktop-only" moduleClass="header-submodule"}}
+        {{/if}}
+
+    </header>
+</template>
