@@ -1,0 +1,17 @@
+<template name="custom_post_vote">
+    <div class="post-vote {{moduleClass}}">
+        <div class="vote-actions {{actionsClass}}">
+            <a class="vote-action upvote-link" href="#" title="{{_ "upvote_"}}">
+            {{{icon "upvote"}}}
+            <span class="sr-only">{{_ "upvote_"}}</span>
+            </a>
+            {{#if enableDownvotes}}
+            <a class="vote-action downvote-link" href="#" title="{{_ "downvote_"}}">
+            {{{icon "downvote"}}}
+            <span class="sr-only">{{_ "downvote_"}}</span>
+            </a>
+            {{/if}}
+        </div>
+        <div class="points">{{baseScore}}</div>
+    </div>
+</template>

@@ -1,4 +1,110 @@
-.custom-hero-banner{
+.upvote-link:hover, .icon-upvote:hover {
+  color: #6a916c;
+}
+
+.post-vote .upvoted .upvote-link {
+  color: #6a916c !important;
+}
+
+.post-vote .vote-actions {
+  border: none;
+}
+
+.post-vote {
+  border: 1px solid #c5c8cf;
+  padding: 5px;
+}
+
+.points {
   text-align: center;
-  color: purple;
+}
+
+.post-content {
+  margin-left: 15px;
+}
+
+.post-heading {
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 12pt;
+  margin-bottom: 40px;
+  margin-top: 0px !important;
+}
+
+.search {
+  margin-top: 10px;
+}
+
+.notifications_menu {
+  text-align: center;
+}
+
+.post-author:hover, .comments-link:hover, .post-title:hover {
+  color: #9db4f5 !important;
+}
+
+.logo-image {
+  text-align: center;
+}
+
+.logo-image a {
+  display: inline-block;
+}
+
+.logo-text a {
+  margin-top: 10px;
+  letter-spacing: 0px !important;
+}
+
+.submit {
+  background-color: #6a916c !important;
+}
+
+.post-avatars, .avatar-link, .post-avatars .avatar {
+  width: 50px;
+  height:50px;
+}
+
+.post-avatars {
+  margin-right: 50px !important;
+}
+
+.post.sticky {
+  margin-bottom: 30px;
+}
+
+a, p {
+  letter-spacing: 1px;
+}
+
+.post {
+  width: 97%;
+  margin-left: 3%;
+  background-color: #f4f4f4 !important;
+  margin-bottom: 5px;
+}
+
+body {
+  background-color: #f4f4f4;
+}
+
+.views-menu-wrapper {
+  background: #f4f4f4;
+  text-align: center;
+}
+
+.views-menu-wrapper span{
+  font-size: 15px;
+  font-weight:100;
+}
+
+.views-menu-wrapper a:hover{
+  color: #000000;
+  text-decoration: underline;
+}
+
+header {
+  background: #3e4862 !important;
 }
