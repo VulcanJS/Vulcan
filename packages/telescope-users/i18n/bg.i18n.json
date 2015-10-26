@@ -48,5 +48,11 @@
   "invited" : "Поканен",
   "uninvited" : "Поканата е отхвърлена",
   "filter_by" : "Филтрирай по ",
-  "sort_by" : "Сортирай по "
+  "sort_by" : "Сортирай по ",
+  "you_have_been_logged_out": "Бяхте отписан от системата.",    
+  "delete_users_posts_comments_as_well": "Да се изтрият ли също публикациите и коментарите на потребителя?",   
+  "commentedAt": "Коментирано на",   
+  "downvotedAt": "Не харесано на",   
+  "postedAt": "Публикувано на",    
+  "upvotedAt": "Харесано на"
 }
