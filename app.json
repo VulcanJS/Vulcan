@@ -1,7 +1,7 @@
 {
   "name": "Telescope",
   "description": "An open-source community app built with Meteor",
-  "repository": "https://github.com/TelescopeJS/Telescope/",
+  "repository": "https://github.com/grahamthompson/Telescope/",
   "logo": "http://www.telescopeapp.org/images/logo.png",
   "keywords": ["meteor", "social", "community"],
   "env": {
