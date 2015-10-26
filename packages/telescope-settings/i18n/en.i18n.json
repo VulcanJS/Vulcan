@@ -54,7 +54,7 @@
   "logo" : "Logo",
   "extras" : "Extras",
   "colors" : "Colors",
-  "integrations" : "Integrations"
+  "integrations" : "Integrations",
   "enableDownvotes": "Enable Downvotes",   
   "RSSLinksPointTo": "RSS Links Point To",   
   "loadMoreBehavior": "“Load More” Behavior",    
