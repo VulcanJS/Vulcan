@@ -5,8 +5,8 @@ if (Meteor.absoluteUrl().indexOf('localhost') !== -1)
 Meteor.startup(function () {
 
   Herald.collection.deny({
-    update: !Users.can.editById,
-    remove: !Users.can.editById
+    update: function(){ return !Users.can.editById; },
+    remove: function(){ return !Users.can.editById; }
   });
 
   // disable all email notifications when "emailNotifications" is set to false
