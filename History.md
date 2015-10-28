@@ -1,3 +1,8 @@
+## v0.25.5 “PrefixerScope”
+
+* Various small bug fixes.
+* Added `seba:minifiers-autoprefixer` to re-enable CSS prefixing. 
+
 ## v0.25.4 “PrerenderScope”
 
 * Added `telescope:prerender` package.
