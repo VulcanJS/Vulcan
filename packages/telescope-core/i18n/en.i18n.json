@@ -70,5 +70,9 @@
   "users_dashboard" : "Users dashboard.",
   "telescope_settings_panel" : "Telescope settings panel.",
   "various_utilities" : "Various utilities.",
+  "follow_on_twitter": "Follow on Twitter",
+  "like_on_facebook": "Like on Facebook",
+  "share_on_twitter": "Share on Twitter",
+  "share_on_facebook": "Share on Facebook",
   "powered_by_telescope": "Powered by Telescope"
 }
