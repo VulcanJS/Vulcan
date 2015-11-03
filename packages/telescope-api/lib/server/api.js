@@ -1,8 +1,8 @@
-serveAPI = function(terms){
+serveAPI = function(terms) {
   var posts = [];
 
   var parameters = Posts.parameters.get(terms);
-
+  // Add for test
   Posts.find(parameters.find, parameters.options).forEach(function(post) {
     var url = Posts.getLink(post);
     var postOutput = {
@@ -15,29 +15,37 @@ serveAPI = function(terms){
       guid: post._id
     };
 
-    if(post.body)
-      postOutput.body = post.body;
 
-    if(post.url)
+    if (post.url)
       postOutput.domain = Telescope.utils.getDomain(url);
+
+    if (post.body)
+      postOutput.body = post.body;
 
     if (post.thumbnailUrl) {
       postOutput.thumbnailUrl = Telescope.utils.addHttp(post.thumbnailUrl);
     }
 
     var twitterName = Users.getTwitterNameById(post.userId);
-    if(twitterName)
+    if (twitterName)
       postOutput.twitterName = twitterName;
 
     var comments = [];
 
-    Comments.find({postId: post._id}, {sort: {postedAt: -1}, limit: 50}).forEach(function(comment) {
+    Comments.find({
+      postId: post._id
+    }, {
+      sort: {
+        postedAt: -1
+      },
+      limit: 50
+    }).forEach(function(comment) {
       var commentProperties = {
-       body: comment.body,
-       author: comment.author,
-       date: comment.postedAt,
-       guid: comment._id,
-       parentCommentId: comment.parentCommentId
+        body: comment.body,
+        author: comment.author,
+        date: comment.postedAt,
+        guid: comment._id,
+        parentCommentId: comment.parentCommentId
       };
       comments.push(commentProperties);
     });
@@ -58,7 +66,7 @@ serveAPI = function(terms){
     });
 
     commentsToDelete.reverse().forEach(function(index) {
-      comments.splice(index,1);
+      comments.splice(index, 1);
     });
 
     postOutput.comments = comments;
