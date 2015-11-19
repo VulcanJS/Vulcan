@@ -1,16 +1,19 @@
 // Category Parameter
 // Add a "categories" property to terms which can be used to filter *all* existing Posts views. 
 function addCategoryParameter (parameters, terms) {
+
+  var cat = terms.cat || terms["cat[]"];
+
   // filter by category if category slugs are provided
-  if (!!terms.cat) {
+  if (cat) {
 
     var categoriesIds = [];
     var find = {};
 
-    if (typeof terms.cat === "string") { // cat is a string
-      find = {slug: terms.cat};
-    } else { // cat is an array
-      find = {slug: {$in: terms.cat}};
+    if (typeof cat === "string") { // cat is a string
+      find = {slug: cat};
+    } else if (Array.isArray(cat)) { // cat is an array
+      find = {slug: {$in: cat}};
     }
 
     // get all categories passed in terms
