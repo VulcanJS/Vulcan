@@ -1,7 +1,17 @@
 if (Settings.get("prerenderIOToken")) {
-  var prerender = Npm.require('prerender-node')
-    .set('protocol', 'http')
-    .set('host', Settings.get("siteUrl").replace("http://", "").replace("/", ""))
+  
+  siteURL = Settings.get("siteUrl");
+  porto = 'http';
+  var prerender = Npm.require('prerender-node');
+  
+  if( siteURL.indexOf('https') >= 0 ){//checking for https
+    prerender.set('protocol', 'https');
+    proto += 's';
+  }
+  else
+    prerender.set('protocol', 'http');
+    
+  prerender.set('host', siteURL.replace(proto+"://", "").replace("/", "") )
     .set('prerenderToken', Settings.get("prerenderIOToken"));
 
   Meteor.startup(function() {
