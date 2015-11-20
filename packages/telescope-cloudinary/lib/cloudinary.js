@@ -16,7 +16,8 @@ Settings.addField([
       optional: true,
       private: true,
       autoform: {
-        group: 'cloudinary'
+        group: 'cloudinary',
+        class: 'private-field'
       }
     }
   },
@@ -27,7 +28,8 @@ Settings.addField([
       optional: true,
       private: true,
       autoform: {
-        group: 'cloudinary'
+        group: 'cloudinary',
+        class: 'private-field'
       }
     }
   }

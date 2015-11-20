@@ -5,19 +5,23 @@ Package.describe({
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
+Npm.depends({
+  cloudinary: "1.2.5"
+});
+
 Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
     'telescope:core@0.25.5',
-    // 'lepozepo:cloudinary@4.1.1',
-    'lepozepo:s3@5.1.5'
+    // 'lepozepo:cloudinary@4.1.1'
+    // 'lepozepo:s3@5.1.5'
   ]);
 
   api.addFiles([
     'package-tap.i18n',
-    'lib/upload.js'
+    'lib/cloudinary.js'
   ], ['client', 'server']);
 
   api.addFiles([
@@ -25,6 +29,7 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
+    'lib/server/config.js'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
@@ -33,6 +38,6 @@ Package.onUse(function (api) {
   // });
   // api.addFiles(languagesPaths, ["client", "server"]);
   
-  // api.export('Users');
+  api.export('Cloudinary');
 
 });
