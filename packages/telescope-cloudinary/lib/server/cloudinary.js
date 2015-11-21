@@ -27,24 +27,28 @@ Meteor.methods({
 
 // post submit callback
 function cachePostThumbnailOnSubmit (post) {
-  if (post.thumbnailUrl) {
-    var newThumbnailUrl = uploadImageFromURL(post.thumbnailUrl);
+  if (Settings.get("cloudinaryAPIKey")) {
+    if (post.thumbnailUrl) {
+      var newThumbnailUrl = uploadImageFromURL(post.thumbnailUrl);
+    }
+    Posts.update(post._id, {$set: {
+      thumbnailUrl: newThumbnailUrl,
+      originalThumbnailUrl: post.thumbnailUrl
+    }});
   }
-  Posts.update(post._id, {$set: {
-    thumbnailUrl: newThumbnailUrl,
-    originalThumbnailUrl: post.thumbnailUrl
-  }});
 }
 Telescope.callbacks.add("postSubmitAsync", cachePostThumbnailOnSubmit);
 
 // post edit callback
 function cachePostThumbnailOnEdit (newPost, oldPost) {
-  if (newPost.thumbnailUrl && newPost.thumbnailUrl !== oldPost.thumbnailUrl) {
-    var newThumbnailUrl = uploadImageFromURL(newPost.thumbnailUrl);
+  if (Settings.get("cloudinaryAPIKey")) {
+    if (newPost.thumbnailUrl && newPost.thumbnailUrl !== oldPost.thumbnailUrl) {
+      var newThumbnailUrl = uploadImageFromURL(newPost.thumbnailUrl);
+    }
+    Posts.update(newPost._id, {$set: {
+      thumbnailUrl: newThumbnailUrl,
+      originalThumbnailUrl: newPost.thumbnailUrl
+    }});
   }
-  Posts.update(newPost._id, {$set: {
-    thumbnailUrl: newThumbnailUrl,
-    originalThumbnailUrl: newPost.thumbnailUrl
-  }});
 }
 Telescope.callbacks.add("postEditAsync", cachePostThumbnailOnEdit);
