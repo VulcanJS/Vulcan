@@ -131,6 +131,7 @@ srp@1.0.4
 standard-app-packages@1.0.6
 tap:i18n@1.7.0
 telescope:api@0.25.5
+telescope:cloudinary@0.25.5
 telescope:comments@0.25.5
 telescope:core@0.25.5
 telescope:daily@0.25.5
@@ -165,7 +166,6 @@ telescope:tags@0.25.5
 telescope:theme-base@0.25.5
 telescope:theme-hubble@0.25.5
 telescope:update-prompt@0.25.5
-telescope:upload@0.25.5
 telescope:users@0.25.5
 templating@1.1.5
 templating-tools@1.0.0

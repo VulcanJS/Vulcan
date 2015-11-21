@@ -34,3 +34,13 @@ Settings.addField([
     }
   }
 ]);
+
+Posts.addField([
+  {
+    fieldName: 'originalThumbnailUrl',
+    fieldSchema: {
+      type: String,
+      optional: true
+    }
+  }
+]);

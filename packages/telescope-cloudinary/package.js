@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'telescope:upload',
+  name: 'telescope:cloudinary',
   summary: 'Telescope file upload package.',
   version: '0.25.5',
   git: "https://github.com/TelescopeJS/Telescope.git"
@@ -21,7 +21,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'package-tap.i18n',
-    'lib/cloudinary.js'
+    'lib/custom_fields.js'
   ], ['client', 'server']);
 
   api.addFiles([
@@ -29,7 +29,7 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    'lib/server/config.js'
+    'lib/server/cloudinary.js'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
