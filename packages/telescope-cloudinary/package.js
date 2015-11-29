@@ -33,10 +33,11 @@ Package.onUse(function (api) {
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
+  var languages = ["en"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
   
   api.export('Cloudinary');
 
