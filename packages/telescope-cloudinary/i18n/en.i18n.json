@@ -1,5 +1,5 @@
 {
-  "cloudinaryCloudName": "Cloud Name",
-  "cloudinaryAPIKey": "API Key",
-  "cloudinaryAPISecret": "API Secret"
+  "cloudinaryCloudName" : "Cloud Name",
+  "cloudinaryAPIKey" : "API Key",
+  "cloudinaryAPISecret" : "API Secret"
 }

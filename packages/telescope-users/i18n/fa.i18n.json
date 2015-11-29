@@ -39,8 +39,11 @@
   "sign_up_" : "ثبت نام!",
   "dont_have_an_account" : "هنوز حساب کاربری ندارید؟",
   "already_have_an_account" : "در حال حاضر حساب کاربری دارید؟",
+  "downvotedAt" : "رای منفی داده شده, در ساعت",
   "sign_up" : "ثبت نام",
+  "postedAt" : "ارسال شده,در ساعت",
   "please_fill_in_all_fields" : "لطفا همه موارد را پر کنید",
+  "upvotedAt" : "رای مثبت داده شده, در ساعت",
   "invite_" : "دعوت از",
   "left" : "ترک",
   "invited" : "دعوت شده"
