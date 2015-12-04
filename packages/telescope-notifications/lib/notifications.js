@@ -25,7 +25,7 @@ var notifications = {
       return Posts.getNotificationProperties(this.data.post);
     },
     subject: function () {
-      return this.postAuthorName+' has a new post pending approval: '+this.postTitle;
+      return 'Your post “'+this.postTitle+'” has been approved';
     },
     emailTemplate: "emailPostApproved",
     onsiteTemplate: "notification_post_approved"

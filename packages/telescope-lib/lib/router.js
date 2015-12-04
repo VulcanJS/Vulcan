@@ -21,10 +21,22 @@ Telescope.adminRoutes = FlowRouter.group({
 
 FlowRouter.notFound = {
   action: function() {
+    if (Meteor.isClient) {
+      DocHead.addMeta({
+        name: "name",
+        property: "prerender-status-code",
+        content: "404"
+      });
+      DocHead.addMeta({
+        name: "name",
+        property: "robots",
+        content: "noindex, nofollow"
+      });
+    }
     BlazeLayout.render("layout", {main: "not_found"});
   }
 };
 
+FlowRouter.triggers.enter([function () {Events.analyticsRequest()}]);
+
 FlowRouter.triggers.exit([function () {Messages.clearSeen()}]);
-FlowRouter.triggers.exit([function () {Events.analyticsInit()}]); // will only run once thanks to _.once()
-FlowRouter.triggers.exit([function () {Events.analyticsRequest()}]);

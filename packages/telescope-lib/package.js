@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:lib',
   summary: 'Telescope libraries.',
-  version: '0.25.2',
+  version: '0.25.5',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -16,7 +16,7 @@ Package.onUse(function (api) {
     'jquery',
     'session',
     'tracker',
-    'standard-minifiers@1.0.1',
+    // 'standard-minifiers@1.0.1',
     'service-configuration',
     'accounts-ui',
     'accounts-base',
@@ -35,13 +35,13 @@ Package.onUse(function (api) {
     'aldeed:autoform@5.7.1',
     'aldeed:template-extension@3.4.3',
     'tap:i18n@1.7.0',
-    'fourseven:scss@3.3.3_3',
+    'fourseven:scss@3.4.1',
     // 'iron:router@1.0.9',
     'kadira:flow-router@2.7.0',
-    'kadira:blaze-layout@2.1.0',
+    'kadira:blaze-layout@2.2.0',
     'arillo:flow-router-helpers@0.4.5',
     'meteorhacks:picker@1.0.3',
-    'kadira:dochead@1.2.2',
+    'kadira:dochead@1.3.1',
     'dburles:collection-helpers@1.0.3',
     // 'meteorhacks:flow-router@1.5.0',
     // 'meteorhacks:flow-layout@1.1.1',
@@ -61,7 +61,7 @@ Package.onUse(function (api) {
     'utilities:avatar@0.9.2',
     'fortawesome:fontawesome@4.4.0',
     'ccan:cssreset@1.0.0',
-    'djedi:sanitize-html@1.10.1',
+    'djedi:sanitize-html@1.11.1',
     'dburles:collection-helpers@1.0.3',
     'jparker:gravatar@0.4.1',
     'sanjo:meteor-files-helpers@1.2.0_1',
@@ -73,7 +73,8 @@ Package.onUse(function (api) {
     'tmeasday:publish-counts@0.7.2',
     // 'dburles:iron-router-query-array@1.0.1'
     'utilities:onsubscribed@0.1.2',
-    'utilities:menu@0.1.1'
+    'utilities:menu@0.1.4',
+    'seba:minifiers-autoprefixer@0.0.1'
   ];
 
   api.use(packages);

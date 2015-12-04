@@ -20,13 +20,13 @@ Template.user_menu.helpers({
 
     return viewableItems;
   },
-  menuClass: function () {
+  menuType: function () {
     if (this.zone === "mobileNav") {
-      return 'menu-collapsible';
+      return 'collapsible';
     } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
-      return 'menu-dropdown';
+      return 'dropdown';
     } else {
-      return 'menu-collapsible';
+      return 'collapsible';
     }
   }
 });

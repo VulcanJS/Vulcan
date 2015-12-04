@@ -46,8 +46,9 @@ Posts.views.add("userSubscribedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId),
       postsIds = [];
 
-  if (user.telescope.subscribedItems && user.telescope.subscribedItems.Posts)
+  if (user && user.telescope.subscribedItems && user.telescope.subscribedItems.Posts) {
     postsIds = _.pluck(user.telescope.subscribedItems.Posts, "itemId");
+  }
 
   return {
     find: {_id: {$in: postsIds}},

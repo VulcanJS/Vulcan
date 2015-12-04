@@ -5,8 +5,13 @@
 //		b. Side nav
 
 .header{
-	position:relative;
 	z-index: 100;
+	@include small{
+		box-shadow: 0px 1px 3px black(0.2);
+	}
+	@include medium-large{
+		position:relative;
+	}
 }
 .logo{
 	line-height: 1;
@@ -61,20 +66,23 @@
 		vertical-align: middle;
 	}
 }
+
 // ------------------------------------ Top Nav Layout ------------------------------------ //
 
 .top-nav{
 	.header{
 		height: 60px;
-		padding: 0 20px;
+		padding: 5px 20px;
 		margin-bottom:$grid-margin;
-		position: relative;
+		@include medium-large{
+			position: relative;
+		}
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 
 		@include small{
-			padding: 0 10px;
+			padding: 5px 10px;
 		}
 		.header-submodule{
 			flex-shrink: 0;
@@ -105,6 +113,13 @@
 			text-align:center;
 			color:white;
 			order: 2;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.tagline{
+				display: none;
+			}
 			.logo-text{
 				@include small{
 					font-size: 18px;
@@ -119,6 +134,7 @@
 		}
 		.logo-image{
 			line-height: 1;
+			height: 100%;
 			a{
 				display:inline-block;
 				background: no-repeat center center;
@@ -155,7 +171,7 @@ $nav-width: 250px;
 		}
 		.logo{
 			text-align: left;
-			&.logo-image{
+			.logo-image{
 				text-align: center;
 				a{
 					margin: 0 auto;

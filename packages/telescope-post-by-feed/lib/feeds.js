@@ -45,7 +45,6 @@ Feeds.schema = new SimpleSchema({
   }
 });
 
-
 Meteor.startup(function(){
   Feeds.internationalize();
 });
@@ -100,4 +99,10 @@ Meteor.startup(function () {
       return Feeds.insert(feedUrl);
     }
   });
+});
+
+Telescope.menuItems.add("adminMenu", {
+  route: "adminFeeds",
+  label: "feeds",
+  description: "import_new_posts_from_feeds"
 });

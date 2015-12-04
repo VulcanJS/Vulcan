@@ -5,9 +5,9 @@ AutoForm.addInputType("bootstrap-postthumbnail", {
 var fillEmbedlyData = function (instance) {
 
   // note: the following fields are *not* in the current template
-  var $urlField = $('[name="url"]');
-  var $titleField = $('[name="title"]');
-  var $bodyField = $('[name="body"]');
+  var $urlField = $('input[name="url"]');
+  var $titleField = $('input[name="title"]');
+  var $bodyField = $('textarea[name="body"]');
   var url = $urlField.val();
 
   var $thumbnailContainer = instance.$('.post-thumbnail-container');
