@@ -124,3 +124,8 @@ $small-break: 600px;
 .regenerate-thumbnail-link{
   margin-right: 10px;
 }
+
+// thumbnail container shouldn't shrink in Safari
+.zone-wrapper.postThumbnail{
+  flex-shrink: 0;
+}
