@@ -10,17 +10,50 @@ var uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
 
 // send an image URL to Cloudinary and get a URL in return
 var uploadImageFromURL = function (imageUrl) {
-  var result = uploadSync(Telescope.utils.addHttp(imageUrl));
-  var cachedUrl = result.url;
-  return cachedUrl;
+  try {
+    var result = uploadSync(Telescope.utils.addHttp(imageUrl));
+    var cachedUrl = result.url;
+    return cachedUrl;
+  } catch (error) {
+    console.log("// Cloudinary upload failed for URL: "+imageUrl);
+    console.log(error.stack);
+  }
 }
 
-// test function
+// methods
 Meteor.methods({
-  testCloudinaryUpload: function () {
+  testCloudinaryUpload: function (thumbnailUrl) {
     if (Users.is.admin(Meteor.user())) {
-      var cachedUrl = uploadImageFromURL("http://www.telescopeapp.org/images/logo.png");
+      var thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
+      var cachedUrl = uploadImageFromURL(thumbnailUrl);
       console.log(cachedUrl);
+    }
+  },
+  cachePostThumbnails: function (limit) {
+
+    // default to caching posts 20 at a time if no limit is passed
+    var limit = typeof limit === "undefined" ? 20 : limit;
+    
+    if (Users.is.admin(Meteor.user())) {
+
+      var postsWithUncachedThumbnails = Posts.find({
+        thumbnailUrl: { $exists: true },
+        originalThumbnailUrl: { $exists: false }
+      }, {sort: {createdAt: -1}, limit: limit});
+
+      postsWithUncachedThumbnails.forEach(Meteor.bindEnvironment(function (post) {
+
+        console.log("// Caching thumbnail for post: "+post.title);
+
+        var originalUrl = post.thumbnailUrl;
+        var cachedUrl = uploadImageFromURL(originalUrl);
+
+        Posts.update(post._id, {$set:{
+          thumbnailUrl: cachedUrl,
+          originalThumbnailUrl: originalUrl
+        }});
+
+      }));
     }
   }
 });
