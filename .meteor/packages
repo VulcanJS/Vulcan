@@ -40,7 +40,6 @@ telescope:tags
 telescope:theme-base
 telescope:theme-hubble
 telescope:update-prompt
-telescope:cloudinary
 
 ############ Your Custom Packages ############
 

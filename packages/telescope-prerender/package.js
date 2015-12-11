@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:prerender",
   summary: "Telescope Prereder.io package",
-  version: "0.25.5",
+  version: "0.25.6",
   git: "https://github.com/TelescopeJS/Telescope"
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:core@0.25.5'
+    'telescope:core@0.25.6'
   ]);
 
   api.addFiles([

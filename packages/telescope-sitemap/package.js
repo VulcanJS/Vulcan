@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:sitemap",
   summary: "Sitemap package for Telescope",
-  version: "0.25.5",
+  version: "0.25.6",
   git: "https://github.com/TelescopeJS/telescope-sitemap.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    "telescope:core@0.25.5",
+    "telescope:core@0.25.6",
     "gadicohen:sitemaps@0.0.20"
   ]);
 
