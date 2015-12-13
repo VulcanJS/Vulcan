@@ -146,7 +146,7 @@ telescope:kadira@0.25.6
 telescope:lib@0.25.6
 telescope:messages@0.25.6
 telescope:migrations@0.25.6
-telescope:newsletter@0.25.6
+telescope:newsletter@0.25.7
 telescope:notifications@0.25.6
 telescope:pages@0.25.6
 telescope:post-by-feed@0.25.6

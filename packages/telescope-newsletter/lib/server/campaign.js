@@ -66,8 +66,13 @@ buildCampaign = function (postsArray) {
         return comment;
       }}).fetch();
 
-    if(post.url)
+    if(post.url) {
       properties.domain = Telescope.utils.getDomain(post.url);
+    }
+
+    if (properties.thumbnailUrl) {
+      properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
+    }
 
     postsHTML += Telescope.email.getTemplate('emailPostItem')(properties);
   });
