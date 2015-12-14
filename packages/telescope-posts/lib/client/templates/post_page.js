@@ -1,5 +1,8 @@
 var doSEOStuff = function (post) {
 
+  // clear previously added meta tags
+  DocHead.removeDocHeadAddedTags();
+
   var link = {rel: "canonical", href: post.getPageUrl(true)};
   DocHead.addLink(link);
   
