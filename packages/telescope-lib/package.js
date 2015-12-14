@@ -74,7 +74,8 @@ Package.onUse(function (api) {
     // 'dburles:iron-router-query-array@1.0.1'
     'utilities:onsubscribed@0.1.2',
     'utilities:menu@0.1.4',
-    'seba:minifiers-autoprefixer@0.0.1'
+    'seba:minifiers-autoprefixer@0.0.1',
+    'dburles:spacebars-tohtml@1.0.1'
   ];
 
   api.use(packages);

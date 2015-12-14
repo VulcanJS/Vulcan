@@ -77,6 +77,6 @@ Picker.route('/email/account-approved/:id?', function(params, req, res, next) {
     siteTitle: Settings.get('title'),
     siteUrl: Telescope.utils.getSiteUrl()
   };
-  var html = Handlebars.templates.emailAccountApproved(emailProperties);
+  var html = Telescope.email.getTemplate('emailAccountApproved')(emailProperties);
   res.end(Telescope.email.buildTemplate(html));
 });

@@ -35,6 +35,7 @@ cmather:handlebars-server@2.0.0
 coffeescript@1.0.11
 cosmos:browserify@0.8.1
 dburles:collection-helpers@1.0.4
+dburles:spacebars-tohtml@1.0.1
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.2

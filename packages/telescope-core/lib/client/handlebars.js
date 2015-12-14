@@ -63,6 +63,7 @@ Template.registerHelper('pluralize', function(count, string) {
 
 Template.registerHelper('getProfileUrl', function(userOrUserId) {
   var user = (typeof userOrUserId === 'string') ? Meteor.users.findOne(userOrUserId) :  userOrUserId;
+  console.log(user)
   if (!!user) {
     return Users.getProfileUrl(user);
   }

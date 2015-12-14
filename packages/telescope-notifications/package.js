@@ -43,6 +43,9 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/server/notifications-server.js',
     'lib/server/routes.js',
+  ], ['server']);
+
+  api.addAssets([
     'lib/server/templates/emailAccountApproved.handlebars',
     'lib/server/templates/emailNewComment.handlebars',
     'lib/server/templates/emailNewPost.handlebars',

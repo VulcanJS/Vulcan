@@ -25,9 +25,12 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/email.js',
+  ], ['server']);
+
+  api.addAssets([
     'lib/server/templates/emailInvite.handlebars',
     'lib/server/templates/emailTest.handlebars',
-    'lib/server/templates/emailWrapper.handlebars',
+    'lib/server/templates/emailWrapper.handlebars'
   ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
