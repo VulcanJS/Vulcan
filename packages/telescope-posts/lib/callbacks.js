@@ -51,6 +51,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
  * Increment the user's post count and upvote the post
  */
 function afterPostSubmitOperations (post) {
+  console.log(this)
   var userId = post.userId;
   Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
   return post;

@@ -15,13 +15,14 @@ FlowRouter.route('/posts/:_id/edit', {
 FlowRouter.route('/posts/:_id/:slug?', {
   name: "postPage",
   action: function(params, queryParams) {
+    trackRouteEntry(params._id);
     BlazeLayout.render("layout", {main: "post_page"});
   }
 });
 
-var trackRouteEntry = function (context) {
+var trackRouteEntry = function (postId) {
   var sessionId = Meteor.default_connection && Meteor.default_connection._lastSessionId ? Meteor.default_connection._lastSessionId : null;
-  Meteor.call('increasePostViews', context.params._id, sessionId);
+  Meteor.call('increasePostViews', postId, sessionId);
 }
 
 FlowRouter.route('/submit', {
