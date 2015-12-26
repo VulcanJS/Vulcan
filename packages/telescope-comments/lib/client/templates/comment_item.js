@@ -109,7 +109,7 @@ var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
   e.preventDefault();
   e.stopImmediatePropagation(); // needed to prevent the handler running multiple times in nested comments
   if (!Meteor.user()){
-    FlowRouter.go("atSignIn");
+    FlowRouter.go("signIn");
     Messages.flash(i18n.t('please_log_in_first'), 'info');
   } else {
     Meteor.call(meteorMethodName, this._id, function(error, result){
