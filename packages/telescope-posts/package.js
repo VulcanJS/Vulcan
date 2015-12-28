@@ -14,7 +14,8 @@ Package.onUse(function (api) {
     'telescope:i18n@0.25.6',
     'telescope:settings@0.25.6',
     'telescope:users@0.25.6',
-    'telescope:comments@0.25.6'
+    'telescope:comments@0.25.6',
+    'meteorhacks:unblock'
   ]);
 
   api.addFiles([
