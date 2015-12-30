@@ -204,11 +204,11 @@ Posts.schema = new SimpleSchema({
   /**
     Save info for later spam checking on a post. We will use this for the akismet package
   */
-  user_ip: {
+  userIP: {
     type: String,
     optional: true
   },
-  user_agent: {
+  userAgent: {
     type: String,
     optional: true
   },
