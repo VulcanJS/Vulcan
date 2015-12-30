@@ -9,5 +9,9 @@
   "notifications" : "Bildirimler",
   "mark_all_as_read" : "Hepsini okunmuş olarak işaretle",
   "has_replied_to_your_comment_on" : " yorumunuza cevap verdi şu konu hakkında:",
-  "mark_as_read" : "Okundu olarak işaretle"
+  "mark_as_read" : "Okundu olarak işaretle",
+  "user_not_found" : "Kullanıcı bulunamadı",
+  "emailNotifications" : "e-posta bildirimleri",
+  "your_post" : "Gönderiniz",
+  "has_been_approved" : "onaylandı"
 }

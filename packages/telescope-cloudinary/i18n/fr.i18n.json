@@ -1,2 +1,5 @@
 {
+  "cloudinaryCloudName" : "Nom du nuage",
+  "cloudinaryAPIKey" : "Clé API",
+  "cloudinaryAPISecret" : "Secret API"
 }

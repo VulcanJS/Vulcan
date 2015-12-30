@@ -69,5 +69,10 @@
   "future_scheduled_posts" : "Posts planifiés.",
   "users_dashboard" : "Tableau de bord utilisateur.",
   "telescope_settings_panel" : "Page de configuration de Telescope.",
-  "various_utilities" : "Outils divers"
+  "various_utilities" : "Outils divers",
+  "follow_on_twitter" : "Suivez sur Twitter",
+  "like_on_facebook" : "Aimer sur Facebook",
+  "share_on_twitter" : "Partager sur Twitter",
+  "share_on_facebook" : "Partager sur Facebook",
+  "powered_by_telescope" : "Powered by Telescope"
 }

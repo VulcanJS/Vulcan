@@ -11,14 +11,14 @@
   "admin" : "Admin?",
   "post" : "Paylaş",
   "toolbox" : "Araç Kutusu",
-  "sign_up_sign_in" : "Kayıt Ol/Giriş Yap",
+  "sign_up_sign_in" : "Yazıl / Giriş Yap",
   "my_account" : "Hesabım",
   "view_profile" : "Profili gör",
   "edit_account" : "Hesabı Ayarla",
   "view_your_profile" : "Profilinizi görüntüleyin",
   "edit_your_profile" : "Profilinizi düzenleyin",
   "you_are_already_logged_in" : "Zaten giriş yapmış durumdasınız",
-  "sorry_this_is_a_private_site_please_sign_up_first" : "Maalesef, bu özel bir sitedir. İlk önce kayıt olun.",
+  "sorry_this_is_a_private_site_please_sign_up_first" : "Ne yazık ki, bu özel bir sitedir. İlk önce kayıt olun.",
   "thanks_for_signing_up" : "Kayıt olduğunuz için teşekkür ederiz!",
   "the_site_is_currently_invite_only_but_we_will_let_you_know_as_soon_as_a_spot_opens_up" : "Bu site sadece davetliler için ama bir yer açılınca size haber vereceğiz",
   "sorry_you_dont_have_the_rights_to_view_this_page" : "Özür dileriz, bu sayfaya erişiminiz yok",
@@ -63,5 +63,9 @@
   "sign_in_sign_up_with_twitter" : "Twitter ile kayıt ol/giriş yap",
   "users_dashboard" : "Kullanıcı Paneli",
   "telescope_settings_panel" : "Telescope Ayar Paneli",
-  "various_utilities" : "Çeşitli programlar."
+  "various_utilities" : "Çeşitli programlar.",
+  "follow_on_twitter" : "Twitter'da izle",
+  "like_on_facebook" : "Facebook'ta beğen",
+  "share_on_twitter" : "Twitter'da paylaş",
+  "share_on_facebook" : "Facebook'ta paylaş"
 }

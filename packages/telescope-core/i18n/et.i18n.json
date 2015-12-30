@@ -69,5 +69,10 @@
   "future_scheduled_posts" : "Tulevikku planeeritud postitused.",
   "users_dashboard" : "Kasutajate töölaud.",
   "telescope_settings_panel" : "Teleskoobi seadete paneel.",
-  "various_utilities" : "Erinevad teenused."
+  "various_utilities" : "Erinevad teenused.",
+  "follow_on_twitter" : "Jälgi Twitteris",
+  "like_on_facebook" : "Laigi Facebookis",
+  "share_on_twitter" : "Jaga Twitteris",
+  "share_on_facebook" : "Jaga Facebookis",
+  "powered_by_telescope" : "Powered by Telescope"
 }

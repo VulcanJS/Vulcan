@@ -54,5 +54,10 @@
   "logo" : "Logo",
   "extras" : "Extras",
   "colors" : "Couleurs",
-  "integrations" : "Intégrations"
+  "integrations" : "Intégrations",
+  "enableDownvotes" : "Activer les downvotes",
+  "RSSLinksPointTo" : "Liens RSS ",
+  "loadMoreBehavior" : "Comportement \"Charger Plus\"",
+  "loadMoreButton" : "Bouton \"Charger Plus\"",
+  "infiniteScroll" : "Defiliment infini"
 }

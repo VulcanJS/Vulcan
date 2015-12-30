@@ -54,5 +54,10 @@
   "logo" : "Logo",
   "extras" : "Lisad",
   "colors" : "Värvid",
-  "integrations" : "Integratsioonid"
+  "integrations" : "Integratsioonid",
+  "enableDownvotes" : "Luba Downvotes",
+  "RSSLinksPointTo" : "RSS Lingid",
+  "loadMoreBehavior" : "\"Lae veel\" käitumine",
+  "loadMoreButton" : "\"Lae veel\" nupp",
+  "infiniteScroll" : "Lõputu scroll"
 }
