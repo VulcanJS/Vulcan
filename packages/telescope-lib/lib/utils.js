@@ -132,7 +132,7 @@ Telescope.utils.getSignupUrl = function() {
   return this.getRouteUrl('atSignUp');
 };
 Telescope.utils.getSigninUrl = function() {
-  return this.getRouteUrl('atSignIn');
+  return this.getRouteUrl('signIn');
 };
 
 //TODO: fix this
