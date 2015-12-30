@@ -3,7 +3,7 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 // Publish a list of posts
 
 Meteor.publish('postsList', function(terms) {
-
+  this.unblock();
   terms.userId = this.userId; // add userId to terms
   
   if(Users.can.viewById(this.userId)){
@@ -20,6 +20,7 @@ Meteor.publish('postsList', function(terms) {
 
 Meteor.publish('postsListUsers', function(terms) {
   
+  this.unblock();
   terms.userId = this.userId; // add userId to terms
   
   if(Users.can.viewById(this.userId)){
@@ -44,6 +45,7 @@ Meteor.publish('postsListUsers', function(terms) {
 Meteor.publish('singlePost', function(postId) {
 
   check(postId, String);
+  this.unblock();
 
   if (Users.can.viewById(this.userId)){
     return Posts.find(postId);
@@ -56,6 +58,7 @@ Meteor.publish('singlePost', function(postId) {
 Meteor.publish('postUsers', function(postId) {
 
   check(postId, String);
+  this.unblock();
 
   if (Users.can.viewById(this.userId)){
     // publish post author and post commenters

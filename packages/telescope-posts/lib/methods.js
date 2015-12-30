@@ -184,6 +184,9 @@ Meteor.methods({
       post.userId = user._id;
     }
 
+    post.userIP = this.connection.clientAddress;
+    post.userAgent = this.connection.httpHeaders["user-agent"];
+
     return Posts.submit(post);
   },
 

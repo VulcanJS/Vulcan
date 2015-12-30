@@ -75,7 +75,8 @@ Package.onUse(function (api) {
     'utilities:onsubscribed@0.1.2',
     'utilities:menu@0.1.4',
     'seba:minifiers-autoprefixer@0.0.1',
-    'dburles:spacebars-tohtml@1.0.1'
+    'dburles:spacebars-tohtml@1.0.1',
+    'meteorhacks:unblock@1.1.0'
   ];
 
   api.use(packages);
