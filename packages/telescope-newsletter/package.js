@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:core@0.25.6',
+    'telescope:core@0.25.7',
     'miro:mailchimp@1.1.0',
   ]);
 

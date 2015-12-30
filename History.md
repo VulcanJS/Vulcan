@@ -1,3 +1,10 @@
+## v0.25.7 “UnblockScope”
+
+* Switched from `handlebars-server` to `spacebars-tohtml`,
+* Fixed increasePostViews bug.
+* Attached data to post for spam detection package (thanks @queso!).
+* Unblocked post publications (thanks @queso!).
+
 ## v0.25.6 “CloudinaryScope”
 
 * Added support for thumbnail caching with Cloudinary (requires adding `telescope:cloudinary` package).
