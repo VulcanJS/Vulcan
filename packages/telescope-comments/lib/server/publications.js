@@ -4,6 +4,9 @@ Comments._ensureIndex({parentCommentId: 1});
 // Publish a list of comments
 
 Meteor.publish('commentsList', function(terms) {
+  
+  this.unblock();
+
   if(Users.can.viewById(this.userId)){
     var parameters = Comments.parameters.get(terms);
     var comments = Comments.find(parameters.find, parameters.options);
@@ -23,6 +26,8 @@ Meteor.publish('singleCommentAndChildren', function(commentId) {
 
   check(commentId, String);
 
+  this.unblock();
+  
   if(Users.can.viewById(this.userId)){
     // publish both current comment and child comments
     var commentIds = [commentId];
@@ -39,6 +44,8 @@ Meteor.publish('commentPost', function(commentId) {
 
   check(commentId, String);
 
+  this.unblock();
+
   if(Users.can.viewById(this.userId)){
     var comment = Comments.findOne(commentId);
     return Posts.find({_id: comment && comment.postId});
@@ -51,7 +58,9 @@ Meteor.publish('commentPost', function(commentId) {
 Meteor.publish('commentUsers', function(commentId) {
 
   check(commentId, String);
-  
+
+  this.unblock();
+    
   var userIds = [];
 
   if(Users.can.viewById(this.userId)){
