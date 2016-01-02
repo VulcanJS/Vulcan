@@ -27,7 +27,8 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/modules.js',
     'lib/vote.js',
-    'lib/subscriptions.js'
+    'lib/subscriptions.js',
+    'lib/callbacks.js'
   ], ['client', 'server']);
 
   api.addFiles([

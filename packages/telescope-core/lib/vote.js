@@ -1,57 +1,27 @@
-
-// getVotePower returns how much "power" a user's votes have
-// It is can be set in a package, by setting getVotePower to a Number or Function then re-exporting
-// The default is found in base.js in the base package, and returns 1.
-
-var modifyKarma = function (userId, karma) {
-  Meteor.users.update({_id: userId}, {$inc: {"telescope.karma": karma}});
-};
-
-var hasUpvotedItem = function (item, user) {
-  return item.upvoters && item.upvoters.indexOf(user._id) !== -1;
-};
-
-var hasDownvotedItem = function (item, user) {
-  return item.downvoters && item.downvoters.indexOf(user._id) !== -1;
-};
-
-var addVote = function (userId, vote, collection, upOrDown) {
-  var field = 'telescope.' + upOrDown + 'voted' + collection;
-  var add = {};
-  add[field] = vote;
-  Meteor.users.update({_id: userId}, {
-    $addToSet: add
-  });
-};
-
-var removeVote = function (userId, itemId, collection, upOrDown) {
-  var field = 'telescope.' + upOrDown + 'voted' + collection;
-  var remove = {};
-  remove[field] = {itemId: itemId};
-  Meteor.users.update({_id: userId}, {
-    $pull: remove
-  });
+// The equation to determine voting power. Defaults to returning 1 for everybody
+Telescope.getVotePower = function (user) {
+  return 1;
 };
 
 Telescope.upvoteItem = function (collection, itemId, user) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
-  var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
   var item = collection.findOne(itemId);
+  var votePower = Telescope.getVotePower(user);
+
+  /* 
+  we're testing if
+  1. the user exists
+  2. they can vote
+  3. they haven't previously performed the same operation on this item
+  */
 
   // make sure user has rights to upvote first
-  if (!user || !Users.can.vote(user, true) || hasUpvotedItem(item, user))
+  if (!user || !user.canVote() || user.hasUpvotedItem(item))
     return false;
 
   // ------------------------------ Callbacks ------------------------------ //
-
-  // run all upvote callbacks on item successively
-
   item = Telescope.callbacks.run("upvote", item, user);
-
-  // ----------------------------------------------------------------------- //
-
-  var votePower = getVotePower(user);
 
   // in case user is upvoting a previously downvoted item, cancel downvote first
   Telescope.cancelDownvote(collection, itemId, user);
@@ -64,62 +34,27 @@ Telescope.upvoteItem = function (collection, itemId, user) {
   });
 
   if (result > 0) {
-
-    // Add item to list of upvoted items
-    var vote = {
-      itemId: item._id,
-      votedAt: new Date(),
-      power: votePower
-    };
-    addVote(user._id, vote, collectionName, 'up');
-
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
-
-    // if the item is being upvoted by its own author, don't give karma
-    if (item.userId !== user._id) {
-      modifyKarma(item.userId, votePower);
-
-      // if karma redistribution is enabled, give karma to all previous upvoters of the post
-      // (but not to the person doing the upvoting)
-      if (Settings.get('redistributeKarma', false)) {
-        _.each(item.upvoters, function (upvoterId) {
-          // share the karma equally among all upvoters, but cap the value at 0.1
-          var karmaIncrease = Math.min(0.1, votePower/item.upvoters.length);
-          modifyKarma(upvoterId, karmaIncrease);
-        });
-      }
-    }
-
     // --------------------- Server-Side Async Callbacks --------------------- //
-
-    Telescope.callbacks.runAsync("upvoteAsync", item, user);
-
-    // ----------------------------------------------------------------------- //
+    Telescope.callbacks.runAsync("upvoteAsync", item, user, collection, "upvote");
   }
-  // console.log(collection.findOne(item._id));
+
   return true;
 };
 
 Telescope.downvoteItem = function (collection, itemId, user) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
-  var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
   var item = collection.findOne(itemId);
+  var votePower = Telescope.getVotePower(user);
 
   // make sure user has rights to downvote first
-  if (!user || !Users.can.vote(user, true)  || hasDownvotedItem(item, user))
+  if (!user || !user.canVote()  || user.hasDownvotedItem(item))
     return false;
 
   // ------------------------------ Callbacks ------------------------------ //
-
-  // run all downvote callbacks on item successively
   item = Telescope.callbacks.run("downvote", item, user);
-
-  // ----------------------------------------------------------------------- //
-
-  var votePower = getVotePower(user);
 
   // in case user is downvoting a previously upvoted item, cancel upvote first
   Telescope.cancelUpvote(collection, item, user);
@@ -132,50 +67,27 @@ Telescope.downvoteItem = function (collection, itemId, user) {
   });
 
   if (result > 0) {
-    // Add item to list of downvoted items
-    var vote = {
-      itemId: item._id,
-      votedAt: new Date(),
-      power: votePower
-    };
-    addVote(user._id, vote, collectionName, 'down');
-
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore - votePower)});
-    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
-
-    // if the item is being upvoted by its own author, don't give karma
-    if (item.userId !== user._id)
-      modifyKarma(item.userId, votePower);
-
     // --------------------- Server-Side Async Callbacks --------------------- //
-
-    Telescope.callbacks.runAsync("downvoteAsync", item, user);
-
-    // ----------------------------------------------------------------------- //
+    Telescope.callbacks.runAsync("downvoteAsync", item, user, collection, "downvote");
   }
-  // console.log(collection.findOne(item._id));
+
   return true;
 };
 
 Telescope.cancelUpvote = function (collection, itemId, user) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
-  var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
   var item = collection.findOne(itemId);
+  var votePower = Telescope.getVotePower(user);
 
   // if user isn't among the upvoters, abort
-  if (!hasUpvotedItem(item, user))
+  if (!user.hasUpvotedItem(item))
     return false;
 
   // ------------------------------ Callbacks ------------------------------ //
-
-  // run all cancel upvote callbacks on item successively
-  item = Telescope.callbacks.run("cancelUpvote", item, user);
-
-  // ----------------------------------------------------------------------- //
-
-  var votePower = getVotePower(user);
+  item = Telescope.callbacks.run("cancelUpvote", item, user, collection, "cancelUpvote");
 
   // Votes & Score
   var result = collection.update({_id: item && item._id, upvoters: user._id},{
@@ -185,23 +97,10 @@ Telescope.cancelUpvote = function (collection, itemId, user) {
   });
 
   if (result > 0) {
-    // Remove item from list of upvoted items
-    removeVote(user._id, item._id, collectionName, 'up');
-
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore - votePower)});
-    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
-
-    // if the item is being upvoted by its own author, don't give karma
-    if (item.userId !== user._id)
-      modifyKarma(item.userId, votePower);
-
-
     // --------------------- Server-Side Async Callbacks --------------------- //
-
-    Telescope.callbacks.runAsync("cancelUpvoteAsync", item, user);
-
-    // ----------------------------------------------------------------------- //
+    Telescope.callbacks.runAsync("cancelUpvoteAsync", item, user, collection, "cancelDownvote");
   }
   // console.log(collection.findOne(item._id));
   return true;
@@ -210,22 +109,15 @@ Telescope.cancelUpvote = function (collection, itemId, user) {
 Telescope.cancelDownvote = function (collection, itemId, user) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
-  var collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
   var item = collection.findOne(itemId);
+  var votePower = Telescope.getVotePower(user);
 
   // if user isn't among the downvoters, abort
-  if (!hasDownvotedItem(item, user))
+  if (!user.hasDownvotedItem(item))
     return false;
 
   // ------------------------------ Callbacks ------------------------------ //
-
-  // run all cancel downvote callbacks on item successively
-
   item = Telescope.callbacks.run("cancelDownvote", item, user);
-
-  // ----------------------------------------------------------------------- //
-
-  var votePower = getVotePower(user);
 
   // Votes & Score
   var result = collection.update({_id: item && item._id, downvoters: user._id},{
@@ -235,25 +127,12 @@ Telescope.cancelDownvote = function (collection, itemId, user) {
   });
 
   if (result > 0) {
-    // Remove item from list of downvoted items
-    removeVote(user._id, item._id, collectionName, 'down');
-
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-    Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
-
-    // if the item is being upvoted by its own author, don't give karma
-    if (item.userId !== user._id)
-      modifyKarma(item.userId, votePower);
-
-
     // --------------------- Server-Side Async Callbacks --------------------- //
-
     Telescope.callbacks.runAsync("cancelDownvoteAsync", item, user);
-
-    // ----------------------------------------------------------------------- //
   }
-  // console.log(collection.findOne(item._id));
+
   return true;
 };
 

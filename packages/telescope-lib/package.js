@@ -116,9 +116,7 @@ Package.onUse(function (api) {
     'getTemplate',
     'templates',
 
-    'themeSettings',
-
-    'getVotePower'
+    'themeSettings'
   ]);
 
 });

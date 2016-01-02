@@ -267,3 +267,23 @@ Users.hasCompletedProfile = function (user) {
 };
 Users.helpers({hasCompletedProfile: function () {return Users.hasCompletedProfile(this);}});
 Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Meteor.users.findOne(userId));};
+
+/**
+ * Check if the user has upvoted an item before
+ * @param {Object} user
+ * @param {Object} item
+ */
+Users.hasUpvotedItem = function (user, item) {
+  return item.upvoters && item.upvoters.indexOf(user._id) !== -1;
+};
+Users.helpers({hasUpvotedItem: function (item) {return Users.hasUpvotedItem(this, item);}});
+
+/**
+ * Check if the user has downvoted an item before
+ * @param {Object} user
+ * @param {Object} item
+ */
+Users.hasDownvotedItem = function (user, item) {
+  return item.downvoters && item.downvoters.indexOf(user._id) !== -1;
+};
+Users.helpers({hasDownvotedItem: function (item) {return Users.hasDownvotedItem(this, item);}});

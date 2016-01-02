@@ -3,7 +3,8 @@
 * Switched from `handlebars-server` to `spacebars-tohtml`,
 * Fixed increasePostViews bug.
 * Attached data to post for spam detection package (thanks @queso!).
-* Unblocked post publications (thanks @queso!).
+* Unblocked publications (thanks @queso!).
+* Async callbacks now take an unlimited number of arguments.
 
 ## v0.25.6 “CloudinaryScope”
 
