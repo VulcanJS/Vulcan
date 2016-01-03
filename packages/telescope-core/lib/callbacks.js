@@ -49,13 +49,6 @@ function updateUser (item, user, collection, operation) {
       break;
   }
 
-  // console.log("// updateUser")
-  // console.log(item)
-  // console.log(user)
-  // console.log(collection)
-  // console.log(operation)
-  // console.log(update)
-
   Meteor.users.update({_id: user._id}, update);
 
 }

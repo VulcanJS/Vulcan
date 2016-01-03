@@ -60,11 +60,10 @@ Telescope.callbacks.run = function (hook, item, constant) {
  * @param {Object} [constant] - An optional constant that will be passed along to each callback 
  */
 Telescope.callbacks.runAsync = function () {
-  
+
   // the first argument is the name of the hook
   var hook = arguments[0];
   var args = Array.prototype.slice.call(arguments).slice(1);
-
   var callbacks = Telescope.callbacks[hook];
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
@@ -78,7 +77,6 @@ Telescope.callbacks.runAsync = function () {
       });
     });
   
-  } else {
-    return item;
   }
+
 };

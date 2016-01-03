@@ -3,170 +3,127 @@ Telescope.getVotePower = function (user) {
   return 1;
 };
 
-Telescope.upvoteItem = function (collection, itemId, user) {
+Telescope.operateOnItem = function (collection, itemId, user, operation) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
+
   var item = collection.findOne(itemId);
   var votePower = Telescope.getVotePower(user);
+  var hasUpvotedItem = user.hasUpvotedItem(item);
+  var hasDownvotedItem = user.hasDownvotedItem(item);
+  var update = {};
 
-  /* 
-  we're testing if
-  1. the user exists
-  2. they can vote
-  3. they haven't previously performed the same operation on this item
-  */
+  // console.log(collection)
+  // console.log(item)
+  // console.log(user)
+  // console.log(operation)
 
-  // make sure user has rights to upvote first
-  if (!user || !user.canVote() || user.hasUpvotedItem(item))
-    return false;
+  // make sure item and user are defined, and user can perform the operation
+  if (
+    !item ||
+    !user || 
+    !user.canVote() || 
+    operation === "upvote" && hasUpvotedItem ||
+    operation === "downvote" && hasDownvotedItem
+  ) {
+    return false; 
+  }
 
-  // ------------------------------ Callbacks ------------------------------ //
-  item = Telescope.callbacks.run("upvote", item, user);
+  // ------------------------------ Sync Callbacks ------------------------------ //
+  item = Telescope.callbacks.run(operation, item, user);
 
-  // in case user is upvoting a previously downvoted item, cancel downvote first
-  Telescope.cancelDownvote(collection, itemId, user);
+  switch (operation) {
 
-  // Votes & Score
-  var result = collection.update({_id: item && item._id, upvoters: { $ne: user._id }},{
-    $addToSet: {upvoters: user._id},
-    $inc: {upvotes: 1, baseScore: votePower},
-    $set: {inactive: false}
-  });
+    case "upvote":
+
+      if (hasDownvotedItem) {
+        Telescope.operateOnItem(collection, itemd, user, "cancelDownvote");
+      }
+      update = {
+        $addToSet: {upvoters: user._id},
+        $inc: {upvotes: 1, baseScore: votePower}
+      }
+      break;
+
+    case "downvote":
+
+      if (hasUpvotedItem) {
+        Telescope.operateOnItem(collection, itemId, user, "cancelUpvote");
+      }
+      update = {
+        $addToSet: {downvoters: user._id},
+        $inc: {downvotes: 1, baseScore: -votePower}
+      }
+      break;
+
+    case "cancelUpvote":
+
+      update = {
+        $pull: {upvoters: user._id},
+        $inc: {upvotes: -1, baseScore: -votePower}
+      };
+      break;
+
+    case "cancelDownvote":
+
+      update = {
+        $pull: {downvoters: user._id},
+        $inc: {downvotes: -1, baseScore: votePower}
+      };
+      break;
+  }
+
+
+
+  update["$set"] = {inactive: false};
+  var result = collection.update({_id: item._id}, update);
+
 
   if (result > 0) {
+
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
+    
     // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync("upvoteAsync", item, user, collection, "upvote");
+    Telescope.callbacks.runAsync(operation+"Async", item, user, collection, operation);
+    
+    return true;
+
   }
 
-  return true;
-};
-
-Telescope.downvoteItem = function (collection, itemId, user) {
-
-  user = typeof user === "undefined" ? Meteor.user() : user;
-  var item = collection.findOne(itemId);
-  var votePower = Telescope.getVotePower(user);
-
-  // make sure user has rights to downvote first
-  if (!user || !user.canVote()  || user.hasDownvotedItem(item))
-    return false;
-
-  // ------------------------------ Callbacks ------------------------------ //
-  item = Telescope.callbacks.run("downvote", item, user);
-
-  // in case user is downvoting a previously upvoted item, cancel upvote first
-  Telescope.cancelUpvote(collection, item, user);
-
-  // Votes & Score
-  var result = collection.update({_id: item && item._id, downvoters: { $ne: user._id }},{
-    $addToSet: {downvoters: user._id},
-    $inc: {downvotes: 1, baseScore: -votePower},
-    $set: {inactive: false}
-  });
-
-  if (result > 0) {
-    // extend item with baseScore to help calculate newScore
-    item = _.extend(item, {baseScore: (item.baseScore - votePower)});
-    // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync("downvoteAsync", item, user, collection, "downvote");
-  }
-
-  return true;
-};
-
-Telescope.cancelUpvote = function (collection, itemId, user) {
-
-  user = typeof user === "undefined" ? Meteor.user() : user;
-  var item = collection.findOne(itemId);
-  var votePower = Telescope.getVotePower(user);
-
-  // if user isn't among the upvoters, abort
-  if (!user.hasUpvotedItem(item))
-    return false;
-
-  // ------------------------------ Callbacks ------------------------------ //
-  item = Telescope.callbacks.run("cancelUpvote", item, user, collection, "cancelUpvote");
-
-  // Votes & Score
-  var result = collection.update({_id: item && item._id, upvoters: user._id},{
-    $pull: {upvoters: user._id},
-    $inc: {upvotes: -1, baseScore: -votePower},
-    $set: {inactive: false}
-  });
-
-  if (result > 0) {
-    // extend item with baseScore to help calculate newScore
-    item = _.extend(item, {baseScore: (item.baseScore - votePower)});
-    // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync("cancelUpvoteAsync", item, user, collection, "cancelDownvote");
-  }
-  // console.log(collection.findOne(item._id));
-  return true;
-};
-
-Telescope.cancelDownvote = function (collection, itemId, user) {
-
-  user = typeof user === "undefined" ? Meteor.user() : user;
-  var item = collection.findOne(itemId);
-  var votePower = Telescope.getVotePower(user);
-
-  // if user isn't among the downvoters, abort
-  if (!user.hasDownvotedItem(item))
-    return false;
-
-  // ------------------------------ Callbacks ------------------------------ //
-  item = Telescope.callbacks.run("cancelDownvote", item, user);
-
-  // Votes & Score
-  var result = collection.update({_id: item && item._id, downvoters: user._id},{
-    $pull: {downvoters: user._id},
-    $inc: {downvotes: -1, baseScore: votePower},
-    $set: {inactive: false}
-  });
-
-  if (result > 0) {
-    // extend item with baseScore to help calculate newScore
-    item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-    // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync("cancelDownvoteAsync", item, user);
-  }
-
-  return true;
-};
+}
 
 Meteor.methods({
   upvotePost: function (postId) {
     check(postId, String);
-    return Telescope.upvoteItem.call(this, Posts, postId);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
   },
   downvotePost: function (postId) {
     check(postId, String);
-    return Telescope.downvoteItem.call(this, Posts, postId);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
   },
   cancelUpvotePost: function (postId) {
     check(postId, String);
-    return Telescope.cancelUpvote.call(this, Posts, postId);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
   },
   cancelDownvotePost: function (postId) {
     check(postId, String);
-    return Telescope.cancelDownvote.call(this, Posts, postId);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");
   },
   upvoteComment: function (commentId) {
     check(commentId, String);
-    return Telescope.upvoteItem.call(this, Comments, commentId);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "upvote");
   },
   downvoteComment: function (commentId) {
     check(commentId, String);
-    return Telescope.downvoteItem.call(this, Comments, commentId);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "downvote");
   },
   cancelUpvoteComment: function (commentId) {
     check(commentId, String);
-    return Telescope.cancelUpvote.call(this, Comments, commentId);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelUpvote");
   },
   cancelDownvoteComment: function (commentId) {
     check(commentId, String);
-    return Telescope.cancelDownvote.call(this, Comments, commentId);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelDownvote");
   }
 });
