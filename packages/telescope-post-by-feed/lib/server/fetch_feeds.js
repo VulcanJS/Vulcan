@@ -75,18 +75,19 @@ var feedHandler = {
 
     stream.pipe(feedParser);
 
-    feedParser.on('meta', Meteor.bindEnvironment(function(meta) {
-      Telescope.log('// Parsing RSS feed: '+ meta.title);
+    feedParser.on('meta', Meteor.bindEnvironment(function (meta) {
+      console.log('// Parsing RSS feed: '+ meta.title);
     }));
 
-    feedParser.on('error', Meteor.bindEnvironment(function(error) {
-      Telescope.log(error);
+    feedParser.on('error', Meteor.bindEnvironment(function (error) {
+      console.log(error);
     }));
 
-    feedParser.on('readable', Meteor.bindEnvironment(function() {
+    feedParser.on('readable', Meteor.bindEnvironment(function () {
       var s = this, item;
 
       while (item = s.read()) {
+
         // if item has no guid, use the URL to give it one
         if (!item.guid) {
           item.guid = item.link;
@@ -94,7 +95,7 @@ var feedHandler = {
 
         // check if post already exists
         if (!!Posts.findOne({feedItemId: item.guid})) {
-          Telescope.log('// Feed item already imported');
+          console.log('// Feed item already imported');
           continue;
         }
 
@@ -129,13 +130,14 @@ var feedHandler = {
           Posts.submit(post);
         } catch (error) {
           // catch errors so they don't stop the loop
-          Telescope.log(error);
+          console.log(error);
         }
       }
 
-      // Telescope.log('// Found ' + newItemsCount + ' new feed items');
-    }, function() {
-      Telescope.log('Failed to bind environment');
+      // console.log('// Found ' + newItemsCount + ' new feed items');
+    }, function (error) {
+      console.log('// Failed to bind environment');
+      console.log(error.stack)
     }, feedParser));
   }
 };
@@ -162,6 +164,7 @@ fetchFeeds = function() {
 
 Meteor.methods({
   fetchFeeds: function () {
+    console.log("// fetching feeds…");
     fetchFeeds();
   },
   testEntities: function (text) {
