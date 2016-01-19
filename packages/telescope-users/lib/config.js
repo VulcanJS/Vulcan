@@ -24,7 +24,7 @@ AccountsTemplates.configureRoute('signIn', {
 });
 AccountsTemplates.configureRoute('signUp', {
     name: 'signUp',
-    path: '/register',
+    path: '/sign-up',
 });
 AccountsTemplates.configureRoute('changePwd');
 AccountsTemplates.configureRoute('forgotPwd');
