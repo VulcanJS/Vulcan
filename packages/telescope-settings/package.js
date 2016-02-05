@@ -11,8 +11,9 @@ Package.onUse(function(api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.25.7', 
-    'telescope:i18n@0.25.7'
+    'telescope:lib@0.25.7',
+    'telescope:i18n@0.25.7',
+    'hausor:autoform-bs-minicolors@1.0.0'
   ]);
 
   api.addFiles([
