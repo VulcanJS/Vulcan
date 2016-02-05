@@ -296,7 +296,8 @@ Settings.schema = new SimpleSchema({
     optional: true,
     autoform: {
       group: "05_colors",
-      instructions: 'Used for button backgrounds.'
+      instructions: 'Used for button backgrounds.',
+      type: "bootstrap-minicolors"
     }
   },
   accentContrastColor: {
@@ -304,7 +305,8 @@ Settings.schema = new SimpleSchema({
     optional: true,
     autoform: {
       group: "05_colors",
-      instructions: 'Used for button text.'
+      instructions: 'Used for button text.',
+      type: "bootstrap-minicolors"
     }
   },
   secondaryColor: {
@@ -312,7 +314,8 @@ Settings.schema = new SimpleSchema({
     optional: true,
     autoform: {
       group: "05_colors",
-      instructions: 'Used for the navigation background.'
+      instructions: 'Used for the navigation background.',
+      type: "bootstrap-minicolors"
     }
   },
   secondaryContrastColor: {
@@ -320,7 +323,8 @@ Settings.schema = new SimpleSchema({
     optional: true,
     autoform: {
       group: "05_colors",
-      instructions: 'Used for header text.'
+      instructions: 'Used for header text.',
+      type: "bootstrap-minicolors"
     }
   },
   fontUrl: {
