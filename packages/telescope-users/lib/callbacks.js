@@ -98,8 +98,14 @@ function setupUser (user, options) {
   // look in a few places for the user email
   if (options.email) {
     user.telescope.email = options.email;
+  } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
+    user.telescope.email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
   } else if (user.services.facebook && user.services.facebook.email) {
     user.telescope.email = user.services.facebook.email;
+  } else if (user.services.github && user.services.github.email) {
+    user.telescope.email = user.services.github.email;
+  } else if (user.services.google && user.services.google.email) {
+    user.telescope.email = user.services.google.email;
   }
 
   // generate email hash
