@@ -11,7 +11,7 @@ Template.main_posts_list.helpers({
 
     // if user is logged in, add their id to terms
     if (Meteor.userId()) {
-      terms.userId = Meteor.userId();
+      terms.currentUserId = Meteor.userId();
     }
 
     if (!terms.view) {

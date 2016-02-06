@@ -7,6 +7,10 @@ Meteor.publish('commentsList', function(terms) {
   
   this.unblock();
 
+  if (this.userId) { // add currentUserId to terms if a user is logged in
+    terms.currentUserId = this.userId; 
+  }
+  
   if(Users.can.viewById(this.userId)){
     var parameters = Comments.parameters.get(terms);
     var comments = Comments.find(parameters.find, parameters.options);

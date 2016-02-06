@@ -1,7 +1,7 @@
 Template.user_posts.helpers({
   arguments: function () {
     var user = this;
-    return {
+    var args = {
       template: "posts_list_compact",
       options: {
         currentUser: user,
@@ -18,5 +18,6 @@ Template.user_posts.helpers({
         subscribeToUsers: false
       }
     };
+    return args;
   }
 });

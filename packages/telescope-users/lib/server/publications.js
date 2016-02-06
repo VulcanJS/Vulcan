@@ -17,7 +17,7 @@ Meteor.publish('userPosts', function(terms) {
 
   this.unblock();
 
-  terms.userId = this.userId; // add userId to terms
+  terms.currentUserId = this.userId; // add userId to terms
 
   var parameters = Posts.parameters.get(terms);
   var posts = Posts.find(parameters.find, parameters.options);
@@ -28,7 +28,7 @@ Meteor.publish('userUpvotedPosts', function(terms) {
 
   this.unblock();
 
-  terms.userId = this.userId; // add userId to terms
+  terms.currentUserId = this.userId; // add userId to terms
 
   var parameters = Posts.parameters.get(terms);
   var posts = Posts.find(parameters.find, parameters.options);
@@ -39,7 +39,7 @@ Meteor.publish('userDownvotedPosts', function(terms) {
 
   this.unblock();
 
-  terms.userId = this.userId; // add userId to terms
+  terms.currentUserId = this.userId; // add userId to terms
 
   var parameters = Posts.parameters.get(terms);
   var posts = Posts.find(parameters.find, parameters.options);
