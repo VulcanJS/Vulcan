@@ -53,7 +53,7 @@ function upvoteOwnComment (comment) {
   var commentAuthor = Meteor.users.findOne(comment.userId);
 
   // upvote comment
-  Telescope.upvoteItem(Comments, comment, commentAuthor);
+  Telescope.operateOnItem(Comments, comment._id, commentAuthor, "upvote");
 
   return comment;
 }

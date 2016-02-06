@@ -60,7 +60,7 @@ Telescope.callbacks.add("postSubmitAsync", afterPostSubmitOperations);
 
 function upvoteOwnPost (post) {
   var postAuthor = Meteor.users.findOne(post.userId);
-  Telescope.upvoteItem(Posts, post._id, postAuthor);
+  Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
   return post;
 }
 Telescope.callbacks.add("postSubmitAsync", upvoteOwnPost);
