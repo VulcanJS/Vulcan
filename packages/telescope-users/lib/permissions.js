@@ -8,8 +8,8 @@
 Users.can = {};
 
 /**
- * Permissions checks.  Return true if all is well.
- * @param {Object} user - Meteor.user()
+ * Check if a given user has access to view posts
+ * @param {Object} user
  */
 Users.can.view = function (user) {
   if (Settings.get('requireViewInvite', false)) {
@@ -25,7 +25,11 @@ Users.can.view = function (user) {
 };
 Users.helpers({canView: function () {return Users.can.view(this);}});
 
-
+/**
+ * Check if a given user can view a specific post
+ * @param {Object} user
+ * @param {Object} post
+ */
 Users.can.viewById = function (userId) {
   // if an invite is required to view, run permission check, else return true
   if (Settings.get('requireViewInvite', false)) {
@@ -35,35 +39,54 @@ Users.can.viewById = function (userId) {
 };
 Users.helpers({canViewById: function () {return Users.can.viewById(this);}});
 
-Users.can.viewPendingPosts = function (user) {
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
-  return Users.is.admin(user);
-};
+/**
+ * Check if a given user can view a specific post
+ * @param {Object} user - can be undefined!
+ * @param {Object} post
+ */
+Users.can.viewPost = function (user, post) {
 
-Users.can.viewPendingPost = function (user, post) {
-  return Users.is.owner(user, post) || Users.can.viewPendingPosts(user);
-};
-
-Users.can.viewRejectedPosts = function (user) {
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
-  return Users.is.admin(user);
-};
-
-Users.can.viewRejectedPost = function (user, post) {
-  return Users.is.owner(user, post) || Users.can.viewRejectedPosts(user);
-};
-
-Users.can.post = function (user, returnError) {
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
-
-  if (!user) {
-    return returnError ? "no_account" : false;
-  } else if (Users.is.admin(user)) {
+  if (Users.is.admin(user)) {
     return true;
-  } else if (Settings.get('requirePostInvite')) {
-    if (user.telescope.isInvited) {
+  } else {
+
+    switch (post.status) {
+
+      case Posts.config.STATUS_APPROVED:
+        return Users.can.view(user);
+      
+      case Posts.config.STATUS_REJECTED:
+      case Posts.config.STATUS_SPAM:
+      case Posts.config.STATUS_PENDING: 
+        return Users.can.view(user) && Users.is.owner(user, post);
+      
+      case Posts.config.STATUS_DELETED:
+        return false;
+    
+    }
+  }
+}
+Users.helpers({canViewPost: function () {return Users.can.viewPost(this, post);}});
+
+/**
+ * Check if a given user has permission to submit new posts
+ * @param {Object} user
+ */
+Users.can.post = function (user) {
+  user = (typeof user === 'undefined') ? Meteor.user() : user;
+
+  if (!user) { // no account
+    return false;
+  } 
+
+  if (user._isAdmin()) { //admin
+    return true;
+  } 
+
+  if (Settings.get('requirePostInvite', false)) { // invite required?
+    if (user.isInvited()) { // invited user
       return true;
-    } else {
+    } else { // not invited
       return false;
     }
   } else {
@@ -72,13 +95,21 @@ Users.can.post = function (user, returnError) {
 };
 Users.helpers({canPost: function () {return Users.can.post(this);}});
 
-Users.can.comment = function (user, returnError) {
-  return Users.can.post(user, returnError);
+/**
+ * Check if a given user has permission to comment (same as posting for now)
+ * @param {Object} user
+ */
+Users.can.comment = function (user) {
+  return Users.can.post(user);
 };
 Users.helpers({canComment: function () {return Users.can.comment(this);}});
 
-Users.can.vote = function (user, returnError) {
-  return Users.can.post(user, returnError);
+/**
+ * Check if a user has permission to vote (same as posting for now)
+ * @param {Object} user
+ */
+Users.can.vote = function (user) {
+  return Users.can.post(user);
 };
 Users.helpers({canVote: function () {return Users.can.vote(this);}});
 
