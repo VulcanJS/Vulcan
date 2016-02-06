@@ -231,21 +231,6 @@ Meteor.methods({
 
   },
 
-  setPostedAt: function(post, customPostedAt){
-
-    // this method is not actually used?
-
-    check(post, Posts.simpleSchema());
-    check(customPostedAt, Date);
-
-    var postedAt = new Date(); // default to current date and time
-
-    if(Users.is.admin(Meteor.user()) && typeof customPostedAt !== 'undefined') // if user is admin and a custom datetime has been set
-      postedAt = customPostedAt;
-
-    Posts.update(post._id, {$set: {postedAt: postedAt}});
-  },
-
   approvePost: function(postId){
 
     check(postId, String);
