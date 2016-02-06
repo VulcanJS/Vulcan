@@ -5,6 +5,9 @@
 * Attached data to post for spam detection package (thanks @queso!).
 * Unblocked publications (thanks @queso!).
 * Async callbacks now take an unlimited number of arguments.
+* Added colorpickers in settings (thanks @pablolarvor !)
+* Refactored voting code.
+* Update various packages.
 
 ## v0.25.6 “CloudinaryScope”
 
