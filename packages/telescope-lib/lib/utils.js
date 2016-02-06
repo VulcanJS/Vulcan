@@ -129,7 +129,7 @@ Telescope.utils.getRouteUrl = function (routeName, params, options) {
 };
 
 Telescope.utils.getSignupUrl = function() {
-  return this.getRouteUrl('atSignUp');
+  return this.getRouteUrl('signUp');
 };
 Telescope.utils.getSigninUrl = function() {
   return this.getRouteUrl('signIn');

@@ -8,6 +8,10 @@
 * Added colorpickers in settings (thanks @pablolarvor !)
 * Refactored voting code.
 * Update various packages.
+* Limit newsletter to posts from the past week.
+* Make spam/pending/rejected/deleted posts unaccessible.
+* Decorate terms with `currentUserId` instead of `userId` to avoid conflicts.
+* Moved invite email template to invite package; added test routes; fixed invite link bug.
 
 ## v0.25.6 “CloudinaryScope”
 

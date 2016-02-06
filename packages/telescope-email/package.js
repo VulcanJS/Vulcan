@@ -19,7 +19,6 @@ Package.onUse(function (api) {
   ]);
 
   api.addAssets([
-    'lib/server/templates/emailInvite.handlebars',
     'lib/server/templates/emailTest.handlebars',
     'lib/server/templates/emailWrapper.handlebars'
   ], ['server']);

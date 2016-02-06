@@ -56,9 +56,15 @@ Package.onUse(function (api) {
 
   // server
 
+  api.addAssets([
+    'lib/server/templates/emailInvite.handlebars'
+  ], ['server']);
+
   api.addFiles([
     'lib/server/invites.js',
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+    'lib/server/routes.js',
+    'lib/server/templates.js'
   ], ['server']);
 
   // i18n languages (must come last)
