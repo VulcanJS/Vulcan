@@ -143,7 +143,7 @@ Comments.schema = new SimpleSchema({
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    editableBy: ["member", "admin"], // TODO: should users be able to set postId, but not modify it?
+    // editableBy: ["member", "admin"], // TODO: should users be able to set postId, but not modify it?
     autoform: {
       omit: true // never show this
     }

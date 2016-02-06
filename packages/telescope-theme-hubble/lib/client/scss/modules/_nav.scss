@@ -192,6 +192,7 @@ $nav-width: 250px;
 			display: flex;
 			flex-direction: column;
 			margin-bottom: 15px;
+			overflow-y: auto;
 			.header-submodule{
 				margin-bottom: 20px;
 			}

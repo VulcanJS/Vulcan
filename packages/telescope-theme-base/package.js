@@ -1,14 +1,14 @@
 Package.describe({
   name: "telescope:theme-base",
   summary: "Telescope base theme package",
-  version: "0.25.6",
+  version: "0.25.7",
   git: "https://github.com/TelescopeJS/telescope-theme-base.git"
 });
 Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['telescope:core@0.25.6']);
+  api.use(['telescope:core@0.25.7']);
 
   api.addFiles(
     [

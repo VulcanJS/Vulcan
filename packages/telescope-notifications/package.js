@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:notifications",
   summary: "Telescope notifications package",
-  version: "0.25.6",
+  version: "0.25.7",
   git: "https://github.com/TelescopeJS/telescope-notifications.git"
 });
 
@@ -10,10 +10,20 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:core@0.25.6',
+    'telescope:core@0.25.7',
     'kestanous:herald@1.3.0',
     'kestanous:herald-email@0.5.0'
   ]);
+
+  api.addAssets([
+    'lib/server/templates/emailAccountApproved.handlebars',
+    'lib/server/templates/emailNewComment.handlebars',
+    'lib/server/templates/emailNewPost.handlebars',
+    'lib/server/templates/emailNewPendingPost.handlebars',
+    'lib/server/templates/emailPostApproved.handlebars',
+    'lib/server/templates/emailNewReply.handlebars',
+    'lib/server/templates/emailNewUser.handlebars'
+  ], ['server']);
 
   api.addFiles([
     'lib/herald.js',
@@ -42,14 +52,8 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/notifications-server.js',
-    'lib/server/routes.js',
-    'lib/server/templates/emailAccountApproved.handlebars',
-    'lib/server/templates/emailNewComment.handlebars',
-    'lib/server/templates/emailNewPost.handlebars',
-    'lib/server/templates/emailNewPendingPost.handlebars',
-    'lib/server/templates/emailPostApproved.handlebars',
-    'lib/server/templates/emailNewReply.handlebars',
-    'lib/server/templates/emailNewUser.handlebars'
+    'lib/server/templates.js',
+    'lib/server/routes.js'
   ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

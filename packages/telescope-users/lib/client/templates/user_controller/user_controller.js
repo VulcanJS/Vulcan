@@ -9,8 +9,8 @@ Template.user_controller.helpers({
     var idOrSlug = FlowRouter.getParam("_idOrSlug");
     var findById = Meteor.users.findOne(idOrSlug);
     var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
-
-    return {user: findById || findBySlug};
+    var user = findById || findBySlug;
+    return {user: user};
 
   }
 });

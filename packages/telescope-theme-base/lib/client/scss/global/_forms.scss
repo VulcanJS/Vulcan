@@ -55,6 +55,10 @@ form, .accounts-dialog{
         display:inline-block;
         margin-bottom:0;
       }
+      .minicolors-theme-bootstrap .minicolors-swatch {
+        top: 1px;
+        left: 1px;
+      }
     }
     &.inline{
       .controls{

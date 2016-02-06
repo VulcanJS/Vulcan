@@ -23,6 +23,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/custom_fields.js',
     'lib/template_modules.js',
+    'lib/email_templates.js',
     'lib/callbacks.js'
   ], ['client', 'server']);
 
@@ -39,7 +40,7 @@ Package.onUse(function (api) {
 
   // server
 
-  api.addFiles([
+  api.addAssets([
     'lib/server/templates/custom_emailPostItem.handlebars'
   ], ['server']);
 

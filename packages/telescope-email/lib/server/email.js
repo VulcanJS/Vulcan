@@ -4,6 +4,12 @@
  */
 Telescope.email = {};
 
+Telescope.email.templates = {};
+
+Telescope.email.addTemplates = function (templates) {
+  _.extend(Telescope.email.templates, templates);
+};
+
 var htmlToText = Npm.require('html-to-text');
 
 // for template "foo", check if "custom_foo" exists. If it does, use it instead
@@ -13,12 +19,16 @@ Telescope.email.getTemplate = function (templateName) {
 
   // go through prefixes and keep the last one (if any) that points to a valid template
   Telescope.config.customPrefixes.forEach(function (prefix) {
-    if(typeof Handlebars.templates[prefix+templateName] === 'function'){
+    if(typeof Telescope.email.templates[prefix+templateName] === 'string'){
       template = prefix + templateName;
     }
   });
 
-  return Handlebars.templates[template];
+  // return Handlebars.templates[template];
+
+  return function (properties) {
+    return Spacebars.toHTML(properties, Telescope.email.templates[template]);
+  }
 
 };
 

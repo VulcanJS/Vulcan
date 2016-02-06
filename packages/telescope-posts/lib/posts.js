@@ -202,6 +202,21 @@ Posts.schema = new SimpleSchema({
     optional: true
   },
   /**
+    Save info for later spam checking on a post. We will use this for the akismet package
+  */
+  userIP: {
+    type: String,
+    optional: true
+  },
+  userAgent: {
+    type: String,
+    optional: true
+  },
+  referrer: {
+    type: String,
+    optional: true
+  },
+  /**
     The post author's name
   */
   author: {

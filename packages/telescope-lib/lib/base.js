@@ -27,13 +27,3 @@ getTemplate = function (name) {
   // if template has been overwritten, return this; else return template name
   // return !!templates[name] ? templates[name] : name;
 };
-
-
-// ------------------------------- Vote Power -------------------------------- //
-
-// The equation to determine voting power
-// Default to returning 1 for everybody
-
-getVotePower = function (user) {
-  return 1;
-};

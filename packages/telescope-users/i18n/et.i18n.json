@@ -64,5 +64,8 @@
   "invited" : "Kutsutud",
   "uninvited" : "Kutsumata",
   "filter_by" : "Filtreeri",
-  "sort_by" : "Sorteeri"
+  "sort_by" : "Sorteeri",
+  "you_have_been_logged_out" : "Sa oled välja logitud",
+  "delete_users_posts_comments_as_well" : "Kustuta kasutaja postitusi ja kommentaare ka?",
+  "commentedAt" : "Viimati Kommenteeris"
 }

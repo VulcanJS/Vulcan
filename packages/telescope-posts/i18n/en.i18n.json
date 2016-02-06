@@ -57,5 +57,7 @@
   "views" : "views",
   "comment" : "comment",
   "point" : "point",
-  "points" : "points"
+  "points" : "points",
+  "spam": "Spam",
+  "deleted": "Deleted"
 }

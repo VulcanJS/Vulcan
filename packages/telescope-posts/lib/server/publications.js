@@ -4,8 +4,12 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 
 Meteor.publish('postsList', function(terms) {
 
-  terms.userId = this.userId; // add userId to terms
+  this.unblock();
   
+  if (this.userId) { // add currentUserId to terms if a user is logged in
+    terms.currentUserId = this.userId; 
+  }
+
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.parameters.get(terms),
         posts = Posts.find(parameters.find, parameters.options);
@@ -20,8 +24,12 @@ Meteor.publish('postsList', function(terms) {
 
 Meteor.publish('postsListUsers', function(terms) {
   
-  terms.userId = this.userId; // add userId to terms
+  this.unblock();
   
+  if (this.userId) {
+    terms.currentUserId = this.userId; // add userId to terms
+  }
+
   if(Users.can.viewById(this.userId)){
     var parameters = Posts.parameters.get(terms),
         posts = Posts.find(parameters.find, parameters.options),
@@ -44,11 +52,17 @@ Meteor.publish('postsListUsers', function(terms) {
 Meteor.publish('singlePost', function(postId) {
 
   check(postId, String);
+  this.unblock();
 
-  if (Users.can.viewById(this.userId)){
+  var user = Meteor.users.findOne(this.userId);
+  var post = Posts.findOne(postId);
+
+  if (Users.can.viewPost(user, post)){
     return Posts.find(postId);
+  } else {
+    return [];
   }
-  return [];
+
 });
 
 // Publish author of the current post, authors of its comments, and upvoters of the post
@@ -56,6 +70,7 @@ Meteor.publish('singlePost', function(postId) {
 Meteor.publish('postUsers', function(postId) {
 
   check(postId, String);
+  this.unblock();
 
   if (Users.can.viewById(this.userId)){
     // publish post author and post commenters

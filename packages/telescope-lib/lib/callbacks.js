@@ -59,8 +59,11 @@ Telescope.callbacks.run = function (hook, item, constant) {
  * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
  * @param {Object} [constant] - An optional constant that will be passed along to each callback 
  */
-Telescope.callbacks.runAsync = function (hook, item, constant) {
-  
+Telescope.callbacks.runAsync = function () {
+
+  // the first argument is the name of the hook
+  var hook = arguments[0];
+  var args = Array.prototype.slice.call(arguments).slice(1);
   var callbacks = Telescope.callbacks[hook];
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
@@ -69,12 +72,11 @@ Telescope.callbacks.runAsync = function (hook, item, constant) {
     Meteor.defer(function () {
       // run all post submit server callbacks on post object successively
       callbacks.forEach(function(callback) {
-        // console.log(callback.name);
-        callback(item, constant);
+        // console.log("// "+hook+": running callback ["+callback.name+"] at "+moment().format("hh:mm:ss"))
+        callback.apply(this, args)
       });
     });
   
-  } else {
-    return item;
   }
+
 };

@@ -64,5 +64,8 @@
   "invited" : "Invité(e)",
   "uninvited" : "Pas invité(e)",
   "filter_by" : "Filtrer par",
-  "sort_by" : "Trier par"
+  "sort_by" : "Trier par",
+  "you_have_been_logged_out" : "Vous avez été déconnecté",
+  "delete_users_posts_comments_as_well" : "Supprimer aussi les messages et les commentaires de l'utilisateur ?",
+  "commentedAt" : "Commenté le"
 }

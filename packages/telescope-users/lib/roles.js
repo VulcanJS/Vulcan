@@ -17,6 +17,8 @@ Users.is.admin = function (userOrUserId) {
   }
 };
 Users.is.adminById = Users.is.admin;
+// use _isAdmin because there is an isAdmin property on the User schema already
+Users.helpers({_isAdmin: function () {return Users.is.admin(this);}});
 
 /**
  * Check if a user owns a document
@@ -37,8 +39,8 @@ Users.is.owner = function (userOrUserId, document) {
     return false; // user not logged in
   }
 };
-
 Users.is.ownerById = Users.is.owner;
+Users.helpers({isOwner: function () {return Users.is.owner(this, document);}});
 
 Users.is.invited = function (userOrUserId) {
   try {
@@ -49,16 +51,4 @@ Users.is.invited = function (userOrUserId) {
   }
 };
 Users.is.invitedById = Users.is.invited;
-
-Meteor.users.helpers({
-  // conflicts with user.isAdmin property
-  // isAdmin: function () {
-  //   return Users.is.admin(this);
-  // },
-  isOwner: function (document) {
-    return Users.is.owner(this, document);
-  },
-  isInvited: function () {
-    return Users.is.invited(this);
-  }
-});
+Users.helpers({isInvited: function () {return Users.is.invited(this);}});

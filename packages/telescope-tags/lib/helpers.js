@@ -63,6 +63,6 @@ Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
  * @param {Object} category
  */
  Categories.getCounterName = function (category) {
-  return category.slug + "-postsCount";
+  return category._id + "-postsCount";
  }
  Categories.helpers({getCounterName: function () {return Categories.getCounterName(this);}});

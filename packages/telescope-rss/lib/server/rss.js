@@ -26,7 +26,7 @@ servePostRSS = function (terms, url) {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: Posts.getShareableLink(post)
+      url: (Settings.get("RSSLinksPointTo", "link") === "link") ? Posts.getLink(post) : Posts.getPageUrl(post, true)
     };
 
     if (post.thumbnailUrl) {

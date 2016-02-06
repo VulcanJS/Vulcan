@@ -14,9 +14,15 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'telescope:core@0.25.6',
+    'telescope:core@0.25.7',
     'miro:mailchimp@1.1.0',
   ]);
+
+  api.addAssets([
+    'lib/server/templates/emailDigest.handlebars',
+    'lib/server/templates/emailDigestConfirmation.handlebars',
+    'lib/server/templates/emailPostItem.handlebars'
+  ], ['server']);
 
   api.addFiles([
     'package-tap.i18n',
@@ -34,9 +40,7 @@ Package.onUse(function (api) {
     'lib/server/cron.js',
     'lib/server/mailchimp.js',
     'lib/server/routes.js',
-    'lib/server/templates/emailDigest.handlebars',
-    'lib/server/templates/emailDigestConfirmation.handlebars',
-    'lib/server/templates/emailPostItem.handlebars'
+    'lib/server/templates.js'
   ], ['server']);
 
   var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

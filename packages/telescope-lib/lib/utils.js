@@ -129,10 +129,10 @@ Telescope.utils.getRouteUrl = function (routeName, params, options) {
 };
 
 Telescope.utils.getSignupUrl = function() {
-  return this.getRouteUrl('atSignUp');
+  return this.getRouteUrl('signUp');
 };
 Telescope.utils.getSigninUrl = function() {
-  return this.getRouteUrl('atSignIn');
+  return this.getRouteUrl('signIn');
 };
 
 //TODO: fix this
@@ -241,8 +241,9 @@ Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
 };
 
 Telescope.log = function (s) {
-  if(Settings.get('debug', false))
+  if(Settings.get('debug', false) || process.env.NODE_ENV === "development") {
     console.log(s);
+  }
 };
 
 // see http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string

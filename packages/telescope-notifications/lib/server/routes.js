@@ -1,15 +1,7 @@
-
-// Notification email
-Picker.route('/email/notification/:id?', function(params, req, res, next) {
-  var notification = Herald.collection.findOne(params.id);
-  var notificationContents = buildEmailNotification(notification);
-  res.end(notificationContents.html);
-});
-
 // New user email
 Picker.route('/email/new-user/:id?', function(params, req, res, next) {
   var html;
-  var user = Meteor.users.findOne(params.id);
+  var user = typeof params.id === "undefined" ? Meteor.users.findOne() : Meteor.users.findOne(params.id);
   var emailProperties = {
     profileUrl: Users.getProfileUrl(user),
     username: Users.getUserName(user)
@@ -21,7 +13,7 @@ Picker.route('/email/new-user/:id?', function(params, req, res, next) {
 // New post email
 Picker.route('/email/new-post/:id?', function(params, req, res, next) {
   var html;
-  var post = Posts.findOne(params.id);
+  var post = typeof params.id === "undefined" ? Posts.findOne() : Posts.findOne(params.id);
   if (!!post) {
     html = Telescope.email.getTemplate('emailNewPost')(Posts.getNotificationProperties(post));
   } else {
@@ -33,7 +25,7 @@ Picker.route('/email/new-post/:id?', function(params, req, res, next) {
 // Post approved
 Picker.route('/email/post-approved/:id?', function(params, req, res, next) {
   var html;
-  var post = Posts.findOne(params.id);
+  var post = typeof params.id === "undefined" ? Posts.findOne() : Posts.findOne(params.id);
   if (!!post) {
     html = Telescope.email.getTemplate('emailPostApproved')(Posts.getNotificationProperties(post));
   } else {
@@ -45,7 +37,7 @@ Picker.route('/email/post-approved/:id?', function(params, req, res, next) {
 // New comment email
 Picker.route('/email/new-comment/:id?', function(params, req, res, next) {
   var html;
-  var comment = Comments.findOne(params.id);
+  var comment = typeof params.id === "undefined" ? Comments.findOne() : Comments.findOne(params.id);
   var post = Posts.findOne(comment.postId);
   if (!!comment) {
     html = Telescope.email.getTemplate('emailNewComment')(Comments.getNotificationProperties(comment, post));
@@ -56,9 +48,9 @@ Picker.route('/email/new-comment/:id?', function(params, req, res, next) {
 });
 
 // New reply email
-Picker.route('/email/new-comment/:id?', function(params, req, res, next) {
+Picker.route('/email/new-reply/:id?', function(params, req, res, next) {
   var html;
-  var comment = Comments.findOne(params.id);
+  var comment = typeof params.id === "undefined" ? Comments.findOne() : Comments.findOne(params.id);
   var post = Posts.findOne(comment.postId);
   if (!!comment) {
     html = Telescope.email.getTemplate('emailNewReply')(Comments.getNotificationProperties(comment, post));
@@ -70,13 +62,13 @@ Picker.route('/email/new-comment/:id?', function(params, req, res, next) {
 
 // Account approved email
 Picker.route('/email/account-approved/:id?', function(params, req, res, next) {
-  var user = Meteor.users.findOne(this.params.id);
+  var user = typeof params.id === "undefined" ? Meteor.users.findOne() : Meteor.users.findOne(params.id);
   var emailProperties = {
     profileUrl: Users.getProfileUrl(user),
     username: Users.getUserName(user),
     siteTitle: Settings.get('title'),
     siteUrl: Telescope.utils.getSiteUrl()
   };
-  var html = Handlebars.templates.emailAccountApproved(emailProperties);
+  var html = Telescope.email.getTemplate('emailAccountApproved')(emailProperties);
   res.end(Telescope.email.buildTemplate(html));
 });

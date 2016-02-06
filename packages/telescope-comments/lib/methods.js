@@ -111,9 +111,14 @@ Meteor.methods({
     // clear restricted properties
     _.keys(comment).forEach(function (fieldName) {
 
-      var field = schema[fieldName];
-      if (!Users.can.submitField(user, field)) {
-        throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+      // make an exception for postId, which should be setable but not modifiable
+      if (fieldName === "postId") {
+        // ok
+      } else {
+        var field = schema[fieldName];
+        if (!Users.can.submitField(user, field)) {
+          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+        }
       }
 
     });
