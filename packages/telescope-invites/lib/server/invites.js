@@ -69,7 +69,8 @@ Meteor.methods({
             communityName : communityName,
             actionLink : user ? Telescope.utils.getSigninUrl() : Telescope.utils.getSignupUrl(),
             invitedBy : Users.getDisplayName(currentUser),
-            profileUrl : Users.getProfileUrl(currentUser)
+            profileUrl : Users.getProfileUrl(currentUser),
+            siteUrl: Settings.get("siteUrl")
           };
 
       Meteor.setTimeout(function () {
