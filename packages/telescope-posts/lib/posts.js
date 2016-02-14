@@ -26,7 +26,7 @@ Posts.schema = new SimpleSchema({
     editableBy: ["admin"],
     autoform: {
       group: 'admin',
-      type: "bootstrap-datetimepicker"
+      // type: "bootstrap-datetimepicker"
     }
   },
   /**
@@ -38,7 +38,7 @@ Posts.schema = new SimpleSchema({
     max: 500,
     editableBy: ["member", "admin"],
     autoform: {
-      type: "bootstrap-url",
+      // type: "bootstrap-url",
       order: 10
     }
   },
@@ -246,18 +246,12 @@ Posts.schema = new SimpleSchema({
 });
 
 // schema transforms
-Meteor.startup(function(){
-  // needs to happen after every fields were added
-  Posts.internationalize();
-});
+// Meteor.startup(function(){
+//   // needs to happen after every fields were added
+//   Posts.internationalize();
+// });
 
 /**
  * Attach schema to Posts collection
  */
 Posts.attachSchema(Posts.schema);
-
-Posts.allow({
-  update: _.partial(Telescope.allowCheck, Posts),
-  remove: _.partial(Telescope.allowCheck, Posts)
-});
-
