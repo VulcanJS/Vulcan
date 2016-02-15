@@ -5,6 +5,10 @@ Package.describe({
   git: "https://github.com/TelescopeJS/telescope-posts.git"
 });
 
+// Npm.depends({
+//   'react-komposer': '1.3.1'
+// });
+
 Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
@@ -15,21 +19,28 @@ Package.onUse(function (api) {
     // 'telescope:settings@0.25.7',
     // 'telescope:users@0.25.7',
     // 'telescope:comments@0.25.7'
+    // 'base-components'
   ]);
 
   api.addFiles([
     'lib/namespace.js',
-    // 'lib/config.js',
+    'lib/config.js',
     // 'lib/posts.js',
-    // 'lib/parameters.js',
-    // 'lib/views.js',
+    'lib/parameters.js',
+    'lib/views.js',
     // 'lib/helpers.js',
     // 'lib/modules.js',
     // 'lib/callbacks.js',
     // 'lib/methods.js',
     // 'lib/menus.js',
     'lib/containers/PostListContainer.jsx',
-    'lib/components/PostList.jsx',
+    'lib/containers/PostContainer.jsx',
+    // 'lib/components/PostList.jsx',
+    // 'lib/components/Post.jsx',
+    // 'lib/components/LoadMore.jsx',
+    // 'lib/components/PostsLoading.jsx',
+    // 'lib/components/NoPosts.jsx',
+    // 'lib/components/NoMorePosts.jsx',
     'lib/routes.jsx'
   ], ['client', 'server']);
 
@@ -93,7 +104,9 @@ Package.onUse(function (api) {
   api.export([
     'Posts',
     'PostListContainer',
-    'PostList'
+    'PostContainer',
+    'PostList',
+    'Post'
   ]);
 
 });

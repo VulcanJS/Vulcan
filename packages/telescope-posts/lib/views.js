@@ -123,3 +123,13 @@ Posts.views.add("userDownvotedPosts", function (terms) {
     options: {limit: 5, sort: {postedAt: -1}}
   };
 });
+
+
+Posts.views.add("test", function (terms) {
+  return {
+    find: {
+      title: {$regex: "newsletter", $options: 'i'}
+    },
+    options: {sort: {sticky: -1, baseScore: -1}}
+  };
+});

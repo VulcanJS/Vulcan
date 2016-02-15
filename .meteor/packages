@@ -3,6 +3,7 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+
 ############ Telescope Core ############
 
 telescope:core
@@ -29,7 +30,9 @@ telescope:core
 # telescope:releases
 # telescope:rss
 # telescope:scoring
-# telescope:search
+
+telescope:search
+
 # telescope:share
 # telescope:singleday
 # telescope:sitemap
@@ -44,3 +47,9 @@ telescope:core
 ############ Your Custom Packages ############
 
 # my-custom-package
+
+base-components
+
+# telescope:forms
+
+# theme-test

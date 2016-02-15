@@ -27,6 +27,10 @@ Package.onUse(function (api) {
     'http',
     'email',
     'aldeed:simple-schema@1.5.3',
+
+    // 'nicolaslopezj:mrf@0.1.1',
+    // 'nicolaslopezj:mrf-material-ui@0.1.1',
+
     // 'aldeed:collection2@2.8.0',
     // 'aldeed:http@0.2.2',
     // 'aldeed:autoform@5.8.1',
@@ -45,7 +49,7 @@ Package.onUse(function (api) {
     // 'useraccounts:unstyled@1.13.1',
     // 'useraccounts:flow-routing@1.13.1',
     // 'aramk:tinycolor@1.1.0_1',
-    // 'momentjs:moment@2.11.2',
+    'momentjs:moment@2.11.2',
     // 'sacha:spin@2.3.1',
     // 'aslagle:reactive-table@0.8.24',
     // 'utilities:avatar@0.9.2',
@@ -59,19 +63,20 @@ Package.onUse(function (api) {
     // 'chuangbo:cookie@1.1.0',
     // 'ongoworks:speakingurl@6.0.0',
     // 'okgrow:router-autoscroll@0.1.6',
-    // 'tmeasday:publish-counts@0.7.3',
+    'tmeasday:publish-counts@0.7.3',
     // 'utilities:onsubscribed@0.1.2',
     // 'utilities:menu@0.1.6',
     // 'seba:minifiers-autoprefixer@0.0.1',
     // 'dburles:spacebars-tohtml@1.0.1',
-    // 'meteorhacks:unblock@1.1.0',
+    'meteorhacks:unblock@1.1.0',
     'kadira:flow-router@2.10.1',
     'arillo:flow-router-helpers@0.5.0',
     'utilities:smartquery@0.1.5',
     'kadira:react-layout@1.5.3',
     'ecmascript@0.1.6',
-    'react',
-    'jsx'
+    'react@0.14.3_1',
+    'jsx',
+    'modules'
   ];
 
   api.use(packages);
@@ -79,16 +84,18 @@ Package.onUse(function (api) {
   api.imply(packages);
 
   api.addFiles([
-    'containers/AppContainer.jsx'
-    // 'lib/core.js',
-    // 'lib/utils.js',
-    // 'lib/callbacks.js',
+    'containers/AppContainer.jsx',
+    'lib/core.js',
+    'lib/utils.js',
+    'lib/callbacks.js',
+    'lib/components.js',
+    'lib/subscriptions.js',
     // 'lib/collections.js',
     // 'lib/modules.js',
     // 'lib/config.js',
     // 'lib/templates.js',
-    // 'lib/deep.js',
-    // 'lib/deep_extend.js',
+    'lib/deep.js',
+    'lib/deep_extend.js',
     // 'lib/autolink.js',
     // 'lib/themes.js',
     // 'lib/menus.js',
