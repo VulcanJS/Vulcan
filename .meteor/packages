@@ -12,9 +12,11 @@ telescope:core
 
 # Note: all following packages depend on telescope:core; Additional internal dependencies are mentioned
 
+telescope:search
+
 # telescope:migrations
 # telescope:api
-# telescope:daily # singleday
+# telescope:daily
 # telescope:datetimepicker
 # telescope:debug
 # telescope:email
@@ -31,7 +33,6 @@ telescope:core
 # telescope:rss
 # telescope:scoring
 
-telescope:search
 
 # telescope:share
 # telescope:singleday

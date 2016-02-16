@@ -6,7 +6,7 @@ Template.posts_list.created = function() {
 
 Template.posts_list.helpers({
   postsLayout: function () {
-    return Settings.get('postsLayout', 'posts-list');
+    return Telescope.settings.get('postsLayout', 'posts-list');
   },
   description: function () {
     var controller = Iron.controller();

@@ -143,8 +143,8 @@ Meteor.methods({
 
       var timeSinceLastPost = Users.timeSinceLast(user, Posts),
         numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
-        postInterval = Math.abs(parseInt(Settings.get('postInterval', 30))),
-        maxPostsPer24Hours = Math.abs(parseInt(Settings.get('maxPostsPerDay', 30)));
+        postInterval = Math.abs(parseInt(Telescope.settings.get('postInterval', 30))),
+        maxPostsPer24Hours = Math.abs(parseInt(Telescope.settings.get('maxPostsPerDay', 30)));
 
       // check that user waits more than X seconds between posts
       if(timeSinceLastPost < postInterval)

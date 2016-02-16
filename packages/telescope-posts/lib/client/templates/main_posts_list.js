@@ -1,6 +1,6 @@
 Template.main_posts_list.helpers({
   customTemplate: function () {
-    var currentView = FlowRouter.getQueryParam("view") || Settings.get("defaultView", "top");
+    var currentView = FlowRouter.getQueryParam("view") || Telescope.settings.get("defaultView", "top");
     var currentMenuItem = _.findWhere(Telescope.menuItems.viewsMenu, {name: currentView});
     return currentMenuItem && currentMenuItem.viewTemplate;
   },
@@ -15,13 +15,13 @@ Template.main_posts_list.helpers({
     }
 
     if (!terms.view) {
-      terms.view = Settings.get('defaultView', 'top');
+      terms.view = Telescope.settings.get('defaultView', 'top');
     }
 
     return {
       terms: terms,
       options: {
-        loadMoreBehavior: Settings.get("loadMoreBehavior", "button")
+        loadMoreBehavior: Telescope.settings.get("loadMoreBehavior", "button")
       }
     };
   }

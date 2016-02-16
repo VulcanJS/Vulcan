@@ -11,7 +11,7 @@ Package.onUse(function(api) {
   
   api.use([
     'telescope:lib@0.25.7',
-    'telescope:i18n@0.25.7'
+    // 'telescope:i18n@0.25.7'
   ]);
 
   api.addFiles([
@@ -19,7 +19,7 @@ Package.onUse(function(api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/analytics.js'
+    // 'lib/client/analytics.js'
   ], ['client']);
 
   api.export([

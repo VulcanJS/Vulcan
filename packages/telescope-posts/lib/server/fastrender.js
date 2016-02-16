@@ -28,7 +28,7 @@ Posts.fastRenderSubscribe = function (params) {
   }
   
   if (!params.query.limit) {
-    params.query.limit = Settings.get('postsPerPage', 10);
+    params.query.limit = Telescope.settings.get('postsPerPage', 10);
   }
 
   // special case for daily view

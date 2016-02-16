@@ -24,10 +24,10 @@ Posts.schema = new SimpleSchema({
     type: Date,
     optional: true,
     editableBy: ["admin"],
-    autoform: {
-      group: 'admin',
-      // type: "bootstrap-datetimepicker"
-    }
+    // autoform: {
+    //   group: 'admin',
+    //   type: "bootstrap-datetimepicker"
+    // }
   },
   /**
     URL
@@ -37,10 +37,10 @@ Posts.schema = new SimpleSchema({
     optional: true,
     max: 500,
     editableBy: ["member", "admin"],
-    autoform: {
-      // type: "bootstrap-url",
-      order: 10
-    }
+    // autoform: {
+    //   type: "bootstrap-url",
+    //   order: 10
+    // }
   },
   /**
     Title
@@ -50,9 +50,9 @@ Posts.schema = new SimpleSchema({
     optional: false,
     max: 500,
     editableBy: ["member", "admin"],
-    autoform: {
-      order: 20
-    }
+    // autoform: {
+    //   order: 20
+    // }
   },
   /**
     Slug
@@ -69,10 +69,10 @@ Posts.schema = new SimpleSchema({
     optional: true,
     max: 3000,
     editableBy: ["member", "admin"],
-    autoform: {
-      rows: 5,
-      order: 30
-    }
+    // autoform: {
+    //   rows: 5,
+    //   order: 30
+    // }
   },
   /**
     HTML version of the post body
@@ -175,11 +175,11 @@ Posts.schema = new SimpleSchema({
       if (this.isInsert && !this.isSet)
         return Posts.getDefaultStatus(user);
     },
-    autoform: {
-      noselect: true,
-      options: Posts.config.postStatuses,
-      group: 'admin'
-    }
+    // autoform: {
+    //   noselect: true,
+    //   options: Posts.config.postStatuses,
+    //   group: 'admin'
+    // }
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)
@@ -189,10 +189,10 @@ Posts.schema = new SimpleSchema({
     optional: true,
     defaultValue: false,
     editableBy: ["admin"],
-    autoform: {
-      group: 'admin',
-      leftLabel: "Sticky"
-    }
+    // autoform: {
+    //   group: 'admin',
+    //   leftLabel: "Sticky"
+    // }
   },
   /**
     Whether the post is inactive. Inactive posts see their score recalculated less often
@@ -231,17 +231,17 @@ Posts.schema = new SimpleSchema({
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
     editableBy: ["admin"],
-    autoform: {
-      group: 'admin',
-      options: function () {
-        return Meteor.users.find().map(function (user) {
-          return {
-            value: user._id,
-            label: Users.getDisplayName(user)
-          };
-        });
-      }
-    }
+    // autoform: {
+    //   group: 'admin',
+    //   options: function () {
+    //     return Meteor.users.find().map(function (user) {
+    //       return {
+    //         value: user._id,
+    //         label: Users.getDisplayName(user)
+    //       };
+    //     });
+    //   }
+    // }
   }
 });
 

@@ -16,7 +16,7 @@ Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbso
  * @param {Object} post
  */
 Posts.getShareableLink = function (post) {
-  return Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+  return Telescope.settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
 };
 Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this);}});
 
@@ -75,7 +75,7 @@ Posts.helpers({getAuthorName: function () {return Posts.getAuthorName(this);}});
  */
 Posts.getDefaultStatus = function (user) {
   var hasAdminRights = typeof user === 'undefined' ? false : Users.is.admin(user);
-  if (hasAdminRights || !Settings.get('requirePostsApproval', false)) {
+  if (hasAdminRights || !Telescope.settings.get('requirePostsApproval', false)) {
     // if user is admin, or else post approval is not required
     return Posts.config.STATUS_APPROVED;
   } else {

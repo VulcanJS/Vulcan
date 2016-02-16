@@ -1,6 +1,6 @@
 Template.post_vote.helpers({
   enableDownvotes: function () {
-    return Settings.get("enableDownvotes", false);
+    return Telescope.settings.get("enableDownvotes", false);
   },
   actionsClass: function () {
     var user = Meteor.user();
@@ -12,7 +12,7 @@ Template.post_vote.helpers({
     if (user.hasDownvoted(this)) {
       actionsClass += " voted downvoted";
     }
-    if (Settings.get("enableDownvotes", false)) {
+    if (Telescope.settings.get("enableDownvotes", false)) {
       actionsClass += " downvotes-enabled";
     }
     return actionsClass;

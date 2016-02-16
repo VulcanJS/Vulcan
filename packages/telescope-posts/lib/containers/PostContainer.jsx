@@ -1,8 +1,6 @@
 // import React from 'react';
 
-const Post = Telescope.getComponent("Post");
-
-PostContainer = React.createClass({
+const PostContainer = React.createClass({
 
   // propTypes: {
 
@@ -12,7 +10,7 @@ PostContainer = React.createClass({
   
   getMeteorData() {
 
-    const subscription = Meteor.subscribe('singlePost', this.props._id);
+    const subscription = Meteor.subscribe('posts.single', this.props._id);
 
     return {
       post: Posts.findOne(this.props._id)
@@ -20,9 +18,12 @@ PostContainer = React.createClass({
   },
 
   render() {
+
+    const PostComponent = Telescope.getComponent(this.props.component); // could be Post or PostEdit
+
     if (this.data.post) {
       return (
-        <Post {...this.data.post} />
+        <PostComponent {...this.data.post} />
       )
     } else {
       return <p>Loading…</p>
@@ -30,3 +31,5 @@ PostContainer = React.createClass({
   }
 
 });
+
+module.exports = PostContainer;

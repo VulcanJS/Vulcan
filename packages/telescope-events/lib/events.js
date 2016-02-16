@@ -26,10 +26,10 @@ Events.schema = new SimpleSchema({
   }
 });
 
-Meteor.startup(function(){
-  // needs to happen after every fields are added
-  Events.internationalize();
-});
+// Meteor.startup(function(){
+//   // needs to happen after every fields are added
+//   Events.internationalize();
+// });
 
 Events.attachSchema(Events.schema);
 
@@ -53,12 +53,12 @@ Events.track = function(event, properties){
   properties = properties || {};
   //TODO
   // add event to an Events collection for logging and buffering purposes
-  if(Meteor.isClient){
-    if(typeof mixpanel !== 'undefined' && typeof mixpanel.track !== 'undefined'){
-      mixpanel.track(event, properties);
-    }
-    if(typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined'){
-      GoSquared.DefaultTracker.TrackEvent(event, JSON.stringify(properties));
-    }
-  }
+  // if(Meteor.isClient){
+  //   if(typeof mixpanel !== 'undefined' && typeof mixpanel.track !== 'undefined'){
+  //     mixpanel.track(event, properties);
+  //   }
+  //   if(typeof GoSquared !== 'undefined' && typeof GoSquared.DefaultTracker !== 'undefined'){
+  //     GoSquared.DefaultTracker.TrackEvent(event, JSON.stringify(properties));
+  //   }
+  // }
 };

@@ -1,34 +1,33 @@
 AppContainer = React.createClass({
 
-  // mixins: [ReactMeteorData],
+  mixins: [ReactMeteorData],
   
-  // getMeteorData() {
+  getMeteorData() {
 
-  //   var data = {
-  //     ready: true
-  //   };
+    var data = {
+      ready: false
+    };
 
-  //   var handles = [
-  //     Meteor.subscribe('site', SITE_KEY),
-  //     Meteor.subscribe('toc'),
-  //     Meteor.subscribe('chapters', BOOK_KEY),
-  //     Meteor.subscribe('interviews', BOOK_KEY),
-  //     Meteor.subscribe('videos', BOOK_KEY),
-  //     Meteor.subscribe('thisUser'),
-  //     Meteor.subscribe('pages'),
-  //   ];
+    var handles = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
 
-  //   if(_.every(handles, handle => {return handle.ready();})) {
-  //     Session.set("book", Products.findOne({key: BOOK_KEY}));
-  //     data.ready = true;
-  //   }
+    if(!handles.length || _.every(handles, handle => handle.ready())) {
+      data.ready = true;
+    }
 
-  //   return data;
-  // },
+    return data;
+  },
 
 
   render() {
-    return this.props.content;
+    
+    const Layout = Telescope.getComponent("Layout");
+
+    if (this.data.ready) {
+      return <Layout>{this.props.content}</Layout>
+    } else {
+      return <p>Loading App…</p>
+    }
+
     // return this.data.ready ? this.props.content : <Loading/>;
   }
 

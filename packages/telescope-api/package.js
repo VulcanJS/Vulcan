@@ -11,6 +11,9 @@ Package.onUse(function (api) {
 
   api.use(['telescope:core@0.25.7']);
 
-  api.addFiles(['lib/server/api.js', 'lib/server/routes.js'], ['server']);
+  api.addFiles([
+    'lib/server/api.js', 
+    'lib/server/routes.js'
+  ], ['server']);
 
 });

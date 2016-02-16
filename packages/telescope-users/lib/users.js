@@ -28,9 +28,9 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     editableBy: ["member", "admin"],
-    autoform: {
-      rows: 5
-    }
+    // autoform: {
+    //   rows: 5
+    // }
   },
   /**
     Total comment count
@@ -93,9 +93,9 @@ Telescope.schemas.userData = new SimpleSchema({
     public: true,
     profile: true,
     optional: true,
-    autoform: {
-      omit: true
-    },
+    // autoform: {
+    //   omit: true
+    // },
     template: "user_profile_bio"
   },
   /**
@@ -123,9 +123,9 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true,
     editableBy: ["member", "admin"],
     blackbox: true,
-    autoform: {
-      omit: true
-    }
+    // autoform: {
+    //   omit: true
+    // }
   },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
@@ -213,9 +213,9 @@ Users.schema = new SimpleSchema({
     type: Boolean,
     optional: true,
     editableBy: ["admin"],
-    autoform: {
-      omit: true
-    }
+    // autoform: {
+    //   omit: true
+    // }
   },
   profile: {
     type: Object,
@@ -233,21 +233,11 @@ Users.schema = new SimpleSchema({
   }
 });
 
-Meteor.startup(function(){
-  Users.internationalize();
-});
+// Meteor.startup(function(){
+//   Users.internationalize();
+// });
 
 /**
  * Attach schema to Meteor.users collection
  */
 Users.attachSchema(Users.schema);
-
-/**
- * Users collection permissions
- */
-
-Users.allow({
-  update: _.partial(Telescope.allowCheck, Meteor.users),
-  remove: _.partial(Telescope.allowCheck, Meteor.users)
-});
-

@@ -13,9 +13,9 @@ Package.onUse(function(api) {
     'telescope:lib@0.25.7', //  no dependencies
     // 'telescope:messages@0.25.7', // lib
     // 'telescope:i18n@0.25.7', // lib
-    // 'telescope:events@0.25.7', // lib, i18n
-    // 'telescope:settings@0.25.7', // lib, i18n
-    // 'telescope:users@0.25.7', // lib, i18n, settings
+    'telescope:events@0.25.7', // lib, i18n
+    'telescope:settings@0.25.7', // lib, i18n
+    'telescope:users@0.25.7', // lib, i18n, settings
     // 'telescope:comments@0.25.7', // lib, i18n, settings, users
     'telescope:posts@0.25.7' // lib, i18n, settings, users, comments
   ];
@@ -32,7 +32,6 @@ Package.onUse(function(api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/components/App.jsx',
     // 'lib/client/handlebars.js',
     // 'lib/client/main.html',
     // 'lib/client/main.js',
@@ -79,7 +78,7 @@ Package.onUse(function(api) {
   api.addFiles([
     // 'lib/server/start.js',
     // 'lib/server/fastrender.js',
-    // 'lib/server/routes.js'
+    'lib/server/routes.js'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

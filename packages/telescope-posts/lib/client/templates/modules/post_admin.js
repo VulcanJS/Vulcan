@@ -1,9 +1,9 @@
 Template.post_admin.helpers({
   showApprove: function () {
-    return !!Settings.get('requirePostsApproval') && (this.status === Posts.config.STATUS_PENDING || this.status === Posts.config.STATUS_REJECTED);
+    return !!Telescope.settings.get('requirePostsApproval') && (this.status === Posts.config.STATUS_PENDING || this.status === Posts.config.STATUS_REJECTED);
   },
   showReject: function(){
-    return !!Settings.get('requirePostsApproval') && (this.status === Posts.config.STATUS_PENDING || this.status === Posts.config.STATUS_APPROVED);
+    return !!Telescope.settings.get('requirePostsApproval') && (this.status === Posts.config.STATUS_PENDING || this.status === Posts.config.STATUS_APPROVED);
   },
   shortScore: function(){
     return Math.floor(this.score*100)/100;

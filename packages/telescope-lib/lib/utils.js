@@ -104,7 +104,7 @@ Telescope.utils.getDateRange = function(pageNumber) {
  * Returns the user defined site URL or Meteor.absoluteUrl
  */
 Telescope.utils.getSiteUrl = function () {
-  return Settings.get('siteUrl', Meteor.absoluteUrl());
+  return Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
 };
 
 /**
@@ -180,7 +180,7 @@ Telescope.utils.getDomain = function(url) {
 };
 
 Telescope.utils.invitesEnabled = function() {
-  return Settings.get("requireViewInvite") || Settings.get("requirePostInvite");
+  return Telescope.settings.get("requireViewInvite") || Telescope.settings.get("requirePostInvite");
 };
 
 // add http: if missing
@@ -241,7 +241,7 @@ Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
 };
 
 Telescope.log = function (s) {
-  if(Settings.get('debug', false) || process.env.NODE_ENV === "development") {
+  if(Telescope.settings.get('debug', false) || process.env.NODE_ENV === "development") {
     console.log(s);
   }
 };

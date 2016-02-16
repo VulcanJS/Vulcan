@@ -34,7 +34,7 @@ i18n.setLanguage = function (language) {
 
 i18n.t = function (str, options) {
   if (Meteor.isServer) {
-    return TAPi18n.__(str, options, Settings.get('language', 'en'));
+    return TAPi18n.__(str, options, Telescope.settings.get('language', 'en'));
   } else {
     return TAPi18n.__(str, options);
   }
@@ -59,7 +59,7 @@ Mongo.Collection.prototype.internationalize = function(){
 Meteor.startup(function () {
 
   if (Meteor.isClient) {
-    i18n.setLanguage(Settings.get('language', 'en'));
+    i18n.setLanguage(Telescope.settings.get('language', 'en'));
   }
 
 });

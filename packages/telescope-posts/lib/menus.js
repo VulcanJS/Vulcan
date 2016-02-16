@@ -2,7 +2,7 @@ Posts.getRoute = function () {
   FlowRouter.watchPathChange()
   var viewName = this.name;
   var currentQuery = _.clone(FlowRouter.current().queryParams);
-  var defaultView = Settings.get("defaultView", "top");
+  var defaultView = Telescope.settings.get("defaultView", "top");
   var newQuery;
 
   if (viewName === defaultView) {

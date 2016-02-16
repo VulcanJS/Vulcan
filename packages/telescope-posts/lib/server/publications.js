@@ -1,108 +1,124 @@
 Posts._ensureIndex({"status": 1, "postedAt": 1});
 
+Meteor.publish('posts.list', function(terms) {
+
+  var parameters = Posts.parameters.get(terms),
+      posts = Posts.find(parameters.find, parameters.options);
+
+  Counts.publish(this, 'posts.list', Posts.find(parameters.find, parameters.options));
+
+  return posts;
+});
+
+Meteor.publish('posts.single', function(postId) {
+
+  return Posts.find(postId);
+
+});
+
 // Publish a list of posts
 
-Meteor.publish('postsList', function(terms) {
+// Meteor.publish('postsList', function(terms) {
 
-  this.unblock();
+//   this.unblock();
   
-  if (this.userId) { // add currentUserId to terms if a user is logged in
-    terms.currentUserId = this.userId; 
-  }
+//   if (this.userId) { // add currentUserId to terms if a user is logged in
+//     terms.currentUserId = this.userId; 
+//   }
 
-  if(Users.can.viewById(this.userId)){
-    var parameters = Posts.parameters.get(terms),
-        posts = Posts.find(parameters.find, parameters.options);
+//   if(Users.can.viewById(this.userId)){
+//     var parameters = Posts.parameters.get(terms),
+//         posts = Posts.find(parameters.find, parameters.options);
 
-    return posts;
-  }
-  return [];
-});
+//     return posts;
+//   }
+//   return [];
+// });
 
-// Publish all the users that have posted the currently displayed list of posts
-// plus the commenters for each post
+// // Publish all the users that have posted the currently displayed list of posts
+// // plus the commenters for each post
 
-Meteor.publish('postsListUsers', function(terms) {
+// Meteor.publish('postsListUsers', function(terms) {
   
-  this.unblock();
+//   this.unblock();
   
-  if (this.userId) {
-    terms.currentUserId = this.userId; // add userId to terms
-  }
+//   if (this.userId) {
+//     terms.currentUserId = this.userId; // add userId to terms
+//   }
 
-  if(Users.can.viewById(this.userId)){
-    var parameters = Posts.parameters.get(terms),
-        posts = Posts.find(parameters.find, parameters.options),
-        userIds = _.pluck(posts.fetch(), 'userId');
+//   if(Users.can.viewById(this.userId)){
+//     var parameters = Posts.parameters.get(terms),
+//         posts = Posts.find(parameters.find, parameters.options),
+//         userIds = _.pluck(posts.fetch(), 'userId');
 
-    // for each post, add first four commenter's userIds to userIds array
-    posts.forEach(function (post) {
-      userIds = userIds.concat(_.first(post.commenters,4));
-    });
+//     // for each post, add first four commenter's userIds to userIds array
+//     posts.forEach(function (post) {
+//       userIds = userIds.concat(_.first(post.commenters,4));
+//     });
 
-    userIds = _.unique(userIds);
+//     userIds = _.unique(userIds);
 
-    return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.avatarProperties, multi: true});
-  }
-  return [];
-});
+//     return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.avatarProperties, multi: true});
+//   }
+//   return [];
+// });
 
-// Publish a single post
+// // Publish a single post
 
-Meteor.publish('singlePost', function(postId) {
+// Meteor.publish('singlePost', function(postId) {
 
-  check(postId, String);
-  this.unblock();
+//   check(postId, String);
+//   this.unblock();
 
-  var user = Meteor.users.findOne(this.userId);
-  var post = Posts.findOne(postId);
+//   var user = Meteor.users.findOne(this.userId);
+//   var post = Posts.findOne(postId);
 
-  if (Users.can.viewPost(user, post)){
-    return Posts.find(postId);
-  } else {
-    return [];
-  }
+//   if (Users.can.viewPost(user, post)){
+//     return Posts.find(postId);
+//   } else {
+//     return [];
+//   }
 
-});
+// });
 
-// Publish author of the current post, authors of its comments, and upvoters of the post
+// // Publish author of the current post, authors of its comments, and upvoters of the post
 
-Meteor.publish('postUsers', function(postId) {
+// Meteor.publish('postUsers', function(postId) {
 
-  check(postId, String);
-  this.unblock();
+//   check(postId, String);
+//   this.unblock();
 
-  if (Users.can.viewById(this.userId)){
-    // publish post author and post commenters
-    var post = Posts.findOne(postId);
-    var users = [];
+//   if (Users.can.viewById(this.userId)){
+//     // publish post author and post commenters
+//     var post = Posts.findOne(postId);
+//     var users = [];
 
-    if (post) {
+//     if (post) {
 
-      users.push(post.userId); // publish post author's ID
+//       users.push(post.userId); // publish post author's ID
 
-      // get IDs from all commenters on the post
-      var comments = Comments.find({postId: post._id}).fetch();
-      if (comments.length) {
-        users = users.concat(_.pluck(comments, "userId"));
-      }
+//       // get IDs from all commenters on the post
+//       var comments = Comments.find({postId: post._id}).fetch();
+//       if (comments.length) {
+//         users = users.concat(_.pluck(comments, "userId"));
+//       }
 
-      // publish upvoters
-      if (post.upvoters && post.upvoters.length) {
-        users = users.concat(post.upvoters);
-      }
+//       // publish upvoters
+//       if (post.upvoters && post.upvoters.length) {
+//         users = users.concat(post.upvoters);
+//       }
 
-      // publish downvoters
-      if (post.downvoters && post.downvoters.length) {
-        users = users.concat(post.downvoters);
-      }
+//       // publish downvoters
+//       if (post.downvoters && post.downvoters.length) {
+//         users = users.concat(post.downvoters);
+//       }
 
-    }
+//     }
 
-    // remove any duplicate IDs
-    users = _.unique(users);
+//     // remove any duplicate IDs
+//     users = _.unique(users);
 
-    return Meteor.users.find({_id: {$in: users}}, {fields: Users.pubsub.publicProperties});
-  }
-  return [];
-});
+//     return Meteor.users.find({_id: {$in: users}}, {fields: Users.pubsub.publicProperties});
+//   }
+//   return [];
+// });

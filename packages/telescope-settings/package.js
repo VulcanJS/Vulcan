@@ -1,6 +1,6 @@
 Package.describe({
   name: "telescope:settings",
-  summary: "Telescope settings package",
+  summary: "Telescope settings package – only necessary if you're storing settings in a collection",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
@@ -17,7 +17,7 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
-    // 'lib/settings.js',
+    'lib/settings.js',
     // 'lib/routes.js',
     // 'lib/menus.js',
     // 'package-tap.i18n'

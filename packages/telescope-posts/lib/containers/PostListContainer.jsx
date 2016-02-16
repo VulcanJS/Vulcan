@@ -41,9 +41,7 @@
 
 // import React from 'react';
 
-// const PostList = Telescope.getComponent("PostList");
-console.log("// PostListContainer")
-PostListContainer = React.createClass({
+const PostListContainer = React.createClass({
 
   // propTypes: {
 
@@ -60,7 +58,7 @@ PostListContainer = React.createClass({
   mixins: [ReactMeteorData],
   
   getMeteorData() {
-    const terms = {...this.props, limit: this.state.limit};
+    const terms = {...this.props.terms, limit: this.state.limit};
     const parameters = Posts.parameters.get(terms);
     const find = parameters.find;
     const options = parameters.options;
@@ -71,9 +69,9 @@ PostListContainer = React.createClass({
     
     // console.log(terms)
 
-    const subscription = Meteor.subscribe('postList', terms);
+    const subscription = Meteor.subscribe('posts.list', terms);
 
-    const totalCount = Counts.get("postList");
+    const totalCount = Counts.get('posts.list');
 
     const cursor = Posts.find(find, options);
     
@@ -94,12 +92,14 @@ PostListContainer = React.createClass({
   },
 
   render() {
-    const PostList = Telescope.getComponent("PostList");
+    const PostListComponent = Telescope.getComponent(this.props.component);
     return (
-      <PostList {...this.data} loadMore={this.loadMore}/>
+      <PostListComponent {...this.data} loadMore={this.loadMore}/>
     )
   }
 
 });
 
 // export default PostListContainer;
+
+module.exports = PostListContainer;

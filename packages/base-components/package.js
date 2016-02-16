@@ -19,7 +19,7 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/require.js'
+    'lib/components.js'
   ], ['client', 'server']);
 
 

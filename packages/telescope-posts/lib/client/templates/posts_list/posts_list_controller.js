@@ -23,7 +23,7 @@ Template.posts_list_controller.onCreated(function () {
 
   // initialize the reactive variables
   template.rTerms = new ReactiveVar(terms);
-  template.rLimit = new ReactiveVar(Settings.get('postsPerPage', 10));
+  template.rLimit = new ReactiveVar(Telescope.settings.get('postsPerPage', 10));
   template.rReady = new ReactiveVar(false);
 
   // if caching is set to true, use Subs Manager. Else use template.subscribe. Default to false
@@ -91,7 +91,7 @@ Template.posts_list_controller.onDataChanged(function (data) {
   // if terms have changed, we reset rLimit
   if (!_.isEqual(oldTerms, newTerms)) {
     template.terms = newTerms;
-    template.rLimit.set(Settings.get('postsPerPage', 10));
+    template.rLimit.set(Telescope.settings.get('postsPerPage', 10));
   }
 });
 
@@ -131,7 +131,7 @@ Template.posts_list_controller.helpers({
       loadMoreHandler: function (template) {
         // increase limit by 5 and update it
         var limit = template.rLimit.get();
-        limit += Settings.get('postsPerPage', 10);
+        limit += Telescope.settings.get('postsPerPage', 10);
         template.rLimit.set(limit);
       },
 

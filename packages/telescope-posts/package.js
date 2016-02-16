@@ -25,16 +25,17 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/namespace.js',
     'lib/config.js',
-    // 'lib/posts.js',
+    'lib/posts.js',
     'lib/parameters.js',
     'lib/views.js',
-    // 'lib/helpers.js',
+    'lib/helpers.js',
+    'lib/components.js',
     // 'lib/modules.js',
     // 'lib/callbacks.js',
     // 'lib/methods.js',
     // 'lib/menus.js',
-    'lib/containers/PostListContainer.jsx',
-    'lib/containers/PostContainer.jsx',
+    // 'lib/containers/PostListContainer.jsx',
+    // 'lib/containers/PostContainer.jsx',
     // 'lib/components/PostList.jsx',
     // 'lib/components/Post.jsx',
     // 'lib/components/LoadMore.jsx',
@@ -90,9 +91,9 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    // 'lib/server/publications.js',
+    'lib/server/publications.js',
     // 'lib/server/fastrender.js'
-    'lib/server/rules.js'
+    // 'lib/server/rules.js'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
@@ -102,11 +103,7 @@ Package.onUse(function (api) {
   // api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export([
-    'Posts',
-    'PostListContainer',
-    'PostContainer',
-    'PostList',
-    'Post'
+    'Posts'
   ]);
 
 });

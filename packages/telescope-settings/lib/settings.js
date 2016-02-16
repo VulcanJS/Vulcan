@@ -2,9 +2,9 @@
  * The global namespace for Settings.
  * @namespace Settings
  */
-Settings = new Mongo.Collection("settings");
+Telescope.settings.collection = new Mongo.Collection("settings");
 
-Settings.schema = new SimpleSchema({
+Telescope.settings.schema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
@@ -197,8 +197,8 @@ Settings.schema = new SimpleSchema({
     autoform: {
       group: "02_posts",
       options: [
-        {value: 'button', label: _.partial(i18n.t, "loadMoreButton")},
-        {value: 'scroll', label: _.partial(i18n.t, "infiniteScroll")}
+        {value: 'button', label: "loadMoreButton"},
+        {value: 'scroll', label: "infiniteScroll"}
       ]
     }
   },
@@ -462,62 +462,64 @@ Settings.schema = new SimpleSchema({
 });
 
 
-Meteor.startup(function(){
-  Settings.internationalize();
-});
+// Meteor.startup(function(){
+//   Settings.internationalize();
+// });
 
-Settings.attachSchema(Settings.schema);
+Telescope.settings.collection.attachSchema(Telescope.settings.schema);
 
-Settings.get = function(setting, defaultValue) {
-  var settings = Settings.find().fetch()[0];
+Telescope.subscriptions.preload("settings");
 
-  if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection first
-    return settings[setting];
+// Settings.get = function(setting, defaultValue) {
+//   var settings = Settings.find().fetch()[0];
 
-  } else if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // else if on the server, look in Meteor.settings
-    return Meteor.settings[setting];
+//   if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection first
+//     return settings[setting];
 
-  } else if (Meteor.settings && Meteor.settings.public && !!Meteor.settings.public[setting]) { // look in Meteor.settings.public
-    return Meteor.settings.public[setting];
+//   } else if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // else if on the server, look in Meteor.settings
+//     return Meteor.settings[setting];
 
-  } else if (typeof defaultValue !== 'undefined') { // fallback to default
-    return  defaultValue;
+//   } else if (Meteor.settings && Meteor.settings.public && !!Meteor.settings.public[setting]) { // look in Meteor.settings.public
+//     return Meteor.settings.public[setting];
 
-  } else { // or return undefined
-    return undefined;
-  }
-};
+//   } else if (typeof defaultValue !== 'undefined') { // fallback to default
+//     return  defaultValue;
+
+//   } else { // or return undefined
+//     return undefined;
+//   }
+// };
 
 
 
-/**
- * Add trailing slash if needed on insert
- */
-Settings.before.insert(function (userId, doc) {
-  if(doc.siteUrl && doc.siteUrl.match(/\//g).length === 2) {
-    doc.siteUrl = doc.siteUrl + "/";
-  }
-});
+// /**
+//  * Add trailing slash if needed on insert
+//  */
+// Settings.before.insert(function (userId, doc) {
+//   if(doc.siteUrl && doc.siteUrl.match(/\//g).length === 2) {
+//     doc.siteUrl = doc.siteUrl + "/";
+//   }
+// });
 
-/**
- * Add trailing slash if needed on update
- */
-Settings.before.update(function (userId, doc, fieldNames, modifier) {
-  if(modifier.$set && modifier.$set.siteUrl && modifier.$set.siteUrl.match(/\//g).length === 2) {
-    modifier.$set.siteUrl = modifier.$set.siteUrl + "/";
-  }
-});
+// /**
+//  * Add trailing slash if needed on update
+//  */
+// Settings.before.update(function (userId, doc, fieldNames, modifier) {
+//   if(modifier.$set && modifier.$set.siteUrl && modifier.$set.siteUrl.match(/\//g).length === 2) {
+//     modifier.$set.siteUrl = modifier.$set.siteUrl + "/";
+//   }
+// });
 
-Meteor.startup(function () {
-  Settings.allow({
-    insert: Users.is.adminById,
-    update: Users.is.adminById,
-    remove: Users.is.adminById
-  });
-});
+// Meteor.startup(function () {
+//   Settings.allow({
+//     insert: Users.is.adminById,
+//     update: Users.is.adminById,
+//     remove: Users.is.adminById
+//   });
+// });
 
-Meteor.startup(function () {
-  // override Meteor.absoluteUrl() with URL provided in settings
-  Meteor.absoluteUrl.defaultOptions.rootUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
-  debug = Settings.get('debug', false);
-});
+// Meteor.startup(function () {
+//   // override Meteor.absoluteUrl() with URL provided in settings
+//   Meteor.absoluteUrl.defaultOptions.rootUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
+//   debug = Settings.get('debug', false);
+// });

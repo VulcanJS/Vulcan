@@ -11,7 +11,7 @@ var doSEOStuff = function (post) {
   var seoProperties = {meta: {}};
 
   // Set site name
-  DocHead.addMeta({property: "og:site_name", content: Settings.get("title")});
+  DocHead.addMeta({property: "og:site_name", content: Telescope.settings.get("title")});
 
   // Set title
   Telescope.SEO.setTitle(post.title);
@@ -30,8 +30,8 @@ var doSEOStuff = function (post) {
   }
 
   // Set Twitter username
-  if (!!Settings.get("twitterAccount")) {
-    DocHead.addMeta({property: "twitter:site", content: Settings.get("twitterAccount")});
+  if (!!Telescope.settings.get("twitterAccount")) {
+    DocHead.addMeta({property: "twitter:site", content: Telescope.settings.get("twitterAccount")});
   }
   
 };
