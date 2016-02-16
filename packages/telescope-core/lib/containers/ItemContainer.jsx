@@ -5,7 +5,7 @@ const ItemContainer = React.createClass({
   propTypes: {
     collection: React.PropTypes.object.isRequired,
     component: React.PropTypes.func.isRequired,
-    subscription: React.PropTypes.string.isRequired,
+    publication: React.PropTypes.string.isRequired,
     terms: React.PropTypes.object
   },
 
@@ -13,7 +13,7 @@ const ItemContainer = React.createClass({
   
   getMeteorData() {
 
-    const subscription = Meteor.subscribe(this.props.subscription, this.props.terms);
+    const subscription = Meteor.subscribe(this.props.publication, this.props.terms);
 
     return {
       results: this.props.collection.findOne(this.props.terms)

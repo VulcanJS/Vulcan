@@ -1,10 +1,6 @@
 const PostList = props => {
 
-  const PostItem = Telescope.getComponent("PostItem");
-  const LoadMore = Telescope.getComponent("LoadMore");
-  const PostsLoading = Telescope.getComponent("PostsLoading");
-  const NoPosts = Telescope.getComponent("NoPosts");
-  const NoMorePosts = Telescope.getComponent("NoMorePosts");
+  ({PostItem, LoadMore, PostsLoading, NoPosts, NoMorePosts} = Telescope.components);
 
   if (!!props.results.length) {
     return (

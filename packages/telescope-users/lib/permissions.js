@@ -12,7 +12,7 @@ Users.can = {};
  * @param {Object} user
  */
 Users.can.view = function (user) {
-  if (Settings.get('requireViewInvite', false)) {
+  if (Telescope.settings.get('requireViewInvite', false)) {
 
     if (Meteor.isClient) {
       // on client only, default to the current user
@@ -32,7 +32,7 @@ Users.helpers({canView: function () {return Users.can.view(this);}});
  */
 Users.can.viewById = function (userId) {
   // if an invite is required to view, run permission check, else return true
-  if (Settings.get('requireViewInvite', false)) {
+  if (Telescope.settings.get('requireViewInvite', false)) {
     return !!userId ? Users.can.view(Meteor.users.findOne(userId)) : false;
   }
   return true;
@@ -83,7 +83,7 @@ Users.can.post = function (user) {
     return true;
   } 
 
-  if (Settings.get('requirePostInvite', false)) { // invite required?
+  if (Telescope.settings.get('requirePostInvite', false)) { // invite required?
     if (user.isInvited()) { // invited user
       return true;
     } else { // not invited

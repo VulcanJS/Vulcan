@@ -3,30 +3,35 @@ const ListContainer = React.createClass({
   propTypes: {
     collection: React.PropTypes.object.isRequired,
     component: React.PropTypes.func.isRequired,
-    subscription: React.PropTypes.string.isRequired,
-    terms: React.PropTypes.object
+    publication: React.PropTypes.string.isRequired,
+    terms: React.PropTypes.object,
+    limit: React.PropTypes.number
   },
 
-  getInitialState() {
-
+  getDefaultProps: function() {
     return {
       limit: 5
     };
+  },
 
+  getInitialState() {
+    return {
+      limit: this.props.limit
+    };
   },
 
   mixins: [ReactMeteorData],
   
   getMeteorData() {
     const terms = {...this.props.terms, limit: this.state.limit};
-    const parameters = Posts.parameters.get(terms);
+    const parameters = this.props.collection.parameters.get(terms);
     const find = parameters.find;
     const options = parameters.options;
     options.limit = this.state.limit;
 
-    const subscription = Meteor.subscribe(this.props.subscription, terms);
+    const subscription = Meteor.subscribe(this.props.publication, terms);
 
-    const totalCount = Counts.get(this.props.subscription);
+    const totalCount = Counts.get(this.props.publication);
 
     const cursor = this.props.collection.find(find, options);
     
@@ -42,7 +47,7 @@ const ListContainer = React.createClass({
   loadMore(event) {
     event.preventDefault();
     this.setState({
-      limit: this.state.limit+5
+      limit: this.state.limit+this.props.limit
     });
   },
 
