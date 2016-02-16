@@ -6,9 +6,12 @@ Meteor.startup(function () {
   });
 });
 
-if (Settings.get('mailUrl'))
-  process.env.MAIL_URL = Settings.get('mailUrl');
+if (Telescope.settings.get('mailUrl')) {
+  process.env.MAIL_URL = Telescope.settings.get('mailUrl');
+}
 
 Meteor.startup(function() {
-  SyncedCron.start();
+  if (typeof SyncedCron !== "undefined") {
+    SyncedCron.start();
+  }
 });

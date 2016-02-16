@@ -77,7 +77,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    // 'lib/server/start.js',
+    'lib/server/start.js',
     // 'lib/server/fastrender.js',
     'lib/server/routes.js'
   ], ['server']);
