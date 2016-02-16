@@ -85,7 +85,6 @@ Package.onUse(function (api) {
   api.imply(packages);
 
   api.addFiles([
-    'containers/AppContainer.jsx',
     'lib/core.js',
     'lib/utils.js',
     'lib/callbacks.js',

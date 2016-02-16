@@ -1,4 +1,4 @@
-AppContainer = React.createClass({
+const AppContainer = React.createClass({
 
   mixins: [ReactMeteorData],
   
@@ -32,3 +32,5 @@ AppContainer = React.createClass({
   }
 
 });
+
+module.exports = AppContainer;

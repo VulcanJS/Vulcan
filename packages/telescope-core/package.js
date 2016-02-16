@@ -25,6 +25,7 @@ Package.onUse(function(api) {
   api.imply(packages);
 
   api.addFiles([
+    'lib/components.js',
     // 'lib/modules.js',
     // 'lib/vote.js',
     // 'lib/subscriptions.js',

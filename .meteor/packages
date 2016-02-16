@@ -13,6 +13,7 @@ telescope:core
 # Note: all following packages depend on telescope:core; Additional internal dependencies are mentioned
 
 telescope:search
+telescope:comments
 
 # telescope:migrations
 # telescope:api

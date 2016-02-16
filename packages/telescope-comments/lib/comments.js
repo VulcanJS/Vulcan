@@ -164,14 +164,9 @@ Comments.schema = new SimpleSchema({
   }
 });
 
-Meteor.startup(function(){
-  // needs to happen after every fields are added
-  Comments.internationalize();
-});
+// Meteor.startup(function(){
+//   // needs to happen after every fields are added
+//   Comments.internationalize();
+// });
 
 Comments.attachSchema(Comments.schema);
-
-Comments.allow({
-  update: _.partial(Telescope.allowCheck, Comments),
-  remove: _.partial(Telescope.allowCheck, Comments)
-});

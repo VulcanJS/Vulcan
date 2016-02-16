@@ -6,10 +6,10 @@ const PostList = props => {
   const NoPosts = Telescope.getComponent("NoPosts");
   const NoMorePosts = Telescope.getComponent("NoMorePosts");
 
-  if (!!props.posts.length) {
+  if (!!props.results.length) {
     return (
       <div className="postList">
-        {props.posts.map(post => <PostItem {...post} key={post._id}/>)}
+        {props.results.map(post => <PostItem {...post} key={post._id}/>)}
         {props.hasMore ? (props.ready ? <LoadMore {...props}/> : <PostsLoading/>) : <NoMorePosts/>}
       </div>
     )

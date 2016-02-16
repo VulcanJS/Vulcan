@@ -10,9 +10,9 @@ Meteor.publish('posts.list', function(terms) {
   return posts;
 });
 
-Meteor.publish('posts.single', function(postId) {
+Meteor.publish('posts.single', function(terms) {
 
-  return Posts.find(postId);
+  return Posts.find(terms);
 
 });
 

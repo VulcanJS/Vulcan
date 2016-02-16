@@ -105,6 +105,7 @@ spacebars@1.0.8-modules.8
 spacebars-compiler@1.0.8-modules.8
 srp@1.0.5-modules.8
 standard-app-packages@1.0.6
+telescope:comments@0.25.7
 telescope:core@0.25.7
 telescope:events@0.25.7
 telescope:lib@0.25.7
