@@ -23,7 +23,11 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/components.js',
-    'lib/callbacks.js'
+    'lib/callbacks.js',
+    'lib/icons.js',
+    'lib/seo.js',
+    'lib/router.jsx',
+    // 'lib/colors.js' // probably not that useful anymore?
   ], ['client', 'server']);
 
   api.addAssets([

@@ -24,8 +24,3 @@ Telescope.settings.get = function(setting, defaultValue) {
 
   }
 };
-
-//   var settings = Settings.find().fetch()[0];
-
-//   if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection first
-//     return settings[setting];

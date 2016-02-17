@@ -85,25 +85,13 @@ Package.onUse(function (api) {
   api.imply(packages);
 
   api.addFiles([
-    'lib/core.js',
+    'lib/config.js',
     'lib/utils.js',
     'lib/callbacks.js',
     'lib/settings.js',
     'lib/collections.js',
-    // 'lib/modules.js',
-    'lib/config.js',
-    // 'lib/templates.js',
     'lib/deep.js',
-    'lib/deep_extend.js',
-    // 'lib/autolink.js',
-    // 'lib/themes.js',
-    // 'lib/menus.js',
-    // 'lib/seo.js',
-    // 'lib/base.js',
-    // 'lib/colors.js',
-    // 'lib/icons.js',
-    // 'lib/router.js',
-    // 'lib/custom_template_prefix.js'
+    'lib/deep_extend.js'
   ], ['client', 'server']);
 
 
