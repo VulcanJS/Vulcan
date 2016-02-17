@@ -1,1 +1,0 @@
-Telescope single day package.
