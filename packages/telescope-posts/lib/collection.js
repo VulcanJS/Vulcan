@@ -17,7 +17,7 @@ Posts.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     optional: true,
-    public: true
+    public: false
   },
   /**
     Timestamp of post first appearing on the site (i.e. being approved)
@@ -110,24 +110,6 @@ Posts.schema = new SimpleSchema({
   */
   clickCount: {
     type: Number,
-    optional: true,
-    public: true,
-  },
-  /**
-    The post's base score (not factoring in the post's age)
-  */
-  baseScore: {
-    type: Number,
-    decimal: true,
-    optional: true,
-    public: true,
-  },
-  /**
-    The post's current score (factoring in age)
-  */
-  score: {
-    type: Number,
-    decimal: true,
     optional: true,
     public: true,
   },

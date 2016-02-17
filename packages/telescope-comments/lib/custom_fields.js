@@ -23,5 +23,5 @@ Posts.addField([
   }
 ]);
 
-Posts.publicationFields.list.push("commentCount", "commenters");
-Posts.publicationFields.single.push("commentCount", "commenters");
+Telescope.utils.addToFields(Posts.publishedFields.list, ["commentCount", "commenters"]);
+Telescope.utils.addToFields(Posts.publishedFields.single, ["commentCount", "commenters"]);

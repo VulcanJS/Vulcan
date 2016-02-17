@@ -1,10 +1,10 @@
-Posts.publicationFields = {};
+Posts.publishedFields = {};
 
 /**
  * Specify which fields should be published by the posts.list publication
- * @array Posts.publicationFields.list
+ * @array Posts.publishedFields.list
  */
-Posts.publicationFields.list = [
+Posts.publishedFields.list = Telescope.utils.arrayToFields([
   "_id",
   "postedAt",
   "url",
@@ -20,10 +20,10 @@ Posts.publicationFields.list = [
   "sticky",
   "author",
   "userId"
-];
+]);
 
 /**
  * Specify which fields should be published by the posts.single publication
- * @array Posts.publicationFields.single
+ * @array Posts.publishedFields.single
  */
-Posts.publicationFields.single = Posts.simpleSchema().getPublicFields();
+Posts.publishedFields.single = Telescope.utils.arrayToFields(Posts.simpleSchema().getPublicFields());

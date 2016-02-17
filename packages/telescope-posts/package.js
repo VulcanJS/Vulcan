@@ -23,13 +23,12 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/namespace.js',
     'lib/config.js',
-    'lib/posts.js',
+    'lib/collection.js',
     'lib/parameters.js',
     'lib/views.js',
     'lib/helpers.js',
-    'lib/fields.js',
+    'lib/published_fields.js',
     // 'lib/modules.js',
     // 'lib/callbacks.js',
     // 'lib/methods.js',

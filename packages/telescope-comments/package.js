@@ -25,6 +25,7 @@ Package.onUse(function (api) {
     'lib/parameters.js',
     'lib/helpers.js',
     'lib/custom_fields.js',
+    'lib/published_fields.js',
     // 'lib/routes.js'
   ], ['client', 'server']);
 

@@ -241,3 +241,5 @@ Users.schema = new SimpleSchema({
  * Attach schema to Meteor.users collection
  */
 Users.attachSchema(Users.schema);
+
+Telescope.subscriptions.preload("users.current");

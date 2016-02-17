@@ -27,7 +27,7 @@ Package.onUse(function (api) {
     // 'lib/modules.js',
     'lib/helpers.js',
     // 'lib/menus.js',
-    'lib/pubsub.js',
+    'lib/published_fields.js',
     // 'lib/methods.js',
     // 'lib/routes.js'
   ], ['client', 'server']);
@@ -75,7 +75,7 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    // 'lib/server/publications.js',
+    'lib/server/publications.js',
     // 'lib/server/create_user.js'
   ], ['server']);
 

@@ -19,7 +19,7 @@ const getPostsListUsers = posts => {
 
   userIds = _.unique(userIds);
 
-  return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.avatarProperties});
+  return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.publishedFields.list});
  
 };
 
@@ -51,16 +51,16 @@ const getSinglePostUsers = post => {
   // remove any duplicate IDs
   users = _.unique(users);
 
-  return Meteor.users.find({_id: {$in: users}}, {fields: Users.pubsub.publicProperties});
+  return Meteor.users.find({_id: {$in: users}}, {fields: Users.publishedFields.list});
 };
 
 // ------------------------------------- Publications -------------------------------- //
 
 /**
- * posts.list publication
+ * Publish a list of posts, along with the users corresponding to these posts
  * @param {Object} terms
  */
-Meteor.publish('posts.list', function(terms) {
+Meteor.publish('posts.list', function (terms) {
 
   this.unblock();
 
@@ -71,7 +71,7 @@ Meteor.publish('posts.list', function(terms) {
   
   Counts.publish(this, 'posts.list', Posts.find(find, options));
 
-  options.fields = Telescope.utils.arrayToFields(Posts.publicationFields.list);
+  options.fields = Posts.publishedFields.list;
 
   const posts = Posts.find(find, options);
   const users = getPostsListUsers(posts);
@@ -80,17 +80,17 @@ Meteor.publish('posts.list', function(terms) {
 });
 
 /**
- * posts.item publication
+ * Publish a single post, along with all relevant users
  * @param {Object} terms
  */
-Meteor.publish('posts.single', function(terms) {
+Meteor.publish('posts.single', function (terms) {
 
   check(terms, {_id: String});
 
   this.unblock();
 
   const currentUser = Meteor.users.findOne(this.userId);
-  const options = {fields: Telescope.utils.arrayToFields(Posts.publicationFields.single)};
+  const options = {fields: Posts.publishedFields.single};
   const post = Posts.find(terms, options);
   const users = getSinglePostUsers(post);
 

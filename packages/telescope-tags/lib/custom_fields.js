@@ -23,5 +23,5 @@ Posts.addField(
   }
 );
 
-Posts.publicationFields.list.push("categories");
-Posts.publicationFields.single.push("categories");
+Telescope.utils.addToFields(Posts.publishedFields.list, ["categories"]);
+Telescope.utils.addToFields(Posts.publishedFields.single, ["categories"]);

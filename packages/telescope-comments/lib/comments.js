@@ -51,7 +51,7 @@ Comments.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     optional: true,
-    public: true,
+    public: false,
   },
   /**
     The timestamp of the comment being posted. For now, comments are always created and posted at the same time
@@ -81,56 +81,6 @@ Comments.schema = new SimpleSchema({
   */
   htmlBody: {
     type: String,
-    optional: true,
-    public: true,
-  },
-  /**
-    The comment's base score (doesn't factor in comment age)
-  */
-  baseScore: {
-    type: Number,
-    decimal: true,
-    optional: true,
-    public: true,
-  },
-  /**
-    The comment's current score (factors in comment age)
-  */
-  score: {
-    type: Number,
-    decimal: true,
-    optional: true,
-    public: true,
-  },
-  /**
-    The number of upvotes the comment has received
-  */
-  upvotes: {
-    type: Number,
-    optional: true,
-    public: true,
-  },
-  /**
-    An array containing the `_id`s of upvoters
-  */
-  upvoters: {
-    type: [String],
-    optional: true,
-    public: true,
-  },
-  /**
-    The number of downvotes the comment has received
-  */
-  downvotes: {
-    type: Number,
-    optional: true,
-    public: true,
-  },
-  /**
-    An array containing the `_id`s of downvoters
-  */
-  downvoters: {
-    type: [String],
     optional: true,
     public: true,
   },

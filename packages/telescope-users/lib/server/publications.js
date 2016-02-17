@@ -1,86 +1,57 @@
-// accept either an ID or a slug
-Meteor.publish('singleUser', function(idOrSlug) {
-  
+/**
+ * Publish a single user
+ * @param {String} idOrSlug
+ */
+Meteor.publish('users.single', function (idOrSlug) {
+
   this.unblock();
 
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var options = Users.is.adminById(this.userId) ? {} : {fields: Users.pubsub.publicProperties};
-  if (user) {
-    return Meteor.users.find({_id: user._id}, options);
-  }
-  return [];
+  var options = Users.is.adminById(this.userId) ? {} : {fields: Users.publishedFields.public};
+
+  return user ? Meteor.users.find({_id: user._id}, options) : [];
+
 });
 
-Meteor.publish('userPosts', function(terms) {
+/**
+ * Publish the current user
+ */
+Meteor.publish('users.current', function () {
 
   this.unblock();
 
-  terms.currentUserId = this.userId; // add userId to terms
+  const user = Meteor.users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
+  return user || [];
 
-  var parameters = Posts.parameters.get(terms);
-  var posts = Posts.find(parameters.find, parameters.options);
-  return posts;
 });
 
-Meteor.publish('userUpvotedPosts', function(terms) {
+// // publish all users for admins to make autocomplete work
+// // TODO: find a better way
 
-  this.unblock();
+// Meteor.publish('allUsersAdmin', function() {
 
-  terms.currentUserId = this.userId; // add userId to terms
+//   this.unblock();
 
-  var parameters = Posts.parameters.get(terms);
-  var posts = Posts.find(parameters.find, parameters.options);
-  return posts;
-});
+//   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
+//   if (Users.is.adminById(this.userId)) {
+//     return Meteor.users.find(selector, {fields: Users.pubsub.avatarProperties});
+//   }
+//   return [];
+// });
 
-Meteor.publish('userDownvotedPosts', function(terms) {
+// // Publish all users to reactive-table (if admin)
+// // Limit, filter, and sort handled by reactive-table.
+// // https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
 
-  this.unblock();
+// ReactiveTable.publish("all-users", function() {
 
-  terms.currentUserId = this.userId; // add userId to terms
-
-  var parameters = Posts.parameters.get(terms);
-  var posts = Posts.find(parameters.find, parameters.options);
-  return posts;
-});
-
-// Publish the current user
-
-Meteor.publish('currentUser', function() {
-
-  this.unblock();
-
-  var user = Meteor.users.find({_id: this.userId}, {fields: Users.pubsub.hiddenProperties});
-  return user;
-});
-
-// publish all users for admins to make autocomplete work
-// TODO: find a better way
-
-Meteor.publish('allUsersAdmin', function() {
-
-  this.unblock();
-
-  var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
-  if (Users.is.adminById(this.userId)) {
-    return Meteor.users.find(selector, {fields: Users.pubsub.avatarProperties});
-  }
-  return [];
-});
-
-// Publish all users to reactive-table (if admin)
-// Limit, filter, and sort handled by reactive-table.
-// https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
-
-ReactiveTable.publish("all-users", function() {
-
-  this.unblock();
+//   this.unblock();
   
-  if(Users.is.adminById(this.userId)){
-    return Meteor.users;
-  } else {
-    return [];
-  }
-});
+//   if(Users.is.adminById(this.userId)){
+//     return Meteor.users;
+//   } else {
+//     return [];
+//   }
+// });

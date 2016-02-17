@@ -260,3 +260,11 @@ Telescope.getNestedProperty = function (obj, desc) {
 Telescope.utils.arrayToFields = function (fieldsArray) {
   return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
 };
+
+/**
+ * Add an array of fields to a Mongo fields specifier
+ * @param {Array} fieldsArray
+ */
+Telescope.utils.addToFields = function (fields, fieldsArray) {
+  fields = Object.assign(fields, Telescope.utils.arrayToFields(fieldsArray));
+};
