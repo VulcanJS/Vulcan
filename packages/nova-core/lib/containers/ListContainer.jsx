@@ -5,7 +5,8 @@ const ListContainer = React.createClass({
     component: React.PropTypes.func.isRequired,
     publication: React.PropTypes.string.isRequired,
     terms: React.PropTypes.object,
-    limit: React.PropTypes.number
+    limit: React.PropTypes.number,
+    joins: React.PropTypes.array
   },
 
   getDefaultProps: function() {
@@ -39,9 +40,37 @@ const ListContainer = React.createClass({
     const totalCount = Counts.get(this.props.publication);
 
     const cursor = this.props.collection.find(find, options);
+    let results = cursor.fetch();
+
+    // look for any specified joins
+    if (this.props.joins) {
+
+      // loop over each document in the results
+      results.map(doc => {
+
+        // loop over each join
+        this.props.joins.forEach(join => {
+
+          // get the property containing the id or ids
+          const joinProperty = doc[join.property];
+
+          // perform the join
+          if (Array.isArray(joinProperty)) { // join property is an array of ids
+            doc[join.joinAs] = join.collection.find({_id: {$in: joinProperty}}).fetch();
+          } else { // join property is a single id
+            doc[join.joinAs] = join.collection.findOne({_id: joinProperty});
+          }
+            
+        });
+
+        // return the updated document
+        return doc;
+
+      });
+    }
     
     return {
-      results: cursor.fetch(),
+      results: results,
       ready: subscription.ready(),
       count: cursor.count(),
       totalCount: totalCount,

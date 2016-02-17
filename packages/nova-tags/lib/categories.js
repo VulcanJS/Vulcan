@@ -84,3 +84,5 @@ Telescope.settings.collection.addField([
     }
   }
 ]);
+
+Telescope.subscriptions.preload("categories");

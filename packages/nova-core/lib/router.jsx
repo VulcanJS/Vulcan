@@ -1,3 +1,9 @@
+FlowRouter.extendPathWithQueryParams = (path, params, newQueryParams) => {
+  const current = FlowRouter.current();
+  const currentQueryParams = _.clone(current.queryParams);
+  return FlowRouter.path(path, params, _.extend(currentQueryParams, newQueryParams));
+};
+
 // FlowRouter.addToQueryArray = function (key, value) {
 //   var keyArray = FlowRouter.getQueryParam(key) || [];
 //   keyArray.push(value);
