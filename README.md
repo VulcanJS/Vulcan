@@ -39,7 +39,7 @@ These packages are necessary for Telescope to run.
 
 #### Optional Packages
 
-These packages are optional, although they might depend on each other. 
+These packages are optional, although they might depend on each other. Note that dependencies on non-core packages should be `weak` whenever possible. 
 
 - `posts`
 - `comments`
@@ -108,3 +108,4 @@ The current default “theme” is `base-components`.
 - i18n (waiting for [tapi18n](https://github.com/TAPevents/tap-i18n) to be 1.3-compatible).
 - Add simple stylesheet to make base theme a little less ugly.
 - Make base theme class names compatible with Vanilla Telescope.
+- Split off notifications package?

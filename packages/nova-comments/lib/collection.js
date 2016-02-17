@@ -138,3 +138,16 @@ Comments.schema = new SimpleSchema({
 // });
 
 Comments.attachSchema(Comments.schema);
+
+if (typeof Herald !== "undefined") {
+  Comments.addField({
+    fieldName: 'disableNotifications',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      autoform: {
+        omit: true
+      }
+    }
+  });
+}

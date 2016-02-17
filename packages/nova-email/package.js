@@ -18,6 +18,10 @@ Package.onUse(function (api) {
     'sacha:juice@0.1.4'
   ]);
 
+  api.use([
+    'telescope:users@0.25.7'
+  ], ['client', 'server'], {weak: true});
+
   api.addAssets([
     'lib/server/templates/emailTest.handlebars',
     'lib/server/templates/emailWrapper.handlebars'

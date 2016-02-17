@@ -13,13 +13,16 @@ Package.onUse(function (api) {
     'telescope:core@0.25.7'
   ]);
 
+  api.use([
+    'telescope:notifications@0.25.7'
+  ], ['client', 'server'], {weak: true});
+
   api.addFiles([
     // 'package-tap.i18n',
-    'lib/namespace.js',
+    'lib/collection.js',
     'lib/roles.js',
     'lib/config.js',
     'lib/permissions.js',
-    'lib/users.js',
     'lib/callbacks.js',
     'lib/helpers.js',
     'lib/published_fields.js',
@@ -28,7 +31,14 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/publications.js',
-    'lib/server/create_user.js'
+    'lib/server/create_user.js',
+    'lib/server/notifications/routes.js',
+    'lib/server/notifications/templates.js'
+  ], ['server']);
+
+  api.addAssets([
+    'lib/server/notifications/templates/emailAccountApproved.handlebars',
+    'lib/server/notifications/templates/emailNewUser.handlebars'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

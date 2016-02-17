@@ -71,3 +71,43 @@ function setPostedAt (post) {
   }
 }
 Telescope.callbacks.add("postEditAsync", setPostedAt);
+
+// notifications
+
+if (typeof Herald !== "undefined") {
+
+  // add new post notification callback on post submit
+  function postSubmitNotification (post) {
+
+    var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
+    var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
+    var notificationData = {
+      post: _.pick(post, '_id', 'userId', 'title', 'url')
+    };
+
+    // remove post author ID from arrays
+    adminIds = _.without(adminIds, post.userId);
+    notifiedUserIds = _.without(notifiedUserIds, post.userId);
+
+    if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
+      // if post is pending, only notify admins
+      Herald.createNotification(adminIds, {courier: 'newPendingPost', data: notificationData});
+    } else if (!!notifiedUserIds.length) {
+      // if post is approved, notify everybody
+      Herald.createNotification(notifiedUserIds, {courier: 'newPost', data: notificationData});
+    }
+
+  }
+  Telescope.callbacks.add("postSubmitAsync", postSubmitNotification);
+
+  function postApprovedNotification (post) {
+
+    var notificationData = {
+      post: _.pick(post, '_id', 'userId', 'title', 'url')
+    };
+
+    Herald.createNotification(post.userId, {courier: 'postApproved', data: notificationData});
+  }
+  Telescope.callbacks.add("postApproveAsync", postApprovedNotification);
+
+}

@@ -30,3 +30,16 @@ Comments.getAuthorName = function (comment) {
   }
 };
 Comments.helpers({getAuthorName: function () {return Comments.getAuthorName(this);}});
+
+Comments.getNotificationProperties = function (comment, post) {
+  var commentAuthor = Meteor.users.findOne(comment.userId);
+  var properties = {
+    profileUrl: commentAuthor && commentAuthor.getProfileUrl(true),
+    postUrl: Posts.getPageUrl(post, true),
+    authorName : Comments.getAuthorName(comment),
+    postTitle: post.title,
+    htmlBody: comment.htmlBody,
+    commentUrl: Comments.getPageUrl(comment, true)
+  };
+  return properties;
+};

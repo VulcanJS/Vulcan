@@ -17,12 +17,17 @@ Package.onUse(function (api) {
     'telescope:users@0.25.7'
   ]);
 
+  api.use([
+    'telescope:notifications@0.25.7'
+  ], ['client', 'server'], {weak: true});
+
   api.addFiles([
-    'lib/comments.js',
+    'lib/collection.js',
     'lib/methods.js',
     'lib/callbacks.js',
     'lib/views.js',
     'lib/parameters.js',
+    'lib/notifications.js',
     'lib/helpers.js',
     'lib/custom_fields.js',
     'lib/published_fields.js'
@@ -30,6 +35,13 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/publications.js',
+    'lib/server/notifications/routes.js',
+    'lib/server/notifications/templates.js'
+  ], ['server']);
+
+  api.addAssets([
+    'lib/server/notifications/templates/emailNewComment.handlebars',
+    'lib/server/notifications/templates/emailNewReply.handlebars'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

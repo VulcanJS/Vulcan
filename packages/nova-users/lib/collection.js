@@ -1,4 +1,10 @@
 /**
+ * Telescope Users namespace
+ * @namespace Users
+ */
+Users = Meteor.users;
+
+/**
  * Vote schema
  * @type {SimpleSchema}
  */
@@ -243,3 +249,62 @@ Users.schema = new SimpleSchema({
 Users.attachSchema(Users.schema);
 
 Telescope.subscriptions.preload("users.current");
+
+
+if (typeof Herald !== "undefined") {
+  // Add notifications options to user profile settings
+  Users.addField([
+    {
+      fieldName: 'telescope.notifications.users',
+      fieldSchema: {
+        label: 'New users',
+        type: Boolean,
+        optional: true,
+        defaultValue: false,
+        editableBy: ['admin'],
+        autoform: {
+          group: 'Email Notifications'
+        }
+      }
+    },
+    {
+      fieldName: 'telescope.notifications.posts',
+      fieldSchema: {
+        label: 'New posts',
+        type: Boolean,
+        optional: true,
+        defaultValue: false,
+        editableBy: ['admin', 'member'],
+        autoform: {
+          group: 'Email Notifications'
+        }
+      }
+    },
+    {
+      fieldName: 'telescope.notifications.comments',
+      fieldSchema: {
+        label: 'Comments on my posts',
+        type: Boolean,
+        optional: true,
+        defaultValue: true,
+        editableBy: ['admin', 'member'],
+        autoform: {
+          group: 'Email Notifications'
+        }
+      }
+    },
+    {
+      fieldName: 'telescope.notifications.replies',
+      fieldSchema: {
+        label: 'Replies to my comments',
+        type: Boolean,
+        optional: true,
+        defaultValue: true,
+        editableBy: ['admin', 'member'],
+        autoform: {
+          group: 'Email Notifications'
+        }
+      }
+    }
+  ]);
+}

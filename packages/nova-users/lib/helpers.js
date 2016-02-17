@@ -3,6 +3,24 @@
 ////////////////////
 
 /**
+ * Get a user
+ * @param {String} userOrUserId
+ */
+Users.getUser = function (userOrUserId) {
+  if (typeof userOrUserId === "undefined") {
+    if (!Meteor.user()) {
+      throw new Error();
+    } else {
+      return Meteor.user();
+    }
+  } else if (typeof userOrUserId === "string") {
+    return Meteor.users.findOne(userOrUserId);
+  } else {
+    return userOrUserId;
+  }
+};
+
+/**
  * Get a user's username (unique, no special characters or spaces)
  * @param {Object} user
  */
