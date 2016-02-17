@@ -1,6 +1,6 @@
 const Header = props => {
   
-  const Logo = Telescope.getComponent("Logo");
+  ({Logo, ListContainer, CategoriesList} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -13,9 +13,7 @@ const Header = props => {
         {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
       </div>
       <div className="nav">
-        <ul>
-          <li>Nav link</li>
-        </ul>
+        <ListContainer collection={Categories} publication="categories" component={CategoriesList} limit={0}/>
       </div>
     </header>
   )

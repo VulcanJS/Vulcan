@@ -29,6 +29,7 @@ Package.onUse(function (api) {
     'lib/parameters.js',
     'lib/views.js',
     'lib/helpers.js',
+    'lib/fields.js',
     // 'lib/modules.js',
     // 'lib/callbacks.js',
     // 'lib/methods.js',

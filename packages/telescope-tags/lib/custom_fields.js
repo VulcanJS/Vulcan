@@ -22,3 +22,6 @@ Posts.addField(
     }
   }
 );
+
+Posts.publicationFields.list.push("categories");
+Posts.publicationFields.single.push("categories");

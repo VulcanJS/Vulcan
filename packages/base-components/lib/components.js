@@ -20,3 +20,7 @@ Telescope.registerComponent("PostEdit", require('./posts/PostEdit.jsx'));
 
 Telescope.registerComponent("CommentItem", require('./comments/list/CommentItem.jsx'));
 Telescope.registerComponent("CommentList", require('./comments/list/CommentList.jsx'));
+
+// categories
+
+Telescope.registerComponent("CategoriesList", require('./categories/list/CategoriesList.jsx'));

@@ -112,6 +112,7 @@ telescope:lib@0.25.7
 telescope:posts@0.25.7
 telescope:search@0.25.7
 telescope:settings@0.25.7
+telescope:tags@0.25.7
 telescope:users@0.25.7
 templating@1.1.6-modules.8
 templating-tools@1.0.1-modules.8

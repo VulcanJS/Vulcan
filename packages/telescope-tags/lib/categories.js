@@ -47,22 +47,14 @@ Categories.schema = new SimpleSchema({
   }
 });
 
-Meteor.startup(function(){
-  Categories.internationalize();
-});
+// Meteor.startup(function(){
+//   Categories.internationalize();
+// });
 
 Categories.attachSchema(Categories.schema);
 
-Meteor.startup(function () {
-  Categories.allow({
-    insert: Users.is.adminById,
-    update: Users.is.adminById,
-    remove: Users.is.adminById
-  });
-});
 
-
-Settings.addField([
+Telescope.settings.collection.addField([
   {
     fieldName: 'categoriesBehavior',
     fieldSchema: {

@@ -14,7 +14,8 @@ Comments.schema = new SimpleSchema({
   */
   _id: {
     type: String,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The `_id` of the parent comment, if there is one
@@ -25,6 +26,7 @@ Comments.schema = new SimpleSchema({
     max: 500,
     editableBy: ["member", "admin"],
     optional: true,
+    public: true,
     autoform: {
       omit: true // never show this
     }
@@ -38,6 +40,7 @@ Comments.schema = new SimpleSchema({
     max: 500,
     editableBy: ["member", "admin"],
     optional: true,
+    public: true,
     autoform: {
       omit: true // never show this
     }
@@ -47,14 +50,16 @@ Comments.schema = new SimpleSchema({
   */
   createdAt: {
     type: Date,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The timestamp of the comment being posted. For now, comments are always created and posted at the same time
   */
   postedAt: {
     type: Date,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The comment body (Markdown)
@@ -63,6 +68,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     max: 3000,
     editableBy: ["member", "admin"],
+    public: true,
     autoform: {
       rows: 5,
       afFormGroup: {
@@ -75,7 +81,8 @@ Comments.schema = new SimpleSchema({
   */
   htmlBody: {
     type: String,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The comment's base score (doesn't factor in comment age)
@@ -83,7 +90,8 @@ Comments.schema = new SimpleSchema({
   baseScore: {
     type: Number,
     decimal: true,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The comment's current score (factors in comment age)
@@ -91,49 +99,56 @@ Comments.schema = new SimpleSchema({
   score: {
     type: Number,
     decimal: true,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The number of upvotes the comment has received
   */
   upvotes: {
     type: Number,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     An array containing the `_id`s of upvoters
   */
   upvoters: {
     type: [String],
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The number of downvotes the comment has received
   */
   downvotes: {
     type: Number,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     An array containing the `_id`s of downvoters
   */
   downvoters: {
     type: [String],
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The comment author's name
   */
   author: {
     type: String,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     Whether the comment is inactive. Inactive comments' scores gets recalculated less often
   */
   inactive: {
     type: Boolean,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     The post's `_id`
@@ -141,6 +156,7 @@ Comments.schema = new SimpleSchema({
   postId: {
     type: String,
     optional: true,
+    public: true,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     // editableBy: ["member", "admin"], // TODO: should users be able to set postId, but not modify it?
@@ -153,14 +169,16 @@ Comments.schema = new SimpleSchema({
   */
   userId: {
     type: String,
-    optional: true
+    optional: true,
+    public: true,
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site. 
   */
   isDeleted: {
     type: Boolean,
-    optional: true
+    optional: true,
+    public: true,
   }
 });
 

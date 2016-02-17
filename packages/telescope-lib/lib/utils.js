@@ -252,3 +252,11 @@ Telescope.getNestedProperty = function (obj, desc) {
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
 };
+
+/**
+ * Convert an array of fields to publish into a Mongo fields specifier
+ * @param {Array} fieldsArray
+ */
+Telescope.utils.arrayToFields = function (fieldsArray) {
+  return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
+};

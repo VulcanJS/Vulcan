@@ -15,7 +15,8 @@ Package.onUse(function (api) {
 
   api.addFiles([
     // 'package-tap.i18n',
-    'lib/vote.js'
+    'lib/vote.js',
+    'lib/custom_fields.js'
   ], ['client', 'server']);
 
   api.addFiles([

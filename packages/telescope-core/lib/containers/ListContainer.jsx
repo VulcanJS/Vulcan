@@ -23,12 +23,17 @@ const ListContainer = React.createClass({
   mixins: [ReactMeteorData],
   
   getMeteorData() {
-    const terms = {...this.props.terms, limit: this.state.limit};
-    const parameters = this.props.collection.parameters.get(terms);
-    const find = parameters.find;
-    const options = parameters.options;
-    options.limit = this.state.limit;
 
+    let terms = {...this.props.terms, limit: this.state.limit};
+    let find = {};
+    let options = {limit: this.state.limit}; 
+    
+    if (this.props.collection.parameters) {
+      const parameters = this.props.collection.parameters.get(terms);
+      find = parameters.find;
+      options = parameters.options;
+    }
+    
     const subscription = Meteor.subscribe(this.props.publication, terms);
 
     const totalCount = Counts.get(this.props.publication);

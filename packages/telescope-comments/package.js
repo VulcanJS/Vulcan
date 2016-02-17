@@ -13,6 +13,7 @@ Package.onUse(function (api) {
     'telescope:lib@0.25.7',
     // 'telescope:i18n@0.25.7',
     'telescope:settings@0.25.7',
+    'telescope:posts@0.25.7',
     'telescope:users@0.25.7'
   ]);
 
@@ -23,6 +24,7 @@ Package.onUse(function (api) {
     'lib/views.js',
     'lib/parameters.js',
     'lib/helpers.js',
+    'lib/custom_fields.js',
     // 'lib/routes.js'
   ], ['client', 'server']);
 

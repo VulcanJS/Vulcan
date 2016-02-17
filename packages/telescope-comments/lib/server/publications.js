@@ -13,8 +13,6 @@ Meteor.publish('comments.list', function(terms) {
   
   if(Users.can.viewById(this.userId)){
     var parameters = Comments.parameters.get(terms);
-    console.log(terms)
-    console.log(parameters)
     var comments = Comments.find(parameters.find, parameters.options);
   
     // if there are comments, find out which posts were commented on
