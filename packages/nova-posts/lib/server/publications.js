@@ -67,13 +67,13 @@ Meteor.publish('posts.list', function (terms) {
   const currentUser = Meteor.users.findOne(this.userId);
 
   terms.currentUserId = this.userId; // add currentUserId to terms
-  ({find, options} = Posts.parameters.get(terms));
+  ({selector, options} = Posts.parameters.get(terms));
   
-  Counts.publish(this, 'posts.list', Posts.find(find, options));
+  Counts.publish(this, 'posts.list', Posts.find(selector, options));
 
   options.fields = Posts.publishedFields.list;
 
-  const posts = Posts.find(find, options);
+  const posts = Posts.find(selector, options);
   const users = getPostsListUsers(posts);
 
   return Users.can.view(currentUser) ? [posts, users] : [];
@@ -86,8 +86,6 @@ Meteor.publish('posts.list', function (terms) {
 Meteor.publish('posts.single', function (terms) {
 
   check(terms, {_id: String});
-
-  
 
   const currentUser = Meteor.users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};

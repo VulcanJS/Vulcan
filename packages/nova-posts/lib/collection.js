@@ -202,6 +202,10 @@ Posts.schema = new SimpleSchema({
           };
         });
       }
+    },
+    join: {
+      joinAs: "user",
+      collection: "Users"
     }
   }
 });

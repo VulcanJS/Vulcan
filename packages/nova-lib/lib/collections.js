@@ -108,3 +108,19 @@ SimpleSchema.prototype.getProfileFields = function () {
   });
   return fields;
 };
+
+SimpleSchema.prototype.getJoins = function () {
+  const schema = this._schema;
+  const joins = [];
+  _.each(_.keys(schema), fieldName => {
+    var field = schema[fieldName];
+    if (field.join) {
+      joins.push({
+        property: fieldName,
+        joinAs: field.join.joinAs,
+        collection: field.join.collection
+      });
+    }
+  });
+  return joins;
+}

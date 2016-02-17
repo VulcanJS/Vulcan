@@ -8,16 +8,16 @@ function addCategoryParameter (parameters, terms) {
   if (cat) {
 
     var categoriesIds = [];
-    var find = {};
+    var selector = {};
 
     if (typeof cat === "string") { // cat is a string
-      find = {slug: cat};
+      selector = {slug: cat};
     } else if (Array.isArray(cat)) { // cat is an array
-      find = {slug: {$in: cat}};
+      selector = {slug: {$in: cat}};
     }
 
     // get all categories passed in terms
-    var categories = Categories.find(find).fetch();
+    var categories = Categories.find(selector).fetch();
     
     // for each category, add its ID and the IDs of its children to categoriesId array
     categories.forEach(function (category) {
@@ -25,7 +25,7 @@ function addCategoryParameter (parameters, terms) {
       categoriesIds = categoriesIds.concat(_.pluck(category.getChildren(), "_id"));
     });
 
-    parameters.find.categories = {$in: categoriesIds};
+    parameters.selector.categories = {$in: categoriesIds};
   }
   return parameters;
 }

@@ -17,7 +17,7 @@ Posts.views.add = function (viewName, viewFunction) {
  * Base parameters that will be common to all other view unless specific properties are overwritten
  */
 Posts.views.baseParameters = {
-  find: {
+  selector: {
     status: Posts.config.STATUS_APPROVED
   },
   options: {
@@ -57,7 +57,7 @@ Posts.views.add("best", function (terms) {
  */
 Posts.views.add("pending", function (terms) {
   return {
-    find: {
+    selector: {
       status: Posts.config.STATUS_PENDING
     },
     options: {sort: {createdAt: -1}},
@@ -70,7 +70,7 @@ Posts.views.add("pending", function (terms) {
  */
 Posts.views.add("rejected", function (terms) {
   return {
-    find: {
+    selector: {
       status: Posts.config.STATUS_REJECTED
     },
     options: {sort: {createdAt: -1}},
@@ -83,7 +83,7 @@ Posts.views.add("rejected", function (terms) {
  */
 Posts.views.add("scheduled", function (terms) {
   return {
-    find: {postedAt: {$gte: new Date()}},
+    selector: {postedAt: {$gte: new Date()}},
     options: {sort: {postedAt: -1}},
     showFuture: true
   };
@@ -94,7 +94,7 @@ Posts.views.add("scheduled", function (terms) {
  */
 Posts.views.add("userPosts", function (terms) {
   return {
-    find: {userId: terms.userId},
+    selector: {userId: terms.userId},
     options: {limit: 5, sort: {postedAt: -1}}
   };
 });
@@ -106,7 +106,7 @@ Posts.views.add("userUpvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
   return {
-    find: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
+    selector: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
   };
 });
@@ -119,7 +119,7 @@ Posts.views.add("userDownvotedPosts", function (terms) {
   var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");
   // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {
-    find: {_id: {$in: postsIds}},
+    selector: {_id: {$in: postsIds}},
     options: {limit: 5, sort: {postedAt: -1}}
   };
 });
@@ -127,7 +127,7 @@ Posts.views.add("userDownvotedPosts", function (terms) {
 
 Posts.views.add("test", function (terms) {
   return {
-    find: {
+    selector: {
       title: {$regex: "newsletter", $options: 'i'}
     },
     options: {sort: {sticky: -1, baseScore: -1}}

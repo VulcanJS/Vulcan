@@ -4,8 +4,6 @@
  */
 Meteor.publish('users.single', function (idOrSlug) {
 
-  
-
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
@@ -19,8 +17,6 @@ Meteor.publish('users.single', function (idOrSlug) {
  * Publish the current user
  */
 Meteor.publish('users.current', function () {
-
-  
 
   const user = Meteor.users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
   return user || [];

@@ -18,7 +18,11 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      public: true
+      public: true,
+      join: {
+        joinAs: "commentersArray",
+        collection: "Users"
+      }
     }
   }
 ]);

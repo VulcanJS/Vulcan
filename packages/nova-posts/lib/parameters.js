@@ -60,7 +60,7 @@ Telescope.callbacks.add("postsParameters", addViewParameter);
 // Add "after" and "before" properties to terms which can be used to limit posts in time. 
 function addTimeParameter (parameters, terms) {
 
-  if (typeof parameters.find.postedAt === "undefined") {
+  if (typeof parameters.selector.postedAt === "undefined") {
   
     var postedAt = {};
 
@@ -73,7 +73,7 @@ function addTimeParameter (parameters, terms) {
     }
 
     if (!_.isEmpty(postedAt)) {
-      parameters.find.postedAt = postedAt;
+      parameters.selector.postedAt = postedAt;
     }
 
   }
@@ -106,25 +106,25 @@ function hideFuturePosts (parameters, terms) {
 
   if (!parameters.showFuture) {
 
-    if (!!parameters.find.postedAt) {
+    if (!!parameters.selector.postedAt) {
     
-      if (!!parameters.find.postedAt.$lt) {
+      if (!!parameters.selector.postedAt.$lt) {
 
         // if postedAt.$lt is defined, use it or current date plus one hour, whichever is earlier in time
-        var lt = parameters.find.postedAt.$lt;
-        parameters.find.postedAt.$lt = lt < inOneHour ? lt : inOneHour;
+        var lt = parameters.selector.postedAt.$lt;
+        parameters.selector.postedAt.$lt = lt < inOneHour ? lt : inOneHour;
       
       } else {
 
         // if postedAt.$lt doesn't exist, use current date plus one hour
-       parameters.find.postedAt.$lt = inOneHour;
+       parameters.selector.postedAt.$lt = inOneHour;
 
       }
 
     } else {
 
       // if postedAt doesn't exist at all, set it to {$lt: now plus one hour}
-      parameters.find.postedAt = { $lt: inOneHour };
+      parameters.selector.postedAt = { $lt: inOneHour };
 
     }
 

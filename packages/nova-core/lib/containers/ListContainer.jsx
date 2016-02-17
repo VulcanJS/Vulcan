@@ -28,12 +28,14 @@ make the relevant data available separately.
 const ListContainer = React.createClass({
 
   propTypes: {
-    collection: React.PropTypes.object.isRequired,
-    component: React.PropTypes.func.isRequired,
-    publication: React.PropTypes.string.isRequired,
-    terms: React.PropTypes.object,
-    limit: React.PropTypes.number,
-    joins: React.PropTypes.array
+    collection: React.PropTypes.object.isRequired, // the collection to paginate
+    component: React.PropTypes.func.isRequired, // the component results will be passed to
+    publication: React.PropTypes.string.isRequired, // the publication to subscribe to
+    terms: React.PropTypes.object, // an object passed to the publication
+    selector: React.PropTypes.object, // the selector used in collection.find()
+    options: React.PropTypes.object, // the options used in collection.find()
+    limit: React.PropTypes.number, // the limit used to increase pagination
+    joins: React.PropTypes.array // joins to apply to the results
   },
 
   getDefaultProps: function() {
@@ -53,19 +55,14 @@ const ListContainer = React.createClass({
   getMeteorData() {
 
     let terms = {...this.props.terms, limit: this.state.limit};
-    let find = {};
-    let options = {limit: this.state.limit}; 
-    
-    // use query constructor if available
-    if (this.props.collection.parameters) {
-      ({find, options} = this.props.collection.parameters.get(terms))
-    }
+    let selector = this.props.selector;
+    let options = {...this.props.options, limit: this.state.limit}; 
     
     const subscription = Meteor.subscribe(this.props.publication, terms);
 
     const totalCount = Counts.get(this.props.publication);
 
-    const cursor = this.props.collection.find(find, options);
+    const cursor = this.props.collection.find(selector, options);
     let results = cursor.fetch();
 
     // look for any specified joins

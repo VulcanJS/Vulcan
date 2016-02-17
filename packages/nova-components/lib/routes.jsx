@@ -4,13 +4,16 @@ FlowRouter.route('/', {
   name: 'postDefault',
   action: function (params, queryParams) {
     ({AppContainer, ListContainer, PostList} = Telescope.components);
+    ({selector, options} = Posts.parameters.get(queryParams));
     ReactLayout.render(AppContainer, {content: 
       <ListContainer 
         collection={Posts} 
-        publication="posts.list" 
+        publication="posts.list"
+        selector={selector}
+        options={options}
         terms={queryParams} 
         component={PostList}
-        joins={Posts.joins.list}
+        joins={Posts.simpleSchema().getJoins()}
       />})
     // mount(App, {content: <PostListContainer {...queryParams}/>});
   }

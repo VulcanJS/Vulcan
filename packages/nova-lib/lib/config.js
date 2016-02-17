@@ -27,7 +27,8 @@ SimpleSchema.extendOptions({
   public: Match.Optional(Boolean), // public: true means the field is published freely
   profile: Match.Optional(Boolean), // profile: true means the field is shown on user profiles
   template: Match.Optional(String), // template used to display the field
-  autoform: Match.Optional(Object) // autoform placeholder
+  autoform: Match.Optional(Object), // autoform placeholder
+  join: Match.Optional(Object) // autoform placeholder
   // editableBy: Match.Optional(String)
 });
 

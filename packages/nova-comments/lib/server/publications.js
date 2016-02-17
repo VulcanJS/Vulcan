@@ -7,18 +7,16 @@ Comments._ensureIndex({parentCommentId: 1});
  */
 Meteor.publish('comments.list', function (terms) {
   
-  
-
   const currentUser = Meteor.users.findOne(this.userId);
 
   terms.currentUserId = this.userId; // add currentUserId to terms
-  ({find, options} = Comments.parameters.get(terms));
+  ({selector, options} = Comments.parameters.get(terms));
 
-  Counts.publish(this, 'comments.list', Comments.find(find, options));
+  Counts.publish(this, 'comments.list', Comments.find(selector, options));
 
   options.fields = Comments.publishedFields.list;
 
-  const comments = Comments.find(find, options);
+  const comments = Comments.find(selector, options);
   const posts = Posts.find({_id: {$in: _.pluck(comments.fetch(), 'postId')}}, {fields: Posts.publishedFields.list});
   const users = Meteor.users.find({_id: {$in: _.pluck(comments.fetch(), 'userId')}}, {fields: Users.publishedFields.list});
 

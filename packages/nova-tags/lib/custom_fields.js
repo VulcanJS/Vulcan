@@ -18,6 +18,10 @@ Posts.addField(
           });
           return categories;
         }
+      },
+      join: {
+        joinAs: "categoriesArray",
+        collection: "Categories"
       }
     }
   }

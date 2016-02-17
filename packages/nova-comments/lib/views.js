@@ -22,14 +22,14 @@ Comments.views.baseParameters = {
 
 Comments.views.add("postComments", function (terms) {
   return {
-    find: {postId: terms.postId},
+    selector: {postId: terms.postId},
     options: {limit: 0, sort: {score: -1, postedAt: -1}}
   };
 });
 
 Comments.views.add("userComments", function (terms) {
   return {
-    find: {userId: terms.userId},
+    selector: {userId: terms.userId},
     options: {sort: {postedAt: -1}}
   };
 });
