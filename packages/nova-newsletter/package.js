@@ -15,6 +15,10 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:core@0.25.7',
+    'telescope:posts@0.25.7',
+    'telescope:comments@0.25.7',
+    'telescope:users@0.25.7',
+    'telescope:email@0.25.7',
     'miro:mailchimp@1.1.0',
   ]);
 
@@ -25,15 +29,9 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.addFiles([
-    'package-tap.i18n',
+    // 'package-tap.i18n',
     'lib/newsletter.js'
   ], ['client', 'server']);
-
-  api.addFiles([
-    'lib/client/templates/newsletter_banner.html',
-    'lib/client/templates/newsletter_banner.js',
-    'lib/client/stylesheets/newsletter_banner.scss'
-  ], ['client']);
 
   api.addFiles([
     'lib/server/campaign.js',
@@ -43,13 +41,10 @@ Package.onUse(function (api) {
     'lib/server/templates.js'
   ], ['server']);
 
-  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  var languagesPaths = languages.map(function (language) {
-    return "i18n/"+language+".i18n.json";
-  });
-  api.addFiles(languagesPaths, ["client", "server"]);
+  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  // var languagesPaths = languages.map(function (language) {
+  //   return "i18n/"+language+".i18n.json";
+  // });
+  // api.addFiles(languagesPaths, ["client", "server"]);
 
-  api.export([
-    'resetNewsletterSchedule'
-  ]);
 });

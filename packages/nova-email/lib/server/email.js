@@ -35,18 +35,18 @@ Telescope.email.getTemplate = function (templateName) {
 Telescope.email.buildTemplate = function (htmlContent) {
 
   var emailProperties = {
-    secondaryColor: Settings.get('secondaryColor', '#444444'),
-    accentColor: Settings.get('accentColor', '#DD3416'),
-    siteName: Settings.get('title'),
-    tagline: Settings.get('tagline'),
+    secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
+    accentColor: Telescope.settings.get('accentColor', '#DD3416'),
+    siteName: Telescope.settings.get('title'),
+    tagline: Telescope.settings.get('tagline'),
     siteUrl: Telescope.utils.getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
     accountLink: Telescope.utils.getSiteUrl()+'account',
-    footer: Settings.get('emailFooter'),
-    logoUrl: Settings.get('logoUrl'),
-    logoHeight: Settings.get('logoHeight'),
-    logoWidth: Settings.get('logoWidth')
+    footer: Telescope.settings.get('emailFooter'),
+    logoUrl: Telescope.settings.get('logoUrl'),
+    logoHeight: Telescope.settings.get('logoHeight'),
+    logoWidth: Telescope.settings.get('logoWidth')
   };
 
   var emailHTML = Telescope.email.getTemplate("emailWrapper")(emailProperties);
@@ -63,8 +63,8 @@ Telescope.email.send = function(to, subject, html, text){
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
-  var from = Settings.get('defaultEmail', 'noreply@example.com');
-  var siteName = Settings.get('title', 'Telescope');
+  var from = Telescope.settings.get('defaultEmail', 'noreply@example.com');
+  var siteName = Telescope.settings.get('title', 'Telescope');
   subject = '['+siteName+'] '+subject;
 
   if (typeof text === 'undefined'){
@@ -102,7 +102,7 @@ Telescope.email.buildAndSend = function (to, subject, template, properties) {
 Meteor.methods({
   testEmail: function () {
     if(Users.is.adminById(this.userId)){
-      var email = Telescope.email.buildAndSend (Settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
+      var email = Telescope.email.buildAndSend (Telescope.settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
     }
   }
 });

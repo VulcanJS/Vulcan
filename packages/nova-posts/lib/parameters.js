@@ -99,37 +99,37 @@ function limitPosts (parameters, terms) {
 Telescope.callbacks.add("postsParameters", limitPosts);
 
 // hide future scheduled posts unless "showFuture" is set to true or postedAt is already defined
-function hideFuturePosts (parameters, terms) {
+// function hideFuturePosts (parameters, terms) {
 
-  // var now = new Date();
-  var inOneHour = moment().add(1, "hour").toDate();
+//   // var now = new Date();
+//   var inOneHour = moment().add(1, "hour").toDate();
 
-  if (!parameters.showFuture) {
+//   if (!parameters.showFuture) {
 
-    if (!!parameters.selector.postedAt) {
+//     if (!!parameters.selector.postedAt) {
     
-      if (!!parameters.selector.postedAt.$lt) {
+//       if (!!parameters.selector.postedAt.$lt) {
 
-        // if postedAt.$lt is defined, use it or current date plus one hour, whichever is earlier in time
-        var lt = parameters.selector.postedAt.$lt;
-        parameters.selector.postedAt.$lt = lt < inOneHour ? lt : inOneHour;
+//         // if postedAt.$lt is defined, use it or current date plus one hour, whichever is earlier in time
+//         var lt = parameters.selector.postedAt.$lt;
+//         parameters.selector.postedAt.$lt = lt < inOneHour ? lt : inOneHour;
       
-      } else {
+//       } else {
 
-        // if postedAt.$lt doesn't exist, use current date plus one hour
-       parameters.selector.postedAt.$lt = inOneHour;
+//         // if postedAt.$lt doesn't exist, use current date plus one hour
+//        parameters.selector.postedAt.$lt = inOneHour;
 
-      }
+//       }
 
-    } else {
+//     } else {
 
-      // if postedAt doesn't exist at all, set it to {$lt: now plus one hour}
-      parameters.selector.postedAt = { $lt: inOneHour };
+//       // if postedAt doesn't exist at all, set it to {$lt: now plus one hour}
+//       parameters.selector.postedAt = { $lt: inOneHour };
 
-    }
+//     }
 
-  }
+//   }
 
-  return parameters;
-}
-Telescope.callbacks.add("postsParameters", hideFuturePosts);
+//   return parameters;
+// }
+// Telescope.callbacks.add("postsParameters", hideFuturePosts);

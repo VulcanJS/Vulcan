@@ -42,7 +42,7 @@ Template.notifications_menu.helpers({
   menuType: function () {
     if (this.zone === "mobileNav") {
       return 'collapsible';
-    } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
+    } else if (Telescope.settings.get('navLayout', 'top-nav') === 'top-nav') {
       return 'dropdown';
     } else {
       return 'collapsible';

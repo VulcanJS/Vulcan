@@ -10,6 +10,6 @@ Meteor.startup(function () {
   });
 
   // disable all email notifications when "emailNotifications" is set to false
-  Herald.settings.overrides.email = !Settings.get('emailNotifications', true);
+  Herald.settings.overrides.email = !Telescope.settings.get('emailNotifications', true);
 
 });

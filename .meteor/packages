@@ -16,7 +16,9 @@ telescope:users
 telescope:posts
 telescope:comments
 
+telescope:newsletter
 telescope:search
+telescope:notifications
 
 # telescope:scoring
 
@@ -30,8 +32,6 @@ telescope:search
 # telescope:getting-started
 # telescope:invites
 # telescope:kadira
-# telescope:newsletter
-# telescope:notifications
 # telescope:pages
 # telescope:post-by-feed
 # telescope:prerender

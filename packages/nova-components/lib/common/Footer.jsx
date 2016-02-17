@@ -1,6 +1,6 @@
 const Footer = props => {
   return (
-    <div>footer</div>
+    <div><a href="http://telescopeapp.org" target="_blank">Powered By Telescope</a></div>
   )
 }
 

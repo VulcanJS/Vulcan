@@ -11,9 +11,16 @@ Package.onUse(function (api) {
 
   api.use([
     'telescope:core@0.25.7',
+    'telescope:email@0.25.7',
     'kestanous:herald@1.3.0',
     'kestanous:herald-email@0.5.0'
   ]);
+
+  api.use([
+    'telescope:posts@0.25.7',
+    'telescope:comments@0.25.7',
+    'telescope:settings@0.25.7',
+  ], ['client', 'server'], {weak: true});
 
   api.addAssets([
     'lib/server/templates/emailAccountApproved.handlebars',
@@ -31,24 +38,9 @@ Package.onUse(function (api) {
     'lib/custom_fields.js',
     'lib/notifications.js',
     'lib/callbacks.js',
-    'lib/modules.js',
     'lib/routes.js',
-    'package-tap.i18n'
+    // 'package-tap.i18n'
   ], ['client', 'server']);
-
-  api.addFiles([
-    'lib/client/templates/notification_item.html',
-    'lib/client/templates/notification_item.js',
-    'lib/client/templates/notifications_mark_as_read.html',
-    'lib/client/templates/notifications_mark_as_read.js',
-    'lib/client/templates/notification_new_comment.html',
-    'lib/client/templates/notification_new_reply.html',
-    'lib/client/templates/notification_post_approved.html',
-    'lib/client/templates/notifications_menu.html',
-    'lib/client/templates/notifications_menu.js',
-    'lib/client/templates/unsubscribe.html',
-    'lib/client/templates/unsubscribe.js',
-  ], ['client']);
 
   api.addFiles([
     'lib/server/notifications-server.js',
@@ -56,11 +48,11 @@ Package.onUse(function (api) {
     'lib/server/routes.js'
   ], ['server']);
 
-  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  var languagesPaths = languages.map(function (language) {
-    return "i18n/"+language+".i18n.json";
-  });
-  api.addFiles(languagesPaths, ["client", "server"]);
+  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  // var languagesPaths = languages.map(function (language) {
+  //   return "i18n/"+language+".i18n.json";
+  // });
+  // api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export([
     'Herald'

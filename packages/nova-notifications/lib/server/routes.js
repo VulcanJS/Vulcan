@@ -66,7 +66,7 @@ Picker.route('/email/account-approved/:id?', function(params, req, res, next) {
   var emailProperties = {
     profileUrl: Users.getProfileUrl(user),
     username: Users.getUserName(user),
-    siteTitle: Settings.get('title'),
+    siteTitle: Telescope.settings.get('title'),
     siteUrl: Telescope.utils.getSiteUrl()
   };
   var html = Telescope.email.getTemplate('emailAccountApproved')(emailProperties);
