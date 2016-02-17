@@ -62,7 +62,7 @@ const getSinglePostUsers = post => {
  */
 Meteor.publish('posts.list', function (terms) {
 
-  this.unblock();
+  // this.unblock(); // causes bug where publication returns 0 results  
 
   const currentUser = Meteor.users.findOne(this.userId);
 
@@ -87,7 +87,7 @@ Meteor.publish('posts.single', function (terms) {
 
   check(terms, {_id: String});
 
-  this.unblock();
+  
 
   const currentUser = Meteor.users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};

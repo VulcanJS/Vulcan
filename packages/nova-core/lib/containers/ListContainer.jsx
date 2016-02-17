@@ -1,3 +1,30 @@
+/*
+Example code:
+
+<ListContainer 
+  collection={Posts} 
+  publication="posts.list" 
+  terms={queryParams} 
+  component={PostList}
+  joins={[
+    {
+      property: "categories",
+      joinAs: "categoriesArray",
+      collection: Categories
+    },
+    {
+      property: "userId",
+      joinAs: "user",
+      collection: Users
+    }
+  ]}
+/>
+
+Note that the joins are client-side only, and expect you to
+make the relevant data available separately. 
+
+*/
+
 const ListContainer = React.createClass({
 
   propTypes: {
@@ -29,10 +56,9 @@ const ListContainer = React.createClass({
     let find = {};
     let options = {limit: this.state.limit}; 
     
+    // use query constructor if available
     if (this.props.collection.parameters) {
-      const parameters = this.props.collection.parameters.get(terms);
-      find = parameters.find;
-      options = parameters.options;
+      ({find, options} = this.props.collection.parameters.get(terms))
     }
     
     const subscription = Meteor.subscribe(this.props.publication, terms);
@@ -68,7 +94,7 @@ const ListContainer = React.createClass({
 
       });
     }
-    
+
     return {
       results: results,
       ready: subscription.ready(),

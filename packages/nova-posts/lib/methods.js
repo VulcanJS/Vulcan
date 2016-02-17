@@ -276,7 +276,7 @@ Meteor.methods({
     check(postId, String);
     check(sessionId, Match.Any);
 
-    this.unblock();
+    
 
     // only let users increment a post's view counter once per session
     var view = {_id: postId, userId: this.userId, sessionId: sessionId};

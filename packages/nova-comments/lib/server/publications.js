@@ -7,7 +7,7 @@ Comments._ensureIndex({parentCommentId: 1});
  */
 Meteor.publish('comments.list', function (terms) {
   
-  this.unblock();
+  
 
   const currentUser = Meteor.users.findOne(this.userId);
 
@@ -35,7 +35,7 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(terms, {_id: String});
 
-//   this.unblock();
+//   
   
 //   let commentIds = [terms._id];
 //   const childCommentIds = _.pluck(Comments.find({parentCommentId: terms._id}, {fields: {_id: 1}}).fetch(), '_id');
@@ -54,7 +54,7 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(commentId, String);
 
-//   this.unblock();
+//   
 
 //   if(Users.can.viewById(this.userId)){
 //     var comment = Comments.findOne(commentId);
@@ -69,7 +69,7 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(commentId, String);
 
-//   this.unblock();
+//   
     
 //   var userIds = [];
 

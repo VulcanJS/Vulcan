@@ -14,7 +14,7 @@ Meteor.methods({
         comments: Comments.find().count()
       };
     
-      this.unblock();
+      
       try {
         var result = HTTP.get(url, {
           params: params

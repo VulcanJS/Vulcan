@@ -4,7 +4,7 @@
  */
 Meteor.publish('users.single', function (idOrSlug) {
 
-  this.unblock();
+  
 
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
@@ -20,7 +20,7 @@ Meteor.publish('users.single', function (idOrSlug) {
  */
 Meteor.publish('users.current', function () {
 
-  this.unblock();
+  
 
   const user = Meteor.users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
   return user || [];
@@ -32,7 +32,7 @@ Meteor.publish('users.current', function () {
 
 // Meteor.publish('allUsersAdmin', function() {
 
-//   this.unblock();
+//   
 
 //   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
 //   if (Users.is.adminById(this.userId)) {
@@ -47,7 +47,7 @@ Meteor.publish('users.current', function () {
 
 // ReactiveTable.publish("all-users", function() {
 
-//   this.unblock();
+//   
   
 //   if(Users.is.adminById(this.userId)){
 //     return Meteor.users;
