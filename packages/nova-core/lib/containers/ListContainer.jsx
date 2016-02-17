@@ -10,12 +10,12 @@ Example code:
     {
       property: "categories",
       joinAs: "categoriesArray",
-      collection: Categories
+      collection: "Categories"
     },
     {
       property: "userId",
       joinAs: "user",
-      collection: Users
+      collection: "Users"
     }
   ]}
 />
@@ -79,12 +79,13 @@ const ListContainer = React.createClass({
 
           // get the property containing the id or ids
           const joinProperty = doc[join.property];
+          const collection = window[join.collection];
 
           // perform the join
           if (Array.isArray(joinProperty)) { // join property is an array of ids
-            doc[join.joinAs] = join.collection.find({_id: {$in: joinProperty}}).fetch();
+            doc[join.joinAs] = collection.find({_id: {$in: joinProperty}}).fetch();
           } else { // join property is a single id
-            doc[join.joinAs] = join.collection.findOne({_id: joinProperty});
+            doc[join.joinAs] = collection.findOne({_id: joinProperty});
           }
             
         });

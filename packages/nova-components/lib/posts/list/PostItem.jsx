@@ -1,14 +1,14 @@
 const PostItem = props => {
   
-  ({PostCategories} = Telescope.components);
+  ({PostCategories, PostItemCommenters} = Telescope.components);
 
   return (
     <div className="post">
       <h3 className="post-title"><a href={Posts.getLink(props)} target={Posts.getLinkTarget(props)}>{props.title}</a></h3>
       {props.categoriesArray ? <PostCategories categories={props.categoriesArray} /> : ""}
-      <p>{props.commentCount} comments</p>
+      <p>{Users.getDisplayName(props.user)}, {moment(props.postedAt).fromNow()}, {props.commentCount} comments</p>
       <a href={Posts.getEditUrl(props)}>Edit</a>
-      <p>{props.url}</p>
+      {props.commentersArray ? <PostItemCommenters commenters={props.commentersArray}/> : ""}
     </div>
   )
 };

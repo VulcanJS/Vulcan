@@ -29,6 +29,7 @@ Package.onUse(function (api) {
     'lib/helpers.js',
     'lib/published_fields.js',
     'lib/callbacks.js',
+    'lib/joins.js',
     'lib/methods.js'
   ], ['client', 'server']);
 

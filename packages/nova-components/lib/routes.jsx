@@ -10,18 +10,7 @@ FlowRouter.route('/', {
         publication="posts.list" 
         terms={queryParams} 
         component={PostList}
-        joins={[
-          {
-            property: "categories",
-            joinAs: "categoriesArray",
-            collection: Categories
-          },
-          {
-            property: "userId",
-            joinAs: "user",
-            collection: Users
-          }
-        ]}
+        joins={Posts.joins.list}
       />})
     // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
