@@ -12,7 +12,7 @@ Package.onUse(function (api) {
   var packages = [
     'meteor-base@1.0.1',
     'mongo',
-    // 'blaze-html-templates@1.0.1',
+    'blaze-html-templates@1.0.1',
     'jquery',
     'session',
     'tracker',
@@ -56,7 +56,6 @@ Package.onUse(function (api) {
     // 'fortawesome:fontawesome@4.5.0',
     // 'ccan:cssreset@1.0.0',
     // 'djedi:sanitize-html@1.11.2',
-    // 'dburles:collection-helpers@1.0.4',
     // 'jparker:gravatar@0.4.1',
     // 'sanjo:meteor-files-helpers@1.2.0_1',
     // 'cmather:handlebars-server@2.0.0',

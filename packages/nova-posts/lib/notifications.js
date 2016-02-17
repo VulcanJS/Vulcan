@@ -29,4 +29,4 @@ Telescope.notifications = Object.assign(Telescope.notifications, {
     emailTemplate: "emailPostApproved",
     onsiteTemplate: "notification_post_approved"
   }
-}
+});

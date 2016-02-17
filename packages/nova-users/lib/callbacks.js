@@ -139,3 +139,24 @@ function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }
 Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);
+
+if (Telescope.email) {
+
+  function adminUserCreationNotification (user) {
+    // send notifications to admins
+    var admins = Users.adminUsers();
+    admins.forEach(function(admin){
+      if (Users.getSetting(admin, "notifications.users", false)) {
+        var emailProperties = {
+          profileUrl: Users.getProfileUrl(user, true),
+          username: Users.getUserName(user)
+        };
+        var html = Telescope.email.getTemplate('emailNewUser')(emailProperties);
+        Telescope.email.send(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), Telescope.email.buildTemplate(html));
+      }
+    });
+    return user;
+  }
+  Telescope.callbacks.add("onCreateUser", adminUserCreationNotification);
+
+}
