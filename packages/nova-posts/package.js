@@ -29,8 +29,7 @@ Package.onUse(function (api) {
     'lib/helpers.js',
     'lib/published_fields.js',
     'lib/callbacks.js',
-    'lib/methods.js',
-    'lib/routes.jsx'
+    'lib/methods.js'
   ], ['client', 'server']);
 
   api.addFiles([

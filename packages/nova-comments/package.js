@@ -25,8 +25,7 @@ Package.onUse(function (api) {
     'lib/parameters.js',
     'lib/helpers.js',
     'lib/custom_fields.js',
-    'lib/published_fields.js',
-    'lib/routes.jsx'
+    'lib/published_fields.js'
   ], ['client', 'server']);
 
   api.addFiles([
