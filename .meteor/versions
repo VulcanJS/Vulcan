@@ -59,6 +59,7 @@ less@2.5.2-modules.8
 livedata@1.0.15
 localstorage@1.0.6-modules.8
 logging@1.0.9-modules.8
+matb33:collection-hooks@0.8.1
 mdg:validation-error@0.2.0
 meteor@1.1.11-modules.8
 meteor-base@1.0.1

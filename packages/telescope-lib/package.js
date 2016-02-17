@@ -41,7 +41,7 @@ Package.onUse(function (api) {
     'meteorhacks:picker@1.0.3',
     // 'kadira:dochead@1.4.0',
     'dburles:collection-helpers@1.0.4',
-    // 'matb33:collection-hooks@0.8.1',
+    'matb33:collection-hooks@0.8.1',
     // 'chuangbo:marked@0.3.5_1',
     // 'meteorhacks:fast-render@2.11.0',
     // 'meteorhacks:subs-manager@1.6.3',
@@ -106,20 +106,9 @@ Package.onUse(function (api) {
     // 'lib/custom_template_prefix.js'
   ], ['client', 'server']);
 
-  api.addFiles([
-    // 'lib/client/jquery.exists.js',
-    // 'lib/client/template_replacement.js'
-  ], ['client']);
 
   api.export([
-    'Telescope',
-    // '_',
-
-    // 'getTemplate',
-    // 'templates',
-
-    // 'themeSettings',
-    'AppContainer'
+    'Telescope'
   ]);
 
 });

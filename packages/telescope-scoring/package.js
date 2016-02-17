@@ -13,6 +13,8 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/scoring.js',
+    'lib/vote.js',
+    'lib/custom_fields.js'
   ], ['client','server']);
 
   api.addFiles([

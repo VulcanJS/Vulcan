@@ -25,6 +25,34 @@ This means that Nova doesn't lock you in with any specific rendering framework. 
 
 (OK, I lied. Nova does depend on React for now, but this dependency could in theory be removed in the future.)
 
+### Packages
+
+#### Core Packages
+
+These packages are necessary for Telescope to run. 
+
+- `lib`: utility functions used by the app; also handles all external packages.
+- `events`: event tracking.
+- `settings`: publish the `Settings` collection.
+- `i18n`
+- `core`: import previous core packages; define containers.
+
+#### Optional Packages
+
+These packages are optional, although they might depend on each other. 
+
+- `posts`
+- `comments`
+- `users`
+- `search`
+- `tags`
+- `vote`
+- `scoring`
+
+#### Theme Packages
+
+- `base-components`
+
 ### Files
 
 Nova tries to maintain a consistent file structure for its main packages:
