@@ -66,4 +66,17 @@ The current default “theme” is `base-components`.
 - Some `.js` files within packages are disabled.
 - Some code is commented. 
 - Telescope's module system will probably not be ported to Nova, since it encourages you to customize your theme manually anyway. 
-- This is obviously a work in progress! 
+- This is obviously a work in progress!
+
+### TODO
+
+- Flesh out the `base-components` theme with components for the most common elements.
+- Get rid of Blaze code.
+- Get rid of unused js code (menus, modules, etc.).
+- Refactor scheduled posts to use cron job (do in `master`?)
+- Forms/methods/operations/etc. (waiting for [React-Form](https://github.com/nicolaslopezj/meteor-react-form) to be 1.3-compatible).
+- Notifications.
+- Email (keep Spacebars for templates?).
+- i18n (waiting for [tapi18n](https://github.com/TAPevents/tap-i18n) to be 1.3-compatible).
+- Add simple stylesheet to make base theme a little less ugly.
+- Make base theme class names compatible with Vanilla Telescope.
