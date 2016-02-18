@@ -1,0 +1,1 @@
+Telescope.registerComponent("PostNewContainer", require('./containers/PostNewContainer.jsx'));

@@ -14,9 +14,10 @@ const ItemContainer = React.createClass({
   getMeteorData() {
 
     const subscription = Meteor.subscribe(this.props.publication, this.props.terms);
+    const collection = this.props.collection;
 
     return {
-      results: this.props.collection.findOne(this.props.terms)
+      results: collection.findOne(this.props.terms)
     };
   },
 

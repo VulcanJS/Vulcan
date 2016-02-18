@@ -9,13 +9,17 @@ Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
-  api.use(['telescope:lib@0.25.7']);
+  api.use([
+    'telescope:lib@0.25.7',
+    'tap:i18n@1.7.0'
+  ]);
 
   api.use(["session"], "client");
 
   api.addFiles(['i18n.js'], ['client', 'server']);
 
   api.export([
-    'i18n'
+    'i18n',
+    '__'
   ]);
 });

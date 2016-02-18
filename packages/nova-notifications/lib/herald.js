@@ -46,7 +46,6 @@ Meteor.startup(function () {
 
 });
 
-
 if (typeof Settings !== "undefined") {
   Settings.addField({
     fieldName: 'emailNotifications',

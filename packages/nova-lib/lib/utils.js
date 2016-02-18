@@ -268,3 +268,16 @@ Telescope.utils.arrayToFields = function (fieldsArray) {
 Telescope.utils.addToFields = function (fields, fieldsArray) {
   fields = Object.assign(fields, Telescope.utils.arrayToFields(fieldsArray));
 };
+
+// see http://stackoverflow.com/a/14058408/649299
+_.mixin({
+  compactObject : function(o) {
+     var clone = _.clone(o);
+     _.each(clone, function(v, k) {
+       if(!v) {
+         delete clone[k];
+       }
+     });
+     return clone;
+  }
+});

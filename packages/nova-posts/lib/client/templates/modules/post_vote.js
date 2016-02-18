@@ -26,7 +26,7 @@ Template.post_vote.events({
     e.preventDefault();
     if(!user){
       FlowRouter.go('signIn');
-      Messages.flash(i18n.t("please_log_in_first"), "info");
+      Messages.flash(__("please_log_in_first"), "info");
     } else if (user.hasUpvoted(post)) {
       Meteor.call('cancelUpvotePost', post._id, function(){
         Events.track("post upvote cancelled", {'_id': post._id});
@@ -43,7 +43,7 @@ Template.post_vote.events({
     e.preventDefault();
     if(!user){
       FlowRouter.go('signIn');
-      Messages.flash(i18n.t("please_log_in_first"), "info");
+      Messages.flash(__("please_log_in_first"), "info");
     }
     if (user.hasDownvoted(post)) {
       Meteor.call('cancelDownvotePost', post._id, function(){

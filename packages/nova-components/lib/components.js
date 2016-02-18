@@ -18,6 +18,7 @@ Telescope.registerComponent("PostCategories", require('./posts/list/PostCategori
 Telescope.registerComponent("PostItemCommenters", require('./posts/list/PostItemCommenters.jsx'));
 Telescope.registerComponent("Post", require('./posts/Post.jsx'));
 Telescope.registerComponent("PostEdit", require('./posts/PostEdit.jsx'));
+Telescope.registerComponent("PostNew", require('./posts/PostNew.jsx'));
 
 // comments
 

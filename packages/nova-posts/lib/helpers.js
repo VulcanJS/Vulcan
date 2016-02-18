@@ -104,7 +104,7 @@ Posts.checkForSameUrl = function (url) {
   var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
   if (typeof postWithSameLink !== 'undefined') {
-    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted'), postWithSameLink._id);
+    throw new Meteor.Error('603', __('this_link_has_already_been_posted'), postWithSameLink._id);
   }
 };
 

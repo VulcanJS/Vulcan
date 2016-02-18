@@ -4,13 +4,14 @@
  *
  */
 
+Posts.methods = {};
 /**
  * Insert a post in the database (note: optional post properties not listed here)
  * @param {Object} post - the post being inserted
  * @param {string} post.userId - the id of the user the post belongs to
  * @param {string} post.title - the post's title
  */
-Posts.submit = function (post) {
+Posts.methods.new = function (post) {
 
   var userId = post.userId, // at this stage, a userId is expected
       user = Users.findOne(userId);
@@ -19,7 +20,7 @@ Posts.submit = function (post) {
 
   // check that a title was provided
   if(!post.title)
-    throw new Meteor.Error(602, i18n.t('please_fill_in_a_title'));
+    throw new Meteor.Error(602, __('please_fill_in_a_title'));
 
   // check that there are no posts with the same URL
   if(!!post.url)
@@ -78,7 +79,7 @@ Posts.submit = function (post) {
  * @param {Object} modifier – the modifier object
  * @param {Object} post - the current post object
  */
-Posts.edit = function (postId, modifier, post) {
+Posts.methods.edit = function (postId, modifier, post) {
 
   if (typeof post === "undefined") {
     post = Posts.findOne(postId);
@@ -113,10 +114,14 @@ Meteor.methods({
    * @memberof Posts
    * @param {Object} post - the post being inserted
    */
-  submitPost: function(post){
+  'posts.new': function(post){
+
+    // remove any empty properties
+    post = _.compactObject(post); 
 
     check(post, Posts.simpleSchema());
 
+    console.log("// submitting post…")
     // required properties:
     // title
 
@@ -135,7 +140,7 @@ Meteor.methods({
 
     // check that user can post
     if (!user || !Users.can.post(user))
-      throw new Meteor.Error(601, i18n.t('you_need_to_login_or_be_invited_to_post_new_stories'));
+      throw new Meteor.Error(601, __('you_need_to_login_or_be_invited_to_post_new_stories'));
 
     // --------------------------- Rate Limiting -------------------------- //
 
@@ -148,11 +153,11 @@ Meteor.methods({
 
       // check that user waits more than X seconds between posts
       if(timeSinceLastPost < postInterval)
-        throw new Meteor.Error(604, i18n.t('please_wait')+(postInterval-timeSinceLastPost)+i18n.t('seconds_before_posting_again'));
+        throw new Meteor.Error(604, __('please_wait')+(postInterval-timeSinceLastPost)+__('seconds_before_posting_again'));
 
       // check that the user doesn't post more than Y posts per day
       if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
-        throw new Meteor.Error(605, i18n.t('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+i18n.t('posts_per_day'));
+        throw new Meteor.Error(605, __('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+__('posts_per_day'));
 
     }
 
@@ -169,7 +174,7 @@ Meteor.methods({
 
       var field = schema[fieldName];
       if (!Users.can.submitField(user, field)) {
-        throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+        throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
       }
 
     });
@@ -187,7 +192,7 @@ Meteor.methods({
     post.userIP = this.connection.clientAddress;
     post.userAgent = this.connection.httpHeaders["user-agent"];
 
-    return Posts.submit(post);
+    return Posts.methods.new(post);
   },
 
   /**
@@ -196,7 +201,7 @@ Meteor.methods({
    * @param {Object} modifier - the update modifier
    * @param {Object} postId - the id of the post being updated
    */
-  editPost: function (modifier, postId) {
+  'posts.edit': function (modifier, postId) {
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
     check(modifier, Match.OneOf({$set: Posts.simpleSchema()}, {$unset: Object}, {$set: Posts.simpleSchema(), $unset: Object}));
@@ -210,7 +215,7 @@ Meteor.methods({
 
     // check that user can edit document
     if (!user || !Users.can.edit(user, post)) {
-      throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_post'));
+      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_post'));
     }
 
     // go over each field and throw an error if it's not editable
@@ -221,17 +226,17 @@ Meteor.methods({
 
         var field = schema[fieldName];
         if (!Users.can.editField(user, field, post)) {
-          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
         }
 
       });
     });
 
-    return Posts.edit(postId, modifier, post);
+    return Posts.methods.edit(postId, modifier, post);
 
   },
 
-  approvePost: function(postId){
+  'posts.approve': function(postId){
 
     check(postId, String);
     
@@ -255,7 +260,7 @@ Meteor.methods({
     }
   },
 
-  rejectPost: function(postId){
+  'posts.reject': function(postId){
 
     check(postId, String);
     var post = Posts.findOne(postId);
@@ -271,7 +276,7 @@ Meteor.methods({
     }
   },
 
-  increasePostViews: function(postId, sessionId){
+  'posts.increaseViews': function(postId, sessionId){
 
     check(postId, String);
     check(sessionId, Match.Any);
@@ -287,7 +292,7 @@ Meteor.methods({
     }
   },
 
-  deletePostById: function(postId) {
+  'posts.deleteById': function(postId) {
 
     check(postId, String);
 
@@ -311,7 +316,7 @@ Meteor.methods({
 
   },
 
-  checkForDuplicates: function (url) {
+  'posts.checkForDuplicates': function (url) {
     Posts.checkForSameUrl(url);  
   }
 

@@ -28,6 +28,9 @@ Package.onUse(function (api) {
     'email',
     'aldeed:simple-schema@1.5.3',
 
+    'alt:react-accounts-ui',
+    'alt:react-accounts-unstyled',
+    
     // 'nicolaslopezj:mrf@0.1.1',
     // 'nicolaslopezj:mrf-material-ui@0.1.1',
 
@@ -35,7 +38,7 @@ Package.onUse(function (api) {
     // 'aldeed:http@0.2.2',
     // 'aldeed:autoform@5.8.1',
     // 'aldeed:template-extension@4.0.0',
-    // 'tap:i18n@1.7.0',
+    
     // 'fourseven:scss@3.4.1',
     // 'kadira:blaze-layout@2.3.0',
     'meteorhacks:picker@1.0.3',

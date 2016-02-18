@@ -22,7 +22,7 @@ AutoForm.hooks({
         // ------------------------------ Checks ------------------------------ //
 
         if (!Meteor.user()) {
-          Messages.flash(i18n.t('you_must_be_logged_in'), 'error');
+          Messages.flash(__('you_must_be_logged_in'), 'error');
           return false;
         }
 

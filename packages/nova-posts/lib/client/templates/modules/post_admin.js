@@ -31,7 +31,7 @@ Template.post_admin.events({
           console.log(error);
           Messages.flash(error.reason, 'error');
         } else {
-          Messages.flash(i18n.t('your_post_has_been_deleted'), 'success');
+          Messages.flash(__('your_post_has_been_deleted'), 'success');
         }
       });
     }

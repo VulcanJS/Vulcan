@@ -17,7 +17,7 @@ var getMenuItems = function () {
 
 Template.views_menu.helpers({
   menuLabel: function () {
-    return i18n.t("view");
+    return __("view");
   },
   menuItems: function () {
     return getMenuItems();

@@ -11,6 +11,8 @@ aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.1-modules.8
+alt:react-accounts-ui@0.0.3
+alt:react-accounts-unstyled@0.0.1
 arillo:flow-router-helpers@0.5.1
 autoupdate@1.2.5-modules.8
 babel-compiler@6.4.0-modules.8
@@ -25,6 +27,7 @@ boilerplate-generator@1.0.5-modules.8
 caching-compiler@1.0.1-modules.8
 caching-html-compiler@1.0.3-modules.8
 callback-hook@1.0.5-modules.8
+cfs:http-methods@0.0.30
 check@1.1.1-modules.8
 coffeescript@1.0.12-modules.8
 cosmos:browserify@0.9.3
@@ -72,6 +75,7 @@ meteor-platform@1.2.3
 meteorhacks:meteorx@1.0.2
 meteorhacks:picker@1.0.3
 meteorhacks:unblock@1.1.0
+meteorspark:util@0.2.0
 minifiers-js@1.1.8-modules.8
 minimongo@1.0.11-modules.8
 miro:mailchimp@1.1.0
@@ -112,10 +116,12 @@ spacebars@1.0.8-modules.8
 spacebars-compiler@1.0.8-modules.8
 srp@1.0.5-modules.8
 standard-app-packages@1.0.6
+tap:i18n@1.7.0
 telescope:comments@0.25.7
 telescope:core@0.25.7
 telescope:email@0.25.7
 telescope:events@0.25.7
+telescope:i18n@0.25.7
 telescope:lib@0.25.7
 telescope:newsletter@0.25.7_1
 telescope:notifications@0.25.7

@@ -19,6 +19,24 @@ FlowRouter.route('/', {
   }
 });
 
+// FlowRouter.route('/post/new', {
+//   name: 'postNew',
+//   action: function (params, queryParams) {
+//     ({ItemContainer} = Telescope.components);
+//     ReactLayout.render(AppContainer, {content: <ItemContainer/>})
+//     // mount(App, {content: <PostListContainer {...queryParams}/>});
+//   }
+// });
+
+FlowRouter.route('/post/new', {
+  name: 'postNew',
+  action: function (params, queryParams) {
+    ({AppContainer, PostNewContainer} = Telescope.components);
+    ReactLayout.render(AppContainer, {content: <PostNewContainer />})
+    // mount(App, {content: <PostListContainer {...queryParams}/>});
+  }
+});
+
 FlowRouter.route('/post/:_id', {
   name: 'postPage',
   action: function (params, queryParams) {

@@ -6,9 +6,9 @@ const Layout = props => {
   return (
     <div>
       <Header/>
-      <a href={FlowRouter.path("newPost")}>New Post</a>
       <hr/>
       {props.children}
+      <hr/>
       <Footer/>
     </div>
   )
