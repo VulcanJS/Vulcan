@@ -6,7 +6,7 @@ const PostList = props => {
     return (
       <div className="postList">
         <PostViews />
-        {props.results.map(post => <PostItem {...post} key={post._id}/>)}
+        {props.results.map(post => <PostItem post={post} currentUser={props.currentUser} key={post._id}/>)}
         {props.hasMore ? (props.ready ? <LoadMore {...props}/> : <PostsLoading/>) : <NoMorePosts/>}
       </div>
     )
