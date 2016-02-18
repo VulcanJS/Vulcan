@@ -106,6 +106,7 @@ The current default “theme” is `base-components`.
 
 #### Components & Themes
 
+- ~~Comment threads~~
 - Flesh out the `base-components` theme with components for the most common elements.
 - Add simple stylesheet to make base theme a little less ugly.
 - Make base theme class names compatible with Vanilla Telescope.
@@ -113,8 +114,8 @@ The current default “theme” is `base-components`.
 #### Forms & Methods
 
 - ~~posts.new~~
-- posts.edit
-- comments.new
+- ~~posts.edit~~
+- ~~comments.new~~
 - comments.edit
 
 #### Other Stuff
