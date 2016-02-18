@@ -9,6 +9,7 @@ Comments.publishedFields.list = Telescope.utils.arrayToFields([
   "parentCommentId",
   "topLevelCommentId",
   "postedAt",
+  "body",
   "htmlBody",
   "author",
   "inactive",

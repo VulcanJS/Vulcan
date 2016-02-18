@@ -6,26 +6,29 @@ const Textarea = FRC.Textarea;
 const CommentNew = React.createClass({
 
   propTypes: {
-    type: React.PropTypes.string, // "comment" or "reply"
     postId: React.PropTypes.string.isRequired,
-    parentCommentId: React.PropTypes.string,
-    topLevelCommentId: React.PropTypes.string,
-    submitCallback: React.PropTypes.func // a callback to execute when the submission has been successful
+    submitCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
+    type: React.PropTypes.string, // "comment" or "reply"
+    comment: React.PropTypes.object, // if reply, the comment being replied to
+    parentCommentId: React.PropTypes.string, // if reply
+    topLevelCommentId: React.PropTypes.string // if reply
   },
 
   submitComment(data) {
     
     data = {
       ...data, 
-      postId: this.props.postId, 
-      parentCommentId: this.props._id
+      postId: this.props.comment.postId, 
+      parentCommentId: this.props.comment._id
     }
 
-    // if current comment has a parent use its topLevelCommentId; if it doesn't then it *is* the top level comment
-    data.topLevelCommentId = this.props.parentCommentId ? this.props.topLevelCommentId : this.props._id;
+    // if comment being replied to has a parent use its topLevelCommentId; if it doesn't then it *is* the top level comment
+    data.topLevelCommentId = this.props.comment.parentCommentId ? this.props.comment.topLevelCommentId : this.props.comment._id;
 
     Meteor.call("comments.new", data, (error, result) => {
-      if (result) {
+      if (error) {
+        // handle error
+      } else {
         this.props.submitCallback();
       }
     });

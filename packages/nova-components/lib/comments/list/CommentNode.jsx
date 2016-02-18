@@ -2,6 +2,7 @@ const CommentNode = React.createClass({
 
   propTypes: {
     comment: React.PropTypes.object.isRequired, // the current comment
+    currentUser: React.PropTypes.object, // the current user
   },
 
   renderComment(comment) {
@@ -9,7 +10,7 @@ const CommentNode = React.createClass({
     ({CommentItem} = Telescope.components);
 
     return (
-      <CommentItem {...comment} key={comment._id}/>
+      <CommentItem comment={comment} key={comment._id} currentUser={this.props.currentUser}/>
     )
   },
 
@@ -19,7 +20,7 @@ const CommentNode = React.createClass({
 
     return (
       <div className="comment-children">
-        {children.map(comment => <CommentNode comment={comment} key={comment._id}/>)}
+        {children.map(comment => <CommentNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
       </div>
     )
   },

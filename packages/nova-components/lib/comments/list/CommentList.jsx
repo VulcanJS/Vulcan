@@ -5,7 +5,7 @@ const CommentList = props => {
   if (!!props.results.length) {
     return (
       <div className="commentList">
-        {props.results.map(comment => <CommentNode comment={comment} key={comment._id}/>)}
+        {props.results.map(comment => <CommentNode comment={comment} key={comment._id} currentUser={props.currentUser}/>)}
         {props.hasMore ? (props.ready ? <LoadMore {...props}/> : <PostsLoading/>) : <NoMorePosts/>}
       </div>
     )

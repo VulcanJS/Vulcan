@@ -1,7 +1,15 @@
 const CommentItem = React.createClass({
 
+  propTypes: {
+    comment: React.PropTypes.object.isRequired, // the current comment
+    currentUser: React.PropTypes.object, // the current user
+  },
+
   getInitialState() {
-    return {showReply: false};
+    return {
+      showReply: false,
+      showEdit: false
+    };
   },
 
   showReply(event) {
@@ -14,27 +22,69 @@ const CommentItem = React.createClass({
     this.setState({showReply: false});
   },
 
+  replyCallback() {
+    this.setState({showReply: false});
+  },
+
+  showEdit(event) {
+    event.preventDefault();
+    this.setState({showEdit: true});
+  },
+  
+  cancelEdit(event) {
+    event.preventDefault();
+    this.setState({showEdit: false});
+  },
+
+  editCallback() {
+    this.setState({showEdit: false});
+  },
+
+  renderComment() {
+    const htmlBody = {__html: this.props.comment.htmlBody};
+
+    return (
+      <div dangerouslySetInnerHTML={htmlBody}></div>
+    )
+  },
+
   renderReply() {
     
     ({CommentNew} = Telescope.components);
 
     return (
       <div className="comment-reply">
-        <CommentNew type="reply" submitCallback={this.cancelReply} {...this.props} />
+        <CommentNew comment={this.props.comment} submitCallback={this.replyCallback} type="reply" />
         <a href="#" onClick={this.cancelReply}>Cancel</a>
       </div>
     )
   },
 
-  render() {
+  renderEdit() {
 
-    const htmlBody = {__html: this.props.htmlBody};
+    ({CommentEdit}  = Telescope.components);
+    
     return (
-      <li className="comment">
-        <div dangerouslySetInnerHTML={htmlBody}></div>
-        <a href="#" onClick={this.showReply}>Reply</a>
+      <CommentEdit comment={this.props.comment} submitCallback={this.editCallback}/>
+    )
+  },
+
+  renderActions() {
+    return (
+      <ul>
+        <li><a href="#" onClick={this.showReply}>Reply</a></li>
+        {Users.can.edit(this.props.currentUser, this.props.comment) ? <li><a href="#" onClick={this.showEdit}>Edit</a></li> : ""}
+      </ul>
+    )
+  },
+
+  render() {
+    return (
+      <div className="comment">
+        {this.state.showEdit ? this.renderEdit() : this.renderComment()}
+        {this.renderActions()}
         {this.state.showReply ? this.renderReply() : ""}
-      </li>
+      </div>
     )
   }
 

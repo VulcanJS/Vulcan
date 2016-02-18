@@ -26,6 +26,7 @@ Telescope.registerComponent("CommentItem", require('./comments/list/CommentItem.
 Telescope.registerComponent("CommentList", require('./comments/list/CommentList.jsx'));
 Telescope.registerComponent("CommentNode", require('./comments/list/CommentNode.jsx'));
 Telescope.registerComponent("CommentNew", require('./comments/list/CommentNew.jsx'));
+Telescope.registerComponent("CommentEdit", require('./comments/list/CommentEdit.jsx'));
 
 // categories
 

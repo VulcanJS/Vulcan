@@ -3,7 +3,7 @@ const PostItem = props => {
   ({PostCategories, PostItemCommenters} = Telescope.components);
 
   return (
-    <div className="post">
+    <div className="post" style={{borderBottom: "2px solid #eee", paddingBottom: "10px", marginBottom: "10px"}}>
       <h3 className="post-title"><a href={Posts.getLink(props)} target={Posts.getLinkTarget(props)}>{props.title}</a></h3>
       {props.categoriesArray ? <PostCategories categories={props.categoriesArray} /> : ""}
       <p>{Users.getDisplayName(props.user)}, {moment(props.postedAt).fromNow()}, {props.commentCount} comments</p>

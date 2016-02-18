@@ -116,7 +116,7 @@ The current default “theme” is `base-components`.
 - ~~posts.new~~
 - ~~posts.edit~~
 - ~~comments.new~~
-- comments.edit
+- ~~comments.edit~~
 
 #### Other Stuff
 
