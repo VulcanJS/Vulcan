@@ -1,6 +1,6 @@
 const Post = (props) => {
   
-  ({ListContainer, CommentList} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew} = Telescope.components);
 
   const htmlBody = {__html: props.htmlBody};
 
@@ -21,7 +21,10 @@ const Post = (props) => {
           terms={{postId: props._id, view: "postComments"}} 
           component={CommentList} 
           limit={0}
+          parentProperty="parentCommentId"
         />
+        <h4>New Comment:</h4>
+        <CommentNew type="comment" postId={props._id}/>
       </div>
 
     </div>

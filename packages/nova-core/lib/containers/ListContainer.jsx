@@ -35,7 +35,8 @@ const ListContainer = React.createClass({
     selector: React.PropTypes.object, // the selector used in collection.find()
     options: React.PropTypes.object, // the options used in collection.find()
     limit: React.PropTypes.number, // the limit used to increase pagination
-    joins: React.PropTypes.array // joins to apply to the results
+    joins: React.PropTypes.array, // joins to apply to the results
+    parentProperty: React.PropTypes.string // if provided, use to generate tree
   },
 
   getDefaultProps: function() {
@@ -93,6 +94,11 @@ const ListContainer = React.createClass({
       });
     }
     
+    // transform list into tree
+    if (this.props.parentProperty) {
+      results = Telescope.utils.unflatten(results, "_id", this.props.parentProperty);
+    }
+
     return {
       results: results,
       ready: subscription.ready(),
