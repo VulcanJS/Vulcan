@@ -1,16 +1,14 @@
-const Formsy = require('formsy-react');
-const FRC = require('formsy-react-components');
+// const Formsy = require('formsy-react');
+// const FRC = require('formsy-react-components');
 
-// import Formsy from 'formsy-react';
-// import FRC from 'formsy-react-components';
+import Formsy from 'formsy-react';
+import FRC from 'formsy-react-components';
 
 const Checkbox = FRC.Checkbox;
 const CheckboxGroup = FRC.CheckboxGroup;
 const Input = FRC.Input;
 const RadioGroup = FRC.RadioGroup;
-const Row = FRC.Row;
 const Select = FRC.Select;
-const File = FRC.File;
 const Textarea = FRC.Textarea;
 
 const PostNew = React.createClass({

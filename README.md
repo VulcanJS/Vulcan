@@ -98,14 +98,28 @@ The current default “theme” is `base-components`.
 
 ### TODO
 
-- Flesh out the `base-components` theme with components for the most common elements.
+#### Clean Up
+
+- ~~Split off notifications package~~
+- ~~Get rid of unused js code (menus, modules, etc.).~~
 - Get rid of Blaze code.
-- Get rid of unused js code (menus, modules, etc.).
-- Refactor scheduled posts to use cron job (do in `master`?)
-- Forms/methods/operations/etc. (waiting for [React-Form](https://github.com/nicolaslopezj/meteor-react-form) to be 1.3-compatible).
-- Notifications.
-- Email (keep Spacebars for templates?).
-- i18n (waiting for [tapi18n](https://github.com/TAPevents/tap-i18n) to be 1.3-compatible).
+
+#### Components & Themes
+
+- Flesh out the `base-components` theme with components for the most common elements.
 - Add simple stylesheet to make base theme a little less ugly.
 - Make base theme class names compatible with Vanilla Telescope.
-- Split off notifications package?
+
+#### Forms & Methods
+
+- ~~posts.new~~
+- posts.edit
+- comments.new
+- comments.edit
+
+#### Other Stuff
+
+- Notifications.
+- Email (keep Spacebars for templates?).
+- Refactor scheduled posts to use cron job (do in `master`?)
+- i18n (waiting for [tapi18n](https://github.com/TAPevents/tap-i18n) to be 1.3-compatible).
