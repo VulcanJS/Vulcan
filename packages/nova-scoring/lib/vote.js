@@ -91,39 +91,4 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
 
   }
 
-}
-
-Meteor.methods({
-  upvotePost: function (postId) {
-    check(postId, String);
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
-  },
-  downvotePost: function (postId) {
-    check(postId, String);
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
-  },
-  cancelUpvotePost: function (postId) {
-    check(postId, String);
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
-  },
-  cancelDownvotePost: function (postId) {
-    check(postId, String);
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");
-  },
-  upvoteComment: function (commentId) {
-    check(commentId, String);
-    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "upvote");
-  },
-  downvoteComment: function (commentId) {
-    check(commentId, String);
-    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "downvote");
-  },
-  cancelUpvoteComment: function (commentId) {
-    check(commentId, String);
-    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelUpvote");
-  },
-  cancelDownvoteComment: function (commentId) {
-    check(commentId, String);
-    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelDownvote");
-  }
-});
+};

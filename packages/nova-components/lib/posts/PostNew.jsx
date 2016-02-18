@@ -58,6 +58,7 @@ const PostNew = React.createClass({
             label="Body"
             type="text"
           />
+          {/*
           <CheckboxGroup
             name="categories"
             value=""
@@ -65,6 +66,7 @@ const PostNew = React.createClass({
             type="text"
             options={categoriesOptions}
           />
+          */}
         <button type="submit" >Submit</button>
       </Formsy.Form>
       </div>

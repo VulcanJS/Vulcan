@@ -1,7 +1,7 @@
 // ------------------------------------- Posts -------------------------------- //
 
 FlowRouter.route('/', {
-  name: 'postDefault',
+  name: 'posts.list',
   action: function (params, queryParams) {
     ({AppContainer, ListContainer, PostList} = Telescope.components);
     ({selector, options} = Posts.parameters.get(queryParams));
@@ -28,8 +28,8 @@ FlowRouter.route('/', {
 //   }
 // });
 
-FlowRouter.route('/post/new', {
-  name: 'postNew',
+FlowRouter.route('/posts/new', {
+  name: 'posts.new',
   action: function (params, queryParams) {
     ({AppContainer, PostNewContainer} = Telescope.components);
     ReactLayout.render(AppContainer, {content: <PostNewContainer />})
@@ -37,8 +37,8 @@ FlowRouter.route('/post/new', {
   }
 });
 
-FlowRouter.route('/post/:_id', {
-  name: 'postPage',
+FlowRouter.route('/posts/:_id', {
+  name: 'posts.single',
   action: function (params, queryParams) {
     ({AppContainer, ItemContainer, Post} = Telescope.components);
     ReactLayout.render(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={Post}/>})
@@ -46,8 +46,8 @@ FlowRouter.route('/post/:_id', {
   }
 });
 
-FlowRouter.route('/post/:_id/edit', {
-  name: 'postEdit',
+FlowRouter.route('/posts/:_id/edit', {
+  name: 'posts.edit',
   action: function (params, queryParams) {
     ({AppContainer, ItemContainer, Post} = Telescope.components);
     ReactLayout.render(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={PostEdit}/>})

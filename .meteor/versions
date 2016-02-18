@@ -29,6 +29,7 @@ caching-html-compiler@1.0.3-modules.8
 callback-hook@1.0.5-modules.8
 cfs:http-methods@0.0.30
 check@1.1.1-modules.8
+chuangbo:marked@0.3.5_1
 coffeescript@1.0.12-modules.8
 cosmos:browserify@0.9.3
 dburles:collection-helpers@1.0.4
@@ -41,6 +42,7 @@ ddp-rate-limiter@1.0.1-modules.8
 ddp-server@1.2.3-modules.8
 deps@1.0.9
 diff-sequence@1.0.2-modules.8
+djedi:sanitize-html@1.11.2
 ecmascript@0.4.0-modules.8
 ecmascript-runtime@0.2.7-modules.8
 ejson@1.0.8-modules.8
@@ -92,6 +94,7 @@ oauth@1.1.7-modules.8
 oauth1@1.1.6-modules.8
 oauth2@1.1.6-modules.8
 observe-sequence@1.0.8-modules.8
+ongoworks:speakingurl@6.0.0
 ordered-dict@1.0.4
 percolatestudio:synced-cron@1.1.0
 promise@0.5.2-modules.8

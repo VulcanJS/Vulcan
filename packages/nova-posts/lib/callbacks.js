@@ -51,19 +51,11 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
  * Increment the user's post count and upvote the post
  */
 function afterPostSubmitOperations (post) {
-  console.log(this)
   var userId = post.userId;
   Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
   return post;
 }
 Telescope.callbacks.add("postSubmitAsync", afterPostSubmitOperations);
-
-function upvoteOwnPost (post) {
-  var postAuthor = Meteor.users.findOne(post.userId);
-  Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
-  return post;
-}
-Telescope.callbacks.add("postSubmitAsync", upvoteOwnPost);
 
 function setPostedAt (post) {
   if (post.isApproved() && !post.postedAt) {
@@ -72,7 +64,20 @@ function setPostedAt (post) {
 }
 Telescope.callbacks.add("postEditAsync", setPostedAt);
 
-// notifications
+// ------------------------------------- Votes -------------------------------- //
+
+if (typeof Telescope.operateOnItem !== "undefined") {
+
+  function upvoteOwnPost (post) {
+    var postAuthor = Meteor.users.findOne(post.userId);
+    Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
+    return post;
+  }
+  Telescope.callbacks.add("postSubmitAsync", upvoteOwnPost);
+
+}
+
+// ------------------------------------- Notifications -------------------------------- //
 
 if (typeof Herald !== "undefined") {
 

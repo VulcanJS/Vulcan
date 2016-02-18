@@ -1,9 +1,9 @@
-
+Comments.methods = {};
 // ------------------------------------------------------------------------------------------- //
 // -------------------------------------- Submit Comment ------------------------------------- //
 // ------------------------------------------------------------------------------------------- //
 
-Comments.submit = function (comment) {
+Comments.methods.new = function (comment) {
 
   var userId = comment.userId; // at this stage, a userId is expected
 
@@ -45,7 +45,7 @@ Comments.submit = function (comment) {
   return comment;
 };
 
-Comments.edit = function (commentId, modifier, comment) {
+Comments.methods.edit = function (commentId, modifier, comment) {
 
   // ------------------------------ Callbacks ------------------------------ //
 
@@ -68,7 +68,8 @@ Comments.edit = function (commentId, modifier, comment) {
 // ------------------------------------------------------------------------------------------- //
 
 Meteor.methods({
-  submitComment: function(comment){
+
+  'comments.new': function(comment){
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
     check(comment, Comments.simpleSchema());
@@ -128,10 +129,10 @@ Meteor.methods({
       comment.userId = user._id;
     }
 
-    return Comments.submit(comment);
+    return Comments.methods.new(comment);
   },
 
-  editComment: function (modifier, commentId) {
+  'comments.edit': function (modifier, commentId) {
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
     check(modifier, {$set: Comments.simpleSchema()});
@@ -162,10 +163,10 @@ Meteor.methods({
       });
     });
 
-    Comments.edit(commentId, modifier, comment);
+    Comments.methods.edit(commentId, modifier, comment);
   },
 
-  deleteCommentById: function (commentId) {
+  'comments.deleteById': function (commentId) {
 
     check(commentId, String);
     
@@ -199,5 +200,26 @@ Meteor.methods({
       Messages.flash("You don't have permission to delete this comment.", "error");
 
     }
+  },
+
+  'comments.upvote': function (commentId) {
+    check(commentId, String);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "upvote");
+  },
+
+  'comments.downvote': function (commentId) {
+    check(commentId, String);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "downvote");
+  },
+
+  'comments.cancelUpvote': function (commentId) {
+    check(commentId, String);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelUpvote");
+  },
+
+  'comments.cancelDownvote': function (commentId) {
+    check(commentId, String);
+    return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelDownvote");
   }
+
 });

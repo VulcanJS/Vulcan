@@ -121,7 +121,6 @@ Meteor.methods({
 
     check(post, Posts.simpleSchema());
 
-    console.log("// submitting post…")
     // required properties:
     // title
 
@@ -318,6 +317,26 @@ Meteor.methods({
 
   'posts.checkForDuplicates': function (url) {
     Posts.checkForSameUrl(url);  
+  },
+
+  'posts.upvote': function (postId) {
+    check(postId, String);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
+  },
+
+  'posts.downvote': function (postId) {
+    check(postId, String);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
+  },
+
+  'posts.cancelUpvote': function (postId) {
+    check(postId, String);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
+  },
+
+  'posts.cancelDownvote': function (postId) {
+    check(postId, String);
+    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");
   }
 
 });
