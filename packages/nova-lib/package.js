@@ -28,9 +28,6 @@ Package.onUse(function (api) {
     'email',
     'aldeed:simple-schema@1.5.3',
 
-    'alt:react-accounts-ui',
-    'alt:react-accounts-unstyled',
-    
     // 'nicolaslopezj:mrf@0.1.1',
     // 'nicolaslopezj:mrf-material-ui@0.1.1',
 

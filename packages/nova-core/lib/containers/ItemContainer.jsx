@@ -17,7 +17,8 @@ const ItemContainer = React.createClass({
     const collection = this.props.collection;
 
     return {
-      results: collection.findOne(this.props.terms)
+      results: collection.findOne(this.props.terms),
+      currentUser: Meteor.user()
     };
   },
 

@@ -1,6 +1,6 @@
 // import React from 'react';
 
-const PostNewContainer = React.createClass({
+const PostEditContainer = React.createClass({
 
   mixins: [ReactMeteorData],
   
@@ -14,10 +14,10 @@ const PostNewContainer = React.createClass({
   },
 
   render() {
-    ({PostNew} = Telescope.components);
-    return <PostNew {...this.data} />;
+    ({PostEdit} = Telescope.components);
+    return <PostEdit post={this.props} {...this.data} />;
   }
 
 });
 
-module.exports = PostNewContainer;
+module.exports = PostEditContainer;

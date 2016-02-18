@@ -48,18 +48,24 @@ function afterCommentOperations (comment) {
 }
 Telescope.callbacks.add("commentSubmitAsync", afterCommentOperations);
 
-function upvoteOwnComment (comment) {
+// ------------------------------------- Votes -------------------------------- //
 
-  var commentAuthor = Meteor.users.findOne(comment.userId);
+if (typeof Telescope.operateOnItem !== "undefined") {
+  
+  function upvoteOwnComment (comment) {
 
-  // upvote comment
-  Telescope.operateOnItem(Comments, comment._id, commentAuthor, "upvote");
+    var commentAuthor = Meteor.users.findOne(comment.userId);
 
-  return comment;
+    // upvote comment
+    Telescope.operateOnItem(Comments, comment._id, commentAuthor, "upvote");
+
+    return comment;
+  }
+  Telescope.callbacks.add("commentSubmitAsync", upvoteOwnComment);
+
 }
-Telescope.callbacks.add("commentSubmitAsync", upvoteOwnComment);
+// ------------------------------------- Notifications -------------------------------- //
 
-// notifications
 
 if (typeof Herald !== "undefined") {
 

@@ -49,8 +49,8 @@ FlowRouter.route('/posts/:_id', {
 FlowRouter.route('/posts/:_id/edit', {
   name: 'posts.edit',
   action: function (params, queryParams) {
-    ({AppContainer, ItemContainer, Post} = Telescope.components);
-    ReactLayout.render(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={PostEdit}/>})
+    ({AppContainer, ItemContainer, PostEditContainer} = Telescope.components);
+    ReactLayout.render(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={PostEditContainer}/>})
     // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });

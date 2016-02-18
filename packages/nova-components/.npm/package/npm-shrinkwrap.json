@@ -77,6 +77,61 @@
           }
         }
       }
+    },
+    "react-dom": {
+      "version": "0.14.7"
+    },
+    "react-modal": {
+      "version": "0.6.1",
+      "dependencies": {
+        "element-class": {
+          "version": "0.2.2"
+        },
+        "exenv": {
+          "version": "1.2.0"
+        },
+        "lodash.assign": {
+          "version": "3.2.0",
+          "dependencies": {
+            "lodash._baseassign": {
+              "version": "3.2.0",
+              "dependencies": {
+                "lodash._basecopy": {
+                  "version": "3.0.1"
+                }
+              }
+            },
+            "lodash._createassigner": {
+              "version": "3.1.1",
+              "dependencies": {
+                "lodash._bindcallback": {
+                  "version": "3.0.1"
+                },
+                "lodash._isiterateecall": {
+                  "version": "3.0.9"
+                },
+                "lodash.restparam": {
+                  "version": "3.6.1"
+                }
+              }
+            },
+            "lodash.keys": {
+              "version": "3.1.2",
+              "dependencies": {
+                "lodash._getnative": {
+                  "version": "3.9.1"
+                },
+                "lodash.isarguments": {
+                  "version": "3.0.7"
+                },
+                "lodash.isarray": {
+                  "version": "3.0.4"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

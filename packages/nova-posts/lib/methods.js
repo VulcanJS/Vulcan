@@ -116,9 +116,6 @@ Meteor.methods({
    */
   'posts.new': function(post){
 
-    // remove any empty properties
-    post = _.compactObject(post); 
-
     check(post, Posts.simpleSchema());
 
     // required properties:

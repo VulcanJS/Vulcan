@@ -7,7 +7,9 @@ Package.describe({
 
 Npm.depends({
   'formsy-react': '0.17.0',
-  'formsy-react-components': '0.6.6'
+  'formsy-react-components': '0.6.6',
+  'react-dom': '0.14.7',
+  'react-modal': '0.6.1'
 });
 
 Package.onUse(function (api) {
@@ -20,7 +22,11 @@ Package.onUse(function (api) {
     // 'telescope:i18n@0.25.7',
     // 'telescope:settings@0.25.7',
     'telescope:users@0.25.7',
-    'telescope:comments@0.25.7'
+    'telescope:comments@0.25.7',
+
+    'alt:react-accounts-ui',
+    // 'alt:react-accounts-unstyled'
+    
   ]);
 
   api.addFiles([

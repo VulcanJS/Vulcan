@@ -20,9 +20,28 @@ const PostNew = React.createClass({
   },
   
   submitForm(data) {
-    event.preventDefault();
     console.log(data)
+    // remove any empty properties
+    data = _.compactObject(data); 
     Meteor.call('posts.new', data);
+  },
+
+  renderAdminForm() {
+    return (
+      <div className="admin-fields">
+        <RadioGroup
+          name="status"
+          value=""
+          label="Status"
+          options={Posts.config.postStatuses}
+        />
+        <Checkbox
+          name="sticky"
+          value=""
+          label="Sticky"
+        />
+      </div>
+    )
   },
 
   render() {
@@ -65,6 +84,7 @@ const PostNew = React.createClass({
             options={categoriesOptions}
           />
           */}
+          {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
         <button type="submit" >Submit</button>
       </Formsy.Form>
       </div>

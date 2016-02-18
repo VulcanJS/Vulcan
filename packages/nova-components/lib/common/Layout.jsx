@@ -4,7 +4,7 @@ const Layout = props => {
   const Footer = Telescope.getComponent("Footer");
 
   return (
-    <div>
+    <div className="wrapper" id="wrapper">
       <Header/>
       <hr/>
       {props.children}

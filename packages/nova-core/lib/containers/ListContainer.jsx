@@ -92,13 +92,14 @@ const ListContainer = React.createClass({
 
       });
     }
-
+    
     return {
       results: results,
       ready: subscription.ready(),
       count: cursor.count(),
       totalCount: totalCount,
-      hasMore: cursor.count() < totalCount
+      hasMore: cursor.count() < totalCount,
+      currentUser: Meteor.user()
     };
   },
 
