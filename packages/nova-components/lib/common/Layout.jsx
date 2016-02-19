@@ -6,9 +6,9 @@ const Layout = props => {
   return (
     <div className="wrapper" id="wrapper">
       <Header/>
-      <hr/>
-      {props.children}
-      <hr/>
+      <div className="main">
+        {props.children}
+      </div>
       <Footer/>
     </div>
   )

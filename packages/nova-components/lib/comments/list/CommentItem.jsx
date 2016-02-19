@@ -55,7 +55,7 @@ const CommentItem = React.createClass({
     return (
       <div className="comment-reply">
         <CommentNew comment={this.props.comment} submitCallback={this.replyCallback} type="reply" />
-        <a href="#" onClick={this.cancelReply}>Cancel</a>
+        <a href="#" onClick={this.cancelReply} className="button button--secondary">Cancel</a>
       </div>
     )
   },

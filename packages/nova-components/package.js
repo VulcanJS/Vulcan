@@ -1,5 +1,5 @@
 Package.describe({
-  name: "base-components",
+  name: "nova:base-components",
   summary: "Telescope components package",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/telescope.git"

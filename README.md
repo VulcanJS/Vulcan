@@ -107,9 +107,9 @@ The current default “theme” is `base-components`.
 #### Components & Themes
 
 - ~~Comment threads~~
-- Flesh out the `base-components` theme with components for the most common elements.
+- ~~Flesh out the `base-components` theme with components for the most common elements.~~
 - Add simple stylesheet to make base theme a little less ugly.
-- Make base theme class names compatible with Vanilla Telescope.
+- Make base theme class names compatible with Vanilla Telescope?
 
 #### Forms & Methods
 
@@ -117,10 +117,18 @@ The current default “theme” is `base-components`.
 - ~~posts.edit~~
 - ~~comments.new~~
 - ~~comments.edit~~
+- users.edit (account)
 
 #### Other Stuff
 
-- Notifications.
-- Email (keep Spacebars for templates?).
+- Newsletter.
+- Email & notifications (keep Spacebars for templates?).
 - Refactor scheduled posts to use cron job (do in `master`?)
 - i18n (waiting for [tapi18n](https://github.com/TAPevents/tap-i18n) to be 1.3-compatible).
+- Autoform.
+- Votes.
+- Nested categories.
+- Create categories from code.
+- Embedly.
+- Search.
+- Meta tags.

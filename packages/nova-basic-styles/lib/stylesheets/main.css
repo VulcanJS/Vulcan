@@ -1,0 +1,30 @@
+body{
+  background: #eee;
+}
+
+.wrapper{
+  padding: 15px;
+}
+
+.main{
+  background: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px #ccc solid;
+}
+
+.post-views{
+  background: #ececec;
+  border: 1px #ddd solid;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-node{
+  border-left: 5px #ececec solid;
+  padding-left: 10px;
+}
+
+.comment{
+  margin-bottom: 15px;
+}

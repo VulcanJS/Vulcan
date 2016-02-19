@@ -17,7 +17,6 @@ arillo:flow-router-helpers@0.5.1
 autoupdate@1.2.5-modules.8
 babel-compiler@6.4.0-modules.8
 babel-runtime@0.1.5-modules.8
-base-components@0.25.7
 base64@1.0.5-modules.8
 binary-heap@1.0.5-modules.8
 blaze@2.1.4-modules.8
@@ -88,6 +87,8 @@ momentjs:moment@2.11.2
 mongo@1.1.4-modules.8
 mongo-id@1.0.1
 mongo-livedata@1.0.9
+nova:base-components@0.25.7
+nova:basic-styles@0.25.7
 npm-bcrypt@0.7.8_2
 npm-mongo@1.4.40-modules.8
 oauth@1.1.7-modules.8

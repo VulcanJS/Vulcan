@@ -68,18 +68,21 @@ const PostEdit = React.createClass({
             value={this.props.post.url}
             label="URL"
             type="text"
+            className="text-input"
           />
           <Input
             name="title"
             value={this.props.post.title}
             label="Title"
             type="text"
+            className="text-input"
           />
           <Textarea
             name="body"
             value={this.props.post.body}
             label="Body"
             type="text"
+            className="textarea"
           />
           {/*
           <CheckboxGroup
@@ -91,7 +94,7 @@ const PostEdit = React.createClass({
           />
           */}
           {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
-          <button type="submit" >Submit</button>
+          <button type="submit" className="button button--primary">Submit</button>
         </Formsy.Form>
       </div>
     )

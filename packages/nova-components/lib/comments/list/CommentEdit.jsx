@@ -31,9 +31,10 @@ const CommentEdit = React.createClass({
           value={this.props.comment.body}
           label="Body"
           type="text"
+          className="textarea"
         />
-        <button type="submit">Submit</button>
-        <a href="#" onClick={this.props.submitCallback}>Cancel</a>
+        <button type="submit" className="button button--primary">Submit</button>
+        <a href="#" onClick={this.props.submitCallback} className="button button-secondary">Cancel</a>
       </Formsy.Form>
     )
   }

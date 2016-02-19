@@ -31,7 +31,7 @@ const CommentNode = React.createClass({
     const children = this.props.comment.childrenResults;
     
     return (
-      <div className="comment-node" style={{borderLeft:"2px solid #eee", paddingLeft: "10px"}}>
+      <div className="comment-node">
         {this.renderComment(comment)}
         {children ? this.renderChildren(children) : ""}
       </div>

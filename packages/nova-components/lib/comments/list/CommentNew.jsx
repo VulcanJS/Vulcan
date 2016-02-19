@@ -42,8 +42,9 @@ const CommentNew = React.createClass({
           value=""
           label="Body"
           type="text"
+          className="textarea"
         />
-        <button type="submit">Submit</button>
+        <button type="submit" className="button button--primary">Submit</button>
       </Formsy.Form>
     )
   }

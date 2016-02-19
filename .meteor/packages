@@ -20,6 +20,9 @@ telescope:newsletter
 telescope:search
 telescope:notifications
 
+nova:base-components
+nova:basic-styles
+
 # telescope:scoring
 
 # telescope:migrations
@@ -56,7 +59,6 @@ telescope:tags
 
 # my-custom-package
 
-base-components
 
 # telescope:forms
 
