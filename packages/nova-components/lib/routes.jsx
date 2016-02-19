@@ -1,11 +1,17 @@
+import React from 'react';
+import {mount} from 'react-mounter';
+
 // ------------------------------------- Posts -------------------------------- //
 
 FlowRouter.route('/', {
   name: 'posts.list',
-  action: function (params, queryParams) {
+  action(params, queryParams) {
+
     ({AppContainer, ListContainer, PostList} = Telescope.components);
+    queryParams = _.isEmpty(queryParams) ? {view: 'top'} : queryParams;
     ({selector, options} = Posts.parameters.get(queryParams));
-    ReactLayout.render(AppContainer, {content: 
+
+    mount(AppContainer, {content: 
       <ListContainer 
         collection={Posts} 
         publication="posts.list"
@@ -23,34 +29,34 @@ FlowRouter.route('/', {
 //   name: 'postNew',
 //   action: function (params, queryParams) {
 //     ({ItemContainer} = Telescope.components);
-//     ReactLayout.render(AppContainer, {content: <ItemContainer/>})
+//     mount(AppContainer, {content: <ItemContainer/>})
 //     // mount(App, {content: <PostListContainer {...queryParams}/>});
 //   }
 // });
 
 FlowRouter.route('/posts/new', {
   name: 'posts.new',
-  action: function (params, queryParams) {
+  action(params, queryParams) {
     ({AppContainer, PostNewContainer} = Telescope.components);
-    ReactLayout.render(AppContainer, {content: <PostNewContainer />})
+    mount(AppContainer, {content: <PostNewContainer />})
     // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });
 
 FlowRouter.route('/posts/:_id', {
   name: 'posts.single',
-  action: function (params, queryParams) {
+  action(params, queryParams) {
     ({AppContainer, ItemContainer, Post} = Telescope.components);
-    ReactLayout.render(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={Post}/>})
+    mount(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={Post}/>})
     // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });
 
 FlowRouter.route('/posts/:_id/edit', {
   name: 'posts.edit',
-  action: function (params, queryParams) {
+  action(params, queryParams) {
     ({AppContainer, ItemContainer, PostEditContainer} = Telescope.components);
-    ReactLayout.render(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={PostEditContainer}/>})
+    mount(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={PostEditContainer}/>})
     // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });

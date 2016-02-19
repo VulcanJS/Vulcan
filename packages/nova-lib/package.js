@@ -67,7 +67,8 @@ Package.onUse(function (api) {
     // 'seba:minifiers-autoprefixer@0.0.1',
     'dburles:spacebars-tohtml@1.0.1',
     'meteorhacks:unblock@1.1.0',
-    'kadira:flow-router@2.10.1',
+    // 'kadira:flow-router@2.10.1',
+    'kadira:flow-router-ssr@3.11.0',
     'arillo:flow-router-helpers@0.5.0',
     'utilities:smartquery@0.1.5',
     'kadira:react-layout@1.5.3',
@@ -93,8 +94,14 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
 
+  api.addFiles([
+    'lib/server/server-utils.js'
+  ], ['server']);
+
+
   api.export([
-    'Telescope'
+    'Telescope',
+    'Counts'
   ]);
 
 });

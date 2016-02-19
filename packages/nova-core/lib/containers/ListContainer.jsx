@@ -58,12 +58,16 @@ const ListContainer = React.createClass({
     let terms = {...this.props.terms, limit: this.state.limit};
     let selector = this.props.selector;
     let options = {...this.props.options, limit: this.state.limit}; 
-    
+    // for SSR purposes, we also get an unlimited options object
+    let optionsNoLimit = {...this.props.options, limit: 0}; 
+
     const subscription = Meteor.subscribe(this.props.publication, terms);
-
-    const totalCount = Counts.get(this.props.publication);
-
     const cursor = this.props.collection.find(selector, options);
+
+    const cursorNoLimit = this.props.collection.find(selector, optionsNoLimit);
+
+    const totalCount = Meteor.isClient ? Counts.get(this.props.publication) : cursorNoLimit.count();
+
     let results = cursor.fetch();
 
     // look for any specified joins
@@ -77,7 +81,7 @@ const ListContainer = React.createClass({
 
           // get the property containing the id or ids
           const joinProperty = doc[join.property];
-          const collection = window[join.collection];
+          const collection = Meteor.isClient ? window[join.collection] : global[join.collection];
 
           // perform the join
           if (Array.isArray(joinProperty)) { // join property is an array of ids
