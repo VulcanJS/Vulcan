@@ -32,7 +32,7 @@ const PostItem = React.createClass({
     const post = this.props.post;
 
     return (
-      <div className="post" style={{borderBottom: "2px solid #eee", paddingBottom: "10px", marginBottom: "10px"}}>
+      <div className="post-item">
         
         <h3 className="post-title"><a href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a></h3>
         <p>{Users.getDisplayName(post.user)}, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>

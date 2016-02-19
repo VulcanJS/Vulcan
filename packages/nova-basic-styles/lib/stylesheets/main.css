@@ -13,24 +13,18 @@ body{
   border: 1px #ccc solid;
 }
 
-.post-views{
-  background: #efefef;
-  border: 1px #ddd solid;
-  padding: 10px;
+
+.post-views, .logo, .nav, .alt-accounts-log-in-buttons, .post-categories, .post-commenters{
   margin-bottom: 15px;
 }
 
-.post-categories, .post-commenters{
-  margin-bottom: 15px;
-}
-
-.post-categories ul, .post-commenters ul{
+.post-views ul, .categories ul, .post-categories ul, .post-commenters ul{
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.post-categories li, .post-commenters li{
+.post-views li, .categories li, .post-categories li, .post-commenters li{
   display: inline-block;
   margin-right: 5px;
   border: 1px solid #ddd;
@@ -38,6 +32,17 @@ body{
   background: #efefef;
 }
 
+.post-list-content{
+  border-top: 2px solid #eee;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.post-item{
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
 .comment-node{
   border-left: 10px #efefef solid;
   padding-left: 10px;

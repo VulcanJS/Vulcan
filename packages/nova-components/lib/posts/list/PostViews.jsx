@@ -9,8 +9,8 @@ const PostViews = props => {
 
   return (
     <div className="post-views">
+      <h4>Sort By:</h4>
       <ul>
-        <li>Sort by:</li>
         {views.map(view => 
           <li key={view}><a href={FlowRouter.extendPathWithQueryParams("posts.list", {}, {view: view})}>{view}</a></li>
         )}
