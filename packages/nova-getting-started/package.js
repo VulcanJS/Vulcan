@@ -13,32 +13,15 @@ Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
 
-  // --------------------------- 1. Meteor packages dependencies ---------------------------
-
-  // automatic (let the package specify where it's needed)
-
-  api.use(['telescope:core@0.25.7']);
-
-  // client
-
   api.use([
-    'jquery',                     // useful for DOM interactions
-    'underscore',                 // JavaScript swiss army knife library
-    'templating'                  // required for client-side templates
-  ], ['client']);
-
-  // server
-
-  api.use([
-    //
-  ], ['server']);
-
-  // ---------------------------------- 2. Files to include ----------------------------------
-
-  // i18n config (must come first)
+    'telescope:core@0.25.7',
+    'telescope:posts@0.25.7',
+    'telescope:comments@0.25.7',
+    'telescope:users@0.25.7'
+  ]);
 
   api.addFiles([
-    'package-tap.i18n'
+    // 'package-tap.i18n'
   ], ['client', 'server']);
 
   // both
@@ -68,10 +51,10 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  var languagesPaths = languages.map(function (language) {
-    return "i18n/"+language+".i18n.json";
-  });
-  api.addFiles(languagesPaths, ["client", "server"]);
+  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  // var languagesPaths = languages.map(function (language) {
+  //   return "i18n/"+language+".i18n.json";
+  // });
+  // api.addFiles(languagesPaths, ["client", "server"]);
 
 });

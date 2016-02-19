@@ -19,6 +19,7 @@ telescope:comments
 telescope:newsletter
 telescope:search
 telescope:notifications
+telescope:getting-started
 
 nova:base-components
 nova:basic-styles
@@ -32,7 +33,6 @@ nova:basic-styles
 # telescope:debug
 # telescope:email
 # telescope:embedly
-# telescope:getting-started
 # telescope:invites
 # telescope:kadira
 # telescope:pages
