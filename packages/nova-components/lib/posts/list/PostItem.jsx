@@ -14,16 +14,16 @@ const PostItem = React.createClass({
 
   renderCommenters() {
 
-    ({PostItemCommenters} = Telescope.components);
+    ({PostCommenters} = Telescope.components);
 
-    return this.props.post.commentersArray ? <PostItemCommenters commenters={this.props.post.commentersArray}/> : "";
+    return this.props.post.commentersArray ? <PostCommenters commenters={this.props.post.commentersArray}/> : "";
   },
 
   renderActions() {
     return (
-      <ul>
-        {Users.can.edit(this.props.currentUser, this.props.post) ? <li><a href={Posts.getEditUrl(this.props.post)}>Edit</a></li> : ""}
-      </ul>
+      <div className="post-actions">
+        {Users.can.edit(this.props.currentUser, this.props.post) ? <a href={Posts.getEditUrl(this.props.post)} className="button button--secondary">Edit</a> : ""}
+      </div>
     )
   },
   

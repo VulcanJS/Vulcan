@@ -54,7 +54,7 @@ const CommentItem = React.createClass({
 
     return (
       <div className="comment-reply">
-        <CommentNew comment={this.props.comment} submitCallback={this.replyCallback} type="reply" />
+        <CommentNew comment={this.props.comment} submitCallback={this.replyCallback} cancelCallback={this.cancelReply} type="reply" />
         <a href="#" onClick={this.cancelReply} className="button button--secondary">Cancel</a>
       </div>
     )
@@ -65,7 +65,7 @@ const CommentItem = React.createClass({
     ({CommentEdit}  = Telescope.components);
     
     return (
-      <CommentEdit comment={this.props.comment} submitCallback={this.editCallback}/>
+      <CommentEdit comment={this.props.comment} submitCallback={this.editCallback} cancelCallback={this.cancelEdit}/>
     )
   },
 
@@ -80,9 +80,11 @@ const CommentItem = React.createClass({
 
   render() {
     return (
-      <div className="comment">
-        {this.state.showEdit ? this.renderEdit() : this.renderComment()}
-        {this.renderActions()}
+      <div className="comment-item">
+        <div className="comment-body">
+          {this.state.showEdit ? this.renderEdit() : this.renderComment()}
+          {this.renderActions()}
+        </div>
         {this.state.showReply ? this.renderReply() : ""}
       </div>
     )

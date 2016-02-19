@@ -62,18 +62,21 @@ const PostNew = React.createClass({
             value=""
             label="URL"
             type="text"
+            className="text-input"
           />
           <Input
             name="title"
             value=""
             label="Title"
             type="text"
+            className="text-input"
           />
           <Textarea
             name="body"
             value=""
             label="Body"
             type="text"
+            className="textarea"
           />
           {/*
           <CheckboxGroup
@@ -85,7 +88,7 @@ const PostNew = React.createClass({
           />
           */}
           {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
-        <button type="submit" >Submit</button>
+        <button type="submit" className="button button--primary">Submit</button>
       </Formsy.Form>
       </div>
     )

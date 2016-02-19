@@ -14,17 +14,40 @@ body{
 }
 
 .post-views{
-  background: #ececec;
+  background: #efefef;
   border: 1px #ddd solid;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.post-categories, .post-commenters{
+  margin-bottom: 15px;
+}
+
+.post-categories ul, .post-commenters ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-categories li, .post-commenters li{
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #ddd;
+  padding: 3px 5px;
+  background: #efefef;
 }
 
 .comment-node{
-  border-left: 5px #ececec solid;
+  border-left: 10px #efefef solid;
   padding-left: 10px;
 }
 
-.comment{
+.comment-item{
   margin-bottom: 15px;
+}
+
+.comment-body{
+  border: 1px solid #ddd;
+  padding: 10px;
 }

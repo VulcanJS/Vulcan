@@ -7,7 +7,8 @@ const CommentEdit = React.createClass({
 
   propTypes: {
     comment: React.PropTypes.object.isRequired,
-    submitCallback: React.PropTypes.func
+    submitCallback: React.PropTypes.func,
+    cancelCallback: React.PropTypes.func
   },
 
   submitComment(data) {
@@ -34,7 +35,7 @@ const CommentEdit = React.createClass({
           className="textarea"
         />
         <button type="submit" className="button button--primary">Submit</button>
-        <a href="#" onClick={this.props.submitCallback} className="button button-secondary">Cancel</a>
+        <a href="#" onClick={this.props.cancelCallback} className="button button--secondary">Cancel</a>
       </Formsy.Form>
     )
   }

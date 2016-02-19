@@ -16,7 +16,7 @@ const Header = props => {
         <ListContainer collection={Categories} publication="categories" component={CategoriesList} limit={0}/>
       </div>
       <LogInButtons />
-      <a href={FlowRouter.path("posts.new")}>New Post</a>
+      <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
     </header>
   )
 }
