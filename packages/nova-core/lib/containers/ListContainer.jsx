@@ -30,7 +30,7 @@ const ListContainer = React.createClass({
   propTypes: {
     collection: React.PropTypes.object.isRequired, // the collection to paginate
     component: React.PropTypes.func.isRequired, // the component results will be passed to
-    publication: React.PropTypes.string.isRequired, // the publication to subscribe to
+    publication: React.PropTypes.string, // the publication to subscribe to
     terms: React.PropTypes.object, // an object passed to the publication
     selector: React.PropTypes.object, // the selector used in collection.find()
     options: React.PropTypes.object, // the options used in collection.find()
@@ -55,26 +55,37 @@ const ListContainer = React.createClass({
   
   getMeteorData() {
 
-    let terms = {...this.props.terms, limit: this.state.limit};
-    let selector = this.props.selector;
-    let options = {...this.props.options, limit: this.state.limit}; 
-    // for SSR purposes, we also get an unlimited options object
-    let optionsNoLimit = {...this.props.options, limit: 0}; 
+    // initialize data object with current user, and default to data being ready
+    let data = {
+      currentUser: Meteor.user(),
+      ready: true
+    };
 
-    const subscription = Meteor.subscribe(this.props.publication, terms);
+    const selector = this.props.selector || {};
+
+    const options = {...this.props.options, limit: this.state.limit}; 
     const cursor = this.props.collection.find(selector, options);
 
+    // when rendering on the server, we want to get a count without the limit
+    const optionsNoLimit = {...this.props.options, limit: 0}; 
     const cursorNoLimit = this.props.collection.find(selector, optionsNoLimit);
 
     const totalCount = Meteor.isClient ? Counts.get(this.props.publication) : cursorNoLimit.count();
 
     let results = cursor.fetch();
 
+    // subscribe if needed
+    if (this.props.publication) {
+      let terms = {...this.props.terms, limit: this.state.limit};
+      const subscription = Meteor.subscribe(this.props.publication, terms);
+      data.ready = subscription.ready();
+    }
+
     // look for any specified joins
     if (this.props.joins) {
 
       // loop over each document in the results
-      results.map(doc => {
+      results.forEach(doc => {
 
         // loop over each join
         this.props.joins.forEach(join => {
@@ -103,14 +114,15 @@ const ListContainer = React.createClass({
       results = Telescope.utils.unflatten(results, "_id", this.props.parentProperty);
     }
 
-    return {
+    data = {
+      ...data,
       results: results,
-      ready: subscription.ready(),
       count: cursor.count(),
       totalCount: totalCount,
-      hasMore: cursor.count() < totalCount,
-      currentUser: Meteor.user()
+      hasMore: cursor.count() < totalCount
     };
+
+    return data;
   },
 
   loadMore(event) {

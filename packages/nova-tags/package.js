@@ -20,6 +20,7 @@ Package.onUse(function (api) {
     'lib/callbacks.js',
     'lib/parameters.js',
     'lib/custom_fields.js',
+    'lib/subscriptions.js',
     'lib/methods.js',
     'lib/routes.jsx',
     // 'package-tap.i18n'

@@ -13,9 +13,9 @@ const Header = props => {
         {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
       </div>
       <div className="nav">
-        {/*<ListContainer collection={Categories} publication="categories" component={CategoriesList} limit={0}/>*/}
+        {<ListContainer collection={Categories} component={CategoriesList} limit={0}/>}
       </div>
-      {/*Meteor.isClient ? <LogInButtons /> : ""*/}
+      {Meteor.isClient ? <LogInButtons /> : ""}
       <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
     </header>
   )

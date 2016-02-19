@@ -95,7 +95,7 @@ Package.onUse(function (api) {
 
 
   api.addFiles([
-    'lib/server/server-utils.js'
+    'lib/server/server-config.js'
   ], ['server']);
 
 
