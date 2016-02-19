@@ -56,7 +56,7 @@ Package.onUse(function (api) {
     // 'fortawesome:fontawesome@4.5.0',
     // 'ccan:cssreset@1.0.0',
     'djedi:sanitize-html@1.11.2',
-    // 'jparker:gravatar@0.4.1',
+    'jparker:gravatar@0.4.1',
     // 'sanjo:meteor-files-helpers@1.2.0_1',
     // 'chuangbo:cookie@1.1.0',
     'ongoworks:speakingurl@6.0.0',

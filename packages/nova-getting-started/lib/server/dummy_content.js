@@ -15,7 +15,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
   if (typeof thumbnail !== "undefined")
     post.thumbnailUrl = "/packages/telescope_getting-started/content/images/" + thumbnail;
 
-  Posts.submit(post);
+  Posts.methods.new(post);
 };
 
 var createComment = function (slug, username, body, parentBody) {
@@ -31,7 +31,7 @@ var createComment = function (slug, username, body, parentBody) {
   if (parentComment)
     comment.parentCommentId = parentComment._id;
 
-  Comments.submit(comment);
+  Comments.methods.new(comment);
 };
 
 var createDummyUsers = function () {
