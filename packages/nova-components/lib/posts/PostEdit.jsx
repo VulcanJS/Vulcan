@@ -29,7 +29,13 @@ const PostEdit = React.createClass({
     event.preventDefault();
     const modifier = {$set: _.compactObject(data)};
     console.log(modifier)
-    Meteor.call('posts.edit', modifier, this.props.post._id);
+    Meteor.call('posts.edit', modifier, this.props.post._id, (error, post) => {
+      if (error) {
+        // handle error
+      } else {
+        FlowRouter.go('posts.single', post);
+      }
+    });
   },
 
   renderAdminForm() {

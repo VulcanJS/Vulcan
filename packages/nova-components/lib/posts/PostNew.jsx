@@ -22,7 +22,13 @@ const PostNew = React.createClass({
   submitForm(data) {
     // remove any empty properties
     data = _.compactObject(data); 
-    Meteor.call('posts.new', data);
+    Meteor.call('posts.new', data, (error, post) => {
+      if (error) {
+        // handle error
+      } else {
+        FlowRouter.go('posts.single', post);
+      }
+    });
   },
 
   renderAdminForm() {
