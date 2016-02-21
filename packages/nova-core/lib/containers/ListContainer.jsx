@@ -61,25 +61,25 @@ const ListContainer = React.createClass({
       ready: true
     };
 
-    const selector = this.props.selector || {};
+    // subscribe if needed. Note: always subscribe first, otherwise 
+    // it won't work when server-side rendering with FlowRouter SSR
+    if (this.props.publication) {
+      let terms = {...this.props.terms, limit: this.state.limit};
+      const subscription = Meteor.subscribe(this.props.publication, terms);
+      data.ready = subscription.ready();
+    }
 
+    const selector = this.props.selector || {};
     const options = {...this.props.options, limit: this.state.limit}; 
     const cursor = this.props.collection.find(selector, options);
-
+    const count = cursor.count();
     // when rendering on the server, we want to get a count without the limit
     const optionsNoLimit = {...this.props.options, limit: 0}; 
     const cursorNoLimit = this.props.collection.find(selector, optionsNoLimit);
 
     const totalCount = Meteor.isClient ? Counts.get(this.props.publication) : cursorNoLimit.count();
 
-    let results = cursor.fetch();
-
-    // subscribe if needed
-    if (this.props.publication) {
-      let terms = {...this.props.terms, limit: this.state.limit};
-      const subscription = Meteor.subscribe(this.props.publication, terms);
-      data.ready = subscription.ready();
-    }
+    let results = cursor.fetch(); 
 
     // look for any specified joins
     if (this.props.joins) {
@@ -117,9 +117,9 @@ const ListContainer = React.createClass({
     data = {
       ...data,
       results: results,
-      count: cursor.count(),
+      count: count,
       totalCount: totalCount,
-      hasMore: cursor.count() < totalCount
+      hasMore: count < totalCount
     };
 
     return data;
