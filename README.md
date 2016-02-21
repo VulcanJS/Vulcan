@@ -108,7 +108,7 @@ The current default “theme” is `base-components`.
 
 - ~~Comment threads~~
 - ~~Flesh out the `base-components` theme with components for the most common elements.~~
-- Add simple stylesheet to make base theme a little less ugly.
+- ~~Add simple stylesheet to make base theme a little less ugly.~~
 - Make base theme class names compatible with Vanilla Telescope?
 
 #### Forms & Methods
@@ -121,6 +121,7 @@ The current default “theme” is `base-components`.
 
 #### Other Stuff
 
+- ~~Create categories from code.~~
 - Newsletter.
 - Email & notifications (keep Spacebars for templates?).
 - Refactor scheduled posts to use cron job (do in `master`?)
@@ -128,7 +129,6 @@ The current default “theme” is `base-components`.
 - Autoform.
 - Votes.
 - Nested categories.
-- Create categories from code.
 - Embedly.
 - Search.
 - Meta tags.

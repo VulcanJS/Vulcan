@@ -27,7 +27,8 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+    'lib/server/load_categories.js'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
