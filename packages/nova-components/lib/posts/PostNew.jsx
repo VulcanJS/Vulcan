@@ -20,7 +20,6 @@ const PostNew = React.createClass({
   },
   
   submitForm(data) {
-    console.log(data)
     // remove any empty properties
     data = _.compactObject(data); 
     Meteor.call('posts.new', data);

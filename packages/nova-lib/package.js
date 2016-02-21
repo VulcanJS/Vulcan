@@ -59,7 +59,7 @@ Package.onUse(function (api) {
     'jparker:gravatar@0.4.1',
     // 'sanjo:meteor-files-helpers@1.2.0_1',
     // 'chuangbo:cookie@1.1.0',
-    'ongoworks:speakingurl@6.0.0',
+    'ongoworks:speakingurl@9.0.0',
     // 'okgrow:router-autoscroll@0.1.6',
     'tmeasday:publish-counts@0.7.3',
     // 'utilities:onsubscribed@0.1.2',

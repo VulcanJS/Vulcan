@@ -8,7 +8,7 @@ const PostNewContainer = React.createClass({
 
     return {
       categories: Categories.find().fetch(),
-      postUrl: Session.get("postUrl"),
+      // postUrl: Session.get("postUrl"), // replace with state?
       currentUser: Meteor.user()
     };
   },

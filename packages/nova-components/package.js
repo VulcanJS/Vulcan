@@ -24,16 +24,20 @@ Package.onUse(function (api) {
     'telescope:users@0.25.7',
     'telescope:comments@0.25.7',
 
-    'alt:react-accounts-ui',
+    'alt:react-accounts-ui@1.0.0',
     // 'alt:react-accounts-unstyled'
     
   ]);
 
   api.addFiles([
+    'lib/config.js',
     'lib/components.js',
     'lib/routes.jsx'
   ], ['client', 'server']);
 
+  api.addFiles([
+    'lib/client/accounts.js'
+  ], ['client']);
 
 
 });

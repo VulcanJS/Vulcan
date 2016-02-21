@@ -15,7 +15,7 @@ const Header = props => {
       <div className="nav">
         {<ListContainer collection={Categories} component={CategoriesList} limit={0}/>}
       </div>
-      {Meteor.isClient ? <LogInButtons /> : ""}
+      <LogInButtons />
       <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
     </header>
   )
