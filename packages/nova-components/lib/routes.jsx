@@ -21,25 +21,14 @@ FlowRouter.route('/', {
         component={PostList}
         joins={Posts.simpleSchema().getJoins()}
       />})
-    // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });
-
-// FlowRouter.route('/post/new', {
-//   name: 'postNew',
-//   action: function (params, queryParams) {
-//     ({ItemContainer} = Telescope.components);
-//     mount(AppContainer, {content: <ItemContainer/>})
-//     // mount(App, {content: <PostListContainer {...queryParams}/>});
-//   }
-// });
 
 FlowRouter.route('/posts/new', {
   name: 'posts.new',
   action(params, queryParams) {
     ({AppContainer, PostNewContainer} = Telescope.components);
     mount(AppContainer, {content: <PostNewContainer />})
-    // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });
 
@@ -47,8 +36,14 @@ FlowRouter.route('/posts/:_id', {
   name: 'posts.single',
   action(params, queryParams) {
     ({AppContainer, ItemContainer, Post} = Telescope.components);
-    mount(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={Post}/>})
-    // mount(App, {content: <PostListContainer {...queryParams}/>});
+    mount(AppContainer, {content: 
+      <ItemContainer 
+        collection={Posts} 
+        publication="posts.single" 
+        terms={params} 
+        component={Post}
+        joins={Posts.simpleSchema().getJoins()}
+      />})
   }
 });
 
@@ -57,7 +52,6 @@ FlowRouter.route('/posts/:_id/edit', {
   action(params, queryParams) {
     ({AppContainer, ItemContainer, PostEditContainer} = Telescope.components);
     mount(AppContainer, {content: <ItemContainer collection={Posts} publication="posts.single" terms={params} component={PostEditContainer}/>})
-    // mount(App, {content: <PostListContainer {...queryParams}/>});
   }
 });
 

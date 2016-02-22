@@ -12,7 +12,7 @@ Meteor.startup(function () {
       return Categories.find().count();
     },
     menuLabel: function () {
-      return i18n.t("categories");
+      return __("categories");
     },
     menuItems: function () {
 
@@ -20,7 +20,7 @@ Meteor.startup(function () {
 
       var defaultItem = [{
         route: "postsDefault",
-        label: i18n.t("all_categories"),
+        label: __("all_categories"),
         itemClass: "item-never-active",
         template: "defaultMenuItem"
       }];

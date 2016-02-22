@@ -65,8 +65,8 @@ Telescope.settings.collection.addField([
         instructions: 'Let users filter by one or multiple categories at a time.', 
         options: function () {
           return [
-            {value: "single", label: i18n.t("categories_behavior_one_at_a_time")},
-            {value: "multiple", label: i18n.t("categories_behavior_multiple")}
+            {value: "single", label: __("categories_behavior_one_at_a_time")},
+            {value: "multiple", label: __("categories_behavior_multiple")}
           ];
         }
       }

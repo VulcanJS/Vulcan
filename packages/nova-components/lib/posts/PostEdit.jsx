@@ -25,12 +25,19 @@ const Textarea = FRC.Textarea;
 
 const PostEdit = React.createClass({
   
+  propTypes: {
+    post: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object.isRequired,
+    categories: React.PropTypes.array
+  },
+
   submitForm(data) {
     event.preventDefault();
     const modifier = {$set: _.compactObject(data)};
     console.log(modifier)
     Meteor.call('posts.edit', modifier, this.props.post._id, (error, post) => {
       if (error) {
+        console.log(error);
         // handle error
       } else {
         FlowRouter.go('posts.single', post);
@@ -58,6 +65,8 @@ const PostEdit = React.createClass({
 
   render() {
      
+   ({CanEditPost} = Telescope.components);
+
     const categoriesOptions = this.props.categories.map(category => {
       return {
         value: category._id,
@@ -66,43 +75,43 @@ const PostEdit = React.createClass({
     });
 
     return (
-      <div className="post-edit">
-        <h3>Edit Post “{this.props.post.title}”</h3>
-        <Formsy.Form onSubmit={this.submitForm}>
-         <Input
-            name="url"
-            value={this.props.post.url}
-            label="URL"
-            type="text"
-            className="text-input"
-          />
-          <Input
-            name="title"
-            value={this.props.post.title}
-            label="Title"
-            type="text"
-            className="text-input"
-          />
-          <Textarea
-            name="body"
-            value={this.props.post.body}
-            label="Body"
-            type="text"
-            className="textarea"
-          />
-          {/*
-          <CheckboxGroup
-            name="categories"
-            value=""
-            label="Categories"
-            type="text"
-            options={categoriesOptions}
-          />
-          */}
-          {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
-          <button type="submit" className="button button--primary">Submit</button>
-        </Formsy.Form>
-      </div>
+      <CanEditPost user={this.props.currentUser} post={this.props.post}>
+        <div className="post-edit">
+          <h3>Edit Post “{this.props.post.title}”</h3>
+          <Formsy.Form onSubmit={this.submitForm}>
+           <Input
+              name="url"
+              value={this.props.post.url}
+              label="URL"
+              type="text"
+              className="text-input"
+            />
+            <Input
+              name="title"
+              value={this.props.post.title}
+              label="Title"
+              type="text"
+              className="text-input"
+            />
+            <Textarea
+              name="body"
+              value={this.props.post.body}
+              label="Body"
+              type="text"
+              className="textarea"
+            />
+            <CheckboxGroup
+              name="categories"
+              value={this.props.post.categories}
+              label="Categories"
+              type="text"
+              options={categoriesOptions}
+            />
+            {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
+            <button type="submit" className="button button--primary">Submit</button>
+          </Formsy.Form>
+        </div>
+      </CanEditPost>
     )
   }
 });

@@ -1,6 +1,6 @@
 const Post = (props) => {
   
-  ({ListContainer, CommentList, CommentNew} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew, PostCategories} = Telescope.components);
 
   const htmlBody = {__html: props.htmlBody};
 
@@ -10,6 +10,7 @@ const Post = (props) => {
       <h3>{props.title}</h3>
       <p>{props.commentCount} comments</p>
       <p>{moment(props.postedAt).fromNow()}</p>
+      {props.categoriesArray ? <PostCategories categories={props.categoriesArray} /> : ""}
       <div dangerouslySetInnerHTML={htmlBody}></div>
 
       <div className="comments-thread">

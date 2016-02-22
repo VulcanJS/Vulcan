@@ -31,3 +31,9 @@ Telescope.registerComponent("CommentEdit", require('./comments/list/CommentEdit.
 // categories
 
 Telescope.registerComponent("CategoriesList", require('./categories/list/CategoriesList.jsx'));
+
+// permissions
+Telescope.registerComponent("CanCreatePost", require('./permissions/CanCreatePost.jsx'));
+Telescope.registerComponent("CanEditPost", require('./permissions/CanEditPost.jsx'));
+Telescope.registerComponent("CanView", require('./permissions/CanView.jsx'));
+Telescope.registerComponent("CanViewPost", require('./permissions/CanViewPost.jsx'));

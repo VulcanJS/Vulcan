@@ -8,7 +8,7 @@ const PostEditContainer = React.createClass({
 
     return {
       categories: Categories.find().fetch(),
-      postUrl: Session.get("postUrl"),
+      // postUrl: Session.get("postUrl"),
       currentUser: Meteor.user()
     };
   },

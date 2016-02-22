@@ -2,6 +2,10 @@
 
 **Nova** is a top-secret, highly unstable experimental branch of Telescope with a really cool name. 
 
+### Install
+
+Clone this branch, then `npm install`. 
+
 ### Philosophy
 
 Nova was born from a simple realization: 80% of the work involed in Telescope comes from focusing on the user experience. But this comes at the detriment of *developer* experience since it means a much larger codebase.
