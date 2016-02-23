@@ -1,6 +1,8 @@
 // const Formsy = require('formsy-react');
 // const FRC = require('formsy-react-components');
 
+import Messages from "meteor/telescope:core";
+
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 // import Modal from 'react-modal';
@@ -46,9 +48,10 @@ const UserEdit = React.createClass({
     Meteor.call('users.edit', user._id, modifier, (error, user) => {
       if (error) {
         console.log(error);
+        Messages.flash(error.message, "error")
         // handle error
       } else {
-        console.log("User modified.")
+        Messages.flash("User modified.", "success")
       }
     });
   },

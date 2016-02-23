@@ -1,6 +1,8 @@
 // const Formsy = require('formsy-react');
 // const FRC = require('formsy-react-components');
 
+import Messages from "meteor/telescope:core";
+
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 
@@ -29,8 +31,10 @@ const PostNew = React.createClass({
     data = _.compactObject(data); 
     Meteor.call('posts.new', data, (error, post) => {
       if (error) {
-        // handle error
+        console.log(error)
+        Messages.flash(error.message, "error")
       } else {
+        Messages.flash("Post created.", "success")
         FlowRouter.go('posts.single', post);
       }
     });

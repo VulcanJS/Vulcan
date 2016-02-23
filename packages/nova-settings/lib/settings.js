@@ -47,18 +47,6 @@ Telescope.settings.schema = new SimpleSchema({
       instructions: "URL to an image for the open graph image tag for all pages"
     }
   },
-  navLayout: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "01_general",
-      instructions: 'The layout used for the main menu',
-      options: [
-        {value: 'top-nav', label: 'Top'},
-        {value: 'side-nav', label: 'Side'}
-      ]
-    }
-  },
   requireViewInvite: {
     type: Boolean,
     optional: true,
@@ -82,16 +70,6 @@ Telescope.settings.schema = new SimpleSchema({
       group: "01_general",
       instructions: "Posts must be approved by admin",
       leftLabel: "Require Posts Approval"
-    }
-  },
-  enableDownvotes: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false,
-    autoform: {
-      group: "01_general",
-      instructions: 'Enable downvotes',
-      leftLabel: "Enable downvotes"
     }
   },
   defaultEmail: {
@@ -141,36 +119,6 @@ Telescope.settings.schema = new SimpleSchema({
       }
     }
   },
-  postsLayout: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "02_posts",
-      instructions: 'The layout used for post lists',
-      options: [
-        {value: 'posts-list', label: 'List'},
-        {value: 'posts-grid', label: 'Grid'}
-      ]
-    }
-  },
-  postViews: {
-    type: [String],
-    optional: true,
-    autoform: {
-      group: "02_posts",
-      instructions: 'Posts views showed in the views menu',
-      editable: true,
-      noselect: true,
-      options: function () {
-        return _.map(Telescope.menuItems.get("viewsMenu"), function (view){
-          return {
-            value: view.name,
-            label: view.label()
-          };
-        });
-      }
-    }
-  },
   postInterval: {
     type: Number,
     optional: true,
@@ -188,17 +136,6 @@ Telescope.settings.schema = new SimpleSchema({
       options: [
         {value: 'page', label: 'Discussion page'},
         {value: 'link', label: 'Outgoing link'}
-      ]
-    }
-  },
-  loadMoreBehavior: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "02_posts",
-      options: [
-        {value: 'button', label: "loadMoreButton"},
-        {value: 'scroll', label: "infiniteScroll"}
       ]
     }
   },
@@ -282,67 +219,6 @@ Telescope.settings.schema = new SimpleSchema({
       }
     }
   },
-  backgroundCSS: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'extras',
-      instructions: 'CSS code for the <body>\'s "background" property',
-      rows: 5
-    }
-  },
-  accentColor: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "05_colors",
-      instructions: 'Used for button backgrounds.',
-      type: "bootstrap-minicolors"
-    }
-  },
-  accentContrastColor: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "05_colors",
-      instructions: 'Used for button text.',
-      type: "bootstrap-minicolors"
-    }
-  },
-  secondaryColor: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "05_colors",
-      instructions: 'Used for the navigation background.',
-      type: "bootstrap-minicolors"
-    }
-  },
-  secondaryContrastColor: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "05_colors",
-      instructions: 'Used for header text.',
-      type: "bootstrap-minicolors"
-    }
-  },
-  fontUrl: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'fonts',
-      instructions: '@import URL (e.g. https://fonts.googleapis.com/css?family=Source+Sans+Pro)'
-    }
-  },
-  fontFamily: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'fonts',
-      instructions: 'font-family (e.g. "Source Sans Pro", sans-serif)'
-    }
-  },
   twitterAccount: {
     type: String,
     optional: true,
@@ -364,47 +240,6 @@ Telescope.settings.schema = new SimpleSchema({
       group: "07_integrations"
     }
   },
-  mixpanelId: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "07_integrations"
-    }
-  },
-  clickyId: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "07_integrations"
-    }
-  },
-  footerCode: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'extras',
-      instructions: 'Footer content (accepts Markdown).',
-      rows: 5
-    }
-  },
-  extraCode: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'extras',
-      instructions: 'Any extra HTML code you want to include on every page.',
-      rows: 5
-    }
-  },
-  extraCSS: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: 'extras',
-      instructions: 'Any extra CSS you want to include on every page.',
-      rows: 5
-    }
-  },
   emailFooter: {
     type: String,
     optional: true,
@@ -414,49 +249,6 @@ Telescope.settings.schema = new SimpleSchema({
       instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).',
       rows: 5,
       class: "private-field"
-    }
-  },
-  notes: {
-    type: String,
-    optional: true,
-    private: true,
-    autoform: {
-      group: 'extras',
-      instructions: 'You can store any notes or extra information here.',
-      rows: 5,
-      class: "private-field"
-    }
-  },
-  debug: {
-    type: Boolean,
-    optional: true,
-    autoform: {
-      group: 'debug',
-      instructions: 'Enable debug mode for more details console logs'
-    }
-  },
-  authMethods: {
-    type: [String],
-    optional: true,
-    autoform: {
-      group: 'auth',
-      editable: true,
-      noselect: true,
-      options: [
-        {
-          value: 'email',
-          label: 'Email/Password'
-        },
-        {
-          value: 'twitter',
-          label: 'Twitter'
-        },
-        {
-          value: 'facebook',
-          label: 'Facebook'
-        }
-      ],
-      instructions: 'Authentication methods (default to email only)'
     }
   }
 });

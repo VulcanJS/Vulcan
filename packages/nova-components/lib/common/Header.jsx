@@ -1,6 +1,6 @@
 const Header = props => {
   
-  ({Logo, ListContainer, CategoriesList} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -18,6 +18,7 @@ const Header = props => {
       <LogInButtons />
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
       <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
+      <FlashContainer />
     </header>
   )
 }

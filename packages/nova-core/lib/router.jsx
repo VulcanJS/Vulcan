@@ -1,8 +1,12 @@
+import Messages from "./messages.js";
+
 FlowRouter.extendPathWithQueryParams = (path, params, newQueryParams) => {
   const current = FlowRouter.current();
   const currentQueryParams = _.clone(current.queryParams);
   return FlowRouter.path(path, params, _.extend(currentQueryParams, newQueryParams));
 };
+
+FlowRouter.triggers.exit([() => Messages.markAsSeen()]);
 
 // FlowRouter.addToQueryArray = function (key, value) {
 //   var keyArray = FlowRouter.getQueryParam(key) || [];
@@ -45,4 +49,3 @@ FlowRouter.extendPathWithQueryParams = (path, params, newQueryParams) => {
 
 // FlowRouter.triggers.enter([function () {Events.analyticsRequest()}]);
 
-// FlowRouter.triggers.exit([function () {Messages.clearSeen()}]);

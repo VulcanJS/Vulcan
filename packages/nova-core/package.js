@@ -26,7 +26,9 @@ Package.onUse(function(api) {
     'lib/callbacks.js',
     'lib/icons.js',
     'lib/seo.js',
+    'lib/debug.js',
     'lib/router.jsx',
+
     // 'lib/colors.js' // probably not that useful anymore?
   ], ['client', 'server']);
 
@@ -39,10 +41,15 @@ Package.onUse(function(api) {
     'lib/server/routes.js'
   ], ['server']);
 
+  api.mainModule("lib/messages.js", ["client", "server"]);
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
   // var languagesPaths = languages.map(function (language) {
   //   return "i18n/"+language+".i18n.json";
   // });
   // api.addFiles(languagesPaths, ["client", "server"]);
+
+  api.export([
+    'Messages'
+  ]);
 
 });

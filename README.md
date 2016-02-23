@@ -87,6 +87,56 @@ Apart from the above files, Nova has two other major file types: **containers** 
 
 The current default “theme” is `base-components`.
 
+### Settings
+
+Settings can be configured in your `settings.json` file (although any settings published to the `Settings` collection will also be taken into account).
+
+Settings can be public (meaning they will be published to the client) or private (they will be kept on the server). Public settings should be set on the `public` object. Here's an example:
+
+```
+{
+  "public": {
+    "title": "Nova"
+  },
+  "kadiraAppSecret": "123xyz"
+}
+```
+
+#### Public Settings
+
+- `title`
+- `siteUrl`
+- `tagline`
+- `description`
+- `siteImage`
+- `requireViewInvite`
+- `requirePostInvite`
+- `requirePostsApproval`
+- `defaultView`
+- `postInterval`
+- `RSSLinksPointTo`
+- `commentInterval`
+- `maxPostsPerDay`
+- `startInvitesCount`
+- `postsPerPage`
+- `logoUrl`
+- `logoHeight`
+- `logoWidth`
+- `faviconUrl`
+- `language`
+- `twitterAccount`
+- `facebookPage`
+- `googleAnalyticsId`
+
+#### Private Settings
+
+- `defaultEmail`
+- `mailUrl`
+- `scoreUpdateInterval` – how often scores are recalculated, in seconds
+- `emailFooter`
+
+Note that packages may also rely on their own settings. 
+
 ### Other Notes
 
 - The `comments` package is now optional.
