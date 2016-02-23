@@ -1,3 +1,5 @@
+import NoSSR from 'react-no-ssr';
+
 const Header = props => {
   
   ({Logo, ListContainer, CategoriesList, FlashContainer} = Telescope.components);
@@ -15,7 +17,11 @@ const Header = props => {
       <div className="nav">
         {<ListContainer collection={Categories} component={CategoriesList} limit={0}/>}
       </div>
-      <LogInButtons />
+      
+      <NoSSR onSSR={<p>Loading…</p>}>
+        <LogInButtons />
+      </NoSSR>
+      
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
       <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
       <FlashContainer />
