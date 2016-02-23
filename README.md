@@ -171,7 +171,7 @@ Note that packages may also rely on their own settings.
 - ~~posts.edit~~
 - ~~comments.new~~
 - ~~comments.edit~~
-- users.edit (account)
+- ~~users.edit (account)~~
 
 #### Other Stuff
 

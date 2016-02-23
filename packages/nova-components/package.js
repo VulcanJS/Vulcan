@@ -5,13 +5,6 @@ Package.describe({
   git: "https://github.com/TelescopeJS/telescope.git"
 });
 
-// Npm.depends({
-//   'formsy-react': '0.17.0',
-//   'formsy-react-components': '0.6.6',
-//   'react-dom': '0.14.7',
-//   'react-modal': '0.6.1'
-// });
-
 Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);

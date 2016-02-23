@@ -5,7 +5,7 @@ const CategoriesList = props => {
       <h4>Categories</h4>
       <ul>
         {props.results.map(category => 
-          <li key={category._id} className="post-category"><a href={FlowRouter.extendPathWithQueryParams("postDefault", {}, {cat: category.slug})}>{category.name}</a></li>
+          <li key={category._id} className="post-category"><a href={FlowRouter.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})}>{category.name}</a></li>
         )}
       </ul>
     </div>

@@ -25,8 +25,11 @@ const Post = (props) => {
           limit={0}
           parentProperty="parentCommentId"
         />
-        <h4>New Comment:</h4>
-        <CommentNew type="comment" postId={post._id}/>
+
+        <div className="post-new-comment">
+          <h4>New Comment:</h4>
+          <CommentNew type="comment" postId={post._id} />
+        </div>
       </div>
 
     </div>
