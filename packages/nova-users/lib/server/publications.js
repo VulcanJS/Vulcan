@@ -4,7 +4,7 @@
  */
 Meteor.publish('users.single', function (terms) {
 
-  var idOrSlug = terms._id;
+  var idOrSlug = terms._id || terms['telescope.slug'];
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;

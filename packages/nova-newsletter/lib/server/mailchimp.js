@@ -60,7 +60,7 @@ scheduleCampaign = function (campaign, isTest) {
         var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
-      var confirmationHtml = Telescope.email.getTemplate('emailDigestConfirmation')({
+      var confirmationHtml = Telescope.email.getTemplate('digestConfirmation')({
         time: scheduledTime,
         newsletterLink: mailchimpCampaign.archive_url,
         subject: subject

@@ -18,6 +18,8 @@ Package.onUse(function (api) {
     'telescope:comments@0.25.7',
 
     'alt:react-accounts-ui@1.0.0',
+    'dburles:spacebars-tohtml@1.0.1',
+
     // 'alt:react-accounts-unstyled'
     
   ]);
@@ -32,5 +34,21 @@ Package.onUse(function (api) {
     'lib/client/accounts.js'
   ], ['client']);
 
+  api.addFiles([
+    'lib/server/routes.js',
+    'lib/server/templates.js'
+  ], ['server']);
+
+  api.addAssets([
+    'lib/server/emails/common/test.handlebars',
+    'lib/server/emails/common/wrapper.handlebars',
+    'lib/server/emails/comments/newComment.handlebars',
+    'lib/server/emails/comments/newReply.handlebars',
+    'lib/server/emails/posts/newPendingPost.handlebars',
+    'lib/server/emails/posts/newPost.handlebars',
+    'lib/server/emails/posts/postApproved.handlebars',
+    'lib/server/emails/users/accountApproved.handlebars',
+    'lib/server/emails/users/newUser.handlebars',
+  ], ['server']);
 
 });

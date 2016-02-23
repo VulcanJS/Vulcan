@@ -35,7 +35,7 @@ const PostItem = React.createClass({
       <div className="post-item">
         
         <h3 className="post-title"><a href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a></h3>
-        <p>{Users.getDisplayName(post.user)}, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>
+        <p><a href={Users.getProfileUrl(post.user)}>{Users.getDisplayName(post.user)}</a>, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>
         
         {this.renderCategories()}
         {this.renderCommenters()}

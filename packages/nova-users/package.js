@@ -31,15 +31,9 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/publications.js',
-    'lib/server/create_user.js',
-    'lib/server/notifications/routes.js',
-    'lib/server/notifications/templates.js'
+    'lib/server/create_user.js'
   ], ['server']);
 
-  api.addAssets([
-    'lib/server/notifications/templates/emailAccountApproved.handlebars',
-    'lib/server/notifications/templates/emailNewUser.handlebars'
-  ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
   // var languagesPaths = languages.map(function (language) {

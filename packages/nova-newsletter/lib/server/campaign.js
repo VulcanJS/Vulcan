@@ -74,7 +74,7 @@ buildCampaign = function (postsArray) {
       properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
     }
 
-    postsHTML += Telescope.email.getTemplate('emailPostItem')(properties);
+    postsHTML += Telescope.email.getTemplate('postItem')(properties);
   });
 
   // 2. Wrap posts HTML in digest template

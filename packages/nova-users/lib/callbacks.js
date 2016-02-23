@@ -151,7 +151,7 @@ if (Telescope.email) {
           profileUrl: Users.getProfileUrl(user, true),
           username: Users.getUserName(user)
         };
-        var html = Telescope.email.getTemplate('emailNewUser')(emailProperties);
+        var html = Telescope.email.getTemplate('newUser')(emailProperties);
         Telescope.email.send(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), Telescope.email.buildTemplate(html));
       }
     });

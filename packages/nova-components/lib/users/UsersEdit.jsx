@@ -25,7 +25,7 @@ const Textarea = FRC.Textarea;
 //   }
 // };
 
-const UserEdit = React.createClass({
+const UsersEdit = React.createClass({
   
   propTypes: {
     document: React.PropTypes.object.isRequired,
@@ -104,4 +104,4 @@ const UserEdit = React.createClass({
   }
 });
 
-module.exports = UserEdit;
+module.exports = UsersEdit;

@@ -17,14 +17,18 @@ Telescope.email.getTemplate = function (templateName) {
 
   var template = templateName;
 
+  // note: template prefixes are disabled
   // go through prefixes and keep the last one (if any) that points to a valid template
-  Telescope.config.customPrefixes.forEach(function (prefix) {
-    if(typeof Telescope.email.templates[prefix+templateName] === 'string'){
-      template = prefix + templateName;
-    }
-  });
+  // Telescope.config.customPrefixes.forEach(function (prefix) {
+  //   if(typeof Telescope.email.templates[prefix+templateName] === 'string'){
+  //     template = prefix + templateName;
+  //   }
+  // });
 
   // return Handlebars.templates[template];
+
+  console.log(templateName)
+  console.log(Telescope.email.templates[template])
 
   return function (properties) {
     return Spacebars.toHTML(properties, Telescope.email.templates[template]);
@@ -49,7 +53,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
     logoWidth: Telescope.settings.get('logoWidth')
   };
 
-  var emailHTML = Telescope.email.getTemplate("emailWrapper")(emailProperties);
+  var emailHTML = Telescope.email.getTemplate("wrapper")(emailProperties);
 
   var inlinedHTML = juice(emailHTML);
 
