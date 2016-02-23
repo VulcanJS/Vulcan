@@ -1,1 +1,0 @@
-Telescope update prompt package, used internally. Also phones home with a few stats. 
