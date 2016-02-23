@@ -23,101 +23,82 @@ const Textarea = FRC.Textarea;
 //   }
 // };
 
-const PostEdit = React.createClass({
+const UserEdit = React.createClass({
   
   propTypes: {
     document: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
-    categories: React.PropTypes.array
+    currentUser: React.PropTypes.object.isRequired
   },
 
   submitForm(data) {
-    const post = this.props.document;
-    const modifier = {$set: _.compactObject(data)};
 
     event.preventDefault();
 
-    Meteor.call('posts.edit', post._id, modifier, (error, post) => {
+    let modifier = {};
+    const user = this.props.document;
+
+    // replace "_" by "." in modifier keys
+    _.keys(data).forEach(key => {modifier[key.replace("_", ".")] = data[key]});
+
+    // remove any empty properties
+    modifier = {$set: _.compactObject(modifier)};
+
+    Meteor.call('users.edit', user._id, modifier, (error, user) => {
       if (error) {
         console.log(error);
         // handle error
       } else {
-        FlowRouter.go('posts.single', post);
+        console.log("User modified.")
       }
     });
   },
 
   renderAdminForm() {
-    const post = this.props.document;
     return (
       <div className="admin-fields">
-        <RadioGroup
-          name="status"
-          value={post.status}
-          label="Status"
-          options={Posts.config.postStatuses}
-        />
-        <Checkbox
-          name="sticky"
-          value={post.sticky}
-          label="Sticky"
-        />
       </div>
     )
   },
 
   render() {
-     
-   ({CanEditPost} = Telescope.components);
+  
+    const user = this.props.document;
 
-    const post = this.props.document;
-    const categoriesOptions = this.props.categories.map(category => {
-      return {
-        value: category._id,
-        label: category.name
-      }
-    });
+    ({CanEditUser} = Telescope.components);
 
     return (
-      <CanEditPost user={this.props.currentUser} post={post}>
-        <div className="post-edit">
-          <h3>Edit Post “{post.title}”</h3>
+      <CanEditUser user={this.props.currentUser} userToEdit={user}>
+        <div className="user-edit">
+          <h3>Edit Account</h3>
           <Formsy.Form onSubmit={this.submitForm}>
            <Input
-              name="url"
-              value={post.url}
-              label="URL"
+              name="telescope_email"
+              value={user.telescope.email}
+              label="Email"
               type="text"
               className="text-input"
             />
             <Input
-              name="title"
-              value={post.title}
-              label="Title"
+              name="telescope_displayName"
+              value={user.telescope.displayName}
+              label="Display Name"
               type="text"
               className="text-input"
             />
             <Textarea
-              name="body"
-              value={post.body}
-              label="Body"
+              name="telescope_bio"
+              value={user.telescope.bio}
+              label="Bio"
               type="text"
               className="textarea"
-            />
-            <CheckboxGroup
-              name="categories"
-              value={post.categories}
-              label="Categories"
-              type="text"
-              options={categoriesOptions}
             />
             {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
             <button type="submit" className="button button--primary">Submit</button>
           </Formsy.Form>
         </div>
-      </CanEditPost>
+      </CanEditUser>
     )
   }
 });
 
-module.exports = PostEdit;
+module.exports = UserEdit;

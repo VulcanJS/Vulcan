@@ -14,9 +14,14 @@ const ItemContainer = React.createClass({
   
   getMeteorData() {
 
-    const subscription = Meteor.subscribe(this.props.publication, this.props.terms);
+    // subscribe if necessary
+    if (this.props.publication && this.props.terms) {
+      const subscription = Meteor.subscribe(this.props.publication, this.props.terms);
+    }
+
     const collection = this.props.collection;
-    const result = collection.findOne(this.props.terms);
+    const document = collection.findOne(this.props.terms);
+    
     // look for any specified joins
     if (this.props.joins) {
 
@@ -24,14 +29,14 @@ const ItemContainer = React.createClass({
       this.props.joins.forEach(join => {
 
         // get the property containing the id or ids
-        const joinProperty = result[join.property];
+        const joinProperty = document[join.property];
         const collection = Meteor.isClient ? window[join.collection] : global[join.collection];
 
         // perform the join
         if (Array.isArray(joinProperty)) { // join property is an array of ids
-          result[join.joinAs] = collection.find({_id: {$in: joinProperty}}).fetch();
+          document[join.joinAs] = collection.find({_id: {$in: joinProperty}}).fetch();
         } else { // join property is a single id
-          result[join.joinAs] = collection.findOne({_id: joinProperty});
+          document[join.joinAs] = collection.findOne({_id: joinProperty});
         }
           
       });
@@ -39,7 +44,7 @@ const ItemContainer = React.createClass({
     }
 
     return {
-      result: result,
+      document: document,
       currentUser: Meteor.user()
     };
   },
@@ -48,9 +53,9 @@ const ItemContainer = React.createClass({
 
     const Component = this.props.component; // could be Post or PostEdit
 
-    if (this.data.result) {
+    if (this.data.document) {
       return (
-        <Component {...this.data.result} />
+        <Component {...this.data} />
       )
     } else {
       return <p>Loading…</p>

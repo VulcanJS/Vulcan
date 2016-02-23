@@ -1,4 +1,4 @@
-var completeUserProfile = function (modifier, userId, user) {
+var completeUserProfile = function (userId, modifier, user) {
 
   Users.update(userId, modifier);
 
@@ -8,8 +8,33 @@ var completeUserProfile = function (modifier, userId, user) {
 
 };
 
+Users.methods = {};
+
+Users.methods.edit = (userId, modifier, user) => {
+  
+  if (typeof user === "undefined") {
+    user = Posts.findOne(userId);
+  }
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  modifier = Telescope.callbacks.run("userEdit", modifier, user);
+
+  // ------------------------------ Update ------------------------------ //
+
+  Users.update(userId, modifier);
+
+  // ------------------------------ Callbacks ------------------------------ //
+
+  Telescope.callbacks.runAsync("userEditAsync", Users.findOne(userId), user);
+
+  // ------------------------------ After Update ------------------------------ //
+  return Users.findOne(userId);
+  
+}
+
 Meteor.methods({
-  completeUserProfile: function (modifier, userId) {
+  'users.compleProfile'(modifier, userId) {
     
     check(modifier, Match.OneOf({$set: Object}, {$unset: Object}, {$set: Object, $unset: Object}));
     check(userId, String);
@@ -53,10 +78,45 @@ Meteor.methods({
       });
     });
 
-    completeUserProfile(modifier, userId, user);
+    completeUserProfile(userId, modifier, user);
   },
 
-  removeUser: function (userId, removePosts) {
+  'users.edit'(userId, modifier) {
+
+    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
+    check(modifier, Match.OneOf({$set: Users.simpleSchema()}, {$unset: Object}, {$set: Users.simpleSchema(), $unset: Object}));
+    check(userId, String);
+
+    var currentUser = Meteor.user(),
+        user = Users.findOne(userId),
+        schema = Users.simpleSchema()._schema;
+
+    // ------------------------------ Checks ------------------------------ //
+
+    // check that user can edit document
+    if (!user || !Users.can.edit(currentUser, user)) {
+      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
+    }
+
+    // go over each field and throw an error if it's not editable
+    // loop over each operation ($set, $unset, etc.)
+    _.each(modifier, function (operation) {
+      // loop over each property being operated on
+      _.keys(operation).forEach(function (fieldName) {
+
+        var field = schema[fieldName];
+        if (!Users.can.editField(currentUser, field, user)) {
+          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
+        }
+
+      });
+    });
+
+    return Users.methods.edit(userId, modifier, user);
+
+  },
+
+  'users.remove'(userId, removePosts) {
 
     if (Users.is.adminById(this.userId)) {
 

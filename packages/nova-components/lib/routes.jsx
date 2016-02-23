@@ -55,6 +55,36 @@ FlowRouter.route('/posts/:_id/edit', {
   }
 });
 
+
+FlowRouter.route('/account', {
+  name: 'account',
+  action(params, queryParams) {
+    ({AppContainer, ItemContainer, UserEdit} = Telescope.components);
+    mount(AppContainer, {content: 
+      <ItemContainer 
+        collection={Users} 
+        publication="users.single" 
+        terms={{_id: Meteor.userId()}} 
+        component={UserEdit}
+      />})
+  }
+});
+
+FlowRouter.route('/users/:_id/edit', {
+  name: 'users.edit',
+  action(params, queryParams) {
+    ({AppContainer, ItemContainer, UserEdit} = Telescope.components);
+    mount(AppContainer, {content: 
+      <ItemContainer 
+        collection={Users} 
+        publication="users.single" 
+        terms={params} 
+        component={UserEdit}
+      />})
+  }
+});
+
+
 // ------------------------------------- Comments -------------------------------- //
 
 // FlowRouter.route('/comments/:_id', {

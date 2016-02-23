@@ -199,7 +199,7 @@ Meteor.methods({
    * @param {Object} modifier - the update modifier
    * @param {Object} postId - the id of the post being updated
    */
-  'posts.edit': function (modifier, postId) {
+  'posts.edit': function (postId, modifier) {
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
     check(modifier, Match.OneOf({$set: Posts.simpleSchema()}, {$unset: Object}, {$set: Posts.simpleSchema(), $unset: Object}));

@@ -5,11 +5,11 @@ const Layout = props => {
 
   return (
     <div className="wrapper" id="wrapper">
-      <Header/>
+      <Header {...props}/>
       <div className="main">
         {props.children}
       </div>
-      <Footer/>
+      <Footer {...props}/>
     </div>
   )
 }

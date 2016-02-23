@@ -5,6 +5,7 @@ const AppContainer = React.createClass({
   getMeteorData() {
 
     var data = {
+      currentUser: Meteor.user(),
       ready: false
     };
 
@@ -23,7 +24,7 @@ const AppContainer = React.createClass({
     const Layout = Telescope.getComponent("Layout");
 
     if (this.data.ready) {
-      return <Layout>{this.props.content}</Layout>
+      return <Layout currentUser={this.data.currentUser}>{this.props.content}</Layout>
     } else {
       return <p>Loading App…</p>
     }

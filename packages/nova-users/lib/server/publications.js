@@ -2,8 +2,9 @@
  * Publish a single user
  * @param {String} idOrSlug
  */
-Meteor.publish('users.single', function (idOrSlug) {
+Meteor.publish('users.single', function (terms) {
 
+  var idOrSlug = terms._id;
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;

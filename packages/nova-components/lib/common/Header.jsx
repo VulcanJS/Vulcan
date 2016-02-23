@@ -16,6 +16,7 @@ const Header = props => {
         {<ListContainer collection={Categories} component={CategoriesList} limit={0}/>}
       </div>
       <LogInButtons />
+      {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
       <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
     </header>
   )
