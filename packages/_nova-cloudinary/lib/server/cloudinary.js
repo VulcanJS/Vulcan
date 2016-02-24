@@ -70,7 +70,7 @@ function cachePostThumbnailOnSubmit (post) {
     }});
   }
 }
-Telescope.callbacks.add("postSubmitAsync", cachePostThumbnailOnSubmit);
+Telescope.callbacks.add("posts.new.async", cachePostThumbnailOnSubmit);
 
 // post edit callback
 function cachePostThumbnailOnEdit (newPost, oldPost) {
@@ -84,4 +84,4 @@ function cachePostThumbnailOnEdit (newPost, oldPost) {
     }});
   }
 }
-Telescope.callbacks.add("postEditAsync", cachePostThumbnailOnEdit);
+Telescope.callbacks.add("posts.edit.async", cachePostThumbnailOnEdit);

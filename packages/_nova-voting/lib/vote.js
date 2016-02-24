@@ -85,7 +85,7 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
     
     // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync(operation+"Async", item, user, collection, operation);
+    Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation);
     
     return true;
 

@@ -142,6 +142,15 @@ Settings can be public (meaning they will be published to the client) or private
 
 Note that packages may also rely on their own settings. 
 
+### Callbacks
+
+Methods support four distinct callbacks
+
+- `client` callbacks are only called on the client, before the actual method is called.
+- `method` callbacks are called within the body of the method, and they run both on the client and server.
+- `sync` callbacks are called in the mutator, and can run either on both client and server, *or* on the server only if the mutator is called directly.
+- `async` callbacks are called in the mutator, and only run on the server in an async non-blocking way. 
+
 ### Other Notes
 
 - The `comments` package is now optional.

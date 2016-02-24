@@ -37,17 +37,17 @@ var checkCategories = function (post) {
   }
 };
 
-function postSubmitCheckCategories (post) {
+function postsNewCheckCategories (post) {
   checkCategories(post);
   return post;
 }
-Telescope.callbacks.add("postSubmit", postSubmitCheckCategories);
+Telescope.callbacks.add("posts.new.sync", postsNewCheckCategories);
 
 function postEditCheckCategories (post) {
   checkCategories(post);
   return post;
 }
-Telescope.callbacks.add("postEdit", postEditCheckCategories);
+Telescope.callbacks.add("posts.edit.sync", postEditCheckCategories);
 
 // TODO: debug this
 
@@ -64,7 +64,7 @@ Telescope.callbacks.add("postEdit", postEditCheckCategories);
 //   post.categories = _.unique(newCategories);
 //   return post;
 // }
-// Telescope.callbacks.add("postSubmit", addParentCategoriesOnSubmit);
+// Telescope.callbacks.add("posts.new.sync", addParentCategoriesOnSubmit);
 
 // function addParentCategoriesOnEdit (modifier, post) {
 //   if (modifier.$unset && modifier.$unset.categories !== undefined) {
@@ -83,4 +83,4 @@ Telescope.callbacks.add("postEdit", postEditCheckCategories);
 //   modifier.$set.categories = _.unique(newCategories);
 //   return modifier;
 // }
-// Telescope.callbacks.add("postEdit", addParentCategoriesOnEdit);
+// Telescope.callbacks.add("posts.edit.sync", addParentCategoriesOnEdit);

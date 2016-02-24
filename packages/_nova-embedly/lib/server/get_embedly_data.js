@@ -75,7 +75,7 @@ function addMediaAfterSubmit (post) {
     }
   }
 }
-Telescope.callbacks.add("postSubmitAsync", addMediaAfterSubmit);
+Telescope.callbacks.add("posts.new.async", addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   var newUrl = modifier.$set.url;
@@ -95,7 +95,7 @@ function updateMediaOnEdit (modifier, post) {
   }
   return modifier;
 }
-Telescope.callbacks.add("postEdit", updateMediaOnEdit);
+Telescope.callbacks.add("posts.edit.sync", updateMediaOnEdit);
 
 var regenerateThumbnail = function (post) {
   delete post.thumbnailUrl;

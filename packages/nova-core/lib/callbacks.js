@@ -12,10 +12,10 @@ var modifyKarma = function (userId, karma) {
 function updateScore (item, user, collection, operation) {
   Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 }
-Telescope.callbacks.add("upvoteAsync", updateScore);
-Telescope.callbacks.add("downvoteAsync", updateScore);
-Telescope.callbacks.add("cancelUpvoteAsync", updateScore);
-Telescope.callbacks.add("cancelDownvoteAsync", updateScore);
+Telescope.callbacks.add("upvote.async", updateScore);
+Telescope.callbacks.add("downvote.async", updateScore);
+Telescope.callbacks.add("cancelUpvote.async", updateScore);
+Telescope.callbacks.add("cancelDownvote.async", updateScore);
 
 /**
  * Update the profile of the user doing the operation
@@ -52,10 +52,10 @@ function updateUser (item, user, collection, operation) {
   Meteor.users.update({_id: user._id}, update);
 
 }
-Telescope.callbacks.add("upvoteAsync", updateUser);
-Telescope.callbacks.add("downvoteAsync", updateUser);
-Telescope.callbacks.add("cancelUpvoteAsync", updateUser);
-Telescope.callbacks.add("cancelDownvoteAsync", updateUser);
+Telescope.callbacks.add("upvote.async", updateUser);
+Telescope.callbacks.add("downvote.async", updateUser);
+Telescope.callbacks.add("cancelUpvote.async", updateUser);
+Telescope.callbacks.add("cancelDownvote.async", updateUser);
 
 /**
  * Update the karma of the item's owner
@@ -75,7 +75,7 @@ function updateKarma (item, user, collection, operation) {
   }
 
 }
-Telescope.callbacks.add("upvoteAsync", updateKarma);
-Telescope.callbacks.add("downvoteAsync", updateKarma);
-Telescope.callbacks.add("cancelUpvoteAsync", updateKarma);
-Telescope.callbacks.add("cancelDownvoteAsync", updateKarma);
+Telescope.callbacks.add("upvote.async", updateKarma);
+Telescope.callbacks.add("downvote.async", updateKarma);
+Telescope.callbacks.add("cancelUpvote.async", updateKarma);
+Telescope.callbacks.add("cancelDownvote.async", updateKarma);

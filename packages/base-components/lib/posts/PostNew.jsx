@@ -28,8 +28,11 @@ const PostNew = React.createClass({
   
   submitForm(data) {
     // remove any empty properties
-    data = _.compactObject(data); 
-    Meteor.call('posts.new', data, (error, post) => {
+    post = _.compactObject(data); 
+
+    post = Telescope.callbacks.run("posts.new.client", post);
+
+    Meteor.call('posts.new', post, (error, post) => {
       if (error) {
         console.log(error)
         Messages.flash(error.message, "error")

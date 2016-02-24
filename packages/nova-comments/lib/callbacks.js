@@ -46,7 +46,7 @@ function afterCommentOperations (comment) {
 
   return comment;
 }
-Telescope.callbacks.add("commentSubmitAsync", afterCommentOperations);
+Telescope.callbacks.add("comments.new.sync", afterCommentOperations);
 
 // ------------------------------------- Votes -------------------------------- //
 
@@ -61,7 +61,7 @@ if (typeof Telescope.operateOnItem !== "undefined") {
 
     return comment;
   }
-  Telescope.callbacks.add("commentSubmitAsync", upvoteOwnComment);
+  Telescope.callbacks.add("comments.new.sync", upvoteOwnComment);
 
 }
 // ------------------------------------- Notifications -------------------------------- //
