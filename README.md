@@ -6,6 +6,12 @@
 
 Clone this branch, then `npm install`. 
 
+### Learn More
+
+- [Introducing Nova](http://www.telescopeapp.org/blog/introducing-nova/)
+- [Getting Started With Nova](http://www.telescopeapp.org/blog/getting-started-with-nova/)
+- [Roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap)
+
 ### Philosophy
 
 Nova was born from a simple realization: 80% of the work involed in Telescope comes from focusing on the user experience. But this comes at the detriment of *developer* experience since it means a much larger codebase.
@@ -56,6 +62,7 @@ These packages are optional, although they might depend on each other. Note that
 #### Theme Packages
 
 - `base-components`
+- `base-styles`
 
 ### Files
 
@@ -84,8 +91,6 @@ Apart from the above files, Nova has two other major file types: **containers** 
 - `ItemContainer.jsx`: used for single items. 
 
 **Components** take in these results, and output HTML. They should only exist inside theme packages. 
-
-The current default “theme” is `base-components`.
 
 ### Settings
 
@@ -149,40 +154,3 @@ Note that packages may also rely on their own settings.
 - Some code is commented. 
 - Telescope's module system will probably not be ported to Nova, since it encourages you to customize your theme manually anyway. 
 - This is obviously a work in progress!
-
-### TODO
-
-#### Clean Up
-
-- ~~Split off notifications package~~
-- ~~Get rid of unused js code (menus, modules, etc.).~~
-- Get rid of Blaze code.
-
-#### Components & Themes
-
-- ~~Comment threads~~
-- ~~Flesh out the `base-components` theme with components for the most common elements.~~
-- ~~Add simple stylesheet to make base theme a little less ugly.~~
-- Make base theme class names compatible with Vanilla Telescope?
-
-#### Forms & Methods
-
-- ~~posts.new~~
-- ~~posts.edit~~
-- ~~comments.new~~
-- ~~comments.edit~~
-- ~~users.edit (account)~~
-
-#### Other Stuff
-
-- ~~Create categories from code.~~
-- Newsletter.
-- Email & notifications (keep Spacebars for templates?).
-- Refactor scheduled posts to use cron job (do in `master`?)
-- i18n (waiting for [tapi18n](https://github.com/TAPevents/tap-i18n) to be 1.3-compatible).
-- Autoform.
-- Votes.
-- Nested categories.
-- Embedly.
-- Search.
-- Meta tags.

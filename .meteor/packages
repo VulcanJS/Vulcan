@@ -19,7 +19,7 @@ nova:newsletter
 nova:search
 nova:notifications
 nova:getting-started
-nova:tags
+nova:categories
 
 # nova:voting
 # nova:migrations

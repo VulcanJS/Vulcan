@@ -48,7 +48,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 //////////////////////////////////////////////////////
 
 /**
- * Increment the user's post count and upvote the post
+ * Increment the user's post count
  */
 function afterPostSubmitOperations (post) {
   var userId = post.userId;
@@ -59,10 +59,11 @@ Telescope.callbacks.add("postSubmitAsync", afterPostSubmitOperations);
 
 function setPostedAt (post) {
   if (post.isApproved() && !post.postedAt) {
-    Posts.update(post._id, {$set: {postedAt: new Date()}});
+    post.postedAt = new Date();
   }
+  return post;
 }
-Telescope.callbacks.add("postEditAsync", setPostedAt);
+Telescope.callbacks.add("postEdit", setPostedAt);
 
 // ------------------------------------- Votes -------------------------------- //
 
