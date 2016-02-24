@@ -6,7 +6,7 @@ FlowRouter.extendPathWithQueryParams = (path, params, newQueryParams) => {
   return FlowRouter.path(path, params, _.extend(currentQueryParams, newQueryParams));
 };
 
-FlowRouter.triggers.exit([() => Messages.markAsSeen()]);
+FlowRouter.triggers.exit([() => Messages.clearSeen()]);
 
 // FlowRouter.addToQueryArray = function (key, value) {
 //   var keyArray = FlowRouter.getQueryParam(key) || [];

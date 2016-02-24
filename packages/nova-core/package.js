@@ -48,8 +48,8 @@ Package.onUse(function(api) {
   // });
   // api.addFiles(languagesPaths, ["client", "server"]);
 
-  api.export([
-    'Messages'
-  ]);
+  // api.export([
+  //   'Messages'
+  // ]);
 
 });

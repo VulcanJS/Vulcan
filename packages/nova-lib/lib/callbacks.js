@@ -63,6 +63,7 @@ Telescope.callbacks.runAsync = function () {
 
   // the first argument is the name of the hook
   var hook = arguments[0];
+  // successive arguments are passed to each iteration
   var args = Array.prototype.slice.call(arguments).slice(1);
   var callbacks = Telescope.callbacks[hook];
 
@@ -73,7 +74,7 @@ Telescope.callbacks.runAsync = function () {
       // run all post submit server callbacks on post object successively
       callbacks.forEach(function(callback) {
         // console.log("// "+hook+": running callback ["+callback.name+"] at "+moment().format("hh:mm:ss"))
-        callback.apply(this, args)
+        callback.apply(this, args);
       });
     });
   

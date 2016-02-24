@@ -23,7 +23,7 @@ const ItemContainer = React.createClass({
     const document = collection.findOne(this.props.terms);
     
     // look for any specified joins
-    if (this.props.joins) {
+    if (document && this.props.joins) {
 
       // loop over each join
       this.props.joins.forEach(join => {

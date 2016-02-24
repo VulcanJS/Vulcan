@@ -109,7 +109,7 @@ const PostEdit = React.createClass({
             />
             <CheckboxGroup
               name="categories"
-              value={post.categories}
+              value={post.categories ? post.categories : ""}
               label="Categories"
               type="text"
               options={categoriesOptions}

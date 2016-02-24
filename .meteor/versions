@@ -89,6 +89,7 @@ momentjs:moment@2.11.2
 mongo@1.1.4-beta.10
 mongo-id@1.0.1
 mongo-livedata@1.0.9
+nova:categories@0.25.7
 nova:comments@0.25.7
 nova:core@0.25.7
 nova:email@0.25.7
@@ -101,7 +102,6 @@ nova:notifications@0.25.7
 nova:posts@0.25.7
 nova:search@0.25.7
 nova:settings@0.25.7
-nova:tags@0.25.7
 nova:users@0.25.7
 npm-bcrypt@0.7.8_2
 npm-mongo@1.4.40-beta.10

@@ -3,7 +3,7 @@ import Messages from "meteor/nova:core";
 const Flash = React.createClass({
 
   componentDidMount() {
-    Messages.markAsRead(this.props.message._id);
+    Messages.markAsSeen(this.props.message._id);
   },
 
   render() {

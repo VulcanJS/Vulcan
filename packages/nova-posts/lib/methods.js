@@ -13,62 +13,12 @@ Posts.methods = {};
  */
 Posts.methods.new = function (post) {
 
-  var userId = post.userId, // at this stage, a userId is expected
-      user = Users.findOne(userId);
-
-  // ------------------------------ Checks ------------------------------ //
-
-  // check that a title was provided
-  if(!post.title)
-    throw new Meteor.Error(602, __('please_fill_in_a_title'));
-
-  // check that there are no posts with the same URL
-  if(!!post.url)
-    Posts.checkForSameUrl(post.url, user);
-
-  // ------------------------------ Properties ------------------------------ //
-
-  var defaultProperties = {
-    createdAt: new Date(),
-    author: Users.getDisplayNameById(userId),
-    upvotes: 0,
-    downvotes: 0,
-    commentCount: 0,
-    clickCount: 0,
-    viewCount: 0,
-    baseScore: 0,
-    score: 0,
-    inactive: false,
-    sticky: false,
-    status: Posts.getDefaultStatus()
-  };
-
-  post = _.extend(defaultProperties, post);
-
-  // if post is approved but doesn't have a postedAt date, give it a default date
-  // note: pending posts get their postedAt date only once theyre approved
-  if (post.status === Posts.config.STATUS_APPROVED && !post.postedAt)
-    post.postedAt = new Date();
-
-  // clean up post title
-  post.title = Telescope.utils.cleanUp(post.title);
-
-  // generate slug
-  post.slug = Telescope.utils.slugify(post.title);
-
-  // ------------------------------ Callbacks ------------------------------ //
-
-  // run all post submit server callbacks on post object successively
-  post = Telescope.callbacks.run("postSubmit", post);
-
-  // -------------------------------- Insert ------------------------------- //
+  post = Telescope.callbacks.run("posts.new.sync", post, Meteor.user());
 
   post._id = Posts.insert(post);
 
-  // --------------------- Server-Side Async Callbacks --------------------- //
-
   // note: query for post to get fresh document with collection-hooks effects applied
-  Telescope.callbacks.runAsync("postSubmitAsync", Posts.findOne(post._id));
+  Telescope.callbacks.runAsync("posts.new.async", Posts.findOne(post._id));
 
   return post;
 };
@@ -85,19 +35,12 @@ Posts.methods.edit = function (postId, modifier, post) {
     post = Posts.findOne(postId);
   }
 
-  // ------------------------------ Callbacks ------------------------------ //
-
-  modifier = Telescope.callbacks.run("postEdit", modifier, post);
-
-  // ------------------------------ Update ------------------------------ //
+  modifier = Telescope.callbacks.run("posts.edit.sync", modifier, post);
 
   Posts.update(postId, modifier);
 
-  // ------------------------------ Callbacks ------------------------------ //
+  Telescope.callbacks.runAsync("posts.edit.async", Posts.findOne(postId), post);
 
-  Telescope.callbacks.runAsync("postEditAsync", Posts.findOne(postId), post);
-
-  // ------------------------------ After Update ------------------------------ //
   return Posts.findOne(postId);
 };
 
@@ -128,62 +71,10 @@ Meteor.methods({
     // thumbnailUrl
 
     // NOTE: the current user and the post author user might be two different users!
-    var user = Meteor.user(),
-        hasAdminRights = Users.is.admin(user),
-        schema = Posts.simpleSchema()._schema;
 
-    // ------------------------------ Checks ------------------------------ //
+    // TODO: find a way to bind `this` to do the following in a callback?
 
-    // check that user can post
-    if (!user || !Users.can.post(user))
-      throw new Meteor.Error(601, __('you_need_to_login_or_be_invited_to_post_new_stories'));
-
-    // --------------------------- Rate Limiting -------------------------- //
-
-    if(!hasAdminRights){
-
-      var timeSinceLastPost = Users.timeSinceLast(user, Posts),
-        numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
-        postInterval = Math.abs(parseInt(Telescope.settings.get('postInterval', 30))),
-        maxPostsPer24Hours = Math.abs(parseInt(Telescope.settings.get('maxPostsPerDay', 30)));
-
-      // check that user waits more than X seconds between posts
-      if(timeSinceLastPost < postInterval)
-        throw new Meteor.Error(604, __('please_wait')+(postInterval-timeSinceLastPost)+__('seconds_before_posting_again'));
-
-      // check that the user doesn't post more than Y posts per day
-      if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
-        throw new Meteor.Error(605, __('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+__('posts_per_day'));
-
-    }
-
-    // ------------------------------ Properties ------------------------------ //
-
-    // admin-only properties
-    // status
-    // postedAt
-    // userId
-    // sticky (default to false)
-
-    // go over each schema field and throw an error if it's not editable
-    _.keys(post).forEach(function (fieldName) {
-
-      var field = schema[fieldName];
-      if (!Users.can.submitField(user, field)) {
-        throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
-      }
-
-    });
-
-    // if no post status has been set, set it now
-    if (!post.status) {
-      post.status = Posts.getDefaultStatus(user);
-    }
-
-    // if no userId has been set, default to current user id
-    if (!post.userId) {
-      post.userId = user._id;
-    }
+    post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
 
     if (Meteor.isServer) {
       post.userIP = this.connection.clientAddress;

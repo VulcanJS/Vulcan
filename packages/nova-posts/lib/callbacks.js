@@ -47,42 +47,181 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 // Callbacks                                        //
 //////////////////////////////////////////////////////
 
+// ------------------------------------- posts.new.method -------------------------------- //
+
 /**
- * Increment the user's post count
+ * Check that the current user can post
  */
-function afterPostSubmitOperations (post) {
-  var userId = post.userId;
-  Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
+function clientSubmitChecks (post, user) {
+  // check that user can post
+  if (!user || !Users.can.post(user))
+    throw new Meteor.Error(601, __('you_need_to_login_or_be_invited_to_post_new_stories'));
   return post;
 }
-Telescope.callbacks.add("postSubmitAsync", afterPostSubmitOperations);
+Telescope.callbacks.add("posts.new.method", clientSubmitChecks);
 
-function setPostedAt (post) {
-  if (post.isApproved() && !post.postedAt) {
+/**
+ * Rate limiting
+ */
+function rateLimiting (post, user) {
+
+  if(!Users.is.admin(user)){
+
+    var timeSinceLastPost = Users.timeSinceLast(user, Posts),
+      numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
+      postInterval = Math.abs(parseInt(Telescope.settings.get('postInterval', 30))),
+      maxPostsPer24Hours = Math.abs(parseInt(Telescope.settings.get('maxPostsPerDay', 30)));
+
+    // check that user waits more than X seconds between posts
+    if(timeSinceLastPost < postInterval)
+      throw new Meteor.Error(604, __('please_wait')+(postInterval-timeSinceLastPost)+__('seconds_before_posting_again'));
+
+    // check that the user doesn't post more than Y posts per day
+    if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
+      throw new Meteor.Error(605, __('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+__('posts_per_day'));
+
+  }
+
+  return post;
+}
+Telescope.callbacks.add("posts.new.method", rateLimiting);
+
+/**
+ * Properties
+ */
+function propertyChecks (post, user) {
+
+  // admin-only properties
+  // status
+  // postedAt
+  // userId
+  // sticky (default to false)
+
+  const schema = Posts.simpleSchema()._schema;
+
+  // go over each schema field and throw an error if it's not editable
+  _.keys(post).forEach(function (fieldName) {
+
+    var field = schema[fieldName];
+    if (!Users.can.submitField(user, field)) {
+      throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
+    }
+
+  });
+
+  return post;
+}
+Telescope.callbacks.add("posts.new.method", propertyChecks);
+
+/**
+ * Properties
+ */
+function methodDefaultProperties (post, user) {
+
+  // if no post status has been set, set it now
+  if (!post.status) {
+    post.status = Posts.getDefaultStatus(user);
+  }
+
+  // if no userId has been set, default to current user id
+  if (!post.userId) {
+    post.userId = user._id;
+  }
+
+  return post;
+}
+Telescope.callbacks.add("posts.new.method", methodDefaultProperties);
+
+
+
+// ------------------------------------- posts.new.sync -------------------------------- //
+
+/**
+ * Check for necessary properties
+ */
+function postSubmitChecks (post, user) {
+  // check that a title was provided
+  if(!post.title)
+    throw new Meteor.Error(602, __('please_fill_in_a_title'));
+  // check that there are no posts with the same URL
+  if(!!post.url)
+    Posts.checkForSameUrl(post.url, user);
+  return post;
+}
+Telescope.callbacks.add("posts.new.sync", postSubmitChecks);
+
+/**
+ * Set properties to default values if missing
+ */
+function setProperties (post, user) {
+
+  var defaultProperties = {
+    createdAt: new Date(),
+    author: Users.getDisplayNameById(post.userId),
+    upvotes: 0,
+    downvotes: 0,
+    commentCount: 0,
+    clickCount: 0,
+    viewCount: 0,
+    baseScore: 0,
+    score: 0,
+    inactive: false,
+    sticky: false,
+    status: Posts.getDefaultStatus()
+  };
+
+  post = _.extend(defaultProperties, post);
+
+  // clean up post title
+  post.title = Telescope.utils.cleanUp(post.title);
+
+  // generate slug
+  post.slug = Telescope.utils.slugify(post.title);
+  return post;
+}
+Telescope.callbacks.add("posts.new.sync", setProperties);
+
+/**
+ * Set postedAt date
+ */
+function setPostedAt (post, user) {
+  // if post is approved but doesn't have a postedAt date, give it a default date
+  // note: pending posts get their postedAt date only once theyre approved
+  if (Posts.isApproved(post) && !post.postedAt) {
     post.postedAt = new Date();
   }
   return post;
 }
-Telescope.callbacks.add("postEdit", setPostedAt);
+Telescope.callbacks.add("posts.new.sync", setPostedAt);
 
-// ------------------------------------- Votes -------------------------------- //
+// ------------------------------------- posts.new.async -------------------------------- //
 
+/**
+ * Increment the user's post count
+ */
+function incrementPostCount (post) {
+  var userId = post.userId;
+  Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
+  return post;
+}
+Telescope.callbacks.add("posts.new.async", incrementPostCount);
+
+/**
+ * Make users upvote their own new posts
+ */
 if (typeof Telescope.operateOnItem !== "undefined") {
-
   function upvoteOwnPost (post) {
     var postAuthor = Meteor.users.findOne(post.userId);
     Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
     return post;
   }
-  Telescope.callbacks.add("postSubmitAsync", upvoteOwnPost);
-
+  Telescope.callbacks.add("posts.new.async", upvoteOwnPost);
 }
 
-// ------------------------------------- Notifications -------------------------------- //
-
+/**
+ * Add new post notification callback on post submit
+ */
 if (typeof Herald !== "undefined") {
-
-  // add new post notification callback on post submit
   function postSubmitNotification (post) {
 
     var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
@@ -104,7 +243,11 @@ if (typeof Herald !== "undefined") {
     }
 
   }
-  Telescope.callbacks.add("postSubmitAsync", postSubmitNotification);
+  Telescope.callbacks.add("posts.new.async", postSubmitNotification);
+
+/**
+ * Add notification callback when a post is approved
+ */
 
   function postApprovedNotification (post) {
 
@@ -114,6 +257,13 @@ if (typeof Herald !== "undefined") {
 
     Herald.createNotification(post.userId, {courier: 'postApproved', data: notificationData});
   }
-  Telescope.callbacks.add("postApproveAsync", postApprovedNotification);
+  Telescope.callbacks.add("posts.new.async", postApprovedNotification);
 
 }
+// ------------------------------------- posts.edit.method -------------------------------- //
+
+// ------------------------------------- posts.edit.sync -------------------------------- //
+
+Telescope.callbacks.add("posts.edit.sync", setPostedAt);
+
+// ------------------------------------- posts.edit.async -------------------------------- //
