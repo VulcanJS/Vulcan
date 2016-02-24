@@ -29,9 +29,9 @@ reactive-dict@1.1.0
 reactive-var@1.0.5
 retry@1.0.3
 spacebars-compiler@1.0.6
-telescope:lib@0.3.1
-telescope:settings@0.1.0
-telescope:users@0.1.0
+nova:lib@0.3.1
+nova:settings@0.1.0
+nova:users@0.1.0
 templating@1.1.1
 tracker@1.0.7
 ui@1.0.6

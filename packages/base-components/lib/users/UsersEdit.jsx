@@ -1,7 +1,7 @@
 // const Formsy = require('formsy-react');
 // const FRC = require('formsy-react-components');
 
-import Messages from "meteor/telescope:core";
+import Messages from "meteor/nova:core";
 
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';

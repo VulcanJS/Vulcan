@@ -225,11 +225,11 @@
       "0.0.0"
     ],
     [
-      "telescope:email",
+      "nova:email",
       "0.2.9"
     ],
     [
-      "telescope:i18n",
+      "nova:i18n",
       "0.0.0"
     ],
     [

@@ -1,5 +1,5 @@
 Package.describe({
-  name: "telescope:settings",
+  name: "nova:settings",
   summary: "Telescope settings package – only necessary if you're storing settings in a collection",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/Telescope.git"
@@ -11,8 +11,8 @@ Package.onUse(function(api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.25.7',
-    // 'telescope:i18n@0.25.7'
+    'nova:lib@0.25.7',
+    // 'nova:i18n@0.25.7'
   ]);
 
   api.addFiles([

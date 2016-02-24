@@ -30,7 +30,7 @@ iron:url@1.0.7
 jquery@1.11.3_2
 json@1.0.3
 livedata@1.0.13
-local-test:telescope:post-by-feed@0.1.0
+local-test:nova:post-by-feed@0.1.0
 logging@1.0.7
 matb33:collection-hooks@0.7.11
 meteor@1.1.6
@@ -50,11 +50,11 @@ session@1.1.0
 spacebars@1.0.6
 spacebars-compiler@1.0.6
 tap:i18n@1.4.1
-telescope:lib@0.3.1
-telescope:messages@0.1.0
-telescope:post-by-feed@0.1.0
-telescope:posts@0.1.2
-telescope:tags@0.1.0
+nova:lib@0.3.1
+nova:messages@0.1.0
+nova:post-by-feed@0.1.0
+nova:posts@0.1.2
+nova:tags@0.1.0
 templating@1.1.1
 tinytest@1.0.5
 tracker@1.0.7

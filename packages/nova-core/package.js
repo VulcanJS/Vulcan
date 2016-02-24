@@ -1,5 +1,5 @@
 Package.describe({
-  name: "telescope:core",
+  name: "nova:core",
   summary: "Telescope core package",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/Telescope.git"
@@ -10,11 +10,11 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
   
   var packages = [
-    'telescope:lib@0.25.7', //  no dependencies
-    // 'telescope:messages@0.25.7', // lib
-    'telescope:i18n@0.25.7', // lib
-    'telescope:events@0.25.7', // lib, i18n
-    'telescope:settings@0.25.7', // lib, i18n
+    'nova:lib@0.25.7', //  no dependencies
+    // 'nova:messages@0.25.7', // lib
+    'nova:i18n@0.25.7', // lib
+    'nova:events@0.25.7', // lib, i18n
+    'nova:settings@0.25.7', // lib, i18n
   ];
 
   api.use(packages);

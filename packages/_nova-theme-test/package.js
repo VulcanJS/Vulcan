@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.25.7'
+    'nova:lib@0.25.7'
   ]);
 
   api.addFiles([

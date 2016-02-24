@@ -1,11 +1,10 @@
 // const Formsy = require('formsy-react');
 // const FRC = require('formsy-react-components');
 
-import Messages from "meteor/telescope:core";
+import Messages from "meteor/nova:core";
 
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
-// import Modal from 'react-modal';
 
 const Checkbox = FRC.Checkbox;
 const CheckboxGroup = FRC.CheckboxGroup;
@@ -14,55 +13,45 @@ const RadioGroup = FRC.RadioGroup;
 const Select = FRC.Select;
 const Textarea = FRC.Textarea;
 
-// const customStyles = {
-//   content : {
-//     top                   : '50%',
-//     left                  : '50%',
-//     right                 : 'auto',
-//     bottom                : 'auto',
-//     marginRight           : '-50%',
-//     transform             : 'translate(-50%, -50%)'
-//   }
-// };
+const PostNew = React.createClass({
 
-const PostEdit = React.createClass({
-  
   propTypes: {
-    document: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object,
     categories: React.PropTypes.array
   },
 
+  getInitialState() {
+    return {
+      canSubmit: false
+    }
+  },
+  
   submitForm(data) {
-    const post = this.props.document;
-    const modifier = {$set: _.compactObject(data)};
-
-    event.preventDefault();
-
-    Meteor.call('posts.edit', post._id, modifier, (error, post) => {
+    // remove any empty properties
+    data = _.compactObject(data); 
+    Meteor.call('posts.new', data, (error, post) => {
       if (error) {
         console.log(error)
         Messages.flash(error.message, "error")
       } else {
-        Messages.flash("Post edited.", "success")
+        Messages.flash("Post created.", "success")
         FlowRouter.go('posts.single', post);
       }
     });
   },
 
   renderAdminForm() {
-    const post = this.props.document;
     return (
       <div className="admin-fields">
         <RadioGroup
           name="status"
-          value={post.status}
+          value=""
           label="Status"
           options={Posts.config.postStatuses}
         />
         <Checkbox
           name="sticky"
-          value={post.sticky}
+          value=""
           label="Sticky"
         />
       </div>
@@ -71,9 +60,8 @@ const PostEdit = React.createClass({
 
   render() {
      
-   ({CanEditPost} = Telescope.components);
+    ({CanCreatePost} = Telescope.components);
 
-    const post = this.props.document;
     const categoriesOptions = this.props.categories.map(category => {
       return {
         value: category._id,
@@ -82,45 +70,45 @@ const PostEdit = React.createClass({
     });
 
     return (
-      <CanEditPost user={this.props.currentUser} post={post}>
-        <div className="post-edit">
-          <h3>Edit Post “{post.title}”</h3>
+      <CanCreatePost user={this.props.currentUser}>
+        <div className="post-new">
+          <h3>New Post</h3>
           <Formsy.Form onSubmit={this.submitForm}>
            <Input
               name="url"
-              value={post.url}
+              value=""
               label="URL"
               type="text"
               className="text-input"
             />
             <Input
               name="title"
-              value={post.title}
+              value=""
               label="Title"
               type="text"
               className="text-input"
             />
             <Textarea
               name="body"
-              value={post.body}
+              value=""
               label="Body"
               type="text"
               className="textarea"
             />
             <CheckboxGroup
               name="categories"
-              value={post.categories}
+              value=""
               label="Categories"
               type="text"
               options={categoriesOptions}
             />
             {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
-            <button type="submit" className="button button--primary">Submit</button>
-          </Formsy.Form>
+          <button type="submit" className="button button--primary">Submit</button>
+        </Formsy.Form>
         </div>
-      </CanEditPost>
+      </CanCreatePost>
     )
   }
 });
 
-module.exports = PostEdit;
+module.exports = PostNew;

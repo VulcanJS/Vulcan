@@ -7,6 +7,6 @@ jquery@1.11.3_2
 json@1.0.3
 meteor@1.1.6
 random@1.0.3
-telescope:lib@0.3.1
+nova:lib@0.3.1
 tracker@1.0.7
 underscore@1.0.3

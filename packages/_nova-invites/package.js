@@ -1,5 +1,5 @@
 Package.describe({
-  name: "telescope:invites",
+  name: "nova:invites",
   summary: "Telescope invites package",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/telescope-invites.git"
@@ -17,7 +17,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['telescope:core@0.25.7']);
+  api.use(['nova:core@0.25.7']);
 
   // client
 

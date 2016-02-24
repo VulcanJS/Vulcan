@@ -17,7 +17,7 @@ mongo@1.1.0
 ordered-dict@1.0.3
 random@1.0.3
 retry@1.0.3
-telescope:lib@0.3.1
-telescope:posts@0.1.2
+nova:lib@0.3.1
+nova:posts@0.1.2
 tracker@1.0.7
 underscore@1.0.3

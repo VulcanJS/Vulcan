@@ -1,5 +1,5 @@
 Package.describe({
-  name: "telescope:subscribe-to-posts",
+  name: "nova:subscribe-to-posts",
   summary: "Subscribe to posts to be notified when they get new comments",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/telescope-subscribe-to-posts.git"
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['telescope:core@0.25.7']);
+  api.use(['nova:core@0.25.7']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 

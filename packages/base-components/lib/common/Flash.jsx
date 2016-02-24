@@ -1,4 +1,4 @@
-import Messages from "meteor/telescope:core";
+import Messages from "meteor/nova:core";
 
 const Flash = React.createClass({
 
