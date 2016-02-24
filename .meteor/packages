@@ -21,7 +21,7 @@ nova:notifications
 nova:getting-started
 nova:tags
 
-# nova:scoring
+# nova:voting
 # nova:migrations
 # nova:api
 # nova:email

@@ -78,7 +78,7 @@ buildCampaign = function (postsArray) {
   });
 
   // 2. Wrap posts HTML in digest template
-  var digestHTML = Telescope.email.getTemplate('emailDigest')({
+  var digestHTML = Telescope.email.getTemplate('newsletter')({
     siteName: Telescope.settings.get('title'),
     date: moment().format("dddd, MMMM Do YYYY"),
     content: postsHTML

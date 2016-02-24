@@ -50,6 +50,9 @@ Package.onUse(function (api) {
     'lib/server/emails/posts/postApproved.handlebars',
     'lib/server/emails/users/accountApproved.handlebars',
     'lib/server/emails/users/newUser.handlebars',
+    'lib/server/emails/newsletter/newsletter.handlebars',
+    'lib/server/emails/newsletter/newsletterConfirmation.handlebars',
+    'lib/server/emails/newsletter/postItem.handlebars',
   ], ['server']);
 
 });

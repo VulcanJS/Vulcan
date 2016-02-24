@@ -72,3 +72,21 @@ Picker.route('/email/account-approved/:id?', function(params, req, res, next) {
   var html = Telescope.email.getTemplate('accountApproved')(emailProperties);
   res.end(Telescope.email.buildTemplate(html));
 });
+
+// Newsletter email
+Picker.route('/email/newsletter', function(params, req, res, next) {
+  var campaign = buildCampaign(getCampaignPosts(Settings.get('postsPerNewsletter', 5)));
+  var campaignSubject = '<div class="campaign-subject"><strong>Subject:</strong> '+campaign.subject+' (note: contents might change)</div>';
+  var campaignSchedule = '<div class="campaign-schedule"><strong>Scheduled for:</strong> '+ Meteor.call('getNextJob') +'</div>';
+  res.end(campaignSubject+campaignSchedule+campaign.html);
+});
+
+// Newsletter confirmation email
+Picker.route('/email/newsletter-confirmation', function(params, req, res, next) {
+  var confirmationHtml = Telescope.email.getTemplate('newsletterConfirmation')({
+    time: 'January 1st, 1901',
+    newsletterLink: 'http://example.com',
+    subject: 'Lorem ipsum dolor sit amet'
+  });
+  res.end(Telescope.email.buildTemplate(confirmationHtml));
+});

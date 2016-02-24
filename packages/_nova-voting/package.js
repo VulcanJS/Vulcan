@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:scoring",
+  name: "nova:voting",
   summary: "Telescope scoring package.",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/Telescope.git"

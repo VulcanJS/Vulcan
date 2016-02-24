@@ -22,23 +22,17 @@ Package.onUse(function (api) {
     'miro:mailchimp@1.1.0',
   ]);
 
-  api.addAssets([
-    'lib/server/templates/emailDigest.handlebars',
-    'lib/server/templates/emailDigestConfirmation.handlebars',
-    'lib/server/templates/emailPostItem.handlebars'
-  ], ['server']);
-
   api.addFiles([
     // 'package-tap.i18n',
-    'lib/newsletter.js'
+    'lib/collection.js',
+    'lib/callbacks.js',
+    'lib/custom_fields.js'
   ], ['client', 'server']);
 
   api.addFiles([
     'lib/server/campaign.js',
     'lib/server/cron.js',
-    'lib/server/mailchimp.js',
-    'lib/server/routes.js',
-    'lib/server/templates.js'
+    'lib/server/mailchimp.js'
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
