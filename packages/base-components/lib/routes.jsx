@@ -27,8 +27,8 @@ FlowRouter.route('/', {
 FlowRouter.route('/posts/new', {
   name: 'posts.new',
   action(params, queryParams) {
-    ({AppContainer, PostNewContainer} = Telescope.components);
-    mount(AppContainer, {content: <PostNewContainer />});
+    ({AppContainer, CurrentUserContainer, PostNew} = Telescope.components);
+    mount(AppContainer, {content: <CurrentUserContainer><PostNew /></CurrentUserContainer>});
   }
 });
 
@@ -50,8 +50,13 @@ FlowRouter.route('/posts/:_id', {
 FlowRouter.route('/posts/:_id/edit', {
   name: 'posts.edit',
   action(params, queryParams) {
-    ({AppContainer, PostEditContainer} = Telescope.components);
-    mount(AppContainer, {content: <PostEditContainer postId={params._id}/>});
+    ({AppContainer, ItemContainer} = Telescope.components);
+    mount(AppContainer, {content: <ItemContainer
+      collection={Posts} 
+      publication="posts.single" 
+      terms={{_id: params._id}} 
+      component={PostEdit}
+    />});
   }
 });
 

@@ -1,34 +1,34 @@
-// import React from 'react';
+// // not used anymore
 
-const PostEditContainer = React.createClass({
+// const PostEditContainer = React.createClass({
 
-  propTypes: {
-    postId: React.PropTypes.string.isRequired
-  },
+//   propTypes: {
+//     postId: React.PropTypes.string.isRequired
+//   },
 
-  mixins: [ReactMeteorData],
+//   mixins: [ReactMeteorData],
   
-  getMeteorData() {
-    return {
-      categories: Categories.find().fetch(),
-      // postUrl: Session.get("postUrl"),
-    };
-  },
+//   getMeteorData() {
+//     return {
+//       categories: Categories.find().fetch(),
+//       // postUrl: Session.get("postUrl"),
+//     };
+//   },
 
-  render() {
-    ({ItemContainer, PostEdit} = Telescope.components);
+//   render() {
+//     ({ItemContainer, PostEdit} = Telescope.components);
 
-    return (
-      <ItemContainer
-        propsToPass={this.data}
-        collection={Posts} 
-        publication="posts.single" 
-        terms={{_id: this.props.postId}} 
-        component={PostEdit}
-      />
-    )
-  }
+//     return (
+//       <ItemContainer
+//         propsToPass={this.data}
+//         collection={Posts} 
+//         publication="posts.single" 
+//         terms={{_id: this.props.postId}} 
+//         component={PostEdit}
+//       />
+//     )
+//   }
 
-});
+// });
 
-module.exports = PostEditContainer;
+// module.exports = PostEditContainer;

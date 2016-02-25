@@ -1,22 +1,22 @@
-// import React from 'react';
+// // not used anymore
 
-const PostNewContainer = React.createClass({
+// const PostNewContainer = React.createClass({
 
-  mixins: [ReactMeteorData],
+//   mixins: [ReactMeteorData],
   
-  getMeteorData() {
+//   getMeteorData() {
 
-    return {
-      // postUrl: Session.get("postUrl"), // replace with state?
-      currentUser: Meteor.user()
-    };
-  },
+//     return {
+//       // postUrl: Session.get("postUrl"), // replace with state?
+//       currentUser: Meteor.user()
+//     };
+//   },
 
-  render() {
-    ({PostNew} = Telescope.components);
-    return <PostNew {...this.props} {...this.data} />;
-  }
+//   render() {
+//     ({PostNew} = Telescope.components);
+//     return <PostNew {...this.props} {...this.data} />;
+//   }
 
-});
+// });
 
-module.exports = PostNewContainer;
+// module.exports = PostNewContainer;
