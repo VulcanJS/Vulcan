@@ -31,6 +31,8 @@ NovaForms.getComponent = (fieldName, field, document) => {
       return <CheckboxGroup key={fieldName} name={fieldName} value={value} label={fieldName} options={options} />;
     case "radiogroup":
       return <RadioGroup    key={fieldName} name={fieldName} value={value} label={fieldName} options={options} />;
+    case "select":
+      return <Select        key={fieldName} name={fieldName} value={value} label={fieldName} options={options} />;
     default: 
       return <Input         key={fieldName} name={fieldName} value={value} label={fieldName} type="text" className="text-input"/>;
   }

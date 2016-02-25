@@ -7,7 +7,9 @@ const PostNew = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    categories: React.PropTypes.array
+    categories: React.PropTypes.array,
+    postNewCallback: React.PropTypes.func,
+    closeModal: React.PropTypes.func
   },
 
   getInitialState() {
@@ -27,8 +29,11 @@ const PostNew = React.createClass({
         console.log(error)
         Messages.flash(error.message, "error")
       } else {
-        Messages.flash("Post created.", "success")
+        Messages.flash("Post created.", "success");
         FlowRouter.go('posts.single', post);
+        if (this.props.closeModal) {
+          this.props.closeModal();
+        }
       }
     });
   },
@@ -37,12 +42,6 @@ const PostNew = React.createClass({
      
     ({CanCreatePost} = Telescope.components);
 
-    const categoriesOptions = this.props.categories.map(category => {
-      return {
-        value: category._id,
-        label: category.name
-      }
-    });
     const fields = Posts.simpleSchema().getEditableFields(this.props.currentUser);
 
     return (

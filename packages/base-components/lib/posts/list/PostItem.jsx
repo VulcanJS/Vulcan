@@ -20,9 +20,12 @@ const PostItem = React.createClass({
   },
 
   renderActions() {
+
+    ({ModalButton, PostEditContainer} = Telescope.components);
+
     return (
       <div className="post-actions">
-        {Users.can.edit(this.props.currentUser, this.props.post) ? <a href={Posts.getEditUrl(this.props.post)} className="button button--secondary">Edit</a> : ""}
+        {Users.can.edit(this.props.currentUser, this.props.post) ? <ModalButton label="Edit" component={PostEditContainer} propsToPass={{postId: this.props.post._id}} className="button button--secondary"/> : ""}
       </div>
     )
   },

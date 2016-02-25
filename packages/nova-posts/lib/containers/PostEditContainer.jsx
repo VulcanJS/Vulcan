@@ -3,8 +3,7 @@
 const PostEditContainer = React.createClass({
 
   propTypes: {
-    document: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired
+    postId: React.PropTypes.string.isRequired
   },
 
   mixins: [ReactMeteorData],
@@ -12,17 +11,23 @@ const PostEditContainer = React.createClass({
   getMeteorData() {
     return {
       categories: Categories.find().fetch(),
+      currentUser: Meteor.user()
       // postUrl: Session.get("postUrl"),
     };
   },
 
   render() {
-    ({PostEdit} = Telescope.components);
+    ({ItemContainer, PostEdit} = Telescope.components);
+
+    // const component = <PostEdit />;
+
     return (
-      <PostEdit 
-        document={this.props.document} 
-        currentUser={this.props.currentUser} 
-        categories={this.data.categories}
+      <ItemContainer
+        propsToPass={this.data}
+        collection={Posts} 
+        publication="posts.single" 
+        terms={{_id: this.props.postId}} 
+        component={PostEdit}
       />
     )
   }

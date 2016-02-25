@@ -15,7 +15,7 @@ const PostNewContainer = React.createClass({
 
   render() {
     ({PostNew} = Telescope.components);
-    return <PostNew {...this.data} />;
+    return <PostNew {...this.props} {...this.data} />;
   }
 
 });

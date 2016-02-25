@@ -28,7 +28,7 @@ FlowRouter.route('/posts/new', {
   name: 'posts.new',
   action(params, queryParams) {
     ({AppContainer, PostNewContainer} = Telescope.components);
-    mount(AppContainer, {content: <PostNewContainer />})
+    mount(AppContainer, {content: <PostNewContainer />});
   }
 });
 
@@ -43,21 +43,15 @@ FlowRouter.route('/posts/:_id', {
         terms={params} 
         component={Post}
         joins={Posts.simpleSchema().getJoins()}
-      />})
+      />});
   }
 });
 
 FlowRouter.route('/posts/:_id/edit', {
   name: 'posts.edit',
   action(params, queryParams) {
-    ({AppContainer, ItemContainer, FlashContainer, PostEditContainer} = Telescope.components);
-    mount(AppContainer, {content: 
-      <ItemContainer 
-        collection={Posts} 
-        publication="posts.single" 
-        terms={params} 
-        component={PostEditContainer}
-      />})
+    ({AppContainer, PostEditContainer} = Telescope.components);
+    mount(AppContainer, {content: <PostEditContainer postId={params._id}/>});
   }
 });
 
@@ -71,7 +65,7 @@ FlowRouter.route('/users/:slug', {
         publication="users.single" 
         terms={{'telescope.slug': params.slug}} 
         component={UsersSingle}
-      />})
+      />});
   }
 });
 
@@ -85,7 +79,7 @@ FlowRouter.route('/account', {
         publication="users.single" 
         terms={{_id: Meteor.userId()}} 
         component={UsersEdit}
-      />})
+      />});
   }
 });
 
@@ -99,7 +93,7 @@ FlowRouter.route('/users/:slug/edit', {
         publication="users.single" 
         terms={params} 
         component={UsersEdit}
-      />})
+      />});
   }
 });
 

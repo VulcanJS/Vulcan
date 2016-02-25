@@ -1,8 +1,9 @@
 import NoSSR from 'react-no-ssr';
 
+
 const Header = props => {
   
-  ({Logo, ListContainer, CategoriesList, FlashContainer} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer, NewPostButton, ModalButton, PostNewContainer} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -23,8 +24,11 @@ const Header = props => {
       </NoSSR>
       
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
-      <a href={FlowRouter.path("posts.new")} className="button button--primary">New Post</a>
+
+      <ModalButton label="New Post" component={PostNewContainer} className="button button--primary"/>
+
       <FlashContainer />
+
     </header>
   )
 }

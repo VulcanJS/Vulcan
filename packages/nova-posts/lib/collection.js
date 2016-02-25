@@ -124,7 +124,7 @@ Posts.schema = new SimpleSchema({
     type: Number,
     optional: true,
     editableBy: ["admin"],
-    control: "radiogroup",
+    control: "select",
     public: true,
     autoValue: function () {
       // only provide a default value
@@ -197,7 +197,7 @@ Posts.schema = new SimpleSchema({
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
     editableBy: ["admin"],
-    control: "radiogroup",
+    control: "select",
     public: true,
     autoform: {
       group: 'admin',

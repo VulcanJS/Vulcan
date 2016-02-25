@@ -7,6 +7,7 @@ const ItemContainer = React.createClass({
     component: React.PropTypes.func.isRequired,
     publication: React.PropTypes.string.isRequired,
     terms: React.PropTypes.object,
+    propsToPass: React.PropTypes.object,
     joins: React.PropTypes.array
   },
 
@@ -55,7 +56,7 @@ const ItemContainer = React.createClass({
 
     if (this.data.document) {
       return (
-        <Component {...this.data} />
+        <Component {...this.props.propsToPass} {...this.data} />
       )
     } else {
       return <p>Loading…</p>
