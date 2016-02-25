@@ -7,7 +7,6 @@ const PostNew = React.createClass({
 
   propTypes: {
     currentUser: React.PropTypes.object,
-    categories: React.PropTypes.array,
     postNewCallback: React.PropTypes.func,
     closeModal: React.PropTypes.func
   },

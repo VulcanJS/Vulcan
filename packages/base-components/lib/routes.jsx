@@ -8,7 +8,7 @@ FlowRouter.route('/', {
   action(params, queryParams) {
 
     ({AppContainer, ListContainer, PostList} = Telescope.components);
-    queryParams = _.isEmpty(queryParams) ? {view: 'top'} : queryParams;
+    queryParams = _.isEmpty(queryParams) ? {view: 'new'} : queryParams;
     ({selector, options} = Posts.parameters.get(queryParams));
 
     mount(AppContainer, {content: 

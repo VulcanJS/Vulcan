@@ -14,7 +14,6 @@ const customStyles = {
 const ModalButton = React.createClass({
 
   propTypes: {
-    component: React.PropTypes.func.isRequired,
     propsToPass: React.PropTypes.object,
     label: React.PropTypes.string.isRequired,
     className: React.PropTypes.string
@@ -38,6 +37,11 @@ const ModalButton = React.createClass({
     // ({PostNewContainer} = Telescope.components);
     const Component = this.props.component;
 
+    // see http://stackoverflow.com/a/32371612/649299
+    const childrenWithProps = React.Children.map(this.props.children, (child) => {
+      return React.cloneElement(child, { ...this.props.propsToPass, closeModal: this.closeModal });
+    });
+
     return (
       <div className="new-post-button">
         <button onClick={this.openModal} className={this.props.className}>{this.props.label}</button>
@@ -46,7 +50,8 @@ const ModalButton = React.createClass({
           onRequestClose={this.closeModal}
           style={customStyles} >
 
-          <Component {...this.props.propsToPass} closeModal={this.closeModal}/>
+
+          {childrenWithProps}
 
         </Modal>
       </div>

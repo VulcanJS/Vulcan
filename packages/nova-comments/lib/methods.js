@@ -96,7 +96,7 @@ Meteor.methods({
     if (!hasAdminRights) {
 
       var timeSinceLastComment = Users.timeSinceLast(user, Comments),
-          commentInterval = Math.abs(parseInt(Settings.get('commentInterval',15)));
+          commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
 
       // check that user waits more than 15 seconds between comments
       if((timeSinceLastComment < commentInterval))

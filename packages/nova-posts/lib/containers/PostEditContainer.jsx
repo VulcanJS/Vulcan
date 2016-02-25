@@ -11,15 +11,12 @@ const PostEditContainer = React.createClass({
   getMeteorData() {
     return {
       categories: Categories.find().fetch(),
-      currentUser: Meteor.user()
       // postUrl: Session.get("postUrl"),
     };
   },
 
   render() {
     ({ItemContainer, PostEdit} = Telescope.components);
-
-    // const component = <PostEdit />;
 
     return (
       <ItemContainer

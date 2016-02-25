@@ -21,11 +21,22 @@ const PostItem = React.createClass({
 
   renderActions() {
 
-    ({ModalButton, PostEditContainer} = Telescope.components);
+    ({ModalButton, ItemContainer, PostEdit} = Telescope.components);
+
+    const component = (
+      <ModalButton label="Edit" className="button button--secondary">
+        <ItemContainer
+          collection={Posts} 
+          publication="posts.single" 
+          terms={{_id: this.props.post._id}} 
+          component={PostEdit}
+        />
+      </ModalButton>
+    );
 
     return (
       <div className="post-actions">
-        {Users.can.edit(this.props.currentUser, this.props.post) ? <ModalButton label="Edit" component={PostEditContainer} propsToPass={{postId: this.props.post._id}} className="button button--secondary"/> : ""}
+        {Users.can.edit(this.props.currentUser, this.props.post) ? component : ""}
       </div>
     )
   },

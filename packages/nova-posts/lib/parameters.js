@@ -25,9 +25,9 @@ Posts.parameters.get = function (terms) {
   // iterate over postsParameters callbacks
   parameters = Telescope.callbacks.run("postsParameters", parameters, terms);
   
-  // if sort options are not provided, default to "top" sort
+  // if sort options are not provided, default to "createdAt" sort
   if (_.isEmpty(parameters.options.sort)) {
-    parameters.options.sort = {sticky: -1, score: -1};
+    parameters.options.sort = {sticky: -1, createdAt: -1};
   }
  
   // extend sort to sort posts by _id to break ties
@@ -45,8 +45,8 @@ Posts.parameters.get = function (terms) {
 // Add a "view" property to terms which can be used to filter posts. 
 function addViewParameter (parameters, terms) {
 
-  // if view is not defined, default to "top"
-  var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'top';
+  // if view is not defined, default to "new"
+  var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'new';
 
   // get query parameters according to current view
   if (typeof Posts.views[view] !== 'undefined')

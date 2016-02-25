@@ -7,8 +7,7 @@ const PostEdit = React.createClass({
   
   propTypes: {
     document: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired,
-    categories: React.PropTypes.array
+    currentUser: React.PropTypes.object.isRequired
   },
 
   submitForm(data) {
@@ -33,12 +32,7 @@ const PostEdit = React.createClass({
    ({CanEditPost} = Telescope.components);
 
     const post = this.props.document;
-    const categoriesOptions = this.props.categories.map(category => {
-      return {
-        value: category._id,
-        label: category.name
-      }
-    });
+
     const fields = Posts.simpleSchema().getEditableFields(this.props.currentUser);
 
     return (

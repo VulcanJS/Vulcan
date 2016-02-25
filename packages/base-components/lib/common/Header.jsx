@@ -25,7 +25,7 @@ const Header = props => {
       
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
 
-      <ModalButton label="New Post" component={PostNewContainer} className="button button--primary"/>
+      <ModalButton label="New Post" className="button button--primary"><PostNewContainer/></ModalButton>
 
       <FlashContainer />
 
