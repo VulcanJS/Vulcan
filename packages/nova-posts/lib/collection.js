@@ -27,6 +27,7 @@ Posts.schema = new SimpleSchema({
     optional: true,
     editableBy: ["admin"],
     public: true,
+    control: "datepicker",
     autoform: {
       group: 'admin',
       type: "bootstrap-datetimepicker"
@@ -40,6 +41,7 @@ Posts.schema = new SimpleSchema({
     optional: true,
     max: 500,
     editableBy: ["member", "admin"],
+    control: "text",
     public: true,
     autoform: {
       type: "bootstrap-url",
@@ -54,6 +56,7 @@ Posts.schema = new SimpleSchema({
     optional: false,
     max: 500,
     editableBy: ["member", "admin"],
+    control: "text",
     public: true,
     autoform: {
       order: 20
@@ -75,6 +78,7 @@ Posts.schema = new SimpleSchema({
     optional: true,
     max: 3000,
     editableBy: ["member", "admin"],
+    control: "textarea",
     public: true,
     autoform: {
       rows: 5,
@@ -120,6 +124,7 @@ Posts.schema = new SimpleSchema({
     type: Number,
     optional: true,
     editableBy: ["admin"],
+    control: "radiogroup",
     public: true,
     autoValue: function () {
       // only provide a default value
@@ -143,6 +148,7 @@ Posts.schema = new SimpleSchema({
     optional: true,
     defaultValue: false,
     editableBy: ["admin"],
+    control: "checkbox",
     public: true,
     autoform: {
       group: 'admin',
@@ -191,6 +197,7 @@ Posts.schema = new SimpleSchema({
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
     editableBy: ["admin"],
+    control: "radiogroup",
     public: true,
     autoform: {
       group: 'admin',

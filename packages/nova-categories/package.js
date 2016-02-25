@@ -15,7 +15,7 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/categories.js',
+    'lib/collection.js',
     'lib/helpers.js',
     'lib/callbacks.js',
     'lib/parameters.js',

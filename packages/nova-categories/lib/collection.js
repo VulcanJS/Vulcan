@@ -4,12 +4,14 @@ Categories = new Mongo.Collection("categories");
 Categories.schema = new SimpleSchema({
   name: {
     type: String,
-    editableBy: ["admin"]
+    editableBy: ["admin"],
+    public: true
   },
   description: {
     type: String,
     optional: true,
     editableBy: ["admin"],
+    public: true,
     autoform: {
       rows: 3
     }
@@ -17,22 +19,26 @@ Categories.schema = new SimpleSchema({
   order: {
     type: Number,
     optional: true,
-    editableBy: ["admin"]
+    editableBy: ["admin"],
+    public: true
   },
   slug: {
     type: String,
     optional: true,
-    editableBy: ["admin"]
+    editableBy: ["admin"],
+    public: true
   },
   image: {
     type: String,
     optional: true,
-    editableBy: ["admin"]
+    editableBy: ["admin"],
+    public: true
   },
   parentId: {
     type: String,
     optional: true,
     editableBy: ["admin"],
+    public: true,
     autoform: {
       options: function () {
         var categories = Categories.find().map(function (category) {

@@ -3,6 +3,7 @@ Posts.addField(
     fieldName: 'categories',
     fieldSchema: {
       type: [String],
+      control: "checkboxgroup",
       optional: true,
       editableBy: ["member", "admin"],
       autoform: {

@@ -1,29 +1,7 @@
-// const Formsy = require('formsy-react');
-// const FRC = require('formsy-react-components');
-
-import Messages from "meteor/nova:core";
+import Core from "meteor/nova:core";
+({Messages, NovaForms} = Core);
 
 import Formsy from 'formsy-react';
-import FRC from 'formsy-react-components';
-// import Modal from 'react-modal';
-
-const Checkbox = FRC.Checkbox;
-const CheckboxGroup = FRC.CheckboxGroup;
-const Input = FRC.Input;
-const RadioGroup = FRC.RadioGroup;
-const Select = FRC.Select;
-const Textarea = FRC.Textarea;
-
-// const customStyles = {
-//   content : {
-//     top                   : '50%',
-//     left                  : '50%',
-//     right                 : 'auto',
-//     bottom                : 'auto',
-//     marginRight           : '-50%',
-//     transform             : 'translate(-50%, -50%)'
-//   }
-// };
 
 const PostEdit = React.createClass({
   
@@ -50,25 +28,6 @@ const PostEdit = React.createClass({
     });
   },
 
-  renderAdminForm() {
-    const post = this.props.document;
-    return (
-      <div className="admin-fields">
-        <RadioGroup
-          name="status"
-          value={post.status}
-          label="Status"
-          options={Posts.config.postStatuses}
-        />
-        <Checkbox
-          name="sticky"
-          value={post.sticky}
-          label="Sticky"
-        />
-      </div>
-    )
-  },
-
   render() {
      
    ({CanEditPost} = Telescope.components);
@@ -80,41 +39,14 @@ const PostEdit = React.createClass({
         label: category.name
       }
     });
+    const fields = Posts.simpleSchema().getEditableFields(this.props.currentUser);
 
     return (
       <CanEditPost user={this.props.currentUser} post={post}>
         <div className="post-edit">
           <h3>Edit Post “{post.title}”</h3>
           <Formsy.Form onSubmit={this.submitForm}>
-           <Input
-              name="url"
-              value={post.url}
-              label="URL"
-              type="text"
-              className="text-input"
-            />
-            <Input
-              name="title"
-              value={post.title}
-              label="Title"
-              type="text"
-              className="text-input"
-            />
-            <Textarea
-              name="body"
-              value={post.body}
-              label="Body"
-              type="text"
-              className="textarea"
-            />
-            <CheckboxGroup
-              name="categories"
-              value={post.categories ? post.categories : ""}
-              label="Categories"
-              type="text"
-              options={categoriesOptions}
-            />
-            {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
+            {fields.map(fieldName => NovaForms.getComponent(fieldName, Posts.simpleSchema()._schema[fieldName], post))}
             <button type="submit" className="button button--primary">Submit</button>
           </Formsy.Form>
         </div>

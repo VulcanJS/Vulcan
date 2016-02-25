@@ -1,4 +1,5 @@
-import Messages from "meteor/nova:core";
+import Core from "meteor/nova:core";
+const Messages = Core.Messages;
 
 const Flash = React.createClass({
 

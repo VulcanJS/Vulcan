@@ -1,29 +1,7 @@
-// const Formsy = require('formsy-react');
-// const FRC = require('formsy-react-components');
-
-import Messages from "meteor/nova:core";
+import Core from "meteor/nova:core";
+({Messages, NovaForms} = Core);
 
 import Formsy from 'formsy-react';
-import FRC from 'formsy-react-components';
-// import Modal from 'react-modal';
-
-const Checkbox = FRC.Checkbox;
-const CheckboxGroup = FRC.CheckboxGroup;
-const Input = FRC.Input;
-const RadioGroup = FRC.RadioGroup;
-const Select = FRC.Select;
-const Textarea = FRC.Textarea;
-
-// const customStyles = {
-//   content : {
-//     top                   : '50%',
-//     left                  : '50%',
-//     right                 : 'auto',
-//     bottom                : 'auto',
-//     marginRight           : '-50%',
-//     transform             : 'translate(-50%, -50%)'
-//   }
-// };
 
 const UsersEdit = React.createClass({
   
@@ -36,11 +14,17 @@ const UsersEdit = React.createClass({
 
     event.preventDefault();
 
-    let modifier = {};
+    let modifier = {...data};
+    delete modifier.telescope;
     const user = this.props.document;
 
     // replace "_" by "." in modifier keys
-    _.keys(data).forEach(key => {modifier[key.replace("_", ".")] = data[key]});
+    // _.keys(data).forEach(key => {modifier[key.replace("_", ".")] = data[key]});
+    
+    // flatten data object
+    _.keys(data.telescope).forEach(key => {
+      modifier["telescope."+key] = data.telescope[key];
+    });
 
     // remove any empty properties
     modifier = {$set: _.compactObject(modifier)};
@@ -56,46 +40,20 @@ const UsersEdit = React.createClass({
     });
   },
 
-  renderAdminForm() {
-    return (
-      <div className="admin-fields">
-      </div>
-    )
-  },
-
   render() {
   
     const user = this.props.document;
 
     ({CanEditUser} = Telescope.components);
 
+    const fields = Meteor.users.simpleSchema().getEditableFields(this.props.currentUser);
+
     return (
       <CanEditUser user={this.props.currentUser} userToEdit={user}>
         <div className="user-edit">
           <h3>Edit Account</h3>
           <Formsy.Form onSubmit={this.submitForm}>
-           <Input
-              name="telescope_email"
-              value={user.telescope.email}
-              label="Email"
-              type="text"
-              className="text-input"
-            />
-            <Input
-              name="telescope_displayName"
-              value={user.telescope.displayName}
-              label="Display Name"
-              type="text"
-              className="text-input"
-            />
-            <Textarea
-              name="telescope_bio"
-              value={user.telescope.bio}
-              label="Bio"
-              type="text"
-              className="textarea"
-            />
-            {Users.is.admin(this.props.currentUser) ? this.renderAdminForm() : ""}
+            {fields.map(fieldName => NovaForms.getComponent(fieldName, Meteor.users.simpleSchema()._schema[fieldName], this.props.currentUser))}
             <button type="submit" className="button button--primary">Submit</button>
           </Formsy.Form>
         </div>

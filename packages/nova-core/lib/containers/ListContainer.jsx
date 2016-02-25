@@ -93,10 +93,11 @@ const ListContainer = React.createClass({
           // get the property containing the id or ids
           const joinProperty = doc[join.property];
           const collection = Meteor.isClient ? window[join.collection] : global[join.collection];
+          const joinLimit = join.limit ? join.limit : 0;
 
           // perform the join
           if (Array.isArray(joinProperty)) { // join property is an array of ids
-            doc[join.joinAs] = collection.find({_id: {$in: joinProperty}}).fetch();
+            doc[join.joinAs] = collection.find({_id: {$in: joinProperty}}, {limit: joinLimit}).fetch();
           } else { // join property is a single id
             doc[join.joinAs] = collection.findOne({_id: joinProperty});
           }

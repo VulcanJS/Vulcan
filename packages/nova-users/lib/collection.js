@@ -33,6 +33,7 @@ Telescope.schemas.userData = new SimpleSchema({
   bio: {
     type: String,
     optional: true,
+    control: "textarea",
     editableBy: ["member", "admin"],
     // autoform: {
     //   rows: 5
@@ -54,6 +55,7 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true,
     public: true,
     profile: true,
+    control: "text",
     editableBy: ["member", "admin"]
   },
   /**
@@ -80,6 +82,7 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
     required: true,
+    control: "text",
     editableBy: ["member", "admin"]
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
@@ -124,15 +127,15 @@ Telescope.schemas.userData = new SimpleSchema({
   /**
     A blackbox modifiable object to store the user's settings
   */
-  settings: {
-    type: Object,
-    optional: true,
-    editableBy: ["member", "admin"],
-    blackbox: true,
-    // autoform: {
-    //   omit: true
-    // }
-  },
+  // settings: {
+  //   type: Object,
+  //   optional: true,
+  //   editableBy: ["member", "admin"],
+  //   blackbox: true,
+  //   autoform: {
+  //     omit: true
+  //   }
+  // },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
@@ -149,6 +152,7 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true,
     public: true,
     profile: true,
+    control: "text",
     editableBy: ["member", "admin"],
     template: "user_profile_twitter"
   },
@@ -177,6 +181,7 @@ Telescope.schemas.userData = new SimpleSchema({
     public: true,
     profile: true,
     optional: true,
+    control: "text",
     editableBy: ["member", "admin"]
   }
 });
@@ -217,6 +222,7 @@ Users.schema = new SimpleSchema({
   },
   isAdmin: {
     type: Boolean,
+    control: "checkbox",
     optional: true,
     editableBy: ["admin"],
     // autoform: {
@@ -261,6 +267,7 @@ if (typeof Herald !== "undefined") {
         type: Boolean,
         optional: true,
         defaultValue: false,
+        control: "checkbox",
         editableBy: ['admin'],
         autoform: {
           group: 'Email Notifications'
@@ -274,6 +281,7 @@ if (typeof Herald !== "undefined") {
         type: Boolean,
         optional: true,
         defaultValue: false,
+        control: "checkbox",
         editableBy: ['admin', 'member'],
         autoform: {
           group: 'Email Notifications'
@@ -287,6 +295,7 @@ if (typeof Herald !== "undefined") {
         type: Boolean,
         optional: true,
         defaultValue: true,
+        control: "checkbox",
         editableBy: ['admin', 'member'],
         autoform: {
           group: 'Email Notifications'
@@ -300,6 +309,7 @@ if (typeof Herald !== "undefined") {
         type: Boolean,
         optional: true,
         defaultValue: true,
+        control: "checkbox",
         editableBy: ['admin', 'member'],
         autoform: {
           group: 'Email Notifications'

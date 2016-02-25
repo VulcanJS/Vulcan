@@ -28,6 +28,7 @@ SimpleSchema.extendOptions({
   profile: Match.Optional(Boolean), // profile: true means the field is shown on user profiles
   template: Match.Optional(String), // template used to display the field
   autoform: Match.Optional(Object), // autoform placeholder
+  control: Match.Optional(String), // autoform placeholder
   join: Match.Optional(Object) // autoform placeholder
   // editableBy: Match.Optional(String)
 });

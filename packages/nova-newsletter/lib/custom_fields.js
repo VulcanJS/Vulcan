@@ -12,7 +12,7 @@ Posts.addField({
 
 Users.addField([
   {
-    fieldName: 'telescope.newsletter.showBanner',
+    fieldName: 'telescope.newsletter_showBanner',
     fieldSchema: {
       label: 'Show banner',
       type: Boolean,
@@ -24,7 +24,7 @@ Users.addField([
     }
   },
   {
-    fieldName: 'telescope.newsletter.subscribeToNewsletter',
+    fieldName: 'telescope.newsletter_subscribeToNewsletter',
     fieldSchema: {
       label: 'Subscribe to newsletter',
       type: Boolean,

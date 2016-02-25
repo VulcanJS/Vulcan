@@ -69,6 +69,102 @@ Meteor.Collection.prototype.allowCheck = function (userId, document, fieldNames,
 };
 
 /**
+ * For a given cursor, get an array of all its joins
+ */
+Mongo.Collection.prototype.getCursorJoins = function (cursor) {
+
+  const collection = this;
+  const schema = collection.simpleSchema();
+  const joins = schema.getJoins();
+  const documents = cursor.fetch();
+  let joinsArray = [];
+  let collectionsToJoin = {};
+
+  // loop over each join defined in the schema
+  joins.forEach(join => {
+
+    // if join collection is a string interpret it as global, if it's a function get its return
+    const joinCollection = typeof join.collection === "function" ? join.collection() : (Meteor.isClient ? window[join.collection] : global[join.collection]);
+    const collectionName = joinCollection._name;
+    let joinIDs = [];
+
+    // loop over each document in the cursor
+    documents.forEach(document => {
+
+      // get the field containing the join id or ids
+      const joinField = document[join.property];
+      let idsToAdd = [];
+
+      if (Array.isArray(joinField)) { // join field is an array
+        // if the join is limited, only take the first `join.limit` documents
+
+        idsToAdd = join.limit ? _.first(joinField, join.limit) : joinField;
+      } else { // join field is a single id, so wrap it in an array
+        idsToAdd = [joinField];
+      }
+
+      // add id or ids to the list of joined ids
+      joinIDs = joinIDs.concat(idsToAdd);
+    
+    });
+
+    if (collectionsToJoin[collectionName]) { // if the current collection already has joins, add ids to its joinIDs property
+      collectionsToJoin[collectionName].ids = collectionsToJoin[collectionName].ids.concat(joinIDs);
+    } else { // else add it to the collectionsToJoin object
+      collectionsToJoin[collectionName] = {
+        collection: joinCollection,
+        ids: joinIDs
+      };
+    }
+
+  });
+
+  // loop over collectionsToJoin to add each cursor to joinsArray
+  _.each(collectionsToJoin, (item) => {
+
+    const publicFields = Telescope.utils.arrayToFields(item.collection.simpleSchema().getPublicFields());
+
+    // add cursor for this join to joinsArray
+    joinsArray.push(item.collection.find({_id: {$in: _.unique(item.ids)}}, {fields: publicFields}));
+
+  });
+
+  return joinsArray;
+};
+
+
+/**
+ * Create a publication function for lists
+ */
+Mongo.Collection.prototype.publish = function () {
+
+  const collection = this;
+  const publicationName = collection._name+".list";
+
+  Meteor.publish(publicationName, function (terms) {
+    
+    const emptyTerms = {selector: {}, options: {}};
+
+    if (terms) {
+      terms.currentUserId = this.userId;
+      ({selector, options} = collection.parameters.get(terms));
+    } else {
+      ({selector, options} = emptyTerms);
+    }
+
+    Counts.publish(this, publicationName, collection.find(selector, options));
+    
+    options.fields = Telescope.utils.arrayToFields(collection.simpleSchema().getPublicFields());
+
+    const cursor = collection.find(selector, options);
+
+    return [cursor].concat(collection.getCursorJoins(cursor));
+
+  });
+
+};
+
+/**
  * Global schemas object. Note: not reactive, won't be updated after initialization
  * @namespace Telescope.schemas
  */
