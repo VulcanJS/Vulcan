@@ -23,14 +23,6 @@ FlowRouter.route('/', {
   }
 });
 
-FlowRouter.route('/posts/new', {
-  name: 'posts.new',
-  action(params, queryParams) {
-    ({AppContainer, CurrentUserContainer, PostNew} = Telescope.components);
-    mount(AppContainer, {content: <CurrentUserContainer><PostNew /></CurrentUserContainer>});
-  }
-});
-
 FlowRouter.route('/posts/:_id', {
   name: 'posts.single',
   action(params, queryParams) {

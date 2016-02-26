@@ -4,7 +4,7 @@ const ItemContainer = React.createClass({
 
   propTypes: {
     collection: React.PropTypes.object.isRequired,
-    publication: React.PropTypes.string.isRequired,
+    publication: React.PropTypes.string,
     terms: React.PropTypes.object,
     joins: React.PropTypes.array,
     callback: React.PropTypes.func // a callback function to pass through, for modals (note: use Redux?)
@@ -15,7 +15,7 @@ const ItemContainer = React.createClass({
   getMeteorData() {
 
     // subscribe if necessary
-    if (this.props.publication && this.props.terms) {
+    if (this.props.publication) {
       const subscription = Meteor.subscribe(this.props.publication, this.props.terms);
     }
 

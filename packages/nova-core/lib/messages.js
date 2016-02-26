@@ -1,4 +1,4 @@
-Messages = {
+const Messages = {
   // Local (client-only) collection
   collection: new Meteor.Collection(null),
 
