@@ -4,11 +4,10 @@ const ItemContainer = React.createClass({
 
   propTypes: {
     collection: React.PropTypes.object.isRequired,
-    component: React.PropTypes.func.isRequired,
     publication: React.PropTypes.string.isRequired,
     terms: React.PropTypes.object,
-    propsToPass: React.PropTypes.object,
-    joins: React.PropTypes.array
+    joins: React.PropTypes.array,
+    callback: React.PropTypes.func // a callback function to pass through, for modals (note: use Redux?)
   },
 
   mixins: [ReactMeteorData],
@@ -55,9 +54,7 @@ const ItemContainer = React.createClass({
     const Component = this.props.component; // could be Post or PostEdit
 
     if (this.data.document) {
-      return (
-        <Component {...this.props.propsToPass} {...this.data} />
-      )
+      return React.cloneElement(this.props.children, { ...this.data, callback: this.props.callback, collection: this.props.collection });
     } else {
       return <p>Loading…</p>
     }

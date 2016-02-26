@@ -3,7 +3,7 @@ import NoSSR from 'react-no-ssr';
 
 const Header = props => {
   
-  ({Logo, ListContainer, CategoriesList, FlashContainer, NewPostButton, ModalButton, PostNewContainer, CurrentUserContainer, PostNew} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer, NewPostButton, ModalButton, PostNewContainer, CurrentUserContainer, PostNew, NewDocContainer} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -16,7 +16,7 @@ const Header = props => {
         {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
       </div>
       <div className="nav">
-        {<ListContainer collection={Categories} component={CategoriesList} limit={0}/>}
+        <ListContainer collection={Categories} limit={0}><CategoriesList/></ListContainer>
       </div>
       
       <NoSSR onSSR={<p>Loading…</p>}>
@@ -25,7 +25,9 @@ const Header = props => {
       
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
 
-      <ModalButton label="New Post" className="button button--primary"><CurrentUserContainer><PostNew /></CurrentUserContainer></ModalButton>
+      <ModalButton label="New Post" className="button button--primary">
+        <NewDocContainer collection={Posts} label="New Post" methodName="posts.new" callback={(post)=>{FlowRouter.go('posts.single', post);}}/>
+      </ModalButton>
 
       <FlashContainer />
 

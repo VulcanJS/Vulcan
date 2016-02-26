@@ -18,9 +18,8 @@ FlowRouter.route('/', {
         selector={selector}
         options={options}
         terms={queryParams} 
-        component={PostList}
         joins={Posts.simpleSchema().getJoins()}
-      />})
+      ><PostList/></ListContainer>})
   }
 });
 
@@ -41,9 +40,8 @@ FlowRouter.route('/posts/:_id', {
         collection={Posts} 
         publication="posts.single" 
         terms={params} 
-        component={Post}
         joins={Posts.simpleSchema().getJoins()}
-      />});
+      ><Post/></ItemContainer>});
   }
 });
 
@@ -56,7 +54,7 @@ FlowRouter.route('/posts/:_id/edit', {
       publication="posts.single" 
       terms={{_id: params._id}} 
       component={PostEdit}
-    />});
+    ><PostEdit/></ItemContainer>});
   }
 });
 
@@ -69,8 +67,7 @@ FlowRouter.route('/users/:slug', {
         collection={Users} 
         publication="users.single" 
         terms={{'telescope.slug': params.slug}} 
-        component={UsersSingle}
-      />});
+      ><UsersSingle/></ItemContainer>});
   }
 });
 
@@ -84,7 +81,7 @@ FlowRouter.route('/account', {
         publication="users.single" 
         terms={{_id: Meteor.userId()}} 
         component={UsersEdit}
-      />});
+      ><UsersEdit/></ItemContainer>});
   }
 });
 
@@ -98,7 +95,7 @@ FlowRouter.route('/users/:slug/edit', {
         publication="users.single" 
         terms={params} 
         component={UsersEdit}
-      />});
+      ><UsersEdit/></ItemContainer>});
   }
 });
 

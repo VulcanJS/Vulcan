@@ -14,7 +14,6 @@ const customStyles = {
 const ModalButton = React.createClass({
 
   propTypes: {
-    propsToPass: React.PropTypes.object,
     label: React.PropTypes.string.isRequired,
     className: React.PropTypes.string
   },
@@ -39,7 +38,21 @@ const ModalButton = React.createClass({
 
     // see http://stackoverflow.com/a/32371612/649299
     const childrenWithProps = React.Children.map(this.props.children, (child) => {
-      return React.cloneElement(child, { ...this.props.propsToPass, closeModal: this.closeModal });
+
+      // if child component already has a callback, create new callback 
+      // that both calls original callback and also closes modal
+      let callback;
+      if (child.props.callback) {
+        callback = (document) => {
+          child.props.callback(document);
+          this.closeModal();
+        }
+      } else {
+        callback = this.closeModal;
+      }
+
+      return React.cloneElement(child, { callback: callback });
+
     });
 
     return (
@@ -49,7 +62,6 @@ const ModalButton = React.createClass({
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles} >
-
 
           {childrenWithProps}
 

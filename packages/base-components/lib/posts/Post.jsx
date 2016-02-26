@@ -21,10 +21,9 @@ const Post = (props) => {
           publication="comments.list" 
           selector={{postId: post._id}} 
           terms={{postId: post._id, view: "postComments"}} 
-          component={CommentList} 
           limit={0}
           parentProperty="parentCommentId"
-        />
+        ><CommentList/></ListContainer>
 
         <div className="post-new-comment">
           <h4>New Comment:</h4>

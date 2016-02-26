@@ -3,9 +3,10 @@
 
 // import Formsy from 'formsy-react';
 
-// const NewDocumentForm = React.createClass({
-
+// const EditDocumentForm = React.createClass({
+  
 //   propTypes: {
+//     document: React.PropTypes.object.isRequired,
 //     currentUser: React.PropTypes.object.isRequired,
 //     collection: React.PropTypes.object.isRequired,
 //     label: React.PropTypes.string,
@@ -13,24 +14,18 @@
 //     methodName: React.PropTypes.string
 //   },
 
-//   getInitialState() {
-//     return {
-//       canSubmit: false
-//     }
-//   },
-  
 //   submitForm(data) {
-//     // remove any empty properties
-//     const document = _.compactObject(data); 
+//     const document = this.props.document;
+//     const modifier = {$set: _.compactObject(data)};
 //     const collection = this.props.collection;
-//     const methodName = this.props.methodName ? this.props.methodName : collection._name+'.create';
-
-//     Meteor.call(methodName, document, (error, document) => {
+//     const methodName = this.props.methodName ? this.props.methodName : collection._name+'.edit';
+    
+//     Meteor.call(methodName, document._id, modifier, (error, document) => {
 //       if (error) {
 //         console.log(error)
 //         Messages.flash(error.message, "error")
 //       } else {
-//         Messages.flash("Document created.", "success");
+//         Messages.flash("Document edited.", "success");
 //         if (this.props.callback) {
 //           this.props.callback(document);
 //         }
@@ -39,15 +34,16 @@
 //   },
 
 //   render() {
-    
+     
+//     const document = this.props.document;
 //     const collection = this.props.collection;
 //     const fields = collection.simpleSchema().getEditableFields(this.props.currentUser);
 
 //     return (
-//       <div className="new-document">
+//       <div className="document-edit">
 //         <h3>{this.props.label}</h3>
 //         <Formsy.Form onSubmit={this.submitForm}>
-//           {fields.map(fieldName => NovaForms.getComponent(fieldName, collection.simpleSchema()._schema[fieldName]))}
+//           {fields.map(fieldName => NovaForms.getComponent(fieldName, collection.simpleSchema()._schema[fieldName], document))}
 //           <button type="submit" className="button button--primary">Submit</button>
 //         </Formsy.Form>
 //       </div>
@@ -55,4 +51,4 @@
 //   }
 // });
 
-// module.exports = NewDocumentForm;
+// module.exports = EditDocumentForm;

@@ -29,7 +29,6 @@ const ListContainer = React.createClass({
 
   propTypes: {
     collection: React.PropTypes.object.isRequired, // the collection to paginate
-    component: React.PropTypes.func.isRequired, // the component results will be passed to
     publication: React.PropTypes.string, // the publication to subscribe to
     terms: React.PropTypes.object, // an object passed to the publication
     selector: React.PropTypes.object, // the selector used in collection.find()
@@ -134,10 +133,7 @@ const ListContainer = React.createClass({
   },
 
   render() {
-    const Component = this.props.component;
-    return (
-      <Component {...this.data} loadMore={this.loadMore}/>
-    )
+    return React.cloneElement(this.props.children, { ...this.data, loadMore: this.loadMore});
   }
 
 });

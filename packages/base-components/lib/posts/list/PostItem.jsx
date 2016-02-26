@@ -21,7 +21,7 @@ const PostItem = React.createClass({
 
   renderActions() {
 
-    ({ModalButton, ItemContainer, PostEdit} = Telescope.components);
+    ({ModalButton, ItemContainer, EditDocContainer} = Telescope.components);
 
     const component = (
       <ModalButton label="Edit" className="button button--secondary">
@@ -29,8 +29,9 @@ const PostItem = React.createClass({
           collection={Posts} 
           publication="posts.single" 
           terms={{_id: this.props.post._id}} 
-          component={PostEdit}
-        />
+        >
+          <EditDocContainer label="Edit Post" methodName="posts.edit"/>
+        </ItemContainer>
       </ModalButton>
     );
 
