@@ -21,7 +21,7 @@ Posts.addField([
       public: true,
       join: {
         joinAs: "commentersArray",
-        collection: "Users",
+        collection: () => Users,
         limit: 4
       }
     }

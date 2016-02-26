@@ -22,7 +22,7 @@ Posts.addField(
       },
       join: {
         joinAs: "categoriesArray",
-        collection: "Categories"
+        collection: () => Categories
       }
     }
   }

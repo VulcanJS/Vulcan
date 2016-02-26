@@ -1,36 +1,24 @@
 import {mount} from 'react-mounter';
-// import {Demo} from './demo-component.jsx';
+
+//////////////////////////////////////////////////////
+// Route                                            //
+//////////////////////////////////////////////////////
 
 FlowRouter.route('/demo', {
   name: 'posts.single',
-  action(params, queryParams) {
-
-    ({AppContainer, ListContainer} = Telescope.components);
-    
-    mount(AppContainer, {content: 
-      <ListContainer 
-        collection={Movies} 
-        publication="movies.list"
-        terms={{options: {sort: {createdAt: -1}}}}
-        options={{sort: {createdAt: -1}}}
-        joins={Posts.simpleSchema().getJoins()}
-      >
-        <MoviesList/>
-      </ListContainer>
-    });
-
+  action(params, queryParams) {    
+    mount(MoviesWrapper);
   }
 });
 
+//////////////////////////////////////////////////////
+// Collection & Schema                              //
+//////////////////////////////////////////////////////
+
 Movies = new Mongo.Collection("movies");
 
-const hasUserId = function (userId) {
-  return !!userId;
-}
-
-const isOwner = function (userId, document) {
-  return userId === document.userId;
-}
+const hasUserId = userId => !!userId;
+const isOwner = (userId, document) => userId === document.userId;
 
 const schema = new SimpleSchema({
   name: {
@@ -43,7 +31,7 @@ const schema = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    publish: false,
+    publish: true,
   },
   year: {
     type: String,
@@ -66,12 +54,17 @@ const schema = new SimpleSchema({
     type: String,
     publish: true,
     join: {
-      collection: function () {return Meteor.users}
+      collection: () => Meteor.users,
+      joinAs: "user"
     }
   }
 });
 
 Movies.attachSchema(schema);
+
+//////////////////////////////////////////////////////
+// Methods                                          //
+//////////////////////////////////////////////////////
 
 Movies.initMethods({
   deleteIf: isOwner,
@@ -83,6 +76,10 @@ Movies.initMethods({
     return document;
   }
 });
+
+//////////////////////////////////////////////////////
+// Publications                                     //
+//////////////////////////////////////////////////////
 
 if (Meteor.isServer) {
   Movies.publish("movies.list");

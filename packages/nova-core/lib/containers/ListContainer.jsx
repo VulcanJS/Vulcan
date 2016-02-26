@@ -70,6 +70,7 @@ const ListContainer = React.createClass({
 
     const selector = this.props.selector || {};
     const options = {...this.props.options, limit: this.state.limit}; 
+
     const cursor = this.props.collection.find(selector, options);
     const count = cursor.count();
     // when rendering on the server, we want to get a count without the limit
@@ -91,7 +92,7 @@ const ListContainer = React.createClass({
 
           // get the property containing the id or ids
           const joinProperty = doc[join.property];
-          const collection = Meteor.isClient ? window[join.collection] : global[join.collection];
+          const collection = join.collection();
           const joinLimit = join.limit ? join.limit : 0;
 
           // perform the join

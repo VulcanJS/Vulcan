@@ -1,3 +1,45 @@
+import NoSSR from 'react-no-ssr';
+
+//////////////////////////////////////////////////////
+// MoviesWrapper                                    //
+//////////////////////////////////////////////////////
+
+MoviesWrapper = React.createClass({
+
+  render() {
+
+    ({ListContainer, FlashContainer} = Telescope.components);
+
+    return (
+      <div>
+
+        <NoSSR onSSR={<p>Loading…</p>}>
+          <LogInButtons />
+        </NoSSR>
+
+        <FlashContainer />
+
+        <div className="main">
+          <ListContainer 
+            collection={Movies} 
+            publication="movies.list"
+            terms={{options: {sort: {createdAt: -1}}}}
+            options={{sort: {createdAt: -1}}}
+            joins={Movies.simpleSchema().getJoins()}
+          >
+            <MoviesList/>
+          </ListContainer>
+        </div>
+
+      </div>
+    )
+  }
+})
+
+//////////////////////////////////////////////////////
+// MoviesList                                       //
+//////////////////////////////////////////////////////
+
 MoviesList = React.createClass({
 
   renderNew() {
@@ -26,6 +68,10 @@ MoviesList = React.createClass({
   }
 });
 
+//////////////////////////////////////////////////////
+// Movie                                            //
+//////////////////////////////////////////////////////
+
 Movie = React.createClass({
 
 
@@ -47,8 +93,8 @@ Movie = React.createClass({
     );
 
     return (
-      <div className="post-actions">
-        {this.props.currentUser._id === movie.userId ? component : ""}
+      <div className="item-actions">
+        {this.props.currentUser && this.props.currentUser._id === movie.userId ? component : ""}
       </div>
     )
   },
@@ -60,7 +106,7 @@ Movie = React.createClass({
     return (
       <div key={movie.name} style={{marginBottom: "15px"}}>
         <h2>{movie.name} ({movie.year})</h2>
-        <p>{movie.review} – by <strong>{movie.user.username}</strong></p>
+        <p>{movie.review} – by <strong>{movie.user && movie.user.username}</strong></p>
         {this.renderEdit()}
       </div>
     )
