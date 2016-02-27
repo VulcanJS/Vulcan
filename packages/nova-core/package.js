@@ -15,6 +15,7 @@ Package.onUse(function(api) {
     'nova:i18n@0.25.7', // lib
     'nova:events@0.25.7', // lib, i18n
     'nova:settings@0.25.7', // lib, i18n
+    'utilities:react-list-container'
   ];
 
   api.use(packages);

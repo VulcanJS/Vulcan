@@ -5,7 +5,7 @@ import {mount} from 'react-mounter';
 //////////////////////////////////////////////////////
 
 FlowRouter.route('/demo', {
-  name: 'posts.single',
+  name: 'demo',
   action(params, queryParams) {    
     mount(MoviesWrapper);
   }

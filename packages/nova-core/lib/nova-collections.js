@@ -1,0 +1,3 @@
+// NovaCollection = function (options) {
+
+// }

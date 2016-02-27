@@ -25,13 +25,7 @@ const PostItem = React.createClass({
 
     const component = (
       <ModalButton label="Edit" className="button button--secondary">
-        <ItemContainer
-          collection={Posts} 
-          publication="posts.single" 
-          terms={{_id: this.props.post._id}} 
-        >
-          <EditDocContainer label="Edit Post" methodName="posts.edit"/>
-        </ItemContainer>
+        <EditDocContainer collection={Posts} document={this.props.post} label="Edit Post" methodName="posts.edit"/>
       </ModalButton>
     );
 

@@ -76,7 +76,9 @@ Meteor.publish('posts.list', function (terms) {
   const posts = Posts.find(selector, options);
   const users = getPostsListUsers(posts);
 
+  
   return Users.can.view(currentUser) ? [posts, users] : [];
+    
 });
 
 /**
@@ -84,6 +86,7 @@ Meteor.publish('posts.list', function (terms) {
  * @param {Object} terms
  */
 Meteor.publish('posts.single', function (terms) {
+
   check(terms, {_id: String});
 
   const currentUser = Meteor.users.findOne(this.userId);

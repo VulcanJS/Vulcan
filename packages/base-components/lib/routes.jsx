@@ -31,7 +31,8 @@ FlowRouter.route('/posts/:_id', {
       <ItemContainer 
         collection={Posts} 
         publication="posts.single" 
-        terms={params} 
+        selector={params}
+        terms={params}
         joins={Posts.simpleSchema().getJoins()}
       ><Post/></ItemContainer>});
   }
@@ -44,7 +45,8 @@ FlowRouter.route('/posts/:_id/edit', {
     mount(AppContainer, {content: <ItemContainer
       collection={Posts} 
       publication="posts.single" 
-      terms={{_id: params._id}} 
+      selector={{_id: params._id}}
+      terms={params}
       component={PostEdit}
     ><PostEdit/></ItemContainer>});
   }
@@ -58,7 +60,8 @@ FlowRouter.route('/users/:slug', {
       <ItemContainer 
         collection={Users} 
         publication="users.single" 
-        terms={{'telescope.slug': params.slug}} 
+        selector={{'telescope.slug': params.slug}}
+        terms={{'telescope.slug': params.slug}}
       ><UsersSingle/></ItemContainer>});
   }
 });
@@ -71,6 +74,7 @@ FlowRouter.route('/account', {
       <ItemContainer 
         collection={Users} 
         publication="users.single" 
+        selector={{_id: Meteor.userId()}} 
         terms={{_id: Meteor.userId()}} 
         component={UsersEdit}
       ><UsersEdit/></ItemContainer>});
@@ -85,6 +89,7 @@ FlowRouter.route('/users/:slug/edit', {
       <ItemContainer 
         collection={Users} 
         publication="users.single" 
+        selector={params} 
         terms={params} 
         component={UsersEdit}
       ><UsersEdit/></ItemContainer>});

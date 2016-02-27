@@ -26,6 +26,7 @@ MoviesWrapper = React.createClass({
             terms={{options: {sort: {createdAt: -1}}}}
             options={{sort: {createdAt: -1}}}
             joins={Movies.simpleSchema().getJoins()}
+            limit={4}
           >
             <MoviesList/>
           </ListContainer>
@@ -77,18 +78,13 @@ Movie = React.createClass({
 
   renderEdit() {
 
-    ({ModalButton, ItemContainer, EditDocContainer} = Telescope.components);
+    ({ModalButton, EditDocContainer} = Telescope.components);
 
     const movie = this.props;
 
     const component = (
       <ModalButton label="Edit" className="button button--secondary">
-        <ItemContainer
-          collection={Movies}
-          terms={{_id: movie._id}} 
-        >
-          <EditDocContainer label="Edit Movie" methodName="movies.edit"/>
-        </ItemContainer>
+        <EditDocContainer collection={Movies} document={movie} label="Edit Movie" methodName="movies.edit"/>
       </ModalButton>
     );
 

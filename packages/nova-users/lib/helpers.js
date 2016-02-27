@@ -62,9 +62,13 @@ Users.getProfileUrl = function (user, isAbsolute) {
   if (typeof user === "undefined") {
     return "";
   }
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("users.single", {slug: user.telescope.slug});
+  if (user.telescope && user.telescope.slug) {
+    return prefix + FlowRouter.path("users.single", {slug: user.telescope.slug});
+  } else {
+    return "";
+  }
 };
 Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
