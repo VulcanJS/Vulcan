@@ -1,3 +1,5 @@
+import PublicationUtils from 'meteor/utilities:smart-publications';
+
 Posts.addField([
   /**
     Count of the post's comments
@@ -28,5 +30,5 @@ Posts.addField([
   }
 ]);
 
-Telescope.utils.addToFields(Posts.publishedFields.list, ["commentCount", "commenters"]);
-Telescope.utils.addToFields(Posts.publishedFields.single, ["commentCount", "commenters"]);
+PublicationUtils.addToFields(Posts.publishedFields.list, ["commentCount", "commenters"]);
+PublicationUtils.addToFields(Posts.publishedFields.single, ["commentCount", "commenters"]);

@@ -85,9 +85,14 @@ Telescope.callbacks.add("postsParameters", addTimeParameter);
 // limit the number of items that can be requested at once
 function limitPosts (parameters, terms) {
   var maxLimit = 200;
+
+  if (!terms.options) {
+    terms.options = {};
+  }
+
   // if a limit was provided with the terms, add it too (note: limit=0 means "no limit")
-  if (typeof terms.limit !== 'undefined') {
-    _.extend(parameters.options, {limit: parseInt(terms.limit)});
+  if (terms.options.limit) {
+    _.extend(parameters.options, {limit: parseInt(terms.options.limit)});
   }
 
   // limit to "maxLimit" items at most when limit is undefined, equal to 0, or superior to maxLimit

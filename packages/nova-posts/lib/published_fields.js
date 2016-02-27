@@ -1,10 +1,12 @@
+import PublicationsUtils from 'meteor/utilities:smart-publications';
+
 Posts.publishedFields = {};
 
 /**
  * Specify which fields should be published by the posts.list publication
  * @array Posts.publishedFields.list
  */
-Posts.publishedFields.list = Telescope.utils.arrayToFields([
+Posts.publishedFields.list = PublicationsUtils.arrayToFields([
   "_id",
   "postedAt",
   "url",
@@ -26,4 +28,4 @@ Posts.publishedFields.list = Telescope.utils.arrayToFields([
  * Specify which fields should be published by the posts.single publication
  * @array Posts.publishedFields.single
  */
-Posts.publishedFields.single = Telescope.utils.arrayToFields(Posts.simpleSchema().getPublicFields());
+Posts.publishedFields.single = PublicationsUtils.arrayToFields(Posts.getPublishedFields());

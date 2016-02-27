@@ -1,3 +1,4 @@
+
 /**
  * The global namespace for Telescope utils.
  * @namespace Telescope.utils
@@ -251,22 +252,6 @@ Telescope.getNestedProperty = function (obj, desc) {
   var arr = desc.split(".");
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
-};
-
-/**
- * Convert an array of fields to publish into a Mongo fields specifier
- * @param {Array} fieldsArray
- */
-Telescope.utils.arrayToFields = function (fieldsArray) {
-  return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
-};
-
-/**
- * Add an array of fields to a Mongo fields specifier
- * @param {Array} fieldsArray
- */
-Telescope.utils.addToFields = function (fields, fieldsArray) {
-  fields = Object.assign(fields, Telescope.utils.arrayToFields(fieldsArray));
 };
 
 // see http://stackoverflow.com/a/14058408/649299

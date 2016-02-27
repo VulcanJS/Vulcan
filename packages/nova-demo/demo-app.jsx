@@ -55,7 +55,8 @@ const schema = new SimpleSchema({
     publish: true,
     join: {
       collection: () => Meteor.users,
-      joinAs: "user"
+      joinAs: "user",
+      fields: ["_id", "username"]
     }
   }
 });
@@ -82,5 +83,5 @@ Movies.initMethods({
 //////////////////////////////////////////////////////
 
 if (Meteor.isServer) {
-  Movies.publish("movies.list");
+  Movies.smartPublish("movies.list");
 }

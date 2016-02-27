@@ -1,3 +1,5 @@
+import PublicationUtils from 'meteor/utilities:smart-publications';
+
 Posts.addField(
   {
     fieldName: 'categories',
@@ -28,5 +30,5 @@ Posts.addField(
   }
 );
 
-Telescope.utils.addToFields(Posts.publishedFields.list, ["categories"]);
-Telescope.utils.addToFields(Posts.publishedFields.single, ["categories"]);
+PublicationUtils.addToFields(Posts.publishedFields.list, ["categories"]);
+PublicationUtils.addToFields(Posts.publishedFields.single, ["categories"]);

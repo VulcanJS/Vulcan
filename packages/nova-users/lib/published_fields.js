@@ -1,11 +1,13 @@
+import PublicationsUtils from 'meteor/utilities:smart-publications';
+
 Users.publishedFields = {};
 
 /**
  * Specify which fields should be public
  * @type {Array}
  */
-Users.publishedFields.public = Telescope.utils.arrayToFields([
-  ...Users.simpleSchema().getPublicFields(),
+Users.publishedFields.public = PublicationsUtils.arrayToFields([
+  ...Users.getPublishedFields(),
   'services.twitter.profile_image_url',
   'services.twitter.profile_image_url_https',
   'services.facebook.id',
@@ -16,7 +18,7 @@ Users.publishedFields.public = Telescope.utils.arrayToFields([
  * Minimum required properties to display avatars and display names
  * @type {Array}
  */
-// Users.publishedFields.list = Telescope.utils.arrayToFields([
+// Users.publishedFields.list = PublicationsUtils.arrayToFields([
 //   '_id',
 //   'telescope.emailHash',
 //   'telescope.slug',

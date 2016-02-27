@@ -25,7 +25,7 @@ MoviesWrapper = React.createClass({
             publication="movies.list"
             terms={{options: {sort: {createdAt: -1}}}}
             options={{sort: {createdAt: -1}}}
-            joins={Movies.simpleSchema().getJoins()}
+            joins={Movies.getJoins()}
             limit={4}
           >
             <MoviesList/>

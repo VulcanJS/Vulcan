@@ -64,21 +64,24 @@ Meteor.publish('posts.list', function (terms) {
 
   // this.unblock(); // causes bug where publication returns 0 results  
 
-  const currentUser = Meteor.users.findOne(this.userId);
+  // this.autorun(function () { // sadly, reactive joins break SSR for now :(
+    const currentUser = Meteor.users.findOne(this.userId);
 
-  terms.currentUserId = this.userId; // add currentUserId to terms
-  ({selector, options} = Posts.parameters.get(terms));
-  
-  Counts.publish(this, 'posts.list', Posts.find(selector, options));
-
-  options.fields = Posts.publishedFields.list;
-
-  const posts = Posts.find(selector, options);
-  const users = getPostsListUsers(posts);
-
-  
-  return Users.can.view(currentUser) ? [posts, users] : [];
+    terms.currentUserId = this.userId; // add currentUserId to terms
+    ({selector, options} = Posts.parameters.get(terms));
     
+    Counts.publish(this, 'posts.list', Posts.find(selector, options));
+
+    options.fields = Posts.publishedFields.list;
+
+    const posts = Posts.find(selector, options);
+    const users = getPostsListUsers(posts);
+
+    
+    return Users.can.view(currentUser) ? [posts, users] : [];
+  
+  // });
+
 });
 
 /**

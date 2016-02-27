@@ -18,7 +18,7 @@ FlowRouter.route('/', {
         selector={selector}
         options={options}
         terms={queryParams} 
-        joins={Posts.simpleSchema().getJoins()}
+        joins={Posts.getJoins()}
       ><PostList/></ListContainer>})
   }
 });
@@ -33,7 +33,7 @@ FlowRouter.route('/posts/:_id', {
         publication="posts.single" 
         selector={params}
         terms={params}
-        joins={Posts.simpleSchema().getJoins()}
+        joins={Posts.getJoins()}
       ><Post/></ItemContainer>});
   }
 });

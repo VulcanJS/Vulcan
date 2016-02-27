@@ -70,6 +70,8 @@ Package.onUse(function (api) {
     'kadira:flow-router-ssr@3.11.0',
     'arillo:flow-router-helpers@0.5.0',
     // 'peerlibrary:reactive-publish@0.2.0',
+    
+    'utilities:smart-publications',
 
     'ecmascript',
     'react',
