@@ -77,7 +77,6 @@ Meteor.publish('posts.list', function (terms) {
     const posts = Posts.find(selector, options);
     const users = getPostsListUsers(posts);
 
-    
     return Users.can.view(currentUser) ? [posts, users] : [];
   
   // });

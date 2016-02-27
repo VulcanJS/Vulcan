@@ -38,19 +38,19 @@ FlowRouter.route('/posts/:_id', {
   }
 });
 
-FlowRouter.route('/posts/:_id/edit', {
-  name: 'posts.edit',
-  action(params, queryParams) {
-    ({AppContainer, ItemContainer} = Telescope.components);
-    mount(AppContainer, {content: <ItemContainer
-      collection={Posts} 
-      publication="posts.single" 
-      selector={{_id: params._id}}
-      terms={params}
-      component={PostEdit}
-    ><PostEdit/></ItemContainer>});
-  }
-});
+// FlowRouter.route('/posts/:_id/edit', {
+//   name: 'posts.edit',
+//   action(params, queryParams) {
+//     ({AppContainer, ItemContainer} = Telescope.components);
+//     mount(AppContainer, {content: <ItemContainer
+//       collection={Posts} 
+//       publication="posts.single" 
+//       selector={{_id: params._id}}
+//       terms={params}
+//       component={PostEdit}
+//     ><PostEdit/></ItemContainer>});
+//   }
+// });
 
 FlowRouter.route('/users/:slug', {
   name: 'users.single',

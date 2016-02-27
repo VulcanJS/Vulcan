@@ -25,11 +25,11 @@ const Header = props => {
       
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
 
-      <ModalButton label="New Post" className="button button--primary">
-        <CanCreatePost user={props.currentUser}>
+      <CanCreatePost user={props.currentUser}>
+        <ModalButton label="New Post" className="button button--primary">
           <NewDocContainer collection={Posts} label="New Post" methodName="posts.new" callback={(post)=>{FlowRouter.go('posts.single', post);}}/>
-        </CanCreatePost>
-      </ModalButton>
+        </ModalButton>
+      </CanCreatePost>
 
       <FlashContainer />
 

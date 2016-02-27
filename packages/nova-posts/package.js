@@ -29,7 +29,6 @@ Package.onUse(function (api) {
     'lib/config.js',
     'lib/collection.js',
     'lib/parameters.js',
-    'lib/components.js',
     'lib/notifications.js',
     'lib/views.js',
     'lib/helpers.js',
