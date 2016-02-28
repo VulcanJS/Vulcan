@@ -49,7 +49,7 @@ const schema = new SimpleSchema({
   },
   userId: {
     type: String,
-    publish: user => Users.is.admin(user),
+    publish: true,
     join: {
       collection: () => Meteor.users,
       joinAs: "user",
