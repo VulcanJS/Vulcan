@@ -51,7 +51,7 @@ const ModalButton = React.createClass({
         callback = this.closeModal;
       }
 
-      return React.cloneElement(child, { callback: callback });
+      return React.cloneElement(child, { successCallback: callback });
 
     });
 
@@ -72,3 +72,4 @@ const ModalButton = React.createClass({
 });
 
 module.exports = ModalButton;
+export default ModalButton;

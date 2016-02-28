@@ -1,24 +1,13 @@
 import {mount} from 'react-mounter';
 
 //////////////////////////////////////////////////////
-// Route                                            //
-//////////////////////////////////////////////////////
-
-FlowRouter.route('/demo', {
-  name: 'demo',
-  action(params, queryParams) {    
-    mount(MoviesWrapper);
-  }
-});
-
-//////////////////////////////////////////////////////
 // Collection & Schema                              //
 //////////////////////////////////////////////////////
 
 Movies = new Mongo.Collection("movies");
 
 const isLoggedIn = user => !!user;
-const isOwner = (user, document) => {user._id === document.userId};
+const isOwner = (user, document) => user._id === document.userId;
 
 const schema = new SimpleSchema({
   name: {
@@ -61,11 +50,22 @@ const schema = new SimpleSchema({
 Movies.attachSchema(schema);
 
 //////////////////////////////////////////////////////
+// Route                                            //
+//////////////////////////////////////////////////////
+
+FlowRouter.route('/demo', {
+  name: 'demo',
+  action() {    
+    mount(MoviesWrapper);
+  }
+});
+
+//////////////////////////////////////////////////////
 // Methods                                          //
 //////////////////////////////////////////////////////
 
 Movies.smartMethods({
-  createCallback: function (document) {
+  createCallback: function (user, document) {
     document = _.extend(document, {
       createdAt: new Date(),
       userId: Meteor.userId()

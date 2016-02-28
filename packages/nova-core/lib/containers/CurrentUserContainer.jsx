@@ -16,3 +16,4 @@ const CurrentUserContainer = React.createClass({
 });
 
 module.exports = CurrentUserContainer;
+export default CurrentUserContainer;

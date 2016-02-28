@@ -1,5 +1,15 @@
 import NoSSR from 'react-no-ssr';
 
+import Core from 'meteor/nova:core';
+import SmartContainers from "meteor/utilities:react-list-container";
+import FormContainers from "meteor/utilities:react-form-containers";
+
+FlashContainer = Core.FlashContainer;
+ModalButton = Core.ModalButton;
+NewDocContainer = FormContainers.NewDocContainer;
+EditDocContainer = FormContainers.EditDocContainer;
+ListContainer = SmartContainers.ListContainer;
+
 //////////////////////////////////////////////////////
 // MoviesWrapper                                    //
 //////////////////////////////////////////////////////
@@ -8,10 +18,8 @@ MoviesWrapper = React.createClass({
 
   render() {
 
-    ({ListContainer, FlashContainer} = Telescope.components);
-
     return (
-      <div>
+      <div className="wrapper">
 
         <NoSSR onSSR={<p>Loading…</p>}>
           <LogInButtons />
@@ -26,7 +34,6 @@ MoviesWrapper = React.createClass({
             terms={{options: {sort: {createdAt: -1}}}}
             options={{sort: {createdAt: -1}}}
             joins={Movies.getJoins()}
-            limit={4}
           >
             <MoviesList/>
           </ListContainer>
@@ -35,7 +42,7 @@ MoviesWrapper = React.createClass({
       </div>
     )
   }
-})
+});
 
 //////////////////////////////////////////////////////
 // MoviesList                                       //
@@ -45,8 +52,6 @@ MoviesList = React.createClass({
 
   renderNew() {
     
-    ({ModalButton, NewDocContainer} = Telescope.components);
-
     const component = (
       <ModalButton label="Add Movie" className="button button--primary">
         <NewDocContainer collection={Movies} label="Add Movie" methodName="movies.create"/>
@@ -57,7 +62,6 @@ MoviesList = React.createClass({
   },
 
   render() {
-    ({LoadMore} = Telescope.components);
 
     return (
       <div className="movies">
@@ -68,17 +72,13 @@ MoviesList = React.createClass({
     )
   }
 });
-
 //////////////////////////////////////////////////////
 // Movie                                            //
 //////////////////////////////////////////////////////
-
 Movie = React.createClass({
 
 
   renderEdit() {
-
-    ({ModalButton, EditDocContainer} = Telescope.components);
 
     const movie = this.props;
 
@@ -109,3 +109,5 @@ Movie = React.createClass({
   }
 
 });
+
+const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>

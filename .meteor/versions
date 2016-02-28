@@ -143,6 +143,7 @@ twitter@1.1.6-beta.11
 ui@1.0.8
 underscore@1.0.5-beta.11
 url@1.0.6-beta.11
+utilities:react-form-containers@0.1.0
 utilities:react-list-container@0.1.0
 utilities:smart-methods@0.1.0
 utilities:smart-publications@0.1.1

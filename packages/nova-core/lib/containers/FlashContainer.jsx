@@ -25,3 +25,4 @@ const FlashContainer = React.createClass({
 });
 
 module.exports = FlashContainer;
+export default FlashContainer;

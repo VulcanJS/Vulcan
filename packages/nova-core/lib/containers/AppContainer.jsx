@@ -35,3 +35,4 @@ const AppContainer = React.createClass({
 });
 
 module.exports = AppContainer;
+export default AppContainer;
