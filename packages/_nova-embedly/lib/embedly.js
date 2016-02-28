@@ -4,7 +4,8 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      editableBy: ["member", "admin"],
+      insertableIf: Users.is.memberOrAdmin,
+      editableIf: Users.is.ownerOrAdmin,
       autoform: {
         type: 'bootstrap-postthumbnail',
         order: 40

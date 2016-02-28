@@ -3,7 +3,7 @@ Template.user_account.helpers({
     return this;
   },
   userFields: function () {
-    var fields = Meteor.users.simpleSchema().getEditableFields(Meteor.user());
+    var fields = Meteor.users.getInsertableFields(Meteor.user());
     return fields;
   },
   isUsingPassword: function  () {

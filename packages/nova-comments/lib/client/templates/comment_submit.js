@@ -1,6 +1,6 @@
 Template.comment_submit.helpers({
   commentFields: function () {
-    return Comments.simpleSchema().getEditableFields(Meteor.user());
+    return Comments.getInsertableFields(Meteor.user());
   },
   isLoggedIn: function () {
     return !!Meteor.user();

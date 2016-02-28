@@ -17,17 +17,16 @@ FlowRouter.route('/demo', {
 
 Movies = new Mongo.Collection("movies");
 
-const hasUserId = userId => !!userId;
-const isOwner = (userId, document) => userId === document.userId;
+const isLoggedIn = user => !!user;
+const isOwner = (user, document) => {user._id === document.userId};
 
 const schema = new SimpleSchema({
   name: {
     type: String,
     publish: true,
     control: "text",
-    createIf: hasUserId,
-    editIf: isOwner,
-    editableBy: ["member", "admin"]
+    insertableIf: isLoggedIn,
+    editableIf: isOwner
   },
   createdAt: {
     type: Date,
@@ -38,21 +37,19 @@ const schema = new SimpleSchema({
     publish: true,
     optional: true,
     control: "text",
-    createIf: hasUserId,
-    editIf: isOwner,
-    editableBy: ["member", "admin"]
+    insertableIf: isLoggedIn,
+    editableIf: isOwner
   },
   review: {
     type: String,
     publish: true,
     control: "textarea",
-    createIf: hasUserId,
-    editIf: isOwner,
-    editableBy: ["member", "admin"]
+    insertableIf: isLoggedIn,
+    editableIf: isOwner
   },
   userId: {
     type: String,
-    publish: true,
+    publish: user => Users.is.admin(user),
     join: {
       collection: () => Meteor.users,
       joinAs: "user",
@@ -67,15 +64,15 @@ Movies.attachSchema(schema);
 // Methods                                          //
 //////////////////////////////////////////////////////
 
-Movies.initMethods({
-  deleteIf: isOwner,
+Movies.smartMethods({
   createCallback: function (document) {
     document = _.extend(document, {
       createdAt: new Date(),
       userId: Meteor.userId()
     });
     return document;
-  }
+  },
+  deleteCallback: isOwner
 });
 
 //////////////////////////////////////////////////////

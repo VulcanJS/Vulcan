@@ -48,7 +48,7 @@ Telescope.allowCheck = function (collection, userId, document, fieldNames, modif
 
   var schema = collection.simpleSchema();
   var user = Meteor.users.findOne(userId);
-  var allowedFields = schema.getEditableFields(user);
+  var allowedFields = collection.getInsertableFields(user);
   var fields = [];
 
   // fieldNames only contains top-level fields, so loop over modifier to get real list of fields
@@ -74,23 +74,6 @@ Meteor.Collection.prototype.allowCheck = function (userId, document, fieldNames,
  * @namespace Telescope.schemas
  */
 Telescope.schemas = {};
-
-/**
- * @method SimpleSchema.getEditableFields
- * Get a list of all fields editable by a specific user for a given schema
- * @param {Object} user – the user for which to check field permissions
- */
-SimpleSchema.prototype.getEditableFields = function (user) {
-  var schema = this._schema;
-  var fields = _.sortBy(_.filter(_.keys(schema), function (fieldName) {
-    var field = schema[fieldName];
-    return Users.can.editField(user, field);
-  }), function (fieldName) {
-    var field = schema[fieldName];
-    return field.autoform && field.autoform.order;
-  });
-  return fields;
-};
 
 SimpleSchema.prototype.getProfileFields = function () {
   var schema = this._schema;

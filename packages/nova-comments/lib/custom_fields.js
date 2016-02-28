@@ -9,7 +9,7 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      public: true
+      publish: true
     }
   },
   /**
@@ -20,7 +20,7 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      public: true,
+      publish: true,
       join: {
         joinAs: "commentersArray",
         collection: () => Users,

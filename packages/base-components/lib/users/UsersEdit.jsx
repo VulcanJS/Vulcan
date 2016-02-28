@@ -46,7 +46,7 @@ const UsersEdit = React.createClass({
 
     ({CanEditUser} = Telescope.components);
 
-    const fields = Meteor.users.simpleSchema().getEditableFields(this.props.currentUser);
+    const fields = Users.getInsertableFields(this.props.currentUser);
 
     return (
       <CanEditUser user={this.props.currentUser} userToEdit={user}>

@@ -4,7 +4,7 @@ Template.post_submit.onCreated(function () {
 
 Template.post_submit.helpers({
   postFields: function () {
-    return Posts.simpleSchema().getEditableFields(Meteor.user());
+    return Posts.getInsertableFields(Meteor.user());
   }
 });
 

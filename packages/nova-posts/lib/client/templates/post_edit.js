@@ -28,7 +28,7 @@ Template.post_edit.helpers({
     return Posts.findOne(FlowRouter.getParam("_id"));
   },
   postFields: function () {
-    return Posts.simpleSchema().getEditableFields(Meteor.user());
+    return Posts.getInsertableFields(Meteor.user());
   }
 });
 

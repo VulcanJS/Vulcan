@@ -46,7 +46,7 @@ const EditDocContainer = React.createClass({
 
     const document = this.props.document;
     const collection = this.props.collection;
-    const fields = collection.simpleSchema().getEditableFields(this.data.currentUser);
+    const fields = collection.getInsertableFields(this.data.currentUser);
 
     return (
       <div className="document-edit">

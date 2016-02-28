@@ -48,9 +48,10 @@ Users.addField([
     fieldName: "telescope.isInvited",
     fieldSchema: {
       type: Boolean,
-      public: true,
+      publish: true,
       optional: true,
-      editableBy: ["admin"],
+      insertableIf: Users.is.admin,
+      editableIf: Users.is.admin,
       autoform: {
         omit: true
       }

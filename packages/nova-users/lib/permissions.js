@@ -144,16 +144,7 @@ Users.helpers({canEditById: function (document) {return Users.can.editById(this,
  * @param {Object} field - The field being edited or inserted
  */
 Users.can.submitField = function (user, field) {
-
-  if (!field.editableBy || !user) {
-    return false;
-  }
-
-  var adminCheck = _.contains(field.editableBy, "admin") && Users.is.admin(user); // is the field editable by admins?
-  var memberCheck = _.contains(field.editableBy, "member"); // is the field editable by regular users?
-
-  return adminCheck || memberCheck;
-
+  return user && field.insertableIf && field.insertableIf(user);
 };
 Users.helpers({canSubmitField: function (field) {return Users.can.submitField(this, field);}});
 
@@ -162,7 +153,9 @@ Users.helpers({canSubmitField: function (field) {return Users.can.submitField(th
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.can.editField = Users.can.submitField;
+Users.can.editField = function (user, field, document) {
+  return user && field.editableIf && field.editableIf(user, document);
+};
 
 Users.can.invite = function (user) {
   return Users.is.invited(user) || Users.is.admin(user);

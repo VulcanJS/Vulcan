@@ -17,7 +17,8 @@ Users.addField([
       label: 'Show banner',
       type: Boolean,
       optional: true,
-      editableBy: ['admin', 'member'],
+      insertableIf: Users.is.memberOrAdmin,
+      editableIf: Users.is.ownerOrAdmin,
       autoform: {
         omit: true
       }
@@ -29,7 +30,8 @@ Users.addField([
       label: 'Subscribe to newsletter',
       type: Boolean,
       optional: true,
-      editableBy: ['admin', 'member'],
+      insertableIf: Users.is.memberOrAdmin,
+      editableIf: Users.is.ownerOrAdmin,
       autoform: {
         omit: true
       }

@@ -1,8 +1,3 @@
-/**
- * Telescope Users namespace
- * @namespace Users
- */
-Users = Meteor.users;
 
 /**
  * Vote schema
@@ -34,7 +29,8 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     control: "textarea",
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     // autoform: {
     //   rows: 5
     // }
@@ -44,7 +40,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   commentCount: {
     type: Number,
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -53,17 +49,18 @@ Telescope.schemas.userData = new SimpleSchema({
   displayName: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
     profile: true,
     control: "text",
-    editableBy: ["member", "admin"]
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin
   },
   /**
     An array containing comment downvotes
   */
   downvotedComments: {
     type: [Telescope.schemas.votes],
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -71,7 +68,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedPosts: {
     type: [Telescope.schemas.votes],
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -83,7 +80,8 @@ Telescope.schemas.userData = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Email,
     required: true,
     control: "text",
-    editableBy: ["member", "admin"]
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -91,7 +89,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   emailHash: {
     type: String,
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -99,7 +97,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   htmlBio: {
     type: String,
-    public: true,
+    publish: true,
     profile: true,
     optional: true,
     // autoform: {
@@ -113,7 +111,7 @@ Telescope.schemas.userData = new SimpleSchema({
   karma: {
     type: Number,
     decimal: true,
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -121,7 +119,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   postCount: {
     type: Number,
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -130,7 +128,7 @@ Telescope.schemas.userData = new SimpleSchema({
   // settings: {
   //   type: Object,
   //   optional: true,
-  //   editableBy: ["member", "admin"],
+  //   editableIf: Users.is.ownerOrAdmin,
   //   blackbox: true,
   //   autoform: {
   //     omit: true
@@ -141,7 +139,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   slug: {
     type: String,
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -150,10 +148,11 @@ Telescope.schemas.userData = new SimpleSchema({
   twitterUsername: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
     profile: true,
     control: "text",
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     template: "user_profile_twitter"
   },
   /**
@@ -161,7 +160,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedComments: {
     type: [Telescope.schemas.votes],
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -169,7 +168,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedPosts: {
     type: [Telescope.schemas.votes],
-    public: true,
+    publish: true,
     optional: true
   },
   /**
@@ -178,11 +177,12 @@ Telescope.schemas.userData = new SimpleSchema({
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
-    public: true,
+    publish: true,
     profile: true,
     optional: true,
     control: "text",
-    editableBy: ["member", "admin"]
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin
   }
 });
 
@@ -193,13 +193,13 @@ Telescope.schemas.userData = new SimpleSchema({
 Users.schema = new SimpleSchema({ 
   _id: {
     type: String,
-    public: true,
+    publish: true,
     optional: true
   },
   username: {
     type: String,
     // regEx: /^[a-z0-9A-Z_]{3,15}$/,
-    public: true,
+    publish: true,
     optional: true
   },
   emails: {
@@ -217,14 +217,15 @@ Users.schema = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    public: true,
+    publish: true,
     optional: true
   },
   isAdmin: {
     type: Boolean,
     control: "checkbox",
     optional: true,
-    editableBy: ["admin"],
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     // autoform: {
     //   omit: true
     // }
@@ -268,7 +269,8 @@ if (typeof Herald !== "undefined") {
         optional: true,
         defaultValue: false,
         control: "checkbox",
-        editableBy: ['admin'],
+        insertableIf: Users.is.admin,
+        editableBy: Users.is.admin,
         autoform: {
           group: 'Email Notifications'
         }
@@ -282,7 +284,8 @@ if (typeof Herald !== "undefined") {
         optional: true,
         defaultValue: false,
         control: "checkbox",
-        editableBy: ['admin', 'member'],
+        insertableIf: Users.is.memberOrAdmin,
+        editableIf: Users.is.ownerOrAdmin,
         autoform: {
           group: 'Email Notifications'
         }
@@ -296,7 +299,8 @@ if (typeof Herald !== "undefined") {
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        editableBy: ['admin', 'member'],
+        insertableIf: Users.is.memberOrAdmin,
+        editableIf: Users.is.ownerOrAdmin,
         autoform: {
           group: 'Email Notifications'
         }
@@ -310,7 +314,8 @@ if (typeof Herald !== "undefined") {
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        editableBy: ['admin', 'member'],
+        insertableIf: Users.is.memberOrAdmin,
+        editableIf: Users.is.ownerOrAdmin,
         autoform: {
           group: 'Email Notifications'
         }

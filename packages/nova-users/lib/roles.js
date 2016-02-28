@@ -42,6 +42,35 @@ Users.is.owner = function (userOrUserId, document) {
 Users.is.ownerById = Users.is.owner;
 Users.helpers({isOwner: function () {return Users.is.owner(this, document);}});
 
+/**
+ * Check if a user is a member or an admin
+ * @param {Object} user - The user
+ * @param {Object} document - The document to check (post, comment, user object, etc.)
+ */
+Users.is.memberOrAdmin = function (user) {
+  if (typeof user === "undefined") {
+    return false;
+  } else {
+    return !!user || Users.is.admin(user);
+  }
+};
+
+/**
+ * Check if a user owns a document or is an admin
+ * @param {Object} user - The user
+ * @param {Object} document - The document to check (post, comment, user object, etc.)
+ */
+Users.is.ownerOrAdmin = function (user, document) {
+  if (typeof user === "undefined") {
+    return false;
+  } else if (typeof document === "undefined") {
+    return true;
+  } else {
+    return Users.is.owner(user, document) || Users.is.admin(user);
+  }
+};
+
+
 Users.is.invited = function (userOrUserId) {
   try {
     var user = Users.getUser(userOrUserId);

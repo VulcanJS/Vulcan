@@ -11,7 +11,8 @@ Package.onUse(function (api) {
 
   api.use([
     'nova:core@0.25.7',
-    'nova:posts@0.25.7'
+    'nova:posts@0.25.7',
+    'nova:users@0.25.7'
   ]);
 
   api.addFiles([

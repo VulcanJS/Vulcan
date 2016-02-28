@@ -9,7 +9,7 @@ Posts.schema = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
-    public: true
+    publish: true
   },
   /**
     Timetstamp of post creation
@@ -17,7 +17,7 @@ Posts.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     optional: true,
-    public: false
+    publish: false
   },
   /**
     Timestamp of post first appearing on the site (i.e. being approved)
@@ -25,8 +25,9 @@ Posts.schema = new SimpleSchema({
   postedAt: {
     type: Date,
     optional: true,
-    editableBy: ["admin"],
-    public: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
+    publish: true,
     control: "datepicker",
     autoform: {
       group: 'admin',
@@ -40,9 +41,10 @@ Posts.schema = new SimpleSchema({
     type: String,
     optional: true,
     max: 500,
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     control: "text",
-    public: true,
+    publish: true,
     autoform: {
       type: "bootstrap-url",
       order: 10
@@ -55,9 +57,10 @@ Posts.schema = new SimpleSchema({
     type: String,
     optional: false,
     max: 500,
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     control: "text",
-    public: true,
+    publish: true,
     autoform: {
       order: 20
     }
@@ -68,7 +71,7 @@ Posts.schema = new SimpleSchema({
   slug: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     Post body (markdown)
@@ -77,9 +80,10 @@ Posts.schema = new SimpleSchema({
     type: String,
     optional: true,
     max: 3000,
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     control: "textarea",
-    public: true,
+    publish: true,
     autoform: {
       rows: 5,
       order: 30
@@ -91,7 +95,7 @@ Posts.schema = new SimpleSchema({
   htmlBody: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     Count of how many times the post's page was viewed
@@ -99,7 +103,7 @@ Posts.schema = new SimpleSchema({
   viewCount: {
     type: Number,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     Timestamp of the last comment
@@ -107,7 +111,7 @@ Posts.schema = new SimpleSchema({
   lastCommentedAt: {
     type: Date,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     Count of how many times the post's link was clicked
@@ -115,7 +119,7 @@ Posts.schema = new SimpleSchema({
   clickCount: {
     type: Number,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     The post's status. One of pending (`1`), approved (`2`), or deleted (`3`)
@@ -123,9 +127,10 @@ Posts.schema = new SimpleSchema({
   status: {
     type: Number,
     optional: true,
-    editableBy: ["admin"],
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     control: "select",
-    public: true,
+    publish: true,
     autoValue: function () {
       // only provide a default value
       // 1) this is an insert operation
@@ -147,9 +152,10 @@ Posts.schema = new SimpleSchema({
     type: Boolean,
     optional: true,
     defaultValue: false,
-    editableBy: ["admin"],
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     control: "checkbox",
-    public: true,
+    publish: true,
     autoform: {
       group: 'admin',
       leftLabel: "Sticky"
@@ -161,7 +167,7 @@ Posts.schema = new SimpleSchema({
   inactive: {
     type: Boolean,
     optional: true,
-    public: false,
+    publish: false
   },
   /**
     Save info for later spam checking on a post. We will use this for the akismet package
@@ -169,17 +175,17 @@ Posts.schema = new SimpleSchema({
   userIP: {
     type: String,
     optional: true,
-    public: false,
+    publish: false
   },
   userAgent: {
     type: String,
     optional: true,
-    public: false,
+    publish: false
   },
   referrer: {
     type: String,
     optional: true,
-    public: false,
+    publish: false
   },
   /**
     The post author's name
@@ -187,7 +193,7 @@ Posts.schema = new SimpleSchema({
   author: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     The post author's `_id`. 
@@ -196,9 +202,10 @@ Posts.schema = new SimpleSchema({
     type: String,
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
-    editableBy: ["admin"],
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     control: "select",
-    public: true,
+    publish: true,
     autoform: {
       group: 'admin',
       options: function () {

@@ -42,7 +42,7 @@ const NewDocContainer = React.createClass({
   render() {
     
     const collection = this.props.collection;
-    const fields = collection.simpleSchema().getEditableFields(this.data.currentUser);
+    const fields = collection.getInsertableFields(this.data.currentUser);
 
     return (
       <div className="new-document">

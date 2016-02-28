@@ -19,10 +19,11 @@ Package.onUse(function (api) {
 
   api.addFiles([
     // 'package-tap.i18n',
-    'lib/collection.js',
+    'lib/namespace.js',
     'lib/roles.js',
     'lib/config.js',
     'lib/permissions.js',
+    'lib/collection.js',
     'lib/callbacks.js',
     'lib/helpers.js',
     'lib/published_fields.js',

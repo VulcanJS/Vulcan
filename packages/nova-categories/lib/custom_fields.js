@@ -7,7 +7,8 @@ Posts.addField(
       type: [String],
       control: "checkboxgroup",
       optional: true,
-      editableBy: ["member", "admin"],
+      insertableIf: Users.is.memberOrAdmin,
+      editableIf: Users.is.ownerOrAdmin,
       autoform: {
         noselect: true,
         type: "bootstrap-category",

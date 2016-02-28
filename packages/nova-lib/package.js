@@ -72,6 +72,7 @@ Package.onUse(function (api) {
     // 'peerlibrary:reactive-publish@0.2.0',
     
     'utilities:smart-publications',
+    'utilities:smart-methods',
 
     'ecmascript',
     'react',

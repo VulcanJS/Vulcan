@@ -15,7 +15,7 @@ Comments.schema = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     The `_id` of the parent comment, if there is one
@@ -24,9 +24,10 @@ Comments.schema = new SimpleSchema({
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     optional: true,
-    public: true,
+    publish: true,
     autoform: {
       omit: true // never show this
     }
@@ -38,9 +39,10 @@ Comments.schema = new SimpleSchema({
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    editableBy: ["member", "admin"],
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     optional: true,
-    public: true,
+    publish: true,
     autoform: {
       omit: true // never show this
     }
@@ -51,7 +53,7 @@ Comments.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     optional: true,
-    public: false,
+    publish: false
   },
   /**
     The timestamp of the comment being posted. For now, comments are always created and posted at the same time
@@ -59,7 +61,7 @@ Comments.schema = new SimpleSchema({
   postedAt: {
     type: Date,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     The comment body (Markdown)
@@ -67,8 +69,9 @@ Comments.schema = new SimpleSchema({
   body: {
     type: String,
     max: 3000,
-    editableBy: ["member", "admin"],
-    public: true,
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
+    publish: true,
     autoform: {
       rows: 5,
       afFormGroup: {
@@ -82,7 +85,7 @@ Comments.schema = new SimpleSchema({
   htmlBody: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     The comment author's name
@@ -90,7 +93,7 @@ Comments.schema = new SimpleSchema({
   author: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     Whether the comment is inactive. Inactive comments' scores gets recalculated less often
@@ -98,7 +101,7 @@ Comments.schema = new SimpleSchema({
   inactive: {
     type: Boolean,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     The post's `_id`
@@ -106,10 +109,10 @@ Comments.schema = new SimpleSchema({
   postId: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    // editableBy: ["member", "admin"], // TODO: should users be able to set postId, but not modify it?
+    // editableIf: Users.is.ownerOrAdmin, // TODO: should users be able to set postId, but not modify it?
     autoform: {
       omit: true // never show this
     }
@@ -120,7 +123,7 @@ Comments.schema = new SimpleSchema({
   userId: {
     type: String,
     optional: true,
-    public: true,
+    publish: true,
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site. 
@@ -128,7 +131,7 @@ Comments.schema = new SimpleSchema({
   isDeleted: {
     type: Boolean,
     optional: true,
-    public: true,
+    publish: true,
   }
 });
 

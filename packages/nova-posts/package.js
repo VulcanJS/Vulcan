@@ -17,7 +17,7 @@ Package.onUse(function (api) {
     'nova:core@0.25.7',
     // 'nova:i18n@0.25.7',
     // 'nova:settings@0.25.7',
-    // 'nova:users@0.25.7',
+    'nova:users@0.25.7',
     // 'nova:comments@0.25.7'
   ]);
 

@@ -50,7 +50,7 @@ Posts.addField([
       type: Number,
       decimal: true,
       optional: true,
-      public: true,
+      publish: true,
     }
   },
   /**
@@ -62,7 +62,7 @@ Posts.addField([
       type: Number,
       decimal: true,
       optional: true,
-      public: true,
+      publish: true,
     }
   },
 ]);
@@ -81,7 +81,7 @@ Comments.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      public: true,
+      publish: true,
     }
   },
   /**
@@ -92,7 +92,7 @@ Comments.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      public: true,
+      publish: true,
     }
   },
   /**
@@ -103,7 +103,7 @@ Comments.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      public: true,
+      publish: true,
     }
   },
   /**
@@ -114,7 +114,7 @@ Comments.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      public: true,
+      publish: true,
     }
   },
   /**
@@ -126,7 +126,7 @@ Comments.addField([
       type: Number,
       decimal: true,
       optional: true,
-      public: true,
+      publish: true,
     }
   },
   /**
@@ -138,7 +138,7 @@ Comments.addField([
       type: Number,
       decimal: true,
       optional: true,
-      public: true,
+      publish: true,
     }
   },
 ]);

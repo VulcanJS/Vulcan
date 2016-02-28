@@ -4,12 +4,14 @@ Feeds.schema = new SimpleSchema({
   url: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
-    editableBy: ["admin"]
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin
   },
   userId: {
     type: String,
     label: 'feedUser',
-    editableBy: ["admin"],
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       instructions: 'Posts will be assigned to this user.',
       options: function () {
@@ -27,7 +29,8 @@ Feeds.schema = new SimpleSchema({
     type: [String],
     label: 'categories',
     optional: true,
-    editableBy: ["admin"],
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       instructions: 'Posts will be assigned to this category.',
       noselect: true,
