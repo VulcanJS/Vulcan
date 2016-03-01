@@ -35,10 +35,6 @@ packages_update.py
 
 versions
 
-.editorconfig
-.eslintrc
-.jshintrc
-
 get_file_list.sh
 packages_update.py
 publish_package.sh
