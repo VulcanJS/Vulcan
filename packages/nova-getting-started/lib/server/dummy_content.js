@@ -108,7 +108,7 @@ Meteor.methods({
 
 Meteor.startup(function () {
   // insert dummy content only if createDummyContent hasn't happened and there aren't any posts in the db
-  if (!Events.findOne({name: 'createDummyContent'}) && !Posts.find().count()) {
+  if (!Users.find().count() && !Events.findOne({name: 'createDummyContent'}) && !Posts.find().count()) {
     createDummyUsers();
     createDummyPosts();
     createDummyComments();
