@@ -13,7 +13,9 @@ Posts.methods = {};
  */
 Posts.methods.new = function (post) {
 
-  post = Telescope.callbacks.run("posts.new.sync", post, Meteor.user());
+  const currentUser = Meteor.users.findOne(post.userId);
+
+  post = Telescope.callbacks.run("posts.new.sync", post, currentUser);
 
   post._id = Posts.insert(post);
 
