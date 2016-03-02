@@ -15,13 +15,19 @@ const PostList = props => {
   } else if (!props.ready) {
     return (
       <div className="postList">
-        <PostsLoading/>
+        <PostViews />
+        <div className="post-list-content">
+          <PostsLoading/>
+        </div>
       </div>
     )
   } else {
     return (
       <div className="postList">
-        <NoPosts/>
+        <PostViews />
+        <div className="post-list-content">
+          <NoPosts/>
+        </div>
       </div>
     )  
   }
