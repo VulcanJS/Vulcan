@@ -30,7 +30,7 @@ Comments.methods.new = function (comment) {
   // ------------------------------ Callbacks ------------------------------ //
 
   // run all post submit server callbacks on comment object successively
-  comment = Telescope.callbacks.run("commentSubmit", comment);
+  comment = Telescope.callbacks.run("comments.new.sync", comment);
 
   // -------------------------------- Insert -------------------------------- //
 
