@@ -21,7 +21,7 @@ const PostItem = React.createClass({
 
   renderActions() {
 
-    ({ModalButton, ItemContainer, EditDocContainer} = Telescope.components);
+    ({ModalButton, DocumentContainer, EditDocContainer} = Telescope.components);
 
     const component = (
       <ModalButton label="Edit" className="button button--secondary">

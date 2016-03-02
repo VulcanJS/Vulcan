@@ -2,13 +2,13 @@ import SmartContainers from "meteor/utilities:react-list-container";
 import FormContainers from "meteor/utilities:react-form-containers";
 
 Telescope.registerComponent("AppContainer", require('./containers/AppContainer.jsx'));
-// Telescope.registerComponent("ItemContainer", require('./containers/ItemContainer.jsx'));
+// Telescope.registerComponent("DocumentContainer", require('./containers/DocumentContainer.jsx'));
 // Telescope.registerComponent("ListContainer", require('./containers/ListContainer.jsx'));
 
-Telescope.registerComponent("ItemContainer", SmartContainers.ItemContainer);
+Telescope.registerComponent("DocumentContainer", SmartContainers.DocumentContainer);
 Telescope.registerComponent("ListContainer", SmartContainers.ListContainer);
 
-// Telescope.registerComponent("ItemContainer", ItemContainer);
+// Telescope.registerComponent("DocumentContainer", DocumentContainer);
 // Telescope.registerComponent("ListContainer", ListContainer);
 
 Telescope.registerComponent("FlashContainer", require('./containers/FlashContainer.jsx'));

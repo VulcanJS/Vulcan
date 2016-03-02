@@ -26,73 +26,73 @@ FlowRouter.route('/', {
 FlowRouter.route('/posts/:_id', {
   name: 'posts.single',
   action(params, queryParams) {
-    ({AppContainer, ItemContainer, Post} = Telescope.components);
+    ({AppContainer, DocumentContainer, Post} = Telescope.components);
     mount(AppContainer, {content: 
-      <ItemContainer 
+      <DocumentContainer 
         collection={Posts} 
         publication="posts.single" 
         selector={params}
         terms={params}
         joins={Posts.getJoins()}
-      ><Post/></ItemContainer>});
+      ><Post/></DocumentContainer>});
   }
 });
 
 // FlowRouter.route('/posts/:_id/edit', {
 //   name: 'posts.edit',
 //   action(params, queryParams) {
-//     ({AppContainer, ItemContainer} = Telescope.components);
-//     mount(AppContainer, {content: <ItemContainer
+//     ({AppContainer, DocumentContainer} = Telescope.components);
+//     mount(AppContainer, {content: <DocumentContainer
 //       collection={Posts} 
 //       publication="posts.single" 
 //       selector={{_id: params._id}}
 //       terms={params}
 //       component={PostEdit}
-//     ><PostEdit/></ItemContainer>});
+//     ><PostEdit/></DocumentContainer>});
 //   }
 // });
 
 FlowRouter.route('/users/:slug', {
   name: 'users.single',
   action(params, queryParams) {
-    ({AppContainer, ItemContainer, UsersSingle} = Telescope.components);
+    ({AppContainer, DocumentContainer, UsersSingle} = Telescope.components);
     mount(AppContainer, {content: 
-      <ItemContainer 
+      <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={{'telescope.slug': params.slug}}
         terms={{'telescope.slug': params.slug}}
-      ><UsersSingle/></ItemContainer>});
+      ><UsersSingle/></DocumentContainer>});
   }
 });
 
 FlowRouter.route('/account', {
   name: 'account',
   action(params, queryParams) {
-    ({AppContainer, ItemContainer, UsersEdit} = Telescope.components);
+    ({AppContainer, DocumentContainer, UsersEdit} = Telescope.components);
     mount(AppContainer, {content: 
-      <ItemContainer 
+      <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={{_id: Meteor.userId()}} 
         terms={{_id: Meteor.userId()}} 
         component={UsersEdit}
-      ><UsersEdit/></ItemContainer>});
+      ><UsersEdit/></DocumentContainer>});
   }
 });
 
 FlowRouter.route('/users/:slug/edit', {
   name: 'users.edit',
   action(params, queryParams) {
-    ({AppContainer, ItemContainer, UsersEdit} = Telescope.components);
+    ({AppContainer, DocumentContainer, UsersEdit} = Telescope.components);
     mount(AppContainer, {content: 
-      <ItemContainer 
+      <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={params} 
         terms={params} 
         component={UsersEdit}
-      ><UsersEdit/></ItemContainer>});
+      ><UsersEdit/></DocumentContainer>});
   }
 });
 

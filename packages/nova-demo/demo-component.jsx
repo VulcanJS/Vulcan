@@ -34,6 +34,7 @@ MoviesWrapper = React.createClass({
             terms={{options: {sort: {createdAt: -1}}}}
             options={{sort: {createdAt: -1}}}
             joins={Movies.getJoins()}
+            limit={5}
           >
             <MoviesList/>
           </ListContainer>
