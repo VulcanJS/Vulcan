@@ -17,7 +17,7 @@ Package.onUse(function (api) {
     'session',
     'tracker',
     'service-configuration',
-    'accounts-ui',
+//    'accounts-ui',
     'accounts-base',
     'accounts-password',
     'accounts-twitter',

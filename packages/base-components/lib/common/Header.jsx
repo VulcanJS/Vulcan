@@ -19,9 +19,7 @@ const Header = props => {
         <ListContainer collection={Categories} limit={0}><CategoriesList/></ListContainer>
       </div>
       
-      <NoSSR onSSR={<p>Loading…</p>}>
-        <LogInButtons />
-      </NoSSR>
+      <LogInButtons />
       
       {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
 
