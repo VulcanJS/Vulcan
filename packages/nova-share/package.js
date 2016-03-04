@@ -9,17 +9,16 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['nova:core@0.25.7']);
+  api.use([
+    'nova:core@0.25.7',
+    'fourseven:scss'
+  ]);
 
   api.addFiles([
-    'lib/share.js'
+    'lib/social_share.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/post_share.html',
-    'lib/client/post_share.js',
-    'lib/client/post_share.scss'
-  ], ['client']);
-
-  // api.export();
+    'lib/client/social_share.scss'
+  ], ['client'], {isImport:true});
 });
