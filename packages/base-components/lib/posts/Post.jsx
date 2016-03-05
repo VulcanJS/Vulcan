@@ -1,6 +1,6 @@
 const Post = (props) => {
   
-  ({ListContainer, CommentList, CommentNew, PostCategories} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare} = Telescope.components);
 
   const post = props.document;
   const htmlBody = {__html: post.htmlBody};
@@ -9,6 +9,7 @@ const Post = (props) => {
     <div className="post">
 
       <h3>{post.title}</h3>
+      <SocialShare url={ Posts.getLink(post) } title={ post.title }/>
       <p>{post.commentCount} comments</p>
       <p>{moment(post.postedAt).fromNow()}</p>
       {post.categoriesArray ? <PostCategories categories={post.categoriesArray} /> : ""}

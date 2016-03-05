@@ -47,6 +47,8 @@ ecmascript-runtime@0.2.7-beta.11
 ejson@1.0.8-beta.11
 email@1.0.9-beta.11
 facebook@1.2.3-beta.11
+fortawesome:fontawesome@4.5.0
+fourseven:scss@0.9.6
 geojson-utils@1.0.5-beta.11
 hot-code-push@1.0.1-beta.11
 html-tools@1.0.6-beta.11
@@ -101,6 +103,7 @@ nova:notifications@0.25.7
 nova:posts@0.25.7
 nova:search@0.25.7
 nova:settings@0.25.7
+nova:share@0.25.7
 nova:users@0.25.7
 npm-bcrypt@0.7.8_2
 npm-mongo@1.4.40-beta.11

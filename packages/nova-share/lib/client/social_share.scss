@@ -11,15 +11,11 @@ $small-break: 600px;
   }
 }
 
-.post-share{
+.social-share{
   position: relative;
   color: #b3c1c6;
   order: 8;
-  // temporary
-  display: none;
-  @include small{
-    display: none;
-  } 
+  width: 40px;
   .icon-share{
     &:before{
       font-size: 24px;
@@ -35,20 +31,21 @@ $small-break: 600px;
   z-index: 10000;
   background: rgba(0,0,0,0.4);
   border-radius: 3px;
-  width: 185px;
+  width: auto;
   padding: 10px;
   line-height: 1;
   @include small {
-    left: 50% !important;
+    left: -50% !important;
     top: 40px !important;
-    margin-left: -92px;
+    
   }
   @include medium-large {
-    left: -200px;
-    top: -8px;
+    left: 40px;
+    top: 0;
   }
   .icon {
     color: white;
+    width: 100%;
   }
   a {
     display: inline-block;
@@ -88,8 +85,9 @@ $small-break: 600px;
       margin-left: -11px;
     }
     @include medium-large {
-      border-left-color: rgba(0,0,0,0.4);
-      top: 20px;
+      border-right-color: rgba(0,0,0,0.4);
+      top: 5px;
+      left: -20px;
       margin-top: -3px;
     }
   }

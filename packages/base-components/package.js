@@ -12,11 +12,12 @@ Package.onUse(function (api) {
   api.use([
 
     // Nova packages
-    
+
     'nova:core@0.25.7',
     'nova:posts@0.25.7',
     'nova:users@0.25.7',
     'nova:comments@0.25.7',
+    'nova:share@0.25.7',
 
     // third-party packages
 
