@@ -9,8 +9,10 @@ aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.1-beta.11
-alt:react-accounts-ui@1.1.0
-alt:react-accounts-unstyled@1.1.0
+alt:react@1.0.1
+alt:react-accounts-ui@1.2.0
+alt:react-accounts-unstyled@1.2.0
+alt:react-npm@1.0.0
 arillo:flow-router-helpers@0.5.1
 autoupdate@1.2.5-beta.11
 babel-compiler@6.4.0-beta.11
