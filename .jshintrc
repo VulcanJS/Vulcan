@@ -145,6 +145,7 @@
     "SubsManager": false,
     "SyncedCron": false,
     "TAPi18n": false,
+    "FlowRouter": false,
 
     // Telescope collections
     "Categories": true,
@@ -184,5 +185,6 @@
     "Telescope": true,
     "templates": true,
     "themeSettings": true
-  }
+  },
+  "esnext": true
 }

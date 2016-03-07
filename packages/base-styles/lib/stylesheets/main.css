@@ -1,0 +1,62 @@
+body{
+  background: #eee;
+}
+
+.wrapper{
+  padding: 15px;
+}
+
+.main{
+  background: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px #ccc solid;
+}
+
+
+.post-views, .logo, .nav, .alt-accounts-log-in-buttons, .post-categories, .post-commenters{
+  margin-bottom: 15px;
+}
+
+.post-views ul, .categories ul, .post-categories ul, .post-commenters ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-views li, .categories li, .post-categories li, .post-commenters li{
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #ddd;
+  padding: 3px 5px;
+  background: #efefef;
+}
+
+.post-list-content{
+  border-top: 2px solid #eee;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.post-item{
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+.comment-node{
+  border-left: 10px #efefef solid;
+  padding-left: 10px;
+}
+
+.comment-item{
+  margin-bottom: 15px;
+}
+
+.comment-body{
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.new-post-button{
+  margin-bottom: 15px;
+}
