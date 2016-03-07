@@ -1,10 +1,12 @@
 const Layout = props => {
 
+  const HeadTags = Telescope.getComponent("HeadTags");
   const Header = Telescope.getComponent("Header");
   const Footer = Telescope.getComponent("Footer");
 
   return (
     <div className="wrapper" id="wrapper">
+      <HeadTags/>
       <Header {...props}/>
       <div className="main">
         {props.children}
