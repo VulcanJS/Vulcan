@@ -1,1 +1,0 @@
-Telescope messages package, used internally. 

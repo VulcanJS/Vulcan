@@ -1,1 +1,0 @@
-Telescope sitemap package, used internally. 
