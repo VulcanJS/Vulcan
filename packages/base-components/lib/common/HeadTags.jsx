@@ -16,7 +16,7 @@ const HeadTags = () => (
 			{name: "description", content: settings.tagline},
 			// facebook
 			{property: "og:type", content: "article"},
-			{property: "og:url", content: Meteor.absoluteUrl()},
+			{property: "og:url", content: Telescope.utils.getSiteUrl()},
 			{property: "og:image", content: settings.logoUrl},
 			{property: "og:title", content: settings.siteTitle},
 			{property: "og:description", content: settings.tagline},
@@ -27,7 +27,7 @@ const HeadTags = () => (
 			{name: "twitter:description", content: settings.tagline}
 		]}
 		link={[
-			{rel: "canonical", href: Meteor.absoluteUrl()},
+			{rel: "canonical", href: Telescope.utils.getSiteUrl()},
 			{rel: "shortcut icon", href: settings.favicon}
 		]}
 	/>
