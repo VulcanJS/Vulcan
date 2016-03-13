@@ -49,13 +49,27 @@ Telescope.allowCheck = function (collection, userId, document, fieldNames, modif
   var schema = collection.simpleSchema();
   var user = Meteor.users.findOne(userId);
   var allowedFields = schema.getEditableFields(user);
+  var blackboxFields = schema.getBlackboxFields();
+  var allowedBlackboxes = _.intersection(blackboxFields, allowedFields);
   var fields = [];
 
   // fieldNames only contains top-level fields, so loop over modifier to get real list of fields
   _.each(modifier, function (operation) {
     fields = fields.concat(_.keys(operation));
   });
-
+    
+  // filter out fields with proprties under allowed blackbox fields
+  fields = _.filter(fields, function(fieldName) {
+      var parentBlackbox = _.find(allowedBlackboxes, function(blackbox) {
+          
+          // return if blackbox name is a prefix for the fieldName
+          return fieldName !== blackbox && fieldName.indexOf(blackbox) === 0;
+      });
+      
+      // filter out if the field has a parent blackbox
+      return !parentBlackbox;
+  });
+    
   // allow update only if:
   // 1. user has rights to edit the document
   // 2. there is no fields in fieldNames that are not also in allowedFields
@@ -107,4 +121,19 @@ SimpleSchema.prototype.getProfileFields = function () {
     return !!field.profile;
   });
   return fields;
+};
+
+/**
+* @method SimpleSchema.getBlackboxFields
+* Get a list of all fields marked as blackbox for a given schema
+*/
+SimpleSchema.prototype.getBlackboxFields = function() {
+  var schema = this._schema;
+    
+    var fields = _.filter(_.keys(schema), function (fieldName) {
+      var field = schema[fieldName];
+      return !!field.blackbox;
+    });
+    
+    return fields;  
 };
