@@ -73,13 +73,14 @@ Users.helpers({canViewPost: function () {return Users.can.viewPost(this, post);}
  * @param {Object} user
  */
 Users.can.post = function (user) {
+
   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
   if (!user) { // no account
     return false;
   } 
 
-  if (user._isAdmin()) { //admin
+  if (Users.is.admin(user)) { //admin
     return true;
   } 
 

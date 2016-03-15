@@ -77,7 +77,7 @@ FlowRouter.route('/account', {
         selector={{_id: Meteor.userId()}} 
         terms={{_id: Meteor.userId()}} 
         component={UsersEdit}
-      ><UsersEdit/></DocumentContainer>});
+      />});
   }
 });
 
@@ -92,7 +92,7 @@ FlowRouter.route('/users/:slug/edit', {
         selector={params} 
         terms={params} 
         component={UsersEdit}
-      ><UsersEdit/></DocumentContainer>});
+      />});
   }
 });
 
