@@ -19,7 +19,8 @@ FlowRouter.route('/', {
         options={options}
         terms={queryParams} 
         joins={Posts.getJoins()}
-      ><PostList/></ListContainer>})
+        component={PostList}
+      />})
   }
 });
 
@@ -34,7 +35,8 @@ FlowRouter.route('/posts/:_id', {
         selector={params}
         terms={params}
         joins={Posts.getJoins()}
-      ><Post/></DocumentContainer>});
+        component={Post}
+      />});
   }
 });
 
@@ -62,7 +64,8 @@ FlowRouter.route('/users/:slug', {
         publication="users.single" 
         selector={{'telescope.slug': params.slug}}
         terms={{'telescope.slug': params.slug}}
-      ><UsersSingle/></DocumentContainer>});
+        component={UsersSingle}
+      />});
   }
 });
 
