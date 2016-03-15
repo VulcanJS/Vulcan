@@ -1,8 +1,8 @@
 const UsersSingle = React.createClass({
   
   propTypes: {
-    document: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired
+    document: React.PropTypes.object, // Note: should be required
+    currentUser: React.PropTypes.object // Note: should be required
   },
 
   render() {

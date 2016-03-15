@@ -67,7 +67,7 @@ Package.onUse(function (api) {
     // 'seba:minifiers-autoprefixer@0.0.1',
     'meteorhacks:unblock@1.1.0',
     // 'kadira:flow-router@2.10.1',
-    'kadira:flow-router-ssr@3.11.0',
+    'kadira:flow-router-ssr@3.11.2',
     'arillo:flow-router-helpers@0.5.0',
     // 'peerlibrary:reactive-publish@0.2.0',
     
