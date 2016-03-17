@@ -6,7 +6,7 @@ const UsersEdit = ({document, currentUser}) => {
   ({CanEditUser, EditDocContainer} = Telescope.components);
 
   return (
-    <CanEditUser user={this.props.currentUser} userToEdit={user}>
+    <CanEditUser user={currentUser} userToEdit={user}>
       <EditDocContainer collection={Meteor.users} document={user} label={label} methodName="users.edit"/>
     </CanEditUser>
   )
