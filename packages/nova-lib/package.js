@@ -52,7 +52,7 @@ Package.onUse(function (api) {
     'momentjs:moment@2.11.2',
     // 'sacha:spin@2.3.1',
     // 'aslagle:reactive-table@0.8.24',
-    // 'utilities:avatar@0.9.2',
+    'utilities:avatar@0.9.2',
     'fortawesome:fontawesome@4.5.0',
     // 'ccan:cssreset@1.0.0',
     'djedi:sanitize-html@1.11.2',

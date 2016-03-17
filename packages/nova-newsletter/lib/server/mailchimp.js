@@ -1,10 +1,24 @@
+import Email from 'meteor/nova:email';
+import Campaign from "./campaign.js";
+
+Campaign.scheduleNextWithMailChimp = function (isTest) {
+  isTest = !! isTest;
+  var posts = Campaign.getPosts(Telescope.Telescope.settings.get('postsPerNewsletter', defaultPosts));
+  if(!!posts.length){
+    return Campaign.scheduleWithMailChimp(Campaign.build(posts), isTest);
+  }else{
+    var result = 'No posts to schedule today…';
+    return result;
+  }
+};
+
 var htmlToText = Npm.require('html-to-text');
 
-scheduleCampaign = function (campaign, isTest) {
-  var isTest = typeof isTest === 'undefined' ? false : isTest;
+Campaign.scheduleWithMailChimp = function (campaign, isTest) {
+  isTest = typeof isTest === 'undefined' ? false : isTest;
 
-  var apiKey = Settings.get('mailChimpAPIKey');
-  var listId = Settings.get('mailChimpListId');
+  var apiKey = Telescope.settings.get('mailChimpAPIKey');
+  var listId = Telescope.settings.get('mailChimpListId');
 
   if(!!apiKey && !!listId){
 
@@ -19,14 +33,14 @@ scheduleCampaign = function (campaign, isTest) {
 
       var api = new MailChimp(apiKey);
       var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = Settings.get('defaultEmail');
+      var defaultEmail = Telescope.settings.get('defaultEmail');
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
           subject: subject,
           from_email: defaultEmail,
-          from_name: Settings.get('title')+ ' Top Posts',
+          from_name: Telescope.settings.get('title')+ ' Top Posts',
         },
         content: {
           html: campaign.html,
@@ -60,12 +74,12 @@ scheduleCampaign = function (campaign, isTest) {
         var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
-      var confirmationHtml = Telescope.email.getTemplate('digestConfirmation')({
+      var confirmationHtml = Email.getTemplate('digestConfirmation')({
         time: scheduledTime,
         newsletterLink: mailchimpCampaign.archive_url,
         subject: subject
       });
-      Telescope.email.send(defaultEmail, 'Newsletter scheduled', Telescope.email.buildTemplate(confirmationHtml));
+      Email.send(defaultEmail, 'Newsletter scheduled', Email.buildTemplate(confirmationHtml));
 
     } catch (error) {
       console.log(error);
@@ -74,7 +88,7 @@ scheduleCampaign = function (campaign, isTest) {
   }
 };
 
-addToMailChimpList = function(userOrEmail, confirm, done){
+const addToMailChimpList = function(userOrEmail, confirm, done){
 
   var user, email;
 
@@ -91,8 +105,8 @@ addToMailChimpList = function(userOrEmail, confirm, done){
       throw 'User must have an email address';
   }
 
-  var apiKey = Settings.get('mailChimpAPIKey');
-  var listId = Settings.get('mailChimpListId');
+  var apiKey = Telescope.settings.get('mailChimpAPIKey');
+  var listId = Telescope.settings.get('mailChimpListId');
 
   // add a user to a MailChimp list.
   // called when a new user is created, or when an existing user fills in their email
@@ -128,6 +142,14 @@ addToMailChimpList = function(userOrEmail, confirm, done){
 };
 
 Meteor.methods({
+  sendCampaign: function () {
+    if(Users.is.adminById(this.userId))
+      return Campaign.scheduleNextWithMailChimp(false);
+  },
+  testCampaign: function () {
+    if(Users.is.adminById(this.userId))
+      return Campaign.scheduleNextWithMailChimp(true);
+  },
   addCurrentUserToMailChimpList: function(){
     var currentUser = Meteor.users.findOne(this.userId);
     try {

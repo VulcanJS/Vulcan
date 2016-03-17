@@ -23,9 +23,11 @@ Package.onUse(function (api) {
   //   'package-tap.i18n'
   // ], ['client', 'server']);
 
-  api.addFiles([
-    'lib/server/email.js'
-  ], ['server']);
+  // api.addFiles([
+  //   'lib/server/email.js'
+  // ], ['server']);
+
+  api.mainModule('lib/server/email.js', ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
   // var languagesPaths = languages.map(function (language) {

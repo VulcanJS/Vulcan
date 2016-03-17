@@ -1,7 +1,11 @@
-defaultFrequency = 7;
-defaultPosts = 5;
+import Email from 'meteor/nova:email';
 
-getCampaignPosts = function (postsCount) {
+const defaultFrequency = 7;
+const defaultPosts = 5;
+
+const Campaign = {};
+
+Campaign.getPosts = function (postsCount) {
 
   // look for last scheduled campaign in the database
   var lastCampaign = SyncedCron._collection.findOne({name: 'scheduleNewsletter'}, {sort: {finishedAt: -1}, limit: 1});
@@ -12,13 +16,15 @@ getCampaignPosts = function (postsCount) {
 
   var params = Posts.parameters.get({
     view: 'campaign',
-    limit: postsCount,
-    after: after
+    after: after,
+    options: {
+      limit: postsCount,
+    }
   });
   return Posts.find(params.find, params.options).fetch();
 };
 
-buildCampaign = function (postsArray) {
+Campaign.build = function (postsArray) {
   var postsHTML = '', subject = '';
 
   // 1. Iterate through posts and pass each of them through a handlebars template
@@ -50,7 +56,8 @@ buildCampaign = function (postsArray) {
       properties.body = Telescope.utils.trimHTML(post.htmlBody, 20);
     }
 
-    if (post.commentCount > 0)
+    if (post.commentCount > 0) {
+
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
         var user = Meteor.users.findOne(comment.userId);
 
@@ -66,6 +73,8 @@ buildCampaign = function (postsArray) {
         return comment;
       }}).fetch();
 
+    }
+
     if(post.url) {
       properties.domain = Telescope.utils.getDomain(post.url);
     }
@@ -74,46 +83,25 @@ buildCampaign = function (postsArray) {
       properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
     }
 
-    postsHTML += Telescope.email.getTemplate('postItem')(properties);
+    postsHTML += Email.getTemplate('postItem')(properties);
   });
 
   // 2. Wrap posts HTML in digest template
-  var digestHTML = Telescope.email.getTemplate('newsletter')({
+  var digestHTML = Email.getTemplate('newsletter')({
     siteName: Telescope.settings.get('title'),
     date: moment().format("dddd, MMMM Do YYYY"),
     content: postsHTML
   });
 
   // 3. wrap digest HTML in email wrapper template
-  var emailHTML = Telescope.email.buildTemplate(digestHTML);
+  var emailHTML = Email.buildTemplate(digestHTML);
 
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
     subject: Telescope.utils.trimWords(subject, 15),
     html: emailHTML
   };
-
   return campaign;
 };
 
-scheduleNextCampaign = function (isTest) {
-  isTest = !! isTest;
-  var posts = getCampaignPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
-  if(!!posts.length){
-    return scheduleCampaign(buildCampaign(posts), isTest);
-  }else{
-    var result = 'No posts to schedule today…';
-    return result;
-  }
-};
-
-Meteor.methods({
-  sendCampaign: function () {
-    if(Users.is.adminById(this.userId))
-      return scheduleNextCampaign(false);
-  },
-  testCampaign: function () {
-    if(Users.is.adminById(this.userId))
-      return scheduleNextCampaign(true);
-  }
-});
+export default Campaign;
