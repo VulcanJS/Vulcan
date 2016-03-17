@@ -1,7 +1,7 @@
 import NoSSR from 'react-no-ssr';
 
 
-const Header = props => {
+const Header = ({currentUser}) => {
   
   ({Logo, ListContainer, CategoriesList, FlashContainer, ModalButton, NewDocContainer, CanCreatePost} = Telescope.components);
 
@@ -21,9 +21,9 @@ const Header = props => {
       
       <LogInButtons />
       
-      {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
+      {currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
 
-      <CanCreatePost user={props.currentUser}>
+      <CanCreatePost user={currentUser}>
         <ModalButton label="New Post" className="button button--primary">
           <NewDocContainer collection={Posts} label="New Post" methodName="posts.new" callback={(post)=>{FlowRouter.go('posts.single', post);}}/>
         </ModalButton>

@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -11,29 +13,29 @@ const customStyles = {
   }
 };
 
-const ModalButton = React.createClass({
+class ModalButton extends Component {
 
-  propTypes: {
-    label: React.PropTypes.string.isRequired,
-    className: React.PropTypes.string
-  },
+  constructor() {
+    super();
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      modalIsOpen: false
+    };
+  }
 
-  getInitialState: function() {
-    return { modalIsOpen: false };
-  },
-
-  openModal: function(event) {
+  openModal(event) {
     event.preventDefault();
     this.setState({modalIsOpen: true});
-  },
+  }
 
-  closeModal: function() {
+  closeModal(event) {
+    event.preventDefault();
     this.setState({modalIsOpen: false});
-  },
+  }
 
   render() {
     
-    // ({PostNewContainer} = Telescope.components);
     const Component = this.props.component;
 
     // see http://stackoverflow.com/a/32371612/649299
@@ -69,7 +71,12 @@ const ModalButton = React.createClass({
       </div>
     )
   }
-});
+};
+
+ModalButton.propTypes = {
+  label: React.PropTypes.string.isRequired,
+  className: React.PropTypes.string
+}
 
 module.exports = ModalButton;
 export default ModalButton;

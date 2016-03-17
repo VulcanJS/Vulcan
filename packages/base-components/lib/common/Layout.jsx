@@ -1,7 +1,6 @@
 const Layout = props => {
 
-  const Header = Telescope.getComponent("Header");
-  const Footer = Telescope.getComponent("Footer");
+  ({Header, Footer} = Telescope.components);
 
   return (
     <div className="wrapper" id="wrapper">

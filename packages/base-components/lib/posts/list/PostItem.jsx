@@ -1,23 +1,20 @@
-const PostItem = React.createClass({
-  
-  propTypes: {
-    post: React.PropTypes.object.isRequired, // the current comment
-    currentUser: React.PropTypes.object, // the current user
-  },
+import React, { PropTypes, Component } from 'react';
+
+class PostItem extends Component {
 
   renderCategories() {
 
     ({PostCategories} = Telescope.components);
 
     return this.props.post.categoriesArray ? <PostCategories categories={this.props.post.categoriesArray} /> : "";
-  },
+  }
 
   renderCommenters() {
 
     ({PostCommenters} = Telescope.components);
 
     return this.props.post.commentersArray ? <PostCommenters commenters={this.props.post.commentersArray}/> : "";
-  },
+  }
 
   renderActions() {
 
@@ -34,7 +31,7 @@ const PostItem = React.createClass({
         {Users.can.edit(this.props.currentUser, this.props.post) ? component : ""}
       </div>
     )
-  },
+  }
   
   render() {
 
@@ -53,6 +50,11 @@ const PostItem = React.createClass({
       </div>
     )
   }
-});
+};
+  
+PostItem.propTypes = {
+  post: React.PropTypes.object.isRequired, // the current comment
+  currentUser: React.PropTypes.object, // the current user
+}
 
 module.exports = PostItem;

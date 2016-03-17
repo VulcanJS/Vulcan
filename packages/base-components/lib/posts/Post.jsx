@@ -1,8 +1,8 @@
-const Post = (props) => {
+const Post = ({document}) => {
   
   ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare} = Telescope.components);
 
-  const post = props.document;
+  const post = document;
   const htmlBody = {__html: post.htmlBody};
 
   return (

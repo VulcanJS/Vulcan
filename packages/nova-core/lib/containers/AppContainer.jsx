@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const AppContainer = React.createClass({
 
   mixins: [ReactMeteorData],

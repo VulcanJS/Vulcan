@@ -1,18 +1,18 @@
-const PostList = props => {
+const PostList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
 
   ({PostItem, LoadMore, PostsLoading, NoPosts, NoMorePosts, PostViews} = Telescope.components);
 
-  if (!!props.results.length) {
+  if (!!results.length) {
     return (
       <div className="postList">
         <PostViews />
         <div className="post-list-content">
-          {props.results.map(post => <PostItem post={post} currentUser={props.currentUser} key={post._id}/>)}
+          {results.map(post => <PostItem post={post} currentUser={currentUser} key={post._id}/>)}
         </div>
-        {props.hasMore ? (props.ready ? <LoadMore {...props}/> : <PostsLoading/>) : <NoMorePosts/>}
+        {hasMore ? (ready ? <LoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <PostsLoading/>) : <NoMorePosts/>}
       </div>
     )
-  } else if (!props.ready) {
+  } else if (!ready) {
     return (
       <div className="postList">
         <PostViews />
