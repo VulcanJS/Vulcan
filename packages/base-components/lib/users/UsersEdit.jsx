@@ -1,6 +1,6 @@
 const UsersEdit = ({document, currentUser}) => {
 
-  const user = this.props.document;
+  const user = document;
   const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
   ({CanEditUser, EditDocContainer} = Telescope.components);
