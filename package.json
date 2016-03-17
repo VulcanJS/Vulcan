@@ -4,7 +4,9 @@
   "dependencies": {
     "formsy-react": "^0.17.0",
     "formsy-react-components": "^0.6.6",
+    "classnames": "^2.2.3",
     "react": "^0.14.6",
+    "react-addons-pure-render-mixin": "^0.14.7",
     "react-dom": "^0.14.6",
     "react-mounter": "^1.1.0",
     "react-no-ssr": "^1.0.1",

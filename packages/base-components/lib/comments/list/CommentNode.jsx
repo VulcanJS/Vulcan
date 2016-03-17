@@ -1,9 +1,6 @@
-const CommentNode = React.createClass({
+import React, { PropTypes, Component } from 'react';
 
-  propTypes: {
-    comment: React.PropTypes.object.isRequired, // the current comment
-    currentUser: React.PropTypes.object, // the current user
-  },
+class CommentNode extends Component {
 
   renderComment(comment) {
     
@@ -12,18 +9,15 @@ const CommentNode = React.createClass({
     return (
       <CommentItem comment={comment} key={comment._id} currentUser={this.props.currentUser}/>
     )
-  },
+  }
 
   renderChildren(children) {
-
-    // ({CommentNode} = Telescope.components);
-
     return (
       <div className="comment-children">
         {children.map(comment => <CommentNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
       </div>
     )
-  },
+  }
 
   render() {
 
@@ -38,6 +32,11 @@ const CommentNode = React.createClass({
     )
   }
 
-});
+};
+
+CommentNode.propTypes = {
+  comment: React.PropTypes.object.isRequired, // the current comment
+  currentUser: React.PropTypes.object, // the current user
+}
 
 module.exports = CommentNode;

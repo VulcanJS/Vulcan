@@ -1,18 +1,16 @@
+import React, { PropTypes, Component } from 'react';
+
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 
 const Textarea = FRC.Textarea;
 
-const CommentNew = React.createClass({
+class CommentNew extends Component {
 
-  propTypes: {
-    postId: React.PropTypes.string.isRequired,
-    submitCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
-    type: React.PropTypes.string, // "comment" or "reply"
-    parentComment: React.PropTypes.object, // if reply, the comment being replied to
-    parentCommentId: React.PropTypes.string, // if reply
-    topLevelCommentId: React.PropTypes.string // if reply
-  },
+  constructor() {
+    super();
+    this.submitComment = this.submitComment.bind(this);
+  }
 
   submitComment(data) {
     
@@ -44,7 +42,7 @@ const CommentNew = React.createClass({
         // component.refs.commentTextarea.reset(); //TODO: why are refs not working?
       }
     });
-  },
+  }
 
   render() {
     return (
@@ -61,6 +59,15 @@ const CommentNew = React.createClass({
     )
   }
 
-});
+};
+
+CommentNew.propTypes = {
+  postId: React.PropTypes.string.isRequired,
+  submitCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
+  type: React.PropTypes.string, // "comment" or "reply"
+  parentComment: React.PropTypes.object, // if reply, the comment being replied to
+  parentCommentId: React.PropTypes.string, // if reply
+  topLevelCommentId: React.PropTypes.string // if reply
+}
 
 module.exports = CommentNew;

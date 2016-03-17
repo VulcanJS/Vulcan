@@ -1,44 +1,43 @@
-const CommentItem = React.createClass({
+import React, { PropTypes, Component } from 'react';
 
-  propTypes: {
-    comment: React.PropTypes.object.isRequired, // the current comment
-    currentUser: React.PropTypes.object, // the current user
-  },
+class CommentItem extends Component{
 
-  getInitialState() {
-    return {
+  constructor() {
+    super();
+    ['showReply', 'cancelReply', 'replyCallback', 'showEdit', 'cancelEdit', 'editCallback'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
+    this.state = {
       showReply: false,
       showEdit: false
     };
-  },
+  }
 
   showReply(event) {
     event.preventDefault();
     this.setState({showReply: true});
-  },
+  }
 
   cancelReply(event) {
     event.preventDefault();
     this.setState({showReply: false});
-  },
+  }
 
   replyCallback() {
     this.setState({showReply: false});
-  },
+  }
 
   showEdit(event) {
     event.preventDefault();
     this.setState({showEdit: true});
-  },
+  }
   
   cancelEdit(event) {
     event.preventDefault();
     this.setState({showEdit: false});
-  },
+  }
 
   editCallback() {
     this.setState({showEdit: false});
-  },
+  }
 
   renderComment() {
     const htmlBody = {__html: this.props.comment.htmlBody};
@@ -46,7 +45,7 @@ const CommentItem = React.createClass({
     return (
       <div dangerouslySetInnerHTML={htmlBody}></div>
     )
-  },
+  }
 
   renderReply() {
     
@@ -58,7 +57,7 @@ const CommentItem = React.createClass({
         <a href="#" onClick={this.cancelReply} className="button button--secondary">Cancel</a>
       </div>
     )
-  },
+  }
 
   renderEdit() {
 
@@ -67,7 +66,7 @@ const CommentItem = React.createClass({
     return (
       <CommentEdit comment={this.props.comment} submitCallback={this.editCallback} cancelCallback={this.cancelEdit}/>
     )
-  },
+  }
 
   renderActions() {
     return (
@@ -76,7 +75,7 @@ const CommentItem = React.createClass({
         {Users.can.edit(this.props.currentUser, this.props.comment) ? <li><a href="#" onClick={this.showEdit}>Edit</a></li> : ""}
       </ul>
     )
-  },
+  }
 
   render() {
     return (
@@ -90,6 +89,11 @@ const CommentItem = React.createClass({
     )
   }
 
-});
+}
+
+CommentItem.propTypes = {
+  comment: React.PropTypes.object.isRequired, // the current comment
+  currentUser: React.PropTypes.object, // the current user
+}
 
 module.exports = CommentItem;
