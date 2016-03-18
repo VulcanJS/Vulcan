@@ -31,6 +31,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/cron.js',
+    'lib/server/methods.js'
   ], ['server']);
 
   api.mainModule(

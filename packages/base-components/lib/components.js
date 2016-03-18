@@ -6,6 +6,7 @@ Telescope.registerComponent("Layout", require('./common/Layout.jsx'));
 Telescope.registerComponent("Logo", require('./common/Logo.jsx'));
 Telescope.registerComponent("Flash", require('./common/Flash.jsx'));
 Telescope.registerComponent("FlashMessages", require('./common/FlashMessages.jsx'));
+Telescope.registerComponent("NewsletterForm", require('./common/NewsletterForm.jsx'));
 
 // posts
 

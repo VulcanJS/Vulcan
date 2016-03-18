@@ -88,7 +88,12 @@ Campaign.scheduleWithMailChimp = function (campaign, isTest) {
   }
 };
 
-const addToMailChimpList = function(userOrEmail, confirm, done){
+const MailChimpList = {};
+
+MailChimpList.add = function(userOrEmail, confirm, done){
+
+  var apiKey = Telescope.settings.get('mailChimpAPIKey');
+  var listId = Telescope.settings.get('mailChimpListId');
 
   var user, email;
 
@@ -104,9 +109,6 @@ const addToMailChimpList = function(userOrEmail, confirm, done){
     if (!email)
       throw 'User must have an email address';
   }
-
-  var apiKey = Telescope.settings.get('mailChimpAPIKey');
-  var listId = Telescope.settings.get('mailChimpListId');
 
   // add a user to a MailChimp list.
   // called when a new user is created, or when an existing user fills in their email
@@ -128,7 +130,7 @@ const addToMailChimpList = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if (!!user) {
-        Users.setSetting(user, 'newsletter.subscribeToNewsletter', true);
+        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
       }
 
       console.log("// User subscribed");
@@ -138,31 +140,9 @@ const addToMailChimpList = function(userOrEmail, confirm, done){
     } catch (error) {
       throw new Meteor.Error("subscription-failed", error.message);
     }
+  } else {
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
   }
 };
 
-Meteor.methods({
-  sendCampaign: function () {
-    if(Users.is.adminById(this.userId))
-      return Campaign.scheduleNextWithMailChimp(false);
-  },
-  testCampaign: function () {
-    if(Users.is.adminById(this.userId))
-      return Campaign.scheduleNextWithMailChimp(true);
-  },
-  addCurrentUserToMailChimpList: function(){
-    var currentUser = Meteor.users.findOne(this.userId);
-    try {
-      return addToMailChimpList(currentUser, false);
-    } catch (error) {
-      throw new Meteor.Error(500, error.message);
-    }
-  },
-  addEmailToMailChimpList: function (email) {
-    try {
-      return addToMailChimpList(email, true);
-    } catch (error) {
-      throw new Meteor.Error(500, error.message);
-    }
-  }
-});
+export default MailChimpList;

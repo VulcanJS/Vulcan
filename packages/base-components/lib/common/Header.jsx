@@ -5,7 +5,7 @@ const Messages = Core.Messages;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -38,6 +38,8 @@ const Header = ({currentUser}) => {
           />
         </ModalButton>
       </CanCreatePost>
+
+      <CurrentUserContainer component={NewsletterForm} />
 
       <FlashContainer component={FlashMessages}/>
 
