@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const UsersEdit = ({document, currentUser}) => {
 
   const user = document;

@@ -22,7 +22,12 @@ class PostItem extends Component {
 
     const component = (
       <ModalButton label="Edit" className="button button--secondary">
-        <EditDocContainer collection={Posts} document={this.props.post} label="Edit Post" methodName="posts.edit"/>
+        <EditDocContainer 
+          collection={Posts} 
+          document={this.props.post} 
+          label="Edit Post" 
+          methodName="posts.edit"
+        />
       </ModalButton>
     );
 

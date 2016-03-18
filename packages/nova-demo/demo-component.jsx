@@ -1,3 +1,4 @@
+import React, { PropTypes, Component } from 'react';
 
 import NoSSR from 'react-no-ssr';
 

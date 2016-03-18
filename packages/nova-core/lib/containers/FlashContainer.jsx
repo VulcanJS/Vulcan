@@ -1,28 +1,12 @@
 import Messages from "../messages.js";
 
-const FlashContainer = React.createClass({
+import { createContainer } from 'meteor/react-meteor-data';
 
-  mixins: [ReactMeteorData],
-  
-  getMeteorData() {
-    return {
-      messages: Messages.collection.find({show: true}).fetch()
-    };
-  },
-
-  render() {
-    
-    ({Flash} = Telescope.components);
-
-    return (
-      <div className="flash-messages">
-        {this.data.messages.map((message, index) => <Flash key={index} message={message} />)}
-      </div>
-    );
-
+const FlashContainer = createContainer(() => {
+  return {
+    messages: Messages.collection.find({show: true}).fetch()
   }
-
-});
+}, params => <params.component {...params} />);
 
 module.exports = FlashContainer;
 export default FlashContainer;

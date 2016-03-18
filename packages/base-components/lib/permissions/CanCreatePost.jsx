@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const CanCreatePost = ({user, children}) => {
   if (!user){
     return <p>Please log in.</p>;

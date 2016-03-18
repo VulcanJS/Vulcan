@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const CanEditUser = ({user, userToEdit, children}) => {
   if (!user){
     return <p>Please log in.</p>;

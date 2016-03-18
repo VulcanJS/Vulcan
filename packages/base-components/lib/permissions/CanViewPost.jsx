@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const CanViewPost = ({user, post, children}) => {
   if (Users.can.viewPost(this.props.user, this.props.document)) {
     return this.props.children;

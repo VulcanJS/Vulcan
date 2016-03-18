@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const CanView = ({user, children}) => {
   if (Users.can.view(user)) {
     return children;

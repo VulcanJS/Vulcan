@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
 import Core from "meteor/nova:core";
-
 const Messages = Core.Messages;
 
 class Flash extends Component{

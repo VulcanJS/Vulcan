@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 const CanEditPost = ({user, post, children}) => {
   if (Users.can.edit(user, post)) {
     return children;
