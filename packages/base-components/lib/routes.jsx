@@ -99,6 +99,13 @@ FlowRouter.route('/users/:slug/edit', {
   }
 });
 
+FlowRouter.route('/cheatsheet', {
+  name: 'cheatsheet',
+  action() {
+    ({AppContainer, Cheatsheet} = Telescope.components);
+    mount(AppContainer, {content: <Cheatsheet/>});
+  }
+});
 
 // ------------------------------------- Comments -------------------------------- //
 
