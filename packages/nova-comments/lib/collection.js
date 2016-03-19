@@ -124,6 +124,10 @@ Comments.schema = new SimpleSchema({
     type: String,
     optional: true,
     publish: true,
+    join: {
+      joinAs: "user",
+      collection: () => Meteor.users
+    }
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site. 

@@ -24,6 +24,7 @@ const Post = ({document}) => {
           terms={{postId: post._id, view: "postComments"}} 
           limit={0}
           parentProperty="parentCommentId"
+          joins={Comments.getJoins()}
         ><CommentList/></ListContainer>
 
         <div className="post-new-comment">

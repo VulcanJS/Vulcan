@@ -78,9 +78,17 @@ class CommentItem extends Component{
   }
 
   render() {
+    
+    ({UserAvatar}  = Telescope.components);
+
+    const comment = this.props.comment;
+
     return (
       <div className="comment-item">
         <div className="comment-body">
+          <div className="comment-meta">
+            <a href={Users.getProfileUrl(comment.user)}><UserAvatar user={comment.user}/>{Users.getDisplayName(comment.user)}</a>, {moment(comment.postedAt).fromNow()}
+          </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
           {this.renderActions()}
         </div>
