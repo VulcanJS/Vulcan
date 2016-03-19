@@ -1,3 +1,5 @@
+import Email from 'meteor/nova:email';
+
 Telescope.notifications = {};
 
 // send emails every second when in dev environment
@@ -15,8 +17,8 @@ Meteor.startup(function () {
           emailRunner: function (user) {
             var properties = notification.properties.call(this);
             var subject = notification.subject.call(properties);
-            var html = Telescope.email.buildTemplate(Telescope.email.getTemplate(notification.emailTemplate)(properties));
-            Telescope.email.send(Users.getEmail(user), subject, html);
+            var html = Email.buildTemplate(Email.getTemplate(notification.emailTemplate)(properties));
+            Email.send(Users.getEmail(user), subject, html);
           }
         }
       }

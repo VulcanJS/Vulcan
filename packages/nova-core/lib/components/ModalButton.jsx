@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -11,47 +13,45 @@ const customStyles = {
   }
 };
 
-const ModalButton = React.createClass({
+class ModalButton extends Component {
 
-  propTypes: {
-    label: React.PropTypes.string.isRequired,
-    className: React.PropTypes.string
-  },
+  constructor() {
+    super();
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      modalIsOpen: false
+    };
+  }
 
-  getInitialState: function() {
-    return { modalIsOpen: false };
-  },
-
-  openModal: function(event) {
-    event.preventDefault();
+  openModal() {
     this.setState({modalIsOpen: true});
-  },
+  }
 
-  closeModal: function() {
+  closeModal() {
     this.setState({modalIsOpen: false});
-  },
+  }
 
   render() {
     
-    // ({PostNewContainer} = Telescope.components);
     const Component = this.props.component;
 
     // see http://stackoverflow.com/a/32371612/649299
     const childrenWithProps = React.Children.map(this.props.children, (child) => {
 
-      // if child component already has a callback, create new callback 
+      // if child component already has a successCallback, create new callback 
       // that both calls original callback and also closes modal
-      let callback;
-      if (child.props.callback) {
-        callback = (document) => {
-          child.props.callback(document);
+      let successCallback;
+      if (child.props.successCallback) {
+        successCallback = (document) => {
+          child.props.successCallback(document);
           this.closeModal();
         }
       } else {
-        callback = this.closeModal;
+        successCallback = this.closeModal;
       }
 
-      return React.cloneElement(child, { successCallback: callback });
+      return React.cloneElement(child, { successCallback: successCallback });
 
     });
 
@@ -61,15 +61,19 @@ const ModalButton = React.createClass({
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
-          style={customStyles} >
-
+          style={customStyles} 
+        >
           {childrenWithProps}
-
         </Modal>
       </div>
     )
   }
-});
+};
+
+ModalButton.propTypes = {
+  label: React.PropTypes.string.isRequired,
+  className: React.PropTypes.string
+}
 
 module.exports = ModalButton;
 export default ModalButton;

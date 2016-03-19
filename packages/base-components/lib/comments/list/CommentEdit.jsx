@@ -1,18 +1,17 @@
+import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 
 const Textarea = FRC.Textarea;
 
-const CommentEdit = React.createClass({
+class CommentEdit extends Component {
 
-  propTypes: {
-    comment: React.PropTypes.object.isRequired,
-    submitCallback: React.PropTypes.func,
-    cancelCallback: React.PropTypes.func
-  },
+  constructor() {
+    super();
+    this.submitComment = this.submitComment.bind(this);
+  }
 
   submitComment(data) {
-    
     data = {$set: data};
     Meteor.call("comments.edit", data, this.props.comment._id, (error, result) => {
       if (error) {
@@ -21,8 +20,7 @@ const CommentEdit = React.createClass({
         this.props.submitCallback();
       }
     });
-
-  },
+  }
 
   render() {
     return (
@@ -40,6 +38,12 @@ const CommentEdit = React.createClass({
     )
   }
 
-});
+}
+
+CommentEdit.propTypes = {
+  comment: React.PropTypes.object.isRequired,
+  submitCallback: React.PropTypes.func,
+  cancelCallback: React.PropTypes.func
+}
 
 module.exports = CommentEdit;

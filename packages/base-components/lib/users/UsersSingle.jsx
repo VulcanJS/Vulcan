@@ -1,18 +1,15 @@
-const UsersSingle = React.createClass({
-  
-  propTypes: {
-    document: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired
-  },
+import React, { PropTypes, Component } from 'react';
 
-  render() {
-  
-    const user = this.props.document;
+const UsersSingle = ({document, currentUser}) => {
+  const user = document;
+  return (
+    <p>Profile for {Users.getDisplayName(user)}</p>
+  )
+}
 
-    return (
-      <p>Profile for {Users.getDisplayName(user)}</p>
-    )
-  }
-});
+UsersSingle.propTypes = {
+  document: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object.isRequired
+}
 
 module.exports = UsersSingle;

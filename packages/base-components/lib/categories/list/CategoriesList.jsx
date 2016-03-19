@@ -1,4 +1,4 @@
-const CategoriesList = props => {
+const CategoriesList = (props) => {
 
   return (
     <div className="categories">

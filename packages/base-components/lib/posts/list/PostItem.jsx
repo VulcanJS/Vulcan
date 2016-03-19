@@ -1,23 +1,20 @@
-const PostItem = React.createClass({
-  
-  propTypes: {
-    post: React.PropTypes.object.isRequired, // the current comment
-    currentUser: React.PropTypes.object, // the current user
-  },
+import React, { PropTypes, Component } from 'react';
+
+class PostItem extends Component {
 
   renderCategories() {
 
     ({PostCategories} = Telescope.components);
 
     return this.props.post.categoriesArray ? <PostCategories categories={this.props.post.categoriesArray} /> : "";
-  },
+  }
 
   renderCommenters() {
 
     ({PostCommenters} = Telescope.components);
 
     return this.props.post.commentersArray ? <PostCommenters commenters={this.props.post.commentersArray}/> : "";
-  },
+  }
 
   renderActions() {
 
@@ -25,7 +22,12 @@ const PostItem = React.createClass({
 
     const component = (
       <ModalButton label="Edit" className="button button--secondary">
-        <EditDocContainer collection={Posts} document={this.props.post} label="Edit Post" methodName="posts.edit"/>
+        <EditDocContainer 
+          collection={Posts} 
+          document={this.props.post} 
+          label="Edit Post" 
+          methodName="posts.edit"
+        />
       </ModalButton>
     );
 
@@ -34,9 +36,11 @@ const PostItem = React.createClass({
         {Users.can.edit(this.props.currentUser, this.props.post) ? component : ""}
       </div>
     )
-  },
+  }
   
   render() {
+
+    ({UserAvatar} = Telescope.components);
 
     const post = this.props.post;
 
@@ -44,7 +48,7 @@ const PostItem = React.createClass({
       <div className="post-item">
         
         <h3 className="post-title"><a href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a></h3>
-        <p><a href={Users.getProfileUrl(post.user)}>{Users.getDisplayName(post.user)}</a>, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>
+        <p><a href={Users.getProfileUrl(post.user)}><UserAvatar user={post.user}/>{Users.getDisplayName(post.user)}</a>, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>
         
         {this.renderCategories()}
         {this.renderCommenters()}
@@ -53,6 +57,11 @@ const PostItem = React.createClass({
       </div>
     )
   }
-});
+};
+  
+PostItem.propTypes = {
+  post: React.PropTypes.object.isRequired, // the current comment
+  currentUser: React.PropTypes.object, // the current user
+}
 
 module.exports = PostItem;

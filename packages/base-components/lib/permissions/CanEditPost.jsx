@@ -1,20 +1,18 @@
-const CanEditPost = React.createClass({
+import React, { PropTypes, Component } from 'react';
 
-  propTypes: {
-    user: React.PropTypes.object,
-    post: React.PropTypes.object
-  },
-
-  render() {
-    if (Users.can.edit(this.props.user, this.props.post)) {
-      return this.props.children;
-    } else if (!this.props.user){
-      return <p>Please log in.</p>;
-    } else {
-      return <p>Sorry, you do not have permissions to edit this post at this time</p>;
-    }
+const CanEditPost = ({user, post, children}) => {
+  if (Users.can.edit(user, post)) {
+    return children;
+  } else if (!user){
+    return <p>Please log in.</p>;
+  } else {
+    return <p>Sorry, you do not have permissions to edit this post at this time</p>;
   }
+};
 
-});
+CanEditPost.propTypes = {
+  user: React.PropTypes.object,
+  post: React.PropTypes.object
+}
 
 module.exports = CanEditPost;

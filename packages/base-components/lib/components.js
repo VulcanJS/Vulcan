@@ -5,7 +5,12 @@ Telescope.registerComponent("Header", require('./common/Header.jsx'));
 Telescope.registerComponent("Layout", require('./common/Layout.jsx'));
 Telescope.registerComponent("Logo", require('./common/Logo.jsx'));
 Telescope.registerComponent("Flash", require('./common/Flash.jsx'));
+<<<<<<< HEAD
 Telescope.registerComponent('HeadTags', require('./common/HeadTags.jsx'));
+=======
+Telescope.registerComponent("FlashMessages", require('./common/FlashMessages.jsx'));
+Telescope.registerComponent("NewsletterForm", require('./common/NewsletterForm.jsx'));
+>>>>>>> TelescopeJS/nova
 
 // posts
 
@@ -44,3 +49,9 @@ Telescope.registerComponent("CanEditUser", require('./permissions/CanEditUser.js
 
 Telescope.registerComponent("UsersEdit", require('./users/UsersEdit.jsx'));
 Telescope.registerComponent("UsersSingle", require('./users/UsersSingle.jsx'));
+Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
+
+// debug
+
+Telescope.registerComponent("Cheatsheet", require('./debug/Cheatsheet.jsx'));
+

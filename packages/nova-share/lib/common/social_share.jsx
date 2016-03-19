@@ -1,28 +1,29 @@
-const SocialShare = React.createClass({
+import React, { PropTypes, Component } from 'react';
 
-  propTypes: {
-    url: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-  },
+class SocialShare extends Component {
 
-  getInitialState: function() {
-    return {showShare: false};
-  },
+  constructor() {
+    super();
+    this.toggleView = this.toggleView.bind(this);
+    this.state = {
+      showShare: false
+    }
+  }
 
   viaTwitter() {
     return !!Settings.get('twitterAccount') ? 'via='+Settings.get('twitterAccount') : '';
-  },
+  }
 
   toggleView() {
     this.setState({
       showShare: !this.state.showShare
     });
     return;
-  },
+  }
 
   insertIcon(name) {
     return {__html: Telescope.utils.getIcon(name)};
-  },
+  }
 
   render() {
     let shareDisplay = this.state.showShare ? 'active' : 'hidden';
@@ -38,6 +39,11 @@ const SocialShare = React.createClass({
       </div>
     )
   }
-});
+}
+
+SocialShare.propTypes = {
+  url: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string.isRequired,
+}
 
 module.exports = SocialShare;

@@ -60,3 +60,50 @@ body{
 .new-post-button{
   margin-bottom: 15px;
 }
+
+code{
+  font-family: monospace;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  padding: 3px 6px;
+}
+
+.cheatsheet h1{
+  margin-bottom: 20px;
+}
+.cheatsheet-wrapper{
+  display: flex;
+}
+.cheatsheet-block{
+  flex: 1;
+  margin-right: 20px;
+}
+.cheatsheet-block:last-of-type{
+  margin-right: 0;
+}
+
+.cheatsheet ul{
+  list-style-type: none;
+  margin-bottom: 20px;
+  padding-left: 0px;
+}
+.cheatsheet ul li{
+  margin-bottom: 10px;
+}
+.cheatsheet h2{
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.cheatsheet h3{
+  margin-bottom: 10px;
+}
+.cheatsheet code{
+  font-size: 13px;
+}
+
+.avatar{
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+}

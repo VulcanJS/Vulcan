@@ -1,11 +1,13 @@
+import React, { PropTypes, Component } from 'react';
+
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 
-const Flash = React.createClass({
+class Flash extends Component{
 
   componentDidMount() {
     Messages.markAsSeen(this.props.message._id);
-  },
+  }
 
   render() {
     return (
@@ -14,6 +16,6 @@ const Flash = React.createClass({
       </div>
     )
   }
-});
+}
 
 module.exports = Flash;

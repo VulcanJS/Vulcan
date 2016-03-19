@@ -1,15 +1,15 @@
-const Logo = props => {
-  if (props.logoUrl) {
+const Logo = ({logoUrl, siteTitle}) => {
+  if (logoUrl) {
     return (
       <h1 className="logo-image ">
         <a href="/">
-          <img src={props.logoUrl} alt={props.siteTitle} style={{maxWidth: "100px", maxHeight: "100px"}} />
+          <img src={logoUrl} alt={siteTitle} style={{maxWidth: "100px", maxHeight: "100px"}} />
         </a>
       </h1>
     )
   } else {
     return (
-      <h1 className="logo-text"><a href="/">{props.siteTitle}</a></h1>
+      <h1 className="logo-text"><a href="/">{siteTitle}</a></h1>
     )
   }
 }

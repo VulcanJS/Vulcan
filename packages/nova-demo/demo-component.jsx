@@ -1,3 +1,5 @@
+import React, { PropTypes, Component } from 'react';
+
 import NoSSR from 'react-no-ssr';
 
 import Core from 'meteor/nova:core';

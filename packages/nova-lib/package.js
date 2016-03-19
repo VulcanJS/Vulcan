@@ -52,7 +52,7 @@ Package.onUse(function (api) {
     'momentjs:moment@2.11.2',
     // 'sacha:spin@2.3.1',
     // 'aslagle:reactive-table@0.8.24',
-    // 'utilities:avatar@0.9.2',
+    'utilities:avatar@0.9.2',
     'fortawesome:fontawesome@4.5.0',
     // 'ccan:cssreset@1.0.0',
     'djedi:sanitize-html@1.11.2',
@@ -67,7 +67,7 @@ Package.onUse(function (api) {
     // 'seba:minifiers-autoprefixer@0.0.1',
     'meteorhacks:unblock@1.1.0',
     // 'kadira:flow-router@2.10.1',
-    'kadira:flow-router-ssr@3.11.0',
+    'kadira:flow-router-ssr@3.12.2',
     'arillo:flow-router-helpers@0.5.0',
     // 'peerlibrary:reactive-publish@0.2.0',
     
@@ -75,9 +75,7 @@ Package.onUse(function (api) {
     'utilities:smart-methods',
 
     'ecmascript',
-    'react',
-    'jsx',
-    'modules'
+    'react-meteor-data@0.2.6-beta.16'
   ];
 
   api.use(packages);

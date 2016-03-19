@@ -1,15 +1,15 @@
-const CommentList = props => {
+const CommentList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
 
   ({LoadMore, PostsLoading, NoPosts, NoMorePosts, CommentNode} = Telescope.components);
   
-  if (!!props.results.length) {
+  if (!!results.length) {
     return (
       <div className="commentList">
-        {props.results.map(comment => <CommentNode comment={comment} key={comment._id} currentUser={props.currentUser}/>)}
-        {props.hasMore ? (props.ready ? <LoadMore {...props}/> : <PostsLoading/>) : <NoMorePosts/>}
+        {results.map(comment => <CommentNode comment={comment} key={comment._id} currentUser={currentUser}/>)}
+        {hasMore ? (ready ? <LoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <PostsLoading/>) : <NoMorePosts/>}
       </div>
     )
-  } else if (!props.ready) {
+  } else if (!ready) {
     return (
       <div className="commentList">
         <PostsLoading/>

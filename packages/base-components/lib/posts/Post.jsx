@@ -1,8 +1,8 @@
-const Post = (props) => {
+const Post = ({document}) => {
   
   ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare} = Telescope.components);
 
-  const post = props.document;
+  const post = document;
   const htmlBody = {__html: post.htmlBody};
 
   return (
@@ -24,6 +24,7 @@ const Post = (props) => {
           terms={{postId: post._id, view: "postComments"}} 
           limit={0}
           parentProperty="parentCommentId"
+          joins={Comments.getJoins()}
         ><CommentList/></ListContainer>
 
         <div className="post-new-comment">

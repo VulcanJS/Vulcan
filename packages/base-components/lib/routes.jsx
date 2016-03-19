@@ -19,7 +19,8 @@ FlowRouter.route('/', {
         options={options}
         terms={queryParams} 
         joins={Posts.getJoins()}
-      ><PostList/></ListContainer>})
+        component={PostList}
+      />})
   }
 });
 
@@ -34,7 +35,8 @@ FlowRouter.route('/posts/:_id', {
         selector={params}
         terms={params}
         joins={Posts.getJoins()}
-      ><Post/></DocumentContainer>});
+        component={Post}
+      />});
   }
 });
 
@@ -62,7 +64,8 @@ FlowRouter.route('/users/:slug', {
         publication="users.single" 
         selector={{'telescope.slug': params.slug}}
         terms={{'telescope.slug': params.slug}}
-      ><UsersSingle/></DocumentContainer>});
+        component={UsersSingle}
+      />});
   }
 });
 
@@ -77,7 +80,7 @@ FlowRouter.route('/account', {
         selector={{_id: Meteor.userId()}} 
         terms={{_id: Meteor.userId()}} 
         component={UsersEdit}
-      ><UsersEdit/></DocumentContainer>});
+      />});
   }
 });
 
@@ -92,10 +95,17 @@ FlowRouter.route('/users/:slug/edit', {
         selector={params} 
         terms={params} 
         component={UsersEdit}
-      ><UsersEdit/></DocumentContainer>});
+      />});
   }
 });
 
+FlowRouter.route('/cheatsheet', {
+  name: 'cheatsheet',
+  action() {
+    ({AppContainer, Cheatsheet} = Telescope.components);
+    mount(AppContainer, {content: <Cheatsheet/>});
+  }
+});
 
 // ------------------------------------- Comments -------------------------------- //
 

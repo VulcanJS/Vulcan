@@ -21,7 +21,7 @@ Package.onUse(function (api) {
 
     // third-party packages
 
-    'alt:react-accounts-ui@1.1.0',
+    'alt:react-accounts-ui@1.2.0',
     // 'alt:react-accounts-unstyled',
     'dburles:spacebars-tohtml@1.0.1',
   ]);

@@ -1,19 +1,10 @@
-const CurrentUserContainer = React.createClass({
+import { createContainer } from 'meteor/react-meteor-data';
 
-  mixins: [ReactMeteorData],
-  
-  getMeteorData() {
-
-    return {
-      currentUser: Meteor.user()
-    };
-  },
-
-  render() {
-    return React.cloneElement(this.props.children, { currentUser: this.data.currentUser });
+const CurrentUserContainer = createContainer(() => {
+  return {
+    currentUser: Meteor.user()
   }
-
-});
+}, params => <params.component {...params} />);
 
 module.exports = CurrentUserContainer;
 export default CurrentUserContainer;

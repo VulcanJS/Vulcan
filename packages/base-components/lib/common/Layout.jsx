@@ -1,8 +1,12 @@
 const Layout = props => {
 
+<<<<<<< HEAD
   const HeadTags = Telescope.getComponent("HeadTags");
   const Header = Telescope.getComponent("Header");
   const Footer = Telescope.getComponent("Footer");
+=======
+  ({Header, Footer} = Telescope.components);
+>>>>>>> TelescopeJS/nova
 
   return (
     <div className="wrapper" id="wrapper">

@@ -1,9 +1,11 @@
 import NoSSR from 'react-no-ssr';
 
+import Core from "meteor/nova:core";
+const Messages = Core.Messages;
 
-const Header = props => {
+const Header = ({currentUser}) => {
   
-  ({Logo, ListContainer, CategoriesList, FlashContainer, ModalButton, NewDocContainer, CanCreatePost} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -21,15 +23,25 @@ const Header = props => {
       
       <LogInButtons />
       
-      {props.currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
+      {currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
 
-      <CanCreatePost user={props.currentUser}>
+      <CanCreatePost user={currentUser}>
         <ModalButton label="New Post" className="button button--primary">
-          <NewDocContainer collection={Posts} label="New Post" methodName="posts.new" callback={(post)=>{FlowRouter.go('posts.single', post);}}/>
+          <NewDocContainer 
+            collection={Posts} 
+            label="New Post" 
+            methodName="posts.new" 
+            successCallback={(post)=>{
+              Messages.flash("Post created.", "success");
+              FlowRouter.go('posts.single', post);
+            }}
+          />
         </ModalButton>
       </CanCreatePost>
 
-      <FlashContainer />
+      <CurrentUserContainer component={NewsletterForm} />
+
+      <FlashContainer component={FlashMessages}/>
 
     </header>
   )
