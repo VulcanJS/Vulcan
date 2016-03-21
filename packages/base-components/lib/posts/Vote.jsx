@@ -32,15 +32,16 @@ class Vote extends Component {
 
     ({Icon} = Telescope.components);
 
+    const post = this.props.post;
     const user = this.props.currentUser;
 
     let actionsClass = "vote";
-    if (user.hasUpvoted(this)) actionsClass += " voted upvoted";
-    if (user.hasDownvoted(this)) actionsClass += " voted downvoted";
+    if (user.hasUpvoted(post)) actionsClass += " voted upvoted";
+    if (user.hasDownvoted(post)) actionsClass += " voted downvoted";
 
     return (
       <div className={actionsClass}>
-        <a href="#" className="upvote" onClick={this.upvote}>
+        <a href="#" className="button button--secondary upvote" onClick={this.upvote}>
           <Icon name="upvote" />
           <span className="sr-only">Upvote</span>
         </a>

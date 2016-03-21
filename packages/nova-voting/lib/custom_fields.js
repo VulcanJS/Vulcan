@@ -69,7 +69,7 @@ Posts.addField([
   },
 ]);
 
-PublicationUtils.addToFields(Posts.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);
+PublicationUtils.addToFields(Posts.publishedFields.list, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
 PublicationUtils.addToFields(Posts.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
 
 // ------------------------------------- Comments -------------------------------- //
