@@ -4,11 +4,12 @@ const Post = ({document}) => {
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
-
+  debugger
   return (
     <div className="post">
 
       <h3>{post.title}</h3>
+      <HeadTags url={Posts.getLink(post)} title={post.title}/>
       <SocialShare url={ Posts.getLink(post) } title={ post.title }/>
       <p>{post.commentCount} comments</p>
       <p>{moment(post.postedAt).fromNow()}</p>

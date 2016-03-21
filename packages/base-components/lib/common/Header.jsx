@@ -5,7 +5,7 @@ const Messages = Core.Messages;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm, HeadTags} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -13,7 +13,8 @@ const Header = ({currentUser}) => {
 
   return (
     <header className="header">
-     <div className="logo">
+      <HeadTags url={Telescope.utils.getSiteUrl()} title={siteTitle} description={tagline} image={logoUrl} />
+      <div className="logo">
         <Logo logoUrl={logoUrl} siteTitle={siteTitle} />
         {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
       </div>
