@@ -1,3 +1,5 @@
+const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
+
 const renderFunction = (func, name) => {
   const s = func.toString();
   const openParen = s.indexOf("(");
@@ -47,7 +49,7 @@ const Cheatsheet = props => {
           </ul>
           <h3>Methods</h3>
           <ul>
-            {_.map(Meteor.connection._methodHandlers, (item, key) => (key.indexOf("users.") !== -1 ? renderFunction(item, key) : null))}
+            {_.map(methodList, (item, key) => (key.indexOf("users.") !== -1 ? renderFunction(item, key) : null))}
           </ul>
         </div>
 
@@ -59,7 +61,7 @@ const Cheatsheet = props => {
           </ul>
           <h3>Methods</h3>
           <ul>
-            {_.map(Meteor.connection._methodHandlers, (item, key) => (key.indexOf("posts.") !== -1 ? renderFunction(item, key) : null))}
+            {_.map(methodList, (item, key) => (key.indexOf("posts.") !== -1 ? renderFunction(item, key) : null))}
           </ul>
         </div>
         
@@ -71,7 +73,7 @@ const Cheatsheet = props => {
           </ul>
           <h3>Methods</h3>
           <ul>
-            {_.map(Meteor.connection._methodHandlers, (item, key) => (key.indexOf("comments.") !== -1 ? renderFunction(item, key) : null))}
+            {_.map(methodList, (item, key) => (key.indexOf("comments.") !== -1 ? renderFunction(item, key) : null))}
           </ul>
         </div>
 
