@@ -9,7 +9,7 @@
 Posts.before.insert(function (userId, doc) {
   if(!!doc.body){
     doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
-    doc.excerpt = doc.htmlBody.substr(0,255);
+    doc.excerpt = Telescope.utils.trimHTML(doc.htmlBody).substr(0,255);
   }
 });
 
@@ -20,7 +20,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if body is being modified or $unset, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
-    modifier.$set.excerpt = Telescope.utils.sanitize(marked(modifier.$set.body)).substr(0,255);
+    modifier.$set.excerpt = Telescope.utils.trimHTML(Telescope.utils.sanitize(marked(modifier.$set.body))).substr(0,255);
   }
   if (Meteor.isServer && modifier.$unset && (typeof modifier.$unset.body !== "undefined")) {
     modifier.$unset.htmlBody = "";
