@@ -1,6 +1,6 @@
 const Post = ({document}) => {
   
-  ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare, HeadTags} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
