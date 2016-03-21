@@ -4,7 +4,6 @@ const Post = ({document}) => {
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
-  debugger
   return (
     <div className="post">
 

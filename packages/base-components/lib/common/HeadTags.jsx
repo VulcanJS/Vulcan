@@ -1,7 +1,6 @@
 import Helmet from 'react-helmet';
 
 const HeadTags = ({url, title, description, image}) => {
-	debugger
 	return (
 		<Helmet
 			title={title}
