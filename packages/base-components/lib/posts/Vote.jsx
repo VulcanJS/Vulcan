@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
+import Core from "meteor/nova:core";
+const Messages = Core.Messages;
+
 class Vote extends Component {
 
   constructor() {
@@ -14,8 +17,7 @@ class Vote extends Component {
     const user = this.props.currentUser;
 
     if(!user){
-      FlowRouter.go('signIn');
-      Messages.flash(__("please_log_in_first"), "info");
+      Messages.flash("Please log in first");
     } else if (user.hasUpvoted(post)) {
       Meteor.call('posts.cancelUpvote', post._id, function(){
         Events.track("post upvote cancelled", {'_id': post._id});
@@ -36,8 +38,8 @@ class Vote extends Component {
     const user = this.props.currentUser;
 
     let actionsClass = "vote";
-    if (user.hasUpvoted(post)) actionsClass += " voted upvoted";
-    if (user.hasDownvoted(post)) actionsClass += " voted downvoted";
+    if (Users.hasUpvoted(user, post)) actionsClass += " voted upvoted";
+    if (Users.hasDownvoted(user, post)) actionsClass += " voted downvoted";
 
     return (
       <div className={actionsClass}>
