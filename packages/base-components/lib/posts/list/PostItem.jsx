@@ -40,16 +40,19 @@ class PostItem extends Component {
   
   render() {
 
-    ({UserAvatar} = Telescope.components);
+    ({UserAvatar, Vote, PostStats} = Telescope.components);
 
     const post = this.props.post;
 
     return (
       <div className="post-item">
         
+        <Vote post={post} currentUser={this.props.currentUser}/>
         <h3 className="post-title"><a href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a></h3>
         <p><a href={Users.getProfileUrl(post.user)}><UserAvatar user={post.user}/>{Users.getDisplayName(post.user)}</a>, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>
         
+        <PostStats post={post} />
+
         {this.renderCategories()}
         {this.renderCommenters()}
         {this.renderActions()}

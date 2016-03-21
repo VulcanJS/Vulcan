@@ -104,6 +104,7 @@ nova:search@0.25.7
 nova:settings@0.25.7
 nova:share@0.25.7
 nova:users@0.25.7
+nova:voting@0.25.7
 npm-bcrypt@0.7.8_2
 npm-mongo@1.4.41-rc.2
 oauth@1.1.8-rc.2

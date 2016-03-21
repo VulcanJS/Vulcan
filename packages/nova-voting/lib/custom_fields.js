@@ -1,3 +1,5 @@
+import PublicationUtils from 'meteor/utilities:smart-publications';
+
 // ------------------------------------- Posts -------------------------------- //
 
 Posts.addField([
@@ -67,8 +69,8 @@ Posts.addField([
   },
 ]);
 
-Telescope.utils.addToFields(Posts.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);
-Telescope.utils.addToFields(Posts.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
+PublicationUtils.addToFields(Posts.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);
+PublicationUtils.addToFields(Posts.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
 
 // ------------------------------------- Comments -------------------------------- //
 
@@ -143,5 +145,5 @@ Comments.addField([
   },
 ]);
 
-Telescope.utils.addToFields(Comments.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);
-Telescope.utils.addToFields(Comments.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
+PublicationUtils.addToFields(Comments.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);
+PublicationUtils.addToFields(Comments.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);

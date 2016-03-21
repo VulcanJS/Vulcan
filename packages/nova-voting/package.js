@@ -11,6 +11,11 @@ Package.onUse(function (api) {
 
   api.use(['nova:core@0.25.7']);
 
+  api.use([
+    'nova:posts@0.25.7', 
+    'nova:comments@0.25.7'
+  ], ['client', 'server']);
+
   api.addFiles([
     'lib/scoring.js',
     'lib/vote.js',
