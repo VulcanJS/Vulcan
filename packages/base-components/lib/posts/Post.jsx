@@ -1,6 +1,6 @@
-const Post = ({document}) => {
+const Post = ({document, currentUser}) => {
   
-  ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare, Vote, PostStats} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
@@ -8,10 +8,15 @@ const Post = ({document}) => {
   return (
     <div className="post">
 
+      <Vote post={post} currentUser={currentUser}/>
+
       <h3>{post.title}</h3>
       <SocialShare url={ Posts.getLink(post) } title={ post.title }/>
       <p>{post.commentCount} comments</p>
       <p>{moment(post.postedAt).fromNow()}</p>
+
+      <PostStats post={post} />
+
       {post.categoriesArray ? <PostCategories categories={post.categoriesArray} /> : ""}
       <div dangerouslySetInnerHTML={htmlBody}></div>
 

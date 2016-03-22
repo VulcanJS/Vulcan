@@ -37,10 +37,8 @@ Telescope.updateScore = function (args) {
   // time decay factor
   var f = 1.3;
 
-  // use baseScore if defined, if not just use the number of votes
-  // note: for transition period, also use votes if there are more votes than baseScore
-  // var baseScore = Math.max(item.votes || 0, item.baseScore || 0);
-  var baseScore = item.baseScore;
+  // use baseScore if defined, if not just use 0
+  var baseScore = item.baseScore || 0;
 
   // HN algorithm
   var newScore = baseScore / Math.pow(ageInHours + 2, f);
