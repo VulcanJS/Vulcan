@@ -116,3 +116,7 @@ code{
 .upvoted .upvote{
   opacity: 0.3;
 }
+
+.post-day h2{
+  font-weight: bold;
+}

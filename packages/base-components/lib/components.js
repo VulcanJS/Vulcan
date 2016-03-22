@@ -22,6 +22,8 @@ Telescope.registerComponent("PostCategories", require('./posts/list/PostCategori
 Telescope.registerComponent("PostCommenters", require('./posts/list/PostCommenters.jsx'));
 Telescope.registerComponent("Post", require('./posts/Post.jsx'));
 Telescope.registerComponent("PostStats", require('./posts/PostStats.jsx'));
+Telescope.registerComponent("PostDaily", require('./posts/PostDaily.jsx'));
+Telescope.registerComponent("PostDay", require('./posts/PostDay.jsx'));
 Telescope.registerComponent("Vote", require('./posts/Vote.jsx'));
 
 // comments

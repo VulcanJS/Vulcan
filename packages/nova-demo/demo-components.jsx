@@ -6,20 +6,20 @@ import Core from 'meteor/nova:core';
 import SmartContainers from "meteor/utilities:react-list-container";
 import FormContainers from "meteor/utilities:react-form-containers";
 
-FlashContainer = Core.FlashContainer;
-ModalButton = Core.ModalButton;
-NewDocContainer = FormContainers.NewDocContainer;
-EditDocContainer = FormContainers.EditDocContainer;
-ListContainer = SmartContainers.ListContainer;
+const ModalButton = Core.ModalButton;
+const NewDocContainer = FormContainers.NewDocContainer;
+const EditDocContainer = FormContainers.EditDocContainer;
+const ListContainer = SmartContainers.ListContainer;
+
+const FlashContainer = Telescope.components.FlashContainer;
+const FlashMessages = Telescope.components.FlashMessages;
 
 //////////////////////////////////////////////////////
 // MoviesWrapper                                    //
 //////////////////////////////////////////////////////
 
-MoviesWrapper = React.createClass({
-
+class MoviesWrapper extends Component {
   render() {
-
     return (
       <div className="wrapper">
 
@@ -27,7 +27,7 @@ MoviesWrapper = React.createClass({
           <LogInButtons />
         </NoSSR>
 
-        <FlashContainer />
+        <FlashContainer component={FlashMessages}/>
 
         <div className="main">
           <ListContainer 
@@ -45,13 +45,13 @@ MoviesWrapper = React.createClass({
       </div>
     )
   }
-});
+}
 
 //////////////////////////////////////////////////////
 // MoviesList                                       //
 //////////////////////////////////////////////////////
 
-MoviesList = React.createClass({
+class MoviesList extends Component {
 
   renderNew() {
     
@@ -62,7 +62,7 @@ MoviesList = React.createClass({
     )
     
     return !!this.props.currentUser ? component : "";
-  },
+  }
 
   render() {
 
@@ -74,12 +74,12 @@ MoviesList = React.createClass({
       </div>
     )
   }
-});
+};
+
 //////////////////////////////////////////////////////
 // Movie                                            //
 //////////////////////////////////////////////////////
-Movie = React.createClass({
-
+class Movie extends Component {
 
   renderEdit() {
 
@@ -96,7 +96,7 @@ Movie = React.createClass({
         {this.props.currentUser && this.props.currentUser._id === movie.userId ? component : ""}
       </div>
     )
-  },
+  }
 
   render() {
     
@@ -111,6 +111,8 @@ Movie = React.createClass({
     )
   }
 
-});
+};
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
+
+export default MoviesWrapper
