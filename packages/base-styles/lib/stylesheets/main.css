@@ -97,6 +97,7 @@ code{
 }
 .cheatsheet h3{
   margin-bottom: 10px;
+  font-weight: bold;
 }
 .cheatsheet code{
   font-size: 13px;
@@ -106,4 +107,16 @@ code{
   height: 24px;
   width: 24px;
   display: inline-block;
+}
+
+.sr-only{
+  display: none;
+}
+
+.upvoted .upvote{
+  opacity: 0.3;
+}
+
+.post-day h2{
+  font-weight: bold;
 }

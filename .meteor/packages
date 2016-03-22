@@ -21,8 +21,8 @@ nova:notifications
 nova:getting-started
 nova:categories
 nova:share
+nova:voting
 
-# nova:voting
 # nova:migrations
 # nova:api
 # nova:email

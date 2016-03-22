@@ -1,9 +1,10 @@
 Meteor.startup(function () {
-  var scoreInterval = Settings.get("scoreUpdateInterval") || 30;
+  var scoreInterval = Telescope.settings.get("scoreUpdateInterval") || 30;
   if (scoreInterval > 0) {
 
     // active items get updated every N seconds
     Meteor.setInterval(function () {
+      
       var updatedPosts = 0;
       var updatedComments = 0;
       // console.log('tick ('+scoreInterval+')');

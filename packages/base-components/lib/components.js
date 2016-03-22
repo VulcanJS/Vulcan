@@ -8,6 +8,8 @@ Telescope.registerComponent("Flash", require('./common/Flash.jsx'));
 Telescope.registerComponent('HeadTags', require('./common/HeadTags.jsx'));
 Telescope.registerComponent("FlashMessages", require('./common/FlashMessages.jsx'));
 Telescope.registerComponent("NewsletterForm", require('./common/NewsletterForm.jsx'));
+Telescope.registerComponent("Icon", require('./common/Icon.jsx'));
+Telescope.registerComponent("SearchForm", require('./common/SearchForm.jsx'));
 
 // posts
 
@@ -21,6 +23,10 @@ Telescope.registerComponent("PostList", require('./posts/list/PostList.jsx'));
 Telescope.registerComponent("PostCategories", require('./posts/list/PostCategories.jsx'));
 Telescope.registerComponent("PostCommenters", require('./posts/list/PostCommenters.jsx'));
 Telescope.registerComponent("Post", require('./posts/Post.jsx'));
+Telescope.registerComponent("PostStats", require('./posts/PostStats.jsx'));
+Telescope.registerComponent("PostDaily", require('./posts/PostDaily.jsx'));
+Telescope.registerComponent("PostDay", require('./posts/PostDay.jsx'));
+Telescope.registerComponent("Vote", require('./posts/Vote.jsx'));
 
 // comments
 

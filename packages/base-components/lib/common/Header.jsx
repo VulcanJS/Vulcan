@@ -4,8 +4,8 @@ import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 
 const Header = ({currentUser}) => {
-  
-  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm, HeadTags} = Telescope.components);
+
+  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm, SearchForm, HeadTags} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -41,6 +41,8 @@ const Header = ({currentUser}) => {
       </CanCreatePost>
 
       <CurrentUserContainer component={NewsletterForm} />
+
+      <SearchForm/>
 
       <FlashContainer component={FlashMessages}/>
 

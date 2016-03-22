@@ -24,7 +24,6 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'demo-component.jsx',
     'demo-app.jsx'
   ], ['client', 'server']);
 

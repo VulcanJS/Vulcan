@@ -1,11 +1,11 @@
-const PostList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
+const PostList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore, showViews = true}) => {
 
   ({PostItem, LoadMore, PostsLoading, NoPosts, NoMorePosts, PostViews} = Telescope.components);
 
   if (!!results.length) {
     return (
       <div className="postList">
-        <PostViews />
+        {showViews ? <PostViews /> : null}
         <div className="post-list-content">
           {results.map(post => <PostItem post={post} currentUser={currentUser} key={post._id}/>)}
         </div>
@@ -15,7 +15,7 @@ const PostList = ({results, currentUser, hasMore, ready, count, totalCount, load
   } else if (!ready) {
     return (
       <div className="postList">
-        <PostViews />
+        {showViews ? <PostViews /> : null}
         <div className="post-list-content">
           <PostsLoading/>
         </div>
@@ -24,7 +24,7 @@ const PostList = ({results, currentUser, hasMore, ready, count, totalCount, load
   } else {
     return (
       <div className="postList">
-        <PostViews />
+        {showViews ? <PostViews /> : null}
         <div className="post-list-content">
           <NoPosts/>
         </div>

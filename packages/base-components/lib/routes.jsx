@@ -24,6 +24,16 @@ FlowRouter.route('/', {
   }
 });
 
+FlowRouter.route('/daily/:days?', {
+  name: 'posts.list',
+  action(params, queryParams) {
+
+    ({AppContainer, PostDaily} = Telescope.components);
+
+    mount(AppContainer, {content: <PostDaily days={params.days}/>})
+  }
+});
+
 FlowRouter.route('/posts/:_id', {
   name: 'posts.single',
   action(params, queryParams) {

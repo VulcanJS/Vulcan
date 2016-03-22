@@ -213,6 +213,7 @@ Meteor.methods({
 
   'posts.upvote': function (postId) {
     check(postId, String);
+    console.log("upvote")
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
   },
 
@@ -223,6 +224,7 @@ Meteor.methods({
 
   'posts.cancelUpvote': function (postId) {
     check(postId, String);
+    console.log("cancelUpvote")
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
   },
 
