@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
+import Actions from '../../actions.js';
 
 const Textarea = FRC.Textarea;
 
@@ -31,7 +31,7 @@ class CommentNew extends Component {
       }
     }
 
-    Meteor.call("comments.new", data, (error, result) => {
+    Actions.call("comments.new", data, (error, result) => {
       if (error) {
         // handle error
       } else {

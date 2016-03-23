@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Actions from "../actions.js";
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
@@ -19,13 +20,13 @@ class Vote extends Component {
     if(!user){
       Messages.flash("Please log in first");
     } else if (user.hasUpvoted(post)) {
-      Meteor.call('posts.cancelUpvote', post._id, function(){
+      Actions.call('posts.cancelUpvote', post._id, function(){
         Events.track("post upvote cancelled", {'_id': post._id});
       });        
     } else {
-      Meteor.call('posts.upvote', post._id, function(){
+      Actions.call('posts.upvote', post._id, function(){
         Events.track("post upvoted", {'_id': post._id});
-      });  
+      });
     }
 
   }

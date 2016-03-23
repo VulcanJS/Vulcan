@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
+import Actions from '../../actions.js';
 
 const Textarea = FRC.Textarea;
 
@@ -13,7 +14,7 @@ class CommentEdit extends Component {
 
   submitComment(data) {
     data = {$set: data};
-    Meteor.call("comments.edit", data, this.props.comment._id, (error, result) => {
+    Actions.call("comments.edit", data, this.props.comment._id, (error, result) => {
       if (error) {
         // handle error
       } else {

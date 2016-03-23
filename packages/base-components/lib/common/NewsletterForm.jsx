@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
+import Actions from "../actions.js";
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
@@ -17,7 +18,7 @@ class NewsletterForm extends Component {
 
   subscribeEmail(data) {
     console.log(data)
-    Meteor.call("addEmailToMailChimpList", data.email, (error, result) => {
+    Actions.call("addEmailToMailChimpList", data.email, (error, result) => {
       if (error) {
         console.log(error)
         Messages.flash(error.message, "error");
@@ -28,7 +29,7 @@ class NewsletterForm extends Component {
   }
 
   subscribeUser() {
-    Meteor.call("addCurrentUserToMailChimpList", (error, result) => {
+    Actions.call("addCurrentUserToMailChimpList", (error, result) => {
       if (error) {
         console.log(error)
         Messages.flash(error.message, "error");
