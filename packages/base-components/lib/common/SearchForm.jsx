@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Router from '../router.js'
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 
@@ -22,8 +23,8 @@ class SearchForm extends Component{
 
   search(data) {
 
-    if (FlowRouter.getRouteName() !== "posts.list") {
-      FlowRouter.go("posts.list");
+    if (Router.getRouteName() !== "posts.list") {
+      Router.go("posts.list");
     }
     
     if (data.searchQuery === '') {
@@ -31,7 +32,7 @@ class SearchForm extends Component{
     }
 
     delay(function(){
-      FlowRouter.setQueryParams({query: data.searchQuery});
+      Router.setQueryParams({query: data.searchQuery});
     }, 700 );
 
   }

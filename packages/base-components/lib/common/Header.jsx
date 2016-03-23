@@ -1,5 +1,5 @@
 import NoSSR from 'react-no-ssr';
-
+import Router from '../router.js'
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 
@@ -23,7 +23,7 @@ const Header = ({currentUser}) => {
       
       <LogInButtons />
       
-      {currentUser ? <p><a href={FlowRouter.path("account")}>My Account</a></p> : ""}
+      {currentUser ? <p><a href={Router.path("account")}>My Account</a></p> : ""}
 
       <CanCreatePost user={currentUser}>
         <ModalButton label="New Post" className="button button--primary">
@@ -33,7 +33,7 @@ const Header = ({currentUser}) => {
             methodName="posts.new" 
             successCallback={(post)=>{
               Messages.flash("Post created.", "success");
-              FlowRouter.go('posts.single', post);
+              Router.go('posts.single', post);
             }}
           />
         </ModalButton>

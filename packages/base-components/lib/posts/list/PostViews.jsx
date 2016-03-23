@@ -1,3 +1,5 @@
+import Router from '../../router.js';
+
 const PostViews = props => {
 
   let views = ["top", "new", "best", "daily"];
@@ -12,7 +14,7 @@ const PostViews = props => {
       <h4>Sort By:</h4>
       <ul>
         {views.map(view => 
-          <li key={view}><a href={FlowRouter.extendPathWithQueryParams("posts.list", {}, {view: view})}>{view}</a></li>
+          <li key={view}><a href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})}>{view}</a></li>
         )}
       </ul>
     </div>

@@ -1,9 +1,10 @@
 import React from 'react';
+import Router from './router.js'
 import {mount} from 'react-mounter';
 
 // ------------------------------------- Posts -------------------------------- //
 
-FlowRouter.route('/', {
+Router.route('/', {
   name: 'posts.list',
   action(params, queryParams) {
 
@@ -24,8 +25,8 @@ FlowRouter.route('/', {
   }
 });
 
-FlowRouter.route('/daily/:days?', {
-  name: 'posts.list',
+Router.route('/daily/:days?', {
+  name: 'posts.daily',
   action(params, queryParams) {
 
     ({AppContainer, PostDaily} = Telescope.components);
@@ -34,7 +35,7 @@ FlowRouter.route('/daily/:days?', {
   }
 });
 
-FlowRouter.route('/posts/:_id', {
+Router.route('/posts/:_id', {
   name: 'posts.single',
   action(params, queryParams) {
     ({AppContainer, DocumentContainer, Post} = Telescope.components);
@@ -50,7 +51,7 @@ FlowRouter.route('/posts/:_id', {
   }
 });
 
-// FlowRouter.route('/posts/:_id/edit', {
+// Router.route('/posts/:_id/edit', {
 //   name: 'posts.edit',
 //   action(params, queryParams) {
 //     ({AppContainer, DocumentContainer} = Telescope.components);
@@ -64,7 +65,7 @@ FlowRouter.route('/posts/:_id', {
 //   }
 // });
 
-FlowRouter.route('/users/:slug', {
+Router.route('/users/:slug', {
   name: 'users.single',
   action(params, queryParams) {
     ({AppContainer, DocumentContainer, UsersSingle} = Telescope.components);
@@ -79,7 +80,7 @@ FlowRouter.route('/users/:slug', {
   }
 });
 
-FlowRouter.route('/account', {
+Router.route('/account', {
   name: 'account',
   action(params, queryParams) {
     ({AppContainer, DocumentContainer, UsersEdit} = Telescope.components);
@@ -94,7 +95,7 @@ FlowRouter.route('/account', {
   }
 });
 
-FlowRouter.route('/users/:slug/edit', {
+Router.route('/users/:slug/edit', {
   name: 'users.edit',
   action(params, queryParams) {
     ({AppContainer, DocumentContainer, UsersEdit} = Telescope.components);
@@ -109,7 +110,7 @@ FlowRouter.route('/users/:slug/edit', {
   }
 });
 
-FlowRouter.route('/cheatsheet', {
+Router.route('/cheatsheet', {
   name: 'cheatsheet',
   action() {
     ({AppContainer, Cheatsheet} = Telescope.components);
@@ -119,14 +120,14 @@ FlowRouter.route('/cheatsheet', {
 
 // ------------------------------------- Comments -------------------------------- //
 
-// FlowRouter.route('/comments/:_id', {
+// Router.route('/comments/:_id', {
 //   name: "commentPage",
 //   action: function(params, queryParams) {
 //     BlazeLayout.render("layout", {main: "comment_controller", commentTemplate: "comment_reply"});
 //   }
 // });
 
-// FlowRouter.route('/comments/:_id/edit', {
+// Router.route('/comments/:_id/edit', {
 //   name: "commentEdit",
 //   action: function(params, queryParams) {
 //     BlazeLayout.render("layout", {main: "comment_controller", commentTemplate: "comment_edit"});
@@ -142,28 +143,28 @@ FlowRouter.route('/cheatsheet', {
 //   }
 // });
 
-// FlowRouter.route('/users/:_idOrSlug', {
+// Router.route('/users/:_idOrSlug', {
 //   name: "userProfile",
 //   action: function(params, queryParams) {
 //     BlazeLayout.render("layout", {main: "user_controller", userTemplate: "user_profile"});
 //   }
 // });
 
-// FlowRouter.route('/users/:_idOrSlug/edit', {
+// Router.route('/users/:_idOrSlug/edit', {
 //   name: "userEdit",
 //   action: function(params, queryParams) {
 //     BlazeLayout.render("layout", {main: "user_controller", userTemplate: "user_edit"});
 //   }
 // });
 
-// FlowRouter.route('/account', {
+// Router.route('/account', {
 //   name: "userAccountShortcut",
 //   triggersEnter: [function(context, redirect) {
 //     redirect("userEdit", {_idOrSlug: Meteor.userId()});
 //   }]
 // });
 
-// FlowRouter.route('/sign-out', {
+// Router.route('/sign-out', {
 //   name: "signOut",
 //   triggersEnter: [function(context, redirect) {
 //     AccountsTemplates.logout();
