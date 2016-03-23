@@ -15,7 +15,7 @@ class Vote extends Component {
     e.preventDefault();
 
     const post = this.props.post;
-    const user = this.props.currentUser;
+    const user = this.context.currentUser;
 
     if(!user){
       Messages.flash("Please log in first");
@@ -36,7 +36,7 @@ class Vote extends Component {
     ({Icon} = Telescope.components);
 
     const post = this.props.post;
-    const user = this.props.currentUser;
+    const user = this.context.currentUser;
 
     let actionsClass = "vote";
     if (Users.hasUpvoted(user, post)) actionsClass += " voted upvoted";
@@ -55,9 +55,13 @@ class Vote extends Component {
 }
 
 Vote.propTypes = {
-  post: React.PropTypes.object.isRequired, // the current comment
-  currentUser: React.PropTypes.object, // the current user
+  post: React.PropTypes.object.isRequired, // the current post
+  // currentUser: React.PropTypes.object, // the current user
 }
+
+Vote.contextTypes = {
+  currentUser: React.PropTypes.object
+};
 
 module.exports = Vote;
 export default Vote;

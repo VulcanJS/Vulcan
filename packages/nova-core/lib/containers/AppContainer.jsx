@@ -20,6 +20,13 @@ const AppContainer = React.createClass({
     return data;
   },
 
+  childContextTypes: {
+    currentUser: React.PropTypes.object
+  },
+
+  getChildContext: function() {
+    return {currentUser: this.data.currentUser};
+  },
 
   render() {
     
