@@ -88,13 +88,24 @@ Meteor.publish('posts.list', function (terms) {
  * @param {Object} terms
  */
 Meteor.publish('posts.single', function (terms) {
-
-  check(terms, {_id: String});
+  
+  if(!!terms.slug)
+    check(terms, {slug: String});
+  else if(!!terms._id)
+    check(terms, {_id: String});
 
   const currentUser = Meteor.users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};
   const posts = Posts.find(terms, options);
-  const post = posts.fetch()[0];
+  console.log(terms,options)
+  var post = posts.fetch();
+  if(post.length)
+    post = post[0];
+  else{// accept posts/:slug as well
+    post = Posts.find({slug:terms._id}, options);
+    post = post[0];
+  }
+  console.log(post)
   const users = getSinglePostUsers(post);
 
   return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
