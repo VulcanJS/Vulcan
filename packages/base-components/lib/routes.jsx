@@ -40,6 +40,22 @@ FlowRouter.route('/posts/:_id', {
   }
 });
 
+FlowRouter.route('/p/:slug', {//short link for posts
+  name: 'posts.single',
+  action(params, queryParams) {
+    ({AppContainer, DocumentContainer, Post} = Telescope.components);
+    mount(AppContainer, {content: 
+      <DocumentContainer 
+        collection={Posts} 
+        publication="posts.single" 
+        selector={params}
+        terms={params}
+        joins={Posts.getJoins()}
+        component={Post}
+      />});
+  }
+});
+
 // FlowRouter.route('/posts/:_id/edit', {
 //   name: 'posts.edit',
 //   action(params, queryParams) {
