@@ -3,6 +3,13 @@
 // Collection Hooks                                 //
 //////////////////////////////////////////////////////
 
+//check if there is any same slug 
+function sameSlug(s){
+  if( Posts.findOne({slug:s}).fetch().length )
+    return true;
+  return false;
+}
+
 /**
  * Generate HTML body from Markdown on post insert
  */
@@ -10,6 +17,9 @@ Posts.before.insert(function (userId, doc) {
   if(!!doc.body){
     doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
     doc.excerpt = Telescope.utils.trimHTML(doc.htmlBody,30);//30 words only
+  }
+  while( sameSlug( doc.slug ) ){//check if slug exist if not generate a new one
+    doc.slug = doc.slug + Math.floor((Math.random() * 1000) + 1);//append a random number between 1 and 10:
   }
 });
 
