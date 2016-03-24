@@ -41,11 +41,12 @@
 }
 
 .post-title{
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
   .post-title-link{
+    color: $black;
     &, &:active, &:hover{
       text-decoration: none;
     }
@@ -112,5 +113,20 @@
 .post-commenters{
   .user-avatar{
     margin-right: $hmargin;
+  }
+}
+
+.post-load-more{
+  display: block;
+  text-align: center;
+  border: 1px solid $light-border;
+  border-radius: 3px;
+  font-size: 1.25rem;
+  padding: 10px 20px;
+  &:hover{
+    background: $blue;
+    color: $white;
+    border-color: $blue;
+    text-decoration: none;
   }
 }
