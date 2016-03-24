@@ -45,11 +45,14 @@ class PostItem extends Component {
 
     const post = this.props.post;
 
+    let postClass = "post-item"; 
+    if (post.sticky) postClass += " post-sticky";
+
     // console.log(post)
     // console.log(post.user)
 
     return (
-      <div className="post-item">
+      <div className={postClass}>
         
         <div className="post-vote">
           <Vote post={post} currentUser={this.props.currentUser}/>

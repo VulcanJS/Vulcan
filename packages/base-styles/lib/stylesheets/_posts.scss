@@ -1,6 +1,21 @@
+
+.post-list-content{
+  border-top: 1px solid $light-border;
+  // padding-top: 15px;
+  // margin-top: 15px;
+  margin-bottom: $vmargin;
+}
+
 .post-item{
   display: flex;
   align-items: center;
+  border-bottom: 1px solid $light-border;
+  padding: $vmargin 5px;
+  // margin-bottom: 15px;
+  &.post-sticky{
+    background: $light-yellow;
+
+  }
 }
 
 .post-vote{
