@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import Actions from "../actions.js";
+import { Button } from 'react-bootstrap';
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
@@ -48,14 +49,14 @@ class NewsletterForm extends Component {
           label={this.props.labelText}
           type="text"
         />
-        <button type="submit" className="button button--primary">{this.props.buttonText}</button>
+        <Button bsStyle="primary">{this.props.buttonText}</Button>
       </Formsy.Form>
     )
   }
 
   renderButton() {
     return (
-      <button onClick={this.subscribeUser} type="submit" className="button button--primary">{this.props.buttonText}</button>
+      <Button onClick={this.subscribeUser} bsStyle="primary">{this.props.buttonText}</Button>
     )
   }
 

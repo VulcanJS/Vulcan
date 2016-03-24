@@ -35,7 +35,7 @@ Router.route('/daily/:days?', {
   }
 });
 
-Router.route('/posts/:_id', {
+Router.route('/posts/:_id/:slug?', {
   name: 'posts.single',
   action(params, queryParams) {
     ({AppContainer, DocumentContainer, Post} = Telescope.components);

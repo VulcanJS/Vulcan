@@ -20,4 +20,4 @@ Telescope.registerComponent("CurrentUserContainer", require('./containers/Curren
 Telescope.registerComponent("NewDocContainer", FormContainers.NewDocContainer);
 Telescope.registerComponent("EditDocContainer", FormContainers.EditDocContainer);
 
-Telescope.registerComponent("ModalButton", require('./components/ModalButton.jsx'));
+Telescope.registerComponent("ModalTrigger", require('./components/ModalTrigger.jsx'));

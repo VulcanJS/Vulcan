@@ -6,7 +6,7 @@ import Core from 'meteor/nova:core';
 import SmartContainers from "meteor/utilities:react-list-container";
 import FormContainers from "meteor/utilities:react-form-containers";
 
-const ModalButton = Core.ModalButton;
+const ModalTrigger = Core.ModalTrigger;
 const NewDocContainer = FormContainers.NewDocContainer;
 const EditDocContainer = FormContainers.EditDocContainer;
 const ListContainer = SmartContainers.ListContainer;
@@ -56,9 +56,9 @@ class MoviesList extends Component {
   renderNew() {
     
     const component = (
-      <ModalButton label="Add Movie" className="button button--primary">
+      <ModalTrigger label="Add Movie" className="button button--primary">
         <NewDocContainer collection={Movies} label="Add Movie" methodName="movies.create"/>
-      </ModalButton>
+      </ModalTrigger>
     )
     
     return !!this.props.currentUser ? component : "";
@@ -86,9 +86,9 @@ class Movie extends Component {
     const movie = this.props;
 
     const component = (
-      <ModalButton label="Edit" className="button button--secondary">
+      <ModalTrigger label="Edit" className="button button--secondary">
         <EditDocContainer collection={Movies} document={movie} label="Edit Movie" methodName="movies.edit"/>
-      </ModalButton>
+      </ModalTrigger>
     );
 
     return (

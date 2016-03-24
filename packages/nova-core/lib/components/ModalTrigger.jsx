@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-
+import { Button } from 'react-bootstrap';
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -13,7 +13,7 @@ const customStyles = {
   }
 };
 
-class ModalButton extends Component {
+class ModalTrigger extends Component {
 
   constructor() {
     super();
@@ -34,7 +34,6 @@ class ModalButton extends Component {
 
   render() {
     
-    const Component = this.props.component;
 
     // see http://stackoverflow.com/a/32371612/649299
     const childrenWithProps = React.Children.map(this.props.children, (child) => {
@@ -55,9 +54,11 @@ class ModalButton extends Component {
 
     });
 
+    const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
+
     return (
       <div className="new-post-button">
-        <button onClick={this.openModal} className={this.props.className}>{this.props.label}</button>
+        {triggerComponent}
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
@@ -70,10 +71,9 @@ class ModalButton extends Component {
   }
 };
 
-ModalButton.propTypes = {
-  label: React.PropTypes.string.isRequired,
-  className: React.PropTypes.string
+ModalTrigger.propTypes = {
+  component: React.PropTypes.object.isRequired
 }
 
-module.exports = ModalButton;
-export default ModalButton;
+module.exports = ModalTrigger;
+export default ModalTrigger;

@@ -1,11 +1,13 @@
 import NoSSR from 'react-no-ssr';
 import Router from '../router.js'
 import Core from "meteor/nova:core";
+import { Button } from 'react-bootstrap';
+
 const Messages = Core.Messages;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalButton, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm, SearchForm} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, FlashContainer, FlashMessages, ModalTrigger, NewDocContainer, CanCreatePost, CurrentUserContainer, NewsletterForm, SearchForm} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -20,13 +22,13 @@ const Header = ({currentUser}) => {
       <div className="nav">
         <ListContainer collection={Categories} limit={0}><CategoriesList/></ListContainer>
       </div>
-      
+
       <LogInButtons />
       
       {currentUser ? <p><a href={Router.path("account")}>My Account</a></p> : ""}
 
       <CanCreatePost user={currentUser}>
-        <ModalButton label="New Post" className="button button--primary">
+        <ModalTrigger component={<Button bsStyle="primary">New Post</Button>}>
           <NewDocContainer 
             collection={Posts} 
             label="New Post" 
@@ -36,7 +38,7 @@ const Header = ({currentUser}) => {
               Router.go('posts.single', post);
             }}
           />
-        </ModalButton>
+        </ModalTrigger>
       </CanCreatePost>
 
       <CurrentUserContainer component={NewsletterForm} />

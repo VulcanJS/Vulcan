@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Button } from 'react-bootstrap';
 
 class PostItem extends Component {
 
@@ -18,17 +19,17 @@ class PostItem extends Component {
 
   renderActions() {
 
-    ({ModalButton, DocumentContainer, EditDocContainer} = Telescope.components);
+    ({ModalTrigger, DocumentContainer, EditDocContainer} = Telescope.components);
 
     const component = (
-      <ModalButton label="Edit" className="button button--secondary">
+      <ModalTrigger component={<Button bsStyle="info">Edit</Button>}>
         <EditDocContainer 
           collection={Posts} 
           document={this.props.post} 
           label="Edit Post" 
           methodName="posts.edit"
         />
-      </ModalButton>
+      </ModalTrigger>
     );
 
     return (

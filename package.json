@@ -2,15 +2,25 @@
   "name": "Nova",
   "version": "0.0.0",
   "dependencies": {
+    "bootstrap": "^4.0.0-alpha.2",
+    "classnames": "^2.2.3",
     "formsy-react": "^0.17.0",
     "formsy-react-components": "^0.6.6",
-    "classnames": "^2.2.3",
-    "react": "^0.14.6",
+    "react": "^0.14.7",
     "react-addons-pure-render-mixin": "^0.14.7",
+    "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.6",
+    "react-modal": "^0.6.1",
     "react-mounter": "^1.1.0",
-    "react-no-ssr": "^1.0.1",
-    "react-modal": "^0.6.1"
+    "react-no-ssr": "^1.0.1"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "autoprefixer": "^6.3.4"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {"browsers": ["last 2 versions"]}
+    }
+  }
 }

@@ -1,4 +1,4 @@
 import Messages from "./messages.js";
-import ModalButton from "./components/ModalButton.jsx";
+import ModalTrigger from "./components/ModalTrigger.jsx";
 
-export default {Messages, ModalButton};
+export default {Messages, ModalTrigger};
