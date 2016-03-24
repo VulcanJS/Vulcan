@@ -57,7 +57,7 @@ class ModalTrigger extends Component {
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
 
     return (
-      <div className="new-post-button">
+      <div className="modal-trigger">
         {triggerComponent}
         <Modal
           isOpen={this.state.modalIsOpen}

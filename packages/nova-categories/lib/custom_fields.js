@@ -23,6 +23,7 @@ Posts.addField(
           return categories;
         }
       },
+      publish: true,
       join: {
         joinAs: "categoriesArray",
         collection: () => Categories

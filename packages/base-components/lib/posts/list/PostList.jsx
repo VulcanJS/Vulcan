@@ -1,5 +1,8 @@
 const PostList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore, showViews = true}) => {
 
+  // console.log(results);
+  // console.log(ready);
+
   ({PostItem, LoadMore, PostsLoading, NoPosts, NoMorePosts, PostViews} = Telescope.components);
 
   if (!!results.length) {

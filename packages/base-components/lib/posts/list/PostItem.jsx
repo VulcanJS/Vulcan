@@ -7,14 +7,14 @@ class PostItem extends Component {
 
     ({PostCategories} = Telescope.components);
 
-    return this.props.post.categoriesArray ? <PostCategories categories={this.props.post.categoriesArray} /> : "";
+    return this.props.post.categoriesArray ? <PostCategories post={this.props.post} /> : "";
   }
 
   renderCommenters() {
 
     ({PostCommenters} = Telescope.components);
 
-    return this.props.post.commentersArray ? <PostCommenters commenters={this.props.post.commentersArray}/> : "";
+    return this.props.post.commentersArray ? <PostCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
@@ -22,7 +22,7 @@ class PostItem extends Component {
     ({ModalTrigger, DocumentContainer, EditDocContainer} = Telescope.components);
 
     const component = (
-      <ModalTrigger component={<Button bsStyle="info">Edit</Button>}>
+      <ModalTrigger component={<a href="#" className="edit-link">Edit</a>}>
         <EditDocContainer 
           collection={Posts} 
           document={this.props.post} 
@@ -41,22 +41,39 @@ class PostItem extends Component {
   
   render() {
 
-    ({UserAvatar, Vote, PostStats} = Telescope.components);
+    ({UserAvatar, UserName, Vote, PostStats} = Telescope.components);
 
     const post = this.props.post;
+
+    // console.log(post)
+    // console.log(post.user)
 
     return (
       <div className="post-item">
         
-        <Vote post={post} currentUser={this.props.currentUser}/>
-        <h3 className="post-title"><a href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a></h3>
-        <p><a href={Users.getProfileUrl(post.user)}><UserAvatar user={post.user}/>{Users.getDisplayName(post.user)}</a>, {moment(post.postedAt).fromNow()}, {post.commentCount} comments</p>
+        <div className="post-vote">
+          <Vote post={post} currentUser={this.props.currentUser}/>
+        </div>
         
-        <PostStats post={post} />
+        <div className="post-content">
+          
+          <h3 className="post-title">
+            <a className="post-title-link" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a>
+            {this.renderCategories()}
+          </h3>
+          
+          <div className="post-meta">
+            <UserAvatar user={post.user} size="small"/>
+            <UserName user={post.user}/>
+            <div className="post-date">{moment(post.postedAt).fromNow()}</div>
+            <PostStats post={post} />
+            {this.renderActions()}
 
-        {this.renderCategories()}
+          </div>
+        </div>
+
         {this.renderCommenters()}
-        {this.renderActions()}
+        
       
       </div>
     )

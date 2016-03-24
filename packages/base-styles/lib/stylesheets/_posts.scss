@@ -1,0 +1,116 @@
+.post-item{
+  display: flex;
+  align-items: center;
+}
+
+.post-vote{
+  margin-right: $hmargin;
+}
+
+.upvote-button{
+  border: 1px solid $light-border;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 5px;
+  .icon{
+    text-align: center;
+    display: block;
+  }
+  .vote-count{
+    text-align: center;
+    display: block;
+  }
+  .voted &{
+    color: $light-text;
+  }
+  &:hover{
+    background: $blue;
+    color: $white;
+    border-color: $blue;
+  }
+  &, &:active, &:hover{
+    text-decoration: none;
+  }
+}
+
+.post-content{
+  flex-grow: 1;
+}
+
+.post-title{
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  .post-title-link{
+    &, &:active, &:hover{
+      text-decoration: none;
+    }
+  }
+}
+
+.post-categories{
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  a{
+    display: block;
+    font-size: 0.8rem;
+    border: 1px solid $light-grey;
+    border-radius: 3px;
+    margin-right: 5px;
+    padding: 2px 6px;
+    &:hover{
+      background: $blue;
+      color: $white;
+      border-color: $blue;
+      text-decoration: none;
+    }
+  }
+}
+
+.post-meta{
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  .user-avatar, .user-name, .post-date, .post-stats, .post-actions{
+    margin-right: 5px;
+  }
+}
+
+.post-date{
+  color: $medium-text;
+}
+
+.post-stats{
+  border: 1px solid $light-border;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  >span{
+    border-right: 1px solid $light-border;
+    padding: 2px 5px;
+    display: inline-block;
+    &:last-child{
+      border: none;
+    }
+  }
+}
+
+.post-actions{
+  display: flex;
+  align-items: center;
+}
+
+.post-comments{
+  display: flex;
+  align-items: center;
+}
+
+.post-commenters{
+  .user-avatar{
+    margin-right: $hmargin;
+  }
+}

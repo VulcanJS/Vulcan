@@ -70,8 +70,8 @@ Meteor.publish('posts.list', function (terms) {
     terms.currentUserId = this.userId; // add currentUserId to terms
     ({selector, options} = Posts.parameters.get(terms));
     
-    // disabled for now because of FlowRouterSSR issue
-    // Counts.publish(this, 'posts.list', Posts.find(selector, options));
+    // note: enabling Counts.publish messes up SSR
+    Counts.publish(this, 'posts.list', Posts.find(selector, options));
 
     options.fields = Posts.publishedFields.list;
 

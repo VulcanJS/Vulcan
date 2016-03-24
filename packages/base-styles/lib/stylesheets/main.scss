@@ -1,4 +1,13 @@
 
+@import "colors";
+@import "variables";
+@import "global";
+
+@import "categories";
+@import "comments";
+@import "common";
+@import "posts";
+
 body{
   background: #eee;
 }
@@ -15,7 +24,7 @@ body{
 }
 
 
-.post-views, .logo, .nav, .alt-accounts-log-in-buttons, .post-categories, .post-commenters{
+.post-views, .logo, .nav, .alt-accounts-log-in-buttons{
   margin-bottom: 15px;
 }
 
@@ -120,8 +129,4 @@ code{
 
 .post-day h2{
   font-weight: bold;
-}
-
-body{
-  display: flex;
 }

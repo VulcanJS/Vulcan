@@ -21,13 +21,15 @@ Package.onUse(function (api) {
     'lib/stylesheets/bootstrap.css',
 
     // 'lib/stylesheets/solid.1.4.4.css',
-    'lib/stylesheets/main.scss',
-    // '/node_modules/bootstrap/dist/css/bootstrap.css',
-    'lib/stylesheets/categories.scss',
-    'lib/stylesheets/comments.scss',
-    'lib/stylesheets/common.scss',
-    'lib/stylesheets/posts.scss',
-    'lib/stylesheets/users.scss'
+    'lib/stylesheets/_colors.scss',
+    'lib/stylesheets/_variables.scss',
+    'lib/stylesheets/_global.scss',
+    'lib/stylesheets/_categories.scss',
+    'lib/stylesheets/_comments.scss',
+    'lib/stylesheets/_common.scss',
+    'lib/stylesheets/_posts.scss',
+    'lib/stylesheets/_users.scss',
+    'lib/stylesheets/main.scss'
   ], ['client']);
 
 });
