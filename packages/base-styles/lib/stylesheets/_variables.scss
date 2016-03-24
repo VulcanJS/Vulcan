@@ -1,2 +1,11 @@
 $hmargin: 10px;
 $vmargin: 15px;
+
+@mixin blueHover{
+  &:hover{
+    background: $blue;
+    color: $white;
+    border-color: $blue;
+    text-decoration: none;
+  }
+}

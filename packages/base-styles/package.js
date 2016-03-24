@@ -28,6 +28,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/_comments.scss',
     'lib/stylesheets/_common.scss',
     'lib/stylesheets/_posts.scss',
+    'lib/stylesheets/_newsletter.scss',
     'lib/stylesheets/_users.scss',
     'lib/stylesheets/main.scss'
   ], ['client']);

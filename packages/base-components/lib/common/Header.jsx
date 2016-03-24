@@ -19,10 +19,7 @@ const Header = ({currentUser}) => {
         <Logo logoUrl={logoUrl} siteTitle={siteTitle} />
         {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
       </div>
-      <div className="nav">
-        <ListContainer collection={Categories} limit={0}><CategoriesList/></ListContainer>
-      </div>
-
+      
       <LogInButtons />
       
       {currentUser ? <p><a href={Router.path("account")}>My Account</a></p> : ""}
@@ -43,10 +40,12 @@ const Header = ({currentUser}) => {
 
       <CurrentUserContainer component={NewsletterForm} />
 
-      <SearchForm/>
-
       <FlashContainer component={FlashMessages}/>
 
+      <div className="nav">
+        <ListContainer collection={Categories} limit={0}><CategoriesList/></ListContainer>
+      </div>
+    
     </header>
   )
 }

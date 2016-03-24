@@ -1,4 +1,22 @@
 
+.post-list-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-views{
+  a{
+    border: 1px solid $light-border;
+    @include blueHover;
+    // border-radius: 3px;
+    // padding: 3px 5px;
+    // margin-right: 5px;
+    &.post-view-active{
+      background: $light-blue;
+    }
+  }
+}
 .post-list-content{
   border-top: 1px solid $light-border;
   // padding-top: 15px;
@@ -41,11 +59,7 @@
   .voted &{
     color: $light-text;
   }
-  &:hover{
-    background: $blue;
-    color: $white;
-    border-color: $blue;
-  }
+  @include blueHover;
   &, &:active, &:hover{
     text-decoration: none;
   }
@@ -79,12 +93,7 @@
     border-radius: 3px;
     margin-right: 5px;
     padding: 2px 6px;
-    &:hover{
-      background: $blue;
-      color: $white;
-      border-color: $blue;
-      text-decoration: none;
-    }
+    @include blueHover;
   }
 }
 
@@ -138,10 +147,5 @@
   border-radius: 3px;
   font-size: 1.25rem;
   padding: 10px 20px;
-  &:hover{
-    background: $blue;
-    color: $white;
-    border-color: $blue;
-    text-decoration: none;
-  }
+  @include blueHover;
 }

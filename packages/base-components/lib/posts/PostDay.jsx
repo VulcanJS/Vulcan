@@ -25,7 +25,7 @@ const PostDay = ({date, number}) => {
         terms={terms} 
         joins={Posts.getJoins()}
         component={PostList}
-        componentProps={{showViews: false}}
+        componentProps={{showHeader: false}}
       />
     </div>
   )

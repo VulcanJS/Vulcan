@@ -21,11 +21,19 @@ const AppContainer = React.createClass({
   },
 
   childContextTypes: {
-    currentUser: React.PropTypes.object
+    currentUser: React.PropTypes.object,
+    currentRoute: React.PropTypes.object
   },
 
   getChildContext: function() {
-    return {currentUser: this.data.currentUser};
+
+    FlowRouter.watchPathChange();
+
+    return {
+      currentUser: this.data.currentUser,
+      currentRoute: FlowRouter.current()
+    };
+
   },
 
   render() {
