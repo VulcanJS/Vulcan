@@ -13,7 +13,7 @@ const UserMenu = ({user}) => {
         <div>{Users.getDisplayName(user)}</div>
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", user)}>Profile</MenuItem>
+        <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}>Profile</MenuItem>
         <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}>Edit Account</MenuItem>
         <MenuItem className="dropdown-item" eventKey="3" href={Router.path("account")}>Log Out</MenuItem>
       </Dropdown.Menu>
