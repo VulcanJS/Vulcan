@@ -42,12 +42,13 @@ class NewsletterForm extends Component {
 
   renderForm() {
     return (
-      <Formsy.Form onSubmit={this.subscribeEmail}>
+      <Formsy.Form className="newsletter-form" onSubmit={this.subscribeEmail}>
         <Input
           name="email"
           value=""
-          label={this.props.labelText}
+          placeholder={this.props.labelText}
           type="text"
+          layout="elementOnly"
         />
         <Button bsStyle="primary">{this.props.buttonText}</Button>
       </Formsy.Form>
@@ -56,7 +57,7 @@ class NewsletterForm extends Component {
 
   renderButton() {
     return (
-      <Button onClick={this.subscribeUser} bsStyle="primary">{this.props.buttonText}</Button>
+      <Button className="newsletter-button" onClick={this.subscribeUser} bsStyle="primary">{this.props.buttonText}</Button>
     )
   }
 
@@ -64,8 +65,8 @@ class NewsletterForm extends Component {
     if (Telescope.settings.get("showBanner", true)) {
       return (
         <div className="newsletter">
-          <h3>{this.props.headerText}</h3>
-          {this.props.currentUser ? this.renderButton() : this.renderForm()}
+          <h4 className="newsletter-tagline">{this.props.headerText}</h4>
+          {this.context.currentUser ? this.renderButton() : this.renderForm()}
         </div>
       )
     } else {
@@ -75,7 +76,6 @@ class NewsletterForm extends Component {
 }
 
 NewsletterForm.propTypes = {
-  currentUser: React.PropTypes.object,
   headerText: React.PropTypes.string,
   labelText: React.PropTypes.string,
   buttonText: React.PropTypes.string,
@@ -87,6 +87,10 @@ NewsletterForm.defaultProps = {
   labelText: "Your Email",
   buttonText: "Subscribe",
   successMessage: "Thanks for subscribing!"
+};
+
+NewsletterForm.contextTypes = {
+  currentUser: React.PropTypes.object
 };
 
 module.exports = NewsletterForm;

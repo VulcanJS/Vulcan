@@ -69,6 +69,7 @@ class PostItem extends Component {
             <UserAvatar user={post.user} size="small"/>
             <UserName user={post.user}/>
             <div className="post-date">{moment(post.postedAt).fromNow()}</div>
+            <div className="post-comments"><a href={Posts.getLink(post)}>{post.commentCount}&nbsp;comments</a></div>
             <PostStats post={post} />
             {this.renderActions()}
 

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Alert } from 'react-bootstrap';
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
@@ -10,10 +11,14 @@ class Flash extends Component{
   }
 
   render() {
+
+    let type = this.props.message.type;
+    type = type === "error" ? "danger" : type; // if type is "error", use "danger" instead
+
     return (
-      <div className={`flash-message page-message page-message--${this.props.message.type}`}>
-        <div className="page-message__text">{this.props.message.content}</div>
-      </div>
+      <Alert className="flash-message" bsStyle={type}>
+        {this.props.message.content}
+      </Alert>
     )
   }
 }

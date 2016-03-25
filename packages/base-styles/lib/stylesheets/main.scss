@@ -4,45 +4,37 @@
 @import "global";
 
 @import "categories";
+@import "cheatsheet";
 @import "comments";
-@import "common";
+@import "header";
 @import "newsletter";
+@import "other";
 @import "posts";
 
 body{
-  background: #eee;
   color: $black;
 }
 
-.wrapper{
-  padding: 15px;
-}
-
-.main{
-  background: #fff;
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px #ccc solid;
-}
 
 
-.post-views, .logo, .nav, .alt-accounts-log-in-buttons{
-  margin-bottom: 15px;
-}
 
-.post-views ul, .categories ul, .post-categories ul, .post-commenters ul{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
+// .post-views, .logo, .nav, .alt-accounts-log-in-buttons{
+//   margin-bottom: 15px;
+// }
 
-.post-views li, .categories li, .post-categories li, .post-commenters li{
-  display: inline-block;
-  margin-right: 5px;
-  border: 1px solid #ddd;
-  padding: 3px 5px;
-  background: #efefef;
-}
+// .post-views ul, .categories ul, .post-categories ul, .post-commenters ul{
+//   list-style-type: none;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .post-views li, .categories li, .post-categories li, .post-commenters li{
+//   display: inline-block;
+//   margin-right: 5px;
+//   border: 1px solid #ddd;
+//   padding: 3px 5px;
+//   background: #efefef;
+// }
 
 .comment-node{
   border-left: 10px #efefef solid;
@@ -69,40 +61,6 @@ code{
   padding: 3px 6px;
 }
 
-.cheatsheet h1{
-  margin-bottom: 20px;
-}
-.cheatsheet-wrapper{
-  display: flex;
-}
-.cheatsheet-block{
-  flex: 1;
-  margin-right: 20px;
-}
-.cheatsheet-block:last-of-type{
-  margin-right: 0;
-}
-
-.cheatsheet ul{
-  list-style-type: none;
-  margin-bottom: 20px;
-  padding-left: 0px;
-}
-.cheatsheet ul li{
-  margin-bottom: 10px;
-}
-.cheatsheet h2{
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
-}
-.cheatsheet h3{
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-.cheatsheet code{
-  font-size: 13px;
-}
 
 .avatar{
   height: 24px;

@@ -12,15 +12,24 @@ const PostViews = (props, context) => {
   }
 
   const currentRoute = context.currentRoute;
+  const currentView = currentRoute.queryParams.view || props.defaultView;
   // console.log(currentRoute);
   
   return (
     <div className="post-views">
       <ButtonGroup>
-        {views.map(view => <Button className={currentRoute.queryParams.view === view ? "post-view-active" : ""} bsStyle="default" key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})}>{view}</Button>)}
+        {views.map(view => <Button className={currentView === view ? "post-view-active" : ""} bsStyle="default" key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})}>{view}</Button>)}
       </ButtonGroup>
     </div>
   )
+}
+
+PostViews.propTypes = {
+  defaultView: React.PropTypes.string
+}
+
+PostViews.defaultProps = {
+  defaultView: "top"
 }
 
 PostViews.contextTypes = {

@@ -1,15 +1,15 @@
 
 .post-list-header{
-  display: flex;
-  align-items: center;
+  @include flex-center;
   justify-content: space-between;
+  margin-bottom: $vmargin;
 }
 
 .post-views{
   a{
-    border: 1px solid $light-border;
+    @include border;
     @include blueHover;
-    // border-radius: 3px;
+    // @include border-radius;
     // padding: 3px 5px;
     // margin-right: 5px;
     &.post-view-active{
@@ -18,16 +18,15 @@
   }
 }
 .post-list-content{
-  border-top: 1px solid $light-border;
+  border-top: $border;
   // padding-top: 15px;
   // margin-top: 15px;
   margin-bottom: $vmargin;
 }
 
 .post-item{
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid $light-border;
+  @include flex-center;
+  border-bottom: $border;
   padding: $vmargin 5px;
   // margin-bottom: 15px;
   &.post-sticky{
@@ -41,11 +40,10 @@
 }
 
 .upvote-button{
-  border: 1px solid $light-border;
-  border-radius: 3px;
-  display: flex;
+  @include border;
+  @include border-radius;
+  @include flex-center;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   padding: 3px 5px;
   .icon{
@@ -72,8 +70,7 @@
 .post-title{
   font-size: 1.35rem;
   margin-bottom: 5px;
-  display: flex;
-  align-items: center;
+  @include flex-center;
   .post-title-link{
     color: $black;
     &, &:active, &:hover{
@@ -83,14 +80,13 @@
 }
 
 .post-categories{
-  display: flex;
-  align-items: center;
+  @include flex-center;
   margin-left: 5px;
   a{
     display: block;
     font-size: 0.8rem;
-    border: 1px solid $light-grey;
-    border-radius: 3px;
+    @include border;
+    @include border-radius;
     margin-right: 5px;
     padding: 2px 6px;
     @include blueHover;
@@ -99,23 +95,25 @@
 
 .post-meta{
   font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  .user-avatar, .user-name, .post-date, .post-stats, .post-actions{
+  @include flex-center;
+  .user-avatar{
     margin-right: 5px;
+  }
+  .user-name, .post-date, .post-comments, .post-stats, .post-actions{
+    margin-right: $hmargin;
   }
 }
 
-.post-date{
+.post-date, .post-comments{
   color: $medium-text;
 }
 
 .post-stats{
-  border: 1px solid $light-border;
-  border-radius: 3px;
+  @include border;
+  @include border-radius;
   font-size: 0.8rem;
-  >span{
-    border-right: 1px solid $light-border;
+  .post-stat{
+    border-right: $border;
     padding: 2px 5px;
     display: inline-block;
     &:last-child{
@@ -125,13 +123,11 @@
 }
 
 .post-actions{
-  display: flex;
-  align-items: center;
+  @include flex-center;
 }
 
 .post-comments{
-  display: flex;
-  align-items: center;
+  @include flex-center;
 }
 
 .post-commenters{
@@ -143,8 +139,8 @@
 .post-load-more{
   display: block;
   text-align: center;
-  border: 1px solid $light-border;
-  border-radius: 3px;
+  @include border;
+  @include border-radius;
   font-size: 1.25rem;
   padding: 10px 20px;
   @include blueHover;

@@ -1,6 +1,8 @@
 $hmargin: 10px;
 $vmargin: 15px;
 
+$border: 1px solid $light-border;
+
 @mixin blueHover{
   &:hover{
     background: $blue;
@@ -9,3 +11,16 @@ $vmargin: 15px;
     text-decoration: none;
   }
 }
+
+@mixin flex-center{
+  display: flex;
+  align-items: center;
+}
+
+@mixin border-radius{
+  border-radius: .25rem;
+}
+@mixin border{
+  border: $border;
+}
+
