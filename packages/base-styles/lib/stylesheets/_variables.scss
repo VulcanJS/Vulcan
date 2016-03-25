@@ -3,11 +3,11 @@ $vmargin: 15px;
 
 $border: 1px solid $light-border;
 
-@mixin blueHover{
+@mixin activeHover{
   &:hover{
-    background: $blue;
+    background: $active-color;
     color: $white;
-    border-color: $blue;
+    border-color: $active-color;
     text-decoration: none;
   }
 }

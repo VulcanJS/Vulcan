@@ -8,10 +8,12 @@
 .post-views{
   a{
     @include border;
-    @include blueHover;
     // @include border-radius;
     // padding: 3px 5px;
     // margin-right: 5px;
+    &.post-view-inactive{
+      @include activeHover;
+    }
     &.post-view-active{
       background: $light-blue;
     }
@@ -57,7 +59,7 @@
   .voted &{
     color: $light-text;
   }
-  @include blueHover;
+  @include activeHover;
   &, &:active, &:hover{
     text-decoration: none;
   }
@@ -89,7 +91,7 @@
     @include border-radius;
     margin-right: 5px;
     padding: 2px 6px;
-    @include blueHover;
+    @include activeHover;
   }
 }
 
@@ -143,5 +145,5 @@
   @include border-radius;
   font-size: 1.25rem;
   padding: 10px 20px;
-  @include blueHover;
+  @include activeHover;
 }

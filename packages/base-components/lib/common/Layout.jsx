@@ -7,9 +7,9 @@ const Layout = props => {
 
       <Header {...props}/>
     
-      <FlashContainer component={FlashMessages}/>
-    
       <div className="main">
+
+        <FlashContainer component={FlashMessages}/>
 
         <NewsletterForm />
 

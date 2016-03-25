@@ -38,7 +38,7 @@ Router.route('/daily/:days?', {
 Router.route('/posts/:_id/:slug?', {
   name: 'posts.single',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, Post} = Telescope.components);
+    ({AppContainer, DocumentContainer, PostPage} = Telescope.components);
     mount(AppContainer, {content: 
       <DocumentContainer 
         collection={Posts} 
@@ -46,7 +46,7 @@ Router.route('/posts/:_id/:slug?', {
         selector={params}
         terms={params}
         joins={Posts.getJoins()}
-        component={Post}
+        component={PostPage}
       />});
   }
 });

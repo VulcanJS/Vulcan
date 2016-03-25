@@ -1,4 +1,4 @@
-const Post = ({document, currentUser}) => {
+const PostPage = ({document, currentUser}) => {
   
   ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare, Vote, PostStats} = Telescope.components);
 
@@ -42,4 +42,4 @@ const Post = ({document, currentUser}) => {
   )
 }
 
-module.exports = Post;
+module.exports = PostPage;
