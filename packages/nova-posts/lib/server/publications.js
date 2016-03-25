@@ -90,7 +90,7 @@ Meteor.publish('posts.list', function (terms) {
  */
 Meteor.publish('posts.single', function (terms) {
 
-  check(terms, {_id: String});
+  check(terms, Match.OneOf({_id: String}, {_id: String, slug: String}));
 
   const currentUser = Meteor.users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};

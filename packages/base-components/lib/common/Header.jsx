@@ -15,17 +15,24 @@ const Header = ({currentUser}) => {
   return (
     <div className="header-wrapper">
       <header className="header">
-       <div className="logo">
+
+        <div className="logo">
           <Logo logoUrl={logoUrl} siteTitle={siteTitle} />
           {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
         </div>
         
-        <LogInButtons />
-        
-        {currentUser ? <p><a href={Router.path("account")}>My Account</a></p> : ""}
+        <div className="nav">
+          
+          <div className="nav-user">
+            {currentUser ? <a href={Router.path("account")}>My Account</a> : <LogInButtons />}
+          </div>
 
-        <NewPostButton/>
-      
+          <div className="nav-new-post">
+            <NewPostButton/>
+          </div>
+
+        </div>
+
       </header>
     </div>
   )

@@ -22,6 +22,9 @@ const UserAvatar = ({user, size}) => {
     display: "block"
   }; 
 
+  console.log(user)
+  console.log(Avatar.getUrl(user))
+  
   return (
     <a style={aStyle} className="user-avatar" href={Users.getProfileUrl(user)}>
       <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={Avatar.getUrl(user)}/>

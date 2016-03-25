@@ -2,3 +2,33 @@
   background: $light-grey;
   margin-bottom: $vmargin;
 }
+
+.header{
+  @include flex-center;
+  justify-content: space-between;
+  padding: $vmargin 0;
+}
+
+.logo{
+  display: flex;
+  align-items: baseline;
+  .logo-text{
+    margin-right: $hmargin;
+  }
+  .logo-image{
+    margin-right: $hmargin;
+  }
+  .tagline{
+    font-size: 1.35rem;
+  }
+}
+
+.nav{
+  @include flex-center;
+  .nav-user{
+    margin-right: $hmargin;
+  }
+  .nav-new-post{
+
+  }
+}

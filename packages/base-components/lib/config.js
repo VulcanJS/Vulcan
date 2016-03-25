@@ -7,3 +7,8 @@ checkNpmVersions({
   // "react-no-ssr": "^1.0.1",
   "react-bootstrap": "^0.28.3",
 });
+
+Avatar.setOptions({
+  "gravatarDefault": "mm",
+  "defaultImageUrl": "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y"
+});
