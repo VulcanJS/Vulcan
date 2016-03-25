@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import Actions from '../../actions.js';
+import { Button } from 'react-bootstrap';
 
 const Textarea = FRC.Textarea;
 
@@ -46,15 +47,18 @@ class CommentNew extends Component {
 
   render() {
     return (
-      <Formsy.Form onSubmit={this.submitComment}>
+      <Formsy.Form className="comment-new-form" onSubmit={this.submitComment}>
         <Textarea
           name="body"
           value=""
           label="Body"
           type="text"
-          className="textarea"
+          layout="vertical"
         />
-        <button type="submit" className="button button--primary">Submit</button>
+        <div className="comment-actions comment-new-actions">
+          <Button type="submit" bsStyle="primary">Submit</Button>
+          {this.props.type === "reply" ? <a href="#" className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+        </div>
       </Formsy.Form>
     )
   }
@@ -67,7 +71,8 @@ CommentNew.propTypes = {
   type: React.PropTypes.string, // "comment" or "reply"
   parentComment: React.PropTypes.object, // if reply, the comment being replied to
   parentCommentId: React.PropTypes.string, // if reply
-  topLevelCommentId: React.PropTypes.string // if reply
+  topLevelCommentId: React.PropTypes.string, // if reply
+  cancelCallback: React.PropTypes.func
 }
 
 module.exports = CommentNew;

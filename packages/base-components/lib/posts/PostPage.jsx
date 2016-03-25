@@ -1,27 +1,21 @@
 const PostPage = ({document, currentUser}) => {
   
-  ({ListContainer, CommentList, CommentNew, PostCategories, SocialShare, Vote, PostStats} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
 
   return (
-    <div className="post">
+    <div className="post-page">
 
-      <Vote post={post} currentUser={currentUser}/>
+      <PostItem post={post}/>
 
-      <h3>{post.title}</h3>
-      <SocialShare url={ Posts.getLink(post) } title={ post.title }/>
-      <p>{post.commentCount} comments</p>
-      <p>{moment(post.postedAt).fromNow()}</p>
+      <div className="post-body" dangerouslySetInnerHTML={htmlBody}></div>
 
-      <PostStats post={post} />
-
-      {post.categoriesArray ? <PostCategories categories={post.categoriesArray} /> : ""}
-      <div dangerouslySetInnerHTML={htmlBody}></div>
+      {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
       <div className="comments-thread">
-        <h4>Comments</h4>
+        <h4 className="comments-thread-title">Comments</h4>
         <ListContainer 
           collection={Comments} 
           publication="comments.list" 

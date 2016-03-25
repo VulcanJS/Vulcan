@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import Actions from '../../actions.js';
+import { Button } from 'react-bootstrap';
 
 const Textarea = FRC.Textarea;
 
@@ -25,16 +26,18 @@ class CommentEdit extends Component {
 
   render() {
     return (
-      <Formsy.Form onSubmit={this.submitComment}>
+      <Formsy.Form className="comment-edit-form" onSubmit={this.submitComment}>
         <Textarea
           name="body"
           value={this.props.comment.body}
           label="Body"
           type="text"
-          className="textarea"
+          layout="vertical"
         />
-        <button type="submit" className="button button--primary">Submit</button>
-        <a href="#" onClick={this.props.cancelCallback} className="button button--secondary">Cancel</a>
+        <div className="comment-actions comment-edit-actions">
+          <Button type="submit" bsStyle="primary">Submit</Button>
+          <a href="#" className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a>
+        </div>
       </Formsy.Form>
     )
   }

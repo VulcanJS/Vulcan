@@ -43,5 +43,6 @@ Telescope.utils.icons = {
   reject: "times-circle-o",
   views: "eye",
   clicks: "mouse-pointer", 
-  score: "line-chart"
+  score: "line-chart",
+  reply: "reply"
 };

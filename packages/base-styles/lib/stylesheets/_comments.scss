@@ -1,0 +1,70 @@
+.comments-thread{
+  border-top: $border;
+  margin-top: $vmargin;
+  padding-top: $vmargin;
+}
+
+.comments-thread-title{
+  margin-bottom: $vmargin;
+}
+
+.comment-node .comment-node, .comment-reply{
+  border-left: 10px $lightest-border solid;
+  padding-left: $hmargin;
+}
+
+.comment-item{
+  margin-bottom: $vmargin;
+}
+
+.comment-body{
+  @include border-radius;
+  // max-width: 800px;
+  border: $border;
+  padding: $hmargin $vmargin;
+}
+
+.comment-meta{
+  @include flex-center;
+  margin-bottom: $vmargin;
+  .user-avatar{
+    margin-right: 5px;
+  }
+  .user-name{
+    margin-right: $hmargin;
+  }
+  .comment-date{
+    margin-right: $hmargin;
+    color: $medium-text;
+    font-size: $small-font;
+  }
+  .comment-edit{
+    font-size: $small-font;
+  }
+}
+
+.comment-text{
+}
+
+.comment-edit-form, .comment-new-form{
+  .form-group{
+    margin-bottom: $hmargin;
+  }
+  .control-label{
+    display: none;
+  }
+}
+
+.comment-reply{
+  margin-top: $vmargin;
+}
+
+.comment-actions{
+  @include flex-center;
+  button{
+    margin-right: $hmargin;
+  }
+  a{
+    display: block;
+  }
+}

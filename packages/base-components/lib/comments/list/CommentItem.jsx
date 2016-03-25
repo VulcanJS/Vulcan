@@ -43,7 +43,10 @@ class CommentItem extends Component{
     const htmlBody = {__html: this.props.comment.htmlBody};
 
     return (
-      <div dangerouslySetInnerHTML={htmlBody}></div>
+      <div className="comment-text">
+        <div dangerouslySetInnerHTML={htmlBody}></div>
+        <a className="comment-reply-link" href="#" onClick={this.showReply}><Icon name="reply"/> Reply</a>
+      </div>  
     )
   }
 
@@ -54,7 +57,6 @@ class CommentItem extends Component{
     return (
       <div className="comment-reply">
         <CommentNew postId={this.props.comment.postId} parentComment={this.props.comment} submitCallback={this.replyCallback} cancelCallback={this.cancelReply} type="reply" />
-        <a href="#" onClick={this.cancelReply} className="button button--secondary">Cancel</a>
       </div>
     )
   }
@@ -68,15 +70,6 @@ class CommentItem extends Component{
     )
   }
 
-  renderActions() {
-    return (
-      <ul>
-        <li><a href="#" onClick={this.showReply}>Reply</a></li>
-        {Users.can.edit(this.props.currentUser, this.props.comment) ? <li><a href="#" onClick={this.showEdit}>Edit</a></li> : ""}
-      </ul>
-    )
-  }
-
   render() {
     
     ({UserAvatar}  = Telescope.components);
@@ -87,12 +80,14 @@ class CommentItem extends Component{
       <div className="comment-item">
         <div className="comment-body">
           <div className="comment-meta">
-            <a href={Users.getProfileUrl(comment.user)}><UserAvatar user={comment.user}/>{Users.getDisplayName(comment.user)}</a>, {moment(comment.postedAt).fromNow()}
+            <UserAvatar size="small" user={comment.user}/>
+            <UserName user={comment.user}/>
+            <div className="comment-date">{moment(comment.postedAt).fromNow()}</div>
+            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" href="#" onClick={this.showEdit}>Edit</a> : null}
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
-          {this.renderActions()}
         </div>
-        {this.state.showReply ? this.renderReply() : ""}
+        {this.state.showReply ? this.renderReply() : null}
       </div>
     )
   }
