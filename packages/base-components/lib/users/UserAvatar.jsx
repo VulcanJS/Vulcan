@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-const UserAvatar = ({user, size}) => {
+const UserAvatar = ({user, size, link}) => {
 
   const sizes = {
     small: "20px",
@@ -17,25 +17,26 @@ const UserAvatar = ({user, size}) => {
 
   const imgStyle = {
     borderRadius: "100%",
-    width: "100%",
-    height: "100%",
-    display: "block"
+    display: "block",
+    height: sizes[size],
+    width: sizes[size]
   }; 
 
-  return (
-    <a style={aStyle} className="user-avatar" href={Users.getProfileUrl(user)}>
-      <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={Avatar.getUrl(user)}/>
-    </a>
-  )
+  const img = <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={Avatar.getUrl(user)}/>;
+
+  return link ? <a style={aStyle} className="user-avatar" href={Users.getProfileUrl(user)}>{img}</a> : img;
+
 }
 
 UserAvatar.propTypes = {
   user: React.PropTypes.object.isRequired,
-  size: React.PropTypes.string
+  size: React.PropTypes.string,
+  link: React.PropTypes.bool
 }
 
 UserAvatar.defaultProps = {
-  size: "medium"
+  size: "medium",
+  link: true
 }
 
 module.exports = UserAvatar;

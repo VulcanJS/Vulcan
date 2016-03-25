@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-const UsersEdit = ({document, currentUser}) => {
+const UserEdit = ({document, currentUser}) => {
 
   const user = document;
   const label = `Edit profile for ${Users.getDisplayName(user)}`;
@@ -14,9 +14,9 @@ const UsersEdit = ({document, currentUser}) => {
   )
 }
   
-UsersEdit.propTypes = {
+UserEdit.propTypes = {
   document: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object.isRequired
 }
 
-module.exports = UsersEdit;
+module.exports = UserEdit;

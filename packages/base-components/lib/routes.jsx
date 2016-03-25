@@ -68,14 +68,14 @@ Router.route('/posts/:_id/:slug?', {
 Router.route('/users/:slug', {
   name: 'users.single',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, UsersSingle} = Telescope.components);
+    ({AppContainer, DocumentContainer, UserSingle} = Telescope.components);
     mount(AppContainer, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={{'telescope.slug': params.slug}}
         terms={{'telescope.slug': params.slug}}
-        component={UsersSingle}
+        component={UserSingle}
       />});
   }
 });
@@ -83,14 +83,14 @@ Router.route('/users/:slug', {
 Router.route('/account', {
   name: 'account',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, UsersEdit} = Telescope.components);
+    ({AppContainer, DocumentContainer, UserEdit} = Telescope.components);
     mount(AppContainer, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={{_id: Meteor.userId()}} 
         terms={{_id: Meteor.userId()}} 
-        component={UsersEdit}
+        component={UserEdit}
       />});
   }
 });
@@ -98,14 +98,14 @@ Router.route('/account', {
 Router.route('/users/:slug/edit', {
   name: 'users.edit',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, UsersEdit} = Telescope.components);
+    ({AppContainer, DocumentContainer, UserEdit} = Telescope.components);
     mount(AppContainer, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={params} 
         terms={params} 
-        component={UsersEdit}
+        component={UserEdit}
       />});
   }
 });

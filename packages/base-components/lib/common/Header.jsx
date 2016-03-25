@@ -6,7 +6,7 @@ const Messages = Core.Messages;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, ListContainer, CategoriesList, NewPostButton} = Telescope.components);
+  ({Logo, ListContainer, CategoriesList, NewPostButton, UserMenu} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -24,7 +24,7 @@ const Header = ({currentUser}) => {
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <a href={Router.path("account")}>My Account</a> : <LogInButtons />}
+            {currentUser ? <UserMenu user={currentUser}/> : <LogInButtons />}
           </div>
 
           <div className="nav-new-post">

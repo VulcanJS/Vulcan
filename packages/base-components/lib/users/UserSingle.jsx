@@ -1,15 +1,15 @@
 import React, { PropTypes, Component } from 'react';
 
-const UsersSingle = ({document, currentUser}) => {
+const UserSingle = ({document, currentUser}) => {
   const user = document;
   return (
     <p>Profile for {Users.getDisplayName(user)}</p>
   )
 }
 
-UsersSingle.propTypes = {
+UserSingle.propTypes = {
   document: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object.isRequired
 }
 
-module.exports = UsersSingle;
+module.exports = UserSingle;

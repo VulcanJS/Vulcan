@@ -32,3 +32,14 @@
 
   }
 }
+
+.user-menu-dropdown{
+  .dropdown-toggle{
+    @include flex-center;
+    padding: 0;
+    background: none;
+    img{
+      margin-right: 5px;
+    }
+  }
+}

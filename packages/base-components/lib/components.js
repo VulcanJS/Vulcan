@@ -51,10 +51,11 @@ Telescope.registerComponent("CanEditUser", require('./permissions/CanEditUser.js
 
 // users
 
-Telescope.registerComponent("UsersEdit", require('./users/UsersEdit.jsx'));
-Telescope.registerComponent("UsersSingle", require('./users/UsersSingle.jsx'));
+Telescope.registerComponent("UserEdit", require('./users/UserEdit.jsx'));
+Telescope.registerComponent("UserSingle", require('./users/UserSingle.jsx'));
 Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
 Telescope.registerComponent("UserName", require('./users/UserName.jsx'));
+Telescope.registerComponent("UserMenu", require('./users/UserMenu.jsx'));
 
 // debug
 
