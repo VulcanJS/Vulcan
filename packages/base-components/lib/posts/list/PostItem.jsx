@@ -70,14 +70,14 @@ class PostItem extends Component {
           </h3>
           
           <div className="post-meta">
-            {post.user? <UserAvatar user={post.user} size="small"/> : null}
-            {post.user? <UserName user={post.user}/> : null}
+            <UserAvatar user={post.user} size="small"/>
+            <UserName user={post.user}/>
             <div className="post-date">{moment(post.postedAt).fromNow()}</div>
             <div className="post-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
             <PostStats post={post} />
             {this.renderActions()}
-
           </div>
+
         </div>
 
         {this.renderCommenters()}

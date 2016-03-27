@@ -2,17 +2,18 @@ import React from 'react';
 import Router from './router.js'
 import {mount} from 'react-mounter';
 
+
 // ------------------------------------- Posts -------------------------------- //
 
 Router.route('/', {
   name: 'posts.list',
   action(params, queryParams) {
 
-    ({AppContainer, ListContainer, PostList} = Telescope.components);
+    ({App, ListContainer, PostList} = Telescope.components);
     queryParams = _.isEmpty(queryParams) ? {view: 'new'} : _.clone(queryParams);
     ({selector, options} = Posts.parameters.get(queryParams));
 
-    mount(AppContainer, {content: 
+    mount(App, {content: 
       <ListContainer 
         collection={Posts} 
         publication="posts.list"
@@ -29,17 +30,17 @@ Router.route('/daily/:days?', {
   name: 'posts.daily',
   action(params, queryParams) {
 
-    ({AppContainer, PostDaily} = Telescope.components);
+    ({App, PostDaily} = Telescope.components);
 
-    mount(AppContainer, {content: <PostDaily days={params.days}/>})
+    mount(App, {content: <PostDaily days={params.days}/>})
   }
 });
 
 Router.route('/posts/:_id/:slug?', {
   name: 'posts.single',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, PostPage} = Telescope.components);
-    mount(AppContainer, {content: 
+    ({App, DocumentContainer, PostPage} = Telescope.components);
+    mount(App, {content: 
       <DocumentContainer 
         collection={Posts} 
         publication="posts.single" 
@@ -54,8 +55,8 @@ Router.route('/posts/:_id/:slug?', {
 // Router.route('/posts/:_id/edit', {
 //   name: 'posts.edit',
 //   action(params, queryParams) {
-//     ({AppContainer, DocumentContainer} = Telescope.components);
-//     mount(AppContainer, {content: <DocumentContainer
+//     ({App, DocumentContainer} = Telescope.components);
+//     mount(App, {content: <DocumentContainer
 //       collection={Posts} 
 //       publication="posts.single" 
 //       selector={{_id: params._id}}
@@ -68,8 +69,8 @@ Router.route('/posts/:_id/:slug?', {
 Router.route('/users/:slug', {
   name: 'users.single',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, UserSingle} = Telescope.components);
-    mount(AppContainer, {content: 
+    ({App, DocumentContainer, UserSingle} = Telescope.components);
+    mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
@@ -83,8 +84,8 @@ Router.route('/users/:slug', {
 Router.route('/account', {
   name: 'account',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, UserEdit} = Telescope.components);
-    mount(AppContainer, {content: 
+    ({App, DocumentContainer, UserEdit} = Telescope.components);
+    mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
@@ -98,8 +99,8 @@ Router.route('/account', {
 Router.route('/users/:slug/edit', {
   name: 'users.edit',
   action(params, queryParams) {
-    ({AppContainer, DocumentContainer, UserEdit} = Telescope.components);
-    mount(AppContainer, {content: 
+    ({App, DocumentContainer, UserEdit} = Telescope.components);
+    mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
@@ -113,8 +114,8 @@ Router.route('/users/:slug/edit', {
 Router.route('/cheatsheet', {
   name: 'cheatsheet',
   action() {
-    ({AppContainer, Cheatsheet} = Telescope.components);
-    mount(AppContainer, {content: <Cheatsheet/>});
+    ({App, Cheatsheet} = Telescope.components);
+    mount(App, {content: <Cheatsheet/>});
   }
 });
 

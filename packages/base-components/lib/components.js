@@ -1,5 +1,6 @@
 // common
 
+Telescope.registerComponent("App", require('./common/App.jsx'));
 Telescope.registerComponent("Footer", require('./common/Footer.jsx'));
 Telescope.registerComponent("Header", require('./common/Header.jsx'));
 Telescope.registerComponent("Layout", require('./common/Layout.jsx'));
@@ -57,6 +58,7 @@ Telescope.registerComponent("UserSingle", require('./users/UserSingle.jsx'));
 Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
 Telescope.registerComponent("UserName", require('./users/UserName.jsx'));
 Telescope.registerComponent("UserMenu", require('./users/UserMenu.jsx'));
+Telescope.registerComponent("AccountsMenu", require('./users/AccountsMenu.jsx'));
 
 // debug
 

@@ -22,8 +22,8 @@ Package.onUse(function (api) {
     // third-party packages
 
     'tmeasday:check-npm-versions@0.1.1',
-    'alt:react-accounts-ui@1.2.0',
-    // 'alt:react-accounts-unstyled',
+    'alt:react-accounts-ui@1.2.1',
+    // 'alt:react-accounts-unstyled@1.2.1',
     'dburles:spacebars-tohtml@1.0.1',
   ]);
 

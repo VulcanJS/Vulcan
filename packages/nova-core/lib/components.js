@@ -1,7 +1,7 @@
 import SmartContainers from "meteor/utilities:react-list-container";
 import FormContainers from "meteor/utilities:react-form-containers";
 
-Telescope.registerComponent("AppContainer", require('./containers/AppContainer.jsx'));
+// Telescope.registerComponent("AppContainer", require('./containers/AppContainer.jsx'));
 // Telescope.registerComponent("DocumentContainer", require('./containers/DocumentContainer.jsx'));
 // Telescope.registerComponent("ListContainer", require('./containers/ListContainer.jsx'));
 

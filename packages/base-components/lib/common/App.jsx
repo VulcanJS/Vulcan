@@ -1,23 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import { composeWithTracker } from 'react-komposer';
 
-function AppComposer(props, onData) {
-
-  const subscriptions = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
-
-  FlowRouter.watchPathChange();
-
-  if (!subscriptions.length || _.every(subscriptions, handle => handle.ready())) {
-    const data = {
-      ready: true,
-      currentUser: Meteor.user(),
-      currentRoute: FlowRouter.current()
-    }
-    onData(null, data);
-  } else {
-    onData(null, {ready: false});
-  }
-}
+import Core from "meteor/nova:core";
+const AppComposer = Core.AppComposer;
 
 class App extends Component {
 
@@ -52,5 +36,5 @@ App.childContextTypes = {
   currentRoute: React.PropTypes.object
 }
 
-module.exports = composeWithTracker(AppComposer)(App);
-export default composeWithTracker(AppComposer)(App);
+module.exports = AppComposer(App);
+export default AppComposer(App);
