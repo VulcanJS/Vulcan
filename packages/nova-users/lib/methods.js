@@ -136,6 +136,30 @@ Meteor.methods({
     
     }
 
+  },
+
+  'users.setSetting'(userId, settingName, value) {
+
+    check(userId, String);
+    check(settingName, String);
+    check(value, Match.OneOf(String, Number, Boolean));
+
+    var currentUser = Meteor.user(),
+      user = Users.findOne(userId);
+
+    // check that user can edit document
+    if (!user || !Users.can.edit(currentUser, user)) {
+      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
+    }
+
+    // all settings should be in the user.telescope namespace, so add "telescope." if needed
+    var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
+
+    var modifier = {$set: {}};
+    modifier.$set[field] = value;
+
+    Users.update(userId, modifier);
+
   }
 
 });

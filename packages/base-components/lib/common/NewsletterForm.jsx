@@ -3,28 +3,41 @@ import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
+import Cookie from 'js-cookie';
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 
 const Input = FRC.Input;
 
+
 class NewsletterForm extends Component {
 
-  constructor() {
-    super();
+  constructor(props, context) {
+    super(props);
     this.subscribeEmail = this.subscribeEmail.bind(this);
     this.subscribeUser = this.subscribeUser.bind(this);
+    this.dismissBanner = this.dismissBanner.bind(this);
+
+    const showBanner = 
+      Telescope.settings.get('showBanner', true) &&
+      !(Meteor.isClient && Cookie.get('showBanner') === "no") &&
+      Users.getSetting(context.currentUser, 'newsletter_showBanner', true) &&
+      !Users.getSetting(context.currentUser, 'newsletter_subscribeToNewsletter', false);
+
+    this.state = {
+      showBanner: showBanner
+    };
   }
 
   subscribeEmail(data) {
-    console.log(data)
     Actions.call("addEmailToMailChimpList", data.email, (error, result) => {
       if (error) {
         console.log(error)
         Messages.flash(error.message, "error");
       } else {
         Messages.flash(this.props.successMessage, "success");
+        this.dismissBanner();
       }
     });
   }
@@ -36,8 +49,24 @@ class NewsletterForm extends Component {
         Messages.flash(error.message, "error");
       } else {
         Messages.flash(this.props.successMessage, "success");
+        this.dismissBanner();
       }
     });
+  }
+
+  dismissBanner(e) {
+    
+    if (e && e.preventDefault) e.preventDefault();
+
+    this.setState({showBanner: false});
+
+    if(this.context.currentUser){
+      // if user is connected, change setting in their account
+      Users.setSetting(this.context.currentUser, 'newsletter_showBanner', false);
+    }else{
+      // set cookie
+      Cookie.set('showBanner', "no");
+    }
   }
 
   renderForm() {
@@ -50,7 +79,7 @@ class NewsletterForm extends Component {
           type="text"
           layout="elementOnly"
         />
-        <Button bsStyle="primary">{this.props.buttonText}</Button>
+        <Button type="submit" bsStyle="primary">{this.props.buttonText}</Button>
       </Formsy.Form>
     )
   }
@@ -62,15 +91,21 @@ class NewsletterForm extends Component {
   }
 
   render() {
-    if (Telescope.settings.get("showBanner", true)) {
+
+    const currentUser = this.context.currentUser;
+
+    ({Icon} = Telescope.components);
+
+    if (this.state.showBanner) {
       return (
         <div className="newsletter">
           <h4 className="newsletter-tagline">{this.props.headerText}</h4>
           {this.context.currentUser ? this.renderButton() : this.renderForm()}
+          <a onClick={this.dismissBanner} href="#" className="newsletter-close"><Icon name="close"/></a>
         </div>
-      )
+      );
     } else {
-      return null
+      return null;
     }
   }
 }

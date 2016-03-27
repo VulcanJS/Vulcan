@@ -159,7 +159,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
   // all settings should be in the user.telescope namespace, so add "telescope." if needed
   settingName = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
 
-  if (user.telescope) {
+  if (user && user.telescope) {
     var settingValue = this.getProperty(user, settingName);
     return (settingValue === null) ? defaultValue : settingValue;
   } else {
@@ -176,14 +176,7 @@ Users.helpers({getSetting: function (settingName, defaultValue) {return Users.ge
  */
 Users.setSetting = function (user, settingName, value) {
   if (user) {
-
-    // all settings should be in the user.telescope namespace, so add "telescope." if needed
-    var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
-
-    var modifier = {$set: {}};
-    modifier.$set[field] = value;
-    Users.update(user._id, modifier);
-
+    Meteor.call("users.setSetting", user._id, settingName, value);
   }
 };
 Users.helpers({setSetting: function () {return Users.setSetting(this);}});

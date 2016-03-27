@@ -12,6 +12,10 @@ const Messages = {
     this.collection.update(messageId, {$set: {seen:true}});
   },
 
+  clear(messageId) {
+    this.collection.update(messageId, {$set: {show:false}});
+  },
+
   clearSeen() {
     this.collection.update({seen:true}, {$set: {show:false}}, {multi:true});
   }
