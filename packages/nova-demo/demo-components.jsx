@@ -7,8 +7,8 @@ import SmartContainers from "meteor/utilities:react-list-container";
 import FormContainers from "meteor/utilities:react-form-containers";
 
 const ModalTrigger = Core.ModalTrigger;
-const NewDocContainer = FormContainers.NewDocContainer;
-const EditDocContainer = FormContainers.EditDocContainer;
+const NewDocument = FormContainers.NewDocument;
+const EditDocument = FormContainers.EditDocument;
 const ListContainer = SmartContainers.ListContainer;
 
 const FlashContainer = Telescope.components.FlashContainer;
@@ -57,7 +57,7 @@ class MoviesList extends Component {
     
     const component = (
       <ModalTrigger label="Add Movie" className="button button--primary">
-        <NewDocContainer collection={Movies} label="Add Movie" methodName="movies.create"/>
+        <NewDocument collection={Movies} label="Add Movie" methodName="movies.create"/>
       </ModalTrigger>
     )
     
@@ -87,7 +87,7 @@ class Movie extends Component {
 
     const component = (
       <ModalTrigger label="Edit" className="button button--secondary">
-        <EditDocContainer collection={Movies} document={movie} label="Edit Movie" methodName="movies.edit"/>
+        <EditDocument collection={Movies} document={movie} label="Edit Movie" methodName="movies.edit"/>
       </ModalTrigger>
     );
 

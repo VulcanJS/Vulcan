@@ -14,10 +14,10 @@ Telescope.registerComponent("ListContainer", SmartContainers.ListContainer);
 Telescope.registerComponent("FlashContainer", require('./containers/FlashContainer.jsx'));
 Telescope.registerComponent("CurrentUserContainer", require('./containers/CurrentUserContainer.jsx'));
 
-// Telescope.registerComponent("NewDocContainer", require('./containers/NewDocContainer.jsx'));
-// Telescope.registerComponent("EditDocContainer", require('./containers/EditDocContainer.jsx'));
+// Telescope.registerComponent("NewDocument", require('./containers/NewDocument.jsx'));
+// Telescope.registerComponent("EditDocument", require('./containers/EditDocument.jsx'));
 
-Telescope.registerComponent("NewDocContainer", FormContainers.NewDocContainer);
-Telescope.registerComponent("EditDocContainer", FormContainers.EditDocContainer);
+Telescope.registerComponent("NewDocument", FormContainers.NewDocument);
+Telescope.registerComponent("EditDocument", FormContainers.EditDocument);
 
 Telescope.registerComponent("ModalTrigger", require('./components/ModalTrigger.jsx'));

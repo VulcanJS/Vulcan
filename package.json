@@ -10,6 +10,7 @@
     "react-addons-pure-render-mixin": "^0.14.7",
     "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.6",
+    "react-komposer": "^1.4.1",
     "react-modal": "^0.6.1",
     "react-mounter": "^1.1.0",
     "react-no-ssr": "^1.0.1"
@@ -20,7 +21,11 @@
   },
   "postcss": {
     "plugins": {
-      "autoprefixer": {"browsers": ["last 2 versions"]}
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
     }
   }
 }

@@ -18,10 +18,8 @@ Meteor.publish('users.single', function (terms) {
  * Publish the current user
  */
 Meteor.publish('users.current', function () {
-
   const user = Meteor.users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
   return user || [];
-
 });
 
 // // publish all users for admins to make autocomplete work

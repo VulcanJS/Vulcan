@@ -71,7 +71,7 @@ Meteor.publish('posts.list', function (terms) {
     ({selector, options} = Posts.parameters.get(terms));
     
     // note: enabling Counts.publish messes up SSR
-    Counts.publish(this, 'posts.list', Posts.find(selector, options));
+    // Counts.publish(this, 'posts.list', Posts.find(selector, options));
 
     options.fields = Posts.publishedFields.list;
 

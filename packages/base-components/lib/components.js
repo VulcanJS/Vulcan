@@ -10,6 +10,7 @@ Telescope.registerComponent("NewsletterForm", require('./common/NewsletterForm.j
 Telescope.registerComponent("Icon", require('./common/Icon.jsx'));
 Telescope.registerComponent("SearchForm", require('./common/SearchForm.jsx'));
 Telescope.registerComponent("NewPostButton", require('./common/NewPostButton.jsx'));
+Telescope.registerComponent("AppLoading", require('./common/AppLoading.jsx'));
 
 // posts
 

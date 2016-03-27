@@ -5,11 +5,11 @@ const UserEdit = ({document, currentUser}) => {
   const user = document;
   const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
-  ({CanEditUser, EditDocContainer} = Telescope.components);
+  ({CanEditUser, EditDocument} = Telescope.components);
 
   return (
     <CanEditUser user={currentUser} userToEdit={user}>
-      <EditDocContainer collection={Meteor.users} document={user} label={label} methodName="users.edit"/>
+      <EditDocument collection={Meteor.users} document={user} label={label} methodName="users.edit"/>
     </CanEditUser>
   )
 }

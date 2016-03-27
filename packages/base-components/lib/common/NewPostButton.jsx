@@ -1,17 +1,24 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 
+import Core from "meteor/nova:core";
+const Messages = Core.Messages;
+
+import ReactForms from "meteor/utilities:react-form-containers";
+const NewDocument = ReactForms.NewDocument;
+
 const NewPostButton = (props, context) => {
 
-  ({ModalTrigger, NewDocContainer, CanCreatePost} = Telescope.components);
+  ({ModalTrigger, CanCreatePost} = Telescope.components);
 
   return (
     <ModalTrigger component={<Button bsStyle="primary">New Post</Button>}>
       <CanCreatePost user={context.currentUser}>
-        <NewDocContainer 
+        <h3 className="modal-form-title">New Post</h3>
+        <NewDocument 
           collection={Posts} 
-          label="New Post" 
-          methodName="posts.new" 
+          currentUser={context.currentUser}
+          methodName="posts.new"
           successCallback={(post)=>{
             Messages.flash("Post created.", "success");
             Router.go('posts.single', post);

@@ -1,55 +1,56 @@
 import React, { PropTypes, Component } from 'react';
+import { composeWithTracker } from 'react-komposer';
 
-const AppContainer = React.createClass({
+function AppComposer(props, onData) {
 
-  mixins: [ReactMeteorData],
-  
-  getMeteorData() {
+  const subscriptions = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
 
-    var data = {
+  FlowRouter.watchPathChange();
+
+  if (!subscriptions.length || _.every(subscriptions, handle => handle.ready())) {
+    const data = {
+      ready: true,
       currentUser: Meteor.user(),
-      ready: false
-    };
-
-    var handles = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
-
-    if(!handles.length || _.every(handles, handle => handle.ready())) {
-      data.ready = true;
-    }
-
-    return data;
-  },
-
-  childContextTypes: {
-    currentUser: React.PropTypes.object,
-    currentRoute: React.PropTypes.object
-  },
-
-  getChildContext: function() {
-
-    FlowRouter.watchPathChange();
-
-    return {
-      currentUser: this.data.currentUser,
       currentRoute: FlowRouter.current()
-    };
+    }
+    onData(null, data);
+  } else {
+    onData(null, {ready: false});
+  }
+}
 
-  },
+class App extends Component {
+
+  getChildContext() {
+    return {
+      currentUser: this.props.currentUser,
+      currentRoute: this.props.currentRoute
+    };
+  }
 
   render() {
     
-    const Layout = Telescope.getComponent("Layout");
+    ({Layout, AppLoading} = Telescope.components);
 
-    if (this.data.ready) {
-      return <Layout currentUser={this.data.currentUser}>{this.props.content}</Layout>
+    if (this.props.ready) {
+      return <Layout currentUser={this.props.currentUser}>{this.props.content}</Layout>
     } else {
-      return <p>Loading App…</p>
+      return <AppLoading />
     }
-
-    // return this.data.ready ? this.props.content : <Loading/>;
   }
 
-});
+}
 
-module.exports = AppContainer;
-export default AppContainer;
+App.propTypes = {
+  ready: React.PropTypes.bool,
+  currentUser: React.PropTypes.object,
+  currentRoute: React.PropTypes.object
+}
+
+App.childContextTypes = {
+  currentUser: React.PropTypes.object,
+  currentRoute: React.PropTypes.object
+}
+
+module.exports = composeWithTracker(AppComposer)(App);
+export default composeWithTracker(AppComposer)(App);
