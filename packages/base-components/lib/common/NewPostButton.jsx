@@ -14,16 +14,18 @@ const NewPostButton = (props, context) => {
   return (
     <ModalTrigger component={<Button bsStyle="primary">New Post</Button>}>
       <CanCreatePost user={context.currentUser}>
-        <h3 className="modal-form-title">New Post</h3>
-        <NewDocument 
-          collection={Posts} 
-          currentUser={context.currentUser}
-          methodName="posts.new"
-          successCallback={(post)=>{
-            Messages.flash("Post created.", "success");
-            Router.go('posts.single', post);
-          }}
-        />
+        <div className="new-post-form">
+          <h3 className="modal-form-title">New Post</h3>
+          <NewDocument 
+            collection={Posts} 
+            currentUser={context.currentUser}
+            methodName="posts.new"
+            successCallback={(post)=>{
+              Messages.flash("Post created.", "success");
+              Router.go('posts.single', post);
+            }}
+          />
+        </div>
       </CanCreatePost>
     </ModalTrigger>
   )

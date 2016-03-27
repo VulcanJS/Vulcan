@@ -161,3 +161,13 @@
   font-size: $large-font;
   margin-bottom: $hmargin;
 }
+
+.post-thumbnail{
+  display: block;
+  margin-right: $hmargin;
+  img{
+    display: block;
+    height: 50px;
+    width: auto;
+  }
+}

@@ -93,6 +93,7 @@ nova:categories@0.25.7
 nova:comments@0.25.7
 nova:core@0.25.7
 nova:email@0.25.7
+nova:embedly@0.25.7
 nova:events@0.25.7
 nova:getting-started@0.25.7
 nova:i18n@0.25.7

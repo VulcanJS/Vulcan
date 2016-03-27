@@ -22,6 +22,7 @@ nova:getting-started
 nova:categories
 nova:share
 nova:voting
+nova:embedly
 
 # nova:migrations
 # nova:api

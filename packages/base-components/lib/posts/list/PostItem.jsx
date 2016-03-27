@@ -26,13 +26,15 @@ class PostItem extends Component {
 
     const component = (
       <ModalTrigger component={<a href="#" className="edit-link">Edit</a>}>
-        <h3 className="modal-form-title">Edit Post</h3>
-        <EditDocument 
-          collection={Posts}
-          document={this.props.post}
-          currentUser={this.context.currentUser}
-          methodName="posts.edit"
-        />
+        <div className="edit-post-form">
+          <h3 className="modal-form-title">Edit Post</h3>
+          <EditDocument 
+            collection={Posts}
+            document={this.props.post}
+            currentUser={this.context.currentUser}
+            methodName="posts.edit"
+          />
+        </div>
       </ModalTrigger>
     );
 
@@ -45,7 +47,7 @@ class PostItem extends Component {
   
   render() {
 
-    ({UserAvatar, UserName, Vote, PostStats} = Telescope.components);
+    ({UserAvatar, UserName, Vote, PostStats, PostThumbnail} = Telescope.components);
 
     const post = this.props.post;
 
@@ -62,6 +64,8 @@ class PostItem extends Component {
           <Vote post={post} currentUser={this.props.currentUser}/>
         </div>
         
+        {post.thumbnailUrl ? <PostThumbnail post={post}/> : null}
+
         <div className="post-content">
           
           <h3 className="post-title">
