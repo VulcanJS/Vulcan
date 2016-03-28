@@ -56,14 +56,15 @@ Router.route('/posts/:_id/:slug?', {
 Router.route('/users/:slug', {
   name: 'users.single',
   action(params, queryParams) {
-    ({App, DocumentContainer, UserSingle} = Telescope.components);
+    ({App, DocumentContainer, UserProfile} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={{'telescope.slug': params.slug}}
         terms={{'telescope.slug': params.slug}}
-        component={UserSingle}
+        component={UserProfile}
+        documentPropName="user"
       />});
   }
 });

@@ -74,8 +74,7 @@ class PostItem extends Component {
           </h3>
           
           <div className="post-meta">
-            <UserAvatar user={post.user} size="small"/>
-            <UserName user={post.user}/>
+            {post.user? <div className="post-user"><UserAvatar user={post.user} size="small"/><UserName user={post.user}/></div> : null}
             <div className="post-date">{moment(post.postedAt).fromNow()}</div>
             <div className="post-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
             <PostStats post={post} />

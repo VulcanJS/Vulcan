@@ -57,7 +57,7 @@ Telescope.registerComponent("CanEditUser", require('./permissions/CanEditUser.js
 // users
 
 Telescope.registerComponent("UserEdit", require('./users/UserEdit.jsx'));
-Telescope.registerComponent("UserSingle", require('./users/UserSingle.jsx'));
+Telescope.registerComponent("UserProfile", require('./users/UserProfile.jsx'));
 Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
 Telescope.registerComponent("UserName", require('./users/UserName.jsx'));
 Telescope.registerComponent("UserMenu", require('./users/UserMenu.jsx'));

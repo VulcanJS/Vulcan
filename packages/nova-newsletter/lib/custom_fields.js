@@ -19,9 +19,7 @@ Users.addField([
       optional: true,
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
-      autoform: {
-        omit: true
-      }
+      control: "checkbox"
     }
   },
   {
@@ -32,9 +30,7 @@ Users.addField([
       optional: true,
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
-      autoform: {
-        omit: true
-      }
+      control: "checkbox"
     }
   }
 ]);
