@@ -13,6 +13,7 @@ Telescope.registerComponent("Icon", require('./common/Icon.jsx'));
 Telescope.registerComponent("SearchForm", require('./common/SearchForm.jsx'));
 Telescope.registerComponent("NewPostButton", require('./common/NewPostButton.jsx'));
 Telescope.registerComponent("AppLoading", require('./common/AppLoading.jsx'));
+Telescope.registerComponent("Error404", require('./common/Error404.jsx'));
 
 // posts
 
