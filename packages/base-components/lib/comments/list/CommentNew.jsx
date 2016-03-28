@@ -57,7 +57,7 @@ class CommentNew extends Component {
         />
         <div className="comment-actions comment-new-actions">
           <Button type="submit" bsStyle="primary">Submit</Button>
-          {this.props.type === "reply" ? <a href="#" className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+          {this.props.type === "reply" ? <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
         </div>
       </Formsy.Form>
     )

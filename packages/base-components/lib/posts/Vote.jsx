@@ -44,7 +44,7 @@ class Vote extends Component {
 
     return (
       <div className={actionsClass}>
-        <a href="#" className="upvote-button" onClick={this.upvote}>
+        <a className="upvote-button" onClick={this.upvote}>
           <Icon name="upvote" />
           <div className="sr-only">Upvote</div>
           <div className="vote-count">{post.baseScore || 0}</div>

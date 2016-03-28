@@ -27,7 +27,7 @@ class PostDaily extends Component{
     return (
       <div className="post-daily">
         {getLastNDates(this.state.days).map((date, index) => <PostDay key={index} date={date} number={index}/>)}
-        <a href="#" className="button button--primary" onClick={this.loadMoreDays}>Load More Days</a>
+        <a className="button button--primary" onClick={this.loadMoreDays}>Load More Days</a>
       </div>
     )
   }

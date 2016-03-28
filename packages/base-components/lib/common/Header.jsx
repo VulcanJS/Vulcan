@@ -15,7 +15,7 @@ const Header = ({currentUser}) => {
   return (
     <div className="header-wrapper">
 
-      <HeadTags url={Telescope.utils.getSiteUrl()} title={siteTitle} description={tagline} image={logoUrl} />
+      {/*<HeadTags url={Telescope.utils.getSiteUrl()} title={siteTitle} description={tagline} image={logoUrl} />*/}
 
       <header className="header">
 
