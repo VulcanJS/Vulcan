@@ -4,23 +4,29 @@
 //////////////////////////////////////////////////////
 
 /**
- * Generate HTML body from Markdown on post insert
+ * Generate HTML body and excerpt from Markdown on post insert
  */
 Posts.before.insert(function (userId, doc) {
-  if(!!doc.body)
-    doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
+  if(!!doc.body) {
+    const htmlBody = Telescope.utils.sanitize(marked(doc.body));
+    doc.htmlBody = htmlBody;
+    doc.excerpt = Telescope.utils.trimHTML(htmlBody,30);
+  }
 });
 
 /**
- * Generate HTML body from Markdown when post body is updated
+ * Generate HTML body and excerpt from Markdown when post body is updated
  */
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if body is being modified or $unset, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
-    modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+    const htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+    modifier.$set.htmlBody = htmlBody;
+    modifier.$set.excerpt = Telescope.utils.trimHTML(htmlBody,30);
   }
   if (Meteor.isServer && modifier.$unset && (typeof modifier.$unset.body !== "undefined")) {
     modifier.$unset.htmlBody = "";
+    modifier.$unset.excerpt = "";
   }
 });
 

@@ -12,7 +12,7 @@ Posts.publishedFields.list = PublicationsUtils.arrayToFields([
   "url",
   "title",
   "slug",
-  "htmlBody",
+  "excerpt",
   "viewCount",
   "lastCommentedAt",
   "clickCount",

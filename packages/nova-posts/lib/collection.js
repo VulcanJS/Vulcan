@@ -98,6 +98,15 @@ Posts.schema = new SimpleSchema({
     publish: true,
   },
   /**
+   Post Excerpt
+   */
+  excerpt: {
+    type: String,
+    optional: true,
+    max: 255, //should not be changed the 255 is max we should load for each post/item
+    publish: true,
+  },
+  /**
     Count of how many times the post's page was viewed
   */
   viewCount: {
