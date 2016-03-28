@@ -64,7 +64,7 @@ Meteor.publish('posts.list', function (terms) {
 
   // this.unblock(); // causes bug where publication returns 0 results  
 
-  // this.autorun(function () { // sadly, reactive joins break SSR for now :(
+  this.autorun(function () {
     const currentUser = Meteor.users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
@@ -80,7 +80,7 @@ Meteor.publish('posts.list', function (terms) {
 
     return Users.can.view(currentUser) ? [posts, users] : [];
   
-  // });
+  });
 
 });
 

@@ -25,7 +25,7 @@ class PostItem extends Component {
     ({ModalTrigger, DocumentContainer} = Telescope.components);
 
     const component = (
-      <ModalTrigger component={<a href="#" className="edit-link">Edit</a>}>
+      <ModalTrigger component={<a className="edit-link">Edit</a>}>
         <div className="edit-post-form">
           <h3 className="modal-form-title">Edit Post</h3>
           <EditDocument 

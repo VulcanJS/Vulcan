@@ -45,7 +45,7 @@ class CommentItem extends Component{
     return (
       <div className="comment-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
-        <a className="comment-reply-link" href="#" onClick={this.showReply}><Icon name="reply"/> Reply</a>
+        <a className="comment-reply-link" onClick={this.showReply}><Icon name="reply"/> Reply</a>
       </div>  
     )
   }
@@ -83,7 +83,7 @@ class CommentItem extends Component{
             <UserAvatar size="small" user={comment.user}/>
             <UserName user={comment.user}/>
             <div className="comment-date">{moment(comment.postedAt).fromNow()}</div>
-            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" href="#" onClick={this.showEdit}>Edit</a> : null}
+            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}>Edit</a> : null}
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Button } from 'react-bootstrap';
 
 // for a number of days "n" return dates object for the past n days
 const getLastNDates = n => {
@@ -23,11 +24,12 @@ class PostDaily extends Component{
   }
 
   render() {
-    ({PostDay} = Telescope.components);
+    ({PostDay, PostListHeader} = Telescope.components);
     return (
       <div className="post-daily">
+        <PostListHeader />
         {getLastNDates(this.state.days).map((date, index) => <PostDay key={index} date={date} number={index}/>)}
-        <a href="#" className="button button--primary" onClick={this.loadMoreDays}>Load More Days</a>
+        <button className="post-load-more" onClick={this.loadMoreDays}>Load More Days</button>
       </div>
     )
   }

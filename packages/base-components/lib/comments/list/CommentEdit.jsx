@@ -36,7 +36,7 @@ class CommentEdit extends Component {
         />
         <div className="comment-actions comment-edit-actions">
           <Button type="submit" bsStyle="primary">Submit</Button>
-          <a href="#" className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a>
+          <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a>
         </div>
       </Formsy.Form>
     )

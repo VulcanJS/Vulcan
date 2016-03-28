@@ -16,7 +16,7 @@ const PostDay = ({date, number}) => {
 
   return (
     <div className="post-day">
-      <h2>{moment(date).format("dddd, MMMM Do YYYY")}</h2>
+      <h4>{moment(date).format("dddd, MMMM Do YYYY")}</h4>
       <ListContainer 
         collection={Posts} 
         publication="posts.list"

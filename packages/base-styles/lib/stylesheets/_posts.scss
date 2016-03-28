@@ -18,6 +18,9 @@
       background: $light-blue;
     }
   }
+  .btn-group{
+    margin-right: $hmargin;
+  }
 }
 .post-list-content{
   border-top: $border;
@@ -146,6 +149,9 @@
   font-size: $large-font;
   padding: 10px 20px;
   @include activeHover;
+  width: 100%;
+  background: $white;
+  color: $blue;
 }
 
 .post-page{
@@ -169,5 +175,18 @@
     display: block;
     height: 50px;
     width: auto;
+  }
+}
+
+.post-day{
+  margin-bottom: $vmargin;
+  .post-load-more{
+    border: none;
+    padding: 0;
+    &:hover{
+      background: inherit;
+      color: inherit;
+      border: inherit;      
+    }
   }
 }
