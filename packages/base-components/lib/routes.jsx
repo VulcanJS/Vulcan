@@ -2,7 +2,6 @@ import React from 'react';
 import Router from './router.js'
 import {mount} from 'react-mounter';
 
-
 // ------------------------------------- Posts -------------------------------- //
 
 Router.route('/', {
@@ -52,19 +51,7 @@ Router.route('/posts/:_id/:slug?', {
   }
 });
 
-// Router.route('/posts/:_id/edit', {
-//   name: 'posts.edit',
-//   action(params, queryParams) {
-//     ({App, DocumentContainer} = Telescope.components);
-//     mount(App, {content: <DocumentContainer
-//       collection={Posts} 
-//       publication="posts.single" 
-//       selector={{_id: params._id}}
-//       terms={params}
-//       component={PostEdit}
-//     ><PostEdit/></DocumentContainer>});
-//   }
-// });
+// ------------------------------------- Users -------------------------------- //
 
 Router.route('/users/:slug', {
   name: 'users.single',
@@ -111,6 +98,8 @@ Router.route('/users/:slug/edit', {
   }
 });
 
+// ------------------------------------- Other -------------------------------- //
+
 Router.route('/cheatsheet', {
   name: 'cheatsheet',
   action() {
@@ -119,56 +108,9 @@ Router.route('/cheatsheet', {
   }
 });
 
-// ------------------------------------- Comments -------------------------------- //
-
-// Router.route('/comments/:_id', {
-//   name: "commentPage",
-//   action: function(params, queryParams) {
-//     BlazeLayout.render("layout", {main: "comment_controller", commentTemplate: "comment_reply"});
-//   }
-// });
-
-// Router.route('/comments/:_id/edit', {
-//   name: "commentEdit",
-//   action: function(params, queryParams) {
-//     BlazeLayout.render("layout", {main: "comment_controller", commentTemplate: "comment_edit"});
-//   }
-// });
-
-// ------------------------------------- Users -------------------------------- //
-
-// Telescope.adminRoutes.route('/users', {
-//   name: "adminUsers",
-//   action: function(params, queryParams) {
-//     BlazeLayout.render("layout", {main: "admin_wrapper", admin: "users_dashboard"});
-//   }
-// });
-
-// Router.route('/users/:_idOrSlug', {
-//   name: "userProfile",
-//   action: function(params, queryParams) {
-//     BlazeLayout.render("layout", {main: "user_controller", userTemplate: "user_profile"});
-//   }
-// });
-
-// Router.route('/users/:_idOrSlug/edit', {
-//   name: "userEdit",
-//   action: function(params, queryParams) {
-//     BlazeLayout.render("layout", {main: "user_controller", userTemplate: "user_edit"});
-//   }
-// });
-
-// Router.route('/account', {
-//   name: "userAccountShortcut",
-//   triggersEnter: [function(context, redirect) {
-//     redirect("userEdit", {_idOrSlug: Meteor.userId()});
-//   }]
-// });
-
-// Router.route('/sign-out', {
-//   name: "signOut",
-//   triggersEnter: [function(context, redirect) {
-//     AccountsTemplates.logout();
-//     Messages.flash(i18n.t("you_have_been_logged_out"));
-//   }]
-// });
+FlowRouter.notFound = {
+  action() {
+    ({Error404} = Telescope.components);
+    mount(App, {content: <Error404/>});
+  }
+};
