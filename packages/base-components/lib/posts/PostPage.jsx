@@ -1,6 +1,6 @@
 const PostPage = ({document, currentUser}) => {
   
-  ({ListContainer, CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats} = Telescope.components);
+  ({ListContainer, CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
@@ -8,6 +8,8 @@ const PostPage = ({document, currentUser}) => {
   return (
     <div className="post-page">
 
+      <HeadTags url={Posts.getLink(post)} title={post.title}/>
+      
       <PostItem post={post}/>
 
       <div className="post-body" dangerouslySetInnerHTML={htmlBody}></div>
