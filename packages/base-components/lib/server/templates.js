@@ -1,6 +1,4 @@
-import Email from 'meteor/nova:email';
-
-Email.addTemplates({
+const emailTemplates = {
   test:                     Assets.getText("lib/server/emails/common/test.handlebars"),
   wrapper:                  Assets.getText("lib/server/emails/common/wrapper.handlebars"),
   newPost:                  Assets.getText("lib/server/emails/posts/newPost.handlebars"),
@@ -13,6 +11,6 @@ Email.addTemplates({
   newsletter:               Assets.getText("lib/server/emails/newsletter/newsletter.handlebars"),
   newsletterConfirmation:   Assets.getText("lib/server/emails/newsletter/newsletterConfirmation.handlebars"),
   postItem:                 Assets.getText("lib/server/emails/newsletter/postItem.handlebars"),
-});
+};
 
-export default Email; // export Email from nova:email with the templates;
+export default emailTemplates;

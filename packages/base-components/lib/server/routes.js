@@ -1,5 +1,9 @@
-import Email from './templates'; // the templates where not defined, here we get the extended Email with the templates from nova:email module
+import Email from 'meteor/nova:email';
 import Campaign from 'meteor/nova:newsletter';
+import emailTemplates from './templates.js';
+
+// assign templates to Email
+Email.addTemplates(emailTemplates);
 
 // New post email
 Picker.route('/email/new-post/:id?', function(params, req, res, next) {
