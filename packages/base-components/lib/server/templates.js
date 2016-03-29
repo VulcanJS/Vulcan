@@ -14,3 +14,5 @@ Email.addTemplates({
   newsletterConfirmation:   Assets.getText("lib/server/emails/newsletter/newsletterConfirmation.handlebars"),
   postItem:                 Assets.getText("lib/server/emails/newsletter/postItem.handlebars"),
 });
+
+export default Email; // export Email from nova:email with the templates;

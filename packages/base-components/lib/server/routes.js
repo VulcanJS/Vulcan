@@ -1,4 +1,4 @@
-import Email from 'meteor/nova:email';
+import Email from './templates'; // the templates where not defined, here we get the extended Email with the templates from nova:email module
 import Campaign from 'meteor/nova:newsletter';
 
 // New post email
@@ -92,4 +92,14 @@ Picker.route('/email/newsletter-confirmation', function(params, req, res, next) 
     subject: 'Lorem ipsum dolor sit amet'
   });
   res.end(Email.buildTemplate(confirmationHtml));
+});
+
+// how i tested: curl localhost:3000/email/test -> if not like this, email sent forever because of my cURL.
+Picker.route('/email/test', function (params, req, res, next) {
+  let run;
+  if (run === undefined) {
+    Email.buildAndSend('xavier.cazalot@gmail.com', 'Telescope email test', 'test', {date: new Date()});
+    run = true;
+  }
+  res.end('email sent');
 });

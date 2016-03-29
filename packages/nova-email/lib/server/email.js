@@ -2,7 +2,9 @@
  * Telescope Email namespace
  * @namespace Email
  */
-const Email = {};
+
+// extend the email meteor core package
+import { Email } from 'meteor/email';
 
 Email.templates = {};
 
@@ -27,8 +29,8 @@ Email.getTemplate = function (templateName) {
 
   // return Handlebars.templates[template];
 
-  // console.log(templateName)
-  // console.log(Email.templates[template])
+  console.log('template name', templateName)
+  console.log('template used', Email.templates[template])
 
   return function (properties) {
     return Spacebars.toHTML(properties, Email.templates[template]);
@@ -62,7 +64,9 @@ Email.buildTemplate = function (htmlContent) {
   return doctype+inlinedHTML;
 };
 
-Email.send = function(to, subject, html, text){
+// recursivity : Email.send is calling Email.send which is calling Email. -> params `to` becomes email returned, etc.
+//Email.send = function(to, subject, html, text){
+Email.monkeyPatchedSend = function(to, subject, html, text){
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -79,9 +83,9 @@ Email.send = function(to, subject, html, text){
   }
 
   console.log('//////// sending email…');
-  console.log('from: '+from);
-  console.log('to: '+to);
-  console.log('subject: '+subject);
+  console.log('from: ', from); // looking what's inside the [object Object] during the recursivity
+  console.log('to: ', to);
+  console.log('subject: ', subject);
   // console.log('html: '+html);
   // console.log('text: '+text);
 
@@ -100,13 +104,15 @@ Email.send = function(to, subject, html, text){
 
 Email.buildAndSend = function (to, subject, template, properties) {
   var html = Email.buildTemplate(Email.getTemplate(template)(properties));
-  return Email.send (to, subject, html);
+  return Email.monkeyPatchedSend (to, subject, html);
 };
 
 Meteor.methods({
   testEmail: function () {
     if(Users.is.adminById(this.userId)){
-      var email = Email.buildAndSend (Telescope.settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
+      // test template, not emailTest
+      Email.buildAndSend (Telescope.settings.get('defaultEmail'), 'Telescope email test', 'test', {date: new Date()});
+      //however, this template doesn't exist here -> the method doesn't recognize it when called
     }
   }
 });

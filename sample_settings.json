@@ -24,5 +24,6 @@
     }
   ],
   "mailChimpAPIKey": "af5541d55e7ef6d8a008edfa3ab9d86e-us2",
-  "mailChimpListId": "b238a62c30"
+  "mailChimpListId": "b238a62c30",
+  "mailUrl": "smtp://postmaster@sandbox3208052ff5354017a7fe0168fc1b89c2.mailgun.org:robert@smtp.mailgun.org:587"
 }
