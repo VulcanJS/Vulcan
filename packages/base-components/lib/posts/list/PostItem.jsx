@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 
-import ReactForms from "meteor/utilities:react-form-containers";
-const EditDocument = ReactForms.EditDocument;
 
 class PostItem extends Component {
 
@@ -22,19 +20,11 @@ class PostItem extends Component {
 
   renderActions() {
 
-    ({ModalTrigger, DocumentContainer} = Telescope.components);
+    ({ModalTrigger, DocumentContainer, PostEditForm} = Telescope.components);
 
     const component = (
       <ModalTrigger component={<a className="edit-link">Edit</a>}>
-        <div className="edit-post-form">
-          <h3 className="modal-form-title">Edit Post</h3>
-          <EditDocument 
-            collection={Posts}
-            document={this.props.post}
-            currentUser={this.context.currentUser}
-            methodName="posts.edit"
-          />
-        </div>
+        <PostEditForm post={this.props.post}/>
       </ModalTrigger>
     );
 
@@ -92,8 +82,8 @@ class PostItem extends Component {
 };
   
 PostItem.propTypes = {
-  post: React.PropTypes.object.isRequired, // the current comment
-  currentUser: React.PropTypes.object, // the current user
+  post: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object
 }
 
 PostItem.contextTypes = {
@@ -101,3 +91,4 @@ PostItem.contextTypes = {
 };
 
 module.exports = PostItem;
+export default PostItem;

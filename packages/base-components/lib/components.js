@@ -33,6 +33,7 @@ Telescope.registerComponent("PostDaily", require('./posts/PostDaily.jsx'));
 Telescope.registerComponent("PostDay", require('./posts/PostDay.jsx'));
 Telescope.registerComponent("Vote", require('./posts/Vote.jsx'));
 Telescope.registerComponent("PostThumbnail", require('./posts/list/PostThumbnail.jsx'));
+Telescope.registerComponent("PostEditForm", require('./posts/PostEditForm.jsx'));
 
 // comments
 
