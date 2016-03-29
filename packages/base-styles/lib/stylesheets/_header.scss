@@ -43,3 +43,19 @@
     }
   }
 }
+
+.accounts-ui{
+  padding: $vmargin;
+  min-width: 240px;
+  .buttons{
+    .btn{
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: $vmargin;
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+  }
+}

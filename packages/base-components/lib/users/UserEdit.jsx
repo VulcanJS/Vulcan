@@ -9,7 +9,15 @@ const UserEdit = ({document, currentUser}) => {
 
   return (
     <CanEditUser user={currentUser} userToEdit={user}>
-      <EditDocument collection={Meteor.users} document={user} label={label} methodName="users.edit"/>
+      <div className="edit-user-form">
+        <h3>Edit Account</h3>
+        <EditDocument 
+          currentUser={currentUser}
+          collection={Meteor.users} 
+          document={user} 
+          methodName="users.edit"
+        />
+      </div>
     </CanEditUser>
   )
 }

@@ -33,6 +33,7 @@ Telescope.registerComponent("PostDaily", require('./posts/PostDaily.jsx'));
 Telescope.registerComponent("PostDay", require('./posts/PostDay.jsx'));
 Telescope.registerComponent("Vote", require('./posts/Vote.jsx'));
 Telescope.registerComponent("PostThumbnail", require('./posts/list/PostThumbnail.jsx'));
+Telescope.registerComponent("PostEditForm", require('./posts/PostEditForm.jsx'));
 
 // comments
 
@@ -57,7 +58,7 @@ Telescope.registerComponent("CanEditUser", require('./permissions/CanEditUser.js
 // users
 
 Telescope.registerComponent("UserEdit", require('./users/UserEdit.jsx'));
-Telescope.registerComponent("UserSingle", require('./users/UserSingle.jsx'));
+Telescope.registerComponent("UserProfile", require('./users/UserProfile.jsx'));
 Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
 Telescope.registerComponent("UserName", require('./users/UserName.jsx'));
 Telescope.registerComponent("UserMenu", require('./users/UserMenu.jsx'));

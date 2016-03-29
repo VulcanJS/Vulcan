@@ -14,6 +14,15 @@ Telescope.utils.camelToDash = function (str) {
 };
 
 /**
+ * Convert a camelCase string to a space-separated capitalized string
+ * See http://stackoverflow.com/questions/4149276/javascript-camelcase-to-regular-form
+ * @param {String} str
+ */
+Telescope.utils.camelToSpaces = function (str) {
+  return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+};
+
+/**
  * Convert an underscore-separated string to dash-separated string
  * @param {String} str
  */

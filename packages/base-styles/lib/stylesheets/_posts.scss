@@ -190,3 +190,8 @@
     }
   }
 }
+
+.edit-post-form-header{
+  @include flex-center;
+  justify-content: space-between;
+}

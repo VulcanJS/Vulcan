@@ -24,6 +24,7 @@ const NewPostButton = (props, context) => {
               Messages.flash("Post created.", "success");
               Router.go('posts.single', post);
             }}
+            labelFunction={Telescope.utils.camelToSpaces}
           />
         </div>
       </CanCreatePost>
