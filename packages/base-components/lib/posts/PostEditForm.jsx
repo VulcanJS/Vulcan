@@ -36,6 +36,7 @@ class PostEditForm extends Component{
           document={this.props.post}
           currentUser={this.context.currentUser}
           methodName="posts.edit"
+          labelFunction={Telescope.utils.camelToSpaces}
         />
       </div>
     )
