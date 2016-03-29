@@ -27,7 +27,7 @@ const Header = ({currentUser}) => {
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <UserMenu user={currentUser}/> : <NoSSR><LogInButtons /></NoSSR>}
+            {currentUser ? <UserMenu user={currentUser}/> : <AccountsMenu/>}
           </div>
 
           <div className="nav-new-post">

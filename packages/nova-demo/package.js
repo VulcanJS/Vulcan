@@ -20,7 +20,7 @@ Package.onUse(function (api) {
 
     // third-party packages
 
-    'alt:react-accounts-ui@1.1.0'
+    // 'alt:react-accounts-ui@1.1.0'
   ]);
 
   api.addFiles([
