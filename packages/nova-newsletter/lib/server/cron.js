@@ -48,7 +48,7 @@ var addJob = function () {
   });
 };
 Meteor.startup(function () {
-  if (Telescope.settings.get('enableNewsletter', false)) {
+  if (Telescope.settings.get('enableNewsletter', true) && Telescope.settings.get('mailChimpAPIKey') && Telescope.settings.get('mailChimpListId')) {
     addJob();
   }
 });

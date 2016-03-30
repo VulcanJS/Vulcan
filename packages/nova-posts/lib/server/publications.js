@@ -94,11 +94,9 @@ Meteor.publish('posts.single', function (terms) {
 
   const currentUser = Meteor.users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};
-  const posts = Posts.find(terms, options);
+  const posts = Posts.find(terms._id, options);
   const post = posts.fetch()[0];
   const users = getSinglePostUsers(post);
-
-  console.log(_.pluck(users.fetch(), "_id"))
 
   return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
 

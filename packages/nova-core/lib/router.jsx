@@ -24,6 +24,12 @@ FlowRouter.removeFromQueryArray = function (key, value) {
   FlowRouter.setQueryParams(params);
 }
 
+if(Meteor.isServer) {
+  var timeInMillis = 1000 * 10; // 10 secs
+  FlowRouter.setPageCacheTimeout(timeInMillis);
+  FlowRouter.setDeferScriptLoading(true);
+}
+
 // FlowRouter.notFound = {
 //   action: function() {
 //     if (Meteor.isClient) {

@@ -12,6 +12,7 @@ nova:core
 
 # Note: all following packages depend on nova:core
 
+nova:settings
 nova:users
 nova:posts
 nova:comments
@@ -22,7 +23,10 @@ nova:getting-started
 nova:categories
 nova:share
 nova:voting
+nova:forms
 nova:embedly
+nova:base-components
+nova:base-styles
 
 # nova:migrations
 # nova:api
@@ -35,11 +39,9 @@ nova:embedly
 # nova:releases
 # nova:rss
 # nova:subscribe-to-posts
+# nova-demo
 
-############ Customizable Packages ############
+############ Custom Packages ############
 
-base-components
-base-styles
 
-nova-demo
-alt:react-npm
+

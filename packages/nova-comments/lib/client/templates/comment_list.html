@@ -1,8 +1,0 @@
-<template name="comment_list">
-  <ul class="comments comment-list {{commentListClass}}" aria-live="polite">
-    {{#each childComments}}
-      {{> comment_item}}
-    {{/each}}
-  </ul>
-  {{> modules zone="commentThreadBottom" moduleData=this}}
-</template>

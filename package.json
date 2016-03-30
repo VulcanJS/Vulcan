@@ -9,7 +9,7 @@
     "js-cookie": "^2.1.0",
     "react": "^0.14.7",
     "react-addons-pure-render-mixin": "^0.14.7",
-    "react-bootstrap": "^0.28.3",
+    "react-bootstrap": "^0.28.4",
     "react-dom": "^0.14.6",
     "react-komposer": "^1.4.1",
     "react-modal": "^0.6.1",

@@ -4,7 +4,7 @@ import NoSSR from 'react-no-ssr';
 
 import Core from 'meteor/nova:core';
 import SmartContainers from "meteor/utilities:react-list-container";
-import FormContainers from "meteor/utilities:react-form-containers";
+import FormContainers from "meteor/nova:forms";
 
 const ModalTrigger = Core.ModalTrigger;
 const NewDocument = FormContainers.NewDocument;

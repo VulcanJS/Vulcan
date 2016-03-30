@@ -1,8 +1,43 @@
 {
   "public": {
-    "title": "Nova",
-    "showBanner": true
+    "title": "Your site title",
+    "tagline":"Your site tagline",
+
+    "logoUrl": "/foo.png",
+    "logoHeight": "80",
+    "logoWidth": "250",
+    "faviconUrl": "/favicon.ico",
+
+    "requirePostsApproval":false,
+    "requireViewInvite":false,
+    "requirePostInvite":false,
+    "enableNewsletter":true,
+    "autoSubscribe":false,
+    "emailNotifications":true,
+    "postInterval": 20,
+    "RSSLinksPointTo": "link",
+    "commentInterval": 20,
+    "maxPostsPerDay": 10
+    "startInvitesCount": 5,
+    "postsPerPage": 10,
+
+    "language": "en",
+
+    "twitterAccount": "foo",
+    "facebookPage": "http://facebook.com/foo",
+
+    "googleAnalyticsId":"123foo",
+    "embedlyKey":"123foo"
   },
+
+
+  "defaultEmail": "hello@world.com",
+  "mailUrl": "smtp://postmaster%40telescope.mailgun.org:foo123@smtp.mailgun.org:587/",
+  "scoreUpdateInterval": "30",
+
+  "mailChimpAPIKey": "123foo",
+  "mailChimpListId": "123foo",
+
   "categories": [
     {
       "name": "Test Category 1",
@@ -22,8 +57,5 @@
       "order": 10,
       "slug": "testcat3"
     }
-  ],
-  "mailChimpAPIKey": "af5541d55e7ef6d8a008edfa3ab9d86e-us2",
-  "mailChimpListId": "b238a62c30",
-  "mailUrl": "smtp://postmaster@sandbox3208052ff5354017a7fe0168fc1b89c2.mailgun.org:robert@smtp.mailgun.org:587"
+  ]
 }
