@@ -2,55 +2,47 @@
 
 **Nova** is a top-secret, highly unstable experimental branch of Telescope with a really cool name. 
 
-### Install
+## Install
 
-Clone this branch, then `npm install`. 
+1. Clone this branch to your local machine
+2. Run `npm install`
+3. Run `meteor`
 
-### Learn More
+Note: the `nova:*` packages are *not* currently published to Atmosphere.  
 
-- [Introducing Nova](http://www.telescopeapp.org/blog/introducing-nova/)
-- [Getting Started With Nova](http://www.telescopeapp.org/blog/getting-started-with-nova/)
-- [Roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap)
+## Resources
 
-### Philosophy
+The best way to get support is the #nova channel in the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
 
-Nova was born from a simple realization: 80% of the work involed in Telescope comes from focusing on the user experience. But this comes at the detriment of *developer* experience since it means a much larger codebase.
+You can also check out the [Nova roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap) to see what needs to be done. 
 
-So Nova gets rid of nice-to-have-but-not-critical features like themes, notifications, update alerts, the admin back-end, etc.
+## Settings
 
-### Goals
+Settings can be configured in your `settings.json` file (although any settings published to the `Telescope.settings.collection` collection will also be taken into account).
 
-The goal of this project is to provide an upgrade path for people who want to completely customize their app anyway, and also benefit from React's advantages (performance, server-side rendering, tooling, etc.).
+Settings can be public (meaning they will be published to the client) or private (they will be kept on the server). Public settings should be set on the `public` object. You can find a full example in `sample_settings.json`.
 
-### Separation Of Concerns
+To use your `settings.json` file:
 
-Nova assumes that you're a developer and that you're going to want to customize your app anyway. So it doesn't have a default theme, and more importantly the core files don't include a single piece of HTML code. 
+- Development: `meteor --settings settings.json`
+- Production: specify the path to `settings.json` in `mup.json`
 
-Instead, all markup is stored in your own theme. This comes in sharp contrast with “vanilla” Telescope:
-
-- **Vanilla**: the newsletter package contains markup for the newsletter form, the comments package contains markup for displaying comments, etc.
-- **Nova**: packages only contains each feature's underlying logic. All markup used to *display* content is contained within your own theme. 
-
-This means that Nova doesn't lock you in with any specific rendering framework. Use React, Blaze, Angular, or even an iOS or Android app!
-
-(OK, I lied. Nova does depend on React for now, but this dependency could in theory be removed in the future.)
-
-### Packages
+## Packages
 
 #### Core Packages
 
-These packages are necessary for Telescope to run. 
+These packages are necessary for Nova to run. 
 
 - `lib`: utility functions used by the app; also handles all external packages.
 - `events`: event tracking.
-- `settings`: publish the `Settings` collection.
-- `i18n`
-- `core`: import previous core packages; define containers.
+- `i18n`: internationalization.
+- `core`: import previous core packages.
 
 #### Optional Packages
 
 These packages are optional, although they might depend on each other. Note that dependencies on non-core packages should be `weak` whenever possible. 
 
+- `settings`: publish the `Settings` collection (for backwards compatibility)
 - `posts`
 - `comments`
 - `users`
@@ -64,7 +56,7 @@ These packages are optional, although they might depend on each other. Note that
 - `base-components`
 - `base-styles`
 
-### Files
+## Files
 
 Nova tries to maintain a consistent file structure for its main packages:
 
@@ -80,86 +72,62 @@ Nova tries to maintain a consistent file structure for its main packages:
 - `parameters.js`: the collection's query constructor.
 - `server/publications.js`: publications.
 
-### Containers & Components
+## Customizing Components
 
-Apart from the above files, Nova has two other major file types: **containers** and **components**. 
+Apart from a couple exceptions, almost all React components in Nova live inside the `nova:base-components` package. There are two main ways of customizing them.
 
-**Containers** take a set of properties, subscribe to a data source, and return a set of results. Out of the box, Nova has three containers (all contained in the `core` package):
+### Override
 
-- `AppContainer.jsx`: used to wait on global subscriptions and load the app.
-- `ListContainer.jsx`: used for paginated list of items.
-- `ItemContainer.jsx`: used for single items. 
+If you only need to modify a single component, you can simply override it with a new one without having to touch the `nova:base-components` package. 
 
-**Components** take in these results, and output HTML. They should only exist inside theme packages. 
+For example, if you wanted to use your own `CustomLogo` component you would do:
 
-### Settings
-
-Settings can be configured in your `settings.json` file (although any settings published to the `Settings` collection will also be taken into account).
-
-Settings can be public (meaning they will be published to the client) or private (they will be kept on the server). Public settings should be set on the `public` object. Here's an example:
-
-```
-{
-  "public": {
-    "title": "Nova"
-  },
-  "kadiraAppSecret": "123xyz"
+```js
+class CustomLogo extends Telescope.components.Logo{
+  render() {
+    return (
+      <div>/* custom component code */</div>;
+    )
+  } 
 }
+Telescope.components.Logo = CustomLogo;
 ```
 
-#### Public Settings
+Nova components are resolved at render. So you just need to make the override anytime before the `<Logo/>` component is called from a parent component. 
 
-- `title`
-- `siteUrl`
-- `tagline`
-- `description`
-- `siteImage`
-- `requireViewInvite`
-- `requirePostInvite`
-- `requirePostsApproval`
-- `defaultView`
-- `postInterval`
-- `RSSLinksPointTo`
-- `commentInterval`
-- `maxPostsPerDay`
-- `startInvitesCount`
-- `postsPerPage`
-- `logoUrl`
-- `logoHeight`
-- `logoWidth`
-- `faviconUrl`
-- `language`
-- `twitterAccount`
-- `facebookPage`
-- `googleAnalyticsId`
+### Clone & Modify
 
-#### Private Settings
+For more in-depth customizations, you can also just clone the entire `nova:base-components` package and then make your modification directly there. 
 
-- `defaultEmail`
-- `mailUrl`
-- `scoreUpdateInterval` – how often scores are recalculated, in seconds
-- `emailFooter`
+Of course, keeping your own new `components` package up to date with any future `nova:base-components` modifications will then be up to you. 
 
-Note that packages may also rely on their own settings. 
+## Callbacks
 
-### Callbacks
+Nova uses a system of hooks and callbacks for many of its operations. 
 
-Methods support four distinct callbacks
+For example, here's how you would add a callback to `posts.edit.sync` to give posts an `editedAt` date every time they are modified:
+
+```js
+function setEditedAt (post, user) {
+  post.editedAt = new Date();
+  return post;
+}
+Telescope.callbacks.add("posts.edit.sync", setEditedAt);
+```
+
+If the callback function is named (i.e. declared using the `function foo () {}` syntax), you can also remove it from the callback using:
+
+```js
+Telescope.callbacks.remove("posts.edit.sync", "setEditedAt");
+```
+
+Methods support four distinct types of callbacks, each with their own hook:
 
 - `client` callbacks are only called on the client, before the actual method is called.
 - `method` callbacks are called within the body of the method, and they run both on the client and server.
 - `sync` callbacks are called in the mutator, and can run either on both client and server, *or* on the server only if the mutator is called directly.
 - `async` callbacks are called in the mutator, and only run on the server in an async non-blocking way. 
 
-### Other Notes
+## Cheatsheet
 
-- The `comments` package is now optional.
-- Voting logic is now optional. 
-- Posts and comments fields are not published by default anymore, but must be specified as so using `Posts.publishedFields` and `Comments.publishedFields`.
-- Using the global scope is discouraged. Instead, use modules with `import` (if possible) or `require` (if you need dynamic module importing).
-- Packages with directory names starting with `_` are currently disabled. 
-- All Blaze files within packages are disabled.
-- Some `.js` files within packages are disabled.
-- Some code is commented. 
-- Telescope's module system will probably not be ported to Nova, since it encourages you to customize your theme manually anyway. 
-- This is obviously a work in progress!
+You can access a dynamically generated cheatsheet of Nova's main functions at [http://localhost:3000/cheatsheet](/cheatsheet) (replace with your own development URL).
