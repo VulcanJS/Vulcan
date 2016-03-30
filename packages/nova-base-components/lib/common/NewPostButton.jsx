@@ -3,13 +3,14 @@ import { Button } from 'react-bootstrap';
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
+const ModalTrigger = Core.ModalTrigger;
 
 import ReactForms from "meteor/utilities:react-form-containers";
 const NewDocument = ReactForms.NewDocument;
 
 const NewPostButton = (props, context) => {
 
-  ({ModalTrigger, CanCreatePost} = Telescope.components);
+  ({CanCreatePost} = Telescope.components);
 
   return (
     <ModalTrigger component={<Button bsStyle="primary">New Post</Button>}>

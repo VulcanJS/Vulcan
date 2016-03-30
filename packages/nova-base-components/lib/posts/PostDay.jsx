@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
+import SmartContainers from "meteor/utilities:react-list-container";
+const ListContainer = SmartContainers.ListContainer;
+
 const PostDay = ({date, number}) => {
 
   ({PostList} = Telescope.components);

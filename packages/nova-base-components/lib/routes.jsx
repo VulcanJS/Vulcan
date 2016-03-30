@@ -2,13 +2,17 @@ import React from 'react';
 import Router from './router.js'
 import {mount} from 'react-mounter';
 
+import SmartContainers from "meteor/utilities:react-list-container";
+const DocumentContainer = SmartContainers.DocumentContainer;
+const ListContainer = SmartContainers.ListContainer;
+
 // ------------------------------------- Posts -------------------------------- //
 
 Router.route('/', {
   name: 'posts.list',
   action(params, queryParams) {
 
-    ({App, ListContainer, PostList} = Telescope.components);
+    ({App, PostList} = Telescope.components);
     queryParams = _.isEmpty(queryParams) ? {view: 'new'} : _.clone(queryParams);
     ({selector, options} = Posts.parameters.get(queryParams));
 
@@ -38,7 +42,7 @@ Router.route('/daily/:days?', {
 Router.route('/posts/:_id/:slug?', {
   name: 'posts.single',
   action(params, queryParams) {
-    ({App, DocumentContainer, PostPage} = Telescope.components);
+    ({App, PostPage} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Posts} 
@@ -56,7 +60,7 @@ Router.route('/posts/:_id/:slug?', {
 Router.route('/users/:slug', {
   name: 'users.single',
   action(params, queryParams) {
-    ({App, DocumentContainer, UserProfile} = Telescope.components);
+    ({App, UserProfile} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
@@ -72,7 +76,7 @@ Router.route('/users/:slug', {
 Router.route('/account', {
   name: 'account',
   action(params, queryParams) {
-    ({App, DocumentContainer, UserEdit} = Telescope.components);
+    ({App, UserEdit} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
@@ -87,7 +91,7 @@ Router.route('/account', {
 Router.route('/users/:slug/edit', {
   name: 'users.edit',
   action(params, queryParams) {
-    ({App, DocumentContainer, UserEdit} = Telescope.components);
+    ({App, UserEdit} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Users} 

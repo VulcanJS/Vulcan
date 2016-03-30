@@ -13,10 +13,7 @@ Package.onUse(function(api) {
     'nova:lib@0.25.7', //  no dependencies
     // 'nova:messages@0.25.7', // lib
     'nova:i18n@0.25.7', // lib
-    'nova:events@0.25.7', // lib, i18n
-    'nova:settings@0.25.7', // lib, i18n
-    'utilities:react-list-container',
-    'utilities:react-form-containers'
+    'nova:events@0.25.7' // lib, i18n
   ];
 
   api.use(packages);
@@ -24,7 +21,6 @@ Package.onUse(function(api) {
   api.imply(packages);
 
   api.addFiles([
-    'lib/components.js',
     'lib/callbacks.js',
     'lib/icons.js',
     'lib/seo.js',

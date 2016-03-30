@@ -6,6 +6,7 @@
     "logoUrl": "/foo.png",
     "logoHeight": "80",
     "logoWidth": "250",
+    "faviconUrl": "/favicon.ico",
 
     "requirePostsApproval":false,
     "requireViewInvite":false,
@@ -13,13 +14,29 @@
     "enableNewsletter":true,
     "autoSubscribe":false,
     "emailNotifications":true,
+    "postInterval": 20,
+    "RSSLinksPointTo": "link",
+    "commentInterval": 20,
+    "maxPostsPerDay": 10
+    "startInvitesCount": 5,
+    "postsPerPage": 10,
+    
+    "language": "en",
+
+    "twitterAccount": "foo",
+    "facebookPage": "http://facebook.com/foo",
 
     "googleAnalyticsId":"123foo",
     "embedlyKey":"123foo",
   },
 
+
+  "defaultEmail": "hello@world.com",
+  "mailUrl": "smtp://postmaster%40telescope.mailgun.org:foo123@smtp.mailgun.org:587/",
+  "scoreUpdateInterval": "30",
+
   "mailChimpAPIKey": "123foo",
-  "mailChimpListId": "123foo"
+  "mailChimpListId": "123foo",
 
   "categories": [
     {

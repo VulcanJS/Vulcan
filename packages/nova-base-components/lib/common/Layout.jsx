@@ -1,8 +1,11 @@
 import React from 'react';
 
+import Core from "meteor/nova:core";
+const FlashContainer = Core.FlashContainer;
+
 const Layout = props => {
 
-  ({Header, Footer, FlashContainer, FlashMessages, NewsletterForm} = Telescope.components);
+  ({Header, Footer, FlashMessages, NewsletterForm} = Telescope.components);
 
   return (
     <div className="wrapper" id="wrapper">

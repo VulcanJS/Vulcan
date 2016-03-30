@@ -1,6 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 
+import Core from "meteor/nova:core";
+const ModalTrigger = Core.ModalTrigger;
+
+import SmartContainers from "meteor/utilities:react-list-container";
+const DocumentContainer = SmartContainers.DocumentContainer;
 
 class PostItem extends Component {
 
@@ -20,7 +25,7 @@ class PostItem extends Component {
 
   renderActions() {
 
-    ({ModalTrigger, DocumentContainer, PostEditForm} = Telescope.components);
+    ({PostEditForm} = Telescope.components);
 
     const component = (
       <ModalTrigger component={<a className="edit-link">Edit</a>}>

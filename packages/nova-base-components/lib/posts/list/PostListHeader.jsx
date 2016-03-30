@@ -1,8 +1,11 @@
 import React from 'react';
 
+import SmartContainers from "meteor/utilities:react-list-container";
+const ListContainer = SmartContainers.ListContainer;
+
 const PostListHeader = () => {
 
-  ({PostViews, SearchForm, ListContainer, CategoriesList} = Telescope.components)
+  ({PostViews, SearchForm, CategoriesList} = Telescope.components)
 
   return (
     <div className="post-list-header">

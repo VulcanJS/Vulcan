@@ -12,6 +12,7 @@ nova:core
 
 # Note: all following packages depend on nova:core
 
+nova:settings
 nova:users
 nova:posts
 nova:comments

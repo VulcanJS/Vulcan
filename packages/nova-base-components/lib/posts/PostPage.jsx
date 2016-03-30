@@ -1,8 +1,10 @@
 import React from 'react';
+import SmartContainers from "meteor/utilities:react-list-container";
+const ListContainer = SmartContainers.ListContainer;
 
 const PostPage = ({document, currentUser}) => {
   
-  ({ListContainer, CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags} = Telescope.components);
+  ({CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};

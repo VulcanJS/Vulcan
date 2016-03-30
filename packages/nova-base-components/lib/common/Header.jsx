@@ -5,9 +5,12 @@ import Core from "meteor/nova:core";
 
 const Messages = Core.Messages;
 
+import SmartContainers from "meteor/utilities:react-list-container";
+const ListContainer = SmartContainers.ListContainer;
+
 const Header = ({currentUser}) => {
   
-  ({Logo, ListContainer, CategoriesList, NewPostButton, UserMenu, AccountsMenu, HeadTags} = Telescope.components);
+  ({Logo, CategoriesList, NewPostButton, UserMenu, AccountsMenu, HeadTags} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
