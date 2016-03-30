@@ -137,7 +137,6 @@ tap:i18n@1.7.0
 templating@1.1.7
 templating-tools@1.0.2
 tmeasday:check-npm-versions@0.1.1
-tmeasday:healthcheck-handler@0.0.2
 tmeasday:publish-counts@0.7.3
 tracker@1.0.11
 twitter@1.1.7
