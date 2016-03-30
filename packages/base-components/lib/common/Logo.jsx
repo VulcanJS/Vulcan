@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Logo = ({logoUrl, siteTitle}) => {
   if (logoUrl) {
     return (

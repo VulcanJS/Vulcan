@@ -1,3 +1,4 @@
+import React from 'react';
 import Messages from "../messages.js";
 
 import { createContainer } from 'meteor/react-meteor-data';

@@ -9,13 +9,10 @@ aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.2
-alt:react-npm@1.0.0
 arillo:flow-router-helpers@0.5.1
 autoupdate@1.2.6
 babel-compiler@6.5.2
 babel-runtime@0.1.6
-base-components@0.25.7
-base-styles@0.25.7
 base64@1.0.6
 binary-heap@1.0.6
 blaze@2.1.5
@@ -83,7 +80,8 @@ modules-runtime@0.6.1
 momentjs:moment@2.11.2
 mongo@1.1.5
 mongo-id@1.0.2
-nova-demo@0.25.7
+nova:base-components@0.25.7
+nova:base-styles@0.25.7
 nova:categories@0.25.7
 nova:comments@0.25.7
 nova:core@0.25.7

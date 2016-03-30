@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Layout = props => {
 
   ({Header, Footer, FlashContainer, FlashMessages, NewsletterForm} = Telescope.components);

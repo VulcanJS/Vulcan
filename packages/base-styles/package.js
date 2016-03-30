@@ -1,5 +1,5 @@
 Package.describe({
-  name: "base-styles",
+  name: "nova:base-styles",
   summary: "Nova basic styles package",
   version: "0.25.7",
   git: "https://github.com/TelescopeJS/Telescope.git"

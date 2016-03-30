@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PostStats = ({post}) => {
 
   ({Icon} = Telescope.components);

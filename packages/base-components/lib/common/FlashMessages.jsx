@@ -1,3 +1,5 @@
+import React from 'react';
+
 const FlashMessages = ({messages}) => {
   ({Flash} = Telescope.components);
   return (

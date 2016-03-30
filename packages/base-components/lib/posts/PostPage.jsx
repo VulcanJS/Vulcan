@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PostPage = ({document, currentUser}) => {
   
   ({ListContainer, CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags} = Telescope.components);

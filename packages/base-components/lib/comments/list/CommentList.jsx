@@ -1,3 +1,5 @@
+import React from 'react';
+
 const CommentList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
 
   ({LoadMore, PostsLoading, NoPosts, NoMorePosts, CommentNode} = Telescope.components);

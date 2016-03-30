@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PostCommenters = ({post}) => {
   return (
     <div className="post-comments">

@@ -1,3 +1,4 @@
+import React from 'react';
 import Helmet from 'react-helmet';
 
 const HeadTags = ({url, title, description, image}) => {

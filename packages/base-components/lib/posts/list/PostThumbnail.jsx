@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PostThumbnail = ({post}) => {
   return (
     <a className="post-thumbnail" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>

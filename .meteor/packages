@@ -23,6 +23,8 @@ nova:categories
 nova:share
 nova:voting
 nova:embedly
+nova:base-components
+nova:base-styles
 
 # nova:migrations
 # nova:api
@@ -35,11 +37,9 @@ nova:embedly
 # nova:releases
 # nova:rss
 # nova:subscribe-to-posts
+# nova-demo
 
-############ Customizable Packages ############
+############ Custom Packages ############
 
-base-components
-base-styles
 
-nova-demo
-alt:react-npm
+

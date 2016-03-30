@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Icon = ({ name, iconClass }) => {
   const icons = Telescope.utils.icons;
   const iconCode = !!icons[name] ? icons[name] : name;

@@ -1,3 +1,5 @@
+import React from 'react';
+
 const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
 
 const renderFunction = (func, name) => {

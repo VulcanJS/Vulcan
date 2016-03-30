@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PostListHeader = () => {
 
   ({PostViews, SearchForm, ListContainer, CategoriesList} = Telescope.components)
