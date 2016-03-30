@@ -21,6 +21,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/bootstrap.css',
 
     // 'lib/stylesheets/solid.1.4.4.css',
+    'lib/stylesheets/_breakpoints.scss',
     'lib/stylesheets/_colors.scss',
     'lib/stylesheets/_variables.scss',
     'lib/stylesheets/_global.scss',

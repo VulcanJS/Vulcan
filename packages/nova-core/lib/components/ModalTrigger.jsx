@@ -6,8 +6,8 @@ const customStyles = {
   content : {
     position                   : 'absolute',
     top                        : '40px',
-    left                       : '20%',
-    right                      : '20%',
+    left                       : '10%',
+    right                      : '10%',
     bottom                     : '40px',
     border                     : '1px solid #ccc',
     background                 : '#fff',

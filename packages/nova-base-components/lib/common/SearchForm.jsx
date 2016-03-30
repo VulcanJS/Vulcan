@@ -47,6 +47,7 @@ class SearchForm extends Component{
             value=""
             placeholder={this.props.labelText}
             type="text"
+            layout="elementOnly"
           />
         </Formsy.Form>
       </div>

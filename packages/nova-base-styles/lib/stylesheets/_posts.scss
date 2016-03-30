@@ -1,11 +1,28 @@
 
+//////////////////////////////////////////////////////
+// Post List                                        //
+//////////////////////////////////////////////////////
+
 .post-list-header{
-  @include flex-center;
-  justify-content: space-between;
+  @include medium-large{
+    @include flex-center;
+    justify-content: space-between;
+  }
   margin-bottom: $vmargin;
 }
 
+.post-list-categories{
+  @include small{
+    margin: 0 auto;
+    margin-bottom: $vmargin;
+    text-align: center;
+  }
+}
+
 .post-views{
+  @include small{
+    margin-bottom: $vmargin;
+  }
   a{
     @include border;
     // @include border-radius;
@@ -22,6 +39,7 @@
     margin-right: $hmargin;
   }
 }
+
 .post-list-content{
   border-top: $border;
   // padding-top: 15px;
@@ -29,8 +47,27 @@
   margin-bottom: $vmargin;
 }
 
+.post-load-more{
+  display: block;
+  text-align: center;
+  @include border;
+  @include border-radius;
+  font-size: $large-font;
+  padding: 10px 20px;
+  @include activeHover;
+  width: 100%;
+  background: $white;
+  color: $blue;
+}
+
+//////////////////////////////////////////////////////
+// Post Item                                        //
+//////////////////////////////////////////////////////
+
 .post-item{
-  @include flex-center;
+  @include medium-large{
+    @include flex-center;
+  }
   border-bottom: $border;
   padding: $vmargin 5px;
   // margin-bottom: 15px;
@@ -41,7 +78,12 @@
 }
 
 .post-vote{
-  margin-right: $hmargin;
+  @include small{
+    float: right;    
+  }
+  @include medium-large{
+    margin-right: $hmargin;
+  }
 }
 
 .upvote-button{
@@ -73,10 +115,21 @@
 }
 
 .post-title{
-  font-size: $larger-font;
-  margin-bottom: 5px;
-  @include flex-center;
+  @include small{
+    margin-right: 40px;
+    font-size: $large-font;
+    margin-bottom: $vmargin/2;
+  }
+  @include medium-large{
+    @include flex-center;
+    font-size: $larger-font;
+    margin-bottom: 5px;
+  }
   .post-title-link{
+    @include small{
+      display: block;
+      margin-bottom: $vmargin/2;
+    }
     color: $black;
     &, &:active, &:hover{
       text-decoration: none;
@@ -85,8 +138,10 @@
 }
 
 .post-categories{
+  @include medium-large{
+    margin-left: 5px;
+  }
   @include flex-center;
-  margin-left: 5px;
   a{
     display: block;
     font-size: $small-font;
@@ -99,8 +154,10 @@
 }
 
 .post-meta{
+  @include medium-large{
+    @include flex-center;
+  }
   font-size: $small-font;
-  @include flex-center;
   .user-avatar{
     margin-right: 5px;
   }
@@ -109,11 +166,25 @@
   }
 }
 
+.post-user{
+  @include small{
+    margin-bottom: $vmargin/2;
+  }
+  @include flex-center;
+}
+
 .post-date, .post-comments{
+  @include small{
+    margin-bottom: $vmargin/2;
+  }
   color: $medium-text;
 }
 
 .post-stats{
+  @include small{
+    margin-bottom: $vmargin/2;
+    display: inline-block;
+  }
   @include border;
   @include border-radius;
   font-size: $smaller-font;
@@ -131,28 +202,35 @@
   @include flex-center;
 }
 
-.post-comments{
+.post-commenters{
+  @include small{
+    display: none;
+  }
   @include flex-center;
 }
 
-.post-commenters{
+.post-commenters-avatars{
   .user-avatar{
     margin-right: $hmargin;
   }
 }
 
-.post-load-more{
+.post-thumbnail{
+  @include small{
+    float: left;
+  }
   display: block;
-  text-align: center;
-  @include border;
-  @include border-radius;
-  font-size: $large-font;
-  padding: 10px 20px;
-  @include activeHover;
-  width: 100%;
-  background: $white;
-  color: $blue;
+  margin-right: $hmargin;
+  img{
+    display: block;
+    height: 50px;
+    width: auto;
+  }
 }
+
+//////////////////////////////////////////////////////
+// Post Page                                        //
+//////////////////////////////////////////////////////
 
 .post-page{
   .post-item{
@@ -168,15 +246,9 @@
   margin-bottom: $hmargin;
 }
 
-.post-thumbnail{
-  display: block;
-  margin-right: $hmargin;
-  img{
-    display: block;
-    height: 50px;
-    width: auto;
-  }
-}
+//////////////////////////////////////////////////////
+// Other Elements                                   //
+//////////////////////////////////////////////////////
 
 .post-day{
   margin-bottom: $vmargin;

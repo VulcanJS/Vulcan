@@ -5,6 +5,7 @@ body{
 .main, .footer, .header{
   margin-left: auto;
   margin-right: auto;
+  padding: 0 $hmargin;
   max-width: 1200px;
 }
 

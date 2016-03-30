@@ -9,22 +9,20 @@ const CategoriesList = ({categories}, context) => {
   
   if (categories && categories.length > 0) {
     return (
-      <div className="categories">
-        <DropdownButton bsStyle="default" className="btn-secondary" title="Categories" id="categories-dropdown">
-          <MenuItem href={Router.path("posts.list")} eventKey={0} className="dropdown-item post-category">All Categories</MenuItem>
-          {categories.map((category, index) => 
-            <MenuItem 
-              href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})} 
-              eventKey={index+1} 
-              key={category._id} 
-              className={currentCategory === category.slug ? "post-category-active dropdown-item post-category" : "dropdown-item post-category"} 
-            >
-              {currentCategory === category.slug ? <Icon name="voted"/> :  null}
-              {category.name}
-            </MenuItem>
-          )}
-        </DropdownButton>
-      </div>
+      <DropdownButton bsStyle="default" className="categories btn-secondary" title="Categories" id="categories-dropdown">
+        <MenuItem href={Router.path("posts.list")} eventKey={0} className="dropdown-item post-category">All Categories</MenuItem>
+        {categories.map((category, index) => 
+          <MenuItem 
+            href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})} 
+            eventKey={index+1} 
+            key={category._id} 
+            className={currentCategory === category.slug ? "post-category-active dropdown-item post-category" : "dropdown-item post-category"} 
+          >
+            {currentCategory === category.slug ? <Icon name="voted"/> :  null}
+            {category.name}
+          </MenuItem>
+        )}
+      </DropdownButton>
     )
   } else {
     return null

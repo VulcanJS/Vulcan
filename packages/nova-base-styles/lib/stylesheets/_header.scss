@@ -1,22 +1,27 @@
 .header-wrapper{
   background: $header-bg;
   margin-bottom: $vmargin;
+  padding: 0 $hmargin;
 }
 
 .header{
-  @include flex-center;
-  justify-content: space-between;
+  @include medium-large{
+    @include flex-center;
+    justify-content: space-between;
+  }
   padding: $vmargin 0;
 }
 
 .logo{
-  display: flex;
-  align-items: baseline;
-  .logo-text{
-    margin-right: $hmargin;
-  }
-  .logo-image{
-    margin-right: $hmargin;
+  @include medium-large{
+    display: flex;
+    align-items: baseline;
+    .logo-text{
+      margin-right: $hmargin;
+    }
+    .logo-image{
+      margin-right: $hmargin;
+    }
   }
   .tagline{
     font-size: 1.35rem;
