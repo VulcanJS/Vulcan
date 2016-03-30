@@ -1,11 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
+import Router from '../router.js'
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 const ModalTrigger = Core.ModalTrigger;
 
-import ReactForms from "meteor/utilities:react-form-containers";
+import ReactForms from "meteor/nova:forms";
 const NewDocument = ReactForms.NewDocument;
 
 const NewPostButton = (props, context) => {

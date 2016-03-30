@@ -47,7 +47,7 @@ Router.route('/posts/:_id/:slug?', {
       <DocumentContainer 
         collection={Posts} 
         publication="posts.single" 
-        selector={params}
+        selector={{_id: params._id}}
         terms={params}
         joins={Posts.getJoins()}
         component={PostPage}

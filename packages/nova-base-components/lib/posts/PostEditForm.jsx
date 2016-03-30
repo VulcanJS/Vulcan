@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import ReactForms from "meteor/utilities:react-form-containers";
+import ReactForms from "meteor/nova:forms";
 const EditDocument = ReactForms.EditDocument;
 
 import Core from "meteor/nova:core";

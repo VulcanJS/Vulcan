@@ -30,7 +30,6 @@ const CategoriesList = ({categories}, context) => {
   
 };
 
-
 CategoriesList.contextTypes = {
   currentRoute: React.PropTypes.object
 };

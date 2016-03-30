@@ -88,6 +88,7 @@ nova:core@0.25.7
 nova:email@0.25.7
 nova:embedly@0.25.7
 nova:events@0.25.7
+nova:forms@0.25.7
 nova:getting-started@0.25.7
 nova:i18n@0.25.7
 nova:lib@0.25.7
@@ -136,6 +137,7 @@ tap:i18n@1.7.0
 templating@1.1.7
 templating-tools@1.0.2
 tmeasday:check-npm-versions@0.1.1
+tmeasday:healthcheck-handler@0.0.2
 tmeasday:publish-counts@0.7.3
 tracker@1.0.11
 twitter@1.1.7
@@ -143,7 +145,6 @@ ui@1.0.9
 underscore@1.0.6
 url@1.0.7
 utilities:avatar@0.9.2
-utilities:react-form-containers@0.1.7
 utilities:react-list-container@0.1.6
 utilities:smart-methods@0.1.2
 utilities:smart-publications@0.1.4

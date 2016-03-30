@@ -38,27 +38,14 @@ class ModalTrigger extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  getChildContext() {
+    const component = this;
+    return {
+      closeCallback: component.closeModal
+    };
+  }
+
   render() {
-    
-
-    // see http://stackoverflow.com/a/32371612/649299
-    const childrenWithProps = React.Children.map(this.props.children, (child) => {
-
-      // if child component already has a successCallback, create new callback 
-      // that both calls original callback and also closes modal
-      let successCallback;
-      if (child.props.successCallback) {
-        successCallback = (document) => {
-          child.props.successCallback(document);
-          this.closeModal();
-        }
-      } else {
-        successCallback = this.closeModal;
-      }
-
-      return React.cloneElement(child, { successCallback: successCallback });
-
-    });
 
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
 
@@ -70,7 +57,7 @@ class ModalTrigger extends Component {
           onRequestClose={this.closeModal}
           style={customStyles} 
         >
-          {childrenWithProps}
+          {this.props.children}
         </Modal>
       </div>
     )
@@ -79,6 +66,10 @@ class ModalTrigger extends Component {
 
 ModalTrigger.propTypes = {
   component: React.PropTypes.object.isRequired
+}
+
+ModalTrigger.childContextTypes = {
+  closeCallback: React.PropTypes.func
 }
 
 module.exports = ModalTrigger;

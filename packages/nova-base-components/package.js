@@ -27,8 +27,7 @@ Package.onUse(function (api) {
     // 'studiointeract:react-accounts-ui-basic@1.0.1',
     'studiointeract:react-accounts-ui@1.0.7',
     'dburles:spacebars-tohtml@1.0.1',
-    'utilities:react-list-container',
-    'utilities:react-form-containers'
+    'utilities:react-list-container'
   ]);
 
   api.addFiles([

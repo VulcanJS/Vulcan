@@ -23,6 +23,7 @@ nova:getting-started
 nova:categories
 nova:share
 nova:voting
+nova:forms
 nova:embedly
 nova:base-components
 nova:base-styles
