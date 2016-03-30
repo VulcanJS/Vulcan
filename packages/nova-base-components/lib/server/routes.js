@@ -98,12 +98,7 @@ Picker.route('/email/newsletter-confirmation', function(params, req, res, next) 
   res.end(Email.buildTemplate(confirmationHtml));
 });
 
-// how i tested: curl localhost:3000/email/test -> if not like this, email sent forever because of my cURL.
 Picker.route('/email/test', function (params, req, res, next) {
-  let run;
-  if (run === undefined) {
-    Email.buildAndSend('xavier.cazalot@gmail.com', 'Telescope email test', 'test', {date: new Date()});
-    run = true;
-  }
+  Email.buildAndSend(Telescope.settings.get('defaultEmail'), 'Telescope email test', 'test', {date: new Date()});
   res.end('email sent');
 });

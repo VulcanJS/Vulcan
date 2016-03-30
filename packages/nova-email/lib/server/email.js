@@ -29,9 +29,6 @@ Email.getTemplate = function (templateName) {
 
   // return Handlebars.templates[template];
 
-  console.log('template name', templateName)
-  console.log('template used', Email.templates[template])
-
   return function (properties) {
     return Spacebars.toHTML(properties, Email.templates[template]);
   }
