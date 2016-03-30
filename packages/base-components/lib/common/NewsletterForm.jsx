@@ -20,7 +20,6 @@ class NewsletterForm extends Component {
     this.dismissBanner = this.dismissBanner.bind(this);
 
     const showBanner = 
-      Telescope.settings.get('showBanner', true) &&
       !(Meteor.isClient && Cookie.get('showBanner') === "no") &&
       Users.getSetting(context.currentUser, 'newsletter_showBanner', true) &&
       !Users.getSetting(context.currentUser, 'newsletter_subscribeToNewsletter', false);

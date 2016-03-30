@@ -145,7 +145,7 @@ ui@1.0.9
 underscore@1.0.6
 url@1.0.7
 utilities:avatar@0.9.2
-utilities:react-form-containers@0.1.6
+utilities:react-form-containers@0.1.7
 utilities:react-list-container@0.1.6
 utilities:smart-methods@0.1.2
 utilities:smart-publications@0.1.4

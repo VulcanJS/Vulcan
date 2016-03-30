@@ -1,8 +1,26 @@
 {
   "public": {
-    "title": "Nova",
-    "showBanner": true
+    "title": "Your site title",
+    "tagline":"Your site tagline",
+    
+    "logoUrl": "/foo.png",
+    "logoHeight": "80",
+    "logoWidth": "250",
+
+    "requirePostsApproval":false,
+    "requireViewInvite":false,
+    "requirePostInvite":false,
+    "enableNewsletter":true,
+    "autoSubscribe":false,
+    "emailNotifications":true,
+
+    "googleAnalyticsId":"123foo",
+    "embedlyKey":"123foo",
   },
+
+  "mailChimpAPIKey": "123foo",
+  "mailChimpListId": "123foo"
+
   "categories": [
     {
       "name": "Test Category 1",
@@ -22,7 +40,6 @@
       "order": 10,
       "slug": "testcat3"
     }
-  ],
-  "mailChimpAPIKey": "af5541d55e7ef6d8a008edfa3ab9d86e-us2",
-  "mailChimpListId": "b238a62c30"
+  ]
+
 }
