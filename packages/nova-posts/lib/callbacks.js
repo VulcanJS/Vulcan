@@ -274,6 +274,29 @@ if (typeof Herald !== "undefined") {
 
 // ------------------------------------- posts.edit.sync -------------------------------- //
 
-Telescope.callbacks.add("posts.edit.sync", setPostedAt);
+/**
+ * Force sticky to default to false when it's not specified
+ */
+function forceStickyToFalse (modifier, post) {
+  if (!modifier.$set.sticky) {
+    delete modifier.$unset.sticky;
+    modifier.$set.sticky = false;
+  }
+  return modifier;
+}
+Telescope.callbacks.add("posts.edit.sync", forceStickyToFalse);
 
 // ------------------------------------- posts.edit.async -------------------------------- //
+
+/**
+ * Set postedAt date
+ */
+function setPostedAtEdit (post, oldPost) {
+  // if post is approved but doesn't have a postedAt date, give it a default date
+  // note: pending posts get their postedAt date only once theyre approved
+  if (Posts.isApproved(post) && !post.postedAt) {
+    modifier.postedAt = new Date();
+  }
+  return modifier;
+}
+Telescope.callbacks.add("posts.edit.async", setPostedAtEdit);

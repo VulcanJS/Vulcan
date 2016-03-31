@@ -61,8 +61,7 @@ Meteor.methods({
    */
   'posts.new': function(post){
 
-    check(post, Posts.simpleSchema());
-
+    const isValid = Posts.simpleSchema().namedContext("posts.new").validate(post);
     // required properties:
     // title
 
@@ -95,7 +94,8 @@ Meteor.methods({
   'posts.edit': function (postId, modifier) {
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
-    check(modifier, Match.OneOf({$set: Posts.simpleSchema()}, {$unset: Object}, {$set: Posts.simpleSchema(), $unset: Object}));
+    Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
+    // check(modifier, Match.OneOf({$set: Posts.simpleSchema()}, {$unset: Object}, {$set: Posts.simpleSchema(), $unset: Object}));
     check(postId, String);
 
     var user = Meteor.user(),
