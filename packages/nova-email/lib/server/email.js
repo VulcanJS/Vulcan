@@ -1,42 +1,43 @@
 /**
- * Telescope Email namespace
- * @namespace Email
+ * Nova email namespace
+ * @namespace Novamail
  */
-const Email = {};
 
-Email.templates = {};
+// extend the email meteor core package
+import { Email } from 'meteor/email';
 
-Email.addTemplates = function (templates) {
-  _.extend(Email.templates, templates);
+const Novamail = {};
+
+Novamail.templates = {};
+
+Novamail.addTemplates = function (templates) {
+  _.extend(Novamail.templates, templates);
 };
 
 var htmlToText = Npm.require('html-to-text');
 
 // for template "foo", check if "custom_foo" exists. If it does, use it instead
-Email.getTemplate = function (templateName) {
+Novamail.getTemplate = function (templateName) {
 
   var template = templateName;
 
   // note: template prefixes are disabled
   // go through prefixes and keep the last one (if any) that points to a valid template
   // Telescope.config.customPrefixes.forEach(function (prefix) {
-  //   if(typeof Email.templates[prefix+templateName] === 'string'){
+  //   if(typeof Novamail.templates[prefix+templateName] === 'string'){
   //     template = prefix + templateName;
   //   }
   // });
 
   // return Handlebars.templates[template];
 
-  // console.log(templateName)
-  // console.log(Email.templates[template])
-
   return function (properties) {
-    return Spacebars.toHTML(properties, Email.templates[template]);
+    return Spacebars.toHTML(properties, Novamail.templates[template]);
   }
 
 };
 
-Email.buildTemplate = function (htmlContent) {
+Novamail.buildTemplate = function (htmlContent) {
 
   var emailProperties = {
     secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
@@ -53,7 +54,7 @@ Email.buildTemplate = function (htmlContent) {
     logoWidth: Telescope.settings.get('logoWidth')
   };
 
-  var emailHTML = Email.getTemplate("wrapper")(emailProperties);
+  var emailHTML = Novamail.getTemplate("wrapper")(emailProperties);
 
   var inlinedHTML = juice(emailHTML);
 
@@ -62,7 +63,7 @@ Email.buildTemplate = function (htmlContent) {
   return doctype+inlinedHTML;
 };
 
-Email.send = function(to, subject, html, text){
+Novamail.send = function(to, subject, html, text){
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -79,9 +80,9 @@ Email.send = function(to, subject, html, text){
   }
 
   console.log('//////// sending email…');
-  console.log('from: '+from);
-  console.log('to: '+to);
-  console.log('subject: '+subject);
+  console.log('from: ', from); // looking what's inside the [object Object] during the recursivity
+  console.log('to: ', to);
+  console.log('subject: ', subject);
   // console.log('html: '+html);
   // console.log('text: '+text);
 
@@ -98,17 +99,19 @@ Email.send = function(to, subject, html, text){
   return email;
 };
 
-Email.buildAndSend = function (to, subject, template, properties) {
-  var html = Email.buildTemplate(Email.getTemplate(template)(properties));
-  return Email.send (to, subject, html);
+Novamail.buildAndSend = function (to, subject, template, properties) {
+  var html = Novamail.buildTemplate(Novamail.getTemplate(template)(properties));
+  return Novamail.send (to, subject, html);
 };
 
 Meteor.methods({
-  testEmail: function () {
+  testNovamail: function () {
     if(Users.is.adminById(this.userId)){
-      var email = Email.buildAndSend (Telescope.settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
+      // test template, not emailTest
+      Novamail.buildAndSend (Telescope.settings.get('defaultEmail'), 'Telescope email test', 'test', {date: new Date()});
+      //however, this template doesn't exist here -> the method doesn't recognize it when called
     }
   }
 });
 
-export default Email;
+export default Novamail;

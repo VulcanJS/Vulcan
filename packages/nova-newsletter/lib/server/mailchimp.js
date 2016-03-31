@@ -3,7 +3,7 @@ import Campaign from "./campaign.js";
 
 Campaign.scheduleNextWithMailChimp = function (isTest) {
   isTest = !! isTest;
-  var posts = Campaign.getPosts(Telescope.Telescope.settings.get('postsPerNewsletter', defaultPosts));
+  var posts = Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
     return Campaign.scheduleWithMailChimp(Campaign.build(posts), isTest);
   }else{
