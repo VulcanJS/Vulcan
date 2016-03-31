@@ -5,7 +5,7 @@ import FRC from 'formsy-react-components';
 import Utils from './utils.js';
 
 const Checkbox = FRC.Checkbox;
-const CheckboxGroup = FRC.CheckboxGroup;
+// const CheckboxGroup = FRC.CheckboxGroup;
 const Input = FRC.Input;
 const RadioGroup = FRC.RadioGroup;
 const Select = FRC.Select;
@@ -38,7 +38,7 @@ SmartForms.getComponent = (fieldName, field, labelFunction, document) => {
       return <Checkbox      key={fieldName} name={fieldName} value={value} label={label}/>;        
     // note: checkboxgroup cause React refs error, so use RadioGroup for now
     case "checkboxgroup":
-     return <RadioGroup     key={fieldName} name={fieldName} value={value} label={label} options={options} />;
+     return <CheckboxGroup  key={fieldName} name={fieldName} value={value} label={label} options={options} />;
     case "radiogroup":
       return <RadioGroup    key={fieldName} name={fieldName} value={value} label={label} options={options} />;
     case "select":
@@ -49,3 +49,79 @@ SmartForms.getComponent = (fieldName, field, labelFunction, document) => {
 }
 
 export default SmartForms;
+
+
+import ComponentMixin from './component';
+import Row from './row';
+
+const CheckboxGroup = React.createClass({
+
+    mixins: [Formsy.Mixin, ComponentMixin],
+
+    propTypes: {
+        name: React.PropTypes.string.isRequired,
+        options: React.PropTypes.array.isRequired
+    },
+
+    getDefaultProps: function() {
+        return {
+            label: '',
+            help: null
+        };
+    },
+
+    changeCheckbox: function() {
+        var value = [];
+        this.props.options.forEach(function(option, key) {
+            if (this.refs['element-' + key].checked) {
+                value.push(option.value);
+            }
+
+        }.bind(this));
+        this.setValue(value);
+        this.props.onChange(this.props.name, value);
+    },
+
+    renderElement: function() {
+        var _this = this;
+        var controls = this.props.options.map(function(checkbox, key) {
+            var checked = (_this.getValue().indexOf(checkbox.value) !== -1);
+            var disabled = _this.isFormDisabled() || checkbox.disabled || _this.props.disabled;
+            return (
+                <div className="checkbox" key={key}>
+                    <label>
+                        <input
+                            ref={'element-' + key}
+                            checked={checked}
+                            type="checkbox"
+                            value={checkbox.value}
+                            onChange={_this.changeCheckbox}
+                            disabled={disabled}
+                        /> {checkbox.label}
+                    </label>
+                </div>
+            );
+        });
+        return controls;
+    },
+
+    render: function() {
+
+        if (this.getLayout() === 'elementOnly') {
+            return (
+                <div>{this.renderElement()}</div>
+            );
+        }
+
+        return (
+            <Row
+                {...this.getRowProperties()}
+                fakeLabel={true}
+            >
+                {this.renderElement()}
+                {this.renderHelp()}
+                {this.renderErrorMessage()}
+            </Row>
+        );
+    }
+});

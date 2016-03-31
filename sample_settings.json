@@ -17,7 +17,7 @@
     "postInterval": 20,
     "RSSLinksPointTo": "link",
     "commentInterval": 20,
-    "maxPostsPerDay": 10
+    "maxPostsPerDay": 10,
     "startInvitesCount": 5,
     "postsPerPage": 10,
     
@@ -27,7 +27,7 @@
     "facebookPage": "http://facebook.com/foo",
 
     "googleAnalyticsId":"123foo",
-    "embedlyKey":"123foo",
+    "embedlyKey":"123foo"
   },
 
 

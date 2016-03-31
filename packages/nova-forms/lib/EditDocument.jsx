@@ -17,17 +17,25 @@ const EditDocument = React.createClass({
     labelFunction: React.PropTypes.func
   },
 
+  getFields() {
+    const collection = this.props.collection;
+    const fields = collection.getInsertableFields(this.props.currentUser);
+    return fields;
+  },
+
   submitForm(data) {
     
-    console.log(data)
-
+    const fields = this.getFields();
     const document = this.props.document;
-    const modifier = {$set: _.compactObject(Utils.flatten(data))};
+    // put all keys with data on $set
+    const set = _.compactObject(Utils.flatten(data));
+    // put all keys without data on $unset
+    const unsetKeys = _.difference(fields, _.keys(set));
+    const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
+    const modifier = {$set: set, $unset: unset};
     const collection = this.props.collection;
     const methodName = this.props.methodName ? this.props.methodName : collection._name+'.edit';
     
-    console.log(modifier)
-
     Meteor.call(methodName, document._id, modifier, (error, document) => {
       if (error) {
         console.log(error)
@@ -49,7 +57,7 @@ const EditDocument = React.createClass({
 
     const document = this.props.document;
     const collection = this.props.collection;
-    const fields = collection.getInsertableFields(this.props.currentUser);
+    const fields = this.getFields();
 
     const style = {
       maxWidth: "800px",
@@ -59,7 +67,11 @@ const EditDocument = React.createClass({
     return (
       <div className="edit-document" style={style}>
         <Formsy.Form onSubmit={this.submitForm}>
-          {fields.map(fieldName => <div key={fieldName} className={"input-"+fieldName}>{SmartForms.getComponent(fieldName, collection.simpleSchema()._schema[fieldName], this.props.labelFunction, document)}</div>)}
+          {fields.map(fieldName => 
+            <div key={fieldName} className={"input-"+fieldName}>
+              {SmartForms.getComponent(fieldName, collection.simpleSchema()._schema[fieldName], this.props.labelFunction, document)}
+            </div>
+          )}
           <Button type="submit" bsStyle="primary">Submit</Button>
         </Formsy.Form>
       </div>
