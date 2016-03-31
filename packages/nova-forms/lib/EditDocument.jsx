@@ -59,6 +59,8 @@ const EditDocument = React.createClass({
     const collection = this.props.collection;
     const fields = this.getFields();
 
+    console.log('called editdocument render')
+
     const style = {
       maxWidth: "800px",
       width: "100%"
