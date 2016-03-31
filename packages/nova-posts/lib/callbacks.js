@@ -295,8 +295,7 @@ function setPostedAtEdit (post, oldPost) {
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
-    modifier.postedAt = new Date();
+    Posts.update(post._id, {$set:{postedAt: new Date()}});
   }
-  return modifier;
 }
 Telescope.callbacks.add("posts.edit.async", setPostedAtEdit);

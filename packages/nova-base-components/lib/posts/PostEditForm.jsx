@@ -2,6 +2,9 @@ import React, { PropTypes, Component } from 'react';
 import ReactForms from "meteor/nova:forms";
 const EditDocument = ReactForms.EditDocument;
 
+import SmartContainers from "meteor/utilities:react-list-container";
+const DocumentContainer = SmartContainers.DocumentContainer;
+
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 const FlashContainer = Core.FlashContainer;
@@ -36,14 +39,21 @@ class PostEditForm extends Component{
           <a onClick={this.deletePost} className="delete-post-link"><Icon name="close"/> Delete Post</a>
         </div>
         <FlashContainer component={FlashMessages}/>
-        <EditDocument 
-          collection={Posts}
-          document={this.props.post}
-          currentUser={this.context.currentUser}
-          methodName="posts.edit"
-          labelFunction={Telescope.utils.camelToSpaces}
-          errorCallback={(post, error)=>{
-            Messages.flash(error.message);
+        <DocumentContainer 
+          collection={Posts} 
+          publication="posts.single" 
+          selector={{_id: this.props.post._id}}
+          terms={{_id: this.props.post._id}}
+          joins={Posts.getJoins()}
+          component={EditDocument}
+          componentProps={{
+            collection: Posts,
+            currentUser: this.context.currentUser,
+            methodName: "posts.edit",
+            labelFunction: Telescope.utils.camelToSpaces,
+            errorCallback: (post, error)=>{
+              Messages.flash(error.message);
+            }
           }}
         />
       </div>
