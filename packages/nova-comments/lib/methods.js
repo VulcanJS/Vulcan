@@ -11,7 +11,7 @@ Comments.methods.new = function (comment) {
 
   // Don't allow empty comments
   if (!comment.body)
-    throw new Meteor.Error(704,i18n.t('your_comment_is_empty'));
+    throw new Meteor.Error(704,__('your_comment_is_empty'));
 
   // ------------------------------ Properties ------------------------------ //
 
@@ -89,7 +89,7 @@ Meteor.methods({
 
     // check that user can comment
     if (!user || !Users.can.comment(user))
-      throw new Meteor.Error(i18n.t('you_need_to_login_or_be_invited_to_post_new_comments'));
+      throw new Meteor.Error(__('you_need_to_login_or_be_invited_to_post_new_comments'));
 
     // ------------------------------ Rate Limiting ------------------------------ //
 
@@ -100,7 +100,7 @@ Meteor.methods({
 
       // check that user waits more than 15 seconds between comments
       if((timeSinceLastComment < commentInterval))
-        throw new Meteor.Error(704, i18n.t('please_wait')+(commentInterval-timeSinceLastComment)+i18n.t('seconds_before_commenting_again'));
+        throw new Meteor.Error(704, __('please_wait')+(commentInterval-timeSinceLastComment)+__('seconds_before_commenting_again'));
 
     }
 
@@ -118,7 +118,7 @@ Meteor.methods({
       } else {
         var field = schema[fieldName];
         if (!Users.can.submitField(user, field)) {
-          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
         }
       }
 
@@ -146,7 +146,7 @@ Meteor.methods({
 
     // check that user can edit
     if (!user || !Users.can.edit(user, comment)) {
-      throw new Meteor.Error(601, i18n.t('sorry_you_cannot_edit_this_comment'));
+      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_comment'));
     }
 
     // go over each field and throw an error if it's not editable
@@ -157,7 +157,7 @@ Meteor.methods({
 
         var field = schema[fieldName];
         if (!Users.can.editField(user, field, comment)) {
-          throw new Meteor.Error("disallowed_property", i18n.t('disallowed_property_detected') + ": " + fieldName);
+          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
         }
 
       });

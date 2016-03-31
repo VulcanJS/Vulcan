@@ -27,7 +27,7 @@ const NewDocument = React.createClass({
       if (error) {
         console.log(error)
         if (this.props.errorCallback) {
-          this.props.errorCallback(document);
+          this.props.errorCallback(document, error);
         }
       } else {
         if (this.props.successCallback) {

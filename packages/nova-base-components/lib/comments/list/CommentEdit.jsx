@@ -17,7 +17,7 @@ class CommentEdit extends Component {
     data = {$set: data};
     Actions.call("comments.edit", data, this.props.comment._id, (error, result) => {
       if (error) {
-        // handle error
+        Messages.flash(error.message);
       } else {
         this.props.submitCallback();
       }

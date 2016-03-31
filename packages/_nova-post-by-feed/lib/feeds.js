@@ -94,10 +94,10 @@ Meteor.startup(function () {
       check(feedUrl, Feeds.schema);
 
       if (Feeds.findOne({url: feedUrl.url}))
-        throw new Meteor.Error('already-exists', i18n.t('feed_already_exists'));
+        throw new Meteor.Error('already-exists', __('feed_already_exists'));
 
       if (!Meteor.user() || !Users.is.admin(Meteor.user()))
-        throw new Meteor.Error('login-required', i18n.t('you_need_to_login_and_be_an_admin_to_add_a_new_feed'));
+        throw new Meteor.Error('login-required', __('you_need_to_login_and_be_an_admin_to_add_a_new_feed'));
 
       return Feeds.insert(feedUrl);
     }

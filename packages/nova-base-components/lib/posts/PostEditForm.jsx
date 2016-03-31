@@ -4,6 +4,7 @@ const EditDocument = ReactForms.EditDocument;
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
+const FlashContainer = Core.FlashContainer;
 
 import Actions from "../actions.js";
 
@@ -25,18 +26,25 @@ class PostEditForm extends Component{
   }
 
   render() {
+
+    ({FlashMessages} = Telescope.components);
+    
     return (
       <div className="edit-post-form">
         <div className="modal-form-title edit-post-form-header">
           <h3>Edit Post</h3>
           <a onClick={this.deletePost} className="delete-post-link"><Icon name="close"/> Delete Post</a>
         </div>
+        <FlashContainer component={FlashMessages}/>
         <EditDocument 
           collection={Posts}
           document={this.props.post}
           currentUser={this.context.currentUser}
           methodName="posts.edit"
           labelFunction={Telescope.utils.camelToSpaces}
+          errorCallback={(post, error)=>{
+            Messages.flash(error.message);
+          }}
         />
       </div>
     )
