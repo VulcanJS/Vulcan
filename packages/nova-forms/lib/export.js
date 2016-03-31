@@ -11,3 +11,4 @@ import NewDocument from "./NewDocument.jsx";
 import EditDocument from "./EditDocument.jsx";
 
 export default {NewDocument, EditDocument};
+module.exports = {NewDocument, EditDocument};
