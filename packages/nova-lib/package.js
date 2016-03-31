@@ -17,6 +17,7 @@ Package.onUse(function (api) {
     'session',
     'tracker',
     'service-configuration',
+    'standard-minifiers',
 //    'accounts-ui',
     'accounts-base',
     'accounts-password',

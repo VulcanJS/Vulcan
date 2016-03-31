@@ -72,6 +72,7 @@ meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
 meteorhacks:unblock@1.1.0
 meteorspark:util@0.2.0
+minifier-css@1.1.9
 minifier-js@1.1.9
 minimongo@1.0.12
 miro:mailchimp@1.1.0
@@ -132,6 +133,9 @@ softwarerero:accounts-t9n@0.0.20
 spacebars@1.0.9
 spacebars-compiler@1.0.9
 srp@1.0.6
+standard-minifier-css@1.0.4
+standard-minifier-js@1.0.4
+standard-minifiers@1.0.4
 studiointeract:react-accounts-ui@1.0.7
 tap:i18n@1.7.0
 templating@1.1.7
