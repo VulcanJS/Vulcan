@@ -28,7 +28,7 @@ const PostNewForm = (props, context) => {
           errorCallback={(post, error)=>{
             Messages.flash(error.message);
           }}
-          labelFunction={Telescope.utils.camelToSpaces}
+          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)}
         />
       </div>
     </CanCreatePost>

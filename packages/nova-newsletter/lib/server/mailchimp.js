@@ -1,9 +1,9 @@
-import Email from 'meteor/nova:email';
+// import Email from 'meteor/nova:email';
 import Campaign from "./campaign.js";
 
 Campaign.scheduleNextWithMailChimp = function (isTest) {
   isTest = !! isTest;
-  var posts = Campaign.getPosts(Telescope.Telescope.settings.get('postsPerNewsletter', defaultPosts));
+  var posts = Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
     return Campaign.scheduleWithMailChimp(Campaign.build(posts), isTest);
   }else{
@@ -74,12 +74,12 @@ Campaign.scheduleWithMailChimp = function (campaign, isTest) {
         var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
-      var confirmationHtml = Email.getTemplate('digestConfirmation')({
+      var confirmationHtml = Telescope.email.getTemplate('digestConfirmation')({
         time: scheduledTime,
         newsletterLink: mailchimpCampaign.archive_url,
         subject: subject
       });
-      Email.send(defaultEmail, 'Newsletter scheduled', Email.buildTemplate(confirmationHtml));
+      Telescope.email.send(defaultEmail, 'Newsletter scheduled', Telescope.email.buildTemplate(confirmationHtml));
 
     } catch (error) {
       console.log(error);

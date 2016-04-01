@@ -13,10 +13,6 @@ Package.onUse(function (api) {
     'nova:core@0.25.7'
   ]);
 
-  api.use([
-    'nova:notifications@0.25.7'
-  ], ['client', 'server'], {weak: true});
-
   api.addFiles([
     // 'package-tap.i18n',
     'lib/namespace.js',

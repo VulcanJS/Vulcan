@@ -67,7 +67,7 @@ if (typeof Telescope.operateOnItem !== "undefined") {
 // ------------------------------------- Notifications -------------------------------- //
 
 
-if (typeof Herald !== "undefined") {
+if (typeof Telescope.notifications !== "undefined") {
 
   // add new comment notification callback on comment submit
   function commentSubmitNotifications (comment) {
@@ -87,7 +87,7 @@ if (typeof Herald !== "undefined") {
       // 1. Notify author of post (if they have new comment notifications turned on)
       //    but do not notify author of post if they're the ones posting the comment
       if (Users.getSetting(postAuthor, "notifications.comments", true) && comment.userId !== postAuthor._id) {
-        Herald.createNotification(post.userId, {courier: 'newComment', data: notificationData});
+        Telescope.createNotification(post.userId, 'newComment', notificationData);
         userIdsNotified.push(post.userId);
       }
 
@@ -108,7 +108,7 @@ if (typeof Herald !== "undefined") {
             // add parent comment to notification data
             notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author', 'htmlBody');
 
-            Herald.createNotification(parentComment.userId, {courier: 'newReply', data: notificationData});
+            Telescope.createNotification(parentComment.userId, 'newReply', notificationData);
             userIdsNotified.push(parentComment.userId);
           }
         }
@@ -122,7 +122,7 @@ if (typeof Herald !== "undefined") {
         // remove userIds of users that have already been notified
         // and of comment author (they could be replying in a thread they're subscribed to)
         var subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
-        Herald.createNotification(subscriberIdsToNotify, {courier: 'newCommentSubscribed', data: notificationData});
+        Telescope.createNotification(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
 
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
 

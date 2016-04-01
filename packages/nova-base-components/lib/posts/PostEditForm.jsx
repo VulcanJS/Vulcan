@@ -50,7 +50,7 @@ class PostEditForm extends Component{
             collection: Posts,
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
-            labelFunction: Telescope.utils.camelToSpaces,
+            labelFunction: (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts),
             errorCallback: (post, error)=>{
               Messages.flash(error.message);
             }

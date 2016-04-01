@@ -146,7 +146,7 @@ Comments.schema = new SimpleSchema({
 
 Comments.attachSchema(Comments.schema);
 
-if (typeof Herald !== "undefined") {
+if (typeof Telescope.notifications !== "undefined") {
   Comments.addField({
     fieldName: 'disableNotifications',
     fieldSchema: {
