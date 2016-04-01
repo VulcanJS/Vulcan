@@ -1,4 +1,4 @@
-import Email from 'meteor/nova:email';
+// import Email from 'meteor/nova:email';
 import Campaign from 'meteor/nova:newsletter';
 
 // New post email
@@ -6,11 +6,11 @@ Picker.route('/email/new-post/:id?', function(params, req, res, next) {
   var html;
   var post = typeof params.id === "undefined" ? Posts.findOne() : Posts.findOne(params.id);
   if (!!post) {
-    html = Email.getTemplate('newPost')(Posts.getNotificationProperties(post));
+    html = Telescope.email.getTemplate('newPost')(Posts.getNotificationProperties(post));
   } else {
     html = "<h3>No post found.</h3>"
   }
-  res.end(Email.buildTemplate(html));
+  res.end(Telescope.email.buildTemplate(html));
 });
 
 // Post approved
@@ -18,11 +18,11 @@ Picker.route('/email/post-approved/:id?', function(params, req, res, next) {
   var html;
   var post = typeof params.id === "undefined" ? Posts.findOne() : Posts.findOne(params.id);
   if (!!post) {
-    html = Email.getTemplate('postApproved')(Posts.getNotificationProperties(post));
+    html = Telescope.email.getTemplate('postApproved')(Posts.getNotificationProperties(post));
   } else {
     html = "<h3>No post found.</h3>"
   }
-  res.end(Email.buildTemplate(html));
+  res.end(Telescope.email.buildTemplate(html));
 });
 
 // New comment email
@@ -31,11 +31,11 @@ Picker.route('/email/new-comment/:id?', function(params, req, res, next) {
   var comment = typeof params.id === "undefined" ? Comments.findOne() : Comments.findOne(params.id);
   var post = Posts.findOne(comment.postId);
   if (!!comment) {
-    html = Email.getTemplate('newComment')(Comments.getNotificationProperties(comment, post));
+    html = Telescope.email.getTemplate('newComment')(Comments.getNotificationProperties(comment, post));
   } else {
     html = "<h3>No post found.</h3>"
   }
-  res.end(Email.buildTemplate(html));
+  res.end(Telescope.email.buildTemplate(html));
 });
 
 // New reply email
@@ -44,11 +44,11 @@ Picker.route('/email/new-reply/:id?', function(params, req, res, next) {
   var comment = typeof params.id === "undefined" ? Comments.findOne() : Comments.findOne(params.id);
   var post = Posts.findOne(comment.postId);
   if (!!comment) {
-    html = Email.getTemplate('newReply')(Comments.getNotificationProperties(comment, post));
+    html = Telescope.email.getTemplate('newReply')(Comments.getNotificationProperties(comment, post));
   } else {
     html = "<h3>No post found.</h3>"
   }
-  res.end(Email.buildTemplate(html));
+  res.end(Telescope.email.buildTemplate(html));
 });
 
 // New user email
@@ -59,8 +59,8 @@ Picker.route('/email/new-user/:id?', function(params, req, res, next) {
     profileUrl: Users.getProfileUrl(user),
     username: Users.getUserName(user)
   };
-  html = Email.getTemplate('newUser')(emailProperties);
-  res.end(Email.buildTemplate(html));
+  html = Telescope.email.getTemplate('newUser')(emailProperties);
+  res.end(Telescope.email.buildTemplate(html));
 });
 
 // Account approved email
@@ -72,8 +72,8 @@ Picker.route('/email/account-approved/:id?', function(params, req, res, next) {
     siteTitle: Telescope.settings.get('title'),
     siteUrl: Telescope.utils.getSiteUrl()
   };
-  var html = Email.getTemplate('accountApproved')(emailProperties);
-  res.end(Email.buildTemplate(html));
+  var html = Telescope.email.getTemplate('accountApproved')(emailProperties);
+  res.end(Telescope.email.buildTemplate(html));
 });
 
 // Newsletter email
@@ -86,10 +86,10 @@ Picker.route('/email/newsletter', function(params, req, res, next) {
 
 // Newsletter confirmation email
 Picker.route('/email/newsletter-confirmation', function(params, req, res, next) {
-  var confirmationHtml = Email.getTemplate('newsletterConfirmation')({
+  var confirmationHtml = Telescope.email.getTemplate('newsletterConfirmation')({
     time: 'January 1st, 1901',
     newsletterLink: 'http://example.com',
     subject: 'Lorem ipsum dolor sit amet'
   });
-  res.end(Email.buildTemplate(confirmationHtml));
+  res.end(Telescope.email.buildTemplate(confirmationHtml));
 });

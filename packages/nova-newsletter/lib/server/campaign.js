@@ -1,4 +1,4 @@
-import Email from 'meteor/nova:email';
+// import Email from 'meteor/nova:email';
 
 const defaultFrequency = 7;
 const defaultPosts = 5;
@@ -83,18 +83,18 @@ Campaign.build = function (postsArray) {
       properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
     }
 
-    postsHTML += Email.getTemplate('postItem')(properties);
+    postsHTML += Telescope.email.getTemplate('postItem')(properties);
   });
 
   // 2. Wrap posts HTML in digest template
-  var digestHTML = Email.getTemplate('newsletter')({
+  var digestHTML = Telescope.email.getTemplate('newsletter')({
     siteName: Telescope.settings.get('title'),
     date: moment().format("dddd, MMMM Do YYYY"),
     content: postsHTML
   });
 
   // 3. wrap digest HTML in email wrapper template
-  var emailHTML = Email.buildTemplate(digestHTML);
+  var emailHTML = Telescope.email.buildTemplate(digestHTML);
 
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),

@@ -2,28 +2,32 @@ import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 
-import SmartForms from "./smart-forms.jsx";
+import FormComponent from "./FormComponent.jsx";
 import Utils from './utils.js';
 
-const NewDocument = React.createClass({
+class NewDocument extends Component {
 
-  propTypes: {
-    collection: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object,
-    errorCallback: React.PropTypes.func,
-    successCallback: React.PropTypes.func,
-    methodName: React.PropTypes.string,
-    labelFunction: React.PropTypes.func
-  },
+  constructor() {
+    super();
+    this.submitForm = this.submitForm.bind(this);
+    this.state = {
+      disabled: false
+    };
+  }
 
   submitForm(data) {
     
+    this.setState({disabled: true});
+
     // remove any empty properties
     const document = _.compactObject(Utils.flatten(data));
     const collection = this.props.collection;
     const methodName = this.props.methodName ? this.props.methodName : collection._name+'.create';
 
     Meteor.call(methodName, document, (error, document) => {
+
+      this.setState({disabled: false});
+      
       if (error) {
         console.log(error)
         if (this.props.errorCallback) {
@@ -37,8 +41,9 @@ const NewDocument = React.createClass({
           this.context.closeCallback();
         }
       }
+
     });
-  },
+  }
 
   render() {
     
@@ -52,14 +57,29 @@ const NewDocument = React.createClass({
 
     return (
       <div className="new-document" style={style}>
-        <Formsy.Form onSubmit={this.submitForm}>
-          {fields.map(fieldName => <div key={fieldName} className={"input-"+fieldName}>{SmartForms.getComponent(fieldName, collection.simpleSchema()._schema[fieldName], this.props.labelFunction)}</div>)}
+        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled}>
+          {fields.map(fieldName => <FormComponent 
+            key={fieldName}
+            className={"input-"+fieldName}
+            fieldName={fieldName}
+            field={collection.simpleSchema()._schema[fieldName]}
+            labelFunction={this.props.labelFunction}
+          />)}
           <Button type="submit" bsStyle="primary">Submit</Button>
         </Formsy.Form>
       </div>
     )
   }
-});
+}
+
+NewDocument.propTypes = {
+  collection: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object,
+  errorCallback: React.PropTypes.func,
+  successCallback: React.PropTypes.func,
+  methodName: React.PropTypes.string,
+  labelFunction: React.PropTypes.func
+}
 
 NewDocument.contextTypes = {
   closeCallback: React.PropTypes.func

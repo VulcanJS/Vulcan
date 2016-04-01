@@ -12,17 +12,6 @@ Posts.addField({
 
 Users.addField([
   {
-    fieldName: 'telescope.newsletter_showBanner',
-    fieldSchema: {
-      label: 'Show banner',
-      type: Boolean,
-      optional: true,
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin,
-      control: "checkbox"
-    }
-  },
-  {
     fieldName: 'telescope.newsletter_subscribeToNewsletter',
     fieldSchema: {
       label: 'Subscribe to newsletter',

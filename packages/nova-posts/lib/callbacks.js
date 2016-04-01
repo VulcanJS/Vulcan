@@ -229,7 +229,7 @@ if (typeof Telescope.operateOnItem !== "undefined") {
 /**
  * Add new post notification callback on post submit
  */
-if (typeof Herald !== "undefined") {
+if (typeof Telescope.notifications !== "undefined") {
   function postSubmitNotification (post) {
 
     var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
@@ -244,10 +244,10 @@ if (typeof Herald !== "undefined") {
 
     if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
       // if post is pending, only notify admins
-      Herald.createNotification(adminIds, {courier: 'newPendingPost', data: notificationData});
+      Telescope.createNotification(adminIds, 'newPendingPost', notificationData);
     } else if (!!notifiedUserIds.length) {
       // if post is approved, notify everybody
-      Herald.createNotification(notifiedUserIds, {courier: 'newPost', data: notificationData});
+      Telescope.createNotification(notifiedUserIds, 'newPost', notificationData);
     }
 
   }
@@ -263,9 +263,9 @@ if (typeof Herald !== "undefined") {
       post: _.pick(post, '_id', 'userId', 'title', 'url')
     };
 
-    Herald.createNotification(post.userId, {courier: 'postApproved', data: notificationData});
+    Telescope.createNotification(post.userId, 'postApproved', notificationData);
   }
-  Telescope.callbacks.add("posts.new.async", postApprovedNotification);
+  Telescope.callbacks.add("posts.approve.async", postApprovedNotification);
 
 }
 // ------------------------------------- posts.edit.client -------------------------------- //
@@ -291,11 +291,20 @@ Telescope.callbacks.add("posts.edit.sync", forceStickyToFalse);
 /**
  * Set postedAt date
  */
-function setPostedAtEdit (post, oldPost) {
+function setPostedAtOnEdit (post, oldPost) {
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
     Posts.update(post._id, {$set:{postedAt: new Date()}});
   }
 }
-Telescope.callbacks.add("posts.edit.async", setPostedAtEdit);
+Telescope.callbacks.add("posts.edit.async", setPostedAtOnEdit);
+
+function runPostApprovedCallbacksOnEdit (post, oldPost) {
+  var now = new Date();
+
+  if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {
+    Telescope.callbacks.runAsync("posts.approve.async", post);
+  }
+}
+Telescope.callbacks.add("posts.edit.async", runPostApprovedCallbacksOnEdit);

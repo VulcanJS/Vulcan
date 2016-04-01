@@ -1,26 +1,26 @@
 /**
- * Telescope Email namespace
- * @namespace Email
+ * Telescope Telescope.email namespace
+ * @namespace Telescope.email
  */
-const Email = {};
+Telescope.email = {};
 
-Email.templates = {};
+Telescope.email.templates = {};
 
-Email.addTemplates = function (templates) {
-  _.extend(Email.templates, templates);
+Telescope.email.addTemplates = function (templates) {
+  _.extend(Telescope.email.templates, templates);
 };
 
 var htmlToText = Npm.require('html-to-text');
 
 // for template "foo", check if "custom_foo" exists. If it does, use it instead
-Email.getTemplate = function (templateName) {
+Telescope.email.getTemplate = function (templateName) {
 
   var template = templateName;
 
   // note: template prefixes are disabled
   // go through prefixes and keep the last one (if any) that points to a valid template
   // Telescope.config.customPrefixes.forEach(function (prefix) {
-  //   if(typeof Email.templates[prefix+templateName] === 'string'){
+  //   if(typeof Telescope.email.templates[prefix+templateName] === 'string'){
   //     template = prefix + templateName;
   //   }
   // });
@@ -28,15 +28,15 @@ Email.getTemplate = function (templateName) {
   // return Handlebars.templates[template];
 
   // console.log(templateName)
-  // console.log(Email.templates[template])
+  // console.log(Telescope.email.templates[template])
 
   return function (properties) {
-    return Spacebars.toHTML(properties, Email.templates[template]);
+    return Spacebars.toHTML(properties, Telescope.email.templates[template]);
   }
 
 };
 
-Email.buildTemplate = function (htmlContent) {
+Telescope.email.buildTemplate = function (htmlContent) {
 
   var emailProperties = {
     secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
@@ -53,7 +53,7 @@ Email.buildTemplate = function (htmlContent) {
     logoWidth: Telescope.settings.get('logoWidth')
   };
 
-  var emailHTML = Email.getTemplate("wrapper")(emailProperties);
+  var emailHTML = Telescope.email.getTemplate("wrapper")(emailProperties);
 
   var inlinedHTML = juice(emailHTML);
 
@@ -62,7 +62,7 @@ Email.buildTemplate = function (htmlContent) {
   return doctype+inlinedHTML;
 };
 
-Email.send = function(to, subject, html, text){
+Telescope.email.send = function(to, subject, html, text){
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -98,17 +98,15 @@ Email.send = function(to, subject, html, text){
   return email;
 };
 
-Email.buildAndSend = function (to, subject, template, properties) {
-  var html = Email.buildTemplate(Email.getTemplate(template)(properties));
-  return Email.send (to, subject, html);
+Telescope.email.buildAndSend = function (to, subject, template, properties) {
+  var html = Telescope.email.buildTemplate(Telescope.email.getTemplate(template)(properties));
+  return Telescope.email.send (to, subject, html);
 };
 
 Meteor.methods({
   testEmail: function () {
     if(Users.is.adminById(this.userId)){
-      var email = Email.buildAndSend (Telescope.settings.get('defaultEmail'), 'Telescope email test', 'emailTest', {date: new Date()});
+      var email = Telescope.email.buildAndSend(Telescope.settings.get('defaultEmail'), 'Telescope email test', 'test', {date: new Date()});
     }
   }
 });
-
-export default Email;

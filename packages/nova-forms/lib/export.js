@@ -10,5 +10,9 @@ checkNpmVersions({
 import NewDocument from "./NewDocument.jsx";
 import EditDocument from "./EditDocument.jsx";
 
+SimpleSchema.extendOptions({
+  insertableIf: Match.Optional(Function),
+  editableIf: Match.Optional(Function)
+});
+
 export default {NewDocument, EditDocument};
-module.exports = {NewDocument, EditDocument};

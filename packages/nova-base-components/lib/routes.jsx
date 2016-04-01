@@ -25,6 +25,7 @@ Router.route('/', {
         terms={queryParams} 
         joins={Posts.getJoins()}
         component={PostList}
+        cacheSubscription={false}
       />})
   }
 });

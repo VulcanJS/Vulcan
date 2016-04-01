@@ -2,29 +2,29 @@ import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 
-import SmartForms from "./smart-forms.jsx";
+import FormComponent from "./FormComponent.jsx";
 import Utils from './utils.js';
 
-const EditDocument = React.createClass({
+class EditDocument extends Component{
   
-  propTypes: {
-    document: React.PropTypes.object.isRequired,
-    collection: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object,
-    successCallback: React.PropTypes.func,
-    errorCallback: React.PropTypes.func,
-    methodName: React.PropTypes.string,
-    labelFunction: React.PropTypes.func
-  },
+  constructor() {
+    super();
+    this.submitForm = this.submitForm.bind(this);
+    this.state = {
+      disabled: false
+    };
+  }
 
   getFields() {
     const collection = this.props.collection;
     const fields = collection.getInsertableFields(this.props.currentUser);
     return fields;
-  },
+  }
 
   submitForm(data) {
     
+    this.setState({disabled: true});
+
     const fields = this.getFields();
     const document = this.props.document;
     // put all keys with data on $set
@@ -37,6 +37,9 @@ const EditDocument = React.createClass({
     const methodName = this.props.methodName ? this.props.methodName : collection._name+'.edit';
     
     Meteor.call(methodName, document._id, modifier, (error, document) => {
+      
+      this.setState({disabled: false});
+      
       if (error) {
         console.log(error)
         if (this.props.errorCallback) {
@@ -50,8 +53,9 @@ const EditDocument = React.createClass({
           this.context.closeCallback();
         }
       }
+
     });
-  },
+  }
 
   render() {
 
@@ -68,18 +72,32 @@ const EditDocument = React.createClass({
 
     return (
       <div className="edit-document" style={style}>
-        <Formsy.Form onSubmit={this.submitForm}>
-          {fields.map(fieldName => 
-            <div key={fieldName} className={"input-"+fieldName}>
-              {SmartForms.getComponent(fieldName, collection.simpleSchema()._schema[fieldName], this.props.labelFunction, document)}
-            </div>
-          )}
+        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled}>
+          {fields.map(fieldName => <FormComponent 
+            key={fieldName}
+            className={"input-"+fieldName}
+            fieldName={fieldName}
+            field={collection.simpleSchema()._schema[fieldName]}
+            labelFunction={this.props.labelFunction}
+            document={document}
+          />)}
           <Button type="submit" bsStyle="primary">Submit</Button>
         </Formsy.Form>
       </div>
     )
   }
-});
+
+}
+
+EditDocument.propTypes = {
+  document: React.PropTypes.object.isRequired,
+  collection: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object,
+  successCallback: React.PropTypes.func,
+  errorCallback: React.PropTypes.func,
+  methodName: React.PropTypes.string,
+  labelFunction: React.PropTypes.func
+}
 
 EditDocument.contextTypes = {
   closeCallback: React.PropTypes.func

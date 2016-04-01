@@ -1,32 +1,31 @@
 Telescope.notifications = Object.assign(Telescope.notifications, {
   newPost: {
-    properties: function () {
-      return Posts.getNotificationProperties(this.data.post);
+    properties(data) {
+      return Posts.getNotificationProperties(data.post);
     },
-    subject: function () {
-      return this.postAuthorName+' has created a new post: '+this.postTitle;
+    subject(properties) {
+      return properties.postAuthorName+' has created a new post: '+properties.postTitle;
     },
-    emailTemplate: "emailNewPost"
+    emailTemplate: "newPost"
   },
 
   newPendingPost: {
-    properties: function () {
-      return Posts.getNotificationProperties(this.data.post);
+    properties(data) {
+      return Posts.getNotificationProperties(data.post);
     },
-    subject: function () {
-      return this.postAuthorName+' has a new post pending approval: '+this.postTitle;
+    subject(properties) {
+      return properties.postAuthorName+' has a new post pending approval: '+properties.postTitle;
     },
-    emailTemplate: "emailNewPendingPost"
+    emailTemplate: "newPendingPost"
   },
 
   postApproved: {
-    properties: function () {
-      return Posts.getNotificationProperties(this.data.post);
+    properties(data) {
+      return Posts.getNotificationProperties(data.post);
     },
-    subject: function () {
-      return 'Your post “'+this.postTitle+'” has been approved';
+    subject(properties) {
+      return 'Your post “'+properties.postTitle+'” has been approved';
     },
-    emailTemplate: "emailPostApproved",
-    onsiteTemplate: "notification_post_approved"
+    emailTemplate: "postApproved"
   }
 });
