@@ -1,11 +1,13 @@
 import React, { PropTypes, Component } from 'react';
+import ReactForms from "meteor/nova:forms";
+const EditDocument = ReactForms.EditDocument;
 
 const UserEdit = ({document, currentUser}) => {
 
   const user = document;
   const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
-  ({CanEditUser, EditDocument} = Telescope.components);
+  ({CanEditUser} = Telescope.components);
 
   return (
     <CanEditUser user={currentUser} userToEdit={user}>
