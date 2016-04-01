@@ -8,6 +8,7 @@ Posts.publishedFields = {};
  */
 Posts.publishedFields.list = PublicationsUtils.arrayToFields([
   "_id",
+  "createdAt",
   "postedAt",
   "url",
   "title",

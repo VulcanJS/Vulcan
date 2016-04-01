@@ -301,7 +301,6 @@ function setPostedAtOnEdit (post, oldPost) {
 Telescope.callbacks.add("posts.edit.async", setPostedAtOnEdit);
 
 function runPostApprovedCallbacksOnEdit (post, oldPost) {
-  var post = Posts.findOne(postId);
   var now = new Date();
 
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {

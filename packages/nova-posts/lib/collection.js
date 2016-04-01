@@ -17,7 +17,7 @@ Posts.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     optional: true,
-    publish: false
+    publish: true // publish so that admins can sort pending posts by createdAt
   },
   /**
     Timestamp of post first appearing on the site (i.e. being approved)
