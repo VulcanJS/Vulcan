@@ -146,7 +146,7 @@ if (Telescope.email) {
     // send notifications to admins
     var admins = Users.adminUsers();
     admins.forEach(function(admin){
-      if (Users.getSetting(admin, "notifications.users", false)) {
+      if (Users.getSetting(admin, "notifications_users", false)) {
         var emailProperties = {
           profileUrl: Users.getProfileUrl(user, true),
           username: Users.getUserName(user)
