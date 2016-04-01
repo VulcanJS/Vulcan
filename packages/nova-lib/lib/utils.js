@@ -314,7 +314,7 @@ Telescope.utils.unflatten = function( array, idProperty, parentIdProperty, paren
 }
 
 Telescope.utils.getFieldLabel = (fieldName, collection) => {
-  const label = Meteor.users.simpleSchema()._schema[fieldName].label;
+  const label = collection.simpleSchema()._schema[fieldName].label;
   const nameWithSpaces = Telescope.utils.camelToSpaces(fieldName.replace("telescope.", ""));
   return label || nameWithSpaces;
 }

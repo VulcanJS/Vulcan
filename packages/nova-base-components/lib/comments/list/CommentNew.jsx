@@ -41,21 +41,21 @@ class CommentNew extends Component {
         if (this.props.submitCallback) {
           this.props.submitCallback();
         }
-        // console.log(component)
-        // component.refs.commentTextarea.reset(); //TODO: why are refs not working?
+        component.refs.commentForm.reset();
       }
     });
   }
 
   render() {
     return (
-      <Formsy.Form className="comment-new-form" onSubmit={this.submitComment}>
+      <Formsy.Form className="comment-new-form" onSubmit={this.submitComment} ref="commentForm">
         <Textarea
           name="body"
           value=""
           label="Body"
           type="text"
           layout="vertical"
+          ref="commentTextarea"
         />
         <div className="comment-actions comment-new-actions">
           <Button type="submit" bsStyle="primary">Submit</Button>
