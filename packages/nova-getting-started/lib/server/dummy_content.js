@@ -13,7 +13,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
   };
 
   if (typeof thumbnail !== "undefined")
-    post.thumbnailUrl = "/packages/telescope_getting-started/content/images/" + thumbnail;
+    post.thumbnailUrl = "/packages/nova_getting-started/content/images/" + thumbnail;
 
   Posts.methods.new(post);
 };

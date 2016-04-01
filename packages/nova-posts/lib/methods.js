@@ -144,7 +144,7 @@ Meteor.methods({
       
       Posts.update(post._id, {$set: set});
 
-      Telescope.callbacks.runAsync("postApproveAsync", post);
+      Telescope.callbacks.runAsync("posts.approve.async", post);
 
     }else{
       Messages.flash('You need to be an admin to do that.', "error");

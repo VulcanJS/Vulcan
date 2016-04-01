@@ -265,7 +265,7 @@ if (typeof Telescope.notifications !== "undefined") {
 
     Telescope.createNotification(post.userId, 'postApproved', notificationData);
   }
-  Telescope.callbacks.add("posts.new.async", postApprovedNotification);
+  Telescope.callbacks.add("posts.approve.async", postApprovedNotification);
 
 }
 // ------------------------------------- posts.edit.client -------------------------------- //
@@ -291,11 +291,21 @@ Telescope.callbacks.add("posts.edit.sync", forceStickyToFalse);
 /**
  * Set postedAt date
  */
-function setPostedAtEdit (post, oldPost) {
+function setPostedAtOnEdit (post, oldPost) {
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
     Posts.update(post._id, {$set:{postedAt: new Date()}});
   }
 }
-Telescope.callbacks.add("posts.edit.async", setPostedAtEdit);
+Telescope.callbacks.add("posts.edit.async", setPostedAtOnEdit);
+
+function runPostApprovedCallbacksOnEdit (post, oldPost) {
+  var post = Posts.findOne(postId);
+  var now = new Date();
+
+  if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {
+    Telescope.callbacks.runAsync("posts.approve.async", post);
+  }
+}
+Telescope.callbacks.add("posts.edit.async", runPostApprovedCallbacksOnEdit);
