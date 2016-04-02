@@ -52,5 +52,57 @@ class AccountsField extends Accounts.ui.Field {
   }
 }
 
+/**
+ * accounts-facebook & accounts-twitter are used by nova:lib, so the oauthServices recognize these two keys.
+ * However, they are not enabled by default (no credentials)
+ * => Don't show the social buttons if the service exists but is not enabled.
+ */
+
+class AccountsSocialButtons extends Accounts.ui.SocialButtons {
+  render () {
+    let { oauthServices = {}, className = "social_buttons" } = this.props;
+    return(
+      <div className={ className }>
+        {Object.keys(oauthServices)
+          .filter(service => oauthServices[service].disabled) // filter services registered but not enabled
+          .map((id, i) => <Accounts.ui.Button {...oauthServices[id]} key={i} />)}
+      </div>
+    );
+
+  }
+}
+
+/**
+ * Same stuff as above -> filter services registered but not enabled
+ */
+
+class AccountsPasswordOrService extends Accounts.ui.PasswordOrService {
+  render () {
+    let {
+      oauthServices = {},
+      className,
+      style = {}
+      } = this.props;
+    let { hasPasswordService } = this.state;
+    let labels = Object.keys(oauthServices)
+      .filter(service => oauthServices[service].disabled) // filter services registered but not enabled
+      .map(service => oauthServices[service].label);
+    if (labels.length > 2) {
+      labels = [];
+    }
+
+    if (hasPasswordService && labels.length > 0) {
+      return (
+        <div style={ style } className={ className }>
+          { `${T9n.get('or use')} ${ labels.join(' / ') }` }
+        </div>
+      );
+    }
+    return null;
+  }
+}
+
 Accounts.ui.Button = AccountsButton;
 Accounts.ui.Field = AccountsField;
+Accounts.ui.SocialButtons = AccountsSocialButtons;
+Accounts.ui.PasswordOrService = AccountsPasswordOrService;
