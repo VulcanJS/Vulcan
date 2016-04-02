@@ -28,6 +28,8 @@ export default AccountsMenu;
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
+  onSignedInHook: () => {},
+  onSignedOutHook: () => {},
 });
 
 class AccountsButton extends Accounts.ui.Button {
@@ -52,12 +54,6 @@ class AccountsField extends Accounts.ui.Field {
   }
 }
 
-/**
- * accounts-facebook & accounts-twitter are used by nova:lib, so the oauthServices recognize these two keys.
- * However, they are not enabled by default (no credentials)
- * => Don't show the social buttons if the service exists but is not enabled.
- */
-
 class AccountsSocialButtons extends Accounts.ui.SocialButtons {
   render () {
     let { oauthServices = {}, className = "social_buttons" } = this.props;
@@ -71,10 +67,6 @@ class AccountsSocialButtons extends Accounts.ui.SocialButtons {
 
   }
 }
-
-/**
- * Same stuff as above -> filter services registered but not enabled
- */
 
 class AccountsPasswordOrService extends Accounts.ui.PasswordOrService {
   render () {
