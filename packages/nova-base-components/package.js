@@ -25,7 +25,7 @@ Package.onUse(function (api) {
     // 'alt:react-accounts-ui@1.2.1',
     // 'alt:react-accounts-unstyled@1.2.1',
     // 'studiointeract:react-accounts-ui-basic@1.0.1',
-    'studiointeract:react-accounts-ui@1.0.7',
+    'std:accounts-ui@1.1.0',
     'dburles:spacebars-tohtml@1.0.1',
     'utilities:react-list-container'
   ]);

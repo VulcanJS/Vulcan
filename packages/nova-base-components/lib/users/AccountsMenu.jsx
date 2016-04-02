@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js'
+import Router from '../router.js';
 import { Dropdown } from 'react-bootstrap';
 import { Button, Input } from 'react-bootstrap';
 
-import { Accounts, redirect } from 'meteor/studiointeract:react-accounts-ui';
+import { Accounts } from 'meteor/std:accounts-ui';
 
 const AccountsMenu = () => {
 
@@ -19,7 +19,7 @@ const AccountsMenu = () => {
       </Dropdown.Menu>
     </Dropdown>
   ) 
-}
+};
 
 module.exports = AccountsMenu;
 export default AccountsMenu;
