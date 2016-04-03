@@ -14,6 +14,7 @@ Telescope.registerComponent("SearchForm", require('./common/SearchForm.jsx'));
 Telescope.registerComponent("NewPostButton", require('./common/NewPostButton.jsx'));
 Telescope.registerComponent("AppLoading", require('./common/AppLoading.jsx'));
 Telescope.registerComponent("Error404", require('./common/Error404.jsx'));
+Telescope.registerComponent("Loading", require('./common/Loading.jsx'));
 
 // posts
 
@@ -64,6 +65,7 @@ Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
 Telescope.registerComponent("UserName", require('./users/UserName.jsx'));
 Telescope.registerComponent("UserMenu", require('./users/UserMenu.jsx'));
 Telescope.registerComponent("AccountsMenu", require('./users/AccountsMenu.jsx'));
+Telescope.registerComponent("AccountsForm", require('./users/AccountsForm.jsx'));
 
 // debug
 

@@ -1,5 +1,8 @@
 import React from 'react';
 
-const PostsLoading = props => <p>Loading…</p>
+const PostsLoading = props => {
+  const Loading = Telescope.components.Loading;
+  return <Loading/>
+}
 
 module.exports = PostsLoading;

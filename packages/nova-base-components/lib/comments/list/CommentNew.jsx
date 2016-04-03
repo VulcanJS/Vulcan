@@ -3,65 +3,47 @@ import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 import Actions from '../../actions.js';
 import { Button } from 'react-bootstrap';
+
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
+
+import ReactForms from "meteor/nova:forms";
+const NewDocument = ReactForms.NewDocument;
 
 const Textarea = FRC.Textarea;
 
 class CommentNew extends Component {
 
-  constructor() {
-    super();
-    this.submitComment = this.submitComment.bind(this);
-  }
-
-  submitComment(data) {
-
-    const parentComment = this.props.parentComment;
-    const component = this;
-
-    data = {
-      ...data, 
-      postId: this.props.postId
-    }
-
-    if (parentComment) { // replying to a comment
-      data = {
-        ...data,
-        parentCommentId: parentComment._id,
-        // if parent comment has a topLevelCommentId use it; if it doesn't then it *is* the top level comment
-        topLevelCommentId: parentComment.topLevelCommentId || parentComment._id
-      }
-    }
-
-    Actions.call("comments.new", data, (error, result) => {
-      if (error) {
-        Messages.flash(error.message);
-      } else {
-        if (this.props.submitCallback) {
-          this.props.submitCallback();
-        }
-        component.refs.commentForm.reset();
-      }
-    });
-  }
-
   render() {
+
+    let prefilledProps = {postId: this.props.postId};
+
+    if (this.props.parentComment) {
+      prefilledProps = Object.assign(prefilledProps, {
+        parentCommentId: this.props.parentComment._id,
+        // if parent comment has a topLevelCommentId use it; if it doesn't then it *is* the top level comment
+        topLevelCommentId: this.props.parentComment.topLevelCommentId || this.props.parentComment._id
+      });
+    }
+
     return (
-      <Formsy.Form className="comment-new-form" onSubmit={this.submitComment} ref="commentForm">
-        <Textarea
-          name="body"
-          value=""
-          label="Body"
-          type="text"
-          layout="vertical"
-          ref="commentTextarea"
+      <div className="comment-new-form">
+        <NewDocument 
+          collection={Comments} 
+          currentUser={this.context.currentUser}
+          methodName="comments.new"
+          prefilledProps={prefilledProps}
+          successCallback={(post)=>{
+            this.props.submitCallback();
+            Messages.flash("Comment created.", "success");
+          }}
+          errorCallback={(post, error)=>{
+            Messages.flash(error.message);
+          }}
+          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Comments)}
         />
-        <div className="comment-actions comment-new-actions">
-          <Button type="submit" bsStyle="primary">Submit</Button>
-          {this.props.type === "reply" ? <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
-        </div>
-      </Formsy.Form>
+        {this.props.type === "reply" ? <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+      </div>
     )
   }
 
@@ -75,6 +57,10 @@ CommentNew.propTypes = {
   parentCommentId: React.PropTypes.string, // if reply
   topLevelCommentId: React.PropTypes.string, // if reply
   cancelCallback: React.PropTypes.func
+}
+
+CommentNew.contextTypes = {
+  currentUser: React.PropTypes.object
 }
 
 module.exports = CommentNew;

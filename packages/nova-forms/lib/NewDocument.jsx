@@ -20,9 +20,14 @@ class NewDocument extends Component {
     this.setState({disabled: true});
 
     // remove any empty properties
-    const document = _.compactObject(Utils.flatten(data));
+    let document = _.compactObject(Utils.flatten(data));
     const collection = this.props.collection;
     const methodName = this.props.methodName ? this.props.methodName : collection._name+'.create';
+
+    // add prefilled properties
+    if (this.props.prefilledProps) {
+      document = Object.assign(document, this.props.prefilledProps);
+    }
 
     Meteor.call(methodName, document, (error, document) => {
 
@@ -34,6 +39,7 @@ class NewDocument extends Component {
           this.props.errorCallback(document, error);
         }
       } else {
+        this.refs.newDocumentForm.reset();
         if (this.props.successCallback) {
           this.props.successCallback(document);
         }
@@ -57,7 +63,7 @@ class NewDocument extends Component {
 
     return (
       <div className="new-document" style={style}>
-        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled}>
+        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="newDocumentForm">
           {fields.map(fieldName => <FormComponent 
             key={fieldName}
             className={"input-"+fieldName}
@@ -78,7 +84,8 @@ NewDocument.propTypes = {
   errorCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
   methodName: React.PropTypes.string,
-  labelFunction: React.PropTypes.func
+  labelFunction: React.PropTypes.func,
+  prefilledProps: React.PropTypes.object
 }
 
 NewDocument.contextTypes = {

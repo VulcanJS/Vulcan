@@ -28,9 +28,7 @@ Comments.schema = new SimpleSchema({
     editableIf: Users.is.ownerOrAdmin,
     optional: true,
     publish: true,
-    autoform: {
-      omit: true // never show this
-    }
+    control: "none" // never show this
   },
   /**
     The `_id` of the top-level parent comment, if there is one
@@ -43,9 +41,7 @@ Comments.schema = new SimpleSchema({
     editableIf: Users.is.ownerOrAdmin,
     optional: true,
     publish: true,
-    autoform: {
-      omit: true // never show this
-    }
+    control: "none" // never show this
   },
   /**
     The timestamp of comment creation
@@ -72,12 +68,7 @@ Comments.schema = new SimpleSchema({
     insertableIf: Users.is.memberOrAdmin,
     editableIf: Users.is.ownerOrAdmin,
     publish: true,
-    autoform: {
-      rows: 5,
-      afFormGroup: {
-        'formgroup-class': 'hide-label'
-      }
-    }
+    control: "textarea"
   },
   /**
     The HTML version of the comment body

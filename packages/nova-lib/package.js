@@ -21,8 +21,6 @@ Package.onUse(function (api) {
 //    'accounts-ui',
     'accounts-base',
     'accounts-password',
-    'accounts-twitter',
-    'accounts-facebook',
     'check',
     'reactive-var',
     'http',

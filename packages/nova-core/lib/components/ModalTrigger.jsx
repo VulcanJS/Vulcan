@@ -49,6 +49,13 @@ class ModalTrigger extends Component {
 
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
 
+    if (this.props.size === "small") {
+      customStyles.content.left = "20%";
+      customStyles.content.right = "20%";
+      customStyles.content.top = "60px";
+      customStyles.content.bottom = "60px";
+    }
+
     return (
       <div className="modal-trigger">
         {triggerComponent}
@@ -65,7 +72,12 @@ class ModalTrigger extends Component {
 };
 
 ModalTrigger.propTypes = {
-  component: React.PropTypes.object.isRequired
+  component: React.PropTypes.object.isRequired,
+  size: React.PropTypes.string
+}
+
+ModalTrigger.defaultProps = {
+  size: "medium"
 }
 
 ModalTrigger.childContextTypes = {
