@@ -13,9 +13,14 @@ class CommentNew extends Component {
   constructor() {
     super();
     this.submitComment = this.submitComment.bind(this);
+    this.state = {
+      disabled: false
+    };
   }
 
   submitComment(data) {
+
+    this.setState({disabled: true});
 
     const parentComment = this.props.parentComment;
     const component = this;
@@ -35,6 +40,9 @@ class CommentNew extends Component {
     }
 
     Actions.call("comments.new", data, (error, result) => {
+      
+      this.setState({disabled: false});
+
       if (error) {
         Messages.flash(error.message);
       } else {
@@ -48,7 +56,7 @@ class CommentNew extends Component {
 
   render() {
     return (
-      <Formsy.Form className="comment-new-form" onSubmit={this.submitComment} ref="commentForm">
+      <Formsy.Form className="comment-new-form" onSubmit={this.submitComment} ref="commentForm" disabled={this.state.disabled}>
         <Textarea
           name="body"
           value=""
