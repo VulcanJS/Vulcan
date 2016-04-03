@@ -12,7 +12,8 @@ Meteor.publish('comments.list', function (terms) {
   terms.currentUserId = this.userId; // add currentUserId to terms
   ({selector, options} = Comments.parameters.get(terms));
 
-  Counts.publish(this, 'comments.list', Comments.find(selector, options));
+  // commenting this because of FR-SSR issue
+  // Counts.publish(this, 'comments.list', Comments.find(selector, options));
 
   options.fields = Comments.publishedFields.list;
 
