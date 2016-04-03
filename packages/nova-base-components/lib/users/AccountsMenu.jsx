@@ -3,7 +3,7 @@ import Router from '../router.js'
 import { Dropdown } from 'react-bootstrap';
 import { Button, Input } from 'react-bootstrap';
 
-import { Accounts, redirect } from 'meteor/studiointeract:react-accounts-ui';
+import { Accounts } from 'meteor/std:accounts-ui';
 
 const AccountsMenu = () => {
 
@@ -18,7 +18,7 @@ const AccountsMenu = () => {
         <Accounts.ui.LoginForm />
       </Dropdown.Menu>
     </Dropdown>
-  ) 
+  )
 }
 
 module.exports = AccountsMenu;
@@ -32,23 +32,30 @@ Accounts.ui.config({
 
 class AccountsButton extends Accounts.ui.Button {
   render() {
-    const { label, type, disabled = false, onClick, className } = this.props;
-    return type == 'link' ? (
-      <Button bsStyle="default" href="#" className={className} onClick={onClick} >{label}</Button>
-    ) : (
-      <Button bsStyle="primary" className={className} onClick={onClick} disabled={disabled}>{label}</Button>
-    );
+    const { label, href, type, disabled = false, className, onClick } = this.props;
+    if (type == 'link') {
+      return <Button bsStyle="default"
+                     href="#"
+                     className={ className }
+                     onClick={ onClick }>{ label }</Button>;
+    }
+    return <Button bsStyle="primary"
+                   type={ type }
+                   className={ className }
+                   onClick={ onClick }
+                   disabled={ disabled }>{ label }</Button>;
   }
 }
 
 class AccountsField extends Accounts.ui.Field {
   render() {
-    const { id, hint, label, type = 'text', onChange, className = "field" } = this.props;
-    return (
-      <div className={className}>
-        <Input name={id} id={id} type={type} onChange={onChange} placeholder={hint} defaultValue="" />
+    const { id, hint, label, type = 'text', onChange, className = "field", defaultValue = "" } = this.props;
+    const { mount = true } = this.state;
+    return mount ? (
+      <div className={ className }>
+        <Input id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
       </div>
-    );
+    ) : null;
   }
 }
 
