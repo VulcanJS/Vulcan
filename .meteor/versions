@@ -135,7 +135,7 @@ srp@1.0.6
 standard-minifier-css@1.0.4
 standard-minifier-js@1.0.4
 standard-minifiers@1.0.4
-studiointeract:react-accounts-ui@1.0.7
+std:accounts-ui@1.1.5
 tap:i18n@1.7.0
 templating@1.1.7
 templating-tools@1.0.2
