@@ -3,9 +3,12 @@ import { Accounts } from 'meteor/std:accounts-ui';
 import SmartContainers from "meteor/utilities:react-list-container";
 const ListContainer = SmartContainers.ListContainer;
 
+import Core from "meteor/nova:core";
+const ModalTrigger = Core.ModalTrigger;
+
 const PostPage = ({document, currentUser}) => {
   
-  ({CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags} = Telescope.components);
+  ({CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags, AccountsForm} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
@@ -39,8 +42,9 @@ const PostPage = ({document, currentUser}) => {
             <CommentNew type="comment" postId={post._id} />
           </div> :
           <div>
-            <h4>Please login to comment:</h4>
-            <Accounts.ui.LoginForm />
+            <ModalTrigger size="small" component={<a>Please log in to comment</a>}>
+              <AccountsForm/>
+            </ModalTrigger>
           </div> }
       </div>
 
