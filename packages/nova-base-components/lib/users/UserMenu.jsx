@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js'
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/std:accounts-ui';
+import Router from '../router.js';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
 const UserMenu = ({user}) => {
@@ -15,7 +17,7 @@ const UserMenu = ({user}) => {
       <Dropdown.Menu>
         <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}>Profile</MenuItem>
         <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}>Edit Account</MenuItem>
-        <MenuItem className="dropdown-item" eventKey="3" href={Router.path("account")} onClick={Meteor.logout}>Log Out</MenuItem>
+        <MenuItem className="dropdown-item" eventKey="3" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}>Log Out</MenuItem>
       </Dropdown.Menu>
     </Dropdown>
   ) 
