@@ -1,4 +1,5 @@
 import React from 'react';
+import { Accounts } from 'meteor/std:accounts-ui';
 import SmartContainers from "meteor/utilities:react-list-container";
 const ListContainer = SmartContainers.ListContainer;
 
@@ -32,14 +33,19 @@ const PostPage = ({document, currentUser}) => {
           joins={Comments.getJoins()}
         ><CommentList/></ListContainer>
 
-        <div className="post-new-comment">
-          <h4>New Comment:</h4>
-          <CommentNew type="comment" postId={post._id} />
-        </div>
+        { currentUser ?
+          <div className="post-new-comment">
+            <h4>New Comment:</h4>
+            <CommentNew type="comment" postId={post._id} />
+          </div> :
+          <div>
+            <h4>Please login to comment:</h4>
+            <Accounts.ui.LoginForm />
+          </div> }
       </div>
 
     </div>
   )
-}
+};
 
 module.exports = PostPage;

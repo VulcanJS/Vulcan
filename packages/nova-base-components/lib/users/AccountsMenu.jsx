@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js'
+import Router from '../router.js';
 import { Dropdown } from 'react-bootstrap';
 import { Button, Input } from 'react-bootstrap';
 
@@ -18,8 +18,8 @@ const AccountsMenu = () => {
         <Accounts.ui.LoginForm />
       </Dropdown.Menu>
     </Dropdown>
-  )
-}
+  ) 
+};
 
 module.exports = AccountsMenu;
 export default AccountsMenu;
@@ -28,6 +28,8 @@ export default AccountsMenu;
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
+  onSignedInHook: () => {},
+  onSignedOutHook: () => {},
 });
 
 class AccountsButton extends Accounts.ui.Button {
@@ -59,5 +61,47 @@ class AccountsField extends Accounts.ui.Field {
   }
 }
 
+class AccountsSocialButtons extends Accounts.ui.SocialButtons {
+  render () {
+    let { oauthServices = {}, className = "social_buttons" } = this.props;
+    return(
+      <div className={ className }>
+        {Object.keys(oauthServices)
+          .filter(service => oauthServices[service].disabled) // filter services registered but not enabled
+          .map((id, i) => <Accounts.ui.Button {...oauthServices[id]} key={i} />)}
+      </div>
+    );
+
+  }
+}
+
+class AccountsPasswordOrService extends Accounts.ui.PasswordOrService {
+  render () {
+    let {
+      oauthServices = {},
+      className,
+      style = {}
+      } = this.props;
+    let { hasPasswordService } = this.state;
+    let labels = Object.keys(oauthServices)
+      .filter(service => oauthServices[service].disabled) // filter services registered but not enabled
+      .map(service => oauthServices[service].label);
+    if (labels.length > 2) {
+      labels = [];
+    }
+
+    if (hasPasswordService && labels.length > 0) {
+      return (
+        <div style={ style } className={ className }>
+          { `${T9n.get('or use')} ${ labels.join(' / ') }` }
+        </div>
+      );
+    }
+    return null;
+  }
+}
+
 Accounts.ui.Button = AccountsButton;
 Accounts.ui.Field = AccountsField;
+Accounts.ui.SocialButtons = AccountsSocialButtons;
+Accounts.ui.PasswordOrService = AccountsPasswordOrService;
