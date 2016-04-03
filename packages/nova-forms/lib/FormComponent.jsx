@@ -46,11 +46,15 @@ class FormComponent extends Component {
   }
 
   render() {
-    return (
-      <div className={"input-"+fieldName}>
-        {this.renderComponent()}
-      </div>
-    )
+    if (this.props.field.control === "none") {
+      return null;
+    } else {
+      return (
+        <div className={"input-"+fieldName}>
+          {this.renderComponent()}
+        </div>
+      )
+    }
   }
 
 }

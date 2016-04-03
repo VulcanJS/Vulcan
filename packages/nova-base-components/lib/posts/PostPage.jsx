@@ -34,7 +34,8 @@ const PostPage = ({document, currentUser}) => {
           limit={0}
           parentProperty="parentCommentId"
           joins={Comments.getJoins()}
-        ><CommentList/></ListContainer>
+          component={CommentList}
+        />
 
         { currentUser ?
           <div className="post-new-comment">

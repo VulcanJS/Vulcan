@@ -16,6 +16,7 @@ This component takes the following properties:
 - `successCallback`: a function to call on success.
 - `methodName`: the name of the method to submit the form to. 
 - `labelFunction`: a function that will be called on each field's name to get the label (for example, an internationalization function).
+- `prefilledProps`: properties to use to prefill the document that will be created.
 
 ### `EditDocument`
 
