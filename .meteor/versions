@@ -1,5 +1,4 @@
 accounts-base@1.2.4
-accounts-facebook@1.0.7
 accounts-oauth@1.1.10
 accounts-password@1.1.6
 accounts-twitter@1.0.7
@@ -41,7 +40,6 @@ ecmascript@0.4.1
 ecmascript-runtime@0.2.8
 ejson@1.0.9
 email@1.0.10
-facebook@1.2.4
 fortawesome:fontawesome@4.5.0
 fourseven:scss@3.4.1
 geojson-utils@1.0.6
@@ -104,7 +102,6 @@ npm-bcrypt@0.7.8_2
 npm-mongo@1.4.41
 oauth@1.1.8
 oauth1@1.1.7
-oauth2@1.1.7
 observe-sequence@1.0.9
 ongoworks:speakingurl@9.0.0
 ordered-dict@1.0.5
