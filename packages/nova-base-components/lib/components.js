@@ -70,4 +70,5 @@ Telescope.registerComponent("AccountsForm", require('./users/AccountsForm.jsx'))
 // debug
 
 Telescope.registerComponent("Cheatsheet", require('./debug/Cheatsheet.jsx'));
+Telescope.registerComponent("Settings", require('./debug/Settings.jsx'));
 

@@ -27,6 +27,8 @@ To use your `settings.json` file:
 - Development: `meteor --settings settings.json`
 - Production: specify the path to `settings.json` in `mup.json`
 
+See also the `/settings` route inside your app. 
+
 ## Social Login
 
 To add new social login options, just add the relevant package (`accounts-twitter`, `accounts-facebook`, etc.) to your `.meteor/packages` file with (for example):
@@ -135,6 +137,18 @@ Methods support four distinct types of callbacks, each with their own hook:
 - `method` callbacks are called within the body of the method, and they run both on the client and server.
 - `sync` callbacks are called in the mutator, and can run either on both client and server, *or* on the server only if the mutator is called directly.
 - `async` callbacks are called in the mutator, and only run on the server in an async non-blocking way. 
+
+## Loading Data
+
+To load data and display it as a list of documents (or a single document), Nova uses the [React List Container](https://github.com/meteor-utilities/react-list-container) package. 
+
+## Forms
+
+See [nova:forms](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms) package readme.
+
+## Methods
+
+You can use regular Meteor methods, or [Smart Methods](https://github.com/meteor-utilities/smart-methods).
 
 ## Cheatsheet
 

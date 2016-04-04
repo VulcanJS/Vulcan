@@ -16,7 +16,7 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
-    'lib/settings.js',
+    'lib/collection.js',
     // 'package-tap.i18n'
   ], both);
 
@@ -30,5 +30,4 @@ Package.onUse(function(api) {
   // });
   // api.addFiles(languagesPaths, ["client", "server"]);
 
-  api.export('Settings', both);
 });

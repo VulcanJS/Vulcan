@@ -1,6 +1,6 @@
 /**
  * The global namespace for Settings.
- * @namespace Settings
+ * @namespace Telescope.settings.collection
  */
 Telescope.settings.collection = new Mongo.Collection("settings");
 
@@ -101,22 +101,6 @@ Telescope.settings.schema = new SimpleSchema({
       group: '01_general',
       instructions: 'How often to recalculate scores, in seconds (default to 30)',
       class: "private-field"
-    }
-  },
-  defaultView: {
-    type: String,
-    optional: true,
-    autoform: {
-      group: "02_posts",
-      instructions: 'The view used for the front page',
-      options: function () {
-        return _.map(Telescope.menuItems.get("viewsMenu"), function (view) {
-          return {
-            value: view.name,
-            label: view.label()
-          };
-        });
-      }
     }
   },
   postInterval: {

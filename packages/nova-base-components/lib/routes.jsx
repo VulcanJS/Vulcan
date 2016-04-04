@@ -114,6 +114,14 @@ Router.route('/cheatsheet', {
   }
 });
 
+Router.route('/settings', {
+  name: 'settings',
+  action() {
+    ({App, Settings} = Telescope.components);
+    mount(App, {content: <Settings/>});
+  }
+});
+
 FlowRouter.notFound = {
   action() {
     ({Error404} = Telescope.components);

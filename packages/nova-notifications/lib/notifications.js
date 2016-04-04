@@ -14,8 +14,8 @@ Telescope.createNotification = (userId, notificationName, data) => {
 
 };
 
-if (typeof Settings !== "undefined") {
-  Settings.addField({
+if (typeof Telescope.settings.collection !== "undefined") {
+  Telescope.settings.collection.addField({
     fieldName: 'emailNotifications',
     fieldSchema: {
       type: Boolean,

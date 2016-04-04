@@ -26,8 +26,8 @@ Users.addField([
 
 // Settings
 
-if (typeof Settings !== "undefined") {
-  Settings.addField([
+if (typeof Telescope.settings.collection !== "undefined") {
+  Telescope.settings.collection.addField([
     {
       fieldName: 'enableNewsletter',
       fieldSchema: {
@@ -36,18 +36,6 @@ if (typeof Settings !== "undefined") {
         autoform: {
           group: 'newsletter',
           instructions: 'Enable newsletter (requires restart).'
-        }
-      }
-    },
-    {
-      fieldName: 'showBanner',
-      fieldSchema: {
-        type: Boolean,
-        optional: true,
-        label: 'Newsletter banner',
-        autoform: {
-          group: 'newsletter',
-          instructions: 'Show newsletter sign-up form on the front page.'
         }
       }
     },
@@ -91,6 +79,7 @@ if (typeof Settings !== "undefined") {
       fieldSchema: {
         type: [Number],
         optional: true,
+        defaultValue: [2,4,6],
         autoform: {
           group: 'newsletter',
           instructions: 'Defaults to once a week on Monday. Changes require restarting your app to take effect.',
