@@ -4,7 +4,7 @@ class CommentItem extends Component{
 
   constructor() {
     super();
-    ['showReply', 'cancelReply', 'replyCallback', 'showEdit', 'cancelEdit', 'editCallback'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
+    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
     this.state = {
       showReply: false,
       showEdit: false
@@ -16,12 +16,12 @@ class CommentItem extends Component{
     this.setState({showReply: true});
   }
 
-  cancelReply(event) {
+  replyCancelCallback(event) {
     event.preventDefault();
     this.setState({showReply: false});
   }
 
-  replyCallback() {
+  replySuccessCallback() {
     this.setState({showReply: false});
   }
 
@@ -30,12 +30,12 @@ class CommentItem extends Component{
     this.setState({showEdit: true});
   }
   
-  cancelEdit(event) {
+  editCancelCallback(event) {
     event.preventDefault();
     this.setState({showEdit: false});
   }
 
-  editCallback() {
+  editSuccessCallback() {
     this.setState({showEdit: false});
   }
 
@@ -56,7 +56,13 @@ class CommentItem extends Component{
 
     return (
       <div className="comment-reply">
-        <CommentNew postId={this.props.comment.postId} parentComment={this.props.comment} submitCallback={this.replyCallback} cancelCallback={this.cancelReply} type="reply" />
+        <CommentNew 
+          postId={this.props.comment.postId} 
+          parentComment={this.props.comment} 
+          successCallback={this.replySuccessCallback} 
+          cancelCallback={this.replyCancelCallback} 
+          type="reply" 
+        />
       </div>
     )
   }
@@ -66,7 +72,11 @@ class CommentItem extends Component{
     ({CommentEdit}  = Telescope.components);
     
     return (
-      <CommentEdit comment={this.props.comment} submitCallback={this.editCallback} cancelCallback={this.cancelEdit}/>
+      <CommentEdit 
+        comment={this.props.comment} 
+        successCallback={this.editSuccessCallback} 
+        cancelCallback={this.editCancelCallback}
+      />
     )
   }
 

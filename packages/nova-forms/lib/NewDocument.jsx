@@ -19,6 +19,11 @@ class NewDocument extends Component {
     
     this.setState({disabled: true});
 
+    // if there's a submit callback, run it
+    if (this.props.submitCallback) {
+      this.props.submitCallback();
+    }
+    
     // remove any empty properties
     let document = _.compactObject(Utils.flatten(data));
     const collection = this.props.collection;

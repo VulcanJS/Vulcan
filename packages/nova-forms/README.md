@@ -12,6 +12,7 @@ This component takes the following properties:
 
 - `collection`: the collection in which to insert the new document.
 - `currentUser`: the current user.
+- `submitCallback`: a function to call on form submit.
 - `errorCallback`: a function to call on error.
 - `successCallback`: a function to call on success.
 - `methodName`: the name of the method to submit the form to. 

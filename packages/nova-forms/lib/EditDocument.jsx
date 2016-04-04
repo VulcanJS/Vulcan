@@ -25,6 +25,11 @@ class EditDocument extends Component{
     
     this.setState({disabled: true});
 
+    // if there's a submit callback, run it
+    if (this.props.submitCallback) {
+      this.props.submitCallback();
+    }
+    
     const fields = this.getFields();
     const document = this.props.document;
     // put all keys with data on $set

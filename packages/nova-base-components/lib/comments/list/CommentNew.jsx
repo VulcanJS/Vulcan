@@ -34,7 +34,7 @@ class CommentNew extends Component {
           methodName="comments.new"
           prefilledProps={prefilledProps}
           successCallback={(post)=>{
-            this.props.submitCallback();
+            this.props.successCallback();
             Messages.flash("Comment created.", "success");
           }}
           errorCallback={(post, error)=>{
@@ -51,7 +51,7 @@ class CommentNew extends Component {
 
 CommentNew.propTypes = {
   postId: React.PropTypes.string.isRequired,
-  submitCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
+  successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
   type: React.PropTypes.string, // "comment" or "reply"
   parentComment: React.PropTypes.object, // if reply, the comment being replied to
   parentCommentId: React.PropTypes.string, // if reply
