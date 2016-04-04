@@ -132,7 +132,7 @@ Meteor.methods({
     return Comments.methods.new(comment);
   },
 
-  'comments.edit': function (modifier, commentId) {
+  'comments.edit': function (commentId, modifier) {
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
     check(modifier, {$set: Comments.simpleSchema()});

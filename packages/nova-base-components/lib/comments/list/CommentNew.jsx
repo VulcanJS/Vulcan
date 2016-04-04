@@ -1,16 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import Formsy from 'formsy-react';
-import FRC from 'formsy-react-components';
 import Actions from '../../actions.js';
-import { Button } from 'react-bootstrap';
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
-
-import ReactForms from "meteor/nova:forms";
-const NewDocument = ReactForms.NewDocument;
-
-const Textarea = FRC.Textarea;
+import NovaForm from "meteor/nova:forms";
 
 class CommentNew extends Component {
 
@@ -28,18 +18,12 @@ class CommentNew extends Component {
 
     return (
       <div className="comment-new-form">
-        <NewDocument 
+        <NovaForm 
           collection={Comments} 
           currentUser={this.context.currentUser}
           methodName="comments.new"
           prefilledProps={prefilledProps}
-          successCallback={(post)=>{
-            this.props.successCallback();
-            Messages.flash("Comment created.", "success");
-          }}
-          errorCallback={(post, error)=>{
-            Messages.flash(error.message);
-          }}
+          successCallback={this.props.successCallback}
           labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Comments)}
         />
         {this.props.type === "reply" ? <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
@@ -51,11 +35,11 @@ class CommentNew extends Component {
 
 CommentNew.propTypes = {
   postId: React.PropTypes.string.isRequired,
-  successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
   type: React.PropTypes.string, // "comment" or "reply"
   parentComment: React.PropTypes.object, // if reply, the comment being replied to
   parentCommentId: React.PropTypes.string, // if reply
   topLevelCommentId: React.PropTypes.string, // if reply
+  successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
   cancelCallback: React.PropTypes.func
 }
 

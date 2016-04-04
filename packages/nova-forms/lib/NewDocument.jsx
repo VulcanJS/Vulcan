@@ -11,7 +11,8 @@ class NewDocument extends Component {
     super();
     this.submitForm = this.submitForm.bind(this);
     this.state = {
-      disabled: false
+      disabled: false,
+      errors: []
     };
   }
 
@@ -27,23 +28,29 @@ class NewDocument extends Component {
     // remove any empty properties
     let document = _.compactObject(Utils.flatten(data));
     const collection = this.props.collection;
-    const methodName = this.props.methodName ? this.props.methodName : collection._name+'.create';
 
     // add prefilled properties
     if (this.props.prefilledProps) {
       document = Object.assign(document, this.props.prefilledProps);
     }
 
-    Meteor.call(methodName, document, (error, document) => {
+    Meteor.call(this.props.methodName, document, (error, document) => {
 
       this.setState({disabled: false});
       
       if (error) {
         console.log(error)
+        this.setState({
+          errors: [{
+            content: error.message,
+            type: "error"
+          }]
+        });
         if (this.props.errorCallback) {
           this.props.errorCallback(document, error);
         }
       } else {
+        this.setState({errors: []});
         this.refs.newDocumentForm.reset();
         if (this.props.successCallback) {
           this.props.successCallback(document);
@@ -54,6 +61,11 @@ class NewDocument extends Component {
       }
 
     });
+  }
+
+  renderErrors() {
+    Flash = Telescope.components.Flash;
+    return <div className="form-errors">{this.state.errors.map(message => <Flash message={message}/>)}</div>
   }
 
   render() {
@@ -69,6 +81,7 @@ class NewDocument extends Component {
     return (
       <div className="new-document" style={style}>
         <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="newDocumentForm">
+          {this.renderErrors()}
           {fields.map(fieldName => <FormComponent 
             key={fieldName}
             className={"input-"+fieldName}

@@ -1,44 +1,21 @@
 import React, { PropTypes, Component } from 'react';
-import Formsy from 'formsy-react';
-import FRC from 'formsy-react-components';
 import Actions from '../../actions.js';
-import { Button } from 'react-bootstrap';
-
-const Textarea = FRC.Textarea;
+import NovaForm from "meteor/nova:forms";
 
 class CommentEdit extends Component {
 
-  constructor() {
-    super();
-    this.submitComment = this.submitComment.bind(this);
-  }
-
-  submitComment(data) {
-    data = {$set: data};
-    Actions.call("comments.edit", data, this.props.comment._id, (error, result) => {
-      if (error) {
-        Messages.flash(error.message);
-      } else {
-        this.props.submitCallback();
-      }
-    });
-  }
-
   render() {
     return (
-      <Formsy.Form className="comment-edit-form" onSubmit={this.submitComment}>
-        <Textarea
-          name="body"
-          value={this.props.comment.body}
-          label="Body"
-          type="text"
-          layout="vertical"
+      <div className="comment-edit">
+        <NovaForm 
+          collection={Comments}
+          document={this.props.comment}
+          currentUser={this.context.currentUser}
+          methodName="comments.edit"
+          successCallback={this.props.successCallback}
         />
-        <div className="comment-actions comment-edit-actions">
-          <Button type="submit" bsStyle="primary">Submit</Button>
-          <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a>
-        </div>
-      </Formsy.Form>
+        <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a>
+      </div>
     )
   }
 
@@ -46,8 +23,12 @@ class CommentEdit extends Component {
 
 CommentEdit.propTypes = {
   comment: React.PropTypes.object.isRequired,
-  submitCallback: React.PropTypes.func,
+  successCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func
+}
+
+CommentEdit.contextTypes = {
+  currentUser: React.PropTypes.object
 }
 
 module.exports = CommentEdit;

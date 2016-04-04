@@ -5,8 +5,7 @@ import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 const FlashContainer = Core.FlashContainer;
 
-import ReactForms from "meteor/nova:forms";
-const NewDocument = ReactForms.NewDocument;
+import NovaForm from "meteor/nova:forms";
 
 const PostNewForm = (props, context) => {
 
@@ -17,16 +16,13 @@ const PostNewForm = (props, context) => {
       <div className="new-post-form">
         <h3 className="modal-form-title">New Post</h3>
         <FlashContainer component={FlashMessages}/>
-        <NewDocument 
+        <NovaForm 
           collection={Posts} 
           currentUser={context.currentUser}
           methodName="posts.new"
           successCallback={(post)=>{
             Messages.flash("Post created.", "success");
             Router.go('posts.single', post);
-          }}
-          errorCallback={(post, error)=>{
-            Messages.flash(error.message);
           }}
           labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)}
         />

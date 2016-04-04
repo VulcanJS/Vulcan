@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import ReactForms from "meteor/nova:forms";
-const EditDocument = ReactForms.EditDocument;
+import NovaForm from "meteor/nova:forms";
 
 import SmartContainers from "meteor/utilities:react-list-container";
 const DocumentContainer = SmartContainers.DocumentContainer;
@@ -45,15 +44,13 @@ class PostEditForm extends Component{
           selector={{_id: this.props.post._id}}
           terms={{_id: this.props.post._id}}
           joins={Posts.getJoins()}
-          component={EditDocument}
+          component={NovaForm}
           componentProps={{
+            // note: the document prop will be passed from DocumentContainer
             collection: Posts,
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
-            labelFunction: (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts),
-            errorCallback: (post, error)=>{
-              Messages.flash(error.message);
-            }
+            labelFunction: (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)
           }}
         />
       </div>

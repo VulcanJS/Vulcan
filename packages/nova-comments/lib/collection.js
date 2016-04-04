@@ -25,7 +25,6 @@ Comments.schema = new SimpleSchema({
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
     optional: true,
     publish: true,
     control: "none" // never show this
@@ -38,7 +37,6 @@ Comments.schema = new SimpleSchema({
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
     optional: true,
     publish: true,
     control: "none" // never show this

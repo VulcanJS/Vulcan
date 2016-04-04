@@ -17,7 +17,7 @@ class EditDocument extends Component{
 
   getFields() {
     const collection = this.props.collection;
-    const fields = collection.getInsertableFields(this.props.currentUser);
+    const fields = collection.getEditableFields(this.props.currentUser);
     return fields;
   }
 
@@ -39,18 +39,24 @@ class EditDocument extends Component{
     const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
     const modifier = {$set: set, $unset: unset};
     const collection = this.props.collection;
-    const methodName = this.props.methodName ? this.props.methodName : collection._name+'.edit';
     
-    Meteor.call(methodName, document._id, modifier, (error, document) => {
+    Meteor.call(this.props.methodName, document._id, modifier, (error, document) => {
       
       this.setState({disabled: false});
       
       if (error) {
         console.log(error)
+        this.setState({
+          errors: [{
+            content: error.message,
+            type: "error"
+          }]
+        });
         if (this.props.errorCallback) {
           this.props.errorCallback(document, error);
         }
       } else {
+        this.setState({errors: []});
         if (this.props.successCallback) {
           this.props.successCallback(document);
         }
@@ -62,13 +68,16 @@ class EditDocument extends Component{
     });
   }
 
+  renderErrors() {
+    Flash = Telescope.components.Flash;
+    return <div className="form-errors">{this.state.errors.map(message => <Flash message={message}/>)}</div>
+  }
+
   render() {
 
     const document = this.props.document;
     const collection = this.props.collection;
     const fields = this.getFields();
-
-    console.log('called editdocument render')
 
     const style = {
       maxWidth: "800px",
@@ -78,6 +87,7 @@ class EditDocument extends Component{
     return (
       <div className="edit-document" style={style}>
         <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled}>
+          {this.renderErrors()}
           {fields.map(fieldName => <FormComponent 
             key={fieldName}
             className={"input-"+fieldName}
