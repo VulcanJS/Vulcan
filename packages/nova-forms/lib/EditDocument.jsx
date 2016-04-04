@@ -63,6 +63,8 @@ class EditDocument extends Component{
     const collection = this.props.collection;
     const fields = this.getFields();
 
+    console.log('called editdocument render')
+
     const style = {
       maxWidth: "800px",
       width: "100%"

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+
 import ReactForms from "meteor/nova:forms";
 const EditDocument = ReactForms.EditDocument;
 
@@ -8,7 +9,7 @@ const Messages = Core.Messages;
 const UserEdit = ({document, currentUser}) => {
 
   const user = document;
-  const label = `Edit profile for ${Users.getDisplayName(user)}`;
+  //const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
   ({CanEditUser} = Telescope.components);
 
@@ -30,6 +31,7 @@ const UserEdit = ({document, currentUser}) => {
     </CanEditUser>
   )
 }
+
   
 UserEdit.propTypes = {
   document: React.PropTypes.object.isRequired,
@@ -37,3 +39,4 @@ UserEdit.propTypes = {
 }
 
 module.exports = UserEdit;
+export default UserEdit;

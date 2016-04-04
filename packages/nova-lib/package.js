@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.versionsFrom(['METEOR@1.0']);
-  
+
   var packages = [
     'meteor-base@1.0.1',
     'mongo',
@@ -30,11 +30,11 @@ Package.onUse(function (api) {
     // 'nicolaslopezj:mrf@0.1.1',
     // 'nicolaslopezj:mrf-material-ui@0.1.1',
 
-    'aldeed:collection2@2.8.0',
+    'aldeed:collection2@2.9.1',
     // 'aldeed:http@0.2.2',
     // 'aldeed:autoform@5.8.1',
     // 'aldeed:template-extension@4.0.0',
-    
+
     // 'fourseven:scss@3.4.1',
     // 'kadira:blaze-layout@2.3.0',
     'meteorhacks:picker@1.0.3',
@@ -70,12 +70,12 @@ Package.onUse(function (api) {
     'kadira:flow-router-ssr@3.12.2',
     'arillo:flow-router-helpers@0.5.0',
     // 'peerlibrary:reactive-publish@0.2.0',
-    
+
     'utilities:smart-publications',
     'utilities:smart-methods',
 
     'ecmascript',
-    'react-meteor-data@0.2.6-beta.16'
+    'react-meteor-data@0.2.7'
   ];
 
   api.use(packages);
