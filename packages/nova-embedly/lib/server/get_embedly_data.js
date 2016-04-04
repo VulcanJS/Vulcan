@@ -1,9 +1,9 @@
 getEmbedlyData = function (url) {
   var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
-  var embedlyKey = Settings.get('embedlyKey');
-  var thumbnailWidth = Settings.get('thumbnailWidth', 200);
-  var thumbnailHeight = Settings.get('thumbnailHeight', 125);
+  var embedlyKey = Telescope.settings.get('embedlyKey');
+  var thumbnailWidth = Telescope.settings.get('thumbnailWidth', 200);
+  var thumbnailHeight = Telescope.settings.get('thumbnailHeight', 125);
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
@@ -115,7 +115,7 @@ Meteor.methods({
     return getEmbedlyData(url);
   },
   embedlyKeyExists: function () {
-    return !!Settings.get('embedlyKey');
+    return !!Telescope.settings.get('embedlyKey');
   },
   regenerateThumbnail: function (post) {
     check(post, Posts.simpleSchema());

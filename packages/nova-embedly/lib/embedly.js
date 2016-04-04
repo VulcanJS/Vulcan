@@ -16,39 +16,3 @@ function checkIfPreviouslyPosted (data) {
   return data;
 }
 Telescope.callbacks.add("afterEmbedlyPrefill", checkIfPreviouslyPosted);
-
-
-// Settings.addField([
-//   {
-//     fieldName: 'embedlyKey',
-//     fieldSchema: {
-//       type: String,
-//       optional: true,
-//       private: true,
-//       autoform: {
-//         group: 'embedly',
-//         class: 'private-field'
-//       }
-//     }
-//   },
-//   {
-//     fieldName: 'thumbnailWidth',
-//     fieldSchema: {
-//       type: Number,
-//       optional: true,
-//       autoform: {
-//         group: 'embedly'
-//       }
-//     }
-//   },
-//   {
-//     fieldName: 'thumbnailHeight',
-//     fieldSchema: {
-//       type: Number,
-//       optional: true,
-//       autoform: {
-//         group: 'embedly'
-//       }
-//     }
-//   }
-// ]);

@@ -1,4 +1,5 @@
 import PublicationUtils from 'meteor/utilities:smart-publications';
+import EmbedlyThumbnail from './components/EmbedlyThumbnail.jsx';
 
 Posts.addField([
   {
@@ -9,10 +10,7 @@ Posts.addField([
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
       publish: true,
-      autoform: {
-        type: 'bootstrap-postthumbnail',
-        order: 40
-      }
+      control: EmbedlyThumbnail
     }
   },
   {
@@ -44,3 +42,40 @@ Posts.addField([
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
 PublicationUtils.addToFields(Posts.publishedFields.single, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
+
+if (typeof Telescope.settings.collection !== "undefined") {
+  Telescope.settings.collection.addField([
+    {
+      fieldName: 'embedlyKey',
+      fieldSchema: {
+        type: String,
+        optional: true,
+        private: true,
+        autoform: {
+          group: 'embedly',
+          class: 'private-field'
+        }
+      }
+    },
+    {
+      fieldName: 'thumbnailWidth',
+      fieldSchema: {
+        type: Number,
+        optional: true,
+        autoform: {
+          group: 'embedly'
+        }
+      }
+    },
+    {
+      fieldName: 'thumbnailHeight',
+      fieldSchema: {
+        type: Number,
+        optional: true,
+        autoform: {
+          group: 'embedly'
+        }
+      }
+    }
+  ]);
+}

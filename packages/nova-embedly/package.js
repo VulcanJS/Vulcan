@@ -17,12 +17,12 @@ Package.onUse( function(api) {
 
   api.addFiles([
     // 'package-tap.i18n',
-    // 'lib/embedly.js',
+    'lib/embedly.js',
     'lib/custom_fields.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    // 'lib/server/get_embedly_data.js'
+    'lib/server/get_embedly_data.js'
   ], ['server']);
 
   api.addFiles([

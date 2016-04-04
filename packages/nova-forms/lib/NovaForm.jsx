@@ -7,26 +7,74 @@ import Utils from './utils.js';
 
 class NovaForm extends Component{
   
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.submitForm = this.submitForm.bind(this);
     this.methodCallback = this.methodCallback.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.throwError = this.throwError.bind(this);
+    this.clearErrors = this.clearErrors.bind(this);
     this.state = {
       disabled: false,
-      errors: []
+      errors: [],
+      currentValues: this.props.document
     };
   }
 
-  getFormType() { // if a document is being passed, this is an edit form
+  // if a document is being passed, this is an edit form
+  getFormType() { 
     return this.props.document ? "edit" : "new";
   }
 
-  getFields() { // get relevant fields
+  // get relevant fields
+  getFields() { 
     const collection = this.props.collection;
     const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser) : collection.getInsertableFields(this.props.currentUser);
     return fields;
   }
 
+  // add error to state
+  throwError(error) {
+    this.setState({
+      errors: [error]
+    });
+  }
+
+  // clear all errors
+  clearErrors() {
+    this.setState({
+      errors: []
+    });
+  }
+
+  // render errors
+  renderErrors() {
+    Flash = Telescope.components.Flash;
+    return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
+  }
+
+  // whenever the form values change, keep track of them in the state
+  updateState(e) {
+    // e can sometimes be event, sometims be currentValue
+    // see https://github.com/christianalfoni/formsy-react/issues/203
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else {
+      this.setState({
+        currentValues: e
+      });
+    }
+  }
+
+  // pass on form values as context to all child components for easy access
+  getChildContext() {
+    return {
+      throwError: this.throwError,
+      currentValues: this.state.currentValues
+    };
+  }
+
+  // common callback for both new and edit forms
   methodCallback(error, document) {
 
     this.setState({disabled: false});
@@ -36,11 +84,9 @@ class NovaForm extends Component{
       console.log(error)
 
       // add error to state
-      this.setState({
-        errors: [{
-          content: error.message,
-          type: "error"
-        }]
+      this.throwError({
+        content: error.message,
+        type: "error"
       });
 
       // run error callback if it exists
@@ -48,9 +94,7 @@ class NovaForm extends Component{
 
     } else { // success
 
-      this.setState({
-        errors: []
-      });
+      this.clearErrors();
 
       // reset form if this is a new document form
       if (this.getFormType() === "new") this.refs.form.reset();
@@ -64,8 +108,8 @@ class NovaForm extends Component{
     }
   }
 
+  // submit form handler
   submitForm(data) {
-    
     this.setState({disabled: true});
 
     const fields = this.getFields();
@@ -101,17 +145,11 @@ class NovaForm extends Component{
       // build modifier
       const modifier = {$set: set};
       if (!_.isEmpty(unset)) modifier.$unset = unset;
-
       // call method with _id of document being edited and modifier
       Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
 
     }
 
-  }
-
-  renderErrors() {
-    Flash = Telescope.components.Flash;
-    return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
   }
 
   render() {
@@ -127,7 +165,7 @@ class NovaForm extends Component{
 
     return (
       <div className={"document-"+this.getFormType()} style={style}>
-        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="form">
+        <Formsy.Form onSubmit={this.submitForm} onChange={this.updateState} disabled={this.state.disabled} ref="form">
           {this.renderErrors()}
           {fields.map(fieldName => <FormComponent 
             key={fieldName}
@@ -159,6 +197,11 @@ NovaForm.propTypes = {
 
 NovaForm.contextTypes = {
   closeCallback: React.PropTypes.func
+}
+
+NovaForm.childContextTypes = {
+  currentValues: React.PropTypes.object,
+  throwError: React.PropTypes.func
 }
 
 module.exports = NovaForm;
