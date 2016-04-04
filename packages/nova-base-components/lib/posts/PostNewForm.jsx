@@ -3,7 +3,6 @@ import Router from '../router.js'
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
-const FlashContainer = Core.FlashContainer;
 
 import NovaForm from "meteor/nova:forms";
 
@@ -15,7 +14,6 @@ const PostNewForm = (props, context) => {
     <CanCreatePost user={context.currentUser}>
       <div className="new-post-form">
         <h3 className="modal-form-title">New Post</h3>
-        <FlashContainer component={FlashMessages}/>
         <NovaForm 
           collection={Posts} 
           currentUser={context.currentUser}

@@ -16,15 +16,17 @@ class EmbedlyThumbnail extends Component {
   // will trigger every time the context (i.e. form values) changes
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     
-    const nextUrl = nextContext.currentValues.url;
-    const currentUrl = this.context.currentValues.url;
-    
-    if (nextUrl != currentUrl) {
+    const nextUrl = nextContext.currentValues && nextContext.currentValues.url;
+    const currentUrl = this.context.currentValues && this.context.currentValues.url;
+
+    if (!!nextUrl && nextUrl != currentUrl) {
 
       this.setState({loading: true});
 
       // the URL has changed, get a new thumbnail
       Meteor.call("getEmbedlyData", nextUrl, (error, result) => {
+        
+        console.log("querying Embedly…");
         
         this.setState({loading: false});
 

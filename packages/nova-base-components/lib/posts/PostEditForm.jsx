@@ -6,7 +6,6 @@ const DocumentContainer = SmartContainers.DocumentContainer;
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
-const FlashContainer = Core.FlashContainer;
 
 import Actions from "../actions.js";
 
@@ -37,7 +36,6 @@ class PostEditForm extends Component{
           <h3>Edit Post</h3>
           <a onClick={this.deletePost} className="delete-post-link"><Icon name="close"/> Delete Post</a>
         </div>
-        <FlashContainer component={FlashMessages}/>
         <DocumentContainer 
           collection={Posts} 
           publication="posts.single" 
