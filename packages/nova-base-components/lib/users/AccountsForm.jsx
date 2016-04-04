@@ -22,19 +22,18 @@ Accounts.ui.config({
 });
 
 class AccountsButton extends Accounts.ui.Button {
-  render() {
-    const { label, href, type, disabled = false, className, onClick } = this.props;
-    if (type == 'link') {
-      return <Button bsStyle="default"
-                     href="#"
-                     className={ className }
-                     onClick={ onClick }>{ label }</Button>;
+  render () {
+    const {label, href, type, disabled, className, onClick} = this.props;
+    if (type === 'link') {
+      return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
     }
-    return <Button bsStyle="primary"
-                   type={ type }
-                   className={ className }
-                   onClick={ onClick }
-                   disabled={ disabled }>{ label }</Button>;
+    return <Button 
+        bsStyle="primary"
+        className={ className }
+        type={ type } 
+        disabled={ disabled }
+        onClick={ onClick }>{ label }
+      </Button>;
   }
 }
 

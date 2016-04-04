@@ -1,26 +1,45 @@
 # React Forms
 
-This package provides two components (`NewDocument` and `EditDocument`) that work with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
+This package provides a `NovaForm` component that works with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
 
 ### Install
 
-`meteor add utilities:react-form-containers`
+`meteor add nova:forms`
 
-### `NewDocument`
+### Props
 
-This component takes the following properties:
+#### collection `object.isRequired`
 
-- `collection`: the collection in which to insert the new document.
-- `currentUser`: the current user.
-- `submitCallback`: a function to call on form submit.
-- `errorCallback`: a function to call on error.
-- `successCallback`: a function to call on success.
-- `methodName`: the name of the method to submit the form to. 
-- `labelFunction`: a function that will be called on each field's name to get the label (for example, an internationalization function).
-- `prefilledProps`: properties to use to prefill the document that will be created.
+The collection in which to edit or insert a document.
 
-### `EditDocument`
+#### document `object`
 
-This component takes the same properties as `NewDocument`, plus:
+If present, the document to edit. If not present, the form will be a “new document” form. 
 
-- `document`: the document being edited. 
+#### currentUser `object`
+
+The current user.
+
+#### submitCallback() `func`
+
+A callback called on form submission.
+
+#### successCallback(document) `func`
+
+A callback called on method success.
+
+#### errorCallback(document, error) `func`
+
+A callback called on method failure.
+
+#### methodName `string`
+
+The name of the Meteor method to call.
+
+#### labelFunction `func`
+
+A function to call on field names to get the label.
+
+#### prefilledProps `object`
+
+A set of props to prefill for new documents. 

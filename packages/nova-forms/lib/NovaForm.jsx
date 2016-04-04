@@ -101,7 +101,7 @@ class NovaForm extends Component{
       // build modifier
       const modifier = {$set: set};
       if (!_.isEmpty(unset)) modifier.$unset = unset;
-      
+
       // call method with _id of document being edited and modifier
       Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
 
@@ -149,6 +149,7 @@ NovaForm.propTypes = {
   collection: React.PropTypes.object.isRequired,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   currentUser: React.PropTypes.object,
+  submitCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
   errorCallback: React.PropTypes.func,
   methodName: React.PropTypes.string,

@@ -27,6 +27,14 @@ To use your `settings.json` file:
 - Development: `meteor --settings settings.json`
 - Production: specify the path to `settings.json` in `mup.json`
 
+## Social Login
+
+To add new social login options, just add the relevant package (`accounts-twitter`, `accounts-facebook`, etc.) to your `.meteor/packages` file with (for example):
+
+`meteor add accounts-twitter`
+
+Note: you will need to configure the service's oAuth tokens via the log-in UI, or directly in the database. 
+
 ## Packages
 
 #### Core Packages

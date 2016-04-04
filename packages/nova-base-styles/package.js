@@ -25,6 +25,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/_colors.scss',
     'lib/stylesheets/_variables.scss',
     'lib/stylesheets/_global.scss',
+    'lib/stylesheets/_accounts.scss',
     'lib/stylesheets/_categories.scss',
     'lib/stylesheets/_cheatsheet.scss',
     'lib/stylesheets/_comments.scss',
@@ -32,6 +33,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/_other.scss',
     'lib/stylesheets/_posts.scss',
     'lib/stylesheets/_newsletter.scss',
+    'lib/stylesheets/_spinner.scss',
     'lib/stylesheets/_users.scss',
     'lib/stylesheets/main.scss'
   ], ['client']);
