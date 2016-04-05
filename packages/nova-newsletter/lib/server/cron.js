@@ -1,3 +1,5 @@
+import Campaign from "./campaign.js";
+
 SyncedCron.options = {
   log: false,
   collectionName: 'cronHistory',
@@ -42,11 +44,12 @@ var addJob = function () {
     job: function() {
       // only schedule newsletter campaigns in production
       if (process.env.NODE_ENV === "production") {
-        scheduleNextCampaign();
+        Campaign.scheduleNextWithMailChimp();
       }
     }
   });
 };
+
 Meteor.startup(function () {
   if (Telescope.settings.get('enableNewsletter', true) && Telescope.settings.get('mailChimpAPIKey') && Telescope.settings.get('mailChimpListId')) {
     addJob();
