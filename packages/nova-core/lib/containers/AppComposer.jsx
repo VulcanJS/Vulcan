@@ -6,12 +6,13 @@ function composer(props, onData) {
 
   FlowRouter.watchPathChange();
 
+  const data = {
+    currentUser: Meteor.user(),
+    currentRoute: FlowRouter.current()
+  }
+
   if (!subscriptions.length || _.every(subscriptions, handle => handle.ready())) {
-    const data = {
-      ready: true,
-      currentUser: Meteor.user(),
-      currentRoute: FlowRouter.current()
-    }
+    data.ready = true;
     onData(null, data);
   } else {
     onData(null, {ready: false});

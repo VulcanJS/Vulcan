@@ -9,9 +9,9 @@ import NovaForm from "meteor/nova:forms";
 const PostNewForm = (props, context) => {
 
   ({CanCreatePost, FlashMessages} = Telescope.components);
-  
+
   return (
-    <CanCreatePost user={context.currentUser}>
+    <CanCreatePost>
       <div className="new-post-form">
         <h3 className="modal-form-title">New Post</h3>
         <NovaForm 
