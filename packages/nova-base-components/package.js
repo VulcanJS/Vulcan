@@ -33,7 +33,8 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/config.js',
     'lib/components.js',
-    'lib/routes.jsx'
+    'lib/router.js',
+    'lib/routes.jsx',
   ], ['client', 'server']);
 
   api.addFiles([

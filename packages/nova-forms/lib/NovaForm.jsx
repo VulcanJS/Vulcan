@@ -29,7 +29,18 @@ class NovaForm extends Component{
   // get relevant fields
   getFields() { 
     const collection = this.props.collection;
-    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser) : collection.getInsertableFields(this.props.currentUser);
+    const currentUser = this.props.currentUser;
+    const fields = this.getFormType() === "edit" ? collection.getEditableFields(currentUser) : collection.getInsertableFields(currentUser);
+
+    if(_.isEmpty(fields)){
+      const schema = collection.simpleSchema()._schema;
+
+      const schemaFields = _.filter(_.keys(schema), function (fieldName) {
+        var field = schema[fieldName];
+        return field.editableIf;
+      });
+      return schemaFields;
+    }
     return fields;
   }
 
@@ -66,6 +77,11 @@ class NovaForm extends Component{
     }
   }
 
+  getSimpleSchema(ss){
+    console.log(ss);
+    return ss;
+  }
+
   // pass on form values as context to all child components for easy access
   getChildContext() {
     return {
@@ -80,8 +96,6 @@ class NovaForm extends Component{
     this.setState({disabled: false});
     
     if (error) { // error
-
-      console.log(error)
 
       // add error to state
       this.throwError({
@@ -180,7 +194,6 @@ class NovaForm extends Component{
       </div>
     )
   }
-
 }
 
 NovaForm.propTypes = {

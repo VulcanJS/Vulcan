@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js'
+import Router from './../router';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js'
+import Router from './../router';
 
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;

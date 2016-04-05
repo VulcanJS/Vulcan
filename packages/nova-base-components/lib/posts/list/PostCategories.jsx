@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from '../../router.js';
+import Router from './../../router';
 
 const PostCategories = ({post}) => {
   return (

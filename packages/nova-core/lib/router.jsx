@@ -30,6 +30,11 @@ if(Meteor.isServer) {
   FlowRouter.setDeferScriptLoading(true);
 }
 
+Telescope.adminRoutes = FlowRouter.group({
+  prefix: '/admin',
+  name: 'admin'
+});
+
 // FlowRouter.notFound = {
 //   action: function() {
 //     if (Meteor.isClient) {

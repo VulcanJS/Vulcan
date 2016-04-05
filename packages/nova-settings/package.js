@@ -12,7 +12,8 @@ Package.onUse(function(api) {
 
   api.use([
     'nova:lib@0.25.7',
-    // 'nova:i18n@0.25.7'
+    'nova:i18n@0.25.7',
+    'nova:users@0.25.7', // TODO: Michel Herszak: maybe this should be replaced with core?
   ]);
 
   api.addFiles([
@@ -24,10 +25,10 @@ Package.onUse(function(api) {
     'lib/server/publications.js',
   ], 'server');
 
-  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
+  /*var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+   return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);*/
 
 });

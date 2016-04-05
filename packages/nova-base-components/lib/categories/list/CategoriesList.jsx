@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from "../../router.js"
+import Router from './../../router';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 class CategoriesList extends Component{
@@ -17,7 +17,7 @@ class CategoriesList extends Component{
           <MenuItem href={Router.path("posts.list")} eventKey={0} className="dropdown-item post-category">All Categories</MenuItem>
           {categories.map((category, index) => 
             <MenuItem 
-              href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})} 
+              href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})}
               eventKey={index+1} 
               key={category._id} 
               className={currentCategory === category.slug ? "post-category-active dropdown-item post-category" : "dropdown-item post-category"} 

@@ -56,6 +56,7 @@ Telescope.registerComponent("CanEditPost", require('./permissions/CanEditPost.js
 Telescope.registerComponent("CanView", require('./permissions/CanView.jsx'));
 Telescope.registerComponent("CanViewPost", require('./permissions/CanViewPost.jsx'));
 Telescope.registerComponent("CanEditUser", require('./permissions/CanEditUser.jsx'));
+Telescope.registerComponent("IsAdmin", require('./permissions/IsAdmin.jsx'));
 
 // users
 
@@ -71,4 +72,5 @@ Telescope.registerComponent("AccountsForm", require('./users/AccountsForm.jsx'))
 
 Telescope.registerComponent("Cheatsheet", require('./debug/Cheatsheet.jsx'));
 Telescope.registerComponent("Settings", require('./debug/Settings.jsx'));
+Telescope.registerComponent("SettingsPage", require('./debug/SettingsPage.jsx'));
 

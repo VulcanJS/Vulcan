@@ -100,7 +100,7 @@ Package.onUse(function (api) {
 
   api.export([
     'Telescope',
-    'Counts'
+    'Counts',
   ]);
 
 });

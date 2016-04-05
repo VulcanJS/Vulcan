@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js';
+import Router from './../router';
 import { Button, Input } from 'react-bootstrap';
 
 import { Accounts } from 'meteor/std:accounts-ui';

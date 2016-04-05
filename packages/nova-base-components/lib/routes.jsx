@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from './router.js'
+import Router from './router';
 import {mount} from 'react-mounter';
 
 import SmartContainers from "meteor/utilities:react-list-container";
@@ -122,9 +122,19 @@ Router.route('/settings', {
   }
 });
 
-FlowRouter.notFound = {
+Router.notFound = {
   action() {
-    ({Error404} = Telescope.components);
+    ({App,Error404} = Telescope.components);
     mount(App, {content: <Error404/>});
   }
 };
+
+// ----- start using admin routes (stored in nova:lib) -- //
+Telescope.adminRoutes.route('/settings', {
+  name: "adminSettings",
+  action(params, queryParams) {
+    ({App, SettingsPage} = Telescope.components);
+
+    mount(App,{content: <SettingsPage /> });
+  }
+});

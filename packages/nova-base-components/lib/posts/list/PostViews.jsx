@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../../router.js';
+import Router from './../../router';
 import { Button, ButtonGroup } from 'react-bootstrap';
 
 const PostViews = (props, context) => {

@@ -8,6 +8,9 @@ Telescope.settings.schema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general"
     }
@@ -16,6 +19,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     // regEx: SimpleSchema.RegEx.Url,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       type: "bootstrap-url",
@@ -25,6 +31,9 @@ Telescope.settings.schema = new SimpleSchema({
   tagline: {
     type: String,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general"
     }
@@ -32,6 +41,9 @@ Telescope.settings.schema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       rows: 5,
@@ -42,6 +54,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Url,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       instructions: "URL to an image for the open graph image tag for all pages"
@@ -50,6 +65,9 @@ Telescope.settings.schema = new SimpleSchema({
   requireViewInvite: {
     type: Boolean,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: 'invites',
       leftLabel: 'Require View Invite'
@@ -58,6 +76,9 @@ Telescope.settings.schema = new SimpleSchema({
   requirePostInvite: {
     type: Boolean,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: 'invites',
       leftLabel: 'Require Post Invite'
@@ -66,6 +87,9 @@ Telescope.settings.schema = new SimpleSchema({
   requirePostsApproval: {
     type: Boolean,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       instructions: "Posts must be approved by admin",
@@ -76,6 +100,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     private: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "06_email",
       instructions: 'The address all outgoing emails will be sent from.',
@@ -86,6 +113,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     private: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "06_email",
       instructions: 'MAIL_URL environment variable (requires restart).',
@@ -97,6 +127,9 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     defaultValue: 30,
     private: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: '01_general',
       instructions: 'How often to recalculate scores, in seconds (default to 30)',
@@ -107,6 +140,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 30,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts",
       instructions: 'Minimum time between posts, in seconds (defaults to 30)'
@@ -115,6 +151,9 @@ Telescope.settings.schema = new SimpleSchema({
   RSSLinksPointTo: {
     type: String,
     optional: true,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts",
       options: [
@@ -127,6 +166,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 15,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "03_comments",
       instructions: 'Minimum time between comments, in seconds (defaults to 15)'
@@ -136,6 +178,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 30,
+    // Michel Herszak: This seems unnecessary since we use isAdmin to show content
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts",
       instructions: 'Maximum number of posts a user can post in a day (default to 30).'
@@ -145,6 +190,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     defaultValue: 3,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: 'invites'
     }
@@ -153,6 +200,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     defaultValue: 10,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts"
     }
@@ -160,6 +209,8 @@ Telescope.settings.schema = new SimpleSchema({
   logoUrl: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -167,6 +218,8 @@ Telescope.settings.schema = new SimpleSchema({
   logoHeight: {
     type: Number,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -174,6 +227,8 @@ Telescope.settings.schema = new SimpleSchema({
   logoWidth: {
     type: Number,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -181,6 +236,8 @@ Telescope.settings.schema = new SimpleSchema({
   faviconUrl: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -189,7 +246,9 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     defaultValue: 'en',
     optional: true,
-    autoform: {
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
+    /*autoform: {
       group: "01_general",
       instructions: 'The app\'s language. Defaults to English.',
       options: function () {
@@ -201,11 +260,13 @@ Telescope.settings.schema = new SimpleSchema({
         });
         return languages;
       }
-    }
+    }*/
   },
   twitterAccount: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "07_integrations"
     }
@@ -213,6 +274,8 @@ Telescope.settings.schema = new SimpleSchema({
   facebookPage: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "07_integrations"
     }
@@ -220,6 +283,8 @@ Telescope.settings.schema = new SimpleSchema({
   googleAnalyticsId: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "07_integrations"
     }
@@ -228,6 +293,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     private: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "06_email",
       instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).',
@@ -246,56 +313,56 @@ Telescope.settings.collection.attachSchema(Telescope.settings.schema);
 
 Telescope.subscriptions.preload("settings");
 
-// Settings.get = function(setting, defaultValue) {
-//   var settings = Settings.find().fetch()[0];
+Telescope.settings.get = function(setting, defaultValue) {
+   var settings = Telescope.settings.collection.find().fetch()[0];
 
-//   if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection first
-//     return settings[setting];
+   if(settings && (typeof settings[setting] !== 'undefined')) { // look in Settings collection first
+     return settings[setting];
 
-//   } else if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // else if on the server, look in Meteor.settings
-//     return Meteor.settings[setting];
+   } else if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // else if on the server, look in Meteor.settings
+     return Meteor.settings[setting];
 
-//   } else if (Meteor.settings && Meteor.settings.public && !!Meteor.settings.public[setting]) { // look in Meteor.settings.public
-//     return Meteor.settings.public[setting];
+   } else if (Meteor.settings && Meteor.settings.public && !!Meteor.settings.public[setting]) { // look in Meteor.settings.public
+     return Meteor.settings.public[setting];
 
-//   } else if (typeof defaultValue !== 'undefined') { // fallback to default
-//     return  defaultValue;
+   } else if (typeof defaultValue !== 'undefined') { // fallback to default
+     return  defaultValue;
 
-//   } else { // or return undefined
-//     return undefined;
-//   }
-// };
+   } else { // or return undefined
+     return undefined;
+   }
+};
 
 
 
-// /**
-//  * Add trailing slash if needed on insert
-//  */
-// Settings.before.insert(function (userId, doc) {
-//   if(doc.siteUrl && doc.siteUrl.match(/\//g).length === 2) {
-//     doc.siteUrl = doc.siteUrl + "/";
-//   }
-// });
+/**
+* Add trailing slash if needed on insert
+*/
+Telescope.settings.collection.before.insert(function (userId, doc) {
+ if(doc.siteUrl && doc.siteUrl.match(/\//g).length === 2) {
+   doc.siteUrl = doc.siteUrl + "/";
+ }
+});
 
-// /**
-//  * Add trailing slash if needed on update
-//  */
-// Settings.before.update(function (userId, doc, fieldNames, modifier) {
-//   if(modifier.$set && modifier.$set.siteUrl && modifier.$set.siteUrl.match(/\//g).length === 2) {
-//     modifier.$set.siteUrl = modifier.$set.siteUrl + "/";
-//   }
-// });
+/**
+* Add trailing slash if needed on update
+*/
+Telescope.settings.collection.before.update(function (userId, doc, fieldNames, modifier) {
+ if(modifier.$set && modifier.$set.siteUrl && modifier.$set.siteUrl.match(/\//g).length === 2) {
+   modifier.$set.siteUrl = modifier.$set.siteUrl + "/";
+ }
+});
 
-// Meteor.startup(function () {
-//   Settings.allow({
-//     insert: Users.is.adminById,
-//     update: Users.is.adminById,
-//     remove: Users.is.adminById
-//   });
-// });
+Meteor.startup(function () {
+  Telescope.settings.collection.allow({
+   insert: Users.is.adminById,
+   update: Users.is.adminById,
+   remove: Users.is.adminById
+ });
+});
 
-// Meteor.startup(function () {
-//   // override Meteor.absoluteUrl() with URL provided in settings
-//   Meteor.absoluteUrl.defaultOptions.rootUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
-//   debug = Settings.get('debug', false);
-// });
+Meteor.startup(function () {
+ // override Meteor.absoluteUrl() with URL provided in settings
+ Meteor.absoluteUrl.defaultOptions.rootUrl = Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
+ debug = Telescope.settings.get('debug', false);
+});
