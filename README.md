@@ -198,6 +198,38 @@ Methods support four distinct types of callbacks, each with their own hook:
 - `sync` callbacks are called in the mutator, and can run either on both client and server, *or* on the server only if the mutator is called directly.
 - `async` callbacks are called in the mutator, and only run on the server in an async non-blocking way. 
 
+## Posts Parameters
+
+In order to filter posts by category, keyword, view, etc. Nova uses a system of successive callbacks to translate filtering options into MongoDB database queries. 
+
+For example, here is how the `nova:search` package adds a callback to handle the `query` parameter:
+
+```js
+function addSearchQueryParameter (parameters, terms) {
+  if(!!terms.query) {
+    var parameters = Telescope.utils.deepExtend(true, parameters, {
+      selector: {
+        $or: [
+          {title: {$regex: terms.query, $options: 'i'}},
+          {url: {$regex: terms.query, $options: 'i'}},
+          {body: {$regex: terms.query, $options: 'i'}}
+        ]
+      }
+    });
+  }
+  return parameters;
+}
+Telescope.callbacks.add("postsParameters", addSearchQueryParameter);
+```
+
+The callback takes two arguments: the current MongoDB `parameters` (an object with a `selector` and `options` properties), and the `terms` extracted from the URL. 
+
+It then tests for the presence of a `query` property in the `terms`, and if it finds one it then extends the `parameter` object with a MongoDB RegEx search query.
+
+Finally, it then returns `parameters` to pass it on to the next callback (or to the database itself if this happens to be the last callback).
+
+The `view`, `category`, `after`, `before`, etc. URL parameters are all handled using their own similar callbacks.
+
 ## Forms
 
 See [nova:forms](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms) package readme.
