@@ -60,7 +60,7 @@ Called on the `user` performing the operation, and the `document` being operated
 
 Either a text string (one of `text`, `textarea`, `checkbox`, `checkboxgroup`, `radiogroup`, or `select`) or a React component. 
 
-#### `position`
+#### `order`
 
 A number corresponding to the position of the property's field inside the form. 
 
