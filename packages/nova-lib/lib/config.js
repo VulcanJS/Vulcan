@@ -26,7 +26,7 @@ SimpleSchema.extendOptions({
   template: Match.Optional(String), // template used to display the field
   autoform: Match.Optional(Object), // autoform placeholder
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
-  position: Match.Optional(Number) // position in the form
+  order: Match.Optional(Number) // position in the form
 });
 
 // ------------------------------------- Components -------------------------------- //

@@ -3,10 +3,7 @@ Posts.addField({
   fieldName: 'scheduledAt',
   fieldSchema: {
     type: Date,
-    optional: true,
-    autoform: {
-      omit: true
-    }
+    optional: true
   }
 });
 

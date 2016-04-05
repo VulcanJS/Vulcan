@@ -31,4 +31,3 @@ Posts.addField([
 ]);
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["commentCount", "commenters"]);
-PublicationUtils.addToFields(Posts.publishedFields.single, ["commentCount", "commenters"]);

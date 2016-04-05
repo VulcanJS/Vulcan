@@ -41,7 +41,6 @@ Posts.addField([
 ]);
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
-PublicationUtils.addToFields(Posts.publishedFields.single, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
 
 if (typeof Telescope.settings.collection !== "undefined") {
   Telescope.settings.collection.addField([

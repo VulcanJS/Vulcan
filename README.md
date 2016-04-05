@@ -157,7 +157,7 @@ In order to make data available to the cient, you need to **publish** it. Out of
 - `users.single`: a single user
 - `users.current`: the current user (includes personal data)
 
-While most publications look up each field's `publish` property to figure out if they should publish it or not, some (like `posts.list`) only feature a smaller subset of properties for performance reasons, and thus have their own specific list of published fields. 
+While most publications look up each field's `publish` property to figure out if they should publish it or not, some (like `posts.list` and `comments.list`) only feature a smaller subset of properties for performance reasons, and thus have their own specific list of published fields. 
 
 For example, here's how the `nova:embedly` adds the `thumbnailUrl, `media`, `soureName`, and `sourceUrl` fields to the list of published fields for the `posts.list` publication (after having defined them as custom fields):
 
