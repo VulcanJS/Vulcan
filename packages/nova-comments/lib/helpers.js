@@ -9,7 +9,7 @@
 Comments.getPageUrl = function(comment, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("commentPage", comment);
+  return prefix + FlowRouter.path("posts.single", {_id: comment.postId}) + "#"+comment._id;
 };
 Comments.helpers({getPageUrl: function () {return Comments.getPageUrl(this);}});
 
@@ -31,15 +31,3 @@ Comments.getAuthorName = function (comment) {
 };
 Comments.helpers({getAuthorName: function () {return Comments.getAuthorName(this);}});
 
-Comments.getNotificationProperties = function (comment, post) {
-  var commentAuthor = Meteor.users.findOne(comment.userId);
-  var properties = {
-    profileUrl: commentAuthor && commentAuthor.getProfileUrl(true),
-    postUrl: Posts.getPageUrl(post, true),
-    authorName : Comments.getAuthorName(comment),
-    postTitle: post.title,
-    htmlBody: comment.htmlBody,
-    commentUrl: Comments.getPageUrl(comment, true)
-  };
-  return properties;
-};

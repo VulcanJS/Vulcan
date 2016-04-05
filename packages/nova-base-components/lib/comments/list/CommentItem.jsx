@@ -87,7 +87,7 @@ class CommentItem extends Component{
     const comment = this.props.comment;
 
     return (
-      <div className="comment-item">
+      <div className="comment-item" id={comment._id}>
         <div className="comment-body">
           <div className="comment-meta">
             <UserAvatar size="small" user={comment.user}/>
