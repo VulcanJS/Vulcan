@@ -111,6 +111,66 @@ For more in-depth customizations, you can also just clone the entire `nova:base-
 
 Of course, keeping your own new `components` package up to date with any future `nova:base-components` modifications will then be up to you. 
 
+## Custom Fields
+
+Out of the box, Nova has three main collections: `Posts`, `Users`, and `Comments`. Each of them has a pre-set schema, but that schema can also be extended with custom fields. 
+
+For example, this is how the `nova:newsletter` package extends the `Posts` schema with a `scheduledAt` property that keeps track of when a post was sent out as part of an email newsletter:
+
+```js
+Posts.addField({
+  fieldName: 'scheduledAt',
+  fieldSchema: {
+    type: Date,
+    optional: true
+  }
+});
+```
+
+The `collection.addField()` function takes either a field object, or an array of fields. Each field has a `fieldName` property, and a `fieldSchema` property.
+
+Each field schema supports all of the [SimpleSchema properties](https://github.com/aldeed/meteor-simple-schema#schema-rules), such as `type`, `optional`, etc.
+
+A few special properties (`insertableIf`, `editableIf`, `control`, and `order`) are also supported by the [nova:forms](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms) package.
+
+Note that Telescope provides a few utility function out of the box to use with `insertableIf` and `editableIf`:
+
+- `Users.is.admin`: returns `true` if a user is an admin.
+- `Users.is.memberOrAdmin`: returns `true` if a user is a member (i.e. has an account and is currently logged in) or an admin.
+- `Users.is.ownerOrAdmin`: (editing only) returns `true` if a user is a members and owns the document being edited; or is an admin. 
+
+Additionally, the `publish` and `join` properties come from the [Smart Publications](https://github.com/meteor-utilities/smart-publications) package. Setting `publish` to true indicates that a field should be published to the client (see also next section).
+
+You can also remove a field by calling `collection.removeField(fieldName)`. For example:
+
+```js
+Posts.removeField('scheduledAt');
+```
+
+## Publishing Data
+
+In order to make data available to the cient, you need to **publish** it. Out of the box, Nova includes the following publications:
+
+- `posts.list`: a list of posts
+- `posts.single`: a single post (includes more data)
+- `comments.list`: a list of comments
+- `users.single`: a single user
+- `users.current`: the current user (includes personal data)
+
+While most publications look up each field's `publish` property to figure out if they should publish it or not, some (like `posts.list`) only feature a smaller subset of properties for performance reasons, and thus have their own specific list of published fields. 
+
+For example, here's how the `nova:embedly` adds the `thumbnailUrl, `media`, `soureName`, and `sourceUrl` fields to the list of published fields for the `posts.list` publication (after having defined them as custom fields):
+
+```js
+import PublicationUtils from 'meteor/utilities:smart-publications';
+
+PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
+```
+
+## Loading Data
+
+To load data and display it as a list of documents (or a single document), Nova uses the [React List Container](https://github.com/meteor-utilities/react-list-container) package to connect to the publications mentioned in the previous section.  
+
 ## Callbacks
 
 Nova uses a system of hooks and callbacks for many of its operations. 
@@ -138,9 +198,37 @@ Methods support four distinct types of callbacks, each with their own hook:
 - `sync` callbacks are called in the mutator, and can run either on both client and server, *or* on the server only if the mutator is called directly.
 - `async` callbacks are called in the mutator, and only run on the server in an async non-blocking way. 
 
-## Loading Data
+## Posts Parameters
 
-To load data and display it as a list of documents (or a single document), Nova uses the [React List Container](https://github.com/meteor-utilities/react-list-container) package. 
+In order to filter posts by category, keyword, view, etc. Nova uses a system of successive callbacks to translate filtering options into MongoDB database queries. 
+
+For example, here is how the `nova:search` package adds a callback to handle the `query` parameter:
+
+```js
+function addSearchQueryParameter (parameters, terms) {
+  if(!!terms.query) {
+    var parameters = Telescope.utils.deepExtend(true, parameters, {
+      selector: {
+        $or: [
+          {title: {$regex: terms.query, $options: 'i'}},
+          {url: {$regex: terms.query, $options: 'i'}},
+          {body: {$regex: terms.query, $options: 'i'}}
+        ]
+      }
+    });
+  }
+  return parameters;
+}
+Telescope.callbacks.add("postsParameters", addSearchQueryParameter);
+```
+
+The callback takes two arguments: the current MongoDB `parameters` (an object with a `selector` and `options` properties), and the `terms` extracted from the URL. 
+
+It then tests for the presence of a `query` property in the `terms`, and if it finds one it then extends the `parameter` object with a MongoDB RegEx search query.
+
+Finally, it then returns `parameters` to pass it on to the next callback (or to the database itself if this happens to be the last callback).
+
+The `view`, `category`, `after`, `before`, etc. URL parameters are all handled using their own similar callbacks.
 
 ## Forms
 

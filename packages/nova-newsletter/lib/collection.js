@@ -31,17 +31,6 @@
 //   schema: campaignSchema
 // });
 
-// // create new "campaign" view for all posts from the past X days that haven't been scheduled yet
-// Posts.views.add("campaign", function (terms) {
-//   return {
-//     find: {
-//       scheduledAt: {$exists: false},
-//       postedAt: {
-//         $gte: terms.after
-//       }
-//     },
-//     options: {sort: {baseScore: -1}}
-//   };
-// });
+
 
 // export default Campaigns;

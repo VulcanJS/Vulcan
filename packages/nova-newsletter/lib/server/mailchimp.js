@@ -1,6 +1,8 @@
 // import Email from 'meteor/nova:email';
 import Campaign from "./campaign.js";
 
+const defaultPosts = 5;
+
 Campaign.scheduleNextWithMailChimp = function (isTest) {
   isTest = !! isTest;
   var posts = Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
