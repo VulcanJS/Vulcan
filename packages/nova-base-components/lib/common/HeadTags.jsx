@@ -12,6 +12,8 @@ class HeadTags extends Component {
 		const metas = [
 			{charset: "utf-8"},
 			{name: "description", content: description},
+			// responsive
+			{name: "viewport", content:"width=device-width, initial-scale=1"},
 			// facebook
 			{property: "og:type", content: "article"},
 			{property: "og:url", content: url},
