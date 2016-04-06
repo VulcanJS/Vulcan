@@ -5,6 +5,7 @@
 ## Table Of Contents
 
   - [Install](#install)
+  - [Updating](#updating)
   - [Resources](#resources)
   - [Deployment](#deployment)
   - [Settings](#settings)
@@ -28,6 +29,14 @@
 3. Run `meteor`
 
 Note: the `nova:*` packages are *not* currently published to Atmosphere.  
+
+## Updating
+
+To keep your codebase up to date, you'll have to manually pull in the changes from this git repo for now. Automated updating via `meteor update` is not yet supported, although it will be soon. 
+
+To update to Nova from an earlier version of Telescope, I suggest you create a new repo and start from scratch. That being said you can use the same database seamlessly since Nova uses the same database schema. 
+
+For local development, an easy way to do that is to simply copy the `.meteor/local` directory which contains your local database to your new repo. 
 
 ## Resources
 
