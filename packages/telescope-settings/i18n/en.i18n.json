@@ -58,6 +58,7 @@
   "enableDownvotes" : "Enable Downvotes",
   "RSSLinksPointTo" : "RSS Links Point To",
   "loadMoreBehavior" : "“Load More” Behavior",
-  "loadMoreButton" : "”Load More” button",
-  "infiniteScroll" : "Infinite scroll"
+  "loadMoreButton" : "“Load More” button",
+  "infiniteScroll" : "Infinite scroll",
+  "facebookPage" : "Facebook"
 }
