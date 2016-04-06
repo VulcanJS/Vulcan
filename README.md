@@ -2,6 +2,25 @@
 
 **Nova** is a top-secret, highly unstable experimental branch of Telescope with a really cool name. 
 
+## Table Of Contents
+
+  - [Install](#install)
+  - [Resources](#resources)
+  - [Deployment](#deployment)
+  - [Settings](#settings)
+  - [Social Login](social-login#)
+  - [Packages](#packages)
+  - [Files](#files)
+  - [Customizing Components](#customizing-components)
+  - [Custom Fields](#custom-fields)
+  - [Publishing Data](#publishing-data)
+  - [Loading Data](#loading-data)
+  - [Callbacks](#callbacks)
+  - [Posts Parameters](#posts-parameters)
+  - [Forms](#forms)
+  - [Methods](#methods)
+  - [Cheatsheet](#cheatsheet)
+
 ## Install
 
 1. Clone this branch to your local machine
@@ -15,6 +34,10 @@ Note: the `nova:*` packages are *not* currently published to Atmosphere.
 The best way to get support is the #nova channel in the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
 
 You can also check out the [Nova roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap) to see what needs to be done. 
+
+## Deployment
+
+The recommended way to deploy Nova is by using [MupX](https://github.com/arunoda/meteor-up/tree/mupx).
 
 ## Settings
 
