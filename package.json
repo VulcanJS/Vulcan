@@ -7,6 +7,7 @@
     "formsy-react": "^0.17.0",
     "formsy-react-components": "^0.6.6",
     "js-cookie": "^2.1.0",
+    "load-script": "^1.0.0",
     "react": "^0.14.7",
     "react-addons-pure-render-mixin": "^0.14.7",
     "react-bootstrap": "^0.28.4",
