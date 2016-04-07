@@ -13,6 +13,10 @@ const Textarea = FRC.Textarea;
 
 class FormComponent extends Component {
 
+  constructor() {
+    super();
+  }
+  
   renderComponent() {
 
     ({fieldName, field, labelFunction, document} = this.props);

@@ -12,6 +12,7 @@ class NovaForm extends Component{
     this.submitForm = this.submitForm.bind(this);
     this.methodCallback = this.methodCallback.bind(this);
     this.updateState = this.updateState.bind(this);
+    this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.state = {
@@ -66,11 +67,20 @@ class NovaForm extends Component{
     }
   }
 
+  // add something to the state
+  addToPrefilledValues(property) {
+    this.setState({
+      prefilledValues: {...this.state.prefilledValues, ...property}
+    });
+  }
+
   // pass on form values as context to all child components for easy access
   getChildContext() {
     return {
       throwError: this.throwError,
-      currentValues: this.state.currentValues
+      currentValues: this.state.currentValues,
+      prefilledValues: this.state.prefilledValues,
+      addToPrefilledValues: this.addToPrefilledValues
     };
   }
 
@@ -201,7 +211,9 @@ NovaForm.contextTypes = {
 
 NovaForm.childContextTypes = {
   currentValues: React.PropTypes.object,
-  throwError: React.PropTypes.func
+  prefilledValues: React.PropTypes.object,
+  throwError: React.PropTypes.func,
+  addToPrefilledValues: React.PropTypes.func
 }
 
 module.exports = NovaForm;

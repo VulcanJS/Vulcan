@@ -1,3 +1,6 @@
+import PrefilledTitle from './components/PrefilledTitle.jsx';
+import PrefilledBody from './components/PrefilledBody.jsx';
+
 /**
  * Posts schema
  * @type {SimpleSchema}
@@ -45,10 +48,7 @@ Posts.schema = new SimpleSchema({
     editableIf: Users.is.ownerOrAdmin,
     control: "text",
     publish: true,
-    autoform: {
-      type: "bootstrap-url",
-      order: 10
-    }
+    order: 10
   },
   /**
     Title
@@ -59,7 +59,7 @@ Posts.schema = new SimpleSchema({
     max: 500,
     insertableIf: Users.is.memberOrAdmin,
     editableIf: Users.is.ownerOrAdmin,
-    control: "text",
+    control: PrefilledTitle,
     publish: true,
     autoform: {
       order: 20
@@ -82,7 +82,7 @@ Posts.schema = new SimpleSchema({
     max: 3000,
     insertableIf: Users.is.memberOrAdmin,
     editableIf: Users.is.ownerOrAdmin,
-    control: "textarea",
+    control: PrefilledBody,
     publish: true,
     autoform: {
       rows: 5,
