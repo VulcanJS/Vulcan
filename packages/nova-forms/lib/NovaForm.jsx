@@ -25,13 +25,16 @@ class NovaForm extends Component{
   constructor(props) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
+    this.updateState = this.updateState.bind(this);
     this.methodCallback = this.methodCallback.bind(this);
     this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.state = {
       disabled: false,
-      errors: []
+      errors: [],
+      prefilledValues: {},
+      currentValues: {}
     };
   }
 
@@ -41,14 +44,39 @@ class NovaForm extends Component{
 
   // if a document is being passed, this is an edit form
   getFormType() { 
-    return this.props.document ? "edit" : "new";
+    return this.getDocument() ? "edit" : "new";
   }
 
   // get relevant fields
   getFieldNames() { 
     const collection = this.props.collection;
-    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.props.document) : collection.getInsertableFields(this.props.currentUser);
+    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.getDocument()) : collection.getInsertableFields(this.props.currentUser);
     return fields;
+  }
+
+  // look in the document, prefilled values, or inputted values
+  getDocument() {
+    const document = Object.assign(this.props.document || {}, this.state.prefilledValues, this.state.currentValues);
+    return document;
+  }
+
+  // whenever the form changes, update its state
+  updateState(e) {
+    // e can sometimes be event, sometims be currentValue
+    // see https://github.com/christianalfoni/formsy-react/issues/203
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else {
+      // get rid of empty fields
+      _.forEach(e, (value, key) => {
+        if (_.isEmpty(value)) {
+          delete e[key];
+        }
+      });
+      this.setState({
+        currentValues: e
+      });
+    }
   }
 
   // --------------------------------------------------------------------- //
@@ -158,7 +186,7 @@ class NovaForm extends Component{
 
     } else { // edit document form
 
-      const document = this.props.document;
+      const document = this.getDocument();
 
       // put all keys with data on $set
       const set = _.compactObject(Utils.flatten(data));
@@ -198,7 +226,7 @@ class NovaForm extends Component{
       }
 
       // add value
-      field.value = this.props.document && Utils.deepValue(this.props.document, fieldName) ? Utils.deepValue(this.props.document, fieldName) : "";  
+      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
 
       // add options if they exist
       if (fieldSchema.autoform && fieldSchema.autoform.options) {
@@ -209,12 +237,14 @@ class NovaForm extends Component{
 
     });
 
+    // console.log(fields)
+
     // remove fields where control = "none"
     fields = _.reject(fields, field => field.control === "none");
 
     return (
       <div className={"document-"+this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="form">
+        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="form" onChange={this.updateState}>
           {this.renderErrors()}
           {fields.map(field => <FormComponent key={field.name} {...field} />)}
           <Button type="submit" bsStyle="primary">Submit</Button>

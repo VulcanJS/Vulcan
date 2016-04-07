@@ -1,6 +1,6 @@
 import PublicationUtils from 'meteor/utilities:smart-publications';
 import EmbedlyURL from './components/EmbedlyURL.jsx';
-import PrefilledThumbnail from './components/PrefilledThumbnail.jsx';
+import ThumbnailURL from './components/ThumbnailURL.jsx';
 
 
 Posts.addField([
@@ -24,7 +24,7 @@ Posts.addField([
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
       publish: true,
-      control: PrefilledThumbnail
+      control: ThumbnailURL
     }
   },
   {
