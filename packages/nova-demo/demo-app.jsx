@@ -1,6 +1,7 @@
+import React, { PropTypes, Component } from 'react';
 import {mount} from 'react-mounter';
-
 import MoviesWrapper from './demo-components.jsx';
+import Core from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // Collection & Schema                              //
@@ -57,7 +58,7 @@ Movies.attachSchema(schema);
 
 FlowRouter.route('/demo', {
   name: 'demo',
-  action() {    
+  action() {
     mount(MoviesWrapper);
   }
 });

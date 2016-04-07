@@ -47,7 +47,7 @@ class NovaForm extends Component{
   // get relevant fields
   getFieldNames() { 
     const collection = this.props.collection;
-    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser) : collection.getInsertableFields(this.props.currentUser);
+    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.props.document) : collection.getInsertableFields(this.props.currentUser);
     return fields;
   }
 
