@@ -11,14 +11,12 @@ class NovaForm extends Component{
     super(props);
     this.submitForm = this.submitForm.bind(this);
     this.methodCallback = this.methodCallback.bind(this);
-    this.updateState = this.updateState.bind(this);
     this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.state = {
       disabled: false,
-      errors: [],
-      currentValues: this.props.document
+      errors: []
     };
   }
 
@@ -28,7 +26,7 @@ class NovaForm extends Component{
   }
 
   // get relevant fields
-  getFields() { 
+  getFieldNames() { 
     const collection = this.props.collection;
     const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser) : collection.getInsertableFields(this.props.currentUser);
     return fields;
@@ -54,31 +52,17 @@ class NovaForm extends Component{
     return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
   }
 
-  // whenever the form values change, keep track of them in the state
-  updateState(e) {
-    // e can sometimes be event, sometims be currentValue
-    // see https://github.com/christianalfoni/formsy-react/issues/203
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    } else {
-      this.setState({
-        currentValues: e
-      });
-    }
-  }
-
-  // add something to the state
+  // add something to prefilled values
   addToPrefilledValues(property) {
     this.setState({
       prefilledValues: {...this.state.prefilledValues, ...property}
     });
   }
 
-  // pass on form values as context to all child components for easy access
+  // pass on context to all child components
   getChildContext() {
     return {
       throwError: this.throwError,
-      currentValues: this.state.currentValues,
       prefilledValues: this.state.prefilledValues,
       addToPrefilledValues: this.addToPrefilledValues
     };
@@ -122,7 +106,7 @@ class NovaForm extends Component{
   submitForm(data) {
     this.setState({disabled: true});
 
-    const fields = this.getFields();
+    const fields = this.getFieldNames();
     const collection = this.props.collection;
 
     // if there's a submit callback, run it
@@ -163,28 +147,41 @@ class NovaForm extends Component{
   }
 
   render() {
+    
+    // build fields array by iterating over the list of field names
+    let fields = this.getFieldNames().map(fieldName => {
+        
+      // get schema for the current field
+      const fieldSchema = this.props.collection.simpleSchema()._schema[fieldName]
 
-    const document = this.props.document;
-    const collection = this.props.collection;
-    const fields = this.getFields();
+      // add name, label, and type properties
+      let field = {
+        name: fieldName,
+        label: (typeof fieldSchema.labelFunction === "function") ? fieldSchema.labelFunction(fieldName) : fieldName,
+        type: fieldSchema.type,
+        control: fieldSchema.control
+      }
 
-    const style = {
-      maxWidth: "800px",
-      width: "100%"
-    }
+      // add value
+      field.value = this.props.document && Utils.deepValue(this.props.document, fieldName) ? Utils.deepValue(this.props.document, fieldName) : "";  
+
+      // add options if they exist
+      if (fieldSchema.autoform && fieldSchema.autoform.options) {
+        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options() : fieldSchema.autoform.options;
+      }
+
+      return field;
+
+    });
+
+    // remove fields where control = "none"
+    fields = _.reject(fields, field => field.control === "none");
 
     return (
-      <div className={"document-"+this.getFormType()} style={style}>
-        <Formsy.Form onSubmit={this.submitForm} onChange={this.updateState} disabled={this.state.disabled} ref="form">
+      <div className={"document-"+this.getFormType()}>
+        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="form">
           {this.renderErrors()}
-          {fields.map(fieldName => <FormComponent 
-            key={fieldName}
-            className={"input-"+fieldName}
-            fieldName={fieldName}
-            field={collection.simpleSchema()._schema[fieldName]}
-            labelFunction={this.props.labelFunction}
-            document={document}
-          />)}
+          {fields.map(field => <FormComponent key={field.name} {...field} />)}
           <Button type="submit" bsStyle="primary">Submit</Button>
         </Formsy.Form>
       </div>
@@ -210,10 +207,9 @@ NovaForm.contextTypes = {
 }
 
 NovaForm.childContextTypes = {
-  currentValues: React.PropTypes.object,
   prefilledValues: React.PropTypes.object,
-  throwError: React.PropTypes.func,
-  addToPrefilledValues: React.PropTypes.func
+  addToPrefilledValues: React.PropTypes.func,
+  throwError: React.PropTypes.func
 }
 
 module.exports = NovaForm;

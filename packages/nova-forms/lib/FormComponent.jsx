@@ -13,75 +13,48 @@ const Textarea = FRC.Textarea;
 
 class FormComponent extends Component {
 
-  constructor() {
-    super();
-  }
-
   renderComponent() {
 
-    ({fieldName, field, labelFunction, document} = this.props);
+    // if control is a React component, use it
+    if (typeof this.props.control === "function") {
 
-    let options = [];
-    if (field.autoform && field.autoform.options) {
-      options = typeof field.autoform.options === "function" ? field.autoform.options() : field.autoform.options;
-    }
+      return <this.props.control     {...this.props} />
 
-    const value = document && Utils.deepValue(document, fieldName) ? Utils.deepValue(document, fieldName) : "";
-    const label = typeof labelFunction === "function" ? labelFunction(fieldName) : fieldName;
+    } else { // else pick a predefined component
 
-    const inputProps = {
-      key: fieldName,
-      name: fieldName,
-      value: value,
-      label: label
-    };
-
-    if (typeof field.control === "function") {
-
-      return <field.control     {...inputProps} />
-
-    } else {
-
-      switch (field.control) {
+      switch (this.props.control) {
         case "text":
-          return <Input         {...inputProps} type="text" />;
+          return <Input         {...this.props} type="text" />;
         case "textarea":
-          return <Textarea      {...inputProps} />;
+          return <Textarea      {...this.props} />;
         case "checkbox":
-          return <Checkbox      {...inputProps}/>;        
+          return <Checkbox      {...this.props} />;        
         // note: checkboxgroup cause React refs error
         case "checkboxgroup":
-         return <CheckboxGroup  {...inputProps} options={options} />;
+         return <CheckboxGroup  {...this.props} />;
         case "radiogroup":
-          return <RadioGroup    {...inputProps} options={options} />;
+          return <RadioGroup    {...this.props} />;
         case "select":
-          return <Select        {...inputProps} options={options} />;
+          return <Select        {...this.props} />;
         default: 
-          return <Input         {...inputProps} type="text" />;
+          return <Input         {...this.props} type="text" />;
       }
 
     }
   }
 
   render() {
-    if (this.props.field.control === "none") {
-      return null;
-    } else {
-      return (
-        <div className={"input-"+fieldName}>
-          {this.renderComponent()}
-        </div>
-      )
-    }
+    return <div className={"input-"+this.props.name}>{this.renderComponent()}</div>
   }
 
 }
 
 FormComponent.propTypes = {
-  fieldName: React.PropTypes.string,
-  field: React.PropTypes.object, 
-  labelFunction: React.PropTypes.func, 
-  document: React.PropTypes.object 
+  name: React.PropTypes.string,
+  label: React.PropTypes.string, 
+  value: React.PropTypes.any, 
+  options: React.PropTypes.any,
+  control: React.PropTypes.any
 }
 
 export default FormComponent;

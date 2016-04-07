@@ -68,10 +68,6 @@ A number corresponding to the position of the property's field inside the form.
 
 The main `NovaForm` components makes the following objects available as context to all its children:
 
-#### `currentValues`
-
-An object containing all the current values of the form.
-
 #### `prefilledValues`
 
 An object containing optional prefilled properties. 
