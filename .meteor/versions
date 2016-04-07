@@ -26,6 +26,7 @@ check@1.1.2
 chuangbo:cookie@1.1.0
 chuangbo:marked@0.3.5_1
 coffeescript@1.0.15
+cosmos:browserify@0.8.4
 dburles:collection-helpers@1.0.4
 dburles:spacebars-tohtml@1.0.1
 ddp@1.2.3
@@ -40,6 +41,7 @@ ecmascript@0.4.1
 ecmascript-runtime@0.2.8
 ejson@1.0.9
 email@1.0.10
+es5-shim@4.5.8
 fortawesome:fontawesome@4.5.0
 fourseven:scss@3.4.1
 geojson-utils@1.0.6
@@ -53,6 +55,7 @@ jparker:crypto-core@0.1.0
 jparker:crypto-md5@0.1.1
 jparker:gravatar@0.4.1
 jquery@1.11.6
+kadira:dochead@1.4.0
 kadira:flow-router-ssr@3.12.2
 livedata@1.0.16
 localstorage@1.0.7

@@ -10,7 +10,7 @@ const ListContainer = SmartContainers.ListContainer;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, CategoriesList, NewPostButton, UserMenu, AccountsMenu, HeadTags} = Telescope.components);
+  ({Logo, CategoriesList, NewPostButton, UserMenu, AccountsMenu} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Telescope");
@@ -18,8 +18,6 @@ const Header = ({currentUser}) => {
 
   return (
     <div className="header-wrapper">
-
-      {/*<HeadTags url={Telescope.utils.getSiteUrl()} title={siteTitle} description={tagline} image={logoUrl} />*/}
 
       <header className="header">
 

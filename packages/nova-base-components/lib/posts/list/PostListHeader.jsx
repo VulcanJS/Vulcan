@@ -5,10 +5,11 @@ const ListContainer = SmartContainers.ListContainer;
 
 const PostListHeader = () => {
 
-  ({PostViews, SearchForm, CategoriesList} = Telescope.components)
+  ({PostViews, SearchForm, CategoriesList, HeadTags} = Telescope.components)
 
   return (
     <div className="post-list-header">
+      <HeadTags />
       <div className="post-list-categories">
         <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={CategoriesList}/>
       </div>
