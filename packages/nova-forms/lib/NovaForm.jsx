@@ -5,8 +5,23 @@ import { Button } from 'react-bootstrap';
 import FormComponent from "./FormComponent.jsx";
 import Utils from './utils.js';
 
+/*
+
+1. Constructor
+2. Helpers
+3. Errors
+4. Context
+4. Method & Callback
+5. Render
+
+*/
+
 class NovaForm extends Component{
   
+  // --------------------------------------------------------------------- //
+  // ----------------------------- Constructor --------------------------- //
+  // --------------------------------------------------------------------- //
+
   constructor(props) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
@@ -20,6 +35,10 @@ class NovaForm extends Component{
     };
   }
 
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Helpers ----------------------------- //
+  // --------------------------------------------------------------------- //
+
   // if a document is being passed, this is an edit form
   getFormType() { 
     return this.props.document ? "edit" : "new";
@@ -32,12 +51,9 @@ class NovaForm extends Component{
     return fields;
   }
 
-  // add error to state
-  throwError(error) {
-    this.setState({
-      errors: [error]
-    });
-  }
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Errors ------------------------------ //
+  // --------------------------------------------------------------------- //
 
   // clear all errors
   clearErrors() {
@@ -50,6 +66,17 @@ class NovaForm extends Component{
   renderErrors() {
     Flash = Telescope.components.Flash;
     return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
+  }
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Context ----------------------------- //
+  // --------------------------------------------------------------------- //
+  
+  // add error to state
+  throwError(error) {
+    this.setState({
+      errors: [error]
+    });
   }
 
   // add something to prefilled values
@@ -67,6 +94,10 @@ class NovaForm extends Component{
       addToPrefilledValues: this.addToPrefilledValues
     };
   }
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Method ------------------------------ //
+  // --------------------------------------------------------------------- //
 
   // common callback for both new and edit forms
   methodCallback(error, document) {
@@ -145,6 +176,10 @@ class NovaForm extends Component{
     }
 
   }
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Render ------------------------------ //
+  // --------------------------------------------------------------------- //
 
   render() {
     
