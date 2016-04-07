@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:forms",
   summary: "Form containers for React",
-  version: "0.25.7",
+  version: "0.25.8",
   git: "https://github.com/meteor-utilities/react-form-containers.git"
 });
 
