@@ -143,3 +143,13 @@ Posts.getNotificationProperties = function (post) {
 
   return properties;
 };
+
+Posts.getThumbnailUrl = (post) => {
+  const thumbnailUrl = post.thumbnailUrl;
+  if (!!thumbnailUrl) {
+    const prefix = Telescope.utils.getSiteUrl().slice(0,-1);
+    // the thumbnail may be hosted on another website
+    return thumbnailUrl.indexOf('://') > -1 ? thumbnailUrl : prefix + thumbnailUrl;
+  }
+};
+Posts.helpers({ getThumbnailUrl() { return Posts.getThumbnailUrl(this); } });
