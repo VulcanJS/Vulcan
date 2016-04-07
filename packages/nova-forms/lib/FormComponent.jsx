@@ -16,7 +16,7 @@ class FormComponent extends Component {
   constructor() {
     super();
   }
-  
+
   renderComponent() {
 
     ({fieldName, field, labelFunction, document} = this.props);
@@ -29,28 +29,35 @@ class FormComponent extends Component {
     const value = document && Utils.deepValue(document, fieldName) ? Utils.deepValue(document, fieldName) : "";
     const label = typeof labelFunction === "function" ? labelFunction(fieldName) : fieldName;
 
+    const inputProps = {
+      key: fieldName,
+      name: fieldName,
+      value: value,
+      label: label
+    };
+
     if (typeof field.control === "function") {
 
-      return <field.control key={fieldName} name={fieldName} value={value} label={label}/>
+      return <field.control     {...inputProps} />
 
     } else {
 
       switch (field.control) {
         case "text":
-          return <Input         key={fieldName} name={fieldName} value={value} label={label} type="text" />;
+          return <Input         {...inputProps} type="text" />;
         case "textarea":
-          return <Textarea      key={fieldName} name={fieldName} value={value} label={label} />;
+          return <Textarea      {...inputProps} />;
         case "checkbox":
-          return <Checkbox      key={fieldName} name={fieldName} value={value} label={label}/>;        
+          return <Checkbox      {...inputProps}/>;        
         // note: checkboxgroup cause React refs error
         case "checkboxgroup":
-         return <CheckboxGroup  key={fieldName} name={fieldName} value={value} label={label} options={options} />;
+         return <CheckboxGroup  {...inputProps} options={options} />;
         case "radiogroup":
-          return <RadioGroup    key={fieldName} name={fieldName} value={value} label={label} options={options} />;
+          return <RadioGroup    {...inputProps} options={options} />;
         case "select":
-          return <Select        key={fieldName} name={fieldName} value={value} label={label} options={options} />;
+          return <Select        {...inputProps} options={options} />;
         default: 
-          return <Input         key={fieldName} name={fieldName} value={value} label={label} type="text" />;
+          return <Input         {...inputProps} type="text" />;
       }
 
     }

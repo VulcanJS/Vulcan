@@ -72,6 +72,15 @@ The main `NovaForm` components makes the following objects available as context 
 
 An object containing all the current values of the form.
 
+#### `prefilledValues`
+
+An object containing optional prefilled properties. 
+
+#### `addToPrefilledValues({name: value})`
+
+A function that takes a property, and adds it to the `prefilledValues` object. 
+
 #### `throwError({content, type})`
 
 A callback function that can be used to throw an error. 
+
