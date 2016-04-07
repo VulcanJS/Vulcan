@@ -48,6 +48,14 @@ class ModalTrigger extends Component {
   //   };
   // }
 
+  renderHeader() {
+    return (
+      <Modal.Header closeButton>
+        <Modal.Title>{this.props.title}</Modal.Title>
+      </Modal.Header>
+    )
+  }
+
   render() {
 
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
@@ -56,9 +64,7 @@ class ModalTrigger extends Component {
       <div className="modal-trigger">
         {triggerComponent}
         <Modal bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
+          {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
             <ContextPasser currentUser={this.context.currentUser} closeCallback={this.props.closeCallback}>
               {this.props.children}

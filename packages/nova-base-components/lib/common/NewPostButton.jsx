@@ -8,7 +8,7 @@ const NewPostButton = (props, context) => {
   ({PostNewForm} = Telescope.components);
 
   return (
-    <ModalTrigger component={<Button bsStyle="primary">New Post</Button>}>
+    <ModalTrigger title="New Post" component={<Button bsStyle="primary">New Post</Button>}>
       <PostNewForm/>
     </ModalTrigger>
   )

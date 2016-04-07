@@ -56,7 +56,7 @@ class MoviesList extends Component {
   renderNew() {
     
     const component = (
-      <ModalTrigger label="Add Movie" className="button button--primary">
+      <ModalTrigger title="Add Movie" label="Add Movie" className="button button--primary">
         <NewDocument collection={Movies} label="Add Movie" methodName="movies.create"/>
       </ModalTrigger>
     )
