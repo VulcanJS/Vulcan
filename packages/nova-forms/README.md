@@ -22,6 +22,52 @@ This package can generate new document and edit document forms from a [SimpleSch
 
 ### Usage
 
+Example schema:
+
+```js
+
+import BodyFormControl from './components/BodyFormControl.jsx';
+
+const isLoggedIn = (user) => !!user;
+const isOwner = (user, document) => user._id === document.userId;
+const isAdmin = (user) => user.isAdmin;
+
+const PostsSchema = new SimpleSchema({
+  postedAt: {
+    type: Date,
+    optional: true
+    // no insertableIf or editableIf means this field won't appear in forms
+  },
+  title: {
+    type: String,
+    optional: false,
+    max: 500,
+    insertableIf: isLoggedIn,
+    editableIf: isOwner,
+    control: "text",
+    order: 1
+  },
+  body: {
+    type: String,
+    optional: true,
+    max: 3000,
+    insertableIf: isLoggedIn,
+    editableIf: isOwner,
+    control: BodyFormControl,
+    order: 2
+  },
+  sticky: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+    insertableIf: isAdmin,
+    editableIf: isAdmin,
+    control: "checkbox",
+    order: 3
+  },
+}
+```
+
 New document form:
 
 ```jsx
