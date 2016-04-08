@@ -4,7 +4,7 @@
  */
 
 /**
- * Add an additional field (or an array of fields) to a schema.
+ * @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} field
  */
 Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {

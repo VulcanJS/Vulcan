@@ -1,0 +1,14 @@
+{
+  "plugins": ["plugins/markdown"],
+  "markdown": {
+    "parser": "gfm"
+  },
+  "source": {
+    "exclude": [
+      ".git",
+      ".meteor",
+      "node_modules"
+    ],
+    "includePattern": ".+\\.js(x|doc)?$"
+  }
+}
