@@ -38,9 +38,14 @@ $mobile-nav-width: 200px;
   }
 }
 
+/*
+
+CSS Transition breaks side-nav function on FF/Safari 
 .mobile-nav, .inner-wrapper{
   transition: all, 300ms, ease-out, 0ms;
 }
+
+*/
 
 .inner-wrapper{
   position: relative;
