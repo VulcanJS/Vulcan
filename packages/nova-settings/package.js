@@ -18,6 +18,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/collection.js',
+    'lib/methods.js',
     // 'package-tap.i18n'
   ], both);
 

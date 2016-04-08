@@ -135,6 +135,7 @@ Telescope.adminRoutes.route('/settings', {
   action(params, queryParams) {
     ({App, SettingsPage} = Telescope.components);
 
-    mount(App,{content: <SettingsPage /> });
+    mount(App,{content: <SettingsPage currentUser={Meteor.user()}
+                                      document={Telescope.settings.collection.findOne({})} />});
   }
 });

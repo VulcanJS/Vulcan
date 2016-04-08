@@ -18,13 +18,6 @@ const Settings = props => {
   return (
     <div className="settings">
       <h1>Settings</h1>
-
-        <NovaForm
-            currentUser={Meteor.users}
-            collection={Telescope.settings.collection}
-            labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Telescope.settings.collection.simpleSchema()._schema)}
-        />
-
       <div className="settings-wrapper">
 
         <table className="table">
