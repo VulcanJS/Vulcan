@@ -44,7 +44,7 @@ class NovaForm extends Component{
 
   // if a document is being passed, this is an edit form
   getFormType() { 
-    return this.getDocument() ? "edit" : "new";
+    return this.props.document ? "edit" : "new";
   }
 
   // get relevant fields
