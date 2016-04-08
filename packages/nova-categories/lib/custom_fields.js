@@ -33,4 +33,3 @@ Posts.addField(
 );
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["categories"]);
-PublicationUtils.addToFields(Posts.publishedFields.single, ["categories"]);

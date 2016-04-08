@@ -79,7 +79,7 @@ if (typeof Telescope.notifications !== "undefined") {
           postAuthor = Users.findOne(post.userId),
           userIdsNotified = [],
           notificationData = {
-            comment: _.pick(comment, '_id', 'userId', 'author', 'htmlBody'),
+            comment: _.pick(comment, '_id', 'userId', 'author', 'htmlBody', 'postId'),
             post: _.pick(post, '_id', 'userId', 'title', 'url')
           };
 

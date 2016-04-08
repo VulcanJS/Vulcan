@@ -25,8 +25,9 @@ class CommentNew extends Component {
           prefilledProps={prefilledProps}
           successCallback={this.props.successCallback}
           labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Comments)}
+          layout="elementOnly"
+          cancelCallback={this.props.type === "reply" ? this.props.cancelCallback : null}
         />
-        {this.props.type === "reply" ? <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
       </div>
     )
   }

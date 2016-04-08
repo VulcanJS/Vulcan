@@ -1,22 +1,24 @@
 import React, { PropTypes, Component } from 'react';
-import { Button } from 'react-bootstrap';
-import Modal from 'react-modal';
+import { Modal } from 'react-bootstrap';
+// import Modal from 'react-modal';
 
-const customStyles = {
-  content : {
-    position                   : 'absolute',
-    top                        : '40px',
-    left                       : '10%',
-    right                      : '10%',
-    bottom                     : '40px',
-    border                     : '1px solid #ccc',
-    background                 : '#fff',
-    overflow                   : 'auto',
-    WebkitOverflowScrolling    : 'touch',
-    borderRadius               : '5px',
-    outline                    : 'none',
-    padding                    : '20px'
+class ContextPasser extends Component {
+
+  getChildContext() {
+
+    return {
+      closeCallback: this.props.closeCallback,
+      currentUser: this.props.currentUser // pass on currentUser
+    };
   }
+
+  render() {
+    return this.props.children;
+  }
+}
+ContextPasser.childContextTypes = {
+  closeCallback: React.PropTypes.func,
+  currentUser: React.PropTypes.object
 };
 
 class ModalTrigger extends Component {
@@ -38,33 +40,36 @@ class ModalTrigger extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  getChildContext() {
-    const component = this;
-    return {
-      closeCallback: component.closeModal
-    };
+  // getChildContext() {
+  //   const component = this;
+  //   return {
+  //     closeCallback: component.closeModal,
+  //     currentUser: this.context.currentUser // pass on currentUser
+  //   };
+  // }
+
+  renderHeader() {
+    return (
+      <Modal.Header closeButton>
+        <Modal.Title>{this.props.title}</Modal.Title>
+      </Modal.Header>
+    )
   }
 
   render() {
 
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
 
-    if (this.props.size === "small") {
-      customStyles.content.left = "20%";
-      customStyles.content.right = "20%";
-      customStyles.content.top = "60px";
-      customStyles.content.bottom = "60px";
-    }
-
     return (
       <div className="modal-trigger">
         {triggerComponent}
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles} 
-        >
-          {this.props.children}
+        <Modal bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
+          {this.props.title ? this.renderHeader() : null}
+          <Modal.Body>
+            <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
+              {this.props.children}
+            </ContextPasser>
+          </Modal.Body>
         </Modal>
       </div>
     )
@@ -77,12 +82,17 @@ ModalTrigger.propTypes = {
 }
 
 ModalTrigger.defaultProps = {
-  size: "medium"
+  size: "large"
 }
 
-ModalTrigger.childContextTypes = {
-  closeCallback: React.PropTypes.func
-}
+ModalTrigger.contextTypes = {
+  currentUser: React.PropTypes.object
+};
+
+// ModalTrigger.childContextTypes = {
+//   closeCallback: React.PropTypes.func,
+//   currentUser: React.PropTypes.object
+// }
 
 module.exports = ModalTrigger;
 export default ModalTrigger;

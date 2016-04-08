@@ -28,11 +28,7 @@ Posts.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     publish: true,
-    control: "datepicker",
-    autoform: {
-      group: 'admin',
-      type: "bootstrap-datetimepicker"
-    }
+    control: "datepicker"
   },
   /**
     URL
@@ -45,10 +41,7 @@ Posts.schema = new SimpleSchema({
     editableIf: Users.is.ownerOrAdmin,
     control: "text",
     publish: true,
-    autoform: {
-      type: "bootstrap-url",
-      order: 10
-    }
+    order: 10
   },
   /**
     Title
@@ -61,9 +54,7 @@ Posts.schema = new SimpleSchema({
     editableIf: Users.is.ownerOrAdmin,
     control: "text",
     publish: true,
-    autoform: {
-      order: 20
-    }
+    order: 20
   },
   /**
     Slug
@@ -84,10 +75,7 @@ Posts.schema = new SimpleSchema({
     editableIf: Users.is.ownerOrAdmin,
     control: "textarea",
     publish: true,
-    autoform: {
-      rows: 5,
-      order: 30
-    }
+    order: 30
   },
   /**
     HTML version of the post body
@@ -164,11 +152,7 @@ Posts.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     control: "checkbox",
-    publish: true,
-    autoform: {
-      group: 'admin',
-      leftLabel: "Sticky"
-    }
+    publish: true
   },
   /**
     Whether the post is inactive. Inactive posts see their score recalculated less often

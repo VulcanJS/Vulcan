@@ -32,10 +32,6 @@ class PostEditForm extends Component{
     
     return (
       <div className="edit-post-form">
-        <div className="modal-form-title edit-post-form-header">
-          <h3>Edit Post</h3>
-          <a onClick={this.deletePost} className="delete-post-link"><Icon name="close"/> Delete Post</a>
-        </div>
         <DocumentContainer 
           collection={Posts} 
           publication="posts.single" 
@@ -48,9 +44,11 @@ class PostEditForm extends Component{
             collection: Posts,
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
-            labelFunction: (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)
+            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Posts)
           }}
         />
+        <hr/>
+        <a onClick={this.deletePost} className="delete-post-link"><Icon name="close"/> Delete Post</a>
       </div>
     )
   }

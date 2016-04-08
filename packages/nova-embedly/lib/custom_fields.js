@@ -1,7 +1,21 @@
 import PublicationUtils from 'meteor/utilities:smart-publications';
-import EmbedlyThumbnail from './components/EmbedlyThumbnail.jsx';
+import EmbedlyURL from './components/EmbedlyURL.jsx';
+import ThumbnailURL from './components/ThumbnailURL.jsx';
+
 
 Posts.addField([
+  {
+    fieldName: 'url',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      max: 500,
+      insertableIf: Users.is.memberOrAdmin,
+      editableIf: Users.is.ownerOrAdmin,
+      control: EmbedlyURL,
+      publish: true
+    }
+  },
   {
     fieldName: 'thumbnailUrl',
     fieldSchema: {
@@ -10,7 +24,7 @@ Posts.addField([
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
       publish: true,
-      control: EmbedlyThumbnail
+      control: ThumbnailURL
     }
   },
   {
@@ -41,7 +55,6 @@ Posts.addField([
 ]);
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
-PublicationUtils.addToFields(Posts.publishedFields.single, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
 
 if (typeof Telescope.settings.collection !== "undefined") {
   Telescope.settings.collection.addField([

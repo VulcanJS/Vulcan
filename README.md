@@ -2,6 +2,26 @@
 
 **Nova** is a top-secret, highly unstable experimental branch of Telescope with a really cool name. 
 
+## Table Of Contents
+
+  - [Install](#install)
+  - [Updating](#updating)
+  - [Resources](#resources)
+  - [Deployment](#deployment)
+  - [Settings](#settings)
+  - [Social Login](social-login#)
+  - [Packages](#packages)
+  - [Files](#files)
+  - [Customizing Components](#customizing-components)
+  - [Custom Fields](#custom-fields)
+  - [Publishing Data](#publishing-data)
+  - [Loading Data](#loading-data)
+  - [Callbacks](#callbacks)
+  - [Posts Parameters](#posts-parameters)
+  - [Forms](#forms)
+  - [Methods](#methods)
+  - [Cheatsheet](#cheatsheet)
+
 ## Install
 
 1. Clone this branch to your local machine
@@ -10,11 +30,23 @@
 
 Note: the `nova:*` packages are *not* currently published to Atmosphere.  
 
+## Updating
+
+To keep your codebase up to date, you'll have to manually pull in the changes from this git repo for now. Automated updating via `meteor update` is not yet supported, although it will be soon. 
+
+To update to Nova from an earlier version of Telescope, I suggest you create a new repo and start from scratch. That being said you can use the same database seamlessly since Nova uses the same database schema. 
+
+For local development, an easy way to do that is to simply copy the `.meteor/local` directory which contains your local database to your new repo. 
+
 ## Resources
 
 The best way to get support is the #nova channel in the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
 
 You can also check out the [Nova roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap) to see what needs to be done. 
+
+## Deployment
+
+The recommended way to deploy Nova is by using [MupX](https://github.com/arunoda/meteor-up/tree/mupx).
 
 ## Settings
 
@@ -157,7 +189,7 @@ In order to make data available to the cient, you need to **publish** it. Out of
 - `users.single`: a single user
 - `users.current`: the current user (includes personal data)
 
-While most publications look up each field's `publish` property to figure out if they should publish it or not, some (like `posts.list`) only feature a smaller subset of properties for performance reasons, and thus have their own specific list of published fields. 
+While most publications look up each field's `publish` property to figure out if they should publish it or not, some (like `posts.list` and `comments.list`) only feature a smaller subset of properties for performance reasons, and thus have their own specific list of published fields. 
 
 For example, here's how the `nova:embedly` adds the `thumbnailUrl, `media`, `soureName`, and `sourceUrl` fields to the list of published fields for the `posts.list` publication (after having defined them as custom fields):
 

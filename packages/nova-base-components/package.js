@@ -27,7 +27,8 @@ Package.onUse(function (api) {
     // 'std:accounts-ui-basic@1.0.1',
     'std:accounts-ui@1.1.12',
     'dburles:spacebars-tohtml@1.0.1',
-    'utilities:react-list-container'
+    'utilities:react-list-container',
+    'kadira:dochead@1.4.0'
   ]);
 
   api.addFiles([

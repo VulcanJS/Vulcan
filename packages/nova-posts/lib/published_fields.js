@@ -29,4 +29,6 @@ Posts.publishedFields.list = PublicationsUtils.arrayToFields([
  * Specify which fields should be published by the posts.single publication
  * @array Posts.publishedFields.single
  */
-Posts.publishedFields.single = PublicationsUtils.arrayToFields(Posts.getPublishedFields());
+Meteor.startup(() => {
+  Posts.publishedFields.single = PublicationsUtils.arrayToFields(Posts.getPublishedFields());
+});

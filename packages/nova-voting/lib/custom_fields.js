@@ -10,7 +10,8 @@ Posts.addField([
     fieldName: "upvotes",
     fieldSchema: {
       type: Number,
-      optional: true
+      optional: true,
+      publish: true
     }
   },
   /**
@@ -20,7 +21,8 @@ Posts.addField([
     fieldName: "upvoters",
     fieldSchema: {
       type: [String],
-      optional: true
+      optional: true,
+      publish: true
     }
   },
   /**
@@ -29,8 +31,9 @@ Posts.addField([
   {
     fieldName: "downvotes",
     fieldSchema: {
-    type: Number,
-    optional: true
+      type: Number,
+      optional: true,
+      publish: true
     }
   },
   /**
@@ -40,7 +43,8 @@ Posts.addField([
     fieldName: "downvoters",
     fieldSchema: {
       type: [String],
-      optional: true
+      optional: true,
+      publish: true
     }
   },
   /**
@@ -70,7 +74,6 @@ Posts.addField([
 ]);
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
-PublicationUtils.addToFields(Posts.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
 
 // ------------------------------------- Comments -------------------------------- //
 
@@ -146,4 +149,3 @@ Comments.addField([
 ]);
 
 PublicationUtils.addToFields(Comments.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);
-PublicationUtils.addToFields(Comments.publishedFields.single, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);

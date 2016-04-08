@@ -16,7 +16,7 @@ const PostPage = ({document, currentUser}) => {
   return (
     <div className="post-page">
 
-      {/*<HeadTags url={Posts.getLink(post)} title={post.title}/>*/}
+      <HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
       
       <PostItem post={post}/>
 

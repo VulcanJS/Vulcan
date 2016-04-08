@@ -5,21 +5,42 @@ import { Button } from 'react-bootstrap';
 import FormComponent from "./FormComponent.jsx";
 import Utils from './utils.js';
 
+/*
+
+1. Constructor
+2. Helpers
+3. Errors
+4. Context
+4. Method & Callback
+5. Render
+
+*/
+
 class NovaForm extends Component{
   
+  // --------------------------------------------------------------------- //
+  // ----------------------------- Constructor --------------------------- //
+  // --------------------------------------------------------------------- //
+
   constructor(props) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
-    this.methodCallback = this.methodCallback.bind(this);
     this.updateState = this.updateState.bind(this);
+    this.methodCallback = this.methodCallback.bind(this);
+    this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.state = {
       disabled: false,
       errors: [],
-      currentValues: this.props.document
+      prefilledValues: {},
+      currentValues: {}
     };
   }
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Helpers ----------------------------- //
+  // --------------------------------------------------------------------- //
 
   // if a document is being passed, this is an edit form
   getFormType() { 
@@ -27,12 +48,13 @@ class NovaForm extends Component{
   }
 
   // get relevant fields
-  getFields() { 
+  getFieldNames() { 
     const collection = this.props.collection;
+
     const currentUser = this.props.currentUser;
     const fields = this.getFormType() === "edit" ? collection.getEditableFields(currentUser) : collection.getInsertableFields(currentUser);
 
-    if(_.isEmpty(fields)){
+    /*if(_.isEmpty(fields)){
       const schema = collection.simpleSchema()._schema;
 
       const schemaFields = _.filter(_.keys(schema), function (fieldName) {
@@ -40,16 +62,39 @@ class NovaForm extends Component{
         return field.editableIf;
       });
       return schemaFields;
-    }
+    }*/
+
     return fields;
   }
 
-  // add error to state
-  throwError(error) {
-    this.setState({
-      errors: [error]
-    });
+  // look in the document, prefilled values, or inputted values
+  getDocument() {
+    const document = Object.assign(this.props.document || {}, this.state.prefilledValues, this.state.currentValues);
+    return document;
   }
+
+  // whenever the form changes, update its state
+  updateState(e) {
+    // e can sometimes be event, sometims be currentValue
+    // see https://github.com/christianalfoni/formsy-react/issues/203
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else {
+      // get rid of empty fields
+      _.forEach(e, (value, key) => {
+        if (_.isEmpty(value)) {
+          delete e[key];
+        }
+      });
+      this.setState({
+        currentValues: e
+      });
+    }
+  }
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Errors ------------------------------ //
+  // --------------------------------------------------------------------- //
 
   // clear all errors
   clearErrors() {
@@ -64,31 +109,37 @@ class NovaForm extends Component{
     return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
   }
 
-  // whenever the form values change, keep track of them in the state
-  updateState(e) {
-    // e can sometimes be event, sometims be currentValue
-    // see https://github.com/christianalfoni/formsy-react/issues/203
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    } else {
-      this.setState({
-        currentValues: e
-      });
-    }
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Context ----------------------------- //
+  // --------------------------------------------------------------------- //
+  
+  // add error to state
+  throwError(error) {
+    this.setState({
+      errors: [error]
+    });
   }
 
-  getSimpleSchema(ss){
-    console.log(ss);
-    return ss;
+  // add something to prefilled values
+  addToPrefilledValues(property) {
+    this.setState({
+      prefilledValues: {...this.state.prefilledValues, ...property}
+    });
   }
 
-  // pass on form values as context to all child components for easy access
+// pass on context to all child components
+
   getChildContext() {
     return {
       throwError: this.throwError,
-      currentValues: this.state.currentValues
+      prefilledValues: this.state.prefilledValues,
+      addToPrefilledValues: this.addToPrefilledValues
     };
   }
+
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Method ------------------------------ //
+  // --------------------------------------------------------------------- //
 
   // common callback for both new and edit forms
   methodCallback(error, document) {
@@ -126,7 +177,7 @@ class NovaForm extends Component{
   submitForm(data) {
     this.setState({disabled: true});
 
-    const fields = this.getFields();
+    const fields = this.getFieldNames();
     const collection = this.props.collection;
 
     // if there's a submit callback, run it
@@ -147,7 +198,7 @@ class NovaForm extends Component{
 
     } else { // edit document form
 
-      const document = this.props.document;
+      const document = this.getDocument();
 
       // put all keys with data on $set
       const set = _.compactObject(Utils.flatten(data));
@@ -166,30 +217,56 @@ class NovaForm extends Component{
 
   }
 
+  // --------------------------------------------------------------------- //
+  // ------------------------------- Render ------------------------------ //
+  // --------------------------------------------------------------------- //
+
   render() {
+    
+    // build fields array by iterating over the list of field names
+    let fields = this.getFieldNames().map(fieldName => {
+        
+      // get schema for the current field
+      const fieldSchema = this.props.collection.simpleSchema()._schema[fieldName]
 
-    const document = this.props.document;
-    const collection = this.props.collection;
-    const fields = this.getFields();
+      // add name, label, and type properties
+      let field = {
+        name: fieldName,
+        label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
+        type: fieldSchema.type,
+        control: fieldSchema.control,
+        layout: this.props.layout
+      }
 
-    const style = {
-      maxWidth: "800px",
-      width: "100%"
-    }
+      // add value
+      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
+
+      // add options if they exist
+      if (fieldSchema.autoform && fieldSchema.autoform.options) {
+        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options() : fieldSchema.autoform.options;
+      }
+
+      return field;
+
+    });
+
+    // console.log(fields)
+
+    // remove fields where control = "none"
+    fields = _.reject(fields, field => field.control === "none");
 
     return (
-      <div className={"document-"+this.getFormType()} style={style}>
-        <Formsy.Form onSubmit={this.submitForm} onChange={this.updateState} disabled={this.state.disabled} ref="form">
+      <div className={"document-"+this.getFormType()}>
+        <Formsy.Form 
+          onSubmit={this.submitForm} 
+          disabled={this.state.disabled} 
+          ref="form" 
+          onChange={this.updateState} 
+        >
           {this.renderErrors()}
-          {fields.map(fieldName => <FormComponent 
-            key={fieldName}
-            className={"input-"+fieldName}
-            fieldName={fieldName}
-            field={collection.simpleSchema()._schema[fieldName]}
-            labelFunction={this.props.labelFunction}
-            document={document}
-          />)}
+          {fields.map(field => <FormComponent key={field.name} {...field} />)}
           <Button type="submit" bsStyle="primary">Submit</Button>
+          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
         </Formsy.Form>
       </div>
     )
@@ -205,7 +282,13 @@ NovaForm.propTypes = {
   errorCallback: React.PropTypes.func,
   methodName: React.PropTypes.string,
   labelFunction: React.PropTypes.func,
-  prefilledProps: React.PropTypes.object
+  prefilledProps: React.PropTypes.object,
+  layout: React.PropTypes.string,
+  cancelCallback: React.PropTypes.func
+}
+
+NovaForm.defaultPropTypes = {
+  layout: "horizontal"
 }
 
 NovaForm.contextTypes = {
@@ -213,7 +296,8 @@ NovaForm.contextTypes = {
 }
 
 NovaForm.childContextTypes = {
-  currentValues: React.PropTypes.object,
+  prefilledValues: React.PropTypes.object,
+  addToPrefilledValues: React.PropTypes.func,
   throwError: React.PropTypes.func
 }
 

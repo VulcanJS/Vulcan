@@ -6,15 +6,16 @@ class CommentEdit extends Component {
 
   render() {
     return (
-      <div className="comment-edit">
+      <div className="comment-edit-form">
         <NovaForm 
           collection={Comments}
           document={this.props.comment}
           currentUser={this.context.currentUser}
           methodName="comments.edit"
           successCallback={this.props.successCallback}
+          layout="elementOnly"
+          cancelCallback={this.props.cancelCallback}
         />
-        <a className="comment-edit-cancel" onClick={this.props.cancelCallback}>Cancel</a>
       </div>
     )
   }

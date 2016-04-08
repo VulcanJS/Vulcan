@@ -2,15 +2,21 @@
 
 Telescope.notifications = {};
 
-Telescope.createNotification = (userId, notificationName, data) => {
+Telescope.createNotification = (userIds, notificationName, data) => {
 
-  const user = Users.findOne(userId);
-  const notification = Telescope.notifications[notificationName];
-  const properties = notification.properties(data);
-  const subject = notification.subject(properties);
-  const html = Telescope.email.buildTemplate(Telescope.email.getTemplate(notification.emailTemplate)(properties));
+  // if userIds is not an array, wrap it in one
+  if (!Array.isArray(userIds)) userIds = [userIds];
 
-  Telescope.email.send(Users.getEmail(user), subject, html);
+  userIds.forEach(userId => {
+
+    const user = Users.findOne(userId);
+    const notification = Telescope.notifications[notificationName];
+    const properties = notification.properties(data);
+    const subject = notification.subject(properties);
+    const html = Telescope.email.buildTemplate(Telescope.email.getTemplate(notification.emailTemplate)(properties));
+
+    Telescope.email.send(Users.getEmail(user), subject, html);
+  });
 
 };
 
