@@ -117,6 +117,10 @@ A callback called on method success.
 
 A callback called on method failure.
 
+###### `cancelCallback()`
+
+If provided, will show a "cancel" link next to the form's submit button. 
+
 ###### `methodName`
 
 The name of the Meteor method to call.

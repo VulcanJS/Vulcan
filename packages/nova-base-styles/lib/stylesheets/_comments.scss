@@ -8,6 +8,10 @@
   margin-bottom: $vmargin;
 }
 
+.comments-list{
+  margin-bottom: $vmargin;
+}
+
 .comment-node .comment-node, .comment-reply{
   border-left: 10px $lightest-border solid;
   padding-left: $hmargin;
@@ -47,11 +51,12 @@
 }
 
 .comment-edit-form, .comment-new-form{
-  .form-group{
+  .input-body{
     margin-bottom: $hmargin;
   }
-  .control-label{
-    display: none;
+  .form-cancel{
+    display: inline-block;
+    margin-left: $hmargin;
   }
 }
 

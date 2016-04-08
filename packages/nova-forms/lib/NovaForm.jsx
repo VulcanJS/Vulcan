@@ -220,9 +220,10 @@ class NovaForm extends Component{
       // add name, label, and type properties
       let field = {
         name: fieldName,
-        label: (typeof fieldSchema.labelFunction === "function") ? fieldSchema.labelFunction(fieldName) : fieldName,
+        label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
         type: fieldSchema.type,
-        control: fieldSchema.control
+        control: fieldSchema.control,
+        layout: this.props.layout
       }
 
       // add value
@@ -244,10 +245,16 @@ class NovaForm extends Component{
 
     return (
       <div className={"document-"+this.getFormType()}>
-        <Formsy.Form onSubmit={this.submitForm} disabled={this.state.disabled} ref="form" onChange={this.updateState}>
+        <Formsy.Form 
+          onSubmit={this.submitForm} 
+          disabled={this.state.disabled} 
+          ref="form" 
+          onChange={this.updateState} 
+        >
           {this.renderErrors()}
           {fields.map(field => <FormComponent key={field.name} {...field} />)}
           <Button type="submit" bsStyle="primary">Submit</Button>
+          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
         </Formsy.Form>
       </div>
     )
@@ -264,7 +271,13 @@ NovaForm.propTypes = {
   errorCallback: React.PropTypes.func,
   methodName: React.PropTypes.string,
   labelFunction: React.PropTypes.func,
-  prefilledProps: React.PropTypes.object
+  prefilledProps: React.PropTypes.object,
+  layout: React.PropTypes.string,
+  cancelCallback: React.PropTypes.func
+}
+
+NovaForm.defaultPropTypes = {
+  layout: "horizontal"
 }
 
 NovaForm.contextTypes = {

@@ -44,7 +44,7 @@ class PostEditForm extends Component{
             collection: Posts,
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
-            labelFunction: (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)
+            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Posts)
           }}
         />
         <hr/>
