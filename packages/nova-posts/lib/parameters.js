@@ -87,19 +87,32 @@ Telescope.callbacks.add("postsParameters", addTimeParameter);
 function limitPosts (parameters, terms) {
   var maxLimit = 200;
 
-  if (!terms.options) {
-    terms.options = {};
+  // 1. set default limit to 10
+  let limit = 10;
+
+  // 2. look for limit on terms.limit
+  if (terms.limit) {
+    limit = parseInt(terms.limit);
   }
 
-  // if a limit was provided with the terms, add it too (note: limit=0 means "no limit")
-  if (terms.options.limit) {
-    _.extend(parameters.options, {limit: parseInt(terms.options.limit)});
+  // 3. look for limit on terms.options.limit
+  if (terms.options && terms.options.limit) {
+    limit = parseInt(terms.options.limit);
   }
 
-  // limit to "maxLimit" items at most when limit is undefined, equal to 0, or superior to maxLimit
-  if(!parameters.options.limit || parameters.options.limit === 0 || parameters.options.limit > maxLimit) {
-    parameters.options.limit = maxLimit;
+  // 4. make sure limit is not greater than 200
+  if (limit > maxLimit) {
+    limit = maxLimit;
   }
+
+  // 5. initialize parameters.options if needed
+  if (!parameters.options) {
+    parameters.options = {};
+  }
+
+  // 6. set limit
+  parameters.options.limit = limit;
+
   return parameters;
 }
 Telescope.callbacks.add("postsParameters", limitPosts);

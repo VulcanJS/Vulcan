@@ -19,9 +19,6 @@ Posts.views.add = function (viewName, viewFunction) {
 Posts.views.baseParameters = {
   selector: {
     status: Posts.config.STATUS_APPROVED
-  },
-  options: {
-    limit: 10
   }
 };
 

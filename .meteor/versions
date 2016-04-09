@@ -81,6 +81,7 @@ modules-runtime@0.6.1
 momentjs:moment@2.11.2
 mongo@1.1.5
 mongo-id@1.0.2
+nova:api@0.25.7
 nova:base-components@0.25.7
 nova:base-styles@0.25.7
 nova:categories@0.25.7

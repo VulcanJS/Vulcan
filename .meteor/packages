@@ -27,9 +27,9 @@ nova:forms
 nova:embedly
 nova:base-components
 nova:base-styles
+nova:api
 
 # nova:migrations
-# nova:api
 # nova:email
 # nova:embedly
 # nova:invites
