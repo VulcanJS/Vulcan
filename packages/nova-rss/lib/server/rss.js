@@ -1,10 +1,10 @@
 RSS = Npm.require('rss');
 
 getMeta = function (url) {
-  var siteUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
+  var siteUrl = Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
   return {
-    title: Settings.get('title'),
-    description: Settings.get('tagline'),
+    title: Telescope.settings.get('title'),
+    description: Telescope.settings.get('tagline'),
     feed_url: siteUrl+url,
     site_url: siteUrl,
     image_url: siteUrl+'img/favicon.png'
@@ -14,10 +14,12 @@ getMeta = function (url) {
 servePostRSS = function (terms, url) {
   var feed = new RSS(getMeta(url));
 
-  var params = Posts.parameters.get(terms);
-  delete params['options']['sort']['sticky'];
+  var parameters = Posts.parameters.get(terms);
+  delete parameters['options']['sort']['sticky'];
 
-  Posts.find(params.find, params.options).forEach(function(post) {
+  const postsCursor = Posts.find(parameters.selector, parameters.options);
+
+  postsCursor.forEach(function(post) {
 
     var description = !!post.body ? post.body+'</br></br>' : '';
     var feedItem = {
@@ -26,7 +28,7 @@ servePostRSS = function (terms, url) {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: (Settings.get("RSSLinksPointTo", "link") === "link") ? Posts.getLink(post) : Posts.getPageUrl(post, true)
+      url: (Telescope.settings.get("RSSLinksPointTo", "link") === "link") ? Posts.getLink(post) : Posts.getPageUrl(post, true)
     };
 
     if (post.thumbnailUrl) {

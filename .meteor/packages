@@ -28,6 +28,7 @@ nova:embedly
 nova:base-components
 nova:base-styles
 nova:api
+nova:rss
 
 # nova:migrations
 # nova:email
@@ -37,7 +38,6 @@ nova:api
 # nova:post-by-feed
 # nova:prerender
 # nova:releases
-# nova:rss
 # nova:subscribe-to-posts
 # nova-demo
 

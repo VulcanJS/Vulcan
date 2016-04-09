@@ -36,7 +36,7 @@ Posts.parameters.get = function (terms) {
   parameters = Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
   // console.log(parameters);
-
+  
   return parameters;
 };
 

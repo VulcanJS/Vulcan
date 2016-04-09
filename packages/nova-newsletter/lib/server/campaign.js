@@ -37,7 +37,7 @@ Campaign.getPosts = function (postsCount) {
     after: after,
     limit: postsCount
   });
-  return Posts.find(params.find, params.options).fetch();
+  return Posts.find(params.selector, params.options).fetch();
 };
 
 /**
