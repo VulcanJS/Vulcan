@@ -29,12 +29,12 @@ nova:base-components
 nova:base-styles
 nova:api
 nova:rss
+nova:kadira
 
 # nova:migrations
 # nova:email
 # nova:embedly
 # nova:invites
-# nova:kadira
 # nova:post-by-feed
 # nova:prerender
 # nova:releases
