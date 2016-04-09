@@ -1,11 +1,11 @@
 /**
- * The global namespace for Comments.
+ * @summary The global namespace for Comments.
  * @namespace Comments
  */
 Comments = new Mongo.Collection("comments");
 
 /**
- * Comments schema
+ * @summary Comments schema
  * @type {SimpleSchema}
  */
 Comments.schema = new SimpleSchema({

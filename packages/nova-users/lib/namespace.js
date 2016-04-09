@@ -1,5 +1,5 @@
 /**
- * Telescope Users namespace
+ * @summary Telescope Users namespace
  * @namespace Users
  */
 Users = Meteor.users;

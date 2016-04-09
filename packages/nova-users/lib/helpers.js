@@ -3,7 +3,7 @@
 ////////////////////
 
 /**
- * Get a user
+ * @summary Get a user
  * @param {String} userOrUserId
  */
 Users.getUser = function (userOrUserId) {
@@ -21,7 +21,7 @@ Users.getUser = function (userOrUserId) {
 };
 
 /**
- * Get a user's username (unique, no special characters or spaces)
+ * @summary Get a user's username (unique, no special characters or spaces)
  * @param {Object} user
  */
 Users.getUserName = function (user) {
@@ -40,7 +40,7 @@ Users.helpers({getUserName: function () {return Users.getUserName(this);}});
 Users.getUserNameById = function (userId) {return Users.getUserName(Meteor.users.findOne(userId))};
 
 /**
- * Get a user's display name (not unique, can take special characters and spaces)
+ * @summary Get a user's display name (not unique, can take special characters and spaces)
  * @param {Object} user
  */
 Users.getDisplayName = function (user) {
@@ -54,7 +54,7 @@ Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}}
 Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor.users.findOne(userId));};
 
 /**
- * Get a user's profile URL
+ * @summary Get a user's profile URL
  * @param {Object} user (note: we only actually need either the _id or slug properties)
  * @param {Boolean} isAbsolute
  */
@@ -73,7 +73,7 @@ Users.getProfileUrl = function (user, isAbsolute) {
 Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
 /**
- * Get a user's Twitter name
+ * @summary Get a user's Twitter name
  * @param {Object} user
  */
 Users.getTwitterName = function (user) {
@@ -91,7 +91,7 @@ Users.helpers({getTwitterName: function () {return Users.getTwitterName(this);}}
 Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Meteor.users.findOne(userId));};
 
 /**
- * Get a user's GitHub name
+ * @summary Get a user's GitHub name
  * @param {Object} user
  */
 Users.getGitHubName = function (user) {
@@ -107,7 +107,7 @@ Users.helpers({getGitHubName: function () {return Users.getGitHubName(this);}});
 Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Meteor.users.findOne(userId));};
 
 /**
- * Get a user's email
+ * @summary Get a user's email
  * @param {Object} user
  */
 Users.getEmail = function (user) {
@@ -121,7 +121,7 @@ Users.helpers({getEmail: function () {return Users.getEmail(this);}});
 Users.getEmailById = function (userId) {return Users.getEmail(Meteor.users.findOne(userId));};
 
 /**
- * Get a user's email hash
+ * @summary Get a user's email hash
  * @param {Object} user
  */
 Users.getEmailHash = function (user) {
@@ -132,7 +132,7 @@ Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Meteor.users.findOne(userId));};
 
 /**
- * Check if a user's profile is complete
+ * @summary Check if a user's profile is complete
  * @param {Object} user
  */
 Users.userProfileComplete = function (user) {
@@ -147,7 +147,7 @@ Users.helpers({userProfileComplete: function () {return Users.userProfileComplet
 Users.userProfileCompleteById = function (userId) {return Users.userProfileComplete(Meteor.users.findOne(userId));};
 
 /**
- * Get a user setting
+ * @summary Get a user setting
  * @param {Object} user
  * @param {String} settingName
  * @param {Object} defaultValue
@@ -169,7 +169,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
 Users.helpers({getSetting: function (settingName, defaultValue) {return Users.getSetting(this, settingName, defaultValue);}});
 
 /**
- * Set a user setting
+ * @summary Set a user setting
  * @param {Object} user
  * @param {String} settingName
  * @param {Object} defaultValue
@@ -182,7 +182,7 @@ Users.setSetting = function (user, settingName, value) {
 Users.helpers({setSetting: function () {return Users.setSetting(this);}});
 
 /**
- * Check if a user has upvoted a post
+ * @summary Check if a user has upvoted a post
  * @param {Object} user
  * @param {Object} post
  */
@@ -192,7 +192,7 @@ Users.hasUpvoted = function (user, post) {
 Users.helpers({hasUpvoted: function (post) {return Users.hasUpvoted(this, post);}});
 
 /**
- * Check if a user has downvoted a post
+ * @summary Check if a user has downvoted a post
  * @param {Object} user
  * @param {Object} post
  */
@@ -259,7 +259,7 @@ Users.findByEmail = function (email) {
 
 
 /**
- * @method Users.getRequiredFields
+ * @summary @method Users.getRequiredFields
  * Get a list of all fields required for a profile to be complete.
  */
 Users.getRequiredFields = function () {
@@ -272,7 +272,7 @@ Users.getRequiredFields = function () {
 };
 
 /**
- * Check if the user has completed their profile.
+ * @summary Check if the user has completed their profile.
  * @param {Object} user
  */
 Users.hasCompletedProfile = function (user) {
@@ -284,7 +284,7 @@ Users.helpers({hasCompletedProfile: function () {return Users.hasCompletedProfil
 Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Meteor.users.findOne(userId));};
 
 /**
- * Check if the user has upvoted an item before
+ * @summary Check if the user has upvoted an item before
  * @param {Object} user
  * @param {Object} item
  */
@@ -294,7 +294,7 @@ Users.hasUpvotedItem = function (user, item) {
 Users.helpers({hasUpvotedItem: function (item) {return Users.hasUpvotedItem(this, item);}});
 
 /**
- * Check if the user has downvoted an item before
+ * @summary Check if the user has downvoted an item before
  * @param {Object} user
  * @param {Object} item
  */

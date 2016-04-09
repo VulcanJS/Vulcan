@@ -1,11 +1,11 @@
 /**
- * Telescope roles
+ * @summary Telescope roles
  * @namespace Users.is
  */
 Users.is = {};
 
 /**
- * Check if a user is an admin
+ * @summary Check if a user is an admin
  * @param {Object|string} userOrUserId - The user or their userId
  */
 Users.is.admin = function (userOrUserId) {
@@ -21,7 +21,7 @@ Users.is.adminById = Users.is.admin;
 Users.helpers({_isAdmin: function () {return Users.is.admin(this);}});
 
 /**
- * Check if a user owns a document
+ * @summary Check if a user owns a document
  * @param {Object|string} userOrUserId - The user or their userId
  * @param {Object} document - The document to check (post, comment, user object, etc.)
  */
@@ -43,7 +43,7 @@ Users.is.ownerById = Users.is.owner;
 Users.helpers({isOwner: function () {return Users.is.owner(this, document);}});
 
 /**
- * Check if a user is a member or an admin
+ * @summary Check if a user is a member or an admin
  * @param {Object} user - The user
  * @param {Object} document - The document to check (post, comment, user object, etc.)
  */
@@ -56,7 +56,7 @@ Users.is.memberOrAdmin = function (user) {
 };
 
 /**
- * Check if a user owns a document or is an admin
+ * @summary Check if a user owns a document or is an admin
  * @param {Object} user - The user
  * @param {Object} document - The document to check (post, comment, user object, etc.)
  */

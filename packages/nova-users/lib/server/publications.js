@@ -1,5 +1,5 @@
 /**
- * Publish a single user
+ * @summary Publish a single user
  * @param {String} idOrSlug
  */
 Meteor.publish('users.single', function (terms) {
@@ -15,7 +15,7 @@ Meteor.publish('users.single', function (terms) {
 });
 
 /**
- * Publish the current user
+ * @summary Publish the current user
  */
 Meteor.publish('users.current', function () {
   const user = Meteor.users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});

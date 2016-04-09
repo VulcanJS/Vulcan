@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////
 
 /**
- * Generate HTML body and excerpt from Markdown on post insert
+ * @summary Generate HTML body and excerpt from Markdown on post insert
  */
 Posts.before.insert(function (userId, doc) {
   if(!!doc.body) {
@@ -15,7 +15,7 @@ Posts.before.insert(function (userId, doc) {
 });
 
 /**
- * Generate HTML body and excerpt from Markdown when post body is updated
+ * @summary Generate HTML body and excerpt from Markdown when post body is updated
  */
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if body is being modified or $unset, update htmlBody too
@@ -31,7 +31,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * Generate slug when post title is updated
+ * @summary Generate slug when post title is updated
  */
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
   // if title is being modified, update slug too
@@ -41,7 +41,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * Disallow $rename
+ * @summary Disallow $rename
  */
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
   if (!!modifier.$rename) {
@@ -58,7 +58,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 // ------------------------------------- posts.new.method -------------------------------- //
 
 /**
- * Check that the current user can post
+ * @summary Check that the current user can post
  */
 function clientSubmitChecks (post, user) {
   // check that user can post
@@ -69,7 +69,7 @@ function clientSubmitChecks (post, user) {
 Telescope.callbacks.add("posts.new.method", clientSubmitChecks);
 
 /**
- * Rate limiting
+ * @summary Rate limiting
  */
 function rateLimiting (post, user) {
 
@@ -95,7 +95,7 @@ function rateLimiting (post, user) {
 Telescope.callbacks.add("posts.new.method", rateLimiting);
 
 /**
- * Properties
+ * @summary Properties
  */
 function propertyChecks (post, user) {
 
@@ -122,7 +122,7 @@ function propertyChecks (post, user) {
 Telescope.callbacks.add("posts.new.method", propertyChecks);
 
 /**
- * Properties
+ * @summary Properties
  */
 function methodDefaultProperties (post, user) {
 
@@ -145,7 +145,7 @@ Telescope.callbacks.add("posts.new.method", methodDefaultProperties);
 // ------------------------------------- posts.new.sync -------------------------------- //
 
 /**
- * Check for necessary properties
+ * @summary Check for necessary properties
  */
 function postSubmitChecks (post, user) {
   // check that a title was provided
@@ -159,7 +159,7 @@ function postSubmitChecks (post, user) {
 Telescope.callbacks.add("posts.new.sync", postSubmitChecks);
 
 /**
- * Set properties to default values if missing
+ * @summary Set properties to default values if missing
  */
 function setProperties (post, user) {
 
@@ -190,7 +190,7 @@ function setProperties (post, user) {
 Telescope.callbacks.add("posts.new.sync", setProperties);
 
 /**
- * Set postedAt date
+ * @summary Set postedAt date
  */
 function setPostedAt (post, user) {
   // if post is approved but doesn't have a postedAt date, give it a default date
@@ -205,7 +205,7 @@ Telescope.callbacks.add("posts.new.sync", setPostedAt);
 // ------------------------------------- posts.new.async -------------------------------- //
 
 /**
- * Increment the user's post count
+ * @summary Increment the user's post count
  */
 function incrementPostCount (post) {
   var userId = post.userId;
@@ -215,7 +215,7 @@ function incrementPostCount (post) {
 Telescope.callbacks.add("posts.new.async", incrementPostCount);
 
 /**
- * Make users upvote their own new posts
+ * @summary Make users upvote their own new posts
  */
 if (typeof Telescope.operateOnItem !== "undefined") {
   function upvoteOwnPost (post) {
@@ -227,7 +227,7 @@ if (typeof Telescope.operateOnItem !== "undefined") {
 }
 
 /**
- * Add new post notification callback on post submit
+ * @summary Add new post notification callback on post submit
  */
 if (typeof Telescope.notifications !== "undefined") {
   function postSubmitNotification (post) {
@@ -254,7 +254,7 @@ if (typeof Telescope.notifications !== "undefined") {
   Telescope.callbacks.add("posts.new.async", postSubmitNotification);
 
 /**
- * Add notification callback when a post is approved
+ * @summary Add notification callback when a post is approved
  */
 
   function postApprovedNotification (post) {
@@ -275,7 +275,7 @@ if (typeof Telescope.notifications !== "undefined") {
 // ------------------------------------- posts.edit.sync -------------------------------- //
 
 /**
- * Force sticky to default to false when it's not specified
+ * @summary Force sticky to default to false when it's not specified
  */
 function forceStickyToFalse (modifier, post) {
   if (!modifier.$set.sticky) {
@@ -289,7 +289,7 @@ Telescope.callbacks.add("posts.edit.sync", forceStickyToFalse);
 // ------------------------------------- posts.edit.async -------------------------------- //
 
 /**
- * Set postedAt date
+ * @summary Set postedAt date
  */
 function setPostedAtOnEdit (post, oldPost) {
   // if post is approved but doesn't have a postedAt date, give it a default date

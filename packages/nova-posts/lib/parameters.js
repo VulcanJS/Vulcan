@@ -1,12 +1,13 @@
 /**
- * Parameter callbacks let you add parameters to subscriptions 
+ * @summary Parameter callbacks let you add parameters to subscriptions 
  * @namespace Posts.parameters
  */
 Posts.parameters = {};
 
 /**
- * Takes a set of terms, and translates them into a `parameter` object containing the appropriate find
+ * @summary Takes a set of terms, and translates them into a `parameter` object containing the appropriate find
  * and options arguments for the subscriptions's Posts.find()
+ * @memberof Parameters
  * @param {Object} terms
  */
 Posts.parameters.get = function (terms) {

@@ -4,7 +4,7 @@
   // node.js install path, default to: "`which node`" on Mac and Linux, "`where node`" on Windows
   "nodePath": "",
   // Project docs path
-  "docsPath": "~/nova-docs",
+  "docsPath": "~/Dev/nova-docs",
   // Project docs Meteor server port, default to: 3333
   "meteorPort": 3333,
   // Copy the Meteor docs server before building the docs (required for the first build)

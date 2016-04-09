@@ -6,7 +6,7 @@
 
 Posts.methods = {};
 /**
- * Insert a post in the database (note: optional post properties not listed here)
+ * @summary Insert a post in the database (note: optional post properties not listed here)
  * @param {Object} post - the post being inserted
  * @param {string} post.userId - the id of the user the post belongs to
  * @param {string} post.title - the post's title
@@ -26,7 +26,7 @@ Posts.methods.new = function (post) {
 };
 
 /**
- * Edit a post in the database
+ * @summary Edit a post in the database
  * @param {string} postId – the ID of the post being edited
  * @param {Object} modifier – the modifier object
  * @param {Object} post - the current post object
@@ -55,8 +55,9 @@ var postViews = [];
 Meteor.methods({
 
   /**
-   * Meteor method for submitting a post from the client
+   * @summary Meteor method for submitting a post from the client
    * @memberof Posts
+   * @isMethod true
    * @param {Object} post - the post being inserted
    */
   'posts.new': function(post){
@@ -86,8 +87,9 @@ Meteor.methods({
   },
 
   /**
-   * Meteor method for editing a post from the client
+   * @summary Meteor method for editing a post from the client
    * @memberof Posts
+   * @isMethod true
    * @param {Object} modifier - the update modifier
    * @param {Object} postId - the id of the post being updated
    */
@@ -127,6 +129,12 @@ Meteor.methods({
 
   },
 
+  /**
+   * @summary Meteor method for approving a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post to approve
+   */
   'posts.approve': function(postId){
 
     check(postId, String);
@@ -151,6 +159,12 @@ Meteor.methods({
     }
   },
 
+  /**
+   * @summary Meteor method for rejecting a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post to reject
+   */
   'posts.reject': function(postId){
 
     check(postId, String);
@@ -167,6 +181,12 @@ Meteor.methods({
     }
   },
 
+  /**
+   * @summary Meteor method for increasing the number of views on a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post
+   */
   'posts.increaseViews': function(postId, sessionId){
 
     check(postId, String);
@@ -183,6 +203,12 @@ Meteor.methods({
     }
   },
 
+  /**
+   * @summary Meteor method for deleting a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post
+   */
   'posts.deleteById': function(postId) {
 
     check(postId, String);
@@ -207,25 +233,56 @@ Meteor.methods({
 
   },
 
+  /**
+   * @summary Check for other posts with the same URL
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} url - the URL to check
+   */
   'posts.checkForDuplicates': function (url) {
     Posts.checkForSameUrl(url);  
   },
 
+  /**
+   * Upvote a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post
+   */
   'posts.upvote': function (postId) {
     check(postId, String);
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
   },
 
+  /**
+   * Downvote a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post
+   */
   'posts.downvote': function (postId) {
     check(postId, String);
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
   },
 
+
+  /**
+   * Cancel an upvote on a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post
+   */
   'posts.cancelUpvote': function (postId) {
     check(postId, String);
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
   },
 
+  /**
+   * Cancel a downvote on a post
+   * @memberof Posts
+   * @isMethod true
+   * @param {String} postId - the id of the post
+   */
   'posts.cancelDownvote': function (postId) {
     check(postId, String);
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");

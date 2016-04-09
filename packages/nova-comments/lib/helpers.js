@@ -3,7 +3,7 @@
 //////////////////
 
 /**
- * Get URL of a comment page.
+ * @summary Get URL of a comment page.
  * @param {Object} comment
  */
 Comments.getPageUrl = function(comment, isAbsolute){
@@ -18,7 +18,7 @@ Comments.helpers({getPageUrl: function () {return Comments.getPageUrl(this);}});
 ///////////////////
 
 /**
- * Get a comment author's name
+ * @summary Get a comment author's name
  * @param {Object} comment
  */
 Comments.getAuthorName = function (comment) {

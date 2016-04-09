@@ -1,7 +1,7 @@
 // ------------------------------ Dynamic Icons ------------------------------ //
 
 /**
- * Take an icon name (such as "open") and return the HTML code to display the icon
+ * @summary Take an icon name (such as "open") and return the HTML code to display the icon
  * @param {string} iconName - the name of the icon
  * @param {string} [iconClass] - an optional class to assign to the icon
  */
@@ -13,7 +13,7 @@ Telescope.utils.getIcon = function (iconName, iconClass) {
 };
 
 /**
- * A directory of icon keys and icon codes
+ * @summary A directory of icon keys and icon codes
  */
 Telescope.utils.icons = {
   expand: "angle-right",

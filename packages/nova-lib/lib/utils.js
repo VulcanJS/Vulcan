@@ -1,12 +1,12 @@
 
 /**
- * The global namespace for Telescope utils.
+ * @summary The global namespace for Telescope utils.
  * @namespace Telescope.utils
  */
 Telescope.utils = {};
 
 /**
- * Convert a camelCase string to dash-separated string
+ * @summary Convert a camelCase string to dash-separated string
  * @param {String} str
  */
 Telescope.utils.camelToDash = function (str) {
@@ -14,7 +14,7 @@ Telescope.utils.camelToDash = function (str) {
 };
 
 /**
- * Convert a camelCase string to a space-separated capitalized string
+ * @summary Convert a camelCase string to a space-separated capitalized string
  * See http://stackoverflow.com/questions/4149276/javascript-camelcase-to-regular-form
  * @param {String} str
  */
@@ -23,7 +23,7 @@ Telescope.utils.camelToSpaces = function (str) {
 };
 
 /**
- * Convert an underscore-separated string to dash-separated string
+ * @summary Convert an underscore-separated string to dash-separated string
  * @param {String} str
  */
 Telescope.utils.underscoreToDash = function (str) {
@@ -31,7 +31,7 @@ Telescope.utils.underscoreToDash = function (str) {
 };
 
 /**
- * Convert a dash separated string to camelCase.
+ * @summary Convert a dash separated string to camelCase.
  * @param {String} str
  */
 Telescope.utils.dashToCamel = function (str) {
@@ -39,7 +39,7 @@ Telescope.utils.dashToCamel = function (str) {
 };
 
 /**
- * Convert a string to camelCase and remove spaces.
+ * @summary Convert a string to camelCase and remove spaces.
  * @param {String} str
  */
 Telescope.utils.camelCaseify = function(str) {
@@ -49,7 +49,7 @@ Telescope.utils.camelCaseify = function(str) {
 };
 
 /**
- * Trim a sentence to a specified amount of words and append an ellipsis.
+ * @summary Trim a sentence to a specified amount of words and append an ellipsis.
  * @param {String} s - Sentence to trim.
  * @param {Number} numWords - Number of words to trim sentence to.
  */
@@ -65,7 +65,7 @@ Telescope.utils.trimWords = function(s, numWords) {
 };
 
 /**
- * Trim a block of HTML code to get a clean text excerpt
+ * @summary Trim a block of HTML code to get a clean text excerpt
  * @param {String} html - HTML to trim.
  */
 Telescope.utils.trimHTML = function (html, numWords) {
@@ -74,7 +74,7 @@ Telescope.utils.trimHTML = function (html, numWords) {
 };
 
 /**
- * Capitalize a string.
+ * @summary Capitalize a string.
  * @param {String} str
  */
 Telescope.utils.capitalise = function(str) {
@@ -111,14 +111,14 @@ Telescope.utils.getDateRange = function(pageNumber) {
 //////////////////////////
 
 /**
- * Returns the user defined site URL or Meteor.absoluteUrl
+ * @summary Returns the user defined site URL or Meteor.absoluteUrl
  */
 Telescope.utils.getSiteUrl = function () {
   return Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
 };
 
 /**
- * The global namespace for Telescope utils.
+ * @summary The global namespace for Telescope utils.
  * @param {String} url - the URL to redirect
  */
 Telescope.utils.getOutgoingUrl = function (url) {

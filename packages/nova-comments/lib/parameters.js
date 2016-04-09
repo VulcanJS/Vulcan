@@ -1,8 +1,9 @@
 Comments.parameters = {};
 
 /**
- * Gives an object containing the appropriate find
+ * @summary Gives an object containing the appropriate find
  * and options arguments for the subscriptions's Comments.find()
+ * @memberof Parameters
  * @param {Object} terms
  */
 Comments.parameters.get = function (terms) {

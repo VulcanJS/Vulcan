@@ -1,11 +1,11 @@
 /**
- * Post views are filters used for subscribing to and viewing posts
+ * @summary Post views are filters used for subscribing to and viewing posts
  * @namespace Posts.views
  */
 Posts.views = {};
 
 /**
- * Add a post view
+ * @summary Add a post view
  * @param {string} viewName - The name of the view
  * @param {function} [viewFunction] - The function used to calculate query terms. Takes terms and baseParameters arguments
  */
@@ -14,7 +14,7 @@ Posts.views.add = function (viewName, viewFunction) {
 };
 
 /**
- * Base parameters that will be common to all other view unless specific properties are overwritten
+ * @summary Base parameters that will be common to all other view unless specific properties are overwritten
  */
 Posts.views.baseParameters = {
   selector: {
@@ -26,7 +26,7 @@ Posts.views.baseParameters = {
 };
 
 /**
- * Top view
+ * @summary Top view
  */
 Posts.views.add("top", function (terms) {
   return {
@@ -35,7 +35,7 @@ Posts.views.add("top", function (terms) {
 });
 
 /**
- * New view
+ * @summary New view
  */
 Posts.views.add("new", function (terms) {
   return {
@@ -44,7 +44,7 @@ Posts.views.add("new", function (terms) {
 });
 
 /**
- * Best view
+ * @summary Best view
  */
 Posts.views.add("best", function (terms) {
   return {
@@ -53,7 +53,7 @@ Posts.views.add("best", function (terms) {
 });
 
 /**
- * Pending view
+ * @summary Pending view
  */
 Posts.views.add("pending", function (terms) {
   return {
@@ -66,7 +66,7 @@ Posts.views.add("pending", function (terms) {
 });
 
 /**
- * Rejected view
+ * @summary Rejected view
  */
 Posts.views.add("rejected", function (terms) {
   return {
@@ -79,7 +79,7 @@ Posts.views.add("rejected", function (terms) {
 });
 
 /**
- * Scheduled view
+ * @summary Scheduled view
  */
 Posts.views.add("scheduled", function (terms) {
   return {
@@ -90,7 +90,7 @@ Posts.views.add("scheduled", function (terms) {
 });
 
 /**
- * User posts view
+ * @summary User posts view
  */
 Posts.views.add("userPosts", function (terms) {
   return {
@@ -100,7 +100,7 @@ Posts.views.add("userPosts", function (terms) {
 });
 
 /**
- * User upvoted posts view
+ * @summary User upvoted posts view
  */
 Posts.views.add("userUpvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);
@@ -112,7 +112,7 @@ Posts.views.add("userUpvotedPosts", function (terms) {
 });
 
 /**
- * User downvoted posts view
+ * @summary User downvoted posts view
  */
 Posts.views.add("userDownvotedPosts", function (terms) {
   var user = Meteor.users.findOne(terms.userId);

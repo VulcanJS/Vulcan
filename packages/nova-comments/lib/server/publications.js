@@ -2,7 +2,7 @@ Comments._ensureIndex({postId: 1});
 Comments._ensureIndex({parentCommentId: 1});
 
 /**
- * Publish a list of comments, along with the posts and users corresponding to these comments
+ * @summary Publish a list of comments, along with the posts and users corresponding to these comments
  * @param {Object} terms
  */
 Meteor.publish('comments.list', function (terms) {

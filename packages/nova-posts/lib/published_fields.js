@@ -3,7 +3,7 @@ import PublicationsUtils from 'meteor/utilities:smart-publications';
 Posts.publishedFields = {};
 
 /**
- * Specify which fields should be published by the posts.list publication
+ * @summary Specify which fields should be published by the posts.list publication
  * @array Posts.publishedFields.list
  */
 Posts.publishedFields.list = PublicationsUtils.arrayToFields([
@@ -26,7 +26,7 @@ Posts.publishedFields.list = PublicationsUtils.arrayToFields([
 ]);
 
 /**
- * Specify which fields should be published by the posts.single publication
+ * @summary Specify which fields should be published by the posts.single publication
  * @array Posts.publishedFields.single
  */
 Meteor.startup(() => {

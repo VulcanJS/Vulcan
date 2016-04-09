@@ -1,11 +1,11 @@
 /**
- * Comment views are filters used for subscribing to and viewing comments
+ * @summary Comment views are filters used for subscribing to and viewing comments
  * @namespace Comments.views
  */
 Comments.views = {};
 
 /**
- * Add a module to a comment view
+ * @summary Add a module to a comment view
  * @param {string} viewName - The name of the view
  * @param {function} [viewFunction] - The function used to calculate query terms. Takes terms and baseParameters arguments
  */

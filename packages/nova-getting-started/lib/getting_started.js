@@ -43,7 +43,7 @@ fieldSchema: {
 });
 
 /**
- * Copy over profile.isDummy to telescope.isDummy on user creation
+ * @summary Copy over profile.isDummy to telescope.isDummy on user creation
  * @param {Object} user – the user object being iterated on and returned
  * @param {Object} options – user options
  */

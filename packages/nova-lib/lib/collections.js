@@ -1,10 +1,10 @@
 /**
- * Meteor Collections.
+ * @summary Meteor Collections.
  * @class Mongo.Collection
  */
 
 /**
- * @summary Add an additional field (or an array of fields) to a schema.
+ * @summary @summary Add an additional field (or an array of fields) to a schema.
  * @param {Object|Object[]} field
  */
 Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
@@ -24,7 +24,7 @@ Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
 };
 
 /**
- * Remove a field from a schema.
+ * @summary Remove a field from a schema.
  * @param {String} fieldName
  */
 Mongo.Collection.prototype.removeField = function (fieldName) {
@@ -37,7 +37,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
 };
 
 /**
- * Global schemas object. Note: not reactive, won't be updated after initialization
+ * @summary Global schemas object. Note: not reactive, won't be updated after initialization
  * @namespace Telescope.schemas
  */
 Telescope.schemas = {};
