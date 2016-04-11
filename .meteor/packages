@@ -30,16 +30,13 @@ nova:base-styles
 nova:api
 nova:rss
 nova:kadira
+nova:email
+nova-demo
 
 # nova:migrations
-# nova:email
-# nova:embedly
 # nova:invites
 # nova:post-by-feed
-# nova:prerender
-# nova:releases
 # nova:subscribe-to-posts
-# nova-demo
 
 ############ Custom Packages ############
 

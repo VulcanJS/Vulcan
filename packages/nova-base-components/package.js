@@ -21,7 +21,7 @@ Package.onUse(function (api) {
 
     // third-party packages
 
-    'tmeasday:check-npm-versions@0.2.0',
+    'tmeasday:check-npm-versions@0.3.0',
     // 'alt:react-accounts-ui@1.2.1',
     // 'alt:react-accounts-unstyled@1.2.1',
     // 'std:accounts-ui-basic@1.0.1',

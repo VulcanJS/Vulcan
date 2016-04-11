@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const renderSetting = (field, key) => {
   return (
     <tr key={key}>
