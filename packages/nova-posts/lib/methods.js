@@ -78,7 +78,7 @@ Meteor.methods({
 
     post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
 
-    if (Meteor.isServer) {
+    if (Meteor.isServer && this.connection) {
       post.userIP = this.connection.clientAddress;
       post.userAgent = this.connection.httpHeaders["user-agent"];
     }
