@@ -1,5 +1,5 @@
 /**
- * A dictionnary of all the elements that use custom colors
+ * @summary A dictionnary of all the elements that use custom colors
  */
 
 Telescope.colorElements = {};
@@ -19,7 +19,7 @@ Telescope.colorElements.defaultColors = {
 };
 
 /**
- * Register an element to use a custom color
+ * @summary Register an element to use a custom color
  * @param {string} selector - the CSS selector of the element
  * @param {string} color - the color. Either `accentColor`, `accentContrastColor`, `secondaryColor`, or `secondaryContrastColor`
  * @param {string} [property=color] - the property to colorize. Usually `color`, `background-color`, `border-color`, etc. 

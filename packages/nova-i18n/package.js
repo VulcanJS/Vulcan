@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
     'nova:lib@0.25.7',
-    'tap:i18n@1.7.0'
+    'tap:i18n@1.8.0'
   ]);
 
   api.use(["session"], "client");

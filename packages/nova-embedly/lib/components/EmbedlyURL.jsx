@@ -40,7 +40,6 @@ class EmbedlyURL extends Component {
 
   render() {
     
-    const {name, value, label} = this.props;
     const Loading = Telescope.components.Loading;
 
     const wrapperStyle = {
@@ -58,17 +57,15 @@ class EmbedlyURL extends Component {
 
     return (
       <div className="embedly-url-field" style={wrapperStyle}>
-      <Input 
-        onBlur={this.handleBlur} 
-        name={name} 
-        value={value} 
-        label={label} 
-        type="text"  
-        ref={(ref) => this.input = ref}
-      />
-      <div className="embedly-url-field-loading" style={loadingStyle}>
-        <Loading />
-      </div>
+        <Input 
+          {...this.props}
+          onBlur={this.handleBlur} 
+          type="text"  
+          ref={ref => this.input = ref}
+        />
+        <div className="embedly-url-field-loading" style={loadingStyle}>
+          <Loading />
+        </div>
       </div>
     );
   }

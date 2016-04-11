@@ -16,7 +16,7 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * Disallow $rename
+ * @summary Disallow $rename
  */
 Comments.before.update(function (userId, doc, fieldNames, modifier) {
   if (!!modifier.$rename) {

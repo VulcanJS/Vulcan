@@ -1,5 +1,5 @@
 /**
- * Posts schema
+ * @summary Posts schema
  * @type {SimpleSchema}
  */
 Posts.schema = new SimpleSchema({
@@ -224,6 +224,6 @@ Posts.schema = new SimpleSchema({
 // });
 
 /**
- * Attach schema to Posts collection
+ * @summary Attach schema to Posts collection
  */
 Posts.attachSchema(Posts.schema);

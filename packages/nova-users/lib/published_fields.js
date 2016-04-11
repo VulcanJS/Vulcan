@@ -3,7 +3,7 @@ import PublicationsUtils from 'meteor/utilities:smart-publications';
 Users.publishedFields = {};
 
 /**
- * Specify which fields should be public
+ * @summary Specify which fields should be public
  * @type {Array}
  */
 Users.publishedFields.public = PublicationsUtils.arrayToFields([
@@ -15,7 +15,7 @@ Users.publishedFields.public = PublicationsUtils.arrayToFields([
 ]);
 
 /**
- * Minimum required properties to display avatars and display names
+ * @summary Minimum required properties to display avatars and display names
  * @type {Array}
  */
 // Users.publishedFields.list = PublicationsUtils.arrayToFields([

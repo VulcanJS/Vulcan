@@ -92,6 +92,7 @@ These packages are optional, although they might depend on each other. Note that
 - `tags`
 - `vote`
 - `scoring`
+- `forms` ([README](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms))
 
 #### Theme Packages
 

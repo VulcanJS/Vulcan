@@ -2,13 +2,13 @@
 // because they'll throw an error when the user is undefined
 
 /**
- * Telescope permissions
+ * @summary Telescope permissions
  * @namespace Users.can
  */
 Users.can = {};
 
 /**
- * Check if a given user has access to view posts
+ * @summary Check if a given user has access to view posts
  * @param {Object} user
  */
 Users.can.view = function (user) {
@@ -26,7 +26,7 @@ Users.can.view = function (user) {
 Users.helpers({canView: function () {return Users.can.view(this);}});
 
 /**
- * Check if a given user can view a specific post
+ * @summary Check if a given user can view a specific post
  * @param {Object} user
  * @param {Object} post
  */
@@ -40,7 +40,7 @@ Users.can.viewById = function (userId) {
 Users.helpers({canViewById: function () {return Users.can.viewById(this);}});
 
 /**
- * Check if a given user can view a specific post
+ * @summary Check if a given user can view a specific post
  * @param {Object} user - can be undefined!
  * @param {Object} post
  */
@@ -69,7 +69,7 @@ Users.can.viewPost = function (user, post) {
 Users.helpers({canViewPost: function () {return Users.can.viewPost(this, post);}});
 
 /**
- * Check if a given user has permission to submit new posts
+ * @summary Check if a given user has permission to submit new posts
  * @param {Object} user
  */
 Users.can.post = function (user) {
@@ -97,7 +97,7 @@ Users.can.post = function (user) {
 Users.helpers({canPost: function () {return Users.can.post(this);}});
 
 /**
- * Check if a given user has permission to comment (same as posting for now)
+ * @summary Check if a given user has permission to comment (same as posting for now)
  * @param {Object} user
  */
 Users.can.comment = function (user) {
@@ -106,7 +106,7 @@ Users.can.comment = function (user) {
 Users.helpers({canComment: function () {return Users.can.comment(this);}});
 
 /**
- * Check if a user has permission to vote (same as posting for now)
+ * @summary Check if a user has permission to vote (same as posting for now)
  * @param {Object} user
  */
 Users.can.vote = function (user) {
@@ -115,7 +115,7 @@ Users.can.vote = function (user) {
 Users.helpers({canVote: function () {return Users.can.vote(this);}});
 
 /**
- * Check if a user can edit a document
+ * @summary Check if a user can edit a document
  * @param {Object} user - The user performing the action
  * @param {Object} document - The document being edited
  */
@@ -140,7 +140,7 @@ Users.can.editById = function (userId, document) {
 Users.helpers({canEditById: function (document) {return Users.can.editById(this, document);}});
 
 /**
- * Check if a user can submit a field
+ * @summary Check if a user can submit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */

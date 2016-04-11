@@ -3,7 +3,7 @@ Posts._ensureIndex({"status": 1, "postedAt": 1});
 // ------------------------------------- Helpers -------------------------------- //
 
 /**
- * Get all users relevant to a list of posts
+ * @summary Get all users relevant to a list of posts
  * (authors of the listed posts, and first four commenters of each post)
  * @param {Object} posts
  */
@@ -24,7 +24,7 @@ const getPostsListUsers = posts => {
 };
 
 /**
- * Get all users relevant to a single post
+ * @summary Get all users relevant to a single post
  * (author of the current post, authors of its comments, and upvoters & downvoters of the post)
  * @param {Object} post
  */
@@ -57,7 +57,7 @@ const getSinglePostUsers = post => {
 // ------------------------------------- Publications -------------------------------- //
 
 /**
- * Publish a list of posts, along with the users corresponding to these posts
+ * @summary Publish a list of posts, along with the users corresponding to these posts
  * @param {Object} terms
  */
 Meteor.publish('posts.list', function (terms) {
@@ -85,7 +85,7 @@ Meteor.publish('posts.list', function (terms) {
 });
 
 /**
- * Publish a single post, along with all relevant users
+ * @summary Publish a single post, along with all relevant users
  * @param {Object} terms
  */
 Meteor.publish('posts.single', function (terms) {

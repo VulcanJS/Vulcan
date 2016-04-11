@@ -1,12 +1,13 @@
 /**
- * Parameter callbacks let you add parameters to subscriptions 
+ * @summary Parameter callbacks let you add parameters to subscriptions 
  * @namespace Posts.parameters
  */
 Posts.parameters = {};
 
 /**
- * Takes a set of terms, and translates them into a `parameter` object containing the appropriate find
+ * @summary Takes a set of terms, and translates them into a `parameter` object containing the appropriate find
  * and options arguments for the subscriptions's Posts.find()
+ * @memberof Parameters
  * @param {Object} terms
  */
 Posts.parameters.get = function (terms) {
@@ -35,7 +36,7 @@ Posts.parameters.get = function (terms) {
   parameters = Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
   // console.log(parameters);
-
+  
   return parameters;
 };
 
@@ -86,19 +87,32 @@ Telescope.callbacks.add("postsParameters", addTimeParameter);
 function limitPosts (parameters, terms) {
   var maxLimit = 200;
 
-  if (!terms.options) {
-    terms.options = {};
+  // 1. set default limit to 10
+  let limit = 10;
+
+  // 2. look for limit on terms.limit
+  if (terms.limit) {
+    limit = parseInt(terms.limit);
   }
 
-  // if a limit was provided with the terms, add it too (note: limit=0 means "no limit")
-  if (terms.options.limit) {
-    _.extend(parameters.options, {limit: parseInt(terms.options.limit)});
+  // 3. look for limit on terms.options.limit
+  if (terms.options && terms.options.limit) {
+    limit = parseInt(terms.options.limit);
   }
 
-  // limit to "maxLimit" items at most when limit is undefined, equal to 0, or superior to maxLimit
-  if(!parameters.options.limit || parameters.options.limit === 0 || parameters.options.limit > maxLimit) {
-    parameters.options.limit = maxLimit;
+  // 4. make sure limit is not greater than 200
+  if (limit > maxLimit) {
+    limit = maxLimit;
   }
+
+  // 5. initialize parameters.options if needed
+  if (!parameters.options) {
+    parameters.options = {};
+  }
+
+  // 6. set limit
+  parameters.options.limit = limit;
+
   return parameters;
 }
 Telescope.callbacks.add("postsParameters", limitPosts);

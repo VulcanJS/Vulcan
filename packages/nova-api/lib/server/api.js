@@ -3,7 +3,9 @@ serveAPI = function(terms){
 
   var parameters = Posts.parameters.get(terms);
 
-  Posts.find(parameters.find, parameters.options).forEach(function(post) {
+  const postsCursor = Posts.find(parameters.selector, parameters.options);
+
+  postsCursor.forEach(function(post) {
     var url = Posts.getLink(post);
     var postOutput = {
       title: post.title,

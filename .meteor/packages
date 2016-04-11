@@ -27,19 +27,16 @@ nova:forms
 nova:embedly
 nova:base-components
 nova:base-styles
+nova:api
+nova:rss
+nova:kadira
+nova:email
+nova-demo
 
 # nova:migrations
-# nova:api
-# nova:email
-# nova:embedly
 # nova:invites
-# nova:kadira
 # nova:post-by-feed
-# nova:prerender
-# nova:releases
-# nova:rss
 # nova:subscribe-to-posts
-# nova-demo
 
 ############ Custom Packages ############
 

@@ -1,6 +1,6 @@
 
 /**
- * Get all of a category's parents
+ * @summary Get all of a category's parents
  * @param {Object} category
  */
 Categories.getParents = function (category) {
@@ -19,7 +19,7 @@ Categories.getParents = function (category) {
 Categories.helpers({getParents: function () {return Categories.getParents(this);}});
 
 /**
- * Get all of a category's children
+ * @summary Get all of a category's children
  * @param {Object} category
  */
 Categories.getChildren = function (category) {
@@ -38,7 +38,7 @@ Categories.getChildren = function (category) {
 Categories.helpers({getChildren: function () {return Categories.getChildren(this);}});
 
 /**
- * Get all of a post's categories
+ * @summary Get all of a post's categories
  * @param {Object} post
  */
 Posts.getCategories = function (post) {
@@ -47,7 +47,7 @@ Posts.getCategories = function (post) {
 Posts.helpers({getCategories: function () {return Posts.getCategories(this);}});
 
 /**
- * Get a category's URL
+ * @summary Get a category's URL
  * @param {Object} category
  */
 Categories.getUrl = function (category, isAbsolute) {
@@ -59,7 +59,7 @@ Categories.getUrl = function (category, isAbsolute) {
 Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
 
 /**
- * Get a category's counter name
+ * @summary Get a category's counter name
  * @param {Object} category
  */
  Categories.getCounterName = function (category) {

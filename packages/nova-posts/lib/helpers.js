@@ -3,7 +3,7 @@
 //////////////////
 
 /**
- * Return a post's link if it has one, else return its post page URL
+ * @summary Return a post's link if it has one, else return its post page URL
  * @param {Object} post
  */
 Posts.getLink = function (post, isAbsolute) {
@@ -12,7 +12,7 @@ Posts.getLink = function (post, isAbsolute) {
 Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
 /**
- * Depending on the settings, return either a post's URL link (if it has one) or its page URL.
+ * @summary Depending on the settings, return either a post's URL link (if it has one) or its page URL.
  * @param {Object} post
  */
 Posts.getShareableLink = function (post) {
@@ -21,7 +21,7 @@ Posts.getShareableLink = function (post) {
 Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this);}});
 
 /**
- * Whether a post's link should open in a new tab or not
+ * @summary Whether a post's link should open in a new tab or not
  * @param {Object} post
  */
 Posts.getLinkTarget = function (post) {
@@ -30,7 +30,7 @@ Posts.getLinkTarget = function (post) {
 Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
 
 /**
- * Get URL of a post page.
+ * @summary Get URL of a post page.
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute){
@@ -41,7 +41,7 @@ Posts.getPageUrl = function(post, isAbsolute){
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
 
 /**
- * Get post edit page URL.
+ * @summary Get post edit page URL.
  * @param {String} id
  */
 Posts.getEditUrl = function(post, isAbsolute){
@@ -56,7 +56,7 @@ Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, 
 ///////////////////
 
 /**
- * Get a post author's name
+ * @summary Get a post author's name
  * @param {Object} post
  */
 Posts.getAuthorName = function (post) {
@@ -70,7 +70,7 @@ Posts.getAuthorName = function (post) {
 Posts.helpers({getAuthorName: function () {return Posts.getAuthorName(this);}});
 
 /**
- * Get default status for new posts.
+ * @summary Get default status for new posts.
  * @param {Object} user
  */
 Posts.getDefaultStatus = function (user) {
@@ -84,7 +84,7 @@ Posts.getDefaultStatus = function (user) {
 };
 
 /**
- * Check if a post is approved
+ * @summary Check if a post is approved
  * @param {Object} post
  */
 Posts.isApproved = function (post) {
@@ -93,7 +93,7 @@ Posts.isApproved = function (post) {
 Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
 
 /**
- * Check to see if post URL is unique.
+ * @summary Check to see if post URL is unique.
  * We need the current user so we know who to upvote the existing post as.
  * @param {String} url
  */
@@ -109,14 +109,14 @@ Posts.checkForSameUrl = function (url) {
 };
 
 /**
- * When on a post page, return the current post
+ * @summary When on a post page, return the current post
  */
 Posts.current = function () {
   return Posts.findOne(FlowRouter.getParam("_id"));
 };
 
 /**
- * Check to see if a post is a link to a video
+ * @summary Check to see if a post is a link to a video
  * @param {Object} post
  */
 Posts.isVideo = function (post) {

@@ -5,6 +5,6 @@ Meteor.publish('userSubscribedPosts', function(terms) {
   }
 
   var parameters = Posts.parameters.get(terms);
-  var posts = Posts.find(parameters.find, parameters.options);
+  var posts = Posts.find(parameters.selector, parameters.options);
   return posts;
 });

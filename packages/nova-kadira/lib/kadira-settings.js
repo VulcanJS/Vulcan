@@ -9,7 +9,7 @@ var kadiraAppIdProperty = {
     }
   }
 };
-Settings.addField(kadiraAppIdProperty);
+Telescope.settings.collection.addField(kadiraAppIdProperty);
 
 var kadiraAppSecretProperty = {
   fieldName: "kadiraAppSecret",
@@ -24,4 +24,4 @@ var kadiraAppSecretProperty = {
     }
   }
 };
-Settings.addField(kadiraAppSecretProperty);
+Telescope.settings.collection.addField(kadiraAppSecretProperty);

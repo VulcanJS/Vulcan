@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////
 
 /**
- * Generate HTML body from Markdown on user bio insert
+ * @summary Generate HTML body from Markdown on user bio insert
  */
 Users.after.insert(function (userId, user) {
 
@@ -18,7 +18,7 @@ Users.after.insert(function (userId, user) {
 });
 
 /**
- * Generate HTML body from Markdown when user bio is updated
+ * @summary Generate HTML body from Markdown when user bio is updated
  */
 Users.before.update(function (userId, doc, fieldNames, modifier) {
   // if bio is being modified, update htmlBio too
@@ -28,7 +28,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * Disallow $rename
+ * @summary Disallow $rename
  */
 Users.before.update(function (userId, doc, fieldNames, modifier) {
   if (!!modifier.$rename) {
@@ -37,7 +37,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * If user.telescope.email has changed, check for existing emails and change user.emails and email hash if needed
+ * @summary If user.telescope.email has changed, check for existing emails and change user.emails and email hash if needed
  */
  if (Meteor.isServer) {
   Users.before.update(function (userId, doc, fieldNames, modifier) {
@@ -73,7 +73,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 //////////////////////////////////////////////////////
 
 /**
- * Set up user object on creation
+ * @summary Set up user object on creation
  * @param {Object} user – the user object being iterated on and returned
  * @param {Object} options – user options
  */

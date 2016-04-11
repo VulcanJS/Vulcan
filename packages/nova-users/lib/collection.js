@@ -1,6 +1,6 @@
 
 /**
- * Vote schema
+ * @summary Vote schema
  * @type {SimpleSchema}
  */
 Telescope.schemas.votes = new SimpleSchema({
@@ -18,7 +18,7 @@ Telescope.schemas.votes = new SimpleSchema({
 });
 
 /**
- * User Data schema
+ * @summary User Data schema
  * @type {SimpleSchema}
  */
 Telescope.schemas.userData = new SimpleSchema({
@@ -187,7 +187,7 @@ Telescope.schemas.userData = new SimpleSchema({
 });
 
 /**
- * Users schema
+ * @summary Users schema
  * @type {SimpleSchema}
  */
 Users.schema = new SimpleSchema({ 
@@ -252,7 +252,7 @@ Users.schema = new SimpleSchema({
 // });
 
 /**
- * Attach schema to Meteor.users collection
+ * @summary Attach schema to Meteor.users collection
  */
 Users.attachSchema(Users.schema);
 

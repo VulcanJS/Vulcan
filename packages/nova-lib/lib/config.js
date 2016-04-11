@@ -1,5 +1,5 @@
 /**
- * Kick off the global namespace for Telescope.
+ * @summary Kick off the global namespace for Telescope.
  * @namespace Telescope
  */
 
@@ -10,7 +10,7 @@ Telescope.VERSION = '0.25.7';
 // ------------------------------------- Config -------------------------------- //
 
 /**
- * Telescope configuration namespace
+ * @summary Telescope configuration namespace
  * @namespace Telescope.config
  */
 Telescope.config = {};
@@ -44,13 +44,13 @@ Telescope.getComponent = (name) => {
 // ------------------------------------- Subscriptions -------------------------------- //
 
  /**
- * Subscriptions namespace
+ * @summary Subscriptions namespace
  * @namespace Telescope.subscriptions
  */
 Telescope.subscriptions = [];
 
 /**
- * Add a subscription to be preloaded
+ * @summary Add a subscription to be preloaded
  * @param {string} subscription - The name of the subscription
  */
 Telescope.subscriptions.preload = function (subscription, args) {

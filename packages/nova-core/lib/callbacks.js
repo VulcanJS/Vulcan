@@ -3,7 +3,7 @@ var modifyKarma = function (userId, karma) {
 };
 
 /**
- * Update an item's (post or comment) score
+ * @summary Update an item's (post or comment) score
  * @param {object} item - The item being operated on
  * @param {object} user - The user doing the operation
  * @param {object} collection - The collection the item belongs to
@@ -18,7 +18,7 @@ Telescope.callbacks.add("cancelUpvote.async", updateScore);
 Telescope.callbacks.add("cancelDownvote.async", updateScore);
 
 /**
- * Update the profile of the user doing the operation
+ * @summary Update the profile of the user doing the operation
  * @param {object} item - The item being operated on
  * @param {object} user - The user doing the operation
  * @param {object} collection - The collection the item belongs to
@@ -58,7 +58,7 @@ Telescope.callbacks.add("cancelUpvote.async", updateUser);
 Telescope.callbacks.add("cancelDownvote.async", updateUser);
 
 /**
- * Update the karma of the item's owner
+ * @summary Update the karma of the item's owner
  * @param {object} item - The item being operated on
  * @param {object} user - The user doing the operation
  * @param {object} collection - The collection the item belongs to

@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   var packages = [
-    'meteor-base@1.0.1',
+    'meteor-base@1.0.3',
     'mongo',
     'blaze-html-templates@1.0.1',
     'jquery',
@@ -25,6 +25,7 @@ Package.onUse(function (api) {
     'reactive-var',
     'http',
     'email',
+    'tracker',
     'aldeed:simple-schema@1.5.3',
 
     // 'nicolaslopezj:mrf@0.1.1',
@@ -48,7 +49,7 @@ Package.onUse(function (api) {
     // 'useraccounts:unstyled@1.13.1',
     // 'useraccounts:flow-routing@1.13.1',
     // 'aramk:tinycolor@1.1.0_1',
-    'momentjs:moment@2.11.2',
+    'momentjs:moment@2.12.0',
     // 'sacha:spin@2.3.1',
     // 'aslagle:reactive-table@0.8.24',
     'utilities:avatar@0.9.2',
@@ -68,14 +69,14 @@ Package.onUse(function (api) {
     // 'kadira:flow-router@2.10.1',
     // 'tmeasday:healthcheck-handler@0.0.2',
     'kadira:flow-router-ssr@3.12.2',
-    'arillo:flow-router-helpers@0.5.0',
+    'arillo:flow-router-helpers@0.5.1',
     // 'peerlibrary:reactive-publish@0.2.0',
 
     'utilities:smart-publications',
     'utilities:smart-methods',
 
     'ecmascript',
-    'react-meteor-data@0.2.7'
+    'react-meteor-data@0.2.8'
   ];
 
   api.use(packages);

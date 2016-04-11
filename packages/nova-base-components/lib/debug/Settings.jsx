@@ -1,5 +1,4 @@
 import React from 'react';
-import NovaForm from "meteor/nova:forms";
 
 const renderSetting = (field, key) => {
   return (

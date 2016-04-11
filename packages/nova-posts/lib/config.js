@@ -1,18 +1,18 @@
 /**
- * The global namespace/collection for Posts.
+ * @summary The global namespace/collection for Posts.
  * @namespace Posts
  */
 Posts = new Mongo.Collection("posts");
 
 /**
- * Posts config namespace
+ * @summary Posts config namespace
  * @type {Object}
  */
 Posts.config = {};
 
 
 /**
- * Post Statuses
+ * @summary Post Statuses
  */
 Posts.config.postStatuses = [
   {

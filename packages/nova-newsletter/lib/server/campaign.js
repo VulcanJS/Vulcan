@@ -19,7 +19,7 @@ Posts.views.add("campaign", function (terms) {
 const Campaign = {};
 
 /**
- * Return an array containing the latest n posts that can be sent in a newsletter
+ * @summary Return an array containing the latest n posts that can be sent in a newsletter
  * @param {Number} postsCount
  */
 Campaign.getPosts = function (postsCount) {
@@ -37,11 +37,11 @@ Campaign.getPosts = function (postsCount) {
     after: after,
     limit: postsCount
   });
-  return Posts.find(params.find, params.options).fetch();
+  return Posts.find(params.selector, params.options).fetch();
 };
 
 /**
- * Build a newsletter campaign from an array of posts
+ * @summary Build a newsletter campaign from an array of posts
  * (Called from Campaign.scheduleNextWithMailChimp)
  * @param {Array} postsArray
  */

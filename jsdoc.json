@@ -1,0 +1,27 @@
+{
+  // Execute meteor-jsdoc in debug mode to track down errors.
+  "debug": true,
+  // node.js install path, default to: "`which node`" on Mac and Linux, "`where node`" on Windows
+  "nodePath": "",
+  // Project docs path
+  "docsPath": "~/Dev/nova-docs",
+  // Project docs Meteor server port, default to: 3333
+  "meteorPort": 3333,
+  // Copy the Meteor docs server before building the docs (required for the first build)
+  // Setting this to false after the first build allows you to customize the docs templates
+  // without seeing your changes overwritten the next time you build the docs.
+  "initMeteor": true,
+  // Update Meteor without overwriting your changes to the docs templates.
+  "updateMeteor": true,
+  // Add a preamble to your project's docs that will appear at the top of the docs.
+  "preamble": true,
+  // Link to the project repository (used to construct the file path in the docs). Optional.
+  "projectRepo": "https://github.com/TelescopeJS/Telescope/tree/nova",
+  // Values to be used in the `<head>` for the docs.
+  "docsConfig": {
+    "title": "Nova Docs",
+    "metas": {
+      "description": "Documentation for Telescope Nova."
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * The global namespace for Settings.
+ * @summary The global namespace for Settings.
  * @namespace Telescope.settings.collection
  */
 Telescope.settings.collection = new Mongo.Collection("settings");
