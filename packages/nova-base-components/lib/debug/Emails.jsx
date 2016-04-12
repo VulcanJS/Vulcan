@@ -1,5 +1,4 @@
 import React from 'react';
-import emailRoutes from '../server/routes.js';
 
 const renderEmail = (email, key) => {
   return (
@@ -12,6 +11,9 @@ const renderEmail = (email, key) => {
 }
 
 const Emails = props => {
+
+  const emailRoutes = Telescope.email.routes;
+
   return (
     <div className="emails">
       <h1>Emails</h1>

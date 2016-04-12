@@ -1,9 +1,3 @@
-/**
- * @summary Telescope Telescope.email namespace
- * @namespace Telescope.email
- */
-Telescope.email = {};
-
 Telescope.email.templates = {};
 
 Telescope.email.addTemplates = function (templates) {
