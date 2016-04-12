@@ -38,7 +38,7 @@ Package.onUse(function (api) {
 
     // 'fourseven:scss@3.4.1',
     // 'kadira:blaze-layout@2.3.0',
-    'meteorhacks:picker@1.0.3',
+    'meteorhacks:picker@1.0.4',
     // 'kadira:dochead@1.4.0',
     'dburles:collection-helpers@1.0.4',
     'matb33:collection-hooks@0.8.1',

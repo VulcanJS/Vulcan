@@ -122,6 +122,14 @@ Router.route('/settings', {
   }
 });
 
+Router.route('/emails', {
+  name: 'emails',
+  action() {
+    ({App, Emails} = Telescope.components);
+    mount(App, {content: <Emails/>});
+  }
+});
+
 FlowRouter.notFound = {
   action() {
     ({Error404} = Telescope.components);
