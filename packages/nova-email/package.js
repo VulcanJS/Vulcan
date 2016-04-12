@@ -23,9 +23,9 @@ Package.onUse(function (api) {
   //   'package-tap.i18n'
   // ], ['client', 'server']);
 
-  // api.addFiles([
-  //   'lib/server/email.js'
-  // ], ['server']);
+  api.addFiles([
+    'lib/namespace.js'
+  ], ['client', 'server']);
 
   api.mainModule('lib/server/email.js', ['server']);
 

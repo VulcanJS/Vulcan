@@ -73,4 +73,6 @@ Telescope.registerComponent("AccountsForm", require('./users/AccountsForm.jsx'))
 Telescope.registerComponent("Cheatsheet", require('./debug/Cheatsheet.jsx'));
 Telescope.registerComponent("Settings", require('./debug/Settings.jsx'));
 Telescope.registerComponent("SettingsPage", require('./debug/SettingsPage.jsx'));
+Telescope.registerComponent("Emails", require('./debug/Emails.jsx'));
+
 
