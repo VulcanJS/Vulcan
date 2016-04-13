@@ -3,6 +3,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 
 class HeadTags extends Component {
 	render() {
+		DocHead.removeDocHeadAddedTags();
 
 		const url = this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
 		const title = this.props.title ? this.props.title : Telescope.settings.get("title");
@@ -10,33 +11,33 @@ class HeadTags extends Component {
 		const image = this.props.image ? this.props.image : Telescope.utils.getSiteUrl() + Telescope.settings.get("logoUrl");
 
 		const metas = [
-			{charset: "utf-8"},
-			{name: "description", content: description},
+			{ charset: "utf-8" },
+			{ name: "description", content: description },
 			// responsive
-			{name: "viewport", content:"width=device-width, initial-scale=1"},
+			{ name: "viewport", content:"width=device-width, initial-scale=1" },
 			// facebook
-			{property: "og:type", content: "article"},
-			{property: "og:url", content: url},
-			{property: "og:image", content: image},
-			{property: "og:title", content: title},
-			{property: "og:description", content: description},
+			{ property: "og:type", content: "article" },
+			{ property: "og:url", content: url },
+			{ property: "og:image", content: image },
+			{ property: "og:title", content: title },
+			{ property: "og:description", content: description },
 			//twitter
-			{name: "twitter:card", content: "summary"},
-			{name: "twitter:image:src", content: image},
-			{name: "twitter:title", content: title},
-			{name: "twitter:description", content: description}
+			{ name: "twitter:card", content: "summary" },
+			{ name: "twitter:image:src", content: image },
+			{ name: "twitter:title", content: title },
+			{ name: "twitter:description", content: description }
 		];
 
 		const links = [
-			{rel: "canonical", href: Telescope.utils.getSiteUrl()},
-			{rel: "shortcut icon", href: Telescope.settings.get("favicon", "/img/favicon.ico")}
+			{ rel: "canonical", href: Telescope.utils.getSiteUrl() },
+			{ rel: "shortcut icon", href: Telescope.settings.get("favicon", "/img/favicon.ico") }
 		];
 
 		return (
 			<div>
-				{DocHead.setTitle(title)}
-				{metas.map(meta => DocHead.addMeta(meta))}
-				{links.map(link => DocHead.addLink(link))}
+				{ DocHead.setTitle(title) }
+				{ metas.map(meta => DocHead.addMeta(meta)) }
+				{ links.map(link => DocHead.addLink(link)) }
 			</div>
 		);
 	}
