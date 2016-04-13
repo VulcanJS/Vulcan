@@ -31,7 +31,7 @@ Package.onUse(function (api) {
     'lib/notifications.js',
     'lib/helpers.js',
     'lib/custom_fields.js',
-    'lib/email_routes.js',
+    'lib/emails.js',
     'lib/published_fields.js'
   ], ['client', 'server']);
 

@@ -27,12 +27,12 @@ Package.onUse(function (api) {
     // 'lib/collection.js',
     'lib/callbacks.js',
     'lib/custom_fields.js',
-    'lib/email_routes.js'
+    'lib/emails.js'
   ], ['client', 'server']);
 
   api.addFiles([
     'lib/server/cron.js',
-    'lib/server/email_routes.js',
+    'lib/server/emails.js',
     'lib/server/methods.js'
   ], ['server']);
 

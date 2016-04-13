@@ -97,10 +97,16 @@ Telescope.email.buildAndSend = function (to, subject, template, properties) {
   return Telescope.email.send (to, subject, html);
 };
 
+Telescope.email.buildAndSendHTML = function (to, subject, html) {
+  return Telescope.email.send (to, subject, Telescope.email.buildTemplate(html));
+};
+
 Meteor.methods({
-  testEmail: function () {
+  testEmail: function (email) {
     if(Users.is.adminById(this.userId)){
-      var email = Telescope.email.buildAndSend(Telescope.settings.get('defaultEmail'), 'Telescope email test', 'test', {date: new Date()});
+      console.log("// testing email ["+email.name+"]");
+      const subject = `[${Telescope.settings.get('title')} Test] ${email.name}`;
+      Telescope.email.buildAndSendHTML(Telescope.settings.get('defaultEmail'), subject, email.getHTML());
     }
   }
 });

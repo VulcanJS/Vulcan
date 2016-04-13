@@ -27,7 +27,7 @@ Package.onUse(function (api) {
     'lib/callbacks.js',
     'lib/helpers.js',
     'lib/published_fields.js',
-    'lib/email_routes.js',
+    'lib/emails.js',
     'lib/methods.js'
   ], ['client', 'server']);
 

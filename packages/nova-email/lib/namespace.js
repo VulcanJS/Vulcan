@@ -4,4 +4,4 @@
  */
 Telescope.email = {};
 
-Telescope.email.routes = [];
+Telescope.email.emails = {};
