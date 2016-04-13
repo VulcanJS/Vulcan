@@ -13,6 +13,10 @@ Package.onUse(function (api) {
     'nova:core@0.25.7'
   ]);
 
+  api.use([
+    'nova:email@0.25.7'
+  ], ['client', 'server'], {weak: true});
+  
   api.addFiles([
     // 'package-tap.i18n',
     'lib/namespace.js',
@@ -23,6 +27,7 @@ Package.onUse(function (api) {
     'lib/callbacks.js',
     'lib/helpers.js',
     'lib/published_fields.js',
+    'lib/email_routes.js',
     'lib/methods.js'
   ], ['client', 'server']);
 

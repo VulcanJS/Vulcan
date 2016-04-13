@@ -22,9 +22,10 @@ Package.onUse(function (api) {
   ]);
 
   api.use([
-    'nova:notifications@0.25.7'
+    'nova:notifications@0.25.7',
+    'nova:email@0.25.7'
   ], ['client', 'server'], {weak: true});
-
+  
   api.addFiles([
     'lib/config.js',
     'lib/collection.js',
@@ -34,6 +35,7 @@ Package.onUse(function (api) {
     'lib/helpers.js',
     'lib/published_fields.js',
     'lib/callbacks.js',
+    'lib/email_routes.js',
     'lib/methods.js'
   ], ['client', 'server']);
 

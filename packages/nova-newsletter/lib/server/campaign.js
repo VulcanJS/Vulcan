@@ -140,3 +140,4 @@ Campaign.build = function (postsArray) {
 };
 
 export default Campaign;
+module.exports = Campaign;

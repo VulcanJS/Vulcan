@@ -3,3 +3,5 @@
  * @namespace Telescope.email
  */
 Telescope.email = {};
+
+Telescope.email.routes = [];

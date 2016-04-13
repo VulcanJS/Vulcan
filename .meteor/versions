@@ -85,14 +85,16 @@ momentjs:moment@2.12.0
 mongo@1.1.6
 mongo-id@1.0.3
 mongo-livedata@1.0.11
-nova-demo@0.25.7
 nova:api@0.25.7
 nova:base-components@0.25.7
 nova:base-styles@0.25.7
 nova:categories@0.25.7
 nova:comments@0.25.7
 nova:core@0.25.7
+nova:debug@0.25.7
+nova:demo@0.25.7
 nova:email@0.25.7
+nova:email-templates@0.25.7
 nova:embedly@0.25.7
 nova:events@0.25.7
 nova:forms@0.25.7

@@ -4,7 +4,7 @@ const renderEmail = (email, key) => {
   return (
     <tr key={key}>
       <td>{email.name}</td>
-      <td><a href={email.path.replace(":_id?", "")} target="_blank"><code>{email.path}</code></a></td>
+      <td><a href={email.path.replace(":_id?", "")} target="_blank">{email.path}</a></td>
       <td>coming soon…</td>
     </tr>
   )
