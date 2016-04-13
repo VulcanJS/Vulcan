@@ -3,10 +3,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 
 class HeadTags extends Component {
 	render() {
-
-		if (!!this.props) {
-			DocHead.removeDocHeadAddedTags();
-		}
+		DocHead.removeDocHeadAddedTags();
 
 		const url = this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
 		const title = this.props.title ? this.props.title : Telescope.settings.get("title");
