@@ -1,4 +1,8 @@
-Telescope.email.emails = Object.assign(Telescope.email.emails, {
+const getComment = (commentId) => {
+  return typeof Comments.findOne(commentId) === "undefined" ? Comments.findOne() : Comments.findOne(commentId);
+};
+
+Telescope.email.addEmails({
 
   newComment: {
     template: "newComment",
@@ -7,11 +11,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject({authorName = "[authorName]", postTitle = "[postTitle]"}) {
       return authorName+' left a new comment on your post "' + postTitle + '"';
     },
-    getTestHTML(commentId) {
-      var comment = typeof commentId === "undefined" ? Comments.findOne() : Comments.findOne(commentId);
-      var post = Posts.findOne(comment.postId);
-      return !!comment ? Telescope.email.getTemplate(this.template)(this.getProperties(comment, post)) : "<h3>No comment found.</h3>";
-    }
+    getTestObject: getComment
   },
 
   newReply: {
@@ -21,11 +21,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject({authorName = "[authorName]", postTitle = "[postTitle]"}) {
       return authorName+' replied to your comment on "'+postTitle+'"';
     },
-    getTestHTML(commentId) {
-      var comment = typeof commentId === "undefined" ? Comments.findOne() : Comments.findOne(commentId);
-      var post = Posts.findOne(comment.postId);
-      return !!comment ? Telescope.email.getTemplate(this.template)(this.getProperties(comment, post)) : "<h3>No comment found.</h3>";
-    }
+    getTestObject: getComment
   },
 
   newCommentSubscribed: {
@@ -35,11 +31,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject({authorName = "[authorName]", postTitle = "[postTitle]"}) {
       return authorName+' left a new comment on "' + postTitle + '"';
     },
-    getTestHTML(commentId) {
-      var comment = typeof commentId === "undefined" ? Comments.findOne() : Comments.findOne(commentId);
-      var post = Posts.findOne(comment.postId);
-      return !!comment ? Telescope.email.getTemplate(this.template)(this.getProperties(comment, post)) : "<h3>No comment found.</h3>";
-    }
+    getTestObject: getComment
   }
 
 });

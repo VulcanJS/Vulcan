@@ -1,6 +1,6 @@
 // email test routes (make available to client & server)
 
-Telescope.email.emails = Object.assign(Telescope.email.emails, {
+Telescope.email.addEmails({
 
   newsletter: {
     template: "newsletter",

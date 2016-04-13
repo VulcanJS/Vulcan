@@ -1,4 +1,9 @@
-Telescope.email.emails = Object.assign(Telescope.email.emails, {
+const getUser = (userId) => {
+  return typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
+};
+
+
+Telescope.email.addEmails({
   
   newUser: {
     template: "newUser",
@@ -7,10 +12,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject() {
       return "A new user has been created";
     },
-    getTestHTML(userId)  {
-      var user = typeof userId === "undefined" ? Meteor.users.findOne() : Meteor.users.findOne(userId);
-      return Telescope.email.getTemplate(this.template)(this.getProperties(user));
-    }
+    getTestObject: getUser
   },
 
   accountApproved: {
@@ -20,10 +22,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject() {
       return "Your account has been approved.";
     },
-    getTestHTML(userId) {
-      var user = typeof userId === "undefined" ? Meteor.users.findOne() : Meteor.users.findOne(userId);
-      return Telescope.email.getTemplate(this.template)(this.getProperties(user));
-    }
+    getTestObject: getUser
   }
 
 });

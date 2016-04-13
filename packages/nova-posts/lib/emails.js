@@ -1,4 +1,8 @@
-Telescope.email.emails = Object.assign(Telescope.email.emails, {
+const getPost = (postId) => {
+  return typeof Posts.findOne(postId) === "undefined" ? Posts.findOne() : Posts.findOne(postId);
+};
+
+Telescope.email.addEmails({
 
   newPost: {
     template: "newPost",
@@ -7,10 +11,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject({postAuthorName="[postAuthorName]", postTitle="[postTitle]"}) {
       return postAuthorName+' has created a new post: '+postTitle;
     },
-    getTestHTML(postId) {
-      var post = typeof params._id === "undefined" ? Posts.findOne() : Posts.findOne(postId);
-      return !!post ? Telescope.email.getTemplate(this.template)(this.getProperties(post)) : "<h3>No post found.</h3>";
-    }
+    getTestObject: getPost
   },
 
   newPendingPost: {
@@ -20,10 +21,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject({postAuthorName="[postAuthorName]", postTitle="[postTitle]"}) {
       return postAuthorName+' has a new post pending approval: '+postTitle;
     },
-    getTestHTML(postId) {
-      var post = typeof postId === "undefined" ? Posts.findOne() : Posts.findOne(postId);
-      return !!post ? Telescope.email.getTemplate(this.template)(this.getProperties(post)) : "<h3>No post found.</h3>";
-    }
+    getTestObject: getPost
   },
 
   postApproved: {
@@ -33,10 +31,7 @@ Telescope.email.emails = Object.assign(Telescope.email.emails, {
     subject({postTitle="[postTitle]"}) {
       return 'Your post “'+postTitle+'” has been approved';
     },
-    getTestHTML(postId) {
-      var post = typeof postId === "undefined" ? Posts.findOne() : Posts.findOne(postId);
-      return !!post ? Telescope.email.getTemplate(this.template)(this.getProperties(post)) : "<h3>No post found.</h3>";
-    }
+    getTestObject: getPost
   }
 
 });

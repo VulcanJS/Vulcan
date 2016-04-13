@@ -102,11 +102,39 @@ Telescope.email.buildAndSendHTML = function (to, subject, html) {
 };
 
 Meteor.methods({
-  testEmail: function (email) {
+  testEmail: function (emailName) {
+    
+    const email = Telescope.email.emails[emailName];
+    
     if(Users.is.adminById(this.userId)){
-      console.log("// testing email ["+email.name+"]");
-      const subject = `[${Telescope.settings.get('title')} Test] ${email.name}`;
-      Telescope.email.buildAndSendHTML(Telescope.settings.get('defaultEmail'), subject, email.getHTML());
+
+      console.log("// testing email ["+emailName+"]");
+      const item = email.getTestObject();
+      const subject = "[Test] " + email.subject(email.getProperties(item));
+      let html;
+    
+      // if email has a custom way of generating test HTML, use it
+      if (typeof email.getTestHTML !== "undefined") {
+
+        html = email.getTestHTML.bind(email)();
+
+      } else {
+
+        // else get test object (sample post, comment, user, etc.)
+        const testObject = email.getTestObject();
+        // get test object's email properties
+        const properties = email.getProperties(testObject);
+        // then apply email template to properties, and wrap it with buildTemplate
+        html = Telescope.email.buildTemplate(Telescope.email.getTemplate(email.template)(properties));
+
+      }
+
+      Telescope.email.buildAndSendHTML(Telescope.settings.get('defaultEmail'), subject, html);
+    
+      return subject;
+    
+    } else {
+      throw new Meteor.Error("must_be_admin", "You must be an admin to send test emails");
     }
   }
 });

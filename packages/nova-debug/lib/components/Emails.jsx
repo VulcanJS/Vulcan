@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
-
-const sendTest = event => {
-  const email = this;
-  Actions.call("testEmail", email)
-}
+import Core from "meteor/nova:core";
+const Messages = Core.Messages;
 
 const renderEmail = (email, key) => {
-  const testEmail = sendTest.bind(this);
+  
+  const sendTest = () => {
+    Actions.call("testEmail", key, (error, result) => {
+      if (error) {
+        Messages.flash(error.message, "error");
+      } else {
+        Messages.flash(`Test email sent (“${result}”).`, "success");
+      }
+    });
+  };
+
   return (
     <tr key={key}>
       <td>{key}</td>
       <td>{email.template}</td>
       <td>{email.subject({})}</td>
       <td><a href={email.path.replace(":_id?", "")} target="_blank">{email.path}</a></td>
-      <td><Button onClick={testEmail} bsStyle="primary">Send Test</Button></td>
+      <td><Button onClick={sendTest} bsStyle="primary">Send Test</Button></td>
     </tr>
   )
 }
