@@ -4,8 +4,16 @@ import Campaign from "./campaign.js";
 
 Telescope.email.emails.newsletter = Object.assign(Telescope.email.emails.newsletter, {
 
+  getCampaign() {
+    return Campaign.build(Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', 5)));
+  },
+
+  subject() {
+    return this.getCampaign().subject;
+  },
+
   getTestHTML() {
-    var campaign = Campaign.build(Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', 5)));
+    var campaign = this.getCampaign();
     var newsletterEnabled = '<div class="newsletter-enabled"><strong>Newsletter Enabled:</strong> '+Telescope.settings.get('enableNewsletter', true)+'</div>';
     var mailChimpAPIKey = '<div class="mailChimpAPIKey"><strong>mailChimpAPIKey:</strong> '+(typeof Telescope.settings.get('mailChimpAPIKey') !== "undefined")+'</div>';
     var mailChimpListId = '<div class="mailChimpListId"><strong>mailChimpListId:</strong> '+(typeof Telescope.settings.get('mailChimpListId') !== "undefined")+'</div>';

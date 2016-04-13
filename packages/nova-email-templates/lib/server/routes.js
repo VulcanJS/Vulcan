@@ -1,4 +1,6 @@
 _.forEach(Telescope.email.emails, (email, key) => {
+
+  // template live preview routes
   Picker.route(email.path, (params, req, res) => {
 
     let html;
@@ -25,4 +27,10 @@ _.forEach(Telescope.email.emails, (email, key) => {
     res.end(html);
   
   });
+
+  // raw template
+  Picker.route("/email/template/:template", (params, req, res) => {
+    res.end(Telescope.email.templates[params.template]);
+  });
+
 });

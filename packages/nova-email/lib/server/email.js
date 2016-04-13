@@ -109,11 +109,9 @@ Meteor.methods({
     if(Users.is.adminById(this.userId)){
 
       console.log("// testing email ["+emailName+"]");
-      const item = email.getTestObject();
-      const subject = "[Test] " + email.subject(email.getProperties(item));
-      let html;
+      let html, properties;
     
-      // if email has a custom way of generating test HTML, use it
+      // if email has a custom way of generating its HTML, use it
       if (typeof email.getTestHTML !== "undefined") {
 
         html = email.getTestHTML.bind(email)();
@@ -123,11 +121,15 @@ Meteor.methods({
         // else get test object (sample post, comment, user, etc.)
         const testObject = email.getTestObject();
         // get test object's email properties
-        const properties = email.getProperties(testObject);
+        properties = email.getProperties(testObject);
+
         // then apply email template to properties, and wrap it with buildTemplate
         html = Telescope.email.buildTemplate(Telescope.email.getTemplate(email.template)(properties));
 
       }
+
+      // get subject
+      const subject = "[Test] " + email.subject.bind(email)(properties);
 
       Telescope.email.buildAndSendHTML(Telescope.settings.get('defaultEmail'), subject, html);
     

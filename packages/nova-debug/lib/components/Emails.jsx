@@ -19,7 +19,7 @@ const renderEmail = (email, key) => {
   return (
     <tr key={key}>
       <td>{key}</td>
-      <td>{email.template}</td>
+      <td><a href={"/email/template/"+email.template} target="_blank">{email.template}</a></td>
       <td>{email.subject({})}</td>
       <td><a href={email.path.replace(":_id?", "")} target="_blank">{email.path}</a></td>
       <td><Button onClick={sendTest} bsStyle="primary">Send Test</Button></td>
