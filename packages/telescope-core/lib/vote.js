@@ -37,7 +37,7 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
     case "upvote":
 
       if (hasDownvotedItem) {
-        Telescope.operateOnItem(collection, itemd, user, "cancelDownvote");
+        Telescope.operateOnItem(collection, itemId, user, "cancelDownvote");
       }
       update = {
         $addToSet: {upvoters: user._id},
