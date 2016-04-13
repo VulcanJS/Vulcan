@@ -31,7 +31,7 @@ nova:api
 nova:rss
 nova:kadira
 nova:email
-nova-demo
+nova:email-templates
 
 # nova:migrations
 # nova:invites
@@ -39,6 +39,9 @@ nova-demo
 # nova:subscribe-to-posts
 
 ############ Custom Packages ############
+
+nova:demo
+nova:debug
 
 accounts-twitter
 # accounts-facebook

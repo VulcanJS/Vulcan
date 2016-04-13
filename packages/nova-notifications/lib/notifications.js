@@ -1,7 +1,5 @@
 // import Email from 'meteor/nova:email';
 
-Telescope.notifications = {};
-
 Telescope.createNotification = (userIds, notificationName, data) => {
 
   // if userIds is not an array, wrap it in one
@@ -10,12 +8,12 @@ Telescope.createNotification = (userIds, notificationName, data) => {
   userIds.forEach(userId => {
 
     const user = Users.findOne(userId);
-    const notification = Telescope.notifications[notificationName];
-    const properties = notification.properties(data);
-    const subject = notification.subject(properties);
-    const html = Telescope.email.buildTemplate(Telescope.email.getTemplate(notification.emailTemplate)(properties));
+    const email = Telescope.email.emails[notificationName];
+    const properties = email.getProperties(data);
+    const subject = email.subject(properties);
+    const html = Telescope.email.getTemplate(email.template)(properties);
 
-    Telescope.email.send(Users.getEmail(user), subject, html);
+    Telescope.email.buildAndSendHTML(Users.getEmail(user), subject, html);
   });
 
 };

@@ -1,1 +1,0 @@
-Telescope.email.routes.forEach(route => Picker.route(route.path, route.action));

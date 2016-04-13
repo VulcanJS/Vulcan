@@ -1,7 +1,6 @@
 import React from 'react';
 import Router from './router';
 import {mount} from 'react-mounter';
-import Campaign from 'meteor/nova:newsletter';
 
 import SmartContainers from "meteor/utilities:react-list-container";
 const DocumentContainer = SmartContainers.DocumentContainer;
@@ -107,6 +106,7 @@ Router.route('/users/:slug/edit', {
 
 // ------------------------------------- Other -------------------------------- //
 
+
 Router.route('/cheatsheet', {
   name: 'cheatsheet',
   action() {
@@ -133,11 +133,11 @@ Router.route('/emails', {
 });
 
 Router.notFound = {
-
   action() {
     ({App,Error404} = Telescope.components);
     mount(App, {content: <Error404/>});
   }
+
 };
 
 // ----- start using admin routes (stored in nova:lib) -- //

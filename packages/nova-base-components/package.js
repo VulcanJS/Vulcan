@@ -22,11 +22,7 @@ Package.onUse(function (api) {
     // third-party packages
 
     'tmeasday:check-npm-versions@0.3.0',
-    // 'alt:react-accounts-ui@1.2.1',
-    // 'alt:react-accounts-unstyled@1.2.1',
-    // 'std:accounts-ui-basic@1.0.1',
     'std:accounts-ui@1.1.12',
-    'dburles:spacebars-tohtml@1.0.1',
     'utilities:react-list-container',
     'kadira:dochead@1.4.0'
   ]);
@@ -37,28 +33,5 @@ Package.onUse(function (api) {
     'lib/router.js',
     'lib/routes.jsx',
   ], ['client', 'server']);
-
-  api.addFiles([
-  ], ['client']);
-
-  api.addFiles([
-    'lib/server/routes.js',
-    'lib/server/templates.js'
-  ], ['server']);
-
-  api.addAssets([
-    'lib/server/emails/common/test.handlebars',
-    'lib/server/emails/common/wrapper.handlebars',
-    'lib/server/emails/comments/newComment.handlebars',
-    'lib/server/emails/comments/newReply.handlebars',
-    'lib/server/emails/posts/newPendingPost.handlebars',
-    'lib/server/emails/posts/newPost.handlebars',
-    'lib/server/emails/posts/postApproved.handlebars',
-    'lib/server/emails/users/accountApproved.handlebars',
-    'lib/server/emails/users/newUser.handlebars',
-    'lib/server/emails/newsletter/newsletter.handlebars',
-    'lib/server/emails/newsletter/newsletterConfirmation.handlebars',
-    'lib/server/emails/newsletter/postItem.handlebars',
-  ], ['server']);
 
 });

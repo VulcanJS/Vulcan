@@ -113,6 +113,7 @@ Nova tries to maintain a consistent file structure for its main packages:
 - `routes.jsx`: routes.
 - `views.js`: views used for [query constructors](https://www.discovermeteor.com/blog/query-constructors/).
 - `parameters.js`: the collection's query constructor.
+- `email_routes.js`: test routes for email templates.
 - `server/publications.js`: publications.
 
 ## Customizing Components

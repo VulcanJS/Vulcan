@@ -66,8 +66,6 @@ Telescope.registerComponent("UserAvatar", require('./users/UserAvatar.jsx'));
 Telescope.registerComponent("UserName", require('./users/UserName.jsx'));
 Telescope.registerComponent("UserMenu", require('./users/UserMenu.jsx'));
 Telescope.registerComponent("AccountsMenu", require('./users/AccountsMenu.jsx'));
-Telescope.registerComponent("AccountsForm", require('./users/AccountsForm.jsx'));
-
 // debug
 
 Telescope.registerComponent("Cheatsheet", require('./debug/Cheatsheet.jsx'));
@@ -75,4 +73,4 @@ Telescope.registerComponent("Settings", require('./debug/Settings.jsx'));
 Telescope.registerComponent("SettingsPage", require('./debug/SettingsPage.jsx'));
 Telescope.registerComponent("Emails", require('./debug/Emails.jsx'));
 
-
+Telescope.registerComponent("AccountsForm", require('./users/AccountsForm.jsx'));

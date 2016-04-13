@@ -26,11 +26,13 @@ Package.onUse(function (api) {
     // 'package-tap.i18n',
     // 'lib/collection.js',
     'lib/callbacks.js',
-    'lib/custom_fields.js'
+    'lib/custom_fields.js',
+    'lib/emails.js'
   ], ['client', 'server']);
 
   api.addFiles([
     'lib/server/cron.js',
+    'lib/server/emails.js',
     'lib/server/methods.js'
   ], ['server']);
 
