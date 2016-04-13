@@ -13,6 +13,7 @@
   - [Packages](#packages)
   - [Files](#files)
   - [Customizing Components](#customizing-components)
+  - [Customizing Emails](#customizing-emails)
   - [Custom Fields](#custom-fields)
   - [Publishing Data](#publishing-data)
   - [Loading Data](#loading-data)
@@ -144,6 +145,37 @@ Nova components are resolved at render. So you just need to make the override an
 For more in-depth customizations, you can also just clone the entire `nova:base-components` package and then make your modification directly there. 
 
 Of course, keeping your own new `components` package up to date with any future `nova:base-components` modifications will then be up to you. 
+
+## Customizing Emails
+
+Unlike components, emails don't use React but Spacebars, a variant of the Handlebars templating language. 
+
+All email templates live in the `nova:email-templates` package. In order to register a new template or override an existing one, first you must import it as a text asset in your `package.js` file (or store it in your `/public` directory):
+
+```js
+api.addAssets(['path/to/template/newReply.handlebars',], ['server']);
+```
+
+You'll then be able to load the contents of the file in your code with:
+
+```js
+Assets.getText("path/to/template/newReply.handlebars")
+```
+
+You can add a template with:
+
+```js
+Telescope.email.addTemplates({
+  newReply: Assets.getText("path/to/template/newReply.handlebars")
+});
+```
+
+Or override an existing one with:
+
+```js
+Telescope.email.templates.newReply = Assets.getText("path/to/template/newReply.handlebars");
+});
+```
 
 ## Custom Fields
 
