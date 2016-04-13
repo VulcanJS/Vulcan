@@ -2,7 +2,6 @@ const getUser = (userId) => {
   return typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
 };
 
-
 Telescope.email.addEmails({
   
   newUser: {
