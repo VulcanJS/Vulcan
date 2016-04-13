@@ -92,7 +92,6 @@ nova:categories@0.25.7
 nova:comments@0.25.7
 nova:core@0.25.7
 nova:debug@0.25.7
-nova:demo@0.25.7
 nova:email@0.25.7
 nova:email-templates@0.25.7
 nova:embedly@0.25.7

@@ -131,8 +131,8 @@ Meteor.methods({
       // get subject
       const subject = "[Test] " + email.subject.bind(email)(properties);
 
-      Telescope.email.buildAndSendHTML(Telescope.settings.get('defaultEmail'), subject, html);
-    
+      Telescope.email.send (Telescope.settings.get('defaultEmail'), subject, html)
+ 
       return subject;
     
     } else {

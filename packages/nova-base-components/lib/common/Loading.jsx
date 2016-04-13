@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 
-const Loading = () => {
+const Loading = ({color}) => {
   return (
-    <div className="spinner">
+    <div className={color === "white" ? "spinner white" : "spinner"}>
       <div className="bounce1"></div>
       <div className="bounce2"></div>
       <div className="bounce3"></div>
     </div>
   )
+}
+
+Loading.propTypes = {
+  color: React.PropTypes.string
+}
+
+Loading.defaultPropTypes = {
+  color: "black"
 }
 
 module.exports = Loading;
