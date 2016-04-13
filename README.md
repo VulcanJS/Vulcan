@@ -13,6 +13,7 @@
   - [Packages](#packages)
   - [Files](#files)
   - [Customizing Components](#customizing-components)
+  - [Customizing Emails](#customizing-emails)
   - [Custom Fields](#custom-fields)
   - [Publishing Data](#publishing-data)
   - [Loading Data](#loading-data)
@@ -75,29 +76,56 @@ Note: you will need to configure the service's oAuth tokens via the log-in UI, o
 
 These packages are necessary for Nova to run. 
 
-- `lib`: utility functions used by the app; also handles all external packages.
-- `events`: event tracking.
-- `i18n`: internationalization.
-- `core`: import previous core packages.
+| Name | Description |
+| --- | --- |
+| `nova:lib` | Utility functions used by the app; also handles importing most external packages. |
+| `nova:events` | Event tracking.|
+| `nova:i18n` | Internationalization package.|
+| `nova:core` | Import previous core packages. |
 
 #### Optional Packages
 
 These packages are optional, although they might depend on each other. Note that dependencies on non-core packages should be `weak` whenever possible. 
 
-- `settings`: publish the `Settings` collection (for backwards compatibility)
-- `posts`
-- `comments`
-- `users`
-- `search`
-- `tags`
-- `vote`
-- `scoring`
-- `forms` ([README](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms))
+| Name | Description |
+| --- | --- |
+| `nova:api` | Generate a JSON API for posts. |
+| `nova:categories` | Posts categories. |
+| `nova:comments` | Comments. |
+| `nova:categories` | Posts categories. |
+| `nova:email` | Send emails. |
+| `nova:embedly` | Get metadata (thumbnails, origin, etc.) from [Embedly](http://embed.ly) when submitting new posts. |
+| `nova:forms` | Generate forms for inserting and editing documents ([README](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms)). |
+| `nova:getting-started` | Generate dummy content on first run. |
+| `nova:kadira` | [Kadira](http://kadira.io) integration. |
+| `nova:newsletter` | Send an automated newsletter with [Mailchimp](http://mailchimp.com). |
+| `nova:notifications` | Notifications. |
+| `nova:posts` | Posts. |
+| `nova:RSS` | RSS feeds for posts and comments. |
+| `nova:search` | Search across posts. |
+| `nova:settings` | Legacy support for publishing settings. |
+| `nova:share` | Easy social sharing. |
+| `nova:users` | Users. |
+| `nova:voting` | Voting on posts and comments. |
 
-#### Theme Packages
+#### Customizable Packages
 
-- `base-components`
-- `base-styles`
+These are the packages that you might need to customize to tweak your app's layout, design, and behavior. You can either clone these packages and modify them directly, or *extend* their contents (see the [Customizing Components](#customizing-components) section.)
+
+| Name | Description |
+| --- | --- |
+| `nova:base-components` | The default components that make up the Nova front-end. |
+| `nova:base-styles` | Default styles (includes Bootstrap).|
+| `nova:email-templates` | Email templates.|
+
+#### Debug Packages
+
+These packages are provided to help you when doing local development. 
+
+| Name | Description |
+| --- | --- |
+| `nova:debug` | Provides routes and utility for debugging. |
+| `nova:demo` | A demo of how to use custom collections.|
 
 ## Files
 
@@ -144,6 +172,37 @@ Nova components are resolved at render. So you just need to make the override an
 For more in-depth customizations, you can also just clone the entire `nova:base-components` package and then make your modification directly there. 
 
 Of course, keeping your own new `components` package up to date with any future `nova:base-components` modifications will then be up to you. 
+
+## Customizing Emails
+
+Unlike components, emails don't use React but Spacebars, a variant of the Handlebars templating language. 
+
+All email templates live in the `nova:email-templates` package. In order to register a new template or override an existing one, first you must import it as a text asset in your `package.js` file (or store it in your `/public` directory):
+
+```js
+api.addAssets(['path/to/template/newReply.handlebars',], ['server']);
+```
+
+You'll then be able to load the contents of the file in your code with:
+
+```js
+Assets.getText("path/to/template/newReply.handlebars")
+```
+
+You can add a template with:
+
+```js
+Telescope.email.addTemplates({
+  newReply: Assets.getText("path/to/template/newReply.handlebars")
+});
+```
+
+Or override an existing one with:
+
+```js
+Telescope.email.templates.newReply = Assets.getText("path/to/template/newReply.handlebars");
+});
+```
 
 ## Custom Fields
 

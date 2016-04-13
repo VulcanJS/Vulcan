@@ -40,7 +40,7 @@ nova:email-templates
 
 ############ Custom Packages ############
 
-nova:demo
+# nova:demo
 nova:debug
 
 accounts-twitter

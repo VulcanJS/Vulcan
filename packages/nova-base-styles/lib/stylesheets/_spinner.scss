@@ -17,6 +17,9 @@
       margin-right: 0;
     }
   }
+  &.white div{
+    background-color: rgba(255,255,255,0.55);
+  }
   .bounce1 {
     -webkit-animation-delay: -0.32s;
     animation-delay: -0.32s;
