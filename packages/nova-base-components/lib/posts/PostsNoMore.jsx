@@ -1,5 +1,5 @@
 import React from 'react';
 
-const PostsNoMore = props => <p>No more posts.</p>
+const PostsNoMore = props => <p className="posts-no-more">No more posts.</p>
 
 module.exports = PostsNoMore;

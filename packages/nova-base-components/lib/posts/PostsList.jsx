@@ -4,6 +4,9 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
 
   // console.log(results);
   // console.log(ready);
+  // console.log(hasMore);
+  // console.log(totalCount);
+  // console.log(count);
 
   ({PostsItem, PostsLoadMore, PostsLoading, PostsNoResults, PostsNoMore, PostsListHeader} = Telescope.components);
 

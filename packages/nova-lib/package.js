@@ -21,7 +21,6 @@ Package.onUse(function (api) {
     'modules@0.5.2',
 //    'accounts-ui',
     'accounts-base',
-    'accounts-password',
     'check',
     'reactive-var',
     'http',
@@ -74,7 +73,7 @@ Package.onUse(function (api) {
     // 'peerlibrary:reactive-publish@0.2.0',
 
     'utilities:smart-publications@0.1.4',
-    'utilities:smart-methods@0.1.2',
+    'utilities:smart-methods@0.1.3',
 
     'ecmascript@0.4.2',
     'react-meteor-data@0.2.8'

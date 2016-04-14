@@ -8,7 +8,7 @@ const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, 
     return (
       <div className="comments-list">
         {results.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={currentUser}/>)}
-        {hasMore ? (ready ? <PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Loading/>) : <PostsNoMore/>}
+        {hasMore ? (ready ? <PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Loading/>) : null}
       </div>
     )
   } else if (!ready) {

@@ -21,3 +21,8 @@ Meteor.methods({
     }
   }
 });
+
+Categories.smartMethods({
+  createName: "categories.new",
+  editName: "categories.edit"
+});

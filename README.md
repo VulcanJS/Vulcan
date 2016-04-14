@@ -68,7 +68,7 @@ To add new social login options, just add the relevant package (`accounts-twitte
 
 `meteor add accounts-twitter`
 
-Note: you will need to configure the service's oAuth tokens via the log-in UI, or directly in the database. 
+Note: you will need to configure the service's oAuth tokens via the log-in UI, using the [service-configuration](https://atmospherejs.com/meteor/service-configuration) package, or directly in the database. 
 
 ## Packages
 

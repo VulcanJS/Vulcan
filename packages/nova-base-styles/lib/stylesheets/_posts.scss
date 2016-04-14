@@ -255,7 +255,7 @@
 //////////////////////////////////////////////////////
 
 .post-day{
-  margin-bottom: $vmargin;
+  margin-bottom: $vmargin * 2;
   .post-load-more{
     border: none;
     padding: 0;
@@ -264,6 +264,9 @@
       color: inherit;
       border: inherit;      
     }
+  }
+  .posts-no-results{
+    margin-top: $vmargin;
   }
 }
 
