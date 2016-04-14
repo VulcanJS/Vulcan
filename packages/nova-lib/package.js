@@ -21,7 +21,6 @@ Package.onUse(function (api) {
     'modules@0.5.2',
 //    'accounts-ui',
     'accounts-base',
-    'accounts-password',
     'check',
     'reactive-var',
     'http',

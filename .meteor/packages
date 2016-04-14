@@ -28,6 +28,7 @@ nova:base-components
 nova:base-styles
 nova:email-templates
 
+accounts-password
 accounts-twitter
 # accounts-facebook
 

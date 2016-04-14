@@ -22,7 +22,7 @@ Package.onUse(function (api) {
     // third-party packages
 
     'tmeasday:check-npm-versions@0.3.0',
-    'std:accounts-ui@1.1.12',
+    'std:accounts-ui@1.1.19',
     'utilities:react-list-container@0.1.8',
     'kadira:dochead@1.4.0'
   ]);
