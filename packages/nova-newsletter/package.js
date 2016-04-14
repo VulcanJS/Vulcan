@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:newsletter",
   summary: "Telescope email newsletter package",
-  version: "0.26.0-nova_1",
+  version: "0.26.0-nova",
   git: "https://github.com/TelescopeJS/telescope-newsletter.git"
 });
 

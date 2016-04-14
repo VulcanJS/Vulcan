@@ -23,7 +23,7 @@ Package.onUse(function (api) {
 
     'tmeasday:check-npm-versions@0.3.0',
     'std:accounts-ui@1.1.12',
-    'utilities:react-list-container',
+    'utilities:react-list-container@0.1.7',
     'kadira:dochead@1.4.0'
   ]);
 

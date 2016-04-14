@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:getting-started",
   summary: "Getting started posts",
-  version: '0.26.0-nova',
+  version: '0.26.1-nova',
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 
@@ -44,8 +44,8 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.addAssets('content/read_this_first.md', 'server');
-  api.addAssets('content/deploying_telescope.md', 'server');
-  api.addAssets('content/customizing_telescope.md', 'server');
+  api.addAssets('content/deploying.md', 'server');
+  api.addAssets('content/customizing.md', 'server');
   api.addAssets('content/getting_help.md', 'server', 'server');
   api.addAssets('content/removing_getting_started_posts.md', 'server');
 
