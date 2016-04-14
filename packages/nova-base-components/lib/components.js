@@ -11,7 +11,6 @@ Telescope.registerComponent("FlashMessages",        require('./common/FlashMessa
 Telescope.registerComponent("NewsletterForm",       require('./common/NewsletterForm.jsx'));
 Telescope.registerComponent("Icon",                 require('./common/Icon.jsx'));
 Telescope.registerComponent("SearchForm",           require('./common/SearchForm.jsx'));
-Telescope.registerComponent("NewPostButton",        require('./common/NewPostButton.jsx'));
 Telescope.registerComponent("AppLoading",           require('./common/AppLoading.jsx'));
 Telescope.registerComponent("Error404",             require('./common/Error404.jsx'));
 Telescope.registerComponent("Loading",              require('./common/Loading.jsx'));
@@ -19,6 +18,7 @@ Telescope.registerComponent("Vote",                 require('./common/Vote.jsx')
 
 // posts
 
+Telescope.registerComponent("PostsNewButton",       require('./posts/PostsNewButton.jsx'));
 Telescope.registerComponent("PostsLoadMore",        require('./posts/PostsLoadMore.jsx'));
 Telescope.registerComponent("PostsNoMore",          require('./posts/PostsNoMore.jsx'));
 Telescope.registerComponent("PostsNoResults",       require('./posts/PostsNoResults.jsx'));
@@ -48,6 +48,9 @@ Telescope.registerComponent("CommentsEdit",         require('./comments/Comments
 // categories
 
 Telescope.registerComponent("CategoriesList",       require('./categories/CategoriesList.jsx'));
+Telescope.registerComponent("Category",             require('./categories/Category.jsx'));
+Telescope.registerComponent("CategoriesEditForm",   require('./categories/CategoriesEditForm.jsx'));
+Telescope.registerComponent("CategoriesNewForm",    require('./categories/CategoriesNewForm.jsx'));
 
 // permissions
 

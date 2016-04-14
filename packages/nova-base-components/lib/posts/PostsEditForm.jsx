@@ -19,7 +19,7 @@ class PostsEditForm extends Component{
   deletePost() {
     const post = this.props.post;
     if (window.confirm(`Delete post “${post.title}”?`)) { 
-      Actions.call('posts.deleteById', post._id, function(){
+      Actions.call('posts.deleteById', post._id, (error, result) => {
         Messages.flash(`Post “${post.title}” deleted.`, "success");
         Events.track("post deleted", {'_id': post._id});
       });
@@ -28,8 +28,6 @@ class PostsEditForm extends Component{
 
   render() {
 
-    ({FlashMessages} = Telescope.components);
-    
     return (
       <div className="edit-post-form">
         <DocumentContainer 

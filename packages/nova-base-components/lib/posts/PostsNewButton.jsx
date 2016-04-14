@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import Core from "meteor/nova:core";
 const ModalTrigger = Core.ModalTrigger;
 
-const NewPostButton = (props, context) => {
+const PostsNewButton = (props, context) => {
 
   ({PostsNewForm} = Telescope.components);
 
@@ -14,5 +14,5 @@ const NewPostButton = (props, context) => {
   )
 }
 
-module.exports = NewPostButton;
-export default NewPostButton;
+module.exports = PostsNewButton;
+export default PostsNewButton;

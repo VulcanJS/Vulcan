@@ -10,10 +10,10 @@ const ListContainer = SmartContainers.ListContainer;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, CategoriesList, NewPostButton, UserMenu, AccountsMenu} = Telescope.components);
+  ({Logo, CategoriesList, PostsNewButton, UserMenu, AccountsMenu} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
-  const siteTitle = Telescope.settings.get("title", "Telescope");
+  const siteTitle = Telescope.settings.get("title", "Nova");
   const tagline = Telescope.settings.get("tagline");
 
   return (
@@ -33,7 +33,7 @@ const Header = ({currentUser}) => {
           </div>
 
           <div className="nav-new-post">
-            <NewPostButton/>
+            <PostsNewButton/>
           </div>
 
         </div>
