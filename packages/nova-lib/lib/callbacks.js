@@ -46,6 +46,14 @@ Telescope.callbacks.run = function (hook, item, constant) {
     return callbacks.reduce(function(result, callback) {
       // console.log(callback.name);
       return callback(result, constant);
+
+      // uncomment for debugging
+      // try {
+      //   return callback(result, constant);
+      // } catch (error) {
+      //   console.log(`// error at callback [${callback.name}] in hook [${hook}]`)
+      //   throw error;
+      // }
     }, item);
 
   } else { // else, just return the item unchanged

@@ -56,25 +56,15 @@ Meteor.methods({
 
   /**
    * @summary Meteor method for submitting a post from the client
+   * NOTE: the current user and the post author user might sometimes be two different users!
+   * Required properties: title
    * @memberof Posts
    * @isMethod true
    * @param {Object} post - the post being inserted
    */
   'posts.new': function(post){
 
-    const isValid = Posts.simpleSchema().namedContext("posts.new").validate(post);
-    // required properties:
-    // title
-
-    // optional properties
-    // URL
-    // body
-    // categories
-    // thumbnailUrl
-
-    // NOTE: the current user and the post author user might be two different users!
-
-    // TODO: find a way to bind `this` to do the following in a callback?
+    Posts.simpleSchema().namedContext("posts.new").validate(post);
 
     post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
 
@@ -90,40 +80,17 @@ Meteor.methods({
    * @summary Meteor method for editing a post from the client
    * @memberof Posts
    * @isMethod true
-   * @param {Object} modifier - the update modifier
    * @param {Object} postId - the id of the post being updated
+   * @param {Object} modifier - the update modifier
    */
   'posts.edit': function (postId, modifier) {
     
-    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
     Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
-    // check(modifier, Match.OneOf({$set: Posts.simpleSchema()}, {$unset: Object}, {$set: Posts.simpleSchema(), $unset: Object}));
     check(postId, String);
 
-    var user = Meteor.user(),
-        post = Posts.findOne(postId),
-        schema = Posts.simpleSchema()._schema;
+    const post = Posts.findOne(postId);
 
-    // ------------------------------ Checks ------------------------------ //
-
-    // check that user can edit document
-    if (!user || !Users.can.edit(user, post)) {
-      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_post'));
-    }
-
-    // go over each field and throw an error if it's not editable
-    // loop over each operation ($set, $unset, etc.)
-    _.each(modifier, function (operation) {
-      // loop over each property being operated on
-      _.keys(operation).forEach(function (fieldName) {
-
-        var field = schema[fieldName];
-        if (!Users.can.editField(user, field, post)) {
-          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
-        }
-
-      });
-    });
+    modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
 
     return Posts.methods.edit(postId, modifier, post);
 
@@ -139,12 +106,12 @@ Meteor.methods({
 
     check(postId, String);
     
-    var post = Posts.findOne(postId);
-    var now = new Date();
+    const post = Posts.findOne(postId);
+    const now = new Date();
 
-    if(Users.is.admin(Meteor.user())){
+    if (Users.is.admin(Meteor.user())) {
 
-      var set = {status: Posts.config.STATUS_APPROVED};
+      const set = {status: Posts.config.STATUS_APPROVED};
 
       if (!post.postedAt) {
         set.postedAt = now;
@@ -154,7 +121,7 @@ Meteor.methods({
 
       Telescope.callbacks.runAsync("posts.approve.async", post);
 
-    }else{
+    } else {
       Messages.flash('You need to be an admin to do that.', "error");
     }
   },
@@ -168,7 +135,8 @@ Meteor.methods({
   'posts.reject': function(postId){
 
     check(postId, String);
-    var post = Posts.findOne(postId);
+    
+    const post = Posts.findOne(postId);
     
     if(Users.is.admin(Meteor.user())){
 
@@ -191,13 +159,11 @@ Meteor.methods({
 
     check(postId, String);
     check(sessionId, Match.Any);
-
     
-
     // only let users increment a post's view counter once per session
     var view = {_id: postId, userId: this.userId, sessionId: sessionId};
 
-    if(_.where(postViews, view).length === 0){
+    if (_.where(postViews, view).length === 0) {
       postViews.push(view);
       Posts.update(postId, { $inc: { viewCount: 1 }});
     }
@@ -221,7 +187,9 @@ Meteor.methods({
 
     var post = Posts.findOne({_id: postId});
 
-    if(!Meteor.userId() || !Users.can.editById(Meteor.userId(), post)) throw new Meteor.Error(606, 'You need permission to edit or delete a post');
+    if (!Meteor.userId() || !Users.can.editById(Meteor.userId(), post)){
+      throw new Meteor.Error(606, 'You need permission to edit or delete a post');
+    }
 
     // decrement post count
     Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
@@ -244,7 +212,7 @@ Meteor.methods({
   },
 
   /**
-   * Upvote a post
+   * @summary Upvote a post
    * @memberof Posts
    * @isMethod true
    * @param {String} postId - the id of the post
@@ -255,7 +223,7 @@ Meteor.methods({
   },
 
   /**
-   * Downvote a post
+   * @summary Downvote a post
    * @memberof Posts
    * @isMethod true
    * @param {String} postId - the id of the post
@@ -267,7 +235,7 @@ Meteor.methods({
 
 
   /**
-   * Cancel an upvote on a post
+   * @summary Cancel an upvote on a post
    * @memberof Posts
    * @isMethod true
    * @param {String} postId - the id of the post
@@ -278,7 +246,7 @@ Meteor.methods({
   },
 
   /**
-   * Cancel a downvote on a post
+   * @summary Cancel a downvote on a post
    * @memberof Posts
    * @isMethod true
    * @param {String} postId - the id of the post

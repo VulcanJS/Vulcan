@@ -28,7 +28,130 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 // Callbacks                                        //
 //////////////////////////////////////////////////////
 
-function afterCommentOperations (comment) {
+
+/*
+
+### comments.new.client
+
+### comments.new.method
+
+- CommentsNewUserCheck
+- CommentsNewRateLimit
+- CommentsNewSubmittedPropertiesCheck
+
+### comments.new.sync
+
+- CommentsNewRequiredPropertiesCheck
+
+### comments.new.async
+
+- CommentsNewOperations
+- CommentsNewUpvoteOwnComment
+- CommentsNewNotifications
+
+### comments.edit.client
+
+### comments.edit.method
+
+- CommentsEditUserCheck
+- CommentsEditSubmittedPropertiesCheck
+
+### comments.edit.sync
+
+### comments.edit.async
+
+*/
+
+// ------------------------------------- comments.new.client -------------------------------- //
+
+// ------------------------------------- comments.new.method -------------------------------- //
+
+function CommentsNewUserCheck (comment, user) {
+  // check that user can post
+  if (!user || !Users.can.comment(user))
+    throw new Meteor.Error(601, __('you_need_to_login_or_be_invited_to_post_new_comments'));
+  return comment;
+}
+Telescope.callbacks.add("comments.new.method", CommentsNewUserCheck);
+
+function CommentsNewRateLimit (comment, user) {
+  if (!Users.is.admin(user)) {
+    var timeSinceLastComment = Users.timeSinceLast(user, Comments),
+        commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
+    // check that user waits more than 15 seconds between comments
+    if((timeSinceLastComment < commentInterval)) {
+      throw new Meteor.Error(704, __('please_wait')+(commentInterval-timeSinceLastComment)+__('seconds_before_commenting_again'));
+    }
+  }
+  return comment;
+}
+Telescope.callbacks.add("comments.new.method", CommentsNewRateLimit);
+
+function CommentsNewSubmittedPropertiesCheck (comment, user) {
+  // admin-only properties
+  // userId
+  const schema = Comments.simpleSchema()._schema;
+
+  // clear restricted properties
+  _.keys(comment).forEach(function (fieldName) {
+
+    // make an exception for postId, which should be setable but not modifiable
+    if (fieldName === "postId") {
+      // ok
+    } else {
+      var field = schema[fieldName];
+      if (!Users.can.submitField(user, field)) {
+        throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
+      }
+    }
+
+  });
+
+  // if no userId has been set, default to current user id
+  if (!comment.userId) {
+    comment.userId = user._id;
+  }
+  return comment;
+}
+Telescope.callbacks.add("comments.new.method", CommentsNewSubmittedPropertiesCheck);
+
+// ------------------------------------- comments.new.sync -------------------------------- //
+
+/**
+ * @summary Check for required properties
+ */
+function CommentsNewRequiredPropertiesCheck (comment, user) {
+  
+  var userId = comment.userId; // at this stage, a userId is expected
+
+  // ------------------------------ Checks ------------------------------ //
+
+  // Don't allow empty comments
+  if (!comment.body)
+    throw new Meteor.Error(704,__('your_comment_is_empty'));
+
+  // ------------------------------ Properties ------------------------------ //
+
+  var defaultProperties = {
+    createdAt: new Date(),
+    postedAt: new Date(),
+    upvotes: 0,
+    downvotes: 0,
+    baseScore: 0,
+    score: 0,
+    author: Users.getDisplayNameById(userId)
+  };
+
+  comment = _.extend(defaultProperties, comment);
+
+  return comment;
+}
+Telescope.callbacks.add("comments.new.sync", CommentsNewRequiredPropertiesCheck);
+
+
+// ------------------------------------- comments.new.async -------------------------------- //
+
+function CommentsNewOperations (comment) {
 
   var userId = comment.userId;
 
@@ -46,13 +169,11 @@ function afterCommentOperations (comment) {
 
   return comment;
 }
-Telescope.callbacks.add("comments.new.sync", afterCommentOperations);
+Telescope.callbacks.add("comments.new.async", CommentsNewOperations);
 
-// ------------------------------------- Votes -------------------------------- //
+function CommentsNewUpvoteOwnComment (comment) {
 
-if (typeof Telescope.operateOnItem !== "undefined") {
-  
-  function upvoteOwnComment (comment) {
+  if (typeof Telescope.operateOnItem !== "undefined") {
 
     var commentAuthor = Meteor.users.findOne(comment.userId);
 
@@ -61,16 +182,13 @@ if (typeof Telescope.operateOnItem !== "undefined") {
 
     return comment;
   }
-  Telescope.callbacks.add("comments.new.sync", upvoteOwnComment);
-
 }
-// ------------------------------------- Notifications -------------------------------- //
+Telescope.callbacks.add("comments.new.sync", CommentsNewUpvoteOwnComment);
 
+// add new comment notification callback on comment submit
+function CommentsNewNotifications (comment) {
 
-if (typeof Telescope.notifications !== "undefined") {
-
-  // add new comment notification callback on comment submit
-  function commentSubmitNotifications (comment) {
+  if (typeof Telescope.notifications !== "undefined") {
 
     // note: dummy content has disableNotifications set to true
     if(Meteor.isServer && !comment.disableNotifications){
@@ -130,6 +248,42 @@ if (typeof Telescope.notifications !== "undefined") {
 
     }
   }
-  Telescope.callbacks.add("commentSubmitAsync", commentSubmitNotifications);
-
 }
+Telescope.callbacks.add("comments.new.async", CommentsNewNotifications);
+
+// ------------------------------------- comments.edit.client -------------------------------- //
+
+// ------------------------------------- comments.edit.method -------------------------------- //
+
+function CommentsEditUserCheck (modifier, comment, user) {
+  if (!user || !Users.can.edit(user, comment)) {
+    throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_comment'));
+  }
+  return modifier;
+}
+Telescope.callbacks.add("comments.edit.method", CommentsEditUserCheck);
+
+function CommentsEditSubmittedPropertiesCheck (modifier, post, user) {
+  const schema = Posts.simpleSchema()._schema;
+  // go over each field and throw an error if it's not editable
+  // loop over each operation ($set, $unset, etc.)
+  _.each(modifier, function (operation) {
+    // loop over each property being operated on
+    _.keys(operation).forEach(function (fieldName) {
+
+      var field = schema[fieldName];
+      if (!Users.can.editField(user, field, comment)) {
+        throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
+      }
+
+    });
+  });
+  return modifier;
+}
+Telescope.callbacks.add("posts.edit.method", CommentsEditSubmittedPropertiesCheck);
+
+
+// ------------------------------------- comments.edit.sync -------------------------------- //
+
+// ------------------------------------- comments.edit.async -------------------------------- //
+
