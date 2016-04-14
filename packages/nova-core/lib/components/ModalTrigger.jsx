@@ -5,7 +5,6 @@ import { Modal } from 'react-bootstrap';
 class ContextPasser extends Component {
 
   getChildContext() {
-
     return {
       closeCallback: this.props.closeCallback,
       currentUser: this.props.currentUser // pass on currentUser
@@ -16,6 +15,7 @@ class ContextPasser extends Component {
     return this.props.children;
   }
 }
+
 ContextPasser.childContextTypes = {
   closeCallback: React.PropTypes.func,
   currentUser: React.PropTypes.object

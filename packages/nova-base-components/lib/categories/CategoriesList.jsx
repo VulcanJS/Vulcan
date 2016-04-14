@@ -26,7 +26,12 @@ class CategoriesList extends Component {
     const currentCategorySlug = currentRoute.queryParams.cat;
     
     return (
-      <DropdownButton bsStyle="default" className="categories btn-secondary" title="Categories" id="categories-dropdown">
+      <DropdownButton 
+        bsStyle="default" 
+        className="categories btn-secondary" 
+        title="Categories" 
+        id="categories-dropdown"
+      >
         <MenuItem href={Router.path("posts.list")} eventKey={0} className="dropdown-item post-category">All Categories</MenuItem>
         {categories && categories.length > 0 ? categories.map((category, index) => <Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug}/>) : null}
         {Users.is.admin(this.context.currentUser) ? this.renderNew() : null}

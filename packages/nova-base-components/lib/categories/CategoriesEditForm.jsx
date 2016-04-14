@@ -31,21 +31,14 @@ class CategoriesEditForm extends Component{
 
   render() {
 
-    
     return (
       <div className="edit-category-form">
-        <DocumentContainer 
-          collection={Categories} 
-          selector={{_id: this.props.category._id}}
-          terms={{_id: this.props.category._id}}
-          component={NovaForm}
-          componentProps={{
-            // note: the document prop will be passed from DocumentContainer
-            collection: Categories,
-            currentUser: this.context.currentUser,
-            methodName: "categories.edit",
-            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)
-          }}
+        <NovaForm 
+          document={this.props.category}
+          collection={Categories}
+          currentUser={this.context.currentUser}
+          methodName="categories.edit"
+          labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>
         <a onClick={this.deleteCategory} className="delete-category-link"><Icon name="close"/> Delete Category</a>
