@@ -12,8 +12,7 @@ Package.onUse(function (api) {
   api.use([
     'nova:core@0.26.0-nova',
     'nova:posts@0.26.0-nova',
-    'nova:users@0.26.0-nova',
-    'utilities:smart-methods@0.1.2'
+    'nova:users@0.26.0-nova'
   ]);
 
   api.addFiles([
