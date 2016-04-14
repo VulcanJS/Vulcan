@@ -20,7 +20,6 @@ Package.onUse(function (api) {
     'standard-minifiers',
 //    'accounts-ui',
     'accounts-base',
-    'accounts-password',
     'check',
     'reactive-var',
     'http',

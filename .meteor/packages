@@ -43,5 +43,6 @@ nova:email-templates
 # nova:demo
 nova:debug
 
+accounts-password
 accounts-twitter
 # accounts-facebook
