@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:migrations",
+  name: "migrations",
   summary: "Telescope migrations package",
   version: "0.26.0-nova",
   git: "https://github.com/TelescopeJS/Telescope.git"

@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:invites",
+  name: "invites",
   summary: "Telescope invites package",
   version: "0.26.0-nova",
   git: "https://github.com/TelescopeJS/telescope-invites.git"

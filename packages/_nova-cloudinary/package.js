@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'nova:cloudinary',
+  name: 'cloudinary',
   summary: 'Telescope file upload package.',
   version: '0.26.0-nova',
   git: "https://github.com/TelescopeJS/Telescope.git"

@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:subscribe-to-posts",
+  name: "subscribe-to-posts",
   summary: "Subscribe to posts to be notified when they get new comments",
   version: "0.26.0-nova",
   git: "https://github.com/TelescopeJS/telescope-subscribe-to-posts.git"
