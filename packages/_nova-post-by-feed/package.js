@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:post-by-feed",
   summary: "Auto post via RSS to Telescope",
-  version: "0.25.7",
+  version: "0.26.0-nova",
   git: "https://github.com/TelescopeJS/telescope-post-by-feed.git"
 });
 
@@ -16,7 +16,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  api.use(['nova:core@0.25.7']);
+  api.use(['nova:core@0.26.0-nova']);
 
   api.addFiles([
     'lib/feeds.js',

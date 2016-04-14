@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nova:cloudinary',
   summary: 'Telescope file upload package.',
-  version: '0.25.7',
+  version: '0.26.0-nova',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@0.25.7',
+    'nova:core@0.26.0-nova',
     // 'lepozepo:cloudinary@4.1.1'
     // 'lepozepo:s3@5.1.5'
   ]);
