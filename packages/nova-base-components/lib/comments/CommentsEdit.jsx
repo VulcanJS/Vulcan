@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from '../../actions.js';
+import Actions from '../actions.js';
 import NovaForm from "meteor/nova:forms";
 
-class CommentEdit extends Component {
+class CommentsEdit extends Component {
 
   render() {
     return (
@@ -22,14 +22,14 @@ class CommentEdit extends Component {
 
 }
 
-CommentEdit.propTypes = {
+CommentsEdit.propTypes = {
   comment: React.PropTypes.object.isRequired,
   successCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func
 }
 
-CommentEdit.contextTypes = {
+CommentsEdit.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-module.exports = CommentEdit;
+module.exports = CommentsEdit;

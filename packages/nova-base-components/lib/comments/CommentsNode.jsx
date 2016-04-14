@@ -1,20 +1,20 @@
 import React, { PropTypes, Component } from 'react';
 
-class CommentNode extends Component {
+class CommentsNode extends Component {
 
   renderComment(comment) {
     
-    ({CommentItem} = Telescope.components);
+    ({CommentsItem} = Telescope.components);
 
     return (
-      <CommentItem comment={comment} key={comment._id} currentUser={this.props.currentUser}/>
+      <CommentsItem comment={comment} key={comment._id} currentUser={this.props.currentUser}/>
     )
   }
 
   renderChildren(children) {
     return (
       <div className="comment-children">
-        {children.map(comment => <CommentNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
+        {children.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
       </div>
     )
   }
@@ -34,9 +34,9 @@ class CommentNode extends Component {
 
 };
 
-CommentNode.propTypes = {
+CommentsNode.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
   currentUser: React.PropTypes.object, // the current user
 }
 
-module.exports = CommentNode;
+module.exports = CommentsNode;

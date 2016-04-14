@@ -54,8 +54,6 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 
 /*
 
-### posts.new.client
-
 ### posts.new.method
 
 - PostsNewUserCheck
@@ -72,8 +70,6 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 - PostsNewIncrementPostCount
 - PostsNewUpvoteOwnPost
 - PostsNewNotifications
-
-### posts.edit.client
 
 ### posts.edit.method
 
@@ -94,8 +90,6 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 - PostsApprovedNotification
 
 */
-
-// ------------------------------------- posts.new.client -------------------------------- //
 
 // ------------------------------------- posts.new.method -------------------------------- //
 
@@ -262,8 +256,6 @@ function PostsNewNotifications (post) {
   }
 }
 Telescope.callbacks.add("posts.new.async", PostsNewNotifications);
-
-// ------------------------------------- posts.edit.client -------------------------------- //
 
 // ------------------------------------- posts.edit.method -------------------------------- //
 

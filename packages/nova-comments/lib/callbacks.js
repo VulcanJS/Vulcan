@@ -31,8 +31,6 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 
 /*
 
-### comments.new.client
-
 ### comments.new.method
 
 - CommentsNewUserCheck
@@ -49,8 +47,6 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 - CommentsNewUpvoteOwnComment
 - CommentsNewNotifications
 
-### comments.edit.client
-
 ### comments.edit.method
 
 - CommentsEditUserCheck
@@ -61,8 +57,6 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 ### comments.edit.async
 
 */
-
-// ------------------------------------- comments.new.client -------------------------------- //
 
 // ------------------------------------- comments.new.method -------------------------------- //
 
@@ -124,13 +118,9 @@ function CommentsNewRequiredPropertiesCheck (comment, user) {
   
   var userId = comment.userId; // at this stage, a userId is expected
 
-  // ------------------------------ Checks ------------------------------ //
-
   // Don't allow empty comments
   if (!comment.body)
     throw new Meteor.Error(704,__('your_comment_is_empty'));
-
-  // ------------------------------ Properties ------------------------------ //
 
   var defaultProperties = {
     createdAt: new Date(),
@@ -183,7 +173,7 @@ function CommentsNewUpvoteOwnComment (comment) {
     return comment;
   }
 }
-Telescope.callbacks.add("comments.new.sync", CommentsNewUpvoteOwnComment);
+Telescope.callbacks.add("comments.new.async", CommentsNewUpvoteOwnComment);
 
 // add new comment notification callback on comment submit
 function CommentsNewNotifications (comment) {
@@ -251,8 +241,6 @@ function CommentsNewNotifications (comment) {
 }
 Telescope.callbacks.add("comments.new.async", CommentsNewNotifications);
 
-// ------------------------------------- comments.edit.client -------------------------------- //
-
 // ------------------------------------- comments.edit.method -------------------------------- //
 
 function CommentsEditUserCheck (modifier, comment, user) {
@@ -263,7 +251,7 @@ function CommentsEditUserCheck (modifier, comment, user) {
 }
 Telescope.callbacks.add("comments.edit.method", CommentsEditUserCheck);
 
-function CommentsEditSubmittedPropertiesCheck (modifier, post, user) {
+function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   const schema = Posts.simpleSchema()._schema;
   // go over each field and throw an error if it's not editable
   // loop over each operation ($set, $unset, etc.)
@@ -280,7 +268,7 @@ function CommentsEditSubmittedPropertiesCheck (modifier, post, user) {
   });
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.method", CommentsEditSubmittedPropertiesCheck);
+Telescope.callbacks.add("comments.edit.method", CommentsEditSubmittedPropertiesCheck);
 
 
 // ------------------------------------- comments.edit.sync -------------------------------- //

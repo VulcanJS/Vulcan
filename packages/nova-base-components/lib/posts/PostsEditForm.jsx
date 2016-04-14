@@ -9,7 +9,7 @@ const Messages = Core.Messages;
 
 import Actions from "../actions.js";
 
-class PostEditForm extends Component{
+class PostsEditForm extends Component{
 
   constructor() {
     super();
@@ -54,13 +54,13 @@ class PostEditForm extends Component{
   }
 }
 
-PostEditForm.propTypes = {
+PostsEditForm.propTypes = {
   post: React.PropTypes.object.isRequired
 }
 
-PostEditForm.contextTypes = {
+PostsEditForm.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = PostEditForm;
-export default PostEditForm;
+module.exports = PostsEditForm;
+export default PostsEditForm;

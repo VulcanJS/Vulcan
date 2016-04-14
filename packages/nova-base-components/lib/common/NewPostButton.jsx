@@ -5,11 +5,11 @@ const ModalTrigger = Core.ModalTrigger;
 
 const NewPostButton = (props, context) => {
 
-  ({PostNewForm} = Telescope.components);
+  ({PostsNewForm} = Telescope.components);
 
   return (
     <ModalTrigger title="New Post" component={<Button bsStyle="primary">New Post</Button>}>
-      <PostNewForm/>
+      <PostsNewForm/>
     </ModalTrigger>
   )
 }

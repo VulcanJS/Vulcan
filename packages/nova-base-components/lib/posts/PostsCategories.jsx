@@ -1,7 +1,7 @@
 import React from 'react';
-import Router from '../../router.js';
+import Router from '../router.js';
 
-const PostCategories = ({post}) => {
+const PostsCategories = ({post}) => {
   return (
     <div className="post-categories">
       {post.categoriesArray.map(category => <a key={category._id} href={Router.path("posts.list", {}, {cat: category.slug})}>{category.name}</a>)}
@@ -9,4 +9,4 @@ const PostCategories = ({post}) => {
   )
 };
 
-module.exports = PostCategories;
+module.exports = PostsCategories;

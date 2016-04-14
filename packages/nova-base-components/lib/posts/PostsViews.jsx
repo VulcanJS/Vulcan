@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../../router.js';
+import Router from '../router.js';
 import { Button, ButtonGroup } from 'react-bootstrap';
 
-const PostViews = (props, context) => {
+const PostsViews = (props, context) => {
 
   let views = ["top", "new", "best"];
   const adminViews = ["pending", "rejected", "scheduled"];
@@ -25,16 +25,16 @@ const PostViews = (props, context) => {
   )
 }
 
-PostViews.propTypes = {
+PostsViews.propTypes = {
   defaultView: React.PropTypes.string
 }
 
-PostViews.defaultProps = {
+PostsViews.defaultProps = {
   defaultView: "top"
 }
 
-PostViews.contextTypes = {
+PostsViews.contextTypes = {
   currentRoute: React.PropTypes.object
 };
 
-module.exports = PostViews;
+module.exports = PostsViews;

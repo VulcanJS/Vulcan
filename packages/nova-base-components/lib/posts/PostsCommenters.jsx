@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PostCommenters = ({post}) => {
+const PostsCommenters = ({post}) => {
   return (
     <div className="post-commenters">
       <div className="post-commenters-avatars">
@@ -17,5 +17,5 @@ const PostCommenters = ({post}) => {
   )
 }
 
-module.exports = PostCommenters;
-export default PostCommenters;
+module.exports = PostsCommenters;
+export default PostsCommenters;

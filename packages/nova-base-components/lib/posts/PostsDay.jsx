@@ -3,9 +3,9 @@ import React, { PropTypes, Component } from 'react';
 import SmartContainers from "meteor/utilities:react-list-container";
 const ListContainer = SmartContainers.ListContainer;
 
-const PostDay = ({date, number}) => {
+const PostsDay = ({date, number}) => {
 
-  ({PostList} = Telescope.components);
+  ({PostsList} = Telescope.components);
 
   const terms = {
     view: "top",
@@ -27,17 +27,17 @@ const PostDay = ({date, number}) => {
         options={options}
         terms={terms} 
         joins={Posts.getJoins()}
-        component={PostList}
+        component={PostsList}
         componentProps={{showHeader: false}}
       />
     </div>
   )
 }
 
-PostDay.propTypes = {
+PostsDay.propTypes = {
   date: React.PropTypes.object,
   number: React.PropTypes.number
 }
 
-module.exports = PostDay;
-export default PostDay;
+module.exports = PostsDay;
+export default PostsDay;

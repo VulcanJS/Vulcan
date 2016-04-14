@@ -6,7 +6,7 @@ const Messages = Core.Messages;
 
 import NovaForm from "meteor/nova:forms";
 
-const PostNewForm = (props, context) => {
+const PostsNewForm = (props, context) => {
 
   ({CanCreatePost, FlashMessages} = Telescope.components);
 
@@ -28,9 +28,9 @@ const PostNewForm = (props, context) => {
   )
 }
 
-PostNewForm.contextTypes = {
+PostsNewForm.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = PostNewForm;
-export default PostNewForm;
+module.exports = PostsNewForm;
+export default PostsNewForm;
