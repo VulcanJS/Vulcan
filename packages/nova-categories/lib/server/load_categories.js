@@ -1,6 +1,5 @@
 // Load categories from settings, if there are any
 
-
 if (Meteor.settings && Meteor.settings.categories) {
   Meteor.settings.categories.forEach(category => {
 

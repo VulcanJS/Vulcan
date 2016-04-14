@@ -1,16 +1,8 @@
-# Meteor packages used by this project, one per line.
-#
-# 'meteor add' and 'meteor remove' will edit this file for you,
-# but you can also edit it by hand.
-
-
 ############ Nova Core ############
 
-nova:core
+nova:core # do not remove!
 
-############ Nova Packages (Optional) ############
-
-# Note: all following packages depend on nova:core
+############ Optional Packages ############
 
 nova:settings
 nova:users
@@ -25,23 +17,20 @@ nova:share
 nova:voting
 nova:forms
 nova:embedly
-nova:base-components
-nova:base-styles
 nova:api
 nova:rss
 nova:kadira
 nova:email
+
+############ Customizable Packages ############
+
+nova:base-components
+nova:base-styles
 nova:email-templates
-
-# nova:migrations
-# nova:invites
-# nova:post-by-feed
-# nova:subscribe-to-posts
-
-############ Custom Packages ############
-
-# nova:demo
-nova:debug
 
 accounts-twitter
 # accounts-facebook
+
+############ Debug Packages ############
+
+nova:debug

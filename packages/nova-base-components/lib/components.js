@@ -47,7 +47,7 @@ Telescope.registerComponent("CommentsEdit",         require('./comments/Comments
 
 // categories
 
-Telescope.registerComponent("CategoriesList",       require('./categories/list/CategoriesList.jsx'));
+Telescope.registerComponent("CategoriesList",       require('./categories/CategoriesList.jsx'));
 
 // permissions
 

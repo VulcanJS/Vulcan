@@ -1,11 +1,9 @@
 Meteor.methods({
-  removeCategory: function (categoryId) {
+  "categories.deleteById": function (categoryId) {
     
     check(categoryId, String);
 
     if (Users.is.admin(this.userId)) {
-
-      var category = Categories.findOne(categoryId);
 
       // delete category
       Categories.remove(categoryId);
@@ -15,7 +13,7 @@ Meteor.methods({
         Categories.update(category._id, {$unset: {parentId: ""}});
       });
 
-      // find any post with this category and remove it
+      // find any posts with this category and remove it
       var postsUpdated = Posts.update({categories: {$in: [categoryId]}}, {$pull: {categories: categoryId}}, {multi: true});
 
       return postsUpdated;

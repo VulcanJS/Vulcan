@@ -88,7 +88,7 @@ mongo-livedata@1.0.11
 nova:api@0.26.0-nova
 nova:base-components@0.26.0-nova
 nova:base-styles@0.26.0-nova
-nova:categories@0.26.0-nova
+nova:categories@0.26.1-nova
 nova:comments@0.26.0-nova
 nova:core@0.26.0-nova
 nova:debug@0.26.0-nova
@@ -97,7 +97,7 @@ nova:email-templates@0.26.0-nova
 nova:embedly@0.26.0-nova
 nova:events@0.26.0-nova
 nova:forms@0.26.0-nova
-nova:getting-started@0.26.0-nova
+nova:getting-started@0.26.1-nova
 nova:i18n@0.26.0-nova
 nova:kadira@0.26.0-nova
 nova:lib@0.26.0-nova
