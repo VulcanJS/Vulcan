@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PostThumbnail = ({post}) => {
+const PostsThumbnail = ({post}) => {
   return (
     <a className="post-thumbnail" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>
       <img src={Posts.getThumbnailUrl(post)} />
@@ -8,5 +8,5 @@ const PostThumbnail = ({post}) => {
   )
 }
 
-module.exports = PostThumbnail;
-export default PostThumbnail;
+module.exports = PostsThumbnail;
+export default PostsThumbnail;

@@ -9,7 +9,8 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true
+      publish: true,
+      defaultValue: 0
     }
   },
   /**

@@ -7,29 +7,29 @@ const ModalTrigger = Core.ModalTrigger;
 import SmartContainers from "meteor/utilities:react-list-container";
 const DocumentContainer = SmartContainers.DocumentContainer;
 
-class PostItem extends Component {
+class PostsItem extends Component {
 
   renderCategories() {
 
-    ({PostCategories} = Telescope.components);
+    ({PostsCategories} = Telescope.components);
 
-    return this.props.post.categoriesArray ? <PostCategories post={this.props.post} /> : "";
+    return this.props.post.categoriesArray ? <PostsCategories post={this.props.post} /> : "";
   }
 
   renderCommenters() {
 
-    ({PostCommenters} = Telescope.components);
+    ({PostsCommenters} = Telescope.components);
 
-    return this.props.post.commentersArray ? <PostCommenters post={this.props.post}/> : "";
+    return this.props.post.commentersArray ? <PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
 
-    ({PostEditForm} = Telescope.components);
+    ({PostsEditForm} = Telescope.components);
 
     const component = (
       <ModalTrigger title="Edit Post" component={<a className="edit-link">Edit</a>}>
-        <PostEditForm post={this.props.post}/>
+        <PostsEditForm post={this.props.post}/>
       </ModalTrigger>
     );
 
@@ -42,7 +42,7 @@ class PostItem extends Component {
   
   render() {
 
-    ({UserAvatar, UserName, Vote, PostStats, PostThumbnail} = Telescope.components);
+    ({UserAvatar, UserName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
 
     const post = this.props.post;
 
@@ -59,7 +59,7 @@ class PostItem extends Component {
           <Vote post={post} currentUser={this.props.currentUser}/>
         </div>
         
-        {post.thumbnailUrl ? <PostThumbnail post={post}/> : null}
+        {post.thumbnailUrl ? <PostsThumbnail post={post}/> : null}
 
         <div className="post-content">
           
@@ -72,7 +72,7 @@ class PostItem extends Component {
             {post.user? <div className="post-user"><UserAvatar user={post.user} size="small"/><UserName user={post.user}/></div> : null}
             <div className="post-date">{moment(post.postedAt).fromNow()}</div>
             <div className="post-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
-            <PostStats post={post} />
+            <PostsStats post={post} />
             {this.renderActions()}
           </div>
 
@@ -86,14 +86,14 @@ class PostItem extends Component {
   }
 };
   
-PostItem.propTypes = {
+PostsItem.propTypes = {
   post: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object
 }
 
-PostItem.contextTypes = {
+PostsItem.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = PostItem;
-export default PostItem;
+module.exports = PostsItem;
+export default PostsItem;

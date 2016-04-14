@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:notifications",
   summary: "Telescope notifications package",
-  version: "0.25.7",
+  version: "0.26.0-nova",
   git: "https://github.com/TelescopeJS/telescope-notifications.git"
 });
 
@@ -10,9 +10,9 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'nova:core@0.25.7',
-    'nova:email@0.25.7',
-    'nova:users@0.25.7'
+    'nova:core@0.26.0-nova',
+    'nova:email@0.26.0-nova',
+    'nova:users@0.26.0-nova'
     // 'kestanous:herald@1.3.0',
     // 'kestanous:herald-email@0.5.0'
   ]);

@@ -8,7 +8,7 @@ const getLastNDates = n => {
   );
 };
 
-class PostDaily extends Component{
+class PostsDaily extends Component{
   
   constructor(props) {
     super(props);
@@ -24,24 +24,24 @@ class PostDaily extends Component{
   }
 
   render() {
-    ({PostDay, PostListHeader} = Telescope.components);
+    ({PostsDay, PostsListHeader} = Telescope.components);
     return (
       <div className="post-daily">
-        <PostListHeader />
-        {getLastNDates(this.state.days).map((date, index) => <PostDay key={index} date={date} number={index}/>)}
+        <PostsListHeader />
+        {getLastNDates(this.state.days).map((date, index) => <PostsDay key={index} date={date} number={index}/>)}
         <button className="post-load-more" onClick={this.loadMoreDays}>Load More Days</button>
       </div>
     )
   }
 }
 
-PostDaily.propTypes = {
+PostsDaily.propTypes = {
   days: React.PropTypes.number
 }
 
-PostDaily.defaultProps = {
+PostsDaily.defaultProps = {
   days: 5
 }
 
-module.exports = PostDaily;
-export default PostDaily;
+module.exports = PostsDaily;
+export default PostsDaily;

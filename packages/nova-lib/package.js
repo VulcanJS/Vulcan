@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nova:lib',
   summary: 'Telescope libraries.',
-  version: '0.25.7',
+  version: '0.26.0-nova',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -17,7 +17,8 @@ Package.onUse(function (api) {
     'session',
     'tracker',
     'service-configuration',
-    'standard-minifiers',
+    'standard-minifiers@1.0.5',
+    'modules@0.5.2',
 //    'accounts-ui',
     'accounts-base',
     'accounts-password',
@@ -72,10 +73,10 @@ Package.onUse(function (api) {
     'arillo:flow-router-helpers@0.5.1',
     // 'peerlibrary:reactive-publish@0.2.0',
 
-    'utilities:smart-publications',
-    'utilities:smart-methods',
+    'utilities:smart-publications@0.1.4',
+    'utilities:smart-methods@0.1.2',
 
-    'ecmascript',
+    'ecmascript@0.4.2',
     'react-meteor-data@0.2.8'
   ];
 

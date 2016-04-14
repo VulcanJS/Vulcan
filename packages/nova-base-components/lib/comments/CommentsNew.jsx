@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from '../../actions.js';
+import Actions from '../actions.js';
 import NovaForm from "meteor/nova:forms";
 
-class CommentNew extends Component {
+class CommentsNew extends Component {
 
   render() {
 
@@ -34,7 +34,7 @@ class CommentNew extends Component {
 
 };
 
-CommentNew.propTypes = {
+CommentsNew.propTypes = {
   postId: React.PropTypes.string.isRequired,
   type: React.PropTypes.string, // "comment" or "reply"
   parentComment: React.PropTypes.object, // if reply, the comment being replied to
@@ -44,8 +44,8 @@ CommentNew.propTypes = {
   cancelCallback: React.PropTypes.func
 }
 
-CommentNew.contextTypes = {
+CommentsNew.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-module.exports = CommentNew;
+module.exports = CommentsNew;

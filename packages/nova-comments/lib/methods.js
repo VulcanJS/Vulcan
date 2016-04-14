@@ -5,61 +5,30 @@ Comments.methods = {};
 
 Comments.methods.new = function (comment) {
 
-  var userId = comment.userId; // at this stage, a userId is expected
+  const currentUser = Meteor.users.findOne(comment.userId);
 
-  // ------------------------------ Checks ------------------------------ //
-
-  // Don't allow empty comments
-  if (!comment.body)
-    throw new Meteor.Error(704,__('your_comment_is_empty'));
-
-  // ------------------------------ Properties ------------------------------ //
-
-  var defaultProperties = {
-    createdAt: new Date(),
-    postedAt: new Date(),
-    upvotes: 0,
-    downvotes: 0,
-    baseScore: 0,
-    score: 0,
-    author: Users.getDisplayNameById(userId)
-  };
-
-  comment = _.extend(defaultProperties, comment);
-
-  // ------------------------------ Callbacks ------------------------------ //
-
-  // run all post submit server callbacks on comment object successively
-  comment = Telescope.callbacks.run("comments.new.sync", comment);
-
-  // -------------------------------- Insert -------------------------------- //
+  comment = Telescope.callbacks.run("comments.new.sync", comment, currentUser);
 
   comment._id = Comments.insert(comment);
 
-  // --------------------- Server-side Async Callbacks --------------------- //
-
-  // run all post submit server callbacks on comment object successively
   // note: query for comment to get fresh document with collection-hooks effects applied
-  Telescope.callbacks.runAsync("commentSubmitAsync", Comments.findOne(comment._id));
+  Telescope.callbacks.runAsync("comments.new.async", Comments.findOne(comment._id));
 
   return comment;
 };
 
 Comments.methods.edit = function (commentId, modifier, comment) {
 
-  // ------------------------------ Callbacks ------------------------------ //
+  if (typeof comment === "undefined") {
+    comment = Comments.findOne(commentId);
+  }
 
-  modifier = Telescope.callbacks.run("commentEdit", modifier, comment);
-
-  // ------------------------------ Update ------------------------------ //
+  modifier = Telescope.callbacks.run("comments.edit.sync", modifier, comment);
 
   Comments.update(commentId, modifier);
 
-  // ------------------------------ Callbacks ------------------------------ //
+  Telescope.callbacks.runAsync("comments.edit.async", Comments.findOne(commentId), comment);
 
-  Telescope.callbacks.runAsync("commentEditAsync", Comments.findOne(commentId), comment);
-
-  // ------------------------------ After Update ------------------------------ //
   return Comments.findOne(commentId);
 };
 
@@ -69,103 +38,52 @@ Comments.methods.edit = function (commentId, modifier, comment) {
 
 Meteor.methods({
 
+  /**
+   * @summary Meteor method for submitting a comment from the client
+   * Required properties: postId, body
+   * @memberof Comments
+   * @isMethod true
+   * @param {Object} comment - the comment being inserted
+   */
   'comments.new': function(comment){
 
-    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
-    check(comment, Comments.simpleSchema());
+    Comments.simpleSchema().namedContext("comments.new").validate(comment);
 
-    // required properties:
-    // postId
-    // body
-
-    // optional properties:
-    // parentCommentId
-
-    var user = Meteor.user(),
-        hasAdminRights = Users.is.admin(user),
-        schema = Comments.simpleSchema()._schema;
-
-    // ------------------------------ Checks ------------------------------ //
-
-    // check that user can comment
-    if (!user || !Users.can.comment(user))
-      throw new Meteor.Error(__('you_need_to_login_or_be_invited_to_post_new_comments'));
-
-    // ------------------------------ Rate Limiting ------------------------------ //
-
-    if (!hasAdminRights) {
-
-      var timeSinceLastComment = Users.timeSinceLast(user, Comments),
-          commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
-
-      // check that user waits more than 15 seconds between comments
-      if((timeSinceLastComment < commentInterval))
-        throw new Meteor.Error(704, __('please_wait')+(commentInterval-timeSinceLastComment)+__('seconds_before_commenting_again'));
-
-    }
-
-    // ------------------------------ Properties ------------------------------ //
-
-    // admin-only properties
-    // userId
-
-    // clear restricted properties
-    _.keys(comment).forEach(function (fieldName) {
-
-      // make an exception for postId, which should be setable but not modifiable
-      if (fieldName === "postId") {
-        // ok
-      } else {
-        var field = schema[fieldName];
-        if (!Users.can.submitField(user, field)) {
-          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
-        }
-      }
-
-    });
-
-    // if no userId has been set, default to current user id
-    if (!comment.userId) {
-      comment.userId = user._id;
+    comment = Telescope.callbacks.run("comments.new.method", comment, Meteor.user());
+    
+    if (Meteor.isServer && this.connection) {
+      comment.userIP = this.connection.clientAddress;
+      comment.userAgent = this.connection.httpHeaders["user-agent"];
     }
 
     return Comments.methods.new(comment);
   },
 
+  /**
+   * @summary Meteor method for editing a comment from the client
+   * @memberof Comments
+   * @isMethod true
+   * @param {Object} commentId - the id of the comment being updated
+   * @param {Object} modifier - the update modifier
+   */
   'comments.edit': function (commentId, modifier) {
 
-    // checking might be redundant because SimpleSchema already enforces the schema, but you never know
-    check(modifier, {$set: Comments.simpleSchema()});
+    Comments.simpleSchema().namedContext("comments.edit").validate(modifier, {modifier: true});
     check(commentId, String);
 
-    var user = Meteor.user(),
-        comment = Comments.findOne(commentId),
-        schema = Comments.simpleSchema()._schema;
+    const comment = Comments.findOne(commentId);
+    
+    modifier = Telescope.callbacks.run("comments.edit.method", modifier, comment, Meteor.user());
 
-    // ------------------------------ Checks ------------------------------ //
-
-    // check that user can edit
-    if (!user || !Users.can.edit(user, comment)) {
-      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_comment'));
-    }
-
-    // go over each field and throw an error if it's not editable
-    // loop over each operation ($set, $unset, etc.)
-    _.each(modifier, function (operation) {
-      // loop over each property being operated on
-      _.keys(operation).forEach(function (fieldName) {
-
-        var field = schema[fieldName];
-        if (!Users.can.editField(user, field, comment)) {
-          throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
-        }
-
-      });
-    });
-
-    Comments.methods.edit(commentId, modifier, comment);
+    return Comments.methods.edit(commentId, modifier, comment);
   },
 
+  /**
+   * @summary Meteor method for deleting a comment
+   * @memberof Comments
+   * @isMethod true
+   * @param {String} commentId - the id of the comment
+   */
   'comments.deleteById': function (commentId) {
 
     check(commentId, String);
@@ -202,21 +120,45 @@ Meteor.methods({
     }
   },
 
+  /**
+   * @summary Upvote a comment
+   * @memberof Comments
+   * @isMethod true
+   * @param {String} commentId - the id of the comment
+   */
   'comments.upvote': function (commentId) {
     check(commentId, String);
     return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "upvote");
   },
 
+  /**
+   * @summary Downvote a comment
+   * @memberof Comments
+   * @isMethod true
+   * @param {String} commentId - the id of the comment
+   */
   'comments.downvote': function (commentId) {
     check(commentId, String);
     return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "downvote");
   },
 
+  /**
+   * @summary Cancel an upvote on a comment
+   * @memberof Comments
+   * @isMethod true
+   * @param {String} commentId - the id of the comment
+   */
   'comments.cancelUpvote': function (commentId) {
     check(commentId, String);
     return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelUpvote");
   },
 
+  /**
+   * @summary Cancel a downvote on a comment
+   * @memberof Comments
+   * @isMethod true
+   * @param {String} commentId - the id of the comment
+   */
   'comments.cancelDownvote': function (commentId) {
     check(commentId, String);
     return Telescope.operateOnItem.call(this, Comments, commentId, Meteor.user(), "cancelDownvote");

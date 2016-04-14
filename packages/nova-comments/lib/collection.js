@@ -125,6 +125,21 @@ Comments.schema = new SimpleSchema({
     type: Boolean,
     optional: true,
     publish: true,
+  },
+  userIP: {
+    type: String,
+    optional: true,
+    publish: false
+  },
+  userAgent: {
+    type: String,
+    optional: true,
+    publish: false
+  },
+  referrer: {
+    type: String,
+    optional: true,
+    publish: false
   }
 });
 

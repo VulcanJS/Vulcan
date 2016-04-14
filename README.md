@@ -284,9 +284,8 @@ If the callback function is named (i.e. declared using the `function foo () {}` 
 Telescope.callbacks.remove("posts.edit.sync", "setEditedAt");
 ```
 
-Methods support four distinct types of callbacks, each with their own hook:
+Methods support three distinct types of callbacks, each with their own hook:
 
-- `client` callbacks are only called on the client, before the actual method is called.
 - `method` callbacks are called within the body of the method, and they run both on the client and server.
 - `sync` callbacks are called in the mutator, and can run either on both client and server, *or* on the server only if the mutator is called directly.
 - `async` callbacks are called in the mutator, and only run on the server in an async non-blocking way. 

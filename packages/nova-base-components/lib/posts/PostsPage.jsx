@@ -6,9 +6,9 @@ const ListContainer = SmartContainers.ListContainer;
 import Core from "meteor/nova:core";
 const ModalTrigger = Core.ModalTrigger;
 
-const PostPage = ({document, currentUser}) => {
+const PostsPage = ({document, currentUser}) => {
   
-  ({CommentList, CommentNew, PostItem, PostCategories, SocialShare, Vote, PostStats, HeadTags, AccountsForm} = Telescope.components);
+  ({CommentsList, CommentsNew, PostsItem, PostsCategories, SocialShare, Vote, PostsStats, HeadTags, AccountsForm} = Telescope.components);
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
@@ -18,7 +18,7 @@ const PostPage = ({document, currentUser}) => {
 
       <HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
       
-      <PostItem post={post}/>
+      <PostsItem post={post}/>
 
       <div className="post-body" dangerouslySetInnerHTML={htmlBody}></div>
 
@@ -34,13 +34,13 @@ const PostPage = ({document, currentUser}) => {
           limit={0}
           parentProperty="parentCommentId"
           joins={Comments.getJoins()}
-          component={CommentList}
+          component={CommentsList}
         />
 
         { currentUser ?
           <div className="post-new-comment">
             <h4>New Comment:</h4>
-            <CommentNew type="comment" postId={post._id} />
+            <CommentsNew type="comment" postId={post._id} />
           </div> :
           <div>
             <ModalTrigger size="small" component={<a>Please log in to comment</a>}>
@@ -53,4 +53,4 @@ const PostPage = ({document, currentUser}) => {
   )
 };
 
-module.exports = PostPage;
+module.exports = PostsPage;

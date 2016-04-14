@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-class CommentItem extends Component{
+class CommentsItem extends Component{
 
   constructor() {
     super();
@@ -52,11 +52,11 @@ class CommentItem extends Component{
 
   renderReply() {
     
-    ({CommentNew} = Telescope.components);
+    ({CommentsNew} = Telescope.components);
 
     return (
       <div className="comment-reply">
-        <CommentNew 
+        <CommentsNew 
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
           successCallback={this.replySuccessCallback} 
@@ -69,10 +69,10 @@ class CommentItem extends Component{
 
   renderEdit() {
 
-    ({CommentEdit}  = Telescope.components);
+    ({CommentsEdit}  = Telescope.components);
     
     return (
-      <CommentEdit 
+      <CommentsEdit 
         comment={this.props.comment} 
         successCallback={this.editSuccessCallback} 
         cancelCallback={this.editCancelCallback}
@@ -104,9 +104,9 @@ class CommentItem extends Component{
 
 }
 
-CommentItem.propTypes = {
+CommentsItem.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
   currentUser: React.PropTypes.object, // the current user
 }
 
-module.exports = CommentItem;
+module.exports = CommentsItem;

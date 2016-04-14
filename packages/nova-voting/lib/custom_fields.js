@@ -11,7 +11,8 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true
+      publish: true,
+      defaultValue: 0
     }
   },
   /**
@@ -33,7 +34,8 @@ Posts.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      publish: true
+      publish: true,
+      defaultValue: 0
     }
   },
   /**
@@ -57,6 +59,7 @@ Posts.addField([
       decimal: true,
       optional: true,
       publish: true,
+      defaultValue: 0
     }
   },
   /**
@@ -69,6 +72,7 @@ Posts.addField([
       decimal: true,
       optional: true,
       publish: true,
+      defaultValue: 0
     }
   },
 ]);
@@ -87,6 +91,7 @@ Comments.addField([
       type: Number,
       optional: true,
       publish: true,
+      defaultValue: 0
     }
   },
   /**
@@ -109,6 +114,7 @@ Comments.addField([
       type: Number,
       optional: true,
       publish: true,
+      defaultValue: 0
     }
   },
   /**
@@ -132,6 +138,7 @@ Comments.addField([
       decimal: true,
       optional: true,
       publish: true,
+      defaultValue: 0
     }
   },
   /**
@@ -144,6 +151,7 @@ Comments.addField([
       decimal: true,
       optional: true,
       publish: true,
+      defaultValue: 0
     }
   },
 ]);

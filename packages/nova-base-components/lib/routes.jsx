@@ -12,7 +12,7 @@ Router.route('/', {
   name: 'posts.list',
   action(params, queryParams) {
 
-    ({App, PostList} = Telescope.components);
+    ({App, PostsList} = Telescope.components);
     queryParams = _.isEmpty(queryParams) ? {view: 'new'} : _.clone(queryParams);
     ({selector, options} = Posts.parameters.get(queryParams));
 
@@ -24,7 +24,7 @@ Router.route('/', {
         options={options}
         terms={queryParams} 
         joins={Posts.getJoins()}
-        component={PostList}
+        component={PostsList}
         cacheSubscription={false}
       />})
   }
@@ -34,16 +34,16 @@ Router.route('/daily/:days?', {
   name: 'posts.daily',
   action(params, queryParams) {
 
-    ({App, PostDaily} = Telescope.components);
+    ({App, PostsDaily} = Telescope.components);
 
-    mount(App, {content: <PostDaily days={params.days}/>})
+    mount(App, {content: <PostsDaily days={params.days}/>})
   }
 });
 
 Router.route('/posts/:_id/:slug?', {
   name: 'posts.single',
   action(params, queryParams) {
-    ({App, PostPage} = Telescope.components);
+    ({App, PostsPage} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Posts} 
@@ -51,7 +51,7 @@ Router.route('/posts/:_id/:slug?', {
         selector={{_id: params._id}}
         terms={params}
         joins={Posts.getJoins()}
-        component={PostPage}
+        component={PostsPage}
       />});
   }
 });

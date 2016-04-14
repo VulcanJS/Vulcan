@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PostStats = ({post}) => {
+const PostsStats = ({post}) => {
 
   ({Icon} = Telescope.components);
 
@@ -14,5 +14,5 @@ const PostStats = ({post}) => {
   )
 }
 
-module.exports = PostStats;
-export default PostStats;
+module.exports = PostsStats;
+export default PostsStats;

@@ -9,7 +9,7 @@ const Messages = Core.Messages;
 
 import Actions from "../actions.js";
 
-class PostEditForm extends Component{
+class PostsEditForm extends Component{
 
   constructor() {
     super();
@@ -19,7 +19,7 @@ class PostEditForm extends Component{
   deletePost() {
     const post = this.props.post;
     if (window.confirm(`Delete post “${post.title}”?`)) { 
-      Actions.call('posts.deleteById', post._id, function(){
+      Actions.call('posts.deleteById', post._id, (error, result) => {
         Messages.flash(`Post “${post.title}” deleted.`, "success");
         Events.track("post deleted", {'_id': post._id});
       });
@@ -28,8 +28,6 @@ class PostEditForm extends Component{
 
   render() {
 
-    ({FlashMessages} = Telescope.components);
-    
     return (
       <div className="edit-post-form">
         <DocumentContainer 
@@ -54,13 +52,13 @@ class PostEditForm extends Component{
   }
 }
 
-PostEditForm.propTypes = {
+PostsEditForm.propTypes = {
   post: React.PropTypes.object.isRequired
 }
 
-PostEditForm.contextTypes = {
+PostsEditForm.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = PostEditForm;
-export default PostEditForm;
+module.exports = PostsEditForm;
+export default PostsEditForm;

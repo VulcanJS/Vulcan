@@ -101,6 +101,7 @@ Posts.schema = new SimpleSchema({
     type: Number,
     optional: true,
     publish: true,
+    defaultValue: 0
   },
   /**
     Timestamp of the last comment
@@ -117,6 +118,7 @@ Posts.schema = new SimpleSchema({
     type: Number,
     optional: true,
     publish: true,
+    defaultValue: 0
   },
   /**
     The post's status. One of pending (`1`), approved (`2`), or deleted (`3`)
@@ -160,7 +162,8 @@ Posts.schema = new SimpleSchema({
   inactive: {
     type: Boolean,
     optional: true,
-    publish: false
+    publish: false,
+    defaultValue: false
   },
   /**
     Save info for later spam checking on a post. We will use this for the akismet package
