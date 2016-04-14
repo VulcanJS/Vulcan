@@ -32,21 +32,29 @@ Telescope.callbacks.remove = function (hookName, callbackName) {
 
 /**
  * @summary Successively run all of a hook's callbacks on an item
- * @param {String} hook - The name of the hook
- * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
- * @param {Object} [constant] - An optional constant that will be passed along to each callback
+ * @param {String} hook - First argument: the name of the hook
+ * @param {Object} item - Second argument: the post, comment, modifier, etc. on which to run the callbacks
+ * @param {Any} args - Other arguments will be passed to each successive iteration
  * @returns {Object} Returns the item after it's been through all the callbacks for this hook
  */
-Telescope.callbacks.run = function (hook, item, constant) {
+Telescope.callbacks.run = function () {
 
-  var callbacks = Telescope.callbacks[hook];
+  // the first argument is the name of the hook
+  const hook = arguments[0];
+  // the second argument is the item on which to iterate
+  const item = arguments[1];
+  // successive arguments are passed to each iteration
+  const args = Array.prototype.slice.call(arguments).slice(2);
+
+  const callbacks = Telescope.callbacks[hook];
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
     return callbacks.reduce(function(result, callback) {
       // console.log(callback.name);
-      return callback(result, constant);
-
+      // return callback(result, constant);
+      const newArguments = [result].concat(args);
+      return callback.apply(this, newArguments);
       // uncomment for debugging
       // try {
       //   return callback(result, constant);
@@ -63,9 +71,8 @@ Telescope.callbacks.run = function (hook, item, constant) {
 
 /**
  * @summary Successively run all of a hook's callbacks on an item, in async mode (only works on server)
- * @param {String} hook - The name of the hook
- * @param {Object} item - The post, comment, modifier, etc. on which to run the callbacks
- * @param {Object} [constant] - An optional constant that will be passed along to each callback 
+ * @param {String} hook - First argument: the name of the hook
+ * @param {Any} args - Other arguments will be passed to each successive iteration
  */
 Telescope.callbacks.runAsync = function () {
 
