@@ -54,7 +54,9 @@ FormComponent.propTypes = {
   label: React.PropTypes.string, 
   value: React.PropTypes.any, 
   options: React.PropTypes.any,
-  control: React.PropTypes.any
+  control: React.PropTypes.any,
+  dataType: React.PropTypes.any,
+  disabled: React.PropTypes.bool
 }
 
 export default FormComponent;

@@ -2,6 +2,11 @@
  * @summary The global namespace for Settings.
  * @namespace Telescope.settings.collection
  */
+
+const isInSettingsJSON = function () {
+  return typeof Telescope.settings.getFromJSON(this.name) !== "undefined";
+};
+
 Telescope.settings.collection = new Mongo.Collection("settings");
 
 Telescope.settings.schema = new SimpleSchema({
@@ -11,6 +16,8 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
+      help: "Your site's title.",
       group: "01_general"
     }
   },
@@ -21,9 +28,10 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "01_general",
       type: "bootstrap-url",
-      instructions: 'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
+      help:  'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
     }
   },
   tagline: {
@@ -32,6 +40,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "01_general"
     }
   },
@@ -41,9 +50,10 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "01_general",
       rows: 5,
-      instructions: 'A short description used for SEO purposes.'
+      help:  'A short description used for SEO purposes.'
     }
   },
   siteImage: {
@@ -53,8 +63,9 @@ Telescope.settings.schema = new SimpleSchema({
     editableIf: Users.is.admin,
     regEx: SimpleSchema.RegEx.Url,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "01_general",
-      instructions: "URL to an image for the open graph image tag for all pages"
+      help:  "URL to an image for the open graph image tag for all pages"
     }
   },
   requireViewInvite: {
@@ -62,7 +73,9 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    control: "checkbox",
     autoform: {
+      disabled: isInSettingsJSON,
       group: 'invites',
       leftLabel: 'Require View Invite'
     }
@@ -72,7 +85,9 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    control: "checkbox",
     autoform: {
+      disabled: isInSettingsJSON,
       group: 'invites',
       leftLabel: 'Require Post Invite'
     }
@@ -82,9 +97,11 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    control: "checkbox",
     autoform: {
+      disabled: isInSettingsJSON,
       group: "01_general",
-      instructions: "Posts must be approved by admin",
+      help:  "Posts must be approved by admin",
       leftLabel: "Require Posts Approval"
     }
   },
@@ -95,8 +112,9 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "06_email",
-      instructions: 'The address all outgoing emails will be sent from.',
+      help:  'The address all outgoing emails will be sent from.',
       class: "private-field"
     }
   },
@@ -107,8 +125,9 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "06_email",
-      instructions: 'MAIL_URL environment variable (requires restart).',
+      help:  'MAIL_URL environment variable (requires restart).',
       class: "private-field"
     }
   },
@@ -120,8 +139,9 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: '01_general',
-      instructions: 'How often to recalculate scores, in seconds (default to 30)',
+      help:  'How often to recalculate scores, in seconds (default to 30)',
       class: "private-field"
     }
   },
@@ -132,8 +152,9 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "02_posts",
-      instructions: 'Minimum time between posts, in seconds (defaults to 30)'
+      help:  'Minimum time between posts, in seconds (defaults to 30)'
     }
   },
   RSSLinksPointTo: {
@@ -141,7 +162,9 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    control: "radiogroup",
     autoform: {
+      disabled: isInSettingsJSON,
       group: "02_posts",
       options: [
         {value: 'page', label: 'Discussion page'},
@@ -156,8 +179,9 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "03_comments",
-      instructions: 'Minimum time between comments, in seconds (defaults to 15)'
+      help:  'Minimum time between comments, in seconds (defaults to 15)'
     }
   },
   maxPostsPerDay: {
@@ -167,8 +191,9 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "02_posts",
-      instructions: 'Maximum number of posts a user can post in a day (default to 30).'
+      help:  'Maximum number of posts a user can post in a day (default to 30).'
     }
   },
   startInvitesCount: {
@@ -178,6 +203,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: 'invites'
     }
   },
@@ -188,6 +214,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "02_posts"
     }
   },
@@ -197,6 +224,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "04_logo"
     }
   },
@@ -206,6 +234,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "04_logo"
     }
   },
@@ -215,6 +244,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "04_logo"
     }
   },
@@ -224,6 +254,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "04_logo"
     }
   },
@@ -235,7 +266,7 @@ Telescope.settings.schema = new SimpleSchema({
   //   editableIf: Users.is.admin,
   //   autoform: {
   //     group: "01_general",
-  //     instructions: 'The app\'s language. Defaults to English.',
+  //     help:  'The app\'s language. Defaults to English.',
   //     options: function () {
   //       var languages = _.map(TAPi18n.getLanguages(), function (item, key) {
   //         return {
@@ -253,6 +284,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "07_integrations"
     }
   },
@@ -262,6 +294,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "07_integrations"
     }
   },
@@ -271,6 +304,7 @@ Telescope.settings.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "07_integrations"
     }
   },
@@ -281,8 +315,9 @@ Telescope.settings.schema = new SimpleSchema({
     editableIf: Users.is.admin,
     private: true,
     autoform: {
+      disabled: isInSettingsJSON,
       group: "06_email",
-      instructions: 'Content that will appear at the bottom of outgoing emails (accepts HTML).',
+      help:  'Content that will appear at the bottom of outgoing emails (accepts HTML).',
       rows: 5,
       class: "private-field"
     }
