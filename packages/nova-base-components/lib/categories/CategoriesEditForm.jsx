@@ -38,6 +38,9 @@ class CategoriesEditForm extends Component{
           collection={Categories}
           currentUser={this.context.currentUser}
           methodName="categories.edit"
+          successCallback={(category)=>{
+            Messages.flash("Category edited.", "success");
+          }}
           labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>

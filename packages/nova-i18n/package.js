@@ -10,8 +10,8 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:lib@0.26.0-nova',
-    'tap:i18n@1.8.0'
+    'nova:lib@0.26.0-nova'
+    // 'tap:i18n@1.8.0'
   ]);
 
   api.use(["session"], "client");

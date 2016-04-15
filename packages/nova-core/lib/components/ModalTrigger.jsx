@@ -1,25 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
 // import Modal from 'react-modal';
-
-class ContextPasser extends Component {
-
-  getChildContext() {
-    return {
-      closeCallback: this.props.closeCallback,
-      currentUser: this.props.currentUser // pass on currentUser
-    };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
-ContextPasser.childContextTypes = {
-  closeCallback: React.PropTypes.func,
-  currentUser: React.PropTypes.object
-};
 
 class ModalTrigger extends Component {
 
