@@ -12,6 +12,7 @@ Package.onUse(function(api) {
 
   api.use([
     'nova:lib@0.26.0-nova',
+    'nova:users@0.26.0-nova',
     // 'nova:i18n@0.26.0-nova'
 
   ]);
