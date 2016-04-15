@@ -17,6 +17,7 @@ const UserProfileCheck = ({ currentUser }) => {
           methodName="users.edit"
           labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Meteor.users)}
           successCallback={ (user)=> Telescope.callbacks.runAsync("profileCompletedAsync", user) }
+          requiredFieldsOnly={ true }
         />
       </Modal.Body>
     </Modal>)

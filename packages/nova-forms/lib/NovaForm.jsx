@@ -48,9 +48,18 @@ class NovaForm extends Component{
   }
 
   // get relevant fields
-  getFieldNames() { 
+  getFieldNames() {
     const collection = this.props.collection;
-    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.getDocument()) : collection.getInsertableFields(this.props.currentUser);
+    let fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.getDocument()) : collection.getInsertableFields(this.props.currentUser);
+
+    if (this.props.requiredFieldsOnly) {
+      const schema = collection.simpleSchema()._schema;
+      fields = _.filter(_.keys(schema), function (fieldName) {
+        const field = schema[fieldName];
+        return !!field.required;
+      });
+    }
+
     return fields;
   }
 
@@ -273,7 +282,8 @@ NovaForm.propTypes = {
   labelFunction: React.PropTypes.func,
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
-  cancelCallback: React.PropTypes.func
+  cancelCallback: React.PropTypes.func,
+  requiredFieldsOnly: React.PropTypes.bool
 }
 
 NovaForm.defaultPropTypes = {
