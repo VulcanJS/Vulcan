@@ -10,11 +10,12 @@ class Category extends Component {
 
   renderEdit() {
     const {Icon, CategoriesEditForm} = Telescope.components;
-    return (
-      <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Icon name="edit"/></a>}>
-        <CategoriesEditForm category={this.props.category}/>
-      </ModalTrigger>
-    )
+    return <a onClick={this.props.openModal} className="edit-category-link"><Icon name="edit"/></a>;
+    // return (
+    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Icon name="edit"/></a>}>
+    //     <CategoriesEditForm category={this.props.category}/>
+    //   </ModalTrigger>
+    // )
   }
 
   render() {
@@ -43,6 +44,7 @@ Category.propTypes = {
   category: React.PropTypes.object,
   index: React.PropTypes.number,
   currentCategorySlug: React.PropTypes.string,
+  openModal: React.PropTypes.func
 }
 
 Category.contextTypes = {
