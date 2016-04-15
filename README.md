@@ -1,3 +1,7 @@
+**IMPORTANT: [Nova](https://github.com/TelescopeJS/Telescope/tree/nova) is a new, React-based version of Telescope. Although it's still beta software, it is recommended you use it for any new projects going forward.**
+
+---
+
 Telescope is an open-source, real-time social news site built with [Meteor](http://meteor.com)
 
 **Note:** Telescope is beta software. Most of it should work but it's still a little unpolished and you'll probably find some bugs. Use at your own risk :)
