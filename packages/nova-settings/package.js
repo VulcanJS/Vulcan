@@ -6,19 +6,21 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  var both = ['server', 'client'];
 
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
     'nova:lib@0.26.0-nova',
+    'nova:users@0.26.0-nova'
     // 'nova:i18n@0.26.0-nova'
   ]);
 
   api.addFiles([
     'lib/collection.js',
+    'lib/init.js',
+    'lib/methods.js',
     // 'package-tap.i18n'
-  ], both);
+  ], ['server', 'client']);
 
   api.addFiles([
     'lib/server/publications.js',

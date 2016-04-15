@@ -8,6 +8,8 @@ Telescope.settings.schema = new SimpleSchema({
   title: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general"
     }
@@ -16,6 +18,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     // regEx: SimpleSchema.RegEx.Url,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       type: "bootstrap-url",
@@ -25,6 +29,8 @@ Telescope.settings.schema = new SimpleSchema({
   tagline: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general"
     }
@@ -32,6 +38,8 @@ Telescope.settings.schema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       rows: 5,
@@ -41,6 +49,8 @@ Telescope.settings.schema = new SimpleSchema({
   siteImage: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     regEx: SimpleSchema.RegEx.Url,
     autoform: {
       group: "01_general",
@@ -50,6 +60,8 @@ Telescope.settings.schema = new SimpleSchema({
   requireViewInvite: {
     type: Boolean,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: 'invites',
       leftLabel: 'Require View Invite'
@@ -58,6 +70,8 @@ Telescope.settings.schema = new SimpleSchema({
   requirePostInvite: {
     type: Boolean,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: 'invites',
       leftLabel: 'Require Post Invite'
@@ -66,6 +80,8 @@ Telescope.settings.schema = new SimpleSchema({
   requirePostsApproval: {
     type: Boolean,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "01_general",
       instructions: "Posts must be approved by admin",
@@ -76,6 +92,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     private: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "06_email",
       instructions: 'The address all outgoing emails will be sent from.',
@@ -86,6 +104,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     private: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "06_email",
       instructions: 'MAIL_URL environment variable (requires restart).',
@@ -97,6 +117,8 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     defaultValue: 30,
     private: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: '01_general',
       instructions: 'How often to recalculate scores, in seconds (default to 30)',
@@ -107,6 +129,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 30,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts",
       instructions: 'Minimum time between posts, in seconds (defaults to 30)'
@@ -115,6 +139,8 @@ Telescope.settings.schema = new SimpleSchema({
   RSSLinksPointTo: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts",
       options: [
@@ -127,6 +153,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 15,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "03_comments",
       instructions: 'Minimum time between comments, in seconds (defaults to 15)'
@@ -136,6 +164,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 30,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts",
       instructions: 'Maximum number of posts a user can post in a day (default to 30).'
@@ -145,6 +175,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     defaultValue: 3,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: 'invites'
     }
@@ -153,6 +185,8 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     defaultValue: 10,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "02_posts"
     }
@@ -160,6 +194,8 @@ Telescope.settings.schema = new SimpleSchema({
   logoUrl: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -167,6 +203,8 @@ Telescope.settings.schema = new SimpleSchema({
   logoHeight: {
     type: Number,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -174,6 +212,8 @@ Telescope.settings.schema = new SimpleSchema({
   logoWidth: {
     type: Number,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
@@ -181,31 +221,37 @@ Telescope.settings.schema = new SimpleSchema({
   faviconUrl: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "04_logo"
     }
   },
-  language: {
-    type: String,
-    defaultValue: 'en',
-    optional: true,
-    autoform: {
-      group: "01_general",
-      instructions: 'The app\'s language. Defaults to English.',
-      options: function () {
-        var languages = _.map(TAPi18n.getLanguages(), function (item, key) {
-          return {
-            value: key,
-            label: item.name
-          };
-        });
-        return languages;
-      }
-    }
-  },
+  // language: {
+  //   type: String,
+  //   defaultValue: 'en',
+  //   optional: true,
+  //   insertableIf: Users.is.admin,
+  //   editableIf: Users.is.admin,
+  //   autoform: {
+  //     group: "01_general",
+  //     instructions: 'The app\'s language. Defaults to English.',
+  //     options: function () {
+  //       var languages = _.map(TAPi18n.getLanguages(), function (item, key) {
+  //         return {
+  //           value: key,
+  //           label: item.name
+  //         };
+  //       });
+  //       return languages;
+  //     }
+  //   }
+  // },
   twitterAccount: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "07_integrations"
     }
@@ -213,6 +259,8 @@ Telescope.settings.schema = new SimpleSchema({
   facebookPage: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "07_integrations"
     }
@@ -220,6 +268,8 @@ Telescope.settings.schema = new SimpleSchema({
   googleAnalyticsId: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     autoform: {
       group: "07_integrations"
     }
@@ -227,6 +277,8 @@ Telescope.settings.schema = new SimpleSchema({
   emailFooter: {
     type: String,
     optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     private: true,
     autoform: {
       group: "06_email",

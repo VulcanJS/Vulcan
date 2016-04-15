@@ -14,3 +14,11 @@ Meteor.publish('settings', function() {
 
   return Telescope.settings.collection.find({}, options);
 });
+
+Meteor.publish('settings.admin', function() {
+  if (Users.is.adminById(this.userId)) {
+    return Telescope.settings.collection.find({}, {});
+  } else {
+    return [];
+  }
+});

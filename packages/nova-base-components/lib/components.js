@@ -15,6 +15,7 @@ Telescope.registerComponent("AppLoading",           require('./common/AppLoading
 Telescope.registerComponent("Error404",             require('./common/Error404.jsx'));
 Telescope.registerComponent("Loading",              require('./common/Loading.jsx'));
 Telescope.registerComponent("Vote",                 require('./common/Vote.jsx'));
+Telescope.registerComponent("SettingsEditForm",     require('./common/SettingsEditForm.jsx'));
 
 // posts
 
