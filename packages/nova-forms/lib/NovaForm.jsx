@@ -30,6 +30,10 @@ class NovaForm extends Component{
     this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
+  
+    // a debounced version of seState that only updates state every 500 ms (not used)
+    this.debouncedSetState = _.debounce(this.setState, 500);
+  
     this.state = {
       disabled: false,
       errors: [],
@@ -216,12 +220,13 @@ class NovaForm extends Component{
         
       // get schema for the current field
       const fieldSchema = this.props.collection.simpleSchema()._schema[fieldName]
+      fieldSchema.name = fieldName;
 
       // add name, label, and type properties
       let field = {
         name: fieldName,
         label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
-        type: fieldSchema.type,
+        dataType: fieldSchema.type,
         control: fieldSchema.control,
         layout: this.props.layout
       }
@@ -231,7 +236,15 @@ class NovaForm extends Component{
 
       // add options if they exist
       if (fieldSchema.autoform && fieldSchema.autoform.options) {
-        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options() : fieldSchema.autoform.options;
+        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
+      }
+
+      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
+        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
+      }
+
+      if (fieldSchema.autoform && fieldSchema.autoform.help) {
+        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
       }
 
       return field;
