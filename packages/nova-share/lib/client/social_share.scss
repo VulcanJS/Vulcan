@@ -1,0 +1,107 @@
+$small-break: 600px;
+
+@mixin small(){
+  @media screen and (max-width: $small-break) {
+    @content;
+  }
+}
+@mixin medium-large(){
+  @media screen and (min-width: $small-break) {
+    @content;
+  }
+}
+
+.social-share{
+  position: relative;
+  color: #b3c1c6;
+  order: 8;
+  width: 40px;
+  .icon-share{
+    &:before{
+      font-size: 24px;
+    }
+  }
+  .posts-grid & {
+    display: none;
+  }
+}
+
+.share-options {
+  position: absolute;
+  z-index: 10000;
+  background: rgba(0,0,0,0.4);
+  border-radius: 3px;
+  width: auto;
+  padding: 10px;
+  line-height: 1;
+  @include small {
+    left: -50% !important;
+    top: 40px !important;
+    
+  }
+  @include medium-large {
+    left: 40px;
+    top: 0;
+  }
+  .icon {
+    color: white;
+    width: 100%;
+  }
+  a {
+    display: inline-block;
+    line-height: 1;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    margin-right: 4px;
+    &:last-child{
+      margin-right: 0px;
+    }
+  }
+  &.hidden {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    left:-160px;
+  }
+  &:after{
+    left: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-width: 10px;
+    @include small {
+      border-bottom-color: rgba(0,0,0,0.4);
+      top: -20px;
+      left: 50%;
+      margin-left: -11px;
+    }
+    @include medium-large {
+      border-right-color: rgba(0,0,0,0.4);
+      top: 5px;
+      left: -20px;
+      margin-top: -3px;
+    }
+  }
+}
+
+.share-option-google {
+  background-color: rgb(221, 75, 57);
+}
+.share-option-linkedin {
+  background-color: rgb(14, 118, 168);
+}
+.share-option-twitter {
+  background-color: rgb(0, 172, 238);
+}
+.share-option-facebook {
+  background-color: rgb(59, 89, 152);
+}

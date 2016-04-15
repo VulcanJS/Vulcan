@@ -1,46 +1,37 @@
-# Meteor packages used by this project, one per line.
-#
-# 'meteor add' and 'meteor remove' will edit this file for you,
-# but you can also edit it by hand.
+############ Nova Core ############
 
-############ Telescope Core ############
+nova:core # do not remove!
 
-telescope:core
+############ Optional Packages ############
 
-############ Telescope Packages (Optional) ############
+nova:settings
+nova:users
+nova:posts
+nova:comments
+nova:newsletter
+nova:search
+nova:notifications
+nova:getting-started
+nova:categories
+nova:share
+nova:voting
+nova:forms
+nova:embedly
+nova:api
+nova:rss
+nova:kadira
+nova:email
 
-# Note: all following packages depend on telescope:core; Additional internal dependencies are mentioned
+############ Customizable Packages ############
 
-telescope:migrations
-telescope:api
-telescope:daily # singleday
-telescope:datetimepicker
-telescope:debug
-telescope:email
-telescope:embedly
-telescope:getting-started
-telescope:invites
-telescope:kadira
-telescope:newsletter
-telescope:notifications
-telescope:pages
-telescope:post-by-feed
-telescope:prerender
-telescope:releases
-telescope:rss
-telescope:scoring
-telescope:search
-telescope:share
-# telescope:singleday
-# telescope:sitemap
-telescope:spiderable
-telescope:subscribe-to-posts # notifications
-telescope:tagline-banner
-telescope:tags
-telescope:theme-base
-telescope:theme-hubble
-telescope:update-prompt
+nova:base-components
+nova:base-styles
+nova:email-templates
 
-############ Your Custom Packages ############
+accounts-password
+accounts-twitter
+# accounts-facebook
 
-# my-custom-package
+############ Debug Packages ############
+
+nova:debug

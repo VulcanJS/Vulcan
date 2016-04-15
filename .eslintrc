@@ -1,0 +1,44 @@
+/* Galaxy's Javascript linting configuration (Meteor)
+ *
+ * Documentation on rules can be found at:
+ * http://eslint.org/docs/rules/ <- Optionally append the rulename
+ *
+ * Ensure changes are kept in sync with the base linting configuration.
+*/
+
+{
+  "extends": ".eslintrc-meteor",
+  "env": {
+    /* Allows global vars from the Meteor environment to pass and enables certain rules */
+    "meteor": true
+  },
+  "rules": {
+
+    /* ---------------- Rules relaxed for Meteor's sake --------------------- */
+
+    /* allows use of var (remove when we are ready to switch to ES6) */
+    "no-var": 0,
+
+    /* allows anonymous functions */
+    "func-names": 0,
+
+    /* allows var = function() delcarations */
+    "func-style": 0,
+
+    /* relaxes max-len to 100 chars per line */
+    "max-len": [2, 100, 2],
+
+    /* relaxes requirement to put all vars at the top of the scope */
+    "vars-on-top": 0,
+
+    /* relaxes dangling commas enforcement */
+    "comma-dangle": 0,
+
+    /* allows certain non-constructor functions to start with a capital letter, */
+    "new-cap": [2, { "capIsNewExceptions": [
+        "Match", "Any", "Object", "ObjectIncluding", "OneOf", "Optional", "Where"
+    ]}],
+
+    /* ---------------------------------------------------------------------- */
+  }
+}

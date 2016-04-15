@@ -1,0 +1,71 @@
+
+@import "breakpoints";
+@import "colors";
+@import "variables";
+@import "spinner";
+@import "global";
+
+@import "accounts";
+@import "categories";
+@import "cheatsheet";
+@import "comments";
+@import "header";
+@import "newsletter";
+@import "other";
+@import "posts";
+
+body{
+  color: $black;
+}
+
+
+
+
+// .post-views, .logo, .nav, .alt-accounts-log-in-buttons{
+//   margin-bottom: 15px;
+// }
+
+// .post-views ul, .categories ul, .post-categories ul, .post-commenters ul{
+//   list-style-type: none;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .post-views li, .categories li, .post-categories li, .post-commenters li{
+//   display: inline-block;
+//   margin-right: 5px;
+//   border: 1px solid #ddd;
+//   padding: 3px 5px;
+//   background: #efefef;
+// }
+
+
+.new-post-button{
+  margin-bottom: 15px;
+}
+
+code{
+  font-family: monospace;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  padding: 3px 6px;
+}
+
+
+.avatar{
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+}
+
+.sr-only{
+  display: none;
+}
+
+.upvoted .upvote{
+  opacity: 0.3;
+}
+
+.post-day h2{
+  font-weight: bold;
+}

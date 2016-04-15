@@ -1,7 +1,0 @@
-<template name="settings">
-  {{#if settings}}
-    {{> quickForm collection="Settings" id="updateSettingsForm" type="update" doc=settings label-class="control-label" input-col-class="controls" template="bootstrap3-horizontal"}}
-  {{else}}
-    {{> quickForm collection="Settings" id="insertSettingsForm" type="insert" template="bootstrap3-horizontal" label-class="control-label" input-col-class="controls"}}
-  {{/if}}
-</template>

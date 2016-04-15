@@ -1,1 +1,0 @@
-Telescope spiderable package, used internally. 

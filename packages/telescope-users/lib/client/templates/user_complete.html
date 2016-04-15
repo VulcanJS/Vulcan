@@ -1,8 +1,0 @@
-<template name="user_complete">
-  <div class="grid-small grid-block dialog user-edit">
-    <div class="finish-signup-message">
-      {{_ "please_fill_in_missing_information_to_finish_signing_up"}}
-    </div>
-    {{> quickForm collection="Meteor.users" doc=user id="completeUserForm" template="bootstrap3-horizontal" input-col-class="controls" type="method-update" meteormethod="completeUserProfile" fields=requiredFields}}
-  </div>
-</template>

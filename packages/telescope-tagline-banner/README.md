@@ -1,1 +1,0 @@
-Telescope tagline package, used internally. 
