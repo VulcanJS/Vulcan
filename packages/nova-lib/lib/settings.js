@@ -22,7 +22,7 @@ Telescope.settings.get = function (setting, defaultValue) {
 
   const collection = Telescope.settings.collection;
 
-  if (Telescope.settings.getFromJSON(setting) !== "undefined") { // if on the server, look in Meteor.settings
+  if (typeof Telescope.settings.getFromJSON(setting) !== "undefined") { // if on the server, look in Meteor.settings
 
     return Telescope.settings.getFromJSON(setting);
 
