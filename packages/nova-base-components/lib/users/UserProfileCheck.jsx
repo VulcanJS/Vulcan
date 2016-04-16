@@ -17,7 +17,7 @@ const UserProfileCheck = ({ currentUser }) => {
           methodName="users.edit"
           labelFunction={ (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Meteor.users) }
           successCallback={ (user)=> Telescope.callbacks.runAsync("profileCompletedAsync", user) }
-          requiredFieldsOnly={ true }
+          fields={ ["telescope.email"] }
         />
       </Modal.Body>
       <Button bsStyle="primary" className="complete-profile-logout" onClick={ () => Meteor.logout() }>Log Out</Button>
