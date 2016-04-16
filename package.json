@@ -15,6 +15,7 @@
     "react-addons-pure-render-mixin": "^0.14.8",
     "react-bootstrap": "^0.28.5",
     "react-dom": "^0.14.8",
+    "react-helmet": "^3.0.1",
     "react-komposer": "^1.8.0",
     "react-mounter": "^1.2.0",
     "react-no-ssr": "^1.1.0",
