@@ -11,14 +11,15 @@
     "formsy-react-components": "^0.6.6",
     "js-cookie": "^2.1.0",
     "load-script": "^1.0.0",
-    "react": "^15.0.1",
-    "react-addons-pure-render-mixin": "^15.0.0",
+    "react": "^0.14.8",
+    "react-addons-pure-render-mixin": "^0.14.8",
     "react-bootstrap": "^0.28.5",
-    "react-dom": "^15.0.0",
+    "react-dom": "^0.14.8",
     "react-komposer": "^1.8.0",
     "react-mounter": "^1.2.0",
     "react-no-ssr": "^1.1.0",
-    "tracker-component": "^1.3.14"
+    "tracker-component": "^1.3.14",
+    "x-ray":"^2.2.0"
   },
   "private": true,
   "devDependencies": {
