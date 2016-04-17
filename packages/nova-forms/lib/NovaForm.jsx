@@ -73,25 +73,25 @@ class NovaForm extends Component{
     return document;
   }
 
-  // we don't need this anymore since we're updating on blur, not on change
+  // NOTE: this is not called anymore since we're updating on blur, not on change
   // whenever the form changes, update its state
-  // updateState(e) {
-  //   // e can sometimes be event, sometims be currentValue
-  //   // see https://github.com/christianalfoni/formsy-react/issues/203
-  //   if (e.stopPropagation) {
-  //     e.stopPropagation();
-  //   } else {
-  //     // get rid of empty fields
-  //     _.forEach(e, (value, key) => {
-  //       if (_.isEmpty(value)) {
-  //         delete e[key];
-  //       }
-  //     });
-  //     this.setState({
-  //       currentValues: e
-  //     });
-  //   }
-  // }
+  updateState(e) {
+    // e can sometimes be event, sometims be currentValue
+    // see https://github.com/christianalfoni/formsy-react/issues/203
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else {
+      // get rid of empty fields
+      _.forEach(e, (value, key) => {
+        if (_.isEmpty(value)) {
+          delete e[key];
+        }
+      });
+      this.setState({
+        currentValues: e
+      });
+    }
+  }
 
   // manually update current value (i.e. on blur). See above for on change instead
   updateCurrentValue(fieldName, fieldValue) {
