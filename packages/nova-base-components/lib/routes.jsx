@@ -108,7 +108,7 @@ Router.route('/users/:slug/edit', {
 
 FlowRouter.notFound = {
   action() {
-    ({Error404} = Telescope.components);
+    ({App, Error404} = Telescope.components);
     mount(App, {content: <Error404/>});
   }
 };
