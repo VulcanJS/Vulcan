@@ -13,31 +13,47 @@ const Textarea = FRC.Textarea;
 
 class FormComponent extends Component {
 
+  constructor(props) {
+    super(props);
+    this.handleBlur = this.handleBlur.bind(this);
+  }
+
+  handleBlur() {
+    console.log(this.input.getValue())
+    this.props.updateCurrentValue(this.props.name, this.input.getValue());
+  }
+
   renderComponent() {
+
+    const properties = {
+      ...this.props,
+      onBlur: this.handleBlur,
+      ref: (ref) => this.input = ref
+    };
 
     // if control is a React component, use it
     if (typeof this.props.control === "function") {
 
-      return <this.props.control {...this.props} />
+      return <this.props.control {...properties} />
 
     } else { // else pick a predefined component
 
       switch (this.props.control) {
         case "text":
-          return <Input         {...this.props} type="text" />;
+          return <Input         {...properties} type="text" />;
         case "textarea":
-          return <Textarea      {...this.props} />;
+          return <Textarea      {...properties} />;
         case "checkbox":
-          return <Checkbox      {...this.props} />;        
+          return <Checkbox      {...properties} />;        
         // note: checkboxgroup cause React refs error
         case "checkboxgroup":
-         return <CheckboxGroup  {...this.props} />;
+         return <CheckboxGroup  {...properties} />;
         case "radiogroup":
-          return <RadioGroup    {...this.props} />;
+          return <RadioGroup    {...properties} />;
         case "select":
-          return <Select        {...this.props} />;
+          return <Select        {...properties} />;
         default: 
-          return <Input         {...this.props} type="text" />;
+          return <Input         {...properties} type="text" />;
       }
 
     }
@@ -56,7 +72,8 @@ FormComponent.propTypes = {
   options: React.PropTypes.any,
   control: React.PropTypes.any,
   datatype: React.PropTypes.any,
-  disabled: React.PropTypes.bool
+  disabled: React.PropTypes.bool,
+  updateCurrentValue: React.PropTypes.func
 }
 
 export default FormComponent;

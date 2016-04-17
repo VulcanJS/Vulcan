@@ -30,7 +30,8 @@ class NovaForm extends Component{
     this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
-  
+    this.updateCurrentValue = this.updateCurrentValue.bind(this);
+
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
   
@@ -72,23 +73,31 @@ class NovaForm extends Component{
     return document;
   }
 
+  // we don't need this anymore since we're updating on blur, not on change
   // whenever the form changes, update its state
-  updateState(e) {
-    // e can sometimes be event, sometims be currentValue
-    // see https://github.com/christianalfoni/formsy-react/issues/203
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    } else {
-      // get rid of empty fields
-      _.forEach(e, (value, key) => {
-        if (_.isEmpty(value)) {
-          delete e[key];
-        }
-      });
-      this.setState({
-        currentValues: e
-      });
-    }
+  // updateState(e) {
+  //   // e can sometimes be event, sometims be currentValue
+  //   // see https://github.com/christianalfoni/formsy-react/issues/203
+  //   if (e.stopPropagation) {
+  //     e.stopPropagation();
+  //   } else {
+  //     // get rid of empty fields
+  //     _.forEach(e, (value, key) => {
+  //       if (_.isEmpty(value)) {
+  //         delete e[key];
+  //       }
+  //     });
+  //     this.setState({
+  //       currentValues: e
+  //     });
+  //   }
+  // }
+
+  // manually update current value (i.e. on blur). See above for on change instead
+  updateCurrentValue(fieldName, fieldValue) {
+    const currentValues = this.state.currentValues;
+    currentValues[fieldName] = fieldValue;
+    this.setState({currentValues: currentValues});
   }
 
   // --------------------------------------------------------------------- //
@@ -270,10 +279,9 @@ class NovaForm extends Component{
           onSubmit={this.submitForm} 
           disabled={this.state.disabled} 
           ref="form" 
-          onChange={this.updateState} 
         >
           {this.renderErrors()}
-          {fields.map(field => <FormComponent key={field.name} {...field} />)}
+          {fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValue={this.updateCurrentValue} />)}
           <Button type="submit" bsStyle="primary">Submit</Button>
           {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
         </Formsy.Form>
