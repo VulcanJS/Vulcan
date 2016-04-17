@@ -5,12 +5,14 @@ const FlashContainer = Core.FlashContainer;
 
 const Layout = props => {
 
-  ({Header, Footer, FlashMessages, NewsletterForm, HeadTags} = Telescope.components);
+  ({Header, Footer, FlashMessages, NewsletterForm, HeadTags, UserProfileCheck} = Telescope.components);
 
   return (
     <div className="wrapper" id="wrapper">
 
       <HeadTags />
+
+      <UserProfileCheck {...props} />
 
       <Header {...props}/>
     
