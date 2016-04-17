@@ -54,14 +54,13 @@ class NovaForm extends Component{
   // get relevant fields
   getFieldNames() {
     const { collection, fields } = this.props;
+
+    // get all editable/insertable fields (depending on current form type)
     let relevantFields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.getDocument()) : collection.getInsertableFields(this.props.currentUser);
 
-    // some specific fields are required, filter on them
+    // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
-      const schema = collection.simpleSchema()._schema;
-      relevantFields = _.filter(_.keys(schema), function (fieldName) {
-        return _.contains(fields, fieldName);
-      });
+      relevantFields = _.intersection(relevantFields, fields);
     }
 
     return relevantFields;
@@ -235,7 +234,7 @@ class NovaForm extends Component{
       let field = {
         name: fieldName,
         label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
-        dataType: fieldSchema.type,
+        datatype: fieldSchema.type,
         control: fieldSchema.control,
         layout: this.props.layout
       }

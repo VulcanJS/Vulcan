@@ -4,6 +4,14 @@ import Router from '../router.js';
 import NovaForm from "meteor/nova:forms";
 
 const UserProfileCheckModal = ({currentUser, show}) => {
+
+  // return fields that are required by the schema but haven't been filled out yet
+  const schema = Users.simpleSchema()._schema;
+  const requiredFields = _.filter(_.keys(schema), function (fieldName) {
+    var field = schema[fieldName];
+    return !!field.required && !Telescope.getNestedProperty(Meteor.user(), fieldName);
+  });
+
   return (
     <Modal bsSize='small' show={ show }>
       <Modal.Header>
@@ -17,7 +25,7 @@ const UserProfileCheckModal = ({currentUser, show}) => {
           methodName="users.edit"
           labelFunction={ (fieldName)=>Telescope.utils.getFieldLabel(fieldName, Meteor.users) }
           successCallback={ (user) => Telescope.callbacks.runAsync("profileCompletedAsync", user) }
-          fields={ ["telescope.email"] }
+          fields={ requiredFields }
         />
       </Modal.Body>
       <Modal.Footer>
