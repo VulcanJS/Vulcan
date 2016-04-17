@@ -235,7 +235,7 @@ class NovaForm extends Component{
       let field = {
         name: fieldName,
         label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
-        datatype: fieldSchema.type,
+        dataType: fieldSchema.type,
         control: fieldSchema.control,
         layout: this.props.layout
       }
