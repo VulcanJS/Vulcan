@@ -16,14 +16,28 @@
     margin: 0 auto;
     margin-bottom: $vmargin;
     text-align: center;
+    .btn-group{
+      margin-right: 0;
+      width: 100%;
+    }
+    .dropdown-toggle{
+      width: 100%;
+    }
   }
 }
 
 .post-views{
   @include small{
     margin-bottom: $vmargin;
+    .btn-group{
+      margin-right: 0;
+      width: 100%;
+    }
+    .dropdown-toggle{
+      width: 100%;
+    }
   }
-  a{
+  a.btn{
     @include border;
     // @include border-radius;
     // padding: 3px 5px;

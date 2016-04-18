@@ -13,6 +13,9 @@
 }
 
 .logo{
+  @include small{
+    text-align: center;
+  }
   @include medium-large{
     display: flex;
     align-items: baseline;
@@ -30,11 +33,21 @@
 
 .nav{
   @include flex-center;
-  .nav-user{
-    margin-right: $hmargin;
+  @include small{
+    border-top: 1px solid $medium-grey;
+    margin-top: $vmargin;
+    padding-top: $vmargin;
+    justify-content: space-between;
+  }
+  @include medium-large{
+    .nav-user{
+      margin-right: $hmargin;
+    }
   }
   .nav-new-post{
+    @include small{
 
+    }
   }
 }
 
