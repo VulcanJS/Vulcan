@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 
+import DateTime from './DateTime.jsx';
+
 import Utils from './utils.js';
 
 const Checkbox = FRC.Checkbox;
@@ -52,6 +54,8 @@ class FormComponent extends Component {
           return <RadioGroup    {...properties} />;
         case "select":
           return <Select        {...properties} />;
+        // case "datetime":
+        //   return <DateTime      {...properties} />;
         default: 
           return <Input         {...properties} type="text" />;
       }

@@ -28,7 +28,7 @@ Posts.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     publish: true,
-    control: "datepicker"
+    control: "datetime"
   },
   /**
     URL
