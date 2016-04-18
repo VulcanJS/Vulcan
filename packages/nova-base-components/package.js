@@ -24,7 +24,7 @@ Package.onUse(function (api) {
     'tmeasday:check-npm-versions@0.3.1',
     'std:accounts-ui@1.1.12',
     'utilities:react-list-container@0.1.8',
-    'kadira:dochead@1.4.0'
+    'kadira:dochead@1.5.0'
   ]);
 
   api.addFiles([
