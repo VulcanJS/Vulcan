@@ -78,7 +78,7 @@ class NewsletterForm extends Component {
           type="text"
           layout="elementOnly"
         />
-        <Button type="submit" bsStyle="primary">{this.props.buttonText}</Button>
+        <Button className="newsletter-button" type="submit" bsStyle="primary">{this.props.buttonText}</Button>
       </Formsy.Form>
     )
   }

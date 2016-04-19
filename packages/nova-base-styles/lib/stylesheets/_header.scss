@@ -1,7 +1,6 @@
 .header-wrapper{
   background: $header-bg;
   margin-bottom: $vmargin;
-  padding: 0 $hmargin;
 }
 
 .header{
@@ -9,7 +8,8 @@
     @include flex-center;
     justify-content: space-between;
   }
-  padding: $vmargin 0;
+  padding-top: $vmargin;
+  padding-bottom: $vmargin;
 }
 
 .logo{
