@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:kadira",
   summary: "Telescope Kadira package",
-  version: "0.26.0-nova",
+  version: "0.26.1-nova",
   git: "https://github.com/TelescopeJS/telescope-kadira.git"
 });
 
@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@0.26.0-nova',
+    'nova:core@0.26.1-nova',
     'meteorhacks:kadira@2.28.5',
     'kadira:debug@3.2.2'
   ], ['client', 'server']);

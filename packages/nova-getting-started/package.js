@@ -14,10 +14,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@0.26.0-nova',
-    'nova:posts@0.26.0-nova',
-    'nova:comments@0.26.0-nova',
-    'nova:users@0.26.0-nova'
+    'nova:core@0.26.1-nova',
+    'nova:posts@0.26.1-nova',
+    'nova:comments@0.26.1-nova',
+    'nova:users@0.26.1-nova'
   ]);
 
   api.addFiles([
