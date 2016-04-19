@@ -91,7 +91,7 @@ class CommentsItem extends Component{
         <div className="comments-item-body">
           <div className="comments-item-meta">
             <UsersAvatar size="small" user={comment.user}/>
-            <UserName user={comment.user}/>
+            <UsersName user={comment.user}/>
             <div className="comments-item-date">{moment(comment.postedAt).fromNow()}</div>
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}>Edit</a> : null}
           </div>

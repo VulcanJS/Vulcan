@@ -21,7 +21,6 @@ class FormComponent extends Component {
   }
 
   handleBlur() {
-    console.log(this.input.getValue())
     this.props.updateCurrentValue(this.props.name, this.input.getValue());
   }
 

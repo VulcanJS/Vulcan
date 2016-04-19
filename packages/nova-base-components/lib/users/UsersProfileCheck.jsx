@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import Router from '../router.js';
 import NovaForm from "meteor/nova:forms";
 
-const UserProfileCheckModal = ({currentUser, show}) => {
+const UsersProfileCheckModal = ({currentUser, show}) => {
 
   // return fields that are required by the schema but haven't been filled out yet
   const schema = Users.simpleSchema()._schema;
@@ -35,16 +35,16 @@ const UserProfileCheckModal = ({currentUser, show}) => {
   )
 };
 
-class UserProfileCheck extends Component {
+class UsersProfileCheck extends Component {
   render() {
     const currentUser = this.context.currentUser;
-    return currentUser ? <UserProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null
+    return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null
   }
 }
 
-UserProfileCheck.contextTypes = {
+UsersProfileCheck.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-module.exports = UserProfileCheck;
-export default UserProfileCheck;
+module.exports = UsersProfileCheck;
+export default UsersProfileCheck;

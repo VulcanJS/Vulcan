@@ -2,12 +2,12 @@ import React, { PropTypes, Component } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Button, Input } from 'react-bootstrap';
 
-const AccountsMenu = () => {
+const UsersAccountMenu = () => {
 
-  ({UsersAvatar, UserName, AccountsForm} = Telescope.components);
+  ({UsersAvatar, UsersName, AccountsForm} = Telescope.components);
 
   return (
-    <Dropdown id="accounts-dropdown" className="users-accounts-menu">
+    <Dropdown id="accounts-dropdown" className="users-account-menu">
       <Dropdown.Toggle>
         Log In
       </Dropdown.Toggle>
@@ -18,5 +18,5 @@ const AccountsMenu = () => {
   ) 
 };
 
-module.exports = AccountsMenu;
-export default AccountsMenu;
+module.exports = UsersAccountMenu;
+export default UsersAccountMenu;

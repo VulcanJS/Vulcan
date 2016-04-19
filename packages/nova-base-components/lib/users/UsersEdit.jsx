@@ -13,8 +13,8 @@ const UsersEdit = ({document, currentUser}) => {
   ({CanEditUser} = Telescope.components);
 
   return (
-    <div className="users-edit-form">
-      <CanEditUser user={currentUser} userToEdit={user}>
+    <CanEditUser user={currentUser} userToEdit={user}>
+      <div className="users-edit-form">
         <h3>Edit Account</h3>
         <NovaForm 
           currentUser={currentUser}
@@ -26,8 +26,8 @@ const UsersEdit = ({document, currentUser}) => {
             Messages.flash("User updated.", "success");
           }}
         />
-      </CanEditUser>
-    </div>
+      </div>
+    </CanEditUser>
   )
 }
 

@@ -43,7 +43,7 @@ class UsersMenu extends Component {
 
   render() {
 
-    ({UsersAvatar, UserName} = Telescope.components);
+    ({UsersAvatar, UsersName} = Telescope.components);
 
     const user = this.props.user;
 

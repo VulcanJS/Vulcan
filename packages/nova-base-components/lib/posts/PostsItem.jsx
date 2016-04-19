@@ -42,7 +42,7 @@ class PostsItem extends Component {
   
   render() {
 
-    ({UsersAvatar, UserName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
+    ({UsersAvatar, UsersName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
 
     const post = this.props.post;
 
@@ -69,7 +69,7 @@ class PostsItem extends Component {
           </h3>
           
           <div className="posts-item-meta">
-            {post.user? <div className="posts-item-user"><UsersAvatar user={post.user} size="small"/><UserName user={post.user}/></div> : null}
+            {post.user? <div className="posts-item-user"><UsersAvatar user={post.user} size="small"/><UsersName user={post.user}/></div> : null}
             <div className="posts-item-date">{moment(post.postedAt).fromNow()}</div>
             <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
             <PostsStats post={post} />

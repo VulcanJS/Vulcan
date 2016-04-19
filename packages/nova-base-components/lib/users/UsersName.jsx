@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 
-const UserName = ({user}) => <a className="users-name" href={Users.getProfileUrl(user)}>{Users.getDisplayName(user)}</a>
+const UsersName = ({user}) => <a className="users-name" href={Users.getProfileUrl(user)}>{Users.getDisplayName(user)}</a>
 
-UserName.propTypes = {
+UsersName.propTypes = {
   user: React.PropTypes.object.isRequired,
 }
 
-module.exports = UserName;
-export default UserName;
+module.exports = UsersName;
+export default UsersName;

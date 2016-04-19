@@ -10,7 +10,7 @@ const ListContainer = SmartContainers.ListContainer;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, CategoriesList, PostsNewButton, UsersMenu, AccountsMenu} = Telescope.components);
+  ({Logo, CategoriesList, PostsNewButton, UsersMenu, UsersAccountMenu} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Nova");

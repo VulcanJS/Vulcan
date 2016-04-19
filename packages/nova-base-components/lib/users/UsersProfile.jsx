@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-const UserProfile = ({user, currentUser}) => {
+const UsersProfile = ({user, currentUser}) => {
 
   ({HeadTags} = Telescope.components);
 
@@ -17,9 +17,9 @@ const UserProfile = ({user, currentUser}) => {
   )
 }
 
-UserProfile.propTypes = {
+UsersProfile.propTypes = {
   user: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object
 }
 
-module.exports = UserProfile;
+module.exports = UsersProfile;
