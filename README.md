@@ -161,15 +161,28 @@ If you only need to modify a single component, you can simply override it with a
 For example, if you wanted to use your own `CustomLogo` component you would do:
 
 ```js
+const CustomLogo = (props) => {
+  return (
+    <div>/* custom component code */</div>
+  )
+}
+Telescope.components.Logo = CustomLogo;
+```
+
+Or, if `Logo` is defined as an ES6 class:
+
+```js
 class CustomLogo extends Telescope.components.Logo{
   render() {
     return (
-      <div>/* custom component code */</div>;
+      <div>/* custom component code */</div>
     )
   } 
 }
 Telescope.components.Logo = CustomLogo;
 ```
+
+Components are generally defined as functional stateless components, unless they contain extra logic (lifecycle methods, event handlers, etc.) in which case they'll be defined as ES6 classes. 
 
 Nova components are resolved at render. So you just need to make the override anytime before the `<Logo/>` component is called from a parent component. 
 
