@@ -4,7 +4,7 @@ import { Button, Input } from 'react-bootstrap';
 
 const UsersAccountMenu = () => {
 
-  ({UsersAvatar, UsersName, AccountsForm} = Telescope.components);
+  ({UsersAvatar, UsersName, UsersAccountForm} = Telescope.components);
 
   return (
     <Dropdown id="accounts-dropdown" className="users-account-menu">
@@ -12,7 +12,7 @@ const UsersAccountMenu = () => {
         Log In
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <AccountsForm />
+        <UsersAccountForm />
       </Dropdown.Menu>
     </Dropdown>
   ) 

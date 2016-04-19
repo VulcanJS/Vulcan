@@ -5,13 +5,13 @@ const CanCreatePost = (props, context) => {
   const currentUser = context.currentUser;
 
   const children = props.children;
-  const AccountsForm = Telescope.components.AccountsForm;
+  const UsersAccountForm = Telescope.components.UsersAccountForm;
 
   if (!currentUser){
     return (
       <div>
         <h3>Please Log In</h3>
-        <AccountsForm/>
+        <UsersAccountForm/>
       </div>
     )
   } else if (Users.can.post(currentUser)) {

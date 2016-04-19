@@ -7,7 +7,7 @@ const ModalTrigger = Core.ModalTrigger;
 
 const PostsCommentsThread = ({document, currentUser}) => {
   
-  ({CommentsList, CommentsNew, PostsItem, PostsCategories, SocialShare, Vote, PostsStats, HeadTags, AccountsForm} = Telescope.components);
+  ({CommentsList, CommentsNew, PostsItem, PostsCategories, SocialShare, Vote, PostsStats, HeadTags, UsersAccountForm} = Telescope.components);
 
   const post = document;
 
@@ -31,7 +31,7 @@ const PostsCommentsThread = ({document, currentUser}) => {
         </div> :
         <div>
           <ModalTrigger size="small" component={<a>Please log in to comment</a>}>
-            <AccountsForm/>
+            <UsersAccountForm/>
           </ModalTrigger>
         </div> }
     </div>

@@ -4,14 +4,14 @@ import { Button, Input } from 'react-bootstrap';
 
 import { Accounts } from 'meteor/std:accounts-ui';
 
-const AccountsForm = () => {
+const UsersAccountForm = () => {
   return (
     <Accounts.ui.LoginForm />
   ) 
 };
 
-module.exports = AccountsForm;
-export default AccountsForm;
+module.exports = UsersAccountForm;
+export default UsersAccountForm;
 
 // customize Accounts.ui
 
