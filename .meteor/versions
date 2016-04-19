@@ -9,7 +9,7 @@ aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.4
 arillo:flow-router-helpers@0.5.1
-autoupdate@1.2.8
+autoupdate@1.2.9
 babel-compiler@6.6.4
 babel-runtime@0.1.8
 base64@1.0.8
