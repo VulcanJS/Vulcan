@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-const UserAvatar = ({user, size, link}) => {
+const UsersAvatar = ({user, size, link}) => {
 
   const sizes = {
     small: "20px",
@@ -28,16 +28,16 @@ const UserAvatar = ({user, size, link}) => {
 
 }
 
-UserAvatar.propTypes = {
+UsersAvatar.propTypes = {
   user: React.PropTypes.object.isRequired,
   size: React.PropTypes.string,
   link: React.PropTypes.bool
 }
 
-UserAvatar.defaultProps = {
+UsersAvatar.defaultProps = {
   size: "medium",
   link: true
 }
 
-module.exports = UserAvatar;
-export default UserAvatar;
+module.exports = UsersAvatar;
+export default UsersAvatar;

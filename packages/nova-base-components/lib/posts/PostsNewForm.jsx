@@ -12,7 +12,7 @@ const PostsNewForm = (props, context) => {
 
   return (
     <CanCreatePost>
-      <div className="new-post-form">
+      <div className="posts-new-form">
         <NovaForm 
           collection={Posts} 
           currentUser={context.currentUser}

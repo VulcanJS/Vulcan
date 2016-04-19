@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js";
-
 import Core from "meteor/nova:core";
 const Messages = Core.Messages;
 

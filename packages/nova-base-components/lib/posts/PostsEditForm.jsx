@@ -29,7 +29,7 @@ class PostsEditForm extends Component{
   render() {
 
     return (
-      <div className="edit-post-form">
+      <div className="posts-edit-form">
         <DocumentContainer 
           collection={Posts} 
           publication="posts.single" 

@@ -18,7 +18,7 @@ const PostsDay = ({date, number}) => {
   ({selector, options} = Posts.parameters.get(terms));
 
   return (
-    <div className="post-day">
+    <div className="posts-day">
       <h4>{moment(date).format("dddd, MMMM Do YYYY")}</h4>
       <ListContainer 
         collection={Posts} 

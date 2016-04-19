@@ -3,7 +3,7 @@ import Router from '../router.js';
 
 const PostsCategories = ({post}) => {
   return (
-    <div className="post-categories">
+    <div className="posts-categories">
       {post.categoriesArray.map(category => <a key={category._id} href={Router.path("posts.list", {}, {cat: category.slug})}>{category.name}</a>)}
     </div>
   )

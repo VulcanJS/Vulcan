@@ -17,7 +17,7 @@ class CommentsNew extends Component {
     }
 
     return (
-      <div className="comment-new-form">
+      <div className="comments-new-form">
         <NovaForm 
           collection={Comments} 
           currentUser={this.context.currentUser}

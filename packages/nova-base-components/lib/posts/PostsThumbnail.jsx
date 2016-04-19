@@ -2,7 +2,7 @@ import React from 'react';
 
 const PostsThumbnail = ({post}) => {
   return (
-    <a className="post-thumbnail" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>
+    <a className="posts-thumbnail" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>
       <img src={Posts.getThumbnailUrl(post)} />
     </a>
   )

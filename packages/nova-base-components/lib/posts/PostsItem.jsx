@@ -42,11 +42,11 @@ class PostsItem extends Component {
   
   render() {
 
-    ({UserAvatar, UserName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
+    ({UsersAvatar, UserName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
 
     const post = this.props.post;
 
-    let postClass = "post-item"; 
+    let postClass = "posts-item"; 
     if (post.sticky) postClass += " post-sticky";
 
     // console.log(post)
@@ -55,23 +55,23 @@ class PostsItem extends Component {
     return (
       <div className={postClass}>
         
-        <div className="post-vote">
+        <div className="posts-item-vote">
           <Vote post={post} currentUser={this.props.currentUser}/>
         </div>
         
         {post.thumbnailUrl ? <PostsThumbnail post={post}/> : null}
 
-        <div className="post-content">
+        <div className="posts-item-content">
           
-          <h3 className="post-title">
-            <a className="post-title-link" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a>
+          <h3 className="posts-item-title">
+            <a className="posts-item-title-link" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a>
             {this.renderCategories()}
           </h3>
           
-          <div className="post-meta">
-            {post.user? <div className="post-user"><UserAvatar user={post.user} size="small"/><UserName user={post.user}/></div> : null}
-            <div className="post-date">{moment(post.postedAt).fromNow()}</div>
-            <div className="post-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
+          <div className="posts-item-meta">
+            {post.user? <div className="posts-item-user"><UsersAvatar user={post.user} size="small"/><UserName user={post.user}/></div> : null}
+            <div className="posts-item-date">{moment(post.postedAt).fromNow()}</div>
+            <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
             <PostsStats post={post} />
             {this.renderActions()}
           </div>

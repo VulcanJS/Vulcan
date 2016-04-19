@@ -6,7 +6,7 @@ class CommentsEdit extends Component {
 
   render() {
     return (
-      <div className="comment-edit-form">
+      <div className="comments-edit-form">
         <NovaForm 
           collection={Comments}
           document={this.props.comment}

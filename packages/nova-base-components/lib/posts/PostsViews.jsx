@@ -16,7 +16,7 @@ const PostsViews = (props, context) => {
   // console.log(currentRoute);
   
   return (
-    <div className="post-views">
+    <div className="posts-views">
       {/*
       <ButtonGroup>
         {views.map(view => <Button className={currentRoute.route.name === "posts.list" && currentView === view ? "post-view-active" : "post-view-inactive"} bsStyle="default" key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})}>{Telescope.utils.capitalise(view)}</Button>)}

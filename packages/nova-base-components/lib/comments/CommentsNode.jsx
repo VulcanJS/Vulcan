@@ -13,7 +13,7 @@ class CommentsNode extends Component {
 
   renderChildren(children) {
     return (
-      <div className="comment-children">
+      <div className="comments-children">
         {children.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
       </div>
     )
@@ -25,7 +25,7 @@ class CommentsNode extends Component {
     const children = this.props.comment.childrenResults;
     
     return (
-      <div className="comment-node">
+      <div className="comments-node">
         {this.renderComment(comment)}
         {children ? this.renderChildren(children) : ""}
       </div>

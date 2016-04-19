@@ -179,6 +179,14 @@ For more in-depth customizations, you can also just clone the entire `nova:base-
 
 Of course, keeping your own new `components` package up to date with any future `nova:base-components` modifications will then be up to you. 
 
+### Naming Conventions
+
+If a component deals with a collection (`Posts`, `Comments`, etc.) its name should start with the collection's capitalized name in plural form, followed by the component's function using camelCase formatting. 
+
+For example: `PostsShare`. 
+
+The outermost HTML element within the component will have a class of the same name, but with a dash instead: `posts-share`. If possible, classes for all other elements within the component will start with the component's class: `posts-share-button`, `posts-share-divider`, etc.  
+
 ## Customizing Emails
 
 Unlike components, emails don't use React but Spacebars, a variant of the Handlebars templating language. 

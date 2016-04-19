@@ -32,7 +32,7 @@ class CategoriesEditForm extends Component{
   render() {
 
     return (
-      <div className="edit-category-form">
+      <div className="categories-edit-form">
         <NovaForm 
           document={this.props.category}
           collection={Categories}
@@ -44,7 +44,7 @@ class CategoriesEditForm extends Component{
           labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>
-        <a onClick={this.deleteCategory} className="delete-category-link"><Icon name="close"/> Delete Category</a>
+        <a onClick={this.deleteCategory} className="categories-delete-link"><Icon name="close"/> Delete Category</a>
       </div>
     )
   }

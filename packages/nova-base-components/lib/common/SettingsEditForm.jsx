@@ -12,7 +12,7 @@ class SettingsEditForm extends Component{
   render() {
 
     return (
-      <div className="edit-post-form">
+      <div className="settings-edit-form">
         <p>Note: settings already provided in your <code>settings.json</code> file will be disabled.</p>
         <DocumentContainer 
           collection={Telescope.settings.collection} 

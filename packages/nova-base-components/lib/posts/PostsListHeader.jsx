@@ -9,8 +9,8 @@ const PostsListHeader = () => {
 
   return (
     <div>
-      <div className="post-list-header">
-        <div className="post-list-categories">
+      <div className="posts-list-header">
+        <div className="post-lists-header-categories">
           <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={CategoriesList}/>
         </div>
         <PostsViews />

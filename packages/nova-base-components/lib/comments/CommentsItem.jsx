@@ -43,9 +43,9 @@ class CommentsItem extends Component{
     const htmlBody = {__html: this.props.comment.htmlBody};
 
     return (
-      <div className="comment-text">
+      <div className="comments-item-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
-        <a className="comment-reply-link" onClick={this.showReply}><Icon name="reply"/> Reply</a>
+        <a className="comments-item-reply-link" onClick={this.showReply}><Icon name="reply"/> Reply</a>
       </div>  
     )
   }
@@ -55,7 +55,7 @@ class CommentsItem extends Component{
     ({CommentsNew} = Telescope.components);
 
     return (
-      <div className="comment-reply">
+      <div className="comments-item-reply">
         <CommentsNew 
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
@@ -82,17 +82,17 @@ class CommentsItem extends Component{
 
   render() {
     
-    ({UserAvatar}  = Telescope.components);
+    ({UsersAvatar}  = Telescope.components);
 
     const comment = this.props.comment;
 
     return (
-      <div className="comment-item" id={comment._id}>
-        <div className="comment-body">
-          <div className="comment-meta">
-            <UserAvatar size="small" user={comment.user}/>
+      <div className="comments-item" id={comment._id}>
+        <div className="comments-item-body">
+          <div className="comments-item-meta">
+            <UsersAvatar size="small" user={comment.user}/>
             <UserName user={comment.user}/>
-            <div className="comment-date">{moment(comment.postedAt).fromNow()}</div>
+            <div className="comments-item-date">{moment(comment.postedAt).fromNow()}</div>
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}>Edit</a> : null}
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}

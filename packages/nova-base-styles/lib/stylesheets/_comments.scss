@@ -1,10 +1,10 @@
-.comments-thread{
+.posts-comments-thread{
   border-top: $border;
   margin-top: $vmargin;
   padding-top: $vmargin;
 }
 
-.comments-thread-title{
+.posts-comments-thread-title{
   margin-bottom: $vmargin;
 }
 
@@ -12,23 +12,23 @@
   margin-bottom: $vmargin;
 }
 
-.comment-node .comment-node, .comment-reply{
+.comments-node .comments-node, .comments-item-reply{
   border-left: 10px $lightest-border solid;
   padding-left: $hmargin;
 }
 
-.comment-item{
+.comments-item{
   margin-bottom: $vmargin;
 }
 
-.comment-body{
+.comments-item-body{
   @include border-radius;
   // max-width: 800px;
   border: $border;
   padding: $hmargin $vmargin;
 }
 
-.comment-meta{
+.comments-item-meta{
   @include flex-center;
   margin-bottom: $vmargin;
   .user-avatar{
@@ -37,7 +37,7 @@
   .user-name{
     margin-right: $hmargin;
   }
-  .comment-date{
+  .comments-item-date{
     margin-right: $hmargin;
     color: $medium-text;
     font-size: $small-font;
@@ -47,10 +47,10 @@
   }
 }
 
-.comment-text{
+.comments-item-text{
 }
 
-.comment-edit-form, .comment-new-form{
+.comments-edit-form, .comments-new-form{
   .input-body{
     margin-bottom: $hmargin;
   }
@@ -60,7 +60,7 @@
   }
 }
 
-.comment-reply{
+.comments-item-reply{
   margin-top: $vmargin;
 }
 

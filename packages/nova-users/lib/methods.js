@@ -18,7 +18,7 @@ Users.methods.edit = (userId, modifier, user) => {
 
   // ------------------------------ Callbacks ------------------------------ //
 
-  modifier = Telescope.callbacks.run("userEdit", modifier, user);
+  modifier = Telescope.callbacks.run("UsersEdit", modifier, user);
 
   // ------------------------------ Update ------------------------------ //
 
@@ -26,7 +26,7 @@ Users.methods.edit = (userId, modifier, user) => {
 
   // ------------------------------ Callbacks ------------------------------ //
 
-  Telescope.callbacks.runAsync("userEditAsync", Users.findOne(userId), user);
+  Telescope.callbacks.runAsync("UsersEditAsync", Users.findOne(userId), user);
 
   // ------------------------------ After Update ------------------------------ //
   return Users.findOne(userId);

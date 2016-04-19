@@ -6,7 +6,7 @@ import { Modal, Dropdown, MenuItem } from 'react-bootstrap';
 import Core from "meteor/nova:core";
 const ContextPasser = Core.ContextPasser;
 
-class UserMenu extends Component {
+class UsersMenu extends Component {
 
   constructor() {
     super();
@@ -43,15 +43,15 @@ class UserMenu extends Component {
 
   render() {
 
-    ({UserAvatar, UserName} = Telescope.components);
+    ({UsersAvatar, UserName} = Telescope.components);
 
     const user = this.props.user;
 
     return (
-      <div>
-        <Dropdown id="user-dropdown" className="user-menu-dropdown">
+      <div className="users-menu">
+        <Dropdown id="user-dropdown">
           <Dropdown.Toggle>
-            <UserAvatar size="small" user={user} link={false} />
+            <UsersAvatar size="small" user={user} link={false} />
             <div>{Users.getDisplayName(user)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
@@ -68,9 +68,9 @@ class UserMenu extends Component {
 
 }
 
-UserMenu.propTypes = {
+UsersMenu.propTypes = {
   user: React.PropTypes.object
 }
 
-module.exports = UserMenu;
-export default UserMenu;
+module.exports = UsersMenu;
+export default UsersMenu;

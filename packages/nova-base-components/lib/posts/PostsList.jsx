@@ -12,9 +12,9 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
 
   if (!!results.length) {
     return (
-      <div className="postList">
+      <div className="posts-list">
         {showHeader ? <PostsListHeader /> : null}
-        <div className="post-list-content">
+        <div className="posts-list-content">
           {results.map(post => <PostsItem post={post} currentUser={currentUser} key={post._id}/>)}
         </div>
         {hasMore ? (ready ? <PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <PostsLoading/>) : <PostsNoMore/>}
@@ -22,18 +22,18 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
     )
   } else if (!ready) {
     return (
-      <div className="postList">
+      <div className="posts-list">
         {showHeader ? <PostsListHeader /> : null}
-        <div className="post-list-content">
+        <div className="posts-list-content">
           <PostsLoading/>
         </div>
       </div>
     )
   } else {
     return (
-      <div className="postList">
+      <div className="posts-list">
         {showHeader ? <PostsListHeader /> : null}
-        <div className="post-list-content">
+        <div className="posts-list-content">
           <PostsNoResults/>
         </div>
       </div>

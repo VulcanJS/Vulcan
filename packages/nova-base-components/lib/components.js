@@ -8,7 +8,7 @@ Telescope.registerComponent("Logo",                 require('./common/Logo.jsx')
 Telescope.registerComponent("Flash",                require('./common/Flash.jsx'));
 Telescope.registerComponent('HeadTags',             require('./common/HeadTags.jsx'));
 Telescope.registerComponent("FlashMessages",        require('./common/FlashMessages.jsx'));
-Telescope.registerComponent("NewsletterForm",       require('./common/NewsletterForm.jsx'));
+Telescope.registerComponent("Newsletter",       require('./common/Newsletter.jsx'));
 Telescope.registerComponent("Icon",                 require('./common/Icon.jsx'));
 Telescope.registerComponent("SearchForm",           require('./common/SearchForm.jsx'));
 Telescope.registerComponent("AppLoading",           require('./common/AppLoading.jsx'));
@@ -37,6 +37,7 @@ Telescope.registerComponent("PostsDay",             require('./posts/PostsDay.js
 Telescope.registerComponent("PostsThumbnail",       require('./posts/PostsThumbnail.jsx'));
 Telescope.registerComponent("PostsEditForm",        require('./posts/PostsEditForm.jsx'));
 Telescope.registerComponent("PostsNewForm",         require('./posts/PostsNewForm.jsx'));
+Telescope.registerComponent("PostsCommentsThread",        require('./posts/PostsCommentsThread.jsx'));
 
 // comments
 
@@ -45,6 +46,7 @@ Telescope.registerComponent("CommentsList",         require('./comments/Comments
 Telescope.registerComponent("CommentsNode",         require('./comments/CommentsNode.jsx'));
 Telescope.registerComponent("CommentsNew",          require('./comments/CommentsNew.jsx'));
 Telescope.registerComponent("CommentsEdit",         require('./comments/CommentsEdit.jsx'));
+Telescope.registerComponent("CommentsLoadMore",     require('./comments/CommentsLoadMore.jsx'));
 
 // categories
 
@@ -63,11 +65,11 @@ Telescope.registerComponent("CanEditUser",          require('./permissions/CanEd
 
 // users
 
-Telescope.registerComponent("UserEdit",             require('./users/UserEdit.jsx'));
-Telescope.registerComponent("UserProfile",          require('./users/UserProfile.jsx'));
-Telescope.registerComponent("UserProfileCheck",     require('./users/UserProfileCheck.jsx'));
-Telescope.registerComponent("UserAvatar",           require('./users/UserAvatar.jsx'));
-Telescope.registerComponent("UserName",             require('./users/UserName.jsx'));
-Telescope.registerComponent("UserMenu",             require('./users/UserMenu.jsx'));
-Telescope.registerComponent("AccountsMenu",         require('./users/AccountsMenu.jsx'));
-Telescope.registerComponent("AccountsForm",         require('./users/AccountsForm.jsx'));
+Telescope.registerComponent("UsersEdit",            require('./users/UsersEdit.jsx'));
+Telescope.registerComponent("UsersProfile",         require('./users/UsersProfile.jsx'));
+Telescope.registerComponent("UsersProfileCheck",    require('./users/UsersProfileCheck.jsx'));
+Telescope.registerComponent("UsersAvatar",          require('./users/UsersAvatar.jsx'));
+Telescope.registerComponent("UsersName",            require('./users/UsersName.jsx'));
+Telescope.registerComponent("UsersMenu",            require('./users/UsersMenu.jsx'));
+Telescope.registerComponent("UsersAccountMenu",     require('./users/UsersAccountMenu.jsx'));
+Telescope.registerComponent("UsersAccountForm",     require('./users/UsersAccountForm.jsx'));

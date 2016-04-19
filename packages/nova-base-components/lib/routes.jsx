@@ -77,14 +77,14 @@ Router.route('/users/:slug', {
 Router.route('/account', {
   name: 'account',
   action(params, queryParams) {
-    ({App, UserEdit} = Telescope.components);
+    ({App, UsersEdit} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={{_id: Meteor.userId()}} 
         terms={{_id: Meteor.userId()}} 
-        component={UserEdit}
+        component={UsersEdit}
       />});
   }
 });
@@ -92,14 +92,14 @@ Router.route('/account', {
 Router.route('/users/:slug/edit', {
   name: 'users.edit',
   action(params, queryParams) {
-    ({App, UserEdit} = Telescope.components);
+    ({App, UsersEdit} = Telescope.components);
     mount(App, {content: 
       <DocumentContainer 
         collection={Users} 
         publication="users.single" 
         selector={params} 
         terms={params} 
-        component={UserEdit}
+        component={UsersEdit}
       />});
   }
 });

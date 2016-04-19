@@ -5,7 +5,7 @@ const FlashContainer = Core.FlashContainer;
 
 const Layout = props => {
 
-  ({Header, Footer, FlashMessages, NewsletterForm, HeadTags, UserProfileCheck} = Telescope.components);
+  ({Header, Footer, FlashMessages, Newsletter, HeadTags, UserProfileCheck} = Telescope.components);
 
   return (
     <div className="wrapper" id="wrapper">
@@ -20,7 +20,7 @@ const Layout = props => {
 
         <FlashContainer component={FlashMessages}/>
 
-        <NewsletterForm />
+        <Newsletter />
 
         {props.children}
 

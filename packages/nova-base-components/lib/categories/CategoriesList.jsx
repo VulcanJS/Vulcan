@@ -70,7 +70,7 @@ class CategoriesList extends Component {
   }
 
   renderCategoryNewButton() {
-    return <MenuItem className="dropdown-item post-category"><Button bsStyle="primary" onClick={this.openCategoryNewModal}>New Category</Button></MenuItem>;
+    return <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}>New Category</Button></MenuItem></div>;
     // const CategoriesNewForm = Telescope.components.CategoriesNewForm;
     // return (
     //   <ModalTrigger title="New Category" component={<MenuItem className="dropdown-item post-category"><Button bsStyle="primary">New Category</Button></MenuItem>}>
@@ -93,11 +93,11 @@ class CategoriesList extends Component {
       <div>
         <DropdownButton 
           bsStyle="default" 
-          className="categories btn-secondary" 
+          className="categories-list btn-secondary" 
           title="Categories" 
           id="categories-dropdown"
         >
-          <MenuItem href={Router.path("posts.list")} eventKey={0} className="dropdown-item post-category">All Categories</MenuItem>
+          <div className="category-menu-item dropdown-item"><MenuItem href={Router.path("posts.list")} eventKey={0}>All Categories</MenuItem></div>
           {categories && categories.length > 0 ? categories.map((category, index) => <Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
           {Users.is.admin(this.context.currentUser) ? this.renderCategoryNewButton() : null}
         </DropdownButton>

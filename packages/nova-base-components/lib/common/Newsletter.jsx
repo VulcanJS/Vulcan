@@ -11,7 +11,7 @@ const Messages = Core.Messages;
 const Input = FRC.Input;
 
 
-class NewsletterForm extends Component {
+class Newsletter extends Component {
 
   constructor(props, context) {
     super(props);
@@ -109,23 +109,23 @@ class NewsletterForm extends Component {
   }
 }
 
-NewsletterForm.propTypes = {
+Newsletter.propTypes = {
   headerText: React.PropTypes.string,
   labelText: React.PropTypes.string,
   buttonText: React.PropTypes.string,
   successMessage: React.PropTypes.string
 }
 
-NewsletterForm.defaultProps = {
+Newsletter.defaultProps = {
   headerText: "Subscribe to the newsletter",
   labelText: "Your Email",
   buttonText: "Subscribe",
   successMessage: "Thanks for subscribing!"
 };
 
-NewsletterForm.contextTypes = {
+Newsletter.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = NewsletterForm;
-export default NewsletterForm;
+module.exports = Newsletter;
+export default Newsletter;

@@ -10,7 +10,7 @@ const ListContainer = SmartContainers.ListContainer;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, CategoriesList, PostsNewButton, UserMenu, AccountsMenu} = Telescope.components);
+  ({Logo, CategoriesList, PostsNewButton, UsersMenu, AccountsMenu} = Telescope.components);
 
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Nova");
@@ -29,7 +29,7 @@ const Header = ({currentUser}) => {
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <UserMenu user={currentUser}/> : <AccountsMenu/>}
+            {currentUser ? <UsersMenu user={currentUser}/> : <UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">

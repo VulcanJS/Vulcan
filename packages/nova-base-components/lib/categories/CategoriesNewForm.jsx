@@ -11,7 +11,7 @@ const CategoriesNewForm = (props, context) => {
   ({FlashMessages} = Telescope.components);
 
   return (
-    <div className="new-category-form">
+    <div className="categories-new-form">
       <NovaForm 
         collection={Categories} 
         currentUser={context.currentUser}
