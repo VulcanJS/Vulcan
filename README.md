@@ -15,7 +15,7 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Resources](#resources)
   - [Deployment](#deployment)
   - [Settings](#settings)
-  - [Social Login](social-login#)
+  - [Social Login](#social-login)
   - [Packages](#packages)
   - [Application Structure](#application-structure)
   - [Files](#files)
