@@ -176,10 +176,10 @@
     @include flex-center;
   }
   font-size: $small-font;
-  .user-avatar{
+  .users-avatar{
     margin-right: 5px;
   }
-  .user-name, .posts-item-date, .posts-item-comments, .posts-stats, .post-actions{
+  .users-name, .posts-item-date, .posts-item-comments, .posts-stats, .post-actions{
     margin-right: $hmargin;
   }
 }

@@ -24,7 +24,7 @@ const UsersAvatar = ({user, size, link}) => {
 
   const img = <img alt={Users.getDisplayName(user)} style={imgStyle} className="avatar" src={Avatar.getUrl(user)}/>;
 
-  return link ? <a style={aStyle} className="user-avatar" href={Users.getProfileUrl(user)}>{img}</a> : img;
+  return link ? <a style={aStyle} className="users-avatar" href={Users.getProfileUrl(user)}>{img}</a> : img;
 
 }
 
