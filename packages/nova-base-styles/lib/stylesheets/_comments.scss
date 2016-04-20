@@ -31,10 +31,10 @@
 .comments-item-meta{
   @include flex-center;
   margin-bottom: $vmargin;
-  .user-avatar{
+  .users-avatar{
     margin-right: 5px;
   }
-  .user-name{
+  .users-name{
     margin-right: $hmargin;
   }
   .comments-item-date{
