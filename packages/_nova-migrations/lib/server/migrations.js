@@ -254,7 +254,7 @@ var migrationsList = {
   },
   submittedToPostedAt: function () {
     var i = 0;
-    Posts.find({postedAt: {$exists : false}}).forEach(function (post) {
+    Posts.find({submitted: {$exists : true}, postedAt: {$exists : false}}).forEach(function (post) {
       i++;
       console.log("Post: "+post._id);
       Posts.update(post._id, { $rename: { 'submitted': 'postedAt'}}, {multi: true, validate: false});
@@ -490,7 +490,7 @@ var migrationsList = {
   },
   changeColorNames: function () {
     var i = 0;
-    var settings = Settings.findOne();
+    var settings = Telescope.settings.collection.findOne();
     var set = {};
 
     if (!!settings) {
@@ -508,7 +508,7 @@ var migrationsList = {
         set.secondaryContrastColor = settings.headerTextColor;
 
       if (!_.isEmpty(set)) {
-        Settings.update(settings._id, {$set: set}, {validate: false});
+        Telescope.settings.collection.update(settings._id, {$set: set}, {validate: false});
       }
 
     }
@@ -698,7 +698,7 @@ var migrationsList = {
   },
   updateNewsletterFrequency: function () {
     var i = 0;
-    Settings.find().forEach(function (setting) {
+    Telescope.settings.collection.find().forEach(function (setting) {
       if (!!setting.newsletterFrequency) {
         console.log("Migrating newsletter frequency… ("+setting.newsletterFrequency+")");
         i++;
@@ -717,16 +717,16 @@ var migrationsList = {
             days = [2];
             break;
         }
-        Settings.update(setting._id, { $set: { newsletterFrequency: days } });
+        Telescope.settings.collection.update(setting._id, { $set: { newsletterFrequency: days } });
       }
     });
     return i;
   },
   changeOutsideLinksPointTo: function () {
     var i = 0;
-    Settings.find({outsideLinksPointTo: {$exists : true}}).forEach(function (setting) {
+    Telescope.settings.collection.find({outsideLinksPointTo: {$exists : true}}).forEach(function (setting) {
       i++;
-      Settings.update(setting._id, {$set: {RSSLinksPointTo: setting.outsideLinksPointTo}});
+      Telescope.settings.collection.update(setting._id, {$set: {RSSLinksPointTo: setting.outsideLinksPointTo}});
     });
     return i;
   }
