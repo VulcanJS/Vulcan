@@ -50,3 +50,31 @@ SimpleSchema.prototype.getProfileFields = function () {
   });
   return fields;
 };
+
+/**
+ * @summary Get a list of a schema's private fields
+ * @namespace Telescope.schemas
+ */
+Mongo.Collection.prototype.getPrivateFields = function () {
+  var schema = this.simpleSchema()._schema;
+  var fields = _.filter(_.keys(schema), function (fieldName) {
+    var field = schema[fieldName];
+    return field.publish !== true;
+  });
+  return fields;
+};
+
+
+/**
+ * @summary Get a list of a schema's public fields
+ * @namespace Telescope.schemas
+ */
+Mongo.Collection.prototype.getPublicFields = function () {
+  var schema = this.simpleSchema()._schema;
+  var fields = _.filter(_.keys(schema), function (fieldName) {
+    var field = schema[fieldName];
+    return field.publish === true;
+  });
+  return fields;
+};
+

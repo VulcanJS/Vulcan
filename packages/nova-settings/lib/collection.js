@@ -4,7 +4,12 @@
  */
 
 const isInSettingsJSON = function () {
-  return typeof Telescope.settings.getFromJSON(this.name) !== "undefined";
+  // settings can either be in settings json's public, or in the special object we publish only for admins for private settings
+  return typeof Telescope.settings.getFromJSON(this.name) !== "undefined" || typeof Telescope.settings.settingsJSON[this.name] !== "undefined";
+};
+
+const getFromJSON = function () {
+  return Telescope.settings.getFromJSON(this.name) || Telescope.settings.settingsJSON[this.name];
 };
 
 Telescope.settings.collection = new Mongo.Collection("settings");
@@ -15,8 +20,10 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    publish: true,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       help: "Your site's title.",
       group: "01_general"
     }
@@ -24,11 +31,13 @@ Telescope.settings.schema = new SimpleSchema({
   siteUrl: {
     type: String,
     optional: true,
+    publish: true,
     // regEx: SimpleSchema.RegEx.Url,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "01_general",
       type: "bootstrap-url",
       help:  'Your site\'s URL (with trailing "/"). Will default to Meteor.absoluteUrl()'
@@ -37,20 +46,24 @@ Telescope.settings.schema = new SimpleSchema({
   tagline: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "01_general"
     }
   },
   description: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "01_general",
       rows: 5,
       help:  'A short description used for SEO purposes.'
@@ -59,11 +72,13 @@ Telescope.settings.schema = new SimpleSchema({
   siteImage: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     regEx: SimpleSchema.RegEx.Url,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "01_general",
       help:  "URL to an image for the open graph image tag for all pages"
     }
@@ -71,11 +86,13 @@ Telescope.settings.schema = new SimpleSchema({
   requireViewInvite: {
     type: Boolean,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     control: "checkbox",
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: 'invites',
       leftLabel: 'Require View Invite'
     }
@@ -83,11 +100,13 @@ Telescope.settings.schema = new SimpleSchema({
   requirePostInvite: {
     type: Boolean,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     control: "checkbox",
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: 'invites',
       leftLabel: 'Require Post Invite'
     }
@@ -95,11 +114,13 @@ Telescope.settings.schema = new SimpleSchema({
   requirePostsApproval: {
     type: Boolean,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     control: "checkbox",
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "01_general",
       help:  "Posts must be approved by admin",
       leftLabel: "Require Posts Approval"
@@ -108,11 +129,11 @@ Telescope.settings.schema = new SimpleSchema({
   defaultEmail: {
     type: String,
     optional: true,
-    private: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "06_email",
       help:  'The address all outgoing emails will be sent from.',
       class: "private-field"
@@ -121,11 +142,11 @@ Telescope.settings.schema = new SimpleSchema({
   mailUrl: {
     type: String,
     optional: true,
-    private: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "06_email",
       help:  'MAIL_URL environment variable (requires restart).',
       class: "private-field"
@@ -135,11 +156,11 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: 30,
-    private: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: '01_general',
       help:  'How often to recalculate scores, in seconds (default to 30)',
       class: "private-field"
@@ -148,11 +169,13 @@ Telescope.settings.schema = new SimpleSchema({
   postInterval: {
     type: Number,
     optional: true,
+    publish: true,
     defaultValue: 30,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "02_posts",
       help:  'Minimum time between posts, in seconds (defaults to 30)'
     }
@@ -160,11 +183,13 @@ Telescope.settings.schema = new SimpleSchema({
   RSSLinksPointTo: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     control: "radiogroup",
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "02_posts",
       options: [
         {value: 'page', label: 'Discussion page'},
@@ -175,11 +200,13 @@ Telescope.settings.schema = new SimpleSchema({
   commentInterval: {
     type: Number,
     optional: true,
+    publish: true,
     defaultValue: 15,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "03_comments",
       help:  'Minimum time between comments, in seconds (defaults to 15)'
     }
@@ -187,11 +214,13 @@ Telescope.settings.schema = new SimpleSchema({
   maxPostsPerDay: {
     type: Number,
     optional: true,
+    publish: true,
     defaultValue: 30,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "02_posts",
       help:  'Maximum number of posts a user can post in a day (default to 30).'
     }
@@ -200,10 +229,12 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     defaultValue: 3,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: 'invites'
     }
   },
@@ -211,50 +242,60 @@ Telescope.settings.schema = new SimpleSchema({
     type: Number,
     defaultValue: 10,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "02_posts"
     }
   },
   logoUrl: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "04_logo"
     }
   },
   logoHeight: {
     type: Number,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "04_logo"
     }
   },
   logoWidth: {
     type: Number,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "04_logo"
     }
   },
   faviconUrl: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "04_logo"
     }
   },
@@ -281,30 +322,36 @@ Telescope.settings.schema = new SimpleSchema({
   twitterAccount: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "07_integrations"
     }
   },
   facebookPage: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "07_integrations"
     }
   },
   googleAnalyticsId: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "07_integrations"
     }
   },
@@ -313,9 +360,9 @@ Telescope.settings.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
-    private: true,
     autoform: {
       disabled: isInSettingsJSON,
+      prefill: getFromJSON,
       group: "06_email",
       help:  'Content that will appear at the bottom of outgoing emails (accepts HTML).',
       rows: 5,

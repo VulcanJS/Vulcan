@@ -251,6 +251,15 @@ class NovaForm extends Component{
       // add value
       field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
 
+      // replace value by prefilled value if value is empty
+      if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
+        const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
+        if (!!prefilledValue && !field.value) {
+          field.prefilledValue = prefilledValue;
+          field.value = prefilledValue;
+        }
+      }
+
       // add options if they exist
       if (fieldSchema.autoform && fieldSchema.autoform.options) {
         field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
