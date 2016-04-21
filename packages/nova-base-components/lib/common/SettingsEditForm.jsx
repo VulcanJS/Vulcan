@@ -25,7 +25,7 @@ class SettingsEditForm extends Component{
             collection: Telescope.settings.collection,
             currentUser: this.context.currentUser,
             methodName: "settings.edit",
-            successCallback: (category)=>{
+            successCallback: (category) => {
               Messages.flash("Settings edited (please reload).", "success");
             },
             labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Telescope.settings.collection)

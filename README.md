@@ -40,7 +40,10 @@ Note: the `nova:*` packages are *not* currently published to Atmosphere.
 
 ## Updating
 
-To keep your codebase up to date, you'll have to manually pull in the changes from this git repo for now. Automated updating via `meteor update` is not yet supported, although it will be soon. 
+There are two ways of keeping your codebase up to date:
+
+- If you're using **local packages** (i.e. `nova:core`, `nova:posts`, etc. are in your `/packages` directory) you'll have to pull in the changes from this repo via Git. 
+- If you're using **remote packages** (your `/packages` directory is empty) you can simply do `meteor update` (if that doesn't work you can also delete your `.meteor/versions` file to force an update). 
 
 To update to Nova from an earlier version of Telescope, I suggest you create a new repo and start from scratch. That being said you can use the same database seamlessly since Nova uses the same database schema. 
 

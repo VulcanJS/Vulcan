@@ -1,10 +1,10 @@
-import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
-checkNpmVersions({
-  "formsy-react": "^0.18.0",
-  "formsy-react-components": "^0.7.1",
-  "react-bootstrap": "^0.29.0"
-  // 'rebass': '^0.2.4',
-});
+// import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
+// checkNpmVersions({
+//   "formsy-react": "^0.18.0",
+//   "formsy-react-components": "^0.7.1",
+//   "react-bootstrap": "^0.29.0"
+//   // 'rebass': '^0.2.4',
+// });
 
 SimpleSchema.extendOptions({
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)

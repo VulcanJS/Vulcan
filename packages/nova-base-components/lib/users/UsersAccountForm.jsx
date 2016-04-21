@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Router from '../router.js';
-import { Button, Input } from 'react-bootstrap';
+import { Button, FormControl } from 'react-bootstrap';
 
 import { Accounts } from 'meteor/std:accounts-ui';
 
@@ -43,7 +43,7 @@ class AccountsField extends Accounts.ui.Field {
     const { mount = true } = this.state;
     return mount ? (
       <div className={ className }>
-        <Input id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        <FormControl id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
       </div>
     ) : null;
   }
