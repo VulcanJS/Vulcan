@@ -84,6 +84,7 @@ mongo-id@1.0.4
 mongo-livedata@1.0.12
 nova:api@0.26.1-nova
 nova:base-components@0.26.1-nova
+nova:base-routes@0.26.1-nova
 nova:base-styles@0.26.1-nova
 nova:categories@0.26.1-nova
 nova:comments@0.26.1-nova

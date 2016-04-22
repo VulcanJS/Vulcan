@@ -26,6 +26,7 @@ nova:email
 
 nova:base-components
 nova:base-styles
+nova:base-routes
 nova:email-templates
 
 accounts-password

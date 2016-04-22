@@ -1,6 +1,6 @@
 Package.describe({
-  name: "nova:base-components",
-  summary: "Telescope components package",
+  name: "nova:base-routes",
+  summary: "Nova routes package",
   version: "0.26.1-nova",
   git: "https://github.com/TelescopeJS/telescope.git"
 });
@@ -17,19 +17,14 @@ Package.onUse(function (api) {
     'nova:posts@0.26.1-nova',
     'nova:users@0.26.1-nova',
     'nova:comments@0.26.1-nova',
-    'nova:share@0.26.1-nova',
 
     // third-party packages
 
-    'tmeasday:check-npm-versions@0.3.1',
-    'std:accounts-ui@1.1.12',
     'utilities:react-list-container@0.1.8',
-    'kadira:dochead@1.5.0'
   ]);
 
   api.addFiles([
-    'lib/config.js',
-    'lib/components.js'
+    'lib/routes.jsx'
   ], ['client', 'server']);
 
 });
