@@ -1,3 +1,4 @@
+import urlObject from 'url';
 
 /**
  * @summary The global namespace for Telescope utils.
@@ -185,7 +186,6 @@ Telescope.utils.getShortUrl = function(post) {
 };
 
 Telescope.utils.getDomain = function(url) {
-  var urlObject = Npm.require('url');
   return urlObject.parse(url).hostname.replace('www.', '');
 };
 
