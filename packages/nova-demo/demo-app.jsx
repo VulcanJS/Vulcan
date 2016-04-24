@@ -68,6 +68,8 @@ FlowRouter.route('/demo', {
 //////////////////////////////////////////////////////
 
 Movies.smartMethods({
+  createName: "movies.create",
+  editName: "movies.edit",
   createCallback: function (user, document) {
     document = _.extend(document, {
       createdAt: new Date(),
