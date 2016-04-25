@@ -28,6 +28,8 @@ class PostsEditForm extends Component{
 
   render() {
 
+    const Icon = Telescope.components.Icon;
+    
     return (
       <div className="posts-edit-form">
         <DocumentContainer 

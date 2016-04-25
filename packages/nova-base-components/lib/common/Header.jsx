@@ -1,6 +1,5 @@
 import React from 'react';
 import NoSSR from 'react-no-ssr';
-import Router from '../router.js'
 import Core from "meteor/nova:core";
 
 const Messages = Core.Messages;

@@ -161,7 +161,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
 
   if (user && user.telescope) {
     var settingValue = this.getProperty(user, settingName);
-    return (settingValue === null) ? defaultValue : settingValue;
+    return _.isEmpty(settingValue) ? defaultValue : settingValue;
   } else {
     return defaultValue;
   }

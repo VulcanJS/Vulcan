@@ -126,6 +126,7 @@ These are the packages that you might need to customize to tweak your app's layo
 | --- | --- |
 | `nova:base-components` | The default components that make up the Nova front-end. |
 | `nova:base-styles` | Default styles (includes Bootstrap).|
+| `nova:base-routes` | Default routes.|
 | `nova:email-templates` | Email templates.|
 
 #### Debug Packages

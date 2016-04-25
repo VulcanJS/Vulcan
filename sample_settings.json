@@ -26,8 +26,7 @@
     "twitterAccount": "foo",
     "facebookPage": "http://facebook.com/foo",
 
-    "googleAnalyticsId":"123foo",
-    "embedlyKey":"123foo"
+    "googleAnalyticsId":"123foo"
   },
 
 
@@ -35,6 +34,7 @@
   "mailUrl": "smtp://postmaster%40telescope.mailgun.org:foo123@smtp.mailgun.org:587/",
   "scoreUpdateInterval": "30",
 
+  "embedlyKey":"123foo",
   "mailChimpAPIKey": "123foo",
   "mailChimpListId": "123foo",
 
