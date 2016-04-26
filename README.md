@@ -10,7 +10,7 @@ Note that both versions use the same data format, so you can go back and forth b
 
 ## Table Of Contents
 
-  - [Install](#install)
+  - [Getting Started](#getting-started)
   - [Updating](#updating)
   - [Resources](#resources)
   - [Deployment](#deployment)
@@ -30,20 +30,31 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Methods](#methods)
   - [Cheatsheet](#cheatsheet)
 
-## Install
+## Getting Started
 
-1. Clone this branch to your local machine
-2. Run `npm install`
-3. Run `meteor`
+#### Regular Install
 
-Note: the `nova:*` packages are *not* currently published to Atmosphere.  
+The recommended way to install Nova is to refer to the [sample project](https://github.com/TelescopeJS/sample-project).
+
+This will install all required components for you, and make it easy to update them since they'll all be managed through the Meteor package system. 
+
+#### Developer Install
+
+You can also clone *this* repo (and then run `npm install` and `meteor`) if you need access to the full codebase. This is only recommended if you want to have easy access to the codebase for reference purposes, or would like to submit PRs back to the project.
+
+Modifying the core codebase directly is **a very bad idea** as it will make it very hard to keep your customized codebase up to date in the future. 
 
 ## Updating
 
-There are two ways of keeping your codebase up to date:
+#### Regular Install
 
-- If you're using **local packages** (i.e. `nova:core`, `nova:posts`, etc. are in your `/packages` directory) you'll have to pull in the changes from this repo via Git. 
-- If you're using **remote packages** (your `/packages` directory is empty) you can simply do `meteor update` (if that doesn't work you can also delete your `.meteor/versions` file to force an update). 
+If you've used the regular install and are using **remote packages** (your `/packages` directory is empty) you can simply do `meteor update` (if that doesn't work you can also delete your `.meteor/versions` file to force an update). 
+
+#### Developer Install
+
+If you've cloned this repo and are using **local packages** (i.e. `nova:core`, `nova:posts`, etc. are in your `/packages` directory) you'll have to pull in the changes from this repo via Git. 
+
+#### Upgrading From Older Versions
 
 To update to Nova from an earlier version of Telescope, I suggest you create a new repo and start from scratch. That being said you can use the same database seamlessly since Nova uses the same database schema. 
 
@@ -51,7 +62,7 @@ For local development, an easy way to do that is to simply copy the `.meteor/loc
 
 ## Resources
 
-The best way to get support is the #nova channel in the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
+The best way to get support is [Telescope Meta](http://meta.telescopeapp.org). The  [Telescope Slack Chatroom](http://slack.telescopeapp.org) is also a good place.
 
 You can also check out the [Nova roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap) to see what needs to be done. 
 
@@ -69,8 +80,6 @@ To use your `settings.json` file:
 
 - Development: `meteor --settings settings.json`
 - Production: specify the path to `settings.json` in `mup.json`
-
-See also the `/settings` route inside your app. 
 
 ## Social Login
 
@@ -370,7 +379,7 @@ The `view`, `category`, `after`, `before`, etc. URL parameters are all handled u
 
 ## Forms
 
-See [nova:forms](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms) package readme.
+See [nova:forms](https://github.com/TelescopeJS/Telescope/tree/devel/packages/nova-forms) package readme.
 
 ## Methods
 
