@@ -12,6 +12,7 @@
     "js-cookie": "^2.1.0",
     "load-script": "^1.0.0",
     "react": "^15.0.1",
+    "react": "^0.14.0",
     "react-addons-pure-render-mixin": "^15.0.0",
     "react-bootstrap": "^0.28.5",
     "react-dom": "^15.0.0",
