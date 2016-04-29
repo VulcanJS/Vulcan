@@ -5,12 +5,46 @@
 export const name = 'pegg-cards';
 
 Posts.addField({
-  fieldName: 'question',
+  fieldName: 'answer1',
   fieldSchema: {
     type: String,
-    optional: false
+    insertableIf: Users.is.memberOrAdmin,
+    optional: false,
+    publish: true
   }
 });
 
-Posts.removeField('scheduledAt');
-console.log('got here horse feathers!')
+Posts.addField({
+  fieldName: 'answer2',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    optional: false,
+    publish: true
+  }
+});
+
+Posts.addField({
+  fieldName: 'answer3',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    optional: false,
+    publish: true
+  }
+});
+
+Posts.addField({
+  fieldName: 'answer4',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    optional: false,
+    publish: true
+  }
+});
+
+Posts.removeField('url');
+Posts.removeField('body');
+Posts.removeField('thumbnailUrl');
+console.log('horse feathers!')
