@@ -1,4 +1,4 @@
-// note: using collection helpers here is probably a bad idea, 
+// note: using collection helpers here is probably a bad idea,
 // because they'll throw an error when the user is undefined
 
 /**
@@ -54,15 +54,15 @@ Users.can.viewPost = function (user, post) {
 
       case Posts.config.STATUS_APPROVED:
         return Users.can.view(user);
-      
+
       case Posts.config.STATUS_REJECTED:
       case Posts.config.STATUS_SPAM:
-      case Posts.config.STATUS_PENDING: 
+      case Posts.config.STATUS_PENDING:
         return Users.can.view(user) && Users.is.owner(user, post);
-      
+
       case Posts.config.STATUS_DELETED:
         return false;
-    
+
     }
   }
 }
@@ -78,11 +78,11 @@ Users.can.post = function (user) {
 
   if (!user) { // no account
     return false;
-  } 
+  }
 
   if (Users.is.admin(user)) { //admin
     return true;
-  } 
+  }
 
   if (Telescope.settings.get('requirePostInvite', false)) { // invite required?
     if (user.isInvited()) { // invited user
@@ -125,6 +125,8 @@ Users.can.edit = function (user, document) {
   if (!user || !document) {
     return false;
   }
+
+  if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
 
   var adminCheck = Users.is.admin(user);
   var ownerCheck = Users.is.owner(user, document);

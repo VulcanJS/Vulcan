@@ -45,6 +45,10 @@
   .comment-edit{
     font-size: $small-font;
   }
+  .comment-delete{
+    font-size: $small-font;
+    margin-left: 8px;
+  }
 }
 
 .comments-item-text{
@@ -58,6 +62,10 @@
     display: inline-block;
     margin-left: $hmargin;
   }
+}
+
+.comments-delete-form form {
+    margin-top: 8px;
 }
 
 .comments-item-reply{
