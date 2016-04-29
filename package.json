@@ -2,7 +2,7 @@
   "name": "Nova",
   "version": "0.0.0",
   "engines": {
-    "npm": "^3.0"
+    "npm": "^3.3.6"
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.2",
