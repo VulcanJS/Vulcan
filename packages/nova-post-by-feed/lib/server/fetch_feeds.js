@@ -1,21 +1,21 @@
-var toMarkdown = Npm.require('to-markdown').toMarkdown;
-var he = Npm.require('he');
-var FeedParser = Npm.require('feedparser');
-var Readable = Npm.require('stream').Readable;
-var iconv = Npm.require('iconv-lite');
+import { toMarkdown } from 'to-markdown';
+import he from 'he';
+import FeedParser from 'feedparser';
+import { Readable } from 'stream';
+import iconv from 'iconv-lite';
 
-var getFirstAdminUser = function() {
+const getFirstAdminUser = function() {
   return Users.adminUsers({sort: {createdAt: 1}, limit: 1})[0];
 };
 
-var normalizeEncoding = function (contentBuffer) {
+const normalizeEncoding = function (contentBuffer) {
   // got from https://github.com/szwacz/sputnik/
-  var encoding;
-  var content = contentBuffer.toString();
+  let encoding;
+  let content = contentBuffer.toString();
 
-  var xmlDeclaration = content.match(/^<\?xml .*\?>/);
+  const xmlDeclaration = content.match(/^<\?xml .*\?>/);
   if (xmlDeclaration) {
-    var encodingDeclaration = xmlDeclaration[0].match(/encoding=("|').*?("|')/);
+    const encodingDeclaration = xmlDeclaration[0].match(/encoding=("|').*?("|')/);
     if (encodingDeclaration) {
       encoding = encodingDeclaration[0].substring(10, encodingDeclaration[0].length - 1);
     }
@@ -32,25 +32,25 @@ var normalizeEncoding = function (contentBuffer) {
   return content;
 };
 
-var feedHandler = {
-  getStream: function(content) {
-    var stream = new Readable();
+const feedHandler = {
+  getStream(content) {
+    let stream = new Readable();
     stream.push(content);
     stream.push(null);
 
     return stream;
   },
 
-  getItemCategories: function(item, feedCategories) {
+  getItemCategories(item, feedCategories) {
 
-    var itemCategories = [];
+    let itemCategories = [];
 
     // loop over RSS categories for the current item if it has any
     if (item.categories && item.categories.length > 0) {
       item.categories.forEach(function(name) {
 
         // if the RSS category corresponds to a Telescope cateogry, add it
-        var category = Categories.findOne({name: name}, {fields: {_id: 1}});
+        const category = Categories.findOne({name: name}, {fields: {_id: 1}});
         if (category) {
           itemCategories.push(category._id);
         }
@@ -66,12 +66,12 @@ var feedHandler = {
     return itemCategories;
   },
 
-  handle: function(contentBuffer, userId, feedCategories, feedId) {
-    var content = normalizeEncoding(contentBuffer);
-    var stream = this.getStream(content),
-    feedParser = new FeedParser(),
-    newItemsCount = 0,
-    self = this;
+  handle(contentBuffer, userId, feedCategories, feedId) {
+    const self = this;
+    const content = normalizeEncoding(contentBuffer);
+    const stream = this.getStream(content);
+    const feedParser = new FeedParser();
+    let newItemsCount = 0;
 
     stream.pipe(feedParser);
 
@@ -84,7 +84,7 @@ var feedHandler = {
     }));
 
     feedParser.on('readable', Meteor.bindEnvironment(function () {
-      var s = this, item;
+      let s = this, item;
 
       while (item = s.read()) {
 
@@ -101,7 +101,7 @@ var feedHandler = {
 
         newItemsCount++;
 
-        var post = {
+        let post = {
           title: he.decode(item.title),
           url: item.link,
           feedId: feedId,
@@ -116,7 +116,7 @@ var feedHandler = {
         // console.log(item)
 
         // if RSS item link is a 301 or 302 redirect, follow the redirect
-        var get = HTTP.get(item.link, {followRedirects: false});
+        const get = HTTP.get(item.link, {followRedirects: false});
         if (!!get.statusCode && (get.statusCode === 301 || get.statusCode === 302) &&
             !!get.headers && !!get.headers.location) {
               post.url = get.headers.location;
@@ -127,7 +127,7 @@ var feedHandler = {
           post.postedAt = moment(item.pubdate).toDate();
 
         try {
-          Posts.submit(post);
+          Posts.methods.new(post);
         } catch (error) {
           // catch errors so they don't stop the loop
           console.log(error);
@@ -137,20 +137,20 @@ var feedHandler = {
       // console.log('// Found ' + newItemsCount + ' new feed items');
     }, function (error) {
       console.log('// Failed to bind environment');
-      console.log(error.stack)
+      console.log(error.stack);
     }, feedParser));
   }
 };
 
-fetchFeeds = function() {
-  var contentBuffer;
+export const fetchFeeds = function() {
+  let contentBuffer;
 
   Feeds.find().forEach(function(feed) {
 
     // if feed doesn't specify a user, default to admin
-    var userId = !!feed.userId ? feed.userId : getFirstAdminUser()._id;
-    var feedCategories = feed.categories;
-    var feedId = feed._id;
+    const userId = !!feed.userId ? feed.userId : getFirstAdminUser()._id;
+    const feedCategories = feed.categories;
+    const feedId = feed._id;
 
     try {
       contentBuffer = HTTP.get(feed.url, {responseType: 'buffer'}).content;
@@ -163,14 +163,14 @@ fetchFeeds = function() {
 };
 
 Meteor.methods({
-  fetchFeeds: function () {
+  fetchFeeds() {
     console.log("// fetching feeds…");
     fetchFeeds();
   },
-  testEntities: function (text) {
+  testEntities(text) {
     console.log(he.decode(text));
   },
-  testToMarkdown: function (text) {
+  testToMarkdown(text) {
     console.log(toMarkdown(text));
   }
 });

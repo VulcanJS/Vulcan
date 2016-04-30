@@ -14,8 +14,8 @@ Feeds.schema = new SimpleSchema({
     editableIf: Users.is.admin,
     autoform: {
       instructions: 'Posts will be assigned to this user.',
-      options: function () {
-        var users = Meteor.users.find().map(function (user) {
+      options() {
+        const users = Meteor.users.find().map((user) => {
           return {
             value: user._id,
             label: Users.getDisplayName(user)
@@ -35,8 +35,8 @@ Feeds.schema = new SimpleSchema({
       instructions: 'Posts will be assigned to this category.',
       noselect: true,
       editable: true,
-      options: function () {
-        var categories = Categories.find().map(function (category) {
+      options() {
+        const categories = Categories.find().map((category) => {
           return {
             value: category._id,
             label: category.name
@@ -48,14 +48,10 @@ Feeds.schema = new SimpleSchema({
   }
 });
 
-Meteor.startup(function(){
-  Feeds.internationalize();
-});
-
 Feeds.attachSchema(Feeds.schema);
 
 // used to keep track of which feed a post was imported from
-var feedIdProperty = {
+const feedIdProperty = {
   fieldName: 'feedId',
   fieldSchema: {
     type: String,
@@ -69,7 +65,7 @@ var feedIdProperty = {
 Posts.addField(feedIdProperty);
 
 // the RSS ID of the post in its original feed
-var feedItemIdProperty = {
+const feedItemIdProperty = {
   fieldName: 'feedItemId',
   fieldSchema: {
     type: String,
@@ -82,15 +78,26 @@ var feedItemIdProperty = {
 };
 Posts.addField(feedItemIdProperty);
 
-Meteor.startup(function () {
-  Feeds.allow({
-    insert: Users.is.adminById,
-    update: Users.is.adminById,
-    remove: Users.is.adminById
-  });
+// add a field in settings
+const feedUrl = {
+  fieldName: "feedUrl",
+  propertyGroup: "post-by-feed",
+  fieldSchema: {
+    type: String,
+    optional: true,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
+    autoform: {
+      help: 'Imported content via RSS feed',
+      group: "02_posts"
+    }
+  }
+};
+Telescope.settings.collection.addField(feedUrl);
 
+Meteor.startup(() => {
   Meteor.methods({
-    insertFeed: function(feedUrl){
+    insertFeed(feedUrl){
       check(feedUrl, Feeds.schema);
 
       if (Feeds.findOne({url: feedUrl.url}))
@@ -102,10 +109,4 @@ Meteor.startup(function () {
       return Feeds.insert(feedUrl);
     }
   });
-});
-
-Telescope.menuItems.add("adminMenu", {
-  route: "adminFeeds",
-  label: "feeds",
-  description: "import_new_posts_from_feeds"
 });
