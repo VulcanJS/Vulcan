@@ -12,6 +12,11 @@ const PeggCardPostsPage = ({document, currentUser}) => {
 
   const post = document;
   const htmlBody = {__html: post.htmlBody};
+  const openLinkStyles = {
+    position: 'relative',
+    top: '-3px',
+    height: '1em'
+  };
 
   return (
     <div className="post-page">
@@ -20,10 +25,30 @@ const PeggCardPostsPage = ({document, currentUser}) => {
       
       <PostsItem post={post}/>
 
-      <div className="post-body">{post.answer1}</div>
-      <div className="post-body">{post.answer2}</div>
-      <div className="post-body">{post.answer3}</div>
-      <div className="post-body">{post.answer4}</div>
+      <div className="post-body">{post.answer1}  &nbsp;&nbsp;
+        { post.gif1 ?
+          <a href={post.gif1} target='_blank'><img src="http://i.stack.imgur.com/To3El.png" style={ openLinkStyles }/></a>
+          : ''
+        }
+      </div>
+      <div className="post-body">{post.answer2}  &nbsp;&nbsp;
+        { post.gif2 ?
+          <a href={post.gif2} target='_blank'><img src="http://i.stack.imgur.com/To3El.png" style={ openLinkStyles }/></a>
+          : ''
+          }
+      </div>
+      <div className="post-body">{post.answer3}  &nbsp;&nbsp;
+        { post.gif3 ?
+          <a href={post.gif3} target='_blank'><img src="http://i.stack.imgur.com/To3El.png" style={ openLinkStyles }/></a>
+          : ''
+          }
+      </div>
+      <div className="post-body">{post.answer4}  &nbsp;&nbsp;
+        { post.gif4 ?
+          <a href={post.gif4} target='_blank'><img src="http://i.stack.imgur.com/To3El.png" style={ openLinkStyles }/></a>
+          : ''
+          }
+      </div>
 
       {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 

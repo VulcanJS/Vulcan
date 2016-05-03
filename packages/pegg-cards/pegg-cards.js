@@ -9,7 +9,19 @@ Posts.addField({
   fieldSchema: {
     type: String,
     insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
     optional: false,
+    publish: true
+  }
+});
+
+Posts.addField({
+  fieldName: 'gif1',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
+    optional: true,
     publish: true
   }
 });
@@ -19,7 +31,19 @@ Posts.addField({
   fieldSchema: {
     type: String,
     insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
     optional: false,
+    publish: true
+  }
+});
+
+Posts.addField({
+  fieldName: 'gif2',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
+    optional: true,
     publish: true
   }
 });
@@ -29,7 +53,19 @@ Posts.addField({
   fieldSchema: {
     type: String,
     insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
     optional: false,
+    publish: true
+  }
+});
+
+Posts.addField({
+  fieldName: 'gif3',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
+    optional: true,
     publish: true
   }
 });
@@ -39,7 +75,19 @@ Posts.addField({
   fieldSchema: {
     type: String,
     insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
     optional: false,
+    publish: true
+  }
+});
+
+Posts.addField({
+  fieldName: 'gif4',
+  fieldSchema: {
+    type: String,
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.memberOrAdmin,
+    optional: true,
     publish: true
   }
 });
