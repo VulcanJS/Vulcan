@@ -25,6 +25,10 @@ const Header = ({currentUser}) => {
           <Logo logoUrl={logoUrl} siteTitle={siteTitle} />
           {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
         </div>
+
+        <div>
+          <a href='https://docs.google.com/document/d/1JXOg_iQfiKABnHyUJSSs4GkCYsts1OqWTNOSlZH_2Ps/edit?usp=sharing' target="_blank">Style Guide</a>
+        </div>
         
         <div className="nav">
           
