@@ -22,7 +22,7 @@ function addCategoryParameter (parameters, terms) {
     // for each category, add its ID and the IDs of its children to categoriesId array
     categories.forEach(function (category) {
       categoriesIds.push(category._id);
-      categoriesIds = categoriesIds.concat(_.pluck(category.getChildren(), "_id"));
+      categoriesIds = categoriesIds.concat(_.pluck(Categories.getChildren(category), "_id"));
     });
 
     parameters.selector.categories = {$in: categoriesIds};

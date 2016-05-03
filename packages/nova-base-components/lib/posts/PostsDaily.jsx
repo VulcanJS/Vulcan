@@ -1,13 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 
-// for a number of days "n" return dates object for the past n days
-const getLastNDates = n => {
-  return _.range(n).map(
-    i => moment().subtract(i, 'days').startOf('day').toDate()
-  );
-};
-
 class PostsDaily extends Component{
   
   constructor(props) {
@@ -16,10 +9,17 @@ class PostsDaily extends Component{
     this.state = {days: props.days};
   }
 
+  // for a number of days "n" return dates object for the past n days
+  getLastNDates(n) {
+    return _.range(n).map(
+      i => moment().subtract(i, 'days').startOf('day').toDate()
+    );
+  }
+
   loadMoreDays(e) {
     e.preventDefault();
     this.setState({
-      days: this.state.days + 5
+      days: this.state.days + this.props.increment
     });
   }
 
@@ -28,7 +28,7 @@ class PostsDaily extends Component{
     return (
       <div className="posts-daily">
         <PostsListHeader />
-        {getLastNDates(this.state.days).map((date, index) => <PostsDay key={index} date={date} number={index}/>)}
+        {this.getLastNDates(this.state.days).map((date, index) => <PostsDay key={index} date={date} number={index}/>)}
         <button className="posts-load-more" onClick={this.loadMoreDays}>Load More Days</button>
       </div>
     )
@@ -36,11 +36,13 @@ class PostsDaily extends Component{
 }
 
 PostsDaily.propTypes = {
-  days: React.PropTypes.number
+  days: React.PropTypes.number,
+  increment: React.PropTypes.number
 }
 
 PostsDaily.defaultProps = {
-  days: 5
+  days: 5,
+  increment: 5
 }
 
 module.exports = PostsDaily;

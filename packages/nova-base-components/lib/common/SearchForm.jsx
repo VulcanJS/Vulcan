@@ -39,12 +39,14 @@ class SearchForm extends Component{
 
   render() {
 
+    const currentQuery = this.context.currentRoute.queryParams.query;
+
     return (
       <div className="search-form">
         <Formsy.Form onChange={this.search}>
           <Input
             name="searchQuery"
-            value=""
+            value={currentQuery}
             placeholder={this.props.labelText}
             type="text"
             layout="elementOnly"
@@ -62,6 +64,11 @@ SearchForm.propTypes = {
 SearchForm.defaultProps = {
   labelText: "Search"
 };
+
+SearchForm.contextTypes = {
+  currentRoute: React.PropTypes.object,
+  currentUser: React.PropTypes.object
+}
 
 module.exports = SearchForm;
 export default SearchForm;

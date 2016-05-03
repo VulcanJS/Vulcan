@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Dropdown } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { Dropdown, Button } from 'react-bootstrap';
 
 const UsersAccountMenu = () => {
 

@@ -10,7 +10,7 @@ const PostsListHeader = () => {
   return (
     <div>
       <div className="posts-list-header">
-        <div className="post-lists-header-categories">
+        <div className="posts-lists-header-categories">
           <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={CategoriesList}/>
         </div>
         <PostsViews />

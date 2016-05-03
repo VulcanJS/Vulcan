@@ -4,9 +4,6 @@ import { Button } from 'react-bootstrap';
 import Core from "meteor/nova:core";
 const ModalTrigger = Core.ModalTrigger;
 
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-
 class PostsItem extends Component {
 
   renderCategories() {
@@ -28,14 +25,14 @@ class PostsItem extends Component {
     ({PostsEditForm} = Telescope.components);
 
     const component = (
-      <ModalTrigger title="Edit Post" component={<a className="edit-link">Edit</a>}>
+      <ModalTrigger title="Edit Post" component={<a className="posts-action-edit">Edit</a>}>
         <PostsEditForm post={this.props.post}/>
       </ModalTrigger>
     );
 
     return (
       <div className="post-actions">
-        {Users.can.edit(this.props.currentUser, this.props.post) ? component : ""}
+        {Users.can.edit(this.context.currentUser, this.props.post) ? component : ""}
       </div>
     )
   }
@@ -56,7 +53,7 @@ class PostsItem extends Component {
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Vote post={post} currentUser={this.props.currentUser}/>
+          <Vote post={post} currentUser={this.context.currentUser}/>
         </div>
         
         {post.thumbnailUrl ? <PostsThumbnail post={post}/> : null}
@@ -87,8 +84,7 @@ class PostsItem extends Component {
 };
   
 PostsItem.propTypes = {
-  post: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object
+  post: React.PropTypes.object.isRequired
 }
 
 PostsItem.contextTypes = {

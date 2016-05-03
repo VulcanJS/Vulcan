@@ -24,7 +24,7 @@ Posts.parameters.get = function (terms) {
   var parameters = Telescope.utils.deepExtend(true, {}, Posts.views.baseParameters);
 
   // iterate over postsParameters callbacks
-  parameters = Telescope.callbacks.run("postsParameters", parameters, terms);
+  parameters = Telescope.callbacks.run("postsParameters", parameters, _.clone(terms));
   
   // if sort options are not provided, default to "createdAt" sort
   if (_.isEmpty(parameters.options.sort)) {

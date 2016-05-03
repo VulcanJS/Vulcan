@@ -7,7 +7,7 @@ const PostsViews = (props, context) => {
   let views = ["top", "new", "best"];
   const adminViews = ["pending", "rejected", "scheduled"];
   
-  if (Users.is.admin(Meteor.user())) {
+  if (Users.is.admin(context.currentUser)) {
     views = views.concat(adminViews);
   }
 
@@ -45,7 +45,8 @@ PostsViews.defaultProps = {
 }
 
 PostsViews.contextTypes = {
-  currentRoute: React.PropTypes.object
+  currentRoute: React.PropTypes.object,
+  currentUser: React.PropTypes.object
 };
 
 module.exports = PostsViews;

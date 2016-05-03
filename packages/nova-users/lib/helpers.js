@@ -160,7 +160,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
   settingName = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
 
   if (user && user.telescope) {
-    var settingValue = this.getProperty(user, settingName);
+    var settingValue = Users.getProperty(user, settingName);
     return _.isEmpty(settingValue) ? defaultValue : settingValue;
   } else {
     return defaultValue;

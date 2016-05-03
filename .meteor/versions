@@ -153,7 +153,7 @@ ui@1.0.11
 underscore@1.0.8
 url@1.0.9
 utilities:avatar@0.9.2
-utilities:react-list-container@0.1.8
+utilities:react-list-container@0.1.9
 utilities:smart-methods@0.1.4
 utilities:smart-publications@0.1.4
 webapp@1.2.8

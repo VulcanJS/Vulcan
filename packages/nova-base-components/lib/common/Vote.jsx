@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js";
 import Core from "meteor/nova:core";
+import classNames from 'classnames';
 const Messages = Core.Messages;
 
 class Vote extends Component {
@@ -37,9 +38,14 @@ class Vote extends Component {
     const post = this.props.post;
     const user = this.context.currentUser;
 
-    let actionsClass = "vote";
-    if (Users.hasUpvoted(user, post)) actionsClass += " voted upvoted";
-    if (Users.hasDownvoted(user, post)) actionsClass += " voted downvoted";
+    const hasUpvoted = Users.hasUpvoted(user, post);
+    const hasDownvoted = Users.hasDownvoted(user, post);
+    const actionsClass = classNames(
+      "vote", 
+      {voted: hasUpvoted || hasDownvoted},
+      {upvoted: hasUpvoted},
+      {downvoted: hasDownvoted}
+    );
 
     return (
       <div className={actionsClass}>
