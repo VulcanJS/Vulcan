@@ -1,3 +1,5 @@
+import PublicationsUtils from 'meteor/utilities:smart-publications';
+
 Feeds = new Mongo.Collection('feeds');
 
 Feeds.schema = new SimpleSchema({
@@ -51,49 +53,32 @@ Feeds.schema = new SimpleSchema({
 Feeds.attachSchema(Feeds.schema);
 
 // used to keep track of which feed a post was imported from
-const feedIdProperty = {
-  fieldName: 'feedId',
-  fieldSchema: {
-    type: String,
-    label: 'feedId',
-    optional: true,
-    autoform: {
-      omit: true
+Posts.addField([
+  {
+    fieldName: 'feedId',
+    fieldSchema: {
+      type: String,
+      label: 'feedId',
+      optional: true,
+      autoform: {
+        omit: true
+      }
     }
-  }
-};
-Posts.addField(feedIdProperty);
-
+  },
 // the RSS ID of the post in its original feed
-const feedItemIdProperty = {
-  fieldName: 'feedItemId',
-  fieldSchema: {
-    type: String,
-    label: 'feedItemId',
-    optional: true,
-    autoform: {
-      omit: true
+  {
+    fieldName: 'feedItemId',
+    fieldSchema: {
+      type: String,
+      label: 'feedItemId',
+      optional: true,
+      autoform: {
+        omit: true
+      }
     }
   }
-};
-Posts.addField(feedItemIdProperty);
-
-// add a field in settings
-const feedUrl = {
-  fieldName: "feedUrl",
-  propertyGroup: "post-by-feed",
-  fieldSchema: {
-    type: String,
-    optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
-    autoform: {
-      help: 'Imported content via RSS feed',
-      group: "02_posts"
-    }
-  }
-};
-Telescope.settings.collection.addField(feedUrl);
+]);
+PublicationsUtils.addToFields(Posts.publishedFields.list, ['feedId', 'feedItemId']);
 
 Meteor.startup(() => {
   Meteor.methods({
