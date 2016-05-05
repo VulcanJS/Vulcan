@@ -1,8 +1,10 @@
 import React, { PropTypes, Component } from 'react';
+import SmartContainers from "meteor/utilities:react-list-container";
+const ListContainer = SmartContainers.ListContainer;
 
 const UserProfile = ({user, currentUser}) => {
 
-  ({HeadTags} = Telescope.components);
+  ({HeadTags, PostsList} = Telescope.components);
 
   return (
     <div className="page user-profile">
@@ -13,6 +15,17 @@ const UserProfile = ({user, currentUser}) => {
         {user.telescope.twitterUsername ? <li><a href={"http://twitter.com/" + user.telescope.twitterUsername}>@{user.telescope.twitterUsername}</a></li> : null }
         {user.telescope.website ? <li><a href={user.telescope.website}>{user.telescope.website}</a></li> : null }
       </ul>
+
+      <ListContainer
+        collection={Posts}
+        publication="posts.list"
+        terms={{view:"userPosts", userId: user._id}}
+        joins={Posts.getJoins()}
+        component={PostsList}
+        cacheSubscription={false}
+        componentProps={{showHeader: false}}
+      />
+
     </div>
   )
 }
