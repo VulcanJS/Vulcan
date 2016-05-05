@@ -110,8 +110,12 @@ const feedHandler = {
           categories: self.getItemCategories(item, feedCategories)
         };
 
-        if (item.description)
+        if (item.description) {
           post.body = toMarkdown(he.decode(item.description));
+          // a post body cannot exceed 3000 characters
+          if (post.body.length > 3000)
+            post.body = post.body.substring(0, 2999);
+        }
 
         // console.log(item)
 

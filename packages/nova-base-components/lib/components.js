@@ -38,6 +38,8 @@ Telescope.registerComponent("PostsThumbnail",       require('./posts/PostsThumbn
 Telescope.registerComponent("PostsEditForm",        require('./posts/PostsEditForm.jsx'));
 Telescope.registerComponent("PostsNewForm",         require('./posts/PostsNewForm.jsx'));
 Telescope.registerComponent("PostsCommentsThread",        require('./posts/PostsCommentsThread.jsx'));
+Telescope.registerComponent("FeedsEditForm",        require('./posts/FeedsEditForm.jsx'));
+Telescope.registerComponent("FeedsList",            require('./posts/FeedsList.jsx'));
 
 // comments
 

@@ -14,31 +14,36 @@ Feeds.schema = new SimpleSchema({
     label: 'feedUser',
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    control: "select",
+    publish: true,
     autoform: {
-      instructions: 'Posts will be assigned to this user.',
-      options() {
-        const users = Meteor.users.find().map((user) => {
+      group: 'admin',
+      options: function () {
+        return Meteor.users.find().map(function (user) {
           return {
             value: user._id,
             label: Users.getDisplayName(user)
           };
         });
-        return users;
       }
+    },
+    join: {
+      joinAs: "user",
+      collection: () => Meteor.users
     }
   },
   categories: {
     type: [String],
-    label: 'categories',
+    control: "checkboxgroup",
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: Users.is.memberOrAdmin,
+    editableIf: Users.is.ownerOrAdmin,
     autoform: {
-      instructions: 'Posts will be assigned to this category.',
       noselect: true,
-      editable: true,
-      options() {
-        const categories = Categories.find().map((category) => {
+      type: "bootstrap-category",
+      order: 50,
+      options: function () {
+        var categories = Categories.find().map(function (category) {
           return {
             value: category._id,
             label: category.name
@@ -46,6 +51,11 @@ Feeds.schema = new SimpleSchema({
         });
         return categories;
       }
+    },
+    publish: true,
+    join: {
+      joinAs: "categoriesArray",
+      collection: () => Categories
     }
   }
 });
@@ -82,7 +92,7 @@ PublicationsUtils.addToFields(Posts.publishedFields.list, ['feedId', 'feedItemId
 
 Meteor.startup(() => {
   Meteor.methods({
-    insertFeed(feedUrl){
+    'feeds.new'(feedUrl) {
       check(feedUrl, Feeds.schema);
 
       if (Feeds.findOne({url: feedUrl.url}))
@@ -92,6 +102,12 @@ Meteor.startup(() => {
         throw new Meteor.Error('login-required', __('you_need_to_login_and_be_an_admin_to_add_a_new_feed'));
 
       return Feeds.insert(feedUrl);
+    },
+    'feeds.edit'(feed) {
+      // use smart-method
+    },
+    'feeds.remove'(feedId) {
+      //use smart-method
     }
   });
 });
