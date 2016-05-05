@@ -25,21 +25,17 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
-    'lib/feeds.js',
-    //'lib/routes.js'
+    'lib/collection.js',
+    'lib/custom_fields.js',
+    'lib/methods.js',
   ], ['client', 'server']);
 
-  // api.addFiles([
-  //   'lib/client/templates/feeds.html',
-  //   'lib/client/templates/feeds.js',
-  //   'lib/client/templates/feed_item.html',
-  //   'lib/client/templates/feed_item.js',
-  // ], 'client');
+  
 
   api.addFiles([
     'lib/server/fetch_feeds.js',
     'lib/server/cron.js',
-    'lib/server/publications.js'
+    'lib/server/publications.js',
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

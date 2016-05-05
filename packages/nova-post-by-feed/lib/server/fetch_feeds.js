@@ -77,6 +77,12 @@ const feedHandler = {
 
     feedParser.on('meta', Meteor.bindEnvironment(function (meta) {
       console.log('// Parsing RSS feed: '+ meta.title);
+
+      const currentFeed = Feeds.findOne({_id: feedId}, {fields: {_id: 1, title: 1}});
+      if (!currentFeed.title) {
+        Feeds.update({_id: feedId}, {$set: {title: meta.title}});
+        console.log('// Feed title updated');
+      }
     }));
 
     feedParser.on('error', Meteor.bindEnvironment(function (error) {
@@ -167,14 +173,9 @@ export const fetchFeeds = function() {
 };
 
 Meteor.methods({
-  fetchFeeds() {
+  // this method cannot be defined in /lib/methods.js as it uses the exported function 'fetchFeeds' which is available only server-side
+  'feeds.fetch'() {
     console.log("// fetching feeds…");
     fetchFeeds();
   },
-  testEntities(text) {
-    console.log(he.decode(text));
-  },
-  testToMarkdown(text) {
-    console.log(toMarkdown(text));
-  }
 });

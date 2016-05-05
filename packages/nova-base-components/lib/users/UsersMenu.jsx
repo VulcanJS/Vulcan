@@ -22,27 +22,17 @@ class UsersMenu extends Component {
 
   openModal(modal) {
     return (event) => {
-      switch(modal) {
-        case 'settings':
-          this.setState({settingsModalOpen: true});
-          break;
-        case 'feeds':
-          this.setState({feedsModalOpen: true});
-          break;
-      }
+      const modalOpen = {};
+      modalOpen[modal] = true;
+      this.setState({ modalOpen });
     };
   }
 
   closeModal(modal) {
     return (event) => {
-      switch(modal) {
-        case 'settings':
-          this.setState({settingsModalOpen: false});
-          break;
-        case 'feeds':
-          this.setState({feedsModalOpen: false});
-          break;
-      }
+      const modalOpen = {};
+      modalOpen[modal] = false;
+      this.setState({ modalOpen });
     };
   }
 
@@ -51,7 +41,7 @@ class UsersMenu extends Component {
     const SettingsEditForm = Telescope.components.SettingsEditForm;
 
     return (
-      <Modal show={this.state.settingsModalOpen} onHide={this.closeModal('settings')}>
+      <Modal show={this.state.modalOpen.settings} onHide={this.closeModal('settings')}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Settings</Modal.Title>
         </Modal.Header>        
@@ -69,7 +59,7 @@ class UsersMenu extends Component {
     const FeedsEditForm = Telescope.components.FeedsEditForm;
 
     return (
-      <Modal bsSize='large' show={this.state.feedsModalOpen} onHide={this.closeModal('feeds')}>
+      <Modal bsSize='large' show={this.state.modalOpen.feeds} onHide={this.closeModal('feeds')}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Feeds</Modal.Title>
         </Modal.Header>
