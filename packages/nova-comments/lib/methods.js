@@ -50,7 +50,7 @@ Meteor.methods({
     Comments.simpleSchema().namedContext("comments.new").validate(comment);
 
     comment = Telescope.callbacks.run("comments.new.method", comment, Meteor.user());
-    
+
     if (Meteor.isServer && this.connection) {
       comment.userIP = this.connection.clientAddress;
       comment.userAgent = this.connection.httpHeaders["user-agent"];
@@ -72,7 +72,7 @@ Meteor.methods({
     check(commentId, String);
 
     const comment = Comments.findOne(commentId);
-    
+
     modifier = Telescope.callbacks.run("comments.edit.method", modifier, comment, Meteor.user());
 
     return Comments.methods.edit(commentId, modifier, comment);
@@ -87,22 +87,24 @@ Meteor.methods({
   'comments.deleteById': function (commentId) {
 
     check(commentId, String);
-    
+
     var comment = Comments.findOne(commentId);
     var user = Meteor.user();
 
     if(Users.can.edit(user, comment)){
 
-      // decrement post comment count and remove user ID from post
-      Posts.update(comment.postId, {
-        $inc:   {commentCount: -1},
-        $pull:  {commenters: comment.userId}
-      });
+      if(!comment.isDeleted) {
+        // decrement post comment count and remove user ID from post
+        Posts.update(comment.postId, {
+          $inc:   {commentCount: -1},
+          $pull:  {commenters: comment.userId}
+        });
 
-      // decrement user comment count and remove comment ID from user
-      Meteor.users.update({_id: comment.userId}, {
-        $inc:   {'telescope.commentCount': -1}
-      });
+        // decrement user comment count and remove comment ID from user
+        Meteor.users.update({_id: comment.userId}, {
+          $inc:   {'telescope.commentCount': -1}
+        });
+      }
 
       // note: should we also decrease user's comment karma ?
       // We don't actually delete the comment to avoid losing all child comments.

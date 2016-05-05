@@ -17,7 +17,7 @@ import Utils from './utils.js';
 */
 
 class NovaForm extends Component{
-  
+
   // --------------------------------------------------------------------- //
   // ----------------------------- Constructor --------------------------- //
   // --------------------------------------------------------------------- //
@@ -34,7 +34,7 @@ class NovaForm extends Component{
 
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
-  
+
     this.state = {
       disabled: false,
       errors: [],
@@ -48,7 +48,7 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
 
   // if a document is being passed, this is an edit form
-  getFormType() { 
+  getFormType() {
     return this.props.document ? "edit" : "new";
   }
 
@@ -120,7 +120,7 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
-  
+
   // add error to state
   throwError(error) {
     this.setState({
@@ -152,7 +152,7 @@ class NovaForm extends Component{
   methodCallback(error, document) {
 
     this.setState({disabled: false});
-    
+
     if (error) { // error
 
       console.log(error)
@@ -178,7 +178,7 @@ class NovaForm extends Component{
 
       // run close callback if it exists in context (i.e. we're inside a modal)
       if (this.context.closeCallback) this.context.closeCallback();
-    
+
     }
   }
 
@@ -191,7 +191,7 @@ class NovaForm extends Component{
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) this.props.submitCallback();
-    
+
     if (this.getFormType() === "new") { // new document form
 
       // remove any empty properties
@@ -211,11 +211,11 @@ class NovaForm extends Component{
 
       // put all keys with data on $set
       const set = _.compactObject(Utils.flatten(data));
-      
+
       // put all keys without data on $unset
       const unsetKeys = _.difference(fields, _.keys(set));
       const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
-      
+
       // build modifier
       const modifier = {$set: set};
       if (!_.isEmpty(unset)) modifier.$unset = unset;
@@ -231,10 +231,10 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
 
   render() {
-    
+
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
-        
+
       // get schema for the current field
       const fieldSchema = this.props.collection.simpleSchema()._schema[fieldName]
       fieldSchema.name = fieldName;
@@ -249,7 +249,7 @@ class NovaForm extends Component{
       }
 
       // add value
-      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
+      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";
 
       // replace value by prefilled value if value is empty
       if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
@@ -284,15 +284,17 @@ class NovaForm extends Component{
 
     return (
       <div className={"document-"+this.getFormType()}>
-        <Formsy.Form 
-          onSubmit={this.submitForm} 
-          disabled={this.state.disabled} 
-          ref="form" 
+        <Formsy.Form
+          onSubmit={this.submitForm}
+          disabled={this.state.disabled}
+          ref="form"
         >
           {this.renderErrors()}
           {fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValue={this.updateCurrentValue} />)}
-          <Button type="submit" bsStyle="primary">Submit</Button>
-          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+          <Button className="novaform-submit" type="submit" bsStyle="primary">
+            {this.props.submitButtonText ? this.props.submitButtonText : "Submit"}
+          </Button>
+          {this.props.cancelCallback ? <Button className="novaform-cancel" bsStyle="warning" onClick={this.props.cancelCallback}>Cancel</Button> : null}
         </Formsy.Form>
       </div>
     )
@@ -304,6 +306,7 @@ NovaForm.propTypes = {
   collection: React.PropTypes.object.isRequired,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   currentUser: React.PropTypes.object,
+  submitButtonText: React.PropTypes.string,
   submitCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
   errorCallback: React.PropTypes.func,
