@@ -16,14 +16,21 @@ class FeedsEditForm extends Component {
     return (
       <div className="feeds-edit-form">
         <p>Add a new feed:</p>
-        <NovaForm
+        <ListContainer
           collection={Feeds}
-          currentUser={this.context.currentUser}
-          methodName="feeds.new"
-          successCallback={() => {
-            Messages.flash("Feed added.", "success");
+          publication="users.allAdmins" // subscribe to only admins or users
+          selector={{}} // a specific selector is set directly in the feeds schema to avoid showing normal user in the list if the modal is triggered on their profile
+          terms={{}}
+          component={NovaForm}
+          componentProps={{
+            collection: Feeds,
+            currentUser: this.context.currentUser,
+            methodName: "feeds.new",
+            successCallback: () => {
+              Messages.flash("Feed added.", "success");
+            },
+            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Feeds)
           }}
-          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Feeds)}
         />
         <ListContainer
           collection={Feeds}

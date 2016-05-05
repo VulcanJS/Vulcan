@@ -35,7 +35,7 @@ class FeedsItem extends Component {
         <div className="posts-item-content">
           
           <h3 className="posts-item-title">
-            <a className="posts-item-title-link" href={feed.url}>{feed.title ? feed.title : "Feed not fetched yet."}</a>
+            <a className="posts-item-title-link" href={feed.url}>{feed.title ? feed.title : "Feed not fetched yet"}</a>
             {this.renderCategories()}
           </h3>
 

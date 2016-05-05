@@ -24,7 +24,8 @@ Feeds.schema = new SimpleSchema({
       group: 'admin',
       prefill: () => Meteor.userId(),
       options: () => {
-        return Meteor.users.find().map((user) => {
+        // only find admins and owners, even if the feeds modal is opened on a normal user profile page
+        return Meteor.users.find({$or: [{isAdmin: true}, {isOwner: true}]}).map((user) => {
           return {
             value: user._id,
             label: Users.getDisplayName(user)
