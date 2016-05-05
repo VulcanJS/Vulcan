@@ -12,15 +12,28 @@ class UsersMenu extends Component {
     super();
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.state = {modalOpen: false};
+    this.state = {
+      modalOpen: {
+        settings: false,
+        feeds: false
+      }
+    };
   }
 
-  openModal() {
-    this.setState({modalOpen: true});
+  openModal(modal) {
+    return (event) => {
+      const modalOpen = {};
+      modalOpen[modal] = true;
+      this.setState({ modalOpen });
+    };
   }
 
-  closeModal() {
-    this.setState({modalOpen: false});
+  closeModal(modal) {
+    return (event) => {
+      const modalOpen = {};
+      modalOpen[modal] = false;
+      this.setState({ modalOpen });
+    };
   }
 
   renderSettingsModal() {
@@ -28,13 +41,31 @@ class UsersMenu extends Component {
     const SettingsEditForm = Telescope.components.SettingsEditForm;
 
     return (
-      <Modal show={this.state.modalOpen} onHide={this.closeModal}>
+      <Modal show={this.state.modalOpen.settings} onHide={this.closeModal('settings')}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Settings</Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal('settings')}>
             <SettingsEditForm/>
+          </ContextPasser>
+        </Modal.Body>
+      </Modal>
+    )
+  }
+
+  renderFeedsModal() {
+
+    const FeedsEditForm = Telescope.components.FeedsEditForm;
+
+    return (
+      <Modal bsSize='large' show={this.state.modalOpen.feeds} onHide={this.closeModal('feeds')}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Feeds</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal('feeds')}>
+            <FeedsEditForm/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -57,11 +88,13 @@ class UsersMenu extends Component {
           <Dropdown.Menu>
             <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}>Profile</MenuItem>
             <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}>Edit Account</MenuItem>
-            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal}>Settings</MenuItem> : null}
-            <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}>Log Out</MenuItem>
+            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal('settings')}>Settings</MenuItem> : null}
+            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="4" onClick={this.openModal('feeds')}>Imported Feeds</MenuItem> : null}
+            <MenuItem className="dropdown-item" eventKey="5" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}>Log Out</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
         {this.renderSettingsModal()}
+        {this.renderFeedsModal()}
       </div>
     ) 
   }

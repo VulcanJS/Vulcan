@@ -21,6 +21,7 @@ nova:api
 nova:rss
 nova:kadira
 nova:email
+nova:post-by-feed
 
 ############ Customizable Packages ############
 
