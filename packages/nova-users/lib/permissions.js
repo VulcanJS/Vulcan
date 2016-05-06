@@ -126,6 +126,8 @@ Users.can.edit = function (user, document) {
     return false;
   }
 
+  if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
+
   var adminCheck = Users.is.admin(user);
   var ownerCheck = Users.is.owner(user, document);
 

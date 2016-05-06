@@ -42,8 +42,11 @@
     color: $medium-text;
     font-size: $small-font;
   }
-  .comment-edit{
+  .comment-edit, .comment-delete {
     font-size: $small-font;
+  }
+  .comment-delete {
+    margin-left: 8px;
   }
 }
 
