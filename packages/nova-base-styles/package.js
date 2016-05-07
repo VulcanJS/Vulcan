@@ -30,6 +30,7 @@ Package.onUse(function (api) {
     'lib/stylesheets/_cheatsheet.scss',
     'lib/stylesheets/_comments.scss',
     'lib/stylesheets/_header.scss',
+    'lib/stylesheets/_forms.scss',
     'lib/stylesheets/_other.scss',
     'lib/stylesheets/_posts.scss',
     'lib/stylesheets/_newsletter.scss',

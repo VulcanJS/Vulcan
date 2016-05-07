@@ -13,9 +13,9 @@
 @import "header";
 @import "newsletter";
 @import "other";
+@import "forms";
 @import "posts";
 @import "users";
-
 
 .new-post-button{
   margin-bottom: 15px;
@@ -27,7 +27,6 @@ code{
   border: 1px solid #ddd;
   padding: 3px 6px;
 }
-
 
 .avatar{
   height: 24px;
