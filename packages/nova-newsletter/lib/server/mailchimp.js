@@ -99,7 +99,7 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
   var user, email;
 
-  var confirm = (typeof confirm === 'undefined') ? false : confirm; // default to no confirmation
+  confirm = (typeof confirm === 'undefined') ? false : confirm; // default to no confirmation
 
   // not sure if it's really necessary that the function take both user and email?
   if (typeof userOrEmail === "string") {
