@@ -198,8 +198,8 @@ Posts.schema = new SimpleSchema({
     type: String,
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    // insertableIf: Users.is.admin,
+    // editableIf: Users.is.admin,
     control: "select",
     publish: true,
     autoform: {
