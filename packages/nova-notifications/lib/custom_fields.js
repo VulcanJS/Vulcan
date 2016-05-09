@@ -24,29 +24,34 @@ Users.addField([
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin
     }
-  },
-  {
-    fieldName: 'telescope.notifications_comments',
-    fieldSchema: {
-      label: 'Comments on my posts',
-      type: Boolean,
-      optional: true,
-      defaultValue: true,
-      control: "checkbox",
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin
-    }
-  },
-  {
-    fieldName: 'telescope.notifications_replies',
-    fieldSchema: {
-      label: 'Replies to my comments',
-      type: Boolean,
-      optional: true,
-      defaultValue: true,
-      control: "checkbox",
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin
-    }
   }
 ]);
+
+if (typeof Comments !== "undefined") {
+  Users.addField([
+    {
+      fieldName: 'telescope.notifications_comments',
+      fieldSchema: {
+        label: 'Comments on my posts',
+        type: Boolean,
+        optional: true,
+        defaultValue: true,
+        control: "checkbox",
+        insertableIf: Users.is.memberOrAdmin,
+        editableIf: Users.is.ownerOrAdmin
+      }
+    },
+    {
+      fieldName: 'telescope.notifications_replies',
+      fieldSchema: {
+        label: 'Replies to my comments',
+        type: Boolean,
+        optional: true,
+        defaultValue: true,
+        control: "checkbox",
+        insertableIf: Users.is.memberOrAdmin,
+        editableIf: Users.is.ownerOrAdmin
+      }
+    }
+  ]);  
+}
