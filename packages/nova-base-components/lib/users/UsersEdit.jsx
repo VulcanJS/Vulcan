@@ -14,8 +14,8 @@ const UsersEdit = ({document, currentUser}) => {
 
   return (
     <CanEditUser user={currentUser} userToEdit={user}>
-      <div className="users-edit-form">
-        <h3>Edit Account</h3>
+      <div className="page users-edit-form">
+        <h2 className="page-title users-edit-form-title">Edit Account</h2>
         <NovaForm 
           currentUser={currentUser}
           collection={Meteor.users} 
