@@ -16,7 +16,7 @@ Users.addField([
       optional: true,
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
-      control: "checkbox"
+      control: "none"
     }
   }
 ]);
