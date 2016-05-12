@@ -32,6 +32,7 @@ class PostsEditForm extends Component{
     
     return (
       <div className="posts-edit-form">
+        {Users.is.admin(this.context.currentUser) ? <div className="posts-edit-form-id">ID: {this.props.post._id}</div> : null}
         <DocumentContainer 
           collection={Posts} 
           publication="posts.single" 
