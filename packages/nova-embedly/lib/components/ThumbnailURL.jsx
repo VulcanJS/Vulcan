@@ -8,14 +8,19 @@ class ThumbnailURL extends Component {
   constructor(props) {
     super(props);
     this.clearThumbnail = this.clearThumbnail.bind(this);
+    this.showInput = this.showInput.bind(this);
     this.state = {
-      value: props.value
+      showInput: false
     };
   }
 
   clearThumbnail() {
+    this.context.updateCurrentValue("thumbnailUrl", "");
+  }
+
+  showInput() {
     this.setState({
-      value: ""
+      showInput: true
     });
   }
 
@@ -37,12 +42,15 @@ class ThumbnailURL extends Component {
 
     const {name, value, label} = this.props;
 
+    const inputType = this.state.showInput ? "text" : "hidden";
+
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{label}</label>
         <div className="col-sm-9">
-          {this.state.value ? this.renderThumbnail() : null}
-          <Input name={name} type="hidden" readOnly value={this.state.value} />
+          {this.props.value ? this.renderThumbnail() : null}
+          <Input name={name} type={inputType} value={this.props.value} />
+          {!this.state.showInput ? <a className="thumbnail-show-input" onClick={this.showInput}>Enter URL</a> : null}
         </div>
       </div>
     )
@@ -57,6 +65,7 @@ ThumbnailURL.propTypes = {
 
 ThumbnailURL.contextTypes = {
   addToPrefilledValues: React.PropTypes.func,
+  updateCurrentValue: React.PropTypes.func,
   deleteValue: React.PropTypes.func
 }
 
