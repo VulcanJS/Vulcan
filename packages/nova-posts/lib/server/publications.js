@@ -32,12 +32,14 @@ const getSinglePostUsers = post => {
 
   let users = [post.userId]; // publish post author's ID
 
-  // get IDs from all commenters on the post
-  const comments = Comments.find({postId: post._id}).fetch();
-  if (comments.length) {
-    users = users.concat(_.pluck(comments, "userId"));
+  if (typeof Comments !== "undefined") {
+    // get IDs from all commenters on the post
+    const comments = Comments.find({postId: post._id}).fetch();
+    if (comments.length) {
+      users = users.concat(_.pluck(comments, "userId"));
+    }
   }
-
+  
   // add upvoters
   if (post.upvoters && post.upvoters.length) {
     users = users.concat(post.upvoters);

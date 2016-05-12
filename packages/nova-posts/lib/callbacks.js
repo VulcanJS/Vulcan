@@ -295,7 +295,9 @@ Telescope.callbacks.add("posts.edit.method", PostsEditSubmittedPropertiesCheck);
  */
 function PostsEditForceStickyToFalse (modifier, post) {
   if (!modifier.$set.sticky) {
-    delete modifier.$unset.sticky;
+    if (modifier.$unset && modifier.$unset.sticky) {
+      delete modifier.$unset.sticky;
+    }
     modifier.$set.sticky = false;
   }
   return modifier;

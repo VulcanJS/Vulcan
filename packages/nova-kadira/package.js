@@ -2,7 +2,7 @@ Package.describe({
   name: "nova:kadira",
   summary: "Telescope Kadira package",
   version: "0.26.1-nova",
-  git: "https://github.com/TelescopeJS/telescope-kadira.git"
+  git: "https://github.com/TelescopeJS/telescope.git"
 });
 
 Package.onUse(function (api) {
