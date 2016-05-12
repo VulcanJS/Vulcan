@@ -27,7 +27,7 @@ class NovaForm extends Component{
     this.submitForm = this.submitForm.bind(this);
     this.updateState = this.updateState.bind(this);
     this.methodCallback = this.methodCallback.bind(this);
-    this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
+    this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.updateCurrentValue = this.updateCurrentValue.bind(this);
@@ -38,7 +38,7 @@ class NovaForm extends Component{
     this.state = {
       disabled: false,
       errors: [],
-      prefilledValues: {},
+      autofilledValues: {},
       currentValues: {}
     };
   }
@@ -67,9 +67,13 @@ class NovaForm extends Component{
     return relevantFields;
   }
 
-  // look in the document, prefilled values, or inputted values
+  // for each field, we apply the following logic:
+  // - if its value is currently being inputted, use that
+  // - else if its value was provided by the db, use that (i.e. props.document)
+  // - else if its value is provded by the autofilledValues object, use that
   getDocument() {
-    const document = Object.assign(this.props.document || {}, this.state.prefilledValues, this.state.currentValues);
+    const currentDocument = _.clone(this.props.document) || {};
+    const document = Object.assign(_.clone(this.state.autofilledValues), currentDocument,  _.clone(this.state.currentValues));
     return document;
   }
 
@@ -129,18 +133,24 @@ class NovaForm extends Component{
   }
 
   // add something to prefilled values
-  addToPrefilledValues(property) {
+  addToAutofilledValues(property) {
     this.setState({
-      prefilledValues: {...this.state.prefilledValues, ...property}
+      autofilledValues: {...this.state.autofilledValues, ...property}
     });
+  }
+
+  // clear value
+  clearValue(property) {
+
   }
 
   // pass on context to all child components
   getChildContext() {
     return {
       throwError: this.throwError,
-      prefilledValues: this.state.prefilledValues,
-      addToPrefilledValues: this.addToPrefilledValues
+      autofilledValues: this.state.autofilledValues,
+      addToAutofilledValues: this.addToAutofilledValues,
+      updateCurrentValue: this.updateCurrentValue
     };
   }
 
@@ -324,8 +334,9 @@ NovaForm.contextTypes = {
 }
 
 NovaForm.childContextTypes = {
-  prefilledValues: React.PropTypes.object,
-  addToPrefilledValues: React.PropTypes.func,
+  autofilledValues: React.PropTypes.object,
+  addToAutofilledValues: React.PropTypes.func,
+  updateCurrentValue: React.PropTypes.func,
   throwError: React.PropTypes.func
 }
 

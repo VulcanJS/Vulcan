@@ -21,7 +21,7 @@ class FormComponent extends Component {
   }
 
   handleBlur() {
-    this.props.updateCurrentValue(this.props.name, this.input.getValue());
+    this.props.updateCurrentValue(this.props.name, this.formControl.getValue());
   }
 
   renderComponent() {
@@ -29,7 +29,7 @@ class FormComponent extends Component {
     const properties = {
       ...this.props,
       onBlur: this.handleBlur,
-      ref: (ref) => this.input = ref
+      ref: (ref) => this.formControl = ref
     };
 
     // if control is a React component, use it
