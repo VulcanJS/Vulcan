@@ -29,7 +29,7 @@ class EmbedlyURL extends Component {
         this.context.throwError({content: error.message, type: "error"});
       } else {
         console.log(result)
-        this.context.addToPrefilledValues({
+        this.context.addToAutofilledValues({
           title: result.title,
           body: result.description,
           thumbnailUrl: result.thumbnailUrl
@@ -78,7 +78,7 @@ EmbedlyURL.propTypes = {
 }
 
 EmbedlyURL.contextTypes = {
-  addToPrefilledValues: React.PropTypes.func,
+  addToAutofilledValues: React.PropTypes.func,
   throwError: React.PropTypes.func
 }
 
