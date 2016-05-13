@@ -75,7 +75,10 @@ Package.onUse(function (api) {
     'utilities:smart-methods@0.1.4',
 
     'ecmascript@0.4.2',
-    'react-meteor-data@0.2.8'
+    'react-meteor-data@0.2.8',
+
+    // 'simple:reactive-method@1.0.2',
+    'meteorhacks:inject-initial@1.0.4'
   ];
 
   api.use(packages);
