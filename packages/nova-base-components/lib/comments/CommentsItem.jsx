@@ -4,7 +4,7 @@ class CommentsItem extends Component{
 
   constructor() {
     super();
-    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
+    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback', 'deleteComment'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
     this.state = {
       showReply: false,
       showEdit: false
@@ -39,13 +39,23 @@ class CommentsItem extends Component{
     this.setState({showEdit: false});
   }
 
+  deleteComment() {
+    const comment = this.props.comment;
+    if (window.confirm(`Delete comment “${comment.body}”?`)) {
+      Meteor.call('comments.deleteById', comment._id, (error, result) => {
+       Messages.flash(`Comment “${comment.body}” deleted.`, "success");
+       Events.track("comment deleted", {'_id': comment._id});
+      });
+    }
+  }
+
   renderComment() {
     const htmlBody = {__html: this.props.comment.htmlBody};
 
     return (
       <div className="comments-item-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
-        <a className="comments-item-reply-link" onClick={this.showReply}><Icon name="reply"/> Reply</a>
+        {!this.props.comment.isDeleted ? <a className="comments-item-reply-link" onClick={this.showReply}><Icon name="reply"/> Reply</a> : null} 
       </div>  
     )
   }
@@ -94,6 +104,7 @@ class CommentsItem extends Component{
             <UsersName user={comment.user}/>
             <div className="comments-item-date">{moment(comment.postedAt).fromNow()}</div>
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}>Edit</a> : null}
+            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-delete" onClick={this.deleteComment}>Delete</a> : null}
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
