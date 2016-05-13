@@ -69,7 +69,8 @@ class PostsItem extends Component {
             {post.user? <div className="posts-item-user"><UsersAvatar user={post.user} size="small"/><UsersName user={post.user}/></div> : null}
             <div className="posts-item-date">{moment(post.postedAt).fromNow()}</div>
             <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
-            <PostsStats post={post} />
+
+            {(this.context.currentUser && this.context.currentUser.isAdmin) ?<PostsStats post={post} />:null}
             {this.renderActions()}
           </div>
 
