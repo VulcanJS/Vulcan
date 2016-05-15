@@ -127,6 +127,12 @@ These packages are optional, although they might depend on each other. Note that
 | `nova:users` | Users. |
 | `nova:voting` | Voting on posts and comments. |
 
+The following packages are maintained by other developers from the Nova ecosystem. They let you implement the provided feature in your Nova instance as you wish.
+
+| Name | Description |
+| --- | --- |
+| `xavcz:nova-post-by-feed` | Parse RSS feeds and use them to automatically import posts ([repository](https://github.com/xavcz/nova-post-by-feed/)). |
+
 #### Customizable Packages
 
 These are the packages that you might need to customize to tweak your app's layout, design, and behavior. You can either clone these packages and modify them directly, or *extend* their contents (see the [Customizing Components](#customizing-components) section.)
