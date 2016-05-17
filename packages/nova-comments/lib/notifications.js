@@ -1,4 +1,5 @@
-Comments.getNotificationProperties = function (comment) {
+Comments.getNotificationProperties = function (data) {
+  const comment = data.comment;
   var commentAuthor = Meteor.users.findOne(comment.userId);
   var post = Posts.findOne(comment.postId);
   var properties = {
