@@ -1,6 +1,8 @@
 // import Email from 'meteor/nova:email';
 
-Telescope.createNotification = (userIds, notificationName, data) => {
+Telescope.notifications = {}
+
+Telescope.notifications.create = (userIds, notificationName, data) => {
 
   // if userIds is not an array, wrap it in one
   if (!Array.isArray(userIds)) userIds = [userIds];

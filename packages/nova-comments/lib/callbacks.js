@@ -195,7 +195,7 @@ function CommentsNewNotifications (comment) {
       // 1. Notify author of post (if they have new comment notifications turned on)
       //    but do not notify author of post if they're the ones posting the comment
       if (Users.getSetting(postAuthor, "notifications_comments", true) && comment.userId !== postAuthor._id) {
-        Telescope.createNotification(post.userId, 'newComment', notificationData);
+        Telescope.notifications.create(post.userId, 'newComment', notificationData);
         userIdsNotified.push(post.userId);
       }
 
@@ -216,7 +216,7 @@ function CommentsNewNotifications (comment) {
             // add parent comment to notification data
             notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author', 'htmlBody');
 
-            Telescope.createNotification(parentComment.userId, 'newReply', notificationData);
+            Telescope.notifications.create(parentComment.userId, 'newReply', notificationData);
             userIdsNotified.push(parentComment.userId);
           }
         }
@@ -230,7 +230,7 @@ function CommentsNewNotifications (comment) {
         // remove userIds of users that have already been notified
         // and of comment author (they could be replying in a thread they're subscribed to)
         var subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
-        Telescope.createNotification(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
+        Telescope.notifications.create(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
 
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
 

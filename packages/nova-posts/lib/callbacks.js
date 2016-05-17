@@ -248,10 +248,10 @@ function PostsNewNotifications (post) {
 
     if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
       // if post is pending, only notify admins
-      Telescope.createNotification(adminIds, 'newPendingPost', notificationData);
+      Telescope.notifications.create(adminIds, 'newPendingPost', notificationData);
     } else if (!!notifiedUserIds.length) {
       // if post is approved, notify everybody
-      Telescope.createNotification(notifiedUserIds, 'newPost', notificationData);
+      Telescope.notifications.create(notifiedUserIds, 'newPost', notificationData);
     }
   }
 }
@@ -338,7 +338,7 @@ function PostsApprovedNotification (post) {
       post: _.pick(post, '_id', 'userId', 'title', 'url')
     };
 
-    Telescope.createNotification(post.userId, 'postApproved', notificationData);
+    Telescope.notifications.create(post.userId, 'postApproved', notificationData);
   }
 }
 Telescope.callbacks.add("posts.approve.async", PostsApprovedNotification);
