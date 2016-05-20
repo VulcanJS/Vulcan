@@ -1,3 +1,4 @@
+import Avatar from 'meteor-avatar-core';
 // import Email from 'meteor/nova:email';
 
 // create new "campaign" view for all posts from the past X days that haven't been scheduled yet

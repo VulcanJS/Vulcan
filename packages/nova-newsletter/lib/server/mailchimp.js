@@ -1,3 +1,4 @@
+import htmlToText from 'html-to-text';
 // import Email from 'meteor/nova:email';
 import Campaign from "./campaign.js";
 
@@ -13,8 +14,6 @@ Campaign.scheduleNextWithMailChimp = function (isTest) {
     return result;
   }
 };
-
-var htmlToText = Npm.require('html-to-text');
 
 Campaign.scheduleWithMailChimp = function (campaign, isTest) {
   isTest = typeof isTest === 'undefined' ? false : isTest;

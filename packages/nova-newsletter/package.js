@@ -5,10 +5,6 @@ Package.describe({
   git: "https://github.com/TelescopeJS/telescope-newsletter.git"
 });
 
-Npm.depends({
-  "html-to-text": "1.3.1"
-});
-
 Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
@@ -18,8 +14,7 @@ Package.onUse(function (api) {
     'nova:posts@0.26.1-nova',
     'nova:comments@0.26.1-nova',
     'nova:users@0.26.1-nova',
-    'nova:email@0.26.1-nova',
-    'miro:mailchimp@1.1.0',
+    'nova:email@0.26.1-nova'
   ]);
 
   api.addFiles([
@@ -33,7 +28,8 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/server/cron.js',
     'lib/server/emails.js',
-    'lib/server/methods.js'
+    'lib/server/methods.js',
+    'lib/server/mailchimp_api.js'
   ], ['server']);
 
   api.mainModule('lib/server.js', 'server');

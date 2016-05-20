@@ -1,10 +1,12 @@
+import Juice from 'juice';
+import htmlToText from 'html-to-text';
+import Handlebars from 'handlebars';
+
 Telescope.email.templates = {};
 
 Telescope.email.addTemplates = function (templates) {
   _.extend(Telescope.email.templates, templates);
 };
-
-var htmlToText = Npm.require('html-to-text');
 
 // for template "foo", check if "custom_foo" exists. If it does, use it instead
 Telescope.email.getTemplate = function (templateName) {
@@ -24,9 +26,7 @@ Telescope.email.getTemplate = function (templateName) {
   // console.log(templateName)
   // console.log(Telescope.email.templates[template])
 
-  return function (properties) {
-    return Spacebars.toHTML(properties, Telescope.email.templates[template]);
-  }
+  return Handlebars.compile(Telescope.email.templates[template]);
 
 };
 
@@ -49,7 +49,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
 
   var emailHTML = Telescope.email.getTemplate("wrapper")(emailProperties);
 
-  var inlinedHTML = juice(emailHTML);
+  var inlinedHTML = Juice(emailHTML);
 
   var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
 

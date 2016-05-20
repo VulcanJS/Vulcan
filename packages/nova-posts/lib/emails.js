@@ -1,5 +1,5 @@
 const getPost = (postId) => {
-  return typeof Posts.findOne(postId) === "undefined" ? Posts.findOne() : Posts.findOne(postId);
+  return typeof Posts.findOne(postId) === "undefined" ? {post: Posts.findOne()} : {post: Posts.findOne(postId)};
 };
 
 Telescope.email.addEmails({

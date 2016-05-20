@@ -1,5 +1,5 @@
 const getComment = (commentId) => {
-  return typeof Comments.findOne(commentId) === "undefined" ? Comments.findOne() : Comments.findOne(commentId);
+  return typeof Comments.findOne(commentId) === "undefined" ? {comment: Comments.findOne()} : {comment: Comments.findOne(commentId)};
 };
 
 Telescope.email.addEmails({

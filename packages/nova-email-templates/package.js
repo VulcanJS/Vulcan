@@ -13,9 +13,7 @@ Package.onUse(function (api) {
     'nova:core@0.26.1-nova',
     'nova:posts@0.26.1-nova',
     'nova:users@0.26.1-nova',
-    'nova:comments@0.26.1-nova',
-
-    'dburles:spacebars-tohtml@1.0.1'
+    'nova:comments@0.26.1-nova'
   ]);
 
   api.addFiles([
