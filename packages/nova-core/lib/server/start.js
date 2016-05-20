@@ -1,3 +1,5 @@
+import {Inject} from 'meteor/meteorhacks:inject-initial';
+
 Meteor.startup(function () {
   Events.log({
     name: "firstRun",

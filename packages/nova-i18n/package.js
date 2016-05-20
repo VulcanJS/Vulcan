@@ -14,7 +14,7 @@ Package.onUse(function (api) {
     // 'tap:i18n@1.8.0'
   ]);
 
-  api.use(["session"], "client");
+  // api.use(["session"], "client");
 
   api.addFiles(['i18n.js'], ['client', 'server']);
 
