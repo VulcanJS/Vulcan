@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Avatar from 'meteor-avatar-core';
 
 const UsersAvatar = ({user, size, link}) => {
 

@@ -1,3 +1,5 @@
+import Avatar from 'meteor-avatar-core';
+
 // import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 // checkNpmVersions({
 //   "formsy-react": "^0.18.0",
