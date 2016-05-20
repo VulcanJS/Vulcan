@@ -237,7 +237,7 @@ function PostsNewNotifications (post) {
   if (typeof Telescope.notifications !== "undefined") {
 
     var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-    var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
+    var notifiedUserIds = _.pluck(Users.find({'telescope.notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
     var notificationData = {
       post: _.pick(post, '_id', 'userId', 'title', 'url')
     };
