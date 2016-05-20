@@ -288,3 +288,9 @@
   @include flex-center;
   justify-content: space-between;
 }
+
+.posts-edit-form-admin{
+  @include flex-center;
+  justify-content: space-between;
+  margin-bottom: $vmargin * 2;
+}
