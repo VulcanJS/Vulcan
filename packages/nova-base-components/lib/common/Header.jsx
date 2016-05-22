@@ -1,8 +1,6 @@
 import React from 'react';
 import NoSSR from 'react-no-ssr';
-import Core from "meteor/nova:core";
-
-const Messages = Core.Messages;
+import { Messages } from "meteor/nova:core";
 
 import SmartContainers from "meteor/utilities:react-list-container";
 const ListContainer = SmartContainers.ListContainer;

@@ -3,8 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/std:accounts-ui';
 import Router from '../router.js';
 import { Modal, Dropdown, MenuItem } from 'react-bootstrap';
-import Core from "meteor/nova:core";
-const ContextPasser = Core.ContextPasser;
+import { ContextPasser } from "meteor/nova:core";
 
 class UsersMenu extends Component {
 

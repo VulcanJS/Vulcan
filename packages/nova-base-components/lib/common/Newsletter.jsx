@@ -5,8 +5,7 @@ import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
 import Cookie from 'js-cookie';
 
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { Messages } from "meteor/nova:core";
 
 const Input = FRC.Input;
 

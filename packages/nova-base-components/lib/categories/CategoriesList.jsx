@@ -1,9 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
 import Router from "../router.js"
-import Core from "meteor/nova:core";
-const ModalTrigger = Core.ModalTrigger;
-const ContextPasser = Core.ContextPasser;
+import { ModalTrigger, ContextPasser } from "meteor/nova:core";
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 

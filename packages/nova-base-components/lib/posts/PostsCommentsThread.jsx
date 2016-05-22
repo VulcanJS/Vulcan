@@ -2,8 +2,7 @@ import React from 'react';
 import SmartContainers from "meteor/utilities:react-list-container";
 const ListContainer = SmartContainers.ListContainer;
 
-import Core from "meteor/nova:core";
-const ModalTrigger = Core.ModalTrigger;
+import { ModalTrigger } from "meteor/nova:core";
 
 const PostsCommentsThread = ({document, currentUser}) => {
   

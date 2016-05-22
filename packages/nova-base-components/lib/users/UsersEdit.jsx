@@ -2,8 +2,7 @@ import React, { PropTypes, Component } from 'react';
 
 import NovaForm from "meteor/nova:forms";
 
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { Messages } from "meteor/nova:core";
 
 const UsersEdit = ({document, currentUser}) => {
 

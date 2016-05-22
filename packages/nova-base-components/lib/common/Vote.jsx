@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js";
-import Core from "meteor/nova:core";
+import { Messages } from "meteor/nova:core";
 import classNames from 'classnames';
-const Messages = Core.Messages;
 
 class Vote extends Component {
 

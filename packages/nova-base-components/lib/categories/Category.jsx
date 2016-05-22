@@ -3,9 +3,7 @@ import Actions from "../actions.js"
 import Router from "../router.js"
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
-const ModalTrigger = Core.ModalTrigger;
+import { Messages, ModalTrigger } from "meteor/nova:core";
 
 class Category extends Component {
 

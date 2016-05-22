@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-import Core from "meteor/nova:core";
-const AppComposer = Core.AppComposer;
+import { AppComposer } from "meteor/nova:core";
 
 class App extends Component {
 

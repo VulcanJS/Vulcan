@@ -15,7 +15,6 @@
     "juice": "^1.11.0",
     "load-script": "^1.0.0",
     "mailchimp": "^1.1.6",
-    "meteor-avatar-core": "0.0.1",
     "moment": "^2.13.0",
     "react": "^15.0.1",
     "react-addons-pure-render-mixin": "^15.0.0",

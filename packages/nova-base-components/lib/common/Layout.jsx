@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-import Core from "meteor/nova:core";
-const FlashContainer = Core.FlashContainer;
+import { FlashContainer } from "meteor/nova:core";
 
 class Layout extends Component {
 

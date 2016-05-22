@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 
-import Core from "meteor/nova:core";
-const ModalTrigger = Core.ModalTrigger;
+import { ModalTrigger } from "meteor/nova:core";
 
 class PostsItem extends Component {
 

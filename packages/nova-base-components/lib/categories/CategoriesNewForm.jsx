@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Router from '../router.js'
 
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { Messages } from "meteor/nova:core";
 
 import NovaForm from "meteor/nova:forms";
 

@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { Messages } from "meteor/nova:core";
 
 const Loading = Telescope.components.Loading;
 
