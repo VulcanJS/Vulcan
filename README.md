@@ -297,7 +297,7 @@ Posts.removeField('scheduledAt');
 
 ## Publishing Data
 
-In order to make data available to the cient, you need to **publish** it. Out of the box, Nova includes the following publications:
+In order to make data available to the client, you need to **publish** it. Out of the box, Nova includes the following publications:
 
 - `posts.list`: a list of posts
 - `posts.single`: a single post (includes more data)
