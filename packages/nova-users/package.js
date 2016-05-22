@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nova:users',
   summary: 'Telescope permissions.',
-  version: '0.26.1-nova',
+  version: '0.26.2-nova',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,11 +10,11 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@0.26.1-nova'
+    'nova:core@0.26.2-nova'
   ]);
 
   api.use([
-    'nova:email@0.26.1-nova'
+    'nova:email@0.26.2-nova'
   ], ['client', 'server'], {weak: true});
   
   api.addFiles([

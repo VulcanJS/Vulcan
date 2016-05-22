@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:comments",
   summary: "Telescope comments package",
-  version: "0.26.1-nova",
+  version: "0.26.2-nova",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,16 +10,16 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:lib@0.26.1-nova',
-    // 'nova:i18n@0.26.1-nova',
-    'nova:settings@0.26.1-nova',
-    'nova:posts@0.26.1-nova',
-    'nova:users@0.26.1-nova'
+    'nova:lib@0.26.2-nova',
+    // 'nova:i18n@0.26.2-nova',
+    'nova:settings@0.26.2-nova',
+    'nova:posts@0.26.2-nova',
+    'nova:users@0.26.2-nova'
   ]);
 
   api.use([
-    'nova:notifications@0.26.1-nova',
-    'nova:email@0.26.1-nova'
+    'nova:notifications@0.26.2-nova',
+    'nova:email@0.26.2-nova'
   ], ['client', 'server'], {weak: true});
 
   api.addFiles([
