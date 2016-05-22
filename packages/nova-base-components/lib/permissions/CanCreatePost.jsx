@@ -9,7 +9,7 @@ const CanCreatePost = (props, context) => {
 
   if (!currentUser){
     return (
-      <div>
+      <div className="log-in-message">
         <h3>Please Log In</h3>
         <UsersAccountForm/>
       </div>

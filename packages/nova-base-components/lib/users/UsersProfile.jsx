@@ -12,7 +12,7 @@ const UsersProfile = ({user, currentUser}) => {
   return (
     <div className="page users-profile">
       <Telescope.components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.telescope.bio} />
-      <h2>{Users.getDisplayName(user)}</h2>
+      <h2 className="page-title">{Users.getDisplayName(user)}</h2>
       <p>{user.telescope.bio}</p>
       <ul>
         {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }

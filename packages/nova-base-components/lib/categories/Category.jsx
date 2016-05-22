@@ -10,7 +10,7 @@ class Category extends Component {
   renderEdit() {
     return <a onClick={this.props.openModal} className="edit-category-link"><Telescope.components.Icon name="edit"/></a>;
     // return (
-    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Icon name="edit"/></a>}>
+    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Telescope.components.Icon name="edit"/></a>}>
     //     <Telescope.componentsCategoriesEditForm category={this.props.category}/>
     //   </ModalTrigger>
     // )

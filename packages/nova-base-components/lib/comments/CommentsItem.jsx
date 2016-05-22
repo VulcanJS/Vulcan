@@ -55,7 +55,7 @@ class CommentsItem extends Component{
     return (
       <div className="comments-item-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
-        {!this.props.comment.isDeleted ? <a className="comments-item-reply-link" onClick={this.showReply}><Icon name="reply"/> Reply</a> : null} 
+        {!this.props.comment.isDeleted ? <a className="comments-item-reply-link" onClick={this.showReply}><Telescope.components.Icon name="reply"/> Reply</a> : null} 
       </div>  
     )
   }
