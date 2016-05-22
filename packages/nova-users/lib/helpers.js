@@ -160,7 +160,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
 
   if (user && user.telescope) {
     var settingValue = Users.getProperty(user, settingName);
-    return _.isEmpty(settingValue) ? defaultValue : settingValue;
+    return typeof settingValue === 'undefined' ? defaultValue : settingValue;
   } else {
     return defaultValue;
   }
