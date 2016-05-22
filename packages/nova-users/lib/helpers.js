@@ -233,7 +233,7 @@ Users.getProperty = function (object, property) {
   if(array.length > 1){
     var parent = array.shift();
     // if our property is not at this level, call function again one level deeper if we can go deeper, else return null
-    return (typeof object[parent] === "undefined") ? null : this.getProperty(object[parent], array.join('.'));
+    return (typeof object[parent] === "undefined") ? undefined : this.getProperty(object[parent], array.join('.'));
   }else{
     // else return property
     return object[array[0]];
