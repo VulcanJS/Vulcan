@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Avatar from 'meteor-avatar-core';
+// import Avatar from 'meteor-avatar-core';
+import { Avatar } from 'meteor/nova:core';
+
+console.log(Avatar)
 
 const UsersAvatar = ({user, size, link}) => {
 
