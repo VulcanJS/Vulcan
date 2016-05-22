@@ -46,5 +46,7 @@ UsersAvatar.defaultProps = {
   link: true
 }
 
+UsersAvatar.displayName = "UsersAvatar";
+
 module.exports = UsersAvatar;
 export default UsersAvatar;

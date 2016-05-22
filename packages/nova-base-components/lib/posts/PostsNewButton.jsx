@@ -8,10 +8,12 @@ const PostsNewButton = (props, context) => {
 
   return (
     <ModalTrigger title="New Post" component={<Button className="posts-new-button" bsStyle="primary">New Post</Button>}>
-      <PostsNewForm/>
+      <Telescope.components.PostsNewForm/>
     </ModalTrigger>
   )
 }
+
+PostsNewButton.displayName = "PostsNewButton";
 
 module.exports = PostsNewButton;
 export default PostsNewButton;

@@ -15,4 +15,6 @@ CanEditUser.propTypes = {
   userToEdit: React.PropTypes.object
 }
 
+CanEditUser.displayName = "CanEditUser";
+
 module.exports = CanEditUser;

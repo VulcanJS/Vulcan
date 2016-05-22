@@ -4,11 +4,11 @@ const PostsCommenters = ({post}) => {
   return (
     <div className="posts-commenters">
       <div className="posts-commenters-avatars">
-        {post.commentersArray.map(user => <UsersAvatar key={user._id} user={user}/>)}
+        {post.commentersArray.map(user => <Telescope.components.UsersAvatar key={user._id} user={user}/>)}
       </div>
       <div className="posts-commenters-discuss">
         <a href={Posts.getPageUrl(post)}>
-          <Icon name="comment" />
+          <Telescope.components.Icon name="comment" />
           <span className="posts-commenters-comments-count">{post.commentCount}</span>
           <span className="sr-only">Comments</span>
         </a>
@@ -16,6 +16,8 @@ const PostsCommenters = ({post}) => {
     </div>
   )
 }
+
+PostsCommenters.displayName = "PostsCommenters";
 
 module.exports = PostsCommenters;
 export default PostsCommenters;

@@ -8,5 +8,7 @@ const Icon = ({ name, iconClass }) => {
   return <i className={c} aria-hidden="true"></i>;
 }
 
+Icon.displayName = "Icon";
+
 module.exports = Icon;
 export default Icon;

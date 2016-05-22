@@ -25,4 +25,6 @@ CanCreatePost.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
+CanCreatePost.displayName = "CanCreatePost";
+
 module.exports = CanCreatePost;

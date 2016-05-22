@@ -4,8 +4,6 @@ const ListContainer = SmartContainers.ListContainer;
 
 const UsersProfile = ({user, currentUser}) => {
 
-  ({HeadTags, PostsList} = Telescope.components);
-
   const twitterName = Users.getTwitterName(user);
 
   const terms = {view:"userPosts", userId: user._id};
@@ -13,7 +11,7 @@ const UsersProfile = ({user, currentUser}) => {
 
   return (
     <div className="page users-profile">
-      <HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.telescope.bio} />
+      <Telescope.components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.telescope.bio} />
       <h2>{Users.getDisplayName(user)}</h2>
       <p>{user.telescope.bio}</p>
       <ul>
@@ -29,7 +27,7 @@ const UsersProfile = ({user, currentUser}) => {
         options={options}
         joins={Posts.getJoins()}
         cacheSubscription={false}
-        component={PostsList}
+        component={Telescope.components.PostsList}
         componentProps={{showHeader: false}}
       />
     </div>
@@ -40,5 +38,7 @@ UsersProfile.propTypes = {
   user: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object
 }
+
+UsersProfile.displayName = "UsersProfile";
 
 module.exports = UsersProfile;

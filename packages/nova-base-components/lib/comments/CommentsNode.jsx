@@ -4,10 +4,8 @@ class CommentsNode extends Component {
 
   renderComment(comment) {
     
-    ({CommentsItem} = Telescope.components);
-
     return (
-      <CommentsItem comment={comment} key={comment._id} currentUser={this.props.currentUser}/>
+      <Telescope.components.CommentsItem comment={comment} key={comment._id} currentUser={this.props.currentUser}/>
     )
   }
 

@@ -61,12 +61,10 @@ class CommentsItem extends Component{
   }
 
   renderReply() {
-    
-    ({CommentsNew} = Telescope.components);
 
     return (
       <div className="comments-item-reply">
-        <CommentsNew 
+        <Telescope.components.CommentsNew 
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
           successCallback={this.replySuccessCallback} 
@@ -79,10 +77,8 @@ class CommentsItem extends Component{
 
   renderEdit() {
 
-    ({CommentsEdit}  = Telescope.components);
-    
     return (
-      <CommentsEdit 
+      <Telescope.components.CommentsEdit 
         comment={this.props.comment} 
         successCallback={this.editSuccessCallback} 
         cancelCallback={this.editCancelCallback}
@@ -91,8 +87,6 @@ class CommentsItem extends Component{
   }
 
   render() {
-    
-    ({UsersAvatar}  = Telescope.components);
 
     const comment = this.props.comment;
 
@@ -100,8 +94,8 @@ class CommentsItem extends Component{
       <div className="comments-item" id={comment._id}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
-            <UsersAvatar size="small" user={comment.user}/>
-            <UsersName user={comment.user}/>
+            <Telescope.components.UsersAvatar size="small" user={comment.user}/>
+            <Telescope.components.UsersName user={comment.user}/>
             <div className="comments-item-date">{moment(comment.postedAt).fromNow()}</div>
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}>Edit</a> : null}
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-delete" onClick={this.deleteComment}>Delete</a> : null}

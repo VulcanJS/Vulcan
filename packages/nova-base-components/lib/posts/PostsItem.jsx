@@ -6,26 +6,18 @@ import { ModalTrigger } from "meteor/nova:core";
 class PostsItem extends Component {
 
   renderCategories() {
-
-    ({PostsCategories} = Telescope.components);
-
-    return this.props.post.categoriesArray ? <PostsCategories post={this.props.post} /> : "";
+    return this.props.post.categoriesArray ? <Telescope.components.PostsCategories post={this.props.post} /> : "";
   }
 
   renderCommenters() {
-
-    ({PostsCommenters} = Telescope.components);
-
-    return this.props.post.commentersArray ? <PostsCommenters post={this.props.post}/> : "";
+    return this.props.post.commentersArray ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
 
-    ({PostsEditForm} = Telescope.components);
-
     const component = (
       <ModalTrigger title="Edit Post" component={<a className="posts-action-edit">Edit</a>}>
-        <PostsEditForm post={this.props.post}/>
+        <Telescope.components.PostsEditForm post={this.props.post}/>
       </ModalTrigger>
     );
 
@@ -37,8 +29,6 @@ class PostsItem extends Component {
   }
   
   render() {
-
-    ({UsersAvatar, UsersName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
 
     const post = this.props.post;
 
@@ -52,10 +42,10 @@ class PostsItem extends Component {
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Vote post={post} currentUser={this.context.currentUser}/>
+          <Telescope.components.Vote post={post} currentUser={this.context.currentUser}/>
         </div>
         
-        {post.thumbnailUrl ? <PostsThumbnail post={post}/> : null}
+        {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}
 
         <div className="posts-item-content">
           
@@ -65,11 +55,11 @@ class PostsItem extends Component {
           </h3>
           
           <div className="posts-item-meta">
-            {post.user? <div className="posts-item-user"><UsersAvatar user={post.user} size="small"/><UsersName user={post.user}/></div> : null}
+            {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date">{moment(post.postedAt).fromNow()}</div>
             <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
 
-            {(this.context.currentUser && this.context.currentUser.isAdmin) ?<PostsStats post={post} />:null}
+            {(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
             {this.renderActions()}
           </div>
 

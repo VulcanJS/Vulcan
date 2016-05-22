@@ -18,5 +18,7 @@ Loading.defaultPropTypes = {
   color: "black"
 }
 
+Loading.displayName = "Loading";
+
 module.exports = Loading;
 export default Loading;

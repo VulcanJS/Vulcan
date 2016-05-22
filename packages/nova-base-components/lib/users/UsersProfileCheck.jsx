@@ -46,5 +46,7 @@ UsersProfileCheck.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
+UsersProfileCheck.displayName = "UsersProfileCheck";
+
 module.exports = UsersProfileCheck;
 export default UsersProfileCheck;

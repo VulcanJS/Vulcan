@@ -14,4 +14,6 @@ CanView.propTypes = {
   user: React.PropTypes.object
 }
 
+CanView.displayName = "CanView";
+
 module.exports = CanView;

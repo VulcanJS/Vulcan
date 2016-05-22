@@ -49,4 +49,6 @@ PostsViews.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
+PostsViews.displayName = "PostsViews";
+
 module.exports = PostsViews;

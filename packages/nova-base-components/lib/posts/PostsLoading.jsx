@@ -5,4 +5,6 @@ const PostsLoading = props => {
   return <div className="posts-load-more-loading"><Loading/></div>
 }
 
+PostsLoading.displayName = "PostsLoading";
+
 module.exports = PostsLoading;
