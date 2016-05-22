@@ -227,7 +227,7 @@ var Avatar = {
       gravatarDefault = '404';
     }
 
-    var email = this.getUserEmail(user);
+    var emailOrHash = this.getUserEmail(user) || Users.getEmailHash(user);
     var secure = true;
     var options = {
       // NOTE: Gravatar's default option requires a publicly accessible URL,
@@ -238,7 +238,7 @@ var Avatar = {
       default: gravatarDefault,
       secure: true
     };
-    return email ? Gravatar.imageUrl(email, options) : null;
+    return emailOrHash ? Gravatar.imageUrl(emailOrHash, options) : null;
 
   },
 
