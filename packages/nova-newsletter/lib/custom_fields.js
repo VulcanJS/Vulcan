@@ -19,17 +19,6 @@ Users.addField([
       control: "none"
     }
   },
-  {
-    fieldName: 'telescope.newsletter_showBanner',
-    fieldSchema: {
-      type: Boolean,
-      optional: true,
-      publish: true,
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin,
-      control: "none"
-    }
-  }
 ]);
 
 // Settings
