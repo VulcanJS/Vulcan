@@ -1,4 +1,5 @@
-import Avatar from 'meteor-avatar-core';
+// import Avatar from 'meteor-avatar-core';
+import { Avatar } from 'meteor/nova:core';
 // import Email from 'meteor/nova:email';
 
 // create new "campaign" view for all posts from the past X days that haven't been scheduled yet
@@ -11,7 +12,7 @@ Posts.views.add("campaign", function (terms) {
       }
     },
     options: {
-      sort: {baseScore: -1}, 
+      sort: {baseScore: -1},
       limit: terms.limit
     }
   };
@@ -86,7 +87,7 @@ Campaign.build = function (postsArray) {
 
       // get the two highest-scoring comments
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
-        
+
         // get comment author
         var user = Meteor.users.findOne(comment.userId);
 
@@ -100,7 +101,7 @@ Campaign.build = function (postsArray) {
         } catch (error) {
           comment.authorAvatarUrl = false;
         }
-        
+
         return comment;
 
       }}).fetch();
