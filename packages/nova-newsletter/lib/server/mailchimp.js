@@ -146,4 +146,45 @@ MailChimpList.add = function(userOrEmail, confirm, done){
   }
 };
 
+MailChimpList.remove = (user) => {
+  const apiKey = Telescope.settings.get('mailChimpAPIKey');
+  const listId = Telescope.settings.get('mailChimpListId');
+
+  const email = Users.getEmail(user);
+  if (!email) {
+    throw 'User must have an email address';
+  }
+
+  // remove a user to a MailChimp list.
+  // called from the user's account
+  if(!!apiKey && !!listId){
+
+    try {
+
+      console.log('// Removing "'+email+'" to MailChimp list…');
+
+      var api = new MailChimp(apiKey);
+      var subscribeOptions = {
+        id: listId,
+        email: {"email": email},
+      };
+
+      // subscribe user
+      var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
+
+      // mark user as subscribed
+      Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+
+      console.log("// User unsubscribed");
+
+      return subscribe;
+
+    } catch (error) {
+      throw new Meteor.Error("unsubscription-failed", error.message);
+    }
+  } else {
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
+  }
+};
+
 export default MailChimpList;

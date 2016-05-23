@@ -18,6 +18,14 @@ Meteor.methods({
       throw new Meteor.Error(500, error.message);
     }
   },
+  removeCurrentUserFromMailChimpList() {
+    var currentUser = Meteor.users.findOne(this.userId);
+    try {
+      return MailChimpList.remove(currentUser);
+    } catch (error) {
+      throw new Meteor.Error(500, error.message);
+    }
+  },
   addEmailToMailChimpList: function (email) {
     try {
       return MailChimpList.add(email, true);
