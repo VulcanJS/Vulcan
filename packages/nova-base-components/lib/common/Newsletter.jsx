@@ -13,7 +13,7 @@ class Newsletter extends Component {
   constructor(props, context) {
     super(props);
     this.subscribeEmail = this.subscribeEmail.bind(this);
-    this.callbackSubscription = this.callbackSubscription.bind(this);
+    this.successCallbackSubscription = this.successCallbackSubscription.bind(this);
     this.dismissBanner = this.dismissBanner.bind(this);
 
     const showBanner =
@@ -26,17 +26,19 @@ class Newsletter extends Component {
   }
 
   subscribeEmail(data) {
-    Actions.call("addEmailToMailChimpList", data.email, (error, result) => this.callbackSubscription(error, result));
+    Actions.call("addEmailToMailChimpList", data.email, (error, result) => {
+      if (error) {
+        console.log(error);
+        Messages.flash(error.message, "error");
+      } else {
+        this.successCallbackSubscription(result);
+      }
+    });
   }
 
-  callbackSubscription(error, result) {
-    if (error) {
-      console.log(error);
-      Messages.flash(error.message, "error");
-    } else {
-      Messages.flash(this.props.successMessage, "success");
-      this.dismissBanner();
-    }
+  successCallbackSubscription(result) {
+    Messages.flash(this.props.successMessage, "success");
+    this.dismissBanner();
   }
 
   dismissBanner(e) {
