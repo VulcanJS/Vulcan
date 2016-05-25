@@ -23,16 +23,21 @@ const UsersEdit = ({document, currentUser}) => {
             Messages.flash("User updated.", "success");
           }}
         />
+        <Telescope.components.NewsletterButton
+          callback={() => Messages.flash("Newsletter subscription updated", "success")}
+          buttonText="Subscribe"
+          user={currentUser}
+        />
       </div>
     </Telescope.components.CanEditUser>
   )
-}
+};
 
   
 UsersEdit.propTypes = {
   document: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object.isRequired
-}
+};
 
 UsersEdit.displayName = "UsersEdit";
 

@@ -169,11 +169,11 @@ MailChimpList.remove = (user) => {
         email: {"email": email},
       };
 
-      // subscribe user
+      // unsubscribe user
       var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
 
-      // mark user as subscribed
-      Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+      // mark user as unsubscribed
+      Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
 
       console.log("// User unsubscribed");
 
