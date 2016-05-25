@@ -167,6 +167,7 @@ MailChimpList.remove = (user) => {
       var subscribeOptions = {
         id: listId,
         email: {"email": email},
+        delete_member: true // delete the member from the list to make it possible for him to *resubscribe* via API (mailchimp's spam prevention policy)
       };
 
       // unsubscribe user

@@ -80,7 +80,7 @@ class Newsletter extends Component {
           {this.context.currentUser
             ? <Telescope.components.NewsletterButton
                 successCallback={() => this.successCallbackSubscription}
-                buttonText={this.props.buttonText}
+                subscribeText={this.props.buttonText}
                 user={currentUser}
               />
             : this.renderForm()

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Row, Col } from 'react-bootstrap';
 
 import NovaForm from "meteor/nova:forms";
 
@@ -23,11 +24,17 @@ const UsersEdit = ({document, currentUser}) => {
             Messages.flash("User updated.", "success");
           }}
         />
-        <Telescope.components.NewsletterButton
-          successCallback={(result) => Messages.flash("Newsletter subscription updated", "success")}
-          buttonText="Subscribe"
-          user={currentUser}
-        />
+        <Row className="users-newsletter-settings">
+          <Col sm={3}>
+            Newsletter Settings
+          </Col>
+          <Col sm={9}>
+            <Telescope.components.NewsletterButton
+              successCallback={(result) => Messages.flash("Newsletter subscription updated", "success")}
+              user={user}
+            />
+          </Col>
+        </Row>
       </div>
     </Telescope.components.CanEditUser>
   )

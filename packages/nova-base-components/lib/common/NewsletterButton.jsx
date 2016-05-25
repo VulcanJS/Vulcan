@@ -36,7 +36,7 @@ class NewsletterButton extends Component {
         onClick={this.subscriptionAction(isSubscribed ? "removeUserFromMailChimpList" : "addUserToMailChimpList")}
         bsStyle="primary"
       >
-        {isSubscribed ? "Unsubscribe" : this.props.buttonText}
+        {isSubscribed ? this.props.unsubscribeText : this.props.subscribeText}
       </Button>
     )
   }
@@ -45,7 +45,13 @@ class NewsletterButton extends Component {
 NewsletterButton.propTypes = {
   user: React.PropTypes.object.isRequired,
   successCallback: React.PropTypes.func.isRequired,
-  buttonText: React.PropTypes.string
+  subscribeText: React.PropTypes.string,
+  unsubscribeText: React.PropTypes.string
+};
+
+NewsletterButton.defaultProps = {
+  subscribeText: "Subscribe",
+  unsubscribeText: "Unsubscribe"
 };
 
 module.exports = NewsletterButton;
