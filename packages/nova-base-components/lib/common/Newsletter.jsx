@@ -79,7 +79,7 @@ class Newsletter extends Component {
           <h4 className="newsletter-tagline">{this.props.headerText}</h4>
           {this.context.currentUser
             ? <Telescope.components.NewsletterButton
-                callback={() => this.props.callbackSubscription}
+                successCallback={() => this.successCallbackSubscription}
                 buttonText={this.props.buttonText}
                 user={currentUser}
               />

@@ -24,7 +24,7 @@ const UsersEdit = ({document, currentUser}) => {
           }}
         />
         <Telescope.components.NewsletterButton
-          callback={() => Messages.flash("Newsletter subscription updated", "success")}
+          successCallback={(result) => Messages.flash("Newsletter subscription updated", "success")}
           buttonText="Subscribe"
           user={currentUser}
         />
