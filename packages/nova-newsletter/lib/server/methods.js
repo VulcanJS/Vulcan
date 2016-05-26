@@ -33,12 +33,10 @@ Meteor.methods({
     }
   },
   'newsletter.addEmail'(email) {
-    if(Users.is.adminById(this.userId)) {
-      try {
-        return MailChimpList.add(email, true);
-      } catch (error) {
-        throw new Meteor.Error(500, error.message);
-      }
+    try {
+      return MailChimpList.add(email, true);
+    } catch (error) {
+      throw new Meteor.Error(500, error.message);
     }
   }
 });
