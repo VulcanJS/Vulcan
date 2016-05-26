@@ -9,22 +9,19 @@ class NewsletterButton extends Component {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
   }
+  
+  subscriptionAction() {
+    const action = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false) ? 
+      'newsletter.removeUser' : 'newsletter.addUser';
 
-  /**
-   * @summary subscribe or unsubcribe
-   * @params action: string, name of the method for subscribing or unsubscribing user
-   */
-  subscriptionAction(action) {
-    return () => {
-      Actions.call(action, this.props.user, (error, result) => {
-        if (error) {
-          console.log(error);
-          Messages.flash(error.message, "error");
-        } else {
-          this.props.successCallback(result);
-        }
-      });
-    };
+    Actions.call(action, this.props.user, (error, result) => {
+      if (error) {
+        console.log(error);
+        Messages.flash(error.message, "error");
+      } else {
+        this.props.successCallback(result);
+      }
+    });
   }
 
   render() {
@@ -33,7 +30,7 @@ class NewsletterButton extends Component {
     return (
       <Button
         className="newsletter-button"
-        onClick={this.subscriptionAction(isSubscribed ? "removeUserFromMailChimpList" : "addUserToMailChimpList")}
+        onClick={this.subscriptionAction}
         bsStyle="primary"
       >
         {isSubscribed ? this.props.unsubscribeText : this.props.subscribeText}

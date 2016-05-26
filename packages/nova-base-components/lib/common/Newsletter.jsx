@@ -36,7 +36,7 @@ class Newsletter extends Component {
   }
 
   subscribeEmail(data) {
-    Actions.call("addEmailToMailChimpList", data.email, (error, result) => {
+    Actions.call("newsletter.addEmail", data.email, (error, result) => {
       if (error) {
         console.log(error);
         Messages.flash(error.message, "error");
