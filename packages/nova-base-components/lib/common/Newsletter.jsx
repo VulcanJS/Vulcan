@@ -3,7 +3,7 @@ import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
 import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
-import Cookie from 'js-cookie';
+import Cookie from 'react-cookie';
 
 import { Messages } from "meteor/nova:core";
 
@@ -17,12 +17,22 @@ class Newsletter extends Component {
     this.dismissBanner = this.dismissBanner.bind(this);
 
     const showBanner =
-      !(Meteor.isClient && Cookie.get('showBanner') === "no") &&
+      Cookie.load('showBanner') !== "no" &&
       !Users.getSetting(context.currentUser, 'newsletter_subscribeToNewsletter', false);
 
     this.state = {
       showBanner: showBanner
     };
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextContext.currentUser) {
+      const showBanner =
+        Cookie.load('showBanner') !== "no" &&
+        !Users.getSetting(nextContext.currentUser, 'newsletter_subscribeToNewsletter', false);
+
+      this.setState({showBanner});
+    }
   }
 
   subscribeEmail(data) {
@@ -46,13 +56,8 @@ class Newsletter extends Component {
 
     this.setState({showBanner: false});
 
-    if(this.context.currentUser){
-      // if user is connected, change setting in their account
-      Users.setSetting(this.context.currentUser, 'newsletter_subscribeToNewsletter', false);
-    } else {
-      // set cookie
-      Cookie.set('showBanner', "no");
-    }
+    // set cookie
+    Cookie.save('showBanner', "no");
   }
 
   renderForm() {
