@@ -6,4 +6,6 @@ const Footer = props => {
   )
 }
 
+Footer.displayName = "Footer";
+
 module.exports = Footer;

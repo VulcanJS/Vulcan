@@ -42,15 +42,13 @@ class UsersMenu extends Component {
 
   render() {
 
-    ({UsersAvatar, UsersName} = Telescope.components);
-
     const user = this.props.user;
 
     return (
       <div className="users-menu">
         <Dropdown id="user-dropdown">
           <Dropdown.Toggle>
-            <UsersAvatar size="small" user={user} link={false} />
+            <Telescope.components.UsersAvatar size="small" user={user} link={false} />
             <div>{Users.getDisplayName(user)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>

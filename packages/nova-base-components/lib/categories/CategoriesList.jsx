@@ -33,8 +33,6 @@ class CategoriesList extends Component {
 
   renderCategoryEditModal(category, index) {
     
-    const CategoriesEditForm = Telescope.components.CategoriesEditForm;
-
     return (
       <Modal key={index} show={this.state.openModal === index+1} onHide={this.closeModal}>
         <Modal.Header closeButton>
@@ -42,7 +40,7 @@ class CategoriesList extends Component {
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
-            <CategoriesEditForm category={category}/>
+            <Telescope.components.CategoriesEditForm category={category}/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -51,8 +49,6 @@ class CategoriesList extends Component {
 
   renderCategoryNewModal() {
     
-    const CategoriesNewForm = Telescope.components.CategoriesNewForm;
-
     return (
       <Modal show={this.state.openModal === 0} onHide={this.closeModal}>
         <Modal.Header closeButton>
@@ -60,7 +56,7 @@ class CategoriesList extends Component {
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
-            <CategoriesNewForm/>
+            <Telescope.components.CategoriesNewForm/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -79,8 +75,6 @@ class CategoriesList extends Component {
 
   render() {
     
-    const Category = Telescope.components.Category;
-
     const categories = this.props.categories;
     const context = this.context;
 
@@ -96,7 +90,7 @@ class CategoriesList extends Component {
           id="categories-dropdown"
         >
           <div className="category-menu-item dropdown-item"><MenuItem href={Router.path("posts.list")} eventKey={0}>All Categories</MenuItem></div>
-          {categories && categories.length > 0 ? categories.map((category, index) => <Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
+          {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
           {Users.is.admin(this.context.currentUser) ? this.renderCategoryNewButton() : null}
         </DropdownButton>
         <div>

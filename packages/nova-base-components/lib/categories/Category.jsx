@@ -8,11 +8,10 @@ import { Messages, ModalTrigger } from "meteor/nova:core";
 class Category extends Component {
 
   renderEdit() {
-    const {Icon, CategoriesEditForm} = Telescope.components;
-    return <a onClick={this.props.openModal} className="edit-category-link"><Icon name="edit"/></a>;
+    return <a onClick={this.props.openModal} className="edit-category-link"><Telescope.components.Icon name="edit"/></a>;
     // return (
-    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Icon name="edit"/></a>}>
-    //     <CategoriesEditForm category={this.props.category}/>
+    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Telescope.components.Icon name="edit"/></a>}>
+    //     <Telescope.componentsCategoriesEditForm category={this.props.category}/>
     //   </ModalTrigger>
     // )
   }
@@ -20,7 +19,6 @@ class Category extends Component {
   render() {
 
     const {category, index, currentCategorySlug} = this.props;
-    const Icon = Telescope.components.Icon;
 
     const categoryClass = classNames("category-menu-item", "dropdown-item", {"category-active": currentCategorySlug === category.slug});
 
@@ -31,7 +29,7 @@ class Category extends Component {
           eventKey={index+1} 
           key={category._id} 
         >
-          {currentCategorySlug === category.slug ? <Icon name="voted"/> :  null}
+          {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
           {category.name}
         </MenuItem>
         {Users.is.admin(this.context.currentUser) ? this.renderEdit() : null}

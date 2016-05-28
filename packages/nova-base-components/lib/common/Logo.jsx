@@ -16,4 +16,6 @@ const Logo = ({logoUrl, siteTitle}) => {
   }
 }
 
+Logo.displayName = "Logo";
+
 module.exports = Logo;

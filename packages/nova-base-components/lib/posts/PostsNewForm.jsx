@@ -7,10 +7,8 @@ import NovaForm from "meteor/nova:forms";
 
 const PostsNewForm = (props, context) => {
 
-  ({CanCreatePost, FlashMessages} = Telescope.components);
-
   return (
-    <CanCreatePost>
+    <Telescope.components.CanCreatePost>
       <div className="posts-new-form">
         <NovaForm 
           collection={Posts} 
@@ -23,13 +21,15 @@ const PostsNewForm = (props, context) => {
           labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)}
         />
       </div>
-    </CanCreatePost>
+    </Telescope.components.CanCreatePost>
   )
 }
 
 PostsNewForm.contextTypes = {
   currentUser: React.PropTypes.object
 };
+
+PostsNewForm.displayName = "PostsNewForm";
 
 module.exports = PostsNewForm;
 export default PostsNewForm;

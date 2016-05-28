@@ -12,13 +12,10 @@ class App extends Component {
   }
 
   render() {
-    
-    ({Layout, AppLoading} = Telescope.components);
-
     if (this.props.ready) {
-      return <Layout currentUser={this.props.currentUser}>{this.props.content}</Layout>
+      return <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.content}</Telescope.components.Layout>
     } else {
-      return <AppLoading />
+      return <Telescope.components.AppLoading />
     }
   }
 

@@ -7,8 +7,6 @@ const ListContainer = SmartContainers.ListContainer;
 
 const Header = ({currentUser}) => {
   
-  ({Logo, CategoriesList, PostsNewButton, UsersMenu, UsersAccountMenu} = Telescope.components);
-
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Nova");
   const tagline = Telescope.settings.get("tagline");
@@ -19,18 +17,18 @@ const Header = ({currentUser}) => {
       <header className="header">
 
         <div className="logo">
-          <Logo logoUrl={logoUrl} siteTitle={siteTitle} />
+          <Telescope.components.Logo logoUrl={logoUrl} siteTitle={siteTitle} />
           {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
         </div>
         
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <UsersMenu user={currentUser}/> : <UsersAccountMenu/>}
+            {currentUser ? <Telescope.components.UsersMenu user={currentUser}/> : <Telescope.components.UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">
-            <PostsNewButton/>
+            <Telescope.components.PostsNewButton/>
           </div>
 
         </div>
@@ -39,5 +37,7 @@ const Header = ({currentUser}) => {
     </div>
   )
 }
+
+Header.displayName = "Header";
 
 module.exports = Header;

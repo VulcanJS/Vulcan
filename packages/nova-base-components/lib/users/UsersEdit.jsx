@@ -9,10 +9,8 @@ const UsersEdit = ({document, currentUser}) => {
   const user = document;
   //const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
-  ({CanEditUser} = Telescope.components);
-
   return (
-    <CanEditUser user={currentUser} userToEdit={user}>
+    <Telescope.components.CanEditUser user={currentUser} userToEdit={user}>
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title">Edit Account</h2>
         <NovaForm 
@@ -26,7 +24,7 @@ const UsersEdit = ({document, currentUser}) => {
           }}
         />
       </div>
-    </CanEditUser>
+    </Telescope.components.CanEditUser>
   )
 }
 
@@ -35,6 +33,8 @@ UsersEdit.propTypes = {
   document: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object.isRequired
 }
+
+UsersEdit.displayName = "UsersEdit";
 
 module.exports = UsersEdit;
 export default UsersEdit;

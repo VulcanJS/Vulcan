@@ -2,19 +2,17 @@ import React from 'react';
 
 const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
 
-  ({CommentsLoadMore, Loading, PostsNoResults, PostsNoMore, CommentsNode} = Telescope.components);
-  
   if (!!results.length) {
     return (
       <div className="comments-list">
-        {results.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={currentUser}/>)}
-        {hasMore ? (ready ? <CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Loading/>) : null}
+        {results.map(comment => <Telescope.components.CommentsNode comment={comment} key={comment._id} currentUser={currentUser}/>)}
+        {hasMore ? (ready ? <Telescope.components.CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Telescope.components.Loading/>) : null}
       </div>
     )
   } else if (!ready) {
     return (
       <div className="comments-list">
-        <Loading/>
+        <Telescope.components.Loading/>
       </div>
     )
   } else {
@@ -26,5 +24,7 @@ const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, 
   }
   
 };
+
+CommentsList.displayName = "CommentsList";
 
 module.exports = CommentsList;

@@ -32,8 +32,6 @@ class Vote extends Component {
 
   render() {
 
-    ({Icon} = Telescope.components);
-
     const post = this.props.post;
     const user = this.context.currentUser;
 
@@ -49,7 +47,7 @@ class Vote extends Component {
     return (
       <div className={actionsClass}>
         <a className="upvote-button" onClick={this.upvote}>
-          <Icon name="upvote" />
+          <Telescope.components.Icon name="upvote" />
           <div className="sr-only">Upvote</div>
           <div className="vote-count">{post.baseScore || 0}</div>
         </a>

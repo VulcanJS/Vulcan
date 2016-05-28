@@ -5,20 +5,20 @@ const ListContainer = SmartContainers.ListContainer;
 
 const PostsListHeader = () => {
 
-  ({PostsViews, SearchForm, CategoriesList} = Telescope.components)
-
   return (
     <div>
       <div className="posts-list-header">
         <div className="posts-lists-header-categories">
-          <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={CategoriesList}/>
+          <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={Telescope.components.CategoriesList}/>
         </div>
-        <PostsViews />
-        <SearchForm/>
+        <Telescope.components.PostsViews />
+        <Telescope.components.SearchForm/>
       </div>
     </div>
   )
 }
+
+PostsListHeader.displayName = "PostsListHeader";
 
 module.exports = PostsListHeader;
 export default PostsListHeader;

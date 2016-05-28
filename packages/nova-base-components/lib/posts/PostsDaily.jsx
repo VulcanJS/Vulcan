@@ -24,11 +24,10 @@ class PostsDaily extends Component{
   }
 
   render() {
-    ({PostsDay, PostsListHeader} = Telescope.components);
     return (
       <div className="posts-daily">
-        <PostsListHeader />
-        {this.getLastNDates(this.state.days).map((date, index) => <PostsDay key={index} date={date} number={index}/>)}
+        <Telescope.components.PostsListHeader />
+        {this.getLastNDates(this.state.days).map((date, index) => <Telescope.components.PostsDay key={index} date={date} number={index}/>)}
         <button className="posts-load-more" onClick={this.loadMoreDays}>Load More Days</button>
       </div>
     )

@@ -5,4 +5,6 @@ const CommentsLoadMore = ({loadMore, count, totalCount}) => {
   return <a className="comments-load-more" onClick={loadMore}>{label}</a>
 }
 
+CommentsLoadMore.displayName = "CommentsLoadMore";
+
 module.exports = CommentsLoadMore;

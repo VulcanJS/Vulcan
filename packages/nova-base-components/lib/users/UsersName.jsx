@@ -6,5 +6,7 @@ UsersName.propTypes = {
   user: React.PropTypes.object.isRequired,
 }
 
+UsersName.displayName = "UsersName";
+
 module.exports = UsersName;
 export default UsersName;

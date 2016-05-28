@@ -9,4 +9,6 @@ const PostsCategories = ({post}) => {
   )
 };
 
+PostsCategories.displayName = "PostsCategories";
+
 module.exports = PostsCategories;

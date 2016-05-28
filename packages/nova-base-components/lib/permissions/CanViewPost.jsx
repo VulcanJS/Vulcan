@@ -15,4 +15,6 @@ CanViewPost.propTypes = {
   post: React.PropTypes.object
 }
 
+CanViewPost.displayName = "CanViewPost";
+
 module.exports = CanViewPost;

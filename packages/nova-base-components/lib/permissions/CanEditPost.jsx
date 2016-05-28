@@ -15,4 +15,6 @@ CanEditPost.propTypes = {
   post: React.PropTypes.object
 }
 
+CanEditPost.displayName = "CanEditPost";
+
 module.exports = CanEditPost;

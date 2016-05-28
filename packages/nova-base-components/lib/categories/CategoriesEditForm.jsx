@@ -43,7 +43,7 @@ class CategoriesEditForm extends Component{
           labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>
-        <a onClick={this.deleteCategory} className="categories-delete-link"><Icon name="close"/> Delete Category</a>
+        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> Delete Category</a>
       </div>
     )
   }

@@ -9,7 +9,7 @@ const CanCreatePost = (props, context) => {
 
   if (!currentUser){
     return (
-      <div>
+      <div className="log-in-message">
         <h3>Please Log In</h3>
         <UsersAccountForm/>
       </div>
@@ -24,5 +24,7 @@ const CanCreatePost = (props, context) => {
 CanCreatePost.contextTypes = {
   currentUser: React.PropTypes.object
 };
+
+CanCreatePost.displayName = "CanCreatePost";
 
 module.exports = CanCreatePost;

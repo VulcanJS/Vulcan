@@ -36,8 +36,7 @@ class PostsEditForm extends Component{
 
   render() {
 
-    const Icon = Telescope.components.Icon;
-    
+  
     return (
       <div className="posts-edit-form">
         {Users.is.admin(this.context.currentUser) ?  this.renderAdminArea() : null}
@@ -57,7 +56,7 @@ class PostsEditForm extends Component{
           }}
         />
         <hr/>
-        <a onClick={this.deletePost} className="delete-post-link"><Icon name="close"/> Delete Post</a>
+        <a onClick={this.deletePost} className="delete-post-link"><Telescope.components.Icon name="close"/> Delete Post</a>
       </div>
     )
   }

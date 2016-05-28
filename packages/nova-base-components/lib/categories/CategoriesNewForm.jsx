@@ -7,8 +7,6 @@ import NovaForm from "meteor/nova:forms";
 
 const CategoriesNewForm = (props, context) => {
 
-  ({FlashMessages} = Telescope.components);
-
   return (
     <div className="categories-new-form">
       <NovaForm 
@@ -23,6 +21,8 @@ const CategoriesNewForm = (props, context) => {
     </div>
   )
 }
+
+CategoriesNewForm.displayName = "CategoriesNewForm";
 
 CategoriesNewForm.contextTypes = {
   currentUser: React.PropTypes.object

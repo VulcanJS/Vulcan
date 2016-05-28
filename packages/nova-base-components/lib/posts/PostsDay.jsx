@@ -6,8 +6,6 @@ class PostsDay extends Component {
 
   render() {
 
-    ({PostsList} = Telescope.components);
-
     const {date, number} = this.props;
 
     const terms = {
@@ -30,7 +28,7 @@ class PostsDay extends Component {
           options={options}
           terms={terms} 
           joins={Posts.getJoins()}
-          component={PostsList}
+          component={Telescope.components.PostsList}
           componentProps={{showHeader: false}}
         />
       </div>
