@@ -34,3 +34,9 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
 });
+
+Package.onTest(function (api) {
+  api.use('nova:base-components');
+  api.use('practicalmeteor:mocha@2.4.5_2');
+  api.addFiles('lib/common/Vote.tests.js', 'client');
+});
