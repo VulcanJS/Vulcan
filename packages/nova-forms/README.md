@@ -157,11 +157,11 @@ A number corresponding to the position of the property's field inside the form.
 
 The main `NovaForm` components makes the following objects available as context to all its children:
 
-###### `prefilledValues`
+###### `autofilledValues`
 
-An object containing optional prefilled properties. 
+An object containing optional autofilled properties. 
 
-###### `addToPrefilledValues({name: value})`
+###### `addToAutofilledValues({name: value})`
 
 A function that takes a property, and adds it to the `prefilledValues` object. 
 
@@ -169,3 +169,12 @@ A function that takes a property, and adds it to the `prefilledValues` object.
 
 A callback function that can be used to throw an error. 
 
+### Handling Values
+
+The component handles three different layers of input values:
+
+- The value stored in the database (when editing a document).
+- The value being currently inputted in the form element.
+- An “autofilled” value, typically provided by an *other* form element (i.e. autofilling the post title from its URL).
+
+The highest-priority value is the user input. If there is no user input, we default to the database value provided by the `props`. And if that one is empty too, we then look for autofilled values. 

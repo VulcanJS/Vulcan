@@ -160,7 +160,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
 
   if (user && user.telescope) {
     var settingValue = Users.getProperty(user, settingName);
-    return _.isEmpty(settingValue) ? defaultValue : settingValue;
+    return typeof settingValue === 'undefined' ? defaultValue : settingValue;
   } else {
     return defaultValue;
   }
@@ -232,8 +232,8 @@ Users.getProperty = function (object, property) {
   var array = property.split('.');
   if(array.length > 1){
     var parent = array.shift();
-    // if our property is not at this level, call function again one level deeper if we can go deeper, else return null
-    return (typeof object[parent] === "undefined") ? null : this.getProperty(object[parent], array.join('.'));
+    // if our property is not at this level, call function again one level deeper if we can go deeper, else return undefined
+    return (typeof object[parent] === "undefined") ? undefined : this.getProperty(object[parent], array.join('.'));
   }else{
     // else return property
     return object[array[0]];
