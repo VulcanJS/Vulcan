@@ -19,3 +19,8 @@
     line-height: 1;
   }
 }
+
+.users-newsletter-settings {
+  @include flex-center;
+  margin-top: $vmargin;
+}

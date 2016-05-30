@@ -1,4 +1,3 @@
-
 Posts.addField({
   fieldName: 'scheduledAt',
   fieldSchema: {
@@ -14,11 +13,12 @@ Users.addField([
       label: 'Subscribe to newsletter',
       type: Boolean,
       optional: true,
+      publish: true,
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
       control: "none"
     }
-  }
+  },
 ]);
 
 // Settings
