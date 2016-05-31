@@ -5,9 +5,9 @@ import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 
-const ModalTrigger = Core.ModalTrigger;
-const Messages = Core.Messages;
-const FlashContainer = Core.FlashContainer;
+import {ModalTrigger} from "meteor/nova:core";
+import {Messages} from "meteor/nova:core";
+import {FlashContainer} from "meteor/nova:core";
 const ListContainer = SmartContainers.ListContainer;
 const FlashMessages = Telescope.components.FlashMessages;
 
