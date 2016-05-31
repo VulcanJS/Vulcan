@@ -26,7 +26,9 @@ Telescope.email.getTemplate = function (templateName) {
   // console.log(templateName)
   // console.log(Telescope.email.templates[template])
 
-  return Handlebars.compile(Telescope.email.templates[template]);
+  return Handlebars.compile(Telescope.email.templates[template], {
+    noEscape: true
+  });
 
 };
 
@@ -49,7 +51,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
 
   var emailHTML = Telescope.email.getTemplate("wrapper")(emailProperties);
 
-  var inlinedHTML = Juice(emailHTML);
+  var inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
 
   var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
 

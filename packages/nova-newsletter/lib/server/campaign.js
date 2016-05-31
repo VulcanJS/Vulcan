@@ -31,7 +31,7 @@ Campaign.getPosts = function (postsCount) {
   // if there is a last campaign and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
   var lastWeek = moment().subtract(7, 'days');
   var after = (lastCampaign && moment(lastCampaign.finishedAt).isAfter(lastWeek)) ? lastCampaign.finishedAt : lastWeek.toDate();
-
+  
   // get parameters using "campaign" view
   var params = Posts.parameters.get({
     view: 'campaign',
@@ -117,6 +117,17 @@ Campaign.build = function (postsArray) {
       properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
     }
 
+    // if post has categories, add them
+    if (post.categories) {
+      properties.categories = post.categories.map(categoryID => {
+        const category = Categories.findOne(categoryID);
+        return {
+          name: category.name,
+          url: Categories.getUrl(category, true)
+        }
+      });
+    }
+    console.log(properties)
     // generate post item HTML and add it to the postsHTML string
     postsHTML += Telescope.email.getTemplate('postItem')(properties);
   });
@@ -124,7 +135,7 @@ Campaign.build = function (postsArray) {
   // 2. Wrap posts HTML in newsletter template
   var newsletterHTML = Telescope.email.getTemplate('newsletter')({
     siteName: Telescope.settings.get('title'),
-    date: moment().format("dddd, MMMM Do YYYY"),
+    date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });
 
@@ -137,6 +148,7 @@ Campaign.build = function (postsArray) {
     subject: Telescope.utils.trimWords(subject, 15),
     html: emailHTML
   };
+  
   return campaign;
 };
 
