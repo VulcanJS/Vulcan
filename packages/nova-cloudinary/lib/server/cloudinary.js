@@ -1,9 +1,9 @@
 Cloudinary = Npm.require("cloudinary").v2;
 
 Cloudinary.config({
-  cloud_name: Settings.get("cloudinaryCloudName"),
-  api_key: Settings.get("cloudinaryAPIKey"),
-  api_secret: Settings.get("cloudinaryAPISecret")
+  cloud_name: Telescope.settings.get("cloudinaryCloudName"),
+  api_key: Telescope.settings.get("cloudinaryAPIKey"),
+  api_secret: Telescope.settings.get("cloudinaryAPISecret")
 });
 
 var uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
@@ -18,21 +18,21 @@ var uploadImageFromURL = function (imageUrl) {
     console.log("// Cloudinary upload failed for URL: "+imageUrl);
     console.log(error.stack);
   }
-}
+};
 
 // methods
 Meteor.methods({
   testCloudinaryUpload: function (thumbnailUrl) {
     if (Users.is.admin(Meteor.user())) {
-      var thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
-      var cachedUrl = uploadImageFromURL(thumbnailUrl);
+      thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
+      const cachedUrl = uploadImageFromURL(thumbnailUrl);
       console.log(cachedUrl);
     }
   },
   cachePostThumbnails: function (limit) {
 
     // default to caching posts 20 at a time if no limit is passed
-    var limit = typeof limit === "undefined" ? 20 : limit;
+    limit = typeof limit === "undefined" ? 20 : limit;
     
     if (Users.is.admin(Meteor.user())) {
 
@@ -60,7 +60,7 @@ Meteor.methods({
 
 // post submit callback
 function cachePostThumbnailOnSubmit (post) {
-  if (Settings.get("cloudinaryAPIKey")) {
+  if (Telescope.settings.get("cloudinaryAPIKey")) {
     if (post.thumbnailUrl) {
       var newThumbnailUrl = uploadImageFromURL(post.thumbnailUrl);
     }
@@ -74,7 +74,7 @@ Telescope.callbacks.add("posts.new.async", cachePostThumbnailOnSubmit);
 
 // post edit callback
 function cachePostThumbnailOnEdit (newPost, oldPost) {
-  if (Settings.get("cloudinaryAPIKey")) {
+  if (Telescope.settings.get("cloudinaryAPIKey")) {
     if (newPost.thumbnailUrl && newPost.thumbnailUrl !== oldPost.thumbnailUrl) {
       var newThumbnailUrl = uploadImageFromURL(newPost.thumbnailUrl);
     }
