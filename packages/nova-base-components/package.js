@@ -40,3 +40,8 @@ Package.onTest(function (api) {
   api.use('practicalmeteor:mocha@2.4.5_2');
   api.addFiles('lib/common/Vote.tests.js', 'client');
 });
+
+Npm.depends({
+  "react": "15.0.1",
+  "react-addons-pure-render-mixin": "15.0.0",
+})
