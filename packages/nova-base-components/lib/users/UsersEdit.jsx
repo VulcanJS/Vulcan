@@ -24,17 +24,6 @@ const UsersEdit = ({document, currentUser}) => {
             Messages.flash("User updated.", "success");
           }}
         />
-        <Row className="users-newsletter-settings">
-          <Col sm={3}>
-            Newsletter Settings
-          </Col>
-          <Col sm={9}>
-            <Telescope.components.NewsletterButton
-              successCallback={(result) => Messages.flash("Newsletter subscription updated", "success")}
-              user={user}
-            />
-          </Col>
-        </Row>
       </div>
     </Telescope.components.CanEditUser>
   )

@@ -8,7 +8,8 @@
 
 SimpleSchema.extendOptions({
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
-  order: Match.Optional(Number) // order in the form
+  order: Match.Optional(Number), // order in the form
+  group: Match.Optional(Object) // form fieldset group
 });
 
 // import NewDocument from "./NewDocument.jsx";

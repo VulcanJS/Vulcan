@@ -1,7 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
-
 import { Messages } from 'meteor/nova:core';
 
 class NewsletterButton extends Component {
@@ -11,10 +9,10 @@ class NewsletterButton extends Component {
   }
   
   subscriptionAction() {
-    const action = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false) ? 
+    const action = Users.getSetting(this.context.currentUser, 'newsletter_subscribeToNewsletter', false) ? 
       'newsletter.removeUser' : 'newsletter.addUser';
 
-    Actions.call(action, this.props.user, (error, result) => {
+    Meteor.call(action, this.context.currentUser, (error, result) => {
       if (error) {
         console.log(error);
         Messages.flash(error.message, "error");
@@ -25,7 +23,7 @@ class NewsletterButton extends Component {
   }
 
   render() {
-    const isSubscribed = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false);
+    const isSubscribed = Users.getSetting(this.context.currentUser, 'newsletter_subscribeToNewsletter', false);
 
     return (
       <Button
@@ -40,7 +38,6 @@ class NewsletterButton extends Component {
 }
 
 NewsletterButton.propTypes = {
-  user: React.PropTypes.object.isRequired,
   successCallback: React.PropTypes.func.isRequired,
   subscribeText: React.PropTypes.string,
   unsubscribeText: React.PropTypes.string
@@ -50,6 +47,10 @@ NewsletterButton.defaultProps = {
   subscribeText: "Subscribe",
   unsubscribeText: "Unsubscribe"
 };
+
+NewsletterButton.contextTypes = {
+  currentUser: React.PropTypes.object
+}
 
 module.exports = NewsletterButton;
 export default NewsletterButton;

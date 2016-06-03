@@ -83,3 +83,14 @@ div.ReactTags__suggestions ul li.active {
   background: #b7cfe0;
   cursor: pointer;
 }
+
+
+.form-section{
+  .form-section-heading{
+    border-bottom: 1px solid $light-border;
+    padding-bottom: $vmargin;
+    margin-bottom: $vmargin;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+}

@@ -1,3 +1,8 @@
+const adminGroup = {
+  name: "admin",
+  label: "Admin",
+  order: 10
+};
 
 /**
  * @summary Vote schema
@@ -227,6 +232,7 @@ Users.schema = new SimpleSchema({
     optional: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
+    group: adminGroup
     // autoform: {
     //   omit: true
     // }

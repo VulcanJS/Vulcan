@@ -1,3 +1,8 @@
+const notificationsGroup = {
+  name: "notifications",
+  label: "Notifications",
+  order: 2
+};
 
 // Add notifications options to user profile settings
 Users.addField([
@@ -10,7 +15,8 @@ Users.addField([
       defaultValue: false,
       control: "checkbox",
       insertableIf: Users.is.admin,
-      editableIf: Users.is.admin
+      editableIf: Users.is.admin,
+      group: notificationsGroup
     }
   },
   {
@@ -22,7 +28,8 @@ Users.addField([
       defaultValue: false,
       control: "checkbox",
       insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin
+      editableIf: Users.is.ownerOrAdmin,
+      group: notificationsGroup
     }
   }
 ]);
