@@ -1,3 +1,12 @@
+Events.analyticsRequest = function() {
+  // Google Analytics
+  if (typeof window.ga !== 'undefined'){
+    window.ga('send', 'pageview', {
+      'page': FlowRouter.current().path
+    });
+  }
+};
+
 Events.analyticsInit = function() {
 
   // Google Analytics
@@ -19,11 +28,5 @@ Events.analyticsInit = function() {
 
 };
 
-Events.analyticsRequest = function() {
-  // Google Analytics
-  if (typeof window.ga !== 'undefined'){
-    window.ga('send', 'pageview', {
-      'page': FlowRouter.current().path
-    });
-  }
-};
+Events.analyticsInit();
+

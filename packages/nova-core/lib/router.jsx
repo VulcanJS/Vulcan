@@ -48,5 +48,6 @@ if(Meteor.isServer) {
 //   }
 // };
 
-// FlowRouter.triggers.enter([function () {Events.analyticsRequest()}]);
-
+if (typeof Events !== "undefined" && Meteor.isClient) {
+  FlowRouter.triggers.enter([function () {Events.analyticsRequest()}]);
+}

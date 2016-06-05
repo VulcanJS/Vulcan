@@ -19,7 +19,7 @@ Package.onUse(function(api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    // 'lib/client/analytics.js'
+    'lib/client/analytics.js'
   ], ['client']);
 
   api.export([
