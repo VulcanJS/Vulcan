@@ -81,7 +81,8 @@ Meteor.publish('posts.list', function (terms) {
 
     const posts = Posts.find(selector, options);
 
-    CursorCounts.push(terms.listId, posts.count(), this.connection.id);
+    // note: doesn't work yet :(
+    // CursorCounts.set(terms, posts.count());
 
     const users = getPostsListUsers(posts);
 

@@ -140,7 +140,6 @@ standard-minifiers@1.0.6
 std:accounts-ui@1.2.3
 templating@1.1.9
 templating-tools@1.0.4
-timoruetten:flow-router-ssr-request@0.1.0
 tmeasday:check-npm-versions@0.3.1
 tmeasday:publish-counts@0.7.3
 tracker@1.0.13
