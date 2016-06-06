@@ -75,14 +75,14 @@ Meteor.publish('posts.list', function (terms) {
     const {selector, options} = Posts.parameters.get(terms);
     
     // note: enabling Counts.publish messes up SSR
-    // Counts.publish(this, 'posts.list', Posts.find(selector, options));
+    Counts.publish(this, terms.listId, Posts.find(selector, options), {noReady: true});
 
     options.fields = Posts.publishedFields.list;
 
     const posts = Posts.find(selector, options);
 
     // note: doesn't work yet :(
-    // CursorCounts.set(terms, posts.count());
+    // CursorCounts.set(terms, posts.count(), this.connection.id);
 
     const users = getPostsListUsers(posts);
 

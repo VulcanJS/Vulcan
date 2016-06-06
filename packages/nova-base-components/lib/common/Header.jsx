@@ -1,5 +1,4 @@
 import React from 'react';
-import NoSSR from 'react-no-ssr';
 import { Messages } from "meteor/nova:core";
 
 const Header = ({currentUser}) => {
