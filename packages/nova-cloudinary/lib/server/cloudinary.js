@@ -1,4 +1,6 @@
-Cloudinary = Npm.require("cloudinary").v2;
+import cloudinary from "cloudinary";
+
+const Cloudinary = cloudinary.v2;
 
 Cloudinary.config({
   cloud_name: Telescope.settings.get("cloudinaryCloudName"),
@@ -29,11 +31,8 @@ Meteor.methods({
       console.log(cachedUrl);
     }
   },
-  cachePostThumbnails: function (limit) {
+  cachePostThumbnails: function (limit = 20) {
 
-    // default to caching posts 20 at a time if no limit is passed
-    limit = typeof limit === "undefined" ? 20 : limit;
-    
     if (Users.is.admin(Meteor.user())) {
 
       var postsWithUncachedThumbnails = Posts.find({
@@ -41,18 +40,21 @@ Meteor.methods({
         originalThumbnailUrl: { $exists: false }
       }, {sort: {createdAt: -1}, limit: limit});
 
-      postsWithUncachedThumbnails.forEach(Meteor.bindEnvironment(function (post) {
+      postsWithUncachedThumbnails.forEach(Meteor.bindEnvironment((post, index) => {
 
-        console.log("// Caching thumbnail for post: "+post.title);
+          Meteor.setTimeout(function () {
+          console.log(`// ${index}. Caching thumbnail for post “${post.title}” (_id: ${post._id})`);
 
-        var originalUrl = post.thumbnailUrl;
-        var cachedUrl = uploadImageFromURL(originalUrl);
+          var originalUrl = post.thumbnailUrl;
+          var cachedUrl = uploadImageFromURL(originalUrl);
 
-        Posts.update(post._id, {$set:{
-          thumbnailUrl: cachedUrl,
-          originalThumbnailUrl: originalUrl
-        }});
-
+          Posts.update(post._id, {$set:{
+            thumbnailUrl: cachedUrl,
+            originalThumbnailUrl: originalUrl
+          }});
+          
+        }, index * 1000);
+      
       }));
     }
   }
