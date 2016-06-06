@@ -1,3 +1,5 @@
+import { CursorCounts } from "meteor/utilities:react-list-container";
+
 Posts._ensureIndex({"status": 1, "postedAt": 1});
 
 // ------------------------------------- Helpers -------------------------------- //
@@ -70,7 +72,7 @@ Meteor.publish('posts.list', function (terms) {
     const currentUser = Meteor.users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
-    ({selector, options} = Posts.parameters.get(terms));
+    const {selector, options} = Posts.parameters.get(terms);
     
     // note: enabling Counts.publish messes up SSR
     // Counts.publish(this, 'posts.list', Posts.find(selector, options));
@@ -78,6 +80,9 @@ Meteor.publish('posts.list', function (terms) {
     options.fields = Posts.publishedFields.list;
 
     const posts = Posts.find(selector, options);
+
+    CursorCounts.push(terms.listId, posts.count(), this.connection.id);
+
     const users = getPostsListUsers(posts);
 
     return Users.can.view(currentUser) ? [posts, users] : [];

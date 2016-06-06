@@ -52,7 +52,7 @@ jparker:gravatar@0.4.1
 jquery@1.11.8
 kadira:debug@3.2.2
 kadira:dochead@1.5.0
-kadira:flow-router-ssr@3.12.2
+kadira:flow-router-ssr@3.13.0
 kadira:runtime-dev@0.0.1
 livedata@1.0.18
 localstorage@1.0.9
@@ -61,7 +61,7 @@ matb33:collection-hooks@0.8.1
 mdg:validation-error@0.5.1
 meteor@1.1.14
 meteor-base@1.0.4
-meteorhacks:fast-render@2.13.0
+meteorhacks:fast-render@2.14.0
 meteorhacks:inject-data@2.0.0
 meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.28.5
@@ -140,6 +140,7 @@ standard-minifiers@1.0.6
 std:accounts-ui@1.2.3
 templating@1.1.9
 templating-tools@1.0.4
+timoruetten:flow-router-ssr-request@0.1.0
 tmeasday:check-npm-versions@0.3.1
 tmeasday:publish-counts@0.7.3
 tracker@1.0.13
@@ -147,7 +148,7 @@ twitter@1.1.9
 ui@1.0.11
 underscore@1.0.8
 url@1.0.9
-utilities:react-list-container@0.1.9
+utilities:react-list-container@0.1.10
 utilities:smart-methods@0.1.4
 utilities:smart-publications@0.1.4
 webapp@1.2.8

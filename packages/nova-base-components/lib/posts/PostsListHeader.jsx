@@ -1,7 +1,5 @@
 import React from 'react';
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
+import { ListContainer } from "meteor/utilities:react-list-container";
 
 const PostsListHeader = () => {
 
@@ -9,7 +7,13 @@ const PostsListHeader = () => {
     <div>
       <div className="posts-list-header">
         <div className="posts-lists-header-categories">
-          <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={Telescope.components.CategoriesList}/>
+          <ListContainer 
+            collection={Categories} 
+            limit={0} 
+            resultsPropName="categories" 
+            component={Telescope.components.CategoriesList}
+            listId="categories"
+          />
         </div>
         <Telescope.components.PostsViews />
         <Telescope.components.SearchForm/>

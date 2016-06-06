@@ -1,7 +1,5 @@
 import React from 'react';
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
-
+import { ListContainer } from "meteor/utilities:react-list-container";
 import { ModalTrigger } from "meteor/nova:core";
 
 const PostsCommentsThread = ({document, currentUser}) => {
@@ -20,6 +18,7 @@ const PostsCommentsThread = ({document, currentUser}) => {
         parentProperty="parentCommentId"
         joins={Comments.getJoins()}
         component={Telescope.components.CommentsList}
+        listId="comments.list"
       />
       { currentUser ?
         <div className="posts-comments-thread-new">

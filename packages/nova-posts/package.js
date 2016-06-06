@@ -19,6 +19,7 @@ Package.onUse(function (api) {
     // 'nova:settings@0.26.2-nova',
     'nova:users@0.26.2-nova',
     // 'nova:comments@0.26.2-nova'
+    'utilities:react-list-container@0.1.10'
   ]);
 
   api.use([

@@ -25,7 +25,7 @@ Package.onUse(function(api) {
     'lib/icons.js',
     'lib/seo.js',
     'lib/debug.js',
-    'lib/router.jsx',
+    'lib/router.jsx'
     // 'lib/colors.js' // probably not that useful anymore?
   ], ['client', 'server']);
 
@@ -38,7 +38,8 @@ Package.onUse(function(api) {
     'lib/server/routes.js'
   ], ['server']);
 
-  api.mainModule("lib/core.js", ["client", "server"]);
+  api.mainModule("lib/export.js", "server");
+  api.mainModule("lib/export.js", "client");
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
   // var languagesPaths = languages.map(function (language) {

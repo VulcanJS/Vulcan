@@ -20,7 +20,7 @@ Package.onUse(function (api) {
 
     // third-party packages
 
-    'utilities:react-list-container@0.1.8',
+    'utilities:react-list-container@0.1.10'
   ]);
 
   api.addFiles([

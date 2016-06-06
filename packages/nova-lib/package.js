@@ -34,7 +34,7 @@ Package.onUse(function (api) {
     'djedi:sanitize-html@1.11.2',
     'jparker:gravatar@0.4.1',
     'ongoworks:speakingurl@9.0.0',
-    'tmeasday:publish-counts@0.7.3',
+    // 'tmeasday:publish-counts@0.7.3',
     'meteorhacks:unblock@1.1.0',
     'kadira:flow-router-ssr@3.12.2',
     'utilities:smart-publications@0.1.4',
@@ -61,8 +61,7 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.export([
-    'Telescope',
-    'Counts'
+    'Telescope'
   ]);
 
 });

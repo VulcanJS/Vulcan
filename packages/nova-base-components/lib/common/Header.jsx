@@ -2,9 +2,6 @@ import React from 'react';
 import NoSSR from 'react-no-ssr';
 import { Messages } from "meteor/nova:core";
 
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
-
 const Header = ({currentUser}) => {
   
   const logoUrl = Telescope.settings.get("logoUrl");

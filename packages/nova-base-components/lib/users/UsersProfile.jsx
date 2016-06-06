@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
+import { ListContainer } from "meteor/utilities:react-list-container";
 
 const UsersProfile = ({user, currentUser}) => {
 
@@ -29,6 +28,7 @@ const UsersProfile = ({user, currentUser}) => {
         cacheSubscription={false}
         component={Telescope.components.PostsList}
         componentProps={{showHeader: false}}
+        listId="posts.list.user"
       />
     </div>
   )

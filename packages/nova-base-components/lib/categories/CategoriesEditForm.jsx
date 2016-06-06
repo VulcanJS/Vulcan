@@ -1,11 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-
+import { DocumentContainer } from "meteor/utilities:react-list-container";
 import { Messages } from "meteor/nova:core";
-
 import Actions from "../actions.js";
 
 class CategoriesEditForm extends Component{

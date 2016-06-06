@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
+import { ListContainer } from "meteor/utilities:react-list-container";
 
 class PostsDay extends Component {
 
@@ -13,7 +12,8 @@ class PostsDay extends Component {
       date: date,
       after: moment(date).format("YYYY-MM-DD"),
       before: moment(date).format("YYYY-MM-DD"),
-      enableCache: number <= 15 ? true : false // only cache first 15 days
+      enableCache: number <= 15 ? true : false, // only cache first 15 days
+      listId: `posts.list.${moment(date).format("YYYY-MM-DD")}`
     };
 
     ({selector, options} = Posts.parameters.get(terms));
@@ -30,6 +30,7 @@ class PostsDay extends Component {
           joins={Posts.getJoins()}
           component={Telescope.components.PostsList}
           componentProps={{showHeader: false}}
+          listId={terms.listId}
         />
       </div>
     )
