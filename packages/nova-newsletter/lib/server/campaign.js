@@ -121,13 +121,15 @@ Campaign.build = function (postsArray) {
     if (post.categories) {
       properties.categories = post.categories.map(categoryID => {
         const category = Categories.findOne(categoryID);
-        return {
-          name: category.name,
-          url: Categories.getUrl(category, true)
+        if (category) {
+          return {
+            name: category.name,
+            url: Categories.getUrl(category, true)
+          }
         }
       });
     }
-    console.log(properties)
+    // console.log(properties)
     // generate post item HTML and add it to the postsHTML string
     postsHTML += Telescope.email.getTemplate('postItem')(properties);
   });

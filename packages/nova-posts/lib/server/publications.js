@@ -69,12 +69,12 @@ Meteor.publish('posts.list', function (terms) {
   // this.unblock(); // causes bug where publication returns 0 results  
 
   this.autorun(function () {
+    
     const currentUser = Meteor.users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
     const {selector, options} = Posts.parameters.get(terms);
     
-    // note: enabling Counts.publish messes up SSR
     Counts.publish(this, terms.listId, Posts.find(selector, options), {noReady: true});
 
     options.fields = Posts.publishedFields.list;
