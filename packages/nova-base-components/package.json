@@ -11,5 +11,10 @@
   "dependencies": {
     "react": "^15.0.1",
     "react-addons-pure-render-mixin": "^15.0.0"
+  },
+  "devDependencies": {
+    "enzyme": "^2.3.0",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0"
   }
 }
