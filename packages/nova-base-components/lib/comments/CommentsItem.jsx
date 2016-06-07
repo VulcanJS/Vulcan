@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import moment from 'moment';
 
 class CommentsItem extends Component{
 

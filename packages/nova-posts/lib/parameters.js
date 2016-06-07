@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  * @summary Parameter callbacks let you add parameters to subscriptions 
  * @namespace Posts.parameters

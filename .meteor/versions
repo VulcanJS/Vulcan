@@ -52,7 +52,7 @@ jparker:gravatar@0.4.1
 jquery@1.11.8
 kadira:debug@3.2.2
 kadira:dochead@1.5.0
-kadira:flow-router-ssr@3.13.0
+kadira:flow-router-ssr@3.12.2
 kadira:runtime-dev@0.0.1
 livedata@1.0.18
 localstorage@1.0.9

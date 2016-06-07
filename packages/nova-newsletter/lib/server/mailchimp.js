@@ -1,6 +1,7 @@
 import htmlToText from 'html-to-text';
 // import Email from 'meteor/nova:email';
 import Campaign from "./campaign.js";
+import moment from 'moment';
 
 const defaultPosts = 5;
 

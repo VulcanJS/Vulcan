@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
-
+import moment from 'moment';
 import { ModalTrigger } from "meteor/nova:core";
 
 class PostsItem extends Component {

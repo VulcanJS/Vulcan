@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 var toMarkdown = Npm.require('to-markdown').toMarkdown;
 var he = Npm.require('he');
 var FeedParser = Npm.require('feedparser');

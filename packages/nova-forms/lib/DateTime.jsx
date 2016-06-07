@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import DateTimeField from 'react-bootstrap-datetimepicker';
 import Row from './row.js';
 import ComponentMixin from './component.js';
+import moment from 'moment';
 
 class DateTime extends Component {
 

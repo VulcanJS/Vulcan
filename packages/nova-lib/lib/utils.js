@@ -1,4 +1,8 @@
+import marked from 'marked';
 import urlObject from 'url';
+import moment from 'moment';
+import sanitizeHtml from 'sanitize-html';
+import getSlug from 'speakingurl';
 
 /**
  * @summary The global namespace for Telescope utils.

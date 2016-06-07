@@ -1,3 +1,5 @@
+import marked from 'marked';
+
 // TODO: switch over to Tom's migration package.
 
 // database migrations
