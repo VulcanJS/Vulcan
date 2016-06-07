@@ -18,6 +18,8 @@ class PostsDay extends Component {
 
     ({selector, options} = Posts.parameters.get(terms));
 
+    const postsPerPage = Telescope.settings.get("postsPerPage", 10);
+
     return (
       <div className="posts-day">
         <h4 className="posts-day-heading">{moment(date).format("dddd, MMMM Do YYYY")}</h4>
@@ -31,6 +33,7 @@ class PostsDay extends Component {
           component={Telescope.components.PostsList}
           componentProps={{showHeader: false}}
           listId={terms.listId}
+          limit={postsPerPage}
         />
       </div>
     )

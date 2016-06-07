@@ -22,6 +22,8 @@ Telescope.addRoutes({
       
       ({selector, options} = Posts.parameters.get(queryParams));
 
+      const postsPerPage = Telescope.settings.get("postsPerPage", 10);
+
       mount(App, {content: 
         <ListContainer 
           collection={Posts} 
@@ -33,6 +35,7 @@ Telescope.addRoutes({
           component={PostsList}
           cacheSubscription={false}
           listId={queryParams.listId}
+          limit={postsPerPage}
         />})
     }
   },
