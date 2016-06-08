@@ -104,8 +104,13 @@ Meteor.publish('posts.single', function (terms) {
   const options = {fields: Posts.publishedFields.single};
   const posts = Posts.find(terms._id, options);
   const post = posts.fetch()[0];
-  const users = getSinglePostUsers(post);
 
-  return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
+  if (post) {
+    const users = getSinglePostUsers(post);
+    return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
+  } else {
+    console.log(`// posts.single: no post found for _id “${terms._id}”`)
+    return [];
+  }
 
 });
