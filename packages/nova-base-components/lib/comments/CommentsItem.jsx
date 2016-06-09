@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
+import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 
 class CommentsItem extends Component{
 
@@ -41,13 +42,18 @@ class CommentsItem extends Component{
   }
 
   deleteComment() {
+    
     const comment = this.props.comment;
-    if (window.confirm(`Delete comment “${comment.body}”?`)) {
+    const deleteConfirmMessage = this.context.intl.formatMessage({id: "comments.delete_confirm"}, {body: Telescope.utils.trimWords(comment.body, 20)});
+    const deleteSuccessMessage = this.context.intl.formatMessage({id: "comments.delete_success"}, {body: Telescope.utils.trimWords(comment.body, 20)});
+    
+    if (window.confirm(deleteConfirmMessage)) {
       Meteor.call('comments.deleteById', comment._id, (error, result) => {
-       Messages.flash(`Comment “${comment.body}” deleted.`, "success");
-       Events.track("comment deleted", {'_id': comment._id});
+        Messages.flash(deleteSuccessMessage, "success");
+        Events.track("comment deleted", {'_id': comment._id});
       });
     }
+
   }
 
   renderComment() {
@@ -56,7 +62,7 @@ class CommentsItem extends Component{
     return (
       <div className="comments-item-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
-        {!this.props.comment.isDeleted ? <a className="comments-item-reply-link" onClick={this.showReply}><Telescope.components.Icon name="reply"/> Reply</a> : null} 
+        {!this.props.comment.isDeleted ? <a className="comments-item-reply-link" onClick={this.showReply}><Telescope.components.Icon name="reply"/> <FormattedMessage id="comments.reply"/></a> : null} 
       </div>  
     )
   }
@@ -88,7 +94,6 @@ class CommentsItem extends Component{
   }
 
   render() {
-
     const comment = this.props.comment;
 
     return (
@@ -98,8 +103,8 @@ class CommentsItem extends Component{
             <Telescope.components.UsersAvatar size="small" user={comment.user}/>
             <Telescope.components.UsersName user={comment.user}/>
             <div className="comments-item-date">{moment(comment.postedAt).fromNow()}</div>
-            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}>Edit</a> : null}
-            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-delete" onClick={this.deleteComment}>Delete</a> : null}
+            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a> : null}
+            {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-delete" onClick={this.deleteComment}><FormattedMessage id="comments.delete"/></a> : null}
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
@@ -113,6 +118,10 @@ class CommentsItem extends Component{
 CommentsItem.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
   currentUser: React.PropTypes.object, // the current user
+}
+
+CommentsItem.contextTypes = {
+  intl: intlShape
 }
 
 module.exports = CommentsItem;

@@ -57,3 +57,5 @@ Telescope.subscriptions = [];
 Telescope.subscriptions.preload = function (subscription, args) {
   Telescope.subscriptions.push({name: subscription, arguments: args});
 };
+
+Telescope.strings = {};

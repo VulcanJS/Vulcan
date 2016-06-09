@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import { ModalTrigger } from "meteor/nova:core";
@@ -16,7 +17,7 @@ class PostsItem extends Component {
   renderActions() {
 
     const component = (
-      <ModalTrigger title="Edit Post" component={<a className="posts-action-edit">Edit</a>}>
+      <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
         <Telescope.components.PostsEditForm post={this.props.post}/>
       </ModalTrigger>
     );
@@ -57,7 +58,7 @@ class PostsItem extends Component {
           <div className="posts-item-meta">
             {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date">{moment(post.postedAt).fromNow()}</div>
-            <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
+            <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}><FormattedMessage id="comments.count" values={{count: post.commentCount}}/></a></div>
 
             {(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
             {this.renderActions()}

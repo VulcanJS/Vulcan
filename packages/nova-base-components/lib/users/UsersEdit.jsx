@@ -19,7 +19,6 @@ const UsersEdit = ({document, currentUser}) => {
           collection={Meteor.users} 
           document={user} 
           methodName="users.edit"
-          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Meteor.users)}
           successCallback={(user)=>{
             Messages.flash("User updated.", "success");
           }}

@@ -12,7 +12,8 @@ Package.onUse(function (api) {
   api.use([
     'nova:core@0.26.2-nova',
     'meteorhacks:kadira@2.28.5',
-    'kadira:debug@3.2.2'
+    'kadira:debug@3.2.2',
+    'meteorhacks:kadira-profiler@1.2.1'
   ], ['client', 'server']);
 
   api.addFiles([

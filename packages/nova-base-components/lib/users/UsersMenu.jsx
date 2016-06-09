@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/std:accounts-ui';
 import Router from '../router.js';
@@ -29,7 +30,7 @@ class UsersMenu extends Component {
     return (
       <Modal show={this.state.modalOpen} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Settings</Modal.Title>
+          <Modal.Title><FormattedMessage id="settings.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal}>
@@ -52,10 +53,10 @@ class UsersMenu extends Component {
             <div>{Users.getDisplayName(user)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}>Profile</MenuItem>
-            <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}>Edit Account</MenuItem>
-            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal}>Settings</MenuItem> : null}
-            <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}>Log Out</MenuItem>
+            <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}><FormattedMessage id="users.profile"/></MenuItem>
+            <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}><FormattedMessage id="users.edit_account"/></MenuItem>
+            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal}><FormattedMessage id="settings"/></MenuItem> : null}
+            <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}><FormattedMessage id="users.log_out"/></MenuItem>
           </Dropdown.Menu>
         </Dropdown>
         {this.renderSettingsModal()}

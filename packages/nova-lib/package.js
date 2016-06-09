@@ -61,7 +61,8 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/server-config.js'
+    'lib/server/server-config.js',
+    'lib/server/intl-polyfill.js'
   ], ['server']);
 
   api.export([

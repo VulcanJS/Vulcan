@@ -1,4 +1,5 @@
 import React from 'react';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
 
@@ -18,7 +19,9 @@ const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, 
   } else {
     return (
       <div className="comments-list">
-        <p>No comments to display.</p>
+        <p>
+          <FormattedMessage id="comments.no_comments"/>
+        </p>
       </div>
     )  
   }

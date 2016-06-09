@@ -16,7 +16,6 @@ const CategoriesNewForm = (props, context) => {
         successCallback={(category)=>{
           Messages.flash("Category created.", "success");
         }}
-        labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Categories)}
       />
     </div>
   )

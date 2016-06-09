@@ -36,7 +36,6 @@ class CategoriesEditForm extends Component{
           successCallback={(category)=>{
             Messages.flash("Category edited.", "success");
           }}
-          labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>
         <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> Delete Category</a>

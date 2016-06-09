@@ -18,7 +18,6 @@ const PostsNewForm = (props, context) => {
             Messages.flash("Post created.", "success");
             Router.go('posts.single', post);
           }}
-          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Posts)}
         />
       </div>
     </Telescope.components.CanCreatePost>

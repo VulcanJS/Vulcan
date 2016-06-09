@@ -63,6 +63,8 @@ meteorhacks:fast-render@2.14.0
 meteorhacks:inject-data@2.0.0
 meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.28.7
+meteorhacks:kadira-binary-deps@1.4.0
+meteorhacks:kadira-profiler@1.2.1
 meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
 meteorhacks:subs-manager@1.6.4
@@ -90,6 +92,8 @@ nova:events@0.26.2-nova
 nova:forms@0.26.2-nova
 nova:getting-started@0.26.2-nova
 nova:i18n@0.26.2-nova
+nova:i18n-en-us@0.26.2-nova
+nova:i18n-fr-fr@0.26.2-nova
 nova:kadira@0.26.2-nova
 nova:lib@0.26.2-nova
 nova:newsletter@0.26.2-nova

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
 import Router from '../router.js'
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
@@ -47,7 +48,7 @@ class SearchForm extends Component{
           <Input
             name="searchQuery"
             value={currentQuery}
-            placeholder={this.props.labelText}
+            placeholder={this.context.intl.formatMessage({id: "posts.search"})}
             type="text"
             layout="elementOnly"
           />
@@ -57,17 +58,10 @@ class SearchForm extends Component{
   }
 }
 
-SearchForm.propTypes = {
-  labelText: React.PropTypes.string
-}
-
-SearchForm.defaultProps = {
-  labelText: "Search"
-};
-
 SearchForm.contextTypes = {
   currentRoute: React.PropTypes.object,
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  intl: intlShape
 }
 
 module.exports = SearchForm;

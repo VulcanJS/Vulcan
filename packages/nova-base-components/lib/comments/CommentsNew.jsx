@@ -24,7 +24,6 @@ class CommentsNew extends Component {
           methodName="comments.new"
           prefilledProps={prefilledProps}
           successCallback={this.props.successCallback}
-          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Comments)}
           layout="elementOnly"
           cancelCallback={this.props.type === "reply" ? this.props.cancelCallback : null}
         />

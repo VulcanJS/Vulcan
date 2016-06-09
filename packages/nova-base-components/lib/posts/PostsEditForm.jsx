@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
 import { Messages } from "meteor/nova:core";
@@ -13,9 +14,12 @@ class PostsEditForm extends Component{
 
   deletePost() {
     const post = this.props.post;
-    if (window.confirm(`Delete post “${post.title}”?`)) { 
+    const deletePostConfirm = this.context.intl.formatMessage({id: "posts.delete_confirm"}, {title: post.title});
+    const deletePostSuccess = this.context.intl.formatMessage({id: "posts.delete_success"}, {title: post.title});
+
+    if (window.confirm(deletePostConfirm)) { 
       Actions.call('posts.deleteById', post._id, (error, result) => {
-        Messages.flash(`Post “${post.title}” deleted.`, "success");
+        Messages.flash(deletePostSuccess, "success");
         Events.track("post deleted", {'_id': post._id});
       });
     }
@@ -47,12 +51,11 @@ class PostsEditForm extends Component{
             // note: the document prop will be passed from DocumentContainer
             collection: Posts,
             currentUser: this.context.currentUser,
-            methodName: "posts.edit",
-            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Posts)
+            methodName: "posts.edit"
           }}
         />
         <hr/>
-        <a onClick={this.deletePost} className="delete-post-link"><Telescope.components.Icon name="close"/> Delete Post</a>
+        <a onClick={this.deletePost} className="delete-post-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="posts.delete"/></a>
       </div>
     )
   }
@@ -63,8 +66,9 @@ PostsEditForm.propTypes = {
 }
 
 PostsEditForm.contextTypes = {
-  currentUser: React.PropTypes.object
-};
+  currentUser: React.PropTypes.object,
+  intl: intlShape
+}
 
 module.exports = PostsEditForm;
 export default PostsEditForm;

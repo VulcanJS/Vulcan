@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
 import { Messages } from "meteor/nova:core";
@@ -9,7 +10,7 @@ class SettingsEditForm extends Component{
 
     return (
       <div className="settings-edit-form">
-        <p>Note: settings already provided in your <code>settings.json</code> file will be disabled.</p>
+        <p><FormattedMessage id="settings.json_message"/></p>
         <DocumentContainer 
           collection={Telescope.settings.collection} 
           publication="settings.admin" 
@@ -22,9 +23,8 @@ class SettingsEditForm extends Component{
             currentUser: this.context.currentUser,
             methodName: "settings.edit",
             successCallback: (category) => {
-              Messages.flash("Settings edited (please reload).", "success");
-            },
-            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Telescope.settings.collection)
+              Messages.flash(this.context.intl.formatMessage({id: "settings.edited"}), "success");
+            }
           }}
         />
       </div>
@@ -33,7 +33,8 @@ class SettingsEditForm extends Component{
 }
 
 SettingsEditForm.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  intl: intlShape
 };
 
 module.exports = SettingsEditForm;

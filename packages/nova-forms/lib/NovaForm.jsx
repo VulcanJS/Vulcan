@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import {FormattedMessage, intlShape} from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 
@@ -59,14 +60,17 @@ class NovaForm extends Component{
 
       fieldSchema.name = fieldName;
 
-      // add name, label, and type properties
+      // intialize properties
       let field = {
         name: fieldName,
-        label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
         datatype: fieldSchema.type,
         control: fieldSchema.control,
         layout: this.props.layout
       }
+
+      // add label
+      const intlFieldName = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName});
+      field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
 
       // add value
       field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
@@ -338,8 +342,8 @@ class NovaForm extends Component{
         >
           {this.renderErrors()}
           {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValue={this.updateCurrentValue} />)}
-          <Button type="submit" bsStyle="primary">Submit</Button>
-          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+          <Button type="submit" bsStyle="primary"><FormattedMessage id="forms.submit"/></Button>
+          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}><FormattedMessage id="forms.cancel"/></a> : null}
         </Formsy.Form>
       </div>
     )
@@ -367,7 +371,8 @@ NovaForm.defaultPropTypes = {
 }
 
 NovaForm.contextTypes = {
-  closeCallback: React.PropTypes.func
+  closeCallback: React.PropTypes.func,
+  intl: intlShape
 }
 
 NovaForm.childContextTypes = {
