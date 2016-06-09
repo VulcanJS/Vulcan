@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { Messages } from 'meteor/nova:core';
 
@@ -31,22 +32,17 @@ class NewsletterButton extends Component {
         onClick={this.subscriptionAction}
         bsStyle="primary"
       >
-        {isSubscribed ? this.props.unsubscribeText : this.props.subscribeText}
+        {isSubscribed ? <FormattedMessage id="newsletter.unsubscribe"/> : <FormattedMessage id="newsletter.subscribe"/>}
       </Button>
     )
   }
 }
 
 NewsletterButton.propTypes = {
-  successCallback: React.PropTypes.func.isRequired,
-  subscribeText: React.PropTypes.string,
-  unsubscribeText: React.PropTypes.string
+  successCallback: React.PropTypes.func.isRequired
 };
 
-NewsletterButton.defaultProps = {
-  subscribeText: "Subscribe",
-  unsubscribeText: "Unsubscribe"
-};
+
 
 NewsletterButton.contextTypes = {
   currentUser: React.PropTypes.object

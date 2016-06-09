@@ -1,6 +1,5 @@
 const notificationsGroup = {
   name: "notifications",
-  label: "Notifications",
   order: 2
 };
 

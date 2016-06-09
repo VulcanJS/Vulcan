@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { ListContainer } from "meteor/utilities:react-list-container";
 
 const UsersProfile = ({user, currentUser}) => {
@@ -17,7 +18,7 @@ const UsersProfile = ({user, currentUser}) => {
         {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }
         {user.telescope.website ? <li><a href={user.telescope.website}>{user.telescope.website}</a></li> : null }
       </ul>
-      <h3>Posts</h3>
+      <h3><FormattedMessage id="users.posts"/></h3>
       <ListContainer
         collection={Posts}
         publication="posts.list"

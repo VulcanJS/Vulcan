@@ -1,6 +1,5 @@
 const adminGroup = {
   name: "admin",
-  label: "Admin",
   order: 10
 };
 

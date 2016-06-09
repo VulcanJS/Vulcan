@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
 import { Messages } from "meteor/nova:core";
@@ -38,7 +39,7 @@ class CategoriesEditForm extends Component{
           }}
         />
         <hr/>
-        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> Delete Category</a>
+        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="categories.delete"/></a>
       </div>
     )
   }

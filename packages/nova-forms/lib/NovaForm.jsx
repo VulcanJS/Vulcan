@@ -116,6 +116,7 @@ class NovaForm extends Component{
     
     // for each group, add relevant fields
     groups = groups.map(group => {
+      group.label = group.label || this.context.intl.formatMessage({id: group.name});
       group.fields = _.filter(fields, field => {return field.group && field.group.name === group.name});
       return group;
     });
