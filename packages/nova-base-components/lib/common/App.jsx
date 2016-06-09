@@ -1,16 +1,18 @@
 import React, { PropTypes, Component } from 'react';
-import {IntlProvider, intlShape} from 'react-intl';
+import { IntlProvider, intlShape} from 'react-intl';
 import { AppComposer } from "meteor/nova:core";
 
 class App extends Component {
 
   getLocale() {
-    return Telescope.settings.get("locale", "en_US");
+    return Telescope.settings.get("locale", "en");
   }
 
   getChildContext() {
     
-    const intlProvider = new IntlProvider({locale: this.getLocale()}, Telescope.strings[this.getLocale()]);
+    const messages = Telescope.strings[this.getLocale()] || {};
+    const intlProvider = new IntlProvider({locale: this.getLocale()}, messages);
+    
     const {intl} = intlProvider.getChildContext();
 
     return {

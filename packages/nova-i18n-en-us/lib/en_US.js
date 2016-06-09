@@ -1,4 +1,4 @@
-Telescope.strings.en_US = {
+Telescope.strings.en = {
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",
 

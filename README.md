@@ -394,6 +394,8 @@ Nova is internationalized using [react-intl](https://github.com/yahoo/react-intl
 2. Publish that package to Atmosphere and then add it to your app using `meteor add username:packagename.
 3. Set `locale` to the locale name (`fr`, `en`, `ru`, etc.) in your settings. 
 
+Note: make sure the locale you set matches the language package you're adding. 
+
 If you create a new internationalization package, let us know so we can add it here!
 
 - [fr_FR](https://github.com/TelescopeJS/nova-i18n-fr-fr)
