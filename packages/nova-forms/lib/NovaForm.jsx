@@ -257,9 +257,10 @@ class NovaForm extends Component{
 
       console.log(error)
 
+      const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
       // add error to state
       this.throwError({
-        content: error.message,
+        content: errorContent,
         type: "error"
       });
 

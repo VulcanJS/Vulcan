@@ -76,7 +76,7 @@ function CommentsNewRateLimit (comment, user) {
         commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
     // check that user waits more than 15 seconds between comments
     if((timeSinceLastComment < commentInterval)) {
-      throw new Meteor.Error(704, __('please_wait')+(commentInterval-timeSinceLastComment)+__('seconds_before_commenting_again'));
+      throw new Meteor.Error("CommentsNewRateLimit", "comments.rate_limit_error", commentInterval-timeSinceLastComment);
     }
   }
   return comment;

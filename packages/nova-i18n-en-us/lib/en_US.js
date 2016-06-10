@@ -27,6 +27,7 @@ Telescope.strings.en = {
   "posts.clear_thumbnail": "Clear Thumbnail",
   "posts.enter_thumbnail_url": "Enter URL",
   "posts.created_message": "Post created.",
+  "posts.rate_limit_error": "Please wait {details} seconds before posting again.",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
@@ -41,6 +42,7 @@ Telescope.strings.en = {
   "comments.parentCommentId": "Parent Comment ID",
   "comments.topLevelCommentId": "Top Level Comment ID",
   "comments.body": "Body",
+  "comments.rate_limit_error": "Please wait {details} seconds before commenting again.",
 
   "users.profile": "Profile",
   "users.complete_profile": "Complete your Profile",
