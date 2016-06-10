@@ -16,4 +16,4 @@ Avatar.setOptions({
 });
 
 // https://github.com/softwarerero/meteor-accounts-t9n
-T9n.setLanguage(Telescope.settings.get("locale"))
+T9n.setLanguage(Telescope.settings.get("locale", "en"));
