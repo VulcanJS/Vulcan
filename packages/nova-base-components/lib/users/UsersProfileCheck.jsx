@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Modal } from 'react-bootstrap';
 import Router from '../router.js';
 import NovaForm from "meteor/nova:forms";
@@ -15,7 +16,7 @@ const UsersProfileCheckModal = ({currentUser, show}) => {
   return (
     <Modal bsSize='small' show={ show }>
       <Modal.Header>
-        <Modal.Title>Complete your Profile</Modal.Title>
+        <Modal.Title><FormattedMessage id="users.complete_profile"/></Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <NovaForm
@@ -28,7 +29,7 @@ const UsersProfileCheckModal = ({currentUser, show}) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        Or <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => Router.go('/')) }>Log Out</a>
+        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => Router.go('/')) }><FormattedMessage id="users.log_out"/></a>
       </Modal.Footer>
     </Modal>
   )

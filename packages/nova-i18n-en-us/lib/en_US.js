@@ -13,6 +13,7 @@ Telescope.strings.en = {
   "posts.categories": "Categories",
   "posts.thumbnailUrl": "Thumbnail URL",
   "posts.status": "Status",
+  "posts.sticky": "Sticky",
   "posts.load_more": "Load More",
   "posts.search": "Search",
   "posts.view": "View",
@@ -23,6 +24,9 @@ Telescope.strings.en = {
   "posts.rejected": "Rejected",
   "posts.scheduled": "Scheduled",
   "posts.daily": "Daily",
+  "posts.clear_thumbnail": "Clear Thumbnail",
+  "posts.enter_thumbnail_url": "Enter URL",
+  "posts.created_message": "Post created.",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
@@ -34,9 +38,14 @@ Telescope.strings.en = {
   "comments.delete_confirm": "Delete comment “{body}”?",
   "comments.delete_success": "Comment “{body}” deleted.",
   "comments.please_log_in": "Please log in to comment.",
+  "comments.parentCommentId": "Parent Comment ID",
+  "comments.topLevelCommentId": "Top Level Comment ID",
+  "comments.body": "Body",
 
   "users.profile": "Profile",
+  "users.complete_profile": "Complete your Profile",
   "users.edit_account": "Edit Account",
+  "users.log_in": "Log In",
   "users.log_out": "Log Out",
   "users.telescope.bio": "Bio",
   "users.telescope.displayName": "Display Name",
@@ -50,6 +59,8 @@ Telescope.strings.en = {
   "users.admin": "Admin",
   "users.isAdmin": "Admin",
   "users.posts": "Posts",
+  "users.please_log_in": "Please log in",
+  "users.cannot_post": "Sorry, you do not have permissions to post at this time",
 
   "categories": "Categories",
   "categories.all": "All Categories",
@@ -93,8 +104,15 @@ Telescope.strings.en = {
   "app.loading": "Loading…",
   "app.404": "Sorry, we couldn't find what you were looking for.",
   "app.powered_by": "Powered by Telescope",
+  "app.or": "Or",
 
   "newsletter": "Newsletter", 
   "newsletter.subscribe": "Subscribe", 
   "newsletter.unsubscribe": "Unsubscribe", 
+  "newsletter.subscribe_prompt": "Subscribe to the newsletter",
+  "newsletter.email": "Your email",
+  "newsletter.success_message": "Thanks for subscribing!",
+
+  "admin": "Admin",
+  "notifications": "Notifications",
 }

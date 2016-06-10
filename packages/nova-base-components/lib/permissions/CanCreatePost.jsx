@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const CanCreatePost = (props, context) => {
 
@@ -10,14 +11,14 @@ const CanCreatePost = (props, context) => {
   if (!currentUser){
     return (
       <div className="log-in-message">
-        <h3>Please Log In</h3>
+        <h3><FormattedMessage id="users.please_log_in"/></h3>
         <UsersAccountForm/>
       </div>
     )
   } else if (Users.can.post(currentUser)) {
     return children;
   } else {
-    return <p>Sorry, you do not have permissions to post at this time</p>;
+    return <p><FormattedMessage id="users.cannot_post"/></p>;
   }
 };
 

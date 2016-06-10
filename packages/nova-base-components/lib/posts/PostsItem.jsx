@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import { ModalTrigger } from "meteor/nova:core";
@@ -57,7 +57,7 @@ class PostsItem extends Component {
           
           <div className="posts-item-meta">
             {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
-            <div className="posts-item-date">{moment(post.postedAt).fromNow()}</div>
+            <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
             <div className="posts-item-comments"><a href={Posts.getPageUrl(post)}><FormattedMessage id="comments.count" values={{count: post.commentCount}}/></a></div>
 
             {(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}

@@ -23,7 +23,7 @@ Package.onUse(function (api) {
 
     'fortawesome:fontawesome@4.5.0',
     'tmeasday:check-npm-versions@0.3.1',
-    'std:accounts-ui@1.2.3',
+    'std:accounts-ui@1.2.6',
     'utilities:react-list-container@0.1.10',
     'kadira:dochead@1.5.0'
   ]);

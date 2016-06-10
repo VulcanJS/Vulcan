@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import {FormattedMessage, intlShape} from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 

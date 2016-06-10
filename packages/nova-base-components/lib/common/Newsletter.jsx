@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
 import Actions from "../actions.js";
@@ -47,7 +48,7 @@ class Newsletter extends Component {
   }
 
   successCallbackSubscription(result) {
-    Messages.flash(this.props.successMessage, "success");
+    Messages.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
     this.dismissBanner();
   }
 
@@ -66,11 +67,11 @@ class Newsletter extends Component {
         <Input
           name="email"
           value=""
-          placeholder={this.props.labelText}
+          placeholder={this.context.intl.formatMessage({id: "newsletter.email"})}
           type="text"
           layout="elementOnly"
         />
-        <Button className="newsletter-button" type="submit" bsStyle="primary">{this.props.buttonText}</Button>
+        <Button className="newsletter-button" type="submit" bsStyle="primary"><FormattedMessage id="newsletter.subscribe"/></Button>
       </Formsy.Form>
     )
   }
@@ -81,11 +82,11 @@ class Newsletter extends Component {
     return this.state.showBanner
       ? (
         <div className="newsletter">
-          <h4 className="newsletter-tagline">{this.props.headerText}</h4>
+          <h4 className="newsletter-tagline"><FormattedMessage id="newsletter.subscribe_prompt"/></h4>
           {this.context.currentUser
             ? <Telescope.components.NewsletterButton
                 successCallback={() => this.successCallbackSubscription}
-                subscribeText={this.props.buttonText}
+                subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
                 user={currentUser}
               />
             : this.renderForm()
@@ -96,22 +97,9 @@ class Newsletter extends Component {
   }
 }
 
-Newsletter.propTypes = {
-  headerText: React.PropTypes.string,
-  labelText: React.PropTypes.string,
-  buttonText: React.PropTypes.string,
-  successMessage: React.PropTypes.string
-};
-
-Newsletter.defaultProps = {
-  headerText: "Subscribe to the newsletter",
-  labelText: "Your Email",
-  buttonText: "Subscribe",
-  successMessage: "Thanks for subscribing!"
-};
-
 Newsletter.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  intl: intlShape
 };
 
 module.exports = Newsletter;

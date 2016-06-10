@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
 import Router from '../router.js'
 
 import { Messages } from "meteor/nova:core";
@@ -15,7 +16,7 @@ const PostsNewForm = (props, context) => {
           currentUser={context.currentUser}
           methodName="posts.new"
           successCallback={(post)=>{
-            Messages.flash("Post created.", "success");
+            Messages.flash(this.context.intl.formatMessage({id: "posts.created_message"}), "success");
             Router.go('posts.single', post);
           }}
         />
@@ -25,7 +26,8 @@ const PostsNewForm = (props, context) => {
 }
 
 PostsNewForm.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  intl: intlShape
 };
 
 PostsNewForm.displayName = "PostsNewForm";

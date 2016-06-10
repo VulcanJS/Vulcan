@@ -29,6 +29,7 @@ nova:base-styles
 nova:base-routes
 nova:email-templates
 nova:i18n-en-us
+nova:i18n-fr-fr
 
 accounts-password
 accounts-twitter

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
 
 class CommentsItem extends Component{
 
@@ -102,7 +102,7 @@ class CommentsItem extends Component{
           <div className="comments-item-meta">
             <Telescope.components.UsersAvatar size="small" user={comment.user}/>
             <Telescope.components.UsersName user={comment.user}/>
-            <div className="comments-item-date">{moment(comment.postedAt).fromNow()}</div>
+            <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a> : null}
             {Users.can.edit(this.props.currentUser, this.props.comment) ? <a className="comment-delete" onClick={this.deleteComment}><FormattedMessage id="comments.delete"/></a> : null}
           </div>

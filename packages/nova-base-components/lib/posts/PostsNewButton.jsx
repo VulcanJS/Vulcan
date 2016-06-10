@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
-import {FormattedMessage, intlShape} from 'react-intl';
+import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { ModalTrigger } from "meteor/nova:core";
 
 const PostsNewButton = (props, context) => {
 
-  const size = context.currentUser ? "small" : "large";
+  const size = context.currentUser ? "large" : "small";
   const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
   return (
     <ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
@@ -17,6 +17,7 @@ const PostsNewButton = (props, context) => {
 PostsNewButton.displayName = "PostsNewButton";
 
 PostsNewButton.contextTypes = {
+  currentUser: React.PropTypes.object,
   intl: intlShape
 }
 

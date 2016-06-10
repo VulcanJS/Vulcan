@@ -14,3 +14,6 @@ Avatar.setOptions({
   "gravatarDefault": "mm",
   "defaultImageUrl": "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y"
 });
+
+// https://github.com/softwarerero/meteor-accounts-t9n
+T9n.setLanguage(Telescope.settings.get("locale"))
