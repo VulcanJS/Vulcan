@@ -20,6 +20,7 @@ Telescope.registerComponent("SettingsEditForm",     require('./common/SettingsEd
 
 // posts
 
+Telescope.registerComponent("PostsHome",            require('./posts/PostsHome.jsx'));
 Telescope.registerComponent("PostsNewButton",       require('./posts/PostsNewButton.jsx'));
 Telescope.registerComponent("PostsLoadMore",        require('./posts/PostsLoadMore.jsx'));
 Telescope.registerComponent("PostsNoMore",          require('./posts/PostsNoMore.jsx'));

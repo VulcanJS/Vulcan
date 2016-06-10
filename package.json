@@ -29,6 +29,7 @@
     "react-komposer": "^1.8.0",
     "react-mounter": "^1.2.0",
     "react-no-ssr": "^1.1.0",
+    "react-router": "^2.4.1",
     "sanitize-html": "^1.11.4",
     "speakingurl": "^9.0.0",
     "tracker-component": "^1.3.14",

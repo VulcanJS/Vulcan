@@ -50,7 +50,6 @@ jparker:gravatar@0.4.1
 jquery@1.11.8
 kadira:debug@3.2.2
 kadira:dochead@1.5.0
-kadira:flow-router-ssr@3.13.0
 kadira:runtime-dev@0.0.1
 livedata@1.0.18
 localstorage@1.0.9
@@ -124,6 +123,7 @@ rate-limit@1.0.4
 react-meteor-data@0.2.9
 reactive-dict@1.1.7
 reactive-var@1.0.9
+reactrouter:react-router-ssr@3.1.2
 reload@1.1.8
 retry@1.0.7
 routepolicy@1.0.10
