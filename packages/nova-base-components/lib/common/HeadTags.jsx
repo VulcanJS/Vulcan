@@ -8,7 +8,13 @@ class HeadTags extends Component {
 		const url = this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
 		const title = this.props.title ? this.props.title : Telescope.settings.get("title");
 		const description = this.props.description ? this.props.description : Telescope.settings.get("tagline");
-		const image = this.props.image ? this.props.image : Telescope.utils.getSiteUrl() + Telescope.settings.get("logoUrl");
+
+		let image = Telescope.utils.getSiteUrl() + Telescope.settings.get("logoUrl");
+		if (!!this.prop && !!this.prop.image) {
+			image = this.props.image;
+		} else if (!!Telescope.settings.get("siteImage")) {
+			image = Telescope.settings.get("siteImage");
+		}
 
 		const metas = [
 			{ charset: "utf-8" },
