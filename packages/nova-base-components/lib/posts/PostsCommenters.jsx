@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const PostsCommenters = ({post}) => {
   return (
@@ -7,11 +8,11 @@ const PostsCommenters = ({post}) => {
         {post.commentersArray.map(user => <Telescope.components.UsersAvatar key={user._id} user={user}/>)}
       </div>
       <div className="posts-commenters-discuss">
-        <a href={Posts.getPageUrl(post)}>
+        <Link to={`posts/${post._id}/${post.slug}/`}>
           <Telescope.components.Icon name="comment" />
           <span className="posts-commenters-comments-count">{post.commentCount}</span>
           <span className="sr-only">Comments</span>
-        </a>
+        </Link>
       </div>
     </div>
   )

@@ -4,125 +4,6 @@ import { IndexRoute, Route } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
 
-// Telescope.routes = {};
-
-// Telescope.addRoutes = (newRoutes) => {
-//   Telescope.routes = Object.assign(Telescope.routes, newRoutes);
-// }
-
-// Telescope.addRoutes({
-
-//   // ------------------------------------- Posts -------------------------------- //
-
-//   "posts.list": {
-//     path: "/",
-//     action(params, queryParams) {
-
-//       ({App, PostsList} = Telescope.components);
-//       queryParams = _.isEmpty(queryParams) ? {view: 'new'} : _.clone(queryParams);
-//       queryParams.listId = "posts.list.main";
-      
-//       ({selector, options} = Posts.parameters.get(queryParams));
-
-//       const postsPerPage = Telescope.settings.get("postsPerPage", 10);
-
-//       mount(App, {content: 
-//         <ListContainer 
-//           collection={Posts} 
-//           publication="posts.list"
-//           selector={selector}
-//           options={options}
-//           terms={queryParams} 
-//           joins={Posts.getJoins()}
-//           component={PostsList}
-//           cacheSubscription={false}
-//           listId={queryParams.listId}
-//           limit={postsPerPage}
-//         />})
-//     }
-//   },
-
-//   "posts.daily": {
-//     path: "/daily/:days?",
-//     action(params, queryParams) {
-
-//       ({App, PostsDaily} = Telescope.components);
-
-//       mount(App, {content: <PostsDaily days={params.days}/>})
-//     }
-//   },
-
-//   "posts.single": {
-//     path: "/posts/:_id/:slug?",
-//     action(params, queryParams) {
-//       ({App, PostsPage} = Telescope.components);
-//       mount(App, {content: 
-//         <DocumentContainer 
-//           collection={Posts} 
-//           publication="posts.single" 
-//           selector={{_id: params._id}}
-//           terms={params}
-//           joins={Posts.getJoins()}
-//           component={PostsPage}
-//         />});
-//     }    
-//   },
-
-//   // ------------------------------------- Users -------------------------------- //
-
-//   "users.single": {
-//     path: "/users/:slug",
-//     action(params, queryParams) {
-//       ({App, UsersProfile} = Telescope.components);
-//       mount(App, {content: 
-//         <DocumentContainer 
-//           collection={Users} 
-//           publication="users.single" 
-//           selector={{'telescope.slug': params.slug}}
-//           terms={{'telescope.slug': params.slug}}
-//           component={UsersProfile}
-//           documentPropName="user"
-//         />});
-//     }
-//   },
-
-//   "account": {
-//     path: "/account",
-//     action(params, queryParams) {
-//       ({App, UsersEdit} = Telescope.components);
-//       mount(App, {content: 
-//         <DocumentContainer 
-//           collection={Users} 
-//           publication="users.single" 
-//           selector={{_id: Meteor.userId()}} 
-//           terms={{_id: Meteor.userId()}} 
-//           component={UsersEdit}
-//         />});
-//     }
-//   },
-
-//   "users.edit": {
-//     path: "/users/:slug/edit",
-//     action(params, queryParams) {
-//       ({App, UsersEdit} = Telescope.components);
-//       mount(App, {content: 
-//         <DocumentContainer 
-//           collection={Users} 
-//           publication="users.single" 
-//           selector={params} 
-//           terms={params} 
-//           component={UsersEdit}
-//         />});
-//     }
-//   }  
-// });
-
-// _.forEach(Telescope.routes, (route, routeName) => {
-//   FlowRouter.route(route.path, {
-//     name: routeName,
-//     action: route.action
-//   });
-// });
 
 // // ------------------------------------- Other -------------------------------- //
 
@@ -133,13 +14,15 @@ import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-co
 //   }
 // };
 
-
-
 const AppRoutes = (
-  <Route path="/" component={Telescope.components.App}>
-    <IndexRoute component={Telescope.components.PostsHome} />
+  <Route path="/" component={Telescope.components.App} >
+    <IndexRoute name="posts.list"                               component={Telescope.components.PostsHome} />
+    <Route      name="posts.daily"    path="daily"              component={Telescope.components.PostsDaily} />
+    <Route      name="posts.single"   path="posts/:_id(/:slug)"  component={Telescope.components.PostsSingle} />
+    <Route      name="users.single"   path="users/:slug"        component={Telescope.components.UsersSingle} />
+    <Route      name="users.account"  path="account"           component={Telescope.components.UsersAccount} />
+    <Route      name="users.edit"     path="users/:slug/edit"  component={Telescope.components.UsersAccount} />
   </Route>
 );
-console.log(ReactRouterSSR)
-console.log(ReactRouterSSR.Run)
+
 ReactRouterSSR.Run(AppRoutes);

@@ -21,6 +21,7 @@ Telescope.registerComponent("SettingsEditForm",     require('./common/SettingsEd
 // posts
 
 Telescope.registerComponent("PostsHome",            require('./posts/PostsHome.jsx'));
+Telescope.registerComponent("PostsSingle",          require('./posts/PostsSingle.jsx'));
 Telescope.registerComponent("PostsNewButton",       require('./posts/PostsNewButton.jsx'));
 Telescope.registerComponent("PostsLoadMore",        require('./posts/PostsLoadMore.jsx'));
 Telescope.registerComponent("PostsNoMore",          require('./posts/PostsNoMore.jsx'));
@@ -67,6 +68,8 @@ Telescope.registerComponent("CanEditUser",          require('./permissions/CanEd
 
 // users
 
+Telescope.registerComponent("UsersSingle",          require('./users/UsersSingle.jsx'));
+Telescope.registerComponent("UsersAccount",         require('./users/UsersAccount.jsx'));
 Telescope.registerComponent("UsersEdit",            require('./users/UsersEdit.jsx'));
 Telescope.registerComponent("UsersProfile",         require('./users/UsersProfile.jsx'));
 Telescope.registerComponent("UsersProfileCheck",    require('./users/UsersProfileCheck.jsx'));
