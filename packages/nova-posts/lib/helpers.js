@@ -38,7 +38,7 @@ Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
 Posts.getPageUrl = function(post, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.single", post);
+  return prefix + "foo";
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
 
@@ -49,7 +49,7 @@ Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, 
 Posts.getEditUrl = function(post, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.edit", post);
+  return prefix + "foo";
 };
 Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
 
@@ -114,7 +114,7 @@ Posts.checkForSameUrl = function (url) {
  * @summary When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(FlowRouter.getParam("_id"));
+  return Posts.findOne("foo");
 };
 
 /**

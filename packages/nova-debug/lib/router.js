@@ -1,3 +1,3 @@
-const Router = FlowRouter;
+const Router = {};
 
 export default Router;

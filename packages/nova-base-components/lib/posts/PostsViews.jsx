@@ -12,8 +12,9 @@ const PostsViews = (props, context) => {
     views = views.concat(adminViews);
   }
 
-  const currentRoute = context.currentRoute;
-  const currentView = currentRoute.queryParams.view || props.defaultView;
+  // const currentRoute = context.currentRoute;
+  // const currentView = currentRoute.queryParams.view || props.defaultView;
+  const currentView = "top";
   // console.log(currentRoute);
   
   return (
@@ -31,11 +32,11 @@ const PostsViews = (props, context) => {
         id="views-dropdown"
       >
         {views.map(view => 
-          <MenuItem key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})} className={currentRoute.route.name === "posts.list" && currentView === view ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"}>
+          <MenuItem key={view} href={"foo"} className={"bar"}>
             <FormattedMessage id={"posts."+view}/>
           </MenuItem>
         )}
-        <MenuItem href={Router.path("posts.daily")} className={currentRoute.route.name === "posts.daily" ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"} ><FormattedMessage id="posts.daily"/></MenuItem>
+        <MenuItem href={Router.path("posts.daily")} className={"bar"} ><FormattedMessage id="posts.daily"/></MenuItem>
       </DropdownButton>
     </div>
   )

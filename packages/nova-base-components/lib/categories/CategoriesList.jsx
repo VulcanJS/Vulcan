@@ -79,8 +79,8 @@ class CategoriesList extends Component {
     const categories = this.props.categories;
     const context = this.context;
 
-    const currentRoute = context.currentRoute;
-    const currentCategorySlug = currentRoute.queryParams.cat;
+    // const currentRoute = context.currentRoute;
+    const currentCategorySlug = "foo";
     
     return (
       <div>

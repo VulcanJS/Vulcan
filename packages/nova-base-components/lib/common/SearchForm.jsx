@@ -25,7 +25,7 @@ class SearchForm extends Component{
   search(data) {
 
     if (Router.getRouteName() !== "posts.list") {
-      Router.go("posts.list");
+      // Router.go("posts.list");
     }
     
     if (data.searchQuery === '') {
@@ -33,14 +33,14 @@ class SearchForm extends Component{
     }
 
     delay(function(){
-      Router.setQueryParams({query: data.searchQuery});
+      // Router.setQueryParams({query: data.searchQuery});
     }, 700 );
 
   }
 
   render() {
 
-    const currentQuery = this.context.currentRoute.queryParams.query;
+    const currentQuery = "foo";
 
     return (
       <div className="search-form">

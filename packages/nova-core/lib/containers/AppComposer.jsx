@@ -4,11 +4,11 @@ function composer(props, onData) {
 
   const subscriptions = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
 
-  FlowRouter.watchPathChange();
+  // FlowRouter.watchPathChange();
 
   const data = {
     currentUser: Meteor.user(),
-    currentRoute: FlowRouter.current()
+    // currentRoute: FlowRouter.current()
   }
 
   Meteor.call("settings.getJSON", (error, result) => {

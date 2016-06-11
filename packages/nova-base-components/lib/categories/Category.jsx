@@ -25,7 +25,7 @@ class Category extends Component {
     return (
       <div className={categoryClass}>
         <MenuItem 
-          href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})} 
+          href={"foo"} 
           eventKey={index+1} 
           key={category._id} 
         >
