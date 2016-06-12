@@ -1,6 +1,6 @@
 # Telescope Nova
 
-There are currently two discinct versions of Telescope: **Nova** and **Legacy**. 
+There are currently two distinct versions of Telescope: **Nova** and **Legacy**. 
 
 **Nova** is the new, React-based version and all development will happen on this version going forward. It's used by the [master](https://github.com/TelescopeJS/Telescope/tree/master) and [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branches. 
 
