@@ -1,9 +1,11 @@
 import React from 'react';
 import {mount} from 'react-mounter';
-import { IndexRoute, Route } from 'react-router';
+
+import { IndexRoute, Route, useRouterHistory, browserHistory, createMemoryHistory } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
-
+import useNamedRoutes from 'use-named-routes';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
 
 // // ------------------------------------- Other -------------------------------- //
 
@@ -24,5 +26,13 @@ const AppRoutes = (
     <Route      name="users.edit"     path="users/:slug/edit"  component={Telescope.components.UsersAccount} />
   </Route>
 );
+
+const clientOptions = {
+  historyHook: history => useNamedRoutes(useRouterHistory(createBrowserHistory))({ AppRoutes })
+}
+
+const serverOptions = {
+  historyHook: history => useNamedRoutes(useRouterHistory(createMemoryHistory))({ AppRoutes })
+}
 
 ReactRouterSSR.Run(AppRoutes);

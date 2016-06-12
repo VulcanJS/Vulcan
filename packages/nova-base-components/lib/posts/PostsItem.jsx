@@ -60,7 +60,9 @@ class PostsItem extends Component {
             {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
             <div className="posts-item-comments">
-              <Link to={`posts/${post._id}/${post.slug}/`}><FormattedMessage id="comments.count" values={{count: post.commentCount}}/></Link>
+              <Link to={`posts/${post._id}/${post.slug}/`}>
+                <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
+              </Link>
             </div>
             {(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
             {this.renderActions()}
