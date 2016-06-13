@@ -187,7 +187,7 @@ An object containing optional autofilled properties.
 
 ###### `addToAutofilledValues({name: value})`
 
-A function that takes a property, and adds it to the `prefilledValues` object. 
+A function that takes a property, and adds it to the `autofilledValues` object. 
 
 ###### `throwError({content, type})`
 
@@ -202,3 +202,17 @@ The component handles three different layers of input values:
 - An “autofilled” value, typically provided by an *other* form element (i.e. autofilling the post title from its URL).
 
 The highest-priority value is the user input. If there is no user input, we default to the database value provided by the `props`. And if that one is empty too, we then look for autofilled values. 
+
+### i18n
+
+This package uses [React Intl](https://github.com/yahoo/react-intl/) to automatically translate all labels. In order to do so it expects an `intl` object ot be passed as part of its context. For example, in a parent component: 
+
+```
+getChildContext() {
+  const intlProvider = new IntlProvider({locale: myLocale}, myMessages);
+  const {intl} = intlProvider.getChildContext();
+  return {
+    intl: intl
+  };
+}
+```
