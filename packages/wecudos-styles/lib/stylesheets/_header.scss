@@ -1,0 +1,140 @@
+.header-wrapper{
+  background: {
+    color: #000;
+    image: url('/images/app-nav-bg.jpg');
+    size: cover;
+    repeat: no-repeat;
+    position: top center;
+  }
+  margin-bottom: $grid-gutter-width;
+  padding: $grid-gutter-width/2;
+}
+
+.header{
+  @include medium-large{
+    // @include flex-center;
+    justify-content: space-between;
+  }
+  padding: $vmargin 0;
+}
+
+.logo{
+  @include medium-large{
+    // display: flex;
+    align-items: baseline;
+    .logo-text{
+      margin-right: $hmargin;
+    }
+    .logo-image{
+      margin-right: $hmargin;
+    }
+  }
+  .tagline{
+    font-size: 1.35*$font-size-base;
+  }
+}
+
+.app-nav-menu {
+  padding-top: 1.5em;
+}
+
+.nav-user {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.nav-new-post {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.nav{
+  // @include flex-center;
+  .nav-user{
+    margin-right: $hmargin;
+  }
+  .nav-new-post{
+
+  }
+}
+
+.user-menu-dropdown{
+  .dropdown-toggle{
+    //@include flex-center;
+    img{
+      margin-right: 5px;
+    }
+  }
+}
+
+.accounts-ui{
+  padding: $vmargin;
+  min-width: 240px;
+  .buttons{
+    .btn{
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: $vmargin;
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.nav-user {
+  .user-menu-dropdown.dropdown.btn-group {
+    &, &.open {
+      @extend .btn-white
+    }
+  }
+}
+
+.app-nav-menu-item {
+  display: inline-block;
+  &, &:focus, &:visited, &:hover {
+    color: #fff;
+  }
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin-right: 15px;
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  font-size: 10px;
+  cursor: pointer;
+  transition: border 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  &.app-nav-menu-item--active {
+    border-bottom: 2px solid rgba(#fff, 0.5);
+  }
+  &, &:hover, &:focus {
+    color: #fff;
+  }
+  .app-nav-menu-item-content {
+    position: relative;
+    display: inline-block;
+    transition: transform 0.2s;
+
+    &:before {
+      position: absolute;
+      top: 200%;
+      content: attr(data-hover);
+      font-weight: 600;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  &:hover,
+  &:focus {
+    .app-nav-menu-item-content {
+      transform: translateY(-200%);
+    }
+  }
+}

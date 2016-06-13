@@ -84,8 +84,6 @@ mongo@1.1.6
 mongo-id@1.0.3
 mongo-livedata@1.0.11
 nova:api@0.26.0-nova
-nova:base-components@0.26.0-nova
-nova:base-styles@0.26.0-nova
 nova:categories@0.26.1-nova
 nova:comments@0.26.0-nova
 nova:core@0.26.0-nova
@@ -158,4 +156,6 @@ utilities:smart-methods@0.1.4
 utilities:smart-publications@0.1.4
 webapp@1.2.7
 webapp-hashing@1.0.8
+wecudos:components@0.26.0-nova
+wecudos:styles@0.26.0-nova
 zimme:active-route@2.3.2

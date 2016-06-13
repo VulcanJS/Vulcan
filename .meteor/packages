@@ -24,9 +24,12 @@ nova:email
 
 ############ Customizable Packages ############
 
-nova:base-components
-nova:base-styles
+# nova:base-components
+# nova:base-styles
 nova:email-templates
+
+wecudos:styles
+wecudos:components
 
 accounts-password
 accounts-twitter

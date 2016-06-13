@@ -1,0 +1,14 @@
+.btn-white {
+  &, &.btn-default {
+    &, &:focus, &:visited {
+      background-color: #fff;
+      border: none;
+      color: $text-color;
+    }
+    &:hover {
+      background-color: $brand-primary;
+      border: none;
+      color: #fff;
+    }
+  }
+}
