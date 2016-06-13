@@ -20,6 +20,12 @@ This package can generate new document and edit document forms from a [SimpleSch
 - Support for custom form controls.
 - Submission to Meteor methods. 
 
+### NPM Dependencies
+
+```
+react react-intl formsy-react react-bootstrap formsy-react-components
+```
+
 ### Usage
 
 Example schema:
@@ -96,6 +102,10 @@ Edit document form:
 ###### `collection`
 
 The collection in which to edit or insert a document.
+
+###### `schema`
+
+If you prefer, you can also specify a schema instead of a collection.
 
 ###### `document`
 

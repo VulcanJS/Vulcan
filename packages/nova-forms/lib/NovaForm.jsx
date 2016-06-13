@@ -4,7 +4,7 @@ import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 
 import FormGroup from "./FormGroup.jsx";
-import Utils from './utils.js';
+import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
 
 /*
 
@@ -48,9 +48,14 @@ class NovaForm extends Component{
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
 
+  // return the current schema based on either the schema or collection prop
+  getSchema() {
+    return this.props.schema ? this.props.schema : this.props.collection.simpleSchema()._schema;
+  }
+
   getFieldGroups() {
 
-    const schema = this.props.collection.simpleSchema()._schema;
+    const schema = this.getSchema();
 
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
@@ -73,7 +78,7 @@ class NovaForm extends Component{
       field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
 
       // add value
-      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
+      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";  
 
       // replace value by prefilled value if value is empty
       if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
@@ -144,10 +149,10 @@ class NovaForm extends Component{
 
   // get relevant fields
   getFieldNames() {
-    const { collection, fields } = this.props;
+    const fields = this.props.fields;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.getDocument()) : collection.getInsertableFields(this.props.currentUser);
+    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.props.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
@@ -288,7 +293,6 @@ class NovaForm extends Component{
     this.setState({disabled: true});
 
     const fields = this.getFieldNames();
-    const collection = this.props.collection;
 
     // if there's a submit callback, run it
     if (this.props.submitCallback) this.props.submitCallback();
@@ -296,7 +300,7 @@ class NovaForm extends Component{
     if (this.getFormType() === "new") { // new document form
 
       // remove any empty properties
-      let document = _.compactObject(Utils.flatten(data));
+      let document = _.compactObject(flatten(data));
 
       // add prefilled properties
       if (this.props.prefilledProps) {
@@ -311,7 +315,7 @@ class NovaForm extends Component{
       const document = this.getDocument();
 
       // put all keys with data on $set
-      const set = _.compactObject(Utils.flatten(data));
+      const set = _.compactObject(flatten(data));
       
       // put all keys without data on $unset
       const unsetKeys = _.difference(fields, _.keys(set));
@@ -355,6 +359,7 @@ class NovaForm extends Component{
 
 NovaForm.propTypes = {
   collection: React.PropTypes.object.isRequired,
+  schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   currentUser: React.PropTypes.object,
   submitCallback: React.PropTypes.func,
