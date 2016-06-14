@@ -2,8 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
-import { Messages } from "meteor/nova:core";
-import Actions from "../actions.js";
+//import { Messages } from "meteor/nova:core";
+//import Actions from "../actions.js";
 
 class CategoriesEditForm extends Component{
 
@@ -15,11 +15,11 @@ class CategoriesEditForm extends Component{
   deleteCategory() {
     const category = this.props.category;
     if (window.confirm(`Delete category “${category.name}”?`)) { 
-      Actions.call("categories.deleteById", category._id, (error, result) => {
+      this.context.actions.call("categories.deleteById", category._id, (error, result) => {
         if (error) {
-          Messages.flash(error.message, "error");
+          this.context.messages.flash(error.message, "error");
         } else {
-          Messages.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
+          this.context.messages.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
         }
       });
     }
@@ -35,7 +35,7 @@ class CategoriesEditForm extends Component{
           currentUser={this.context.currentUser}
           methodName="categories.edit"
           successCallback={(category)=>{
-            Messages.flash("Category edited.", "success");
+            this.context.messages.flash("Category edited.", "success");
           }}
         />
         <hr/>
@@ -50,7 +50,9 @@ CategoriesEditForm.propTypes = {
 }
 
 CategoriesEditForm.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  actions: React.PropTypes.object,
+  messages: React.PropTypes.object
 };
 
 module.exports = CategoriesEditForm;

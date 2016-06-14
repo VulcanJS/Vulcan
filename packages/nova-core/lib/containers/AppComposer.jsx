@@ -1,11 +1,15 @@
 import { composeWithTracker } from 'react-komposer';
+import { Messages } from '../messages.js';
 
 function composer(props, onData) {
 
   const subscriptions = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
 
   const data = {
-    currentUser: Meteor.user()
+    currentUser: Meteor.user(),
+    actions: {call: Meteor.call},
+    events: Events,
+    messages: Messages
   }
 
   Meteor.call("settings.getJSON", (error, result) => {

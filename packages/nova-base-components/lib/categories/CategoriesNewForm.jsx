@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Messages } from "meteor/nova:core";
+//import { Messages } from "meteor/nova:core";
 import NovaForm from "meteor/nova:forms";
 
 const CategoriesNewForm = (props, context) => {
@@ -11,7 +11,7 @@ const CategoriesNewForm = (props, context) => {
         currentUser={context.currentUser}
         methodName="categories.new"
         successCallback={(category)=>{
-          Messages.flash("Category created.", "success");
+          this.context.messages.flash("Category created.", "success");
         }}
       />
     </div>
@@ -21,7 +21,8 @@ const CategoriesNewForm = (props, context) => {
 CategoriesNewForm.displayName = "CategoriesNewForm";
 
 CategoriesNewForm.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object
 };
 
 module.exports = CategoriesNewForm;

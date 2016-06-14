@@ -17,6 +17,9 @@ class App extends Component {
 
     return {
       currentUser: this.props.currentUser,
+      applyAction: this.props.applyAction,
+      events: this.props.events,
+      messages: this.props.messages,
       intl: intl
     };
   }
@@ -43,6 +46,9 @@ App.propTypes = {
 
 App.childContextTypes = {
   currentUser: React.PropTypes.object,
+  applyAction: React.PropTypes.object,
+  events: React.PropTypes.object,
+  messages: React.PropTypes.object,
   intl: intlShape
 }
 

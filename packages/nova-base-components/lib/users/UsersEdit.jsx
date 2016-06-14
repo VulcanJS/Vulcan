@@ -1,10 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
-
 import NovaForm from "meteor/nova:forms";
-
-import { Messages } from "meteor/nova:core";
+//import { Messages } from "meteor/nova:core";
 
 const UsersEdit = ({document, currentUser}) => {
 
@@ -21,7 +19,7 @@ const UsersEdit = ({document, currentUser}) => {
           document={user} 
           methodName="users.edit"
           successCallback={(user)=>{
-            Messages.flash("User updated.", "success");
+            this.context.messages.flash("User updated.", "success");
           }}
         />
       </div>
@@ -33,6 +31,10 @@ const UsersEdit = ({document, currentUser}) => {
 UsersEdit.propTypes = {
   document: React.PropTypes.object.isRequired,
   currentUser: React.PropTypes.object.isRequired
+};
+
+UsersEdit.contextTypes = {
+  messages: React.PropTypes.object
 };
 
 UsersEdit.displayName = "UsersEdit";
