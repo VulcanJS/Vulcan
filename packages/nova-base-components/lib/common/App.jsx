@@ -17,7 +17,6 @@ class App extends Component {
 
     return {
       currentUser: this.props.currentUser,
-      currentRoute: this.props.currentRoute,
       intl: intl
     };
   }
@@ -40,12 +39,10 @@ class App extends Component {
 App.propTypes = {
   ready: React.PropTypes.bool,
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object
 }
 
 App.childContextTypes = {
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object,
   intl: intlShape
 }
 
