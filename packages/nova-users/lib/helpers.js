@@ -67,7 +67,7 @@ Users.getProfileUrl = function (user, isAbsolute) {
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
   if (user.telescope && user.telescope.slug) {
-    return prefix + FlowRouter.path("users.single", {slug: user.telescope.slug});
+    return `${prefix}/users/${user.telescope.slug}`;
   } else {
     return "";
   }

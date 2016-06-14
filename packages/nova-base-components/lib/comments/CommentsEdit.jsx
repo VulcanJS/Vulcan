@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from '../actions.js';
 import NovaForm from "meteor/nova:forms";
 
 class CommentsEdit extends Component {

@@ -27,7 +27,7 @@ class App extends Component {
     if (this.props.ready) {
       return (
         <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
-          <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.content}</Telescope.components.Layout>
+          <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.children}</Telescope.components.Layout>
         </IntlProvider>
       )
     } else {

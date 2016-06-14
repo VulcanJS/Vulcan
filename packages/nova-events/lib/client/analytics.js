@@ -2,7 +2,7 @@ Events.analyticsRequest = function() {
   // Google Analytics
   if (typeof window.ga !== 'undefined'){
     window.ga('send', 'pageview', {
-      'page': FlowRouter.current().path
+      'page': window.location.pathname
     });
   }
 };

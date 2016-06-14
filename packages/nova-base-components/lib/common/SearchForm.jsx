@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import Router from '../router.js'
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
+import { withRouter } from 'react-router'
 
 const Input = FRC.Input;
 
@@ -17,37 +17,38 @@ const delay = (function(){
 
 class SearchForm extends Component{
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.search = this.search.bind(this);
+    this.state = {
+      search: props.router.location.query.query || ''
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      search: this.props.router.location.query.query || ''
+    });
   }
 
   search(data) {
 
-    if (Router.getRouteName() !== "posts.list") {
-      Router.go("posts.list");
-    }
-    
-    if (data.searchQuery === '') {
-      data.searchQuery = null;
-    }
+    const router = this.props.router;
+    const query = data.searchQuery === '' ? {} : {query: data.searchQuery};
 
-    delay(function(){
-      Router.setQueryParams({query: data.searchQuery});
+    delay(() => {
+      router.push({pathname: "/", query: query});
     }, 700 );
 
   }
 
   render() {
-
-    const currentQuery = this.context.currentRoute.queryParams.query;
-
     return (
       <div className="search-form">
         <Formsy.Form onChange={this.search}>
           <Input
             name="searchQuery"
-            value={currentQuery}
+            value={this.state.search}
             placeholder={this.context.intl.formatMessage({id: "posts.search"})}
             type="text"
             layout="elementOnly"
@@ -64,5 +65,5 @@ SearchForm.contextTypes = {
   intl: intlShape
 }
 
-module.exports = SearchForm;
-export default SearchForm;
+module.exports = withRouter(SearchForm);
+export default withRouter(SearchForm);
