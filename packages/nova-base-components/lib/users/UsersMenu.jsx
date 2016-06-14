@@ -33,7 +33,7 @@ class UsersMenu extends Component {
           <Modal.Title><FormattedMessage id="settings.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.props.user} messages={this.context.messages} closeCallback={this.closeModal}>
             <SettingsEditForm/>
           </ContextPasser>
         </Modal.Body>

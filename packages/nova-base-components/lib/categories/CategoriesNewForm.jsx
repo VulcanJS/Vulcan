@@ -11,7 +11,7 @@ const CategoriesNewForm = (props, context) => {
         currentUser={context.currentUser}
         methodName="categories.new"
         successCallback={(category)=>{
-          this.context.messages.flash("Category created.", "success");
+          context.messages.flash("Category created.", "success");
         }}
       />
     </div>
