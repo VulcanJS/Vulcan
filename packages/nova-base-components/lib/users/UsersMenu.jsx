@@ -74,5 +74,9 @@ UsersMenu.propTypes = {
   user: React.PropTypes.object
 }
 
+UsersMenu.contextTypes = {
+  messages: React.PropTypes.object
+}
+
 module.exports = UsersMenu;
 export default UsersMenu;
