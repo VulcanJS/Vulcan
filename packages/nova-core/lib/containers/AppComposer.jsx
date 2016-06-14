@@ -1,5 +1,5 @@
 import { composeWithTracker } from 'react-komposer';
-import { Messages } from '../messages.js';
+import Messages from '../messages.js';
 
 function composer(props, onData) {
 
