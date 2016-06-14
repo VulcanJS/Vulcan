@@ -1,8 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js'
-
 import { Messages } from "meteor/nova:core";
-
 import NovaForm from "meteor/nova:forms";
 
 const CategoriesNewForm = (props, context) => {

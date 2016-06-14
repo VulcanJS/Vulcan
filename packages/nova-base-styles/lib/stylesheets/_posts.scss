@@ -42,10 +42,10 @@
     // @include border-radius;
     // padding: 3px 5px;
     // margin-right: 5px;
-    &.post-view-inactive{
+    &.posts-view-inactive{
       @include activeHover;
     }
-    &.post-view-active{
+    &.posts-view-active{
       background: $light-blue;
     }
   }

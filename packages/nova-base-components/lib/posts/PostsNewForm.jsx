@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import Router from '../router.js'
-
 import { Messages } from "meteor/nova:core";
-
 import NovaForm from "meteor/nova:forms";
+import { withRouter } from 'react-router'
 
 const PostsNewForm = (props, context) => {
+  
+  const router = props.router;
 
   return (
     <Telescope.components.CanCreatePost>
@@ -17,7 +17,7 @@ const PostsNewForm = (props, context) => {
           methodName="posts.new"
           successCallback={(post)=>{
             Messages.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
-            Router.go('posts.single', post);
+            router.push({pathname: Posts.getPageUrl(post)});
           }}
         />
       </div>
@@ -32,5 +32,5 @@ PostsNewForm.contextTypes = {
 
 PostsNewForm.displayName = "PostsNewForm";
 
-module.exports = PostsNewForm;
-export default PostsNewForm;
+module.exports = withRouter(PostsNewForm);
+export default withRouter(PostsNewForm);

@@ -48,7 +48,7 @@ class FormComponent extends Component {
           return <Checkbox      {...properties} />;        
         // note: checkboxgroup cause React refs error
         case "checkboxgroup":
-         return <CheckboxGroup  {...properties} />;
+          return <CheckboxGroup  {...properties} />;
         case "radiogroup":
           return <RadioGroup    {...properties} />;
         case "select":

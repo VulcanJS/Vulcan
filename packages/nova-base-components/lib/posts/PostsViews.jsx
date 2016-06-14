@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
-import Router from '../router.js';
 import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
 
 const PostsViews = (props, context) => {
 
@@ -12,18 +13,10 @@ const PostsViews = (props, context) => {
     views = views.concat(adminViews);
   }
 
-  const currentRoute = context.currentRoute;
-  const currentView = currentRoute.queryParams.view || props.defaultView;
-  // console.log(currentRoute);
-  
+  const query = _.clone(props.router.location.query);
+
   return (
     <div className="posts-views">
-      {/*
-      <ButtonGroup>
-        {views.map(view => <Button className={currentRoute.route.name === "posts.list" && currentView === view ? "post-view-active" : "post-view-inactive"} bsStyle="default" key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})}>{Telescope.utils.capitalise(view)}</Button>)}
-      </ButtonGroup>
-      <Button bsStyle="default" href={Router.path("posts.daily")} className={currentRoute.route.name === "posts.daily" ? "post-view-active" : "post-view-inactive"} >Daily</Button>
-      */}
       <DropdownButton 
         bsStyle="default" 
         className="views btn-secondary" 
@@ -31,11 +24,17 @@ const PostsViews = (props, context) => {
         id="views-dropdown"
       >
         {views.map(view => 
-          <MenuItem key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})} className={currentRoute.route.name === "posts.list" && currentView === view ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"}>
-            <FormattedMessage id={"posts."+view}/>
-          </MenuItem>
+          <LinkContainer key={view} to={{pathname: "/", query: {...query, view: view}}} /*to={}*/ className="dropdown-item" activeClassName="posts-view-active">
+            <MenuItem>
+              <FormattedMessage id={"posts."+view}/>
+            </MenuItem>
+          </LinkContainer>
         )}
-        <MenuItem href={Router.path("posts.daily")} className={currentRoute.route.name === "posts.daily" ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"} ><FormattedMessage id="posts.daily"/></MenuItem>
+        <LinkContainer to={"/daily"} /*to={{name: "posts.daily"}}*/ className="dropdown-item" activeClassName="posts-view-active">
+          <MenuItem className={"bar"}>
+            <FormattedMessage id="posts.daily"/>
+          </MenuItem>
+        </LinkContainer>
       </DropdownButton>
     </div>
   )
@@ -57,4 +56,4 @@ PostsViews.contextTypes = {
 
 PostsViews.displayName = "PostsViews";
 
-module.exports = PostsViews;
+module.exports = withRouter(PostsViews);

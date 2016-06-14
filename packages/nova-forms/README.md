@@ -20,6 +20,14 @@ This package can generate new document and edit document forms from a [SimpleSch
 - Support for custom form controls.
 - Submission to Meteor methods. 
 
+### NPM Dependencies
+
+```
+react react-intl formsy-react react-bootstrap formsy-react-components
+```
+
+You also need to load Bootstrap's CSS separately. 
+
 ### Usage
 
 Example schema:
@@ -96,6 +104,10 @@ Edit document form:
 ###### `collection`
 
 The collection in which to edit or insert a document.
+
+###### `schema`
+
+If you prefer, you can also specify a schema instead of a collection.
 
 ###### `document`
 
@@ -187,7 +199,7 @@ An object containing optional autofilled properties.
 
 ###### `addToAutofilledValues({name: value})`
 
-A function that takes a property, and adds it to the `prefilledValues` object. 
+A function that takes a property, and adds it to the `autofilledValues` object. 
 
 ###### `throwError({content, type})`
 
@@ -202,3 +214,17 @@ The component handles three different layers of input values:
 - An “autofilled” value, typically provided by an *other* form element (i.e. autofilling the post title from its URL).
 
 The highest-priority value is the user input. If there is no user input, we default to the database value provided by the `props`. And if that one is empty too, we then look for autofilled values. 
+
+### i18n
+
+This package uses [React Intl](https://github.com/yahoo/react-intl/) to automatically translate all labels. In order to do so it expects an `intl` object ot be passed as part of its context. For example, in a parent component: 
+
+```
+getChildContext() {
+  const intlProvider = new IntlProvider({locale: myLocale}, myMessages);
+  const {intl} = intlProvider.getChildContext();
+  return {
+    intl: intl
+  };
+}
+```

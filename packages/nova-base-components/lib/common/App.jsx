@@ -17,7 +17,6 @@ class App extends Component {
 
     return {
       currentUser: this.props.currentUser,
-      currentRoute: this.props.currentRoute,
       intl: intl
     };
   }
@@ -27,7 +26,7 @@ class App extends Component {
     if (this.props.ready) {
       return (
         <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
-          <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.content}</Telescope.components.Layout>
+          <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.children}</Telescope.components.Layout>
         </IntlProvider>
       )
     } else {
@@ -40,12 +39,10 @@ class App extends Component {
 App.propTypes = {
   ready: React.PropTypes.bool,
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object
 }
 
 App.childContextTypes = {
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object,
   intl: intlShape
 }
 
