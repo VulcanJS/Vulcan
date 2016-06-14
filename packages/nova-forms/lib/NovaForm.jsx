@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
-
+import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
 import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
 
@@ -212,7 +212,6 @@ class NovaForm extends Component{
 
   // render errors
   renderErrors() {
-    Flash = Telescope.components.Flash;
     return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
   }
 

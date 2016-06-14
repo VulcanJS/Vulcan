@@ -26,6 +26,8 @@ This package can generate new document and edit document forms from a [SimpleSch
 react react-intl formsy-react react-bootstrap formsy-react-components
 ```
 
+You also need to load Bootstrap's CSS separately. 
+
 ### Usage
 
 Example schema:
