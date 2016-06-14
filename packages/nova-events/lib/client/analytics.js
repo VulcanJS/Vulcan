@@ -2,7 +2,7 @@ Events.analyticsRequest = function() {
   // Google Analytics
   if (typeof window.ga !== 'undefined'){
     window.ga('send', 'pageview', {
-      'page': "foobar"
+      'page': window.location.pathname
     });
   }
 };

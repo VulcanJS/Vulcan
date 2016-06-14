@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js"
-import Router from "../router.js"
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";
-import { Messages, ModalTrigger } from "meteor/nova:core";
+import { Messages, ModalTrigger } from 'meteor/nova:core';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class Category extends Component {
 
@@ -20,18 +20,17 @@ class Category extends Component {
 
     const {category, index, currentCategorySlug} = this.props;
 
-    const categoryClass = classNames("category-menu-item", "dropdown-item", {"category-active": currentCategorySlug === category.slug});
-
     return (
-      <div className={categoryClass}>
-        <MenuItem 
-          href={"foo"} 
-          eventKey={index+1} 
-          key={category._id} 
-        >
-          {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
-          {category.name}
-        </MenuItem>
+      <div className="category-menu-item dropdown-item">
+        <LinkContainer to={{pathname:"/", query: {cat: category.slug}}} activeClassName="category-active">
+          <MenuItem 
+            eventKey={index+1} 
+            key={category._id} 
+          >
+            {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
+            {category.name}
+          </MenuItem>
+        </LinkContainer>
         {Users.is.admin(this.context.currentUser) ? this.renderEdit() : null}
       </div>
     )

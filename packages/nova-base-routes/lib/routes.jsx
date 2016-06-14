@@ -29,6 +29,8 @@ const AppRoutes = (
 
 let history;
 
+const clientOptions = {}, serverOptions = {};
+
 if (Meteor.isClient) {
   history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });
 }
@@ -37,5 +39,7 @@ if (Meteor.isServer) {
   history = useNamedRoutes(useRouterHistory(createMemoryHistory))({ routes: AppRoutes });
 }
 
+clientOptions.props = {onUpdate: Events.analyticsRequest};
+
 // ReactRouterSSR.Run(AppRoutes, {historyHook: () => history}, {historyHook: () => history});
-ReactRouterSSR.Run(AppRoutes);
+ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);

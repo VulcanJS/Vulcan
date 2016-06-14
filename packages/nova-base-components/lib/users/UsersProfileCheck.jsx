@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Modal } from 'react-bootstrap';
-import Router from '../router.js';
 import NovaForm from "meteor/nova:forms";
+import { withRouter } from 'react-router'
 
-const UsersProfileCheckModal = ({currentUser, show}) => {
+const UsersProfileCheckModal = ({currentUser, show, router}) => {
 
   // return fields that are required by the schema but haven't been filled out yet
   const schema = Users.simpleSchema()._schema;
@@ -29,7 +29,7 @@ const UsersProfileCheckModal = ({currentUser, show}) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => Router.go('/')) }><FormattedMessage id="users.log_out"/></a>
+        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => router.push({pathName: '/'})) }><FormattedMessage id="users.log_out"/></a>
       </Modal.Footer>
     </Modal>
   )
@@ -48,5 +48,5 @@ UsersProfileCheck.contextTypes = {
 
 UsersProfileCheck.displayName = "UsersProfileCheck";
 
-module.exports = UsersProfileCheck;
-export default UsersProfileCheck;
+module.exports = withRouter(UsersProfileCheck);
+export default withRouter(UsersProfileCheck);

@@ -36,22 +36,11 @@ Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute){
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + "foo";
+  return `${prefix}/posts/${post._id}/${post.slug}`;
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
-
-/**
- * @summary Get post edit page URL.
- * @param {String} id
- */
-Posts.getEditUrl = function(post, isAbsolute){
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + "foo";
-};
-Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
 
 ///////////////////
 // Other Helpers //

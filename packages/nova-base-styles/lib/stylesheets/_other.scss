@@ -31,3 +31,9 @@
   font-size: $smaller-font;
   color: $red;
 }
+
+.dropdown-item.active{
+  a{
+    color: $white;
+  }
+}

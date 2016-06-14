@@ -1,17 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Logo = ({logoUrl, siteTitle}) => {
   if (logoUrl) {
     return (
       <h1 className="logo-image ">
-        <a href="/">
+        <Link to={{pathname: "/"}}>
           <img src={logoUrl} alt={siteTitle} style={{maxWidth: "100px", maxHeight: "100px"}} />
-        </a>
+        </Link>
       </h1>
     )
   } else {
     return (
-      <h1 className="logo-text"><a href="/">{siteTitle}</a></h1>
+      <h1 className="logo-text">
+        <Link to={{pathname: "/"}}>{siteTitle}</Link>
+      </h1>
     )
   }
 }
