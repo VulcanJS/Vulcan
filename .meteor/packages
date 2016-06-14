@@ -28,6 +28,7 @@ nova:base-components
 nova:base-styles
 nova:base-routes
 nova:email-templates
+nova:i18n-en-us
 
 accounts-password
 accounts-twitter

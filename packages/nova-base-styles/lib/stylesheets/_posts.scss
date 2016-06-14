@@ -228,6 +228,7 @@
 }
 
 .posts-commenters-avatars{
+  display: flex;
   .users-avatar{
     margin-right: $hmargin;
   }

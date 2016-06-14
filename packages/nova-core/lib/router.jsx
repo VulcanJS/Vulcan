@@ -25,7 +25,7 @@ FlowRouter.removeFromQueryArray = function (key, value) {
 }
 
 if(Meteor.isServer) {
-  var timeInMillis = 1000 * 10; // 10 secs
+  var timeInMillis = 1000 * 30; // 30 secs
   FlowRouter.setPageCacheTimeout(timeInMillis);
   FlowRouter.setDeferScriptLoading(true);
 }
@@ -48,5 +48,6 @@ if(Meteor.isServer) {
 //   }
 // };
 
-// FlowRouter.triggers.enter([function () {Events.analyticsRequest()}]);
-
+if (typeof Events !== "undefined" && Meteor.isClient) {
+  FlowRouter.triggers.enter([function () {Events.analyticsRequest()}]);
+}

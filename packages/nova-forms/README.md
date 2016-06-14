@@ -153,6 +153,30 @@ Either a text string (one of `text`, `textarea`, `checkbox`, `checkboxgroup`, `r
 
 A number corresponding to the position of the property's field inside the form. 
 
+###### `group`
+
+An optional object containing the group/section/fieldset in which to include the form element. Groups have `name`, `label`, and `order` properties.
+
+For example:
+
+```js
+postedAt: {
+  type: Date,
+  optional: true,
+  insertableIf: Users.is.admin,
+  editableIf: Users.is.admin,
+  publish: true,
+  control: "datetime",
+  group: {
+    name: "admin",
+    label: "Admin Options",
+    order: 2
+  }
+},
+```
+
+Note that fields with no groups are always rendered first in the form. 
+
 ### Context
 
 The main `NovaForm` components makes the following objects available as context to all its children:

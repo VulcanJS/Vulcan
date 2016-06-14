@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:demo",
   summary: "Telescope components package",
-  version: "0.26.2-nova",
+  version: "0.26.3-nova",
   git: "https://github.com/TelescopeJS/telescope.git"
 });
 
@@ -13,8 +13,8 @@ Package.onUse(function (api) {
 
     // Nova packages
     
-    'nova:core@0.26.2-nova',
-    'utilities:react-list-container@0.1.8',
+    'nova:core@0.26.3-nova',
+    'utilities:react-list-container@0.1.10',
     'utilities:smart-publications@0.1.4',
 
     // third-party packages

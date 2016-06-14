@@ -1,3 +1,5 @@
+import { CursorCounts } from "meteor/utilities:react-list-container";
+
 Posts._ensureIndex({"status": 1, "postedAt": 1});
 
 // ------------------------------------- Helpers -------------------------------- //
@@ -67,17 +69,21 @@ Meteor.publish('posts.list', function (terms) {
   // this.unblock(); // causes bug where publication returns 0 results  
 
   this.autorun(function () {
+    
     const currentUser = Meteor.users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
-    ({selector, options} = Posts.parameters.get(terms));
+    const {selector, options} = Posts.parameters.get(terms);
     
-    // note: enabling Counts.publish messes up SSR
-    // Counts.publish(this, 'posts.list', Posts.find(selector, options));
+    Counts.publish(this, terms.listId, Posts.find(selector, options), {noReady: true});
 
     options.fields = Posts.publishedFields.list;
 
     const posts = Posts.find(selector, options);
+
+    // note: doesn't work yet :(
+    // CursorCounts.set(terms, posts.count(), this.connection.id);
+
     const users = getPostsListUsers(posts);
 
     return Users.can.view(currentUser) ? [posts, users] : [];
@@ -98,8 +104,13 @@ Meteor.publish('posts.single', function (terms) {
   const options = {fields: Posts.publishedFields.single};
   const posts = Posts.find(terms._id, options);
   const post = posts.fetch()[0];
-  const users = getSinglePostUsers(post);
 
-  return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
+  if (post) {
+    const users = getSinglePostUsers(post);
+    return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
+  } else {
+    console.log(`// posts.single: no post found for _id “${terms._id}”`)
+    return [];
+  }
 
 });

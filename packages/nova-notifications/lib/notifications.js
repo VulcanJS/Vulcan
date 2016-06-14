@@ -1,6 +1,6 @@
 // import Email from 'meteor/nova:email';
 
-Telescope.notifications = {}
+Telescope.notifications = {};
 
 Telescope.notifications.create = (userIds, notificationName, data) => {
 
@@ -15,7 +15,12 @@ Telescope.notifications.create = (userIds, notificationName, data) => {
     const subject = email.subject(properties);
     const html = Telescope.email.getTemplate(email.template)(properties);
 
-    Telescope.email.buildAndSendHTML(Users.getEmail(user), subject, html);
+    const userEmail = Users.getEmail(user);
+    if (!!userEmail) {
+      Telescope.email.buildAndSendHTML(Users.getEmail(user), subject, html);
+    } else {
+      console.log(`// Couldn't send notification: admin user ${user._id} doesn't have an email`);
+    }
   });
 
 };

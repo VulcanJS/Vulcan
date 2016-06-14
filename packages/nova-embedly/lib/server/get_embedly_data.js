@@ -117,19 +117,30 @@ Meteor.methods({
   embedlyKeyExists: function () {
     return !!Telescope.settings.get('embedlyKey');
   },
-  regenerateThumbnail: function (post) {
+  generateThumbnail: function (post) {
     check(post, Posts.simpleSchema());
     if (Users.can.edit(Meteor.user(), post)) {
       regenerateThumbnail(post);
     }
   },
-  regenerateAllThumbnails: function () {
+  generateThumbnails: function (limit = 20, mode = "generate") {
+    // mode = "generate" : generate thumbnails only for all posts that don't have one
+    // mode = "all" : regenerate thumbnais for all posts
+      
     if (Users.is.admin(Meteor.user())) {
-      var posts = Posts.find({thumbnailUrl: {$exists: true}});
-      console.log("// regenerating thumbnails for "+posts.count()+" posts…");
-      posts.forEach(function (post, index) {
+      
+      console.log("// Generating thumbnails…")
+      
+      const selector = {url: {$exists: true}};
+      if (mode === "generate") {
+        selector.thumbnailUrl = {$exists: false};
+      }
+
+      const posts = Posts.find(selector, {limit: limit, sort: {postedAt: -1}});
+
+      posts.forEach((post, index) => {
         Meteor.setTimeout(function () {
-          console.log(index+". "+post.title);
+          console.log(`// ${index}. fetching thumbnail for “${post.title}” (_id: ${post._id})`);
           try {
             regenerateThumbnail(post);
           } catch (error) {

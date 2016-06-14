@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
 import Router from "../router.js"
 import { ModalTrigger, ContextPasser } from "meteor/nova:core";
@@ -36,7 +37,7 @@ class CategoriesList extends Component {
     return (
       <Modal key={index} show={this.state.openModal === index+1} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Category</Modal.Title>
+          <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
@@ -52,7 +53,7 @@ class CategoriesList extends Component {
     return (
       <Modal show={this.state.openModal === 0} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>New Category</Modal.Title>
+          <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
@@ -64,7 +65,7 @@ class CategoriesList extends Component {
   }
 
   renderCategoryNewButton() {
-    return <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}>New Category</Button></MenuItem></div>;
+    return <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}><FormattedMessage id="categories.new"/></Button></MenuItem></div>;
     // const CategoriesNewForm = Telescope.components.CategoriesNewForm;
     // return (
     //   <ModalTrigger title="New Category" component={<MenuItem className="dropdown-item post-category"><Button bsStyle="primary">New Category</Button></MenuItem>}>
@@ -86,10 +87,10 @@ class CategoriesList extends Component {
         <DropdownButton 
           bsStyle="default" 
           className="categories-list btn-secondary" 
-          title="Categories" 
+          title={<FormattedMessage id="categories"/>} 
           id="categories-dropdown"
         >
-          <div className="category-menu-item dropdown-item"><MenuItem href={Router.path("posts.list")} eventKey={0}>All Categories</MenuItem></div>
+          <div className="category-menu-item dropdown-item"><MenuItem href={Router.path("posts.list")} eventKey={0}><FormattedMessage id="categories.all"/></MenuItem></div>
           {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
           {Users.is.admin(this.context.currentUser) ? this.renderCategoryNewButton() : null}
         </DropdownButton>

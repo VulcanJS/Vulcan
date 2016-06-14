@@ -1,6 +1,7 @@
 import htmlToText from 'html-to-text';
 // import Email from 'meteor/nova:email';
 import Campaign from "./campaign.js";
+import moment from 'moment';
 
 const defaultPosts = 5;
 
@@ -75,7 +76,7 @@ Campaign.scheduleWithMailChimp = function (campaign, isTest) {
         var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
-      var confirmationHtml = Telescope.email.getTemplate('digestConfirmation')({
+      var confirmationHtml = Telescope.email.getTemplate('newsletterConfirmation')({
         time: scheduledTime,
         newsletterLink: mailchimpCampaign.archive_url,
         subject: subject
@@ -140,6 +141,48 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
     } catch (error) {
       throw new Meteor.Error("subscription-failed", error.message);
+    }
+  } else {
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
+  }
+};
+
+MailChimpList.remove = (user) => {
+  const apiKey = Telescope.settings.get('mailChimpAPIKey');
+  const listId = Telescope.settings.get('mailChimpListId');
+
+  const email = Users.getEmail(user);
+  if (!email) {
+    throw 'User must have an email address';
+  }
+
+  // remove a user to a MailChimp list.
+  // called from the user's account
+  if(!!apiKey && !!listId){
+
+    try {
+
+      console.log('// Removing "'+email+'" to MailChimp list…');
+
+      var api = new MailChimp(apiKey);
+      var subscribeOptions = {
+        id: listId,
+        email: {"email": email},
+        delete_member: true // delete the member from the list to make it possible for him to *resubscribe* via API (mailchimp's spam prevention policy)
+      };
+
+      // unsubscribe user
+      var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
+
+      // mark user as unsubscribed
+      Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
+
+      console.log("// User unsubscribed");
+
+      return subscribe;
+
+    } catch (error) {
+      throw new Meteor.Error("unsubscription-failed", error.message);
     }
   } else {
     throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);

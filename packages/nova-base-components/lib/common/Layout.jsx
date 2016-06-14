@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-
 import { FlashContainer } from "meteor/nova:core";
 
 class Layout extends Component {

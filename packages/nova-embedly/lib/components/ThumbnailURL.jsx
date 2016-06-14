@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 const Input = FRC.Input;
@@ -33,7 +34,7 @@ class ThumbnailURL extends Component {
             height={Telescope.settings.get('thumbnailHeight', 125)} 
             width={Telescope.settings.get('thumbnailWidth', 200)}
             />
-          <a className="thumbnail-url-clear" onClick={this.clearThumbnail}>Clear Thumbnail</a>
+          <a className="thumbnail-url-clear" onClick={this.clearThumbnail}><FormattedMessage id="posts.clear_thumbnail"/></a>
       </div>
     )
   }
@@ -50,7 +51,7 @@ class ThumbnailURL extends Component {
         <div className="col-sm-9">
           {this.props.value ? this.renderThumbnail() : null}
           <Input name={name} type={inputType} value={this.props.value} />
-          {!this.state.showInput ? <a className="thumbnail-show-input" onClick={this.showInput}>Enter URL</a> : null}
+          {!this.state.showInput ? <a className="thumbnail-show-input" onClick={this.showInput}><FormattedMessage id="posts.enter_thumbnail_url"/></a> : null}
         </div>
       </div>
     )

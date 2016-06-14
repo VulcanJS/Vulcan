@@ -1,11 +1,8 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-
+import { DocumentContainer } from "meteor/utilities:react-list-container";
 import { Messages } from "meteor/nova:core";
-
 import Actions from "../actions.js";
 
 class CategoriesEditForm extends Component{
@@ -40,10 +37,9 @@ class CategoriesEditForm extends Component{
           successCallback={(category)=>{
             Messages.flash("Category edited.", "success");
           }}
-          labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>
-        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> Delete Category</a>
+        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="categories.delete"/></a>
       </div>
     )
   }

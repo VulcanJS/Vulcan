@@ -1,9 +1,6 @@
 import React from 'react';
 import {mount} from 'react-mounter';
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-const ListContainer = SmartContainers.ListContainer;
+import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
 
 Telescope.routes = {};
 
@@ -21,7 +18,11 @@ Telescope.addRoutes({
 
       ({App, PostsList} = Telescope.components);
       queryParams = _.isEmpty(queryParams) ? {view: 'new'} : _.clone(queryParams);
+      queryParams.listId = "posts.list.main";
+      
       ({selector, options} = Posts.parameters.get(queryParams));
+
+      const postsPerPage = Telescope.settings.get("postsPerPage", 10);
 
       mount(App, {content: 
         <ListContainer 
@@ -33,6 +34,8 @@ Telescope.addRoutes({
           joins={Posts.getJoins()}
           component={PostsList}
           cacheSubscription={false}
+          listId={queryParams.listId}
+          limit={postsPerPage}
         />})
     }
   },

@@ -19,3 +19,14 @@
     line-height: 1;
   }
 }
+
+.users-newsletter-settings {
+  @include flex-center;
+  margin-top: $vmargin;
+}
+
+.log-in-message{
+  h3{
+    text-align: center;
+  }
+}

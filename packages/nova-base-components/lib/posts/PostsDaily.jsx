@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
+import moment from 'moment';
 
 class PostsDaily extends Component{
   

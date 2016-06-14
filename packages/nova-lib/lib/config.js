@@ -5,7 +5,7 @@
 
 Telescope = {};
 
-Telescope.VERSION = '0.26.2-nova';
+Telescope.VERSION = '0.26.3-nova';
 
 // ------------------------------------- Config -------------------------------- //
 
@@ -26,7 +26,8 @@ SimpleSchema.extendOptions({
   template: Match.Optional(String), // template used to display the field
   autoform: Match.Optional(Object), // autoform placeholder
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
-  order: Match.Optional(Number) // position in the form
+  order: Match.Optional(Number), // position in the form
+  group: Match.Optional(Object) // form fieldset group
 });
 
 // ------------------------------------- Components -------------------------------- //
@@ -56,3 +57,5 @@ Telescope.subscriptions = [];
 Telescope.subscriptions.preload = function (subscription, args) {
   Telescope.subscriptions.push({name: subscription, arguments: args});
 };
+
+Telescope.strings = {};

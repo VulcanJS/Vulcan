@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import Router from '../router.js';
 import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
@@ -26,11 +27,15 @@ const PostsViews = (props, context) => {
       <DropdownButton 
         bsStyle="default" 
         className="views btn-secondary" 
-        title="View" 
+        title={context.intl.formatMessage({id: "posts.view"})} 
         id="views-dropdown"
       >
-        {views.map(view => <MenuItem key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})} className={currentRoute.route.name === "posts.list" && currentView === view ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"}>{Telescope.utils.capitalise(view)}</MenuItem>)}
-        <MenuItem href={Router.path("posts.daily")} className={currentRoute.route.name === "posts.daily" ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"} >Daily</MenuItem>
+        {views.map(view => 
+          <MenuItem key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})} className={currentRoute.route.name === "posts.list" && currentView === view ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"}>
+            <FormattedMessage id={"posts."+view}/>
+          </MenuItem>
+        )}
+        <MenuItem href={Router.path("posts.daily")} className={currentRoute.route.name === "posts.daily" ? "dropdown-item post-view-active" : "dropdown-item post-view-inactive"} ><FormattedMessage id="posts.daily"/></MenuItem>
       </DropdownButton>
     </div>
   )
@@ -46,7 +51,8 @@ PostsViews.defaultProps = {
 
 PostsViews.contextTypes = {
   currentRoute: React.PropTypes.object,
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  intl: intlShape
 };
 
 PostsViews.displayName = "PostsViews";

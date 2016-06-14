@@ -1,3 +1,8 @@
+const adminGroup = {
+  name: "admin",
+  order: 2
+}
+
 /**
  * @summary Posts schema
  * @type {SimpleSchema}
@@ -28,7 +33,8 @@ Posts.schema = new SimpleSchema({
     // insertableIf: Users.is.admin,
     // editableIf: Users.is.admin,
     publish: true,
-    control: "datetime"
+    control: "datetime",
+    group: adminGroup
   },
   /**
     URL
@@ -142,7 +148,8 @@ Posts.schema = new SimpleSchema({
       noselect: true,
       options: Posts.config.postStatuses,
       group: 'admin'
-    }
+    },
+    group: adminGroup
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)
@@ -154,7 +161,8 @@ Posts.schema = new SimpleSchema({
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     control: "checkbox",
-    publish: true
+    publish: true,
+    group: adminGroup
   },
   /**
     Whether the post is inactive. Inactive posts see their score recalculated less often

@@ -1,6 +1,6 @@
 # Telescope Nova
 
-There are currently two discinct versions of Telescope: **Nova** and **Legacy**. 
+There are currently two distinct versions of Telescope: **Nova** and **Legacy**. 
 
 **Nova** is the new, React-based version and all development will happen on this version going forward. It's used by the [master](https://github.com/TelescopeJS/Telescope/tree/master) and [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branches. 
 
@@ -28,6 +28,7 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Posts Parameters](#posts-parameters)
   - [Forms](#forms)
   - [Methods](#methods)
+  - [Internationalization](#internationalization)
   - [Cheatsheet](#cheatsheet)
 
 ## Getting Started
@@ -384,6 +385,20 @@ See [nova:forms](https://github.com/TelescopeJS/Telescope/tree/devel/packages/no
 ## Methods
 
 You can use regular Meteor methods, or [Smart Methods](https://github.com/meteor-utilities/smart-methods).
+
+## Internationalization
+
+Nova is internationalized using [react-intl](https://github.com/yahoo/react-intl/). To add a new language, you need to:
+
+1. Create a new package containing the internationalized strings (you can use `nova:i18n-en-us` as a model).
+2. Publish that package to Atmosphere and then add it to your app using `meteor add username:packagename.
+3. Set `locale` to the locale name (`fr`, `en`, `ru`, etc.) in your settings. 
+
+Note: make sure the locale you set matches the language package you're adding. 
+
+If you create a new internationalization package, let us know so we can add it here!
+
+- [fr_FR](https://github.com/TelescopeJS/nova-i18n-fr-fr)
 
 ## Cheatsheet
 

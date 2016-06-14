@@ -355,18 +355,16 @@ Telescope.settings.schema = new SimpleSchema({
       group: "07_integrations"
     }
   },
-  emailFooter: {
+  locale: {
     type: String,
     optional: true,
+    publish: true,
     insertableIf: Users.is.admin,
     editableIf: Users.is.admin,
     autoform: {
       disabled: isInSettingsJSON,
       prefill: getFromJSON,
-      group: "06_email",
-      help:  'Content that will appear at the bottom of outgoing emails (accepts HTML).',
-      rows: 5,
-      class: "private-field"
+      group: "01_general"
     }
   }
 });

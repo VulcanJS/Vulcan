@@ -10,15 +10,29 @@ Meteor.methods({
     if(Users.is.adminById(this.userId))
       return Campaign.scheduleNextWithMailChimp(true);
   },
-  addCurrentUserToMailChimpList: function(){
-    var currentUser = Meteor.users.findOne(this.userId);
+  'newsletter.addUser'(user){
+    if (!user || !Users.can.editById(this.userId, user)) {
+      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
+    }
+    
     try {
-      return MailChimpList.add(currentUser, false);
+      return MailChimpList.add(user, false);
     } catch (error) {
       throw new Meteor.Error(500, error.message);
     }
   },
-  addEmailToMailChimpList: function (email) {
+  'newsletter.removeUser'(user) {
+    if (!user || !Users.can.editById(this.userId, user)) {
+      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
+    }
+    
+    try {
+      return MailChimpList.remove(user);
+    } catch (error) {
+      throw new Meteor.Error(500, error.message);
+    }
+  },
+  'newsletter.addEmail'(email) {
     try {
       return MailChimpList.add(email, true);
     } catch (error) {

@@ -1,3 +1,4 @@
+import NewsletterSubscribe from './components/NewsletterSubscribe.jsx';
 
 Posts.addField({
   fieldName: 'scheduledAt',
@@ -14,11 +15,17 @@ Users.addField([
       label: 'Subscribe to newsletter',
       type: Boolean,
       optional: true,
+      publish: true,
       insertableIf: Users.is.memberOrAdmin,
       editableIf: Users.is.ownerOrAdmin,
-      control: "none"
+      control: NewsletterSubscribe,
+      group: {
+        name: "newsletter",
+        label: "Newsletter",
+        order: 3
+      }
     }
-  }
+  },
 ]);
 
 // Settings

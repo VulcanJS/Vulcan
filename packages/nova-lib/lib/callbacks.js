@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  * @summary Callback hooks provide an easy way to add extra steps to common operations. 
  * @namespace Telescope.callbacks

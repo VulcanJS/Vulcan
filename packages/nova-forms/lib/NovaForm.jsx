@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 
-import FormComponent from "./FormComponent.jsx";
+import FormGroup from "./FormGroup.jsx";
 import Utils from './utils.js';
 
 /*
@@ -46,6 +47,95 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
+
+  getFieldGroups() {
+
+    const schema = this.props.collection.simpleSchema()._schema;
+
+    // build fields array by iterating over the list of field names
+    let fields = this.getFieldNames().map(fieldName => {
+        
+      // get schema for the current field
+      const fieldSchema = schema[fieldName];
+
+      fieldSchema.name = fieldName;
+
+      // intialize properties
+      let field = {
+        name: fieldName,
+        datatype: fieldSchema.type,
+        control: fieldSchema.control,
+        layout: this.props.layout
+      }
+
+      // add label
+      const intlFieldName = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName});
+      field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
+
+      // add value
+      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
+
+      // replace value by prefilled value if value is empty
+      if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
+        const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
+        if (!!prefilledValue && !field.value) {
+          field.prefilledValue = prefilledValue;
+          field.value = prefilledValue;
+        }
+      }
+
+      // add options if they exist
+      if (fieldSchema.autoform && fieldSchema.autoform.options) {
+        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
+      }
+
+      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
+        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
+      }
+
+      if (fieldSchema.autoform && fieldSchema.autoform.help) {
+        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
+      }
+
+      // add group
+      if (fieldSchema.group) {
+        field.group = fieldSchema.group;
+      }
+
+      return field;
+
+    });
+
+    // remove fields where control = "none"
+    fields = _.reject(fields, field => field.control === "none");
+
+    // console.log(fields)
+
+    // get list of all groups used in current fields
+    let groups = _.compact(_.unique(_.pluck(fields, "group")));
+    
+    // for each group, add relevant fields
+    groups = groups.map(group => {
+      group.label = group.label || this.context.intl.formatMessage({id: group.name});
+      group.fields = _.filter(fields, field => {return field.group && field.group.name === group.name});
+      return group;
+    });
+
+    // add default group
+    groups = [{
+      name: "default", 
+      label: "default", 
+      order: 0,
+      fields: _.filter(fields, field => {return !field.group;})
+    }].concat(groups);
+
+    // sort by order
+    groups = _.sortBy(groups, "order");
+
+    // console.log(groups);
+
+    return groups;
+  }
 
   // if a document is being passed, this is an edit form
   getFormType() { 
@@ -167,9 +257,10 @@ class NovaForm extends Component{
 
       console.log(error)
 
+      const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
       // add error to state
       this.throwError({
-        content: error.message,
+        content: errorContent,
         type: "error"
       });
 
@@ -242,55 +333,7 @@ class NovaForm extends Component{
 
   render() {
     
-    // build fields array by iterating over the list of field names
-    let fields = this.getFieldNames().map(fieldName => {
-        
-      // get schema for the current field
-      const fieldSchema = this.props.collection.simpleSchema()._schema[fieldName]
-      fieldSchema.name = fieldName;
-
-      // add name, label, and type properties
-      let field = {
-        name: fieldName,
-        label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
-        datatype: fieldSchema.type,
-        control: fieldSchema.control,
-        layout: this.props.layout
-      }
-
-      // add value
-      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
-
-      // replace value by prefilled value if value is empty
-      if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
-        const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
-        if (!!prefilledValue && !field.value) {
-          field.prefilledValue = prefilledValue;
-          field.value = prefilledValue;
-        }
-      }
-
-      // add options if they exist
-      if (fieldSchema.autoform && fieldSchema.autoform.options) {
-        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
-      }
-
-      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
-        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
-      }
-
-      if (fieldSchema.autoform && fieldSchema.autoform.help) {
-        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
-      }
-
-      return field;
-
-    });
-
-    // console.log(fields)
-
-    // remove fields where control = "none"
-    fields = _.reject(fields, field => field.control === "none");
+    const fieldGroups = this.getFieldGroups();
 
     return (
       <div className={"document-"+this.getFormType()}>
@@ -300,9 +343,9 @@ class NovaForm extends Component{
           ref="form" 
         >
           {this.renderErrors()}
-          {fields.map(field => <FormComponent key={field.name} {...field} updateCurrentValue={this.updateCurrentValue} />)}
-          <Button type="submit" bsStyle="primary">Submit</Button>
-          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValue={this.updateCurrentValue} />)}
+          <Button type="submit" bsStyle="primary"><FormattedMessage id="forms.submit"/></Button>
+          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}><FormattedMessage id="forms.cancel"/></a> : null}
         </Formsy.Form>
       </div>
     )
@@ -330,7 +373,8 @@ NovaForm.defaultPropTypes = {
 }
 
 NovaForm.contextTypes = {
-  closeCallback: React.PropTypes.func
+  closeCallback: React.PropTypes.func,
+  intl: intlShape
 }
 
 NovaForm.childContextTypes = {

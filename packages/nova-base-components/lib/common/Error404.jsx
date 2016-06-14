@@ -1,9 +1,10 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const Error404 = () => {
   return (
     <div className="error404">
-      <h3>Sorry, we couldn't find what you were looking for.</h3>
+      <h3><FormattedMessage id="app.404"/></h3>
     </div>
   )
 }
