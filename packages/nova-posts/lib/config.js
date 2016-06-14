@@ -1,15 +1,23 @@
+// import { Mongo } from './imports.js';
+
 /**
  * @summary The global namespace/collection for Posts.
  * @namespace Posts
  */
-Posts = new Mongo.Collection("posts");
+
+const PostsStub = {
+  helpers: x => x
+}
+
+/* we need to handle two scenarios: when the package is called as a Meteor package, 
+and when it's called as a NPM package */
+Posts = typeof Mongo !== "undefined" ? new Mongo.Collection("posts") : PostsStub;
 
 /**
  * @summary Posts config namespace
  * @type {Object}
  */
 Posts.config = {};
-
 
 /**
  * @summary Post Statuses
