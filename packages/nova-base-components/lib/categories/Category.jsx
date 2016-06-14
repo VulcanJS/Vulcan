@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js"
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";
 import { Messages, ModalTrigger } from 'meteor/nova:core';
