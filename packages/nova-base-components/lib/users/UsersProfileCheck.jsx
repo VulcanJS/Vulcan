@@ -29,7 +29,7 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => router.push({pathName: '/'})) }><FormattedMessage id="users.log_out"/></a>
+        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => router.push({pathname: '/'})) }><FormattedMessage id="users.log_out"/></a>
       </Modal.Footer>
     </Modal>
   )

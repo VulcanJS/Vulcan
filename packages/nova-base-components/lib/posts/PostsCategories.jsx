@@ -5,7 +5,7 @@ const PostsCategories = ({post}) => {
   return (
     <div className="posts-categories">
       {post.categoriesArray.map(category => 
-        <Link className="posts-category" key={category._id} to={{pathName: "/", query: {cat: category.slug}}}>{category.name}</Link>
+        <Link className="posts-category" key={category._id} to={{pathname: "/", query: {cat: category.slug}}}>{category.name}</Link>
       )}
     </div>
   )

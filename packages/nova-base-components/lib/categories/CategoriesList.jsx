@@ -79,8 +79,9 @@ class CategoriesList extends Component {
     
     const categories = this.props.categories;
     const context = this.context;
-    const currentCategorySlug = this.props.router.location.query.cat;
-
+    const currentQuery = _.clone(this.props.router.location.query);
+    delete currentQuery.cat;
+    
     return (
       <div>
         <DropdownButton 
@@ -90,13 +91,13 @@ class CategoriesList extends Component {
           id="categories-dropdown"
         >
           <div className="category-menu-item dropdown-item">
-            <LinkContainer to={{pathname:"/"}} activeClassName="category-active">
+            <LinkContainer to={{pathname:"/", query: currentQuery}} activeClassName="category-active">
               <MenuItem eventKey={0}>
                 <FormattedMessage id="categories.all"/>
               </MenuItem>
             </LinkContainer>
           </div>
-          {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
+          {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
           {Users.is.admin(this.context.currentUser) ? this.renderCategoryNewButton() : null}
         </DropdownButton>
         <div>

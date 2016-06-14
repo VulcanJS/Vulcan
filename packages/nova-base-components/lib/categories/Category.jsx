@@ -4,6 +4,7 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";
 import { Messages, ModalTrigger } from 'meteor/nova:core';
 import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
 
 class Category extends Component {
 
@@ -18,11 +19,16 @@ class Category extends Component {
 
   render() {
 
-    const {category, index, currentCategorySlug} = this.props;
+    const {category, index, router} = this.props;
+
+    const currentQuery = router.location.query;
+    const currentCategorySlug = router.location.query.cat;
+    const newQuery = _.clone(router.location.query);
+    newQuery.cat = category.slug;
 
     return (
       <div className="category-menu-item dropdown-item">
-        <LinkContainer to={{pathname:"/", query: {cat: category.slug}}} activeClassName="category-active">
+        <LinkContainer to={{pathname:"/", query: newQuery}} activeClassName="category-active">
           <MenuItem 
             eventKey={index+1} 
             key={category._id} 
@@ -48,5 +54,5 @@ Category.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = Category;
-export default Category;
+module.exports = withRouter(Category);
+export default withRouter(Category);

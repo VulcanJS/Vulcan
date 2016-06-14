@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
 
 const PostsViews = (props, context) => {
 
@@ -12,6 +13,8 @@ const PostsViews = (props, context) => {
     views = views.concat(adminViews);
   }
 
+  const query = _.clone(props.router.location.query);
+
   return (
     <div className="posts-views">
       <DropdownButton 
@@ -21,7 +24,7 @@ const PostsViews = (props, context) => {
         id="views-dropdown"
       >
         {views.map(view => 
-          <LinkContainer key={view} to={{pathname: "/", query: {view: view}}} /*to={}*/ className="dropdown-item" activeClassName="posts-view-active">
+          <LinkContainer key={view} to={{pathname: "/", query: {...query, view: view}}} /*to={}*/ className="dropdown-item" activeClassName="posts-view-active">
             <MenuItem>
               <FormattedMessage id={"posts."+view}/>
             </MenuItem>
@@ -53,4 +56,4 @@ PostsViews.contextTypes = {
 
 PostsViews.displayName = "PostsViews";
 
-module.exports = PostsViews;
+module.exports = withRouter(PostsViews);
