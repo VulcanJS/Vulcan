@@ -357,7 +357,7 @@ class NovaForm extends Component{
 }
 
 NovaForm.propTypes = {
-  collection: React.PropTypes.object.isRequired,
+  collection: React.PropTypes.object,
   schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   currentUser: React.PropTypes.object,
