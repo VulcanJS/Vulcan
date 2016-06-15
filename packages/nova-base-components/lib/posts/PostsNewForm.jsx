@@ -15,7 +15,7 @@ const PostsNewForm = (props, context) => {
           currentUser={context.currentUser}
           methodName="posts.new"
           successCallback={(post)=>{
-            this.context.messages.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
+            context.messages.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
             router.push({pathname: Posts.getPageUrl(post)});
           }}
         />
