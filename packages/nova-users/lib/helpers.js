@@ -171,19 +171,6 @@ Users.getSetting = function (user, settingName, defaultValue) {
 Users.helpers({getSetting: function (settingName, defaultValue) {return Users.getSetting(this, settingName, defaultValue);}});
 
 /**
- * @summary Set a user setting
- * @param {Object} user
- * @param {String} settingName
- * @param {Object} defaultValue
- */
-Users.setSetting = function (user, settingName, value) {
-  if (user) {
-    Meteor.call("users.setSetting", user._id, settingName, value);
-  }
-};
-Users.helpers({setSetting: function () {return Users.setSetting(this);}});
-
-/**
  * @summary Check if a user has upvoted a post
  * @param {Object} user
  * @param {Object} post
