@@ -1,3 +1,5 @@
+import Posts from './config'
+
 const adminGroup = {
   name: "admin",
   order: 2

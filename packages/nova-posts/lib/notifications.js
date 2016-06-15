@@ -1,3 +1,5 @@
+import Posts from './config'
+
 Posts.getNotificationProperties = function (data) {
   const post = data.post;
   const postAuthor = Meteor.users.findOne(post.userId);

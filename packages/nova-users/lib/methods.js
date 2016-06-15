@@ -1,3 +1,5 @@
+import Users from './namespace.js';
+
 var completeUserProfile = function (userId, modifier, user) {
 
   Users.update(userId, modifier);

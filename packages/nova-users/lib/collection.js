@@ -1,3 +1,5 @@
+import Users from './namespace.js';
+
 const adminGroup = {
   name: "admin",
   order: 10

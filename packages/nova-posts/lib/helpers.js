@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Posts from './config';
 
 //////////////////
 // Link Helpers //

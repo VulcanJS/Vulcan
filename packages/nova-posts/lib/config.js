@@ -50,3 +50,5 @@ Posts.config.STATUS_APPROVED = 2;
 Posts.config.STATUS_REJECTED = 3;
 Posts.config.STATUS_SPAM = 4;
 Posts.config.STATUS_DELETED = 5;
+
+export default Posts;

@@ -1,3 +1,4 @@
+import Users from './namespace.js';
 import moment from 'moment';
 
 ////////////////////
