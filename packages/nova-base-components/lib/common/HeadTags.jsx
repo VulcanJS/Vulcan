@@ -10,7 +10,7 @@ class HeadTags extends Component {
 		const description = this.props.description ? this.props.description : Telescope.settings.get("tagline");
 
 		let image = Telescope.utils.getSiteUrl() + Telescope.settings.get("logoUrl");
-		if (!!this.prop && !!this.prop.image) {
+		if (!!this.props && !!this.props.image) {
 			image = this.props.image;
 		} else if (!!Telescope.settings.get("siteImage")) {
 			image = Telescope.settings.get("siteImage");
