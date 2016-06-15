@@ -15,6 +15,7 @@ Telescope.VERSION = '0.26.3-nova';
  */
 Telescope.config = {};
 
+
 // ------------------------------------- Schemas -------------------------------- //
 
 SimpleSchema.extendOptions({
@@ -58,4 +59,16 @@ Telescope.subscriptions.preload = function (subscription, args) {
   Telescope.subscriptions.push({name: subscription, arguments: args});
 };
 
+// ------------------------------------- Strings -------------------------------- //
+
 Telescope.strings = {};
+
+// ------------------------------------- Routes -------------------------------- //
+
+Telescope.routes = {
+  routes: [],
+  add(routeOrRouteArray) {
+    const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
+    this.routes = this.routes.concat(addedRoutes);
+  }
+}

@@ -16,30 +16,38 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 //   }
 // };
 
-const AppRoutes = (
-  <Route path="/" component={Telescope.components.App} >
-    <IndexRoute name="posts.list"                               component={Telescope.components.PostsHome} />
-    <Route      name="posts.daily"    path="daily"              component={Telescope.components.PostsDaily} />
-    <Route      name="posts.single"   path="posts/:_id(/:slug)" component={Telescope.components.PostsSingle} />
-    <Route      name="users.single"   path="users/:slug"        component={Telescope.components.UsersSingle} />
-    <Route      name="users.account"  path="account"            component={Telescope.components.UsersAccount} />
-    <Route      name="users.edit"     path="users/:slug/edit"   component={Telescope.components.UsersAccount} />
-  </Route>
-);
+Meteor.startup(() => {
 
-let history;
+  Telescope.routes.add([
+    {name:"posts.daily",    path:"daily",              component:Telescope.components.PostsDaily},
+    {name:"posts.single",   path:"posts/:_id(/:slug)", component:Telescope.components.PostsSingle},
+    {name:"users.single",   path:"users/:slug",        component:Telescope.components.UsersSingle},
+    {name:"users.account",  path:"account",            component:Telescope.components.UsersAccount},
+    {name:"users.edit",     path:"users/:slug/edit",   component:Telescope.components.UsersAccount}
+  ]);
 
-const clientOptions = {}, serverOptions = {};
+  const AppRoutes = {
+    path: '/',
+    component: Telescope.components.App,
+    indexRoute: { name: "posts.list", component: Telescope.components.PostsHome },
+    childRoutes: Telescope.routes.routes
+  }
 
-if (Meteor.isClient) {
-  history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });
-}
+  let history;
 
-if (Meteor.isServer) {
-  history = useNamedRoutes(useRouterHistory(createMemoryHistory))({ routes: AppRoutes });
-}
+  const clientOptions = {}, serverOptions = {};
 
-clientOptions.props = {onUpdate: Events.analyticsRequest};
+  if (Meteor.isClient) {
+    history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });
+  }
 
-// ReactRouterSSR.Run(AppRoutes, {historyHook: () => history}, {historyHook: () => history});
-ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
+  if (Meteor.isServer) {
+    history = useNamedRoutes(useRouterHistory(createMemoryHistory))({ routes: AppRoutes });
+  }
+
+  clientOptions.props = {onUpdate: Events.analyticsRequest};
+
+  // ReactRouterSSR.Run(AppRoutes, {historyHook: () => history}, {historyHook: () => history});
+  ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
+
+});
