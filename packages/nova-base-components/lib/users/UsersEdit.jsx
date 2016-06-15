@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 //import { Messages } from "meteor/nova:core";
 
-const UsersEdit = ({document, currentUser}) => {
+const UsersEdit = ({document, currentUser}, context) => {
 
   const user = document;
   //const label = `Edit profile for ${Users.getDisplayName(user)}`;
@@ -19,7 +19,7 @@ const UsersEdit = ({document, currentUser}) => {
           document={user} 
           methodName="users.edit"
           successCallback={(user)=>{
-            this.context.messages.flash("User updated.", "success");
+            context.messages.flash("User updated.", "success");
           }}
         />
       </div>
