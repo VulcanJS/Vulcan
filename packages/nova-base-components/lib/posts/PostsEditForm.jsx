@@ -51,7 +51,10 @@ class PostsEditForm extends Component{
             // note: the document prop will be passed from DocumentContainer
             collection: Posts,
             currentUser: this.context.currentUser,
-            methodName: "posts.edit"
+            methodName: "posts.edit",
+            successCallback: (post) => { 
+              this.context.messages.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success')
+            }
           }}
         />
         <hr/>

@@ -4,6 +4,7 @@ Telescope.strings.en = {
 
   "posts.new_post": "New Post",
   "posts.edit": "Edit",
+  "posts.edit_success": "Post “{title}” edited.",
   "posts.delete": "Delete",
   "posts.delete_confirm": "Delete post “{title}”?",
   "posts.delete_success": "Post “{title}” deleted.",
