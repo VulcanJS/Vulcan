@@ -25,16 +25,15 @@ class App extends Component {
   }
 
   render() {
-
-    if (this.props.ready) {
-      return (
-        <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
-          <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.children}</Telescope.components.Layout>
-        </IntlProvider>
-      )
-    } else {
-      return <Telescope.components.AppLoading />
-    }
+    return (
+      <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
+        {
+          this.props.ready ? 
+            <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.children}</Telescope.components.Layout> 
+          : <Telescope.components.AppLoading />
+        }
+      </IntlProvider>
+    )
   }
 
 }
