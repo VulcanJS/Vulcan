@@ -52,7 +52,7 @@ class PostsItem extends Component {
         <div className="posts-item-content">
           
           <h3 className="posts-item-title">
-            <Link to={`posts/${post._id}/${post.slug}/`} /*to={{name: "posts.single", params: {_id: post._id, slug: post.slug}}}*/ className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
+            <Link to={`/posts/${post._id}/${post.slug}/`} /*to={{name: "posts.single", params: {_id: post._id, slug: post.slug}}}*/ className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
               {post.title}
             </Link>
             {this.renderCategories()}
