@@ -1,1 +1,0 @@
-Telescope i18n package, used internally. 

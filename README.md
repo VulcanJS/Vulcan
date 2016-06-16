@@ -33,27 +33,61 @@ Note that both versions use the same data format, so you can go back and forth b
 
 ## Getting Started
 
-#### Regular Install
+### First Steps
 
-The recommended way to install Nova is to refer to the [sample project](https://github.com/TelescopeJS/sample-project).
+[Install Meteor](https://www.meteor.com/install):
 
-This will install all required components for you, and make it easy to update them since they'll all be managed through the Meteor package system. 
+```
+curl https://install.meteor.com/ | sh
+```
 
-#### Developer Install
+Clone this repository locally:
 
-You can also clone *this* repo (and then run `npm install` and `meteor`) if you need access to the full codebase. This is only recommended if you want to have easy access to the codebase for reference purposes, or would like to submit PRs back to the project.
+```
+git clone git@github.com:TelescopeJS/Telescope.git
+```
 
-Modifying the core codebase directly is **a very bad idea** as it will make it very hard to keep your customized codebase up to date in the future. 
+Install the necessary NPM packages:
+
+```
+npm install
+```
+
+Then run the app with:
+
+```
+meteor
+```
+
+You'll then be able to access it on [http://localhost:3000](http://localhost:3000).
+
+### Creating An Admin Account
+
+The first account you create (via Log In > Register) will automatically be given admin rights. 
+
+### Deleting Dummy Content
+
+On its first run, Nova seeds the site with a few dummy posts. You can remove them by opening the browser console and calling `Meteor.call('removeGettingStartedContent')` while logged in as admin. 
+
+### Example Custom Package
+
+This repo also includes an example of how to customize Nova using a custom package. To enable the custom package, simply uncomment the line `# my-custom-package` in `.meteor/packages` (remove the `#`). 
 
 ## Updating
 
-#### Regular Install
+#### Updating with Git
 
-If you've used the regular install and are using **remote packages** (your `/packages` directory is empty) you can simply do `meteor update` (if that doesn't work you can also delete your `.meteor/versions` file to force an update). 
+If you've cloned this repo and are using **local packages** (i.e. `nova:core`, `nova:posts`, etc. are in your `/packages` directory) you'll have to pull in the changes from this repo with `git pull origin master`. 
 
-#### Developer Install
+#### Updating with Meteor
 
-If you've cloned this repo and are using **local packages** (i.e. `nova:core`, `nova:posts`, etc. are in your `/packages` directory) you'll have to pull in the changes from this repo via Git. 
+Alternatively, if Meteor can't find a package in your local `/packages` directory it will look for it in the [Atmosphere](http://atmospherejs.com) package directory. This means you can also update the app by following these steps:
+
+- Delete all `nova:*` packages from `/packages` to force Meteor to use remote versions instead. 
+- Run `meteor update`.
+- If that didn't work, delete the `.meteor/versions` file to force an update. 
+
+If you're comfortable with Git workflows the first method is recommended, if not you can use the `meteor update` technique instead. 
 
 #### Upgrading From Older Versions
 
@@ -63,9 +97,7 @@ For local development, an easy way to do that is to simply copy the `.meteor/loc
 
 ## Resources
 
-The best way to get support is [Telescope Meta](http://meta.telescopeapp.org). The  [Telescope Slack Chatroom](http://slack.telescopeapp.org) is also a good place.
-
-You can also check out the [Nova roadmap on Trello](https://trello.com/b/dwPR0LTz/nova-roadmap) to see what needs to be done. 
+The best ways to get support are [Telescope Meta](http://meta.telescopeapp.org) and the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
 
 ## Deployment
 
@@ -73,7 +105,7 @@ The recommended way to deploy Nova is by using [MupX](https://github.com/arunoda
 
 ## Settings
 
-Settings can be configured in your `settings.json` file (although any settings published to the `Telescope.settings.collection` collection will also be taken into account).
+Settings can be configured via the in-app UI (in which case they'll be stored in the Mongo database), or specified in a `settings.json` file. Using the in-app UI is easier, but using `settings.json` is recommended to make deploying easier. Note that settings specified in `settings.json` take priority over those stored in the database.
 
 Settings can be public (meaning they will be published to the client) or private (they will be kept on the server). Public settings should be set on the `public` object. You can find a full example in `sample_settings.json`.
 
@@ -81,6 +113,10 @@ To use your `settings.json` file:
 
 - Development: `meteor --settings settings.json`
 - Production: specify the path to `settings.json` in `mup.json`
+
+## Categories
+
+Just like Settings, you can specify categories either via the in-app UI or via `settings.json`. Note that if you want to delete a category, you'll have to both delete it via the UI and also remove it from `settings.json`. 
 
 ## Social Login
 
@@ -92,6 +128,8 @@ Note: you will need to configure the service's oAuth tokens via the log-in UI, u
 
 ## Packages
 
+Nova's codebase is split across multiple packages, with the philosophy that you should be able to add and remove packages depending on which features you actually need. 
+
 #### Core Packages
 
 These packages are necessary for Nova to run. 
@@ -100,7 +138,6 @@ These packages are necessary for Nova to run.
 | --- | --- |
 | `nova:lib` | Utility functions used by the app; also handles importing most external packages. |
 | `nova:events` | Event tracking.|
-| `nova:i18n` | Internationalization package.|
 | `nova:core` | Import previous core packages. |
 
 #### Optional Packages
@@ -130,7 +167,7 @@ These packages are optional, although they might depend on each other. Note that
 
 #### Customizable Packages
 
-These are the packages that you might need to customize to tweak your app's layout, design, and behavior. You can either clone these packages and modify them directly, or *extend* their contents (see the [Customizing Components](#customizing-components) section.)
+These are the packages that you might commonly need to customize or replace to tweak your app's layout, design, and behavior. You can either clone these packages and modify them directly, or *extend* their contents (see the [Customizing Components](#customizing-components) section.), but you should **not** modify them directly.
 
 | Name | Description |
 | --- | --- |
@@ -138,6 +175,16 @@ These are the packages that you might need to customize to tweak your app's layo
 | `nova:base-styles` | Default styles (includes Bootstrap).|
 | `nova:base-routes` | Default routes.|
 | `nova:email-templates` | Email templates.|
+| `nova:i18n-en-us` | Contains English language strings.|
+
+#### Extra Packages
+
+These packages provide extra features but are not enabled out of the box.
+
+| Name | Description |
+| --- | --- |
+| `nova:forms-tags` | A component for autofilled tags. |
+| `nova:cloudinary` | Automatically upload posts thumbnails to [Cloudinary](http://cloudinary.com).|
 
 #### Debug Packages
 
@@ -403,3 +450,7 @@ If you create a new internationalization package, let us know so we can add it h
 ## Cheatsheet
 
 You can access a dynamically generated cheatsheet of Nova's main functions at [http://localhost:3000/cheatsheet](/cheatsheet) (replace with your own development URL).
+
+## Third-Party Plugins
+
+- [Post By Feed](https://github.com/xavcz/nova-post-by-feed): register RSS feeds that will be fetched every 30 minutes to create new posts automatically.

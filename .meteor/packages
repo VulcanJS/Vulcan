@@ -37,3 +37,7 @@ accounts-twitter
 ############ Debug Packages ############
 
 nova:debug
+
+############ Your Packages ############
+
+# my-custom-package
