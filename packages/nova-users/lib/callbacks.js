@@ -1,3 +1,4 @@
+import Users from './namespace.js';
 import marked from 'marked';
 
 //////////////////////////////////////////////////////

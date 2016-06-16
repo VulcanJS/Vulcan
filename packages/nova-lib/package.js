@@ -38,7 +38,8 @@ Package.onUse(function (api) {
     'jparker:gravatar@0.4.1',
     'tmeasday:publish-counts@0.7.3',
     'meteorhacks:unblock@1.1.0',
-    'kadira:flow-router-ssr@3.13.0',
+    // 'kadira:flow-router-ssr@3.13.0',
+    "reactrouter:react-router-ssr@3.1.3",
     // 'kadira:flow-router@2.12.1',
     'utilities:smart-publications@0.1.4',
     'utilities:smart-methods@0.1.4',
@@ -57,12 +58,12 @@ Package.onUse(function (api) {
     'lib/settings.js',
     'lib/collections.js',
     'lib/deep.js',
-    'lib/deep_extend.js'
+    'lib/deep_extend.js',
+    'lib/intl-polyfill.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/server-config.js',
-    'lib/server/intl-polyfill.js'
+    'lib/server/server-config.js'
   ], ['server']);
 
   api.export([

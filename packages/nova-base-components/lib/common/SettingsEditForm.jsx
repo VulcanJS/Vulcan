@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
-import { Messages } from "meteor/nova:core";
+//import { Messages } from "meteor/nova:core";
 
 class SettingsEditForm extends Component{
 
@@ -23,7 +23,7 @@ class SettingsEditForm extends Component{
             currentUser: this.context.currentUser,
             methodName: "settings.edit",
             successCallback: (category) => {
-              Messages.flash(this.context.intl.formatMessage({id: "settings.edited"}), "success");
+              this.context.messages.flash(this.context.intl.formatMessage({id: "settings.edited"}), "success");
             }
           }}
         />
@@ -34,6 +34,7 @@ class SettingsEditForm extends Component{
 
 SettingsEditForm.contextTypes = {
   currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
   intl: intlShape
 };
 

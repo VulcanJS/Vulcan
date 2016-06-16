@@ -9,7 +9,7 @@
 Comments.getPageUrl = function(comment, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.single", {_id: comment.postId}) + "#"+comment._id;
+  return prefix + "foo" + "#"+comment._id;
 };
 Comments.helpers({getPageUrl: function () {return Comments.getPageUrl(this);}});
 

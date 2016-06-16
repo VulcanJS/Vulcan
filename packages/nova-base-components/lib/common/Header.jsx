@@ -1,5 +1,5 @@
 import React from 'react';
-import { Messages } from "meteor/nova:core";
+//import { Messages } from "meteor/nova:core";
 
 const Header = ({currentUser}) => {
   

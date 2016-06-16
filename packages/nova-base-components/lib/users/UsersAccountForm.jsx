@@ -1,7 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js';
 import { Button, FormControl } from 'react-bootstrap';
-
 import { Accounts } from 'meteor/std:accounts-ui';
 
 const UsersAccountForm = () => {

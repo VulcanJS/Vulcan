@@ -1,7 +1,7 @@
 var areIntlLocalesSupported = require('intl-locales-supported');
 
 var localesMyAppSupports = [
-  Telescope.settings.get("locale")
+  Telescope.settings.get("locale", "en")
 ];
 
 if (global.Intl) {

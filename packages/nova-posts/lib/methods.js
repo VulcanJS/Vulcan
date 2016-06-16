@@ -1,3 +1,5 @@
+import Posts from './config'
+
 /**
  *
  * Post Methods

@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js"
-import Router from "../router.js"
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";
-import { Messages, ModalTrigger } from "meteor/nova:core";
+//import { Messages, ModalTrigger } from 'meteor/nova:core';
+import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
 
 class Category extends Component {
 
@@ -18,20 +18,24 @@ class Category extends Component {
 
   render() {
 
-    const {category, index, currentCategorySlug} = this.props;
+    const {category, index, router} = this.props;
 
-    const categoryClass = classNames("category-menu-item", "dropdown-item", {"category-active": currentCategorySlug === category.slug});
+    const currentQuery = router.location.query;
+    const currentCategorySlug = router.location.query.cat;
+    const newQuery = _.clone(router.location.query);
+    newQuery.cat = category.slug;
 
     return (
-      <div className={categoryClass}>
-        <MenuItem 
-          href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})} 
-          eventKey={index+1} 
-          key={category._id} 
-        >
-          {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
-          {category.name}
-        </MenuItem>
+      <div className="category-menu-item dropdown-item">
+        <LinkContainer to={{pathname:"/", query: newQuery}} activeClassName="category-active">
+          <MenuItem 
+            eventKey={index+1} 
+            key={category._id} 
+          >
+            {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
+            {category.name}
+          </MenuItem>
+        </LinkContainer>
         {Users.is.admin(this.context.currentUser) ? this.renderEdit() : null}
       </div>
     )
@@ -49,5 +53,5 @@ Category.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = Category;
-export default Category;
+module.exports = withRouter(Category);
+export default withRouter(Category);

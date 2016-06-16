@@ -1,3 +1,4 @@
+import Posts from './config'
 import PublicationsUtils from 'meteor/utilities:smart-publications';
 
 Posts.publishedFields = {};

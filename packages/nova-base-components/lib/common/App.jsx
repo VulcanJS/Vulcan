@@ -17,22 +17,23 @@ class App extends Component {
 
     return {
       currentUser: this.props.currentUser,
-      currentRoute: this.props.currentRoute,
+      actions: this.props.actions,
+      events: this.props.events,
+      messages: this.props.messages,
       intl: intl
     };
   }
 
   render() {
-
-    if (this.props.ready) {
-      return (
-        <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
-          <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.content}</Telescope.components.Layout>
-        </IntlProvider>
-      )
-    } else {
-      return <Telescope.components.AppLoading />
-    }
+    return (
+      <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
+        {
+          this.props.ready ? 
+            <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.children}</Telescope.components.Layout> 
+          : <Telescope.components.AppLoading />
+        }
+      </IntlProvider>
+    )
   }
 
 }
@@ -40,12 +41,16 @@ class App extends Component {
 App.propTypes = {
   ready: React.PropTypes.bool,
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object
+  actions: React.PropTypes.object,
+  events: React.PropTypes.object,
+  messages: React.PropTypes.object,
 }
 
 App.childContextTypes = {
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object,
+  actions: React.PropTypes.object,
+  events: React.PropTypes.object,
+  messages: React.PropTypes.object,
   intl: intlShape
 }
 

@@ -18,6 +18,7 @@ PostsNewButton.displayName = "PostsNewButton";
 
 PostsNewButton.contextTypes = {
   currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
   intl: intlShape
 }
 

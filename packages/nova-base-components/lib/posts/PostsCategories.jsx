@@ -1,10 +1,12 @@
 import React from 'react';
-import Router from '../router.js';
+import { Link } from 'react-router';
 
 const PostsCategories = ({post}) => {
   return (
     <div className="posts-categories">
-      {post.categoriesArray.map(category => <a className="posts-category" key={category._id} href={Router.path("posts.list", {}, {cat: category.slug})}>{category.name}</a>)}
+      {post.categoriesArray.map(category => 
+        <Link className="posts-category" key={category._id} to={{pathname: "/", query: {cat: category.slug}}}>{category.name}</Link>
+      )}
     </div>
   )
 };

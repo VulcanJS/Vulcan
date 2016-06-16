@@ -1,3 +1,4 @@
+import Users from './namespace.js';
 import PublicationsUtils from 'meteor/utilities:smart-publications';
 
 Users.publishedFields = {};

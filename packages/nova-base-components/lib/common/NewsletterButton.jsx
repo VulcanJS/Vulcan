@@ -16,7 +16,7 @@ class NewsletterButton extends Component {
     Meteor.call(action, this.context.currentUser, (error, result) => {
       if (error) {
         console.log(error);
-        Messages.flash(error.message, "error");
+        this.context.messages.flash(error.message, "error");
       } else {
         this.props.successCallback(result);
       }
@@ -42,10 +42,9 @@ NewsletterButton.propTypes = {
   successCallback: React.PropTypes.func.isRequired
 };
 
-
-
 NewsletterButton.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object
 }
 
 module.exports = NewsletterButton;

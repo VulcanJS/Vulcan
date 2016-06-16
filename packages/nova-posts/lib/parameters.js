@@ -1,3 +1,4 @@
+import Posts from './config'
 import moment from 'moment';
 
 /**

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Posts from './config';
 
 //////////////////
 // Link Helpers //
@@ -36,22 +37,11 @@ Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute){
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.single", post);
+  return `${prefix}/posts/${post._id}/${post.slug}`;
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
-
-/**
- * @summary Get post edit page URL.
- * @param {String} id
- */
-Posts.getEditUrl = function(post, isAbsolute){
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.edit", post);
-};
-Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
 
 ///////////////////
 // Other Helpers //
@@ -114,7 +104,7 @@ Posts.checkForSameUrl = function (url) {
  * @summary When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(FlowRouter.getParam("_id"));
+  return Posts.findOne("foo");
 };
 
 /**

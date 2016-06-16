@@ -1,3 +1,4 @@
+import Users from './namespace.js';
 import moment from 'moment';
 
 ////////////////////
@@ -67,7 +68,7 @@ Users.getProfileUrl = function (user, isAbsolute) {
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
   if (user.telescope && user.telescope.slug) {
-    return prefix + FlowRouter.path("users.single", {slug: user.telescope.slug});
+    return `${prefix}/users/${user.telescope.slug}`;
   } else {
     return "";
   }
@@ -168,19 +169,6 @@ Users.getSetting = function (user, settingName, defaultValue) {
   }
 };
 Users.helpers({getSetting: function (settingName, defaultValue) {return Users.getSetting(this, settingName, defaultValue);}});
-
-/**
- * @summary Set a user setting
- * @param {Object} user
- * @param {String} settingName
- * @param {Object} defaultValue
- */
-Users.setSetting = function (user, settingName, value) {
-  if (user) {
-    Meteor.call("users.setSetting", user._id, settingName, value);
-  }
-};
-Users.helpers({setSetting: function () {return Users.setSetting(this);}});
 
 /**
  * @summary Check if a user has upvoted a post

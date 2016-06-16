@@ -1,3 +1,5 @@
+import Posts from './config'
+
 const adminGroup = {
   name: "admin",
   order: 2
@@ -7,7 +9,7 @@ const adminGroup = {
  * @summary Posts schema
  * @type {SimpleSchema}
  */
-Posts.schema = new SimpleSchema({
+Posts.schemaJSON = {
   /**
     ID
   */
@@ -226,15 +228,9 @@ Posts.schema = new SimpleSchema({
       collection: () => Meteor.users
     }
   }
-});
+};
 
-// schema transforms
-// Meteor.startup(function(){
-//   // needs to happen after every fields were added
-//   Posts.internationalize();
-// });
-
-/**
- * @summary Attach schema to Posts collection
- */
-Posts.attachSchema(Posts.schema);
+if (typeof SimpleSchema !== "undefined") {
+  Posts.schema = new SimpleSchema(Posts.schemaJSON);
+  Posts.attachSchema(Posts.schema);
+}
