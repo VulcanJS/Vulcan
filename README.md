@@ -120,11 +120,28 @@ Just like Settings, you can specify categories either via the in-app UI or via `
 
 ## Social Login
 
-To add new social login options, just add the relevant package (`accounts-twitter`, `accounts-facebook`, etc.) to your `.meteor/packages` file with (for example):
+To add new social login options, you'll first need to add your API keys to your `settings.json` file. For example:
 
-`meteor add accounts-twitter`
+```
+"oAuth": {
+  "twitter": {
+    "consumerKey": "foo",
+    "secret": "bar"
+  },
+  "facebook": {
+    "clientId": "foo",
+    "secret": "bar"
+  }
+}
+```
 
-Note: you will need to configure the service's oAuth tokens via the log-in UI, using the [service-configuration](https://atmospherejs.com/meteor/service-configuration) package, or directly in the database. 
+(Make sure these are not in the `public` block of `settings.json`)
+
+Then, add the relevant Meteor package:
+
+```
+meteor add accounts-twitter accounts-facebook
+```
 
 ## Packages
 

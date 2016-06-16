@@ -57,6 +57,15 @@
       "order": 10,
       "slug": "testcat3"
     }
-  ]
-
+  ],
+  "oAuth": {
+    "twitter": {
+      "consumerKey": "foo",
+      "secret": "bar"
+    },
+    "facebook": {
+      "clientId": "foo",
+      "secret": "bar"
+    }
+  }
 }
