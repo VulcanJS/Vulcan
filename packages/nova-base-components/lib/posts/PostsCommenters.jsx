@@ -8,7 +8,7 @@ const PostsCommenters = ({post}) => {
         {post.commentersArray.map(user => <Telescope.components.UsersAvatar key={user._id} user={user}/>)}
       </div>
       <div className="posts-commenters-discuss">
-        <Link to={`/posts/${post._id}/${post.slug}/`}>
+        <Link to={Posts.getPageUrl(post)}>
           <Telescope.components.Icon name="comment" />
           <span className="posts-commenters-comments-count">{post.commentCount}</span>
           <span className="sr-only">Comments</span>

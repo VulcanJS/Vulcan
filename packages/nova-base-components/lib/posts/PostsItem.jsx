@@ -52,7 +52,7 @@ class PostsItem extends Component {
         <div className="posts-item-content">
           
           <h3 className="posts-item-title">
-            <Link to={`posts/${post._id}/${post.slug}/`} /*to={{name: "posts.single", params: {_id: post._id, slug: post.slug}}}*/ className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
+            <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
               {post.title}
             </Link>
             {this.renderCategories()}
@@ -62,7 +62,7 @@ class PostsItem extends Component {
             {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
             <div className="posts-item-comments">
-              <Link to={`posts/${post._id}/${post.slug}/`} /*to={{name: "posts.single", params: {_id: post._id, slug: post.slug}}}*/>
+              <Link to={Posts.getPageUrl(post)}>
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
