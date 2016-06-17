@@ -93,7 +93,7 @@ nova:kadira@0.26.3-nova
 nova:lib@0.26.3-nova
 nova:newsletter@0.26.3-nova
 nova:notifications@0.26.3-nova
-nova:posts@0.26.3-nova
+nova:posts@0.26.4-nova
 nova:rss@0.26.3-nova
 nova:search@0.26.3-nova
 nova:settings@0.26.3-nova

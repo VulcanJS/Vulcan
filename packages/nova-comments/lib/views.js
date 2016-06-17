@@ -23,7 +23,7 @@ Comments.views.baseParameters = {
 Comments.views.add("postComments", function (terms) {
   return {
     selector: {postId: terms.postId},
-    options: {limit: 0, sort: {score: -1, postedAt: -1}}
+    options: {limit: 0, sort: {postedAt: -1}}
   };
 });
 

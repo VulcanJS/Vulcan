@@ -19,7 +19,6 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Packages](#packages)
   - [Application Structure](#application-structure)
   - [Files](#files)
-  - [Customizing Components](#customizing-components)
   - [Customizing Emails](#customizing-emails)
   - [Custom Fields](#custom-fields)
   - [Publishing Data](#publishing-data)
@@ -72,6 +71,10 @@ On its first run, Nova seeds the site with a few dummy posts. You can remove the
 ### Example Custom Package
 
 This repo also includes an example of how to customize Nova using a custom package. To enable the custom package, simply uncomment the line `# my-custom-package` in `.meteor/packages` (remove the `#`). 
+
+For more information on customizing Nova, refer to specific sections in this documentation. Note that **you should never customize core files directly** (files in `nova:*` packages). 
+
+Instead, either extend the object you want to customize from your own package, or disable the initial package, clone it, and modify your own copy.
 
 ## Updating
 

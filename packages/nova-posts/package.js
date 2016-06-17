@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:posts",
   summary: "Telescope posts package",
-  version: "0.26.3-nova",
+  version: "0.26.4-nova",
   git: "https://github.com/TelescopeJS/telescope-posts.git"
 });
 
