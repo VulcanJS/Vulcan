@@ -3,9 +3,8 @@ import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-co
 
 const PostsHome = (props, context) => {
 
-  const params = _.isEmpty(props.location.query) ? {view: 'top'} : _.clone(props.location.query);
-  params.listId = "posts.list.main";
-  
+  const defaultView = {view: 'top'};
+  const params = {...defaultView, ...props.location.query, listId: "posts.list.main"};
   const {selector, options} = Posts.parameters.get(params);
 
   return (
