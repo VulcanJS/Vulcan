@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
 
-const PostsHome = (props, context) => {
+class PostsHome extends Component {
 
-  const defaultView = {view: 'top'};
-  const params = {...defaultView, ...props.location.query, listId: "posts.list.main"};
-  const {selector, options} = Posts.parameters.get(params);
+  getDefaultView() {
+    return {view: 'top'}
+  }
+  
+  render() {
 
-  return (
-    <ListContainer 
-      collection={Posts} 
-      publication="posts.list"
-      selector={selector}
-      options={options}
-      terms={params} 
-      joins={Posts.getJoins()}
-      component={Telescope.components.PostsList}
-      cacheSubscription={false}
-      listId={params.listId}
-      limit={Telescope.settings.get("postsPerPage", 10)}
-    />
-  )
+    const params = {...this.getDefaultView(), ...this.props.location.query, listId: "posts.list.main"};
+    const {selector, options} = Posts.parameters.get(params);
 
+    return (
+      <ListContainer 
+        collection={Posts} 
+        publication="posts.list"
+        selector={selector}
+        options={options}
+        terms={params} 
+        joins={Posts.getJoins()}
+        component={Telescope.components.PostsList}
+        cacheSubscription={false}
+        listId={params.listId}
+        limit={Telescope.settings.get("postsPerPage", 10)}
+      />
+    )
+  }
 };
-
-PostsHome.displayName = "PostsHome";
 
 module.exports = PostsHome;
