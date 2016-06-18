@@ -1,7 +1,7 @@
 /*
-  Let's add an international label to the field added in custom_fields
+  Let's add an international label to the field added in custom_fields.js
 */
-Telescope.strings.add({
-  "posts.color": "Color" // collection.field: "Label"
-}, "en"); // define the lang (en, fr, ...)
-
+Telescope.strings.en = {
+  ...Telescope.strings.en, // get all the string translated
+  "posts.color": "Color" // add a new one (collection.field: "Label")
+};

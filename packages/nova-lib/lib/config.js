@@ -61,17 +61,7 @@ Telescope.subscriptions.preload = function (subscription, args) {
 
 // ------------------------------------- Strings -------------------------------- //
 
-Telescope.strings = {
-  transformArrayInObject(arrayOfObj) {
-    let result = {};
-    arrayOfObj.forEach(obj => { result = { ...result, ...obj } });
-    return result;
-  },
-  add(stringOrStringsArray, lang) {
-    const addedStrings = Array.isArray(stringOrStringsArray) ? this.transformArrayInObject(stringOrStringsArray) : stringOrStringsArray;
-    this[lang] = {...this[lang], ...addedStrings};
-  }
-};
+Telescope.strings = {};
 
 // ------------------------------------- Routes -------------------------------- //
 
