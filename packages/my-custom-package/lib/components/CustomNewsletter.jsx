@@ -8,26 +8,20 @@ functions, event handlers, etc.).
 */
 
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 
 class CustomNewsletter extends Telescope.components.Newsletter {
 
   render() {
 
-    const currentUser = this.context.currentUser;
-
-    ({Icon} = Telescope.components);
-
-    if (this.state.showBanner) {
-      return (
+    return this.state.showBanner
+      ? (
         <div className="newsletter">
-          <h4 className="newsletter-tagline">✉️{this.props.headerText}✉️</h4>
+          <h4 className="newsletter-tagline">✉️<FormattedMessage id="newsletter.subscribe_prompt"/>✉️</h4>
           {this.context.currentUser ? this.renderButton() : this.renderForm()}
-          <a onClick={this.dismissBanner} className="newsletter-close"><Icon name="close"/></a>
+          <a onClick={this.dismissBanner} className="newsletter-close"><Telescope.components.Icon name="close"/></a>
         </div>
-      );
-    } else {
-      return null;
-    }
+      ) : null;
   }
 
 }
