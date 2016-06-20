@@ -5,10 +5,11 @@ it the same way.
 */
 
 import React from 'react';
+import { IndexLink } from 'react-router';
 
 const CustomLogo = ({logoUrl, siteTitle}) => {
   return (
-    <h1 className="logo-text"><a href="/">⭐{siteTitle}⭐</a></h1>
+    <h1 className="logo-text"><IndexLink to="/">⭐{siteTitle}⭐</IndexLink></h1>
   )
 }
 

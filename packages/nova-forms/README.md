@@ -117,9 +117,9 @@ If present, the document to edit. If not present, the form will be a “new docu
 
 The current user.
 
-###### `submitCallback()`
+###### `submitCallback(data)`
 
-A callback called on form submission.
+A callback called on form submission on the form data. Should return the `data` object as well.
 
 ###### `successCallback(document)`
 

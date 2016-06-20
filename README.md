@@ -108,7 +108,7 @@ The recommended way to deploy Nova is by using [MupX](https://github.com/arunoda
 
 ## Settings
 
-Settings can be configured via the in-app UI (in which case they'll be stored in the Mongo database), or specified in a `settings.json` file. Using the in-app UI is easier, but using `settings.json` is recommended to make deploying easier. Note that settings specified in `settings.json` take priority over those stored in the database.
+Settings can be configured in your `settings.json` file. For legacy compatibility reasons, settings can also be specified in your database, but note that settings specified in `settings.json` take priority over those stored in the database.
 
 Settings can be public (meaning they will be published to the client) or private (they will be kept on the server). Public settings should be set on the `public` object. You can find a full example in `sample_settings.json`.
 

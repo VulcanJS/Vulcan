@@ -8,39 +8,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 class UsersMenu extends Component {
 
-  constructor() {
-    super();
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.state = {modalOpen: false};
-  }
-
-  openModal() {
-    this.setState({modalOpen: true});
-  }
-
-  closeModal() {
-    this.setState({modalOpen: false});
-  }
-
-  renderSettingsModal() {
-    
-    const SettingsEditForm = Telescope.components.SettingsEditForm;
-
-    return (
-      <Modal show={this.state.modalOpen} onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title><FormattedMessage id="settings.edit"/></Modal.Title>
-        </Modal.Header>        
-        <Modal.Body>
-          <ContextPasser currentUser={this.props.user} messages={this.context.messages} closeCallback={this.closeModal}>
-            <SettingsEditForm/>
-          </ContextPasser>
-        </Modal.Body>
-      </Modal>
-    )
-  }
-
   render() {
 
     const user = this.props.user;
@@ -59,11 +26,9 @@ class UsersMenu extends Component {
             <LinkContainer to={`/account`} /*to={{name: "account"}}*/>
               <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
             </LinkContainer>
-            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal}><FormattedMessage id="settings"/></MenuItem> : null}
             <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}><FormattedMessage id="users.log_out"/></MenuItem>
           </Dropdown.Menu>
         </Dropdown>
-        {this.renderSettingsModal()}
       </div>
     ) 
   }

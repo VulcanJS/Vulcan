@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount} from 'react-mounter';
-
+import { Messages } from 'meteor/nova:core';
 import { IndexRoute, Route, useRouterHistory, browserHistory, createMemoryHistory } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
@@ -45,7 +45,7 @@ Meteor.startup(() => {
     history = useNamedRoutes(useRouterHistory(createMemoryHistory))({ routes: AppRoutes });
   }
 
-  clientOptions.props = {onUpdate: Events.analyticsRequest};
+  clientOptions.props = {onUpdate: () => {Events.analyticsRequest(); Messages.clearSeen();}};
 
   // ReactRouterSSR.Run(AppRoutes, {historyHook: () => history}, {historyHook: () => history});
   ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
