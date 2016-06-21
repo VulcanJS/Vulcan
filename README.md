@@ -15,13 +15,16 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Resources](#resources)
   - [Deployment](#deployment)
   - [Settings](#settings)
+  - [Categories](#categories)
   - [Social Login](#social-login)
   - [Packages](#packages)
   - [Application Structure](#application-structure)
   - [Files](#files)
+  - [Customizing Components](#customizing-components)
   - [Customizing Emails](#customizing-emails)
   - [Custom Fields](#custom-fields)
   - [Publishing Data](#publishing-data)
+  - [Subscribing](#subscribing)
   - [Loading Data](#loading-data)
   - [Callbacks](#callbacks)
   - [Posts Parameters](#posts-parameters)
@@ -381,6 +384,20 @@ For example, here's how the `nova:embedly` adds the `thumbnailUrl, `media`, `sou
 import PublicationUtils from 'meteor/utilities:smart-publications';
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
+```
+
+## Subscribing
+
+If you create your own new subscription, you can tell Nova to preload it (and wait for it to be loaded) with:
+
+```js
+Telescope.subscriptions.preload(subscriptionName, subscriptionArguments);
+```
+
+For example:
+
+```js
+Telescope.subscriptions.preload("posts.featured", {featuredPostId: "foo123"});
 ```
 
 ## Loading Data
