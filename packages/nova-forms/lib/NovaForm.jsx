@@ -18,7 +18,7 @@ import { flatten, deepValue, getEditableFields, getInsertableFields } from './ut
 */
 
 class NovaForm extends Component{
-  
+
   // --------------------------------------------------------------------- //
   // ----------------------------- Constructor --------------------------- //
   // --------------------------------------------------------------------- //
@@ -35,7 +35,7 @@ class NovaForm extends Component{
 
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
-  
+
     this.state = {
       disabled: false,
       errors: [],
@@ -59,7 +59,7 @@ class NovaForm extends Component{
 
     // build fields array by iterating over the list of field names
     let fields = this.getFieldNames().map(fieldName => {
-        
+
       // get schema for the current field
       const fieldSchema = schema[fieldName];
 
@@ -70,7 +70,8 @@ class NovaForm extends Component{
         name: fieldName,
         datatype: fieldSchema.type,
         control: fieldSchema.control,
-        layout: this.props.layout
+        layout: this.props.layout,
+        order: fieldSchema.order
       }
 
       // add label
@@ -78,7 +79,7 @@ class NovaForm extends Component{
       field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
 
       // add value
-      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";  
+      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
       // replace value by prefilled value if value is empty
       if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
@@ -113,12 +114,13 @@ class NovaForm extends Component{
 
     // remove fields where control = "none"
     fields = _.reject(fields, field => field.control === "none");
+    fields = _.sortBy(fields, "order");
 
     // console.log(fields)
 
     // get list of all groups used in current fields
     let groups = _.compact(_.unique(_.pluck(fields, "group")));
-    
+
     // for each group, add relevant fields
     groups = groups.map(group => {
       group.label = group.label || this.context.intl.formatMessage({id: group.name});
@@ -128,8 +130,8 @@ class NovaForm extends Component{
 
     // add default group
     groups = [{
-      name: "default", 
-      label: "default", 
+      name: "default",
+      label: "default",
       order: 0,
       fields: _.filter(fields, field => {return !field.group;})
     }].concat(groups);
@@ -143,7 +145,7 @@ class NovaForm extends Component{
   }
 
   // if a document is being passed, this is an edit form
-  getFormType() { 
+  getFormType() {
     return this.props.document ? "edit" : "new";
   }
 
@@ -218,7 +220,7 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
-  
+
   // add error to state
   throwError(error) {
     this.setState({
@@ -256,7 +258,7 @@ class NovaForm extends Component{
   methodCallback(error, document) {
 
     this.setState({disabled: false});
-    
+
     if (error) { // error
 
       console.log(error)
@@ -283,7 +285,7 @@ class NovaForm extends Component{
 
       // run close callback if it exists in context (i.e. we're inside a modal)
       if (this.context.closeCallback) this.context.closeCallback();
-    
+
     }
   }
 
@@ -297,7 +299,7 @@ class NovaForm extends Component{
     if (this.props.submitCallback) {
       data = this.props.submitCallback(data);
     }
-    
+
     if (this.getFormType() === "new") { // new document form
 
       // remove any empty properties
@@ -317,11 +319,11 @@ class NovaForm extends Component{
 
       // put all keys with data on $set
       const set = _.compactObject(flatten(data));
-      
+
       // put all keys without data on $unset
       const unsetKeys = _.difference(fields, _.keys(set));
       const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
-      
+
       // build modifier
       const modifier = {$set: set};
       if (!_.isEmpty(unset)) modifier.$unset = unset;
@@ -337,15 +339,15 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
 
   render() {
-    
+
     const fieldGroups = this.getFieldGroups();
 
     return (
       <div className={"document-"+this.getFormType()}>
-        <Formsy.Form 
-          onSubmit={this.submitForm} 
-          disabled={this.state.disabled} 
-          ref="form" 
+        <Formsy.Form
+          onSubmit={this.submitForm}
+          disabled={this.state.disabled}
+          ref="form"
         >
           {this.renderErrors()}
           {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValue={this.updateCurrentValue} />)}
