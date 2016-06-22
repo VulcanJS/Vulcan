@@ -37,7 +37,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
   var emailProperties = {
     secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
     accentColor: Telescope.settings.get('accentColor', '#DD3416'),
-    siteName: Telescope.settings.get('title'),
+    siteName: Telescope.settings.get('title', "Nova"),
     tagline: Telescope.settings.get('tagline'),
     siteUrl: Telescope.utils.getSiteUrl(),
     body: htmlContent,

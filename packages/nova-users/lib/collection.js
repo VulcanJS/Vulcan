@@ -66,7 +66,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedComments: {
     type: [Telescope.schemas.votes],
-    publish: true,
+    publish: false,
     optional: true
   },
   /**
@@ -74,7 +74,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   downvotedPosts: {
     type: [Telescope.schemas.votes],
-    publish: true,
+    publish: false,
     optional: true
   },
   /**
@@ -166,7 +166,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedComments: {
     type: [Telescope.schemas.votes],
-    publish: true,
+    publish: false,
     optional: true
   },
   /**
@@ -174,7 +174,7 @@ Telescope.schemas.userData = new SimpleSchema({
   */
   upvotedPosts: {
     type: [Telescope.schemas.votes],
-    publish: true,
+    publish: false,
     optional: true
   },
   /**
