@@ -4,6 +4,7 @@ Telescope.strings.en = {
 
   "posts.new_post": "New Post",
   "posts.edit": "Edit",
+  "posts.edit_success": "Post “{title}” edited.",
   "posts.delete": "Delete",
   "posts.delete_confirm": "Delete post “{title}”?",
   "posts.delete_success": "Post “{title}” deleted.",
@@ -102,6 +103,10 @@ Telescope.strings.en = {
   "settings.facebookPage": "Facebook Page",
   "settings.googleAnalyticsId": "Google Analytics ID",
   "settings.locale": "Locale",
+  "settings.requireViewInvite": "Require View Invite",
+  "settings.requirePostInvite": "Require Post Invite",
+  "settings.requirePostsApproval": "Require Posts Approval",
+  "settings.scoreUpdateInterval": "Score Update Interval",
   
   "app.loading": "Loading…",
   "app.404": "Sorry, we couldn't find what you were looking for.",

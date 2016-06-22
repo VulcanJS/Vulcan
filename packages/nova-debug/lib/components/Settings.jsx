@@ -30,7 +30,7 @@ const Settings = props => {
             </tr>
           </thead>
           <tbody>
-            {_.map(Telescope.settings.collection.simpleSchema()._schema, renderSetting)}
+            {_.map(_.omit(Telescope.settings.collection.simpleSchema()._schema, (value, key) => key.indexOf("$") >= 0), renderSetting)}
           </tbody>
         </table>
 

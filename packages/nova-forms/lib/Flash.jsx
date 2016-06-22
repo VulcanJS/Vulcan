@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import { Alert } from 'react-bootstrap';
 
-const Flash = () => {
+const Flash = ({message}) => {
   
-  let type = this.props.message.type;
+  let type = message.type;
   type = type === "error" ? "danger" : type; // if type is "error", use "danger" instead
 
   return (
     <Alert className="flash-message" bsStyle={type}>
-      {this.props.message.content}
+      {message.content}
     </Alert>
   )
 }

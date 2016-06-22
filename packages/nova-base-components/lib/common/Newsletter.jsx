@@ -2,11 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
-import Actions from "../actions.js";
+//import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
-
-import { Messages } from "meteor/nova:core";
+//import { Messages } from "meteor/nova:core";
 
 
 class Newsletter extends Component {
@@ -37,10 +36,10 @@ class Newsletter extends Component {
   }
 
   subscribeEmail(data) {
-    Actions.call("newsletter.addEmail", data.email, (error, result) => {
+    this.context.actions.call("newsletter.addEmail", data.email, (error, result) => {
       if (error) {
         console.log(error);
-        Messages.flash(error.message, "error");
+        this.context.messages.flash(error.message, "error");
       } else {
         this.successCallbackSubscription(result);
       }
@@ -48,7 +47,7 @@ class Newsletter extends Component {
   }
 
   successCallbackSubscription(result) {
-    Messages.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
+    this.context.messages.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
     this.dismissBanner();
   }
 
@@ -59,6 +58,14 @@ class Newsletter extends Component {
 
     // set cookie
     Cookie.save('showBanner', "no");
+  }
+
+  renderButton() {
+    return <Telescope.components.NewsletterButton
+              successCallback={() => this.successCallbackSubscription}
+              subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
+              user={this.context.currentUser}
+            />
   }
 
   renderForm() {
@@ -77,20 +84,12 @@ class Newsletter extends Component {
   }
 
   render() {
-    const currentUser = this.context.currentUser;
 
     return this.state.showBanner
       ? (
         <div className="newsletter">
           <h4 className="newsletter-tagline"><FormattedMessage id="newsletter.subscribe_prompt"/></h4>
-          {this.context.currentUser
-            ? <Telescope.components.NewsletterButton
-                successCallback={() => this.successCallbackSubscription}
-                subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
-                user={currentUser}
-              />
-            : this.renderForm()
-          }
+          {this.context.currentUser ? this.renderButton() : this.renderForm()}
           <a onClick={this.dismissBanner} className="newsletter-close"><Telescope.components.Icon name="close"/></a>
         </div>
       ) : null;
@@ -99,6 +98,8 @@ class Newsletter extends Component {
 
 Newsletter.contextTypes = {
   currentUser: React.PropTypes.object,
+  actions: React.PropTypes.object,
+  messages: React.PropTypes.object,
   intl: intlShape
 };
 

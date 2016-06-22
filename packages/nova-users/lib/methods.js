@@ -1,3 +1,5 @@
+import Users from './namespace.js';
+
 var completeUserProfile = function (userId, modifier, user) {
 
   Users.update(userId, modifier);
@@ -31,6 +33,16 @@ Users.methods.edit = (userId, modifier, user) => {
   // ------------------------------ After Update ------------------------------ //
   return Users.findOne(userId);
   
+}
+
+Users.methods.setSetting = (userId, settingName, value) => {
+  // all settings should be in the user.telescope namespace, so add "telescope." if needed
+  var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
+
+  var modifier = {$set: {}};
+  modifier.$set[field] = value;
+
+  Users.update(userId, modifier);
 }
 
 Meteor.methods({
@@ -152,13 +164,7 @@ Meteor.methods({
       throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
     }
 
-    // all settings should be in the user.telescope namespace, so add "telescope." if needed
-    var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
-
-    var modifier = {$set: {}};
-    modifier.$set[field] = value;
-
-    Users.update(userId, modifier);
+    Users.methods.setSetting(userId, settingName, value);
 
   }
 

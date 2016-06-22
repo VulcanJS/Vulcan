@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import { ModalTrigger, ContextPasser } from "meteor/nova:core";
+import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -41,7 +41,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesEditForm category={category}/>
           </ContextPasser>
         </Modal.Body>
@@ -57,7 +57,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesNewForm/>
           </ContextPasser>
         </Modal.Body>
@@ -116,7 +116,8 @@ CategoriesList.propTypes = {
 }
 
 CategoriesList.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
 };
 
 module.exports = withRouter(CategoriesList);

@@ -26,7 +26,8 @@ Package.onUse(function (api) {
     'tracker',
     'ecmascript@0.4.2',
     'react-meteor-data@0.2.8',
-
+    'service-configuration',
+    
     // Third-party packages
 
     'aldeed:simple-schema@1.5.3',
@@ -58,12 +59,12 @@ Package.onUse(function (api) {
     'lib/settings.js',
     'lib/collections.js',
     'lib/deep.js',
-    'lib/deep_extend.js'
+    'lib/deep_extend.js',
+    'lib/intl-polyfill.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/server-config.js',
-    'lib/server/intl-polyfill.js'
+    'lib/server/oauth-config.js'
   ], ['server']);
 
   api.export([

@@ -294,7 +294,9 @@ class NovaForm extends Component{
     const fields = this.getFieldNames();
 
     // if there's a submit callback, run it
-    if (this.props.submitCallback) this.props.submitCallback();
+    if (this.props.submitCallback) {
+      data = this.props.submitCallback(data);
+    }
     
     if (this.getFormType() === "new") { // new document form
 
@@ -357,7 +359,7 @@ class NovaForm extends Component{
 }
 
 NovaForm.propTypes = {
-  collection: React.PropTypes.object.isRequired,
+  collection: React.PropTypes.object,
   schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   currentUser: React.PropTypes.object,

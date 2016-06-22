@@ -49,8 +49,8 @@ class CommentsItem extends Component{
     
     if (window.confirm(deleteConfirmMessage)) {
       Meteor.call('comments.deleteById', comment._id, (error, result) => {
-        Messages.flash(deleteSuccessMessage, "success");
-        Events.track("comment deleted", {'_id': comment._id});
+        this.context.messages.flash(deleteSuccessMessage, "success");
+        this.context.events.track("comment deleted", {'_id': comment._id});
       });
     }
 
@@ -121,6 +121,8 @@ CommentsItem.propTypes = {
 }
 
 CommentsItem.contextTypes = {
+  messages: React.PropTypes.object,
+  events: React.PropTypes.object,
   intl: intlShape
 }
 

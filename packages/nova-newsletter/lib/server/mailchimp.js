@@ -132,7 +132,7 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if (!!user) {
-        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+        Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', true);
       }
 
       console.log("// User subscribed");
@@ -175,7 +175,7 @@ MailChimpList.remove = (user) => {
       var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
 
       // mark user as unsubscribed
-      Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
+      Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', false);
 
       console.log("// User unsubscribed");
 

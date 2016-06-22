@@ -1,7 +1,5 @@
 accounts-base@1.2.7
-accounts-oauth@1.1.12
 accounts-password@1.1.8
-accounts-twitter@1.0.9
 aldeed:collection2@2.9.1
 aldeed:collection2-core@1.1.1
 aldeed:schema-deny@1.0.1
@@ -17,7 +15,6 @@ blaze@2.1.7
 blaze-tools@1.0.8
 boilerplate-generator@1.0.8
 caching-compiler@1.0.4
-caching-html-compiler@1.0.6
 callback-hook@1.0.8
 check@1.2.1
 chuangbo:cookie@1.1.0
@@ -96,7 +93,7 @@ nova:kadira@0.26.3-nova
 nova:lib@0.26.3-nova
 nova:newsletter@0.26.3-nova
 nova:notifications@0.26.3-nova
-nova:posts@0.26.3-nova
+nova:posts@0.26.4-nova
 nova:rss@0.26.3-nova
 nova:search@0.26.3-nova
 nova:settings@0.26.3-nova
@@ -105,8 +102,6 @@ nova:users@0.26.3-nova
 nova:voting@0.26.3-nova
 npm-bcrypt@0.8.5
 npm-mongo@1.4.43
-oauth@1.1.10
-oauth1@1.1.9
 observe-sequence@1.0.11
 ordered-dict@1.0.7
 peerlibrary:assert@0.2.5
@@ -137,17 +132,14 @@ standard-minifier-css@1.0.6
 standard-minifier-js@1.0.6
 standard-minifiers@1.0.6
 std:accounts-ui@1.2.6
-templating@1.1.9
-templating-tools@1.0.4
 tmeasday:check-npm-versions@0.3.1
 tmeasday:publish-counts@0.7.3
 tracker@1.0.13
-twitter@1.1.9
 ui@1.0.11
 underscore@1.0.8
 url@1.0.9
 utilities:react-list-container@0.1.12
-utilities:smart-methods@0.1.4
+utilities:smart-methods@0.1.5
 utilities:smart-publications@0.1.4
 webapp@1.2.8
 webapp-hashing@1.0.9
