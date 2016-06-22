@@ -137,11 +137,11 @@ Campaign.build = function (postsArray) {
 
   // 2. Wrap posts HTML in newsletter template
   var newsletterHTML = Telescope.email.getTemplate('newsletter')({
-    siteName: Telescope.settings.get('title'),
+    siteName: Telescope.settings.get('title', "Nova"),
     date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });
-
+  
   // 3. wrap newsletter HTML in email wrapper template
   var emailHTML = Telescope.email.buildTemplate(newsletterHTML);
 

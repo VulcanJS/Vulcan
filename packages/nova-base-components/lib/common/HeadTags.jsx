@@ -6,7 +6,7 @@ class HeadTags extends Component {
 		DocHead.removeDocHeadAddedTags();
 
 		const url = this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
-		const title = this.props.title ? this.props.title : Telescope.settings.get("title");
+		const title = this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
 		const description = this.props.description ? this.props.description : Telescope.settings.get("tagline");
 
 		let image = Telescope.utils.getSiteUrl() + Telescope.settings.get("logoUrl");

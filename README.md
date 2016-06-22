@@ -283,6 +283,8 @@ Telescope.components.Logo = CustomLogo;
 
 Components are generally defined as functional stateless components, unless they contain extra logic (lifecycle methods, event handlers, etc.) in which case they'll be defined as ES6 classes. 
 
+For components defined as ES6 classes, make sure you `extend` the original component. This will let you pick and choose which methods you actually need to replace, while inheriting the ones you didn't specify in your new component. 
+
 You can make the override at any point, as long as it happens before the `<Telescope.components.Logo/>` component is called from a parent component. 
 
 ### Clone & Modify
@@ -491,3 +493,5 @@ You can access a dynamically generated cheatsheet of Nova's main functions at [h
 ## Third-Party Plugins
 
 - [Post By Feed](https://github.com/xavcz/nova-post-by-feed): register RSS feeds that will be fetched every 30 minutes to create new posts automatically.
+- [Nova-Slack](https://github.com/xavcz/nova-slack): A package that automatically sends your posts as messages to any connected Slack Team.
+
