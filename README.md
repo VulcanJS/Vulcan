@@ -283,7 +283,7 @@ Telescope.components.Logo = CustomLogo;
 
 Components are generally defined as functional stateless components, unless they contain extra logic (lifecycle methods, event handlers, etc.) in which case they'll be defined as ES6 classes. 
 
-Nova components are resolved at render. So you just need to make the override anytime before the `<Logo/>` component is called from a parent component. 
+You can make the override at any point, as long as it happens before the `<Telescope.components.Logo/>` component is called from a parent component. 
 
 ### Clone & Modify
 
