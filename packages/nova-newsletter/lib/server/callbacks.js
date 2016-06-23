@@ -1,4 +1,4 @@
-import MailChimpList from './mailchimp.js';
+import MailChimpList from './mailchimp/mailchimp_list.js';
 import Users from 'meteor/nova:users';
 
 function subscribeUserOnProfileCompletion (user) {

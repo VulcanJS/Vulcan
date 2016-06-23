@@ -1,21 +1,22 @@
 import NovaEmail from 'meteor/nova:email';
+import Newsletter from "../namespace.js";
 
-// Campaign object is only available on server, so define actions on server only
+// Extend email objects with server-only properties
 
-import Campaign from "./campaign.js";
+NovaEmail.emails.newsletter = {
 
-NovaEmail.emails.newsletter = Object.assign(NovaEmail.emails.newsletter, {
+  ...NovaEmail.emails.newsletter, 
 
-  getCampaign() {
-    return Campaign.build(Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', 5)));
+  getNewsletter() {
+    return Newsletter.build(Newsletter.getPosts(Telescope.settings.get('postsPerNewsletter', 5)));
   },
 
   subject() {
-    return this.getCampaign().subject;
+    return this.getNewsletter().subject;
   },
 
   getTestHTML() {
-    var campaign = this.getCampaign();
+    var campaign = this.getNewsletter();
     var newsletterEnabled = '<div class="newsletter-enabled"><strong>Newsletter Enabled:</strong> '+Telescope.settings.get('enableNewsletter', true)+'</div>';
     var mailChimpAPIKey = '<div class="mailChimpAPIKey"><strong>mailChimpAPIKey:</strong> '+(typeof Telescope.settings.get('mailChimpAPIKey') !== "undefined")+'</div>';
     var mailChimpListId = '<div class="mailChimpListId"><strong>mailChimpListId:</strong> '+(typeof Telescope.settings.get('mailChimpListId') !== "undefined")+'</div>';
@@ -24,9 +25,11 @@ NovaEmail.emails.newsletter = Object.assign(NovaEmail.emails.newsletter, {
     return newsletterEnabled+mailChimpAPIKey+mailChimpListId+campaignSubject+campaignSchedule+campaign.html;
   }
 
-});
+};
 
-NovaEmail.emails.newsletterConfirmation = Object.assign(NovaEmail.emails.newsletterConfirmation, {
+NovaEmail.emails.newsletterConfirmation = {
+
+  ...NovaEmail.emails.newsletterConfirmation, 
 
   getTestHTML() {
     return NovaEmail.getTemplate('newsletterConfirmation')({
@@ -36,4 +39,4 @@ NovaEmail.emails.newsletterConfirmation = Object.assign(NovaEmail.emails.newslet
     });
   }
 
-});
+};

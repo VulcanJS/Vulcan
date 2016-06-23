@@ -10,9 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-
     // Nova packages
-
     'nova:core@0.26.3-nova',
     'nova:posts@0.26.3-nova',
     'nova:users@0.26.3-nova',
@@ -20,7 +18,6 @@ Package.onUse(function (api) {
     'nova:share@0.26.3-nova',
 
     // third-party packages
-
     'fortawesome:fontawesome@4.5.0',
     'tmeasday:check-npm-versions@0.3.1',
     'std:accounts-ui@1.2.6',
@@ -28,9 +25,7 @@ Package.onUse(function (api) {
     'kadira:dochead@1.5.0'
   ]);
 
-  api.addFiles([
-    'lib/config.js',
-    'lib/components.js'
-  ], ['client', 'server']);
-
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
+  
 });

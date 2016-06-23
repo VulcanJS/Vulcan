@@ -1,4 +1,4 @@
-import Campaign from "./campaign.js";
+import Newsletter from '../namespace.js';
 
 SyncedCron.options = {
   log: false,
@@ -44,7 +44,7 @@ var addJob = function () {
     job: function() {
       // only schedule newsletter campaigns in production
       if (process.env.NODE_ENV === "production") {
-        Campaign.scheduleNextWithMailChimp();
+        Newsletter.scheduleNextWithMailChimp();
       }
     }
   });

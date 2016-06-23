@@ -11,9 +11,7 @@ Package.onUse(function (api) {
 
   api.use(['nova:core@0.26.3-nova']);
 
-  api.addFiles([
-    'lib/server/api.js', 
-    'lib/server/routes.js'
-  ], ['server']);
+  api.mainModule("lib/server.js", "server");
+  // api.mainModule("lib/client.js", "client");
 
 });

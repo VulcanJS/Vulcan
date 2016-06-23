@@ -1,3 +1,4 @@
+// Mailchimp API wrapper (get rid of it eventually)
 // see https://github.com/MiroHibler/meteor-mailchimp/blob/master/lib/server/mailchimp.js
 
 import MailChimpNPM from 'mailchimp';
@@ -12,7 +13,7 @@ var getSettingsValueFor = function ( key ) {
     }
   };
 
-MailChimp = function ( apiKey, options ) {
+const MailChimp = function ( apiKey, options ) {
   var mailChimpOptions = {
       'apiKey' : apiKey || getSettingsValueFor( 'apiKey' ),
       'options': options || {
@@ -58,32 +59,34 @@ MailChimp.prototype.call = function ( section, method, options, callback ) {
   }
 };
 
-Meteor.methods({
-  'MailChimp': function ( clientOptions, section, method, options ) {
-    check( clientOptions, Object );
-    check( section, String );
-    check( method, String );
-    check( options, Object );
+// Meteor.methods({
+//   'MailChimp': function ( clientOptions, section, method, options ) {
+//     check( clientOptions, Object );
+//     check( section, String );
+//     check( method, String );
+//     check( options, Object );
 
-    var mailChimp,
-      mailChimpOptions = _.defaults( {}, options );
+//     var mailChimp,
+//       mailChimpOptions = _.defaults( {}, options );
 
-    try {
-      mailChimp = new MailChimp( clientOptions.apiKey, clientOptions.options );
-    } catch ( error ) {
-      throw new Meteor.Error( error.error, error.reason, error.details );
-    }
+//     try {
+//       mailChimp = new MailChimp( clientOptions.apiKey, clientOptions.options );
+//     } catch ( error ) {
+//       throw new Meteor.Error( error.error, error.reason, error.details );
+//     }
 
-    switch ( section ) {
-      case 'lists':
-        if ( !mailChimpOptions.id || mailChimpOptions.id === '' ) {
-          mailChimpOptions.id = getSettingsValueFor( 'listId' );
-        }
+//     switch ( section ) {
+//       case 'lists':
+//         if ( !mailChimpOptions.id || mailChimpOptions.id === '' ) {
+//           mailChimpOptions.id = getSettingsValueFor( 'listId' );
+//         }
 
-        break;
-      default:
-    }
+//         break;
+//       default:
+//     }
 
-    return mailChimp.call( section, method, mailChimpOptions );
-  }
-});
+//     return mailChimp.call( section, method, mailChimpOptions );
+//   }
+// });
+
+export default MailChimp;

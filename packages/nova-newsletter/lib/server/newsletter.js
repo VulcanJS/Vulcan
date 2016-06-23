@@ -4,6 +4,9 @@ import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 import Categories from "meteor/nova:categories";
 import NovaEmail from 'meteor/nova:email';
+import Newsletter from '../namespace.js';
+
+const defaultPosts = 5;
 
 // create new "campaign" view for all posts from the past X days that haven't been scheduled yet
 Posts.views.add("campaign", function (terms) {
@@ -21,20 +24,18 @@ Posts.views.add("campaign", function (terms) {
   };
 });
 
-const Campaign = {};
-
 /**
  * @summary Return an array containing the latest n posts that can be sent in a newsletter
  * @param {Number} postsCount
  */
-Campaign.getPosts = function (postsCount) {
+Newsletter.getPosts = function (postsCount) {
 
   // look for last scheduled campaign in the database
-  var lastCampaign = SyncedCron._collection.findOne({name: 'scheduleNewsletter'}, {sort: {finishedAt: -1}, limit: 1});
+  var lastNewsletter = SyncedCron._collection.findOne({name: 'scheduleNewsletter'}, {sort: {finishedAt: -1}, limit: 1});
 
   // if there is a last campaign and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
   var lastWeek = moment().subtract(7, 'days');
-  var after = (lastCampaign && moment(lastCampaign.finishedAt).isAfter(lastWeek)) ? lastCampaign.finishedAt : lastWeek.toDate();
+  var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.toDate();
   
   // get parameters using "campaign" view
   var params = Posts.parameters.get({
@@ -47,10 +48,10 @@ Campaign.getPosts = function (postsCount) {
 
 /**
  * @summary Build a newsletter campaign from an array of posts
- * (Called from Campaign.scheduleNextWithMailChimp)
+ * (Called from Newsletter.scheduleNextWithMailChimp)
  * @param {Array} postsArray
  */
-Campaign.build = function (postsArray) {
+Newsletter.build = function (postsArray) {
   var postsHTML = '', subject = '';
 
   // 1. Iterate through posts and pass each of them through a handlebars template
@@ -157,6 +158,3 @@ Campaign.build = function (postsArray) {
   
   return campaign;
 };
-
-export default Campaign;
-module.exports = Campaign;

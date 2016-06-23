@@ -1,15 +1,15 @@
-import Campaign from "./campaign.js";
-import MailChimpList from "./mailchimp.js";
+import Newsletter from "../namespace.js";
+import MailChimpList from "./mailchimp/mailchimp_list.js";
 import Users from 'meteor/nova:users';
 
 Meteor.methods({
-  sendCampaign: function () {
+  'newsletter.send': function () {
     if(Users.is.adminById(this.userId))
-      return Campaign.scheduleNextWithMailChimp(false);
+      return Newsletter.scheduleNextWithMailChimp(false);
   },
-  testCampaign: function () {
+  'newsletter.test': function () {
     if(Users.is.adminById(this.userId))
-      return Campaign.scheduleNextWithMailChimp(true);
+      return Newsletter.scheduleNextWithMailChimp(true);
   },
   'newsletter.addUser'(user){
     if (!user || !Users.can.editById(this.userId, user)) {
