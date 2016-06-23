@@ -28,11 +28,18 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-    'lib/routes.jsx'
+    'lib/routes.jsx',
+    'lib/globals.js'
   ], ['client', 'server']);
 
   api.addFiles([
     'lib/server/methods.js'
   ], ['server']);
+
+  api.export([
+    'Posts',
+    'Comments',
+    'Users'
+  ], ['client', 'server']);
 
 });
