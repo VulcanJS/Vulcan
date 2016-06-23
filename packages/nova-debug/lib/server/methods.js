@@ -1,8 +1,9 @@
+import NovaEmail from 'meteor/nova:email';
 
 Meteor.methods({
   testEmail: function (emailName) {
     
-    const email = Telescope.email.emails[emailName];
+    const email = NovaEmail.emails[emailName];
     
     if(Users.is.adminById(this.userId)){
 
@@ -22,14 +23,14 @@ Meteor.methods({
         properties = email.getProperties(testObject);
 
         // then apply email template to properties, and wrap it with buildTemplate
-        html = Telescope.email.buildTemplate(Telescope.email.getTemplate(email.template)(properties));
+        html = NovaEmail.buildTemplate(NovaEmail.getTemplate(email.template)(properties));
 
       }
 
       // get subject
       const subject = "[Test] " + email.subject.bind(email)(properties);
 
-      Telescope.email.send (Telescope.settings.get('defaultEmail'), subject, html)
+      NovaEmail.send (Telescope.settings.get('defaultEmail'), subject, html)
  
       return subject;
     

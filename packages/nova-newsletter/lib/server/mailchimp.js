@@ -4,6 +4,7 @@ import Campaign from "./campaign.js";
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import NovaEmail from 'meteor/nova:email';
 
 const defaultPosts = 5;
 
@@ -78,12 +79,12 @@ Campaign.scheduleWithMailChimp = function (campaign, isTest) {
         var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
 
       // send confirmation email
-      var confirmationHtml = Telescope.email.getTemplate('newsletterConfirmation')({
+      var confirmationHtml = NovaEmail.getTemplate('newsletterConfirmation')({
         time: scheduledTime,
         newsletterLink: mailchimpCampaign.archive_url,
         subject: subject
       });
-      Telescope.email.send(defaultEmail, 'Newsletter scheduled', Telescope.email.buildTemplate(confirmationHtml));
+      NovaEmail.send(defaultEmail, 'Newsletter scheduled', NovaEmail.buildTemplate(confirmationHtml));
 
     } catch (error) {
       console.log(error);

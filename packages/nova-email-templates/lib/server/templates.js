@@ -1,6 +1,6 @@
-// import Email from 'meteor/nova:email';
+import NovaEmail from 'meteor/nova:email';
 
-Telescope.email.addTemplates({
+NovaEmail.addTemplates({
   test:                     Assets.getText("lib/server/emails/common/test.handlebars"),
   wrapper:                  Assets.getText("lib/server/emails/common/wrapper.handlebars"),
   newPost:                  Assets.getText("lib/server/emails/posts/newPost.handlebars"),

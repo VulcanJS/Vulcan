@@ -1,4 +1,6 @@
-_.forEach(Telescope.email.emails, (email, key) => {
+import NovaEmail from 'meteor/nova:email';
+
+_.forEach(NovaEmail.emails, (email, key) => {
 
   // template live preview routes
   Picker.route(email.path, (params, req, res) => {
@@ -19,7 +21,7 @@ _.forEach(Telescope.email.emails, (email, key) => {
       const properties = email.getProperties(testObject);
 
       // then apply email template to properties, and wrap it with buildTemplate
-      html = Telescope.email.buildTemplate(Telescope.email.getTemplate(email.template)(properties));
+      html = NovaEmail.buildTemplate(NovaEmail.getTemplate(email.template)(properties));
 
     }
 
@@ -30,7 +32,7 @@ _.forEach(Telescope.email.emails, (email, key) => {
 
   // raw template
   Picker.route("/email/template/:template", (params, req, res) => {
-    res.end(Telescope.email.templates[params.template]);
+    res.end(NovaEmail.templates[params.template]);
   });
 
 });

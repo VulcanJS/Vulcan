@@ -1,6 +1,7 @@
+import NovaEmail from 'meteor/nova:email';
 // email test routes (make available to client & server)
 
-Telescope.email.addEmails({
+NovaEmail.addEmails({
 
   newsletter: {
     template: "newsletter",

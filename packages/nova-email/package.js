@@ -13,10 +13,7 @@ Package.onUse(function (api) {
     'nova:core@0.26.3-nova'
   ]);
 
-  api.addFiles([
-    'lib/namespace.js'
-  ], ['client', 'server']);
-
-  api.mainModule('lib/server/email.js', ['server']);
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
 
 });

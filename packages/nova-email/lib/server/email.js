@@ -1,22 +1,23 @@
+import NovaEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
 
-Telescope.email.templates = {};
+NovaEmail.templates = {};
 
-Telescope.email.addTemplates = function (templates) {
-  _.extend(Telescope.email.templates, templates);
+NovaEmail.addTemplates = function (templates) {
+  _.extend(NovaEmail.templates, templates);
 };
 
 // for template "foo", check if "custom_foo" exists. If it does, use it instead
-Telescope.email.getTemplate = function (templateName) {
+NovaEmail.getTemplate = function (templateName) {
 
   var template = templateName;
 
   // note: template prefixes are disabled
   // go through prefixes and keep the last one (if any) that points to a valid template
   // Telescope.config.customPrefixes.forEach(function (prefix) {
-  //   if(typeof Telescope.email.templates[prefix+templateName] === 'string'){
+  //   if(typeof NovaEmail.templates[prefix+templateName] === 'string'){
   //     template = prefix + templateName;
   //   }
   // });
@@ -24,15 +25,15 @@ Telescope.email.getTemplate = function (templateName) {
   // return Handlebars.templates[template];
 
   // console.log(templateName)
-  // console.log(Telescope.email.templates[template])
+  // console.log(NovaEmail.templates[template])
 
-  return Handlebars.compile(Telescope.email.templates[template], {
+  return Handlebars.compile(NovaEmail.templates[template], {
     noEscape: true
   });
 
 };
 
-Telescope.email.buildTemplate = function (htmlContent) {
+NovaEmail.buildTemplate = function (htmlContent) {
 
   var emailProperties = {
     secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
@@ -49,7 +50,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
     logoWidth: Telescope.settings.get('logoWidth')
   };
 
-  var emailHTML = Telescope.email.getTemplate("wrapper")(emailProperties);
+  var emailHTML = NovaEmail.getTemplate("wrapper")(emailProperties);
 
   var inlinedHTML = Juice(emailHTML, {preserveMediaQueries: true});
 
@@ -58,7 +59,7 @@ Telescope.email.buildTemplate = function (htmlContent) {
   return doctype+inlinedHTML;
 };
 
-Telescope.email.send = function(to, subject, html, text){
+NovaEmail.send = function(to, subject, html, text){
 
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
@@ -94,11 +95,11 @@ Telescope.email.send = function(to, subject, html, text){
   return email;
 };
 
-Telescope.email.buildAndSend = function (to, subject, template, properties) {
-  var html = Telescope.email.buildTemplate(Telescope.email.getTemplate(template)(properties));
-  return Telescope.email.send (to, subject, html);
+NovaEmail.buildAndSend = function (to, subject, template, properties) {
+  var html = NovaEmail.buildTemplate(NovaEmail.getTemplate(template)(properties));
+  return NovaEmail.send (to, subject, html);
 };
 
-Telescope.email.buildAndSendHTML = function (to, subject, html) {
-  return Telescope.email.send (to, subject, Telescope.email.buildTemplate(html));
+NovaEmail.buildAndSendHTML = function (to, subject, html) {
+  return NovaEmail.send (to, subject, NovaEmail.buildTemplate(html));
 };

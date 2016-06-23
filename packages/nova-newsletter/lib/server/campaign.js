@@ -3,8 +3,7 @@ import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 import Categories from "meteor/nova:categories";
-
-// import Email from 'meteor/nova:email';
+import NovaEmail from 'meteor/nova:email';
 
 // create new "campaign" view for all posts from the past X days that haven't been scheduled yet
 Posts.views.add("campaign", function (terms) {
@@ -136,18 +135,18 @@ Campaign.build = function (postsArray) {
     }
     // console.log(properties)
     // generate post item HTML and add it to the postsHTML string
-    postsHTML += Telescope.email.getTemplate('postItem')(properties);
+    postsHTML += NovaEmail.getTemplate('postItem')(properties);
   });
 
   // 2. Wrap posts HTML in newsletter template
-  var newsletterHTML = Telescope.email.getTemplate('newsletter')({
+  var newsletterHTML = NovaEmail.getTemplate('newsletter')({
     siteName: Telescope.settings.get('title', "Nova"),
     date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });
   
   // 3. wrap newsletter HTML in email wrapper template
-  var emailHTML = Telescope.email.buildTemplate(newsletterHTML);
+  var emailHTML = NovaEmail.buildTemplate(newsletterHTML);
 
   // 4. build campaign object and return it
   var campaign = {

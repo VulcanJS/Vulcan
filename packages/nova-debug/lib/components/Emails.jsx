@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
 import { Messages } from "meteor/nova:core";
+import NovaEmail from 'meteor/nova:email';
 
 const Loading = Telescope.components.Loading;
 
@@ -56,7 +57,7 @@ Email.propTypes = {
 
 const Emails = props => {
 
-  const emails = Telescope.email.emails;
+  const emails = NovaEmail.emails;
 
   return (
     <div className="emails">

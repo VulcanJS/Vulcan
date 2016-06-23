@@ -1,8 +1,10 @@
+import NovaEmail from 'meteor/nova:email';
+
 // Campaign object is only available on server, so define actions on server only
 
 import Campaign from "./campaign.js";
 
-Telescope.email.emails.newsletter = Object.assign(Telescope.email.emails.newsletter, {
+NovaEmail.emails.newsletter = Object.assign(NovaEmail.emails.newsletter, {
 
   getCampaign() {
     return Campaign.build(Campaign.getPosts(Telescope.settings.get('postsPerNewsletter', 5)));
@@ -24,10 +26,10 @@ Telescope.email.emails.newsletter = Object.assign(Telescope.email.emails.newslet
 
 });
 
-Telescope.email.emails.newsletterConfirmation = Object.assign(Telescope.email.emails.newsletterConfirmation, {
+NovaEmail.emails.newsletterConfirmation = Object.assign(NovaEmail.emails.newsletterConfirmation, {
 
   getTestHTML() {
-    return Telescope.email.getTemplate('newsletterConfirmation')({
+    return NovaEmail.getTemplate('newsletterConfirmation')({
       time: 'January 1st, 1901',
       newsletterLink: 'http://example.com',
       subject: 'Lorem ipsum dolor sit amet'
