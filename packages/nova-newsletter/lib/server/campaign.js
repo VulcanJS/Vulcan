@@ -2,6 +2,7 @@ import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
+import Categories from "meteor/nova:categories";
 
 // import Email from 'meteor/nova:email';
 

@@ -14,6 +14,7 @@ Package.onUse(function (api) {
     'nova:posts@0.26.3-nova',
     'nova:comments@0.26.3-nova',
     'nova:users@0.26.3-nova',
+    'nova:categories@0.26.3-nova',
     'nova:email@0.26.3-nova'
   ]);
 

@@ -1,5 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import Categories from "../collection.js";
 
 Meteor.publish('categories', function() {
   if(Users.can.viewById(this.userId)){

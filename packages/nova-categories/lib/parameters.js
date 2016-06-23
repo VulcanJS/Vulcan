@@ -1,3 +1,5 @@
+import Categories from "./collection.js";
+
 // Category Parameter
 // Add a "categories" property to terms which can be used to filter *all* existing Posts views. 
 function addCategoryParameter (parameters, terms) {

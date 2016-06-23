@@ -1,4 +1,5 @@
 import Posts from "meteor/nova:posts";
+import Categories from "./collection.js";
 
 // generate slug on insert
 Categories.before.insert(function (userId, doc) {

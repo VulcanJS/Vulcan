@@ -5,6 +5,7 @@ import moment from 'moment';
 import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
+import Categories from "meteor/nova:categories";
 
 class CustomPostsItem extends Telescope.components.PostsItem {
 
