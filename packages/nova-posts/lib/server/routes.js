@@ -1,21 +1,4 @@
-var increasePostClicks = function(postId, ip){
-
-  var clickEvent = {
-    name: 'click',
-    properties: {
-      postId: postId,
-      ip: ip
-    }
-  };
-
-  // make sure this IP hasn't previously clicked on this post
-  var existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
-
-  if(!existingClickEvent){
-    Events.log(clickEvent);
-    Posts.update(postId, { $inc: { clickCount: 1 }});
-  }
-};
+import Posts from '../namespace.js';
 
 Picker.route('/out', function(params, req, res, next) {
   var query = params.query;
@@ -23,7 +6,7 @@ Picker.route('/out', function(params, req, res, next) {
     var post = Posts.findOne({url: query.url});
     if (post) {
       var ip = req.connection.remoteAddress;
-      increasePostClicks(post._id, ip);
+      Posts.methods.increaseClicks(post._id, ip);
       res.writeHead(302, {'Location': query.url});
       res.end();
     } else {

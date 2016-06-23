@@ -28,22 +28,25 @@ Package.onUse(function (api) {
   ], ['client', 'server'], {weak: true});
   
   api.addFiles([
-    'lib/config.js',
-    'lib/collection.js',
-    'lib/parameters.js',
-    'lib/notifications.js',
-    'lib/views.js',
-    'lib/helpers.js',
-    'lib/published_fields.js',
-    'lib/callbacks.js',
-    'lib/emails.js',
-    'lib/methods.js'
+    // 'lib/namespace.js',
+    // 'lib/collection.js',
+    // 'lib/parameters.js',
+    // 'lib/notifications.js',
+    // 'lib/views.js',
+    // 'lib/helpers.js',
+    // 'lib/published_fields.js',
+    // 'lib/callbacks.js',
+    // 'lib/emails.js',
+    // 'lib/methods.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+    'lib/server/routes.js'
   ], ['server']);
 
+  api.mainModule("lib/export.js", "server");
+  api.mainModule("lib/export.js", "client");
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
   // var languagesPaths = languages.map(function (language) {
@@ -51,8 +54,8 @@ Package.onUse(function (api) {
   // });
   // api.addFiles(languagesPaths, ["client", "server"]);
 
-  api.export([
-    'Posts'
-  ]);
+  // api.export([
+  //   'Posts'
+  // ]);
 
 });

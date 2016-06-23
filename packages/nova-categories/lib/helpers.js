@@ -1,3 +1,4 @@
+import Posts from "meteor/nova:posts";
 
 /**
  * @summary Get all of a category's parents

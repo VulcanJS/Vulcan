@@ -1,4 +1,4 @@
-import Posts from './config'
+import Posts from './namespace.js'
 
 /**
  * @summary Post views are filters used for subscribing to and viewing posts

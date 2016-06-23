@@ -1,4 +1,5 @@
 import marked from 'marked';
+import Posts from "meteor/nova:posts";
 
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //
@@ -57,6 +58,10 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 ### comments.edit.sync
 
 ### comments.edit.async
+
+### users.remove.async
+
+- UsersRemoveDeleteComments
 
 */
 
@@ -277,3 +282,16 @@ Telescope.callbacks.add("comments.edit.method", CommentsEditSubmittedPropertiesC
 
 // ------------------------------------- comments.edit.async -------------------------------- //
 
+
+
+// ------------------------------------- users.remove.async -------------------------------- //
+
+function UsersRemoveDeleteComments (user, options) {
+  if (options.deleteComments) {
+    var deletedComments = Comments.remove({userId: userId});
+  } else {
+    // not sure if anything should be done in that scenario yet
+    // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
+  }
+}
+Telescope.callbacks.add("users.remove.async", UsersRemoveDeleteComments);

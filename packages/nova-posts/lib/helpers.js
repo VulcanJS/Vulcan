@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Posts from './config';
+import Posts from './namespace.js';
 
 //////////////////
 // Link Helpers //
@@ -127,3 +127,36 @@ Posts.getThumbnailUrl = (post) => {
   }
 };
 Posts.helpers({ getThumbnailUrl() { return Posts.getThumbnailUrl(this); } });
+
+///////////////////
+// Users Helpers //
+///////////////////
+
+/**
+ * @summary Check if a given user can view a specific post
+ * @param {Object} user - can be undefined!
+ * @param {Object} post
+ */
+Users.can.viewPost = function (user, post) {
+
+  if (Users.is.admin(user)) {
+    return true;
+  } else {
+
+    switch (post.status) {
+
+      case Posts.config.STATUS_APPROVED:
+        return Users.can.view(user);
+      
+      case Posts.config.STATUS_REJECTED:
+      case Posts.config.STATUS_SPAM:
+      case Posts.config.STATUS_PENDING: 
+        return Users.can.view(user) && Users.is.owner(user, post);
+      
+      case Posts.config.STATUS_DELETED:
+        return false;
+    
+    }
+  }
+}
+Users.helpers({canViewPost: function () {return Users.can.viewPost(this, post);}});

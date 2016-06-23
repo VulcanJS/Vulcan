@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
+import Posts from "meteor/nova:posts";
 
 class CustomPostsItem extends Telescope.components.PostsItem {
 

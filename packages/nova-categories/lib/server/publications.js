@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 Meteor.publish('categories', function() {
   if(Users.can.viewById(this.userId)){
     var categories = Categories.find();

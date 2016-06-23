@@ -1,5 +1,7 @@
 import { Avatar } from 'meteor/nova:core';
 import moment from 'moment';
+import Posts from "meteor/nova:posts";
+
 // import Email from 'meteor/nova:email';
 
 // create new "campaign" view for all posts from the past X days that haven't been scheduled yet

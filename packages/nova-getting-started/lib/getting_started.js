@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 Users.addField({
   fieldName: 'telescope.isDummy',
   fieldSchema: {

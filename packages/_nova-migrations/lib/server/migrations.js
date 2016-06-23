@@ -1,4 +1,5 @@
 import marked from 'marked';
+import Posts from "meteor/nova:posts";
 
 // TODO: switch over to Tom's migration package.
 

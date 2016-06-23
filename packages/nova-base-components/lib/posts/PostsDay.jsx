@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { ListContainer } from "meteor/utilities:react-list-container";
 import moment from 'moment';
+import Posts from "meteor/nova:posts";
 
 class PostsDay extends Component {
 

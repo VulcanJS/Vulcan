@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 serveAPI = function(terms){
   var posts = [];
 

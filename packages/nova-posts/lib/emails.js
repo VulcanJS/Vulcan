@@ -1,3 +1,5 @@
+import Posts from './namespace.js';
+
 const getPost = (postId) => {
   return typeof Posts.findOne(postId) === "undefined" ? {post: Posts.findOne()} : {post: Posts.findOne(postId)};
 };

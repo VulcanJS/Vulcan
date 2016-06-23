@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 // generate slug on insert
 Categories.before.insert(function (userId, doc) {
   // if no slug has been provided, generate one

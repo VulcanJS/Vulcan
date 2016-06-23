@@ -1,4 +1,4 @@
-import Posts from './config'
+import Posts from './namespace.js'
 import marked from 'marked';
 
 //////////////////////////////////////////////////////
@@ -91,6 +91,10 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 ### posts.approve.async
 
 - PostsApprovedNotification
+
+### users.remove.async
+
+- UsersRemoveDeletePosts
 
 */
 
@@ -345,3 +349,15 @@ function PostsApprovedNotification (post) {
   }
 }
 Telescope.callbacks.add("posts.approve.async", PostsApprovedNotification);
+
+// ------------------------------------- users.remove.async -------------------------------- //
+
+function UsersRemoveDeletePosts (user, options) {
+  if (options.deletePosts) {
+    var deletedPosts = Posts.remove({userId: userId});
+  } else {
+    // not sure if anything should be done in that scenario yet
+    // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
+  }
+}
+Telescope.callbacks.add("users.remove.async", UsersRemoveDeletePosts);

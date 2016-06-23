@@ -11,7 +11,7 @@ const PostsStub = {
 
 /* we need to handle two scenarios: when the package is called as a Meteor package, 
 and when it's called as a NPM package */
-Posts = typeof Mongo !== "undefined" ? new Mongo.Collection("posts") : PostsStub;
+const Posts = typeof Mongo !== "undefined" ? new Mongo.Collection("posts") : PostsStub;
 
 /**
  * @summary Posts config namespace

@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 getEmbedlyData = function (url) {
   var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';

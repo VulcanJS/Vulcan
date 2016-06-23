@@ -1,4 +1,4 @@
-import Posts from './config'
+import Posts from './namespace.js'
 
 /**
  *
@@ -46,6 +46,30 @@ Posts.methods.edit = function (postId, modifier, post) {
   Telescope.callbacks.runAsync("posts.edit.async", Posts.findOne(postId), post);
 
   return Posts.findOne(postId);
+};
+
+/**
+ * @summary Increase the number of clicks on a post
+ * @param {string} postId – the ID of the post being edited
+ * @param {string} ip – the IP of the current user
+ */
+Posts.methods.increaseClicks = (postId, ip) => {
+
+  var clickEvent = {
+    name: 'click',
+    properties: {
+      postId: postId,
+      ip: ip
+    }
+  };
+
+  // make sure this IP hasn't previously clicked on this post
+  var existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
+
+  if(!existingClickEvent){
+    Events.log(clickEvent);
+    Posts.update(postId, { $inc: { clickCount: 1 }});
+  }
 };
 
 // ------------------------------------------------------------------------------------------- //
@@ -177,7 +201,7 @@ Meteor.methods({
    * @isMethod true
    * @param {String} postId - the id of the post
    */
-  'posts.deleteById': function(postId) {
+  'posts.remove': function(postId) {
 
     check(postId, String);
 
@@ -199,7 +223,7 @@ Meteor.methods({
     // delete post
     Posts.remove(postId);
 
-    Telescope.callbacks.runAsync("postDeleteAsync", post);
+    Telescope.callbacks.runAsync("posts.remove.async", post);
 
   },
 

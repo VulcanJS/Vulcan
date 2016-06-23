@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 Meteor.methods({
   "categories.deleteById": function (categoryId) {
     

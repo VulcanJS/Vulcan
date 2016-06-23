@@ -4,6 +4,7 @@ import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
 //import { Messages } from "meteor/nova:core";
 //import Actions from "../actions.js";
+import Posts from "meteor/nova:posts";
 
 class PostsEditForm extends Component{
 
@@ -18,7 +19,7 @@ class PostsEditForm extends Component{
     const deletePostSuccess = this.context.intl.formatMessage({id: "posts.delete_success"}, {title: post.title});
 
     if (window.confirm(deletePostConfirm)) { 
-      this.context.actions.call('posts.deleteById', post._id, (error, result) => {
+      this.context.actions.call('posts.remove', post._id, (error, result) => {
         this.context.messages.flash(deletePostSuccess, "success");
         this.context.events.track("post deleted", {'_id': post._id});
       });

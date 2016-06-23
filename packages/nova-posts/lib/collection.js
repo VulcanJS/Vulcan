@@ -1,4 +1,4 @@
-import Posts from './config'
+import Posts from './namespace.js';
 
 const adminGroup = {
   name: "admin",

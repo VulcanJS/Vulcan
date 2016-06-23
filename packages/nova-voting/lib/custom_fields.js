@@ -1,4 +1,5 @@
 import PublicationUtils from 'meteor/utilities:smart-publications';
+import Posts from "meteor/nova:posts";
 
 // ------------------------------------- Posts -------------------------------- //
 

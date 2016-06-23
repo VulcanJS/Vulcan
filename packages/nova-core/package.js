@@ -34,8 +34,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    'lib/server/start.js',
-    'lib/server/routes.js'
+    'lib/server/start.js'
   ], ['server']);
 
   api.mainModule("lib/export.js", "server");

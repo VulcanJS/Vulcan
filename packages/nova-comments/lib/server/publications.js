@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 Comments._ensureIndex({postId: 1});
 Comments._ensureIndex({parentCommentId: 1});
 

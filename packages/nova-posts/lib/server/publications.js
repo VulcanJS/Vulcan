@@ -1,3 +1,4 @@
+import Posts from '../namespace.js';
 import { CursorCounts } from "meteor/utilities:react-list-container";
 
 Posts._ensureIndex({"status": 1, "postedAt": 1});

@@ -1,4 +1,5 @@
 import React from 'react';
+import Posts from "meteor/nova:posts";
 
 const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
 

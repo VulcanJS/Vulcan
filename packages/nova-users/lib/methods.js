@@ -12,10 +12,16 @@ var completeUserProfile = function (userId, modifier, user) {
 
 Users.methods = {};
 
+/**
+ * @summary Edit a user in the database
+ * @param {string} userId – the ID of the user being edited
+ * @param {Object} modifier – the modifier object
+ * @param {Object} user - the current user object
+ */
 Users.methods.edit = (userId, modifier, user) => {
   
   if (typeof user === "undefined") {
-    user = Posts.findOne(userId);
+    user = Users.findOne(userId);
   }
 
   // ------------------------------ Callbacks ------------------------------ //
@@ -128,23 +134,15 @@ Meteor.methods({
 
   },
 
-  'users.remove'(userId, removePosts) {
+  'users.remove'(userId, options) {
 
     if (Users.is.adminById(this.userId)) {
 
-      removePosts = (typeof removePosts === "undefined") ? false : removePosts;
+      const user = Users.findOne(userId);
 
       Meteor.users.remove(userId);
 
-      if (removePosts) {
-        var deletedPosts = Posts.remove({userId: userId});
-        var deletedComments = Comments.remove({userId: userId});
-        return "Deleted "+deletedPosts+" posts and "+deletedComments+" comments";
-      } else {
-        // not sure if anything should be done in that scenario yet
-        // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
-        // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
-      }
+      Telescope.callbacks.runAsync("users.remove.async", user, options);
     
     }
 

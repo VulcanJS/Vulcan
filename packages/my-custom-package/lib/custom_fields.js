@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 /*
 Let's assign a color to each post (why? cause we want to, that's why).
 We'll do that by adding a custom field to the Posts collection.
