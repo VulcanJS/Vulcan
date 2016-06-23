@@ -1,4 +1,5 @@
 import MailChimpList from './mailchimp.js';
+import Users from 'meteor/nova:users';
 
 function subscribeUserOnProfileCompletion (user) {
   if (!!Telescope.settings.get('autoSubscribe') && !!Users.getEmail(user)) {

@@ -1,4 +1,5 @@
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 Meteor.methods({
   "categories.deleteById": function (categoryId) {

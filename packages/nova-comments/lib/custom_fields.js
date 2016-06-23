@@ -1,6 +1,6 @@
 import PublicationUtils from 'meteor/utilities:smart-publications';
 import Posts from "meteor/nova:posts";
-import Comments from './collection.js';
+import Users from "meteor/nova:users";
 
 Posts.addField([
   /**

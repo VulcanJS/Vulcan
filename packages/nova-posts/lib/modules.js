@@ -1,5 +1,6 @@
 import Posts from './collection.js';
 
+import './schema.js';
 import './parameters.js';
 import './notifications.js';
 import './views.js';

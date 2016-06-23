@@ -4,6 +4,7 @@ import classNames from "classnames";
 //import { Messages, ModalTrigger } from 'meteor/nova:core';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
+import Users from 'meteor/nova:users';
 
 class Category extends Component {
 

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Users from 'meteor/nova:users';
 
 const UsersName = ({user}) => <a className="users-name" href={Users.getProfileUrl(user)}>{Users.getDisplayName(user)}</a>
 

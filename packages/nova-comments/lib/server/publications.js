@@ -1,4 +1,5 @@
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 Comments._ensureIndex({postId: 1});
 Comments._ensureIndex({parentCommentId: 1});

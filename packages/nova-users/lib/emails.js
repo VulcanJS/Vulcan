@@ -1,3 +1,5 @@
+import Users from './collection.js';
+
 const getUser = (userId) => {
   return typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
 };

@@ -1,5 +1,6 @@
 import Posts from './collection.js'
 import marked from 'marked';
+import Users from 'meteor/nova:users';
 
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //

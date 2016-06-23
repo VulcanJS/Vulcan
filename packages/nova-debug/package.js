@@ -11,14 +11,15 @@ Package.onUse(function (api) {
 
   api.use([
 
+    'fourseven:scss@3.4.1',
+
     // Nova packages
 
     'nova:core@0.26.3-nova',
     'nova:posts@0.26.3-nova',
     'nova:users@0.26.3-nova',
-    'nova:comments@0.26.3-nova',
-    
-    'fourseven:scss@3.4.1'
+    'nova:email@0.26.3-nova',
+    'nova:comments@0.26.3-nova'
 
   ]);
 
@@ -30,6 +31,8 @@ Package.onUse(function (api) {
     'lib/routes.jsx'
   ], ['client', 'server']);
 
-
+  api.addFiles([
+    'lib/server/methods.js'
+  ], ['server']);
 
 });

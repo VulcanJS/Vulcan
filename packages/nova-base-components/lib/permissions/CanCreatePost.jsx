@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import Users from 'meteor/nova:users';
 
 const CanCreatePost = (props, context) => {
 

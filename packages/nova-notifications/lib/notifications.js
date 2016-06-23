@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 // import Email from 'meteor/nova:email';
 
 Telescope.notifications = {};

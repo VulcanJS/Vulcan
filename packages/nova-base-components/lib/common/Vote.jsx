@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 //import Actions from "../actions.js";
 //import { Messages } from "meteor/nova:core";
 import classNames from 'classnames';
+import Users from 'meteor/nova:users';
 
 class Vote extends Component {
 

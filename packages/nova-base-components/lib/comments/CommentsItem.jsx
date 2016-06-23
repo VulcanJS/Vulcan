@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
+import Users from 'meteor/nova:users';
 
 class CommentsItem extends Component{
 

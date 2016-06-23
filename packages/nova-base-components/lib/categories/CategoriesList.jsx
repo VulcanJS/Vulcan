@@ -4,6 +4,7 @@ import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
 import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
+import Users from 'meteor/nova:users';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 

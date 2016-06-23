@@ -3,6 +3,7 @@ import htmlToText from 'html-to-text';
 import Campaign from "./campaign.js";
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 const defaultPosts = 5;
 

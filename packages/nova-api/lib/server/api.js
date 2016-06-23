@@ -1,5 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
+import Users from 'meteor/nova:users';
 
 serveAPI = function(terms){
   var posts = [];

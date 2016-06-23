@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 const isInSettingsJSON = function () {
   // settings can either be in settings json's public, or in the special object we publish only for admins for private settings
   return typeof Telescope.settings.getFromJSON(this.name) !== "undefined" || typeof Telescope.settings.settingsJSON[this.name] !== "undefined";

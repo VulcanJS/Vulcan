@@ -1,5 +1,6 @@
 import Campaign from "./campaign.js";
 import MailChimpList from "./mailchimp.js";
+import Users from 'meteor/nova:users';
 
 Meteor.methods({
   sendCampaign: function () {

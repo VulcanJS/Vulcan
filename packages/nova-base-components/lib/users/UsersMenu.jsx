@@ -5,6 +5,7 @@ import { Accounts } from 'meteor/std:accounts-ui';
 import { Modal, Dropdown, MenuItem } from 'react-bootstrap';
 import { ContextPasser } from "meteor/nova:core";
 import { LinkContainer } from 'react-router-bootstrap';
+import Users from 'meteor/nova:users';
 
 class UsersMenu extends Component {
 

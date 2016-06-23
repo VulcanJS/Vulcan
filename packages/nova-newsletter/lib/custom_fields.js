@@ -1,5 +1,6 @@
 import NewsletterSubscribe from './components/NewsletterSubscribe.jsx';
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 Posts.addField({
   fieldName: 'scheduledAt',

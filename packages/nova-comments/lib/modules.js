@@ -1,5 +1,6 @@
 import Comments from './collection.js';
 
+import './schema.js';
 import './methods.js';
 import './callbacks.js';
 import './views.js';

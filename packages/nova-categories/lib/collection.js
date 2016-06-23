@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 Categories = new Mongo.Collection("categories");
 
 // category schema

@@ -1,4 +1,5 @@
 import Posts from './collection.js'
+import Users from 'meteor/nova:users';
 
 /**
  *

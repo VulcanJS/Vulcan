@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ListContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 const UsersProfile = ({user, currentUser}) => {
 

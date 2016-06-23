@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 Telescope.settings.collection.smartMethods({
   editName: "settings.edit"
 });

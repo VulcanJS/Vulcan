@@ -1,5 +1,6 @@
 import cloudinary from "cloudinary";
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 const Cloudinary = cloudinary.v2;
 

@@ -1,7 +1,7 @@
-import { Avatar } from 'meteor/nova:core';
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
+import Users from 'meteor/nova:users';
 
 // import Email from 'meteor/nova:email';
 
@@ -70,7 +70,7 @@ Campaign.build = function (postsArray) {
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
       date: moment(post.postedAt).format("MMMM D YYYY"),
-      authorAvatarUrl: Avatar.getUrl(postUser)
+      authorAvatarUrl: Users.avatar.getUrl(postUser)
     });
 
     // if post author's avatar returns an error, remove it from properties object
@@ -97,7 +97,7 @@ Campaign.build = function (postsArray) {
         // add properties to comment
         comment.body = Telescope.utils.trimHTML(comment.htmlBody, 20);
         comment.authorProfileUrl = Users.getProfileUrl(user, true);
-        comment.authorAvatarUrl = Avatar.getUrl(user);
+        comment.authorAvatarUrl = Users.avatar.getUrl(user);
 
         try {
           HTTP.get(comment.authorAvatarUrl);

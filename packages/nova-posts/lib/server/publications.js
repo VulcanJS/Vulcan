@@ -1,5 +1,6 @@
 import Posts from '../collection.js';
 // import Comments from "meteor/nova:comments";
+import Users from 'meteor/nova:users';
 
 Posts._ensureIndex({"status": 1, "postedAt": 1});
 

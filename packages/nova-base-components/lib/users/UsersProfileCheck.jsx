@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Modal } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
+import Users from 'meteor/nova:users';
 
 const UsersProfileCheckModal = ({currentUser, show, router}) => {
 

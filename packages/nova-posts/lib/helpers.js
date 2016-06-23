@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Posts from './collection.js';
+import Users from 'meteor/nova:users';
 
 //////////////////
 // Link Helpers //

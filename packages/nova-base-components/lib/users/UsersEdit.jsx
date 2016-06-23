@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 //import { Messages } from "meteor/nova:core";
+import Users from 'meteor/nova:users';
 
 const UsersEdit = ({document, currentUser}, context) => {
 

@@ -6,7 +6,7 @@ import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
 //import { Messages } from "meteor/nova:core";
-
+import Users from 'meteor/nova:users';
 
 class Newsletter extends Component {
 

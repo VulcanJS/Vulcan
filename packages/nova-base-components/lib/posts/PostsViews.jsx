@@ -3,6 +3,7 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
+import Users from 'meteor/nova:users';
 
 const PostsViews = (props, context) => {
 

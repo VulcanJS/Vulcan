@@ -1,4 +1,4 @@
-import Users from './namespace.js';
+import Users from './collection.js';
 
 // note: using collection helpers here is probably a bad idea, 
 // because they'll throw an error when the user is undefined

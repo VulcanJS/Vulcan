@@ -1,8 +1,10 @@
+import Users from './collection.js';
+
 // var _ = require('underscore');
 
 // import Gravatar from 'gravatar';
 
-var Avatar = {
+Users.avatar = {
 
   // Default functionality. You can override these options by calling
   // Avater.setOptions (do not set this.options directly)
@@ -273,7 +275,4 @@ var Avatar = {
 };
 
 // This will be replaced if the user calls setOptions in their own code
-Avatar.setOptions({});
-
-module.exports = Avatar;
-export default Avatar;
+Users.avatar.setOptions({});

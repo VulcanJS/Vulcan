@@ -1,4 +1,5 @@
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 /*
 Let's assign a color to each post (why? cause we want to, that's why).

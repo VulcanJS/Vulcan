@@ -1,4 +1,4 @@
-import Users from './namespace.js';
+import Users from './collection.js';
 
 var completeUserProfile = function (userId, modifier, user) {
 
