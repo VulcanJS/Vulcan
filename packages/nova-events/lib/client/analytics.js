@@ -1,3 +1,5 @@
+import Events from '../collection.js';
+
 Events.analyticsRequest = function() {
   // Google Analytics
   if (typeof window.ga !== 'undefined'){

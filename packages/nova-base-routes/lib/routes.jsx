@@ -6,6 +6,7 @@ import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
 // import useNamedRoutes from 'use-named-routes';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
+import Events from "meteor/nova:events";
 
 // // ------------------------------------- Other -------------------------------- //
 

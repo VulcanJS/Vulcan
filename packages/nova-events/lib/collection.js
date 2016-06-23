@@ -1,4 +1,4 @@
-Events = new Mongo.Collection('events');
+const Events = new Mongo.Collection('events');
 
 Events.schema = new SimpleSchema({
   createdAt: {
@@ -62,3 +62,5 @@ Events.track = function(event, properties){
   //   }
   // }
 };
+
+export default Events;
