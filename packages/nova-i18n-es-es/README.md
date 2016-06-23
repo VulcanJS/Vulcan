@@ -1,1 +1,1 @@
-Nova i18n en_US package.
+Nova i18n es_ES package.
