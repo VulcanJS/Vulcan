@@ -1,6 +1,7 @@
 import { Avatar } from 'meteor/nova:core';
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
+import Comments from "meteor/nova:comments";
 
 // import Email from 'meteor/nova:email';
 

@@ -1,7 +1,5 @@
-import Posts from './namespace.js';
+import Posts from './collection.js';
 
-import './namespace.js';
-import './collection.js';
 import './parameters.js';
 import './notifications.js';
 import './views.js';

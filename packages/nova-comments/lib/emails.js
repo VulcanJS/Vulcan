@@ -1,3 +1,5 @@
+import Comments from './collection.js';
+
 const getComment = (commentId) => {
   return typeof Comments.findOne(commentId) === "undefined" ? {comment: Comments.findOne()} : {comment: Comments.findOne(commentId)};
 };

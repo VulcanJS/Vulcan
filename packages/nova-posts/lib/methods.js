@@ -1,4 +1,4 @@
-import Posts from './namespace.js'
+import Posts from './collection.js'
 
 /**
  *

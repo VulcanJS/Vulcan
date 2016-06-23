@@ -1,3 +1,4 @@
+import Comments from './collection.js';
 import Posts from "meteor/nova:posts";
 
 Comments.methods = {};

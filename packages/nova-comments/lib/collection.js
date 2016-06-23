@@ -143,11 +143,6 @@ Comments.schema = new SimpleSchema({
   }
 });
 
-// Meteor.startup(function(){
-//   // needs to happen after every fields are added
-//   Comments.internationalize();
-// });
-
 Comments.attachSchema(Comments.schema);
 
 if (typeof Telescope.notifications !== "undefined") {
@@ -162,3 +157,5 @@ if (typeof Telescope.notifications !== "undefined") {
     }
   });
 }
+
+export default Comments;

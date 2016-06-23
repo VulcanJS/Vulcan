@@ -1,3 +1,5 @@
+import Comments from './collection.js';
+
 /**
  * @summary Comment views are filters used for subscribing to and viewing comments
  * @namespace Comments.views

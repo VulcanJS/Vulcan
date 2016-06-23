@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Posts from './namespace.js';
+import Posts from './collection.js';
 
 //////////////////
 // Link Helpers //

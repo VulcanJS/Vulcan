@@ -11,7 +11,6 @@ Package.onUse(function (api) {
 
   api.use([
     'nova:lib@0.26.3-nova',
-    // 'nova:i18n@0.26.3-nova',
     'nova:settings@0.26.3-nova',
     'nova:posts@0.26.3-nova',
     'nova:users@0.26.3-nova'
@@ -22,29 +21,7 @@ Package.onUse(function (api) {
     'nova:email@0.26.3-nova'
   ], ['client', 'server'], {weak: true});
 
-  api.addFiles([
-    'lib/collection.js',
-    'lib/methods.js',
-    'lib/callbacks.js',
-    'lib/views.js',
-    'lib/parameters.js',
-    'lib/notifications.js',
-    'lib/helpers.js',
-    'lib/custom_fields.js',
-    'lib/emails.js',
-    'lib/published_fields.js'
-  ], ['client', 'server']);
-
-  api.addFiles([
-    'lib/server/publications.js'
-  ], ['server']);
-
-  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
-
-  api.export('Comments');
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
 
 });

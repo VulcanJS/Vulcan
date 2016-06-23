@@ -1,4 +1,4 @@
-import Posts from '../namespace.js';
+import Posts from '../collection.js';
 
 Picker.route('/out', function(params, req, res, next) {
   var query = params.query;
