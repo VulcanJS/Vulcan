@@ -23,4 +23,13 @@ Package.onUse( function(api) {
     'lib/stylesheets/custom.scss'
   ], ['client']);
 
+  api.addFiles([
+    'lib/server/templates.js'
+  ], ['server']);
+
+  api.addAssets([
+    'lib/server/emails/customNewPost.handlebars',
+    'lib/server/emails/customEmail.handlebars'
+  ], ['server']);
+
 });

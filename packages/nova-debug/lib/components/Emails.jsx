@@ -19,7 +19,7 @@ class Email extends Component {
   sendTest() {
     this.setState({loading: true});
 
-    Actions.call("testEmail", this.props.name, (error, result) => {
+    Actions.call("email.test", this.props.name, (error, result) => {
       this.setState({loading: false});
       if (error) {
         Messages.flash(error.message, "error");

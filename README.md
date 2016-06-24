@@ -30,6 +30,7 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Posts Parameters](#posts-parameters)
   - [Forms](#forms)
   - [Methods](#methods)
+  - [Routes](#routes)
   - [Internationalization](#internationalization)
   - [Cheatsheet](#cheatsheet)
 
@@ -471,6 +472,18 @@ See [nova:forms](https://github.com/TelescopeJS/Telescope/tree/devel/packages/no
 ## Methods
 
 You can use regular Meteor methods, or [Smart Methods](https://github.com/meteor-utilities/smart-methods).
+
+## Routes
+
+Here's how you can add routes to your app (using React Router):
+
+```js
+Telescope.routes.add({
+  name: "foo",
+  path: "/foo",
+  component: Foo
+});
+```
 
 ## Internationalization
 

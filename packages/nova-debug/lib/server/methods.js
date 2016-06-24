@@ -1,7 +1,8 @@
 import NovaEmail from 'meteor/nova:email';
+import Users from 'meteor/nova:users';
 
 Meteor.methods({
-  testEmail: function (emailName) {
+  "email.test": function (emailName) {
     
     const email = NovaEmail.emails[emailName];
     

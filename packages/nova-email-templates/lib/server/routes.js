@@ -1,38 +1,42 @@
 import NovaEmail from 'meteor/nova:email';
 
-_.forEach(NovaEmail.emails, (email, key) => {
+Meteor.startup(function () {
 
-  // template live preview routes
-  Picker.route(email.path, (params, req, res) => {
+  _.forEach(NovaEmail.emails, (email, key) => {
 
-    let html;
+    // template live preview routes
+    Picker.route(email.path, (params, req, res) => {
 
-    // if email has a custom way of generating test HTML, use it
-    if (typeof email.getTestHTML !== "undefined") {
+      let html;
 
-      html = email.getTestHTML.bind(email)(params);
+      // if email has a custom way of generating test HTML, use it
+      if (typeof email.getTestHTML !== "undefined") {
 
-    } else {
+        html = email.getTestHTML.bind(email)(params);
 
-      // else get test object (sample post, comment, user, etc.)
-      const testObject = email.getTestObject(params._id);
+      } else {
 
-      // get test object's email properties
-      const properties = email.getProperties(testObject);
+        // else get test object (sample post, comment, user, etc.)
+        const testObject = email.getTestObject(params._id);
 
-      // then apply email template to properties, and wrap it with buildTemplate
-      html = NovaEmail.buildTemplate(NovaEmail.getTemplate(email.template)(properties));
+        // get test object's email properties
+        const properties = email.getProperties(testObject);
 
-    }
+        // then apply email template to properties, and wrap it with buildTemplate
+        html = NovaEmail.buildTemplate(NovaEmail.getTemplate(email.template)(properties));
 
-    // return html
-    res.end(html);
+      }
+
+      // return html
+      res.end(html);
+    
+    });
+
+    // raw template
+    Picker.route("/email/template/:template", (params, req, res) => {
+      res.end(NovaEmail.templates[params.template]);
+    });
+
+  });
   
-  });
-
-  // raw template
-  Picker.route("/email/template/:template", (params, req, res) => {
-    res.end(NovaEmail.templates[params.template]);
-  });
-
 });
