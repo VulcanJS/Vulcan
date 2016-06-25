@@ -49,7 +49,7 @@ class CommentsItem extends Component{
     const deleteSuccessMessage = this.context.intl.formatMessage({id: "comments.delete_success"}, {body: Telescope.utils.trimWords(comment.body, 20)});
     
     if (window.confirm(deleteConfirmMessage)) {
-      Meteor.call('comments.deleteById', comment._id, (error, result) => {
+      this.context.actions.call('comments.deleteById', comment._id, (error, result) => {
         this.context.messages.flash(deleteSuccessMessage, "success");
         this.context.events.track("comment deleted", {'_id': comment._id});
       });
@@ -122,6 +122,7 @@ CommentsItem.propTypes = {
 }
 
 CommentsItem.contextTypes = {
+  actions: React.PropTypes.object,
   messages: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape

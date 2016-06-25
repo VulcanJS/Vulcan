@@ -18,7 +18,7 @@ class EmbedlyURL extends Component {
     this.setState({loading: true});
 
     // the URL has changed, get a new thumbnail
-    Meteor.call("getEmbedlyData", this.input.getValue(), (error, result) => {
+    this.context.actions.call("getEmbedlyData", this.input.getValue(), (error, result) => {
       
       console.log("querying Embedly…");
       
@@ -79,7 +79,8 @@ EmbedlyURL.propTypes = {
 
 EmbedlyURL.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
-  throwError: React.PropTypes.func
+  throwError: React.PropTypes.func,
+  actions: React.PropTypes.object,
 }
 
 export default EmbedlyURL;

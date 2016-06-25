@@ -14,7 +14,7 @@ class NewsletterButton extends Component {
     const action = Users.getSetting(this.context.currentUser, 'newsletter_subscribeToNewsletter', false) ? 
       'newsletter.removeUser' : 'newsletter.addUser';
 
-    Meteor.call(action, this.context.currentUser, (error, result) => {
+    this.context.actions.call(action, this.context.currentUser, (error, result) => {
       if (error) {
         console.log(error);
         this.context.messages.flash(error.message, "error");
@@ -45,7 +45,8 @@ NewsletterButton.propTypes = {
 
 NewsletterButton.contextTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object
+  messages: React.PropTypes.object,
+  actions: React.PropTypes.object,
 }
 
 module.exports = NewsletterButton;
