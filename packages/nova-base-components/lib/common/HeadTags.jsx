@@ -5,15 +5,21 @@ class HeadTags extends Component {
 	render() {
 		DocHead.removeDocHeadAddedTags();
 
-		const url = this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
-		const title = this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
-		const description = this.props.description ? this.props.description : Telescope.settings.get("tagline");
+		const url = !!this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
+		const title = !!this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
+		const description = !!this.props.description ? this.props.description : Telescope.settings.get("tagline");
 
-		let image = Telescope.utils.getSiteUrl() + Telescope.settings.get("logoUrl");
-		if (!!this.props && !!this.props.image) {
-			image = this.props.image;
-		} else if (!!Telescope.settings.get("siteImage")) {
-			image = Telescope.settings.get("siteImage");
+		// default image meta: logo url, else site image defined in settings
+		let image = !!Telescope.settings.get("siteImage") ? Telescope.settings.get("siteImage"): Telescope.settings.get("logoUrl");
+		
+		// overwrite default image if one is passed as props 
+		if (!!this.props.image) {
+			image = this.props.image; 
+		}
+
+		// add site url base if the image is stored locally
+		if (image.indexOf('//') === -1) {
+			image = Telescope.utils.getSiteUrl() + image;
 		}
 
 		const metas = [
