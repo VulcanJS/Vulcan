@@ -11,7 +11,6 @@ Meteor.publish('users.single', function (terms) {
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
   var options = Users.is.admin(this.userId) ? {} : {fields: Users.publishedFields.public};
-  console.log(options);
   return user ? Meteor.users.find({_id: user._id}, options) : [];
 
 });
