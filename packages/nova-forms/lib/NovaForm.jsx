@@ -81,6 +81,11 @@ class NovaForm extends Component{
       // add value
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
+      // add placeholder
+      if (fieldSchema.autoform && fieldSchema.autoform.placeholder) {
+        field.placeholder = fieldSchema.autoform.placeholder;
+      }
+
       // replace value by prefilled value if value is empty
       if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
         const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
@@ -246,7 +251,8 @@ class NovaForm extends Component{
       throwError: this.throwError,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
-      updateCurrentValue: this.updateCurrentValue
+      updateCurrentValue: this.updateCurrentValue,
+      _id: this.getDocument()._id
     };
   }
 
@@ -389,7 +395,8 @@ NovaForm.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
-  throwError: React.PropTypes.func
+  throwError: React.PropTypes.func,
+  _id: React.PropTypes.string
 }
 
 module.exports = NovaForm;
