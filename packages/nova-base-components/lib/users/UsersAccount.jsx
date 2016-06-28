@@ -1,5 +1,6 @@
 import React from 'react';
 import { DocumentContainer } from "meteor/utilities:react-list-container";
+import Users from 'meteor/nova:users';
 
 const UsersAccount = (props, context) => {
   const params = props.params.slug ? props.params : {_id: context.currentUser._id};

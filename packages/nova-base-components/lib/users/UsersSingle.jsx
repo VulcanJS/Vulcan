@@ -1,5 +1,6 @@
 import React from 'react';
 import { DocumentContainer } from "meteor/utilities:react-list-container";
+import Users from 'meteor/nova:users';
 
 const UsersSingle = (props, context) => {
   return (
