@@ -246,7 +246,8 @@ class NovaForm extends Component{
       throwError: this.throwError,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
-      updateCurrentValue: this.updateCurrentValue
+      updateCurrentValue: this.updateCurrentValue,
+      _id: this.getDocument()._id
     };
   }
 
@@ -389,7 +390,8 @@ NovaForm.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
-  throwError: React.PropTypes.func
+  throwError: React.PropTypes.func,
+  _id: React.PropTypes.string
 }
 
 module.exports = NovaForm;
