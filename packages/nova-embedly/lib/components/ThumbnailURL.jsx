@@ -50,7 +50,7 @@ class ThumbnailURL extends Component {
         <label className="control-label col-sm-3">{label}</label>
         <div className="col-sm-9">
           {this.props.value ? this.renderThumbnail() : null}
-          <Input name={name} type={inputType} value={this.props.value} />
+          <Input layout="elementOnly" name={name} type={inputType} value={this.props.value} />
           {!this.state.showInput ? <a className="thumbnail-show-input" onClick={this.showInput}><FormattedMessage id="posts.enter_thumbnail_url"/></a> : null}
         </div>
       </div>

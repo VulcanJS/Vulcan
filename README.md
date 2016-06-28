@@ -497,7 +497,8 @@ Note: make sure the locale you set matches the language package you're adding.
 
 If you create a new internationalization package, let us know so we can add it here!
 
-- [fr_FR](https://github.com/TelescopeJS/nova-i18n-fr-fr)
+- [fr-FR](https://github.com/TelescopeJS/nova-i18n-fr-fr)
+- [es-ES](https://atmospherejs.com/fcallem/nova-i18n-es-es)
 
 ## Cheatsheet
 

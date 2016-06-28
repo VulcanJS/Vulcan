@@ -1,3 +1,5 @@
+import Posts from "meteor/nova:posts";
+
 Posts.addField([
   {
     fieldName: 'originalThumbnailUrl',

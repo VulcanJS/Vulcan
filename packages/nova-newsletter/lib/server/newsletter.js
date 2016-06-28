@@ -6,16 +6,11 @@ import Categories from "meteor/nova:categories";
 import NovaEmail from 'meteor/nova:email';
 import Newsletter from '../namespace.js';
 
-const defaultPosts = 5;
-
-// create new "campaign" view for all posts from the past X days that haven't been scheduled yet
-Posts.views.add("campaign", function (terms) {
+// create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
+Posts.views.add("newsletter", function (terms) {
   return {
-    find: {
-      scheduledAt: {$exists: false},
-      postedAt: {
-        $gte: terms.after
-      }
+    selector: {
+      scheduledAt: {$exists: false}
     },
     options: {
       sort: {baseScore: -1}, 
@@ -30,19 +25,20 @@ Posts.views.add("campaign", function (terms) {
  */
 Newsletter.getPosts = function (postsCount) {
 
-  // look for last scheduled campaign in the database
+  // look for last scheduled newsletter in the database
   var lastNewsletter = SyncedCron._collection.findOne({name: 'scheduleNewsletter'}, {sort: {finishedAt: -1}, limit: 1});
 
-  // if there is a last campaign and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
+  // if there is a last newsletter and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
   var lastWeek = moment().subtract(7, 'days');
-  var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.toDate();
+  var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.format("YYYY-MM-DD");
   
-  // get parameters using "campaign" view
+  // get parameters using "newsletter" view
   var params = Posts.parameters.get({
-    view: 'campaign',
+    view: "newsletter",
     after: after,
     limit: postsCount
   });
+  
   return Posts.find(params.selector, params.options).fetch();
 };
 
@@ -145,7 +141,7 @@ Newsletter.build = function (postsArray) {
     date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });
-  
+
   // 3. wrap newsletter HTML in email wrapper template
   var emailHTML = NovaEmail.buildTemplate(newsletterHTML);
 

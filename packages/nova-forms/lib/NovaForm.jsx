@@ -103,6 +103,9 @@ class NovaForm extends Component{
         field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
       }
 
+      if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
+      if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
+
       // add group
       if (fieldSchema.group) {
         field.group = fieldSchema.group;

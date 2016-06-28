@@ -63,7 +63,13 @@ class FormComponent extends Component {
   }
 
   render() {
-    return <div className={"input-"+this.props.name}>{this.renderComponent()}</div>
+    return (
+      <div className={"input-"+this.props.name}>
+        {this.props.beforeComponent ? this.props.beforeComponent : null}
+        {this.renderComponent()}
+        {this.props.afterComponent ? this.props.afterComponent : null}
+      </div>
+    )
   }
 
 }

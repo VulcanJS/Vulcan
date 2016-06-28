@@ -46,6 +46,17 @@ if (typeof Telescope.settings.collection !== "undefined") {
       }
     },
     {
+      fieldName: 'enableNewsletterInDev',
+      fieldSchema: {
+        type: Boolean,
+        optional: true,
+        autoform: {
+          group: 'newsletter',
+          instructions: 'Enable newsletter in development too (requires restart).'
+        }
+      }
+    },
+    {
       fieldName: "mailChimpAPIKey",
       fieldSchema: {
         type: String,
@@ -131,7 +142,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
         defaultValue: '00:00',
         autoform: {
           group: 'newsletter',
-          instructions: 'Defaults to 00:00/12:00 AM. Time to send out newsletter if enabled.',
+          instructions: 'Defaults to 00:00/12:00 AM. Time to send out newsletter if enabled (GMT).',
           type: 'time'
         }
       }

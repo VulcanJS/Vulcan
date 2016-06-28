@@ -3,9 +3,12 @@
 import Newsletter from '../../namespace.js';
 import MailChimp from './mailchimp_api.js';
 import NovaEmail from 'meteor/nova:email';
+import htmlToText from 'html-to-text';
+import moment from 'moment';
 
-Newsletter.scheduleNextWithMailChimp = function (isTest) {
-  isTest = !! isTest;
+const defaultPosts = 5;
+
+Newsletter.scheduleNextWithMailChimp = function (isTest = false) {
   var posts = Newsletter.getPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
     return Newsletter.scheduleWithMailChimp(Newsletter.build(posts), isTest);
@@ -15,8 +18,7 @@ Newsletter.scheduleNextWithMailChimp = function (isTest) {
   }
 };
 
-Newsletter.scheduleWithMailChimp = function (campaign, isTest) {
-  isTest = typeof isTest === 'undefined' ? false : isTest;
+Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
 
   var apiKey = Telescope.settings.get('mailChimpAPIKey');
   var listId = Telescope.settings.get('mailChimpListId');
@@ -41,7 +43,7 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest) {
           list_id: listId,
           subject: subject,
           from_email: defaultEmail,
-          from_name: Telescope.settings.get('title')+ ' Top Posts',
+          from_name: Telescope.settings.get('title')
         },
         content: {
           html: campaign.html,
@@ -49,12 +51,12 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest) {
         }
       };
 
-      console.log( '// Creating campaign…');
-
+      console.log('// Creating campaign…');
+      console.log('// Subject: '+subject)
       // create campaign
       var mailchimpNewsletter = api.call( 'campaigns', 'create', campaignOptions);
 
-      console.log( '// Newsletter created');
+      console.log('// Newsletter created');
       // console.log(campaign)
 
       var scheduledTime = moment().utcOffset(0).add(1, 'hours').format("YYYY-MM-DD HH:mm:ss");
