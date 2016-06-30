@@ -76,6 +76,16 @@ Users.getProfileUrl = function (user, isAbsolute) {
 Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
 /**
+ * @summary Get a user's account edit URL
+ * @param {Object} user (note: we only actually need either the _id or slug properties)
+ * @param {Boolean} isAbsolute
+ */
+Users.getEditUrl = function (user, isAbsolute) {
+  return `${Users.getProfileUrl(user, isAbsolute)}/edit`;
+};
+Users.helpers({getEditUrl: function (isAbsolute) {return Users.getEditUrl(this, isAbsolute);}});
+
+/**
  * @summary Get a user's Twitter name
  * @param {Object} user
  */
@@ -157,7 +167,6 @@ Users.userProfileCompleteById = function (userId) {return Users.userProfileCompl
 Users.getSetting = function (user, settingName, defaultValue) {
   user = user || Meteor.user();
   defaultValue = defaultValue || null;
-
   // all settings should be in the user.telescope namespace, so add "telescope." if needed
   settingName = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
 

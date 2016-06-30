@@ -3,13 +3,14 @@ import { DocumentContainer } from "meteor/utilities:react-list-container";
 import Users from 'meteor/nova:users';
 
 const UsersAccount = (props, context) => {
-  const params = props.params.slug ? props.params : {_id: context.currentUser._id};
+  const terms = props.params.slug ? {"telescope.slug": props.params.slug} : {_id: context.currentUser._id};
   return (
     <DocumentContainer 
       collection={Users} 
       publication="users.single" 
-      selector={params} 
-      terms={params} 
+      selector={terms} 
+      terms={terms}
+      documentPropName="user"
       component={Telescope.components.UsersEdit}
     />
   )
