@@ -1,9 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import { DocHead } from 'meteor/kadira:dochead';
+import Helmet from 'react-helmet';
 
 class HeadTags extends Component {
 	render() {
-		DocHead.removeDocHeadAddedTags();
 
 		const url = !!this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
 		const title = !!this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
@@ -22,7 +21,7 @@ class HeadTags extends Component {
 			image = Telescope.utils.getSiteUrl() + image;
 		}
 
-		const metas = [
+		const meta = [
 			{ charset: "utf-8" },
 			{ name: "description", content: description },
 			// responsive
@@ -40,16 +39,14 @@ class HeadTags extends Component {
 			{ name: "twitter:description", content: description }
 		];
 
-		const links = [
+		const link = [
 			{ rel: "canonical", href: Telescope.utils.getSiteUrl() },
 			{ rel: "shortcut icon", href: Telescope.settings.get("favicon", "/img/favicon.ico") }
 		];
 
 		return (
 			<div>
-				{ DocHead.setTitle(title) }
-				{ metas.map(meta => DocHead.addMeta(meta)) }
-				{ links.map(link => DocHead.addLink(link)) }
+				<Helmet title={title} meta={meta} link={link} />
 			</div>
 		);
 	}
