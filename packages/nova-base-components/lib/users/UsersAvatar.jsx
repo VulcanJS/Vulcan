@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Users from 'meteor/nova:users';
+import { Link } from 'react-router';
 
 const UsersAvatar = ({user, size, link}) => {
 
@@ -30,7 +31,7 @@ const UsersAvatar = ({user, size, link}) => {
 
   const avatar = avatarUrl ? img : initials;
 
-  return link ? <a style={aStyle} className="users-avatar" href={Users.getProfileUrl(user)}>{avatar}</a> : avatar;
+  return link ? <Link style={aStyle} className="users-avatar" to={Users.getProfileUrl(user)}>{avatar}</Link> : avatar;
 
 }
 
