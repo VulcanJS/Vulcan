@@ -17,25 +17,31 @@ class EmbedlyURL extends Component {
 
     this.setState({loading: true});
 
-    // the URL has changed, get a new thumbnail
-    this.context.actions.call("getEmbedlyData", this.input.getValue(), (error, result) => {
-      
-      console.log("querying Embedly…");
-      
-      this.setState({loading: false});
+    const url = this.input.getValue();
 
-      if (error) {
-        console.log(error)
-        this.context.throwError({content: error.message, type: "error"});
-      } else {
-        console.log(result)
-        this.context.addToAutofilledValues({
-          title: result.title,
-          body: result.description,
-          thumbnailUrl: result.thumbnailUrl
-        });
-      }
-    });
+    if (url.length) {
+
+      // the URL has changed, get a new thumbnail
+      this.context.actions.call("getEmbedlyData", url, (error, result) => {
+        
+        console.log("querying Embedly…");
+        
+        this.setState({loading: false});
+
+        if (error) {
+          console.log(error)
+          this.context.throwError({content: error.message, type: "error"});
+        } else {
+          console.log(result)
+          this.context.addToAutofilledValues({
+            title: result.title,
+            body: result.description,
+            thumbnailUrl: result.thumbnailUrl
+          });
+        }
+      });
+
+    }
   }
 
   render() {
