@@ -18,6 +18,10 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
+    'lib/emails.js'
+  ], ['client', 'server']);
+
+  api.addFiles([
     'lib/server/routes.js',
     'lib/server/templates.js'
   ], ['server']);
