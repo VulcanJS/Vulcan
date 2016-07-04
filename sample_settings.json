@@ -2,7 +2,7 @@
   "public": {
     "title": "Your site title",
     "tagline":"Your site tagline",
-    
+
     "logoUrl": "http://placekitten.com/250/80",
     "logoHeight": "80",
     "logoWidth": "250",
@@ -20,7 +20,7 @@
     "maxPostsPerDay": 10,
     "startInvitesCount": 5,
     "postsPerPage": 10,
-    
+
     "language": "en",
 
     "twitterAccount": "foo",
@@ -64,7 +64,7 @@
       "secret": "bar"
     },
     "facebook": {
-      "clientId": "foo",
+      "appId": "foo",
       "secret": "bar"
     }
   }
