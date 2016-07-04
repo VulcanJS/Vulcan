@@ -240,7 +240,7 @@ Nova tries to maintain a consistent file structure for its main packages:
 - `collection.js`: the package's collection schema.
 - `callbacks.js`: callbacks used by the package.
 - `helpers.js`: collection helpers.
-- `methods.js`: collectiom methods.
+- `methods.js`: collection methods.
 - `published_fields.js`: specifies which collection fields should be published in which context.
 - `custom_fields.js`: sets custom fields on *other* collections.
 - `routes.jsx`: routes.
