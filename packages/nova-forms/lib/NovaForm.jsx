@@ -103,6 +103,11 @@ class NovaForm extends Component{
         field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
       }
 
+      // add placeholder
+      if (fieldSchema.autoform && fieldSchema.autoform.placeholder) {
+       field.placeholder = fieldSchema.autoform.placeholder;
+      }
+
       if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
       if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
 
@@ -249,7 +254,8 @@ class NovaForm extends Component{
       throwError: this.throwError,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
-      updateCurrentValue: this.updateCurrentValue
+      updateCurrentValue: this.updateCurrentValue,
+      getDocument: this.getDocument,
     };
   }
 
@@ -392,7 +398,8 @@ NovaForm.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
-  throwError: React.PropTypes.func
+  throwError: React.PropTypes.func,
+  getDocument: React.PropTypes.func
 }
 
 module.exports = NovaForm;

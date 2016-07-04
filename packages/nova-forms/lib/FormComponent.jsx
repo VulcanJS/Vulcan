@@ -76,8 +76,9 @@ class FormComponent extends Component {
 
 FormComponent.propTypes = {
   name: React.PropTypes.string,
-  label: React.PropTypes.string, 
-  value: React.PropTypes.any, 
+  label: React.PropTypes.string,
+  value: React.PropTypes.any,
+  placeholder: React.PropTypes.string,
   prefilledValue: React.PropTypes.any, 
   options: React.PropTypes.any,
   control: React.PropTypes.any,
