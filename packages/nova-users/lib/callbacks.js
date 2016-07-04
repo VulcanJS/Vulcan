@@ -57,7 +57,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
       // check for existing emails and throw error if necessary
       var userWithSameEmail = Users.findByEmail(newEmail);
       if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
-        throw new Meteor.Error("email_taken2", __("this_email_is_already_taken") + " (" + newEmail + ")");
+        throw new Meteor.Error("email_taken2", "this_email_is_already_taken" + " (" + newEmail + ")");
       }
 
       // if user.emails exists, change it too

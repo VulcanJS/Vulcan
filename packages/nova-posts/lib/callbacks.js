@@ -126,11 +126,11 @@ function PostsNewRateLimit (post, user) {
 
     // check that user waits more than X seconds between posts
     if(timeSinceLastPost < postInterval)
-      throw new Meteor.Error(604, __('please_wait')+(postInterval-timeSinceLastPost)+__('seconds_before_posting_again'));
+      throw new Meteor.Error(604, 'please_wait'+(postInterval-timeSinceLastPost)+'seconds_before_posting_again');
 
     // check that the user doesn't post more than Y posts per day
     if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
-      throw new Meteor.Error(605, __('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+__('posts_per_day'));
+      throw new Meteor.Error(605, 'sorry_you_cannot_submit_more_than'+maxPostsPer24Hours+'posts_per_day');
 
   }
 
@@ -270,7 +270,7 @@ Telescope.callbacks.add("posts.new.async", PostsNewNotifications);
 function PostsEditUserCheck (modifier, post, user) {
   // check that user can edit document
   if (!user || !Users.can.edit(user, post)) {
-    throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_post'));
+    throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_post');
   }
   return modifier;
 }

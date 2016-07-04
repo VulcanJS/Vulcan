@@ -129,7 +129,7 @@ function CommentsNewRequiredPropertiesCheck (comment, user) {
 
   // Don't allow empty comments
   if (!comment.body)
-    throw new Meteor.Error(704,__('your_comment_is_empty'));
+    throw new Meteor.Error(704, 'your_comment_is_empty');
 
   var defaultProperties = {
     createdAt: new Date(),
@@ -254,7 +254,7 @@ Telescope.callbacks.add("comments.new.async", CommentsNewNotifications);
 
 function CommentsEditUserCheck (modifier, comment, user) {
   if (!user || !Users.can.edit(user, comment)) {
-    throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_comment'));
+    throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_comment');
   }
   return modifier;
 }

@@ -13,23 +13,23 @@ Posts.config = {};
 Posts.config.postStatuses = [
   {
     value: 1,
-    label: __('pending')
+    label: 'pending'
   },
   {
     value: 2,
-    label: __('approved')
+    label: 'approved'
   },
   {
     value: 3,
-    label: __('rejected')
+    label: 'rejected'
   },
   {
     value: 4,
-    label: __('spam')
+    label: 'spam'
   },
   {
     value: 5,
-    label: __('deleted')
+    label: 'deleted'
   }
 ];
 

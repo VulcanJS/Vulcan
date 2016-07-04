@@ -65,12 +65,12 @@ Meteor.methods({
 
     // check that user can edit document
     if (!user || !Users.can.edit(currentUser, user)) {
-      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
+      throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
 
     // if an $unset modifier is present, it means one or more of the fields is missing
     if (modifier.$unset) {
-      throw new Meteor.Error(601, __('all_fields_are_required'));
+      throw new Meteor.Error(601, 'all_fields_are_required');
     }
 
     // check for existing emails and throw error if necessary
@@ -78,7 +78,7 @@ Meteor.methods({
     if (modifier.$set && modifier.$set["telescope.email"]) {
       var email = modifier.$set["telescope.email"];
       if (Users.findByEmail(email)) {
-        throw new Meteor.Error("email_taken1", __("this_email_is_already_taken") + " (" + email + ")");
+        throw new Meteor.Error("email_taken1", "this_email_is_already_taken" + " (" + email + ")");
       }
 
     }
@@ -159,7 +159,7 @@ Meteor.methods({
 
     // check that user can edit document
     if (!user || !Users.can.edit(currentUser, user)) {
-      throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_user'));
+      throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
 
     Users.methods.setSetting(userId, settingName, value);
