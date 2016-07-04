@@ -11,7 +11,7 @@ Package.onUse(function(api) {
   
   var packages = [
     'nova:lib@0.26.4-nova', //  no dependencies
-    'nova:events@0.26.4-nova' // lib, i18n
+    'nova:events@0.26.4-nova' // lib
   ];
 
   api.use(packages);

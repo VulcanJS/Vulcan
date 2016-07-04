@@ -20,10 +20,6 @@ Package.onUse(function (api) {
     'nova:users@0.26.4-nova'
   ]);
 
-  api.addFiles([
-    // 'package-tap.i18n'
-  ], ['client', 'server']);
-
   // both
 
   api.addFiles([
@@ -48,13 +44,5 @@ Package.onUse(function (api) {
   api.addAssets('content/customizing.md', 'server');
   api.addAssets('content/getting_help.md', 'server', 'server');
   api.addAssets('content/removing_getting_started_posts.md', 'server');
-
-  // i18n languages (must come last)
-
-  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
 
 });

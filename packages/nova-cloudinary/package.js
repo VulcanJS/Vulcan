@@ -19,7 +19,6 @@ Package.onUse(function (api) {
   ], {weak: true});
 
   api.addFiles([
-    // 'package-tap.i18n',
     'lib/custom_fields.js'
   ], ['client', 'server']);
 
