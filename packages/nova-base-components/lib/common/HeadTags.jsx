@@ -17,7 +17,7 @@ class HeadTags extends Component {
 		}
 
 		// add site url base if the image is stored locally
-		if (image.indexOf('//') === -1) {
+		if (!!image && image.indexOf('//') === -1) {
 			image = Telescope.utils.getSiteUrl() + image;
 		}
 
