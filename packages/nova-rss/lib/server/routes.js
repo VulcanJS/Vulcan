@@ -1,6 +1,8 @@
+import { servePostRSS, serveCommentRSS } from './rss.js';
+
 Picker.route('/feed.xml', function(params, req, res, next) {
   if (typeof params.query.view === "undefined") {
-    params.query.view = 'new';
+    params.query.view = 'rss';
   }
   res.end(servePostRSS(params.query, 'feed.xml'));
 });

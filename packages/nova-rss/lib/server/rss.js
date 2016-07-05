@@ -1,9 +1,11 @@
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
-RSS = Npm.require('rss');
+const RSS = Npm.require('rss');
 
-getMeta = function (url) {
+Posts.views.rss = Posts.views.new; // default to "new" view for RSS feed
+
+const getMeta = function (url) {
   var siteUrl = Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
   return {
     title: Telescope.settings.get('title'),
@@ -14,7 +16,7 @@ getMeta = function (url) {
   };
 };
 
-servePostRSS = function (terms, url) {
+const servePostRSS = function (terms, url) {
   var feed = new RSS(getMeta(url));
 
   var parameters = Posts.parameters.get(terms);
@@ -45,7 +47,7 @@ servePostRSS = function (terms, url) {
   return feed.xml();
 };
 
-serveCommentRSS = function (terms, url) {
+const serveCommentRSS = function (terms, url) {
   var feed = new RSS(getMeta(url));
 
   Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
@@ -62,3 +64,5 @@ serveCommentRSS = function (terms, url) {
 
   return feed.xml();
 };
+
+export {servePostRSS, serveCommentRSS};

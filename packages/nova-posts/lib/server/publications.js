@@ -84,7 +84,9 @@ Meteor.publish('posts.list', function (terms) {
     // note: doesn't work yet :(
     // CursorCounts.set(terms, posts.count(), this.connection.id);
 
-    const users = getPostsListUsers(posts);
+    const users = Tracker.nonreactive(function () {
+      return getPostsListUsers(posts);
+    });
 
     return Users.can.view(currentUser) ? [posts, users] : [];
   

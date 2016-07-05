@@ -13,10 +13,6 @@ function composer(props, onData) {
     messages: Messages
   }
 
-  Meteor.call("settings.getJSON", (error, result) => {
-    Telescope.settings.settingsJSON = result;
-  });
-
   if (!subscriptions.length || _.every(subscriptions, handle => handle.ready())) {
     data.ready = true;
     onData(null, data);
