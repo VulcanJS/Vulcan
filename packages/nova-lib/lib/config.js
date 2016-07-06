@@ -72,3 +72,10 @@ Telescope.routes = {
     this.routes = this.routes.concat(addedRoutes);
   }
 }
+
+// ------------------------------------- Head Tags -------------------------------- //
+
+Telescope.headtags = {
+  meta: [],
+  link: []
+}

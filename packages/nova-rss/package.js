@@ -11,6 +11,8 @@ Package.onUse(function (api) {
 
   api.use(['nova:core@0.26.4-nova']);
 
+  api.addFiles(['lib/headtags.js'], ['client', 'server']);
+
   api.addFiles(['lib/server/rss.js', 'lib/server/routes.js'], ['server']);
 
 });

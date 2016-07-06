@@ -5,7 +5,7 @@ Picker.route('/out', function(params, req, res, next) {
   if(query.url){ // for some reason, query.url doesn't need to be decoded
     var post = Posts.findOne({url: query.url});
     if (post) {
-      var ip = req.connection.remoteAddress;
+      var ip = req.headers && req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       Posts.methods.increaseClicks(post._id, ip);
       res.writeHead(302, {'Location': query.url});
       res.end();
