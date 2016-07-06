@@ -53,8 +53,8 @@ class FormComponent extends Component {
           return <RadioGroup    {...properties} />;
         case "select":
           return <Select        {...properties} />;
-        // case "datetime":
-        //   return <DateTime      {...properties} />;
+        case "datetime":
+          return <DateTime      {...properties} />;
         default: 
           return <Input         {...properties} type="text" />;
       }
