@@ -1,0 +1,40 @@
+import Posts from '../collection.js';
+import moment from 'moment';
+
+SyncedCron.options = {
+  log: true,
+  collectionName: 'cronHistory',
+  utc: false,
+  collectionTTL: 172800
+};
+
+
+const addJob = function () {
+  SyncedCron.add({
+    name: 'checkScheduledPosts',
+    schedule(parser) {
+      return parser.text('every 10 minutes');
+    },
+    job() {
+      // fetch all posts tagged as scheduled
+      const scheduledPosts = Posts.find({status: Posts.config.STATUS_SCHEDULED}, {fields: {_id: 1, status: 1, postedAt: 1, userId: 1, title: 1}}).fetch();
+      
+      if (scheduledPosts) {
+        // filter the scheduled posts to retrieve only the one that should update, considering their schedule
+        const postsToUpdate = scheduledPosts.filter(post => post.postedAt <= new Date());
+
+        // update all posts with status approved
+        const postsIds = _.pluck(postsToUpdate, '_id');
+        Posts.update({_id: {$in: postsIds}}, {$set: {status: Posts.config.STATUS_APPROVED}}, {multi: true});
+        
+        // log the action
+        console.log('// Scheduled posts approved:', postsIds);
+      }
+    }
+  });
+};
+
+Meteor.startup(function () {
+  addJob();
+});
+

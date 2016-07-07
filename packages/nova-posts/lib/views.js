@@ -83,7 +83,9 @@ Posts.views.add("rejected", function (terms) {
  */
 Posts.views.add("scheduled", function (terms) {
   return {
-    selector: {postedAt: {$gte: new Date()}},
+    selector: {
+      status: Posts.config.STATUS_SCHEDULED
+    },
     options: {sort: {postedAt: -1}},
     showFuture: true
   };

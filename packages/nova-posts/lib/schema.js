@@ -30,6 +30,10 @@ Posts.config.postStatuses = [
   {
     value: 5,
     label: 'deleted'
+  },
+  {
+    value: 6,
+    label: 'scheduled'
   }
 ];
 
@@ -38,6 +42,7 @@ Posts.config.STATUS_APPROVED = 2;
 Posts.config.STATUS_REJECTED = 3;
 Posts.config.STATUS_SPAM = 4;
 Posts.config.STATUS_DELETED = 5;
+Posts.config.STATUS_SCHEDULED = 6;
 
 const adminGroup = {
   name: "admin",
