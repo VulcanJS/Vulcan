@@ -173,7 +173,6 @@ These packages are optional, although they might depend on each other. Note that
 | `nova:api` | Generate a JSON API for posts. |
 | `nova:categories` | Posts categories. |
 | `nova:comments` | Comments. |
-| `nova:categories` | Posts categories. |
 | `nova:email` | Send emails. |
 | `nova:embedly` | Get metadata (thumbnails, origin, etc.) from [Embedly](http://embed.ly) when submitting new posts. |
 | `nova:forms` | Generate forms for inserting and editing documents ([README](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms)). |
