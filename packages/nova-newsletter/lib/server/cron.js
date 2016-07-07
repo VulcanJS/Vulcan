@@ -1,6 +1,9 @@
 import Newsletter from '../namespace.js';
 import moment from 'moment';
 
+const defaultFrequency = [1]; // every monday
+const defaultTime = '00:00'; // GMT
+
 SyncedCron.options = {
   log: true,
   collectionName: 'cronHistory',
@@ -11,9 +14,6 @@ SyncedCron.options = {
 const addZero = num => {
   return num < 10 ? "0"+num : num;
 };
-
-var defaultFrequency = 7; // once a week
-var defaultTime = '00:00'; // GMT
 
 var getSchedule = function (parser) {
   var frequency = Telescope.settings.get('newsletterFrequency', defaultFrequency);
