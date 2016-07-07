@@ -71,8 +71,8 @@ Posts.schemaJSON = {
   postedAt: {
     type: Date,
     optional: true,
-    // insertableIf: Users.is.admin,
-    // editableIf: Users.is.admin,
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
     publish: true,
     control: "datetime",
     group: adminGroup

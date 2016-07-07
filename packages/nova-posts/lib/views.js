@@ -20,8 +20,9 @@ Posts.views.add = function (viewName, viewFunction) {
  */
 Posts.views.baseParameters = {
   selector: {
-    status: Posts.config.STATUS_APPROVED
-  }
+    status: Posts.config.STATUS_APPROVED,
+  },
+  showFuture: false
 };
 
 /**
