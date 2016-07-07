@@ -62,7 +62,7 @@ class PostsItem extends Component {
           
           <div className="posts-item-meta">
             {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
-            <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
+            <div className="posts-item-date">{post.postedAt ? <FormattedRelative value={post.postedAt}/> : <FormattedMessage id="posts.dateNotDefined"/>}</div>
             <div className="posts-item-comments">
               <Link to={Posts.getPageUrl(post)}>
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
