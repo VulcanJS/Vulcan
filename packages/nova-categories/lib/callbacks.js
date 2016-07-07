@@ -36,7 +36,7 @@ var checkCategories = function (post) {
   var categoryCount = Categories.find({_id: {$in: post.categories}}).count();
 
   if (post.categories.length !== categoryCount) {
-    throw new Meteor.Error('invalid_category', __('invalid_category'));
+    throw new Meteor.Error('invalid_category', 'invalid_category');
   }
 };
 

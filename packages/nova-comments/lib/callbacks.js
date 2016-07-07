@@ -72,7 +72,7 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 function CommentsNewUserCheck (comment, user) {
   // check that user can post
   if (!user || !Users.can.comment(user))
-    throw new Meteor.Error(601, __('you_need_to_login_or_be_invited_to_post_new_comments'));
+    throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_comments');
   return comment;
 }
 Telescope.callbacks.add("comments.new.method", CommentsNewUserCheck);
@@ -104,7 +104,7 @@ function CommentsNewSubmittedPropertiesCheck (comment, user) {
     } else {
       var field = schema[fieldName];
       if (!Users.can.submitField(user, field)) {
-        throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
+        throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
       }
     }
 
@@ -270,7 +270,7 @@ function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
 
       var field = schema[fieldName];
       if (!Users.can.editField(user, field, comment)) {
-        throw new Meteor.Error("disallowed_property", __('disallowed_property_detected') + ": " + fieldName);
+        throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
       }
 
     });
