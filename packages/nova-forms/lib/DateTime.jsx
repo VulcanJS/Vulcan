@@ -1,17 +1,23 @@
 import React, { PropTypes, Component } from 'react';
-import DateTimeField from 'react-datetime';
+import DateTimePicker from 'react-datetime';
 import moment from 'moment';
 
 class DateTime extends Component {
+
+  // when the datetime picker mounts, NovaForm will catch the date value (no formsy mixin in this component)
+  componentWillMount() {
+    this.props.updateCurrentValue(this.props.name, this.props.value || new Date());
+  }
+
   render() {
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{this.props.label}</label>
         <div className="col-sm-9">
-          <DateTimeField 
+          <DateTimePicker 
             value={this.props.value || new Date()}
-            defaultValue={moment().format("x")}
-            onChange={newDate => this.props.updateCurrentValue(this.props.name, newDate._d)}
+            // newDate argument is a Moment object given by react-datetime
+            onChange={newDate => { this.props.updateCurrentValue(this.props.name, newDate._d)}}
             format={"x"} 
             inputProps={{name: this.props.name}}
           />
