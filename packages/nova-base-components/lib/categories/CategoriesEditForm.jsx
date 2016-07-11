@@ -22,6 +22,7 @@ class CategoriesEditForm extends Component{
         } else {
           this.context.messages.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
         }
+        this.context.closeCallback();
       });
     }
   }
@@ -51,9 +52,10 @@ CategoriesEditForm.propTypes = {
 }
 
 CategoriesEditForm.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
-  messages: React.PropTypes.object
+  closeCallback: React.PropTypes.func,
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
 };
 
 module.exports = CategoriesEditForm;

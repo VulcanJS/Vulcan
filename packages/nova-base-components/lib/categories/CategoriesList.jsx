@@ -42,7 +42,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} actions={this.context.actions} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesEditForm category={category}/>
           </ContextPasser>
         </Modal.Body>
@@ -117,6 +117,7 @@ CategoriesList.propTypes = {
 }
 
 CategoriesList.contextTypes = {
+  actions: React.PropTypes.object,
   currentUser: React.PropTypes.object,
   messages: React.PropTypes.object,
 };
