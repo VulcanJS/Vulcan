@@ -160,11 +160,11 @@ function PostsNewSubmittedPropertiesCheck (post, user) {
     }
 
   });
-
+  // note: not needed there anymore, this is already set in the next callback 'posts.new.sync' with other related properties (status, createdAt)
   // if no post status has been set, set it now
-  if (!post.status) {
-    post.status = Posts.getDefaultStatus(user);
-  }
+  // if (!post.status) {
+  //   post.status = Posts.getDefaultStatus(user);
+  // }
 
   // if no userId has been set, default to current user id
   if (!post.userId) {
@@ -197,13 +197,18 @@ function PostsNewRequiredPropertiesCheck (post, user) {
   const defaultProperties = {
     createdAt: new Date(),
     author: Users.getDisplayNameById(post.userId),
-    status: Posts.getDefaultStatus()
+    status: Posts.getDefaultStatus(user)
   };
 
   post = _.extend(defaultProperties, post);
 
   // generate slug
   post.slug = Telescope.utils.slugify(post.title);
+
+  // post is not pending and has been scheduled to be posted in the future by a moderator/admin
+  if (post.status !== Posts.config.STATUS_PENDING && post.postedAt && post.postedAt > post.createdAt) {
+    post.status = Posts.config.STATUS_SCHEDULED;
+  }
 
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
@@ -318,6 +323,12 @@ Telescope.callbacks.add("posts.edit.sync", PostsEditForceStickyToFalse);
  * @summary Set postedAt date
  */
 function PostsEditSetPostedAt (post, oldPost) {
+
+  // post is not pending and has been scheduled to be posted in the future by a moderator/admin
+  if (post.status !== Posts.config.STATUS_PENDING && post.postedAt && post.postedAt > new Date()) {
+    Posts.update(post._id, {$set: {status: Posts.config.STATUS_SCHEDULED}});
+  }
+
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
