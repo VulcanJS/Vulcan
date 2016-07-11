@@ -82,7 +82,7 @@ Posts.getDefaultStatus = function (user) {
  * @param {Object} post
  */
 Posts.isApproved = function (post) {
-  return post.status === Posts.config.STATUS_APPROVED;
+  return parseInt(post.status) === Posts.config.STATUS_APPROVED;
 };
 Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
 
@@ -186,15 +186,15 @@ Users.can.viewPost = function (user, post) {
 
       case Posts.config.STATUS_APPROVED:
         return Users.can.view(user);
-      
+
       case Posts.config.STATUS_REJECTED:
       case Posts.config.STATUS_SPAM:
-      case Posts.config.STATUS_PENDING: 
+      case Posts.config.STATUS_PENDING:
         return Users.can.view(user) && Users.is.owner(user, post);
-      
+
       case Posts.config.STATUS_DELETED:
         return false;
-    
+
     }
   }
 }
