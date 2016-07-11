@@ -30,4 +30,6 @@ Package.onUse(function (api) {
     'lib/server/cloudinary.js'
   ], ['server']);
 
+  api.mainModule("lib/server.js", "server");
+
 });

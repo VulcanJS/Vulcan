@@ -1,11 +1,20 @@
 import Posts from "meteor/nova:posts";
+import PublicationUtils from 'meteor/utilities:smart-publications';
 
 Posts.addField([
   {
-    fieldName: 'originalThumbnailUrl',
+    fieldName: 'cloudinaryId',
     fieldSchema: {
       type: String,
       optional: true
+    }
+  },
+  {
+    fieldName: 'cloudinaryUrls',
+    fieldSchema: {
+      type: [Object],
+      optional: true,
+      blackbox: true
     }
   }
 ]);
@@ -48,3 +57,5 @@ if (typeof Settings !== "undefined") {
     }
   ]);
 }
+
+PublicationUtils.addToFields(Posts.publishedFields.list, ["cloudinaryId", "cloudinaryUrls"]);
