@@ -10,8 +10,9 @@ import Users from 'meteor/nova:users';
  * @summary Return a post's link if it has one, else return its post page URL
  * @param {Object} post
  */
-Posts.getLink = function (post, isAbsolute) {
-  return !!post.url ? Telescope.utils.getOutgoingUrl(post.url) : this.getPageUrl(post, isAbsolute);
+Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
+  const url = isRedirected ? Telescope.utils.getOutgoingUrl(post.url) : post.url;
+  return !!post.url ? url : this.getPageUrl(post, isAbsolute);
 };
 Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
@@ -128,6 +129,43 @@ Posts.getThumbnailUrl = (post) => {
   }
 };
 Posts.helpers({ getThumbnailUrl() { return Posts.getThumbnailUrl(this); } });
+
+/**
+ * @summary Get URL for sharing on Twitter.
+ * @param {Object} post
+ */
+Posts.getTwitterShareUrl = post => {
+  const via = Telescope.settings.get("twitterAccount", null) ? `&via=${Telescope.settings.get("twitterAccount")}` : "";
+  return `https://twitter.com/intent/tweet?text=${ encodeURIComponent(post.title) }%20${ encodeURIComponent(Posts.getLink(post, true)) }${via}`;
+};
+Posts.helpers({ getTwitterShareUrl() { return Posts.getTwitterShareUrl(this); } });
+
+/**
+ * @summary Get URL for sharing on Facebook.
+ * @param {Object} post
+ */
+Posts.getFacebookShareUrl = post => {
+  return `https://www.facebook.com/sharer/sharer.php?u=${ encodeURIComponent(Posts.getLink(post, true)) }`;
+};
+Posts.helpers({ getFacebookShareUrl() { return Posts.getFacebookShareUrl(this); } });
+
+/**
+ * @summary Get URL for sharing by Email.
+ * @param {Object} post
+ */
+Posts.getEmailShareUrl = post => {
+  const subject = `Interesting link: ${post.title}`;
+  const body = `I thought you might find this interesting:
+
+${post.title}
+${Posts.getLink(post, true, false)}
+
+(found via ${Telescope.settings.get("siteUrl")})
+  `;
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+Posts.helpers({ getEmailShareUrl() { return Posts.getEmailShareUrl(this); } });
+
 
 ///////////////////
 // Users Helpers //
