@@ -67,7 +67,10 @@ Newsletter.build = function (postsArray) {
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
       date: moment(post.postedAt).format("MMMM D YYYY"),
-      authorAvatarUrl: Users.avatar.getUrl(postUser)
+      authorAvatarUrl: Users.avatar.getUrl(postUser),
+      emailShareUrl: Posts.getEmailShareUrl(post),
+      twitterShareUrl: Posts.getTwitterShareUrl(post),
+      facebookShareUrl: Posts.getFacebookShareUrl(post)
     });
 
     // if post author's avatar returns an error, remove it from properties object
@@ -143,8 +146,11 @@ Newsletter.build = function (postsArray) {
   });
 
   // 3. wrap newsletter HTML in email wrapper template
-  var emailHTML = NovaEmail.buildTemplate(newsletterHTML);
-
+  // (also pass date to wrapper as extra property just in case we need it)
+  var emailHTML = NovaEmail.buildTemplate(newsletterHTML, {
+    date: moment().format("dddd, MMMM D YYYY")
+  });
+  
   // 4. build campaign object and return it
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),

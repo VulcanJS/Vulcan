@@ -33,7 +33,7 @@ NovaEmail.getTemplate = function (templateName) {
 
 };
 
-NovaEmail.buildTemplate = function (htmlContent) {
+NovaEmail.buildTemplate = function (htmlContent, optionalProperties = {}) {
 
   var emailProperties = {
     secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
@@ -47,7 +47,8 @@ NovaEmail.buildTemplate = function (htmlContent) {
     footer: Telescope.settings.get('emailFooter'),
     logoUrl: Telescope.settings.get('logoUrl'),
     logoHeight: Telescope.settings.get('logoHeight'),
-    logoWidth: Telescope.settings.get('logoWidth')
+    logoWidth: Telescope.settings.get('logoWidth'),
+    ...optionalProperties
   };
 
   var emailHTML = NovaEmail.getTemplate("wrapper")(emailProperties);
