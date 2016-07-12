@@ -65,7 +65,7 @@
       "secret": "bar"
     },
     "facebook": {
-      "clientId": "foo",
+      "appId": "foo",
       "secret": "bar"
     }
   }
