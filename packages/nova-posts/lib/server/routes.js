@@ -7,7 +7,7 @@ Picker.route('/out', function(params, req, res, next) {
     if (post) {
       var ip = req.headers && req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       Posts.methods.increaseClicks(post._id, ip);
-      res.writeHead(302, {'Location': query.url});
+      res.writeHead(301, {'Location': query.url});
       res.end();
     } else {
       // don't redirect if we can't find a post for that link

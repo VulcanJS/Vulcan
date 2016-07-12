@@ -203,10 +203,14 @@ Telescope.utils.invitesEnabled = function() {
 
 // add http: if missing
 Telescope.utils.addHttp = function (url) {
-  if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
-    url = "http:"+url;
+  try {
+    if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
+      url = "http:"+url;
+    }
+    return url;
+  } catch (error) {
+    return null;
   }
-  return url;
 };
 
 /////////////////////////////
