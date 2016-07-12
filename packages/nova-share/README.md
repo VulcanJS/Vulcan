@@ -1,1 +1,0 @@
-Telescope share module package, used internally.
