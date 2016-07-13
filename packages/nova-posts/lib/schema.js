@@ -44,10 +44,12 @@ Posts.config.STATUS_SPAM = 4;
 Posts.config.STATUS_DELETED = 5;
 Posts.config.STATUS_SCHEDULED = 6;
 
-const adminGroup = {
-  name: "admin",
-  order: 2
-}
+Posts.groups = {
+  admin: {
+    name: "admin",
+    order: 2
+  }
+};
 
 /**
  * @summary Posts schema
@@ -80,7 +82,7 @@ Posts.schemaJSON = {
     editableIf: Users.is.admin,
     publish: true,
     control: "datetime",
-    group: adminGroup
+    group: Posts.groups.admin
   },
   /**
     URL
@@ -195,7 +197,7 @@ Posts.schemaJSON = {
       options: Posts.config.postStatuses,
       group: 'admin'
     },
-    group: adminGroup
+    group: Posts.groups.admin
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)
@@ -208,7 +210,7 @@ Posts.schemaJSON = {
     editableIf: Users.is.admin,
     control: "checkbox",
     publish: true,
-    group: adminGroup
+    group: Posts.groups.admin
   },
   /**
     Whether the post is inactive. Inactive posts see their score recalculated less often
