@@ -220,6 +220,15 @@ function PostsNewRequiredPropertiesCheck (post, user) {
 }
 Telescope.callbacks.add("posts.new.sync", PostsNewRequiredPropertiesCheck);
 
+/**
+ * @summary Set the post's isFuture to true if necessary
+ */
+function PostsNewSetFuture (post, user) {
+  post.isFuture = post.postedAt > post.createdAt;
+  return post;
+}
+Telescope.callbacks.add("posts.new.sync", PostsNewSetFuture);
+
 // ------------------------------------- posts.new.async -------------------------------- //
 
 /**
@@ -317,25 +326,30 @@ function PostsEditForceStickyToFalse (modifier, post) {
 }
 Telescope.callbacks.add("posts.edit.sync", PostsEditForceStickyToFalse);
 
-// ------------------------------------- posts.edit.async -------------------------------- //
+/**
+ * @summary Set status
+ */
+function PostsEditSetIsFuture (modifier, post) {
+  // if a post's postedAt date is in the future, set isFuture to true
+  modifier.$set.isFuture = modifier.$set.postedAt > new Date();
+  return modifier;
+}
+Telescope.callbacks.add("posts.edit.sync", PostsEditSetIsFuture);
 
 /**
  * @summary Set postedAt date
  */
-function PostsEditSetPostedAt (post, oldPost) {
-
-  // post is not pending and has been scheduled to be posted in the future by a moderator/admin
-  if (post.status !== Posts.config.STATUS_PENDING && post.postedAt && post.postedAt > new Date()) {
-    Posts.update(post._id, {$set: {status: Posts.config.STATUS_SCHEDULED}});
-  }
-
+function PostsEditSetPostedAt (modifier, post) {
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
-    Posts.update(post._id, {$set:{postedAt: new Date()}});
+    modifier.$set.postedAt = new Date();
   }
+  return modifier;
 }
-Telescope.callbacks.add("posts.edit.async", PostsEditSetPostedAt);
+Telescope.callbacks.add("posts.edit.sync", PostsEditSetPostedAt);
+
+// ------------------------------------- posts.edit.async -------------------------------- //
 
 function PostsEditRunPostApprovedCallbacks (post, oldPost) {
   var now = new Date();

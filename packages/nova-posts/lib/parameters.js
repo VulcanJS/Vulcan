@@ -23,8 +23,11 @@ Posts.parameters.get = function (terms) {
   // note: using jquery's extend() with "deep" parameter set to true instead of shallow _.extend()
   // see: http://api.jquery.com/jQuery.extend/
 
-  // initialize parameters by extending baseParameters object, to avoid passing it by reference
-  var parameters = Telescope.utils.deepExtend(true, {}, Posts.views.baseParameters);
+  // initialize parameters with empty object
+  let parameters = {
+    selector: {},
+    options: {}
+  };
 
   // iterate over postsParameters callbacks
   parameters = Telescope.callbacks.run("postsParameters", parameters, _.clone(terms));
@@ -169,39 +172,3 @@ function limitPosts (parameters, terms) {
   return parameters;
 }
 Telescope.callbacks.add("postsParameters", limitPosts);
-
-// hide future scheduled posts unless "showFuture" is set to true or postedAt is already defined
-// function hideFuturePosts (parameters, terms) {
-
-//   // var now = new Date();
-//   var inOneHour = moment().add(1, "hour").toDate();
-
-//   if (!parameters.showFuture) {
-
-//     if (!!parameters.selector.postedAt) {
-    
-//       if (!!parameters.selector.postedAt.$lt) {
-
-//         // if postedAt.$lt is defined, use it or current date plus one hour, whichever is earlier in time
-//         var lt = parameters.selector.postedAt.$lt;
-//         parameters.selector.postedAt.$lt = lt < inOneHour ? lt : inOneHour;
-      
-//       } else {
-
-//         // if postedAt.$lt doesn't exist, use current date plus one hour
-//        parameters.selector.postedAt.$lt = inOneHour;
-
-//       }
-
-//     } else {
-
-//       // if postedAt doesn't exist at all, set it to {$lt: now plus one hour}
-//       parameters.selector.postedAt = { $lt: inOneHour };
-
-//     }
-
-//   }
-
-//   return parameters;
-// }
-// Telescope.callbacks.add("postsParameters", hideFuturePosts);

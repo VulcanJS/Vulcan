@@ -23,7 +23,8 @@ Posts.publishedFields.list = PublicationsUtils.arrayToFields([
   "status",
   "sticky",
   "author",
-  "userId"
+  "userId",
+  "isFuture"
 ]);
 
 /**

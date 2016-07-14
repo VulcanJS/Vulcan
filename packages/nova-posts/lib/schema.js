@@ -30,10 +30,6 @@ Posts.config.postStatuses = [
   {
     value: 5,
     label: 'deleted'
-  },
-  {
-    value: 6,
-    label: 'scheduled'
   }
 ];
 
@@ -42,7 +38,6 @@ Posts.config.STATUS_APPROVED = 2;
 Posts.config.STATUS_REJECTED = 3;
 Posts.config.STATUS_SPAM = 4;
 Posts.config.STATUS_DELETED = 5;
-Posts.config.STATUS_SCHEDULED = 6;
 
 Posts.groups = {
   admin: {
@@ -198,6 +193,14 @@ Posts.schemaJSON = {
       group: 'admin'
     },
     group: Posts.groups.admin
+  },
+  /**
+    Whether a post is scheduled in the future or not
+  */
+  isFuture: {
+    type: Boolean,
+    optional: true,
+    publish: true
   },
   /**
     Whether the post is sticky (pinned to the top of posts lists)

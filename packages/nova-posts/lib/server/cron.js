@@ -17,7 +17,7 @@ const addJob = function () {
     },
     job() {
       // fetch all posts tagged as scheduled
-      const scheduledPosts = Posts.find({status: Posts.config.STATUS_SCHEDULED}, {fields: {_id: 1, status: 1, postedAt: 1, userId: 1, title: 1}}).fetch();
+      const scheduledPosts = Posts.find({isFuture: true}, {fields: {_id: 1, status: 1, postedAt: 1, userId: 1, title: 1}}).fetch();
       
       if (scheduledPosts) {
         // filter the scheduled posts to retrieve only the one that should update, considering their schedule
@@ -25,7 +25,7 @@ const addJob = function () {
 
         // update all posts with status approved
         const postsIds = _.pluck(postsToUpdate, '_id');
-        Posts.update({_id: {$in: postsIds}}, {$set: {status: Posts.config.STATUS_APPROVED}}, {multi: true});
+        Posts.update({_id: {$in: postsIds}}, {$set: {isFuture: false}}, {multi: true});
         
         // log the action
         console.log('// Scheduled posts approved:', postsIds);

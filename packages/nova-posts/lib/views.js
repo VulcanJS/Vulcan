@@ -21,8 +21,8 @@ Posts.views.add = function (viewName, viewFunction) {
 Posts.views.baseParameters = {
   selector: {
     status: Posts.config.STATUS_APPROVED,
-  },
-  showFuture: false
+    isFuture: {$ne: true} // match both false and undefined
+  }
 };
 
 /**
@@ -30,6 +30,7 @@ Posts.views.baseParameters = {
  */
 Posts.views.add("top", function (terms) {
   return {
+    ...Posts.views.baseParameters,
     options: {sort: {sticky: -1, score: -1}}
   };
 });
@@ -39,6 +40,7 @@ Posts.views.add("top", function (terms) {
  */
 Posts.views.add("new", function (terms) {
   return {
+    ...Posts.views.baseParameters,
     options: {sort: {sticky: -1, postedAt: -1}}
   };
 });
@@ -48,6 +50,7 @@ Posts.views.add("new", function (terms) {
  */
 Posts.views.add("best", function (terms) {
   return {
+    ...Posts.views.baseParameters,
     options: {sort: {sticky: -1, baseScore: -1}}
   };
 });
@@ -60,8 +63,7 @@ Posts.views.add("pending", function (terms) {
     selector: {
       status: Posts.config.STATUS_PENDING
     },
-    options: {sort: {createdAt: -1}},
-    showFuture: true
+    options: {sort: {createdAt: -1}}
   };
 });
 
@@ -73,8 +75,7 @@ Posts.views.add("rejected", function (terms) {
     selector: {
       status: Posts.config.STATUS_REJECTED
     },
-    options: {sort: {createdAt: -1}},
-    showFuture: true
+    options: {sort: {createdAt: -1}}
   };
 });
 
@@ -84,10 +85,10 @@ Posts.views.add("rejected", function (terms) {
 Posts.views.add("scheduled", function (terms) {
   return {
     selector: {
-      status: Posts.config.STATUS_SCHEDULED
+      status: Posts.config.STATUS_APPROVED,
+      isFuture: true
     },
-    options: {sort: {postedAt: -1}},
-    showFuture: true
+    options: {sort: {postedAt: -1}}
   };
 });
 
@@ -96,8 +97,17 @@ Posts.views.add("scheduled", function (terms) {
  */
 Posts.views.add("userPosts", function (terms) {
   return {
-    selector: {userId: terms.userId},
-    options: {limit: 5, sort: {postedAt: -1}}
+    selector: {
+      userId: terms.userId,
+      status: Posts.config.STATUS_APPROVED,
+      isFuture: false
+    },
+    options: {
+      limit: 5, 
+      sort: {
+        postedAt: -1
+      }
+    }
   };
 });
 
