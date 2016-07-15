@@ -31,8 +31,10 @@ class ThumbnailURL extends Component {
           <img 
             className="embedly-thumbnail" 
             src={this.props.value} 
-            height={Telescope.settings.get('thumbnailHeight', 125)} 
-            width={Telescope.settings.get('thumbnailWidth', 200)}
+            style={{
+              "width": 150,
+              "height": Telescope.settings.get('thumbnailHeight', 150) * 150 / Telescope.settings.get('thumbnailWidth', 150)
+            }}
             />
           <a className="thumbnail-url-clear" onClick={this.clearThumbnail}><FormattedMessage id="posts.clear_thumbnail"/></a>
       </div>
