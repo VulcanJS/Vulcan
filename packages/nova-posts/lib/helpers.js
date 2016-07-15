@@ -87,6 +87,16 @@ Posts.isApproved = function (post) {
 Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
 
 /**
+ * @summary Check if a post is pending
+ * @param {Object} post
+ */
+Posts.isPending = function (post) {
+  return post.status === Posts.config.STATUS_PENDING;
+};
+Posts.helpers({isPending: function () {return Posts.isPending(this);}});
+
+
+/**
  * @summary Check to see if post URL is unique.
  * We need the current user so we know who to upvote the existing post as.
  * @param {String} url
