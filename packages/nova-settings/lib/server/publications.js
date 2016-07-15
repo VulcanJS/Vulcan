@@ -1,19 +1,23 @@
-Meteor.publish('settings', function() {
-  var options = {};
-  var privateFields = {};
+import Users from 'meteor/nova:users';
 
-  // look at Settings.simpleSchema._schema to see which fields should be kept private
-  _.each(Telescope.settings.collection.simpleSchema()._schema, (property, key) => {
-    if (property.private) 
-      privateFields[key] = false;
-  });
+// Meteor.publish('settings', function() {
+//   var options = {};
+//   var privateFields = {};
 
-  options = _.extend(options, {
-    fields: privateFields
-  });
+//   // look at Settings.simpleSchema._schema to see which fields should be kept private
+//   _.each(Telescope.settings.collection.simpleSchema()._schema, (property, key) => {
+//     if (property.private) 
+//       privateFields[key] = false;
+//   });
 
-  return Telescope.settings.collection.find({}, options);
-});
+//   options = _.extend(options, {
+//     fields: privateFields
+//   });
+
+//   return Telescope.settings.collection.find({}, options);
+// });
+
+Telescope.settings.collection.smartPublish('settings');
 
 Meteor.publish('settings.admin', function() {
   if (Users.is.adminById(this.userId)) {

@@ -1,8 +1,11 @@
+import Users from './collection.js';
+import NovaEmail from 'meteor/nova:email';
+
 const getUser = (userId) => {
   return typeof Users.findOne(userId) === "undefined" ? Users.findOne() : Users.findOne(userId);
 };
 
-Telescope.email.addEmails({
+NovaEmail.addEmails({
   
   newUser: {
     template: "newUser",

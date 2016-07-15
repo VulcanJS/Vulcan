@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js";
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+//import Actions from "../actions.js";
+//import { Messages } from "meteor/nova:core";
+import classNames from 'classnames';
+import Users from 'meteor/nova:users';
 
 class Vote extends Component {
 
@@ -18,14 +18,14 @@ class Vote extends Component {
     const user = this.context.currentUser;
 
     if(!user){
-      Messages.flash("Please log in first");
+      this.context.messages.flash("Please log in first");
     } else if (user.hasUpvoted(post)) {
-      Actions.call('posts.cancelUpvote', post._id, function(){
-        Events.track("post upvote cancelled", {'_id': post._id});
+      this.context.actions.call('posts.cancelUpvote', post._id, () => {
+        this.context.events.track("post upvote cancelled", {'_id': post._id});
       });        
     } else {
-      Actions.call('posts.upvote', post._id, function(){
-        Events.track("post upvoted", {'_id': post._id});
+      this.context.actions.call('posts.upvote', post._id, () => {
+        this.context.events.track("post upvoted", {'_id': post._id});
       });
     }
 
@@ -33,19 +33,22 @@ class Vote extends Component {
 
   render() {
 
-    ({Icon} = Telescope.components);
-
     const post = this.props.post;
     const user = this.context.currentUser;
 
-    let actionsClass = "vote";
-    if (Users.hasUpvoted(user, post)) actionsClass += " voted upvoted";
-    if (Users.hasDownvoted(user, post)) actionsClass += " voted downvoted";
+    const hasUpvoted = Users.hasUpvoted(user, post);
+    const hasDownvoted = Users.hasDownvoted(user, post);
+    const actionsClass = classNames(
+      "vote", 
+      {voted: hasUpvoted || hasDownvoted},
+      {upvoted: hasUpvoted},
+      {downvoted: hasDownvoted}
+    );
 
     return (
       <div className={actionsClass}>
         <a className="upvote-button" onClick={this.upvote}>
-          <Icon name="upvote" />
+          <Telescope.components.Icon name="upvote" />
           <div className="sr-only">Upvote</div>
           <div className="vote-count">{post.baseScore || 0}</div>
         </a>
@@ -61,7 +64,10 @@ Vote.propTypes = {
 }
 
 Vote.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  actions: React.PropTypes.object,
+  events: React.PropTypes.object,
+  messages: React.PropTypes.object
 };
 
 module.exports = Vote;

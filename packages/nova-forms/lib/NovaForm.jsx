@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
-
-import FormComponent from "./FormComponent.jsx";
-import Utils from './utils.js';
+import Flash from "./Flash.jsx";
+import FormGroup from "./FormGroup.jsx";
+import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
 
 /*
 
@@ -17,7 +18,7 @@ import Utils from './utils.js';
 */
 
 class NovaForm extends Component{
-  
+
   // --------------------------------------------------------------------- //
   // ----------------------------- Constructor --------------------------- //
   // --------------------------------------------------------------------- //
@@ -27,17 +28,18 @@ class NovaForm extends Component{
     this.submitForm = this.submitForm.bind(this);
     this.updateState = this.updateState.bind(this);
     this.methodCallback = this.methodCallback.bind(this);
-    this.addToPrefilledValues = this.addToPrefilledValues.bind(this);
+    this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
-  
+    this.updateCurrentValue = this.updateCurrentValue.bind(this);
+
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
-  
+
     this.state = {
       disabled: false,
       errors: [],
-      prefilledValues: {},
+      autofilledValues: {},
       currentValues: {}
     };
   }
@@ -46,24 +48,141 @@ class NovaForm extends Component{
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
 
+  // return the current schema based on either the schema or collection prop
+  getSchema() {
+    return this.props.schema ? this.props.schema : this.props.collection.simpleSchema()._schema;
+  }
+
+  getFieldGroups() {
+
+    const schema = this.getSchema();
+
+    // build fields array by iterating over the list of field names
+    let fields = this.getFieldNames().map(fieldName => {
+
+      // get schema for the current field
+      const fieldSchema = schema[fieldName];
+
+      fieldSchema.name = fieldName;
+
+      // intialize properties
+      let field = {
+        name: fieldName,
+        datatype: fieldSchema.type,
+        control: fieldSchema.control,
+        layout: this.props.layout,
+        order: fieldSchema.order
+      }
+
+      // add label
+      const intlFieldName = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName});
+      field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
+
+      // add value
+      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
+
+      // replace value by prefilled value if value is empty
+      if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
+        const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
+        if (!!prefilledValue && !field.value) {
+          field.prefilledValue = prefilledValue;
+          field.value = prefilledValue;
+        }
+      }
+
+      // add options if they exist
+      if (fieldSchema.autoform && fieldSchema.autoform.options) {
+        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
+      }
+
+      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
+        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
+      }
+
+      if (fieldSchema.autoform && fieldSchema.autoform.help) {
+        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
+      }
+
+      // add placeholder
+      if (fieldSchema.autoform && fieldSchema.autoform.placeholder) {
+       field.placeholder = fieldSchema.autoform.placeholder;
+      }
+
+      if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
+      if (fieldSchema.afterComponent) field.afterComponent = fieldSchema.afterComponent;
+
+      // add group
+      if (fieldSchema.group) {
+        field.group = fieldSchema.group;
+      }
+
+      return field;
+
+    });
+
+    // remove fields where control = "none"
+    fields = _.reject(fields, field => field.control === "none");
+    fields = _.sortBy(fields, "order");
+
+    // console.log(fields)
+
+    // get list of all groups used in current fields
+    let groups = _.compact(_.unique(_.pluck(fields, "group")));
+
+    // for each group, add relevant fields
+    groups = groups.map(group => {
+      group.label = group.label || this.context.intl.formatMessage({id: group.name});
+      group.fields = _.filter(fields, field => {return field.group && field.group.name === group.name});
+      return group;
+    });
+
+    // add default group
+    groups = [{
+      name: "default",
+      label: "default",
+      order: 0,
+      fields: _.filter(fields, field => {return !field.group;})
+    }].concat(groups);
+
+    // sort by order
+    groups = _.sortBy(groups, "order");
+
+    // console.log(groups);
+
+    return groups;
+  }
+
   // if a document is being passed, this is an edit form
-  getFormType() { 
+  getFormType() {
     return this.props.document ? "edit" : "new";
   }
 
   // get relevant fields
-  getFieldNames() { 
-    const collection = this.props.collection;
-    const fields = this.getFormType() === "edit" ? collection.getEditableFields(this.props.currentUser, this.getDocument()) : collection.getInsertableFields(this.props.currentUser);
-    return fields;
+  getFieldNames() {
+    const fields = this.props.fields;
+
+    // get all editable/insertable fields (depending on current form type)
+    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.props.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.props.currentUser);
+
+    // if "fields" prop is specified, restrict list of fields to it
+    if (typeof fields !== "undefined" && fields.length > 0) {
+      relevantFields = _.intersection(relevantFields, fields);
+    }
+
+    return relevantFields;
   }
 
-  // look in the document, prefilled values, or inputted values
+  // for each field, we apply the following logic:
+  // - if its value is currently being inputted, use that
+  // - else if its value was provided by the db, use that (i.e. props.document)
+  // - else if its value is provded by the autofilledValues object, use that
   getDocument() {
-    const document = Object.assign(this.props.document || {}, this.state.prefilledValues, this.state.currentValues);
+    const currentDocument = _.clone(this.props.document) || {};
+    const document = Object.assign(_.clone(this.state.autofilledValues), currentDocument,  _.clone(this.state.currentValues));
     return document;
   }
 
+  // NOTE: this is not called anymore since we're updating on blur, not on change
   // whenever the form changes, update its state
   updateState(e) {
     // e can sometimes be event, sometims be currentValue
@@ -83,6 +202,13 @@ class NovaForm extends Component{
     }
   }
 
+  // manually update current value (i.e. on blur). See above for on change instead
+  updateCurrentValue(fieldName, fieldValue) {
+    const currentValues = this.state.currentValues;
+    currentValues[fieldName] = fieldValue;
+    this.setState({currentValues: currentValues});
+  }
+
   // --------------------------------------------------------------------- //
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
@@ -96,14 +222,13 @@ class NovaForm extends Component{
 
   // render errors
   renderErrors() {
-    Flash = Telescope.components.Flash;
     return <div className="form-errors">{this.state.errors.map(message => <Flash key={message} message={message}/>)}</div>
   }
 
   // --------------------------------------------------------------------- //
   // ------------------------------- Context ----------------------------- //
   // --------------------------------------------------------------------- //
-  
+
   // add error to state
   throwError(error) {
     this.setState({
@@ -112,18 +237,25 @@ class NovaForm extends Component{
   }
 
   // add something to prefilled values
-  addToPrefilledValues(property) {
+  addToAutofilledValues(property) {
     this.setState({
-      prefilledValues: {...this.state.prefilledValues, ...property}
+      autofilledValues: {...this.state.autofilledValues, ...property}
     });
+  }
+
+  // clear value
+  clearValue(property) {
+
   }
 
   // pass on context to all child components
   getChildContext() {
     return {
       throwError: this.throwError,
-      prefilledValues: this.state.prefilledValues,
-      addToPrefilledValues: this.addToPrefilledValues
+      autofilledValues: this.state.autofilledValues,
+      addToAutofilledValues: this.addToAutofilledValues,
+      updateCurrentValue: this.updateCurrentValue,
+      getDocument: this.getDocument,
     };
   }
 
@@ -135,14 +267,15 @@ class NovaForm extends Component{
   methodCallback(error, document) {
 
     this.setState({disabled: false});
-    
+
     if (error) { // error
 
       console.log(error)
 
+      const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
       // add error to state
       this.throwError({
-        content: error.message,
+        content: errorContent,
         type: "error"
       });
 
@@ -161,7 +294,7 @@ class NovaForm extends Component{
 
       // run close callback if it exists in context (i.e. we're inside a modal)
       if (this.context.closeCallback) this.context.closeCallback();
-    
+
     }
   }
 
@@ -170,15 +303,16 @@ class NovaForm extends Component{
     this.setState({disabled: true});
 
     const fields = this.getFieldNames();
-    const collection = this.props.collection;
 
     // if there's a submit callback, run it
-    if (this.props.submitCallback) this.props.submitCallback();
-    
+    if (this.props.submitCallback) {
+      data = this.props.submitCallback(data);
+    }
+
     if (this.getFormType() === "new") { // new document form
 
       // remove any empty properties
-      let document = _.compactObject(Utils.flatten(data));
+      let document = _.compactObject(flatten(data));
 
       // add prefilled properties
       if (this.props.prefilledProps) {
@@ -193,12 +327,12 @@ class NovaForm extends Component{
       const document = this.getDocument();
 
       // put all keys with data on $set
-      const set = _.compactObject(Utils.flatten(data));
-      
+      const set = _.compactObject(flatten(data));
+
       // put all keys without data on $unset
       const unsetKeys = _.difference(fields, _.keys(set));
       const unset = _.object(unsetKeys, unsetKeys.map(()=>true));
-      
+
       // build modifier
       const modifier = {$set: set};
       if (!_.isEmpty(unset)) modifier.$unset = unset;
@@ -214,60 +348,20 @@ class NovaForm extends Component{
   // --------------------------------------------------------------------- //
 
   render() {
-    
-    // build fields array by iterating over the list of field names
-    let fields = this.getFieldNames().map(fieldName => {
-        
-      // get schema for the current field
-      const fieldSchema = this.props.collection.simpleSchema()._schema[fieldName]
-      fieldSchema.name = fieldName;
 
-      // add name, label, and type properties
-      let field = {
-        name: fieldName,
-        label: (typeof this.props.labelFunction === "function") ? this.props.labelFunction(fieldName) : fieldName,
-        dataType: fieldSchema.type,
-        control: fieldSchema.control,
-        layout: this.props.layout
-      }
-
-      // add value
-      field.value = this.getDocument() && Utils.deepValue(this.getDocument(), fieldName) ? Utils.deepValue(this.getDocument(), fieldName) : "";  
-
-      // add options if they exist
-      if (fieldSchema.autoform && fieldSchema.autoform.options) {
-        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
-      }
-
-      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
-        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
-      }
-
-      if (fieldSchema.autoform && fieldSchema.autoform.help) {
-        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
-      }
-
-      return field;
-
-    });
-
-    // console.log(fields)
-
-    // remove fields where control = "none"
-    fields = _.reject(fields, field => field.control === "none");
+    const fieldGroups = this.getFieldGroups();
 
     return (
       <div className={"document-"+this.getFormType()}>
-        <Formsy.Form 
-          onSubmit={this.submitForm} 
-          disabled={this.state.disabled} 
-          ref="form" 
-          onChange={this.updateState} 
+        <Formsy.Form
+          onSubmit={this.submitForm}
+          disabled={this.state.disabled}
+          ref="form"
         >
           {this.renderErrors()}
-          {fields.map(field => <FormComponent key={field.name} {...field} />)}
-          <Button type="submit" bsStyle="primary">Submit</Button>
-          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}>Cancel</a> : null}
+          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValue={this.updateCurrentValue} />)}
+          <Button type="submit" bsStyle="primary"><FormattedMessage id="forms.submit"/></Button>
+          {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}><FormattedMessage id="forms.cancel"/></a> : null}
         </Formsy.Form>
       </div>
     )
@@ -276,7 +370,8 @@ class NovaForm extends Component{
 }
 
 NovaForm.propTypes = {
-  collection: React.PropTypes.object.isRequired,
+  collection: React.PropTypes.object,
+  schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   currentUser: React.PropTypes.object,
   submitCallback: React.PropTypes.func,
@@ -286,7 +381,8 @@ NovaForm.propTypes = {
   labelFunction: React.PropTypes.func,
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
-  cancelCallback: React.PropTypes.func
+  cancelCallback: React.PropTypes.func,
+  fields: React.PropTypes.arrayOf(React.PropTypes.string)
 }
 
 NovaForm.defaultPropTypes = {
@@ -294,13 +390,16 @@ NovaForm.defaultPropTypes = {
 }
 
 NovaForm.contextTypes = {
-  closeCallback: React.PropTypes.func
+  closeCallback: React.PropTypes.func,
+  intl: intlShape
 }
 
 NovaForm.childContextTypes = {
-  prefilledValues: React.PropTypes.object,
-  addToPrefilledValues: React.PropTypes.func,
-  throwError: React.PropTypes.func
+  autofilledValues: React.PropTypes.object,
+  addToAutofilledValues: React.PropTypes.func,
+  updateCurrentValue: React.PropTypes.func,
+  throwError: React.PropTypes.func,
+  getDocument: React.PropTypes.func
 }
 
 module.exports = NovaForm;

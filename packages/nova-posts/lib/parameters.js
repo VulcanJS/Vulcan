@@ -1,3 +1,6 @@
+import Posts from './collection.js'
+import moment from 'moment';
+
 /**
  * @summary Parameter callbacks let you add parameters to subscriptions 
  * @namespace Posts.parameters
@@ -24,7 +27,7 @@ Posts.parameters.get = function (terms) {
   var parameters = Telescope.utils.deepExtend(true, {}, Posts.views.baseParameters);
 
   // iterate over postsParameters callbacks
-  parameters = Telescope.callbacks.run("postsParameters", parameters, terms);
+  parameters = Telescope.callbacks.run("postsParameters", parameters, _.clone(terms));
   
   // if sort options are not provided, default to "createdAt" sort
   if (_.isEmpty(parameters.options.sort)) {
@@ -61,16 +64,66 @@ Telescope.callbacks.add("postsParameters", addViewParameter);
 // Add "after" and "before" properties to terms which can be used to limit posts in time. 
 function addTimeParameter (parameters, terms) {
 
+  // console.log("// addTimeParameter")
+
   if (typeof parameters.selector.postedAt === "undefined") {
   
-    var postedAt = {};
+    let postedAt = {}, mAfter, mBefore, startOfDay, endOfDay, clientTimezoneOffset, serverTimezoneOffset, timeDifference;
+
+    /* 
+
+    If we're on the client, add the time difference between client and server
+    
+    Example: client is on Japanese time (+9 hours), 
+    server on UCT (Greenwich) time (+0 hours), for a total difference of +9 hours.
+
+    So the time "00:00, UCT" is equivalent to "09:00, JST".
+
+    So if we want to express the timestamp "00:00, UCT" on the client, 
+    we *add* 9 hours to "00:00, JST" on the client to get "09:00, JST" and
+    sync up both times.
+
+    */
+
+    if (Meteor.isClient) {
+      clientTimezoneOffset = -1 * new Date().getTimezoneOffset();
+      serverTimezoneOffset = -1 * Injected.obj('serverTimezoneOffset').offset;
+      timeDifference = clientTimezoneOffset - serverTimezoneOffset;
+    
+      // console.log("client time:"+clientTimezoneOffset);
+      // console.log("server time:"+serverTimezoneOffset);
+      // console.log("difference: "+timeDifference);
+    }
 
     if (terms.after) {
-      postedAt.$gte = moment(terms.after, "YYYY-MM-DD").startOf('day').toDate();
+
+      // console.log("// after: "+terms.after);
+
+      mAfter = moment(terms.after, "YYYY-MM-DD");
+      startOfDay = mAfter.startOf('day');
+
+        // console.log("// normal      ", mAfter.toDate(), mAfter.valueOf());
+        // console.log("// startOfDay  ", startOfDay.toDate(), startOfDay.valueOf());
+
+      if (Meteor.isClient) {
+        startOfDay.add(timeDifference, "minutes");
+        // console.log("// after add   ", startOfDay.toDate(), startOfDay.valueOf());
+      }
+
+      postedAt.$gte = startOfDay.toDate();
     }
 
     if (terms.before) {
-      postedAt.$lt = moment(terms.before, "YYYY-MM-DD").endOf('day').toDate();
+
+      mBefore = moment(terms.before, "YYYY-MM-DD");
+      endOfDay = mBefore.endOf('day');
+
+      if (Meteor.isClient) {
+        endOfDay.add(timeDifference, "minutes");
+      }
+
+      postedAt.$lt = endOfDay.toDate();
+    
     }
 
     if (!_.isEmpty(postedAt)) {

@@ -1,24 +1,29 @@
 import React from 'react';
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
+import { ListContainer } from "meteor/utilities:react-list-container";
+import Categories from "meteor/nova:categories";
 
 const PostsListHeader = () => {
 
-  ({PostsViews, SearchForm, CategoriesList} = Telescope.components)
-
   return (
     <div>
-      <div className="post-list-header">
-        <div className="post-list-categories">
-          <ListContainer collection={Categories} limit={0} resultsPropName="categories" component={CategoriesList}/>
+      <div className="posts-list-header">
+        <div className="posts-lists-header-categories">
+          <ListContainer 
+            collection={Categories} 
+            limit={0} 
+            resultsPropName="categories" 
+            component={Telescope.components.CategoriesList}
+            listId="categories"
+          />
         </div>
-        <PostsViews />
-        <SearchForm/>
+        <Telescope.components.PostsViews />
+        <Telescope.components.SearchForm/>
       </div>
     </div>
   )
 }
+
+PostsListHeader.displayName = "PostsListHeader";
 
 module.exports = PostsListHeader;
 export default PostsListHeader;

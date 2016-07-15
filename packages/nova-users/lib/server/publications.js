@@ -1,3 +1,5 @@
+import Users from '../modules.js';
+
 /**
  * @summary Publish a single user
  * @param {String} idOrSlug
@@ -8,8 +10,7 @@ Meteor.publish('users.single', function (terms) {
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var options = Users.is.adminById(this.userId) ? {} : {fields: Users.publishedFields.public};
-
+  var options = Users.is.admin(this.userId) ? {} : {fields: Users.publishedFields.public};
   return user ? Meteor.users.find({_id: user._id}, options) : [];
 
 });

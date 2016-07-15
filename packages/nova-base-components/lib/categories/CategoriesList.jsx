@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import Router from "../router.js"
-import Core from "meteor/nova:core";
-const ModalTrigger = Core.ModalTrigger;
-const ContextPasser = Core.ContextPasser;
+import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
+import { withRouter } from 'react-router'
+import { LinkContainer } from 'react-router-bootstrap';
+import Users from 'meteor/nova:users';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 
@@ -35,16 +36,14 @@ class CategoriesList extends Component {
 
   renderCategoryEditModal(category, index) {
     
-    const CategoriesEditForm = Telescope.components.CategoriesEditForm;
-
     return (
       <Modal key={index} show={this.state.openModal === index+1} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Category</Modal.Title>
+          <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
-            <CategoriesEditForm category={category}/>
+          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
+            <Telescope.components.CategoriesEditForm category={category}/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -53,16 +52,14 @@ class CategoriesList extends Component {
 
   renderCategoryNewModal() {
     
-    const CategoriesNewForm = Telescope.components.CategoriesNewForm;
-
     return (
       <Modal show={this.state.openModal === 0} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>New Category</Modal.Title>
+          <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
-            <CategoriesNewForm/>
+          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
+            <Telescope.components.CategoriesNewForm/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -70,7 +67,7 @@ class CategoriesList extends Component {
   }
 
   renderCategoryNewButton() {
-    return <MenuItem className="dropdown-item post-category"><Button bsStyle="primary" onClick={this.openCategoryNewModal}>New Category</Button></MenuItem>;
+    return <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}><FormattedMessage id="categories.new"/></Button></MenuItem></div>;
     // const CategoriesNewForm = Telescope.components.CategoriesNewForm;
     // return (
     //   <ModalTrigger title="New Category" component={<MenuItem className="dropdown-item post-category"><Button bsStyle="primary">New Category</Button></MenuItem>}>
@@ -81,24 +78,27 @@ class CategoriesList extends Component {
 
   render() {
     
-    const Category = Telescope.components.Category;
-
     const categories = this.props.categories;
     const context = this.context;
-
-    const currentRoute = context.currentRoute;
-    const currentCategorySlug = currentRoute.queryParams.cat;
+    const currentQuery = _.clone(this.props.router.location.query);
+    delete currentQuery.cat;
     
     return (
       <div>
         <DropdownButton 
           bsStyle="default" 
-          className="categories btn-secondary" 
-          title="Categories" 
+          className="categories-list btn-secondary" 
+          title={<FormattedMessage id="categories"/>} 
           id="categories-dropdown"
         >
-          <MenuItem href={Router.path("posts.list")} eventKey={0} className="dropdown-item post-category">All Categories</MenuItem>
-          {categories && categories.length > 0 ? categories.map((category, index) => <Category key={index} category={category} index={index} currentCategorySlug={currentCategorySlug} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
+          <div className="category-menu-item dropdown-item">
+            <LinkContainer to={{pathname:"/", query: currentQuery}} activeClassName="category-active">
+              <MenuItem eventKey={0}>
+                <FormattedMessage id="categories.all"/>
+              </MenuItem>
+            </LinkContainer>
+          </div>
+          {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
           {Users.is.admin(this.context.currentUser) ? this.renderCategoryNewButton() : null}
         </DropdownButton>
         <div>
@@ -118,8 +118,8 @@ CategoriesList.propTypes = {
 
 CategoriesList.contextTypes = {
   currentUser: React.PropTypes.object,
-  currentRoute: React.PropTypes.object
+  messages: React.PropTypes.object,
 };
 
-module.exports = CategoriesList;
-export default CategoriesList;
+module.exports = withRouter(CategoriesList);
+export default withRouter(CategoriesList);

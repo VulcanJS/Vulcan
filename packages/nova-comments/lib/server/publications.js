@@ -1,3 +1,6 @@
+import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
+
 Comments._ensureIndex({postId: 1});
 Comments._ensureIndex({parentCommentId: 1});
 
@@ -24,6 +27,10 @@ Meteor.publish('comments.list', function (terms) {
   return Users.can.view(currentUser) ? [comments, posts, users] : [];
 
 });
+
+
+
+
 
 
 // /**

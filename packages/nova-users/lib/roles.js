@@ -1,3 +1,5 @@
+import Users from './collection.js';
+
 /**
  * @summary Telescope roles
  * @namespace Users.is

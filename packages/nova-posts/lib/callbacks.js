@@ -1,3 +1,7 @@
+import Posts from './collection.js'
+import marked from 'marked';
+import Users from 'meteor/nova:users';
+
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //
 //////////////////////////////////////////////////////
@@ -89,6 +93,10 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 
 - PostsApprovedNotification
 
+### users.remove.async
+
+- UsersRemoveDeletePosts
+
 */
 
 // ------------------------------------- posts.new.method -------------------------------- //
@@ -118,11 +126,11 @@ function PostsNewRateLimit (post, user) {
 
     // check that user waits more than X seconds between posts
     if(timeSinceLastPost < postInterval)
-      throw new Meteor.Error(604, __('please_wait')+(postInterval-timeSinceLastPost)+__('seconds_before_posting_again'));
+      throw new Meteor.Error(604, 'please_wait'+(postInterval-timeSinceLastPost)+'seconds_before_posting_again');
 
     // check that the user doesn't post more than Y posts per day
     if(numberOfPostsInPast24Hours > maxPostsPer24Hours)
-      throw new Meteor.Error(605, __('sorry_you_cannot_submit_more_than')+maxPostsPer24Hours+__('posts_per_day'));
+      throw new Meteor.Error(605, 'sorry_you_cannot_submit_more_than'+maxPostsPer24Hours+'posts_per_day');
 
   }
 
@@ -237,7 +245,7 @@ function PostsNewNotifications (post) {
   if (typeof Telescope.notifications !== "undefined") {
 
     var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-    var notifiedUserIds = _.pluck(Users.find({'telescope.notifications.posts': true}, {fields: {_id:1}}).fetch(), '_id');
+    var notifiedUserIds = _.pluck(Users.find({'telescope.notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
     var notificationData = {
       post: _.pick(post, '_id', 'userId', 'title', 'url')
     };
@@ -248,10 +256,10 @@ function PostsNewNotifications (post) {
 
     if (post.status === Posts.config.STATUS_PENDING && !!adminIds.length) {
       // if post is pending, only notify admins
-      Telescope.createNotification(adminIds, 'newPendingPost', notificationData);
+      Telescope.notifications.create(adminIds, 'newPendingPost', notificationData);
     } else if (!!notifiedUserIds.length) {
       // if post is approved, notify everybody
-      Telescope.createNotification(notifiedUserIds, 'newPost', notificationData);
+      Telescope.notifications.create(notifiedUserIds, 'newPost', notificationData);
     }
   }
 }
@@ -262,7 +270,7 @@ Telescope.callbacks.add("posts.new.async", PostsNewNotifications);
 function PostsEditUserCheck (modifier, post, user) {
   // check that user can edit document
   if (!user || !Users.can.edit(user, post)) {
-    throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_post'));
+    throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_post');
   }
   return modifier;
 }
@@ -295,7 +303,9 @@ Telescope.callbacks.add("posts.edit.method", PostsEditSubmittedPropertiesCheck);
  */
 function PostsEditForceStickyToFalse (modifier, post) {
   if (!modifier.$set.sticky) {
-    delete modifier.$unset.sticky;
+    if (modifier.$unset && modifier.$unset.sticky) {
+      delete modifier.$unset.sticky;
+    }
     modifier.$set.sticky = false;
   }
   return modifier;
@@ -336,7 +346,19 @@ function PostsApprovedNotification (post) {
       post: _.pick(post, '_id', 'userId', 'title', 'url')
     };
 
-    Telescope.createNotification(post.userId, 'postApproved', notificationData);
+    Telescope.notifications.create(post.userId, 'postApproved', notificationData);
   }
 }
 Telescope.callbacks.add("posts.approve.async", PostsApprovedNotification);
+
+// ------------------------------------- users.remove.async -------------------------------- //
+
+function UsersRemoveDeletePosts (user, options) {
+  if (options.deletePosts) {
+    var deletedPosts = Posts.remove({userId: userId});
+  } else {
+    // not sure if anything should be done in that scenario yet
+    // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
+  }
+}
+Telescope.callbacks.add("users.remove.async", UsersRemoveDeletePosts);

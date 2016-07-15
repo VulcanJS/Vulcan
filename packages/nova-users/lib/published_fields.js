@@ -1,3 +1,4 @@
+import Users from './collection.js';
 import PublicationsUtils from 'meteor/utilities:smart-publications';
 
 Users.publishedFields = {};
@@ -11,7 +12,11 @@ Users.publishedFields.public = PublicationsUtils.arrayToFields([
   'services.twitter.profile_image_url',
   'services.twitter.profile_image_url_https',
   'services.facebook.id',
-  'services.twitter.screenName'
+  'services.twitter.screenName',
+  'telescope.downvotedComments',
+  'telescope.downvotedPosts',
+  'telescope.upvotedComments',
+  'telescope.upvotedPosts'
 ]);
 
 /**

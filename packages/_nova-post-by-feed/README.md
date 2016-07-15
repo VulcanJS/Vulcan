@@ -1,1 +1,0 @@
-Telescope post by feed package, used internally. 

@@ -1,14 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import Core from 'meteor/nova:core';
-import SmartContainers from "meteor/utilities:react-list-container";
+import { ListContainer } from "meteor/utilities:react-list-container";
 import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
+import { ModalTrigger, Messages, FlashContainer } from "meteor/nova:core";
 
-const ModalTrigger = Core.ModalTrigger;
-const Messages = Core.Messages;
-const FlashContainer = Core.FlashContainer;
-const ListContainer = SmartContainers.ListContainer;
 const FlashMessages = Telescope.components.FlashMessages;
 
 //////////////////////////////////////////////////////
@@ -35,7 +31,8 @@ class MoviesWrapper extends Component {
             joins={Movies.getJoins()}
             limit={5}
             component={MoviesList}
-            />
+            listId="movies.list"
+          />
         </div>
 
       </div>

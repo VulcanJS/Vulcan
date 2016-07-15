@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import {mount} from 'react-mounter';
 import MoviesWrapper from './demo-components.jsx';
 import Core from 'meteor/nova:core';
+import { Route } from 'react-router';
 
 //////////////////////////////////////////////////////
 // Collection & Schema                              //
@@ -56,18 +57,16 @@ Movies.attachSchema(schema);
 // Route                                            //
 //////////////////////////////////////////////////////
 
-FlowRouter.route('/demo', {
-  name: 'demo',
-  action() {
-    mount(MoviesWrapper);
-  }
-});
+// Telescope.routes.add(<Route name="demo" path="/demo" component={MoviesWrapper} />);
+Telescope.routes.add({name:"demo", path:"/demo", component:MoviesWrapper});
 
 //////////////////////////////////////////////////////
 // Methods                                          //
 //////////////////////////////////////////////////////
 
 Movies.smartMethods({
+  createName: "movies.create",
+  editName: "movies.edit",
   createCallback: function (user, document) {
     document = _.extend(document, {
       createdAt: new Date(),

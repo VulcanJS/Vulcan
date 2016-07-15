@@ -1,1 +1,0 @@
-FlowRouter.setDeferScriptLoading(true);

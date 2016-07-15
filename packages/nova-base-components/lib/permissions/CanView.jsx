@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Users from 'meteor/nova:users';
 
 const CanView = ({user, children}) => {
   if (Users.can.view(user)) {
@@ -13,5 +14,7 @@ const CanView = ({user, children}) => {
 CanView.propTypes = {
   user: React.PropTypes.object
 }
+
+CanView.displayName = "CanView";
 
 module.exports = CanView;

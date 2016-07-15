@@ -1,8 +1,11 @@
+import NovaEmail from 'meteor/nova:email';
+import Comments from './collection.js';
+
 const getComment = (commentId) => {
-  return typeof Comments.findOne(commentId) === "undefined" ? Comments.findOne() : Comments.findOne(commentId);
+  return typeof Comments.findOne(commentId) === "undefined" ? {comment: Comments.findOne()} : {comment: Comments.findOne(commentId)};
 };
 
-Telescope.email.addEmails({
+NovaEmail.addEmails({
 
   newComment: {
     template: "newComment",

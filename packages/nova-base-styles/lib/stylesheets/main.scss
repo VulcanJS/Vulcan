@@ -1,3 +1,4 @@
+// @import '{}/node_modules/bootstrap/scss/bootstrap.scss';
 
 @import "breakpoints";
 @import "colors";
@@ -12,33 +13,9 @@
 @import "header";
 @import "newsletter";
 @import "other";
+@import "forms";
 @import "posts";
-
-body{
-  color: $black;
-}
-
-
-
-
-// .post-views, .logo, .nav, .alt-accounts-log-in-buttons{
-//   margin-bottom: 15px;
-// }
-
-// .post-views ul, .categories ul, .post-categories ul, .post-commenters ul{
-//   list-style-type: none;
-//   margin: 0;
-//   padding: 0;
-// }
-
-// .post-views li, .categories li, .post-categories li, .post-commenters li{
-//   display: inline-block;
-//   margin-right: 5px;
-//   border: 1px solid #ddd;
-//   padding: 3px 5px;
-//   background: #efefef;
-// }
-
+@import "users";
 
 .new-post-button{
   margin-bottom: 15px;
@@ -50,7 +27,6 @@ code{
   border: 1px solid #ddd;
   padding: 3px 6px;
 }
-
 
 .avatar{
   height: 24px;
@@ -66,6 +42,6 @@ code{
   opacity: 0.3;
 }
 
-.post-day h2{
+.posts-day h2{
   font-weight: bold;
 }

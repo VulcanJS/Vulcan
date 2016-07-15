@@ -1,26 +1,42 @@
 import React, { PropTypes, Component } from 'react';
-import Router from '../router.js';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { FormattedMessage, intlShape } from 'react-intl';
+import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
+import Users from 'meteor/nova:users';
 
 const PostsViews = (props, context) => {
 
   let views = ["top", "new", "best"];
   const adminViews = ["pending", "rejected", "scheduled"];
   
-  if (Users.is.admin(Meteor.user())) {
+  if (Users.is.admin(context.currentUser)) {
     views = views.concat(adminViews);
   }
 
-  const currentRoute = context.currentRoute;
-  const currentView = currentRoute.queryParams.view || props.defaultView;
-  // console.log(currentRoute);
-  
+  const query = _.clone(props.router.location.query);
+
   return (
-    <div className="post-views">
-      <ButtonGroup>
-        {views.map(view => <Button className={currentRoute.route.name === "posts.list" && currentView === view ? "post-view-active" : "post-view-inactive"} bsStyle="default" key={view} href={Router.extendPathWithQueryParams("posts.list", {}, {view: view})}>{Telescope.utils.capitalise(view)}</Button>)}
-      </ButtonGroup>
-      <Button bsStyle="default" href={Router.path("posts.daily")} className={currentRoute.route.name === "posts.daily" ? "post-view-active" : "post-view-inactive"} >Daily</Button>
+    <div className="posts-views">
+      <DropdownButton 
+        bsStyle="default" 
+        className="views btn-secondary" 
+        title={context.intl.formatMessage({id: "posts.view"})} 
+        id="views-dropdown"
+      >
+        {views.map(view => 
+          <LinkContainer key={view} to={{pathname: "/", query: {...query, view: view}}} /*to={}*/ className="dropdown-item" activeClassName="posts-view-active">
+            <MenuItem>
+              <FormattedMessage id={"posts."+view}/>
+            </MenuItem>
+          </LinkContainer>
+        )}
+        <LinkContainer to={"/daily"} /*to={{name: "posts.daily"}}*/ className="dropdown-item" activeClassName="posts-view-active">
+          <MenuItem className={"bar"}>
+            <FormattedMessage id="posts.daily"/>
+          </MenuItem>
+        </LinkContainer>
+      </DropdownButton>
     </div>
   )
 }
@@ -34,7 +50,11 @@ PostsViews.defaultProps = {
 }
 
 PostsViews.contextTypes = {
-  currentRoute: React.PropTypes.object
+  currentRoute: React.PropTypes.object,
+  currentUser: React.PropTypes.object,
+  intl: intlShape
 };
 
-module.exports = PostsViews;
+PostsViews.displayName = "PostsViews";
+
+module.exports = withRouter(PostsViews);

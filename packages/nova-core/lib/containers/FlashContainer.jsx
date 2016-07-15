@@ -9,5 +9,7 @@ const FlashContainer = createContainer(() => {
   }
 }, params => <params.component {...params} />);
 
+FlashContainer.displayName = "FlashContainer";
+
 module.exports = FlashContainer;
 export default FlashContainer;

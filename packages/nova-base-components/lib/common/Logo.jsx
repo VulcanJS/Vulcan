@@ -1,19 +1,24 @@
 import React from 'react';
+import { IndexLink } from 'react-router';
 
 const Logo = ({logoUrl, siteTitle}) => {
   if (logoUrl) {
     return (
       <h1 className="logo-image ">
-        <a href="/">
+        <IndexLink to={{pathname: "/"}}>
           <img src={logoUrl} alt={siteTitle} style={{maxWidth: "100px", maxHeight: "100px"}} />
-        </a>
+        </IndexLink>
       </h1>
     )
   } else {
     return (
-      <h1 className="logo-text"><a href="/">{siteTitle}</a></h1>
+      <h1 className="logo-text">
+        <IndexLink to={{pathname: "/"}}>{siteTitle}</IndexLink>
+      </h1>
     )
   }
 }
+
+Logo.displayName = "Logo";
 
 module.exports = Logo;

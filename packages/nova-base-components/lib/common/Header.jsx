@@ -1,17 +1,8 @@
 import React from 'react';
-import NoSSR from 'react-no-ssr';
-import Router from '../router.js'
-import Core from "meteor/nova:core";
-
-const Messages = Core.Messages;
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
+//import { Messages } from "meteor/nova:core";
 
 const Header = ({currentUser}) => {
   
-  ({Logo, CategoriesList, PostsNewButton, UserMenu, AccountsMenu} = Telescope.components);
-
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Nova");
   const tagline = Telescope.settings.get("tagline");
@@ -22,18 +13,18 @@ const Header = ({currentUser}) => {
       <header className="header">
 
         <div className="logo">
-          <Logo logoUrl={logoUrl} siteTitle={siteTitle} />
+          <Telescope.components.Logo logoUrl={logoUrl} siteTitle={siteTitle} />
           {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
         </div>
         
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <UserMenu user={currentUser}/> : <AccountsMenu/>}
+            {currentUser ? <Telescope.components.UsersMenu user={currentUser}/> : <Telescope.components.UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">
-            <PostsNewButton/>
+            <Telescope.components.PostsNewButton/>
           </div>
 
         </div>
@@ -42,5 +33,7 @@ const Header = ({currentUser}) => {
     </div>
   )
 }
+
+Header.displayName = "Header";
 
 module.exports = Header;

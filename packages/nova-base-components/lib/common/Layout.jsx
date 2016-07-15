@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
+import { FlashContainer } from "meteor/nova:core";
 
-import Core from "meteor/nova:core";
-const FlashContainer = Core.FlashContainer;
+class Layout extends Component {
 
-const Layout = props => {
+  render() {
 
-  ({Header, Footer, FlashMessages, NewsletterForm, HeadTags} = Telescope.components);
+    return (
+      <div className="wrapper" id="wrapper">
 
-  return (
-    <div className="wrapper" id="wrapper">
+        <Telescope.components.HeadTags />
 
-      <HeadTags />
+        <Telescope.components.UsersProfileCheck {...this.props} />
 
-      <Header {...props}/>
-    
-      <div className="main">
+        <Telescope.components.Header {...this.props}/>
+      
+        <div className="main">
 
-        <FlashContainer component={FlashMessages}/>
+          <FlashContainer component={Telescope.components.FlashMessages}/>
 
-        <NewsletterForm />
+          <Telescope.components.Newsletter />
 
-        {props.children}
+          {this.props.children}
 
+        </div>
+      
+        <Telescope.components.Footer {...this.props}/>
+      
       </div>
-    
-      <Footer {...props}/>
-    
-    </div>
-  )
+    )
+
+  }
 }
+
+Layout.displayName = "Layout";
 
 module.exports = Layout;

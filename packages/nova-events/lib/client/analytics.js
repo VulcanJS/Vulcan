@@ -1,3 +1,14 @@
+import Events from '../collection.js';
+
+Events.analyticsRequest = function() {
+  // Google Analytics
+  if (typeof window.ga !== 'undefined'){
+    window.ga('send', 'pageview', {
+      'page': window.location.pathname
+    });
+  }
+};
+
 Events.analyticsInit = function() {
 
   // Google Analytics
@@ -19,11 +30,5 @@ Events.analyticsInit = function() {
 
 };
 
-Events.analyticsRequest = function() {
-  // Google Analytics
-  if (typeof window.ga !== 'undefined'){
-    window.ga('send', 'pageview', {
-      'page': FlowRouter.current().path
-    });
-  }
-};
+Events.analyticsInit();
+

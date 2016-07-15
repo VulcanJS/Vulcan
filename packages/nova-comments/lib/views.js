@@ -1,3 +1,5 @@
+import Comments from './collection.js';
+
 /**
  * @summary Comment views are filters used for subscribing to and viewing comments
  * @namespace Comments.views
@@ -23,7 +25,7 @@ Comments.views.baseParameters = {
 Comments.views.add("postComments", function (terms) {
   return {
     selector: {postId: terms.postId},
-    options: {limit: 0, sort: {score: -1, postedAt: -1}}
+    options: {limit: 0, sort: {postedAt: -1}}
   };
 });
 

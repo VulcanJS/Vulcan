@@ -1,3 +1,5 @@
+import Users from './collection.js';
+
 Users.getNotificationProperties = function (user) {
   const properties = {
     profileUrl: Users.getProfileUrl(user),

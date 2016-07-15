@@ -1,3 +1,8 @@
+import marked from 'marked';
+import Posts from "meteor/nova:posts";
+import Comments from './collection.js';
+import Users from 'meteor/nova:users';
+
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //
 //////////////////////////////////////////////////////
@@ -56,6 +61,10 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 
 ### comments.edit.async
 
+### users.remove.async
+
+- UsersRemoveDeleteComments
+
 */
 
 // ------------------------------------- comments.new.method -------------------------------- //
@@ -74,7 +83,7 @@ function CommentsNewRateLimit (comment, user) {
         commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
     // check that user waits more than 15 seconds between comments
     if((timeSinceLastComment < commentInterval)) {
-      throw new Meteor.Error(704, __('please_wait')+(commentInterval-timeSinceLastComment)+__('seconds_before_commenting_again'));
+      throw new Meteor.Error("CommentsNewRateLimit", "comments.rate_limit_error", commentInterval-timeSinceLastComment);
     }
   }
   return comment;
@@ -120,7 +129,7 @@ function CommentsNewRequiredPropertiesCheck (comment, user) {
 
   // Don't allow empty comments
   if (!comment.body)
-    throw new Meteor.Error(704,__('your_comment_is_empty'));
+    throw new Meteor.Error(704, 'your_comment_is_empty');
 
   var defaultProperties = {
     createdAt: new Date(),
@@ -195,7 +204,7 @@ function CommentsNewNotifications (comment) {
       // 1. Notify author of post (if they have new comment notifications turned on)
       //    but do not notify author of post if they're the ones posting the comment
       if (Users.getSetting(postAuthor, "notifications_comments", true) && comment.userId !== postAuthor._id) {
-        Telescope.createNotification(post.userId, 'newComment', notificationData);
+        Telescope.notifications.create(post.userId, 'newComment', notificationData);
         userIdsNotified.push(post.userId);
       }
 
@@ -216,7 +225,7 @@ function CommentsNewNotifications (comment) {
             // add parent comment to notification data
             notificationData.parentComment = _.pick(parentComment, '_id', 'userId', 'author', 'htmlBody');
 
-            Telescope.createNotification(parentComment.userId, 'newReply', notificationData);
+            Telescope.notifications.create(parentComment.userId, 'newReply', notificationData);
             userIdsNotified.push(parentComment.userId);
           }
         }
@@ -230,7 +239,7 @@ function CommentsNewNotifications (comment) {
         // remove userIds of users that have already been notified
         // and of comment author (they could be replying in a thread they're subscribed to)
         var subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
-        Telescope.createNotification(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
+        Telescope.notifications.create(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
 
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
 
@@ -245,7 +254,7 @@ Telescope.callbacks.add("comments.new.async", CommentsNewNotifications);
 
 function CommentsEditUserCheck (modifier, comment, user) {
   if (!user || !Users.can.edit(user, comment)) {
-    throw new Meteor.Error(601, __('sorry_you_cannot_edit_this_comment'));
+    throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_comment');
   }
   return modifier;
 }
@@ -275,3 +284,28 @@ Telescope.callbacks.add("comments.edit.method", CommentsEditSubmittedPropertiesC
 
 // ------------------------------------- comments.edit.async -------------------------------- //
 
+
+
+// ------------------------------------- users.remove.async -------------------------------- //
+
+function UsersRemoveDeleteComments (user, options) {
+  if (options.deleteComments) {
+    var deletedComments = Comments.remove({userId: userId});
+  } else {
+    // not sure if anything should be done in that scenario yet
+    // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
+  }
+}
+Telescope.callbacks.add("users.remove.async", UsersRemoveDeleteComments);
+
+// Add to posts.single publication
+
+function PostsSingleAddCommentsUsers (users, post) {
+  // get IDs from all commenters on the post
+  const comments = Comments.find({postId: post._id}).fetch();
+  if (comments.length) {
+    users = users.concat(_.pluck(comments, "userId"));
+  }
+  return users;
+}
+Telescope.callbacks.add("posts.single.getUsers", PostsSingleAddCommentsUsers);

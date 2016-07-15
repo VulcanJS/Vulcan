@@ -1,28 +1,32 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+import Users from 'meteor/nova:users';
 
 const CanCreatePost = (props, context) => {
 
   const currentUser = context.currentUser;
 
   const children = props.children;
-  const AccountsForm = Telescope.components.AccountsForm;
+  const UsersAccountForm = Telescope.components.UsersAccountForm;
 
   if (!currentUser){
     return (
-      <div>
-        <h3>Please Log In</h3>
-        <AccountsForm/>
+      <div className="log-in-message">
+        <h3><FormattedMessage id="users.please_log_in"/></h3>
+        <UsersAccountForm/>
       </div>
     )
   } else if (Users.can.post(currentUser)) {
     return children;
   } else {
-    return <p>Sorry, you do not have permissions to post at this time</p>;
+    return <p><FormattedMessage id="users.cannot_post"/></p>;
   }
 };
 
 CanCreatePost.contextTypes = {
   currentUser: React.PropTypes.object
 };
+
+CanCreatePost.displayName = "CanCreatePost";
 
 module.exports = CanCreatePost;

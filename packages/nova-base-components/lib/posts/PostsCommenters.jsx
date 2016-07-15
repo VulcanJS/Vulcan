@@ -1,21 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router';
+import Posts from "meteor/nova:posts";
 
 const PostsCommenters = ({post}) => {
   return (
-    <div className="post-commenters">
-      <div className="post-commenters-avatars">
-        {post.commentersArray.map(user => <UserAvatar key={user._id} user={user}/>)}
+    <div className="posts-commenters">
+      <div className="posts-commenters-avatars">
+        {post.commentersArray.map(user => <Telescope.components.UsersAvatar key={user._id} user={user}/>)}
       </div>
-      <div className="post-discuss">
-        <a href={Posts.getPageUrl(post)}>
-          <Icon name="comment" />
-          <span className="post-comments-count">{post.commentCount}</span>
+      <div className="posts-commenters-discuss">
+        <Link to={Posts.getPageUrl(post)}>
+          <Telescope.components.Icon name="comment" />
+          <span className="posts-commenters-comments-count">{post.commentCount}</span>
           <span className="sr-only">Comments</span>
-        </a>
+        </Link>
       </div>
     </div>
   )
 }
+
+PostsCommenters.displayName = "PostsCommenters";
 
 module.exports = PostsCommenters;
 export default PostsCommenters;

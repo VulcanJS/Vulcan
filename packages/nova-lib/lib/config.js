@@ -5,7 +5,7 @@
 
 Telescope = {};
 
-Telescope.VERSION = '0.26.0-nova';
+Telescope.VERSION = '0.26.4-nova';
 
 // ------------------------------------- Config -------------------------------- //
 
@@ -14,6 +14,7 @@ Telescope.VERSION = '0.26.0-nova';
  * @namespace Telescope.config
  */
 Telescope.config = {};
+
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -26,7 +27,8 @@ SimpleSchema.extendOptions({
   template: Match.Optional(String), // template used to display the field
   autoform: Match.Optional(Object), // autoform placeholder
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
-  order: Match.Optional(Number) // position in the form
+  order: Match.Optional(Number), // position in the form
+  group: Match.Optional(Object) // form fieldset group
 });
 
 // ------------------------------------- Components -------------------------------- //
@@ -56,3 +58,17 @@ Telescope.subscriptions = [];
 Telescope.subscriptions.preload = function (subscription, args) {
   Telescope.subscriptions.push({name: subscription, arguments: args});
 };
+
+// ------------------------------------- Strings -------------------------------- //
+
+Telescope.strings = {};
+
+// ------------------------------------- Routes -------------------------------- //
+
+Telescope.routes = {
+  routes: [],
+  add(routeOrRouteArray) {
+    const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
+    this.routes = this.routes.concat(addedRoutes);
+  }
+}

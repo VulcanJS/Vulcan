@@ -20,6 +20,14 @@ This package can generate new document and edit document forms from a [SimpleSch
 - Support for custom form controls.
 - Submission to Meteor methods. 
 
+### NPM Dependencies
+
+```
+react react-intl formsy-react react-bootstrap formsy-react-components
+```
+
+You also need to load Bootstrap's CSS separately. 
+
 ### Usage
 
 Example schema:
@@ -97,6 +105,10 @@ Edit document form:
 
 The collection in which to edit or insert a document.
 
+###### `schema`
+
+If you prefer, you can also specify a schema instead of a collection.
+
 ###### `document`
 
 If present, the document to edit. If not present, the form will be a “new document” form. 
@@ -105,9 +117,9 @@ If present, the document to edit. If not present, the form will be a “new docu
 
 The current user.
 
-###### `submitCallback()`
+###### `submitCallback(data)`
 
-A callback called on form submission.
+A callback called on form submission on the form data. Should return the `data` object as well.
 
 ###### `successCallback(document)`
 
@@ -153,19 +165,82 @@ Either a text string (one of `text`, `textarea`, `checkbox`, `checkboxgroup`, `r
 
 A number corresponding to the position of the property's field inside the form. 
 
+###### `group`
+
+An optional object containing the group/section/fieldset in which to include the form element. Groups have `name`, `label`, and `order` properties.
+
+For example:
+
+```js
+postedAt: {
+  type: Date,
+  optional: true,
+  insertableIf: Users.is.admin,
+  editableIf: Users.is.admin,
+  publish: true,
+  control: "datetime",
+  group: {
+    name: "admin",
+    label: "Admin Options",
+    order: 2
+  }
+},
+```
+
+Note that fields with no groups are always rendered first in the form. 
+
+###### `placeholder`
+
+A placeholder value for the form field. 
+
+###### `beforeComponent`
+
+A React component that will be inserted just before the form component itself.
+
+###### `afterComponent`
+
+A React component that will be inserted just after the form component itself.
+
 ### Context
 
 The main `NovaForm` components makes the following objects available as context to all its children:
 
-###### `prefilledValues`
+###### `autofilledValues`
 
-An object containing optional prefilled properties. 
+An object containing optional autofilled properties. 
 
-###### `addToPrefilledValues({name: value})`
+###### `addToAutofilledValues({name: value})`
 
-A function that takes a property, and adds it to the `prefilledValues` object. 
+A function that takes a property, and adds it to the `autofilledValues` object. 
 
 ###### `throwError({content, type})`
 
 A callback function that can be used to throw an error. 
 
+###### `getDocument()`
+
+A function that lets you retrieve the current document from a form component.
+
+### Handling Values
+
+The component handles three different layers of input values:
+
+- The value stored in the database (when editing a document).
+- The value being currently inputted in the form element.
+- An “autofilled” value, typically provided by an *other* form element (i.e. autofilling the post title from its URL).
+
+The highest-priority value is the user input. If there is no user input, we default to the database value provided by the `props`. And if that one is empty too, we then look for autofilled values. 
+
+### i18n
+
+This package uses [React Intl](https://github.com/yahoo/react-intl/) to automatically translate all labels. In order to do so it expects an `intl` object ot be passed as part of its context. For example, in a parent component: 
+
+```
+getChildContext() {
+  const intlProvider = new IntlProvider({locale: myLocale}, myMessages);
+  const {intl} = intlProvider.getChildContext();
+  return {
+    intl: intl
+  };
+}
+```

@@ -1,3 +1,5 @@
+import NovaEmail from 'meteor/nova:email';
+
 // Invitation email
 Picker.route('/email/invite-existing-user/:id?', function(params, req, res, next) {
   
@@ -13,8 +15,8 @@ Picker.route('/email/invite-existing-user/:id?', function(params, req, res, next
         profileUrl : Users.getProfileUrl(invitingUser)
       };
 
-  html = Telescope.email.getTemplate('emailInvite')(emailProperties);
-  res.end(Telescope.email.buildTemplate(html));
+  html = NovaEmail.getTemplate('emailInvite')(emailProperties);
+  res.end(NovaEmail.buildTemplate(html));
 });
 
 // Invitation email
@@ -32,6 +34,6 @@ Picker.route('/email/invite-new-user/:id?', function(params, req, res, next) {
         profileUrl : Users.getProfileUrl(invitingUser)
       };
 
-  html = Telescope.email.getTemplate('emailInvite')(emailProperties);
-  res.end(Telescope.email.buildTemplate(html));
+  html = NovaEmail.getTemplate('emailInvite')(emailProperties);
+  res.end(NovaEmail.buildTemplate(html));
 });

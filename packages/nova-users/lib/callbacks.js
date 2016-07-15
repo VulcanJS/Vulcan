@@ -1,3 +1,8 @@
+import Users from './collection.js';
+import marked from 'marked';
+import Events from "meteor/nova:events";
+import NovaEmail from 'meteor/nova:email';
+
 //////////////////////////////////////////////////////
 // Collection Hooks                                 //
 //////////////////////////////////////////////////////
@@ -52,7 +57,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
       // check for existing emails and throw error if necessary
       var userWithSameEmail = Users.findByEmail(newEmail);
       if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
-        throw new Meteor.Error("email_taken2", __("this_email_is_already_taken") + " (" + newEmail + ")");
+        throw new Meteor.Error("email_taken2", "this_email_is_already_taken" + " (" + newEmail + ")");
       }
 
       // if user.emails exists, change it too
@@ -140,23 +145,19 @@ function hasCompletedProfile (user) {
 }
 Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);
 
-if (Telescope.email) {
-
-  function adminUserCreationNotification (user) {
-    // send notifications to admins
-    var admins = Users.adminUsers();
-    admins.forEach(function(admin){
-      if (Users.getSetting(admin, "notifications_users", false)) {
-        var emailProperties = {
-          profileUrl: Users.getProfileUrl(user, true),
-          username: Users.getUserName(user)
-        };
-        var html = Telescope.email.getTemplate('newUser')(emailProperties);
-        Telescope.email.send(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), Telescope.email.buildTemplate(html));
-      }
-    });
-    return user;
-  }
-  Telescope.callbacks.add("onCreateUser", adminUserCreationNotification);
-
+function adminUserCreationNotification (user) {
+  // send notifications to admins
+  var admins = Users.adminUsers();
+  admins.forEach(function(admin){
+    if (Users.getSetting(admin, "notifications_users", false)) {
+      var emailProperties = {
+        profileUrl: Users.getProfileUrl(user, true),
+        username: Users.getUserName(user)
+      };
+      var html = NovaEmail.getTemplate('newUser')(emailProperties);
+      NovaEmail.send(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), NovaEmail.buildTemplate(html));
+    }
+  });
+  return user;
 }
+Telescope.callbacks.add("onCreateUser", adminUserCreationNotification);

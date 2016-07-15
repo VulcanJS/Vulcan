@@ -1,53 +1,43 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Button } from 'react-bootstrap';
-
-import Core from "meteor/nova:core";
-const ModalTrigger = Core.ModalTrigger;
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
+import moment from 'moment';
+import { ModalTrigger } from "meteor/nova:core";
+import { Link } from 'react-router';
+import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 class PostsItem extends Component {
 
   renderCategories() {
-
-    ({PostsCategories} = Telescope.components);
-
-    return this.props.post.categoriesArray ? <PostsCategories post={this.props.post} /> : "";
+    return this.props.post.categoriesArray ? <Telescope.components.PostsCategories post={this.props.post} /> : "";
   }
 
   renderCommenters() {
-
-    ({PostsCommenters} = Telescope.components);
-
-    return this.props.post.commentersArray ? <PostsCommenters post={this.props.post}/> : "";
+    return this.props.post.commentersArray ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
 
-    ({PostsEditForm} = Telescope.components);
-
     const component = (
-      <ModalTrigger title="Edit Post" component={<a className="edit-link">Edit</a>}>
-        <PostsEditForm post={this.props.post}/>
+      <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
+        <Telescope.components.PostsEditForm post={this.props.post}/>
       </ModalTrigger>
     );
 
     return (
       <div className="post-actions">
-        {Users.can.edit(this.props.currentUser, this.props.post) ? component : ""}
+        {Users.can.edit(this.context.currentUser, this.props.post) ? component : ""}
       </div>
     )
   }
   
   render() {
 
-    ({UserAvatar, UserName, Vote, PostsStats, PostsThumbnail} = Telescope.components);
-
     const post = this.props.post;
 
-    let postClass = "post-item"; 
-    if (post.sticky) postClass += " post-sticky";
+    let postClass = "posts-item"; 
+    if (post.sticky) postClass += " posts-sticky";
 
     // console.log(post)
     // console.log(post.user)
@@ -55,24 +45,30 @@ class PostsItem extends Component {
     return (
       <div className={postClass}>
         
-        <div className="post-vote">
-          <Vote post={post} currentUser={this.props.currentUser}/>
+        <div className="posts-item-vote">
+          <Telescope.components.Vote post={post} currentUser={this.context.currentUser}/>
         </div>
         
-        {post.thumbnailUrl ? <PostsThumbnail post={post}/> : null}
+        {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}
 
-        <div className="post-content">
+        <div className="posts-item-content">
           
-          <h3 className="post-title">
-            <a className="post-title-link" href={Posts.getLink(post)} target={Posts.getLinkTarget(post)}>{post.title}</a>
+          <h3 className="posts-item-title">
+            <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
+              {post.title}
+            </Link>
             {this.renderCategories()}
           </h3>
           
-          <div className="post-meta">
-            {post.user? <div className="post-user"><UserAvatar user={post.user} size="small"/><UserName user={post.user}/></div> : null}
-            <div className="post-date">{moment(post.postedAt).fromNow()}</div>
-            <div className="post-comments"><a href={Posts.getPageUrl(post)}>{post.commentCount}&nbsp;comments</a></div>
-            <PostsStats post={post} />
+          <div className="posts-item-meta">
+            {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
+            <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
+            <div className="posts-item-comments">
+              <Link to={Posts.getPageUrl(post)}>
+                <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
+              </Link>
+            </div>
+            {(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
             {this.renderActions()}
           </div>
 
@@ -87,8 +83,7 @@ class PostsItem extends Component {
 };
   
 PostsItem.propTypes = {
-  post: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object
+  post: React.PropTypes.object.isRequired
 }
 
 PostsItem.contextTypes = {

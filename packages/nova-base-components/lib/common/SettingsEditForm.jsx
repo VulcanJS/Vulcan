@@ -1,19 +1,16 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { DocumentContainer } from "meteor/utilities:react-list-container";
+//import { Messages } from "meteor/nova:core";
 
 class SettingsEditForm extends Component{
 
   render() {
 
     return (
-      <div className="edit-post-form">
-        <p>Note: settings already provided in your <code>settings.json</code> file will be disabled.</p>
+      <div className="settings-edit-form">
+        <p><FormattedMessage id="settings.json_message"/></p>
         <DocumentContainer 
           collection={Telescope.settings.collection} 
           publication="settings.admin" 
@@ -25,10 +22,9 @@ class SettingsEditForm extends Component{
             collection: Telescope.settings.collection,
             currentUser: this.context.currentUser,
             methodName: "settings.edit",
-            successCallback: (category)=>{
-              Messages.flash("Settings edited (please reload).", "success");
-            },
-            labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Telescope.settings.collection)
+            successCallback: (category) => {
+              this.context.messages.flash(this.context.intl.formatMessage({id: "settings.edited"}), "success");
+            }
           }}
         />
       </div>
@@ -37,7 +33,9 @@ class SettingsEditForm extends Component{
 }
 
 SettingsEditForm.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
+  intl: intlShape
 };
 
 module.exports = SettingsEditForm;

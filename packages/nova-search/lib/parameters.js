@@ -5,7 +5,10 @@ function addSearchQueryParameter (parameters, terms) {
         $or: [
           {title: {$regex: terms.query, $options: 'i'}},
           {url: {$regex: terms.query, $options: 'i'}},
-          {body: {$regex: terms.query, $options: 'i'}}
+          // note: we cannot search the body field because it's not published
+          // to the client. If we did, we'd get different result sets on 
+          // client and server
+          {excerpt: {$regex: terms.query, $options: 'i'}}
         ]
       }
     });

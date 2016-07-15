@@ -3,7 +3,7 @@
 // Post List                                        //
 //////////////////////////////////////////////////////
 
-.post-list-header{
+.posts-list-header{
   @include medium-large{
     @include flex-center;
     justify-content: space-between;
@@ -11,27 +11,41 @@
   margin-bottom: $vmargin;
 }
 
-.post-list-categories{
+.post-lists-header-categories{
   @include small{
     margin: 0 auto;
     margin-bottom: $vmargin;
     text-align: center;
+    .btn-group{
+      margin-right: 0;
+      width: 100%;
+    }
+    .dropdown-toggle{
+      width: 100%;
+    }
   }
 }
 
-.post-views{
+.posts-views{
   @include small{
     margin-bottom: $vmargin;
+    .btn-group{
+      margin-right: 0;
+      width: 100%;
+    }
+    .dropdown-toggle{
+      width: 100%;
+    }
   }
-  a{
+  a.btn{
     @include border;
     // @include border-radius;
     // padding: 3px 5px;
     // margin-right: 5px;
-    &.post-view-inactive{
+    &.posts-view-inactive{
       @include activeHover;
     }
-    &.post-view-active{
+    &.posts-view-active{
       background: $light-blue;
     }
   }
@@ -40,14 +54,14 @@
   }
 }
 
-.post-list-content{
+.posts-list-content{
   border-top: $border;
   // padding-top: 15px;
   // margin-top: 15px;
   margin-bottom: $vmargin;
 }
 
-.post-load-more{
+.posts-load-more, .comments-load-more{
   display: block;
   text-align: center;
   @include border;
@@ -57,10 +71,10 @@
   @include activeHover;
   width: 100%;
   background: $white;
-  color: $blue;
+  color: $active-color;
 }
 
-.post-load-more-loading{
+.posts-load-more-loading{
   padding: 21px 0;
 }
 
@@ -68,20 +82,20 @@
 // Post Item                                        //
 //////////////////////////////////////////////////////
 
-.post-item{
+.posts-item{
   @include medium-large{
     @include flex-center;
   }
   border-bottom: $border;
   padding: $vmargin 5px;
   // margin-bottom: 15px;
-  &.post-sticky{
+  &.posts-sticky{
     background: $light-yellow;
 
   }
 }
 
-.post-vote{
+.posts-item-vote{
   @include small{
     float: right;    
   }
@@ -114,11 +128,11 @@
   }
 }
 
-.post-content{
+.posts-item-content{
   flex-grow: 1;
 }
 
-.post-title{
+.posts-item-title{
   @include small{
     margin-right: 40px;
     font-size: $large-font;
@@ -129,7 +143,7 @@
     font-size: $larger-font;
     margin-bottom: 5px;
   }
-  .post-title-link{
+  .posts-item-title-link{
     @include small{
       display: block;
       margin-bottom: $vmargin/2;
@@ -141,7 +155,7 @@
   }
 }
 
-.post-categories{
+.posts-categories{
   @include medium-large{
     margin-left: 5px;
   }
@@ -157,34 +171,34 @@
   }
 }
 
-.post-meta{
+.posts-item-meta{
   @include medium-large{
     @include flex-center;
   }
   font-size: $small-font;
-  .user-avatar{
+  .users-avatar{
     margin-right: 5px;
   }
-  .user-name, .post-date, .post-comments, .post-stats, .post-actions{
+  .users-name, .posts-item-date, .posts-item-comments, .posts-stats, .post-actions{
     margin-right: $hmargin;
   }
 }
 
-.post-user{
+.posts-item-user{
   @include small{
     margin-bottom: $vmargin/2;
   }
   @include flex-center;
 }
 
-.post-date, .post-comments{
+.posts-item-date, .posts-item-comments{
   @include small{
     margin-bottom: $vmargin/2;
   }
   color: $medium-text;
 }
 
-.post-stats{
+.posts-stats{
   @include small{
     margin-bottom: $vmargin/2;
     display: inline-block;
@@ -192,7 +206,7 @@
   @include border;
   @include border-radius;
   font-size: $smaller-font;
-  .post-stat{
+  .posts-stats-item{
     border-right: $border;
     padding: 2px 5px;
     display: inline-block;
@@ -206,20 +220,21 @@
   @include flex-center;
 }
 
-.post-commenters{
+.posts-commenters{
   @include small{
     display: none;
   }
   @include flex-center;
 }
 
-.post-commenters-avatars{
-  .user-avatar{
+.posts-commenters-avatars{
+  display: flex;
+  .users-avatar{
     margin-right: $hmargin;
   }
 }
 
-.post-thumbnail{
+.posts-thumbnail{
   @include small{
     float: left;
   }
@@ -236,8 +251,8 @@
 // Post Page                                        //
 //////////////////////////////////////////////////////
 
-.post-page{
-  .post-item{
+.posts-page{
+  .posts-item{
     @include border-radius;
     border: $border;
     padding: $hmargin;
@@ -245,7 +260,7 @@
   }
 }
 
-.post-body{
+.posts-page-body{
   font-size: $large-font;
   margin-bottom: $hmargin;
 }
@@ -254,9 +269,9 @@
 // Other Elements                                   //
 //////////////////////////////////////////////////////
 
-.post-day{
+.posts-day{
   margin-bottom: $vmargin * 2;
-  .post-load-more{
+  .posts-load-more{
     border: none;
     padding: 0;
     &:hover{
@@ -270,7 +285,13 @@
   }
 }
 
-.edit-post-form-header{
+.posts-edit-form-header{
   @include flex-center;
   justify-content: space-between;
+}
+
+.posts-edit-form-admin{
+  @include flex-center;
+  justify-content: space-between;
+  margin-bottom: $vmargin * 2;
 }

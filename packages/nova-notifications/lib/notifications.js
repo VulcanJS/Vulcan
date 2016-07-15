@@ -1,6 +1,9 @@
-// import Email from 'meteor/nova:email';
+import Users from 'meteor/nova:users';
+import NovaEmail from 'meteor/nova:email';
 
-Telescope.createNotification = (userIds, notificationName, data) => {
+Telescope.notifications = {};
+
+Telescope.notifications.create = (userIds, notificationName, data) => {
 
   // if userIds is not an array, wrap it in one
   if (!Array.isArray(userIds)) userIds = [userIds];
@@ -8,12 +11,17 @@ Telescope.createNotification = (userIds, notificationName, data) => {
   userIds.forEach(userId => {
 
     const user = Users.findOne(userId);
-    const email = Telescope.email.emails[notificationName];
+    const email = NovaEmail.emails[notificationName];
     const properties = email.getProperties(data);
     const subject = email.subject(properties);
-    const html = Telescope.email.getTemplate(email.template)(properties);
+    const html = NovaEmail.getTemplate(email.template)(properties);
 
-    Telescope.email.buildAndSendHTML(Users.getEmail(user), subject, html);
+    const userEmail = Users.getEmail(user);
+    if (!!userEmail) {
+      NovaEmail.buildAndSendHTML(Users.getEmail(user), subject, html);
+    } else {
+      console.log(`// Couldn't send notification: admin user ${user._id} doesn't have an email`);
+    }
   });
 
 };

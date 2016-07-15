@@ -1,13 +1,10 @@
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
-
-import Actions from "../actions.js";
+import { DocumentContainer } from "meteor/utilities:react-list-container";
+//import { Messages } from "meteor/nova:core";
+//import Actions from "../actions.js";
+import Categories from "meteor/nova:categories";
 
 class CategoriesEditForm extends Component{
 
@@ -19,11 +16,11 @@ class CategoriesEditForm extends Component{
   deleteCategory() {
     const category = this.props.category;
     if (window.confirm(`Delete category “${category.name}”?`)) { 
-      Actions.call("categories.deleteById", category._id, (error, result) => {
+      this.context.actions.call("categories.deleteById", category._id, (error, result) => {
         if (error) {
-          Messages.flash(error.message, "error");
+          this.context.messages.flash(error.message, "error");
         } else {
-          Messages.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
+          this.context.messages.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
         }
       });
     }
@@ -32,19 +29,18 @@ class CategoriesEditForm extends Component{
   render() {
 
     return (
-      <div className="edit-category-form">
+      <div className="categories-edit-form">
         <NovaForm 
           document={this.props.category}
           collection={Categories}
           currentUser={this.context.currentUser}
           methodName="categories.edit"
           successCallback={(category)=>{
-            Messages.flash("Category edited.", "success");
+            this.context.messages.flash("Category edited.", "success");
           }}
-          labelFunction={fieldName => Telescope.utils.getFieldLabel(fieldName, Categories)}
         />
         <hr/>
-        <a onClick={this.deleteCategory} className="delete-category-link"><Icon name="close"/> Delete Category</a>
+        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="categories.delete"/></a>
       </div>
     )
   }
@@ -55,7 +51,9 @@ CategoriesEditForm.propTypes = {
 }
 
 CategoriesEditForm.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  actions: React.PropTypes.object,
+  messages: React.PropTypes.object
 };
 
 module.exports = CategoriesEditForm;

@@ -1,5 +1,6 @@
-// on client, export dummy object
+import Newsletter from './namespace.js';
 
-const Campaign = {};
+import './emails.js';
+import './custom_fields.js';
 
-export default Campaign;
+export default Newsletter;

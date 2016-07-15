@@ -74,7 +74,7 @@ Meteor.methods({
           };
 
       Meteor.setTimeout(function () {
-        Telescope.email.buildAndSend(userEmail, emailSubject, 'emailInvite', emailProperties);
+        NovaEmail.buildAndSend(userEmail, emailSubject, 'emailInvite', emailProperties);
       }, 1);
 
     }

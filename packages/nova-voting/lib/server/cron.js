@@ -1,3 +1,6 @@
+import Posts from "meteor/nova:posts";
+import Comments from "meteor/nova:comments";
+
 Meteor.startup(function () {
   var scoreInterval = Telescope.settings.get("scoreUpdateInterval") || 30;
   if (scoreInterval > 0) {

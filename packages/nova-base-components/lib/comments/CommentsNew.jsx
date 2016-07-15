@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from '../actions.js';
 import NovaForm from "meteor/nova:forms";
+import Comments from "meteor/nova:comments";
 
 class CommentsNew extends Component {
 
@@ -17,14 +17,13 @@ class CommentsNew extends Component {
     }
 
     return (
-      <div className="comment-new-form">
+      <div className="comments-new-form">
         <NovaForm 
           collection={Comments} 
           currentUser={this.context.currentUser}
           methodName="comments.new"
           prefilledProps={prefilledProps}
           successCallback={this.props.successCallback}
-          labelFunction={(fieldName)=>Telescope.utils.getFieldLabel(fieldName, Comments)}
           layout="elementOnly"
           cancelCallback={this.props.type === "reply" ? this.props.cancelCallback : null}
         />

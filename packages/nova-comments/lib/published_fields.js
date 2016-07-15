@@ -1,4 +1,6 @@
+import Comments from './collection.js';
 import PublicationsUtils from 'meteor/utilities:smart-publications';
+import Posts from "meteor/nova:posts";
 
 Comments.publishedFields = {};
 

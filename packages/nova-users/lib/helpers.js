@@ -1,3 +1,6 @@
+import Users from './collection.js';
+import moment from 'moment';
+
 ////////////////////
 //  User Getters  //
 ////////////////////
@@ -65,12 +68,22 @@ Users.getProfileUrl = function (user, isAbsolute) {
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
   if (user.telescope && user.telescope.slug) {
-    return prefix + FlowRouter.path("users.single", {slug: user.telescope.slug});
+    return `${prefix}/users/${user.telescope.slug}`;
   } else {
     return "";
   }
 };
 Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
+
+/**
+ * @summary Get a user's account edit URL
+ * @param {Object} user (note: we only actually need either the _id or slug properties)
+ * @param {Boolean} isAbsolute
+ */
+Users.getEditUrl = function (user, isAbsolute) {
+  return `${Users.getProfileUrl(user, isAbsolute)}/edit`;
+};
+Users.helpers({getEditUrl: function (isAbsolute) {return Users.getEditUrl(this, isAbsolute);}});
 
 /**
  * @summary Get a user's Twitter name
@@ -125,8 +138,7 @@ Users.getEmailById = function (userId) {return Users.getEmail(Meteor.users.findO
  * @param {Object} user
  */
 Users.getEmailHash = function (user) {
-  // has to be this way to work with Gravatar
-  return Gravatar.hash(Users.getEmail(user));
+  return user.telescope.emailHash;
 };
 Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Meteor.users.findOne(userId));};
@@ -155,31 +167,17 @@ Users.userProfileCompleteById = function (userId) {return Users.userProfileCompl
 Users.getSetting = function (user, settingName, defaultValue) {
   user = user || Meteor.user();
   defaultValue = defaultValue || null;
-
   // all settings should be in the user.telescope namespace, so add "telescope." if needed
   settingName = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
 
   if (user && user.telescope) {
-    var settingValue = this.getProperty(user, settingName);
-    return (settingValue === null) ? defaultValue : settingValue;
+    var settingValue = Users.getProperty(user, settingName);
+    return typeof settingValue === 'undefined' ? defaultValue : settingValue;
   } else {
     return defaultValue;
   }
 };
 Users.helpers({getSetting: function (settingName, defaultValue) {return Users.getSetting(this, settingName, defaultValue);}});
-
-/**
- * @summary Set a user setting
- * @param {Object} user
- * @param {String} settingName
- * @param {Object} defaultValue
- */
-Users.setSetting = function (user, settingName, value) {
-  if (user) {
-    Meteor.call("users.setSetting", user._id, settingName, value);
-  }
-};
-Users.helpers({setSetting: function () {return Users.setSetting(this);}});
 
 /**
  * @summary Check if a user has upvoted a post
@@ -233,8 +231,8 @@ Users.getProperty = function (object, property) {
   var array = property.split('.');
   if(array.length > 1){
     var parent = array.shift();
-    // if our property is not at this level, call function again one level deeper if we can go deeper, else return null
-    return (typeof object[parent] === "undefined") ? null : this.getProperty(object[parent], array.join('.'));
+    // if our property is not at this level, call function again one level deeper if we can go deeper, else return undefined
+    return (typeof object[parent] === "undefined") ? undefined : this.getProperty(object[parent], array.join('.'));
   }else{
     // else return property
     return object[array[0]];

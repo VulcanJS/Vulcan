@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from '../actions.js';
 import NovaForm from "meteor/nova:forms";
+import Comments from "meteor/nova:comments";
 
 class CommentsEdit extends Component {
 
   render() {
     return (
-      <div className="comment-edit-form">
+      <div className="comments-edit-form">
         <NovaForm 
           collection={Comments}
           document={this.props.comment}

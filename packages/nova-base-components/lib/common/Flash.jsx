@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Alert } from 'react-bootstrap';
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+//import { Messages } from "meteor/nova:core";
 
 class Flash extends Component{
 
@@ -12,12 +10,12 @@ class Flash extends Component{
   }
 
   componentDidMount() {
-    Messages.markAsSeen(this.props.message._id);
+    this.context.messages.markAsSeen(this.props.message._id);
   }
 
   dismissFlash(e) {
     e.preventDefault();
-    Messages.clear(this.props.message._id);
+    this.context.messages.clear(this.props.message._id);
   }
 
   render() {
@@ -35,6 +33,10 @@ class Flash extends Component{
 
 Flash.propTypes = {
   message: React.PropTypes.object.isRequired
+}
+
+Flash.contextTypes = {
+  messages: React.PropTypes.object.isRequired
 }
 
 module.exports = Flash;

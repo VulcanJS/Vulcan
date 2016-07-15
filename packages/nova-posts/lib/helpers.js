@@ -1,3 +1,7 @@
+import moment from 'moment';
+import Posts from './collection.js';
+import Users from 'meteor/nova:users';
+
 //////////////////
 // Link Helpers //
 //////////////////
@@ -34,22 +38,11 @@ Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute){
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.single", post);
+  return `${prefix}/posts/${post._id}/${post.slug}`;
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
-
-/**
- * @summary Get post edit page URL.
- * @param {String} id
- */
-Posts.getEditUrl = function(post, isAbsolute){
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + FlowRouter.path("posts.edit", post);
-};
-Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
 
 ///////////////////
 // Other Helpers //
@@ -104,7 +97,7 @@ Posts.checkForSameUrl = function (url) {
   var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
   if (typeof postWithSameLink !== 'undefined') {
-    throw new Meteor.Error('603', __('this_link_has_already_been_posted'), postWithSameLink._id);
+    throw new Meteor.Error('603', 'this_link_has_already_been_posted', postWithSameLink._id);
   }
 };
 
@@ -112,7 +105,7 @@ Posts.checkForSameUrl = function (url) {
  * @summary When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(FlowRouter.getParam("_id"));
+  return Posts.findOne("foo");
 };
 
 /**
@@ -135,3 +128,36 @@ Posts.getThumbnailUrl = (post) => {
   }
 };
 Posts.helpers({ getThumbnailUrl() { return Posts.getThumbnailUrl(this); } });
+
+///////////////////
+// Users Helpers //
+///////////////////
+
+/**
+ * @summary Check if a given user can view a specific post
+ * @param {Object} user - can be undefined!
+ * @param {Object} post
+ */
+Users.can.viewPost = function (user, post) {
+
+  if (Users.is.admin(user)) {
+    return true;
+  } else {
+
+    switch (post.status) {
+
+      case Posts.config.STATUS_APPROVED:
+        return Users.can.view(user);
+      
+      case Posts.config.STATUS_REJECTED:
+      case Posts.config.STATUS_SPAM:
+      case Posts.config.STATUS_PENDING: 
+        return Users.can.view(user) && Users.is.owner(user, post);
+      
+      case Posts.config.STATUS_DELETED:
+        return false;
+    
+    }
+  }
+}
+Users.helpers({canViewPost: function () {return Users.can.viewPost(this, post);}});

@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:getting-started",
   summary: "Getting started posts",
-  version: '0.26.1-nova',
+  version: '0.26.4-nova',
   git: "https://github.com/TelescopeJS/telescope-getting-started.git"
 });
 
@@ -14,15 +14,11 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@0.26.0-nova',
-    'nova:posts@0.26.0-nova',
-    'nova:comments@0.26.0-nova',
-    'nova:users@0.26.0-nova'
+    'nova:core@0.26.4-nova',
+    'nova:posts@0.26.4-nova',
+    'nova:comments@0.26.4-nova',
+    'nova:users@0.26.4-nova'
   ]);
-
-  api.addFiles([
-    // 'package-tap.i18n'
-  ], ['client', 'server']);
 
   // both
 
@@ -48,13 +44,5 @@ Package.onUse(function (api) {
   api.addAssets('content/customizing.md', 'server');
   api.addAssets('content/getting_help.md', 'server', 'server');
   api.addAssets('content/removing_getting_started_posts.md', 'server');
-
-  // i18n languages (must come last)
-
-  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
 
 });

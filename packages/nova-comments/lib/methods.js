@@ -1,3 +1,7 @@
+import Comments from './collection.js';
+import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
+
 Comments.methods = {};
 // ------------------------------------------------------------------------------------------- //
 // -------------------------------------- Submit Comment ------------------------------------- //

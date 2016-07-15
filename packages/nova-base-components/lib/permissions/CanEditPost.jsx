@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Users from 'meteor/nova:users';
 
 const CanEditPost = ({user, post, children}) => {
   if (Users.can.edit(user, post)) {
@@ -14,5 +15,7 @@ CanEditPost.propTypes = {
   user: React.PropTypes.object,
   post: React.PropTypes.object
 }
+
+CanEditPost.displayName = "CanEditPost";
 
 module.exports = CanEditPost;

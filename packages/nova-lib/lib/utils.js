@@ -1,3 +1,8 @@
+import marked from 'marked';
+import urlObject from 'url';
+import moment from 'moment';
+import sanitizeHtml from 'sanitize-html';
+import getSlug from 'speakingurl';
 
 /**
  * @summary The global namespace for Telescope utils.
@@ -185,8 +190,7 @@ Telescope.utils.getShortUrl = function(post) {
 };
 
 Telescope.utils.getDomain = function(url) {
-  var urlObject = Npm.require('url');
-  return urlObject.parse(url).hostname.replace('www.', '');
+  return url && urlObject.parse(url).hostname.replace('www.', '');
 };
 
 Telescope.utils.invitesEnabled = function() {

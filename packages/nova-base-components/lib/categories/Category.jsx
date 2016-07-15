@@ -1,39 +1,42 @@
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js"
-import Router from "../router.js"
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
-const ModalTrigger = Core.ModalTrigger;
+import classNames from "classnames";
+//import { Messages, ModalTrigger } from 'meteor/nova:core';
+import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
+import Users from 'meteor/nova:users';
 
 class Category extends Component {
 
   renderEdit() {
-    const {Icon, CategoriesEditForm} = Telescope.components;
-    return <a onClick={this.props.openModal} className="edit-category-link"><Icon name="edit"/></a>;
+    return <a onClick={this.props.openModal} className="edit-category-link"><Telescope.components.Icon name="edit"/></a>;
     // return (
-    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Icon name="edit"/></a>}>
-    //     <CategoriesEditForm category={this.props.category}/>
+    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Telescope.components.Icon name="edit"/></a>}>
+    //     <Telescope.componentsCategoriesEditForm category={this.props.category}/>
     //   </ModalTrigger>
     // )
   }
 
   render() {
 
-    const {category, index, currentCategorySlug} = this.props;
-    const Icon = Telescope.components.Icon;
+    const {category, index, router} = this.props;
+
+    const currentQuery = router.location.query;
+    const currentCategorySlug = router.location.query.cat;
+    const newQuery = _.clone(router.location.query);
+    newQuery.cat = category.slug;
 
     return (
-      <div className="category-menu-item">
-        <MenuItem 
-          href={Router.extendPathWithQueryParams("posts.list", {}, {cat: category.slug})} 
-          eventKey={index+1} 
-          key={category._id} 
-          className={currentCategorySlug === category.slug ? "post-category-active dropdown-item post-category" : "dropdown-item post-category"} 
-        >
-          {currentCategorySlug === category.slug ? <Icon name="voted"/> :  null}
-          {category.name}
-        </MenuItem>
+      <div className="category-menu-item dropdown-item">
+        <LinkContainer to={{pathname:"/", query: newQuery}} activeClassName="category-active">
+          <MenuItem 
+            eventKey={index+1} 
+            key={category._id} 
+          >
+            {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
+            {category.name}
+          </MenuItem>
+        </LinkContainer>
         {Users.is.admin(this.context.currentUser) ? this.renderEdit() : null}
       </div>
     )
@@ -51,5 +54,5 @@ Category.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = Category;
-export default Category;
+module.exports = withRouter(Category);
+export default withRouter(Category);

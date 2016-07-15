@@ -1,6 +1,0 @@
-{
-  "feeds" : "Beslemeler",
-  "feed_already_exists" : "Bu URL'i kullananan bir besleme zaten var.",
-  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Yeni bir besleme ekleyebilmek için yönetici olarak giri yapmış olmanız gerekir.",
-  "import_new_posts_from_feeds" : "Beslemeerden yeni gönderileri içeri al."
-}

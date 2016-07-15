@@ -1,11 +1,13 @@
 /**
- * @summary Telescope Telescope.email namespace
- * @namespace Telescope.email
+ * @summary Telescope NovaEmail namespace
+ * @namespace NovaEmail
  */
-Telescope.email = {};
+const NovaEmail = {};
 
-Telescope.email.emails = {};
+NovaEmail.emails = {};
 
-Telescope.email.addEmails = emails => {
-  Telescope.email.emails = Object.assign(Telescope.email.emails, emails);
+NovaEmail.addEmails = emails => {
+  NovaEmail.emails = Object.assign(NovaEmail.emails, emails);
 };
+
+export default NovaEmail;

@@ -1,5 +1,0 @@
-{
-  "feed_already_exists" : "Un feed con la misma URL ya existe.",
-  "you_need_to_login_and_be_an_admin_to_add_a_new_feed" : "Tienes que iniciar sesión y ser un administrador para agregar un nuevo feed.",
-  "import_new_posts_from_feeds" : "Importar nuevos posts desde los feeds."
-}
