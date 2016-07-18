@@ -20,6 +20,6 @@ UsersAccount.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-UsersAccount.displayName = "PostsSingle";
+UsersAccount.displayName = "UsersAccount";
 
 module.exports = UsersAccount;

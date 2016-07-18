@@ -22,7 +22,7 @@ const UsersEdit = (props, context) => {
           document={user} 
           methodName="users.edit"
           successCallback={(user)=>{
-            context.messages.flash(this.context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getUsername(user)}), 'success')
+            context.messages.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getUserName(user)}), 'success')
           }}
         />
       </div>
