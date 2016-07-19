@@ -42,7 +42,7 @@ Users.is.owner = function (userOrUserId, document) {
   }
 };
 Users.is.ownerById = Users.is.owner;
-Users.helpers({isOwner: function () {return Users.is.owner(this, document);}});
+Users.helpers({isOwner: function (document) {return Users.is.owner(this, document);}});
 
 /**
  * @summary Check if a user is a member or an admin

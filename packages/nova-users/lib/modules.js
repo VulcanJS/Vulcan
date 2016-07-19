@@ -12,5 +12,6 @@ import './notifications.js';
 import './emails.js';
 import './avatar.js';
 import './methods.js';
+import './groups.js';
 
 export default Users;

@@ -51,6 +51,14 @@ Users.methods.setSetting = (userId, settingName, value) => {
   Users.update(userId, modifier);
 }
 
+Users.methods.addGroup = (userId, groupName) => {
+  Users.update(userId, {$push: {"telescope.groups": groupName}});
+};
+
+Users.methods.removeGroup = (userId, groupName) => {
+  Users.update(userId, {$pull: {"telescope.groups": groupName}});
+};
+
 Meteor.methods({
   'users.compleProfile'(modifier, userId) {
     

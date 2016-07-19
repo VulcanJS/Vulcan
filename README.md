@@ -31,6 +31,7 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Forms](#forms)
   - [Methods](#methods)
   - [Routes](#routes)
+  - [Groups](#routes)
   - [Internationalization](#internationalization)
   - [Cheatsheet](#cheatsheet)
 
@@ -483,6 +484,82 @@ Telescope.routes.add({
   component: Foo
 });
 ```
+
+## Groups
+
+User groups let you give your users permission to perform specific actions.
+
+### Creating A Group
+
+```js
+Users.createGroup("mods"); // let's create a new "mods" group
+```
+
+### Assigning Actions
+
+```js
+Users.groups.mods.can("posts.edit.all"); // mods can edit anybody's posts
+Users.groups.mods.can("posts.remove.all"); // mods can delete anybody's posts
+```
+
+You can also define and test for your own custom actions:
+
+```js
+Users.groups.mods.can("invite"); // new custom action
+```
+
+Here's a list of all out-of-the-box permissions:
+
+```js
+// anonymous actions
+posts.view
+comments.view
+
+// default actions
+posts.new
+posts.edit.own
+posts.remove.own
+posts.upvote
+posts.cancelUpvote
+posts.downvote
+posts.cancelDownvote
+comments.new
+comments.edit.own
+comments.remove.own
+comments.upvote
+comments.cancelUpvote
+comments.downvote
+comments.cancelDownvote
+users.edit.own
+users.remove.own
+
+// admin actions
+posts.new.approved
+posts.edit.all
+posts.remove.all
+comments.edit.all
+comments.remove.all
+users.edit.all
+users.remove.all
+```
+
+### Groups API
+
+```js
+Users.methods.addGroup(userId, groupName); // add a user to a group (server only)
+
+Users.getGroups(user); // get a list of all the groups a user belongs to
+
+Users.getActions(user); // get a list of all the actions a user can perform
+
+Users.canDo(user, action); // check if a user can perform a specific action
+```
+
+Note that some groups are applied automatically without having to call `addToGroup`:
+
+- `anonymous`: any non-logged-in user is considered anonymous.
+- `admins`: any user with the `isAdmin` flag set to true.
+- `default`: default group for all existing users.
 
 ## Internationalization
 

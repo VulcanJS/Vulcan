@@ -10,5 +10,6 @@ import './helpers.js';
 import './custom_fields.js';
 import './emails.js';
 import './published_fields.js';
+import './permissions.js';
 
 export default Comments;

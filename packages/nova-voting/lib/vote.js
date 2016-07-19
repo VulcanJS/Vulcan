@@ -22,7 +22,7 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
   if (
     !item ||
     !user || 
-    !user.canVote() || 
+    !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem
   ) {

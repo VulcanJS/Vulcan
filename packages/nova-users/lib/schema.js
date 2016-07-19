@@ -189,7 +189,23 @@ Telescope.schemas.userData = new SimpleSchema({
     control: "text",
     insertableIf: Users.is.memberOrAdmin,
     editableIf: Users.is.ownerOrAdmin
-  }
+  },
+  /**
+    Groups
+  */
+  groups: {
+    type: [String],
+    optional: true,
+    control: "checkboxgroup",
+    insertableIf: Users.is.admin,
+    editableIf: Users.is.admin,
+    autoform: {
+      options: function () {
+        const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
+        return groups.map(group => {return {value: group, label: group};});
+      }
+    },
+  },
 });
 
 /**

@@ -45,47 +45,28 @@ Users.helpers({canViewById: function () {return Users.can.viewById(this);}});
  * @summary Check if a given user has permission to submit new posts
  * @param {Object} user
  */
-Users.can.post = function (user) {
-
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
-
-  if (!user) { // no account
-    return false;
-  } 
-
-  if (Users.is.admin(user)) { //admin
-    return true;
-  } 
-
-  if (Telescope.settings.get('requirePostInvite', false)) { // invite required?
-    if (user.isInvited()) { // invited user
-      return true;
-    } else { // not invited
-      return false;
-    }
-  } else {
-    return true;
-  }
-};
-Users.helpers({canPost: function () {return Users.can.post(this);}});
+// Users.can.post = function (user) {
+//   return Users.canDo(user, "posts.new");
+// };
+// Users.helpers({canPost: function () {return Users.can.post(this);}});
 
 /**
  * @summary Check if a given user has permission to comment (same as posting for now)
  * @param {Object} user
  */
-Users.can.comment = function (user) {
-  return Users.can.post(user);
-};
-Users.helpers({canComment: function () {return Users.can.comment(this);}});
+// Users.can.comment = function (user) {
+//   return Users.canDo(user, "comments.new");
+// };
+// Users.helpers({canComment: function () {return Users.can.comment(this);}});
 
 /**
  * @summary Check if a user has permission to vote (same as posting for now)
  * @param {Object} user
  */
-Users.can.vote = function (user) {
-  return Users.can.post(user);
-};
-Users.helpers({canVote: function () {return Users.can.vote(this);}});
+// Users.can.vote = function (user) {
+//   return Users.can.post(user);
+// };
+// Users.helpers({canVote: function () {return Users.can.vote(this);}});
 
 /**
  * @summary Check if a user can edit a document
@@ -93,7 +74,9 @@ Users.helpers({canVote: function () {return Users.can.vote(this);}});
  * @param {Object} document - The document being edited
  */
 Users.can.edit = function (user, document) {
+
   user = (typeof user === 'undefined') ? Meteor.user() : user;
+  const collectionName = document.getCollectionName();
 
   if (!user || !document) {
     return false;
@@ -101,10 +84,13 @@ Users.can.edit = function (user, document) {
 
   if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
 
-  var adminCheck = Users.is.admin(user);
-  var ownerCheck = Users.is.owner(user, document);
+  // if this is user's document, check if user can edit own documents
+  const editOwnCheck = user.owns(document) && user.canDo(collectionName+".edit.own");
 
-  return adminCheck || ownerCheck;
+  // if this is not user's document, check if they can edit all documents
+  const editAllCheck = user.canDo(collectionName+".edit.all");
+
+  return editOwnCheck || editAllCheck;
 };
 Users.helpers({canEdit: function (document) {return Users.can.edit(this, document);}});
 

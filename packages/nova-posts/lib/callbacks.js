@@ -106,7 +106,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
  */
 function PostsNewUserCheck (post, user) {
   // check that user can post
-  if (!user || !Users.can.post(user))
+  if (!user || !Users.canDo(user, "posts.new"))
     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_stories');
   return post;
 }

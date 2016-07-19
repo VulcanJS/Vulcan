@@ -1,6 +1,9 @@
 import Users from './collection.js';
 import moment from 'moment';
 
+Users.helpers({getCollection: () => Users});
+Users.helpers({getCollectionName: () => "users"});
+
 ////////////////////
 //  User Getters  //
 ////////////////////
@@ -300,3 +303,23 @@ Users.hasDownvotedItem = function (user, item) {
   return item.downvoters && item.downvoters.indexOf(user._id) !== -1;
 };
 Users.helpers({hasDownvotedItem: function (item) {return Users.hasDownvotedItem(this, item);}});
+
+/**
+ * @summary Check if a user owns a document
+ * @param {Object|string} userOrUserId - The user or their userId
+ * @param {Object} document - The document to check (post, comment, user object, etc.)
+ */
+Users.owns = function (user, document) {
+  try {
+    if (!!document.userId) {
+      // case 1: document is a post or a comment, use userId to check
+      return user._id === document.userId;
+    } else {
+      // case 2: document is a user, use _id to check
+      return user._id === document._id;
+    }
+  } catch (e) {
+    return false; // user not logged in
+  }
+};
+Users.helpers({owns: function (document) {return Users.owns(this, document);}});
