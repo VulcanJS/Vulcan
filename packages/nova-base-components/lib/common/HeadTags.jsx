@@ -21,7 +21,7 @@ class HeadTags extends Component {
 			image = Telescope.utils.getSiteUrl() + image;
 		}
 
-		Telescope.headtags.meta = [
+		const meta = Telescope.headtags.meta.concat([
 			{ charset: "utf-8" },
 			{ name: "description", content: description },
 			// responsive
@@ -37,16 +37,16 @@ class HeadTags extends Component {
 			{ name: "twitter:image:src", content: image },
 			{ name: "twitter:title", content: title },
 			{ name: "twitter:description", content: description }
-		];
+		]);
 
-		Telescope.headtags.link = [
+		const link = Telescope.headtags.link.concat([
 			{ rel: "canonical", href: Telescope.utils.getSiteUrl() },
 			{ rel: "shortcut icon", href: Telescope.settings.get("faviconUrl", "/img/favicon.ico") }
-		];
+		]);
 
 		return (
 			<div>
-				<Helmet title={title} meta={Telescope.headtags.meta} link={Telescope.headtags.link} />
+				<Helmet title={title} meta={meta} link={link} />
 			</div>
 		);
 	}
