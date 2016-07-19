@@ -33,10 +33,10 @@ var getSchedule = function (parser) {
   const serverTime = GMTtime.subtract(offsetInMinutes, "minutes");
   const serverTimeString = addZero(serverTime.hours()) + ":" + addZero(serverTime.minutes());
 
-  console.log("// scheduled for: (GMT): "+Telescope.settings.get('newsletterTime', defaultTime));
-  console.log("// server offset (minutes): "+offsetInMinutes);
-  console.log("// server scheduled time (minutes): "+serverTime.asMinutes());
-  console.log("// server scheduled time: "+serverTimeString);
+  // console.log("// scheduled for: (GMT): "+Telescope.settings.get('newsletterTime', defaultTime));
+  // console.log("// server offset (minutes): "+offsetInMinutes);
+  // console.log("// server scheduled time (minutes): "+serverTime.asMinutes());
+  // console.log("// server scheduled time: "+serverTimeString);
 
   return schedule.on(serverTimeString).time();
 };

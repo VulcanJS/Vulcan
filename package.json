@@ -7,6 +7,7 @@
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.2",
     "classnames": "^2.2.3",
+    "escape-string-regexp": "^1.0.5",
     "formsy-react": "^0.18.0",
     "formsy-react-components": "^0.7.1",
     "handlebars": "^4.0.5",
