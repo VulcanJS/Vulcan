@@ -10,7 +10,7 @@ Comments._ensureIndex({parentCommentId: 1});
  */
 Meteor.publish('comments.list', function (terms) {
   
-  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUser = this.userId && Meteor.users.findOne(this.userId);
 
   terms.currentUserId = this.userId; // add currentUserId to terms
   ({selector, options} = Comments.parameters.get(terms));
@@ -24,7 +24,7 @@ Meteor.publish('comments.list', function (terms) {
   const posts = Posts.find({_id: {$in: _.pluck(comments.fetch(), 'postId')}}, {fields: Posts.publishedFields.list});
   const users = Meteor.users.find({_id: {$in: _.pluck(comments.fetch(), 'userId')}}, {fields: Users.publishedFields.list});
 
-  return Users.can.view(currentUser) ? [comments, posts, users] : [];
+  return Users.canDo(currentUser, "comments.view.all") ? [comments, posts, users] : [];
 
 });
 
@@ -47,7 +47,7 @@ Meteor.publish('comments.list', function (terms) {
 //   const childCommentIds = _.pluck(Comments.find({parentCommentId: terms._id}, {fields: {_id: 1}}).fetch(), '_id');
 //   commentIds = commentIds.concat(childCommentIds);
   
-//   return Users.can.view(currentUser) ? Comments.find({_id: {$in: commentIds}}, {sort: {score: -1, postedAt: -1}}) : [];
+//   return Users.canView(currentUser) ? Comments.find({_id: {$in: commentIds}}, {sort: {score: -1, postedAt: -1}}) : [];
 
 // });
 
@@ -62,7 +62,7 @@ Meteor.publish('comments.list', function (terms) {
 
 //   
 
-//   if(Users.can.viewById(this.userId)){
+//   if(Users.canViewById(this.userId)){
 //     var comment = Comments.findOne(commentId);
 //     return Posts.find({_id: comment && comment.postId});
 //   }
@@ -79,7 +79,7 @@ Meteor.publish('comments.list', function (terms) {
     
 //   var userIds = [];
 
-//   if(Users.can.viewById(this.userId)){
+//   if(Users.canViewById(this.userId)){
 
 //     var comment = Comments.findOne(commentId);
 

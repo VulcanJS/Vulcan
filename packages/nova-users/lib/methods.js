@@ -72,7 +72,7 @@ Meteor.methods({
     // ------------------------------ Checks ------------------------------ //
 
     // check that user can edit document
-    if (!user || !Users.can.edit(currentUser, user)) {
+    if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
 
@@ -97,7 +97,7 @@ Meteor.methods({
       // loop over each property being operated on
       _.keys(operation).forEach(function (fieldName) {
         var field = schema[fieldName];
-        if (!Users.can.editField(user, field, user)) {
+        if (!Users.canEditField(user, field, user)) {
           throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
         }
 
@@ -120,7 +120,7 @@ Meteor.methods({
     // ------------------------------ Checks ------------------------------ //
 
     // check that user can edit document
-    if (!user || !Users.can.edit(currentUser, user)) {
+    if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
 
@@ -131,7 +131,7 @@ Meteor.methods({
       _.keys(operation).forEach(function (fieldName) {
 
         var field = schema[fieldName];
-        if (!Users.can.editField(currentUser, field, user)) {
+        if (!Users.canEditField(currentUser, field, user)) {
           throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
         }
 
@@ -166,7 +166,7 @@ Meteor.methods({
       user = Users.findOne(userId);
 
     // check that user can edit document
-    if (!user || !Users.can.edit(currentUser, user)) {
+    if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
 

@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Users from 'meteor/nova:users';
 
 const CanViewPost = ({user, post, children}) => {
-  if (Users.can.viewPost(this.props.user, this.props.document)) {
+  if (Users.canView(this.props.user, this.props.document)) {
     return this.props.children;
   } else if (!this.props.user){
     return <p>Please log in.</p>;

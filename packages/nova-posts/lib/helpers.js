@@ -179,36 +179,3 @@ ${Posts.getLink(post, true, false)}
 };
 Posts.helpers({ getEmailShareUrl() { return Posts.getEmailShareUrl(this); } });
 
-
-///////////////////
-// Users Helpers //
-///////////////////
-
-/**
- * @summary Check if a given user can view a specific post
- * @param {Object} user - can be undefined!
- * @param {Object} post
- */
-Users.can.viewPost = function (user, post) {
-
-  if (Users.is.admin(user)) {
-    return true;
-  } else {
-
-    switch (post.status) {
-
-      case Posts.config.STATUS_APPROVED:
-        return Users.can.view(user);
-      
-      case Posts.config.STATUS_REJECTED:
-      case Posts.config.STATUS_SPAM:
-      case Posts.config.STATUS_PENDING: 
-        return Users.can.view(user) && Users.is.owner(user, post);
-      
-      case Posts.config.STATUS_DELETED:
-        return false;
-    
-    }
-  }
-}
-Users.helpers({canViewPost: function () {return Users.can.viewPost(this, post);}});

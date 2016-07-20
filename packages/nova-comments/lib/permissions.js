@@ -1,11 +1,14 @@
 import Users from 'meteor/nova:users';
 
 const anonymousActions = [
-  "comments.view"
+  "comments.view.own",
+  "comments.view.all"
 ];
 Users.groups.anonymous.can(anonymousActions);
 
 const defaultActions = [
+  "comments.view.own",
+  "comments.view.all",
   "comments.new", 
   "comments.edit.own", 
   "comments.remove.own", 

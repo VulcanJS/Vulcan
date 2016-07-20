@@ -70,7 +70,7 @@ Meteor.publish('posts.list', function (terms) {
 
   this.autorun(function () {
     
-    const currentUser = Meteor.users.findOne(this.userId);
+    const currentUser = this.userId && Meteor.users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
     const {selector, options} = Posts.parameters.get(terms);
@@ -88,7 +88,7 @@ Meteor.publish('posts.list', function (terms) {
       return getPostsListUsers(posts);
     });
 
-    return Users.can.view(currentUser) ? [posts, users] : [];
+    return Users.canDo(currentUser, "posts.view.approved.all") ? [posts, users] : [];
   
   });
 
@@ -102,14 +102,14 @@ Meteor.publish('posts.single', function (terms) {
 
   check(terms, Match.OneOf({_id: String}, {_id: String, slug: Match.Any}));
 
-  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUser = this.userId && Meteor.users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};
   const posts = Posts.find(terms._id, options);
   const post = posts.fetch()[0];
 
   if (post) {
     const users = getSinglePostUsers(post);
-    return Users.can.viewPost(currentUser, post) ? [posts, users] : [];
+    return Users.canView(currentUser, post) ? [posts, users] : [];
   } else {
     console.log(`// posts.single: no post found for _id “${terms._id}”`)
     return [];

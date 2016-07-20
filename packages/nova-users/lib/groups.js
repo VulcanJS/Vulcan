@@ -1,6 +1,11 @@
 import Users from './collection.js';
 
 /**
+ * @summary Users.groups object
+ */
+Users.groups = {};
+
+/**
  * @summary Group class
  */
 class Group {
@@ -20,11 +25,6 @@ class Group {
   }
 
 }
-
-/**
- * @summary Users.groups object
- */
-Users.groups = {};
 
 /**
  * @summary create a new group
@@ -63,7 +63,6 @@ Users.getGroups = user => {
   return userGroups;
 
 };
-Users.helpers({getGroups: function () {return Users.getGroups(this);}});
 
 /**
  * @summary get a list of all the actions a user can perform
@@ -74,7 +73,6 @@ Users.getActions = user => {
   const groupActions = userGroups.map(groupName => Users.groups[groupName].actions);
   return _.unique(_.flatten(groupActions));
 };
-Users.helpers({getActions: function () {return Users.getActions(this);}});
 
 /**
  * @summary check if a user can perform a specific action
@@ -84,7 +82,72 @@ Users.helpers({getActions: function () {return Users.getActions(this);}});
 Users.canDo = (user, action) => {
   return Users.getActions(user).indexOf(action) !== -1;
 };
-Users.helpers({canDo: function (action) {return Users.canDo(this, action);}});
+
+/**
+ * @summary Check if a given user can view a specific document
+ * @param {Object} user - can be undefined!
+ * @param {Object} document - Note: only actually works with posts for now
+ */
+Users.canView = function (user, document) {
+
+  const status = _.findWhere(Posts.config.postStatuses, {value: document.status}).label;
+  const collectionName = document.getCollectionName();
+
+  if (!document) {
+    return false;
+  }
+
+  if (Users.owns(user, document)) {
+    return Users.canDo(user, `${collectionName}.view.${status}.own`);
+  } else {
+    return Users.canDo(user, `${collectionName}.view.${status}.all`);
+  }
+
+};
+
+/**
+ * @summary Check if a user can edit a document
+ * @param {Object} user - The user performing the action
+ * @param {Object} document - The document being edited
+ */
+Users.canEdit = function (user, document) {
+
+  user = (typeof user === 'undefined') ? Meteor.user() : user;
+  const collectionName = document.getCollectionName();
+
+  if (!user || !document) {
+    return false;
+  }
+
+  if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
+
+  if (Users.owns(user, document)) {
+    // if this is user's document, check if user can edit own documents
+    return Users.canDo(user, `${collectionName}.edit.own`);
+  } else {
+    // if this is not user's document, check if they can edit all documents
+    return Users.canDo(user, `${collectionName}.edit.all`);
+  }
+
+};
+
+/**
+ * @summary Check if a user can submit a field
+ * @param {Object} user - The user performing the action
+ * @param {Object} field - The field being edited or inserted
+ */
+Users.canSubmitField = function (user, field) {
+  return user && field.insertableIf && field.insertableIf(user);
+};
+
+/** @function
+ * Check if a user can edit a field – for now, identical to Users.canSubmitField 
+ * @param {Object} user - The user performing the action
+ * @param {Object} field - The field being edited or inserted
+ */
+Users.canEditField = function (user, field, document) {
+  return user && field.editableIf && field.editableIf(user, document);
+};
 
 /**
  * @summary initialize the 3 out-of-the-box groups
@@ -92,20 +155,3 @@ Users.helpers({canDo: function (action) {return Users.canDo(this, action);}});
 Users.createGroup("anonymous"); // non-logged-in users
 Users.createGroup("default"); // regular users
 Users.createGroup("admins"); // admin users
-
-/**
- * @summary add default actions concerning users
- */
-const defaultActions = [
-  "users.edit.own", 
-  "users.remove.own"
-];
-Users.groups.default.can(defaultActions);
-
-const adminActions = [
-  "users.edit.all",
-  "users.remove.all"
-];
-Users.groups.admins.can(adminActions);
-
-console.log(Users.groups);
