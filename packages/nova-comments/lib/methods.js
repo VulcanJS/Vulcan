@@ -95,7 +95,7 @@ Meteor.methods({
     var comment = Comments.findOne(commentId);
     var user = Meteor.user();
 
-    if(Users.can.edit(user, comment)){
+    if(Users.canEdit(user, comment)){
 
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {

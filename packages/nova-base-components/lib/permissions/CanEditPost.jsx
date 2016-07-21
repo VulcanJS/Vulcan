@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Users from 'meteor/nova:users';
 
 const CanEditPost = ({user, post, children}) => {
-  if (Users.can.edit(user, post)) {
+  if (Users.canEdit(user, post)) {
     return children;
   } else if (!user){
     return <p>Please log in.</p>;

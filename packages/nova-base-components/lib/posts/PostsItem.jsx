@@ -27,7 +27,7 @@ class PostsItem extends Component {
 
     return (
       <div className="post-actions">
-        {Users.can.edit(this.context.currentUser, this.props.post) ? component : ""}
+        {Users.canEdit(this.context.currentUser, this.props.post) ? component : ""}
       </div>
     )
   }

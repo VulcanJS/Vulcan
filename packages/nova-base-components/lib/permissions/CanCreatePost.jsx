@@ -16,7 +16,7 @@ const CanCreatePost = (props, context) => {
         <UsersAccountForm/>
       </div>
     )
-  } else if (Users.can.post(currentUser)) {
+  } else if (Users.canDo(currentUser, "posts.new")) {
     return children;
   } else {
     return <p><FormattedMessage id="users.cannot_post"/></p>;

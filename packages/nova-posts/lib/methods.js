@@ -137,7 +137,7 @@ Meteor.methods({
     const post = Posts.findOne(postId);
     const now = new Date();
 
-    if (Users.is.admin(Meteor.user())) {
+    if (Users.canDo(Meteor.user(), "posts.new.approved")) {
 
       const set = {status: Posts.config.STATUS_APPROVED};
 
@@ -215,7 +215,7 @@ Meteor.methods({
 
     var post = Posts.findOne({_id: postId});
 
-    if (!Meteor.userId() || !Users.can.editById(Meteor.userId(), post)){
+    if (!Meteor.userId() || !Users.canEdit(Meteor.user(), post)){
       throw new Meteor.Error(606, 'You need permission to edit or delete a post');
     }
 

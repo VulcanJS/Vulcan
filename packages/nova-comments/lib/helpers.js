@@ -1,5 +1,8 @@
 import Comments from './collection.js';
 
+Comments.helpers({getCollection: () => Comments});
+Comments.helpers({getCollectionName: () => "comments"});
+
 //////////////////
 // Link Helpers //
 //////////////////

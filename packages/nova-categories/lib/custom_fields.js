@@ -3,6 +3,11 @@ import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import Categories from "./collection.js";
 
+// check if user can create a new post
+const canInsert = user => Users.canDo(user, "posts.new");
+// check if user can edit a post
+const canEdit = Users.canEdit;
+
 Posts.addField(
   {
     fieldName: 'categories',
@@ -10,8 +15,8 @@ Posts.addField(
       type: [String],
       control: "checkboxgroup",
       optional: true,
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin,
+      insertableIf: canInsert,
+      editableIf: canEdit,
       autoform: {
         noselect: true,
         type: "bootstrap-category",

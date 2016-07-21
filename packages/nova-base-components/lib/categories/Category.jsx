@@ -37,7 +37,7 @@ class Category extends Component {
             {category.name}
           </MenuItem>
         </LinkContainer>
-        {Users.is.admin(this.context.currentUser) ? this.renderEdit() : null}
+        {Users.canDo(this.context.currentUser, "categories.edit.all") ? this.renderEdit() : null}
       </div>
     )
   }

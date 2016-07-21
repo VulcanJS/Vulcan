@@ -3,7 +3,11 @@ import Users from 'meteor/nova:users';
 import Categories from "../collection.js";
 
 Meteor.publish('categories', function() {
-  if(Users.can.viewById(this.userId)){
+  
+  const currentUser = this.userId && Users.findOne(this.userId);
+
+  if(Users.canDo(currentUser, "posts.view.approved.all")){
+    
     var categories = Categories.find();
     var publication = this;
 

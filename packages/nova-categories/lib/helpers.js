@@ -1,6 +1,9 @@
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
 
+Categories.helpers({getCollection: () => Categories});
+Categories.helpers({getCollectionName: () => "categories"});
+
 /**
  * @summary Get all of a category's parents
  * @param {Object} category
