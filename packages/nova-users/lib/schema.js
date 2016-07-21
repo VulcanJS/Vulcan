@@ -5,6 +5,15 @@ const adminGroup = {
   order: 10
 };
 
+// check if user can create a new user
+const canInsert = user => Users.canDo(user, "users.new");
+
+// check if user can edit a user
+const canEdit = Users.canEdit;
+
+// check if user can edit *all* users
+const canEditAll = user => Users.canDo(user, "users.edit.all");
+
 /**
  * @summary Vote schema
  * @type {SimpleSchema}
@@ -35,8 +44,8 @@ Telescope.schemas.userData = new SimpleSchema({
     type: String,
     optional: true,
     control: "textarea",
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
+    insertableIf: canInsert,
+    editableIf: canEdit,
     // autoform: {
     //   rows: 5
     // }
@@ -58,8 +67,8 @@ Telescope.schemas.userData = new SimpleSchema({
     publish: true,
     profile: true,
     control: "text",
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin
+    insertableIf: canInsert,
+    editableIf: canEdit
   },
   /**
     An array containing comment downvotes
@@ -86,8 +95,8 @@ Telescope.schemas.userData = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Email,
     required: true,
     control: "text",
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin
+    insertableIf: canInsert,
+    editableIf: canEdit
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -134,7 +143,7 @@ Telescope.schemas.userData = new SimpleSchema({
   // settings: {
   //   type: Object,
   //   optional: true,
-  //   editableIf: Users.is.ownerOrAdmin,
+  //   editableIf: canEdit,
   //   blackbox: true,
   //   autoform: {
   //     omit: true
@@ -157,8 +166,8 @@ Telescope.schemas.userData = new SimpleSchema({
     publish: true,
     profile: true,
     control: "text",
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
+    insertableIf: canInsert,
+    editableIf: canEdit,
     template: "user_profile_twitter"
   },
   /**
@@ -187,8 +196,8 @@ Telescope.schemas.userData = new SimpleSchema({
     profile: true,
     optional: true,
     control: "text",
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin
+    insertableIf: canInsert,
+    editableIf: canEdit
   },
   /**
     Groups
@@ -197,8 +206,8 @@ Telescope.schemas.userData = new SimpleSchema({
     type: [String],
     optional: true,
     control: "checkboxgroup",
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canEditAll,
+    editableIf: canEditAll,
     autoform: {
       options: function () {
         const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
@@ -247,8 +256,8 @@ Users.schema = new SimpleSchema({
     label: "Admin",
     control: "checkbox",
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canEditAll,
+    editableIf: canEditAll,
     group: adminGroup
     // autoform: {
     //   omit: true

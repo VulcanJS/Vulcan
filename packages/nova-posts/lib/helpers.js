@@ -71,9 +71,9 @@ Posts.helpers({getAuthorName: function () {return Posts.getAuthorName(this);}});
  * @param {Object} user
  */
 Posts.getDefaultStatus = function (user) {
-  var hasAdminRights = typeof user === 'undefined' ? false : Users.is.admin(user);
-  if (hasAdminRights || !Telescope.settings.get('requirePostsApproval', false)) {
-    // if user is admin, or else post approval is not required
+  const canPostApproved = typeof user === 'undefined' ? false : Users.canDo(user, "posts.new.approved");
+  if (!Telescope.settings.get('requirePostsApproval', false) || canPostApproved) {
+    // if user can post straight to "approved", or else post approval is not required
     return Posts.config.STATUS_APPROVED;
   } else {
     return Posts.config.STATUS_PENDING;

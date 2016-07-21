@@ -1,6 +1,7 @@
 import Users from './collection.js';
 
 import './roles.js';
+import './groups.js';
 import './schema.js';
 import './config.js';
 import './collection.js';
@@ -11,7 +12,6 @@ import './notifications.js';
 import './emails.js';
 import './avatar.js';
 import './methods.js';
-import './groups.js';
 import './permissions.js';
 
 export default Users;

@@ -137,7 +137,7 @@ Meteor.methods({
     const post = Posts.findOne(postId);
     const now = new Date();
 
-    if (Users.is.admin(Meteor.user())) {
+    if (Users.canDo(Meteor.user(), "posts.new.approved")) {
 
       const set = {status: Posts.config.STATUS_APPROVED};
 

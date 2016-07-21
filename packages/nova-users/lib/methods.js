@@ -144,7 +144,7 @@ Meteor.methods({
 
   'users.remove'(userId, options) {
 
-    if (Users.is.adminById(this.userId)) {
+    if (Users.canDo(Meteor.user(), "users.remove.all")) {
 
       const user = Users.findOne(userId);
 
