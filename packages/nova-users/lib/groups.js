@@ -26,6 +26,10 @@ class Group {
 
 }
 
+////////////////////
+// Helpers        //
+////////////////////
+
 /**
  * @summary create a new group
  * @param {String} groupName
@@ -136,6 +140,42 @@ Users.canEdit = function (user, document) {
 };
 
 /**
+ * @summary Check if a user owns a document
+ * @param {Object|string} userOrUserId - The user or their userId
+ * @param {Object} document - The document to check (post, comment, user object, etc.)
+ */
+Users.owns = function (user, document) {
+  try {
+    if (!!document.userId) {
+      // case 1: document is a post or a comment, use userId to check
+      return user._id === document.userId;
+    } else {
+      // case 2: document is a user, use _id to check
+      return user._id === document._id;
+    }
+  } catch (e) {
+    return false; // user not logged in
+  }
+};
+Users.helpers({owns: function (document) {return Users.owns(this, document);}});
+
+/**
+ * @summary Check if a user is an admin
+ * @param {Object|string} userOrUserId - The user or their userId
+ */
+Users.isAdmin = function (userOrUserId) {
+  try {
+    var user = Users.getUser(userOrUserId);
+    return !!user && !!user.isAdmin;
+  } catch (e) {
+    return false; // user not logged in
+  }
+};
+Users.isAdminById = Users.isAdmin;
+// use _isAdmin because there is an isAdmin property on the User schema already
+Users.helpers({_isAdmin: function () {return Users.isAdmin(this);}});
+
+/**
  * @summary Check if a user can submit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
@@ -152,6 +192,10 @@ Users.canSubmitField = function (user, field) {
 Users.canEditField = function (user, field, document) {
   return user && field.editableIf && field.editableIf(user, document);
 };
+
+////////////////////
+// Initialize     //
+////////////////////
 
 /**
  * @summary initialize the 3 out-of-the-box groups
