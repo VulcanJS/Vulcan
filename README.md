@@ -31,7 +31,7 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Forms](#forms)
   - [Methods](#methods)
   - [Routes](#routes)
-  - [Groups](#groups-permissions)
+  - [Groups & Permissions](#groups--permissions)
   - [Internationalization](#internationalization)
   - [Cheatsheet](#cheatsheet)
 
@@ -521,6 +521,7 @@ Note that some groups are applied automatically without having to call `addToGro
 ### Assigning Actions
 
 ```js
+// assuming we've created a new "mods" group
 Users.groups.mods.can("posts.edit.all"); // mods can edit anybody's posts
 Users.groups.mods.can("posts.remove.all"); // mods can delete anybody's posts
 ```

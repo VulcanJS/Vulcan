@@ -224,7 +224,7 @@ Telescope.callbacks.add("posts.new.sync", PostsNewRequiredPropertiesCheck);
  * @summary Set the post's isFuture to true if necessary
  */
 function PostsNewSetFuture (post, user) {
-  post.isFuture = post.postedAt > post.createdAt;
+  post.isFuture = post.postedAt.getTime() > post.createdAt.getTime() + 1000; // round up to the second
   return post;
 }
 Telescope.callbacks.add("posts.new.sync", PostsNewSetFuture);
@@ -331,7 +331,7 @@ Telescope.callbacks.add("posts.edit.sync", PostsEditForceStickyToFalse);
  */
 function PostsEditSetIsFuture (modifier, post) {
   // if a post's postedAt date is in the future, set isFuture to true
-  modifier.$set.isFuture = modifier.$set.postedAt > new Date();
+  modifier.$set.isFuture = modifier.$set.postedAt.getTime() > new Date().getTime() + 1000;
   return modifier;
 }
 Telescope.callbacks.add("posts.edit.sync", PostsEditSetIsFuture);

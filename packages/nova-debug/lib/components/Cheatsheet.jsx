@@ -44,11 +44,6 @@ const Cheatsheet = props => {
           <ul>
             {_.map(Users, (item, key) => (key[0] !== "_" ? renderFunction(item, key) : null) )}
           </ul>
-          <h3>Permissions (<code>Users.can.*</code>)</h3>
-          <ul>
-            {_.map(Users.can, renderFunction)}
-          </ul>
-          <h3>Roles (<code>Users.is.*</code>)</h3>
           <ul>
             {_.map(Users.is, renderFunction)}
           </ul>
