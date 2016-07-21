@@ -7,5 +7,6 @@ import './parameters.js';
 import './custom_fields.js';
 import './subscriptions.js';
 import './methods.js';
+import './permissions.js';
 
 export default Categories;

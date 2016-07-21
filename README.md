@@ -539,6 +539,7 @@ posts.view.approved.own
 posts.view.approved.all
 comments.view.own
 comments.view.all
+categories.view.all
 
 // default actions
 posts.view.approved.own
@@ -565,6 +566,7 @@ comments.downvote
 comments.cancelDownvote
 users.edit.own
 users.remove.own
+categories.view.all
 
 // admin actions
 posts.view.pending.all
@@ -578,6 +580,9 @@ comments.edit.all
 comments.remove.all
 users.edit.all
 users.remove.all
+categories.view.all
+categories.edit.all
+categories.remove.all
 ```
 
 ## Internationalization

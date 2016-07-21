@@ -1,19 +1,21 @@
 import Categories from "./collection.js";
 import Users from 'meteor/nova:users';
 
+const canInsert = user => Users.canDo(user, "categories.new");
+
 // category schema
 Categories.schema = new SimpleSchema({
   name: {
     type: String,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canInsert,
+    editableIf: Users.canEdit,
     publish: true
   },
   description: {
     type: String,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canInsert,
+    editableIf: Users.canEdit,
     publish: true,
     autoform: {
       rows: 3
@@ -22,29 +24,29 @@ Categories.schema = new SimpleSchema({
   order: {
     type: Number,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canInsert,
+    editableIf: Users.canEdit,
     publish: true
   },
   slug: {
     type: String,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canInsert,
+    editableIf: Users.canEdit,
     publish: true
   },
   image: {
     type: String,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canInsert,
+    editableIf: Users.canEdit,
     publish: true
   },
   parentId: {
     type: String,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canInsert,
+    editableIf: Users.canEdit,
     publish: true,
     autoform: {
       options: function () {

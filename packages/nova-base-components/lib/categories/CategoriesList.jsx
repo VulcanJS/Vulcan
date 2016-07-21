@@ -99,7 +99,7 @@ class CategoriesList extends Component {
             </LinkContainer>
           </div>
           {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
-          {Users.is.admin(this.context.currentUser) ? this.renderCategoryNewButton() : null}
+          {Users.canDo(this.context.currentUser, "categories.new") ? this.renderCategoryNewButton() : null}
         </DropdownButton>
         <div>
           {/* modals cannot be inside DropdownButton component (see GH issue) */}

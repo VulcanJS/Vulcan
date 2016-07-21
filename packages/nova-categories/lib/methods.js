@@ -6,8 +6,10 @@ Meteor.methods({
   "categories.deleteById": function (categoryId) {
     
     check(categoryId, String);
+    
+    const currentUser = this.userId && Users.findOne(this.userId);
 
-    if (Users.is.admin(this.userId)) {
+    if (Users.canDo(currentUser, "categories.remove.all")) {
 
       // delete category
       Categories.remove(categoryId);
