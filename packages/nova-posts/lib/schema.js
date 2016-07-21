@@ -46,6 +46,15 @@ Posts.formGroups = {
   }
 };
 
+// check if user can create a new post
+const canInsert = user => Users.canDo(user, "posts.new");
+
+// check if user can edit a post
+const canEdit = Users.canEdit;
+
+// check if user can edit *all* posts
+const canEditAll = user => Users.canDo(user, "posts.edit.all");
+
 /**
  * @summary Posts schema
  * @type {SimpleSchema}
@@ -73,8 +82,8 @@ Posts.schemaJSON = {
   postedAt: {
     type: Date,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canEditAll,
+    editableIf: canEditAll,
     publish: true,
     control: "datetime",
     group: Posts.formGroups.admin
@@ -86,8 +95,8 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     max: 500,
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
+    insertableIf: canInsert,
+    editableIf: canEdit,
     control: "text",
     publish: true,
     order: 10
@@ -99,8 +108,8 @@ Posts.schemaJSON = {
     type: String,
     optional: false,
     max: 500,
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
+    insertableIf: canInsert,
+    editableIf: canEdit,
     control: "text",
     publish: true,
     order: 20
@@ -120,8 +129,8 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     max: 3000,
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
+    insertableIf: canInsert,
+    editableIf: canEdit,
     control: "textarea",
     publish: true,
     order: 30
@@ -175,8 +184,8 @@ Posts.schemaJSON = {
   status: {
     type: Number,
     optional: true,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canEditAll,
+    editableIf: canEditAll,
     control: "select",
     publish: true,
     autoValue: function () {
@@ -209,8 +218,8 @@ Posts.schemaJSON = {
     type: Boolean,
     optional: true,
     defaultValue: false,
-    insertableIf: Users.is.admin,
-    editableIf: Users.is.admin,
+    insertableIf: canEditAll,
+    editableIf: canEditAll,
     control: "checkbox",
     publish: true,
     group: Posts.formGroups.admin
@@ -257,8 +266,8 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     // regEx: SimpleSchema.RegEx.Id,
-    // insertableIf: Users.is.admin,
-    // editableIf: Users.is.admin,
+    // insertableIf: canEditAll,
+    // editableIf: canEditAll,
     control: "select",
     publish: true,
     autoform: {

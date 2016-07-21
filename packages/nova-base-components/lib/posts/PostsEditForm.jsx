@@ -41,7 +41,7 @@ class PostsEditForm extends Component{
   
     return (
       <div className="posts-edit-form">
-        {Users.is.admin(this.context.currentUser) ?  this.renderAdminArea() : null}
+        {Users.canDo(this.context.currentUser, "posts.edit.all") ?  this.renderAdminArea() : null}
         <DocumentContainer 
           collection={Posts} 
           publication="posts.single" 

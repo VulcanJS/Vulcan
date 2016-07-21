@@ -1,6 +1,16 @@
 import Comments from './collection.js';
 import Users from 'meteor/nova:users';
 
+
+// check if user can create a new comment
+const canInsert = user => Users.canDo(user, "comments.new");
+
+// check if user can edit a comment
+const canEdit = Users.canEdit;
+
+// check if user can edit *all* comments
+const canEditAll = user => Users.canDo(user, "comments.edit.all");
+
 /**
  * @summary Comments schema
  * @type {SimpleSchema}
@@ -21,7 +31,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    insertableIf: Users.is.memberOrAdmin,
+    insertableIf: canInsert,
     optional: true,
     publish: true,
     control: "none" // never show this
@@ -33,7 +43,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    insertableIf: Users.is.memberOrAdmin,
+    insertableIf: canInsert,
     optional: true,
     publish: true,
     control: "none" // never show this
@@ -60,8 +70,8 @@ Comments.schema = new SimpleSchema({
   body: {
     type: String,
     max: 3000,
-    insertableIf: Users.is.memberOrAdmin,
-    editableIf: Users.is.ownerOrAdmin,
+    insertableIf: canInsert,
+    editableIf: canEdit,
     publish: true,
     control: "textarea"
   },

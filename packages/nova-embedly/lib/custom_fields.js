@@ -4,6 +4,11 @@ import ThumbnailURL from './components/ThumbnailURL.jsx';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 
+// check if user can create a new post
+const canInsert = user => Users.canDo(user, "posts.new");
+// check if user can edit a post
+const canEdit = Users.canEdit;
+
 Posts.addField([
   {
     fieldName: 'url',
@@ -11,8 +16,8 @@ Posts.addField([
       type: String,
       optional: true,
       max: 500,
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin,
+      insertableIf: canInsert,
+      editableIf: canEdit,
       control: EmbedlyURL,
       publish: true
     }
@@ -22,8 +27,8 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin,
+      insertableIf: canInsert,
+      editableIf: canEdit,
       publish: true,
       control: ThumbnailURL
     }

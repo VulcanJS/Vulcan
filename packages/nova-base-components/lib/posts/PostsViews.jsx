@@ -10,7 +10,7 @@ const PostsViews = (props, context) => {
   let views = ["top", "new", "best"];
   const adminViews = ["pending", "rejected", "scheduled"];
   
-  if (Users.is.admin(context.currentUser)) {
+  if (Users.canDo(context.currentUser, "posts.edit.all")) {
     views = views.concat(adminViews);
   }
 

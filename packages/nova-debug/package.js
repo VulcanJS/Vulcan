@@ -39,7 +39,8 @@ Package.onUse(function (api) {
   api.export([
     'Posts',
     'Comments',
-    'Users'
+    'Users',
+    'Categories'
   ], ['client', 'server']);
 
 });

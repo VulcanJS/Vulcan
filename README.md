@@ -581,6 +581,7 @@ comments.remove.all
 users.edit.all
 users.remove.all
 categories.view.all
+categories.new
 categories.edit.all
 categories.remove.all
 ```

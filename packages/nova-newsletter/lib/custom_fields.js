@@ -2,6 +2,11 @@ import NewsletterSubscribe from './components/NewsletterSubscribe.jsx';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 
+// check if user can create a new account
+const canInsert = user => Users.canDo(user, "users.new");
+// check if user can edit a user
+const canEdit = Users.canEdit;
+
 Posts.addField({
   fieldName: 'scheduledAt',
   fieldSchema: {
@@ -18,8 +23,8 @@ Users.addField([
       type: Boolean,
       optional: true,
       publish: true,
-      insertableIf: Users.is.memberOrAdmin,
-      editableIf: Users.is.ownerOrAdmin,
+      insertableIf: canInsert,
+      editableIf: canEdit,
       control: NewsletterSubscribe,
       group: {
         name: "newsletter",
