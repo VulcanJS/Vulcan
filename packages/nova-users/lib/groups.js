@@ -70,7 +70,11 @@ Users.getGroups = user => {
  */
 Users.getActions = user => {
   const userGroups = Users.getGroups(user);
-  const groupActions = userGroups.map(groupName => Users.groups[groupName].actions);
+  const groupActions = userGroups.map(groupName => {
+    // note: make sure groupName corresponds to an actual group
+    const group = Users.groups[groupName];
+    return group && group.actions;
+  });
   return _.unique(_.flatten(groupActions));
 };
 
