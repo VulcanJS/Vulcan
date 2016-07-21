@@ -54,7 +54,7 @@ Users.getGroups = user => {
       userGroups = userGroups.concat(user.telescope.groups);
     } 
     
-    if (Users.is.admin(user)) { // admin
+    if (Users.isAdmin(user)) { // admin
       userGroups.push("admins");
     }
 

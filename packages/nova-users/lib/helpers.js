@@ -323,3 +323,19 @@ Users.owns = function (user, document) {
   }
 };
 Users.helpers({owns: function (document) {return Users.owns(this, document);}});
+
+/**
+ * @summary Check if a user is an admin
+ * @param {Object|string} userOrUserId - The user or their userId
+ */
+Users.isAdmin = function (userOrUserId) {
+  try {
+    var user = Users.getUser(userOrUserId);
+    return !!user && !!user.isAdmin;
+  } catch (e) {
+    return false; // user not logged in
+  }
+};
+Users.isAdminById = Users.isAdmin;
+// use _isAdmin because there is an isAdmin property on the User schema already
+Users.helpers({_isAdmin: function () {return Users.isAdmin(this);}});

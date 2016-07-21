@@ -108,7 +108,6 @@ Comments.schema = new SimpleSchema({
     publish: true,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    // editableIf: Users.is.ownerOrAdmin, // TODO: should users be able to set postId, but not modify it?
     autoform: {
       omit: true // never show this
     }

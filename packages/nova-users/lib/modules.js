@@ -1,6 +1,5 @@
 import Users from './collection.js';
 
-import './roles.js';
 import './groups.js';
 import './schema.js';
 import './config.js';

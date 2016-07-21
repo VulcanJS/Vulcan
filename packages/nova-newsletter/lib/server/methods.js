@@ -4,11 +4,11 @@ import Users from 'meteor/nova:users';
 
 Meteor.methods({
   'newsletter.send': function () {
-    if(Users.is.adminById(this.userId))
+    if(Users.isAdminById(this.userId))
       return Newsletter.scheduleNextWithMailChimp(false);
   },
   'newsletter.test': function () {
-    if(Users.is.adminById(this.userId))
+    if(Users.isAdminById(this.userId))
       return Newsletter.scheduleNextWithMailChimp(true);
   },
   'newsletter.addUser'(user){

@@ -20,7 +20,7 @@ import Users from 'meteor/nova:users';
 Telescope.settings.collection.smartPublish('settings');
 
 Meteor.publish('settings.admin', function() {
-  if (Users.is.adminById(this.userId)) {
+  if (Users.isAdminById(this.userId)) {
     return Telescope.settings.collection.find({}, {});
   } else {
     return [];

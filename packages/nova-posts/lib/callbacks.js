@@ -117,7 +117,7 @@ Telescope.callbacks.add("posts.new.method", PostsNewUserCheck);
  */
 function PostsNewRateLimit (post, user) {
 
-  if(!Users.is.admin(user)){
+  if(!Users.isAdmin(user)){
 
     var timeSinceLastPost = Users.timeSinceLast(user, Posts),
       numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),

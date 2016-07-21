@@ -51,7 +51,7 @@ const CloudinaryUtils = {
 // methods
 Meteor.methods({
   testCloudinaryUpload: function (thumbnailUrl) {
-    if (Users.is.admin(Meteor.user())) {
+    if (Users.isAdmin(Meteor.user())) {
       thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
       const data = CloudinaryUtils.uploadImage(thumbnailUrl);
       console.log(data);
@@ -59,7 +59,7 @@ Meteor.methods({
   },
   cachePostThumbnails: function (limit = 20) {
 
-    if (Users.is.admin(Meteor.user())) {
+    if (Users.isAdmin(Meteor.user())) {
 
       var postsWithUncachedThumbnails = Posts.find({
         thumbnailUrl: { $exists: true },

@@ -6,14 +6,14 @@ Telescope.settings.collection.smartMethods({
 
 Meteor.methods({
   "settings.getJSON": function () {
-    if (Users.is.adminById(this.userId)) {
+    if (Users.isAdminById(this.userId)) {
       return Meteor.settings;
     } else {
       return {};
     }
   },
   "settings.exportToJSON": function () {
-    if (Users.is.adminById(this.userId)) {
+    if (Users.isAdminById(this.userId)) {
       let settings = Telescope.settings.collection.findOne();
       const schema = Telescope.settings.collection.simpleSchema()._schema;
       const publicFields = Telescope.settings.collection.getPublicFields();
@@ -30,7 +30,7 @@ Meteor.methods({
     }
   },
   "settings.clear": function () {
-    if (Users.is.adminById(this.userId)) {
+    if (Users.isAdminById(this.userId)) {
       const settings = Telescope.settings.collection.findOne();
       Telescope.settings.collection.update(settings._id, {}, {validate: false});
     }

@@ -175,8 +175,8 @@ For example:
 postedAt: {
   type: Date,
   optional: true,
-  insertableIf: Users.is.admin,
-  editableIf: Users.is.admin,
+  insertableIf: Users.isAdmin,
+  editableIf: Users.isAdmin,
   publish: true,
   control: "datetime",
   group: {

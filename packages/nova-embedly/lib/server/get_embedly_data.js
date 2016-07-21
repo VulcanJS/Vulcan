@@ -130,7 +130,7 @@ Meteor.methods({
     // mode = "generate" : generate thumbnails only for all posts that don't have one
     // mode = "all" : regenerate thumbnais for all posts
       
-    if (Users.is.admin(Meteor.user())) {
+    if (Users.isAdmin(Meteor.user())) {
       
       console.log("// Generating thumbnails…")
       

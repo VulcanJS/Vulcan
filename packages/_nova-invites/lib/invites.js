@@ -50,8 +50,8 @@ Users.addField([
       type: Boolean,
       publish: true,
       optional: true,
-      insertableIf: Users.is.admin,
-      editableIf: Users.is.admin,
+      insertableIf: Users.isAdmin,
+      editableIf: Users.isAdmin,
       autoform: {
         omit: true
       }

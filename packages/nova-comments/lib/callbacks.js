@@ -78,7 +78,7 @@ function CommentsNewUserCheck (comment, user) {
 Telescope.callbacks.add("comments.new.method", CommentsNewUserCheck);
 
 function CommentsNewRateLimit (comment, user) {
-  if (!Users.is.admin(user)) {
+  if (!Users.isAdmin(user)) {
     var timeSinceLastComment = Users.timeSinceLast(user, Comments),
         commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
     // check that user waits more than 15 seconds between comments

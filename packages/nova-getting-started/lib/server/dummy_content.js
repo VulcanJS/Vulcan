@@ -100,14 +100,14 @@ deleteDummyContent = function () {
 
 Meteor.methods({
   addGettingStartedContent: function () {
-    if (Users.is.admin(Meteor.user())) {
+    if (Users.isAdmin(Meteor.user())) {
       createDummyUsers();
       createDummyPosts();
       createDummyComments();
     }
   },
   removeGettingStartedContent: function () {
-    if (Users.is.admin(Meteor.user()))
+    if (Users.isAdmin(Meteor.user()))
       deleteDummyContent();
   }
 });

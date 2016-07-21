@@ -20,8 +20,8 @@ Users.addField([
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      insertableIf: Users.is.admin,
-      editableIf: Users.is.admin,
+      insertableIf: Users.isAdmin,
+      editableIf: Users.isAdmin,
       group: notificationsGroup
     }
   },

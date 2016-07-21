@@ -6,7 +6,7 @@ Meteor.methods({
     
     const email = NovaEmail.emails[emailName];
     
-    if(Users.is.adminById(this.userId)){
+    if(Users.isAdminById(this.userId)){
 
       console.log("// testing email ["+emailName+"]");
       let html, properties;

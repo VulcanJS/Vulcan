@@ -10,7 +10,7 @@ Meteor.publish('users.single', function (terms) {
   var findById = Meteor.users.findOne(idOrSlug);
   var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var options = Users.is.admin(this.userId) ? {} : {fields: Users.publishedFields.public};
+  var options = Users.isAdmin(this.userId) ? {} : {fields: Users.publishedFields.public};
   return user ? Meteor.users.find({_id: user._id}, options) : [];
 
 });
@@ -31,7 +31,7 @@ Meteor.publish('users.current', function () {
 //   
 
 //   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
-//   if (Users.is.adminById(this.userId)) {
+//   if (Users.isAdminById(this.userId)) {
 //     return Meteor.users.find(selector, {fields: Users.pubsub.avatarProperties});
 //   }
 //   return [];
@@ -45,7 +45,7 @@ Meteor.publish('users.current', function () {
 
 //   
   
-//   if(Users.is.adminById(this.userId)){
+//   if(Users.isAdminById(this.userId)){
 //     return Meteor.users;
 //   } else {
 //     return [];

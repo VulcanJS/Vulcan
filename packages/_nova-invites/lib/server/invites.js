@@ -22,7 +22,7 @@ Meteor.methods({
     
     var userEmail = invitation.invitedUserEmail ? invitation.invitedUserEmail :Users.getEmail(user);
     var currentUser = Meteor.user();
-    var currentUserIsAdmin = Users.is.admin(currentUser);
+    var currentUserIsAdmin = Users.isAdmin(currentUser);
     var currentUserCanInvite = currentUserIsAdmin || (currentUser.telescope.inviteCount > 0 && Users.can.invite(currentUser));
 
     // check if the person is already invited

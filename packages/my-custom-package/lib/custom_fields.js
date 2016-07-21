@@ -7,6 +7,11 @@ We'll do that by adding a custom field to the Posts collection.
 Note that this requires our custom package to depend on nova:posts and nova:users.
 */
 
+// check if user can create a new post
+const canInsert = user => Users.canDo(user, "posts.new");
+// check if user can edit a post
+const canEdit = Users.canEdit;
+
 Posts.addField(
   {
     fieldName: 'color',
@@ -14,8 +19,8 @@ Posts.addField(
       type: String,
       control: "select", // use a select form control
       optional: true, // this field is not required
-      insertableIf: Users.is.memberOrAdmin, // insertable by regular logged in users and admins
-      editableIf: Users.is.ownerOrAdmin, // editable by the post's owner or admins
+      insertableIf: canInsert,
+      editableIf: canEdit,
       autoform: {
         options: function () { // options for the select form control
           return [

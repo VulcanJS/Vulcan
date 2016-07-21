@@ -166,7 +166,7 @@ Meteor.methods({
     
     const post = Posts.findOne(postId);
     
-    if(Users.is.admin(Meteor.user())){
+    if(Users.isAdmin(Meteor.user())){
 
       Posts.update(post._id, {$set: {status: Posts.config.STATUS_REJECTED}});
 
