@@ -11,8 +11,8 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
 
   var item = collection.findOne(itemId);
   var votePower = Telescope.getVotePower(user);
-  var hasUpvotedItem = user.hasUpvotedItem(item);
-  var hasDownvotedItem = user.hasDownvotedItem(item);
+  var hasUpvotedItem = user.hasUpvoted(item);
+  var hasDownvotedItem = user.hasDownvoted(item);
   var update = {};
 
   // console.log(collection)
