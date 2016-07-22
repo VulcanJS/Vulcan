@@ -12,7 +12,8 @@ Meteor.methods({
       return Newsletter.scheduleNextWithMailChimp(true);
   },
   'newsletter.addUser'(user){
-    const currentUser = this.userId && Users.findOne(this.userId);
+    const currentUser = Users.findOne({_id: this.userId});
+    user = Users._transform(user);
     if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
@@ -24,7 +25,8 @@ Meteor.methods({
     }
   },
   'newsletter.removeUser'(user) {
-    const currentUser = this.userId && Users.findOne(this.userId);
+    const currentUser = Users.findOne({_id: this.userId});
+    user = Users._transform(user);
     if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
