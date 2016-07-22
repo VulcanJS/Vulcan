@@ -11,8 +11,8 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
 
   var item = collection.findOne(itemId);
   var votePower = Telescope.getVotePower(user);
-  var hasUpvotedItem = user.hasUpvotedItem(item);
-  var hasDownvotedItem = user.hasDownvotedItem(item);
+  var hasUpvotedItem = user.hasUpvoted(item);
+  var hasDownvotedItem = user.hasDownvoted(item);
   var update = {};
 
   // console.log(collection)
@@ -23,12 +23,12 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
   // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
-    !user || 
-    !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
+    !user ||
+    !Users.canDo(user, `${item.getCollectionName()}.${operation}`) ||
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem
   ) {
-    return false; 
+    return false;
   }
 
   // ------------------------------ Sync Callbacks ------------------------------ //
@@ -83,10 +83,10 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
 
     // extend item with baseScore to help calculate newScore
     item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-    
+
     // --------------------- Server-Side Async Callbacks --------------------- //
     Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation);
-    
+
     return true;
 
   }
