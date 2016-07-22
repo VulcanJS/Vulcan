@@ -8,7 +8,7 @@ Meteor.publish('categories', function() {
 
   if(Users.canDo(currentUser, "posts.view.approved.all")){
 
-    var categories = Categories.find({$query:{}, $orderby:{ "order": 1 }});
+    var categories = Categories.find();
     var publication = this;
 
     categories.forEach(function (category) {
