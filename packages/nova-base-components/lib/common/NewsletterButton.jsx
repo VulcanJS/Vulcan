@@ -11,10 +11,10 @@ class NewsletterButton extends Component {
   }
   
   subscriptionAction() {
-    const action = Users.getSetting(this.context.currentUser, 'newsletter_subscribeToNewsletter', false) ? 
+    const action = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false) ? 
       'newsletter.removeUser' : 'newsletter.addUser';
 
-    this.context.actions.call(action, this.context.currentUser, (error, result) => {
+    this.context.actions.call(action, this.props.user, (error, result) => {
       if (error) {
         console.log(error);
         this.context.messages.flash(error.message, "error");
@@ -25,7 +25,7 @@ class NewsletterButton extends Component {
   }
 
   render() {
-    const isSubscribed = Users.getSetting(this.context.currentUser, 'newsletter_subscribeToNewsletter', false);
+    const isSubscribed = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false);
 
     return (
       <Button
@@ -40,7 +40,8 @@ class NewsletterButton extends Component {
 }
 
 NewsletterButton.propTypes = {
-  successCallback: React.PropTypes.func.isRequired
+  successCallback: React.PropTypes.func.isRequired,
+  user: React.PropTypes.object.isRequired,
 };
 
 NewsletterButton.contextTypes = {
