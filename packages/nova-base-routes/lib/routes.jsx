@@ -9,19 +9,11 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Events from "meteor/nova:events";
 import Helmet from 'react-helmet';
 
-// // ------------------------------------- Other -------------------------------- //
-
-// FlowRouter.notFound = {
-//   action() {
-//     ({App, Error404} = Telescope.components);
-//     mount(App, {content: <Error404/>});
-//   }
-// };
+Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
 Meteor.startup(() => {
 
   Telescope.routes.add([
-    {name:"posts.daily",    path:"daily",              component:Telescope.components.PostsDaily},
     {name:"posts.single",   path:"posts/:_id(/:slug)", component:Telescope.components.PostsSingle},
     {name:"users.single",   path:"users/:slug",        component:Telescope.components.UsersSingle},
     {name:"users.account",  path:"account",            component:Telescope.components.UsersAccount},
@@ -31,7 +23,7 @@ Meteor.startup(() => {
   const AppRoutes = {
     path: '/',
     component: Telescope.components.App,
-    indexRoute: { name: "posts.list", component: Telescope.components.PostsHome },
+    indexRoute: Telescope.routes.indexRoute,
     childRoutes: Telescope.routes.routes
   }
 

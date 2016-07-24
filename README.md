@@ -475,7 +475,9 @@ You can use regular Meteor methods, or [Smart Methods](https://github.com/meteor
 
 ## Routes
 
-Here's how you can add routes to your app (using React Router):
+### Customizing Routes
+
+Here's how you can add child routes to your app (using React Router):
 
 ```js
 Telescope.routes.add({
@@ -484,6 +486,35 @@ Telescope.routes.add({
   component: Foo
 });
 ```
+
+To change the index (`/`) route, you can do:
+
+```js
+Telescope.routes.indexRoute = { 
+  name: "myIndexRoute", 
+  component: myIndexRouteComponent
+};
+```
+
+For more complex router customizations, you can also disable the `nova:base-routes` package altogether and replace it with your own React Router code. 
+
+### Using React Router In Your Components
+
+If you need to access router properties (such as the current route, path, or query parameters) inside a component, you'll need to wrap that component with the `withRouter` HoC (higher-order component):
+
+```js
+import React, { PropTypes, Component } from 'react';
+import { withRouter } from 'react-router'
+
+class SearchForm extends Component{
+
+  render() {
+    // this.props.router is accessible
+  }
+}
+
+export default withRouter(SearchForm);
+``` 
 
 ## Groups & Permissions
 
