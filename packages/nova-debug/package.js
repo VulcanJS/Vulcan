@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
 
-    'fourseven:scss@3.4.1',
+    'fourseven:scss@3.8.0_1',
 
     // Nova packages
 

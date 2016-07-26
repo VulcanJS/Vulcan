@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'check',
     'aldeed:simple-schema@1.5.3',
     'aldeed:collection2@2.8.0',
-    'fourseven:scss@3.4.1'
+    'fourseven:scss@3.8.0_1'
   ]);
 
   api.addFiles([
