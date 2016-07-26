@@ -56,7 +56,7 @@ meteorhacks:fast-render@2.14.0
 meteorhacks:inject-data@2.0.0
 meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.30.0
-meteorhacks:kadira-binary-deps@1.4.0
+meteorhacks:kadira-binary-deps@1.5.0
 meteorhacks:kadira-profiler@1.2.1
 meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
