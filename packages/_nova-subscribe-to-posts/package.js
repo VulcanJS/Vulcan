@@ -14,8 +14,17 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['nova:core@0.26.5-nova']);
+  api.use([
+    'nova:core@0.26.5-nova',
+    'nova:posts@0.26.5-nova',
+    'nova:users@0.26.5-nova'
+  ]);
 
+  // api.use([
+  //   'nova:notifications@0.26.5-nova',
+  //   'nova:email@0.26.5-nova'
+  // ], ['client', 'server'], {weak: true});
+  //
   // ---------------------------------- 2. Files to include ----------------------------------
 
   // i18n config (must come first)
@@ -59,5 +68,7 @@ Package.onUse(function (api) {
   //   'subscribeItem',
   //   'unsubscribeItem'
   // ]);
+
+  api.mainModule("lib/export.js", ["client", "server"]);
 
 });
