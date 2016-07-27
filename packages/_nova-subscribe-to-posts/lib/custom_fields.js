@@ -26,7 +26,6 @@ Posts.addField(
     fieldName: 'subscribers',
     fieldSchema: {
       type: [String],
-      control: "checkboxgroup",
       optional: true,
       insertableIf: canSubscribe,
       autoform: {
