@@ -30,17 +30,7 @@ Posts.addField(
       optional: true,
       insertableIf: canSubscribe,
       autoform: {
-        // omit: true
-        noselect: true,
-        type: "bootstrap-category",
-        order: 50,
-        options: function () {
-          var subscribers = [{
-            value: "123",
-            label: "razdwatrzy"
-          }];
-          return subscribers;
-        }
+        omit: true
       },
       publish: true,
       join: {
