@@ -14,6 +14,7 @@ Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.compone
 Meteor.startup(() => {
 
   Telescope.routes.add([
+    {name:"posts.daily",    path:"daily",              component:Telescope.components.PostsDaily},
     {name:"posts.single",   path:"posts/:_id(/:slug)", component:Telescope.components.PostsSingle},
     {name:"users.single",   path:"users/:slug",        component:Telescope.components.UsersSingle},
     {name:"users.account",  path:"account",            component:Telescope.components.UsersAccount},
