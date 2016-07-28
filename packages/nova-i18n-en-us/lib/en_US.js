@@ -31,6 +31,9 @@ Telescope.strings.en = {
   "posts.rate_limit_error": "Please wait {details} seconds before posting again.",
   "posts.postedAt": "Posted at",
   "posts.dateNotDefined": "Date not defined",
+  "posts.subscribe": "Subscribe",
+  "posts.unsubscribe": "Unsubscribe",
+  "posts.subscribed_posts" : "Subscribed Posts",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
@@ -111,15 +114,15 @@ Telescope.strings.en = {
   "settings.requirePostInvite": "Require Post Invite",
   "settings.requirePostsApproval": "Require Posts Approval",
   "settings.scoreUpdateInterval": "Score Update Interval",
-  
+
   "app.loading": "Loading…",
   "app.404": "Sorry, we couldn't find what you were looking for.",
   "app.powered_by": "Powered by Telescope",
   "app.or": "Or",
 
-  "newsletter": "Newsletter", 
-  "newsletter.subscribe": "Subscribe", 
-  "newsletter.unsubscribe": "Unsubscribe", 
+  "newsletter": "Newsletter",
+  "newsletter.subscribe": "Subscribe",
+  "newsletter.unsubscribe": "Unsubscribe",
   "newsletter.subscribe_prompt": "Subscribe to the newsletter",
   "newsletter.email": "Your email",
   "newsletter.success_message": "Thanks for subscribing!",
