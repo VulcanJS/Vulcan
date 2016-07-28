@@ -1,36 +1,8 @@
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
+import Subscribe from './Subscribe.jsx';
 
-class SubscribeButton extends Component {
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.onSubscribe = this.onSubscribe.bind(this);
-    this.isSubscribed = this.isSubscribed.bind(this);
-  }
-
-  onSubscribe() {
-    const post = this.props.post;
-    const user = this.context.currentUser;
-
-    let callAction = 'subscribePost';
-
-    let isSubscribed = this.isSubscribed(post, user);
-    if( isSubscribed ) {
-      callAction = "unsubscribePost";
-    }
-
-    this.context.actions.call(callAction, post._id, (error, result) => {
-      if (result)
-        this.context.events.track(callAction, {'_id': post._id});
-    })
-  }
-
-  isSubscribed(post, user) {
-    if (!post || !user)
-      return false;
-    return post.subscribers && post.subscribers.indexOf(user._id) != -1;
-  }
+class SubscribeButton extends Subscribe {
 
   render() {
     const post = this.props.post;
@@ -38,37 +10,31 @@ class SubscribeButton extends Component {
 
     // can't subscribe to own post (also validated on server side)
     if(user && post.author === user.username) {
-      return null
+      return null;
     }
 
     let btnStyle = "default";
+    let btnTitle = "posts.subscribe";
+    let btnIcon  = "eye";
 
     let isSubscribed = this.isSubscribed(post, user);
     if( isSubscribed ) {
       btnStyle = "info";
+      btnTitle = "posts.unsubscribe";
+      btnIcon  = "eye-slash";
     }
 
     return (
-      <button type="button" title="Observe"
-        className={`btn btn-${btnStyle} btn-sm pull-right`}
+      <button type="button" title={this.context.intl.formatMessage({id: btnTitle})}
+        className={`btn btn-${btnStyle} btn-sm`}
         style={{padding: '.5rem', lineHeight: 1, borderRadius: '50%', marginLeft: '.5rem'}}
         onClick={this.onSubscribe} >
-        <i className="fa fa-eye"></i>
+        <i className={`fa fa-${btnIcon}`}></i>
       </button>
     )
   }
 
 }
-
-SubscribeButton.propTypes = {
-  post: React.PropTypes.object.isRequired
-}
-
-SubscribeButton.contextTypes = {
-  currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object
-};
 
 module.exports = SubscribeButton;
 export default SubscribeButton;

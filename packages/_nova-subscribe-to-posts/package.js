@@ -17,7 +17,10 @@ Package.onUse(function (api) {
   api.use([
     'nova:core@0.26.5-nova',
     'nova:posts@0.26.5-nova',
-    'nova:users@0.26.5-nova'
+    'nova:users@0.26.5-nova',
+
+    // 3rd party
+    'fortawesome:fontawesome@4.5.0'
   ]);
 
   // api.use([
@@ -37,6 +40,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     // 'lib/subscribe-to-posts.js',',
+    // 'lib/callbacks.js',
     'lib/custom_fields.js',
     'lib/methods.js'
   ], ['client', 'server']);
