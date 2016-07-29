@@ -40,7 +40,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     // 'lib/subscribe-to-posts.js',',
-    // 'lib/callbacks.js',
+    'lib/callbacks.js',
     'lib/custom_fields.js',
     'lib/methods.js'
   ], ['client', 'server']);
