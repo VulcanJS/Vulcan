@@ -10,7 +10,9 @@ class Subscribe extends Component {
     this.isSubscribed = this.isSubscribed.bind(this);
   }
 
-  onSubscribe() {
+  onSubscribe(e) {
+    e.preventDefault(); 
+
     const post = this.props.post;
     const user = this.context.currentUser;
 
@@ -50,7 +52,7 @@ class Subscribe extends Component {
     }
 
     return (
-      <a href="#" onClick={this.onSubscribe} >{this.context.intl.formatMessage({id: btnTitle})}</a>
+      <a onClick={this.onSubscribe} >{this.context.intl.formatMessage({id: btnTitle})}</a>
     )
   }
 
