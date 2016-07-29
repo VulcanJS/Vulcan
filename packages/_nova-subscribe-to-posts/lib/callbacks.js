@@ -25,7 +25,6 @@ function SubscribedCommentsNotifications (comment) {
         userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
       }
 
-      console.log('SubscribedCommentsNotifications', notificationData, userIdsNotified);
     }
   }
 }
