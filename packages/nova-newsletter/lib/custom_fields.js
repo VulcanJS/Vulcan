@@ -23,6 +23,7 @@ Users.addField([
       type: Boolean,
       optional: true,
       publish: true,
+      defaultValue: false,
       insertableIf: canInsert,
       editableIf: canEdit,
       control: NewsletterSubscribe,
