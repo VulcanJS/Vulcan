@@ -307,8 +307,8 @@ class NovaForm extends Component{
   submitForm(data) {
     this.setState({disabled: true});
 
-    // mutate data with values not caught by formsy submit handler (ex: datetimepicker)
-    data = {...data, ...this.state.currentValues};
+    // complete the data with values not caught by formsy submit handler (ex: Datetimepicker or NewsletterSubcribe components)
+    data = {...data, ...this.state.currentValues, ...this.state.autofilledValues};
 
     const fields = this.getFieldNames();
 
