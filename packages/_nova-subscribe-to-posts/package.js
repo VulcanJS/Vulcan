@@ -17,10 +17,7 @@ Package.onUse(function (api) {
   api.use([
     'nova:core@0.26.5-nova',
     'nova:posts@0.26.5-nova',
-    'nova:users@0.26.5-nova',
-
-    // 3rd party
-    'fortawesome:fontawesome@4.5.0'
+    'nova:users@0.26.5-nova'
   ]);
 
   // api.use([
