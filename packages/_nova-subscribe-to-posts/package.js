@@ -39,7 +39,8 @@ Package.onUse(function (api) {
     // 'lib/subscribe-to-posts.js',',
     'lib/callbacks.js',
     'lib/custom_fields.js',
-    'lib/methods.js'
+    'lib/methods.js',
+    'lib/views.js'
   ], ['client', 'server']);
 
   // client
