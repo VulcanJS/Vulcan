@@ -9,7 +9,11 @@ const PostsNewForm = (props, context) => {
   const router = props.router;
 
   return (
-    <Telescope.components.CanCreatePost>
+    <Telescope.components.CanDo
+      action="posts.new"
+      noPermissionMessage="users.cannot_post"
+      displayNoPermissionMessage={true}
+    >
       <div className="posts-new-form">
         <NovaForm 
           collection={Posts} 
@@ -21,7 +25,7 @@ const PostsNewForm = (props, context) => {
           }}
         />
       </div>
-    </Telescope.components.CanCreatePost>
+    </Telescope.components.CanDo>
   )
 }
 
