@@ -60,6 +60,7 @@ Telescope.registerComponent("CategoriesNewForm",    require('./categories/Catego
 
 // permissions
 
+Telescope.registerComponent("CanDo",                require('./permissions/CanDo.jsx'));
 Telescope.registerComponent("CanCreatePost",        require('./permissions/CanCreatePost.jsx'));
 Telescope.registerComponent("CanEditPost",          require('./permissions/CanEditPost.jsx'));
 Telescope.registerComponent("CanView",              require('./permissions/CanView.jsx'));

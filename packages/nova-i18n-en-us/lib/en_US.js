@@ -116,6 +116,7 @@ Telescope.strings.en = {
   "app.404": "Sorry, we couldn't find what you were looking for.",
   "app.powered_by": "Powered by Telescope",
   "app.or": "Or",
+  "app.noPermission": "Sorry, you do not have the permission to do this at this time.",
 
   "newsletter": "Newsletter", 
   "newsletter.subscribe": "Subscribe", 
