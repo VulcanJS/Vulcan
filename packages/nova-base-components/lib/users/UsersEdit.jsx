@@ -37,7 +37,6 @@ const UsersEdit = (props, context) => {
   
 UsersEdit.propTypes = {
   user: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object.isRequired
 };
 
 UsersEdit.contextTypes = {

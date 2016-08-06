@@ -1,21 +1,23 @@
-import React, { PropTypes, Component } from 'react';
-import Users from 'meteor/nova:users';
+// Deprecated way to handle permission in components, check CanDo component
 
-const CanEditPost = ({user, post, children}) => {
-  if (Users.canEdit(user, post)) {
-    return children;
-  } else if (!user){
-    return <p>Please log in.</p>;
-  } else {
-    return <p>Sorry, you do not have permissions to edit this post at this time</p>;
-  }
-};
+// import React, { PropTypes, Component } from 'react';
+// import Users from 'meteor/nova:users';
 
-CanEditPost.propTypes = {
-  user: React.PropTypes.object,
-  post: React.PropTypes.object
-}
+// const CanEditPost = ({user, post, children}) => {
+//   if (Users.canEdit(user, post)) {
+//     return children;
+//   } else if (!user){
+//     return <p>Please log in.</p>;
+//   } else {
+//     return <p>Sorry, you do not have permissions to edit this post at this time</p>;
+//   }
+// };
 
-CanEditPost.displayName = "CanEditPost";
+// CanEditPost.propTypes = {
+//   user: React.PropTypes.object,
+//   post: React.PropTypes.object
+// }
 
-module.exports = CanEditPost;
+// CanEditPost.displayName = "CanEditPost";
+
+// module.exports = CanEditPost;

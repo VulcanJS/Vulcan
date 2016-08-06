@@ -15,6 +15,6 @@ const UsersSingle = (props, context) => {
   )
 };
 
-UsersSingle.displayName = "PostsSingle";
+UsersSingle.displayName = "UsersSingle";
 
 module.exports = UsersSingle;
