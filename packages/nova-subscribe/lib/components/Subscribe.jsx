@@ -11,16 +11,16 @@ class Subscribe extends Component {
   }
 
   onSubscribe(e) {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const post = this.props.post;
     const user = this.context.currentUser;
 
-    let callAction = 'subscribePost';
+    let callAction = 'posts.subscribe';
 
     let isSubscribed = this.isSubscribed(post, user);
     if( isSubscribed ) {
-      callAction = "unsubscribePost";
+      callAction = "posts.unsubscribe";
     }
 
     this.context.actions.call(callAction, post._id, (error, result) => {
