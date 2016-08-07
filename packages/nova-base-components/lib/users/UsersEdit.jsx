@@ -13,7 +13,11 @@ const UsersEdit = (props, context) => {
   //const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
   return (
-    <Telescope.components.CanEditUser user={currentUser} userToEdit={user}>
+    <Telescope.components.CanDo 
+      action="users.edit"
+      document={user}
+      displayNoPermissionMessage={true}
+    >
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
         <NovaForm 
@@ -26,14 +30,13 @@ const UsersEdit = (props, context) => {
           }}
         />
       </div>
-    </Telescope.components.CanEditUser>
+    </Telescope.components.CanDo>
   )
 };
 
   
 UsersEdit.propTypes = {
   user: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object.isRequired
 };
 
 UsersEdit.contextTypes = {

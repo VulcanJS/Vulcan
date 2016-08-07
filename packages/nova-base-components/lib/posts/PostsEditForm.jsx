@@ -29,10 +29,12 @@ class PostsEditForm extends Component{
 
   renderAdminArea() {
     return (
-      <div className="posts-edit-form-admin">
-        <div className="posts-edit-form-id">ID: {this.props.post._id}</div>
-        <Telescope.components.PostsStats post={this.props.post} />
-      </div>
+      <Telescope.components.CanDo action="posts.edit.all">
+        <div className="posts-edit-form-admin">
+          <div className="posts-edit-form-id">ID: {this.props.post._id}</div>
+          <Telescope.components.PostsStats post={this.props.post} />
+        </div>
+      </Telescope.components.CanDo>
     )
   }
 
@@ -41,7 +43,7 @@ class PostsEditForm extends Component{
   
     return (
       <div className="posts-edit-form">
-        {Users.canDo(this.context.currentUser, "posts.edit.all") ?  this.renderAdminArea() : null}
+        {this.renderAdminArea()}
         <DocumentContainer 
           collection={Posts} 
           publication="posts.single" 

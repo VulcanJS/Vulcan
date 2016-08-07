@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
 
-class SubscribeButton extends Component {
+class Subscribe extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -9,7 +10,9 @@ class SubscribeButton extends Component {
     this.isSubscribed = this.isSubscribed.bind(this);
   }
 
-  onSubscribe() {
+  onSubscribe(e) {
+    e.preventDefault(); 
+
     const post = this.props.post;
     const user = this.context.currentUser;
 
@@ -38,37 +41,33 @@ class SubscribeButton extends Component {
 
     // can't subscribe to own post (also validated on server side)
     if(user && post.author === user.username) {
-      return null
+      return null;
     }
 
-    let btnStyle = "default";
+    let btnTitle = "posts.subscribe";
 
     let isSubscribed = this.isSubscribed(post, user);
     if( isSubscribed ) {
-      btnStyle = "info";
+      btnTitle = "posts.unsubscribe";
     }
 
     return (
-      <button type="button" title="Observe"
-        className={`btn btn-${btnStyle} btn-sm pull-right`}
-        style={{padding: '.5rem', lineHeight: 1, borderRadius: '50%', marginLeft: '.5rem'}}
-        onClick={this.onSubscribe} >
-        <i className="fa fa-eye"></i>
-      </button>
+      <a onClick={this.onSubscribe} >{this.context.intl.formatMessage({id: btnTitle})}</a>
     )
   }
 
 }
 
-SubscribeButton.propTypes = {
+Subscribe.propTypes = {
   post: React.PropTypes.object.isRequired
 }
 
-SubscribeButton.contextTypes = {
+Subscribe.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
-  events: React.PropTypes.object
+  events: React.PropTypes.object,
+  intl: intlShape
 };
 
-module.exports = SubscribeButton;
-export default SubscribeButton;
+module.exports = Subscribe;
+export default Subscribe;

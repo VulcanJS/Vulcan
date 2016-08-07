@@ -1,8 +1,10 @@
 import {subscribeItem, unsubscribeItem} from './methods.js';
-import SubscribeButton from './components/SubscribeButton.jsx';
+import Subscribe from './components/Subscribe.jsx';
+import SubscribedPosts from './components/SubscribedPosts.jsx';
 
 export {
   subscribeItem,
   unsubscribeItem,
-  SubscribeButton
+  Subscribe,
+  SubscribedPosts
 }
