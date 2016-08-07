@@ -24,6 +24,8 @@ class Subscribe extends Component {
     }
 
     this.context.actions.call(callAction, post._id, (error, result) => {
+      if (error)
+        this.context.messages.flash(error.message, "error")
       if (result)
         this.context.events.track(callAction, {'_id': post._id});
     })
@@ -64,6 +66,7 @@ Subscribe.propTypes = {
 
 Subscribe.contextTypes = {
   currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
