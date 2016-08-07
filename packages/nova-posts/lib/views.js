@@ -100,7 +100,7 @@ Posts.views.add("userPosts", function (terms) {
     selector: {
       userId: terms.userId,
       status: Posts.config.STATUS_APPROVED,
-      isFuture: false
+      isFuture: {$ne: true}
     },
     options: {
       limit: 5, 

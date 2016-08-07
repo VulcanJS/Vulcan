@@ -67,7 +67,11 @@ class CategoriesList extends Component {
   }
 
   renderCategoryNewButton() {
-    return <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}><FormattedMessage id="categories.new"/></Button></MenuItem></div>;
+    return (
+      <Telescope.components.CanDo action="categories.new">
+        <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}><FormattedMessage id="categories.new"/></Button></MenuItem></div>
+      </Telescope.components.CanDo>
+    );
     // const CategoriesNewForm = Telescope.components.CategoriesNewForm;
     // return (
     //   <ModalTrigger title="New Category" component={<MenuItem className="dropdown-item post-category"><Button bsStyle="primary">New Category</Button></MenuItem>}>
@@ -99,7 +103,7 @@ class CategoriesList extends Component {
             </LinkContainer>
           </div>
           {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
-          {Users.canDo(this.context.currentUser, "categories.new") ? this.renderCategoryNewButton() : null}
+          {this.renderCategoryNewButton()}
         </DropdownButton>
         <div>
           {/* modals cannot be inside DropdownButton component (see GH issue) */}

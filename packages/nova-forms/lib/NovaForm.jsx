@@ -393,7 +393,7 @@ NovaForm.propTypes = {
   fields: React.PropTypes.arrayOf(React.PropTypes.string)
 }
 
-NovaForm.defaultPropTypes = {
+NovaForm.defaultProps = {
   layout: "horizontal"
 }
 

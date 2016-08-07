@@ -14,7 +14,7 @@ Loading.propTypes = {
   color: React.PropTypes.string
 }
 
-Loading.defaultPropTypes = {
+Loading.defaultProps = {
   color: "black"
 }
 

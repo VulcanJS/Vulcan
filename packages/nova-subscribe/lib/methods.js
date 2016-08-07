@@ -1,60 +1,5 @@
-Users.addField({
-  fieldName: 'telescope.subscribedItems',
-  fieldSchema: {
-    type: Object,
-    optional: true,
-    blackbox: true,
-    autoform: {
-      omit: true
-    }
-  }
-});
-
-Posts.addField({
-  fieldName: 'subscribers',
-  fieldSchema: {
-    type: [String],
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  }
-});
-
-Posts.addField({
-  fieldName: 'subscriberCount',
-  fieldSchema: {
-    type: Number,
-    optional: true,
-    autoform: {
-      omit: true
-    }
-  }
-});
-
-Telescope.modules.add("profileEdit", {
-  template: 'user_subscribed_posts',
-  order: 5
-});
-
-Telescope.modules.add("commentThreadBottom", {
-  template: 'post_subscribe',
-  order: 10
-});
-
-Posts.views.add("userSubscribedPosts", function (terms) {
-  var user = Meteor.users.findOne(terms.userId),
-      postsIds = [];
-
-  if (user && user.telescope.subscribedItems && user.telescope.subscribedItems.Posts) {
-    postsIds = _.pluck(user.telescope.subscribedItems.Posts, "itemId");
-  }
-
-  return {
-    find: {_id: {$in: postsIds}},
-    options: {limit: 5, sort: {postedAt: -1}}
-  };
-});
+import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 var hasSubscribedItem = function (item, user) {
   return item.subscribers && item.subscribers.indexOf(user._id) != -1;
@@ -78,7 +23,8 @@ var removeSubscribedItem = function (userId, itemId, collectionName) {
   });
 };
 
-subscribeItem = function (collection, itemId, user) {
+export var subscribeItem = function (collection, itemId, user) {
+
   var item = collection.findOne(itemId),
       collectionName = collection._name.slice(0,1).toUpperCase() + collection._name.slice(1);
 
@@ -87,7 +33,7 @@ subscribeItem = function (collection, itemId, user) {
 
   // author can't subscribe item
   if (item.userId && item.userId === user._id)
-    return false
+    return false;
 
   // Subscribe
   var result = collection.update({_id: itemId, subscribers: { $ne: user._id }}, {
@@ -107,9 +53,9 @@ subscribeItem = function (collection, itemId, user) {
   return true;
 };
 
-unsubscribeItem = function (collection, itemId, user) {
-  var user = Meteor.user(),
-      item = collection.findOne(itemId),
+export var unsubscribeItem = function (collection, itemId, user) {
+
+  var item = collection.findOne(itemId),
       collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
 
   if (!user || !item  || !hasSubscribedItem(item, user))
@@ -129,11 +75,11 @@ unsubscribeItem = function (collection, itemId, user) {
 };
 
 Meteor.methods({
-  subscribePost: function(postId) {
+  "posts.subscribe": function(postId) {
     check(postId, String);
     return subscribeItem.call(this, Posts, postId, Meteor.user());
   },
-  unsubscribePost: function(postId) {
+  "posts.unsubscribe": function(postId) {
     check(postId, String);
     return unsubscribeItem.call(this, Posts, postId, Meteor.user());
   }
