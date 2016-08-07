@@ -20,6 +20,7 @@ nova:api
 nova:rss
 nova:kadira
 nova:email
+nova:subscribe
 
 ############ Customizable Packages ############
 
@@ -40,5 +41,3 @@ nova:debug
 ############ Your Packages ############
 
 # my-custom-package
-
-nova:subscribe
