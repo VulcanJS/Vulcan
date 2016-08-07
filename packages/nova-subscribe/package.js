@@ -1,6 +1,6 @@
 Package.describe({
-  name: "subscribe-to-posts",
-  summary: "Subscribe to posts to be notified when they get new comments",
+  name: "nova:subscribe",
+  summary: "Subscribe to posts, users, etc. to be notified of new activity",
   version: "0.26.5-nova",
   git: "https://github.com/TelescopeJS/telescope-subscribe-to-posts.git"
 });
@@ -10,67 +10,13 @@ Package.onUse(function (api) {
 
   api.versionsFrom("METEOR@1.0");
 
-  // --------------------------- 1. Meteor packages dependencies ---------------------------
-
-  // automatic (let the package specify where it's needed)
-
   api.use([
     'nova:core@0.26.5-nova',
     'nova:posts@0.26.5-nova',
     'nova:users@0.26.5-nova'
   ]);
 
-  // api.use([
-  //   'nova:notifications@0.26.5-nova',
-  //   'nova:email@0.26.5-nova'
-  // ], ['client', 'server'], {weak: true});
-  //
-  // ---------------------------------- 2. Files to include ----------------------------------
-
-  // i18n config (must come first)
-
-  // api.addFiles([
-  //   'package-tap.i18n'
-  // ], ['client', 'server']);
-
-  // both
-
-  api.addFiles([
-    // 'lib/subscribe-to-posts.js',',
-    'lib/callbacks.js',
-    'lib/custom_fields.js',
-    'lib/methods.js',
-    'lib/views.js'
-  ], ['client', 'server']);
-
-  // client
-
-  // api.addFiles([
-  //   'lib/client/templates/post_subscribe.html',
-  //   'lib/client/templates/post_subscribe.js',
-  //   'lib/client/templates/user_subscribed_posts.html',
-  //   'lib/client/templates/user_subscribed_posts.js'
-  // ], ['client']);
-
-  // server
-
-  api.addFiles([
-    'lib/server/publications.js'
-  ], ['server']);
-
-  // i18n languages (must come last)
-
-  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
-  //
-  // api.export([
-  //   'subscribeItem',
-  //   'unsubscribeItem'
-  // ]);
-
-  api.mainModule("lib/export.js", ["client", "server"]);
+  api.mainModule("lib/client.js", ["client"]);
+  api.mainModule("lib/server.js", ["server"]);
 
 });

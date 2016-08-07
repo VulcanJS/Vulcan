@@ -1,0 +1,24 @@
+{
+  "isopack-1": {
+    "name": "telescope-blank",
+    "summary": "Telescope blank package – use as template for your own packages",
+    "version": "0.1.0+6c017400b8a83109c230d8b5f2d91823df277f5f",
+    "earliestCompatibleVersion": "0.0.0",
+    "isTest": false,
+    "builds": [
+      {
+        "arch": "os",
+        "path": "os.json"
+      },
+      {
+        "arch": "web.browser",
+        "path": "web.browser.json"
+      },
+      {
+        "arch": "web.cordova",
+        "path": "web.cordova.json"
+      }
+    ],
+    "plugins": []
+  }
+}

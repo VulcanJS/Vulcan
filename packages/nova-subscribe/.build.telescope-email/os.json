@@ -1,0 +1,61 @@
+{
+  "format": "unipackage-unibuild-pre1",
+  "packageVariables": [
+    {
+      "name": "buildEmailTemplate",
+      "export": true
+    },
+    {
+      "name": "sendEmail",
+      "export": true
+    },
+    {
+      "name": "buildAndSendEmail",
+      "export": true
+    },
+    {
+      "name": "getEmailTemplate",
+      "export": true
+    },
+    {
+      "name": "html"
+    },
+    {
+      "name": "Handlebars"
+    }
+  ],
+  "uses": [
+    {
+      "package": "meteor"
+    },
+    {
+      "package": "iron:router"
+    },
+    {
+      "package": "telescope-base"
+    },
+    {
+      "package": "telescope-lib"
+    },
+    {
+      "package": "telescope-i18n"
+    },
+    {
+      "package": "tap:i18n"
+    },
+    {
+      "package": "cmather:handlebars-server"
+    }
+  ],
+  "node_modules": "npm/node_modules",
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "os/packages/telescope-email.js",
+      "length": 50123,
+      "offset": 0,
+      "servePath": "/packages/telescope-email.js",
+      "sourceMap": "os/packages/telescope-email.js.map"
+    }
+  ]
+}

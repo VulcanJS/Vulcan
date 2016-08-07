@@ -1,0 +1,78 @@
+{
+  "builtBy": "meteor/14",
+  "buildDependencies": {
+    "os.json": {
+      "files": {
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/package.js": "4b9dc1cdae8aac921a1147dfcb08534bbaacda72",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/package-tap.i18n": "f6a2318986df41df748399f53ee3d59d7f31c179",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/both.js": "845d5b3f61595101239f77867e54b73a5349ab3e",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/routes.js": "1945a42ee1faecc320213406d99a7a9cea965f9d",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/server/publications.js": "04ae0bc6e0d565e45369ab9e3bf67a55454dce07",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/de.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/en.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/es.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/fr.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/it.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/zh-CN.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4"
+      },
+      "directories": []
+    },
+    "web.browser.json": {
+      "files": {
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/package.js": "4b9dc1cdae8aac921a1147dfcb08534bbaacda72",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/package-tap.i18n": "f6a2318986df41df748399f53ee3d59d7f31c179",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/both.js": "845d5b3f61595101239f77867e54b73a5349ab3e",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/routes.js": "1945a42ee1faecc320213406d99a7a9cea965f9d",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/client/templates/template.html": "eb40d0bd228474b7fb5949e4ba0edae3902619df",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/client/templates/template.js": "fecd7b155ddc678bced9144469adbada08756039",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/client/scss/package.scss": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/de.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/en.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/es.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/fr.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/it.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/zh-CN.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4"
+      },
+      "directories": []
+    },
+    "web.cordova.json": {
+      "files": {
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/package.js": "4b9dc1cdae8aac921a1147dfcb08534bbaacda72",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/package-tap.i18n": "f6a2318986df41df748399f53ee3d59d7f31c179",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/both.js": "845d5b3f61595101239f77867e54b73a5349ab3e",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/routes.js": "1945a42ee1faecc320213406d99a7a9cea965f9d",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/client/templates/template.html": "eb40d0bd228474b7fb5949e4ba0edae3902619df",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/client/templates/template.js": "fecd7b155ddc678bced9144469adbada08756039",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/lib/client/scss/package.scss": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/de.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/en.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/es.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/fr.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/it.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4",
+        "/Users/sacha/Dev/Telescope/packages/telescope-blank/i18n/zh-CN.i18n.json": "d103be8932357cacdb9d285fde2a5cd35ddb70d4"
+      },
+      "directories": []
+    }
+  },
+  "pluginDependencies": {
+    "files": {
+      "/Users/sacha/Dev/Telescope/packages/telescope-blank/package.js": "4b9dc1cdae8aac921a1147dfcb08534bbaacda72"
+    },
+    "directories": []
+  },
+  "source": "/Users/sacha/Dev/Telescope/packages/telescope-blank",
+  "buildTimeDirectDependencies": {
+    "telescope-i18n": "0.0.0+59e245bcb9daad9888d7b1165563547b730f4b1e",
+    "tap:i18n": "1.2.1",
+    "telescope-lib": "0.2.9+3c5fc781baa945505183378ea284deac3068520b",
+    "templating": "1.0.9",
+    "fourseven:scss": "1.0.0",
+    "underscore": "1.0.1",
+    "iron:router": "1.0.3",
+    "jquery": "1.0.1",
+    "meteor": "1.1.3",
+    "telescope-base": "0.0.0+400cdc252958afc669dfe6de17b9604adb753c62"
+  },
+  "buildTimePluginDependencies": {},
+  "cordovaDependencies": null
+}

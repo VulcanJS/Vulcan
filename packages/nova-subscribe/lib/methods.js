@@ -33,7 +33,7 @@ export var subscribeItem = function (collection, itemId, user) {
 
   // author can't subscribe item
   if (item.userId && item.userId === user._id)
-    return false
+    return false;
 
   // Subscribe
   var result = collection.update({_id: itemId, subscribers: { $ne: user._id }}, {
@@ -75,11 +75,11 @@ export var unsubscribeItem = function (collection, itemId, user) {
 };
 
 Meteor.methods({
-  subscribePost: function(postId) {
+  "posts.subscribe": function(postId) {
     check(postId, String);
     return subscribeItem.call(this, Posts, postId, Meteor.user());
   },
-  unsubscribePost: function(postId) {
+  "posts.unsubscribe": function(postId) {
     check(postId, String);
     return unsubscribeItem.call(this, Posts, postId, Meteor.user());
   }
