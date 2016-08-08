@@ -11,19 +11,21 @@ class Subscribe extends Component {
   }
 
   onSubscribe(e) {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const post = this.props.post;
     const user = this.context.currentUser;
 
-    let callAction = 'subscribePost';
+    let callAction = 'posts.subscribe';
 
     let isSubscribed = this.isSubscribed(post, user);
     if( isSubscribed ) {
-      callAction = "unsubscribePost";
+      callAction = "posts.unsubscribe";
     }
 
     this.context.actions.call(callAction, post._id, (error, result) => {
+      if (error)
+        this.context.messages.flash(error.message, "error")
       if (result)
         this.context.events.track(callAction, {'_id': post._id});
     })
@@ -64,6 +66,7 @@ Subscribe.propTypes = {
 
 Subscribe.contextTypes = {
   currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
