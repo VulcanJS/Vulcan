@@ -79,3 +79,5 @@ Telescope.headtags = {
   meta: [],
   link: []
 }
+
+export default Telescope;

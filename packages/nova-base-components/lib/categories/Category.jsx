@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";

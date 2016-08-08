@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 var kadiraAppIdProperty = {
   fieldName: "kadiraAppId",
   propertyGroup: "kadira",

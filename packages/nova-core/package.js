@@ -18,7 +18,6 @@ Package.onUse(function(api) {
     'nova:lib@0.26.5-nova'
   ]);
 
-
   api.mainModule("lib/server.js", "server");
   api.mainModule("lib/client.js", "client");
 

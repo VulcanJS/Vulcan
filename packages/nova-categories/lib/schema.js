@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Categories from "./collection.js";
 import Users from 'meteor/nova:users';
 

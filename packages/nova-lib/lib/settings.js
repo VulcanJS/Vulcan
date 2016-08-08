@@ -1,3 +1,5 @@
+import Telescope from './config.js';
+
 Telescope.settings = {};
 
 Telescope.settings.getFromJSON = function (setting) {

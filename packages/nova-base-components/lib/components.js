@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 // common
 
 Telescope.registerComponent("App",                  require('./common/App.jsx'));

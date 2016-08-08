@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 /**
  * @summary Telescope Users namespace
  * @namespace Users

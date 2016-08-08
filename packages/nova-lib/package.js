@@ -52,23 +52,11 @@ Package.onUse(function (api) {
 
   api.imply(packages);
 
-  api.addFiles([
-    'lib/config.js',
-    'lib/utils.js',
-    'lib/callbacks.js',
-    'lib/settings.js',
-    'lib/collections.js',
-    'lib/deep.js',
-    'lib/deep_extend.js',
-    'lib/intl-polyfill.js'
-  ], ['client', 'server']);
+  // api.export([
+  //   'Telescope'
+  // ]);
 
-  api.addFiles([
-    'lib/server/oauth-config.js'
-  ], ['server']);
-
-  api.export([
-    'Telescope'
-  ]);
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
 
 });

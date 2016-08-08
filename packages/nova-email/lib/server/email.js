@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import NovaEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';

@@ -1,4 +1,4 @@
-
+import Telescope from 'meteor/nova:lib';
 
 function addThumbnailClass (postClass, post) {
   var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";

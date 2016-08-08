@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Events from '../collection.js';
 
 Events.analyticsRequest = function() {

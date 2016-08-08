@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import NovaEmail from 'meteor/nova:email';
 

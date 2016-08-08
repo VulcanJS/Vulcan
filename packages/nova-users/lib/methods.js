@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 
 var completeUserProfile = function (userId, modifier, user) {

@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 Telescope.strings.en = {
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",

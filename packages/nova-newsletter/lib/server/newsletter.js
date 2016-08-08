@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";

@@ -1,5 +1,6 @@
 // newsletter scheduling with MailChimp
 
+import Telescope from 'meteor/nova:lib';
 import Newsletter from '../../namespace.js';
 import MailChimp from './mailchimp_api.js';
 import NovaEmail from 'meteor/nova:email';

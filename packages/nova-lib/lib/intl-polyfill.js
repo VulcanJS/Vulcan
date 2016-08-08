@@ -1,3 +1,5 @@
+import Telescope from './config.js';
+
 var areIntlLocalesSupported = require('intl-locales-supported');
 
 var localesMyAppSupports = [

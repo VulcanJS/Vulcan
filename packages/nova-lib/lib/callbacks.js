@@ -1,3 +1,4 @@
+import Telescope from './config.js';
 import moment from 'moment';
 
 /**

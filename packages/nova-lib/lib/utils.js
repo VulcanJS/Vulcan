@@ -1,3 +1,4 @@
+import Telescope from './config.js';
 import marked from 'marked';
 import urlObject from 'url';
 import moment from 'moment';

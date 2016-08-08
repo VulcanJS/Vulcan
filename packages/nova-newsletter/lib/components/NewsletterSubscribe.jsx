@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
