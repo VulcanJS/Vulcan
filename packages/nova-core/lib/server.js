@@ -1,9 +1,11 @@
+import "./modules.js";
+
+import "./server/start.js";
+
 import Messages from "./messages.js";
 import ModalTrigger from "./components/ModalTrigger.jsx";
 import ContextPasser from "./components/ContextPasser.jsx";
 import FlashContainer from "./containers/FlashContainer.jsx";
 import AppComposer from "./containers/AppComposer.jsx";
-import CurrentUserContainer from "./containers/CurrentUserContainer.jsx";
-// import NovaCounts from "./counts.js";
 
-export { Messages, ModalTrigger, ContextPasser, AppComposer, FlashContainer, CurrentUserContainer};
+export { Messages, ModalTrigger, ContextPasser, AppComposer, FlashContainer};
