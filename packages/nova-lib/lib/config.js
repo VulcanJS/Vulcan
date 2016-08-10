@@ -80,4 +80,29 @@ Telescope.headtags = {
   link: []
 }
 
+// ------------------------------------- Statuses -------------------------------- //
+
+Telescope.statuses = [
+  {
+    value: 1,
+    label: 'pending'
+  },
+  {
+    value: 2,
+    label: 'approved'
+  },
+  {
+    value: 3,
+    label: 'rejected'
+  },
+  {
+    value: 4,
+    label: 'spam'
+  },
+  {
+    value: 5,
+    label: 'deleted'
+  }
+];
+
 export default Telescope;
