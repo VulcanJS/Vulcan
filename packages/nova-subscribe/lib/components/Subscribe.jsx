@@ -42,7 +42,7 @@ class Subscribe extends Component {
     const user = this.context.currentUser;
 
     // can't subscribe to own post (also validated on server side)
-    if(user && post.author === user.username) {
+    if(!user || user && post.author === user.username) {
       return null;
     }
 

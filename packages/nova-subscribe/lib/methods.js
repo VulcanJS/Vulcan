@@ -1,86 +1,149 @@
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 
-var hasSubscribedItem = function (item, user) {
-  return item.subscribers && item.subscribers.indexOf(user._id) != -1;
-};
+/**
+ * @summary Verify that the un/subscription can be performed
+ * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
+ * @param {String} action
+ * @param {Collection} collection
+ * @param {String} itemId
+ * @param {Object} user: current user (xxx: legacy, to replace with this.userId)
+ */
+const prepareSubscription = (action, collection, itemId, user) => {
+  
+  // get item's collection name
+  const collectionName = collection._name.slice(0,1).toUpperCase() + collection._name.slice(1);
+  
+  // get item data
+  const item = collection.findOne(itemId);
 
-var addSubscribedItem = function (userId, item, collectionName) {
-  var field = 'telescope.subscribedItems.' + collectionName;
-  var add = {};
-  add[field] = item;
-  Meteor.users.update({_id: userId}, {
-    $addToSet: add
-  });
-};
-
-var removeSubscribedItem = function (userId, itemId, collectionName) {
-  var field = 'telescope.subscribedItems.' + collectionName;
-  var remove = {};
-  remove[field] = {itemId: itemId};
-  Meteor.users.update({_id: userId}, {
-    $pull: remove
-  });
-};
-
-export var subscribeItem = function (collection, itemId, user) {
-
-  var item = collection.findOne(itemId),
-      collectionName = collection._name.slice(0,1).toUpperCase() + collection._name.slice(1);
-
-  if (!user || !item || hasSubscribedItem(item, user))
+  // there no user logged in or no item, abort process
+  if (!user || !item) {
     return false;
+  }
+  
+  // edge case: Users collection
+  if (collectionName === 'Users') {
+    // someone can't subscribe to themself, abort process
+    if (item._id === user._id) {
+      return false;
+    }
+  } else {
+    // the item's owner is the subscriber, abort process
+    if (item.userId && item.userId === user._id) {
+      return false;
+    }
+  }
 
-  // author can't subscribe item
-  if (item.userId && item.userId === user._id)
-    return false;
+  // assign the right fields depending on the collection
+  let fields = { 
+    subscribers: collectionName === 'Users' ? 'telescope.subscribers' : 'subscribers',
+    subscriberCount: collectionName === 'Users' ? 'telescope.subscriberCount' : 'subscriberCount',
+  };
 
-  // Subscribe
-  var result = collection.update({_id: itemId, subscribers: { $ne: user._id }}, {
-    $addToSet: {subscribers: user._id},
-    $inc: {subscriberCount: 1}
+  // return true if the item has the subscriber's id in its fields 
+  const hasSubscribedItem = !!_.deep(item, fields['subscribers']) && _.deep(item, fields['subscribers']) && _.deep(item, fields['subscribers']).indexOf(user._id) !== -1;
+
+  // assign the right update operator and count depending on the action type
+  const updateQuery = action === 'subscribe' ? {
+    findOperator: '$ne', // where 'IT' isn't...
+    updateOperator: '$addToSet', // ...add 'IT' to the array...
+    updateCount: 1, // ...and log the addition +1
+  } : {
+    findOperator: '$eq', // where 'IT' is...
+    updateOperator: '$pull', // ...remove 'IT' from the array...
+    updateCount: -1, // ...and log the subtraction -1
+  };
+
+  // return the utility object to pursue
+  return {
+    collectionName,
+    fields,
+    item,
+    hasSubscribedItem,
+    ...updateQuery,
+  };
+}
+
+/**
+ * @summary Perform the un/subscription after verification: update the collection item & the user
+ * @param {String} action
+ * @param {Collection} collection
+ * @param {String} itemId
+ * @param {Object} user: current user (xxx: legacy, to replace with this.userId)
+ * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
+ */
+const performSubscriptionAction = (action, collection, itemId, user) => {
+
+  // subscription preparation to verify if can pursue and give shorthand variables
+  const subscription = prepareSubscription(action, collection, itemId, user);
+
+  // Abort process if the situation matches one of these cases:
+  // - subscription preparation failed (ex: no user, no item, subscriber is author's item, ... see all cases above)
+  // - the action is subscribe but the user has already subscribed to this item
+  // - the action is unsubscribe but the user hasn't subscribed to this item
+  if(!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
+    return false; // xxx: should return exploitable error
+  }
+
+  // shorthand for useful variables
+  const { collectionName, fields, item, findOperator, updateOperator, updateCount } = subscription;
+
+  // Perform the action, eg. operate on the item's collection
+  const result = collection.update({
+      _id: itemId,
+      // if it's a subscription, find  where there are not the user (ie. findOperator = $ne), else it will be $in
+      [fields['subscribers']]: { [findOperator]: user._id }
+    }, {
+      // if it's a subscription, add a subscriber (ie. updateOperator = $addToSet), else it will be $pull
+      [updateOperator]: { [fields['subscribers']]: user._id },
+      // if it's a subscription, the count is incremented of 1, else decremented of 1
+      $inc: { [fields['subscriberCount']]: updateCount },
   });
 
+  // log the operation on the subscriber if it has succeeded
   if (result > 0) {
-    // Add item to list of subscribed items
-    var obj = {
+    // id of the item subject of the action
+    let loggedItem = {
       itemId: item._id,
-      subscribedAt: new Date()
     };
-    addSubscribedItem(user._id, obj, collectionName);
+
+    // in case of subscription, log also the date 
+    if (action === 'subscribe') {
+      loggedItem = {
+        ...loggedItem,
+        subscribedAt: new Date()
+      };
+    }
+
+    // update the user's list of subscribed items
+    Users.update({
+      _id: user._id
+    }, {
+      [updateOperator]: { [`telescope.subscribedItems.${collectionName}`]: loggedItem }
+    });
+
+    return true; // action completed! ✅
+  } else {
+    return false; // xxx: should return exploitable error
   }
-
-  return true;
-};
-
-export var unsubscribeItem = function (collection, itemId, user) {
-
-  var item = collection.findOne(itemId),
-      collectionName = collection._name.slice(0,1).toUpperCase()+collection._name.slice(1);
-
-  if (!user || !item  || !hasSubscribedItem(item, user))
-    return false;
-
-  // Unsubscribe
-  var result = collection.update({_id: itemId, subscribers: user._id }, {
-    $pull: {subscribers: user._id},
-    $inc: {subscriberCount: -1}
-  });
-
-  if (result > 0) {
-    // Remove item from list of subscribed items
-    removeSubscribedItem(user._id, itemId, collectionName);
-  }
-  return true;
 };
 
 Meteor.methods({
-  "posts.subscribe": function(postId) {
+  "posts.subscribe"(postId) {
     check(postId, String);
-    return subscribeItem.call(this, Posts, postId, Meteor.user());
+    return performSubscriptionAction('subscribe', Posts, postId, Meteor.user());
   },
-  "posts.unsubscribe": function(postId) {
+  "posts.unsubscribe"(postId) {
     check(postId, String);
-    return unsubscribeItem.call(this, Posts, postId, Meteor.user());
+    return performSubscriptionAction('unsubscribe', Posts, postId, Meteor.user());
+  },
+  "users.subscribe"(userId) {
+    check(userId, String);
+    return performSubscriptionAction('subscribe', Users, userId, Meteor.user());
+  },
+  "users.unsubscribe"(userId) {
+    check(userId, String);
+    return performSubscriptionAction('unsubscribe', Users, userId, Meteor.user());
   }
 });

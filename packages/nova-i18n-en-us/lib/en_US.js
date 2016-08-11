@@ -33,9 +33,6 @@ Telescope.strings.en = {
   "posts.rate_limit_error": "Please wait {details} seconds before posting again.",
   "posts.postedAt": "Posted at",
   "posts.dateNotDefined": "Date not defined",
-  "posts.subscribe": "Subscribe",
-  "posts.unsubscribe": "Unsubscribe",
-  "posts.subscribed_posts" : "Subscribed Posts",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
