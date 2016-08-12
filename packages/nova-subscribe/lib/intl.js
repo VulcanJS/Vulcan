@@ -13,8 +13,8 @@ Meteor.startup(() => {
     "users.subscribed_users" : "Users subscribed to",
     "users.subscribers": "Subscribers",
 
-    "categories.subscribe": "😎",
-    "categories.unsubscribe": "🤓",
+    "categories.subscribe": "Subscribe to this category's posts",
+    "categories.unsubscribe": "Unsubscribe to this category's posts",
     "categories.subscribed_categories" : "Categories subscribed to",
   };
 });
