@@ -1,9 +1,7 @@
 import Telescope from 'meteor/nova:lib';
-import PostsSubscribe from './components/PostsSubscribe.jsx';
-import UsersSubscribe from './components/UsersSubscribe.jsx';
+import SubscribeTo from './components/SubscribeTo.jsx';
 import PostsSubscribedList from './components/PostsSubscribedList.jsx';
 
-Telescope.components.PostsSubscribe = PostsSubscribe;
-Telescope.components.PostsSubscribedList = PostsSubscribedList;
+Telescope.components.SubscribeTo = SubscribeTo;
 
-Telescope.components.UsersSubscribe = UsersSubscribe;
+Telescope.components.PostsSubscribedList = PostsSubscribedList;
