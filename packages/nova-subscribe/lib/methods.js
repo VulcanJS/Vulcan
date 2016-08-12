@@ -3,11 +3,11 @@ import Users from 'meteor/nova:users';
 
 /**
  * @summary Verify that the un/subscription can be performed
- * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
  * @param {String} action
  * @param {Collection} collection
  * @param {String} itemId
  * @param {Object} user: current user (xxx: legacy, to replace with this.userId)
+ * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
  */
 const prepareSubscription = (action, collection, itemId, user) => {
   
@@ -71,7 +71,7 @@ const prepareSubscription = (action, collection, itemId, user) => {
  * @param {Collection} collection
  * @param {String} itemId
  * @param {Object} user: current user (xxx: legacy, to replace with this.userId)
- * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
+ * @returns {Boolean}
  */
 const performSubscriptionAction = (action, collection, itemId, user) => {
 
@@ -130,20 +130,56 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
 };
 
 Meteor.methods({
-  "posts.subscribe"(postId) {
-    check(postId, String);
-    return performSubscriptionAction('subscribe', Posts, postId, Meteor.user());
-  },
-  "posts.unsubscribe"(postId) {
-    check(postId, String);
-    return performSubscriptionAction('unsubscribe', Posts, postId, Meteor.user());
-  },
-  "users.subscribe"(userId) {
+  "posts.subscribe"(docId, userId = this.userId) {
+    check(docId, String);
     check(userId, String);
-    return performSubscriptionAction('subscribe', Users, userId, Meteor.user());
+    
+    const currentUser = Users.findOne({_id: this.userId});
+    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+
+    if (!Users.canDo(currentUser, "posts.subscribe") || userId !== this.userId && !Users.canDo(currentUser, "posts.subscribe.all")) {
+      throw new Meteor.Error(601, "You don't have the permission to do this");
+    }
+
+    return performSubscriptionAction('subscribe', Posts, docId, user);
   },
-  "users.unsubscribe"(userId) {
+  "posts.unsubscribe"(docId, userId = this.userId) {
+    check(docId, String);
     check(userId, String);
-    return performSubscriptionAction('unsubscribe', Users, userId, Meteor.user());
+    
+    const currentUser = Users.findOne({_id: this.userId});
+    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+
+    if (!Users.canDo(currentUser, "posts.unsubscribe") || userId !== this.userId && !Users.canDo(currentUser, "posts.unsubscribe.all")) {
+      throw new Meteor.Error(601, "You don't have the permission to do this");
+    }
+
+    return performSubscriptionAction('unsubscribe', Posts, docId, Meteor.user());
+  },
+  "users.subscribe"(docId, userId = this.userId) {
+    check(docId, String);
+    check(userId, String);
+    
+    const currentUser = Users.findOne({_id: this.userId});
+    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+
+    if (!Users.canDo(currentUser, "users.subscribe") || userId !== this.userId && !Users.canDo(currentUser, "users.subscribe.all")) {
+      throw new Meteor.Error(601, "You don't have the permission to do this");
+    }
+
+    return performSubscriptionAction('subscribe', Users, docId, Meteor.user());
+  },
+  "users.unsubscribe"(docId, userId = this.userId) {
+    check(docId, String);
+    check(userId, String);
+    
+    const currentUser = Users.findOne({_id: this.userId});
+    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+
+    if (!Users.canDo(currentUser, "users.unsubscribe") || userId !== this.userId && !Users.canDo(currentUser, "users.unsubscribe.all")) {
+      throw new Meteor.Error(601, "You don't have the permission to do this");
+    }
+
+    return performSubscriptionAction('unsubscribe', Users, docId, Meteor.user());
   }
 });

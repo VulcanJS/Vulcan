@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
+import Telescope from 'meteor/nova:lib';
 
 class UsersSubscribe extends Component {
 
@@ -48,15 +49,17 @@ class UsersSubscribe extends Component {
       return null;
     }
 
-    let btnTitle = "users.subscribe";
+    let action = "users.subscribe";
 
     let isSubscribed = this.isSubscribed(user, currentUser);
     if( isSubscribed ) {
-      btnTitle = "users.unsubscribe";
+      action = "users.unsubscribe";
     }
 
     return (
-      <a onClick={this.onSubscribe} >{intl.formatMessage({id: btnTitle})}</a>
+      <Telescope.components.CanDo action={action}>
+        <a onClick={this.onSubscribe} >{intl.formatMessage({id: action})}</a>
+      </Telescope.components.CanDo>
     );
   }
 

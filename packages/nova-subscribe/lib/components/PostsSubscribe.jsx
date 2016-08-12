@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
+import Telescope from 'meteor/nova:lib';
 
-class Subscribe extends Component {
+class PostsSubscribe extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -46,25 +47,27 @@ class Subscribe extends Component {
       return null;
     }
 
-    let btnTitle = "posts.subscribe";
+    let action = "posts.subscribe";
 
     let isSubscribed = this.isSubscribed(post, user);
     if( isSubscribed ) {
-      btnTitle = "posts.unsubscribe";
+      action = "posts.unsubscribe";
     }
 
     return (
-      <a onClick={this.onSubscribe} >{this.context.intl.formatMessage({id: btnTitle})}</a>
+      <Telescope.components.CanDo action={action}>
+        <a onClick={this.onSubscribe} >{this.context.intl.formatMessage({id: action})}</a>
+      </Telescope.components.CanDo>
     )
   }
 
 }
 
-Subscribe.propTypes = {
+PostsSubscribe.propTypes = {
   post: React.PropTypes.object.isRequired
 }
 
-Subscribe.contextTypes = {
+PostsSubscribe.contextTypes = {
   currentUser: React.PropTypes.object,
   messages: React.PropTypes.object,
   actions: React.PropTypes.object,
@@ -72,5 +75,5 @@ Subscribe.contextTypes = {
   intl: intlShape
 };
 
-module.exports = Subscribe;
-export default Subscribe;
+module.exports = PostsSubscribe;
+export default PostsSubscribe;

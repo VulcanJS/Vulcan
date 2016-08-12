@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { ListContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
 
-class SubscribedPosts extends Component {
+class PostsSubscribedList extends Component {
 
   render() {
 
@@ -27,4 +27,4 @@ class SubscribedPosts extends Component {
   }
 };
 
-module.exports = SubscribedPosts;
+module.exports = PostsSubscribedList;
