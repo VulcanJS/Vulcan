@@ -1,5 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import Categories from 'meteor/nova:categories';
 
 /**
  * @summary Verify that the un/subscription can be performed
@@ -30,19 +31,19 @@ const prepareSubscription = (action, collection, itemId, user) => {
     }
   } else {
     // the item's owner is the subscriber, abort process
-    if (item.userId && item.userId === user._id) {
+    if (item.userId && item.userId === user._id) {
       return false;
     }
   }
 
   // assign the right fields depending on the collection
-  let fields = { 
+  const fields = { 
     subscribers: collectionName === 'Users' ? 'telescope.subscribers' : 'subscribers',
     subscriberCount: collectionName === 'Users' ? 'telescope.subscriberCount' : 'subscriberCount',
   };
 
   // return true if the item has the subscriber's id in its fields 
-  const hasSubscribedItem = !!_.deep(item, fields['subscribers']) && _.deep(item, fields['subscribers']) && _.deep(item, fields['subscribers']).indexOf(user._id) !== -1;
+  const hasSubscribedItem = !!_.deep(item, fields.subscribers) && _.deep(item, fields.subscribers) && _.deep(item, fields.subscribers).indexOf(user._id) !== -1;
 
   // assign the right update operator and count depending on the action type
   const updateQuery = action === 'subscribe' ? {
@@ -82,7 +83,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   // - subscription preparation failed (ex: no user, no item, subscriber is author's item, ... see all cases above)
   // - the action is subscribe but the user has already subscribed to this item
   // - the action is unsubscribe but the user hasn't subscribed to this item
-  if(!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
+  if (!subscription || (action === 'subscribe' && subscription.hasSubscribedItem) || (action === 'unsubscribe' && !subscription.hasSubscribedItem)) {
     return false; // xxx: should return exploitable error
   }
 
@@ -91,14 +92,14 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
 
   // Perform the action, eg. operate on the item's collection
   const result = collection.update({
-      _id: itemId,
-      // if it's a subscription, find  where there are not the user (ie. findOperator = $ne), else it will be $in
-      [fields['subscribers']]: { [findOperator]: user._id }
-    }, {
-      // if it's a subscription, add a subscriber (ie. updateOperator = $addToSet), else it will be $pull
-      [updateOperator]: { [fields['subscribers']]: user._id },
-      // if it's a subscription, the count is incremented of 1, else decremented of 1
-      $inc: { [fields['subscriberCount']]: updateCount },
+    _id: itemId,
+    // if it's a subscription, find  where there are not the user (ie. findOperator = $ne), else it will be $in
+    [fields.subscribers]: { [findOperator]: user._id }
+  }, {
+    // if it's a subscription, add a subscriber (ie. updateOperator = $addToSet), else it will be $pull
+    [updateOperator]: { [fields.subscribers]: user._id },
+    // if it's a subscription, the count is incremented of 1, else decremented of 1
+    $inc: { [fields.subscriberCount]: updateCount },
   });
 
   // log the operation on the subscriber if it has succeeded
@@ -129,57 +130,40 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   }
 };
 
-Meteor.methods({
-  "posts.subscribe"(docId, userId = this.userId) {
-    check(docId, String);
-    check(userId, String);
-    
-    const currentUser = Users.findOne({_id: this.userId});
-    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+// collections = array of name ['posts', 'users', categories]
+const subscribeMethodsGenerator = (collections) => {
+  
+  const genericMethodFunction = (collection, action) => {
+    // get the lower case collection name
 
-    if (!Users.canDo(currentUser, "posts.subscribe") || userId !== this.userId && !Users.canDo(currentUser, "posts.subscribe.all")) {
-      throw new Meteor.Error(601, "You don't have the permission to do this");
-    }
+    return function(docId, userId) {
+      check(docId, String);
+      check(userId, Match.Maybe(String));
 
-    return performSubscriptionAction('subscribe', Posts, docId, user);
-  },
-  "posts.unsubscribe"(docId, userId = this.userId) {
-    check(docId, String);
-    check(userId, String);
-    
-    const currentUser = Users.findOne({_id: this.userId});
-    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+      const currentUser = Users.findOne({_id: this.userId});
+      const user = typeof userId !== "undefined" ? Users.findOne({_id: userId }) : currentUser;
 
-    if (!Users.canDo(currentUser, "posts.unsubscribe") || userId !== this.userId && !Users.canDo(currentUser, "posts.unsubscribe.all")) {
-      throw new Meteor.Error(601, "You don't have the permission to do this");
-    }
+      if (!Users.canDo(currentUser, `${collection._name}.${action}`) || typeof userId !== "undefined" && !Users.canDo(currentUser, `${collection._name}.${action}.all`)) {
+        throw new Meteor.Error(601, "You don't have the permission to do this");
+      }
 
-    return performSubscriptionAction('unsubscribe', Posts, docId, Meteor.user());
-  },
-  "users.subscribe"(docId, userId = this.userId) {
-    check(docId, String);
-    check(userId, String);
-    
-    const currentUser = Users.findOne({_id: this.userId});
-    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
+      return performSubscriptionAction(action, collection, docId, user);
+    };
+  };
 
-    if (!Users.canDo(currentUser, "users.subscribe") || userId !== this.userId && !Users.canDo(currentUser, "users.subscribe.all")) {
-      throw new Meteor.Error(601, "You don't have the permission to do this");
-    }
+  //
+  return collections
+          .map(collection => {
+            const collectionName = collection._name;
+            return {
+              [`${collectionName}.subscribe`]: genericMethodFunction(collection, 'subscribe'),
+              [`${collectionName}.unsubscribe`]: genericMethodFunction(collection, 'unsubscribe')
+            };
+          })
+          .reduce((methods, couple) => ({
+            ...methods,
+            ...couple,
+          }), {});
+};
 
-    return performSubscriptionAction('subscribe', Users, docId, Meteor.user());
-  },
-  "users.unsubscribe"(docId, userId = this.userId) {
-    check(docId, String);
-    check(userId, String);
-    
-    const currentUser = Users.findOne({_id: this.userId});
-    const user = userId !== this.userId ? Users.findOne({_id: userId }) : currentUser;
-
-    if (!Users.canDo(currentUser, "users.unsubscribe") || userId !== this.userId && !Users.canDo(currentUser, "users.unsubscribe.all")) {
-      throw new Meteor.Error(601, "You don't have the permission to do this");
-    }
-
-    return performSubscriptionAction('unsubscribe', Users, docId, Meteor.user());
-  }
-});
+Meteor.methods(subscribeMethodsGenerator([Posts, Users, Categories]));

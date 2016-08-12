@@ -13,7 +13,8 @@ Package.onUse(function (api) {
   api.use([
     'nova:core@0.26.5-nova',
     'nova:posts@0.26.5-nova',
-    'nova:users@0.26.5-nova'
+    'nova:users@0.26.5-nova',
+    'nova:categories@0.26.5-nova',
   ]);
 
   api.mainModule("lib/client.js", ["client"]);
