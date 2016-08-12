@@ -7,7 +7,7 @@ import Categories from 'meteor/nova:categories';
  * @param {String} action
  * @param {Collection} collection
  * @param {String} itemId
- * @param {Object} user: current user (xxx: legacy, to replace with this.userId)
+ * @param {Object} user
  * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
  */
 const prepareSubscription = (action, collection, itemId, user) => {
@@ -64,7 +64,7 @@ const prepareSubscription = (action, collection, itemId, user) => {
     hasSubscribedItem,
     ...updateQuery,
   };
-}
+};
 
 /**
  * @summary Perform the un/subscription after verification: update the collection item & the user
@@ -130,17 +130,20 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
   }
 };
 
-// collections = array of name ['posts', 'users', categories]
+/**
+ * @summary Generate methods 'collection.subscribe' & 'collection.unsubscribe' automatically 
+ * @params {Array[Collections]} collections
+ */
 const subscribeMethodsGenerator = (collections) => {
   
+  // generic method function calling the performSubscriptionAction
   const genericMethodFunction = (collection, action) => {
-    // get the lower case collection name
-
+    // return the method code
     return function(docId, userId) {
       check(docId, String);
       check(userId, Match.Maybe(String));
 
-      const currentUser = Users.findOne({_id: this.userId});
+      const currentUser = Users.findOne({_id: this.userId}); // this refers to Meteor thanks to previous fat arrows when this function-builder is used
       const user = typeof userId !== "undefined" ? Users.findOne({_id: userId }) : currentUser;
 
       if (!Users.canDo(currentUser, `${collection._name}.${action}`) || typeof userId !== "undefined" && !Users.canDo(currentUser, `${collection._name}.${action}.all`)) {
@@ -150,9 +153,9 @@ const subscribeMethodsGenerator = (collections) => {
       return performSubscriptionAction(action, collection, docId, user);
     };
   };
-
-  //
+  // return an object of the shape expected by Meteor.methods
   return collections
+          // map over the collection and create the methods associated
           .map(collection => {
             const collectionName = collection._name;
             return {
@@ -160,10 +163,12 @@ const subscribeMethodsGenerator = (collections) => {
               [`${collectionName}.unsubscribe`]: genericMethodFunction(collection, 'unsubscribe')
             };
           })
+          // reduce this array in an object of methods
           .reduce((methods, couple) => ({
             ...methods,
             ...couple,
           }), {});
 };
 
+// Finally. Add the methods to the Meteor namespace 🖖
 Meteor.methods(subscribeMethodsGenerator([Posts, Users, Categories]));
