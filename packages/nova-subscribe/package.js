@@ -12,11 +12,11 @@ Package.onUse(function (api) {
 
   api.use([
     'nova:core@0.26.5-nova',
-    'nova:posts@0.26.5-nova',
-    'nova:users@0.26.5-nova'
+    'nova:users@0.26.5-nova', // this dep is needed to check users permissions
+    // dependencies on posts, categories are done with nested imports to reduce explicit dependencies
   ]);
 
-  api.mainModule("lib/client.js", ["client"]);
-  api.mainModule("lib/server.js", ["server"]);
+  api.mainModule("lib/modules.js", ["client"]);
+  api.mainModule("lib/modules.js", ["server"]);
 
 });
