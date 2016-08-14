@@ -33,6 +33,9 @@ Telescope.strings.en = {
   "posts.rate_limit_error": "Please wait {details} seconds before posting again.",
   "posts.postedAt": "Posted at",
   "posts.dateNotDefined": "Date not defined",
+  "posts.subscribe": "Subscribe",
+  "posts.unsubscribe": "Unsubscribe",
+  "posts.subscribed_posts" : "Posts subscribed to",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
@@ -70,6 +73,10 @@ Telescope.strings.en = {
   "users.posts": "Posts",
   "users.please_log_in": "Please log in",
   "users.cannot_post": "Sorry, you do not have permissions to post at this time",
+  "users.subscribe": "Subscribe to this user's posts",
+  "users.unsubscribe": "Unsubscribe to this user's posts",
+  "users.subscribed_users" : "Users subscribed to",
+  "users.subscribers": "Subscribers",
 
   "categories": "Categories",
   "categories.all": "All Categories",
@@ -82,6 +89,9 @@ Telescope.strings.en = {
   "categories.slug": "Slug",
   "categories.image": "Image",
   "categories.parentId": "Parent ID",
+  "categories.subscribe": "Subscribe to this category's posts",
+  "categories.unsubscribe": "Unsubscribe to this category's posts",
+  "categories.subscribed_categories" : "Categories subscribed to",
 
   "settings": "Settings",
   "settings.json_message": "Note: settings already provided in your <code>settings.json</code> file will be disabled.",
@@ -129,4 +139,4 @@ Telescope.strings.en = {
 
   "admin": "Admin",
   "notifications": "Notifications",
-}
+};

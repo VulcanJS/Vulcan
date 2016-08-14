@@ -1,6 +1,4 @@
-import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
-import Categories from 'meteor/nova:categories';
 
 /**
  * @summary Verify that the un/subscription can be performed
@@ -134,41 +132,47 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
  * @summary Generate methods 'collection.subscribe' & 'collection.unsubscribe' automatically 
  * @params {Array[Collections]} collections
  */
-const subscribeMethodsGenerator = (collections) => {
-  
-  // generic method function calling the performSubscriptionAction
-  const genericMethodFunction = (collection, action) => {
-    // return the method code
-    return function(docId, userId) {
-      check(docId, String);
-      check(userId, Match.Maybe(String));
+ export default subscribeMethodsGenerator = (collection) => {
+   
+   // generic method function calling the performSubscriptionAction
+   const genericMethodFunction = (col, action) => {
+     // return the method code
+     return function(docId, userId) {
+       check(docId, String);
+       check(userId, Match.Maybe(String));
 
-      const currentUser = Users.findOne({_id: this.userId}); // this refers to Meteor thanks to previous fat arrows when this function-builder is used
-      const user = typeof userId !== "undefined" ? Users.findOne({_id: userId }) : currentUser;
+       const currentUser = Users.findOne({_id: this.userId}); // this refers to Meteor thanks to previous fat arrows when this function-builder is used
+       const user = typeof userId !== "undefined" ? Users.findOne({_id: userId }) : currentUser;
 
-      if (!Users.canDo(currentUser, `${collection._name}.${action}`) || typeof userId !== "undefined" && !Users.canDo(currentUser, `${collection._name}.${action}.all`)) {
-        throw new Meteor.Error(601, "You don't have the permission to do this");
-      }
+       if (!Users.canDo(currentUser, `${col._name}.${action}`) || typeof userId !== "undefined" && !Users.canDo(currentUser, `${col._name}.${action}.all`)) {
+         throw new Meteor.Error(601, "You don't have the permission to do this");
+       }
 
-      return performSubscriptionAction(action, collection, docId, user);
-    };
-  };
-  // return an object of the shape expected by Meteor.methods
-  return collections
-          // map over the collection and create the methods associated
-          .map(collection => {
-            const collectionName = collection._name;
-            return {
-              [`${collectionName}.subscribe`]: genericMethodFunction(collection, 'subscribe'),
-              [`${collectionName}.unsubscribe`]: genericMethodFunction(collection, 'unsubscribe')
-            };
-          })
-          // reduce this array in an object of methods
-          .reduce((methods, couple) => ({
-            ...methods,
-            ...couple,
-          }), {});
-};
+       return performSubscriptionAction(action, col, docId, user);
+     };
+   };
+   
+   const collectionName = collection._name;
+   // return an object of the shape expected by Meteor.methods
+   return {
+     [`${collectionName}.subscribe`]: genericMethodFunction(collection, 'subscribe'),
+     [`${collectionName}.unsubscribe`]: genericMethodFunction(collection, 'unsubscribe')
+   };
+ };
 
 // Finally. Add the methods to the Meteor namespace 🖖
-Meteor.methods(subscribeMethodsGenerator([Posts, Users, Categories]));
+
+// nova:users is a dependency of this package, it is alreay imported 
+Meteor.methods(subscribeMethodsGenerator(Users));
+
+// check if nova:posts exists, if yes, add the methods to Posts
+if (typeof Package['nova:posts'] !== 'undefined') {
+  import Posts from 'meteor/nova:posts';
+  Meteor.methods(subscribeMethodsGenerator(Posts));
+}
+
+// check if nova:categories exists, if yes, add the methods to Categories
+if (typeof Package['nova:categories'] !== "undefined") {
+  import Categories from 'meteor/nova:categories';
+  Meteor.methods(subscribeMethodsGenerator(Categories));
+}
