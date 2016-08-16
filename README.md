@@ -48,7 +48,7 @@ curl https://install.meteor.com/ | sh
 Clone this repository locally:
 
 ```
-git clone git@github.com:TelescopeJS/Telescope.git
+git clone https://github.com/TelescopeJS/Telescope.git
 ```
 
 Install the necessary NPM packages:
