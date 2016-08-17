@@ -64,6 +64,7 @@ Telescope.strings.en = {
   "users.telescope.twitterUsername": "Twitter Username",
   "users.telescope.website": "Website",
   "users.telescope.groups": "Groups",
+  "users.telescope.avatar": "Avatar",
   "users.notifications": "Notifications",
   "users.telescope.notifications_users": "New Users Notifications",
   "users.telescope.notifications_posts": "New Posts Notifications",
