@@ -9,6 +9,7 @@ import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-co
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Events from "meteor/nova:events";
 import Helmet from 'react-helmet';
+import Cookie from 'react-cookie';
 
 Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
@@ -31,24 +32,34 @@ Meteor.startup(() => {
 
   let history;
 
-  const clientOptions = {}, serverOptions = {};
+  const clientOptions = {
+    props: {
+      onUpdate: () => {
+        Events.analyticsRequest(); 
+        Messages.clearSeen();
+      }
+    }
+  };
 
+  const serverOptions = {
+    htmlHook: (html) => {
+      const head = Helmet.rewind();
+      return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);    
+    },
+    preRender: (req, res) => {
+      Cookie.plugToRequest(req, res);
+    },
+  };
+  
+  ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
+  
+  // note: we did like this at first
   // if (Meteor.isClient) {
   //   history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });
   // }
-
   // if (Meteor.isServer) {
   //   history = useNamedRoutes(useRouterHistory(createMemoryHistory))({ routes: AppRoutes });
   // }
-
-  clientOptions.props = {onUpdate: () => {Events.analyticsRequest(); Messages.clearSeen();}};
-
-  serverOptions.htmlHook = (html) => {
-    const head = Helmet.rewind();
-    return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);    
-  }
-  
   // ReactRouterSSR.Run(AppRoutes, {historyHook: () => history}, {historyHook: () => history});
-  ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
 
 });
