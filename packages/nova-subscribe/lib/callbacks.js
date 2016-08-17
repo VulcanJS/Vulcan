@@ -73,7 +73,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
 
   const SubscribedCategoriesNotifications = (post) => {
 
-    if (typeof Telescope.notifications !== "undefined" && Meteor.isServer && !!post.categories.length) {
+    if (typeof Telescope.notifications !== "undefined" && Meteor.isServer && !!post.categories && !!post.categories.length) {
       // get the subscribers of the different categories from the post's categories
       const subscribers = post.categories
                                 // find the category from its id
