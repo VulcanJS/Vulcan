@@ -37,6 +37,7 @@ Package.onUse(function (api) {
   ], ['server']);
 
   api.export([
+    'Telescope',
     'Posts',
     'Comments',
     'Users',
