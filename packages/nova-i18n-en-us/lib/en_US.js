@@ -35,6 +35,8 @@ Telescope.strings.en = {
   "posts.dateNotDefined": "Date not defined",
   "posts.subscribe": "Subscribe",
   "posts.unsubscribe": "Unsubscribe",
+  "posts.subscribed": "You have subscribed to “{name}” comments.",
+  "posts.unsubscribed": "You have unsubscribed from “{name}” comments.",
   "posts.subscribed_posts" : "Posts subscribed to",
 
   "comments.comments": "Comments",
@@ -76,7 +78,8 @@ Telescope.strings.en = {
   "users.cannot_post": "Sorry, you do not have permissions to post at this time",
   "users.subscribe": "Subscribe to this user's posts",
   "users.unsubscribe": "Unsubscribe to this user's posts",
-  "users.subscribed_users" : "Users subscribed to",
+  "users.subscribed": "You have subscribed to “{name}” posts.",
+  "users.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "users.subscribers": "Subscribers",
 
   "categories": "Categories",
@@ -92,6 +95,8 @@ Telescope.strings.en = {
   "categories.parentId": "Parent ID",
   "categories.subscribe": "Subscribe to this category's posts",
   "categories.unsubscribe": "Unsubscribe to this category's posts",
+  "categories.subscribed": "You have subscribed to “{name}” posts.",
+  "categories.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "categories.subscribed_categories" : "Categories subscribed to",
 
   "settings": "Settings",

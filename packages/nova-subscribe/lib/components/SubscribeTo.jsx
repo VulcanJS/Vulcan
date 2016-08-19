@@ -16,13 +16,23 @@ class SubscribeTo extends Component {
 
     const {document, documentType} = this.props;
 
-    const action = this.isSubscribed() ? `${this.props.documentType}.unsubscribe` : `${this.props.documentType}.subscribe`;
+    const action = this.isSubscribed() ? `unsubscribe` : `subscribe`;
 
-    this.context.actions.call(action, this.props.document._id, (error, result) => {
-      if (error)
+    // method name will be for example posts.subscribe
+    this.context.actions.call(`${documentType}.${action}`, document._id, (error, result) => {
+      if (error) {
         this.context.messages.flash(error.message, "error")
-      if (result)
+      }
+
+      if (result) {
+        // success message will be for example posts.subscribed
+        this.context.messages.flash(this.context.intl.formatMessage(
+          {id: `${documentType}.${action}d`}, 
+          // handle usual name properties
+          {name: document.name || document.title || document.telescope.displayName}
+        ), "success");
         this.context.events.track(action, {'_id': this.props.document._id});
+      }
     });
   }
 
