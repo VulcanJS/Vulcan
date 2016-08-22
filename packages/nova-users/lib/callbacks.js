@@ -111,6 +111,8 @@ function setupUser (user, options) {
     user.telescope.email = user.services.github.email;
   } else if (user.services.google && user.services.google.email) {
     user.telescope.email = user.services.google.email;
+  } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
+    user.telescope.email = user.services.linkedin.emailAddress;
   }
 
   // generate email hash
@@ -123,9 +125,11 @@ function setupUser (user, options) {
     user.telescope.displayName = user.profile.username;
   } else if (user.profile.name) {
     user.telescope.displayName = user.profile.name;
+  } else if (user.services.linkedin && user.services.linkedin.firstName) {
+    user.telescope.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
   } else {
     user.telescope.displayName = user.username;
-  }
+  } 
 
   // create slug from display name
   user.telescope.slug = Telescope.utils.slugify(user.telescope.displayName);
