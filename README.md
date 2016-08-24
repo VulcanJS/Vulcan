@@ -41,25 +41,25 @@ Note that both versions use the same data format, so you can go back and forth b
 
 [Install Meteor](https://www.meteor.com/install):
 
-```
+```sh
 curl https://install.meteor.com/ | sh
 ```
 
 Clone this repository locally:
 
-```
+```sh
 git clone git@github.com:TelescopeJS/Telescope.git
 ```
 
 Install the necessary NPM packages:
 
-```
+```sh
 npm install
 ```
 
 Then run the app with:
 
-```
+```sh
 meteor
 ```
 
@@ -130,7 +130,7 @@ Just like Settings, you can specify categories either via the in-app UI or via `
 
 To add new social login options, you'll first need to add your API keys to your `settings.json` file. For example:
 
-```
+```json
 "oAuth": {
   "twitter": {
     "consumerKey": "foo",
@@ -147,7 +147,7 @@ To add new social login options, you'll first need to add your API keys to your 
 
 Then, add the relevant Meteor package:
 
-```
+```sh
 meteor add accounts-twitter accounts-facebook
 ```
 
