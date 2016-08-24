@@ -1,5 +1,5 @@
-import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
+import Telescope from 'nova-lib';
+import Users from 'nova-users';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 Telescope.getVotePower = function (user) {
@@ -27,7 +27,9 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
     !user || 
     !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
     operation === "upvote" && hasUpvotedItem ||
-    operation === "downvote" && hasDownvotedItem
+    operation === "downvote" && hasDownvotedItem ||
+    operation === "cancelUpvote" && !hasUpvotedItem||
+    operation === "cancelDownvote" && !hasDownvotedItem
   ) {
     return false; 
   }
