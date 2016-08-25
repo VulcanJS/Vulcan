@@ -52,7 +52,7 @@ matb33:collection-hooks@0.8.3
 mdg:validation-error@0.2.0
 meteor@1.2.16
 meteor-base@1.0.4
-meteorhacks:fast-render@2.14.0
+meteorhacks:fast-render@2.16.0
 meteorhacks:inject-data@2.0.0
 meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.30.0
