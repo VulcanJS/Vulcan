@@ -1,5 +1,5 @@
-import Telescope from 'nova-lib';
-import Users from 'nova-users';
+import Telescope from 'meteor/nova:lib';
+import Users from 'meteor/nova:users';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 Telescope.getVotePower = function (user) {
