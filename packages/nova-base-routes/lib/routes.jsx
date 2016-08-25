@@ -10,6 +10,7 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Events from "meteor/nova:events";
 import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
+import ReactDOM from 'react-dom';
 
 Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
@@ -33,6 +34,7 @@ Meteor.startup(() => {
   let history;
 
   const clientOptions = {
+    renderHook: ReactDOM.render,
     props: {
       onUpdate: () => {
         Events.analyticsRequest(); 
