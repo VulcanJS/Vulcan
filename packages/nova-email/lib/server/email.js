@@ -92,9 +92,15 @@ NovaEmail.send = function(to, subject, html, text){
     html: html
   };
 
-  Email.send(email);
+  try {
+    Email.send(email);
+  } catch (error) {
+    console.log("// error while sending email:")
+    console.log(error)
+  }
 
   return email;
+
 };
 
 NovaEmail.buildAndSend = function (to, subject, template, properties) {

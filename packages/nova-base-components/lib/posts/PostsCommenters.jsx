@@ -7,7 +7,7 @@ const PostsCommenters = ({post}) => {
   return (
     <div className="posts-commenters">
       <div className="posts-commenters-avatars">
-        {post.commentersArray.map(user => <Telescope.components.UsersAvatar key={user._id} user={user}/>)}
+        {_.take(post.commentersArray, 4).map(user => <Telescope.components.UsersAvatar key={user._id} user={user}/>)}
       </div>
       <div className="posts-commenters-discuss">
         <Link to={Posts.getPageUrl(post)}>
