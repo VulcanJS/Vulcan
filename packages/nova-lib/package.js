@@ -27,7 +27,7 @@ Package.onUse(function (api) {
     'ecmascript@0.4.2',
     'react-meteor-data@0.2.8',
     'service-configuration',
-    
+
     // Third-party packages
 
     'aldeed:simple-schema@1.5.3',
@@ -40,7 +40,7 @@ Package.onUse(function (api) {
     'tmeasday:publish-counts@0.7.3',
     'meteorhacks:unblock@1.1.0',
     // 'kadira:flow-router-ssr@3.13.0',
-    "reactrouter:react-router-ssr@3.1.3",
+    'reactrouter:react-router-ssr@3.1.3',
     // 'kadira:flow-router@2.12.1',
     'utilities:smart-publications@0.1.4',
     'utilities:smart-methods@0.1.4',
