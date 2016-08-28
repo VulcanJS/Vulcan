@@ -1,3 +1,5 @@
+import Telescope from './config.js';
+
 /**
  * @summary Meteor Collections.
  * @class Mongo.Collection

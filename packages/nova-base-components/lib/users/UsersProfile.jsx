@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ListContainer } from "meteor/utilities:react-list-container";
@@ -5,7 +6,7 @@ import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
 
-const UsersProfile = ({user, currentUser}) => {
+const UsersProfile = ({user}, {currentUser}) => {
 
   const twitterName = Users.getTwitterName(user);
 
@@ -20,7 +21,9 @@ const UsersProfile = ({user, currentUser}) => {
       <ul>
         {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }
         {user.telescope.website ? <li><a href={user.telescope.website}>{user.telescope.website}</a></li> : null }
-        {Users.canDo(currentUser, "users.edit.all") ? <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li> : null}
+        <Telescope.components.CanDo document={user} action="users.edit">
+          <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
+        </Telescope.components.CanDo>
       </ul>
       <h3><FormattedMessage id="users.posts"/></h3>
       <ListContainer
@@ -41,6 +44,9 @@ const UsersProfile = ({user, currentUser}) => {
 
 UsersProfile.propTypes = {
   user: React.PropTypes.object.isRequired,
+}
+
+UsersProfile.contextTypes = {
   currentUser: React.PropTypes.object
 }
 

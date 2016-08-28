@@ -17,7 +17,7 @@ Package.onUse(function (api) {
     'mongo',
     'tracker',
     'service-configuration',
-    'standard-minifiers@1.0.5',
+    'standard-minifiers@1.0.6',
     'modules@0.5.2',
     'accounts-base',
     'check',
@@ -27,11 +27,12 @@ Package.onUse(function (api) {
     'ecmascript@0.4.2',
     'react-meteor-data@0.2.8',
     'service-configuration',
+    'shell-server',
     
     // Third-party packages
 
     'aldeed:simple-schema@1.5.3',
-    'aldeed:collection2@2.9.1',
+    'aldeed:collection2@2.10.0',
     'meteorhacks:picker@1.0.3',
     'dburles:collection-helpers@1.0.4',
     'matb33:collection-hooks@0.8.1',
@@ -52,23 +53,11 @@ Package.onUse(function (api) {
 
   api.imply(packages);
 
-  api.addFiles([
-    'lib/config.js',
-    'lib/utils.js',
-    'lib/callbacks.js',
-    'lib/settings.js',
-    'lib/collections.js',
-    'lib/deep.js',
-    'lib/deep_extend.js',
-    'lib/intl-polyfill.js'
-  ], ['client', 'server']);
+  // api.export([
+  //   'Telescope'
+  // ]);
 
-  api.addFiles([
-    'lib/server/oauth-config.js'
-  ], ['server']);
-
-  api.export([
-    'Telescope'
-  ]);
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
 
 });

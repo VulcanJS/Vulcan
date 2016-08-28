@@ -8,34 +8,17 @@ Package.describe({
 Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
+
+  api.use([
+    'nova:lib@0.26.5-nova',
+    'nova:events@0.26.5-nova'
+  ]);
   
-  var packages = [
-    'nova:lib@0.26.5-nova', //  no dependencies
-    'nova:events@0.26.5-nova' // lib
-  ];
+  api.imply([
+    'nova:lib@0.26.5-nova'
+  ]);
 
-  api.use(packages);
-  
-  api.imply(packages);
-
-  api.addFiles([
-    'lib/callbacks.js',
-    'lib/icons.js',
-    'lib/seo.js',
-    'lib/debug.js',
-    'lib/router.jsx'
-    // 'lib/colors.js' // probably not that useful anymore?
-  ], ['client', 'server']);
-
-  api.addAssets([
-    // 'public/img/loading.svg',
-  ], 'client');
-
-  api.addFiles([
-    'lib/server/start.js'
-  ], ['server']);
-
-  api.mainModule("lib/export.js", "server");
-  api.mainModule("lib/export.js", "client");
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
 
 });

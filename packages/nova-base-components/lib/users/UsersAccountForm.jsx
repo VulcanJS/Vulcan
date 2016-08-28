@@ -36,6 +36,15 @@ class AccountsButton extends Accounts.ui.Button {
 }
 
 class AccountsField extends Accounts.ui.Field {
+
+  // see https://github.com/studiointeract/accounts-ui/issues/60
+  triggerUpdate () {
+    const { onChange } = this.props
+    if (this.input) {
+      onChange({ target: { value: this.input.value } })
+    }
+  }
+  
   render() {
     const { id, hint, label, type = 'text', onChange, className = "field", defaultValue = "" } = this.props;
     const { mount = true } = this.state;

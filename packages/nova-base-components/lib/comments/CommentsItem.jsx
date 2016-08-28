@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
@@ -104,8 +105,12 @@ class CommentsItem extends Component{
             <Telescope.components.UsersAvatar size="small" user={comment.user}/>
             <Telescope.components.UsersName user={comment.user}/>
             <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
-            {Users.canEdit(this.props.currentUser, this.props.comment) ? <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a> : null}
-            {Users.canEdit(this.props.currentUser, this.props.comment) ? <a className="comment-delete" onClick={this.deleteComment}><FormattedMessage id="comments.delete"/></a> : null}
+            <Telescope.components.CanDo action="comments.edit" document={this.props.comment}>
+              <div>
+                <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
+                <a className="comment-delete" onClick={this.deleteComment}><FormattedMessage id="comments.delete"/></a>
+              </div>
+            </Telescope.components.CanDo>
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
@@ -118,10 +123,11 @@ class CommentsItem extends Component{
 
 CommentsItem.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
-  currentUser: React.PropTypes.object, // the current user
+  //currentUser: React.PropTypes.object, // the current user
 }
 
 CommentsItem.contextTypes = {
+  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   messages: React.PropTypes.object,
   events: React.PropTypes.object,

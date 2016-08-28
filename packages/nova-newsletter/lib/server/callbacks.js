@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import MailChimpList from './mailchimp/mailchimp_list.js';
 import Users from 'meteor/nova:users';
 

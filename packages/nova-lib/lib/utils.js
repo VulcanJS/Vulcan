@@ -1,3 +1,4 @@
+import Telescope from './config.js';
 import marked from 'marked';
 import urlObject from 'url';
 import moment from 'moment';
@@ -277,14 +278,14 @@ Telescope.getNestedProperty = function (obj, desc) {
 
 // see http://stackoverflow.com/a/14058408/649299
 _.mixin({
-  compactObject : function(o) {
-     var clone = _.clone(o);
-     _.each(clone, function(v, k) {
-       if(!v) {
-         delete clone[k];
-       }
-     });
-     return clone;
+  compactObject : function(object) {
+    var clone = _.clone(object);
+    _.each(clone, function(value, key) {
+      if(!value && typeof value !== "boolean") {
+        delete clone[key];
+      }
+    });
+    return clone;
   }
 });
 

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React from 'react';
 //import { Messages } from "meteor/nova:core";
 

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import marked from 'marked';
 import Posts from "meteor/nova:posts";
 import Comments from './collection.js';
@@ -124,7 +125,7 @@ Telescope.callbacks.add("comments.new.method", CommentsNewSubmittedPropertiesChe
  * @summary Check for required properties
  */
 function CommentsNewRequiredPropertiesCheck (comment, user) {
-  
+
   var userId = comment.userId; // at this stage, a userId is expected
 
   // Don't allow empty comments
@@ -231,20 +232,7 @@ function CommentsNewNotifications (comment) {
         }
 
       }
-
-      // 3. Notify users subscribed to the thread
-      // TODO: ideally this would be injected from the telescope-subscribe-to-posts package
-      if (!!post.subscribers) {
-
-        // remove userIds of users that have already been notified
-        // and of comment author (they could be replying in a thread they're subscribed to)
-        var subscriberIdsToNotify = _.difference(post.subscribers, userIdsNotified, [comment.userId]);
-        Telescope.notifications.create(subscriberIdsToNotify, 'newCommentSubscribed', notificationData);
-
-        userIdsNotified = userIdsNotified.concat(subscriberIdsToNotify);
-
-      }
-
+      
     }
   }
 }

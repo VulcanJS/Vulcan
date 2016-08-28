@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 // ------------------------------ Dynamic Icons ------------------------------ //
 
 /**

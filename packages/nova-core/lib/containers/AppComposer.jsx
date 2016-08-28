@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import { composeWithTracker } from 'react-komposer';
 import Messages from '../messages.js';
 import Events from "meteor/nova:events";

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import cloudinary from "cloudinary";
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';

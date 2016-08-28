@@ -1,5 +1,4 @@
-// methods to add and remove users from MailChimp lists
-
+import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import MailChimp from './mailchimp_api.js';
 

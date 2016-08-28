@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 getUnsubscribeLink = function(user){
   return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.telescope.emailHash});
 };

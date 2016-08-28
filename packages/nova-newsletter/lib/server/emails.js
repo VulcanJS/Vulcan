@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import NovaEmail from 'meteor/nova:email';
 import Newsletter from "../namespace.js";
 

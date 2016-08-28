@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Cheatsheet from './components/Cheatsheet.jsx';
 import Groups from './components/Groups.jsx';
 import Settings from './components/Settings.jsx';

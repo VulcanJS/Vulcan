@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 var modifyKarma = function (userId, karma) {
   Meteor.users.update({_id: userId}, {$inc: {"telescope.karma": karma}});
 };

@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 // common
 
 Telescope.registerComponent("App",                  require('./common/App.jsx'));
@@ -60,11 +62,7 @@ Telescope.registerComponent("CategoriesNewForm",    require('./categories/Catego
 
 // permissions
 
-Telescope.registerComponent("CanCreatePost",        require('./permissions/CanCreatePost.jsx'));
-Telescope.registerComponent("CanEditPost",          require('./permissions/CanEditPost.jsx'));
-Telescope.registerComponent("CanView",              require('./permissions/CanView.jsx'));
-Telescope.registerComponent("CanViewPost",          require('./permissions/CanViewPost.jsx'));
-Telescope.registerComponent("CanEditUser",          require('./permissions/CanEditUser.jsx'));
+Telescope.registerComponent("CanDo",                require('./permissions/CanDo.jsx'));
 
 // users
 

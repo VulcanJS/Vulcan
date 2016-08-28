@@ -1,32 +1,35 @@
-import React, { PropTypes, Component } from 'react';
-import { FormattedMessage } from 'react-intl';
-import Users from 'meteor/nova:users';
+// Deprecated way to handle permission in components, check CanDo component
 
-const CanCreatePost = (props, context) => {
+// import Telescope from 'meteor/nova:lib';
+// import React, { PropTypes, Component } from 'react';
+// import { FormattedMessage } from 'react-intl';
+// import Users from 'meteor/nova:users';
 
-  const currentUser = context.currentUser;
+// const CanCreatePost = (props, context) => {
 
-  const children = props.children;
-  const UsersAccountForm = Telescope.components.UsersAccountForm;
+//   const currentUser = context.currentUser;
 
-  if (!currentUser){
-    return (
-      <div className="log-in-message">
-        <h3><FormattedMessage id="users.please_log_in"/></h3>
-        <UsersAccountForm/>
-      </div>
-    )
-  } else if (Users.canDo(currentUser, "posts.new")) {
-    return children;
-  } else {
-    return <p><FormattedMessage id="users.cannot_post"/></p>;
-  }
-};
+//   const children = props.children;
+//   const UsersAccountForm = Telescope.components.UsersAccountForm;
 
-CanCreatePost.contextTypes = {
-  currentUser: React.PropTypes.object
-};
+//   if (!currentUser){
+//     return (
+//       <div className="log-in-message">
+//         <h3><FormattedMessage id="users.please_log_in"/></h3>
+//         <UsersAccountForm/>
+//       </div>
+//     )
+//   } else if (Users.canDo(currentUser, "posts.new")) {
+//     return children;
+//   } else {
+//     return <p><FormattedMessage id="users.cannot_post"/></p>;
+//   }
+// };
 
-CanCreatePost.displayName = "CanCreatePost";
+// CanCreatePost.contextTypes = {
+//   currentUser: React.PropTypes.object
+// };
 
-module.exports = CanCreatePost;
+// CanCreatePost.displayName = "CanCreatePost";
+
+// module.exports = CanCreatePost;

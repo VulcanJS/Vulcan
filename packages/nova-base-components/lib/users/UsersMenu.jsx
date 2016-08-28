@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import PublicationUtils from 'meteor/utilities:smart-publications';
 import EmbedlyURL from './components/EmbedlyURL.jsx';
 import ThumbnailURL from './components/ThumbnailURL.jsx';

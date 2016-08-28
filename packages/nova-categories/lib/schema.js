@@ -1,21 +1,23 @@
+import Telescope from 'meteor/nova:lib';
 import Categories from "./collection.js";
 import Users from 'meteor/nova:users';
 
 const canInsert = user => Users.canDo(user, "categories.new");
+const canEdit = user => Users.canDo(user, "categories.edit.all");
 
 // category schema
 Categories.schema = new SimpleSchema({
   name: {
     type: String,
     insertableIf: canInsert,
-    editableIf: Users.canEdit,
+    editableIf: canEdit,
     publish: true
   },
   description: {
     type: String,
     optional: true,
     insertableIf: canInsert,
-    editableIf: Users.canEdit,
+    editableIf: canEdit,
     publish: true,
     autoform: {
       rows: 3
@@ -25,28 +27,28 @@ Categories.schema = new SimpleSchema({
     type: Number,
     optional: true,
     insertableIf: canInsert,
-    editableIf: Users.canEdit,
+    editableIf: canEdit,
     publish: true
   },
   slug: {
     type: String,
     optional: true,
     insertableIf: canInsert,
-    editableIf: Users.canEdit,
+    editableIf: canEdit,
     publish: true
   },
   image: {
     type: String,
     optional: true,
     insertableIf: canInsert,
-    editableIf: Users.canEdit,
+    editableIf: canEdit,
     publish: true
   },
   parentId: {
     type: String,
     optional: true,
     insertableIf: canInsert,
-    editableIf: Users.canEdit,
+    editableIf: canEdit,
     publish: true,
     autoform: {
       options: function () {

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { ListContainer } from "meteor/utilities:react-list-container";
 import moment from 'moment';

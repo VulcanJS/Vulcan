@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
 
@@ -6,32 +7,6 @@ import Users from 'meteor/nova:users';
  * @type {Object}
  */
 Posts.config = {};
-
-/**
- * @summary Post Statuses
- */
-Posts.config.postStatuses = [
-  {
-    value: 1,
-    label: 'pending'
-  },
-  {
-    value: 2,
-    label: 'approved'
-  },
-  {
-    value: 3,
-    label: 'rejected'
-  },
-  {
-    value: 4,
-    label: 'spam'
-  },
-  {
-    value: 5,
-    label: 'deleted'
-  }
-];
 
 Posts.config.STATUS_PENDING = 1;
 Posts.config.STATUS_APPROVED = 2;
@@ -198,7 +173,7 @@ Posts.schemaJSON = {
     },
     autoform: {
       noselect: true,
-      options: Posts.config.postStatuses,
+      options: Telescope.statuses,
       group: 'admin'
     },
     group: Posts.formGroups.admin

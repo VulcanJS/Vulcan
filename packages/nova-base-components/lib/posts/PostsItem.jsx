@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Button } from 'react-bootstrap';
@@ -18,16 +19,16 @@ class PostsItem extends Component {
   }
 
   renderActions() {
-
-    const component = (
-      <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
-        <Telescope.components.PostsEditForm post={this.props.post}/>
-      </ModalTrigger>
-    );
-
     return (
       <div className="post-actions">
-        {Users.canEdit(this.context.currentUser, this.props.post) ? component : ""}
+        <Telescope.components.CanDo
+          action="posts.edit.all"
+          document={this.props.post}
+        >
+          <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
+            <Telescope.components.PostsEditForm post={this.props.post}/>
+          </ModalTrigger>
+        </Telescope.components.CanDo>
       </div>
     )
   }

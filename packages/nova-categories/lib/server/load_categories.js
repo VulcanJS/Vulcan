@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Categories from "../collection.js";
 
 // Load categories from settings, if there are any

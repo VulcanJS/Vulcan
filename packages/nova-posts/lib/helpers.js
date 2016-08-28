@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import moment from 'moment';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
@@ -41,9 +42,8 @@ Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
  * @summary Get URL of a post page.
  * @param {Object} post
  */
-Posts.getPageUrl = function(post, isAbsolute){
-  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+Posts.getPageUrl = function(post, isAbsolute = false){
+  const prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
   return `${prefix}/posts/${post._id}/${post.slug}`;
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import escapeStringRegexp from 'escape-string-regexp';
 
 function addSearchQueryParameter (parameters, terms) {
