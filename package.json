@@ -5,6 +5,7 @@
     "npm": "^3.0"
   },
   "dependencies": {
+    "bcrypt": "^0.8.7",
     "bootstrap": "^4.0.0-alpha.2",
     "classnames": "^2.2.3",
     "escape-string-regexp": "^1.0.5",
