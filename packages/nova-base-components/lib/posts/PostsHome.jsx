@@ -23,7 +23,7 @@ class PostsHome extends Component {
         terms={params} 
         joins={Posts.getJoins()}
         component={Telescope.components.PostsList}
-        cacheSubscription={false}
+        cacheSubscription={true}
         listId={params.listId}
         limit={Telescope.settings.get("postsPerPage", 10)}
       />
