@@ -23,6 +23,7 @@
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.13.0",
     "react": "^15.3.1",
+    "react-addons-pure-render-mixin": "^15.3.1",
     "react-bootstrap": "^0.30.3",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^0.4.6",
