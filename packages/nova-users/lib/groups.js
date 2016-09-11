@@ -16,12 +16,12 @@ class Group {
   }
 
   can(actions) {
-    actions = Array.isArray(actions) ? actions : actions;
+    actions = Array.isArray(actions) ? actions : [actions];
     this.actions = this.actions.concat(actions);
   }
 
   cannot(actions) {
-    actions = Array.isArray(actions) ? actions : actions;
+    actions = Array.isArray(actions) ? actions : [actions];
     this.actions = _.difference(this.actions, actions);
   }
 
