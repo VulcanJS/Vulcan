@@ -111,7 +111,7 @@ The best ways to get support are [Telescope Meta](http://meta.telescopeapp.org) 
 
 ## Deployment
 
-The recommended way to deploy Nova is by using [MupX](https://github.com/arunoda/meteor-up/tree/mupx).
+The recommended way to deploy Nova is by using [Mup](https://github.com/kadirahq/meteor-up/), at least v1.0.3.
 
 ## Settings
 
@@ -648,4 +648,5 @@ You can access a dynamically generated cheatsheet of Nova's main functions at [h
 ## Third-Party Plugins
 
 - [Post By Feed](https://github.com/xavcz/nova-post-by-feed): register RSS feeds that will be fetched every 30 minutes to create new posts automatically.
-- [Nova-Slack](https://github.com/xavcz/nova-slack): A package that automatically sends your posts as messages to any connected Slack Team.
+- [Post To Slack](https://github.com/xavcz/nova-slack): A package that automatically sends your posts as messages to any connected Slack Team.
+- [Upload Images](https://github.com/xavcz/nova-forms-upload): A package that extends [nova:forms](https://github.com/TelescopeJS/Telescope/tree/master/packages/nova-forms) to upload images, like an avatar, to Cloudinary from a drop zone.
