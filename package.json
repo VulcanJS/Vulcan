@@ -17,7 +17,6 @@
     "intl": "^1.2.4",
     "intl-locales-supported": "^1.0.0",
     "juice": "^1.11.0",
-    "load-script": "^1.0.0",
     "mailchimp": "^1.1.6",
     "marked": "^0.3.5",
     "meteor-node-stubs": "^0.2.3",
