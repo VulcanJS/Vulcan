@@ -1,9 +1,12 @@
-## vNEXT
+## v0.27.1
 
-- Nova uses now React 15.3.x with associated Node modules, besides it prevents unknown prop warnings ([React docs](https://facebook.github.io/react/warnings/unknown-prop.html)).
+- Nova uses now React 15.3.x with associated Node modules, besides it prevents unknown prop warnings ([React docs](https://facebook.github.io/react/warnings/unknown-prop.html)). We still depends on `react-meteor-data` and mixins to load data (thanks @MHerszak for careful watch!), we may move soon to Apollo (contributions welcomed on `[apollo](https://github.com/TelescopeJS/Telescope/tree/apollo)` branch).
 - README updated. On deployment recommandations: you should go with Mup 1.0.3 ([repo](https://github.com/kadirahq/meteor-up)), MupX is not compatible with Meteor 1.4 ; on 3rd-party packages section, you can now upload images to a CDN ([package](https://github.com/xavcz/nova-forms-upload)).
 - The 404 Not Found route has been brought back to `nova:base-routes`, you can customize its shape by editing `Error404.jsx` (`nova:base-components`).
 - Added support for a custom CSS class for `SubscribeTo` component.
+- No more global variable in `nova:api` (the last one? \o/).
+- Fix a version problem with `fourseven:scss`, now running on 3.9.0.
+- Remove unnecessary NPM dependency on `load-script` (thanks @MHerszak!).
 - You can now run Nova in Brazilian Portuguese by [adding this package](https://github.com/lukasag/nova-i18n-pt-br) (thanks @lukasag!).
 - Added support for a `defaultValue` property in `nova:forms`. You can define it in your custom fields, it will be added if no value nor prefilled value is defined (thanks @beeva-franciscocalle!).
 - Fixed edge bug when users don't have an `username`, use `displayName` instead (thanks @jeffreywyman!).

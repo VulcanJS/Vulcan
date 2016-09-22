@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:email-templates",
   summary: "Telescope email templates package",
-  version: "0.27.0-nova",
+  version: "0.27.1-nova",
   git: "https://github.com/TelescopeJS/telescope.git"
 });
 
@@ -10,11 +10,11 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'nova:core@0.27.0-nova',
-    'nova:posts@0.27.0-nova',
-    'nova:users@0.27.0-nova',
-    'nova:comments@0.27.0-nova',
-    'nova:email@0.27.0-nova'
+    'nova:core@0.27.1-nova',
+    'nova:posts@0.27.1-nova',
+    'nova:users@0.27.1-nova',
+    'nova:comments@0.27.1-nova',
+    'nova:email@0.27.1-nova'
   ]);
 
   api.addFiles([
