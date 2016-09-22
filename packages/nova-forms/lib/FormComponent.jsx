@@ -26,8 +26,13 @@ class FormComponent extends Component {
 
   renderComponent() {
 
+    // see https://facebook.github.io/react/warnings/unknown-prop.html
+    const { control, group, updateCurrentValue, ...rest } = this.props;
+
+    const base = this.props.control === "function" ? this.props : rest;
+
     const properties = {
-      ...this.props,
+      ...base,
       onBlur: this.handleBlur,
       ref: (ref) => this.formControl = ref
     };

@@ -54,9 +54,11 @@ class SubscribeTo extends Component {
 
     const action = this.isSubscribed() ? `${documentType}.unsubscribe` : `${documentType}.subscribe`;
 
+    const className = this.props.className ? this.props.className : "";
+
     return (
       <Telescope.components.CanDo action={action}>
-        <a onClick={this.onSubscribe}>{intl.formatMessage({id: action})}</a>
+        <a className={className} onClick={this.onSubscribe}>{intl.formatMessage({id: action})}</a>
       </Telescope.components.CanDo>
     );
   }
@@ -66,6 +68,7 @@ class SubscribeTo extends Component {
 SubscribeTo.propTypes = {
   document: React.PropTypes.object.isRequired,
   documentType: React.PropTypes.string.isRequired,
+  className: React.PropTypes.string,
 }
 
 SubscribeTo.contextTypes = {
