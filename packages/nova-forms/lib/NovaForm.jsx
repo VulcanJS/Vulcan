@@ -91,7 +91,7 @@ class NovaForm extends Component{
       }
       
       // replace empty value, which has not been prefilled, by the default value from the schema
-      if (fieldSchema.defaultValue && field.value === "" && ) {
+      if (fieldSchema.defaultValue && field.value === "") {
         field.value = fieldSchema.defaultValue;
       }
 
