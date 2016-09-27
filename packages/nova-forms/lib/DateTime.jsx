@@ -31,13 +31,13 @@ DateTime.propTypes = {
   datatype: React.PropTypes.any,
   group: React.PropTypes.any,
   label: React.PropTypes.string,
-  updateCurrentValue: React.PropTypes.func,
   name: React.PropTypes.string,
   value: React.PropTypes.any,
 };
 
 DateTime.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
+  updateCurrentValue: React.PropTypes.func,
 };
 
 export default DateTime;
