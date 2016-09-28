@@ -38,6 +38,7 @@ Telescope.strings.en = {
   "posts.subscribed": "You have subscribed to “{name}” comments.",
   "posts.unsubscribed": "You have unsubscribed from “{name}” comments.",
   "posts.subscribed_posts" : "Posts subscribed to",
+  "posts.link_already_posted": "This link has already been posted.",
 
   "comments.comments": "Comments",
   "comments.count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
