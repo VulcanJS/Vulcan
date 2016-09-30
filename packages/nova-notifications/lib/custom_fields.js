@@ -11,7 +11,38 @@ const canInsert = user => Users.canDo(user, "users.new");
 const canEdit = Users.canEdit;
 
 // Add notifications options to user profile settings
-Users.addField([
+Users.addField([  {
+    fieldName: 'telescope.notifications',
+    fieldSchema: {
+      type: Array,
+      optional: true,
+      publish:true
+    }
+  },
+  {
+    fieldName: 'telescope.notifications.$',
+    fieldSchema: {
+      type: Object,
+      optional: true,
+      publish:true
+    }
+  },
+  {
+    fieldName: 'telescope.notifications.$.name',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      publish:true
+    }
+  },
+  {
+    fieldName: 'telescope.notifications.$.link',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      publish:true
+    }
+  },
   {
     fieldName: 'telescope.notifications_users',
     fieldSchema: {
