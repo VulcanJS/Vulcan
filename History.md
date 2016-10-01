@@ -1,3 +1,10 @@
+## v0.27.2
+- Move `updateCurrentValue` function from `propTypes` to `contextTypes` in the datetime picker`DateTime` (`nova:forms`) (#1449).
+- Check duplicate links on post's edit (#247).
+- Cloudinary images from `nova:cloudinary` are now served over HTTPS (#1224).
+- Add year and name to licence (#1117).
+- Clean Legacy's issues & PRs. Be ready for the [Hacktoberfest](https://hacktoberfest.digitalocean.com/)!! 🍻
+
 ## v0.27.1
 
 - Nova uses now React 15.3.x with associated Node modules, besides it prevents unknown prop warnings ([React docs](https://facebook.github.io/react/warnings/unknown-prop.html)). We still depends on `react-meteor-data` and mixins to load data (thanks @MHerszak for careful watch!), we may move soon to Apollo (contributions welcomed on `[apollo](https://github.com/TelescopeJS/Telescope/tree/apollo)` branch).
