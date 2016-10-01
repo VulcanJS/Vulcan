@@ -83,6 +83,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 
 ### posts.edit.sync
 
+- PostsEditDuplicateLinksCheck
 - PostsEditForceStickyToFalse
 
 ### posts.edit.async
@@ -183,7 +184,7 @@ Telescope.callbacks.add("posts.new.method", PostsNewSubmittedPropertiesCheck);
  */
 function PostsNewDuplicateLinksCheck (post, user) {
   if(!!post.url) {
-    Posts.checkForSameUrl(post.url, user);
+    Posts.checkForSameUrl(post.url);
   }
   return post;
 }
@@ -311,6 +312,17 @@ function PostsEditSubmittedPropertiesCheck (modifier, post, user) {
 Telescope.callbacks.add("posts.edit.method", PostsEditSubmittedPropertiesCheck);
 
 // ------------------------------------- posts.edit.sync -------------------------------- //
+
+/**
+ * @summary Check for duplicate links
+ */
+const PostsEditDuplicateLinksCheck = (modifier, post) => {
+  if(post.url !== modifier.$set.url && !!modifier.$set.url) {
+    Posts.checkForSameUrl(modifier.$set.url);
+  }
+  return modifier;
+};
+Telescope.callbacks.add("posts.edit.sync", PostsEditDuplicateLinksCheck);
 
 /**
  * @summary Force sticky to default to false when it's not specified
