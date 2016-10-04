@@ -115,6 +115,44 @@ The best ways to get support are [Telescope Meta](http://meta.telescopeapp.org) 
 
 The recommended way to deploy Nova is by using [Mup](https://github.com/kadirahq/meteor-up/), at least v1.0.3.
 
+Installing the latest version of NodeJS and npm. Skip if already installed.
+
+	sudo apt-get install nodejs
+	sudo apt-get install npm
+
+Installing the latest kadirahq/meteor-up
+ 
+	npm install -g mup
+
+Creating Meteor Up configuration files in project directory
+
+	cd my-app-folder
+	mkdir .deploy
+	cd .deploy
+	mup init
+
+This creates two files
+
+	mup.js - Meteor Up configuration file
+	settings.json - Settings for Meteor's settings API
+
+Replace the content of the newly created settings.json with the content of sample_settings.json.
+
+Modify mup.js on the ROOT_URL field (absolute url of your deploy) and add a docker field with abernix/meteord:base docker image.
+
+	env: {
+	      ROOT_URL: 'http://nova-app.com', 
+	      MONGO_URL: 'mongodb://localhost/meteor'
+	}, 
+	 
+	docker: {
+	      image:'abernix/meteord:base' // docker image working with meteor 1.4 & node 4
+	}
+
+We recommend to take inspiration (or copy/paste) on this [gist](https://gist.github.com/xavcz/6ddc2bb6f67fe0936c8328ab3314641d).
+
+
+
 ## Settings
 
 Settings can be configured in your `settings.json` file. For legacy compatibility reasons, settings can also be specified in your database, but note that settings specified in `settings.json` take priority over those stored in the database.
