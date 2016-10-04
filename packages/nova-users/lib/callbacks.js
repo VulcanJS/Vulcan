@@ -132,8 +132,9 @@ function setupUser (user, options) {
     user.telescope.displayName = user.username;
   } 
 
-  // create slug from display name
-  user.telescope.slug = Telescope.utils.slugify(user.telescope.displayName);
+  // create a basic slug from display name and then modify it if this slugs already exists;
+  const basicSlug = Telescope.utils.slugify(user.telescope.displayName);
+  user.telescope.slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
