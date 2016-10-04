@@ -1,5 +1,7 @@
 # Telescope Nova
 
+made changes.
+
 > It's the [Hacktoberfest](https://hacktoberfest.digitalocean.com/), support & celebrate open-source! [Browse our issues](https://github.com/TelescopeJS/Telescope/issues?q=is%3Aissue+is%3Aopen+label%3Ahacktoberfest) and come contribute! 
 
 There are currently two distinct versions of Telescope: **Nova** and **Legacy**.
