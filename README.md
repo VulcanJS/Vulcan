@@ -15,8 +15,8 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Getting Started](#getting-started)
   - [Updating](#updating)
   - [Resources](#resources)
-  - [Deployment](#deployment)
   - [Settings](#settings)
+  - [Deployment](#deployment)
   - [Categories](#categories)
   - [Social Login](#social-login)
   - [Packages](#packages)
@@ -36,10 +36,13 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Groups & Permissions](#groups--permissions)
   - [Internationalization](#internationalization)
   - [Cheatsheet](#cheatsheet)
+  - [Third-Party packages](#third-party-packages)
 
 ## Getting Started
 
 ### First Steps
+
+Install the latest version of Node and NPM. We recommend the usage of [NVM](http://nvm.sh).
 
 [Install Meteor](https://www.meteor.com/install):
 
@@ -111,48 +114,6 @@ For local development, an easy way to do that is to simply copy the `.meteor/loc
 
 The best ways to get support are [Telescope Meta](http://meta.telescopeapp.org) and the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
 
-## Deployment
-
-The recommended way to deploy Nova is by using [Mup](https://github.com/kadirahq/meteor-up/), at least v1.0.3.
-
-Installing the latest version of NodeJS and npm. Skip if already installed.
-
-	sudo apt-get install nodejs
-	sudo apt-get install npm
-
-Installing the latest kadirahq/meteor-up
- 
-	npm install -g mup
-
-Creating Meteor Up configuration files in project directory
-
-	cd my-app-folder
-	mkdir .deploy
-	cd .deploy
-	mup init
-
-This creates two files
-
-	mup.js - Meteor Up configuration file
-	settings.json - Settings for Meteor's settings API
-
-Replace the content of the newly created settings.json with the content of sample_settings.json.
-
-Modify mup.js on the ROOT_URL field (absolute url of your deploy) and add a docker field with abernix/meteord:base docker image.
-
-	env: {
-	      ROOT_URL: 'http://nova-app.com', 
-	      MONGO_URL: 'mongodb://localhost/meteor'
-	}, 
-	 
-	docker: {
-	      image:'abernix/meteord:base' // docker image working with meteor 1.4 & node 4
-	}
-
-We recommend to take inspiration (or copy/paste) on this [gist](https://gist.github.com/xavcz/6ddc2bb6f67fe0936c8328ab3314641d).
-
-
-
 ## Settings
 
 Settings can be configured in your `settings.json` file. For legacy compatibility reasons, settings can also be specified in your database, but note that settings specified in `settings.json` take priority over those stored in the database.
@@ -162,7 +123,78 @@ Settings can be public (meaning they will be published to the client) or private
 To use your `settings.json` file:
 
 - Development: `meteor --settings settings.json`
-- Production: specify the path to `settings.json` in `mup.json`
+- Production: specify the path to `settings.json` in the tool you use to deploy (i.e. `mup deploy --settings settings.json`, see below)
+
+## Deployment
+
+The recommended way to deploy Nova is by using [Mup](https://github.com/kadirahq/meteor-up/), at least v1.0.3.
+
+#### Configuration
+
+You should have a Linux server online, for instance [a Digital Ocean droplet running with Ubuntu](https://www.digitalocean.com).
+
+Install globally the latest `kadirahq/meteor-up`.
+
+``` 
+npm install -g mup
+```
+
+Create Meteor Up configuration files in your project directory with `mup init`. In the example below, the configuration files are created in a `.deploy` directory at the root of your app. 
+
+```
+cd my-app-folder
+mkdir .deploy
+cd .deploy
+mup init
+```
+
+This will create two files :
+
+```
+mup.js - Meteor Up configuration file
+settings.json - Settings for Meteor's settings API
+```
+
+Then, replace the content of the newly created `settings.json` with your own settings (you can use the content of `sample_settings.json` as a starter).
+
+Fill `mup.js` with your credentials and optional settings (check the [Mup repo](https://github.com/kadirahq/meteor-up) for additional docs). 
+
+**Note:** the `ROOT_URL` field should be the absolute url of your deploy ; and you need to explicitly point out to use `abernix/meteord:base` docker image with a `docker` field within the `meteor` object.
+
+```
+...
+meteor: {
+  ...
+  path: '../' // relative path of the app considering your mup config files
+  env: {
+        ROOT_URL: 'http://nova-app.com', // absolute url of your deploy
+        ...
+  }, 
+  ...
+  docker: {
+        image:'abernix/meteord:base' // docker image working with meteor 1.4 & node 4
+  },
+  ...
+},
+...
+```
+
+You can take inspiration (or copy/paste) on this [`mup.js` example](https://gist.github.com/xavcz/6ddc2bb6f67fe0936c8328ab3314641d).
+
+#### Setup your server
+
+From this folder, you can now setup Docker & Mongo your server with:
+```
+mup setup 
+```
+
+#### Deploy your app to your server
+
+Still in the same folder, to deploy your app with your settings file:
+
+```
+mup --settings settings.json
+```
 
 ## Categories
 
@@ -685,7 +717,7 @@ If you create a new internationalization package, let us know so we can add it h
 
 You can access a dynamically generated cheatsheet of Nova's main functions at [http://localhost:3000/cheatsheet](/cheatsheet) (replace with your own development URL).
 
-## Third-Party Plugins
+## Third-Party Packages
 
 - [Post By Feed](https://github.com/xavcz/nova-post-by-feed): register RSS feeds that will be fetched every 30 minutes to create new posts automatically.
 - [Post To Slack](https://github.com/xavcz/nova-slack): A package that automatically sends your posts as messages to any connected Slack Team.
