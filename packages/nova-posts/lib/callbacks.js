@@ -207,11 +207,6 @@ function PostsNewRequiredPropertiesCheck (post, user) {
   // generate slug
   post.slug = Telescope.utils.slugify(post.title);
 
-  // post is not pending and has been scheduled to be posted in the future by a moderator/admin
-  if (post.status !== Posts.config.STATUS_PENDING && post.postedAt && post.postedAt > post.createdAt) {
-    post.status = Posts.config.STATUS_SCHEDULED;
-  }
-
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
