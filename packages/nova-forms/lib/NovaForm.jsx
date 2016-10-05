@@ -82,8 +82,8 @@ class NovaForm extends Component{
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
       // replace value by prefilled value if value is empty
-      if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
-        const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
+      if (fieldSchema.form && fieldSchema.form.prefill) {
+        const prefilledValue = typeof fieldSchema.form.prefill === "function" ? fieldSchema.form.prefill.call(fieldSchema) : fieldSchema.form.prefill;
         if (!!prefilledValue && !field.value) {
           field.prefilledValue = prefilledValue;
           field.value = prefilledValue;
@@ -96,21 +96,21 @@ class NovaForm extends Component{
       }
 
       // add options if they exist
-      if (fieldSchema.autoform && fieldSchema.autoform.options) {
-        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
+      if (fieldSchema.form && fieldSchema.form.options) {
+        field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema) : fieldSchema.form.options;
       }
 
-      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
-        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
+      if (fieldSchema.form && fieldSchema.form.disabled) {
+        field.disabled = typeof fieldSchema.form.disabled === "function" ? fieldSchema.form.disabled.call(fieldSchema) : fieldSchema.form.disabled;
       }
 
-      if (fieldSchema.autoform && fieldSchema.autoform.help) {
-        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
+      if (fieldSchema.form && fieldSchema.form.help) {
+        field.help = typeof fieldSchema.form.help === "function" ? fieldSchema.form.help.call(fieldSchema) : fieldSchema.form.help;
       }
 
       // add placeholder
-      if (fieldSchema.autoform && fieldSchema.autoform.placeholder) {
-       field.placeholder = fieldSchema.autoform.placeholder;
+      if (fieldSchema.form && fieldSchema.form.placeholder) {
+       field.placeholder = fieldSchema.form.placeholder;
       }
 
       if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;

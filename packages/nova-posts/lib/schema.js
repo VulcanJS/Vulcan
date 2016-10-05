@@ -171,7 +171,7 @@ Posts.schemaJSON = {
       if (this.isInsert && !this.isSet)
         return Posts.getDefaultStatus(user);
     },
-    autoform: {
+    form: {
       noselect: true,
       options: Telescope.statuses,
       group: 'admin'
@@ -245,7 +245,7 @@ Posts.schemaJSON = {
     // editableIf: canEditAll,
     control: "select",
     publish: true,
-    autoform: {
+    form: {
       group: 'admin',
       options: function () {
         return Users.find().map(function (user) {

@@ -1,5 +1,4 @@
 import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
 
 /**
  * @summary Update an item's (post or comment) score

@@ -109,7 +109,7 @@ Comments.schema = new SimpleSchema({
     publish: true,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    autoform: {
+    form: {
       omit: true // never show this
     }
   },
@@ -158,7 +158,7 @@ if (typeof Telescope.notifications !== "undefined") {
     fieldSchema: {
       type: Boolean,
       optional: true,
-      autoform: {
+      form: {
         omit: true
       }
     }

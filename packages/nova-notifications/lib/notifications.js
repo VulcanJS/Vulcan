@@ -34,7 +34,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       type: Boolean,
       optional: true,
       defaultValue: true,
-      autoform: {
+      form: {
         group: 'notifications',
         instructions: 'Enable email notifications for new posts and new comments (requires restart).'
       }

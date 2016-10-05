@@ -46,7 +46,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       fieldSchema: {
         type: Boolean,
         optional: true,
-        autoform: {
+        form: {
           group: 'newsletter',
           instructions: 'Enable newsletter (requires restart).'
         }
@@ -57,7 +57,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       fieldSchema: {
         type: Boolean,
         optional: true,
-        autoform: {
+        form: {
           group: 'newsletter',
           instructions: 'Enable newsletter in development too (requires restart).'
         }
@@ -69,7 +69,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
         type: String,
         optional: true,
         private: true,
-        autoform: {
+        form: {
           group: "newsletter",
           class: "private-field"
         }
@@ -81,7 +81,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
         type: String,
         optional: true,
         private: true,
-        autoform: {
+        form: {
           group: 'newsletter',
           instructions: 'The ID of the list you want to send to.',
           class: "private-field"
@@ -93,7 +93,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        autoform: {
+        form: {
           group: 'newsletter'
         }
       }
@@ -104,7 +104,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
         type: [Number],
         optional: true,
         defaultValue: [2,4,6],
-        autoform: {
+        form: {
           group: 'newsletter',
           instructions: 'Defaults to once a week on Monday. Changes require restarting your app to take effect.',
           noselect: true,
@@ -147,7 +147,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
         type: String,
         optional: true,
         defaultValue: '00:00',
-        autoform: {
+        form: {
           group: 'newsletter',
           instructions: 'Defaults to 00:00/12:00 AM. Time to send out newsletter if enabled (GMT).',
           type: 'time'
@@ -159,7 +159,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       fieldSchema: {
         type: Boolean,
         optional: true,
-        autoform: {
+        form: {
           group: 'newsletter',
           instructions: 'Automatically subscribe new users on sign-up.'
         }
