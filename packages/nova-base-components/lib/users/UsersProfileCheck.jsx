@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
+import { Accounts } from 'meteor/std:accounts-ui';
 
 const UsersProfileCheckModal = ({currentUser, show, router}) => {
 
@@ -31,7 +32,7 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => router.push({pathname: '/'})) }><FormattedMessage id="users.log_out"/></a>
+        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(Accounts.ui._options.onSignedOutHook()) }><FormattedMessage id="users.log_out"/></a>
       </Modal.Footer>
     </Modal>
   )
