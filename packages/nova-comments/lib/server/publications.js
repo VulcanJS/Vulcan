@@ -10,7 +10,7 @@ Comments._ensureIndex({parentCommentId: 1});
  */
 Meteor.publish('comments.list', function (terms) {
   
-  const currentUser = this.userId && Meteor.users.findOne(this.userId);
+  const currentUser = this.userId && Users.findOne(this.userId);
 
   terms.currentUserId = this.userId; // add currentUserId to terms
   ({selector, options} = Comments.parameters.get(terms));
@@ -22,7 +22,7 @@ Meteor.publish('comments.list', function (terms) {
 
   const comments = Comments.find(selector, options);
   const posts = Posts.find({_id: {$in: _.pluck(comments.fetch(), 'postId')}}, {fields: Posts.publishedFields.list});
-  const users = Meteor.users.find({_id: {$in: _.pluck(comments.fetch(), 'userId')}}, {fields: Users.publishedFields.list});
+  const users = Users.find({_id: {$in: _.pluck(comments.fetch(), 'userId')}}, {fields: Users.publishedFields.list});
 
   return Users.canDo(currentUser, "comments.view.all") ? [comments, posts, users] : [];
 
@@ -91,7 +91,7 @@ Meteor.publish('comments.list', function (terms) {
 //         userIds.push(post.userId);
 //       }
 
-//       return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
+//       return Users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
     
 //     }
 

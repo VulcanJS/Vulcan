@@ -285,6 +285,6 @@ Users.schema = new SimpleSchema({
 // });
 
 /**
- * @summary Attach schema to Meteor.users collection
+ * @summary Attach schema to Users (Meteor.users at the moment) collection
  */
 Users.attachSchema(Users.schema);

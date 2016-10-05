@@ -137,7 +137,7 @@ function setupUser (user, options) {
   user.telescope.slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
-  user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
+  user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
   Events.track('new user', {username: user.telescope.displayName, email: user.telescope.email});
 

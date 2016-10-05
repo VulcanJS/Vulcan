@@ -149,7 +149,7 @@ Meteor.methods({
 
       const user = Users.findOne(userId);
 
-      Meteor.users.remove(userId);
+      Users.remove(userId);
 
       Telescope.callbacks.runAsync("users.remove.async", user, options);
     

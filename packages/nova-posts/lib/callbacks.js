@@ -233,7 +233,7 @@ Telescope.callbacks.add("posts.new.sync", PostsNewSetFuture);
  */
 function PostsNewIncrementPostCount (post) {
   var userId = post.userId;
-  Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
+  Users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
 }
 Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
 
@@ -242,7 +242,7 @@ Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
  */
 function PostsNewUpvoteOwnPost (post) {
   if (typeof Telescope.operateOnItem !== "undefined") {
-    var postAuthor = Meteor.users.findOne(post.userId);
+    var postAuthor = Users.findOne(post.userId);
     Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
   }
 }

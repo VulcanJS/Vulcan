@@ -23,7 +23,7 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
       <Modal.Body>
         <NovaForm
           currentUser={ currentUser }
-          collection={ Meteor.users }
+          collection={ Users }
           document={ currentUser }
           methodName="users.edit"
           successCallback={ (user) => Telescope.callbacks.runAsync("profileCompletedAsync", user) }

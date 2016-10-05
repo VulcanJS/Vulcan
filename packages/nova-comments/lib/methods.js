@@ -10,7 +10,7 @@ Comments.methods = {};
 
 Comments.methods.new = function (comment) {
 
-  const currentUser = Meteor.users.findOne(comment.userId);
+  const currentUser = Users.findOne(comment.userId);
 
   comment = Telescope.callbacks.run("comments.new.sync", comment, currentUser);
 
@@ -105,7 +105,7 @@ Meteor.methods({
       });
 
       // decrement user comment count and remove comment ID from user
-      Meteor.users.update({_id: comment.userId}, {
+      Users.update({_id: comment.userId}, {
         $inc:   {'telescope.commentCount': -1}
       });
 

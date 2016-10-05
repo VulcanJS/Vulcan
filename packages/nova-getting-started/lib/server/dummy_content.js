@@ -15,7 +15,7 @@ var createPost = function (slug, postedAt, username, thumbnail) {
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
-    userId: Meteor.users.findOne({username: username})._id
+    userId: Users.findOne({username: username})._id
   };
 
   if (typeof thumbnail !== "undefined")
@@ -28,7 +28,7 @@ var createComment = function (slug, username, body, parentBody) {
 
   var comment = {
     postId: Posts.findOne({dummySlug: slug})._id,
-    userId: Meteor.users.findOne({username: username})._id,
+    userId: Users.findOne({username: username})._id,
     body: body,
     isDummy: true,
     disableNotifications: true
@@ -93,7 +93,7 @@ var createDummyComments = function () {
 };
 
 deleteDummyContent = function () {
-  Meteor.users.remove({'profile.isDummy': true});
+  Users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
 };

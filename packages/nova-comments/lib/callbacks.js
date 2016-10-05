@@ -80,8 +80,8 @@ Telescope.callbacks.add("comments.new.method", CommentsNewUserCheck);
 
 function CommentsNewRateLimit (comment, user) {
   if (!Users.isAdmin(user)) {
-    var timeSinceLastComment = Users.timeSinceLast(user, Comments),
-        commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
+    const timeSinceLastComment = Users.timeSinceLast(user, Comments);
+    const commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
     // check that user waits more than 15 seconds between comments
     if((timeSinceLastComment < commentInterval)) {
       throw new Meteor.Error("CommentsNewRateLimit", "comments.rate_limit_error", commentInterval-timeSinceLastComment);
@@ -156,7 +156,7 @@ function CommentsNewOperations (comment) {
   var userId = comment.userId;
 
   // increment comment count
-  Meteor.users.update({_id: userId}, {
+  Users.update({_id: userId}, {
     $inc:       {'telescope.commentCount': 1}
   });
 
@@ -175,7 +175,7 @@ function CommentsNewUpvoteOwnComment (comment) {
 
   if (typeof Telescope.operateOnItem !== "undefined") {
 
-    var commentAuthor = Meteor.users.findOne(comment.userId);
+    var commentAuthor = Users.findOne(comment.userId);
 
     // upvote comment
     Telescope.operateOnItem(Comments, comment._id, commentAuthor, "upvote");

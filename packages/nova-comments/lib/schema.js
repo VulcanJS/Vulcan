@@ -122,7 +122,7 @@ Comments.schema = new SimpleSchema({
     publish: true,
     join: {
       joinAs: "user",
-      collection: () => Meteor.users
+      collection: () => Users
     }
   },
   /**

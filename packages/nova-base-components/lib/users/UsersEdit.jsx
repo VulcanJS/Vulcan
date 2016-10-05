@@ -23,7 +23,7 @@ const UsersEdit = (props, context) => {
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
         <NovaForm 
           currentUser={currentUser}
-          collection={Meteor.users} 
+          collection={Users} 
           document={user} 
           methodName="users.edit"
           successCallback={(user)=>{
