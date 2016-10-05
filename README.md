@@ -528,7 +528,7 @@ function addSearchQueryParameter (parameters, terms) {
   }
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", addSearchQueryParameter);
+Telescope.callbacks.add("posts.parameters", addSearchQueryParameter);
 ```
 
 The callback takes two arguments: the current MongoDB `parameters` (an object with a `selector` and `options` properties), and the `terms` extracted from the URL.

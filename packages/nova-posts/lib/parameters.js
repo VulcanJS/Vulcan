@@ -30,8 +30,8 @@ Posts.parameters.get = function (terms) {
     options: {}
   };
 
-  // iterate over postsParameters callbacks
-  parameters = Telescope.callbacks.run("postsParameters", parameters, _.clone(terms));
+  // iterate over posts.parameters callbacks
+  parameters = Telescope.callbacks.run("posts.parameters", parameters, _.clone(terms));
   
   // if sort options are not provided, default to "createdAt" sort
   if (_.isEmpty(parameters.options.sort)) {
@@ -62,7 +62,7 @@ function addViewParameter (parameters, terms) {
 
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", addViewParameter);
+Telescope.callbacks.add("posts.parameters", addViewParameter);
 
 // View Parameter
 // Add "after" and "before" properties to terms which can be used to limit posts in time. 
@@ -138,7 +138,7 @@ function addTimeParameter (parameters, terms) {
 
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", addTimeParameter);
+Telescope.callbacks.add("posts.parameters", addTimeParameter);
 
 // limit the number of items that can be requested at once
 function limitPosts (parameters, terms) {
@@ -172,4 +172,4 @@ function limitPosts (parameters, terms) {
 
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", limitPosts);
+Telescope.callbacks.add("posts.parameters", limitPosts);
