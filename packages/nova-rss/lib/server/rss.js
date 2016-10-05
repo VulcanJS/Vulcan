@@ -55,7 +55,7 @@ const serveCommentRSS = function (terms, url) {
     post = Posts.findOne(comment.postId);
     feed.item({
      title: 'Comment on '+post.title,
-     description: comment.body+'</br></br>'+'<a href="'+Telescope.utils.getPostCommentUrl(post._id, comment._id)+'">Discuss</a>',
+     description: `${comment.body}</br></br><a href="${comment.getPageUrl(true)}">Discuss</a>`,
      author: comment.author,
      date: comment.postedAt,
      url: comment.getPageUrl(true),
