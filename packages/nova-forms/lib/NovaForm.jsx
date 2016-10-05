@@ -223,10 +223,11 @@ class NovaForm extends Component{
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // clear all errors
+  // clear all errors and re-enable the form
   clearErrors() {
     this.setState({
-      errors: []
+      errors: [],
+      disabled: false,
     });
   }
 
@@ -276,11 +277,11 @@ class NovaForm extends Component{
   // common callback for both new and edit forms
   methodCallback(error, document) {
 
-    this.setState({disabled: false});
-
     if (error) { // error
 
-      console.log(error)
+      this.setState({disabled: false});
+
+      console.log(error);
 
       const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
       // add error to state
@@ -294,8 +295,6 @@ class NovaForm extends Component{
 
     } else { // success
 
-      this.clearErrors();
-
       // reset form if this is a new document form
       if (this.getFormType() === "new") this.refs.form.reset();
 
@@ -304,6 +303,9 @@ class NovaForm extends Component{
 
       // run close callback if it exists in context (i.e. we're inside a modal)
       if (this.context.closeCallback) this.context.closeCallback();
+      // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
+      // note: we don't want to update the state of an unmounted component
+      else this.clearErrors();
 
     }
   }
@@ -359,6 +361,14 @@ class NovaForm extends Component{
 
     }
 
+  }
+
+  componentWillUnmount() {
+    // note: patch to cancel closeCallback given by parent, we clean the event by hand
+    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
+    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
+    // let's not call setState on an unmounted component (avoid no-op / memory leak)
+    this.context.closeCallback = f => f;
   }
 
   // --------------------------------------------------------------------- //
