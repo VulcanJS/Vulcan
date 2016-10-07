@@ -27,7 +27,7 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
           collection={ Users }
           document={ currentUser }
           methodName="users.edit"
-          successCallback={ (user) => Telescope.callbacks.runAsync("profileCompletedAsync", user) }
+          successCallback={ (user) => Telescope.callbacks.runAsync("users.profileCompleted.async", user) }
           fields={ requiredFields }
         />
       </Modal.Body>

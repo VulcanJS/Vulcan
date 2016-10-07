@@ -14,11 +14,11 @@ import NovaEmail from 'meteor/nova:email';
 Users.after.insert(function (userId, user) {
 
   // run create user async callbacks
-  Telescope.callbacks.runAsync("onCreateUserAsync", user);
+  Telescope.callbacks.runAsync("users.new.async", user);
 
   // check if all required fields have been filled in. If so, run profile completion callbacks
   if (Users.hasCompletedProfile(user)) {
-    Telescope.callbacks.runAsync("profileCompletedAsync", user);
+    Telescope.callbacks.runAsync("users.profileCompleted.async", user);
   }
 
 });
@@ -143,13 +143,13 @@ function setupUser (user, options) {
 
   return user;
 }
-Telescope.callbacks.add("onCreateUser", setupUser);
+Telescope.callbacks.add("users.new.sync", setupUser);
 
 
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }
-Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);
+Telescope.callbacks.add("users.profileCompleted.sync", hasCompletedProfile);
 
 function adminUserCreationNotification (user) {
   // send notifications to admins
@@ -163,4 +163,4 @@ function adminUserCreationNotification (user) {
   });
   return user;
 }
-Telescope.callbacks.add("onCreateUser", adminUserCreationNotification);
+Telescope.callbacks.add("users.new.sync", adminUserCreationNotification);

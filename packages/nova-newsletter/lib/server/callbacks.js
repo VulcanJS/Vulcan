@@ -11,4 +11,4 @@ function subscribeUserOnProfileCompletion (user) {
   }
   return user;
 }
-Telescope.callbacks.add("profileCompletedAsync", subscribeUserOnProfileCompletion);
+Telescope.callbacks.add("users.profileCompleted.async", subscribeUserOnProfileCompletion);
