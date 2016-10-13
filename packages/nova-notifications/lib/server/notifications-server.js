@@ -4,7 +4,19 @@ getUnsubscribeLink = function(user){
   return Telescope.utils.getRouteUrl('unsubscribe', {hash: user.telescope.emailHash});
 };
 
+
 Meteor.methods({
+  sawNotification : function(link){
+    check(link, String);
+    user = Meteor.user()
+    noteData = _.findWhere(user.telescope.notifications,{link:link})
+    //TODO: nothing to do ;P
+    console.log(noteData)
+    if( !_.isEmpty(noteData) )
+      if( Meteor.users.update(user._id, { $pull: {"telescope.notifications": {link:link}} }))
+      return true;
+      else return false;
+  },
   unsubscribeUser : function(hash){
     check(hash, String);
     // TO-DO: currently, if you have somebody's email you can unsubscribe them
@@ -24,4 +36,6 @@ Meteor.methods({
     return false;
   }
 });
+
+
 
