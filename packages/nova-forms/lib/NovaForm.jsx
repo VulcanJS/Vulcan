@@ -82,6 +82,12 @@ class NovaForm extends Component{
       // add value
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
+      // backward compatibility from 'autoform' to 'form'
+      if (fieldSchema.autoform) {
+        fieldSchema.form = fieldSchema.autoform;
+        console.warn(`🔭 Telescope Nova Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`);
+      }
+
       // replace value by prefilled value if value is empty
       if (fieldSchema.form && fieldSchema.form.prefill) {
         const prefilledValue = typeof fieldSchema.form.prefill === "function" ? fieldSchema.form.prefill.call(fieldSchema) : fieldSchema.form.prefill;

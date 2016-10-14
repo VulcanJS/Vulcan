@@ -26,6 +26,7 @@ SimpleSchema.extendOptions({
   profile: Match.Optional(Boolean), // profile: true means the field is shown on user profiles
   template: Match.Optional(String), // template used to display the field
   form: Match.Optional(Object), // form placeholder
+  autoform: Match.Optional(Object), // legacy form placeholder; backward compatibility
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
   order: Match.Optional(Number), // position in the form
   group: Match.Optional(Object) // form fieldset group
