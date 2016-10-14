@@ -59,7 +59,7 @@ Newsletter.build = function (postsArray) {
     subject += post.title;
 
     // get author of the current post
-    var postUser = Meteor.users.findOne(post.userId);
+    var postUser = Users.findOne(post.userId);
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
@@ -93,7 +93,7 @@ Newsletter.build = function (postsArray) {
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
         
         // get comment author
-        var user = Meteor.users.findOne(comment.userId);
+        var user = Users.findOne(comment.userId);
 
         // add properties to comment
         comment.body = Telescope.utils.trimHTML(comment.htmlBody, 20);

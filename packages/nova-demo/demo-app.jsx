@@ -4,6 +4,7 @@ import {mount} from 'react-mounter';
 import MoviesWrapper from './demo-components.jsx';
 import Core from 'meteor/nova:core';
 import { Route } from 'react-router';
+import Users from 'meteor/nova:users';
 
 //////////////////////////////////////////////////////
 // Collection & Schema                              //
@@ -45,7 +46,7 @@ const schema = new SimpleSchema({
     type: String,
     publish: true,
     join: {
-      collection: () => Meteor.users,
+      collection: () => Users,
       joinAs: "user",
       fields: ["_id", "username"]
     }

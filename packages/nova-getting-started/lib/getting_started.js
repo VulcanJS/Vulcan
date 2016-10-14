@@ -8,7 +8,7 @@ Users.addField({
   fieldSchema: {
     type: Boolean,
     optional: true,
-    autoform: {
+    form: {
       omit: true
     }
   }
@@ -19,7 +19,7 @@ Posts.addField({
   fieldSchema: {
     type: String,
     optional: true,
-    autoform: {
+    form: {
       omit: true
     }
   }
@@ -30,7 +30,7 @@ Posts.addField({
   fieldSchema: {
     type: Boolean,
     optional: true,
-    autoform: {
+    form: {
       omit: true
     }
   }
@@ -41,7 +41,7 @@ fieldName: 'isDummy',
 fieldSchema: {
   type: Boolean,
   optional: true,
-  autoform: {
+  form: {
     omit: true
   }
 }

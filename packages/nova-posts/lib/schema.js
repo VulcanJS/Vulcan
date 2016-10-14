@@ -167,11 +167,11 @@ Posts.schemaJSON = {
       // only provide a default value
       // 1) this is an insert operation
       // 2) status field is not set in the document being inserted
-      var user = Meteor.users.findOne(this.userId);
+      var user = Users.findOne(this.userId);
       if (this.isInsert && !this.isSet)
         return Posts.getDefaultStatus(user);
     },
-    autoform: {
+    form: {
       noselect: true,
       options: Telescope.statuses,
       group: 'admin'
@@ -245,10 +245,10 @@ Posts.schemaJSON = {
     // editableIf: canEditAll,
     control: "select",
     publish: true,
-    autoform: {
+    form: {
       group: 'admin',
       options: function () {
-        return Meteor.users.find().map(function (user) {
+        return Users.find().map(function (user) {
           return {
             value: user._id,
             label: Users.getDisplayName(user)
@@ -258,7 +258,7 @@ Posts.schemaJSON = {
     },
     join: {
       joinAs: "user",
-      collection: () => Meteor.users
+      collection: () => Users
     }
   }
 };

@@ -374,7 +374,26 @@ If a component deals with a collection (`Posts`, `Comments`, etc.) its name shou
 
 For example: `PostsShare`.
 
-The outermost HTML element within the component will have a class of the same name, but with a dash instead: `posts-share`. If possible, classes for all other elements within the component will start with the component's class: `posts-share-button`, `posts-share-divider`, etc.  
+The outermost HTML element within the component will have a class of the same name, but with a dash instead: `posts-share`. If possible, classes for all other elements within the component will start with the component's class: `posts-share-button`, `posts-share-divider`, etc.
+
+### Get current user
+
+The current user is given to the components via the React context. You can access it via `this.context.currentUser` (class) or `context.currentUser` (stateless-component). 
+
+The component needs to define `currentUser` in its `contextTypes`. If `contextTypes` is not defined, then `context` will be an empty object and you won't be able to access to the current user.
+
+Example :
+```js
+const CustomHeader = (props, context) => {
+  // if a user is connected, show its username; else say hello
+  return context.currentUser ? <div>Hey ${context.currentUser.username}!</div> : <div>Hello!</div>
+};
+
+// if you don't define `contextTypes` for `CustomHeader`, then the `context` argument will be an empty object
+CustomHeader.contextTypes = {
+  currentUser: React.PropTypes.object
+};
+```
 
 ## Customizing Emails
 
@@ -528,7 +547,7 @@ function addSearchQueryParameter (parameters, terms) {
   }
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", addSearchQueryParameter);
+Telescope.callbacks.add("posts.parameters", addSearchQueryParameter);
 ```
 
 The callback takes two arguments: the current MongoDB `parameters` (an object with a `selector` and `options` properties), and the `terms` extracted from the URL.

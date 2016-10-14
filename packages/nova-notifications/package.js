@@ -20,8 +20,4 @@ Package.onUse(function (api) {
     'lib/custom_fields.js'
   ], ['client', 'server']);
 
-  api.addFiles([
-    'lib/server/notifications-server.js'
-  ], ['server']);
-
 });

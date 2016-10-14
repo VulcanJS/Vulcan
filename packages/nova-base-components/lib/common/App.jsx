@@ -30,7 +30,7 @@ class App extends Component {
       <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
         {
           this.props.ready ? 
-            <Telescope.components.Layout currentUser={this.props.currentUser}>{this.props.children}</Telescope.components.Layout> 
+            <Telescope.components.Layout>{this.props.children}</Telescope.components.Layout> 
           : <Telescope.components.AppLoading />
         }
       </IntlProvider>

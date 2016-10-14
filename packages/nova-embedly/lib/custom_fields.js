@@ -71,7 +71,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
         type: String,
         optional: true,
         private: true,
-        autoform: {
+        form: {
           group: 'embedly',
           class: 'private-field'
         }
@@ -82,7 +82,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        autoform: {
+        form: {
           group: 'embedly'
         }
       }
@@ -92,7 +92,7 @@ if (typeof Telescope.settings.collection !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        autoform: {
+        form: {
           group: 'embedly'
         }
       }

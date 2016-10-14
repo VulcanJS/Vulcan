@@ -3,8 +3,6 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
-//import { Messages } from "meteor/nova:core";
-//import Actions from "../actions.js";
 import Categories from "meteor/nova:categories";
 
 class CategoriesEditForm extends Component{
@@ -35,7 +33,6 @@ class CategoriesEditForm extends Component{
         <NovaForm 
           document={this.props.category}
           collection={Categories}
-          currentUser={this.context.currentUser}
           methodName="categories.edit"
           successCallback={(category)=>{
             this.context.messages.flash("Category edited.", "success");

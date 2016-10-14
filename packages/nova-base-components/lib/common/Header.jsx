@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 //import { Messages } from "meteor/nova:core";
 
-const Header = ({currentUser}) => {
+const Header = (props, {currentUser}) => {
   
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Nova");
@@ -36,5 +36,9 @@ const Header = ({currentUser}) => {
 }
 
 Header.displayName = "Header";
+
+Header.contextTypes = {
+  currentUser: React.PropTypes.object,
+};
 
 module.exports = Header;

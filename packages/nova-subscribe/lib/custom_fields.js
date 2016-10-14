@@ -8,7 +8,7 @@ Users.addField([
       type: Object,
       optional: true,
       blackbox: true,
-      autoform: {
+      form: {
         omit: true
       }
     }
@@ -18,7 +18,7 @@ Users.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      autoform: {
+      form: {
         omit: true
       },
       publish: true,
@@ -33,7 +33,7 @@ Users.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      autoform: {
+      form: {
         omit: true
       }
     }
@@ -50,7 +50,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        autoform: {
+        form: {
           omit: true
         },
         publish: true,
@@ -65,7 +65,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        autoform: {
+        form: {
           omit: true
         }
       }
@@ -84,7 +84,7 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        autoform: {
+        form: {
           omit: true
         },
         publish: true,
@@ -99,7 +99,7 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        autoform: {
+        form: {
           omit: true
         }
       }

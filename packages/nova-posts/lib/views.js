@@ -115,7 +115,7 @@ Posts.views.add("userPosts", function (terms) {
  * @summary User upvoted posts view
  */
 Posts.views.add("userUpvotedPosts", function (terms) {
-  var user = Meteor.users.findOne(terms.userId);
+  var user = Users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
   return {
     selector: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
@@ -127,7 +127,7 @@ Posts.views.add("userUpvotedPosts", function (terms) {
  * @summary User downvoted posts view
  */
 Posts.views.add("userDownvotedPosts", function (terms) {
-  var user = Meteor.users.findOne(terms.userId);
+  var user = Users.findOne(terms.userId);
   var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");
   // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {

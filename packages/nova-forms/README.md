@@ -81,7 +81,6 @@ New document form:
 ```jsx
 <NovaForm 
   collection={Posts}
-  currentUser={currentUser},
   methodName="posts.new"
 />
 ```
@@ -91,9 +90,8 @@ Edit document form:
 ```jsx
 <NovaForm 
   collection={Posts}
-  currentUser={currentUser},
-  methodName="posts.edit",
-  document={post},
+  methodName="posts.edit"
+  document={post}
   labelFunction={capitalize}
   successCallback={closeModal}
 />

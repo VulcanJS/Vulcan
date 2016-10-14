@@ -57,7 +57,7 @@ Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, 
  * @param {Object} post
  */
 Posts.getAuthorName = function (post) {
-  var user = Meteor.users.findOne(post.userId);
+  var user = Users.findOne(post.userId);
   if (user) {
     return user.getDisplayName();
   } else {

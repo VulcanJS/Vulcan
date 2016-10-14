@@ -83,8 +83,8 @@ class NovaForm extends Component{
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
       // replace value by prefilled value if value is empty
-      if (fieldSchema.autoform && fieldSchema.autoform.prefill) {
-        const prefilledValue = typeof fieldSchema.autoform.prefill === "function" ? fieldSchema.autoform.prefill.call(fieldSchema) : fieldSchema.autoform.prefill;
+      if (fieldSchema.form && fieldSchema.form.prefill) {
+        const prefilledValue = typeof fieldSchema.form.prefill === "function" ? fieldSchema.form.prefill.call(fieldSchema) : fieldSchema.form.prefill;
         if (!!prefilledValue && !field.value) {
           field.prefilledValue = prefilledValue;
           field.value = prefilledValue;
@@ -97,21 +97,21 @@ class NovaForm extends Component{
       }
 
       // add options if they exist
-      if (fieldSchema.autoform && fieldSchema.autoform.options) {
-        field.options = typeof fieldSchema.autoform.options === "function" ? fieldSchema.autoform.options.call(fieldSchema) : fieldSchema.autoform.options;
+      if (fieldSchema.form && fieldSchema.form.options) {
+        field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema) : fieldSchema.form.options;
       }
 
-      if (fieldSchema.autoform && fieldSchema.autoform.disabled) {
-        field.disabled = typeof fieldSchema.autoform.disabled === "function" ? fieldSchema.autoform.disabled.call(fieldSchema) : fieldSchema.autoform.disabled;
+      if (fieldSchema.form && fieldSchema.form.disabled) {
+        field.disabled = typeof fieldSchema.form.disabled === "function" ? fieldSchema.form.disabled.call(fieldSchema) : fieldSchema.form.disabled;
       }
 
-      if (fieldSchema.autoform && fieldSchema.autoform.help) {
-        field.help = typeof fieldSchema.autoform.help === "function" ? fieldSchema.autoform.help.call(fieldSchema) : fieldSchema.autoform.help;
+      if (fieldSchema.form && fieldSchema.form.help) {
+        field.help = typeof fieldSchema.form.help === "function" ? fieldSchema.form.help.call(fieldSchema) : fieldSchema.form.help;
       }
 
       // add placeholder
-      if (fieldSchema.autoform && fieldSchema.autoform.placeholder) {
-       field.placeholder = fieldSchema.autoform.placeholder;
+      if (fieldSchema.form && fieldSchema.form.placeholder) {
+       field.placeholder = fieldSchema.form.placeholder;
       }
 
       if (fieldSchema.beforeComponent) field.beforeComponent = fieldSchema.beforeComponent;
@@ -173,7 +173,7 @@ class NovaForm extends Component{
     const fields = this.props.fields;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.props.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.props.currentUser);
+    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.context.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.context.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
@@ -224,10 +224,11 @@ class NovaForm extends Component{
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // clear all errors
+  // clear all errors and re-enable the form
   clearErrors() {
     this.setState({
-      errors: []
+      errors: [],
+      disabled: false,
     });
   }
 
@@ -277,11 +278,11 @@ class NovaForm extends Component{
   // common callback for both new and edit forms
   methodCallback(error, document) {
 
-    this.setState({disabled: false});
-
     if (error) { // error
 
-      console.log(error)
+      this.setState({disabled: false});
+
+      console.log(error);
 
       const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
       // add error to state
@@ -295,8 +296,6 @@ class NovaForm extends Component{
 
     } else { // success
 
-      this.clearErrors();
-
       // reset form if this is a new document form
       if (this.getFormType() === "new") this.refs.form.reset();
 
@@ -305,6 +304,9 @@ class NovaForm extends Component{
 
       // run close callback if it exists in context (i.e. we're inside a modal)
       if (this.context.closeCallback) this.context.closeCallback();
+      // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
+      // note: we don't want to update the state of an unmounted component
+      else this.clearErrors();
 
     }
   }
@@ -362,6 +364,15 @@ class NovaForm extends Component{
 
   }
 
+  componentWillUnmount() {
+    // note: patch to cancel closeCallback given by parent
+    // we clean the event by hand
+    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
+    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
+    // let's not call setState on an unmounted component (avoid no-op / memory leak)
+    this.context.closeCallback = f => f;
+  }
+
   // key down handler
   formKeyDown(event) {
 
@@ -401,7 +412,6 @@ NovaForm.propTypes = {
   collection: React.PropTypes.object,
   schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
-  currentUser: React.PropTypes.object,
   submitCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
   errorCallback: React.PropTypes.func,
@@ -419,6 +429,7 @@ NovaForm.defaultProps = {
 
 NovaForm.contextTypes = {
   closeCallback: React.PropTypes.func,
+  currentUser: React.PropTypes.object,
   intl: intlShape
 }
 
