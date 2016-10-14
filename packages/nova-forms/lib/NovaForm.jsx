@@ -363,8 +363,16 @@ class NovaForm extends Component{
 
   }
 
+  // key down handler for submit shortcut
+  formKeyDown(event) {
+    if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+      this.submitForm(this.refs.form.getModel());
+    }
+  }  
+
   componentWillUnmount() {
-    // note: patch to cancel closeCallback given by parent, we clean the event by hand
+    // note: patch to cancel closeCallback given by parent
+    // we clean the event by hand
     // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
     // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
     // let's not call setState on an unmounted component (avoid no-op / memory leak)
