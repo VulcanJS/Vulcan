@@ -32,6 +32,7 @@ class NovaForm extends Component{
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.updateCurrentValue = this.updateCurrentValue.bind(this);
+    this.formKeyDown = this.formKeyDown.bind(this);
 
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
@@ -363,13 +364,6 @@ class NovaForm extends Component{
 
   }
 
-  // key down handler for submit shortcut
-  formKeyDown(event) {
-    if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.getModel());
-    }
-  }  
-
   componentWillUnmount() {
     // note: patch to cancel closeCallback given by parent
     // we clean the event by hand
@@ -377,6 +371,14 @@ class NovaForm extends Component{
     // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
     // let's not call setState on an unmounted component (avoid no-op / memory leak)
     this.context.closeCallback = f => f;
+  }
+
+  // key down handler
+  formKeyDown(event) {
+
+    if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+      this.submitForm(this.refs.form.getModel());
+    }
   }
 
   // --------------------------------------------------------------------- //
@@ -391,6 +393,7 @@ class NovaForm extends Component{
       <div className={"document-"+this.getFormType()}>
         <Formsy.Form
           onSubmit={this.submitForm}
+          onKeyDown={this.formKeyDown}
           disabled={this.state.disabled}
           ref="form"
         >
