@@ -22,7 +22,6 @@ const UsersEdit = (props, context) => {
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
         <NovaForm 
-          currentUser={currentUser}
           collection={Users} 
           document={user} 
           methodName="users.edit"
@@ -41,6 +40,7 @@ UsersEdit.propTypes = {
 };
 
 UsersEdit.contextTypes = {
+  currentUser: React.PropTypes.object,
   messages: React.PropTypes.object,
   intl: intlShape
 };

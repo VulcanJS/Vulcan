@@ -123,8 +123,7 @@ class CommentsItem extends Component{
 
 CommentsItem.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
-  //currentUser: React.PropTypes.object, // the current user
-}
+};
 
 CommentsItem.contextTypes = {
   currentUser: React.PropTypes.object,
@@ -132,6 +131,6 @@ CommentsItem.contextTypes = {
   messages: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
-}
+};
 
 module.exports = CommentsItem;

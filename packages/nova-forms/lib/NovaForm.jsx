@@ -172,7 +172,7 @@ class NovaForm extends Component{
     const fields = this.props.fields;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.props.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.props.currentUser);
+    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.context.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.context.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
@@ -401,7 +401,6 @@ NovaForm.propTypes = {
   collection: React.PropTypes.object,
   schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
-  currentUser: React.PropTypes.object,
   submitCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
   errorCallback: React.PropTypes.func,
@@ -419,6 +418,7 @@ NovaForm.defaultProps = {
 
 NovaForm.contextTypes = {
   closeCallback: React.PropTypes.func,
+  currentUser: React.PropTypes.object,
   intl: intlShape
 }
 

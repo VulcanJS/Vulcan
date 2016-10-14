@@ -18,7 +18,6 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm 
           collection={Posts} 
-          currentUser={context.currentUser}
           methodName="posts.new"
           successCallback={(post)=>{
             context.messages.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");

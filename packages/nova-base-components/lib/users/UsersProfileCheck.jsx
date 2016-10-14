@@ -7,13 +7,13 @@ import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
 import { Accounts } from 'meteor/std:accounts-ui';
 
-const UsersProfileCheckModal = ({currentUser, show, router}) => {
+const UsersProfileCheckModal = ({show, router}, {currentUser}) => {
 
   // return fields that are required by the schema but haven't been filled out yet
   const schema = Users.simpleSchema()._schema;
-  const requiredFields = _.filter(_.keys(schema), function (fieldName) {
+  const requiredFields = _.filter(_.keys(schema), (fieldName) => {
     var field = schema[fieldName];
-    return !!field.required && !Telescope.getNestedProperty(Meteor.user(), fieldName);
+    return !!field.required && !Telescope.getNestedProperty(currentUser, fieldName);
   });
 
   return (
@@ -23,7 +23,6 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
       </Modal.Header>
       <Modal.Body>
         <NovaForm
-          currentUser={ currentUser }
           collection={ Users }
           document={ currentUser }
           methodName="users.edit"
@@ -38,16 +37,17 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
   )
 };
 
-class UsersProfileCheck extends Component {
-  render() {
-    const currentUser = this.context.currentUser;
-    return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null
-  }
-}
+const UsersProfileCheck = (props, {currentUser}) => {
+  return currentUser ? <UsersProfileCheckModal show={!Users.hasCompletedProfile(currentUser)}/> : null;
+};
 
 UsersProfileCheck.contextTypes = {
   currentUser: React.PropTypes.object
-}
+};
+
+UsersProfileCheckModal.contextTypes = {
+  currentUser: React.PropTypes.object
+};
 
 UsersProfileCheck.displayName = "UsersProfileCheck";
 

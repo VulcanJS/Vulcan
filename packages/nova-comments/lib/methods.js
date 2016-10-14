@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Comments from './collection.js';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import { Messages } from 'meteor/nova:core';
 
 Comments.methods = {};
 // ------------------------------------------------------------------------------------------- //
@@ -97,7 +98,6 @@ Meteor.methods({
     var user = Meteor.user();
 
     if(Users.canEdit(user, comment)){
-
       // decrement post comment count and remove user ID from post
       Posts.update(comment.postId, {
         $inc:   {commentCount: -1},
@@ -117,11 +117,8 @@ Meteor.methods({
         htmlBody: 'Deleted',
         isDeleted: true
       }});
-
-    }else{
-
+    } else {
       Messages.flash("You don't have permission to delete this comment.", "error");
-
     }
   },
 

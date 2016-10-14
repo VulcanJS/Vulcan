@@ -9,7 +9,6 @@ const CategoriesNewForm = (props, context) => {
     <div className="categories-new-form">
       <NovaForm 
         collection={Categories} 
-        currentUser={context.currentUser}
         methodName="categories.new"
         successCallback={(category)=>{
           context.messages.flash("Category created.", "success");
