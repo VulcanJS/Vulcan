@@ -4,6 +4,9 @@
   "engines": {
     "npm": "^3.0"
   },
+  "scripts": {
+    "lint": "eslint --cache packages"
+  },
   "dependencies": {
     "bcrypt": "^0.8.7",
     "bootstrap": "^4.0.0-alpha.2",
@@ -42,7 +45,12 @@
   },
   "private": true,
   "devDependencies": {
-    "autoprefixer": "^6.3.6"
+    "autoprefixer": "^6.3.6",
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.8.0",
+    "eslint-config-meteor": "0.0.9",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-meteor": "^4.0.1"
   },
   "postcss": {
     "plugins": {
