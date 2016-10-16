@@ -1,4 +1,29 @@
+## vNEXT
+
+Apollo integration, Webpack build (work in progress on `apollo` & `webpack` branches).
+
+## v0.27.3
+
+- Explain with more details how to deploy with Meteor Up (#1455, thanks @asmita005!).
+- Add slug to `newPendingPost` notifications, fixes #1254.
+- Ensure slug unicity on user's slug as done as category's slug (use of `Telescope.utils.getUnusedSlug`), fixes #1213.
+- Remove some dead code from Telescope Legacy.
+- Use of Comment's `getPageUrl` helper in `nova:rss`.
+- Prefer `Users` namespace to `Meteor.users` in active packages.
+- If you used the property `autoform` on your custom fields, it's now entitled `form`. This was an old reference to [AutoForm](https://github.com/aldeed/meteor-autoform) used by Telescope Legacy. We will give you a console warning if you still use it to advice you to change it.
+- Fix errors on `nova:forms`: callbacks from components wrapping a `NovaForm` (ex: `ModalTrigger`) are not fired anymore when it has already been unmounted.
+- Fix errors when logging out from the "profile check modal" (`UsersProfileCheck`).
+- Prevent errors when creating/editing a category with custom fields (load order of smart methods with extended schema).
+- The callback on `nova:subscribe` related to categories has been updated to prevent a user from receiving multiple emails if he/she is subscribed to multiple categories (#1466, thanks @chptung).
+- You can now submit a post/comments (or any `NovaForm` comp) with CMD + Enter / Ctrl + Enter shortcuts (#1471, thanks @aszx87410).
+
+**Changes that may break some parts of your app:**
+- Some callbacks have been renamed for consistency purposes: `postsParameters` becomes `posts.parameters`, `profileCompletedAsync` becomes `users.profileCompleted.async`, `profileCompletedChecks` becomes `users.profileCompleted.sync`, `onCreateUserAsync` becomes `users.new.async`, `onCreateUser` becomes `users.new.sync`, `UsersEdit` becomes `users.edit.sync`, `UsersEditAsync` becomes `users.edit.async`.
+- The use of `react-bootstrap@0.30.3` is now forced in `package.json`: the latest versions break the dropdown at the moment (see #1463). You should re-run `npm install` if you update from a previous version.
+- The `currentUser` props has been removed, the current user is explicitly passed through the context as a matter of consistency across the app. If one of your custom components extending one of `nova:base-components` used `currentUser` as a props, you should update it to use it via the context and add the corresponding contextTypes. See https://github.com/TelescopeJS/Telescope/commit/b04cb5247027fc431f7aa1704ef823ac8ce5fdd1.
+
 ## v0.27.2
+
 - Move `updateCurrentValue` function from `propTypes` to `contextTypes` in the datetime picker`DateTime` (`nova:forms`) (#1449).
 - Check duplicate links on post's edit (#247).
 - Cloudinary images from `nova:cloudinary` are now served over HTTPS (#1224).
