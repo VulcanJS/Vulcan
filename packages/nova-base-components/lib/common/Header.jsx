@@ -21,7 +21,7 @@ const Header = (props, {currentUser}) => {
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <Telescope.components.UsersMenu user={currentUser}/> : <Telescope.components.UsersAccountMenu/>}
+            {currentUser ? <Telescope.components.UsersMenu/> : <Telescope.components.UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">
