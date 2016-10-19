@@ -11,11 +11,11 @@ import Users from 'meteor/nova:users';
 class PostsItem extends Component {
 
   renderCategories() {
-    return this.props.post.categoriesArray ? <Telescope.components.PostsCategories post={this.props.post} /> : "";
+    return this.props.post.categories && this.props.post.categories.length > 0 ? <Telescope.components.PostsCategories post={this.props.post} /> : "";
   }
 
   renderCommenters() {
-    return this.props.post.comments ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
+    return this.props.post.comments && this.props.post.comments.length > 0 ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
@@ -69,8 +69,8 @@ class PostsItem extends Component {
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
-            {/*(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
-            {this.renderActions()*/}
+            {this.context.currentUser && this.context.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
+            {this.renderActions()}
           </div>
 
         </div>

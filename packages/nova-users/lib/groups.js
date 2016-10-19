@@ -100,7 +100,10 @@ Users.canDo = (user, action) => {
 Users.canView = function (user, document) {
 
   const status = _.findWhere(Telescope.statuses, {value: document.status}).label;
-  const collectionName = document.getCollectionName();
+  
+  // note(apollo): use of `__typename` given by react-apollo
+  //const collectionName = document.getCollectionName();
+  const collectionName = document.__typename ? Telescope.utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
 
   if (!document) {
     return false;
@@ -122,8 +125,11 @@ Users.canView = function (user, document) {
 Users.canEdit = function (user, document) {
 
   user = (typeof user === 'undefined') ? Meteor.user() : user;
-  const collectionName = document.getCollectionName();
 
+  // note(apollo): use of `__typename` given by react-apollo
+  //const collectionName = document.getCollectionName();
+    const collectionName = document.__typename ? Telescope.utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
+  
   if (!user || !document) {
     return false;
   }

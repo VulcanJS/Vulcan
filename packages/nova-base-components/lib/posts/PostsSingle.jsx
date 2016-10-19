@@ -25,6 +25,7 @@ PostsSingle.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
+// this query is really too big 💥...🚂
 const PostsSingleWithData = graphql(gql`
   query getPost($postId: String) {
     post(_id: $postId) {
@@ -36,7 +37,15 @@ const PostsSingleWithData = graphql(gql`
       thumbnailUrl
       baseScore
       postedAt
+      sticky
+      categories {
+        _id
+        name
+        slug
+      }
+      commentCount
       comments {
+        _id
         parentComment {
           htmlBody
           postedAt
@@ -58,7 +67,16 @@ const PostsSingleWithData = graphql(gql`
           }
         }
       }
-      commentCount
+      upvoters {
+        _id
+      }
+      downvoters {
+        _id
+      }
+      upvotes # should be asked only for admins?
+      score # should be asked only for admins?
+      viewCount # should be asked only for admins?
+      clickCount # should be asked only for admins?
       user {
         _id
         telescope {

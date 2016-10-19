@@ -18,7 +18,7 @@ class Vote extends Component {
 
     if(!user){
       this.context.messages.flash("Please log in first");
-    } else if (user.hasUpvoted(post)) {
+    } else if (Users.hasUpvoted(user, post)) {
       this.context.actions.call('posts.cancelUpvote', post._id, () => {
         this.context.events.track("post upvote cancelled", {'_id': post._id});
       });        

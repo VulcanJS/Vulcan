@@ -311,3 +311,16 @@ Telescope.utils.getLogoUrl = () => {
     return logoUrl.indexOf('://') > -1 ? logoUrl : prefix + logoUrl;
   }
 };
+
+// note(apollo): get collection's name from __typename given by react-apollo
+Telescope.utils.getCollectionNameFromTypename = (type) => {
+  if (type.indexOf('Post') > -1) {
+    return 'posts';
+  } else if (type.indexOf('Cat') > -1) {
+    return 'categories';
+  } else if (type.indexOf('User') > -1) {
+    return 'users';
+  } else if (type.indexOf('Comment') > -1) {
+    return 'comments';
+  }
+};

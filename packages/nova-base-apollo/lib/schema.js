@@ -14,6 +14,7 @@ const postSchema = `
     body: String
     htmlBody: String
     excerpt: String
+    sticky: Boolean
     viewCount: Int
     lastCommentedAt: String
     clickCount: Int
@@ -33,6 +34,8 @@ const postSchema = `
     downvoters: [User]
     baseScore: Int
     score: Float
+    clickCount: Int
+    viewCount: Int
     thumbnailUrl: String
   }
 `;
@@ -102,6 +105,7 @@ const commentSchema = `
 
 const categorySchema = `
   type Category {
+    _id: String
     name: String
     description: String
     order: Int

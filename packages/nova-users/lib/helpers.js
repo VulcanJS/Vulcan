@@ -190,7 +190,8 @@ Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProf
  * @param {Object} document
  */
 Users.hasUpvoted = function (user, document) {
-  return user && _.include(document.upvoters, user._id);
+  // note(apollo): check upvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
+  return user && document.upvoters && document.upvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
 Users.helpers({hasUpvoted: function (document) {return Users.hasUpvoted(this, document);}});
 
@@ -200,7 +201,8 @@ Users.helpers({hasUpvoted: function (document) {return Users.hasUpvoted(this, do
  * @param {Object} document
  */
 Users.hasDownvoted = function (user, document) {
-  return user && _.include(document.downvoters, user._id);
+  // note(apollo): check downvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
+  return user && document.downvoters && document.downvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
 Users.helpers({hasDownvoted: function (document) {return Users.hasDownvoted(this, document);}});
 
