@@ -1,20 +1,16 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
-import {mount} from 'react-mounter';
 import { Messages } from 'meteor/nova:core';
 import { IndexRoute, Route, useRouterHistory, browserHistory, createMemoryHistory } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
-import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
-// import useNamedRoutes from 'use-named-routes';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Events from "meteor/nova:events";
 import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
 
-// redux
-import { Provider } from 'react-redux';
-import store from "./store.js";
+import { ApolloProvider } from 'react-apollo';
+import { store, client } from "./store.js";
 
 Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
@@ -30,9 +26,9 @@ Meteor.startup(() => {
   ]);
   
   const ProvidedApp = (props) => (
-    <Provider store={store}>
+    <ApolloProvider store={store} client={client}>
       <Telescope.components.App {...props} />
-    </Provider>
+    </ApolloProvider>
   );
 
   const AppRoutes = {
@@ -42,7 +38,6 @@ Meteor.startup(() => {
     childRoutes: Telescope.routes.routes
   };
 
-  let history;
 
   const clientOptions = {
     renderHook: ReactDOM.render,
@@ -62,11 +57,19 @@ Meteor.startup(() => {
     preRender: (req, res) => {
       Cookie.plugToRequest(req, res);
     },
+    // see https://github.com/thereactivestack/meteor-react-router-ssr/blob/9762f12c5d5512c5cfee8663a29428f7e4c141f8/lib/server.jsx#L241-L257
+    fetchDataHook: (components) => {
+      console.log('this is where ssr & apollo should interact')
+      return [new Promise((resolve, reject) => {
+        resolve();
+      })];
+    },
   };
   
   ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
   
   // note: we did like this at first
+  // let history;
   // if (Meteor.isClient) {
   //   history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });
   // }
