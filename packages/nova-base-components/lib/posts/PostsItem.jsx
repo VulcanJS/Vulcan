@@ -15,7 +15,7 @@ class PostsItem extends Component {
   }
 
   renderCommenters() {
-    return this.props.post.commentersArray ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
+    return this.props.post.comments ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
@@ -69,8 +69,8 @@ class PostsItem extends Component {
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
-            {this.context.currentUser && this.context.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
-            {this.renderActions()}
+            {/*(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
+            {this.renderActions()*/}
           </div>
 
         </div>

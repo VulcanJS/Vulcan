@@ -2,9 +2,8 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
 
-const PostsPage = ({document, currentUser}) => {
+const PostsPage = ({post}) => {
   
-  const post = document;
   const htmlBody = {__html: post.htmlBody};
 
   return (

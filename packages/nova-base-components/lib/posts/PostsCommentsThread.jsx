@@ -12,17 +12,7 @@ const PostsCommentsThread = ({document}, {currentUser}) => {
   return (
     <div className="posts-comments-thread">
       <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
-      <ListContainer 
-        collection={Comments} 
-        publication="comments.list" 
-        selector={{postId: post._id}} 
-        terms={{postId: post._id, view: "postComments"}} 
-        limit={0}
-        parentProperty="parentCommentId"
-        joins={Comments.getJoins()}
-        component={Telescope.components.CommentsList}
-        listId="comments.list"
-      />
+      <Telescope.components.CommentsList comments={post.comments} commentCount={post.commentCount} />
       { currentUser ?
         <div className="posts-comments-thread-new">
           <h4><FormattedMessage id="comments.new"/></h4>

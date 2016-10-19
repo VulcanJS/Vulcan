@@ -15,6 +15,7 @@
     "formsy-react": "^0.18.1",
     "formsy-react-components": "^0.8.1",
     "graphql": "^0.7.2",
+    "graphql-tag": "^0.1.14",
     "graphql-tools": "^0.7.2",
     "handlebars": "^4.0.5",
     "history": "^3.0.0",
