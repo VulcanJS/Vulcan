@@ -1,3 +1,5 @@
+import Telescope from 'meteor/nova:lib';
+
 const Messages = {
   // Local (client-only) collection
   collection: new Meteor.Collection(null),
@@ -19,6 +21,34 @@ const Messages = {
   clearSeen() {
     this.collection.update({seen:true}, {$set: {show:false}}, {multi:true});
   }
+};
+
+// actions
+Telescope.actions.messages = {
+  flash(content, flashType) {
+    return {
+      type: 'FLASH',
+      content,
+      flashType,
+    };
+  },
+  clear(i) {
+    return {
+      type: 'CLEAR',
+      i,
+    };
+  },
+  markAsSeen(i) {
+    return {
+      type: 'MARK_AS_SEEN',
+      i,
+    };
+  },
+  clearSeen() {
+    return {
+      type: 'CLEAR_SEEN'
+    };
+  },
 };
 
 export default Messages;

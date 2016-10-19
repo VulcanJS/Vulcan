@@ -5,7 +5,6 @@ import { FlashContainer } from "meteor/nova:core";
 class Layout extends Component {
 
   render() {
-
     return (
       <div className="wrapper" id="wrapper">
 
@@ -17,7 +16,7 @@ class Layout extends Component {
       
         <div className="main">
 
-          <FlashContainer component={Telescope.components.FlashMessages}/>
+          <FlashContainer {...this.props} component={Telescope.components.FlashMessages}/>
 
           <Telescope.components.Newsletter />
 
@@ -29,7 +28,6 @@ class Layout extends Component {
       
       </div>
     )
-
   }
 }
 

@@ -106,4 +106,8 @@ Telescope.statuses = [
   }
 ];
 
+// ---------------------------------- Redux ------------------------------------ //
+Telescope.actions = {};
+Telescope.reducers = {};
+
 export default Telescope;

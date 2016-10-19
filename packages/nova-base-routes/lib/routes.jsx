@@ -12,6 +12,10 @@ import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
 
+// redux
+import { Provider } from 'react-redux';
+import store from "./store.js";
+
 Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
 Meteor.startup(() => {
@@ -24,13 +28,19 @@ Meteor.startup(() => {
     {name:"users.edit",     path:"users/:slug/edit",   component:Telescope.components.UsersAccount},
     {name:"app.notfound",   path:"*",                  component:Telescope.components.Error404},
   ]);
+  
+  const ProvidedApp = (props) => (
+    <Provider store={store}>
+      <Telescope.components.App {...props} />
+    </Provider>
+  );
 
   const AppRoutes = {
     path: '/',
-    component: Telescope.components.App,
+    component: ProvidedApp,
     indexRoute: Telescope.routes.indexRoute,
     childRoutes: Telescope.routes.routes
-  }
+  };
 
   let history;
 
