@@ -28,6 +28,7 @@ Package.onUse(function (api) {
     'react-meteor-data@0.2.8',
     'service-configuration',
     'shell-server',
+    'apollo@0.1.2',
     
     // Third-party packages
 
