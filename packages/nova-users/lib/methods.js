@@ -5,7 +5,7 @@ var completeUserProfile = function (userId, modifier, user) {
 
   Users.update(userId, modifier);
 
-  Telescope.callbacks.runAsync("profileCompletedAsync", Users.findOne(userId));
+  Telescope.callbacks.runAsync("users.profileCompleted.async", Users.findOne(userId));
 
   return Users.findOne(userId);
 
@@ -27,7 +27,7 @@ Users.methods.edit = (userId, modifier, user) => {
 
   // ------------------------------ Callbacks ------------------------------ //
 
-  modifier = Telescope.callbacks.run("UsersEdit", modifier, user);
+  modifier = Telescope.callbacks.run("users.edit.sync", modifier, user);
 
   // ------------------------------ Update ------------------------------ //
 
@@ -35,7 +35,7 @@ Users.methods.edit = (userId, modifier, user) => {
 
   // ------------------------------ Callbacks ------------------------------ //
 
-  Telescope.callbacks.runAsync("UsersEditAsync", Users.findOne(userId), user);
+  Telescope.callbacks.runAsync("users.edit.async", Users.findOne(userId), user);
 
   // ------------------------------ After Update ------------------------------ //
   return Users.findOne(userId);
@@ -61,53 +61,6 @@ Users.methods.removeGroup = (userId, groupName) => {
 };
 
 Meteor.methods({
-  'users.compleProfile'(modifier, userId) {
-    
-    check(modifier, Match.OneOf({$set: Object}, {$unset: Object}, {$set: Object, $unset: Object}));
-    check(userId, String);
-
-    var currentUser = Meteor.user(),
-        user = Users.findOne(userId),
-        schema = Users.simpleSchema()._schema;
-
-    // ------------------------------ Checks ------------------------------ //
-
-    // check that user can edit document
-    if (!user || !Users.canEdit(currentUser, user)) {
-      throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
-    }
-
-    // if an $unset modifier is present, it means one or more of the fields is missing
-    if (modifier.$unset) {
-      throw new Meteor.Error(601, 'all_fields_are_required');
-    }
-
-    // check for existing emails and throw error if necessary
-    // NOTE: redundant with collection hook, but better to throw the error here to avoid wiping out the form
-    if (modifier.$set && modifier.$set["telescope.email"]) {
-      var email = modifier.$set["telescope.email"];
-      if (Users.findByEmail(email)) {
-        throw new Meteor.Error("email_taken1", "this_email_is_already_taken" + " (" + email + ")");
-      }
-
-    }
-
-    // go over each field and throw an error if it's not editable
-    // loop over each operation ($set, $unset, etc.)
-    _.each(modifier, function (operation) {
-      // loop over each property being operated on
-      _.keys(operation).forEach(function (fieldName) {
-        var field = schema[fieldName];
-        if (!Users.canEditField(user, field, user)) {
-          throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
-        }
-
-      });
-    });
-
-    completeUserProfile(userId, modifier, user);
-  },
-
   'users.edit'(userId, modifier) {
 
     // checking might be redundant because SimpleSchema already enforces the schema, but you never know
@@ -149,7 +102,7 @@ Meteor.methods({
 
       const user = Users.findOne(userId);
 
-      Meteor.users.remove(userId);
+      Users.remove(userId);
 
       Telescope.callbacks.runAsync("users.remove.async", user, options);
     

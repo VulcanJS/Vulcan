@@ -156,6 +156,7 @@
 }
 
 .posts-categories{
+  flex-wrap: wrap;
   @include medium-large{
     margin-left: 5px;
   }

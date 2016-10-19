@@ -207,11 +207,6 @@ function PostsNewRequiredPropertiesCheck (post, user) {
   // generate slug
   post.slug = Telescope.utils.slugify(post.title);
 
-  // post is not pending and has been scheduled to be posted in the future by a moderator/admin
-  if (post.status !== Posts.config.STATUS_PENDING && post.postedAt && post.postedAt > post.createdAt) {
-    post.status = Posts.config.STATUS_SCHEDULED;
-  }
-
   // if post is approved but doesn't have a postedAt date, give it a default date
   // note: pending posts get their postedAt date only once theyre approved
   if (Posts.isApproved(post) && !post.postedAt) {
@@ -238,7 +233,7 @@ Telescope.callbacks.add("posts.new.sync", PostsNewSetFuture);
  */
 function PostsNewIncrementPostCount (post) {
   var userId = post.userId;
-  Meteor.users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
+  Users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
 }
 Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
 
@@ -247,7 +242,7 @@ Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
  */
 function PostsNewUpvoteOwnPost (post) {
   if (typeof Telescope.operateOnItem !== "undefined") {
-    var postAuthor = Meteor.users.findOne(post.userId);
+    var postAuthor = Users.findOne(post.userId);
     Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
   }
 }
@@ -263,7 +258,7 @@ function PostsNewNotifications (post) {
     var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
     var notifiedUserIds = _.pluck(Users.find({'telescope.notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
     var notificationData = {
-      post: _.pick(post, '_id', 'userId', 'title', 'url')
+      post: _.pick(post, '_id', 'userId', 'title', 'url', 'slug')
     };
 
     // remove post author ID from arrays

@@ -20,7 +20,6 @@ class CommentsNew extends Component {
       <div className="comments-new-form">
         <NovaForm 
           collection={Comments} 
-          currentUser={this.context.currentUser}
           methodName="comments.new"
           prefilledProps={prefilledProps}
           successCallback={this.props.successCallback}

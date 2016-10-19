@@ -17,7 +17,7 @@ Posts.addField(
       optional: true,
       insertableIf: canInsert,
       editableIf: canEdit,
-      autoform: {
+      form: {
         noselect: true,
         type: "bootstrap-category",
         order: 50,

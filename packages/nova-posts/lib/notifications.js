@@ -4,7 +4,7 @@ import Users from 'meteor/nova:users';
 
 Posts.getNotificationProperties = function (data) {
   const post = data.post;
-  const postAuthor = Meteor.users.findOne(post.userId);
+  const postAuthor = Users.findOne(post.userId);
   const properties = {
     postAuthorName : Posts.getAuthorName(post),
     postTitle : Telescope.utils.cleanUp(post.title),

@@ -21,4 +21,4 @@ function addSearchQueryParameter (parameters, terms) {
   }
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", addSearchQueryParameter);
+Telescope.callbacks.add("posts.parameters", addSearchQueryParameter);
