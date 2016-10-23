@@ -62,7 +62,7 @@ minifier-js@1.2.14
 minimongo@1.0.17
 modules@0.7.6
 modules-runtime@0.7.6
-mongo@1.1.12
+mongo@1.1.13
 mongo-id@1.0.5
 nova:api@0.27.3-nova
 nova:base-components@0.27.3-nova
@@ -89,7 +89,7 @@ nova:settings@0.27.3-nova
 nova:users@0.27.3-nova
 nova:voting@0.27.3-nova
 npm-bcrypt@0.9.1
-npm-mongo@1.5.48
+npm-mongo@2.2.11_1
 observe-sequence@1.0.12
 ordered-dict@1.0.8
 peerlibrary:assert@0.2.5
