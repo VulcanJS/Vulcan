@@ -18,7 +18,7 @@ const PostsPage = ({document, currentUser}) => {
 
       {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
-      <Telescope.components.PostsCommentsThread document={post} currentUser={currentUser}/>
+      <Telescope.components.PostsCommentsThread document={post} />
 
     </div>
   )

@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nova:lib',
   summary: 'Telescope libraries.',
-  version: '0.27.2-nova',
+  version: '0.27.3-nova',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 

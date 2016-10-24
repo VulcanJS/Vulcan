@@ -21,7 +21,7 @@ Posts.addField(
       optional: true, // this field is not required
       insertableIf: canInsert,
       editableIf: canEdit,
-      autoform: {
+      form: {
         options: function () { // options for the select form control
           return [
             {value: "white", label: "White"},

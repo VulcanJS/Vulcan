@@ -2,7 +2,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
   import Posts from "meteor/nova:posts";
 
   Posts.views.add("userSubscribedPosts", function (terms) {
-    var user = Meteor.users.findOne(terms.userId),
+    var user = Users.findOne(terms.userId),
         postsIds = [];
 
     if (user && user.telescope.subscribedItems && user.telescope.subscribedItems.Posts) {

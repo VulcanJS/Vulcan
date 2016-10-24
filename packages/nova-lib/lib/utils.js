@@ -131,35 +131,6 @@ Telescope.utils.getOutgoingUrl = function (url) {
   return Telescope.utils.getSiteUrl() + "out?url=" + encodeURIComponent(url);
 };
 
-// This function should only ever really be necessary server side
-// Client side using .path() is a better option since it's relative
-// and shouldn't care about the siteUrl.
-Telescope.utils.getRouteUrl = function (routeName, params, options) {
-  options = options || {};
-  var route = FlowRouter.path(
-    routeName,
-    params || {},
-    options
-  );
-  return route;
-};
-
-Telescope.utils.getSignupUrl = function() {
-  return this.getRouteUrl('signUp');
-};
-Telescope.utils.getSigninUrl = function() {
-  return this.getRouteUrl('signIn');
-};
-
-//TODO: fix this
-Telescope.utils.getPostCommentUrl = function(postId, commentId) {
-  // get link to a comment on a post page
-  return this.getRouteUrl('post_page_comment', {
-    _id: postId,
-    commentId: commentId
-  });
-};
-
 Telescope.utils.slugify = function (s) {
   var slug = getSlug(s, {
     truncate: 60
@@ -174,8 +145,8 @@ Telescope.utils.slugify = function (s) {
 };
 
 Telescope.utils.getUnusedSlug = function (collection, slug) {
-  var suffix = "";
-  var index = 0;
+  let suffix = "";
+  let index = 0;
 
   // test if slug is already in use
   while (!!collection.findOne({slug: slug+suffix})) {

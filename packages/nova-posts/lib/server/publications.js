@@ -24,7 +24,7 @@ const getPostsListUsers = posts => {
 
   userIds = _.unique(userIds);
 
-  return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.publishedFields.list});
+  return Users.find({_id: {$in: userIds}}, {fields: Users.publishedFields.list});
  
 };
 
@@ -56,7 +56,7 @@ const getSinglePostUsers = post => {
   // remove any duplicate IDs
   users = _.unique(users);
 
-  return Meteor.users.find({_id: {$in: users}}, {fields: Users.publishedFields.list});
+  return Users.find({_id: {$in: users}}, {fields: Users.publishedFields.list});
 };
 
 // ------------------------------------- Publications -------------------------------- //
@@ -71,7 +71,7 @@ Meteor.publish('posts.list', function (terms) {
 
   this.autorun(function () {
     
-    const currentUser = this.userId && Meteor.users.findOne(this.userId);
+    const currentUser = this.userId && Users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
     const {selector, options} = Posts.parameters.get(terms);
@@ -103,7 +103,7 @@ Meteor.publish('posts.single', function (terms) {
 
   check(terms, Match.OneOf({_id: String}, {_id: String, slug: Match.Any}));
 
-  const currentUser = this.userId && Meteor.users.findOne(this.userId);
+  const currentUser = this.userId && Users.findOne(this.userId);
   const options = {fields: Posts.publishedFields.single};
   const posts = Posts.find(terms._id, options);
   const post = posts.fetch()[0];

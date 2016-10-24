@@ -3,10 +3,8 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Input } from 'formsy-react-components';
-//import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
-//import { Messages } from "meteor/nova:core";
 import Users from 'meteor/nova:users';
 
 class Newsletter extends Component {

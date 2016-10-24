@@ -6,7 +6,7 @@ var kadiraAppIdProperty = {
   fieldSchema: {
     type: String,
     optional: true,
-    autoform: {
+    form: {
       group: "kadira"
     }
   }
@@ -20,7 +20,7 @@ var kadiraAppSecretProperty = {
     type: String,
     optional: true,
     private: true,
-    autoform: {
+    form: {
       group: "kadira",
       class: "private-field"
     }

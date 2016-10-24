@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import Categories from "./collection.js";
@@ -28,7 +29,10 @@ Meteor.methods({
   }
 });
 
-Categories.smartMethods({
-  createName: "categories.new",
-  editName: "categories.edit"
+// assign smart methods on startup so the method code generated takes care of categories' custom fields (extended schema) -> prevent bug on create/edit categories with custom fields
+Meteor.startup(() => {
+  Categories.smartMethods({
+    createName: "categories.new",
+    editName: "categories.edit"
+  });
 });
