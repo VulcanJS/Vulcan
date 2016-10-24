@@ -12,8 +12,8 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
 
   var item = collection.findOne(itemId);
   var votePower = Telescope.getVotePower(user);
-  var hasUpvotedItem = user.hasUpvoted(item);
-  var hasDownvotedItem = user.hasDownvoted(item);
+  var hasUpvotedItem = Users.hasUpvoted(user, item);
+  var hasDownvotedItem = Users.hasDownvoted(user, item);
   var update = {};
 
   // console.log(collection)
@@ -27,7 +27,9 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
     !user || 
     !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
     operation === "upvote" && hasUpvotedItem ||
-    operation === "downvote" && hasDownvotedItem
+    operation === "downvote" && hasDownvotedItem ||
+    operation === "cancelUpvote" && !hasUpvotedItem||
+    operation === "cancelDownvote" && !hasDownvotedItem
   ) {
     return false; 
   }

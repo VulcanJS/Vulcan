@@ -14,11 +14,11 @@ import NovaEmail from 'meteor/nova:email';
 Users.after.insert(function (userId, user) {
 
   // run create user async callbacks
-  Telescope.callbacks.runAsync("onCreateUserAsync", user);
+  Telescope.callbacks.runAsync("users.new.async", user);
 
   // check if all required fields have been filled in. If so, run profile completion callbacks
   if (Users.hasCompletedProfile(user)) {
-    Telescope.callbacks.runAsync("profileCompletedAsync", user);
+    Telescope.callbacks.runAsync("users.profileCompleted.async", user);
   }
 
 });
@@ -112,6 +112,8 @@ function setupUser (user, options) {
     user.telescope.email = user.services.github.email;
   } else if (user.services.google && user.services.google.email) {
     user.telescope.email = user.services.google.email;
+  } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
+    user.telescope.email = user.services.linkedin.emailAddress;
   }
 
   // generate email hash
@@ -124,41 +126,41 @@ function setupUser (user, options) {
     user.telescope.displayName = user.profile.username;
   } else if (user.profile.name) {
     user.telescope.displayName = user.profile.name;
+  } else if (user.services.linkedin && user.services.linkedin.firstName) {
+    user.telescope.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
   } else {
     user.telescope.displayName = user.username;
-  }
+  } 
 
-  // create slug from display name
-  user.telescope.slug = Telescope.utils.slugify(user.telescope.displayName);
+  // create a basic slug from display name and then modify it if this slugs already exists;
+  const basicSlug = Telescope.utils.slugify(user.telescope.displayName);
+  user.telescope.slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
-  user.isAdmin = (!user.profile.isDummy && Meteor.users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
+  user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
-  Events.track('new user', {username: user.username, email: user.telescope.email});
+  Events.track('new user', {username: user.telescope.displayName, email: user.telescope.email});
 
   return user;
 }
-Telescope.callbacks.add("onCreateUser", setupUser);
+Telescope.callbacks.add("users.new.sync", setupUser);
 
 
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }
-Telescope.callbacks.add("profileCompletedChecks", hasCompletedProfile);
+Telescope.callbacks.add("users.profileCompleted.sync", hasCompletedProfile);
 
 function adminUserCreationNotification (user) {
   // send notifications to admins
-  var admins = Users.adminUsers();
-  admins.forEach(function(admin){
+  const admins = Users.adminUsers();
+  admins.forEach(function(admin) {
     if (Users.getSetting(admin, "notifications_users", false)) {
-      var emailProperties = {
-        profileUrl: Users.getProfileUrl(user, true),
-        username: Users.getUserName(user)
-      };
-      var html = NovaEmail.getTemplate('newUser')(emailProperties);
-      NovaEmail.send(Users.getEmail(admin), 'New user account: '+Users.getUserName(user), NovaEmail.buildTemplate(html));
+      const emailProperties = Users.getNotificationProperties(user);
+      const html = NovaEmail.getTemplate('newUser')(emailProperties);
+      NovaEmail.send(Users.getEmail(admin), `New user account: ${emailProperties.displayName}`, NovaEmail.buildTemplate(html));
     }
   });
   return user;
 }
-Telescope.callbacks.add("onCreateUser", adminUserCreationNotification);
+Telescope.callbacks.add("users.new.sync", adminUserCreationNotification);

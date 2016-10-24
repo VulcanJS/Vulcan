@@ -9,7 +9,8 @@ const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
 Cloudinary.config({
   cloud_name: Telescope.settings.get("cloudinaryCloudName"),
   api_key: Telescope.settings.get("cloudinaryAPIKey"),
-  api_secret: Telescope.settings.get("cloudinaryAPISecret")
+  api_secret: Telescope.settings.get("cloudinaryAPISecret"),
+  secure: true,
 });
 
 const CloudinaryUtils = {

@@ -5,7 +5,7 @@
 
 Telescope = {};
 
-Telescope.VERSION = '0.26.5-nova';
+Telescope.VERSION = '0.27.3-nova';
 
 // ------------------------------------- Config -------------------------------- //
 
@@ -25,7 +25,8 @@ SimpleSchema.extendOptions({
   required: Match.Optional(Boolean), // required: true means the field is required to have a complete profile
   profile: Match.Optional(Boolean), // profile: true means the field is shown on user profiles
   template: Match.Optional(String), // template used to display the field
-  autoform: Match.Optional(Object), // autoform placeholder
+  form: Match.Optional(Object), // form placeholder
+  autoform: Match.Optional(Object), // legacy form placeholder; backward compatibility
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
   order: Match.Optional(Number), // position in the form
   group: Match.Optional(Object) // form fieldset group
@@ -104,5 +105,9 @@ Telescope.statuses = [
     label: 'deleted'
   }
 ];
+
+// ---------------------------------- Redux ------------------------------------ //
+Telescope.actions = {};
+Telescope.reducers = {};
 
 export default Telescope;

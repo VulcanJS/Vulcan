@@ -7,11 +7,11 @@ import Users from '../modules.js';
 Meteor.publish('users.single', function (terms) {
 
   var idOrSlug = terms._id || terms['telescope.slug'];
-  var findById = Meteor.users.findOne(idOrSlug);
-  var findBySlug = Meteor.users.findOne({"telescope.slug": idOrSlug});
+  var findById = Users.findOne(idOrSlug);
+  var findBySlug = Users.findOne({"telescope.slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
   var options = Users.isAdmin(this.userId) ? {} : {fields: Users.publishedFields.public};
-  return user ? Meteor.users.find({_id: user._id}, options) : [];
+  return user ? Users.find({_id: user._id}, options) : [];
 
 });
 
@@ -19,7 +19,7 @@ Meteor.publish('users.single', function (terms) {
  * @summary Publish the current user
  */
 Meteor.publish('users.current', function () {
-  const user = Meteor.users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
+  const user = Users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
   return user || [];
 });
 
@@ -32,7 +32,7 @@ Meteor.publish('users.current', function () {
 
 //   var selector = Settings.get('requirePostInvite') ? {isInvited: true} : {}; // only users that can post
 //   if (Users.isAdminById(this.userId)) {
-//     return Meteor.users.find(selector, {fields: Users.pubsub.avatarProperties});
+//     return Users.find(selector, {fields: Users.pubsub.avatarProperties});
 //   }
 //   return [];
 // });

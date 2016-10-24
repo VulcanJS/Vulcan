@@ -1,5 +1,7 @@
 # Telescope Nova
 
+> It's the [Hacktoberfest](https://hacktoberfest.digitalocean.com/), support & celebrate open-source! [Browse our issues](https://github.com/TelescopeJS/Telescope/issues?q=is%3Aissue+is%3Aopen+label%3Ahacktoberfest) and come contribute! 
+
 There are currently two distinct versions of Telescope: **Nova** and **Legacy**.
 
 **Nova** is the new, React-based version and all development will happen on this version going forward. It's used by the [master](https://github.com/TelescopeJS/Telescope/tree/master) and [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branches.
@@ -13,8 +15,8 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Getting Started](#getting-started)
   - [Updating](#updating)
   - [Resources](#resources)
-  - [Deployment](#deployment)
   - [Settings](#settings)
+  - [Deployment](#deployment)
   - [Categories](#categories)
   - [Social Login](#social-login)
   - [Packages](#packages)
@@ -34,32 +36,37 @@ Note that both versions use the same data format, so you can go back and forth b
   - [Groups & Permissions](#groups--permissions)
   - [Internationalization](#internationalization)
   - [Cheatsheet](#cheatsheet)
+  - [Third-Party packages](#third-party-packages)
 
 ## Getting Started
 
 ### First Steps
 
+Install the latest version of Node and NPM. We recommend the usage of [NVM](http://nvm.sh).
+
 [Install Meteor](https://www.meteor.com/install):
 
-```
+```sh
 curl https://install.meteor.com/ | sh
 ```
 
 Clone this repository locally:
 
-```
+```sh
 git clone git@github.com:TelescopeJS/Telescope.git
 ```
 
+(or `https://github.com/TelescopeJS/Telescope.git`)
+
 Install the necessary NPM packages:
 
-```
+```sh
 npm install
 ```
 
 Then run the app with:
 
-```
+```sh
 meteor
 ```
 
@@ -107,10 +114,6 @@ For local development, an easy way to do that is to simply copy the `.meteor/loc
 
 The best ways to get support are [Telescope Meta](http://meta.telescopeapp.org) and the [Telescope Slack Chatroom](http://slack.telescopeapp.org).
 
-## Deployment
-
-The recommended way to deploy Nova is by using [MupX](https://github.com/arunoda/meteor-up/tree/mupx).
-
 ## Settings
 
 Settings can be configured in your `settings.json` file. For legacy compatibility reasons, settings can also be specified in your database, but note that settings specified in `settings.json` take priority over those stored in the database.
@@ -120,7 +123,78 @@ Settings can be public (meaning they will be published to the client) or private
 To use your `settings.json` file:
 
 - Development: `meteor --settings settings.json`
-- Production: specify the path to `settings.json` in `mup.json`
+- Production: specify the path to `settings.json` in the tool you use to deploy (i.e. `mup deploy --settings settings.json`, see below)
+
+## Deployment
+
+The recommended way to deploy Nova is by using [Mup](https://github.com/kadirahq/meteor-up/), at least v1.0.3.
+
+#### Configuration
+
+You should have a Linux server online, for instance [a Digital Ocean droplet running with Ubuntu](https://www.digitalocean.com).
+
+Install globally the latest `kadirahq/meteor-up`.
+
+``` 
+npm install -g mup
+```
+
+Create Meteor Up configuration files in your project directory with `mup init`. In the example below, the configuration files are created in a `.deploy` directory at the root of your app. 
+
+```
+cd my-app-folder
+mkdir .deploy
+cd .deploy
+mup init
+```
+
+This will create two files :
+
+```
+mup.js - Meteor Up configuration file
+settings.json - Settings for Meteor's settings API
+```
+
+Then, replace the content of the newly created `settings.json` with your own settings (you can use the content of `sample_settings.json` as a starter).
+
+Fill `mup.js` with your credentials and optional settings (check the [Mup repo](https://github.com/kadirahq/meteor-up) for additional docs). 
+
+**Note:** the `ROOT_URL` field should be the absolute url of your deploy ; and you need to explicitly point out to use `abernix/meteord:base` docker image with a `docker` field within the `meteor` object.
+
+```
+...
+meteor: {
+  ...
+  path: '../' // relative path of the app considering your mup config files
+  env: {
+        ROOT_URL: 'http://nova-app.com', // absolute url of your deploy
+        ...
+  }, 
+  ...
+  docker: {
+        image:'abernix/meteord:base' // docker image working with meteor 1.4 & node 4
+  },
+  ...
+},
+...
+```
+
+You can take inspiration (or copy/paste) on this [`mup.js` example](https://gist.github.com/xavcz/6ddc2bb6f67fe0936c8328ab3314641d).
+
+#### Setup your server
+
+From this folder, you can now setup Docker & Mongo your server with:
+```
+mup setup 
+```
+
+#### Deploy your app to your server
+
+Still in the same folder, to deploy your app with your settings file:
+
+```
+mup --settings settings.json
+```
 
 ## Categories
 
@@ -130,7 +204,7 @@ Just like Settings, you can specify categories either via the in-app UI or via `
 
 To add new social login options, you'll first need to add your API keys to your `settings.json` file. For example:
 
-```
+```json
 "oAuth": {
   "twitter": {
     "consumerKey": "foo",
@@ -147,7 +221,7 @@ To add new social login options, you'll first need to add your API keys to your 
 
 Then, add the relevant Meteor package:
 
-```
+```sh
 meteor add accounts-twitter accounts-facebook
 ```
 
@@ -300,7 +374,26 @@ If a component deals with a collection (`Posts`, `Comments`, etc.) its name shou
 
 For example: `PostsShare`.
 
-The outermost HTML element within the component will have a class of the same name, but with a dash instead: `posts-share`. If possible, classes for all other elements within the component will start with the component's class: `posts-share-button`, `posts-share-divider`, etc.  
+The outermost HTML element within the component will have a class of the same name, but with a dash instead: `posts-share`. If possible, classes for all other elements within the component will start with the component's class: `posts-share-button`, `posts-share-divider`, etc.
+
+### Get current user
+
+The current user is given to the components via the React context. You can access it via `this.context.currentUser` (class) or `context.currentUser` (stateless-component). 
+
+The component needs to define `currentUser` in its `contextTypes`. If `contextTypes` is not defined, then `context` will be an empty object and you won't be able to access to the current user.
+
+Example :
+```js
+const CustomHeader = (props, context) => {
+  // if a user is connected, show its username; else say hello
+  return context.currentUser ? <div>Hey ${context.currentUser.username}!</div> : <div>Hello!</div>
+};
+
+// if you don't define `contextTypes` for `CustomHeader`, then the `context` argument will be an empty object
+CustomHeader.contextTypes = {
+  currentUser: React.PropTypes.object
+};
+```
 
 ## Customizing Emails
 
@@ -454,7 +547,7 @@ function addSearchQueryParameter (parameters, terms) {
   }
   return parameters;
 }
-Telescope.callbacks.add("postsParameters", addSearchQueryParameter);
+Telescope.callbacks.add("posts.parameters", addSearchQueryParameter);
 ```
 
 The callback takes two arguments: the current MongoDB `parameters` (an object with a `selector` and `options` properties), and the `terms` extracted from the URL.
@@ -636,12 +729,15 @@ If you create a new internationalization package, let us know so we can add it h
 - [es-ES](https://atmospherejs.com/fcallem/nova-i18n-es-es)
 - [pl-PL](https://atmospherejs.com/lusch/nova-i18n-pl-pl)
 - [ru-RU](https://github.com/fortunto2/nova-i18n-ru-ru)
+- [de-DE](https://atmospherejs.com/fzeidler/nova-i18n-de-de)
+- [pt-BR](https://github.com/lukasag/nova-i18n-pt-br)
 
 ## Cheatsheet
 
 You can access a dynamically generated cheatsheet of Nova's main functions at [http://localhost:3000/cheatsheet](/cheatsheet) (replace with your own development URL).
 
-## Third-Party Plugins
+## Third-Party Packages
 
 - [Post By Feed](https://github.com/xavcz/nova-post-by-feed): register RSS feeds that will be fetched every 30 minutes to create new posts automatically.
-- [Nova-Slack](https://github.com/xavcz/nova-slack): A package that automatically sends your posts as messages to any connected Slack Team.
+- [Post To Slack](https://github.com/xavcz/nova-slack): A package that automatically sends your posts as messages to any connected Slack Team.
+- [Upload Images](https://github.com/xavcz/nova-forms-upload): A package that extends [nova:forms](https://github.com/TelescopeJS/Telescope/tree/master/packages/nova-forms) to upload images, like an avatar, to Cloudinary from a drop zone.

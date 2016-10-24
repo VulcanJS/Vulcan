@@ -22,12 +22,11 @@ const UsersEdit = (props, context) => {
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
         <NovaForm 
-          currentUser={currentUser}
-          collection={Meteor.users} 
+          collection={Users} 
           document={user} 
           methodName="users.edit"
           successCallback={(user)=>{
-            context.messages.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getUserName(user)}), 'success')
+            context.messages.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
           }}
         />
       </div>
@@ -41,6 +40,7 @@ UsersEdit.propTypes = {
 };
 
 UsersEdit.contextTypes = {
+  currentUser: React.PropTypes.object,
   messages: React.PropTypes.object,
   intl: intlShape
 };

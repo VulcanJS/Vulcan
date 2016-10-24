@@ -1,9 +1,5 @@
 import Telescope from 'meteor/nova:lib';
 
-var modifyKarma = function (userId, karma) {
-  Meteor.users.update({_id: userId}, {$inc: {"telescope.karma": karma}});
-};
-
 /**
  * @summary Update an item's (post or comment) score
  * @param {object} item - The item being operated on
@@ -51,7 +47,7 @@ function updateUser (item, user, collection, operation) {
       break;
   }
 
-  Meteor.users.update({_id: user._id}, update);
+  Users.update({_id: user._id}, update);
 
 }
 Telescope.callbacks.add("upvote.async", updateUser);
@@ -73,7 +69,7 @@ function updateKarma (item, user, collection, operation) {
   
   // only update karma is the operation isn't done by the item's author
   if (item.userId !== user._id) {
-    Meteor.users.update({_id: item.userId}, {$inc: {"telescope.karma": karmaAmount}});
+    Users.update({_id: item.userId}, {$inc: {"telescope.karma": karmaAmount}});
   }
 
 }

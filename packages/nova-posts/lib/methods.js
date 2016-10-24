@@ -18,7 +18,7 @@ Posts.methods = {};
  */
 Posts.methods.new = function (post) {
 
-  const currentUser = Meteor.users.findOne(post.userId);
+  const currentUser = Users.findOne(post.userId);
 
   post = Telescope.callbacks.run("posts.new.sync", post, currentUser);
 
@@ -248,6 +248,7 @@ Meteor.methods({
    */
   'posts.upvote': function (postId) {
     check(postId, String);
+    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
   },
 
@@ -259,6 +260,7 @@ Meteor.methods({
    */
   'posts.downvote': function (postId) {
     check(postId, String);
+    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
   },
 
@@ -271,6 +273,7 @@ Meteor.methods({
    */
   'posts.cancelUpvote': function (postId) {
     check(postId, String);
+    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
   },
 
@@ -282,6 +285,7 @@ Meteor.methods({
    */
   'posts.cancelDownvote': function (postId) {
     check(postId, String);
+    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
     return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");
   }
 

@@ -33,7 +33,7 @@ class Category extends Component {
 
     return (
       <div className="category-menu-item dropdown-item">
-        <LinkContainer to={{pathname:"/", query: newQuery}} activeClassName="category-active">
+        <LinkContainer to={{pathname:"/", query: newQuery}}>
           <MenuItem 
             eventKey={index+1} 
             key={category._id} 

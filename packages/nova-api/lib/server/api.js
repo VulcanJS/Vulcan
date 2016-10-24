@@ -3,7 +3,7 @@ import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 
-serveAPI = function(terms){
+export const servePostsApi = (terms) => {
   var posts = [];
 
   var parameters = Posts.parameters.get(terms);

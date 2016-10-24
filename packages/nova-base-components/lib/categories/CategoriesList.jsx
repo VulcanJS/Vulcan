@@ -97,7 +97,7 @@ class CategoriesList extends Component {
           id="categories-dropdown"
         >
           <div className="category-menu-item dropdown-item">
-            <LinkContainer to={{pathname:"/", query: currentQuery}} activeClassName="category-active">
+            <LinkContainer to={{pathname:"/", query: currentQuery}}>
               <MenuItem eventKey={0}>
                 <FormattedMessage id="categories.all"/>
               </MenuItem>

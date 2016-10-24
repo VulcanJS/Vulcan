@@ -8,4 +8,4 @@ import ContextPasser from "./components/ContextPasser.jsx";
 import FlashContainer from "./containers/FlashContainer.jsx";
 import AppComposer from "./containers/AppComposer.jsx";
 
-export { Messages, ModalTrigger, ContextPasser, AppComposer, FlashContainer};
+export { Messages, ModalTrigger, ContextPasser, AppComposer, FlashContainer };

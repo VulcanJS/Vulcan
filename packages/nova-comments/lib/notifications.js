@@ -1,11 +1,12 @@
 import Comments from './collection.js';
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 Comments.getNotificationProperties = function (data) {
   const comment = data.comment;
-  var commentAuthor = Meteor.users.findOne(comment.userId);
-  var post = Posts.findOne(comment.postId);
-  var properties = {
+  const commentAuthor = Users.findOne(comment.userId);
+  const post = Posts.findOne(comment.postId);
+  const properties = {
     profileUrl: commentAuthor && commentAuthor.getProfileUrl(true),
     postUrl: Posts.getPageUrl(post, true),
     authorName : Comments.getAuthorName(comment),

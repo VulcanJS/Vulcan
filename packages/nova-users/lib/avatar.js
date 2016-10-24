@@ -7,7 +7,7 @@ import Users from './collection.js';
 Users.avatar = {
 
   // Default functionality. You can override these options by calling
-  // Avater.setOptions (do not set this.options directly)
+  // Users.avatar.setOptions (do not set this.options directly)
 
   options: {
 

@@ -21,7 +21,7 @@ Users.getUser = function (userOrUserId) {
       return Meteor.user();
     }
   } else if (typeof userOrUserId === "string") {
-    return Meteor.users.findOne(userOrUserId);
+    return Users.findOne(userOrUserId);
   } else {
     return userOrUserId;
   }
@@ -44,7 +44,7 @@ Users.getUserName = function (user) {
   }
 };
 Users.helpers({getUserName: function () {return Users.getUserName(this);}});
-Users.getUserNameById = function (userId) {return Users.getUserName(Meteor.users.findOne(userId))};
+Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOne(userId))};
 
 /**
  * @summary Get a user's display name (not unique, can take special characters and spaces)
@@ -58,7 +58,7 @@ Users.getDisplayName = function (user) {
   }
 };
 Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}});
-Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Meteor.users.findOne(userId));};
+Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Users.findOne(userId));};
 
 /**
  * @summary Get a user's profile URL
@@ -105,7 +105,7 @@ Users.getTwitterName = function (user) {
   return null;
 };
 Users.helpers({getTwitterName: function () {return Users.getTwitterName(this);}});
-Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Meteor.users.findOne(userId));};
+Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Users.findOne(userId));};
 
 /**
  * @summary Get a user's GitHub name
@@ -121,7 +121,7 @@ Users.getGitHubName = function (user) {
   return null;
 };
 Users.helpers({getGitHubName: function () {return Users.getGitHubName(this);}});
-Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Meteor.users.findOne(userId));};
+Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Users.findOne(userId));};
 
 /**
  * @summary Get a user's email
@@ -135,7 +135,7 @@ Users.getEmail = function (user) {
   }
 };
 Users.helpers({getEmail: function () {return Users.getEmail(this);}});
-Users.getEmailById = function (userId) {return Users.getEmail(Meteor.users.findOne(userId));};
+Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(userId));};
 
 /**
  * @summary Get a user's email hash
@@ -145,7 +145,7 @@ Users.getEmailHash = function (user) {
   return user.telescope.emailHash;
 };
 Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
-Users.getEmailHashById = function (userId) {return Users.getEmailHash(Meteor.users.findOne(userId));};
+Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.findOne(userId));};
 
 /**
  * @summary Get a user setting
@@ -182,7 +182,7 @@ Users.hasCompletedProfile = function (user) {
   });
 };
 Users.helpers({hasCompletedProfile: function () {return Users.hasCompletedProfile(this);}});
-Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Meteor.users.findOne(userId));};
+Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Users.findOne(userId));};
 
 /**
  * @summary Check if a user has upvoted a document
@@ -190,7 +190,8 @@ Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProf
  * @param {Object} document
  */
 Users.hasUpvoted = function (user, document) {
-  return user && _.include(document.upvoters, user._id);
+  // note(apollo): check upvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
+  return user && document.upvoters && document.upvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
 Users.helpers({hasUpvoted: function (document) {return Users.hasUpvoted(this, document);}});
 
@@ -200,7 +201,8 @@ Users.helpers({hasUpvoted: function (document) {return Users.hasUpvoted(this, do
  * @param {Object} document
  */
 Users.hasDownvoted = function (user, document) {
-  return user && _.include(document.downvoters, user._id);
+  // note(apollo): check downvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
+  return user && document.downvoters && document.downvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
 Users.helpers({hasDownvoted: function (document) {return Users.hasDownvoted(this, document);}});
 
@@ -272,6 +274,6 @@ Users.getCurrentUserEmail = function () {
 };
 
 Users.findByEmail = function (email) {
-  return Meteor.users.findOne({"telescope.email": email});
+  return Users.findOne({"telescope.email": email});
 };
 

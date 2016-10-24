@@ -10,7 +10,6 @@ class CommentsEdit extends Component {
         <NovaForm 
           collection={Comments}
           document={this.props.comment}
-          currentUser={this.context.currentUser}
           methodName="comments.edit"
           successCallback={this.props.successCallback}
           layout="elementOnly"

@@ -1,10 +1,12 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 
-const FlashMessages = ({messages}) => {
+const FlashMessages = ({messages, clear, markAsSeen}) => {
   return (
     <div className="flash-messages">
-      {messages.map((message, index) => <Telescope.components.Flash key={index} message={message} />)}
+      {messages
+        .filter(message => message.show)
+        .map(message => <Telescope.components.Flash key={message._id} message={message} clear={clear} markAsSeen={markAsSeen} />)}
     </div>
   );
 }

@@ -27,7 +27,7 @@ class CustomPostsItem extends Telescope.components.PostsItem {
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Telescope.components.Vote post={post} currentUser={this.context.currentUser}/>
+          <Telescope.components.Vote post={post} />
         </div>
         
         {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}
@@ -49,7 +49,7 @@ class CustomPostsItem extends Telescope.components.PostsItem {
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
-            {(this.context.currentUser && this.context.currentUser.isAdmin) ?<Telescope.components.PostsStats post={post} />:null}
+            {this.context.currentUser && this.context.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
             {this.renderActions()}
           </div>
 

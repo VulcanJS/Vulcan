@@ -19,7 +19,7 @@ Categories.schema = new SimpleSchema({
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true,
-    autoform: {
+    form: {
       rows: 3
     }
   },
@@ -50,7 +50,7 @@ Categories.schema = new SimpleSchema({
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true,
-    autoform: {
+    form: {
       options: function () {
         var categories = Categories.find().map(function (category) {
           return {
@@ -77,7 +77,7 @@ Telescope.settings.collection.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      autoform: {
+      form: {
         group: 'categories',
         instructions: 'Let users filter by one or multiple categories at a time.', 
         options: function () {
@@ -94,7 +94,7 @@ Telescope.settings.collection.addField([
     fieldSchema: {
       type: Boolean,
       optional: true,
-      autoform: {
+      form: {
         group: 'categories',
         instructions: 'Hide empty categories in navigation'
       }

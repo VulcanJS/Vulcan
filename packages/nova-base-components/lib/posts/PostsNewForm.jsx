@@ -1,5 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
@@ -18,10 +20,9 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm 
           collection={Posts} 
-          currentUser={context.currentUser}
           methodName="posts.new"
           successCallback={(post)=>{
-            context.messages.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
+            props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
             router.push({pathname: Posts.getPageUrl(post)});
           }}
         />
@@ -32,11 +33,14 @@ const PostsNewForm = (props, context) => {
 
 PostsNewForm.contextTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
   intl: intlShape
 };
 
 PostsNewForm.displayName = "PostsNewForm";
 
-module.exports = withRouter(PostsNewForm);
-export default withRouter(PostsNewForm);
+const mapStateToProps = state => ({ messages: state.messages });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+// note: why having both module.exports & export default?
+module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsNewForm));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsNewForm));

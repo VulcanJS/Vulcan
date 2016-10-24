@@ -1,7 +1,5 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-//import Actions from "../actions.js";
-//import { Messages } from "meteor/nova:core";
 import classNames from 'classnames';
 import Users from 'meteor/nova:users';
 
@@ -20,7 +18,7 @@ class Vote extends Component {
 
     if(!user){
       this.context.messages.flash("Please log in first");
-    } else if (user.hasUpvoted(post)) {
+    } else if (Users.hasUpvoted(user, post)) {
       this.context.actions.call('posts.cancelUpvote', post._id, () => {
         this.context.events.track("post upvote cancelled", {'_id': post._id});
       });        
@@ -61,8 +59,7 @@ class Vote extends Component {
 
 Vote.propTypes = {
   post: React.PropTypes.object.isRequired, // the current post
-  // currentUser: React.PropTypes.object, // the current user
-}
+};
 
 Vote.contextTypes = {
   currentUser: React.PropTypes.object,

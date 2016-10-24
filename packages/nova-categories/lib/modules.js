@@ -8,5 +8,6 @@ import './custom_fields.js';
 import './subscriptions.js';
 import './methods.js';
 import './permissions.js';
+import './published_fields.js';
 
 export default Categories;

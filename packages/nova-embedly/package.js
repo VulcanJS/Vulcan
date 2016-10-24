@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:embedly",
   summary: "Telescope Embedly module package",
-  version: "0.26.5-nova",
+  version: "0.27.3-nova",
   git: 'https://github.com/TelescopeJS/telescope-embedly.git'
 });
 
@@ -10,10 +10,10 @@ Package.onUse( function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'nova:core@0.26.5-nova',
-    'nova:posts@0.26.5-nova',
-    'nova:users@0.26.5-nova',
-    'fourseven:scss@3.8.0_1'
+    'nova:core@0.27.3-nova',
+    'nova:posts@0.27.3-nova',
+    'nova:users@0.27.3-nova',
+    'fourseven:scss@3.9.0'
   ]);
 
   api.addFiles([
