@@ -61,7 +61,7 @@ function ItemAgeCheck (postedAt) {
     if (!postedAt)
       return 0;
 
-    const postedAt = postedAt.valueOf();
+    postedAt = postedAt.valueOf();
     const now = new Date().getTime();
     const age = now - postedAt;
     const ageInHours = age / (60 * 60 * 1000);
