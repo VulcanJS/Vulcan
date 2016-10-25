@@ -69,8 +69,9 @@ const resolvers = {
     }
   },
   Query: {
-    posts(root, args, context) {
-      return Posts.find({}, {limit: 5}).fetch();
+    posts(root, {view, offset, limit}, context) {
+      const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
+      return Posts.find({}, {limit: limit, skip: offset}).fetch();
     },
     post(root, args, context) {
       return Posts.findOne({_id: args._id});
