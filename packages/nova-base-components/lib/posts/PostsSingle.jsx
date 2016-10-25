@@ -8,9 +8,9 @@ import gql from 'graphql-tag';
 
 const PostsSingle = (props, context) => {
 
-  const {loading, post} = props.data;
+  const {loading, post, refetch} = props.data;
 
-  return loading ? <Telescope.components.Loading/> : <Telescope.components.PostsPage post={post} />;
+  return loading ? <Telescope.components.Loading/> : <Telescope.components.PostsPage post={post} refetchQuery={refetch} />;
 };
 
 PostsSingle.propTypes = {
@@ -92,7 +92,8 @@ const PostsSingleWithData = graphql(gql`
 `, {
   options(ownProps) {
     return {
-      variables: { postId: ownProps.params._id } 
+      variables: { postId: ownProps.params._id },
+      pollInterval: 20000,
     };
   },
 })(PostsSingle);
