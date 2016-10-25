@@ -35,17 +35,9 @@ PostsHome.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-//
-
-/*
- TODO: add arguments
+const PostsHomeWithData = graphql(gql`
   query getPosts($view: String, $offset: Int, $limit: Int) {
     posts(view: $view, offset: $offset, limit: $limit) {
-*/
-
-const PostsHomeWithData = graphql(gql`
-  query getPosts {
-    posts {
       _id
       title
       url
@@ -86,7 +78,8 @@ const PostsHomeWithData = graphql(gql`
   options(ownProps) {
     return {
       variables: { 
-        view: 'top',
+        // get the view from the query params or ask for the 'top' one as a default
+        view: ownProps.location && ownProps.location.query && ownProps.location.query.view || 'top',
         offset: 0,
         limit: 10
       }

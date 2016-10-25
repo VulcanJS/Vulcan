@@ -8,6 +8,7 @@
     "apollo-client": "^0.4.21",
     "apollo-server": "^0.3.2",
     "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
     "bootstrap": "^4.0.0-alpha.2",
     "classnames": "^2.2.3",
     "escape-string-regexp": "^1.0.5",

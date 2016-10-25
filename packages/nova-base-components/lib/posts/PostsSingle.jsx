@@ -46,17 +46,18 @@ const PostsSingleWithData = graphql(gql`
       commentCount
       comments {
         _id
-        parentComment {
-          htmlBody
-          postedAt
-          user {
-            _id
-            telescope {
-              slug
-              emailHash # used for the avatar
-            }
-          }
-        }
+        # note: currently not used in PostsCommentsThread
+        # parentComment {
+        #   htmlBody
+        #   postedAt
+        #   user {
+        #     _id
+        #     telescope {
+        #       slug
+        #       emailHash # used for the avatar
+        #     }
+        #   }
+        # }
         htmlBody
         postedAt
         user {
