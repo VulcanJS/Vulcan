@@ -37,6 +37,9 @@ const postSchema = `
     clickCount: Int
     viewCount: Int
     thumbnailUrl: String
+    userIP: String
+    userAgent: String
+    referrer: String
   }
 `;
 
@@ -120,8 +123,12 @@ ${postSchema}
 ${userSchema}
 ${commentSchema}
 ${categorySchema}
+input Terms {
+  view: String
+  userId: String
+}
 type Query {
-  posts(view: String, offset: Int, limit: Int): [Post]
+  posts(terms: Terms, offset: Int, limit: Int): [Post]
   post(_id: String): Post
   users: [User]
   user(_id: String): User

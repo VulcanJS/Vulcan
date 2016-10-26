@@ -69,12 +69,12 @@ const resolvers = {
     }
   },
   Query: {
-    // the view = top may be redundant here?
-    posts(root, {view = 'top', offset, limit}, context) {
-      let {selector, options} = Posts.parameters.get({view});
+    posts(root, {terms, offset, limit}, context, info) {
+      let {selector, options} = Posts.parameters.get(terms);
       const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
       options.limit = protectedLimit;
       options.skip = offset;
+      options.fields = Posts.publishedFields.list;
       return Posts.find(selector, options).fetch();
     },
     post(root, args, context) {
