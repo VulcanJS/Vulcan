@@ -77,6 +77,10 @@ const resolvers = {
       options.fields = Posts.publishedFields.list;
       return Posts.find(selector, options).fetch();
     },
+    postsViewTotal(root, {terms}, context) {
+      const {selector} = Posts.parameters.get(terms);
+      return Posts.find(selector).count();
+    },
     post(root, args, context) {
       return Posts.findOne({_id: args._id});
     },

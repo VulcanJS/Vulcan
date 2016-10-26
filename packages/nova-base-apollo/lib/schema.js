@@ -126,9 +126,11 @@ ${categorySchema}
 input Terms {
   view: String
   userId: String
+  cat: String
 }
 type Query {
   posts(terms: Terms, offset: Int, limit: Int): [Post]
+  postsViewTotal(terms: Terms): Int 
   post(_id: String): Post
   users: [User]
   user(_id: String): User

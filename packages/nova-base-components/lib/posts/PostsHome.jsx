@@ -8,27 +8,27 @@ import gql from 'graphql-tag';
 
 const PostsHome = (props, context) => {
 
-  const {loading, posts, refetch} = props.data;
+  const {loading, posts, postsViewTotal, refetchQuery, loadMore} = props;
+  const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
 
-  return loading ? 
-    <Telescope.components.Loading/> : 
-    <Telescope.components.PostsList 
-      results={posts}
-      hasMore={true}
-      ready={true}
-      count={10}
-      totalCount={20}
-      loadMore={()=>{console.log("load more")}}
-      refetchQuery={refetch}
-    />;
+  return <Telescope.components.PostsList 
+            results={posts || []}
+            hasMore={hasMore}
+            ready={!loading}
+            count={posts && posts.length}
+            totalCount={postsViewTotal}
+            loadMore={loadMore}
+            refetchQuery={refetchQuery}
+          />;
 };
 
 
 PostsHome.propTypes = {
-  data: React.PropTypes.shape({
-    loading: React.PropTypes.bool,
-    posts: React.PropTypes.array,
-  }).isRequired,
+  loading: React.PropTypes.bool,
+  postsViewTotal: React.PropTypes.number,
+  posts: React.PropTypes.array,
+  refetch: React.PropTypes.func,
+  loadMore: React.PropTypes.func,
   params: React.PropTypes.object
 };
 
@@ -37,7 +37,8 @@ PostsHome.contextTypes = {
 };
 
 const PostsHomeWithData = graphql(gql`
-  query getPosts($terms: Terms, $offset: Int, $limit: Int) {
+  query getPostsView($terms: Terms, $offset: Int, $limit: Int) {
+    postsViewTotal(terms: $terms)
     posts(terms: $terms, offset: $offset, limit: $limit) {
       _id
       title
@@ -77,15 +78,37 @@ const PostsHomeWithData = graphql(gql`
 
 `, {
   options(ownProps) {
-    const view = ownProps.location && ownProps.location.query && ownProps.location.query.view || 'top';
+    const { view = 'top', cat } = ownProps.location && ownProps.location.query;
+
     return {
       variables: { 
-        // get the view from the query params or ask for the 'top' one as a default
-        terms: { view },
+        terms: { view, cat },
         offset: 0,
         limit: 10
       },
       pollInterval: 20000,
+    };
+  },
+  props({data: {loading, posts, postsViewTotal, refetch, fetchMore}}) {
+    return {
+      loading,
+      posts,
+      postsViewTotal,
+      refetchQuery: refetch,
+      loadMore() {
+        // basically, rerun the query 'getPostsView' with a new offset
+        return fetchMore({
+          variables: { offset: posts.length },
+          updateQuery(previousResults, { fetchMoreResult }) {
+            // no more post to fetch
+            if (!fetchMoreResult.data) {
+              return previousResults;
+            }
+            // return the previous results "augmented" with more
+            return {...previousResults, posts: [...previousResults.posts, ...fetchMoreResult.data.posts]};
+          },
+        });
+      },
     };
   },
 })(PostsHome);
@@ -93,33 +116,3 @@ const PostsHomeWithData = graphql(gql`
 PostsHome.displayName = "PostsHome";
 
 module.exports = PostsHomeWithData;
-
-// TODO: remove old code
-
-// class PostsHome extends Component {
-
-//   getDefaultView() {
-//     return {view: 'top'}
-//   }
-  
-//   render() {
-
-//     const params = {...this.getDefaultView(), ...this.props.location.query, listId: "posts.list.main"};
-//     const {selector, options} = Posts.parameters.get(params);
-
-//     return (
-//       <ListContainer 
-//         collection={Posts} 
-//         publication="posts.list"
-//         selector={selector}
-//         options={options}
-//         terms={params} 
-//         joins={Posts.getJoins()}
-//         component={Telescope.components.PostsList}
-//         cacheSubscription={true}
-//         listId={params.listId}
-//         limit={Telescope.settings.get("postsPerPage", 10)}
-//       />
-//     )
-//   }
-// };
