@@ -6,11 +6,97 @@ import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
 
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
+const UsersProfilePostsList = (props, context) => {
+
+  const {loading, posts, refetch} = props.data;
+  return loading ? 
+    <Telescope.components.Loading/> : 
+    <Telescope.components.PostsList 
+      results={posts}
+      hasMore={true}
+      ready={true}
+      count={10}
+      totalCount={20}
+      loadMore={()=>{console.log("load more")}}
+      refetchQuery={refetch}
+    />;
+};
+
+UsersProfilePostsList.propTypes = {
+  data: React.PropTypes.shape({
+    loading: React.PropTypes.bool,
+    posts: React.PropTypes.array,
+  }).isRequired,
+  params: React.PropTypes.object
+};
+
+UsersProfilePostsList.contextTypes = {
+  currentUser: React.PropTypes.object
+};
+
+UsersProfilePostsList.displayName = "UsersProfilePostsList";
+
+const UsersProfilePostsListWithData = graphql(gql`
+  query getPosts($terms: Terms, $offset: Int, $limit: Int) {
+    posts(terms: $terms, offset: $offset, limit: $limit) {
+      _id
+      title
+      url
+      slug
+      htmlBody
+      thumbnailUrl
+      baseScore
+      postedAt
+      sticky
+      categories {
+        _id
+        name
+        slug
+      }
+      commentCount
+      upvoters {
+        _id
+      }
+      downvoters {
+        _id
+      }
+      upvotes # should be asked only for admins?
+      score # should be asked only for admins?
+      viewCount # should be asked only for admins?
+      clickCount # should be asked only for admins?
+      user {
+        _id
+        telescope {
+          displayName
+          slug
+          emailHash
+        }
+      }
+    }
+  }
+
+`, {
+  options(ownProps) {
+    return {
+      variables: { 
+        // get the view from the query params or ask for the 'top' one as a default
+        terms: ownProps.terms,
+        offset: 0,
+        limit: 10
+      },
+      pollInterval: 20000,
+    };
+  },
+})(UsersProfilePostsList);
+
 const UsersProfile = ({user}, {currentUser}) => {
 
   const twitterName = Users.getTwitterName(user);
 
-  const terms = {view:"userPosts", userId: user._id};
+  const terms = {view: "userPosts", userId: user._id};
   const {selector, options} = Posts.parameters.get(terms);
 
   return (
@@ -26,18 +112,7 @@ const UsersProfile = ({user}, {currentUser}) => {
         </Telescope.components.CanDo>
       </ul>
       <h3><FormattedMessage id="users.posts"/></h3>
-      <ListContainer
-        collection={Posts}
-        publication="posts.list"
-        terms={terms}
-        selector={selector}
-        options={options}
-        joins={Posts.getJoins()}
-        cacheSubscription={false}
-        component={Telescope.components.PostsList}
-        componentProps={{showHeader: false}}
-        listId="posts.list.user"
-      />
+      <UsersProfilePostsListWithData terms={terms} />
     </div>
   )
 }
@@ -53,3 +128,16 @@ UsersProfile.contextTypes = {
 UsersProfile.displayName = "UsersProfile";
 
 module.exports = UsersProfile;
+
+// <ListContainer
+//   collection={Posts}
+//   publication="posts.list"
+//   terms={terms}
+//   selector={selector}
+//   options={options}
+//   joins={Posts.getJoins()}
+//   cacheSubscription={false}
+//   component={Telescope.components.PostsList}
+//   componentProps={{showHeader: false}}
+//   listId="posts.list.user"
+// />

@@ -37,8 +37,8 @@ PostsHome.contextTypes = {
 };
 
 const PostsHomeWithData = graphql(gql`
-  query getPosts($view: String, $offset: Int, $limit: Int) {
-    posts(view: $view, offset: $offset, limit: $limit) {
+  query getPosts($terms: Terms, $offset: Int, $limit: Int) {
+    posts(terms: $terms, offset: $offset, limit: $limit) {
       _id
       title
       url
@@ -77,10 +77,11 @@ const PostsHomeWithData = graphql(gql`
 
 `, {
   options(ownProps) {
+    const view = ownProps.location && ownProps.location.query && ownProps.location.query.view || 'top';
     return {
       variables: { 
         // get the view from the query params or ask for the 'top' one as a default
-        view: ownProps.location && ownProps.location.query && ownProps.location.query.view || 'top',
+        terms: { view },
         offset: 0,
         limit: 10
       },
