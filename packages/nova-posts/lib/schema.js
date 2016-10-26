@@ -178,7 +178,7 @@ Posts.schemaJSON = {
     editableIf: canEditAll,
     control: "select",
     publish: true,
-    autoValue: function () {
+    defaultValue: function () {
       // only provide a default value
       // 1) this is an insert operation
       // 2) status field is not set in the document being inserted
