@@ -121,7 +121,7 @@ ${userSchema}
 ${commentSchema}
 ${categorySchema}
 type Query {
-  posts: [Post]
+  posts(view: String, offset: Int, limit: Int): [Post]
   post(_id: String): Post
   users: [User]
   user(_id: String): User

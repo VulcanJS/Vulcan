@@ -8,9 +8,9 @@ import gql from 'graphql-tag';
 
 const PostsSingle = (props, context) => {
 
-  const {loading, post} = props.data;
+  const {loading, post, refetch} = props.data;
 
-  return loading ? <Telescope.components.Loading/> : <Telescope.components.PostsPage post={post} />;
+  return loading ? <Telescope.components.Loading/> : <Telescope.components.PostsPage post={post} refetchQuery={refetch} />;
 };
 
 PostsSingle.propTypes = {
@@ -46,17 +46,18 @@ const PostsSingleWithData = graphql(gql`
       commentCount
       comments {
         _id
-        parentComment {
-          htmlBody
-          postedAt
-          user {
-            _id
-            telescope {
-              slug
-              emailHash # used for the avatar
-            }
-          }
-        }
+        # note: currently not used in PostsCommentsThread
+        # parentComment {
+        #   htmlBody
+        #   postedAt
+        #   user {
+        #     _id
+        #     telescope {
+        #       slug
+        #       emailHash # used for the avatar
+        #     }
+        #   }
+        # }
         htmlBody
         postedAt
         user {
@@ -91,7 +92,8 @@ const PostsSingleWithData = graphql(gql`
 `, {
   options(ownProps) {
     return {
-      variables: { postId: ownProps.params._id } 
+      variables: { postId: ownProps.params._id },
+      pollInterval: 20000,
     };
   },
 })(PostsSingle);

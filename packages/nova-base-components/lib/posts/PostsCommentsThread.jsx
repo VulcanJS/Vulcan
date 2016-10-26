@@ -4,7 +4,7 @@ import {FormattedMessage } from 'react-intl';
 import { ModalTrigger } from "meteor/nova:core";
 import Comments from "meteor/nova:comments";
 
-const PostsCommentsThread = ({document}, {currentUser}) => {
+const PostsCommentsThread = ({document, refetchQuery}, {currentUser}) => {
 
   const post = document;
 
@@ -15,7 +15,7 @@ const PostsCommentsThread = ({document}, {currentUser}) => {
       { currentUser ?
         <div className="posts-comments-thread-new">
           <h4><FormattedMessage id="comments.new"/></h4>
-          <Telescope.components.CommentsNew type="comment" postId={post._id} />
+          <Telescope.components.CommentsNew type="comment" postId={post._id} successCallback={refetchQuery} />
         </div> :
         <div>
           <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>

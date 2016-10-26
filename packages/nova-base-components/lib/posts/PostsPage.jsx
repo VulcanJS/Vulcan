@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
 
-const PostsPage = ({post}) => {
+const PostsPage = ({post, refetchQuery}) => {
   
   const htmlBody = {__html: post.htmlBody};
 
@@ -11,13 +11,13 @@ const PostsPage = ({post}) => {
 
       <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
       
-      <Telescope.components.PostsItem post={post}/>
+      <Telescope.components.PostsItem post={post} refetchQuery={refetchQuery} />
 
       {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
       {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
-      <Telescope.components.PostsCommentsThread document={post} />
+      <Telescope.components.PostsCommentsThread document={post} refetchQuery={refetchQuery} />
 
     </div>
   )

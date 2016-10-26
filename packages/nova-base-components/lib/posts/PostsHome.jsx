@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 
 const PostsHome = (props, context) => {
 
-  const {loading, posts} = props.data;
+  const {loading, posts, refetch} = props.data;
 
   return loading ? 
     <Telescope.components.Loading/> : 
@@ -19,6 +19,7 @@ const PostsHome = (props, context) => {
       count={10}
       totalCount={20}
       loadMore={()=>{console.log("load more")}}
+      refetchQuery={refetch}
     />;
 };
 
@@ -35,17 +36,9 @@ PostsHome.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-//
-
-/*
- TODO: add arguments
+const PostsHomeWithData = graphql(gql`
   query getPosts($view: String, $offset: Int, $limit: Int) {
     posts(view: $view, offset: $offset, limit: $limit) {
-*/
-
-const PostsHomeWithData = graphql(gql`
-  query getPosts {
-    posts {
       _id
       title
       url
@@ -86,10 +79,12 @@ const PostsHomeWithData = graphql(gql`
   options(ownProps) {
     return {
       variables: { 
-        view: 'top',
+        // get the view from the query params or ask for the 'top' one as a default
+        view: ownProps.location && ownProps.location.query && ownProps.location.query.view || 'top',
         offset: 0,
         limit: 10
-      }
+      },
+      pollInterval: 20000,
     };
   },
 })(PostsHome);
