@@ -8,7 +8,7 @@ const PostsListHeader = () => {
   return (
     <div>
       <div className="posts-list-header">
-        <div className="posts-lists-header-categories">
+        <div className="posts-list-header-categories">
           <ListContainer 
             collection={Categories} 
             limit={0} 
