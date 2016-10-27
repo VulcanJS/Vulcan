@@ -3,7 +3,7 @@ import Telescope from 'meteor/nova:lib';
 // containers
 
 Telescope.registerComponent("PostsListContainer",   require('./containers/PostsListContainer.jsx'));
-Telescope.registerComponent("PostsPageContainer",   require('./containers/PostsPageContainer.jsx'));
+Telescope.registerComponent("PostsSingleContainer",   require('./containers/PostsSingleContainer.jsx'));
 
 // common
 

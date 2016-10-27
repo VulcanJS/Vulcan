@@ -8,10 +8,11 @@ import gql from 'graphql-tag';
 
 const PostsListContainer = (props, context) => {
 
-  const {loading, posts, postsViewTotal, refetchQuery, loadMore} = props;
+  const {loading, posts, postsViewTotal, refetchQuery, loadMore, componentProps} = props;
+  const Component = props.component;
   const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
 
-  return loading ? <Telescope.components.Loading/> : <Telescope.components.PostsList 
+  return loading ? <Telescope.components.Loading/> : <Component 
     results={posts || []}
     hasMore={hasMore}
     ready={!loading}
@@ -19,6 +20,7 @@ const PostsListContainer = (props, context) => {
     totalCount={postsViewTotal}
     loadMore={loadMore}
     refetchQuery={refetchQuery}
+    {...componentProps}
   />;
 };
 

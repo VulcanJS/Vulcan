@@ -45,12 +45,8 @@ class PostsEditForm extends Component{
     return (
       <div className="posts-edit-form">
         {this.renderAdminArea()}
-        <DocumentContainer 
-          collection={Posts} 
-          publication="posts.single" 
-          selector={{_id: this.props.post._id}}
-          terms={{_id: this.props.post._id}}
-          joins={Posts.getJoins()}
+        <Telescope.components.PostsSingleContainer
+          postId={this.props.post._id}
           component={NovaForm}
           componentProps={{
             // note: the document prop will be passed from DocumentContainer

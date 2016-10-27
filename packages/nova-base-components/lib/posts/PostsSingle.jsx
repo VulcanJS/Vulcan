@@ -4,7 +4,7 @@ import { DocumentContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
 
 const PostsSingle = (props, context) => {
-  return <Telescope.components.PostsPageContainer postId={props.params._id} />
+  return <Telescope.components.PostsSingleContainer postId={props.params._id} component={Telescope.components.PostsPage} />
 };
 
 PostsSingle.displayName = "PostsSingle";

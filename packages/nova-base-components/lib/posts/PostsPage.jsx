@@ -4,7 +4,8 @@ import Posts from "meteor/nova:posts";
 
 const PostsPage = (props) => {
   
-  const {post, loading, refetchQuery} = props;
+  const {refetchQuery} = props;
+  const post = props.document;
   const htmlBody = {__html: post.htmlBody};
 
   return (

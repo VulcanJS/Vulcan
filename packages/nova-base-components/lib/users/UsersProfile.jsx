@@ -27,7 +27,7 @@ const UsersProfile = ({user}) => {
         </Telescope.components.CanDo>
       </ul>
       <h3><FormattedMessage id="users.posts"/></h3>
-      <Telescope.components.PostsListContainer terms={terms} />
+      <Telescope.components.PostsListContainer terms={terms} component={Telescope.components.PostsList} />
     </div>
   )
 }

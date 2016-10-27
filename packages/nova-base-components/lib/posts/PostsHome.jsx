@@ -5,7 +5,7 @@ import Posts from "meteor/nova:posts";
 
 const PostsHome = (props, context) => {
   const terms = props.location && props.location.query;
-  return <Telescope.components.PostsListContainer terms={terms} />
+  return <Telescope.components.PostsListContainer terms={terms} component={Telescope.components.PostsList} />
 };
 
 PostsHome.displayName = "PostsHome";
