@@ -127,6 +127,11 @@ input Terms {
   view: String
   userId: String
   cat: String
+  date: String
+  after: String
+  before: String
+  enableCache: Boolean
+  listId: String
 }
 type Query {
   posts(terms: Terms, offset: Int, limit: Int): [Post]
