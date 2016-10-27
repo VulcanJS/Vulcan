@@ -11,7 +11,7 @@ const PostsListContainer = (props, context) => {
   const {loading, posts, postsViewTotal, refetchQuery, loadMore} = props;
   const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
 
-  return <Telescope.components.PostsList 
+  return loading ? <Telescope.components.Loading/> : <Telescope.components.PostsList 
     results={posts || []}
     hasMore={hasMore}
     ready={!loading}
@@ -76,7 +76,6 @@ const PostsListContainerWithData = graphql(gql`
 
 `, {
   options(ownProps) {
-    console.log(ownProps)
     return {
       variables: { 
         terms: ownProps.terms,

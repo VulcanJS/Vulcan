@@ -2,8 +2,9 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
 
-const PostsPage = ({post, refetchQuery}) => {
+const PostsPage = (props) => {
   
+  const {post, loading, refetchQuery} = props;
   const htmlBody = {__html: post.htmlBody};
 
   return (
