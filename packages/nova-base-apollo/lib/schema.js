@@ -132,6 +132,7 @@ input Terms {
   before: String
   enableCache: Boolean
   listId: String
+  query: String # search query
 }
 type Query {
   posts(terms: Terms, offset: Int, limit: Int): [Post]
