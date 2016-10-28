@@ -8,10 +8,8 @@ import Users from 'meteor/nova:users';
 
 const UsersEdit = (props, context) => {
 
-  const user = props.user;
+  const user = props.document;
   const currentUser = props.currentUser;
-
-  //const label = `Edit profile for ${Users.getDisplayName(user)}`;
 
   return (
     <Telescope.components.CanDo 
@@ -36,7 +34,7 @@ const UsersEdit = (props, context) => {
 
   
 UsersEdit.propTypes = {
-  user: React.PropTypes.object.isRequired,
+  document: React.PropTypes.object,
 };
 
 UsersEdit.contextTypes = {

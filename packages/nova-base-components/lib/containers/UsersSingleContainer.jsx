@@ -20,7 +20,7 @@ const UsersSingleContainer = (props, context) => {
 UsersSingleContainer.propTypes = {
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool,
-    post: React.PropTypes.object,
+    user: React.PropTypes.object,
   }).isRequired,
   params: React.PropTypes.object
 };

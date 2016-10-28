@@ -3,7 +3,7 @@ import React from 'react';
 import Users from 'meteor/nova:users';
 
 const UsersAccount = (props, context) => {
-  const terms = props.params.slug ? {slug: props.params.slug} : context.currentUser ? {_id: context.currentUser._id } : {};
+  const terms = props.params.slug ? {slug: props.params.slug} : context.currentUser ? {userId: context.currentUser._id } : {};
   return (
     <Telescope.components.CanDo action="users.edit.own" displayNoPermissionMessage={true}>
       <Telescope.components.UsersSingleContainer 

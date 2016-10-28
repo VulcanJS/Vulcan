@@ -43,7 +43,7 @@ class FormComponent extends Component {
     // if control is a React component, use it
     if (typeof this.props.control === "function") {
 
-      return <this.props.control {...properties} />
+      return <this.props.control document={document} {...properties} />
 
     } else { // else pick a predefined component
 

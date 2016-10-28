@@ -140,6 +140,7 @@ type Query {
   post(_id: String): Post
   users: [User]
   user(_id: String, slug: String): User
+  currentUser: User
   comments: [Comment]
   comment(_id: String): Comment
   categories: [Category]

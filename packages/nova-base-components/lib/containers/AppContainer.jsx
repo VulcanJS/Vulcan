@@ -8,7 +8,6 @@ import gql from 'graphql-tag';
 const AppContainer = (props, context) => {
 
   const {loading, refetch} = props.data;
-
   return <Telescope.components.App
     ready={!loading}
     refetchQuery={refetch}
@@ -19,13 +18,10 @@ const AppContainer = (props, context) => {
 AppContainer.propTypes = {
   data: React.PropTypes.shape({
     loading: React.PropTypes.bool,
-    post: React.PropTypes.object,
+    categories: React.PropTypes.array,
+    currentUser: React.PropTypes.object,
   }).isRequired,
   params: React.PropTypes.object
-};
-
-AppContainer.contextTypes = {
-  currentUser: React.PropTypes.object
 };
 
 AppContainer.displayName = "AppContainer";
@@ -39,6 +35,49 @@ const AppContainerWithData = graphql(gql`
       order
       slug
       image
+    }
+    currentUser {
+      _id
+      username
+      createdAt
+      isAdmin
+      telescope {
+        bio
+        commentCount
+        displayName
+        downvotedComments {
+          itemId
+          power
+          votedAt
+        }
+        downvotedPosts {
+          itemId
+          power
+          votedAt
+        }
+        email
+        emailHash
+        htmlBio
+        karma
+        postCount
+        slug
+        twitterUsername
+        upvotedComments {
+          itemId
+          power
+          votedAt
+        }
+        upvotedPosts {
+          itemId
+          power
+          votedAt
+        }
+        website
+        groups
+        notifications_users
+        notifications_posts
+        newsletter_subscribeToNewsletter
+      }
     }
   }
 `, {

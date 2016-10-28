@@ -90,6 +90,9 @@ const resolvers = {
     user(root, args, context) {
       return Users.findOne({$or: [{_id: args._id}, {'telescope.slug': args.slug}]});
     },
+    currentUser(root, args, context) {
+      return context && context.userId ? Meteor.users.findOne(context.userId) : null;
+    },
     comments(root, args, context) {
       return Comments.find({}, {limit: 5}).fetch();
     },

@@ -17,7 +17,7 @@ class App extends Component {
     const {intl} = intlProvider.getChildContext();
 
     return {
-      currentUser: this.props.currentUser,
+      currentUser: this.props.data.currentUser,
       categories: this.props.data.categories,
       actions: this.props.actions,
       events: this.props.events,

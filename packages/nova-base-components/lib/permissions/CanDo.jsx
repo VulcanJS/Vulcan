@@ -17,7 +17,7 @@ const CanDo = (props, context) => {
   // default permission, is the user allowed to perform this action?
   let permission = Users.canDo(context.currentUser, props.action);
 
-  /*
+
   // the permission is about viewing a document, check if the user is allowed
   if (props.document && props.action.indexOf('view') > -1) {
     // use the permission shortcut canView on the current user and requested document
@@ -29,7 +29,7 @@ const CanDo = (props, context) => {
     // use the permission shortcut canEdit on the current user and requested document
     permission = Users.canEdit(context.currentUser, props.document);
   }
-  */
+
 
   // the user can perform the intented action in the component: display the component, 
   // else: display a not allowed message
