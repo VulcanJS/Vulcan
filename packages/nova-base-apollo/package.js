@@ -19,7 +19,8 @@ Package.onUse(function (api) {
     'nova:comments@0.27.3-nova',
 
   ]);
-
-  api.mainModule("lib/server.js", "server");
+  
+  api.mainModule("lib/client.js", "client"); 
+  api.mainModule("lib/export.js", "server"); // client.js inside of export.js for ssr purpose
 
 });

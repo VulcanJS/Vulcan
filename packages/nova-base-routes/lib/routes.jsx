@@ -10,7 +10,8 @@ import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
 
 import { ApolloProvider } from 'react-apollo';
-import { store, client } from "./store.js";
+import { client } from 'meteor/nova:base-apollo';
+import { store } from "./store.js";
 
 Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
