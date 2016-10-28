@@ -24,7 +24,6 @@ const PostsListContainer = (props, context) => {
   />;
 };
 
-
 PostsListContainer.propTypes = {
   loading: React.PropTypes.bool,
   postsViewTotal: React.PropTypes.number,

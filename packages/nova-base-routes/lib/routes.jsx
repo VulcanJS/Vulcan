@@ -27,7 +27,7 @@ Meteor.startup(() => {
   
   const ProvidedApp = (props) => (
     <ApolloProvider store={store} client={client}>
-      <Telescope.components.App {...props} />
+      <Telescope.components.AppContainer {...props} />
     </ApolloProvider>
   );
 

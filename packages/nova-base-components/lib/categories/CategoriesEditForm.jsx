@@ -2,7 +2,6 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
-import { DocumentContainer } from "meteor/utilities:react-list-container";
 import Categories from "meteor/nova:categories";
 
 class CategoriesEditForm extends Component{

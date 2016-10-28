@@ -4,7 +4,7 @@ nova:core # do not remove!
 
 ############ Optional Packages ############
 
-nova:settings
+# nova:settings
 nova:users
 nova:posts
 nova:comments

@@ -83,7 +83,7 @@ class CategoriesList extends Component {
 
   render() {
     
-    const categories = this.props.categories;
+    const categories = this.context.categories;
     const context = this.context;
     const currentQuery = _.clone(this.props.router.location.query);
     delete currentQuery.cat;
@@ -117,12 +117,9 @@ class CategoriesList extends Component {
   }
 };
 
-CategoriesList.propTypes = {
-  categories: React.PropTypes.array
-}
-
 CategoriesList.contextTypes = {
   actions: React.PropTypes.object,
+  categories: React.PropTypes.array,
   currentUser: React.PropTypes.object,
   messages: React.PropTypes.object,
 };
