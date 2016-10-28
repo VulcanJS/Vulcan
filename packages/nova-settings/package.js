@@ -16,11 +16,11 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/collection.js',
-    'lib/init.js',
     'lib/methods.js',
   ], ['server', 'client']);
 
   api.addFiles([
+    'lib/init.js',
     'lib/server/publications.js',
   ], 'server');
 
