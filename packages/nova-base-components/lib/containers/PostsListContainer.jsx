@@ -1,6 +1,5 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { ListContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
 
 import { graphql } from 'react-apollo';

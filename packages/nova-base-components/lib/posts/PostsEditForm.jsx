@@ -2,7 +2,6 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
-import { DocumentContainer } from "meteor/utilities:react-list-container";
 //import { Messages } from "meteor/nova:core";
 //import Actions from "../actions.js";
 import Posts from "meteor/nova:posts";
@@ -49,7 +48,6 @@ class PostsEditForm extends Component{
           postId={this.props.post._id}
           component={NovaForm}
           componentProps={{
-            // note: the document prop will be passed from DocumentContainer
             collection: Posts,
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
