@@ -139,7 +139,7 @@ type Query {
   postsViewTotal(terms: Terms): Int 
   post(_id: String): Post
   users: [User]
-  user(_id: String): User
+  user(_id: String, slug: String): User
   comments: [Comment]
   comment(_id: String): Comment
   categories: [Category]

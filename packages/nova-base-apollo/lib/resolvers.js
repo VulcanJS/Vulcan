@@ -88,7 +88,7 @@ const resolvers = {
       return Users.find({}, {limit: 5}).fetch();
     },
     user(root, args, context) {
-      return Users.findOne({_id: args._id});
+      return Users.findOne({$or: [{_id: args._id}, {'telescope.slug': args.slug}]});
     },
     comments(root, args, context) {
       return Comments.find({}, {limit: 5}).fetch();

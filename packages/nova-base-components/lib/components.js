@@ -5,6 +5,7 @@ import Telescope from 'meteor/nova:lib';
 Telescope.registerComponent("AppContainer",   require('./containers/AppContainer.jsx'));
 Telescope.registerComponent("PostsListContainer",   require('./containers/PostsListContainer.jsx'));
 Telescope.registerComponent("PostsSingleContainer",   require('./containers/PostsSingleContainer.jsx'));
+Telescope.registerComponent("UsersSingleContainer",   require('./containers/UsersSingleContainer.jsx'));
 
 // common
 

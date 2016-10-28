@@ -4,21 +4,13 @@ import { DocumentContainer } from "meteor/utilities:react-list-container";
 import Users from 'meteor/nova:users';
 
 const UsersAccount = (props, context) => {
-  const terms = props.params.slug ? {"telescope.slug": props.params.slug} : context.currentUser ? {_id: context.currentUser._id } : undefined;
+  const terms = props.params.slug ? {slug: props.params.slug} : context.currentUser ? {_id: context.currentUser._id } : {};
   return (
     <Telescope.components.CanDo action="users.edit.own" displayNoPermissionMessage={true}>
-      { 
-        // do not try to render DocumentContainer without required prop 'terms'
-        typeof terms === "undefined" ? null 
-        : <DocumentContainer 
-            collection={Users} 
-            publication="users.single" 
-            selector={terms} 
-            terms={terms}
-            documentPropName="user"
-            component={Telescope.components.UsersEdit}
-          /> 
-        }
+      <Telescope.components.UsersSingleContainer 
+        component={Telescope.components.UsersEdit}
+        {...terms}
+      />
     </Telescope.components.CanDo>
   )
 };

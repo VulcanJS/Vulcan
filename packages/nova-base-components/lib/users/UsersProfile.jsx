@@ -7,8 +7,9 @@ import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
 
 
-const UsersProfile = ({user}) => {
+const UsersProfile = (props) => {
 
+  const user = props.document;
   const twitterName = Users.getTwitterName(user);
 
   const terms = {view: "userPosts", userId: user._id};
@@ -33,7 +34,7 @@ const UsersProfile = ({user}) => {
 }
 
 UsersProfile.propTypes = {
-  user: React.PropTypes.object.isRequired,
+  document: React.PropTypes.object.isRequired,
 }
 
 UsersProfile.displayName = "UsersProfile";

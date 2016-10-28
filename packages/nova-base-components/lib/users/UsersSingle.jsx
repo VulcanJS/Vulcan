@@ -4,16 +4,7 @@ import { DocumentContainer } from "meteor/utilities:react-list-container";
 import Users from 'meteor/nova:users';
 
 const UsersSingle = (props, context) => {
-  return (
-    <DocumentContainer 
-      collection={Users} 
-      publication="users.single" 
-      selector={{'telescope.slug': props.params.slug}}
-      terms={{'telescope.slug': props.params.slug}}
-      component={Telescope.components.UsersProfile}
-      documentPropName="user"
-    />
-  )
+  return <Telescope.components.UsersSingleContainer userId={props.params._id} slug={props.params.slug} component={Telescope.components.UsersProfile} />
 };
 
 UsersSingle.displayName = "UsersSingle";

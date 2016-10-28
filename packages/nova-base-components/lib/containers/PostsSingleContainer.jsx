@@ -8,7 +8,6 @@ import gql from 'graphql-tag';
 
 const PostsSingleContainer = (props, context) => {
 
-  console.log(props)
   const {loading, post, refetch} = props.data;
   const Component = props.component
 
