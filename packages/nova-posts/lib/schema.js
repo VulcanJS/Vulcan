@@ -30,6 +30,8 @@ const canEdit = Users.canEdit;
 // check if user can edit *all* posts
 const canEditAll = user => Users.canDo(user, "posts.edit.all");
 
+const alwaysPublic = user => true;
+
 /**
  * @summary Posts schema
  * @type {SimpleSchema}
@@ -49,6 +51,7 @@ Posts.schemaJSON = {
   createdAt: {
     type: Date,
     optional: true,
+    viewableIf: canEditAll,
     publish: true // publish so that admins can sort pending posts by createdAt
   },
   /**
@@ -57,6 +60,7 @@ Posts.schemaJSON = {
   postedAt: {
     type: Date,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canEditAll,
     editableIf: canEditAll,
     publish: true,
@@ -70,6 +74,7 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     max: 500,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     control: "text",
@@ -83,6 +88,7 @@ Posts.schemaJSON = {
     type: String,
     optional: false,
     max: 500,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     control: "text",
@@ -95,6 +101,7 @@ Posts.schemaJSON = {
   slug: {
     type: String,
     optional: true,
+    viewableIf: alwaysPublic,
     publish: true,
   },
   /**
@@ -104,6 +111,7 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     max: 3000,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     control: "textarea",
@@ -117,6 +125,7 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
    Post Excerpt
@@ -126,6 +135,7 @@ Posts.schemaJSON = {
     optional: true,
     max: 255, //should not be changed the 255 is max we should load for each post/item
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     Count of how many times the post's page was viewed
@@ -134,6 +144,7 @@ Posts.schemaJSON = {
     type: Number,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
     defaultValue: 0
   },
   /**
@@ -143,6 +154,7 @@ Posts.schemaJSON = {
     type: Date,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     Count of how many times the post's link was clicked
@@ -151,6 +163,7 @@ Posts.schemaJSON = {
     type: Number,
     optional: true,
     publish: true,
+    viewableIf: canEditAll,
     defaultValue: 0
   },
   /**
@@ -159,6 +172,7 @@ Posts.schemaJSON = {
   status: {
     type: Number,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canEditAll,
     editableIf: canEditAll,
     control: "select",
@@ -184,6 +198,7 @@ Posts.schemaJSON = {
   isFuture: {
     type: Boolean,
     optional: true,
+    viewableIf: alwaysPublic,
     publish: true
   },
   /**
@@ -193,6 +208,7 @@ Posts.schemaJSON = {
     type: Boolean,
     optional: true,
     defaultValue: false,
+    viewableIf: alwaysPublic,
     insertableIf: canEditAll,
     editableIf: canEditAll,
     control: "checkbox",
@@ -214,16 +230,19 @@ Posts.schemaJSON = {
   userIP: {
     type: String,
     optional: true,
+    viewableIf: canEditAll,
     publish: false
   },
   userAgent: {
     type: String,
     optional: true,
+    viewableIf: canEditAll,
     publish: false
   },
   referrer: {
     type: String,
     optional: true,
+    viewableIf: canEditAll,
     publish: false
   },
   /**
@@ -232,6 +251,7 @@ Posts.schemaJSON = {
   author: {
     type: String,
     optional: true,
+    viewableIf: alwaysPublic,
     publish: true,
   },
   /**
@@ -245,6 +265,7 @@ Posts.schemaJSON = {
     // editableIf: canEditAll,
     control: "select",
     publish: true,
+    viewableIf: alwaysPublic,
     form: {
       group: 'admin',
       options: function () {

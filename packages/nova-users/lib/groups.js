@@ -55,7 +55,7 @@ Users.getGroups = user => {
   
     userGroups = ["default"];
 
-    if (user.telescope.groups) { // custom groups
+    if (user.telescope && user.telescope.groups) { // custom groups
       userGroups = userGroups.concat(user.telescope.groups);
     } 
     
@@ -115,6 +115,18 @@ Users.canView = function (user, document) {
     return Users.canDo(user, `${collectionName}.view.${status}.all`);
   }
 
+};
+
+/**
+ * @summary Check if a given user can view a specific field
+ * @param {Object} user - can be undefined!
+ * @param {Object} collection
+ * @param {String} fieldName
+ */
+Users.canViewField = function (user, collection, fieldName) {
+  const schema = collection.simpleSchema()._schema;
+  const field = schema[fieldName];
+  return field.viewableIf(user);
 };
 
 /**

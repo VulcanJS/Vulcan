@@ -1,5 +1,11 @@
 import Telescope from './config.js';
 
+SimpleSchema.extendOptions({
+  viewableIf: Match.Optional(Function),
+  insertableIf: Match.Optional(Function),
+  editableIf: Match.Optional(Function)
+});
+
 /**
  * @summary Meteor Collections.
  * @class Mongo.Collection

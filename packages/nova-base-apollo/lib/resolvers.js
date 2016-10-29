@@ -2,6 +2,8 @@ import Posts from 'meteor/nova:posts';
 import Users from 'meteor/nova:users';
 import Comments from 'meteor/nova:comments';
 import Categories from 'meteor/nova:categories';
+import PublicationsUtils from 'meteor/utilities:smart-publications';
+import _ from 'underscore';
 
 const resolvers = {
   Post: {
@@ -72,9 +74,15 @@ const resolvers = {
     posts(root, {terms, offset, limit}, context, info) {
       let {selector, options} = Posts.parameters.get(terms);
       const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
+      const currentUser = Users.findOne(context.userId);
       options.limit = protectedLimit;
       options.skip = offset;
-      options.fields = Posts.publishedFields.list;
+      // keep only fields that should be viewable by current user
+      options.fields = PublicationsUtils.arrayToFields(_.compact(_.map(Posts.simpleSchema()._schema,
+        (field, fieldName) => {
+          return _.isFunction(field.viewableIf) && field.viewableIf(currentUser) ? fieldName : null;
+        }
+      )));
       return Posts.find(selector, options).fetch();
     },
     postsViewTotal(root, {terms}, context) {
