@@ -5,8 +5,7 @@
     "npm": "^3.0"
   },
   "dependencies": {
-    "apollo-client": "^0.4.21",
-    "apollo-server": "^0.3.2",
+    "apollo-client": "^0.5.0",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "bootstrap": "^4.0.0-alpha.2",
@@ -16,8 +15,9 @@
     "formsy-react": "^0.18.1",
     "formsy-react-components": "^0.8.1",
     "graphql": "^0.7.2",
+    "graphql-server-express": "^0.4.3",
     "graphql-tag": "^0.1.14",
-    "graphql-tools": "^0.7.2",
+    "graphql-tools": "^0.8.0",
     "handlebars": "^4.0.5",
     "history": "^3.0.0",
     "html-to-text": "^2.1.0",
