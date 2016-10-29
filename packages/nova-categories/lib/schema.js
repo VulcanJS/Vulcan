@@ -108,3 +108,23 @@ Categories.attachSchema(Categories.schema);
 //     }
 //   }
 // ]);
+
+
+Categories.graphQLSchema = `
+  type Category {
+    _id: String
+    name: String
+    description: String
+    order: Int
+    slug: String
+    image: String
+    parent: Category
+  }
+`;
+
+Telescope.graphQL.addSchema(Categories.graphQLSchema);
+
+Telescope.graphQL.addQuery(`
+  categories: [Category]
+  category(_id: String): Category
+`);

@@ -181,3 +181,34 @@ if (typeof Telescope.notifications !== "undefined") {
     }
   });
 }
+
+Comments.graphQLSchema = `
+  type Comment {
+    _id: String
+    parentComment: Comment
+    topLevelComment: Comment
+    createdAt: String
+    postedAt: String
+    body: String
+    htmlBody: String
+    author: String
+    inactive: Boolean
+    post: Post
+    user: User
+    isDeleted: Boolean
+    isDummy: Boolean
+    upvotes: Int
+    upvoters: [User]
+    downvotes: Int
+    downvoters: [User]
+    baseScore: Int
+    score: Float
+  }
+`
+
+Telescope.graphQL.addSchema(Comments.graphQLSchema);
+
+Telescope.graphQL.addQuery(`
+  comments: [Comment]
+  comment(_id: String): Comment
+`);

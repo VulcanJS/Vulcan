@@ -284,6 +284,66 @@ Posts.schemaJSON = {
   }
 };
 
+Posts.graphQLSchema = `
+  type Post {
+    _id: String
+    createdAt: String
+    postedAt: String
+    url: String
+    title: String
+    slug: String
+    body: String
+    htmlBody: String
+    excerpt: String
+    sticky: Boolean
+    viewCount: Int
+    lastCommentedAt: String
+    clickCount: Int
+    status: Int
+    isFuture: Boolean
+    user: User
+    commentCount: Int
+    commenters: [User]
+    comments: [Comment]
+    categories: [Category]
+    scheduledAt: String
+    dummySlug: String
+    isDummy: String
+    upvotes: Int
+    upvoters: [User]
+    downvotes: Int
+    downvoters: [User]
+    baseScore: Int
+    score: Float
+    clickCount: Int
+    viewCount: Int
+    thumbnailUrl: String
+    userIP: String
+    userAgent: String
+    referrer: String
+  }
+
+  input Terms {
+    view: String
+    userId: String
+    cat: String
+    date: String
+    after: String
+    before: String
+    enableCache: Boolean
+    listId: String
+    query: String # search query
+  }
+`;
+
+Telescope.graphQL.addSchema(Posts.graphQLSchema);
+
+Telescope.graphQL.addQuery(`
+  posts(terms: Terms, offset: Int, limit: Int): [Post]
+  postsViewTotal(terms: Terms): Int 
+  post(_id: String): Post
+`);
+
 if (typeof SimpleSchema !== "undefined") {
   Posts.schema = new SimpleSchema(Posts.schemaJSON);
   Posts.attachSchema(Posts.schema);

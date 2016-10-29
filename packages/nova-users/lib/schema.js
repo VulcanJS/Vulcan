@@ -288,3 +288,50 @@ Users.schema = new SimpleSchema({
  * @summary Attach schema to Users (Meteor.users at the moment) collection
  */
 Users.attachSchema(Users.schema);
+
+Users.graphQLSchema = `
+  type User {
+    _id: String
+    username: String
+    createdAt: String
+    isAdmin: Boolean
+    telescope: UserTelescope
+  }
+
+  type UserTelescope {
+    bio: String
+    commentCount: Float
+    displayName: String
+    downvotedComments: [Vote]
+    downvotedPosts: [Vote]
+    email: String
+    emailHash: String
+    htmlBio: String
+    karma: Float
+    postCount: Int
+    slug: String
+    twitterUsername: String
+    upvotedComments: [Vote]
+    upvotedPosts: [Vote]
+    website: String
+    groups: [String]
+    notifications_users: Boolean
+    notifications_posts: Boolean
+    newsletter_subscribeToNewsletter: Boolean
+    isDummy: Boolean
+  }
+
+  type Vote {
+    itemId: String
+    power: Float
+    votedAt: String
+  }
+`;
+
+Telescope.graphQL.addSchema(Users.graphQLSchema);
+
+Telescope.graphQL.addQuery(`
+  users: [User]
+  user(_id: String, slug: String): User
+  currentUser: User
+`);

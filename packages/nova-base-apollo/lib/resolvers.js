@@ -104,7 +104,7 @@ const resolvers = {
     comments(root, args, context) {
       const options = {
         limit: 5,
-        fields: Users.getViewableFields(context.currentUser, Comments)
+        fields: gVF(context.currentUser, Comments)
       }
       return Comments.find({}, options).fetch();
     },
@@ -114,7 +114,7 @@ const resolvers = {
     categories(root, args, context) {
       const options = {
         limit: 5,
-        fields: Users.getViewableFields(context.currentUser, Categories)
+        fields: gVF(context.currentUser, Categories)
       };
       return Categories.find({}, options).fetch();
     },
