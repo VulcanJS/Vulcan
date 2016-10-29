@@ -3,25 +3,28 @@ import Users from 'meteor/nova:users';
 import Comments from 'meteor/nova:comments';
 import Categories from 'meteor/nova:categories';
 
+// shortcut
+const gVF = Users.getViewableFields;
+
 const resolvers = {
   Post: {
     user(post, args, context) {
-      return Users.findOne({_id: post.userId});
+      return Users.findOne({ _id: post.userId }, { fields: gVF(context.currentUser, Users) });
     },
     commenters(post, args, context) {
-      return post.commenters ? Users.find({_id: {$in: post.commenters}}).fetch() : [];
+      return post.commenters ? Users.find({_id: {$in: post.commenters}}, { fields: gVF(context.currentUser, Users) }).fetch() : [];
     },
     comments(post, args, context) {
-      return post.commentCount ? Comments.find({postId: post._id}).fetch() : [];
+      return post.commentCount ? Comments.find({postId: post._id}, { fields: gVF(context.currentUser, Comments) }).fetch() : [];
     },
     upvoters(post, args, context) {
-      return post.upvoters ? Users.find({_id: {$in: post.upvoters}}).fetch() : [];
+      return post.upvoters ? Users.find({_id: {$in: post.upvoters}}, { fields: gVF(context.currentUser, Users) }).fetch() : [];
     },
     downvoters(post, args, context) {
-      return post.downvoters ? Users.find({_id: {$in: post.downvoters}}).fetch() : [];
+      return post.downvoters ? Users.find({_id: {$in: post.downvoters}}, { fields: gVF(context.currentUser, Users) }).fetch() : [];
     },
     categories(post, args, context) {
-      return post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
+      return post.categories ? Categories.find({_id: {$in: post.categories}}, { fields: gVF(context.currentUser, Categories) }).fetch() : [];
     },
   },
   User: {
@@ -45,27 +48,27 @@ const resolvers = {
   },
   Comment: {
     parentComment(comment, args, context) {
-      return comment.parentCommentId ? Comments.findOne({_id: comment.parentCommentId}) : null;
+      return comment.parentCommentId ? Comments.findOne({_id: comment.parentCommentId}, { fields: gVF(context.currentUser, Comments) }) : null;
     },
     topLevelComment(comment, args, context) {
-      return comment.topLevelCommentId ? Comments.findOne({_id: comment.topLevelCommentId}) : null;
+      return comment.topLevelCommentId ? Comments.findOne({_id: comment.topLevelCommentId}, { fields: gVF(context.currentUser, Comments) }) : null;
     },
     post(comment, args, context) {
-      return Posts.findOne({_id: comment.postId});
+      return Posts.findOne({_id: comment.postId}, { fields: gVF(context.currentUser, Posts) });
     },
     user(comment, args, context) {
-      return Users.findOne({_id: comment.userId});
+      return Users.findOne({_id: comment.userId}, { fields: gVF(context.currentUser, Posts) });
     },
     upvoters(comment, args, context) {
-      return comment.upvoters ? Users.find({_id: {$in: comment.upvoters}}).fetch() : [];
+      return comment.upvoters ? Users.find({_id: {$in: comment.upvoters}}, { fields: gVF(context.currentUser, Users) }).fetch() : [];
     },
     downvoters(comment, args, context) {
-      return comment.downvoters ? Users.find({_id: {$in: comment.downvoters}}).fetch() : [];
+      return comment.downvoters ? Users.find({_id: {$in: comment.downvoters}}, { fields: gVF(context.currentUser, Users) }).fetch() : [];
     },
   },
   Category: {
     parent(category, args, context) {
-      return category.parent ? Categories.findOne({_id: category.parent }) : null;
+      return category.parent ? Categories.findOne({_id: category.parent }, { fields: gVF(context.currentUser, Categories) }) : null;
     }
   },
   Query: {
@@ -75,7 +78,7 @@ const resolvers = {
       options.limit = protectedLimit;
       options.skip = offset;
       // keep only fields that should be viewable by current user
-      options.fields = Users.getViewableFields(context.currentUser, Posts);
+      options.fields = gVF(context.currentUser, Posts);
       return Posts.find(selector, options).fetch();
     },
     postsViewTotal(root, {terms}, context) {
@@ -83,23 +86,17 @@ const resolvers = {
       return Posts.find(selector).count();
     },
     post(root, args, context) {
-      const options = {
-        fields: Users.getViewableFields(context.currentUser, Posts)
-      }
-      return Posts.findOne({_id: args._id}, options);
+      return Posts.findOne({_id: args._id}, { fields: gVF(context.currentUser, Posts) });
     },
     users(root, args, context) {
       const options = {
         limit: 5,
-        fields: Users.getViewableFields(context.currentUser, Users)
+        fields: gVF(context.currentUser, Users)
       }
       return Users.find({}, {limit: 5}).fetch();
     },
     user(root, args, context) {
-      const options = {
-        fields: Users.getViewableFields(context.currentUser, Users)
-      }
-      return Users.findOne({$or: [{_id: args._id}, {'telescope.slug': args.slug}]}, options);
+      return Users.findOne({$or: [{_id: args._id}, {'telescope.slug': args.slug}]}, { fields: gVF(context.currentUser, Users) });
     },
     currentUser(root, args, context) {
       return context && context.userId ? Meteor.users.findOne(context.userId) : null;
@@ -112,10 +109,7 @@ const resolvers = {
       return Comments.find({}, options).fetch();
     },
     comment(root, args, context) {
-      const options = {
-        fields: Users.getViewableFields(context.currentUser, Comments)
-      }
-      return Comments.findOne({_id: args._id}, options);
+      return Comments.findOne({_id: args._id}, { fields: gVF(context.currentUser, Comments) });
     },
     categories(root, args, context) {
       const options = {
@@ -125,10 +119,7 @@ const resolvers = {
       return Categories.find({}, options).fetch();
     },
     category(root, args, context) {
-      const options = {
-        fields: Users.getViewableFields(context.currentUser, Categories)
-      }
-      return Categories.findOne({_id: args._id}, options);
+      return Categories.findOne({_id: args._id}, { fields: gVF(context.currentUser, Categories) });
     },
   },
 };
