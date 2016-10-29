@@ -2,8 +2,6 @@ import Posts from 'meteor/nova:posts';
 import Users from 'meteor/nova:users';
 import Comments from 'meteor/nova:comments';
 import Categories from 'meteor/nova:categories';
-import PublicationsUtils from 'meteor/utilities:smart-publications';
-import _ from 'underscore';
 
 const resolvers = {
   Post: {
@@ -74,15 +72,10 @@ const resolvers = {
     posts(root, {terms, offset, limit}, context, info) {
       let {selector, options} = Posts.parameters.get(terms);
       const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
-      const currentUser = Users.findOne(context.userId);
       options.limit = protectedLimit;
       options.skip = offset;
       // keep only fields that should be viewable by current user
-      options.fields = PublicationsUtils.arrayToFields(_.compact(_.map(Posts.simpleSchema()._schema,
-        (field, fieldName) => {
-          return _.isFunction(field.viewableIf) && field.viewableIf(currentUser) ? fieldName : null;
-        }
-      )));
+      options.fields = Users.getViewableFields(context.currentUser, Posts);
       return Posts.find(selector, options).fetch();
     },
     postsViewTotal(root, {terms}, context) {
@@ -90,28 +83,52 @@ const resolvers = {
       return Posts.find(selector).count();
     },
     post(root, args, context) {
-      return Posts.findOne({_id: args._id});
+      const options = {
+        fields: Users.getViewableFields(context.currentUser, Posts)
+      }
+      return Posts.findOne({_id: args._id}, options);
     },
     users(root, args, context) {
+      const options = {
+        limit: 5,
+        fields: Users.getViewableFields(context.currentUser, Users)
+      }
       return Users.find({}, {limit: 5}).fetch();
     },
     user(root, args, context) {
-      return Users.findOne({$or: [{_id: args._id}, {'telescope.slug': args.slug}]});
+      const options = {
+        fields: Users.getViewableFields(context.currentUser, Users)
+      }
+      return Users.findOne({$or: [{_id: args._id}, {'telescope.slug': args.slug}]}, options);
     },
     currentUser(root, args, context) {
       return context && context.userId ? Meteor.users.findOne(context.userId) : null;
     },
     comments(root, args, context) {
-      return Comments.find({}, {limit: 5}).fetch();
+      const options = {
+        limit: 5,
+        fields: Users.getViewableFields(context.currentUser, Comments)
+      }
+      return Comments.find({}, options).fetch();
     },
     comment(root, args, context) {
-      return Comments.findOne({_id: args._id});
+      const options = {
+        fields: Users.getViewableFields(context.currentUser, Comments)
+      }
+      return Comments.findOne({_id: args._id}, options);
     },
     categories(root, args, context) {
-      return Categories.find({}, {limit: 5}).fetch();
+      const options = {
+        limit: 5,
+        fields: Users.getViewableFields(context.currentUser, Categories)
+      };
+      return Categories.find({}, options).fetch();
     },
     category(root, args, context) {
-      return Categories.findOne({_id: args._id});
+      const options = {
+        fields: Users.getViewableFields(context.currentUser, Categories)
+      }
+      return Categories.findOne({_id: args._id}, options);
     },
   },
 };

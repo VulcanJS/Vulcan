@@ -12,6 +12,8 @@ const canEdit = Users.canEdit;
 // check if user can edit *all* comments
 const canEditAll = user => Users.canDo(user, "comments.edit.all");
 
+const alwaysPublic = user => true;
+
 /**
  * @summary Comments schema
  * @type {SimpleSchema}
@@ -24,6 +26,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The `_id` of the parent comment, if there is one
@@ -32,6 +35,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     optional: true,
     publish: true,
@@ -44,6 +48,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     optional: true,
     publish: true,
@@ -55,7 +60,8 @@ Comments.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     optional: true,
-    publish: false
+    publish: false,
+    viewableIf: canEditAll,
   },
   /**
     The timestamp of the comment being posted. For now, comments are always created and posted at the same time
@@ -64,6 +70,7 @@ Comments.schema = new SimpleSchema({
     type: Date,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The comment body (Markdown)
@@ -71,6 +78,7 @@ Comments.schema = new SimpleSchema({
   body: {
     type: String,
     max: 3000,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true,
@@ -83,6 +91,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The comment author's name
@@ -91,6 +100,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     Whether the comment is inactive. Inactive comments' scores gets recalculated less often
@@ -99,6 +109,7 @@ Comments.schema = new SimpleSchema({
     type: Boolean,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The post's `_id`
@@ -107,6 +118,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     form: {
@@ -120,6 +132,7 @@ Comments.schema = new SimpleSchema({
     type: String,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
     join: {
       joinAs: "user",
       collection: () => Users
@@ -132,21 +145,25 @@ Comments.schema = new SimpleSchema({
     type: Boolean,
     optional: true,
     publish: true,
+    viewableIf: alwaysPublic,
   },
   userIP: {
     type: String,
     optional: true,
-    publish: false
+    publish: false,
+    viewableIf: canEditAll,
   },
   userAgent: {
     type: String,
     optional: true,
-    publish: false
+    publish: false,
+    viewableIf: canEditAll,
   },
   referrer: {
     type: String,
     optional: true,
-    publish: false
+    publish: false,
+    viewableIf: canEditAll,
   }
 });
 

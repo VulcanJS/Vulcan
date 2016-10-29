@@ -14,6 +14,8 @@ import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { _ } from 'meteor/underscore';
 
+import Users from 'meteor/nova:users';
+
 const defaultConfig = {
   path: '/graphql',
   maxAccountsCacheSizeInMB: 1,
@@ -83,6 +85,7 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
           }
 
           options.context.userId = user._id;
+          options.context.currentUser = Users.findOne(user._id);
         }
       }
     }

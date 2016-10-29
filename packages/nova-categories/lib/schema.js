@@ -4,11 +4,13 @@ import Users from 'meteor/nova:users';
 
 const canInsert = user => Users.canDo(user, "categories.new");
 const canEdit = user => Users.canDo(user, "categories.edit.all");
+const alwaysPublic = user => true;
 
 // category schema
 Categories.schema = new SimpleSchema({
   name: {
     type: String,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true
@@ -16,6 +18,7 @@ Categories.schema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true,
@@ -26,6 +29,7 @@ Categories.schema = new SimpleSchema({
   order: {
     type: Number,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true
@@ -33,6 +37,7 @@ Categories.schema = new SimpleSchema({
   slug: {
     type: String,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true
@@ -40,6 +45,7 @@ Categories.schema = new SimpleSchema({
   image: {
     type: String,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true
@@ -47,6 +53,7 @@ Categories.schema = new SimpleSchema({
   parentId: {
     type: String,
     optional: true,
+    viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true,
