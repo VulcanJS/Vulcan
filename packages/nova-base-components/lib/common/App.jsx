@@ -43,6 +43,7 @@ class App extends Component {
 App.propTypes = {
   ready: React.PropTypes.bool,
   currentUser: React.PropTypes.object,
+  categories: React.PropTypes.array,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   messages: React.PropTypes.object,

@@ -71,33 +71,33 @@ Categories.schema = new SimpleSchema({
 Categories.attachSchema(Categories.schema);
 
 
-Telescope.settings.collection.addField([
-  {
-    fieldName: 'categoriesBehavior',
-    fieldSchema: {
-      type: String,
-      optional: true,
-      form: {
-        group: 'categories',
-        instructions: 'Let users filter by one or multiple categories at a time.', 
-        options: function () {
-          return [
-            {value: "single", label: "categories_behavior_one_at_a_time"},
-            {value: "multiple", label: "categories_behavior_multiple"}
-          ];
-        }
-      }
-    }
-  },
-  {
-    fieldName: 'hideEmptyCategories',
-    fieldSchema: {
-      type: Boolean,
-      optional: true,
-      form: {
-        group: 'categories',
-        instructions: 'Hide empty categories in navigation'
-      }
-    }
-  }
-]);
+// Telescope.settings.collection.addField([
+//   {
+//     fieldName: 'categoriesBehavior',
+//     fieldSchema: {
+//       type: String,
+//       optional: true,
+//       form: {
+//         group: 'categories',
+//         instructions: 'Let users filter by one or multiple categories at a time.', 
+//         options: function () {
+//           return [
+//             {value: "single", label: "categories_behavior_one_at_a_time"},
+//             {value: "multiple", label: "categories_behavior_multiple"}
+//           ];
+//         }
+//       }
+//     }
+//   },
+//   {
+//     fieldName: 'hideEmptyCategories',
+//     fieldSchema: {
+//       type: Boolean,
+//       optional: true,
+//       form: {
+//         group: 'categories',
+//         instructions: 'Hide empty categories in navigation'
+//       }
+//     }
+//   }
+// ]);

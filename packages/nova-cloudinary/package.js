@@ -14,10 +14,6 @@ Package.onUse(function (api) {
     'nova:core@0.27.3-nova'
   ]);
 
-  api.use([
-    'nova:settings@0.26.1-nova'
-  ], {weak: true});
-
   api.addFiles([
     'lib/custom_fields.js'
   ], ['client', 'server']);
