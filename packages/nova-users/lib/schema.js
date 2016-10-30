@@ -15,6 +15,8 @@ const canEdit = Users.canEdit;
 // check if user can edit *all* users
 const canEditAll = user => Users.canDo(user, "users.edit.all");
 
+const alwaysPublic = user => true;
+
 /**
  * @summary Vote schema
  * @type {SimpleSchema}
@@ -47,6 +49,7 @@ Telescope.schemas.userData = new SimpleSchema({
     control: "textarea",
     insertableIf: canInsert,
     editableIf: canEdit,
+    viewableIf: alwaysPublic,
     // form: {
     //   rows: 5
     // }
@@ -57,7 +60,8 @@ Telescope.schemas.userData = new SimpleSchema({
   commentCount: {
     type: Number,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
@@ -69,7 +73,8 @@ Telescope.schemas.userData = new SimpleSchema({
     profile: true,
     control: "text",
     insertableIf: canInsert,
-    editableIf: canEdit
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
   },
   /**
     An array containing comment downvotes
@@ -77,7 +82,8 @@ Telescope.schemas.userData = new SimpleSchema({
   downvotedComments: {
     type: [Telescope.schemas.votes],
     publish: false,
-    optional: true
+    optional: true,
+    // viewableIf: alwaysPublic,
   },
   /**
     An array containing posts downvotes
@@ -85,7 +91,8 @@ Telescope.schemas.userData = new SimpleSchema({
   downvotedPosts: {
     type: [Telescope.schemas.votes],
     publish: false,
-    optional: true
+    optional: true,
+    // viewableIf: alwaysPublic,
   },
   /**
     The user's email. Modifiable.
@@ -97,7 +104,8 @@ Telescope.schemas.userData = new SimpleSchema({
     required: true,
     control: "text",
     insertableIf: canInsert,
-    editableIf: canEdit
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
   /**
@@ -106,7 +114,8 @@ Telescope.schemas.userData = new SimpleSchema({
   emailHash: {
     type: String,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The HTML version of the bio field
@@ -116,6 +125,7 @@ Telescope.schemas.userData = new SimpleSchema({
     publish: true,
     profile: true,
     optional: true,
+    viewableIf: alwaysPublic,
     // form: {
     //   omit: true
     // },
@@ -128,7 +138,8 @@ Telescope.schemas.userData = new SimpleSchema({
     type: Number,
     decimal: true,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   /**
     Total post count
@@ -136,7 +147,8 @@ Telescope.schemas.userData = new SimpleSchema({
   postCount: {
     type: Number,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   /**
     A blackbox modifiable object to store the user's settings
@@ -156,7 +168,8 @@ Telescope.schemas.userData = new SimpleSchema({
   slug: {
     type: String,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   /**
     The user's Twitter username
@@ -169,7 +182,8 @@ Telescope.schemas.userData = new SimpleSchema({
     control: "text",
     insertableIf: canInsert,
     editableIf: canEdit,
-    template: "user_profile_twitter"
+    template: "user_profile_twitter",
+    viewableIf: alwaysPublic,
   },
   /**
     An array containing comments upvotes
@@ -177,7 +191,8 @@ Telescope.schemas.userData = new SimpleSchema({
   upvotedComments: {
     type: [Telescope.schemas.votes],
     publish: false,
-    optional: true
+    optional: true,
+    // viewableIf: alwaysPublic,
   },
   /**
     An array containing posts upvotes
@@ -185,7 +200,8 @@ Telescope.schemas.userData = new SimpleSchema({
   upvotedPosts: {
     type: [Telescope.schemas.votes],
     publish: false,
-    optional: true
+    optional: true,
+    // viewableIf: alwaysPublic,
   },
   /**
     A link to the user's homepage
@@ -198,7 +214,8 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true,
     control: "text",
     insertableIf: canInsert,
-    editableIf: canEdit
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
   },
   /**
     Groups
@@ -209,6 +226,7 @@ Telescope.schemas.userData = new SimpleSchema({
     control: "checkboxgroup",
     insertableIf: canEditAll,
     editableIf: canEditAll,
+    viewableIf: alwaysPublic,
     form: {
       options: function () {
         const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
@@ -226,13 +244,15 @@ Users.schema = new SimpleSchema({
   _id: {
     type: String,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   username: {
     type: String,
     // regEx: /^[a-z0-9A-Z_]{3,15}$/,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   emails: {
     type: [Object],
@@ -250,7 +270,8 @@ Users.schema = new SimpleSchema({
   createdAt: {
     type: Date,
     publish: true,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   isAdmin: {
     type: Boolean,
@@ -259,6 +280,7 @@ Users.schema = new SimpleSchema({
     optional: true,
     insertableIf: canEditAll,
     editableIf: canEditAll,
+    viewableIf: alwaysPublic,
     group: adminGroup
     // form: {
     //   omit: true
@@ -271,7 +293,8 @@ Users.schema = new SimpleSchema({
   },
   telescope: { // telescope-specific data
     type: Telescope.schemas.userData,
-    optional: true
+    optional: true,
+    viewableIf: alwaysPublic,
   },
   services: {
     type: Object,

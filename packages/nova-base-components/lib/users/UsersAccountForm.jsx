@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 
+//import { client } from 'meteor/nova:base-apollo';
+
 const UsersAccountForm = () => {
   return (
     <Accounts.ui.LoginForm />
@@ -16,7 +18,7 @@ export default UsersAccountForm;
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
   onSignedInHook: () => {},
-  onSignedOutHook: () => {},
+  onSignedOutHook: () => {}, //client.resetStore()
 });
 
 class AccountsButton extends Accounts.ui.Button {

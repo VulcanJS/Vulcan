@@ -12,6 +12,8 @@ const canInsert = user => Users.canDo(user, "posts.new");
 // check if user can edit a post
 const canEdit = Users.canEdit;
 
+const alwaysPublic = user => true;
+
 Posts.addField(
   {
     fieldName: 'color',
@@ -21,6 +23,7 @@ Posts.addField(
       optional: true, // this field is not required
       insertableIf: canInsert,
       editableIf: canEdit,
+      viewableIf: alwaysPublic,
       form: {
         options: function () { // options for the select form control
           return [

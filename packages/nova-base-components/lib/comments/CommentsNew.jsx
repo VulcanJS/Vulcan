@@ -22,7 +22,7 @@ class CommentsNew extends Component {
           collection={Comments} 
           methodName="comments.new"
           prefilledProps={prefilledProps}
-          successCallback={this.props.successCallback}
+          //successCallback={this.props.successCallback}
           layout="elementOnly"
           cancelCallback={this.props.type === "reply" ? this.props.cancelCallback : null}
         />

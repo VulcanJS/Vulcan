@@ -1,12 +1,15 @@
 import Posts from "meteor/nova:posts";
 import PublicationUtils from 'meteor/utilities:smart-publications';
 
+const alwaysPublic = user => true;
+
 Posts.addField([
   {
     fieldName: 'cloudinaryId',
     fieldSchema: {
       type: String,
-      optional: true
+      optional: true,
+      viewableIf: alwaysPublic,
     }
   },
   {
@@ -14,48 +17,10 @@ Posts.addField([
     fieldSchema: {
       type: [Object],
       optional: true,
-      blackbox: true
+      blackbox: true,
+      viewableIf: alwaysPublic,
     }
   }
 ]);
-
-if (typeof Settings !== "undefined") {
-  Settings.addField([
-    {
-      fieldName: 'cloudinaryCloudName',
-      fieldSchema: {
-        type: String,
-        optional: true,
-        form: {
-          group: 'cloudinary'
-        }
-      }
-    },
-    {
-      fieldName: 'cloudinaryAPIKey',
-      fieldSchema: {
-        type: String,
-        optional: true,
-        private: true,
-        form: {
-          group: 'cloudinary',
-          class: 'private-field'
-        }
-      }
-    },
-    {
-      fieldName: 'cloudinaryAPISecret',
-      fieldSchema: {
-        type: String,
-        optional: true,
-        private: true,
-        form: {
-          group: 'cloudinary',
-          class: 'private-field'
-        }
-      }
-    }
-  ]);
-}
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["cloudinaryId", "cloudinaryUrls"]);

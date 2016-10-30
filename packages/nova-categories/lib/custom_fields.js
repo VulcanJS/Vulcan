@@ -8,6 +8,8 @@ const canInsert = user => Users.canDo(user, "posts.new");
 // check if user can edit a post
 const canEdit = Users.canEdit;
 
+const alwaysPublic = user => true;
+
 Posts.addField(
   {
     fieldName: 'categories',
@@ -17,6 +19,7 @@ Posts.addField(
       optional: true,
       insertableIf: canInsert,
       editableIf: canEdit,
+      viewableIf: alwaysPublic,
       form: {
         noselect: true,
         type: "bootstrap-category",

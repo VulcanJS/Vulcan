@@ -10,6 +10,8 @@ const canInsert = user => Users.canDo(user, "posts.new");
 // check if user can edit a post
 const canEdit = Users.canEdit;
 
+const alwaysPublic = user => true;
+
 Posts.addField([
   {
     fieldName: 'url',
@@ -19,6 +21,7 @@ Posts.addField([
       max: 500,
       insertableIf: canInsert,
       editableIf: canEdit,
+      viewableIf: alwaysPublic,
       control: EmbedlyURL,
       publish: true
     }
@@ -30,6 +33,7 @@ Posts.addField([
       optional: true,
       insertableIf: canInsert,
       editableIf: canEdit,
+      viewableIf: alwaysPublic,
       publish: true,
       control: ThumbnailURL
     }
@@ -40,7 +44,8 @@ Posts.addField([
       type: Object,
       publish: true,
       optional: true,
-      blackbox: true
+      blackbox: true,
+      viewableIf: alwaysPublic,
     }
   },
   {
@@ -49,6 +54,7 @@ Posts.addField([
       type: String,
       optional: true,
       publish: true,
+      viewableIf: alwaysPublic,
     }
   },
   {
@@ -57,45 +63,9 @@ Posts.addField([
       type: String,
       optional: true,
       publish: true,
+      viewableIf: alwaysPublic,
     }
   }
 ]);
 
 PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
-
-if (typeof Telescope.settings.collection !== "undefined") {
-  Telescope.settings.collection.addField([
-    {
-      fieldName: 'embedlyKey',
-      fieldSchema: {
-        type: String,
-        optional: true,
-        private: true,
-        form: {
-          group: 'embedly',
-          class: 'private-field'
-        }
-      }
-    },
-    {
-      fieldName: 'thumbnailWidth',
-      fieldSchema: {
-        type: Number,
-        optional: true,
-        form: {
-          group: 'embedly'
-        }
-      }
-    },
-    {
-      fieldName: 'thumbnailHeight',
-      fieldSchema: {
-        type: Number,
-        optional: true,
-        form: {
-          group: 'embedly'
-        }
-      }
-    }
-  ]);
-}
