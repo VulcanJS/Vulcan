@@ -2,6 +2,8 @@ import PublicationUtils from 'meteor/utilities:smart-publications';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
+const alwaysPublic = user => true;
+
 // ------------------------------------- Posts -------------------------------- //
 
 Posts.addField([
@@ -14,7 +16,8 @@ Posts.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -25,7 +28,8 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true
+      publish: true,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -37,7 +41,8 @@ Posts.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -48,7 +53,8 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true
+      publish: true,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -61,7 +67,8 @@ Posts.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -74,7 +81,8 @@ Posts.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
 ]);
@@ -93,7 +101,8 @@ Comments.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -105,6 +114,7 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -116,7 +126,8 @@ Comments.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -128,6 +139,7 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -140,7 +152,8 @@ Comments.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
   /**
@@ -153,7 +166,8 @@ Comments.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
     }
   },
 ]);

@@ -3,6 +3,8 @@ import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import Users from 'meteor/nova:users';
 
 class Vote extends Component {
@@ -20,18 +22,10 @@ class Vote extends Component {
 
     if(!user){
       this.props.flash("Please log in first");
-    } else if (Users.hasUpvoted(user, post)) {
-      this.context.actions.call('posts.cancelUpvote', post._id, () => {
-        this.props.refetchQuery();
-        this.context.events.track("post upvote cancelled", {'_id': post._id});
-      });        
     } else {
-      this.context.actions.call('posts.upvote', post._id, () => {
-        this.props.refetchQuery();
-        this.context.events.track("post upvoted", {'_id': post._id});
-      });
-    }
-
+      const voteType = Users.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
+      this.props.vote({postId: post._id, voteType});
+    } 
   }
 
   render() {
@@ -63,17 +57,31 @@ class Vote extends Component {
 
 Vote.propTypes = {
   post: React.PropTypes.object.isRequired, // the current post
+  vote: React.PropTypes.func, // mutate function with callback inside
 };
 
 Vote.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
-  //messages: React.PropTypes.object
 };
 
+// graphql
+const VoteWithMutation = graphql(gql`
+  mutation postVote($postId: String, $voteType: String) {
+    postVote(postId: $postId, voteType: $voteType)
+  }
+`, {
+  props: ({ownProps, mutate}) => ({
+    vote: ({postId, voteType}) => {
+      mutate({ variables: {postId, voteType} }).then(() => ownProps.refetchQuery())
+    }
+  }),
+})(Vote);
+
+// redux state + actions for messages
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Vote);
-export default connect(mapStateToProps, mapDispatchToProps)(Vote);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(VoteWithMutation);
+export default connect(mapStateToProps, mapDispatchToProps)(VoteWithMutation);

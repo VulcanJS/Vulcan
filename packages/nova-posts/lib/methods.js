@@ -5,7 +5,7 @@ import Events from "meteor/nova:events";
 
 /**
  *
- * Post Methods
+ * Post Methods (and Mutations)
  *
  */
 
@@ -240,53 +240,57 @@ Meteor.methods({
     Posts.checkForSameUrl(url);  
   },
 
-  /**
-   * @summary Upvote a post
-   * @memberof Posts
-   * @isMethod true
-   * @param {String} postId - the id of the post
-   */
-  'posts.upvote': function (postId) {
-    check(postId, String);
-    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
-  },
+  // /**
+  //  * @summary Upvote a post
+  //  * @memberof Posts
+  //  * @isMethod true
+  //  * @param {String} postId - the id of the post
+  //  */
+  // 'posts.upvote': function (postId) {
+  //   check(postId, String);
+  //   // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
+  //   return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "upvote");
+  // },
 
-  /**
-   * @summary Downvote a post
-   * @memberof Posts
-   * @isMethod true
-   * @param {String} postId - the id of the post
-   */
-  'posts.downvote': function (postId) {
-    check(postId, String);
-    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
-  },
+  // /**
+  //  * @summary Downvote a post
+  //  * @memberof Posts
+  //  * @isMethod true
+  //  * @param {String} postId - the id of the post
+  //  */
+  // 'posts.downvote': function (postId) {
+  //   check(postId, String);
+  //   // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
+  //   return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "downvote");
+  // },
 
 
-  /**
-   * @summary Cancel an upvote on a post
-   * @memberof Posts
-   * @isMethod true
-   * @param {String} postId - the id of the post
-   */
-  'posts.cancelUpvote': function (postId) {
-    check(postId, String);
-    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
-  },
+  // *
+  //  * @summary Cancel an upvote on a post
+  //  * @memberof Posts
+  //  * @isMethod true
+  //  * @param {String} postId - the id of the post
+   
+  // 'posts.cancelUpvote': function (postId) {
+  //   check(postId, String);
+  //   // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
+  //   return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelUpvote");
+  // },
 
-  /**
-   * @summary Cancel a downvote on a post
-   * @memberof Posts
-   * @isMethod true
-   * @param {String} postId - the id of the post
-   */
-  'posts.cancelDownvote': function (postId) {
-    check(postId, String);
-    // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
-    return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");
-  }
+  // /**
+  //  * @summary Cancel a downvote on a post
+  //  * @memberof Posts
+  //  * @isMethod true
+  //  * @param {String} postId - the id of the post
+  //  */
+  // 'posts.cancelDownvote': function (postId) {
+  //   check(postId, String);
+  //   // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
+  //   return Telescope.operateOnItem.call(this, Posts, postId, Meteor.user(), "cancelDownvote");
+  // }
 
 });
+
+Telescope.graphQL.addMutation(`
+  postVote(postId: String, voteType: String) : Boolean
+`);

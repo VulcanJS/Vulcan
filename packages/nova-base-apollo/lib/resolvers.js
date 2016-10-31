@@ -122,6 +122,11 @@ const resolvers = {
       return Categories.findOne({_id: args._id}, { fields: gVF(context.currentUser, Categories) });
     },
   },
+  Mutation: {
+    postVote(root, {postId, voteType}, context) {
+      return Users.canDo(context.currentUser, `posts.${voteType}`) ? Telescope.operateOnItem(Posts, postId, context.currentUser, voteType) : false;
+    },
+  }
 };
 
 export default resolvers;
