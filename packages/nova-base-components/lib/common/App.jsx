@@ -19,7 +19,8 @@ class App extends Component {
     return {
       currentUser: this.props.data.currentUser,
       categories: this.props.data.categories,
-      actions: this.props.actions,
+      //actions: this.props.actions,
+      actions: {call: Meteor.call},
       events: this.props.events,
       messages: this.props.messages,
       intl: intl

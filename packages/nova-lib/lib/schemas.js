@@ -6,5 +6,9 @@ Telescope.graphQL = {
   queries: [],
   addQuery(query) {
     this.queries.push(query);
-  }
+  },
+  mutations: [],
+  addMutation(mutation) {
+    this.mutations.push(mutation);
+  },
 };

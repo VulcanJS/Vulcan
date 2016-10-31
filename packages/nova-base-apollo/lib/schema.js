@@ -6,4 +6,8 @@ ${Telescope.graphQL.schemas.join('\n')}
 type Query {
   ${Telescope.graphQL.queries.join('\n')}
 }
+
+type Mutation {
+  ${Telescope.graphQL.mutations.join('\n')}
+}
 `];
