@@ -3,6 +3,8 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import Categories from "meteor/nova:categories";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class CategoriesEditForm extends Component{
 
@@ -16,9 +18,9 @@ class CategoriesEditForm extends Component{
     if (window.confirm(`Delete category “${category.name}”?`)) { 
       this.context.actions.call("categories.deleteById", category._id, (error, result) => {
         if (error) {
-          this.context.messages.flash(error.message, "error");
+          this.props.flash(error.message, "error");
         } else {
-          this.context.messages.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
+          this.props.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
         }
         this.context.closeCallback();
       });
@@ -34,7 +36,7 @@ class CategoriesEditForm extends Component{
           collection={Categories}
           methodName="categories.edit"
           successCallback={(category)=>{
-            this.context.messages.flash("Category edited.", "success");
+            this.props.flash("Category edited.", "success");
           }}
         />
         <hr/>
@@ -52,8 +54,10 @@ CategoriesEditForm.contextTypes = {
   actions: React.PropTypes.object,
   closeCallback: React.PropTypes.func,
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
 };
 
-module.exports = CategoriesEditForm;
-export default CategoriesEditForm;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(CategoriesEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesEditForm);

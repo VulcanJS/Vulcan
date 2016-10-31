@@ -43,7 +43,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} actions={this.context.actions} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.context.currentUser} actions={this.context.actions} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesEditForm category={category}/>
           </ContextPasser>
         </Modal.Body>
@@ -59,7 +59,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
         </Modal.Header>        
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
+          <ContextPasser currentUser={this.context.currentUser} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesNewForm/>
           </ContextPasser>
         </Modal.Body>
@@ -121,7 +121,6 @@ CategoriesList.contextTypes = {
   actions: React.PropTypes.object,
   categories: React.PropTypes.array,
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
 };
 
 module.exports = withRouter(CategoriesList);

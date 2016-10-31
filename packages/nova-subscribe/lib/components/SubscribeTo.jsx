@@ -2,6 +2,9 @@ import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import Telescope from 'meteor/nova:lib';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 class SubscribeTo extends Component {
 
   constructor(props, context) {
@@ -21,12 +24,12 @@ class SubscribeTo extends Component {
     // method name will be for example posts.subscribe
     this.context.actions.call(`${documentType}.${action}`, document._id, (error, result) => {
       if (error) {
-        this.context.messages.flash(error.message, "error")
+        this.props.flash(error.message, "error");
       }
 
       if (result) {
         // success message will be for example posts.subscribed
-        this.context.messages.flash(this.context.intl.formatMessage(
+        this.props.flash(this.context.intl.formatMessage(
           {id: `${documentType}.${action}d`}, 
           // handle usual name properties
           {name: document.name || document.title || document.telescope.displayName}
@@ -73,10 +76,12 @@ SubscribeTo.propTypes = {
 
 SubscribeTo.contextTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
 };
 
-export default SubscribeTo;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubscribeTo);

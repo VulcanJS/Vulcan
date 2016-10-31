@@ -45,9 +45,10 @@ Meteor.startup(() => {
     props: {
       onUpdate: () => {
         Events.analyticsRequest(); 
-        Messages.clearSeen();
-      }
-    }
+        // clear all previous messages
+        store.dispatch(Telescope.actions.messages.clearSeen());
+      },
+    },
   };
 
   const serverOptions = {

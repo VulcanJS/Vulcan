@@ -1,7 +1,9 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-//import { Messages } from "meteor/nova:core";
 import Categories from "meteor/nova:categories";
 import NovaForm from "meteor/nova:forms";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 const CategoriesNewForm = (props, context) => {
 
@@ -11,7 +13,7 @@ const CategoriesNewForm = (props, context) => {
         collection={Categories} 
         methodName="categories.new"
         successCallback={(category)=>{
-          context.messages.flash("Category created.", "success");
+          props.flash("Category created.", "success");
         }}
       />
     </div>
@@ -22,8 +24,10 @@ CategoriesNewForm.displayName = "CategoriesNewForm";
 
 CategoriesNewForm.contextTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object
 };
 
-module.exports = CategoriesNewForm;
-export default CategoriesNewForm;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(CategoriesNewForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesNewForm);

@@ -3,6 +3,8 @@ import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
 import Users from 'meteor/nova:users';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class CommentsItem extends Component{
 
@@ -51,7 +53,7 @@ class CommentsItem extends Component{
     
     if (window.confirm(deleteConfirmMessage)) {
       this.context.actions.call('comments.deleteById', comment._id, (error, result) => {
-        this.context.messages.flash(deleteSuccessMessage, "success");
+        this.props.flash(deleteSuccessMessage, "success");
         this.context.events.track("comment deleted", {'_id': comment._id});
       });
     }
@@ -128,9 +130,10 @@ CommentsItem.propTypes = {
 CommentsItem.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
-  messages: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
 };
 
-module.exports = CommentsItem;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(CommentsItem);

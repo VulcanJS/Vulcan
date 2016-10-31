@@ -22,8 +22,8 @@ const PostsNewForm = (props, context) => {
           collection={Posts} 
           methodName="posts.new"
           successCallback={(post)=>{
-            props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
             router.push({pathname: Posts.getPageUrl(post)});
+            props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
         />
       </div>

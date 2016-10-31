@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import { Alert } from 'react-bootstrap';
-//import { Messages } from "meteor/nova:core";
 
 class Flash extends Component{
 

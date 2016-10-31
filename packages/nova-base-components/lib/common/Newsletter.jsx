@@ -6,6 +6,8 @@ import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class Newsletter extends Component {
 
@@ -38,7 +40,7 @@ class Newsletter extends Component {
     this.context.actions.call("newsletter.addEmail", data.email, (error, result) => {
       if (error) {
         console.log(error);
-        this.context.messages.flash(error.message, "error");
+        this.props.flash(error.message, "error");
       } else {
         this.successCallbackSubscription(result);
       }
@@ -46,7 +48,7 @@ class Newsletter extends Component {
   }
 
   successCallbackSubscription(result) {
-    this.context.messages.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
+    this.props.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
     this.dismissBanner();
   }
 
@@ -98,9 +100,10 @@ class Newsletter extends Component {
 Newsletter.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
-  messages: React.PropTypes.object,
   intl: intlShape
 };
 
-module.exports = Newsletter;
-export default Newsletter;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Newsletter);
+export default connect(mapStateToProps, mapDispatchToProps)(Newsletter);

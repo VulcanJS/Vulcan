@@ -52,7 +52,6 @@ class ModalTrigger extends Component {
               currentUser={this.context.currentUser}
               actions={this.context.actions}
               events={this.context.events}
-              messages={this.context.messages}
               closeCallback={this.closeModal}
             >
               {this.props.children}
@@ -77,7 +76,6 @@ ModalTrigger.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
-  messages: React.PropTypes.object
 };
 
 // ModalTrigger.childContextTypes = {

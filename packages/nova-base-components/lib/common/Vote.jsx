@@ -1,6 +1,8 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Users from 'meteor/nova:users';
 
 class Vote extends Component {
@@ -17,7 +19,7 @@ class Vote extends Component {
     const user = this.context.currentUser;
 
     if(!user){
-      this.context.messages.flash("Please log in first");
+      this.props.flash("Please log in first");
     } else if (Users.hasUpvoted(user, post)) {
       this.context.actions.call('posts.cancelUpvote', post._id, () => {
         this.props.refetchQuery();
@@ -67,8 +69,11 @@ Vote.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
-  messages: React.PropTypes.object
+  //messages: React.PropTypes.object
 };
 
-module.exports = Vote;
-export default Vote;
+const mapStateToProps = state => ({ messages: state.messages });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Vote);
+export default connect(mapStateToProps, mapDispatchToProps)(Vote);

@@ -2,10 +2,11 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
-//import { Messages } from "meteor/nova:core";
-//import Actions from "../actions.js";
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class PostsEditForm extends Component{
 
@@ -21,7 +22,7 @@ class PostsEditForm extends Component{
 
     if (window.confirm(deletePostConfirm)) { 
       this.context.actions.call('posts.remove', post._id, (error, result) => {
-        this.context.messages.flash(deletePostSuccess, "success");
+        this.props.flash(deletePostSuccess, "success");
         this.context.events.track("post deleted", {'_id': post._id});
       });
     }
@@ -52,7 +53,7 @@ class PostsEditForm extends Component{
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
             successCallback: (post) => { 
-              this.context.messages.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success')
+              this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success')
             }
           }}
         />
@@ -71,9 +72,11 @@ PostsEditForm.contextTypes = {
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
-  messages: React.PropTypes.object,
   intl: intlShape
 }
 
-module.exports = PostsEditForm;
-export default PostsEditForm;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(PostsEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PostsEditForm);

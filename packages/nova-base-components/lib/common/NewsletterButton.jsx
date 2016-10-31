@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { Messages } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class NewsletterButton extends Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class NewsletterButton extends Component {
     this.context.actions.call(action, this.props.user, (error, result) => {
       if (error) {
         console.log(error);
-        this.context.messages.flash(error.message, "error");
+        this.props.flash(error.message, "error");
       } else {
         this.props.successCallback(result);
       }
@@ -46,9 +48,11 @@ NewsletterButton.propTypes = {
 
 NewsletterButton.contextTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
   actions: React.PropTypes.object,
 }
 
-module.exports = NewsletterButton;
-export default NewsletterButton;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(NewsletterButton);
+export default connect(mapStateToProps, mapDispatchToProps)(NewsletterButton);

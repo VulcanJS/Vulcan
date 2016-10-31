@@ -3,13 +3,14 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
-//import { Messages } from "meteor/nova:core";
 import Users from 'meteor/nova:users';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 const UsersEdit = (props, context) => {
 
   const user = props.document;
-  const currentUser = props.currentUser;
 
   return (
     <Telescope.components.CanDo 
@@ -24,7 +25,7 @@ const UsersEdit = (props, context) => {
           document={user} 
           methodName="users.edit"
           successCallback={(user)=>{
-            context.messages.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
+            props.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
           }}
         />
       </div>
@@ -39,11 +40,13 @@ UsersEdit.propTypes = {
 
 UsersEdit.contextTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
   intl: intlShape
 };
 
 UsersEdit.displayName = "UsersEdit";
 
-module.exports = UsersEdit;
-export default UsersEdit;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
