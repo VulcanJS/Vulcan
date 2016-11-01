@@ -57,6 +57,7 @@ export const createMeteorNetworkInterface = (givenConfig) => {
 
 export const meteorClientConfig = (networkInterfaceConfig) => {
   return {
+    ssrMode: true,
     networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
     queryTransformer: addTypenameToSelectionSet,
 

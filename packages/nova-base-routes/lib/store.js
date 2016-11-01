@@ -1,25 +1,22 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import ApolloClient from 'apollo-client';
+import { routerMiddleware } from 'react-router-redux'
 
 import Telescope from 'meteor/nova:lib';
-// import { meteorClientConfig } from 'meteor/apollo';
 import { client } from 'meteor/nova:base-apollo';
-
-// // see https://github.com/apollostack/meteor-integration/blob/master/package.js#L15
-// // on one hand, a client-side function shouldn't exist server-side
-// // on the other hand, it breaks server-side rendering
-// const config = Meteor.isClient ? meteorClientConfig() : {}; // so, that feels weird.
 
 const rootReducer = combineReducers({...Telescope.reducers, apollo: client.reducer()}); 
 
-const store = createStore(
+const configureStore = (initialState = {}, history) => createStore(
   // reducers
   rootReducer,
+  //initial state
+  initialState,
   // middlewares
   compose(
-    applyMiddleware(client.middleware()),
+    applyMiddleware(client.middleware(), routerMiddleware(history)),
     typeof window !== "undefined" && window.devToolsExtension ? window.devToolsExtension() : f => f
   ),
 );
 
-export { store };
+export { configureStore };

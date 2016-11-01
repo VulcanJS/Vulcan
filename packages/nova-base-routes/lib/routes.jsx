@@ -1,9 +1,8 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import { Messages } from 'meteor/nova:core';
-import { IndexRoute, Route, useRouterHistory, browserHistory, createMemoryHistory } from 'react-router';
+import { IndexRoute, Route } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Events from "meteor/nova:events";
 import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
@@ -11,11 +10,16 @@ import ReactDOM from 'react-dom';
 
 import { ApolloProvider } from 'react-apollo';
 import { client } from 'meteor/nova:base-apollo';
-import { store } from "./store.js";
+import { configureStore } from "./store.js";
 
-Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
 Meteor.startup(() => {
+  
+  /*
+    Routes definition  
+  */
+
+  Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
   Telescope.routes.add([
     {name:"posts.daily",    path:"daily",              component:Telescope.components.PostsDaily},
@@ -25,23 +29,45 @@ Meteor.startup(() => {
     {name:"users.edit",     path:"users/:slug/edit",   component:Telescope.components.UsersAccount},
     {name:"app.notfound",   path:"*",                  component:Telescope.components.Error404},
   ]);
-  
-  const ProvidedApp = (props) => (
-    <ApolloProvider store={store} client={client}>
-      <Telescope.components.AppContainer {...props} />
-    </ApolloProvider>
-  );
 
   const AppRoutes = {
     path: '/',
-    component: ProvidedApp,
+    component: Telescope.components.AppContainer,
     indexRoute: Telescope.routes.indexRoute,
     childRoutes: Telescope.routes.routes
   };
 
+  /*
+    Hooks client side and server side definition
+  */
+
+  
+  let history;
+  let initialState;
+  let store;
+  
+  // Use history hook to get a reference to the history object
+  const historyHook = newHistory => history = newHistory;
+
+  // Pass the state of the store as the object to be dehydrated server side
+  const dehydrateHook = () => {
+    console.log('store get state', store.getState());
+    return store.getState();
+  }
+
+  // Take the rehydrated state and use it as the initial state client side
+  const rehydrateHook = state => {
+    console.log('rehydrated state', state);
+    initialState = state
+  };
 
   const clientOptions = {
-    renderHook: ReactDOM.render,
+    historyHook,
+    rehydrateHook,
+    wrapperHook(app) {
+      store = configureStore(initialState, history);
+      return <ApolloProvider store={store} client={client}>{app}</ApolloProvider>
+    },
     props: {
       onUpdate: () => {
         Events.analyticsRequest(); 
@@ -59,25 +85,17 @@ Meteor.startup(() => {
     preRender: (req, res) => {
       Cookie.plugToRequest(req, res);
     },
+    historyHook,
+    dehydrateHook,
     // see https://github.com/thereactivestack/meteor-react-router-ssr/blob/9762f12c5d5512c5cfee8663a29428f7e4c141f8/lib/server.jsx#L241-L257
-    fetchDataHook: (components) => {
-      console.log('this is where ssr & apollo should interact')
-      return [new Promise((resolve, reject) => {
-        resolve();
-      })];
-    },
+    // note: can't get it working well
+    // fetchDataHook: (components) => {
+    //   console.log(components[0]); // = Apollo(AppContainer)
+    //   // console.log('this is where ssr & apollo should interact -> fetch data')
+    //   return [components[0].fetchData({} /* should be props .. how to get them?*/, {client})];
+    // },
+    fetchDataHook: (components) => components,
   };
   
   ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
-  
-  // note: we did like this at first
-  // let history;
-  // if (Meteor.isClient) {
-  //   history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });
-  // }
-  // if (Meteor.isServer) {
-  //   history = useNamedRoutes(useRouterHistory(createMemoryHistory))({ routes: AppRoutes });
-  // }
-  // ReactRouterSSR.Run(AppRoutes, {historyHook: () => history}, {historyHook: () => history});
-
 });
