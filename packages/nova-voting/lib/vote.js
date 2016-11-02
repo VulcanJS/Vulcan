@@ -25,6 +25,7 @@ Telescope.operateOnItem = function (collection, item, user, operation, isSimulat
 
     const simulatedItem = { 
       __typename: 'Post',
+      _id: item._id,
       upvoters: item.upvoters,
       upvotes: item.upvotes,
       baseScore: item.baseScore

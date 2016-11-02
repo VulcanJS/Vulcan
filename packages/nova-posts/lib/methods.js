@@ -292,5 +292,5 @@ Meteor.methods({
 });
 
 Telescope.graphQL.addMutation(`
-  postVote(postId: String, voteType: String) : Boolean
+  postVote(postId: String, voteType: String) : Post
 `);
