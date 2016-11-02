@@ -1,5 +1,7 @@
 import './modules.js';
 
+import './subscriptions.js';
+
 import Messages from './messages.js';
 import ModalTrigger from './components/ModalTrigger.jsx';
 import ContextPasser from './components/ContextPasser.jsx';
