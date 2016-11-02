@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
+import Events from "meteor/nova:events";
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -14,6 +15,7 @@ const AppContainer = (props, context) => {
     refetchQuery={refetch}
     currentUser={currentUser}
     categories={categories}
+    events={Events}
     {...props}
   />;
 };
