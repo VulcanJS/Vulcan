@@ -46,5 +46,6 @@ Telescope.utils.icons = {
   views: "eye",
   clicks: "mouse-pointer", 
   score: "line-chart",
-  reply: "reply"
+  reply: "reply",
+  spinner: "spinner"
 };

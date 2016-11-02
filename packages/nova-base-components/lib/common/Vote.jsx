@@ -12,10 +12,25 @@ class Vote extends Component {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+    this.startLoading = this.startLoading.bind(this);
+    this.stopLoading = this.stopLoading.bind(this);
+    this.state = {
+      loading: false
+    }
+  }
+
+  startLoading() {
+    this.setState({ loading: true });
+  }
+
+  stopLoading() {
+    this.setState({ loading: false });
   }
 
   upvote(e) {
     e.preventDefault();
+
+    this.startLoading();
 
     const post = this.props.post;
     const user = this.context.currentUser;
@@ -24,7 +39,9 @@ class Vote extends Component {
       this.props.flash("Please log in first");
     } else {
       const voteType = Users.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
-      this.props.vote({postId: post._id, voteType});
+      this.props.vote({postId: post._id, voteType}).then(result => {
+        this.stopLoading();
+      });
     } 
   }
 
@@ -45,7 +62,7 @@ class Vote extends Component {
     return (
       <div className={actionsClass}>
         <a className="upvote-button" onClick={this.upvote}>
-          <Telescope.components.Icon name="upvote" />
+          {this.state.loading ? <Telescope.components.Icon name="spinner" /> : <Telescope.components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
           <div className="vote-count">{post.baseScore || 0}</div>
         </a>
@@ -73,9 +90,9 @@ const VoteWithMutation = graphql(gql`
   }
 `, {
   props: ({ownProps, mutate}) => ({
-    vote: ({postId, voteType}) => {
-      mutate({ variables: {postId, voteType} }).then(() => ownProps.refetchQuery())
-    }
+    vote: ({postId, voteType}) => mutate({ variables: {postId, voteType} }).then(() => {
+      return ownProps.refetchQuery();
+    })
   }),
 })(Vote);
 
