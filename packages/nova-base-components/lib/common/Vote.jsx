@@ -39,7 +39,7 @@ class Vote extends Component {
       this.props.flash("Please log in first");
     } else {
       const voteType = Users.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
-      this.props.vote({postId: post._id, voteType}).then(result => {
+      this.props.vote({post, voteType, currentUser: this.context.currentUser}).then(result => {
         this.stopLoading();
       });
     } 
@@ -90,9 +90,23 @@ const VoteWithMutation = graphql(gql`
   }
 `, {
   props: ({ownProps, mutate}) => ({
-    vote: ({postId, voteType}) => mutate({ variables: {postId, voteType} }).then(() => {
-      return ownProps.refetchQuery();
-    })
+    vote: ({post, voteType, currentUser}) => {
+      
+      const votedItem = Telescope.operateOnItem(Posts, post, currentUser, voteType, true);
+      
+      console.log("// votedItem")
+      console.log(votedItem)
+
+      return mutate({ 
+        variables: {postId: post._id, voteType},
+        optimisticResponse: {
+          __typename: 'Mutation',
+          postVote: votedItem
+        },
+      }).then(() => {
+        return ownProps.refetchQuery();
+      })
+    }
   }),
 })(Vote);
 

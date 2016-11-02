@@ -6,11 +6,10 @@ Telescope.getVotePower = function (user) {
   return 1;
 };
 
-Telescope.operateOnItem = function (collection, itemId, user, operation) {
+Telescope.operateOnItem = function (collection, item, user, operation, isSimulation = false) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
 
-  var item = collection.findOne(itemId);
   var votePower = Telescope.getVotePower(user);
   var hasUpvotedItem = Users.hasUpvoted(user, item);
   var hasDownvotedItem = Users.hasDownvoted(user, item);
@@ -21,77 +20,132 @@ Telescope.operateOnItem = function (collection, itemId, user, operation) {
   // console.log(user)
   // console.log(operation)
 
-  // make sure item and user are defined, and user can perform the operation
-  if (
-    !item ||
-    !user || 
-    !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
-    operation === "upvote" && hasUpvotedItem ||
-    operation === "downvote" && hasDownvotedItem ||
-    operation === "cancelUpvote" && !hasUpvotedItem||
-    operation === "cancelDownvote" && !hasDownvotedItem
-  ) {
-    return false; 
-  }
+  if (isSimulation) {
+    // ------------------------------ Optimistic UI Simulation ------------------------------ //
 
-  // ------------------------------ Sync Callbacks ------------------------------ //
-  item = Telescope.callbacks.run(operation, item, user);
+    const simulatedItem = { 
+      __typename: 'Post',
+      upvoters: item.upvoters,
+      upvotes: item.upvotes,
+      baseScore: item.baseScore
+    };
 
-  switch (operation) {
+    // console.log("// before simulation")
+    // console.log(operation)
+    // console.log(_.clone(simulatedItem))
 
-    case "upvote":
+    switch (operation) {
 
-      if (hasDownvotedItem) {
-        Telescope.operateOnItem(collection, itemId, user, "cancelDownvote");
-      }
-      update = {
-        $addToSet: {upvoters: user._id},
-        $inc: {upvotes: 1, baseScore: votePower}
-      }
-      break;
+      case "upvote": 
+        if (hasDownvotedItem) {
+          Telescope.operateOnItem(collection, item, user, "cancelDownvote", true);
+        }
+        simulatedItem.upvoters.push(user._id);
+        simulatedItem.upvotes += 1;
+        simulatedItem.baseScore += votePower;
+        break;
 
-    case "downvote":
+      case "downvote":
+        if (hasUpvotedItem) {
+          Telescope.operateOnItem(collection, item, user, "cancelUpvote", true);
+        }
+        simulatedItem.downvoters.push(user._id);
+        simulatedItem.downvotes += 1;
+        simulatedItem.baseScore -= votePower;
 
-      if (hasUpvotedItem) {
-        Telescope.operateOnItem(collection, itemId, user, "cancelUpvote");
-      }
-      update = {
-        $addToSet: {downvoters: user._id},
-        $inc: {downvotes: 1, baseScore: -votePower}
-      }
-      break;
+      case "cancelUpvote": 
+        simulatedItem.upvoters = _.reject(simulatedItem.upvoters, u => u._id === user._id);
+        simulatedItem.upvotes -= 1;
+        simulatedItem.baseScore -= votePower;
+        break;
 
-    case "cancelUpvote":
+      case "cancelDownvote": 
+        simulatedItem.downvoters = _.reject(simulatedItem.downvoters, u => u._id === user._id);
+        simulatedItem.downvoters -= 1;
+        simulatedItem.baseScore += votePower;
+        break;
+    }
 
-      update = {
-        $pull: {upvoters: user._id},
-        $inc: {upvotes: -1, baseScore: -votePower}
-      };
-      break;
-
-    case "cancelDownvote":
-
-      update = {
-        $pull: {downvoters: user._id},
-        $inc: {downvotes: -1, baseScore: votePower}
-      };
-      break;
-  }
-
-  update["$set"] = {inactive: false};
-  var result = collection.update({_id: item._id}, update);
-
-
-  if (result > 0) {
-
-    // extend item with baseScore to help calculate newScore
-    item = _.extend(item, {baseScore: (item.baseScore + votePower)});
+    // console.log("// after simulation")
+    // console.log(_.clone(simulatedItem))
     
-    // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation);
-    
-    return true;
+    return simulatedItem;
 
+  } else {
+
+    // ------------------------------ "Real" Server-Side Operation ------------------------------ //
+
+    // make sure item and user are defined, and user can perform the operation
+    if (
+      !item ||
+      !user || 
+      !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
+      operation === "upvote" && hasUpvotedItem ||
+      operation === "downvote" && hasDownvotedItem ||
+      operation === "cancelUpvote" && !hasUpvotedItem||
+      operation === "cancelDownvote" && !hasDownvotedItem
+    ) {
+      return false; 
+    }
+
+    // ------------------------------ Sync Callbacks ------------------------------ //
+    item = Telescope.callbacks.run(operation, item, user);
+
+    switch (operation) {
+
+      case "upvote":
+
+        if (hasDownvotedItem) {
+          Telescope.operateOnItem(collection, item, user, "cancelDownvote", isSimulation);
+        }
+        update = {
+          $addToSet: {upvoters: user._id},
+          $inc: {upvotes: 1, baseScore: votePower}
+        }
+        break;
+
+      case "downvote":
+
+        if (hasUpvotedItem) {
+          Telescope.operateOnItem(collection, item, user, "cancelUpvote", isSimulation);
+        }
+        update = {
+          $addToSet: {downvoters: user._id},
+          $inc: {downvotes: 1, baseScore: -votePower}
+        }
+        break;
+
+      case "cancelUpvote":
+
+        update = {
+          $pull: {upvoters: user._id},
+          $inc: {upvotes: -1, baseScore: -votePower}
+        };
+        break;
+
+      case "cancelDownvote":
+
+        update = {
+          $pull: {downvoters: user._id},
+          $inc: {downvotes: -1, baseScore: votePower}
+        };
+        break;
+    }
+
+    update["$set"] = {inactive: false};
+    var result = collection.update({_id: item._id}, update);
+
+
+    if (result > 0) {
+
+      // extend item with baseScore to help calculate newScore
+      item = _.extend(item, {baseScore: (item.baseScore + votePower)});
+      
+      // --------------------- Server-Side Async Callbacks --------------------- //
+      Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation);
+      
+      return item;
+
+    }
   }
-
 };

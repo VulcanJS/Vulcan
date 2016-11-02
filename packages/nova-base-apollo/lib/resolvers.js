@@ -124,7 +124,10 @@ const resolvers = {
   },
   Mutation: {
     postVote(root, {postId, voteType}, context) {
-      return Users.canDo(context.currentUser, `posts.${voteType}`) ? Telescope.operateOnItem(Posts, postId, context.currentUser, voteType) : false;
+      Meteor._sleepForMs(10000); // wait 10 seconds
+      console.log("sleep done")
+      const post = Posts.findOne(postId);
+      return Users.canDo(context.currentUser, `posts.${voteType}`) ? Telescope.operateOnItem(Posts, post, context.currentUser, voteType) : false;
     },
   }
 };

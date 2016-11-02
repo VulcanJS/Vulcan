@@ -243,7 +243,7 @@ Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
 function PostsNewUpvoteOwnPost (post) {
   if (typeof Telescope.operateOnItem !== "undefined") {
     var postAuthor = Users.findOne(post.userId);
-    Telescope.operateOnItem(Posts, post._id, postAuthor, "upvote");
+    Telescope.operateOnItem(Posts, post, postAuthor, "upvote");
   }
 }
 Telescope.callbacks.add("posts.new.async", PostsNewUpvoteOwnPost);
