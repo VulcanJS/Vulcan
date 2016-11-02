@@ -86,6 +86,7 @@ const resolvers = {
       return Posts.find(selector).count();
     },
     post(root, args, context) {
+      Meteor._sleepForMs(2000); // wait 2 seconds
       return Posts.findOne({_id: args._id}, { fields: gVF(context.currentUser, Posts) });
     },
     users(root, args, context) {
@@ -124,7 +125,7 @@ const resolvers = {
   },
   Mutation: {
     postVote(root, {postId, voteType}, context) {
-      Meteor._sleepForMs(10000); // wait 10 seconds
+      Meteor._sleepForMs(2000); // wait 2 seconds
       console.log("sleep done")
       const post = Posts.findOne(postId);
       return Users.canDo(context.currentUser, `posts.${voteType}`) ? Telescope.operateOnItem(Posts, post, context.currentUser, voteType) : false;

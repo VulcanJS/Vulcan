@@ -114,15 +114,23 @@ Meteor.methods({
    */
   'posts.edit': function (postId, modifier) {
     
-    Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
-    check(postId, String);
+    if (Meteor.isClient) {
 
-    const post = Posts.findOne(postId);
+      // no simulation for now
+      return {};
 
-    modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
+    } else {
 
-    return Posts.methods.edit(postId, modifier, post);
+      Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
+      check(postId, String);
 
+      const post = Posts.findOne(postId);
+
+      modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
+
+      return Posts.methods.edit(postId, modifier, post);
+
+    }
   },
 
   /**
@@ -204,29 +212,37 @@ Meteor.methods({
    * @isMethod true
    * @param {String} postId - the id of the post
    */
-  'posts.remove': function(postId) {
+  'posts.remove': function(post) {
 
-    check(postId, String);
+    if (Meteor.isClient) {
+      
+      // no simulation for now
+    
+    } else {
 
-    // remove post comments
-    // if(!this.isSimulation) {
-    //   Comments.remove({post: postId});
-    // }
-    // NOTE: actually, keep comments after all
+      check(postId, String);
 
-    var post = Posts.findOne({_id: postId});
+      // remove post comments
+      // if(!this.isSimulation) {
+      //   Comments.remove({post: postId});
+      // }
+      // NOTE: actually, keep comments after all
 
-    if (!Meteor.userId() || !Users.canEdit(Meteor.user(), post)){
-      throw new Meteor.Error(606, 'You need permission to edit or delete a post');
+      const post = Posts.findOne({_id: postId});
+
+      if (!Meteor.userId() || !Users.canEdit(Meteor.user(), post)){
+        throw new Meteor.Error(606, 'You need permission to edit or delete a post');
+      }
+
+      // decrement post count
+      Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
+
+      // delete post
+      Posts.remove(postId);
+
+      Telescope.callbacks.runAsync("posts.remove.async", post);
+      
     }
-
-    // decrement post count
-    Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
-
-    // delete post
-    Posts.remove(postId);
-
-    Telescope.callbacks.runAsync("posts.remove.async", post);
 
   },
 

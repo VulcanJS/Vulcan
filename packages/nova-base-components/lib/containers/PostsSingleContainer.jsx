@@ -99,7 +99,7 @@ const PostsSingleContainerWithData = graphql(gql`
   options(ownProps) {
     return {
       variables: { postId: ownProps.postId },
-      pollInterval: 20000,
+      // pollInterval: 20000,
     };
   },
 })(PostsSingleContainer);

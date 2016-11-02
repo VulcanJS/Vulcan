@@ -339,7 +339,7 @@ Telescope.callbacks.add("posts.edit.sync", PostsEditForceStickyToFalse);
  */
 function PostsEditSetIsFuture (modifier, post) {
   // if a post's postedAt date is in the future, set isFuture to true
-  modifier.$set.isFuture = modifier.$set.postedAt && modifier.$set.postedAt.getTime() > new Date().getTime() + 1000;
+  modifier.$set.isFuture = modifier.$set.postedAt && new Date(modifier.$set.postedAt).getTime() > new Date().getTime() + 1000;
   return modifier;
 }
 Telescope.callbacks.add("posts.edit.sync", PostsEditSetIsFuture);

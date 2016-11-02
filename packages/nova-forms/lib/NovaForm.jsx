@@ -300,17 +300,29 @@ class NovaForm extends Component{
 
     } else { // success
 
-      // reset form if this is a new document form
-      if (this.getFormType() === "new") this.refs.form.reset();
+      const successOperations = () => {
 
-      // run success callback if it exists
-      if (this.props.successCallback) this.props.successCallback(document);
+        // reset form if this is a new document form
+        if (this.getFormType() === "new") this.refs.form.reset();
 
-      // run close callback if it exists in context (i.e. we're inside a modal)
-      if (this.context.closeCallback) this.context.closeCallback();
-      // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
-      // note: we don't want to update the state of an unmounted component
-      else this.clearErrors();
+        // run success callback if it exists
+        if (this.props.successCallback) this.props.successCallback(document);
+
+        // run close callback if it exists in context (i.e. we're inside a modal)
+        if (this.context.closeCallback) this.context.closeCallback();
+        // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
+        // note: we don't want to update the state of an unmounted component
+        else this.clearErrors();
+
+      }
+
+      if (this.props.refetchQuery) {
+        // if a refetchQuery prop is provided, call it and then run all success operations
+        this.props.refetchQuery().then(successOperations);
+      } else {
+        // else just run success operations right away
+        successOperations();
+      }
 
     }
   }
@@ -424,6 +436,7 @@ NovaForm.propTypes = {
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
   cancelCallback: React.PropTypes.func,
+  refetchQuery: React.PropTypes.func,
   fields: React.PropTypes.arrayOf(React.PropTypes.string)
 }
 

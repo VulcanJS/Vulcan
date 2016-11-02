@@ -82,7 +82,7 @@ const PostsListContainerWithData = graphql(gql`
         offset: 0,
         limit: 10
       },
-      pollInterval: 20000,
+      // pollInterval: 20000,
     };
   },
   props({data: {loading, posts, postsViewTotal, refetch, fetchMore}}) {

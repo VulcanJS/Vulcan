@@ -53,7 +53,7 @@ class PostsEditForm extends Component{
             currentUser: this.context.currentUser,
             methodName: "posts.edit",
             successCallback: (post) => { 
-              this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success')
+              this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
             }
           }}
         />

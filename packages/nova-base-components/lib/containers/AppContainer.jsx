@@ -89,7 +89,7 @@ const AppContainerWithData = graphql(gql`
   options(ownProps) {
     return {
       variables: {},
-      pollInterval: 20000,
+      // pollInterval: 20000,
     };
   },
 })(AppContainer);

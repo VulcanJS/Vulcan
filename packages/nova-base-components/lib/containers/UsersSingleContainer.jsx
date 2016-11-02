@@ -81,7 +81,7 @@ const UsersSingleContainerWithData = graphql(gql`
   options(ownProps) {
     return {
       variables: { userId: ownProps.userId, slug: ownProps.slug },
-      pollInterval: 20000,
+      // pollInterval: 20000,
     };
   },
 })(UsersSingleContainer);
