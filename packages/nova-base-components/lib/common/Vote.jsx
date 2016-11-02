@@ -89,25 +89,29 @@ const VoteWithMutation = graphql(gql`
     postVote(postId: $postId, voteType: $voteType) {
       _id
       baseScore
+      downvotes
+      downvoters {
+        _id
+      }
+      upvotes
+      upvoters {
+        _id
+      }
     }
   }
 `, {
   props: ({ownProps, mutate}) => ({
     vote: ({post, voteType, currentUser}) => {
-      const { baseScore, _id } = Telescope.operateOnItem(Posts, post, currentUser, voteType, true);
-      
-      // console.log("// votedItem")
-      // console.log(votedItem)
+      const votedItem = Telescope.operateOnItem(Posts, post, currentUser, voteType, true);
+
       return mutate({ 
         variables: {postId: post._id, voteType},
         optimisticResponse: {
           __typename: 'Mutation',
           postVote: {
-            __typename: 'Post',
-            _id,
-            baseScore,
+            ...votedItem,
           },
-        },
+        }
       })
     }
   }),

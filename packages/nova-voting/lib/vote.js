@@ -20,133 +20,115 @@ Telescope.operateOnItem = function (collection, item, user, operation, isSimulat
   // console.log(user)
   // console.log(operation)
 
-  if (isSimulation) {
-    // ------------------------------ Optimistic UI Simulation ------------------------------ //
+  // ---------------------------- "Real" Server-Side Operation -------------------------- //
 
-    const simulatedItem = { 
-      __typename: 'Post',
-      _id: item._id,
-      upvoters: item.upvoters,
-      upvotes: item.upvotes,
-      baseScore: item.baseScore
-    };
+  // make sure item and user are defined, and user can perform the operation
+  const collectionName = item.__typename ? Telescope.utils.getCollectionNameFromTypename(item.__typename) : item.getCollectionName();
 
-    // console.log("// before simulation")
-    // console.log(operation)
-    // console.log(_.clone(simulatedItem))
+  if (
+    !item ||
+    !user || 
+    !Users.canDo(user, `${collectionName}.${operation}`) || 
+    operation === "upvote" && hasUpvotedItem ||
+    operation === "downvote" && hasDownvotedItem ||
+    operation === "cancelUpvote" && !hasUpvotedItem ||
+    operation === "cancelDownvote" && !hasDownvotedItem
+  ) {
+    return false; 
+  }
 
-    switch (operation) {
+  if (typeof item.upvoters === 'undefined') {
+    item.upvoters = [];
+  }
 
-      case "upvote": 
-        if (hasDownvotedItem) {
-          Telescope.operateOnItem(collection, item, user, "cancelDownvote", true);
-        }
-        simulatedItem.upvoters.push(user._id);
-        simulatedItem.upvotes += 1;
-        simulatedItem.baseScore += votePower;
-        break;
+  if (typeof item.downvoters === 'undefined') {
+    item.downvoters = [];
+  }
 
-      case "downvote":
-        if (hasUpvotedItem) {
-          Telescope.operateOnItem(collection, item, user, "cancelUpvote", true);
-        }
-        simulatedItem.downvoters.push(user._id);
-        simulatedItem.downvotes += 1;
-        simulatedItem.baseScore -= votePower;
+  // ------------------------------ Sync Callbacks ------------------------------ //
 
-      case "cancelUpvote": 
-        simulatedItem.upvoters = _.reject(simulatedItem.upvoters, u => u._id === user._id);
-        simulatedItem.upvotes -= 1;
-        simulatedItem.baseScore -= votePower;
-        break;
+  item = Telescope.callbacks.run(operation, item, user);
 
-      case "cancelDownvote": 
-        simulatedItem.downvoters = _.reject(simulatedItem.downvoters, u => u._id === user._id);
-        simulatedItem.downvoters -= 1;
-        simulatedItem.baseScore += votePower;
-        break;
-    }
+  switch (operation) {
 
-    // console.log("// after simulation")
-    // console.log(_.clone(simulatedItem))
-    
-    return simulatedItem;
+    case "upvote":
+      if (hasDownvotedItem) {
+        Telescope.operateOnItem(collection, item, user, "cancelDownvote", isSimulation);
+      }
 
-  } else {
-
-    // ------------------------------ "Real" Server-Side Operation ------------------------------ //
-
-    // make sure item and user are defined, and user can perform the operation
-    if (
-      !item ||
-      !user || 
-      !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
-      operation === "upvote" && hasUpvotedItem ||
-      operation === "downvote" && hasDownvotedItem ||
-      operation === "cancelUpvote" && !hasUpvotedItem||
-      operation === "cancelDownvote" && !hasDownvotedItem
-    ) {
-      return false; 
-    }
-
-    // ------------------------------ Sync Callbacks ------------------------------ //
-    item = Telescope.callbacks.run(operation, item, user);
-
-    switch (operation) {
-
-      case "upvote":
-
-        if (hasDownvotedItem) {
-          Telescope.operateOnItem(collection, item, user, "cancelDownvote", isSimulation);
-        }
+      const upvoter = isSimulation ? {__typename: "User", _id: user._id} : user._id
+      item.upvoters.push(upvoter);
+      item.upvotes += 1;
+      item.baseScore += votePower;
+      
+      if (!isSimulation) {
         update = {
           $addToSet: {upvoters: user._id},
           $inc: {upvotes: 1, baseScore: votePower}
         }
-        break;
+      }
+      break;
 
-      case "downvote":
+    case "downvote":
+      if (hasUpvotedItem) {
+        Telescope.operateOnItem(collection, item, user, "cancelUpvote", isSimulation);
+      }
 
-        if (hasUpvotedItem) {
-          Telescope.operateOnItem(collection, item, user, "cancelUpvote", isSimulation);
-        }
+      const downvoter = isSimulation ? {__typename: "User", _id: user._id} : user._id
+      item.downvoters.push(downvoter);
+      item.downvotes += 1;
+      item.baseScore -= votePower;
+      
+      if (!isSimulation) {
         update = {
           $addToSet: {downvoters: user._id},
           $inc: {downvotes: 1, baseScore: -votePower}
         }
-        break;
+      }
+      break;
 
-      case "cancelUpvote":
-
+    case "cancelUpvote":
+      item.upvoters = item.upvoters.filter(u => typeof u === 'string' ? u !== user._id : u._id !== user._id);
+      item.upvotes -= 1;
+      item.baseScore -= votePower;
+      
+      if (!isSimulation) {  
         update = {
           $pull: {upvoters: user._id},
           $inc: {upvotes: -1, baseScore: -votePower}
         };
-        break;
+      }
+      break;
 
-      case "cancelDownvote":
-
+    case "cancelDownvote":
+      item.downvoters = item.downvoters.filter(u => typeof u === 'string' ? u !== user._id : u._id !== user._id);
+      item.downvotes -= 1;
+      item.baseScore += votePower;
+      
+      if (!isSimulation) {
         update = {
           $pull: {downvoters: user._id},
           $inc: {downvotes: -1, baseScore: votePower}
         };
-        break;
-    }
+      }
+      break;
+  }
 
+  if (!isSimulation) {
     update["$set"] = {inactive: false};
-    var result = collection.update({_id: item._id}, update);
-
-
+    const result = collection.update({_id: item._id}, update);
+    
     if (result > 0) {
-
-      // extend item with baseScore to help calculate newScore
-      item = _.extend(item, {baseScore: (item.baseScore + votePower)});
-      
       // --------------------- Server-Side Async Callbacks --------------------- //
-      Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation);
-      
-      return item;
-
+      Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation); 
     }
   }
+
+  // if (isSimulation) {
+  //   console.log('item from apollo store', item);
+  // } else {
+  //   console.log('item from mongo db', item);
+  // }
+
+  return item;
 };

@@ -83,7 +83,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: [Telescope.schemas.votes],
     publish: false,
     optional: true,
-    // viewableIf: alwaysPublic,
+    viewableIf: alwaysPublic,
   },
   /**
     An array containing posts downvotes
@@ -92,7 +92,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: [Telescope.schemas.votes],
     publish: false,
     optional: true,
-    // viewableIf: alwaysPublic,
+    viewableIf: alwaysPublic,
   },
   /**
     The user's email. Modifiable.
@@ -192,7 +192,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: [Telescope.schemas.votes],
     publish: false,
     optional: true,
-    // viewableIf: alwaysPublic,
+    viewableIf: alwaysPublic,
   },
   /**
     An array containing posts upvotes
@@ -201,7 +201,7 @@ Telescope.schemas.userData = new SimpleSchema({
     type: [Telescope.schemas.votes],
     publish: false,
     optional: true,
-    // viewableIf: alwaysPublic,
+    viewableIf: alwaysPublic,
   },
   /**
     A link to the user's homepage

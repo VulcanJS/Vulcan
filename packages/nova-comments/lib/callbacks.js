@@ -178,7 +178,7 @@ function CommentsNewUpvoteOwnComment (comment) {
     var commentAuthor = Users.findOne(comment.userId);
 
     // upvote comment
-    Telescope.operateOnItem(Comments, comment._id, commentAuthor, "upvote");
+    Telescope.operateOnItem(Comments, comment, commentAuthor, "upvote");
 
     return comment;
   }
