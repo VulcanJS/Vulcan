@@ -9,6 +9,8 @@ import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform'
 import { Accounts } from 'meteor/accounts-base';
 import { _ } from 'meteor/underscore';
 
+import Telescope from 'meteor/nova:lib';
+
 const defaultNetworkInterfaceConfig = {
   path: '/graphql',
   options: {},
@@ -75,3 +77,5 @@ export const meteorClientConfig = (networkInterfaceConfig) => {
 // --------
 
 export const client = new ApolloClient(meteorClientConfig());
+
+Telescope.graphQL.client = client;
