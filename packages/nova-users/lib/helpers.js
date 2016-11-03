@@ -144,7 +144,7 @@ Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(user
  * @param {Object} user
  */
 Users.getEmailHash = function (user) {
-  return user.telescope.emailHash;
+  return user.telescope && user.telescope.emailHash;
 };
 Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.findOne(userId));};

@@ -6,9 +6,11 @@ Telescope.getVotePower = function (user) {
   return 1;
 };
 
-Telescope.operateOnItem = function (collection, item, user, operation, isSimulation = false) {
+Telescope.operateOnItem = function (collection, originalItem, user, operation, isSimulation = false) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
+
+  let item = _.clone(originalItem); // we do not want to affect the original item directly
 
   var votePower = Telescope.getVotePower(user);
   var hasUpvotedItem = Users.hasUpvoted(user, item);

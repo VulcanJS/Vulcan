@@ -1,20 +1,29 @@
 import Telescope from 'meteor/nova:lib';
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import Posts from "meteor/nova:posts";
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const PostsSingleContainer = (props, context) => {
+class PostsSingleContainer extends Component {
 
-  const {loading, post, refetch} = props.data;
-  const Component = props.component
+  getChildContext() {
+    return {
+      refetchPostsSingleQuery: this.props.data.refetch
+    };
+  }
 
-  return loading ? <Telescope.components.Loading/> : <Component 
-    document={post}
-    refetchQuery={refetch}
-    {...props.componentProps}
-  />;
+  render() {
+    console.log(this.props.data.post)
+    const {loading, post, refetch} = this.props.data;
+    const Component = this.props.component
+
+    return loading ? <Telescope.components.Loading/> : <Component 
+      document={post}
+      refetchQuery={refetch}
+      {...this.props.componentProps}
+    />;
+  }
 };
 
 PostsSingleContainer.propTypes = {
@@ -23,6 +32,10 @@ PostsSingleContainer.propTypes = {
     post: React.PropTypes.object,
   }).isRequired,
   params: React.PropTypes.object
+};
+
+PostsSingleContainer.childContextTypes = {
+  refetchPostsSingleQuery: React.PropTypes.func
 };
 
 PostsSingleContainer.contextTypes = {
@@ -39,6 +52,7 @@ const PostsSingleContainerWithData = graphql(gql`
       title
       url
       slug
+      body
       htmlBody
       thumbnailUrl
       baseScore

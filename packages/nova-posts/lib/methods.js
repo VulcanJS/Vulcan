@@ -212,7 +212,7 @@ Meteor.methods({
    * @isMethod true
    * @param {String} postId - the id of the post
    */
-  'posts.remove': function(post) {
+  'posts.remove': function(postId) {
 
     if (Meteor.isClient) {
       

@@ -27,5 +27,9 @@ const PostsPage = (props) => {
 
 PostsPage.displayName = "PostsPage";
 
+PostsPage.propTypes = {
+  document: React.PropTypes.object.isRequired
+}
+
 module.exports = PostsPage;
 export default PostsPage;

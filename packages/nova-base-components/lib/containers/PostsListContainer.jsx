@@ -5,22 +5,30 @@ import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const PostsListContainer = (props, context) => {
+class PostsListContainer extends Component {
+  
+  getChildContext() {
+    return {
+      refetchPostsListQuery: this.props.refetchQuery
+    };
+  }
+  
+  render() {
+    const {loading, posts, postsViewTotal, refetchQuery, loadMore, componentProps} = this.props;
+    const Component = this.props.component;
+    const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
 
-  const {loading, posts, postsViewTotal, refetchQuery, loadMore, componentProps} = props;
-  const Component = props.component;
-  const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
-
-  return loading ? <Telescope.components.Loading/> : <Component 
-    results={posts || []}
-    hasMore={hasMore}
-    ready={!loading}
-    count={posts && posts.length}
-    totalCount={postsViewTotal}
-    loadMore={loadMore}
-    refetchQuery={refetchQuery}
-    {...componentProps}
-  />;
+    return loading ? <Telescope.components.Loading/> : <Component 
+      results={posts || []}
+      hasMore={hasMore}
+      ready={!loading}
+      count={posts && posts.length}
+      totalCount={postsViewTotal}
+      loadMore={loadMore}
+      refetchQuery={refetchQuery}
+      {...componentProps}
+    />;
+  }
 };
 
 PostsListContainer.propTypes = {
@@ -30,6 +38,10 @@ PostsListContainer.propTypes = {
   refetch: React.PropTypes.func,
   loadMore: React.PropTypes.func,
   params: React.PropTypes.object
+};
+
+PostsListContainer.childContextTypes = {
+  refetchPostsListQuery: React.PropTypes.func
 };
 
 PostsListContainer.displayName = "PostsListContainer";
