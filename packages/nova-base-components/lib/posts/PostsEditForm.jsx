@@ -33,8 +33,9 @@ class PostsEditForm extends Component {
           // post edit form is being included from a post list, refresh list
           this.context.refetchPostsListQuery().then(successOperations);
         } else {
-          // post edit form is being included from a single post, redirect
-
+          // post edit form is being included from a single post, redirect to root
+          this.props.router.push('/');
+          successOperations();
         }
       });
     }
