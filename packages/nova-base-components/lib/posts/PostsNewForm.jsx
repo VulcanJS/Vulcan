@@ -24,6 +24,7 @@ const PostsNewForm = (props, context) => {
           successCallback={(post)=>{
             router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
+            context.triggerMainRefetch();
           }}
         />
       </div>
@@ -33,6 +34,7 @@ const PostsNewForm = (props, context) => {
 
 PostsNewForm.contextTypes = {
   currentUser: React.PropTypes.object,
+  triggerMainRefetch: React.PropTypes.func,
   intl: intlShape
 };
 

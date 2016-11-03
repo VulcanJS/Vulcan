@@ -7,6 +7,11 @@ import gql from 'graphql-tag';
 
 class PostsListContainer extends Component {
   
+  constructor(props, context) {
+    super(props);
+    context.setMainRefetch(props.refetchQuery);
+  }
+
   getChildContext() {
     return {
       refetchPostsListQuery: this.props.refetchQuery
@@ -42,6 +47,10 @@ PostsListContainer.propTypes = {
 
 PostsListContainer.childContextTypes = {
   refetchPostsListQuery: React.PropTypes.func
+};
+
+PostsListContainer.contextTypes = {
+  setMainRefetch: React.PropTypes.func
 };
 
 PostsListContainer.displayName = "PostsListContainer";
