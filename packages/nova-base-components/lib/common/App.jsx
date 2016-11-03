@@ -24,7 +24,8 @@ class App extends Component {
         refetch = refetchQuery;
       },
       triggerMainRefetch: () => {
-        refetch();
+        // refetch could be undefined if PostsListContainer has never been loaded
+        if (!!refetch) refetch();
       },
       //actions: this.props.actions,
       actions: {call: Meteor.call},
