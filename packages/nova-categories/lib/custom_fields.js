@@ -30,36 +30,18 @@ Posts.addField(
         order: 50,
         options: function () {
 
-          const query = Telescope.graphQL.client.query({
-            query: gql`
-              query getAppData {
-                categories {
-                  _id
-                  name
-                  description
-                  order
-                  slug
-                  image
-                }
-              }
-            `,
-            noFetch: true
-          });
-
-          query.then((result)=>{
-            console.log(result.data.categories); 
-            return result.data.categories;
-          })
-          // note: not sure how to use the promise in a sync way to return data yet
-
-          var categories = Categories.find().map(function (category) {
+          const apolloData = Telescope.graphQL.client.store.getState().apollo.data;
+          const categoryNames = apolloData.ROOT_QUERY.categories;
+          const categories = _.filter(Telescope.graphQL.client.store.getState().apollo.data, (object, key) => {return categoryNames.indexOf(key) !== -1});
+          
+          const categoriesOptions = categories.map(function (category) {
             return {
               value: category._id,
               label: category.name
             };
           });
-          
-          return categories;
+
+          return categoriesOptions;
         }
       },
       publish: true,
