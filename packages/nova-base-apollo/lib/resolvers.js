@@ -1,3 +1,5 @@
+// not used anymore
+
 import Posts from 'meteor/nova:posts';
 import Users from 'meteor/nova:users';
 import Comments from 'meteor/nova:comments';

@@ -344,6 +344,8 @@ Telescope.graphQL.addQuery(`
   post(_id: String): Post
 `);
 
+Telescope.graphQL.addToContext({ Posts });
+
 if (typeof SimpleSchema !== "undefined") {
   Posts.schema = new SimpleSchema(Posts.schemaJSON);
   Posts.attachSchema(Posts.schema);

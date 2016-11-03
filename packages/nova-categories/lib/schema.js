@@ -128,3 +128,5 @@ Telescope.graphQL.addQuery(`
   categories: [Category]
   category(_id: String): Category
 `);
+
+Telescope.graphQL.addToContext({ Categories });

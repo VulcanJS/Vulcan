@@ -8,6 +8,8 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import bodyParser from 'body-parser';
 import express from 'express';
 
+import deepmerge from 'deepmerge';
+
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import { check } from 'meteor/check';
@@ -15,6 +17,8 @@ import { Accounts } from 'meteor/accounts-base';
 import { _ } from 'meteor/underscore';
 
 import Users from 'meteor/nova:users';
+
+import Telescope from 'meteor/nova:lib';
 
 const defaultConfig = {
   path: '/graphql',
@@ -86,6 +90,8 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
           options.context.userId = user._id;
           options.context.currentUser = Users.findOne(user._id);
+
+          options.context = deepmerge(options.context, Telescope.graphQL.context);
         }
       }
     }

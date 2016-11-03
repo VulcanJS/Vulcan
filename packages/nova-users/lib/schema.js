@@ -358,3 +358,5 @@ Telescope.graphQL.addQuery(`
   user(_id: String, slug: String): User
   currentUser: User
 `);
+
+Telescope.graphQL.addToContext({ Users });

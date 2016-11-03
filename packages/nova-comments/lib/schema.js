@@ -212,3 +212,5 @@ Telescope.graphQL.addQuery(`
   comments: [Comment]
   comment(_id: String): Comment
 `);
+
+Telescope.graphQL.addToContext({ Comments });

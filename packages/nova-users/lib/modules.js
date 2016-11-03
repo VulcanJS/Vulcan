@@ -12,5 +12,6 @@ import './emails.js';
 import './avatar.js';
 import './methods.js';
 import './permissions.js';
+import './resolvers.js';
 
 export default Users;

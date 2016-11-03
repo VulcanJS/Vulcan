@@ -10,5 +10,6 @@ import './callbacks.js';
 import './emails.js';
 import './methods.js';
 import './permissions.js';
+import './resolvers.js';
 
 export default Posts;

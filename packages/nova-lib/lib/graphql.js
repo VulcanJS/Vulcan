@@ -1,3 +1,5 @@
+import deepmerge from 'deepmerge';
+
 Telescope.graphQL = {
   schemas: [],
   addSchema(schema) {
@@ -11,4 +13,12 @@ Telescope.graphQL = {
   addMutation(mutation) {
     this.mutations.push(mutation);
   },
+  resolvers: {},
+  addResolvers(resolvers) {
+    this.resolvers = deepmerge(this.resolvers, resolvers);
+  },
+  context: {},
+  addToContext(object) {
+    this.context = deepmerge(this.context, object);
+  }
 };

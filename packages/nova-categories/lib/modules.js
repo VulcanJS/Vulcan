@@ -9,5 +9,6 @@ import './subscriptions.js';
 import './methods.js';
 import './permissions.js';
 import './published_fields.js';
+import './resolvers.js';
 
 export default Categories;
