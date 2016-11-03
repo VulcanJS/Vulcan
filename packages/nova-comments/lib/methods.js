@@ -93,7 +93,9 @@ Meteor.methods({
   'comments.deleteById': function (commentId) {
 
     check(commentId, String);
-    
+
+    if (Meteor.isClient) return; // We don't have data in minimongo on the client
+
     var comment = Comments.findOne(commentId);
     var user = Meteor.user();
 
