@@ -47,7 +47,7 @@ class PostsItem extends Component {
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Telescope.components.Vote post={post} refetchQuery={refetchQuery} />
+          <Telescope.components.VoteContainer post={post} refetchQuery={refetchQuery} />
         </div>
         
         {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}

@@ -1,12 +1,5 @@
 import Telescope from 'meteor/nova:lib';
 
-// containers
-
-Telescope.registerComponent("AppContainer",   require('./containers/AppContainer.jsx'));
-Telescope.registerComponent("PostsListContainer",   require('./containers/PostsListContainer.jsx'));
-Telescope.registerComponent("PostsSingleContainer",   require('./containers/PostsSingleContainer.jsx'));
-Telescope.registerComponent("UsersSingleContainer",   require('./containers/UsersSingleContainer.jsx'));
-
 // common
 
 Telescope.registerComponent("App",                  require('./common/App.jsx'));
@@ -83,3 +76,11 @@ Telescope.registerComponent("UsersName",            require('./users/UsersName.j
 Telescope.registerComponent("UsersMenu",            require('./users/UsersMenu.jsx'));
 Telescope.registerComponent("UsersAccountMenu",     require('./users/UsersAccountMenu.jsx'));
 Telescope.registerComponent("UsersAccountForm",     require('./users/UsersAccountForm.jsx'));
+
+// containers
+
+Telescope.registerComponent("AppContainer",   require('./containers/AppContainer.jsx'));
+Telescope.registerComponent("PostsListContainer",   require('./containers/PostsListContainer.jsx'));
+Telescope.registerComponent("PostsSingleContainer",   require('./containers/PostsSingleContainer.jsx'));
+Telescope.registerComponent("UsersSingleContainer",   require('./containers/UsersSingleContainer.jsx'));
+Telescope.registerComponent("VoteContainer",   require('./containers/VoteContainer.jsx'));

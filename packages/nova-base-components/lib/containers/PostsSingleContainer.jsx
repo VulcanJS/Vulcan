@@ -57,6 +57,7 @@ const PostsSingleContainerWithData = graphql(gql`
       baseScore
       postedAt
       sticky
+      status
       categories {
         _id
         name
