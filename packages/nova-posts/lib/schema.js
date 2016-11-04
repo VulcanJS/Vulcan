@@ -336,19 +336,30 @@ Posts.graphQLSchema = `
     thumbnailUrl: String
   }
 
-  input PostModifier {
-    foo: {
-      postedAt: String
-      url: String
-      title: String
-      slug: String
-      body: String
-      sticky: Boolean
-      status: Int
-      categories: [String]
-      scheduledAt: String
-      thumbnailUrl: String
-    }
+  input PostSetModifier {
+    postedAt: String
+    url: String
+    title: String
+    slug: String
+    body: String
+    sticky: Boolean
+    status: Int
+    categories: [String]
+    scheduledAt: String
+    thumbnailUrl: String
+  }
+
+  input PostUnsetModifier {
+    postedAt: String
+    url: String
+    title: String
+    slug: String
+    body: String
+    sticky: Boolean
+    status: Int
+    categories: [String]
+    scheduledAt: String
+    thumbnailUrl: String
   }
 
   input Terms {

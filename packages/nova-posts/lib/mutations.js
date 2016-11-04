@@ -12,7 +12,7 @@ import Events from "meteor/nova:events";
 // define GraphQL mutations
 
 Telescope.graphQL.addMutation('postsNew(post: PostInput) : Post');
-Telescope.graphQL.addMutation('postsEdit(postId: String, modifier: PostModifier) : Post');
+Telescope.graphQL.addMutation('postsEdit(postId: String, set: PostSetModifier, unset: PostUnsetModifier) : Post');
 Telescope.graphQL.addMutation('postsVote(postId: String, voteType: String) : Post');
 
 // resolvers
@@ -49,7 +49,9 @@ Posts.mutations = {
       console.log("// postsEdit")
       console.log(parameters)
 
-      let {postId, modifier} = parameters;
+      let {postId, set, unset} = parameters;
+
+      let modifier = {$set: set, $unset: unset};
 
       context.Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
       check(postId, String);

@@ -30,7 +30,7 @@ const resolvers = {
       return context.Posts.find(selector).count();
     },
     post(root, args, context) {
-      Meteor._sleepForMs(10000); // wait 2 seconds
+      // Meteor._sleepForMs(10000); // wait 2 seconds
       return context.Posts.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, Posts) });
     },
   },

@@ -96,8 +96,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.mess
 
 
 const NovaFormWithMutation = graphql(gql`
-  mutation postsEdit($postId: String, $modifier: PostModifier) {
-    postsEdit(postId: $postId, modifier: $modifier) {
+  mutation postsEdit($postId: String, $set: PostSetModifier, $unset: PostUnsetModifier) {
+    postsEdit(postId: $postId, set: $set, unset: $unset) {
       _id
       title
       url
@@ -161,12 +161,13 @@ const NovaFormWithMutation = graphql(gql`
   }
 `, {
   props: ({ownProps, mutate}) => ({
-    novaFormMutation: ({documentId, modifier}) => {
+    novaFormMutation: ({documentId, set, unset}) => {
       console.log("novaFormMutation")
-      console.log(postId)
-      console.log(modifier)
+      console.log(documentId)
+      console.log(set)
+      console.log(unset)
       return mutate({ 
-        variables: {postId: documentId, modifier}
+        variables: {postId: documentId, set, unset}
       })
     }
   }),
