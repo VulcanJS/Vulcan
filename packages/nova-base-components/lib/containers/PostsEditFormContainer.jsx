@@ -1,33 +1,32 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage, intlShape } from 'react-intl';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import update from 'immutability-helper';
 
-const PostsNewFormContainer = (props, context) => {
+const PostsEditFormContainer = (props, context) => {
   const Component = props.component;
 
-  return <Component router={props.router} novaFormMutation={props.novaFormMutation} flash={props.flash} />
-}
-
-PostsNewFormContainer.propTypes = {
-  router: React.PropTypes.object,
-  novaFormMutation: React.PropTypes.func,
-  component: React.PropTypes.func,
+  return <Component post={props.post} flash={props.flash} novaFormMutation={props.novaFormMutation} router={props.router} />;
 };
 
-PostsNewFormContainer.displayName = "PostsNewFormContainer";
+PostsEditFormContainer.propTypes = {
+  flash: React.PropTypes.func,
+  novaFormMutation: React.PropTypes.func,
+  post: React.PropTypes.object.isRequired,
+  router: React.PropTypes.object,
+};
 
-const mapStateToProps = state => ({ messages: state.messages });
+const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-const PostsNewFormContainerWithMutation = graphql(gql`
-  mutation postsNew($post: PostInput) {
-    postsNew(post: $post) {
+const PostsEditFormContainerWithMutation = graphql(gql`
+  mutation postsEdit($postId: String, $set: PostSetModifier, $unset: PostUnsetModifier) {
+    postsEdit(postId: $postId, set: $set, unset: $unset) {
       _id
       title
       url
@@ -91,41 +90,16 @@ const PostsNewFormContainerWithMutation = graphql(gql`
   }
 `, {
   props: ({ownProps, mutate}) => ({
-    novaFormMutation: ({document}) => {
-      // const optimisticResponseItem = {
-      //   ...document,
-      //   title: "optimisitc!",
-      //   __typename: 'Post',
-      //   id: 123,
-      //   slug: 'foo'
-      // }
-
-      // console.log(document)
-      // console.log(optimisticResponseItem)
-
+    novaFormMutation: ({documentId, set, unset}) => {
+      console.log("novaFormMutation")
+      console.log(documentId)
+      console.log(set)
+      console.log(unset)
       return mutate({ 
-        variables: {post: document},
-        // optimisticResponse: {
-        //   __typename: 'Mutation',
-        //   postsNew: optimisticResponseItem,
-        // },
-        updateQueries: {
-          getPostsView: (prev, { mutationResult }) => {
-            const newPost = mutationResult.data.postsNew;
-            const newList = update(prev, {
-              posts: {
-                $unshift: [newPost],
-              },
-              postsViewTotal: {
-                $set: prev.postsViewTotal + 1
-              }
-            });
-            return newList;
-          },
-        }
+        variables: {postId: documentId, set, unset}
       })
     }
   }),
-})(PostsNewFormContainer);
+})(PostsEditFormContainer);
 
-module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsNewFormContainerWithMutation));
+module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsEditFormContainerWithMutation));

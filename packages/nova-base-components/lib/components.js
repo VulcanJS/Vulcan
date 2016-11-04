@@ -83,5 +83,6 @@ Telescope.registerComponent("AppContainer",   require('./containers/AppContainer
 Telescope.registerComponent("PostsListContainer",   require('./containers/PostsListContainer.jsx'));
 Telescope.registerComponent("PostsSingleContainer",   require('./containers/PostsSingleContainer.jsx'));
 Telescope.registerComponent("PostsNewFormContainer",   require('./containers/PostsNewFormContainer.jsx'));
+Telescope.registerComponent("PostsEditFormContainer",   require('./containers/PostsEditFormContainer.jsx'));
 Telescope.registerComponent("UsersSingleContainer",   require('./containers/UsersSingleContainer.jsx'));
 Telescope.registerComponent("VoteContainer",   require('./containers/VoteContainer.jsx'));

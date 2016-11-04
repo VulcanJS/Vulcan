@@ -6,16 +6,22 @@ import Posts from "meteor/nova:posts";
 
 const PostsNewForm = (props, context) => {
   return (
-    <div className="posts-new-form">
-      <NovaForm
-        collection={Posts}
-        novaFormMutation={props.novaFormMutation}
-        successCallback={post => {
-          props.router.push({pathname: Posts.getPageUrl(post)});
-          props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
-        }}
-      />
-    </div>
+    <Telescope.components.CanDo
+      action="posts.new"
+      noPermissionMessage="users.cannot_post"
+      displayNoPermissionMessage={true}
+    >
+      <div className="posts-new-form">
+        <NovaForm
+          collection={Posts}
+          novaFormMutation={props.novaFormMutation}
+          successCallback={post => {
+            props.router.push({pathname: Posts.getPageUrl(post)});
+            props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
+          }}
+        />
+      </div>
+    </Telescope.components.CanDo>
   );
 };
 

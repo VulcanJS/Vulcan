@@ -26,7 +26,7 @@ class PostsItem extends Component {
           document={this.props.post}
         >
           <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
-            <Telescope.components.PostsEditForm post={this.props.post}/>
+            <Telescope.components.PostsEditFormContainer post={this.props.post} component={Telescope.components.PostsEditForm} />
           </ModalTrigger>
         </Telescope.components.CanDo>
       </div>
