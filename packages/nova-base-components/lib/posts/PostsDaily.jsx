@@ -1,10 +1,11 @@
-import Telescope from 'meteor/nova:lib';
-import React, { PropTypes, Component } from 'react';
-import { Button } from 'react-bootstrap';
-import moment from 'moment';
+import Telescope from "meteor/nova:lib";
+import React, { PropTypes, Component } from "react";
+import { Button } from "react-bootstrap";
+import moment from "moment";
+import { FormattedMessage } from "react-intl";
 
 class PostsDaily extends Component{
-  
+
   constructor(props) {
     super(props);
     this.loadMoreDays = this.loadMoreDays.bind(this);
@@ -30,7 +31,7 @@ class PostsDaily extends Component{
       <div className="posts-daily">
         <Telescope.components.PostsListHeader />
         {this.getLastNDates(this.state.days).map((date, index) => <Telescope.components.PostsDay key={index} date={date} number={index}/>)}
-        <button className="posts-load-more" onClick={this.loadMoreDays}>Load More Days</button>
+        <button className="posts-load-more" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></button>
       </div>
     )
   }
@@ -39,12 +40,12 @@ class PostsDaily extends Component{
 PostsDaily.propTypes = {
   days: React.PropTypes.number,
   increment: React.PropTypes.number
-}
+};
 
 PostsDaily.defaultProps = {
   days: 5,
   increment: 5
-}
+};
 
 module.exports = PostsDaily;
 export default PostsDaily;
