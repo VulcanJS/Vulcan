@@ -14,6 +14,7 @@ Package.onUse(function (api) {
     // Nova packages
 
     'nova:core@0.27.3-nova',
+    'nova:users@0.27.3-nova',
 
   ]);
   

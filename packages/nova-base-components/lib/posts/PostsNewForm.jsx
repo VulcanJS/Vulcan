@@ -8,7 +8,7 @@ import { withRouter } from 'react-router'
 import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import update from 'react-addons-update';
+import update from 'immutability-helper';
 
 const PostsNewForm = (props, context) => {
   
