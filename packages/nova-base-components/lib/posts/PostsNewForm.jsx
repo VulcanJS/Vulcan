@@ -8,6 +8,7 @@ import { withRouter } from 'react-router'
 import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import update from 'react-addons-update';
 
 const PostsNewForm = (props, context) => {
   
@@ -22,11 +23,9 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaFormWithMutation 
           collection={Posts} 
-          methodName="posts.new"
           successCallback={(post)=>{
             router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
-            context.triggerMainRefetch();
           }}
         />
       </div>
@@ -113,7 +112,21 @@ const NovaFormWithMutation = graphql(gql`
   props: ({ownProps, mutate}) => ({
     novaFormMutation: ({document}) => {
       return mutate({ 
-        variables: {post: document}
+        variables: {post: document},
+        updateQueries: {
+          getPostsView: (prev, { mutationResult }) => {
+            const newPost = mutationResult.data.postsNew;
+            const newList = update(prev, {
+              posts: {
+                $unshift: [newPost],
+              },
+              postsViewTotal: {
+                $set: prev.postsViewTotal + 1
+              }
+            });
+            return newList;
+          },
+        }
       })
     }
   }),

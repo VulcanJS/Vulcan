@@ -30,6 +30,7 @@
     "moment": "^2.13.0",
     "react": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
+    "react-addons-update": "^15.3.2",
     "react-apollo": "^0.5.13",
     "react-bootstrap": "0.30.3",
     "react-bootstrap-datetimepicker": "0.0.22",
