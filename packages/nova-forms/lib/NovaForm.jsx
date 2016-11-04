@@ -415,7 +415,7 @@ class NovaForm extends Component{
       if (!_.isEmpty(unset)) modifier.$unset = unset;
       // call method with _id of document being edited and modifier
       // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
-      this.props.novaFormMutation({documentId: document._id, modifier: modifier}).then(mutationSuccessCallback, mutationErrorCallback);
+      this.props.novaFormMutation({documentId: document._id, modifier: modifier}).then(this.mutationSuccessCallback, this.mutationErrorCallback);
 
     }
 

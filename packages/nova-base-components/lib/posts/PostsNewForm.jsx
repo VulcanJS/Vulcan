@@ -111,8 +111,23 @@ const NovaFormWithMutation = graphql(gql`
 `, {
   props: ({ownProps, mutate}) => ({
     novaFormMutation: ({document}) => {
+      // const optimisticResponseItem = {
+      //   ...document,
+      //   title: "optimisitc!",
+      //   __typename: 'Post',
+      //   id: 123,
+      //   slug: 'foo'
+      // }
+
+      // console.log(document)
+      // console.log(optimisticResponseItem)
+
       return mutate({ 
         variables: {post: document},
+        // optimisticResponse: {
+        //   __typename: 'Mutation',
+        //   postsNew: optimisticResponseItem,
+        // },
         updateQueries: {
           getPostsView: (prev, { mutationResult }) => {
             const newPost = mutationResult.data.postsNew;

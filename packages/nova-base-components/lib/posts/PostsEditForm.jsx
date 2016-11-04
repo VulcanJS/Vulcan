@@ -8,7 +8,9 @@ import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router'
-  
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
 class PostsEditForm extends Component {
 
   constructor() {
@@ -60,10 +62,9 @@ class PostsEditForm extends Component {
         {this.renderAdminArea()}
         <Telescope.components.PostsSingleContainer
           postId={this.props.post._id}
-          component={NovaForm}
+          component={NovaFormWithMutation}
           componentProps={{
             collection: Posts,
-            currentUser: this.context.currentUser,
             methodName: "posts.edit",
             successCallback: (post) => { 
               this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
@@ -92,6 +93,84 @@ PostsEditForm.contextTypes = {
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+
+const NovaFormWithMutation = graphql(gql`
+  mutation postsEdit($postId: String, $modifier: PostModifier) {
+    postsEdit(postId: $postId, modifier: $modifier) {
+      _id
+      title
+      url
+      slug
+      body
+      htmlBody
+      thumbnailUrl
+      baseScore
+      postedAt
+      sticky
+      status
+      categories {
+        _id
+        name
+        slug
+      }
+      commentCount
+      comments {
+        _id
+        # note: currently not used in PostsCommentsThread
+        # parentComment {
+        #   htmlBody
+        #   postedAt
+        #   user {
+        #     _id
+        #     telescope {
+        #       slug
+        #       emailHash # used for the avatar
+        #     }
+        #   }
+        # }
+        htmlBody
+        postedAt
+        user {
+          _id
+          telescope {
+            slug
+            emailHash # used for the avatar
+          }
+        }
+      }
+      upvoters {
+        _id
+      }
+      downvoters {
+        _id
+      }
+      upvotes # should be asked only for admins?
+      score # should be asked only for admins?
+      viewCount # should be asked only for admins?
+      clickCount # should be asked only for admins?
+      user {
+        _id
+        telescope {
+          displayName
+          slug
+          emailHash
+        }
+      }
+    }
+  }
+`, {
+  props: ({ownProps, mutate}) => ({
+    novaFormMutation: ({documentId, modifier}) => {
+      console.log("novaFormMutation")
+      console.log(postId)
+      console.log(modifier)
+      return mutate({ 
+        variables: {postId: documentId, modifier}
+      })
+    }
+  }),
+})(NovaForm);
 
 module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsEditForm));
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsEditForm));

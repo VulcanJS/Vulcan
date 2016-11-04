@@ -12,6 +12,7 @@ import Events from "meteor/nova:events";
 // define GraphQL mutations
 
 Telescope.graphQL.addMutation('postsNew(post: PostInput) : Post');
+Telescope.graphQL.addMutation('postsEdit(postId: String, modifier: PostModifier) : Post');
 Telescope.graphQL.addMutation('postsVote(postId: String, voteType: String) : Post');
 
 // resolvers
@@ -23,11 +24,9 @@ Posts.mutations = {
     console.log("// postsNew")
     console.log(post)
 
-    Posts.simpleSchema().namedContext("posts.new").validate(post);
+    context.Posts.simpleSchema().namedContext("posts.new").validate(post);
 
-    if (Meteor.isClient) {
-      post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
-    }
+    // post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
 
     if (Meteor.isServer && this.connection) {
       post.userIP = this.connection.clientAddress;
@@ -43,6 +42,33 @@ Posts.mutations = {
 
     return post;
 
+  },
+
+  postsEdit(root, parameters, context) {
+
+      console.log("// postsEdit")
+      console.log(parameters)
+
+      let {postId, modifier} = parameters;
+
+      context.Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
+      check(postId, String);
+
+      let post = context.Posts.findOne(postId);
+
+      // modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
+
+      if (typeof post === "undefined") {
+        post = context.Posts.findOne(postId);
+      }
+
+      modifier = Telescope.callbacks.run("posts.edit.sync", modifier, post);
+
+      context.Posts.update(postId, modifier);
+
+      Telescope.callbacks.runAsync("posts.edit.async", context.Posts.findOne(postId), post);
+
+      return context.Posts.findOne(postId);
   },
 
   postsVote(root, {postId, voteType}, context) {
