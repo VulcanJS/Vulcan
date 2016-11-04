@@ -9,8 +9,8 @@ import typeDefs from './schema';
 
 // import resolvers from './resolvers';
 
-console.log("// Telescope.graphQL.resolvers")
-console.log(Telescope.graphQL.resolvers)
+// console.log("// Telescope.graphQL.resolvers")
+// console.log(Telescope.graphQL.resolvers)
 
 const schema = makeExecutableSchema({
   typeDefs,

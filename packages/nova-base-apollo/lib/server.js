@@ -90,6 +90,7 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
           options.context.userId = user._id;
           options.context.currentUser = Users.findOne(user._id);
+          options.context.getViewableFields = Users.getViewableFields;
 
           options.context = deepmerge(options.context, Telescope.graphQL.context);
         }
