@@ -27,7 +27,9 @@ class NovaForm extends Component{
     super(props);
     this.submitForm = this.submitForm.bind(this);
     this.updateState = this.updateState.bind(this);
-    this.methodCallback = this.methodCallback.bind(this);
+    // this.methodCallback = this.methodCallback.bind(this);
+    this.mutationSuccessCallback = this.mutationSuccessCallback.bind(this);
+    this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
@@ -279,53 +281,91 @@ class NovaForm extends Component{
   // ------------------------------- Method ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // common callback for both new and edit forms
-  methodCallback(error, document) {
+  mutationSuccessCallback(result) {
 
-    if (error) { // error
+    const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
 
-      this.setState({disabled: false});
+    // reset form if this is a new document form
+    if (this.getFormType() === "new") this.refs.form.reset();
 
-      console.log(error);
+    // run success callback if it exists
+    if (this.props.successCallback) this.props.successCallback(document);
 
-      const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
-      // add error to state
-      this.throwError({
-        content: errorContent,
-        type: "error"
-      });
-
-      // run error callback if it exists
-      if (this.props.errorCallback) this.props.errorCallback(document, error);
-
-    } else { // success
-
-      const successOperations = () => {
-
-        // reset form if this is a new document form
-        if (this.getFormType() === "new") this.refs.form.reset();
-
-        // run success callback if it exists
-        if (this.props.successCallback) this.props.successCallback(document);
-
-        // run close callback if it exists in context (i.e. we're inside a modal)
-        if (this.context.closeCallback) this.context.closeCallback();
-        // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
-        // note: we don't want to update the state of an unmounted component
-        else this.clearErrors();
-
-      }
-
-      if (this.props.refetchQuery) {
-        // if a refetchQuery prop is provided, call it and then run all success operations
-        this.props.refetchQuery().then(successOperations);
-      } else {
-        // else just run success operations right away
-        successOperations();
-      }
-
-    }
+    // run close callback if it exists in context (i.e. we're inside a modal)
+    if (this.context.closeCallback) this.context.closeCallback();
+    // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
+    // note: we don't want to update the state of an unmounted component
+    else this.clearErrors();
   }
+
+  mutationErrorCallback(error) {
+
+    this.setState({disabled: false});
+
+    console.log(error);
+
+    const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
+    // add error to state
+    this.throwError({
+      content: errorContent,
+      type: "error"
+    });
+
+    // run error callback if it exists
+    if (this.props.errorCallback) this.props.errorCallback(document, error);
+  
+  }
+
+  // common callback for both new and edit forms
+  // methodCallback(error, document) {
+
+
+  //   if (error) { // error
+
+  //     this.setState({disabled: false});
+
+  //     console.log(error);
+
+  //     const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
+  //     // add error to state
+  //     this.throwError({
+  //       content: errorContent,
+  //       type: "error"
+  //     });
+
+  //     // run error callback if it exists
+  //     if (this.props.errorCallback) this.props.errorCallback(document, error);
+
+  //   } else { // success
+
+  //     const successOperations = () => {
+
+  //       // reset form if this is a new document form
+  //       if (this.getFormType() === "new") this.refs.form.reset();
+
+  //       // run success callback if it exists
+  //       if (this.props.successCallback) this.props.successCallback(document);
+
+  //       // run close callback if it exists in context (i.e. we're inside a modal)
+  //       if (this.context.closeCallback) this.context.closeCallback();
+  //       // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
+  //       // note: we don't want to update the state of an unmounted component
+  //       else this.clearErrors();
+
+  //     }
+
+  //     successOperations();
+
+  //     // if (this.props.refetchQuery) {
+  //     //   // if a refetchQuery prop is provided, call it and then run all success operations
+  //     //   this.props.refetchQuery().then(successOperations);
+  //     // } else {
+  //     //   // else just run success operations right away
+  //     //   successOperations();
+  //     // }
+
+  //   }
+  // }
 
   // submit form handler
   submitForm(data) {
@@ -357,7 +397,7 @@ class NovaForm extends Component{
       }
 
       // call method with new document
-      Meteor.call(this.props.methodName, document, this.methodCallback);
+      this.props.novaFormMutation({document}).then(this.mutationSuccessCallback, this.mutationErrorCallback);
 
     } else { // edit document form
 
@@ -374,7 +414,8 @@ class NovaForm extends Component{
       const modifier = {$set: set};
       if (!_.isEmpty(unset)) modifier.$unset = unset;
       // call method with _id of document being edited and modifier
-      Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
+      // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
+      this.props.novaFormMutation({documentId: document._id, modifier: modifier}).then(mutationSuccessCallback, mutationErrorCallback);
 
     }
 

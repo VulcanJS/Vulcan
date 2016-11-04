@@ -11,5 +11,6 @@ import './emails.js';
 import './methods.js';
 import './permissions.js';
 import './resolvers.js';
+import './mutations.js';
 
 export default Posts;

@@ -323,6 +323,19 @@ Posts.graphQLSchema = `
     referrer: String
   }
 
+  input PostInput {
+    postedAt: String
+    url: String
+    title: String
+    slug: String
+    body: String
+    sticky: Boolean
+    status: Int
+    categories: [String]
+    scheduledAt: String
+    thumbnailUrl: String
+  }
+
   input Terms {
     view: String
     userId: String
