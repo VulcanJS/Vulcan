@@ -298,22 +298,25 @@ class NovaForm extends Component{
     else this.clearErrors();
   }
 
-  mutationErrorCallback(error) {
+  // catch graphql errors
+  mutationErrorCallback({graphQLErrors}) {
 
     this.setState({disabled: false});
 
-    console.log(error);
+    const errorContent = graphQLErrors.reduce((content, error) => {
+      // path: first value is the mutation name
+      return `${content} ${this.context.intl.formatMessage({id: `[${error.path[0]}] ${error.message} `})}`;
+    }, 'GraphQL Errors:');
 
-    const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
     // add error to state
     this.throwError({
       content: errorContent,
       type: "error"
     });
 
+    // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
     // run error callback if it exists
-    if (this.props.errorCallback) this.props.errorCallback(document, error);
-  
+    // if (this.props.errorCallback) this.props.errorCallback(document, error);
   }
 
   // common callback for both new and edit forms
@@ -397,7 +400,7 @@ class NovaForm extends Component{
       }
 
       // call method with new document
-      this.props.novaFormMutation({document}).then(this.mutationSuccessCallback, this.mutationErrorCallback);
+      this.props.novaFormMutation({document}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
 
     } else { // edit document form
 
@@ -415,7 +418,7 @@ class NovaForm extends Component{
       if (!_.isEmpty(unset)) modifier.$unset = unset;
       // call method with _id of document being edited and modifier
       // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
-      this.props.novaFormMutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback, this.mutationErrorCallback);
+      this.props.novaFormMutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
 
     }
 
