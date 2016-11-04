@@ -10,7 +10,7 @@ const PostsNewButton = (props, context) => {
   const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
   return (
     <ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
-      <Telescope.components.PostsNewForm/>
+      <Telescope.components.PostsNewFormContainer component={Telescope.components.PostsNewForm} />
     </ModalTrigger>
   )
 }

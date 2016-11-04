@@ -8,8 +8,8 @@ import gql from 'graphql-tag';
 
 // graphql
 const VoteWithMutation = graphql(gql`
-  mutation postVote($postId: String, $voteType: String) {
-    postVote(postId: $postId, voteType: $voteType) {
+  mutation postsVote($postId: String, $voteType: String) {
+    postsVote(postId: $postId, voteType: $voteType) {
       _id
       baseScore
       downvotes
@@ -30,7 +30,7 @@ const VoteWithMutation = graphql(gql`
         variables: {postId: post._id, voteType},
         optimisticResponse: {
           __typename: 'Mutation',
-          postVote: {
+          postsVote: {
             ...votedItem,
           },
         }
