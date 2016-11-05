@@ -2,33 +2,36 @@ import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 
-class CommentsNewForm extends Component {
+const CommentsNewForm = (props, context) => {
 
-  render() {
+  let prefilledProps = {postId: props.postId};
 
-    let prefilledProps = {postId: this.props.postId};
+  if (props.parentComment) {
+    prefilledProps = Object.assign(prefilledProps, {
+      parentCommentId: props.parentComment._id,
+      // if parent comment has a topLevelCommentId use it; if it doesn't then it *is* the top level comment
+      topLevelCommentId: props.parentComment.topLevelCommentId || props.parentComment._id
+    });
+  }
 
-    if (this.props.parentComment) {
-      prefilledProps = Object.assign(prefilledProps, {
-        parentCommentId: this.props.parentComment._id,
-        // if parent comment has a topLevelCommentId use it; if it doesn't then it *is* the top level comment
-        topLevelCommentId: this.props.parentComment.topLevelCommentId || this.props.parentComment._id
-      });
-    }
-
-    return (
+  return (
+    <Telescope.components.CanDo
+      action="comments.new"
+      noPermissionMessage="users.cannot_comment"
+      displayNoPermissionMessage={true}
+    >
       <div className="comments-new-form">
         <NovaForm 
           collection={Comments} 
           novaFormMutation={props.novaFormMutation}
           prefilledProps={prefilledProps}
-          //successCallback={this.props.successCallback}
+          //successCallback={props.successCallback}
           layout="elementOnly"
-          cancelCallback={this.props.type === "reply" ? this.props.cancelCallback : null}
+          cancelCallback={props.type === "reply" ? props.cancelCallback : null}
         />
       </div>
-    )
-  }
+    </Telescope.components.CanDo>
+  )
 
 };
 
@@ -42,7 +45,7 @@ CommentsNewForm.propTypes = {
   cancelCallback: React.PropTypes.func,
   novaFormMutation: React.PropTypes.func,
   router: React.PropTypes.object,
-  flash: React.PropTypes.object,
+  flash: React.PropTypes.func,
 }
 
 CommentsNewForm.contextTypes = {
