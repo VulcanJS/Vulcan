@@ -350,16 +350,16 @@ Posts.graphQLSchema = `
   }
 
   input PostUnsetModifier {
-    postedAt: String
-    url: String
-    title: String
-    slug: String
-    body: String
+    postedAt: Boolean
+    url: Boolean
+    title: Boolean
+    slug: Boolean
+    body: Boolean
     sticky: Boolean
-    status: Int
-    categories: [String]
-    scheduledAt: String
-    thumbnailUrl: String
+    status: Boolean
+    categories: Boolean
+    scheduledAt: Boolean
+    thumbnailUrl: Boolean
   }
 
   input Terms {
