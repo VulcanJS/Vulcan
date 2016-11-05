@@ -15,9 +15,6 @@ class PostsSingleContainer extends Component {
 
   render() {
 
-    console.log("// PostsSingleContainer")
-    console.log(this.props.data)
-    
     const {loading, post, refetch} = this.props.data;
     const Component = this.props.component
 

@@ -25,7 +25,7 @@ const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
 const PostsEditFormContainerWithMutation = graphql(gql`
-  mutation postsEdit($postId: String, $set: PostSetModifier, $unset: PostUnsetModifier) {
+  mutation postsEdit($postId: String, $set: PostInput, $unset: PostUnsetModifier) {
     postsEdit(postId: $postId, set: $set, unset: $unset) {
       _id
       title
@@ -91,12 +91,15 @@ const PostsEditFormContainerWithMutation = graphql(gql`
 `, {
   props: ({ownProps, mutate}) => ({
     novaFormMutation: ({documentId, set, unset}) => {
-      console.log("novaFormMutation")
-      console.log(documentId)
-      console.log(set)
-      console.log(unset)
       return mutate({ 
-        variables: {postId: documentId, set, unset}
+        variables: {postId: documentId, set, unset},
+        // optimisticResponse: {
+        //   __typename: 'Mutation',
+        //   postsEdit: {
+        //     __typename: 'Post',
+        //     ...set
+        //   }
+        // },
       })
     }
   }),

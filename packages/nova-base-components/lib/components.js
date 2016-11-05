@@ -49,8 +49,8 @@ Telescope.registerComponent("PostsCommentsThread",        require('./posts/Posts
 Telescope.registerComponent("CommentsItem",         require('./comments/CommentsItem.jsx'));
 Telescope.registerComponent("CommentsList",         require('./comments/CommentsList.jsx'));
 Telescope.registerComponent("CommentsNode",         require('./comments/CommentsNode.jsx'));
-Telescope.registerComponent("CommentsNew",          require('./comments/CommentsNew.jsx'));
-Telescope.registerComponent("CommentsEdit",         require('./comments/CommentsEdit.jsx'));
+Telescope.registerComponent("CommentsNewForm",          require('./comments/CommentsNewForm.jsx'));
+Telescope.registerComponent("CommentsEditForm",         require('./comments/CommentsEditForm.jsx'));
 Telescope.registerComponent("CommentsLoadMore",     require('./comments/CommentsLoadMore.jsx'));
 
 // categories
@@ -86,3 +86,5 @@ Telescope.registerComponent("PostsNewFormContainer",   require('./containers/Pos
 Telescope.registerComponent("PostsEditFormContainer",   require('./containers/PostsEditFormContainer.jsx'));
 Telescope.registerComponent("UsersSingleContainer",   require('./containers/UsersSingleContainer.jsx'));
 Telescope.registerComponent("VoteContainer",   require('./containers/VoteContainer.jsx'));
+Telescope.registerComponent("CommentsNewFormContainer",   require('./containers/CommentsNewFormContainer.jsx'));
+Telescope.registerComponent("CommentsEditFormContainer",   require('./containers/CommentsEditFormContainer.jsx'));

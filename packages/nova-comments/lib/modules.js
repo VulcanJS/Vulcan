@@ -12,5 +12,6 @@ import './emails.js';
 import './published_fields.js';
 import './permissions.js';
 import './resolvers.js';
+import './mutations.js';
 
 export default Comments;

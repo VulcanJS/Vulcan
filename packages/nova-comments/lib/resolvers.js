@@ -1,4 +1,5 @@
 import Telescope from 'meteor/nova:lib';
+import mutations from './mutations.js';
 
 const resolvers = {
   Post: {
@@ -40,7 +41,8 @@ const resolvers = {
     comment(root, args, context) {
       return context.Comments.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, Comments) });
     },
-  }
+  },
+  Mutation: mutations
 };
 
 Telescope.graphQL.addResolvers(resolvers);

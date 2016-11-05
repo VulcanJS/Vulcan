@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 
-class CommentsNew extends Component {
+class CommentsNewForm extends Component {
 
   render() {
 
@@ -20,7 +20,7 @@ class CommentsNew extends Component {
       <div className="comments-new-form">
         <NovaForm 
           collection={Comments} 
-          methodName="comments.new"
+          novaFormMutation={props.novaFormMutation}
           prefilledProps={prefilledProps}
           //successCallback={this.props.successCallback}
           layout="elementOnly"
@@ -32,18 +32,21 @@ class CommentsNew extends Component {
 
 };
 
-CommentsNew.propTypes = {
+CommentsNewForm.propTypes = {
   postId: React.PropTypes.string.isRequired,
   type: React.PropTypes.string, // "comment" or "reply"
   parentComment: React.PropTypes.object, // if reply, the comment being replied to
   parentCommentId: React.PropTypes.string, // if reply
   topLevelCommentId: React.PropTypes.string, // if reply
   successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
-  cancelCallback: React.PropTypes.func
+  cancelCallback: React.PropTypes.func,
+  novaFormMutation: React.PropTypes.func,
+  router: React.PropTypes.object,
+  flash: React.PropTypes.object,
 }
 
-CommentsNew.contextTypes = {
+CommentsNewForm.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-module.exports = CommentsNew;
+module.exports = CommentsNewForm;

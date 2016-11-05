@@ -204,7 +204,19 @@ Comments.graphQLSchema = `
     baseScore: Int
     score: Float
   }
-`
+
+  input CommentInput {
+    parentCommentId: String
+    topLevelCommentId: String
+    body: String!
+  }
+
+  input CommentUnsetModifier {
+    parentCommentId: Boolean
+    topLevelCommentId: Boolean
+    body: Boolean
+  }
+`;
 
 Telescope.graphQL.addSchema(Comments.graphQLSchema);
 

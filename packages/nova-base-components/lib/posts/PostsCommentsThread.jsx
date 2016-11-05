@@ -15,7 +15,11 @@ const PostsCommentsThread = ({document, refetchQuery}, {currentUser}) => {
       { currentUser ?
         <div className="posts-comments-thread-new">
           <h4><FormattedMessage id="comments.new"/></h4>
-          <Telescope.components.CommentsNew type="comment" postId={post._id} successCallback={refetchQuery} />
+          <Telescope.components.CommentsNewFormContainer 
+            component={Telescope.components.CommentsNewForm}
+            postId={post._id} 
+            type="comment" 
+          />
         </div> :
         <div>
           <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>

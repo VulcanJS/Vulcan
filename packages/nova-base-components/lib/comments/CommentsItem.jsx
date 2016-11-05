@@ -75,7 +75,8 @@ class CommentsItem extends Component{
 
     return (
       <div className="comments-item-reply">
-        <Telescope.components.CommentsNew 
+        <Telescope.components.CommentsNewFormContainer 
+          component={Telescope.components.CommentsNewForm}
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
           successCallback={this.replySuccessCallback} 
