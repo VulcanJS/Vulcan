@@ -51,7 +51,7 @@ mdg:validation-error@0.5.1
 meteor@1.6.0
 meteor-base@1.0.4
 meteorhacks:fast-render@2.16.0
-meteorhacks:inject-data@2.0.0
+meteorhacks:inject-data@2.0.1-nova-patch
 meteorhacks:inject-initial@1.0.4
 meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
