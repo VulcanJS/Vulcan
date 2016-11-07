@@ -34,7 +34,7 @@ const PostsPage = (props) => {
 PostsPage.displayName = "PostsPage";
 
 PostsPage.propTypes = {
-  document: React.PropTypes.object.isRequired
+  document: React.PropTypes.object
 }
 
 module.exports = PostsPage;
