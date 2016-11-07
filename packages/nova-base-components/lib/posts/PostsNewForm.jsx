@@ -28,7 +28,7 @@ const PostsNewForm = (props, context) => {
 PostsNewForm.propTypes = {
   novaFormMutation: React.PropTypes.func,
   router: React.PropTypes.object,
-  flash: React.PropTypes.object,
+  flash: React.PropTypes.func,
 }
 
 PostsNewForm.contextTypes = {

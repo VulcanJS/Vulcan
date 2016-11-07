@@ -51,13 +51,13 @@ Meteor.startup(() => {
 
   // Pass the state of the store as the object to be dehydrated server side
   const dehydrateHook = () => {
-    console.log('store get state', store.getState());
+    // console.log('store get state', store.getState());
     return store.getState();
   }
 
   // Take the rehydrated state and use it as the initial state client side
   const rehydrateHook = state => {
-    console.log('rehydrated state', state);
+    // console.log('rehydrated state', state);
     initialState = state
   };
 

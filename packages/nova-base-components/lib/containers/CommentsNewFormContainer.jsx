@@ -53,7 +53,7 @@ const CommentsNewFormContainerWithMutation = graphql(gql`
       // console.log(optimisticResponseItem)
 
       return mutate({ 
-        variables: {post: document},
+        variables: {comment: document},
         // optimisticResponse: {
         //   __typename: 'Mutation',
         //   postsNew: optimisticResponseItem,
