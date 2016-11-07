@@ -36,6 +36,18 @@ const CommentsNewFormContainerWithMutation = graphql(gql`
   mutation commentsNew($comment: CommentInput) {
     commentsNew(comment: $comment) {
       _id
+      postId
+      parentCommentId
+      topLevelCommentId
+      htmlBody
+      postedAt
+      user {
+        _id
+        telescope {
+          slug
+          emailHash # used for the avatar
+        }
+      }
     }
   }
 `, {
@@ -59,17 +71,22 @@ const CommentsNewFormContainerWithMutation = graphql(gql`
         //   postsNew: optimisticResponseItem,
         // },
         updateQueries: {
-          getPostsView: (prev, { mutationResult }) => {
-            const newPost = mutationResult.data.postsNew;
-            const newList = update(prev, {
-              posts: {
-                $unshift: [newPost],
-              },
-              postsViewTotal: {
-                $set: prev.postsViewTotal + 1
+          getPost: (prev, { mutationResult }) => {
+            console.log(prev)
+            console.log(mutationResult)
+            const newComment = mutationResult.data.commentsNew;
+            const newPost = update(prev, {
+              post: {
+                commentCount: {
+                  $set: prev.post.commentCount + 1
+                },
+                comments: {
+                  $push: [newComment]
+                }
               }
             });
-            return newList;
+            console.log(newPost)
+            return newPost;
           },
         }
       })

@@ -203,6 +203,9 @@ Comments.graphQLSchema = `
     downvoters: [User]
     baseScore: Int
     score: Float
+    parentCommentId: String
+    topLevelCommentId: String
+    postId: String
   }
 
   input CommentInput {

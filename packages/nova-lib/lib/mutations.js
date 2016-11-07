@@ -110,7 +110,7 @@ const removeMutation = ({ collection, documentId, currentUser, validate }) => {
 
   const collectionName = collection._name;
 
-  const document = collection.findOne(documentId);
+  let document = collection.findOne(documentId);
 
   // if document is not trusted, run validation callbacks
   if (validate) {

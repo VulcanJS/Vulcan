@@ -8,18 +8,18 @@ import Users from 'meteor/nova:users';
 // Collection Hooks                                 //
 //////////////////////////////////////////////////////
 
-Comments.before.insert(function (userId, doc) {
-  // note: only actually sanitizes on the server
-  doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
-});
+// Comments.before.insert(function (userId, doc) {
+//   // note: only actually sanitizes on the server
+//   doc.htmlBody = Telescope.utils.sanitize(marked(doc.body));
+// });
 
-Comments.before.update(function (userId, doc, fieldNames, modifier) {
-  // if body is being modified, update htmlBody too
-  if (Meteor.isServer && modifier.$set && modifier.$set.body) {
-    modifier.$set = modifier.$set || {};
-    modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
-  }
-});
+// Comments.before.update(function (userId, doc, fieldNames, modifier) {
+//   // if body is being modified, update htmlBody too
+//   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
+//     modifier.$set = modifier.$set || {};
+//     modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+//   }
+// });
 
 /**
  * @summary Disallow $rename
@@ -148,6 +148,11 @@ function CommentsNewRequiredPropertiesCheck (comment, user) {
 }
 Telescope.callbacks.add("comments.new.sync", CommentsNewRequiredPropertiesCheck);
 
+function CommentsNewGenerateHTMLBody (comment, user) {
+  comment.htmlBody = Telescope.utils.sanitize(marked(comment.body));
+  return comment;
+}
+Telescope.callbacks.add("comments.new.sync", CommentsNewGenerateHTMLBody);
 
 // ------------------------------------- comments.new.async -------------------------------- //
 
@@ -269,6 +274,15 @@ Telescope.callbacks.add("comments.edit.validate", CommentsEditSubmittedPropertie
 
 
 // ------------------------------------- comments.edit.sync -------------------------------- //
+
+function CommentsEditGenerateHTMLBody (modifier, comment, user) {
+  // if body is being modified, update htmlBody too
+  if (modifier.$set && modifier.$set.body) {
+    modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+  }
+  return modifier;
+}
+Telescope.callbacks.add("comments.edit.sync", CommentsEditGenerateHTMLBody);
 
 // ------------------------------------- comments.edit.async -------------------------------- //
 

@@ -15,6 +15,8 @@ class PostsSingleContainer extends Component {
 
   render() {
 
+    console.log(this.props)
+    
     const {loading, post, refetch} = this.props.data;
     const Component = this.props.component
 
@@ -79,6 +81,9 @@ const PostsSingleContainerWithData = graphql(gql`
         #     }
         #   }
         # }
+        postId
+        parentCommentId
+        topLevelCommentId
         htmlBody
         postedAt
         user {
