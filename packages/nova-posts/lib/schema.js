@@ -323,7 +323,7 @@ Posts.graphQLSchema = `
     referrer: String
   }
 
-  input PostInput {
+  input postsInput {
     postedAt: String
     url: String
     title: String
@@ -336,7 +336,7 @@ Posts.graphQLSchema = `
     thumbnailUrl: String
   }
 
-  input PostUnsetModifier {
+  input postsUnset {
     postedAt: Boolean
     url: Boolean
     title: Boolean

@@ -45,8 +45,8 @@ Posts.mutations = {
 };
 
 // GraphQL mutations
-Telescope.graphQL.addMutation('postsNew(document: PostInput) : Post');
-Telescope.graphQL.addMutation('postsEdit(documentId: String, set: PostInput, unset: PostUnsetModifier) : Post');
+Telescope.graphQL.addMutation('postsNew(document: postsInput) : Post');
+Telescope.graphQL.addMutation('postsEdit(documentId: String, set: postsInput, unset: postsUnset) : Post');
 Telescope.graphQL.addMutation('postsRemove(documentId: String) : Post');
 Telescope.graphQL.addMutation('postsVote(documentId: String, voteType: String) : Post');
 

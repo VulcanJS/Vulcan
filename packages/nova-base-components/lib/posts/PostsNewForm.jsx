@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import NovaForm, { FormWrapper } from "meteor/nova:forms";
+import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Posts from "meteor/nova:posts";
 import update from 'immutability-helper';

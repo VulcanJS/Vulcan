@@ -1,8 +1,11 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
-import { FormWrapper } from "meteor/nova:forms";
+import NovaForm from "meteor/nova:forms";
 import Posts from "meteor/nova:posts";
+import { withRouter } from 'react-router'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class PostsEditForm extends Component {
 
@@ -49,16 +52,18 @@ class PostsEditForm extends Component {
 
   render() {
 
-  
     return (
       <div className="posts-edit-form">
         {this.renderAdminArea()}
         <Telescope.components.PostsSingleContainer
           postId={this.props.post._id}
-          component={FormWrapper}
+          component={NovaForm}
+          resultQuery={Posts.graphQLQueries.single}
           componentProps={{
             collection: Posts,
-            novaFormMutation: this.props.novaFormMutation,
+            document: this.props.post,
+            mutationName: "postsEdit",
+            resultQuery: Posts.graphQLQueries.single,
             successCallback: (post) => { 
               this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
             }
@@ -86,4 +91,7 @@ PostsEditForm.contextTypes = {
   intl: intlShape
 }
 
-module.exports = PostsEditForm;
+const mapStateToProps = state => ({ messages: state.messages });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsEditForm));

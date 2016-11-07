@@ -11,26 +11,50 @@ import FormWrapper from './FormWrapper.jsx';
 // const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
 const FormWithMutation = props => {
-  console.log("FormWithMutation")
-  console.log(props)
+
+  let ComponentWithMutation;
+  const collectionName = props.collection._name;
 
   // create new component by wrapping FormWrapper with mutation
-  const ComponentWithMutation = graphql(gql`
-    mutation ${props.mutationName}($document: PostInput) {
-      ${props.mutationName}(document: $document) {
-        ${props.resultQuery}
+  if (props.document) {
+
+    // edit document mutation
+    ComponentWithMutation = graphql(gql`
+      mutation ${props.mutationName}($documentId: String, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
+        ${props.mutationName}(documentId: $documentId, set: $set, unset: $unset) {
+          ${props.resultQuery}
+        }
       }
-    }
-  `, {
-    props: ({ownProps, mutate}) => ({
-      mutation: ({document}) => {
-        return mutate({ 
-          variables: {document: document},
-          updateQueries: props.updateQueries
-        })
+    `, {
+      props: ({ownProps, mutate}) => ({
+        mutation: ({documentId, set, unset}) => {
+          return mutate({ 
+            variables: {documentId: documentId, set, unset}
+          })
+        }
+      }),
+    })(FormWrapper);
+
+  } else {
+
+    // new document mutation
+    ComponentWithMutation = graphql(gql`
+      mutation ${props.mutationName}($document: PostInput) {
+        ${props.mutationName}(document: $document) {
+          ${props.resultQuery}
+        }
       }
-    }),
-  })(FormWrapper);
+    `, {
+      props: ({ownProps, mutate}) => ({
+        mutation: ({document}) => {
+          return mutate({ 
+            variables: {document: document},
+            updateQueries: props.updateQueries
+          })
+        }
+      }),
+    })(FormWrapper);
+  }
 
   const {mutationName, updateQueries, ...rest} = props;
   

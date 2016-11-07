@@ -311,8 +311,8 @@ class FormWrapper extends Component{
       const {graphQLErrors} = error;
       const errorContent = graphQLErrors.reduce((content, error) => {
         // path: first value is the mutation name
-        // TODO: replace path by locations ?
-        return `${content} ${this.context.intl.formatMessage({id: `[${error.path[0]}] ${error.message} `})}`;
+        // TODO: "path" doesn't work…
+        return `${content} ${this.context.intl.formatMessage({id: `${error.message} `})}`;
       }, 'GraphQL Errors:');
 
       // add error to state
@@ -456,8 +456,6 @@ class FormWrapper extends Component{
 
   render() {
 
-    console.log(this)
-    
     const fieldGroups = this.getFieldGroups();
 
     return (
