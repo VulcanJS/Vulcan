@@ -59,7 +59,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 
 /*
 
-### posts.new.method
+### posts.new.validate
 
 - PostsNewUserCheck
 - PostsNewRateLimit
@@ -76,7 +76,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 - PostsNewUpvoteOwnPost
 - PostsNewNotifications
 
-### posts.edit.method
+### posts.edit.validate
 
 - PostsEditUserCheck
 - PostsEditSubmittedPropertiesCheck
@@ -101,7 +101,7 @@ Posts.before.update(function (userId, doc, fieldNames, modifier) {
 
 */
 
-// ------------------------------------- posts.new.method -------------------------------- //
+// ------------------------------------- posts.new.validate -------------------------------- //
 
 /**
  * @summary Check that the current user can post
@@ -112,7 +112,7 @@ function PostsNewUserCheck (post, user) {
     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_stories');
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsNewUserCheck);
+Telescope.callbacks.add("posts.new.validate", PostsNewUserCheck);
 
 /**
  * @summary Rate limiting
@@ -138,7 +138,7 @@ function PostsNewRateLimit (post, user) {
 
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsNewRateLimit);
+Telescope.callbacks.add("posts.new.validate", PostsNewRateLimit);
 
 /**
  * @summary Properties
@@ -175,7 +175,7 @@ function PostsNewSubmittedPropertiesCheck (post, user) {
 
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsNewSubmittedPropertiesCheck);
+Telescope.callbacks.add("posts.new.validate", PostsNewSubmittedPropertiesCheck);
 
 // ------------------------------------- posts.new.sync -------------------------------- //
 
@@ -276,7 +276,7 @@ function PostsNewNotifications (post) {
 }
 Telescope.callbacks.add("posts.new.async", PostsNewNotifications);
 
-// ------------------------------------- posts.edit.method -------------------------------- //
+// ------------------------------------- posts.edit.validate -------------------------------- //
 
 function PostsEditUserCheck (modifier, post, user) {
   // check that user can edit document
@@ -285,7 +285,7 @@ function PostsEditUserCheck (modifier, post, user) {
   }
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.method", PostsEditUserCheck);
+Telescope.callbacks.add("posts.edit.validate", PostsEditUserCheck);
 
 function PostsEditSubmittedPropertiesCheck (modifier, post, user) {
   const schema = Posts.simpleSchema()._schema;
@@ -304,7 +304,7 @@ function PostsEditSubmittedPropertiesCheck (modifier, post, user) {
   });
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.method", PostsEditSubmittedPropertiesCheck);
+Telescope.callbacks.add("posts.edit.validate", PostsEditSubmittedPropertiesCheck);
 
 // ------------------------------------- posts.edit.sync -------------------------------- //
 

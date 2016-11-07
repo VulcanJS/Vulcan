@@ -37,7 +37,7 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 
 /*
 
-### comments.new.method
+### comments.new.validate
 
 - CommentsNewUserCheck
 - CommentsNewRateLimit
@@ -53,7 +53,7 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 - CommentsNewUpvoteOwnComment
 - CommentsNewNotifications
 
-### comments.edit.method
+### comments.edit.validate
 
 - CommentsEditUserCheck
 - CommentsEditSubmittedPropertiesCheck
@@ -68,7 +68,7 @@ Comments.before.update(function (userId, doc, fieldNames, modifier) {
 
 */
 
-// ------------------------------------- comments.new.method -------------------------------- //
+// ------------------------------------- comments.new.validate -------------------------------- //
 
 function CommentsNewUserCheck (comment, user) {
   // check that user can post
@@ -89,7 +89,7 @@ function CommentsNewRateLimit (comment, user) {
   }
   return comment;
 }
-Telescope.callbacks.add("comments.new.sync", CommentsNewRateLimit);
+Telescope.callbacks.add("comments.new.validate", CommentsNewRateLimit);
 
 function CommentsNewSubmittedPropertiesCheck (comment, user) {
   // admin-only properties
@@ -117,7 +117,7 @@ function CommentsNewSubmittedPropertiesCheck (comment, user) {
   }
   return comment;
 }
-Telescope.callbacks.add("comments.new.sync", CommentsNewSubmittedPropertiesCheck);
+Telescope.callbacks.add("comments.new.validate", CommentsNewSubmittedPropertiesCheck);
 
 // ------------------------------------- comments.new.sync -------------------------------- //
 
@@ -238,7 +238,7 @@ function CommentsNewNotifications (comment) {
 }
 Telescope.callbacks.add("comments.new.async", CommentsNewNotifications);
 
-// ------------------------------------- comments.edit.method -------------------------------- //
+// ------------------------------------- comments.edit.validate -------------------------------- //
 
 function CommentsEditUserCheck (modifier, comment, user) {
   if (!user || !Users.canEdit(user, comment)) {
@@ -246,7 +246,7 @@ function CommentsEditUserCheck (modifier, comment, user) {
   }
   return modifier;
 }
-Telescope.callbacks.add("comments.edit.method", CommentsEditUserCheck);
+Telescope.callbacks.add("comments.edit.validate", CommentsEditUserCheck);
 
 function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   const schema = Posts.simpleSchema()._schema;
@@ -265,7 +265,7 @@ function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   });
   return modifier;
 }
-Telescope.callbacks.add("comments.edit.method", CommentsEditSubmittedPropertiesCheck);
+Telescope.callbacks.add("comments.edit.validate", CommentsEditSubmittedPropertiesCheck);
 
 
 // ------------------------------------- comments.edit.sync -------------------------------- //

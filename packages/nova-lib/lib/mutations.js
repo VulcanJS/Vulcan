@@ -1,5 +1,5 @@
 
-const newMutation = (collection, document, currentUser) => {
+const newMutation = ({ collection, document, currentUser, validate }) => {
   
   console.log("// newMutation")
   console.log(collection._name)
@@ -7,11 +7,13 @@ const newMutation = (collection, document, currentUser) => {
 
   const collectionName = collection._name;
 
-  // validate document
-  collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
+  // if document is not trusted, run validation callbacks
+  if (validate) {
+    document = Telescope.callbacks.run(`${collectionName}.new.validate`, document, currentUser);
+  }
 
-  // TODO: run method callbacks somewhere else
-  // post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
+  // validate document against schema
+  collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
 
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {
@@ -32,7 +34,7 @@ const newMutation = (collection, document, currentUser) => {
   return document;
 }
 
-const editMutation = (collection, documentId, set, unset, currentUser) => {
+const editMutation = ({ collection, documentId, set, unset, currentUser, validate }) => {
 
   console.log("// editMutation")
   console.log(collection._name)
@@ -42,15 +44,19 @@ const editMutation = (collection, documentId, set, unset, currentUser) => {
   
   const collectionName = collection._name;
 
+  // build mongo modifier from arguments
   let modifier = {$set: set, $unset: unset};
 
-  // validate modifier
-  collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
-
   // get original document from database
-  const document = collection.findOne(documentId);
+  let document = collection.findOne(documentId);
 
-  // modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
+  // if document is not trusted, run validation callbacks
+  if (validate) {
+    document = Telescope.callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
+  }
+
+  // validate modifier against schema
+  collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
 
   // run sync callbacks (on mongo modifier)
   modifier = Telescope.callbacks.run(`${collectionName}.edit.sync`, modifier, document);

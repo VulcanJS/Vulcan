@@ -7,15 +7,32 @@ import Events from "meteor/nova:events";
 Posts.mutations = {
 
   postsNew(root, {post}, context) {
-    return newMutation(context.Posts, post, context.currentUser);
+    return newMutation({
+      collection: context.Posts, 
+      document: post, 
+      currentUser: context.currentUser,
+      validate: true
+    });
   },
 
   postsEdit(root, {postId, set, unset}, context) {
-    return editMutation(context.Posts, postId, set, unset, context.currentUser);
+    return editMutation({
+      collection: context.Posts, 
+      documentId: postId, 
+      set: set, 
+      unset: unset, 
+      currentUser: context.currentUser,
+      validate: true
+    });
   },
 
   postsRemove(root, {postId}, context) {
-    return removeMutation(context.Posts, postId, context.currentUser);
+    return removeMutation({
+      collection: context.Posts, 
+      documentId: postId, 
+      currentUser: context.currentUser,
+      validate: true
+    });
   },
 
   postsVote(root, {postId, voteType}, context) {

@@ -7,15 +7,32 @@ import Events from "meteor/nova:events";
 Comments.mutations = {
 
   commentsNew(root, {comment}, context) {
-    return newMutation(context.Comments, comment, context.currentUser);
+    return newMutation({
+      collection: context.Comments, 
+      document: comment,
+      currentUser: context.currentUser,
+      validate: true
+    });
   },
 
   commentsEdit(root, {commentId, set, unset}, context) {
-    return editMutation(context.Comments, commentId, set, unset, context.currentUser);
+    return editMutation({
+      collection: context.Comments, 
+      documentId: commentId,
+      set: set, 
+      unset: unset, 
+      currentUser: context.currentUser, 
+      validate: true
+    });
   },
 
   commentsRemove(root, {commentId}, context) {
-    return removeMutation(context.Comments, commentId, context.currentUser);
+    return removeMutation({
+      collection: context.Comments, 
+      documentId: commentId, 
+      currentUser: context.currentUser,
+      validate: true
+    });
   },
 
   commentsVote(root, {commentId, voteType}, context) {
