@@ -39,7 +39,7 @@ const FormWithMutation = props => {
 
     // new document mutation
     ComponentWithMutation = graphql(gql`
-      mutation ${props.mutationName}($document: PostInput) {
+      mutation ${props.mutationName}($document: ${collectionName}Input) {
         ${props.mutationName}(document: $document) {
           ${props.resultQuery}
         }
