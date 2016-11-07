@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
-
+import Posts from "meteor/nova:posts";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router'
@@ -30,65 +30,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.mess
 const PostsEditFormContainerWithMutation = graphql(gql`
   mutation postsEdit($postId: String, $set: PostInput, $unset: PostUnsetModifier) {
     postsEdit(postId: $postId, set: $set, unset: $unset) {
-      _id
-      title
-      url
-      slug
-      body
-      htmlBody
-      thumbnailUrl
-      baseScore
-      postedAt
-      sticky
-      status
-      categories {
-        _id
-        name
-        slug
-      }
-      commentCount
-      comments {
-        _id
-        # note: currently not used in PostsCommentsThread
-        # parentComment {
-        #   htmlBody
-        #   postedAt
-        #   user {
-        #     _id
-        #     telescope {
-        #       slug
-        #       emailHash # used for the avatar
-        #     }
-        #   }
-        # }
-        htmlBody
-        postedAt
-        user {
-          _id
-          telescope {
-            slug
-            emailHash # used for the avatar
-          }
-        }
-      }
-      upvoters {
-        _id
-      }
-      downvoters {
-        _id
-      }
-      upvotes # should be asked only for admins?
-      score # should be asked only for admins?
-      viewCount # should be asked only for admins?
-      clickCount # should be asked only for admins?
-      user {
-        _id
-        telescope {
-          displayName
-          slug
-          emailHash
-        }
-      }
+      ${Posts.graphQLQueries.single}
     }
   }
 `, {

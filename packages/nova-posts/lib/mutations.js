@@ -6,19 +6,19 @@ import Events from "meteor/nova:events";
 // Resolvers
 Posts.mutations = {
 
-  postsNew(root, {post}, context) {
+  postsNew(root, {document}, context) {
     return newMutation({
       collection: context.Posts, 
-      document: post, 
+      document: document, 
       currentUser: context.currentUser,
       validate: true
     });
   },
 
-  postsEdit(root, {postId, set, unset}, context) {
+  postsEdit(root, {documentId, set, unset}, context) {
     return editMutation({
       collection: context.Posts, 
-      documentId: postId, 
+      documentId: documentId, 
       set: set, 
       unset: unset, 
       currentUser: context.currentUser,
@@ -26,28 +26,28 @@ Posts.mutations = {
     });
   },
 
-  postsRemove(root, {postId}, context) {
+  postsRemove(root, {documentId}, context) {
     return removeMutation({
       collection: context.Posts, 
-      documentId: postId, 
+      documentId: documentId, 
       currentUser: context.currentUser,
       validate: true
     });
   },
 
-  postsVote(root, {postId, voteType}, context) {
+  postsVote(root, {documentId, voteType}, context) {
     Meteor._sleepForMs(2000); // wait 2 seconds for demonstration purpose
     console.log("sleep done");
-    const post = Posts.findOne(postId);
+    const post = Posts.findOne(documentId);
     return context.Users.canDo(context.currentUser, `posts.${voteType}`) ? Telescope.operateOnItem(context.Posts, post, context.currentUser, voteType) : false;
   },
 
 };
 
 // GraphQL mutations
-Telescope.graphQL.addMutation('postsNew(post: PostInput) : Post');
-Telescope.graphQL.addMutation('postsEdit(postId: String, set: PostInput, unset: PostUnsetModifier) : Post');
-Telescope.graphQL.addMutation('postsRemove(postId: String) : Post');
-Telescope.graphQL.addMutation('postsVote(postId: String, voteType: String) : Post');
+Telescope.graphQL.addMutation('postsNew(document: PostInput) : Post');
+Telescope.graphQL.addMutation('postsEdit(documentId: String, set: PostInput, unset: PostUnsetModifier) : Post');
+Telescope.graphQL.addMutation('postsRemove(documentId: String) : Post');
+Telescope.graphQL.addMutation('postsVote(documentId: String, voteType: String) : Post');
 
 export default Posts.mutations;

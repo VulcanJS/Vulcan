@@ -15,7 +15,7 @@ class PostsSingleContainer extends Component {
 
   render() {
 
-    // console.log(this.props)
+    console.log(this.props)
     
     const {loading, post, refetch} = this.props.data;
     const Component = this.props.component
@@ -50,69 +50,7 @@ PostsSingleContainer.displayName = "PostsSingleContainer";
 const PostsSingleContainerWithData = graphql(gql`
   query getPost($postId: String) {
     post(_id: $postId) {
-      _id
-      title
-      url
-      slug
-      body
-      htmlBody
-      thumbnailUrl
-      baseScore
-      postedAt
-      sticky
-      status
-      categories {
-        _id
-        name
-        slug
-      }
-      commentCount
-      comments {
-        _id
-        # note: currently not used in PostsCommentsThread
-        # parentComment {
-        #   htmlBody
-        #   postedAt
-        #   user {
-        #     _id
-        #     telescope {
-        #       slug
-        #       emailHash # used for the avatar
-        #     }
-        #   }
-        # }
-        postId
-        parentCommentId
-        topLevelCommentId
-        body
-        htmlBody
-        postedAt
-        user {
-          _id
-          telescope {
-            slug
-            emailHash # used for the avatar
-          }
-        }
-      }
-      upvoters {
-        _id
-      }
-      downvoters {
-        _id
-      }
-      upvotes # should be asked only for admins?
-      score # should be asked only for admins?
-      viewCount # should be asked only for admins?
-      clickCount # should be asked only for admins?
-      user {
-        _id
-        telescope {
-          displayName
-          slug
-          emailHash
-        }
-      }
+      ${Posts.graphQLQueries.single}
     }
   }
 

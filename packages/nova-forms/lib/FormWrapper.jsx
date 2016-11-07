@@ -17,7 +17,7 @@ import { flatten, deepValue, getEditableFields, getInsertableFields } from './ut
 
 */
 
-class NovaForm extends Component{
+class FormWrapper extends Component{
 
   // --------------------------------------------------------------------- //
   // ----------------------------- Constructor --------------------------- //
@@ -299,15 +299,16 @@ class NovaForm extends Component{
   }
 
   // catch graphql errors
-  mutationErrorCallback({graphQLErrors}) {
+  mutationErrorCallback(error) {
 
     this.setState({disabled: false});
 
     console.log("// graphQL Error")
-    console.log(graphQLErrors)
+    console.log(error)
 
-    if (!_.isEmpty(graphQLErrors)) {
+    if (!_.isEmpty(error)) {
       
+      const {graphQLErrors} = error;
       const errorContent = graphQLErrors.reduce((content, error) => {
         // path: first value is the mutation name
         // TODO: replace path by locations ?
@@ -408,7 +409,7 @@ class NovaForm extends Component{
       }
 
       // call method with new document
-      this.props.novaFormMutation({document}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.mutation({document}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
 
     } else { // edit document form
 
@@ -426,7 +427,7 @@ class NovaForm extends Component{
       if (!_.isEmpty(unset)) modifier.$unset = unset;
       // call method with _id of document being edited and modifier
       // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
-      this.props.novaFormMutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.mutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
 
     }
 
@@ -455,6 +456,8 @@ class NovaForm extends Component{
 
   render() {
 
+    console.log(this)
+    
     const fieldGroups = this.getFieldGroups();
 
     return (
@@ -476,14 +479,14 @@ class NovaForm extends Component{
 
 }
 
-NovaForm.propTypes = {
+FormWrapper.propTypes = {
   collection: React.PropTypes.object,
   schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   submitCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
   errorCallback: React.PropTypes.func,
-  methodName: React.PropTypes.string,
+  mutation: React.PropTypes.func,
   labelFunction: React.PropTypes.func,
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
@@ -492,17 +495,17 @@ NovaForm.propTypes = {
   fields: React.PropTypes.arrayOf(React.PropTypes.string)
 }
 
-NovaForm.defaultProps = {
+FormWrapper.defaultProps = {
   layout: "horizontal"
 }
 
-NovaForm.contextTypes = {
+FormWrapper.contextTypes = {
   closeCallback: React.PropTypes.func,
   currentUser: React.PropTypes.object,
   intl: intlShape
 }
 
-NovaForm.childContextTypes = {
+FormWrapper.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
@@ -510,5 +513,5 @@ NovaForm.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = NovaForm;
-export default NovaForm;
+module.exports = FormWrapper;
+export default FormWrapper;

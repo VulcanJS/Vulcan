@@ -362,6 +362,75 @@ Posts.graphQLSchema = `
   }
 `;
 
+Posts.graphQLQueries = {
+  list: ``,
+  single: `
+    _id
+    title
+    url
+    slug
+    body
+    htmlBody
+    thumbnailUrl
+    baseScore
+    postedAt
+    sticky
+    status
+    categories {
+      _id
+      name
+      slug
+    }
+    commentCount
+    comments {
+      _id
+      # note: currently not used in PostsCommentsThread
+      # parentComment {
+      #   htmlBody
+      #   postedAt
+      #   user {
+      #     _id
+      #     telescope {
+      #       slug
+      #       emailHash # used for the avatar
+      #     }
+      #   }
+      # }
+      postId
+      parentCommentId
+      topLevelCommentId
+      body
+      htmlBody
+      postedAt
+      user {
+        _id
+        telescope {
+          slug
+          emailHash # used for the avatar
+        }
+      }
+    }
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes # should be asked only for admins?
+    score # should be asked only for admins?
+    viewCount # should be asked only for admins?
+    clickCount # should be asked only for admins?
+    user {
+      _id
+      telescope {
+        displayName
+        slug
+        emailHash
+      }
+    }
+  `
+};
+
 Telescope.graphQL.addSchema(Posts.graphQLSchema);
 
 Telescope.graphQL.addQuery(`

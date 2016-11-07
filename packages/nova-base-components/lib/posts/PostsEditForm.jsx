@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
-import NovaForm from "meteor/nova:forms";
+import { FormWrapper } from "meteor/nova:forms";
 import Posts from "meteor/nova:posts";
 
 class PostsEditForm extends Component {
@@ -55,7 +55,7 @@ class PostsEditForm extends Component {
         {this.renderAdminArea()}
         <Telescope.components.PostsSingleContainer
           postId={this.props.post._id}
-          component={NovaForm}
+          component={FormWrapper}
           componentProps={{
             collection: Posts,
             novaFormMutation: this.props.novaFormMutation,

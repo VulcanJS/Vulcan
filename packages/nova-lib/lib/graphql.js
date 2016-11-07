@@ -20,5 +20,5 @@ Telescope.graphQL = {
   context: {},
   addToContext(object) {
     this.context = deepmerge(this.context, object);
-  }
+  },
 };

@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import NovaForm from "meteor/nova:forms";
+import NovaForm, { FormWrapper } from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Posts from "meteor/nova:posts";
+import update from 'immutability-helper';
 
 const PostsNewForm = (props, context) => {
   return (
@@ -14,7 +15,21 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm
           collection={Posts}
-          novaFormMutation={props.novaFormMutation}
+          mutationName="postsNew"
+          updateQueries={{
+            getPostsView: (prev, { mutationResult }) => {
+              const newPost = mutationResult.data.postsNew;
+              const newList = update(prev, {
+                posts: {
+                  $unshift: [newPost],
+                },
+                postsViewTotal: {
+                  $set: prev.postsViewTotal + 1
+                }
+              });
+              return newList;
+            }
+          }}
           successCallback={post => {
             props.router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
@@ -26,7 +41,6 @@ const PostsNewForm = (props, context) => {
 };
 
 PostsNewForm.propTypes = {
-  novaFormMutation: React.PropTypes.func,
   router: React.PropTypes.object,
   flash: React.PropTypes.func,
 }
@@ -39,4 +53,4 @@ PostsNewForm.contextTypes = {
 
 PostsNewForm.displayName = "PostsNewForm";
 
-module.exports = PostsNewForm;
+module.exports = withRouter(PostsNewForm);

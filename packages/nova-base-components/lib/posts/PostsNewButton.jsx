@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { ModalTrigger } from "meteor/nova:core";
+import Posts from "meteor/nova:posts";
 
 const PostsNewButton = (props, context) => {
 
@@ -10,7 +11,7 @@ const PostsNewButton = (props, context) => {
   const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
   return (
     <ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
-      <Telescope.components.PostsNewFormContainer component={Telescope.components.PostsNewForm} />
+      <Telescope.components.PostsNewForm />
     </ModalTrigger>
   )
 }

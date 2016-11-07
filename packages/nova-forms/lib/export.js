@@ -10,6 +10,7 @@ if (typeof SimpleSchema !== "undefined") {
   });
 }
 
-import NovaForm from "./NovaForm.jsx";
+import FormWithMutation from "./FormWithMutation.jsx";
 
-export default NovaForm;
+import FormWrapper from './FormWrapper.jsx'
+export { FormWithMutation as default, FormWrapper };
