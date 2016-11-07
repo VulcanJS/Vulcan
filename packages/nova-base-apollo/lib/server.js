@@ -37,6 +37,7 @@ const defaultOptions = {
     locations: e.locations,
     path: e.path
   }),
+  debug: Meteor.isDevelopment,
 };
 
 export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
