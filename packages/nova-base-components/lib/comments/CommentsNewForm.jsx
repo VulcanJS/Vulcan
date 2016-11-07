@@ -30,21 +30,27 @@ const CommentsNewForm = (props, context) => {
           resultQuery={Comments.graphQLQueries.single}
           updateQueries={{
             getPost: (prev, { mutationResult }) => {
-              console.log(prev)
-              console.log(mutationResult)
-              const newComment = mutationResult.data.commentsNew;
+              console.log('[commentsNew] prev post', prev)
               const newPost = update(prev, {
                 post: {
                   commentCount: {
                     $set: prev.post.commentCount + 1
-                  },
-                  comments: {
-                    $push: [newComment]
                   }
                 }
               });
-              console.log(newPost)
+              console.log('[commentsNew] new post', newPost)
               return newPost;
+            },
+            getCommentsView: (prev, { mutationResult }) => {
+              console.log('[commentsNew] previous comment list', prev);
+              const newComment = mutationResult.data.commentsNew;
+              const newCommentsList = update(prev, {
+                comments: {
+                  $push: [newComment]
+                }
+              });
+              console.log('[commentsNew] previous comment list', newCommentsList)
+              return newCommentsList;
             },
           }}
           successCallback={this.replySuccessCallback} 

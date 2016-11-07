@@ -23,6 +23,7 @@ const PostsPage = (props) => {
         component={Telescope.components.PostsCommentsThread}
         postId={post._id}
         componentProps={{
+          commentCount: post.commentCount,
           postId: post._id
         }}
       />

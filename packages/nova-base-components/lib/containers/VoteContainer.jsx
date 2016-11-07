@@ -8,8 +8,8 @@ import gql from 'graphql-tag';
 
 // graphql
 const VoteWithMutation = graphql(gql`
-  mutation postsVote($postId: String, $voteType: String) {
-    postsVote(postId: $postId, voteType: $voteType) {
+  mutation postsVote($documentId: String, $voteType: String) {
+    postsVote(documentId: $documentId, voteType: $voteType) {
       _id
       baseScore
       downvotes
@@ -27,7 +27,7 @@ const VoteWithMutation = graphql(gql`
     vote: ({post, voteType, currentUser}) => {
       const votedItem = Telescope.operateOnItem(Posts, post, currentUser, voteType, true);
       return mutate({ 
-        variables: {postId: post._id, voteType},
+        variables: {documentId: post._id, voteType},
         optimisticResponse: {
           __typename: 'Mutation',
           postsVote: {

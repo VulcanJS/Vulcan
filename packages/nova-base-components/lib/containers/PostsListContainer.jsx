@@ -40,39 +40,7 @@ const PostsListContainerWithData = graphql(gql`
   query getPostsView($terms: Terms, $offset: Int, $limit: Int) {
     postsViewTotal(terms: $terms)
     posts(terms: $terms, offset: $offset, limit: $limit) {
-      _id
-      title
-      url
-      slug
-      htmlBody
-      thumbnailUrl
-      baseScore
-      postedAt
-      sticky
-      categories {
-        _id
-        name
-        slug
-      }
-      commentCount
-      upvoters {
-        _id
-      }
-      downvoters {
-        _id
-      }
-      upvotes # should be asked only for admins?
-      score # should be asked only for admins?
-      viewCount # should be asked only for admins?
-      clickCount # should be asked only for admins?
-      user {
-        _id
-        telescope {
-          displayName
-          slug
-          emailHash
-        }
-      }
+      ${Posts.graphQLQueries.list}
     }
   }
 

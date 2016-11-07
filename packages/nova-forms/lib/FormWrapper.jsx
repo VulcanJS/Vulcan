@@ -32,7 +32,7 @@ class FormWrapper extends Component{
     this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
+    this.clearForm = this.clearForm.bind(this);
     this.updateCurrentValue = this.updateCurrentValue.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
 
@@ -230,12 +230,14 @@ class FormWrapper extends Component{
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  // clear all errors and re-enable the form
-  clearErrors() {
-    this.setState({
-      errors: [],
+  // clear and re-enable the form
+  // by default, clear errors and keep current values
+  clearForm({ clearErrors = true, clearCurrentValues = false}) {
+    this.setState(prevState => ({
+      errors: clearErrors ? [] : prevState.errors,
+      currentValues: clearCurrentValues ? {} : prevState.currentValues,
       disabled: false,
-    });
+    }));
   }
 
   // render errors
@@ -285,17 +287,26 @@ class FormWrapper extends Component{
 
     const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
 
-    // reset form if this is a new document form
-    if (this.getFormType() === "new") this.refs.form.reset();
-
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document);
 
     // run close callback if it exists in context (i.e. we're inside a modal)
-    if (this.context.closeCallback) this.context.closeCallback();
-    // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
+    if (this.context.closeCallback) {
+      this.context.closeCallback();
+    
+    // else there is no close callback (i.e. we're not inside a modal), call the clear form method
     // note: we don't want to update the state of an unmounted component
-    else this.clearErrors();
+    } else {
+      let clearCurrentValues = false;
+
+      // reset form if this is a new document form
+      if (this.getFormType() === "new") {
+        this.refs.form.reset();
+        clearCurrentValues = true;
+      }
+
+      this.clearForm({clearErrors: true, clearCurrentValues});
+    }
   }
 
   // catch graphql errors
@@ -303,23 +314,15 @@ class FormWrapper extends Component{
 
     this.setState({disabled: false});
 
-    console.log("// graphQL Error")
-    console.log(error)
+    console.log("// graphQL Error");
+    console.log(error);
 
     if (!_.isEmpty(error)) {
-      
-      const {graphQLErrors} = error;
-      // const errorContent = graphQLErrors.reduce((content, error) => {
-      //   // path: first value is the mutation name
-      //   return `${content} ${this.context.intl.formatMessage({id: `${error.message} `})}`;
-      // }, 'GraphQL Errors:');
-
       // add error to state
       this.throwError({
         content: error.message,
         type: "error"
       });
-
     }
 
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
@@ -361,7 +364,7 @@ class FormWrapper extends Component{
   //       if (this.context.closeCallback) this.context.closeCallback();
   //       // else there is no close callback (i.e. we're not inside a modal), call the clear errors method
   //       // note: we don't want to update the state of an unmounted component
-  //       else this.clearErrors();
+  //       else this.clearForm();
 
   //     }
 
@@ -427,7 +430,6 @@ class FormWrapper extends Component{
       // call method with _id of document being edited and modifier
       // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
       this.props.mutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
-
     }
 
   }

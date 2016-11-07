@@ -4,7 +4,7 @@ import {injectIntl, FormattedMessage} from 'react-intl';
 
 const CommentsList = ({comments, commentCount}) => {
 
-  if (!!comments) {
+  if (commentCount > 0) {
     return (
       <div className="comments-list">
         {comments.map(comment => <Telescope.components.CommentsNode comment={comment} key={comment._id} />)}

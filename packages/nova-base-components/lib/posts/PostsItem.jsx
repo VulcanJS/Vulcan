@@ -15,7 +15,7 @@ class PostsItem extends Component {
   }
 
   renderCommenters() {
-    return this.props.post.comments && this.props.post.comments.length > 0 ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
+    return this.props.post.commenters && this.props.post.commenters.length > 0 ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
