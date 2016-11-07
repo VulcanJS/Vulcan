@@ -39,6 +39,7 @@ const CommentsNewFormContainerWithMutation = graphql(gql`
       postId
       parentCommentId
       topLevelCommentId
+      body
       htmlBody
       postedAt
       user {
