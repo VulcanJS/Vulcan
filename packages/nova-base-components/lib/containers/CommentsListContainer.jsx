@@ -10,8 +10,6 @@ class CommentsListContainer extends Component {
   
   render() {
 
-    console.log(this)
-
     const {loading, comments, commentsViewTotal, refetchQuery, loadMore, componentProps} = this.props;
     const Component = this.props.component;
     const hasMore = comments && commentsViewTotal && comments.length < commentsViewTotal;
@@ -73,7 +71,6 @@ const CommentsListContainerWithData = graphql(gql`
   }
 `, {
   options(ownProps) {
-    console.log(ownProps)
     return {
       variables: { 
         postId: ownProps.postId
@@ -82,7 +79,6 @@ const CommentsListContainerWithData = graphql(gql`
     };
   },
   props(props) {
-    console.log(props)
     const {data: {loading, comments, commentsViewTotal, refetch, fetchMore}} = props;
     return {
       loading,

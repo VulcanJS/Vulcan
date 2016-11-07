@@ -6,7 +6,7 @@ import Comments from "meteor/nova:comments";
 
 const PostsCommentsThread = (props, context) => {
 
-  const {post, results, totalCount} = props;
+  const {postId, results, totalCount} = props;
 
   return (
     <div className="posts-comments-thread">
@@ -16,7 +16,7 @@ const PostsCommentsThread = (props, context) => {
         <div className="posts-comments-thread-new">
           <h4><FormattedMessage id="comments.new"/></h4>
           <Telescope.components.CommentsNewForm
-            postId={post._id} 
+            postId={postId} 
             type="comment" 
           />
         </div> :
