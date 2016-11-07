@@ -5,7 +5,6 @@
 // start of main-client from apollostack/meteor-integration
 
 import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client';
-import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
 import { Accounts } from 'meteor/accounts-base';
 import { _ } from 'meteor/underscore';
 
@@ -61,7 +60,6 @@ export const meteorClientConfig = (networkInterfaceConfig) => {
   return {
     ssrMode: true,
     networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
-    queryTransformer: addTypenameToSelectionSet,
 
     // Default to using Mongo _id, must use _id for queries.
     dataIdFromObject: (result) => {
