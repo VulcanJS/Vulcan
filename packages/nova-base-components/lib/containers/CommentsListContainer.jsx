@@ -10,13 +10,14 @@ class CommentsListContainer extends Component {
   
   render() {
 
-    const {loading, comments, commentsViewTotal, refetchQuery, loadMore, componentProps} = this.props;
+    const {loading, results, componentProps} = this.props;
     const Component = this.props.component;
     //const hasMore = comments && commentsViewTotal && comments.length < commentsViewTotal;
 
     return loading ? <Telescope.components.Loading/> : <Component 
-        results={comments || []}
-        count={comments && comments.length}
+        results={results || []}
+        //count={comments && comments.length}
+        {...componentProps}
       />;
   }
 };
@@ -59,7 +60,7 @@ const CommentsListContainerWithData = graphql(gql`
     const {data: {loading, comments}} = props;
     return {
       loading,
-      comments,
+      results: comments,
       // loadMore() {
       //   // basically, rerun the query 'getPostsView' with a new offset
       //   return fetchMore({
