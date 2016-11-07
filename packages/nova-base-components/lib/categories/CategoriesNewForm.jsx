@@ -4,6 +4,7 @@ import Categories from "meteor/nova:categories";
 import NovaForm from "meteor/nova:forms";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import update from 'immutability-helper';
 
 const CategoriesNewForm = (props, context) => {
 
@@ -11,7 +12,22 @@ const CategoriesNewForm = (props, context) => {
     <div className="categories-new-form">
       <NovaForm 
         collection={Categories} 
-        methodName="categories.new"
+        mutationName="categoriesNew"
+        resultQuery={Categories.graphQLQueries.single}
+        updateQueries={{
+          getAppData: (prev, {mutationResult}) => {
+            console.log(prev);
+            const newCategory = mutationResult.data.categoriesNew;
+            console.log(newCategory);
+            const newCategoriesList = update(prev, {
+              categories: {
+                $push: [newCategory]
+              }
+            });
+            console.log(newCategoriesList);
+            return newCategoriesList;
+          },
+        }}
         successCallback={(category)=>{
           props.flash("Category created.", "success");
         }}

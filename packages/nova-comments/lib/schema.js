@@ -167,24 +167,6 @@ Comments.schema = new SimpleSchema({
   }
 });
 
-Comments.graphQLQueries = {
-  single: `
-    _id
-    postId
-    parentCommentId
-    topLevelCommentId
-    body
-    htmlBody
-    postedAt
-    user {
-      _id
-      telescope {
-        slug
-        emailHash # used for the avatar
-      }
-    }
-  `
-}
 Comments.attachSchema(Comments.schema);
 
 if (typeof Telescope.notifications !== "undefined") {
@@ -237,7 +219,7 @@ Comments.graphQLSchema = `
     parentCommentId: Boolean
     topLevelCommentId: Boolean
     postId: Boolean
-    body: Boolean
+    body: Boolean 
   }
 `;
 
@@ -247,5 +229,24 @@ Telescope.graphQL.addQuery(`
   comments(postId: String): [Comment]
   comment(_id: String): Comment
 `);
+
+Comments.graphQLQueries = {
+  single: `
+    _id
+    postId
+    parentCommentId
+    topLevelCommentId
+    body
+    htmlBody
+    postedAt
+    user {
+      _id
+      telescope {
+        slug
+        emailHash # used for the avatar
+      }
+    }
+  `
+}
 
 Telescope.graphQL.addToContext({ Comments });

@@ -104,7 +104,7 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
 
 const removeMutation = ({ collection, documentId, currentUser, validate }) => {
 
-  console.log("// editMutation")
+  console.log("// removeMutation")
   console.log(collection._name)
   console.log(documentId)
 

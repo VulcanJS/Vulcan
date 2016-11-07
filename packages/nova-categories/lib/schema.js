@@ -120,6 +120,24 @@ Categories.graphQLSchema = `
     image: String
     parent: Category
   }
+
+  input categoriesInput {
+    name: String!
+    description: String
+    order: Int
+    slug: String
+    image: String
+    parent: String
+  }
+
+  input categoriesUnset {
+    _id: Boolean
+    description: Boolean
+    order: Boolean
+    slug: Boolean
+    image: Boolean
+    parent: Boolean
+  }
 `;
 
 Telescope.graphQL.addSchema(Categories.graphQLSchema);
@@ -128,5 +146,24 @@ Telescope.graphQL.addQuery(`
   categories: [Category]
   category(_id: String): Category
 `);
+
+Categories.graphQLQueries = {
+  single: `
+    _id
+    name
+    description
+    order
+    slug
+    image
+    parent {
+      _id
+      name
+      description
+      order
+      slug
+      image
+    }
+  `
+}
 
 Telescope.graphQL.addToContext({ Categories });
