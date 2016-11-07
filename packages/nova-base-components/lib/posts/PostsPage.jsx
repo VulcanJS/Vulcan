@@ -19,7 +19,13 @@ const PostsPage = (props) => {
 
       {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
-      <Telescope.components.PostsCommentsThread document={post} refetchQuery={refetchQuery} />
+      <Telescope.components.CommentsListContainer
+        component={Telescope.components.PostsCommentsThread}
+        postId={post._id}
+        componentProps={{
+          postId: post._id
+        }}
+      />
 
     </div>
   )

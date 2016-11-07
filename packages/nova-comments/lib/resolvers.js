@@ -31,12 +31,12 @@ const resolvers = {
     },
   },
   Query: {
-    comments(root, args, context) {
+    comments(root, {postId}, context) {
       const options = {
         limit: 5,
         fields: context.getViewableFields(context.currentUser, Comments)
       }
-      return context.Comments.find({}, options).fetch();
+      return context.Comments.find({postId: postId}, options).fetch();
     },
     comment(root, args, context) {
       return context.Comments.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, Comments) });

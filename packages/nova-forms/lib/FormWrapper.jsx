@@ -309,15 +309,14 @@ class FormWrapper extends Component{
     if (!_.isEmpty(error)) {
       
       const {graphQLErrors} = error;
-      const errorContent = graphQLErrors.reduce((content, error) => {
-        // path: first value is the mutation name
-        // TODO: "path" doesn't work…
-        return `${content} ${this.context.intl.formatMessage({id: `${error.message} `})}`;
-      }, 'GraphQL Errors:');
+      // const errorContent = graphQLErrors.reduce((content, error) => {
+      //   // path: first value is the mutation name
+      //   return `${content} ${this.context.intl.formatMessage({id: `${error.message} `})}`;
+      // }, 'GraphQL Errors:');
 
       // add error to state
       this.throwError({
-        content: errorContent,
+        content: error.message,
         type: "error"
       });
 

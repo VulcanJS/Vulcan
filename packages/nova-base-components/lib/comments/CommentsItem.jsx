@@ -5,6 +5,7 @@ import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import NovaForm from "meteor/nova:forms";
 
 class CommentsItem extends Component{
 
@@ -37,11 +38,14 @@ class CommentsItem extends Component{
   }
   
   editCancelCallback(event) {
+    console.log("editCancelCallback")
     event.preventDefault();
     this.setState({showEdit: false});
   }
 
-  editSuccessCallback() {
+  editSuccessCallback(event) {
+    console.log("editSuccessCallback")
+    event.preventDefault();
     this.setState({showEdit: false});
   }
 
@@ -75,13 +79,12 @@ class CommentsItem extends Component{
 
     return (
       <div className="comments-item-reply">
-        <Telescope.components.CommentsNewFormContainer 
-          component={Telescope.components.CommentsNewForm}
+        <Telescope.components.CommentsNewForm
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
           successCallback={this.replySuccessCallback} 
           cancelCallback={this.replyCancelCallback} 
-          type="reply" 
+          type="reply"
         />
       </div>
     )
@@ -90,9 +93,8 @@ class CommentsItem extends Component{
   renderEdit() {
 
     return (
-      <Telescope.components.CommentsEditFormContainer
-        component={Telescope.components.CommentsEditForm} 
-        comment={this.props.comment} 
+      <Telescope.components.CommentsEditForm
+        comment={this.props.comment}
         successCallback={this.editSuccessCallback} 
         cancelCallback={this.editCancelCallback}
       />

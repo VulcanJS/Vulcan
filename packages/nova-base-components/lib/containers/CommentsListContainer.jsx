@@ -1,23 +1,27 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Posts from "meteor/nova:posts";
+import Comments from "meteor/nova:comments";
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-class PostsListContainer extends Component {
-
+class CommentsListContainer extends Component {
+  
   render() {
-    const {loading, posts, postsViewTotal, refetchQuery, loadMore, componentProps} = this.props;
+
+    console.log(this)
+
+    const {loading, comments, commentsViewTotal, refetchQuery, loadMore, componentProps} = this.props;
     const Component = this.props.component;
-    const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
+    const hasMore = comments && commentsViewTotal && comments.length < commentsViewTotal;
 
     return loading ? <Telescope.components.Loading/> : <Component 
-      results={posts || []}
+      results={comments || []}
       hasMore={hasMore}
       ready={!loading}
-      count={posts && posts.length}
-      totalCount={postsViewTotal}
+      count={comments && comments.length}
+      totalCount={commentsViewTotal}
       loadMore={loadMore}
       refetchQuery={refetchQuery}
       {...componentProps}
@@ -25,7 +29,7 @@ class PostsListContainer extends Component {
   }
 };
 
-PostsListContainer.propTypes = {
+CommentsListContainer.propTypes = {
   loading: React.PropTypes.bool,
   postsViewTotal: React.PropTypes.number,
   posts: React.PropTypes.array,
@@ -34,64 +38,56 @@ PostsListContainer.propTypes = {
   params: React.PropTypes.object
 };
 
-PostsListContainer.displayName = "PostsListContainer";
+CommentsListContainer.displayName = "CommentsListContainer";
 
-const PostsListContainerWithData = graphql(gql`
-  query getPostsView($terms: Terms, $offset: Int, $limit: Int) {
-    postsViewTotal(terms: $terms)
-    posts(terms: $terms, offset: $offset, limit: $limit) {
+const CommentsListContainerWithData = graphql(gql`
+  query getCommentsView ($postId: String) {
+    comments (postId: $postId) {
       _id
-      title
-      url
-      slug
+      # note: currently not used in PostsCommentsThread
+      # parentComment {
+      #   htmlBody
+      #   postedAt
+      #   user {
+      #     _id
+      #     telescope {
+      #       slug
+      #       emailHash # used for the avatar
+      #     }
+      #   }
+      # }
+      postId
+      parentCommentId
+      topLevelCommentId
+      body
       htmlBody
-      thumbnailUrl
-      baseScore
       postedAt
-      sticky
-      categories {
-        _id
-        name
-        slug
-      }
-      commentCount
-      upvoters {
-        _id
-      }
-      downvoters {
-        _id
-      }
-      upvotes # should be asked only for admins?
-      score # should be asked only for admins?
-      viewCount # should be asked only for admins?
-      clickCount # should be asked only for admins?
       user {
         _id
         telescope {
-          displayName
           slug
-          emailHash
+          emailHash # used for the avatar
         }
       }
     }
   }
-
 `, {
   options(ownProps) {
+    console.log(ownProps)
     return {
       variables: { 
-        terms: ownProps.terms,
-        offset: 0,
-        limit: 10
+        postId: ownProps.postId
       },
       // pollInterval: 20000,
     };
   },
-  props({data: {loading, posts, postsViewTotal, refetch, fetchMore}}) {
+  props(props) {
+    console.log(props)
+    const {data: {loading, comments, commentsViewTotal, refetch, fetchMore}} = props;
     return {
       loading,
-      posts,
-      postsViewTotal,
+      comments,
+      commentsViewTotal,
       refetchQuery: refetch,
       loadMore() {
         // basically, rerun the query 'getPostsView' with a new offset
@@ -109,6 +105,6 @@ const PostsListContainerWithData = graphql(gql`
       },
     };
   },
-})(PostsListContainer);
+})(CommentsListContainer);
 
-module.exports = PostsListContainerWithData;
+module.exports = CommentsListContainerWithData;

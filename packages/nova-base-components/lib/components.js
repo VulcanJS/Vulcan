@@ -82,9 +82,10 @@ Telescope.registerComponent("UsersAccountForm",     require('./users/UsersAccoun
 Telescope.registerComponent("AppContainer",   require('./containers/AppContainer.jsx'));
 Telescope.registerComponent("PostsListContainer",   require('./containers/PostsListContainer.jsx'));
 Telescope.registerComponent("PostsSingleContainer",   require('./containers/PostsSingleContainer.jsx'));
-Telescope.registerComponent("PostsNewFormContainer",   require('./containers/PostsNewFormContainer.jsx'));
-Telescope.registerComponent("PostsEditFormContainer",   require('./containers/PostsEditFormContainer.jsx'));
+Telescope.registerComponent("CommentsListContainer",   require('./containers/CommentsListContainer.jsx'));
+// Telescope.registerComponent("PostsNewFormContainer",   require('./containers/PostsNewFormContainer.jsx'));
+// Telescope.registerComponent("PostsEditFormContainer",   require('./containers/PostsEditFormContainer.jsx'));
 Telescope.registerComponent("UsersSingleContainer",   require('./containers/UsersSingleContainer.jsx'));
 Telescope.registerComponent("VoteContainer",   require('./containers/VoteContainer.jsx'));
-Telescope.registerComponent("CommentsNewFormContainer",   require('./containers/CommentsNewFormContainer.jsx'));
-Telescope.registerComponent("CommentsEditFormContainer",   require('./containers/CommentsEditFormContainer.jsx'));
+// Telescope.registerComponent("CommentsNewFormContainer",   require('./containers/CommentsNewFormContainer.jsx'));
+// Telescope.registerComponent("CommentsEditFormContainer",   require('./containers/CommentsEditFormContainer.jsx'));

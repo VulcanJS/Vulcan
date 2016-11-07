@@ -4,19 +4,18 @@ import {FormattedMessage } from 'react-intl';
 import { ModalTrigger } from "meteor/nova:core";
 import Comments from "meteor/nova:comments";
 
-const PostsCommentsThread = ({document, refetchQuery}, {currentUser}) => {
+const PostsCommentsThread = (props, context) => {
 
-  const post = document;
+  const {post, results, totalCount} = props;
 
   return (
     <div className="posts-comments-thread">
       <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
-      <Telescope.components.CommentsList comments={post.comments} commentCount={post.commentCount} />
-      { currentUser ?
+      <Telescope.components.CommentsList comments={results} commentCount={totalCount} />
+      { context.currentUser ?
         <div className="posts-comments-thread-new">
           <h4><FormattedMessage id="comments.new"/></h4>
-          <Telescope.components.CommentsNewFormContainer 
-            component={Telescope.components.CommentsNewForm}
+          <Telescope.components.CommentsNewForm
             postId={post._id} 
             type="comment" 
           />

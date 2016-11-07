@@ -6,19 +6,19 @@ import Events from "meteor/nova:events";
 // Resolvers
 Comments.mutations = {
 
-  commentsNew(root, {comment}, context) {
+  commentsNew(root, {document}, context) {
     return newMutation({
       collection: context.Comments, 
-      document: comment,
+      document: document,
       currentUser: context.currentUser,
       validate: true
     });
   },
 
-  commentsEdit(root, {commentId, set, unset}, context) {
+  commentsEdit(root, {documentId, set, unset}, context) {
     return editMutation({
       collection: context.Comments, 
-      documentId: commentId,
+      documentId: documentId,
       set: set, 
       unset: unset, 
       currentUser: context.currentUser, 
@@ -26,25 +26,25 @@ Comments.mutations = {
     });
   },
 
-  commentsRemove(root, {commentId}, context) {
+  commentsRemove(root, {documentId}, context) {
     return removeMutation({
       collection: context.Comments, 
-      documentId: commentId, 
+      documentId: documentId, 
       currentUser: context.currentUser,
       validate: true
     });
   },
 
-  commentsVote(root, {commentId, voteType}, context) {
+  commentsVote(root, {documentId, voteType}, context) {
 
   },
 
 };
 
 // GraphQL mutations
-Telescope.graphQL.addMutation('commentsNew(comment: CommentInput) : Comment');
-Telescope.graphQL.addMutation('commentsEdit(commentId: String, set: CommentInput, unset: CommentUnsetModifier) : Comment');
-Telescope.graphQL.addMutation('commentsRemove(commentId: String) : Comment');
-Telescope.graphQL.addMutation('commentsVote(commentId: String, voteType: String) : Comment');
+Telescope.graphQL.addMutation('commentsNew(document: commentsInput) : Comment');
+Telescope.graphQL.addMutation('commentsEdit(documentId: String, set: commentsInput, unset: commentsUnset) : Comment');
+Telescope.graphQL.addMutation('commentsRemove(documentId: String) : Comment');
+Telescope.graphQL.addMutation('commentsVote(documentId: String, voteType: String) : Comment');
 
 export default Comments.mutations;

@@ -382,34 +382,6 @@ Posts.graphQLQueries = {
       slug
     }
     commentCount
-    comments {
-      _id
-      # note: currently not used in PostsCommentsThread
-      # parentComment {
-      #   htmlBody
-      #   postedAt
-      #   user {
-      #     _id
-      #     telescope {
-      #       slug
-      #       emailHash # used for the avatar
-      #     }
-      #   }
-      # }
-      postId
-      parentCommentId
-      topLevelCommentId
-      body
-      htmlBody
-      postedAt
-      user {
-        _id
-        telescope {
-          slug
-          emailHash # used for the avatar
-        }
-      }
-    }
     upvoters {
       _id
     }

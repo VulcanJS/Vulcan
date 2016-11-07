@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import update from 'immutability-helper';
 
 const CommentsNewForm = (props, context) => {
 
@@ -21,13 +24,33 @@ const CommentsNewForm = (props, context) => {
       displayNoPermissionMessage={true}
     >
       <div className="comments-new-form">
-        <NovaForm 
-          collection={Comments} 
-          novaFormMutation={props.novaFormMutation}
-          prefilledProps={prefilledProps}
-          //successCallback={props.successCallback}
-          layout="elementOnly"
+        <NovaForm
+          collection={Comments}
+          mutationName="commentsNew"
+          resultQuery={Comments.graphQLQueries.single}
+          updateQueries={{
+            getPost: (prev, { mutationResult }) => {
+              console.log(prev)
+              console.log(mutationResult)
+              const newComment = mutationResult.data.commentsNew;
+              const newPost = update(prev, {
+                post: {
+                  commentCount: {
+                    $set: prev.post.commentCount + 1
+                  },
+                  comments: {
+                    $push: [newComment]
+                  }
+                }
+              });
+              console.log(newPost)
+              return newPost;
+            },
+          }}
+          successCallback={this.replySuccessCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
+          prefilledProps={prefilledProps}
+          layout="elementOnly"
         />
       </div>
     </Telescope.components.CanDo>
@@ -52,4 +75,7 @@ CommentsNewForm.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-module.exports = CommentsNewForm;
+const mapStateToProps = state => ({ messages: state.messages });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(CommentsNewForm);
