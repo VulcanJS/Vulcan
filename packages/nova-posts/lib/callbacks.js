@@ -368,6 +368,22 @@ function PostsEditRunPostApprovedCallbacks (post, oldPost) {
 }
 Telescope.callbacks.add("posts.edit.async", PostsEditRunPostApprovedCallbacks);
 
+// ------------------------------------- posts.remove.validate -------------------------------- //
+
+function PostsRemoveValidation (post, currentUser) {
+  if (!currentUser || !Users.canEdit(currentUser, post)){
+    throw new Meteor.Error(606, 'You need permission to edit or delete a post');
+  }
+}
+Telescope.callbacks.add("posts.remove.validate", PostsRemoveValidation);
+
+// ------------------------------------- posts.remove.sync -------------------------------- //
+
+function PostsRemoveOperations (post) {
+  Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
+}
+Telescope.callbacks.add("posts.remove.sync", PostsRemoveOperations);
+
 // ------------------------------------- posts.approve.async -------------------------------- //
 
 /**
