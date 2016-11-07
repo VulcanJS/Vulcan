@@ -4,10 +4,15 @@ import Users from 'meteor/nova:users';
 
 function subscribeUserOnProfileCompletion (user) {
   if (!!Telescope.settings.get('autoSubscribe') && !!Users.getEmail(user)) {
-    MailChimpList.add(user, false, function (error, result) {
-      console.log(error);
-      console.log(result);
-    });
+    try {
+      MailChimpList.add(user, false, function (error, result) {
+        console.log(error);
+        console.log(result);
+      });
+    } catch (error) {
+      console.log("// MailChimp Error:")
+      console.log(error)
+    }
   }
   return user;
 }
