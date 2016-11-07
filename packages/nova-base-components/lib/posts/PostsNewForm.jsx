@@ -4,6 +4,8 @@ import NovaForm, { FormWrapper } from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Posts from "meteor/nova:posts";
 import update from 'immutability-helper';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 const PostsNewForm = (props, context) => {
   return (
@@ -16,6 +18,7 @@ const PostsNewForm = (props, context) => {
         <NovaForm
           collection={Posts}
           mutationName="postsNew"
+          resultQuery={Posts.graphQLQueries.single}
           updateQueries={{
             getPostsView: (prev, { mutationResult }) => {
               const newPost = mutationResult.data.postsNew;
@@ -53,4 +56,7 @@ PostsNewForm.contextTypes = {
 
 PostsNewForm.displayName = "PostsNewForm";
 
-module.exports = withRouter(PostsNewForm);
+const mapStateToProps = state => ({ messages: state.messages });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsNewForm));

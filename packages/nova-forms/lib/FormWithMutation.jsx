@@ -18,7 +18,7 @@ const FormWithMutation = props => {
   const ComponentWithMutation = graphql(gql`
     mutation ${props.mutationName}($document: PostInput) {
       ${props.mutationName}(document: $document) {
-        ${props.collection.graphQLQueries.single}
+        ${props.resultQuery}
       }
     }
   `, {
@@ -49,7 +49,7 @@ FormWithMutation.propTypes = {
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
   cancelCallback: React.PropTypes.func,
-  refetchQuery: React.PropTypes.func,
+  resultQuery: React.PropTypes.string,
   fields: React.PropTypes.arrayOf(React.PropTypes.string)
 }
 
