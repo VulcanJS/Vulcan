@@ -324,3 +324,15 @@ Telescope.utils.getCollectionNameFromTypename = (type) => {
     return 'comments';
   }
 };
+
+Telescope.utils.findIndex = (array, predicate) => {
+  let index = -1;
+  let continueLoop = true;
+  array.forEach((item, currentIndex) => {
+    if (continueLoop && predicate(item)) {
+      index = currentIndex
+      continueLoop = false
+    }
+  });
+  return index;
+}

@@ -90,7 +90,8 @@ class CommentsItem extends Component{
   renderEdit() {
 
     return (
-      <Telescope.components.CommentsEdit 
+      <Telescope.components.CommentsEditFormContainer
+        component={Telescope.components.CommentsEditForm} 
         comment={this.props.comment} 
         successCallback={this.editSuccessCallback} 
         cancelCallback={this.editCancelCallback}

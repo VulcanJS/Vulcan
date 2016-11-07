@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 const PostsEditFormContainer = (props, context) => {
   const Component = props.component;
 
-  return <Component post={props.post} flash={props.flash} novaFormMutation={props.novaFormMutation} router={props.router} />;
+  return <Component {...props} />;
 };
 
 PostsEditFormContainer.propTypes = {
@@ -19,6 +19,9 @@ PostsEditFormContainer.propTypes = {
   novaFormMutation: React.PropTypes.func,
   post: React.PropTypes.object.isRequired,
   router: React.PropTypes.object,
+  component: React.PropTypes.func,
+  successCallback: React.PropTypes.func,
+  cancelCallback: React.PropTypes.func,
 };
 
 const mapStateToProps = state => ({ messages: state.messages, });

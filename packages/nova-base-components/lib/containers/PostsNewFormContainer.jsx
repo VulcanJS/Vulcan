@@ -10,14 +10,15 @@ import update from 'immutability-helper';
 
 const PostsNewFormContainer = (props, context) => {
   const Component = props.component;
-
-  return <Component router={props.router} novaFormMutation={props.novaFormMutation} flash={props.flash} />
+  return <Component {...props} />
 }
 
 PostsNewFormContainer.propTypes = {
   router: React.PropTypes.object,
   novaFormMutation: React.PropTypes.func,
   component: React.PropTypes.func,
+  successCallback: React.PropTypes.func, // a callback to execute when the submission has been successful
+  cancelCallback: React.PropTypes.func,
 };
 
 PostsNewFormContainer.displayName = "PostsNewFormContainer";

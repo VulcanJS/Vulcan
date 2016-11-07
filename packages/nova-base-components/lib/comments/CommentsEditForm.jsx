@@ -2,33 +2,29 @@ import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 
-class CommentsEdit extends Component {
-
-  render() {
-    return (
-      <div className="comments-edit-form">
-        <NovaForm 
-          collection={Comments}
-          document={this.props.comment}
-          methodName="comments.edit"
-          successCallback={this.props.successCallback}
-          layout="elementOnly"
-          cancelCallback={this.props.cancelCallback}
-        />
-      </div>
-    )
-  }
-
+const CommentsEditForm = (props, context) => {
+  return (
+    <div className="comments-edit-form">
+      <NovaForm 
+        layout="elementOnly"
+        collection={Comments}
+        document={props.comment}
+        novaFormMutation={props.novaFormMutation}
+        successCallback={props.successCallback}
+        cancelCallback={props.cancelCallback}
+      />
+    </div>
+  )
 }
 
-CommentsEdit.propTypes = {
+CommentsEditForm.propTypes = {
   comment: React.PropTypes.object.isRequired,
   successCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func
 }
 
-CommentsEdit.contextTypes = {
+CommentsEditForm.contextTypes = {
   currentUser: React.PropTypes.object
 }
 
-module.exports = CommentsEdit;
+module.exports = CommentsEditForm;

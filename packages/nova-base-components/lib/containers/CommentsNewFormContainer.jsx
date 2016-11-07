@@ -11,7 +11,7 @@ import update from 'immutability-helper';
 const CommentsNewFormContainer = (props, context) => {
   const Component = props.component;
 
-  return <Component router={props.router} novaFormMutation={props.novaFormMutation} flash={props.flash} {...props} />
+  return <Component {...props} />
 }
 
 CommentsNewFormContainer.propTypes = {
