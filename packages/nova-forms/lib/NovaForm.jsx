@@ -303,16 +303,24 @@ class NovaForm extends Component{
 
     this.setState({disabled: false});
 
-    const errorContent = graphQLErrors.reduce((content, error) => {
-      // path: first value is the mutation name
-      return `${content} ${this.context.intl.formatMessage({id: `[${error.path[0]}] ${error.message} `})}`;
-    }, 'GraphQL Errors:');
+    console.log("// graphQL Error")
+    console.log(graphQLErrors)
 
-    // add error to state
-    this.throwError({
-      content: errorContent,
-      type: "error"
-    });
+    if (!_.isEmpty(graphQLErrors)) {
+      
+      const errorContent = graphQLErrors.reduce((content, error) => {
+        // path: first value is the mutation name
+        // TODO: replace path by locations ?
+        return `${content} ${this.context.intl.formatMessage({id: `[${error.path[0]}] ${error.message} `})}`;
+      }, 'GraphQL Errors:');
+
+      // add error to state
+      this.throwError({
+        content: errorContent,
+        type: "error"
+      });
+
+    }
 
     // note: we don't have access to the document here :( maybe use redux-forms and get it from the store?
     // run error callback if it exists

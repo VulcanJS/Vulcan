@@ -208,12 +208,14 @@ Comments.graphQLSchema = `
   input CommentInput {
     parentCommentId: String
     topLevelCommentId: String
+    postId: String
     body: String!
   }
 
   input CommentUnsetModifier {
     parentCommentId: Boolean
     topLevelCommentId: Boolean
+    postId: Boolean
     body: Boolean
   }
 `;

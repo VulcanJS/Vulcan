@@ -1,71 +1,21 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
 import Posts from './collection.js'
 import Users from 'meteor/nova:users';
 import Events from "meteor/nova:events";
 
-/**
- *
- * Post Methods (and Mutations)
- *
- */
-
-// define GraphQL mutations
-
-Telescope.graphQL.addMutation('postsNew(post: PostInput) : Post');
-Telescope.graphQL.addMutation('postsEdit(postId: String, set: PostInput, unset: PostUnsetModifier) : Post');
-Telescope.graphQL.addMutation('postsVote(postId: String, voteType: String) : Post');
-
-// resolvers
-
+// Resolvers
 Posts.mutations = {
 
   postsNew(root, {post}, context) {
-
-    console.log("// postsNew")
-    console.log(post)
-
-    context.Posts.simpleSchema().namedContext("posts.new").validate(post);
-
-    // post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
-
-    if (Meteor.isServer && this.connection) {
-      post.userIP = this.connection.clientAddress;
-      post.userAgent = this.connection.httpHeaders["user-agent"];
-    }
-
-    post = Telescope.callbacks.run("posts.new.sync", post, context.currentUser);
-
-    post._id = context.Posts.insert(post);
-
-    // note: query for post to get fresh document with collection-hooks effects applied
-    Telescope.callbacks.runAsync("posts.new.async", context.Posts.findOne(post._id));
-
-    return post;
-
+    return newMutation(context.Posts, post, context.currentUser);
   },
 
   postsEdit(root, {postId, set, unset}, context) {
+    return editMutation(context.Posts, postId, set, unset, context.currentUser);
+  },
 
-      let modifier = {$set: set, $unset: unset};
-
-      context.Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
-      check(postId, String);
-
-      let post = context.Posts.findOne(postId);
-
-      // modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
-
-      if (typeof post === "undefined") {
-        post = context.Posts.findOne(postId);
-      }
-
-      modifier = Telescope.callbacks.run("posts.edit.sync", modifier, post);
-
-      context.Posts.update(postId, modifier);
-
-      Telescope.callbacks.runAsync("posts.edit.async", context.Posts.findOne(postId), post);
-
-      return context.Posts.findOne(postId);
+  postsRemove(root, {postId}, context) {
+    return removeMutation(context.Posts, postId, context.currentUser);
   },
 
   postsVote(root, {postId, voteType}, context) {
@@ -76,5 +26,11 @@ Posts.mutations = {
   },
 
 };
+
+// GraphQL mutations
+Telescope.graphQL.addMutation('postsNew(post: PostInput) : Post');
+Telescope.graphQL.addMutation('postsEdit(postId: String, set: PostInput, unset: PostUnsetModifier) : Post');
+Telescope.graphQL.addMutation('postsRemove(postId: String) : Post');
+Telescope.graphQL.addMutation('postsVote(postId: String, voteType: String) : Post');
 
 export default Posts.mutations;

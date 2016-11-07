@@ -76,7 +76,7 @@ function CommentsNewUserCheck (comment, user) {
     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_comments');
   return comment;
 }
-Telescope.callbacks.add("comments.new.method", CommentsNewUserCheck);
+Telescope.callbacks.add("comments.new.sync", CommentsNewUserCheck);
 
 function CommentsNewRateLimit (comment, user) {
   if (!Users.isAdmin(user)) {
@@ -89,7 +89,7 @@ function CommentsNewRateLimit (comment, user) {
   }
   return comment;
 }
-Telescope.callbacks.add("comments.new.method", CommentsNewRateLimit);
+Telescope.callbacks.add("comments.new.sync", CommentsNewRateLimit);
 
 function CommentsNewSubmittedPropertiesCheck (comment, user) {
   // admin-only properties
@@ -117,7 +117,7 @@ function CommentsNewSubmittedPropertiesCheck (comment, user) {
   }
   return comment;
 }
-Telescope.callbacks.add("comments.new.method", CommentsNewSubmittedPropertiesCheck);
+Telescope.callbacks.add("comments.new.sync", CommentsNewSubmittedPropertiesCheck);
 
 // ------------------------------------- comments.new.sync -------------------------------- //
 

@@ -112,7 +112,7 @@ function PostsNewUserCheck (post, user) {
     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_stories');
   return post;
 }
-Telescope.callbacks.add("posts.new.method", PostsNewUserCheck);
+Telescope.callbacks.add("posts.new.sync", PostsNewUserCheck);
 
 /**
  * @summary Rate limiting
@@ -138,7 +138,7 @@ function PostsNewRateLimit (post, user) {
 
   return post;
 }
-Telescope.callbacks.add("posts.new.method", PostsNewRateLimit);
+Telescope.callbacks.add("posts.new.sync", PostsNewRateLimit);
 
 /**
  * @summary Properties
@@ -175,7 +175,7 @@ function PostsNewSubmittedPropertiesCheck (post, user) {
 
   return post;
 }
-Telescope.callbacks.add("posts.new.method", PostsNewSubmittedPropertiesCheck);
+Telescope.callbacks.add("posts.new.sync", PostsNewSubmittedPropertiesCheck);
 
 // ------------------------------------- posts.new.sync -------------------------------- //
 
