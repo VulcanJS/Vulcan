@@ -80,12 +80,14 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       // Get the user from the database
       user = await Users.findOne(
         {"services.resume.loginTokens.hashedToken": hashedToken},
-        {fields: {
-          _id: 1,
-          'services.resume.loginTokens.$': 1
-        }});
+        // {fields: {
+        //   _id: 1,
+        //   'services.resume.loginTokens.$': 1
+        // }}
+        );
 
       if (user) {
+
         const expiresAt = Accounts._tokenExpiration(user.services.resume.loginTokens[0].when);
         const isExpired = expiresAt < new Date();
 
