@@ -61,10 +61,15 @@ class CommentsItem extends Component{
   renderComment() {
     const htmlBody = {__html: this.props.comment.htmlBody};
 
+    const showReplyButton = !this.props.comment.isDeleted && !!this.context.currentUser;
+
     return (
       <div className="comments-item-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
-        {!this.props.comment.isDeleted ? <a className="comments-item-reply-link" onClick={this.showReply}><Telescope.components.Icon name="reply"/> <FormattedMessage id="comments.reply"/></a> : null} 
+        { showReplyButton ?
+          <a className="comments-item-reply-link" onClick={this.showReply}>
+            <Telescope.components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
+          </a> : null}
       </div>  
     )
   }
