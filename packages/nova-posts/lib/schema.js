@@ -2,6 +2,8 @@ import Telescope from 'meteor/nova:lib';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
 
+import resolvers from './resolvers.js';
+
 /**
  * @summary Posts config namespace
  * @type {Object}
@@ -264,103 +266,110 @@ Posts.schemaJSON = {
     // insertableIf: canEditAll,
     // editableIf: canEditAll,
     control: "select",
-    publish: true,
+    // publish: true,
     viewableIf: alwaysPublic,
-    form: {
-      group: 'admin',
-      options: function () {
-        return Users.find().map(function (user) {
-          return {
-            value: user._id,
-            label: Users.getDisplayName(user)
-          };
-        });
-      }
-    },
-    join: {
-      joinAs: "user",
-      collection: () => Users
-    }
+    // form: {
+    //   group: 'admin',
+    //   options: function () {
+    //     return Users.find().map(function (user) {
+    //       return {
+    //         value: user._id,
+    //         label: Users.getDisplayName(user)
+    //       };
+    //     });
+    //   }
+    // },
+    resolveAs: 'user: User',
+    // join: {
+    //   joinAs: "user",
+    //   collection: () => Users
+    // }
   }
 };
 
-Posts.graphQLSchema = `
-  type Post {
-    _id: String
-    createdAt: String
-    postedAt: String
-    url: String
-    title: String
-    slug: String
-    body: String
-    htmlBody: String
-    excerpt: String
-    sticky: Boolean
-    viewCount: Int
-    lastCommentedAt: String
-    clickCount: Int
-    status: Int
-    isFuture: Boolean
-    user: User
-    commentCount: Int
-    commenters: [User]
-    comments: [Comment]
-    categories: [Category]
-    scheduledAt: String
-    dummySlug: String
-    isDummy: String
-    upvotes: Int
-    upvoters: [User]
-    downvotes: Int
-    downvoters: [User]
-    baseScore: Int
-    score: Float
-    clickCount: Int
-    viewCount: Int
-    thumbnailUrl: String
-    userIP: String
-    userAgent: String
-    referrer: String
-  }
+if (typeof SimpleSchema !== "undefined") {
+  Posts.schema = new SimpleSchema(Posts.schemaJSON);
+  Posts.attachSchema(Posts.schema);
+}
 
-  input postsInput {
-    postedAt: String
-    url: String
-    title: String
-    slug: String
-    body: String
-    sticky: Boolean
-    status: Int
-    categories: [String]
-    scheduledAt: String
-    thumbnailUrl: String
-  }
 
-  input postsUnset {
-    postedAt: Boolean
-    url: Boolean
-    title: Boolean
-    slug: Boolean
-    body: Boolean
-    sticky: Boolean
-    status: Boolean
-    categories: Boolean
-    scheduledAt: Boolean
-    thumbnailUrl: Boolean
-  }
+// Posts.graphQLSchema = `
+//   type Post {
+//     _id: String
+//     createdAt: String
+//     postedAt: String
+//     url: String
+//     title: String
+//     slug: String
+//     body: String
+//     htmlBody: String
+//     excerpt: String
+//     sticky: Boolean
+//     viewCount: Int
+//     lastCommentedAt: String
+//     clickCount: Int
+//     status: Int
+//     isFuture: Boolean
+//     user: User
+//     commentCount: Int
+//     commenters: [User]
+//     # comments: [Comment]
+//     categories: [Category]
+//     scheduledAt: String
+//     dummySlug: String
+//     isDummy: String
+//     upvotes: Int
+//     upvoters: [User]
+//     downvotes: Int
+//     downvoters: [User]
+//     baseScore: Int
+//     score: Float
+//     clickCount: Int
+//     viewCount: Int
+//     thumbnailUrl: String
+//     userIP: String
+//     userAgent: String
+//     referrer: String
+//   }
 
-  input Terms {
-    view: String
-    userId: String
-    cat: String
-    date: String
-    after: String
-    before: String
-    enableCache: Boolean
-    listId: String
-    query: String # search query
-  }
-`;
+//   input postsInput {
+//     postedAt: String
+//     url: String
+//     title: String
+//     slug: String
+//     body: String
+//     sticky: Boolean
+//     status: Int
+//     categories: [String]
+//     scheduledAt: String
+//     thumbnailUrl: String
+//   }
+
+//   input postsUnset {
+//     postedAt: Boolean
+//     url: Boolean
+//     title: Boolean
+//     slug: Boolean
+//     body: Boolean
+//     sticky: Boolean
+//     status: Boolean
+//     categories: Boolean
+//     scheduledAt: Boolean
+//     thumbnailUrl: Boolean
+//   }
+
+//   input Terms {
+//     view: String
+//     userId: String
+//     cat: String
+//     date: String
+//     after: String
+//     before: String
+//     enableCache: Boolean
+//     listId: String
+//     query: String # search query
+//   }
+// `;
 
 Posts.graphQLQueries = {
   list: `
@@ -451,7 +460,23 @@ Posts.graphQLQueries = {
   `
 };
 
-Telescope.graphQL.addSchema(Posts.graphQLSchema);
+Telescope.graphQL.addCollection(Posts, 'Post');
+
+const termsSchema = `
+  input Terms {
+    view: String
+    userId: String
+    cat: String
+    date: String
+    after: String
+    before: String
+    enableCache: Boolean
+    listId: String
+    query: String # search query
+  }
+`;
+
+Telescope.graphQL.addSchema(termsSchema);
 
 Telescope.graphQL.addQuery(`
   posts(terms: Terms, offset: Int, limit: Int): [Post]
@@ -461,7 +486,5 @@ Telescope.graphQL.addQuery(`
 
 Telescope.graphQL.addToContext({ Posts });
 
-if (typeof SimpleSchema !== "undefined") {
-  Posts.schema = new SimpleSchema(Posts.schemaJSON);
-  Posts.attachSchema(Posts.schema);
-}
+Telescope.graphQL.addResolvers(resolvers);
+

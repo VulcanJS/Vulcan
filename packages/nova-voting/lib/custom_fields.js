@@ -1,8 +1,10 @@
+import Telescope from 'meteor/nova:lib';
 import PublicationUtils from 'meteor/utilities:smart-publications';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
 const alwaysPublic = user => true;
+
 
 // ------------------------------------- Posts -------------------------------- //
 
@@ -30,6 +32,7 @@ Posts.addField([
       optional: true,
       publish: true,
       viewableIf: alwaysPublic,
+      resolveAs: 'upvoters: [User]',
     }
   },
   /**
@@ -55,6 +58,7 @@ Posts.addField([
       optional: true,
       publish: true,
       viewableIf: alwaysPublic,
+      resolveAs: 'downvoters: [User]',
     }
   },
   /**
@@ -115,6 +119,7 @@ Comments.addField([
       optional: true,
       publish: true,
       viewableIf: alwaysPublic,
+      resolveAs: 'upvoters: [User]',
     }
   },
   /**
@@ -140,6 +145,7 @@ Comments.addField([
       optional: true,
       publish: true,
       viewableIf: alwaysPublic,
+      resolveAs: 'downvoters: [User]',
     }
   },
   /**

@@ -44,11 +44,12 @@ Posts.addField(
           return categoriesOptions;
         }
       },
-      publish: true,
-      join: {
-        joinAs: "categoriesArray",
-        collection: () => Categories
-      }
+      // publish: true,
+      // join: {
+      //   joinAs: "categoriesArray",
+      //   collection: () => Categories
+      // },
+      resolveAs: 'categories: [Category]'
     }
   }
 );

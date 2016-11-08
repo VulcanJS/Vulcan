@@ -6,9 +6,9 @@ const resolvers = {
     commenters(post, args, context) {
       return post.commenters ? context.Users.find({_id: {$in: post.commenters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
     },
-    comments(post, args, context) {
-      return post.commentCount ? context.Comments.find({postId: post._id}, { fields: context.getViewableFields(context.currentUser, context.Comments) }).fetch() : [];
-    },
+    // comments(post, args, context) {
+    //   return post.commentCount ? context.Comments.find({postId: post._id}, { fields: context.getViewableFields(context.currentUser, context.Comments) }).fetch() : [];
+    // },
   },
   Comment: {
     parentComment(comment, args, context) {

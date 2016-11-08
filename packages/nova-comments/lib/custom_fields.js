@@ -32,6 +32,7 @@ Posts.addField([
         collection: () => Users,
         limit: 4
       },
+      resolveAs: 'commenters: [User]',
       viewableIf: alwaysPublic,
     }
   }

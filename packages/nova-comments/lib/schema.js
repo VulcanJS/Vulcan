@@ -39,6 +39,7 @@ Comments.schema = new SimpleSchema({
     insertableIf: canInsert,
     optional: true,
     publish: true,
+    resolveAs: 'parentComment: Comment',
     control: "none" // never show this
   },
   /**
@@ -52,6 +53,7 @@ Comments.schema = new SimpleSchema({
     insertableIf: canInsert,
     optional: true,
     publish: true,
+    resolveAs: 'topLevelComment: Comment',
     control: "none" // never show this
   },
   /**
@@ -121,6 +123,7 @@ Comments.schema = new SimpleSchema({
     viewableIf: alwaysPublic,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
+    resolveAs: 'post: Post',
     form: {
       omit: true // never show this
     }
@@ -136,7 +139,8 @@ Comments.schema = new SimpleSchema({
     join: {
       joinAs: "user",
       collection: () => Users
-    }
+    },
+    resolveAs: 'user: User',
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site. 
@@ -182,48 +186,49 @@ if (typeof Telescope.notifications !== "undefined") {
   });
 }
 
-Comments.graphQLSchema = `
-  type Comment {
-    _id: String
-    parentComment: Comment
-    topLevelComment: Comment
-    createdAt: String
-    postedAt: String
-    body: String
-    htmlBody: String
-    author: String
-    inactive: Boolean
-    post: Post
-    user: User
-    isDeleted: Boolean
-    isDummy: Boolean
-    upvotes: Int
-    upvoters: [User]
-    downvotes: Int
-    downvoters: [User]
-    baseScore: Int
-    score: Float
-    parentCommentId: String
-    topLevelCommentId: String
-    postId: String
-  }
+// Comments.graphQLSchema = `
+//   type Comment {
+//     _id: String
+//     parentComment: Comment
+//     topLevelComment: Comment
+//     createdAt: String
+//     postedAt: String
+//     body: String
+//     htmlBody: String
+//     author: String
+//     inactive: Boolean
+//     post: Post
+//     user: User
+//     isDeleted: Boolean
+//     isDummy: Boolean
+//     upvotes: Int
+//     upvoters: [User]
+//     downvotes: Int
+//     downvoters: [User]
+//     baseScore: Int
+//     score: Float
+//     parentCommentId: String
+//     topLevelCommentId: String
+//     postId: String
+//   }
 
-  input commentsInput {
-    parentCommentId: String
-    topLevelCommentId: String
-    postId: String
-    body: String!
-  }
+//   input commentsInput {
+//     parentCommentId: String
+//     topLevelCommentId: String
+//     postId: String
+//     body: String!
+//   }
 
-  input commentsUnset {
-    parentCommentId: Boolean
-    topLevelCommentId: Boolean
-    postId: Boolean
-    body: Boolean 
-  }
-`;
+//   input commentsUnset {
+//     parentCommentId: Boolean
+//     topLevelCommentId: Boolean
+//     postId: Boolean
+//     body: Boolean 
+//   }
+// `;
 
-Telescope.graphQL.addSchema(Comments.graphQLSchema);
+Telescope.graphQL.addCollection(Comments, 'Comment');
+// Telescope.graphQL.addSchema(Comments.graphQLSchema);
 
 Telescope.graphQL.addQuery(`
   comments(postId: String): [Comment]

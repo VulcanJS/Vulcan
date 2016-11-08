@@ -57,6 +57,7 @@ Categories.schema = new SimpleSchema({
     insertableIf: canInsert,
     editableIf: canEdit,
     publish: true,
+    resolveAs: 'parent: Category',
     form: {
       options: function () {
         var categories = Categories.find().map(function (category) {
@@ -110,37 +111,37 @@ Categories.attachSchema(Categories.schema);
 // ]);
 
 
-Categories.graphQLSchema = `
-  type Category {
-    _id: String
-    name: String
-    description: String
-    order: Int
-    slug: String
-    image: String
-    parent: Category
-  }
+// Categories.graphQLSchema = `
+//   type Category {
+//     _id: String
+//     name: String
+//     description: String
+//     order: Int
+//     slug: String
+//     image: String
+//     parent: Category
+//   }
 
-  input categoriesInput {
-    name: String!
-    description: String
-    order: Int
-    slug: String
-    image: String
-    parent: String
-  }
+//   input categoriesInput {
+//     name: String!
+//     description: String
+//     order: Int
+//     slug: String
+//     image: String
+//     parent: String
+//   }
 
-  input categoriesUnset {
-    _id: Boolean
-    description: Boolean
-    order: Boolean
-    slug: Boolean
-    image: Boolean
-    parent: Boolean
-  }
-`;
+//   input categoriesUnset {
+//     _id: Boolean
+//     description: Boolean
+//     order: Boolean
+//     slug: Boolean
+//     image: Boolean
+//     parent: Boolean
+//   }
+// `;
 
-Telescope.graphQL.addSchema(Categories.graphQLSchema);
+Telescope.graphQL.addCollection(Categories, 'Category');
 
 Telescope.graphQL.addQuery(`
   categories: [Category]

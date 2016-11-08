@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import mutations from './mutations.js';
 
-const resolvers = {
+export default resolvers = {
   Post: {
     user(post, args, context) {
       return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
@@ -36,5 +36,3 @@ const resolvers = {
   },
   Mutation: mutations
 };
-
-Telescope.graphQL.addResolvers(resolvers);
