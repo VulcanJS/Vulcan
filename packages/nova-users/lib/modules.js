@@ -10,8 +10,9 @@ import './published_fields.js';
 import './notifications.js';
 import './emails.js';
 import './avatar.js';
-import './methods.js';
+import './mutations.js';
 import './permissions.js';
 import './resolvers.js';
+import './queries.js';
 
 export default Users;

@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
+import Users from "meteor/nova:users";
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -34,47 +35,7 @@ UsersSingleContainer.displayName = "UsersSingleContainer";
 const UsersSingleContainerWithData = graphql(gql`
   query getUser($userId: String, $slug: String) {
     user(_id: $userId, slug: $slug) {
-      _id
-      username
-      createdAt
-      isAdmin
-      telescope {
-        bio
-        commentCount
-        displayName
-        downvotedComments {
-          itemId
-          power
-          votedAt
-        }
-        downvotedPosts {
-          itemId
-          power
-          votedAt
-        }
-        email
-        emailHash
-        htmlBio
-        karma
-        postCount
-        slug
-        twitterUsername
-        upvotedComments {
-          itemId
-          power
-          votedAt
-        }
-        upvotedPosts {
-          itemId
-          power
-          votedAt
-        }
-        website
-        groups
-        notifications_users
-        notifications_posts
-        newsletter_subscribeToNewsletter
-      }
+      ${Users.graphQLQueries.single}
     }
   }
   `, {

@@ -1,12 +1,60 @@
 import Telescope from 'meteor/nova:lib';
-import PublicationUtils from 'meteor/utilities:smart-publications';
+import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
 const alwaysPublic = user => true;
 
-
-// ------------------------------------- Posts -------------------------------- //
+Users.addField([
+  /**
+    An array containing comments upvotes
+  */
+  {
+    fieldName: 'telescope.upvotedComments',
+    fieldSchema: {
+      type: [Telescope.schemas.votes],
+      publish: false,
+      optional: true,
+      viewableIf: alwaysPublic,
+    }
+  },
+  /**
+    An array containing posts upvotes
+  */
+  {
+    fieldName: 'telescope.upvotedPosts',
+    fieldSchema: {
+      type: [Telescope.schemas.votes],
+      publish: false,
+      optional: true,
+      viewableIf: alwaysPublic,
+    }
+  },
+  /**
+    An array containing comment downvotes
+  */
+  {
+    fieldName: 'telescope.downvotedComments',
+    fieldSchema: {
+      type: [Telescope.schemas.votes],
+      publish: false,
+      optional: true,
+      viewableIf: alwaysPublic,
+    }
+  },
+  /**
+    An array containing posts downvotes
+  */
+  {  
+    fieldName: 'telescope.downvotedPosts',
+    fieldSchema: {
+      type: [Telescope.schemas.votes],
+      publish: false,
+      optional: true,
+      viewableIf: alwaysPublic,
+    }
+  },
+]);
 
 Posts.addField([
   /**
@@ -91,10 +139,6 @@ Posts.addField([
   },
 ]);
 
-PublicationUtils.addToFields(Posts.publishedFields.list, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
-
-// ------------------------------------- Comments -------------------------------- //
-
 Comments.addField([
   /**
     The number of upvotes the comment has received
@@ -178,4 +222,3 @@ Comments.addField([
   },
 ]);
 
-PublicationUtils.addToFields(Comments.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);

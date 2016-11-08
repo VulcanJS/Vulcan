@@ -1,8 +1,23 @@
-import PublicationUtils from 'meteor/utilities:smart-publications';
 import Posts from "meteor/nova:posts";
 import Users from "meteor/nova:users";
 
 const alwaysPublic = user => true;
+
+Users.addField([
+  /**
+    Count of the user's comments
+  */
+  {
+    fieldName: "telescope.commentCount",
+    fieldSchema: {
+      type: Number,
+      optional: true,
+      publish: true,
+      defaultValue: 0,
+      viewableIf: alwaysPublic,
+    }
+  }
+]);
 
 Posts.addField([
   /**
@@ -37,5 +52,3 @@ Posts.addField([
     }
   }
 ]);
-
-PublicationUtils.addToFields(Posts.publishedFields.list, ["commentCount", "commenters"]);

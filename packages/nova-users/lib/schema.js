@@ -54,15 +54,15 @@ Telescope.schemas.userData = new SimpleSchema({
     //   rows: 5
     // }
   },
-  /**
-    Total comment count
-  */
-  commentCount: {
-    type: Number,
-    publish: true,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
+  // /**
+  //   Total comment count
+  // */
+  // commentCount: {
+  //   type: Number,
+  //   publish: true,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
   */
@@ -76,24 +76,24 @@ Telescope.schemas.userData = new SimpleSchema({
     editableIf: canEdit,
     viewableIf: alwaysPublic,
   },
-  /**
-    An array containing comment downvotes
-  */
-  downvotedComments: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
-  /**
-    An array containing posts downvotes
-  */
-  downvotedPosts: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
+  // /**
+  //   An array containing comment downvotes
+  // */
+  // downvotedComments: {
+  //   type: [Telescope.schemas.votes],
+  //   publish: false,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
+  // /**
+  //   An array containing posts downvotes
+  // */
+  // downvotedPosts: {
+  //   type: [Telescope.schemas.votes],
+  //   publish: false,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
   /**
     The user's email. Modifiable.
   */
@@ -141,15 +141,15 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true,
     viewableIf: alwaysPublic,
   },
-  /**
-    Total post count
-  */
-  postCount: {
-    type: Number,
-    publish: true,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
+  // /**
+  //   Total post count
+  // */
+  // postCount: {
+  //   type: Number,
+  //   publish: true,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
   /**
     A blackbox modifiable object to store the user's settings
   */
@@ -185,24 +185,24 @@ Telescope.schemas.userData = new SimpleSchema({
     template: "user_profile_twitter",
     viewableIf: alwaysPublic,
   },
-  /**
-    An array containing comments upvotes
-  */
-  upvotedComments: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
-  /**
-    An array containing posts upvotes
-  */
-  upvotedPosts: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
+  // /**
+  //   An array containing comments upvotes
+  // */
+  // upvotedComments: {
+  //   type: [Telescope.schemas.votes],
+  //   publish: false,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
+  // /**
+  //   An array containing posts upvotes
+  // */
+  // upvotedPosts: {
+  //   type: [Telescope.schemas.votes],
+  //   publish: false,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
   /**
     A link to the user's homepage
   */
@@ -352,11 +352,5 @@ Users.graphQLSchema = `
 `;
 
 Telescope.graphQL.addSchema(Users.graphQLSchema);
-
-Telescope.graphQL.addQuery(`
-  users: [User]
-  user(_id: String, slug: String): User
-  currentUser: User
-`);
 
 Telescope.graphQL.addToContext({ Users });
