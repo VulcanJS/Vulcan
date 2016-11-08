@@ -16,19 +16,17 @@ const CategoriesNewForm = (props, context) => {
         resultQuery={Categories.graphQLQueries.single}
         updateQueries={{
           getAppData: (prev, {mutationResult}) => {
-            console.log(prev);
             const newCategory = mutationResult.data.categoriesNew;
-            console.log(newCategory);
             const newCategoriesList = update(prev, {
               categories: {
                 $push: [newCategory]
               }
             });
-            console.log(newCategoriesList);
             return newCategoriesList;
           },
         }}
         successCallback={(category)=>{
+          context.closeCallback();
           props.flash("Category created.", "success");
         }}
       />
@@ -39,6 +37,7 @@ const CategoriesNewForm = (props, context) => {
 CategoriesNewForm.displayName = "CategoriesNewForm";
 
 CategoriesNewForm.contextTypes = {
+  closeCallback: React.PropTypes.func,
   currentUser: React.PropTypes.object,
 };
 
