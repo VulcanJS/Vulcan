@@ -36,3 +36,5 @@ export default resolvers = {
   },
   Mutation: mutations
 };
+
+Telescope.graphQL.addResolvers(resolvers);

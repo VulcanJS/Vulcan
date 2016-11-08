@@ -11,5 +11,6 @@ import './permissions.js';
 import './published_fields.js';
 import './resolvers.js';
 import './mutations.js';
+import './queries.js';
 
 export default Categories;

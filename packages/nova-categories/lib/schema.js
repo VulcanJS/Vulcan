@@ -143,28 +143,4 @@ Categories.attachSchema(Categories.schema);
 
 Telescope.graphQL.addCollection(Categories, 'Category');
 
-Telescope.graphQL.addQuery(`
-  categories: [Category]
-  category(_id: String): Category
-`);
-
-Categories.graphQLQueries = {
-  single: `
-    _id
-    name
-    description
-    order
-    slug
-    image
-    parent {
-      _id
-      name
-      description
-      order
-      slug
-      image
-    }
-  `
-}
-
 Telescope.graphQL.addToContext({ Categories });

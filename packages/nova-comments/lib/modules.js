@@ -13,5 +13,6 @@ import './published_fields.js';
 import './permissions.js';
 import './resolvers.js';
 import './mutations.js';
+import './queries.js';
 
 export default Comments;

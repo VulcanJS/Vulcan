@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 
-const resolvers = {
+export default resolvers = {
   Post: {
     categories(post, args, context) {
       return post.categories ? context.Categories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) }).fetch() : [];

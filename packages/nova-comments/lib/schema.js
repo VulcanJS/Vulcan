@@ -227,31 +227,7 @@ if (typeof Telescope.notifications !== "undefined") {
 //   }
 // `;
 
+// add Comments collection to list to auto-generate its GraphQL schema
 Telescope.graphQL.addCollection(Comments, 'Comment');
-// Telescope.graphQL.addSchema(Comments.graphQLSchema);
-
-Telescope.graphQL.addQuery(`
-  comments(postId: String): [Comment]
-  comment(_id: String): Comment
-`);
-
-Comments.graphQLQueries = {
-  single: `
-    _id
-    postId
-    parentCommentId
-    topLevelCommentId
-    body
-    htmlBody
-    postedAt
-    user {
-      _id
-      telescope {
-        slug
-        emailHash # used for the avatar
-      }
-    }
-  `
-}
 
 Telescope.graphQL.addToContext({ Comments });
