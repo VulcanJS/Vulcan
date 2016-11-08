@@ -8,9 +8,7 @@ Users.addField({
   fieldSchema: {
     type: Boolean,
     optional: true,
-    form: {
-      omit: true
-    }
+    control: "none" // never show this
   }
 });
 
@@ -19,9 +17,7 @@ Posts.addField({
   fieldSchema: {
     type: String,
     optional: true,
-    form: {
-      omit: true
-    }
+    control: "none" // never show this
   }
 });
 
@@ -30,21 +26,17 @@ Posts.addField({
   fieldSchema: {
     type: Boolean,
     optional: true,
-    form: {
-      omit: true
-    }
+    control: "none" // never show this
   }
 });
 
 Comments.addField({
-fieldName: 'isDummy',
-fieldSchema: {
-  type: Boolean,
-  optional: true,
-  form: {
-    omit: true
+  fieldName: 'isDummy',
+  fieldSchema: {
+    type: Boolean,
+    optional: true,
+    control: "none" // never show this
   }
-}
 });
 
 /**

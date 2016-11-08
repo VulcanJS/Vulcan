@@ -77,8 +77,8 @@ class FormWrapper extends Component{
         order: fieldSchema.order
       }
 
-      // add label
-      const intlFieldName = this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName});
+      // add label if necessary
+      const intlFieldName = field.control !== "none" ? this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName}) : "";
       field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
 
       // add value

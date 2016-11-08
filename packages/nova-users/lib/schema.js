@@ -126,10 +126,6 @@ Telescope.schemas.userData = new SimpleSchema({
     profile: true,
     optional: true,
     viewableIf: alwaysPublic,
-    // form: {
-    //   omit: true
-    // },
-    template: "user_profile_bio"
   },
   /**
     The user's karma
@@ -282,9 +278,6 @@ Users.schema = new SimpleSchema({
     editableIf: canEditAll,
     viewableIf: alwaysPublic,
     group: adminGroup
-    // form: {
-    //   omit: true
-    // }
   },
   profile: {
     type: Object,
@@ -343,7 +336,7 @@ Users.graphQLSchema = `
     newsletter_subscribeToNewsletter: Boolean
     isDummy: Boolean
   }
-  
+
   # input usersInput {
   #   isAdmin: Boolean
   #   bio: String

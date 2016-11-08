@@ -121,12 +121,11 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: true,
     viewableIf: alwaysPublic,
+    insertableIf: canInsert,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     resolveAs: 'post: Post',
-    form: {
-      omit: true // never show this
-    }
+    control: "none" // never show this
   },
   /**
     The comment author's `_id`
@@ -179,9 +178,7 @@ if (typeof Telescope.notifications !== "undefined") {
     fieldSchema: {
       type: Boolean,
       optional: true,
-      form: {
-        omit: true
-      }
+      control: "none" // never show this
     }
   });
 }
