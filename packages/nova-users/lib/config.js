@@ -91,5 +91,5 @@
 
 // Avatar.setOptions({
 //   fallbackType: 'initials',
-//   emailHashProperty: 'telescope.emailHash'
+//   emailHashProperty: 'nova_emailHash'
 // });

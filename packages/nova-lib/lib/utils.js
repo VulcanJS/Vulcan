@@ -299,7 +299,7 @@ Telescope.utils.unflatten = function( array, idProperty, parentIdProperty, paren
 
 Telescope.utils.getFieldLabel = (fieldName, collection) => {
   const label = collection.simpleSchema()._schema[fieldName].label;
-  const nameWithSpaces = Telescope.utils.camelToSpaces(fieldName.replace("telescope.", ""));
+  const nameWithSpaces = Telescope.utils.camelToSpaces(fieldName.replace("nova_", ""));
   return label || nameWithSpaces;
 }
 

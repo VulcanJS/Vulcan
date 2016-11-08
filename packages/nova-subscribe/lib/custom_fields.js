@@ -3,7 +3,7 @@ import Users from "meteor/nova:users";
 
 Users.addField([
   {
-    fieldName: 'telescope.subscribedItems',
+    fieldName: 'nova_subscribedItems',
     fieldSchema: {
       type: Object,
       optional: true,
@@ -12,7 +12,7 @@ Users.addField([
     }
   },
   {
-    fieldName: 'telescope.subscribers',
+    fieldName: 'nova_subscribers',
     fieldSchema: {
       type: [String],
       optional: true,
@@ -25,7 +25,7 @@ Users.addField([
     }
   },
   {
-    fieldName: 'telescope.subscriberCount',
+    fieldName: 'nova_subscriberCount',
     fieldSchema: {
       type: Number,
       optional: true,
@@ -33,7 +33,7 @@ Users.addField([
     }
   }
 ]);
-PublicationUtils.addToFields(Users.publishedFields.list, ["telescope.subscribedItems", "telescope.subscribers", "telescope.subscriberCount"]);
+PublicationUtils.addToFields(Users.publishedFields.list, ["nova_subscribedItems", "nova_subscribers", "nova_subscriberCount"]);
 
 // check if nova:posts exists, if yes, add the custom fields to Posts
 if (typeof Package['nova:posts'] !== "undefined") {

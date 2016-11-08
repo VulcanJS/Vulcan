@@ -13,7 +13,7 @@ const canEdit = Users.canEdit;
 // Add notifications options to user profile settings
 Users.addField([
   {
-    fieldName: 'telescope.notifications_users',
+    fieldName: 'nova_notifications_users',
     fieldSchema: {
       label: 'New users',
       type: Boolean,
@@ -26,7 +26,7 @@ Users.addField([
     }
   },
   {
-    fieldName: 'telescope.notifications_posts',
+    fieldName: 'nova_notifications_posts',
     fieldSchema: {
       label: 'New posts',
       type: Boolean,
@@ -43,7 +43,7 @@ Users.addField([
 if (typeof Comments !== "undefined") {
   Users.addField([
     {
-      fieldName: 'telescope.notifications_comments',
+      fieldName: 'nova_notifications_comments',
       fieldSchema: {
         label: 'Comments on my posts',
         type: Boolean,
@@ -55,7 +55,7 @@ if (typeof Comments !== "undefined") {
       }
     },
     {
-      fieldName: 'telescope.notifications_replies',
+      fieldName: 'nova_notifications_replies',
       fieldSchema: {
         label: 'Replies to my comments',
         type: Boolean,

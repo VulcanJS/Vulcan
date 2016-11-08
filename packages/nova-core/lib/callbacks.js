@@ -34,16 +34,16 @@ function updateUser (item, user, collection, operation) {
 
   switch (operation) {
     case "upvote":
-      update.$addToSet = {'telescope.upvotedPosts': vote};
+      update.$addToSet = {'nova_upvotedPosts': vote};
       break;
     case "downvote":
-      update.$addToSet = {'telescope.downvotedPosts': vote};
+      update.$addToSet = {'nova_downvotedPosts': vote};
       break;
     case "cancelUpvote": 
-      update.$pull = {'telescope.upvotedPosts': {itemId: item._id}};
+      update.$pull = {'nova_upvotedPosts': {itemId: item._id}};
       break;
     case "cancelDownvote": 
-      update.$pull = {'telescope.downvotedPosts': {itemId: item._id}};
+      update.$pull = {'nova_downvotedPosts': {itemId: item._id}};
       break;
   }
 
@@ -69,7 +69,7 @@ function updateKarma (item, user, collection, operation) {
   
   // only update karma is the operation isn't done by the item's author
   if (item.userId !== user._id) {
-    Users.update({_id: item.userId}, {$inc: {"telescope.karma": karmaAmount}});
+    Users.update({_id: item.userId}, {$inc: {"nova_karma": karmaAmount}});
   }
 
 }

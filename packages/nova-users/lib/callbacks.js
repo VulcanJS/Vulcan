@@ -28,8 +28,8 @@ Users.after.insert(function (userId, user) {
  */
 Users.before.update(function (userId, doc, fieldNames, modifier) {
   // if bio is being modified, update htmlBio too
-  if (Meteor.isServer && modifier.$set && modifier.$set["telescope.bio"]) {
-    modifier.$set["telescope.htmlBio"] = Telescope.utils.sanitize(marked(modifier.$set["telescope.bio"]));
+  if (Meteor.isServer && modifier.$set && modifier.$set["nova_bio"]) {
+    modifier.$set["nova_htmlBio"] = Telescope.utils.sanitize(marked(modifier.$set["nova_bio"]));
   }
 });
 
@@ -43,7 +43,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
 });
 
 /**
- * @summary If user.telescope.email has changed, check for existing emails and change user.emails and email hash if needed
+ * @summary If user.nova_email has changed, check for existing emails and change user.emails and email hash if needed
  */
  if (Meteor.isServer) {
   Users.before.update(function (userId, doc, fieldNames, modifier) {
@@ -51,9 +51,9 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
     var user = doc;
 
     // if email is being modified, update user.emails too
-    if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
+    if (Meteor.isServer && modifier.$set && modifier.$set["nova_email"]) {
 
-      var newEmail = modifier.$set["telescope.email"];
+      var newEmail = modifier.$set["nova_email"];
 
       // check for existing emails and throw error if necessary
       var userWithSameEmail = Users.findByEmail(newEmail);
@@ -68,7 +68,7 @@ Users.before.update(function (userId, doc, fieldNames, modifier) {
       }
 
       // update email hash
-      modifier.$set["telescope.emailHash"] = Gravatar.hash(newEmail);
+      modifier.$set["nova_emailHash"] = Gravatar.hash(newEmail);
 
     }
   });
@@ -87,59 +87,57 @@ function setupUser (user, options) {
   // ------------------------------ Properties ------------------------------ //
   var userProperties = {
     profile: options.profile || {},
-    telescope: {
-      karma: 0,
-      isInvited: false,
-      postCount: 0,
-      commentCount: 0,
-      invitedCount: 0,
-      upvotedPosts: [],
-      downvotedPosts: [],
-      upvotedComments: [],
-      downvotedComments: []
-    }
+    nova_karma: 0,
+    nova_isInvited: false,
+    nova_postCount: 0,
+    nova_commentCount: 0,
+    nova_invitedCount: 0,
+    nova_upvotedPosts: [],
+    nova_downvotedPosts: [],
+    nova_upvotedComments: [],
+    nova_downvotedComments: []
   };
   user = _.extend(user, userProperties);
 
   // look in a few places for the user email
   if (options.email) {
-    user.telescope.email = options.email;
+    user.nova_email = options.email;
   } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
-    user.telescope.email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
+    user.nova_email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
   } else if (user.services.facebook && user.services.facebook.email) {
-    user.telescope.email = user.services.facebook.email;
+    user.nova_email = user.services.facebook.email;
   } else if (user.services.github && user.services.github.email) {
-    user.telescope.email = user.services.github.email;
+    user.nova_email = user.services.github.email;
   } else if (user.services.google && user.services.google.email) {
-    user.telescope.email = user.services.google.email;
+    user.nova_email = user.services.google.email;
   } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
-    user.telescope.email = user.services.linkedin.emailAddress;
+    user.nova_email = user.services.linkedin.emailAddress;
   }
 
   // generate email hash
-  if (!!user.telescope.email) {
-    user.telescope.emailHash = Gravatar.hash(user.telescope.email);
+  if (!!user.nova_email) {
+    user.nova_emailHash = Gravatar.hash(user.nova_email);
   }
 
   // look in a few places for the displayName
   if (user.profile.username) {
-    user.telescope.displayName = user.profile.username;
+    user.nova_displayName = user.profile.username;
   } else if (user.profile.name) {
-    user.telescope.displayName = user.profile.name;
+    user.nova_displayName = user.profile.name;
   } else if (user.services.linkedin && user.services.linkedin.firstName) {
-    user.telescope.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
+    user.nova_displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
   } else {
-    user.telescope.displayName = user.username;
+    user.nova_displayName = user.username;
   } 
 
   // create a basic slug from display name and then modify it if this slugs already exists;
-  const basicSlug = Telescope.utils.slugify(user.telescope.displayName);
-  user.telescope.slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
+  const basicSlug = Telescope.utils.slugify(user.nova_displayName);
+  user.nova_slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
-  Events.track('new user', {username: user.telescope.displayName, email: user.telescope.email});
+  Events.track('new user', {username: user.nova_displayName, email: user.nova_email});
 
   return user;
 }

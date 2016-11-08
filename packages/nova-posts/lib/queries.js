@@ -25,11 +25,9 @@ Posts.graphQLQueries = {
     commentCount
     commenters {
       _id
-      telescope {
-        displayName
-        emailHash
-        slug
-      }
+      nova_displayName
+      nova_emailHash
+      nova_slug
     }
     upvoters {
       _id
@@ -43,11 +41,9 @@ Posts.graphQLQueries = {
     clickCount # should be asked only for admins?
     user {
       _id
-      telescope {
-        displayName
-        slug
-        emailHash
-      }
+      nova_displayName
+      nova_emailHash
+      nova_slug
     }
   `,
   single: `
@@ -70,10 +66,9 @@ Posts.graphQLQueries = {
     commentCount
     commenters {
       _id
-      telescope {
-        slug
-        emailHash
-      }
+      nova_displayName
+      nova_emailHash
+      nova_slug
     }
     upvoters {
       _id
@@ -87,11 +82,9 @@ Posts.graphQLQueries = {
     clickCount # should be asked only for admins?
     user {
       _id
-      telescope {
-        displayName
-        slug
-        emailHash
-      }
+      nova_displayName
+      nova_emailHash
+      nova_slug
     }
   `
 };

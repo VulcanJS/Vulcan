@@ -21,7 +21,7 @@ Posts.addField({
 
 Users.addField([
   {
-    fieldName: 'telescope.newsletter_subscribeToNewsletter',
+    fieldName: 'nova_newsletter_subscribeToNewsletter',
     fieldSchema: {
       label: 'Subscribe to newsletter',
       type: Boolean,

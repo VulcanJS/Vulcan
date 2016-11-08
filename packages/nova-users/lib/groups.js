@@ -55,8 +55,8 @@ Users.getGroups = user => {
   
     userGroups = ["default"];
 
-    if (user.telescope && user.telescope.groups) { // custom groups
-      userGroups = userGroups.concat(user.telescope.groups);
+    if (user.nova_groups) { // custom groups
+      userGroups = userGroups.concat(user.nova_groups);
     } 
     
     if (Users.isAdmin(user)) { // admin

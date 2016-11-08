@@ -43,8 +43,8 @@ Users.methods.edit = (userId, modifier, user) => {
 }
 
 Users.methods.setSetting = (userId, settingName, value) => {
-  // all settings should be in the user.telescope namespace, so add "telescope." if needed
-  var field = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
+  // all settings should be in the user.nova_ namespace, so add "nova_" if needed
+  var field = settingName.slice(0,10) === "nova_" ? settingName : "nova_" + settingName;
 
   var modifier = {$set: {}};
   modifier.$set[field] = value;
@@ -53,11 +53,11 @@ Users.methods.setSetting = (userId, settingName, value) => {
 }
 
 Users.methods.addGroup = (userId, groupName) => {
-  Users.update(userId, {$push: {"telescope.groups": groupName}});
+  Users.update(userId, {$push: {"nova_groups": groupName}});
 };
 
 Users.methods.removeGroup = (userId, groupName) => {
-  Users.update(userId, {$pull: {"telescope.groups": groupName}});
+  Users.update(userId, {$pull: {"nova_groups": groupName}});
 };
 
 Meteor.methods({

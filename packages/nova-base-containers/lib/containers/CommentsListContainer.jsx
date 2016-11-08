@@ -40,10 +40,8 @@ const CommentsListContainerWithData = graphql(gql`
       postedAt
       user {
         _id
-        telescope {
-          slug
-          emailHash # used for the avatar
-        }
+        nova_slug
+        nova_emailHash # used for the avatar
       }
     }
   }

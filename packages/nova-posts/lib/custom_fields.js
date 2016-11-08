@@ -8,7 +8,7 @@ Users.addField([
     Count of the user's posts
   */
   {
-    fieldName: "telescope.postCount",
+    fieldName: "nova_postCount",
     fieldSchema: {
       type: Number,
       optional: true,

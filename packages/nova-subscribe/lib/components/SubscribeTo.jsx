@@ -32,7 +32,7 @@ class SubscribeTo extends Component {
         this.props.flash(this.context.intl.formatMessage(
           {id: `${documentType}.${action}d`}, 
           // handle usual name properties
-          {name: document.name || document.title || document.telescope.displayName}
+          {name: document.name || document.title || document.nova_displayName}
         ), "success");
         this.context.events.track(action, {'_id': this.props.document._id});
       }
@@ -40,8 +40,7 @@ class SubscribeTo extends Component {
   }
 
   isSubscribed() {
-    // if the document is a user, the subscribers object is located on `user.telescope`
-    const documentCheck = this.props.documentType === 'users' ? this.props.document.telescope : this.props.document;
+    const documentCheck = this.props.document;
 
     return documentCheck && documentCheck.subscribers && documentCheck.subscribers.indexOf(this.context.currentUser._id) !== -1;
   }
