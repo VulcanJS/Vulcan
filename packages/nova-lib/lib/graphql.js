@@ -24,12 +24,12 @@ Telescope.graphQL = {
 
   // collections used to auto-generate schemas
   collections: [],
-  addCollection(collection, typeName) {
-    this.collections.push({ collection, typeName });
+  addCollection(collection) {
+    this.collections.push(collection);
   },
   getCollectionSchemas() {
     const collectionSchemas = this.collections.map(collection => {
-      return this.generateSchema(collection.collection, collection.typeName);
+      return this.generateSchema(collection);
     }).join('\n');
     console.log(collectionSchemas)
     return collectionSchemas;
@@ -70,11 +70,11 @@ Telescope.graphQL = {
     this.context = deepmerge(this.context, object);
   },
   
-  generateSchema(collection, typeName) {
+  generateSchema(collection) {
 
     const schema = collection.simpleSchema()._schema;
     const collectionName = collection._name;
-    const mainTypeName = typeName ? typeName : Telescope.utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
+    const mainTypeName = collection.typeName ? collection.typeName : Telescope.utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
     let mainSchema = [], inputSchema = [], unsetSchema = [];
 

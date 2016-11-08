@@ -228,6 +228,6 @@ if (typeof Telescope.notifications !== "undefined") {
 // `;
 
 // add Comments collection to list to auto-generate its GraphQL schema
-Telescope.graphQL.addCollection(Comments, 'Comment');
+Telescope.graphQL.addCollection(Comments);
 
 Telescope.graphQL.addToContext({ Comments });

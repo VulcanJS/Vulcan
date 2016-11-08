@@ -8,4 +8,6 @@ const Users = Meteor.users;
 
 Telescope.subscriptions.preload("users.current");
 
+Users.typeName = 'User';
+
 export default Users;

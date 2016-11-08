@@ -370,7 +370,7 @@ if (typeof SimpleSchema !== "undefined") {
 // `;
 
 
-Telescope.graphQL.addCollection(Posts, 'Post');
+Telescope.graphQL.addCollection(Posts);
 
 const termsSchema = `
   input Terms {

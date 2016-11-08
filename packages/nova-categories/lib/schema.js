@@ -141,6 +141,6 @@ Categories.attachSchema(Categories.schema);
 //   }
 // `;
 
-Telescope.graphQL.addCollection(Categories, 'Category');
+Telescope.graphQL.addCollection(Categories);
 
 Telescope.graphQL.addToContext({ Categories });
