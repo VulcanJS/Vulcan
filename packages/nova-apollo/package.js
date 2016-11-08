@@ -1,5 +1,5 @@
 Package.describe({
-  name: "nova:base-apollo",
+  name: "nova:apollo",
   summary: "Nova Apollo Server package",
   version: "0.27.3-nova",
   git: "https://github.com/TelescopeJS/telescope.git"

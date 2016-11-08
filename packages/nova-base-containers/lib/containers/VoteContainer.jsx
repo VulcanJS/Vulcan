@@ -6,8 +6,14 @@ import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-// graphql
-const VoteWithMutation = graphql(gql`
+class VoteContainer extends Component {
+  render() {
+    const Component = this.props.component;
+    return <Component {...this.props} />
+  }
+}
+
+const VoteContainerWithMutation = graphql(gql`
   mutation postsVote($documentId: String, $voteType: String) {
     postsVote(documentId: $documentId, voteType: $voteType) {
       _id
@@ -37,11 +43,11 @@ const VoteWithMutation = graphql(gql`
       })
     }
   }),
-})(Telescope.components.Vote);
+})(VoteContainer);
 
 // redux state + actions for messages
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(VoteWithMutation);
-export default connect(mapStateToProps, mapDispatchToProps)(VoteWithMutation);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(VoteContainerWithMutation);
+export default connect(mapStateToProps, mapDispatchToProps)(VoteContainerWithMutation);

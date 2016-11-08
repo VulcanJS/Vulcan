@@ -1,1 +1,0 @@
-Nova Apollo Server package. 

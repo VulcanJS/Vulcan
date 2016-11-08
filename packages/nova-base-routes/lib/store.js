@@ -3,7 +3,7 @@ import ApolloClient from 'apollo-client';
 import { routerMiddleware } from 'react-router-redux'
 
 import Telescope from 'meteor/nova:lib';
-import { client } from 'meteor/nova:base-apollo';
+import { client } from 'meteor/nova:apollo';
 
 const rootReducer = combineReducers({...Telescope.reducers, apollo: client.reducer()}); 
 

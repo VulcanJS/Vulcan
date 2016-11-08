@@ -37,19 +37,16 @@ class PostsItem extends Component {
   
   render() {
 
-    const {post, refetchQuery} = this.props;
+    const {post} = this.props;
 
     let postClass = "posts-item"; 
     if (post.sticky) postClass += " posts-sticky";
-
-    // console.log(post)
-    // console.log(post.user)
 
     return (
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Telescope.components.VoteContainer post={post} refetchQuery={refetchQuery} />
+          <Telescope.components.VoteContainer component={Telescope.components.Vote} post={post}/>
         </div>
         
         {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}
@@ -78,7 +75,6 @@ class PostsItem extends Component {
         </div>
 
         {this.renderCommenters()}
-        
       
       </div>
     )

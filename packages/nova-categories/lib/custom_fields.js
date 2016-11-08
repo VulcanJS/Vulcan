@@ -4,7 +4,6 @@ import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import Categories from "./collection.js";
 
-// import { client } from 'meteor/nova:base-apollo';
 import gql from 'graphql-tag';
 
 // check if user can create a new post

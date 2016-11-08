@@ -8,12 +8,11 @@ import gql from 'graphql-tag';
 
 const UsersSingleContainer = (props, context) => {
 
-  const {loading, user, refetch} = props.data;
+  const {loading, user} = props.data;
   const Component = props.component
 
   return loading ? <Telescope.components.Loading/> : <Component 
     document={user}
-    refetchQuery={refetch}
     {...props.componentProps}
   />;
 };

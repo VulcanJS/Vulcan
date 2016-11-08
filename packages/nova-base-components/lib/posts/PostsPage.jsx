@@ -4,7 +4,6 @@ import Posts from "meteor/nova:posts";
 
 const PostsPage = (props) => {
   
-  const {refetchQuery} = props;
   const post = props.document;
   const htmlBody = {__html: post.htmlBody};
 
@@ -13,7 +12,7 @@ const PostsPage = (props) => {
 
       <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
       
-      <Telescope.components.PostsItem post={post} refetchQuery={refetchQuery} />
+      <Telescope.components.PostsItem post={post} />
 
       {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 

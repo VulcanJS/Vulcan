@@ -16,15 +16,7 @@ Package.onUse(function (api) {
     'nova:comments@0.27.3-nova'
   ], ['client', 'server']);
 
-  api.addFiles([
-    'lib/scoring.js',
-    'lib/vote.js',
-    'lib/custom_fields.js'
-  ], ['client','server']);
-
-  api.addFiles([
-    'lib/server/cron.js',
-  ], ['server']);
-
-
+  api.mainModule("lib/server.js", "server");
+  api.mainModule("lib/client.js", "client");
+  
 });

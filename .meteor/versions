@@ -65,8 +65,9 @@ modules-runtime@0.7.7
 mongo@1.1.14
 mongo-id@1.0.6
 nova:api@0.27.3-nova
-nova:base-apollo@0.27.3-nova
+nova:apollo@0.27.3-nova
 nova:base-components@0.27.3-nova
+nova:base-containers@0.27.3-nova
 nova:base-routes@0.27.3-nova
 nova:base-styles@0.27.3-nova
 nova:categories@0.27.3-nova

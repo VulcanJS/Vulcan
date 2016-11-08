@@ -22,9 +22,13 @@ nova:rss
 # nova:subscribe
 # nova:cloudinary
 
+############ Data Layer Package ##############
+
+nova:apollo # do not remove!
+
 ############ Customizable Packages ############
 
-nova:base-apollo        # default graphql server
+nova:base-containers    # default data containers
 nova:base-components    # default ui components
 nova:base-styles        # default styling
 nova:base-routes        # default routes

@@ -12,7 +12,6 @@ const AppContainer = (props, context) => {
   
   return <Telescope.components.App
     ready={!loading}
-    refetchQuery={refetch}
     currentUser={currentUser}
     categories={categories}
     events={Events}

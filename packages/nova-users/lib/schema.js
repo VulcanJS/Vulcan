@@ -343,12 +343,43 @@ Users.graphQLSchema = `
     newsletter_subscribeToNewsletter: Boolean
     isDummy: Boolean
   }
+  
+  # input usersInput {
+  #   isAdmin: Boolean
+  #   bio: String
+  #   commentCount: Float
+  #   displayName: String!
+  #   downvotedComments: [Vote]
+  #   downvotedPosts: [Vote]
+  #   email: String
+  #   emailHash: String
+  #   htmlBio: String
+  #   karma: Float
+  #   postCount: Int
+  #   slug: String
+  #   twitterUsername: String
+  #   upvotedComments: [Vote]
+  #   upvotedPosts: [Vote]
+  #   website: String
+  #   groups: [String]
+  #   notifications_users: Boolean
+  #   notifications_posts: Boolean
+  #   newsletter_subscribeToNewsletter: Boolean
+  #   #isDummy: Boolean
+  # }
 
-  type Vote {
-    itemId: String
-    power: Float
-    votedAt: String
-  }
+  # input usersUnset {
+  #   isAdmin: Boolean
+  #   bio: Boolean
+  #   displayName: Boolean
+  #   email: Boolean
+  #   htmlBio: Boolean
+  #   twitterUsername: Boolean
+  #   website: Boolean
+  #   notifications_users: Boolean
+  #   notifications_posts: Boolean
+  #   newsletter_subscribeToNewsletter: Boolean
+  # }
 `;
 
 Telescope.graphQL.addSchema(Users.graphQLSchema);

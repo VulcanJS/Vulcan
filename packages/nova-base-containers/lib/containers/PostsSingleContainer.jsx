@@ -6,23 +6,12 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 class PostsSingleContainer extends Component {
-
-  getChildContext() {
-    return {
-      refetchPostsSingleQuery: this.props.data.refetch
-    };
-  }
-
   render() {
-
-    // console.log(this.props)
-    
     const {loading, post, refetch} = this.props.data;
     const Component = this.props.component
 
     return loading ? <Telescope.components.Loading/> : <Component 
       document={post}
-      refetchQuery={refetch}
       {...this.props.componentProps}
     />;
   }
@@ -34,10 +23,6 @@ PostsSingleContainer.propTypes = {
     post: React.PropTypes.object,
   }).isRequired,
   params: React.PropTypes.object
-};
-
-PostsSingleContainer.childContextTypes = {
-  refetchPostsSingleQuery: React.PropTypes.func
 };
 
 PostsSingleContainer.contextTypes = {

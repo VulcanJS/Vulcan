@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 
-//import { client } from 'meteor/nova:base-apollo';
+//import { client } from 'meteor/nova:apollo';
 
 const UsersAccountForm = () => {
   return (
