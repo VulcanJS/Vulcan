@@ -43,7 +43,8 @@ Posts.schemaJSON = {
   _id: {
     type: String,
     optional: true,
-    publish: true
+    publish: true,
+    viewableIf: alwaysPublic,
   },
   /**
     Timetstamp of post creation

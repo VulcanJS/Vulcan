@@ -31,7 +31,6 @@ Telescope.graphQL = {
     const collectionSchemas = this.collections.map(collection => {
       return this.generateSchema(collection);
     }).join('\n');
-    console.log(collectionSchemas)
     return collectionSchemas;
   },
 
@@ -42,7 +41,6 @@ Telescope.graphQL = {
   },
   getAdditionalSchemas() {
     const additionalSchemas = this.schemas.join('\n');
-    console.log(additionalSchemas);
     return additionalSchemas;
   },
 
@@ -85,9 +83,13 @@ Telescope.graphQL = {
       if (key.indexOf('$') === -1 && fieldType !== "???") { // skip fields with "$" and unknown fields
         
         // 1. main schema
-        // if field has a resolver, use it, else use a name: type pattern
-        mainSchema.push(!!field.resolveAs ? field.resolveAs : `${key}: ${fieldType}`);
-      
+        mainSchema.push(`${key}: ${fieldType}`);
+
+        // if field has a resolver, also push it to schema
+        if (field.resolveAs) {
+          mainSchema.push(field.resolveAs);
+        }
+
         if (field.insertableIf || field.editableIf) {
 
           const isRequired = field.optional ? '' : '!';

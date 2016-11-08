@@ -8,6 +8,12 @@ const alwaysPublic = user => true;
 
 // category schema
 Categories.schema = new SimpleSchema({
+  _id: {
+    type: String,
+    viewableIf: alwaysPublic,
+    optional: true,
+    publish: true
+  },
   name: {
     type: String,
     viewableIf: alwaysPublic,
