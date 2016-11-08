@@ -38,15 +38,12 @@ class CommentsItem extends Component{
   }
   
   editCancelCallback(event) {
-    console.log("editCancelCallback")
     event.preventDefault();
     this.setState({showEdit: false});
   }
 
-  editSuccessCallback(event) {
+  editSuccessCallback() {
     console.log("editSuccessCallback")
-    event.preventDefault();
-    this.setState({showEdit: false});
   }
 
   deleteComment() {

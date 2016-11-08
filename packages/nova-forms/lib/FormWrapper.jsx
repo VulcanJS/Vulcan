@@ -479,19 +479,27 @@ class FormWrapper extends Component{
 }
 
 FormWrapper.propTypes = {
+
+  // main options
   collection: React.PropTypes.object,
-  schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
-  submitCallback: React.PropTypes.func,
-  successCallback: React.PropTypes.func,
-  errorCallback: React.PropTypes.func,
-  mutation: React.PropTypes.func,
+  schema: React.PropTypes.object, // usually not needed
+
+  // graphQL
+  mutation: React.PropTypes.func, // the mutation
+
+  // form
   labelFunction: React.PropTypes.func,
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
+  fields: React.PropTypes.arrayOf(React.PropTypes.string),
+
+  // callbacks
+  submitCallback: React.PropTypes.func,
+  successCallback: React.PropTypes.func,
+  errorCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func,
-  refetchQuery: React.PropTypes.func,
-  fields: React.PropTypes.arrayOf(React.PropTypes.string)
+
 }
 
 FormWrapper.defaultProps = {

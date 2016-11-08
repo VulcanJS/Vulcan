@@ -65,6 +65,7 @@ class PostsEditForm extends Component {
             mutationName: "postsEdit",
             resultQuery: Posts.graphQLQueries.single,
             successCallback: (post) => { 
+              this.context.closeCallback();
               this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
             }
           }}

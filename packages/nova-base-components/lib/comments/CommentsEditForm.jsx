@@ -15,26 +15,6 @@ const CommentsEditForm = (props, context) => {
         resultQuery={Comments.graphQLQueries.single}
         successCallback={props.successCallback}
         cancelCallback={props.cancelCallback}
-        updateQueries={{
-          getPost: (prev, { mutationResult }) => {
-
-            const editedComment = mutationResult.data.commentsEdit;
-
-            const commentIndex = Telescope.utils.findIndex(prev.post.comments, comment => comment._id = editedComment._id);
-            const newCommentList = _.clone(prev.post.comments);
-            newCommentList[commentIndex] = Object.assign(newCommentList[commentIndex], editedComment);
-            
-            const newPost = update(prev, {
-              post: {
-                comments: {
-                  $set: newCommentList
-                }
-              }
-            });
-
-            return newPost;
-          },
-        }}
       />
     </div>
   )

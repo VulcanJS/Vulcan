@@ -1,3 +1,11 @@
+/*
+This component wraps FormWrapper with a mutation that submits the form.
+
+The mutation can either be one that inserts a new document, or one
+that updates an existing document. 
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
@@ -9,6 +17,7 @@ import FormWrapper from './FormWrapper.jsx';
 
 // const mapStateToProps = state => ({ messages: state.messages });
 // const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
 
 const FormWithMutation = props => {
 
@@ -49,7 +58,7 @@ const FormWithMutation = props => {
         mutation: ({document}) => {
           return mutate({ 
             variables: {document: document},
-            updateQueries: props.updateQueries
+            updateQueries: props.updateQueries // needed for new document form only
           })
         }
       }),
@@ -62,19 +71,29 @@ const FormWithMutation = props => {
 };
 
 FormWithMutation.propTypes = {
+
+  // main options
   collection: React.PropTypes.object,
-  schema: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
-  submitCallback: React.PropTypes.func,
-  successCallback: React.PropTypes.func,
-  errorCallback: React.PropTypes.func,
-  mutationName: React.PropTypes.string,
+  schema: React.PropTypes.object, // usually not needed
+
+  // graphQL
+  mutationName: React.PropTypes.string, // the mutation name
+  resultQuery: React.PropTypes.string, // the results to get back
+  updateQueries: React.PropTypes.object, // how to update queries
+
+  // form
   labelFunction: React.PropTypes.func,
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
+  fields: React.PropTypes.arrayOf(React.PropTypes.string),
+
+  // callbacks
+  submitCallback: React.PropTypes.func,
+  successCallback: React.PropTypes.func,
+  errorCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func,
-  resultQuery: React.PropTypes.string,
-  fields: React.PropTypes.arrayOf(React.PropTypes.string)
+
 }
 
 module.exports = FormWithMutation;
