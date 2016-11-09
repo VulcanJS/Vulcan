@@ -51,10 +51,10 @@ const newMutation = ({ collection, document, currentUser, validate }) => {
   document = Telescope.callbacks.run(`${collectionName}.new.sync`, document, currentUser);
 
   // add _id to document
-  const documentId = collection.insert(document);
+  document._id = collection.insert(document);
 
   // get fresh copy of document from db
-  const newDocument = collection.findOne(documentId);
+  const newDocument = collection.findOne(document._id);
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied

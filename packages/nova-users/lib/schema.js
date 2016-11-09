@@ -344,6 +344,30 @@ Users.graphQLSchema = `
     isDummy: Boolean
   }
 
+  input usersInput {
+    bio: String
+    displayName: String
+    email: String
+    twitterUsername: String
+    website: String
+    groups: [String]
+    notifications_users: Boolean
+    notifications_posts: Boolean
+    newsletter_subscribeToNewsletter: Boolean
+  }
+
+  input usersUnset {
+    bio: Boolean
+    displayName: Boolean
+    email: Boolean
+    twitterUsername: Boolean
+    website: Boolean
+    groups: Boolean
+    notifications_users: Boolean
+    notifications_posts: Boolean
+    newsletter_subscribeToNewsletter: Boolean
+  }
+
   type Vote {
     itemId: String
     power: Float

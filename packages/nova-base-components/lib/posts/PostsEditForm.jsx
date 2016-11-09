@@ -58,7 +58,6 @@ class PostsEditForm extends Component {
         <Telescope.components.PostsSingleContainer
           postId={this.props.post._id}
           component={NovaForm}
-          resultQuery={Posts.graphQLQueries.single}
           componentProps={{
             collection: Posts,
             document: this.props.post,
