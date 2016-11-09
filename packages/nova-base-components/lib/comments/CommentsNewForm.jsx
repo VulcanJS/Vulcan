@@ -53,7 +53,7 @@ const CommentsNewForm = (props, context) => {
               return newCommentsList;
             },
           }}
-          successCallback={this.replySuccessCallback} 
+          successCallback={props.successCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
           layout="elementOnly"
