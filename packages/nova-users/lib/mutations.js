@@ -36,8 +36,8 @@ Users.mutations = {
 };
 
 // GraphQL mutations
-Telescope.graphQL.addMutation('usersNew(document: usersInput) : Post');
-Telescope.graphQL.addMutation('usersEdit(documentId: String, set: usersInput, unset: usersUnset) : Post');
-Telescope.graphQL.addMutation('usersRemove(documentId: String) : Post');
+Telescope.graphQL.addMutation('usersNew(document: usersInput) : User');
+Telescope.graphQL.addMutation('usersEdit(documentId: String, set: usersInput, unset: usersUnset) : User');
+Telescope.graphQL.addMutation('usersRemove(documentId: String) : User');
 
 export default Users.mutations;

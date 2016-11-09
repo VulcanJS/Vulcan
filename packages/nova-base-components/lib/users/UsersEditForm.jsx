@@ -8,7 +8,7 @@ import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-const UsersEdit = (props, context) => {
+const UsersEditForm = (props, context) => {
 
   const user = props.document;
 
@@ -23,7 +23,8 @@ const UsersEdit = (props, context) => {
         <NovaForm 
           collection={Users} 
           document={user} 
-          methodName="users.edit"
+          mutationName="usersEdit"
+          resultQuery={Users.graphQLQueries.single}
           successCallback={(user)=>{
             props.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
           }}
@@ -34,19 +35,19 @@ const UsersEdit = (props, context) => {
 };
 
   
-UsersEdit.propTypes = {
+UsersEditForm.propTypes = {
   document: React.PropTypes.object,
 };
 
-UsersEdit.contextTypes = {
+UsersEditForm.contextTypes = {
   currentUser: React.PropTypes.object,
   intl: intlShape
 };
 
-UsersEdit.displayName = "UsersEdit";
+UsersEditForm.displayName = "UsersEditForm";
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(UsersEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersEditForm);

@@ -7,7 +7,7 @@ const UsersAccount = (props, context) => {
   return (
     <Telescope.components.CanDo action="users.edit.own" displayNoPermissionMessage={true}>
       <Telescope.components.UsersSingleContainer 
-        component={Telescope.components.UsersEdit}
+        component={Telescope.components.UsersEditForm}
         {...terms}
       />
     </Telescope.components.CanDo>
