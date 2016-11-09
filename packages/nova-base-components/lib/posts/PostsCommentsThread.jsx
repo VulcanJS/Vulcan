@@ -8,10 +8,12 @@ const PostsCommentsThread = (props, context) => {
 
   const {postId, results, commentCount} = props;
 
+  const nestedComments = Telescope.utils.unflatten(results, '_id', 'parentCommentId');
+
   return (
     <div className="posts-comments-thread">
       <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
-      <Telescope.components.CommentsList comments={results} commentCount={commentCount}/>
+      <Telescope.components.CommentsList comments={nestedComments} commentCount={commentCount}/>
       { context.currentUser ?
         <div className="posts-comments-thread-new">
           <h4><FormattedMessage id="comments.new"/></h4>

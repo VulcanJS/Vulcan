@@ -10,23 +10,23 @@ class CommentsNode extends Component {
     )
   }
 
-  // renderChildren(children) {
-  //   return (
-  //     <div className="comments-children">
-  //       {children.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
-  //     </div>
-  //   )
-  // }
+  renderChildren(children) {
+    return (
+      <div className="comments-children">
+        {children.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
+      </div>
+    )
+  }
 
   render() {
 
     const comment = this.props.comment;
-    //const children = this.props.comment.childrenResults;
+    const children = this.props.comment.childrenResults;
     
     return (
       <div className="comments-node">
         {this.renderComment(comment)}
-        {/*children ? this.renderChildren(children) : ""*/}
+        {children ? this.renderChildren(children) : null}
       </div>
     )
   }

@@ -33,7 +33,7 @@ const resolvers = {
   Query: {
     comments(root, {postId}, context) {
       const options = {
-        limit: 5,
+        // limit: 5, // no limit for now
         fields: context.getViewableFields(context.currentUser, context.Comments)
       }
       return context.Comments.find({postId: postId}, options).fetch();

@@ -25,7 +25,8 @@ const UsersProfileCheckModal = ({show, router}, {currentUser}) => {
         <NovaForm
           collection={ Users }
           document={ currentUser }
-          methodName="users.edit"
+          mutationName="usersEdit"
+          resultQuery={Users.graphQLQueries.single}
           successCallback={ (user) => Telescope.callbacks.runAsync("users.profileCompleted.async", user) }
           fields={ requiredFields }
         />
