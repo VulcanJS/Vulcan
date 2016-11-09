@@ -16,12 +16,12 @@ const UsersProfile = (props) => {
 
   return (
     <div className="page users-profile">
-      <Telescope.components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.telescope.bio} />
+      <Telescope.components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.nova_bio} />
       <h2 className="page-title">{Users.getDisplayName(user)}</h2>
-      <p>{user.telescope.bio}</p>
+      <p>{user.nova_bio}</p>
       <ul>
         {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }
-        {user.telescope.website ? <li><a href={user.telescope.website}>{user.telescope.website}</a></li> : null }
+        {user.nova_website ? <li><a href={user.nova_website}>{user.nova_website}</a></li> : null }
         <Telescope.components.CanDo document={user} action="users.edit">
           <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
         </Telescope.components.CanDo>

@@ -13,42 +13,40 @@ Users.graphQLQueries = {
     username
     createdAt
     isAdmin
-    telescope {
-      bio
-      commentCount
-      displayName
-      downvotedComments {
-        itemId
-        power
-        votedAt
-      }
-      downvotedPosts {
-        itemId
-        power
-        votedAt
-      }
-      email
-      emailHash
-      htmlBio
-      karma
-      postCount
-      slug
-      twitterUsername
-      upvotedComments {
-        itemId
-        power
-        votedAt
-      }
-      upvotedPosts {
-        itemId
-        power
-        votedAt
-      }
-      website
-      groups
-      notifications_users
-      notifications_posts
-      newsletter_subscribeToNewsletter
+    nova_bio
+    nova_commentCount
+    nova_displayName
+    nova_downvotedComments {
+      itemId
+      power
+      votedAt
     }
+    nova_downvotedPosts {
+      itemId
+      power
+      votedAt
+    }
+    nova_email
+    nova_emailHash
+    nova_htmlBio
+    nova_karma
+    nova_postCount
+    nova_slug
+    nova_twitterUsername
+    nova_upvotedComments {
+      itemId
+      power
+      votedAt
+    }
+    nova_upvotedPosts {
+      itemId
+      power
+      votedAt
+    }
+    nova_website
+    nova_groups
+    nova_notifications_users
+    nova_notifications_posts
+    nova_newsletter_subscribeToNewsletter
   `
 };

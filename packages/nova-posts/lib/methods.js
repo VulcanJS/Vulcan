@@ -235,7 +235,7 @@ Meteor.methods({
       }
 
       // decrement post count
-      Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
+      Users.update({_id: post.userId}, {$inc: {"nova_postCount": -1}});
 
       // delete post
       Posts.remove(postId);

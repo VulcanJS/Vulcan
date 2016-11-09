@@ -162,7 +162,7 @@ function CommentsNewOperations (comment) {
 
   // increment comment count
   Users.update({_id: userId}, {
-    $inc:       {'telescope.commentCount': 1}
+    $inc:       {'nova_commentCount': 1}
   });
 
   // update post

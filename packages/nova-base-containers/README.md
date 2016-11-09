@@ -1,0 +1,1 @@
+Nova basic React containers: they fetch data thanks to Apollo and give them back to React components in `nova:base-components`.

@@ -27,11 +27,11 @@ Telescope.graphQL = {
   addCollection(collection) {
     this.collections.push(collection);
   },
-  getCollectionSchemas() {
-    const collectionSchemas = this.collections.map(collection => {
+  getCollectionsSchemas() {
+    const collectionsSchemas = this.collections.map(collection => {
       return this.generateSchema(collection);
     }).join('\n');
-    return collectionSchemas;
+    return collectionsSchemas;
   },
 
   // additional schemas
@@ -116,7 +116,8 @@ input ${collectionName}Input {
 input ${collectionName}Unset {
   ${unsetSchema.join('\n  ')}
 }
-`
+    `;
+    
     // const graphQLSchema = _.compact(_.map(schema, (field, key) => {
     //   // console.log(field, key)
     //   if (key.indexOf('$') !== -1) {

@@ -51,7 +51,6 @@ PostsNewForm.propTypes = {
 
 PostsNewForm.contextTypes = {
   currentUser: React.PropTypes.object,
-  triggerMainRefetch: React.PropTypes.func,
   closeCallback: React.PropTypes.func,
   intl: intlShape
 };

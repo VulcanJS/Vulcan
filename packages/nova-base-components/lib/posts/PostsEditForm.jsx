@@ -26,16 +26,17 @@ class PostsEditForm extends Component {
     }
 
     if (window.confirm(deletePostConfirm)) { 
-      this.context.actions.call('posts.remove', post._id, (error, result) => {
-        if (this.context.refetchPostsListQuery) {
-          // post edit form is being included from a post list, refresh list
-          this.context.refetchPostsListQuery().then(successOperations);
-        } else {
-          // post edit form is being included from a single post, redirect to root
-          this.props.router.push('/');
-          successOperations();
-        }
-      });
+      console.log('to be handled with mutation');
+      // this.context.actions.call('posts.remove', post._id, (error, result) => {
+      //   if (this.context.refetchPostsListQuery) {
+      //     // post edit form is being included from a post list, refresh list
+      //     this.context.refetchPostsListQuery().then(successOperations);
+      //   } else {
+      //     // post edit form is being included from a single post, redirect to root
+      //     this.props.router.push('/');
+      //     successOperations();
+      //   }
+      // });
     }
   }
 
@@ -83,7 +84,6 @@ PostsEditForm.propTypes = {
 }
 
 PostsEditForm.contextTypes = {
-  refetchPostsListQuery: React.PropTypes.func,
   currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,

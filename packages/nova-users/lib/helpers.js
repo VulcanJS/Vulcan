@@ -56,7 +56,7 @@ Users.getDisplayName = function (user) {
   if (typeof user === "undefined") {
     return "";
   } else {
-    return (user.telescope && user.telescope.displayName) ? user.telescope.displayName : Users.getUserName(user);
+    return (user.nova_displayName) ? user.nova_displayName : Users.getUserName(user);
   }
 };
 Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}});
@@ -73,8 +73,8 @@ Users.getProfileUrl = function (user, isAbsolute) {
   }
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  if (user.telescope && user.telescope.slug) {
-    return `${prefix}/users/${user.telescope.slug}`;
+  if (user.nova_slug) {
+    return `${prefix}/users/${user.nova_slug}`;
   } else {
     return "";
   }
@@ -130,8 +130,8 @@ Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Users.fi
  * @param {Object} user
  */
 Users.getEmail = function (user) {
-  if(user.telescope && user.telescope.email){
-    return user.telescope.email;
+  if(user.nova_email){
+    return user.nova_email;
   }else{
     return null;
   }
@@ -144,7 +144,7 @@ Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(user
  * @param {Object} user
  */
 Users.getEmailHash = function (user) {
-  return user.telescope && user.telescope.emailHash;
+  return user.nova_emailHash;
 };
 Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.findOne(userId));};
@@ -158,11 +158,10 @@ Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.find
 Users.getSetting = function (user, settingName, defaultValue) {
   user = user || Meteor.user();
   defaultValue = defaultValue || null;
-  // all settings should be in the user.telescope namespace, so add "telescope." if needed
-  settingName = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
-
-  if (user && user.telescope) {
-    var settingValue = Users.getProperty(user, settingName);
+  // all settings should be prefixed by nova_ to avoid conflict with other meteor packages writing on Meteor.users collection, so add "nova_" if needed
+  settingName = settingName.slice(0,10) === "nova_" ? settingName : "nova_" + settingName;
+  if (user) {
+    const settingValue = Users.getProperty(user, settingName);
     return typeof settingValue === 'undefined' ? defaultValue : settingValue;
   } else {
     return defaultValue;
@@ -286,6 +285,6 @@ Users.getCurrentUserEmail = function () {
 };
 
 Users.findByEmail = function (email) {
-  return Users.findOne({"telescope.email": email});
+  return Users.findOne({"nova_email": email});
 };
 

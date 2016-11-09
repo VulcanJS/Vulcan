@@ -8,7 +8,7 @@ Users.addField([
     Count of the user's comments
   */
   {
-    fieldName: "telescope.commentCount",
+    fieldName: "nova_commentCount",
     fieldSchema: {
       type: Number,
       optional: true,

@@ -5,8 +5,8 @@ if (typeof Package['nova:posts'] !== "undefined") {
     var user = Users.findOne(terms.userId),
         postsIds = [];
 
-    if (user && user.telescope.subscribedItems && user.telescope.subscribedItems.Posts) {
-      postsIds = _.pluck(user.telescope.subscribedItems.Posts, "itemId");
+    if (user && user.nova_subscribedItems && user.nova_subscribedItems.Posts) {
+      postsIds = _.pluck(user.nova_subscribedItems.Posts, "itemId");
     }
 
     return {

@@ -15,19 +15,9 @@ class App extends Component {
     
     const {intl} = intlProvider.getChildContext();
 
-    let refetch;
-
     return {
       currentUser: this.props.data.currentUser,
       categories: this.props.data.categories,
-      setMainRefetch: (refetchQuery) => {
-        refetch = refetchQuery;
-      },
-      triggerMainRefetch: () => {
-        // refetch could be undefined if PostsListContainer has never been loaded
-        if (!!refetch) refetch();
-      },
-      //actions: this.props.actions,
       actions: {call: Meteor.call},
       events: this.props.events,
       intl: intl
@@ -62,8 +52,6 @@ App.childContextTypes = {
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape,
-  setMainRefetch: React.PropTypes.func,
-  triggerMainRefetch: React.PropTypes.func,
 }
 
 module.exports = App;

@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 class PostsListContainer extends Component {
 
   render() {
-    const {loading, posts, postsViewTotal, refetchQuery, loadMore, componentProps} = this.props;
+    const {loading, posts, postsViewTotal, loadMore, componentProps} = this.props;
     const Component = this.props.component;
     const hasMore = posts && postsViewTotal && posts.length < postsViewTotal;
 
@@ -19,7 +19,6 @@ class PostsListContainer extends Component {
       count={posts && posts.length}
       totalCount={postsViewTotal}
       loadMore={loadMore}
-      refetchQuery={refetchQuery}
       {...componentProps}
     />;
   }
@@ -29,7 +28,6 @@ PostsListContainer.propTypes = {
   loading: React.PropTypes.bool,
   postsViewTotal: React.PropTypes.number,
   posts: React.PropTypes.array,
-  refetch: React.PropTypes.func,
   loadMore: React.PropTypes.func,
   params: React.PropTypes.object
 };
@@ -55,12 +53,11 @@ const PostsListContainerWithData = graphql(gql`
       // pollInterval: 20000,
     };
   },
-  props({data: {loading, posts, postsViewTotal, refetch, fetchMore}}) {
+  props({data: {loading, posts, postsViewTotal, fetchMore}}) {
     return {
       loading,
       posts,
       postsViewTotal,
-      refetchQuery: refetch,
       loadMore() {
         // basically, rerun the query 'getPostsView' with a new offset
         return fetchMore({

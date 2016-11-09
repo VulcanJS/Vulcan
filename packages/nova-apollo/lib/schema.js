@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 
 export default schema = [`
-${Telescope.graphQL.getCollectionSchemas()}
+${Telescope.graphQL.getCollectionsSchemas()}
 ${Telescope.graphQL.getAdditionalSchemas()}
 
 type Query {

@@ -18,225 +18,6 @@ const canEditAll = user => Users.canDo(user, "users.edit.all");
 const alwaysPublic = user => true;
 
 /**
- * @summary Vote schema
- * @type {SimpleSchema}
- */
-Telescope.schemas.votes = new SimpleSchema({
-  itemId: {
-    type: String
-  },
-  power: {
-    type: Number,
-    optional: true
-  },
-  votedAt: {
-    type: Date, 
-    optional: true
-  }
-});
-
-/**
- * @summary User Data schema
- * @type {SimpleSchema}
- */
-Telescope.schemas.userData = new SimpleSchema({
-  /**
-    Bio (Markdown version)
-  */
-  bio: {
-    type: String,
-    optional: true,
-    control: "textarea",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    viewableIf: alwaysPublic,
-    // form: {
-    //   rows: 5
-    // }
-  },
-  // /**
-  //   Total comment count
-  // */
-  // commentCount: {
-  //   type: Number,
-  //   publish: true,
-  //   optional: true,
-  //   viewableIf: alwaysPublic,
-  // },
-  /**
-    The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
-  */
-  displayName: {
-    type: String,
-    optional: true,
-    publish: true,
-    profile: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    viewableIf: alwaysPublic,
-  },
-  // /**
-  //   An array containing comment downvotes
-  // */
-  // downvotedComments: {
-  //   type: [Telescope.schemas.votes],
-  //   publish: false,
-  //   optional: true,
-  //   viewableIf: alwaysPublic,
-  // },
-  // /**
-  //   An array containing posts downvotes
-  // */
-  // downvotedPosts: {
-  //   type: [Telescope.schemas.votes],
-  //   publish: false,
-  //   optional: true,
-  //   viewableIf: alwaysPublic,
-  // },
-  /**
-    The user's email. Modifiable.
-  */
-  email: {
-    type: String,
-    optional: true,
-    regEx: SimpleSchema.RegEx.Email,
-    required: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    viewableIf: alwaysPublic,
-    // unique: true // note: find a way to fix duplicate accounts before enabling this
-  },
-  /**
-    A hash of the email, used for Gravatar // TODO: change this when email changes
-  */
-  emailHash: {
-    type: String,
-    publish: true,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
-  /**
-    The HTML version of the bio field
-  */
-  htmlBio: {
-    type: String,
-    publish: true,
-    profile: true,
-    optional: true,
-    viewableIf: alwaysPublic,
-    // form: {
-    //   omit: true
-    // },
-    template: "user_profile_bio"
-  },
-  /**
-    The user's karma
-  */
-  karma: {
-    type: Number,
-    decimal: true,
-    publish: true,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
-  // /**
-  //   Total post count
-  // */
-  // postCount: {
-  //   type: Number,
-  //   publish: true,
-  //   optional: true,
-  //   viewableIf: alwaysPublic,
-  // },
-  /**
-    A blackbox modifiable object to store the user's settings
-  */
-  // settings: {
-  //   type: Object,
-  //   optional: true,
-  //   editableIf: canEdit,
-  //   blackbox: true,
-  //   form: {
-  //     omit: true
-  //   }
-  // },
-  /**
-    The user's profile URL slug // TODO: change this when displayName changes
-  */
-  slug: {
-    type: String,
-    publish: true,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
-  /**
-    The user's Twitter username
-  */
-  twitterUsername: {
-    type: String,
-    optional: true,
-    publish: true,
-    profile: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    template: "user_profile_twitter",
-    viewableIf: alwaysPublic,
-  },
-  // /**
-  //   An array containing comments upvotes
-  // */
-  // upvotedComments: {
-  //   type: [Telescope.schemas.votes],
-  //   publish: false,
-  //   optional: true,
-  //   viewableIf: alwaysPublic,
-  // },
-  // /**
-  //   An array containing posts upvotes
-  // */
-  // upvotedPosts: {
-  //   type: [Telescope.schemas.votes],
-  //   publish: false,
-  //   optional: true,
-  //   viewableIf: alwaysPublic,
-  // },
-  /**
-    A link to the user's homepage
-  */
-  website: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-    publish: true,
-    profile: true,
-    optional: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    viewableIf: alwaysPublic,
-  },
-  /**
-    Groups
-  */
-  groups: {
-    type: [String],
-    optional: true,
-    control: "checkboxgroup",
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
-    viewableIf: alwaysPublic,
-    form: {
-      options: function () {
-        const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
-        return groups.map(group => {return {value: group, label: group};});
-      }
-    },
-  },
-});
-
-/**
  * @summary Users schema
  * @type {SimpleSchema}
  */
@@ -282,25 +63,144 @@ Users.schema = new SimpleSchema({
     editableIf: canEditAll,
     viewableIf: alwaysPublic,
     group: adminGroup
-    // form: {
-    //   omit: true
-    // }
   },
   profile: {
     type: Object,
     optional: true,
     blackbox: true
   },
-  telescope: { // telescope-specific data
-    type: Telescope.schemas.userData,
-    optional: true,
-    viewableIf: alwaysPublic,
-  },
+  // 👋 bye bye, 🔭 namespace
+  // telescope: { // telescope-specific data
+  //   type: Telescope.schemas.userData,
+  //   optional: true,
+  //   viewableIf: alwaysPublic,
+  // },
   services: {
     type: Object,
     optional: true,
     blackbox: true
-  }
+  },
+  /**
+    Bio (Markdown version)
+  */
+  nova_bio: {
+    type: String,
+    optional: true,
+    control: "textarea",
+    insertableIf: canInsert,
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
+  */
+  nova_displayName: {
+    type: String,
+    optional: true,
+    publish: true,
+    profile: true,
+    control: "text",
+    insertableIf: canInsert,
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    The user's email. Modifiable.
+  */
+  nova_email: {
+    type: String,
+    optional: true,
+    regEx: SimpleSchema.RegEx.Email,
+    required: true,
+    control: "text",
+    insertableIf: canInsert,
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
+    // unique: true // note: find a way to fix duplicate accounts before enabling this
+  },
+  /**
+    A hash of the email, used for Gravatar // TODO: change this when email changes
+  */
+  nova_emailHash: {
+    type: String,
+    publish: true,
+    optional: true,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    The HTML version of the bio field
+  */
+  nova_htmlBio: {
+    type: String,
+    publish: true,
+    profile: true,
+    optional: true,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    The user's karma
+  */
+  nova_karma: {
+    type: Number,
+    decimal: true,
+    publish: true,
+    optional: true,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    The user's profile URL slug // TODO: change this when displayName changes
+  */
+  nova_slug: {
+    type: String,
+    publish: true,
+    optional: true,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    The user's Twitter username
+  */
+  nova_twitterUsername: {
+    type: String,
+    optional: true,
+    publish: true,
+    profile: true,
+    control: "text",
+    insertableIf: canInsert,
+    editableIf: canEdit,
+    template: "user_profile_twitter",
+    viewableIf: alwaysPublic,
+  },
+  /**
+    A link to the user's homepage
+  */
+  nova_website: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    publish: true,
+    profile: true,
+    optional: true,
+    control: "text",
+    insertableIf: canInsert,
+    editableIf: canEdit,
+    viewableIf: alwaysPublic,
+  },
+  /**
+    Groups
+  */
+  nova_groups: {
+    type: [String],
+    optional: true,
+    control: "checkboxgroup",
+    insertableIf: canEditAll,
+    editableIf: canEditAll,
+    viewableIf: alwaysPublic,
+    form: {
+      options: function () {
+        const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
+        return groups.map(group => {return {value: group, label: group};});
+      }
+    },
+  },
 });
 
 // Meteor.startup(function(){
@@ -312,69 +212,6 @@ Users.schema = new SimpleSchema({
  */
 Users.attachSchema(Users.schema);
 
-Users.graphQLSchema = `
-  type User {
-    _id: String
-    username: String
-    createdAt: String
-    isAdmin: Boolean
-    telescope: UserTelescope
-  }
-
-  type UserTelescope {
-    bio: String
-    commentCount: Float
-    displayName: String
-    downvotedComments: [Vote]
-    downvotedPosts: [Vote]
-    email: String
-    emailHash: String
-    htmlBio: String
-    karma: Float
-    postCount: Int
-    slug: String
-    twitterUsername: String
-    upvotedComments: [Vote]
-    upvotedPosts: [Vote]
-    website: String
-    groups: [String]
-    notifications_users: Boolean
-    notifications_posts: Boolean
-    newsletter_subscribeToNewsletter: Boolean
-    isDummy: Boolean
-  }
-
-  input usersInput {
-    bio: String
-    displayName: String
-    email: String
-    twitterUsername: String
-    website: String
-    groups: [String]
-    notifications_users: Boolean
-    notifications_posts: Boolean
-    newsletter_subscribeToNewsletter: Boolean
-  }
-
-  input usersUnset {
-    bio: Boolean
-    displayName: Boolean
-    email: Boolean
-    twitterUsername: Boolean
-    website: Boolean
-    groups: Boolean
-    notifications_users: Boolean
-    notifications_posts: Boolean
-    newsletter_subscribeToNewsletter: Boolean
-  }
-
-  type Vote {
-    itemId: String
-    power: Float
-    votedAt: String
-  }
-`;
-
-Telescope.graphQL.addSchema(Users.graphQLSchema);
+Telescope.graphQL.addCollection(Users);
 
 Telescope.graphQL.addToContext({ Users });

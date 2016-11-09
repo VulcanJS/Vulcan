@@ -3,24 +3,20 @@ import Users from "meteor/nova:users";
 
 Users.addField([
   {
-    fieldName: 'telescope.subscribedItems',
+    fieldName: 'nova_subscribedItems',
     fieldSchema: {
       type: Object,
       optional: true,
       blackbox: true,
-      form: {
-        omit: true
-      }
+      control: "none", // never show this
     }
   },
   {
-    fieldName: 'telescope.subscribers',
+    fieldName: 'nova_subscribers',
     fieldSchema: {
       type: [String],
       optional: true,
-      form: {
-        omit: true
-      },
+      control: "none", // never show this,
       publish: true,
       join: {
         joinAs: "subscribersArray",
@@ -29,17 +25,15 @@ Users.addField([
     }
   },
   {
-    fieldName: 'telescope.subscriberCount',
+    fieldName: 'nova_subscriberCount',
     fieldSchema: {
       type: Number,
       optional: true,
-      form: {
-        omit: true
-      }
+      control: "none", // never show this
     }
   }
 ]);
-PublicationUtils.addToFields(Users.publishedFields.list, ["telescope.subscribedItems", "telescope.subscribers", "telescope.subscriberCount"]);
+PublicationUtils.addToFields(Users.publishedFields.list, ["nova_subscribedItems", "nova_subscribers", "nova_subscriberCount"]);
 
 // check if nova:posts exists, if yes, add the custom fields to Posts
 if (typeof Package['nova:posts'] !== "undefined") {
@@ -50,9 +44,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        form: {
-          omit: true
-        },
+        control: "none", // never show this
         publish: true,
         join: {
           joinAs: "subscribersArray",
@@ -65,9 +57,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        form: {
-          omit: true
-        }
+        control: "none", // never show this
       }
     }
   ]);
@@ -84,9 +74,7 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        form: {
-          omit: true
-        },
+        control: "none", // never show this
         publish: true,
         join: {
           joinAs: "subscribersArray",
@@ -99,9 +87,7 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        form: {
-          omit: true
-        }
+        control: "none", // never show this
       }
     }
   ]);

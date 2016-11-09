@@ -43,7 +43,7 @@ class CommentsItem extends Component{
   }
 
   editSuccessCallback() {
-    console.log("editSuccessCallback")
+    this.setState({showEdit: false});
   }
 
   deleteComment() {

@@ -9,7 +9,7 @@ import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
 
 import { ApolloProvider } from 'react-apollo';
-import { client } from 'meteor/nova:base-apollo';
+import { client } from 'meteor/nova:apollo';
 import { configureStore } from "./store.js";
 
 

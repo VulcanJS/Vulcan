@@ -21,7 +21,7 @@ class UsersMenu extends Component {
             <div>{Users.getDisplayName(currentUser)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <LinkContainer to={`/users/${currentUser.telescope.slug}`}>
+            <LinkContainer to={`/users/${currentUser.nova_slug}`}>
               <MenuItem className="dropdown-item" eventKey="1"><FormattedMessage id="users.profile"/></MenuItem>
             </LinkContainer>
             <LinkContainer to={`/account`}>

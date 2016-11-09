@@ -233,7 +233,7 @@ Telescope.callbacks.add("posts.new.sync", PostsNewSetFuture);
  */
 function PostsNewIncrementPostCount (post) {
   var userId = post.userId;
-  Users.update({_id: userId}, {$inc: {"telescope.postCount": 1}});
+  Users.update({_id: userId}, {$inc: {"nova_postCount": 1}});
 }
 Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
 
@@ -256,7 +256,7 @@ function PostsNewNotifications (post) {
   if (typeof Telescope.notifications !== "undefined") {
 
     var adminIds = _.pluck(Users.adminUsers({fields: {_id:1}}), '_id');
-    var notifiedUserIds = _.pluck(Users.find({'telescope.notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
+    var notifiedUserIds = _.pluck(Users.find({'nova_notifications_posts': true}, {fields: {_id:1}}).fetch(), '_id');
     var notificationData = {
       post: _.pick(post, '_id', 'userId', 'title', 'url', 'slug')
     };
@@ -380,7 +380,7 @@ Telescope.callbacks.add("posts.remove.validate", PostsRemoveValidation);
 // ------------------------------------- posts.remove.sync -------------------------------- //
 
 function PostsRemoveOperations (post) {
-  Users.update({_id: post.userId}, {$inc: {"telescope.postCount": -1}});
+  Users.update({_id: post.userId}, {$inc: {"nova_postCount": -1}});
 }
 Telescope.callbacks.add("posts.remove.sync", PostsRemoveOperations);
 

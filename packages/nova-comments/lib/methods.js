@@ -108,7 +108,7 @@ Meteor.methods({
 
       // decrement user comment count and remove comment ID from user
       Users.update({_id: comment.userId}, {
-        $inc:   {'telescope.commentCount': -1}
+        $inc:   {'nova_commentCount': -1}
       });
 
       // note: should we also decrease user's comment karma ?
