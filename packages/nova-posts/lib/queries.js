@@ -17,6 +17,7 @@ Posts.graphQLQueries = {
     baseScore
     postedAt
     sticky
+    status
     categories {
       _id
       name

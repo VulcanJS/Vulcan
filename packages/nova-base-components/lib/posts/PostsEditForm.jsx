@@ -61,7 +61,6 @@ class PostsEditForm extends Component {
           component={NovaForm}
           componentProps={{
             collection: Posts,
-            document: this.props.post,
             mutationName: "postsEdit",
             resultQuery: Posts.graphQLQueries.single,
             successCallback: (post) => { 
