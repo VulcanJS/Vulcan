@@ -8,9 +8,14 @@ import gql from 'graphql-tag';
 import { composeWithTracker } from 'react-komposer';
 
 const currentUserComposer = (props, onData) => {
+
+  const userSubscription = Meteor.subscribe('users.current');
+
   const data = {
-    currentUser: Meteor.user()
+    currentUser: Meteor.user(),
+    userLoading: !userSubscription.ready()
   }
+
   onData(null, data);
 }
 
@@ -18,10 +23,10 @@ const AppContainer = (props, context) => {
 
   const {loading, refetch, /*currentUser,*/ categories} = props.data;
   
-  const currentUser = props.currentUser;
+  const { currentUser, userLoading } = props;
 
   return <Telescope.components.App
-    ready={!loading}
+    loading={loading || userLoading}
     currentUser={currentUser}
     categories={categories}
     events={Events}

@@ -28,9 +28,9 @@ class App extends Component {
     return (
       <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
         {
-          this.props.ready ? 
+          this.props.loading ? 
+            <Telescope.components.AppLoading /> :
             <Telescope.components.Layout>{this.props.children}</Telescope.components.Layout> 
-          : <Telescope.components.AppLoading />
         }
       </IntlProvider>
     )
@@ -39,7 +39,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  ready: React.PropTypes.bool,
+  loading: React.PropTypes.bool,
   currentUser: React.PropTypes.object,
   categories: React.PropTypes.array,
   actions: React.PropTypes.object,
