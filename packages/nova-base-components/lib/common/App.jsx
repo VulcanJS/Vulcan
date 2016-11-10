@@ -16,8 +16,7 @@ class App extends Component {
     const {intl} = intlProvider.getChildContext();
 
     return {
-      currentUser: this.props.currentUser,
-      categories: this.props.categories,
+      currentUser: this.props.data.currentUser,
       actions: {call: Meteor.call},
       events: this.props.events,
       intl: intl
@@ -41,14 +40,12 @@ class App extends Component {
 App.propTypes = {
   loading: React.PropTypes.bool,
   currentUser: React.PropTypes.object,
-  categories: React.PropTypes.array,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
 }
 
 App.childContextTypes = {
   currentUser: React.PropTypes.object,
-  categories: React.PropTypes.array,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape,

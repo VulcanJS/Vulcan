@@ -7,8 +7,8 @@ const PostsListHeader = () => {
   return (
     <div>
       <div className="posts-list-header">
-        <div className="posts-lists-header-categories">
-          <Telescope.components.CategoriesList/>
+        <div className="posts-list-header-categories">
+          <Telescope.components.CategoriesListContainer component={Telescope.components.CategoriesList} />
         </div>
         <Telescope.components.PostsViews />
         <Telescope.components.SearchForm/>

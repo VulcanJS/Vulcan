@@ -24,6 +24,7 @@ class CommentsListContainer extends Component {
 
 CommentsListContainer.propTypes = {
   loading: React.PropTypes.bool,
+  results: React.PropTypes.array,
 };
 
 CommentsListContainer.displayName = "CommentsListContainer";

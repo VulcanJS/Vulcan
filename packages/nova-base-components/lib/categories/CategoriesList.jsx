@@ -83,8 +83,8 @@ class CategoriesList extends Component {
 
   render() {
     
-    const categories = this.context.categories;
-    const context = this.context;
+    const categories = this.props.results; 
+
     const currentQuery = _.clone(this.props.router.location.query);
     delete currentQuery.cat;
     
@@ -103,13 +103,43 @@ class CategoriesList extends Component {
               </MenuItem>
             </LinkContainer>
           </div>
-          {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
+          {
+            // categories data are loaded
+            !this.props.loading ? 
+              // there are currently categories
+              categories && categories.length > 0 ? 
+                categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) 
+              // not any category found
+              : null
+            // categories are loading
+            : <div className="dropdown-item"><MenuItem><Telescope.components.Loading /></MenuItem></div>
+          }
           {this.renderCategoryNewButton()}
         </DropdownButton>
+        
         <div>
-          {/* modals cannot be inside DropdownButton component (see GH issue) */}
-          {categories && categories.length > 0 ? categories.map((category, index) => this.renderCategoryEditModal(category, index)) : null}
-          {this.renderCategoryNewModal()}
+          {
+            /* 
+              Modals cannot be inside DropdownButton component (see GH issue link on top of the file) 
+              -> we place them in a <div> outside the <DropdownButton> component
+            */
+            
+            /* Modals for each category to edit */
+            // categories data are loaded
+            !this.props.loading ? 
+              // there are currently categories 
+              categories && categories.length > 0 ? 
+                categories.map((category, index) => this.renderCategoryEditModal(category, index)) 
+              // not any category found
+              : null
+            // categories are loading
+            : null
+          }
+           
+          { 
+            /* modal for creating a new category */
+            this.renderCategoryNewModal()
+          }
         </div>
       </div>
     )
@@ -117,9 +147,11 @@ class CategoriesList extends Component {
   }
 };
 
+CategoriesList.propTypes = {
+  results: React.PropTypes.array,
+}
+
 CategoriesList.contextTypes = {
-  actions: React.PropTypes.object,
-  categories: React.PropTypes.array,
   currentUser: React.PropTypes.object,
 };
 

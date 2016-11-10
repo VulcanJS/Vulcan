@@ -17,8 +17,9 @@ export default UsersAccountForm;
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
-  onSignedInHook: () => {},
-  onSignedOutHook: () => {}, //client.resetStore()
+  onPostSignUpHook: () => Telescope.graphQL.client.resetStore(),
+  onSignedInHook: () => Telescope.graphQL.client.resetStore(),
+  onSignedOutHook: () => Telescope.graphQL.client.resetStore(),
 });
 
 class AccountsButton extends Accounts.ui.Button {
