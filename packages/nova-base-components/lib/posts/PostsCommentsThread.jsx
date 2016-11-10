@@ -8,7 +8,8 @@ const PostsCommentsThread = (props, context) => {
 
   const {postId, results, commentCount} = props;
 
-  const nestedComments = Telescope.utils.unflatten(results, '_id', 'parentCommentId');
+  const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
+  const nestedComments = Telescope.utils.unflatten(resultsClone, '_id', 'parentCommentId');
 
   return (
     <div className="posts-comments-thread">

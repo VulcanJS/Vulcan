@@ -41,7 +41,6 @@ const PostsListContainerWithData = graphql(gql`
       ${Posts.graphQLQueries.list}
     }
   }
-
 `, {
   options(ownProps) {
     return {
