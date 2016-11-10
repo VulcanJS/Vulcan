@@ -1,3 +1,3 @@
-Meteor.startup(() => {
-  Meteor.subscribe('users.current');
-});
+// Meteor.startup(() => {
+//   Meteor.subscribe('users.current');
+// });

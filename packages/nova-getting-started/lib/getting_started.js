@@ -50,4 +50,4 @@ function copyDummyProperty (user, options) {
   }
   return user;
 }
-Telescope.callbacks.add("onCreateUser", copyDummyProperty);
+Telescope.callbacks.add("users.new.sync", copyDummyProperty);

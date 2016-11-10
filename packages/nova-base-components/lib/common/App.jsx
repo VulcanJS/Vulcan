@@ -16,7 +16,7 @@ class App extends Component {
     const {intl} = intlProvider.getChildContext();
 
     return {
-      currentUser: this.props.data.currentUser,
+      currentUser: this.props.currentUser,
       actions: {call: Meteor.call},
       events: this.props.events,
       intl: intl
