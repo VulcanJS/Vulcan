@@ -44,4 +44,4 @@ PostsList.propTypes = {
 
 };
 
-module.exports = withPostsList({})(PostsList);
+module.exports = withPostsList({})(PostsList); // get terms from parent component
