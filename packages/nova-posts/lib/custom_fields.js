@@ -8,7 +8,7 @@ Users.addField([
     Count of the user's posts
   */
   {
-    fieldName: "nova_postCount",
+    fieldName: "__postCount",
     fieldSchema: {
       type: Number,
       optional: true,

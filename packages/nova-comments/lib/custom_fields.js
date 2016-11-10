@@ -8,7 +8,7 @@ Users.addField([
     Count of the user's comments
   */
   {
-    fieldName: "nova_commentCount",
+    fieldName: "__commentCount",
     fieldSchema: {
       type: Number,
       optional: true,

@@ -43,8 +43,8 @@ Users.methods.edit = (userId, modifier, user) => {
 }
 
 Users.methods.setSetting = (userId, settingName, value) => {
-  // all settings should be in the user.nova_ namespace, so add "nova_" if needed
-  var field = settingName.slice(0,10) === "nova_" ? settingName : "nova_" + settingName;
+  // all users settings should begin with the prexi __: user.__setting namespace, so add "__" if needed
+  var field = settingName.slice(0,2) === "__" ? settingName : "__" + settingName;
 
   var modifier = {$set: {}};
   modifier.$set[field] = value;
@@ -53,11 +53,11 @@ Users.methods.setSetting = (userId, settingName, value) => {
 }
 
 Users.methods.addGroup = (userId, groupName) => {
-  Users.update(userId, {$push: {"nova_groups": groupName}});
+  Users.update(userId, {$push: {"__groups": groupName}});
 };
 
 Users.methods.removeGroup = (userId, groupName) => {
-  Users.update(userId, {$pull: {"nova_groups": groupName}});
+  Users.update(userId, {$pull: {"__groups": groupName}});
 };
 
 Meteor.methods({

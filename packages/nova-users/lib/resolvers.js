@@ -4,17 +4,17 @@ import mutations from './mutations.js';
 const resolvers = {
   
   User: {
-    nova_downvotedComments(user, args, context) {
-      return user.nova_downvotedComments ? user.nova_downvotedComments : []
+    __downvotedComments(user, args, context) {
+      return user.__downvotedComments ? user.__downvotedComments : []
     },
-    nova_downvotedPosts(user, args, context) {
-      return user.nova_downvotedPosts ? user.nova_downvotedPosts : []
+    __downvotedPosts(user, args, context) {
+      return user.__downvotedPosts ? user.__downvotedPosts : []
     },
-    nova_upvotedComments(user, args, context) {
-      return user.nova_upvotedComments ? user.nova_upvotedComments : []
+    __upvotedComments(user, args, context) {
+      return user.__upvotedComments ? user.__upvotedComments : []
     },
-    nova_upvotedPosts(user, args, context) {
-      return user.nova_upvotedPosts ? user.nova_upvotedPosts : [];
+    __upvotedPosts(user, args, context) {
+      return user.__upvotedPosts ? user.__upvotedPosts : [];
     },
   },
 
@@ -28,7 +28,7 @@ const resolvers = {
       return context.Users.find({}, {limit: 5}).fetch();
     },
     user(root, args, context) {
-      return context.Users.findOne({$or: [{_id: args._id}, {'nova_slug': args.slug}]}, { fields: context.getViewableFields(context.currentUser, context.Users) });
+      return context.Users.findOne({$or: [{_id: args._id}, {'__slug': args.slug}]}, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
     currentUser(root, args, context) {
       return context && context.userId ? context.Users.findOne(context.userId) : null;

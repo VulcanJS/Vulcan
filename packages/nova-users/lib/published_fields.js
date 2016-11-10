@@ -13,10 +13,10 @@ Users.publishedFields.public = PublicationsUtils.arrayToFields([
   'services.twitter.profile_image_url_https',
   'services.facebook.id',
   'services.twitter.screenName',
-  'nova_downvotedComments',
-  'nova_downvotedPosts',
-  'nova_upvotedComments',
-  'nova_upvotedPosts'
+  '__downvotedComments',
+  '__downvotedPosts',
+  '__upvotedComments',
+  '__upvotedPosts'
 ]);
 
 /**
@@ -25,9 +25,9 @@ Users.publishedFields.public = PublicationsUtils.arrayToFields([
  */
 // Users.publishedFields.list = PublicationsUtils.arrayToFields([
 //   '_id',
-//   'nova_emailHash',
-//   'nova_slug',
-//   'nova_displayName',
+//   '__emailHash',
+//   '__slug',
+//   '__displayName',
 //   'username',
 //   'profile.username',
 //   'profile.github',

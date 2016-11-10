@@ -83,7 +83,7 @@ Users.schema = new SimpleSchema({
   /**
     Bio (Markdown version)
   */
-  nova_bio: {
+  __bio: {
     type: String,
     optional: true,
     control: "textarea",
@@ -94,7 +94,7 @@ Users.schema = new SimpleSchema({
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
   */
-  nova_displayName: {
+  __displayName: {
     type: String,
     optional: true,
     publish: true,
@@ -107,7 +107,7 @@ Users.schema = new SimpleSchema({
   /**
     The user's email. Modifiable.
   */
-  nova_email: {
+  __email: {
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
@@ -121,7 +121,7 @@ Users.schema = new SimpleSchema({
   /**
     A hash of the email, used for Gravatar // TODO: change this when email changes
   */
-  nova_emailHash: {
+  __emailHash: {
     type: String,
     publish: true,
     optional: true,
@@ -130,7 +130,7 @@ Users.schema = new SimpleSchema({
   /**
     The HTML version of the bio field
   */
-  nova_htmlBio: {
+  __htmlBio: {
     type: String,
     publish: true,
     profile: true,
@@ -140,7 +140,7 @@ Users.schema = new SimpleSchema({
   /**
     The user's karma
   */
-  nova_karma: {
+  __karma: {
     type: Number,
     decimal: true,
     publish: true,
@@ -150,7 +150,7 @@ Users.schema = new SimpleSchema({
   /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
-  nova_slug: {
+  __slug: {
     type: String,
     publish: true,
     optional: true,
@@ -159,7 +159,7 @@ Users.schema = new SimpleSchema({
   /**
     The user's Twitter username
   */
-  nova_twitterUsername: {
+  __twitterUsername: {
     type: String,
     optional: true,
     publish: true,
@@ -173,7 +173,7 @@ Users.schema = new SimpleSchema({
   /**
     A link to the user's homepage
   */
-  nova_website: {
+  __website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     publish: true,
@@ -187,7 +187,7 @@ Users.schema = new SimpleSchema({
   /**
     Groups
   */
-  nova_groups: {
+  __groups: {
     type: [String],
     optional: true,
     control: "checkboxgroup",

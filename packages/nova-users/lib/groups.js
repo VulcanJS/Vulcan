@@ -55,8 +55,8 @@ Users.getGroups = user => {
   
     userGroups = ["default"];
 
-    if (user.nova_groups) { // custom groups
-      userGroups = userGroups.concat(user.nova_groups);
+    if (user.__groups) { // custom groups
+      userGroups = userGroups.concat(user.__groups);
     } 
     
     if (Users.isAdmin(user)) { // admin

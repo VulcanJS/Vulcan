@@ -32,7 +32,7 @@ class SubscribeTo extends Component {
         this.props.flash(this.context.intl.formatMessage(
           {id: `${documentType}.${action}d`}, 
           // handle usual name properties
-          {name: document.name || document.title || document.nova_displayName}
+          {name: document.name || document.title || document.__displayName}
         ), "success");
         this.context.events.track(action, {'_id': this.props.document._id});
       }

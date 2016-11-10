@@ -26,9 +26,9 @@ Posts.graphQLQueries = {
     commentCount
     commenters {
       _id
-      nova_displayName
-      nova_emailHash
-      nova_slug
+      __displayName
+      __emailHash
+      __slug
     }
     upvoters {
       _id
@@ -42,9 +42,9 @@ Posts.graphQLQueries = {
     clickCount # should be asked only for admins?
     user {
       _id
-      nova_displayName
-      nova_emailHash
-      nova_slug
+      __displayName
+      __emailHash
+      __slug
     }
   `,
   single: `
@@ -67,9 +67,9 @@ Posts.graphQLQueries = {
     commentCount
     commenters {
       _id
-      nova_displayName
-      nova_emailHash
-      nova_slug
+      __displayName
+      __emailHash
+      __slug
     }
     upvoters {
       _id
@@ -83,9 +83,9 @@ Posts.graphQLQueries = {
     clickCount # should be asked only for admins?
     user {
       _id
-      nova_displayName
-      nova_emailHash
-      nova_slug
+      __displayName
+      __emailHash
+      __slug
     }
   `
 };

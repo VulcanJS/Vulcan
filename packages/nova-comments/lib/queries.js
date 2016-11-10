@@ -18,8 +18,8 @@ Comments.graphQLQueries = {
     postedAt
     user {
       _id
-      nova_slug
-      nova_emailHash # used for the avatar
+      __slug
+      __emailHash # used for the avatar
     }
   `
 }

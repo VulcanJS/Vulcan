@@ -6,9 +6,9 @@ import Users from '../modules.js';
  */
 Meteor.publish('users.single', function (terms) {
 
-  var idOrSlug = terms._id || terms['nova_slug'];
+  var idOrSlug = terms._id || terms['__slug'];
   var findById = Users.findOne(idOrSlug);
-  var findBySlug = Users.findOne({"nova_slug": idOrSlug});
+  var findBySlug = Users.findOne({"__slug": idOrSlug});
   var user = typeof findById !== 'undefined' ? findById : findBySlug;
   var options = Users.isAdmin(this.userId) ? {} : {fields: Users.publishedFields.public};
   return user ? Users.find({_id: user._id}, options) : [];

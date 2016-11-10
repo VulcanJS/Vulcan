@@ -56,7 +56,7 @@ Users.getDisplayName = function (user) {
   if (typeof user === "undefined") {
     return "";
   } else {
-    return (user.nova_displayName) ? user.nova_displayName : Users.getUserName(user);
+    return (user.__displayName) ? user.__displayName : Users.getUserName(user);
   }
 };
 Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}});
@@ -73,8 +73,8 @@ Users.getProfileUrl = function (user, isAbsolute) {
   }
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  if (user.nova_slug) {
-    return `${prefix}/users/${user.nova_slug}`;
+  if (user.__slug) {
+    return `${prefix}/users/${user.__slug}`;
   } else {
     return "";
   }
@@ -130,8 +130,8 @@ Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Users.fi
  * @param {Object} user
  */
 Users.getEmail = function (user) {
-  if(user.nova_email){
-    return user.nova_email;
+  if(user.__email){
+    return user.__email;
   }else{
     return null;
   }
@@ -144,7 +144,7 @@ Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(user
  * @param {Object} user
  */
 Users.getEmailHash = function (user) {
-  return user.nova_emailHash;
+  return user.__emailHash;
 };
 Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.findOne(userId));};
@@ -158,8 +158,8 @@ Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.find
 Users.getSetting = function (user, settingName, defaultValue) {
   user = user || Meteor.user();
   defaultValue = defaultValue || null;
-  // all settings should be prefixed by nova_ to avoid conflict with other meteor packages writing on Meteor.users collection, so add "nova_" if needed
-  settingName = settingName.slice(0,10) === "nova_" ? settingName : "nova_" + settingName;
+  // all settings should be prefixed by __ to avoid conflict with other meteor packages writing on Meteor.users collection, so add "__" if needed
+  settingName = settingName.slice(0,10) === "__" ? settingName : "__" + settingName;
   if (user) {
     const settingValue = Users.getProperty(user, settingName);
     return typeof settingValue === 'undefined' ? defaultValue : settingValue;
@@ -285,6 +285,6 @@ Users.getCurrentUserEmail = function () {
 };
 
 Users.findByEmail = function (email) {
-  return Users.findOne({"nova_email": email});
+  return Users.findOne({"__email": email});
 };
 

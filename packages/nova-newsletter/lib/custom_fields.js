@@ -21,7 +21,7 @@ Posts.addField({
 
 Users.addField([
   {
-    fieldName: 'nova_newsletter_subscribeToNewsletter',
+    fieldName: '__newsletter_subscribeToNewsletter',
     fieldSchema: {
       label: 'Subscribe to newsletter',
       type: Boolean,

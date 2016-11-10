@@ -10,52 +10,52 @@ Users.addField([
     An array containing comments upvotes
   */
   {
-    fieldName: 'nova_upvotedComments',
+    fieldName: '__upvotedComments',
     fieldSchema: {
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
       viewableIf: alwaysPublic,
-      resolveAs: 'nova_upvotedComments: [Vote]',
+      resolveAs: '__upvotedComments: [Vote]',
     }
   },
   /**
     An array containing posts upvotes
   */
   {
-    fieldName: 'nova_upvotedPosts',
+    fieldName: '__upvotedPosts',
     fieldSchema: {
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
       viewableIf: alwaysPublic,
-      resolveAs: 'nova_upvotedPosts: [Vote]',
+      resolveAs: '__upvotedPosts: [Vote]',
     }
   },
   /**
     An array containing comment downvotes
   */
   {
-    fieldName: 'nova_downvotedComments',
+    fieldName: '__downvotedComments',
     fieldSchema: {
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
       viewableIf: alwaysPublic,
-      resolveAs: 'nova_downvotedComments: [Vote]',
+      resolveAs: '__downvotedComments: [Vote]',
     }
   },
   /**
     An array containing posts downvotes
   */
   {  
-    fieldName: 'nova_downvotedPosts',
+    fieldName: '__downvotedPosts',
     fieldSchema: {
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
       viewableIf: alwaysPublic,
-      resolveAs: 'nova_downvotedPosts: [Vote]',
+      resolveAs: '__downvotedPosts: [Vote]',
     }
   },
 ]);

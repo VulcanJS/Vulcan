@@ -35,41 +35,41 @@ const AppContainerWithData = graphql(gql`
       username
       createdAt
       isAdmin
-      nova_bio
-      nova_commentCount
-      nova_displayName
-      nova_downvotedComments {
+      __bio
+      __commentCount
+      __displayName
+      __downvotedComments {
         itemId
         power
         votedAt
       }
-      nova_downvotedPosts {
+      __downvotedPosts {
         itemId
         power
         votedAt
       }
-      nova_email
-      nova_emailHash
-      nova_htmlBio
-      nova_karma
-      nova_postCount
-      nova_slug
-      nova_twitterUsername
-      nova_upvotedComments {
+      __email
+      __emailHash
+      __htmlBio
+      __karma
+      __postCount
+      __slug
+      __twitterUsername
+      __upvotedComments {
         itemId
         power
         votedAt
       }
-      nova_upvotedPosts {
+      __upvotedPosts {
         itemId
         power
         votedAt
       }
-      nova_website
-      nova_groups
-      nova_notifications_users
-      nova_notifications_posts
-      nova_newsletter_subscribeToNewsletter
+      __website
+      __groups
+      __notifications_users
+      __notifications_posts
+      __newsletter_subscribeToNewsletter
     }
   }
 `, {
