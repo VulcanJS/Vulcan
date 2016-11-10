@@ -34,8 +34,10 @@ class CategoriesEditForm extends Component{
         <NovaForm 
           document={this.props.category}
           collection={Categories}
-          methodName="categories.edit"
+          mutationName="categoriesEdit"
+          resultQuery={Categories.graphQLQueries.single}
           successCallback={(category)=>{
+            this.context.closeCallback();
             this.props.flash("Category edited.", "success");
           }}
         />

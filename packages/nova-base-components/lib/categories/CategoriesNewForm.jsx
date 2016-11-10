@@ -15,7 +15,7 @@ const CategoriesNewForm = (props, context) => {
         mutationName="categoriesNew"
         resultQuery={Categories.graphQLQueries.single}
         updateQueries={{
-          getAppData: (prev, {mutationResult}) => {
+          getCategoriesList: (prev, {mutationResult}) => {
             const newCategory = mutationResult.data.categoriesNew;
             const newCategoriesList = update(prev, {
               categories: {
