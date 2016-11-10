@@ -1,9 +1,12 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
+import { withPostsList } from 'meteor/nova:base-containers';
 
-const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore, showHeader = true}) => {
+const PostsList = (props) => {
 
-  if (!!results.length) {
+  const {results, terms, hasMore, loading, count, totalCount, loadMore, showHeader = true} = props
+
+  if (results && results.length) {
     return (
       <div className="posts-list">
         {showHeader ? <Telescope.components.PostsListHeader/> : null}
@@ -13,16 +16,15 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
         {hasMore ? (ready ? <Telescope.components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Telescope.components.PostsLoading/>) : <Telescope.components.PostsNoMore/>}
       </div>
     )
-  // note: we're handling the "loading" case in the container now
-  // } else if (!ready) {
-  //   return (
-  //     <div className="posts-list">
-  //       {showHeader ? <Telescope.components.PostsListHeader /> : null}
-  //       <div className="posts-list-content">
-  //         <Telescope.components.PostsLoading/>
-  //       </div>
-  //     </div>
-  //   )
+  } else if (loading) {
+    return (
+      <div className="posts-list">
+        {showHeader ? <Telescope.components.PostsListHeader /> : null}
+        <div className="posts-list-content">
+          <Telescope.components.PostsLoading/>
+        </div>
+      </div>
+    )
   } else {
     return (
       <div className="posts-list">
@@ -38,4 +40,8 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
 
 PostsList.displayName = "PostsList";
 
-module.exports = PostsList;
+PostsList.propTypes = {
+
+};
+
+module.exports = withPostsList({})(PostsList);
