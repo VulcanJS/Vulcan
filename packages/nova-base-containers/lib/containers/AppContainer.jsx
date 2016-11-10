@@ -5,11 +5,21 @@ import Events from "meteor/nova:events";
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { composeWithTracker } from 'react-komposer';
+
+const currentUserComposer = (props, onData) => {
+  const data = {
+    currentUser: Meteor.user()
+  }
+  onData(null, data);
+}
 
 const AppContainer = (props, context) => {
 
-  const {loading, refetch, currentUser, categories} = props.data;
+  const {loading, refetch, /*currentUser,*/ categories} = props.data;
   
+  const currentUser = props.currentUser;
+
   return <Telescope.components.App
     ready={!loading}
     currentUser={currentUser}
@@ -40,47 +50,47 @@ const AppContainerWithData = graphql(gql`
       slug
       image
     }
-    currentUser {
-      _id
-      username
-      createdAt
-      isAdmin
-      nova_bio
-      nova_commentCount
-      nova_displayName
-      nova_downvotedComments {
-        itemId
-        power
-        votedAt
-      }
-      nova_downvotedPosts {
-        itemId
-        power
-        votedAt
-      }
-      nova_email
-      nova_emailHash
-      nova_htmlBio
-      nova_karma
-      nova_postCount
-      nova_slug
-      nova_twitterUsername
-      nova_upvotedComments {
-        itemId
-        power
-        votedAt
-      }
-      nova_upvotedPosts {
-        itemId
-        power
-        votedAt
-      }
-      nova_website
-      nova_groups
-      nova_notifications_users
-      nova_notifications_posts
-      nova_newsletter_subscribeToNewsletter
-    }
+    #currentUser {
+    #  _id
+    #  username
+    #  createdAt
+    #  isAdmin
+    #  nova_bio
+    #  nova_commentCount
+    #  nova_displayName
+    #  nova_downvotedComments {
+    #    itemId
+    #    power
+    #    votedAt
+    #  }
+    #  nova_downvotedPosts {
+    #    itemId
+    #    power
+    #    votedAt
+    #  }
+    #  nova_email
+    #  nova_emailHash
+    #  nova_htmlBio
+    #  nova_karma
+    #  nova_postCount
+    #  nova_slug
+    #  nova_twitterUsername
+    #  nova_upvotedComments {
+    #    itemId
+    #    power
+    #    votedAt
+    #  }
+    #  nova_upvotedPosts {
+    #    itemId
+    #    power
+    #    votedAt
+    #  }
+    #  nova_website
+    #  nova_groups
+    #  nova_notifications_users
+    #  nova_notifications_posts
+    #  nova_newsletter_subscribeToNewsletter
+    #}
   }
 `, {
   options(ownProps) {
@@ -91,4 +101,4 @@ const AppContainerWithData = graphql(gql`
   },
 })(AppContainer);
 
-module.exports = AppContainerWithData;
+module.exports = composeWithTracker(currentUserComposer)(AppContainerWithData);
