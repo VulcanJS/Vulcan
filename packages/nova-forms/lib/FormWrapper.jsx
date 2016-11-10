@@ -53,7 +53,7 @@ class FormWrapper extends Component{
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : this.props.collection.simpleSchema()._schema;
+    return this.props.schema ? this.props.schema : Telescope.utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
   }
 
   getFieldGroups() {

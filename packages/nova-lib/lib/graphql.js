@@ -1,3 +1,4 @@
+import Telescope from './config.js';
 import deepmerge from 'deepmerge';
 
 const jsTypeToGraphQLType = typeName => {
@@ -73,19 +74,8 @@ Telescope.graphQL = {
     const collectionName = collection._name;
     const mainTypeName = collection.typeName ? collection.typeName : Telescope.utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
-    let schema = collection.simpleSchema()._schema;
-
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
-    if (collectionName === "users") {
-      // grab the users schema keys
-      const schemaKeys = Object.keys(schema);
-
-      // remove any field beginning by telescope: .telescope, .telescope.upvotedPosts.$, ...
-      const filteredSchemaKeys = schemaKeys.filter(key => key.slice(0,9) !== 'telescope');
-      
-      // replace the previous schema by an object based on this filteredSchemaKeys
-      schema = filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
-    }
+    const schema = Telescope.utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
 
     let mainSchema = [], inputSchema = [], unsetSchema = [];
 

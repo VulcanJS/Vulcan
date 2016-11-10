@@ -372,4 +372,16 @@ Telescope.utils.unflatten = function( array, idProperty, parentIdProperty, paren
   }
 
   return tree;
+};
+
+// remove the telescope object from a schema and duplicate it at the root
+Telescope.utils.stripTelescopeNamespace = (schema) => {
+  // grab the users schema keys
+  const schemaKeys = Object.keys(schema);
+
+  // remove any field beginning by telescope: .telescope, .telescope.upvotedPosts.$, ...
+  const filteredSchemaKeys = schemaKeys.filter(key => key.slice(0,9) !== 'telescope');
+  
+  // replace the previous schema by an object based on this filteredSchemaKeys
+  return filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
 }

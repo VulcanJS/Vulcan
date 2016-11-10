@@ -268,7 +268,7 @@ Users.getViewableFields = function (user, collection) {
  * Get a list of all fields required for a profile to be complete.
  */
 Users.getRequiredFields = function () {
-  var schema = Users.simpleSchema()._schema;
+  var schema = Telescope.utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
   var fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return !!field.required;

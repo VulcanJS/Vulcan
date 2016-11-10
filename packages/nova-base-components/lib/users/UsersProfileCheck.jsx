@@ -10,7 +10,7 @@ import { Accounts } from 'meteor/std:accounts-ui';
 const UsersProfileCheckModal = ({show, router}, {currentUser}) => {
 
   // return fields that are required by the schema but haven't been filled out yet
-  const schema = Users.simpleSchema()._schema;
+  const schema = Telescope.utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
   const requiredFields = _.filter(_.keys(schema), (fieldName) => {
     var field = schema[fieldName];
     return !!field.required && !Telescope.getNestedProperty(currentUser, fieldName);
