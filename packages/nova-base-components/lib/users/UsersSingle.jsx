@@ -3,7 +3,7 @@ import React from 'react';
 import Users from 'meteor/nova:users';
 
 const UsersSingle = (props, context) => {
-  return <Telescope.components.UsersSingleContainer userId={props.params._id} slug={props.params.slug} component={Telescope.components.UsersProfile} />
+  return <Telescope.components.UsersProfile userId={props.params._id} slug={props.params.slug} />
 };
 
 UsersSingle.displayName = "UsersSingle";

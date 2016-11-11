@@ -4,14 +4,7 @@ import Users from 'meteor/nova:users';
 
 const UsersAccount = (props, context) => {
   const terms = props.params.slug ? {slug: props.params.slug} : context.currentUser ? {userId: context.currentUser._id } : {};
-  return (
-    <Telescope.components.CanDo action="users.edit.own" displayNoPermissionMessage={true}>
-      <Telescope.components.UsersSingleContainer 
-        component={Telescope.components.UsersEditForm}
-        {...terms}
-      />
-    </Telescope.components.CanDo>
-  )
+  return <Telescope.components.UsersEditForm {...terms} />
 };
 
 UsersAccount.contextTypes = {

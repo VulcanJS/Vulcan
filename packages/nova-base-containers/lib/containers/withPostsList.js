@@ -4,7 +4,7 @@ import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withPostsList (getParams) {
+export default function withPostsList (params) {
   return graphql(gql`
     query getPostsView($terms: Terms, $offset: Int, $limit: Int) {
       postsViewTotal(terms: $terms)
@@ -14,15 +14,9 @@ export default function withPostsList (getParams) {
     }
   `, {
     options(ownProps) {
-      
-      const finalProps = getParams ? getParams(ownProps) : ownProps
-
-      // console.log(ownProps)
-      // console.log(finalProps)
-
       return {
         variables: { 
-          terms: finalProps.terms,
+          terms: ownProps.terms,
           offset: 0,
           limit: 10
         },

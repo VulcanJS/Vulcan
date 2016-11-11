@@ -4,7 +4,7 @@ import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withCommentsList (getParams) {
+export default function withCommentsList () {
   return graphql(gql`
     query getCommentsView ($postId: String) {
       comments (postId: $postId) {
@@ -24,12 +24,9 @@ export default function withCommentsList (getParams) {
     }
   `, {
     options(ownProps) {
-
-      const finalProps = getParams ? getParams(ownProps) : ownProps
-
       return {
         variables: { 
-          postId: finalProps.postId
+          postId: ownProps.postId
         },
         // pollInterval: 20000,
       };

@@ -28,7 +28,8 @@ const resolvers = {
       return context.Users.find({}, {limit: 5}).fetch();
     },
     user(root, args, context) {
-      return context.Users.findOne({$or: [{_id: args._id}, {'__slug': args.slug}]}, { fields: context.getViewableFields(context.currentUser, context.Users) });
+      const selector = args._id ? {_id: args._id} : {'__slug': args.slug};
+      return context.Users.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
     currentUser(root, args, context) {
       return context && context.userId ? context.Users.findOne(context.userId) : null;

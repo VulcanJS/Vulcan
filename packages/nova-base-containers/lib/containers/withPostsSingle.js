@@ -4,7 +4,7 @@ import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withPostsSingle (getParams) {
+export default function withPostsSingle (params) {
   return graphql(gql`
     query getPost($postId: String) {
       post(_id: $postId) {
@@ -13,11 +13,8 @@ export default function withPostsSingle (getParams) {
     }
   `, {
     options(ownProps) {
-
-      const finalProps = getParams ? getParams(ownProps) : ownProps;
-
       return {
-        variables: { postId: finalProps.postId },
+        variables: { postId: ownProps.postId },
         // pollInterval: 20000,
       };
     },

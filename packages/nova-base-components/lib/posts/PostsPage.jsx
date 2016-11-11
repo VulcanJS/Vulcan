@@ -37,7 +37,5 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-const getPostIdFromRouter = props => ({ postId: props.params._id });
-
-module.exports = withPostsSingle(getPostIdFromRouter)(PostsPage);
-export default withPostsSingle(getPostIdFromRouter)(PostsPage);
+module.exports = withPostsSingle()(PostsPage);
+export default withPostsSingle()(PostsPage);
