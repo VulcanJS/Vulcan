@@ -1,12 +1,12 @@
-import Telescope from 'meteor/nova:lib';
-import React, { PropTypes, Component } from 'react';
-import Posts from "meteor/nova:posts";
+// import Telescope from 'meteor/nova:lib';
+// import React, { PropTypes, Component } from 'react';
+// import Posts from "meteor/nova:posts";
 
-const PostsHome = (props, context) => {
-  const terms = props.location && props.location.query;
-  return <Telescope.components.PostsList terms={terms}/>
-};
+// const PostsHome = (props, context) => {
+//   const terms = props.location && props.location.query;
+//   return <Telescope.components.PostsList terms={terms}/>
+// };
 
-PostsHome.displayName = "PostsHome";
+// PostsHome.displayName = "PostsHome";
 
-module.exports = PostsHome;
+// module.exports = PostsHome;

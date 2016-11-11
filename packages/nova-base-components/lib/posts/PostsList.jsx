@@ -41,7 +41,16 @@ const PostsList = (props) => {
 PostsList.displayName = "PostsList";
 
 PostsList.propTypes = {
-
+  results: React.PropTypes.array,
+  terms: React.PropTypes.object,
+  hasMore: React.PropTypes.bool,
+  loading: React.PropTypes.bool,
+  count: React.PropTypes.number,
+  totalCount: React.PropTypes.number,
+  loadMore: React.PropTypes.func,
+  showHeader: React.PropTypes.bool,
 };
 
-module.exports = withPostsList({})(PostsList); // get terms from parent component
+const getTermsFromRouter = props => ({terms: props.location && props.location.query});
+
+module.exports = withPostsList(getTermsFromRouter)(PostsList);

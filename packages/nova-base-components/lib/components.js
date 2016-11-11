@@ -42,15 +42,15 @@ Telescope.registerComponent("PostsDay",             require('./posts/PostsDay.js
 Telescope.registerComponent("PostsThumbnail",       require('./posts/PostsThumbnail.jsx'));
 Telescope.registerComponent("PostsEditForm",        require('./posts/PostsEditForm.jsx'));
 Telescope.registerComponent("PostsNewForm",         require('./posts/PostsNewForm.jsx'));
-Telescope.registerComponent("PostsCommentsThread",        require('./posts/PostsCommentsThread.jsx'));
+Telescope.registerComponent("PostsCommentsThread",  require('./posts/PostsCommentsThread.jsx'));
 
 // comments
 
 Telescope.registerComponent("CommentsItem",         require('./comments/CommentsItem.jsx'));
 Telescope.registerComponent("CommentsList",         require('./comments/CommentsList.jsx'));
 Telescope.registerComponent("CommentsNode",         require('./comments/CommentsNode.jsx'));
-Telescope.registerComponent("CommentsNewForm",          require('./comments/CommentsNewForm.jsx'));
-Telescope.registerComponent("CommentsEditForm",         require('./comments/CommentsEditForm.jsx'));
+Telescope.registerComponent("CommentsNewForm",      require('./comments/CommentsNewForm.jsx'));
+Telescope.registerComponent("CommentsEditForm",     require('./comments/CommentsEditForm.jsx'));
 Telescope.registerComponent("CommentsLoadMore",     require('./comments/CommentsLoadMore.jsx'));
 
 // categories

@@ -19,11 +19,11 @@ Meteor.startup(() => {
     Routes definition  
   */
 
-  Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
+  Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsList };
 
   Telescope.routes.add([
     {name:"posts.daily",    path:"daily",              component:Telescope.components.PostsDaily},
-    {name:"posts.single",   path:"posts/:_id(/:slug)", component:Telescope.components.PostsSingle},
+    {name:"posts.single",   path:"posts/:_id(/:slug)", component:Telescope.components.PostsPage},
     {name:"users.single",   path:"users/:slug",        component:Telescope.components.UsersSingle},
     {name:"users.account",  path:"account",            component:Telescope.components.UsersAccount},
     {name:"users.edit",     path:"users/:slug/edit",   component:Telescope.components.UsersAccount},

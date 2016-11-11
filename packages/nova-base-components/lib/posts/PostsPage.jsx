@@ -1,34 +1,34 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
-import Posts from "meteor/nova:posts";
+import Posts from 'meteor/nova:posts';
+import { withPostsSingle } from 'meteor/nova:base-containers';
 
 const PostsPage = (props) => {
   
-  const post = props.document;
-  const htmlBody = {__html: post.htmlBody};
+  if (props.data.loading) {
 
-  return (
-    <div className="posts-page">
+    return <div className="posts-page"><Telescope.components.Loading/></div>
 
-      <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
-      
-      <Telescope.components.PostsItem post={post} />
+  } else {
 
-      {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+    const post = props.data.post;
+    const htmlBody = {__html: post.htmlBody};
 
-      {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
+    return (
+      <div className="posts-page">
+        <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
+        
+        <Telescope.components.PostsItem post={post} />
 
-      <Telescope.components.CommentsListContainer
-        component={Telescope.components.PostsCommentsThread}
-        postId={post._id}
-        componentProps={{
-          commentCount: post.commentCount,
-          postId: post._id
-        }}
-      />
+        {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
-    </div>
-  )
+        {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
+
+        <Telescope.components.PostsCommentsThread postId={post._id} />
+
+      </div> 
+    )
+  }
 };
 
 PostsPage.displayName = "PostsPage";
@@ -37,5 +37,7 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-module.exports = PostsPage;
-export default PostsPage;
+const getPostIdFromRouter = props => ({ postId: props.params._id });
+
+module.exports = withPostsSingle(getPostIdFromRouter)(PostsPage);
+export default withPostsSingle(getPostIdFromRouter)(PostsPage);

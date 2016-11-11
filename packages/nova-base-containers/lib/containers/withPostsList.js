@@ -1,11 +1,10 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Posts from "meteor/nova:posts";
-
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withPostsList(params){
+export default function withPostsList (getParams) {
   return graphql(gql`
     query getPostsView($terms: Terms, $offset: Int, $limit: Int) {
       postsViewTotal(terms: $terms)
@@ -16,11 +15,8 @@ export default function withPostsList(params){
   `, {
     options(ownProps) {
       
-      // two ways of passing terms: via the wrapping call, or via
-      // the component calling the wrapped component
-      const finalProps = {...params, ...ownProps};
+      const finalProps = getParams ? getParams(ownProps) : ownProps
 
-      // console.log(params)
       // console.log(ownProps)
       // console.log(finalProps)
 
@@ -59,5 +55,5 @@ export default function withPostsList(params){
         ...props.ownProps // pass on the props down to the wrapped component
       };
     },
-  })
+  });
 }

@@ -1,11 +1,11 @@
-import Telescope from 'meteor/nova:lib';
-import React from 'react';
-import Posts from "meteor/nova:posts";
+// import Telescope from 'meteor/nova:lib';
+// import React from 'react';
+// import Posts from "meteor/nova:posts";
 
-const PostsSingle = (props, context) => {
-  return <Telescope.components.PostsSingleContainer postId={props.params._id} component={Telescope.components.PostsPage} />
-};
+// const PostsSingle = (props, context) => {
+//   return <Telescope.components.PostsPage postId={props.params._id} />
+// };
 
-PostsSingle.displayName = "PostsSingle";
+// PostsSingle.displayName = "PostsSingle";
 
-module.exports = PostsSingle;
+// module.exports = PostsSingle;
