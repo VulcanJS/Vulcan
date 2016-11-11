@@ -32,7 +32,7 @@ Meteor.startup(() => {
 
   const AppRoutes = {
     path: '/',
-    component: Telescope.components.AppContainer,
+    component: Telescope.components.App,
     indexRoute: Telescope.routes.indexRoute,
     childRoutes: Telescope.routes.routes
   };

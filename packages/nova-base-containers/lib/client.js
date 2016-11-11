@@ -1,5 +1,6 @@
 import './containers.js';
 
+import withApp from './containers/withApp.js';
 import withPostsList from './containers/withPostsList.js';
 import withPostsSingle from './containers/withPostsSingle.js';
 import withCommentsList from './containers/withCommentsList.js';
@@ -10,6 +11,7 @@ import withVoteMutation from './mutations/withVoteMutation.js';
 
 export {
   // query containers
+  withApp,
   withPostsList,
   withPostsSingle,
   withCommentsList,

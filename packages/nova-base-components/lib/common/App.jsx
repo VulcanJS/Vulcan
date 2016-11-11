@@ -1,6 +1,8 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
+import Events from "meteor/nova:events";
+import { withApp } from 'meteor/nova:base-containers';
 
 class App extends Component {
 
@@ -18,7 +20,7 @@ class App extends Component {
     return {
       currentUser: this.props.currentUser,
       actions: {call: Meteor.call},
-      events: this.props.events,
+      events: Events,
       intl: intl
     };
   }
@@ -51,5 +53,4 @@ App.childContextTypes = {
   intl: intlShape,
 }
 
-module.exports = App;
-export default App;
+module.exports = withApp(App);
