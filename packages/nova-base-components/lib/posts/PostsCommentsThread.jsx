@@ -49,5 +49,5 @@ PostsCommentsThread.contextTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = withCommentsList()(PostsCommentsThread);
-export default withCommentsList()(PostsCommentsThread);
+module.exports = withCommentsList(PostsCommentsThread);
+export default withCommentsList(PostsCommentsThread);

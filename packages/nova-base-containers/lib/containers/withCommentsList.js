@@ -4,7 +4,7 @@ import Posts from "meteor/nova:posts";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withCommentsList () {
+export default function withCommentsList (component, options) {
   return graphql(gql`
     query getCommentsView ($postId: String) {
       comments (postId: $postId) {
@@ -52,5 +52,5 @@ export default function withCommentsList () {
         // },
       };
     },
-  });
+  })(component);
 }

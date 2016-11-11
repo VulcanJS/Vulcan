@@ -37,5 +37,5 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-module.exports = withPostsSingle()(PostsPage);
-export default withPostsSingle()(PostsPage);
+module.exports = withPostsSingle(PostsPage);
+export default withPostsSingle(PostsPage);

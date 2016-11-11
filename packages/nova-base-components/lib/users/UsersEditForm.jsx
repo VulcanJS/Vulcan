@@ -56,5 +56,5 @@ UsersEditForm.displayName = "UsersEditForm";
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withUsersSingle()(UsersEditForm));
-export default connect(mapStateToProps, mapDispatchToProps)(withUsersSingle()(UsersEditForm));
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withUsersSingle(UsersEditForm));
+export default connect(mapStateToProps, mapDispatchToProps)(withUsersSingle(UsersEditForm));
