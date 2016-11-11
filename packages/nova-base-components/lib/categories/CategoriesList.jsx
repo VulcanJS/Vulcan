@@ -6,6 +6,7 @@ import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
+import { withCategoriesList } from 'meteor/nova:base-containers';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 
@@ -155,5 +156,4 @@ CategoriesList.contextTypes = {
   currentUser: React.PropTypes.object,
 };
 
-module.exports = withRouter(CategoriesList);
-export default withRouter(CategoriesList);
+module.exports = withRouter(withCategoriesList(CategoriesList, {}));
