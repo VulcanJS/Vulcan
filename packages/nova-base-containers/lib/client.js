@@ -6,4 +6,16 @@ import withCommentsList from './containers/withCommentsList.js';
 import withUsersSingle from './containers/withUsersSingle.js';
 import withCategoriesList from './containers/withCategoriesList.js';
 
-export {withPostsList, withPostsSingle, withCommentsList, withUsersSingle, withCategoriesList}
+import withVoteMutation from './mutations/withVoteMutation.js';
+
+export {
+  // query containers
+  withPostsList,
+  withPostsSingle,
+  withCommentsList,
+  withUsersSingle,
+  withCategoriesList,
+
+  // mutation containers
+  withVoteMutation,
+}
