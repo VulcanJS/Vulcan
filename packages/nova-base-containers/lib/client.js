@@ -5,4 +5,6 @@ import withPostsSingle from './containers/withPostsSingle.js';
 import withCommentsList from './containers/withCommentsList.js';
 import withUsersSingle from './containers/withUsersSingle.js';
 
-export {withPostsList, withPostsSingle, withCommentsList, withUsersSingle}
+import withVoteMutation from './mutations/withVoteMutation.js';
+
+export { withPostsList, withPostsSingle, withCommentsList, withUsersSingle, withVoteMutation }

@@ -2,6 +2,9 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import Users from 'meteor/nova:users';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withVoteMutation } from 'meteor/nova:base-containers';
 
 class Vote extends Component {
 
@@ -79,5 +82,9 @@ Vote.contextTypes = {
   events: React.PropTypes.object,
 };
 
-module.exports = Vote;
-export default Vote;
+// redux state + actions for messages
+const mapStateToProps = state => ({ messages: state.messages });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote));
+export default connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote));
