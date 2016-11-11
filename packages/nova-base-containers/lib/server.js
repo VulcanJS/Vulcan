@@ -1,4 +1,4 @@
-import './containers.js';
+import './fragments.js';
 
 import withApp from './containers/withApp.js';
 import withPostsList from './containers/withPostsList.js';

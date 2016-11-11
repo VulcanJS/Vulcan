@@ -31,10 +31,11 @@ const FormWithMutation = props => {
     ComponentWithMutation = graphql(gql`
       mutation ${props.mutationName}($documentId: String, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
         ${props.mutationName}(documentId: $documentId, set: $set, unset: $unset) {
-          ${props.resultQuery}
+          ${props.fragment ? `...${props.fragment[0].name.value}` : props.resultQuery}
         }
       }
     `, {
+      options: (props) => props.fragment ? {fragments: props.fragment} : {},
       props: ({ownProps, mutate}) => ({
         mutation: ({documentId, set, unset}) => {
           return mutate({ 
@@ -50,10 +51,11 @@ const FormWithMutation = props => {
     ComponentWithMutation = graphql(gql`
       mutation ${props.mutationName}($document: ${collectionName}Input) {
         ${props.mutationName}(document: $document) {
-          ${props.resultQuery}
+          ${props.fragment ? `...${props.fragment[0].name.value}` : props.resultQuery}
         }
       }
     `, {
+      options: (props) => props.fragment ? {fragments: props.fragment} : {},
       props: ({ownProps, mutate}) => ({
         mutation: ({document}) => {
           return mutate({ 

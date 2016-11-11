@@ -13,7 +13,8 @@ const CategoriesNewForm = (props, context) => {
       <NovaForm 
         collection={Categories} 
         mutationName="categoriesNew"
-        resultQuery={Categories.graphQLQueries.single}
+        // resultQuery={Categories.graphQLQueries.single}
+        fragment={Categories.fragments.full}
         updateQueries={{
           getCategoriesList: (prev, {mutationResult}) => {
             const newCategory = mutationResult.data.categoriesNew;
@@ -22,6 +23,7 @@ const CategoriesNewForm = (props, context) => {
                 $push: [newCategory]
               }
             });
+            // note: 'newCategoriesList' is extended with the category but somehow when the query updates it e
             return newCategoriesList;
           },
         }}

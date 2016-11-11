@@ -8,13 +8,17 @@ export default function withCategoriesList(component, options) {
   return graphql(gql`
     query getCategoriesList {
       categories {
-        ${Categories.graphQLQueries.single}
+        ...fullCategoryInfo
+        parent {
+          ...fullCategoryInfo
+        }
       }
     }
   `, {
     options(ownProps) {
       return {
         variables: {},
+        fragments: Categories.fragments.full,
         // pollInterval: 20000,
       };
     },
