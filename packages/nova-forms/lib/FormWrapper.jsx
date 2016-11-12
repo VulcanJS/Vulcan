@@ -4,7 +4,10 @@ import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
+import withEdit from './withEdit.jsx';
+import withNew from './withNew.jsx';
 import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
+
 
 /*
 
@@ -469,5 +472,5 @@ FormWrapper.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = FormWrapper;
-export default FormWrapper;
+module.exports = withEdit(withNew(FormWrapper));
+export default withEdit(withNew(FormWrapper));

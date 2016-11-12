@@ -8,6 +8,7 @@ import withUsersSingle from './containers/withUsersSingle.js';
 import withCategoriesList from './containers/withCategoriesList.js';
 
 import withVoteMutation from './mutations/withVoteMutation.js';
+import withEdit from './mutations/withEdit.js';
 
 export {
   // query containers
@@ -20,4 +21,5 @@ export {
 
   // mutation containers
   withVoteMutation,
+  withEdit,
 }
