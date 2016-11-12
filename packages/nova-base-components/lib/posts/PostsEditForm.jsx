@@ -56,29 +56,26 @@ class PostsEditForm extends Component {
     return (
       <div className="posts-edit-form">
         {this.renderAdminArea()}
-        <Telescope.components.PostsSingleContainer
-          postId={this.props.post._id}
-          component={NovaForm}
-          componentProps={{
-            collection: Posts,
-            mutationName: "postsEdit",
-            resultQuery: Posts.graphQLQueries.single,
-            successCallback: (post) => { 
-              this.context.closeCallback();
-              this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
-            }
+        <NovaForm
+          collection={Posts}
+          mutationName="postsEdit"
+          document={this.props.post}
+          resultQuery={Posts.graphQLQueries.single}
+          successCallback={post => { 
+            this.context.closeCallback();
+            this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
         />
         <hr/>
         <a onClick={this.deletePost} className="delete-post-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="posts.delete"/></a>
       </div>
-    )
+    );
+    
   }
 }
 
 PostsEditForm.propTypes = {
   flash: React.PropTypes.func,
-  novaFormMutation: React.PropTypes.func,
   post: React.PropTypes.object.isRequired,
 }
 
