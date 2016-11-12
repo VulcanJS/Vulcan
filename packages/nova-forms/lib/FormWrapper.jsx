@@ -38,7 +38,7 @@ class FormWrapper extends Component{
     this.clearForm = this.clearForm.bind(this);
     this.updateCurrentValue = this.updateCurrentValue.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
-
+    this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
     this.debouncedSetState = _.debounce(this.setState, 500);
 
@@ -229,6 +229,14 @@ class FormWrapper extends Component{
     this.setState({currentValues: currentValues});
   }
 
+  // key down handler
+  formKeyDown(event) {
+
+    if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+      this.submitForm(this.refs.form.getModel());
+    }
+  }
+
   // --------------------------------------------------------------------- //
   // ------------------------------- Errors ------------------------------ //
   // --------------------------------------------------------------------- //
@@ -386,25 +394,26 @@ class FormWrapper extends Component{
 
   }
 
-  componentWillUnmount() {
-    // note: patch to cancel closeCallback given by parent
-    // we clean the event by hand
-    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
-    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
-    // let's not call setState on an unmounted component (avoid no-op / memory leak)
-    this.context.closeCallback = f => f;
-  }
+  deleteDocument() {
+    const document = this.getDocument();
+    const documentId = document._id;
+    const documentTitle = document.title || document.name || "this document";
 
-  // key down handler
-  formKeyDown(event) {
+    const deleteDocumentConfirm = this.context.intl.formatMessage({id: `${this.props.collection._name}.delete_confirm`}, {title: documentTitle});
 
-    if( (event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-      this.submitForm(this.refs.form.getModel());
+    if (window.confirm(deleteDocumentConfirm)) { 
+      this.props.removeMutation({documentId})
+        .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
+          this.props.removeSuccessCallback({documentId, documentTitle});
+        })
+        .catch(() => {
+          console.log('something went bad when removing the document', documentId);
+        });
     }
   }
 
   // --------------------------------------------------------------------- //
-  // ------------------------------- Render ------------------------------ //
+  // ------------------------- Lifecycle Hooks --------------------------- //
   // --------------------------------------------------------------------- //
 
   render() {
@@ -424,8 +433,28 @@ class FormWrapper extends Component{
           <Button type="submit" bsStyle="primary"><FormattedMessage id="forms.submit"/></Button>
           {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}><FormattedMessage id="forms.cancel"/></a> : null}
         </Formsy.Form>
+
+        {
+          this.props.removeMutation 
+            ? <div>
+                <hr/>
+                <a onClick={this.deleteDocument} className="delete-post-link">
+                  <Telescope.components.Icon name="close"/> <FormattedMessage id="posts.delete"/>
+                </a>
+              </div>
+            : null
+        }
       </div>
     )
+  }
+
+  componentWillUnmount() {
+    // note: patch to cancel closeCallback given by parent
+    // we clean the event by hand
+    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
+    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
+    // let's not call setState on an unmounted component (avoid no-op / memory leak)
+    this.context.closeCallback = f => f;
   }
 
 }
@@ -439,6 +468,7 @@ FormWrapper.propTypes = {
 
   // graphQL
   mutation: React.PropTypes.func, // the mutation
+  removeMutation: React.PropTypes.func, // the remove mutation when editing document
 
   // form
   labelFunction: React.PropTypes.func,
@@ -449,13 +479,15 @@ FormWrapper.propTypes = {
   // callbacks
   submitCallback: React.PropTypes.func,
   successCallback: React.PropTypes.func,
+  removeSuccessCallback: React.PropTypes.func,
   errorCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func,
 
 }
 
 FormWrapper.defaultProps = {
-  layout: "horizontal"
+  layout: "horizontal",
+  removeSuccessCallback: ({documentId}) => console.log('document removed', documentId),
 }
 
 FormWrapper.contextTypes = {

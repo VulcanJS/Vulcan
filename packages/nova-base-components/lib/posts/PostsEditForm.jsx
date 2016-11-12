@@ -9,37 +9,6 @@ import { connect } from 'react-redux';
 
 class PostsEditForm extends Component {
 
-  constructor() {
-    super();
-    this.deletePost = this.deletePost.bind(this);
-  }
-
-  deletePost() {
-    const post = this.props.post;
-    const deletePostConfirm = this.context.intl.formatMessage({id: "posts.delete_confirm"}, {title: post.title});
-    const deletePostSuccess = this.context.intl.formatMessage({id: "posts.delete_success"}, {title: post.title});
-
-    const successOperations = () => {
-      this.props.flash(deletePostSuccess, "success");
-      this.context.events.track("post deleted", {'_id': post._id});
-      // note: no need to call closeCallback because once the post is deleted, the modal automatically disappears
-    }
-
-    if (window.confirm(deletePostConfirm)) { 
-      console.log('to be handled with mutation');
-      // this.context.actions.call('posts.remove', post._id, (error, result) => {
-      //   if (this.context.refetchPostsListQuery) {
-      //     // post edit form is being included from a post list, refresh list
-      //     this.context.refetchPostsListQuery().then(successOperations);
-      //   } else {
-      //     // post edit form is being included from a single post, redirect to root
-      //     this.props.router.push('/');
-      //     successOperations();
-      //   }
-      // });
-    }
-  }
-
   renderAdminArea() {
     return (
       <Telescope.components.CanDo action="posts.edit.all">
@@ -65,9 +34,19 @@ class PostsEditForm extends Component {
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
+          removeSuccessCallback={({documentId, documentTitle}) => {
+            if (typeof this.context.closeCallback === "function") {
+              this.context.closeCallback();
+            } else {
+              // post edit form is being included from a single post, redirect to index
+              this.props.router.push('/');
+            }
+
+            const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'posts.delete_success'}, {title: documentTitle});
+            this.props.flash(deleteDocumentSuccess, "success");
+            this.context.events.track("post deleted", {'_id': documentId});
+          }}
         />
-        <hr/>
-        <a onClick={this.deletePost} className="delete-post-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="posts.delete"/></a>
       </div>
     );
     

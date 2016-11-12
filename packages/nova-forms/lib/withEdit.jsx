@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import hoistStatics from 'hoist-non-react-statics'
 import { getDisplayName } from './utils';
+import withRemove from './withRemove.jsx'
 
 export default function withEdit(WrappedComponent, options) {
 
@@ -40,7 +41,10 @@ export default function withEdit(WrappedComponent, options) {
           }),
         })(WrappedComponent);
 
-        return <ComponentWithMutation {...this.props} />
+        // add the remove mutation to the component with the edit mutation
+        const ComponentWithRemoveAndEdit = withRemove(ComponentWithMutation);
+
+        return <ComponentWithRemoveAndEdit {...this.props} />
 
       }
     }

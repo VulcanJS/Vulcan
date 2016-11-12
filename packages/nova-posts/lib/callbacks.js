@@ -374,6 +374,7 @@ function PostsRemoveValidation (post, currentUser) {
   if (!currentUser || !Users.canEdit(currentUser, post)){
     throw new Meteor.Error(606, 'You need permission to edit or delete a post');
   }
+  return post;
 }
 Telescope.callbacks.add("posts.remove.validate", PostsRemoveValidation);
 
