@@ -19,6 +19,9 @@ export default resolvers = {
       };
       return context.Categories.find({}, options).fetch();
     },
+    categoriesListTotal(root, args, context) {
+      return context.Categories.find({}).count();
+    },
     category(root, args, context) {
       return context.Categories.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
     },

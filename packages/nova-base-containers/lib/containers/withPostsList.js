@@ -6,8 +6,8 @@ import gql from 'graphql-tag';
 
 export default function withPostsList (component, options) {
   return graphql(gql`
-    query getPostsView($terms: Terms, $offset: Int, $limit: Int) {
-      postsViewTotal(terms: $terms)
+    query getPostsList($terms: Terms, $offset: Int, $limit: Int) {
+      postsListTotal(terms: $terms)
       posts(terms: $terms, offset: $offset, limit: $limit) {
         ${Posts.graphQLQueries.list}
       }
@@ -25,15 +25,15 @@ export default function withPostsList (component, options) {
     },
     props(props) {
 
-      const {data: {loading, posts, postsViewTotal, fetchMore}} = props;
+      const {data: {loading, posts, postsListTotal, fetchMore}} = props;
 
       return {
         loading,
         results: posts,
-        totalCount: postsViewTotal,
+        totalCount: postsListTotal,
         count: posts && posts.length,
         loadMore() {
-          // basically, rerun the query 'getPostsView' with a new offset
+          // basically, rerun the query 'getPostsList' with a new offset
           return fetchMore({
             variables: { offset: posts.length },
             updateQuery(previousResults, { fetchMoreResult }) {

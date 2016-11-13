@@ -20,14 +20,14 @@ const PostsNewForm = (props, context) => {
           mutationName="postsNew"
           resultQuery={Posts.graphQLQueries.single}
           updateQueries={{
-            getPostsView: (prev, { mutationResult }) => {
+            getPostsList: (prev, { mutationResult }) => {
               const newPost = mutationResult.data.postsNew;
               const newList = update(prev, {
                 posts: {
                   $unshift: [newPost],
                 },
-                postsViewTotal: {
-                  $set: prev.postsViewTotal + 1
+                postsListTotal: {
+                  $set: prev.postsListTotal + 1
                 }
               });
               return newList;

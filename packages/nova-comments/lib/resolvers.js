@@ -38,6 +38,9 @@ const resolvers = {
       }
       return context.Comments.find({postId: postId}, options).fetch();
     },
+    commentsListTotal(root, {postId}, context) {
+      return context.Comments.find({postId: postId}).count();
+    },
     comment(root, args, context) {
       return context.Comments.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Comments) });
     },

@@ -7,6 +7,7 @@ import gql from 'graphql-tag';
 export default function withCategoriesList(component, options) {
   return graphql(gql`
     query getCategoriesList {
+      categoriesListTotal
       categories {
         ...fullCategoryInfo
         parent {

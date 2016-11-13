@@ -25,7 +25,7 @@ export default resolvers = {
       options.fields = context.getViewableFields(context.currentUser, context.Posts);
       return context.Posts.find(selector, options).fetch();
     },
-    postsViewTotal(root, {terms}, context) {
+    postsListTotal(root, {terms}, context) {
       const {selector} = context.Posts.parameters.get(terms);
       return context.Posts.find(selector).count();
     },

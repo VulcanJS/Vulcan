@@ -21,7 +21,10 @@ const CategoriesNewForm = (props, context) => {
             const newCategoriesList = update(prev, {
               categories: {
                 $push: [newCategory]
-              }
+              },
+              categoriesListTotal: {
+                $set: prev.categoriesListTotal + 1
+              },
             });
             // note: 'newCategoriesList' is extended with the category but somehow when the query updates it e
             return newCategoriesList;

@@ -5,7 +5,8 @@ import gql from 'graphql-tag';
 
 export default function withCommentsList (component, options) {
   return graphql(gql`
-    query getCommentsView ($postId: String) {
+    query getCommentsList ($postId: String) {
+      commentsListTotal(postId: $postId)
       comments (postId: $postId) {
         _id
         postId
@@ -36,7 +37,7 @@ export default function withCommentsList (component, options) {
         loading,
         results: comments,
         // loadMore() {
-        //   // basically, rerun the query 'getPostsView' with a new offset
+        //   // basically, rerun the query 'getPostsList' with a new offset
         //   return fetchMore({
         //     variables: { offset: posts.length },
         //     updateQuery(previousResults, { fetchMoreResult }) {

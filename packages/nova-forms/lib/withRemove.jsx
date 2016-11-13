@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import hoistStatics from 'hoist-non-react-statics'
+import hoistStatics from 'hoist-non-react-statics';
+import update from 'immutability-helper';
 import { getDisplayName } from './utils';
 
-export default function withEdit(WrappedComponent, options) {
+export default function withRemove(WrappedComponent, options) {
 
   class WithRemove extends Component {
     constructor(...args) {
@@ -27,7 +28,25 @@ export default function withEdit(WrappedComponent, options) {
           removeMutation: ({documentId}) => {
             return mutate({ 
               variables: {documentId},
-              // should call updateQueries here
+              updateQueries: {
+                // ex: getPostsList
+                [`get${Telescope.utils.camelToSpaces(collectionName)}List`]: (prev, { mutationResult }) => {
+                  // filter the list to get a new one without the document
+                  const listWithoutDocument = prev[collectionName].filter(doc => doc._id !== documentId);
+                  // update the query
+                  const newList = update(prev, {
+                    // ex: posts
+                    [collectionName]: {
+                      $set: listWithoutDocument,
+                    },
+                    // ex: postsListTotal
+                    [`${collectionName}ListTotal`]: {
+                      $set: prev.postsListTotal - 1
+                    }
+                  });
+                  return newList;
+                },
+              }
             })
           },
         }),
