@@ -11,7 +11,7 @@ class CommentsItem extends Component{
 
   constructor() {
     super();
-    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback', 'deleteComment'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
+    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback', 'removeSuccessCallback'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
     this.state = {
       showReply: false,
       showEdit: false
@@ -46,19 +46,10 @@ class CommentsItem extends Component{
     this.setState({showEdit: false});
   }
 
-  deleteComment() {
-    
-    const comment = this.props.comment;
-    const deleteConfirmMessage = this.context.intl.formatMessage({id: "comments.delete_confirm"}, {body: Telescope.utils.trimWords(comment.body, 20)});
-    const deleteSuccessMessage = this.context.intl.formatMessage({id: "comments.delete_success"}, {body: Telescope.utils.trimWords(comment.body, 20)});
-    
-    if (window.confirm(deleteConfirmMessage)) {
-      this.context.actions.call('comments.deleteById', comment._id, (error, result) => {
-        this.props.flash(deleteSuccessMessage, "success");
-        this.context.events.track("comment deleted", {'_id': comment._id});
-      });
-    }
-
+  removeSuccessCallback({documentId}) {
+    const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'comments.delete_success'});
+    this.props.flash(deleteDocumentSuccess, "success");
+    this.context.events.track("comment deleted", {_id: documentId});
   }
 
   renderComment() {
@@ -80,7 +71,7 @@ class CommentsItem extends Component{
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
           successCallback={this.replySuccessCallback} 
-          cancelCallback={this.replyCancelCallback} 
+          cancelCallback={this.replyCancelCallback}
           type="reply"
         />
       </div>
@@ -94,6 +85,7 @@ class CommentsItem extends Component{
         comment={this.props.comment}
         successCallback={this.editSuccessCallback} 
         cancelCallback={this.editCancelCallback}
+        removeSuccessCallback={this.removeSuccessCallback}
       />
     )
   }
@@ -111,7 +103,6 @@ class CommentsItem extends Component{
             <Telescope.components.CanDo action="comments.edit" document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
-                <a className="comment-delete" onClick={this.deleteComment}><FormattedMessage id="comments.delete"/></a>
               </div>
             </Telescope.components.CanDo>
           </div>
@@ -130,7 +121,6 @@ CommentsItem.propTypes = {
 
 CommentsItem.contextTypes = {
   currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
 };

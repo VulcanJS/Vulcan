@@ -419,6 +419,7 @@ class FormWrapper extends Component{
   render() {
 
     const fieldGroups = this.getFieldGroups();
+    const collectionName = this.props.collection._name;
 
     return (
       <div className={"document-"+this.getFormType()}>
@@ -438,8 +439,8 @@ class FormWrapper extends Component{
           this.props.removeMutation 
             ? <div>
                 <hr/>
-                <a onClick={this.deleteDocument} className="delete-post-link">
-                  <Telescope.components.Icon name="close"/> <FormattedMessage id="posts.delete"/>
+                <a onClick={this.deleteDocument} className={`${collectionName}-delete-link`}>
+                  <Telescope.components.Icon name="close"/> <FormattedMessage id={`${collectionName}.delete`}/>
                 </a>
               </div>
             : null

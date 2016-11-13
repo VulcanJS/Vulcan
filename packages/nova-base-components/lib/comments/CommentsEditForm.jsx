@@ -15,6 +15,7 @@ const CommentsEditForm = (props, context) => {
         resultQuery={Comments.graphQLQueries.single}
         successCallback={props.successCallback}
         cancelCallback={props.cancelCallback}
+        removeSuccessCallback={props.removeSuccessCallback}
       />
     </div>
   )

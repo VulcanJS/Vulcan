@@ -8,25 +8,6 @@ import { connect } from 'react-redux';
 
 class CategoriesEditForm extends Component{
 
-  constructor() {
-    super();
-    this.deleteCategory = this.deleteCategory.bind(this);
-  }
-
-  deleteCategory() {
-    const category = this.props.category;
-    if (window.confirm(`Delete category “${category.name}”?`)) { 
-      this.context.actions.call("categories.deleteById", category._id, (error, result) => {
-        if (error) {
-          this.props.flash(error.message, "error");
-        } else {
-          this.props.flash(`Category “${category.name}” deleted and removed from ${result} posts.`, "success");
-        }
-        this.context.closeCallback();
-      });
-    }
-  }
-
   render() {
 
     return (
@@ -41,9 +22,13 @@ class CategoriesEditForm extends Component{
             this.context.closeCallback();
             this.props.flash("Category edited.", "success");
           }}
+          removeSuccessCallback={({documentId, documentTitle}) => {
+            this.context.closeCallback();
+            const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'categories.delete_success'}, {title: documentTitle});
+            this.props.flash(deleteDocumentSuccess, "success");
+            this.context.events.track("category deleted", {_id: documentId});
+          }}
         />
-        <hr/>
-        <a onClick={this.deleteCategory} className="categories-delete-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="categories.delete"/></a>
       </div>
     )
   }
@@ -54,7 +39,6 @@ CategoriesEditForm.propTypes = {
 }
 
 CategoriesEditForm.contextTypes = {
-  actions: React.PropTypes.object,
   closeCallback: React.PropTypes.func,
   currentUser: React.PropTypes.object,
 };

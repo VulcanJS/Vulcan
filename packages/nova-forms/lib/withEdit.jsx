@@ -24,7 +24,7 @@ export default function withEdit(WrappedComponent, options) {
 
         const collectionName = collection._name;
 
-        const ComponentWithMutation = graphql(gql`
+        const ComponentWithEdit = graphql(gql`
           mutation ${mutationName}($documentId: String, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {
             ${mutationName}(documentId: $documentId, set: $set, unset: $unset) {
               ${fragment ? `...${fragment[0].name.value}` : resultQuery}
@@ -41,10 +41,10 @@ export default function withEdit(WrappedComponent, options) {
           }),
         })(WrappedComponent);
 
-        // add the remove mutation to the component with the edit mutation
-        const ComponentWithRemoveAndEdit = withRemove(ComponentWithMutation);
-
-        return <ComponentWithRemoveAndEdit {...this.props} />
+        // add the remove mutation by default unless it's explicitly specified not to do it
+        const ComponentToRender = this.props.noRemoveMutation ? ComponentWithEdit : withRemove(ComponentWithEdit);
+  
+        return <ComponentToRender {...this.props} />
 
       }
     }

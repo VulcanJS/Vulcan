@@ -44,7 +44,7 @@ class PostsEditForm extends Component {
 
             const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'posts.delete_success'}, {title: documentTitle});
             this.props.flash(deleteDocumentSuccess, "success");
-            this.context.events.track("post deleted", {'_id': documentId});
+            this.context.events.track("post deleted", {_id: documentId});
           }}
         />
       </div>
