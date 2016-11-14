@@ -5,6 +5,7 @@ Categories.mutations = {
 
   categoriesNew(root, {document}, context) {
     return newMutation({
+      action: 'categories.new',
       collection: context.Categories, 
       document: document,
       currentUser: context.currentUser,
@@ -14,6 +15,7 @@ Categories.mutations = {
 
   categoriesEdit(root, {documentId, set, unset}, context) {
     return editMutation({
+      action: 'categories.edit.all',
       collection: context.Categories, 
       documentId: documentId,
       set: set, 
@@ -25,6 +27,7 @@ Categories.mutations = {
 
   categoriesRemove(root, {documentId}, context) {
     return removeMutation({
+      action: 'categories.remove.all',
       collection: context.Categories, 
       documentId: documentId, 
       currentUser: context.currentUser,

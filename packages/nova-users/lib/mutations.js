@@ -6,6 +6,7 @@ Users.mutations = {
 
   usersNew(root, {document}, context) {
     return newMutation({
+      action: 'users.new',
       collection: context.Users, 
       document: document, 
       currentUser: context.currentUser,
@@ -14,7 +15,11 @@ Users.mutations = {
   },
 
   usersEdit(root, {documentId, set, unset}, context) {
+
+    const action = documentId === context.userId ? 'users.edit.own' : 'users.edit.all';
+
     return editMutation({
+      action: action,
       collection: context.Users, 
       documentId: documentId, 
       set: set, 
@@ -25,7 +30,11 @@ Users.mutations = {
   },
 
   usersRemove(root, {documentId}, context) {
+
+    const action = documentId === context.userId ? 'users.remove.own' : 'users.remove.all';
+
     return removeMutation({
+      action: action,
       collection: context.Users, 
       documentId: documentId, 
       currentUser: context.currentUser,
