@@ -49,5 +49,5 @@ Posts.fragments = {
         __slug
       }
     }
-  `, Users.fragments.avatar),
+  `/*, Users.fragments.avatar*/),
 }
