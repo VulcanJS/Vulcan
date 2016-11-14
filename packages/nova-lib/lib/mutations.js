@@ -5,8 +5,13 @@ Mutations have four steps:
 1. Validation
 
 If the mutation call is not trusted (i.e. it comes from a GraphQL mutation), 
-we'll run all validate callbacks. In any case, we'll also validate the 
-arguments against our schema.
+we'll run all validate steps:
+
+- Check that the current user is defined and has permission to perform the action.
+- Check that the current user has permission to insert/edit each field.
+- Validate document against collection schema.
+- Add userId to document (insert only).
+- Run validation callbacks.
 
 2. Sync Callbacks
 
@@ -25,21 +30,43 @@ to the client.
 */
 
 
-const newMutation = ({ collection, document, currentUser, validate }) => {
+const newMutation = ({ action, collection, document, currentUser, validate }) => {
   
   console.log("// newMutation")
+  console.log(action)
   console.log(collection._name)
   console.log(document)
 
-  const collectionName = collection._name;
 
-  // if document is not trusted, run validation callbacks
+  const collectionName = collection._name;
+  const schema = collection.simpleSchema()._schema;
+
+  // if document is not trusted, run validation steps
   if (validate) {
+  
+    // check if current user has permission to perform the current action
+    if (!currentUser || !Users.canDo(currentUser, action)) {
+      throw new Meteor.Error(601, `Sorry, you don't have the proper permissions to perform this action`);
+    }
+
+    // check that the current user has permission to insert each field
+    _.keys(document).forEach(function (fieldName) {
+      var field = schema[fieldName];
+      if (!Users.canSubmitField (currentUser, field)) {
+        throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
+      }
+    });
+
+    // validate document against schema
+    collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
+
+    // add userId to document
+    document.userId = currentUser._id;
+
+    // run validation callbacks
     document = Telescope.callbacks.run(`${collectionName}.new.validate`, document, currentUser);
   }
 
-  // validate document against schema
-  collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
 
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {
@@ -60,18 +87,22 @@ const newMutation = ({ collection, document, currentUser, validate }) => {
   // note: query for document to get fresh document with collection-hooks effects applied
   Telescope.callbacks.runAsync(`${collectionName}.new.async`, newDocument, currentUser);
 
+  console.log("// new mutation finished:")
+  console.log(newDocument)
   return document;
 }
 
-const editMutation = ({ collection, documentId, set, unset, currentUser, validate }) => {
+const editMutation = ({ action, collection, documentId, set, unset, currentUser, validate }) => {
 
   console.log("// editMutation")
+  console.log(action)
   console.log(collection._name)
   console.log(documentId)
   console.log(set)
   console.log(unset)
   
   const collectionName = collection._name;
+  const schema = collection.simpleSchema()._schema;
 
   // build mongo modifier from arguments
   let modifier = {$set: set, $unset: unset};
@@ -79,13 +110,29 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
   // get original document from database
   let document = collection.findOne(documentId);
 
-  // if document is not trusted, run validation callbacks
+  // if document is not trusted, run validation steps
   if (validate) {
+
+    // check if current user has permission to perform the current action
+    if (!currentUser || !Users.canDo(currentUser, action)) {
+      throw new Meteor.Error(601, `Sorry, you don't have the proper permissions to perform this action`);
+    }
+
+    // check that the current user has permission to edit each field
+    const modifiedProperties = _.keys(set).concat(_.keys(unset));
+    modifiedProperties.forEach(function (fieldName) {
+      var field = schema[fieldName];
+      if (!Users.canEditField(currentUser, field, document)) {
+        throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
+      }
+    });
+
+    // validate modifier against schema
+    collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
+
+    // run validation callbacks
     document = Telescope.callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
   }
-
-  // validate modifier against schema
-  collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
 
   // run sync callbacks (on mongo modifier)
   modifier = Telescope.callbacks.run(`${collectionName}.edit.sync`, modifier, document, currentUser);
@@ -99,10 +146,13 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
   // run async callbacks
   Telescope.callbacks.runAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
 
+  console.log("// edit mutation finished")
+  console.log(newDocument)
+
   return newDocument;
 }
 
-const removeMutation = ({ collection, documentId, currentUser, validate }) => {
+const removeMutation = ({ action, collection, documentId, currentUser, validate }) => {
 
   console.log("// removeMutation")
   console.log(collection._name)

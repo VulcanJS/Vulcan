@@ -8,6 +8,7 @@ Comments.mutations = {
 
   commentsNew(root, {document}, context) {
     return newMutation({
+      action: 'comments.new',
       collection: context.Comments, 
       document: document,
       currentUser: context.currentUser,
@@ -16,7 +17,12 @@ Comments.mutations = {
   },
 
   commentsEdit(root, {documentId, set, unset}, context) {
+
+    const document = Comments.findOne(documentId);
+    const action = Users.owns(context.currentUser, document) ? 'comments.edit.own' : 'comments.edit.all';
+
     return editMutation({
+      action: action,
       collection: context.Comments, 
       documentId: documentId,
       set: set, 
@@ -27,7 +33,12 @@ Comments.mutations = {
   },
 
   commentsRemove(root, {documentId}, context) {
+
+    const document = Comments.findOne(documentId);
+    const action = Users.owns(context.currentUser, document) ? 'comments.remove.own' : 'comments.remove.all';
+
     return removeMutation({
+      action: action,
       collection: context.Comments, 
       documentId: documentId, 
       currentUser: context.currentUser,

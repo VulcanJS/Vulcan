@@ -8,7 +8,8 @@ Posts.mutations = {
 
   postsNew(root, {document}, context) {
     return newMutation({
-      collection: context.Posts, 
+      action: 'posts.new',
+      collection: context.Posts,
       document: document, 
       currentUser: context.currentUser,
       validate: true
@@ -16,7 +17,12 @@ Posts.mutations = {
   },
 
   postsEdit(root, {documentId, set, unset}, context) {
+
+    const document = Posts.findOne(documentId);
+    const action = Users.owns(context.currentUser, document) ? 'posts.edit.own' : 'posts.edit.all';
+
     return editMutation({
+      action: action,
       collection: context.Posts, 
       documentId: documentId, 
       set: set, 
@@ -27,7 +33,12 @@ Posts.mutations = {
   },
 
   postsRemove(root, {documentId}, context) {
+
+    const document = Posts.findOne(documentId);
+    const action = Users.owns(context.currentUser, document) ? 'posts.remove.own' : 'posts.remove.all';
+
     return removeMutation({
+      action: action,
       collection: context.Posts, 
       documentId: documentId, 
       currentUser: context.currentUser,

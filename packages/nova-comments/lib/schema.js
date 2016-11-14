@@ -64,6 +64,9 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: false,
     viewableIf: canEditAll,
+    autoValue: (documentOrModifier) => {
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+    }
   },
   /**
     The timestamp of the comment being posted. For now, comments are always created and posted at the same time
@@ -72,7 +75,10 @@ Comments.schema = new SimpleSchema({
     type: Date,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: alwaysPublic,    
+    autoValue: (documentOrModifier) => {
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+    }
   },
   /**
     The comment body (Markdown)
@@ -103,6 +109,11 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: true,
     viewableIf: alwaysPublic,
+    autoValue: (documentOrModifier) => {
+      // if userId is changing, change the author name too
+      const userId = documentOrModifier.userId || documentOrModifier.$set && documentOrModifier.$set.userId
+      if (userId) return Users.getDisplayNameById(userId)
+    }
   },
   /**
     Whether the comment is inactive. Inactive comments' scores gets recalculated less often
