@@ -29,7 +29,7 @@ class PostsEditForm extends Component {
           collection={Posts}
           mutationName="postsEdit"
           document={this.props.post}
-          resultQuery={Posts.graphQLQueries.single}
+          fragment={Posts.fragments.full}
           successCallback={post => { 
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');

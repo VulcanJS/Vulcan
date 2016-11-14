@@ -7,20 +7,3 @@ Telescope.graphQL.addQuery(`
   commentsListTotal(postId: String): Int
   comment(_id: String): Comment
 `);
-
-Comments.graphQLQueries = {
-  single: `
-    _id
-    postId
-    parentCommentId
-    topLevelCommentId
-    body
-    htmlBody
-    postedAt
-    user {
-      _id
-      __slug
-      __emailHash # used for the avatar
-    }
-  `
-}

@@ -12,7 +12,7 @@ const CommentsEditForm = (props, context) => {
         collection={Comments}
         document={props.comment}
         mutationName="commentsEdit"
-        resultQuery={Comments.graphQLQueries.single}
+        fragment={Comments.fragments.full}
         successCallback={props.successCallback}
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}

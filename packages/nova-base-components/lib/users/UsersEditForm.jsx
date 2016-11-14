@@ -30,7 +30,7 @@ const UsersEditForm = (props, context) => {
             collection={Users} 
             document={user} 
             mutationName="usersEdit"
-            resultQuery={Users.graphQLQueries.single}
+            fragment={Users.fragments.full}
             successCallback={(user)=>{
               props.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
             }}

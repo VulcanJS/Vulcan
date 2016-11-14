@@ -18,7 +18,7 @@ const PostsNewForm = (props, context) => {
         <NovaForm
           collection={Posts}
           mutationName="postsNew"
-          resultQuery={Posts.graphQLQueries.single}
+          fragment={Posts.fragments.full}
           updateQueries={{
             getPostsList: (prev, { mutationResult }) => {
               const newPost = mutationResult.data.postsNew;

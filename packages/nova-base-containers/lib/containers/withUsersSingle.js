@@ -8,13 +8,14 @@ export default function withUsersSingle (component, options) {
   return graphql(gql`
     query getUser($userId: String, $slug: String) {
       user(_id: $userId, slug: $slug) {
-        ${Users.graphQLQueries.single}
+        ...fullUserInfo
       }
     }
     `, {
     options(ownProps) {
       return {
         variables: { userId: ownProps.userId, slug: ownProps.slug },
+        fragments: Users.fragments.full,
         // pollInterval: 20000,
       };
     },

@@ -26,7 +26,7 @@ const UsersProfileCheckModal = ({show, router}, {currentUser}) => {
           collection={ Users }
           document={ currentUser }
           mutationName="usersEdit"
-          resultQuery={Users.graphQLQueries.single}
+          resultQuery={Users.fragments.full}
           successCallback={ (user) => Telescope.callbacks.runAsync("users.profileCompleted.async", user) }
           fields={ requiredFields }
         />

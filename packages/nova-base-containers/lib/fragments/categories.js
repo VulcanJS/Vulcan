@@ -22,8 +22,8 @@ Categories.fragments = {
       }
     }
   `),
-  essential: createFragment(gql`
-    fragment essentialCategoryInfo on Category {
+  minimum: createFragment(gql`
+    fragment minimumCategoryInfo on Category {
       _id
       name
       slug

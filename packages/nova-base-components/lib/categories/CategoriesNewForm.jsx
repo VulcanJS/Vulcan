@@ -13,7 +13,6 @@ const CategoriesNewForm = (props, context) => {
       <NovaForm 
         collection={Categories} 
         mutationName="categoriesNew"
-        // resultQuery={Categories.graphQLQueries.single}
         fragment={Categories.fragments.full}
         updateQueries={{
           getCategoriesList: (prev, {mutationResult}) => {

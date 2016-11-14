@@ -27,7 +27,7 @@ const CommentsNewForm = (props, context) => {
         <NovaForm
           collection={Comments}
           mutationName="commentsNew"
-          resultQuery={Comments.graphQLQueries.single}
+          fragment={Comments.fragments.full}
           updateQueries={{
             getPost: (prev, { mutationResult }) => {
               // console.log('[commentsNew] prev post', prev)

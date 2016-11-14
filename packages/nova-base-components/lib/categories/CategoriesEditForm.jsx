@@ -16,7 +16,6 @@ class CategoriesEditForm extends Component{
           document={this.props.category}
           collection={Categories}
           mutationName="categoriesEdit"
-          // resultQuery={Categories.graphQLQueries.single}
           fragment={Categories.fragments.full}
           successCallback={(category)=>{
             this.context.closeCallback();

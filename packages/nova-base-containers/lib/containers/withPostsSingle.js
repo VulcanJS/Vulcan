@@ -8,13 +8,14 @@ export default function withPostsSingle (component, options) {
   return graphql(gql`
     query getPost($postId: String) {
       post(_id: $postId) {
-        ${Posts.graphQLQueries.single}
+        ...fullPostInfo
       }
     }
   `, {
     options(ownProps) {
       return {
         variables: { postId: ownProps.postId },
+        fragments: Posts.fragments.full,
         // pollInterval: 20000,
       };
     },

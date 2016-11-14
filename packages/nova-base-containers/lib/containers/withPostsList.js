@@ -9,7 +9,7 @@ export default function withPostsList (component, options) {
     query getPostsList($terms: Terms, $offset: Int, $limit: Int) {
       postsListTotal(terms: $terms)
       posts(terms: $terms, offset: $offset, limit: $limit) {
-        ${Posts.graphQLQueries.list}
+        ...fullPostInfo
       }
     }
   `, {
@@ -20,6 +20,7 @@ export default function withPostsList (component, options) {
           offset: 0,
           limit: 10
         },
+        fragments: Posts.fragments.full,
         // pollInterval: 20000,
       };
     },

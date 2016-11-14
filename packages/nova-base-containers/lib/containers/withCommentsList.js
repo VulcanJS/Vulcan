@@ -2,24 +2,14 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Comments from 'meteor/nova:comments';
 
 export default function withCommentsList (component, options) {
   return graphql(gql`
     query getCommentsList ($postId: String) {
       commentsListTotal(postId: $postId)
       comments (postId: $postId) {
-        _id
-        postId
-        parentCommentId
-        topLevelCommentId
-        body
-        htmlBody
-        postedAt
-        user {
-          _id
-          __slug
-          __emailHash # used for the avatar
-        }
+        ...fullCommentInfo
       }
     }
   `, {
@@ -28,6 +18,7 @@ export default function withCommentsList (component, options) {
         variables: { 
           postId: ownProps.postId
         },
+        fragments: Comments.fragments.full,
         // pollInterval: 20000,
       };
     },

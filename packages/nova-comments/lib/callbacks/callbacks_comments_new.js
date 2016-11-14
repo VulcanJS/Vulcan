@@ -1,3 +1,4 @@
+import marked from 'marked';
 import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
@@ -83,11 +84,11 @@ Telescope.callbacks.add("comments.new.validate", CommentsNewRateLimit);
 // }
 // Telescope.callbacks.add("comments.new.sync", CommentsNewRequiredPropertiesCheck);
 
-// function CommentsNewGenerateHTMLBody (comment, user) {
-//   comment.htmlBody = Telescope.utils.sanitize(marked(comment.body));
-//   return comment;
-// }
-// Telescope.callbacks.add("comments.new.sync", CommentsNewGenerateHTMLBody);
+function CommentsNewGenerateHTMLBody (comment, user) {
+  comment.htmlBody = Telescope.utils.sanitize(marked(comment.body));
+  return comment;
+}
+Telescope.callbacks.add("comments.new.sync", CommentsNewGenerateHTMLBody);
 
 // ------------------------------------- comments.new.async -------------------------------- //
 
