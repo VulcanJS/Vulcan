@@ -1,6 +1,6 @@
 ## vNEXT
 
-- Nova is now powered by Meteor 1.4.2, which provides among other cool features super fast build time!
+- Nova is now powered by Meteor 1.4.2.1, which provides among other cool features super fast build time! Some NPM dependencies changed: **be sure to run `npm install` again!**
 - Fix typo in class name `posts-list-header-categories` ([PR #1487](https://github.com/TelescopeJS/Telescope/pull/1487), thanks [@seanjsong](https://github.com/seanjsong)).
 - Make `document` property available to all form components, but don't pass it down to standard input controls to avoid error.
 - Do not try to init legacy `Settings` collection client-side: this was an annoying warning that you may have got telling something about a forbidden insert.

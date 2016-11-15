@@ -13,7 +13,7 @@ Package.onUse( function(api) {
     'nova:core@0.27.3-nova',
     'nova:posts@0.27.3-nova',
     'nova:users@0.27.3-nova',
-    'fourseven:scss@3.9.0'
+    'fourseven:scss'
   ]);
 
   api.addFiles([
