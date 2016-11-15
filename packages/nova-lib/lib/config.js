@@ -5,7 +5,7 @@
 
 Telescope = {};
 
-Telescope.VERSION = '0.27.3-nova';
+Telescope.VERSION = '0.27.4-nova';
 
 // ------------------------------------- Config -------------------------------- //
 

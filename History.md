@@ -1,4 +1,4 @@
-## vNEXT
+## v0.27.4
 
 - Nova is now powered by Meteor 1.4.2.1, which provides among other cool features super fast build time! Some NPM dependencies changed: **be sure to run `npm install` again!**
 - Fix typo in class name `posts-list-header-categories` ([PR #1487](https://github.com/TelescopeJS/Telescope/pull/1487), thanks [@seanjsong](https://github.com/seanjsong)).
