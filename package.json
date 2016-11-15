@@ -1,8 +1,11 @@
 {
   "name": "Nova",
-  "version": "0.0.0",
+  "version": "0.27.4",
   "engines": {
     "npm": "^3.0"
+  },
+  "scripts": {
+    "lint": "eslint --cache packages"
   },
   "dependencies": {
     "apollo-client": "^0.5.1",
@@ -57,7 +60,17 @@
   },
   "private": true,
   "devDependencies": {
-    "autoprefixer": "^6.3.6"
+    "autoprefixer": "^6.3.6",
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.10.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-meteor": "0.0.9",
+    "eslint-import-resolver-meteor": "^0.3.3",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-react": "^6.7.1"
   },
   "postcss": {
     "plugins": {

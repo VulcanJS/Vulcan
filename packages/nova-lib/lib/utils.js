@@ -147,9 +147,12 @@ Telescope.utils.slugify = function (s) {
 Telescope.utils.getUnusedSlug = function (collection, slug) {
   let suffix = "";
   let index = 0;
+  
+  // handle edge case for Users collection
+  const field = collection._name === 'users' ? '__slug' : 'slug';
 
   // test if slug is already in use
-  while (!!collection.findOne({slug: slug+suffix})) {
+  while (!!collection.findOne({[field]: slug+suffix})) {
     index++;
     suffix = "-"+index;
   }

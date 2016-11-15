@@ -18,7 +18,7 @@ import Users from 'meteor/nova:users';
 //   return Telescope.settings.collection.find({}, options);
 // });
 
-Telescope.settings.collection.smartPublish('settings');
+// Telescope.settings.collection.smartPublish('settings');
 
 Meteor.publish('settings.admin', function() {
   if (Users.isAdminById(this.userId)) {

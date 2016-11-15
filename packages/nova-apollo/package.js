@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:apollo",
   summary: "Nova Apollo Server package",
-  version: "0.27.3-nova",
+  version: "0.27.4-nova",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -13,8 +13,8 @@ Package.onUse(function (api) {
 
     // Nova packages
 
-    'nova:core@0.27.3-nova',
-    'nova:users@0.27.3-nova',
+    'nova:core@0.27.4-nova',
+    'nova:users@0.27.4-nova',
 
   ]);
   

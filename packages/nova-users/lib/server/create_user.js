@@ -12,6 +12,6 @@ function novaCreateUserCallbacks (options, user) {
   }
 
   return user;
-};
+}
 
 Accounts.onCreateUser(novaCreateUserCallbacks);

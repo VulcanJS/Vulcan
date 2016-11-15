@@ -1,8 +1,11 @@
 // add support for nested properties
 const deepValue = function(obj, path){
-  for (var i=0, path=path.split('.'), len=path.length; i<len; i++){
-    obj = obj[path[i]];
-  };
+  const pathArray = path.split('.');
+
+  for (var i=0; i < pathArray.length; i++) {
+    obj = obj[pathArray[i]];
+  }
+
   return obj;
 };
 

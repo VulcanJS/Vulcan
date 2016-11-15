@@ -10,11 +10,11 @@ Categories.helpers({getCollectionName: () => "categories"});
  * @param {Object} category
  */
 Categories.getParents = function (category) {
-  var categoriesArray = [];
+  const categoriesArray = [];
 
-  var getParents = function recurse (category) {
-    var parent;
-    if (parent = Categories.findOne(category.parentId)) {
+  const getParents = function recurse (category) {
+    const parent = Categories.findOne(category.parentId);
+    if (parent) {
       categoriesArray.push(parent);
       recurse(parent);
     }
@@ -57,8 +57,8 @@ Posts.helpers({getCategories: function () {return Posts.getCategories(this);}});
  * @param {Object} category
  */
 Categories.getUrl = function (category, isAbsolute) {
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  const prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
   // return prefix + FlowRouter.path("postsCategory", category);
   return `${prefix}/?cat=${category.slug}`;
 };
