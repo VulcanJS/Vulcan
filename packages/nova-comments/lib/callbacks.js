@@ -277,8 +277,8 @@ Telescope.callbacks.add("comments.edit.method", CommentsEditSubmittedPropertiesC
 // ------------------------------------- users.remove.async -------------------------------- //
 
 function UsersRemoveDeleteComments (user, options) {
-  if (options.deleteComments) {
-    var deletedComments = Comments.remove({userId: userId});
+  if (options && options.deleteComments) {
+    Comments.remove({userId: userId});
   } else {
     // not sure if anything should be done in that scenario yet
     // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});

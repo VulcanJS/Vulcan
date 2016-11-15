@@ -128,10 +128,8 @@ class NovaForm extends Component{
         field.group = fieldSchema.group;
       }
 
-      // add document if the control is a React component (cannot access it through the context)
-      if (typeof fieldSchema.control === "function") {
-        field.document = this.getDocument();
-      }
+      // add document
+      field.document = this.getDocument();
 
       return field;
 
@@ -256,8 +254,13 @@ class NovaForm extends Component{
 
   // add something to prefilled values
   addToAutofilledValues(property) {
-    this.setState({
-      autofilledValues: {...this.state.autofilledValues, ...property}
+    this.setState(function(state){
+      return {
+        autofilledValues: {
+          ...state.autofilledValues,
+          ...property
+        }
+      };
     });
   }
 

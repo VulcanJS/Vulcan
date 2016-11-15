@@ -30,7 +30,7 @@ class FormComponent extends Component {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValue, ...rest } = this.props;
+    const { control, group, updateCurrentValue, document, ...rest } = this.props;
 
     const base = this.props.control === "function" ? this.props : rest;
 
@@ -83,6 +83,7 @@ class FormComponent extends Component {
 }
 
 FormComponent.propTypes = {
+  document: React.PropTypes.object,
   name: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.any,

@@ -47,7 +47,6 @@ Telescope.utils.deepExtend = function () {
             return false;
           }
           var key;
-          for (key in obj) {}
           return key === undefined || hasOwn.call(obj, key);
         }
       };

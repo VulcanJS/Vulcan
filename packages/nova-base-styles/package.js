@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use([
     'nova:core@0.27.3-nova',
-    'fourseven:scss@3.9.0',
+    'fourseven:scss',
     // 'juliancwirko:postcss@1.0.0-rc.4',
     // 'seba:minifiers-autoprefixer@0.0.1',
     // 'twbs:bootstrap@=4.0.0-alpha.2'

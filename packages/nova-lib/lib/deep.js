@@ -27,7 +27,7 @@ _.mixin({
 
     // Get deep value
     } else {
-      while ((obj = obj[keys[i++]]) !== null && i < n) {};
+      //while ((obj = obj[keys[i++]]) !== null && i < n) {};
       value = i < n ? void 0 : obj;
     }
 
