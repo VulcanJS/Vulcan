@@ -42,7 +42,7 @@ class Category extends Component {
             {category.name}
           </MenuItem>
         </LinkContainer>
-        {Users.canDo(this.context.currentUser, "categories.edit.all") ? this.renderEdit() : null}
+        {this.renderEdit()}
       </div>
     )
   }
@@ -53,10 +53,6 @@ Category.propTypes = {
   index: React.PropTypes.number,
   currentCategorySlug: React.PropTypes.string,
   openModal: React.PropTypes.func
-}
-
-Category.contextTypes = {
-  currentUser: React.PropTypes.object
 };
 
 module.exports = withRouter(Category);

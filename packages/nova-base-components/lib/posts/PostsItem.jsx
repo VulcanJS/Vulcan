@@ -7,6 +7,7 @@ import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class PostsItem extends Component {
 
@@ -68,7 +69,7 @@ class PostsItem extends Component {
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
-            {this.context.currentUser && this.context.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
+            {this.props.currentUser && this.props.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
             {this.renderActions()}
           </div>
 
@@ -82,12 +83,9 @@ class PostsItem extends Component {
 };
   
 PostsItem.propTypes = {
-  post: React.PropTypes.object.isRequired
-}
-
-PostsItem.contextTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  post: React.PropTypes.object.isRequired,
 };
 
-module.exports = PostsItem;
-export default PostsItem;
+module.exports = withCurrentUser(PostsItem);
+export default withCurrentUser(PostsItem);

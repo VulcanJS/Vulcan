@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import hoistStatics from 'hoist-non-react-statics'
-import { getDisplayName } from './utils';
+import Telescope from 'meteor/nova:lib';
 import withRemove from './withRemove.jsx'
 
 export default function withEdit(WrappedComponent, options) {
@@ -50,7 +50,7 @@ export default function withEdit(WrappedComponent, options) {
     }
   };
 
-  WithEdit.displayName = `withEdit(${getDisplayName(WrappedComponent)}`;
+  WithEdit.displayName = `withEdit(${Telescope.utils.getComponentDisplayName(WrappedComponent)}`;
   WithEdit.WrappedComponent = WrappedComponent;
 
   return hoistStatics(WithEdit, WrappedComponent);

@@ -47,9 +47,8 @@ NewsletterButton.propTypes = {
 };
 
 NewsletterButton.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
-}
+};
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);

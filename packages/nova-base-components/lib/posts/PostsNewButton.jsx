@@ -4,10 +4,11 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { ModalTrigger } from "meteor/nova:core";
 import Posts from "meteor/nova:posts";
+import { withCurrentUser } from 'meteor/nova:core';
 
 const PostsNewButton = (props, context) => {
 
-  const size = context.currentUser ? "large" : "small";
+  const size = props.currentUser ? "large" : "small";
   const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
   return (
     <ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
@@ -18,11 +19,14 @@ const PostsNewButton = (props, context) => {
 
 PostsNewButton.displayName = "PostsNewButton";
 
-PostsNewButton.contextTypes = {
+PostsNewButton.propTypes = {
   currentUser: React.PropTypes.object,
+};
+
+PostsNewButton.contextTypes = {
   messages: React.PropTypes.object,
   intl: intlShape
-}
+};
 
-module.exports = PostsNewButton;
-export default PostsNewButton;
+module.exports = withCurrentUser(PostsNewButton);
+export default withCurrentUser(PostsNewButton);

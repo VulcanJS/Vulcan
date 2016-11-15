@@ -13,7 +13,7 @@ class CommentsNode extends Component {
   renderChildren(children) {
     return (
       <div className="comments-children">
-        {children.map(comment => <CommentsNode comment={comment} key={comment._id} currentUser={this.props.currentUser}/>)}
+        {children.map(comment => <CommentsNode comment={comment} key={comment._id} />)}
       </div>
     )
   }
@@ -35,10 +35,6 @@ class CommentsNode extends Component {
 
 CommentsNode.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
-};
-
-CommentsNode.contextTypes = {
-  currentUser: React.PropTypes.object, // the current user
 };
 
 module.exports = CommentsNode;

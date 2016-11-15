@@ -8,6 +8,7 @@ import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
@@ -19,8 +20,7 @@ class Newsletter extends Component {
 
     const showBanner =
       Cookie.load('showBanner') !== "no" &&
-      !Users.getSetting(context.currentUser, 'newsletter_subscribeToNewsletter', false);
-
+      !Users.getSetting(props.currentUser, 'newsletter_subscribeToNewsletter', false);
     this.state = {
       showBanner: showBanner
     };
@@ -65,7 +65,7 @@ class Newsletter extends Component {
     return <Telescope.components.NewsletterButton
               successCallback={() => this.successCallbackSubscription()}
               subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
-              user={this.context.currentUser}
+              user={this.props.currentUser}
             />
   }
 
@@ -90,7 +90,7 @@ class Newsletter extends Component {
       ? (
         <div className="newsletter">
           <h4 className="newsletter-tagline"><FormattedMessage id="newsletter.subscribe_prompt"/></h4>
-          {this.context.currentUser ? this.renderButton() : this.renderForm()}
+          {this.props.currentUser ? this.renderButton() : this.renderForm()}
           <a onClick={this.dismissBanner} className="newsletter-close"><Telescope.components.Icon name="close"/></a>
         </div>
       ) : null;
@@ -98,12 +98,11 @@ class Newsletter extends Component {
 }
 
 Newsletter.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   intl: intlShape
 };
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Newsletter);
-export default connect(mapStateToProps, mapDispatchToProps)(Newsletter);
+module.exports = withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(Newsletter));
+export default withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(Newsletter));

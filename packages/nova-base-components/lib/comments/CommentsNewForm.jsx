@@ -78,11 +78,7 @@ CommentsNewForm.propTypes = {
   novaFormMutation: React.PropTypes.func,
   router: React.PropTypes.object,
   flash: React.PropTypes.func,
-}
-
-CommentsNewForm.contextTypes = {
-  currentUser: React.PropTypes.object
-}
+};
 
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);

@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import hoistStatics from 'hoist-non-react-statics';
 import update from 'immutability-helper';
-import { getDisplayName } from './utils';
+import Telescope from 'meteor/nova:lib';
 
 export default function withRemove(WrappedComponent, options) {
 
@@ -56,7 +56,7 @@ export default function withRemove(WrappedComponent, options) {
     }
   };
 
-  WithRemove.displayName = `withRemove(${getDisplayName(WrappedComponent)}`;
+  WithRemove.displayName = `withRemove(${Telescope.utils.getComponentDisplayName(WrappedComponent)}`;
   WithRemove.WrappedComponent = WrappedComponent;
 
   return hoistStatics(WithRemove, WrappedComponent);

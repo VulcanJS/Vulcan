@@ -6,8 +6,9 @@ import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
 import { Accounts } from 'meteor/std:accounts-ui';
+import { withCurrentUser } from 'meteor/nova:core';
 
-const UsersProfileCheckModal = ({show, router}, {currentUser}) => {
+const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
 
   // return fields that are required by the schema but haven't been filled out yet
   const schema = Telescope.utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
@@ -38,19 +39,15 @@ const UsersProfileCheckModal = ({show, router}, {currentUser}) => {
   )
 };
 
-const UsersProfileCheck = (props, {currentUser}) => {
-  return currentUser ? <UsersProfileCheckModal show={!Users.hasCompletedProfile(currentUser)}/> : null;
+const UsersProfileCheck = ({currentUser}, context) => {
+  return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null;
 };
 
-UsersProfileCheck.contextTypes = {
-  currentUser: React.PropTypes.object
-};
-
-UsersProfileCheckModal.contextTypes = {
+UsersProfileCheck.propsTypes = {
   currentUser: React.PropTypes.object
 };
 
 UsersProfileCheck.displayName = "UsersProfileCheck";
 
-module.exports = withRouter(UsersProfileCheck);
-export default withRouter(UsersProfileCheck);
+module.exports = withCurrentUser(withRouter(UsersProfileCheck));
+export default withCurrentUser(withRouter(UsersProfileCheck));

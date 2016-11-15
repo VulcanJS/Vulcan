@@ -6,6 +6,7 @@ import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NovaForm from "meteor/nova:forms";
+import { withCurrentUser } from 'meteor/nova:core';
 
 class CommentsItem extends Component{
 
@@ -55,7 +56,7 @@ class CommentsItem extends Component{
   renderComment() {
     const htmlBody = {__html: this.props.comment.htmlBody};
 
-    const showReplyButton = !this.props.comment.isDeleted && !!this.context.currentUser;
+    const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;
 
     return (
       <div className="comments-item-text">
@@ -122,14 +123,14 @@ class CommentsItem extends Component{
 
 CommentsItem.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
+  currentUser: React.PropTypes.object,
 };
 
 CommentsItem.contextTypes = {
-  currentUser: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
 };
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-module.exports = connect(mapStateToProps, mapDispatchToProps)(CommentsItem);
+module.exports = withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(CommentsItem));

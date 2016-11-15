@@ -5,6 +5,7 @@ import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withVoteMutation } from 'meteor/nova:base-containers';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class Vote extends Component {
 
@@ -32,13 +33,13 @@ class Vote extends Component {
     this.startLoading();
 
     const post = this.props.post;
-    const user = this.context.currentUser;
+    const user = this.props.currentUser;
 
     if(!user){
       this.props.flash("Please log in first");
     } else {
       const voteType = Users.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
-      this.props.vote({post, voteType, currentUser: this.context.currentUser}).then(result => {
+      this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
         this.stopLoading();
       });
     } 
@@ -47,7 +48,7 @@ class Vote extends Component {
   render() {
 
     const post = this.props.post;
-    const user = this.context.currentUser;
+    const user = this.props.currentUser;
 
     const hasUpvoted = Users.hasUpvoted(user, post);
     const hasDownvoted = Users.hasDownvoted(user, post);
@@ -74,10 +75,10 @@ class Vote extends Component {
 Vote.propTypes = {
   post: React.PropTypes.object.isRequired, // the current post
   vote: React.PropTypes.func, // mutate function with callback inside
+  currentUser: React.PropTypes.object,
 };
 
 Vote.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
 };
@@ -86,5 +87,5 @@ Vote.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote));
-export default connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote));
+module.exports = withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote)));
+export default withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote)));

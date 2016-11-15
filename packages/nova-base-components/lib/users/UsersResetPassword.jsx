@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Link } from 'react-router';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class UsersResetPassword extends Component {
   componentDidMount() {
@@ -9,7 +10,7 @@ class UsersResetPassword extends Component {
   }
 
   render() {
-    if (!this.context.currentUser) {
+    if (!this.props.currentUser) {
       return (
         <Accounts.ui.LoginForm
           formState={ STATES.PASSWORD_CHANGE }
@@ -28,9 +29,10 @@ class UsersResetPassword extends Component {
   }
 }
 
-module.exports = UsersResetPassword;
-export default UsersResetPassword;
 
-UsersResetPassword.contextTypes = {
+UsersResetPassword.propsTypes = {
   currentUser: React.PropTypes.object
 };
+
+module.exports = withCurrentUser(UsersResetPassword);
+export default withCurrentUser(UsersResetPassword);

@@ -50,7 +50,6 @@ PostsNewForm.propTypes = {
 }
 
 PostsNewForm.contextTypes = {
-  currentUser: React.PropTypes.object,
   closeCallback: React.PropTypes.func,
   intl: intlShape
 };

@@ -59,7 +59,6 @@ PostsEditForm.propTypes = {
 }
 
 PostsEditForm.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   closeCallback: React.PropTypes.func,

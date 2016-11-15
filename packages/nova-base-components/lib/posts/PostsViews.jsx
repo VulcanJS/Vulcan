@@ -4,13 +4,14 @@ import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 const PostsViews = (props, context) => {
 
   let views = ["top", "new", "best"];
   const adminViews = ["pending", "rejected", "scheduled"];
   
-  if (Users.canDo(context.currentUser, "posts.edit.all")) {
+  if (Users.canDo(props.currentUser, "posts.edit.all")) {
     views = views.concat(adminViews);
   }
 
@@ -42,19 +43,19 @@ const PostsViews = (props, context) => {
 }
 
 PostsViews.propTypes = {
+  currentUser: React.PropTypes.object,
   defaultView: React.PropTypes.string
-}
+};
 
 PostsViews.defaultProps = {
   defaultView: "top"
-}
+};
 
 PostsViews.contextTypes = {
   currentRoute: React.PropTypes.object,
-  currentUser: React.PropTypes.object,
   intl: intlShape
 };
 
 PostsViews.displayName = "PostsViews";
 
-module.exports = withRouter(PostsViews);
+module.exports = withCurrentUser(withRouter(PostsViews));

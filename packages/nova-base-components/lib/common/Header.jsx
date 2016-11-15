@@ -1,8 +1,8 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
-//import { Messages } from "meteor/nova:core";
+import { withCurrentUser } from 'meteor/nova:core';
 
-const Header = (props, {currentUser}) => {
+const Header = (props, context) => {
   
   const logoUrl = Telescope.settings.get("logoUrl");
   const siteTitle = Telescope.settings.get("title", "Nova");
@@ -21,7 +21,7 @@ const Header = (props, {currentUser}) => {
         <div className="nav">
           
           <div className="nav-user">
-            {currentUser ? <Telescope.components.UsersMenu/> : <Telescope.components.UsersAccountMenu/>}
+            {props.currentUser ? <Telescope.components.UsersMenu/> : <Telescope.components.UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">
@@ -37,8 +37,8 @@ const Header = (props, {currentUser}) => {
 
 Header.displayName = "Header";
 
-Header.contextTypes = {
+Header.propTypes = {
   currentUser: React.PropTypes.object,
 };
 
-module.exports = Header;
+module.exports = withCurrentUser(Header);

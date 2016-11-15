@@ -1,9 +1,10 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import {FormattedMessage } from 'react-intl';
-import { ModalTrigger } from 'meteor/nova:core';
+import { ModalTrigger, withCurrentUser } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
 import { withCommentsList } from 'meteor/nova:base-containers';
+
 
 const PostsCommentsThread = (props, context) => {
 
@@ -24,7 +25,7 @@ const PostsCommentsThread = (props, context) => {
       <div className="posts-comments-thread">
         <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
         <Telescope.components.CommentsList comments={nestedComments} commentCount={commentCount}/>
-        { context.currentUser ?
+        { props.currentUser ?
           <div className="posts-comments-thread-new">
             <h4><FormattedMessage id="comments.new"/></h4>
             <Telescope.components.CommentsNewForm
@@ -45,9 +46,9 @@ const PostsCommentsThread = (props, context) => {
 
 PostsCommentsThread.displayName = "PostsCommentsThread";
 
-PostsCommentsThread.contextTypes = {
+PostsCommentsThread.propTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = withCommentsList(PostsCommentsThread);
-export default withCommentsList(PostsCommentsThread);
+module.exports = withCurrentUser(withCommentsList(PostsCommentsThread));
+export default withCurrentUser(withCommentsList(PostsCommentsThread));

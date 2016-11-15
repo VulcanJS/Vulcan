@@ -6,12 +6,13 @@ import { Accounts } from 'meteor/std:accounts-ui';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class UsersMenu extends Component {
 
   render() {
 
-    const {currentUser} = this.context;
+    const {currentUser} = this.props;
 
     return (
       <div className="users-menu">
@@ -39,7 +40,7 @@ class UsersMenu extends Component {
 UsersMenu.contextTypes = {
   currentUser: React.PropTypes.object,
   messages: React.PropTypes.object
-}
+};
 
-module.exports = UsersMenu;
-export default UsersMenu;
+module.exports = withCurrentUser(UsersMenu);
+export default withCurrentUser(UsersMenu);

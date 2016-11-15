@@ -396,3 +396,11 @@ Telescope.utils.stripTelescopeNamespace = (schema) => {
 Telescope.utils.arrayToFields = (fieldsArray) => {
   return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
 }
+
+/**
+ * Get the display name of a React component
+ * @param {React Component} WrappedComponent
+ */
+Telescope.utils.getComponentDisplayName = (WrappedComponent) => {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+};

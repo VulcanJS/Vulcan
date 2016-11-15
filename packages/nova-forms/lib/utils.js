@@ -61,8 +61,4 @@ const getEditableFields = function (schema, user, document) {
   return fields;
 };
 
-const getDisplayName = (WrappedComponent) => {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component'
-};
-
-export { flatten, deepValue, getInsertableFields, getEditableFields, getDisplayName };
+export { flatten, deepValue, getInsertableFields, getEditableFields };

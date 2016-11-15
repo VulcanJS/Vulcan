@@ -25,11 +25,7 @@ CommentsEditForm.propTypes = {
   comment: React.PropTypes.object.isRequired,
   successCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func
-}
-
-CommentsEditForm.contextTypes = {
-  currentUser: React.PropTypes.object
-}
+};
 
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);

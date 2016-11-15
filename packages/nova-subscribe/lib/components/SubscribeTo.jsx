@@ -4,6 +4,7 @@ import Telescope from 'meteor/nova:lib';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class SubscribeTo extends Component {
 
@@ -46,8 +47,7 @@ class SubscribeTo extends Component {
   }
 
   render() {
-    const {document, documentType} = this.props;
-    const {currentUser, intl} = this.context;
+    const {currentUser, document, documentType} = this.props;
 
     // can't subscribe to yourself or to own post (also validated on server side)
     if (!currentUser || !document || (documentType === 'posts' && document && document.author === currentUser.username) || (documentType === 'users' && document === currentUser)) {
@@ -60,7 +60,7 @@ class SubscribeTo extends Component {
 
     return (
       <Telescope.components.CanDo action={action}>
-        <a className={className} onClick={this.onSubscribe}>{intl.formatMessage({id: action})}</a>
+        <a className={className} onClick={this.onSubscribe}>{this.context.intl.formatMessage({id: action})}</a>
       </Telescope.components.CanDo>
     );
   }
@@ -71,10 +71,10 @@ SubscribeTo.propTypes = {
   document: React.PropTypes.object.isRequired,
   documentType: React.PropTypes.string.isRequired,
   className: React.PropTypes.string,
+  currentUser: React.PropTypes.object,
 }
 
 SubscribeTo.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
@@ -83,4 +83,4 @@ SubscribeTo.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubscribeTo);
+export default withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(SubscribeTo));

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
+import { withCurrentUser } from 'meteor/nova:core';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 import Flash from "./Flash.jsx";
@@ -182,7 +183,7 @@ class FormWrapper extends Component{
     const fields = this.props.fields;
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.context.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.context.currentUser);
+    let relevantFields = this.getFormType() === "edit" ? getEditableFields(this.getSchema(), this.props.currentUser, this.getDocument()) : getInsertableFields(this.getSchema(), this.props.currentUser);
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
@@ -489,6 +490,7 @@ FormWrapper.propTypes = {
   errorCallback: React.PropTypes.func,
   cancelCallback: React.PropTypes.func,
 
+  currentUser: React.PropTypes.object,
 }
 
 FormWrapper.defaultProps = {
@@ -498,7 +500,6 @@ FormWrapper.defaultProps = {
 
 FormWrapper.contextTypes = {
   closeCallback: React.PropTypes.func,
-  currentUser: React.PropTypes.object,
   intl: intlShape
 }
 
@@ -510,5 +511,5 @@ FormWrapper.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = withEdit(withNew(FormWrapper));
-export default withEdit(withNew(FormWrapper));
+module.exports = withCurrentUser(withEdit(withNew(FormWrapper)));
+export default withCurrentUser(withEdit(withNew(FormWrapper)));

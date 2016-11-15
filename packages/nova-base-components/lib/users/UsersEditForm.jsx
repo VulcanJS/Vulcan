@@ -48,7 +48,6 @@ UsersEditForm.propTypes = {
 };
 
 UsersEditForm.contextTypes = {
-  currentUser: React.PropTypes.object,
   intl: intlShape
 };
 

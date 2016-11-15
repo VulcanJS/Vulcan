@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
-// import Modal from 'react-modal';
+import withCurrentUser from '../containers/withCurrentUser.js';
 
 class ModalTrigger extends Component {
 
@@ -49,7 +49,7 @@ class ModalTrigger extends Component {
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
             <ContextPasser 
-              currentUser={this.context.currentUser}
+              currentUser={this.props.currentUser}
               actions={this.context.actions}
               events={this.context.events}
               closeCallback={this.closeModal}
@@ -65,6 +65,7 @@ class ModalTrigger extends Component {
 
 ModalTrigger.propTypes = {
   component: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object,
   size: React.PropTypes.string
 }
 
@@ -73,7 +74,6 @@ ModalTrigger.defaultProps = {
 }
 
 ModalTrigger.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
 };
@@ -83,5 +83,5 @@ ModalTrigger.contextTypes = {
 //   currentUser: React.PropTypes.object
 // }
 
-module.exports = ModalTrigger;
-export default ModalTrigger;
+module.exports = withCurrentUser(ModalTrigger);
+export default withCurrentUser(ModalTrigger);

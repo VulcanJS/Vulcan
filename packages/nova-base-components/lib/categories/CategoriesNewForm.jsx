@@ -42,7 +42,6 @@ CategoriesNewForm.displayName = "CategoriesNewForm";
 
 CategoriesNewForm.contextTypes = {
   closeCallback: React.PropTypes.func,
-  currentUser: React.PropTypes.object,
 };
 
 const mapStateToProps = state => ({ messages: state.messages, });

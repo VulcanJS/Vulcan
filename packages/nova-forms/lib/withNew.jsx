@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import hoistStatics from 'hoist-non-react-statics'
-import { getDisplayName } from './utils';
+import Telescope from 'meteor/nova:lib';
 
 export default function withNew(WrappedComponent, options) {
 
@@ -47,7 +47,7 @@ export default function withNew(WrappedComponent, options) {
     }
   };
 
-  WithNew.displayName = `withNew(${getDisplayName(WrappedComponent)}`;
+  WithNew.displayName = `withNew(${Telescope.utils.getComponentDisplayName(WrappedComponent)}`;
   WithNew.WrappedComponent = WrappedComponent;
 
   return hoistStatics(WithNew, WrappedComponent);
