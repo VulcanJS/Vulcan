@@ -3,7 +3,7 @@ const deepValue = function(obj, path){
   const pathArray = path.split('.');
 
   for (var i=0; i < pathArray.length; i++) {
-    obj = obj[path[i]];
+    obj = obj[pathArray[i]];
   }
 
   return obj;
