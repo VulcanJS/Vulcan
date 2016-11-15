@@ -3,18 +3,18 @@ import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
 
 // generate slug on insert
-Categories.before.insert(function (userId, doc) {
-  // if no slug has been provided, generate one
-  var slug = !!doc.slug ? doc.slug : Telescope.utils.slugify(doc.name);
-  doc.slug = Telescope.utils.getUnusedSlug(Categories, slug);
-});
+// Categories.before.insert(function (userId, doc) {
+//   // if no slug has been provided, generate one
+//   var slug = !!doc.slug ? doc.slug : Telescope.utils.slugify(doc.name);
+//   doc.slug = Telescope.utils.getUnusedSlug(Categories, slug);
+// });
 
-// generate slug on edit, if it has changed
-Categories.before.update(function (userId, doc, fieldNames, modifier) {
-  if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== doc.slug) {
-    modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, modifier.$set.slug);
-  }
-});
+// // generate slug on edit, if it has changed
+// Categories.before.update(function (userId, doc, fieldNames, modifier) {
+//   if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== doc.slug) {
+//     modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, modifier.$set.slug);
+//   }
+// });
 
 // add callback that adds categories CSS classes
 function addCategoryClass (postClass, post) {
@@ -47,11 +47,29 @@ function postsNewCheckCategories (post) {
 }
 Telescope.callbacks.add("posts.new.sync", postsNewCheckCategories);
 
-function postEditCheckCategories (post) {
-  checkCategories(post);
-  return post;
+function postEditCheckCategories (modifier) {
+  checkCategories(modifier.$set);
+  return modifier;
 }
 Telescope.callbacks.add("posts.edit.sync", postEditCheckCategories);
+
+function categoriesNewGenerateSlug (category) {
+  // if no slug has been provided, generate one
+  const slug = category.slug || Telescope.utils.slugify(category.name);
+  category.slug = Telescope.utils.getUnusedSlug(Categories, slug);
+  return category;
+}
+Telescope.callbacks.add("categories.new.sync", categoriesNewGenerateSlug);
+
+function categoriesEditGenerateSlug (modifier) {
+  // if slug is changing
+  if (modifier.$set && modifier.$set.slug) {
+    const slug = modifier.$set.slug;
+    modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, slug);
+  }
+  return modifier;
+}
+Telescope.callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
 
 // TODO: debug this
 

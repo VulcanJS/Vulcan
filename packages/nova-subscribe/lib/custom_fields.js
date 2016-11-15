@@ -1,4 +1,3 @@
-import PublicationUtils from 'meteor/utilities:smart-publications';
 import Users from "meteor/nova:users";
 
 Users.addField([
@@ -33,7 +32,6 @@ Users.addField([
     }
   }
 ]);
-PublicationUtils.addToFields(Users.publishedFields.list, ["__subscribedItems", "__subscribers", "__subscriberCount"]);
 
 // check if nova:posts exists, if yes, add the custom fields to Posts
 if (typeof Package['nova:posts'] !== "undefined") {
@@ -62,7 +60,6 @@ if (typeof Package['nova:posts'] !== "undefined") {
     }
   ]);
 
-  PublicationUtils.addToFields(Posts.publishedFields.list, ["subscribers", "subscriberCount"]);
 }
 
 // check if nova:categories exists, if yes, add the custom fields to Categories
@@ -92,5 +89,4 @@ if (typeof Package['nova:categories'] !== "undefined") {
     }
   ]);
 
-  PublicationUtils.addToFields(Categories.publishedFields.list, ["subscribers", "subscriberCount"]);
 }

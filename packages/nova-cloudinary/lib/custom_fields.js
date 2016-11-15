@@ -1,5 +1,4 @@
 import Posts from "meteor/nova:posts";
-import PublicationUtils from 'meteor/utilities:smart-publications';
 
 const alwaysPublic = user => true;
 
@@ -22,5 +21,3 @@ Posts.addField([
     }
   }
 ]);
-
-PublicationUtils.addToFields(Posts.publishedFields.list, ["cloudinaryId", "cloudinaryUrls"]);

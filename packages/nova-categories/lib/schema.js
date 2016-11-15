@@ -46,7 +46,7 @@ Categories.schema = new SimpleSchema({
     viewableIf: alwaysPublic,
     insertableIf: canInsert,
     editableIf: canEdit,
-    publish: true
+    publish: true,
   },
   image: {
     type: String,

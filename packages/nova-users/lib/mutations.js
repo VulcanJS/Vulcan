@@ -4,7 +4,7 @@ import Users from './collection.js'
 // Resolvers
 Users.mutations = {
 
-  usersNew(root, {document}, context) {
+  usersNew(root, {document}, context) { // handled by Meteor Accounts
     return newMutation({
       action: 'users.new',
       collection: context.Users, 

@@ -146,10 +146,10 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: true,
     viewableIf: alwaysPublic,
-    join: {
-      joinAs: "user",
-      collection: () => Users
-    },
+    // join: {
+    //   joinAs: "user",
+    //   collection: () => Users
+    // },
     resolveAs: 'user: User',
   },
   /**

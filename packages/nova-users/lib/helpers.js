@@ -1,7 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 import moment from 'moment';
-import PublicationsUtils from 'meteor/utilities:smart-publications';
 import _ from 'underscore';
 
 Users.helpers({getCollection: () => Users});
@@ -250,7 +249,7 @@ Users.getProperty = function (object, property) {
 };
 
 Users.getViewableFields = function (user, collection) {
-  return PublicationsUtils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
+  return Telescope.utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
     (field, fieldName) => {
       return _.isFunction(field.viewableIf) && field.viewableIf(user) ? fieldName : null;
     }

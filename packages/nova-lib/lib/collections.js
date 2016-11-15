@@ -5,6 +5,7 @@ SimpleSchema.extendOptions({
   insertableIf: Match.Optional(Function),
   editableIf: Match.Optional(Function),
   resolveAs: Match.Optional(String),
+  publish: Match.Optional(Boolean),
 });
 
 /**

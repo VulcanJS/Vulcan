@@ -6,7 +6,6 @@ import './parameters.js';
 import './notifications.js';
 import './views.js';
 import './helpers.js';
-import './published_fields.js';
 import './callbacks/callbacks_posts_new.js';
 import './callbacks/callbacks_posts_edit.js';
 import './callbacks/callbacks_other.js';

@@ -15,7 +15,6 @@ Package.onUse(function (api) {
     
     'nova:core@0.27.3-nova',
     'utilities:react-list-container@0.1.10',
-    'utilities:smart-publications@0.1.4',
 
     // third-party packages
 

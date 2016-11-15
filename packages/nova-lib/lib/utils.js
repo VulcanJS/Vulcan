@@ -385,3 +385,11 @@ Telescope.utils.stripTelescopeNamespace = (schema) => {
   // replace the previous schema by an object based on this filteredSchemaKeys
   return filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
 }
+
+/**
+ * Convert an array of field names into a Mongo fields specifier
+ * @param {Array} fieldsArray
+ */
+Telescope.utils.arrayToFields = (fieldsArray) => {
+  return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
+}
