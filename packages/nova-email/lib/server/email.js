@@ -72,7 +72,7 @@ NovaEmail.send = function(to, subject, html, text){
 
   if (typeof text === 'undefined'){
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
-    var text = htmlToText.fromString(html, {
+    text = htmlToText.fromString(html, {
         wordwrap: 130
     });
   }

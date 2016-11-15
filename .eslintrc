@@ -4,6 +4,7 @@
   ],
   "parser": "babel-eslint",
   "parserOptions": {
+    "allowImportExportEverywhere": true,
     "ecmaVersion": 6,
     "sourceType": "module"
   },
@@ -23,14 +24,19 @@
     "no-console": 1
   },
   "env": {
-    "es6": true,
-    "node": true,
     "browser": true,
-    "commonjs": true
+    "commonjs": true,
+    "es6": true,
+    "meteor": true,
+    "node": true
   },
   "plugins": [
     "babel",
+    "meteor"
   ],
+  "settings": {
+    "import/resolver": "meteor"
+  },
   "modules": true,
   "root": true,
   "globals": {
