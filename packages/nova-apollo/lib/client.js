@@ -77,6 +77,4 @@ export const meteorClientConfig = (networkInterfaceConfig) => {
 // end of main-client from apollostack/meteor-integration
 // --------
 
-export const client = new ApolloClient(meteorClientConfig());
-
-Telescope.graphQL.client = client;
+// export const client = new ApolloClient(meteorClientConfig());

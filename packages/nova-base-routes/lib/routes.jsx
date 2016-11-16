@@ -61,7 +61,12 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     wrapperHook(app, loginToken) {
       // console.log('wrapper hook initial state', initialState);
       client = new ApolloClient(meteorClientConfig({cookieLoginToken: loginToken}));
+
       store = configureStore(client, initialState, history);
+      
+      // *IRONY MODE: let's mess even more with the data flow. closure? never heard about that. I do like global vars*
+      Telescope.graphQL.client = client;
+
       return <ApolloProvider store={store} client={client}>{app}</ApolloProvider>
     },
     props: {
