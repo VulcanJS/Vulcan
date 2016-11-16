@@ -37,8 +37,8 @@ export const createMeteorNetworkInterface = (givenConfig) => {
 
   networkInterface.use([{
     applyMiddleware(request, next) {
-      console.log('from router token', config.cookieLoginToken);
-      console.log('from accounts token', Meteor.isClient && Accounts._storedLoginToken());
+      // console.log('from router token', config.cookieLoginToken);
+      // console.log('from accounts token', Meteor.isClient && Accounts._storedLoginToken());
       const currentUserToken = config.cookieLoginToken ? config.cookieLoginToken : Meteor.isClient ? Accounts._storedLoginToken() : null;
 
       if (!currentUserToken) {

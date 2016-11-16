@@ -41,7 +41,8 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
 };
 
 const UsersProfileCheck = ({currentUser}, context) => {
-  debugger
+  // console.log('current user', currentUser);
+  // console.log('profile completed', !Users.hasCompletedProfile(currentUser));
   return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null;
 };
 

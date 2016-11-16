@@ -55,11 +55,11 @@ Meteor.startup(function initNovaRoutesAndApollo() {
   const clientOptions = {
     historyHook,
     rehydrateHook: state => {
-      console.log('rehydrated state', state);
+      // console.log('rehydrated state', state);
       initialState = state
     },
     wrapperHook(app, loginToken) {
-      console.log('wrapper hook initial state', initialState);
+      // console.log('wrapper hook initial state', initialState);
       client = new ApolloClient(meteorClientConfig({cookieLoginToken: loginToken}));
       store = configureStore(client, initialState, history);
       return <ApolloProvider store={store} client={client}>{app}</ApolloProvider>
@@ -86,7 +86,13 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       return Promise.await(getDataFromTree(app));
     },
     dehydrateHook: () => {
-      console.log(client.store.getState());
+      // console.log(client.store.getState());
+      const state = client.store.getState();
+      
+      // https://github.com/apollostack/apollo-client/issues/845
+      delete state.apollo.queries;
+      delete state.apollo.mutations;
+
       return client.store.getState();
     },
     // fetchDataHook: (components) => components,
