@@ -18,6 +18,7 @@ const UsersEditForm = (props, context) => {
   } else {
     
     const user = props.data.user;
+
     return (
       <Telescope.components.CanDo 
         action="users.edit"

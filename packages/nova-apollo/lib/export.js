@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 
 import { makeExecutableSchema } from 'graphql-tools';
 
-import { client } from './client.js';
+import { meteorClientConfig, client } from './client.js';
 
 import { createApolloServer } from './server.js';
 import typeDefs from './schema';
@@ -16,4 +16,4 @@ createApolloServer({
   schema,
 });
 
-export { client };
+export { meteorClientConfig, client };

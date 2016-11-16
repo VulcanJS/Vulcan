@@ -30,6 +30,7 @@
     "immutability-helper": "^2.0.0",
     "intl": "^1.2.4",
     "intl-locales-supported": "^1.0.0",
+    "isomorphic-fetch": "^2.2.1",
     "juice": "^1.11.0",
     "mailchimp": "^1.1.6",
     "marked": "^0.3.5",

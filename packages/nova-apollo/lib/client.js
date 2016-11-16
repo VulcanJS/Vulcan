@@ -4,16 +4,17 @@
 // -------
 // start of main-client from apollostack/meteor-integration
 
-import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client';
+import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { Accounts } from 'meteor/accounts-base';
 import { _ } from 'meteor/underscore';
+import 'isomorphic-fetch';
+import Cookie from 'react-cookie';
 
 import Telescope from 'meteor/nova:lib';
 
 const defaultNetworkInterfaceConfig = {
   path: '/graphql',
   options: {},
-  useMeteorAccounts: true
 };
 
 export const createMeteorNetworkInterface = (givenConfig) => {
@@ -27,38 +28,40 @@ export const createMeteorNetworkInterface = (givenConfig) => {
 
   // For SSR
   const url = Meteor.absoluteUrl(path);
-  const networkInterface = createBatchingNetworkInterface({
+  const networkInterface = createNetworkInterface({
     uri: url,
-    batchInterval: 10
+    opts: {
+      credentials: 'same-origin',
+    }
   });
 
-  if (config.useMeteorAccounts) {
-    networkInterface.use([{
-      applyMiddleware(request, next) {
-        const currentUserToken = Accounts._storedLoginToken();
+  networkInterface.use([{
+    applyMiddleware(request, next) {
+      console.log('from router token', config.cookieLoginToken);
+      console.log('from accounts token', Meteor.isClient && Accounts._storedLoginToken());
+      const currentUserToken = config.cookieLoginToken ? config.cookieLoginToken : Meteor.isClient ? Accounts._storedLoginToken() : null;
 
-        if (!currentUserToken) {
-          next();
-          return;
-        }
-
-        if (!request.options.headers) {
-          request.options.headers = new Headers();
-        }
-
-        request.options.headers.Authorization = currentUserToken;
-
+      if (!currentUserToken) {
         next();
-      },
-    }]);
-  }
+        return;
+      }
+
+      if (!request.options.headers) {
+        request.options.headers = new Headers();
+      }
+
+      request.options.headers.Authorization = currentUserToken;
+
+      next();
+    },
+  }]);
 
   return networkInterface;
 };
 
 export const meteorClientConfig = (networkInterfaceConfig) => {
   return {
-    ssrMode: true,
+    ssrMode: Meteor.isServer,
     networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
 
     // Default to using Mongo _id, must use _id for queries.
