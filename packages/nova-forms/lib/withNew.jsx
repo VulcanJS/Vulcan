@@ -12,14 +12,15 @@ export default function withNew(WrappedComponent, options) {
     }
 
     render() {
-      const { mutationName, fragment, resultQuery, collection } = this.props
 
-      // if the mutation given to NovaForm isn't about creating a new document, do nothing
-      if (mutationName.indexOf('New') === -1) {
+      // if the NovaForm mutation isn't about creating a new document (it already has one), do nothing
+      if (this.props.document) {
 
         return <WrappedComponent {...this.props} />
 
       } else {
+
+        const { mutationName, fragment, resultQuery, collection } = this.props;
 
         const collectionName = collection._name;
 

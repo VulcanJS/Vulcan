@@ -13,14 +13,15 @@ export default function withEdit(WrappedComponent, options) {
     }
 
     render() {
-      const { mutationName, fragment, resultQuery, collection } = this.props
 
-      // if the mutation given to NovaForm isn't about editing an existing document, do nothing
-      if (mutationName.indexOf('Edit') === -1) {
+      // if the NovaForm mutation isn't about editing an existing document (it doesn't have one), do nothing
+      if (!this.props.document) {
 
         return <WrappedComponent {...this.props} />
 
       } else {
+        
+        const { mutationName, fragment, resultQuery, collection } = this.props;
 
         const collectionName = collection._name;
 

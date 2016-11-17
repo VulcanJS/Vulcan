@@ -131,7 +131,7 @@ const editMutation = ({ action, collection, documentId, set, unset, currentUser,
     collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
 
     // run validation callbacks
-    document = Telescope.callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
+    modifier = Telescope.callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
   }
 
   // run sync callbacks (on mongo modifier)
