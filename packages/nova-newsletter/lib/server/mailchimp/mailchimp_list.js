@@ -74,7 +74,7 @@ MailChimpList.remove = (user) => {
 
     try {
 
-      console.log('// Removing "'+email+'" to MailChimp list…');
+      console.log('// Removing "'+email+'" from MailChimp list…');
 
       var api = new MailChimp(apiKey);
       var subscribeOptions = {
