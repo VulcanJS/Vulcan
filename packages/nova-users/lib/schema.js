@@ -28,7 +28,7 @@ Telescope.schemas.votes = new SimpleSchema({
     optional: true
   },
   votedAt: {
-    type: Date, 
+    type: Date,
     optional: true
   }
 });
@@ -131,6 +131,21 @@ Telescope.schemas.userData = new SimpleSchema({
     optional: true
   },
   /**
+    Newsletter subscription settings
+  */
+  newsletter_subscribeToNewsletter: {
+    type: Boolean,
+    optional: true
+  },
+  newsletter: {
+    type: Object,
+    optional: true
+  },
+  "newsletter.showBanner": {
+      type: Boolean,
+      optional: true
+  },
+  /**
     Total post count
   */
   postCount: {
@@ -222,7 +237,7 @@ Telescope.schemas.userData = new SimpleSchema({
  * @summary Users schema
  * @type {SimpleSchema}
  */
-Users.schema = new SimpleSchema({ 
+Users.schema = new SimpleSchema({
   _id: {
     type: String,
     publish: true,
