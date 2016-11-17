@@ -41,9 +41,9 @@ Package.onUse(function (api) {
     // 'kadira:flow-router-ssr@3.13.0',
     "reactrouter:react-router-ssr@3.1.5",
     // 'kadira:flow-router@2.12.1',
-    'utilities:smart-methods@0.1.4',
+    // 'utilities:smart-methods@0.1.4',
     'meteorhacks:inject-initial@1.0.4',
-    'peerlibrary:reactive-publish@0.2.0'
+    // 'peerlibrary:reactive-publish@0.2.0'
   ];
 
   api.use(packages);
