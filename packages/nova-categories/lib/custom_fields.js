@@ -26,12 +26,19 @@ Posts.addField(
         noselect: true,
         type: "bootstrap-category",
         order: 50,
-        options: function () {
+        options: function (formProps) {
+          // catch the ApolloClient from the form props
+          const {client} = formProps;
 
-          const apolloData = Telescope.graphQL.client.store.getState().apollo.data;
-          const categoryNames = apolloData.ROOT_QUERY.categories;
-          const categories = _.filter(Telescope.graphQL.client.store.getState().apollo.data, (object, key) => {return categoryNames.indexOf(key) !== -1});
+          // get the current data of the store
+          const apolloData = client.store.getState().apollo.data;
           
+          // filter these data based on their typename: we are interested in the categories data
+          const categories = _.filter(apolloData, (object, key) => {
+            return object.__typename === 'Category'
+          });
+
+          // give the form component (here: checkboxgroup) exploitable data
           const categoriesOptions = categories.map(function (category) {
             return {
               value: category._id,

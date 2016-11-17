@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
-import { withCurrentUser } from 'meteor/nova:core';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
+import { withApollo, compose } from 'react-apollo';
+import { withCurrentUser } from 'meteor/nova:core';
 import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
 import withEdit from './withEdit.jsx';
@@ -110,7 +111,7 @@ class FormWrapper extends Component{
 
       // add options if they exist
       if (fieldSchema.form && fieldSchema.form.options) {
-        field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema) : fieldSchema.form.options;
+        field.options = typeof fieldSchema.form.options === "function" ? fieldSchema.form.options.call(fieldSchema, this.props) : fieldSchema.form.options;
       }
 
       if (fieldSchema.form && fieldSchema.form.disabled) {
@@ -491,6 +492,7 @@ FormWrapper.propTypes = {
   cancelCallback: React.PropTypes.func,
 
   currentUser: React.PropTypes.object,
+  client: React.PropTypes.object,
 }
 
 FormWrapper.defaultProps = {
@@ -511,5 +513,10 @@ FormWrapper.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = withCurrentUser(withEdit(withNew(FormWrapper)));
-export default withCurrentUser(withEdit(withNew(FormWrapper)));
+module.exports = compose(
+  withCurrentUser,
+  withEdit,
+  withNew,
+  withApollo
+)(FormWrapper);
+// export default withCurrentUser(withEdit(withNew(FormWrapper)));
