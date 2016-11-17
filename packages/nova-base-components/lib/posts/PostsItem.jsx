@@ -87,5 +87,4 @@ PostsItem.propTypes = {
   post: React.PropTypes.object.isRequired,
 };
 
-module.exports = withCurrentUser(PostsItem);
-export default withCurrentUser(PostsItem);
+Telescope.registerComponent('PostsItem', PostsItem, withCurrentUser);

@@ -6,11 +6,13 @@ Telescope.registerComponent("App",                  require('./common/App.jsx'))
 Telescope.registerComponent("Footer",               require('./common/Footer.jsx'));
 Telescope.registerComponent("Header",               require('./common/Header.jsx'));
 Telescope.registerComponent("Layout",               require('./common/Layout.jsx'));
-Telescope.registerComponent("Logo",                 require('./common/Logo.jsx'));
+// Telescope.registerComponent("Logo",                 require('./common/Logo.jsx'));
+import './common/Logo.jsx';
 Telescope.registerComponent("Flash",                require('./common/Flash.jsx'));
 Telescope.registerComponent('HeadTags',             require('./common/HeadTags.jsx'));
 Telescope.registerComponent("FlashMessages",        require('./common/FlashMessages.jsx'));
-Telescope.registerComponent("Newsletter",           require('./common/Newsletter.jsx'));
+// Telescope.registerComponent("Newsletter",           require('./common/Newsletter.jsx'));
+import './common/Newsletter.jsx';
 Telescope.registerComponent("NewsletterButton",     require('./common/NewsletterButton.jsx'));
 Telescope.registerComponent("Icon",                 require('./common/Icon.jsx'));
 Telescope.registerComponent("SearchForm",           require('./common/SearchForm.jsx'));
@@ -28,7 +30,8 @@ Telescope.registerComponent("PostsNewButton",       require('./posts/PostsNewBut
 Telescope.registerComponent("PostsLoadMore",        require('./posts/PostsLoadMore.jsx'));
 Telescope.registerComponent("PostsNoMore",          require('./posts/PostsNoMore.jsx'));
 Telescope.registerComponent("PostsNoResults",       require('./posts/PostsNoResults.jsx'));
-Telescope.registerComponent("PostsItem",            require('./posts/PostsItem.jsx'));
+// Telescope.registerComponent("PostsItem",            require('./posts/PostsItem.jsx'));
+import './posts/PostsItem.jsx';
 Telescope.registerComponent("PostsLoading",         require('./posts/PostsLoading.jsx'));
 Telescope.registerComponent("PostsViews",           require('./posts/PostsViews.jsx'));
 Telescope.registerComponent("PostsList",            require('./posts/PostsList.jsx'));

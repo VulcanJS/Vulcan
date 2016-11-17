@@ -4,13 +4,19 @@ functional stateless component syntax, so we redefine
 it the same way. 
 */
 
+import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import { IndexLink } from 'react-router';
+import { withCurrentUser } from 'meteor/nova:core';
+import Users from 'meteor/nova:users';
 
-const CustomLogo = ({logoUrl, siteTitle}) => {
+const CustomLogo = ({logoUrl, siteTitle, currentUser}) => {
   return (
-    <h1 className="logo-text"><IndexLink to="/">⭐{siteTitle}⭐</IndexLink></h1>
+    <div>
+      <h1 className="logo-text"><IndexLink to="/">⭐{siteTitle}⭐</IndexLink></h1>
+      { currentUser ? <span className="logo-hello">Welcome {Users.getDisplayName(currentUser)} 👋</span> : null}
+    </div>
   )
 }
 
-export default CustomLogo;
+Telescope.replaceComponent('Logo', CustomLogo, withCurrentUser);
