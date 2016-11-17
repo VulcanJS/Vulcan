@@ -133,10 +133,6 @@ Telescope.schemas.userData = new SimpleSchema({
   /**
     Newsletter subscription settings
   */
-  newsletter_subscribeToNewsletter: {
-    type: Boolean,
-    optional: true
-  },
   newsletter: {
     type: Object,
     optional: true
@@ -144,6 +140,10 @@ Telescope.schemas.userData = new SimpleSchema({
   "newsletter.showBanner": {
       type: Boolean,
       optional: true
+  },
+  "newsletter.subscribed": {
+    type: Boolean,
+    optional: true
   },
   /**
     Total post count
