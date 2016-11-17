@@ -1,5 +1,5 @@
-import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
+// import Telescope from 'meteor/nova:lib';
+// import Users from 'meteor/nova:users';
 
 // Meteor.publish('settings', function() {
 //   var options = {};
@@ -20,10 +20,10 @@ import Users from 'meteor/nova:users';
 
 // Telescope.settings.collection.smartPublish('settings');
 
-Meteor.publish('settings.admin', function() {
-  if (Users.isAdminById(this.userId)) {
-    return Telescope.settings.collection.find({}, {});
-  } else {
-    return [];
-  }
-});
+// Meteor.publish('settings.admin', function() {
+//   if (Users.isAdminById(this.userId)) {
+//     return Telescope.settings.collection.find({}, {});
+//   } else {
+//     return [];
+//   }
+// });

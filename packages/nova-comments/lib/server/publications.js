@@ -1,32 +1,32 @@
-import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
+// import Posts from "meteor/nova:posts";
+// import Users from 'meteor/nova:users';
 
-Comments._ensureIndex({postId: 1});
-Comments._ensureIndex({parentCommentId: 1});
+// Comments._ensureIndex({postId: 1});
+// Comments._ensureIndex({parentCommentId: 1});
 
-/**
- * @summary Publish a list of comments, along with the posts and users corresponding to these comments
- * @param {Object} terms
- */
-Meteor.publish('comments.list', function (terms) {
+// /**
+//  * @summary Publish a list of comments, along with the posts and users corresponding to these comments
+//  * @param {Object} terms
+//  */
+// Meteor.publish('comments.list', function (terms) {
   
-  const currentUser = this.userId && Users.findOne(this.userId);
+//   const currentUser = this.userId && Users.findOne(this.userId);
 
-  terms.currentUserId = this.userId; // add currentUserId to terms
-  ({selector, options} = Comments.parameters.get(terms));
+//   terms.currentUserId = this.userId; // add currentUserId to terms
+//   ({selector, options} = Comments.parameters.get(terms));
 
-  // commenting this because of FR-SSR issue
-  // Counts.publish(this, 'comments.list', Comments.find(selector, options));
+//   // commenting this because of FR-SSR issue
+//   // Counts.publish(this, 'comments.list', Comments.find(selector, options));
 
-  options.fields = Comments.publishedFields.list;
+//   options.fields = Comments.publishedFields.list;
 
-  const comments = Comments.find(selector, options);
-  const posts = Posts.find({_id: {$in: _.pluck(comments.fetch(), 'postId')}}, {fields: Posts.publishedFields.list});
-  const users = Users.find({_id: {$in: _.pluck(comments.fetch(), 'userId')}}, {fields: Users.publishedFields.list});
+//   const comments = Comments.find(selector, options);
+//   const posts = Posts.find({_id: {$in: _.pluck(comments.fetch(), 'postId')}}, {fields: Posts.publishedFields.list});
+//   const users = Users.find({_id: {$in: _.pluck(comments.fetch(), 'userId')}}, {fields: Users.publishedFields.list});
 
-  return Users.canDo(currentUser, "comments.view.all") ? [comments, posts, users] : [];
+//   return Users.canDo(currentUser, "comments.view.all") ? [comments, posts, users] : [];
 
-});
+// });
 
 
 

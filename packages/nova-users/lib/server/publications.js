@@ -1,27 +1,27 @@
-import Users from '../modules.js';
+// import Users from '../modules.js';
 
-/**
- * @summary Publish a single user
- * @param {String} idOrSlug
- */
-Meteor.publish('users.single', function (terms) {
+// /**
+//  * @summary Publish a single user
+//  * @param {String} idOrSlug
+//  */
+// Meteor.publish('users.single', function (terms) {
 
-  var idOrSlug = terms._id || terms['__slug'];
-  var findById = Users.findOne(idOrSlug);
-  var findBySlug = Users.findOne({"__slug": idOrSlug});
-  var user = typeof findById !== 'undefined' ? findById : findBySlug;
-  var options = Users.isAdmin(this.userId) ? {} : {fields: Users.publishedFields.public};
-  return user ? Users.find({_id: user._id}, options) : [];
+//   var idOrSlug = terms._id || terms['__slug'];
+//   var findById = Users.findOne(idOrSlug);
+//   var findBySlug = Users.findOne({"__slug": idOrSlug});
+//   var user = typeof findById !== 'undefined' ? findById : findBySlug;
+//   var options = Users.isAdmin(this.userId) ? {} : {fields: Users.publishedFields.public};
+//   return user ? Users.find({_id: user._id}, options) : [];
 
-});
+// });
 
-/**
- * @summary Publish the current user
- */
-Meteor.publish('users.current', function () {
-  const user = Users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
-  return user || [];
-});
+// /**
+//  * @summary Publish the current user
+//  */
+// Meteor.publish('users.current', function () {
+//   const user = Users.find({_id: this.userId}, {fields: {'services.password.bcrypt': false}});
+//   return user || [];
+// });
 
 // // publish all users for admins to make autocomplete work
 // // TODO: find a better way
