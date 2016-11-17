@@ -27,7 +27,8 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
           collection={ Users }
           document={ currentUser }
           mutationName="usersEdit"
-          resultQuery={Users.fragments.full}
+          fragment={Users.fragments.full}
+          noRemoveMutation={true}
           successCallback={ (user) => Telescope.callbacks.runAsync("users.profileCompleted.async", user) }
           fields={ requiredFields }
         />
@@ -40,6 +41,8 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
 };
 
 const UsersProfileCheck = ({currentUser}, context) => {
+  // console.log('current user', currentUser);
+  // console.log('profile completed', !Users.hasCompletedProfile(currentUser));
   return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null;
 };
 
