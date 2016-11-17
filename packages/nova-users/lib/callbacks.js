@@ -170,7 +170,7 @@ function usersEditGenerateHtmlBio (modifier) {
 }
 Telescope.callbacks.add("users.edit.sync", usersEditGenerateHtmlBio);
 
-function usersEditCheckEmail (modifier) {
+function usersEditCheckEmail (modifier, user) {
   // if email is being modified, update user.emails too
   if (modifier.$set && modifier.$set.__email) {
 
@@ -178,7 +178,7 @@ function usersEditCheckEmail (modifier) {
 
     // check for existing emails and throw error if necessary
     var userWithSameEmail = Users.findByEmail(newEmail);
-    if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
+    if (userWithSameEmail && userWithSameEmail._id !== user._id) {
       throw new Meteor.Error("email_taken2", "this_email_is_already_taken" + " (" + newEmail + ")");
     }
 
