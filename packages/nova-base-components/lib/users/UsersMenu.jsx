@@ -7,12 +7,13 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
 import { withCurrentUser } from 'meteor/nova:core';
+import { withApollo } from 'react-apollo';
 
 class UsersMenu extends Component {
 
   render() {
 
-    const {currentUser} = this.props;
+    const {currentUser, client} = this.props;
 
     return (
       <div className="users-menu">
@@ -28,7 +29,7 @@ class UsersMenu extends Component {
             <LinkContainer to={`/account`}>
               <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
             </LinkContainer>
-            <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}><FormattedMessage id="users.log_out"/></MenuItem>
+            <MenuItem className="dropdown-item" eventKey="4" onClick={() => Meteor.logout(() => client.resetStore())}><FormattedMessage id="users.log_out"/></MenuItem>
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -42,4 +43,4 @@ UsersMenu.contextTypes = {
   messages: React.PropTypes.object
 };
 
-Telescope.registerComponent('UsersMenu', UsersMenu, withCurrentUser);
+Telescope.registerComponent('UsersMenu', UsersMenu, withCurrentUser, withApollo);

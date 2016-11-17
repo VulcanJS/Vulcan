@@ -34,7 +34,7 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(Accounts.ui._options.onSignedOutHook()) }><FormattedMessage id="users.log_out"/></a>
+        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => window.location.reload() /* something is broken here when giving the apollo client as a prop*/) }><FormattedMessage id="users.log_out"/></a>
       </Modal.Footer>
     </Modal>
   )
