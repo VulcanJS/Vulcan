@@ -41,4 +41,4 @@ Header.propTypes = {
   currentUser: React.PropTypes.object,
 };
 
-module.exports = withCurrentUser(Header);
+Telescope.registerComponent('Header', Header, withCurrentUser);

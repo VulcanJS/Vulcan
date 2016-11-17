@@ -133,4 +133,5 @@ CommentsItem.contextTypes = {
 
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-module.exports = withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(CommentsItem));
+
+Telescope.registerComponent('CommentsItem', CommentsItem, connect(mapStateToProps, mapDispatchToProps), withCurrentUser);

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -13,4 +14,4 @@ const PostsLoadMore = ({loadMore, count, totalCount}) => {
 
 PostsLoadMore.displayName = "PostsLoadMore";
 
-module.exports = PostsLoadMore;
+Telescope.registerComponent('PostsLoadMore', PostsLoadMore);

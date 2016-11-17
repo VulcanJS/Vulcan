@@ -19,5 +19,4 @@ const PostsListHeader = () => {
 
 PostsListHeader.displayName = "PostsListHeader";
 
-module.exports = PostsListHeader;
-export default PostsListHeader;
+Telescope.registerComponent('PostsListHeader', PostsListHeader);

@@ -9,4 +9,4 @@ const PostsHome = (props, context) => {
 
 PostsHome.displayName = "PostsHome";
 
-module.exports = PostsHome;
+Telescope.registerComponent('PostsHome', PostsHome);

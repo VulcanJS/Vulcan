@@ -33,4 +33,4 @@ class Layout extends Component {
 
 Layout.displayName = "Layout";
 
-module.exports = Layout;
+Telescope.registerComponent('Layout', Layout);

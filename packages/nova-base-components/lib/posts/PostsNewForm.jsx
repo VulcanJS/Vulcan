@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
@@ -59,4 +60,4 @@ PostsNewForm.displayName = "PostsNewForm";
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsNewForm));
+Telescope.registerComponent('PostsNewForm', PostsNewForm, withRouter, connect(mapStateToProps, mapDispatchToProps));

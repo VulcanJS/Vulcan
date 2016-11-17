@@ -37,5 +37,4 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-module.exports = withPostsSingle(PostsPage);
-export default withPostsSingle(PostsPage);
+Telescope.registerComponent('PostsPage', PostsPage, withPostsSingle);

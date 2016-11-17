@@ -37,4 +37,4 @@ CommentsNode.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
 };
 
-module.exports = CommentsNode;
+Telescope.registerComponent('CommentsNode', CommentsNode);

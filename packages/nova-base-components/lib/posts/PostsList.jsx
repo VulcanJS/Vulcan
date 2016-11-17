@@ -54,4 +54,4 @@ PostsList.propTypes = {
   showHeader: React.PropTypes.bool,
 };
 
-module.exports = withPostsList(PostsList);
+Telescope.registerComponent('PostsList', PostsList, withPostsList);

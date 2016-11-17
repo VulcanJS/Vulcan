@@ -52,5 +52,4 @@ UsersProfileCheck.propsTypes = {
 
 UsersProfileCheck.displayName = "UsersProfileCheck";
 
-module.exports = withCurrentUser(withRouter(UsersProfileCheck));
-export default withCurrentUser(withRouter(UsersProfileCheck));
+Telescope.registerComponent('UsersProfileCheck', UsersProfileCheck, withCurrentUser, withRouter);

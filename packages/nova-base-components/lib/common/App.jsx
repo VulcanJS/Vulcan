@@ -53,4 +53,4 @@ App.childContextTypes = {
   intl: intlShape,
 }
 
-module.exports = withApp(App);
+Telescope.registerComponent('App', App, withApp);

@@ -105,13 +105,4 @@ Newsletter.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-// register the component directly in the file
-Telescope.registerComponent(
-  // name of the component
-  'Newsletter',
-  // original component
-  Newsletter, 
-  // higher order components enhancing the original component
-  withCurrentUser, 
-  connect(mapStateToProps, mapDispatchToProps)
-);
+Telescope.registerComponent('Newsletter', Newsletter, connect(mapStateToProps, mapDispatchToProps), withCurrentUser);

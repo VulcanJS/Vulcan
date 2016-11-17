@@ -47,5 +47,4 @@ PostsDaily.defaultProps = {
   increment: 5
 };
 
-module.exports = PostsDaily;
-export default PostsDaily;
+Telescope.registerComponent('PostsDaily', PostsDaily);

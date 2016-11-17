@@ -50,5 +50,4 @@ PostsCommentsThread.propTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = withCurrentUser(withCommentsList(PostsCommentsThread));
-export default withCurrentUser(withCommentsList(PostsCommentsThread));
+Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withCommentsList);

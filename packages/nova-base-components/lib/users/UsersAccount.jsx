@@ -14,4 +14,4 @@ UsersAccount.propTypes = {
 
 UsersAccount.displayName = "UsersAccount";
 
-module.exports = withCurrentUser(UsersAccount);
+Telescope.registerComponent('UsersAccount', UsersAccount, withCurrentUser);

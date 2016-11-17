@@ -25,4 +25,4 @@ const CommentsList = ({comments, commentCount}) => {
 
 CommentsList.displayName = "CommentsList";
 
-module.exports = CommentsList;
+Telescope.registerComponent('CommentsList', CommentsList);

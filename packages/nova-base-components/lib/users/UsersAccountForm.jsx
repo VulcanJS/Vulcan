@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
@@ -10,16 +11,15 @@ const UsersAccountForm = () => {
   ) 
 };
 
-module.exports = UsersAccountForm;
-export default UsersAccountForm;
+Telescope.registerComponent('UsersAccountForm', UsersAccountForm);
 
 // customize Accounts.ui
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
-  onPostSignUpHook: () => Telescope.graphQL.client.resetStore(),
-  onSignedInHook: () => Telescope.graphQL.client.resetStore(),
-  onSignedOutHook: () => Telescope.graphQL.client.resetStore(),
+  onPostSignUpHook: () => Telescope.graphQL.client.resetStore(), // fix this
+  onSignedInHook: () => Telescope.graphQL.client.resetStore(), // fix this
+  onSignedOutHook: () => Telescope.graphQL.client.resetStore(), // fix this
 });
 
 class AccountsButton extends Accounts.ui.Button {

@@ -68,4 +68,4 @@ PostsEditForm.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsEditForm));
+Telescope.registerComponent('PostsEditForm', PostsEditForm, connect(mapStateToProps, mapDispatchToProps), withRouter);

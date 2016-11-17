@@ -19,5 +19,4 @@ const UsersAccountMenu = () => {
 
 UsersAccountMenu.displayName = "UsersAccountMenu";
 
-module.exports = UsersAccountMenu;
-export default UsersAccountMenu;
+Telescope.registerComponent('UsersAccountMenu', UsersAccountMenu);

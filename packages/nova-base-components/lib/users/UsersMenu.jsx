@@ -42,5 +42,4 @@ UsersMenu.contextTypes = {
   messages: React.PropTypes.object
 };
 
-module.exports = withCurrentUser(UsersMenu);
-export default withCurrentUser(UsersMenu);
+Telescope.registerComponent('UsersMenu', UsersMenu, withCurrentUser);

@@ -38,5 +38,4 @@ PostsDay.propTypes = {
   number: React.PropTypes.number
 }
 
-module.exports = PostsDay;
-export default PostsDay;
+Telescope.registerComponent('PostsDay', PostsDay);

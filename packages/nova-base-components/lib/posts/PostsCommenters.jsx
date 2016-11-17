@@ -22,5 +22,4 @@ const PostsCommenters = ({post}) => {
 
 PostsCommenters.displayName = "PostsCommenters";
 
-module.exports = PostsCommenters;
-export default PostsCommenters;
+Telescope.registerComponent('PostsCommenters', PostsCommenters);

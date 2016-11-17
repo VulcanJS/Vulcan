@@ -55,5 +55,4 @@ Category.propTypes = {
   openModal: React.PropTypes.func
 };
 
-module.exports = withRouter(Category);
-export default withRouter(Category);
+Telescope.registerComponent('Category', Category, withRouter);

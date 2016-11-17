@@ -13,4 +13,4 @@ const FlashMessages = ({messages, clear, markAsSeen}) => {
 
 FlashMessages.displayName = "FlashMessages";
 
-module.exports = FlashMessages;
+Telescope.registerComponent('FlashMessages', FlashMessages);

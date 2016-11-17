@@ -8,4 +8,4 @@ const PostsSingle = (props, context) => {
 
 PostsSingle.displayName = "PostsSingle";
 
-module.exports = PostsSingle;
+Telescope.registerComponent('PostsSingle', PostsSingle);

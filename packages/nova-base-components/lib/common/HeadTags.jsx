@@ -60,5 +60,4 @@ HeadTags.propTypes = {
 	image: React.PropTypes.string,
 };
 
-module.exports = HeadTags;
-export default HeadTags;
+Telescope.registerComponent('HeadTags', HeadTags);

@@ -8,4 +8,4 @@ const PostsLoading = props => {
 
 PostsLoading.displayName = "PostsLoading";
 
-module.exports = PostsLoading;
+Telescope.registerComponent('PostsLoading', PostsLoading);

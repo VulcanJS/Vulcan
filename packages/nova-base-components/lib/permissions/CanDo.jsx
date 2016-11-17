@@ -56,5 +56,4 @@ CanDo.defaultProps = {
 
 CanDo.displayName = "CanDo";
 
-module.exports = withCurrentUser(CanDo);
-export default withCurrentUser(CanDo);
+Telescope.registerComponent('CanDo', CanDo, withCurrentUser);

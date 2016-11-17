@@ -152,4 +152,4 @@ CategoriesList.propTypes = {
   results: React.PropTypes.array,
 };
 
-module.exports = withRouter(withCategoriesList(CategoriesList, {}));
+Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withCategoriesList);

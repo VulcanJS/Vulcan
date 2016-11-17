@@ -28,5 +28,4 @@ PostsNewButton.contextTypes = {
   intl: intlShape
 };
 
-module.exports = withCurrentUser(PostsNewButton);
-export default withCurrentUser(PostsNewButton);
+Telescope.registerComponent('PostsNewButton', PostsNewButton, withCurrentUser);

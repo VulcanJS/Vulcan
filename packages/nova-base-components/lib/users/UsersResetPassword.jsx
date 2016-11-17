@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Link } from 'react-router';
@@ -31,8 +32,8 @@ class UsersResetPassword extends Component {
 
 
 UsersResetPassword.propsTypes = {
-  currentUser: React.PropTypes.object
+  currentUser: React.PropTypes.object,
+  params: React.PropTypes.object,
 };
 
-module.exports = withCurrentUser(UsersResetPassword);
-export default withCurrentUser(UsersResetPassword);
+Telescope.registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);

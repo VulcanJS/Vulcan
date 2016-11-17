@@ -44,5 +44,4 @@ CategoriesEditForm.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(CategoriesEditForm);
-export default connect(mapStateToProps, mapDispatchToProps)(CategoriesEditForm);
+Telescope.registerComponent('CategoriesEditForm', CategoriesEditForm, connect(mapStateToProps, mapDispatchToProps));

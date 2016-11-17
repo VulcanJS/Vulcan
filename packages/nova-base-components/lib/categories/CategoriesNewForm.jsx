@@ -47,5 +47,4 @@ CategoriesNewForm.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(CategoriesNewForm);
-export default connect(mapStateToProps, mapDispatchToProps)(CategoriesNewForm);
+Telescope.registerComponent('CategoriesNewForm', CategoriesNewForm, connect(mapStateToProps, mapDispatchToProps));

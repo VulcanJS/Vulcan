@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React from 'react';
 
 const CommentsLoadMore = ({loadMore, count, totalCount}) => {
@@ -7,4 +8,4 @@ const CommentsLoadMore = ({loadMore, count, totalCount}) => {
 
 CommentsLoadMore.displayName = "CommentsLoadMore";
 
-module.exports = CommentsLoadMore;
+Telescope.registerComponent('CommentsLoadMore', CommentsLoadMore);

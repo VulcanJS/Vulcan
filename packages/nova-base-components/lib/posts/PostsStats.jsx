@@ -15,5 +15,4 @@ const PostsStats = ({post}) => {
 
 PostsStats.displayName = "PostsStats";
 
-module.exports = PostsStats;
-export default PostsStats;
+Telescope.registerComponent('PostsStats', PostsStats);

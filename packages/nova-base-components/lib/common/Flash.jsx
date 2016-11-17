@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Alert } from 'react-bootstrap';
 
@@ -34,4 +35,4 @@ Flash.propTypes = {
   message: React.PropTypes.object.isRequired
 }
 
-module.exports = Flash;
+Telescope.registerComponent('Flash', Flash);

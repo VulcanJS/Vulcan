@@ -87,5 +87,4 @@ Vote.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-module.exports = withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote)));
-export default withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(withVoteMutation(Vote)));
+Telescope.registerComponent('Vote', Vote, withCurrentUser, connect(mapStateToProps, mapDispatchToProps), withVoteMutation);
