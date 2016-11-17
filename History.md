@@ -1,6 +1,18 @@
-## vNEXT
+## v0.27.4
 
-Apollo integration, Webpack build (work in progress on `apollo` & `webpack` branches).
+- Nova is now powered by Meteor 1.4.2.1, which provides among other cool features super fast build time! Some NPM dependencies changed: **be sure to run `npm install` again!**
+- Fix typo in class name `posts-list-header-categories` ([PR #1487](https://github.com/TelescopeJS/Telescope/pull/1487), thanks [@seanjsong](https://github.com/seanjsong)).
+- Make `document` property available to all form components, but don't pass it down to standard input controls to avoid error.
+- Do not try to init legacy `Settings` collection client-side: this was an annoying warning that you may have got telling something about a forbidden insert.
+- Add reset password components and route ([PR #1491](https://github.com/TelescopeJS/Telescope/pull/1491), thanks [@malively](https://github.com/malively)).
+- Add internationalization messages for "no more posts", "no results" and "load more days" ([PR #1499](https://github.com/TelescopeJS/Telescope/pull/1499), thanks [@qge](https://github.com/qge)).
+- No more duplicate slugs if a user signs up with an external service (Facebook, Twitter, ..) and another user signs up with a username being the same as the other user (modification on `Telescope.utils.getUnsudedSlug` to handle edge case on `Users` collection).
+- Somebody can remove their account themselves again: `users.remove` fixed at the level of the permissions and related callbacks.
+- Server-side rendering / data-injection is fixed thanks to a `meteorhacks:inject-data` fork added locally in the packages (`nova-inject-data` folder, [see here for more info](https://github.com/TelescopeJS/Telescope/commit/f988686653b21896c3f5d321f30c34c1b5778628#diff-8f4ee0b18f5c4673b79684ee3c7d2430))
+- Add simplified chinese (`zh-CN`) translation package to the README ([PR #1503](https://github.com/TelescopeJS/Telescope/pull/1503), thanks [@qge](https://github.com/qge)).
+- Only show comment reply button for logged in users ([PR #1504](https://github.com/TelescopeJS/Telescope/pull/1504), thanks [@qge](https://github.com/qge)).
+- Fix React `setState` race condition on `NovaForm` autofilled values ([PR #1507](https://github.com/TelescopeJS/Telescope/pull/1507), thanks [@sherryxiao1988](https://github.com/sherryxiao1988)).
+- Fix ESLint config: you can lint your project with `npm run lint`! It is based on `eslint:recommended` + `meteor` extends ([PR #1474](https://github.com/TelescopeJS/Telescope/pull/1474), thanks [@moimikey](https://github.com/moimikey)).
 
 ## v0.27.3
 

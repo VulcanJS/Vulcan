@@ -46,7 +46,6 @@ getEmbedlyData = function (url) {
     // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
     var errorObject = JSON.parse(error.message.substring(13));
     throw new Meteor.Error(errorObject.error_code, errorObject.error_message);
-    return null;
   }
 }
 

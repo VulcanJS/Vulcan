@@ -10,7 +10,7 @@ import Telescope from 'meteor/nova:lib';
 Telescope.utils.getIcon = function (iconName, iconClass) {
   var icons = Telescope.utils.icons;
   var iconCode = !!icons[iconName] ? icons[iconName] : iconName;
-  var iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
+  iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
   return '<i class="icon fa fa-fw fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
 };
 
@@ -40,7 +40,6 @@ Telescope.utils.icons = {
   time: "clock-o",
   best: "star",
   search: "search",
-  edit: "pencil",
   approve: "check-circle-o",
   reject: "times-circle-o",
   views: "eye",

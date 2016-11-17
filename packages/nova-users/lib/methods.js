@@ -97,8 +97,11 @@ Meteor.methods({
   },
 
   'users.remove'(userId, options) {
+    
+    // do the user which to delete his account or another user?
+    const actionType = this.userId === userId ? "own" : "all";
 
-    if (Users.canDo(Meteor.user(), "users.remove.all")) {
+    if (Users.canDo(Meteor.user(), `users.remove.${actionType}`)) {
 
       const user = Users.findOne(userId);
 

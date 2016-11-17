@@ -387,8 +387,8 @@ Telescope.callbacks.add("posts.approve.async", PostsApprovedNotification);
 // ------------------------------------- users.remove.async -------------------------------- //
 
 function UsersRemoveDeletePosts (user, options) {
-  if (options.deletePosts) {
-    var deletedPosts = Posts.remove({userId: userId});
+  if (options && options.deletePosts) {
+    Posts.remove({userId: userId});
   } else {
     // not sure if anything should be done in that scenario yet
     // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});

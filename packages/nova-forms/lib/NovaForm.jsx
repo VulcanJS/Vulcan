@@ -254,8 +254,13 @@ class NovaForm extends Component{
 
   // add something to prefilled values
   addToAutofilledValues(property) {
-    this.setState({
-      autofilledValues: {...this.state.autofilledValues, ...property}
+    this.setState(function(state){
+      return {
+        autofilledValues: {
+          ...state.autofilledValues,
+          ...property
+        }
+      };
     });
   }
 
