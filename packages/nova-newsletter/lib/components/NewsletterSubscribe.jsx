@@ -23,6 +23,7 @@ class NewsletterSubscribe extends Component {
         <label className="control-label col-sm-3">Newsletter</label>
         <div className="col-sm-9">
           <Telescope.components.NewsletterButton
+            user={this.props.document}
             successCallback={() => {
               this.context.messages.flash("Newsletter subscription updated", "success")
             }}
