@@ -1,9 +1,9 @@
-var fs = Npm.require('fs');
-var path = Npm.require('path');
+// var fs = Npm.require('fs');
+// var path = Npm.require('path');
 
 // We use this patch to avoid data injection failure during server-side rendering on Meteor 1.4
 // All the credits for this package goes to Arunoda, Kadira's team & @rigconfig
-// see https://github.com/meteor/meteor/issues/7992 
+// see https://github.com/meteor/meteor/issues/7992
 
 Package.describe({
   "summary": "A way to inject data to the client with initial HTML",

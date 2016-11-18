@@ -1,3 +1,5 @@
+/* global InjectData */
+
 Meteor.startup(function() {
   var dom = $('script[type="text/inject-data"]', document);
   var injectedDataString = $.trim(dom.text());
