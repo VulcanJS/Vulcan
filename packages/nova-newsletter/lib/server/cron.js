@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
-import Newsletter from '../namespace.js';
+import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
+import Newsletter from '../namespace.js';
 
 const defaultFrequency = [1]; // every monday
 const defaultTime = '00:00'; // GMT
@@ -45,7 +46,7 @@ var getSchedule = function (parser) {
 Meteor.methods({
   getNextJob: function () {
     var nextJob = SyncedCron.nextScheduledAtDate('scheduleNewsletter');
-    console.log(nextJob);
+    console.log(nextJob); // eslint-disable-line
     return nextJob;
   }
 });
@@ -60,8 +61,8 @@ var addJob = function () {
     job: function() {
       // only schedule newsletter campaigns in production
       if (process.env.NODE_ENV === "production" || Telescope.settings.get("enableNewsletterInDev", false)) {
-        console.log("// Scheduling newsletter…")
-        console.log(new Date());
+        console.log("// Scheduling newsletter…"); // eslint-disable-line
+        console.log(new Date()); // eslint-disable-line
         Newsletter.scheduleNextWithMailChimp();
       }
     }
