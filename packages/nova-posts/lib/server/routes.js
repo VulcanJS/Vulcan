@@ -1,11 +1,12 @@
-import Posts from '../collection.js';
+import { Picker } from 'meteor/meteorhacks:picker';
 import escapeStringRegexp from 'escape-string-regexp';
+import Posts from '../collection.js';
 
 Picker.route('/out', function(params, req, res, next) {
   var query = params.query;
   if(query.url){ // for some reason, query.url doesn't need to be decoded
 
-    /* 
+    /*
     If the URL passed to ?url= is in plain text, any hash fragment
     will get stripped out.
     So we search for any post whose URL contains the current URL to get a match
