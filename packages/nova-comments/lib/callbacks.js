@@ -232,7 +232,7 @@ function CommentsNewNotifications (comment) {
         }
 
       }
-      
+
     }
   }
 }
@@ -278,7 +278,7 @@ Telescope.callbacks.add("comments.edit.method", CommentsEditSubmittedPropertiesC
 
 function UsersRemoveDeleteComments (user, options) {
   if (options && options.deleteComments) {
-    Comments.remove({userId: userId});
+    Comments.remove({userId: user._id});
   } else {
     // not sure if anything should be done in that scenario yet
     // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
