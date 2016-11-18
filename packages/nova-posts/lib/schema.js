@@ -292,12 +292,15 @@ Posts.schemaJSON = {
   userId: {
     type: String,
     optional: true,
+    control: "select",
+    viewableIf: alwaysPublic,
+    insertableIf: canInsert,
+    control: "none",
+    resolveAs: 'user: User',
+    // publish: true,
     // regEx: SimpleSchema.RegEx.Id,
     // insertableIf: canEditAll,
     // editableIf: canEditAll,
-    control: "select",
-    // publish: true,
-    viewableIf: alwaysPublic,
     // form: {
     //   group: 'admin',
     //   options: function () {
@@ -309,7 +312,6 @@ Posts.schemaJSON = {
     //     });
     //   }
     // },
-    resolveAs: 'user: User',
     // join: {
     //   joinAs: "user",
     //   collection: () => Users

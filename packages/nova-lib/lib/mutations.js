@@ -40,8 +40,11 @@ const newMutation = ({ action, collection, document, currentUser, validate }) =>
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
+  // check if userId field is in the schema
+  const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
+
   // add userId to document if needed
-  if (!document.userId) document.userId = currentUser._id;
+  if (!!userIdInSchema && !document.userId) document.userId = currentUser._id;
 
   // if document is not trusted, run validation steps
   if (validate) {

@@ -146,11 +146,13 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: true,
     viewableIf: alwaysPublic,
+    insertableIf: canInsert,
+    control: "none",
+    resolveAs: 'user: User',
     // join: {
     //   joinAs: "user",
     //   collection: () => Users
     // },
-    resolveAs: 'user: User',
   },
   /**
     Whether the comment is deleted. Delete comments' content doesn't appear on the site. 

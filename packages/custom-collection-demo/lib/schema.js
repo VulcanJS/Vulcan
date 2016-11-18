@@ -53,6 +53,9 @@ const schema = new SimpleSchema({
   userId: {
     type: String,
     viewableIf: alwaysPublic,
+    insertableIf: isLoggedIn,
+    control: "none",
+    resolveAs: 'user: User',
   }
 });
 
