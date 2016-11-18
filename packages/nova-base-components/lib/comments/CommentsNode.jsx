@@ -4,7 +4,7 @@ import React, { PropTypes, Component } from 'react';
 class CommentsNode extends Component {
 
   renderComment(comment) {
-    
+
     return (
       <Telescope.components.CommentsItem comment={comment} key={comment._id} />
     )
@@ -22,7 +22,7 @@ class CommentsNode extends Component {
 
     const comment = this.props.comment;
     const children = this.props.comment.childrenResults;
-    
+
     return (
       <div className="comments-node">
         {this.renderComment(comment)}
@@ -31,7 +31,7 @@ class CommentsNode extends Component {
     )
   }
 
-};
+}
 
 CommentsNode.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment

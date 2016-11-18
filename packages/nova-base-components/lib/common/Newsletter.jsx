@@ -37,7 +37,7 @@ class Newsletter extends Component {
   subscribeEmail(data) {
     this.context.actions.call("newsletter.addEmail", data.email, (error, result) => {
       if (error) {
-        console.log(error);
+        console.log(error); // eslint-disable-line
         this.context.messages.flash(error.message, "error");
       } else {
         this.successCallbackSubscription(result);

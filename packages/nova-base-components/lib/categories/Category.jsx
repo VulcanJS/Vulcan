@@ -1,11 +1,11 @@
 import Telescope from 'meteor/nova:lib';
+import Users from 'meteor/nova:users';
 import React, { PropTypes, Component } from 'react';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
-import classNames from "classnames";
-//import { Messages, ModalTrigger } from 'meteor/nova:core';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
-import Users from 'meteor/nova:users';
+import { /* Button, DropdownButton, */ MenuItem } from 'react-bootstrap';
+// import classNames from "classnames";
+// import { Messages, ModalTrigger } from 'meteor/nova:core';
 
 class Category extends Component {
 
@@ -26,7 +26,7 @@ class Category extends Component {
 
     const {category, index, router} = this.props;
 
-    const currentQuery = router.location.query;
+    // const currentQuery = router.location.query;
     const currentCategorySlug = router.location.query.cat;
     const newQuery = _.clone(router.location.query);
     newQuery.cat = category.slug;
@@ -34,9 +34,9 @@ class Category extends Component {
     return (
       <div className="category-menu-item dropdown-item">
         <LinkContainer to={{pathname:"/", query: newQuery}}>
-          <MenuItem 
-            eventKey={index+1} 
-            key={category._id} 
+          <MenuItem
+            eventKey={index+1}
+            key={category._id}
           >
             {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
             {category.name}
