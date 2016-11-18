@@ -295,7 +295,7 @@ Posts.schemaJSON = {
     control: "select",
     viewableIf: alwaysPublic,
     insertableIf: canInsert,
-    control: "none",
+    hidden: true,
     resolveAs: 'user: User',
     // publish: true,
     // regEx: SimpleSchema.RegEx.Id,

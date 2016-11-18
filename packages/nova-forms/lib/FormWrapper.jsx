@@ -78,12 +78,13 @@ class FormWrapper extends Component{
         name: fieldName,
         datatype: fieldSchema.type,
         control: fieldSchema.control,
+        hidden: fieldSchema.hidden,
         layout: this.props.layout,
         order: fieldSchema.order
       }
 
-      // add label if necessary
-      const intlFieldName = field.control !== "none" ? this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName}) : "";
+      // add label if necessary (field not hidden)
+      const intlFieldName = !field.hidden ? this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName}) : "";
       field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
 
       // add value
@@ -142,8 +143,8 @@ class FormWrapper extends Component{
 
     });
 
-    // remove fields where control = "none"
-    fields = _.reject(fields, field => field.control === "none");
+    // remove fields where hidden is set to true
+    fields = _.reject(fields, field => field.hidden);
     fields = _.sortBy(fields, "order");
 
     // console.log(fields)

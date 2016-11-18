@@ -7,7 +7,7 @@ Users.addField([
       type: Object,
       optional: true,
       blackbox: true,
-      control: "none", // never show this
+      hidden: true, // never show this
     }
   },
   {
@@ -15,7 +15,7 @@ Users.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      control: "none", // never show this,
+      hidden: true, // never show this,
       publish: true,
       join: {
         joinAs: "subscribersArray",
@@ -28,7 +28,7 @@ Users.addField([
     fieldSchema: {
       type: Number,
       optional: true,
-      control: "none", // never show this
+      hidden: true, // never show this
     }
   }
 ]);
@@ -42,7 +42,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        control: "none", // never show this
+        hidden: true, // never show this
         publish: true,
         join: {
           joinAs: "subscribersArray",
@@ -55,7 +55,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        control: "none", // never show this
+        hidden: true, // never show this
       }
     }
   ]);
@@ -71,7 +71,7 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        control: "none", // never show this
+        hidden: true, // never show this
         publish: true,
         join: {
           joinAs: "subscribersArray",
@@ -84,7 +84,7 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        control: "none", // never show this
+        hidden: true, // never show this
       }
     }
   ]);

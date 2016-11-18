@@ -54,7 +54,7 @@ const schema = new SimpleSchema({
     type: String,
     viewableIf: alwaysPublic,
     insertableIf: isLoggedIn,
-    control: "none",
+    hidden: true,
     resolveAs: 'user: User',
   }
 });

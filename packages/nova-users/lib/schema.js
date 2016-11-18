@@ -103,7 +103,6 @@ Telescope.schemas.userData = new SimpleSchema({
     // form: {
     //   omit: true
     // },
-    template: "user_profile_bio"
   },
   /**
     The user's karma
@@ -153,7 +152,6 @@ Telescope.schemas.userData = new SimpleSchema({
     control: "text",
     insertableIf: canInsert,
     editableIf: canEdit,
-    template: "user_profile_twitter"
   },
   /**
     An array containing comments upvotes
@@ -352,7 +350,6 @@ Users.schema = new SimpleSchema({
     control: "text",
     insertableIf: canInsert,
     editableIf: canEdit,
-    template: "user_profile_twitter",
     viewableIf: alwaysPublic,
   },
   /**

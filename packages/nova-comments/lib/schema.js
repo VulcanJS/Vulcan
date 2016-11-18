@@ -40,7 +40,7 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: true,
     resolveAs: 'parentComment: Comment',
-    control: "none" // never show this
+    hidden: true // never show this
   },
   /**
     The `_id` of the top-level parent comment, if there is one
@@ -54,7 +54,7 @@ Comments.schema = new SimpleSchema({
     optional: true,
     publish: true,
     resolveAs: 'topLevelComment: Comment',
-    control: "none" // never show this
+    hidden: true // never show this
   },
   /**
     The timestamp of comment creation
@@ -136,7 +136,7 @@ Comments.schema = new SimpleSchema({
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     resolveAs: 'post: Post',
-    control: "none" // never show this
+    hidden: true // never show this
   },
   /**
     The comment author's `_id`
@@ -147,7 +147,7 @@ Comments.schema = new SimpleSchema({
     publish: true,
     viewableIf: alwaysPublic,
     insertableIf: canInsert,
-    control: "none",
+    hidden: true,
     resolveAs: 'user: User',
     // join: {
     //   joinAs: "user",
@@ -191,7 +191,7 @@ if (typeof Telescope.notifications !== "undefined") {
     fieldSchema: {
       type: Boolean,
       optional: true,
-      control: "none" // never show this
+      hidden: true // never show this
     }
   });
 }
