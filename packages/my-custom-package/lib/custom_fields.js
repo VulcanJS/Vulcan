@@ -35,7 +35,6 @@ Posts.addField(
           ];
         }
       },
-      publish: true // make that field public and send it to the client
     }
   }
 );

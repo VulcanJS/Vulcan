@@ -38,3 +38,9 @@ export default resolvers = {
 };
 
 Telescope.graphQL.addResolvers(resolvers);
+
+Telescope.graphQL.addQuery(`
+  posts(terms: Terms, offset: Int, limit: Int): [Post]
+  postsListTotal(terms: Terms): Int 
+  post(_id: String): Post
+`);

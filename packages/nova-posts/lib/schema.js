@@ -421,5 +421,3 @@ const termsSchema = `
 Telescope.graphQL.addSchema(termsSchema);
 
 Telescope.graphQL.addToContext({ Posts });
-
-

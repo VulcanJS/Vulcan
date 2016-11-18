@@ -5,15 +5,22 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { meteorClientConfig, client } from './client.js';
 
 import { createApolloServer } from './server.js';
-import typeDefs from './schema';
+import generateTypeDefs from './schema';
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers: Telescope.graphQL.resolvers,
-});
+Meteor.startup(function () {
+  
+  const typeDefs = generateTypeDefs();
 
-createApolloServer({
-  schema,
+  Telescope.graphQL.finalSchema = typeDefs;
+
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers: Telescope.graphQL.resolvers,
+  });
+
+  createApolloServer({
+    schema,
+  });
 });
 
 export { meteorClientConfig, client };

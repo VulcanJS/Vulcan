@@ -37,9 +37,11 @@ const newMutation = ({ action, collection, document, currentUser, validate }) =>
   console.log(collection._name)
   console.log(document)
 
-
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
+
+  // add userId to document if needed
+  if (!document.userId) document.userId = currentUser._id;
 
   // if document is not trusted, run validation steps
   if (validate) {
@@ -59,9 +61,6 @@ const newMutation = ({ action, collection, document, currentUser, validate }) =>
 
     // validate document against schema
     collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
-
-    // add userId to document
-    document.userId = currentUser._id;
 
     // run validation callbacks
     document = Telescope.callbacks.run(`${collectionName}.new.validate`, document, currentUser);
