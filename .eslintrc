@@ -1,6 +1,7 @@
 {
   "extends": [
     "eslint:recommended",
+    "plugin:meteor/recommended",
     "plugin:react/recommended"
   ],
   "parser": "babel-eslint",
@@ -37,7 +38,8 @@
       "varsIgnorePattern": "React|PropTypes|Component"
     }],
     "no-console": 1,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "meteor/audit-argument-checks": 0
   },
   "env": {
     "browser": true,
