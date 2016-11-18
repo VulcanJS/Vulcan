@@ -19,7 +19,7 @@ if (Meteor.settings && Meteor.settings.categories) {
     } else {
       // if not, create it
       Categories.insert(category);
-      console.log(`// Creating category “${category.name}”`);
+      console.log(`// Creating category “${category.name}”`); // eslint-disable-line
     }
   });
 }
