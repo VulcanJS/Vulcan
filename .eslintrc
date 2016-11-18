@@ -10,7 +10,15 @@
   },
   "rules": {
     "babel/generator-star-spacing": 0,
-    "babel/new-cap": 1,
+    "babel/new-cap": [1, {
+      "capIsNewExceptions": [
+        "Optional",
+        "OneOf",
+        "Maybe",
+        "MailChimpAPI",
+        "Juice"
+      ]
+    }],
     "babel/array-bracket-spacing": 0,
     "babel/object-curly-spacing": 0,
     "babel/object-shorthand": 0,
@@ -20,7 +28,7 @@
     "key-spacing": 0,
     "no-extra-boolean-cast": 0,
     "no-undef": 1,
-    "no-unused-vars": 1,
+    "no-unused-vars": [1, { "vars": "all", "args": "none" }],
     "no-console": 1
   },
   "env": {
