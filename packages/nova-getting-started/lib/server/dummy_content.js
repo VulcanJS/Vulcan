@@ -92,7 +92,7 @@ var createDummyComments = function () {
 
 };
 
-deleteDummyContent = function () {
+var deleteDummyContent = function () {
   Users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
