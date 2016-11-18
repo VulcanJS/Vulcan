@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
-import Comments from './collection.js';
 import Users from 'meteor/nova:users';
-
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import Comments from './collection.js';
 
 // check if user can create a new comment
 const canInsert = user => Users.canDo(user, "comments.new");
@@ -10,7 +10,7 @@ const canInsert = user => Users.canDo(user, "comments.new");
 const canEdit = Users.canEdit;
 
 // check if user can edit *all* comments
-const canEditAll = user => Users.canDo(user, "comments.edit.all");
+// const canEditAll = user => Users.canDo(user, "comments.edit.all");
 
 /**
  * @summary Comments schema
@@ -126,7 +126,7 @@ Comments.schema = new SimpleSchema({
     }
   },
   /**
-    Whether the comment is deleted. Delete comments' content doesn't appear on the site. 
+    Whether the comment is deleted. Delete comments' content doesn't appear on the site.
   */
   isDeleted: {
     type: Boolean,

@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import PublicationUtils from 'meteor/utilities:smart-publications';
 
@@ -20,7 +21,7 @@ Posts.addField([
 ]);
 
 if (typeof Settings !== "undefined") {
-  Settings.addField([
+  Telescope.settings.collection.addField([
     {
       fieldName: 'cloudinaryCloudName',
       fieldSchema: {

@@ -23,7 +23,7 @@ const MailChimp = function ( apiKey, options ) {
 
   if ( !mailChimpOptions.apiKey || mailChimpOptions.apiKey === '' ) {
 
-    console.error( '[MailChimp] Error: No API Key defined!' );
+    console.error( '[MailChimp] Error: No API Key defined!' ); // eslint-disable-line
 
     throw new Meteor.Error(
       'No API Key',

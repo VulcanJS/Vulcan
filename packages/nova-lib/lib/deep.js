@@ -1,3 +1,4 @@
+/* eslint-disable */
 // see https://gist.github.com/furf/3208381
 
 _.mixin({
@@ -27,7 +28,7 @@ _.mixin({
 
     // Get deep value
     } else {
-      //while ((obj = obj[keys[i++]]) !== null && i < n) {};
+      while ((obj = obj[keys[i++]]) !== null && i < n) {};
       value = i < n ? void 0 : obj;
     }
 

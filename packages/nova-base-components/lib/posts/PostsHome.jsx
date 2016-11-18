@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
+import { ListContainer /* , DocumentContainer */ } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
 
 class PostsHome extends Component {
@@ -8,19 +8,19 @@ class PostsHome extends Component {
   getDefaultView() {
     return {view: 'top'}
   }
-  
+
   render() {
 
     const params = {...this.getDefaultView(), ...this.props.location.query, listId: "posts.list.main"};
     const {selector, options} = Posts.parameters.get(params);
 
     return (
-      <ListContainer 
-        collection={Posts} 
+      <ListContainer
+        collection={Posts}
         publication="posts.list"
         selector={selector}
         options={options}
-        terms={params} 
+        terms={params}
         joins={Posts.getJoins()}
         component={Telescope.components.PostsList}
         cacheSubscription={true}
@@ -29,6 +29,6 @@ class PostsHome extends Component {
       />
     )
   }
-};
+}
 
 module.exports = PostsHome;

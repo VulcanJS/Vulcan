@@ -1,16 +1,16 @@
 import Telescope from 'meteor/nova:lib';
-import React from 'react';
-import {mount} from 'react-mounter';
 import { Messages } from 'meteor/nova:core';
-import { IndexRoute, Route, useRouterHistory, browserHistory, createMemoryHistory } from 'react-router';
-import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
-import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
-// import useNamedRoutes from 'use-named-routes';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Events from "meteor/nova:events";
+import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
+import React from 'react';
 import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
+// import {mount} from 'react-mounter';
+// import { IndexRoute, Route, useRouterHistory, browserHistory, createMemoryHistory } from 'react-router';
+// import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
+// import useNamedRoutes from 'use-named-routes';
+// import createBrowserHistory from 'history/lib/createBrowserHistory';
 
 Telescope.routes.indexRoute = { name: "posts.list", component: Telescope.components.PostsHome };
 
@@ -33,13 +33,13 @@ Meteor.startup(() => {
     childRoutes: Telescope.routes.routes
   }
 
-  let history;
+  // let history;
 
   const clientOptions = {
     renderHook: ReactDOM.render,
     props: {
       onUpdate: () => {
-        Events.analyticsRequest(); 
+        Events.analyticsRequest();
         Messages.clearSeen();
       }
     }
@@ -48,15 +48,15 @@ Meteor.startup(() => {
   const serverOptions = {
     htmlHook: (html) => {
       const head = Helmet.rewind();
-      return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);    
+      return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);
     },
     preRender: (req, res) => {
       Cookie.plugToRequest(req, res);
     },
   };
-  
+
   ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
-  
+
   // note: we did like this at first
   // if (Meteor.isClient) {
   //   history = useNamedRoutes(useRouterHistory(createBrowserHistory))({ routes: AppRoutes });

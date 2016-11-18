@@ -1,10 +1,12 @@
+/* global Movies */
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { ListContainer } from "meteor/utilities:react-list-container";
 import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
-import { ModalTrigger, Messages, FlashContainer } from "meteor/nova:core";
+import { ModalTrigger, /* Messages, */ FlashContainer } from "meteor/nova:core";
 
 const FlashMessages = Telescope.components.FlashMessages;
 
@@ -24,8 +26,8 @@ class MoviesWrapper extends Component {
         <FlashContainer component={FlashMessages}/>
 
         <div className="main">
-          <ListContainer 
-            collection={Movies} 
+          <ListContainer
+            collection={Movies}
             publication="movies.list"
             terms={{options: {sort: {createdAt: -1}}}}
             options={{sort: {createdAt: -1}}}
@@ -48,23 +50,23 @@ class MoviesWrapper extends Component {
 class MoviesList extends Component {
 
   renderNew() {
-    
+
     const component = (
       <div className="add-movie">
-        <ModalTrigger 
-          title="Add Movie" 
+        <ModalTrigger
+          title="Add Movie"
           component={<Button bsStyle="primary">Add Movie</Button>}
         >
-          <NovaForm 
-            collection={Movies} 
-            methodName="movies.create" 
+          <NovaForm
+            collection={Movies}
+            methodName="movies.create"
             currentUser={this.props.currentUser}
           />
         </ModalTrigger>
         <hr/>
       </div>
     )
-    
+
     return !!this.props.currentUser ? component : "";
   }
 
@@ -78,7 +80,7 @@ class MoviesList extends Component {
       </div>
     )
   }
-};
+}
 
 //////////////////////////////////////////////////////
 // Movie                                            //
@@ -91,14 +93,14 @@ class Movie extends Component {
     const movie = this.props;
 
     const component = (
-      <ModalTrigger 
-        label="Edit Movie" 
-        component={<Button bsStyle="primary">Edit Movie</Button>} 
+      <ModalTrigger
+        label="Edit Movie"
+        component={<Button bsStyle="primary">Edit Movie</Button>}
       >
-        <NovaForm 
-          collection={Movies} 
-          currentUser={this.props.currentUser} 
-          document={movie} 
+        <NovaForm
+          collection={Movies}
+          currentUser={this.props.currentUser}
+          document={movie}
           methodName="movies.edit"
         />
       </ModalTrigger>
@@ -112,7 +114,7 @@ class Movie extends Component {
   }
 
   render() {
-    
+
     const movie = this.props;
 
     return (
@@ -124,7 +126,7 @@ class Movie extends Component {
     )
   }
 
-};
+}
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 

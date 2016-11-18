@@ -6,13 +6,13 @@ import Users from 'meteor/nova:users';
  * @param {Collection} collection
  * @param {String} itemId
  * @param {Object} user
- * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean 
+ * @returns {Object} collectionName, fields: object, item, hasSubscribedItem: boolean
  */
 const prepareSubscription = (action, collection, itemId, user) => {
-  
+
   // get item's collection name
   const collectionName = collection._name.slice(0,1).toUpperCase() + collection._name.slice(1);
-  
+
   // get item data
   const item = collection.findOne(itemId);
 
@@ -20,7 +20,7 @@ const prepareSubscription = (action, collection, itemId, user) => {
   if (!user || !item) {
     return false;
   }
-  
+
   // edge case: Users collection
   if (collectionName === 'Users') {
     // someone can't subscribe to themself, abort process
@@ -35,12 +35,12 @@ const prepareSubscription = (action, collection, itemId, user) => {
   }
 
   // assign the right fields depending on the collection
-  const fields = { 
+  const fields = {
     subscribers: collectionName === 'Users' ? 'telescope.subscribers' : 'subscribers',
     subscriberCount: collectionName === 'Users' ? 'telescope.subscriberCount' : 'subscriberCount',
   };
 
-  // return true if the item has the subscriber's id in its fields 
+  // return true if the item has the subscriber's id in its fields
   const hasSubscribedItem = !!_.deep(item, fields.subscribers) && _.deep(item, fields.subscribers) && _.deep(item, fields.subscribers).indexOf(user._id) !== -1;
 
   // assign the right update operator and count depending on the action type
@@ -107,7 +107,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
       itemId: item._id,
     };
 
-    // in case of subscription, log also the date 
+    // in case of subscription, log also the date
     if (action === 'subscribe') {
       loggedItem = {
         ...loggedItem,
@@ -129,11 +129,12 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
 };
 
 /**
- * @summary Generate methods 'collection.subscribe' & 'collection.unsubscribe' automatically 
+ * @summary Generate methods 'collection.subscribe' & 'collection.unsubscribe' automatically
  * @params {Array[Collections]} collections
  */
+ let subscribeMethodsGenerator;
  export default subscribeMethodsGenerator = (collection) => {
-   
+
    // generic method function calling the performSubscriptionAction
    const genericMethodFunction = (col, action) => {
      // return the method code
@@ -151,7 +152,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
        return performSubscriptionAction(action, col, docId, user);
      };
    };
-   
+
    const collectionName = collection._name;
    // return an object of the shape expected by Meteor.methods
    return {
@@ -162,7 +163,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
 
 // Finally. Add the methods to the Meteor namespace 🖖
 
-// nova:users is a dependency of this package, it is alreay imported 
+// nova:users is a dependency of this package, it is alreay imported
 Meteor.methods(subscribeMethodsGenerator(Users));
 
 // check if nova:posts exists, if yes, add the methods to Posts

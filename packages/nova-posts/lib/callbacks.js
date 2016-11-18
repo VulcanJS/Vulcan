@@ -360,7 +360,7 @@ Telescope.callbacks.add("posts.edit.sync", PostsEditSetPostedAt);
 // ------------------------------------- posts.edit.async -------------------------------- //
 
 function PostsEditRunPostApprovedCallbacks (post, oldPost) {
-  var now = new Date();
+  // var now = new Date();
 
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {
     Telescope.callbacks.runAsync("posts.approve.async", post);
@@ -388,7 +388,7 @@ Telescope.callbacks.add("posts.approve.async", PostsApprovedNotification);
 
 function UsersRemoveDeletePosts (user, options) {
   if (options && options.deletePosts) {
-    Posts.remove({userId: userId});
+    Posts.remove({userId: user._id});
   } else {
     // not sure if anything should be done in that scenario yet
     // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});

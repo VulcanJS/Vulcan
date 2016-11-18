@@ -4,7 +4,7 @@ import FRC from 'formsy-react-components';
 
 import DateTime from './DateTime.jsx';
 
-import Utils from './utils.js';
+// import Utils from './utils.js';
 
 const Checkbox = FRC.Checkbox;
 // const CheckboxGroup = FRC.CheckboxGroup;
@@ -30,7 +30,7 @@ class FormComponent extends Component {
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValue, document, ...rest } = this.props;
+    const { control, group, updateCurrentValue, document, ...rest } = this.props; // eslint-disable-line
 
     const base = this.props.control === "function" ? this.props : rest;
 
@@ -53,7 +53,7 @@ class FormComponent extends Component {
         case "textarea":
           return <Textarea      {...properties} />;
         case "checkbox":
-          return <Checkbox      {...properties} />;        
+          return <Checkbox      {...properties} />;
         // note: checkboxgroup cause React refs error
         case "checkboxgroup":
           return <CheckboxGroup  {...properties} />;
@@ -63,7 +63,7 @@ class FormComponent extends Component {
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
-        default: 
+        default:
           return <Input         {...properties} type="text" />;
       }
 
@@ -88,7 +88,7 @@ FormComponent.propTypes = {
   label: React.PropTypes.string,
   value: React.PropTypes.any,
   placeholder: React.PropTypes.string,
-  prefilledValue: React.PropTypes.any, 
+  prefilledValue: React.PropTypes.any,
   options: React.PropTypes.any,
   control: React.PropTypes.any,
   datatype: React.PropTypes.any,
