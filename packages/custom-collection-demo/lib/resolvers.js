@@ -8,7 +8,7 @@ const resolvers = {
   //   },
   // },
   Query: {
-    movies(root, {offset, limit}, context, info) {
+    moviesList(root, {offset, limit}, context, info) {
       const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
       let options = {};
       options.limit = protectedLimit;
@@ -17,10 +17,10 @@ const resolvers = {
       options.fields = context.getViewableFields(context.currentUser, context.Movies);
       return context.Movies.find({}, options).fetch();
     },
-    moviesListTotal(root, args, context) {
+    moviesTotal(root, args, context) {
       return context.Movies.find().count();
     },
-    movie(root, args, context) {
+    moviesSingle(root, args, context) {
       return context.Movies.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Movies) });
     },
   },
@@ -32,9 +32,9 @@ Telescope.graphQL.addResolvers(resolvers);
 
 // define GraphQL queries
 Telescope.graphQL.addQuery(`
-  movies(offset: Int, limit: Int): [Movie]
-  moviesListTotal(foo: Int): Int 
-  movie(_id: String): Movie
+  moviesList(offset: Int, limit: Int): [Movie]
+  moviesTotal: Int 
+  moviesSingle(_id: String): Movie
 `);
 
 export default resolvers;

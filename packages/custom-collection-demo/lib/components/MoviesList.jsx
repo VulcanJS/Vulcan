@@ -5,8 +5,11 @@ import { Button } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { ModalTrigger } from "meteor/nova:core";
 import withMoviesList from '../containers/withMoviesList';
+import withList from '../containers/withList';
 import Movie from './Movie.jsx';
 import Movies from '../collection.js';
+import { withCurrentUser } from 'meteor/nova:core';
+import { moviesListProps, moviesSingleProps } from '../containers/fragments.js';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -30,18 +33,33 @@ class MoviesList extends Component {
       </div>
     )
     
-    return !!this.props.currentUser ? component : "";
+    return !!this.props.currentUser ? component : null;
   }
 
   render() {
-    return (
-      <div className="movies">
-        {this.renderNew()}
-        {this.props.results && this.props.results.map(movie => <Movie key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
-        {this.props.hasMore ? (this.props.ready ? <LoadMore {...this.props}/> : <p>Loading…</p>) : <p>No more movies</p>}
-      </div>
-    )
+    console.log(this)
+
+    if (this.props.loading) {
+      return <div className="movies"><p>Loading…</p></div>
+    } else {
+      const hasMore = this.props.totalCount > this.props.results && this.props.results.length;
+      return (
+        <div className="movies">
+          {this.renderNew()}
+          {this.props.results.map(movie => <Movie key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
+          {hasMore ?  <LoadMore {...this.props}/> : <p>No more movies</p>}
+        </div>
+      )
+    }
   }
+
 };
 
-export default withMoviesList(MoviesList);
+export default withList(withCurrentUser(MoviesList), {
+  queryName: 'getMoviesList',
+  collection: Movies,
+  listResolverName: 'moviesList',
+  totalResolverName: 'moviesTotal',
+  fragment: moviesListProps,
+  fragmentName: 'moviesListProps',
+});

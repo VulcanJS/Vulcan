@@ -27,7 +27,27 @@ const seedData = [
     review: 'The original blockbuster.',
     privateComments: `I'm scared of sharks…`
   },
-]
+  {
+    name: 'Die Hard II',
+    year: '1991',
+    review: `Another classic.`
+  },
+  {
+    name: 'Rush Hour',
+    year: '1993',
+    review: `Jackie Chan at his best.`,
+  },
+  {
+    name: 'Citizen Kane',
+    year: '1943',
+    review: `A disappointing lack of action sequences.`,
+  },
+  {
+    name: 'Commando',
+    year: '1983',
+    review: 'A good contender for highest kill count ever.',
+  },
+];
 
 Meteor.startup(function () {
   const currentUser = Users.findOne();
