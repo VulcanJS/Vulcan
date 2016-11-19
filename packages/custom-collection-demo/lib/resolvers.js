@@ -2,11 +2,11 @@ import Telescope from 'meteor/nova:lib';
 import mutations from './mutations.js';
 
 const resolvers = {
-  // Movie: {
-  //   user(post, args, context) {
-  //     return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
-  //   },
-  // },
+  Movie: {
+    user(movie, args, context) {
+      return context.Users.findOne({ _id: movie.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
+    },
+  },
   Query: {
     moviesList(root, {offset, limit}, context, info) {
       const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;

@@ -46,7 +46,7 @@ const CommentsNewForm = (props, context) => {
               // console.log('[commentsNew] previous comment list', prev);
               const newComment = mutationResult.data.commentsNew;
               const newCommentsList = update(prev, {
-                comments: {
+                commentsList: {
                   $push: [newComment]
                 },
                 commentsListTotal: {

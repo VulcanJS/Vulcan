@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
-import { withPostsList } from 'meteor/nova:base-containers';
+import { withList } from 'meteor/nova:core';
+import Posts from 'meteor/nova:posts';
 
 const PostsList = (props) => {
 
@@ -54,4 +55,19 @@ PostsList.propTypes = {
   showHeader: React.PropTypes.bool,
 };
 
-Telescope.registerComponent('PostsList', PostsList, withPostsList);
+const postsListOptions = {
+  queryName: 'getPostsList',
+  collection: Posts,
+  listResolverName: 'postsList',
+  totalResolverName: 'postsListTotal',
+  fragment: Posts.fragments.full,
+  fragmentName: 'fullPostInfo',
+  ownPropsVariables: [
+    // test note: can't overwrite atm
+    // {propName: 'limit', graphqlType: 'Int', defaultValue: 2, usedForTotal: false}, 
+    // note:give the list hoc the ability to catch props coming from upper in the component tree
+    {propName: 'terms', graphqlType: 'Terms', usedForTotal: true},
+  ],
+};
+
+Telescope.registerComponent('PostsList', PostsList, withList(postsListOptions));

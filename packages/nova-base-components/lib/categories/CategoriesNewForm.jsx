@@ -18,14 +18,13 @@ const CategoriesNewForm = (props, context) => {
           getCategoriesList: (prev, {mutationResult}) => {
             const newCategory = mutationResult.data.categoriesNew;
             const newCategoriesList = update(prev, {
-              categories: {
+              categoriesList: {
                 $push: [newCategory]
               },
               categoriesListTotal: {
                 $set: prev.categoriesListTotal + 1
               },
             });
-            // note: 'newCategoriesList' is extended with the category but somehow when the query updates it e
             return newCategoriesList;
           },
         }}

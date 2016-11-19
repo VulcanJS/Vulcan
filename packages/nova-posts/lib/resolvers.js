@@ -14,7 +14,7 @@ export default resolvers = {
     },
   },
   Query: {
-    posts(root, {terms, offset, limit}, context, info) {
+    postsList(root, {terms, offset, limit}, context, info) {
       // console.log("// context")
       // console.log(context)
       let {selector, options} = context.Posts.parameters.get(terms);
@@ -40,7 +40,7 @@ export default resolvers = {
 Telescope.graphQL.addResolvers(resolvers);
 
 Telescope.graphQL.addQuery(`
-  posts(terms: Terms, offset: Int, limit: Int): [Post]
+  postsList(terms: Terms, offset: Int, limit: Int): [Post]
   postsListTotal(terms: Terms): Int 
   post(_id: String): Post
 `);

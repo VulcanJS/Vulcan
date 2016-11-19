@@ -1,10 +1,8 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import {FormattedMessage } from 'react-intl';
-import { ModalTrigger, withCurrentUser } from 'meteor/nova:core';
+import { ModalTrigger, withCurrentUser, withList } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
-import { withCommentsList } from 'meteor/nova:base-containers';
-
 
 const PostsCommentsThread = (props, context) => {
 
@@ -50,4 +48,16 @@ PostsCommentsThread.propTypes = {
   currentUser: React.PropTypes.object
 };
 
-Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withCommentsList);
+const commentsListOptions = {
+  queryName: 'getCommentsList',
+  collection: Comments,
+  listResolverName: 'commentsList',
+  totalResolverName: 'commentsListTotal',
+  fragment: Comments.fragments.full,
+  fragmentName: 'fullCommentInfo',
+  ownPropsVariables: [
+    {propName: 'postId', graphqlType: 'String', usedForTotal: true},
+  ],
+};
+
+Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withList(commentsListOptions));

@@ -24,7 +24,7 @@ const PostsNewForm = (props, context) => {
             getPostsList: (prev, { mutationResult }) => {
               const newPost = mutationResult.data.postsNew;
               const newList = update(prev, {
-                posts: {
+                postsList: {
                   $unshift: [newPost],
                 },
                 postsListTotal: {

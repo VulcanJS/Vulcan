@@ -40,7 +40,7 @@ class Movie extends Component {
     return (
       <div key={movie.name} style={{paddingBottom: "15px",marginBottom: "15px", borderBottom: "1px solid #ccc"}}>
         <h2>{movie.name} ({movie.year})</h2>
-        <p>{movie.review} – by <strong>{movie.user && movie.user.username}</strong></p>
+        <p>{movie.review} – by <strong>{movie.user && movie.user.__displayName}</strong></p>
         {this.renderEdit()}
       </div>
     )

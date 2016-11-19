@@ -13,7 +13,7 @@ export default resolvers = {
     }
   },
   Query: {
-    categories(root, args, context) {
+    categoriesList(root, args, context) {
       const options = {
         fields: context.getViewableFields(context.currentUser, context.Categories)
       };

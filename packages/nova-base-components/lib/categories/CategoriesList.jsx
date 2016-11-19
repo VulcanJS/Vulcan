@@ -2,11 +2,11 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
+import { /* ModalTrigger, */ ContextPasser, withList } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
-import { withCategoriesList } from 'meteor/nova:base-containers';
+import Categories from 'meteor/nova:categories';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 
@@ -152,4 +152,13 @@ CategoriesList.propTypes = {
   results: React.PropTypes.array,
 };
 
-Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withCategoriesList);
+const categoriesListOptions = {
+  queryName: 'getCategoriesList',
+  collection: CategoriesList,
+  listResolverName: 'categoriesList',
+  totalResolverName: 'categoriesListTotal',
+  fragment: Categories.fragments.full,
+  fragmentName: 'fullCategoryInfo',
+};
+
+Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

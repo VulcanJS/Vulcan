@@ -31,11 +31,13 @@ const resolvers = {
     },
   },
   Query: {
-    comments(root, {postId}, context) {
+    commentsList(root, {postId, offset, limit}, context) {
       const options = {
-        // limit: 5, // no limit for now
+        limit: (limit < 1 || limit > 10) ? 10 : limit,
+        skip: offset,
         fields: context.getViewableFields(context.currentUser, context.Comments)
-      }
+      };
+
       return context.Comments.find({postId: postId}, options).fetch();
     },
     commentsListTotal(root, {postId}, context) {

@@ -6,6 +6,7 @@ import { Accounts } from 'meteor/std:accounts-ui';
 import { ModalTrigger } from "meteor/nova:core";
 import Movie from './Movie.jsx';
 import Movies from '../collection.js';
+import { compose } from 'react-apollo';
 import { withCurrentUser, withList } from 'meteor/nova:core';
 import { moviesListProps, moviesSingleProps } from '../containers/fragments.js';
 
@@ -60,4 +61,4 @@ const listOptions = {
   fragmentName: 'moviesListProps',
 };
 
-export default withList(listOptions)(withCurrentUser(MoviesList));
+export default compose(withList(listOptions), withCurrentUser)(MoviesList);
