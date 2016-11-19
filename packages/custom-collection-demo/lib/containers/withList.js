@@ -4,7 +4,7 @@ import Movies from '../collection.js';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withList (component, options) {
+export default function withList (options) {
 
   console.log("withList")
   console.log(options)
@@ -61,5 +61,5 @@ export default function withList (component, options) {
         ...props.ownProps // pass on the props down to the wrapped component
       };
     },
-  })(component);
+  });
 }

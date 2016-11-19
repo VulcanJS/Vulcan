@@ -37,8 +37,6 @@ class MoviesList extends Component {
   }
 
   render() {
-    console.log(this)
-
     if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {
@@ -55,11 +53,13 @@ class MoviesList extends Component {
 
 };
 
-export default withList(withCurrentUser(MoviesList), {
+const listOptions = {
   queryName: 'getMoviesList',
   collection: Movies,
   listResolverName: 'moviesList',
   totalResolverName: 'moviesTotal',
   fragment: moviesListProps,
   fragmentName: 'moviesListProps',
-});
+};
+
+export default withList(listOptions)(withCurrentUser(MoviesList));
