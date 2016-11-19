@@ -42,12 +42,12 @@ class MoviesList extends Component {
     if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {
-      const hasMore = this.props.totalCount > this.props.results && this.props.results.length;
+      const hasMore = this.props.totalCount > this.props.results.length;
       return (
         <div className="movies">
           {this.renderNew()}
           {this.props.results.map(movie => <Movie key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
-          {hasMore ?  <LoadMore {...this.props}/> : <p>No more movies</p>}
+          {hasMore ? <LoadMore {...this.props}/> : <p>No more movies</p>}
         </div>
       )
     }

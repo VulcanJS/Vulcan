@@ -8,7 +8,7 @@ export default function withList (component, options) {
 
   console.log("withList")
   console.log(options)
-  
+
   const { queryName, collection, listResolverName, totalResolverName, fragment, fragmentName } = options;
 
   return graphql(gql`
@@ -41,7 +41,8 @@ export default function withList (component, options) {
         results,
         totalCount,
         count: results && results.length,
-        loadMore() {
+        loadMore(event) {
+          event.preventDefault();
           // basically, rerun the query 'getPostsList' with a new offset
           return fetchMore({
             variables: { offset: results.length },
@@ -50,8 +51,10 @@ export default function withList (component, options) {
               if (!fetchMoreResult.data) {
                 return previousResults;
               }
+              const newResults = {};
+              newResults[listResolverName] = [...previousResults[listResolverName], ...fetchMoreResult.data[listResolverName]];
               // return the previous results "augmented" with more
-              return {...previousResults, results: [...previousResults.results, ...fetchMoreResult.data.results]};
+              return {...previousResults, ...newResults };
             },
           });
         },
