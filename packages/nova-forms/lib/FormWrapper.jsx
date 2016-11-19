@@ -3,11 +3,9 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 import { withApollo, compose } from 'react-apollo';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, withNew, withEdit } from 'meteor/nova:core';
 import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
-import withEdit from './withEdit.jsx';
-import withNew from './withNew.jsx';
 import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
 
 
@@ -520,4 +518,3 @@ module.exports = compose(
   withNew,
   withApollo
 )(FormWrapper);
-// export default withCurrentUser(withEdit(withNew(FormWrapper)));

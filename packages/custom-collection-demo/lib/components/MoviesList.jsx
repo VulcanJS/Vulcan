@@ -4,11 +4,9 @@ import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { ModalTrigger } from "meteor/nova:core";
-import withMoviesList from '../containers/withMoviesList';
-import withList from '../containers/withList';
 import Movie from './Movie.jsx';
 import Movies from '../collection.js';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, withList } from 'meteor/nova:core';
 import { moviesListProps, moviesSingleProps } from '../containers/fragments.js';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
