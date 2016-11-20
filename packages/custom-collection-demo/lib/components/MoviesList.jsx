@@ -53,12 +53,10 @@ class MoviesList extends Component {
 };
 
 const listOptions = {
-  queryName: 'getMoviesList',
   collection: Movies,
-  listResolverName: 'moviesList',
-  totalResolverName: 'moviesTotal',
-  fragment: moviesListProps,
-  fragmentName: 'moviesListProps',
+  options: {
+    fragment: moviesListProps,
+  },
 };
 
 export default compose(withList(listOptions), withCurrentUser)(MoviesList);

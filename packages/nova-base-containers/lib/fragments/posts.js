@@ -4,8 +4,9 @@ import Posts from 'meteor/nova:posts';
 import Users from 'meteor/nova:users';
 
 Posts.fragments = {
-  full: createFragment(gql`
-    fragment fullPostInfo on Post {
+  list: createFragment(gql` 
+    # what name convention for the fragments??
+    fragment postInfoInList on Post {
       _id
       title
       url

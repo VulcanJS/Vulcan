@@ -83,7 +83,7 @@ Telescope.utils.trimHTML = function (html, numWords) {
  * @summary Capitalize a string.
  * @param {String} str
  */
-Telescope.utils.capitalise = function(str) {
+Telescope.utils.capitalize = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 

@@ -4,7 +4,7 @@ import Comments from 'meteor/nova:comments';
 import Users from 'meteor/nova:users';
 
 Comments.fragments = {
-  full: createFragment(gql`
+  list: createFragment(gql`
     fragment fullCommentInfo on Comment {
       _id
       postId

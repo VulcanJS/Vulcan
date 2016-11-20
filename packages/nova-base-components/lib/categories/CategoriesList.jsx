@@ -153,12 +153,7 @@ CategoriesList.propTypes = {
 };
 
 const categoriesListOptions = {
-  queryName: 'getCategoriesList',
-  collection: CategoriesList,
-  listResolverName: 'categoriesList',
-  totalResolverName: 'categoriesListTotal',
-  fragment: Categories.fragments.full,
-  fragmentName: 'fullCategoryInfo',
+  collection: Categories,
 };
 
 Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

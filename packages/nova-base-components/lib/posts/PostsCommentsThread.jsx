@@ -49,15 +49,15 @@ PostsCommentsThread.propTypes = {
 };
 
 const commentsListOptions = {
-  queryName: 'getCommentsList',
   collection: Comments,
-  listResolverName: 'commentsList',
-  totalResolverName: 'commentsListTotal',
-  fragment: Comments.fragments.full,
-  fragmentName: 'fullCommentInfo',
-  ownPropsVariables: [
-    {propName: 'postId', graphqlType: 'String', usedForTotal: true},
-  ],
+  options: {
+    variables: {
+      postId: {
+        type: 'String',
+        usedForTotal: true
+      }
+    }
+  },
 };
 
 Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withList(commentsListOptions));

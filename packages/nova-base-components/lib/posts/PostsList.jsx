@@ -55,19 +55,33 @@ PostsList.propTypes = {
   showHeader: React.PropTypes.bool,
 };
 
-const postsListOptions = {
-  queryName: 'getPostsList',
+// const postsListOptions = {
+//   queryName: 'getPostsList',
+//   collection: Posts,
+//   listResolverName: 'postsList',
+//   totalResolverName: 'postsListTotal',
+//   fragment: Posts.fragments.list,
+//   fragmentName: 'fullPostInfo',
+//   ownPropsVariables: [
+//     // test note: can't overwrite atm
+//     // {propName: 'limit', graphqlType: 'Int', defaultValue: 2, usedForTotal: false}, 
+//     // note:give the list hoc the ability to catch props coming from upper in the component tree
+//     {propName: 'terms', graphqlType: 'Terms', usedForTotal: true},
+//   ],
+// };
+
+const postsListConfig = {
   collection: Posts,
-  listResolverName: 'postsList',
-  totalResolverName: 'postsListTotal',
-  fragment: Posts.fragments.full,
-  fragmentName: 'fullPostInfo',
-  ownPropsVariables: [
-    // test note: can't overwrite atm
-    // {propName: 'limit', graphqlType: 'Int', defaultValue: 2, usedForTotal: false}, 
-    // note:give the list hoc the ability to catch props coming from upper in the component tree
-    {propName: 'terms', graphqlType: 'Terms', usedForTotal: true},
-  ],
+  // options passed to the query
+  options: {
+    // fragment: someSpecificFragment
+    variables: {
+      terms: {
+        type: 'Terms',
+        usedForTotal: true,
+      },
+    },
+  }
 };
 
-Telescope.registerComponent('PostsList', PostsList, withList(postsListOptions));
+Telescope.registerComponent('PostsList', PostsList, withList(postsListConfig));

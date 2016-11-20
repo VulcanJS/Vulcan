@@ -3,51 +3,77 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withList (options) {
+export default function withList (config) {
 
   // extract arguments from the options of the hoc
-  const { queryName, collection, listResolverName, totalResolverName, fragment, fragmentName, ownPropsVariables = [] } = options;
-  
+  // const { queryName, collection, listResolverName, totalResolverName, fragment, fragmentName, ownPropsVariables = [] } = options;
+  const { collection, options = {variables: {}} } = config;
+
+  // from the collection, get the info following the naming convention 
+  const collectionName = collection._name;
+  const queryName = `get${Telescope.utils.capitalize(collectionName)}List`;
+  // ex: getPostsList
+  const listResolverName = `${collectionName}List`;
+  // ex: postsList
+  const totalResolverName = `${collectionName}ListTotal`;
+  // ex: postsListTotal
+  const fragment = options.fragment || collection.fragments.list;
+  // ex: Posts.fragments.list
+  const fragmentName = fragment[0].name.value;
+  // ex: postInfoInList ; or whatever it's called, we grab it directly in the fragment
+
   console.log("withList: ", queryName);
   // console.log(options);
 
   // default variables for the gql query list 
-  const defaultQueryVariables = [
-    {propName: 'offset', graphqlType: 'Int', defaultValue: 0, usedForTotal: false},
-    {propName: 'limit', graphqlType: 'Int', defaultValue: 5, usedForTotal: false},
-  ];
+  const defaultQueryVariables = {
+    offset: {
+      type: 'Int',
+      defaultValue: 0,
+      usedForTotal: false,
+    },
+    limit: {
+      type: 'Int',
+      defaultValue: 5,
+      usedForTotal: false,
+    }
+  };
 
   // concat the default query variables with the ones from the props of the wrapped component
-  const propsVariables = [...defaultQueryVariables, ...ownPropsVariables];
+  const propsVariables = {...defaultQueryVariables, ...options.variables};
 
   console.log('props variables (default+ownProps)', propsVariables);
 
   // output something like: `$offset: Int, $limit: Int, $terms: Terms`
-  const queryVariablesTypeDef = propsVariables.reduce((string, {propName, graphqlType}, index) => {
+  const queryVariablesTypeDef = Object.keys(propsVariables).reduce((string, variableName, index) => {
+
+    const { type } = propsVariables[variableName];
+
     // don't add ", " if the current typeDef is the first iteration
     const commaSeparation = index === 0 ? "" : ", ";
     
-    return `${string}${commaSeparation}$${propName}: ${graphqlType}`;
+    return `${string}${commaSeparation}$${variableName}: ${type}`;
   }, "");
 
   console.log('query variables type def', queryVariablesTypeDef);
 
   // output something like: `offset: $offset, limit: $limit, terms: $terms`
-  const queryVariablesList = propsVariables.reduce((string, {propName}, index) => {
+  const queryVariablesList = Object.keys(propsVariables).reduce((string, variableName, index) => {
     // don't add ", " if the current typeDef is the first iteration
     const commaSeparation = index === 0 ? "" : ", ";
     
-    return `${string}${commaSeparation}${propName}: $${propName}`;
+    return `${string}${commaSeparation}${variableName}: $${variableName}`;
   }, "");
 
   console.log('query variables list', queryVariablesList);
 
   // output something like: `terms: $terms`
-  const queryVariablesTotal = propsVariables.filter(({usedForTotal}) => !!usedForTotal).reduce((string, {propName}, index) => {
+  const queryVariablesTotalName = Object.keys(propsVariables).filter(variableName => !!propsVariables[variableName].usedForTotal);
+  const queryVariablesTotal = queryVariablesTotalName.reduce((string, variableName, index) => {
     // don't add ", " if the current typeDef is the first iteration
     const commaSeparation = index === 0 ? "" : ", ";
     
-    return `${string}${commaSeparation}${propName}: $${propName}`;
+    return `${string}${commaSeparation}${variableName}: $${variableName}`;
   }, "");
 
   console.log('query variables total', queryVariablesTotal);
@@ -65,12 +91,17 @@ export default function withList (options) {
   `, {
     options(ownProps) {
 
-      const queryVariables = propsVariables.reduce((variables, {propName, defaultValue}) => ({
-        ...variables,
-        [propName]: ownProps[propName] || defaultValue
-      }), {});
+      const queryVariables = Object.keys(propsVariables).reduce((variables, variableName) => {
+        
+        const { defaultValue } = propsVariables[variableName];
 
-      console.log('actual query variables', queryVariables);
+        return {
+          ...variables,
+          [variableName]: ownProps[variableName] || defaultValue,
+        };
+      }, {});
+
+      // console.log('actual query variables', queryVariables);
 
       return {
         variables: queryVariables,
