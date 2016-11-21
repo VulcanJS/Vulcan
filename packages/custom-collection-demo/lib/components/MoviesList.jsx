@@ -35,8 +35,6 @@ class MoviesList extends Component {
   }
 
   render() {
-    console.log(this)
-    
     if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {

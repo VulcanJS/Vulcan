@@ -13,44 +13,20 @@ const Movies = Telescope.createCollection({
   schema: schema,
   
   fragments: {
-    list: {
-      name: 'moviesListFragment',
-      fragment: fragments.moviesListFragment
-    },
-    single: {
-      name: 'moviesSingleFragment',
-      fragment: fragments.moviesSingleFragment
-    } 
+    list: fragments.list,
+    single: fragments.single,
   },
 
   resolvers: {
-    list: {
-      name: 'moviesList',
-      resolver: resolvers.moviesList,
-    },
-    single: {
-      name: 'moviesSingle',
-      resolver: resolvers.moviesSingle,
-    },
-    total: {
-      name: 'moviesTotal',
-      resolver: resolvers.moviesTotal,
-    }
+    list: resolvers.list,
+    single: resolvers.single,
+    total: resolvers.total,
   },
 
   mutations: {
-    new: { // e.g. "moviesNew(document: moviesInput) : Movie"
-      name: 'moviesNew',
-      mutation: mutations.moviesNew,
-    },
-    edit: { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-      name: 'moviesEdit',
-      mutation: mutations.moviesEdit
-    },
-    remove: { // e.g. "moviesRemove(documentId: String) : Movie"
-      name: 'moviesRemove',
-      mutation: mutations.moviesRemove
-    },
+    new: mutations.new,
+    edit: mutations.edit,
+    remove: mutations.remove,
   },
 
 });

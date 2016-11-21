@@ -133,6 +133,17 @@ Telescope.createCollection = options => {
   // ------------------------------------- Mutations -------------------------------- //
 
   const mutations = {};
+  // create a version of the mutation wrapped with its own "check" function
+  // const wrapWithCheck = mutationObject => {
+  //   const checkedMutation = (root, args, context) => {
+  //     const document = args.document ? args.document : collection.findOne(args.documentId);
+  //     if (!mutationObject.check(context.currentUser, document)) {
+  //       throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+  //     }
+  //     return mutationObject.mutation(root, args, context)
+  //   }
+  //   return checkedMutation;
+  // }
   // new
   if (options.mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
     Telescope.graphQL.addMutation(`${options.mutations.new.name}(document: ${options.collectionName}Input) : ${options.typeName}`);

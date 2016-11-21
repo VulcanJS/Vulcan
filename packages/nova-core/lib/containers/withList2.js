@@ -5,8 +5,8 @@ import gql from 'graphql-tag';
 
 export default function withList2 (options) {
 
-  console.log("// withList2")
-  console.log(options)
+  // console.log("// withList2")
+  // console.log(options)
 
   const { queryName, collection } = options,
         listResolverName = collection.options.resolvers.list.name,

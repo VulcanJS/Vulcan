@@ -1,45 +1,82 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
 
+const performCheck = (mutation, user, document) => {
+  if (!mutation.check(context.currentUser, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+}
+
 const mutations = {
 
-  moviesNew(root, {document}, context) {
-    return newMutation({
-      action: 'movies.new',
-      collection: context.Movies,
-      document: document, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+  new: {
+    
+    name: 'moviesNew',
+    
+    check(user, document) {
+      if (!user) return false;
+      return Users.canDo(user, 'movies.new');
+    },
+    
+    mutation(root, {document}, context) {
+      
+      performCheck(this, context.currentUser, document);
+
+      return newMutation({
+        collection: context.Movies,
+        document: document, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
-  moviesEdit(root, {documentId, set, unset}, context) {
+  edit: {
+    
+    name: 'moviesEdit',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'movies.edit.own') : Users.canDo(user, `movies.edit.all`);
+    },
 
-    const document = context.Movies.findOne(documentId);
-    const action = Users.owns(context.currentUser, document) ? 'posts.edit.own' : 'posts.edit.all';
+    mutation(root, {documentId, set, unset}, context) {
 
-    return editMutation({
-      action: action,
-      collection: context.Movies, 
-      documentId: documentId, 
-      set: set, 
-      unset: unset, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+      const document = context.Movies.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return editMutation({
+        collection: context.Movies, 
+        documentId: documentId, 
+        set: set, 
+        unset: unset, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
+  
+  remove: {
 
-  moviesRemove(root, {documentId}, context) {
+    name: 'moviesRemove',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'movies.remove.own') : Users.canDo(user, `movies.remove.all`);
+    },
+    
+    mutation(root, {documentId}, context) {
 
-    const document = context.Movies.findOne(documentId);
-    const action = Users.owns(context.currentUser, document) ? 'movies.remove.own' : 'movies.remove.all';
+      const document = context.Movies.findOne(documentId);
+      performCheck(this, context.currentUser, document);
 
-    return removeMutation({
-      action: action,
-      collection: context.Movies, 
-      documentId: documentId, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+      return removeMutation({
+        collection: context.Movies, 
+        documentId: documentId, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
 };

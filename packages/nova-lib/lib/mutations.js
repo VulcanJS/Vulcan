@@ -7,7 +7,6 @@ Mutations have four steps:
 If the mutation call is not trusted (i.e. it comes from a GraphQL mutation), 
 we'll run all validate steps:
 
-- Check that the current user is defined and has permission to perform the action.
 - Check that the current user has permission to insert/edit each field.
 - Validate document against collection schema.
 - Add userId to document (insert only).
@@ -30,10 +29,9 @@ to the client.
 */
 
 
-const newMutation = ({ action, collection, document, currentUser, validate }) => {
+const newMutation = ({ collection, document, currentUser, validate }) => {
   
   console.log("// newMutation")
-  console.log(action)
   console.log(collection._name)
   console.log(document)
 
@@ -48,11 +46,6 @@ const newMutation = ({ action, collection, document, currentUser, validate }) =>
 
   // if document is not trusted, run validation steps
   if (validate) {
-  
-    // check if current user has permission to perform the current action
-    if (!currentUser || !Users.canDo(currentUser, action)) {
-      throw new Meteor.Error(601, `Sorry, you don't have the proper permissions to perform this action`);
-    }
 
     // check that the current user has permission to insert each field
     _.keys(document).forEach(function (fieldName) {
@@ -94,10 +87,9 @@ const newMutation = ({ action, collection, document, currentUser, validate }) =>
   return document;
 }
 
-const editMutation = ({ action, collection, documentId, set, unset, currentUser, validate }) => {
+const editMutation = ({ collection, documentId, set, unset, currentUser, validate }) => {
 
   console.log("// editMutation")
-  console.log(action)
   console.log(collection._name)
   console.log(documentId)
   console.log(set)
@@ -114,11 +106,6 @@ const editMutation = ({ action, collection, documentId, set, unset, currentUser,
 
   // if document is not trusted, run validation steps
   if (validate) {
-
-    // check if current user has permission to perform the current action
-    if (!currentUser || !Users.canDo(currentUser, action)) {
-      throw new Meteor.Error(601, `Sorry, you don't have the proper permissions to perform this action`);
-    }
 
     // check that the current user has permission to edit each field
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
@@ -154,7 +141,7 @@ const editMutation = ({ action, collection, documentId, set, unset, currentUser,
   return newDocument;
 }
 
-const removeMutation = ({ action, collection, documentId, currentUser, validate }) => {
+const removeMutation = ({ collection, documentId, currentUser, validate }) => {
 
   console.log("// removeMutation")
   console.log(collection._name)

@@ -1,18 +1,20 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import mutations from './mutations.js';
 
 const alwaysPublic = user => true;
 const isLoggedIn = user => !!user;
-const canEdit = Users.canEdit;
+const canEdit = mutations.edit.check;
 
 // define schema
 const schema = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
-    viewableIf: alwaysPublic
+    viewableIf: alwaysPublic,
   },
   name: {
+    label: 'Name',
     type: String,
     control: "text",
     viewableIf: alwaysPublic,
@@ -27,6 +29,7 @@ const schema = new SimpleSchema({
     }
   },
   year: {
+    label: 'Year',
     type: String,
     optional: true,
     control: "text",
@@ -35,6 +38,7 @@ const schema = new SimpleSchema({
     editableIf: canEdit
   },
   review: {
+    label: 'Review',
     type: String,
     control: "textarea",
     viewableIf: alwaysPublic,
@@ -42,6 +46,7 @@ const schema = new SimpleSchema({
     editableIf: canEdit
   },
   privateComments: {
+    label: 'Private Comments',
     type: String,
     optional: true,
     control: "textarea",

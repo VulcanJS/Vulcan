@@ -81,9 +81,10 @@ class FormWrapper extends Component{
         order: fieldSchema.order
       }
 
-      // add label if necessary (field not hidden)
-      const intlFieldName = !field.hidden ? this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName}) : "";
-      field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
+      // add label or internationalized field name if necessary (field not hidden)
+      if (!field.hidden) {
+        field.label = fieldSchema.label ? fieldSchema.label : this.context.intl.formatMessage({id: this.props.collection._name+"."+fieldName});
+      }
 
       // add value
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
@@ -478,7 +479,6 @@ FormWrapper.propTypes = {
   removeMutation: React.PropTypes.func, // the remove mutation when editing document
 
   // form
-  labelFunction: React.PropTypes.func,
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
   fields: React.PropTypes.arrayOf(React.PropTypes.string),
