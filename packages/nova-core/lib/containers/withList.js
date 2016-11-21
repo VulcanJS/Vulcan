@@ -22,7 +22,7 @@ export default function withList (config) {
   const fragmentName = fragment[0].name.value;
   // ex: postInfoInList ; or whatever it's called, we grab it directly in the fragment
 
-  console.log("withList: ", queryName);
+  // console.log("withList: ", queryName);
   // console.log(options);
 
   // default variables for the gql query list 
@@ -42,7 +42,7 @@ export default function withList (config) {
   // concat the default query variables with the ones from the props of the wrapped component
   const propsVariables = {...defaultQueryVariables, ...options.variables};
 
-  console.log('props variables (default+ownProps)', propsVariables);
+  // console.log('props variables (default+ownProps)', propsVariables);
 
   // output something like: `$offset: Int, $limit: Int, $terms: Terms`
   const queryVariablesTypeDef = Object.keys(propsVariables).reduce((string, variableName, index) => {
@@ -55,7 +55,7 @@ export default function withList (config) {
     return `${string}${commaSeparation}$${variableName}: ${type}`;
   }, "");
 
-  console.log('query variables type def', queryVariablesTypeDef);
+  // console.log('query variables type def', queryVariablesTypeDef);
 
   // output something like: `offset: $offset, limit: $limit, terms: $terms`
   const queryVariablesList = Object.keys(propsVariables).reduce((string, variableName, index) => {
@@ -65,7 +65,7 @@ export default function withList (config) {
     return `${string}${commaSeparation}${variableName}: $${variableName}`;
   }, "");
 
-  console.log('query variables list', queryVariablesList);
+  // console.log('query variables list', queryVariablesList);
 
   // output something like: `terms: $terms`
   const queryVariablesTotalName = Object.keys(propsVariables).filter(variableName => !!propsVariables[variableName].usedForTotal);
@@ -76,7 +76,7 @@ export default function withList (config) {
     return `${string}${commaSeparation}${variableName}: $${variableName}`;
   }, "");
 
-  console.log('query variables total', queryVariablesTotal);
+  // console.log('query variables total', queryVariablesTotal);
   
 
   const callQueryVariablesTotal = !!queryVariablesTotal ? `(${queryVariablesTotal})` : "";

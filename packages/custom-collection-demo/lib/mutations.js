@@ -1,8 +1,6 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
-import Movies from './collection.js'
 
-// Resolvers
-Movies.mutations = {
+const mutations = {
 
   moviesNew(root, {document}, context) {
     return newMutation({
@@ -46,9 +44,4 @@ Movies.mutations = {
 
 };
 
-// GraphQL mutations
-Telescope.graphQL.addMutation('moviesNew(document: moviesInput) : Movie');
-Telescope.graphQL.addMutation('moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie');
-Telescope.graphQL.addMutation('moviesRemove(documentId: String) : Movie');
-
-export default Movies.mutations;
+export default mutations;

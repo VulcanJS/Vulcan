@@ -1,6 +1,5 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
-import Movies from './collection.js';
 
 const alwaysPublic = user => true;
 const isLoggedIn = user => !!user;
@@ -59,11 +58,4 @@ const schema = new SimpleSchema({
   }
 });
 
-// attach schema to collection
-Movies.attachSchema(schema);
-
-// generate GraphQL schema from SimpleSchema schema
-Telescope.graphQL.addCollection(Movies);
-
-// make collection available to resolvers via their context
-Telescope.graphQL.addToContext({ Movies });
+export default schema;

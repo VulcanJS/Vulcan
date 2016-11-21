@@ -7,8 +7,7 @@ import { ModalTrigger } from "meteor/nova:core";
 import Movie from './Movie.jsx';
 import Movies from '../collection.js';
 import { compose } from 'react-apollo';
-import { withCurrentUser, withList } from 'meteor/nova:core';
-import { moviesListProps, moviesSingleProps } from '../containers/fragments.js';
+import { withCurrentUser, withList2 } from 'meteor/nova:core';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -36,6 +35,8 @@ class MoviesList extends Component {
   }
 
   render() {
+    console.log(this)
+    
     if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {
@@ -54,9 +55,7 @@ class MoviesList extends Component {
 
 const listOptions = {
   collection: Movies,
-  options: {
-    fragment: moviesListProps,
-  },
+  queryName: 'moviesListQuery',
 };
 
-export default compose(withList(listOptions), withCurrentUser)(MoviesList);
+export default compose(withList2(listOptions), withCurrentUser)(MoviesList);

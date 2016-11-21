@@ -25,6 +25,9 @@ const moviesFullProps = createFragment(gql`
     year
     review
     privateComments
+    user {
+      __displayName
+    }
   }
 `)
 
