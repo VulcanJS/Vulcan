@@ -10,24 +10,13 @@ const Movies = Telescope.createCollection({
 
   typeName: 'Movie',
 
-  schema: schema,
+  schema,
   
-  fragments: {
-    list: fragments.list,
-    single: fragments.single,
-  },
+  fragments,
 
-  resolvers: {
-    list: resolvers.list,
-    single: resolvers.single,
-    total: resolvers.total,
-  },
+  resolvers,
 
-  mutations: {
-    new: mutations.new,
-    edit: mutations.edit,
-    remove: mutations.remove,
-  },
+  mutations,
 
 });
 
