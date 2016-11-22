@@ -4,7 +4,7 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import Users from 'meteor/nova:users';
-import { withUsersSingle } from 'meteor/nova:base-containers';
+import { withSingle } from 'meteor/nova:core';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -57,4 +57,4 @@ UsersEditForm.displayName = "UsersEditForm";
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('UsersEditForm', UsersEditForm, connect(mapStateToProps, mapDispatchToProps)/*, withUsersSingle*/);
+Telescope.registerComponent('UsersEditForm', UsersEditForm, connect(mapStateToProps, mapDispatchToProps)/*, withSingle*/);

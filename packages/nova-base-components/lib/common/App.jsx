@@ -82,8 +82,8 @@ const currentUserContainer = graphql(
       __htmlBio
       __karma
       __newsletter_subscribeToNewsletter
-      #__notifications_users
-      #__notifications_posts
+      __notifications_users
+      __notifications_posts
       __postCount
       __slug
       __twitterUsername

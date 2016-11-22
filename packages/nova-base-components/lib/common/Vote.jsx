@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withVoteMutation } from 'meteor/nova:base-containers';
+import withVote from 'meteor/nova:voting';
 import { withCurrentUser } from 'meteor/nova:core';
 
 class Vote extends Component {
@@ -87,4 +87,4 @@ Vote.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('Vote', Vote, withCurrentUser, connect(mapStateToProps, mapDispatchToProps), withVoteMutation);
+Telescope.registerComponent('Vote', Vote, withCurrentUser, connect(mapStateToProps, mapDispatchToProps), withVote);

@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
-import { withUsersSingle } from 'meteor/nova:base-containers';
+import { withSingle } from 'meteor/nova:core';
 
 const UsersProfile = (props) => {
   console.log(props)
@@ -44,4 +44,4 @@ UsersProfile.propTypes = {
 
 UsersProfile.displayName = "UsersProfile";
 
-Telescope.registerComponent('UsersProfile', UsersProfile/*, withUsersSingle*/);
+Telescope.registerComponent('UsersProfile', UsersProfile/*, withSingle*/);

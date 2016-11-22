@@ -66,7 +66,6 @@ mongo-id@1.0.6
 nova:api@0.27.4-nova
 nova:apollo@0.27.4-nova
 nova:base-components@0.27.4-nova
-nova:base-containers@0.27.4-nova
 nova:base-routes@0.27.4-nova
 nova:base-styles@0.27.4-nova
 nova:categories@0.27.4-nova

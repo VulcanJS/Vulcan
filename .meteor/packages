@@ -28,7 +28,6 @@ nova:apollo # do not remove!
 
 ############ Customizable Packages ############
 
-nova:base-containers    # default data containers
 nova:base-components    # default ui components
 nova:base-styles        # default styling
 nova:base-routes        # default routes
