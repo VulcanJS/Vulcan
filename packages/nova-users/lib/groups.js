@@ -84,6 +84,15 @@ Users.getActions = user => {
 };
 
 /**
+ * @summary check if a user can perform a specific action on a specific document
+ * @param {Object} user
+ * @param {String} action
+ */
+Users.can = (user, action, document) => {
+  // TODO
+};
+
+/**
  * @summary check if a user can perform a specific action
  * @param {Object} user
  * @param {String} action
@@ -140,7 +149,7 @@ Users.canEdit = function (user, document) {
 
   // note(apollo): use of `__typename` given by react-apollo
   //const collectionName = document.getCollectionName();
-    const collectionName = document.__typename ? Telescope.utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
+  const collectionName = document.__typename ? Telescope.utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
   
   if (!user || !document) {
     return false;

@@ -60,4 +60,5 @@ const commentsListOptions = {
   },
 };
 
-Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withList(commentsListOptions));
+Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser);
+// Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withList(commentsListOptions));

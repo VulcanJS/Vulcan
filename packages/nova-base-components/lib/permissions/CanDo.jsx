@@ -5,6 +5,7 @@ import Users from 'meteor/nova:users';
 import { withCurrentUser } from 'meteor/nova:core';
 
 const CanDo = (props, context) => {
+  
   // no user login, display the login form
   if (!props.currentUser && props.displayNoPermissionMessage) {
     return (
@@ -17,7 +18,6 @@ const CanDo = (props, context) => {
 
   // default permission, is the user allowed to perform this action?
   let permission = Users.canDo(props.currentUser, props.action);
-
 
   // the permission is about viewing a document, check if the user is allowed
   if (props.document && props.action.indexOf('view') > -1) {

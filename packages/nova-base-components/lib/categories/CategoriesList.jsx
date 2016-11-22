@@ -156,4 +156,5 @@ const categoriesListOptions = {
   collection: Categories,
 };
 
-Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));
+Telescope.registerComponent('CategoriesList', CategoriesList, withRouter);
+// Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

@@ -84,4 +84,5 @@ const postsListConfig = {
   }
 };
 
-Telescope.registerComponent('PostsList', PostsList, withList(postsListConfig));
+Telescope.registerComponent('PostsList', PostsList);
+// Telescope.registerComponent('PostsList', PostsList, withList(postsListConfig));
