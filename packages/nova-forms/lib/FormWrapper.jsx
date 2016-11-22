@@ -378,7 +378,7 @@ class FormWrapper extends Component{
       }
 
       // call method with new document
-      this.props.mutation({document}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.newMutation({document}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
 
     } else { // edit document form
 
@@ -396,7 +396,7 @@ class FormWrapper extends Component{
       if (!_.isEmpty(unset)) modifier.$unset = unset;
       // call method with _id of document being edited and modifier
       // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
-      this.props.mutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.editMutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
     }
 
   }
@@ -475,8 +475,9 @@ FormWrapper.propTypes = {
   schema: React.PropTypes.object, // usually not needed
 
   // graphQL
-  mutation: React.PropTypes.func, // the mutation
-  removeMutation: React.PropTypes.func, // the remove mutation when editing document
+  newMutation: React.PropTypes.func, // the new mutation
+  editMutation: React.PropTypes.func, // the edit mutation
+  removeMutation: React.PropTypes.func, // the remove mutation
 
   // form
   prefilledProps: React.PropTypes.object,

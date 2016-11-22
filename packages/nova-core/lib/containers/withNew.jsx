@@ -4,48 +4,42 @@ import gql from 'graphql-tag';
 import hoistStatics from 'hoist-non-react-statics'
 import Telescope from 'meteor/nova:lib';
 
-export default function withNew(WrappedComponent, options) {
+export default function withNew(WrappedComponent) {
 
   class WithNew extends Component {
-    constructor(...args) {
-      super(...args);
-    }
+    // constructor(...args) {
+    //   super(...args);
+    // }
 
     render() {
 
-      // if the NovaForm mutation isn't about creating a new document (it already has one), do nothing
-      if (this.props.document) {
+      const collection = this.props.collection,
+            collectionName = collection._name,
+            mutationName = collection.options.mutations.new.name,
+            fragmentName = collection.options.fragments.single.name,
+            fragment = collection.options.fragments.single.fragment
 
-        return <WrappedComponent {...this.props} />
-
-      } else {
-
-        const { mutationName, fragment, resultQuery, collection } = this.props;
-
-        const collectionName = collection._name;
-
-        const ComponentWithMutation = graphql(gql`
+        const ComponentWithNew = graphql(gql`
           mutation ${mutationName}($document: ${collectionName}Input) {
             ${mutationName}(document: $document) {
-              ${fragment ? `...${fragment[0].name.value}` : resultQuery}
+              ...${fragmentName}
             }
           }
+          ${fragment}
         `, {
-          options: (props) => props.fragment ? {fragments: props.fragment} : {},
           props: ({ownProps, mutate}) => ({
-            mutation: ({document}) => {
+            newMutation: ({document}) => {
               return mutate({ 
-                variables: {document: document},
+                variables: { document },
                 updateQueries: ownProps.updateQueries
               })
             }
           }),
         })(WrappedComponent);
 
-        return <ComponentWithMutation {...this.props} />
+        return <ComponentWithNew {...this.props} />
 
       }
-    }
   };
 
   WithNew.displayName = `withNew(${Telescope.utils.getComponentDisplayName(WrappedComponent)}`;

@@ -9,7 +9,6 @@ const moviesListProps = createFragment(gql`
     name
     createdAt
     year
-    review
     privateComments
     user {
       __displayName

@@ -4,10 +4,10 @@ import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { ModalTrigger } from "meteor/nova:core";
-import Movie from './Movie.jsx';
+import MoviesItem from './MoviesItem.jsx';
 import Movies from '../collection.js';
 import { compose } from 'react-apollo';
-import { withCurrentUser, withList2 } from 'meteor/nova:core';
+import { withCurrentUser, withList } from 'meteor/nova:core';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -42,7 +42,7 @@ class MoviesList extends Component {
       return (
         <div className="movies">
           {this.renderNew()}
-          {this.props.results.map(movie => <Movie key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
+          {this.props.results.map(movie => <MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
           {hasMore ? <LoadMore {...this.props}/> : <p>No more movies</p>}
         </div>
       )
@@ -56,4 +56,4 @@ const listOptions = {
   queryName: 'moviesListQuery',
 };
 
-export default compose(withList2(listOptions), withCurrentUser)(MoviesList);
+export default compose(withList(listOptions), withCurrentUser)(MoviesList);

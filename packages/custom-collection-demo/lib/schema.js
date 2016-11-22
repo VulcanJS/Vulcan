@@ -7,7 +7,7 @@ const isLoggedIn = user => !!user;
 const canEdit = mutations.edit.check;
 
 // define schema
-const schema = new SimpleSchema({
+const schema = {
   _id: {
     type: String,
     optional: true,
@@ -56,11 +56,12 @@ const schema = new SimpleSchema({
   },
   userId: {
     type: String,
+    optional: true,
     viewableIf: alwaysPublic,
     insertableIf: isLoggedIn,
     hidden: true,
     resolveAs: 'user: User',
   }
-});
+};
 
 export default schema;

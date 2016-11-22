@@ -1,7 +1,7 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
 
 const performCheck = (mutation, user, document) => {
-  if (!mutation.check(context.currentUser, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
 }
 
 const mutations = {

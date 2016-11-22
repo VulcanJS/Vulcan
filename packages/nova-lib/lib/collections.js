@@ -147,17 +147,17 @@ Telescope.createCollection = options => {
   // new
   if (options.mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
     Telescope.graphQL.addMutation(`${options.mutations.new.name}(document: ${options.collectionName}Input) : ${options.typeName}`);
-    mutations[options.mutations.new.name] = options.mutations.new.mutation;
+    mutations[options.mutations.new.name] = options.mutations.new.mutation.bind(options.mutations.new);
   }
   // edit
   if (options.mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
     Telescope.graphQL.addMutation(`${options.mutations.edit.name}(documentId: String, set: ${options.collectionName}Input, unset: ${options.collectionName}Unset) : ${options.typeName}`);
-    mutations[options.mutations.edit.name] = options.mutations.edit.mutation;
+    mutations[options.mutations.edit.name] = options.mutations.edit.mutation.bind(options.mutations.edit);
   }
   // remove
   if (options.mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
     Telescope.graphQL.addMutation(`${options.mutations.remove.name}(documentId: String) : ${options.typeName}`);
-    mutations[options.mutations.remove.name] = options.mutations.remove.mutation;
+    mutations[options.mutations.remove.name] = options.mutations.remove.mutation.bind(options.mutations.remove);
   }
   Telescope.graphQL.addResolvers({ Mutation: { ...mutations } });
 
