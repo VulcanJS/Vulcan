@@ -1,3 +1,10 @@
+/* 
+
+A component that shows a detailed view of a single movie. 
+Wrapped with the "withSingle" container.
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Movies from '../collection.js';

@@ -1,3 +1,9 @@
+/* 
+
+Wrapper for the Movies components
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";

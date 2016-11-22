@@ -1,3 +1,10 @@
+/* 
+
+List of movies. 
+Wrapped with the "withList" and "withCurrentUser" containers.
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
@@ -6,6 +13,7 @@ import { Accounts } from 'meteor/std:accounts-ui';
 import { ModalTrigger } from "meteor/nova:core";
 import MoviesItem from './MoviesItem.jsx';
 import Movies from '../collection.js';
+import MoviesNewForm from './MoviesNewForm.jsx';
 import { compose } from 'react-apollo';
 import { withCurrentUser, withList } from 'meteor/nova:core';
 
@@ -21,11 +29,7 @@ class MoviesList extends Component {
           title="Add Movie" 
           component={<Button bsStyle="primary">Add Movie</Button>}
         >
-          <NovaForm 
-            collection={Movies} 
-            mutationName="moviesNew" 
-            currentUser={this.props.currentUser}
-          />
+          <MoviesNewForm currentUser={this.props.currentUser}/>
         </ModalTrigger>
         <hr/>
       </div>

@@ -1,3 +1,10 @@
+/* 
+
+An item in the movies list.
+Wrapped with the "withCurrentUser" container.
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Users from "meteor/nova:users";
