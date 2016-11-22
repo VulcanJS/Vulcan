@@ -21,9 +21,7 @@ const MoviesEditForm = (props, context) => {
       successCallback={document => { 
         context.closeCallback();
       }}
-      removeSuccessCallback={({ documentId, documentTitle }) => {
-        context.closeCallback();
-      }}
+      queryName="moviesListQuery"
     />
   )
 }

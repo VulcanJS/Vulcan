@@ -20,6 +20,7 @@ const MoviesNewForm = (props, context) => {
       removeSuccessCallback={({ documentId, documentTitle }) => {
         context.closeCallback();
       }}
+      queryName="moviesListQuery"
     />
   )
 }

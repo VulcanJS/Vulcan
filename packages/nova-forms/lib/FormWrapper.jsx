@@ -3,7 +3,7 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
 import { withApollo, compose } from 'react-apollo';
-import { withCurrentUser, withNew, withEdit } from 'meteor/nova:core';
+import { withCurrentUser, withNew, withEdit, withRemove } from 'meteor/nova:core';
 import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
 import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
@@ -414,7 +414,7 @@ class FormWrapper extends Component{
           this.props.removeSuccessCallback({documentId, documentTitle});
         })
         .catch(() => {
-          console.log('something went bad when removing the document', documentId);
+          console.log('Something went bad when removing the document', documentId);
         });
     }
   }
@@ -443,14 +443,14 @@ class FormWrapper extends Component{
         </Formsy.Form>
 
         {
-          this.props.removeMutation 
-            ? <div>
+          this.props.noRemoveMutation 
+            ? null
+            : <div>
                 <hr/>
                 <a onClick={this.deleteDocument} className={`${collectionName}-delete-link`}>
                   <Telescope.components.Icon name="close"/> <FormattedMessage id={`${collectionName}.delete`}/>
                 </a>
               </div>
-            : null
         }
       </div>
     )
@@ -483,6 +483,7 @@ FormWrapper.propTypes = {
   prefilledProps: React.PropTypes.object,
   layout: React.PropTypes.string,
   fields: React.PropTypes.arrayOf(React.PropTypes.string),
+  noRemoveMutation: React.PropTypes.bool,
 
   // callbacks
   submitCallback: React.PropTypes.func,
@@ -497,7 +498,6 @@ FormWrapper.propTypes = {
 
 FormWrapper.defaultProps = {
   layout: "horizontal",
-  removeSuccessCallback: ({documentId}) => console.log('document removed', documentId),
 }
 
 FormWrapper.contextTypes = {
@@ -515,7 +515,8 @@ FormWrapper.childContextTypes = {
 
 module.exports = compose(
   withCurrentUser,
-  withEdit,
   withNew,
+  withEdit,
+  withRemove,
   withApollo
 )(FormWrapper);

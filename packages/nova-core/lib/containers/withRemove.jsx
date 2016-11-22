@@ -5,55 +5,51 @@ import hoistStatics from 'hoist-non-react-statics';
 import update from 'immutability-helper';
 import Telescope from 'meteor/nova:lib';
 
-export default function withRemove(WrappedComponent, options) {
+export default function withRemove(WrappedComponent) {
 
-  class WithRemove extends Component {
-    constructor(...args) {
-      super(...args);
-    }
+  const WithRemove = props => {
 
-    render() {
-      const { fragment, resultQuery, collection } = this.props;
-      const collectionName = collection._name;
+    const collection = props.collection,
+          collectionName = collection._name,
+          mutationName = collection.options.mutations.remove.name,
+          fragmentName = collection.options.fragments.single.name,
+          fragment = collection.options.fragments.single.fragment,
+          listResolverName = collection.options.resolvers.list.name,
+          totalResolverName = collection.options.resolvers.total.name;
 
-      const ComponentWithMutation = graphql(gql`
-        mutation ${collectionName}Remove($documentId: String) {
-          ${collectionName}Remove(documentId: $documentId) {
-            ${fragment ? `...${fragment[0].name.value}` : resultQuery}
-          }
+    const ComponentWithRemove = graphql(gql`
+      mutation ${mutationName}($documentId: String) {
+        ${mutationName}(documentId: $documentId) {
+          ...${fragmentName}
         }
-      `, {
-        options: (props) => props.fragment ? {fragments: props.fragment} : {},
-        props: ({ownProps, mutate}) => ({
-          removeMutation: ({documentId}) => {
-            return mutate({ 
-              variables: {documentId},
-              updateQueries: {
-                // ex: getPostsList
-                [`get${Telescope.utils.camelToSpaces(collectionName)}List`]: (prev, { mutationResult }) => {
-                  // filter the list to get a new one without the document
-                  const listWithoutDocument = prev[collectionName].filter(doc => doc._id !== documentId);
-                  // update the query
-                  const newList = update(prev, {
-                    // ex: posts
-                    [collectionName]: {
-                      $set: listWithoutDocument,
-                    },
-                    // ex: postsListTotal
-                    [`${collectionName}ListTotal`]: {
-                      $set: prev.postsListTotal - 1
-                    }
-                  });
-                  return newList;
-                },
-              }
-            })
-          },
-        }),
-      })(WrappedComponent);
+      }
+      ${fragment}
+    `, {
+      props: ({ ownProps, mutate }) => ({
+        removeMutation: ({ documentId }) => {
 
-      return <ComponentWithMutation {...this.props} />
-    }
+          const updateQueries = {
+            [props.queryName]: (prev, { mutationResult }) => {
+              // filter the list to get a new one without the document
+              const listWithoutDocument = prev[listResolverName].filter(doc => doc._id !== documentId);
+              // update the query
+              const newList = update(prev, {
+                [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
+                [totalResolverName]: { $set: prev.postsListTotal - 1 } // ex: postsListTotal
+              });
+              return newList;
+            }
+          }
+
+          return mutate({ 
+            variables: { documentId },
+            updateQueries: updateQueries
+          })
+        },
+      }),
+    })(WrappedComponent);
+
+    return <ComponentWithRemove {...props} />
   };
 
   WithRemove.displayName = `withRemove(${Telescope.utils.getComponentDisplayName(WrappedComponent)}`;
