@@ -43,7 +43,7 @@ export default function withRemove(WrappedComponent) {
 
           return mutate({ 
             variables: { documentId },
-            updateQueries: updateQueries
+            updateQueries: props.updateQueries || updateQueries
           })
         },
       }),

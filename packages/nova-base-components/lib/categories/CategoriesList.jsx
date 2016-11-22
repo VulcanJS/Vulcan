@@ -154,6 +154,7 @@ CategoriesList.propTypes = {
 
 const categoriesListOptions = {
   collection: Categories,
+  queryName: 'getCategoriesList'
 };
 
 Telescope.registerComponent('CategoriesList', CategoriesList, withRouter);

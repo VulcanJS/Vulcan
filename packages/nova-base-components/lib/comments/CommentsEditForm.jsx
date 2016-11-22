@@ -12,8 +12,6 @@ const CommentsEditForm = (props, context) => {
         layout="elementOnly"
         collection={Comments}
         document={props.comment}
-        mutationName="commentsEdit"
-        // fragment={Comments.fragments.list}
         successCallback={props.successCallback}
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}

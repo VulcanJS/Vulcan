@@ -42,7 +42,7 @@ export default function withNew(WrappedComponent) {
         newMutation: ({document}) => {
           return mutate({ 
             variables: { document },
-            updateQueries: updateQueries
+            updateQueries: props.updateQueries || updateQueries
           })
         }
       }),

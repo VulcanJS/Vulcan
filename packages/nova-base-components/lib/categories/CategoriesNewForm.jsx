@@ -13,21 +13,7 @@ const CategoriesNewForm = (props, context) => {
       <NovaForm 
         collection={Categories} 
         mutationName="categoriesNew"
-        // fragment={Categories.fragments.list}
-        updateQueries={{
-          getCategoriesList: (prev, {mutationResult}) => {
-            const newCategory = mutationResult.data.categoriesNew;
-            const newCategoriesList = update(prev, {
-              categoriesList: {
-                $push: [newCategory]
-              },
-              categoriesListTotal: {
-                $set: prev.categoriesListTotal + 1
-              },
-            });
-            return newCategoriesList;
-          },
-        }}
+        queryName="getCategoriesList"
         successCallback={(category)=>{
           context.closeCallback();
           props.flash("Category created.", "success");
