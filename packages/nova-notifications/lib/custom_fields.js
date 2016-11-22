@@ -11,60 +11,60 @@ const canInsert = user => Users.canDo(user, "users.new");
 const canEdit = Users.canEdit;
 
 // Add notifications options to user profile settings
-// Users.addField([
-//   {
-//     fieldName: '__notifications_users',
-//     fieldSchema: {
-//       label: 'New users',
-//       type: Boolean,
-//       optional: true,
-//       defaultValue: false,
-//       control: "checkbox",
-//       insertableIf: Users.isAdmin,
-//       editableIf: Users.isAdmin,
-//       group: notificationsGroup
-//     }
-//   },
-//   {
-//     fieldName: '__notifications_posts',
-//     fieldSchema: {
-//       label: 'New posts',
-//       type: Boolean,
-//       optional: true,
-//       defaultValue: false,
-//       control: "checkbox",
-//       insertableIf: canInsert,
-//       editableIf: canEdit,
-//       group: notificationsGroup
-//     }
-//   }
-// ]);
+Users.addField([
+  {
+    fieldName: '__notifications_users',
+    fieldSchema: {
+      label: 'New users',
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      control: "checkbox",
+      insertableIf: Users.isAdmin,
+      editableIf: Users.isAdmin,
+      group: notificationsGroup
+    }
+  },
+  {
+    fieldName: '__notifications_posts',
+    fieldSchema: {
+      label: 'New posts',
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      control: "checkbox",
+      insertableIf: canInsert,
+      editableIf: canEdit,
+      group: notificationsGroup
+    }
+  }
+]);
 
-// if (typeof Comments !== "undefined") {
-//   Users.addField([
-//     {
-//       fieldName: '__notifications_comments',
-//       fieldSchema: {
-//         label: 'Comments on my posts',
-//         type: Boolean,
-//         optional: true,
-//         defaultValue: true,
-//         control: "checkbox",
-//         insertableIf: canInsert,
-//         editableIf: canEdit
-//       }
-//     },
-//     {
-//       fieldName: '__notifications_replies',
-//       fieldSchema: {
-//         label: 'Replies to my comments',
-//         type: Boolean,
-//         optional: true,
-//         defaultValue: true,
-//         control: "checkbox",
-//         insertableIf: canInsert,
-//         editableIf: canEdit
-//       }
-//     }
-//   ]);  
-// }
+if (typeof Comments !== "undefined") {
+  Users.addField([
+    {
+      fieldName: '__notifications_comments',
+      fieldSchema: {
+        label: 'Comments on my posts',
+        type: Boolean,
+        optional: true,
+        defaultValue: true,
+        control: "checkbox",
+        insertableIf: canInsert,
+        editableIf: canEdit
+      }
+    },
+    {
+      fieldName: '__notifications_replies',
+      fieldSchema: {
+        label: 'Replies to my comments',
+        type: Boolean,
+        optional: true,
+        defaultValue: true,
+        control: "checkbox",
+        insertableIf: canInsert,
+        editableIf: canEdit
+      }
+    }
+  ]);  
+}
