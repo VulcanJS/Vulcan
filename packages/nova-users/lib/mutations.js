@@ -1,52 +1,85 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
-import Users from './collection.js'
+import Users from './groups'; // circular dependency?
 
-// Resolvers
-Users.mutations = {
+const performCheck = (mutation, user, document) => {
+  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+};
 
-  usersNew(root, {document}, context) { // handled by Meteor Accounts
-    return newMutation({
-      action: 'users.new',
-      collection: context.Users, 
-      document: document, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+const mutations = {
+
+  new: {
+    
+    name: 'usersNew',
+    
+    check(user, document) {
+      if (!user) return false;
+      return Users.canDo(user, 'users.new');
+    },
+    
+    mutation(root, {document}, context) {
+      
+      performCheck(this, context.currentUser, document);
+
+      return newMutation({
+        collection: context.Users,
+        document: document, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
-  usersEdit(root, {documentId, set, unset}, context) {
+  edit: {
+    
+    name: 'usersEdit',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'users.edit.own') : Users.canDo(user, `users.edit.all`);
+    },
 
-    const action = documentId === context.userId ? 'users.edit.own' : 'users.edit.all';
+    mutation(root, {documentId, set, unset}, context) {
 
-    return editMutation({
-      action: action,
-      collection: context.Users, 
-      documentId: documentId, 
-      set: set, 
-      unset: unset, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+      const document = context.Users.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return editMutation({
+        collection: context.Users, 
+        documentId: documentId, 
+        set: set, 
+        unset: unset, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
+  
+  remove: {
 
-  usersRemove(root, {documentId}, context) {
+    name: 'usersRemove',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'users.remove.own') : Users.canDo(user, `users.remove.all`);
+    },
+    
+    mutation(root, {documentId}, context) {
 
-    const action = documentId === context.userId ? 'users.remove.own' : 'users.remove.all';
+      const document = context.Users.findOne(documentId);
+      performCheck(this, context.currentUser, document);
 
-    return removeMutation({
-      action: action,
-      collection: context.Users, 
-      documentId: documentId, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+      return removeMutation({
+        collection: context.Users, 
+        documentId: documentId, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
 };
 
-// GraphQL mutations
-Telescope.graphQL.addMutation('usersNew(document: usersInput) : User');
-Telescope.graphQL.addMutation('usersEdit(documentId: String, set: usersInput, unset: usersUnset) : User');
-Telescope.graphQL.addMutation('usersRemove(documentId: String) : User');
-
-export default Users.mutations;
+export default mutations;

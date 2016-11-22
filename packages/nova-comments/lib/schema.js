@@ -1,24 +1,24 @@
 import Telescope from 'meteor/nova:lib';
-import Comments from './collection.js';
 import Users from 'meteor/nova:users';
+import mutations from './mutations.js';
 
 
 // check if user can create a new comment
 const canInsert = user => Users.canDo(user, "comments.new");
 
 // check if user can edit a comment
-const canEdit = Users.canEdit;
+const canEdit = mutations.edit.check;
 
 // check if user can edit *all* comments
-const canEditAll = user => Users.canDo(user, "comments.edit.all");
+const canEditAll = user => Users.canDo(user, "comments.edit.all"); // we don't use the mutations.edit check here, to be changed later with ability to give options to mutations.edit.check?
 
 const alwaysPublic = user => true;
 
 /**
  * @summary Comments schema
- * @type {SimpleSchema}
+ * @type {Object}
  */
-Comments.schema = new SimpleSchema({
+const schema = {
   /**
     ID
   */
@@ -181,63 +181,18 @@ Comments.schema = new SimpleSchema({
     publish: false,
     viewableIf: canEditAll,
   }
-});
+};
 
-Comments.attachSchema(Comments.schema);
+export default schema;
 
-if (typeof Telescope.notifications !== "undefined") {
-  Comments.addField({
-    fieldName: 'disableNotifications',
-    fieldSchema: {
-      type: Boolean,
-      optional: true,
-      hidden: true // never show this
-    }
-  });
-}
-
-// Comments.graphQLSchema = `
-//   type Comment {
-//     _id: String
-//     parentComment: Comment
-//     topLevelComment: Comment
-//     createdAt: String
-//     postedAt: String
-//     body: String
-//     htmlBody: String
-//     author: String
-//     inactive: Boolean
-//     post: Post
-//     user: User
-//     isDeleted: Boolean
-//     isDummy: Boolean
-//     upvotes: Int
-//     upvoters: [User]
-//     downvotes: Int
-//     downvoters: [User]
-//     baseScore: Int
-//     score: Float
-//     parentCommentId: String
-//     topLevelCommentId: String
-//     postId: String
-//   }
-
-//   input commentsInput {
-//     parentCommentId: String
-//     topLevelCommentId: String
-//     postId: String
-//     body: String!
-//   }
-
-//   input commentsUnset {
-//     parentCommentId: Boolean
-//     topLevelCommentId: Boolean
-//     postId: Boolean
-//     body: Boolean 
-//   }
-// `;
-
-// add Comments collection to list to auto-generate its GraphQL schema
-Telescope.graphQL.addCollection(Comments);
-
-Telescope.graphQL.addToContext({ Comments });
+// todo: move to nova:notifications
+// if (typeof Telescope.notifications !== "undefined") {
+//   Comments.addField({
+//     fieldName: 'disableNotifications',
+//     fieldSchema: {
+//       type: Boolean,
+//       optional: true,
+//       hidden: true // never show this
+//     }
+//   });
+// }

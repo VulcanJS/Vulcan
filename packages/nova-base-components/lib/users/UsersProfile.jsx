@@ -44,4 +44,4 @@ UsersProfile.propTypes = {
 
 UsersProfile.displayName = "UsersProfile";
 
-Telescope.registerComponent('UsersProfile', UsersProfile, withUsersSingle);
+Telescope.registerComponent('UsersProfile', UsersProfile/*, withUsersSingle*/);

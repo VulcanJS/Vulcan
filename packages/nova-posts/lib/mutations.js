@@ -1,64 +1,85 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
-import Posts from './collection.js'
 import Users from 'meteor/nova:users';
-import Events from "meteor/nova:events";
 
-// Resolvers
-Posts.mutations = {
+const performCheck = (mutation, user, document) => {
+  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+};
 
-  postsNew(root, {document}, context) {
-    return newMutation({
-      action: 'posts.new',
-      collection: context.Posts,
-      document: document, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+const mutations = {
+
+  new: {
+    
+    name: 'postsNew',
+    
+    check(user, document) {
+      if (!user) return false;
+      return Users.canDo(user, 'posts.new');
+    },
+    
+    mutation(root, {document}, context) {
+      
+      performCheck(this, context.currentUser, document);
+
+      return newMutation({
+        collection: context.Posts,
+        document: document, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
-  postsEdit(root, {documentId, set, unset}, context) {
+  edit: {
+    
+    name: 'postsEdit',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'posts.edit.own') : Users.canDo(user, `posts.edit.all`);
+    },
 
-    const document = Posts.findOne(documentId);
-    const action = Users.owns(context.currentUser, document) ? 'posts.edit.own' : 'posts.edit.all';
+    mutation(root, {documentId, set, unset}, context) {
 
-    return editMutation({
-      action: action,
-      collection: context.Posts, 
-      documentId: documentId, 
-      set: set, 
-      unset: unset, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+      const document = context.Posts.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return editMutation({
+        collection: context.Posts, 
+        documentId: documentId, 
+        set: set, 
+        unset: unset, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
+  
+  remove: {
 
-  postsRemove(root, {documentId}, context) {
+    name: 'postsRemove',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'posts.remove.own') : Users.canDo(user, `posts.remove.all`);
+    },
+    
+    mutation(root, {documentId}, context) {
 
-    const document = Posts.findOne(documentId);
-    const action = Users.owns(context.currentUser, document) ? 'posts.remove.own' : 'posts.remove.all';
+      const document = context.Posts.findOne(documentId);
+      performCheck(this, context.currentUser, document);
 
-    return removeMutation({
-      action: action,
-      collection: context.Posts, 
-      documentId: documentId, 
-      currentUser: context.currentUser,
-      validate: true
-    });
-  },
+      return removeMutation({
+        collection: context.Posts, 
+        documentId: documentId, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
 
-  postsVote(root, {documentId, voteType}, context) {
-    Meteor._sleepForMs(2000); // wait 2 seconds for demonstration purpose
-    console.log("sleep done");
-    const post = Posts.findOne(documentId);
-    return context.Users.canDo(context.currentUser, `posts.${voteType}`) ? Telescope.operateOnItem(context.Posts, post, context.currentUser, voteType) : false;
   },
 
 };
 
-// GraphQL mutations
-Telescope.graphQL.addMutation('postsNew(document: postsInput) : Post');
-Telescope.graphQL.addMutation('postsEdit(documentId: String, set: postsInput, unset: postsUnset) : Post');
-Telescope.graphQL.addMutation('postsRemove(documentId: String) : Post');
-Telescope.graphQL.addMutation('postsVote(documentId: String, voteType: String) : Post');
-
-export default Posts.mutations;
+export default mutations;

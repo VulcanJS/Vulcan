@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from 'meteor/nova:posts';
-import { withPostsSingle } from 'meteor/nova:base-containers';
+import { withSingle } from 'meteor/nova:core';
 
 const PostsPage = (props) => {
   
@@ -37,4 +37,9 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-Telescope.registerComponent('PostsPage', PostsPage, withPostsSingle);
+const options = {
+  collection: Posts,
+  queryName: 'postsSingleQuery',
+};
+
+Telescope.registerComponent('PostsPage', PostsPage/*, withSingle(options)*/);

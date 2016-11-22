@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
-import mutations from './mutations.js';
 
-export default resolvers = {
+// add these specific resolvers separately
+const specificResolvers = {
   Post: {
     categories(post, args, context) {
       return post.categories ? context.Categories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) }).fetch() : [];
@@ -12,21 +12,48 @@ export default resolvers = {
       return category.parent ? context.Categories.findOne({_id: category.parent }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
     }
   },
-  Query: {
-    categoriesList(root, args, context) {
+};
+Telescope.graphQL.addResolvers(specificResolvers);
+
+// root resolvers: basic list, single, and total query resolvers
+const resolvers = {
+
+  list: {
+
+    name: 'categoriesList',
+
+    resolver(root, {offset, limit}, context, info) {
       const options = {
-        fields: context.getViewableFields(context.currentUser, context.Categories)
+        // protected limit
+        limit: (limit < 1 || limit > 10) ? 10 : limit, // maybe remove the limit on categories?
+        skip: offset,
+        // keep only fields that should be viewable by current user
+        fields: context.getViewableFields(context.currentUser, context.Categories),
       };
       return context.Categories.find({}, options).fetch();
     },
-    categoriesListTotal(root, args, context) {
-      return context.Categories.find({}).count();
-    },
-    category(root, args, context) {
+
+  },
+
+  single: {
+    
+    name: 'categoriesSingle',
+    
+    resolver(root, args, context) {
       return context.Categories.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
     },
+  
   },
-  Mutation: mutations,
+
+  total: {
+    
+    name: 'categoriesTotal',
+    
+    resolver(root, args, context) {
+      return context.Categories.find().count();
+    },
+  
+  }
 };
 
-Telescope.graphQL.addResolvers(resolvers);
+export default resolvers;

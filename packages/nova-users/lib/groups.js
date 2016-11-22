@@ -1,3 +1,13 @@
+
+
+
+
+
+// Note: something weird is happening here, and I don't f***ing get it. Try to assign something to the Users namespace (like Users.test = {};) and call it in modules.js -> undefined.
+
+
+
+
 import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 
@@ -185,7 +195,7 @@ Users.owns = function (user, document) {
     return false; // user not logged in
   }
 };
-Users.helpers({owns: function (document) {return Users.owns(this, document);}});
+// Users.helpers({owns: function (document) {return Users.owns(this, document);}});
 
 /**
  * @summary Check if a user is an admin
@@ -201,7 +211,7 @@ Users.isAdmin = function (userOrUserId) {
 };
 Users.isAdminById = Users.isAdmin;
 // use _isAdmin because there is an isAdmin property on the User schema already
-Users.helpers({_isAdmin: function () {return Users.isAdmin(this);}});
+// Users.helpers({_isAdmin: function () {return Users.isAdmin(this);}});
 
 /**
  * @summary Check if a user can submit a field

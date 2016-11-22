@@ -18,12 +18,13 @@ const resolvers = {
     name: 'moviesList',
 
     resolver(root, {offset, limit}, context, info) {
-      const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
-      let options = {};
-      options.limit = protectedLimit;
-      options.skip = offset;
-      // keep only fields that should be viewable by current user
-      options.fields = context.getViewableFields(context.currentUser, context.Movies);
+      const options = {
+        // protected limit
+        limit: (limit < 1 || limit > 10) ? 10 : limit,
+        skip: offset,
+        // keep only fields that should be viewable by current user
+        fields: context.getViewableFields(context.currentUser, context.Movies),
+      };
       return context.Movies.find({}, options).fetch();
     },
 

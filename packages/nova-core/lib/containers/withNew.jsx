@@ -17,6 +17,9 @@ export default function withNew(WrappedComponent) {
           listResolverName = collection.options.resolvers.list.name,
           totalResolverName = collection.options.resolvers.total.name;
 
+
+    console.log('new fragment',fragment);
+
     const updateQueries = {};
     updateQueries[props.queryName] = (prev, { mutationResult }) => {
       const newDocument = mutationResult.data[mutationName];

@@ -16,7 +16,7 @@ class CategoriesEditForm extends Component{
           document={this.props.category}
           collection={Categories}
           mutationName="categoriesEdit"
-          fragment={Categories.fragments.list}
+          // fragment={Categories.fragments.list}
           successCallback={(category)=>{
             this.context.closeCallback();
             this.props.flash("Category edited.", "success");

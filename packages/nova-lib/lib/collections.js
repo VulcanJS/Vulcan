@@ -91,7 +91,7 @@ Mongo.Collection.prototype.getPublicFields = function () {
 Telescope.createCollection = options => {
 
   // initialize new Mongo collection
-  const collection = new Mongo.Collection(options.collectionName);
+  const collection = options.collectionName === 'users' ? Meteor.users : new Mongo.Collection(options.collectionName);
 
   // decorate collection with options
   collection.options = options;

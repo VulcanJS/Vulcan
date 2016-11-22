@@ -28,7 +28,7 @@ const CommentsNewForm = (props, context) => {
         <NovaForm
           collection={Comments}
           mutationName="commentsNew"
-          fragment={Comments.fragments.list}
+          // fragment={Comments.fragments.list}
           updateQueries={{
             getPost: (prev, { mutationResult }) => {
               // console.log('[commentsNew] prev post', prev)

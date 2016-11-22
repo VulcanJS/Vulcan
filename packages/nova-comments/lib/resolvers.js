@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import mutations from './mutations.js';
 
-const resolvers = {
+const specificResolvers = {
   Post: {
     commenters(post, args, context) {
       return post.commenters ? context.Users.find({_id: {$in: post.commenters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
@@ -30,24 +30,48 @@ const resolvers = {
       return comment.downvoters ? context.Users.find({_id: {$in: comment.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
     },
   },
-  Query: {
-    commentsList(root, {postId, offset, limit}, context) {
+};
+
+Telescope.graphQL.addResolvers(specificResolvers);
+
+// root resolvers: basic list, single, and total query resolvers
+const resolvers = {
+
+  list: {
+
+    name: 'commentsList',
+
+    resolver(root, {postId, offset, limit}, context) {
       const options = {
         limit: (limit < 1 || limit > 10) ? 10 : limit,
         skip: offset,
         fields: context.getViewableFields(context.currentUser, context.Comments)
       };
 
-      return context.Comments.find({postId: postId}, options).fetch();
+      return context.Comments.find({postId}, options).fetch();
     },
-    commentsListTotal(root, {postId}, context) {
-      return context.Comments.find({postId: postId}).count();
-    },
-    comment(root, args, context) {
+
+  },
+
+  single: {
+    
+    name: 'commentsSingle',
+    
+    resolver(root, args, context) {
       return context.Comments.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Comments) });
     },
+  
   },
-  Mutation: mutations
+
+  total: {
+    
+    name: 'commentsTotal',
+    
+    resolver(root, {postId}, context) {
+      return context.Comments.find({postId}).count();
+    },
+  
+  }
 };
 
-Telescope.graphQL.addResolvers(resolvers);
+export default resolvers;

@@ -1,61 +1,85 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
-import Comments from './collection.js'
 import Users from 'meteor/nova:users';
-import Events from "meteor/nova:events";
 
-// Resolvers
-Comments.mutations = {
+const performCheck = (mutation, user, document) => {
+  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+};
 
-  commentsNew(root, {document}, context) {
-    return newMutation({
-      action: 'comments.new',
-      collection: context.Comments, 
-      document: document,
-      currentUser: context.currentUser,
-      validate: true
-    });
+const mutations = {
+
+  new: {
+    
+    name: 'commentsNew',
+    
+    check(user, document) {
+      if (!user) return false;
+      return Users.canDo(user, 'comments.new');
+    },
+    
+    mutation(root, {document}, context) {
+      
+      performCheck(this, context.currentUser, document);
+
+      return newMutation({
+        collection: context.Comments,
+        document: document, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
-  commentsEdit(root, {documentId, set, unset}, context) {
+  edit: {
+    
+    name: 'commentsEdit',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'comments.edit.own') : Users.canDo(user, `comments.edit.all`);
+    },
 
-    const document = Comments.findOne(documentId);
-    const action = Users.owns(context.currentUser, document) ? 'comments.edit.own' : 'comments.edit.all';
+    mutation(root, {documentId, set, unset}, context) {
 
-    return editMutation({
-      action: action,
-      collection: context.Comments, 
-      documentId: documentId,
-      set: set, 
-      unset: unset, 
-      currentUser: context.currentUser, 
-      validate: true
-    });
+      const document = context.Comments.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return editMutation({
+        collection: context.Comments, 
+        documentId: documentId, 
+        set: set, 
+        unset: unset, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
+  
+  remove: {
 
-  commentsRemove(root, {documentId}, context) {
+    name: 'commentsRemove',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.owns(user, document) ? Users.canDo(user, 'comments.remove.own') : Users.canDo(user, `comments.remove.all`);
+    },
+    
+    mutation(root, {documentId}, context) {
 
-    const document = Comments.findOne(documentId);
-    const action = Users.owns(context.currentUser, document) ? 'comments.remove.own' : 'comments.remove.all';
+      const document = context.Comments.findOne(documentId);
+      performCheck(this, context.currentUser, document);
 
-    return removeMutation({
-      action: action,
-      collection: context.Comments, 
-      documentId: documentId, 
-      currentUser: context.currentUser,
-      validate: true
-    });
-  },
-
-  commentsVote(root, {documentId, voteType}, context) {
+      return removeMutation({
+        collection: context.Comments, 
+        documentId: documentId, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
 
   },
 
 };
 
-// GraphQL mutations
-Telescope.graphQL.addMutation('commentsNew(document: commentsInput) : Comment');
-Telescope.graphQL.addMutation('commentsEdit(documentId: String, set: commentsInput, unset: commentsUnset) : Comment');
-Telescope.graphQL.addMutation('commentsRemove(documentId: String) : Comment');
-Telescope.graphQL.addMutation('commentsVote(documentId: String, voteType: String) : Comment');
-
-export default Comments.mutations;
+export default mutations;

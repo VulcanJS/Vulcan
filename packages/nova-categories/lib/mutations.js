@@ -1,45 +1,85 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
-import Categories from './collection.js'
+import Users from 'meteor/nova:users';
 
-Categories.mutations = {
+const performCheck = (mutation, user, document) => {
+  if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);
+};
 
-  categoriesNew(root, {document}, context) {
-    return newMutation({
-      action: 'categories.new',
-      collection: context.Categories, 
-      document: document,
-      currentUser: context.currentUser,
-      validate: true
-    });
+const mutations = {
+
+  new: {
+    
+    name: 'categoriesNew',
+    
+    check(user, document) {
+      if (!user) return false;
+      return Users.canDo(user, 'categories.new');
+    },
+    
+    mutation(root, {document}, context) {
+      
+      performCheck(this, context.currentUser, document);
+
+      return newMutation({
+        collection: context.Categories,
+        document: document, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
-  categoriesEdit(root, {documentId, set, unset}, context) {
-    return editMutation({
-      action: 'categories.edit.all',
-      collection: context.Categories, 
-      documentId: documentId,
-      set: set, 
-      unset: unset, 
-      currentUser: context.currentUser, 
-      validate: true
-    });
-  },
+  edit: {
+    
+    name: 'categoriesEdit',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.canDo(user, `categories.edit.all`);
+    },
 
-  categoriesRemove(root, {documentId}, context) {
-    return removeMutation({
-      action: 'categories.remove.all',
-      collection: context.Categories, 
-      documentId: documentId, 
-      currentUser: context.currentUser,
-      validate: true
-    });
+    mutation(root, {documentId, set, unset}, context) {
+
+      const document = context.Categories.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return editMutation({
+        collection: context.Categories, 
+        documentId: documentId, 
+        set: set, 
+        unset: unset, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
+  },
+  
+  remove: {
+
+    name: 'categoriesRemove',
+    
+    check(user, document) {
+      if (!user || !document) return false;
+      return Users.canDo(user, `categories.remove.all`);
+    },
+    
+    mutation(root, {documentId}, context) {
+
+      const document = context.Categories.findOne(documentId);
+      performCheck(this, context.currentUser, document);
+
+      return removeMutation({
+        collection: context.Categories, 
+        documentId: documentId, 
+        currentUser: context.currentUser,
+        validate: true
+      });
+    },
+
   },
 
 };
 
-// GraphQL mutations
-Telescope.graphQL.addMutation('categoriesNew(document: categoriesInput) : Category');
-Telescope.graphQL.addMutation('categoriesEdit(documentId: String, set: categoriesInput, unset: categoriesUnset) : Category');
-Telescope.graphQL.addMutation('categoriesRemove(documentId: String) : Category');
-
-export default Categories.mutations;
+export default mutations;

@@ -1,8 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import mutations from './mutations.js';
 
-const resolvers = {
-  
+const specificResolvers = {
   User: {
     __downvotedComments(user, args, context) {
       return user.__downvotedComments ? user.__downvotedComments : []
@@ -17,27 +16,54 @@ const resolvers = {
       return user.__upvotedPosts ? user.__upvotedPosts : [];
     },
   },
-
   Query: {
-    // this shouldn't be accesssible 😳
-    users(root, args, context) {
-      const options = {
-        limit: 5,
-        fields: context.getViewableFields(context.currentUser, Users)
-      }
-      return context.Users.find({}, {limit: 5}).fetch();
+    currentUser(root, args, context) {
+      return context && context.userId ? context.Users.findOne(context.userId) : null;
     },
-    user(root, args, context) {
+  },
+};
+
+Telescope.graphQL.addResolvers(specificResolvers);
+
+const resolvers = {
+
+  list: {
+
+    name: 'usersList',
+
+    resolver(root, {offset, limit}, context, info) {
+      const options = {
+        // protected limit
+        limit: (limit < 1 || limit > 10) ? 10 : limit,
+        skip: offset,
+        // keep only fields that should be viewable by current user
+        fields: context.getViewableFields(context.currentUser, context.Users),
+      };
+      return context.Users.find({}, options).fetch();
+    },
+
+  },
+
+  single: {
+    
+    name: 'usersSingle',
+    
+    resolver(root, args, context) {
       const selector = args._id ? {_id: args._id} : {'__slug': args.slug};
       return context.Users.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
-    currentUser(root, args, context) {
-      return context && context.userId ? context.Users.findOne(context.userId) : null;
-    }
+  
   },
 
-  Mutation: mutations,
-
+  total: {
+    
+    name: 'usersTotal',
+    
+    resolver(root, args, context) {
+      return context.Users.find().count();
+    },
+  
+  }
 };
 
-Telescope.graphQL.addResolvers(resolvers);
+export default resolvers;

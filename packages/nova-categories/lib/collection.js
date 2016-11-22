@@ -1,5 +1,27 @@
-const Categories = new Mongo.Collection('categories');
+ import Telescope from 'meteor/nova:lib';
+ import schema from './schema.js';
+ import fragments from './fragments.js';
+ import mutations from './mutations.js';
+ import resolvers from './resolvers.js';
 
-Categories.typeName = 'Category';
 
+/**
+ * @summary The global namespace for Categories.
+ * @namespace Categories
+ */
+ const Categories = Telescope.createCollection({
+
+   collectionName: 'categories',
+
+   typeName: 'Category',
+
+   schema,
+
+   fragments,
+
+   resolvers,
+
+   mutations,
+
+ });
 export default Categories;

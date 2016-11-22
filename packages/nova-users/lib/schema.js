@@ -1,5 +1,5 @@
 import Telescope from 'meteor/nova:lib';
-import Users from './collection.js';
+import mutations from './mutations.js';
 
 const adminGroup = {
   name: "admin",
@@ -10,10 +10,10 @@ const adminGroup = {
 const canInsert = user => Users.canDo(user, "users.new");
 
 // check if user can edit a user
-const canEdit = Users.canEdit;
+const canEdit = mutations.edit.check;
 
 // check if user can edit *all* users
-const canEditAll = user => Users.canDo(user, "users.edit.all");
+const canEditAll = user => Users.canDo(user, "users.edit.all"); // we don't use the mutations.edit check here, to be changed later with ability to give options to mutations.edit.check?
 
 const alwaysPublic = user => true;
 
@@ -202,9 +202,9 @@ Telescope.schemas.userData = new SimpleSchema({
 
 /**
  * @summary Users schema
- * @type {SimpleSchema}
+ * @type {Object}
  */
-Users.schema = new SimpleSchema({ 
+const schema = { 
   _id: {
     type: String,
     publish: true,
@@ -383,17 +383,6 @@ Users.schema = new SimpleSchema({
       }
     },
   },
-});
+};
 
-// Meteor.startup(function(){
-//   Users.internationalize();
-// });
-
-/**
- * @summary Attach schema to Users (Meteor.users at the moment) collection
- */
-Users.attachSchema(Users.schema);
-
-Telescope.graphQL.addCollection(Users);
-
-Telescope.graphQL.addToContext({ Users });
+export default schema;

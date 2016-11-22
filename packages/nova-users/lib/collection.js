@@ -1,13 +1,31 @@
 import Telescope from 'meteor/nova:lib';
+import schema from './schema.js';
+import fragments from './fragments.js';
+import mutations from './mutations.js';
+import resolvers from './resolvers.js';
 
 /**
  * @summary Telescope Users namespace
  * @namespace Users
  */
-const Users = Meteor.users;
+const Users = Telescope.createCollection({
 
-Telescope.subscriptions.preload("users.current");
+  collection: Meteor.users,
 
-Users.typeName = 'User';
+  collectionName: 'users',
+
+  typeName: 'User',
+
+  schema,
+
+  fragments,
+
+  resolvers,
+
+  mutations,
+
+});
+
+Telescope.graphQL.addQuery(`currentUser: User`);
 
 export default Users;

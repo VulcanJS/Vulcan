@@ -1,13 +1,13 @@
 import Telescope from 'meteor/nova:lib';
-import Categories from "./collection.js";
 import Users from 'meteor/nova:users';
+import mutations from './mutations.js';
 
 const canInsert = user => Users.canDo(user, "categories.new");
-const canEdit = user => Users.canDo(user, "categories.edit.all");
+const canEdit = mutations.edit.check
 const alwaysPublic = user => true;
 
 // category schema
-Categories.schema = new SimpleSchema({
+const schema = {
   _id: {
     type: String,
     viewableIf: alwaysPublic,
@@ -76,77 +76,6 @@ Categories.schema = new SimpleSchema({
       }
     }
   }
-});
+};
 
-// Meteor.startup(function(){
-//   Categories.internationalize();
-// });
-
-Categories.attachSchema(Categories.schema);
-
-
-// Telescope.settings.collection.addField([
-//   {
-//     fieldName: 'categoriesBehavior',
-//     fieldSchema: {
-//       type: String,
-//       optional: true,
-//       form: {
-//         group: 'categories',
-//         instructions: 'Let users filter by one or multiple categories at a time.', 
-//         options: function () {
-//           return [
-//             {value: "single", label: "categories_behavior_one_at_a_time"},
-//             {value: "multiple", label: "categories_behavior_multiple"}
-//           ];
-//         }
-//       }
-//     }
-//   },
-//   {
-//     fieldName: 'hideEmptyCategories',
-//     fieldSchema: {
-//       type: Boolean,
-//       optional: true,
-//       form: {
-//         group: 'categories',
-//         instructions: 'Hide empty categories in navigation'
-//       }
-//     }
-//   }
-// ]);
-
-
-// Categories.graphQLSchema = `
-//   type Category {
-//     _id: String
-//     name: String
-//     description: String
-//     order: Int
-//     slug: String
-//     image: String
-//     parent: Category
-//   }
-
-//   input categoriesInput {
-//     name: String!
-//     description: String
-//     order: Int
-//     slug: String
-//     image: String
-//     parent: String
-//   }
-
-//   input categoriesUnset {
-//     _id: Boolean
-//     description: Boolean
-//     order: Boolean
-//     slug: Boolean
-//     image: Boolean
-//     parent: Boolean
-//   }
-// `;
-
-Telescope.graphQL.addCollection(Categories);
-
-Telescope.graphQL.addToContext({ Categories });
+export default schema;

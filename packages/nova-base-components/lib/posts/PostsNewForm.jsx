@@ -19,7 +19,7 @@ const PostsNewForm = (props, context) => {
         <NovaForm
           collection={Posts}
           mutationName="postsNew"
-          fragment={Posts.fragments.list} // which fragment should we add there for the query of a new post?
+          // fragment={Posts.fragments.list} // which fragment should we add there for the query of a new post?
           updateQueries={{
             getPostsList: (prev, { mutationResult }) => {
               const newPost = mutationResult.data.postsNew;

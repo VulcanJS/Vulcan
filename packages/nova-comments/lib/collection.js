@@ -1,9 +1,27 @@
+ import Telescope from 'meteor/nova:lib';
+ import schema from './schema.js';
+ import fragments from './fragments.js';
+ import mutations from './mutations.js';
+ import resolvers from './resolvers.js';
+
+
 /**
  * @summary The global namespace for Comments.
  * @namespace Comments
  */
-Comments = new Mongo.Collection('comments');
+ const Comments = Telescope.createCollection({
 
-Comments.typeName = 'Comment';
+   collectionName: 'comments',
 
+   typeName: 'Comment',
+
+   schema,
+
+   fragments,
+
+   resolvers,
+
+   mutations,
+
+ });
 export default Comments;

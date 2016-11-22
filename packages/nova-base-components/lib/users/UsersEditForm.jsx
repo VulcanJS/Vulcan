@@ -31,7 +31,7 @@ const UsersEditForm = (props, context) => {
             collection={Users} 
             document={user} 
             mutationName="usersEdit"
-            fragment={Users.fragments.full}
+            // fragment={Users.fragments.full}
             successCallback={(user)=>{
               props.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
             }}
@@ -57,4 +57,4 @@ UsersEditForm.displayName = "UsersEditForm";
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('UsersEditForm', UsersEditForm, connect(mapStateToProps, mapDispatchToProps), withUsersSingle);
+Telescope.registerComponent('UsersEditForm', UsersEditForm, connect(mapStateToProps, mapDispatchToProps)/*, withUsersSingle*/);

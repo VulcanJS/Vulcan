@@ -1,21 +1,14 @@
 import Telescope from 'meteor/nova:lib';
-import Posts from './collection.js';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
+import mutations from './mutations.js';
 
 /**
  * @summary Posts config namespace
  * @type {Object}
  */
-Posts.config = {};
 
-Posts.config.STATUS_PENDING = 1;
-Posts.config.STATUS_APPROVED = 2;
-Posts.config.STATUS_REJECTED = 3;
-Posts.config.STATUS_SPAM = 4;
-Posts.config.STATUS_DELETED = 5;
-
-Posts.formGroups = {
+const formGroups = {
   admin: {
     name: "admin",
     order: 2
@@ -26,18 +19,18 @@ Posts.formGroups = {
 const canInsert = user => Users.canDo(user, "posts.new");
 
 // check if user can edit a post
-const canEdit = Users.canEdit;
+const canEdit = mutations.edit.check;
 
 // check if user can edit *all* posts
-const canEditAll = user => Users.canDo(user, "posts.edit.all");
+const canEditAll = user => Users.canDo(user, "posts.edit.all"); // we don't use the mutations.edit check here, to be changed later with ability to give options to mutations.edit.check?
 
 const alwaysPublic = user => true;
 
 /**
  * @summary Posts schema
- * @type {SimpleSchema}
+ * @type {Object}
  */
-Posts.schemaJSON = {
+const schema = {
   /**
     ID
   */
@@ -70,7 +63,7 @@ Posts.schemaJSON = {
     editableIf: canEditAll,
     publish: true,
     control: "datetime",
-    group: Posts.formGroups.admin
+    group: formGroups.admin
   },
   /**
     URL
@@ -217,7 +210,7 @@ Posts.schemaJSON = {
       options: Telescope.statuses,
       group: 'admin'
     },
-    group: Posts.formGroups.admin
+    group: formGroups.admin
   },
   /**
     Whether a post is scheduled in the future or not
@@ -240,7 +233,7 @@ Posts.schemaJSON = {
     editableIf: canEditAll,
     control: "checkbox",
     publish: true,
-    group: Posts.formGroups.admin
+    group: formGroups.admin
   },
   /**
     Whether the post is inactive. Inactive posts see their score recalculated less often
@@ -319,93 +312,9 @@ Posts.schemaJSON = {
   }
 };
 
-if (typeof SimpleSchema !== "undefined") {
-  Posts.schema = new SimpleSchema(Posts.schemaJSON);
-  Posts.attachSchema(Posts.schema);
-}
+export default schema;
 
-
-// Posts.graphQLSchema = `
-//   type Post {
-//     _id: String
-//     createdAt: String
-//     postedAt: String
-//     url: String
-//     title: String
-//     slug: String
-//     body: String
-//     htmlBody: String
-//     excerpt: String
-//     sticky: Boolean
-//     viewCount: Int
-//     lastCommentedAt: String
-//     clickCount: Int
-//     status: Int
-//     isFuture: Boolean
-//     user: User
-//     commentCount: Int
-//     commenters: [User]
-//     # comments: [Comment]
-//     categories: [Category]
-//     scheduledAt: String
-//     dummySlug: String
-//     isDummy: String
-//     upvotes: Int
-//     upvoters: [User]
-//     downvotes: Int
-//     downvoters: [User]
-//     baseScore: Int
-//     score: Float
-//     clickCount: Int
-//     viewCount: Int
-//     thumbnailUrl: String
-//     userIP: String
-//     userAgent: String
-//     referrer: String
-//   }
-
-//   input postsInput {
-//     postedAt: String
-//     url: String
-//     title: String
-//     slug: String
-//     body: String
-//     sticky: Boolean
-//     status: Int
-//     categories: [String]
-//     scheduledAt: String
-//     thumbnailUrl: String
-//   }
-
-//   input postsUnset {
-//     postedAt: Boolean
-//     url: Boolean
-//     title: Boolean
-//     slug: Boolean
-//     body: Boolean
-//     sticky: Boolean
-//     status: Boolean
-//     categories: Boolean
-//     scheduledAt: Boolean
-//     thumbnailUrl: Boolean
-//   }
-
-//   input Terms {
-//     view: String
-//     userId: String
-//     cat: String
-//     date: String
-//     after: String
-//     before: String
-//     enableCache: Boolean
-//     listId: String
-//     query: String # search query
-//   }
-// `;
-
-
-Telescope.graphQL.addCollection(Posts);
-
+// TODO: to be moved elsewhere / change api
 const termsSchema = `
   input Terms {
     view: String
@@ -421,5 +330,3 @@ const termsSchema = `
 `;
 
 Telescope.graphQL.addSchema(termsSchema);
-
-Telescope.graphQL.addToContext({ Posts });

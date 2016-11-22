@@ -10,6 +10,5 @@ import './methods.js';
 import './permissions.js';
 import './resolvers.js';
 import './mutations.js';
-import './queries.js';
 
 export default Categories;
