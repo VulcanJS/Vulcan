@@ -7,6 +7,7 @@ import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
 import Categories from 'meteor/nova:categories';
+import gql from 'graphql-tag';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 
@@ -152,10 +153,31 @@ CategoriesList.propTypes = {
   results: React.PropTypes.array,
 };
 
+const fragment = gql`
+  fragment categoriesListFragment on Category {
+    _id
+    name
+    description
+    order
+    slug
+    image
+    parent { 
+      # feels weird to repeat the same fields... but we cannot call the fragment on itself?!
+      _id
+      name
+      description
+      order
+      slug
+      image
+    }
+  }
+`;
+
 const categoriesListOptions = {
   collection: Categories,
-  queryName: 'getCategoriesList'
+  queryName: 'getCategoriesList',
+  fragmentName: 'categoriesListFragment',
+  fragment: fragment
 };
 
-Telescope.registerComponent('CategoriesList', CategoriesList, withRouter);
-// Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));
+Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

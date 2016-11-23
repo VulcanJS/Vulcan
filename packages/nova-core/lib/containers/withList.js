@@ -5,16 +5,14 @@ import gql from 'graphql-tag';
 
 export default function withList (options) {
 
-  const { queryName, collection } = options,
+  const { queryName, collection, fragment, fragmentName } = options,
         listResolverName = collection.options.resolvers.list.name,
-        totalResolverName = collection.options.resolvers.total.name,
-        fragment = collection.options.fragments.list.fragment,
-        fragmentName = collection.options.fragments.list.name;
+        totalResolverName = collection.options.resolvers.total.name;
 
   return graphql(gql`
-    query ${queryName}($offset: Int, $limit: Int) {
+    query ${queryName}($terms: Terms, $offset: Int, $limit: Int) {
       ${totalResolverName}
-      ${listResolverName}(offset: $offset, limit: $limit) {
+      ${listResolverName}(terms: $terms, offset: $offset, limit: $limit) {
         ...${fragmentName}
       }
     }
@@ -22,7 +20,8 @@ export default function withList (options) {
   `, {
     options(ownProps) {
       return {
-        variables: { 
+        variables: {
+          terms: ownProps.terms,
           offset: 0,
           limit: 5
         },
@@ -58,6 +57,8 @@ export default function withList (options) {
             },
           });
         },
+        fragmentName,
+        fragment,
         ...props.ownProps // pass on the props down to the wrapped component
       };
     },

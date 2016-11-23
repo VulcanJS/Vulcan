@@ -7,8 +7,8 @@ export default function withSingle (options) {
 
   const { queryName, collection } = options,
         singleResolverName = collection.options.resolvers.single.name,
-        fragment = collection.options.fragments.single.fragment,
-        fragmentName = collection.options.fragments.single.name;
+        fragment = options.fragment,
+        fragmentName = options.fragmentName;
 
   return graphql(gql`
     query ${queryName}($documentId: String) {
@@ -28,7 +28,9 @@ export default function withSingle (options) {
       const { ownProps, data } = returnedProps;
       return {
         loading: data.loading,
-        document: data[singleResolverName] 
+        document: data[singleResolverName],
+        fragmentName,
+        fragment,
       };
     },
   });

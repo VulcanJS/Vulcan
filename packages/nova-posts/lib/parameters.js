@@ -14,11 +14,12 @@ Posts.parameters = {};
  * @memberof Parameters
  * @param {Object} terms
  */
-Posts.parameters.get = function (terms) {
+Posts.parameters.get = function (terms = {}) {
 
   // add this to ensure all post publications pass audit-arguments-check
   check(terms, Match.Any);
 
+  // console.log('// Posts.parameters.get')
   // console.log(terms)
 
   // note: using jquery's extend() with "deep" parameter set to true instead of shallow _.extend()

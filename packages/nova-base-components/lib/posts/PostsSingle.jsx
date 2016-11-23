@@ -3,7 +3,7 @@ import React from 'react';
 import Posts from "meteor/nova:posts";
 
 const PostsSingle = (props, context) => {
-  return <Telescope.components.PostsPage postId={props.params._id} />
+  return <Telescope.components.PostsPage documentId={props.params._id} />
 };
 
 PostsSingle.displayName = "PostsSingle";

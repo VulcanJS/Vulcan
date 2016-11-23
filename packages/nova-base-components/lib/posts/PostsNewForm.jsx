@@ -18,22 +18,7 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm
           collection={Posts}
-          mutationName="postsNew"
-          // fragment={Posts.fragments.list} // which fragment should we add there for the query of a new post?
-          updateQueries={{
-            getPostsList: (prev, { mutationResult }) => {
-              const newPost = mutationResult.data.postsNew;
-              const newList = update(prev, {
-                postsList: {
-                  $unshift: [newPost],
-                },
-                postsListTotal: {
-                  $set: prev.postsListTotal + 1
-                }
-              });
-              return newList;
-            }
-          }}
+          queryName="postsListQuery"
           successCallback={post => {
             props.router.push({pathname: Posts.getPageUrl(post)});
             context.closeCallback();

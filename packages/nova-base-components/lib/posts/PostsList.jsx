@@ -2,10 +2,11 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import { withList } from 'meteor/nova:core';
 import Posts from 'meteor/nova:posts';
+import gql from 'graphql-tag';
 
 const PostsList = (props) => {
 
-  const {results, terms, loading, count, totalCount, loadMore, showHeader = true} = props
+  const {results, terms, loading, count, totalCount, loadMore, showHeader = true} = props;
 
   if (results && results.length) {
 
@@ -70,19 +71,56 @@ PostsList.propTypes = {
 //   ],
 // };
 
-const postsListConfig = {
-  collection: Posts,
-  // options passed to the query
-  options: {
-    // fragment: someSpecificFragment
-    variables: {
-      terms: {
-        type: 'Terms',
-        usedForTotal: true,
-      },
-    },
+const fragment = gql` 
+  fragment postsListFragment on Post {
+    _id
+    title
+    url
+    slug
+    thumbnailUrl
+    baseScore
+    postedAt
+    sticky
+    status
+    categories {
+      # ...minimumCategoryInfo
+      _id
+      name
+      slug
+    }
+    commentCount
+    commenters {
+      # ...avatarUserInfo
+      _id
+      __displayName
+      __emailHash
+      __slug
+    }
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes # should be asked only for admins?
+    score # should be asked only for admins?
+    viewCount # should be asked only for admins?
+    clickCount # should be asked only for admins?
+    user {
+      # ...avatarUserInfo
+      _id
+      __displayName
+      __emailHash
+      __slug
+    }
   }
+`;
+
+const options = {
+  collection: Posts,
+  queryName: 'postsListQuery',
+  fragmentName: 'postsListFragment',
+  fragment: fragment,
 };
 
-Telescope.registerComponent('PostsList', PostsList);
-// Telescope.registerComponent('PostsList', PostsList, withList(postsListConfig));
+Telescope.registerComponent('PostsList', PostsList, withList(options));

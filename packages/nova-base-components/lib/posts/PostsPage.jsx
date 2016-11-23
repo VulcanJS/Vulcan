@@ -2,16 +2,18 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from 'meteor/nova:posts';
 import { withSingle } from 'meteor/nova:core';
+import gql from 'graphql-tag';
 
 const PostsPage = (props) => {
-  
-  if (props.data.loading) {
+
+  if (props.loading) {
 
     return <div className="posts-page"><Telescope.components.Loading/></div>
 
   } else {
 
-    const post = props.data.post;
+    const post = props.document;
+
     const htmlBody = {__html: post.htmlBody};
 
     return (
@@ -24,7 +26,7 @@ const PostsPage = (props) => {
 
         {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
-        <Telescope.components.PostsCommentsThread postId={post._id} />
+        <Telescope.components.PostsCommentsThread terms={{postId: post._id}} />
 
       </div> 
     )
@@ -37,9 +39,58 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
+const fragment = gql` 
+  fragment postsSingleFragment on Post {
+    _id
+    title
+    url
+    body
+    htmlBody
+    slug
+    thumbnailUrl
+    baseScore
+    postedAt
+    sticky
+    status
+    categories {
+      # ...minimumCategoryInfo
+      _id
+      name
+      slug
+    }
+    commentCount
+    commenters {
+      # ...avatarUserInfo
+      _id
+      __displayName
+      __emailHash
+      __slug
+    }
+    upvoters {
+      _id
+    }
+    downvoters {
+      _id
+    }
+    upvotes # should be asked only for admins?
+    score # should be asked only for admins?
+    viewCount # should be asked only for admins?
+    clickCount # should be asked only for admins?
+    user {
+      # ...avatarUserInfo
+      _id
+      __displayName
+      __emailHash
+      __slug
+    }
+  }
+`;
+
 const options = {
   collection: Posts,
   queryName: 'postsSingleQuery',
+  fragmentName: 'postsSingleFragment',
+  fragment: fragment,
 };
 
-Telescope.registerComponent('PostsPage', PostsPage/*, withSingle(options)*/);
+Telescope.registerComponent('PostsPage', PostsPage, withSingle(options));

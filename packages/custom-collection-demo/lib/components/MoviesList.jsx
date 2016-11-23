@@ -16,6 +16,7 @@ import Movies from '../collection.js';
 import MoviesNewForm from './MoviesNewForm.jsx';
 import { compose } from 'react-apollo';
 import { withCurrentUser, withList } from 'meteor/nova:core';
+import fragments from '../fragments.js';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -58,6 +59,8 @@ class MoviesList extends Component {
 const listOptions = {
   collection: Movies,
   queryName: 'moviesListQuery',
+  fragmentName: fragments.list.name,
+  fragment: fragments.list.fragment,
 };
 
 export default compose(withList(listOptions), withCurrentUser)(MoviesList);

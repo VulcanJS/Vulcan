@@ -5,16 +5,16 @@ import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
 import { withSingle } from 'meteor/nova:core';
+import gql from 'graphql-tag';
 
 const UsersProfile = (props) => {
-  console.log(props)
-  if (props.data.loading) {
+  if (props.loading) {
     
     return <div className="page users-edit-form"><Telescope.components.Loading/></div>
   
   } else {
 
-    const user = props.data.user;
+    const user = props.document;
     const twitterName = Users.getTwitterName(user);
 
     const terms = {view: "userPosts", userId: user._id};
@@ -44,4 +44,55 @@ UsersProfile.propTypes = {
 
 UsersProfile.displayName = "UsersProfile";
 
-Telescope.registerComponent('UsersProfile', UsersProfile/*, withSingle*/);
+const fragment = gql`
+  fragment usersSingleFragment on User {
+    _id
+    username
+    createdAt
+    isAdmin
+    __bio
+    __commentCount
+    __displayName
+    __downvotedComments {
+      itemId
+      power
+      votedAt
+    }
+    __downvotedPosts {
+      itemId
+      power
+      votedAt
+    }
+    __email
+    __emailHash
+    __groups
+    __htmlBio
+    __karma
+    __newsletter_subscribeToNewsletter
+    __notifications_users
+    __notifications_posts
+    __postCount
+    __slug
+    __twitterUsername
+    __upvotedComments {
+      itemId
+      power
+      votedAt
+    }
+    __upvotedPosts {
+      itemId
+      power
+      votedAt
+    }
+    __website
+  }
+`;
+
+const options = {
+  collection: Users,
+  queryName: 'usersSingleQuery',
+  fragmentName: 'usersSingleFragment',
+  fragment: fragment,
+};
+
+Telescope.registerComponent('UsersProfile', UsersProfile, withSingle(options));

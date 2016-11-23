@@ -326,6 +326,7 @@ const termsSchema = `
     enableCache: Boolean
     listId: String
     query: String # search query
+    postId: String
   }
 `;
 

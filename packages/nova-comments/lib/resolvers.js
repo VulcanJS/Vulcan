@@ -41,14 +41,14 @@ const resolvers = {
 
     name: 'commentsList',
 
-    resolver(root, {postId, offset, limit}, context) {
+    resolver(root, {terms, offset, limit}, context) {
       const options = {
         limit: (limit < 1 || limit > 10) ? 10 : limit,
         skip: offset,
         fields: context.getViewableFields(context.currentUser, context.Comments)
       };
 
-      return context.Comments.find({postId}, options).fetch();
+      return context.Comments.find({postId: terms.postId}, options).fetch();
     },
 
   },

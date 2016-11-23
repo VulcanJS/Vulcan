@@ -27,9 +27,7 @@ class PostsEditForm extends Component {
         {this.renderAdminArea()}
         <NovaForm
           collection={Posts}
-          mutationName="postsEdit"
           document={this.props.post}
-          // fragment={Posts.fragments.list}
           successCallback={post => { 
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
@@ -46,6 +44,7 @@ class PostsEditForm extends Component {
             this.props.flash(deleteDocumentSuccess, "success");
             this.context.events.track("post deleted", {_id: documentId});
           }}
+          showRemove={true}
         />
       </div>
     );

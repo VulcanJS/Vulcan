@@ -10,6 +10,7 @@ import React, { PropTypes, Component } from 'react';
 import Movies from '../collection.js';
 import { withSingle } from 'meteor/nova:core';
 import { compose } from 'react-apollo';
+import fragments from '../fragments.js';
 
 const MoviesDetails = props => {
   const movie = props.document;
@@ -29,6 +30,8 @@ const MoviesDetails = props => {
 const options = {
   collection: Movies,
   queryName: 'moviesSingleQuery',
+  fragmentName: fragments.single.name,
+  fragment: fragments.single.fragment,
 };
 
 export default compose(withSingle(options))(MoviesDetails);

@@ -115,7 +115,7 @@ Telescope.createCollection = options => {
   const queryResolvers = {};
   // list
   if (options.resolvers.list) { // e.g. ""
-    Telescope.graphQL.addQuery(`${options.resolvers.list.name}(offset: Int, limit: Int): [${options.typeName}]`);
+    Telescope.graphQL.addQuery(`${options.resolvers.list.name}(terms: Terms, offset: Int, limit: Int): [${options.typeName}]`);
     queryResolvers[options.resolvers.list.name] = options.resolvers.list.resolver;
   }
   // single

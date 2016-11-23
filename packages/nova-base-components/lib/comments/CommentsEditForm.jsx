@@ -15,6 +15,7 @@ const CommentsEditForm = (props, context) => {
         successCallback={props.successCallback}
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}
+        showRemove={true}
       />
     </div>
   )
