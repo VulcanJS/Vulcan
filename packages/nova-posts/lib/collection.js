@@ -16,8 +16,6 @@ const Posts = Telescope.createCollection({
 
   schema,
 
-  fragments,
-
   resolvers,
 
   mutations,

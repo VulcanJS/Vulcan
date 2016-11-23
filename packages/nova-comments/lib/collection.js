@@ -17,8 +17,6 @@
 
    schema,
 
-   fragments,
-
    resolvers,
 
    mutations,

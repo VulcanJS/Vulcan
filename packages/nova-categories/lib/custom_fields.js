@@ -27,6 +27,7 @@ Posts.addField(
         type: "bootstrap-category",
         order: 50,
         options: function (formProps) {
+
           // catch the ApolloClient from the form props
           const {client} = formProps;
 

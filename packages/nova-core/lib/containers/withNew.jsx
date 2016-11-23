@@ -9,16 +9,15 @@ export default function withNew(WrappedComponent) {
 
   const WithNew = props => {
 
+    console.log(props)
+    
     const collection = props.collection,
           collectionName = collection._name,
           mutationName = collection.options.mutations.new.name,
-          fragmentName = collection.options.fragments.single.name,
-          fragment = collection.options.fragments.single.fragment,
+          fragmentName = props.fragmentName,
+          fragment = props.fragment,
           listResolverName = collection.options.resolvers.list.name,
           totalResolverName = collection.options.resolvers.total.name;
-
-
-    console.log('new fragment',fragment);
 
     const updateQueries = {};
     updateQueries[props.queryName] = (prev, { mutationResult }) => {

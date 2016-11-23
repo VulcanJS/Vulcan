@@ -12,8 +12,6 @@ const Movies = Telescope.createCollection({
 
   schema,
   
-  fragments,
-
   resolvers,
 
   mutations,

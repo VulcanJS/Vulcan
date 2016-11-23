@@ -50,13 +50,13 @@ const getInsertableFields = function (schema, user) {
 
 /**
  * @method Mongo.Collection.getEditableFields
- * Get an array of all fields editable by a specific user for a given collection
+ * Get an array of all fields editable by a specific user for a given collection (and optionally document)
  * @param {Object} user – the user for which to check field permissions
  */
 const getEditableFields = function (schema, user, document) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return field.editableIf && field.editableIf(user, document);
+    return document ? field.editableIf && field.editableIf(user, document) : field.editableIf;
   });
   return fields;
 };

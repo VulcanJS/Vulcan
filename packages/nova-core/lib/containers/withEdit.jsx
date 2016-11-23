@@ -11,8 +11,8 @@ export default function withEdit(WrappedComponent) {
     const collection = props.collection,
           collectionName = collection._name,
           mutationName = collection.options.mutations.edit.name,
-          fragmentName = collection.options.fragments.single.name,
-          fragment = collection.options.fragments.single.fragment
+          fragmentName = props.fragmentName,
+          fragment = props.fragment
 
     const ComponentWithEdit = graphql(gql`
       mutation ${mutationName}($documentId: String, $set: ${collectionName}Input, $unset: ${collectionName}Unset) {

@@ -5,10 +5,8 @@ import gql from 'graphql-tag';
 
 export default function withSingle (options) {
 
-  const { queryName, collection } = options,
-        singleResolverName = collection.options.resolvers.single.name,
-        fragment = options.fragment,
-        fragmentName = options.fragmentName;
+  const { queryName, collection, fragment, fragmentName } = options,
+        singleResolverName = collection.options.resolvers.single.name;
 
   return graphql(gql`
     query ${queryName}($documentId: String) {

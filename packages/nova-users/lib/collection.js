@@ -18,8 +18,6 @@ const Users = Telescope.createCollection({
 
   schema,
 
-  fragments,
-
   resolvers,
 
   mutations,

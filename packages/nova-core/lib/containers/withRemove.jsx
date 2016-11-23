@@ -12,8 +12,8 @@ export default function withRemove(WrappedComponent) {
     const collection = props.collection,
           collectionName = collection._name,
           mutationName = collection.options.mutations.remove.name,
-          fragmentName = collection.options.fragments.single.name,
-          fragment = collection.options.fragments.single.fragment,
+          fragmentName = props.fragmentName,
+          fragment = props.fragment,
           listResolverName = collection.options.resolvers.list.name,
           totalResolverName = collection.options.resolvers.total.name;
 
