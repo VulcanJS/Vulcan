@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends Component {
@@ -25,7 +26,7 @@ class NewsletterSubscribe extends Component {
           <Telescope.components.NewsletterButton
             user={this.props.document}
             successCallback={() => {
-              this.context.messages.flash("Newsletter subscription updated", "success")
+              this.context.messages.flash(this.context.intl.formatMessage({id: "newsletter.subscription_updated"}), "success")
             }}
           />
         </div>
@@ -37,6 +38,7 @@ class NewsletterSubscribe extends Component {
 NewsletterSubscribe.contextTypes = {
   messages: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
+  intl: intlShape
 };
 
 module.exports = NewsletterSubscribe;
