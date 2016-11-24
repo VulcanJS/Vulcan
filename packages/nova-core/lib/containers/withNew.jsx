@@ -9,8 +9,6 @@ export default function withNew(WrappedComponent) {
 
   const WithNew = props => {
 
-    console.log(props)
-    
     const collection = props.collection,
           collectionName = collection._name,
           mutationName = collection.options.mutations.new.name,
@@ -19,15 +17,16 @@ export default function withNew(WrappedComponent) {
           listResolverName = collection.options.resolvers.list.name,
           totalResolverName = collection.options.resolvers.total.name;
 
-    const updateQueries = {};
-    updateQueries[props.queryName] = (prev, { mutationResult }) => {
-      const newDocument = mutationResult.data[mutationName];
-      const newList = update(prev, {
-        [listResolverName]: { $unshift: [newDocument] },
-        [totalResolverName]: { $set: prev[totalResolverName] + 1 }
-      });
-      return newList;
-    };
+    const updateQueries = {
+      [props.queryName]: (prev, { mutationResult }) => {
+        const newDocument = mutationResult.data[mutationName];
+        const newList = update(prev, {
+          [listResolverName]: { $unshift: [newDocument] },
+          [totalResolverName]: { $set: prev[totalResolverName] + 1 }
+        });
+        return newList;
+      }
+    }
 
     const ComponentWithNew = graphql(gql`
       mutation ${mutationName}($document: ${collectionName}Input) {

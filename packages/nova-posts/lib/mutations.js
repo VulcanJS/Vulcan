@@ -24,7 +24,8 @@ const mutations = {
         collection: context.Posts,
         document: document, 
         currentUser: context.currentUser,
-        validate: true
+        validate: true,
+        context,
       });
     },
 
@@ -50,7 +51,8 @@ const mutations = {
         set: set, 
         unset: unset, 
         currentUser: context.currentUser,
-        validate: true
+        validate: true,
+        context,
       });
     },
 
@@ -74,7 +76,8 @@ const mutations = {
         collection: context.Posts, 
         documentId: documentId, 
         currentUser: context.currentUser,
-        validate: true
+        validate: true,
+        context,
       });
     },
 

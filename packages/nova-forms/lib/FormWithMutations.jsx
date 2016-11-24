@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -411,10 +412,11 @@ class FormWithMutations extends Component{
     if (window.confirm(deleteDocumentConfirm)) { 
       this.props.removeMutation({documentId})
         .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
-          this.props.removeSuccessCallback({documentId, documentTitle});
+          if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({documentId, documentTitle});
+          if (this.context.closeCallback) this.context.closeCallback();
         })
-        .catch(() => {
-          console.log('Something went bad when removing the document', documentId);
+        .catch((error) => {
+          console.log(error);
         });
     }
   }
@@ -424,9 +426,6 @@ class FormWithMutations extends Component{
   // --------------------------------------------------------------------- //
 
   render() {
-
-    console.log('// FormWithMutations')
-    console.log(this)
 
     const fieldGroups = this.getFieldGroups();
     const collectionName = this.props.collection._name;

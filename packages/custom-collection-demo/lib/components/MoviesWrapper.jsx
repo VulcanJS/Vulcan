@@ -6,10 +6,10 @@ Wrapper for the Movies components
 
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
+import NovaForm from 'meteor/nova:forms';
 import { Button } from 'react-bootstrap';
-import { Accounts } from 'meteor/std:accounts-ui';
-import { ModalTrigger, Messages, FlashContainer } from "meteor/nova:core";
+import { FlashContainer } from 'meteor/nova:core';
+import Accounts from './Accounts.jsx';
 import MoviesList from './MoviesList.jsx';
 
 class MoviesWrapper extends Component {
@@ -17,12 +17,9 @@ class MoviesWrapper extends Component {
     return (
       <div className="wrapper">
 
-        {/*<div style={{maxWidth: "300px"}}>
-          <Accounts.ui.LoginForm />
-        </div>
-
-        <FlashContainer component={Telescope.components.FlashMessages}/>
-        */}
+        <div className="header">
+          <Accounts />
+        </div>        
         
         <div className="main">
           <MoviesList />

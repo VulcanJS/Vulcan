@@ -50,6 +50,15 @@ const seedData = [
 ];
 
 Meteor.startup(function () {
+  if (Users.find().fetch().length === 0) {
+    Accounts.createUser({
+      username: 'DemoUser',
+      email: 'dummyuser@telescopeapp.org',
+      profile: {
+        isDummy: true
+      }
+    });
+  }
   const currentUser = Users.findOne();
   if (Movies.find().fetch().length === 0) {
     seedData.forEach(document => {

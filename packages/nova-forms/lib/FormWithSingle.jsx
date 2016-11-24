@@ -37,9 +37,11 @@ class FormWithSingle extends Component{
       relevantFields = _.intersection(relevantFields, fields);
     }
 
-    // fields with resolvers should be treated as arrays of _ids
+    // fields with resolvers that contain "[" should be treated as arrays of _ids
+    // TODO: find a cleaner way to handle this
     relevantFields = relevantFields.map(fieldName => {
-      return this.getSchema()[fieldName].resolveAs ? `${fieldName}{_id}` : fieldName;
+      const resolveAs = this.getSchema()[fieldName].resolveAs;
+      return resolveAs && resolveAs.indexOf('[') > -1 ? `${fieldName}{_id}` : fieldName;
     });
 
     // generate fragment based on the fields that can be edited. Note: always add _id.
@@ -78,9 +80,9 @@ class FormWithSingle extends Component{
       fragment: this.getFragment(),
     }
 
-    // create a stateless component that's wrapped with withSingle,
+    // create a stateless loader component that's wrapped with withSingle,
     // displays the loading state if needed, and passes on loading and document
-    const ComponentWithSingle = withSingle(withSingleOptions)(({ document, loading }) => {
+    const loader = ({ document, loading }) => {
       return loading ? 
         <Telescope.components.Loading /> : 
         <FormWithMutations 
@@ -89,7 +91,9 @@ class FormWithSingle extends Component{
           {...childProps}
           {...parentProps} 
         />;
-    });
+    }
+    loader.displayName = `withLoader(FormWithMutations)`;
+    const ComponentWithSingle = withSingle(withSingleOptions)(loader);
 
     // if this is an edit from, load the necessary data using the withSingle HoC
     return this.getFormType() === 'edit' ? 

@@ -13,13 +13,7 @@ const MoviesNewForm = (props, context) => {
   return (
     <NovaForm 
       collection={Movies} 
-      currentUser={props.currentUser} 
-      successCallback={document => { 
-        context.closeCallback();
-      }}
-      removeSuccessCallback={({ documentId, documentTitle }) => {
-        context.closeCallback();
-      }}
+      currentUser={props.currentUser}
       queryName="moviesListQuery"
     />
   )

@@ -6,21 +6,22 @@ nova:core # do not remove!
 
 # nova:settings
 nova:users
-nova:posts
-nova:comments
-nova:newsletter
-nova:search
-nova:notifications
-nova:getting-started
-nova:categories
-nova:voting
+# nova:posts
+# nova:comments
+# nova:newsletter
+# nova:search
+# nova:notifications
+# nova:getting-started
+# nova:categories
+# nova:voting
 nova:forms
-nova:embedly
-nova:api
-nova:email
-nova:rss
+# nova:embedly
+# nova:api
+# nova:email
+# nova:rss
 # nova:subscribe
 # nova:cloudinary
+nova:routing
 
 ############ Data Layer Package ##############
 
@@ -28,10 +29,10 @@ nova:apollo # do not remove!
 
 ############ Customizable Packages ############
 
-nova:base-components    # default ui components
+# nova:base-components    # default ui components
 nova:base-styles        # default styling
-nova:base-routes        # default routes
-nova:email-templates    # default email templates for notifications
+
+# nova:email-templates    # default email templates for notifications
 nova:i18n-en-us         # default language translation
 
 accounts-password@1.3.3
@@ -40,7 +41,7 @@ accounts-password@1.3.3
 
 ############ Debug Packages ############
 
-nova:debug
+# nova:debug
 # nova:kadira
 
 ############ Your Packages ############

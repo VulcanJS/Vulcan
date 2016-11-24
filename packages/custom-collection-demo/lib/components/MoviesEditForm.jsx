@@ -17,10 +17,7 @@ const MoviesEditForm = (props, context) => {
     <NovaForm 
       collection={Movies} 
       currentUser={props.currentUser} 
-      documentId={props.documentId} 
-      successCallback={document => { 
-        context.closeCallback();
-      }}
+      documentId={props.documentId}
       queryName="moviesListQuery"
       showRemove={true}
     />

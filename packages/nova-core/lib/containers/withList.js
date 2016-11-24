@@ -21,7 +21,7 @@ export default function withList (options) {
     options(ownProps) {
       return {
         variables: {
-          terms: ownProps.terms,
+          terms: ownProps.terms || {},
           offset: 0,
           limit: 5
         },

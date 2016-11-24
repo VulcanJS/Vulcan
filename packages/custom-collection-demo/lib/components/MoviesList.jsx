@@ -9,7 +9,6 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
-import { Accounts } from 'meteor/std:accounts-ui';
 import { ModalTrigger } from "meteor/nova:core";
 import MoviesItem from './MoviesItem.jsx';
 import Movies from '../collection.js';
@@ -17,6 +16,7 @@ import MoviesNewForm from './MoviesNewForm.jsx';
 import { compose } from 'react-apollo';
 import { withCurrentUser, withList } from 'meteor/nova:core';
 import fragments from '../fragments.js';
+import Layout from './Layout.jsx';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -40,13 +40,16 @@ class MoviesList extends Component {
   }
 
   render() {
+
+    const canCreateNewMovie = Movies.options.mutations.new.check(this.props.currentUser);
+    
     if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {
       const hasMore = this.props.totalCount > this.props.results.length;
       return (
         <div className="movies">
-          {this.renderNew()}
+          {canCreateNewMovie ? this.renderNew() : null}
           {this.props.results.map(movie => <MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
           {hasMore ? <LoadMore {...this.props}/> : <p>No more movies</p>}
         </div>

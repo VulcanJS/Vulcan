@@ -1,3 +1,5 @@
+import Telescope from './config.js';
+
 /*
 
 Mutations have four steps:
@@ -29,7 +31,7 @@ to the client.
 */
 
 
-const newMutation = ({ collection, document, currentUser, validate }) => {
+const newMutation = ({ collection, document, currentUser, validate, context }) => {
   
   console.log("// newMutation")
   console.log(collection._name)
@@ -50,7 +52,7 @@ const newMutation = ({ collection, document, currentUser, validate }) => {
     // check that the current user has permission to insert each field
     _.keys(document).forEach(function (fieldName) {
       var field = schema[fieldName];
-      if (!Users.canSubmitField (currentUser, field)) {
+      if (!context.Users.canSubmitField (currentUser, field)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
@@ -87,7 +89,7 @@ const newMutation = ({ collection, document, currentUser, validate }) => {
   return document;
 }
 
-const editMutation = ({ collection, documentId, set, unset, currentUser, validate }) => {
+const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
 
   console.log("// editMutation")
   console.log(collection._name)
@@ -111,7 +113,7 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
     modifiedProperties.forEach(function (fieldName) {
       var field = schema[fieldName];
-      if (!Users.canEditField(currentUser, field, document)) {
+      if (!context.Users.canEditField(currentUser, field, document)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
@@ -141,7 +143,7 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
   return newDocument;
 }
 
-const removeMutation = ({ collection, documentId, currentUser, validate }) => {
+const removeMutation = ({ collection, documentId, currentUser, validate, context }) => {
 
   console.log("// removeMutation")
   console.log(collection._name)
