@@ -55,9 +55,6 @@ class FormWithSingle extends Component{
 
   render() {
 
-    console.log("// FormWithSingle")
-    console.log(this)
-
     const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
     const queryName = `${prefix}FormQuery`;
     const fragmentName = `${prefix}FormFragment`;
@@ -82,7 +79,9 @@ class FormWithSingle extends Component{
 
     // create a stateless loader component that's wrapped with withSingle,
     // displays the loading state if needed, and passes on loading and document
-    const loader = ({ document, loading }) => {
+    const Loader = props => {
+      const { document, loading } = props;
+
       return loading ? 
         <Telescope.components.Loading /> : 
         <FormWithMutations 
@@ -92,8 +91,12 @@ class FormWithSingle extends Component{
           {...parentProps} 
         />;
     }
-    loader.displayName = `withLoader(FormWithMutations)`;
-    const ComponentWithSingle = withSingle(withSingleOptions)(loader);
+    Loader.displayName = `withLoader(FormWithMutations)`;
+    const ComponentWithSingle = withSingle(withSingleOptions)(Loader);
+
+    // load the necessary data using the withSingle HoC.
+    // if this is a new document form, the HoC will just do nothing
+    // return <ComponentWithSingle documentId={this.props.documentId} />;
 
     // if this is an edit from, load the necessary data using the withSingle HoC
     return this.getFormType() === 'edit' ? 

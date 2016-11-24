@@ -51,6 +51,17 @@ class FormWithMutations extends Component{
     };
   }
 
+  componentWillUnmount() {
+    console.log("// FormWithMutations unmounting…")
+    console.log(this)
+    // note: patch to cancel closeCallback given by parent
+    // we clean the event by hand
+    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
+    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
+    // let's not call setState on an unmounted component (avoid no-op / memory leak)
+    this.context.closeCallback = f => f;
+  }
+
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -304,6 +315,10 @@ class FormWithMutations extends Component{
 
   mutationSuccessCallback(result) {
 
+    console.log("//success!")
+    console.log(result)
+    console.log(this)
+
     const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
 
     // run success callback if it exists
@@ -458,14 +473,6 @@ class FormWithMutations extends Component{
     )
   }
 
-  componentWillUnmount() {
-    // note: patch to cancel closeCallback given by parent
-    // we clean the event by hand
-    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
-    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
-    // let's not call setState on an unmounted component (avoid no-op / memory leak)
-    this.context.closeCallback = f => f;
-  }
 
 }
 

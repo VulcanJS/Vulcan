@@ -19,6 +19,7 @@ const resolvers = {
 
     resolver(root, {offset, limit}, context, info) {
       const options = {
+        sort: {createdAt: -1},
         // protected limit
         limit: (limit < 1 || limit > 10) ? 10 : limit,
         skip: offset,

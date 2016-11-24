@@ -25,7 +25,7 @@ export default function withList (options) {
           offset: 0,
           limit: 5
         },
-        pollInterval: 20000,
+        // pollInterval: 20000,
       };
     },
     props(props) {

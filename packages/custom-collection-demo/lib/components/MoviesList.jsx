@@ -15,7 +15,6 @@ import Movies from '../collection.js';
 import MoviesNewForm from './MoviesNewForm.jsx';
 import { compose } from 'react-apollo';
 import { withCurrentUser, withList } from 'meteor/nova:core';
-import fragments from '../fragments.js';
 import Layout from './Layout.jsx';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
@@ -43,7 +42,10 @@ class MoviesList extends Component {
 
     const canCreateNewMovie = Movies.options.mutations.new.check(this.props.currentUser);
     
-    if (this.props.loading) {
+    console.log("//MoviesList")
+    console.log(this)
+
+    if (this.props.loading && !this.props.results) { // TODO: remove !this.props.results since it shouldn't be needed
       return <div className="movies"><p>Loading…</p></div>
     } else {
       const hasMore = this.props.totalCount > this.props.results.length;
@@ -62,8 +64,8 @@ class MoviesList extends Component {
 const listOptions = {
   collection: Movies,
   queryName: 'moviesListQuery',
-  fragmentName: fragments.list.name,
-  fragment: fragments.list.fragment,
+  fragmentName: MoviesItem.fragmentName,
+  fragment: MoviesItem.fragment,
 };
 
 export default compose(withList(listOptions), withCurrentUser)(MoviesList);

@@ -10,7 +10,6 @@ import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Movies from '../collection.js';
 import { compose } from 'react-apollo';
-import fragments from '../fragments.js';
 
 const MoviesEditForm = (props, context) => {
   return (

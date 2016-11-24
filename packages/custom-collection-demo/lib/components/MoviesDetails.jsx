@@ -10,7 +10,7 @@ import React, { PropTypes, Component } from 'react';
 import Movies from '../collection.js';
 import { withSingle } from 'meteor/nova:core';
 import { compose } from 'react-apollo';
-import fragments from '../fragments.js';
+import gql from 'graphql-tag';
 
 const MoviesDetails = props => {
   const movie = props.document;
@@ -27,11 +27,26 @@ const MoviesDetails = props => {
   }
 }
 
+MoviesDetails.fragmentName = 'moviesDetailsFragment';
+MoviesDetails.fragment = gql`
+  fragment moviesDetailsFragment on Movie {
+    _id
+    name
+    createdAt
+    year
+    review
+    privateComments
+    user {
+      __displayName
+    }
+  }
+`;
+
 const options = {
   collection: Movies,
   queryName: 'moviesSingleQuery',
-  fragmentName: fragments.single.name,
-  fragment: fragments.single.fragment,
+  fragmentName: MoviesDetails.fragmentName,
+  fragment: MoviesDetails.fragment,
 };
 
 export default compose(withSingle(options))(MoviesDetails);

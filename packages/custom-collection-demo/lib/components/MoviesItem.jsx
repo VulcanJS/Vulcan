@@ -14,6 +14,7 @@ import MoviesEditForm from './MoviesEditForm.jsx';
 import MoviesDetails from './MoviesDetails.jsx';
 import { withCurrentUser } from 'meteor/nova:core';
 import Movies from '../collection.js';
+import gql from 'graphql-tag';
 
 class MoviesItem extends Component {
 
@@ -67,5 +68,17 @@ class MoviesItem extends Component {
   }
 
 };
+
+MoviesItem.fragmentName = 'moviesItemFragment';
+MoviesItem.fragment = gql`
+  fragment moviesItemFragment on Movie {
+    _id
+    name
+    year
+    user {
+      __displayName
+    }
+  }
+`;
 
 export default withCurrentUser(MoviesItem);
