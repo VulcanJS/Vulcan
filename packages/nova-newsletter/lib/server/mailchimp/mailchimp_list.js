@@ -44,7 +44,7 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if (!!user) {
-        Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', true);
+        Users.methods.setSetting(user._id, 'newsletter.subscribed', true);
       }
 
       console.log("// User subscribed"); // eslint-disable-line
@@ -74,7 +74,7 @@ MailChimpList.remove = (user) => {
 
     try {
 
-      console.log('// Removing "'+email+'" to MailChimp list…'); // eslint-disable-line
+      console.log('// Removing "'+email+'" from MailChimp list…'); // eslint-disable-line
 
       var api = new MailChimp(apiKey);
       var subscribeOptions = {
@@ -87,7 +87,7 @@ MailChimpList.remove = (user) => {
       var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
 
       // mark user as unsubscribed
-      Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', false);
+      Users.methods.setSetting(user._id, 'newsletter.subscribed', false);
 
       console.log("// User unsubscribed"); // eslint-disable-line
 
