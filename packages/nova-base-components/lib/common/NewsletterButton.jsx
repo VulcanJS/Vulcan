@@ -11,7 +11,7 @@ class NewsletterButton extends Component {
   }
 
   subscriptionAction() {
-    const action = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false) ?
+    const action = Users.getSetting(this.props.user, 'newsletter.subscribed', false) ?
       'newsletter.removeUser' : 'newsletter.addUser';
     this.context.actions.call(action, this.props.user, (error, result) => {
       if (error) {
