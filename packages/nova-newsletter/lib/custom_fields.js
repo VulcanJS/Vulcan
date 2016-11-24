@@ -18,9 +18,18 @@ Posts.addField({
 
 Users.addField([
   {
+    fieldName: 'telescope.newsletter.showBanner',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      publish: true,
+      defaultValue: true,
+    }
+  },
+  {
     fieldName: 'telescope.newsletter.subscribed',
     fieldSchema: {
-      label: 'Subscribe to newsletter',
+      label: 'Subscribe to Newsletter',
       type: Boolean,
       optional: true,
       publish: true,
