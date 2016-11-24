@@ -20,7 +20,7 @@ Users.methods = {};
  * @param {Object} user - the current user object
  */
 Users.methods.edit = (userId, modifier, user) => {
-  
+
   if (typeof user === "undefined") {
     user = Users.findOne(userId);
   }
@@ -39,7 +39,7 @@ Users.methods.edit = (userId, modifier, user) => {
 
   // ------------------------------ After Update ------------------------------ //
   return Users.findOne(userId);
-  
+
 }
 
 Users.methods.setSetting = (userId, settingName, value) => {
@@ -108,7 +108,7 @@ Meteor.methods({
       Users.remove(userId);
 
       Telescope.callbacks.runAsync("users.remove.async", user, options);
-    
+
     }
 
   },

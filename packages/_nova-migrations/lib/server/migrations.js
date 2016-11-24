@@ -543,7 +543,7 @@ var migrationsList = {
         } else if (user.profile && user.profile[key]) { // look for it in user.profile object
           telescopeUserData[key] = user.profile[key];
         }
-        
+
       });
 
       // console.log(telescopeUserData);
@@ -583,41 +583,41 @@ var migrationsList = {
 
   //   // find all root comments and set topLevelCommentId on their root children
   //   Comments.find({parentCommentId: {$exists : false}}).forEach(function (comment) {
-      
+
   //     // topLevelCommentId is the root comment._id
   //     var topLevelCommentId = comment._id;
   //     console.log("Root Comment found: " + topLevelCommentId);
-      
+
   //     // find childComments that have this root comment as parentCommentId
   //     Comments.find({parentCommentId: comment._id}).forEach(function (childComment) {
   //       i++;
   //       updateParentAndChild(topLevelCommentId, childComment._id);
   //     });
-    
+
   //   });
-    
+
   //   function updateParentAndChild(topLevelCommentId, parentId) {
-    
+
   //     i++;
   //     console.log("Parent Comment: " + parentId, " top level comment " + topLevelCommentId);
-     
+
   //     Comments.update(parentId, {$set: {'topLevelCommentId': topLevelCommentId}}, {multi: false, validate: false});
-    
+
   //     var childComments = Comments.find({topLevelCommentId: {$exists : false}, parentCommentId: parentId});
-    
+
   //     console.log('> Found '+childComments.count()+' child comments.\n');
-    
+
   //     childComments.forEach(function(childComment){
   //       i++;
-    
+
   //       // find all nested childComments and set topLevelCommentId
   //       console.log("Child Comment: " + childComment._id, " top level comment " + topLevelCommentId);
-    
+
   //       // set nested childComment to use parent's topLevelCommentId
   //       Comments.update(childComment._id, {$set: {'topLevelCommentId': topLevelCommentId}}, {multi: false, validate: false});
   //       updateParentAndChild(topLevelCommentId, childComment._id, true);
   //     });
-    
+
   //   }
   //   console.log("---------------------");
   //   return i;
@@ -646,7 +646,7 @@ var migrationsList = {
       }
     });
     return i;
-  },  
+  },
   migrateNewsletterSettings: function () {
     var i = 0;
     var allUsers = Meteor.users.find({
@@ -675,11 +675,16 @@ var migrationsList = {
 
         var showBanner = user.profile.showBanner;
         if (typeof showBanner !== "undefined") {
+          // BAD! See below...
           set["telescope.newsletter.showBanner"] = showBanner;
         }
 
         var subscribeToNewsletter = user.profile.subscribedToNewsletter;
         if (typeof subscribeToNewsletter !== "undefined") {
+          // BAD! `object["x.y.z"] = value` assigns value to a property
+          // called "x.y.z" instead of actually referencing object.x.y.z as intended.
+          // Perhaps this is how newsletter_subscribeToNewsletter happened?
+          // Maybe the dot got turned into an underscore somehow?
           set["telescope.newsletter.subscribeToNewsletter"] = subscribeToNewsletter;
         }
         console.log(set)
@@ -734,6 +739,45 @@ var migrationsList = {
     Telescope.settings.collection.find({outsideLinksPointTo: {$exists : true}}).forEach(function (setting) {
       i++;
       Telescope.settings.collection.update(setting._id, {$set: {RSSLinksPointTo: setting.outsideLinksPointTo}});
+    });
+    return i;
+  },
+  renameNewsletterSettings: function () {
+    var i = 0;
+    var affectedUsers = Meteor.users.find({
+      $or: [
+        {"profile.showBanner": {$exists: true}},
+        {"profile.subscribedToNewsletter": {$exists: true}},
+        {'telescope.newsletter_subscribeToNewsletter': {$exists: true}}
+      ]
+    });
+
+    console.log('> Renaming newsletter settings: ' + affectedUsers.count() + ' users affected by this migration.\n');
+
+    affectedUsers.forEach(function (user) {
+      i++;
+      var displayName;
+
+      if (user.profile) {
+        displayName = user.profile.name || user.profile.username;
+      } else {
+        displayName = user.username;
+      }
+
+      console.log('> Updating user ' + user._id + '(' + displayName + ')');
+
+      var showBannerSetting = user.profile && user.profile.showBanner;
+      if (showBannerSetting !== undefined) {
+        Meteor.users.update(user._id, {$set: {'telescope.newsletter.showBanner': showBannerSetting}});
+      }
+
+      var subscribedSetting =
+        (user.telescope && user.telescope.newsletter_subscribeToNewsletter)
+        ||
+        (user.profile && user.profile.subscribedToNewsletter);
+      if (subscribedSetting !== undefined) {
+        Meteor.users.update(user._id, {$set: {'telescope.newsletter.subscribed': subscribedSetting}});
+      }
     });
     return i;
   }
