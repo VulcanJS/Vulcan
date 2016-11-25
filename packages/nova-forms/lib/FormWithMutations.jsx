@@ -52,8 +52,6 @@ class FormWithMutations extends Component{
   }
 
   componentWillUnmount() {
-    console.log("// FormWithMutations unmounting…")
-    console.log(this)
     // note: patch to cancel closeCallback given by parent
     // we clean the event by hand
     // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
@@ -314,10 +312,6 @@ class FormWithMutations extends Component{
   // --------------------------------------------------------------------- //
 
   mutationSuccessCallback(result) {
-
-    console.log("//success!")
-    console.log(result)
-    console.log(this)
 
     const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
 

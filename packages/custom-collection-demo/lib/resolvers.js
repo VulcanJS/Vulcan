@@ -17,7 +17,7 @@ const resolvers = {
 
     name: 'moviesList',
 
-    resolver(root, {offset, limit}, context, info) {
+    resolver(root, {terms, offset, limit}, context, info) {
       const options = {
         sort: {createdAt: -1},
         // protected limit
@@ -35,7 +35,7 @@ const resolvers = {
     
     name: 'moviesSingle',
     
-    resolver(root, args, context) {
+    resolver(root, {_id}, context) {
       return context.Movies.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Movies) });
     },
   

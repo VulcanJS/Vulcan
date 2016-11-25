@@ -13,7 +13,6 @@ const MoviesNewForm = (props, context) => {
   return (
     <NovaForm 
       collection={Movies} 
-      currentUser={props.currentUser}
       queryName="moviesListQuery"
     />
   )

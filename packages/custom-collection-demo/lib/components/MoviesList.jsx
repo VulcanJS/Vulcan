@@ -29,7 +29,7 @@ class MoviesList extends Component {
           title="Add Movie" 
           component={<Button bsStyle="primary">Add Movie</Button>}
         >
-          <MoviesNewForm currentUser={this.props.currentUser}/>
+          <MoviesNewForm />
         </ModalTrigger>
         <hr/>
       </div>
@@ -45,7 +45,7 @@ class MoviesList extends Component {
     console.log("//MoviesList")
     console.log(this)
 
-    if (this.props.loading && !this.props.results) { // TODO: remove !this.props.results since it shouldn't be needed
+    if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {
       const hasMore = this.props.totalCount > this.props.results.length;

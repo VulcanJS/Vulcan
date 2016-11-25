@@ -4,6 +4,6 @@ import './permissions.js';
 import './routes.js';
 import './schema.js';
 
-import './components/App.jsx';
-import './components/Icon.jsx';
-import './components/Loading.jsx';
+// import './components/App.jsx';
+// import './components/Icon.jsx';
+// import './components/Loading.jsx';
