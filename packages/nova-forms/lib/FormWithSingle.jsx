@@ -53,6 +53,11 @@ class FormWithSingle extends Component{
     return gql`${fragment}`;
   }
 
+  // prevent extra re-renderings for unknown reasons
+  shouldComponentUpdate() {
+    return false;
+  }
+
   render() {
 
     const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
@@ -69,42 +74,42 @@ class FormWithSingle extends Component{
       fragment: this.getFragment(),
     }
 
-    // options for the withSingle HoC
-    const withSingleOptions = {
-      collection: this.props.collection,
-      queryName: queryName,
-      fragmentName: fragmentName,
-      fragment: this.getFragment(),
-    }
-
-    // create a stateless loader component that's wrapped with withSingle,
-    // displays the loading state if needed, and passes on loading and document
-    const Loader = props => {
-      const { document, loading } = props;
-
-      return loading ? 
-        <Telescope.components.Loading /> : 
-        <FormWithMutations 
-          document={document}
-          loading={loading}
-          {...childProps}
-          {...parentProps} 
-        />;
-    }
-    Loader.displayName = `withLoader(FormWithMutations)`;
-    const ComponentWithSingle = withSingle(withSingleOptions)(Loader);
-
-    // load the necessary data using the withSingle HoC.
-    // if this is a new document form, the HoC will just do nothing
-    // return <ComponentWithSingle documentId={this.props.documentId} />;
-
     // if this is an edit from, load the necessary data using the withSingle HoC
-    return this.getFormType() === 'edit' ? 
-      <ComponentWithSingle documentId={this.props.documentId} /> : 
-      <FormWithMutations 
-        {...childProps}
-        {...parentProps} 
-      />;
+    if (this.getFormType === 'edit') { 
+    
+      // options for the withSingle HoC
+      const withSingleOptions = {
+        collection: this.props.collection,
+        queryName: queryName,
+        fragmentName: fragmentName,
+        fragment: this.getFragment(),
+      }
+
+      // create a stateless loader component that's wrapped with withSingle,
+      // displays the loading state if needed, and passes on loading and document
+      const Loader = props => {
+        const { document, loading } = props;
+
+        return loading ? 
+          <Telescope.components.Loading /> : 
+          <FormWithMutations 
+            document={document}
+            loading={loading}
+            {...childProps}
+            {...parentProps} 
+          />;
+      }
+      Loader.displayName = `withLoader(FormWithMutations)`;
+      const ComponentWithSingle = withSingle(withSingleOptions)(Loader);
+
+      return <ComponentWithSingle documentId={this.props.documentId} />
+    
+    } else {
+    
+      return <FormWithMutations  {...childProps} {...parentProps} />
+    
+    }
+
   }
 
   componentWillUnmount() {
