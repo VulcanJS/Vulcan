@@ -1,3 +1,4 @@
+/* eslint-disable */
 // see https://gist.github.com/furf/3208381
 
 _.mixin({

@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Categories from "./collection.js";
 import Users from 'meteor/nova:users';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const canInsert = user => Users.canDo(user, "categories.new");
 const canEdit = user => Users.canDo(user, "categories.edit.all");
@@ -79,7 +80,7 @@ Telescope.settings.collection.addField([
       optional: true,
       form: {
         group: 'categories',
-        instructions: 'Let users filter by one or multiple categories at a time.', 
+        instructions: 'Let users filter by one or multiple categories at a time.',
         options: function () {
           return [
             {value: "single", label: "categories_behavior_one_at_a_time"},

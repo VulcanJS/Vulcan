@@ -1,3 +1,4 @@
+import { Picker } from 'meteor/meteorhacks:picker';
 import { servePostsApi } from './api.js';
 
 // for backwards compatibility's sake, accept a "limit" segment

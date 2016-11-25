@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 
+/*
 var completeUserProfile = function (userId, modifier, user) {
 
   Users.update(userId, modifier);
@@ -10,6 +11,7 @@ var completeUserProfile = function (userId, modifier, user) {
   return Users.findOne(userId);
 
 };
+*/
 
 Users.methods = {};
 
@@ -97,7 +99,7 @@ Meteor.methods({
   },
 
   'users.remove'(userId, options) {
-    
+
     // do the user which to delete his account or another user?
     const actionType = this.userId === userId ? "own" : "all";
 

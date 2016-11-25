@@ -1,3 +1,5 @@
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
 if (typeof SimpleSchema !== "undefined") {
   SimpleSchema.extendOptions({
     control: Match.Optional(Match.Any), // NovaForm control (String or React component)

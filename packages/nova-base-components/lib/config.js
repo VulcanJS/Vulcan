@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
 // import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 // checkNpmVersions({

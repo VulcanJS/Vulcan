@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {/* injectIntl, */ FormattedMessage} from 'react-intl';
 
 const CommentsList = ({results, hasMore, ready, count, totalCount, loadMore}) => {
 
@@ -24,9 +24,9 @@ const CommentsList = ({results, hasMore, ready, count, totalCount, loadMore}) =>
           <FormattedMessage id="comments.no_comments"/>
         </p>
       </div>
-    )  
+    )
   }
-  
+
 };
 
 CommentsList.displayName = "CommentsList";

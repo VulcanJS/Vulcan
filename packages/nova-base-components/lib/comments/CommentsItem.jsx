@@ -1,8 +1,8 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import moment from 'moment';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-import Users from 'meteor/nova:users';
+// import moment from 'moment';
+// import Users from 'meteor/nova:users';
 
 class CommentsItem extends Component{
 
@@ -33,7 +33,7 @@ class CommentsItem extends Component{
     event.preventDefault();
     this.setState({showEdit: true});
   }
-  
+
   editCancelCallback(event) {
     event.preventDefault();
     this.setState({showEdit: false});
@@ -44,11 +44,11 @@ class CommentsItem extends Component{
   }
 
   deleteComment() {
-    
+
     const comment = this.props.comment;
     const deleteConfirmMessage = this.context.intl.formatMessage({id: "comments.delete_confirm"}, {body: Telescope.utils.trimWords(comment.body, 20)});
     const deleteSuccessMessage = this.context.intl.formatMessage({id: "comments.delete_success"}, {body: Telescope.utils.trimWords(comment.body, 20)});
-    
+
     if (window.confirm(deleteConfirmMessage)) {
       this.context.actions.call('comments.deleteById', comment._id, (error, result) => {
         this.context.messages.flash(deleteSuccessMessage, "success");
@@ -70,7 +70,7 @@ class CommentsItem extends Component{
           <a className="comments-item-reply-link" onClick={this.showReply}>
             <Telescope.components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null}
-      </div>  
+      </div>
     )
   }
 
@@ -78,12 +78,12 @@ class CommentsItem extends Component{
 
     return (
       <div className="comments-item-reply">
-        <Telescope.components.CommentsNew 
-          postId={this.props.comment.postId} 
-          parentComment={this.props.comment} 
-          successCallback={this.replySuccessCallback} 
-          cancelCallback={this.replyCancelCallback} 
-          type="reply" 
+        <Telescope.components.CommentsNew
+          postId={this.props.comment.postId}
+          parentComment={this.props.comment}
+          successCallback={this.replySuccessCallback}
+          cancelCallback={this.replyCancelCallback}
+          type="reply"
         />
       </div>
     )
@@ -92,9 +92,9 @@ class CommentsItem extends Component{
   renderEdit() {
 
     return (
-      <Telescope.components.CommentsEdit 
-        comment={this.props.comment} 
-        successCallback={this.editSuccessCallback} 
+      <Telescope.components.CommentsEdit
+        comment={this.props.comment}
+        successCallback={this.editSuccessCallback}
         cancelCallback={this.editCancelCallback}
       />
     )

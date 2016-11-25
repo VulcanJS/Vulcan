@@ -77,10 +77,10 @@ NovaEmail.send = function(to, subject, html, text){
     });
   }
 
-  console.log('//////// sending email…');
-  console.log('from: '+from);
-  console.log('to: '+to);
-  console.log('subject: '+subject);
+  console.log('//////// sending email…'); // eslint-disable-line
+  console.log('from: '+from); // eslint-disable-line
+  console.log('to: '+to); // eslint-disable-line
+  console.log('subject: '+subject); // eslint-disable-line
   // console.log('html: '+html);
   // console.log('text: '+text);
 
@@ -95,8 +95,8 @@ NovaEmail.send = function(to, subject, html, text){
   try {
     Email.send(email);
   } catch (error) {
-    console.log("// error while sending email:")
-    console.log(error)
+    console.log("// error while sending email:"); // eslint-disable-line
+    console.log(error); // eslint-disable-line
   }
 
   return email;

@@ -1,8 +1,8 @@
 import Telescope from 'meteor/nova:lib';
-import React, { PropTypes, Component } from 'react';
-import { ListContainer } from "meteor/utilities:react-list-container";
-import moment from 'moment';
 import Posts from "meteor/nova:posts";
+import { ListContainer } from "meteor/utilities:react-list-container";
+import React, { PropTypes, Component } from 'react';
+import moment from 'moment';
 
 class PostsDay extends Component {
 
@@ -19,19 +19,19 @@ class PostsDay extends Component {
       listId: `posts.list.${moment(date).format("YYYY-MM-DD")}`
     };
 
-    ({selector, options} = Posts.parameters.get(terms));
+    const {selector, options} = Posts.parameters.get(terms);
 
     const postsPerPage = Telescope.settings.get("postsPerPage", 10);
 
     return (
       <div className="posts-day">
         <h4 className="posts-day-heading">{moment(date).format("dddd, MMMM Do YYYY")}</h4>
-        <ListContainer 
-          collection={Posts} 
+        <ListContainer
+          collection={Posts}
           publication="posts.list"
           selector={selector}
           options={options}
-          terms={terms} 
+          terms={terms}
           joins={Posts.getJoins()}
           component={Telescope.components.PostsList}
           componentProps={{showHeader: false}}

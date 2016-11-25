@@ -1,4 +1,5 @@
 import Telescope from 'meteor/nova:lib';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import Users from './collection.js';
 
 const adminGroup = {

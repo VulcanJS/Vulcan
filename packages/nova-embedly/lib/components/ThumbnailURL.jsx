@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Formsy from 'formsy-react';
+// import Formsy from 'formsy-react';
 import FRC from 'formsy-react-components';
 const Input = FRC.Input;
 
@@ -29,9 +29,9 @@ class ThumbnailURL extends Component {
   renderThumbnail() {
     return (
       <div>
-          <img 
-            className="embedly-thumbnail" 
-            src={this.props.value} 
+          <img
+            className="embedly-thumbnail"
+            src={this.props.value}
             style={{
               "width": 150,
               "height": Telescope.settings.get('thumbnailHeight', 150) * 150 / Telescope.settings.get('thumbnailWidth', 150)
@@ -44,7 +44,7 @@ class ThumbnailURL extends Component {
 
   render() {
 
-    const {name, value, label} = this.props;
+    const {name, /* value, */ label} = this.props;
 
     const inputType = this.state.showInput ? "text" : "hidden";
 

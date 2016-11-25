@@ -1,5 +1,5 @@
 import PublicationUtils from 'meteor/utilities:smart-publications';
-import Users from "meteor/nova:users";
+import Users from 'meteor/nova:users';
 
 Users.addField([
   {

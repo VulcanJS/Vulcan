@@ -1,11 +1,14 @@
+/* eslint-disable no-console */
+
 // newsletter scheduling with MailChimp
 
 import Telescope from 'meteor/nova:lib';
-import Newsletter from '../../namespace.js';
-import MailChimp from './mailchimp_api.js';
+import Posts from 'meteor/nova:posts';
 import NovaEmail from 'meteor/nova:email';
 import htmlToText from 'html-to-text';
 import moment from 'moment';
+import Newsletter from '../../namespace.js';
+import MailChimp from './mailchimp_api.js';
 
 const defaultPosts = 5;
 
@@ -68,14 +71,14 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
       };
 
       // schedule campaign
-      var schedule = api.call('campaigns', 'schedule', scheduleOptions);
+      var schedule = api.call('campaigns', 'schedule', scheduleOptions); // eslint-disable-line
 
       console.log('// Newsletter scheduled for '+scheduledTime);
       // console.log(schedule)
 
       // if this is not a test, mark posts as sent
       if (!isTest)
-        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
 
       // send confirmation email
       var confirmationHtml = NovaEmail.getTemplate('newsletterConfirmation')({

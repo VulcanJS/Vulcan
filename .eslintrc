@@ -1,6 +1,8 @@
 {
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:meteor/recommended",
+    "plugin:react/recommended"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -10,7 +12,17 @@
   },
   "rules": {
     "babel/generator-star-spacing": 0,
-    "babel/new-cap": 1,
+    "babel/new-cap": [1, {
+      "capIsNewExceptions": [
+        "Optional",
+        "OneOf",
+        "Maybe",
+        "MailChimpAPI",
+        "Juice",
+        "Run",
+        "AppComposer"
+      ]
+    }],
     "babel/array-bracket-spacing": 0,
     "babel/object-curly-spacing": 0,
     "babel/object-shorthand": 0,
@@ -20,8 +32,14 @@
     "key-spacing": 0,
     "no-extra-boolean-cast": 0,
     "no-undef": 1,
-    "no-unused-vars": 1,
-    "no-console": 1
+    "no-unused-vars": [1, {
+      "vars": "all",
+      "args": "none",
+      "varsIgnorePattern": "React|PropTypes|Component"
+    }],
+    "no-console": 1,
+    "react/prop-types": 0,
+    "meteor/audit-argument-checks": 0
   },
   "env": {
     "browser": true,
@@ -32,7 +50,8 @@
   },
   "plugins": [
     "babel",
-    "meteor"
+    "meteor",
+    "react"
   ],
   "settings": {
     "import/resolver": "meteor"

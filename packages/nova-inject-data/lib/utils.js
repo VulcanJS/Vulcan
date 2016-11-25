@@ -1,3 +1,5 @@
+/* global InjectData */
+
 InjectData._encode = function(ejson) {
   var ejsonString = EJSON.stringify(ejson);
   return encodeURIComponent(ejsonString);

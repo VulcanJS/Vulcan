@@ -1,6 +1,6 @@
 import Telescope from "meteor/nova:lib";
 import React, { PropTypes, Component } from "react";
-import { Button } from "react-bootstrap";
+// import { Button } from "react-bootstrap";
 import moment from "moment";
 import { FormattedMessage } from "react-intl";
 

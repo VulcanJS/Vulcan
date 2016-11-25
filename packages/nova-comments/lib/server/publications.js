@@ -1,5 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import Comments from '../collection.js';
 
 Comments._ensureIndex({postId: 1});
 Comments._ensureIndex({parentCommentId: 1});
@@ -9,11 +10,11 @@ Comments._ensureIndex({parentCommentId: 1});
  * @param {Object} terms
  */
 Meteor.publish('comments.list', function (terms) {
-  
+
   const currentUser = this.userId && Users.findOne(this.userId);
 
   terms.currentUserId = this.userId; // add currentUserId to terms
-  ({selector, options} = Comments.parameters.get(terms));
+  const {selector, options} = Comments.parameters.get(terms);
 
   // commenting this because of FR-SSR issue
   // Counts.publish(this, 'comments.list', Comments.find(selector, options));
@@ -41,12 +42,12 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(terms, {_id: String});
 
-//   
-  
+//
+
 //   let commentIds = [terms._id];
 //   const childCommentIds = _.pluck(Comments.find({parentCommentId: terms._id}, {fields: {_id: 1}}).fetch(), '_id');
 //   commentIds = commentIds.concat(childCommentIds);
-  
+
 //   return Users.canView(currentUser) ? Comments.find({_id: {$in: commentIds}}, {sort: {score: -1, postedAt: -1}}) : [];
 
 // });
@@ -60,7 +61,7 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(commentId, String);
 
-//   
+//
 
 //   if(Users.canViewById(this.userId)){
 //     var comment = Comments.findOne(commentId);
@@ -75,8 +76,8 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(commentId, String);
 
-//   
-    
+//
+
 //   var userIds = [];
 
 //   if(Users.canViewById(this.userId)){
@@ -92,7 +93,7 @@ Meteor.publish('comments.list', function (terms) {
 //       }
 
 //       return Users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
-    
+
 //     }
 
 //   }

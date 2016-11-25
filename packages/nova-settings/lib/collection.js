@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const isInSettingsJSON = function () {
   // settings can either be in settings json's public, or in the special object we publish only for admins for private settings

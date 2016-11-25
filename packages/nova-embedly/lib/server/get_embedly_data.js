@@ -2,8 +2,8 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 
-getEmbedlyData = function (url) {
-  var data = {};
+var getEmbedlyData = function (url) {
+  // var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
   var embedlyKey = Telescope.settings.get('embedlyKey');
   var thumbnailWidth = Telescope.settings.get('thumbnailWidth', 200);
@@ -11,7 +11,7 @@ getEmbedlyData = function (url) {
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
-    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module.");
+    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module."); // eslint-disable-line
     return null;
   }
 
@@ -42,7 +42,7 @@ getEmbedlyData = function (url) {
     return embedlyData;
 
   } catch (error) {
-    console.log(error)
+    console.log(error); // eslint-disable-line
     // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
     var errorObject = JSON.parse(error.message.substring(13));
     throw new Meteor.Error(errorObject.error_code, errorObject.error_message);
@@ -111,7 +111,7 @@ var regenerateThumbnail = function (post) {
 Meteor.methods({
   testGetEmbedlyData: function (url) {
     check(url, String);
-    console.log(getEmbedlyData(url));
+    console.log(getEmbedlyData(url)); // eslint-disable-line
   },
   getEmbedlyData: function (url) {
     check(url, String);
@@ -129,11 +129,11 @@ Meteor.methods({
   generateThumbnails: function (limit = 20, mode = "generate") {
     // mode = "generate" : generate thumbnails only for all posts that don't have one
     // mode = "all" : regenerate thumbnais for all posts
-      
+
     if (Users.isAdmin(Meteor.user())) {
-      
-      console.log("// Generating thumbnails…")
-      
+
+      console.log("// Generating thumbnails…"); // eslint-disable-line
+
       const selector = {url: {$exists: true}};
       if (mode === "generate") {
         selector.thumbnailUrl = {$exists: false};
@@ -143,11 +143,11 @@ Meteor.methods({
 
       posts.forEach((post, index) => {
         Meteor.setTimeout(function () {
-          console.log(`// ${index}. fetching thumbnail for “${post.title}” (_id: ${post._id})`);
+          console.log(`// ${index}. fetching thumbnail for “${post.title}” (_id: ${post._id})`); // eslint-disable-line
           try {
             regenerateThumbnail(post);
           } catch (error) {
-            console.log(error);
+            console.log(error); // eslint-disable-line
           }
         }, index * 1000);
       });

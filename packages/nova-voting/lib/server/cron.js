@@ -8,9 +8,9 @@ Meteor.startup(function () {
 
     // active items get updated every N seconds
     Meteor.setInterval(function () {
-      
-      var updatedPosts = 0;
-      var updatedComments = 0;
+
+      var updatedPosts = 0; // eslint-disable-line
+      var updatedComments = 0; // eslint-disable-line
       // console.log('tick ('+scoreInterval+')');
       Posts.find({'status': 2,'inactive': {$ne : true}}).forEach(function (post) { // only run scoring on approved posts
         updatedPosts += Telescope.updateScore({collection: Posts, item: post});
@@ -24,8 +24,8 @@ Meteor.startup(function () {
 
     // inactive items get updated every hour
     Meteor.setInterval(function () {
-      var updatedPosts = 0;
-      var updatedComments = 0;
+      var updatedPosts = 0; // eslint-disable-line
+      var updatedComments = 0; // eslint-disable-line
       Posts.find({'inactive': true}).forEach(function (post) {
         updatedPosts += Telescope.updateScore({collection: Posts, item: post});
       });

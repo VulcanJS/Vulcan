@@ -1,4 +1,6 @@
-var http = Npm.require('http');
+/* global InjectData */
+
+// var http = Npm.require('http');
 
 var templateText = Assets.getText('lib/inject.html');
 var injectDataTemplate = _.template(templateText);
@@ -43,7 +45,7 @@ InjectData._hijackWriteIfNeeded = function(res) {
           'warn: injecting data turned off due to CORS headers. ' +
           'read more: http://goo.gl/eGwb4e';
 
-        console.warn(warnMessage);
+        console.warn(warnMessage); // eslint-disable-line
         originalWrite.call(res, chunk, encoding);
         return;
       }

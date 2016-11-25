@@ -1,3 +1,4 @@
+import { Picker } from 'meteor/meteorhacks:picker';
 import { servePostRSS, serveCommentRSS } from './rss.js';
 
 Picker.route('/feed.xml', function(params, req, res, next) {

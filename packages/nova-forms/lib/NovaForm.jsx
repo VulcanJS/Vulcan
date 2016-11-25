@@ -85,7 +85,7 @@ class NovaForm extends Component{
       // backward compatibility from 'autoform' to 'form'
       if (fieldSchema.autoform) {
         fieldSchema.form = fieldSchema.autoform;
-        console.warn(`🔭 Telescope Nova Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`);
+        console.warn(`🔭 Telescope Nova Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`); // eslint-disable-line
       }
 
       // replace value by prefilled value if value is empty
@@ -96,7 +96,7 @@ class NovaForm extends Component{
           field.value = prefilledValue;
         }
       }
-      
+
       // replace empty value, which has not been prefilled, by the default value from the schema
       if (fieldSchema.defaultValue && field.value === "") {
         field.value = fieldSchema.defaultValue;
@@ -291,7 +291,7 @@ class NovaForm extends Component{
 
       this.setState({disabled: false});
 
-      console.log(error);
+      console.log(error); // eslint-disable-line
 
       const errorContent = this.context.intl.formatMessage({id: error.reason}, {details: error.details})
       // add error to state
@@ -326,7 +326,7 @@ class NovaForm extends Component{
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as NovaForm's getDocument method
-    data = { 
+    data = {
       ...this.state.autofilledValues, // ex: can be values from EmbedlyURL or NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
