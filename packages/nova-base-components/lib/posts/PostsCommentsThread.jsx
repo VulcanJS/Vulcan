@@ -49,8 +49,6 @@ PostsCommentsThread.propTypes = {
   currentUser: React.PropTypes.object
 };
 
-console.log("// defining fragment")
-
 const fragment = gql`
   fragment commentsListFragment on Comment {
     _id

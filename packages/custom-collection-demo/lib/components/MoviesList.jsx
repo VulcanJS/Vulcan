@@ -42,9 +42,6 @@ class MoviesList extends Component {
 
     const canCreateNewMovie = Movies.options.mutations.new.check(this.props.currentUser);
     
-    console.log("//MoviesList")
-    console.log(this)
-
     if (this.props.loading) {
       return <div className="movies"><p>Loading…</p></div>
     } else {

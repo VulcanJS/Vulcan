@@ -25,8 +25,6 @@ export default function withNew(WrappedComponent) {
   // create a new stateless component so we can access its props
   const WithNew = props => {
 
-    console.log(props)
-
     const { collection, fragmentName, fragment, queryName } = props,
           collectionName = collection._name,
           mutationName = collection.options.mutations.new.name,
