@@ -74,7 +74,7 @@ export default function withNew(WrappedComponent) {
           
           return mutate({ 
             variables: { document },
-            updateQueries: props.updateQueries || updateQueries
+            // updateQueries: props.updateQueries || updateQueries
           })
         }
       }),

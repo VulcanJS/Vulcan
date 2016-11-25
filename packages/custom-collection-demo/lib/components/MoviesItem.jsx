@@ -45,7 +45,7 @@ class MoviesItem extends Component {
           label="Edit Movie" 
           component={<Button bsStyle="primary">Edit Movie</Button>} 
         >
-          <MoviesEditForm currentUser={this.props.currentUser} documentId={movie._id}/>
+          <MoviesEditForm currentUser={this.props.currentUser} documentId={movie._id} refetch={this.props.refetch}/>
         </ModalTrigger>
       </div>
     )

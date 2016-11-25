@@ -32,6 +32,8 @@ class FormWithMutations extends Component{
     this.submitForm = this.submitForm.bind(this);
     this.updateState = this.updateState.bind(this);
     // this.methodCallback = this.methodCallback.bind(this);
+    this.newMutationSuccessCallback = this.newMutationSuccessCallback.bind(this);
+    this.editMutationSuccessCallback = this.editMutationSuccessCallback.bind(this);
     this.mutationSuccessCallback = this.mutationSuccessCallback.bind(this);
     this.mutationErrorCallback = this.mutationErrorCallback.bind(this);
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
@@ -311,9 +313,20 @@ class FormWithMutations extends Component{
   // ------------------------------- Method ------------------------------ //
   // --------------------------------------------------------------------- //
 
-  mutationSuccessCallback(result) {
+  newMutationSuccessCallback(result) {
+    this.mutationSuccessCallback(result, 'new');
+  }
+
+  editMutationSuccessCallback(result) {
+    this.mutationSuccessCallback(result, 'edit');
+  }
+
+  mutationSuccessCallback(result, mutationType) {
 
     const document = result.data[Object.keys(result.data)[0]]; // document is always on first property
+
+    // for new mutation, run refetch function if it exists
+    if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document);
@@ -388,7 +401,7 @@ class FormWithMutations extends Component{
       }
 
       // call method with new document
-      this.props.newMutation({document}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
 
     } else { // edit document form
 
@@ -406,14 +419,14 @@ class FormWithMutations extends Component{
       if (!_.isEmpty(unset)) modifier.$unset = unset;
       // call method with _id of document being edited and modifier
       // Meteor.call(this.props.methodName, document._id, modifier, this.methodCallback);
-      this.props.editMutation({documentId: document._id, set: set, unset: unset}).then(this.mutationSuccessCallback).catch(this.mutationErrorCallback);
+      this.props.editMutation({documentId: document._id, set: set, unset: unset}).then(this.editMutationSuccessCallback).catch(this.mutationErrorCallback);
     }
 
   }
 
   deleteDocument() {
     const document = this.getDocument();
-    const documentId = document._id;
+    const documentId = this.props.document._id;
     const documentTitle = document.title || document.name || "this document";
 
     const deleteDocumentConfirm = this.context.intl.formatMessage({id: `${this.props.collection._name}.delete_confirm`}, {title: documentTitle});
@@ -423,6 +436,7 @@ class FormWithMutations extends Component{
         .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({documentId, documentTitle});
           if (this.context.closeCallback) this.context.closeCallback();
+          if (this.props.refetch) this.props.refetch();
         })
         .catch((error) => {
           console.log(error);

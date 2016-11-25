@@ -29,7 +29,7 @@ class MoviesList extends Component {
           title="Add Movie" 
           component={<Button bsStyle="primary">Add Movie</Button>}
         >
-          <MoviesNewForm />
+          <MoviesNewForm refetch={this.props.refetch}/>
         </ModalTrigger>
         <hr/>
       </div>
@@ -52,7 +52,7 @@ class MoviesList extends Component {
       return (
         <div className="movies">
           {canCreateNewMovie ? this.renderNew() : null}
-          {this.props.results.map(movie => <MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser}/>)}
+          {this.props.results.map(movie => <MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser} refetch={this.props.refetch} />)}
           {hasMore ? <LoadMore {...this.props}/> : <p>No more movies</p>}
         </div>
       )

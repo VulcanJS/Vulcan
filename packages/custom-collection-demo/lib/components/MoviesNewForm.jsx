@@ -14,6 +14,7 @@ const MoviesNewForm = (props, context) => {
     <NovaForm 
       collection={Movies} 
       queryName="moviesListQuery"
+      refetch={props.refetch}
     />
   )
 }

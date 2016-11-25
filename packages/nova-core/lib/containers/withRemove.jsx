@@ -27,7 +27,6 @@ export default function withRemove(WrappedComponent) {
     `, {
       props: ({ ownProps, mutate }) => ({
         removeMutation: ({ documentId }) => {
-
           const updateQueries = {
             [props.queryName]: (prev, { mutationResult }) => {
               // filter the list to get a new one without the document
@@ -43,7 +42,7 @@ export default function withRemove(WrappedComponent) {
 
           return mutate({ 
             variables: { documentId },
-            updateQueries: props.updateQueries || updateQueries
+            // updateQueries: props.updateQueries || updateQueries
           })
         },
       }),

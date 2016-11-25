@@ -30,8 +30,10 @@ export default function withList (options) {
     },
     props(props) {
 
+
       const loading = props.data.loading,
             fetchMore = props.data.fetchMore,
+            refetch = props.data.refetch,
             results = props.data[listResolverName],
             totalCount = props.data[totalResolverName];
 
@@ -39,6 +41,7 @@ export default function withList (options) {
         loading,
         results,
         totalCount,
+        refetch,
         count: results && results.length,
         loadMore(event) {
           event.preventDefault();
@@ -46,6 +49,9 @@ export default function withList (options) {
           return fetchMore({
             variables: { offset: results.length },
             updateQuery(previousResults, { fetchMoreResult }) {
+              console.log("//withList updateQuery")
+              console.log(previousResults)
+              console.log(fetchMoreResult)
               // no more post to fetch
               if (!fetchMoreResult.data) {
                 return previousResults;

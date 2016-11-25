@@ -75,7 +75,7 @@ class FormWithSingle extends Component{
     }
 
     // if this is an edit from, load the necessary data using the withSingle HoC
-    if (this.getFormType === 'edit') { 
+    if (this.getFormType() === 'edit') { 
     
       // options for the withSingle HoC
       const withSingleOptions = {
@@ -89,7 +89,6 @@ class FormWithSingle extends Component{
       // displays the loading state if needed, and passes on loading and document
       const Loader = props => {
         const { document, loading } = props;
-
         return loading ? 
           <Telescope.components.Loading /> : 
           <FormWithMutations 
@@ -101,11 +100,10 @@ class FormWithSingle extends Component{
       }
       Loader.displayName = `withLoader(FormWithMutations)`;
       const ComponentWithSingle = withSingle(withSingleOptions)(Loader);
-
       return <ComponentWithSingle documentId={this.props.documentId} />
     
     } else {
-    
+
       return <FormWithMutations  {...childProps} {...parentProps} />
     
     }
