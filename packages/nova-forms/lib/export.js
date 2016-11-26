@@ -10,8 +10,5 @@ if (typeof SimpleSchema !== "undefined") {
   });
 }
 
-// import FormWithMutation from "./FormWithMutation.jsx";
-
-import FormWithSingle from './FormWithSingle.jsx'
-export default FormWithSingle;
-// export { FormWithMutation as default, FormWrapper };
+import FormWrapper from './FormWrapper.jsx'
+export default FormWrapper;

@@ -531,8 +531,4 @@ FormWithMutations.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = compose(
-  withNew,
-  withEdit,
-  withRemove,
-)(FormWithMutations);
+module.exports = FormWithMutations
