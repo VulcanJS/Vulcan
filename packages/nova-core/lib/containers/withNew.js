@@ -76,7 +76,7 @@ export default function withNew(options) {
         
         return mutate({ 
           variables: { document },
-          // updateQueries: props.updateQueries || updateQueries
+          // updateQueries: options.updateQueries || updateQueries
         })
       }
     }),

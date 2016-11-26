@@ -27,7 +27,7 @@ import update from 'immutability-helper';
 
 export default function withRemove(options) {
 
-  const { collection, fragmentName, fragment } = options,
+  const { collection, fragmentName, fragment, queryName } = options,
         mutationName = collection.options.mutations.remove.name,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -44,7 +44,7 @@ export default function withRemove(options) {
       removeMutation: ({ documentId }) => {
 
         const updateQueries = {
-          [props.queryName]: (prev, { mutationResult }) => {
+          [queryName]: (prev, { mutationResult }) => {
             // filter the list to get a new one without the document
             const listWithoutDocument = prev[listResolverName].filter(doc => doc._id !== documentId);
             // update the query
@@ -58,7 +58,7 @@ export default function withRemove(options) {
 
         return mutate({ 
           variables: { documentId },
-          // updateQueries: props.updateQueries || updateQueries
+          // updateQueries: options.updateQueries || updateQueries
         })
       },
     }),

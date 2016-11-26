@@ -451,7 +451,7 @@ class FormWithMutations extends Component{
   deleteDocument() {
     const document = this.getDocument();
     const documentId = this.props.document._id;
-    const documentTitle = document.title || document.name || "this document";
+    const documentTitle = document.title || document.name || '';
 
     const deleteDocumentConfirm = this.context.intl.formatMessage({id: `${this.props.collection._name}.delete_confirm`}, {title: documentTitle});
 
