@@ -34,3 +34,7 @@ Events.analyticsInit = function() {
 
 Events.analyticsInit();
 
+function analyticsRequest () {
+  Events.analyticsRequest();
+}
+Telescope.callbacks.add('router.onUpdate', analyticsRequest);

@@ -1,7 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 import marked from 'marked';
-import Events from "meteor/nova:events";
 import NovaEmail from 'meteor/nova:email';
 
 //////////////////////////////////////////////////////
@@ -67,7 +66,7 @@ function setupUser (user, options) {
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
-  Events.track('new user', {username: user.__displayName, email: user.__email});
+  // Events.track('new user', {username: user.__displayName, email: user.__email});
 
   return user;
 }

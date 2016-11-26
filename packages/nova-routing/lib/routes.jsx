@@ -3,7 +3,6 @@ import React from 'react';
 import { Messages } from 'meteor/nova:core';
 import { IndexRoute, Route } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
-import Events from "meteor/nova:events";
 import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
@@ -56,7 +55,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     props: {
       onUpdate: () => {
-        Events.analyticsRequest(); 
+        Telescope.callbacks.run('router.onUpdate');
         // clear all previous messages
         store.dispatch(Telescope.actions.messages.clearSeen());
       },
