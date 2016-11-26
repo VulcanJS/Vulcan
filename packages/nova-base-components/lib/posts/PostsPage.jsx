@@ -39,8 +39,9 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-const fragment = gql` 
-  fragment postsSingleFragment on Post {
+PostsPage.fragmentName = 'PostsSingleFragment'
+PostsPage.fragment = gql` 
+  fragment PostsSingleFragment on Post {
     _id
     title
     url
@@ -89,8 +90,8 @@ const fragment = gql`
 const options = {
   collection: Posts,
   queryName: 'postsSingleQuery',
-  fragmentName: 'postsSingleFragment',
-  fragment: fragment,
+  fragmentName: PostsPage.fragmentName,
+  fragment: PostsPage.fragment,
 };
 
 Telescope.registerComponent('PostsPage', PostsPage, withSingle(options));

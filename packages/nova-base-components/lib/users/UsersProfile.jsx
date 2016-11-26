@@ -44,7 +44,8 @@ UsersProfile.propTypes = {
 
 UsersProfile.displayName = "UsersProfile";
 
-const fragment = gql`
+UsersProfile.fragmentName = 'usersSingleFragment';
+UsersProfile.fragment = gql`
   fragment usersSingleFragment on User {
     _id
     username
@@ -91,8 +92,8 @@ const fragment = gql`
 const options = {
   collection: Users,
   queryName: 'usersSingleQuery',
-  fragmentName: 'usersSingleFragment',
-  fragment: fragment,
+  fragmentName: UsersProfile.fragmentName,
+  fragment: UsersProfile.fragment,
 };
 
 Telescope.registerComponent('UsersProfile', UsersProfile, withSingle(options));

@@ -12,3 +12,5 @@ const Icon = ({ name, iconClass }) => {
 Icon.displayName = "Icon";
 
 Telescope.registerComponent('Icon', Icon);
+
+export default Icon;

@@ -1,3 +1,9 @@
+/*
+
+intl polyfill. See https://github.com/andyearnshaw/Intl.js/
+
+*/
+
 import Telescope from './config.js';
 
 var areIntlLocalesSupported = require('intl-locales-supported');

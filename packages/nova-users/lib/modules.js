@@ -1,7 +1,6 @@
 import Users from './collection.js';
 
 import './groups.js';
-import './config.js';
 import './callbacks.js';
 import './helpers.js';
 import './notifications.js';

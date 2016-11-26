@@ -1,6 +1,13 @@
+/*
+
+Utilities to generate the app's GraphQL schema
+
+*/
+
 import Telescope from './config.js';
 import deepmerge from 'deepmerge';
 
+// convert a JSON schema to a GraphQL schema
 const jsTypeToGraphQLType = typeName => {
   switch (typeName) {
     case "Date":
@@ -28,6 +35,7 @@ Telescope.graphQL = {
   addCollection(collection) {
     this.collections.push(collection);
   },
+  // generate GraphQL schemas for all registered collections
   getCollectionsSchemas() {
     const collectionsSchemas = this.collections.map(collection => {
       return this.generateSchema(collection);
@@ -40,6 +48,7 @@ Telescope.graphQL = {
   addSchema(schema) {
     this.schemas.push(schema);
   },
+  // get extra schemas defined manually
   getAdditionalSchemas() {
     const additionalSchemas = this.schemas.join('\n');
     return additionalSchemas;
@@ -69,6 +78,7 @@ Telescope.graphQL = {
     this.context = deepmerge(this.context, object);
   },
   
+  // generate a GraphQL schema corresponding to a given collection
   generateSchema(collection) {
 
     const collectionName = collection._name;
@@ -120,17 +130,6 @@ input ${collectionName}Unset {
   ${unsetSchema.join('\n  ')}
 }
     `;
-    
-    // const graphQLSchema = _.compact(_.map(schema, (field, key) => {
-    //   // console.log(field, key)
-    //   if (key.indexOf('$') !== -1) {
-    //     // skip fields with "$"
-    //     return
-    //   } else {
-    //     // if field has a resolver, use it, else use a name: type pattern
-    //     return !!field.resolveAs ? field.resolveAs : `${key}: ${jsTypeToGraphQLType(field.type.name)}`
-    //   }
-    // })).join('\n');
 
     return graphQLSchema;
   }

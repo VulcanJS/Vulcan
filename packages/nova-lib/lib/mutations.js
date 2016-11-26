@@ -1,5 +1,3 @@
-import Telescope from './config.js';
-
 /*
 
 Mutations have four steps:
@@ -30,6 +28,7 @@ to the client.
 
 */
 
+import Telescope from './config.js';
 
 const newMutation = ({ collection, document, currentUser, validate, context }) => {
   

@@ -1,3 +1,13 @@
+/*
+
+Three resolvers are defined:
+
+- list (e.g.: moviesList(terms: JSON, offset: Int, limit: Int) )
+- single (e.g.: moviesSingle(_id: String) )
+- listTotal (e.g.: moviesTotal )
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 
 // add the "user" resolver for the Movie type separately

@@ -1,3 +1,19 @@
+/*
+
+Define the three default mutations:
+
+- new (e.g.: moviesNew(document: moviesInput) : Movie )
+- edit (e.g.: moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie )
+- remove (e.g.: moviesRemove(documentId: String) : Movie )
+
+Each mutation has:
+
+- A name
+- A check function that takes the current user and (optionally) the document affected
+- The actual mutation
+
+*/
+
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 
@@ -11,7 +27,7 @@ const mutations = {
     
     name: 'moviesNew',
     
-    check(user, document) {
+    check(user) {
       if (!user) return false;
       return Users.canDo(user, 'movies.new');
     },

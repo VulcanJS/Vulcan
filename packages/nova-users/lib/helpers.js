@@ -44,7 +44,6 @@ Users.getUserName = function (user) {
     return null;
   }
 };
-Users.helpers({getUserName: function () {return Users.getUserName(this);}});
 Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOne(userId))};
 
 /**
@@ -58,7 +57,6 @@ Users.getDisplayName = function (user) {
     return (user.__displayName) ? user.__displayName : Users.getUserName(user);
   }
 };
-Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}});
 Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Users.findOne(userId));};
 
 /**
@@ -78,7 +76,6 @@ Users.getProfileUrl = function (user, isAbsolute) {
     return "";
   }
 };
-Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
 /**
  * @summary Get a user's account edit URL
@@ -88,7 +85,6 @@ Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(
 Users.getEditUrl = function (user, isAbsolute) {
   return `${Users.getProfileUrl(user, isAbsolute)}/edit`;
 };
-Users.helpers({getEditUrl: function (isAbsolute) {return Users.getEditUrl(this, isAbsolute);}});
 
 /**
  * @summary Get a user's Twitter name
@@ -105,7 +101,6 @@ Users.getTwitterName = function (user) {
   }
   return null;
 };
-Users.helpers({getTwitterName: function () {return Users.getTwitterName(this);}});
 Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Users.findOne(userId));};
 
 /**
@@ -121,7 +116,6 @@ Users.getGitHubName = function (user) {
   }
   return null;
 };
-Users.helpers({getGitHubName: function () {return Users.getGitHubName(this);}});
 Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Users.findOne(userId));};
 
 /**
@@ -135,7 +129,6 @@ Users.getEmail = function (user) {
     return null;
   }
 };
-Users.helpers({getEmail: function () {return Users.getEmail(this);}});
 Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(userId));};
 
 /**
@@ -145,7 +138,6 @@ Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(user
 Users.getEmailHash = function (user) {
   return user.__emailHash;
 };
-Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.findOne(userId));};
 
 /**
@@ -166,7 +158,6 @@ Users.getSetting = function (user, settingName, defaultValue) {
     return defaultValue;
   }
 };
-Users.helpers({getSetting: function (settingName, defaultValue) {return Users.getSetting(this, settingName, defaultValue);}});
 
 ////////////////////
 //  User Checks   //
@@ -181,7 +172,6 @@ Users.hasCompletedProfile = function (user) {
     return !!Telescope.getNestedProperty(user, fieldName);
   });
 };
-Users.helpers({hasCompletedProfile: function () {return Users.hasCompletedProfile(this);}});
 Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Users.findOne(userId));};
 
 /**
@@ -194,7 +184,6 @@ Users.hasUpvoted = function (user, document) {
   // note(apollo): check upvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
   return user && document.upvoters && !!document.upvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
-Users.helpers({hasUpvoted: function (document) {return Users.hasUpvoted(this, document);}});
 
 /**
  * @summary Check if a user has downvoted a document
@@ -206,7 +195,6 @@ Users.hasDownvoted = function (user, document) {
   // note(apollo): check downvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
   return user && document.downvoters && !!document.downvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
-Users.helpers({hasDownvoted: function (document) {return Users.hasDownvoted(this, document);}});
 
 ///////////////////
 // Other Helpers //

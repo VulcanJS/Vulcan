@@ -43,7 +43,7 @@ class MoviesList extends Component {
     const canCreateNewMovie = Movies.options.mutations.new.check(this.props.currentUser);
     
     if (this.props.loading) {
-      return <div className="movies"><p>Loading…</p></div>
+      return <Telescope.components.Loading />
     } else {
       const hasMore = this.props.totalCount > this.props.results.length;
       return (

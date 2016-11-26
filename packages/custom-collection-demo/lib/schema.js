@@ -1,5 +1,10 @@
+/*
+
+A SimpleSchema-compatible JSON schema
+
+*/
+
 import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
 import mutations from './mutations.js';
 
 const alwaysPublic = user => true;

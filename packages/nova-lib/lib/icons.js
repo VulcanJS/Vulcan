@@ -1,4 +1,10 @@
-import Telescope from 'meteor/nova:lib';
+/*
+
+Utilities for displaying icons.
+
+*/
+
+import Telescope from './config.js';
 
 // ------------------------------ Dynamic Icons ------------------------------ //
 

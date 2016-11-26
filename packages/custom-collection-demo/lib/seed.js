@@ -1,3 +1,9 @@
+/*
+
+Seed the database with some dummy content. 
+
+*/
+
 import Movies from './collection.js';
 import Users from 'meteor/nova:users';
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';

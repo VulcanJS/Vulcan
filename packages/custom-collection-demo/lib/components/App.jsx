@@ -1,10 +1,8 @@
 import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import Loading from './Loading.jsx';
 import Layout from './Layout.jsx';
 
 class App extends Component {
@@ -28,7 +26,7 @@ class App extends Component {
       <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
         {
           this.props.loading ? 
-            <Loading /> :
+            <Telescope.components.Loading /> :
             <div>{this.props.children}</div> 
         }
       </IntlProvider>

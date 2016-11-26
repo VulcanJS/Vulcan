@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
@@ -22,14 +23,6 @@ class ModalTrigger extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  // getChildContext() {
-  //   const component = this;
-  //   return {
-  //     closeCallback: component.closeModal,
-  //     currentUser: this.context.currentUser // pass on currentUser
-  //   };
-  // }
-
   renderHeader() {
     return (
       <Modal.Header closeButton>
@@ -49,8 +42,6 @@ class ModalTrigger extends Component {
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
             <ContextPasser 
-              currentUser={this.props.currentUser}
-              actions={this.context.actions}
               events={this.context.events}
               closeCallback={this.closeModal}
             >
@@ -65,7 +56,6 @@ class ModalTrigger extends Component {
 
 ModalTrigger.propTypes = {
   component: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object,
   size: React.PropTypes.string
 }
 
@@ -78,10 +68,6 @@ ModalTrigger.contextTypes = {
   events: React.PropTypes.object,
 };
 
-// ModalTrigger.childContextTypes = {
-//   closeCallback: React.PropTypes.func,
-//   currentUser: React.PropTypes.object
-// }
-
-module.exports = withCurrentUser(ModalTrigger);
-export default withCurrentUser(ModalTrigger);
+Telescope.registerComponent('ModalTrigger', ModalTrigger);
+module.exports = ModalTrigger;
+export default ModalTrigger;
