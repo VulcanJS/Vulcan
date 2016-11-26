@@ -10,6 +10,8 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.3");
   
   api.use([
+    'nova:core@0.27.4-nova',
+    
     'ecmascript',
     'check',
     'aldeed:simple-schema@1.5.3',

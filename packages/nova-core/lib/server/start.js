@@ -1,13 +1,17 @@
 import Telescope from 'meteor/nova:lib';
 import {Inject} from 'meteor/meteorhacks:inject-initial';
-import Events from "meteor/nova:events";
+
+const Events = new Mongo.Collection('events');
 
 Meteor.startup(function () {
-  Events.log({
-    name: "firstRun",
-    unique: true, // will only get logged a single time
-    important: true
-  });
+  if (!Events.findOne({name: 'firstRun'})) {
+    Events.insert({
+      name: 'firstRun',
+      unique: true, // will only get logged a single time
+      important: true,
+      createdAt: new Date(),
+    });
+  }
 });
 
 if (Telescope.settings.get('mailUrl')) {
@@ -15,7 +19,7 @@ if (Telescope.settings.get('mailUrl')) {
 }
 
 Meteor.startup(function() {
-  if (typeof SyncedCron !== "undefined") {
+  if (typeof SyncedCron !== 'undefined') {
     SyncedCron.start();
   }
 });

@@ -1,35 +1,36 @@
 ############ Nova Core ############
 
-nova:core # do not remove!
+nova:core                       # core components and wrappers
+
+############ Nova Base Packages ############
+
+nova:forms                      # auto-generated forms
+nova:apollo                     # data layer
+nova:routing                    # routing and server-side rendering
+nova:email                      # email
+nova:users                      # user management and permissions
 
 ############ Optional Packages ############
 
+# nova:events
 # nova:settings
-nova:users
-nova:posts
-nova:comments
-nova:newsletter
-nova:search
-nova:notifications
-nova:getting-started
-nova:categories
-nova:voting
-nova:forms
-nova:embedly
-nova:api
-nova:email
-nova:rss
+# nova:posts
+# nova:comments
+# nova:newsletter
+# nova:search
+# nova:notifications
+# nova:getting-started
+# nova:categories
+# nova:voting
+# nova:embedly
+# nova:api
+# nova:rss
 # nova:subscribe
 # nova:cloudinary
-nova:routing
-
-############ Data Layer Package ##############
-
-nova:apollo # do not remove!
 
 ############ Customizable Packages ############
 
-nova:base-components    # default ui components
+# nova:base-components    # default ui components
 nova:base-styles        # default styling
 
 # nova:email-templates    # default email templates for notifications

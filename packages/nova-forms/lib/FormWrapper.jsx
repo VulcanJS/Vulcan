@@ -1,3 +1,29 @@
+/*
+
+Generate the appropriate fragment for the current form, then
+wrap the main Form component with the necessary HoCs while passing 
+them the fragment. 
+
+This component is itself wrapped with:
+
+- withCurrentUser
+- withApollo (used to access the Apollo client for form pre-population)
+
+And wraps the Form component with:
+
+- withNew
+
+Or: 
+
+- withSingle
+- withEdit
+- withRemove
+
+(When wrapping with withSingle, withEdit, and withRemove, a special Loader
+component is also added to wait for withSingle's loading prop to be false)
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
@@ -122,15 +148,6 @@ class FormWithSingle extends Component{
     
     }
 
-  }
-
-  componentWillUnmount() {
-    // note: patch to cancel closeCallback given by parent
-    // we clean the event by hand
-    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
-    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
-    // let's not call setState on an unmounted component (avoid no-op / memory leak)
-    this.context.closeCallback = f => f;
   }
 
 }

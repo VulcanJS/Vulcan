@@ -1,3 +1,27 @@
+/*
+
+Main form component.
+
+This component expects:
+
+### All Forms:
+
+- collection
+- currentUser
+- client (Apollo client)
+
+### New Form:
+
+- newMutation
+
+### Edit Form:
+
+- editMutation
+- removeMutation
+- document
+
+*/
+
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
@@ -490,7 +514,6 @@ FormWithMutations.propTypes = {
   collection: React.PropTypes.object,
   document: React.PropTypes.object, // if a document is passed, this will be an edit form
   schema: React.PropTypes.object, // usually not needed
-  fieldGroups: React.PropTypes.array,
 
   // graphQL
   newMutation: React.PropTypes.func, // the new mutation

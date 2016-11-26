@@ -10,8 +10,7 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'nova:lib@0.27.4-nova',
-    'nova:events@0.27.4-nova'
+    'nova:lib@0.27.4-nova'
   ]);
   
   api.imply([
