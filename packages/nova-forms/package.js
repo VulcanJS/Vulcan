@@ -11,6 +11,7 @@ Package.onUse(function(api) {
   
   api.use([
     'nova:core@0.27.4-nova',
+    'nova:users@0.27.4-nova',
     
     'ecmascript',
     'check',

@@ -1,6 +1,8 @@
 import './modules.js';
 
 import Messages from './messages.js';
+import App from "./components/App.jsx";
+import Layout from "./components/Layout.jsx";
 import Icon from "./components/Icon.jsx";
 import Loading from "./components/Loading.jsx";
 import ModalTrigger from './components/ModalTrigger.jsx';
@@ -13,4 +15,4 @@ import withNew from './containers/withNew.js';
 import withEdit from './containers/withEdit.js';
 import withRemove from './containers/withRemove.js';
 
-export { Messages, Icon, Loading, ModalTrigger, ContextPasser, FlashContainer, withCurrentUser, withList, withSingle, withNew, withEdit, withRemove };
+export { Messages, App, Layout, Icon, Loading, ModalTrigger, ContextPasser, FlashContainer, withCurrentUser, withList, withSingle, withNew, withEdit, withRemove };

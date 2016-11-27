@@ -1,5 +1,5 @@
 import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
-import Users from './groups'; // circular dependency?
+import Users from './collection'; // circular dependency?
 
 const performCheck = (mutation, user, document) => {
   if (!mutation.check(user, document)) throw new Error(`Sorry, you don't have the rights to perform the mutation ${mutation.name} on document _id = ${document._id}`);

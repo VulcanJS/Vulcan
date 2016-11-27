@@ -1,9 +1,9 @@
 import Telescope from './config.js';
 
 SimpleSchema.extendOptions({
-  viewableIf: Match.Optional(Function),
-  insertableIf: Match.Optional(Function),
-  editableIf: Match.Optional(Function),
+  viewableIf: Match.Optional(Match.OneOf(Function, [String])),
+  insertableIf: Match.Optional(Match.OneOf(Function, [String])),
+  editableIf: Match.Optional(Match.OneOf(Function, [String])),
   resolveAs: Match.Optional(String),
   publish: Match.Optional(Boolean),
 });
@@ -99,8 +99,10 @@ Telescope.createCollection = options => {
   // add typeName
   collection.typeName = options.typeName;
 
-  // attach schema to collection
-  collection.attachSchema(new SimpleSchema(options.schema));
+  if (options.schema) {
+    // attach schema to collection
+    collection.attachSchema(new SimpleSchema(options.schema));
+  }
 
   // add collection to list of dynamically generated GraphQL schemas
   Telescope.graphQL.addCollection(collection);
@@ -112,43 +114,47 @@ Telescope.createCollection = options => {
 
   // ------------------------------------- Queries -------------------------------- //
   
-  const queryResolvers = {};
-  // list
-  if (options.resolvers.list) { // e.g. ""
-    Telescope.graphQL.addQuery(`${options.resolvers.list.name}(terms: Terms, offset: Int, limit: Int): [${options.typeName}]`);
-    queryResolvers[options.resolvers.list.name] = options.resolvers.list.resolver;
+  if (options.resolvers) {
+    const queryResolvers = {};
+    // list
+    if (options.resolvers.list) { // e.g. ""
+      Telescope.graphQL.addQuery(`${options.resolvers.list.name}(terms: Terms, offset: Int, limit: Int): [${options.typeName}]`);
+      queryResolvers[options.resolvers.list.name] = options.resolvers.list.resolver;
+    }
+    // single
+    if (options.resolvers.single) {
+      Telescope.graphQL.addQuery(`${options.resolvers.single.name}(_id: String): ${options.typeName}`);
+      queryResolvers[options.resolvers.single.name] = options.resolvers.single.resolver;
+    }
+    // total
+    if (options.resolvers.total) {
+      Telescope.graphQL.addQuery(`${options.resolvers.total.name}: Int`);
+      queryResolvers[options.resolvers.total.name] = options.resolvers.total.resolver;
+    }
+    Telescope.graphQL.addResolvers({ Query: { ...queryResolvers } });
   }
-  // single
-  if (options.resolvers.single) {
-    Telescope.graphQL.addQuery(`${options.resolvers.single.name}(_id: String): ${options.typeName}`);
-    queryResolvers[options.resolvers.single.name] = options.resolvers.single.resolver;
-  }
-  // total
-  if (options.resolvers.total) {
-    Telescope.graphQL.addQuery(`${options.resolvers.total.name}: Int`);
-    queryResolvers[options.resolvers.total.name] = options.resolvers.total.resolver;
-  }
-  Telescope.graphQL.addResolvers({ Query: { ...queryResolvers } });
 
   // ------------------------------------- Mutations -------------------------------- //
 
-  const mutations = {};
-  // new
-  if (options.mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
-    Telescope.graphQL.addMutation(`${options.mutations.new.name}(document: ${options.collectionName}Input) : ${options.typeName}`);
-    mutations[options.mutations.new.name] = options.mutations.new.mutation.bind(options.mutations.new);
+  if (options.mutations) {
+    const mutations = {};
+    // new
+    if (options.mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
+      Telescope.graphQL.addMutation(`${options.mutations.new.name}(document: ${options.collectionName}Input) : ${options.typeName}`);
+      mutations[options.mutations.new.name] = options.mutations.new.mutation.bind(options.mutations.new);
+    }
+    // edit
+    if (options.mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
+      Telescope.graphQL.addMutation(`${options.mutations.edit.name}(documentId: String, set: ${options.collectionName}Input, unset: ${options.collectionName}Unset) : ${options.typeName}`);
+      mutations[options.mutations.edit.name] = options.mutations.edit.mutation.bind(options.mutations.edit);
+    }
+    // remove
+    if (options.mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
+      Telescope.graphQL.addMutation(`${options.mutations.remove.name}(documentId: String) : ${options.typeName}`);
+      mutations[options.mutations.remove.name] = options.mutations.remove.mutation.bind(options.mutations.remove);
+    }
+    Telescope.graphQL.addResolvers({ Mutation: { ...mutations } });
   }
-  // edit
-  if (options.mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-    Telescope.graphQL.addMutation(`${options.mutations.edit.name}(documentId: String, set: ${options.collectionName}Input, unset: ${options.collectionName}Unset) : ${options.typeName}`);
-    mutations[options.mutations.edit.name] = options.mutations.edit.mutation.bind(options.mutations.edit);
-  }
-  // remove
-  if (options.mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
-    Telescope.graphQL.addMutation(`${options.mutations.remove.name}(documentId: String) : ${options.typeName}`);
-    mutations[options.mutations.remove.name] = options.mutations.remove.mutation.bind(options.mutations.remove);
-  }
-  Telescope.graphQL.addResolvers({ Mutation: { ...mutations } });
-
+  
   return collection;
 }

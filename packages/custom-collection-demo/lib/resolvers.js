@@ -55,7 +55,7 @@ const resolvers = {
     
     name: 'moviesTotal',
     
-    resolver(root, args, context) {
+    resolver(root, {terms}, context) {
       return context.Movies.find().count();
     },
   

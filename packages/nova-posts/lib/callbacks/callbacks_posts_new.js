@@ -63,7 +63,7 @@ Telescope.callbacks.add("posts.new.validate", PostsNewRateLimit);
 //   _.keys(post).forEach(function (fieldName) {
 
 //     var field = schema[fieldName];
-//     if (!Users.canSubmitField (user, field)) {
+//     if (!Users.canInsertField (user, field)) {
 //       throw new Meteor.Error("disallowed_property", 'disallowed_property_detected' + ": " + fieldName);
 //     }
 

@@ -39,19 +39,13 @@ const newMutation = ({ collection, document, currentUser, validate, context }) =
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
 
-  // check if userId field is in the schema
-  const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
-
-  // add userId to document if needed
-  if (!!userIdInSchema && !document.userId) document.userId = currentUser._id;
-
   // if document is not trusted, run validation steps
   if (validate) {
 
     // check that the current user has permission to insert each field
     _.keys(document).forEach(function (fieldName) {
       var field = schema[fieldName];
-      if (!context.Users.canSubmitField (currentUser, field)) {
+      if (!context.Users.canInsertField (currentUser, field)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
@@ -63,6 +57,9 @@ const newMutation = ({ collection, document, currentUser, validate, context }) =
     document = Telescope.callbacks.run(`${collectionName}.new.validate`, document, currentUser);
   }
 
+  // check if userId field is in the schema and add it to document if needed
+  const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
+  if (!!userIdInSchema && !document.userId) document.userId = currentUser._id;
 
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {

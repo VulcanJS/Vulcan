@@ -117,19 +117,22 @@ Telescope.graphQL = {
       }
     });
 
-    const graphQLSchema = `
-type ${mainTypeName} {
-  ${mainSchema.join('\n  ')}
-}
+    let graphQLSchema = `
+      type ${mainTypeName} {
+        ${mainSchema.join('\n  ')}
+      }
+    `
 
-input ${collectionName}Input {
-  ${inputSchema.join('\n  ')}
-}
-
-input ${collectionName}Unset {
-  ${unsetSchema.join('\n  ')}
-}
-    `;
+    if (inputSchema.length) {
+      graphQLSchema += `
+        input ${collectionName}Input {
+          ${inputSchema.join('\n  ')}
+        }
+        input ${collectionName}Unset {
+          ${unsetSchema.join('\n  ')}
+        }
+      `
+    }
 
     return graphQLSchema;
   }

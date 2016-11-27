@@ -1,6 +1,4 @@
 import Telescope from 'meteor/nova:lib';
-import Events from "meteor/nova:events";
-import Users from 'meteor/nova:users';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
 import { graphql } from 'react-apollo';
@@ -20,9 +18,6 @@ class App extends Component {
     const {intl} = intlProvider.getChildContext();
 
     return {
-      currentUser: this.props.currentUser,
-      actions: {call: Meteor.call},
-      events: Events,
       intl: intl
     };
   }
@@ -32,8 +27,8 @@ class App extends Component {
       <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
         {
           this.props.loading ? 
-            <Telescope.components.AppLoading /> :
-            <Telescope.components.Layout>{this.props.children}</Telescope.components.Layout> 
+            <Telescope.components.Loading /> :
+            <Telescope.components.Layout>{this.props.children}</Telescope.components.Layout>
         }
       </IntlProvider>
     )
@@ -43,15 +38,9 @@ class App extends Component {
 
 App.propTypes = {
   loading: React.PropTypes.bool,
-  currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
 }
 
 App.childContextTypes = {
-  currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
   intl: intlShape,
 }
 
@@ -64,39 +53,14 @@ const currentUserContainer = graphql(
       createdAt
       isAdmin
       __bio
-      __commentCount
       __displayName
-      __downvotedComments {
-        itemId
-        power
-        votedAt
-      }
-      __downvotedPosts {
-        itemId
-        power
-        votedAt
-      }
       __email
       __emailHash
       __groups
       __htmlBio
       __karma
-      __newsletter_subscribeToNewsletter
-      __notifications_users
-      __notifications_posts
-      __postCount
       __slug
       __twitterUsername
-      __upvotedComments {
-        itemId
-        power
-        votedAt
-      }
-      __upvotedPosts {
-        itemId
-        power
-        votedAt
-      }
       __website
     }
   }
@@ -112,3 +76,5 @@ const currentUserContainer = graphql(
 );
 
 Telescope.registerComponent('App', App, currentUserContainer);
+
+export default App;

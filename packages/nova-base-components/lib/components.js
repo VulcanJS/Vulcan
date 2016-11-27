@@ -2,7 +2,6 @@ import Telescope from 'meteor/nova:lib';
 
 // common
 
-import './common/App.jsx';
 import './common/Footer.jsx';
 import './common/Header.jsx';
 import './common/Layout.jsx';
@@ -12,9 +11,7 @@ import './common/HeadTags.jsx';
 import './common/FlashMessages.jsx';
 import './common/Newsletter.jsx';
 import './common/NewsletterButton.jsx';
-import './common/Icon.jsx';
 import './common/SearchForm.jsx';
-import './common/AppLoading.jsx';
 import './common/Error404.jsx';
 import './common/Loading.jsx';
 import './common/Vote.jsx';

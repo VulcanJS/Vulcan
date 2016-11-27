@@ -84,6 +84,27 @@ Users.getActions = user => {
 };
 
 /**
+ * @summary check if a user is a member of a group
+ * @param {Array} user 
+ * @param {String} group or array of groups
+ */
+Users.isMemberOf = (user, groupOrGroups) => {
+  const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
+  
+  // everybody is considered part of the anonymous group
+  if (groups.indexOf('anonymous') !== -1) return true;
+  
+  // every logged in user is part of the default group
+  if (groups.indexOf('default') !== -1) return !!user; 
+  
+  // the admin group have their own function
+  if (groups.indexOf('anonymous') !== -1) return Users.isAdmin(user);
+
+  // else test for the `groups` field
+  return _.intersection(Users.getGroups(user), groups).length > 0;
+};
+
+/**
  * @summary check if a user can perform a specific action on a specific document
  * @param {Object} user
  * @param {String} action
@@ -208,17 +229,23 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canSubmitField = function (user, field) {
-  return user && field.insertableIf && field.insertableIf(user);
+Users.canInsertField = function (user, field) {
+  if (user && field.insertableIf) {
+    return typeof field.insertableIf === 'function' ? field.insertableIf(user, document) : Users.isMemberOf(user, field.insertableIf)
+  }
+  return false;
 };
 
 /** @function
- * Check if a user can edit a field – for now, identical to Users.canSubmitField 
+ * Check if a user can edit a field – for now, identical to Users.canInsertField 
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
 Users.canEditField = function (user, field, document) {
-  return user && field.editableIf && field.editableIf(user, document);
+  if (user && field.editableIf) {
+    return typeof field.editableIf === 'function' ? field.editableIf(user, document) : Users.isMemberOf(user, field.editableIf)
+  }
+  return false;
 };
 
 ////////////////////
@@ -230,7 +257,6 @@ Users.canEditField = function (user, field, document) {
  */
 Users.createGroup("anonymous"); // non-logged-in users
 Users.createGroup("default"); // regular users
-Users.createGroup("admins"); // admin users
 
 const defaultActions = [
   "users.new", 
@@ -238,6 +264,8 @@ const defaultActions = [
   "users.remove.own"
 ];
 Users.groups.default.can(defaultActions);
+
+Users.createGroup("admins"); // admin users
 
 const adminActions = [
   "users.new", 

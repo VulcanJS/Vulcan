@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 // add support for nested properties
 const deepValue = function(obj, path){
   const pathArray = path.split('.');
@@ -43,7 +45,7 @@ const flatten = function(data) {
 const getInsertableFields = function (schema, user) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return field.insertableIf && field.insertableIf(user);
+    return Users.canInsertField(user, field);
   });
   return fields;
 };
@@ -56,7 +58,7 @@ const getInsertableFields = function (schema, user) {
 const getEditableFields = function (schema, user, document) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return document ? field.editableIf && field.editableIf(user, document) : field.editableIf;
+    return Users.canEditField(user, field, document);
   });
   return fields;
 };
