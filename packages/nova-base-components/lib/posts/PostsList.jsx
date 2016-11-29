@@ -74,8 +74,8 @@ PostsList.propTypes = {
 const options = {
   collection: Posts,
   queryName: 'postsListQuery',
-  fragmentName: Telescope.components.PostsItem.fragmentName,
-  fragment: Telescope.components.PostsItem.fragment,
+  fragmentName: Telescope.getRawComponent('PostsItem').fragmentName,
+  fragment: Telescope.getRawComponent('PostsItem').fragment,
 };
 
 Telescope.registerComponent('PostsList', PostsList, withList(options));

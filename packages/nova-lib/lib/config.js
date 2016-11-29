@@ -1,4 +1,3 @@
-import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
 /**
  * @summary Kick off the global namespace for Telescope.
@@ -31,7 +30,8 @@ SimpleSchema.extendOptions({
   autoform: Match.Optional(Object), // legacy form placeholder; backward compatibility (not used anymore)
   control: Match.Optional(Match.Any), // NovaForm control (String or React component)
   order: Match.Optional(Number), // position in the form
-  group: Match.Optional(Object) // form fieldset group
+  group: Match.Optional(Object), // form fieldset group
+  preload: Match.Optional(Boolean),
 });
 
 // ------------------------------------- Subscriptions -------------------------------- //

@@ -18,189 +18,6 @@ const canEditAll = user => Users.canDo(user, "users.edit.all"); // we don't use 
 const alwaysPublic = user => true;
 
 /**
- * @summary User Data schema
- * @type {SimpleSchema}
- */
-Telescope.schemas.userData = new SimpleSchema({
-  /**
-    Bio (Markdown version)
-  */
-  bio: {
-    type: String,
-    optional: true,
-    control: "textarea",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    // form: {
-    //   rows: 5
-    // }
-  },
-  /**
-    Total comment count
-  */
-  commentCount: {
-    type: Number,
-    publish: true,
-    optional: true
-  },
-  /**
-    The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
-  */
-  displayName: {
-    type: String,
-    optional: true,
-    publish: true,
-    profile: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit
-  },
-  /**
-    An array containing comment downvotes
-  */
-  downvotedComments: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true
-  },
-  /**
-    An array containing posts downvotes
-  */
-  downvotedPosts: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true
-  },
-  /**
-    The user's email. Modifiable.
-  */
-  email: {
-    type: String,
-    optional: true,
-    regEx: SimpleSchema.RegEx.Email,
-    required: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit
-    // unique: true // note: find a way to fix duplicate accounts before enabling this
-  },
-  /**
-    A hash of the email, used for Gravatar // TODO: change this when email changes
-  */
-  emailHash: {
-    type: String,
-    publish: true,
-    optional: true
-  },
-  /**
-    The HTML version of the bio field
-  */
-  htmlBio: {
-    type: String,
-    publish: true,
-    profile: true,
-    optional: true,
-    // form: {
-    //   omit: true
-    // },
-  },
-  /**
-    The user's karma
-  */
-  karma: {
-    type: Number,
-    decimal: true,
-    publish: true,
-    optional: true
-  },
-  /**
-    Total post count
-  */
-  postCount: {
-    type: Number,
-    publish: true,
-    optional: true
-  },
-  /**
-    A blackbox modifiable object to store the user's settings
-  */
-  // settings: {
-  //   type: Object,
-  //   optional: true,
-  //   editableIf: canEdit,
-  //   blackbox: true,
-  //   form: {
-  //     omit: true
-  //   }
-  // },
-  /**
-    The user's profile URL slug // TODO: change this when displayName changes
-  */
-  slug: {
-    type: String,
-    publish: true,
-    optional: true
-  },
-  /**
-    The user's Twitter username
-  */
-  twitterUsername: {
-    type: String,
-    optional: true,
-    publish: true,
-    profile: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit,
-  },
-  /**
-    An array containing comments upvotes
-  */
-  upvotedComments: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true
-  },
-  /**
-    An array containing posts upvotes
-  */
-  upvotedPosts: {
-    type: [Telescope.schemas.votes],
-    publish: false,
-    optional: true
-  },
-  /**
-    A link to the user's homepage
-  */
-  website: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-    publish: true,
-    profile: true,
-    optional: true,
-    control: "text",
-    insertableIf: canInsert,
-    editableIf: canEdit
-  },
-  /**
-    Groups
-  */
-  groups: {
-    type: [String],
-    optional: true,
-    control: "checkboxgroup",
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
-    form: {
-      options: function () {
-        const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
-        return groups.map(group => {return {value: group, label: group};});
-      }
-    },
-  },
-});
-
-/**
  * @summary Users schema
  * @type {Object}
  */
@@ -245,7 +62,8 @@ const schema = {
     insertableIf: canEditAll,
     editableIf: canEditAll,
     viewableIf: alwaysPublic,
-    group: adminGroup
+    group: adminGroup,
+    preload: true,
   },
   profile: {
     type: Object,
@@ -286,6 +104,7 @@ const schema = {
     insertableIf: canInsert,
     editableIf: canEdit,
     viewableIf: alwaysPublic,
+    preload: true,
   },
   /**
     The user's email. Modifiable.
@@ -309,6 +128,7 @@ const schema = {
     publish: true,
     optional: true,
     viewableIf: alwaysPublic,
+    preload: true,
   },
   /**
     The HTML version of the bio field
@@ -338,6 +158,7 @@ const schema = {
     publish: true,
     optional: true,
     viewableIf: alwaysPublic,
+    preload: true,
   },
   /**
     The user's Twitter username
@@ -382,6 +203,7 @@ const schema = {
         return groups.map(group => {return {value: group, label: group};});
       }
     },
+    preload: true,
   },
 };
 

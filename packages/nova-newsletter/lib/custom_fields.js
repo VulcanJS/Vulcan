@@ -32,6 +32,7 @@ Users.addField([
       editableIf: canEdit,
       viewableIf: alwaysPublic,
       control: NewsletterSubscribe,
+      preload: true,
       group: {
         name: "newsletter",
         label: "Newsletter",
