@@ -3,5 +3,3 @@ import './i18n.js';
 import './permissions.js';
 import './routes.js';
 import './schema.js';
-
-import './components/App.jsx';

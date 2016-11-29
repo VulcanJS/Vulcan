@@ -1,50 +1,46 @@
-############ Nova Core ############
+############ Core Packages ############
 
 nova:core                       # core components and wrappers
-
-############ Nova Base Packages ############
-
 nova:forms                      # auto-generated forms
 nova:apollo                     # data layer
 nova:routing                    # routing and server-side rendering
 nova:email                      # email
 nova:users                      # user management and permissions
 
-############ Optional Packages ############
+############ Features Packages ############
 
-# nova:events
-# nova:settings
-# nova:posts
-# nova:comments
-# nova:newsletter
-# nova:search
-# nova:notifications
-# nova:getting-started
-# nova:categories
-# nova:voting
-# nova:embedly
-# nova:api
-# nova:rss
-# nova:subscribe
-
-############ Customizable Packages ############
-
-# nova:base-components    # default ui components
-nova:base-styles        # default styling
-
-# nova:email-templates    # default email templates for notifications
-nova:i18n-en-us         # default language translation
-
-accounts-password@1.3.3
-# accounts-twitter
-# accounts-facebook
+nova:events
+nova:posts
+nova:comments
+nova:newsletter
+nova:search
+nova:notifications
+nova:getting-started
+nova:categories
+nova:voting
+nova:embedly
+nova:api
+nova:rss
+nova:subscribe
 
 ############ Debug Packages ############
 
 # nova:debug
 # nova:kadira
 
+############ Theme Packages ############
+
+nova:base-components    # default ui components
+nova:base-styles        # default styling
+
+nova:email-templates    # default email templates for notifications
+nova:i18n-en-us         # default language translation
+
 ############ Your Packages ############
 
-# my-custom-package
-custom-collection-demo
+accounts-password@1.3.3
+# accounts-twitter
+# accounts-facebook
+
+# customization-demo
+# framework-demo

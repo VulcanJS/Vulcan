@@ -1,10 +1,8 @@
 Package.describe({
-  name: "my-custom-package"
+  name: "customization-demo"
 });
 
 Package.onUse( function(api) {
-
-  api.versionsFrom("METEOR@1.0");
 
   api.use([
     'fourseven:scss',
