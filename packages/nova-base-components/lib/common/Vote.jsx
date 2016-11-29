@@ -14,6 +14,10 @@ class Vote extends Component {
     this.upvote = this.upvote.bind(this);
     this.startLoading = this.startLoading.bind(this);
     this.stopLoading = this.stopLoading.bind(this);
+
+    this.hasUpvoted = hasUpvoted;
+    this.hasDownvoted = hasDownvoted;
+
     this.state = {
       loading: false
     }
@@ -38,7 +42,7 @@ class Vote extends Component {
     if(!user){
       this.props.flash("Please log in first");
     } else {
-      const voteType = hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
+      const voteType = this.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
       this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
         this.stopLoading();
       });
@@ -47,11 +51,15 @@ class Vote extends Component {
 
   render() {
 
+    // uncomment for debug:
+    // console.log('hasUpvoted', hasUpvoted);
+    // console.log('this.hasUpvoted', this.hasUpvoted);
+
     const post = this.props.post;
     const user = this.props.currentUser;
 
-    const hasUpvoted = hasUpvoted(user, post);
-    const hasDownvoted = hasDownvoted(user, post);
+    const hasUpvoted = this.hasUpvoted(user, post);
+    const hasDownvoted = this.hasDownvoted(user, post);
     const actionsClass = classNames(
       "vote", 
       {voted: hasUpvoted || hasDownvoted},

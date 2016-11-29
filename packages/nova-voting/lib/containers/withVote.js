@@ -1,4 +1,5 @@
 import Telescope from 'meteor/nova:lib';
+import Posts from 'meteor/nova:posts';
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';

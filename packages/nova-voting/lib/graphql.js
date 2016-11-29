@@ -1,4 +1,5 @@
 import Telescope from 'meteor/nova:lib';
+import Posts from 'meteor/nova:posts';
 
 /**
  * @summary Vote schema
