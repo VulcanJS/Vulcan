@@ -6,7 +6,7 @@ import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NovaForm from "meteor/nova:forms";
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser } from 'meteor/nova:users';
 
 class CommentsItem extends Component{
 

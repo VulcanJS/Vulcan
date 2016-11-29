@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser } from 'meteor/nova:users';
 
 const Header = (props, context) => {
   

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser } from 'meteor/nova:users';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 
 class Vote extends Component {

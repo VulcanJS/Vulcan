@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Link } from 'react-router';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser } from 'meteor/nova:users';
 
 class UsersResetPassword extends Component {
   componentDidMount() {

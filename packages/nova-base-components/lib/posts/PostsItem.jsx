@@ -7,7 +7,7 @@ import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser } from 'meteor/nova:users';
 import gql from 'graphql-tag';
 
 class PostsItem extends Component {

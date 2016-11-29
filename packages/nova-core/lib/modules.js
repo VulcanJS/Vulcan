@@ -9,7 +9,6 @@ export { default as Loading } from "./components/Loading.jsx";
 export { default as ModalTrigger } from './components/ModalTrigger.jsx';
 export { default as ContextPasser } from './components/ContextPasser.jsx';
 export { default as FlashContainer } from "./containers/FlashContainer.jsx";
-export { default as withCurrentUser } from './containers/withCurrentUser.js';
 export { default as withList } from './containers/withList.js';
 export { default as withSingle } from './containers/withSingle.js';
 export { default as withNew } from './containers/withNew.js';

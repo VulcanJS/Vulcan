@@ -4,7 +4,7 @@ import Telescope from 'meteor/nova:lib';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser } from 'meteor/nova:users';
 
 class SubscribeTo extends Component {
 

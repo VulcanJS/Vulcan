@@ -1,15 +1,15 @@
 import Telescope from 'meteor/nova:lib';
-import Users from './collection.js';
+import Users from '../collection.js';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-// we are not "forced" to use the containers helpers to run specific queries like `getCurrentUser` which doesn't take any argument
-const withCurrentUser = options => {
+const withCurrentUser = component => {
 
   const preloadedFields = _.compact(_.map(Users.simpleSchema()._schema, (field, fieldName) => {
     return field.preload ? fieldName : undefined;
   }));
-  console.log(preloadedFields)
+  
+  // console.log('preloaded fields', preloadedFields);
 
   return graphql(
     gql`query getCurrentUser {
@@ -30,9 +30,7 @@ const withCurrentUser = options => {
         };
       },
     }
-  )
+  )(component);
 };
-
-Telescope.replaceComponent('App', Telescope.components.App, withCurrentUser);
 
 export default withCurrentUser;

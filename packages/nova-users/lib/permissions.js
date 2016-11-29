@@ -98,7 +98,7 @@ Users.isMemberOf = (user, groupOrGroups) => {
   if (groups.indexOf('default') !== -1) return !!user; 
   
   // the admin group have their own function
-  if (groups.indexOf('anonymous') !== -1) return Users.isAdmin(user);
+  if (groups.indexOf('admin') !== -1) return Users.isAdmin(user);
 
   // else test for the `groups` field
   return _.intersection(Users.getGroups(user), groups).length > 0;

@@ -27,8 +27,6 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
 import { Button } from 'react-bootstrap';
-import { withApollo, compose } from 'react-apollo';
-import { withCurrentUser, withNew, withEdit, withRemove } from 'meteor/nova:core';
 import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
 import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';

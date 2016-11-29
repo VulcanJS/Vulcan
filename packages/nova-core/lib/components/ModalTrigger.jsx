@@ -2,7 +2,6 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
-import withCurrentUser from '../containers/withCurrentUser.js';
 
 class ModalTrigger extends Component {
 
