@@ -1,1 +1,0 @@
-Telescope invites package, used internally. 

@@ -26,7 +26,6 @@ nova:users                      # user management and permissions
 # nova:api
 # nova:rss
 # nova:subscribe
-# nova:cloudinary
 
 ############ Customizable Packages ############
 
