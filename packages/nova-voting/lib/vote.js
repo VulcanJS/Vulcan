@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import { hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 Telescope.getVotePower = function (user) {
@@ -13,8 +14,8 @@ Telescope.operateOnItem = function (collection, originalItem, user, operation, i
   let item = _.clone(originalItem); // we do not want to affect the original item directly
 
   var votePower = Telescope.getVotePower(user);
-  var hasUpvotedItem = Users.hasUpvoted(user, item);
-  var hasDownvotedItem = Users.hasDownvoted(user, item);
+  var hasUpvotedItem = hasUpvoted(user, item);
+  var hasDownvotedItem = hasDownvoted(user, item);
   var update = {};
 
   // console.log(collection)

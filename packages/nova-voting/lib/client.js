@@ -1,3 +1,1 @@
-import withVote from './modules';
-
-export default withVote;
+export * from './modules.js';

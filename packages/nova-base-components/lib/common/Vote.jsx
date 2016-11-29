@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import withVote from 'meteor/nova:voting';
 import { withCurrentUser } from 'meteor/nova:core';
+import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 
 class Vote extends Component {
 
@@ -38,7 +38,7 @@ class Vote extends Component {
     if(!user){
       this.props.flash("Please log in first");
     } else {
-      const voteType = Users.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
+      const voteType = hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
       this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
         this.stopLoading();
       });
@@ -50,8 +50,8 @@ class Vote extends Component {
     const post = this.props.post;
     const user = this.props.currentUser;
 
-    const hasUpvoted = Users.hasUpvoted(user, post);
-    const hasDownvoted = Users.hasDownvoted(user, post);
+    const hasUpvoted = hasUpvoted(user, post);
+    const hasDownvoted = hasDownvoted(user, post);
     const actionsClass = classNames(
       "vote", 
       {voted: hasUpvoted || hasDownvoted},
