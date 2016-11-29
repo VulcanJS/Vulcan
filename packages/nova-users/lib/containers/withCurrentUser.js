@@ -1,5 +1,5 @@
 import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
+import Users from './collection.js';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -9,6 +9,7 @@ const withCurrentUser = options => {
   const preloadedFields = _.compact(_.map(Users.simpleSchema()._schema, (field, fieldName) => {
     return field.preload ? fieldName : undefined;
   }));
+  console.log(preloadedFields)
 
   return graphql(
     gql`query getCurrentUser {
@@ -16,6 +17,7 @@ const withCurrentUser = options => {
         _id
         username
         createdAt
+        isAdmin
         ${preloadedFields.join('\n')}
       }
     }
@@ -31,6 +33,6 @@ const withCurrentUser = options => {
   )
 };
 
-// Telescope.replaceComponent('App', Telescope.components.App, withCurrentUser);
+Telescope.replaceComponent('App', Telescope.components.App, withCurrentUser);
 
 export default withCurrentUser;

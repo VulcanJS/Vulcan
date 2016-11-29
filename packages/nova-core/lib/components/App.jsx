@@ -1,8 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import withCurrentUser from '../containers/withCurrentUser.js';
 
 class App extends Component {
 
@@ -44,37 +43,6 @@ App.childContextTypes = {
   intl: intlShape,
 }
 
-// we are not "forced" to use the containers helpers to run specific queries like `getCurrentUser` which doesn't take any argument
-const currentUserContainer = graphql(
-  gql`query getCurrentUser {
-    currentUser {
-      _id
-      username
-      createdAt
-      isAdmin
-      __bio
-      __displayName
-      __email
-      __emailHash
-      __groups
-      __htmlBio
-      __karma
-      __slug
-      __twitterUsername
-      __website
-    }
-  }
-  `, {
-    props(props) {
-      const {data: {loading, currentUser}} = props;
-      return {
-        loading,
-        currentUser,
-      };
-    },
-  }
-);
-
-Telescope.registerComponent('App', App, currentUserContainer);
+Telescope.registerComponent('App', App, withCurrentUser);
 
 export default App;
