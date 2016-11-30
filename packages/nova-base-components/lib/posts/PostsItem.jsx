@@ -23,16 +23,9 @@ class PostsItem extends Component {
   renderActions() {
     return (
       <div className="post-actions">
-        <Telescope.components.CanDo
-          action="posts.edit.all"
-          document={this.props.post}
-        >
-          <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
-            <Telescope.components.PostsEditForm
-              post={this.props.post}
-            />
-          </ModalTrigger>
-        </Telescope.components.CanDo>
+        <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
+          <Telescope.components.PostsEditForm post={this.props.post} />
+        </ModalTrigger>
       </div>
     )
   }
@@ -71,7 +64,7 @@ class PostsItem extends Component {
               </Link>
             </div>
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
-            {this.renderActions()}
+            {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
           </div>
 
         </div>
@@ -131,6 +124,7 @@ PostsItem.fragment = gql`
       __emailHash
       __slug
     }
+    userId
   }
 `;
 

@@ -84,6 +84,7 @@ PostsPage.fragment = gql`
       __emailHash
       __slug
     }
+    userId
   }
 `;
 

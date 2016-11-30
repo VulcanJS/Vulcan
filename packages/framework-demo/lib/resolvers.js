@@ -45,8 +45,8 @@ const resolvers = {
     
     name: 'moviesSingle',
     
-    resolver(root, {_id}, context) {
-      return context.Movies.findOne({_id}, { fields: context.getViewableFields(context.currentUser, context.Movies) });
+    resolver(root, {documentId}, context) {
+      return context.Movies.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Movies) });
     },
   
   },

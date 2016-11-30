@@ -22,6 +22,15 @@ Telescope.callbacks.add("posts.remove.sync", PostsRemoveOperations);
 // ------------------------------------- posts.approve.async -------------------------------- //
 
 /**
+ * @summary set postedAt when a post is approved
+ */
+function PostsSetPostedAt (modifier, post) {
+  modifier.$set.postedAt = new Date();
+  return modifier;
+}
+Telescope.callbacks.add("posts.approve.sync", PostsSetPostedAt);
+
+/**
  * @summary Add notification callback when a post is approved
  */
 function PostsApprovedNotification (post) {

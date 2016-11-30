@@ -57,8 +57,8 @@ const resolvers = {
     
     name: 'commentsSingle',
     
-    resolver(root, args, context) {
-      return context.Comments.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Comments) });
+    resolver(root, {documentId}, context) {
+      return context.Comments.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Comments) });
     },
   
   },

@@ -78,18 +78,14 @@ function PostsEditSetIsFuture (modifier, post) {
 }
 Telescope.callbacks.add("posts.edit.sync", PostsEditSetIsFuture);
 
-/**
- * @summary Set postedAt date
- */
-function PostsEditSetPostedAt (modifier, post) {
-  // if post is approved but doesn't have a postedAt date, give it a default date
-  // note: pending posts get their postedAt date only once theyre approved
-  if (Posts.isApproved(post) && !post.postedAt) {
-    modifier.$set.postedAt = new Date();
+
+function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
+  if (Posts.isApproved(modifier) && !Posts.isApproved(post)) {
+    modifier = Telescope.callbacks.runAsync("posts.approve.sync", modifier, post);
   }
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.sync", PostsEditSetPostedAt);
+Telescope.callbacks.add("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 
 
 //////////////////////////////////////////////////////
@@ -97,11 +93,9 @@ Telescope.callbacks.add("posts.edit.sync", PostsEditSetPostedAt);
 //////////////////////////////////////////////////////
 
 
-function PostsEditRunPostApprovedCallbacks (post, oldPost) {
-  var now = new Date();
-
+function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {
     Telescope.callbacks.runAsync("posts.approve.async", post);
   }
 }
-Telescope.callbacks.add("posts.edit.async", PostsEditRunPostApprovedCallbacks);
+Telescope.callbacks.add("posts.edit.async", PostsEditRunPostApprovedAsyncCallbacks);

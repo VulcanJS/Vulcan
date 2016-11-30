@@ -27,7 +27,7 @@ class PostsEditForm extends Component {
         {this.renderAdminArea()}
         <NovaForm
           collection={Posts}
-          document={this.props.post}
+          documentId={this.props.post._id}
           successCallback={post => { 
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');

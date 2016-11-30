@@ -35,7 +35,7 @@ import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withSingle } from 'meteor/nova:core';
 
-class FormWithSingle extends Component{
+class FormWrapper extends Component{
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
@@ -54,10 +54,13 @@ class FormWithSingle extends Component{
     const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
     const fragmentName = `${prefix}FormFragment`;
 
+    const schema = this.getSchema();
     const fields = this.props.fields;
+    const insertableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].insertableIf);
+    const editableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].editableIf);
 
     // get all editable/insertable fields (depending on current form type)
-    let relevantFields = this.getFormType() === 'edit' ? getEditableFields(this.getSchema(), this.props.currentUser) : getInsertableFields(this.getSchema(), this.props.currentUser);
+    let relevantFields = this.getFormType() === 'new' ? insertableFields : editableFields;
 
     // if "fields" prop is specified, restrict list of fields to it
     if (typeof fields !== "undefined" && fields.length > 0) {
@@ -86,6 +89,8 @@ class FormWithSingle extends Component{
   }
 
   render() {
+
+    console.log(this)
 
     let WrappedComponent;
 
@@ -153,7 +158,7 @@ class FormWithSingle extends Component{
 
 }
 
-FormWithSingle.propTypes = {
+FormWrapper.propTypes = {
 
   // main options
   collection: React.PropTypes.object,
@@ -182,16 +187,16 @@ FormWithSingle.propTypes = {
   client: React.PropTypes.object,
 }
 
-FormWithSingle.defaultProps = {
+FormWrapper.defaultProps = {
   layout: "horizontal",
 }
 
-FormWithSingle.contextTypes = {
+FormWrapper.contextTypes = {
   closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 
-FormWithSingle.childContextTypes = {
+FormWrapper.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
@@ -202,4 +207,4 @@ FormWithSingle.childContextTypes = {
 module.exports = compose(
   withCurrentUser,
   withApollo,
-)(FormWithSingle);
+)(FormWrapper);

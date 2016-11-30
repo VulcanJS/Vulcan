@@ -48,8 +48,8 @@ const resolvers = {
     
     name: 'usersSingle',
     
-    resolver(root, args, context) {
-      const selector = args._id ? {_id: args._id} : {'__slug': args.slug};
+    resolver(root, {args}, context) {
+      const selector = args.documentId ? {_id: args.documentId} : {'__slug': args.slug};
       return context.Users.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
   

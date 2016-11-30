@@ -10,7 +10,7 @@ export default function withSingle (options) {
 
   return graphql(gql`
     query ${queryName}($documentId: String) {
-      ${singleResolverName}(_id: $documentId) {
+      ${singleResolverName}(documentId: $documentId) {
         ...${fragmentName}
       }
     }

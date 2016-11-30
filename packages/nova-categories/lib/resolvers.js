@@ -39,8 +39,8 @@ const resolvers = {
     
     name: 'categoriesSingle',
     
-    resolver(root, args, context) {
-      return context.Categories.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
+    resolver(root, {documentId}, context) {
+      return context.Categories.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
     },
   
   },

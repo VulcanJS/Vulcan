@@ -43,7 +43,7 @@ import { flatten, deepValue, getEditableFields, getInsertableFields } from './ut
 
 */
 
-class FormWithMutations extends Component{
+class NovaForm extends Component{
 
   // --------------------------------------------------------------------- //
   // ----------------------------- Constructor --------------------------- //
@@ -506,7 +506,7 @@ class FormWithMutations extends Component{
 
 }
 
-FormWithMutations.propTypes = {
+NovaForm.propTypes = {
 
   // main options
   collection: React.PropTypes.object,
@@ -535,16 +535,16 @@ FormWithMutations.propTypes = {
   client: React.PropTypes.object,
 }
 
-FormWithMutations.defaultProps = {
+NovaForm.defaultProps = {
   layout: "horizontal",
 }
 
-FormWithMutations.contextTypes = {
+NovaForm.contextTypes = {
   closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 
-FormWithMutations.childContextTypes = {
+NovaForm.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
@@ -552,4 +552,4 @@ FormWithMutations.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = FormWithMutations
+module.exports = NovaForm

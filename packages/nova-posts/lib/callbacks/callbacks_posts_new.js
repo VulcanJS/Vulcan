@@ -128,6 +128,15 @@ Telescope.callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
 // Telescope.callbacks.add("posts.new.sync", PostsNewRequiredPropertiesCheck);
 
 /**
+ * @summary Set the post's postedAt if it's approved
+ */
+function PostsSetPostedAt (post, user) {
+  if (!post.postedAt) post.postedAt = new Date();
+  return post;
+}
+Telescope.callbacks.add("posts.new.sync", PostsSetPostedAt);
+
+/**
  * @summary Set the post's isFuture to true if necessary
  */
 function PostsNewSetFuture (post, user) {
