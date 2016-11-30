@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:base-routes",
   summary: "Nova routes package",
-  version: "0.27.4-nova",
+  version: "0.27.5-nova",
   git: "https://github.com/TelescopeJS/telescope.git"
 });
 
@@ -13,10 +13,10 @@ Package.onUse(function (api) {
 
     // Nova packages
 
-    'nova:core@0.27.4-nova',
-    'nova:posts@0.27.4-nova',
-    'nova:users@0.27.4-nova',
-    'nova:comments@0.27.4-nova',
+    'nova:core@0.27.5-nova',
+    'nova:posts@0.27.5-nova',
+    'nova:users@0.27.5-nova',
+    'nova:comments@0.27.5-nova',
 
     // third-party packages
 
