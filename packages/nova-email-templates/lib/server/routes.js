@@ -1,3 +1,5 @@
+import { Picker } from 'meteor/meteorhacks:picker';
+
 import NovaEmail from 'meteor/nova:email';
 
 Meteor.startup(function () {
@@ -29,7 +31,7 @@ Meteor.startup(function () {
 
       // return html
       res.end(html);
-    
+
     });
 
     // raw template
@@ -38,5 +40,5 @@ Meteor.startup(function () {
     });
 
   });
-  
+
 });

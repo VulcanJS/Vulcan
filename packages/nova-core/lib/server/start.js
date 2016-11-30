@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
-import {Inject} from 'meteor/meteorhacks:inject-initial';
 import Events from "meteor/nova:events";
+import { Inject } from 'meteor/meteorhacks:inject-initial';
+import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 
 Meteor.startup(function () {
   Events.log({

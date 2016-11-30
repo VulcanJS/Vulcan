@@ -1,6 +1,6 @@
 import React from 'react';
-import Posts from "meteor/nova:posts";
-import Comments from "meteor/nova:comments";
+// import Posts from "meteor/nova:posts";
+// import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 
 const Group = ({name, actions}) => {
@@ -32,7 +32,7 @@ const Groups = props => {
         </table>
 
       </div>
-    
+
     </div>
   )
 }

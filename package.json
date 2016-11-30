@@ -5,7 +5,7 @@
     "npm": "^3.0"
   },
   "scripts": {
-    "lint": "eslint --cache packages"
+    "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",

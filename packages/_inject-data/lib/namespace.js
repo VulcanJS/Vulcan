@@ -1,0 +1,3 @@
+/* eslint-disable */
+
+InjectData = {};

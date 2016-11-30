@@ -74,7 +74,7 @@ Telescope.strings.en = {
   "users.notifications": "Notifications",
   "users.telescope.notifications_users": "New Users Notifications",
   "users.telescope.notifications_posts": "New Posts Notifications",
-  "users.telescope.newsletter_subscribeToNewsletter": "Subscribe to newsletter",
+  "users.telescope.newsletter.subscribed": "Subscribe to newsletter",
   "users.admin": "Admin",
   "users.isAdmin": "Admin",
   "users.posts": "Posts",
@@ -146,6 +146,7 @@ Telescope.strings.en = {
   "newsletter.subscribe_prompt": "Subscribe to the newsletter",
   "newsletter.email": "Your email",
   "newsletter.success_message": "Thanks for subscribing!",
+  "newsletter.subscription_updated": "Newsletter subscription updated.",
 
   "admin": "Admin",
   "notifications": "Notifications",

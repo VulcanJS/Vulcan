@@ -4,16 +4,16 @@ const returnEmptyObject = function () {
   return {};
 }
 
-console.log(Mongo)
+console.log(Mongo); // eslint-disable-line
 
-const Mongo = typeof Mongo !== "undefined" ? Mongo : { 
+const Mongo = typeof Mongo !== "undefined" ? Mongo : {
   Collection: function () {
     return {attachSchema: returnEmptyObject}
   }
 };
 
-console.log("// Mongo")
-console.log(Mongo)
+console.log("// Mongo"); // eslint-disable-line
+console.log(Mongo); // eslint-disable-line
 
 const Meteor = typeof Meteor !== "undefined" ? Meteor : {
   methods: returnEmptyObject

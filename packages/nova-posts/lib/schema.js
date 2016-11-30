@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
-import Posts from './collection.js';
 import Users from 'meteor/nova:users';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import Posts from './collection.js';
 
 /**
  * @summary Posts config namespace
@@ -235,7 +236,7 @@ Posts.schemaJSON = {
     publish: true,
   },
   /**
-    The post author's `_id`. 
+    The post author's `_id`.
   */
   userId: {
     type: String,

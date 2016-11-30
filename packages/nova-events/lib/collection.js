@@ -1,3 +1,5 @@
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
 const Events = new Mongo.Collection('events');
 
 Events.schema = new SimpleSchema({

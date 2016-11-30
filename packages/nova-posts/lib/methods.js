@@ -1,7 +1,8 @@
 import Telescope from 'meteor/nova:lib';
-import Posts from './collection.js'
 import Users from 'meteor/nova:users';
-import Events from "meteor/nova:events";
+import Events from 'meteor/nova:events';
+import { Messages } from 'meteor/nova:core';
+import Posts from './collection.js'
 
 /**
  *
@@ -113,7 +114,7 @@ Meteor.methods({
    * @param {Object} modifier - the update modifier
    */
   'posts.edit': function (postId, modifier) {
-    
+
     Posts.simpleSchema().namedContext("posts.edit").validate(modifier, {modifier: true});
     check(postId, String);
 
@@ -134,7 +135,7 @@ Meteor.methods({
   'posts.approve': function(postId){
 
     check(postId, String);
-    
+
     const post = Posts.findOne(postId);
     const now = new Date();
 
@@ -145,7 +146,7 @@ Meteor.methods({
       if (!post.postedAt) {
         set.postedAt = now;
       }
-      
+
       Posts.update(post._id, {$set: set});
 
       Telescope.callbacks.runAsync("posts.approve.async", post);
@@ -164,15 +165,15 @@ Meteor.methods({
   'posts.reject': function(postId){
 
     check(postId, String);
-    
+
     const post = Posts.findOne(postId);
-    
+
     if(Users.isAdmin(Meteor.user())){
 
       Posts.update(post._id, {$set: {status: Posts.config.STATUS_REJECTED}});
 
       Telescope.callbacks.runAsync("postRejectAsync", post);
-    
+
     }else{
       Messages.flash('You need to be an admin to do that.', "error");
     }
@@ -188,7 +189,7 @@ Meteor.methods({
 
     check(postId, String);
     check(sessionId, Match.Any);
-    
+
     // only let users increment a post's view counter once per session
     var view = {_id: postId, userId: this.userId, sessionId: sessionId};
 
@@ -237,7 +238,7 @@ Meteor.methods({
    * @param {String} url - the URL to check
    */
   'posts.checkForDuplicates': function (url) {
-    Posts.checkForSameUrl(url);  
+    Posts.checkForSameUrl(url);
   },
 
   /**

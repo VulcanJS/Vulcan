@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 
+/*
 var completeUserProfile = function (userId, modifier, user) {
 
   Users.update(userId, modifier);
@@ -10,6 +11,7 @@ var completeUserProfile = function (userId, modifier, user) {
   return Users.findOne(userId);
 
 };
+*/
 
 Users.methods = {};
 
@@ -20,7 +22,7 @@ Users.methods = {};
  * @param {Object} user - the current user object
  */
 Users.methods.edit = (userId, modifier, user) => {
-  
+
   if (typeof user === "undefined") {
     user = Users.findOne(userId);
   }
@@ -39,7 +41,7 @@ Users.methods.edit = (userId, modifier, user) => {
 
   // ------------------------------ After Update ------------------------------ //
   return Users.findOne(userId);
-  
+
 }
 
 Users.methods.setSetting = (userId, settingName, value) => {
@@ -97,7 +99,7 @@ Meteor.methods({
   },
 
   'users.remove'(userId, options) {
-    
+
     // do the user which to delete his account or another user?
     const actionType = this.userId === userId ? "own" : "all";
 
@@ -108,7 +110,7 @@ Meteor.methods({
       Users.remove(userId);
 
       Telescope.callbacks.runAsync("users.remove.async", user, options);
-    
+
     }
 
   },

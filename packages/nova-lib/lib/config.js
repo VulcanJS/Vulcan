@@ -1,9 +1,11 @@
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
 /**
  * @summary Kick off the global namespace for Telescope.
  * @namespace Telescope
  */
 
-Telescope = {};
+const Telescope = {};
 
 Telescope.VERSION = '0.27.4-nova';
 

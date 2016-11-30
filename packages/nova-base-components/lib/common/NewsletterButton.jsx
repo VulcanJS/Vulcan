@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { Messages } from 'meteor/nova:core';
+// import { Messages } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 
 class NewsletterButton extends Component {
@@ -9,14 +9,13 @@ class NewsletterButton extends Component {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
   }
-  
-  subscriptionAction() {
-    const action = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false) ? 
-      'newsletter.removeUser' : 'newsletter.addUser';
 
+  subscriptionAction() {
+    const action = Users.getSetting(this.props.user, 'newsletter.subscribed', false) ?
+      'newsletter.removeUser' : 'newsletter.addUser';
     this.context.actions.call(action, this.props.user, (error, result) => {
       if (error) {
-        console.log(error);
+        console.log(error); // eslint-disable-line
         this.context.messages.flash(error.message, "error");
       } else {
         this.props.successCallback(result);
@@ -25,7 +24,7 @@ class NewsletterButton extends Component {
   }
 
   render() {
-    const isSubscribed = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false);
+    const isSubscribed = Users.getSetting(this.props.user, 'newsletter.subscribed', false);
 
     return (
       <Button
@@ -40,8 +39,8 @@ class NewsletterButton extends Component {
 }
 
 NewsletterButton.propTypes = {
-  successCallback: React.PropTypes.func.isRequired,
   user: React.PropTypes.object.isRequired,
+  successCallback: React.PropTypes.func.isRequired,
 };
 
 NewsletterButton.contextTypes = {

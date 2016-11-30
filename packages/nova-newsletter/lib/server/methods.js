@@ -17,7 +17,7 @@ Meteor.methods({
     if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
-    
+
     try {
       return MailChimpList.add(user, false);
     } catch (error) {
@@ -30,7 +30,7 @@ Meteor.methods({
     if (!user || !Users.canEdit(currentUser, user)) {
       throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_user');
     }
-    
+
     try {
       return MailChimpList.remove(user);
     } catch (error) {

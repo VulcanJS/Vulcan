@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 if (typeof Package['nova:posts'] !== "undefined") {
   import Posts from "meteor/nova:posts";
 

@@ -18,7 +18,8 @@ Categories.getParents = function (category) {
       categoriesArray.push(parent);
       recurse(parent);
     }
-  }(category);
+  };
+  getParents(category);
 
   return categoriesArray;
 };
@@ -37,7 +38,8 @@ Categories.getChildren = function (category) {
       categoriesArray = categoriesArray.concat(children);
       recurse(children);
     }
-  }([category]);
+  };
+  getChildren([category]);
 
   return categoriesArray;
 };

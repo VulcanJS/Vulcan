@@ -1,11 +1,11 @@
 import Telescope from 'meteor/nova:lib';
+import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
-import Users from 'meteor/nova:users';
+// import Users from 'meteor/nova:users';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 
@@ -36,12 +36,12 @@ class CategoriesList extends Component {
   }
 
   renderCategoryEditModal(category, index) {
-    
+
     return (
       <Modal key={index} show={this.state.openModal === index+1} onHide={this.closeModal}>
         <Modal.Header closeButton>
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
-        </Modal.Header>        
+        </Modal.Header>
         <Modal.Body>
           <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} actions={this.context.actions} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesEditForm category={category}/>
@@ -52,12 +52,12 @@ class CategoriesList extends Component {
   }
 
   renderCategoryNewModal() {
-    
+
     return (
       <Modal show={this.state.openModal === 0} onHide={this.closeModal}>
         <Modal.Header closeButton>
           <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
-        </Modal.Header>        
+        </Modal.Header>
         <Modal.Body>
           <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
             <Telescope.components.CategoriesNewForm/>
@@ -82,18 +82,18 @@ class CategoriesList extends Component {
   }
 
   render() {
-    
+
     const categories = this.props.categories;
-    const context = this.context;
+    // const context = this.context;
     const currentQuery = _.clone(this.props.router.location.query);
     delete currentQuery.cat;
-    
+
     return (
       <div>
-        <DropdownButton 
-          bsStyle="default" 
-          className="categories-list btn-secondary" 
-          title={<FormattedMessage id="categories"/>} 
+        <DropdownButton
+          bsStyle="default"
+          className="categories-list btn-secondary"
+          title={<FormattedMessage id="categories"/>}
           id="categories-dropdown"
         >
           <div className="category-menu-item dropdown-item">
@@ -115,7 +115,7 @@ class CategoriesList extends Component {
     )
 
   }
-};
+}
 
 CategoriesList.propTypes = {
   categories: React.PropTypes.array

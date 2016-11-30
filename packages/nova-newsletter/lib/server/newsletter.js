@@ -1,10 +1,11 @@
 import Telescope from 'meteor/nova:lib';
-import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 import Categories from "meteor/nova:categories";
 import NovaEmail from 'meteor/nova:email';
+import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
+import moment from 'moment';
 import Newsletter from '../namespace.js';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
@@ -14,7 +15,7 @@ Posts.views.add("newsletter", function (terms) {
       scheduledAt: {$exists: false}
     },
     options: {
-      sort: {baseScore: -1}, 
+      sort: {baseScore: -1},
       limit: terms.limit
     }
   };
@@ -32,14 +33,14 @@ Newsletter.getPosts = function (postsCount) {
   // if there is a last newsletter and it was sent less than 7 days ago use its date, else default to posts from the last 7 days
   var lastWeek = moment().subtract(7, 'days');
   var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.format("YYYY-MM-DD");
-  
+
   // get parameters using "newsletter" view
   var params = Posts.parameters.get({
     view: "newsletter",
     after: after,
     limit: postsCount
   });
-  
+
   return Posts.find(params.selector, params.options).fetch();
 };
 
@@ -91,7 +92,7 @@ Newsletter.build = function (postsArray) {
 
       // get the two highest-scoring comments
       properties.popularComments = Comments.find({postId: post._id}, {sort: {score: -1}, limit: 2, transform: function (comment) {
-        
+
         // get comment author
         var user = Users.findOne(comment.userId);
 
@@ -105,7 +106,7 @@ Newsletter.build = function (postsArray) {
         } catch (error) {
           comment.authorAvatarUrl = false;
         }
-        
+
         return comment;
 
       }}).fetch();
@@ -151,13 +152,13 @@ Newsletter.build = function (postsArray) {
   var emailHTML = NovaEmail.buildTemplate(newsletterHTML, {
     date: moment().format("dddd, MMMM D YYYY")
   });
-  
+
   // 4. build campaign object and return it
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
     subject: Telescope.utils.trimWords(subject, 15),
     html: emailHTML
   };
-  
+
   return campaign;
 };

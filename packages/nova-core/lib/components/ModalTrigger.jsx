@@ -48,7 +48,7 @@ class ModalTrigger extends Component {
         <Modal bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
-            <ContextPasser 
+            <ContextPasser
               currentUser={this.context.currentUser}
               actions={this.context.actions}
               events={this.context.events}
@@ -62,7 +62,7 @@ class ModalTrigger extends Component {
       </div>
     )
   }
-};
+}
 
 ModalTrigger.propTypes = {
   component: React.PropTypes.object.isRequired,

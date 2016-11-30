@@ -1,10 +1,13 @@
+/* global Movies:true */
+
 import Telescope from 'meteor/nova:lib';
-import React, { PropTypes, Component } from 'react';
-import {mount} from 'react-mounter';
-import MoviesWrapper from './demo-components.jsx';
-import Core from 'meteor/nova:core';
-import { Route } from 'react-router';
 import Users from 'meteor/nova:users';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import React, { PropTypes, Component } from 'react';
+import MoviesWrapper from './demo-components.jsx';
+// import {mount} from 'react-mounter';
+// import Core from 'meteor/nova:core';
+// import { Route } from 'react-router';
 
 //////////////////////////////////////////////////////
 // Collection & Schema                              //
