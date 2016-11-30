@@ -1,31 +1,37 @@
-// import React from 'react';
-// import { graphql } from 'react-apollo';
-// import gql from 'graphql-tag';
-// import Users from 'meteor/nova:users';
+import Users from 'meteor/nova:users';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
-// export default function withApp(component, options) {
-//   return graphql(gql`
-//     query getCurrentUser {
-//       currentUser {
-//         ...fullUserInfo
-//       }
-//     }
-//     ${Users.fragments.full}
-//   `, {
-//     options(ownProps) {
-//       return {
-//         variables: {},
-//         pollInterval: 20000,
-//       };
-//     },
-//     props(props) {
-//       const {data: {loading, currentUser}} = props;
-//       return {
-//         loading,
-//         currentUser,
-//       };
-//     },
-//   })(component)
-// };
+const withApp = component => {
 
-// module.exports = withApp;
+  const preloadedFields = _.compact(_.map(Users.simpleSchema()._schema, (field, fieldName) => {
+    return field.preload ? fieldName : undefined;
+  }));
+  
+  // console.log('preloaded fields', preloadedFields);
+
+  return graphql(
+    gql`query getCurrentUser {
+      currentUser {
+        ${preloadedFields.join('\n')}
+      }
+    }
+    `, {
+      options(ownProps) {
+        return {
+          variables: {},
+          pollInterval: 20000,
+        };
+      },
+      props(props) {
+        const {data: {loading, currentUser}} = props;
+        return {
+          loading,
+          currentUser,
+        };
+      },
+    }
+  )(component);
+};
+
+export default withApp;

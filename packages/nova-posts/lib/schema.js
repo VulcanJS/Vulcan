@@ -107,7 +107,7 @@ const schema = {
     max: 3000,
     viewableIf: ['anonymous'],
     insertableIf: ['default'],
-    editableIf: (user, document) => Users.isAdmin(user) || Users.isOwner(user, document),
+    editableIf: ['default'],
     control: "textarea",
     publish: true,
     order: 30
@@ -154,7 +154,7 @@ const schema = {
     type: Number,
     optional: true,
     publish: true,
-    viewableIf: (user, document) => Users.isAdmin(user) || Users.isOwner(user, document),
+    viewableIf: ['admins'],
     defaultValue: 0
   },
   /**

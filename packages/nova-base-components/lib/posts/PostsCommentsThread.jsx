@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import {FormattedMessage } from 'react-intl';
 import { ModalTrigger, withList } from 'meteor/nova:core';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
 import gql from 'graphql-tag';
 

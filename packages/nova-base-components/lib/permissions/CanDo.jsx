@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/nova:users';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 const CanDo = (props, context) => {
   

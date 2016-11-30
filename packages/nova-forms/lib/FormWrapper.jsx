@@ -28,7 +28,7 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 import { withNew, withEdit, withRemove } from 'meteor/nova:core';
 import { getEditableFields, getInsertableFields } from './utils.js';
 import Form from './Form.jsx';

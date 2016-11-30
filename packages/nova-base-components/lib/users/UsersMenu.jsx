@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 import { withApollo } from 'react-apollo';
 
 class UsersMenu extends Component {

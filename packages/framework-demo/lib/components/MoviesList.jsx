@@ -15,7 +15,7 @@ import Movies from '../collection.js';
 import MoviesNewForm from './MoviesNewForm.jsx';
 import { compose } from 'react-apollo';
 import { withList } from 'meteor/nova:core';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
 

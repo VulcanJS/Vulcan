@@ -11,7 +11,7 @@ import { Button } from 'react-bootstrap';
 import { ModalTrigger } from 'meteor/nova:core';
 import MoviesEditForm from './MoviesEditForm.jsx';
 import MoviesDetails from './MoviesDetails.jsx';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 import Movies from '../collection.js';
 import gql from 'graphql-tag';
 

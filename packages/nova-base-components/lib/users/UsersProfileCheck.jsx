@@ -5,7 +5,7 @@ import { Modal } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
 

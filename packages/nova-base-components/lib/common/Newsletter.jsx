@@ -8,7 +8,7 @@ import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withCurrentUser } from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
