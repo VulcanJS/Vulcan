@@ -25,10 +25,6 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
         <NovaForm
           collection={ Users }
           document={ currentUser }
-          mutationName="usersEdit"
-          // fragment={Users.fragments.full}
-          noRemoveMutation={true}
-          successCallback={ (user) => Telescope.callbacks.runAsync("users.profileCompleted.async", user) }
           fields={ requiredFields }
         />
       </Modal.Body>

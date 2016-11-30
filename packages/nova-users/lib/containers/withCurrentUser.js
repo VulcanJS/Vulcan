@@ -14,10 +14,6 @@ const withCurrentUser = component => {
   return graphql(
     gql`query getCurrentUser {
       currentUser {
-        _id
-        username
-        createdAt
-        isAdmin
         ${preloadedFields.join('\n')}
       }
     }

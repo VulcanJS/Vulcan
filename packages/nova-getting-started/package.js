@@ -17,7 +17,8 @@ Package.onUse(function (api) {
     'nova:core@0.27.4-nova',
     'nova:posts@0.27.4-nova',
     'nova:comments@0.27.4-nova',
-    'nova:users@0.27.4-nova'
+    'nova:users@0.27.4-nova',
+    'nova:events@0.27.4-nova'
   ]);
 
   // both

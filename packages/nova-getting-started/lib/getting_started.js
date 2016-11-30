@@ -45,8 +45,8 @@ Comments.addField({
  * @param {Object} options – user options
  */
 function copyDummyProperty (user, options) {
-  if (typeof user.profile.isDummy !== "undefined") {
-    user.__isDummy = user.profile.isDummy;
+  if (typeof user.profile.__isDummy !== "undefined") {
+    user.__isDummy = user.profile.__isDummy;
   }
   return user;
 }

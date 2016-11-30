@@ -7,7 +7,7 @@ Comments.getNotificationProperties = function (data) {
   const commentAuthor = Users.findOne(comment.userId);
   const post = Posts.findOne(comment.postId);
   const properties = {
-    profileUrl: commentAuthor && commentAuthor.getProfileUrl(true),
+    profileUrl: commentAuthor && Users.getProfileUrl(commentAuthor, true),
     postUrl: Posts.getPageUrl(post, true),
     authorName : Comments.getAuthorName(comment),
     postTitle: post.title,

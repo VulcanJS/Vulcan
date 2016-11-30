@@ -30,7 +30,6 @@ export default function withList (options) {
     },
     props(props) {
 
-
       const loading = props.data.loading,
             fetchMore = props.data.fetchMore,
             refetch = props.data.refetch,

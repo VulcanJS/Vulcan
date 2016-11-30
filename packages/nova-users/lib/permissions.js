@@ -225,19 +225,31 @@ Users.isAdminById = Users.isAdmin;
 // Users.helpers({_isAdmin: function () {return Users.isAdmin(this);}});
 
 /**
+ * @summary Check if a user can view a field
+ * @param {Object} user - The user performing the action
+ * @param {Object} field - The field being edited or inserted
+ */
+Users.canViewField = function (user, field) {
+  if (user && field.viewableIf) {
+    return typeof field.viewableIf === 'function' ? field.viewableIf(user) : Users.isMemberOf(user, field.viewableIf)
+  }
+  return false;
+};
+
+/**
  * @summary Check if a user can submit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
 Users.canInsertField = function (user, field) {
   if (user && field.insertableIf) {
-    return typeof field.insertableIf === 'function' ? field.insertableIf(user, document) : Users.isMemberOf(user, field.insertableIf)
+    return typeof field.insertableIf === 'function' ? field.insertableIf(user) : Users.isMemberOf(user, field.insertableIf)
   }
   return false;
 };
 
 /** @function
- * Check if a user can edit a field – for now, identical to Users.canInsertField 
+ * Check if a user can edit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */

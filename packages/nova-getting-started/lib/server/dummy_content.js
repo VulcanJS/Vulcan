@@ -62,7 +62,7 @@ var createDummyUsers = function () {
     username: 'Bruce',
     email: 'dummyuser1@telescopeapp.org',
     profile: {
-      isDummy: true
+      __isDummy: true
     }
   });
   Accounts.createUser({
