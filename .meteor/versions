@@ -1,5 +1,5 @@
 accounts-base@1.2.14
-accounts-password@1.3.2
+accounts-password@1.3.3
 aldeed:collection2@2.10.0
 aldeed:collection2-core@1.2.0
 aldeed:schema-deny@1.1.0
@@ -8,7 +8,7 @@ aldeed:simple-schema@1.5.3
 allow-deny@1.0.5
 autoupdate@1.3.12
 babel-compiler@6.13.0
-babel-runtime@1.0.0
+babel-runtime@1.0.1
 base64@1.0.10
 binary-heap@1.0.10
 blaze@2.2.0
@@ -18,7 +18,7 @@ caching-compiler@1.1.9
 callback-hook@1.0.10
 check@1.2.4
 chuangbo:cookie@1.1.0
-coffeescript@1.11.1_3
+coffeescript@1.11.1_4
 dburles:collection-helpers@1.1.0
 ddp@1.2.5
 ddp-client@1.3.2
@@ -27,7 +27,7 @@ ddp-rate-limiter@1.0.6
 ddp-server@1.3.12
 deps@1.0.12
 diff-sequence@1.0.7
-ecmascript@0.6.0
+ecmascript@0.6.1
 ecmascript-runtime@0.3.15
 ejson@1.0.13
 email@1.1.18
@@ -59,7 +59,7 @@ meteorhacks:subs-manager@1.6.4
 meteorhacks:unblock@1.1.0
 minifier-css@1.2.15
 minifier-js@1.2.15
-minimongo@1.0.18
+minimongo@1.0.19
 modules@0.7.7
 modules-runtime@0.7.7
 mongo@1.1.14
@@ -105,7 +105,7 @@ rate-limit@1.0.6
 react-meteor-data@0.2.9
 reactive-dict@1.1.8
 reactive-var@1.0.11
-reactrouter:react-router-ssr@3.1.5
+reactrouter:react-router-ssr@3.1.6-nova-patch
 reload@1.1.11
 retry@1.0.9
 routepolicy@1.0.12
@@ -113,7 +113,7 @@ service-configuration@1.0.11
 session@1.1.7
 sha@1.0.9
 shell-server@0.2.1
-softwarerero:accounts-t9n@1.3.5
+softwarerero:accounts-t9n@1.3.6
 spacebars@1.0.13
 spacebars-compiler@1.0.13
 srp@1.0.10
