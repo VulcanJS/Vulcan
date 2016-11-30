@@ -28,21 +28,22 @@ class PostsEditForm extends Component {
         <NovaForm
           collection={Posts}
           documentId={this.props.post._id}
+          queryToUpdate="postsListQuery"
           successCallback={post => { 
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
           removeSuccessCallback={({documentId, documentTitle}) => {
-            if (typeof this.context.closeCallback === "function") {
-              this.context.closeCallback();
-            } else {
-              // post edit form is being included from a single post, redirect to index
+            // post edit form is being included from a single post, redirect to index 
+            // note: this.props.params is in the worst case an empty obj (from react-router)
+            if (this.props.params._id) {
               this.props.router.push('/');
             }
 
             const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'posts.delete_success'}, {title: documentTitle});
             this.props.flash(deleteDocumentSuccess, "success");
-            this.context.events.track("post deleted", {_id: documentId});
+            // todo: handle events in collection callbacks
+            // this.context.events.track("post deleted", {_id: documentId});
           }}
           showRemove={true}
         />

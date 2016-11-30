@@ -27,7 +27,7 @@ import update from 'immutability-helper';
 
 export default function withRemove(options) {
 
-  const { collection, fragmentName, fragment, queryName } = options,
+  const { collection, fragmentName, fragment, queryToUpdate } = options,
         mutationName = collection.options.mutations.remove.name,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -43,23 +43,30 @@ export default function withRemove(options) {
     props: ({ ownProps, mutate }) => ({
       removeMutation: ({ documentId }) => {
 
-        const updateQueries = {
-          [queryName]: (prev, { mutationResult }) => {
-            // filter the list to get a new one without the document
-            const listWithoutDocument = prev[listResolverName].filter(doc => doc._id !== documentId);
-            // update the query
-            const newList = update(prev, {
-              [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
-              [totalResolverName]: { $set: prev.postsListTotal - 1 } // ex: postsListTotal
-            });
-            return newList;
-          }
+        // if a queryToUpdate is passed as prop, generate updateQueries function
+        let updateQueries = {};
+        if (queryToUpdate) {
+          updateQueries = {
+            [queryToUpdate]: (prev, { mutationResult }) => {
+              // filter the list to get a new one without the document
+              const listWithoutDocument = prev[listResolverName].filter(doc => doc._id !== documentId);
+              // update the query
+              const newList = update(prev, {
+                [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
+                [totalResolverName]: { $set: prev.postsListTotal - 1 } // ex: postsListTotal
+              });
+              return newList;
+            }
+          };
         }
-
+        
+        console.log('// removeMutation')
+        console.log(updateQueries);
+        
         return mutate({ 
           variables: { documentId },
-          // updateQueries: options.updateQueries || updateQueries
-        })
+          updateQueries: options.updateQueries || updateQueries
+        });
       },
     }),
   });

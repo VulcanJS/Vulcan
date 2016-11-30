@@ -29,35 +29,11 @@ import update from 'immutability-helper';
 export default function withNew(options) {
 
   // get options
-  const { collection, fragmentName, fragment, queryName } = options,
+  const { collection, fragmentName, fragment, queryToUpdate } = options,
         collectionName = collection._name,
         mutationName = collection.options.mutations.new.name,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
-
-  // if a queryName is passed as prop, generate updateQueries function
-  let updateQueries = {};
-  if (queryName) {
-    updateQueries = {
-      [queryName]: (prev, { mutationResult }) => {
-
-        // get new document to insert
-        const newDocument = mutationResult.data[mutationName];
-
-        // generate new list with updated total count and document inserted at top
-        const newList = update(prev, {
-          [listResolverName]: { $unshift: [newDocument] },
-          [totalResolverName]: { $set: prev[totalResolverName] + 1 }
-        });
-
-        console.log(`// updated query ${queryName}:`)
-        console.log(prev)
-        console.log(newList)
-
-        return newList;
-      }
-    }
-  }
 
   // wrap component with graphql HoC
   return graphql(gql`
@@ -71,22 +47,39 @@ export default function withNew(options) {
     props: ({ownProps, mutate}) => ({
       newMutation: ({document}) => {
 
+        // if a queryToUpdate is passed as prop, generate updateQueries function
+        let updateQueries = {};
+        if (queryToUpdate) {
+          updateQueries = {
+            [queryToUpdate]: (prev, { mutationResult }) => {
+
+              // get new document to insert
+              const newDocument = mutationResult.data[mutationName];
+
+              // generate new list with updated total count and document inserted at top
+              const newList = update(prev, {
+                [listResolverName]: { $unshift: [newDocument] },
+                [totalResolverName]: { $set: prev[totalResolverName] + 1 }
+              });
+
+              console.log(`// updated query ${queryToUpdate}:`)
+              console.log(prev)
+              console.log(newList)
+
+              return newList;
+            }
+          };
+        }
+
         console.log('// newMutation')
         console.log(updateQueries)
         
         return mutate({ 
           variables: { document },
-          // updateQueries: options.updateQueries || updateQueries
-        })
+          updateQueries: options.updateQueries || updateQueries
+        });
       }
     }),
   });
 
-}
-
-withNew.propTypes = {
-  collection: React.PropTypes.object, // the collection to mutate
-  fragmentName: React.PropTypes.string, // the name of the fragment
-  fragment: React.PropTypes.object, // controls what data the mutation should return
-  queryName: React.PropTypes.string, // the query to update on the client
 }

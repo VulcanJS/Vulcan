@@ -90,32 +90,28 @@ class FormWrapper extends Component{
 
   render() {
 
-    console.log(this)
+    // console.log(this)
 
     let WrappedComponent;
 
     const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
-    const queryName = `${prefix}FormQuery`;
     const fragmentName = `${prefix}FormFragment`;
 
     // props received from parent component (i.e. <NovaForm/> call)
     const parentProps = this.props;
 
-    // props to pass on to child component (i.e. <FormWithMutations />)
+    // props to pass on to child component (i.e. <Form />)
     const childProps = {
       formType: this.getFormType(),
       schema: this.getSchema(),
-      fragmentName,
-      fragment: this.getFragment(),
-    }
+    };
 
-    // options for the withSingle, withNew, withEdit, and withRemove HoCs
+    // generic options for the withSingle, withNew, withEdit, and withRemove HoCs
     const options = {
       collection: this.props.collection,
-      queryName: queryName,
       fragmentName: fragmentName,
       fragment: this.getFragment(),
-    }
+    };
 
     // if this is an edit from, load the necessary data using the withSingle HoC
     if (this.getFormType() === 'edit') { 
@@ -137,9 +133,9 @@ class FormWrapper extends Component{
       Loader.displayName = `withLoader(Form)`;
 
       WrappedComponent = compose(
-        withSingle(options),
+        withSingle({...options, queryName: `${prefix}FormQuery`}),
         withEdit(options),
-        withRemove(options)
+        withRemove({...options, queryToUpdate: this.props.queryToUpdate})
       )(Loader);
 
       return <WrappedComponent documentId={this.props.documentId} />
@@ -147,7 +143,7 @@ class FormWrapper extends Component{
     } else {
 
       WrappedComponent = compose(
-        withNew(options)
+        withNew({...options, queryToUpdate: this.props.queryToUpdate})
       )(Form);
 
       return <WrappedComponent {...childProps} {...parentProps} />
@@ -169,6 +165,7 @@ FormWrapper.propTypes = {
   newMutation: React.PropTypes.func, // the new mutation
   editMutation: React.PropTypes.func, // the edit mutation
   removeMutation: React.PropTypes.func, // the remove mutation
+  queryToUpdate: React.PropTypes.string, // query to update, used on new and remove mutation
 
   // form
   prefilledProps: React.PropTypes.object,

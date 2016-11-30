@@ -18,7 +18,7 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm
           collection={Posts}
-          queryName="postsListQuery"
+          queryToUpdate="postsListQuery"
           successCallback={post => {
             props.router.push({pathname: Posts.getPageUrl(post)});
             context.closeCallback();

@@ -64,7 +64,8 @@ const schema = {
   },
   // telescope-specific data, kept for backward compatibility and migration purposes
   telescope: { 
-    type: Telescope.schemas.userData,
+    type: Object,
+    blackbox: true,
     optional: true,
     viewableIf: ['anonymous'],
   },
