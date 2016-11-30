@@ -23,7 +23,12 @@ const resolvers = {
 
     name: 'postsList',
 
+    check(user, documents, context) {
+      return true // TODO: write check function
+    },
+
     resolver(root, {terms, offset, limit}, context, info) {
+      // TODO: call check function
       let {selector, options} = context.Posts.parameters.get(terms);
       options.limit = (limit < 1 || limit > 10) ? 10 : limit;
       options.skip = offset;
@@ -38,8 +43,15 @@ const resolvers = {
     
     name: 'postsSingle',
     
-    resolver(root, args, context) {
-      return context.Posts.findOne({_id: args._id}, { fields: context.getViewableFields(context.currentUser, context.Posts) });
+    check(user, document, context) {
+      return true // TODO: write check function
+      const status = context.Posts.getStatusName(document);
+      return Users.isOwner(user, document) ? Users.canDo(`posts.view.${status}.own`) : Users.canDo(`posts.view.${status}.all`)
+    },
+
+    resolver(root, {documentId}, context) {
+      // TODO: call check function
+      return context.Posts.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Posts) });
     },
   
   },

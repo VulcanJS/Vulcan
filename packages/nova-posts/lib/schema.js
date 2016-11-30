@@ -8,24 +8,12 @@ import Posts from './collection.js';
  * @summary Posts config namespace
  * @type {Object}
  */
-
 const formGroups = {
   admin: {
     name: "admin",
     order: 2
   }
 };
-
-// check if user can create a new post
-const canInsert = user => Users.canDo(user, "posts.new");
-
-// check if user can edit a post
-const canEdit = mutations.edit.check;
-
-// check if user can edit *all* posts
-const canEditAll = user => Users.canDo(user, "posts.edit.all"); // we don't use the mutations.edit check here, to be changed later with ability to give options to mutations.edit.check?
-
-const alwaysPublic = user => true;
 
 /**
  * @summary Posts schema
@@ -39,7 +27,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   /**
     Timetstamp of post creation
@@ -47,7 +35,7 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
     publish: true, // publish so that admins can sort pending posts by createdAt
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
@@ -59,9 +47,9 @@ const schema = {
   postedAt: {
     type: Date,
     optional: true,
-    viewableIf: alwaysPublic,
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
+    viewableIf: ['anonymous'],
+    insertableIf: ['admins'],
+    editableIf: ['admins'],
     publish: true,
     control: "datetime",
     group: formGroups.admin
@@ -73,9 +61,9 @@ const schema = {
     type: String,
     optional: true,
     max: 500,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
+    editableIf: ['default'],
     control: "text",
     publish: true,
     order: 10
@@ -87,9 +75,9 @@ const schema = {
     type: String,
     optional: false,
     max: 500,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
+    editableIf: ['default'],
     control: "text",
     publish: true,
     order: 20
@@ -100,7 +88,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     publish: true,
     autoValue: (documentOrModifier) => {
       // if title is changing, return new slug
@@ -117,9 +105,9 @@ const schema = {
     type: String,
     optional: true,
     max: 3000,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
+    editableIf: (user, document) => Users.isAdmin(user) || Users.isOwner(user, document),
     control: "textarea",
     publish: true,
     order: 30
@@ -131,7 +119,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     autoValue(documentOrModifier) {
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
@@ -149,7 +137,7 @@ const schema = {
     optional: true,
     max: 255, //should not be changed the 255 is max we should load for each post/item
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     autoValue(documentOrModifier) {
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
@@ -166,7 +154,7 @@ const schema = {
     type: Number,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: (user, document) => Users.isAdmin(user) || Users.isOwner(user, document),
     defaultValue: 0
   },
   /**
@@ -176,7 +164,7 @@ const schema = {
     type: Date,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   /**
     Count of how many times the post's link was clicked
@@ -185,7 +173,7 @@ const schema = {
     type: Number,
     optional: true,
     publish: true,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
     defaultValue: 0
   },
   /**
@@ -194,9 +182,9 @@ const schema = {
   status: {
     type: Number,
     optional: true,
-    viewableIf: alwaysPublic,
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
+    viewableIf: ['anonymous'],
+    insertableIf: ['admins'],
+    editableIf: ['admins'],
     control: "select",
     publish: true,
     autoValue(documentOrModifier) {
@@ -219,7 +207,7 @@ const schema = {
   isFuture: {
     type: Boolean,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     publish: true
   },
   /**
@@ -229,9 +217,9 @@ const schema = {
     type: Boolean,
     optional: true,
     defaultValue: false,
-    viewableIf: alwaysPublic,
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
+    viewableIf: ['anonymous'],
+    insertableIf: ['admins'],
+    editableIf: ['admins'],
     control: "checkbox",
     publish: true,
     group: formGroups.admin
@@ -251,19 +239,19 @@ const schema = {
   userIP: {
     type: String,
     optional: true,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
     publish: false
   },
   userAgent: {
     type: String,
     optional: true,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
     publish: false
   },
   referrer: {
     type: String,
     optional: true,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
     publish: false
   },
   /**
@@ -272,7 +260,7 @@ const schema = {
   author: {
     type: String,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     publish: true,
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
@@ -287,14 +275,14 @@ const schema = {
     type: String,
     optional: true,
     control: "select",
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
     hidden: true,
     resolveAs: 'user: User',
     // publish: true,
     // regEx: SimpleSchema.RegEx.Id,
-    // insertableIf: canEditAll,
-    // editableIf: canEditAll,
+    // insertableIf: ['admins'],
+    // editableIf: ['admins'],
     // form: {
     //   group: 'admin',
     //   options: function () {

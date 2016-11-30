@@ -81,6 +81,15 @@ Posts.getDefaultStatus = function (user) {
 };
 
 /**
+ * @summary Get status name
+ * @param {Object} user
+ */
+Posts.getStatusName = function (post) {
+  // TODO: write function
+  return 'approved';
+};
+
+/**
  * @summary Check if a post is approved
  * @param {Object} post
  */
