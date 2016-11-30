@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
-import { withCurrentUser } from 'meteor/nova:users';
+import { loadCurrentUser } from 'meteor/nova:users';
 
 class App extends Component {
 
@@ -43,6 +43,6 @@ App.childContextTypes = {
   intl: intlShape,
 }
 
-Telescope.registerComponent('App', App, withCurrentUser);
+Telescope.registerComponent('App', App, loadCurrentUser);
 
 export default App;

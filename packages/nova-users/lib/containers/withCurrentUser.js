@@ -1,32 +1,30 @@
+import React, { Component, PropTypes } from 'react';
+import hoistStatics from 'hoist-non-react-statics';
+import { Meteor } from 'meteor/meteor';
 import Telescope from 'meteor/nova:lib';
-import Users from '../collection.js';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 
-const withCurrentUser = component => {
+/**
+ * withCurrentUser - HOC to give access to the currentUser as a prop of a WrappedComponent
+ **/
+export default function withCurrentUser(WrappedComponent) {
 
-  const preloadedFields = _.compact(_.map(Users.simpleSchema()._schema, (field, fieldName) => {
-    return field.preload ? fieldName : undefined;
-  }));
-  
-  // console.log('preloaded fields', preloadedFields);
-
-  return graphql(
-    gql`query getCurrentUser {
-      currentUser {
-        ${preloadedFields.join('\n')}
-      }
+  class WithCurrentUser extends Component {
+    constructor(...args) {
+      super(...args);
     }
-    `, {
-      props(props) {
-        const {data: {loading, currentUser}} = props;
-        return {
-          loading,
-          currentUser,
-        };
-      },
-    }
-  )(component);
-};
+    
+    render() {
+      const {client} = this.context; // grab the apollo client from the context
 
-export default withCurrentUser;
+      const currentUser = client ? client.store.getState().apollo.data[`User${Meteor.userId()}`] : null;
+
+      return currentUser ? <WrappedComponent currentUser={currentUser} {...this.props} /> : <WrappedComponent {...this.props} />;
+    }
+  }
+
+  WithCurrentUser.contextTypes = { client: PropTypes.object.isRequired };
+  WithCurrentUser.displayName = `withCurrentUser(${Telescope.utils.getComponentDisplayName(WrappedComponent)}`;
+  WithCurrentUser.WrappedComponent = WrappedComponent;
+
+  return hoistStatics(WithCurrentUser, WrappedComponent);
+}

@@ -9,3 +9,4 @@ import './permissions.js';
 
 export default Users;
 export { default as withCurrentUser } from './containers/withCurrentUser.js';
+export { default as loadCurrentUser } from './containers/loadCurrentUser.js';
