@@ -1,9 +1,10 @@
 import Telescope from 'meteor/nova:lib';
+import NovaForm from "meteor/nova:forms";
+import { ShowIf } from 'meteor/nova:core';
+import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
-import Posts from "meteor/nova:posts";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';

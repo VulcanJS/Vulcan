@@ -27,7 +27,8 @@ import update from 'immutability-helper';
 
 export default function withRemove(options) {
 
-  const { collection, fragmentName, fragment, queryToUpdate } = options,
+  const { collection, fragment, queryToUpdate } = options,
+        fragmentName = fragment.definitions[0].name.value,
         mutationName = collection.options.mutations.remove.name,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
