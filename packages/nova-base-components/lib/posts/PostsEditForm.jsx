@@ -6,17 +6,18 @@ import Posts from "meteor/nova:posts";
 import { withRouter } from 'react-router'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { ShowIf } from 'meteor/nova:core';
 
 class PostsEditForm extends Component {
 
   renderAdminArea() {
     return (
-      <Telescope.components.CanDo action="posts.edit.all">
+      <ShowIf check={Posts.options.mutations.edit.check} document={this.props.post}>
         <div className="posts-edit-form-admin">
           <div className="posts-edit-form-id">ID: {this.props.post._id}</div>
           <Telescope.components.PostsStats post={this.props.post} />
         </div>
-      </Telescope.components.CanDo>
+      </ShowIf>
     )
   }
 

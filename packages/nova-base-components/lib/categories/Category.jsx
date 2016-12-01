@@ -6,14 +6,16 @@ import classNames from "classnames";
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
+import Categories from 'meteor/nova:categories';
+import { ShowIf } from 'meteor/nova:core';
 
 class Category extends Component {
 
   renderEdit() {
     return (
-      <Telescope.components.CanDo action="categories.edit.all">
-        <a onClick={this.props.openModal} className="edit-category-link"><Telescope.components.Icon name="edit"/></a>
-      </Telescope.components.CanDo>
+        <a onClick={this.props.openModal} className="edit-category-link">
+          <Telescope.components.Icon name="edit"/>
+        </a>
     );
     // return (
     //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Telescope.components.Icon name="edit"/></a>}>
@@ -42,7 +44,7 @@ class Category extends Component {
             {category.name}
           </MenuItem>
         </LinkContainer>
-        {this.renderEdit()}
+        <ShowIf check={Categories.options.mutations.edit.check} document={category}>{this.renderEdit()}</ShowIf>
       </div>
     )
   }

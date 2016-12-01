@@ -58,11 +58,7 @@ class SubscribeTo extends Component {
 
     const className = this.props.className ? this.props.className : "";
 
-    return (
-      <Telescope.components.CanDo action={action}>
-        <a className={className} onClick={this.onSubscribe}>{this.context.intl.formatMessage({id: action})}</a>
-      </Telescope.components.CanDo>
-    );
+    return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}>{this.context.intl.formatMessage({id: action})}</a> : null;
   }
 
 }

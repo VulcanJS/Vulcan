@@ -1,12 +1,10 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import moment from 'moment';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import NovaForm from "meteor/nova:forms";
-import { withCurrentUser } from 'meteor/nova:core';
+import { ShowIf, withCurrentUser } from 'meteor/nova:core';
+import Comments from 'meteor/nova:comments';
 
 class CommentsItem extends Component{
 
@@ -106,11 +104,11 @@ class CommentsItem extends Component{
             <Telescope.components.UsersAvatar size="small" user={comment.user}/>
             <Telescope.components.UsersName user={comment.user}/>
             <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
-            <Telescope.components.CanDo action="comments.edit" document={this.props.comment}>
+            <ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
               </div>
-            </Telescope.components.CanDo>
+            </ShowIf>
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>

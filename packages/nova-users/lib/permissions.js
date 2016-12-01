@@ -105,46 +105,12 @@ Users.isMemberOf = (user, groupOrGroups) => {
 };
 
 /**
- * @summary check if a user can perform a specific action on a specific document
- * @param {Object} user
- * @param {String} action
- */
-Users.can = (user, action, document) => {
-  // TODO
-};
-
-/**
  * @summary check if a user can perform a specific action
  * @param {Object} user
  * @param {String} action
  */
 Users.canDo = (user, action) => {
   return Users.getActions(user).indexOf(action) !== -1;
-};
-
-/**
- * @summary Check if a given user can view a specific document
- * @param {Object} user - can be undefined!
- * @param {Object} document - Note: only actually works with posts for now
- */
-Users.canView = function (user, document) {
-
-  const status = _.findWhere(Telescope.statuses, {value: document.status}).label;
-  
-  // note(apollo): use of `__typename` given by react-apollo
-  //const collectionName = document.getCollectionName();
-  const collectionName = document.__typename ? Telescope.utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
-
-  if (!document) {
-    return false;
-  }
-
-  if (Users.owns(user, document)) {
-    return Users.canDo(user, `${collectionName}.view.${status}.own`);
-  } else {
-    return Users.canDo(user, `${collectionName}.view.${status}.all`);
-  }
-
 };
 
 /**

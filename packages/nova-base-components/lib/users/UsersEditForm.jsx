@@ -4,7 +4,7 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import Users from 'meteor/nova:users';
-
+import ShowIf from 'meteor/nova:core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -19,10 +19,9 @@ const UsersEditForm = (props, context) => {
     const user = props.data.user;
 
     return (
-      <Telescope.components.CanDo 
-        action="users.edit"
+      <ShowIf
+        check={Users.options.mutations.edit.check} 
         document={user}
-        displayNoPermissionMessage={true}
       >
         <div className="page users-edit-form">
           <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
@@ -37,7 +36,7 @@ const UsersEditForm = (props, context) => {
             noRemoveMutation={true}
           />
         </div>
-      </Telescope.components.CanDo>
+      </ShowIf>
     )
   }
 };

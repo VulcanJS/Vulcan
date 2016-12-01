@@ -85,8 +85,7 @@ Posts.getDefaultStatus = function (user) {
  * @param {Object} user
  */
 Posts.getStatusName = function (post) {
-  // TODO: write function
-  return 'approved';
+  return _.findWhere(Telescope.statuses, {value: post.status}).label;
 };
 
 /**

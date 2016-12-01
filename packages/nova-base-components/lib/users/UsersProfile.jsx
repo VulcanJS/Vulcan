@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
-import { withSingle } from 'meteor/nova:core';
+import { ShowIf, withSingle } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const UsersProfile = (props) => {
@@ -27,9 +27,9 @@ const UsersProfile = (props) => {
         <ul>
           {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }
           {user.__website ? <li><a href={user.__website}>{user.__website}</a></li> : null }
-          <Telescope.components.CanDo document={user} action="users.edit">
+          <ShowIf check={Users.options.mutations.edit.check} document={user}>
             <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
-          </Telescope.components.CanDo>
+          </ShowIf>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
         <Telescope.components.PostsList terms={terms} />

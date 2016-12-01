@@ -5,6 +5,8 @@ import Comments from "meteor/nova:comments";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import update from 'immutability-helper';
+import { ShowIf } from 'meteor/nova:core';
+import { FormattedMessage } from 'react-intl';
 
 const CommentsNewForm = (props, context) => {
 
@@ -19,10 +21,9 @@ const CommentsNewForm = (props, context) => {
   }
 
   return (
-    <Telescope.components.CanDo
-      action="comments.new"
-      noPermissionMessage="users.cannot_comment"
-      displayNoPermissionMessage={true}
+    <ShowIf
+      check={Comments.options.mutations.new.check}
+      failureComponent={<FormattedMessage id="users.cannot_comment"/>}
     >
       <div className="comments-new-form">
         <NovaForm
@@ -61,7 +62,7 @@ const CommentsNewForm = (props, context) => {
           layout="elementOnly"
         />
       </div>
-    </Telescope.components.CanDo>
+    </ShowIf>
   )
 
 };

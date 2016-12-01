@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import { /* ModalTrigger, */ ContextPasser, withList } from "meteor/nova:core";
+import { ShowIf, ContextPasser, withList } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 import Users from 'meteor/nova:users';
@@ -71,16 +71,14 @@ class CategoriesList extends Component {
 
   renderCategoryNewButton() {
     return (
-      <Telescope.components.CanDo action="categories.new">
-        <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}><FormattedMessage id="categories.new"/></Button></MenuItem></div>
-      </Telescope.components.CanDo>
+      <div className="category-menu-item dropdown-item">
+        <MenuItem>
+          <Button bsStyle="primary" onClick={this.openCategoryNewModal}>
+            <FormattedMessage id="categories.new"/>
+          </Button>
+        </MenuItem>
+      </div>
     );
-    // const CategoriesNewForm = Telescope.components.CategoriesNewForm;
-    // return (
-    //   <ModalTrigger title="New Category" component={<MenuItem className="dropdown-item post-category"><Button bsStyle="primary">New Category</Button></MenuItem>}>
-    //     <CategoriesNewForm/>
-    //   </ModalTrigger>
-    // )
   }
 
   render() {
@@ -116,7 +114,7 @@ class CategoriesList extends Component {
             // categories are loading
             : <div className="dropdown-item"><MenuItem><Telescope.components.Loading /></MenuItem></div>
           }
-          {this.renderCategoryNewButton()}
+          <ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</ShowIf>
         </DropdownButton>
         
         <div>

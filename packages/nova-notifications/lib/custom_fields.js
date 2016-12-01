@@ -5,11 +5,6 @@ const notificationsGroup = {
   order: 2
 };
 
-// check if user can create a new account
-const canInsert = user => Users.canDo(user, "users.new");
-// check if user can edit a user
-const canEdit = Users.canEdit;
-
 // Add notifications options to user profile settings
 Users.addField([
   {
@@ -20,8 +15,9 @@ Users.addField([
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      insertableIf: Users.isAdmin,
-      editableIf: Users.isAdmin,
+      viewableIf: ['anonymous'],
+      insertableIf: ['admins'],
+      editableIf: ['admins'],
       group: notificationsGroup
     }
   },
@@ -33,8 +29,9 @@ Users.addField([
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      insertableIf: canInsert,
-      editableIf: canEdit,
+      viewableIf: ['anonymous'],
+      insertableIf: ['default'],
+      editableIf: ['default'],
       group: notificationsGroup
     }
   }
@@ -50,8 +47,9 @@ if (typeof Comments !== "undefined") {
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        insertableIf: canInsert,
-        editableIf: canEdit
+        viewableIf: ['anonymous'],
+        insertableIf: ['default'],
+        editableIf: ['default']
       }
     },
     {
@@ -62,8 +60,9 @@ if (typeof Comments !== "undefined") {
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        insertableIf: canInsert,
-        editableIf: canEdit
+        viewableIf: ['anonymous'],
+        insertableIf: ['default'],
+        editableIf: ['default']
       }
     }
   ]);  

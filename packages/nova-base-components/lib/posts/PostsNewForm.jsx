@@ -4,16 +4,15 @@ import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Posts from "meteor/nova:posts";
-import update from 'immutability-helper';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 const PostsNewForm = (props, context) => {
   return (
-    <Telescope.components.CanDo
-      action="posts.new"
-      noPermissionMessage="users.cannot_post"
-      displayNoPermissionMessage={true}
+    <ShowIf
+      check={Posts.options.mutations.new.check}
+      failureComponent={<FormattedMessage id="users.cannot_post"/>}
     >
       <div className="posts-new-form">
         <NovaForm
@@ -26,7 +25,7 @@ const PostsNewForm = (props, context) => {
           }}
         />
       </div>
-    </Telescope.components.CanDo>
+    </ShowIf>
   );
 };
 
