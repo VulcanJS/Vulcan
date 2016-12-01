@@ -4,8 +4,9 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 export default function withList (options) {
-
-  const { queryName, collection, fragment, fragmentName } = options,
+  console.log(options)
+  const { queryName, collection, fragment } = options,
+        fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
 

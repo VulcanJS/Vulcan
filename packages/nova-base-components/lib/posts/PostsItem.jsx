@@ -81,7 +81,6 @@ PostsItem.propTypes = {
   post: React.PropTypes.object.isRequired,
 };
 
-PostsItem.fragmentName = 'PostsItemFragment';
 PostsItem.fragment = gql`
   fragment PostsItemFragment on Post {
     _id

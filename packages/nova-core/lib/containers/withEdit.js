@@ -28,7 +28,8 @@ import gql from 'graphql-tag';
 
 export default function withEdit(options) {
 
-  const {collection, fragmentName, fragment } = options,
+  const {collection, fragment } = options,
+        fragmentName = fragment.definitions[0].name.value,
         collectionName = collection._name,
         mutationName = collection.options.mutations.edit.name;
 

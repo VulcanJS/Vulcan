@@ -68,7 +68,6 @@ class MoviesItem extends Component {
 
 };
 
-MoviesItem.fragmentName = 'moviesItemFragment';
 MoviesItem.fragment = gql`
   fragment moviesItemFragment on Movie {
     _id

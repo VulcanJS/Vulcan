@@ -95,7 +95,6 @@ class FormWrapper extends Component{
     let WrappedComponent;
 
     const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
-    const fragmentName = `${prefix}FormFragment`;
 
     // props received from parent component (i.e. <NovaForm/> call)
     const parentProps = this.props;
@@ -109,7 +108,6 @@ class FormWrapper extends Component{
     // generic options for the withSingle, withNew, withEdit, and withRemove HoCs
     const options = {
       collection: this.props.collection,
-      fragmentName: fragmentName,
       fragment: this.getFragment(),
     };
 

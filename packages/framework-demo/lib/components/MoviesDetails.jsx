@@ -27,7 +27,6 @@ const MoviesDetails = props => {
   }
 }
 
-MoviesDetails.fragmentName = 'moviesDetailsFragment';
 MoviesDetails.fragment = gql`
   fragment moviesDetailsFragment on Movie {
     _id
@@ -45,7 +44,6 @@ MoviesDetails.fragment = gql`
 const options = {
   collection: Movies,
   queryName: 'moviesSingleQuery',
-  fragmentName: MoviesDetails.fragmentName,
   fragment: MoviesDetails.fragment,
 };
 

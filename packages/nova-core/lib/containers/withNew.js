@@ -29,7 +29,8 @@ import update from 'immutability-helper';
 export default function withNew(options) {
 
   // get options
-  const { collection, fragmentName, fragment, queryToUpdate } = options,
+  const { collection, fragment, queryToUpdate } = options,
+        fragmentName = fragment.definitions[0].name.value,
         collectionName = collection._name,
         mutationName = collection.options.mutations.new.name,
         listResolverName = collection.options.resolvers.list.name,

@@ -176,7 +176,6 @@ const fragment = gql`
 const categoriesListOptions = {
   collection: Categories,
   queryName: 'getCategoriesList',
-  fragmentName: 'categoriesListFragment',
   fragment: fragment
 };
 

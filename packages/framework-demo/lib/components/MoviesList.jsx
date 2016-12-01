@@ -61,7 +61,6 @@ class MoviesList extends Component {
 const listOptions = {
   collection: Movies,
   queryName: 'moviesListQuery',
-  fragmentName: MoviesItem.fragmentName,
   fragment: MoviesItem.fragment,
 };
 

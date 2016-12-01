@@ -44,7 +44,6 @@ UsersProfile.propTypes = {
 
 UsersProfile.displayName = "UsersProfile";
 
-UsersProfile.fragmentName = 'usersSingleFragment';
 UsersProfile.fragment = gql`
   fragment usersSingleFragment on User {
     _id
@@ -92,7 +91,6 @@ UsersProfile.fragment = gql`
 const options = {
   collection: Users,
   queryName: 'usersSingleQuery',
-  fragmentName: UsersProfile.fragmentName,
   fragment: UsersProfile.fragment,
 };
 

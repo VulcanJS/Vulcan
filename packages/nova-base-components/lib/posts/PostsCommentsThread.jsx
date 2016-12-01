@@ -50,7 +50,6 @@ PostsCommentsThread.propTypes = {
   currentUser: React.PropTypes.object
 };
 
-PostsCommentsThread.fragmentName = 'commentsListFragment';
 PostsCommentsThread.fragment = gql`
   fragment commentsListFragment on Comment {
     _id
@@ -72,7 +71,6 @@ PostsCommentsThread.fragment = gql`
 const options = {
   collection: Comments,
   queryName: 'commentsListQuery',
-  fragmentName: PostsCommentsThread.fragmentName,
   fragment: PostsCommentsThread.fragment,
 };
 

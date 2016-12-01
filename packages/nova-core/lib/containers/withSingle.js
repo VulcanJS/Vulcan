@@ -4,8 +4,9 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 export default function withSingle (options) {
-
-  const { queryName, collection, fragment, fragmentName } = options,
+  
+  const { queryName, collection, fragment } = options,
+        fragmentName = fragment.definitions[0].name.value,
         singleResolverName = collection.options.resolvers.single.name;
 
   return graphql(gql`

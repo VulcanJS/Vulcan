@@ -61,7 +61,6 @@ PostsList.propTypes = {
 //   listResolverName: 'postsList',
 //   totalResolverName: 'postsListTotal',
 //   fragment: Posts.fragments.list,
-//   fragmentName: 'fullPostInfo',
 //   ownPropsVariables: [
 //     // test note: can't overwrite atm
 //     // {propName: 'limit', graphqlType: 'Int', defaultValue: 2, usedForTotal: false}, 
@@ -74,7 +73,6 @@ PostsList.propTypes = {
 const options = {
   collection: Posts,
   queryName: 'postsListQuery',
-  fragmentName: Telescope.getRawComponent('PostsItem').fragmentName,
   fragment: Telescope.getRawComponent('PostsItem').fragment,
 };
 

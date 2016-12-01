@@ -39,7 +39,6 @@ PostsPage.propTypes = {
   document: React.PropTypes.object
 }
 
-PostsPage.fragmentName = 'PostsSingleFragment'
 PostsPage.fragment = gql` 
   fragment PostsSingleFragment on Post {
     _id
@@ -91,7 +90,6 @@ PostsPage.fragment = gql`
 const options = {
   collection: Posts,
   queryName: 'postsSingleQuery',
-  fragmentName: PostsPage.fragmentName,
   fragment: PostsPage.fragment,
 };
 
