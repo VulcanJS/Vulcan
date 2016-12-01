@@ -214,13 +214,6 @@ Users.getProperty = function (object, property) {
   }
 };
 
-Users.getViewableFields = function (user, collection) {
-  return Telescope.utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
-    (field, fieldName) => {
-      return Users.canViewField(user, field) ? fieldName : null;
-    }
-  )));
-}
 
 ////////////////////
 // More Helpers   //

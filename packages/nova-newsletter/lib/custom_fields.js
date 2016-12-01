@@ -1,21 +1,13 @@
-import Telescope from 'meteor/nova:lib';
 import NewsletterSubscribe from './components/NewsletterSubscribe.jsx';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
-
-// check if user can create a new account
-const canInsert = user => Users.canDo(user, "users.new");
-// check if user can edit a user
-const canEdit = Users.canEdit;
-
-const alwaysPublic = user => true;
 
 Posts.addField({
   fieldName: 'scheduledAt',
   fieldSchema: {
     type: Date,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   }
 });
 
@@ -28,9 +20,9 @@ Users.addField([
       optional: true,
       publish: true,
       defaultValue: false,
-      insertableIf: canInsert,
-      editableIf: canEdit,
-      viewableIf: alwaysPublic,
+      insertableIf: ['default'],
+      editableIf: ['default'],
+      viewableIf: ['anonymous'],
       control: NewsletterSubscribe,
       preload: true,
       group: {

@@ -1,8 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Users from "meteor/nova:users";
 
-const alwaysPublic = user => true;
-
 Users.addField([
   /**
     Count of the user's comments
@@ -14,7 +12,7 @@ Users.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   }
 ]);
@@ -30,7 +28,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -48,7 +46,7 @@ Posts.addField([
       //   limit: 4
       // },
       resolveAs: 'commenters: [User]',
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   }
 ]);

@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 export default function withList (options) {
-  console.log(options)
+
   const { queryName, collection, fragment } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
@@ -49,9 +49,6 @@ export default function withList (options) {
           return fetchMore({
             variables: { offset: results.length },
             updateQuery(previousResults, { fetchMoreResult }) {
-              console.log("//withList updateQuery")
-              console.log(previousResults)
-              console.log(fetchMoreResult)
               // no more post to fetch
               if (!fetchMoreResult.data) {
                 return previousResults;

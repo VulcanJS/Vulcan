@@ -148,18 +148,6 @@ Users.canView = function (user, document) {
 };
 
 /**
- * @summary Check if a given user can view a specific field
- * @param {Object} user - can be undefined!
- * @param {Object} collection
- * @param {String} fieldName
- */
-Users.canViewField = function (user, collection, fieldName) {
-  const schema = collection.simpleSchema()._schema;
-  const field = schema[fieldName];
-  return field.viewableIf(user);
-};
-
-/**
  * @summary Check if a user can edit a document
  * @param {Object} user - The user performing the action
  * @param {Object} document - The document being edited
@@ -229,12 +217,26 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
  */
-Users.canViewField = function (user, field) {
-  if (user && field.viewableIf) {
-    return typeof field.viewableIf === 'function' ? field.viewableIf(user) : Users.isMemberOf(user, field.viewableIf)
+Users.canViewField = function (user, field, document) {
+  if (field.viewableIf) {
+    return typeof field.viewableIf === 'function' ? field.viewableIf(user, document) : Users.isMemberOf(user, field.viewableIf)
   }
   return false;
 };
+
+/**
+ * @summary Get a list of fields viewable by a user
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} document - Optionally, get a list for a specific document
+ */
+Users.getViewableFields = function (user, collection, document) {
+  return Telescope.utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
+    (field, fieldName) => {
+      return Users.canViewField(user, field, document) ? fieldName : null;
+    }
+  )));
+}
 
 /**
  * @summary Check if a user can submit a field

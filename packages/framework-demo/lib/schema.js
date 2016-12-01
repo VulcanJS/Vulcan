@@ -5,29 +5,25 @@ A SimpleSchema-compatible JSON schema
 */
 
 import Telescope from 'meteor/nova:lib';
-import mutations from './mutations.js';
-
-const alwaysPublic = user => true;
-const isLoggedIn = user => !!user;
-const canEdit = mutations.edit.check;
+import Users from 'meteor/nova:users';
 
 // define schema
 const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   name: {
     label: 'Name',
     type: String,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     insertableIf: ['default'],
     editableIf: ['default'],
   },
   createdAt: {
     type: Date,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
     }
@@ -36,7 +32,7 @@ const schema = {
     label: 'Year',
     type: String,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     insertableIf: ['default'],
     editableIf: ['default'],
   },
@@ -44,7 +40,7 @@ const schema = {
     label: 'Review',
     type: String,
     control: "textarea",
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     insertableIf: ['default'],
     editableIf: ['default']
   },
@@ -53,14 +49,14 @@ const schema = {
     type: String,
     optional: true,
     control: "textarea",
-    viewableIf: alwaysPublic, //fixme
+    viewableIf: Users.owns,
     insertableIf: ['default'],
     editableIf: ['default']
   },
   userId: {
     type: String,
     optional: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     resolveAs: 'user: User',
   }
 };

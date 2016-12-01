@@ -3,8 +3,6 @@ import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
-const alwaysPublic = user => true;
-
 Users.addField([
   /**
     An array containing comments upvotes
@@ -15,7 +13,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: '__upvotedComments: [Vote]',
     }
   },
@@ -28,7 +26,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: '__upvotedPosts: [Vote]',
     }
   },
@@ -41,7 +39,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: '__downvotedComments: [Vote]',
     }
   },
@@ -54,7 +52,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: '__downvotedPosts: [Vote]',
     }
   },
@@ -71,7 +69,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -83,7 +81,7 @@ Posts.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: 'upvoters: [User]',
     }
   },
@@ -97,7 +95,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -109,7 +107,7 @@ Posts.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: 'downvoters: [User]',
     }
   },
@@ -124,7 +122,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -138,7 +136,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
 ]);
@@ -154,7 +152,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -166,7 +164,7 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: 'upvoters: [User]',
     }
   },
@@ -180,7 +178,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -192,7 +190,7 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
       resolveAs: 'downvoters: [User]',
     }
   },
@@ -207,7 +205,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   /**
@@ -221,7 +219,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
 ]);

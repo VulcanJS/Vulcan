@@ -63,18 +63,11 @@ export default function withNew(options) {
                 [totalResolverName]: { $set: prev[totalResolverName] + 1 }
               });
 
-              console.log(`// updated query ${queryToUpdate}:`)
-              console.log(prev)
-              console.log(newList)
-
               return newList;
             }
           };
         }
 
-        console.log('// newMutation')
-        console.log(updateQueries)
-        
         return mutate({ 
           variables: { document },
           updateQueries: options.updateQueries || updateQueries

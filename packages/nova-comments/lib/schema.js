@@ -2,18 +2,6 @@ import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import mutations from './mutations.js';
 
-
-// check if user can create a new comment
-const canInsert = user => Users.canDo(user, "comments.new");
-
-// check if user can edit a comment
-const canEdit = mutations.edit.check;
-
-// check if user can edit *all* comments
-const canEditAll = user => Users.canDo(user, "comments.edit.all"); // we don't use the mutations.edit check here, to be changed later with ability to give options to mutations.edit.check?
-
-const alwaysPublic = user => true;
-
 /**
  * @summary Comments schema
  * @type {Object}
@@ -26,7 +14,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   /**
     The `_id` of the parent comment, if there is one
@@ -35,8 +23,8 @@ const schema = {
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
     optional: true,
     publish: true,
     resolveAs: 'parentComment: Comment',
@@ -49,8 +37,8 @@ const schema = {
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
     optional: true,
     publish: true,
     resolveAs: 'topLevelComment: Comment',
@@ -63,7 +51,7 @@ const schema = {
     type: Date,
     optional: true,
     publish: false,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
     }
@@ -75,7 +63,7 @@ const schema = {
     type: Date,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,    
+    viewableIf: ['anonymous'],    
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
     }
@@ -86,9 +74,9 @@ const schema = {
   body: {
     type: String,
     max: 3000,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
+    editableIf: ['default'],
     publish: true,
     control: "textarea"
   },
@@ -99,7 +87,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   /**
     The comment author's name
@@ -108,7 +96,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
       const userId = documentOrModifier.userId || documentOrModifier.$set && documentOrModifier.$set.userId
@@ -122,7 +110,7 @@ const schema = {
     type: Boolean,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   /**
     The post's `_id`
@@ -131,8 +119,8 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     resolveAs: 'post: Post',
@@ -145,8 +133,8 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
-    insertableIf: canInsert,
+    viewableIf: ['anonymous'],
+    insertableIf: ['default'],
     hidden: true,
     resolveAs: 'user: User',
     // join: {
@@ -161,25 +149,25 @@ const schema = {
     type: Boolean,
     optional: true,
     publish: true,
-    viewableIf: alwaysPublic,
+    viewableIf: ['anonymous'],
   },
   userIP: {
     type: String,
     optional: true,
     publish: false,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
   },
   userAgent: {
     type: String,
     optional: true,
     publish: false,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
   },
   referrer: {
     type: String,
     optional: true,
     publish: false,
-    viewableIf: canEditAll,
+    viewableIf: ['admins'],
   }
 };
 

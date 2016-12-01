@@ -1,14 +1,12 @@
 import Posts from "meteor/nova:posts";
 
-const alwaysPublic = user => true;
-
 Posts.addField([
   {
     fieldName: 'cloudinaryId',
     fieldSchema: {
       type: String,
       optional: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   },
   {
@@ -17,7 +15,7 @@ Posts.addField([
       type: [Object],
       optional: true,
       blackbox: true,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   }
 ]);

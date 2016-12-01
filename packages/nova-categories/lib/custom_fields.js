@@ -5,13 +5,6 @@ import Categories from "./collection.js";
 
 import gql from 'graphql-tag';
 
-// check if user can create a new post
-const canInsert = user => Users.canDo(user, "posts.new");
-// check if user can edit a post
-const canEdit = Users.canEdit;
-
-const alwaysPublic = user => true;
-
 Posts.addField(
   {
     fieldName: 'categories',
@@ -19,9 +12,9 @@ Posts.addField(
       type: [String],
       control: "checkboxgroup",
       optional: true,
-      insertableIf: canInsert,
-      editableIf: canEdit,
-      viewableIf: alwaysPublic,
+      insertableIf: ['default'],
+      editableIf: ['default'],
+      viewableIf: ['anonymous'],
       form: {
         noselect: true,
         type: "bootstrap-category",

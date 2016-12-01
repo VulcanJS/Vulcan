@@ -49,8 +49,13 @@
       background: $light-blue;
     }
   }
-  .btn-group{
-    margin-right: $hmargin;
+}
+
+.posts-list-header{
+  @include medium-large{
+    .search-form, .posts-list-header-categories button, .posts-views button{
+      width: 160px;
+    }
   }
 }
 

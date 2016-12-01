@@ -1,7 +1,4 @@
-import Posts from './collection.js';
 import Users from "meteor/nova:users";
-
-const alwaysPublic = user => true;
 
 Users.addField([
   /**
@@ -14,7 +11,7 @@ Users.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: alwaysPublic,
+      viewableIf: ['anonymous'],
     }
   }
 ]);
