@@ -13,7 +13,7 @@ const MoviesNewForm = (props, context) => {
   return (
     <NovaForm 
       collection={Movies} 
-      queryName="moviesListQuery"
+      queryToUpdate="moviesListQuery"
       refetch={props.refetch}
     />
   )

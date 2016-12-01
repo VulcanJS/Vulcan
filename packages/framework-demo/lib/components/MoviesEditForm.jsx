@@ -17,7 +17,7 @@ const MoviesEditForm = (props, context) => {
       collection={Movies} 
       documentId={props.documentId}
       refetch={props.refetch}
-      queryName="moviesListQuery"
+      queryToUpdate="moviesListQuery"
       showRemove={true}
     />
   )
