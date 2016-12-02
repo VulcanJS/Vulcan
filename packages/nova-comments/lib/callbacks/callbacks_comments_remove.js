@@ -13,9 +13,10 @@ const CommentsRemovePostCommenters = (comment, currentUser) => {
 
   // update post
   Posts.update(comment.postId, {
-    $inc:       {commentCount: -1},
-    // $set:       {lastCommentedAt: new Date()},
-    $pull:  {commenters: userId}
+    $inc: {commentCount: -1},
+    // note: the others parameters should be queried by graphql from the post
+    // $set: {lastCommentedAt: new Date()},
+    // $pull: {commenters: userId}
   });
 
   return comment;
@@ -40,4 +41,4 @@ const CommentsRemoveChildrenComments = (comment, currentUser) => {
   return comment;
 };
 
-Telescope.callbacks.add("comments.remove.async", CommentsRemovePostCommenters);
+Telescope.callbacks.add("comments.remove.async", CommentsRemoveChildrenComments);

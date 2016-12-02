@@ -11,7 +11,7 @@ const CommentsEditForm = (props, context) => {
       <NovaForm 
         layout="elementOnly"
         collection={Comments}
-        document={props.comment}
+        documentId={props.comment._id}
         successCallback={props.successCallback}
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}

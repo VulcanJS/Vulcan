@@ -48,7 +48,9 @@ class CommentsItem extends Component{
   removeSuccessCallback({documentId}) {
     const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'comments.delete_success'});
     this.props.flash(deleteDocumentSuccess, "success");
-    this.context.events.track("comment deleted", {_id: documentId});
+    this.editSuccessCallback();
+    // todo: handle events in async callback
+    // this.context.events.track("comment deleted", {_id: documentId});
   }
 
   renderComment() {

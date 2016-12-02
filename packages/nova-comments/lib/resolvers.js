@@ -66,7 +66,7 @@ const resolvers = {
   total: {
     
     name: 'commentsTotal',
-    
+    // broken because it doesn't take any arguments in the query
     resolver(root, {postId}, context) {
       return context.Comments.find({postId}).count();
     },

@@ -28,34 +28,35 @@ const CommentsNewForm = (props, context) => {
       <div className="comments-new-form">
         <NovaForm
           collection={Comments}
-          updateQueries={{
-            getPost: (prev, { mutationResult }) => {
-              // console.log('[commentsNew] prev post', prev)
-              const newPost = update(prev, {
-                post: {
-                  commentCount: {
-                    $set: prev.post.commentCount + 1
-                  }
-                }
-              });
-              // console.log('[commentsNew] new post', newPost)
-              return newPost;
-            },
-            getCommentsList: (prev, { mutationResult }) => {
-              // console.log('[commentsNew] previous comment list', prev);
-              const newComment = mutationResult.data.commentsNew;
-              const newCommentsList = update(prev, {
-                commentsList: {
-                  $push: [newComment]
-                },
-                commentsListTotal: {
-                  $set: prev.commentsListTotal + 1
-                },
-              });
-              // console.log('[commentsNew] new comment list', newCommentsList)
-              return newCommentsList;
-            },
-          }}
+          // updateQueries={{
+          //   getPost: (prev, { mutationResult }) => {
+          //     // console.log('[commentsNew] prev post', prev)
+          //     const newPost = update(prev, {
+          //       post: {
+          //         commentCount: {
+          //           $set: prev.post.commentCount + 1
+          //         }
+          //       }
+          //     });
+          //     // console.log('[commentsNew] new post', newPost)
+          //     return newPost;
+          //   },
+          //   getCommentsList: (prev, { mutationResult }) => {
+          //     // console.log('[commentsNew] previous comment list', prev);
+          //     const newComment = mutationResult.data.commentsNew;
+          //     const newCommentsList = update(prev, {
+          //       commentsList: {
+          //         $push: [newComment]
+          //       },
+          //       commentsListTotal: {
+          //         $set: prev.commentsListTotal + 1
+          //       },
+          //     });
+          //     // console.log('[commentsNew] new comment list', newCommentsList)
+          //     return newCommentsList;
+          //   },
+          // }}
+          queryToUpdate="commentsListQuery"
           successCallback={props.successCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
