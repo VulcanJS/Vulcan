@@ -129,7 +129,7 @@ Telescope.callbacks.add("comments.new.async", CommentsNewUpvoteOwnComment);
 // add new comment notification callback on comment submit
 function CommentsNewNotifications (comment) {
 
-  if (typeof Telescope.notifications !== "undefined") {
+  if (typeof Telescope.notifications !== "undefined" && !comment.isDummy) {
 
     // note: dummy content has disableNotifications set to true
     if(Meteor.isServer && !comment.disableNotifications){

@@ -4,7 +4,7 @@ import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 
 Users.addField({
-  fieldName: '__isDummy',
+  fieldName: 'isDummy',
   fieldSchema: {
     type: Boolean,
     optional: true,
@@ -40,13 +40,13 @@ Comments.addField({
 });
 
 /**
- * @summary Copy over profile.isDummy to __isDummy on user creation
+ * @summary Copy over profile.isDummy to isDummy on user creation
  * @param {Object} user – the user object being iterated on and returned
  * @param {Object} options – user options
  */
 function copyDummyProperty (user, options) {
-  if (typeof user.profile.__isDummy !== "undefined") {
-    user.__isDummy = user.profile.__isDummy;
+  if (typeof user.profile.isDummy !== "undefined") {
+    user.isDummy = user.profile.isDummy;
   }
   return user;
 }
