@@ -74,12 +74,15 @@ class FormWrapper extends Component{
       return resolveAs && resolveAs.indexOf('[') > -1 ? `${fieldName}{_id}` : fieldName;
     });
 
+    // if extra fragment fields are specified, add them
+    if (this.props.extraFields) relevantFields = relevantFields.concat(this.props.extraFields);
+
     // generate fragment based on the fields that can be edited. Note: always add _id.
     const fragment = `fragment ${fragmentName} on ${this.props.collection.typeName} {
       _id
       ${relevantFields.join('\n')}
     }`
-
+    
     return gql`${fragment}`;
   }
 

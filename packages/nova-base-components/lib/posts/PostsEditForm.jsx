@@ -29,7 +29,7 @@ class PostsEditForm extends Component {
         <NovaForm
           collection={Posts}
           documentId={this.props.post._id}
-          queryToUpdate="postsListQuery"
+          extraFields={['htmlBody']}
           successCallback={post => { 
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');

@@ -57,6 +57,7 @@ const CommentsNewForm = (props, context) => {
           //   },
           // }}
           queryToUpdate="commentsListQuery"
+          extraFields={['htmlBody']}
           successCallback={props.successCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}

@@ -186,7 +186,6 @@ const schema = {
     insertableIf: ['admins'],
     editableIf: ['admins'],
     control: "select",
-    publish: true,
     autoValue(documentOrModifier) {
       // provide a default value if this is an insert operation and status field is not set in the document
       if (documentOrModifier && !documentOrModifier.$set && documentOrModifier.userId) {
