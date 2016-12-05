@@ -29,7 +29,16 @@ class PostsEditForm extends Component {
         <NovaForm
           collection={Posts}
           documentId={this.props.post._id}
-          extraFields={['htmlBody']}
+          extraFragment={`
+            htmlBody
+            postedAt
+            user{
+              _id
+              __displayName
+              __emailHash
+              __slug
+            }
+          `}
           successCallback={post => { 
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');

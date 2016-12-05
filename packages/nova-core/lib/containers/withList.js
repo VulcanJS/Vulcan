@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 export default function withList (options) {
 
-  const { queryName, collection, fragment } = options,
+  const { queryName, collection, fragment, fetchMoreVariables } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -70,6 +70,9 @@ export default function withList (options) {
     },
     props(props) {
       
+      // console.log('// withList props')
+      // console.log(props)
+
       const loading = props.data.loading,
             fetchMore = props.data.fetchMore,
             refetch = props.data.refetch,
@@ -83,11 +86,20 @@ export default function withList (options) {
         refetch,
         count: results && results.length,
         loadMore(event) {
-          event.preventDefault();
-          // basically, rerun the query 'getPostsList' with a new offset
+          if (event) event.preventDefault();
+
+          // get custom fetchMore variables or else just default to incrementing the offset
+          const variables = fetchMoreVariables && fetchMoreVariables(props.data) || { offset: results.length };
+
+          console.log('// loadMore')
+          console.log(props.data)
+          
           return fetchMore({
-            variables: { offset: results.length },
+            variables,
             updateQuery(previousResults, { fetchMoreResult }) {
+              console.log('// updateQuery')
+              console.log(previousResults)
+              console.log(fetchMoreResult)
               // no more post to fetch
               if (!fetchMoreResult.data) {
                 return previousResults;

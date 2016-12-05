@@ -33,6 +33,7 @@ import './posts/PostsCommenters.jsx';
 import './posts/PostsPage.jsx';
 import './posts/PostsStats.jsx';
 import './posts/PostsDaily.jsx';
+import './posts/PostsDailyList.jsx';
 import './posts/PostsDay.jsx';
 import './posts/PostsThumbnail.jsx';
 import './posts/PostsEditForm.jsx';
