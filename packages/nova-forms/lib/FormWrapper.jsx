@@ -49,7 +49,7 @@ class FormWrapper extends Component{
 
   // get fragment used to decide what data to load from the server to populate the form,
   // as well as what data to ask for as return value for the mutation
-  getFragment() {
+  getFragments() {
 
     const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
     const fragmentName = `${prefix}FormFragment`;
@@ -74,16 +74,23 @@ class FormWrapper extends Component{
       return resolveAs && resolveAs.indexOf('[') > -1 ? `${fieldName}{_id}` : fieldName;
     });
 
-    // if extra fragment fields are specified, add them
-    if (this.props.extraFields) relevantFields = relevantFields.concat(this.props.extraFields);
-
     // generate fragment based on the fields that can be edited. Note: always add _id.
-    const fragment = `fragment ${fragmentName} on ${this.props.collection.typeName} {
+    const queryFragment = `fragment ${fragmentName} on ${this.props.collection.typeName} {
       _id
       ${relevantFields.join('\n')}
     }`
+
+    // same thing but with extra mutation fragment, if there are any
+    const mutationFragment = this.props.extraFragment ? `fragment ${fragmentName} on ${this.props.collection.typeName} {
+      _id
+      ${relevantFields.join('\n')}
+      ${this.props.extraFragment}
+    }` : queryFragment;
     
-    return gql`${fragment}`;
+    return {
+      queryFragment: gql`${queryFragment}`,
+      mutationFragment: gql`${mutationFragment}`
+    };
   }
 
   // prevent extra re-renderings for unknown reasons
@@ -108,10 +115,17 @@ class FormWrapper extends Component{
       schema: this.getSchema(),
     };
 
-    // generic options for the withSingle, withNew, withEdit, and withRemove HoCs
-    const options = {
+    // options for withSingle HoC
+    const queryOptions = {
+      queryName: `${prefix}FormQuery`,
       collection: this.props.collection,
-      fragment: this.getFragment(),
+      fragment: this.getFragments().queryFragment,
+    };
+
+    // options for withNew, withEdit, and withRemove HoCs
+    const mutationOptions = {
+      collection: this.props.collection,
+      fragment: this.getFragments().mutationFragment,
     };
 
     // if this is an edit from, load the necessary data using the withSingle HoC
@@ -134,9 +148,9 @@ class FormWrapper extends Component{
       Loader.displayName = `withLoader(Form)`;
 
       WrappedComponent = compose(
-        withSingle({...options, queryName: `${prefix}FormQuery`}),
-        withEdit(options),
-        withRemove({...options, queryToUpdate: this.props.queryToUpdate})
+        withSingle(queryOptions),
+        withEdit(mutationOptions),
+        withRemove(mutationOptions)
       )(Loader);
 
       return <WrappedComponent documentId={this.props.documentId} />
@@ -144,7 +158,7 @@ class FormWrapper extends Component{
     } else {
 
       WrappedComponent = compose(
-        withNew({...options, queryToUpdate: this.props.queryToUpdate})
+        withNew(mutationOptions)
       )(Form);
 
       return <WrappedComponent {...childProps} {...parentProps} />
@@ -166,7 +180,6 @@ FormWrapper.propTypes = {
   newMutation: React.PropTypes.func, // the new mutation
   editMutation: React.PropTypes.func, // the edit mutation
   removeMutation: React.PropTypes.func, // the remove mutation
-  queryToUpdate: React.PropTypes.string, // query to update, used on new and remove mutation
 
   // form
   prefilledProps: React.PropTypes.object,

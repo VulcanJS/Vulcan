@@ -128,7 +128,7 @@ Telescope.createCollection = options => {
     }
     // total
     if (options.resolvers.total) {
-      Telescope.graphQL.addQuery(`${options.resolvers.total.name}: Int`);
+      Telescope.graphQL.addQuery(`${options.resolvers.total.name}(terms: Terms): Int`);
       queryResolvers[options.resolvers.total.name] = options.resolvers.total.resolver;
     }
     Telescope.graphQL.addResolvers({ Query: { ...queryResolvers } });

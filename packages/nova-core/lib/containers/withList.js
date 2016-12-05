@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import update from 'immutability-helper';
 
 export default function withList (options) {
 
@@ -12,7 +13,7 @@ export default function withList (options) {
 
   return graphql(gql`
     query ${queryName}($terms: Terms, $offset: Int, $limit: Int) {
-      ${totalResolverName}
+      ${totalResolverName}(terms: $terms)
       ${listResolverName}(terms: $terms, offset: $offset, limit: $limit) {
         ...${fragmentName}
       }
@@ -25,6 +26,44 @@ export default function withList (options) {
           terms: ownProps.terms || {},
           offset: 0,
           limit: 5
+        },
+        reducer: (previousResults, action) => {
+
+          const newMutationName = `${collection._name}New`;
+          const editMutationName = `${collection._name}Edit`;
+          const removeMutationName = `${collection._name}Remove`;
+
+          let newResults = previousResults;
+
+          switch (action.operationName) {
+
+            case newMutationName:
+              const newDocument = action.result.data[newMutationName];
+              newResults = update(previousResults, {
+                [listResolverName]: { $unshift: [newDocument] },
+                [totalResolverName]: { $set: previousResults[totalResolverName] + 1 }
+              });
+              break;
+
+            case editMutationName:
+              // do nothing
+              break;
+
+            case removeMutationName:
+              const listWithoutDocument = previousResults[listResolverName].filter(doc => doc._id !== action.result.data[removeMutationName]._id);
+              newResults = update(previousResults, {
+                [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
+                [totalResolverName]: { $set: previousResults[totalResolverName] - 1 } // ex: postsListTotal
+              });
+              break;
+          }
+        
+          // console.log('// withList reducer')
+          // console.log(previousResults)
+          // console.log(action)
+          // console.log(newResults)
+
+          return newResults;
         },
         // pollInterval: 20000,
       };

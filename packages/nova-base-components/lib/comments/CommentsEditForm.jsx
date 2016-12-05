@@ -16,7 +16,16 @@ const CommentsEditForm = (props, context) => {
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}
         showRemove={true}
-        extraFields={['htmlBody']}
+        extraFragment={`
+          htmlBody
+          postedAt
+          user{
+            _id
+            __displayName
+            __emailHash
+            __slug
+          }
+        `}
       />
     </div>
   )

@@ -159,6 +159,8 @@ const removeMutation = ({ collection, documentId, currentUser, validate, context
   collection.remove(documentId);
 
   Telescope.callbacks.runAsync(`${collectionName}.remove.async`, document, currentUser);
+
+  return document;
 }
 
 export {newMutation, editMutation, removeMutation};

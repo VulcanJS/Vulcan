@@ -24,17 +24,14 @@ Child Props:
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import update from 'immutability-helper';
 
 export default function withNew(options) {
 
   // get options
-  const { collection, fragment, queryToUpdate } = options,
+  const { collection, fragment } = options,
         fragmentName = fragment.definitions[0].name.value,
         collectionName = collection._name,
-        mutationName = collection.options.mutations.new.name,
-        listResolverName = collection.options.resolvers.list.name,
-        totalResolverName = collection.options.resolvers.total.name;
+        mutationName = collection.options.mutations.new.name;
 
   // wrap component with graphql HoC
   return graphql(gql`
@@ -47,30 +44,8 @@ export default function withNew(options) {
   `, {
     props: ({ownProps, mutate}) => ({
       newMutation: ({document}) => {
-
-        // if a queryToUpdate is passed as prop, generate updateQueries function
-        let updateQueries = {};
-        if (queryToUpdate) {
-          updateQueries = {
-            [queryToUpdate]: (prev, { mutationResult }) => {
-
-              // get new document to insert
-              const newDocument = mutationResult.data[mutationName];
-
-              // generate new list with updated total count and document inserted at top
-              const newList = update(prev, {
-                [listResolverName]: { $unshift: [newDocument] },
-                [totalResolverName]: { $set: prev[totalResolverName] + 1 }
-              });
-
-              return newList;
-            }
-          };
-        }
-
         return mutate({ 
           variables: { document },
-          updateQueries: options.updateQueries || updateQueries
         });
       }
     }),
