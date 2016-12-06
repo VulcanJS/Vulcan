@@ -12,9 +12,8 @@ const CategoriesNewForm = (props, context) => {
     <div className="categories-new-form">
       <NovaForm 
         collection={Categories} 
-        mutationName="categoriesNew"
-        queryName="getCategoriesList"
-        successCallback={(category)=>{
+        queryToUpdate="categoriesListQuery"
+        successCallback={category => {
           context.closeCallback();
           props.flash("Category created.", "success");
         }}

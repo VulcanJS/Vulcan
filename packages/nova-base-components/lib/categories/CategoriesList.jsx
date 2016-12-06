@@ -151,7 +151,7 @@ CategoriesList.propTypes = {
   results: React.PropTypes.array,
 };
 
-const fragment = gql`
+CategoriesList.fragment = gql`
   fragment categoriesListFragment on Category {
     _id
     name
@@ -159,22 +159,13 @@ const fragment = gql`
     order
     slug
     image
-    parent { 
-      # feels weird to repeat the same fields... but we cannot call the fragment on itself?!
-      _id
-      name
-      description
-      order
-      slug
-      image
-    }
   }
 `;
 
 const categoriesListOptions = {
   collection: Categories,
-  queryName: 'getCategoriesList',
-  fragment: fragment
+  queryName: 'categoriesListQuery',
+  fragment: CategoriesList.fragment,
 };
 
 Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

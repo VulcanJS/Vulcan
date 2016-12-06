@@ -13,9 +13,9 @@ class CategoriesEditForm extends Component{
     return (
       <div className="categories-edit-form">
         <NovaForm 
-          document={this.props.category}
           collection={Categories}
-          successCallback={(category)=>{
+          documentId={this.props.category._id}
+          successCallback={category => {
             this.context.closeCallback();
             this.props.flash("Category edited.", "success");
           }}
