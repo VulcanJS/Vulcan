@@ -11,7 +11,11 @@ class PostsDailyList extends Component{
   constructor(props) {
     super(props);
     this.loadMoreDays = this.loadMoreDays.bind(this);
-    this.state = {days: props.days};
+    this.state = {
+      days: props.days,
+      after: props.terms.after,
+      before: props.terms.before,
+    };
   }
 
   // for a number of days "n" return dates object for the past n days
@@ -23,9 +27,18 @@ class PostsDailyList extends Component{
 
   loadMoreDays(e) {
     e.preventDefault();
-    this.props.loadMore();
+    const numberOfDays = Telescope.settings.get('numberOfDays', 5);
+    const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
+    const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
+    this.props.loadMore({
+      terms: {
+        before: loadMoreBefore,
+        after: loadMoreAfter,
+      }
+    });
     this.setState({
-      days: this.state.days + this.props.increment
+      days: this.state.days + this.props.increment,
+      after: loadMoreAfter,
     });
   }
 
@@ -68,18 +81,6 @@ const options = {
   collection: Posts,
   queryName: 'postsDailyListQuery',
   fragment: Telescope.getRawComponent('PostsItem').fragment,
-  fetchMoreVariables(data) {
-    const numberOfDays = Telescope.settings.get('numberOfDays', 5);
-    const before = moment(data.variables.terms.before, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
-    const after = moment(data.variables.terms.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
-    return {
-      terms: {
-        view: 'daily',
-        after,
-        before,
-      }
-    }
-  }
 };
 
 Telescope.registerComponent('PostsDailyList', PostsDailyList, withList(options));
