@@ -1,6 +1,9 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import FRC from 'formsy-react-components';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
 const Input = FRC.Input;
 
 class EmbedlyURL extends Component {
@@ -21,32 +24,27 @@ class EmbedlyURL extends Component {
     const url = this.input.getValue();
 
     if (url.length) {
-
       // the URL has changed, get a new thumbnail
-      this.context.actions.call("getEmbedlyData", url, (error, result) => {
-        
-        console.log("querying Embedly…");
-        
+      this.props.getEmbedlyData({variables: {url}}).then(result => {
         this.setState({loading: false});
-
-        if (error) {
-          console.log(error)
-          this.context.throwError({content: error.message, type: "error"});
-        } else {
-          console.log(result)
-          this.context.addToAutofilledValues({
-            title: result.title,
-            body: result.description,
-            thumbnailUrl: result.thumbnailUrl
-          });
-        }
+        console.log(result)
+        this.context.addToAutofilledValues({
+          title: result.data.getEmbedlyData.title,
+          body: result.data.getEmbedlyData.description,
+          thumbnailUrl: result.data.getEmbedlyData.thumbnailUrl
+        });
+      }).catch(error => {
+        this.setState({loading: false});
+        console.log(error)
+        this.context.throwError({content: error.message, type: "error"});
       });
-
     }
   }
 
   render() {
     
+    console.log(this)
+
     const Loading = Telescope.components.Loading;
 
     const wrapperStyle = {
@@ -63,7 +61,7 @@ class EmbedlyURL extends Component {
     loadingStyle.display = this.state.loading ? "block" : "none";
     
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const {document, updateCurrentValue, control, ...rest} = this.props;
+    const {document, updateCurrentValue, control, getEmbedlyData, ...rest} = this.props;
 
     return (
       <div className="embedly-url-field" style={wrapperStyle}>
@@ -93,4 +91,27 @@ EmbedlyURL.contextTypes = {
   actions: React.PropTypes.object,
 }
 
-export default EmbedlyURL;
+function withGetEmbedlyData() {
+  return graphql(gql`
+    mutation getEmbedlyData($url: String) {
+      getEmbedlyData(url: $url) {
+        title
+        media {
+          duration
+          width
+          html
+          type
+          height
+        }
+        description
+        thumbnailUrl
+        sourceName
+        sourceUrl
+      }
+    }
+  `, {
+    name: 'getEmbedlyData'
+  });
+}
+
+export default withGetEmbedlyData()(EmbedlyURL);

@@ -22,7 +22,8 @@ Package.onUse( function(api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/get_embedly_data.js'
+    // 'lib/server/get_embedly_data.js'
+    'lib/server/mutations.js'
   ], ['server']);
 
   api.addFiles([

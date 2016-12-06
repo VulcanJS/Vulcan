@@ -6,6 +6,7 @@ Utilities to generate the app's GraphQL schema
 
 import Telescope from './config.js';
 import deepmerge from 'deepmerge';
+import GraphQLJSON from 'graphql-type-json';
 
 // convert a JSON schema to a GraphQL schema
 const jsTypeToGraphQLType = typeName => {
@@ -67,7 +68,9 @@ Telescope.graphQL = {
   },
 
   // add resolvers
-  resolvers: {},
+  resolvers: {
+    JSON: GraphQLJSON,
+  },
   addResolvers(resolvers) {
     this.resolvers = deepmerge(this.resolvers, resolvers);
   },
@@ -118,6 +121,9 @@ Telescope.graphQL = {
     });
 
     let graphQLSchema = `
+
+      scalar JSON
+
       type ${mainTypeName} {
         ${mainSchema.join('\n  ')}
       }
