@@ -4,19 +4,22 @@ import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
 
 const CommentsRemovePostCommenters = (comment, currentUser) => {
-  const userId = comment.userId;
+  const { userId, postId } = comment;
 
-  // dec comment count
+  // dec user's comment count
   Users.update({_id: userId}, {
     $inc:       {'__commentCount': -1}
   });
 
-  // update post
-  Posts.update(comment.postId, {
+  const postComments = Comments.find({postId}, {sort: {postedAt: -1}}).fetch();
+
+  const commenters = _.uniq(postComments.map(comment => comment.userId));
+  const lastCommentedAt = postComments[0] && postComments[0].postedAt;
+
+  // update post with a decremented comment count, a unique list of commenters and corresponding last commented at date 
+  Posts.update(postId, {
     $inc: {commentCount: -1},
-    // note: the others parameters should be queried by graphql from the post
-    // $set: {lastCommentedAt: new Date()},
-    // $pull: {commenters: userId}
+    $set: {lastCommentedAt, commenters},
   });
 
   return comment;
@@ -32,7 +35,7 @@ const CommentsRemoveChildrenComments = (comment, currentUser) => {
     removeMutation({
       action: 'comments.remove',
       collection: Comments,
-      document: childComment, 
+      documentId: childComment._id, 
       currentUser: currentUser,
       validate: false
     });

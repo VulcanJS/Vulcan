@@ -17,7 +17,7 @@ import { compose } from 'react-apollo';
 import { withList } from 'meteor/nova:core';
 import { withCurrentUser } from 'meteor/nova:core';
 
-const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={props.loadMore}>Load More ({props.count}/{props.totalCount})</a>
+const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={e => e.preventDefault(); props.loadMore();}>Load More ({props.count}/{props.totalCount})</a>
 
 class MoviesList extends Component {
 
