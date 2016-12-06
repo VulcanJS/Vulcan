@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
 
@@ -60,4 +60,4 @@ HeadTags.propTypes = {
 	image: React.PropTypes.string,
 };
 
-Telescope.registerComponent('HeadTags', HeadTags);
+registerComponent('HeadTags', HeadTags);

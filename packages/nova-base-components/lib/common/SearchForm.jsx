@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -64,4 +64,4 @@ SearchForm.contextTypes = {
   intl: intlShape
 };
 
-Telescope.registerComponent('SearchForm', SearchForm, withRouter);
+registerComponent('SearchForm', SearchForm, withRouter);

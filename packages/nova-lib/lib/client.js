@@ -1,3 +1,1 @@
-import Telescope from './modules.js';
-
-export default Telescope;
+export * from './modules.js';

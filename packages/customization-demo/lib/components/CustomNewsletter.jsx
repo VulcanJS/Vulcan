@@ -7,11 +7,11 @@ all of the class's other methods (other render
 functions, event handlers, etc.).
 */
 
-import Telescope from 'meteor/nova:lib';
+import { Components, getRawComponent, replaceComponent }from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 
-class CustomNewsletter extends Telescope.getRawComponent('Newsletter') {
+class CustomNewsletter extends getRawComponent('Newsletter') {
 
   render() {
     // console.log(this.renderButton); <-- exists
@@ -21,11 +21,11 @@ class CustomNewsletter extends Telescope.getRawComponent('Newsletter') {
         <div className="newsletter">
           <h4 className="newsletter-tagline">✉️<FormattedMessage id="newsletter.subscribe_prompt"/>✉️</h4>
           {this.props.currentUser ? this.renderButton() : this.renderForm()}
-          <a onClick={this.dismissBanner} className="newsletter-close"><Telescope.components.Icon name="close"/></a>
+          <a onClick={this.dismissBanner} className="newsletter-close"><Components.Icon name="close"/></a>
         </div>
       ) : null;
   }
 
 }
 
-Telescope.replaceComponent('Newsletter', CustomNewsletter);
+replaceComponent('Newsletter', CustomNewsletter);

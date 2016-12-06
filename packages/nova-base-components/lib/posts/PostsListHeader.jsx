@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import Categories from "meteor/nova:categories";
 
@@ -8,10 +8,10 @@ const PostsListHeader = () => {
     <div>
       <div className="posts-list-header">
         <div className="posts-list-header-categories">
-          <Telescope.components.CategoriesList />
+          <Components.CategoriesList />
         </div>
-        <Telescope.components.PostsViews />
-        <Telescope.components.SearchForm/>
+        <Components.PostsViews />
+        <Components.SearchForm/>
       </div>
     </div>
   )
@@ -19,4 +19,4 @@ const PostsListHeader = () => {
 
 PostsListHeader.displayName = "PostsListHeader";
 
-Telescope.registerComponent('PostsListHeader', PostsListHeader);
+registerComponent('PostsListHeader', PostsListHeader);

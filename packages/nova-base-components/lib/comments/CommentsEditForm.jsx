@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
@@ -40,4 +40,4 @@ CommentsEditForm.propTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('CommentsEditForm', CommentsEditForm, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('CommentsEditForm', CommentsEditForm, connect(mapStateToProps, mapDispatchToProps));

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -14,4 +14,4 @@ const PostsCategories = ({post}) => {
 
 PostsCategories.displayName = "PostsCategories";
 
-Telescope.registerComponent('PostsCategories', PostsCategories);
+registerComponent('PostsCategories', PostsCategories);

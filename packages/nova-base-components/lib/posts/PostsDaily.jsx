@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 
@@ -11,9 +11,9 @@ const PostsDaily = props => {
     before: moment().format("YYYY-MM-DD"),
   };
 
-  return <Telescope.components.PostsDailyList terms={terms}/>
+  return <Components.PostsDailyList terms={terms}/>
 };
 
 PostsDaily.displayName = "PostsDaily";
 
-Telescope.registerComponent('PostsDaily', PostsDaily);
+registerComponent('PostsDaily', PostsDaily);

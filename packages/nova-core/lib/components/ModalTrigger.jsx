@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
@@ -67,6 +67,6 @@ ModalTrigger.contextTypes = {
   events: React.PropTypes.object,
 };
 
-Telescope.registerComponent('ModalTrigger', ModalTrigger);
+registerComponent('ModalTrigger', ModalTrigger);
 module.exports = ModalTrigger;
 export default ModalTrigger;

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Button } from 'react-bootstrap';
@@ -12,18 +12,18 @@ import gql from 'graphql-tag';
 class PostsItem extends Component {
 
   renderCategories() {
-    return this.props.post.categories && this.props.post.categories.length > 0 ? <Telescope.components.PostsCategories post={this.props.post} /> : "";
+    return this.props.post.categories && this.props.post.categories.length > 0 ? <Components.PostsCategories post={this.props.post} /> : "";
   }
 
   renderCommenters() {
-    return this.props.post.commenters && this.props.post.commenters.length > 0 ? <Telescope.components.PostsCommenters post={this.props.post}/> : "";
+    return this.props.post.commenters && this.props.post.commenters.length > 0 ? <Components.PostsCommenters post={this.props.post}/> : "";
   }
 
   renderActions() {
     return (
       <div className="post-actions">
         <ModalTrigger title="Edit Post" component={<a className="posts-action-edit"><FormattedMessage id="posts.edit"/></a>}>
-          <Telescope.components.PostsEditForm post={this.props.post} />
+          <Components.PostsEditForm post={this.props.post} />
         </ModalTrigger>
       </div>
     )
@@ -40,10 +40,10 @@ class PostsItem extends Component {
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Telescope.components.Vote post={post}/>
+          <Components.Vote post={post}/>
         </div>
         
-        {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}
+        {post.thumbnailUrl ? <Components.PostsThumbnail post={post}/> : null}
 
         <div className="posts-item-content">
           
@@ -55,14 +55,14 @@ class PostsItem extends Component {
           </h3>
           
           <div className="posts-item-meta">
-            {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
+            {post.user? <div className="posts-item-user"><Components.UsersAvatar user={post.user} size="small"/><Components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date">{post.postedAt ? <FormattedRelative value={post.postedAt}/> : <FormattedMessage id="posts.dateNotDefined"/>}</div>
             <div className="posts-item-comments">
               <Link to={Posts.getPageUrl(post)}>
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
-            {this.props.currentUser && this.props.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
+            {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}
             {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
           </div>
 
@@ -126,4 +126,4 @@ PostsItem.fragment = gql`
   }
 `;
 
-Telescope.registerComponent('PostsItem', PostsItem, withCurrentUser);
+registerComponent('PostsItem', PostsItem, withCurrentUser);

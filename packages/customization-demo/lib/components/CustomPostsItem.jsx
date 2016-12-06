@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, getRawComponent, replaceComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Button } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
 import Categories from "meteor/nova:categories";
 
-class CustomPostsItem extends Telescope.getRawComponent('PostsItem') {
+class CustomPostsItem extends getRawComponent('PostsItem') {
 
   render() {
 
@@ -27,10 +27,10 @@ class CustomPostsItem extends Telescope.getRawComponent('PostsItem') {
       <div className={postClass}>
         
         <div className="posts-item-vote">
-          <Telescope.components.Vote post={post} />
+          <Components.Vote post={post} />
         </div>
         
-        {post.thumbnailUrl ? <Telescope.components.PostsThumbnail post={post}/> : null}
+        {post.thumbnailUrl ? <Components.PostsThumbnail post={post}/> : null}
 
         <div className="posts-item-content">
           
@@ -42,14 +42,14 @@ class CustomPostsItem extends Telescope.getRawComponent('PostsItem') {
           </h3>
           
           <div className="posts-item-meta">
-            {post.user? <div className="posts-item-user"><Telescope.components.UsersAvatar user={post.user} size="small"/><Telescope.components.UsersName user={post.user}/></div> : null}
+            {post.user? <div className="posts-item-user"><Components.UsersAvatar user={post.user} size="small"/><Components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date"><FormattedRelative value={post.postedAt}/></div>
             <div className="posts-item-comments">
               <Link to={Posts.getPageUrl(post)}>
                 <FormattedMessage id="comments.count" values={{count: post.commentCount}}/>
               </Link>
             </div>
-            {this.props.currentUser && this.props.currentUser.isAdmin ? <Telescope.components.PostsStats post={post} /> : null}
+            {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}
             {this.renderActions()}
           </div>
 
@@ -114,4 +114,4 @@ CustomPostsItem.fragment = gql`
   }
 `;
 
-Telescope.replaceComponent('PostsItem', CustomPostsItem);
+replaceComponent('PostsItem', CustomPostsItem);

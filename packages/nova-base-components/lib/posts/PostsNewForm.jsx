@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import NovaForm from "meteor/nova:forms";
 import { ShowIf } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
@@ -55,4 +55,4 @@ PostsNewForm.displayName = "PostsNewForm";
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('PostsNewForm', PostsNewForm, withRouter, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('PostsNewForm', PostsNewForm, withRouter, connect(mapStateToProps, mapDispatchToProps));

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
@@ -13,7 +13,7 @@ class PostsDay extends Component {
       <div className="posts-day">
         <h4 className="posts-day-heading">{date.format("dddd, MMMM Do YYYY")}</h4>
         <div className="posts-list-content">
-          {posts.map(post => <Telescope.components.PostsItem post={post} key={post._id} />)}
+          {posts.map(post => <Components.PostsItem post={post} key={post._id} />)}
         </div>
       </div>
     )
@@ -27,4 +27,4 @@ PostsDay.propTypes = {
   number: React.PropTypes.number
 }
 
-Telescope.registerComponent('PostsDay', PostsDay);
+registerComponent('PostsDay', PostsDay);

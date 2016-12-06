@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -6,4 +6,4 @@ const PostsNoMore = props => <p className="posts-no-more"><FormattedMessage id="
 
 PostsNoMore.displayName = "PostsNoMore";
 
-Telescope.registerComponent('PostsNoMore', PostsNoMore);
+registerComponent('PostsNoMore', PostsNoMore);

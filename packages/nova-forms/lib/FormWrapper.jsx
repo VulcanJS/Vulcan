@@ -24,7 +24,7 @@ component is also added to wait for withSingle's loading prop to be false)
 
 */
 
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
@@ -136,7 +136,7 @@ class FormWrapper extends Component{
       const Loader = props => {
         const { document, loading } = props;
         return loading ? 
-          <Telescope.components.Loading /> : 
+          <Components.Loading /> : 
           <Form 
             document={document}
             loading={loading}

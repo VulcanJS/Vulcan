@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import FRC from 'formsy-react-components';
 import { graphql } from 'react-apollo';
@@ -42,8 +42,6 @@ class EmbedlyURL extends Component {
   }
 
   render() {
-    
-    const Loading = Telescope.components.Loading;
 
     const wrapperStyle = {
       position: "relative"
@@ -70,7 +68,7 @@ class EmbedlyURL extends Component {
           ref={ref => this.input = ref}
         />
         <div className="embedly-url-field-loading" style={loadingStyle}>
-          <Loading />
+          <Components.Loading />
         </div>
       </div>
     );

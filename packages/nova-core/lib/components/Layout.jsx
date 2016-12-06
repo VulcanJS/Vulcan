@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 
 const Layout = props => {
@@ -9,6 +9,6 @@ const Layout = props => {
 
 Layout.displayName = "Layout";
 
-Telescope.registerComponent('Layout', Layout);
+registerComponent('Layout', Layout);
 
 export default Layout;

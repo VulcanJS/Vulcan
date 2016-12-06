@@ -1,9 +1,8 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { withApollo } from 'react-apollo';
-//import { client } from 'meteor/nova:apollo';
 
 const UsersAccountForm = ({client}) => {
   return (
@@ -15,7 +14,7 @@ const UsersAccountForm = ({client}) => {
   ) 
 };
 
-Telescope.registerComponent('UsersAccountForm', UsersAccountForm, withApollo);
+registerComponent('UsersAccountForm', UsersAccountForm, withApollo);
 
 // customize Accounts.ui
 

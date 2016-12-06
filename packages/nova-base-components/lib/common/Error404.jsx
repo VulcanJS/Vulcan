@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -12,4 +12,4 @@ const Error404 = () => {
 
 Error404.displayName = "Error404";
 
-Telescope.registerComponent('Error404', Error404);
+registerComponent('Error404', Error404);

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { withCurrentUser } from 'meteor/nova:core';
 
@@ -14,18 +14,18 @@ const Header = (props, context) => {
       <header className="header">
 
         <div className="logo">
-          <Telescope.components.Logo logoUrl={logoUrl} siteTitle={siteTitle} />
+          <Components.Logo logoUrl={logoUrl} siteTitle={siteTitle} />
           {tagline ? <h2 className="tagline">{tagline}</h2> : "" }
         </div>
         
         <div className="nav">
           
           <div className="nav-user">
-            {props.currentUser ? <Telescope.components.UsersMenu/> : <Telescope.components.UsersAccountMenu/>}
+            {props.currentUser ? <Components.UsersMenu/> : <Components.UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">
-            <Telescope.components.PostsNewButton/>
+            <Components.PostsNewButton/>
           </div>
 
         </div>
@@ -41,4 +41,4 @@ Header.propTypes = {
   currentUser: React.PropTypes.object,
 };
 
-Telescope.registerComponent('Header', Header, withCurrentUser);
+registerComponent('Header', Header, withCurrentUser);

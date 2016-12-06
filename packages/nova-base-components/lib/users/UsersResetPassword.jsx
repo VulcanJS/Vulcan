@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { Link } from 'react-router';
@@ -36,4 +36,4 @@ UsersResetPassword.propsTypes = {
   params: React.PropTypes.object,
 };
 
-Telescope.registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);
+registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);

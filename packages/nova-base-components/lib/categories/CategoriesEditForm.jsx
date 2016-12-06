@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
@@ -42,4 +42,4 @@ CategoriesEditForm.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('CategoriesEditForm', CategoriesEditForm, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('CategoriesEditForm', CategoriesEditForm, connect(mapStateToProps, mapDispatchToProps));

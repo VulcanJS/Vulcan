@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
@@ -49,4 +49,4 @@ UsersAvatar.defaultProps = {
 
 UsersAvatar.displayName = "UsersAvatar";
 
-Telescope.registerComponent('UsersAvatar', UsersAvatar);
+registerComponent('UsersAvatar', UsersAvatar);

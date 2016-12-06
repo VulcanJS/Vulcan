@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
@@ -59,4 +59,4 @@ PostsViews.contextTypes = {
 
 PostsViews.displayName = "PostsViews";
 
-Telescope.registerComponent('PostsViews', PostsViews, withCurrentUser, withRouter);
+registerComponent('PostsViews', PostsViews, withCurrentUser, withRouter);

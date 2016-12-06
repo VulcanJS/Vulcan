@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
@@ -54,4 +54,4 @@ NewsletterButton.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('NewsletterButton', NewsletterButton, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('NewsletterButton', NewsletterButton, connect(mapStateToProps, mapDispatchToProps));

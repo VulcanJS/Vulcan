@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import {FormattedMessage } from 'react-intl';
 import { ModalTrigger, withList } from 'meteor/nova:core';
@@ -12,7 +12,7 @@ const PostsCommentsThread = (props, context) => {
 
   if (loading) {
   
-    return <div className="posts-comments-thread"><Telescope.components.Loading/></div>
+    return <div className="posts-comments-thread"><Components.Loading/></div>
   
   } else {
 
@@ -24,18 +24,18 @@ const PostsCommentsThread = (props, context) => {
     return (
       <div className="posts-comments-thread">
         <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
-        <Telescope.components.CommentsList comments={nestedComments} commentCount={commentCount}/>
+        <Components.CommentsList comments={nestedComments} commentCount={commentCount}/>
         { props.currentUser ?
           <div className="posts-comments-thread-new">
             <h4><FormattedMessage id="comments.new"/></h4>
-            <Telescope.components.CommentsNewForm
+            <Components.CommentsNewForm
               postId={postId} 
               type="comment" 
             />
           </div> :
           <div>
             <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
-              <Telescope.components.UsersAccountForm/>
+              <Components.UsersAccountForm/>
             </ModalTrigger>
           </div> 
         }
@@ -75,4 +75,4 @@ const options = {
   fragment: PostsCommentsThread.fragment,
 };
 
-Telescope.registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withList(options));
+registerComponent('PostsCommentsThread', PostsCommentsThread, withCurrentUser, withList(options));

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
@@ -46,7 +46,7 @@ class CategoriesList extends Component {
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser closeCallback={this.closeModal}>
-            <Telescope.components.CategoriesEditForm category={category}/>
+            <Components.CategoriesEditForm category={category}/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -62,7 +62,7 @@ class CategoriesList extends Component {
         </Modal.Header>        
         <Modal.Body>
           <ContextPasser closeCallback={this.closeModal}>
-            <Telescope.components.CategoriesNewForm/>
+            <Components.CategoriesNewForm/>
           </ContextPasser>
         </Modal.Body>
       </Modal>
@@ -108,11 +108,11 @@ class CategoriesList extends Component {
             !this.props.loading ? 
               // there are currently categories
               categories && categories.length > 0 ? 
-                categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) 
+                categories.map((category, index) => <Components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) 
               // not any category found
               : null
             // categories are loading
-            : <div className="dropdown-item"><MenuItem><Telescope.components.Loading /></MenuItem></div>
+            : <div className="dropdown-item"><MenuItem><Components.Loading /></MenuItem></div>
           }
           <ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</ShowIf>
         </DropdownButton>
@@ -168,4 +168,4 @@ const categoriesListOptions = {
   fragment: CategoriesList.fragment,
 };
 
-Telescope.registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));
+registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

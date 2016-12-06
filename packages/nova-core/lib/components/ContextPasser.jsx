@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 
 class ContextPasser extends Component {
@@ -28,7 +28,7 @@ ContextPasser.childContextTypes = {
   messages: React.PropTypes.object,
 };
 
-Telescope.registerComponent('ContextPasser', ContextPasser);
+registerComponent('ContextPasser', ContextPasser);
 
 export default ContextPasser;
 module.exports = ContextPasser;

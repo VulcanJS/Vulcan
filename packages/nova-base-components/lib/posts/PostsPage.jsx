@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import Posts from 'meteor/nova:posts';
 import { withSingle } from 'meteor/nova:core';
@@ -8,7 +8,7 @@ const PostsPage = (props) => {
 
   if (props.loading) {
 
-    return <div className="posts-page"><Telescope.components.Loading/></div>
+    return <div className="posts-page"><Components.Loading/></div>
 
   } else {
 
@@ -18,15 +18,15 @@ const PostsPage = (props) => {
 
     return (
       <div className="posts-page">
-        <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
+        <Components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
         
-        <Telescope.components.PostsItem post={post} />
+        <Components.PostsItem post={post} />
 
         {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
         {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
 
-        <Telescope.components.PostsCommentsThread terms={{postId: post._id}} />
+        <Components.PostsCommentsThread terms={{postId: post._id}} />
 
       </div> 
     )
@@ -93,4 +93,4 @@ const options = {
   fragment: PostsPage.fragment,
 };
 
-Telescope.registerComponent('PostsPage', PostsPage, withSingle(options));
+registerComponent('PostsPage', PostsPage, withSingle(options));

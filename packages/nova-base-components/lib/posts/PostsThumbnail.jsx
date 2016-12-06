@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
 
@@ -12,4 +12,4 @@ const PostsThumbnail = ({post}) => {
 
 PostsThumbnail.displayName = "PostsThumbnail";
 
-Telescope.registerComponent('PostsThumbnail', PostsThumbnail);
+registerComponent('PostsThumbnail', PostsThumbnail);

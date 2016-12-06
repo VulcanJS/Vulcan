@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 
 const Icon = ({ name, iconClass }) => {
@@ -11,6 +11,6 @@ const Icon = ({ name, iconClass }) => {
 
 Icon.displayName = "Icon";
 
-Telescope.registerComponent('Icon', Icon);
+registerComponent('Icon', Icon);
 
 export default Icon;

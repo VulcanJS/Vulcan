@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
@@ -45,4 +45,4 @@ UsersEditForm.displayName = "UsersEditForm";
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, connect(mapStateToProps, mapDispatchToProps));

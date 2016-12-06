@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 
 const Loading = props => {
@@ -13,6 +13,6 @@ const Loading = props => {
 
 Loading.displayName = "Loading";
 
-Telescope.registerComponent('Loading', Loading);
+registerComponent('Loading', Loading);
 
 export default Loading;

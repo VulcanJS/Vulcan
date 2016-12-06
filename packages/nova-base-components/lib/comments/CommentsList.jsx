@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 
@@ -7,8 +7,8 @@ const CommentsList = ({comments, commentCount}) => {
   if (commentCount > 0) {
     return (
       <div className="comments-list">
-        {comments.map(comment => <Telescope.components.CommentsNode comment={comment} key={comment._id} />)}
-        {/*hasMore ? (ready ? <Telescope.components.CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Telescope.components.Loading/>) : null*/}
+        {comments.map(comment => <Components.CommentsNode comment={comment} key={comment._id} />)}
+        {/*hasMore ? (ready ? <Components.CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Components.Loading/>) : null*/}
       </div>
     )
   } else {
@@ -25,4 +25,4 @@ const CommentsList = ({comments, commentCount}) => {
 
 CommentsList.displayName = "CommentsList";
 
-Telescope.registerComponent('CommentsList', CommentsList);
+registerComponent('CommentsList', CommentsList);

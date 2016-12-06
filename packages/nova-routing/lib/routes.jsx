@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components } from 'meteor/nova:lib';
 import React from 'react';
 import { Messages } from 'meteor/nova:core';
 import { IndexRoute, Route } from 'react-router';
@@ -14,11 +14,11 @@ import { configureStore } from "./store.js";
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
-  Telescope.routes.add({name:"app.notfound", path:"*", component:Telescope.components.Error404});
+  Telescope.routes.add({name:"app.notfound", path:"*", component:Components.Error404});
 
   const AppRoutes = {
     path: '/',
-    component: Telescope.components.App,
+    component: Components.App,
     indexRoute: Telescope.routes.indexRoute,
     childRoutes: Telescope.routes.routes
   };

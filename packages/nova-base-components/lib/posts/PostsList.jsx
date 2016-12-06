@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, getRawComponent, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { withList } from 'meteor/nova:core';
 import Posts from 'meteor/nova:posts';
@@ -13,28 +13,28 @@ const PostsList = (props) => {
 
     return (
       <div className="posts-list">
-        {showHeader ? <Telescope.components.PostsListHeader/> : null}
+        {showHeader ? <Components.PostsListHeader/> : null}
         <div className="posts-list-content">
-          {results.map(post => <Telescope.components.PostsItem post={post} key={post._id} />)}
+          {results.map(post => <Components.PostsItem post={post} key={post._id} />)}
         </div>
-        {hasMore ? (loading ? <Telescope.components.PostsLoading/> : <Telescope.components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Telescope.components.PostsNoMore/>}
+        {hasMore ? (loading ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/>}
       </div>
     )
   } else if (loading) {
     return (
       <div className="posts-list">
-        {showHeader ? <Telescope.components.PostsListHeader /> : null}
+        {showHeader ? <Components.PostsListHeader /> : null}
         <div className="posts-list-content">
-          <Telescope.components.PostsLoading/>
+          <Components.PostsLoading/>
         </div>
       </div>
     )
   } else {
     return (
       <div className="posts-list">
-        {showHeader ? <Telescope.components.PostsListHeader /> : null}
+        {showHeader ? <Components.PostsListHeader /> : null}
         <div className="posts-list-content">
-          <Telescope.components.PostsNoResults/>
+          <Components.PostsNoResults/>
         </div>
       </div>
     )  
@@ -58,7 +58,7 @@ PostsList.propTypes = {
 const options = {
   collection: Posts,
   queryName: 'postsListQuery',
-  fragment: Telescope.getRawComponent('PostsItem').fragment,
+  fragment: getRawComponent('PostsItem').fragment,
 };
 
-Telescope.registerComponent('PostsList', PostsList, withList(options));
+registerComponent('PostsList', PostsList, withList(options));

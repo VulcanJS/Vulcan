@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, getRawComponent, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
@@ -59,8 +59,8 @@ class PostsDailyList extends Component{
 
     return (
       <div className="posts-daily">
-        <Telescope.components.PostsListHeader />
-        {postsByDates.map((day, index) => <Telescope.components.PostsDay key={index} number={index} {...day} />)}
+        <Components.PostsListHeader />
+        {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} />)}
         <button className="posts-load-more" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></button>
       </div>
     )
@@ -80,9 +80,7 @@ PostsDailyList.defaultProps = {
 const options = {
   collection: Posts,
   queryName: 'postsDailyListQuery',
-  fragment: Telescope.getRawComponent('PostsItem').fragment,
+  fragment: getRawComponent('PostsItem').fragment,
 };
 
-Telescope.registerComponent('PostsDailyList', PostsDailyList, withList(options));
-
-// Telescope.registerComponent('PostsDaily', PostsDaily);
+registerComponent('PostsDailyList', PostsDailyList, withList(options));

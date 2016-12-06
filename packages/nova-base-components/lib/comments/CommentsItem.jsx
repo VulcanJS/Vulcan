@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
 import { bindActionCreators } from 'redux';
@@ -62,7 +62,7 @@ class CommentsItem extends Component{
         <div dangerouslySetInnerHTML={htmlBody}></div>
         { showReplyButton ?
           <a className="comments-item-reply-link" onClick={this.showReply}>
-            <Telescope.components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
+            <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null}
       </div>  
     )
@@ -72,7 +72,7 @@ class CommentsItem extends Component{
 
     return (
       <div className="comments-item-reply">
-        <Telescope.components.CommentsNewForm
+        <Components.CommentsNewForm
           postId={this.props.comment.postId} 
           parentComment={this.props.comment} 
           successCallback={this.replySuccessCallback} 
@@ -86,7 +86,7 @@ class CommentsItem extends Component{
   renderEdit() {
 
     return (
-      <Telescope.components.CommentsEditForm
+      <Components.CommentsEditForm
         comment={this.props.comment}
         successCallback={this.editSuccessCallback} 
         cancelCallback={this.editCancelCallback}
@@ -102,8 +102,8 @@ class CommentsItem extends Component{
       <div className="comments-item" id={comment._id}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
-            <Telescope.components.UsersAvatar size="small" user={comment.user}/>
-            <Telescope.components.UsersName user={comment.user}/>
+            <Components.UsersAvatar size="small" user={comment.user}/>
+            <Components.UsersName user={comment.user}/>
             <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
             <ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
@@ -133,4 +133,4 @@ CommentsItem.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('CommentsItem', CommentsItem, connect(mapStateToProps, mapDispatchToProps), withCurrentUser);
+registerComponent('CommentsItem', CommentsItem, connect(mapStateToProps, mapDispatchToProps), withCurrentUser);

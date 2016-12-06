@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Dropdown, Button } from 'react-bootstrap';
@@ -11,7 +11,7 @@ const UsersAccountMenu = () => {
         <FormattedMessage id="users.log_in"/>
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Telescope.components.UsersAccountForm />
+        <Components.UsersAccountForm />
       </Dropdown.Menu>
     </Dropdown>
   ) 
@@ -19,4 +19,4 @@ const UsersAccountMenu = () => {
 
 UsersAccountMenu.displayName = "UsersAccountMenu";
 
-Telescope.registerComponent('UsersAccountMenu', UsersAccountMenu);
+registerComponent('UsersAccountMenu', UsersAccountMenu);

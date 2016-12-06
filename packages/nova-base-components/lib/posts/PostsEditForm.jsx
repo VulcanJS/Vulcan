@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
@@ -15,7 +15,7 @@ class PostsEditForm extends Component {
       <ShowIf check={Posts.options.mutations.edit.check} document={this.props.post}>
         <div className="posts-edit-form-admin">
           <div className="posts-edit-form-id">ID: {this.props.post._id}</div>
-          <Telescope.components.PostsStats post={this.props.post} />
+          <Components.PostsStats post={this.props.post} />
         </div>
       </ShowIf>
     )
@@ -78,4 +78,4 @@ PostsEditForm.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('PostsEditForm', PostsEditForm, connect(mapStateToProps, mapDispatchToProps), withRouter);
+registerComponent('PostsEditForm', PostsEditForm, connect(mapStateToProps, mapDispatchToProps), withRouter);

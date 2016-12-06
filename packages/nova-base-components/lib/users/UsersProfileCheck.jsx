@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Modal } from 'react-bootstrap';
@@ -47,4 +47,4 @@ UsersProfileCheck.propsTypes = {
 
 UsersProfileCheck.displayName = "UsersProfileCheck";
 
-Telescope.registerComponent('UsersProfileCheck', UsersProfileCheck, withCurrentUser, withRouter);
+registerComponent('UsersProfileCheck', UsersProfileCheck, withCurrentUser, withRouter);

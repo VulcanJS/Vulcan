@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import Users from 'meteor/nova:users';
@@ -70,7 +70,7 @@ class Vote extends Component {
     return (
       <div className={actionsClass}>
         <a className="upvote-button" onClick={this.upvote}>
-          {this.state.loading ? <Telescope.components.Icon name="spinner" /> : <Telescope.components.Icon name="upvote" /> }
+          {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
           <div className="vote-count">{post.baseScore || 0}</div>
         </a>
@@ -95,4 +95,4 @@ Vote.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('Vote', Vote, withCurrentUser, connect(mapStateToProps, mapDispatchToProps), withVote);
+registerComponent('Vote', Vote, withCurrentUser, connect(mapStateToProps, mapDispatchToProps), withVote);

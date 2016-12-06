@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -494,7 +494,7 @@ class NovaForm extends Component{
             ? <div>
                 <hr/>
                 <a onClick={this.deleteDocument} className={`${collectionName}-delete-link`}>
-                  <Telescope.components.Icon name="close"/> <FormattedMessage id={`${collectionName}.delete`}/>
+                  <Components.Icon name="close"/> <FormattedMessage id={`${collectionName}.delete`}/>
                 </a>
               </div>
             : null

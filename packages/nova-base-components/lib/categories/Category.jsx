@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import classNames from "classnames";
@@ -14,12 +14,12 @@ class Category extends Component {
   renderEdit() {
     return (
         <a onClick={this.props.openModal} className="edit-category-link">
-          <Telescope.components.Icon name="edit"/>
+          <Components.Icon name="edit"/>
         </a>
     );
     // return (
-    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Telescope.components.Icon name="edit"/></a>}>
-    //     <Telescope.componentsCategoriesEditForm category={this.props.category}/>
+    //   <ModalTrigger title="Edit Category" component={<a className="edit-category-link"><Components.Icon name="edit"/></a>}>
+    //     <ComponentsCategoriesEditForm category={this.props.category}/>
     //   </ModalTrigger>
     // )
   }
@@ -40,7 +40,7 @@ class Category extends Component {
             eventKey={index+1} 
             key={category._id} 
           >
-            {currentCategorySlug === category.slug ? <Telescope.components.Icon name="voted"/> :  null}
+            {currentCategorySlug === category.slug ? <Components.Icon name="voted"/> :  null}
             {category.name}
           </MenuItem>
         </LinkContainer>
@@ -57,4 +57,4 @@ Category.propTypes = {
   openModal: React.PropTypes.func
 };
 
-Telescope.registerComponent('Category', Category, withRouter);
+registerComponent('Category', Category, withRouter);

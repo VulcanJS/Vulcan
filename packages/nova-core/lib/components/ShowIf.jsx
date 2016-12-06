@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes } from 'react';
 import Users from 'meteor/nova:users';
 import withCurrentUser from '../containers/withCurrentUser.js';
@@ -17,6 +17,6 @@ ShowIf.propTypes = {
 
 ShowIf.displayName = "ShowIf";
 
-Telescope.registerComponent('ShowIf', ShowIf, withCurrentUser);
+registerComponent('ShowIf', ShowIf, withCurrentUser);
 
 export default withCurrentUser(ShowIf);

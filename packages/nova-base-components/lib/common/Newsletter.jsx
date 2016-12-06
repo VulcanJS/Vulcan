@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -62,7 +62,7 @@ class Newsletter extends Component {
   }
 
   renderButton() {
-    return <Telescope.components.NewsletterButton
+    return <Components.NewsletterButton
               successCallback={() => this.successCallbackSubscription()}
               subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
               user={this.props.currentUser}
@@ -91,7 +91,7 @@ class Newsletter extends Component {
         <div className="newsletter">
           <h4 className="newsletter-tagline"><FormattedMessage id="newsletter.subscribe_prompt"/></h4>
           {this.props.currentUser ? this.renderButton() : this.renderForm()}
-          <a onClick={this.dismissBanner} className="newsletter-close"><Telescope.components.Icon name="close"/></a>
+          <a onClick={this.dismissBanner} className="newsletter-close"><Components.Icon name="close"/></a>
         </div>
       ) : null;
   }
@@ -105,4 +105,4 @@ Newsletter.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-Telescope.registerComponent('Newsletter', Newsletter, withCurrentUser, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('Newsletter', Newsletter, withCurrentUser, connect(mapStateToProps, mapDispatchToProps));

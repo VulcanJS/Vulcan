@@ -5,7 +5,7 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 */
 
-import Telescope from 'meteor/nova:lib';
+import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
@@ -43,7 +43,7 @@ class MoviesList extends Component {
     const canCreateNewMovie = Movies.options.mutations.new.check(this.props.currentUser);
     
     if (this.props.loading) {
-      return <Telescope.components.Loading />
+      return <Components.Loading />
     } else {
       const hasMore = this.props.totalCount > this.props.results.length;
       return (

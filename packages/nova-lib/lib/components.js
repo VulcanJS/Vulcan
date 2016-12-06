@@ -1,6 +1,8 @@
 import Telescope from './config.js';
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
+export const Components = {};
+// where/how to deal with that?
 Telescope.components = {};
 
 /**
@@ -10,28 +12,34 @@ Telescope.components = {};
  * @param {String} name The name of the component to register.
  * @param {React Component} rawComponent Interchangeable/extendable component.
  * @param {...Function} hocs The HOCs to compose with the raw component.
- * @returns {Function|React Component} A component callable with Telescope.components[name]
+ * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
-Telescope.registerComponent = (name, rawComponent, ...hocs) => {
+export const registerComponent = (name, rawComponent, ...hocs) => {
   // console.log('// registering component');
   // console.log(name);
   // console.log('raw component', rawComponent);
   // console.log('higher order components', hocs); 
 
-  // note: maybe do something to replace connect at the right place, see https://github.com/apollostack/react-apollo/issues/315
-
   // compose the raw component with the HOCs given in option
+  Components[name] = compose(...hocs)(rawComponent);
+
+  // keep track of the raw component & hocs, so we can extend the component if necessary
+  Components[name].rawComponent = rawComponent;
+  Components[name].hocs = hocs;
+
+  // ---- to remove later ----
   Telescope.components[name] = compose(...hocs)(rawComponent);
 
   // keep track of the raw component & hocs, so we can extend the component if necessary
   Telescope.components[name].rawComponent = rawComponent;
   Telescope.components[name].hocs = hocs;
+  // -------------------------
 
-  return Telescope.components[name];
+  return Components[name];
 };
 
 /**
@@ -40,8 +48,8 @@ Telescope.registerComponent = (name, rawComponent, ...hocs) => {
  * @param {String} name The name of the component to get.
  * @returns {Function|React Component} A (wrapped) React component
  */
-Telescope.getComponent = (name) => {
-  return Telescope.components[name];
+ export const getComponent = (name) => {
+  return Components[name];
 };
 
 /**
@@ -51,8 +59,8 @@ Telescope.getComponent = (name) => {
  * @param {String} name The name of the component to get.
  * @returns {Function|React Component} An interchangeable/extendable React component
  */
-Telescope.getRawComponent = (name) => {
-  return Telescope.components[name].rawComponent;
+ export const getRawComponent = (name) => {
+  return Components[name].rawComponent;
 };
 
 /**
@@ -63,14 +71,14 @@ Telescope.getRawComponent = (name) => {
  * @param {String} name The name of the component to register.
  * @param {React Component} rawComponent Interchangeable/extendable component.
  * @param {...Function} hocs The HOCs to compose with the raw component.
- * @returns {Function|React Component} A component callable with Telescope.components[name]
+ * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
-Telescope.replaceComponent = (name, newComponent, ...newHocs) => {
-  const previousComponent = Telescope.components[name];
+ export const replaceComponent = (name, newComponent, ...newHocs) => {
+  const previousComponent = Components[name];
   
   // xxx : throw an error if the previous component doesn't exist
 
@@ -80,5 +88,10 @@ Telescope.replaceComponent = (name, newComponent, ...newHocs) => {
   // console.log('new hocs', newHocs);
   // console.log('previous hocs', previousComponent.hocs);
 
-  return Telescope.registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
-}
+  return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
+};
+
+Telescope.registerComponent = registerComponent; 
+Telescope.getComponent = getComponent; 
+Telescope.getRawComponent = getRawComponent; 
+Telescope.replaceComponent = replaceComponent; 

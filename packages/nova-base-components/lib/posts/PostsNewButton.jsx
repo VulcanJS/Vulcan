@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Button } from 'react-bootstrap';
@@ -12,7 +12,7 @@ const PostsNewButton = (props, context) => {
   const button = <Button className="posts-new-button" bsStyle="primary"><FormattedMessage id="posts.new_post"/></Button>;
   return (
     <ModalTrigger size={size} title={context.intl.formatMessage({id: "posts.new_post"})} component={button}>
-      <Telescope.components.PostsNewForm />
+      <Components.PostsNewForm />
     </ModalTrigger>
   )
 }
@@ -28,4 +28,4 @@ PostsNewButton.contextTypes = {
   intl: intlShape
 };
 
-Telescope.registerComponent('PostsNewButton', PostsNewButton, withCurrentUser);
+registerComponent('PostsNewButton', PostsNewButton, withCurrentUser);

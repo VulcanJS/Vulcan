@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
@@ -18,7 +18,7 @@ class UsersMenu extends Component {
       <div className="users-menu">
         <Dropdown id="user-dropdown">
           <Dropdown.Toggle>
-            <Telescope.components.UsersAvatar size="small" user={currentUser} link={false} />
+            <Components.UsersAvatar size="small" user={currentUser} link={false} />
             <div>{Users.getDisplayName(currentUser)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
@@ -42,4 +42,4 @@ UsersMenu.contextTypes = {
   messages: React.PropTypes.object
 };
 
-Telescope.registerComponent('UsersMenu', UsersMenu, withCurrentUser, withApollo);
+registerComponent('UsersMenu', UsersMenu, withCurrentUser, withApollo);

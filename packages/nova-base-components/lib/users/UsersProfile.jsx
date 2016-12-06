@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Posts from "meteor/nova:posts";
@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 const UsersProfile = (props) => {
   if (props.loading) {
     
-    return <div className="page users-edit-form"><Telescope.components.Loading/></div>
+    return <div className="page users-edit-form"><Components.Loading/></div>
   
   } else {
 
@@ -21,7 +21,7 @@ const UsersProfile = (props) => {
 
     return (
       <div className="page users-profile">
-        <Telescope.components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.__bio} />
+        <Components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.__bio} />
         <h2 className="page-title">{Users.getDisplayName(user)}</h2>
         <p>{user.__bio}</p>
         <ul>
@@ -32,7 +32,7 @@ const UsersProfile = (props) => {
           </ShowIf>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
-        <Telescope.components.PostsList terms={terms} />
+        <Components.PostsList terms={terms} />
       </div>
     )
   }
@@ -94,4 +94,4 @@ const options = {
   fragment: UsersProfile.fragment,
 };
 
-Telescope.registerComponent('UsersProfile', UsersProfile, withSingle(options));
+registerComponent('UsersProfile', UsersProfile, withSingle(options));
