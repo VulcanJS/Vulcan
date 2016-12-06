@@ -80,7 +80,7 @@ class NovaForm extends Component{
       field.label = (typeof this.props.labelFunction === "function") ? this.props.labelFunction(intlFieldName) : intlFieldName,
 
       // add value
-      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
+      field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : (fieldSchema.defaultValue||"");
 
       // backward compatibility from 'autoform' to 'form'
       if (fieldSchema.autoform) {
