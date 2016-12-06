@@ -1,4 +1,5 @@
 import { Components } from 'meteor/nova:lib';
+import { withMutation } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import FRC from 'formsy-react-components';
 import { graphql } from 'react-apollo';
@@ -27,7 +28,7 @@ class EmbedlyURL extends Component {
       // the URL has changed, get a new thumbnail
       this.props.getEmbedlyData({variables: {url}}).then(result => {
         this.setState({loading: false});
-        console.log(result)
+        console.log('Embedly Data', result);
         this.context.addToAutofilledValues({
           title: result.data.getEmbedlyData.title,
           body: result.data.getEmbedlyData.description,
@@ -87,21 +88,26 @@ EmbedlyURL.contextTypes = {
   actions: React.PropTypes.object,
 }
 
-function withGetEmbedlyData() {
-  return graphql(gql`
-    mutation getEmbedlyData($url: String) {
-      getEmbedlyData(url: $url) {
-        title
-        media
-        description
-        thumbnailUrl
-        sourceName
-        sourceUrl
-      }
-    }
-  `, {
-    name: 'getEmbedlyData'
-  });
-}
+// note: not used since we use `withMutation` and getEmbedlyData returns a `JSON` type
+// function withGetEmbedlyData() {
+//   return graphql(gql`
+//     mutation getEmbedlyData($url: String) {
+//       getEmbedlyData(url: $url) {
+//         title
+//         media
+//         description
+//         thumbnailUrl
+//         sourceName
+//         sourceUrl
+//       }
+//     }
+//   `, {
+//     name: 'getEmbedlyData'
+//   });
+// }
 
-export default withGetEmbedlyData()(EmbedlyURL);
+
+export default withMutation({
+  name: 'getEmbedlyData',
+  args: {url: 'String'},
+})(EmbedlyURL);

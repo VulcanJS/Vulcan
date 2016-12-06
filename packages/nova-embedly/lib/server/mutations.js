@@ -4,19 +4,20 @@ import Users from 'meteor/nova:users';
 import GraphQLJSON from 'graphql-type-json';
 import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumbnail } from './get_embedly_data.js';
 
-const embedlyDataSchema = `
-  type EmbedlyData {
-    title: String
-    media: JSON
-    description: String
-    thumbnailUrl: String
-    sourceName: String
-    sourceUrl: String
-  }
-`;
-Telescope.graphQL.addSchema(embedlyDataSchema);
+// note: not used since the type of the query below is JSON
+// const embedlyDataSchema = `
+//   type EmbedlyData {
+//     title: String
+//     media: JSON
+//     description: String
+//     thumbnailUrl: String
+//     sourceName: String
+//     sourceUrl: String
+//   }
+// `;
+// Telescope.graphQL.addSchema(embedlyDataSchema);
 
-Telescope.graphQL.addMutation('getEmbedlyData(url: String) : EmbedlyData');
+Telescope.graphQL.addMutation('getEmbedlyData(url: String) : JSON');
 
 const resolver = {
   Mutation: {
