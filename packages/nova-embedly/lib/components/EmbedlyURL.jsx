@@ -43,8 +43,6 @@ class EmbedlyURL extends Component {
 
   render() {
     
-    console.log(this)
-
     const Loading = Telescope.components.Loading;
 
     const wrapperStyle = {
@@ -96,13 +94,7 @@ function withGetEmbedlyData() {
     mutation getEmbedlyData($url: String) {
       getEmbedlyData(url: $url) {
         title
-        media {
-          duration
-          width
-          html
-          type
-          height
-        }
+        media
         description
         thumbnailUrl
         sourceName

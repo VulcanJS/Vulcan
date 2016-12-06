@@ -7,19 +7,11 @@ import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumb
 const embedlyDataSchema = `
   type EmbedlyData {
     title: String
-    media: EmbedlyMedia
+    media: JSON
     description: String
     thumbnailUrl: String
     sourceName: String
     sourceUrl: String
-  }
-
-  type EmbedlyMedia {
-    duration: Int
-    width: Int
-    html: String
-    type: String
-    height: Int
   }
 `;
 Telescope.graphQL.addSchema(embedlyDataSchema);

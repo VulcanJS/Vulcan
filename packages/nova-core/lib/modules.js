@@ -16,3 +16,4 @@ export { default as withNew } from './containers/withNew.js';
 export { default as withEdit } from './containers/withEdit.js';
 export { default as withRemove } from './containers/withRemove.js';
 export { default as withCurrentUser } from './containers/withCurrentUser.js';
+export { default as withMutation } from './containers/withMutation.js';
