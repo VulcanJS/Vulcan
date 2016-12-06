@@ -11,7 +11,7 @@ Users.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   }
 ]);

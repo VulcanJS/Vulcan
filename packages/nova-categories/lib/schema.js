@@ -6,23 +6,23 @@ import mutations from './mutations.js';
 const schema = {
   _id: {
     type: String,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     optional: true,
     publish: true
   },
   name: {
     type: String,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true
   },
   description: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true,
     form: {
       rows: 3
@@ -31,33 +31,33 @@ const schema = {
   order: {
     type: Number,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true
   },
   slug: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true,
   },
   image: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true
   },
   parentId: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true,
     resolveAs: 'parent: Category',
     form: {

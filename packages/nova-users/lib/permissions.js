@@ -47,13 +47,13 @@ Users.getGroups = user => {
 
   let userGroups = [];
 
-  if (!user) { // anonymous user
+  if (!user) { // guests user
 
-    userGroups = ["anonymous"];
+    userGroups = ["guests"];
   
   } else {
   
-    userGroups = ["default"];
+    userGroups = ["members"];
 
     if (user.__groups) { // custom groups
       userGroups = userGroups.concat(user.__groups);
@@ -91,11 +91,11 @@ Users.getActions = user => {
 Users.isMemberOf = (user, groupOrGroups) => {
   const groups = Array.isArray(groupOrGroups) ? groupOrGroups : [groupOrGroups];
   
-  // everybody is considered part of the anonymous group
-  if (groups.indexOf('anonymous') !== -1) return true;
+  // everybody is considered part of the guests group
+  if (groups.indexOf('guests') !== -1) return true;
   
-  // every logged in user is part of the default group
-  if (groups.indexOf('default') !== -1) return !!user; 
+  // every logged in user is part of the members group
+  if (groups.indexOf('members') !== -1) return !!user; 
   
   // the admin group have their own function
   if (groups.indexOf('admin') !== -1) return Users.isAdmin(user);
@@ -184,8 +184,8 @@ Users.isAdminById = Users.isAdmin;
  * @param {Object} field - The field being edited or inserted
  */
 Users.canViewField = function (user, field, document) {
-  if (field.viewableIf) {
-    return typeof field.viewableIf === 'function' ? field.viewableIf(user, document) : Users.isMemberOf(user, field.viewableIf)
+  if (field.viewableBy) {
+    return typeof field.viewableBy === 'function' ? field.viewableBy(user, document) : Users.isMemberOf(user, field.viewableBy)
   }
   return false;
 };
@@ -210,8 +210,8 @@ Users.getViewableFields = function (user, collection, document) {
  * @param {Object} field - The field being edited or inserted
  */
 Users.canInsertField = function (user, field) {
-  if (user && field.insertableIf) {
-    return typeof field.insertableIf === 'function' ? field.insertableIf(user) : Users.isMemberOf(user, field.insertableIf)
+  if (user && field.insertableBy) {
+    return typeof field.insertableBy === 'function' ? field.insertableBy(user) : Users.isMemberOf(user, field.insertableBy)
   }
   return false;
 };
@@ -222,8 +222,8 @@ Users.canInsertField = function (user, field) {
  * @param {Object} field - The field being edited or inserted
  */
 Users.canEditField = function (user, field, document) {
-  if (user && field.editableIf) {
-    return typeof field.editableIf === 'function' ? field.editableIf(user, document) : Users.isMemberOf(user, field.editableIf)
+  if (user && field.editableBy) {
+    return typeof field.editableBy === 'function' ? field.editableBy(user, document) : Users.isMemberOf(user, field.editableBy)
   }
   return false;
 };
@@ -235,15 +235,15 @@ Users.canEditField = function (user, field, document) {
 /**
  * @summary initialize the 3 out-of-the-box groups
  */
-Users.createGroup("anonymous"); // non-logged-in users
-Users.createGroup("default"); // regular users
+Users.createGroup("guests"); // non-logged-in users
+Users.createGroup("members"); // regular users
 
-const defaultActions = [
+const membersActions = [
   "users.new", 
   "users.edit.own", 
   "users.remove.own"
 ];
-Users.groups.default.can(defaultActions);
+Users.groups.members.can(membersActions);
 
 Users.createGroup("admins"); // admin users
 

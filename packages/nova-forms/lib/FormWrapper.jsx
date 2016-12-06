@@ -56,8 +56,8 @@ class FormWrapper extends Component{
 
     const schema = this.getSchema();
     const fields = this.props.fields;
-    const insertableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].insertableIf);
-    const editableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].editableIf);
+    const insertableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].insertableBy);
+    const editableFields = _.filter(_.keys(schema), fieldName => !!schema[fieldName].editableBy);
 
     // get all editable/insertable fields (depending on current form type)
     let relevantFields = this.getFormType() === 'new' ? insertableFields : editableFields;

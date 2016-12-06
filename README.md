@@ -446,13 +446,12 @@ The `collection.addField()` function takes either a field object, or an array of
 
 Each field schema supports all of the [SimpleSchema properties](https://github.com/aldeed/meteor-simple-schema#schema-rules), such as `type`, `optional`, etc.
 
-A few special properties (`insertableIf`, `editableIf`, `control`, and `order`) are also supported by the [nova:forms](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms) package.
+A few special properties (`viewableBy`, `insertableBy`, `editableBy`, `control`, and `order`) are also supported by the [nova:forms](https://github.com/TelescopeJS/Telescope/tree/nova/packages/nova-forms) package.
 
-Note that Telescope provides a few utility function out of the box to use with `insertableIf` and `editableIf`:
+Note that Telescope provides few utility function out of the box to use with `viewableBy`, `insertableBy` and `editableBy`:
 
-- `Users.is.admin`: returns `true` if a user is an admin.
-- `Users.is.memberOrAdmin`: returns `true` if a user is a member (i.e. has an account and is currently logged in) or an admin.
-- `Users.is.ownerOrAdmin`: (editing only) returns `true` if a user is a members and owns the document being edited; or is an admin.
+- `Users.isAdmin`: returns `true` if a user is an admin.
+- `Users.owns`: returns `true` if a user owns the document.
 
 Additionally, the `publish` and `join` properties come from the [Smart Publications](https://github.com/meteor-utilities/smart-publications) package. Setting `publish` to true indicates that a field should be published to the client (see also next section).
 
@@ -638,8 +637,8 @@ Documents can be Posts, Comments, or Users.
 
 Note that some groups are applied automatically without having to call `addToGroup`:
 
-- `anonymous`: any non-logged-in user is considered anonymous. This group is special in that anonymous users are by definition not part of any other group.
-- `default`: default group for all existing users. Is applied to every user in addition to any other groups. 
+- `guests`: any non-logged-in user is considered guests. This group is special in that guests users are by definition not part of any other group.
+- `members`: every logged in user is part of the members group. Is applied to every user in addition to any other groups. 
 - `admins`: any user with the `isAdmin` flag set to true.
 
 ### Assigning Actions
@@ -659,14 +658,14 @@ Users.groups.mods.can("invite"); // new custom action
 Here's a list of all out-of-the-box permissions:
 
 ```js
-// anonymous actions
+// guests actions
 posts.view.approved.own
 posts.view.approved.all
 comments.view.own
 comments.view.all
 categories.view.all
 
-// default actions
+// members actions
 posts.view.approved.own
 posts.view.approved.all
 posts.view.pending.own

@@ -1,9 +1,13 @@
 import Telescope from './config.js';
 
 SimpleSchema.extendOptions({
-  viewableIf: Match.Optional(Match.OneOf(Function, [String])),
-  insertableIf: Match.Optional(Match.OneOf(Function, [String])),
-  editableIf: Match.Optional(Match.OneOf(Function, [String])),
+  // kept for backward compatibility?
+  // viewableIf: Match.Optional(Match.OneOf(Function, [String])),
+  // insertableIf: Match.Optional(Match.OneOf(Function, [String])),
+  // editableIf: Match.Optional(Match.OneOf(Function, [String])),
+  viewableBy: Match.Optional(Match.OneOf(Function, [String])),
+  insertableBy: Match.Optional(Match.OneOf(Function, [String])),
+  editableBy: Match.Optional(Match.OneOf(Function, [String])),
   resolveAs: Match.Optional(String),
   publish: Match.Optional(Boolean),
 });

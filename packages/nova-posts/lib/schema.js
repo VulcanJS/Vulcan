@@ -27,7 +27,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     Timetstamp of post creation
@@ -35,7 +35,7 @@ const schema = {
   createdAt: {
     type: Date,
     optional: true,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     publish: true, // publish so that admins can sort pending posts by createdAt
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
@@ -47,9 +47,9 @@ const schema = {
   postedAt: {
     type: Date,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['admins'],
-    editableIf: ['admins'],
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     publish: true,
     control: "datetime",
     group: formGroups.admin
@@ -61,9 +61,9 @@ const schema = {
     type: String,
     optional: true,
     max: 500,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     control: "text",
     publish: true,
     order: 10
@@ -75,9 +75,9 @@ const schema = {
     type: String,
     optional: false,
     max: 500,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     control: "text",
     publish: true,
     order: 20
@@ -88,7 +88,7 @@ const schema = {
   slug: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     publish: true,
     autoValue: (documentOrModifier) => {
       // if title is changing, return new slug
@@ -105,9 +105,9 @@ const schema = {
     type: String,
     optional: true,
     max: 3000,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     control: "textarea",
     publish: true,
     order: 30
@@ -119,7 +119,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     autoValue(documentOrModifier) {
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
@@ -137,7 +137,7 @@ const schema = {
     optional: true,
     max: 255, //should not be changed the 255 is max we should load for each post/item
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     autoValue(documentOrModifier) {
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
@@ -154,7 +154,7 @@ const schema = {
     type: Number,
     optional: true,
     publish: true,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     defaultValue: 0
   },
   /**
@@ -164,7 +164,7 @@ const schema = {
     type: Date,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     Count of how many times the post's link was clicked
@@ -173,7 +173,7 @@ const schema = {
     type: Number,
     optional: true,
     publish: true,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     defaultValue: 0
   },
   /**
@@ -182,9 +182,9 @@ const schema = {
   status: {
     type: Number,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['admins'],
-    editableIf: ['admins'],
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     control: "select",
     autoValue(documentOrModifier) {
       // provide a default value if this is an insert operation and status field is not set in the document
@@ -206,7 +206,7 @@ const schema = {
   isFuture: {
     type: Boolean,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     publish: true
   },
   /**
@@ -216,9 +216,9 @@ const schema = {
     type: Boolean,
     optional: true,
     defaultValue: false,
-    viewableIf: ['anonymous'],
-    insertableIf: ['admins'],
-    editableIf: ['admins'],
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     control: "checkbox",
     publish: true,
     group: formGroups.admin
@@ -238,19 +238,19 @@ const schema = {
   userIP: {
     type: String,
     optional: true,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     publish: false
   },
   userAgent: {
     type: String,
     optional: true,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     publish: false
   },
   referrer: {
     type: String,
     optional: true,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     publish: false
   },
   /**
@@ -259,7 +259,7 @@ const schema = {
   author: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     publish: true,
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
@@ -274,14 +274,14 @@ const schema = {
     type: String,
     optional: true,
     control: "select",
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
     hidden: true,
     resolveAs: 'user: User',
     // publish: true,
     // regEx: SimpleSchema.RegEx.Id,
-    // insertableIf: ['admins'],
-    // editableIf: ['admins'],
+    // insertableBy: ['admins'],
+    // editableBy: ['admins'],
     // form: {
     //   group: 'admin',
     //   options: function () {

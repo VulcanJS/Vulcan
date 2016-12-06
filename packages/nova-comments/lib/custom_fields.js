@@ -12,7 +12,7 @@ Users.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   }
 ]);
@@ -28,7 +28,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -46,7 +46,7 @@ Posts.addField([
       //   limit: 4
       // },
       resolveAs: 'commenters: [User]',
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   }
 ]);

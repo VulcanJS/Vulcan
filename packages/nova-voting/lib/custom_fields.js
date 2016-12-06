@@ -13,7 +13,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: '__upvotedComments: [Vote]',
     }
   },
@@ -26,7 +26,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: '__upvotedPosts: [Vote]',
     }
   },
@@ -39,7 +39,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: '__downvotedComments: [Vote]',
     }
   },
@@ -52,7 +52,7 @@ Users.addField([
       type: [Telescope.schemas.votes],
       publish: false,
       optional: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: '__downvotedPosts: [Vote]',
     }
   },
@@ -69,7 +69,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -81,7 +81,7 @@ Posts.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
     }
   },
@@ -95,7 +95,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -107,7 +107,7 @@ Posts.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
     }
   },
@@ -122,7 +122,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -136,7 +136,7 @@ Posts.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
 ]);
@@ -152,7 +152,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -164,7 +164,7 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
     }
   },
@@ -178,7 +178,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -190,7 +190,7 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
     }
   },
@@ -205,7 +205,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -219,7 +219,7 @@ Comments.addField([
       optional: true,
       publish: true,
       defaultValue: 0,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
 ]);

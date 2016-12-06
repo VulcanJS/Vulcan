@@ -7,7 +7,7 @@ Posts.addField({
   fieldSchema: {
     type: Date,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   }
 });
 
@@ -20,9 +20,9 @@ Users.addField([
       optional: true,
       publish: true,
       defaultValue: false,
-      insertableIf: ['default'],
-      editableIf: ['default'],
-      viewableIf: ['anonymous'],
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
       control: NewsletterSubscribe,
       preload: true,
       group: {

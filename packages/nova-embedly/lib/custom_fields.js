@@ -10,9 +10,9 @@ Posts.addField([
       type: String,
       optional: true,
       max: 500,
-      insertableIf: ['default'],
-      editableIf: ['default'],
-      viewableIf: ['anonymous'],
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
       control: EmbedlyURL,
       publish: true
     }
@@ -22,9 +22,9 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      insertableIf: ['default'],
-      editableIf: ['default'],
-      viewableIf: ['anonymous'],
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
       publish: true,
       control: ThumbnailURL
     }
@@ -36,7 +36,7 @@ Posts.addField([
       publish: true,
       optional: true,
       blackbox: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   {
@@ -45,7 +45,7 @@ Posts.addField([
       type: String,
       optional: true,
       publish: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   {
@@ -54,7 +54,7 @@ Posts.addField([
       type: String,
       optional: true,
       publish: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   }
 ]);

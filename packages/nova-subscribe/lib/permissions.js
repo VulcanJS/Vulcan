@@ -1,6 +1,6 @@
 import Users from 'meteor/nova:users';
 
-const defaultActions = [
+const membersActions = [
   "posts.subscribe",
   "posts.unsubscribe",
   "users.subscribe",
@@ -9,7 +9,7 @@ const defaultActions = [
   "categories.unsubscribe",
 ];
 
-Users.groups.default.can(defaultActions);
+Users.groups.members.can(membersActions);
 
 const adminActions = [
   "posts.subscribe.all",

@@ -6,7 +6,7 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   },
   {
@@ -15,7 +15,7 @@ Posts.addField([
       type: [Object],
       optional: true,
       blackbox: true,
-      viewableIf: ['anonymous'],
+      viewableBy: ['guests'],
     }
   }
 ]);

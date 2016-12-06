@@ -12,9 +12,9 @@ Posts.addField(
       type: [String],
       control: "checkboxgroup",
       optional: true,
-      insertableIf: ['default'],
-      editableIf: ['default'],
-      viewableIf: ['anonymous'],
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
       form: {
         noselect: true,
         type: "bootstrap-category",

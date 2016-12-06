@@ -15,9 +15,9 @@ Users.addField([
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      viewableIf: ['anonymous'],
-      insertableIf: ['admins'],
-      editableIf: ['admins'],
+      viewableBy: ['guests'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
       group: notificationsGroup
     }
   },
@@ -29,9 +29,9 @@ Users.addField([
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      viewableIf: ['anonymous'],
-      insertableIf: ['default'],
-      editableIf: ['default'],
+      viewableBy: ['guests'],
+      insertableBy: ['members'],
+      editableBy: ['members'],
       group: notificationsGroup
     }
   }
@@ -47,9 +47,9 @@ if (typeof Comments !== "undefined") {
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        viewableIf: ['anonymous'],
-        insertableIf: ['default'],
-        editableIf: ['default']
+        viewableBy: ['guests'],
+        insertableBy: ['members'],
+        editableBy: ['members']
       }
     },
     {
@@ -60,9 +60,9 @@ if (typeof Comments !== "undefined") {
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        viewableIf: ['anonymous'],
-        insertableIf: ['default'],
-        editableIf: ['default']
+        viewableBy: ['guests'],
+        insertableBy: ['members'],
+        editableBy: ['members']
       }
     }
   ]);  

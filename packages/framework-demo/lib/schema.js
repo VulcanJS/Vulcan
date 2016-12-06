@@ -12,18 +12,18 @@ const schema = {
   _id: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   name: {
     label: 'Name',
     type: String,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   createdAt: {
     type: Date,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
     }
@@ -32,31 +32,31 @@ const schema = {
     label: 'Year',
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
   },
   review: {
     label: 'Review',
     type: String,
     control: "textarea",
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default']
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members']
   },
   privateComments: {
     label: 'Private Comments',
     type: String,
     optional: true,
     control: "textarea",
-    viewableIf: Users.owns,
-    insertableIf: ['default'],
-    editableIf: ['default']
+    viewableBy: Users.owns,
+    insertableBy: ['members'],
+    editableBy: ['members']
   },
   userId: {
     type: String,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     resolveAs: 'user: User',
   }
 };

@@ -106,7 +106,7 @@ Telescope.graphQL = {
           mainSchema.push(field.resolveAs);
         }
 
-        if (field.insertableIf || field.editableIf) {
+        if (field.insertableBy || field.editableBy) {
 
           const isRequired = field.optional ? '' : '!';
 

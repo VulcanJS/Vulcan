@@ -14,7 +14,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     The `_id` of the parent comment, if there is one
@@ -23,8 +23,8 @@ const schema = {
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
     optional: true,
     publish: true,
     resolveAs: 'parentComment: Comment',
@@ -37,8 +37,8 @@ const schema = {
     type: String,
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
     optional: true,
     publish: true,
     resolveAs: 'topLevelComment: Comment',
@@ -51,7 +51,7 @@ const schema = {
     type: Date,
     optional: true,
     publish: false,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
     }
@@ -63,7 +63,7 @@ const schema = {
     type: Date,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],    
+    viewableBy: ['guests'],    
     autoValue: (documentOrModifier) => {
       if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
     }
@@ -74,9 +74,9 @@ const schema = {
   body: {
     type: String,
     max: 3000,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
-    editableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true,
     control: "textarea"
   },
@@ -87,7 +87,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     The comment author's name
@@ -96,7 +96,7 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
       // if userId is changing, change the author name too
       const userId = documentOrModifier.userId || documentOrModifier.$set && documentOrModifier.$set.userId
@@ -110,7 +110,7 @@ const schema = {
     type: Boolean,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     The post's `_id`
@@ -119,8 +119,8 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
     // regEx: SimpleSchema.RegEx.Id,
     max: 500,
     resolveAs: 'post: Post',
@@ -133,8 +133,8 @@ const schema = {
     type: String,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
-    insertableIf: ['default'],
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
     hidden: true,
     resolveAs: 'user: User',
     // join: {
@@ -149,25 +149,25 @@ const schema = {
     type: Boolean,
     optional: true,
     publish: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   userIP: {
     type: String,
     optional: true,
     publish: false,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
   },
   userAgent: {
     type: String,
     optional: true,
     publish: false,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
   },
   referrer: {
     type: String,
     optional: true,
     publish: false,
-    viewableIf: ['admins'],
+    viewableBy: ['admins'],
   }
 };
 

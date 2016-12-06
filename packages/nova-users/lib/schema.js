@@ -15,7 +15,7 @@ const schema = {
     type: String,
     publish: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     preload: true,
   },
   username: {
@@ -23,7 +23,7 @@ const schema = {
     // regEx: /^[a-z0-9A-Z_]{3,15}$/,
     publish: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     preload: true,
   },
   emails: {
@@ -43,7 +43,7 @@ const schema = {
     type: Date,
     publish: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     preload: true,
   },
   isAdmin: {
@@ -51,9 +51,9 @@ const schema = {
     label: "Admin",
     control: "checkbox",
     optional: true,
-    insertableIf: ['admins'],
-    editableIf: ['admins'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
+    viewableBy: ['guests'],
     group: adminGroup,
     preload: true,
   },
@@ -67,7 +67,7 @@ const schema = {
     type: Object,
     blackbox: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   services: {
     type: Object,
@@ -81,9 +81,9 @@ const schema = {
     type: String,
     optional: true,
     control: "textarea",
-    insertableIf: ['default'],
-    editableIf: ['default'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
   },
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
@@ -94,9 +94,9 @@ const schema = {
     publish: true,
     profile: true,
     control: "text",
-    insertableIf: ['default'],
-    editableIf: ['default'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
     preload: true,
   },
   /**
@@ -108,9 +108,9 @@ const schema = {
     regEx: SimpleSchema.RegEx.Email,
     required: true,
     control: "text",
-    insertableIf: ['default'],
-    editableIf: ['default'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
     preload: true,
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
@@ -121,7 +121,7 @@ const schema = {
     type: String,
     publish: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     preload: true,
   },
   /**
@@ -132,7 +132,7 @@ const schema = {
     publish: true,
     profile: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     The user's karma
@@ -142,7 +142,7 @@ const schema = {
     decimal: true,
     publish: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
   },
   /**
     The user's profile URL slug // TODO: change this when displayName changes
@@ -151,7 +151,7 @@ const schema = {
     type: String,
     publish: true,
     optional: true,
-    viewableIf: ['anonymous'],
+    viewableBy: ['guests'],
     preload: true,
   },
   /**
@@ -163,9 +163,9 @@ const schema = {
     publish: true,
     profile: true,
     control: "text",
-    insertableIf: ['default'],
-    editableIf: ['default'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
   },
   /**
     A link to the user's homepage
@@ -177,9 +177,9 @@ const schema = {
     profile: true,
     optional: true,
     control: "text",
-    insertableIf: ['default'],
-    editableIf: ['default'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    viewableBy: ['guests'],
   },
   /**
     Groups
@@ -188,12 +188,12 @@ const schema = {
     type: [String],
     optional: true,
     control: "checkboxgroup",
-    insertableIf: ['admins'],
-    editableIf: ['admins'],
-    viewableIf: ['anonymous'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
+    viewableBy: ['guests'],
     form: {
       options: function () {
-        const groups = _.without(_.keys(Users.groups), "anonymous", "default", "admins");
+        const groups = _.without(_.keys(Users.groups), "guests", "members", "admins");
         return groups.map(group => {return {value: group, label: group};});
       }
     },

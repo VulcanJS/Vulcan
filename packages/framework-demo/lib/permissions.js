@@ -1,17 +1,17 @@
 import Users from 'meteor/nova:users';
 
-const anonymousActions = [
+const guestsActions = [
   'movies.view.own',
   'movies.view.all',
 ];
-Users.groups.anonymous.can(defaultActions);
+Users.groups.guests.can(membersActions);
 
-const defaultActions = [
+const membersActions = [
   'movies.new',
   'movies.edit.own',
   'movies.remove.own',
 ];
-Users.groups.default.can(defaultActions);
+Users.groups.members.can(membersActions);
 
 const adminActions = [
   'movies.edit.all',
