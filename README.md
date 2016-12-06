@@ -729,6 +729,7 @@ If you create a new internationalization package, let us know so we can add it h
 - [ru-RU](https://github.com/fortunto2/nova-i18n-ru-ru)
 - [de-DE](https://atmospherejs.com/fzeidler/nova-i18n-de-de)
 - [pt-BR](https://github.com/lukasag/nova-i18n-pt-br)
+- [pt-PT](https://github.com/brunoamaral/nova-i18n-pt-pt)
 - [zh-CN](https://github.com/qge/nova-i18n-zh-cn)
 
 ## Cheatsheet
