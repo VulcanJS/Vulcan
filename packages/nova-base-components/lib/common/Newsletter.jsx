@@ -8,7 +8,7 @@ import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, withMutation } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
@@ -37,13 +37,11 @@ class Newsletter extends Component {
   }
 
   subscribeEmail(data) {
-    this.context.actions.call("newsletter.addEmail", data.email, (error, result) => {
-      if (error) {
-        console.log(error);
-        this.props.flash(error.message, "error");
-      } else {
-        this.successCallbackSubscription(result);
-      }
+    this.props.addEmailNewsletter({email: data.email}).then(result => {
+      this.successCallbackSubscription(result);
+    }).catch(error => {
+      console.log(error);
+      this.props.flash(error.message, "error");
     });
   }
 
@@ -105,4 +103,8 @@ Newsletter.contextTypes = {
 const mapStateToProps = state => ({ messages: state.messages, });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-registerComponent('Newsletter', Newsletter, withCurrentUser, connect(mapStateToProps, mapDispatchToProps));
+const mutationOptions = {
+  name: 'addEmailNewsletter',
+  args: {email: 'String'}
+}
+registerComponent('Newsletter', Newsletter, withMutation(mutationOptions), withCurrentUser, connect(mapStateToProps, mapDispatchToProps));

@@ -44,14 +44,18 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if (!!user) {
-        Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', true);
+        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
       }
 
       console.log("// User subscribed");
 
-      return subscribe;
+      return {action: 'subscribed', ...subscribe};
 
     } catch (error) {
+      // if user is already subscribed, update setting
+      if (error.error = 214) {
+        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+      }
       throw new Meteor.Error("subscription-failed", error.message);
     }
   } else {
@@ -87,11 +91,11 @@ MailChimpList.remove = (user) => {
       var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
 
       // mark user as unsubscribed
-      Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', false);
+      Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
 
       console.log("// User unsubscribed");
 
-      return subscribe;
+      return {action: 'unsubscribed', ...subscribe};
 
     } catch (error) {
       throw new Meteor.Error("unsubscription-failed", error.message);

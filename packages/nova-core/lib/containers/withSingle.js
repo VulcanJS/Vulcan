@@ -10,8 +10,8 @@ export default function withSingle (options) {
         singleResolverName = collection.options.resolvers.single.name;
 
   return graphql(gql`
-    query ${queryName}($documentId: String) {
-      ${singleResolverName}(documentId: $documentId) {
+    query ${queryName}($documentId: String, $slug: String) {
+      ${singleResolverName}(documentId: $documentId, slug: $slug) {
         ...${fragmentName}
       }
     }
@@ -19,7 +19,7 @@ export default function withSingle (options) {
   `, {
     options(ownProps) {
       return {
-        variables: { documentId: ownProps.documentId },
+        variables: { documentId: ownProps.documentId, slug: ownProps.slug },
         pollInterval: 20000,
       };
     },

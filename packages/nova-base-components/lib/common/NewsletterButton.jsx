@@ -2,8 +2,7 @@ import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { Messages } from 'meteor/nova:core';
-import Users from 'meteor/nova:users';
+import { withMutation, withCurrentUser } from 'meteor/nova:core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -11,24 +10,40 @@ class NewsletterButton extends Component {
   constructor(props) {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
+
+    const isSubscribed = props.currentUser.__newsletter_subscribeToNewsletter;
+
+    this.state = {
+      labelId: isSubscribed ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
+      action: isSubscribed ? 'removeUserNewsletter' : 'addUserNewsletter'
+    };
   }
   
   subscriptionAction() {
-    const action = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false) ? 
-      'newsletter.removeUser' : 'newsletter.addUser';
 
-    this.context.actions.call(action, this.props.user, (error, result) => {
-      if (error) {
-        console.log(error);
-        this.props.flash(error.message, "error");
+    const action = this.state.action;
+
+    this.props[action]({userId: this.props.currentUser._id}).then(result => {
+      console.log(result)
+      this.props.successCallback(result);
+      if (result.data[action].action === 'subscribed') {
+        this.setState({
+          labelId: 'newsletter.unsubscribe',
+          action: 'removeUserNewsletter',
+        });
       } else {
-        this.props.successCallback(result);
+        this.setState({
+          labelId: 'newsletter.subscribe',
+          action: 'addUserNewsletter',
+        });
       }
+    }).catch(error => {
+      console.log(error);
+      this.props.flash(error.message, "error");
     });
   }
 
   render() {
-    const isSubscribed = Users.getSetting(this.props.user, 'newsletter_subscribeToNewsletter', false);
 
     return (
       <Button
@@ -36,7 +51,7 @@ class NewsletterButton extends Component {
         onClick={this.subscriptionAction}
         bsStyle="primary"
       >
-        {isSubscribed ? <FormattedMessage id="newsletter.unsubscribe"/> : <FormattedMessage id="newsletter.subscribe"/>}
+        <FormattedMessage id={this.state.labelId}/>
       </Button>
     )
   }
@@ -51,7 +66,10 @@ NewsletterButton.contextTypes = {
   actions: React.PropTypes.object,
 };
 
-const mapStateToProps = state => ({ messages: state.messages, });
+const mapStateToProps = state => ({ messages: state.messages });
 const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
 
-registerComponent('NewsletterButton', NewsletterButton, connect(mapStateToProps, mapDispatchToProps));
+const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};
+const removeOptions = {name: 'removeUserNewsletter', args: {userId: 'String'}};
+
+registerComponent('NewsletterButton', NewsletterButton, withCurrentUser, withMutation(addOptions), withMutation(removeOptions), connect(mapStateToProps, mapDispatchToProps));

@@ -127,7 +127,7 @@ Telescope.createCollection = options => {
     }
     // single
     if (options.resolvers.single) {
-      Telescope.graphQL.addQuery(`${options.resolvers.single.name}(documentId: String): ${options.typeName}`);
+      Telescope.graphQL.addQuery(`${options.resolvers.single.name}(documentId: String, slug: String): ${options.typeName}`);
       queryResolvers[options.resolvers.single.name] = options.resolvers.single.resolver;
     }
     // total

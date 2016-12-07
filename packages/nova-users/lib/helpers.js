@@ -214,6 +214,16 @@ Users.getProperty = function (object, property) {
   }
 };
 
+Users.setSetting = (user, settingName, value) => {
+  // all users settings should begin with the prexi __: user.__setting namespace, so add "__" if needed
+  var field = settingName.slice(0,2) === "__" ? settingName : "__" + settingName;
+
+  var modifier = {$set: {}};
+  modifier.$set[field] = value;
+
+  Users.update(user._id, modifier);
+}
+
 
 ////////////////////
 // More Helpers   //

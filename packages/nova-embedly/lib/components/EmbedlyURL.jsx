@@ -26,7 +26,7 @@ class EmbedlyURL extends Component {
 
     if (url.length) {
       // the URL has changed, get a new thumbnail
-      this.props.getEmbedlyData({variables: {url}}).then(result => {
+      this.props.getEmbedlyData({url}).then(result => {
         this.setState({loading: false});
         console.log('Embedly Data', result);
         this.context.addToAutofilledValues({
