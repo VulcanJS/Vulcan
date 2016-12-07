@@ -6,6 +6,7 @@
 
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 
 import deepmerge from 'deepmerge';
@@ -50,10 +51,15 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
 
   config.configServer(graphQLServer)
 
+  // Load the cookie parsing middleware, used to grab login token
+  graphQLServer.use(cookieParser());
+  
   // GraphQL endpoint
   graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
     let options,
         user = null;
+
+    // console.log('Login token: ', req.cookies.meteor_login_token);
 
     if (_.isFunction(givenOptions))
       options = givenOptions(req);
