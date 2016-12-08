@@ -1,7 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
-import mutations from './mutations.js';
 import Posts from './collection.js';
 
 /**
@@ -38,7 +37,7 @@ const schema = {
     viewableBy: ['admins'],
     publish: true, // publish so that admins can sort pending posts by createdAt
     autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
   },
   /**
@@ -268,7 +267,7 @@ const schema = {
     }
   },
   /**
-    The post author's `_id`. 
+    The post author's `_id`.
   */
   userId: {
     type: String,

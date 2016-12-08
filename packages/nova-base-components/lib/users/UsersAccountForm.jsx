@@ -11,7 +11,7 @@ const UsersAccountForm = ({client}) => {
       onSignedInHook={() => client.resetStore()}
       onSignedOutHook={() => client.resetStore()}
     />
-  ) 
+  )
 };
 
 registerComponent('UsersAccountForm', UsersAccountForm, withApollo);
@@ -26,12 +26,12 @@ class AccountsButton extends Accounts.ui.Button {
   render () {
     const {label, href, type, disabled, className, onClick} = this.props;
     if (type === 'link') {
-      return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
+      return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
     }
-    return <Button 
+    return <Button
         bsStyle="primary"
         className={ className }
-        type={ type } 
+        type={ type }
         disabled={ disabled }
         onClick={ onClick }>{ label }
       </Button>;
@@ -47,13 +47,13 @@ class AccountsField extends Accounts.ui.Field {
       onChange({ target: { value: this.input.value } })
     }
   }
-  
+
   render() {
-    const { id, hint, label, type = 'text', onChange, className = "field", defaultValue = "" } = this.props;
+    const { id, hint, /* label, */ type = 'text', onChange, className = "field", defaultValue = "" } = this.props;
     const { mount = true } = this.state;
     return mount ? (
       <div className={ className }>
-        <FormControl id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        <FormControl id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
       </div>
     ) : null;
   }

@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Dropdown, Button } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 
 const UsersAccountMenu = () => {
 
@@ -14,7 +14,7 @@ const UsersAccountMenu = () => {
         <Components.UsersAccountForm />
       </Dropdown.Menu>
     </Dropdown>
-  ) 
+  )
 };
 
 UsersAccountMenu.displayName = "UsersAccountMenu";

@@ -56,16 +56,16 @@ class EmbedlyURL extends Component {
     };
 
     loadingStyle.display = this.state.loading ? "block" : "none";
-    
+
     // see https://facebook.github.io/react/warnings/unknown-prop.html
     const {document, updateCurrentValue, control, getEmbedlyData, ...rest} = this.props;
 
     return (
       <div className="embedly-url-field" style={wrapperStyle}>
-        <Input 
+        <Input
           {...rest}
-          onBlur={this.handleBlur} 
-          type="text"  
+          onBlur={this.handleBlur}
+          type="text"
           ref={ref => this.input = ref}
         />
         <div className="embedly-url-field-loading" style={loadingStyle}>

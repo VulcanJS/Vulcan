@@ -1,7 +1,7 @@
 /*
-The original Newsletter components is defined using an 
+The original Newsletter components is defined using an
 ES6 class, so we use the "class foo extends bar" syntax
-to extend it. This way, we can simply redefine the 
+to extend it. This way, we can simply redefine the
 render method to change it, while preserving
 all of the class's other methods (other render
 functions, event handlers, etc.).
@@ -9,13 +9,13 @@ functions, event handlers, etc.).
 
 import { Components, getRawComponent, replaceComponent }from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage /*, intlShape */ } from 'react-intl';
 
 class CustomNewsletter extends getRawComponent('Newsletter') {
 
   render() {
     // console.log(this.renderButton); <-- exists
-    
+
     return this.state.showBanner
       ? (
         <div className="newsletter">

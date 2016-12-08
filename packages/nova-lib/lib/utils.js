@@ -66,7 +66,7 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Telescope.utils.trimWords = function(s, numWords) {
-  
+
   if (!s)
     return s;
 
@@ -95,7 +95,7 @@ Telescope.utils.capitalize = function(str) {
 
 Telescope.utils.t = function(message) {
   var d = new Date();
-  console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());
+  console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()); // eslint-disable-line
 };
 
 Telescope.utils.nl2br = function(str) {
@@ -153,7 +153,7 @@ Telescope.utils.slugify = function (s) {
 Telescope.utils.getUnusedSlug = function (collection, slug) {
   let suffix = "";
   let index = 0;
-  
+
   // handle edge case for Users collection
   const field = collection._name === 'users' ? '__slug' : 'slug';
 
@@ -245,7 +245,7 @@ Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
 
 Telescope.log = function (s) {
   if(Telescope.settings.get('debug', false) || process.env.NODE_ENV === "development") {
-    console.log(s);
+    console.log(s); // eslint-disable-line
   }
 };
 
@@ -390,7 +390,7 @@ Telescope.utils.stripTelescopeNamespace = (schema) => {
 
   // remove any field beginning by telescope: .telescope, .telescope.upvotedPosts.$, ...
   const filteredSchemaKeys = schemaKeys.filter(key => key.slice(0,9) !== 'telescope');
-  
+
   // replace the previous schema by an object based on this filteredSchemaKeys
   return filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
 }

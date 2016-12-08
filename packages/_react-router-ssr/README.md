@@ -1,3 +1,5 @@
+# WARNING: This project is no longer in active maintenance. If you would like to maintain it, contact me at benoit@thereactivestack.com
+
 Server-side rendering for react-router and react-meteor-data rehydratating Meteor subscriptions
 
 It has a protection against leaking your data. Only subscribed data will be available just the way it would be on the client.

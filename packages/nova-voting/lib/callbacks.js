@@ -1,5 +1,5 @@
-import Telescope from 'meteor/nova:lib';
-import Users from 'meteor/nova:users';
+// import Telescope from 'meteor/nova:lib';
+// import Users from 'meteor/nova:users';
 
 /**
  * @summary Update an item's (post or comment) score
@@ -8,6 +8,8 @@ import Users from 'meteor/nova:users';
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
+
+/*
 function updateScore (item, user, collection, operation) {
   Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 }
@@ -15,6 +17,7 @@ Telescope.callbacks.add("upvote.async", updateScore);
 Telescope.callbacks.add("downvote.async", updateScore);
 Telescope.callbacks.add("cancelUpvote.async", updateScore);
 Telescope.callbacks.add("cancelDownvote.async", updateScore);
+*/
 
 /**
  * @summary Update the profile of the user doing the operation
@@ -23,6 +26,8 @@ Telescope.callbacks.add("cancelDownvote.async", updateScore);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
+
+/*
 function updateUser (item, user, collection, operation) {
 
   var update = {};
@@ -40,10 +45,10 @@ function updateUser (item, user, collection, operation) {
     case "downvote":
       update.$addToSet = {'__downvotedPosts': vote};
       break;
-    case "cancelUpvote": 
+    case "cancelUpvote":
       update.$pull = {'__upvotedPosts': {itemId: item._id}};
       break;
-    case "cancelDownvote": 
+    case "cancelDownvote":
       update.$pull = {'__downvotedPosts': {itemId: item._id}};
       break;
   }
@@ -55,6 +60,7 @@ Telescope.callbacks.add("upvote.async", updateUser);
 Telescope.callbacks.add("downvote.async", updateUser);
 Telescope.callbacks.add("cancelUpvote.async", updateUser);
 Telescope.callbacks.add("cancelDownvote.async", updateUser);
+*/
 
 /**
  * @summary Update the karma of the item's owner
@@ -63,11 +69,13 @@ Telescope.callbacks.add("cancelDownvote.async", updateUser);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
+
+/*
 function updateKarma (item, user, collection, operation) {
 
   var votePower = Telescope.getVotePower(user);
   var karmaAmount = (operation === "upvote" || operation === "cancelDownvote") ? votePower : -votePower;
-  
+
   // only update karma is the operation isn't done by the item's author
   if (item.userId !== user._id) {
     Users.update({_id: item.userId}, {$inc: {"__karma": karmaAmount}});
@@ -78,3 +86,4 @@ Telescope.callbacks.add("upvote.async", updateKarma);
 Telescope.callbacks.add("downvote.async", updateKarma);
 Telescope.callbacks.add("cancelUpvote.async", updateKarma);
 Telescope.callbacks.add("cancelDownvote.async", updateKarma);
+*/

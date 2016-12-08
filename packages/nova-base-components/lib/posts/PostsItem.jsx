@@ -1,11 +1,9 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
-import { Button } from 'react-bootstrap';
 import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
 import { withCurrentUser } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
@@ -28,32 +26,32 @@ class PostsItem extends Component {
       </div>
     )
   }
-  
+
   render() {
 
     const {post} = this.props;
 
-    let postClass = "posts-item"; 
+    let postClass = "posts-item";
     if (post.sticky) postClass += " posts-sticky";
 
     return (
       <div className={postClass}>
-        
+
         <div className="posts-item-vote">
           <Components.Vote post={post}/>
         </div>
-        
+
         {post.thumbnailUrl ? <Components.PostsThumbnail post={post}/> : null}
 
         <div className="posts-item-content">
-          
+
           <h3 className="posts-item-title">
             <Link to={Posts.getLink(post)} className="posts-item-title-link" target={Posts.getLinkTarget(post)}>
               {post.title}
             </Link>
             {this.renderCategories()}
           </h3>
-          
+
           <div className="posts-item-meta">
             {post.user? <div className="posts-item-user"><Components.UsersAvatar user={post.user} size="small"/><Components.UsersName user={post.user}/></div> : null}
             <div className="posts-item-date">{post.postedAt ? <FormattedRelative value={post.postedAt}/> : <FormattedMessage id="posts.dateNotDefined"/>}</div>
@@ -69,12 +67,12 @@ class PostsItem extends Component {
         </div>
 
         {this.renderCommenters()}
-      
+
       </div>
     )
   }
-};
-  
+}
+
 PostsItem.propTypes = {
   currentUser: React.PropTypes.object,
   post: React.PropTypes.object.isRequired,

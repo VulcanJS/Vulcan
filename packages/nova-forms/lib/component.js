@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+
 'use strict';
 
 var React = require('react');

@@ -40,7 +40,7 @@ Users.getUserName = function (user) {
       return user.services.twitter.screenName;
   }
   catch (error){
-    console.log(error);
+    console.log(error); // eslint-disable-line
     return null;
   }
 };

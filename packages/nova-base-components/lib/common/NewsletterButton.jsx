@@ -16,7 +16,7 @@ class NewsletterButton extends Component {
       action: isSubscribed ? 'removeUserNewsletter' : 'addUserNewsletter'
     };
   }
-  
+
   subscriptionAction() {
 
     const action = this.state.action;
@@ -56,8 +56,8 @@ class NewsletterButton extends Component {
 }
 
 NewsletterButton.propTypes = {
-  successCallback: React.PropTypes.func.isRequired,
   user: React.PropTypes.object.isRequired,
+  successCallback: React.PropTypes.func.isRequired,
 };
 
 NewsletterButton.contextTypes = {

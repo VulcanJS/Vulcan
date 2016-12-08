@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import Posts from "meteor/nova:posts";
 import { withRouter } from 'react-router'
@@ -37,12 +37,12 @@ class PostsEditForm extends Component {
               __slug
             }
           `}
-          successCallback={post => { 
+          successCallback={post => {
             this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
           removeSuccessCallback={({documentId, documentTitle}) => {
-            // post edit form is being included from a single post, redirect to index 
+            // post edit form is being included from a single post, redirect to index
             // note: this.props.params is in the worst case an empty obj (from react-router)
             if (this.props.params._id) {
               this.props.router.push('/');
@@ -57,7 +57,7 @@ class PostsEditForm extends Component {
         />
       </div>
     );
-    
+
   }
 }
 

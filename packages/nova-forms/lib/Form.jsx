@@ -43,7 +43,7 @@ import { flatten, deepValue, getEditableFields, getInsertableFields } from './ut
 
 */
 
-class NovaForm extends Component{
+class Form extends Component {
 
   // --------------------------------------------------------------------- //
   // ----------------------------- Constructor --------------------------- //
@@ -78,7 +78,7 @@ class NovaForm extends Component{
   componentWillUnmount() {
     // note: patch to cancel closeCallback given by parent
     // we clean the event by hand
-    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this NovaForm component
+    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this Form component
     // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
     // let's not call setState on an unmounted component (avoid no-op / memory leak)
     this.context.closeCallback = f => f;
@@ -126,7 +126,7 @@ class NovaForm extends Component{
       // backward compatibility from 'autoform' to 'form'
       if (fieldSchema.autoform) {
         fieldSchema.form = fieldSchema.autoform;
-        console.warn(`🔭 Telescope Nova Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`);
+        console.warn(`🔭 Telescope Nova Warning: The 'autoform' field is deprecated. You should rename it to 'form' instead. It was defined on your '${fieldName}' field  on the '${this.props.collection._name}' collection`); // eslint-disable-line
       }
 
       // replace value by prefilled value if value is empty
@@ -137,7 +137,7 @@ class NovaForm extends Component{
           field.value = prefilledValue;
         }
       }
-      
+
       // replace empty value, which has not been prefilled, by the default value from the schema
       if (fieldSchema.defaultValue && field.value === "") {
         field.value = fieldSchema.defaultValue;
@@ -356,7 +356,7 @@ class NovaForm extends Component{
     // run close callback if it exists in context (i.e. we're inside a modal)
     if (this.context.closeCallback) {
       this.context.closeCallback();
-    
+
     // else there is no close callback (i.e. we're not inside a modal), call the clear form method
     // note: we don't want to update the state of an unmounted component
     } else {
@@ -399,7 +399,7 @@ class NovaForm extends Component{
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
     // note: it follows the same logic as NovaForm's getDocument method
-    data = { 
+    data = {
       ...this.state.autofilledValues, // ex: can be values from EmbedlyURL or NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy
       ...this.state.currentValues, // ex: can be values from DateTime component
@@ -453,7 +453,7 @@ class NovaForm extends Component{
 
     const deleteDocumentConfirm = this.context.intl.formatMessage({id: `${this.props.collection._name}.delete_confirm`}, {title: documentTitle});
 
-    if (window.confirm(deleteDocumentConfirm)) { 
+    if (window.confirm(deleteDocumentConfirm)) {
       this.props.removeMutation({documentId})
         .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({documentId, documentTitle});
@@ -506,7 +506,7 @@ class NovaForm extends Component{
 
 }
 
-NovaForm.propTypes = {
+Form.propTypes = {
 
   // main options
   collection: React.PropTypes.object,
@@ -535,16 +535,16 @@ NovaForm.propTypes = {
   client: React.PropTypes.object,
 }
 
-NovaForm.defaultProps = {
+Form.defaultProps = {
   layout: "horizontal",
 }
 
-NovaForm.contextTypes = {
+Form.contextTypes = {
   closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 
-NovaForm.childContextTypes = {
+Form.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
   updateCurrentValue: React.PropTypes.func,
@@ -552,4 +552,4 @@ NovaForm.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = NovaForm
+module.exports = Form

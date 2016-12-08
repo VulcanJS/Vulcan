@@ -1,3 +1,4 @@
+import Users from 'meteor/nova:users';
 import Posts from './collection.js'
 
 /**
@@ -103,7 +104,7 @@ Posts.views.add("userPosts", function (terms) {
       isFuture: {$ne: true}
     },
     options: {
-      limit: 5, 
+      limit: 5,
       sort: {
         postedAt: -1
       }

@@ -43,4 +43,3 @@
 //     modifier.$set.slug = Telescope.utils.slugify(modifier.$set.title);
 //   }
 // });
-

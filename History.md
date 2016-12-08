@@ -1,3 +1,11 @@
+## v0.27.5
+
+- Nova is now powered by Meteor 1.4.2.3.
+- Newsletter settings + banner behavior fixed ([PR #1513](https://github.com/TelescopeJS/Telescope/pull/1513), thanks [@bengott](https://github.com/bengott)). **⚠️ If you are updating from a previous version of Nova/Legacy, [make sure to run migration script in your app on a server file!](https://github.com/bengott/Telescope/blob/e714aab27b323aee5ddbb97a5ece01a3cdc0e76f/packages/_nova-migrations/lib/server/migrations.js#L746-L782)**
+- Fix ESLint issues: revert comment in deep function, support for JSX files, clean up code ([PR #1511](https://github.com/TelescopeJS/Telescope/pull/1511), [PR #1512](https://github.com/TelescopeJS/Telescope/pull/1512), [PR #1515](https://github.com/TelescopeJS/Telescope/pull/1515), thanks [@comus](https://github.com/comus)).
+- Remove legacy packages not used anymore `telescope:migrations` & `telescope:invites`.
+- Packages with **_** are unmaintained & necessary Meteor packages for Nova to run. We have added small patches to them: `meteorhacks:inject-data` & `react-router:react-router-ssr`.
+
 ## v0.27.4
 
 - Nova is now powered by Meteor 1.4.2.1, which provides among other cool features super fast build time! Some NPM dependencies changed: **be sure to run `npm install` again!**

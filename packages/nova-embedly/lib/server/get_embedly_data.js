@@ -11,7 +11,7 @@ function getEmbedlyData(url) {
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
-    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module.");
+    console.log("Couldn't find an Embedly API key! Please add it to your Telescope settings or remove the Embedly module."); // eslint-disable-line
     return null;
   }
 
@@ -42,7 +42,7 @@ function getEmbedlyData(url) {
     return embedlyData;
 
   } catch (error) {
-    console.log(error)
+    console.log(error); // eslint-disable-line
     // the first 13 characters of the Embedly errors are "failed [400] ", so remove them and parse the rest
     var errorObject = JSON.parse(error.message.substring(13));
     throw new Meteor.Error(errorObject.error_code, errorObject.error_message);

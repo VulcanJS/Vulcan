@@ -1,6 +1,3 @@
-import Telescope from 'meteor/nova:lib';
-import mutations from './mutations.js';
-
 const adminGroup = {
   name: "admin",
   order: 10
@@ -10,7 +7,7 @@ const adminGroup = {
  * @summary Users schema
  * @type {Object}
  */
-const schema = { 
+const schema = {
   _id: {
     type: String,
     publish: true,
@@ -63,7 +60,7 @@ const schema = {
     blackbox: true
   },
   // telescope-specific data, kept for backward compatibility and migration purposes
-  telescope: { 
+  telescope: {
     type: Object,
     blackbox: true,
     optional: true,

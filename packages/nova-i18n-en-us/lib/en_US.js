@@ -151,6 +151,7 @@ Telescope.strings.en = {
   "newsletter.subscribe_prompt": "Subscribe to the newsletter",
   "newsletter.email": "Your email",
   "newsletter.success_message": "Thanks for subscribing!",
+  "newsletter.subscription_updated": "Newsletter subscription updated.",
 
   "admin": "Admin",
   "notifications": "Notifications",

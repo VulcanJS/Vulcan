@@ -51,7 +51,7 @@ class ModalTrigger extends Component {
       </div>
     )
   }
-};
+}
 
 ModalTrigger.propTypes = {
   component: React.PropTypes.object.isRequired,

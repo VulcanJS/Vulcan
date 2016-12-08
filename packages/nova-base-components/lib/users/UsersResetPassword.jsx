@@ -1,6 +1,7 @@
 import { registerComponent } from 'meteor/nova:lib';
 import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
+import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { Link } from 'react-router';
 import { withCurrentUser } from 'meteor/nova:core';
 

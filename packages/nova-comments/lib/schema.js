@@ -1,6 +1,4 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
-import mutations from './mutations.js';
 
 /**
  * @summary Comments schema
@@ -53,7 +51,7 @@ const schema = {
     publish: false,
     viewableBy: ['admins'],
     autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
   },
   /**
@@ -63,9 +61,9 @@ const schema = {
     type: Date,
     optional: true,
     publish: true,
-    viewableBy: ['guests'],    
+    viewableBy: ['guests'],
     autoValue: (documentOrModifier) => {
-      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp  
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
     }
   },
   /**
@@ -143,7 +141,7 @@ const schema = {
     // },
   },
   /**
-    Whether the comment is deleted. Delete comments' content doesn't appear on the site. 
+    Whether the comment is deleted. Delete comments' content doesn't appear on the site.
   */
   isDeleted: {
     type: Boolean,

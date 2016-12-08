@@ -1,3 +1,4 @@
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import Telescope from './config.js';
 
 SimpleSchema.extendOptions({

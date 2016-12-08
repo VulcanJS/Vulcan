@@ -6,12 +6,12 @@ function subscribeUserOnProfileCompletion (user) {
   if (!!Telescope.settings.get('autoSubscribe') && !!Users.getEmail(user)) {
     try {
       MailChimpList.add(user, false, function (error, result) {
-        console.log(error);
-        console.log(result);
+        console.log(error); // eslint-disable-line
+        console.log(result); // eslint-disable-line
       });
     } catch (error) {
-      console.log("// MailChimp Error:")
-      console.log(error)
+      console.log("// MailChimp Error:") // eslint-disable-line
+      console.log(error) // eslint-disable-line
     }
   }
   return user;

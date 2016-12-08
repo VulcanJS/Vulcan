@@ -21,7 +21,7 @@ Telescope.notifications.create = (userIds, notificationName, data) => {
     if (!!userEmail) {
       NovaEmail.buildAndSendHTML(Users.getEmail(user), subject, html);
     } else {
-      console.log(`// Couldn't send notification: admin user ${user._id} doesn't have an email`);
+      console.log(`// Couldn't send notification: admin user ${user._id} doesn't have an email`); // eslint-disable-line
     }
   });
 

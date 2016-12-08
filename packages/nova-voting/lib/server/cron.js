@@ -8,7 +8,7 @@
 
 //     // active items get updated every N seconds
 //     Meteor.setInterval(function () {
-      
+
 //       var updatedPosts = 0;
 //       var updatedComments = 0;
 //       // console.log('tick ('+scoreInterval+')');

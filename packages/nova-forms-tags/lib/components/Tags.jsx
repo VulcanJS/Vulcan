@@ -31,7 +31,7 @@ class Tags extends Component {
 
     const tags = this.state.tags;
     tags.splice(i, 1);
-    
+
     const value = this.state.value;
     value.splice(i,1);
 
@@ -42,7 +42,7 @@ class Tags extends Component {
   }
 
   handleAddition(tag) {
-    
+
     // first, check if added tag is part of the possible options
     const option = _.findWhere(this.props.options, {label: tag});
 
@@ -69,14 +69,14 @@ class Tags extends Component {
 
   render() {
 
-    const {name, value, label} = this.props;
+    const {name, /* value, */ label} = this.props;
 
     return (
       <div className="form-group row">
         <label className="control-label col-sm-3">{label}</label>
         <div className="col-sm-9">
           <div className="tags-field">
-            <ReactTags 
+            <ReactTags
               tags={this.state.tags}
               suggestions={this.state.suggestions}
               handleDelete={this.handleDelete}

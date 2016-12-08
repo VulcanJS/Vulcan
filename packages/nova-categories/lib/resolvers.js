@@ -7,11 +7,12 @@ const specificResolvers = {
       return post.categories ? context.Categories.find({_id: {$in: post.categories}}, { fields: context.getViewableFields(context.currentUser, context.Categories) }).fetch() : [];
     },
   },
-  Category: {
-    parent(category, args, context) {
-      return category.parent ? context.Categories.findOne({_id: category.parent }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
-    }
-  },
+  // TODO: fix this
+  // Category: {
+  //   parent(category, args, context) {
+  //     return category.parent ? context.Categories.findOne({_id: category.parent }, { fields: context.getViewableFields(context.currentUser, context.Categories) }) : null;
+  //   }
+  // },
 };
 Telescope.graphQL.addResolvers(specificResolvers);
 
@@ -36,23 +37,23 @@ const resolvers = {
   },
 
   single: {
-    
+
     name: 'categoriesSingle',
-    
+
     resolver(root, {documentId}, context) {
       return context.Categories.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Categories) });
     },
-  
+
   },
 
   total: {
-    
+
     name: 'categoriesTotal',
-    
+
     resolver(root, args, context) {
       return context.Categories.find().count();
     },
-  
+
   }
 };
 

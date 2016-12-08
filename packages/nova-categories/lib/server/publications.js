@@ -3,11 +3,11 @@
 // import Categories from "../collection.js";
 
 // Meteor.publish('categories', function() {
-  
+
 //   const currentUser = this.userId && Users.findOne(this.userId);
 
 //   if(Users.canDo(currentUser, "posts.view.approved.all")){
-    
+
 //     var categories = Categories.find({}, {fields: Categories.publishedFields.list});
 //     var publication = this;
 

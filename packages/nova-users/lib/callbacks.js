@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 import marked from 'marked';
 import NovaEmail from 'meteor/nova:email';
+import { Gravatar } from 'meteor/jparker:gravatar';
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -57,7 +58,7 @@ function setupUser (user, options) {
     user.__displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
   } else {
     user.__displayName = user.username;
-  } 
+  }
 
   // create a basic slug from display name and then modify it if this slugs already exists;
   const basicSlug = Telescope.utils.slugify(user.__displayName);

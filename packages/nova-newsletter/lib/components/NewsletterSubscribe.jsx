@@ -1,6 +1,7 @@
 import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { withMessages } from 'meteor/nova:core';
+import { intlShape } from 'react-intl';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends Component {
@@ -21,12 +22,12 @@ class NewsletterSubscribe extends Component {
   render() {
     return (
       <div className="form-group row">
-        <label className="control-label col-sm-3">Newsletter</label>
+        <label className="control-label col-sm-3"></label>
         <div className="col-sm-9">
-          <Components.NewsletterButton 
-            user={this.props.document} 
+          <Components.NewsletterButton
+            user={this.props.document}
             successCallback={() => {
-              this.props.flash("Newsletter subscription updated", "success")
+              this.props.flash(this.context.intl.formatMessage({id: "newsletter.subscription_updated"}), "success")
             }}
           />
         </div>
@@ -37,6 +38,7 @@ class NewsletterSubscribe extends Component {
 
 NewsletterSubscribe.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
+  intl: intlShape
 };
 
 module.exports = withMessages(NewsletterSubscribe);

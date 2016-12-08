@@ -38,12 +38,12 @@ class CategoriesList extends Component {
   }
 
   renderCategoryEditModal(category, index) {
-    
+
     return (
       <Modal key={index} show={this.state.openModal === index+1} onHide={this.closeModal}>
         <Modal.Header closeButton>
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
-        </Modal.Header>        
+        </Modal.Header>
         <Modal.Body>
           <ContextPasser closeCallback={this.closeModal}>
             <Components.CategoriesEditForm category={category}/>
@@ -54,12 +54,12 @@ class CategoriesList extends Component {
   }
 
   renderCategoryNewModal() {
-    
+
     return (
       <Modal show={this.state.openModal === 0} onHide={this.closeModal}>
         <Modal.Header closeButton>
           <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
-        </Modal.Header>        
+        </Modal.Header>
         <Modal.Body>
           <ContextPasser closeCallback={this.closeModal}>
             <Components.CategoriesNewForm/>
@@ -82,18 +82,18 @@ class CategoriesList extends Component {
   }
 
   render() {
-    
-    const categories = this.props.results; 
+
+    const categories = this.props.results;
 
     const currentQuery = _.clone(this.props.router.location.query);
     delete currentQuery.cat;
-    
+
     return (
       <div>
-        <DropdownButton 
-          bsStyle="default" 
-          className="categories-list btn-secondary" 
-          title={<FormattedMessage id="categories"/>} 
+        <DropdownButton
+          bsStyle="default"
+          className="categories-list btn-secondary"
+          title={<FormattedMessage id="categories"/>}
           id="categories-dropdown"
         >
           <div className="category-menu-item dropdown-item">
@@ -105,10 +105,10 @@ class CategoriesList extends Component {
           </div>
           {
             // categories data are loaded
-            !this.props.loading ? 
+            !this.props.loading ?
               // there are currently categories
-              categories && categories.length > 0 ? 
-                categories.map((category, index) => <Components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) 
+              categories && categories.length > 0 ?
+                categories.map((category, index) => <Components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>)
               // not any category found
               : null
             // categories are loading
@@ -116,27 +116,27 @@ class CategoriesList extends Component {
           }
           <ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</ShowIf>
         </DropdownButton>
-        
+
         <div>
           {
-            /* 
-              Modals cannot be inside DropdownButton component (see GH issue link on top of the file) 
+            /*
+              Modals cannot be inside DropdownButton component (see GH issue link on top of the file)
               -> we place them in a <div> outside the <DropdownButton> component
             */
-            
+
             /* Modals for each category to edit */
             // categories data are loaded
-            !this.props.loading ? 
-              // there are currently categories 
-              categories && categories.length > 0 ? 
-                categories.map((category, index) => this.renderCategoryEditModal(category, index)) 
+            !this.props.loading ?
+              // there are currently categories
+              categories && categories.length > 0 ?
+                categories.map((category, index) => this.renderCategoryEditModal(category, index))
               // not any category found
               : null
             // categories are loading
             : null
           }
-           
-          { 
+
+          {
             /* modal for creating a new category */
             this.renderCategoryNewModal()
           }
@@ -145,7 +145,7 @@ class CategoriesList extends Component {
     )
 
   }
-};
+}
 
 CategoriesList.propTypes = {
   results: React.PropTypes.array,

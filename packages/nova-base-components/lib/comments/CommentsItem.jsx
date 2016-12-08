@@ -33,7 +33,7 @@ class CommentsItem extends Component{
     event.preventDefault();
     this.setState({showEdit: true});
   }
-  
+
   editCancelCallback(event) {
     event.preventDefault();
     this.setState({showEdit: false});
@@ -62,7 +62,7 @@ class CommentsItem extends Component{
           <a className="comments-item-reply-link" onClick={this.showReply}>
             <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null}
-      </div>  
+      </div>
     )
   }
 
@@ -71,9 +71,9 @@ class CommentsItem extends Component{
     return (
       <div className="comments-item-reply">
         <Components.CommentsNewForm
-          postId={this.props.comment.postId} 
-          parentComment={this.props.comment} 
-          successCallback={this.replySuccessCallback} 
+          postId={this.props.comment.postId}
+          parentComment={this.props.comment}
+          successCallback={this.replySuccessCallback}
           cancelCallback={this.replyCancelCallback}
           type="reply"
         />
@@ -86,7 +86,7 @@ class CommentsItem extends Component{
     return (
       <Components.CommentsEditForm
         comment={this.props.comment}
-        successCallback={this.editSuccessCallback} 
+        successCallback={this.editSuccessCallback}
         cancelCallback={this.editCancelCallback}
         removeSuccessCallback={this.removeSuccessCallback}
       />

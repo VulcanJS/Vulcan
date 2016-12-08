@@ -1,7 +1,8 @@
 import Telescope from 'meteor/nova:lib';
-import Posts from './collection.js'
 import Users from 'meteor/nova:users';
-import Events from "meteor/nova:events";
+import Events from 'meteor/nova:events';
+import { Messages } from 'meteor/nova:core';
+import Posts from './collection.js'
 
 /**
  *
@@ -113,7 +114,6 @@ Meteor.methods({
    * @param {Object} modifier - the update modifier
    */
   'posts.edit': function (postId, modifier) {
-    
     if (Meteor.isClient) {
 
       // no simulation for now
@@ -142,7 +142,7 @@ Meteor.methods({
   'posts.approve': function(postId){
 
     check(postId, String);
-    
+
     const post = Posts.findOne(postId);
     const now = new Date();
 
@@ -153,7 +153,7 @@ Meteor.methods({
       if (!post.postedAt) {
         set.postedAt = now;
       }
-      
+
       Posts.update(post._id, {$set: set});
 
       Telescope.callbacks.runAsync("posts.approve.async", post);
@@ -172,15 +172,15 @@ Meteor.methods({
   'posts.reject': function(postId){
 
     check(postId, String);
-    
+
     const post = Posts.findOne(postId);
-    
+
     if(Users.isAdmin(Meteor.user())){
 
       Posts.update(post._id, {$set: {status: Posts.config.STATUS_REJECTED}});
 
       Telescope.callbacks.runAsync("postRejectAsync", post);
-    
+
     }else{
       Messages.flash('You need to be an admin to do that.', "error");
     }
@@ -196,7 +196,7 @@ Meteor.methods({
 
     check(postId, String);
     check(sessionId, Match.Any);
-    
+
     // only let users increment a post's view counter once per session
     var view = {_id: postId, userId: this.userId, sessionId: sessionId};
 
@@ -215,9 +215,9 @@ Meteor.methods({
   'posts.remove': function(postId) {
 
     if (Meteor.isClient) {
-      
+
       // no simulation for now
-    
+
     } else {
 
       check(postId, String);
@@ -241,7 +241,7 @@ Meteor.methods({
       Posts.remove(postId);
 
       Telescope.callbacks.runAsync("posts.remove.async", post);
-      
+
     }
 
   },
@@ -253,7 +253,7 @@ Meteor.methods({
    * @param {String} url - the URL to check
    */
   'posts.checkForDuplicates': function (url) {
-    Posts.checkForSameUrl(url);  
+    Posts.checkForSameUrl(url);
   },
 
   // /**
@@ -286,7 +286,7 @@ Meteor.methods({
   //  * @memberof Posts
   //  * @isMethod true
   //  * @param {String} postId - the id of the post
-   
+
   // 'posts.cancelUpvote': function (postId) {
   //   check(postId, String);
   //   // note(apollo): with Meteor, method's simulation gives an exception because MiniMongo don't know about the '..voters'
@@ -306,4 +306,3 @@ Meteor.methods({
   // }
 
 });
-

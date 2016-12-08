@@ -14,7 +14,7 @@ Cloudinary.config({
 });
 
 const CloudinaryUtils = {
-  
+
   // send an image URL to Cloudinary and get a cloudinary result object in return
   uploadImage(imageUrl) {
     try {
@@ -26,8 +26,8 @@ const CloudinaryUtils = {
       };
       return data;
     } catch (error) {
-      console.log("// Cloudinary upload failed for URL: "+imageUrl);
-      console.log(error.stack);
+      console.log("// Cloudinary upload failed for URL: "+imageUrl); // eslint-disable-line
+      console.log(error.stack); // eslint-disable-line
     }
   },
 
@@ -35,8 +35,8 @@ const CloudinaryUtils = {
   getUrls(cloudinaryId) {
     return Telescope.settings.get("cloudinaryFormats").map(format => {
       const url = Cloudinary.url(cloudinaryId, {
-        width: format.width, 
-        height: format.height, 
+        width: format.width,
+        height: format.height,
         crop: 'fill',
         sign_url: true,
         fetch_format: "auto",
@@ -56,7 +56,7 @@ Meteor.methods({
     if (Users.isAdmin(Meteor.user())) {
       thumbnailUrl = typeof thumbnailUrl === "undefined" ? "http://www.telescopeapp.org/images/logo.png" : thumbnailUrl;
       const data = CloudinaryUtils.uploadImage(thumbnailUrl);
-      console.log(data);
+      console.log(data); // eslint-disable-line
     }
   },
   cachePostThumbnails: function (limit = 20) {
@@ -71,16 +71,16 @@ Meteor.methods({
       postsWithUncachedThumbnails.forEach(Meteor.bindEnvironment((post, index) => {
 
           Meteor.setTimeout(function () {
-          console.log(`// ${index}. Caching thumbnail for post “${post.title}” (_id: ${post._id})`);
+          console.log(`// ${index}. Caching thumbnail for post “${post.title}” (_id: ${post._id})`); // eslint-disable-line
 
           const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
           Posts.update(post._id, {$set:{
             cloudinaryId: data.cloudinaryId,
             cloudinaryUrls: data.urls
           }});
-          
+
         }, index * 1000);
-      
+
       }));
     }
   }
@@ -106,7 +106,7 @@ Telescope.callbacks.add("posts.new.async", cachePostThumbnailOnSubmit);
 function cachePostThumbnailOnEdit (newPost, oldPost) {
   if (Telescope.settings.get("cloudinaryAPIKey")) {
     if (newPost.thumbnailUrl && newPost.thumbnailUrl !== oldPost.thumbnailUrl) {
-      
+
       const data = CloudinaryUtils.uploadImage(newPost.thumbnailUrl);
       Posts.update(newPost._id, {$set:{
         cloudinaryId: data.cloudinaryId,

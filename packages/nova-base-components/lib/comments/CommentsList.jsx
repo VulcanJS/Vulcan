@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 const CommentsList = ({comments, commentCount}) => {
 
@@ -18,9 +18,9 @@ const CommentsList = ({comments, commentCount}) => {
           <FormattedMessage id="comments.no_comments"/>
         </p>
       </div>
-    )  
+    )
   }
-  
+
 };
 
 CommentsList.displayName = "CommentsList";

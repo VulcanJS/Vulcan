@@ -1,7 +1,5 @@
 # Telescope Nova
 
-> It's the [Hacktoberfest](https://hacktoberfest.digitalocean.com/), support & celebrate open-source! [Browse our issues](https://github.com/TelescopeJS/Telescope/issues?q=is%3Aissue+is%3Aopen+label%3Ahacktoberfest) and come contribute! 
-
 There are currently two distinct versions of Telescope: **Nova** and **Legacy**.
 
 **Nova** is the new, React-based version and all development will happen on this version going forward. It's used by the [master](https://github.com/TelescopeJS/Telescope/tree/master) and [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branches.
@@ -730,6 +728,7 @@ If you create a new internationalization package, let us know so we can add it h
 - [ru-RU](https://github.com/fortunto2/nova-i18n-ru-ru)
 - [de-DE](https://atmospherejs.com/fzeidler/nova-i18n-de-de)
 - [pt-BR](https://github.com/lukasag/nova-i18n-pt-br)
+- [pt-PT](https://github.com/brunoamaral/nova-i18n-pt-pt)
 - [zh-CN](https://github.com/qge/nova-i18n-zh-cn)
 
 ## Cheatsheet

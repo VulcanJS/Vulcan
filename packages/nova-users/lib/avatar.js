@@ -1,3 +1,4 @@
+import { Gravatar } from 'meteor/jparker:gravatar';
 import Users from './collection.js';
 
 // var _ = require('underscore');
@@ -191,7 +192,7 @@ Users.avatar = {
       return service[0];
   },
 
-  computeUrl: function(prop) {
+  computeUrl: function(prop, user) {
     if (typeof prop === 'function') {
       prop = prop.call(user);
     }
@@ -210,9 +211,9 @@ Users.avatar = {
 
     var customProp = user && this.options.customImageProperty;
     if (typeof customProp === 'function') {
-      return this.computeUrl(customProp);
+      return this.computeUrl(customProp, user);
     } else if (customProp) {
-      return this.computeUrl(this.getDescendantProp(user, customProp));
+      return this.computeUrl(this.getDescendantProp(user, customProp), user);
     }
   },
 
@@ -230,7 +231,7 @@ Users.avatar = {
     }
 
     var emailOrHash = this.getUserEmail(user) || Users.getEmailHash(user);
-    var secure = true;
+    // var secure = true;
     var options = {
       // NOTE: Gravatar's default option requires a publicly accessible URL,
       // so it won't work when your app is running on localhost and you're

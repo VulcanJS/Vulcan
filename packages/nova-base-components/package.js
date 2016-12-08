@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:base-components",
   summary: "Telescope components package",
-  version: "0.27.4-nova",
+  version: "0.27.5-nova",
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -11,11 +11,11 @@ Package.onUse(function (api) {
 
   api.use([
     // Nova packages
-    'nova:core@0.27.4-nova',
-    'nova:posts@0.27.4-nova',
-    'nova:users@0.27.4-nova',
-    'nova:comments@0.27.4-nova',
-    'nova:voting@0.27.4-nova',
+    'nova:core@0.27.5-nova',
+    'nova:posts@0.27.5-nova',
+    'nova:users@0.27.5-nova',
+    'nova:comments@0.27.5-nova',
+    'nova:voting@0.27.5-nova',
 
     // third-party packages
     'fortawesome:fontawesome@4.5.0',
@@ -26,5 +26,5 @@ Package.onUse(function (api) {
 
   api.mainModule("lib/server.js", "server");
   api.mainModule("lib/client.js", "client");
-  
+
 });

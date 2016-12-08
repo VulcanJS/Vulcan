@@ -30,7 +30,7 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
     try {
 
-      console.log('// Adding "'+email+'" to MailChimp list…');
+      console.log('// Adding "'+email+'" to MailChimp list…'); // eslint-disable-line
 
       var api = new MailChimp(apiKey);
       var subscribeOptions = {
@@ -47,19 +47,19 @@ MailChimpList.add = function(userOrEmail, confirm, done){
         Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
       }
 
-      console.log("// User subscribed");
+      console.log("// User subscribed"); // eslint-disable-line
 
       return {action: 'subscribed', ...subscribe};
 
     } catch (error) {
       // if user is already subscribed, update setting
-      if (error.error = 214) {
+      if (error.error == 214) {
         Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
       }
       throw new Meteor.Error("subscription-failed", error.message);
     }
   } else {
-    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID");
   }
 };
 
@@ -78,7 +78,7 @@ MailChimpList.remove = (user) => {
 
     try {
 
-      console.log('// Removing "'+email+'" to MailChimp list…');
+      console.log('// Removing "'+email+'" from MailChimp list…'); // eslint-disable-line
 
       var api = new MailChimp(apiKey);
       var subscribeOptions = {
@@ -93,7 +93,7 @@ MailChimpList.remove = (user) => {
       // mark user as unsubscribed
       Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
 
-      console.log("// User unsubscribed");
+      console.log("// User unsubscribed"); // eslint-disable-line
 
       return {action: 'unsubscribed', ...subscribe};
 
@@ -101,7 +101,7 @@ MailChimpList.remove = (user) => {
       throw new Meteor.Error("unsubscription-failed", error.message);
     }
   } else {
-    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID");
   }
 };
 
