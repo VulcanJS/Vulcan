@@ -1,10 +1,8 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import Users from 'meteor/nova:users';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, withMessages } from 'meteor/nova:core';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 
 class Vote extends Component {
@@ -91,8 +89,4 @@ Vote.contextTypes = {
   events: React.PropTypes.object,
 };
 
-// redux state + actions for messages
-const mapStateToProps = state => ({ messages: state.messages });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-registerComponent('Vote', Vote, withCurrentUser, connect(mapStateToProps, mapDispatchToProps), withVote);
+registerComponent('Vote', Vote, withCurrentUser, withMessages, withVote);

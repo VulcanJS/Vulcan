@@ -1,9 +1,7 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { ShowIf, withCurrentUser } from 'meteor/nova:core';
+import { ShowIf, withCurrentUser, withMessages } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
 
 class CommentsItem extends Component{
@@ -130,7 +128,4 @@ CommentsItem.contextTypes = {
   intl: intlShape
 };
 
-const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-registerComponent('CommentsItem', CommentsItem, connect(mapStateToProps, mapDispatchToProps), withCurrentUser);
+registerComponent('CommentsItem', CommentsItem, withCurrentUser, withMessages);

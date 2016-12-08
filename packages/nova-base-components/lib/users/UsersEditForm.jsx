@@ -1,12 +1,10 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import Users from 'meteor/nova:users';
-import { ShowIf, withCurrentUser, withSingle } from 'meteor/nova:core';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { ShowIf, withCurrentUser, withSingle, withMessages } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const UsersEditForm = (props, context) => {
@@ -43,9 +41,6 @@ UsersEditForm.contextTypes = {
 
 UsersEditForm.displayName = "UsersEditForm";
 
-const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
 UsersEditForm.fragment = gql` 
   fragment UsersEditFormFragment on User {
     _id
@@ -59,4 +54,4 @@ const options = {
   fragment: UsersEditForm.fragment,
 };
 
-registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, withSingle(options), connect(mapStateToProps, mapDispatchToProps));
+registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, withSingle(options), withMessages);

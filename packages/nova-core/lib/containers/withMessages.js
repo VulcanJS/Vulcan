@@ -1,27 +1,12 @@
+/*
+
+HoC that provides access to flash messages stored in Redux state and actions to operate on them
+
+*/
+
 import Telescope from 'meteor/nova:lib';
-
-const Messages = {
-  // Local (client-only) collection
-  collection: new Meteor.Collection(null),
-
-  flash(content, type) {
-    type = (typeof type === 'undefined') ? 'error': type;
-    // Store errors in the local collection
-    this.collection.insert({content:content, type:type, seen: false, show:true});
-  },
-
-  markAsSeen(messageId) {
-    this.collection.update(messageId, {$set: {seen:true}});
-  },
-
-  clear(messageId) {
-    this.collection.update(messageId, {$set: {show:false}});
-  },
-
-  clearSeen() {
-    this.collection.update({seen:true}, {$set: {show:false}}, {multi:true});
-  }
-};
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // messages actions
 Telescope.actions.messages = {
@@ -87,4 +72,7 @@ Telescope.reducers.messages = (state = [], action) => {
   }
 };
 
-export default Messages;
+const mapStateToProps = state => ({ messages: state.messages, });
+const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+
+export default withMessages = (component) => connect(mapStateToProps, mapDispatchToProps)(component);

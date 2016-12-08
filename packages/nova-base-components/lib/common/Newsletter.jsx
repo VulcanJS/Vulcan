@@ -1,4 +1,4 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -6,9 +6,7 @@ import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { withCurrentUser, withMutation } from 'meteor/nova:core';
+import { withCurrentUser, withMutation, withMessages } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
@@ -100,11 +98,8 @@ Newsletter.contextTypes = {
   intl: intlShape
 };
 
-const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
 const mutationOptions = {
   name: 'addEmailNewsletter',
   args: {email: 'String'}
 }
-registerComponent('Newsletter', Newsletter, withMutation(mutationOptions), withCurrentUser, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('Newsletter', Newsletter, withMutation(mutationOptions), withCurrentUser, withMessages);

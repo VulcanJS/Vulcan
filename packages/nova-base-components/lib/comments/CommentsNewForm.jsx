@@ -1,11 +1,9 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import update from 'immutability-helper';
-import { ShowIf } from 'meteor/nova:core';
+import { ShowIf, withMessages } from 'meteor/nova:core';
 import { FormattedMessage } from 'react-intl';
 
 const CommentsNewForm = (props, context) => {
@@ -91,7 +89,4 @@ CommentsNewForm.propTypes = {
   flash: React.PropTypes.func,
 };
 
-const mapStateToProps = state => ({ messages: state.messages });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-registerComponent('CommentsNewForm', CommentsNewForm, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('CommentsNewForm', CommentsNewForm, withMessages);

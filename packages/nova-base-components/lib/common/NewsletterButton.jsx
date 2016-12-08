@@ -1,10 +1,8 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { withMutation, withCurrentUser } from 'meteor/nova:core';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { withMutation, withCurrentUser, withMessages } from 'meteor/nova:core';
 
 class NewsletterButton extends Component {
   constructor(props) {
@@ -66,10 +64,7 @@ NewsletterButton.contextTypes = {
   actions: React.PropTypes.object,
 };
 
-const mapStateToProps = state => ({ messages: state.messages });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
 const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};
 const removeOptions = {name: 'removeUserNewsletter', args: {userId: 'String'}};
 
-registerComponent('NewsletterButton', NewsletterButton, withCurrentUser, withMutation(addOptions), withMutation(removeOptions), connect(mapStateToProps, mapDispatchToProps));
+registerComponent('NewsletterButton', NewsletterButton, withCurrentUser, withMutation(addOptions), withMutation(removeOptions), withMessages);

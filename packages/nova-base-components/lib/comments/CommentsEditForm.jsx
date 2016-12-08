@@ -1,9 +1,8 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { withMessages } from 'meteor/nova:core';
 
 const CommentsEditForm = (props, context) => {
   return (
@@ -37,7 +36,4 @@ CommentsEditForm.propTypes = {
   cancelCallback: React.PropTypes.func
 };
 
-const mapStateToProps = state => ({ messages: state.messages });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-registerComponent('CommentsEditForm', CommentsEditForm, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('CommentsEditForm', CommentsEditForm, withMessages);

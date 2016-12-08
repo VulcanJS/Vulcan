@@ -1,6 +1,5 @@
 import Telescope, { Components } from 'meteor/nova:lib';
 import React from 'react';
-import { Messages } from 'meteor/nova:core';
 import { IndexRoute, Route } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import Helmet from 'react-helmet';

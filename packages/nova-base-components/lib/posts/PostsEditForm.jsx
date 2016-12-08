@@ -1,12 +1,10 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import Posts from "meteor/nova:posts";
 import { withRouter } from 'react-router'
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { ShowIf } from 'meteor/nova:core';
+import { ShowIf, withMessages } from 'meteor/nova:core';
 
 class PostsEditForm extends Component {
 
@@ -75,7 +73,4 @@ PostsEditForm.contextTypes = {
   intl: intlShape
 }
 
-const mapStateToProps = state => ({ messages: state.messages });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-registerComponent('PostsEditForm', PostsEditForm, connect(mapStateToProps, mapDispatchToProps), withRouter);
+registerComponent('PostsEditForm', PostsEditForm, withMessages, withRouter);

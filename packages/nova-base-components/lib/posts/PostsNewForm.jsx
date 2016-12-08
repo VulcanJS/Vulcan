@@ -1,12 +1,10 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import NovaForm from "meteor/nova:forms";
-import { ShowIf } from 'meteor/nova:core';
+import { ShowIf, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withRouter } from 'react-router'
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 const PostsNewForm = (props, context) => {
@@ -52,7 +50,4 @@ PostsNewForm.contextTypes = {
 
 PostsNewForm.displayName = "PostsNewForm";
 
-const mapStateToProps = state => ({ messages: state.messages });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-registerComponent('PostsNewForm', PostsNewForm, withRouter, connect(mapStateToProps, mapDispatchToProps));
+registerComponent('PostsNewForm', PostsNewForm, withRouter, withMessages);

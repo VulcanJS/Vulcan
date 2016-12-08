@@ -1,10 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import Telescope from 'meteor/nova:lib';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, withMessages } from 'meteor/nova:core';
 
 class SubscribeTo extends Component {
 
@@ -76,7 +72,4 @@ SubscribeTo.contextTypes = {
   intl: intlShape
 };
 
-const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-export default withCurrentUser(connect(mapStateToProps, mapDispatchToProps)(SubscribeTo));
+export default withCurrentUser(withMessages(SubscribeTo));

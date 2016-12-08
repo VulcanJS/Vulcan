@@ -1,7 +1,6 @@
-import Telescope, { Components } from 'meteor/nova:lib';
+import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { withMessages } from 'meteor/nova:core';
 
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends Component {
@@ -40,8 +39,5 @@ NewsletterSubscribe.contextTypes = {
   addToAutofilledValues: React.PropTypes.func,
 };
 
-const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
-
-module.exports = connect(mapStateToProps, mapDispatchToProps)(NewsletterSubscribe);
-export default connect(mapStateToProps, mapDispatchToProps)(NewsletterSubscribe);
+module.exports = withMessages(NewsletterSubscribe);
+export default withMessages(NewsletterSubscribe);

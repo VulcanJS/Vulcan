@@ -1,6 +1,5 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { FlashContainer } from "meteor/nova:core";
 
 class Layout extends Component {
 
@@ -16,7 +15,7 @@ class Layout extends Component {
       
         <div className="main">
 
-          <FlashContainer {...this.props} component={Components.FlashMessages}/>
+          <Components.FlashMessages />
 
           <Components.Newsletter />
 
