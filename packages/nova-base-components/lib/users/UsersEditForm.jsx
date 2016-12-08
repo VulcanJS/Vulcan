@@ -11,16 +11,16 @@ const UsersEditForm = (props, context) => {
   return (
     <ShowIf
       check={Users.options.mutations.edit.check}
-      document={{_id: props.document._id}}
+      document={{_id: props.userId || props.document._id}}
       failureComponent={<FormattedMessage id="app.noPermission"/>}
     >
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
         <NovaForm 
           collection={Users} 
-          documentId={props.document._id}
+          documentId={props.userId || props.document._id}
           queryToUpdate="usersSingleQuery"
-          successCallback={(user)=>{
+          successCallback={user => {
             props.flash(context.intl.formatMessage({id: "users.edit_success"}, {name: Users.getDisplayName(user)}), 'success')
           }}
           showRemove={true}
