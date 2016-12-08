@@ -7,6 +7,7 @@ import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
 import Categories from "meteor/nova:categories";
+import gql from 'graphql-tag';
 
 class CustomPostsItem extends getRawComponent('PostsItem') {
 

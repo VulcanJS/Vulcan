@@ -86,6 +86,8 @@ Telescope.strings.en = {
   "users.subscribed": "You have subscribed to “{name}” posts.",
   "users.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "users.subscribers": "Subscribers",
+  "users.delete": "Delete user",
+  "users.delete_confirm": "Delete this user?",
 
   "categories": "Categories",
   "categories.all": "All Categories",
