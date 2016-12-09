@@ -1,7 +1,6 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
 import { ShowIf, withSingle } from 'meteor/nova:core';
@@ -9,9 +8,9 @@ import gql from 'graphql-tag';
 
 const UsersProfile = (props) => {
   if (props.loading) {
-    
+
     return <div className="page users-edit-form"><Components.Loading/></div>
-  
+
   } else {
 
     const user = props.document;
@@ -23,7 +22,7 @@ const UsersProfile = (props) => {
       <div className="page users-profile">
         <Components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.__bio} />
         <h2 className="page-title">{Users.getDisplayName(user)}</h2>
-        <p>{user.__bio}</p>
+        {user.__htmlBio ? <div dangerouslySetInnerHTML={{__html: user.__htmlBio}}></div> : null }
         <ul>
           {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }
           {user.__website ? <li><a href={user.__website}>{user.__website}</a></li> : null }
