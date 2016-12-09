@@ -1,5 +1,5 @@
-// import Telescope from 'meteor/nova:lib';
-// import Users from 'meteor/nova:users';
+import Telescope from 'meteor/nova:lib';
+import Users from 'meteor/nova:users';
 
 /**
  * @summary Update an item's (post or comment) score
@@ -9,15 +9,14 @@
  * @param {string} operation - The operation being performed
  */
 
-/*
 function updateScore (item, user, collection, operation) {
   Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
 }
+
 Telescope.callbacks.add("upvote.async", updateScore);
 Telescope.callbacks.add("downvote.async", updateScore);
 Telescope.callbacks.add("cancelUpvote.async", updateScore);
 Telescope.callbacks.add("cancelDownvote.async", updateScore);
-*/
 
 /**
  * @summary Update the profile of the user doing the operation
@@ -27,7 +26,6 @@ Telescope.callbacks.add("cancelDownvote.async", updateScore);
  * @param {string} operation - The operation being performed
  */
 
-/*
 function updateUser (item, user, collection, operation) {
 
   var update = {};
@@ -60,7 +58,6 @@ Telescope.callbacks.add("upvote.async", updateUser);
 Telescope.callbacks.add("downvote.async", updateUser);
 Telescope.callbacks.add("cancelUpvote.async", updateUser);
 Telescope.callbacks.add("cancelDownvote.async", updateUser);
-*/
 
 /**
  * @summary Update the karma of the item's owner
@@ -70,7 +67,7 @@ Telescope.callbacks.add("cancelDownvote.async", updateUser);
  * @param {string} operation - The operation being performed
  */
 
-/*
+
 function updateKarma (item, user, collection, operation) {
 
   var votePower = Telescope.getVotePower(user);
@@ -86,4 +83,3 @@ Telescope.callbacks.add("upvote.async", updateKarma);
 Telescope.callbacks.add("downvote.async", updateKarma);
 Telescope.callbacks.add("cancelUpvote.async", updateKarma);
 Telescope.callbacks.add("cancelDownvote.async", updateKarma);
-*/

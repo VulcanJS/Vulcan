@@ -1,11 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 
-Telescope.updateScore = function (args) {
-  var collection = args.collection;
-  var item = args.item;
-  var forceUpdate = args.forceUpdate;
-
-  // console.log(item)
+Telescope.updateScore = ({collection, item, forceUpdate}) => {
 
   // Status Check
 
@@ -18,10 +13,10 @@ Telescope.updateScore = function (args) {
   if (!item.postedAt)
     return 0;
 
-  var postedAt = item.postedAt.valueOf();
-  var now = new Date().getTime();
-  var age = now - postedAt;
-  var ageInHours = age / (60 * 60 * 1000);
+  const postedAt = item.postedAt.valueOf();
+  const now = new Date().getTime();
+  const age = now - postedAt;
+  const ageInHours = age / (60 * 60 * 1000);
 
   if (postedAt > now) // if post has been scheduled in the future, don't update its score
     return 0;
@@ -33,17 +28,17 @@ Telescope.updateScore = function (args) {
 
   // n =  number of days after which a single vote will not have a big enough effect to trigger a score update
   //      and posts can become inactive
-  var n = 30;
+  const n = 30;
   // x = score increase amount of a single vote after n days (for n=100, x=0.000040295)
-  var x = 1/Math.pow(n*24+2,1.3);
+  const x = 1/Math.pow(n*24+2,1.3);
   // time decay factor
-  var f = 1.3;
+  const f = 1.3;
 
   // use baseScore if defined, if not just use 0
-  var baseScore = item.baseScore || 0;
+  const baseScore = item.baseScore || 0;
 
   // HN algorithm
-  var newScore = baseScore / Math.pow(ageInHours + 2, f);
+  const newScore = baseScore / Math.pow(ageInHours + 2, f);
 
   // console.log(now)
   // console.log(age)
@@ -52,13 +47,13 @@ Telescope.updateScore = function (args) {
   // console.log(newScore)
 
   // Note: before the first time updateScore runs on a new item, its score will be at 0
-  var scoreDiff = Math.abs(item.score - newScore);
+  const scoreDiff = Math.abs(item.score - newScore);
 
   // only update database if difference is larger than x to avoid unnecessary updates
-  if (forceUpdate || scoreDiff > x){
+  if (forceUpdate || scoreDiff > x) {
     collection.update(item._id, {$set: {score: newScore, inactive: false}});
     return 1;
-  }else if(ageInHours > n*24){
+  } else if(ageInHours > n*24) {
     // only set a post as inactive if it's older than n days
     collection.update(item._id, {$set: {inactive: true}});
   }
