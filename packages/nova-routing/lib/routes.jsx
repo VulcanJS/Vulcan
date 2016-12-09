@@ -1,6 +1,5 @@
 import Telescope, { Components } from 'meteor/nova:lib';
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
@@ -65,7 +64,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);    
     },
     preRender: (req, res, app) => {
-      //Cookie.plugToRequest(req, res);
+      Cookie.plugToRequest(req, res);
       //console.log('preRender hook', app);
       // console.log(req.cookies);
       return Promise.await(getDataFromTree(app));

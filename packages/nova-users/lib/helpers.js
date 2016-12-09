@@ -150,7 +150,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
   user = user || Meteor.user();
   defaultValue = defaultValue || null;
   // all settings should be prefixed by __ to avoid conflict with other meteor packages writing on Meteor.users collection, so add "__" if needed
-  settingName = settingName.slice(0,10) === "__" ? settingName : "__" + settingName;
+  settingName = settingName.slice(0,2) === "__" ? settingName : "__" + settingName;
   if (user) {
     const settingValue = Users.getProperty(user, settingName);
     return typeof settingValue === 'undefined' ? defaultValue : settingValue;
