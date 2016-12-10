@@ -23,8 +23,6 @@ const withApp = WrappedComponent => {
     
     render() {
       
-      console.log(this.preloadedFields);
-      
       const ComponentWithData = graphql(
         gql`query getCurrentUser {
           currentUser {

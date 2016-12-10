@@ -26,7 +26,7 @@ const resolvers = {
     resolver(root, {terms, offset, limit}, context, info) {
       // TODO: call check function
       let {selector, options} = context.Posts.parameters.get(terms);
-      options.limit = (limit < 1 || limit > 10) ? 10 : limit;
+      options.limit = (limit < 1 || limit > 100) ? 100 : limit;
       options.skip = offset;
       // keep only fields that should be viewable by current user
       options.fields = context.getViewableFields(context.currentUser, context.Posts);

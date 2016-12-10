@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 export default function withList (options) {
 
-  const { queryName, collection, fragment } = options,
+  const { queryName, collection, fragment, limit = 5 } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -25,7 +25,7 @@ export default function withList (options) {
         variables: {
           terms: ownProps.terms || {},
           offset: 0,
-          limit: 5
+          limit: limit
         },
         reducer: (previousResults, action) => {
 

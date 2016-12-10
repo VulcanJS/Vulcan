@@ -91,7 +91,12 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
   return registerComponent(name, newComponent, ...newHocs, ...previousComponent.hocs);  
 };
 
+export const copyHoCs = (sourceComponent, targetComponent) => {
+  return compose(...sourceComponent.hocs)(targetComponent);
+}
+
 Telescope.registerComponent = registerComponent; 
 Telescope.getComponent = getComponent; 
 Telescope.getRawComponent = getRawComponent; 
 Telescope.replaceComponent = replaceComponent; 
+Telescope.copyHoCs = copyHoCs; 

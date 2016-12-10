@@ -61,7 +61,7 @@ class PostsDailyList extends Component{
       <div className="posts-daily">
         <Components.PostsListHeader />
         {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} />)}
-        <button className="posts-load-more" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></button>
+        <a className="posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
       </div>
     )
   }
@@ -81,6 +81,7 @@ const options = {
   collection: Posts,
   queryName: 'postsDailyListQuery',
   fragment: getRawComponent('PostsItem').fragment,
+  limit: 0,
 };
 
 registerComponent('PostsDailyList', PostsDailyList, withList(options));

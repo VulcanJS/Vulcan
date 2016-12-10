@@ -10,6 +10,6 @@ import './intl-polyfill.js';
 import './graphql.js';
 import './icons.js';
 
-export { Components, registerComponent, replaceComponent, getRawComponent, getComponent } from './components.js';
+export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs } from './components.js';
 
 export default Telescope;

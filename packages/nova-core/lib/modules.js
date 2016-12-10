@@ -1,3 +1,7 @@
+// import and re-export
+import { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs } from 'meteor/nova:lib';
+export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs };
+
 export { default as App } from "./components/App.jsx";
 export { default as Layout } from "./components/Layout.jsx";
 export { default as Icon } from "./components/Icon.jsx";
