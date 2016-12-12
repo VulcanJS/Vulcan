@@ -1,17 +1,17 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
-import { Utils } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 const RSS = Npm.require('rss');
 
 Posts.views.rss = Posts.views.new; // default to "new" view for RSS feed
 
 const getMeta = function (url) {
-  var siteUrl = Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
+  var siteUrl = getSetting('siteUrl', Meteor.absoluteUrl());
   return {
-    title: Telescope.settings.get('title'),
-    description: Telescope.settings.get('tagline'),
+    title: getSetting('title'),
+    description: getSetting('tagline'),
     feed_url: siteUrl+url,
     site_url: siteUrl,
     image_url: siteUrl+'img/favicon.png'
@@ -35,7 +35,7 @@ const servePostRSS = function (terms, url) {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: (Telescope.settings.get("RSSLinksPointTo", "link") === "link") ? Posts.getLink(post) : Posts.getPageUrl(post, true)
+      url: (getSetting("RSSLinksPointTo", "link") === "link") ? Posts.getLink(post) : Posts.getPageUrl(post, true)
     };
 
     if (post.thumbnailUrl) {

@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { getSetting } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
@@ -17,4 +17,4 @@ Users.avatar.setOptions({
 });
 
 // https://github.com/softwarerero/meteor-accounts-t9n
-T9n.setLanguage(Telescope.settings.get("locale", "en"));
+T9n.setLanguage(getSetting("locale", "en"));

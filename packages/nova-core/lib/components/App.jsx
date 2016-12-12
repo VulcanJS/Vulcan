@@ -1,4 +1,4 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import Telescope, { Components, registerComponent, getSetting } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
 import withApp from '../containers/withApp.js';
@@ -6,7 +6,7 @@ import withApp from '../containers/withApp.js';
 class App extends Component {
 
   getLocale() {
-    return Telescope.settings.get("locale", "en");
+    return getSetting("locale", "en");
   }
 
   getChildContext() {

@@ -1,44 +1,37 @@
-import Telescope from './config.js';
-
-Telescope.settings = {};
-
-Telescope.settings.getFromJSON = function (setting) {
-
+const getSettingFromJSON = function (setting, defaultValue) {
   if (Meteor.isServer && Meteor.settings && typeof Meteor.settings[setting] !== "undefined") { // if on the server, look in Meteor.settings
-
     return Meteor.settings[setting];
-
   } else if (Meteor.settings && Meteor.settings.public && typeof Meteor.settings.public[setting] !== "undefined") { // look in Meteor.settings.public
-    
     return Meteor.settings.public[setting];
-  
+  } else if (defaultValue) {
+    return defaultValue;
   } else {
-  
     return undefined;
-  
   }
-
 }
 
-Telescope.settings.get = function (setting, defaultValue) {
+export const getSetting = getSettingFromJSON;
 
-  const collection = Telescope.settings.collection;
+// Settings collection is deprecated
+// getSetting = function (setting, defaultValue) {
 
-  if (typeof Telescope.settings.getFromJSON(setting) !== "undefined") { // if on the server, look in Meteor.settings
+//   const collection = Telescope.settings.collection;
 
-    return Telescope.settings.getFromJSON(setting);
+//   if (typeof getSettingFromJSON(setting) !== "undefined") { // if on the server, look in Meteor.settings
 
-  } else if (collection && collection.findOne() && typeof collection.findOne()[setting] !== "undefined") { // look in collection
+//     return getSettingFromJSON(setting);
 
-    return Telescope.settings.collection.findOne()[setting];
+//   } else if (collection && collection.findOne() && typeof collection.findOne()[setting] !== "undefined") { // look in collection
 
-  } else if (typeof defaultValue !== 'undefined') { // fallback to default
+//     return Telescope.settings.collection.findOne()[setting];
 
-    return  defaultValue;
+//   } else if (typeof defaultValue !== 'undefined') { // fallback to default
 
-  } else { // or return undefined
+//     return  defaultValue;
 
-    return undefined;
+//   } else { // or return undefined
 
-  }
-};
+//     return undefined;
+
+//   }
+// };

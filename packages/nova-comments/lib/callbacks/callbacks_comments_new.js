@@ -3,7 +3,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { Callbacks, Utils, getSetting } from 'meteor/nova:core';
 
 // ------------------------------------- comments.new.validate -------------------------------- //
 
@@ -18,7 +18,7 @@ import { Callbacks, Utils } from 'meteor/nova:core';
 function CommentsNewRateLimit (comment, user) {
   if (!Users.isAdmin(user)) {
     const timeSinceLastComment = Users.timeSinceLast(user, Comments);
-    const commentInterval = Math.abs(parseInt(Telescope.settings.get('commentInterval',15)));
+    const commentInterval = Math.abs(parseInt(getSetting('commentInterval',15)));
     // check that user waits more than 15 seconds between comments
     if((timeSinceLastComment < commentInterval)) {
       throw new Meteor.Error("CommentsNewRateLimit", "comments.rate_limit_error", commentInterval-timeSinceLastComment);

@@ -1,13 +1,13 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import MailChimp from './mailchimp_api.js';
+import { getSetting } from 'meteor/nova:core';
 
 const MailChimpList = {};
 
 MailChimpList.add = function(userOrEmail, confirm, done){
 
-  var apiKey = Telescope.settings.get('mailChimpAPIKey');
-  var listId = Telescope.settings.get('mailChimpListId');
+  var apiKey = getSetting('mailChimpAPIKey');
+  var listId = getSetting('mailChimpListId');
 
   var user, email;
 
@@ -64,8 +64,8 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 };
 
 MailChimpList.remove = (user) => {
-  const apiKey = Telescope.settings.get('mailChimpAPIKey');
-  const listId = Telescope.settings.get('mailChimpListId');
+  const apiKey = getSetting('mailChimpAPIKey');
+  const listId = getSetting('mailChimpListId');
 
   const email = Users.getEmail(user);
   if (!email) {

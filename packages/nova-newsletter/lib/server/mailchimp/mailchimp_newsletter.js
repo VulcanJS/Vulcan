@@ -2,19 +2,18 @@
 
 // newsletter scheduling with MailChimp
 
-import Telescope from 'meteor/nova:lib';
 import Posts from 'meteor/nova:posts';
 import NovaEmail from 'meteor/nova:email';
 import htmlToText from 'html-to-text';
 import moment from 'moment';
 import Newsletter from '../../namespace.js';
 import MailChimp from './mailchimp_api.js';
-import { Utils } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 const defaultPosts = 5;
 
 Newsletter.scheduleNextWithMailChimp = function (isTest = false) {
-  var posts = Newsletter.getPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
+  var posts = Newsletter.getPosts(getSetting('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
     return Newsletter.scheduleWithMailChimp(Newsletter.build(posts), isTest);
   }else{
@@ -25,8 +24,8 @@ Newsletter.scheduleNextWithMailChimp = function (isTest = false) {
 
 Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
 
-  var apiKey = Telescope.settings.get('mailChimpAPIKey');
-  var listId = Telescope.settings.get('mailChimpListId');
+  var apiKey = getSetting('mailChimpAPIKey');
+  var listId = getSetting('mailChimpListId');
 
   if(!!apiKey && !!listId){
 
@@ -41,14 +40,14 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
 
       var api = new MailChimp(apiKey);
       var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = Telescope.settings.get('defaultEmail');
+      var defaultEmail = getSetting('defaultEmail');
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
           subject: subject,
           from_email: defaultEmail,
-          from_name: Telescope.settings.get('title')
+          from_name: getSetting('title')
         },
         content: {
           html: campaign.html,

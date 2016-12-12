@@ -1,10 +1,10 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getSetting } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 
 const PostsDaily = props => {
   // const terms = props.location && props.location.query;
-  const numberOfDays = Telescope.settings.get('numberOfDays', 5);
+  const numberOfDays = getSetting('numberOfDays', 5);
   const terms = {
     view: 'top',
     after: moment().subtract(numberOfDays - 1, 'days').format("YYYY-MM-DD"),

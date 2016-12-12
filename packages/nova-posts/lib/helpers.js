@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import moment from 'moment';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
-import { Utils } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 //////////////////
 // Link Helpers //
@@ -22,7 +22,7 @@ Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
  * @param {Object} post
  */
 Posts.getShareableLink = function (post) {
-  return Telescope.settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+  return getSetting("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
 };
 
 /**
@@ -65,7 +65,7 @@ Posts.getAuthorName = function (post) {
  */
 Posts.getDefaultStatus = function (user) {
   const canPostApproved = typeof user === 'undefined' ? false : Users.canDo(user, "posts.new.approved");
-  if (!Telescope.settings.get('requirePostsApproval', false) || canPostApproved) {
+  if (!getSetting('requirePostsApproval', false) || canPostApproved) {
     // if user can post straight to "approved", or else post approval is not required
     return Posts.config.STATUS_APPROVED;
   } else {
@@ -145,7 +145,7 @@ Posts.getThumbnailUrl = (post) => {
  * @param {Object} post
  */
 Posts.getTwitterShareUrl = post => {
-  const via = Telescope.settings.get("twitterAccount", null) ? `&via=${Telescope.settings.get("twitterAccount")}` : "";
+  const via = getSetting("twitterAccount", null) ? `&via=${getSetting("twitterAccount")}` : "";
   return `https://twitter.com/intent/tweet?text=${ encodeURIComponent(post.title) }%20${ encodeURIComponent(Posts.getLink(post, true)) }${via}`;
 };
 
@@ -168,7 +168,7 @@ Posts.getEmailShareUrl = post => {
 ${post.title}
 ${Posts.getLink(post, true, false)}
 
-(found via ${Telescope.settings.get("siteUrl")})
+(found via ${getSetting("siteUrl")})
   `;
   return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 };

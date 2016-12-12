@@ -16,5 +16,6 @@ export { Callbacks, addCallback, removeCallbacks, runCallbacks, runCallbacksAsyn
 export { GraphQLSchema } from './graphql.js';
 export { Routes, addRoute } from './routes.js';
 export { Utils } from './utils.js';
+export { getSetting } from './settings.js';
 
 export default Telescope;

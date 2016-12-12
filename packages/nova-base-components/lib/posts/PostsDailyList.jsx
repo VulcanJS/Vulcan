@@ -1,10 +1,8 @@
-import Telescope, { Components, getRawComponent, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 import Posts from 'meteor/nova:posts';
-import { withList } from 'meteor/nova:core';
+import { withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/nova:core';
 
 class PostsDailyList extends Component{
 
@@ -27,7 +25,7 @@ class PostsDailyList extends Component{
 
   loadMoreDays(e) {
     e.preventDefault();
-    const numberOfDays = Telescope.settings.get('numberOfDays', 5);
+    const numberOfDays = getSetting('numberOfDays', 5);
     const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     this.props.loadMore({
@@ -73,8 +71,8 @@ PostsDailyList.propTypes = {
 };
 
 PostsDailyList.defaultProps = {
-  days: Telescope.settings.get('numberOfDays', 5),
-  increment: Telescope.settings.get('numberOfDays', 5)
+  days: getSetting('numberOfDays', 5),
+  increment: getSetting('numberOfDays', 5)
 };
 
 const options = {

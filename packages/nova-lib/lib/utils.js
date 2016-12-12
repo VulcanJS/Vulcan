@@ -4,12 +4,12 @@ Utilities
 
 */
 
-import Telescope from './config.js';
 import marked from 'marked';
 import urlObject from 'url';
 import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
+import { getSetting } from './settings.js';
 
 /**
  * @summary The global namespace for Telescope utils.
@@ -126,7 +126,7 @@ Utils.getDateRange = function(pageNumber) {
  * @summary Returns the user defined site URL or Meteor.absoluteUrl
  */
 Utils.getSiteUrl = function () {
-  return Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
+  return getSetting('siteUrl', Meteor.absoluteUrl());
 };
 
 /**
@@ -179,7 +179,7 @@ Utils.getDomain = function(url) {
 };
 
 Utils.invitesEnabled = function() {
-  return Telescope.settings.get("requireViewInvite") || Telescope.settings.get("requirePostInvite");
+  return getSetting("requireViewInvite") || getSetting("requirePostInvite");
 };
 
 // add http: if missing
@@ -244,7 +244,7 @@ Utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
 };
 
 Utils.log = function (s) {
-  if(Telescope.settings.get('debug', false) || process.env.NODE_ENV === "development") {
+  if(getSetting('debug', false) || process.env.NODE_ENV === "development") {
     console.log(s); // eslint-disable-line
   }
 };
@@ -313,7 +313,7 @@ Utils.getFieldLabel = (fieldName, collection) => {
 }
 
 Utils.getLogoUrl = () => {
-  const logoUrl = Telescope.settings.get("logoUrl");
+  const logoUrl = getSetting("logoUrl");
   if (!!logoUrl) {
     const prefix = Utils.getSiteUrl().slice(0,-1);
     // the logo may be hosted on another website

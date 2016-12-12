@@ -1,12 +1,11 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, getSetting, Components, registerComponent } from 'meteor/nova:core';
 
 const Header = (props, context) => {
   
-  const logoUrl = Telescope.settings.get("logoUrl");
-  const siteTitle = Telescope.settings.get("title", "Nova");
-  const tagline = Telescope.settings.get("tagline");
+  const logoUrl = getSetting("logoUrl");
+  const siteTitle = getSetting("title", "Nova");
+  const tagline = getSetting("tagline");
 
   return (
     <div className="header-wrapper">

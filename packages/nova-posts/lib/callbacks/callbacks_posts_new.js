@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, getSetting } from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
@@ -28,8 +28,8 @@ function PostsNewRateLimit (post, user) {
 
     var timeSinceLastPost = Users.timeSinceLast(user, Posts),
       numberOfPostsInPast24Hours = Users.numberOfItemsInPast24Hours(user, Posts),
-      postInterval = Math.abs(parseInt(Telescope.settings.get('postInterval', 30))),
-      maxPostsPer24Hours = Math.abs(parseInt(Telescope.settings.get('maxPostsPerDay', 30)));
+      postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
+      maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30)));
 
     // check that user waits more than X seconds between posts
     if(timeSinceLastPost < postInterval)

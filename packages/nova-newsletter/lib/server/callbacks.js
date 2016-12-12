@@ -1,10 +1,9 @@
-import Telescope from 'meteor/nova:lib';
 import MailChimpList from './mailchimp/mailchimp_list.js';
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, getSetting } from 'meteor/nova:core';
 
 function subscribeUserOnProfileCompletion (user) {
-  if (!!Telescope.settings.get('autoSubscribe') && !!Users.getEmail(user)) {
+  if (!!getSetting('autoSubscribe') && !!Users.getEmail(user)) {
     try {
       MailChimpList.add(user, false, function (error, result) {
         console.log(error); // eslint-disable-line

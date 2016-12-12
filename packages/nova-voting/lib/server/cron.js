@@ -1,9 +1,10 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
+import { getSetting } from 'meteor/nova:core';
 
 Meteor.startup(function () {
-  const scoreInterval = parseInt(Telescope.settings.get("scoreUpdateInterval")) || 30;
+  const scoreInterval = parseInt(getSetting("scoreUpdateInterval")) || 30;
   if (scoreInterval > 0) {
 
     // active items get updated every N seconds

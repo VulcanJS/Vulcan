@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
@@ -7,7 +6,7 @@ import NovaEmail from 'meteor/nova:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletter from '../namespace.js';
-import { Utils } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
 Posts.views.add("newsletter", function (terms) {
@@ -143,7 +142,7 @@ Newsletter.build = function (postsArray) {
 
   // 2. Wrap posts HTML in newsletter template
   var newsletterHTML = NovaEmail.getTemplate('newsletter')({
-    siteName: Telescope.settings.get('title', "Nova"),
+    siteName: getSetting('title', "Nova"),
     date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });

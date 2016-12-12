@@ -1,9 +1,5 @@
-import Telescope from 'meteor/nova:lib';
-import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
-import GraphQLJSON from 'graphql-type-json';
 import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumbnail } from './get_embedly_data.js';
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema, getSetting } from 'meteor/nova:core';
 
 // note: not used since the type of the query below is JSON
 // const embedlyDataSchema = `
@@ -42,7 +38,7 @@ GraphQLSchema.addResolvers(resolver);
 //     return getEmbedlyData(url);
 //   },
 //   embedlyKeyExists: function () {
-//     return !!Telescope.settings.get('embedlyKey');
+//     return !!getSetting('embedlyKey');
 //   },
 //   generateThumbnail: function (post) {
 //     check(post, Posts.simpleSchema());

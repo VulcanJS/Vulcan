@@ -1,3 +1,4 @@
+import { getSetting } from 'meteor/nova:core';
 
 Meteor.methods({
   testGetEmbedlyData: function (url) {
@@ -9,7 +10,7 @@ Meteor.methods({
     return getEmbedlyData(url);
   },
   embedlyKeyExists: function () {
-    return !!Telescope.settings.get('embedlyKey');
+    return !!getSetting('embedlyKey');
   },
   generateThumbnail: function (post) {
     check(post, Posts.simpleSchema());

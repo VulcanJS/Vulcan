@@ -27,18 +27,19 @@ Telescope.notifications.create = (userIds, notificationName, data) => {
 
 };
 
-if (typeof Telescope.settings.collection !== "undefined") {
-  Telescope.settings.collection.addField({
-    fieldName: 'emailNotifications',
-    fieldSchema: {
-      type: Boolean,
-      optional: true,
-      defaultValue: true,
-      form: {
-        group: 'notifications',
-        instructions: 'Enable email notifications for new posts and new comments (requires restart).'
-      }
-    }
-  });
-}
+// settings collection is deprecated
+// if (typeof Telescope.settings.collection !== "undefined") {
+//   Telescope.settings.collection.addField({
+//     fieldName: 'emailNotifications',
+//     fieldSchema: {
+//       type: Boolean,
+//       optional: true,
+//       defaultValue: true,
+//       form: {
+//         group: 'notifications',
+//         instructions: 'Enable email notifications for new posts and new comments (requires restart).'
+//       }
+//     }
+//   });
+// }
 

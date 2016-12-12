@@ -1,17 +1,17 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
-import { registerComponent, Utils } from 'meteor/nova:core';
+import { registerComponent, Utils, getSetting } from 'meteor/nova:core';
 
 class HeadTags extends Component {
 	render() {
 
 		const url = !!this.props.url ? this.props.url : Utils.getSiteUrl();
-		const title = !!this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
-		const description = !!this.props.description ? this.props.description : Telescope.settings.get("tagline");
+		const title = !!this.props.title ? this.props.title : getSetting("title", "Nova");
+		const description = !!this.props.description ? this.props.description : getSetting("tagline");
 
 		// default image meta: logo url, else site image defined in settings
-		let image = !!Telescope.settings.get("siteImage") ? Telescope.settings.get("siteImage"): Telescope.settings.get("logoUrl");
+		let image = !!getSetting("siteImage") ? getSetting("siteImage"): getSetting("logoUrl");
 		
 		// overwrite default image if one is passed as props 
 		if (!!this.props.image) {
@@ -43,7 +43,7 @@ class HeadTags extends Component {
 
 		const link = Telescope.headtags.link.concat([
 			{ rel: "canonical", href: Utils.getSiteUrl() },
-			{ rel: "shortcut icon", href: Telescope.settings.get("faviconUrl", "/img/favicon.ico") }
+			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") }
 		]);
 
 		return (

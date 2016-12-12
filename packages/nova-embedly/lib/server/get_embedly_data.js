@@ -1,14 +1,12 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, getSetting } from 'meteor/nova:core';
 
 function getEmbedlyData(url) {
   var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
-  var embedlyKey = Telescope.settings.get('embedlyKey');
-  var thumbnailWidth = Telescope.settings.get('thumbnailWidth', 200);
-  var thumbnailHeight = Telescope.settings.get('thumbnailHeight', 125);
+  var embedlyKey = getSetting('embedlyKey');
+  var thumbnailWidth = getSetting('thumbnailWidth', 200);
+  var thumbnailHeight = getSetting('thumbnailHeight', 125);
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
