@@ -1,3 +1,4 @@
+// import { Callbacks } from 'meteor/nova:core';
 // import Telescope from 'meteor/nova:lib';
 // import Comments from './collection.js';
 // import Posts from "meteor/nova:posts";
@@ -13,12 +14,12 @@
 //
 //   const currentUser = Users.findOne(comment.userId);
 //
-//   comment = Telescope.callbacks.run("comments.new.sync", comment, currentUser);
+//   comment = Callbacks.run("comments.new.sync", comment, currentUser);
 //
 //   comment._id = Comments.insert(comment);
 //
 //   // note: query for comment to get fresh document with collection-hooks effects applied
-//   Telescope.callbacks.runAsync("comments.new.async", Comments.findOne(comment._id));
+//   Callbacks.runAsync("comments.new.async", Comments.findOne(comment._id));
 //
 //   return comment;
 // };
@@ -29,11 +30,11 @@
 //     comment = Comments.findOne(commentId);
 //   }
 //
-//   modifier = Telescope.callbacks.run("comments.edit.sync", modifier, comment);
+//   modifier = Callbacks.run("comments.edit.sync", modifier, comment);
 //
 //   Comments.update(commentId, modifier);
 //
-//   Telescope.callbacks.runAsync("comments.edit.async", Comments.findOne(commentId), comment);
+//   Callbacks.runAsync("comments.edit.async", Comments.findOne(commentId), comment);
 //
 //   return Comments.findOne(commentId);
 // };
@@ -55,7 +56,7 @@
 //
 //     Comments.simpleSchema().namedContext("comments.new").validate(comment);
 //
-//     comment = Telescope.callbacks.run("comments.new.method", comment, Meteor.user());
+//     comment = Callbacks.run("comments.new.method", comment, Meteor.user());
 //
 //     if (Meteor.isServer && this.connection) {
 //       comment.userIP = this.connection.clientAddress;
@@ -79,7 +80,7 @@
 //
 //     const comment = Comments.findOne(commentId);
 //
-//     modifier = Telescope.callbacks.run("comments.edit.method", modifier, comment, Meteor.user());
+//     modifier = Callbacks.run("comments.edit.method", modifier, comment, Meteor.user());
 //
 //     return Comments.methods.edit(commentId, modifier, comment);
 //   },

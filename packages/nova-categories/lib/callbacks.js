@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
+import { Callbacks } from 'meteor/nova:core';
 
 // generate slug on insert
 // Categories.before.insert(function (userId, doc) {
@@ -21,7 +22,7 @@ function addCategoryClass (postClass, post) {
   var classArray = _.map(Posts.getCategories(post), function (category){return "category-"+category.slug;});
   return postClass + " " + classArray.join(' ');
 }
-Telescope.callbacks.add("postClass", addCategoryClass);
+Callbacks.add("postClass", addCategoryClass);
 
 // ------- Categories Check -------- //
 
@@ -45,13 +46,13 @@ function postsNewCheckCategories (post) {
   checkCategories(post);
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", postsNewCheckCategories);
+Callbacks.add("posts.new.sync", postsNewCheckCategories);
 
 function postEditCheckCategories (modifier) {
   checkCategories(modifier.$set);
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.sync", postEditCheckCategories);
+Callbacks.add("posts.edit.sync", postEditCheckCategories);
 
 function categoriesNewGenerateSlug (category) {
   // if no slug has been provided, generate one
@@ -59,7 +60,7 @@ function categoriesNewGenerateSlug (category) {
   category.slug = Telescope.utils.getUnusedSlug(Categories, slug);
   return category;
 }
-Telescope.callbacks.add("categories.new.sync", categoriesNewGenerateSlug);
+Callbacks.add("categories.new.sync", categoriesNewGenerateSlug);
 
 function categoriesEditGenerateSlug (modifier) {
   // if slug is changing
@@ -69,7 +70,7 @@ function categoriesEditGenerateSlug (modifier) {
   }
   return modifier;
 }
-Telescope.callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
+Callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
 
 // TODO: debug this
 
@@ -86,7 +87,7 @@ Telescope.callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
 //   post.categories = _.unique(newCategories);
 //   return post;
 // }
-// Telescope.callbacks.add("posts.new.sync", addParentCategoriesOnSubmit);
+// Callbacks.add("posts.new.sync", addParentCategoriesOnSubmit);
 
 // function addParentCategoriesOnEdit (modifier, post) {
 //   if (modifier.$unset && modifier.$unset.categories !== undefined) {
@@ -105,4 +106,4 @@ Telescope.callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
 //   modifier.$set.categories = _.unique(newCategories);
 //   return modifier;
 // }
-// Telescope.callbacks.add("posts.edit.sync", addParentCategoriesOnEdit);
+// Callbacks.add("posts.edit.sync", addParentCategoriesOnEdit);

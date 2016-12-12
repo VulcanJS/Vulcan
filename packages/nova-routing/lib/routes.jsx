@@ -8,6 +8,7 @@ import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
 import { configureStore } from "./store.js";
+import { Callbacks } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
@@ -49,7 +50,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     props: {
       onUpdate: () => {
-        Telescope.callbacks.run('router.onUpdate');
+        Callbacks.run('router.onUpdate');
         // clear all previous messages
         store.dispatch(Telescope.actions.messages.clearSeen());
       },

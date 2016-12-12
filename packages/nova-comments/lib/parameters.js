@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Comments from './collection.js';
+import { Callbacks } from 'meteor/nova:core';
 
 Comments.parameters = {};
 
@@ -27,7 +28,7 @@ Comments.parameters.get = function (terms) {
     parameters = Telescope.utils.deepExtend(true, parameters, Comments.views[terms.view](terms));
 
   // iterate over commentsParameters callbacks
-  parameters = Telescope.callbacks.run("commentsParameters", parameters, terms);
+  parameters = Callbacks.run("commentsParameters", parameters, terms);
 
   // console.log(parameters);
 
@@ -48,4 +49,4 @@ function limitComments (parameters, terms) {
   }
   return parameters;
 }
-Telescope.callbacks.add("commentsParameters", limitComments);
+Callbacks.add("commentsParameters", limitComments);

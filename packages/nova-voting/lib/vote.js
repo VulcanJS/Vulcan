@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import { hasUpvoted, hasDownvoted } from './helpers.js';
+import { Callbacks } from 'meteor/nova:core';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 Telescope.getVotePower = function (user) {
@@ -50,7 +51,7 @@ Telescope.operateOnItem = function (collection, originalItem, user, operation, i
 
   // ------------------------------ Sync Callbacks ------------------------------ //
 
-  item = Telescope.callbacks.run(operation, item, user);
+  item = Callbacks.run(operation, item, user);
 
   switch (operation) {
 
@@ -123,7 +124,7 @@ Telescope.operateOnItem = function (collection, originalItem, user, operation, i
     
     if (result > 0) {
       // --------------------- Server-Side Async Callbacks --------------------- //
-      Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation); 
+      Callbacks.runAsync(operation+".async", item, user, collection, operation); 
     }
   }
 

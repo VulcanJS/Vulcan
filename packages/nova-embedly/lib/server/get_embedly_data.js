@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 function getEmbedlyData(url) {
   var data = {};
@@ -78,7 +79,7 @@ function addMediaAfterSubmit (post) {
     }
   }
 }
-Telescope.callbacks.add("posts.new.async", addMediaAfterSubmit);
+Callbacks.add("posts.new.async", addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   var newUrl = modifier.$set.url;
@@ -98,7 +99,7 @@ function updateMediaOnEdit (modifier, post) {
   }
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.sync", updateMediaOnEdit);
+Callbacks.add("posts.edit.sync", updateMediaOnEdit);
 
 var regenerateThumbnail = function (post) {
   delete post.thumbnailUrl;

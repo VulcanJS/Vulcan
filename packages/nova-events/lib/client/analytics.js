@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Events from '../collection.js';
+import { Callbacks } from 'meteor/nova:core';
 
 Events.analyticsRequest = function() {
   // Google Analytics
@@ -37,4 +38,4 @@ Events.analyticsInit();
 function analyticsRequest () {
   Events.analyticsRequest();
 }
-Telescope.callbacks.add('router.onUpdate', analyticsRequest);
+Callbacks.add('router.onUpdate', analyticsRequest);

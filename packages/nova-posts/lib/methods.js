@@ -1,3 +1,4 @@
+// import { Callbacks } from 'meteor/nova:core';
 // import Telescope from 'meteor/nova:lib';
 // import Users from 'meteor/nova:users';
 // import Events from 'meteor/nova:events';
@@ -21,12 +22,12 @@
 //
 //   const currentUser = Users.findOne(post.userId);
 // 
-//   post = Telescope.callbacks.run("posts.new.sync", post, currentUser);
+//   post = Callbacks.run("posts.new.sync", post, currentUser);
 //
 //   post._id = Posts.insert(post);
 //
 //   // note: query for post to get fresh document with collection-hooks effects applied
-//   Telescope.callbacks.runAsync("posts.new.async", Posts.findOne(post._id));
+//   Callbacks.runAsync("posts.new.async", Posts.findOne(post._id));
 //
 //   return post;
 // };
@@ -43,11 +44,11 @@
 //     post = Posts.findOne(postId);
 //   }
 //
-//   modifier = Telescope.callbacks.run("posts.edit.sync", modifier, post);
+//   modifier = Callbacks.run("posts.edit.sync", modifier, post);
 //
 //   Posts.update(postId, modifier);
 //
-//   Telescope.callbacks.runAsync("posts.edit.async", Posts.findOne(postId), post);
+//   Callbacks.runAsync("posts.edit.async", Posts.findOne(postId), post);
 //
 //   return Posts.findOne(postId);
 // };
@@ -96,7 +97,7 @@
 //
 //     Posts.simpleSchema().namedContext("posts.new").validate(post);
 //
-//     post = Telescope.callbacks.run("posts.new.method", post, Meteor.user());
+//     post = Callbacks.run("posts.new.method", post, Meteor.user());
 //
 //     if (Meteor.isServer && this.connection) {
 //       post.userIP = this.connection.clientAddress;
@@ -126,7 +127,7 @@
 //
 //       const post = Posts.findOne(postId);
 //
-//       modifier = Telescope.callbacks.run("posts.edit.method", modifier, post, Meteor.user());
+//       modifier = Callbacks.run("posts.edit.method", modifier, post, Meteor.user());
 //
 //       return Posts.methods.edit(postId, modifier, post);
 //
@@ -156,7 +157,7 @@
 //
 //       Posts.update(post._id, {$set: set});
 //
-//       Telescope.callbacks.runAsync("posts.approve.async", post);
+//       Callbacks.runAsync("posts.approve.async", post);
 //
 //     } else {
 //       Messages.flash('You need to be an admin to do that.', "error");
@@ -179,7 +180,7 @@
 //
 //       Posts.update(post._id, {$set: {status: Posts.config.STATUS_REJECTED}});
 //
-//       Telescope.callbacks.runAsync("postRejectAsync", post);
+//       Callbacks.runAsync("postRejectAsync", post);
 //
 //     }else{
 //       Messages.flash('You need to be an admin to do that.', "error");
@@ -240,7 +241,7 @@
 //       // delete post
 //       Posts.remove(postId);
 //
-//       Telescope.callbacks.runAsync("posts.remove.async", post);
+//       Callbacks.runAsync("posts.remove.async", post);
 //
 //     }
 //

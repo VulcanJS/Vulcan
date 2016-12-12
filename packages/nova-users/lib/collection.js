@@ -2,12 +2,13 @@ import Telescope from 'meteor/nova:lib';
 import schema from './schema.js';
 import mutations from './mutations.js';
 import resolvers from './resolvers.js';
+import { createCollection } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 /**
  * @summary Telescope Users namespace
  * @namespace Users
  */
-const Users = Telescope.createCollection({
+const Users = createCollection({
 
   collection: Meteor.users,
 

@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import MailChimpList from './mailchimp/mailchimp_list.js';
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 function subscribeUserOnProfileCompletion (user) {
   if (!!Telescope.settings.get('autoSubscribe') && !!Users.getEmail(user)) {
@@ -16,4 +17,4 @@ function subscribeUserOnProfileCompletion (user) {
   }
   return user;
 }
-Telescope.callbacks.add("users.profileCompleted.async", subscribeUserOnProfileCompletion);
+Callbacks.add("users.profileCompleted.async", subscribeUserOnProfileCompletion);

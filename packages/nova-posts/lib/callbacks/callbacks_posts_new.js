@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from '../collection.js'
 import marked from 'marked';
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 
 //////////////////////////////////////////////////////
@@ -18,7 +19,7 @@ import Users from 'meteor/nova:users';
 //     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_stories');
 //   return post;
 // }
-// Telescope.callbacks.add("posts.new.validate", PostsNewUserCheck);
+// Callbacks.add("posts.new.validate", PostsNewUserCheck);
 
 /**
  * @summary Rate limiting
@@ -44,7 +45,7 @@ function PostsNewRateLimit (post, user) {
 
   return post;
 }
-Telescope.callbacks.add("posts.new.validate", PostsNewRateLimit);
+Callbacks.add("posts.new.validate", PostsNewRateLimit);
 
 /**
  * @summary Properties
@@ -81,7 +82,7 @@ Telescope.callbacks.add("posts.new.validate", PostsNewRateLimit);
 
 //   return post;
 // }
-// Telescope.callbacks.add("posts.new.validate", PostsNewSubmittedPropertiesCheck);
+// Callbacks.add("posts.new.validate", PostsNewSubmittedPropertiesCheck);
 
 
 //////////////////////////////////////////////////////
@@ -98,7 +99,7 @@ function PostsNewDuplicateLinksCheck (post, user) {
   }
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
+Callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
 
 /**
  * @summary Check for necessary properties
@@ -125,7 +126,7 @@ Telescope.callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
 
 //   return post;
 // }
-// Telescope.callbacks.add("posts.new.sync", PostsNewRequiredPropertiesCheck);
+// Callbacks.add("posts.new.sync", PostsNewRequiredPropertiesCheck);
 
 /**
  * @summary Set the post's postedAt if it's approved
@@ -134,7 +135,7 @@ function PostsSetPostedAt (post, user) {
   if (!post.postedAt) post.postedAt = new Date();
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsSetPostedAt);
+Callbacks.add("posts.new.sync", PostsSetPostedAt);
 
 /**
  * @summary Set the post's isFuture to true if necessary
@@ -143,7 +144,7 @@ function PostsNewSetFuture (post, user) {
   post.isFuture = post.postedAt && new Date(post.postedAt).getTime() > new Date(post.createdAt).getTime() + 1000; // round up to the second
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsNewSetFuture);
+Callbacks.add("posts.new.sync", PostsNewSetFuture);
 
 
 //////////////////////////////////////////////////////
@@ -158,7 +159,7 @@ function PostsNewIncrementPostCount (post) {
   var userId = post.userId;
   Users.update({_id: userId}, {$inc: {"__postCount": 1}});
 }
-Telescope.callbacks.add("posts.new.async", PostsNewIncrementPostCount);
+Callbacks.add("posts.new.async", PostsNewIncrementPostCount);
 
 /**
  * @summary Make users upvote their own new posts
@@ -169,7 +170,7 @@ function PostsNewUpvoteOwnPost (post) {
     Telescope.operateOnItem(Posts, post, postAuthor, "upvote");
   }
 }
-Telescope.callbacks.add("posts.new.async", PostsNewUpvoteOwnPost);
+Callbacks.add("posts.new.async", PostsNewUpvoteOwnPost);
 
 /**
  * @summary Add new post notification callback on post submit
@@ -197,4 +198,4 @@ function PostsNewNotifications (post) {
     }
   }
 }
-Telescope.callbacks.add("posts.new.async", PostsNewNotifications);
+Callbacks.add("posts.new.async", PostsNewNotifications);

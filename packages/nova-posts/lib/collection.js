@@ -3,12 +3,13 @@ import schema, { config, formGroups } from './schema.js';
 import fragments from './fragments.js';
 import mutations from './mutations.js';
 import resolvers from './resolvers.js';
+import { createCollection } from 'meteor/nova:core';
 
 /**
  * @summary The global namespace for Posts.
  * @namespace Posts
  */
-const Posts = Telescope.createCollection({
+const Posts = createCollection({
 
   collectionName: 'posts',
 

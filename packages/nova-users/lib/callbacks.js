@@ -3,6 +3,7 @@ import Users from './collection.js';
 import marked from 'marked';
 import NovaEmail from 'meteor/nova:email';
 import { Gravatar } from 'meteor/jparker:gravatar';
+import { Callbacks } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -71,12 +72,12 @@ function setupUser (user, options) {
 
   return user;
 }
-Telescope.callbacks.add("users.new.sync", setupUser);
+Callbacks.add("users.new.sync", setupUser);
 
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }
-Telescope.callbacks.add("users.profileCompleted.sync", hasCompletedProfile);
+Callbacks.add("users.profileCompleted.sync", hasCompletedProfile);
 
 function usersNewAdminUserCreationNotification (user) {
   // send notifications to admins
@@ -90,7 +91,7 @@ function usersNewAdminUserCreationNotification (user) {
   });
   return user;
 }
-Telescope.callbacks.add("users.new.sync", usersNewAdminUserCreationNotification);
+Callbacks.add("users.new.sync", usersNewAdminUserCreationNotification);
 
 function usersEditGenerateHtmlBio (modifier) {
   if (modifier.$set && modifier.$set.__bio) {
@@ -98,7 +99,7 @@ function usersEditGenerateHtmlBio (modifier) {
   }
   return modifier;
 }
-Telescope.callbacks.add("users.edit.sync", usersEditGenerateHtmlBio);
+Callbacks.add("users.edit.sync", usersEditGenerateHtmlBio);
 
 function usersEditCheckEmail (modifier, user) {
   // if email is being modified, update user.emails too
@@ -124,4 +125,4 @@ function usersEditCheckEmail (modifier, user) {
   }
   return modifier;
 }
-Telescope.callbacks.add("users.edit.sync", usersEditCheckEmail);
+Callbacks.add("users.edit.sync", usersEditCheckEmail);

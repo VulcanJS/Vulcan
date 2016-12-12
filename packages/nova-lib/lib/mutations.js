@@ -28,9 +28,9 @@ to the client.
 
 */
 
-import Telescope from './config.js';
+import { Callbacks } from './callbacks.js';
 
-const newMutation = ({ collection, document, currentUser, validate, context }) => {
+export const newMutation = ({ collection, document, currentUser, validate, context }) => {
   
   console.log("// newMutation")
   console.log(collection._name)
@@ -54,7 +54,7 @@ const newMutation = ({ collection, document, currentUser, validate, context }) =
     collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
 
     // run validation callbacks
-    document = Telescope.callbacks.run(`${collectionName}.new.validate`, document, currentUser);
+    document = Callbacks.run(`${collectionName}.new.validate`, document, currentUser);
   }
 
   // check if userId field is in the schema and add it to document if needed
@@ -68,7 +68,7 @@ const newMutation = ({ collection, document, currentUser, validate, context }) =
   // }
 
   // run sync callbacks
-  document = Telescope.callbacks.run(`${collectionName}.new.sync`, document, currentUser);
+  document = Callbacks.run(`${collectionName}.new.sync`, document, currentUser);
 
   // add _id to document
   document._id = collection.insert(document);
@@ -78,14 +78,14 @@ const newMutation = ({ collection, document, currentUser, validate, context }) =
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  Telescope.callbacks.runAsync(`${collectionName}.new.async`, newDocument, currentUser);
+  Callbacks.runAsync(`${collectionName}.new.async`, newDocument, currentUser);
 
   console.log("// new mutation finished:")
   console.log(newDocument)
   return document;
 }
 
-const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
+export const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
 
   console.log("// editMutation")
   console.log(collection._name)
@@ -118,11 +118,11 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
     collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
 
     // run validation callbacks
-    modifier = Telescope.callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
+    modifier = Callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
   }
 
   // run sync callbacks (on mongo modifier)
-  modifier = Telescope.callbacks.run(`${collectionName}.edit.sync`, modifier, document, currentUser);
+  modifier = Callbacks.run(`${collectionName}.edit.sync`, modifier, document, currentUser);
 
   // update document
   collection.update(documentId, modifier);
@@ -131,7 +131,7 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
   const newDocument = collection.findOne(documentId);
 
   // run async callbacks
-  Telescope.callbacks.runAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
+  Callbacks.runAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
 
   console.log("// edit mutation finished")
   console.log(newDocument)
@@ -139,7 +139,7 @@ const editMutation = ({ collection, documentId, set, unset, currentUser, validat
   return newDocument;
 }
 
-const removeMutation = ({ collection, documentId, currentUser, validate, context }) => {
+export const removeMutation = ({ collection, documentId, currentUser, validate, context }) => {
 
   console.log("// removeMutation")
   console.log(collection._name)
@@ -151,16 +151,14 @@ const removeMutation = ({ collection, documentId, currentUser, validate, context
 
   // if document is not trusted, run validation callbacks
   if (validate) {
-    document = Telescope.callbacks.run(`${collectionName}.remove.validate`, document, currentUser);
+    document = Callbacks.run(`${collectionName}.remove.validate`, document, currentUser);
   }
 
-  Telescope.callbacks.run(`${collectionName}.remove.sync`, document, currentUser);
+  Callbacks.run(`${collectionName}.remove.sync`, document, currentUser);
 
   collection.remove(documentId);
 
-  Telescope.callbacks.runAsync(`${collectionName}.remove.async`, document, currentUser);
+  Callbacks.runAsync(`${collectionName}.remove.async`, document, currentUser);
 
   return document;
 }
-
-export {newMutation, editMutation, removeMutation};

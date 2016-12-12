@@ -1,3 +1,4 @@
+// import { Callbacks } from 'meteor/nova:core';
 // import Telescope from 'meteor/nova:lib';
 // import Users from './collection.js';
 //
@@ -6,7 +7,7 @@
 //
 //   Users.update(userId, modifier);
 //
-//   Telescope.callbacks.runAsync("users.profileCompleted.async", Users.findOne(userId));
+//   Callbacks.runAsync("users.profileCompleted.async", Users.findOne(userId));
 //
 //   return Users.findOne(userId);
 //
@@ -29,7 +30,7 @@
 //
 //   // ------------------------------ Callbacks ------------------------------ //
 //
-//   modifier = Telescope.callbacks.run("users.edit.sync", modifier, user);
+//   modifier = Callbacks.run("users.edit.sync", modifier, user);
 //
 //   // ------------------------------ Update ------------------------------ //
 //
@@ -37,7 +38,7 @@
 //
 //   // ------------------------------ Callbacks ------------------------------ //
 //
-//   Telescope.callbacks.runAsync("users.edit.async", Users.findOne(userId), user);
+//   Callbacks.runAsync("users.edit.async", Users.findOne(userId), user);
 //
 //   // ------------------------------ After Update ------------------------------ //
 //   return Users.findOne(userId);
@@ -109,7 +110,7 @@
 //
 //       Users.remove(userId);
 //
-//       Telescope.callbacks.runAsync("users.remove.async", user, options);
+//       Callbacks.runAsync("users.remove.async", user, options);
 //
 //     }
 //

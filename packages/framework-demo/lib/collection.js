@@ -8,8 +8,9 @@ import Telescope from 'meteor/nova:lib';
 import schema from './schema.js';
 import mutations from './mutations.js';
 import resolvers from './resolvers.js';
+import { createCollection } from 'meteor/nova:core';
 
-const Movies = Telescope.createCollection({
+const Movies = createCollection({
 
   collectionName: 'movies',
 

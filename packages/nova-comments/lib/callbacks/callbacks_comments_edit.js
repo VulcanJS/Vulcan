@@ -3,6 +3,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 // ------------------------------------- comments.edit.validate -------------------------------- //
 
@@ -12,7 +13,7 @@ function CommentsEditUserCheck (modifier, comment, user) {
   }
   return modifier;
 }
-Telescope.callbacks.add("comments.edit.validate", CommentsEditUserCheck);
+Callbacks.add("comments.edit.validate", CommentsEditUserCheck);
 
 function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   const schema = Posts.simpleSchema()._schema;
@@ -31,7 +32,7 @@ function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   });
   return modifier;
 }
-Telescope.callbacks.add("comments.edit.validate", CommentsEditSubmittedPropertiesCheck);
+Callbacks.add("comments.edit.validate", CommentsEditSubmittedPropertiesCheck);
 
 
 // ------------------------------------- comments.edit.sync -------------------------------- //
@@ -43,4 +44,4 @@ function CommentsEditGenerateHTMLBody (modifier, comment, user) {
   }
   return modifier;
 }
-Telescope.callbacks.add("comments.edit.sync", CommentsEditGenerateHTMLBody);
+Callbacks.add("comments.edit.sync", CommentsEditGenerateHTMLBody);

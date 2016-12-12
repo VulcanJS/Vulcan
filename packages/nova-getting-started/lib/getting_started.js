@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 Users.addField({
   fieldName: 'isDummy',
@@ -50,4 +51,4 @@ function copyDummyProperty (user, options) {
   }
   return user;
 }
-Telescope.callbacks.add("users.new.sync", copyDummyProperty);
+Callbacks.add("users.new.sync", copyDummyProperty);

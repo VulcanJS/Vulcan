@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import cloudinary from "cloudinary";
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 const Cloudinary = cloudinary.v2;
 const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
@@ -100,7 +101,7 @@ function cachePostThumbnailOnSubmit (post) {
     }
   }
 }
-Telescope.callbacks.add("posts.new.async", cachePostThumbnailOnSubmit);
+Callbacks.add("posts.new.async", cachePostThumbnailOnSubmit);
 
 // post edit callback
 function cachePostThumbnailOnEdit (newPost, oldPost) {
@@ -116,6 +117,6 @@ function cachePostThumbnailOnEdit (newPost, oldPost) {
     }
   }
 }
-Telescope.callbacks.add("posts.edit.async", cachePostThumbnailOnEdit);
+Callbacks.add("posts.edit.async", cachePostThumbnailOnEdit);
 
 export default CloudinaryUtils;

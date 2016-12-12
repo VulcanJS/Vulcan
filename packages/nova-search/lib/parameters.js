@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import escapeStringRegexp from 'escape-string-regexp';
+import { Callbacks } from 'meteor/nova:core';
 
 function addSearchQueryParameter (parameters, terms) {
   if(!!terms.query) {
@@ -21,4 +22,4 @@ function addSearchQueryParameter (parameters, terms) {
   }
   return parameters;
 }
-Telescope.callbacks.add("posts.parameters", addSearchQueryParameter);
+Callbacks.add("posts.parameters", addSearchQueryParameter);

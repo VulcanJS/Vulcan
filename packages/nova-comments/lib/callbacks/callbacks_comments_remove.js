@@ -2,6 +2,7 @@ import Telescope, { removeMutation } from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 const CommentsRemovePostCommenters = (comment, currentUser) => {
   const { userId, postId } = comment;
@@ -25,7 +26,7 @@ const CommentsRemovePostCommenters = (comment, currentUser) => {
   return comment;
 };
 
-Telescope.callbacks.add("comments.remove.async", CommentsRemovePostCommenters);
+Callbacks.add("comments.remove.async", CommentsRemovePostCommenters);
 
 const CommentsRemoveChildrenComments = (comment, currentUser) => {
 
@@ -44,4 +45,4 @@ const CommentsRemoveChildrenComments = (comment, currentUser) => {
   return comment;
 };
 
-Telescope.callbacks.add("comments.remove.async", CommentsRemoveChildrenComments);
+Callbacks.add("comments.remove.async", CommentsRemoveChildrenComments);

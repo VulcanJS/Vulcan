@@ -4,6 +4,7 @@ appends a random emoji to the newly submitted post's title.
 */
 
 import Telescope from 'meteor/nova:lib';
+import { Callbacks } from 'meteor/nova:core';
 
 function PostsNewAddRandomEmoji (post, user) {
 
@@ -11,4 +12,4 @@ function PostsNewAddRandomEmoji (post, user) {
 
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", PostsNewAddRandomEmoji);
+Callbacks.add("posts.new.sync", PostsNewAddRandomEmoji);

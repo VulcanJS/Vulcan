@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
+import { Callbacks } from 'meteor/nova:core';
 
 function UsersRemoveDeleteComments (user, options) {
   if (options.deleteComments) {
@@ -11,7 +12,7 @@ function UsersRemoveDeleteComments (user, options) {
     // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
   }
 }
-Telescope.callbacks.add("users.remove.async", UsersRemoveDeleteComments);
+Callbacks.add("users.remove.async", UsersRemoveDeleteComments);
 
 // Add to posts.single publication
 
@@ -23,4 +24,4 @@ function PostsSingleAddCommentsUsers (users, post) {
   }
   return users;
 }
-Telescope.callbacks.add("posts.single.getUsers", PostsSingleAddCommentsUsers);
+Callbacks.add("posts.single.getUsers", PostsSingleAddCommentsUsers);

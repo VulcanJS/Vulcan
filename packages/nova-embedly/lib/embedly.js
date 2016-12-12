@@ -1,11 +1,12 @@
 import Telescope from 'meteor/nova:lib';
+import { Callbacks } from 'meteor/nova:core';
 
 function addThumbnailClass (postClass, post) {
   var thumbnailClass = !!post.thumbnailUrl ? "has-thumbnail" : "no-thumbnail";
   return postClass + " " + thumbnailClass;
 }
 // add callback that adds "has-thumbnail" or "no-thumbnail" CSS classes
-Telescope.callbacks.add("postClass", addThumbnailClass);
+Callbacks.add("postClass", addThumbnailClass);
 
 function checkIfPreviouslyPosted (data) {
   Meteor.call("checkForDuplicates", data.url, function (error, result) {
@@ -15,4 +16,4 @@ function checkIfPreviouslyPosted (data) {
   });
   return data;
 }
-Telescope.callbacks.add("afterEmbedlyPrefill", checkIfPreviouslyPosted);
+Callbacks.add("afterEmbedlyPrefill", checkIfPreviouslyPosted);
