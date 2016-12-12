@@ -1,7 +1,7 @@
 /* 
 
 A component to configure the "edit movie" form.
-Wrapped with the "withSingle" container.
+Wrapped with the "withDocument" container.
 
 */
 

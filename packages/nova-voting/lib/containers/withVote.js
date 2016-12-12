@@ -4,7 +4,7 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-// to adapt like withNew? or withSingle?
+// to adapt like withNew? or withDocument?
 export default function withVote(component) {
   return graphql(gql`
     mutation postsVote($documentId: String, $voteType: String) {

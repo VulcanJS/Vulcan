@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default function withSingle (options) {
+export default function withDocument (options) {
   
   const { queryName, collection, fragment } = options,
         fragmentName = fragment.definitions[0].name.value,

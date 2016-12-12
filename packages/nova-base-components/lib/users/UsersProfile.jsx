@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
-import { ShowIf, withSingle } from 'meteor/nova:core';
+import { ShowIf, withDocument } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const UsersProfile = (props) => {
@@ -93,4 +93,4 @@ const options = {
   fragment: UsersProfile.fragment,
 };
 
-registerComponent('UsersProfile', UsersProfile, withSingle(options));
+registerComponent('UsersProfile', UsersProfile, withDocument(options));

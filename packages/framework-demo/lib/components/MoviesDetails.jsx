@@ -1,14 +1,14 @@
 /* 
 
 A component that shows a detailed view of a single movie. 
-Wrapped with the "withSingle" container.
+Wrapped with the "withDocument" container.
 
 */
 
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Movies from '../collection.js';
-import { withSingle } from 'meteor/nova:core';
+import { withDocument } from 'meteor/nova:core';
 import { compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -48,4 +48,4 @@ const options = {
   fragment: MoviesDetails.fragment,
 };
 
-export default compose(withSingle(options))(MoviesDetails);
+export default compose(withDocument(options))(MoviesDetails);

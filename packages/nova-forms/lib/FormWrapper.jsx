@@ -15,12 +15,12 @@ And wraps the Form component with:
 
 Or: 
 
-- withSingle
+- withDocument
 - withEdit
 - withRemove
 
-(When wrapping with withSingle, withEdit, and withRemove, a special Loader
-component is also added to wait for withSingle's loading prop to be false)
+(When wrapping with withDocument, withEdit, and withRemove, a special Loader
+component is also added to wait for withDocument's loading prop to be false)
 
 */
 
@@ -33,7 +33,7 @@ import { withNew, withEdit, withRemove } from 'meteor/nova:core';
 import { getEditableFields, getInsertableFields } from './utils.js';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
-import { withSingle } from 'meteor/nova:core';
+import { withDocument } from 'meteor/nova:core';
 
 class FormWrapper extends Component{
 
@@ -115,7 +115,7 @@ class FormWrapper extends Component{
       schema: this.getSchema(),
     };
 
-    // options for withSingle HoC
+    // options for withDocument HoC
     const queryOptions = {
       queryName: `${prefix}FormQuery`,
       collection: this.props.collection,
@@ -128,10 +128,10 @@ class FormWrapper extends Component{
       fragment: this.getFragments().mutationFragment,
     };
 
-    // if this is an edit from, load the necessary data using the withSingle HoC
+    // if this is an edit from, load the necessary data using the withDocument HoC
     if (this.getFormType() === 'edit') { 
     
-      // create a stateless loader component that's wrapped with withSingle,
+      // create a stateless loader component that's wrapped with withDocument,
       // displays the loading state if needed, and passes on loading and document
       const Loader = props => {
         const { document, loading } = props;
@@ -148,7 +148,7 @@ class FormWrapper extends Component{
       Loader.displayName = `withLoader(Form)`;
 
       WrappedComponent = compose(
-        withSingle(queryOptions),
+        withDocument(queryOptions),
         withEdit(mutationOptions),
         withRemove(mutationOptions)
       )(Loader);

@@ -4,7 +4,7 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
 import NovaForm from "meteor/nova:forms";
 import Users from 'meteor/nova:users';
-import { ShowIf, withCurrentUser, withSingle, withMessages } from 'meteor/nova:core';
+import { ShowIf, withCurrentUser, withDocument, withMessages } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const UsersEditForm = (props, context) => {
@@ -54,4 +54,4 @@ const options = {
   fragment: UsersEditForm.fragment,
 };
 
-registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, withSingle(options), withMessages);
+registerComponent('UsersEditForm', UsersEditForm, withCurrentUser, withDocument(options), withMessages);

@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import Posts from 'meteor/nova:posts';
-import { withSingle } from 'meteor/nova:core';
+import { withDocument } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const PostsPage = (props) => {
@@ -93,4 +93,4 @@ const options = {
   fragment: PostsPage.fragment,
 };
 
-registerComponent('PostsPage', PostsPage, withSingle(options));
+registerComponent('PostsPage', PostsPage, withDocument(options));
