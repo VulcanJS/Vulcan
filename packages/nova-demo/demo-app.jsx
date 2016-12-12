@@ -5,6 +5,7 @@ import Users from 'meteor/nova:users';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import React, { PropTypes, Component } from 'react';
 import MoviesWrapper from './demo-components.jsx';
+import { addRoute } from 'meteor/nova:core';
 // import {mount} from 'react-mounter';
 // import Core from 'meteor/nova:core';
 // import { Route } from 'react-router';
@@ -63,7 +64,7 @@ Movies.attachSchema(schema);
 //////////////////////////////////////////////////////
 
 // Telescope.routes.add(<Route name="demo" path="/demo" component={MoviesWrapper} />);
-Telescope.routes.add({name:"demo", path:"/demo", component:MoviesWrapper});
+addRoute({name:"demo", path:"/demo", component:MoviesWrapper});
 
 //////////////////////////////////////////////////////
 // Methods                                          //

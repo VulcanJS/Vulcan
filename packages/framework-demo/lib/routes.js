@@ -1,5 +1,5 @@
-import Telescope from 'meteor/nova:lib';
 import MoviesWrapper from './components/MoviesWrapper.jsx';
+import { addRoute } from 'meteor/nova:core';
 
 // add new "/movies" route that loads the MoviesWrapper component
-Telescope.routes.add({ name: 'movies', path: 'movies', component: MoviesWrapper });
+addRoute({ name: 'movies', path: 'movies', component: MoviesWrapper });

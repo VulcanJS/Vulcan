@@ -55,16 +55,6 @@ Telescope.subscriptions.preload = function (subscription, args) {
 
 Telescope.strings = {};
 
-// ------------------------------------- Routes -------------------------------- //
-
-Telescope.routes = {
-  routes: [],
-  add(routeOrRouteArray) {
-    const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
-    this.routes = this.routes.concat(addedRoutes);
-  }
-}
-
 // ------------------------------------- Head Tags -------------------------------- //
 
 Telescope.headtags = {

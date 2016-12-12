@@ -17,7 +17,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/store.js',
-    'lib/routes.jsx'
+    'lib/routing.jsx'
   ], ['client', 'server']);
 
 });

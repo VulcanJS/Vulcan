@@ -1,8 +1,7 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, addRoute } from 'meteor/nova:core';
 
-Telescope.routes.indexRoute = { name: 'posts.list', component: Components.PostsHome };
-
-Telescope.routes.add([
+addRoute([
+  {name:'posts.list',    path: '/',                    component: Components.PostsHome }, // index route
   {name:'posts.daily',    path:'daily',                 component: Components.PostsDaily},
   {name:'posts.single',   path:'posts/:_id(/:slug)',    component: Components.PostsSingle},
   {name:'users.single',   path:'users/:slug',           component: Components.UsersSingle},

@@ -1,6 +1,6 @@
 // import and re-export
-import { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, createCollection, Callbacks, addCallback, removeCallbacks, runCallbacks, runCallbacksAsync, GraphQLSchema } from 'meteor/nova:lib';
-export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, createCollection, Callbacks, addCallback, removeCallbacks, runCallbacks, runCallbacksAsync, GraphQLSchema };
+import { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, createCollection, Callbacks, addCallback, removeCallbacks, runCallbacks, runCallbacksAsync, GraphQLSchema, Routes, addRoute } from 'meteor/nova:lib';
+export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, createCollection, Callbacks, addCallback, removeCallbacks, runCallbacks, runCallbacksAsync, GraphQLSchema, Routes, addRoute };
 
 export { default as App } from "./components/App.jsx";
 export { default as Layout } from "./components/Layout.jsx";

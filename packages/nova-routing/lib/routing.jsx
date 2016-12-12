@@ -8,17 +8,23 @@ import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
 import { configureStore } from "./store.js";
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, addRoute } from 'meteor/nova:core';
+
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
-  Telescope.routes.add({name:"app.notfound", path:"*", component:Components.Error404});
+  const Routes = addRoute({name:"app.notfound", path:"*", component:Components.Error404});
+
+  const indexRoute = _.filter(Routes, route => route.path === '/')[0];
+  const childRoutes = _.reject(Routes, route => route.path === '/');
+
+  delete indexRoute.path; // delete the '/' path to avoid warning
 
   const AppRoutes = {
     path: '/',
     component: Components.App,
-    indexRoute: Telescope.routes.indexRoute,
-    childRoutes: Telescope.routes.routes
+    indexRoute,
+    childRoutes,
   };
 
   /*
