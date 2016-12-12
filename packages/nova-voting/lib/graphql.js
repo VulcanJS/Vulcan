@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from 'meteor/nova:posts';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 /**
  * @summary Vote schema
@@ -27,9 +28,9 @@ const voteSchema = `
   }
 `;
 
-Telescope.graphQL.addSchema(voteSchema);
+GraphQLSchema.addSchema(voteSchema);
 
-Telescope.graphQL.addMutation('postsVote(documentId: String, voteType: String) : Post');
+GraphQLSchema.addMutation('postsVote(documentId: String, voteType: String) : Post');
 
 const voteResolver = {
   Mutation: {
@@ -42,4 +43,4 @@ const voteResolver = {
   },
 };
 
-Telescope.graphQL.addResolvers(voteResolver);
+GraphQLSchema.addResolvers(voteResolver);

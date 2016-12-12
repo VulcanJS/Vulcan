@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import mutations from './mutations.js';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 const speficicResolvers = {
   Post: {
@@ -15,7 +16,7 @@ const speficicResolvers = {
   },
 };
 
-Telescope.graphQL.addResolvers(speficicResolvers);
+GraphQLSchema.addResolvers(speficicResolvers);
 
 const resolvers = {
 

@@ -6,6 +6,7 @@ A SimpleSchema-compatible JSON schema
 
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 // define schema
 const schema = {
@@ -79,4 +80,4 @@ const termsSchema = `
   }
 `;
 
-Telescope.graphQL.addSchema(termsSchema);
+GraphQLSchema.addSchema(termsSchema);

@@ -1,14 +1,15 @@
 import Newsletter from "../namespace.js";
 import MailChimpList from "./mailchimp/mailchimp_list.js";
 import Users from 'meteor/nova:users';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 import Telescope from 'meteor/nova:lib';
 
-Telescope.graphQL.addMutation('sendNewsletter : JSON');
-Telescope.graphQL.addMutation('testNewsletter : JSON');
-Telescope.graphQL.addMutation('addUserNewsletter(userId: String) : JSON');
-Telescope.graphQL.addMutation('addEmailNewsletter(email: String) : JSON');
-Telescope.graphQL.addMutation('removeUserNewsletter(userId: String) : JSON');
+GraphQLSchema.addMutation('sendNewsletter : JSON');
+GraphQLSchema.addMutation('testNewsletter : JSON');
+GraphQLSchema.addMutation('addUserNewsletter(userId: String) : JSON');
+GraphQLSchema.addMutation('addEmailNewsletter(email: String) : JSON');
+GraphQLSchema.addMutation('removeUserNewsletter(userId: String) : JSON');
 
 const resolver = {
   Mutation: {
@@ -55,5 +56,5 @@ const resolver = {
     },
   },
 };
-Telescope.graphQL.addResolvers(resolver);
+GraphQLSchema.addResolvers(resolver);
 

@@ -1,5 +1,6 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import Telescope from './config.js';
+import { GraphQLSchema } from './graphql.js';
 
 SimpleSchema.extendOptions({
   // kept for backward compatibility?
@@ -110,12 +111,12 @@ export const createCollection = options => {
   }
 
   // add collection to list of dynamically generated GraphQL schemas
-  Telescope.graphQL.addCollection(collection);
+  GraphQLSchema.addCollection(collection);
 
   // add collection to resolver context
   const context = {};
   context[Telescope.utils.capitalize(options.collectionName)] = collection;
-  Telescope.graphQL.addToContext(context);
+  GraphQLSchema.addToContext(context);
 
   // ------------------------------------- Queries -------------------------------- //
   
@@ -123,20 +124,20 @@ export const createCollection = options => {
     const queryResolvers = {};
     // list
     if (options.resolvers.list) { // e.g. ""
-      Telescope.graphQL.addQuery(`${options.resolvers.list.name}(terms: Terms, offset: Int, limit: Int): [${options.typeName}]`);
+      GraphQLSchema.addQuery(`${options.resolvers.list.name}(terms: Terms, offset: Int, limit: Int): [${options.typeName}]`);
       queryResolvers[options.resolvers.list.name] = options.resolvers.list.resolver;
     }
     // single
     if (options.resolvers.single) {
-      Telescope.graphQL.addQuery(`${options.resolvers.single.name}(documentId: String, slug: String): ${options.typeName}`);
+      GraphQLSchema.addQuery(`${options.resolvers.single.name}(documentId: String, slug: String): ${options.typeName}`);
       queryResolvers[options.resolvers.single.name] = options.resolvers.single.resolver;
     }
     // total
     if (options.resolvers.total) {
-      Telescope.graphQL.addQuery(`${options.resolvers.total.name}(terms: Terms): Int`);
+      GraphQLSchema.addQuery(`${options.resolvers.total.name}(terms: Terms): Int`);
       queryResolvers[options.resolvers.total.name] = options.resolvers.total.resolver;
     }
-    Telescope.graphQL.addResolvers({ Query: { ...queryResolvers } });
+    GraphQLSchema.addResolvers({ Query: { ...queryResolvers } });
   }
 
   // ------------------------------------- Mutations -------------------------------- //
@@ -145,20 +146,20 @@ export const createCollection = options => {
     const mutations = {};
     // new
     if (options.mutations.new) { // e.g. "moviesNew(document: moviesInput) : Movie"
-      Telescope.graphQL.addMutation(`${options.mutations.new.name}(document: ${options.collectionName}Input) : ${options.typeName}`);
+      GraphQLSchema.addMutation(`${options.mutations.new.name}(document: ${options.collectionName}Input) : ${options.typeName}`);
       mutations[options.mutations.new.name] = options.mutations.new.mutation.bind(options.mutations.new);
     }
     // edit
     if (options.mutations.edit) { // e.g. "moviesEdit(documentId: String, set: moviesInput, unset: moviesUnset) : Movie"
-      Telescope.graphQL.addMutation(`${options.mutations.edit.name}(documentId: String, set: ${options.collectionName}Input, unset: ${options.collectionName}Unset) : ${options.typeName}`);
+      GraphQLSchema.addMutation(`${options.mutations.edit.name}(documentId: String, set: ${options.collectionName}Input, unset: ${options.collectionName}Unset) : ${options.typeName}`);
       mutations[options.mutations.edit.name] = options.mutations.edit.mutation.bind(options.mutations.edit);
     }
     // remove
     if (options.mutations.remove) { // e.g. "moviesRemove(documentId: String) : Movie"
-      Telescope.graphQL.addMutation(`${options.mutations.remove.name}(documentId: String) : ${options.typeName}`);
+      GraphQLSchema.addMutation(`${options.mutations.remove.name}(documentId: String) : ${options.typeName}`);
       mutations[options.mutations.remove.name] = options.mutations.remove.mutation.bind(options.mutations.remove);
     }
-    Telescope.graphQL.addResolvers({ Mutation: { ...mutations } });
+    GraphQLSchema.addResolvers({ Mutation: { ...mutations } });
   }
   
   return collection;

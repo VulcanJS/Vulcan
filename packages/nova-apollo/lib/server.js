@@ -19,7 +19,7 @@ import { _ } from 'meteor/underscore';
 
 import Users from 'meteor/nova:users';
 
-import Telescope from 'meteor/nova:lib';
+import Telescope, { GraphQLSchema } from 'meteor/nova:lib';
 
 const defaultConfig = {
   path: '/graphql',
@@ -106,7 +106,7 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       }
     }
     
-    options.context = deepmerge(options.context, Telescope.graphQL.context);
+    options.context = deepmerge(options.context, GraphQLSchema.context);
 
     return options;
 

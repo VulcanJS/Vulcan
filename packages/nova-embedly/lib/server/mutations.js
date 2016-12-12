@@ -3,6 +3,7 @@ import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
 import GraphQLJSON from 'graphql-type-json';
 import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumbnail } from './get_embedly_data.js';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 // note: not used since the type of the query below is JSON
 // const embedlyDataSchema = `
@@ -15,9 +16,9 @@ import { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumb
 //     sourceUrl: String
 //   }
 // `;
-// Telescope.graphQL.addSchema(embedlyDataSchema);
+// GraphQLSchema.addSchema(embedlyDataSchema);
 
-Telescope.graphQL.addMutation('getEmbedlyData(url: String) : JSON');
+GraphQLSchema.addMutation('getEmbedlyData(url: String) : JSON');
 
 const resolver = {
   Mutation: {
@@ -29,7 +30,7 @@ const resolver = {
     },
   },
 };
-Telescope.graphQL.addResolvers(resolver);
+GraphQLSchema.addResolvers(resolver);
 
 // Meteor.methods({
 //   testGetEmbedlyData: function (url) {

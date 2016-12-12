@@ -9,6 +9,7 @@ Three resolvers are defined:
 */
 
 import Telescope from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 // add the "user" resolver for the Movie type separately
 const movieResolver = {
@@ -18,7 +19,7 @@ const movieResolver = {
     },
   },
 };
-Telescope.graphQL.addResolvers(movieResolver);
+GraphQLSchema.addResolvers(movieResolver);
 
 // basic list, single, and total query resolvers
 const resolvers = {

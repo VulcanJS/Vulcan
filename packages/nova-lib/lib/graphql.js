@@ -29,7 +29,7 @@ const jsTypeToGraphQLType = typeName => {
   }
 }
 
-Telescope.graphQL = {
+export const GraphQLSchema = {
 
   // collections used to auto-generate schemas
   collections: [],

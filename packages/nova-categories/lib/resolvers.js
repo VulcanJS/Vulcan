@@ -1,4 +1,5 @@
 import Telescope from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 // add these specific resolvers separately
 const specificResolvers = {
@@ -14,7 +15,7 @@ const specificResolvers = {
   //   }
   // },
 };
-Telescope.graphQL.addResolvers(specificResolvers);
+GraphQLSchema.addResolvers(specificResolvers);
 
 // root resolvers: basic list, single, and total query resolvers
 const resolvers = {

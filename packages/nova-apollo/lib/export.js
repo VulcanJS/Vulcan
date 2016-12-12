@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { GraphQLSchema } from 'meteor/nova:lib';
 
 import { makeExecutableSchema } from 'graphql-tools';
 
@@ -11,11 +11,11 @@ Meteor.startup(function () {
   
   const typeDefs = generateTypeDefs();
 
-  Telescope.graphQL.finalSchema = typeDefs;
+  GraphQLSchema.finalSchema = typeDefs;
 
   const schema = makeExecutableSchema({
     typeDefs,
-    resolvers: Telescope.graphQL.resolvers,
+    resolvers: GraphQLSchema.resolvers,
   });
 
   createApolloServer({

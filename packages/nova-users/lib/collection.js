@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import schema from './schema.js';
 import mutations from './mutations.js';
 import resolvers from './resolvers.js';
-import { createCollection } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { createCollection, GraphQLSchema } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 /**
  * @summary Telescope Users namespace
@@ -24,6 +24,6 @@ const Users = createCollection({
 
 });
 
-Telescope.graphQL.addQuery(`currentUser: User`);
+GraphQLSchema.addQuery(`currentUser: User`);
 
 export default Users;

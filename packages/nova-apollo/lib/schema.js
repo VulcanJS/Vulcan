@@ -1,15 +1,15 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope, { GraphQLSchema } from 'meteor/nova:lib';
 
 const generateTypeDefs = () => [`
-  ${Telescope.graphQL.getCollectionsSchemas()}
-  ${Telescope.graphQL.getAdditionalSchemas()}
+  ${GraphQLSchema.getCollectionsSchemas()}
+  ${GraphQLSchema.getAdditionalSchemas()}
 
   type Query {
-    ${Telescope.graphQL.queries.join('\n')}
+    ${GraphQLSchema.queries.join('\n')}
   }
 
   type Mutation {
-    ${Telescope.graphQL.mutations.join('\n')}
+    ${GraphQLSchema.mutations.join('\n')}
   }
 `];
 

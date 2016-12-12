@@ -2,6 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
 import Posts from './collection.js';
+import { GraphQLSchema } from 'meteor/nova:core';
 
 /**
  * @summary Posts config namespace
@@ -318,4 +319,4 @@ const termsSchema = `
   }
 `;
 
-Telescope.graphQL.addSchema(termsSchema);
+GraphQLSchema.addSchema(termsSchema);
