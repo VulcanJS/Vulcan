@@ -55,9 +55,7 @@ Mongo.Collection.prototype.removeField = function (fieldName) {
 
 /**
  * @summary Global schemas object. Note: not reactive, won't be updated after initialization
- * @namespace Telescope.schemas
  */
-Telescope.schemas = {};
 
 SimpleSchema.prototype.getProfileFields = function () {
   var schema = this._schema;
@@ -70,7 +68,6 @@ SimpleSchema.prototype.getProfileFields = function () {
 
 /**
  * @summary Get a list of a schema's private fields
- * @namespace Telescope.schemas
  */
 Mongo.Collection.prototype.getPrivateFields = function () {
   var schema = this.simpleSchema()._schema;
@@ -84,7 +81,6 @@ Mongo.Collection.prototype.getPrivateFields = function () {
 
 /**
  * @summary Get a list of a schema's public fields
- * @namespace Telescope.schemas
  */
 Mongo.Collection.prototype.getPublicFields = function () {
   var schema = this.simpleSchema()._schema;

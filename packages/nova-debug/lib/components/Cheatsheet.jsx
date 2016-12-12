@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
@@ -98,7 +97,7 @@ const Cheatsheet = props => {
           <h2>Utils</h2>
           <h3>Helpers (<code>Utils.*</code>)</h3>
           <ul>
-            {_.map(Telescope.utils, renderFunction)}
+            {_.map(Utils, renderFunction)}
           </ul>
         </div>
 

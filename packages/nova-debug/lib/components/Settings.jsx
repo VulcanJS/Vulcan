@@ -32,7 +32,7 @@ const Settings = props => {
             </tr>
           </thead>
           <tbody>
-            {_.map(_.omit(Telescope.settings.collection.simpleSchema()._schema, (value, key) => key.indexOf("$") >= 0), renderSetting)}
+            {_.map(_.omit(Meteor.settings, (value, key) => key.indexOf("$") >= 0), renderSetting)}
           </tbody>
         </table>
 

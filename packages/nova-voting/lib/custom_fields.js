@@ -3,6 +3,24 @@ import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
+/**
+ * @summary Vote schema
+ * @type {SimpleSchema}
+ */
+const voteSchema = new SimpleSchema({
+  itemId: {
+    type: String
+  },
+  power: {
+    type: Number,
+    optional: true
+  },
+  votedAt: {
+    type: Date, 
+    optional: true
+  }
+});
+
 Users.addField([
   /**
     An array containing comments upvotes
@@ -10,7 +28,7 @@ Users.addField([
   {
     fieldName: '__upvotedComments',
     fieldSchema: {
-      type: [Telescope.schemas.votes],
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
@@ -23,7 +41,7 @@ Users.addField([
   {
     fieldName: '__upvotedPosts',
     fieldSchema: {
-      type: [Telescope.schemas.votes],
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
@@ -36,7 +54,7 @@ Users.addField([
   {
     fieldName: '__downvotedComments',
     fieldSchema: {
-      type: [Telescope.schemas.votes],
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
@@ -49,7 +67,7 @@ Users.addField([
   {  
     fieldName: '__downvotedPosts',
     fieldSchema: {
-      type: [Telescope.schemas.votes],
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],

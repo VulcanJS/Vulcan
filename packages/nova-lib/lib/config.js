@@ -9,15 +9,6 @@ const Telescope = {};
 
 Telescope.VERSION = '0.27.5-nova';
 
-// ------------------------------------- Config -------------------------------- //
-
-/**
- * @summary Telescope configuration namespace
- * @namespace Telescope.config
- */
-Telescope.config = {};
-
-
 // ------------------------------------- Schemas -------------------------------- //
 
 SimpleSchema.extendOptions({
@@ -34,24 +25,6 @@ SimpleSchema.extendOptions({
   group: Match.Optional(Object), // form fieldset group
   preload: Match.Optional(Boolean),
 });
-
-// ------------------------------------- Subscriptions -------------------------------- //
-
- /**
- * @summary Subscriptions namespace
- * @namespace Telescope.subscriptions
- */
-Telescope.subscriptions = [];
-
-/**
- * @summary Add a subscription to be preloaded
- * @param {string} subscription - The name of the subscription
- */
-Telescope.subscriptions.preload = function (subscription, args) {
-  Telescope.subscriptions.push({name: subscription, arguments: args});
-};
-
-
 
 // ------------------------------------- Statuses -------------------------------- //
 

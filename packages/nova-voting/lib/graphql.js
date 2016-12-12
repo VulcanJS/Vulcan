@@ -2,23 +2,6 @@ import Telescope from 'meteor/nova:lib';
 import Posts from 'meteor/nova:posts';
 import { GraphQLSchema } from 'meteor/nova:core';
 import { operateOnItem } from './vote.js';
-/**
- * @summary Vote schema
- * @type {SimpleSchema}
- */
-Telescope.schemas.votes = new SimpleSchema({
-  itemId: {
-    type: String
-  },
-  power: {
-    type: Number,
-    optional: true
-  },
-  votedAt: {
-    type: Date, 
-    optional: true
-  }
-});
 
 const voteSchema = `
   type Vote {

@@ -41,7 +41,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
 };
 
 /**
- * Get a component registered with Telescope.registerComponent(name, component, ...hocs).
+ * Get a component registered with registerComponent(name, component, ...hocs).
  *
  * @param {String} name The name of the component to get.
  * @returns {Function|React Component} A (wrapped) React component
@@ -51,7 +51,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
 };
 
 /**
- * Get the **raw** (original) component registered with Telescope.registerComponent
+ * Get the **raw** (original) component registered with registerComponent
  * without the possible HOCs wrapping it.
  *
  * @param {String} name The name of the component to get.
