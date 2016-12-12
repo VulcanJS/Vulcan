@@ -3,7 +3,7 @@ import React from 'react';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
 
@@ -96,7 +96,7 @@ const Cheatsheet = props => {
 
         <div className="cheatsheet-block">
           <h2>Utils</h2>
-          <h3>Helpers (<code>Telescope.utils.*</code>)</h3>
+          <h3>Helpers (<code>Utils.*</code>)</h3>
           <ul>
             {_.map(Telescope.utils, renderFunction)}
           </ul>

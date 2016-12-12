@@ -12,9 +12,9 @@
 //  */
 // Posts.before.insert(function (userId, doc) {
 //   if(!!doc.body) {
-//     const htmlBody = Telescope.utils.sanitize(marked(doc.body));
+//     const htmlBody = Utils.sanitize(marked(doc.body));
 //     doc.htmlBody = htmlBody;
-//     doc.excerpt = Telescope.utils.trimHTML(htmlBody,30);
+//     doc.excerpt = Utils.trimHTML(htmlBody,30);
 //   }
 // });
 
@@ -24,9 +24,9 @@
 // Posts.before.update(function (userId, doc, fieldNames, modifier) {
 //   // if body is being modified or $unset, update htmlBody too
 //   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
-//     const htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+//     const htmlBody = Utils.sanitize(marked(modifier.$set.body));
 //     modifier.$set.htmlBody = htmlBody;
-//     modifier.$set.excerpt = Telescope.utils.trimHTML(htmlBody,30);
+//     modifier.$set.excerpt = Utils.trimHTML(htmlBody,30);
 //   }
 //   if (Meteor.isServer && modifier.$unset && (typeof modifier.$unset.body !== "undefined")) {
 //     modifier.$unset.htmlBody = "";
@@ -40,6 +40,6 @@
 // Posts.before.update(function (userId, doc, fieldNames, modifier) {
 //   // if title is being modified, update slug too
 //   if (Meteor.isServer && modifier.$set && modifier.$set.title) {
-//     modifier.$set.slug = Telescope.utils.slugify(modifier.$set.title);
+//     modifier.$set.slug = Utils.slugify(modifier.$set.title);
 //   }
 // });

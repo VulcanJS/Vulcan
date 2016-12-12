@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import moment from 'moment';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
-
+import { Utils } from 'meteor/nova:core';
 
 //////////////////
 // Link Helpers //
@@ -13,7 +13,7 @@ import Users from 'meteor/nova:users';
  * @param {Object} post
  */
 Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
-  const url = isRedirected ? Telescope.utils.getOutgoingUrl(post.url) : post.url;
+  const url = isRedirected ? Utils.getOutgoingUrl(post.url) : post.url;
   return !!post.url ? url : this.getPageUrl(post, isAbsolute);
 };
 
@@ -38,7 +38,7 @@ Posts.getLinkTarget = function (post) {
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute = false){
-  const prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
   return `${prefix}/posts/${post._id}/${post.slug}`;
 };
 
@@ -136,7 +136,7 @@ Posts.isVideo = function (post) {
 Posts.getThumbnailUrl = (post) => {
   const thumbnailUrl = post.thumbnailUrl;
   if (!!thumbnailUrl) {
-    return thumbnailUrl.indexOf('//') > -1 ? Telescope.utils.addHttp(thumbnailUrl) : Telescope.utils.getSiteUrl().slice(0,-1) + thumbnailUrl;
+    return thumbnailUrl.indexOf('//') > -1 ? Utils.addHttp(thumbnailUrl) : Utils.getSiteUrl().slice(0,-1) + thumbnailUrl;
   }
 };
 

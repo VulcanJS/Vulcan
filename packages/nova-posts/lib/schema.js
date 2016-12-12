@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
 import Posts from './collection.js';
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema, Utils } from 'meteor/nova:core';
 
 /**
  * @summary Posts config namespace
@@ -94,7 +94,7 @@ const schema = {
       // if title is changing, return new slug
       const newTitle = documentOrModifier.title || documentOrModifier.$set && documentOrModifier.$set.title
       if (newTitle) {
-        return Telescope.utils.slugify(newTitle)
+        return Utils.slugify(newTitle)
       }
     }
   },
@@ -123,7 +123,7 @@ const schema = {
     autoValue(documentOrModifier) {
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
-        return Telescope.utils.sanitize(marked(body))
+        return Utils.sanitize(marked(body))
       } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
         return ''
       }
@@ -141,7 +141,7 @@ const schema = {
     autoValue(documentOrModifier) {
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
-        return Telescope.utils.trimHTML(Telescope.utils.sanitize(marked(body)), 30);
+        return Utils.trimHTML(Utils.sanitize(marked(body)), 30);
       } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
         return ''
       }

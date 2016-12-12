@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import cloudinary from "cloudinary";
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 const Cloudinary = cloudinary.v2;
 const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
@@ -19,7 +19,7 @@ const CloudinaryUtils = {
   // send an image URL to Cloudinary and get a cloudinary result object in return
   uploadImage(imageUrl) {
     try {
-      var result = uploadSync(Telescope.utils.addHttp(imageUrl));
+      var result = uploadSync(Utils.addHttp(imageUrl));
       const data = {
         cloudinaryId: result.public_id,
         result: result,

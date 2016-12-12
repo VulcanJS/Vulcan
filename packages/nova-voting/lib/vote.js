@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import { hasUpvoted, hasDownvoted } from './helpers.js';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 Telescope.getVotePower = function (user) {
@@ -27,7 +27,7 @@ Telescope.operateOnItem = function (collection, originalItem, user, operation, i
   // ---------------------------- "Real" Server-Side Operation -------------------------- //
 
   // make sure item and user are defined, and user can perform the operation
-  const collectionName = item.__typename ? Telescope.utils.getCollectionNameFromTypename(item.__typename) : item.getCollectionName();
+  const collectionName = item.__typename ? Utils.getCollectionNameFromTypename(item.__typename) : item.getCollectionName();
 
   if (
     !item ||

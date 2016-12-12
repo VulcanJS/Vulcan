@@ -1,8 +1,7 @@
-import Telescope from 'meteor/nova:lib';
 import { Injected } from 'meteor/meteorhacks:inject-initial';
 import moment from 'moment';
 import Posts from './collection.js'
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 /**
  * @summary Parameter callbacks let you add parameters to subscriptions
@@ -43,7 +42,7 @@ Posts.parameters.get = function (terms = {}) {
 
   // extend sort to sort posts by _id to break ties
   // NOTE: always do this last to avoid _id sort overriding another sort
-  parameters = Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+  parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
   // console.log(parameters);
 
@@ -57,11 +56,11 @@ Posts.parameters.get = function (terms = {}) {
 function addViewParameter (parameters, terms) {
 
   // if view is not defined, default to "new"
-  var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'new';
+  var view = !!terms.view ? Utils.dashToCamel(terms.view) : 'new';
 
   // get query parameters according to current view
   if (typeof Posts.views[view] !== 'undefined')
-    parameters = Telescope.utils.deepExtend(true, parameters, Posts.views[view](terms));
+    parameters = Utils.deepExtend(true, parameters, Posts.views[view](terms));
 
   return parameters;
 }

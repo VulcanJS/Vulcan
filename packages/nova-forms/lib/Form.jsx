@@ -22,7 +22,7 @@ This component expects:
 
 */
 
-import Telescope, { Components } from 'meteor/nova:lib';
+import { Components, Utils } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -30,7 +30,6 @@ import { Button } from 'react-bootstrap';
 import Flash from "./Flash.jsx";
 import FormGroup from "./FormGroup.jsx";
 import { flatten, deepValue, getEditableFields, getInsertableFields } from './utils.js';
-
 
 /*
 
@@ -90,7 +89,7 @@ class Form extends Component {
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Telescope.utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
   }
 
   getFieldGroups() {

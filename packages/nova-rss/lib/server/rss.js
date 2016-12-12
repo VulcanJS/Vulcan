@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
+import { Utils } from 'meteor/nova:core';
 
 const RSS = Npm.require('rss');
 
@@ -38,7 +39,7 @@ const servePostRSS = function (terms, url) {
     };
 
     if (post.thumbnailUrl) {
-      var url = Telescope.utils.addHttp(post.thumbnailUrl);
+      var url = Utils.addHttp(post.thumbnailUrl);
       feedItem.custom_elements = [{"imageUrl":url}, {"content": url}];
     }
 

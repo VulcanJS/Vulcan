@@ -1,10 +1,9 @@
 import Users from 'meteor/nova:users';
-import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import hoistStatics from 'hoist-non-react-statics';
-
+import { Utils } from 'meteor/nova:lib';
 
 const withApp = WrappedComponent => {
 
@@ -50,7 +49,7 @@ const withApp = WrappedComponent => {
     }
   }
   
-  WithApp.displayName = `withApp(${Telescope.utils.getComponentDisplayName(WrappedComponent)})`
+  WithApp.displayName = `withApp(${Utils.getComponentDisplayName(WrappedComponent)})`
   WithApp.WrappedComponent = WrappedComponent
 
   return hoistStatics(WithApp, WrappedComponent);

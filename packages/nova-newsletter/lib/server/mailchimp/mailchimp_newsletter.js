@@ -9,6 +9,7 @@ import htmlToText from 'html-to-text';
 import moment from 'moment';
 import Newsletter from '../../namespace.js';
 import MailChimp from './mailchimp_api.js';
+import { Utils } from 'meteor/nova:core';
 
 const defaultPosts = 5;
 
@@ -32,7 +33,7 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
     var wordCount = 15;
     var subject = campaign.subject;
     while (subject.length >= 150){
-      subject = Telescope.utils.trimWords(subject, wordCount);
+      subject = Utils.trimWords(subject, wordCount);
       wordCount--;
     }
 

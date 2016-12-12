@@ -3,6 +3,7 @@ import NovaEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
+import { Utils } from 'meteor/nova:lib';
 
 NovaEmail.templates = {};
 
@@ -41,10 +42,10 @@ NovaEmail.buildTemplate = function (htmlContent, optionalProperties = {}) {
     accentColor: Telescope.settings.get('accentColor', '#DD3416'),
     siteName: Telescope.settings.get('title', "Nova"),
     tagline: Telescope.settings.get('tagline'),
-    siteUrl: Telescope.utils.getSiteUrl(),
+    siteUrl: Utils.getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
-    accountLink: Telescope.utils.getSiteUrl()+'account',
+    accountLink: Utils.getSiteUrl()+'account',
     footer: Telescope.settings.get('emailFooter'),
     logoUrl: Telescope.settings.get('logoUrl'),
     logoHeight: Telescope.settings.get('logoHeight'),

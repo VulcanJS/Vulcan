@@ -4,7 +4,7 @@ Utilities for displaying icons.
 
 */
 
-import Telescope from './config.js';
+import { Utils } from './utils.js';
 
 // ------------------------------ Dynamic Icons ------------------------------ //
 
@@ -13,8 +13,8 @@ import Telescope from './config.js';
  * @param {string} iconName - the name of the icon
  * @param {string} [iconClass] - an optional class to assign to the icon
  */
-Telescope.utils.getIcon = function (iconName, iconClass) {
-  var icons = Telescope.utils.icons;
+Utils.getIcon = function (iconName, iconClass) {
+  var icons = Utils.icons;
   var iconCode = !!icons[iconName] ? icons[iconName] : iconName;
   iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
   return '<i class="icon fa fa-fw fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
@@ -23,7 +23,7 @@ Telescope.utils.getIcon = function (iconName, iconClass) {
 /**
  * @summary A directory of icon keys and icon codes
  */
-Telescope.utils.icons = {
+Utils.icons = {
   expand: "angle-right",
   collapse: "angle-down",
   next: "angle-right",

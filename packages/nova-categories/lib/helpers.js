@@ -1,6 +1,6 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
+import { Utils } from 'meteor/nova:core';
 
 /**
  * @summary Get all of a category's parents
@@ -52,7 +52,7 @@ Posts.getCategories = function (post) {
  */
 Categories.getUrl = function (category, isAbsolute) {
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  const prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
   // return prefix + FlowRouter.path("postsCategory", category);
   return `${prefix}/?cat=${category.slug}`;
 };

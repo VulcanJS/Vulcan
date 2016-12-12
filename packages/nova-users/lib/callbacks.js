@@ -1,9 +1,8 @@
-import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 import marked from 'marked';
 import NovaEmail from 'meteor/nova:email';
 import { Gravatar } from 'meteor/jparker:gravatar';
-import { Callbacks } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { Callbacks, Utils } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -62,8 +61,8 @@ function setupUser (user, options) {
   }
 
   // create a basic slug from display name and then modify it if this slugs already exists;
-  const basicSlug = Telescope.utils.slugify(user.__displayName);
-  user.__slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
+  const basicSlug = Utils.slugify(user.__displayName);
+  user.__slug = Utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
@@ -95,7 +94,7 @@ Callbacks.add("users.new.sync", usersNewAdminUserCreationNotification);
 
 function usersEditGenerateHtmlBio (modifier) {
   if (modifier.$set && modifier.$set.__bio) {
-    modifier.$set.__htmlBio = Telescope.utils.sanitize(marked(modifier.$set.__bio));
+    modifier.$set.__htmlBio = Utils.sanitize(marked(modifier.$set.__bio));
   }
   return modifier;
 }

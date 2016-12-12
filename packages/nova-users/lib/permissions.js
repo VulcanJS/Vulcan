@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
+import { Utils } from 'meteor/nova:lib';
 
 /**
  * @summary Users.groups object
@@ -124,7 +125,7 @@ Users.canEdit = function (user, document) {
 
   // note(apollo): use of `__typename` given by react-apollo
   //const collectionName = document.getCollectionName();
-  const collectionName = document.__typename ? Telescope.utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
+  const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
   
   if (!user || !document) {
     return false;
@@ -197,7 +198,7 @@ Users.canViewField = function (user, field, document) {
  * @param {Object} document - Optionally, get a list for a specific document
  */
 Users.getViewableFields = function (user, collection, document) {
-  return Telescope.utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
+  return Utils.arrayToFields(_.compact(_.map(collection.simpleSchema()._schema,
     (field, fieldName) => {
       return Users.canViewField(user, field, document) ? fieldName : null;
     }

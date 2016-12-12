@@ -1,6 +1,7 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import Telescope from './config.js';
 import { GraphQLSchema } from './graphql.js';
+import { Utils } from './utils.js';
 
 SimpleSchema.extendOptions({
   // kept for backward compatibility?
@@ -115,7 +116,7 @@ export const createCollection = options => {
 
   // add collection to resolver context
   const context = {};
-  context[Telescope.utils.capitalize(options.collectionName)] = collection;
+  context[Utils.capitalize(options.collectionName)] = collection;
   GraphQLSchema.addToContext(context);
 
   // ------------------------------------- Queries -------------------------------- //

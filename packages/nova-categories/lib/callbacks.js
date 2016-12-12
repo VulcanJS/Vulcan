@@ -1,19 +1,18 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 // generate slug on insert
 // Categories.before.insert(function (userId, doc) {
 //   // if no slug has been provided, generate one
-//   var slug = !!doc.slug ? doc.slug : Telescope.utils.slugify(doc.name);
-//   doc.slug = Telescope.utils.getUnusedSlug(Categories, slug);
+//   var slug = !!doc.slug ? doc.slug : Utils.slugify(doc.name);
+//   doc.slug = Utils.getUnusedSlug(Categories, slug);
 // });
 
 // // generate slug on edit, if it has changed
 // Categories.before.update(function (userId, doc, fieldNames, modifier) {
 //   if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== doc.slug) {
-//     modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, modifier.$set.slug);
+//     modifier.$set.slug = Utils.getUnusedSlug(Categories, modifier.$set.slug);
 //   }
 // });
 
@@ -56,8 +55,8 @@ Callbacks.add("posts.edit.sync", postEditCheckCategories);
 
 function categoriesNewGenerateSlug (category) {
   // if no slug has been provided, generate one
-  const slug = category.slug || Telescope.utils.slugify(category.name);
-  category.slug = Telescope.utils.getUnusedSlug(Categories, slug);
+  const slug = category.slug || Utils.slugify(category.name);
+  category.slug = Utils.getUnusedSlug(Categories, slug);
   return category;
 }
 Callbacks.add("categories.new.sync", categoriesNewGenerateSlug);
@@ -66,7 +65,7 @@ function categoriesEditGenerateSlug (modifier) {
   // if slug is changing
   if (modifier.$set && modifier.$set.slug) {
     const slug = modifier.$set.slug;
-    modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, slug);
+    modifier.$set.slug = Utils.getUnusedSlug(Categories, slug);
   }
   return modifier;
 }

@@ -24,13 +24,10 @@ component is also added to wait for withDocument's loading prop to be false)
 
 */
 
-import Telescope, { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
-import { withCurrentUser } from 'meteor/nova:core';
-import { withNew, withEdit, withRemove } from 'meteor/nova:core';
-import { getEditableFields, getInsertableFields } from './utils.js';
+import { Components, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/nova:core';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/nova:core';
@@ -39,7 +36,7 @@ class FormWrapper extends Component{
 
   // return the current schema based on either the schema or collection prop
   getSchema() {
-    return this.props.schema ? this.props.schema : Telescope.utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
+    return this.props.schema ? this.props.schema : Utils.stripTelescopeNamespace(this.props.collection.simpleSchema()._schema);
   }
 
   // if a document is being passed, this is an edit form
@@ -51,7 +48,7 @@ class FormWrapper extends Component{
   // as well as what data to ask for as return value for the mutation
   getFragments() {
 
-    const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
+    const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
     const fragmentName = `${prefix}FormFragment`;
 
     const schema = this.getSchema();
@@ -104,7 +101,7 @@ class FormWrapper extends Component{
 
     let WrappedComponent;
 
-    const prefix = `${this.props.collection._name}${Telescope.utils.capitalize(this.getFormType())}`
+    const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
 
     // props received from parent component (i.e. <NovaForm/> call)
     const parentProps = this.props;

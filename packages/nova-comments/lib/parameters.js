@@ -1,6 +1,5 @@
-import Telescope from 'meteor/nova:lib';
 import Comments from './collection.js';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 Comments.parameters = {};
 
@@ -21,11 +20,11 @@ Comments.parameters.get = function (terms) {
   // see: http://api.jquery.com/jQuery.extend/
 
   // initialize parameters by extending baseParameters object, to avoid passing it by reference
-  var parameters = Telescope.utils.deepExtend(true, {}, Comments.views.baseParameters);
+  var parameters = Utils.deepExtend(true, {}, Comments.views.baseParameters);
 
   // get query parameters according to current view
   if (typeof Comments.views[terms.view] !== 'undefined')
-    parameters = Telescope.utils.deepExtend(true, parameters, Comments.views[terms.view](terms));
+    parameters = Utils.deepExtend(true, parameters, Comments.views[terms.view](terms));
 
   // iterate over commentsParameters callbacks
   parameters = Callbacks.run("commentsParameters", parameters, terms);

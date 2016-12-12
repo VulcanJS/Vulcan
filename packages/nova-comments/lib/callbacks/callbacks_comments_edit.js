@@ -1,9 +1,7 @@
 import marked from 'marked';
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
-import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 // ------------------------------------- comments.edit.validate -------------------------------- //
 
@@ -40,7 +38,7 @@ Callbacks.add("comments.edit.validate", CommentsEditSubmittedPropertiesCheck);
 function CommentsEditGenerateHTMLBody (modifier, comment, user) {
   // if body is being modified, update htmlBody too
   if (modifier.$set && modifier.$set.body) {
-    modifier.$set.htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
+    modifier.$set.htmlBody = Utils.sanitize(marked(modifier.$set.body));
   }
   return modifier;
 }

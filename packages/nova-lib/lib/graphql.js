@@ -4,9 +4,9 @@ Utilities to generate the app's GraphQL schema
 
 */
 
-import Telescope from './config.js';
 import deepmerge from 'deepmerge';
 import GraphQLJSON from 'graphql-type-json';
+import { Utils } from './utils.js';
 
 // convert a JSON schema to a GraphQL schema
 const jsTypeToGraphQLType = typeName => {
@@ -85,10 +85,10 @@ export const GraphQLSchema = {
   generateSchema(collection) {
 
     const collectionName = collection._name;
-    const mainTypeName = collection.typeName ? collection.typeName : Telescope.utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
+    const mainTypeName = collection.typeName ? collection.typeName : Utils.camelToSpaces(_.initial(collectionName).join('')); // default to posts -> Post
 
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
-    const schema = Telescope.utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
+    const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
 
     let mainSchema = [], inputSchema = [], unsetSchema = [];
 

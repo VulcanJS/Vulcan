@@ -3,7 +3,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, Utils } from 'meteor/nova:core';
 
 // ------------------------------------- comments.new.validate -------------------------------- //
 
@@ -86,7 +86,7 @@ Callbacks.add("comments.new.validate", CommentsNewRateLimit);
 // Callbacks.add("comments.new.sync", CommentsNewRequiredPropertiesCheck);
 
 function CommentsNewGenerateHTMLBody (comment, user) {
-  comment.htmlBody = Telescope.utils.sanitize(marked(comment.body));
+  comment.htmlBody = Utils.sanitize(marked(comment.body));
   return comment;
 }
 Callbacks.add("comments.new.sync", CommentsNewGenerateHTMLBody);

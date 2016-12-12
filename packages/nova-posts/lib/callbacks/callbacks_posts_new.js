@@ -1,9 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from '../collection.js'
-import marked from 'marked';
 import Users from 'meteor/nova:users';
 import { Callbacks } from 'meteor/nova:core';
-
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
@@ -116,7 +114,7 @@ Callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
 //   post = _.extend(defaultProperties, post);
 
 //   // generate slug
-//   post.slug = Telescope.utils.slugify(post.title);
+//   post.slug = Utils.slugify(post.title);
 
 //   // if post is approved but doesn't have a postedAt date, give it a default date
 //   // note: pending posts get their postedAt date only once theyre approved

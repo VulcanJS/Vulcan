@@ -1,8 +1,7 @@
-import Telescope, { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import {FormattedMessage } from 'react-intl';
 import { ModalTrigger, withList } from 'meteor/nova:core';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withCurrentUser, Components, registerComponent, Utils } from 'meteor/nova:core';
 import Comments from 'meteor/nova:comments';
 import gql from 'graphql-tag';
 
@@ -19,7 +18,7 @@ const PostsCommentsThread = (props, context) => {
     const commentCount = results.length;
 
     const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
-    const nestedComments = Telescope.utils.unflatten(resultsClone, '_id', 'parentCommentId');
+    const nestedComments = Utils.unflatten(resultsClone, '_id', 'parentCommentId');
 
     return (
       <div className="posts-comments-thread">

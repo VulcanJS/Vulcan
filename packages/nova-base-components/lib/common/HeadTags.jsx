@@ -1,11 +1,12 @@
-import Telescope, { registerComponent } from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
+import { registerComponent, Utils } from 'meteor/nova:core';
 
 class HeadTags extends Component {
 	render() {
 
-		const url = !!this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
+		const url = !!this.props.url ? this.props.url : Utils.getSiteUrl();
 		const title = !!this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
 		const description = !!this.props.description ? this.props.description : Telescope.settings.get("tagline");
 
@@ -19,7 +20,7 @@ class HeadTags extends Component {
 
 		// add site url base if the image is stored locally
 		if (!!image && image.indexOf('//') === -1) {
-			image = Telescope.utils.getSiteUrl() + image;
+			image = Utils.getSiteUrl() + image;
 		}
 
 		const meta = Telescope.headtags.meta.concat([
@@ -41,7 +42,7 @@ class HeadTags extends Component {
 		]);
 
 		const link = Telescope.headtags.link.concat([
-			{ rel: "canonical", href: Telescope.utils.getSiteUrl() },
+			{ rel: "canonical", href: Utils.getSiteUrl() },
 			{ rel: "shortcut icon", href: Telescope.settings.get("faviconUrl", "/img/favicon.ico") }
 		]);
 

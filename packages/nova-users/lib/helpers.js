@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Utils } from 'meteor/nova:lib';
 import Users from './collection.js';
 import moment from 'moment';
 import _ from 'underscore';
@@ -69,7 +69,7 @@ Users.getProfileUrl = function (user, isAbsolute) {
     return "";
   }
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  var prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
   if (user.__slug) {
     return `${prefix}/users/${user.__slug}`;
   } else {
@@ -93,9 +93,9 @@ Users.getEditUrl = function (user, isAbsolute) {
 Users.getTwitterName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
   if (typeof user !== "undefined") {
-    if (Telescope.utils.checkNested(user, 'profile', 'twitter')) {
+    if (Utils.checkNested(user, 'profile', 'twitter')) {
       return user.profile.twitter;
-    } else if(Telescope.utils.checkNested(user, 'services', 'twitter', 'screenName')) {
+    } else if(Utils.checkNested(user, 'services', 'twitter', 'screenName')) {
       return user.services.twitter.screenName;
     }
   }
@@ -109,9 +109,9 @@ Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Users.
  */
 Users.getGitHubName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
-  if(Telescope.utils.checkNested(user, 'profile', 'github')){
+  if(Utils.checkNested(user, 'profile', 'github')){
     return user.profile.github;
-  }else if(Telescope.utils.checkNested(user, 'services', 'github', 'screenName')){ // TODO: double-check this with GitHub login
+  }else if(Utils.checkNested(user, 'services', 'github', 'screenName')){ // TODO: double-check this with GitHub login
     return user.services.github.screenName;
   }
   return null;
@@ -169,7 +169,7 @@ Users.getSetting = function (user, settingName, defaultValue) {
  */
 Users.hasCompletedProfile = function (user) {
   return _.every(Users.getRequiredFields(), function (fieldName) {
-    return !!Telescope.getNestedProperty(user, fieldName);
+    return !!Utils.getNestedProperty(user, fieldName);
   });
 };
 Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Users.findOne(userId));};
@@ -236,7 +236,7 @@ Users.setSetting = (user, settingName, value) => {
  * Get a list of all fields required for a profile to be complete.
  */
 Users.getRequiredFields = function () {
-  var schema = Telescope.utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
+  var schema = Utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
   var fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return !!field.required;

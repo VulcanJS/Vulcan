@@ -4,10 +4,10 @@ functional stateless component syntax, so we redefine
 it the same way. 
 */
 
-import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import { IndexLink } from 'react-router';
 import Users from 'meteor/nova:users';
+import { replaceComponent } from 'meteor/nova:core';
 
 const CustomLogo = ({logoUrl, siteTitle, currentUser}) => {
   return (
@@ -18,4 +18,4 @@ const CustomLogo = ({logoUrl, siteTitle, currentUser}) => {
   )
 }
 
-Telescope.replaceComponent('Logo', CustomLogo);
+replaceComponent('Logo', CustomLogo);

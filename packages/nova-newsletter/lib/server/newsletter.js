@@ -7,6 +7,7 @@ import NovaEmail from 'meteor/nova:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletter from '../namespace.js';
+import { Utils } from 'meteor/nova:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
 Posts.views.add("newsletter", function (terms) {
@@ -84,7 +85,7 @@ Newsletter.build = function (postsArray) {
 
     // trim the body and remove any HTML tags
     if (post.body) {
-      properties.body = Telescope.utils.trimHTML(post.htmlBody, 20);
+      properties.body = Utils.trimHTML(post.htmlBody, 20);
     }
 
     // if post has comments
@@ -97,7 +98,7 @@ Newsletter.build = function (postsArray) {
         var user = Users.findOne(comment.userId);
 
         // add properties to comment
-        comment.body = Telescope.utils.trimHTML(comment.htmlBody, 20);
+        comment.body = Utils.trimHTML(comment.htmlBody, 20);
         comment.authorProfileUrl = Users.getProfileUrl(user, true);
         comment.authorAvatarUrl = Users.avatar.getUrl(user);
 
@@ -115,12 +116,12 @@ Newsletter.build = function (postsArray) {
 
     // if post has an URL, at the link domain as a property
     if(post.url) {
-      properties.domain = Telescope.utils.getDomain(post.url);
+      properties.domain = Utils.getDomain(post.url);
     }
 
     // if post has a thumbnail, add the thumbnail URL as a property
     if (properties.thumbnailUrl) {
-      properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
+      properties.thumbnailUrl = Utils.addHttp(properties.thumbnailUrl);
     }
 
     // if post has categories, add them
@@ -156,7 +157,7 @@ Newsletter.build = function (postsArray) {
   // 4. build campaign object and return it
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
-    subject: Telescope.utils.trimWords(subject, 15),
+    subject: Utils.trimWords(subject, 15),
     html: emailHTML
   };
 
