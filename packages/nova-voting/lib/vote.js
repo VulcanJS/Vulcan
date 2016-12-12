@@ -25,9 +25,9 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
   // ---------------------------- "Real" Server-Side Operation -------------------------- //
 
-  // make sure item and user are defined, and user can perform the operation
-  const collectionName = item.__typename ? Utils.getCollectionNameFromTypename(item.__typename) : item.getCollectionName();
+  const collectionName = collection._name;
 
+  // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
     !user || 

@@ -1,5 +1,6 @@
 import Users from 'meteor/nova:users';
 import { Callbacks } from 'meteor/nova:core';
+import { updateScore } from './scoring.js';
 import { operateOnItem, getVotePower } from '../vote.js';
 import Posts from 'meteor/nova:posts';
 import Comments from 'meteor/nova:comments';

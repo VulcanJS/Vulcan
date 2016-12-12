@@ -38,6 +38,7 @@ class Vote extends Component {
 
     if(!user){
       this.props.flash("Please log in first");
+      this.stopLoading();
     } else {
       const voteType = this.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
       this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
