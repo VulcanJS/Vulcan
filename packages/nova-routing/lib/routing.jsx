@@ -1,4 +1,4 @@
-import Telescope, { Components, Actions } from 'meteor/nova:lib';
+import { Components, Actions } from 'meteor/nova:lib';
 import React from 'react';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import Helmet from 'react-helmet';

@@ -1,12 +1,11 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // import { routerMiddleware } from 'react-router-redux'
 
-import Telescope from 'meteor/nova:lib';
-// import { client } from 'meteor/nova:apollo';
+import { Reducers }from 'meteor/nova:lib';
 
 const configureStore = (client, initialState = {}, history) => createStore(
   // reducers
-  combineReducers({...Telescope.reducers, apollo: client.reducer()}),
+  combineReducers({...Reducers, apollo: client.reducer()}),
   //initial state
   initialState,
   // middlewares
