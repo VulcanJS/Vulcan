@@ -2,9 +2,8 @@
   Let's add an international label to the field added in custom_fields.js
 */
 
-import Telescope from 'meteor/nova:lib';
+import { addStrings } from 'meteor/nova:core';
 
-Telescope.strings.en = {
-  ...Telescope.strings.en, // get all the string translated
+addStrings('en', {
   "posts.color": "Color" // add a new one (collection.field: "Label")
-};
+});

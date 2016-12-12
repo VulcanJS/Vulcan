@@ -1,6 +1,6 @@
-import Telescope from 'meteor/nova:lib';
+import { addStrings } from 'meteor/nova:core';
 
-Telescope.strings.en = {
+addStrings('en', {
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",
 
@@ -155,4 +155,4 @@ Telescope.strings.en = {
 
   "admin": "Admin",
   "notifications": "Notifications",
-};
+});

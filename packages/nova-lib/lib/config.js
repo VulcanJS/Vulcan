@@ -51,10 +51,6 @@ Telescope.subscriptions.preload = function (subscription, args) {
   Telescope.subscriptions.push({name: subscription, arguments: args});
 };
 
-// ------------------------------------- Strings -------------------------------- //
-
-Telescope.strings = {};
-
 // ------------------------------------- Head Tags -------------------------------- //
 
 Telescope.headtags = {

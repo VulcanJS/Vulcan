@@ -1,7 +1,8 @@
-import Telescope, { Components, registerComponent, getSetting } from 'meteor/nova:lib';
+import { Components, registerComponent, getSetting, Strings } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
 import withApp from '../containers/withApp.js';
+
 
 class App extends Component {
 
@@ -11,7 +12,7 @@ class App extends Component {
 
   getChildContext() {
     
-    const messages = Telescope.strings[this.getLocale()] || {};
+    const messages = Strings[this.getLocale()] || {};
     const intlProvider = new IntlProvider({locale: this.getLocale()}, messages);
     
     const {intl} = intlProvider.getChildContext();
@@ -23,7 +24,7 @@ class App extends Component {
 
   render() {
     return (
-      <IntlProvider locale={this.getLocale()} messages={Telescope.strings[this.getLocale()]}>
+      <IntlProvider locale={this.getLocale()} messages={Strings[this.getLocale()]}>
         {
           this.props.loading ? 
             <Components.Loading /> :
