@@ -1,7 +1,7 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import { getSetting } from 'meteor/nova:core';
+import { updateScore } from './scoring.js';
 
 Meteor.startup(function () {
   const scoreInterval = parseInt(getSetting("scoreUpdateInterval")) || 30;
@@ -14,10 +14,10 @@ Meteor.startup(function () {
 
       // console.log('tick ('+scoreInterval+')');
       Posts.find({'status': 2,'inactive': {$ne : true}}).forEach(function (post) { // only run scoring on approved posts
-        updatedPosts += Telescope.updateScore({collection: Posts, item: post});
+        updatedPosts += updateScore({collection: Posts, item: post});
       });
       Comments.find({'inactive': {$ne : true}}).forEach(function (comment) {
-        updatedComments += Telescope.updateScore({collection: Comments, item: comment});
+        updatedComments += updateScore({collection: Comments, item: comment});
       });
       // console.log("Updated "+updatedPosts+"/"+Posts.find().count()+" Posts")
       // console.log("Updated "+updatedComments+"/"+Comments.find().count()+" Comments")
@@ -29,10 +29,10 @@ Meteor.startup(function () {
       let updatedComments = 0;
 
       Posts.find({'inactive': true}).forEach(function (post) {
-        updatedPosts += Telescope.updateScore({collection: Posts, item: post});
+        updatedPosts += updateScore({collection: Posts, item: post});
       });
       Comments.find({'inactive': true}).forEach(function (comment) {
-        updatedComments += Telescope.updateScore({collection: Comments, item: comment});
+        updatedComments += updateScore({collection: Comments, item: comment});
       });
     }, 3600 * 1000);
 

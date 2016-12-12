@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
-import { registerComponent, Utils, getSetting } from 'meteor/nova:core';
+import { registerComponent, Utils, getSetting, Headtags } from 'meteor/nova:core';
 
 class HeadTags extends Component {
 	render() {
@@ -23,7 +23,7 @@ class HeadTags extends Component {
 			image = Utils.getSiteUrl() + image;
 		}
 
-		const meta = Telescope.headtags.meta.concat([
+		const meta = Headtags.meta.concat([
 			{ charset: "utf-8" },
 			{ name: "description", content: description },
 			// responsive
@@ -41,7 +41,7 @@ class HeadTags extends Component {
 			{ name: "twitter:description", content: description }
 		]);
 
-		const link = Telescope.headtags.link.concat([
+		const link = Headtags.link.concat([
 			{ rel: "canonical", href: Utils.getSiteUrl() },
 			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") }
 		]);

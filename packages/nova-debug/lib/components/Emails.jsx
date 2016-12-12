@@ -1,8 +1,6 @@
 import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
-import { Messages } from "meteor/nova:core";
 import NovaEmail from 'meteor/nova:email';
 
 class Email extends Component {

@@ -4,12 +4,12 @@ HoC that provides access to flash messages stored in Redux state and actions to 
 
 */
 
-import Telescope from 'meteor/nova:lib';
+import { Actions, Reducers } from 'meteor/nova:lib';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 // messages actions
-Telescope.actions.messages = {
+Actions.messages = {
   flash(content, flashType) {
     return {
       type: 'FLASH',
@@ -37,7 +37,7 @@ Telescope.actions.messages = {
 };
 
 // messages reducer
-Telescope.reducers.messages = (state = [], action) => {
+Reducers.messages = (state = [], action) => {
   let currentMsg = {};
   switch(action.type) {
     case 'FLASH':
@@ -73,6 +73,8 @@ Telescope.reducers.messages = (state = [], action) => {
 };
 
 const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Telescope.actions.messages, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(Actions.messages, dispatch);
 
-export default withMessages = (component) => connect(mapStateToProps, mapDispatchToProps)(component);
+const withMessages = (component) => connect(mapStateToProps, mapDispatchToProps)(component);
+
+export default withMessages;

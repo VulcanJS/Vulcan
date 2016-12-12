@@ -1,7 +1,6 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
-import Users from 'meteor/nova:users';
 import { withCurrentUser, withMessages } from 'meteor/nova:core';
 import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 

@@ -3,6 +3,7 @@ import { withMessages } from 'meteor/nova:core';
 import React from 'react';
 
 const FlashMessages = ({messages, clear, markAsSeen}) => {
+  return <p>repair me!</p>
   return (
     <div className="flash-messages">
       {messages

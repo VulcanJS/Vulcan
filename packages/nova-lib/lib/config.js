@@ -51,12 +51,7 @@ Telescope.subscriptions.preload = function (subscription, args) {
   Telescope.subscriptions.push({name: subscription, arguments: args});
 };
 
-// ------------------------------------- Head Tags -------------------------------- //
 
-Telescope.headtags = {
-  meta: [],
-  link: []
-}
 
 // ------------------------------------- Statuses -------------------------------- //
 
@@ -83,8 +78,5 @@ Telescope.statuses = [
   }
 ];
 
-// ---------------------------------- Redux ------------------------------------ //
-Telescope.actions = {};
-Telescope.reducers = {};
 
 export default Telescope;

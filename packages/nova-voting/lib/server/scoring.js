@@ -1,6 +1,4 @@
-import Telescope from 'meteor/nova:lib';
-
-Telescope.updateScore = ({collection, item, forceUpdate}) => {
+export const updateScore = ({collection, item, forceUpdate}) => {
 
   // Status Check
 

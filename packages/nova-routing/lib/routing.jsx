@@ -1,4 +1,4 @@
-import Telescope, { Components } from 'meteor/nova:lib';
+import Telescope, { Components, Actions } from 'meteor/nova:lib';
 import React from 'react';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import Helmet from 'react-helmet';
@@ -58,7 +58,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       onUpdate: () => {
         Callbacks.run('router.onUpdate');
         // clear all previous messages
-        store.dispatch(Telescope.actions.messages.clearSeen());
+        store.dispatch(Actions.messages.clearSeen());
       },
     },
   };

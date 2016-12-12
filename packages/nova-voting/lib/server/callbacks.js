@@ -1,6 +1,8 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import { Callbacks } from 'meteor/nova:core';
+import { operateOnItem, getVotePower } from '../vote.js';
+import Posts from 'meteor/nova:posts';
+import Comments from 'meteor/nova:comments';
 
 /**
  * @summary Update an item's (post or comment) score
@@ -10,14 +12,14 @@ import { Callbacks } from 'meteor/nova:core';
  * @param {string} operation - The operation being performed
  */
 
-function updateScore (item, user, collection, operation) {
-  Telescope.updateScore({collection: collection, item: item, forceUpdate: true});
+function updateScoreCallback (item, user, collection, operation) {
+  updateScore({collection: collection, item: item, forceUpdate: true});
 }
 
-Callbacks.add("upvote.async", updateScore);
-Callbacks.add("downvote.async", updateScore);
-Callbacks.add("cancelUpvote.async", updateScore);
-Callbacks.add("cancelDownvote.async", updateScore);
+Callbacks.add("upvote.async", updateScoreCallback);
+Callbacks.add("downvote.async", updateScoreCallback);
+Callbacks.add("cancelUpvote.async", updateScoreCallback);
+Callbacks.add("cancelDownvote.async", updateScoreCallback);
 
 /**
  * @summary Update the profile of the user doing the operation
@@ -30,7 +32,7 @@ Callbacks.add("cancelDownvote.async", updateScore);
 function updateUser (item, user, collection, operation) {
 
   var update = {};
-  var votePower = Telescope.getVotePower(user);
+  var votePower = getVotePower(user);
   var vote = {
     itemId: item._id,
     votedAt: new Date(),
@@ -71,7 +73,7 @@ Callbacks.add("cancelDownvote.async", updateUser);
 
 function updateKarma (item, user, collection, operation) {
 
-  var votePower = Telescope.getVotePower(user);
+  var votePower = getVotePower(user);
   var karmaAmount = (operation === "upvote" || operation === "cancelDownvote") ? votePower : -votePower;
 
   // only update karma is the operation isn't done by the item's author
@@ -84,3 +86,22 @@ Callbacks.add("upvote.async", updateKarma);
 Callbacks.add("downvote.async", updateKarma);
 Callbacks.add("cancelUpvote.async", updateKarma);
 Callbacks.add("cancelDownvote.async", updateKarma);
+
+/**
+ * @summary Make users upvote their own new posts
+ */
+function PostsNewUpvoteOwnPost (post) {
+  var postAuthor = Users.findOne(post.userId);
+  operateOnItem(Posts, post, postAuthor, "upvote");
+}
+Callbacks.add("posts.new.async", PostsNewUpvoteOwnPost);
+
+/**
+ * @summary Make users upvote their own new comments
+ */
+function CommentsNewUpvoteOwnComment (comment) {
+  var commentAuthor = Users.findOne(comment.userId);
+  operateOnItem(Comments, comment, commentAuthor, "upvote");
+  return comment;
+}
+Callbacks.add("comments.new.async", CommentsNewUpvoteOwnComment);

@@ -160,17 +160,6 @@ function PostsNewIncrementPostCount (post) {
 Callbacks.add("posts.new.async", PostsNewIncrementPostCount);
 
 /**
- * @summary Make users upvote their own new posts
- */
-function PostsNewUpvoteOwnPost (post) {
-  if (typeof Telescope.operateOnItem !== "undefined") {
-    var postAuthor = Users.findOne(post.userId);
-    Telescope.operateOnItem(Posts, post, postAuthor, "upvote");
-  }
-}
-Callbacks.add("posts.new.async", PostsNewUpvoteOwnPost);
-
-/**
  * @summary Add new post notification callback on post submit
  */
 function PostsNewNotifications (post) {

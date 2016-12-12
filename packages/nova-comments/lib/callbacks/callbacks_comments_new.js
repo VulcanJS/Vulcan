@@ -113,20 +113,6 @@ function CommentsNewOperations (comment) {
 }
 Callbacks.add("comments.new.async", CommentsNewOperations);
 
-function CommentsNewUpvoteOwnComment (comment) {
-
-  if (typeof Telescope.operateOnItem !== "undefined") {
-
-    var commentAuthor = Users.findOne(comment.userId);
-
-    // upvote comment
-    Telescope.operateOnItem(Comments, comment, commentAuthor, "upvote");
-
-    return comment;
-  }
-}
-Callbacks.add("comments.new.async", CommentsNewUpvoteOwnComment);
-
 // add new comment notification callback on comment submit
 function CommentsNewNotifications (comment) {
 

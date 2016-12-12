@@ -1,7 +1,6 @@
-import Telescope from 'meteor/nova:lib';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting, Headtags } from 'meteor/nova:core';
 
-Telescope.headtags.link.push({
+Headtags.link.push({
   rel: "alternate", 
   type: "application/rss+xml",
   href: `${getSetting("siteUrl")}feed.xml`

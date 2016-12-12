@@ -1,20 +1,19 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import { hasUpvoted, hasDownvoted } from './helpers.js';
 import { Callbacks, Utils } from 'meteor/nova:core';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
-Telescope.getVotePower = function (user) {
+export const getVotePower = function (user) {
   return 1;
 };
 
-Telescope.operateOnItem = function (collection, originalItem, user, operation, isSimulation = false) {
+export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
 
   let item = _.clone(originalItem); // we do not want to affect the original item directly
 
-  var votePower = Telescope.getVotePower(user);
+  var votePower = getVotePower(user);
   var hasUpvotedItem = hasUpvoted(user, item);
   var hasDownvotedItem = hasDownvoted(user, item);
   var update = {};
@@ -57,7 +56,7 @@ Telescope.operateOnItem = function (collection, originalItem, user, operation, i
 
     case "upvote":
       if (hasDownvotedItem) {
-        Telescope.operateOnItem(collection, item, user, "cancelDownvote", isSimulation);
+        operateOnItem(collection, item, user, "cancelDownvote", isSimulation);
       }
 
       const upvoter = isSimulation ? {__typename: "User", _id: user._id} : user._id
@@ -75,7 +74,7 @@ Telescope.operateOnItem = function (collection, originalItem, user, operation, i
 
     case "downvote":
       if (hasUpvotedItem) {
-        Telescope.operateOnItem(collection, item, user, "cancelUpvote", isSimulation);
+        operateOnItem(collection, item, user, "cancelUpvote", isSimulation);
       }
 
       const downvoter = isSimulation ? {__typename: "User", _id: user._id} : user._id
