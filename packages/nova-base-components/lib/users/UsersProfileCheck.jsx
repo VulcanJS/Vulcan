@@ -24,7 +24,7 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
       <Modal.Body>
         <NovaForm
           collection={ Users }
-          document={ currentUser }
+          documentId={ currentUser._id }
           fields={ requiredFields }
         />
       </Modal.Body>

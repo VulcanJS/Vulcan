@@ -5,8 +5,7 @@ import Helmet from 'react-helmet';
 import Cookie from 'react-cookie';
 import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
-import {getDataFromTree} from "react-apollo/server";
+import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
 import { configureStore } from "./store.js";
 

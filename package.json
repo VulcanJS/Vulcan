@@ -41,7 +41,7 @@
     "moment": "^2.13.0",
     "react": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
-    "react-apollo": "^0.6.0",
+    "react-apollo": "^0.7.1",
     "react-bootstrap": "0.30.3",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-cookie": "^0.4.6",

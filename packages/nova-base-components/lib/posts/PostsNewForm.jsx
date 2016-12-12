@@ -16,7 +16,6 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm
           collection={Posts}
-          queryToUpdate="postsListQuery"
           extraFragment={`
             htmlBody
             postedAt

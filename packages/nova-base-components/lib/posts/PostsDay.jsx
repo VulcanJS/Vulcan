@@ -10,8 +10,10 @@ class PostsDay extends Component {
     return (
       <div className="posts-day">
         <h4 className="posts-day-heading">{date.format("dddd, MMMM Do YYYY")}</h4>
-        <div className="posts-list-content">
-          {posts.map(post => <Components.PostsItem post={post} key={post._id} />)}
+        <div className="posts-list">
+          <div className="posts-list-content">
+            {posts.map(post => <Components.PostsItem post={post} key={post._id} />)}
+          </div>
         </div>
       </div>
     )

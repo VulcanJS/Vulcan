@@ -123,6 +123,11 @@ class Form extends Component {
       // add value
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
+      // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+      if (Array.isArray(field.value)) {
+        field.value = field.value.map(item => item._id);
+      }
+
       // backward compatibility from 'autoform' to 'form'
       if (fieldSchema.autoform) {
         fieldSchema.form = fieldSchema.autoform;
@@ -180,10 +185,8 @@ class Form extends Component {
     fields = _.reject(fields, field => field.hidden);
     fields = _.sortBy(fields, "order");
 
-    // console.log(fields)
-
-    // get list of all groups used in current fields
-    let groups = _.compact(_.unique(_.pluck(fields, "group")));
+    // get list of all unique groups (based on their name) used in current fields
+    let groups = _.compact(_.unique(_.pluck(fields, "group"), false, g => g && g.name));
 
     // for each group, add relevant fields
     groups = groups.map(group => {

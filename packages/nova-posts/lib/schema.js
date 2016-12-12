@@ -1,6 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
+import Posts from './collection.js';
 
 /**
  * @summary Posts config namespace
@@ -313,6 +314,7 @@ const termsSchema = `
     listId: String
     query: String # search query
     postId: String
+    limit: Float
   }
 `;
 
