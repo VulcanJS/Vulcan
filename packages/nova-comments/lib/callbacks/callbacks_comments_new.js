@@ -3,7 +3,7 @@ import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';
-import { Callbacks, Utils, getSetting } from 'meteor/nova:core';
+import { addCallback, Utils, getSetting } from 'meteor/nova:core';
 
 // ------------------------------------- comments.new.validate -------------------------------- //
 
@@ -13,7 +13,7 @@ import { Callbacks, Utils, getSetting } from 'meteor/nova:core';
 //     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_comments');
 //   return comment;
 // }
-// Callbacks.add("comments.new.sync", CommentsNewUserCheck);
+// addCallback("comments.new.sync", CommentsNewUserCheck);
 
 function CommentsNewRateLimit (comment, user) {
   if (!Users.isAdmin(user)) {
@@ -26,7 +26,7 @@ function CommentsNewRateLimit (comment, user) {
   }
   return comment;
 }
-Callbacks.add("comments.new.validate", CommentsNewRateLimit);
+addCallback("comments.new.validate", CommentsNewRateLimit);
 
 // function CommentsNewSubmittedPropertiesCheck (comment, user) {
 //   // admin-only properties
@@ -54,7 +54,7 @@ Callbacks.add("comments.new.validate", CommentsNewRateLimit);
 //   }
 //   return comment;
 // }
-// Callbacks.add("comments.new.validate", CommentsNewSubmittedPropertiesCheck);
+// addCallback("comments.new.validate", CommentsNewSubmittedPropertiesCheck);
 
 // ------------------------------------- comments.new.sync -------------------------------- //
 
@@ -83,13 +83,13 @@ Callbacks.add("comments.new.validate", CommentsNewRateLimit);
 
 //   return comment;
 // }
-// Callbacks.add("comments.new.sync", CommentsNewRequiredPropertiesCheck);
+// addCallback("comments.new.sync", CommentsNewRequiredPropertiesCheck);
 
 function CommentsNewGenerateHTMLBody (comment, user) {
   comment.htmlBody = Utils.sanitize(marked(comment.body));
   return comment;
 }
-Callbacks.add("comments.new.sync", CommentsNewGenerateHTMLBody);
+addCallback("comments.new.sync", CommentsNewGenerateHTMLBody);
 
 // ------------------------------------- comments.new.async -------------------------------- //
 
@@ -111,7 +111,7 @@ function CommentsNewOperations (comment) {
 
   return comment;
 }
-Callbacks.add("comments.new.async", CommentsNewOperations);
+addCallback("comments.new.async", CommentsNewOperations);
 
 // add new comment notification callback on comment submit
 function CommentsNewNotifications (comment) {
@@ -164,4 +164,4 @@ function CommentsNewNotifications (comment) {
     }
   }
 }
-Callbacks.add("comments.new.async", CommentsNewNotifications);
+addCallback("comments.new.async", CommentsNewNotifications);

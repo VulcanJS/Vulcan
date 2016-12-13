@@ -1,5 +1,5 @@
 import Comments from '../collection.js';
-import { Callbacks } from 'meteor/nova:core';
+import { addCallback } from 'meteor/nova:core';
 
 function UsersRemoveDeleteComments (user, options) {
   if (options.deleteComments) {
@@ -9,7 +9,7 @@ function UsersRemoveDeleteComments (user, options) {
     // Comments.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
   }
 }
-Callbacks.add("users.remove.async", UsersRemoveDeleteComments);
+addCallback("users.remove.async", UsersRemoveDeleteComments);
 
 // Add to posts.single publication
 
@@ -21,4 +21,4 @@ function PostsSingleAddCommentsUsers (users, post) {
   }
   return users;
 }
-Callbacks.add("posts.single.getUsers", PostsSingleAddCommentsUsers);
+addCallback("posts.single.getUsers", PostsSingleAddCommentsUsers);

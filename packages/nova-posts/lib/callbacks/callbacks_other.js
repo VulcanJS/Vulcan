@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { addCallback } from 'meteor/nova:core';
 
 // // ------------------------------------- posts.remove.validate -------------------------------- //
 
@@ -11,14 +11,14 @@ import { Callbacks } from 'meteor/nova:core';
 //   }
 //   return post;
 // }
-// Callbacks.add("posts.remove.validate", PostsRemoveValidation);
+// addCallback("posts.remove.validate", PostsRemoveValidation);
 
 // ------------------------------------- posts.remove.sync -------------------------------- //
 
 function PostsRemoveOperations (post) {
   Users.update({_id: post.userId}, {$inc: {"__postCount": -1}});
 }
-Callbacks.add("posts.remove.sync", PostsRemoveOperations);
+addCallback("posts.remove.sync", PostsRemoveOperations);
 
 // ------------------------------------- posts.approve.async -------------------------------- //
 
@@ -29,7 +29,7 @@ function PostsSetPostedAt (modifier, post) {
   modifier.$set.postedAt = new Date();
   return modifier;
 }
-Callbacks.add("posts.approve.sync", PostsSetPostedAt);
+addCallback("posts.approve.sync", PostsSetPostedAt);
 
 /**
  * @summary Add notification callback when a post is approved
@@ -43,7 +43,7 @@ function PostsApprovedNotification (post) {
     Telescope.notifications.create(post.userId, 'postApproved', notificationData);
   }
 }
-Callbacks.add("posts.approve.async", PostsApprovedNotification);
+addCallback("posts.approve.async", PostsApprovedNotification);
 
 // ------------------------------------- users.remove.async -------------------------------- //
 
@@ -55,4 +55,4 @@ function UsersRemoveDeletePosts (user, options) {
     // Posts.update({userId: userId}, {$set: {author: "\[deleted\]"}}, {multi: true});
   }
 }
-Callbacks.add("users.remove.async", UsersRemoveDeletePosts);
+addCallback("users.remove.async", UsersRemoveDeletePosts);

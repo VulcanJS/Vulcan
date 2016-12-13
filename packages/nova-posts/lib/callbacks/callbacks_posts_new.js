@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
-import { Callbacks, getSetting } from 'meteor/nova:core';
+import { Callbacks, addCallback, getSetting } from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
@@ -17,7 +17,7 @@ import { Callbacks, getSetting } from 'meteor/nova:core';
 //     throw new Meteor.Error(601, 'you_need_to_login_or_be_invited_to_post_new_stories');
 //   return post;
 // }
-// Callbacks.add("posts.new.validate", PostsNewUserCheck);
+// addCallback("posts.new.validate", PostsNewUserCheck);
 
 /**
  * @summary Rate limiting
@@ -43,7 +43,7 @@ function PostsNewRateLimit (post, user) {
 
   return post;
 }
-Callbacks.add("posts.new.validate", PostsNewRateLimit);
+addCallback("posts.new.validate", PostsNewRateLimit);
 
 /**
  * @summary Properties
@@ -80,7 +80,7 @@ Callbacks.add("posts.new.validate", PostsNewRateLimit);
 
 //   return post;
 // }
-// Callbacks.add("posts.new.validate", PostsNewSubmittedPropertiesCheck);
+// addCallback("posts.new.validate", PostsNewSubmittedPropertiesCheck);
 
 
 //////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ function PostsNewDuplicateLinksCheck (post, user) {
   }
   return post;
 }
-Callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
+addCallback("posts.new.sync", PostsNewDuplicateLinksCheck);
 
 /**
  * @summary Check for necessary properties
@@ -124,7 +124,7 @@ Callbacks.add("posts.new.sync", PostsNewDuplicateLinksCheck);
 
 //   return post;
 // }
-// Callbacks.add("posts.new.sync", PostsNewRequiredPropertiesCheck);
+// addCallback("posts.new.sync", PostsNewRequiredPropertiesCheck);
 
 /**
  * @summary Set the post's postedAt if it's approved
@@ -133,7 +133,7 @@ function PostsSetPostedAt (post, user) {
   if (!post.postedAt) post.postedAt = new Date();
   return post;
 }
-Callbacks.add("posts.new.sync", PostsSetPostedAt);
+addCallback("posts.new.sync", PostsSetPostedAt);
 
 /**
  * @summary Set the post's isFuture to true if necessary
@@ -142,7 +142,7 @@ function PostsNewSetFuture (post, user) {
   post.isFuture = post.postedAt && new Date(post.postedAt).getTime() > new Date(post.createdAt).getTime() + 1000; // round up to the second
   return post;
 }
-Callbacks.add("posts.new.sync", PostsNewSetFuture);
+addCallback("posts.new.sync", PostsNewSetFuture);
 
 
 //////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ function PostsNewIncrementPostCount (post) {
   var userId = post.userId;
   Users.update({_id: userId}, {$inc: {"__postCount": 1}});
 }
-Callbacks.add("posts.new.async", PostsNewIncrementPostCount);
+addCallback("posts.new.async", PostsNewIncrementPostCount);
 
 /**
  * @summary Add new post notification callback on post submit
@@ -185,4 +185,4 @@ function PostsNewNotifications (post) {
     }
   }
 }
-Callbacks.add("posts.new.async", PostsNewNotifications);
+addCallback("posts.new.async", PostsNewNotifications);

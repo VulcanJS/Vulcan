@@ -1,5 +1,5 @@
 import Posts from "meteor/nova:posts";
-import { Callbacks, getSetting } from 'meteor/nova:core';
+import { addCallback, getSetting } from 'meteor/nova:core';
 
 function getEmbedlyData(url) {
   var data = {};
@@ -77,7 +77,7 @@ function addMediaAfterSubmit (post) {
     }
   }
 }
-Callbacks.add("posts.new.async", addMediaAfterSubmit);
+addCallback("posts.new.async", addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   var newUrl = modifier.$set.url;
@@ -97,7 +97,7 @@ function updateMediaOnEdit (modifier, post) {
   }
   return modifier;
 }
-Callbacks.add("posts.edit.sync", updateMediaOnEdit);
+addCallback("posts.edit.sync", updateMediaOnEdit);
 
 var regenerateThumbnail = function (post) {
   delete post.thumbnailUrl;

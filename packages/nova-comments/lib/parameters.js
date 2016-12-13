@@ -1,5 +1,5 @@
 import Comments from './collection.js';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { runCallbacks, addCallback, Utils } from 'meteor/nova:core';
 
 Comments.parameters = {};
 
@@ -27,7 +27,7 @@ Comments.parameters.get = function (terms) {
     parameters = Utils.deepExtend(true, parameters, Comments.views[terms.view](terms));
 
   // iterate over commentsParameters callbacks
-  parameters = Callbacks.run("commentsParameters", parameters, terms);
+  parameters = runCallbacks("commentsParameters", parameters, terms);
 
   // console.log(parameters);
 
@@ -48,4 +48,4 @@ function limitComments (parameters, terms) {
   }
   return parameters;
 }
-Callbacks.add("commentsParameters", limitComments);
+addCallback("commentsParameters", limitComments);

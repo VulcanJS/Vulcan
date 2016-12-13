@@ -1,7 +1,7 @@
 import marked from 'marked';
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { addCallback, Utils } from 'meteor/nova:core';
 
 // ------------------------------------- comments.edit.validate -------------------------------- //
 
@@ -11,7 +11,7 @@ function CommentsEditUserCheck (modifier, comment, user) {
   }
   return modifier;
 }
-Callbacks.add("comments.edit.validate", CommentsEditUserCheck);
+addCallback("comments.edit.validate", CommentsEditUserCheck);
 
 function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   const schema = Posts.simpleSchema()._schema;
@@ -30,7 +30,7 @@ function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   });
   return modifier;
 }
-Callbacks.add("comments.edit.validate", CommentsEditSubmittedPropertiesCheck);
+addCallback("comments.edit.validate", CommentsEditSubmittedPropertiesCheck);
 
 
 // ------------------------------------- comments.edit.sync -------------------------------- //
@@ -42,4 +42,4 @@ function CommentsEditGenerateHTMLBody (modifier, comment, user) {
   }
   return modifier;
 }
-Callbacks.add("comments.edit.sync", CommentsEditGenerateHTMLBody);
+addCallback("comments.edit.sync", CommentsEditGenerateHTMLBody);

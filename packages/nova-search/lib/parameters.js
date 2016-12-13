@@ -1,5 +1,5 @@
 import escapeStringRegexp from 'escape-string-regexp';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { Callbacks, addCallback, Utils } from 'meteor/nova:core';
 
 function addSearchQueryParameter (parameters, terms) {
   if(!!terms.query) {
@@ -21,4 +21,4 @@ function addSearchQueryParameter (parameters, terms) {
   }
   return parameters;
 }
-Callbacks.add("posts.parameters", addSearchQueryParameter);
+addCallback("posts.parameters", addSearchQueryParameter);

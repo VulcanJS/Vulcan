@@ -1,7 +1,7 @@
 import { Injected } from 'meteor/meteorhacks:inject-initial';
 import moment from 'moment';
 import Posts from './collection.js'
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { runCallbacks, addCallback, Utils } from 'meteor/nova:core';
 
 /**
  * @summary Parameter callbacks let you add parameters to subscriptions
@@ -33,7 +33,7 @@ Posts.parameters.get = function (terms = {}) {
   };
 
   // iterate over posts.parameters callbacks
-  parameters = Callbacks.run("posts.parameters", parameters, _.clone(terms));
+  parameters = runCallbacks("posts.parameters", parameters, _.clone(terms));
 
   // if sort options are not provided, default to "createdAt" sort
   if (_.isEmpty(parameters.options.sort)) {
@@ -64,7 +64,7 @@ function addViewParameter (parameters, terms) {
 
   return parameters;
 }
-Callbacks.add("posts.parameters", addViewParameter);
+addCallback("posts.parameters", addViewParameter);
 
 // View Parameter
 // Add "after" and "before" properties to terms which can be used to limit posts in time.
@@ -140,7 +140,7 @@ function addTimeParameter (parameters, terms) {
 
   return parameters;
 }
-Callbacks.add("posts.parameters", addTimeParameter);
+addCallback("posts.parameters", addTimeParameter);
 
 // limit the number of items that can be requested at once
 function limitPosts (parameters, terms) {
@@ -174,4 +174,4 @@ function limitPosts (parameters, terms) {
 
   return parameters;
 }
-Callbacks.add("posts.parameters", limitPosts);
+addCallback("posts.parameters", limitPosts);

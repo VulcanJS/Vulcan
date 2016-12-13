@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { Callbacks, addCallback } from 'meteor/nova:core';
 
 // note: even if all these callbacks are async, they are imported on the client so they pop in the cheatsheet when debug is enabled
 
@@ -34,7 +34,7 @@ if (typeof Package['nova:posts'] !== "undefined" && typeof Package['nova:comment
     }
   };
 
-  Callbacks.add("comments.new.async", SubscribedPostNotifications);
+  addCallback("comments.new.async", SubscribedPostNotifications);
 }
 
 /**
@@ -62,7 +62,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
     }
   };
 
-  Callbacks.add("posts.new.async", SubscribedUsersNotifications);
+  addCallback("posts.new.async", SubscribedUsersNotifications);
 }
 
 /**
@@ -100,5 +100,5 @@ if (typeof Package['nova:posts'] !== "undefined") {
     }
   };
 
-  Callbacks.add("posts.new.async", SubscribedCategoriesNotifications);
+  addCallback("posts.new.async", SubscribedCategoriesNotifications);
 }

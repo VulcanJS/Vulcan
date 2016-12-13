@@ -1,7 +1,7 @@
 import Telescope from 'meteor/nova:lib';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { runCallbacks, runCallbacksAsync, addCallback } from 'meteor/nova:core';
 
 
 //////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ import { Callbacks } from 'meteor/nova:core';
 //   }
 //   return modifier;
 // }
-// Callbacks.add("posts.edit.validate", PostsEditUserCheck);
+// addCallback("posts.edit.validate", PostsEditUserCheck);
 
 // function PostsEditSubmittedPropertiesCheck (modifier, post, user) {
 //   const schema = Posts.simpleSchema()._schema;
@@ -35,7 +35,7 @@ import { Callbacks } from 'meteor/nova:core';
 //   });
 //   return modifier;
 // }
-// Callbacks.add("posts.edit.validate", PostsEditSubmittedPropertiesCheck);
+// addCallback("posts.edit.validate", PostsEditSubmittedPropertiesCheck);
 
 
 //////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ const PostsEditDuplicateLinksCheck = (modifier, post) => {
   }
   return modifier;
 };
-Callbacks.add("posts.edit.sync", PostsEditDuplicateLinksCheck);
+addCallback("posts.edit.sync", PostsEditDuplicateLinksCheck);
 
 /**
  * @summary Force sticky to default to false when it's not specified
@@ -67,7 +67,7 @@ function PostsEditForceStickyToFalse (modifier, post) {
   }
   return modifier;
 }
-Callbacks.add("posts.edit.sync", PostsEditForceStickyToFalse);
+addCallback("posts.edit.sync", PostsEditForceStickyToFalse);
 
 /**
  * @summary Set status
@@ -77,16 +77,16 @@ function PostsEditSetIsFuture (modifier, post) {
   modifier.$set.isFuture = modifier.$set.postedAt && new Date(modifier.$set.postedAt).getTime() > new Date().getTime() + 1000;
   return modifier;
 }
-Callbacks.add("posts.edit.sync", PostsEditSetIsFuture);
+addCallback("posts.edit.sync", PostsEditSetIsFuture);
 
 
 function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
   if (Posts.isApproved(modifier) && !Posts.isApproved(post)) {
-    modifier = Callbacks.runAsync("posts.approve.sync", modifier, post);
+    modifier = runCallbacksAsync("posts.approve.sync", modifier, post);
   }
   return modifier;
 }
-Callbacks.add("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
+addCallback("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 
 
 //////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ Callbacks.add("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 
 function PostsEditRunPostApprovedAsyncCallbacks (post, oldPost) {
   if (Posts.isApproved(post) && !Posts.isApproved(oldPost)) {
-    Callbacks.runAsync("posts.approve.async", post);
+    runCallbacksAsync("posts.approve.async", post);
   }
 }
-Callbacks.add("posts.edit.async", PostsEditRunPostApprovedAsyncCallbacks);
+addCallback("posts.edit.async", PostsEditRunPostApprovedAsyncCallbacks);

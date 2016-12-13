@@ -1,5 +1,5 @@
 import Events from '../collection.js';
-import { Callbacks, getSetting } from 'meteor/nova:core';
+import { addCallback, getSetting } from 'meteor/nova:core';
 
 Events.analyticsRequest = function() {
   // Google Analytics
@@ -37,4 +37,4 @@ Events.analyticsInit();
 function analyticsRequest () {
   Events.analyticsRequest();
 }
-Callbacks.add('router.onUpdate', analyticsRequest);
+addCallback('router.onUpdate', analyticsRequest);

@@ -1,5 +1,5 @@
 import Categories from "./collection.js";
-import { Callbacks } from 'meteor/nova:core';
+import { addCallback } from 'meteor/nova:core';
 
 // Category Posts Parameters
 // Add a "categories" property to terms which can be used to filter *all* existing Posts views. 
@@ -32,4 +32,4 @@ function addCategoryParameter (parameters, terms) {
   }
   return parameters;
 }
-Callbacks.add("posts.parameters", addCategoryParameter);
+addCallback("posts.parameters", addCategoryParameter);

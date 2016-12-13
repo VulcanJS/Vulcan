@@ -1,5 +1,5 @@
 import Users from 'meteor/nova:users';
-import { Callbacks } from 'meteor/nova:core';
+import { addCallback } from 'meteor/nova:core';
 import { updateScore } from './scoring.js';
 import { operateOnItem, getVotePower } from '../vote.js';
 import Posts from 'meteor/nova:posts';
@@ -17,10 +17,10 @@ function updateScoreCallback (item, user, collection, operation) {
   updateScore({collection: collection, item: item, forceUpdate: true});
 }
 
-Callbacks.add("upvote.async", updateScoreCallback);
-Callbacks.add("downvote.async", updateScoreCallback);
-Callbacks.add("cancelUpvote.async", updateScoreCallback);
-Callbacks.add("cancelDownvote.async", updateScoreCallback);
+addCallback("upvote.async", updateScoreCallback);
+addCallback("downvote.async", updateScoreCallback);
+addCallback("cancelUpvote.async", updateScoreCallback);
+addCallback("cancelDownvote.async", updateScoreCallback);
 
 /**
  * @summary Update the profile of the user doing the operation
@@ -58,10 +58,10 @@ function updateUser (item, user, collection, operation) {
   Users.update({_id: user._id}, update);
 
 }
-Callbacks.add("upvote.async", updateUser);
-Callbacks.add("downvote.async", updateUser);
-Callbacks.add("cancelUpvote.async", updateUser);
-Callbacks.add("cancelDownvote.async", updateUser);
+addCallback("upvote.async", updateUser);
+addCallback("downvote.async", updateUser);
+addCallback("cancelUpvote.async", updateUser);
+addCallback("cancelDownvote.async", updateUser);
 
 /**
  * @summary Update the karma of the item's owner
@@ -83,10 +83,10 @@ function updateKarma (item, user, collection, operation) {
   }
 
 }
-Callbacks.add("upvote.async", updateKarma);
-Callbacks.add("downvote.async", updateKarma);
-Callbacks.add("cancelUpvote.async", updateKarma);
-Callbacks.add("cancelDownvote.async", updateKarma);
+addCallback("upvote.async", updateKarma);
+addCallback("downvote.async", updateKarma);
+addCallback("cancelUpvote.async", updateKarma);
+addCallback("cancelDownvote.async", updateKarma);
 
 /**
  * @summary Make users upvote their own new posts
@@ -95,7 +95,7 @@ function PostsNewUpvoteOwnPost (post) {
   var postAuthor = Users.findOne(post.userId);
   operateOnItem(Posts, post, postAuthor, "upvote");
 }
-Callbacks.add("posts.new.async", PostsNewUpvoteOwnPost);
+addCallback("posts.new.async", PostsNewUpvoteOwnPost);
 
 /**
  * @summary Make users upvote their own new comments
@@ -105,4 +105,4 @@ function CommentsNewUpvoteOwnComment (comment) {
   operateOnItem(Comments, comment, commentAuthor, "upvote");
   return comment;
 }
-Callbacks.add("comments.new.async", CommentsNewUpvoteOwnComment);
+addCallback("comments.new.async", CommentsNewUpvoteOwnComment);

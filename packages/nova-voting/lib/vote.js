@@ -1,6 +1,6 @@
 import Users from 'meteor/nova:users';
 import { hasUpvoted, hasDownvoted } from './helpers.js';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { runCallbacks, runCallbacksAsync } from 'meteor/nova:core';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 export const getVotePower = function (user) {
@@ -50,7 +50,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
   // ------------------------------ Sync Callbacks ------------------------------ //
 
-  item = Callbacks.run(operation, item, user);
+  item = runCallbacks(operation, item, user);
 
   switch (operation) {
 
@@ -123,7 +123,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
     
     if (result > 0) {
       // --------------------- Server-Side Async Callbacks --------------------- //
-      Callbacks.runAsync(operation+".async", item, user, collection, operation); 
+      runCallbacksAsync(operation+".async", item, user, collection, operation); 
     }
   }
 

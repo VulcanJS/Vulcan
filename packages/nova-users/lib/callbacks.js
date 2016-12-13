@@ -2,7 +2,7 @@ import Users from './collection.js';
 import marked from 'marked';
 import NovaEmail from 'meteor/nova:email';
 import { Gravatar } from 'meteor/jparker:gravatar';
-import { Callbacks, Utils } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
+import { addCallback, Utils } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -71,12 +71,12 @@ function setupUser (user, options) {
 
   return user;
 }
-Callbacks.add("users.new.sync", setupUser);
+addCallback("users.new.sync", setupUser);
 
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }
-Callbacks.add("users.profileCompleted.sync", hasCompletedProfile);
+addCallback("users.profileCompleted.sync", hasCompletedProfile);
 
 function usersNewAdminUserCreationNotification (user) {
   // send notifications to admins
@@ -90,7 +90,7 @@ function usersNewAdminUserCreationNotification (user) {
   });
   return user;
 }
-Callbacks.add("users.new.sync", usersNewAdminUserCreationNotification);
+addCallback("users.new.sync", usersNewAdminUserCreationNotification);
 
 function usersEditGenerateHtmlBio (modifier) {
   if (modifier.$set && modifier.$set.__bio) {
@@ -98,7 +98,7 @@ function usersEditGenerateHtmlBio (modifier) {
   }
   return modifier;
 }
-Callbacks.add("users.edit.sync", usersEditGenerateHtmlBio);
+addCallback("users.edit.sync", usersEditGenerateHtmlBio);
 
 function usersEditCheckEmail (modifier, user) {
   // if email is being modified, update user.emails too
@@ -124,4 +124,4 @@ function usersEditCheckEmail (modifier, user) {
   }
   return modifier;
 }
-Callbacks.add("users.edit.sync", usersEditCheckEmail);
+addCallback("users.edit.sync", usersEditCheckEmail);

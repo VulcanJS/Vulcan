@@ -2,7 +2,7 @@
 import Users from 'meteor/nova:users';
 import { Counts } from 'meteor/tmeasday:publish-counts';
 import Posts from '../collection.js';
-import { Callbacks } from 'meteor/nova:core';
+import { runCallbacks } from 'meteor/nova:core';
 
 Posts._ensureIndex({"status": 1, "postedAt": 1});
 
@@ -42,7 +42,7 @@ const getSinglePostUsers = post => {
   NOTE: to avoid circular dependencies between nova:posts and nova:comments,
   use callback hook to get comment authors
   */
-  users = Callbacks.run("posts.single.getUsers", users, post);
+  users = runCallbacks("posts.single.getUsers", users, post);
 
   // add upvoters
   if (post.upvoters && post.upvoters.length) {

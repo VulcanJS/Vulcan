@@ -28,7 +28,7 @@ to the client.
 
 */
 
-import { Callbacks } from './callbacks.js';
+import { runCallbacks, runCallbacksAsync } from './callbacks.js';
 
 export const newMutation = ({ collection, document, currentUser, validate, context }) => {
   
@@ -54,7 +54,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
     collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
 
     // run validation callbacks
-    document = Callbacks.run(`${collectionName}.new.validate`, document, currentUser);
+    document = runCallbacks(`${collectionName}.new.validate`, document, currentUser);
   }
 
   // check if userId field is in the schema and add it to document if needed
@@ -68,7 +68,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   // }
 
   // run sync callbacks
-  document = Callbacks.run(`${collectionName}.new.sync`, document, currentUser);
+  document = runCallbacks(`${collectionName}.new.sync`, document, currentUser);
 
   // add _id to document
   document._id = collection.insert(document);
@@ -78,7 +78,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  Callbacks.runAsync(`${collectionName}.new.async`, newDocument, currentUser);
+  runCallbacksAsync(`${collectionName}.new.async`, newDocument, currentUser);
 
   console.log("// new mutation finished:")
   console.log(newDocument)
@@ -118,11 +118,11 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
     collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
 
     // run validation callbacks
-    modifier = Callbacks.run(`${collectionName}.edit.validate`, modifier, document, currentUser);
+    modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser);
   }
 
   // run sync callbacks (on mongo modifier)
-  modifier = Callbacks.run(`${collectionName}.edit.sync`, modifier, document, currentUser);
+  modifier = runCallbacks(`${collectionName}.edit.sync`, modifier, document, currentUser);
 
   // update document
   collection.update(documentId, modifier);
@@ -131,7 +131,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   const newDocument = collection.findOne(documentId);
 
   // run async callbacks
-  Callbacks.runAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
+  runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
 
   console.log("// edit mutation finished")
   console.log(newDocument)
@@ -151,14 +151,14 @@ export const removeMutation = ({ collection, documentId, currentUser, validate, 
 
   // if document is not trusted, run validation callbacks
   if (validate) {
-    document = Callbacks.run(`${collectionName}.remove.validate`, document, currentUser);
+    document = runCallbacks(`${collectionName}.remove.validate`, document, currentUser);
   }
 
-  Callbacks.run(`${collectionName}.remove.sync`, document, currentUser);
+  runCallbacks(`${collectionName}.remove.sync`, document, currentUser);
 
   collection.remove(documentId);
 
-  Callbacks.runAsync(`${collectionName}.remove.async`, document, currentUser);
+  runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser);
 
   return document;
 }

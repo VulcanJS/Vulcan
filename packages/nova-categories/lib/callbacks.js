@@ -1,6 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { addCallback, Utils } from 'meteor/nova:core';
 
 // generate slug on insert
 // Categories.before.insert(function (userId, doc) {
@@ -21,7 +21,7 @@ function addCategoryClass (postClass, post) {
   var classArray = _.map(Posts.getCategories(post), function (category){return "category-"+category.slug;});
   return postClass + " " + classArray.join(' ');
 }
-Callbacks.add("postClass", addCategoryClass);
+addCallback("postClass", addCategoryClass);
 
 // ------- Categories Check -------- //
 
@@ -45,13 +45,13 @@ function postsNewCheckCategories (post) {
   checkCategories(post);
   return post;
 }
-Callbacks.add("posts.new.sync", postsNewCheckCategories);
+addCallback("posts.new.sync", postsNewCheckCategories);
 
 function postEditCheckCategories (modifier) {
   checkCategories(modifier.$set);
   return modifier;
 }
-Callbacks.add("posts.edit.sync", postEditCheckCategories);
+addCallback("posts.edit.sync", postEditCheckCategories);
 
 function categoriesNewGenerateSlug (category) {
   // if no slug has been provided, generate one
@@ -59,7 +59,7 @@ function categoriesNewGenerateSlug (category) {
   category.slug = Utils.getUnusedSlug(Categories, slug);
   return category;
 }
-Callbacks.add("categories.new.sync", categoriesNewGenerateSlug);
+addCallback("categories.new.sync", categoriesNewGenerateSlug);
 
 function categoriesEditGenerateSlug (modifier) {
   // if slug is changing
@@ -69,7 +69,7 @@ function categoriesEditGenerateSlug (modifier) {
   }
   return modifier;
 }
-Callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
+addCallback("categories.edit.sync", categoriesEditGenerateSlug);
 
 // TODO: debug this
 
@@ -86,7 +86,7 @@ Callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
 //   post.categories = _.unique(newCategories);
 //   return post;
 // }
-// Callbacks.add("posts.new.sync", addParentCategoriesOnSubmit);
+// addCallback("posts.new.sync", addParentCategoriesOnSubmit);
 
 // function addParentCategoriesOnEdit (modifier, post) {
 //   if (modifier.$unset && modifier.$unset.categories !== undefined) {
@@ -105,4 +105,4 @@ Callbacks.add("categories.edit.sync", categoriesEditGenerateSlug);
 //   modifier.$set.categories = _.unique(newCategories);
 //   return modifier;
 // }
-// Callbacks.add("posts.edit.sync", addParentCategoriesOnEdit);
+// addCallback("posts.edit.sync", addParentCategoriesOnEdit);
