@@ -1,4 +1,4 @@
-import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
+import { newMutation } from 'meteor/nova:core';
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";

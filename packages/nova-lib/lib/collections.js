@@ -1,5 +1,4 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import Telescope from './config.js';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 

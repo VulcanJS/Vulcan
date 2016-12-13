@@ -1,4 +1,4 @@
-import Telescope, { GraphQLSchema } from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/nova:lib';
 
 const generateTypeDefs = () => [`
   ${GraphQLSchema.getCollectionsSchemas()}

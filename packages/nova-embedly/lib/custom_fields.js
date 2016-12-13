@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import EmbedlyURL from './components/EmbedlyURL.jsx';
 import ThumbnailURL from './components/ThumbnailURL.jsx';
 import Posts from "meteor/nova:posts";

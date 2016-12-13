@@ -3,8 +3,6 @@ import MailChimpList from "./mailchimp/mailchimp_list.js";
 import Users from 'meteor/nova:users';
 import { GraphQLSchema } from 'meteor/nova:core';
 
-import Telescope from 'meteor/nova:lib';
-
 GraphQLSchema.addMutation('sendNewsletter : JSON');
 GraphQLSchema.addMutation('testNewsletter : JSON');
 GraphQLSchema.addMutation('addUserNewsletter(userId: String) : JSON');

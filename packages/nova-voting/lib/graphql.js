@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from 'meteor/nova:posts';
 import { GraphQLSchema } from 'meteor/nova:core';
 import { operateOnItem } from './vote.js';
@@ -18,8 +17,6 @@ GraphQLSchema.addMutation('postsVote(documentId: String, voteType: String) : Pos
 const voteResolver = {
   Mutation: {
     postsVote(root, {documentId, voteType}, context) {
-      Meteor._sleepForMs(2000); // wait 2 seconds for demonstration purpose
-      console.log("sleep done");
       const post = Posts.findOne(documentId);
       return context.Users.canDo(context.currentUser, `posts.${voteType}`) ? operateOnItem(context.Posts, post, context.currentUser, voteType) : false;
     },

@@ -1,4 +1,4 @@
-import Telescope, { removeMutation } from 'meteor/nova:lib';
+import { removeMutation } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
 import Comments from '../collection.js';
 import Users from 'meteor/nova:users';

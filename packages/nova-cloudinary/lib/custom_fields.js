@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 
 Posts.addField([

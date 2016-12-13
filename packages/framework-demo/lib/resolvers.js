@@ -8,7 +8,6 @@ Three resolvers are defined:
 
 */
 
-import Telescope from 'meteor/nova:lib';
 import { GraphQLSchema } from 'meteor/nova:core';
 
 // add the "user" resolver for the Movie type separately

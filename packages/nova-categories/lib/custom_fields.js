@@ -1,9 +1,4 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
-import Categories from "./collection.js";
-
-import gql from 'graphql-tag';
 
 Posts.addField(
   {

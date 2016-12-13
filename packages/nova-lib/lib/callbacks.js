@@ -1,7 +1,3 @@
-import Telescope from './config.js';
-
-// import moment from 'moment';
-
 /**
  * @summary Callback hooks provide an easy way to add extra steps to common operations.
  * @namespace Callbacks
@@ -100,11 +96,3 @@ export const runCallbacksAsync = function () {
   }
 
 };
-
-// backwards compatibility
-
-Telescope.callbacks = Callbacks;
-Telescope.callbacks.add = addCallback;
-Telescope.callbacks.remove = removeCallback;
-Telescope.callbacks.run = runCallbacks;
-Telescope.callbacks.runAsync = runCallbacksAsync;

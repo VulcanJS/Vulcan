@@ -10,8 +10,6 @@ import { _ } from 'meteor/underscore';
 import 'isomorphic-fetch';
 import Cookie from 'react-cookie';
 
-import Telescope from 'meteor/nova:lib';
-
 const defaultNetworkInterfaceConfig = {
   path: '/graphql',
   options: {},

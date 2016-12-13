@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -6,7 +5,7 @@ import update from 'immutability-helper';
 
 export default function withList (options) {
 
-  const { queryName, collection, fragment, limit = 5 } = options,
+  const { queryName, collection, fragment, limit = 20 } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;

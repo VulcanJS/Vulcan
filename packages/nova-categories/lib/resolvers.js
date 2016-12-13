@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import { GraphQLSchema } from 'meteor/nova:core';
 
 // add these specific resolvers separately

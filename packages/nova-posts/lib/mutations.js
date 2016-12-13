@@ -1,4 +1,4 @@
-import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
+import { newMutation, editMutation, removeMutation } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 
 const performCheck = (mutation, user, document) => {

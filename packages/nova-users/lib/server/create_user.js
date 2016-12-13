@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Users from '../collection.js';
 import { Callbacks } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import { withCurrentUser, withMessages } from 'meteor/nova:core';
+import { withCurrentUser, withMessages, registerComponent } from 'meteor/nova:core';
 
 class SubscribeTo extends Component {
 
@@ -72,4 +72,4 @@ SubscribeTo.contextTypes = {
   intl: intlShape
 };
 
-export default withCurrentUser(withMessages(SubscribeTo));
+registerComponent('SubscribeTo', SubscribeTo, withCurrentUser, withMessages);

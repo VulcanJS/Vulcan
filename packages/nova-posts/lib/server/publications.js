@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 // import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
 import { Counts } from 'meteor/tmeasday:publish-counts';

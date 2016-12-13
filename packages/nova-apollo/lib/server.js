@@ -19,7 +19,7 @@ import { _ } from 'meteor/underscore';
 
 import Users from 'meteor/nova:users';
 
-import Telescope, { GraphQLSchema } from 'meteor/nova:lib';
+import { GraphQLSchema } from 'meteor/nova:lib';
 
 const defaultConfig = {
   path: '/graphql',

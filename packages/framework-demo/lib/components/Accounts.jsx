@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';

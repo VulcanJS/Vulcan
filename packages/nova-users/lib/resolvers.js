@@ -1,5 +1,3 @@
-import Telescope from 'meteor/nova:lib';
-import mutations from './mutations.js';
 import { GraphQLSchema } from 'meteor/nova:lib';
 
 const specificResolvers = {

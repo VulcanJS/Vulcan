@@ -1,5 +1,5 @@
 import Categories from "../collection.js";
-import { Utils } from 'meteor/nova:core';
+import { Utils, newMutation } from 'meteor/nova:core';
 
 // Load categories from settings, if there are any
 
@@ -18,7 +18,13 @@ if (Meteor.settings && Meteor.settings.categories) {
       Categories.update(existingCategory._id, {$set: category});
     } else {
       // if not, create it
-      Categories.insert(category);
+      newMutation({
+        collection: Categories,
+        document: category, 
+        validate: false,
+      });
+      
+      // Categories.insert(category);
       console.log(`// Creating category “${category.name}”`); // eslint-disable-line
     }
   });

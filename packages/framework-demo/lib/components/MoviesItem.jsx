@@ -5,7 +5,6 @@ Wrapped with the "withCurrentUser" container.
 
 */
 
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { ModalTrigger } from 'meteor/nova:core';

@@ -1,4 +1,3 @@
-import Telescope from './config.js';
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
 export const Components = {};
@@ -28,14 +27,6 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
   // keep track of the raw component & hocs, so we can extend the component if necessary
   Components[name].rawComponent = rawComponent;
   Components[name].hocs = hocs;
-
-  // ---- to remove later ----
-  Telescope.components[name] = compose(...hocs)(rawComponent);
-
-  // keep track of the raw component & hocs, so we can extend the component if necessary
-  Telescope.components[name].rawComponent = rawComponent;
-  Telescope.components[name].hocs = hocs;
-  // -------------------------
 
   return Components[name];
 };
@@ -92,12 +83,3 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
 export const copyHoCs = (sourceComponent, targetComponent) => {
   return compose(...sourceComponent.hocs)(targetComponent);
 }
-
-// backwards compatibility
-
-Telescope.components = {};
-Telescope.registerComponent = registerComponent; 
-Telescope.getComponent = getComponent; 
-Telescope.getRawComponent = getRawComponent; 
-Telescope.replaceComponent = replaceComponent; 
-Telescope.copyHoCs = copyHoCs; 

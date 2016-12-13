@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Users from './collection.js';
 import { Utils, getSetting } from 'meteor/nova:lib';
 

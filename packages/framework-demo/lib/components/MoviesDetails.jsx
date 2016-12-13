@@ -5,7 +5,6 @@ Wrapped with the "withDocument" container.
 
 */
 
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Movies from '../collection.js';
 import { withDocument } from 'meteor/nova:core';

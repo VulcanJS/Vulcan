@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import { Callbacks } from 'meteor/nova:core';
 
 function addThumbnailClass (postClass, post) {

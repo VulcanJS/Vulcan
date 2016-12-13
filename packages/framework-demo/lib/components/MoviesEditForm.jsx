@@ -5,11 +5,9 @@ Wrapped with the "withDocument" container.
 
 */
 
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Movies from '../collection.js';
-import { compose } from 'react-apollo';
 
 const MoviesEditForm = (props, context) => {
   return (

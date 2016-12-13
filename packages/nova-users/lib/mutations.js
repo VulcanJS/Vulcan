@@ -1,4 +1,4 @@
-import Telescope, { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
+import { newMutation, editMutation, removeMutation } from 'meteor/nova:lib';
 import Users from './collection'; // circular dependency?
 
 const performCheck = (mutation, user, document) => {

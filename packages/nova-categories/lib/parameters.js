@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Categories from "./collection.js";
 import { Callbacks } from 'meteor/nova:core';
 

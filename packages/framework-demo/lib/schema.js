@@ -4,7 +4,6 @@ A SimpleSchema-compatible JSON schema
 
 */
 
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import { GraphQLSchema } from 'meteor/nova:core';
 
