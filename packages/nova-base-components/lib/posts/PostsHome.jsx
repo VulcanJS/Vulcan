@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 
 const PostsHome = (props, context) => {
-  const terms = props.location && props.location.query;
+  const terms = _.isEmpty(props.location && props.location.query) ? {view: 'top'}: props.location.query;
   return <Components.PostsList terms={terms}/>
 };
 

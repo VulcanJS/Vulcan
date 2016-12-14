@@ -38,7 +38,6 @@ class PostsEditForm extends Component {
             }
           `}
           successCallback={post => {
-            this.context.closeCallback();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
           removeSuccessCallback={({documentId, documentTitle}) => {

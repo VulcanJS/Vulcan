@@ -59,7 +59,7 @@ const loadCurrentUser = component => {
       props(props) {    
         const {data: {loading, currentUser}} = props;   
         return {    
-          loading,    
+          currentUserLoading: loading,    
           currentUser,    
         };    
       },    

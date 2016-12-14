@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
 import { getSetting } from 'meteor/nova:core';
+import Mingo from 'mingo';
 
 export default function withList (options) {
 
@@ -33,6 +34,16 @@ export default function withList (options) {
           const editMutationName = `${collection._name}Edit`;
           const removeMutationName = `${collection._name}Remove`;
 
+          // function to remove a document from a results object, used by edit and remove cases below
+          const removeFromResults = (results, document) => {
+            const listWithoutDocument = results[listResolverName].filter(doc => doc._id !== document._id);
+            const newResults = update(results, {
+              [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
+              [totalResolverName]: { $set: results[totalResolverName] - 1 } // ex: postsListTotal
+            });
+            return newResults;
+          }
+
           let newResults = previousResults;
 
           switch (action.operationName) {
@@ -46,15 +57,22 @@ export default function withList (options) {
               break;
 
             case editMutationName:
-              // do nothing
+              // test if edited document still belongs in the current list
+              // based on the view
+              const editedDocument = action.result.data[editMutationName];
+              const viewName = ownProps.terms && ownProps.terms.view;
+              if (collection.views && collection.views[viewName]) {
+                const view = collection.views[ownProps.terms.view](ownProps.terms);
+                const mingoQuery = Mingo.Query(view.selector);
+                const belongsToQuery = mingoQuery.test(editedDocument);
+                if (!belongsToQuery) {
+                  newResults = removeFromResults(previousResults, action.result.data[editMutationName]);
+                }
+              }
               break;
 
             case removeMutationName:
-              const listWithoutDocument = previousResults[listResolverName].filter(doc => doc._id !== action.result.data[removeMutationName]._id);
-              newResults = update(previousResults, {
-                [listResolverName]: { $set: listWithoutDocument }, // ex: postsList
-                [totalResolverName]: { $set: previousResults[totalResolverName] - 1 } // ex: postsListTotal
-              });
+              newResults = removeFromResults(previousResults, action.result.data[removeMutationName]);
               break;
           }
         
