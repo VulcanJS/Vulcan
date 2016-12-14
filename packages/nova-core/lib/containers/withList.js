@@ -2,10 +2,11 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
+import { getSetting } from 'meteor/nova:core';
 
 export default function withList (options) {
 
-  const { queryName, collection, fragment, limit = 10 } = options,
+  const { queryName, collection, fragment, limit = getSetting('postsPerPage', 10) } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -76,13 +77,15 @@ export default function withList (options) {
             fetchMore = props.data.fetchMore,
             refetch = props.data.refetch,
             results = props.data[listResolverName],
-            totalCount = props.data[totalResolverName];
+            totalCount = props.data[totalResolverName],
+            networkStatus = props.data.networkStatus;
 
       return {
         loading,
         results,
         totalCount,
         refetch,
+        networkStatus,
         count: results && results.length,
         loadMore(variables) {
 

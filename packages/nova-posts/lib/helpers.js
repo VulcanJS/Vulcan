@@ -53,7 +53,7 @@ Posts.getPageUrl = function(post, isAbsolute = false){
 Posts.getAuthorName = function (post) {
   var user = Users.findOne(post.userId);
   if (user) {
-    return user.getDisplayName();
+    return Users.getDisplayName(user);
   } else {
     return post.author;
   }

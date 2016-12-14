@@ -5,13 +5,12 @@ import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withRouter } from 'react-router'
-import { FormattedMessage } from 'react-intl';
 
 const PostsNewForm = (props, context) => {
   return (
     <ShowIf
       check={Posts.options.mutations.new.check}
-      failureComponent={<FormattedMessage id="users.cannot_post"/>}
+      failureComponent={<Components.UsersAccountForm />}
     >
       <div className="posts-new-form">
         <NovaForm

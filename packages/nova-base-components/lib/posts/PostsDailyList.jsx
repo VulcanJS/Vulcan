@@ -30,6 +30,7 @@ class PostsDailyList extends Component{
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     this.props.loadMore({
       terms: {
+        view: 'top',
         before: loadMoreBefore,
         after: loadMoreAfter,
       }
