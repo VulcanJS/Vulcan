@@ -48,6 +48,7 @@ export default function withList (options) {
 
           // add document to a results object
           const addToResults = (results, document) => {
+
             return update(results, {
               [listResolverName]: { $unshift: [document] },
               [totalResolverName]: { $set: results[totalResolverName] + 1 }
@@ -120,9 +121,6 @@ export default function withList (options) {
       };
     },
     props(props) {
-      
-      // console.log('// withList props')
-      // console.log(props)
 
       const loading = props.data.loading,
             fetchMore = props.data.fetchMore,

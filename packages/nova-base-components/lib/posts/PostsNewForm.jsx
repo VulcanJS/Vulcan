@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
 import NovaForm from "meteor/nova:forms";
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
@@ -15,19 +15,9 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm
           collection={Posts}
-          extraFragment={`
-            htmlBody
-            postedAt
-            slug
-            user{
-              _id
-              __displayName
-              __emailHash
-              __slug
-            }
-          `}
+          fragment={getRawComponent('PostsItem').fragment}
           successCallback={post => {
-            props.router.push({pathname: Posts.getPageUrl(post)});
+            // props.router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
         />

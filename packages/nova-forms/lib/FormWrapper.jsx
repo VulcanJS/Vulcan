@@ -72,21 +72,19 @@ class FormWrapper extends Component{
     });
 
     // generate fragment based on the fields that can be edited. Note: always add _id.
-    const queryFragment = `fragment ${fragmentName} on ${this.props.collection.typeName} {
-      _id
-      ${relevantFields.join('\n')}
-    }`
+    const queryFragment = gql`
+      fragment ${fragmentName} on ${this.props.collection.typeName} {
+        _id
+        ${relevantFields.join('\n')}
+      }
+    `
 
-    // same thing but with extra mutation fragment, if there are any
-    const mutationFragment = this.props.extraFragment ? `fragment ${fragmentName} on ${this.props.collection.typeName} {
-      _id
-      ${relevantFields.join('\n')}
-      ${this.props.extraFragment}
-    }` : queryFragment;
+    // get mutation fragment from props or else default to same as queryFragment
+    const mutationFragment = this.props.fragment || queryFragment;
     
     return {
-      queryFragment: gql`${queryFragment}`,
-      mutationFragment: gql`${mutationFragment}`
+      queryFragment,
+      mutationFragment,
     };
   }
 

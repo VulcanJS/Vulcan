@@ -1,8 +1,7 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
-import update from 'immutability-helper';
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import { FormattedMessage } from 'react-intl';
 
@@ -26,45 +25,7 @@ const CommentsNewForm = (props, context) => {
       <div className="comments-new-form">
         <NovaForm
           collection={Comments}
-          // updateQueries={{
-          //   getPost: (prev, { mutationResult }) => {
-          //     // console.log('[commentsNew] prev post', prev)
-          //     const newPost = update(prev, {
-          //       post: {
-          //         commentCount: {
-          //           $set: prev.post.commentCount + 1
-          //         }
-          //       }
-          //     });
-          //     // console.log('[commentsNew] new post', newPost)
-          //     return newPost;
-          //   },
-          //   getCommentsList: (prev, { mutationResult }) => {
-          //     // console.log('[commentsNew] previous comment list', prev);
-          //     const newComment = mutationResult.data.commentsNew;
-          //     const newCommentsList = update(prev, {
-          //       commentsList: {
-          //         $push: [newComment]
-          //       },
-          //       commentsListTotal: {
-          //         $set: prev.commentsListTotal + 1
-          //       },
-          //     });
-          //     // console.log('[commentsNew] new comment list', newCommentsList)
-          //     return newCommentsList;
-          //   },
-          // }}
-          queryToUpdate="commentsListQuery"
-          extraFragment={`
-            htmlBody
-            postedAt
-            user{
-              _id
-              __displayName
-              __emailHash
-              __slug
-            }
-          `}
+          fragment={getRawComponent('PostsCommentsThread').fragment}
           successCallback={props.successCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}
