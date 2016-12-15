@@ -18,6 +18,7 @@ const PostsNewForm = (props, context) => {
           extraFragment={`
             htmlBody
             postedAt
+            slug
             user{
               _id
               __displayName
@@ -27,7 +28,6 @@ const PostsNewForm = (props, context) => {
           `}
           successCallback={post => {
             props.router.push({pathname: Posts.getPageUrl(post)});
-            context.closeCallback();
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
         />

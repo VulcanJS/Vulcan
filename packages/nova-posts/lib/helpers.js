@@ -14,7 +14,7 @@ import { Utils, getSetting } from 'meteor/nova:core';
  */
 Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
   const url = isRedirected ? Utils.getOutgoingUrl(post.url) : post.url;
-  return !!post.url ? url : this.getPageUrl(post, isAbsolute);
+  return !!post.url ? url : Posts.getPageUrl(post, isAbsolute);
 };
 
 /**
