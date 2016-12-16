@@ -6,25 +6,18 @@ import { Utils } from 'meteor/nova:lib';
 /**
  * withCurrentUser - HOC to give access to the currentUser as a prop of a WrappedComponent
  **/
-function withCurrentUser(WrappedComponent) {
+function withCurrentUser1(WrappedComponent) {
 
   class WithCurrentUser extends Component {
     constructor(...args) {
       super(...args);
       this.logCurrentUser = this.logCurrentUser.bind(this);
     }
-    
-    logCurrentUser() {
-      console.log('currentUser', this.context.client.store.getState().apollo.data[`User${Meteor.userId()}`])
-    }
 
     render() {
       const {client} = this.context; // grab the apollo client from the context
 
       const currentUser = client ? client.store.getState().apollo.data[`User${Meteor.userId()}`] : null;
-
-      console.log('// withCurrentUser render: '+Utils.getComponentDisplayName(WrappedComponent))
-      console.log(currentUser)
 
       return currentUser ? <WrappedComponent currentUser={currentUser} {...this.props} /> : <WrappedComponent {...this.props} />;
     }
@@ -40,15 +33,17 @@ function withCurrentUser(WrappedComponent) {
 import Users from 'meteor/nova:users';   
 import { graphql } from 'react-apollo';   
 import gql from 'graphql-tag';    
-    
-const loadCurrentUser = component => {    
+
+/**
+ * withCurrentUser - HOC to give access to the currentUser as a prop of a WrappedComponent
+ * second pattern
+ **/
+const withCurrentUser2 = component => {    
     
   const preloadedFields = _.compact(_.map(Users.simpleSchema()._schema, (field, fieldName) => {   
     return field.preload ? fieldName : undefined;   
   }));    
       
-  // console.log('preloaded fields', preloadedFields);    
-    
   return graphql(   
     gql`query getCurrentUser {    
       currentUser {   
@@ -67,4 +62,4 @@ const loadCurrentUser = component => {
   )(component);   
 };    
 
-export default loadCurrentUser;
+export default withCurrentUser2;
