@@ -36,11 +36,6 @@ export default function withList (options) {
 
           let newResults = previousResults;
 
-          // console.log(_.pluck(previousResults[listResolverName], 'title'))
-          // newResults[listResolverName] = previousResults[listResolverName].reverse();
-          // console.log(_.pluck(newResults[listResolverName], 'title'))
-          // return newResults
-
           // get mongo selector and options objects based on current terms
           const { selector, options } = collection.getParameters(ownProps.terms);
           const mingoQuery = Mingo.Query(selector);
@@ -133,7 +128,12 @@ export default function withList (options) {
           console.log('new titles: ', _.pluck(newResults[listResolverName], 'title'))
           console.log('\n\n')
 
-          return newResults;
+          // copy over arrays explicitely to ensure new sort is taken into account
+          return {
+            [listResolverName]: [...newResults[listResolverName]],
+            [totalResolverName]: newResults[totalResolverName],
+          }
+
         },
         // pollInterval: 20000,
       };
