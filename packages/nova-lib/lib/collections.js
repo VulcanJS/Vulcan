@@ -1,6 +1,7 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
+import { runCallbacks } from './callbacks.js';
 
 SimpleSchema.extendOptions({
   // kept for backward compatibility?
@@ -158,5 +159,28 @@ export const createCollection = options => {
     GraphQLSchema.addResolvers({ Mutation: { ...mutations } });
   }
   
+  // ------------------------------------- Parameters -------------------------------- //
+
+  collection.getParameters = (terms = {}) => {
+
+    console.log(terms)
+
+    let parameters = {
+      selector: {},
+      options: {}
+    };
+
+    // iterate over posts.parameters callbacks
+    parameters = runCallbacks(`${options.collectionName}.parameters`, parameters, _.clone(terms));
+
+    // extend sort to sort posts by _id to break ties
+    // NOTE: always do this last to avoid _id sort overriding another sort
+    parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
+
+    console.log(parameters);
+
+    return parameters;
+  }
+
   return collection;
 }

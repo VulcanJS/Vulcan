@@ -44,8 +44,8 @@ PostsPage.fragment = gql`
     _id
     title
     url
-    body
-    htmlBody
+    body # extra
+    htmlBody # extra
     slug
     thumbnailUrl
     baseScore

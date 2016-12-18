@@ -15,7 +15,7 @@ const PostsNewForm = (props, context) => {
       <div className="posts-new-form">
         <NovaForm
           collection={Posts}
-          fragment={getRawComponent('PostsItem').fragment}
+          fragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {
             // props.router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");

@@ -5,7 +5,6 @@ import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
 import { withCurrentUser } from 'meteor/nova:core';
-import gql from 'graphql-tag';
 
 class PostsItem extends Component {
 
@@ -77,51 +76,5 @@ PostsItem.propTypes = {
   currentUser: React.PropTypes.object,
   post: React.PropTypes.object.isRequired,
 };
-
-PostsItem.fragment = gql`
-  fragment PostsItemFragment on Post {
-    _id
-    title
-    url
-    slug
-    thumbnailUrl
-    baseScore
-    postedAt
-    sticky
-    status
-    categories {
-      # ...minimumCategoryInfo
-      _id
-      name
-      slug
-    }
-    commentCount
-    commenters {
-      # ...avatarUserInfo
-      _id
-      __displayName
-      __emailHash
-      __slug
-    }
-    upvoters {
-      _id
-    }
-    downvoters {
-      _id
-    }
-    upvotes # should be asked only for admins?
-    score # should be asked only for admins?
-    viewCount # should be asked only for admins?
-    clickCount # should be asked only for admins?
-    user {
-      # ...avatarUserInfo
-      _id
-      __displayName
-      __emailHash
-      __slug
-    }
-    userId
-  }
-`;
 
 registerComponent('PostsItem', PostsItem, withCurrentUser);

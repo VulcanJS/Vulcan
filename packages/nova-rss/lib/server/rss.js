@@ -20,7 +20,7 @@ const getMeta = function (url) {
 const servePostRSS = function (terms, url) {
   var feed = new RSS(getMeta(url));
 
-  var parameters = Posts.parameters.get(terms);
+  var parameters = Posts.getParameters(terms);
   delete parameters['options']['sort']['sticky'];
 
   const postsCursor = Posts.find(parameters.selector, parameters.options);

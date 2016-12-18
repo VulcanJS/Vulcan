@@ -7,15 +7,14 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
 import { Button } from 'react-bootstrap';
 import { ModalTrigger } from "meteor/nova:core";
 import MoviesItem from './MoviesItem.jsx';
 import Movies from '../collection.js';
 import MoviesNewForm from './MoviesNewForm.jsx';
 import { compose } from 'react-apollo';
-import { withList } from 'meteor/nova:core';
-import { withCurrentUser } from 'meteor/nova:core';
+import { withList, withCurrentUser } from 'meteor/nova:core';
+import gql from 'graphql-tag';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={e => {e.preventDefault(); props.loadMore();}}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -58,10 +57,22 @@ class MoviesList extends Component {
 
 };
 
+export const MoviesListFragment = gql`
+  fragment moviesItemFragment on Movie {
+    _id
+    name
+    year
+    user {
+      __displayName
+    }
+  }
+`;
+
 const listOptions = {
   collection: Movies,
   queryName: 'moviesListQuery',
-  fragment: MoviesItem.fragment,
+  fragment: MoviesListFragment,
+  limit: 5,
 };
 
 export default compose(withList(listOptions), withCurrentUser)(MoviesList);

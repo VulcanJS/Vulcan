@@ -34,7 +34,16 @@ export default function withList (options) {
           const editMutationName = `${collection._name}Edit`;
           const removeMutationName = `${collection._name}Remove`;
 
-          const viewName = ownProps.terms && ownProps.terms.view;
+          let newResults = previousResults;
+
+          // console.log(_.pluck(previousResults[listResolverName], 'title'))
+          // newResults[listResolverName] = previousResults[listResolverName].reverse();
+          // console.log(_.pluck(newResults[listResolverName], 'title'))
+          // return newResults
+
+          // get mongo selector and options objects based on current terms
+          const { selector, options } = collection.getParameters(ownProps.terms);
+          const mingoQuery = Mingo.Query(selector);
 
           // function to remove a document from a results object, used by edit and remove cases below
           const removeFromResults = (results, document) => {
@@ -55,65 +64,74 @@ export default function withList (options) {
             });
           }
 
-          let newResults = previousResults;
-
-          if (viewName && collection.views && collection.views[viewName]) {
-
-            // scenario 1: we are filtering by a specific view
-            const view = collection.views[ownProps.terms.view](ownProps.terms);
-            const mingoQuery = Mingo.Query(view.selector);
-
-            switch (action.operationName) {
-
-              case newMutationName:
-                // if new document belongs to current list (based on view selector), add it
-                const newDocument = action.result.data[newMutationName];
-                if (mingoQuery.test(newDocument)) {
-                  newResults = addToResults(previousResults, newDocument);
-                }
-                break;
-
-              case editMutationName:
-                // if edited doesn't belong to current list anymore (based on view selector), remove it
-                const editedDocument = action.result.data[editMutationName];
-                if (!mingoQuery.test(editedDocument)) {
-                  newResults = removeFromResults(previousResults, editedDocument);
-                }
-                break;
-
-              case removeMutationName:
-                const removedDocument = action.result.data[removeMutationName];
-                newResults = removeFromResults(previousResults, removedDocument);
-                break;
-            }
-
-          } else {
-          // scenario 2: we aren't filtering
-
-            switch (action.operationName) {
-
-              case newMutationName:
-                // always add
-                const newDocument = action.result.data[newMutationName];
-                newResults = addToResults(previousResults, newDocument);
-                break;
-
-              case editMutationName:
-                // do nothing
-                break;
-
-              case removeMutationName:
-                // always remove
-                const removedDocument = action.result.data[removeMutationName];
-                newResults = removeFromResults(previousResults, removedDocument);
-                break;
-            }
+          // reorder results according to a sort
+          const reorderResults = (results, sort) => {
+            const cursor = mingoQuery.find(results[listResolverName]);
+            const sortedList = cursor.sort(sort).all();
+            console.log('sortedList: ', sortedList)
+            results[listResolverName] = sortedList;
+            return results;
           }
-          
-          // console.log('// withList reducer')
-          // console.log(previousResults)
-          // console.log(action)
-          // console.log(newResults)
+
+          console.log('// withList reducer');
+          console.log('queryName: ', queryName);
+          console.log('terms: ', ownProps.terms);
+          console.log('selector: ', selector);
+          console.log('options: ', options);
+          console.log('previousResults: ', previousResults);
+          console.log('previous titles: ', _.pluck(previousResults[listResolverName], 'title'))
+          console.log('action: ', action);
+
+          switch (action.operationName) {
+
+            case newMutationName:
+              // if new document belongs to current list (based on view selector), add it
+              const newDocument = action.result.data[newMutationName];
+              if (mingoQuery.test(newDocument)) {
+                newResults = addToResults(previousResults, newDocument);
+                newResults = reorderResults(newResults, options.sort);
+              }
+              console.log('** new **')
+              console.log('newDocument: ', newDocument)
+              console.log('belongs to list: ', mingoQuery.test(newDocument))
+              // TODO: reorder list
+              break;
+
+            case editMutationName:
+              const editedDocument = action.result.data[editMutationName];
+              if (mingoQuery.test(editedDocument)) {
+                // edited document belongs to the list
+                if (!_.findWhere(previousResults[listResolverName], {_id: editedDocument._id})) {
+                  // if document wasn't already in list, add it
+                  newResults = addToResults(previousResults, editedDocument);
+                }
+              } else {
+                // if edited doesn't belong to current list anymore (based on view selector), remove it
+                newResults = removeFromResults(previousResults, editedDocument);
+              }
+              newResults = reorderResults(newResults, options.sort);
+              console.log('** edit **')
+              console.log('editedDocument: ', editedDocument)
+              console.log('belongs to list: ', mingoQuery.test(editedDocument))
+              console.log('exists in list: ', !!_.findWhere(previousResults[listResolverName], {_id: editedDocument._id}))
+              // TODO: reorder list
+              break;
+
+            case removeMutationName:
+              const removedDocument = action.result.data[removeMutationName];
+              newResults = removeFromResults(previousResults, removedDocument);
+              console.log('** remove **')
+              console.log('removedDocument: ', removedDocument)
+              break;
+
+            default: 
+              console.log('** no action **')
+          }
+
+
+          console.log('newResults: ', newResults)
+          console.log('new titles: ', _.pluck(newResults[listResolverName], 'title'))
+          console.log('\n\n')
 
           return newResults;
         },

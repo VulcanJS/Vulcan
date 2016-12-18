@@ -6,7 +6,7 @@ import { Utils } from 'meteor/nova:core';
 export const servePostsApi = (terms) => {
   var posts = [];
 
-  var parameters = Posts.parameters.get(terms);
+  var parameters = Posts.getParameters(terms);
 
   const postsCursor = Posts.find(parameters.selector, parameters.options);
 

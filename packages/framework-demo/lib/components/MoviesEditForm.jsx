@@ -14,8 +14,6 @@ const MoviesEditForm = (props, context) => {
     <NovaForm 
       collection={Movies} 
       documentId={props.documentId}
-      refetch={props.refetch}
-      queryToUpdate="moviesListQuery"
       showRemove={true}
     />
   )

@@ -32,7 +32,7 @@ const withApp = WrappedComponent => {
           options(ownProps) {
             return {
               variables: {},
-              pollInterval: 20000,
+              // pollInterval: 20000,
             };
           },
           props(props) {

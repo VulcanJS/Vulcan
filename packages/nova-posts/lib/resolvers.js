@@ -24,7 +24,11 @@ const resolvers = {
 
     resolver(root, {terms, offset, limit}, context, info) {
       // TODO: call check function
-      let {selector, options} = context.Posts.parameters.get(terms);
+      let {selector, options} = context.Posts.getParameters(terms);
+      console.log('// postsList resolver')
+      console.log(selector)
+      console.log(options)
+      console.log(_.pluck(context.Posts.find(selector, options).fetch(), 'title'))
       options.limit = (limit < 1 || limit > 100) ? 100 : limit;
       options.skip = offset;
       // keep only fields that should be viewable by current user
@@ -49,7 +53,7 @@ const resolvers = {
     name: 'postsTotal',
     
     resolver(root, {terms}, context) {
-      const {selector} = context.Posts.parameters.get(terms);
+      const {selector} = context.Posts.getParameters(terms);
       return context.Posts.find(selector).count();
     },
   

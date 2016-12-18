@@ -79,7 +79,7 @@ PostsDailyList.defaultProps = {
 const options = {
   collection: Posts,
   queryName: 'postsDailyListQuery',
-  fragment: getRawComponent('PostsItem').fragment,
+  fragment: getRawComponent('PostsList').fragment,
   limit: 0,
 };
 

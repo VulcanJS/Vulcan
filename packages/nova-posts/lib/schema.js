@@ -188,7 +188,7 @@ const schema = {
     control: "select",
     autoValue(documentOrModifier) {
       // provide a default value if this is an insert operation and status field is not set in the document
-      if (documentOrModifier && !documentOrModifier.$set && documentOrModifier.userId) {
+      if (documentOrModifier && !documentOrModifier.$set && documentOrModifier.userId && !documentOrModifier.status) {
         const user = Users.findOne(documentOrModifier.userId);
         return Posts.getDefaultStatus(user);
       }

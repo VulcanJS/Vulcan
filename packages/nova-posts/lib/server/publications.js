@@ -75,7 +75,7 @@ Meteor.publish('posts.list', function (terms) {
     const currentUser = this.userId && Users.findOne(this.userId);
 
     terms.currentUserId = this.userId; // add currentUserId to terms
-    const {selector, options} = Posts.parameters.get(terms);
+    const {selector, options} = Posts.getParameters(terms);
 
     Counts.publish(this, terms.listId, Posts.find(selector, options), {noReady: true});
 

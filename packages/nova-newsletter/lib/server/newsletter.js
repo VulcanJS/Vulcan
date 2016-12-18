@@ -35,7 +35,7 @@ Newsletter.getPosts = function (postsCount) {
   var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.format("YYYY-MM-DD");
 
   // get parameters using "newsletter" view
-  var params = Posts.parameters.get({
+  var params = Posts.getParameters({
     view: "newsletter",
     after: after,
     limit: postsCount

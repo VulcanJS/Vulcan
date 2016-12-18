@@ -50,7 +50,10 @@ const withCurrentUser2 = component => {
         ${preloadedFields.join('\n')}   
       }   
     }   
-    `, {    
+    `, {
+      options: {
+        noFetch: true
+      },
       props(props) {    
         const {data: {loading, currentUser}} = props;   
         return {    

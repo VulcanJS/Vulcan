@@ -8,7 +8,7 @@
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
-    "apollo-client": "^0.5.20",
+    "apollo-client": "^0.5.22",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
