@@ -133,7 +133,7 @@ export default function withList (options) {
           }
 
         },
-        // pollInterval: 20000,
+        pollInterval: 20000,
       };
     },
     props(props) {

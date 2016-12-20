@@ -20,7 +20,7 @@ const Header = (props, context) => {
         <div className="nav">
           
           <div className="nav-user">
-            {props.currentUser ? <Components.UsersMenu/> : <Components.UsersAccountMenu/>}
+            {!!props.currentUser ? <Components.UsersMenu/> : <Components.UsersAccountMenu/>}
           </div>
 
           <div className="nav-new-post">

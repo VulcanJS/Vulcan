@@ -51,9 +51,9 @@ const withCurrentUser2 = component => {
       }   
     }   
     `, {
-      options: {
-        noFetch: true
-      },
+      // options: {
+      //   noFetch: true
+      // },
       props(props) {    
         const {data: {loading, currentUser}} = props;   
         return {    
