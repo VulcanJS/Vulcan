@@ -1,6 +1,6 @@
 # Telescope Nova
 
-Version 0.3
+Version 0.27.5
 
 This is the Apollo/GraphQL version of Telescope Nova. [You can find the documentation here](http://nova-docs.telescopeapp.org/).
 
