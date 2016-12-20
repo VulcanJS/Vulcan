@@ -63,19 +63,19 @@ export default function withList (options) {
           const reorderResults = (results, sort) => {
             const cursor = mingoQuery.find(results[listResolverName]);
             const sortedList = cursor.sort(sort).all();
-            console.log('sortedList: ', sortedList)
+            // console.log('sortedList: ', sortedList)
             results[listResolverName] = sortedList;
             return results;
           }
 
-          console.log('// withList reducer');
-          console.log('queryName: ', queryName);
-          console.log('terms: ', ownProps.terms);
-          console.log('selector: ', selector);
-          console.log('options: ', options);
-          console.log('previousResults: ', previousResults);
-          console.log('previous titles: ', _.pluck(previousResults[listResolverName], 'title'))
-          console.log('action: ', action);
+          // console.log('// withList reducer');
+          // console.log('queryName: ', queryName);
+          // console.log('terms: ', ownProps.terms);
+          // console.log('selector: ', selector);
+          // console.log('options: ', options);
+          // console.log('previousResults: ', previousResults);
+          // console.log('previous titles: ', _.pluck(previousResults[listResolverName], 'title'))
+          // console.log('action: ', action);
 
           switch (action.operationName) {
 
@@ -86,10 +86,9 @@ export default function withList (options) {
                 newResults = addToResults(previousResults, newDocument);
                 newResults = reorderResults(newResults, options.sort);
               }
-              console.log('** new **')
-              console.log('newDocument: ', newDocument)
-              console.log('belongs to list: ', mingoQuery.test(newDocument))
-              // TODO: reorder list
+              // console.log('** new **')
+              // console.log('newDocument: ', newDocument)
+              // console.log('belongs to list: ', mingoQuery.test(newDocument))
               break;
 
             case editMutationName:
@@ -100,33 +99,32 @@ export default function withList (options) {
                   // if document wasn't already in list, add it
                   newResults = addToResults(previousResults, editedDocument);
                 }
+                newResults = reorderResults(newResults, options.sort);
               } else {
                 // if edited doesn't belong to current list anymore (based on view selector), remove it
                 newResults = removeFromResults(previousResults, editedDocument);
               }
-              newResults = reorderResults(newResults, options.sort);
-              console.log('** edit **')
-              console.log('editedDocument: ', editedDocument)
-              console.log('belongs to list: ', mingoQuery.test(editedDocument))
-              console.log('exists in list: ', !!_.findWhere(previousResults[listResolverName], {_id: editedDocument._id}))
-              // TODO: reorder list
+              // console.log('** edit **')
+              // console.log('editedDocument: ', editedDocument)
+              // console.log('belongs to list: ', mingoQuery.test(editedDocument))
+              // console.log('exists in list: ', !!_.findWhere(previousResults[listResolverName], {_id: editedDocument._id}))
               break;
 
             case removeMutationName:
               const removedDocument = action.result.data[removeMutationName];
               newResults = removeFromResults(previousResults, removedDocument);
-              console.log('** remove **')
-              console.log('removedDocument: ', removedDocument)
+              // console.log('** remove **')
+              // console.log('removedDocument: ', removedDocument)
               break;
 
             default: 
-              console.log('** no action **')
+              // console.log('** no action **')
+              return previousResults;
           }
 
-
-          console.log('newResults: ', newResults)
-          console.log('new titles: ', _.pluck(newResults[listResolverName], 'title'))
-          console.log('\n\n')
+          // console.log('newResults: ', newResults)
+          // console.log('new titles: ', _.pluck(newResults[listResolverName], 'title'))
+          // console.log('\n\n')
 
           // copy over arrays explicitely to ensure new sort is taken into account
           return {
