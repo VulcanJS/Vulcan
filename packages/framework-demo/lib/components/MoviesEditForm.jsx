@@ -6,12 +6,12 @@ Wrapped with the "withDocument" container.
 */
 
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import Movies from '../collection.js';
 
 const MoviesEditForm = (props, context) => {
   return (
-    <NovaForm 
+    <SmartForm 
       collection={Movies} 
       documentId={props.documentId}
       showRemove={true}

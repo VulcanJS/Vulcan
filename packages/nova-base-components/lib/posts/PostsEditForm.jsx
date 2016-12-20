@@ -1,7 +1,7 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import Posts from "meteor/nova:posts";
 import { withRouter } from 'react-router'
 import { ShowIf, withMessages } from 'meteor/nova:core';
@@ -24,7 +24,7 @@ class PostsEditForm extends Component {
     return (
       <div className="posts-edit-form">
         {this.renderAdminArea()}
-        <NovaForm
+        <SmartForm
           collection={Posts}
           documentId={this.props.post._id}
           extraFragment={`

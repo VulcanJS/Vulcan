@@ -1,13 +1,13 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 import { withMessages } from 'meteor/nova:core';
 
 const CommentsEditForm = (props, context) => {
   return (
     <div className="comments-edit-form">
-      <NovaForm 
+      <SmartForm 
         layout="elementOnly"
         collection={Comments}
         documentId={props.comment._id}

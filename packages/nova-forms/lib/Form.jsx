@@ -400,7 +400,7 @@ class Form extends Component {
     this.setState({disabled: true});
 
     // complete the data with values from custom components which are not being catched by Formsy mixin
-    // note: it follows the same logic as NovaForm's getDocument method
+    // note: it follows the same logic as SmartForm's getDocument method
     data = {
       ...this.state.autofilledValues, // ex: can be values from EmbedlyURL or NewsletterSubscribe component
       ...data, // original data generated thanks to Formsy

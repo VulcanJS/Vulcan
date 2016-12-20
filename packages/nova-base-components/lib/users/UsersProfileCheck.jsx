@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Modal } from 'react-bootstrap';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
 import { withCurrentUser, Utils, registerComponent } from 'meteor/nova:core';
@@ -21,7 +21,7 @@ const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
         <Modal.Title><FormattedMessage id="users.complete_profile"/></Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <NovaForm
+        <SmartForm
           collection={ Users }
           documentId={ currentUser._id }
           fields={ requiredFields }

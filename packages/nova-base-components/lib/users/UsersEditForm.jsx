@@ -2,7 +2,7 @@ import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { Row, Col } from 'react-bootstrap';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import Users from 'meteor/nova:users';
 import { ShowIf, withCurrentUser, withDocument, withMessages } from 'meteor/nova:core';
 import gql from 'graphql-tag';
@@ -16,7 +16,7 @@ const UsersEditForm = (props, context) => {
     >
       <div className="page users-edit-form">
         <h2 className="page-title users-edit-form-title"><FormattedMessage id="users.edit_account"/></h2>
-        <NovaForm 
+        <SmartForm 
           collection={Users} 
           documentId={props.userId || props.document._id}
           queryToUpdate="usersSingleQuery"

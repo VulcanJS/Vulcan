@@ -163,7 +163,7 @@ export const createCollection = options => {
 
   collection.getParameters = (terms = {}) => {
 
-    console.log(terms)
+    // console.log(terms)
 
     let parameters = {
       selector: {},
@@ -177,7 +177,7 @@ export const createCollection = options => {
     // NOTE: always do this last to avoid _id sort overriding another sort
     parameters = Utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
 
-    console.log(parameters);
+    // console.log(parameters);
 
     return parameters;
   }

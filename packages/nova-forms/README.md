@@ -1,6 +1,6 @@
 # Nova Forms
 
-This package provides a `NovaForm` component that works with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
+This package provides a `SmartForm` component that works with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
 
 ### Install
 
@@ -79,7 +79,7 @@ const PostsSchema = new SimpleSchema({
 New document form:
 
 ```jsx
-<NovaForm 
+<SmartForm 
   collection={Posts}
   methodName="posts.new"
 />
@@ -88,7 +88,7 @@ New document form:
 Edit document form:
 
 ```jsx
-<NovaForm 
+<SmartForm 
   collection={Posts}
   methodName="posts.edit"
   document={post}
@@ -201,7 +201,7 @@ A React component that will be inserted just after the form component itself.
 
 ### Context
 
-The main `NovaForm` components makes the following objects available as context to all its children:
+The main `SmartForm` components makes the following objects available as context to all its children:
 
 ###### `autofilledValues`
 

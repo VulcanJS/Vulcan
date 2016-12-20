@@ -101,7 +101,7 @@ class FormWrapper extends Component{
 
     const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
 
-    // props received from parent component (i.e. <NovaForm/> call)
+    // props received from parent component (i.e. <SmartForm/> call)
     const parentProps = this.props;
 
     // props to pass on to child component (i.e. <Form />)

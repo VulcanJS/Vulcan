@@ -6,14 +6,14 @@ import { intlShape } from 'react-intl';
 // this component is used as a custom controller in user's account edit (cf. ./custom_fields.js)
 class NewsletterSubscribe extends Component {
 
-  // initiate NovaForm with the newsletter setting value
-  // note: forced boolean value because NovaForm's falsy value are empty double quotes.
+  // initiate SmartForm with the newsletter setting value
+  // note: forced boolean value because SmartForm's falsy value are empty double quotes.
   componentWillMount() {
     this.context.addToAutofilledValues({[this.props.name]: !!this.props.value});
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    // if the user is editing her profile & subscribed to the newsletter from the banner, send the update to NovaForm
+    // if the user is editing her profile & subscribed to the newsletter from the banner, send the update to SmartForm
     if (!!nextProps.value !== !!this.props.value) {
       this.context.addToAutofilledValues({[this.props.name]: !!nextProps.value});
     }

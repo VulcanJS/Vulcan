@@ -1,6 +1,6 @@
 import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import { FormattedMessage } from 'react-intl';
@@ -23,7 +23,7 @@ const CommentsNewForm = (props, context) => {
       failureComponent={<FormattedMessage id="users.cannot_comment"/>}
     >
       <div className="comments-new-form">
-        <NovaForm
+        <SmartForm
           collection={Comments}
           fragment={getRawComponent('PostsCommentsThread').fragment}
           successCallback={props.successCallback} 

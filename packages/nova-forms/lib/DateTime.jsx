@@ -3,7 +3,7 @@ import DateTimePicker from 'react-datetime';
 // import moment from 'moment';
 
 class DateTime extends Component {
-  // when the datetime picker mounts, NovaForm will catch the date value (no formsy mixin in this component)
+  // when the datetime picker mounts, SmartForm will catch the date value (no formsy mixin in this component)
   componentWillMount() {
     this.context.addToAutofilledValues({[this.props.name]: this.props.value || new Date()});
   }

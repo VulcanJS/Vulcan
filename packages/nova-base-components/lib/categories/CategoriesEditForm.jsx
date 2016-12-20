@@ -1,6 +1,6 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import Categories from "meteor/nova:categories";
 import { withMessages } from 'meteor/nova:core';
 
@@ -10,7 +10,7 @@ class CategoriesEditForm extends Component{
 
     return (
       <div className="categories-edit-form">
-        <NovaForm
+        <SmartForm
           collection={Categories}
           documentId={this.props.category._id}
           successCallback={category => {

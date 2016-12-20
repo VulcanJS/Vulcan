@@ -2,7 +2,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 if (typeof SimpleSchema !== "undefined") {
   SimpleSchema.extendOptions({
-    control: Match.Optional(Match.Any), // NovaForm control (String or React component)
+    control: Match.Optional(Match.Any), // SmartForm control (String or React component)
     order: Match.Optional(Number), // order in the form
     group: Match.Optional(Object), // form fieldset group
     beforeComponent: Match.Optional(Match.Any),

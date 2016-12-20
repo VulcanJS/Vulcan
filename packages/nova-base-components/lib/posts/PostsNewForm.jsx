@@ -1,5 +1,5 @@
 import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
-import NovaForm from "meteor/nova:forms";
+import SmartForm from "meteor/nova:forms";
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
@@ -13,7 +13,7 @@ const PostsNewForm = (props, context) => {
       failureComponent={<Components.UsersAccountForm />}
     >
       <div className="posts-new-form">
-        <NovaForm
+        <SmartForm
           collection={Posts}
           fragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {

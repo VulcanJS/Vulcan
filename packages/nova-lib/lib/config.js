@@ -20,7 +20,7 @@ SimpleSchema.extendOptions({
   template: Match.Optional(String), // legacy template used to display the field; backward compatibility (not used anymore)
   form: Match.Optional(Object), // form placeholder
   autoform: Match.Optional(Object), // legacy form placeholder; backward compatibility (not used anymore)
-  control: Match.Optional(Match.Any), // NovaForm control (String or React component)
+  control: Match.Optional(Match.Any), // SmartForm control (String or React component)
   order: Match.Optional(Number), // position in the form
   group: Match.Optional(Object), // form fieldset group
   preload: Match.Optional(Boolean),
