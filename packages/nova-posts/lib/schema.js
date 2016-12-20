@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
 import Posts from './collection.js';
-import { GraphQLSchema, Utils } from 'meteor/nova:core';
+import { Utils } from 'meteor/nova:core';
 
 /**
  * @summary Posts config namespace
@@ -301,22 +301,3 @@ const schema = {
 };
 
 export default schema;
-
-// TODO: to be moved elsewhere / change api
-const termsSchema = `
-  input Terms {
-    view: String
-    userId: String
-    cat: String
-    date: String
-    after: String
-    before: String
-    enableCache: Boolean
-    listId: String
-    query: String # search query
-    postId: String
-    limit: Float
-  }
-`;
-
-GraphQLSchema.addSchema(termsSchema);

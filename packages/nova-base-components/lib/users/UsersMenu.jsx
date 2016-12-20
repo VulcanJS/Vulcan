@@ -37,9 +37,9 @@ class UsersMenu extends Component {
 
 }
 
-UsersMenu.contextTypes = {
+UsersMenu.propsTypes = {
   currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object
+  client: React.PropTypes.object,
 };
 
 registerComponent('UsersMenu', UsersMenu, withCurrentUser, withApollo);

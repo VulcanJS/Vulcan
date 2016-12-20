@@ -13,7 +13,7 @@ export default function withList (options) {
         totalResolverName = collection.options.resolvers.total.name;
 
   return graphql(gql`
-    query ${queryName}($terms: Terms, $offset: Int, $limit: Int) {
+    query ${queryName}($terms: JSON, $offset: Int, $limit: Int) {
       ${totalResolverName}(terms: $terms)
       ${listResolverName}(terms: $terms, offset: $offset, limit: $limit) {
         ...${fragmentName}
@@ -24,6 +24,17 @@ export default function withList (options) {
     options(ownProps) {
       return {
         variables: {
+          // terms object can have the following key/type:
+          // -- view: String
+          // -- userId: String
+          // -- cat: String
+          // -- date: String
+          // -- after: String
+          // -- before: String
+          // -- enableCache: Boolean
+          // -- listId: String
+          // -- query: String # search query
+          // -- postId: String
           terms: ownProps.terms || {},
           offset: 0,
           limit: limit

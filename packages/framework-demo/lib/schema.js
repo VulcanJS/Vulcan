@@ -62,21 +62,3 @@ const schema = {
 };
 
 export default schema;
-
-
-const termsSchema = `
-  input Terms {
-    view: String
-    userId: String
-    cat: String
-    date: String
-    after: String
-    before: String
-    enableCache: Boolean
-    listId: String
-    query: String # search query
-    postId: String
-  }
-`;
-
-GraphQLSchema.addSchema(termsSchema);

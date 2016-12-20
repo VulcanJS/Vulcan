@@ -121,7 +121,7 @@ export const createCollection = options => {
     const queryResolvers = {};
     // list
     if (options.resolvers.list) { // e.g. ""
-      GraphQLSchema.addQuery(`${options.resolvers.list.name}(terms: Terms, offset: Int, limit: Int): [${options.typeName}]`);
+      GraphQLSchema.addQuery(`${options.resolvers.list.name}(terms: JSON, offset: Int, limit: Int): [${options.typeName}]`);
       queryResolvers[options.resolvers.list.name] = options.resolvers.list.resolver;
     }
     // single
@@ -131,7 +131,7 @@ export const createCollection = options => {
     }
     // total
     if (options.resolvers.total) {
-      GraphQLSchema.addQuery(`${options.resolvers.total.name}(terms: Terms): Int`);
+      GraphQLSchema.addQuery(`${options.resolvers.total.name}(terms: JSON): Int`);
       queryResolvers[options.resolvers.total.name] = options.resolvers.total.resolver;
     }
     GraphQLSchema.addResolvers({ Query: { ...queryResolvers } });
