@@ -25,7 +25,7 @@ export default function withDocument (options) {
     props: returnedProps => {
       const { ownProps, data } = returnedProps;
       return {
-        loading: data.loading,
+        loading: data.networkStatus === 1,
         document: data[singleResolverName],
         fragmentName,
         fragment,

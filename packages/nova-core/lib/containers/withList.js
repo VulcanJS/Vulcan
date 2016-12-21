@@ -149,15 +149,16 @@ export default function withList (options) {
     },
     props(props) {
 
-      const loading = props.data.loading,
-            fetchMore = props.data.fetchMore,
+      const fetchMore = props.data.fetchMore,
             refetch = props.data.refetch,
             results = props.data[listResolverName],
             totalCount = props.data[totalResolverName],
             networkStatus = props.data.networkStatus;
 
       return {
-        loading,
+        // see https://github.com/apollostack/apollo-client/blob/master/src/queries/store.ts#L28-L36
+        // note: loading will propably change soon https://github.com/apollostack/apollo-client/issues/831
+        loading: networkStatus === 1, // networkStatus = 1 <=> the graphql container is loading
         results,
         totalCount,
         refetch,
