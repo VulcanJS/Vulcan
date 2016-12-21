@@ -1,3 +1,5 @@
+import Users from './collection.js';
+
 const adminGroup = {
   name: "admin",
   order: 10

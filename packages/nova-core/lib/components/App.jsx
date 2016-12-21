@@ -1,7 +1,7 @@
 import { Components, registerComponent, getSetting, Strings } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { IntlProvider, intlShape} from 'react-intl';
-import withApp from '../containers/withApp.js';
+import withCurrentUser from '../containers/withCurrentUser.js';
 
 
 class App extends Component {
@@ -44,6 +44,6 @@ App.childContextTypes = {
   intl: intlShape,
 }
 
-registerComponent('App', App, withApp);
+registerComponent('App', App, withCurrentUser);
 
 export default App;
