@@ -1,6 +1,5 @@
 import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes } from 'react';
-import Users from 'meteor/nova:users';
 import withCurrentUser from '../containers/withCurrentUser.js';
 
 const ShowIf = props => {
