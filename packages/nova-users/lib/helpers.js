@@ -143,9 +143,7 @@ Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.find
  * @param {String} settingName
  * @param {Object} defaultValue
  */
-Users.getSetting = function (user, settingName, defaultValue) {
-  user = user || Meteor.user();
-  defaultValue = defaultValue || null;
+Users.getSetting = function (user = null, settingName, defaultValue = null) {
   // all settings should be prefixed by __ to avoid conflict with other meteor packages writing on Meteor.users collection, so add "__" if needed
   settingName = settingName.slice(0,2) === "__" ? settingName : "__" + settingName;
   if (user) {

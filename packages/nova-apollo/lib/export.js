@@ -2,13 +2,12 @@ import { GraphQLSchema } from 'meteor/nova:lib';
 
 import { makeExecutableSchema } from 'graphql-tools';
 
-import { meteorClientConfig, client } from './client.js';
+import { meteorClientConfig } from './client.js';
 
 import { createApolloServer } from './server.js';
 import generateTypeDefs from './schema';
 
 Meteor.startup(function () {
-  
   const typeDefs = generateTypeDefs();
 
   GraphQLSchema.finalSchema = typeDefs;
@@ -23,4 +22,4 @@ Meteor.startup(function () {
   });
 });
 
-export { meteorClientConfig, client };
+export { meteorClientConfig };
