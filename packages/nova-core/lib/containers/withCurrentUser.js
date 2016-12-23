@@ -13,24 +13,21 @@ const withCurrentUser = WrappedComponent => {
   class WithCurrentUser extends Component {
     constructor(...args) {
       super(...args);
-      
-      this.preloadedFields = ['_id'];
     }
     
-    // enforce preloading all fields, including the ones added from feature/custom packages 
-    // (ex: nova:newsletter)
-    componentWillMount() {
-      this.preloadedFields = _.compact(_.map(Users.simpleSchema()._schema, (field, fieldName) => {
-        return field.preload ? fieldName : undefined;
-      }));
-    }
+    // uncomment for debugging/monitoring
+    // componentWillUnmount() {
+    //   console.log('unmounting', Utils.getComponentDisplayName(WrappedComponent));
+    // }
     
     render() {
+      
+      const preloadedFields = Users.getPreloadedFields();
       
       const ComponentWithData = graphql(
         gql`query getCurrentUser {
           currentUser {
-            ${this.preloadedFields.join('\n')}
+            ${preloadedFields.join('\n')}
           }
         }
         `, {
