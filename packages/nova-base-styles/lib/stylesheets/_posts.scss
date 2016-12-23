@@ -1,7 +1,7 @@
+/*
+  Modified: 23DEC2016
 
-//////////////////////////////////////////////////////
-// Post List                                        //
-//////////////////////////////////////////////////////
+*/
 
 .posts-list-header{
   @include medium-large{
@@ -49,13 +49,8 @@
       background: $light-blue;
     }
   }
-}
-
-.posts-list-header{
-  @include medium-large{
-    .search-form, .posts-list-header-categories button, .posts-views button{
-      width: 160px;
-    }
+  .btn-group{
+    margin-right: $hmargin;
   }
 }
 
@@ -91,9 +86,9 @@
   @include medium-large{
     @include flex-center;
   }
-  border-bottom: $border;
-  padding: $vmargin 5px;
-  // margin-bottom: 15px;
+  border-bottom: $border; // Modified to remove border on posts
+  padding: $vmarginPostPadding 10px; // Modified
+  margin-bottom: 1px;
   &.posts-sticky{
     background: $light-yellow;
 
@@ -102,16 +97,17 @@
 
 .posts-item-vote{
   @include small{
-    float: right;    
+    float: right;
   }
   @include medium-large{
     margin-right: $hmargin;
   }
 }
 
+// Modified to remove border around arrow
 .upvote-button{
-  @include border;
-  @include border-radius;
+//  @include border;
+//  @include border-radius;
   @include flex-center;
   flex-direction: column;
   justify-content: center;
@@ -119,6 +115,7 @@
   .icon{
     text-align: center;
     display: block;
+    color: $upvoteIconColor;
   }
   .vote-count{
     text-align: center;
@@ -131,6 +128,36 @@
   &, &:active, &:hover{
     text-decoration: none;
   }
+}
+
+.downvote-button{
+//  @include border;
+//  @include border-radius;
+  @include flex-center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3px 5px;
+  .icon{
+    text-align: center;
+    display: block;
+    color: $downvoteIconColor;
+  }
+  .vote-count{
+    text-align: center;
+    display: block;
+  }
+  .voted &{
+    color: $light-text;
+  }
+  @include activeHover;
+  &, &:active, &:hover{
+    text-decoration: none;
+  }
+}
+//This is if not encased within upvote or downvote
+.vote-count{
+  text-align: center;
+  display: block;
 }
 
 .posts-item-content{
@@ -181,7 +208,7 @@
   @include medium-large{
     @include flex-center;
   }
-  font-size: $small-font;
+  font-size: $smaller-font;
   .users-avatar{
     margin-right: 5px;
   }
@@ -240,6 +267,13 @@
   }
 }
 
+.posts-commenters-discuss{
+  .icon{
+  color: $commentIconColor;
+}
+}
+
+// Adjust post thumbnails
 .posts-thumbnail{
   @include small{
     float: left;
@@ -260,14 +294,14 @@
 .posts-page{
   .posts-item{
     @include border-radius;
-    border: $border;
+    border: $postItemBorder;
     padding: $hmargin;
     margin-bottom: $vmargin;
   }
 }
 
 .posts-page-body{
-  font-size: $large-font;
+  font-size: $medium-font;
   margin-bottom: $hmargin;
 }
 
@@ -283,7 +317,7 @@
     &:hover{
       background: inherit;
       color: inherit;
-      border: inherit;      
+      border: inherit;
     }
   }
   .posts-no-results{

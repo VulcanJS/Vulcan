@@ -1,11 +1,32 @@
+/*
+   Last Modified: 23DEC2016
+
+   Purpose: Make a central location of variables site wide in this
+   file to easily manipulate the site visuals
+*/
+
 $hmargin: 10px;
 $vmargin: 15px;
+$vmarginPostPadding: 5px;
 
 $smaller-font: 0.8rem;
 $small-font: 0.9rem;
 $medium-font: 1rem;
 $large-font: 1.25rem;
 $larger-font: 1.35rem;
+
+// located at posts.scss
+$upvoteIconColor: #911818;
+$downvoteIconColor: #911818;
+$commentIconColor: #911818;
+
+//Avatar comment size is in UserAvatar.jsx
+
+// Posts
+$postItemBorder: 1px solid #6a1a1a;
+$borderTopComment: 1px solid #6a1a1a;
+$borderCommentsBody: 1px solid #6a1a1a;
+$leftCommentBorderNode: #1a6a2e;
 
 $border: 1px solid $light-border;
 
@@ -29,4 +50,3 @@ $border: 1px solid $light-border;
 @mixin border{
   border: $border;
 }
-

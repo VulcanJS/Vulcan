@@ -1,5 +1,5 @@
 .posts-comments-thread{
-  border-top: $border;
+  border-top: $borderTopComment;
   margin-top: $vmargin;
   padding-top: $vmargin;
 }
@@ -13,7 +13,7 @@
 }
 
 .comments-node .comments-node, .comments-item-reply{
-  border-left: 10px $lightest-border solid;
+  border-left: 10px $leftCommentBorderNode solid;
   padding-left: $hmargin;
 }
 
@@ -24,7 +24,7 @@
 .comments-item-body{
   @include border-radius;
   // max-width: 800px;
-  border: $border;
+  border: $borderCommentsBody;
   padding: $hmargin $vmargin;
 }
 
@@ -40,7 +40,7 @@
   .comments-item-date{
     margin-right: $hmargin;
     color: $medium-text;
-    font-size: $small-font;
+    font-size: $smaller-font;
   }
   .comment-edit, .comment-delete {
     font-size: $small-font;
