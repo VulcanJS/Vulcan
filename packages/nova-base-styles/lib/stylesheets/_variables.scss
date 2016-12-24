@@ -15,12 +15,15 @@ $medium-font: 1rem;
 $large-font: 1.25rem;
 $larger-font: 1.35rem;
 
-// located at posts.scss
+// Icons
+// upvote located at posts.scss
 $upvoteIconColor: #911818;
 $upvoteIconHoverColor: #f15050;
 $downvoteIconColor: #911818;
 $downvoteIconHoverColor: #f15050;
 $commentIconColor: #0c70f4;
+$replyIconColor: #0c70f4;
+$deleteIconColor: #0c70f4;
 
 //Avatar comment size is in UserAvatar.jsx
 
@@ -33,10 +36,19 @@ $borderCommentsBody: 1px solid #6a1a1a;
 $leftCommentBorderNode: #1a6a2e;
 $hmarginComment: 3px;
 $vmarginComment: 10px;
+$cmtDeleteColor: #f50a0a;
+$cmtEditColor: #f17612;
 
 // Button Colors
-$btnNormal: #2d6cac;
-$btnHover: #3f79b3;
+$btnPriNormal: #2d6cac;
+$btnPriHover: #3f79b3;
+
+$btnSecHover: #3f79b3;
+$btnBorderColor: #adadad;
+$btnSecActiveHover: #90ddb6;
+
+$btnSecMenuItem: #123456;
+$btnSecMenuItemHover: #234567;
 
 // Button Font Size
 $btnFontSize: 1rem;

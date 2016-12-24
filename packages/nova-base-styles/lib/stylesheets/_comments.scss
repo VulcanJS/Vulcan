@@ -42,12 +42,19 @@
     color: $medium-text;
     font-size: $smaller-font;
   }
-  .comment-edit, .comment-delete {
+  .comment-edit{
     font-size: $small-font;
+    color: $cmtEditColor;
+
   }
   .comment-delete {
+    font-size: $small-font;
     margin-left: 8px;
   }
+}
+
+.comments-delete-link{
+    color: $cmtDeleteColor;
 }
 
 .comments-item-text{
@@ -75,4 +82,12 @@
   a{
     display: block;
   }
+}
+
+.icon-reply{
+  color: $replyIconColor;
+}
+
+.icon-close{
+  color: $deleteIconColor;
 }
