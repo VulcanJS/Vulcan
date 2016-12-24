@@ -18,15 +18,32 @@ $larger-font: 1.35rem;
 // located at posts.scss
 $upvoteIconColor: #911818;
 $downvoteIconColor: #911818;
-$commentIconColor: #911818;
+$commentIconColor: #0c70f4;
 
 //Avatar comment size is in UserAvatar.jsx
 
 // Posts
 $postItemBorder: 1px solid #6a1a1a;
 $borderTopComment: 1px solid #6a1a1a;
+
+// Comments
 $borderCommentsBody: 1px solid #6a1a1a;
 $leftCommentBorderNode: #1a6a2e;
+$hmarginComment: 3px;
+$vmarginComment: 10px;
+
+// Button Colors
+$btnNormal: #2d6cac;
+$btnHover: #3f79b3;
+
+
+.users-name{
+  color: #c62d57;
+}
+
+.posts-commenters-comments-count{
+  color: #541255;
+}
 
 $border: 1px solid $light-border;
 

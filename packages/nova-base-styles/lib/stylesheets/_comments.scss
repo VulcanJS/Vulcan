@@ -25,7 +25,7 @@
   @include border-radius;
   // max-width: 800px;
   border: $borderCommentsBody;
-  padding: $hmargin $vmargin;
+  padding: $hmarginComment $vmarginComment;
 }
 
 .comments-item-meta{

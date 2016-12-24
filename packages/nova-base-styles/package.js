@@ -18,7 +18,7 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/stylesheets/bootstrap.css',
+  //  'lib/stylesheets/bootstrap.scss',
     'lib/stylesheets/main.scss'
   ], ['client']);
 

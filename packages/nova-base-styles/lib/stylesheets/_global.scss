@@ -1,13 +1,31 @@
+/* Modified: 23DEC2016
+
+   Changes: Split up the main, header & footer
+*/
+
 body{
   font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", sans-serif;
 }
 
-.main, .footer, .header{
+.main{
   margin-left: auto;
   margin-right: auto;
   padding: 0 $hmargin;
   max-width: 1200px;
 }
+ .footer{
+   margin-left: auto;
+   margin-right: auto;
+   padding: 0 $hmargin;
+   max-width: 1200px;
+ }
+
+ .header{
+   margin-left: auto;
+   margin-right: auto;
+   padding: 0 $hmargin;
+   max-width: 1200px;
+ }
 
 .main{
   margin-bottom: $vmargin;

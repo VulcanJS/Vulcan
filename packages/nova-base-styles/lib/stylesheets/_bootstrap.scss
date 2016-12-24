@@ -5,6 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v4.0.0 | MIT License | github.com/necolas/normalize.css */
+
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -323,8 +324,8 @@ html {
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
-  line-height: 1.5;
-  color: #373a3c;
+  line-height: 1.3;
+  color: #262729;
   background-color: #fff;
 }
 
@@ -382,7 +383,7 @@ blockquote {
 }
 
 a {
-  color: #0275d8;
+  color: #098807; // Modified: 23DEC2016 Default value #0275d8
   text-decoration: none;
 }
 
@@ -1889,8 +1890,8 @@ pre code {
   display: block;
   width: 100%;
   padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.25;
+  font-size: .9rem;
+  line-height: 1.07; // Modified: 23DEC2016 Default 1.25
   color: #55595c;
   background-color: #fff;
   background-image: none;
@@ -2242,7 +2243,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .btn {
   display: inline-block;
   font-weight: normal;
-  line-height: 1.25;
+  line-height: 1.00; //button height
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -2293,13 +2294,13 @@ fieldset[disabled] a.btn {
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #025aa5;
+  background-color: $btnNormal;
   border-color: #01549b;
 }
 
 .btn-primary:focus, .btn-primary.focus {
   color: #fff;
-  background-color: #025aa5;
+  background-color: $btnHover;
   border-color: #01549b;
 }
 
