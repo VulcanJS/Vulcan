@@ -1890,8 +1890,8 @@ pre code {
   display: block;
   width: 100%;
   padding: 0.5rem 0.75rem;
-  font-size: .9rem;
-  line-height: 1.07; // Modified: 23DEC2016 Default 1.25
+  font-size: 1rem;
+  line-height: 1.1; // Modified: 23DEC2016 Default 1.25
   color: #55595c;
   background-color: #fff;
   background-image: none;
@@ -2243,7 +2243,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .btn {
   display: inline-block;
   font-weight: normal;
-  line-height: 1.00; //button height
+  line-height: 1.15; //button height
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -2253,8 +2253,8 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
       -ms-user-select: none;
           user-select: none;
   border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  padding: 0.4rem 1rem;
+  font-size: $btnFontSize;
   border-radius: 0.25rem;
 }
 
@@ -2938,7 +2938,7 @@ input[type="button"].btn-block {
   display: none;
   float: left;
   min-width: 160px;
-  padding: 5px 0;
+  padding: 3px 0; // Modified: 24DEC2016
   margin: 2px 0 0;
   font-size: 1rem;
   color: #373a3c;

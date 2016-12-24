@@ -116,6 +116,9 @@
     text-align: center;
     display: block;
     color: $upvoteIconColor;
+    &:hover{
+      color: $upvoteIconHoverColor;
+    }
   }
   .vote-count{
     text-align: center;
@@ -124,10 +127,12 @@
   .voted &{
     color: $light-text;
   }
+/* Modified: 24DEC2016
   @include activeHover;
   &, &:active, &:hover{
     text-decoration: none;
   }
+  */
 }
 
 .downvote-button{

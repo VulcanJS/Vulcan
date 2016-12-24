@@ -17,7 +17,9 @@ $larger-font: 1.35rem;
 
 // located at posts.scss
 $upvoteIconColor: #911818;
+$upvoteIconHoverColor: #f15050;
 $downvoteIconColor: #911818;
+$downvoteIconHoverColor: #f15050;
 $commentIconColor: #0c70f4;
 
 //Avatar comment size is in UserAvatar.jsx
@@ -36,6 +38,8 @@ $vmarginComment: 10px;
 $btnNormal: #2d6cac;
 $btnHover: #3f79b3;
 
+// Button Font Size
+$btnFontSize: 1rem;
 
 .users-name{
   color: #c62d57;
