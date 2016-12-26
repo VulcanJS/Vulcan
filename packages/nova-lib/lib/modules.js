@@ -18,7 +18,7 @@ export { Routes, addRoute } from './routes.js';
 export { Utils } from './utils.js';
 export { getSetting } from './settings.js';
 export { Strings, addStrings } from './strings.js';
-export { Actions, Reducers } from './redux.js';
+export { Actions, Reducers, Middleware } from './redux.js';
 export { Headtags } from './headtags.js';
 
 export default Telescope;
