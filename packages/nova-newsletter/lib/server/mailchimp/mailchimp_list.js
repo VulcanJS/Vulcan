@@ -49,7 +49,7 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
       console.log("// User subscribed"); // eslint-disable-line
 
-      return {action: 'subscribed', ...subscribe};
+      return {actionResult: 'subscribed', ...subscribe};
 
     } catch (error) {
       // if user is already subscribed, update setting
@@ -95,7 +95,7 @@ MailChimpList.remove = (user) => {
 
       console.log("// User unsubscribed"); // eslint-disable-line
 
-      return {action: 'unsubscribed', ...subscribe};
+      return {actionResult: 'unsubscribed', ...subscribe};
 
     } catch (error) {
       throw new Meteor.Error("unsubscription-failed", error.message);
