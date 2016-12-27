@@ -7,7 +7,7 @@
 
 Package.describe({
   "summary": "A way to inject data to the client with initial HTML",
-  "version": "2.0.1-nova-patch",
+  "version": "2.0.1-patch",
   "git": "https://github.com/meteorhacks/inject-data",
   "name": "meteorhacks:inject-data"
 });
