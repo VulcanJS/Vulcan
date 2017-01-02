@@ -1,7 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-// import { routerMiddleware } from 'react-router-redux'
-
-import { Reducers }from 'meteor/nova:lib';
+import { Reducers, Middleware }from 'meteor/nova:core';
 
 const configureStore = (client, initialState = {}, history) => createStore(
   // reducers
@@ -10,7 +8,7 @@ const configureStore = (client, initialState = {}, history) => createStore(
   initialState,
   // middlewares
   compose(
-    applyMiddleware(client.middleware()/*, routerMiddleware(history)*/),
+    applyMiddleware(...Middleware, client.middleware()/*, routerMiddleware(history)*/),
     typeof window !== "undefined" && window.devToolsExtension ? window.devToolsExtension() : f => f
   ),
 );

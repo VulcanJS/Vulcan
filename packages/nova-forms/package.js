@@ -1,7 +1,7 @@
 Package.describe({
   name: "nova:forms",
   summary: "Form containers for React",
-  version: "0.27.5-nova",
+  version: "1.0.0",
   git: "https://github.com/meteor-utilities/react-form-containers.git"
 });
 
@@ -10,8 +10,8 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.3");
   
   api.use([
-    'nova:core@0.27.4-nova',
-    'nova:users@0.27.4-nova',
+    'nova:core@1.0.0',
+    'nova:users@1.0.0',
     
     'ecmascript',
     'check',

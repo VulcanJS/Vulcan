@@ -1,7 +1,11 @@
 # Telescope Nova
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Version 0.27.5
+=======
+[Version 1.0.0](https://github.com/TelescopeJS/Telescope/releases)
+>>>>>>> TelescopeJS/devel
 
 This is the Apollo/GraphQL version of Telescope Nova. [You can find the documentation here](http://nova-docs.telescopeapp.org/).
 =======

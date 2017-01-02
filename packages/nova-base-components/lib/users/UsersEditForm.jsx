@@ -49,7 +49,7 @@ UsersEditForm.fragment = gql`
 
 const options = {
   collection: Users,
-  queryName: 'UsersEditFormQuery',
+  queryName: 'usersEditPermissionCheckQuery',
   fragment: UsersEditForm.fragment,
 };
 

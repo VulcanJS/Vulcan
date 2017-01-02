@@ -3,9 +3,6 @@ import Comments from './collection.js';
 import Posts from 'meteor/nova:posts';
 import Users from 'meteor/nova:users';
 
-Comments.helpers({getCollection: () => Comments});
-Comments.helpers({getCollectionName: () => "comments"});
-
 //////////////////
 // Link Helpers //
 //////////////////
@@ -31,4 +28,3 @@ Comments.getAuthorName = function (comment) {
   var user = Users.findOne(comment.userId);
   return user ? Users.getDisplayName(user) : comment.author;
 };
-

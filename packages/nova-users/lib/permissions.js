@@ -160,7 +160,6 @@ Users.owns = function (user, document) {
     return false; // user not logged in
   }
 };
-// Users.helpers({owns: function (document) {return Users.owns(this, document);}});
 
 /**
  * @summary Check if a user is an admin
@@ -175,8 +174,6 @@ Users.isAdmin = function (userOrUserId) {
   }
 };
 Users.isAdminById = Users.isAdmin;
-// use _isAdmin because there is an isAdmin property on the User schema already
-// Users.helpers({_isAdmin: function () {return Users.isAdmin(this);}});
 
 /**
  * @summary Check if a user can view a field

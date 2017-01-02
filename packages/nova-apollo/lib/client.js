@@ -4,7 +4,7 @@
 // -------
 // start of main-client from apollostack/meteor-integration
 
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import { createNetworkInterface } from 'apollo-client';
 import { Accounts } from 'meteor/accounts-base';
 import { _ } from 'meteor/underscore';
 import 'isomorphic-fetch';
@@ -61,7 +61,8 @@ export const meteorClientConfig = (networkInterfaceConfig) => {
   return {
     ssrMode: Meteor.isServer,
     networkInterface: createMeteorNetworkInterface(networkInterfaceConfig),
-
+    queryDeduplication: true,
+    
     // Default to using Mongo _id, must use _id for queries.
     dataIdFromObject: (result) => {
       if (result._id && result.__typename) {

@@ -3,9 +3,6 @@ import Users from './collection.js';
 import moment from 'moment';
 import _ from 'underscore';
 
-Users.helpers({getCollection: () => Users});
-Users.helpers({getCollectionName: () => "users"});
-
 ////////////////////
 //  User Getters  //
 ////////////////////
@@ -146,9 +143,7 @@ Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.find
  * @param {String} settingName
  * @param {Object} defaultValue
  */
-Users.getSetting = function (user, settingName, defaultValue) {
-  user = user || Meteor.user();
-  defaultValue = defaultValue || null;
+Users.getSetting = function (user = null, settingName, defaultValue = null) {
   // all settings should be prefixed by __ to avoid conflict with other meteor packages writing on Meteor.users collection, so add "__" if needed
   settingName = settingName.slice(0,2) === "__" ? settingName : "__" + settingName;
   if (user) {
@@ -244,6 +239,18 @@ Users.getRequiredFields = function () {
   return fields;
 };
 
+/**
+ * @summary @method Users.getPreloadedFields
+ * Get a list of all fields that need to be preloaded for the current user
+ */
+Users.getPreloadedFields = function () {
+  // this = collection Users with the final (= extended) schema attached
+  const preloadedFields = _.compact(_.map(this.simpleSchema()._schema, (field, fieldName) => {
+    return field.preload ? fieldName : undefined;
+  }));
+  return preloadedFields;
+};
+
 Users.adminUsers = function (options) {
   return this.find({isAdmin : true}, options).fetch();
 };
@@ -255,4 +262,3 @@ Users.getCurrentUserEmail = function () {
 Users.findByEmail = function (email) {
   return Users.findOne({"__email": email});
 };
-
