@@ -53,7 +53,7 @@ class AccountsField extends Accounts.ui.Field {
     const { mount = true } = this.state;
     return mount ? (
       <div className={ className }>
-        <FormControl id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        <FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
       </div>
     ) : null;
   }
