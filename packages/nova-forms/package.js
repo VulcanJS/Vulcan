@@ -27,3 +27,13 @@ Package.onUse(function(api) {
   api.mainModule("lib/export.js", ["client", "server"]);
 
 });
+
+Package.onTest(function(api) {
+  api.use([
+    'ecmascript',
+    'tinytest',
+    'nova:forms'
+  ]);
+
+  api.mainModule('test.js');
+});
