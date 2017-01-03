@@ -8,11 +8,11 @@ import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
 import { configureStore } from "./store.js";
-import { runCallbacks, addRoute } from 'meteor/nova:core';
+import { runCallbacks, addRoute, Routes } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
-  const Routes = addRoute({name:"app.notfound", path:"*", component:Components.Error404});
+  addRoute({name:"app.notfound", path:"*", component:Components.Error404});
 
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
@@ -30,12 +30,12 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     Hooks client side and server side definition
   */
 
-  
+
   let history;
   let initialState;
   let store;
   let client;
-  
+
   // Use history hook to get a reference to the history object
   const historyHook = newHistory => history = newHistory;
 
@@ -66,7 +66,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     historyHook,
     htmlHook: (html) => {
       const head = Helmet.rewind();
-      return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);    
+      return html.replace('<head>', '<head>'+ head.title + head.meta + head.link);
     },
     preRender: (req, res, app) => {
       Cookie.plugToRequest(req, res);
@@ -77,7 +77,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     dehydrateHook: () => {
       // console.log(client.store.getState());
       const state = client.store.getState();
-      
+
       // https://github.com/apollostack/apollo-client/issues/845
       delete state.apollo.queries;
       delete state.apollo.mutations;
@@ -86,6 +86,6 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     // fetchDataHook: (components) => components,
   };
-  
+
   ReactRouterSSR.Run(AppRoutes, clientOptions, serverOptions);
 });
