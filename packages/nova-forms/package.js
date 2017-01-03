@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'check',
     'aldeed:simple-schema@1.5.3',
     'aldeed:collection2@2.8.0',
-    'fourseven:scss'
+    'fourseven:scss@3.8.0'
   ]);
 
   api.addFiles([
@@ -26,4 +26,14 @@ Package.onUse(function(api) {
 
   api.mainModule("lib/export.js", ["client", "server"]);
 
+});
+
+Package.onTest(function(api) {
+  api.use([
+    'ecmascript',
+    'tinytest',
+    'nova:forms'
+  ]);
+
+  api.mainModule('test.js');
 });
