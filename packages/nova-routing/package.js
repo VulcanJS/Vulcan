@@ -15,9 +15,6 @@ Package.onUse(function (api) {
     'nova:apollo@1.0.0',
   ]);
 
-  api.addFiles([
-    'lib/store.js',
-    'lib/routing.jsx'
-  ], ['client', 'server']);
+  api.mainModule('lib/routing.jsx', ['client', 'server']);
 
 });
