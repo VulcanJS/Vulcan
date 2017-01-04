@@ -69,7 +69,7 @@ class Form extends Component {
     this.state = {
       disabled: false,
       errors: [],
-      autofilledValues: {},
+      autofilledValues: (props.formType === 'new' && props.prefilledProps) || {},
       currentValues: {}
     };
   }
@@ -418,11 +418,6 @@ class Form extends Component {
 
       // remove any empty properties
       let document = _.compactObject(flatten(data));
-
-      // add prefilled properties
-      if (this.props.prefilledProps) {
-        document = Object.assign(document, this.props.prefilledProps);
-      }
 
       // call method with new document
       this.props.newMutation({document}).then(this.newMutationSuccessCallback).catch(this.mutationErrorCallback);
