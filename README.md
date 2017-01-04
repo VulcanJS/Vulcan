@@ -1,12 +1,12 @@
 # Telescope Nova
 
-### Looking for the Apollo/GraphQL version? Check out the [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branch. 
+### Looking for the Apollo/GraphQL version? Check out the [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branch.
 
 There are currently two distinct versions of Telescope: **Nova** and **Legacy**.
 
-**Nova** is the new, React-based version and all development will happen on this version going forward. It's used by the [master](https://github.com/TelescopeJS/Telescope/tree/master) and [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branches. 
+**Nova** is the new, React-based version and all development will happen on this version going forward. It's used by the [master](https://github.com/TelescopeJS/Telescope/tree/master) and [devel](https://github.com/TelescopeJS/Telescope/tree/devel) branches.
 
-Note that as of December 2016, the devel branch now uses [GraphQL](http://graphql.org) as its data layer while the master branch is still on the previous, non-GraphQL version. It is recommended you use the devel branch for any new projects if possible. 
+Note that as of December 2016, the devel branch now uses [GraphQL](http://graphql.org) as its data layer while the master branch is still on the previous, non-GraphQL version. It is recommended you use the devel branch for any new projects if possible.
 
 **Legacy** is the old, Blaze-powered version of Telescope and you can find it on the [legacy](https://github.com/TelescopeJS/Telescope/tree/legacy) and [legacy-devel](https://github.com/TelescopeJS/Telescope/tree/legacy-devel) branches.
 
@@ -137,11 +137,11 @@ You should have a Linux server online, for instance [a Digital Ocean droplet run
 
 Install globally the latest `kadirahq/meteor-up`.
 
-``` 
+```
 npm install -g mup
 ```
 
-Create Meteor Up configuration files in your project directory with `mup init`. In the example below, the configuration files are created in a `.deploy` directory at the root of your app. 
+Create Meteor Up configuration files in your project directory with `mup init`. In the example below, the configuration files are created in a `.deploy` directory at the root of your app.
 
 ```
 cd my-app-folder
@@ -159,7 +159,7 @@ settings.json - Settings for Meteor's settings API
 
 Then, replace the content of the newly created `settings.json` with your own settings (you can use the content of `sample_settings.json` as a starter).
 
-Fill `mup.js` with your credentials and optional settings (check the [Mup repo](https://github.com/kadirahq/meteor-up) for additional docs). 
+Fill `mup.js` with your credentials and optional settings (check the [Mup repo](https://github.com/kadirahq/meteor-up) for additional docs).
 
 **Note:** the `ROOT_URL` field should be the absolute url of your deploy ; and you need to explicitly point out to use `abernix/meteord:base` docker image with a `docker` field within the `meteor` object.
 
@@ -171,7 +171,7 @@ meteor: {
   env: {
         ROOT_URL: 'http://nova-app.com', // absolute url of your deploy
         ...
-  }, 
+  },
   ...
   docker: {
         image:'abernix/meteord:base' // docker image working with meteor 1.4 & node 4
@@ -187,7 +187,7 @@ You can take inspiration (or copy/paste) on this [`mup.js` example](https://gist
 
 From this folder, you can now setup Docker & Mongo your server with:
 ```
-mup setup 
+mup setup
 ```
 
 #### Deploy your app to your server
@@ -195,7 +195,7 @@ mup setup
 Still in the same folder, to deploy your app with your settings file:
 
 ```
-mup --settings settings.json
+mup deploy --settings settings.json
 ```
 
 ## Categories
@@ -380,7 +380,7 @@ The outermost HTML element within the component will have a class of the same na
 
 ### Get current user
 
-The current user is given to the components via the React context. You can access it via `this.context.currentUser` (class) or `context.currentUser` (stateless-component). 
+The current user is given to the components via the React context. You can access it via `this.context.currentUser` (class) or `context.currentUser` (stateless-component).
 
 The component needs to define `currentUser` in its `contextTypes`. If `contextTypes` is not defined, then `context` will be an empty object and you won't be able to access to the current user.
 
@@ -585,13 +585,13 @@ Telescope.routes.add({
 To change the index (`/`) route, you can do:
 
 ```js
-Telescope.routes.indexRoute = { 
-  name: "myIndexRoute", 
+Telescope.routes.indexRoute = {
+  name: "myIndexRoute",
   component: myIndexRouteComponent
 };
 ```
 
-For more complex router customizations, you can also disable the `nova:base-routes` package altogether and replace it with your own React Router code. 
+For more complex router customizations, you can also disable the `nova:base-routes` package altogether and replace it with your own React Router code.
 
 ### Using React Router In Your Components
 
@@ -609,7 +609,7 @@ class SearchForm extends Component{
 }
 
 export default withRouter(SearchForm);
-``` 
+```
 
 ## Groups & Permissions
 
@@ -636,12 +636,12 @@ Users.canView(user, document); // shortcut to check if a user can view a specifi
 Users.canEdit(user, document); // shortcut to check if a user can edit a specific document
 ```
 
-Documents can be Posts, Comments, or Users. 
+Documents can be Posts, Comments, or Users.
 
 Note that some groups are applied automatically without having to call `addToGroup`:
 
 - `anonymous`: any non-logged-in user is considered anonymous. This group is special in that anonymous users are by definition not part of any other group.
-- `default`: default group for all existing users. Is applied to every user in addition to any other groups. 
+- `default`: default group for all existing users. Is applied to every user in addition to any other groups.
 - `admins`: any user with the `isAdmin` flag set to true.
 
 ### Assigning Actions
