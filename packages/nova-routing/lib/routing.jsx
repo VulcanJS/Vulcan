@@ -7,8 +7,7 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { configureStore } from "./store.js";
-import { runCallbacks, addRoute, Routes } from 'meteor/nova:core';
+import { runCallbacks, addRoute, Routes, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
@@ -47,9 +46,13 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     wrapperHook(app, loginToken) {
       // console.log('wrapper hook initial state', initialState);
+      // configure apollo
       client = new ApolloClient(meteorClientConfig({cookieLoginToken: loginToken}));
-
-      store = configureStore(client, initialState, history);
+      const reducers = addReducer({apollo: client.reducer()});
+      const middleware = addMiddleware(client.middleware());
+      
+      // configure the redux store
+      store = configureStore(reducers, initialState, middleware);
 
       return <ApolloProvider store={store} client={client}>{app}</ApolloProvider>
     },
@@ -76,12 +79,6 @@ Meteor.startup(function initNovaRoutesAndApollo() {
     },
     dehydrateHook: () => {
       // console.log(client.store.getState());
-      const state = client.store.getState();
-
-      // https://github.com/apollostack/apollo-client/issues/845
-      delete state.apollo.queries;
-      delete state.apollo.mutations;
-
       return client.store.getState();
     },
     // fetchDataHook: (components) => components,
