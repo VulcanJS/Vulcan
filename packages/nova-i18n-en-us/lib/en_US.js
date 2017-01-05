@@ -92,6 +92,7 @@ addStrings('en', {
   "categories": "categories",
   "categories.all": "All Categories",
   "categories.edit": "Edit Category",
+  "categories.edit_success": "Category “{name}” edited.",
   "categories.new": "New Category",
   "categories.delete": "delete Category",
   "categories.name": "Name",
@@ -106,7 +107,7 @@ addStrings('en', {
   "categories.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "categories.subscribed_categories" : "Categories subscribed to",
   "categories.delete_confirm": "Delete category “{title}”?",
-  "categories.delete_success": "Category deleted.",
+  "categories.delete_success": "Category “{name}” deleted.",
 
   "settings": "Settings",
   "settings.json_message": "Note: settings already provided in your <code>settings.json</code> file will be disabled.",
