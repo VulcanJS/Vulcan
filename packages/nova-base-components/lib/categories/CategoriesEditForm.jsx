@@ -19,7 +19,7 @@ const CategoriesEditForm = (props, context) => {
         removeSuccessCallback={({documentId, documentTitle}) => {
           props.closeCallback();
           props.flash(context.intl.formatMessage({id: 'categories.delete_success'}, {name: documentTitle}), "success");
-          props.events.track("category deleted", {_id: documentId});
+          // context.events.track("category deleted", {_id: documentId});
         }}
         showRemove={true}
       />
@@ -36,7 +36,7 @@ CategoriesEditForm.propTypes = {
 
 CategoriesEditForm.contextTypes = {
   intl: intlShape,
-  events: React.PropTypes.object,
+  // events: React.PropTypes.object,
 };
 
 registerComponent('CategoriesEditForm', CategoriesEditForm, withMessages);

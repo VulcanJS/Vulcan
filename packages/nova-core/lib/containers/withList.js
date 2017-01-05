@@ -2,12 +2,14 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting } from 'meteor/nova:core';
 import Mingo from 'mingo';
+import deepmerge from 'deepmerge';
+
+import { getSetting } from 'meteor/nova:core';
 
 export default function withList (options) {
 
-  const { queryName, collection, fragment, limit = getSetting('postsPerPage', 10) } = options,
+  const { queryName, collection, fragment, limit = getSetting('postsPerPage', 10), terms: optionsTerms = {} } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -22,9 +24,13 @@ export default function withList (options) {
     ${fragment}
   `, {
     options(ownProps) {
+      // merge terms from props and options (terms from props have priority)
+      const propsTerms = ownProps.terms || {};
+      const terms = deepmerge(propsTerms, optionsTerms);
+
       return {
         variables: {
-          // terms object can have the following key/type:
+          // terms object may have the following key/type:
           // -- view: String
           // -- userId: String
           // -- cat: String
@@ -35,9 +41,9 @@ export default function withList (options) {
           // -- listId: String
           // -- query: String # search query
           // -- postId: String
-          terms: ownProps.terms || {},
+          terms,
           offset: 0,
-          limit: limit
+          limit,
         },
         reducer: (previousResults, action) => {
 
@@ -48,7 +54,7 @@ export default function withList (options) {
           let newResults = previousResults;
 
           // get mongo selector and options objects based on current terms
-          const { selector, options } = collection.getParameters(ownProps.terms);
+          const { selector, options } = collection.getParameters(terms);
           const mingoQuery = Mingo.Query(selector);
 
           // function to remove a document from a results object, used by edit and remove cases below
@@ -81,7 +87,7 @@ export default function withList (options) {
 
           // console.log('// withList reducer');
           // console.log('queryName: ', queryName);
-          // console.log('terms: ', ownProps.terms);
+          // console.log('terms: ', terms);
           // console.log('selector: ', selector);
           // console.log('options: ', options);
           // console.log('previousResults: ', previousResults);
