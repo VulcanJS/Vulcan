@@ -5,7 +5,7 @@ module.exports = {
       host: '198.199.111.153',
       username: 'discordius',
       //pem: 'Users/Discordius/.ssh/Telescope', // mup doesn't support '~' alias for home directory
-      password: '6fpfghyLnVIP',
+      password: 'Your-Password-Here',
       // or leave blank to authenticate using ssh-agent
       // opts: {
       //    port: 8000,
