@@ -2,10 +2,9 @@ import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
-import { ShowIf, ContextPasser, withList } from "meteor/nova:core";
+import { ShowIf, withList } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
-import Users from 'meteor/nova:users';
 import Categories from 'meteor/nova:categories';
 import gql from 'graphql-tag';
 
@@ -45,9 +44,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ContextPasser closeCallback={this.closeModal}>
-            <Components.CategoriesEditForm category={category}/>
-          </ContextPasser>
+          <Components.CategoriesEditForm category={category} closeCallback={this.closeModal} />
         </Modal.Body>
       </Modal>
     )
@@ -61,9 +58,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ContextPasser closeCallback={this.closeModal}>
-            <Components.CategoriesNewForm/>
-          </ContextPasser>
+          <Components.CategoriesNewForm closeCallback={this.closeModal}/>
         </Modal.Body>
       </Modal>
     )
