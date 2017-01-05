@@ -6,7 +6,7 @@ import { AppComposer } from "meteor/nova:core";
 class App extends Component {
 
   getLocale() {
-    return Telescope.settings.get("locale", "en");
+    return Telescope.settings.get("locale", Meteor.settings.public.language || "en");
   }
 
   getChildContext() {
