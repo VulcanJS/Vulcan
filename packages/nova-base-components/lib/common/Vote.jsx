@@ -47,6 +47,25 @@ class Vote extends Component {
     } 
   }
 
+  downvote(e) {
+    e.preventDefault();
+
+    this.startLoading();
+
+    const post = this.props.post;
+    const user = this.props.currentUser;
+
+    if(!user){
+      this.props.flash("Please log in first");
+      this.stopLoading();
+    } else {
+      const voteType = this.hasDownvoted(user, post) ? "cancelDownvote" : "downvote";
+      this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
+        this.stopLoading();
+      });
+    } 
+  }
+
   render() {
 
     // uncomment for debug:
@@ -70,7 +89,11 @@ class Vote extends Component {
         <a className="upvote-button" onClick={this.upvote}>
           {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
-          <div className="vote-count">{post.baseScore || 0}</div>
+        </a>
+        <div className="vote-count">{post.baseScore || 0}</div>
+        <a className="downvote-button" onClick={this.downvote}>
+          {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="downvote" /> }
+          <div className="sr-only">Downvote</div>
         </a>
       </div>
     )

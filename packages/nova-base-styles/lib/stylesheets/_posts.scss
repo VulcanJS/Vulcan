@@ -101,35 +101,46 @@
 }
 
 .posts-item-vote{
-  @include small{
-    float: right;    
-  }
-  @include medium-large{
-    margin-right: $hmargin;
-  }
-}
-
-.upvote-button{
   @include border;
   @include border-radius;
   @include flex-center;
   flex-direction: column;
   justify-content: center;
   padding: 3px 5px;
-  .icon{
-    text-align: center;
-    display: block;
+  @include small{
+    float: right;    
   }
-  .vote-count{
+  @include medium-large{
+    margin-right: $hmargin;
+  }
+  @include activeHover;
+  &, &:active, &:hover{
+    text-decoration: none;
+  }
+}
+
+.upvote-button{
+  .icon{
     text-align: center;
     display: block;
   }
   .voted &{
     color: $light-text;
   }
-  @include activeHover;
-  &, &:active, &:hover{
-    text-decoration: none;
+}
+
+.vote-count{
+  text-align: center;
+  display: block;
+}
+
+.downvote-button{
+  .icon{
+    text-align: center;
+    display: block;
+  }
+  .voted &{
+    color: $light-text;
   }
 }
 
