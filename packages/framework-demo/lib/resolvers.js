@@ -27,12 +27,12 @@ const resolvers = {
 
     name: 'moviesList',
 
-    resolver(root, {terms, offset, limit}, context, info) {
+    resolver(root, {terms}, context, info) {
       const options = {
         sort: {createdAt: -1},
         // protected limit
-        limit: (limit < 1 || limit > 10) ? 10 : limit,
-        skip: offset,
+        limit: (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit,
+        skip: terms.offset,
         // keep only fields that should be viewable by current user
         fields: context.getViewableFields(context.currentUser, context.Movies),
       };

@@ -40,10 +40,10 @@ const resolvers = {
 
     name: 'commentsList',
 
-    resolver(root, {terms, offset, limit}, context) {
+    resolver(root, {terms}, context) {
       const options = {
-        limit: (limit < 1 || limit > 10) ? 10 : limit,
-        skip: offset,
+        limit: (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit,
+        skip: terms.offset,
         fields: context.getViewableFields(context.currentUser, context.Comments)
       };
 
