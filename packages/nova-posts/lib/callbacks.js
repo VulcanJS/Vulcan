@@ -11,10 +11,11 @@ import Users from 'meteor/nova:users';
  * @summary Generate HTML body and excerpt from Markdown on post insert
  */
 Posts.before.insert(function (userId, doc) {
+  const excerptLength = Telescope.settings.get('postExcerptLength') || 30;
   if(!!doc.body) {
     const htmlBody = Telescope.utils.sanitize(marked(doc.body));
     doc.htmlBody = htmlBody;
-    doc.excerpt = Telescope.utils.trimHTML(htmlBody,30);
+    doc.excerpt = Telescope.utils.trimHTML(htmlBody, excerptLength);
   }
 });
 
@@ -22,11 +23,12 @@ Posts.before.insert(function (userId, doc) {
  * @summary Generate HTML body and excerpt from Markdown when post body is updated
  */
 Posts.before.update(function (userId, doc, fieldNames, modifier) {
+  const excerptLength = Telescope.settings.get('postExcerptLength') || 30;
   // if body is being modified or $unset, update htmlBody too
   if (Meteor.isServer && modifier.$set && modifier.$set.body) {
     const htmlBody = Telescope.utils.sanitize(marked(modifier.$set.body));
     modifier.$set.htmlBody = htmlBody;
-    modifier.$set.excerpt = Telescope.utils.trimHTML(htmlBody,30);
+    modifier.$set.excerpt = Telescope.utils.trimHTML(htmlBody, excerptLength);
   }
   if (Meteor.isServer && modifier.$unset && (typeof modifier.$unset.body !== "undefined")) {
     modifier.$unset.htmlBody = "";

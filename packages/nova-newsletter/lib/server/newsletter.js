@@ -84,7 +84,8 @@ Newsletter.build = function (postsArray) {
 
     // trim the body and remove any HTML tags
     if (post.body) {
-      properties.body = Telescope.utils.trimHTML(post.htmlBody, 20);
+      const excerptLength = Telescope.settings.get('newsletterExcerptLength') || 20;
+      properties.body = Telescope.utils.trimHTML(post.htmlBody, excerptLength);
     }
 
     // if post has comments
