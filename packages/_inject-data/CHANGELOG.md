@@ -1,6 +1,6 @@
 # Change Log
 
-### v2.0.1-nova-patch
+### v2.0.1-patch
 We use this patch to avoid data injection failure during server-side rendering on Meteor 1.4.
 All the credits for this package goes to Arunoda, Kadira's team & @rigconfig.
 See https://github.com/meteor/meteor/issues/7992 

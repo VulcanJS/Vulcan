@@ -24,13 +24,13 @@ const resolvers = {
     name: 'categoriesList',
 
     resolver(root, {terms}, context, info) {
-      const options = {
-        limit: terms.limit,
-        skip: terms.offset,
-        // keep only fields that should be viewable by current user
-        fields: context.getViewableFields(context.currentUser, context.Categories),
-      };
-      return context.Categories.find({}, options).fetch();
+      let {selector, options} = context.Categories.getParameters(terms);
+      
+      options.limit = terms.limit;
+      options.skip = terms.offset;
+      options.fields = context.getViewableFields(context.currentUser, context.Categories);
+      
+      return context.Categories.find(selector, options).fetch();
     },
 
   },

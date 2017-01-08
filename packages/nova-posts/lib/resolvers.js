@@ -26,7 +26,6 @@ const resolvers = {
       let {selector, options} = context.Posts.getParameters(terms);
       options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
       options.skip = terms.offset;
-      // keep only fields that should be viewable by current user
       options.fields = context.getViewableFields(context.currentUser, context.Posts);
       return context.Posts.find(selector, options).fetch();
     },

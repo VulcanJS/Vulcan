@@ -9,7 +9,7 @@ class NewsletterButton extends Component {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
 
-    const isSubscribed = props.currentUser.__newsletter_subscribeToNewsletter;
+    const isSubscribed = props.user.__newsletter_subscribeToNewsletter;
 
     this.state = {
       labelId: isSubscribed ? 'newsletter.unsubscribe' : 'newsletter.subscribe',
@@ -20,29 +20,29 @@ class NewsletterButton extends Component {
   subscriptionAction() {
 
     const action = this.state.action;
-
-    this.props[action]({userId: this.props.currentUser._id}).then(result => {
-      console.log(result)
+    this.props[action]({userId: this.props.user._id}).then(result => {
       this.props.successCallback(result);
-      if (result.data[action].action === 'subscribed') {
-        this.setState({
-          labelId: 'newsletter.unsubscribe',
-          action: 'removeUserNewsletter',
-        });
-      } else {
-        this.setState({
-          labelId: 'newsletter.subscribe',
-          action: 'addUserNewsletter',
-        });
-      }
+      // note: cannot update state, the component is unmounted when we try to update it 
+      // console.log(result);
+      // if (result.data[action].actionResult === 'subscribed') {
+      //   this.setState({
+      //     labelId: 'newsletter.unsubscribe',
+      //     action: 'removeUserNewsletter',
+      //   });
+      // } else {
+      //   this.setState({
+      //     labelId: 'newsletter.subscribe',
+      //     action: 'addUserNewsletter',
+      //   });
+      // }
     }).catch(error => {
-      console.log(error);
+      console.log(error); // eslint-disable-line no-console
       this.props.flash(error.message, "error");
     });
   }
 
   render() {
-
+    
     return (
       <Button
         className="newsletter-button"

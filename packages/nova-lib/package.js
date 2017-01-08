@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nova:lib',
   summary: 'Telescope libraries.',
-  version: '0.27.5-nova',
+  version: '1.0.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -25,7 +25,7 @@ Package.onUse(function (api) {
     'email',
     'tracker',
     'ecmascript',
-    'react-meteor-data@0.2.8',
+    // 'react-meteor-data@0.2.8',
     'service-configuration',
     'shell-server',
     //'apollo@0.1.2',
@@ -39,7 +39,7 @@ Package.onUse(function (api) {
     'percolatestudio:synced-cron@1.1.0',
     'jparker:gravatar@0.4.1',
     // 'kadira:flow-router-ssr@3.13.0',
-    "reactrouter:react-router-ssr@3.1.5",
+    "reactrouter:react-router-ssr@3.1.6-patch",
     // 'kadira:flow-router@2.12.1',
     // 'utilities:smart-methods@0.1.4',
     'meteorhacks:inject-initial@1.0.4',

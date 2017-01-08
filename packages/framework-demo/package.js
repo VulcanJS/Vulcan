@@ -5,8 +5,8 @@ Package.describe({
 Package.onUse(function (api) {
 
   api.use([
-    'nova:core@0.27.4-nova',
-    'nova:forms@0.27.4-nova',
+    'nova:core@1.0.0',
+    'nova:forms@1.0.0',
 
     'std:accounts-ui@1.2.9',
   ]);
