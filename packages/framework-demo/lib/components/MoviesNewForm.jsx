@@ -8,6 +8,7 @@ import React, { PropTypes, Component } from 'react';
 import SmartForm from "meteor/nova:forms";
 import Movies from '../collection.js';
 import { MoviesListFragment } from './MoviesList.jsx';
+import { withMessages } from 'meteor/nova:core';
 
 const MoviesNewForm = (props, context) => {
   return (
@@ -21,5 +22,4 @@ const MoviesNewForm = (props, context) => {
 MoviesNewForm.contextTypes = {
   closeCallback: React.PropTypes.func,
 }
-
-export default MoviesNewForm;
+export default withMessages(MoviesNewForm);

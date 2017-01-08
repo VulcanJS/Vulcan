@@ -88,7 +88,7 @@ const withList = (options) => {
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, ownProps, listResolverName, totalResolverName);
+              return queryReducer(previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName);
             
             },
             pollInterval: 20000,
@@ -149,7 +149,7 @@ const withList = (options) => {
 
 
 // define query reducer separately
-const queryReducer = (previousResults, action, collection, ownProps, listResolverName, totalResolverName) => {
+const queryReducer = (previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName) => {
 
   const newMutationName = `${collection._name}New`;
   const editMutationName = `${collection._name}Edit`;
