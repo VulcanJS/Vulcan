@@ -238,6 +238,12 @@ const queryReducer = (previousResults, action, collection, ownProps, listResolve
       // console.log('removedDocument: ', removedDocument)
       break;
 
+    case 'vote':
+      // console.log('** vote **')
+      // reorder results in case vote changed the order
+      newResults = reorderResults(newResults, options.sort);
+      break;
+
     default: 
       // console.log('** no action **')
       return previousResults;

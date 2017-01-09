@@ -1,5 +1,4 @@
-import Posts from 'meteor/nova:posts';
-import { GraphQLSchema } from 'meteor/nova:core';
+import { GraphQLSchema, Utils } from 'meteor/nova:core';
 import { operateOnItem } from './vote.js';
 
 const voteSchema = `
@@ -8,17 +7,35 @@ const voteSchema = `
     power: Float
     votedAt: String
   }
+  type VoteResult {
+    _id: String
+    upvoters: [User]
+    upvotes: Float
+    downvoters: [User]
+    downvotes: Float
+    baseScore: Float
+  }
 `;
 
 GraphQLSchema.addSchema(voteSchema);
 
-GraphQLSchema.addMutation('postsVote(documentId: String, voteType: String) : Post');
+/*
+
+Note: although returning a VoteResult object should in theory work, 
+this currently messes the automatic store update on the client. 
+So return a Post for now. 
+
+*/
+
+// GraphQLSchema.addMutation('vote(documentId: String, voteType: String, collectionName: String) : VoteResult');
+GraphQLSchema.addMutation('vote(documentId: String, voteType: String, collectionName: String) : Post');
 
 const voteResolver = {
   Mutation: {
-    postsVote(root, {documentId, voteType}, context) {
-      const post = Posts.findOne(documentId);
-      return context.Users.canDo(context.currentUser, `posts.${voteType}`) ? operateOnItem(context.Posts, post, context.currentUser, voteType) : false;
+    vote(root, {documentId, voteType, collectionName}, context) {
+      const collection = context[Utils.capitalize(collectionName)];
+      const document = collection.findOne(documentId);
+      return context.Users.canDo(context.currentUser, `${collectionName.toLowerCase()}.${voteType}`) ? operateOnItem(collection, document, context.currentUser, voteType) : false;
     },
   },
 };

@@ -18,6 +18,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
   var hasDownvotedItem = hasDownvoted(user, item);
   var update = {};
 
+  // console.log('// operateOnItem')
   // console.log(collection)
   // console.log(item)
   // console.log(user)
@@ -127,11 +128,13 @@ export const operateOnItem = function (collection, originalItem, user, operation
     }
   }
 
+  const voteResult = _.pick(item, '__typename', '_id', 'upvoters', 'downvoters', 'upvotes', 'downvotes', 'baseScore');
+
   // if (isSimulation) {
-  //   console.log('item from apollo store', item);
+  //   console.log('item from apollo store', voteResult);
   // } else {
-  //   console.log('item from mongo db', item);
+  //   console.log('item from mongo db', voteResult);
   // }
 
-  return item;
+  return voteResult;
 };
