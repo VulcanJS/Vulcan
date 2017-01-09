@@ -116,7 +116,7 @@ srp@1.0.10
 standard-minifier-css@1.3.2
 standard-minifier-js@1.2.1
 standard-minifiers@1.0.6
-std:accounts-ui@1.2.9
+std:accounts-ui@1.2.17
 tmeasday:check-npm-versions@0.3.1
 tracker@1.1.1
 ui@1.0.12
