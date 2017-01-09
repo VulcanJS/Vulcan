@@ -2,7 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import marked from 'marked';
 import Posts from './collection.js';
-import { Utils } from 'meteor/nova:core';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 /**
  * @summary Posts config namespace
@@ -139,9 +139,10 @@ const schema = {
     publish: true,
     viewableBy: ['guests'],
     autoValue(documentOrModifier) {
+      const excerptLength = getSetting('postExcerptLength', 30);
       const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
       if (body) {
-        return Utils.trimHTML(Utils.sanitize(marked(body)), 30);
+        return Utils.trimHTML(Utils.sanitize(marked(body)), excerptLength);
       } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
         return ''
       }
