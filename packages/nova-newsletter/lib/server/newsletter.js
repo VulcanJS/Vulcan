@@ -1,3 +1,4 @@
+import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
@@ -51,6 +52,7 @@ Newsletter.getPosts = function (postsCount) {
  */
 Newsletter.build = function (postsArray) {
   var postsHTML = '', subject = '';
+  const excerptLength = getSetting('newsletterExcerptLength', 20);
 
   // 1. Iterate through posts and pass each of them through a handlebars template
   postsArray.forEach(function (post, index) {
@@ -84,7 +86,7 @@ Newsletter.build = function (postsArray) {
 
     // trim the body and remove any HTML tags
     if (post.body) {
-      properties.body = Utils.trimHTML(post.htmlBody, 20);
+      properties.body = Utils.trimHTML(post.htmlBody, excerptLength);
     }
 
     // if post has comments
@@ -97,7 +99,7 @@ Newsletter.build = function (postsArray) {
         var user = Users.findOne(comment.userId);
 
         // add properties to comment
-        comment.body = Utils.trimHTML(comment.htmlBody, 20);
+        comment.body = Utils.trimHTML(comment.htmlBody, excerptLength);
         comment.authorProfileUrl = Users.getProfileUrl(user, true);
         comment.authorAvatarUrl = Users.avatar.getUrl(user);
 

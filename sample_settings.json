@@ -30,7 +30,6 @@
     "googleAnalyticsId":"123foo"
   },
 
-
   "defaultEmail": "hello@world.com",
   "mailUrl": "smtp://postmaster%40foo.mailgun.org:foo123@smtp.mailgun.org:587/",
   "scoreUpdateInterval": "30",
@@ -38,6 +37,9 @@
   "embedlyKey":"123foo",
   "mailChimpAPIKey": "123foo",
   "mailChimpListId": "123foo",
+
+  "newsletterExcerptLength": 20,
+  "postExcerptLength": 30,
 
   "categories": [
     {
