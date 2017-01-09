@@ -26,14 +26,18 @@ class PostsDailyList extends Component{
   loadMoreDays(e) {
     e.preventDefault();
     const numberOfDays = getSetting('numberOfDays', 5);
-    const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
+    
+    /*
+    note: loadMoreBefore is used when doing incremental loading, 
+    but we're not doing that anymore so we only need to change 'after'
+    */
+    
+    // const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     this.props.loadMore({
-      terms: {
-        view: 'top',
-        before: loadMoreBefore,
-        after: loadMoreAfter,
-      }
+      ...this.props.terms,
+      // before: loadMoreBefore,
+      after: loadMoreAfter,
     });
     this.setState({
       days: this.state.days + this.props.increment,
@@ -59,7 +63,7 @@ class PostsDailyList extends Component{
     return (
       <div className="posts-daily">
         <Components.PostsListHeader />
-        {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} />)}
+        {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} loading={true} />)}
         <a className="posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
       </div>
     )
