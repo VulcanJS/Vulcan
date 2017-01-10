@@ -16,24 +16,32 @@ class PostsDailyList extends Component{
     };
   }
 
-  // for a number of days "n" return dates object for the past n days
-  getLastNDates(n) {
-    return _.range(n).map(
-      i => moment().subtract(i, 'days').startOf('day')
+  // return date objects for all the dates in a range
+  getDateRange(after, before) {
+    const mAfter = moment(after, 'YYYY-MM-DD');
+    const mBefore = moment(before, 'YYYY-MM-DD');
+    const daysCount = mBefore.diff(mAfter, 'days') + 1;
+    const range = _.range(daysCount).map(
+      i => moment(before, 'YYYY-MM-DD').subtract(i, 'days').startOf('day')
     );
+    return range;
   }
 
   loadMoreDays(e) {
     e.preventDefault();
     const numberOfDays = getSetting('numberOfDays', 5);
-    const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
+
+    /*
+    note: loadMoreBefore is used when doing incremental loading, 
+    but we're not doing that anymore so we only need to change 'after'
+    */
+    
+    // const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
     this.props.loadMore({
-      terms: {
-        view: 'top',
-        before: loadMoreBefore,
-        after: loadMoreAfter,
-      }
+      ...this.props.terms,
+      // before: loadMoreBefore,
+      after: loadMoreAfter,
     });
     this.setState({
       days: this.state.days + this.props.increment,
@@ -44,9 +52,9 @@ class PostsDailyList extends Component{
   render() {
     const posts = this.props.results;
 
-    const postsByDates = this.getLastNDates(this.state.days).map(date => {
+    const postsByDates = this.getDateRange(this.state.after, this.state.before).map(date => {
       return {
-        date, 
+        date,
         posts: _.filter(posts, post => {
           // console.log(post)
           // console.log(moment(post.postedAt).startOf('day'))
@@ -59,8 +67,8 @@ class PostsDailyList extends Component{
     return (
       <div className="posts-daily">
         <Components.PostsListHeader />
-        {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} />)}
-        <a className="posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
+        {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} networkStatus={this.props.networkStatus} />)}
+        <a className="posts-load-more posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
       </div>
     )
   }

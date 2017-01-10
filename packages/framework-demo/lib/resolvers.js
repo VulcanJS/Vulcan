@@ -27,16 +27,11 @@ const resolvers = {
 
     name: 'moviesList',
 
-    resolver(root, {terms, offset, limit}, context, info) {
-      const options = {
-        sort: {createdAt: -1},
-        // protected limit
-        limit: (limit < 1 || limit > 10) ? 10 : limit,
-        skip: offset,
-        // keep only fields that should be viewable by current user
-        fields: context.getViewableFields(context.currentUser, context.Movies),
-      };
-      return context.Movies.find({}, options).fetch();
+    resolver(root, {terms}, context, info) {
+      let {selector, options} = context.Movies.getParameters(terms);
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.fields = context.getViewableFields(context.currentUser, context.Movies);
+      return context.Movies.find(selector, options).fetch();
     },
 
   },
@@ -57,7 +52,8 @@ const resolvers = {
     name: 'moviesTotal',
     
     resolver(root, {terms}, context) {
-      return context.Movies.find().count();
+      let {selector, options} = context.Movies.getParameters(terms);
+      return context.Movies.find(selector, options).count();
     },
   
   }

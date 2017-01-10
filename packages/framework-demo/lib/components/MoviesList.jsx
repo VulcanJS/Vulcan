@@ -28,7 +28,7 @@ class MoviesList extends Component {
           title="Add Movie" 
           component={<Button bsStyle="primary">Add Movie</Button>}
         >
-          <MoviesNewForm refetch={this.props.refetch}/>
+          <MoviesNewForm/>
         </ModalTrigger>
         <hr/>
       </div>
@@ -62,6 +62,7 @@ export const MoviesListFragment = gql`
     _id
     name
     year
+    createdAt
     user {
       __displayName
     }

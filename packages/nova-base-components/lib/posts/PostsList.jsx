@@ -6,7 +6,9 @@ import gql from 'graphql-tag';
 
 const PostsList = (props) => {
 
-  const {results, terms, loading, count, totalCount, loadMore, showHeader = true} = props;
+  const {results, terms, loading, count, totalCount, loadMore, showHeader = true, networkStatus} = props;
+
+  const loadingMore = networkStatus === 2;
 
   if (results && results.length) {
 
@@ -18,7 +20,7 @@ const PostsList = (props) => {
         <div className="posts-list-content">
           {results.map(post => <Components.PostsItem post={post} key={post._id} />)}
         </div>
-        {hasMore ? (loading ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/>}
+        {hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/>}
       </div>
     )
   } else if (loading) {

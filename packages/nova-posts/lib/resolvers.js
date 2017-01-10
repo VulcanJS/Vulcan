@@ -22,11 +22,10 @@ const resolvers = {
 
     name: 'postsList',
 
-    resolver(root, {terms, offset, limit}, context, info) {
+    resolver(root, {terms}, context, info) {
       let {selector, options} = context.Posts.getParameters(terms);
-      options.limit = (limit < 1 || limit > 100) ? 100 : limit;
-      options.skip = offset;
-      // keep only fields that should be viewable by current user
+      options.limit = (terms.limit < 1 || terms.limit > 100) ? 100 : terms.limit;
+      options.skip = terms.offset;
       options.fields = context.getViewableFields(context.currentUser, context.Posts);
       return context.Posts.find(selector, options).fetch();
     },

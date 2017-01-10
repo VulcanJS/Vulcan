@@ -30,15 +30,14 @@ const resolvers = {
 
     name: 'usersList',
 
-    resolver(root, {offset, limit}, context, info) {
-      const options = {
-        // protected limit
-        limit: (limit < 1 || limit > 10) ? 10 : limit,
-        skip: offset,
-        // keep only fields that should be viewable by current user
-        fields: context.getViewableFields(context.currentUser, context.Users),
-      };
-      return context.Users.find({}, options).fetch();
+    resolver(root, {terms}, context, info) {
+      let {selector, options} = context.Users.getParameters(terms);
+      
+      options.limit = (terms.limit < 1 || terms.limit > 10) ? 10 : terms.limit;
+      options.skip = terms.offset;
+      options.fields = context.getViewableFields(context.currentUser, context.Users);
+      
+      return context.Users.find(selector, options).fetch();
     },
 
   },

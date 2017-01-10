@@ -9,9 +9,14 @@ class Vote extends Component {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+<<<<<<< HEAD
     this.downvote = this.downvote.bind(this);
     this.startLoading = this.startLoading.bind(this);
     this.stopLoading = this.stopLoading.bind(this);
+=======
+    // this.startLoading = this.startLoading.bind(this);
+    // this.stopLoading = this.stopLoading.bind(this);
+>>>>>>> TelescopeJS/devel
 
     this.hasUpvoted = hasUpvoted;
     this.hasDownvoted = hasDownvoted;
@@ -21,29 +26,38 @@ class Vote extends Component {
     }
   }
 
-  startLoading() {
-    this.setState({ loading: true });
-  }
+  /*
 
-  stopLoading() {
-    this.setState({ loading: false });
-  }
+  note: with optimisitc UI, loading functions are not needed
+  also, setState triggers issues when the component is unmounted
+  before the vote mutation returns. 
+
+  */
+
+  // startLoading() {
+  //   this.setState({ loading: true });
+  // }
+
+  // stopLoading() {
+  //   this.setState({ loading: false });
+  // }
 
   upvote(e) {
     e.preventDefault();
 
-    this.startLoading();
+    // this.startLoading();
 
-    const post = this.props.post;
+    const document = this.props.document;
+    const collection = this.props.collection;
     const user = this.props.currentUser;
 
     if(!user){
       this.props.flash("Please log in first");
-      this.stopLoading();
+      // this.stopLoading();
     } else {
-      const voteType = this.hasUpvoted(user, post) ? "cancelUpvote" : "upvote";
-      this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
-        this.stopLoading();
+      const voteType = this.hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
+      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
+        // this.stopLoading();
       });
     }
   }
@@ -73,11 +87,11 @@ class Vote extends Component {
     // console.log('hasUpvoted', hasUpvoted);
     // console.log('this.hasUpvoted', this.hasUpvoted);
 
-    const post = this.props.post;
+    const document = this.props.document;
     const user = this.props.currentUser;
 
-    const hasUpvoted = this.hasUpvoted(user, post);
-    const hasDownvoted = this.hasDownvoted(user, post);
+    const hasUpvoted = this.hasUpvoted(user, document);
+    const hasDownvoted = this.hasDownvoted(user, document);
     const actionsClass = classNames(
       "vote",
       {voted: hasUpvoted || hasDownvoted},
@@ -90,7 +104,7 @@ class Vote extends Component {
         <a className="upvote-button" onClick={this.upvote}>
           {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
-          <div className="vote-count">{post.baseScore || 0}</div>
+          <div className="vote-count">{document.baseScore || 0}</div>
         </a>
       </div>
     )
@@ -99,7 +113,8 @@ class Vote extends Component {
 }
 
 Vote.propTypes = {
-  post: React.PropTypes.object.isRequired, // the current post
+  document: React.PropTypes.object.isRequired, // the document to upvote
+  collection: React.PropTypes.object.isRequired, // the collection containing the document
   vote: React.PropTypes.func, // mutate function with callback inside
   currentUser: React.PropTypes.object,
 };
