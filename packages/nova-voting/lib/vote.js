@@ -30,14 +30,14 @@ export const operateOnItem = function (collection, originalItem, user, operation
   // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
-    !user || 
-    !Users.canDo(user, `${collectionName}.${operation}`) || 
+    !user ||
+    !Users.canDo(user, `${collectionName}.${operation}`) ||
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem ||
     operation === "cancelUpvote" && !hasUpvotedItem ||
     operation === "cancelDownvote" && !hasDownvotedItem
   ) {
-    return false; 
+    return false;
   }
 
   if (typeof item.upvoters === 'undefined') {
@@ -63,7 +63,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
       item.upvoters.push(upvoter);
       item.upvotes += 1;
       item.baseScore += votePower;
-      
+
       if (!isSimulation) {
         update = {
           $addToSet: {upvoters: user._id},
@@ -81,7 +81,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
       item.downvoters.push(downvoter);
       item.downvotes += 1;
       item.baseScore -= votePower;
-      
+
       if (!isSimulation) {
         update = {
           $addToSet: {downvoters: user._id},
@@ -94,8 +94,8 @@ export const operateOnItem = function (collection, originalItem, user, operation
       item.upvoters = item.upvoters.filter(u => typeof u === 'string' ? u !== user._id : u._id !== user._id);
       item.upvotes -= 1;
       item.baseScore -= votePower;
-      
-      if (!isSimulation) {  
+
+      if (!isSimulation) {
         update = {
           $pull: {upvoters: user._id},
           $inc: {upvotes: -1, baseScore: -votePower}
@@ -107,7 +107,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
       item.downvoters = item.downvoters.filter(u => typeof u === 'string' ? u !== user._id : u._id !== user._id);
       item.downvotes -= 1;
       item.baseScore += votePower;
-      
+
       if (!isSimulation) {
         update = {
           $pull: {downvoters: user._id},
@@ -120,10 +120,10 @@ export const operateOnItem = function (collection, originalItem, user, operation
   if (!isSimulation) {
     update["$set"] = {inactive: false};
     const result = collection.update({_id: item._id}, update);
-    
+
     if (result > 0) {
       // --------------------- Server-Side Async Callbacks --------------------- //
-      runCallbacksAsync(operation+".async", item, user, collection, operation); 
+      runCallbacksAsync(operation+".async", item, user, collection, operation);
     }
   }
 

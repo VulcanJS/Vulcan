@@ -9,6 +9,7 @@ class Vote extends Component {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+    this.downvote = this.downvote.bind(this);
     this.startLoading = this.startLoading.bind(this);
     this.stopLoading = this.stopLoading.bind(this);
 
@@ -44,7 +45,7 @@ class Vote extends Component {
       this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
         this.stopLoading();
       });
-    } 
+    }
   }
 
   downvote(e) {
@@ -63,7 +64,7 @@ class Vote extends Component {
       this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
         this.stopLoading();
       });
-    } 
+    }
   }
 
   render() {
@@ -78,7 +79,7 @@ class Vote extends Component {
     const hasUpvoted = this.hasUpvoted(user, post);
     const hasDownvoted = this.hasDownvoted(user, post);
     const actionsClass = classNames(
-      "vote", 
+      "vote",
       {voted: hasUpvoted || hasDownvoted},
       {upvoted: hasUpvoted},
       {downvoted: hasDownvoted}
