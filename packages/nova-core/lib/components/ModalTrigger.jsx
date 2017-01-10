@@ -33,6 +33,7 @@ class ModalTrigger extends Component {
   render() {
 
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
+    const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
 
     return (
       <div className="modal-trigger">
@@ -40,12 +41,7 @@ class ModalTrigger extends Component {
         <Modal bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
-            <ContextPasser 
-              events={this.context.events}
-              closeCallback={this.closeModal}
-            >
-              {this.props.children}
-            </ContextPasser>
+            {childrenComponent}
           </Modal.Body>
         </Modal>
       </div>
@@ -62,11 +58,5 @@ ModalTrigger.defaultProps = {
   size: "large"
 }
 
-ModalTrigger.contextTypes = {
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
-};
-
 registerComponent('ModalTrigger', ModalTrigger);
-module.exports = ModalTrigger;
 export default ModalTrigger;

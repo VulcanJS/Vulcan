@@ -4,7 +4,7 @@ import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { ModalTrigger } from "meteor/nova:core";
 import { Link } from 'react-router';
 import Posts from "meteor/nova:posts";
-import { withCurrentUser } from 'meteor/nova:core';
+// import { withCurrentUser } from 'meteor/nova:core';
 
 class PostsItem extends Component {
 
@@ -77,4 +77,4 @@ PostsItem.propTypes = {
   post: React.PropTypes.object.isRequired,
 };
 
-registerComponent('PostsItem', PostsItem, withCurrentUser);
+registerComponent('PostsItem', PostsItem);

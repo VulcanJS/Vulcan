@@ -17,6 +17,7 @@ const PostsNewForm = (props, context) => {
           collection={Posts}
           fragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {
+            props.closeModal();
             // props.router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
@@ -27,6 +28,7 @@ const PostsNewForm = (props, context) => {
 };
 
 PostsNewForm.propTypes = {
+  closeModal: React.PropTypes.func,
   router: React.PropTypes.object,
   flash: React.PropTypes.func,
 }

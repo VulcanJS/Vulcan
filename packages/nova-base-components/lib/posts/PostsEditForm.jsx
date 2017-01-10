@@ -38,6 +38,7 @@ class PostsEditForm extends Component {
             }
           `}
           successCallback={post => {
+            this.props.closeModal();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
           removeSuccessCallback={({documentId, documentTitle}) => {
@@ -61,14 +62,12 @@ class PostsEditForm extends Component {
 }
 
 PostsEditForm.propTypes = {
+  closeModal: React.PropTypes.func,
   flash: React.PropTypes.func,
   post: React.PropTypes.object.isRequired,
 }
 
 PostsEditForm.contextTypes = {
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
-  closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 

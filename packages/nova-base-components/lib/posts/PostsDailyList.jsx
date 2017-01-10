@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 import Posts from 'meteor/nova:posts';
-import { withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/nova:core';
+import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/nova:core';
 
 class PostsDailyList extends Component{
 
@@ -74,7 +74,7 @@ class PostsDailyList extends Component{
     return (
       <div className="posts-daily">
         <Components.PostsListHeader />
-        {dates.map((date, index) => <Components.PostsDay key={index} number={index} date={date} posts={this.getDatePosts(posts, date)} networkStatus={this.props.networkStatus} />)}
+        {dates.map((date, index) => <Components.PostsDay key={index} number={index} date={date} posts={this.getDatePosts(posts, date)} networkStatus={this.props.networkStatus} currentUser={this.props.currentUser} />)}
         {/* postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} networkStatus={this.props.networkStatus} />) */}
         <a className="posts-load-more posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
       </div>
@@ -83,6 +83,7 @@ class PostsDailyList extends Component{
 }
 
 PostsDailyList.propTypes = {
+  currentUser: React.PropTypes.object,
   days: React.PropTypes.number,
   increment: React.PropTypes.number
 };
@@ -99,4 +100,4 @@ const options = {
   limit: 0,
 };
 
-registerComponent('PostsDailyList', PostsDailyList, withList(options));
+registerComponent('PostsDailyList', PostsDailyList, withCurrentUser, withList(options));
