@@ -5,7 +5,7 @@ class PostsDay extends Component {
 
   render() {
 
-    const {date, posts, networkStatus} = this.props;
+    const {date, networkStatus, posts} = this.props;
 
     const noPosts = posts.length === 0;
     const loading = noPosts && networkStatus === 2;
