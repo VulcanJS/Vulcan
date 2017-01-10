@@ -15,8 +15,7 @@ Package.onUse(function(api) {
     
     'ecmascript',
     'check',
-    'aldeed:simple-schema@1.5.3',
-    'aldeed:collection2@2.8.0',
+    'aldeed:collection2-core@2.0.0',
     'fourseven:scss@3.8.0'
   ]);
 

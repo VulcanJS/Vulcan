@@ -1,14 +1,25 @@
+import { getSetting } from './settings.js';
+
+/*
+
+Babel polyfill for SimpleSchema. See https://github.com/aldeed/node-simple-schema/issues/33
+
+*/
+Array.includes = function() {
+  let [first, ...rest] = arguments;
+  return Array.prototype.includes.apply(first, rest);
+}
+
+
 /*
 
 intl polyfill. See https://github.com/andyearnshaw/Intl.js/
 
 */
 
-import { getSetting } from './settings.js';
+const areIntlLocalesSupported = require('intl-locales-supported');
 
-var areIntlLocalesSupported = require('intl-locales-supported');
-
-var localesMyAppSupports = [
+const localesMyAppSupports = [
   getSetting("locale", "en")
 ];
 
@@ -17,7 +28,7 @@ if (global.Intl) {
   if (!areIntlLocalesSupported(localesMyAppSupports)) {
     // `Intl` exists, but it doesn't have the data we need, so load the
     // polyfill and replace the constructors with need with the polyfill's.
-    var IntlPolyfill = require('intl');
+    const IntlPolyfill = require('intl');
     Intl.NumberFormat   = IntlPolyfill.NumberFormat;
     Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
   }

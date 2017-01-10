@@ -57,6 +57,7 @@
     "redux": "^3.6.0",
     "rss": "^1.2.1",
     "sanitize-html": "^1.11.4",
+    "simpl-schema": "^0.1.0",
     "speakingurl": "^9.0.0",
     "tracker-component": "^1.3.14",
     "url": "^0.11.0"

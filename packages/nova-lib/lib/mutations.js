@@ -71,7 +71,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   document = runCallbacks(`${collectionName}.new.sync`, document, currentUser);
 
   // add _id to document
-  document._id = collection.insert(document);
+  document._id = collection.insert({...document}); // use {...document} to "enable" Object.prototype (see https://cl.ly/1N1m2d0y3u1A)
 
   // get fresh copy of document from db
   const newDocument = collection.findOne(document._id);

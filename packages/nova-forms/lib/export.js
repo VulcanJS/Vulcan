@@ -1,4 +1,4 @@
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import SimpleSchema from 'simpl-schema';
 
 if (typeof SimpleSchema !== "undefined") {
   SimpleSchema.extendOptions({

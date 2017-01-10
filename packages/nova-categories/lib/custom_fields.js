@@ -4,7 +4,7 @@ Posts.addField(
   {
     fieldName: 'categories',
     fieldSchema: {
-      type: [String],
+      type: Array,
       control: "checkboxgroup",
       optional: true,
       insertableBy: ['members'],
@@ -45,5 +45,12 @@ Posts.addField(
       // },
       resolveAs: 'categories: [Category]'
     }
-  }
+  },
+  {
+    fieldName: 'categories.$',
+    fieldSchema: {
+      type: String,
+      optional: true,
+    },
+  },
 );

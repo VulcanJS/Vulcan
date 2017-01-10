@@ -37,7 +37,7 @@ Posts.addField([
   {
     fieldName: "commenters",
     fieldSchema: {
-      type: [String],
+      type: Array,
       optional: true,
       publish: true,
       // join: {
@@ -48,5 +48,12 @@ Posts.addField([
       resolveAs: 'commenters: [User]',
       viewableBy: ['guests'],
     }
-  }
+  },
+  {
+    fieldName: "commenters.$",
+    fieldSchema: {
+      type: String,
+      optional: true,
+    },
+  },
 ]);

@@ -6,7 +6,7 @@ import './settings.js';
 import './collections.js';
 import './deep.js';
 import './deep_extend.js';
-import './intl-polyfill.js';
+import './polyfills.js';
 import './graphql.js';
 import './icons.js';
 
