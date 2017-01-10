@@ -66,7 +66,7 @@ CustomPostsItem.propTypes = {
 };
 
 CustomPostsItem.fragment = gql`
-  fragment PostsItemFragment on Post {
+  fragment CustomPostsItemFragment on Post {
     _id
     title
     url

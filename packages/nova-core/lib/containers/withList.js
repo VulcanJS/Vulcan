@@ -82,9 +82,11 @@ const withList = (options) => {
         // graphql query options
         options(ownProps) {
           // console.log(ownProps)
-          const variables = {
+          return {
             variables: {
               terms: ownProps.terms,
+              // pollInterval can be set to 0 to disable polling (disabled by default)
+              pollInterval: pollInterval || 0,
             },
             reducer: (previousResults, action) => {
 
@@ -93,11 +95,6 @@ const withList = (options) => {
             
             },
           };
-          // pollInterval can be set to 0 to disable polling
-          if (pollInterval > 0) {
-            variables.pollInterval = pollInterval;
-          }
-          return variables;
         },
 
         // define props returned by graphql HoC
