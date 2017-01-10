@@ -7,8 +7,6 @@
  */
 const hasUpvoted = (user, document) => {
   // note(apollo): check upvoters depending if the document is queried by mongo directly or fetched by an apollo resolver
-  console.log(user._id);
-  console.log(document.upvoters);
   return user && document.upvoters && !!document.upvoters.find(u => typeof u === 'string' ? u === user._id : u._id === user._id);
 };
 
