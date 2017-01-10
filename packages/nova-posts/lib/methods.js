@@ -53,29 +53,6 @@
 //   return Posts.findOne(postId);
 // };
 //
-// /**
-//  * @summary Increase the number of clicks on a post
-//  * @param {string} postId – the ID of the post being edited
-//  * @param {string} ip – the IP of the current user
-//  */
-// Posts.methods.increaseClicks = (postId, ip) => {
-//
-//   var clickEvent = {
-//     name: 'click',
-//     properties: {
-//       postId: postId,
-//       ip: ip
-//     }
-//   };
-//
-//   // make sure this IP hasn't previously clicked on this post
-//   var existingClickEvent = Events.findOne({name: 'click', 'properties.postId': postId, 'properties.ip': ip});
-//
-//   if(!existingClickEvent){
-//     Events.log(clickEvent);
-//     Posts.update(postId, { $inc: { clickCount: 1 }});
-//   }
-// };
 //
 // // ------------------------------------------------------------------------------------------- //
 // // ----------------------------------------- Methods ----------------------------------------- //
