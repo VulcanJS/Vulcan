@@ -29,15 +29,12 @@ Users.addField([
     fieldName: '__upvotedComments',
     fieldSchema: {
       type: Array,
+      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedComments: [Vote]',
     }
-  },
-  {
-    fieldName: '__upvotedComments.$',
-    fieldSchema: voteSchema,
   },
   /**
     An array containing posts upvotes
@@ -46,15 +43,12 @@ Users.addField([
     fieldName: '__upvotedPosts',
     fieldSchema: {
       type: Array,
+      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedPosts: [Vote]',
     }
-  },
-  {
-    fieldName: '__upvotedPosts.$',
-    fieldSchema: voteSchema,
   },
   /**
     An array containing comment downvotes
@@ -63,15 +57,12 @@ Users.addField([
     fieldName: '__downvotedComments',
     fieldSchema: {
       type: Array,
+      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedComments: [Vote]',
     }
-  },
-  {
-    fieldName: '__downvotedComments.$',
-    fieldSchema: voteSchema,
   },
   /**
     An array containing posts downvotes
@@ -80,15 +71,12 @@ Users.addField([
     fieldName: '__downvotedPosts',
     fieldSchema: {
       type: Array,
+      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedPosts: [Vote]',
     }
-  },
-  {
-    fieldName: '__downvotedPosts.$',
-    fieldSchema: voteSchema,
   },
 ]);
 
@@ -113,6 +101,7 @@ Posts.addField([
     fieldName: "upvoters",
     fieldSchema: {
       type: Array,
+      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -139,6 +128,7 @@ Posts.addField([
     fieldName: "downvoters",
     fieldSchema: {
       type: Array,
+      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -194,6 +184,7 @@ Comments.addField([
     fieldName: "upvoters",
     fieldSchema: {
       type: Array,
+      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -220,6 +211,7 @@ Comments.addField([
     fieldName: "downvoters",
     fieldSchema: {
       type: Array,
+      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],

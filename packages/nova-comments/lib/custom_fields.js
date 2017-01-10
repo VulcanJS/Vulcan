@@ -38,22 +38,11 @@ Posts.addField([
     fieldName: "commenters",
     fieldSchema: {
       type: Array,
+      blackbox: true,
       optional: true,
       publish: true,
-      // join: {
-      //   joinAs: "commentersArray",
-      //   collection: () => Users,
-      //   limit: 4
-      // },
       resolveAs: 'commenters: [User]',
       viewableBy: ['guests'],
     }
-  },
-  {
-    fieldName: "commenters.$",
-    fieldSchema: {
-      type: String,
-      optional: true,
-    },
   },
 ]);

@@ -6,14 +6,16 @@ Utilities to generate the app's GraphQL schema
 
 import deepmerge from 'deepmerge';
 import GraphQLJSON from 'graphql-type-json';
+import GraphQLDate from 'graphql-date';
 import { Utils } from './utils.js';
 
 // convert a JSON schema to a GraphQL schema
 const jsTypeToGraphQLType = type => {
   switch (type) {
     case String:
-    case Date:
       return "String";
+    case Date:
+      return "Date";
     case Number:
       return "Float";
     case Boolean:
@@ -68,6 +70,7 @@ export const GraphQLSchema = {
   // add resolvers
   resolvers: {
     JSON: GraphQLJSON,
+    Date: GraphQLDate,
   },
   addResolvers(resolvers) {
     this.resolvers = deepmerge(this.resolvers, resolvers);
@@ -120,6 +123,7 @@ export const GraphQLSchema = {
     let graphQLSchema = `
 
       scalar JSON
+      scalar Date
 
       type ${mainTypeName} {
         ${mainSchema.join('\n  ')}
