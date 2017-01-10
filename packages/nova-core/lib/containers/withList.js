@@ -10,7 +10,8 @@ Options:
   - collection: the collection to fetch the documents from
   - fragment: the fragment that defines which properties to fetch
   - limit: the number of documents to show initially
-
+  - pollInterval: how often the data should be updated, in ms (set to 0 to disable polling)
+  
 Props Received: 
 
   - terms: an object that defines which documents to fetch
@@ -41,7 +42,7 @@ import { compose, withState } from 'recompose';
 
 const withList = (options) => {
 
-  const { queryName, collection, fragment, limit } = options,
+  const { queryName, collection, fragment, limit, pollInterval = 20000 } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -81,7 +82,7 @@ const withList = (options) => {
         // graphql query options
         options(ownProps) {
           // console.log(ownProps)
-          return {
+          const variables = {
             variables: {
               terms: ownProps.terms,
             },
@@ -91,8 +92,12 @@ const withList = (options) => {
               return queryReducer(previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName);
             
             },
-            pollInterval: 20000,
           };
+          // pollInterval can be set to 0 to disable polling
+          if (pollInterval > 0) {
+            variables.pollInterval = pollInterval;
+          }
+          return variables;
         },
 
         // define props returned by graphql HoC
@@ -112,31 +117,36 @@ const withList = (options) => {
             refetch,
             networkStatus,
             count: results && results.length,
+
+            // regular load more (reload everything)
             loadMore(providedTerms) {
               // if new terms are provided by presentational component use them, else default to incrementing current limit once
               const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, limit: results.length + props.ownProps.terms.itemsPerPage } : providedTerms;
               props.ownProps.setTerms(newTerms);
             },
-            // // incremental loading version:
-            // loadMore(variables) {
 
-            //   // get variables passed as argument or else just default to incrementing the offset
-            //   variables = typeof variables === 'undefined' ? { offset: results.length } : variables;
+            // incremental loading version (only load new content)
+            // note: not compatible with polling
+            loadMoreInc(providedTerms) {
 
-            //   return fetchMore({
-            //     variables,
-            //     updateQuery(previousResults, { fetchMoreResult }) {
-            //       // no more post to fetch
-            //       if (!fetchMoreResult.data) {
-            //         return previousResults;
-            //       }
-            //       const newResults = {};
-            //       newResults[listResolverName] = [...previousResults[listResolverName], ...fetchMoreResult.data[listResolverName]];
-            //       // return the previous results "augmented" with more
-            //       return {...previousResults, ...newResults };
-            //     },
-            //   });
-            // },
+              // get terms passed as argument or else just default to incrementing the offset
+              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, offset: results.length } : providedTerms;
+
+              return props.data.fetchMore({
+                variables: { newTerms },
+                updateQuery(previousResults, { fetchMoreResult }) {
+                  // no more post to fetch
+                  if (!fetchMoreResult.data) {
+                    return previousResults;
+                  }
+                  const newResults = {};
+                  newResults[listResolverName] = [...previousResults[listResolverName], ...fetchMoreResult.data[listResolverName]];
+                  // return the previous results "augmented" with more
+                  return {...previousResults, ...newResults };
+                },
+              });
+            },
+
             fragmentName,
             fragment,
             ...props.ownProps // pass on the props down to the wrapped component
