@@ -19,7 +19,7 @@ const Meteor = typeof Meteor !== "undefined" ? Meteor : {
   methods: returnEmptyObject
 };
 
-// const SimpleSchema = typeof SimpleSchema !== "undefined" ? SimpleSchema : returnEmptyObject;
+const SimpleSchema = typeof SimpleSchema !== "undefined" ? SimpleSchema : returnEmptyObject;
 
 const Foo = "bar"
 export { Mongo, Foo }

@@ -1,4 +1,3 @@
-import SimpleSchema from 'simpl-schema';
 import Users from './collection.js';
 
 const adminGroup = {
@@ -27,11 +26,7 @@ const schema = {
     preload: true,
   },
   emails: {
-    type: Array,
-    optional: true,
-  },
-  "emails.$": {
-    type: Object,
+    type: [Object],
     optional: true,
   },
   "emails.$.address": {
@@ -143,6 +138,7 @@ const schema = {
   */
   __karma: {
     type: Number,
+    decimal: true,
     publish: true,
     optional: true,
     viewableBy: ['guests'],
@@ -188,7 +184,7 @@ const schema = {
     Groups
   */
   __groups: {
-    type: Array,
+    type: [String],
     optional: true,
     control: "checkboxgroup",
     insertableBy: ['admins'],
@@ -202,10 +198,6 @@ const schema = {
     },
     preload: true,
   },
-  // "__groups.$": {
-  //   type: String,
-  //   optional: true,
-  // },
 };
 
 export default schema;

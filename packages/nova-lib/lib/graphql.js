@@ -9,21 +9,23 @@ import GraphQLJSON from 'graphql-type-json';
 import { Utils } from './utils.js';
 
 // convert a JSON schema to a GraphQL schema
-const jsTypeToGraphQLType = type => {
-  switch (type) {
-    case String:
-    case Date:
+const jsTypeToGraphQLType = typeName => {
+  switch (typeName) {
+    case "Date":
       return "String";
-    case Number:
+
+    case "Number":
       return "Float";
-    case Boolean:
-      return "Boolean";
+
     // assume all arrays contains strings for now
-    case Array:
+    case "Array":
       return "[String]";
-    case Object:
-    default:
+
+    case "Object":
       return "???";
+
+    default:
+      return typeName;
   }
 }
 
@@ -87,12 +89,13 @@ export const GraphQLSchema = {
 
     // backward-compatibility code: we do not want user.telescope fields in the graphql schema
     const schema = Utils.stripTelescopeNamespace(collection.simpleSchema()._schema);
-    
+
     let mainSchema = [], inputSchema = [], unsetSchema = [];
 
     _.forEach(schema, (field, key) => {
       // console.log(field, key)
-      const fieldType = jsTypeToGraphQLType(field.type.definitions[0].type);
+      const fieldType = jsTypeToGraphQLType(field.type.name);
+
       if (key.indexOf('$') === -1 && fieldType !== "???") { // skip fields with "$" and unknown fields
         
         // 1. main schema

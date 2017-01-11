@@ -1,4 +1,3 @@
-import SimpleSchema from 'simpl-schema';
 import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
@@ -28,16 +27,12 @@ Users.addField([
   {
     fieldName: '__upvotedComments',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedComments: [Vote]',
     }
-  },
-  {
-    fieldName: '__upvotedComments.$',
-    fieldSchema: voteSchema,
   },
   /**
     An array containing posts upvotes
@@ -45,16 +40,12 @@ Users.addField([
   {
     fieldName: '__upvotedPosts',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedPosts: [Vote]',
     }
-  },
-  {
-    fieldName: '__upvotedPosts.$',
-    fieldSchema: voteSchema,
   },
   /**
     An array containing comment downvotes
@@ -62,16 +53,12 @@ Users.addField([
   {
     fieldName: '__downvotedComments',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedComments: [Vote]',
     }
-  },
-  {
-    fieldName: '__downvotedComments.$',
-    fieldSchema: voteSchema,
   },
   /**
     An array containing posts downvotes
@@ -79,16 +66,12 @@ Users.addField([
   {  
     fieldName: '__downvotedPosts',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedPosts: [Vote]',
     }
-  },
-  {
-    fieldName: '__downvotedPosts.$',
-    fieldSchema: voteSchema,
   },
 ]);
 
@@ -112,7 +95,7 @@ Posts.addField([
   {
     fieldName: "upvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -138,7 +121,7 @@ Posts.addField([
   {
     fieldName: "downvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -152,6 +135,7 @@ Posts.addField([
     fieldName: "baseScore",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -165,6 +149,7 @@ Posts.addField([
     fieldName: "score",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -193,7 +178,7 @@ Comments.addField([
   {
     fieldName: "upvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -219,7 +204,7 @@ Comments.addField([
   {
     fieldName: "downvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
@@ -233,6 +218,7 @@ Comments.addField([
     fieldName: "baseScore",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -246,6 +232,7 @@ Comments.addField([
     fieldName: "score",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -253,3 +240,4 @@ Comments.addField([
     }
   },
 ]);
+

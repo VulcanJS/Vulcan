@@ -1,4 +1,4 @@
-import SimpleSchema from 'simpl-schema';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 /**
  * @summary Kick off the global namespace for Telescope.

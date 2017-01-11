@@ -32,9 +32,10 @@ Package.onUse(function (api) {
     
     // Third-party packages
 
-    'aldeed:collection2-core@2.0.0',
+    'aldeed:simple-schema@1.5.3',
+    'aldeed:collection2@2.10.0',
     'meteorhacks:picker@1.0.3',
-    // 'dburles:collection-helpers@1.0.4',
+    'dburles:collection-helpers@1.0.4',
     'percolatestudio:synced-cron@1.1.0',
     'jparker:gravatar@0.4.1',
     // 'kadira:flow-router-ssr@3.13.0',
