@@ -71,9 +71,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   document = runCallbacks(`${collectionName}.new.sync`, document, currentUser);
 
   // add _id to document
-  // note: use {...document} to "enable" Object.prototype (see https://cl.ly/1N1m2d0y3u1A)
-  // see https://github.com/aldeed/meteor-collection2-core/issues/8
-  document._id = collection.insert({...document}); 
+  document._id = collection.insert({...document}); // use {...document} to "enable" Object.prototype (see https://cl.ly/1N1m2d0y3u1A)
 
   // get fresh copy of document from db
   const newDocument = collection.findOne(document._id);
@@ -110,11 +108,14 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
     // check that the current user has permission to edit each field
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
     modifiedProperties.forEach(function (fieldName) {
-      const field = schema[fieldName];
+      var field = schema[fieldName];
+      console.log(field);
       if (!context.Users.canEditField(currentUser, field, document)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
+    
+    console.log(modifier);
 
     // validate modifier against schema
     collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
