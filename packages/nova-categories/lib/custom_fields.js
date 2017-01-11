@@ -7,7 +7,6 @@ Posts.addField(
       type: Array,
       control: "checkboxgroup",
       optional: true,
-      blackbox: true,
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
@@ -39,7 +38,19 @@ Posts.addField(
           return categoriesOptions;
         }
       },
+      // publish: true,
+      // join: {
+      //   joinAs: "categoriesArray",
+      //   collection: () => Categories
+      // },
       resolveAs: 'categories: [Category]'
     }
+  },
+  {
+    fieldName: 'categories.$',
+    fieldSchema: {
+      type: String,
+      optional: true,
+    },
   },
 );

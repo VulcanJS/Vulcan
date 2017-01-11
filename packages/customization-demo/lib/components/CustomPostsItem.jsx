@@ -47,7 +47,7 @@ class CustomPostsItem extends getRawComponent('PostsItem') {
               </Link>
             </div>
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}
-            {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
+            {this.renderActions()}
           </div>
 
         </div>

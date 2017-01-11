@@ -28,7 +28,6 @@ const schema = {
   },
   emails: {
     type: Array,
-    blackbox: true,
     optional: true,
   },
   "emails.$": {
@@ -190,7 +189,6 @@ const schema = {
   */
   __groups: {
     type: Array,
-    blackbox: true,
     optional: true,
     control: "checkboxgroup",
     insertableBy: ['admins'],
@@ -204,6 +202,10 @@ const schema = {
     },
     preload: true,
   },
+  // "__groups.$": {
+  //   type: String,
+  //   optional: true,
+  // },
 };
 
 export default schema;

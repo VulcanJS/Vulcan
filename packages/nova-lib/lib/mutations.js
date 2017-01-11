@@ -98,7 +98,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
 
   // build mongo modifier from arguments
   let modifier = {$set: set, $unset: unset};
-  
+
   // get original document from database
   let document = collection.findOne(documentId);
 
@@ -109,13 +109,10 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
     modifiedProperties.forEach(function (fieldName) {
       var field = schema[fieldName];
-      console.log(field);
       if (!context.Users.canEditField(currentUser, field, document)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
-    
-    console.log(modifier);
 
     // validate modifier against schema
     collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});

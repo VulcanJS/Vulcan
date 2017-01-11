@@ -3,20 +3,9 @@ import DateTimePicker from 'react-datetime';
 // import moment from 'moment';
 
 class DateTime extends Component {
-  
-  constructor(props) {
-    super(props);
-    
-    this.updateDate = this.updateDate.bind(this);
-  }
-  
-  // when the datetime picker has mounted, SmartForm will catch the date value (no formsy mixin in this component)
-  componentDidMount() {
-    this.updateDate(this.props.value || new Date());
-  }
-  
-  updateDate(date) {
-    this.context.updateCurrentValue(this.props.name, date);
+  // when the datetime picker mounts, SmartForm will catch the date value (no formsy mixin in this component)
+  componentWillMount() {
+    this.context.addToAutofilledValues({[this.props.name]: this.props.value || new Date()});
   }
 
   render() {
@@ -27,7 +16,7 @@ class DateTime extends Component {
           <DateTimePicker
             value={this.props.value || new Date()}
             // newDate argument is a Moment object given by react-datetime
-            onChange={newDate => this.updateDate(newDate._d)}
+            onChange={newDate => { this.context.addToAutofilledValues({[this.props.name]: newDate._d}) }}
             format={"x"}
             inputProps={{name: this.props.name}}
           />
