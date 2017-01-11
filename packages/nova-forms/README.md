@@ -33,7 +33,7 @@ You also need to load Bootstrap's CSS separately.
 Example schema:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+
 import BodyFormControl from './components/BodyFormControl.jsx';
 
 const isLoggedIn = (user) => !!user;

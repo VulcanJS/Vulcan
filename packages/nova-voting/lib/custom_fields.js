@@ -1,4 +1,3 @@
-import SimpleSchema from 'simpl-schema';
 import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
@@ -28,17 +27,11 @@ Users.addField([
   {
     fieldName: '__upvotedComments',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedComments: [Vote]',
-    }
-  },
-  {
-    fieldName: "__upvotedComments.$",
-    fieldSchema: {
-      type: voteSchema,
     }
   },
   /**
@@ -47,17 +40,11 @@ Users.addField([
   {
     fieldName: '__upvotedPosts',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedPosts: [Vote]',
-    }
-  },
-  {
-    fieldName: "__upvotedPosts.$",
-    fieldSchema: {
-      type: voteSchema,
     }
   },
   /**
@@ -66,37 +53,24 @@ Users.addField([
   {
     fieldName: '__downvotedComments',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedComments: [Vote]',
     }
   },
-  {
-    fieldName: "__downvotedComments.$",
-    fieldSchema: {
-      type: voteSchema,
-    }
-  },
-  
   /**
     An array containing posts downvotes
   */
   {  
     fieldName: '__downvotedPosts',
     fieldSchema: {
-      type: Array,
+      type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedPosts: [Vote]',
-    }
-  },
-  {
-    fieldName: "__downvotedPosts.$",
-    fieldSchema: {
-      type: voteSchema,
     }
   },
 ]);
@@ -121,17 +95,11 @@ Posts.addField([
   {
     fieldName: "upvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
-    }
-  },
-  {
-    fieldName: "upvoters.$",
-    fieldSchema: {
-      type: String,
     }
   },
   /**
@@ -153,20 +121,13 @@ Posts.addField([
   {
     fieldName: "downvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
     }
   },
-  {
-    fieldName: "downvoters.$",
-    fieldSchema: {
-      type: String,
-    }
-  },
-  
   /**
     The post's base score (not factoring in the post's age)
   */
@@ -174,6 +135,7 @@ Posts.addField([
     fieldName: "baseScore",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -187,6 +149,7 @@ Posts.addField([
     fieldName: "score",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -215,17 +178,11 @@ Comments.addField([
   {
     fieldName: "upvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
-    }
-  },
-  {
-    fieldName: "upvoters.$",
-    fieldSchema: {
-      type: String,
     }
   },
   /**
@@ -247,17 +204,11 @@ Comments.addField([
   {
     fieldName: "downvoters",
     fieldSchema: {
-      type: Array,
+      type: [String],
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
-    }
-  },
-  {
-    fieldName: "downvoters.$",
-    fieldSchema: {
-      type: String,
     }
   },
   /**
@@ -267,6 +218,7 @@ Comments.addField([
     fieldName: "baseScore",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -280,6 +232,7 @@ Comments.addField([
     fieldName: "score",
     fieldSchema: {
       type: Number,
+      decimal: true,
       optional: true,
       publish: true,
       defaultValue: 0,
@@ -287,3 +240,4 @@ Comments.addField([
     }
   },
 ]);
+

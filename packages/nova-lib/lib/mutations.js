@@ -8,7 +8,6 @@ If the mutation call is not trusted (i.e. it comes from a GraphQL mutation),
 we'll run all validate steps:
 
 - Check that the current user has permission to insert/edit each field.
-- Validate document against collection schema.
 - Add userId to document (insert only).
 - Run validation callbacks.
 
@@ -35,6 +34,9 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   console.log("// newMutation")
   console.log(collection._name)
   console.log(document)
+  
+  // we don't want to modify the original document
+  let newDocument = Object.assign({}, document);
 
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
@@ -43,23 +45,20 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   if (validate) {
 
     // check that the current user has permission to insert each field
-    _.keys(document).forEach(function (fieldName) {
+    _.keys(newDocument).forEach(function (fieldName) {
       var field = schema[fieldName];
       if (!context.Users.canInsertField (currentUser, field)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
 
-    // validate document against schema
-    collection.simpleSchema().namedContext(`${collectionName}.new`).validate(document);
-
     // run validation callbacks
-    document = runCallbacks(`${collectionName}.new.validate`, document, currentUser);
+    newDocument = runCallbacks(`${collectionName}.new.validate`, newDocument, currentUser);
   }
 
   // check if userId field is in the schema and add it to document if needed
   const userIdInSchema = Object.keys(schema).find(key => key === 'userId');
-  if (!!userIdInSchema && !document.userId) document.userId = currentUser._id;
+  if (!!userIdInSchema && !newDocument.userId) newDocument.userId = currentUser._id;
 
   // TODO: find that info in GraphQL mutations
   // if (Meteor.isServer && this.connection) {
@@ -68,23 +67,22 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   // }
 
   // run sync callbacks
-  document = runCallbacks(`${collectionName}.new.sync`, document, currentUser);
+  newDocument = runCallbacks(`${collectionName}.new.sync`, newDocument, currentUser);
 
   // add _id to document
-  // note: use {...document} to "enable" Object.prototype (see https://cl.ly/1N1m2d0y3u1A)
-  // see https://github.com/aldeed/meteor-collection2-core/issues/8
-  document._id = collection.insert({...document}); 
+  newDocument._id = collection.insert(newDocument);
 
   // get fresh copy of document from db
-  const newDocument = collection.findOne(document._id);
+  const insertedDocument = collection.findOne(newDocument._id);
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  runCallbacksAsync(`${collectionName}.new.async`, newDocument, currentUser);
-
+  runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser);
+  
   console.log("// new mutation finished:")
   console.log(newDocument)
-  return document;
+  
+  return newDocument;
 }
 
 export const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
@@ -100,7 +98,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
 
   // build mongo modifier from arguments
   let modifier = {$set: set, $unset: unset};
-  
+
   // get original document from database
   let document = collection.findOne(documentId);
 
@@ -110,14 +108,11 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
     // check that the current user has permission to edit each field
     const modifiedProperties = _.keys(set).concat(_.keys(unset));
     modifiedProperties.forEach(function (fieldName) {
-      const field = schema[fieldName];
+      var field = schema[fieldName];
       if (!context.Users.canEditField(currentUser, field, document)) {
         throw new Meteor.Error('disallowed_property', `disallowed_property_detected: ${fieldName}`);
       }
     });
-
-    // validate modifier against schema
-    collection.simpleSchema().namedContext(`${collectionName}.edit`).validate(modifier, {modifier: true});
 
     // run validation callbacks
     modifier = runCallbacks(`${collectionName}.edit.validate`, modifier, document, currentUser);

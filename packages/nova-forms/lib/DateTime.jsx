@@ -9,12 +9,12 @@ class DateTime extends Component {
     
     this.updateDate = this.updateDate.bind(this);
   }
-  
+
   // when the datetime picker has mounted, SmartForm will catch the date value (no formsy mixin in this component)
   componentDidMount() {
     this.updateDate(this.props.value || new Date());
   }
-  
+
   updateDate(date) {
     this.context.updateCurrentValue(this.props.name, date);
   }

@@ -4,10 +4,9 @@ Posts.addField(
   {
     fieldName: 'categories',
     fieldSchema: {
-      type: Array,
+      type: [String],
       control: "checkboxgroup",
       optional: true,
-      blackbox: true,
       insertableBy: ['members'],
       editableBy: ['members'],
       viewableBy: ['guests'],
@@ -39,7 +38,12 @@ Posts.addField(
           return categoriesOptions;
         }
       },
+      // publish: true,
+      // join: {
+      //   joinAs: "categoriesArray",
+      //   collection: () => Categories
+      // },
       resolveAs: 'categories: [Category]'
     }
-  },
+  }
 );

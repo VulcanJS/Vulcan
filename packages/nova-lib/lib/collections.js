@@ -1,4 +1,4 @@
-import SimpleSchema from 'simpl-schema';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { GraphQLSchema } from './graphql.js';
 import { Utils } from './utils.js';
 import { runCallbacks } from './callbacks.js';
