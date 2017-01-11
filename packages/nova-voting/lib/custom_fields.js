@@ -29,11 +29,16 @@ Users.addField([
     fieldName: '__upvotedComments',
     fieldSchema: {
       type: Array,
-      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedComments: [Vote]',
+    }
+  },
+  {
+    fieldName: "__upvotedComments.$",
+    fieldSchema: {
+      type: voteSchema,
     }
   },
   /**
@@ -43,11 +48,16 @@ Users.addField([
     fieldName: '__upvotedPosts',
     fieldSchema: {
       type: Array,
-      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__upvotedPosts: [Vote]',
+    }
+  },
+  {
+    fieldName: "__upvotedPosts.$",
+    fieldSchema: {
+      type: voteSchema,
     }
   },
   /**
@@ -57,13 +67,19 @@ Users.addField([
     fieldName: '__downvotedComments',
     fieldSchema: {
       type: Array,
-      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedComments: [Vote]',
     }
   },
+  {
+    fieldName: "__downvotedComments.$",
+    fieldSchema: {
+      type: voteSchema,
+    }
+  },
+  
   /**
     An array containing posts downvotes
   */
@@ -71,11 +87,16 @@ Users.addField([
     fieldName: '__downvotedPosts',
     fieldSchema: {
       type: Array,
-      blackbox: true,
       publish: false,
       optional: true,
       viewableBy: ['guests'],
       resolveAs: '__downvotedPosts: [Vote]',
+    }
+  },
+  {
+    fieldName: "__downvotedPosts.$",
+    fieldSchema: {
+      type: voteSchema,
     }
   },
 ]);
@@ -101,11 +122,16 @@ Posts.addField([
     fieldName: "upvoters",
     fieldSchema: {
       type: Array,
-      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
+    }
+  },
+  {
+    fieldName: "upvoters.$",
+    fieldSchema: {
+      type: String,
     }
   },
   /**
@@ -128,13 +154,19 @@ Posts.addField([
     fieldName: "downvoters",
     fieldSchema: {
       type: Array,
-      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
     }
   },
+  {
+    fieldName: "downvoters.$",
+    fieldSchema: {
+      type: String,
+    }
+  },
+  
   /**
     The post's base score (not factoring in the post's age)
   */
@@ -184,11 +216,16 @@ Comments.addField([
     fieldName: "upvoters",
     fieldSchema: {
       type: Array,
-      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'upvoters: [User]',
+    }
+  },
+  {
+    fieldName: "upvoters.$",
+    fieldSchema: {
+      type: String,
     }
   },
   /**
@@ -211,11 +248,16 @@ Comments.addField([
     fieldName: "downvoters",
     fieldSchema: {
       type: Array,
-      blackbox: true,
       optional: true,
       publish: true,
       viewableBy: ['guests'],
       resolveAs: 'downvoters: [User]',
+    }
+  },
+  {
+    fieldName: "downvoters.$",
+    fieldSchema: {
+      type: String,
     }
   },
   /**
