@@ -343,14 +343,18 @@ class Form extends Component {
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
-    // call the clear form method
-    let clearCurrentValues = false;
-    // reset form if this is a new document form
-    if (this.props.formType === "new") {
-      this.refs.form.reset();
-      clearCurrentValues = true;
-    }
-    this.clearForm({clearErrors: true, clearCurrentValues});
+    // note (jan 11th 2017): lines below disabled because the component unmounts/mounts again when the mutation is submitted, causing the form to loose track of refs / state,
+    // this behavior clears the form as expected, without us controlling what's going on.
+    // -> uncomment lines below for debug
+    
+    // // call the clear form method
+    // let clearCurrentValues = false;
+    // // reset form if this is a new document form
+    // if (this.props.formType === "new") {
+    //   this.refs.form.reset();
+    //   clearCurrentValues = true;
+    // }
+    // this.clearForm({clearErrors: true, clearCurrentValues});
 
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document);
