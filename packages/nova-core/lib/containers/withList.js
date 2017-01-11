@@ -42,7 +42,7 @@ import { compose, withState } from 'recompose';
 
 const withList = (options) => {
 
-  const { queryName, collection, fragment, limit, pollInterval = 20000 } = options,
+  const { queryName, collection, fragment, limit = getSetting('postsPerPage', 10), pollInterval = 20000 } = options,
         fragmentName = fragment.definitions[0].name.value,
         listResolverName = collection.options.resolvers.list.name,
         totalResolverName = collection.options.resolvers.total.name;
@@ -53,10 +53,9 @@ const withList = (options) => {
     withState('terms', 'setTerms', props => {
 
       // either get initial limit from options, or default to settings
-      const initialLimit = typeof limit === 'undefined' ? getSetting('postsPerPage', 10) : limit;
       const terms = {
-        limit: initialLimit, 
-        itemsPerPage: initialLimit, 
+        limit, 
+        itemsPerPage: limit, 
         ...props.terms
       };
 
@@ -85,8 +84,8 @@ const withList = (options) => {
           return {
             variables: {
               terms: ownProps.terms,
-              // pollInterval can be set to 0 to disable polling (disabled by default)
-              pollInterval: pollInterval || 0,
+              // note: pollInterval can be set to 0 to disable polling (20s by default)
+              pollInterval,
             },
             reducer: (previousResults, action) => {
 

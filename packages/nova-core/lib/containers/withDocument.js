@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 export default function withDocument (options) {
   
-  const { queryName, collection, fragment, pollInterval } = options,
+  const { queryName, collection, fragment, pollInterval = 20000 } = options,
         fragmentName = fragment.definitions[0].name.value,
         singleResolverName = collection.options.resolvers.single.name;
 
@@ -19,7 +19,7 @@ export default function withDocument (options) {
     options(ownProps) {
       return {
         variables: { documentId: ownProps.documentId, slug: ownProps.slug },
-        pollInterval: pollInterval || 0, // pollInterval can be set to 0 to disable polling (disabled by default)
+        pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
     },
     props: returnedProps => {
