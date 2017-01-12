@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import SmartForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
@@ -15,16 +15,7 @@ const CommentsEditForm = (props, context) => {
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}
         showRemove={true}
-        extraFragment={`
-          htmlBody
-          postedAt
-          user{
-            _id
-            __displayName
-            __emailHash
-            __slug
-          }
-        `}
+        fragment={getRawComponent('PostsCommentsThread').fragment}
       />
     </div>
   )

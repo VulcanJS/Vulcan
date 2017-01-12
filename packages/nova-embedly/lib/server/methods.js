@@ -1,4 +1,5 @@
 import { getSetting } from 'meteor/nova:core';
+import Posts from 'meteor/nova:posts';
 
 Meteor.methods({
   testGetEmbedlyData: function (url) {
@@ -14,7 +15,7 @@ Meteor.methods({
   },
   generateThumbnail: function (post) {
     check(post, Posts.simpleSchema());
-    if (Users.canEdit(Meteor.user(), post)) {
+    if (Posts.options.mutations.edit.check(Meteor.user(), post)) {
       regenerateThumbnail(post);
     }
   },

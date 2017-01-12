@@ -113,34 +113,36 @@ Users.canDo = (user, action) => {
   return Users.getActions(user).indexOf(action) !== -1;
 };
 
+// DEPRECATED
+// TODO: remove this
 /**
  * @summary Check if a user can edit a document
  * @param {Object} user - The user performing the action
  * @param {Object} document - The document being edited
  */
-Users.canEdit = function (user, document) {
+// Users.canEdit = function (user, document) {
 
-  user = (typeof user === 'undefined') ? Meteor.user() : user;
+//   user = (typeof user === 'undefined') ? Meteor.user() : user;
 
-  // note(apollo): use of `__typename` given by react-apollo
-  //const collectionName = document.getCollectionName();
-  const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
+//   // note(apollo): use of `__typename` given by react-apollo
+//   //const collectionName = document.getCollectionName();
+//   const collectionName = document.__typename ? Utils.getCollectionNameFromTypename(document.__typename) : document.getCollectionName();
   
-  if (!user || !document) {
-    return false;
-  }
+//   if (!user || !document) {
+//     return false;
+//   }
 
-  if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
+//   if (document.hasOwnProperty('isDeleted') && document.isDeleted) return false;
 
-  if (Users.owns(user, document)) {
-    // if this is user's document, check if user can edit own documents
-    return Users.canDo(user, `${collectionName}.edit.own`);
-  } else {
-    // if this is not user's document, check if they can edit all documents
-    return Users.canDo(user, `${collectionName}.edit.all`);
-  }
+//   if (Users.owns(user, document)) {
+//     // if this is user's document, check if user can edit own documents
+//     return Users.canDo(user, `${collectionName}.edit.own`);
+//   } else {
+//     // if this is not user's document, check if they can edit all documents
+//     return Users.canDo(user, `${collectionName}.edit.all`);
+//   }
 
-};
+// };
 
 /**
  * @summary Check if a user owns a document

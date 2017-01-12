@@ -1,4 +1,4 @@
-import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import SmartForm from "meteor/nova:forms";
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";

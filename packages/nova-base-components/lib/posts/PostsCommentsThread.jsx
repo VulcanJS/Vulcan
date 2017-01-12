@@ -69,6 +69,7 @@ const options = {
   collection: Comments,
   queryName: 'commentsListQuery',
   fragment: PostsCommentsThread.fragment,
+  limit: 0,
 };
 
 registerComponent('PostsCommentsThread', PostsCommentsThread, withList(options), withCurrentUser);

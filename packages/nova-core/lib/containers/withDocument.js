@@ -19,6 +19,7 @@ export default function withDocument (options) {
     options(ownProps) {
       return {
         variables: { documentId: ownProps.documentId, slug: ownProps.slug },
+        alias: 'withDocument',
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
     },
