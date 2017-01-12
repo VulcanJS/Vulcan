@@ -64,23 +64,27 @@ class FormWrapper extends Component{
       relevantFields = _.intersection(relevantFields, fields);
     }
 
-    // fields with resolvers that contain "[" should be treated as arrays of _ids
-    // TODO: find a cleaner way to handle this
+    // handle fields with resolvers that contain "[" 
+    // note: you can override the generated fragment with your own fragment given as a prop!
     relevantFields = relevantFields.map(fieldName => {
       const resolveAs = this.getSchema()[fieldName].resolveAs;
-      return resolveAs && resolveAs.indexOf('[') > -1 ? `${fieldName}{_id}` : fieldName;
+      
+      return resolveAs && resolveAs.includes('[') 
+        ? `${fieldName}{_id}` // if it's a custom resolver, add a basic query to its _id
+        : fieldName; // else just ask for the field name
     });
 
     // generate fragment based on the fields that can be edited. Note: always add _id.
-    const queryFragment = gql`
+    const generatedFragment = gql`
       fragment ${fragmentName} on ${this.props.collection.typeName} {
         _id
         ${relevantFields.join('\n')}
       }
     `
 
-    // get mutation fragment from props or else default to same as queryFragment
-    const mutationFragment = this.props.fragment || queryFragment;
+    // get query & mutation fragments from props or else default to same as generatedFragment
+    const queryFragment = this.props.fragment || generatedFragment;
+    const mutationFragment = this.props.fragment || generatedFragment;
     
     return {
       queryFragment,
