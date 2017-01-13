@@ -15,7 +15,7 @@ const CommentsEditForm = (props, context) => {
         cancelCallback={props.cancelCallback}
         removeSuccessCallback={props.removeSuccessCallback}
         showRemove={true}
-        fragment={getRawComponent('PostsCommentsThread').fragment}
+        mutationFragment={getRawComponent('PostsCommentsThread').fragment}
       />
     </div>
   )
