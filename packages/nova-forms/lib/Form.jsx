@@ -114,8 +114,9 @@ class Form extends Component {
       field.value = this.getDocument() && deepValue(this.getDocument(), fieldName) ? deepValue(this.getDocument(), fieldName) : "";
 
       // if value is an array of objects ({_id: '123'}, {_id: 'abc'}), flatten it into an array of strings (['123', 'abc'])
+      // fallback to item itself if item._id is not defined (ex: item is not an object or item is just {slug: 'xxx'})
       if (Array.isArray(field.value)) {
-        field.value = field.value.map(item => item._id);
+        field.value = field.value.map(item => item._id || item);
       }
 
       // backward compatibility from 'autoform' to 'form'

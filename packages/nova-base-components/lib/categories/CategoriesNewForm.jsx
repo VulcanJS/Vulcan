@@ -11,7 +11,6 @@ const CategoriesNewForm = (props, context) => {
     <div className="categories-new-form">
       <SmartForm 
         collection={Categories} 
-        queryToUpdate="categoriesListQuery"
         successCallback={category => {
           props.closeCallback();
           props.flash(context.intl.formatMessage({id: 'categories.new_success'}, {name: category.name}), "success");

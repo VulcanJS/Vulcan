@@ -31,7 +31,8 @@ Posts.addField(
           const categoriesOptions = categories.map(function (category) {
             return {
               value: category._id,
-              label: category.name
+              label: category.name,
+              slug: category.slug, // note: it may be used to look up from prefilled props
             };
           });
 
