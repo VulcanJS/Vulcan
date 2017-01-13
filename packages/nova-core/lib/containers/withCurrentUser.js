@@ -16,11 +16,8 @@ const withCurrentUser1 = component => {
       }
     }
     `, {
-      options(ownProps) {
-        return {
-          alias: 'withCurrentUser',
-        };
-      },
+      alias: 'withCurrentUser',
+      
       props(props) {
         const {data: {loading, currentUser}} = props;
         return {

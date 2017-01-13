@@ -77,12 +77,12 @@ const withList = (options) => {
       `,
 
       {
+        alias: 'withList',
         
         // graphql query options
         options(ownProps) {
           // console.log(ownProps)
           return {
-            alias: 'withList',
             variables: {
               terms: ownProps.terms,
               // note: pollInterval can be set to 0 to disable polling (20s by default)

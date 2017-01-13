@@ -16,10 +16,11 @@ export default function withDocument (options) {
     }
     ${fragment}
   `, {
+    alias: 'withDocument',
+    
     options(ownProps) {
       return {
         variables: { documentId: ownProps.documentId, slug: ownProps.slug },
-        alias: 'withDocument',
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
     },
