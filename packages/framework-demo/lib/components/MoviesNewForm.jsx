@@ -14,7 +14,7 @@ const MoviesNewForm = (props, context) => {
   return (
     <SmartForm 
       collection={Movies}
-      fragment={MoviesListFragment}
+      mutationFragment={MoviesListFragment}
     />
   )
 }

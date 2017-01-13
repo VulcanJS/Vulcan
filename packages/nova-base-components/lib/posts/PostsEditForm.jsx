@@ -27,7 +27,7 @@ class PostsEditForm extends Component {
         <SmartForm
           collection={Posts}
           documentId={this.props.post._id}
-          fragment={getRawComponent('PostsPage').fragment}
+          mutationFragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {
             this.props.closeModal();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');

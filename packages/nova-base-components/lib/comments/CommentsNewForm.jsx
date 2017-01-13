@@ -25,7 +25,7 @@ const CommentsNewForm = (props, context) => {
       <div className="comments-new-form">
         <SmartForm
           collection={Comments}
-          fragment={getRawComponent('PostsCommentsThread').fragment}
+          mutationFragment={getRawComponent('PostsCommentsThread').fragment}
           successCallback={props.successCallback} 
           cancelCallback={props.type === "reply" ? props.cancelCallback : null}
           prefilledProps={prefilledProps}

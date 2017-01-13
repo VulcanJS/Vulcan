@@ -83,12 +83,9 @@ class FormWrapper extends Component{
     `
 
     // get query & mutation fragments from props or else default to same as generatedFragment
-    const queryFragment = this.props.fragment || generatedFragment;
-    const mutationFragment = this.props.fragment || generatedFragment;
-    
     return {
-      queryFragment,
-      mutationFragment,
+      queryFragment: this.props.queryFragment || generatedFragment,
+      mutationFragment: this.props.mutationFragment || generatedFragment,
     };
   }
 
@@ -171,9 +168,11 @@ class FormWrapper extends Component{
 FormWrapper.propTypes = {
 
   // main options
-  collection: React.PropTypes.object,
+  collection: React.PropTypes.object.isRequired,
   documentId: React.PropTypes.string, // if a document is passed, this will be an edit form
   schema: React.PropTypes.object, // usually not needed
+  queryFragment: React.PropTypes.object,
+  mutationFragment: React.PropTypes.object,
 
   // graphQL
   newMutation: React.PropTypes.func, // the new mutation
