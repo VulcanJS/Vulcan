@@ -49,17 +49,16 @@ const withList = (options) => {
 
   return compose(
 
-    // wrap component with HoC that manages the terms object via its state
-    withState('terms', 'setTerms', props => {
+    // // wrap component with HoC that manages the terms object via its state
+    withState('paginationTerms', 'setPaginationTerms', props => {
 
       // either get initial limit from options, or default to settings
-      const terms = {
+      const paginationTerms = {
         limit, 
         itemsPerPage: limit, 
-        ...props.terms
       };
-
-      return terms;
+    
+      return paginationTerms;
     }),
 
     // wrap component with graphql HoC
@@ -80,18 +79,22 @@ const withList = (options) => {
         alias: 'withList',
         
         // graphql query options
-        options(ownProps) {
+        options({terms, paginationTerms}) {
+          console.log('terms', terms);
+          console.log('paginationTerms', paginationTerms);
+          const mergedTerms = {...terms, ...paginationTerms};
+          console.log(mergedTerms);
           // console.log(ownProps)
           return {
             variables: {
-              terms: ownProps.terms,
+              terms: mergedTerms,
               // note: pollInterval can be set to 0 to disable polling (20s by default)
               pollInterval,
             },
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName);
+              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName);
             
             },
           };
@@ -118,8 +121,9 @@ const withList = (options) => {
             // regular load more (reload everything)
             loadMore(providedTerms) {
               // if new terms are provided by presentational component use them, else default to incrementing current limit once
-              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, limit: results.length + props.ownProps.terms.itemsPerPage } : providedTerms;
-              props.ownProps.setTerms(newTerms);
+              const newTerms = typeof providedTerms === 'undefined' ? { /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms, limit: results.length + props.ownProps.paginationTerms.itemsPerPage } : providedTerms;
+              
+              props.ownProps.setPaginationTerms(newTerms);
             },
 
             // incremental loading version (only load new content)
@@ -127,10 +131,10 @@ const withList = (options) => {
             loadMoreInc(providedTerms) {
 
               // get terms passed as argument or else just default to incrementing the offset
-              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, offset: results.length } : providedTerms;
-
+              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length } : providedTerms;
+              
               return props.data.fetchMore({
-                variables: { newTerms },
+                variables: { terms: newTerms }, // ??? not sure about 'terms: newTerms'
                 updateQuery(previousResults, { fetchMoreResult }) {
                   // no more post to fetch
                   if (!fetchMoreResult.data) {
@@ -139,7 +143,7 @@ const withList = (options) => {
                   const newResults = {};
                   newResults[listResolverName] = [...previousResults[listResolverName], ...fetchMoreResult.data[listResolverName]];
                   // return the previous results "augmented" with more
-                  return {...previousResults, ...newResults };
+                  return {...previousResults, ...newResults};
                 },
               });
             },
@@ -156,7 +160,7 @@ const withList = (options) => {
 
 
 // define query reducer separately
-const queryReducer = (previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName) => {
+const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName) => {
 
   const newMutationName = `${collection._name}New`;
   const editMutationName = `${collection._name}Edit`;
@@ -165,7 +169,7 @@ const queryReducer = (previousResults, action, collection, ownProps, listResolve
   let newResults = previousResults;
 
   // get mongo selector and options objects based on current terms
-  const { selector, options } = collection.getParameters(ownProps.terms);
+  const { selector, options } = collection.getParameters(mergedTerms);
   const mingoQuery = Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below
