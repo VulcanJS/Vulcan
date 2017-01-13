@@ -40,8 +40,8 @@ const resolvers = {
     name: 'categoriesSingle',
 
     resolver(root, {documentId, slug}, context) {
-      const selector = documentId ? {_id: documentId} : {slug: slug}; 
-      return context.Categories.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Categories) }
+      const selector = documentId ? {_id: documentId} : {slug: slug};
+      return context.Categories.findOne(selector, { fields: context.getViewableFields(context.currentUser, context.Categories) });
     },
 
   },
