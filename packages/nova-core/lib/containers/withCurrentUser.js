@@ -5,10 +5,37 @@ import gql from 'graphql-tag';
 import { Utils } from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';   
 
+const withCurrentUser1 = component => {
+
+  const preloadedFields = Users.getPreloadedFields();
+
+  return graphql(gql`
+    query getCurrentUser {
+      currentUser {
+        ${preloadedFields.join('\n')}
+      }
+    }
+    `, {
+      options(ownProps) {
+        return {
+          alias: 'withCurrentUser',
+        };
+      },
+      props(props) {
+        const {data: {loading, currentUser}} = props;
+        return {
+          loading,
+          currentUser,
+        };
+      },
+    }
+  )(component);
+}
+
 /**
 * withCurrentUser - HOC to give access to the currentUser as a prop of a WrappedComponent
 **/
-const withCurrentUser = WrappedComponent => {
+const withCurrentUser2 = WrappedComponent => {
   
   class WithCurrentUser extends Component {
     constructor(...args) {
@@ -57,8 +84,6 @@ const withCurrentUser = WrappedComponent => {
   return hoistStatics(WithCurrentUser, WrappedComponent);
 };
 
-export default withCurrentUser;
-
 
 /**
  ************************** old pattern without executing a query **************************
@@ -88,3 +113,5 @@ function withCurrentUserWithoutQuery(WrappedComponent) {
 
   return hoistStatics(WithCurrentUser, WrappedComponent);
 }
+
+export default withCurrentUser1;

@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 import Posts from 'meteor/nova:posts';
-import { withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/nova:core';
+import { withCurrentUser, withList, getSetting, Components, getRawComponent, registerComponent } from 'meteor/nova:core';
 
 class PostsDailyList extends Component{
 
@@ -27,22 +27,40 @@ class PostsDailyList extends Component{
     return range;
   }
 
+  getDatePosts(posts, date) {
+    return _.filter(posts, post => moment(new Date(post.postedAt)).startOf('day').isSame(date, 'day'));
+  }
+
+  // variant 1: reload everything each time (works with polling)
   loadMoreDays(e) {
     e.preventDefault();
     const numberOfDays = getSetting('numberOfDays', 5);
-
-    /*
-    note: loadMoreBefore is used when doing incremental loading, 
-    but we're not doing that anymore so we only need to change 'after'
-    */
-    
-    // const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
     const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
+    
     this.props.loadMore({
       ...this.props.terms,
-      // before: loadMoreBefore,
       after: loadMoreAfter,
     });
+
+    this.setState({
+      days: this.state.days + this.props.increment,
+      after: loadMoreAfter,
+    });
+  }
+
+  // variant 2: only load new data (need to disable polling)
+  loadMoreDaysInc(e) {
+    e.preventDefault();
+    const numberOfDays = getSetting('numberOfDays', 5);
+    const loadMoreAfter = moment(this.state.after, 'YYYY-MM-DD').subtract(numberOfDays, 'days').format('YYYY-MM-DD');
+    const loadMoreBefore = moment(this.state.after, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
+    
+    this.props.loadMoreInc({
+      ...this.props.terms,
+      before: loadMoreBefore,
+      after: loadMoreAfter,
+    });
+    
     this.setState({
       days: this.state.days + this.props.increment,
       after: loadMoreAfter,
@@ -51,23 +69,13 @@ class PostsDailyList extends Component{
 
   render() {
     const posts = this.props.results;
-
-    const postsByDates = this.getDateRange(this.state.after, this.state.before).map(date => {
-      return {
-        date,
-        posts: _.filter(posts, post => {
-          // console.log(post)
-          // console.log(moment(post.postedAt).startOf('day'))
-          // console.log(date)
-          return moment(new Date(post.postedAt)).startOf('day').isSame(date, 'day')
-        })
-      }
-    });
+    const dates = this.getDateRange(this.state.after, this.state.before);
 
     return (
       <div className="posts-daily">
         <Components.PostsListHeader />
-        {postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} networkStatus={this.props.networkStatus} />)}
+        {dates.map((date, index) => <Components.PostsDay key={index} number={index} date={date} posts={this.getDatePosts(posts, date)} networkStatus={this.props.networkStatus} currentUser={this.props.currentUser} />)}
+        {/* postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} networkStatus={this.props.networkStatus} />) */}
         <a className="posts-load-more posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
       </div>
     )
@@ -75,6 +83,7 @@ class PostsDailyList extends Component{
 }
 
 PostsDailyList.propTypes = {
+  currentUser: React.PropTypes.object,
   days: React.PropTypes.number,
   increment: React.PropTypes.number
 };
@@ -91,4 +100,4 @@ const options = {
   limit: 0,
 };
 
-registerComponent('PostsDailyList', PostsDailyList, withList(options));
+registerComponent('PostsDailyList', PostsDailyList, withCurrentUser, withList(options));

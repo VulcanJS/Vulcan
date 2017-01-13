@@ -1,4 +1,4 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import SmartForm from "meteor/nova:forms";
@@ -27,17 +27,9 @@ class PostsEditForm extends Component {
         <SmartForm
           collection={Posts}
           documentId={this.props.post._id}
-          extraFragment={`
-            htmlBody
-            postedAt
-            user{
-              _id
-              __displayName
-              __emailHash
-              __slug
-            }
-          `}
+          fragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {
+            this.props.closeModal();
             this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
           removeSuccessCallback={({documentId, documentTitle}) => {
@@ -61,14 +53,12 @@ class PostsEditForm extends Component {
 }
 
 PostsEditForm.propTypes = {
+  closeModal: React.PropTypes.func,
   flash: React.PropTypes.func,
   post: React.PropTypes.object.isRequired,
 }
 
 PostsEditForm.contextTypes = {
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
-  closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 

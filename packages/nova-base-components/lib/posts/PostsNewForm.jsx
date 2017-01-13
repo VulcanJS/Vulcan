@@ -1,4 +1,4 @@
-import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import SmartForm from "meteor/nova:forms";
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
@@ -17,6 +17,7 @@ const PostsNewForm = (props, context) => {
           collection={Posts}
           fragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {
+            props.closeModal();
             // props.router.push({pathname: Posts.getPageUrl(post)});
             props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
@@ -27,6 +28,7 @@ const PostsNewForm = (props, context) => {
 };
 
 PostsNewForm.propTypes = {
+  closeModal: React.PropTypes.func,
   router: React.PropTypes.object,
   flash: React.PropTypes.func,
 }

@@ -35,7 +35,7 @@ const voteResolver = {
     vote(root, {documentId, voteType, collectionName}, context) {
       const collection = context[Utils.capitalize(collectionName)];
       const document = collection.findOne(documentId);
-      return context.Users.canDo(context.currentUser, `${collectionName.toLowerCase()}.${voteType}`) ? operateOnItem(collection, document, context.currentUser, voteType) : false;
+      return context.Users.canDo(context.currentUser, `${collectionName.toLowerCase()}.${voteType}`) ? operateOnItem(collection, document, context.currentUser, voteType, false) : false;
     },
   },
 };

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
 import SmartForm from "meteor/nova:forms";
 import Categories from "meteor/nova:categories";
 import { withMessages } from 'meteor/nova:core';
@@ -12,6 +12,7 @@ const CategoriesEditForm = (props, context) => {
       <SmartForm
         collection={Categories}
         documentId={props.category._id}
+        fragment={getRawComponent('CategoriesList').fragment}
         successCallback={category => {
           props.closeCallback();
           props.flash(context.intl.formatMessage({id: 'categories.edit_success'}, {name: category.name}), "success");

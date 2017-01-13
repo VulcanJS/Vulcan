@@ -5,14 +5,6 @@ import { addCallback, Utils } from 'meteor/nova:core';
 
 // ------------------------------------- comments.edit.validate -------------------------------- //
 
-function CommentsEditUserCheck (modifier, comment, user) {
-  if (!user || !Users.canEdit(user, comment)) {
-    throw new Meteor.Error(601, 'sorry_you_cannot_edit_this_comment');
-  }
-  return modifier;
-}
-addCallback("comments.edit.validate", CommentsEditUserCheck);
-
 function CommentsEditSubmittedPropertiesCheck (modifier, comment, user) {
   const schema = Posts.simpleSchema()._schema;
   // go over each field and throw an error if it's not editable

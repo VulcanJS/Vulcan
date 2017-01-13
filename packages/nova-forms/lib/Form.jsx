@@ -74,15 +74,6 @@ class Form extends Component {
     };
   }
 
-  componentWillUnmount() {
-    // note: patch to cancel closeCallback given by parent
-    // we clean the event by hand
-    // example : the closeCallback is a function that closes a modal by calling setState, this modal being the parent of this Form component
-    // if this componentWillUnmount hook is triggered, that means that the modal doesn't exist anymore!
-    // let's not call setState on an unmounted component (avoid no-op / memory leak)
-    this.context.closeCallback = f => f;
-  }
-
   // --------------------------------------------------------------------- //
   // ------------------------------- Helpers ----------------------------- //
   // --------------------------------------------------------------------- //
@@ -352,26 +343,22 @@ class Form extends Component {
     // for new mutation, run refetch function if it exists
     if (mutationType === 'new' && this.props.refetch) this.props.refetch();
 
+    // note (jan 11th 2017): lines below disabled because the component unmounts/mounts again when the mutation is submitted, causing the form to loose track of refs / state,
+    // this behavior clears the form as expected, without us controlling what's going on.
+    // -> uncomment lines below for debug
+    
+    // // call the clear form method
+    // let clearCurrentValues = false;
+    // // reset form if this is a new document form
+    // if (this.props.formType === "new") {
+    //   this.refs.form.reset();
+    //   clearCurrentValues = true;
+    // }
+    // this.clearForm({clearErrors: true, clearCurrentValues});
+
     // run success callback if it exists
     if (this.props.successCallback) this.props.successCallback(document);
 
-    // run close callback if it exists in context (i.e. we're inside a modal)
-    if (this.context.closeCallback) {
-      this.context.closeCallback();
-
-    // else there is no close callback (i.e. we're not inside a modal), call the clear form method
-    // note: we don't want to update the state of an unmounted component
-    } else {
-      let clearCurrentValues = false;
-
-      // reset form if this is a new document form
-      if (this.props.formType === "new") {
-        this.refs.form.reset();
-        clearCurrentValues = true;
-      }
-
-      this.clearForm({clearErrors: true, clearCurrentValues});
-    }
   }
 
   // catch graphql errors
@@ -454,7 +441,6 @@ class Form extends Component {
       this.props.removeMutation({documentId})
         .then((mutationResult) => { // the mutation result looks like {data:{collectionRemove: null}} if succeeded
           if (this.props.removeSuccessCallback) this.props.removeSuccessCallback({documentId, documentTitle});
-          if (this.context.closeCallback) this.context.closeCallback();
           if (this.props.refetch) this.props.refetch();
         })
         .catch((error) => {
@@ -537,7 +523,6 @@ Form.defaultProps = {
 }
 
 Form.contextTypes = {
-  closeCallback: React.PropTypes.func,
   intl: intlShape
 }
 

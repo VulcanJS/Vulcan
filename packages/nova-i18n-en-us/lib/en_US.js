@@ -94,12 +94,8 @@ addStrings('en', {
   "categories.edit": "Edit Category",
   "categories.edit_success": "Category “{name}” edited.",
   "categories.new": "New Category",
-<<<<<<< HEAD
-  "categories.delete": "delete Category",
-=======
   "categories.new_success": "Category “{name}” created.",
   "categories.delete": "Delete Category",
->>>>>>> TelescopeJS/devel
   "categories.name": "Name",
   "categories.description": "Description",
   "categories.order": "Order",

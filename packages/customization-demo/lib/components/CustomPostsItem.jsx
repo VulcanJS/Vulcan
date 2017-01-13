@@ -47,7 +47,7 @@ class CustomPostsItem extends getRawComponent('PostsItem') {
               </Link>
             </div>
             {this.props.currentUser && this.props.currentUser.isAdmin ? <Components.PostsStats post={post} /> : null}
-            {this.renderActions()}
+            {Posts.options.mutations.edit.check(this.props.currentUser, post) ? this.renderActions() : null}
           </div>
 
         </div>
@@ -66,7 +66,7 @@ CustomPostsItem.propTypes = {
 };
 
 CustomPostsItem.fragment = gql`
-  fragment PostsItemFragment on Post {
+  fragment CustomPostsItemFragment on Post {
     _id
     title
     url

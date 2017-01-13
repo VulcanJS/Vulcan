@@ -9,14 +9,9 @@ class Vote extends Component {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
-<<<<<<< HEAD
     this.downvote = this.downvote.bind(this);
-    this.startLoading = this.startLoading.bind(this);
-    this.stopLoading = this.stopLoading.bind(this);
-=======
     // this.startLoading = this.startLoading.bind(this);
     // this.stopLoading = this.stopLoading.bind(this);
->>>>>>> TelescopeJS/devel
 
     this.hasUpvoted = hasUpvoted;
     this.hasDownvoted = hasDownvoted;
@@ -30,7 +25,7 @@ class Vote extends Component {
 
   note: with optimisitc UI, loading functions are not needed
   also, setState triggers issues when the component is unmounted
-  before the vote mutation returns. 
+  before the vote mutation returns.
 
   */
 

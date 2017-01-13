@@ -5,7 +5,7 @@ class PostsDay extends Component {
 
   render() {
 
-    const {date, posts, networkStatus} = this.props;
+    const {date, networkStatus, posts} = this.props;
 
     const noPosts = posts.length === 0;
     const loading = noPosts && networkStatus === 2;
@@ -17,7 +17,7 @@ class PostsDay extends Component {
           noPosts ? <Components.PostsNoMore /> :
             <div className="posts-list">
               <div className="posts-list-content">
-                {posts.map(post => <Components.PostsItem post={post} key={post._id} />)}
+                {posts.map(post => <Components.PostsItem post={post} key={post._id} currentUser={this.props.currentUser} />)}
               </div>
             </div>
         }
@@ -29,6 +29,7 @@ class PostsDay extends Component {
 }
 
 PostsDay.propTypes = {
+  currentUser: React.PropTypes.object,
   date: React.PropTypes.object,
   number: React.PropTypes.number
 }

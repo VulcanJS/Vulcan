@@ -3,10 +3,11 @@ import React from 'react';
 import { withList } from 'meteor/nova:core';
 import Posts from 'meteor/nova:posts';
 import gql from 'graphql-tag';
+import { withCurrentUser } from 'meteor/nova:core';
 
 const PostsList = (props) => {
 
-  const {results, terms, loading, count, totalCount, loadMore, showHeader = true, networkStatus} = props;
+  const {results, terms, loading, count, totalCount, loadMore, showHeader = true, networkStatus, currentUser} = props;
 
   const loadingMore = networkStatus === 2;
 
@@ -18,7 +19,7 @@ const PostsList = (props) => {
       <div className="posts-list">
         {showHeader ? <Components.PostsListHeader/> : null}
         <div className="posts-list-content">
-          {results.map(post => <Components.PostsItem post={post} key={post._id} />)}
+          {results.map(post => <Components.PostsItem post={post} key={post._id} currentUser={currentUser} />)}
         </div>
         {hasMore ? (loadingMore ? <Components.PostsLoading/> : <Components.PostsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} />) : <Components.PostsNoMore/>}
       </div>
@@ -111,4 +112,4 @@ const options = {
   fragment: PostsList.fragment,
 };
 
-registerComponent('PostsList', PostsList, withList(options));
+registerComponent('PostsList', PostsList, withCurrentUser, withList(options));
