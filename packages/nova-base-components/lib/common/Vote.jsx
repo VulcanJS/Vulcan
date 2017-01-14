@@ -9,12 +9,9 @@ class Vote extends Component {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+    this.getActionClass = this.getActionClass.bind(this);
     // this.startLoading = this.startLoading.bind(this);
     // this.stopLoading = this.stopLoading.bind(this);
-
-    this.hasUpvoted = hasUpvoted;
-    this.hasDownvoted = hasDownvoted;
-
     this.state = {
       loading: false
     }
@@ -49,37 +46,36 @@ class Vote extends Component {
       this.props.flash("Please log in first");
       // this.stopLoading();
     } else {
-      const voteType = this.hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
+      const voteType = hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
       this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
         // this.stopLoading();
       });
     } 
   }
 
-  render() {
-
-    // uncomment for debug:
-    // console.log('hasUpvoted', hasUpvoted);
-    // console.log('this.hasUpvoted', this.hasUpvoted);
-
+  getActionClass() {
     const document = this.props.document;
     const user = this.props.currentUser;
 
-    const hasUpvoted = this.hasUpvoted(user, document);
-    const hasDownvoted = this.hasDownvoted(user, document);
+    const isUpvoted = hasUpvoted(user, document);
+    const isDownvoted = hasDownvoted(user, document);
     const actionsClass = classNames(
-      "vote", 
-      {voted: hasUpvoted || hasDownvoted},
-      {upvoted: hasUpvoted},
-      {downvoted: hasDownvoted}
+      'vote', 
+      {voted: isUpvoted || isDownvoted},
+      {upvoted: isUpvoted},
+      {downvoted: isDownvoted}
     );
 
+    return actionsClass;
+  }
+
+  render() {
     return (
-      <div className={actionsClass}>
+      <div className={this.getActionClass()}>
         <a className="upvote-button" onClick={this.upvote}>
           {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
-          <div className="vote-count">{document.baseScore || 0}</div>
+          <div className="vote-count">{this.props.document.baseScore || 0}</div>
         </a>
       </div>
     )
