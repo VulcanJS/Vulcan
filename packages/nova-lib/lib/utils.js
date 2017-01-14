@@ -418,9 +418,11 @@ Utils.getComponentDisplayName = (WrappedComponent) => {
  * @param {Object} collection
  * @param {Array} list
  */
-Utils.convertDates = (collection, list) => {
-  if (!list || !list.length) return list;  
+Utils.convertDates = (collection, listOrDocument) => {
+  // if undefined, just return
+  if (!listOrDocument || !listOrDocument.length) return listOrDocument;  
 
+  const list = Array.isArray(listOrDocument) ? listOrDocument : [listOrDocument];
   const schema = collection.simpleSchema()._schema;
   const dateFields = _.filter(_.keys(schema), fieldName => schema[fieldName].type === Date);
   const convertedList = list.map(result => {
@@ -432,5 +434,5 @@ Utils.convertDates = (collection, list) => {
     return result;
   });
 
-  return convertedList;
+  return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
 }

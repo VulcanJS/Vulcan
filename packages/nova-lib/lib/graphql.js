@@ -13,6 +13,10 @@ import { Utils } from './utils.js';
 // convert a JSON schema to a GraphQL schema
 const jsTypeToGraphQLType = typeName => {
   switch (typeName) {
+
+    case "String":
+      return "String";
+
     case "Number":
       return "Float";
 
@@ -22,6 +26,9 @@ const jsTypeToGraphQLType = typeName => {
 
     case "Object":
       return "???";
+
+    case "Date":
+      return "Date";
 
     default:
       return typeName;
