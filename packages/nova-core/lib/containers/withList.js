@@ -36,7 +36,7 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting, Utils } from 'meteor/nova:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
 
@@ -49,17 +49,16 @@ const withList = (options) => {
 
   return compose(
 
-    // wrap component with HoC that manages the terms object via its state
-    withState('terms', 'setTerms', props => {
+    // // wrap component with HoC that manages the terms object via its state
+    withState('paginationTerms', 'setPaginationTerms', props => {
 
       // either get initial limit from options, or default to settings
-      const terms = {
+      const paginationTerms = {
         limit, 
         itemsPerPage: limit, 
-        ...props.terms
       };
-
-      return terms;
+    
+      return paginationTerms;
     }),
 
     // wrap component with graphql HoC
@@ -77,21 +76,21 @@ const withList = (options) => {
       `,
 
       {
+        alias: 'withList',
         
         // graphql query options
-        options(ownProps) {
-          // console.log(ownProps)
+        options({terms, paginationTerms}) {
+          const mergedTerms = {...terms, ...paginationTerms};
           return {
-            alias: 'withList',
             variables: {
-              terms: ownProps.terms,
+              terms: mergedTerms,
               // note: pollInterval can be set to 0 to disable polling (20s by default)
               pollInterval,
             },
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below
-              return queryReducer(previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName);
+              return queryReducer(previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName);
             
             },
           };
@@ -101,7 +100,7 @@ const withList = (options) => {
         props(props) {
 
           const refetch = props.data.refetch,
-                results = props.data[listResolverName],
+                results = Utils.convertDates(collection, props.data[listResolverName]),
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus;
 
@@ -118,8 +117,9 @@ const withList = (options) => {
             // regular load more (reload everything)
             loadMore(providedTerms) {
               // if new terms are provided by presentational component use them, else default to incrementing current limit once
-              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, limit: results.length + props.ownProps.terms.itemsPerPage } : providedTerms;
-              props.ownProps.setTerms(newTerms);
+              const newTerms = typeof providedTerms === 'undefined' ? { /*...props.ownProps.terms,*/ ...props.ownProps.paginationTerms, limit: results.length + props.ownProps.paginationTerms.itemsPerPage } : providedTerms;
+              
+              props.ownProps.setPaginationTerms(newTerms);
             },
 
             // incremental loading version (only load new content)
@@ -127,10 +127,10 @@ const withList = (options) => {
             loadMoreInc(providedTerms) {
 
               // get terms passed as argument or else just default to incrementing the offset
-              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, offset: results.length } : providedTerms;
-
+              const newTerms = typeof providedTerms === 'undefined' ? { ...props.ownProps.terms, ...props.ownProps.paginationTerms, offset: results.length } : providedTerms;
+              
               return props.data.fetchMore({
-                variables: { newTerms },
+                variables: { terms: newTerms }, // ??? not sure about 'terms: newTerms'
                 updateQuery(previousResults, { fetchMoreResult }) {
                   // no more post to fetch
                   if (!fetchMoreResult.data) {
@@ -139,7 +139,7 @@ const withList = (options) => {
                   const newResults = {};
                   newResults[listResolverName] = [...previousResults[listResolverName], ...fetchMoreResult.data[listResolverName]];
                   // return the previous results "augmented" with more
-                  return {...previousResults, ...newResults };
+                  return {...previousResults, ...newResults};
                 },
               });
             },
@@ -156,7 +156,7 @@ const withList = (options) => {
 
 
 // define query reducer separately
-const queryReducer = (previousResults, action, collection, ownProps, listResolverName, totalResolverName, queryName) => {
+const queryReducer = (previousResults, action, collection, mergedTerms, listResolverName, totalResolverName, queryName) => {
 
   const newMutationName = `${collection._name}New`;
   const editMutationName = `${collection._name}Edit`;
@@ -165,7 +165,7 @@ const queryReducer = (previousResults, action, collection, ownProps, listResolve
   let newResults = previousResults;
 
   // get mongo selector and options objects based on current terms
-  const { selector, options } = collection.getParameters(ownProps.terms);
+  const { selector, options } = collection.getParameters(mergedTerms);
   const mingoQuery = Mingo.Query(selector);
 
   // function to remove a document from a results object, used by edit and remove cases below
@@ -189,16 +189,17 @@ const queryReducer = (previousResults, action, collection, ownProps, listResolve
 
   // reorder results according to a sort
   const reorderResults = (results, sort) => {
-    const cursor = mingoQuery.find(results[listResolverName]);
+    const list = results[listResolverName];
+    const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
+    const cursor = mingoQuery.find(convertedList);
     const sortedList = cursor.sort(sort).all();
-    // console.log('sortedList: ', sortedList)
     results[listResolverName] = sortedList;
     return results;
   }
 
   // console.log('// withList reducer');
   // console.log('queryName: ', queryName);
-  // console.log('terms: ', ownProps.terms);
+  // console.log('terms: ', mergedTerms);
   // console.log('selector: ', selector);
   // console.log('options: ', options);
   // console.log('previousResults: ', previousResults);

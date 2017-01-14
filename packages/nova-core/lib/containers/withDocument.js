@@ -16,10 +16,11 @@ export default function withDocument (options) {
     }
     ${fragment}
   `, {
+    alias: 'withDocument',
+    
     options(ownProps) {
       return {
         variables: { documentId: ownProps.documentId, slug: ownProps.slug },
-        alias: 'withDocument',
         pollInterval, // note: pollInterval can be set to 0 to disable polling (20s by default)
       };
     },
@@ -27,7 +28,7 @@ export default function withDocument (options) {
       const { ownProps, data } = returnedProps;
       return {
         loading: data.networkStatus === 1,
-        document: data[singleResolverName],
+        document: Utils.convertDates(collection, data[singleResolverName]),
         fragmentName,
         fragment,
       };
