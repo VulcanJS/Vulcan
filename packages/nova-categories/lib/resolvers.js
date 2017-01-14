@@ -25,11 +25,11 @@ const resolvers = {
 
     resolver(root, {terms}, context, info) {
       let {selector, options} = context.Categories.getParameters(terms);
-      
+
       options.limit = terms.limit;
       options.skip = terms.offset;
       options.fields = context.getViewableFields(context.currentUser, context.Categories);
-      
+
       return context.Categories.find(selector, options).fetch();
     },
 
