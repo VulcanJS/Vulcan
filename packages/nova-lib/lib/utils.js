@@ -410,3 +410,27 @@ Utils.arrayToFields = (fieldsArray) => {
 Utils.getComponentDisplayName = (WrappedComponent) => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
+
+
+/**
+ * Take a collection and a list of documents, and convert all their date fields to date objects
+ * This is necessary because Apollo doesn't support custom scalars, and stores dates as strings
+ * @param {Object} collection
+ * @param {Array} list
+ */
+Utils.convertDates = (collection, list) => {
+  if (!list || !list.length) return list;  
+
+  const schema = collection.simpleSchema()._schema;
+  const dateFields = _.filter(_.keys(schema), fieldName => schema[fieldName].type === Date);
+  const convertedList = list.map(result => {
+    dateFields.forEach(fieldName => {
+      if (result[fieldName] && typeof result[fieldName] === 'string') {
+        result[fieldName] = new Date(result[fieldName]);
+      }
+    });
+    return result;
+  });
+
+  return convertedList;
+}

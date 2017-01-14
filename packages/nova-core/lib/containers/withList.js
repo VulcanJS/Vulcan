@@ -36,7 +36,7 @@ import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import update from 'immutability-helper';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting, Utils } from 'meteor/nova:core';
 import Mingo from 'mingo';
 import { compose, withState } from 'recompose';
 
@@ -80,11 +80,7 @@ const withList = (options) => {
         
         // graphql query options
         options({terms, paginationTerms}) {
-          console.log('terms', terms);
-          console.log('paginationTerms', paginationTerms);
           const mergedTerms = {...terms, ...paginationTerms};
-          console.log(mergedTerms);
-          // console.log(ownProps)
           return {
             variables: {
               terms: mergedTerms,
@@ -104,7 +100,7 @@ const withList = (options) => {
         props(props) {
 
           const refetch = props.data.refetch,
-                results = props.data[listResolverName],
+                results = Utils.convertDates(collection, props.data[listResolverName]),
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus;
 
@@ -193,16 +189,17 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
 
   // reorder results according to a sort
   const reorderResults = (results, sort) => {
-    const cursor = mingoQuery.find(results[listResolverName]);
+    const list = results[listResolverName];
+    const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
+    const cursor = mingoQuery.find(convertedList);
     const sortedList = cursor.sort(sort).all();
-    // console.log('sortedList: ', sortedList)
     results[listResolverName] = sortedList;
     return results;
   }
 
   // console.log('// withList reducer');
   // console.log('queryName: ', queryName);
-  // console.log('terms: ', ownProps.terms);
+  // console.log('terms: ', mergedTerms);
   // console.log('selector: ', selector);
   // console.log('options: ', options);
   // console.log('previousResults: ', previousResults);
