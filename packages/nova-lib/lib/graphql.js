@@ -128,10 +128,6 @@ export const GraphQLSchema = {
     });
 
     let graphQLSchema = `
-
-      scalar JSON
-      scalar Date
-
       type ${mainTypeName} {
         ${mainSchema.join('\n  ')}
       }

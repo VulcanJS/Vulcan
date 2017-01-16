@@ -1,6 +1,10 @@
 import { GraphQLSchema } from 'meteor/nova:lib';
 
 const generateTypeDefs = () => [`
+
+  scalar JSON
+  scalar Date
+  
   ${GraphQLSchema.getCollectionsSchemas()}
   ${GraphQLSchema.getAdditionalSchemas()}
 
