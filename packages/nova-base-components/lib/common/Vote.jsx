@@ -9,11 +9,8 @@ class Vote extends Component {
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
-<<<<<<< HEAD
     this.downvote = this.downvote.bind(this);
-=======
     this.getActionClass = this.getActionClass.bind(this);
->>>>>>> refs/remotes/TelescopeJS/devel
     // this.startLoading = this.startLoading.bind(this);
     // this.stopLoading = this.stopLoading.bind(this);
     this.state = {
@@ -60,18 +57,18 @@ class Vote extends Component {
   downvote(e) {
     e.preventDefault();
 
-    this.startLoading();
-
-    const post = this.props.post;
+  //  this.startLoading();
+    const document = this.props.document;
+    const collection = this.props.collection;
     const user = this.props.currentUser;
 
     if(!user){
       this.props.flash("Please log in first");
-      this.stopLoading();
+    //  this.stopLoading();
     } else {
-      const voteType = this.hasDownvoted(user, post) ? "cancelDownvote" : "downvote";
-      this.props.vote({post, voteType, currentUser: this.props.currentUser}).then(result => {
-        this.stopLoading();
+      const voteType = this.hasDownvoted(user, document) ? "cancelDownvote" : "downvote";
+      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
+      //  this.stopLoading();
       });
     }
   }
@@ -83,17 +80,10 @@ class Vote extends Component {
     const isUpvoted = hasUpvoted(user, document);
     const isDownvoted = hasDownvoted(user, document);
     const actionsClass = classNames(
-<<<<<<< HEAD
-      "vote",
-      {voted: hasUpvoted || hasDownvoted},
-      {upvoted: hasUpvoted},
-      {downvoted: hasDownvoted}
-=======
-      'vote', 
+      'vote',
       {voted: isUpvoted || isDownvoted},
       {upvoted: isUpvoted},
       {downvoted: isDownvoted}
->>>>>>> refs/remotes/TelescopeJS/devel
     );
 
     return actionsClass;
