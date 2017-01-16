@@ -3,28 +3,27 @@ import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
-import { ShowIf, withDocument } from 'meteor/nova:core';
+import { ShowIf, withDocument, withCurrentUser } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const UsersProfile = (props) => {
   if (props.loading) {
 
-    return <div className="page users-edit-form"><Components.Loading/></div>
+    return <div className="page users-profile"><Components.Loading/></div>
 
   } else {
 
     const user = props.document;
-    const twitterName = Users.getTwitterName(user);
 
     const terms = {view: "userPosts", userId: user._id};
 
     return (
       <div className="page users-profile">
-        <Components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} description={user.__bio} />
+        <Components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} />
         <h2 className="page-title">{Users.getDisplayName(user)}</h2>
         {user.__htmlBio ? <div dangerouslySetInnerHTML={{__html: user.__htmlBio}}></div> : null }
         <ul>
-          {twitterName ? <li><a href={"http://twitter.com/" + twitterName}>@{twitterName}</a></li> : null }
+          {user.twitterUsername ? <li><a href={"http://twitter.com/" + user.twitterUsername}>@{user.twitterUsername}</a></li> : null }
           {user.__website ? <li><a href={user.__website}>{user.__website}</a></li> : null }
           <ShowIf check={Users.options.mutations.edit.check} document={user}>
             <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
@@ -44,7 +43,7 @@ UsersProfile.propTypes = {
 UsersProfile.displayName = "UsersProfile";
 
 UsersProfile.fragment = gql`
-  fragment usersSingleFragment on User {
+  fragment usersProfileFragment on User {
     _id
     username
     createdAt
@@ -62,7 +61,6 @@ UsersProfile.fragment = gql`
       power
       votedAt
     }
-    __email
     __emailHash
     __groups
     __htmlBio
@@ -72,7 +70,7 @@ UsersProfile.fragment = gql`
     __notifications_posts
     __postCount
     __slug
-    __twitterUsername
+    twitterUsername
     __upvotedComments {
       itemId
       power
@@ -93,4 +91,4 @@ const options = {
   fragment: UsersProfile.fragment,
 };
 
-registerComponent('UsersProfile', UsersProfile, withDocument(options));
+registerComponent('UsersProfile', UsersProfile, withCurrentUser, withDocument(options));

@@ -5,6 +5,10 @@ const adminGroup = {
   order: 10
 };
 
+const ownsOrIsAdmin = (user, document) => {
+  return Users.owns(user, document) || Users.isAdmin(user);
+};
+
 /**
  * @summary Users schema
  * @type {Object}
@@ -109,7 +113,7 @@ const schema = {
     control: "text",
     insertableBy: ['members'],
     editableBy: ['members'],
-    viewableBy: ['guests'],
+    viewableBy: ownsOrIsAdmin,
     preload: true,
     // unique: true // note: find a way to fix duplicate accounts before enabling this
   },
@@ -154,7 +158,7 @@ const schema = {
     preload: true,
   },
   /**
-    The user's Twitter username
+    The user's Twitter username // not a real field
   */
   __twitterUsername: {
     type: String,
@@ -165,6 +169,7 @@ const schema = {
     insertableBy: ['members'],
     editableBy: ['members'],
     viewableBy: ['guests'],
+    resolveAs: 'twitterUsername: String',
   },
   /**
     A link to the user's homepage
