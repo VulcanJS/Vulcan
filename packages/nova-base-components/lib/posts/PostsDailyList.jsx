@@ -12,8 +12,24 @@ class PostsDailyList extends Component{
     this.state = {
       days: props.days,
       after: props.terms.after,
+      daysLoaded: props.days,
+      afterLoaded: props.terms.after,
       before: props.terms.before,
+      loading: true,
     };
+  }
+
+  // intercept prop change and only show more days once data is done loading
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.networkStatus === 2) {
+      this.setState({loading: true});
+    } else {
+      this.setState((prevState, props) => ({
+        loading: false,
+        daysLoaded: prevState.days,
+        afterLoaded: prevState.after,
+      }));
+    }
   }
 
   // return date objects for all the dates in a range
@@ -69,14 +85,13 @@ class PostsDailyList extends Component{
 
   render() {
     const posts = this.props.results;
-    const dates = this.getDateRange(this.state.after, this.state.before);
+    const dates = this.getDateRange(this.state.afterLoaded, this.state.before);
 
     return (
       <div className="posts-daily">
         <Components.PostsListHeader />
         {dates.map((date, index) => <Components.PostsDay key={index} number={index} date={date} posts={this.getDatePosts(posts, date)} networkStatus={this.props.networkStatus} currentUser={this.props.currentUser} />)}
-        {/* postsByDates.map((day, index) => <Components.PostsDay key={index} number={index} {...day} networkStatus={this.props.networkStatus} />) */}
-        <a className="posts-load-more posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>
+        {this.state.loading? <Components.PostsLoading /> : <a className="posts-load-more posts-load-more-days" onClick={this.loadMoreDays}><FormattedMessage id="posts.load_more_days"/></a>}
       </div>
     )
   }
