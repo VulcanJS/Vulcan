@@ -22,12 +22,6 @@ const specificResolvers = {
     user(comment, args, context) {
       return context.Users.findOne({_id: comment.userId}, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
-    upvoters(comment, args, context) {
-      return comment.upvoters ? context.Users.find({_id: {$in: comment.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
-    downvoters(comment, args, context) {
-      return comment.downvoters ? context.Users.find({_id: {$in: comment.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
   },
 };
 

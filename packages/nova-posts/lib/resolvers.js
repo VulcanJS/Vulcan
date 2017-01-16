@@ -1,20 +1,14 @@
 import { GraphQLSchema } from 'meteor/nova:core';
 
-const speficicResolvers = {
+const specificResolvers = {
   Post: {
     user(post, args, context) {
       return context.Users.findOne({ _id: post.userId }, { fields: context.getViewableFields(context.currentUser, context.Users) });
     },
-    upvoters(post, args, context) {
-      return post.upvoters ? context.Users.find({_id: {$in: post.upvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
-    downvoters(post, args, context) {
-      return post.downvoters ? context.Users.find({_id: {$in: post.downvoters}}, { fields: context.getViewableFields(context.currentUser, context.Users) }).fetch() : [];
-    },
   },
 };
 
-GraphQLSchema.addResolvers(speficicResolvers);
+GraphQLSchema.addResolvers(specificResolvers);
 
 const resolvers = {
 
@@ -37,7 +31,8 @@ const resolvers = {
     name: 'postsSingle',
 
     resolver(root, {documentId}, context) {
-      return context.Posts.findOne({_id: documentId}, { fields: context.getViewableFields(context.currentUser, context.Posts) });
+      const post = context.Posts.findOne({_id: documentId});
+      return context.Users.keepViewableFields(context.currentUser, context.Posts, post);
     },
   
   },

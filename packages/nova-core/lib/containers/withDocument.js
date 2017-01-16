@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Utils } from 'meteor/nova:core';
 
 export default function withDocument (options) {
   

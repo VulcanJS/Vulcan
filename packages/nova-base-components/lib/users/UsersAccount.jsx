@@ -1,6 +1,5 @@
 import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import Users from 'meteor/nova:users';
 import { withCurrentUser } from 'meteor/nova:core';
 
 const UsersAccount = (props, context) => {

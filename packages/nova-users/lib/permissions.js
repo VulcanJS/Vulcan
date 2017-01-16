@@ -204,6 +204,16 @@ Users.getViewableFields = function (user, collection, document) {
 }
 
 /**
+ * @summary For a given document, keep only fields viewable by current user
+ * @param {Object} user - The user performing the action
+ * @param {Object} collection - The collection
+ * @param {Object} document - The document being returned by the resolver
+ */
+Users.keepViewableFields = function (user, collection, document) {
+  return _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
+}
+
+/**
  * @summary Check if a user can submit a field
  * @param {Object} user - The user performing the action
  * @param {Object} field - The field being edited or inserted
