@@ -155,8 +155,8 @@ Users.owns = function (user, document) {
       // case 1: document is a post or a comment, use userId to check
       return user._id === document.userId;
     } else {
-      // case 2: document is a user, use _id to check
-      return user._id === document._id;
+      // case 2: document is a user, use _id or slug to check
+      return document.slug ? user.slug === document.slug : user._id === document._id;
     }
   } catch (e) {
     return false; // user not logged in
@@ -210,7 +210,7 @@ Users.getViewableFields = function (user, collection, document) {
  * @param {Object} document - The document being returned by the resolver
  */
 Users.keepViewableFields = function (user, collection, document) {
-  return _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
+  return document && document._id && _.pick(document, _.keys(Users.getViewableFields(user, collection, document)));
 }
 
 /**
