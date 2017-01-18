@@ -41,7 +41,7 @@ class FormWrapper extends Component{
 
   // if a document is being passed, this is an edit form
   getFormType() {
-    return this.props.documentId ? "edit" : "new";
+    return this.props.documentId || this.props.slug ? "edit" : "new";
   }
 
   // get fragment used to decide what data to load from the server to populate the form,
@@ -89,8 +89,13 @@ class FormWrapper extends Component{
     };
   }
 
-  // prevent extra re-renderings for unknown reasons
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps) {
+    if (this.getFormType() === 'edit') {
+      // re-render only if the document selector changes
+      return nextProps.slug !== this.props.slug || nextProps.documentId !== this.props.documentId;
+    }
+    
+    // prevent extra re-renderings for unknown reasons
     return false;
   }
 
@@ -149,7 +154,7 @@ class FormWrapper extends Component{
         withRemove(mutationOptions)
       )(Loader);
 
-      return <WrappedComponent documentId={this.props.documentId} />
+      return <WrappedComponent documentId={this.props.documentId} slug={this.props.slug} />
     
     } else {
 

@@ -8,7 +8,7 @@ Package.onUse(function (api) {
     'nova:core@1.0.0',
     'nova:forms@1.0.0',
 
-    'std:accounts-ui@1.2.9',
+    'std:accounts-ui@1.2.17',
   ]);
 
   api.addFiles('lib/style.css', 'client');
