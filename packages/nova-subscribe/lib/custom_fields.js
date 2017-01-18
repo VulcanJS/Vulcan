@@ -2,7 +2,7 @@ import Users from "meteor/nova:users";
 
 Users.addField([
   {
-    fieldName: '__subscribedItems',
+    fieldName: 'subscribedItems',
     fieldSchema: {
       type: Object,
       optional: true,
@@ -11,7 +11,7 @@ Users.addField([
     }
   },
   {
-    fieldName: '__subscribers',
+    fieldName: 'subscribers',
     fieldSchema: {
       type: [String],
       optional: true,
@@ -24,7 +24,7 @@ Users.addField([
     }
   },
   {
-    fieldName: '__subscriberCount',
+    fieldName: 'subscriberCount',
     fieldSchema: {
       type: Number,
       optional: true,

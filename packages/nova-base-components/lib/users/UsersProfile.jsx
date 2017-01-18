@@ -21,10 +21,10 @@ const UsersProfile = (props) => {
       <div className="page users-profile">
         <Components.HeadTags url={Users.getProfileUrl(user, true)} title={Users.getDisplayName(user)} />
         <h2 className="page-title">{Users.getDisplayName(user)}</h2>
-        {user.__htmlBio ? <div dangerouslySetInnerHTML={{__html: user.__htmlBio}}></div> : null }
+        {user.htmlBio ? <div dangerouslySetInnerHTML={{__html: user.htmlBio}}></div> : null }
         <ul>
           {user.twitterUsername ? <li><a href={"http://twitter.com/" + user.twitterUsername}>@{user.twitterUsername}</a></li> : null }
-          {user.__website ? <li><a href={user.__website}>{user.__website}</a></li> : null }
+          {user.website ? <li><a href={user.website}>{user.website}</a></li> : null }
           <ShowIf check={Users.options.mutations.edit.check} document={user}>
             <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
           </ShowIf>
@@ -48,40 +48,40 @@ UsersProfile.fragment = gql`
     username
     createdAt
     isAdmin
-    __bio
-    __commentCount
-    __displayName
-    __downvotedComments {
+    bio
+    commentCount
+    displayName
+    downvotedComments {
       itemId
       power
       votedAt
     }
-    __downvotedPosts {
+    downvotedPosts {
       itemId
       power
       votedAt
     }
-    __emailHash
-    __groups
-    __htmlBio
-    __karma
-    __newsletter_subscribeToNewsletter
-    __notifications_users
-    __notifications_posts
-    __postCount
-    __slug
+    emailHash
+    groups
+    htmlBio
+    karma
+    newsletter_subscribeToNewsletter
+    notifications_users
+    notifications_posts
+    postCount
+    slug
     twitterUsername
-    __upvotedComments {
+    upvotedComments {
       itemId
       power
       votedAt
     }
-    __upvotedPosts {
+    upvotedPosts {
       itemId
       power
       votedAt
     }
-    __website
+    website
   }
 `;
 

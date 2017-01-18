@@ -17,57 +17,57 @@ function setupUser (user, options) {
   // ------------------------------ Properties ------------------------------ //
   var userProperties = {
     profile: options.profile || {},
-    __karma: 0,
-    __isInvited: false,
-    __postCount: 0,
-    __commentCount: 0,
-    __invitedCount: 0,
-    __upvotedPosts: [],
-    __downvotedPosts: [],
-    __upvotedComments: [],
-    __downvotedComments: []
+    karma: 0,
+    isInvited: false,
+    postCount: 0,
+    commentCount: 0,
+    invitedCount: 0,
+    upvotedPosts: [],
+    downvotedPosts: [],
+    upvotedComments: [],
+    downvotedComments: []
   };
   user = _.extend(user, userProperties);
 
   // look in a few places for the user email
   if (options.email) {
-    user.__email = options.email;
+    user.email = options.email;
   } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
-    user.__email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
+    user.email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
   } else if (user.services.facebook && user.services.facebook.email) {
-    user.__email = user.services.facebook.email;
+    user.email = user.services.facebook.email;
   } else if (user.services.github && user.services.github.email) {
-    user.__email = user.services.github.email;
+    user.email = user.services.github.email;
   } else if (user.services.google && user.services.google.email) {
-    user.__email = user.services.google.email;
+    user.email = user.services.google.email;
   } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
-    user.__email = user.services.linkedin.emailAddress;
+    user.email = user.services.linkedin.emailAddress;
   }
 
   // generate email hash
-  if (!!user.__email) {
-    user.__emailHash = Gravatar.hash(user.__email);
+  if (!!user.email) {
+    user.emailHash = Gravatar.hash(user.email);
   }
 
   // look in a few places for the displayName
   if (user.profile.username) {
-    user.__displayName = user.profile.username;
+    user.displayName = user.profile.username;
   } else if (user.profile.name) {
-    user.__displayName = user.profile.name;
+    user.displayName = user.profile.name;
   } else if (user.services.linkedin && user.services.linkedin.firstName) {
-    user.__displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
+    user.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
   } else {
-    user.__displayName = user.username;
+    user.displayName = user.username;
   }
 
   // create a basic slug from display name and then modify it if this slugs already exists;
-  const basicSlug = Utils.slugify(user.__displayName);
-  user.__slug = Utils.getUnusedSlug(Users, basicSlug);
+  const basicSlug = Utils.slugify(user.displayName);
+  user.slug = Utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
-  // Events.track('new user', {username: user.__displayName, email: user.__email});
+  // Events.track('new user', {username: user.displayName, email: user.email});
 
   return user;
 }
@@ -93,8 +93,8 @@ function usersNewAdminUserCreationNotification (user) {
 addCallback("users.new.sync", usersNewAdminUserCreationNotification);
 
 function usersEditGenerateHtmlBio (modifier) {
-  if (modifier.$set && modifier.$set.__bio) {
-    modifier.$set.__htmlBio = Utils.sanitize(marked(modifier.$set.__bio));
+  if (modifier.$set && modifier.$set.bio) {
+    modifier.$set.htmlBio = Utils.sanitize(marked(modifier.$set.bio));
   }
   return modifier;
 }
@@ -102,9 +102,9 @@ addCallback("users.edit.sync", usersEditGenerateHtmlBio);
 
 function usersEditCheckEmail (modifier, user) {
   // if email is being modified, update user.emails too
-  if (modifier.$set && modifier.$set.__email) {
+  if (modifier.$set && modifier.$set.email) {
 
-    var newEmail = modifier.$set.__email;
+    var newEmail = modifier.$set.email;
 
     // check for existing emails and throw error if necessary
     var userWithSameEmail = Users.findByEmail(newEmail);
@@ -119,7 +119,7 @@ function usersEditCheckEmail (modifier, user) {
     }
 
     // update email hash
-    modifier.$set.__emailHash = Gravatar.hash(newEmail);
+    modifier.$set.emailHash = Gravatar.hash(newEmail);
 
   }
   return modifier;

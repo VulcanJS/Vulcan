@@ -81,9 +81,9 @@ PostsList.fragment = gql`
     commenters {
       # ...avatarUserInfo
       _id
-      __displayName
-      __emailHash
-      __slug
+      displayName
+      emailHash
+      slug
     }
     upvoters {
       _id
@@ -98,9 +98,9 @@ PostsList.fragment = gql`
     user {
       # ...avatarUserInfo
       _id
-      __displayName
-      __emailHash
-      __slug
+      displayName
+      emailHash
+      slug
     }
     userId
   }

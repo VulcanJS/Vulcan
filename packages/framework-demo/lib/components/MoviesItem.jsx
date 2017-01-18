@@ -55,7 +55,7 @@ class MoviesItem extends Component {
     return (
       <div key={movie.name} style={{paddingBottom: "15px",marginBottom: "15px", borderBottom: "1px solid #ccc"}}>
         <h2>{movie.name} ({movie.year})</h2>
-        <p>By <strong>{movie.user && movie.user.__displayName}</strong></p>
+        <p>By <strong>{movie.user && movie.user.displayName}</strong></p>
         <div className="item-actions">
           {this.renderDetails()}
           {Movies.options.mutations.edit.check(this.props.currentUser, movie) ? this.renderEdit() : null}

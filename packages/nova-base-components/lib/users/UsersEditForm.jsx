@@ -42,7 +42,7 @@ UsersEditForm.displayName = "UsersEditForm";
 UsersEditForm.fragment = gql` 
   fragment UsersEditFormFragment on User {
     _id
-    __slug
+    slug
   }
 `;
 

@@ -19,7 +19,7 @@ const MoviesDetails = props => {
     return (
       <div>
         <h2>{movie.name} ({movie.year})</h2>
-        <p>Reviewed by <strong>{movie.user && movie.user.__displayName}</strong> on {movie.createdAt}</p>
+        <p>Reviewed by <strong>{movie.user && movie.user.displayName}</strong> on {movie.createdAt}</p>
         <p>{movie.review}</p>
         {movie.privateComments ? <p><strong>PRIVATE</strong>: {movie.privateComments}</p>: null}
       </div>
@@ -36,7 +36,7 @@ MoviesDetails.fragment = gql`
     review
     privateComments
     user {
-      __displayName
+      displayName
     }
   }
 `;

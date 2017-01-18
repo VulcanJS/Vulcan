@@ -4,9 +4,9 @@ const fragments = {
   // avatar: gql`
   //   fragment avatarUserInfo on User {
   //     _id
-  //     __emailHash
-  //     __displayName
-  //     __slug
+  //     emailHash
+  //     displayName
+  //     slug
   //   }
   // `,
 
@@ -18,41 +18,41 @@ const fragments = {
         username
         createdAt
         isAdmin
-        __bio
-        __commentCount
-        __displayName
-        __downvotedComments {
+        bio
+        commentCount
+        displayName
+        downvotedComments {
           itemId
           power
           votedAt
         }
-        __downvotedPosts {
+        downvotedPosts {
           itemId
           power
           votedAt
         }
-        __email
-        __emailHash
-        __groups
-        __htmlBio
-        __karma
-        __newsletter_subscribeToNewsletter
-        __notifications_users
-        __notifications_posts
-        __postCount
-        __slug
-        __twitterUsername
-        __upvotedComments {
+        email
+        emailHash
+        groups
+        htmlBio
+        karma
+        newsletter_subscribeToNewsletter
+        notifications_users
+        notifications_posts
+        postCount
+        slug
+        twitterUsername
+        upvotedComments {
           itemId
           power
           votedAt
         }
-        __upvotedPosts {
+        upvotedPosts {
           itemId
           power
           votedAt
         }
-        __website
+        website
       }
     `,
   },
@@ -65,41 +65,41 @@ const fragments = {
         username
         createdAt
         isAdmin
-        __bio
-        __commentCount
-        __displayName
-        __downvotedComments {
+        bio
+        commentCount
+        displayName
+        downvotedComments {
           itemId
           power
           votedAt
         }
-        __downvotedPosts {
+        downvotedPosts {
           itemId
           power
           votedAt
         }
-        __email
-        __emailHash
-        __groups
-        __htmlBio
-        __karma
-        __newsletter_subscribeToNewsletter
-        __notifications_users
-        __notifications_posts
-        __postCount
-        __slug
-        __twitterUsername
-        __upvotedComments {
+        email
+        emailHash
+        groups
+        htmlBio
+        karma
+        newsletter_subscribeToNewsletter
+        notifications_users
+        notifications_posts
+        postCount
+        slug
+        twitterUsername
+        upvotedComments {
           itemId
           power
           votedAt
         }
-        __upvotedPosts {
+        upvotedPosts {
           itemId
           power
           votedAt
         }
-        __website
+        website
       }
     `,
   },

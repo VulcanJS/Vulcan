@@ -14,7 +14,7 @@ Posts.addField({
 Users.addField([
   // TODO: fix this
   // {
-  //   fieldName: '__newsletter_subscribeToNewsletter',
+  //   fieldName: 'newsletter_subscribeToNewsletter',
   //   fieldName: 'telescope.newsletter.showBanner',
   //   fieldSchema: {
   //     type: Boolean,
@@ -24,7 +24,7 @@ Users.addField([
   //   }
   // },
   {
-    fieldName: '__newsletter_subscribeToNewsletter',
+    fieldName: 'newsletter_subscribeToNewsletter',
     fieldSchema: {
       label: 'Subscribe to Newsletter',
       type: Boolean,

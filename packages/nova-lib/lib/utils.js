@@ -154,11 +154,8 @@ Utils.getUnusedSlug = function (collection, slug) {
   let suffix = "";
   let index = 0;
 
-  // handle edge case for Users collection
-  const field = collection._name === 'users' ? '__slug' : 'slug';
-
   // test if slug is already in use
-  while (!!collection.findOne({[field]: slug+suffix})) {
+  while (!!collection.findOne({slug: slug+suffix})) {
     index++;
     suffix = "-"+index;
   }
@@ -308,7 +305,7 @@ Utils.unflatten = function( array, idProperty, parentIdProperty, parent, tree ){
 
 Utils.getFieldLabel = (fieldName, collection) => {
   const label = collection.simpleSchema()._schema[fieldName].label;
-  const nameWithSpaces = Utils.camelToSpaces(fieldName.replace("__", ""));
+  const nameWithSpaces = Utils.camelToSpaces(fieldName);
   return label || nameWithSpaces;
 }
 

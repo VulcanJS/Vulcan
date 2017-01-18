@@ -42,16 +42,16 @@ function updateUser (item, user, collection, operation) {
 
   switch (operation) {
     case "upvote":
-      update.$addToSet = {'__upvotedPosts': vote};
+      update.$addToSet = {'upvotedPosts': vote};
       break;
     case "downvote":
-      update.$addToSet = {'__downvotedPosts': vote};
+      update.$addToSet = {'downvotedPosts': vote};
       break;
     case "cancelUpvote":
-      update.$pull = {'__upvotedPosts': {itemId: item._id}};
+      update.$pull = {'upvotedPosts': {itemId: item._id}};
       break;
     case "cancelDownvote":
-      update.$pull = {'__downvotedPosts': {itemId: item._id}};
+      update.$pull = {'downvotedPosts': {itemId: item._id}};
       break;
   }
 
@@ -79,7 +79,7 @@ function updateKarma (item, user, collection, operation) {
 
   // only update karma is the operation isn't done by the item's author
   if (item.userId !== user._id) {
-    Users.update({_id: item.userId}, {$inc: {"__karma": karmaAmount}});
+    Users.update({_id: item.userId}, {$inc: {"karma": karmaAmount}});
   }
 
 }

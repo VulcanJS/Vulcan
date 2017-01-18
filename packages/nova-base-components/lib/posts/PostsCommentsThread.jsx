@@ -57,9 +57,9 @@ PostsCommentsThread.fragment = gql`
     postedAt
     user {
       _id
-      __displayName
-      __emailHash
-      __slug
+      displayName
+      emailHash
+      slug
     }
     userId
   }

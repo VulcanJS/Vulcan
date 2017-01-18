@@ -51,9 +51,9 @@ if (typeof Package['nova:posts'] !== "undefined") {
 
       const user = Users.findOne({_id: post.userId});
 
-      if (!!user.__subscribers && !!user.__subscribers.length) {
+      if (!!user.subscribers && !!user.subscribers.length) {
         // remove userIds of users that have already been notified and of post's author 
-        let subscriberIdsToNotify = _.difference(user.__subscribers, userIdsNotified, [user._id]);
+        let subscriberIdsToNotify = _.difference(user.subscribers, userIdsNotified, [user._id]);
         
         Telescope.notifications.create(subscriberIdsToNotify, 'newPost', notificationData);
 

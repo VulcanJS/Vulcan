@@ -8,7 +8,7 @@ const notificationsGroup = {
 // Add notifications options to user profile settings
 Users.addField([
   {
-    fieldName: '__notifications_users',
+    fieldName: 'notifications_users',
     fieldSchema: {
       label: 'New users',
       type: Boolean,
@@ -22,7 +22,7 @@ Users.addField([
     }
   },
   {
-    fieldName: '__notifications_posts',
+    fieldName: 'notifications_posts',
     fieldSchema: {
       label: 'New posts',
       type: Boolean,
@@ -40,7 +40,7 @@ Users.addField([
 if (typeof Comments !== "undefined") {
   Users.addField([
     {
-      fieldName: '__notifications_comments',
+      fieldName: 'notifications_comments',
       fieldSchema: {
         label: 'Comments on my posts',
         type: Boolean,
@@ -53,7 +53,7 @@ if (typeof Comments !== "undefined") {
       }
     },
     {
-      fieldName: '__notifications_replies',
+      fieldName: 'notifications_replies',
       fieldSchema: {
         label: 'Replies to my comments',
         type: Boolean,

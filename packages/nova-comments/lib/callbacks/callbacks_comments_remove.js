@@ -9,7 +9,7 @@ const CommentsRemovePostCommenters = (comment, currentUser) => {
 
   // dec user's comment count
   Users.update({_id: userId}, {
-    $inc:       {'__commentCount': -1}
+    $inc:       {'commentCount': -1}
   });
 
   const postComments = Comments.find({postId}, {sort: {postedAt: -1}}).fetch();

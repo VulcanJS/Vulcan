@@ -9,7 +9,7 @@ class NewsletterButton extends Component {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
 
-    const isSubscribed = props.user.__newsletter_subscribeToNewsletter;
+    const isSubscribed = props.user.newsletter_subscribeToNewsletter;
 
     this.state = {
       labelId: isSubscribed ? 'newsletter.unsubscribe' : 'newsletter.subscribe',

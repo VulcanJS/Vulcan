@@ -108,7 +108,7 @@ function showBanner (user) {
     // and showBanner user setting either doesn't exist or is set to true
     // && Users.getSetting(user, 'newsletter.showBanner', true)
     // and user is not subscribed to the newsletter already (setting either DNE or is not set to false)
-    && !Users.getSetting(user, '__newsletter_subscribeToNewsletter', false)
+    && !Users.getSetting(user, 'newsletter_subscribeToNewsletter', false)
   );
 }
 

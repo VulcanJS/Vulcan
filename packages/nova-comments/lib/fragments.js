@@ -15,9 +15,9 @@ const fragments = {
         postedAt
         user {
           _id
-          __displayName
-          __emailHash
-          __slug
+          displayName
+          emailHash
+          slug
         }
       }
     `,
@@ -37,9 +37,9 @@ const fragments = {
         postedAt
         user {
           _id
-          __displayName
-          __emailHash
-          __slug
+          displayName
+          emailHash
+          slug
         }
       }
     `,

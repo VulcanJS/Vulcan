@@ -64,7 +64,7 @@ export const MoviesListFragment = gql`
     year
     createdAt
     user {
-      __displayName
+      displayName
     }
   }
 `;

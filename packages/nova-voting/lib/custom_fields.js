@@ -25,52 +25,52 @@ Users.addField([
     An array containing comments upvotes
   */
   {
-    fieldName: '__upvotedComments',
+    fieldName: 'upvotedComments',
     fieldSchema: {
       type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: '__upvotedComments: [Vote]',
+      resolveAs: 'upvotedComments: [Vote]',
     }
   },
   /**
     An array containing posts upvotes
   */
   {
-    fieldName: '__upvotedPosts',
+    fieldName: 'upvotedPosts',
     fieldSchema: {
       type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: '__upvotedPosts: [Vote]',
+      resolveAs: 'upvotedPosts: [Vote]',
     }
   },
   /**
     An array containing comment downvotes
   */
   {
-    fieldName: '__downvotedComments',
+    fieldName: 'downvotedComments',
     fieldSchema: {
       type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: '__downvotedComments: [Vote]',
+      resolveAs: 'downvotedComments: [Vote]',
     }
   },
   /**
     An array containing posts downvotes
   */
   {  
-    fieldName: '__downvotedPosts',
+    fieldName: 'downvotedPosts',
     fieldSchema: {
       type: [voteSchema],
       publish: false,
       optional: true,
       viewableBy: ['guests'],
-      resolveAs: '__downvotedPosts: [Vote]',
+      resolveAs: 'downvotedPosts: [Vote]',
     }
   },
 ]);

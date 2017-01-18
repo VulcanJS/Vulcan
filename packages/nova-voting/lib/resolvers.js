@@ -2,18 +2,17 @@ import { GraphQLSchema } from 'meteor/nova:lib';
 
 const specificResolvers = {
   User: {
-    __downvotedComments(user, args, context) {
-      return user.__downvotedComments ? user.__downvotedComments : []
+    downvotedComments(user, args, context) {
+      return user.downvotedComments ? user.downvotedComments : []
     },
-    __downvotedPosts(user, args, context) {
-      return user.__downvotedPosts ? user.__downvotedPosts : []
+    downvotedPosts(user, args, context) {
+      return user.downvotedPosts ? user.downvotedPosts : []
     },
-    __upvotedComments(user, args, context) {
-      return user.__upvotedComments ? user.__upvotedComments : []
+    upvotedComments(user, args, context) {
+      return user.upvotedComments ? user.upvotedComments : []
     },
-    __upvotedPosts(user, args, context) {
-      console.log('__upvotedPosts resolver')
-      return user.__upvotedPosts ? user.__upvotedPosts : [];
+    upvotedPosts(user, args, context) {
+      return user.upvotedPosts ? user.upvotedPosts : [];
     },
   },
   Post: {

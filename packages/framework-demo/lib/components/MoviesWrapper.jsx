@@ -11,7 +11,7 @@ import MoviesList from './MoviesList.jsx';
 class MoviesWrapper extends Component {
   render() {
     return (
-      <div className="wrapper">
+      <div className="wrapper framework-demo">
 
         <div className="header">
           <Accounts />

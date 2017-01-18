@@ -80,7 +80,7 @@ const schema = {
   /**
     Bio (Markdown version)
   */
-  __bio: {
+  bio: {
     type: String,
     optional: true,
     control: "textarea",
@@ -91,7 +91,7 @@ const schema = {
   /**
     The name displayed throughout the app. Can contain spaces and special characters, doesn't need to be unique
   */
-  __displayName: {
+  displayName: {
     type: String,
     optional: true,
     publish: true,
@@ -105,7 +105,7 @@ const schema = {
   /**
     The user's email. Modifiable.
   */
-  __email: {
+  email: {
     type: String,
     optional: true,
     regEx: SimpleSchema.RegEx.Email,
@@ -120,7 +120,7 @@ const schema = {
   /**
     A hash of the email, used for Gravatar // TODO: change this when email changes
   */
-  __emailHash: {
+  emailHash: {
     type: String,
     publish: true,
     optional: true,
@@ -130,7 +130,7 @@ const schema = {
   /**
     The HTML version of the bio field
   */
-  __htmlBio: {
+  htmlBio: {
     type: String,
     publish: true,
     profile: true,
@@ -140,7 +140,7 @@ const schema = {
   /**
     The user's karma
   */
-  __karma: {
+  karma: {
     type: Number,
     decimal: true,
     publish: true,
@@ -150,7 +150,7 @@ const schema = {
   /**
     The user's profile URL slug // TODO: change this when displayName changes
   */
-  __slug: {
+  slug: {
     type: String,
     publish: true,
     optional: true,
@@ -160,7 +160,7 @@ const schema = {
   /**
     The user's Twitter username // not a real field
   */
-  __twitterUsername: {
+  twitterUsername: {
     type: String,
     optional: true,
     publish: true,
@@ -174,7 +174,7 @@ const schema = {
   /**
     A link to the user's homepage
   */
-  __website: {
+  website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
     publish: true,
@@ -188,7 +188,7 @@ const schema = {
   /**
     Groups
   */
-  __groups: {
+  groups: {
     type: [String],
     optional: true,
     control: "checkboxgroup",

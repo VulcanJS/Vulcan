@@ -55,8 +55,8 @@ Users.getGroups = user => {
   
     userGroups = ["members"];
 
-    if (user.__groups) { // custom groups
-      userGroups = userGroups.concat(user.__groups);
+    if (user.groups) { // custom groups
+      userGroups = userGroups.concat(user.groups);
     } 
     
     if (Users.isAdmin(user)) { // admin

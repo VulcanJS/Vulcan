@@ -16,9 +16,9 @@
 //         user {
 //           # ...avatarUserInfo
 //           _id
-//           __displayName
-//           __emailHash
-//           __slug
+//           displayName
+//           emailHash
+//           slug
 //         }
 //       }
 //     `,
@@ -49,9 +49,9 @@
 //         commenters {
 //           # ...avatarUserInfo
 //           _id
-//           __displayName
-//           __emailHash
-//           __slug
+//           displayName
+//           emailHash
+//           slug
 //         }
 //         upvoters {
 //           _id
@@ -66,9 +66,9 @@
 //         user {
 //           # ...avatarUserInfo
 //           _id
-//           __displayName
-//           __emailHash
-//           __slug
+//           displayName
+//           emailHash
+//           slug
 //         }
 //       }
 //     `,
