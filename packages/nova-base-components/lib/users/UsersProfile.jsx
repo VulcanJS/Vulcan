@@ -25,9 +25,9 @@ const UsersProfile = (props) => {
         <ul>
           {user.twitterUsername ? <li><a href={"http://twitter.com/" + user.twitterUsername}>@{user.twitterUsername}</a></li> : null }
           {user.website ? <li><a href={user.website}>{user.website}</a></li> : null }
-          <ShowIf check={Users.options.mutations.edit.check} document={user}>
+          <Components.ShowIf check={Users.options.mutations.edit.check} document={user}>
             <li><Link to={Users.getEditUrl(user)}><FormattedMessage id="users.edit_account"/></Link></li>
-          </ShowIf>
+          </Components.ShowIf>
         </ul>
         <h3><FormattedMessage id="users.posts"/></h3>
         <Components.PostsList terms={terms} />

@@ -79,7 +79,7 @@ const PostsSchema = new SimpleSchema({
 New document form:
 
 ```jsx
-<SmartForm 
+<Components.SmartForm 
   collection={Posts}
   methodName="posts.new"
 />
@@ -88,7 +88,7 @@ New document form:
 Edit document form:
 
 ```jsx
-<SmartForm 
+<Components.SmartForm 
   collection={Posts}
   methodName="posts.edit"
   document={post}

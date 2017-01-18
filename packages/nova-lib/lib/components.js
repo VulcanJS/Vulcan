@@ -1,6 +1,9 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
-export const Components = {};
+export const Components = {
+  list: {},
+  // + ...lookup table created when Meteor starts
+};
 
 /**
  * Register a Telescope component with a name, a raw component than can be extended
@@ -9,11 +12,20 @@ export const Components = {};
  * @param {String} name The name of the component to register.
  * @param {React Component} rawComponent Interchangeable/extendable component.
  * @param {...Function} hocs The HOCs to compose with the raw component.
- * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
+ * 
+ * @returns Structure of a component in the list:
+ *
+ * Components.list.Foo = {
+ *    name: 'Foo',
+ *    hocs: [fn1, fn2],
+ *    rawComponent: React.Component,
+ *    call: () => compose(...hocs)(rawComponent),
+ * }
+ *
  */
 export const registerComponent = (name, rawComponent, ...hocs) => {
   // console.log('// registering component');
@@ -21,14 +33,14 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
   // console.log('raw component', rawComponent);
   // console.log('higher order components', hocs); 
 
-  // compose the raw component with the HOCs given in option
-  Components[name] = compose(...hocs)(rawComponent);
-
-  // keep track of the raw component & hocs, so we can extend the component if necessary
-  Components[name].rawComponent = rawComponent;
-  Components[name].hocs = hocs;
-
-  return Components[name];
+  // store the component in a list
+  Components.list[name] = {
+    name,
+    rawComponent,
+    hocs,
+    call: () => compose(...hocs)(rawComponent)
+  };
+  
 };
 
 /**
@@ -37,9 +49,25 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
  * @param {String} name The name of the component to get.
  * @returns {Function|React Component} A (wrapped) React component
  */
- export const getComponent = (name) => {
-  return Components[name];
+export const getComponent = (name) => {
+  return Components.list[name].call();
 };
+
+/**
+ * Populate the lookup table for components to be callable
+ * Called on app startup
+ **/
+export const createComponentsLookupTable = () => {
+  // loop over each component in the list
+  Object.keys(Components.list).map(name => {
+    
+    // populate an entry in the lookup table
+    Components[name] = getComponent(name);
+    
+    // uncomment for debug
+    // console.log('init component:', name);
+  });
+}
 
 /**
  * Get the **raw** (original) component registered with registerComponent
@@ -49,7 +77,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
  * @returns {Function|React Component} An interchangeable/extendable React component
  */
  export const getRawComponent = (name) => {
-  return Components[name].rawComponent;
+  return Components.list[name].rawComponent;
 };
 
 /**
@@ -60,14 +88,14 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
  * @param {String} name The name of the component to register.
  * @param {React Component} rawComponent Interchangeable/extendable component.
  * @param {...Function} hocs The HOCs to compose with the raw component.
- * @returns {Function|React Component} A component callable with Components[name]
+ * @returns {Function|React Component} A component callable with Components.list[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
  export const replaceComponent = (name, newComponent, ...newHocs) => {
-  const previousComponent = Components[name];
+  const previousComponent = Components.list[name];
   
   // xxx : throw an error if the previous component doesn't exist
 

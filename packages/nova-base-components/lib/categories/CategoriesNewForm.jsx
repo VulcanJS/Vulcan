@@ -3,13 +3,12 @@ import { intlShape } from 'react-intl';
 import { Components, registerComponent } from 'meteor/nova:lib';
 import Categories from "meteor/nova:categories";
 import { withMessages } from 'meteor/nova:core';
-import SmartForm from "meteor/nova:forms";
 
 const CategoriesNewForm = (props, context) => {
 
   return (
     <div className="categories-new-form">
-      <SmartForm 
+      <Components.SmartForm 
         collection={Categories} 
         successCallback={category => {
           props.closeCallback();

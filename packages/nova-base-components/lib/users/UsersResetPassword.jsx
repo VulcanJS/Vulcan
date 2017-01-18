@@ -37,4 +37,6 @@ UsersResetPassword.propsTypes = {
   params: React.PropTypes.object,
 };
 
+UsersResetPassword.displayName = 'UsersResetPassword';
+
 registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);

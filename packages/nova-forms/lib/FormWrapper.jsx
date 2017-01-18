@@ -27,7 +27,7 @@ component is also added to wait for withDocument's loading prop to be false)
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { withApollo, compose } from 'react-apollo';
-import { Components, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser, Utils, withNew, withEdit, withRemove } from 'meteor/nova:core';
 import Form from './Form.jsx';
 import gql from 'graphql-tag';
 import { withDocument } from 'meteor/nova:core';
@@ -107,7 +107,7 @@ class FormWrapper extends Component{
 
     const prefix = `${this.props.collection._name}${Utils.capitalize(this.getFormType())}`
 
-    // props received from parent component (i.e. <SmartForm/> call)
+    // props received from parent component (i.e. <Components.SmartForm/> call)
     const parentProps = this.props;
 
     // props to pass on to child component (i.e. <Form />)
@@ -218,7 +218,4 @@ FormWrapper.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-module.exports = compose(
-  withCurrentUser,
-  withApollo,
-)(FormWrapper);
+registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);

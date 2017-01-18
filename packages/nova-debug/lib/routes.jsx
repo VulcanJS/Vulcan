@@ -1,12 +1,8 @@
-import Cheatsheet from './components/Cheatsheet.jsx';
-import Groups from './components/Groups.jsx';
-import Settings from './components/Settings.jsx';
-import Emails from './components/Emails.jsx';
 import { addRoute } from 'meteor/nova:core';
 
 addRoute([
-  {name: "cheatsheet", path: "/cheatsheet", component: Cheatsheet},
-  {name: "groups", path: "/groups", component: Groups},
-  {name: "settings", path: "/settings", component: Settings},
-  {name: "emails", path: "/emails", component: Emails},
+  {name: "cheatsheet", path: "/cheatsheet", componentName: "Cheatsheet"},
+  {name: "groups", path: "/groups", componentName: "Groups"},
+  {name: "settings", path: "/settings", componentName: "Settings"},
+  {name: "emails", path: "/emails", componentName: "Emails"},
 ]);

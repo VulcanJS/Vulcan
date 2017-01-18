@@ -10,11 +10,11 @@ import './intl-polyfill.js';
 import './graphql.js';
 import './icons.js';
 
-export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs } from './components.js';
+export { Components, registerComponent, replaceComponent, getRawComponent, getComponent, copyHoCs, createComponentsLookupTable } from './components.js';
 export { createCollection } from './collections.js';
 export { Callbacks, addCallback, removeCallback, runCallbacks, runCallbacksAsync } from './callbacks.js';
 export { GraphQLSchema } from './graphql.js';
-export { Routes, addRoute } from './routes.js';
+export { Routes, addRoute, getRoute, createRoutesLookupTable } from './routes.js';
 export { Utils } from './utils.js';
 export { getSetting } from './settings.js';
 export { Strings, addStrings } from './strings.js';

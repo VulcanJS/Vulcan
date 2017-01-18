@@ -44,6 +44,8 @@ App.childContextTypes = {
   intl: intlShape,
 }
 
+App.displayName = 'App';
+
 registerComponent('App', App, withCurrentUser);
 
 export default App;

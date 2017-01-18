@@ -8,9 +8,7 @@ Wrapped with the "withCurrentUser" container.
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { ModalTrigger } from 'meteor/nova:core';
-import MoviesEditForm from './MoviesEditForm.jsx';
-import MoviesDetails from './MoviesDetails.jsx';
-import { withCurrentUser } from 'meteor/nova:core';
+import { Components, registerComponent, withCurrentUser } from 'meteor/nova:core';
 import Movies from '../collection.js';
 
 class MoviesItem extends Component {
@@ -25,7 +23,7 @@ class MoviesItem extends Component {
           label="View Details" 
           component={<Button bsStyle="primary">Read Review</Button>} 
         >
-          <MoviesDetails documentId={movie._id}/>
+          <Components.MoviesDetails documentId={movie._id}/>
         </ModalTrigger>
       </div>
     )
@@ -42,7 +40,7 @@ class MoviesItem extends Component {
           label="Edit Movie" 
           component={<Button bsStyle="primary">Edit Movie</Button>} 
         >
-          <MoviesEditForm currentUser={this.props.currentUser} documentId={movie._id} refetch={this.props.refetch}/>
+          <Components.MoviesEditForm currentUser={this.props.currentUser} documentId={movie._id} refetch={this.props.refetch}/>
         </ModalTrigger>
       </div>
     )
@@ -64,6 +62,8 @@ class MoviesItem extends Component {
     )
   }
 
-};
+}
 
-export default withCurrentUser(MoviesItem);
+MoviesItem.displayName = 'MoviesItem';
+
+registerComponent('MoviesItem', MoviesItem, withCurrentUser);
