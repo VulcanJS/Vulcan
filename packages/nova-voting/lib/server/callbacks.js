@@ -1,9 +1,7 @@
 import Users from 'meteor/nova:users';
 import { addCallback } from 'meteor/nova:core';
 import { updateScore } from './scoring.js';
-import { operateOnItem, getVotePower } from '../vote.js';
-import Posts from 'meteor/nova:posts';
-import Comments from 'meteor/nova:comments';
+import { getVotePower } from '../vote.js';
 
 /**
  * @summary Update an item's (post or comment) score
@@ -13,14 +11,14 @@ import Comments from 'meteor/nova:comments';
  * @param {string} operation - The operation being performed
  */
 
-function updateScoreCallback (item, user, collection, operation) {
+function updateItemScore (item, user, collection, operation) {
   updateScore({collection: collection, item: item, forceUpdate: true});
 }
 
-addCallback("upvote.async", updateScoreCallback);
-addCallback("downvote.async", updateScoreCallback);
-addCallback("cancelUpvote.async", updateScoreCallback);
-addCallback("cancelDownvote.async", updateScoreCallback);
+addCallback("upvote.async", updateItemScore);
+addCallback("downvote.async", updateItemScore);
+addCallback("cancelUpvote.async", updateItemScore);
+addCallback("cancelDownvote.async", updateItemScore);
 
 /**
  * @summary Update the profile of the user doing the operation
@@ -88,21 +86,4 @@ addCallback("downvote.async", updateKarma);
 addCallback("cancelUpvote.async", updateKarma);
 addCallback("cancelDownvote.async", updateKarma);
 
-/**
- * @summary Make users upvote their own new posts
- */
-function PostsNewUpvoteOwnPost (post) {
-  var postAuthor = Users.findOne(post.userId);
-  operateOnItem(Posts, post, postAuthor, "upvote");
-}
-addCallback("posts.new.async", PostsNewUpvoteOwnPost);
 
-/**
- * @summary Make users upvote their own new comments
- */
-function CommentsNewUpvoteOwnComment (comment) {
-  var commentAuthor = Users.findOne(comment.userId);
-  operateOnItem(Comments, comment, commentAuthor, "upvote");
-  return comment;
-}
-addCallback("comments.new.async", CommentsNewUpvoteOwnComment);

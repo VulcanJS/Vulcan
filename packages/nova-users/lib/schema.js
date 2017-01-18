@@ -158,7 +158,7 @@ const schema = {
     preload: true,
   },
   /**
-    The user's Twitter username // not a real field
+    The user's Twitter username
   */
   twitterUsername: {
     type: String,

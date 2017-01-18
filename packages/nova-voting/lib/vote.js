@@ -7,11 +7,25 @@ export const getVotePower = function (user) {
   return 1;
 };
 
-export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false) {
+/*
+
+- Simulation mode: runs all the operation and returns an objects without affecting the db.
+- Regular mode: same, but updates the db too.
+
+*/
+
+export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false, context = 'edit') {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
 
-  let item = _.clone(originalItem); // we do not want to affect the original item directly
+  let item = {
+    upvotes: 0,
+    downvotes: 0,
+    upvoters: [],
+    downvoters: [],
+    baseScore: 0,
+    ...originalItem,
+  }; // we do not want to affect the original item directly
 
   var votePower = getVotePower(user);
   var hasUpvotedItem = hasUpvoted(user, item);
@@ -19,12 +33,12 @@ export const operateOnItem = function (collection, originalItem, user, operation
   var update = {};
 
   // console.log('// operateOnItem')
-  // console.log(collection)
-  // console.log(item)
-  // console.log(user)
-  // console.log(operation)
-
-  // ---------------------------- "Real" Server-Side Operation -------------------------- //
+  // console.log('isSimulation: ',isSimulation)
+  // console.log('context: ',context)
+  // console.log('collection: ',collection._name)
+  // console.log('operation: ',operation)
+  // console.log('item: ',item)
+  // console.log('user: ',user)
 
   const collectionName = collection._name;
 
@@ -41,13 +55,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
     return false; 
   }
 
-  if (typeof item.upvoters === 'undefined') {
-    item.upvoters = [];
-  }
-
-  if (typeof item.downvoters === 'undefined') {
-    item.downvoters = [];
-  }
+  const voter = isSimulation ? {__typename: "User", _id: user._id} : user._id;
 
   // ------------------------------ Sync Callbacks ------------------------------ //
 
@@ -57,11 +65,10 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
     case "upvote":
       if (hasDownvotedItem) {
-        operateOnItem(collection, item, user, "cancelDownvote", isSimulation);
+        operateOnItem(collection, item, user, "cancelDownvote", isSimulation, context);
       }
 
-      const upvoter = isSimulation ? {__typename: "User", _id: user._id} : user._id
-      item.upvoters.push(upvoter);
+      item.upvoters.push(voter);
       item.upvotes += 1;
       item.baseScore += votePower;
       
@@ -75,11 +82,10 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
     case "downvote":
       if (hasUpvotedItem) {
-        operateOnItem(collection, item, user, "cancelUpvote", isSimulation);
+        operateOnItem(collection, item, user, "cancelUpvote", isSimulation, context);
       }
 
-      const downvoter = isSimulation ? {__typename: "User", _id: user._id} : user._id
-      item.downvoters.push(downvoter);
+      item.downvoters.push(voter);
       item.downvotes += 1;
       item.baseScore -= votePower;
       
@@ -119,13 +125,15 @@ export const operateOnItem = function (collection, originalItem, user, operation
   }
 
   if (!isSimulation) {
-    update["$set"] = {inactive: false};
-    const result = collection.update({_id: item._id}, update);
-    
-    if (result > 0) {
-      // --------------------- Server-Side Async Callbacks --------------------- //
-      runCallbacksAsync(operation+".async", item, user, collection, operation); 
+
+    if (context === 'edit') {
+      update["$set"] = {inactive: false};
+      collection.update({_id: item._id}, update);
     }
+    
+    // --------------------- Server-Side Async Callbacks --------------------- //
+    runCallbacksAsync(operation+".async", item, user, collection, operation, context); 
+  
   }
 
   const voteResult = _.pick(item, '__typename', '_id', 'upvoters', 'downvoters', 'upvotes', 'downvotes', 'baseScore');

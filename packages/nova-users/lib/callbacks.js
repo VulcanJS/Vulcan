@@ -60,6 +60,11 @@ function setupUser (user, options) {
     user.displayName = user.username;
   }
 
+  // add Twitter username
+  if (user.services && user.services.twitter && user.services.twitter.screenName) {
+    user.twitterUsername = user.services.twitter.screenName;
+  }
+
   // create a basic slug from display name and then modify it if this slugs already exists;
   const basicSlug = Utils.slugify(user.displayName);
   user.slug = Utils.getUnusedSlug(Users, basicSlug);
