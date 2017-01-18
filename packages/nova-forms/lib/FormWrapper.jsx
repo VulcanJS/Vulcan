@@ -219,3 +219,4 @@ FormWrapper.childContextTypes = {
 }
 
 registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
+export default FormWrapper;

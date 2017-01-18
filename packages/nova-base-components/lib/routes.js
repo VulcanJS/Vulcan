@@ -1,11 +1,11 @@
-import { Components, addRoute } from 'meteor/nova:core';
+import { getComponent, addRoute } from 'meteor/nova:core';
 
 addRoute([
-  {name:'posts.list',     path: '/',                    componentName: 'PostsHome' }, // index route
-  {name:'posts.daily',    path:'daily',                 componentName: 'PostsDaily'},
-  {name:'posts.single',   path:'posts/:_id(/:slug)',    componentName: 'PostsSingle'},
-  {name:'users.single',   path:'users/:slug',           componentName: 'UsersSingle'},
-  {name:'users.account',  path:'account',               componentName: 'UsersAccount'},
-  {name:'resetPassword',  path:'reset-password/:token', componentName: 'UsersResetPassword'},
-  {name:'users.edit',     path:'users/:slug/edit',      componentName: 'UsersAccount'},
+  {name:'posts.list',     path: '/',                    component: getComponent('PostsHome')}, // index route
+  {name:'posts.daily',    path:'daily',                 component: getComponent('PostsDaily')},
+  {name:'posts.single',   path:'posts/:_id(/:slug)',    component: getComponent('PostsSingle')},
+  {name:'users.single',   path:'users/:slug',           component: getComponent('UsersSingle')},
+  {name:'users.account',  path:'account',               component: getComponent('UsersAccount')},
+  {name:'resetPassword',  path:'reset-password/:token', component: getComponent('UsersResetPassword')},
+  {name:'users.edit',     path:'users/:slug/edit',      component: getComponent('UsersAccount')},
 ]);

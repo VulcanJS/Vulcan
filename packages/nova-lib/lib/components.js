@@ -1,9 +1,7 @@
 import { compose } from 'react-apollo'; // note: at the moment, compose@react-apollo === compose@redux ; see https://github.com/apollostack/react-apollo/blob/master/src/index.ts#L4-L7
 
-export const Components = {
-  list: {},
-  // + ...lookup table created when Meteor starts
-};
+export const Components = {}; // will be populated on startup (see nova:routing)
+export const ComponentsTable = {} // storage for infos about components
 
 /**
  * Register a Telescope component with a name, a raw component than can be extended
@@ -19,7 +17,7 @@ export const Components = {
  * 
  * @returns Structure of a component in the list:
  *
- * Components.list.Foo = {
+ * ComponentsTable.Foo = {
  *    name: 'Foo',
  *    hocs: [fn1, fn2],
  *    rawComponent: React.Component,
@@ -33,8 +31,8 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
   // console.log('raw component', rawComponent);
   // console.log('higher order components', hocs); 
 
-  // store the component in a list
-  Components.list[name] = {
+  // store the component in the table
+  ComponentsTable[name] = {
     name,
     rawComponent,
     hocs,
@@ -50,16 +48,16 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
  * @returns {Function|React Component} A (wrapped) React component
  */
 export const getComponent = (name) => {
-  return Components.list[name].call();
+  return ComponentsTable[name].call();
 };
 
 /**
  * Populate the lookup table for components to be callable
- * Called on app startup
+ * ℹ️ Called once on app startup
  **/
-export const createComponentsLookupTable = () => {
+export const populateComponentsApp = () => {
   // loop over each component in the list
-  Object.keys(Components.list).map(name => {
+  Object.keys(ComponentsTable).map(name => {
     
     // populate an entry in the lookup table
     Components[name] = getComponent(name);
@@ -77,7 +75,7 @@ export const createComponentsLookupTable = () => {
  * @returns {Function|React Component} An interchangeable/extendable React component
  */
  export const getRawComponent = (name) => {
-  return Components.list[name].rawComponent;
+  return ComponentsTable[name].rawComponent;
 };
 
 /**
@@ -88,14 +86,14 @@ export const createComponentsLookupTable = () => {
  * @param {String} name The name of the component to register.
  * @param {React Component} rawComponent Interchangeable/extendable component.
  * @param {...Function} hocs The HOCs to compose with the raw component.
- * @returns {Function|React Component} A component callable with Components.list[name]
+ * @returns {Function|React Component} A component callable with Components[name]
  *
  * Note: when a component is registered without higher order component, `hocs` will be
  * an empty array, and it's ok! 
  * See https://github.com/reactjs/redux/blob/master/src/compose.js#L13-L15
  */
  export const replaceComponent = (name, newComponent, ...newHocs) => {
-  const previousComponent = Components.list[name];
+  const previousComponent = ComponentsTable[name];
   
   // xxx : throw an error if the previous component doesn't exist
 

@@ -11,5 +11,5 @@ if (typeof SimpleSchema !== "undefined") {
   });
 }
 
-import './FormWrapper.jsx'
-// export default FormWrapper;
+import FormWrapper from './FormWrapper.jsx';
+export default FormWrapper;

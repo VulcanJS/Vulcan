@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { Components, createComponentsLookupTable, Actions, runCallbacks, addRoute, Routes, createRoutesLookupTable, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { Components, populateComponentsApp, Actions, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
 import { applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 
@@ -19,8 +19,8 @@ Meteor.startup(function initNovaRoutesAndApollo() {
   // console.log('// --> starting routing');
   
   // init the application components and routes, including components & routes from 3rd-party packages
-  createComponentsLookupTable();
-  createRoutesLookupTable();
+  populateComponentsApp();
+  populateRoutesApp();
 
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');

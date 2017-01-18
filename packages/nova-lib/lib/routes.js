@@ -1,15 +1,15 @@
 import { Components, getComponent } from './components';
 
-export const Routes = {
-  list: {},
-  // + ...lookup table
-};
+export const Routes = {}; // will be populated on startup (see nova:routing)
+export const RoutesTable = {}; // storage for infos about routes themselves
 
 /*
 A route is defined in the list like:
-Routes.list.foobar = {
+RoutesTable.foobar = {
  name: 'foobar',
- call: () => ({name: 'foobar', path: '/xyz', componentName: Components.Foo}),
+ path: '/xyz', 
+ component: getComponent('FooBar')
+ componentName: 'FooBar' // optional
 }
 */
 export const addRoute = routeOrRouteArray => {
@@ -17,9 +17,9 @@ export const addRoute = routeOrRouteArray => {
   // be sure to have an array of routes to manipulate
   const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
   
-  // modify the routes list witht the new routes
+  // modify the routes table with the new routes
   addedRoutes.map(({name, ...properties}) => {
-    Routes.list[name] = {
+    RoutesTable[name] = {
       name,
       ...properties
     };
@@ -28,18 +28,23 @@ export const addRoute = routeOrRouteArray => {
 }
 
 export const getRoute = name => {
-  const routeDef = Routes.list[name];
+  const routeDef = RoutesTable[name];
   
-  // components should be loaded by now (createComponentsLookupTable function), we can grab the component in the lookup table and assign it to the route
-  return {
-    ...routeDef,
-    component: getComponent(routeDef.componentName),
-  };
+  // components should be loaded by now (populateComponentsApp function), we can grab the component in the lookup table and assign it to the route
+  if (!routeDef.component && routeDef.componentName) {
+    routeDef.component = getComponent(routeDef.componentName);
+  }
+  
+  return routeDef;
 }
 
-export const createRoutesLookupTable = () => {
+/**
+ * Populate the lookup table for routes to be callable
+ * ℹ️ Called once on app startup
+ **/
+export const populateRoutesApp = () => {
   // loop over each component in the list
-  Object.keys(Routes.list).map(name => {
+  Object.keys(RoutesTable).map(name => {
     
     // populate an entry in the lookup table
     Routes[name] = getRoute(name);

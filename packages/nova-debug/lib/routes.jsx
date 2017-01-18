@@ -1,8 +1,8 @@
-import { addRoute } from 'meteor/nova:core';
+import { addRoute, getComponent } from 'meteor/nova:core';
 
 addRoute([
-  {name: "cheatsheet", path: "/cheatsheet", componentName: "Cheatsheet"},
-  {name: "groups", path: "/groups", componentName: "Groups"},
-  {name: "settings", path: "/settings", componentName: "Settings"},
-  {name: "emails", path: "/emails", componentName: "Emails"},
+  {name: "cheatsheet", path: "/cheatsheet", component: getComponent("Cheatsheet")},
+  {name: "groups", path: "/groups", component: getComponent("Groups")},
+  {name: "settings", path: "/settings", component: getComponent("Settings")},
+  {name: "emails", path: "/emails", component: getComponent("Emails")},
 ]);
