@@ -8,6 +8,8 @@ import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
 import { runCallbacks, addRoute, Routes, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { applyRouterMiddleware } from 'react-router';
+import { useScroll } from 'react-router-scroll';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
 
@@ -62,6 +64,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
         // clear all previous messages
         store.dispatch(Actions.messages.clearSeen());
       },
+      render: applyRouterMiddleware(useScroll())
     },
   };
 
