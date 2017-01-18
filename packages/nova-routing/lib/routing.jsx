@@ -1,4 +1,3 @@
-import { Components, Actions } from 'meteor/nova:lib';
 import React from 'react';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
 import Helmet from 'react-helmet';
@@ -7,17 +6,24 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { runCallbacks, addRoute, Routes, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { Components, createComponentsLookupTable, Actions, runCallbacks, addRoute, Routes, createRoutesLookupTable, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
 import { applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
-
-  addRoute({name:"app.notfound", path:"*", component:Components.Error404});
+  
+  // note: route defined here because it "shouldn't be removable"
+  addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
+  
+  // uncomment for debug
+  // console.log('// --> starting routing');
+  
+  // init the application components and routes, including components & routes from 3rd-party packages
+  createComponentsLookupTable();
+  createRoutesLookupTable();
 
   const indexRoute = _.filter(Routes, route => route.path === '/')[0];
   const childRoutes = _.reject(Routes, route => route.path === '/');
-
   delete indexRoute.path; // delete the '/' path to avoid warning
 
   const AppRoutes = {

@@ -109,7 +109,7 @@ class CategoriesList extends Component {
             // categories are loading
             : <div className="dropdown-item"><MenuItem><Components.Loading /></MenuItem></div>
           }
-          <ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</ShowIf>
+          <Components.ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</Components.ShowIf>
         </DropdownButton>
 
         <div>

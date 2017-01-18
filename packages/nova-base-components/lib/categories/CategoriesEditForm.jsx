@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import { Components, registerComponent, getRawComponent } from 'meteor/nova:lib';
-import SmartForm from "meteor/nova:forms";
 import Categories from "meteor/nova:categories";
 import { withMessages } from 'meteor/nova:core';
 
@@ -9,7 +8,7 @@ const CategoriesEditForm = (props, context) => {
 
   return (
     <div className="categories-edit-form">
-      <SmartForm
+      <Components.SmartForm
         collection={Categories}
         documentId={props.category._id}
         mutationFragment={getRawComponent('CategoriesList').fragment}

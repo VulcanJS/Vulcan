@@ -28,6 +28,7 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
+    'lib/components.js',
     'lib/routes.jsx',
     'lib/globals.js'
   ], ['client', 'server']);

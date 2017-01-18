@@ -1,5 +1,4 @@
 import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
-import SmartForm from "meteor/nova:forms";
 import { ShowIf, withMessages } from 'meteor/nova:core';
 import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
@@ -8,12 +7,12 @@ import { withRouter } from 'react-router'
 
 const PostsNewForm = (props, context) => {
   return (
-    <ShowIf
+    <Components.ShowIf
       check={Posts.options.mutations.new.check}
       failureComponent={<Components.UsersAccountForm />}
     >
       <div className="posts-new-form">
-        <SmartForm
+        <Components.SmartForm
           collection={Posts}
           mutationFragment={getRawComponent('PostsPage').fragment}
           successCallback={post => {
@@ -23,7 +22,7 @@ const PostsNewForm = (props, context) => {
           }}
         />
       </div>
-    </ShowIf>
+    </Components.ShowIf>
   );
 };
 

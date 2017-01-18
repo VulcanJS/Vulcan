@@ -2,7 +2,7 @@ import React from 'react';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
-import { Callbacks, Utils } from 'meteor/nova:core';
+import { Callbacks, Utils, registerComponent } from 'meteor/nova:core';
 
 const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
 
@@ -107,5 +107,4 @@ const Cheatsheet = props => {
   )
 }
 
-module.exports = Cheatsheet
-export default Cheatsheet
+registerComponent('Cheatsheet', Cheatsheet);

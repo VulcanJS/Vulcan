@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSetting } from 'meteor/nova:core';
+import { getSetting, registerComponent } from 'meteor/nova:core';
 
 const renderSetting = (field, key) => {
   return (
@@ -41,5 +41,4 @@ const Settings = props => {
   )
 }
 
-module.exports = Settings
-export default Settings
+registerComponent('Settings', Settings);

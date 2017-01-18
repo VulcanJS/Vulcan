@@ -4,6 +4,7 @@ Browse to http://localhost:3000/my-custom-route to see it.
 */
 
 import React from 'react';
+import { registerComponent } from 'meteor/nova:core';
 
 const MyCustomPage = () => {
   return (
@@ -14,4 +15,4 @@ const MyCustomPage = () => {
   )
 }
 
-export default MyCustomPage;
+registerComponent('MyCustomPage', MyCustomPage);

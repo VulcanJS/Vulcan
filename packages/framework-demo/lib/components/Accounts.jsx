@@ -2,12 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { withApollo } from 'react-apollo';
+import { registerComponent } from 'meteor/nova:core';
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
 });
 
-const AccountsComponent = ({client}) => {
+const AccountsForm = ({client}) => {
   return (
     <div>
       <Accounts.ui.LoginForm 
@@ -23,12 +24,12 @@ class AccountsButton extends Accounts.ui.Button {
   render () {
     const {label, href, type, disabled, className, onClick} = this.props;
     if (type === 'link') {
-      return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
+      return <a href={ href } className={ className } onClick={ onClick }>{ label }</a>;
     }
     return <Button 
         bsStyle="primary"
         className={ className }
-        type={ type } 
+        type={ type }
         disabled={ disabled }
         onClick={ onClick }>{ label }
       </Button>;
@@ -55,4 +56,4 @@ class AccountsField extends Accounts.ui.Field {
 Accounts.ui.Button = AccountsButton;
 Accounts.ui.Field = AccountsField;
 
-export default withApollo(AccountsComponent);
+registerComponent('AccountsForm', AccountsForm, withApollo);

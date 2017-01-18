@@ -1,7 +1,6 @@
 import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import SmartForm from "meteor/nova:forms";
 import Posts from "meteor/nova:posts";
 import { withRouter } from 'react-router'
 import { ShowIf, withMessages } from 'meteor/nova:core';
@@ -10,12 +9,12 @@ class PostsEditForm extends Component {
 
   renderAdminArea() {
     return (
-      <ShowIf check={Posts.options.mutations.edit.check} document={this.props.post}>
+      <Components.ShowIf check={Posts.options.mutations.edit.check} document={this.props.post}>
         <div className="posts-edit-form-admin">
           <div className="posts-edit-form-id">ID: {this.props.post._id}</div>
           <Components.PostsStats post={this.props.post} />
         </div>
-      </ShowIf>
+      </Components.ShowIf>
     )
   }
 
@@ -24,7 +23,7 @@ class PostsEditForm extends Component {
     return (
       <div className="posts-edit-form">
         {this.renderAdminArea()}
-        <SmartForm
+        <Components.SmartForm
           collection={Posts}
           documentId={this.props.post._id}
           mutationFragment={getRawComponent('PostsPage').fragment}

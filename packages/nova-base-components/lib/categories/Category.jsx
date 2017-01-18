@@ -41,7 +41,7 @@ class Category extends Component {
             {category.name}
           </MenuItem>
         </LinkContainer>
-        <ShowIf check={Categories.options.mutations.edit.check} document={category}>{this.renderEdit()}</ShowIf>
+        <Components.ShowIf check={Categories.options.mutations.edit.check} document={category}>{this.renderEdit()}</Components.ShowIf>
       </div>
     )
   }

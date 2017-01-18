@@ -1,6 +1,5 @@
 import React from 'react';
-// import Posts from "meteor/nova:posts";
-// import Comments from "meteor/nova:comments";
+import { registerComponent } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 
 const Group = ({name, actions}) => {
@@ -37,6 +36,4 @@ const Groups = props => {
   )
 }
 
-
-module.exports = Groups
-export default Groups
+registerComponent('Groups', Groups);

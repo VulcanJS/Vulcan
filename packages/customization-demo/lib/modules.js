@@ -12,3 +12,4 @@ import "./routes.jsx"
 import "./components/CustomLogo.jsx";
 import "./components/CustomNewsletter.jsx";
 import "./components/CustomPostsItem.jsx";
+import "./components/MyCustomPage.jsx";

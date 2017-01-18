@@ -1,4 +1,5 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { registerComponent } from 'meteor/nova:core';
 
 if (typeof SimpleSchema !== "undefined") {
   SimpleSchema.extendOptions({
@@ -10,5 +11,5 @@ if (typeof SimpleSchema !== "undefined") {
   });
 }
 
-import FormWrapper from './FormWrapper.jsx'
-export default FormWrapper;
+import './FormWrapper.jsx'
+// export default FormWrapper;

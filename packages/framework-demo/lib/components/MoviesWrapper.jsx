@@ -5,8 +5,7 @@ Wrapper for the Movies components
 */
 
 import React, { PropTypes, Component } from 'react';
-import Accounts from './Accounts.jsx';
-import MoviesList from './MoviesList.jsx';
+import { Components, registerComponent } from 'meteor/nova:core';
 
 class MoviesWrapper extends Component {
   render() {
@@ -14,11 +13,11 @@ class MoviesWrapper extends Component {
       <div className="wrapper framework-demo">
 
         <div className="header">
-          <Accounts />
+          <Components.AccountsForm />
         </div>        
         
         <div className="main">
-          <MoviesList />
+          <Components.MoviesList />
         </div>
 
       </div>
@@ -26,4 +25,4 @@ class MoviesWrapper extends Component {
   }
 }
 
-export default MoviesWrapper;
+registerComponent('MoviesWrapper', MoviesWrapper);

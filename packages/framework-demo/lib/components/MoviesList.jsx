@@ -5,16 +5,11 @@ Wrapped with the "withList" and "withCurrentUser" containers.
 
 */
 
-import { Components } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
-import { ModalTrigger } from "meteor/nova:core";
-import MoviesItem from './MoviesItem.jsx';
-import Movies from '../collection.js';
-import MoviesNewForm from './MoviesNewForm.jsx';
-import { compose } from 'react-apollo';
-import { withList, withCurrentUser } from 'meteor/nova:core';
 import gql from 'graphql-tag';
+import Movies from '../collection.js';
+import { Components, registerComponent, ModalTrigger, withList, withCurrentUser } from 'meteor/nova:core';
 
 const LoadMore = props => <a href="#" className="load-more button button--primary" onClick={e => {e.preventDefault(); props.loadMore();}}>Load More ({props.count}/{props.totalCount})</a>
 
@@ -28,7 +23,7 @@ class MoviesList extends Component {
           title="Add Movie" 
           component={<Button bsStyle="primary">Add Movie</Button>}
         >
-          <MoviesNewForm/>
+          <Components.MoviesNewForm />
         </ModalTrigger>
         <hr/>
       </div>
@@ -48,14 +43,16 @@ class MoviesList extends Component {
       return (
         <div className="movies">
           {canCreateNewMovie ? this.renderNew() : null}
-          {this.props.results.map(movie => <MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser} refetch={this.props.refetch} />)}
+          {this.props.results.map(movie => <Components.MoviesItem key={movie._id} {...movie} currentUser={this.props.currentUser} refetch={this.props.refetch} />)}
           {hasMore ? <LoadMore {...this.props}/> : <p>No more movies</p>}
         </div>
       )
     }
   }
 
-};
+}
+
+MoviesList.displayName = 'MoviesList';
 
 export const MoviesListFragment = gql`
   fragment moviesItemFragment on Movie {
@@ -76,4 +73,4 @@ const listOptions = {
   limit: 5,
 };
 
-export default compose(withList(listOptions), withCurrentUser)(MoviesList);
+registerComponent('MoviesList', MoviesList, withList(listOptions), withCurrentUser);

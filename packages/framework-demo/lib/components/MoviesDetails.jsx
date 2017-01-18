@@ -7,8 +7,7 @@ Wrapped with the "withDocument" container.
 
 import React, { PropTypes, Component } from 'react';
 import Movies from '../collection.js';
-import { withDocument } from 'meteor/nova:core';
-import { compose } from 'react-apollo';
+import { withDocument, registerComponent } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const MoviesDetails = props => {
@@ -47,4 +46,4 @@ const options = {
   fragment: MoviesDetails.fragment,
 };
 
-export default compose(withDocument(options))(MoviesDetails);
+registerComponent('MoviesDetails', MoviesDetails, withDocument(options));

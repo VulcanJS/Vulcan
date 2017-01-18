@@ -16,7 +16,10 @@ Meteor.startup(function () {
     typeDefs,
     resolvers: GraphQLSchema.resolvers,
   });
-
+  
+  // uncomment for debug
+  // console.log('// --> starting graphql server');
+  
   createApolloServer({
     schema,
   });

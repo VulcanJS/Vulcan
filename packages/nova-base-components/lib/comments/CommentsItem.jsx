@@ -103,11 +103,11 @@ class CommentsItem extends Component{
             <Components.UsersAvatar size="small" user={comment.user}/>
             <Components.UsersName user={comment.user}/>
             <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
-            <ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
+            <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
               </div>
-            </ShowIf>
+            </Components.ShowIf>
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
