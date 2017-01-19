@@ -18,11 +18,24 @@ export const addRoute = routeOrRouteArray => {
   const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
   
   // modify the routes table with the new routes
-  addedRoutes.map(({name, ...properties}) => {
+  addedRoutes.map(({name, path, ...properties}) => {
+    
+    // check if there is already a route registered to this path
+    // note: destructure in order to get the first item of the array, as _.filter returns an array
+    const [routeWithSamePath] = _.filter(RoutesTable, route => route.path === path); 
+    
+    if (routeWithSamePath) { 
+      // delete the route registered with same path
+      delete RoutesTable[routeWithSamePath.name];
+    }
+    
+    // register the new route
     RoutesTable[name] = {
       name,
+      path,
       ...properties
     };
+    
   });
   
 }
