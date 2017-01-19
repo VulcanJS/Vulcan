@@ -52,10 +52,19 @@ MailChimpList.add = function(userOrEmail, confirm, done){
       return {actionResult: 'subscribed', ...subscribe};
 
     } catch (error) {
-      // if user is already subscribed, update setting
-      if (error.error == 214) {
-        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+      // if the email is already in the Mailchimp list, no need to throw an error
+      if (error.error === 214) {
+        console.log('// Email already present in the list!');
+        
+        // if this is a user subscribing, update the relevant setting
+        if (user) {
+          Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+          console.log('// User setting updated');
+        }
+        
+        return {actionResult: 'subscribed'};
       }
+      
       throw new Meteor.Error("subscription-failed", error.message);
     }
   } else {
