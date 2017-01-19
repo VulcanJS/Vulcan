@@ -46,20 +46,15 @@ class Newsletter extends Component {
 
     this.setState({showBanner: false});
 
-    // set cookie
+    // set cookie to keep the banner dismissed persistently 
     Cookie.save('showBanner', "no");
-
-    // TODO: fix this
-    // set user setting too (if logged in)
-    // if (this.context.currentUser) {
-    //   this.context.actions.call('users.setSetting', this.context.currentUser._id, 'newsletter.showBanner', false);
-    // }
   }
 
   renderButton() {
     return <Components.NewsletterButton
+              label="newsletter.subscribe"
+              mutationName="addUserNewsletter"
               successCallback={() => this.successCallbackSubscription()}
-              subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
               user={this.props.currentUser}
             />
   }
