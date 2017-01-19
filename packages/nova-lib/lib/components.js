@@ -39,6 +39,7 @@ export const registerComponent = (name, rawComponent, ...hocs) => {
     call: () => compose(...hocs)(rawComponent)
   };
   
+  return compose(...hocs)(rawComponent);
 };
 
 /**

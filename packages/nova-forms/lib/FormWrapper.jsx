@@ -218,5 +218,4 @@ FormWrapper.childContextTypes = {
   getDocument: React.PropTypes.func
 }
 
-registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
-export default FormWrapper;
+export default registerComponent('SmartForm', FormWrapper, withCurrentUser, withApollo);
