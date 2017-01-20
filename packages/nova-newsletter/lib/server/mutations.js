@@ -12,11 +12,14 @@ GraphQLSchema.addMutation('removeUserNewsletter(userId: String) : JSON');
 const resolver = {
   Mutation: {
     sendNewsletter(root, args, context) {
-      if(Users.isAdminById(context.currentUser._id)) 
+      if(context.currentUser && Users.isAdminById(context.currentUser._id)) {
         return Newsletter.scheduleNextWithMailChimp(false);
+      } else {
+        return {error: `You don't have the rights to do this.`}
+      }
     },
     testNewsletter(root, args, context) {
-      if(Users.isAdminById(context.currentUser._id)) 
+      if(context.currentUser && Users.isAdminById(context.currentUser._id)) 
         return Newsletter.scheduleNextWithMailChimp(true);
     },
     addUserNewsletter(root, args, context) {

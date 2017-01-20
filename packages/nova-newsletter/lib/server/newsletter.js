@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
@@ -66,7 +65,7 @@ Newsletter.build = function (postsArray) {
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
-      authorName: post.getAuthorName(),
+      authorName: Posts.getAuthorName(post),
       postLink: Posts.getLink(post, true),
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
