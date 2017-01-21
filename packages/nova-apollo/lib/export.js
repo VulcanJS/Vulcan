@@ -7,6 +7,8 @@ import { meteorClientConfig } from './client.js';
 import { createApolloServer } from './server.js';
 import generateTypeDefs from './schema';
 
+import OpticsAgent from 'optics-agent'
+
 Meteor.startup(function () {
   const typeDefs = generateTypeDefs();
 
@@ -17,6 +19,10 @@ Meteor.startup(function () {
     resolvers: GraphQLSchema.resolvers,
   });
   
+  if (process.env.OPTICS_API_KEY) {
+    OpticsAgent.instrumentSchema(schema)
+  }
+
   // uncomment for debug
   // console.log('// --> starting graphql server');
   

@@ -21,6 +21,9 @@ import Users from 'meteor/nova:users';
 
 import { GraphQLSchema } from 'meteor/nova:lib';
 
+import OpticsAgent from 'optics-agent'
+
+
 const defaultConfig = {
   path: '/graphql',
   maxAccountsCacheSizeInMB: 1,
@@ -54,6 +57,11 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
   // Load the cookie parsing middleware, used to grab login token
   graphQLServer.use(cookieParser());
   
+  // Use Optics middleware
+  if (process.env.OPTICS_API_KEY) {
+    graphQLServer.use(OpticsAgent.middleware());
+  }
+  
   // GraphQL endpoint
   graphQLServer.use(config.path, bodyParser.json(), graphqlExpress(async (req) => {
     let options,
@@ -76,6 +84,11 @@ export const createApolloServer = (givenOptions = {}, givenConfig = {}) => {
       options.context = {};
     }
 
+    // Add Optics to GraphQL context object
+    if (process.env.OPTICS_API_KEY) {
+      options.context.opticsContext = OpticsAgent.context(req);
+    }
+  
     options.context.getViewableFields = Users.getViewableFields;
     
     // Get the token from the header
