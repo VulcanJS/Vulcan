@@ -26,14 +26,16 @@ SimpleSchema.extendOptions({
  */
 Mongo.Collection.prototype.addField = function (fieldOrFieldArray) {
 
-  var collection = this;
-  var fieldSchema = {};
+  const collection = this;
+  const schema = collection.simpleSchema()._schema;
+  const fieldSchema = {};
 
-  var fieldArray = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
+  const fieldArray = Array.isArray(fieldOrFieldArray) ? fieldOrFieldArray : [fieldOrFieldArray];
 
-  // loop over fields and add them to schema
+  // loop over fields and add them to schema (or extend existing fields)
   fieldArray.forEach(function (field) {
-    fieldSchema[field.fieldName] = field.fieldSchema;
+    const newField = {...schema[field.fieldName], ...field.fieldSchema};
+    fieldSchema[field.fieldName] = newField;
   });
 
   // add field schema to collection schema
