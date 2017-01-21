@@ -68,9 +68,13 @@ function addTimeParameter (parameters, terms) {
       if (Meteor.isClient) {
         startOfDay.add(timeDifference, "minutes");
         // console.log("// after add   ", startOfDay.toDate(), startOfDay.valueOf());
+        // note: on the client, dates are stored as strings, 
+        // so use strings for MongoDB filtering options too
+        postedAt.$gte = startOfDay.toISOString();
+      } else {
+        postedAt.$gte = startOfDay.toDate();
       }
 
-      postedAt.$gte = startOfDay.toDate();
     }
 
     if (terms.before) {
@@ -80,9 +84,10 @@ function addTimeParameter (parameters, terms) {
 
       if (Meteor.isClient) {
         endOfDay.add(timeDifference, "minutes");
+        postedAt.$lt = endOfDay.toISOString();
+      } else {
+        postedAt.$lt = endOfDay.toDate();
       }
-
-      postedAt.$lt = endOfDay.toDate();
 
     }
 

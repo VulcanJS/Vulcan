@@ -36,6 +36,7 @@ export default function withRemove(options) {
       }
     }
   `, {
+    alias: 'withRemove',
     props: ({ ownProps, mutate }) => ({
       removeMutation: ({ documentId }) => {
         return mutate({ 

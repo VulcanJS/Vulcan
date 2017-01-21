@@ -115,7 +115,11 @@ export const GraphQLSchema = {
 
         if (field.insertableBy || field.editableBy) {
 
-          const isRequired = field.optional ? '' : '!';
+          // note: marking a field as required makes it required for updates, too, 
+          // which makes partial updates impossible
+          // const isRequired = field.optional ? '' : '!';
+          
+          const isRequired = '';
 
           // 2. input schema
           inputSchema.push(`${key}: ${fieldType}${isRequired}`);

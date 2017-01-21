@@ -162,6 +162,7 @@ const categoriesListOptions = {
   queryName: 'categoriesListQuery',
   fragment: CategoriesList.fragment,
   limit: 0,
+  pollInterval: 0,
 };
 
 registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

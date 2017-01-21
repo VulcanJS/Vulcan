@@ -8,7 +8,7 @@
     "lint": "eslint --cache --ext .jsx,js packages"
   },
   "dependencies": {
-    "apollo-client": "^0.6.0",
+    "apollo-client": "^0.7.3",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
@@ -61,6 +61,7 @@
     "sanitize-html": "^1.11.4",
     "speakingurl": "^9.0.0",
     "tracker-component": "^1.3.14",
+    "underscore": "^1.8.3",
     "url": "^0.11.0"
   },
   "private": true,

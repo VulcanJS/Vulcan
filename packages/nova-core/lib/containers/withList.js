@@ -100,7 +100,8 @@ const withList = (options) => {
         props(props) {
 
           const refetch = props.data.refetch,
-                results = Utils.convertDates(collection, props.data[listResolverName]),
+                // results = Utils.convertDates(collection, props.data[listResolverName]),
+                results = props.data[listResolverName],
                 totalCount = props.data[totalResolverName],
                 networkStatus = props.data.networkStatus;
 
@@ -190,7 +191,8 @@ const queryReducer = (previousResults, action, collection, mergedTerms, listReso
   // reorder results according to a sort
   const reorderResults = (results, sort) => {
     const list = results[listResolverName];
-    const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
+    // const convertedList = Utils.convertDates(collection, list); // convert date strings to date objects
+    const convertedList = list;
     const cursor = mingoQuery.find(convertedList);
     const sortedList = cursor.sort(sort).all();
     results[listResolverName] = sortedList;

@@ -929,6 +929,10 @@ dom-helpers@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-2.4.0.tgz#9bb4b245f637367b1fa670274272aa28fe06c367"
 
+dom-helpers@^3.0.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.0.tgz#70af056e6b1507a71084abc1aac0f93a23f7ea1c"
+
 dom-serializer@0, dom-serializer@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.1.0.tgz#073c697546ce0780ce23be4a28e293e40bc30c82"
@@ -2533,20 +2537,6 @@ react-apollo@^0.8.1:
     lodash.pick "^4.4.0"
     object-assign "^4.0.1"
 
-"react-apollo@file:../packages/react-apollo/":
-  version "0.8.2"
-  dependencies:
-    graphql-anywhere "^2.0.0"
-    hoist-non-react-statics "^1.2.0"
-    invariant "^2.2.1"
-    lodash.flatten "^4.2.0"
-    lodash.isequal "^4.1.1"
-    lodash.isobject "^3.0.2"
-    lodash.pick "^4.4.0"
-    object-assign "^4.0.1"
-  optionalDependencies:
-    react-dom "0.14.x || 15.* || ^15.0.0"
-
 react-bootstrap-datetimepicker@0.0.22:
   version "0.0.22"
   resolved "https://registry.yarnpkg.com/react-bootstrap-datetimepicker/-/react-bootstrap-datetimepicker-0.0.22.tgz#07e448d993157d049ad0876d0f9a3c9c5029d9c5"
@@ -2582,7 +2572,7 @@ react-datetime@^2.3.2:
     object-assign "^3.0.0"
     react-onclickoutside "^4.1.0"
 
-"react-dom@0.14.x || 15.* || ^15.0.0", react-dom@^15.4.1:
+react-dom@^15.4.1:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.2.tgz#015363f05b0a1fd52ae9efdd3a0060d90695208f"
   dependencies:
@@ -2641,6 +2631,13 @@ react-redux@^5.0.1:
 react-router-bootstrap@^0.23.1:
   version "0.23.1"
   resolved "https://registry.yarnpkg.com/react-router-bootstrap/-/react-router-bootstrap-0.23.1.tgz#a1e0b82f49d25a6083c72202ad16aaa64bba0e0c"
+
+react-router-scroll@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-router-scroll/-/react-router-scroll-0.4.1.tgz#8cafd348d34e54b1127ec0fb7f8323d0d4c489e0"
+  dependencies:
+    scroll-behavior "^0.9.1"
+    warning "^3.0.0"
 
 react-router@^3.0.0:
   version "3.0.0"
@@ -2828,6 +2825,13 @@ sanitize-html@^1.11.4:
     htmlparser2 "^3.9.0"
     regexp-quote "0.0.0"
     xtend "^4.0.0"
+
+scroll-behavior@^0.9.1:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/scroll-behavior/-/scroll-behavior-0.9.2.tgz#5c04648b1bd8bb14306410a97de3948c72ee1618"
+  dependencies:
+    dom-helpers "^3.0.0"
+    invariant "^2.2.1"
 
 send@0.14.1:
   version "0.14.1"
