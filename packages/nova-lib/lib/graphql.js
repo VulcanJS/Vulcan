@@ -25,7 +25,7 @@ const jsTypeToGraphQLType = typeName => {
       return "[String]";
 
     case "Object":
-      return "???";
+      return "JSON";
 
     case "Date":
       return "Date";
@@ -103,7 +103,7 @@ export const GraphQLSchema = {
       // console.log(field, key)
       const fieldType = jsTypeToGraphQLType(field.type.name);
 
-      if (key.indexOf('$') === -1 && fieldType !== "???") { // skip fields with "$" and unknown fields
+      if (key.indexOf('$') === -1) { // skip fields with "$"
         
         // 1. main schema
         mainSchema.push(`${key}: ${fieldType}`);
