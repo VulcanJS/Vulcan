@@ -87,7 +87,6 @@ const withList = (options) => {
             },
             // note: pollInterval can be set to 0 to disable polling (20s by default)
             pollInterval,
-            returnPartialData: true,
             reducer: (previousResults, action) => {
 
               // see queryReducer function defined below
