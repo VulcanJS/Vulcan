@@ -1,11 +1,14 @@
 import Users from 'meteor/nova:users';
 import { hasUpvoted, hasDownvoted } from './helpers.js';
 import { runCallbacks, runCallbacksAsync } from 'meteor/nova:core';
+import update from 'immutability-helper';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
 export const getVotePower = function (user) {
   return 1;
 };
+
+const keepVoteProperties = item => _.pick(item, '__typename', '_id', 'upvoters', 'downvoters', 'upvotes', 'downvotes', 'baseScore');
 
 /*
 
@@ -13,7 +16,6 @@ export const getVotePower = function (user) {
 - Regular mode: same, but updates the db too.
 
 */
-
 export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false, context = 'edit') {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
@@ -30,7 +32,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
   var votePower = getVotePower(user);
   var hasUpvotedItem = hasUpvoted(user, item);
   var hasDownvotedItem = hasDownvoted(user, item);
-  var update = {};
+  var modifier = {};
 
   // console.log('// operateOnItem')
   // console.log('isSimulation: ',isSimulation)
@@ -68,12 +70,14 @@ export const operateOnItem = function (collection, originalItem, user, operation
         operateOnItem(collection, item, user, "cancelDownvote", isSimulation, context);
       }
 
-      item.upvoters.push(voter);
-      item.upvotes += 1;
-      item.baseScore += votePower;
+      item = update(item, {
+        upvoters: {$push: [voter]},
+        upvotes: {$set: item.upvotes + 1},
+        baseScore: {$set: item.baseScore + votePower},
+      });
       
       if (!isSimulation) {
-        update = {
+        modifier = {
           $addToSet: {upvoters: user._id},
           $inc: {upvotes: 1, baseScore: votePower}
         }
@@ -85,12 +89,14 @@ export const operateOnItem = function (collection, originalItem, user, operation
         operateOnItem(collection, item, user, "cancelUpvote", isSimulation, context);
       }
 
-      item.downvoters.push(voter);
-      item.downvotes += 1;
-      item.baseScore -= votePower;
+      item = update(item, {
+        downvoters: {$push: [voter]},
+        downvotes: {$set: item.downvotes + 1},
+        baseScore: {$set: item.baseScore - votePower},
+      });
       
       if (!isSimulation) {
-        update = {
+        modifier = {
           $addToSet: {downvoters: user._id},
           $inc: {downvotes: 1, baseScore: -votePower}
         }
@@ -98,12 +104,14 @@ export const operateOnItem = function (collection, originalItem, user, operation
       break;
 
     case "cancelUpvote":
-      item.upvoters = item.upvoters.filter(u => typeof u === 'string' ? u !== user._id : u._id !== user._id);
-      item.upvotes -= 1;
-      item.baseScore -= votePower;
-      
+      item = update(item, {
+        upvoters: {$set: item.upvoters.filter(u => u._id !== user._id)},
+        upvotes: {$set: item.upvotes - 1},
+        baseScore: {$set: item.baseScore - votePower},
+      });
+
       if (!isSimulation) {  
-        update = {
+        modifier = {
           $pull: {upvoters: user._id},
           $inc: {upvotes: -1, baseScore: -votePower}
         };
@@ -111,12 +119,15 @@ export const operateOnItem = function (collection, originalItem, user, operation
       break;
 
     case "cancelDownvote":
-      item.downvoters = item.downvoters.filter(u => typeof u === 'string' ? u !== user._id : u._id !== user._id);
-      item.downvotes -= 1;
-      item.baseScore += votePower;
+
+      item = update(item, {
+        downvoters: {$set: item.downvoters.filter(u => u._id !== user._id)},
+        downvotes: {$set: item.upvotes - 1},
+        baseScore: {$set: item.baseScore + votePower},
+      });
       
       if (!isSimulation) {
-        update = {
+        modifier = {
           $pull: {downvoters: user._id},
           $inc: {downvotes: -1, baseScore: votePower}
         };
@@ -127,8 +138,8 @@ export const operateOnItem = function (collection, originalItem, user, operation
   if (!isSimulation) {
 
     if (context === 'edit') {
-      update["$set"] = {inactive: false};
-      collection.update({_id: item._id}, update);
+      modifier["$set"] = {inactive: false};
+      collection.update({_id: item._id}, modifier);
     }
     
     // --------------------- Server-Side Async Callbacks --------------------- //
@@ -136,7 +147,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
   
   }
 
-  const voteResult = _.pick(item, '__typename', '_id', 'upvoters', 'downvoters', 'upvotes', 'downvotes', 'baseScore');
+  const voteResult = item;
 
   // if (isSimulation) {
   //   console.log('item from apollo store', voteResult);

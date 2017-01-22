@@ -24,7 +24,7 @@ class CustomPostsItem extends getRawComponent('PostsItem') {
       <div className={postClass}>
 
         <div className="posts-item-vote">
-          <Components.Vote collection={Posts} document={post}/>
+          <Components.Vote collection={Posts} document={post} currentUser={this.props.currentUser}/>
         </div>
 
         {post.thumbnailUrl ? <Components.PostsThumbnail post={post}/> : null}
