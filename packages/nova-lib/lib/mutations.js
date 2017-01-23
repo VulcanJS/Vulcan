@@ -31,9 +31,9 @@ import { runCallbacks, runCallbacksAsync } from './callbacks.js';
 
 export const newMutation = ({ collection, document, currentUser, validate, context }) => {
   
-  console.log("// newMutation")
-  console.log(collection._name)
-  console.log(document)
+  // console.log("// newMutation")
+  // console.log(collection._name)
+  // console.log(document)
   
   // we don't want to modify the original document
   let newDocument = Object.assign({}, document);
@@ -79,19 +79,19 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
   // note: query for document to get fresh document with collection-hooks effects applied
   runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser);
   
-  console.log("// new mutation finished:")
-  console.log(newDocument)
+  // console.log("// new mutation finished:")
+  // console.log(newDocument)
   
   return newDocument;
 }
 
 export const editMutation = ({ collection, documentId, set, unset, currentUser, validate, context }) => {
 
-  console.log("// editMutation")
-  console.log(collection._name)
-  console.log(documentId)
-  console.log(set)
-  console.log(unset)
+  // console.log("// editMutation")
+  // console.log(collection._name)
+  // console.log(documentId)
+  // console.log(set)
+  // console.log(unset)
   
   const collectionName = collection._name;
   const schema = collection.simpleSchema()._schema;
@@ -130,17 +130,17 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   // run async callbacks
   runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
 
-  console.log("// edit mutation finished")
-  console.log(newDocument)
+  // console.log("// edit mutation finished")
+  // console.log(newDocument)
 
   return newDocument;
 }
 
 export const removeMutation = ({ collection, documentId, currentUser, validate, context }) => {
 
-  console.log("// removeMutation")
-  console.log(collection._name)
-  console.log(documentId)
+  // console.log("// removeMutation")
+  // console.log(collection._name)
+  // console.log(documentId)
 
   const collectionName = collection._name;
 

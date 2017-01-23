@@ -17,11 +17,9 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/kadira-settings.js'
-  ], ['client', 'server']);
-
-  api.addFiles([
     'lib/server/kadira.js'
   ], ['server']);
 
+  api.export(['Kadira']);
+  
 });

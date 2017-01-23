@@ -8,4 +8,3 @@ import './avatar.js';
 import './permissions.js';
 
 export default Users;
-export { default as withCurrentUser } from './containers/withCurrentUser.js';

@@ -1,7 +1,6 @@
 import Comments from './collection.js';
 
 import './schema.js';
-import './methods.js';
 import './callbacks/callbacks_comments_new.js';
 import './callbacks/callbacks_comments_edit.js';
 import './callbacks/callbacks_comments_remove.js';
