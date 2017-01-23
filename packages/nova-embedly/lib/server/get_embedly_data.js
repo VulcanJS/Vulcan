@@ -85,6 +85,9 @@ function updateMediaOnEdit (modifier, post) {
     var data = getEmbedlyData(newUrl);
     if(!!data) {
       if (!!data.media.html) {
+        if (modifier.$unset.media) {
+          delete modifier.$unset.media
+        }
         modifier.$set.media = data.media;
       }
 

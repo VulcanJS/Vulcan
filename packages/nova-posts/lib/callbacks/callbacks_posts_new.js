@@ -1,7 +1,8 @@
-import Telescope from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:lib'; // TODO move Telescope.notifications to its own namespace
 import Posts from '../collection.js'
+import marked from 'marked';
 import Users from 'meteor/nova:users';
-import { Callbacks, addCallback, getSetting } from 'meteor/nova:core';
+import { runCallbacks, runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
 
 //////////////////////////////////////////////////////
 // posts.new.validate                               //
@@ -144,6 +145,30 @@ function PostsNewSetFuture (post, user) {
 }
 addCallback("posts.new.sync", PostsNewSetFuture);
 
+const PostsNewSlugify = post => {
+  post.slug = Utils.slugify(newTitle);
+  
+  return post;
+}
+
+addCallback("posts.new.sync", PostsNewSlugify);
+
+const PostsNewHTMLContent = post => {
+  if (post.body) {
+    // excerpt length is configurable via the settings (30 words by default, ~255 characters)
+    const excerptLength = getSetting('postExcerptLength', 30); 
+    
+    // extend the post document
+    post = {
+      ...post,
+      htmlBody: Utils.sanitize(marked(post.body)),
+      excerpt: Utils.trimHTML(Utils.sanitize(marked(post.body)), excerptLength),
+    };
+  }
+  
+  return post;
+}
+addCallback("posts.new.sync", PostsNewHTMLContent);
 
 //////////////////////////////////////////////////////
 // posts.new.async                                  //

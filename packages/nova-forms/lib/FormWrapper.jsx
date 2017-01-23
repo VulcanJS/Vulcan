@@ -213,7 +213,7 @@ FormWrapper.contextTypes = {
 FormWrapper.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
+  updateCurrentValues: React.PropTypes.func,
   throwError: React.PropTypes.func,
   getDocument: React.PropTypes.func
 }

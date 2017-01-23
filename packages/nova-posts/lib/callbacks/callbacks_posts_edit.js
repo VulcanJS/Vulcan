@@ -1,7 +1,7 @@
-import Telescope from 'meteor/nova:lib';
+import marked from 'marked';
 import Posts from '../collection.js'
 import Users from 'meteor/nova:users';
-import { runCallbacks, runCallbacksAsync, addCallback } from 'meteor/nova:core';
+import { runCallbacks, runCallbacksAsync, addCallback, getSetting, Utils } from 'meteor/nova:core';
 
 
 //////////////////////////////////////////////////////
@@ -88,6 +88,41 @@ function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
 }
 addCallback("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 
+// if title is changing, return new slug
+const PostsEditSlugify = (modifier, post) => {
+  if (modifier.$set && modifier.$set.title) {
+    modifier.$set.slug = Utils.slugify(modifier.$set.title);
+  }
+
+  return modifier;
+}
+
+addCallback("posts.edit.sync", PostsEditSlugify);
+
+// if body is changing, update related fields (htmlBody & excerpt)
+const PostsEditHTMLContent = (modifier, post) => {
+  if (modifier.$set && typeof modifier.$set.body !== 'undefined') {
+    // excerpt length is configurable via the settings (30 words by default, ~255 characters)
+    const excerptLength = getSetting('postExcerptLength', 30); 
+    
+    // extend the modifier
+    modifier.$set = {
+      ...modifier.$set,
+      htmlBody: Utils.sanitize(marked(modifier.$set.body)),
+      excerpt: Utils.trimHTML(Utils.sanitize(marked(modifier.$set.body)), excerptLength),
+    };
+  } else if (modifier.$unset && modifier.$unset.body) {
+    // extend the modifier
+    modifier.$unset = {
+      ...modifier.$unset,
+      htmlBody: true,
+      excerpt: true,
+    };
+  }
+  
+  return modifier;
+}
+addCallback("posts.edit.sync", PostsEditHTMLContent);
 
 //////////////////////////////////////////////////////
 // posts.edit.async                                 //

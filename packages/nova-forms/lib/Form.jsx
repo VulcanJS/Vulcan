@@ -60,7 +60,7 @@ class Form extends Component {
     this.addToAutofilledValues = this.addToAutofilledValues.bind(this);
     this.throwError = this.throwError.bind(this);
     this.clearForm = this.clearForm.bind(this);
-    this.updateCurrentValue = this.updateCurrentValue.bind(this);
+    this.updateCurrentValues = this.updateCurrentValues.bind(this);
     this.formKeyDown = this.formKeyDown.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     // a debounced version of seState that only updates state every 500 ms (not used)
@@ -252,11 +252,15 @@ class Form extends Component {
     }
   }
 
-  // manually update current value (i.e. on blur). See above for on change instead
-  updateCurrentValue(fieldName, fieldValue) {
-    const currentValues = this.state.currentValues;
-    currentValues[fieldName] = fieldValue;
-    this.setState({currentValues: currentValues});
+  // manually update the current values of one or more fields(i.e. on blur). See above for on change instead
+  updateCurrentValues(newValues) {
+  	// keep the previous ones and extend (with possible replacement) with new ones
+    this.setState(prevState => ({
+  		currentValues: {
+  			...prevState.currentValues,
+  			...newValues,
+  		}
+    }));
   }
 
   // key down handler
@@ -320,7 +324,7 @@ class Form extends Component {
       throwError: this.throwError,
       autofilledValues: this.state.autofilledValues,
       addToAutofilledValues: this.addToAutofilledValues,
-      updateCurrentValue: this.updateCurrentValue,
+      updateCurrentValues: this.updateCurrentValues,
       getDocument: this.getDocument,
     };
   }
@@ -466,7 +470,7 @@ class Form extends Component {
           ref="form"
         >
           {this.renderErrors()}
-          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValue={this.updateCurrentValue} />)}
+          {fieldGroups.map(group => <FormGroup key={group.name} {...group} updateCurrentValues={this.updateCurrentValues} />)}
           <Button type="submit" bsStyle="primary"><FormattedMessage id="forms.submit"/></Button>
           {this.props.cancelCallback ? <a className="form-cancel" onClick={this.props.cancelCallback}><FormattedMessage id="forms.cancel"/></a> : null}
         </Formsy.Form>
@@ -528,7 +532,7 @@ Form.contextTypes = {
 Form.childContextTypes = {
   autofilledValues: React.PropTypes.object,
   addToAutofilledValues: React.PropTypes.func,
-  updateCurrentValue: React.PropTypes.func,
+  updateCurrentValues: React.PropTypes.func,
   throwError: React.PropTypes.func,
   getDocument: React.PropTypes.func
 }

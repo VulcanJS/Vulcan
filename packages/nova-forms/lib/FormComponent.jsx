@@ -23,14 +23,14 @@ class FormComponent extends Component {
   handleBlur() {
     // see https://facebook.github.io/react/docs/more-about-refs.html
     if (this.formControl !== null) {
-      this.props.updateCurrentValue(this.props.name, this.formControl.getValue());
+      this.props.updateCurrentValues({[this.props.name]: this.formControl.getValue()});
     }
   }
 
   renderComponent() {
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const { control, group, updateCurrentValue, document, ...rest } = this.props; // eslint-disable-line
+    const { control, group, updateCurrentValues, document, ...rest } = this.props; // eslint-disable-line
 
     const base = this.props.control === "function" ? this.props : rest;
 
@@ -93,7 +93,7 @@ FormComponent.propTypes = {
   control: React.PropTypes.any,
   datatype: React.PropTypes.any,
   disabled: React.PropTypes.bool,
-  updateCurrentValue: React.PropTypes.func
+  updateCurrentValues: React.PropTypes.func
 }
 
 export default FormComponent;

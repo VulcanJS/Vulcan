@@ -6,14 +6,7 @@ Posts.addField([
   {
     fieldName: 'url',
     fieldSchema: {
-      type: String,
-      optional: true,
-      max: 500,
-      insertableBy: ['members'],
-      editableBy: ['members'],
-      viewableBy: ['guests'],
-      control: EmbedlyURL,
-      publish: true
+      control: EmbedlyURL, // we are just extending the field url, not replacing it
     }
   },
   {
