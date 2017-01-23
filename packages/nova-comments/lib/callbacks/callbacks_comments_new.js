@@ -91,8 +91,6 @@ function CommentsNewGenerateHTMLBody (comment, user) {
 }
 addCallback("comments.new.sync", CommentsNewGenerateHTMLBody);
 
-// ------------------------------------- comments.new.async -------------------------------- //
-
 function CommentsNewOperations (comment) {
 
   var userId = comment.userId;
@@ -111,7 +109,9 @@ function CommentsNewOperations (comment) {
 
   return comment;
 }
-addCallback("comments.new.async", CommentsNewOperations);
+addCallback("comments.new.sync", CommentsNewOperations);
+
+// ------------------------------------- comments.new.async -------------------------------- //
 
 // add new comment notification callback on comment submit
 function CommentsNewNotifications (comment) {

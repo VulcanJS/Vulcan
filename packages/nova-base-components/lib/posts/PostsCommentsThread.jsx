@@ -61,6 +61,16 @@ PostsCommentsThread.fragment = gql`
       emailHash
       slug
     }
+    post {
+      _id
+      commentCount
+      commenters {
+        _id
+        displayName
+        emailHash
+        slug
+      }
+    }
     userId
   }
 `;
