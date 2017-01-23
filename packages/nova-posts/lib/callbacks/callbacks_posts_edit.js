@@ -88,7 +88,9 @@ function PostsEditRunPostApprovedSyncCallbacks (modifier, post) {
 }
 addCallback("posts.edit.sync", PostsEditRunPostApprovedSyncCallbacks);
 
-// if title is changing, return new slug
+/**
+ * @summary If title is changing, return new slug
+ */
 const PostsEditSlugify = (modifier, post) => {
   if (modifier.$set && modifier.$set.title) {
     modifier.$set.slug = Utils.slugify(modifier.$set.title);
@@ -99,7 +101,9 @@ const PostsEditSlugify = (modifier, post) => {
 
 addCallback("posts.edit.sync", PostsEditSlugify);
 
-// if body is changing, update related fields (htmlBody & excerpt)
+/**
+ * @summary If body is changing, update related fields (htmlBody & excerpt)
+ */
 const PostsEditHTMLContent = (modifier, post) => {
   if (modifier.$set && typeof modifier.$set.body !== 'undefined') {
     // excerpt length is configurable via the settings (30 words by default, ~255 characters)
