@@ -49,7 +49,7 @@ const withList = (options) => {
 
   return compose(
 
-    // // wrap component with HoC that manages the terms object via its state
+    // wrap component with HoC that manages the terms object via its state
     withState('paginationTerms', 'setPaginationTerms', props => {
 
       // either get initial limit from options, or default to settings

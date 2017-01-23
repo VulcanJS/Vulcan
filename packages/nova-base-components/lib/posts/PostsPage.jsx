@@ -1,7 +1,6 @@
-import { Components, registerComponent } from 'meteor/nova:lib';
+import { Components, registerComponent, withDocument, withCurrentUser } from 'meteor/nova:core';
 import React from 'react';
 import Posts from 'meteor/nova:posts';
-import { withDocument } from 'meteor/nova:core';
 import gql from 'graphql-tag';
 
 const PostsPage = (props) => {
@@ -20,7 +19,7 @@ const PostsPage = (props) => {
       <div className="posts-page">
         <Components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
         
-        <Components.PostsItem post={post} />
+        <Components.PostsItem post={post} currentUser={props.currentUser} />
 
         {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
 
@@ -93,4 +92,4 @@ const options = {
   fragment: PostsPage.fragment,
 };
 
-registerComponent('PostsPage', PostsPage, withDocument(options));
+registerComponent('PostsPage', PostsPage, withCurrentUser, withDocument(options));

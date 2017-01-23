@@ -87,7 +87,7 @@ Vote.propTypes = {
   document: React.PropTypes.object.isRequired, // the document to upvote
   collection: React.PropTypes.object.isRequired, // the collection containing the document
   vote: React.PropTypes.func.isRequired, // mutate function with callback inside
-  currentUser: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object, // user might not be logged in, so don't make it required
 };
 
 Vote.contextTypes = {
