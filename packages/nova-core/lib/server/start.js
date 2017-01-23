@@ -1,22 +1,13 @@
-import Telescope from 'meteor/nova:lib';
-import Events from "meteor/nova:events";
-import { Inject } from 'meteor/meteorhacks:inject-initial';
+import {Inject} from 'meteor/meteorhacks:inject-initial';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
+import { getSetting } from 'meteor/nova:lib';
 
-Meteor.startup(function () {
-  Events.log({
-    name: "firstRun",
-    unique: true, // will only get logged a single time
-    important: true
-  });
-});
-
-if (Telescope.settings.get('mailUrl')) {
-  process.env.MAIL_URL = Telescope.settings.get('mailUrl');
+if (getSetting('mailUrl')) {
+  process.env.MAIL_URL = getSetting('mailUrl');
 }
 
 Meteor.startup(function() {
-  if (typeof SyncedCron !== "undefined") {
+  if (typeof SyncedCron !== 'undefined') {
     SyncedCron.start();
   }
 });

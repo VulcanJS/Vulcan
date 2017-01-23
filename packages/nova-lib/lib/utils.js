@@ -1,21 +1,27 @@
-import Telescope from './config.js';
+/*
+
+Utilities
+
+*/
+
 import marked from 'marked';
 import urlObject from 'url';
 import moment from 'moment';
 import sanitizeHtml from 'sanitize-html';
 import getSlug from 'speakingurl';
+import { getSetting } from './settings.js';
 
 /**
  * @summary The global namespace for Telescope utils.
  * @namespace Telescope.utils
  */
-Telescope.utils = {};
+export const Utils = {};
 
 /**
  * @summary Convert a camelCase string to dash-separated string
  * @param {String} str
  */
-Telescope.utils.camelToDash = function (str) {
+Utils.camelToDash = function (str) {
   return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
 };
 
@@ -24,7 +30,7 @@ Telescope.utils.camelToDash = function (str) {
  * See http://stackoverflow.com/questions/4149276/javascript-camelcase-to-regular-form
  * @param {String} str
  */
-Telescope.utils.camelToSpaces = function (str) {
+Utils.camelToSpaces = function (str) {
   return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
 };
 
@@ -32,7 +38,7 @@ Telescope.utils.camelToSpaces = function (str) {
  * @summary Convert an underscore-separated string to dash-separated string
  * @param {String} str
  */
-Telescope.utils.underscoreToDash = function (str) {
+Utils.underscoreToDash = function (str) {
   return str.replace('_', '-');
 };
 
@@ -40,7 +46,7 @@ Telescope.utils.underscoreToDash = function (str) {
  * @summary Convert a dash separated string to camelCase.
  * @param {String} str
  */
-Telescope.utils.dashToCamel = function (str) {
+Utils.dashToCamel = function (str) {
   return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
 };
 
@@ -48,7 +54,7 @@ Telescope.utils.dashToCamel = function (str) {
  * @summary Convert a string to camelCase and remove spaces.
  * @param {String} str
  */
-Telescope.utils.camelCaseify = function(str) {
+Utils.camelCaseify = function(str) {
   str = this.dashToCamel(str.replace(' ', '-'));
   str = str.slice(0,1).toLowerCase() + str.slice(1);
   return str;
@@ -59,7 +65,7 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {String} s - Sentence to trim.
  * @param {Number} numWords - Number of words to trim sentence to.
  */
-Telescope.utils.trimWords = function(s, numWords) {
+Utils.trimWords = function(s, numWords) {
 
   if (!s)
     return s;
@@ -74,34 +80,34 @@ Telescope.utils.trimWords = function(s, numWords) {
  * @summary Trim a block of HTML code to get a clean text excerpt
  * @param {String} html - HTML to trim.
  */
-Telescope.utils.trimHTML = function (html, numWords) {
-  var text = Telescope.utils.stripHTML(html);
-  return Telescope.utils.trimWords(text, numWords);
+Utils.trimHTML = function (html, numWords) {
+  var text = Utils.stripHTML(html);
+  return Utils.trimWords(text, numWords);
 };
 
 /**
  * @summary Capitalize a string.
  * @param {String} str
  */
-Telescope.utils.capitalise = function(str) {
+Utils.capitalize = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-Telescope.utils.t = function(message) {
+Utils.t = function(message) {
   var d = new Date();
   console.log("### "+message+" rendered at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()); // eslint-disable-line
 };
 
-Telescope.utils.nl2br = function(str) {
+Utils.nl2br = function(str) {
   var breakTag = '<br />';
   return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
 };
 
-Telescope.utils.scrollPageTo = function(selector) {
+Utils.scrollPageTo = function(selector) {
   $('body').scrollTop($(selector).offset().top);
 };
 
-Telescope.utils.getDateRange = function(pageNumber) {
+Utils.getDateRange = function(pageNumber) {
   var now = moment(new Date());
   var dayToDisplay=now.subtract(pageNumber-1, 'days');
   var range={};
@@ -119,19 +125,19 @@ Telescope.utils.getDateRange = function(pageNumber) {
 /**
  * @summary Returns the user defined site URL or Meteor.absoluteUrl
  */
-Telescope.utils.getSiteUrl = function () {
-  return Telescope.settings.get('siteUrl', Meteor.absoluteUrl());
+Utils.getSiteUrl = function () {
+  return getSetting('siteUrl', Meteor.absoluteUrl());
 };
 
 /**
  * @summary The global namespace for Telescope utils.
  * @param {String} url - the URL to redirect
  */
-Telescope.utils.getOutgoingUrl = function (url) {
-  return Telescope.utils.getSiteUrl() + "out?url=" + encodeURIComponent(url);
+Utils.getOutgoingUrl = function (url) {
+  return Utils.getSiteUrl() + "out?url=" + encodeURIComponent(url);
 };
 
-Telescope.utils.slugify = function (s) {
+Utils.slugify = function (s) {
   var slug = getSlug(s, {
     truncate: 60
   });
@@ -144,15 +150,12 @@ Telescope.utils.slugify = function (s) {
   return slug;
 };
 
-Telescope.utils.getUnusedSlug = function (collection, slug) {
+Utils.getUnusedSlug = function (collection, slug) {
   let suffix = "";
   let index = 0;
 
-  // handle edge case for Users collection
-  const field = collection._name === 'users' ? 'telescope.slug' : 'slug';
-
   // test if slug is already in use
-  while (!!collection.findOne({[field]: slug+suffix})) {
+  while (!!collection.findOne({slug: slug+suffix})) {
     index++;
     suffix = "-"+index;
   }
@@ -160,11 +163,11 @@ Telescope.utils.getUnusedSlug = function (collection, slug) {
   return slug+suffix;
 };
 
-Telescope.utils.getShortUrl = function(post) {
+Utils.getShortUrl = function(post) {
   return post.shortUrl || post.url;
 };
 
-Telescope.utils.getDomain = function(url) {
+Utils.getDomain = function(url) {
   try {
     return urlObject.parse(url).hostname.replace('www.', '');
   } catch (error) {
@@ -172,12 +175,12 @@ Telescope.utils.getDomain = function(url) {
   }
 };
 
-Telescope.utils.invitesEnabled = function() {
-  return Telescope.settings.get("requireViewInvite") || Telescope.settings.get("requirePostInvite");
+Utils.invitesEnabled = function() {
+  return getSetting("requireViewInvite") || getSetting("requirePostInvite");
 };
 
 // add http: if missing
-Telescope.utils.addHttp = function (url) {
+Utils.addHttp = function (url) {
   try {
     if (url.substring(0, 5) !== "http:" && url.substring(0, 6) !== "https:") {
       url = "http:"+url;
@@ -192,11 +195,11 @@ Telescope.utils.addHttp = function (url) {
 // String Helper Functions //
 /////////////////////////////
 
-Telescope.utils.cleanUp = function(s) {
+Utils.cleanUp = function(s) {
   return this.stripHTML(s);
 };
 
-Telescope.utils.sanitize = function(s) {
+Utils.sanitize = function(s) {
   // console.log('// before sanitization:')
   // console.log(s)
   if(Meteor.isServer){
@@ -214,17 +217,17 @@ Telescope.utils.sanitize = function(s) {
   return s;
 };
 
-Telescope.utils.stripHTML = function(s) {
+Utils.stripHTML = function(s) {
   return s.replace(/<(?:.|\n)*?>/gm, '');
 };
 
-Telescope.utils.stripMarkdown = function(s) {
+Utils.stripMarkdown = function(s) {
   var htmlBody = marked(s);
-  return Telescope.utils.stripHTML(htmlBody);
+  return Utils.stripHTML(htmlBody);
 };
 
 // http://stackoverflow.com/questions/2631001/javascript-test-for-existence-of-nested-object-key
-Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
+Utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
   var args = Array.prototype.slice.call(arguments);
   obj = args.shift();
 
@@ -237,14 +240,14 @@ Telescope.utils.checkNested = function(obj /*, level1, level2, ... levelN*/) {
   return true;
 };
 
-Telescope.log = function (s) {
-  if(Telescope.settings.get('debug', false) || process.env.NODE_ENV === "development") {
+Utils.log = function (s) {
+  if(getSetting('debug', false) || process.env.NODE_ENV === "development") {
     console.log(s); // eslint-disable-line
   }
 };
 
 // see http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
-Telescope.getNestedProperty = function (obj, desc) {
+Utils.getNestedProperty = function (obj, desc) {
   var arr = desc.split(".");
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
@@ -264,7 +267,7 @@ _.mixin({
 });
 
 // adapted from http://stackoverflow.com/a/22072374/649299
-Telescope.utils.unflatten = function( array, idProperty, parentIdProperty, parent, tree ){
+Utils.unflatten = function( array, idProperty, parentIdProperty, parent, tree ){
 
   tree = typeof tree !== "undefined" ? tree : [];
 
@@ -293,24 +296,140 @@ Telescope.utils.unflatten = function( array, idProperty, parentIdProperty, paren
 
     // we call the function on each child
     children.forEach(child => {
-      Telescope.utils.unflatten(array, idProperty, parentIdProperty, child);
+      Utils.unflatten(array, idProperty, parentIdProperty, child);
     });
   }
 
   return tree;
 }
 
-Telescope.utils.getFieldLabel = (fieldName, collection) => {
+Utils.getFieldLabel = (fieldName, collection) => {
   const label = collection.simpleSchema()._schema[fieldName].label;
-  const nameWithSpaces = Telescope.utils.camelToSpaces(fieldName.replace("telescope.", ""));
+  const nameWithSpaces = Utils.camelToSpaces(fieldName);
   return label || nameWithSpaces;
 }
 
-Telescope.utils.getLogoUrl = () => {
-  const logoUrl = Telescope.settings.get("logoUrl");
+Utils.getLogoUrl = () => {
+  const logoUrl = getSetting("logoUrl");
   if (!!logoUrl) {
-    const prefix = Telescope.utils.getSiteUrl().slice(0,-1);
+    const prefix = Utils.getSiteUrl().slice(0,-1);
     // the logo may be hosted on another website
     return logoUrl.indexOf('://') > -1 ? logoUrl : prefix + logoUrl;
   }
 };
+
+// note(apollo): get collection's name from __typename given by react-apollo
+Utils.getCollectionNameFromTypename = (type) => {
+  if (type.indexOf('Post') > -1) {
+    return 'posts';
+  } else if (type.indexOf('Cat') > -1) {
+    return 'categories';
+  } else if (type.indexOf('User') > -1) {
+    return 'users';
+  } else if (type.indexOf('Comment') > -1) {
+    return 'comments';
+  }
+};
+
+Utils.findIndex = (array, predicate) => {
+  let index = -1;
+  let continueLoop = true;
+  array.forEach((item, currentIndex) => {
+    if (continueLoop && predicate(item)) {
+      index = currentIndex
+      continueLoop = false
+    }
+  });
+  return index;
+}
+
+// adapted from http://stackoverflow.com/a/22072374/649299
+Utils.unflatten = function( array, idProperty, parentIdProperty, parent, tree ){
+
+  tree = typeof tree !== "undefined" ? tree : [];
+
+  let children = [];
+
+  if (typeof parent === "undefined") {
+    // if there is no parent, we're at the root level
+    // so we return all root nodes (i.e. nodes with no parent)
+    children = _.filter( array, node => !node[parentIdProperty]);
+  } else {
+    // if there *is* a parent, we return all its child nodes
+    // (i.e. nodes whose parentId is equal to the parent's id.)
+    children = _.filter( array, node => node[parentIdProperty] === parent[idProperty]);
+  }
+
+  // if we found children, we keep on iterating
+  if (!!children.length) {
+
+    if (typeof parent === "undefined") {
+      // if we're at the root, then the tree consist of all root nodes
+      tree = children;
+    } else {
+      // else, we add the children to the parent as the "childrenResults" property
+      parent.childrenResults = children;
+    }
+
+    // we call the function on each child
+    children.forEach(child => {
+      Utils.unflatten(array, idProperty, parentIdProperty, child);
+    });
+  }
+
+  return tree;
+};
+
+// remove the telescope object from a schema and duplicate it at the root
+Utils.stripTelescopeNamespace = (schema) => {
+  // grab the users schema keys
+  const schemaKeys = Object.keys(schema);
+
+  // remove any field beginning by telescope: .telescope, .telescope.upvotedPosts.$, ...
+  const filteredSchemaKeys = schemaKeys.filter(key => key.slice(0,9) !== 'telescope');
+
+  // replace the previous schema by an object based on this filteredSchemaKeys
+  return filteredSchemaKeys.reduce((sch, key) => ({...sch, [key]: schema[key]}), {});
+}
+
+/**
+ * Convert an array of field names into a Mongo fields specifier
+ * @param {Array} fieldsArray
+ */
+Utils.arrayToFields = (fieldsArray) => {
+  return _.object(fieldsArray, _.map(fieldsArray, function () {return true}));
+}
+
+/**
+ * Get the display name of a React component
+ * @param {React Component} WrappedComponent
+ */
+Utils.getComponentDisplayName = (WrappedComponent) => {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+};
+
+
+/**
+ * Take a collection and a list of documents, and convert all their date fields to date objects
+ * This is necessary because Apollo doesn't support custom scalars, and stores dates as strings
+ * @param {Object} collection
+ * @param {Array} list
+ */
+Utils.convertDates = (collection, listOrDocument) => {
+  // if undefined, just return
+  if (!listOrDocument || !listOrDocument.length) return listOrDocument;  
+
+  const list = Array.isArray(listOrDocument) ? listOrDocument : [listOrDocument];
+  const schema = collection.simpleSchema()._schema;
+  const dateFields = _.filter(_.keys(schema), fieldName => schema[fieldName].type === Date);
+  const convertedList = list.map(result => {
+    dateFields.forEach(fieldName => {
+      if (result[fieldName] && typeof result[fieldName] === 'string') {
+        result[fieldName] = new Date(result[fieldName]);
+      }
+    });
+    return result;
+  });
+
+  return Array.isArray(listOrDocument) ? convertedList : convertedList[0];
+}

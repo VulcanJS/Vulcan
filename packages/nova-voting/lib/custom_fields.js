@@ -1,8 +1,79 @@
-import PublicationUtils from 'meteor/utilities:smart-publications';
+import Users from "meteor/nova:users";
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 
-// ------------------------------------- Posts -------------------------------- //
+/**
+ * @summary Vote schema
+ * @type {SimpleSchema}
+ */
+const voteSchema = new SimpleSchema({
+  itemId: {
+    type: String
+  },
+  power: {
+    type: Number,
+    optional: true
+  },
+  votedAt: {
+    type: Date, 
+    optional: true
+  }
+});
+
+Users.addField([
+  /**
+    An array containing comments upvotes
+  */
+  {
+    fieldName: 'upvotedComments',
+    fieldSchema: {
+      type: [voteSchema],
+      publish: false,
+      optional: true,
+      viewableBy: ['guests'],
+      resolveAs: 'upvotedComments: [Vote]',
+    }
+  },
+  /**
+    An array containing posts upvotes
+  */
+  {
+    fieldName: 'upvotedPosts',
+    fieldSchema: {
+      type: [voteSchema],
+      publish: false,
+      optional: true,
+      viewableBy: ['guests'],
+      resolveAs: 'upvotedPosts: [Vote]',
+    }
+  },
+  /**
+    An array containing comment downvotes
+  */
+  {
+    fieldName: 'downvotedComments',
+    fieldSchema: {
+      type: [voteSchema],
+      publish: false,
+      optional: true,
+      viewableBy: ['guests'],
+      resolveAs: 'downvotedComments: [Vote]',
+    }
+  },
+  /**
+    An array containing posts downvotes
+  */
+  {  
+    fieldName: 'downvotedPosts',
+    fieldSchema: {
+      type: [voteSchema],
+      publish: false,
+      optional: true,
+      viewableBy: ['guests'],
+      resolveAs: 'downvotedPosts: [Vote]',
+    }
+  },
+]);
 
 Posts.addField([
   /**
@@ -14,7 +85,8 @@ Posts.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -25,7 +97,9 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true
+      publish: true,
+      viewableBy: ['guests'],
+      resolveAs: 'upvoters: [User]',
     }
   },
   /**
@@ -37,7 +111,8 @@ Posts.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -48,7 +123,9 @@ Posts.addField([
     fieldSchema: {
       type: [String],
       optional: true,
-      publish: true
+      publish: true,
+      viewableBy: ['guests'],
+      resolveAs: 'downvoters: [User]',
     }
   },
   /**
@@ -61,7 +138,8 @@ Posts.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -74,14 +152,11 @@ Posts.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
 ]);
-
-PublicationUtils.addToFields(Posts.publishedFields.list, ["upvotes", "upvoters", "downvotes", "downvoters", "baseScore", "score"]);
-
-// ------------------------------------- Comments -------------------------------- //
 
 Comments.addField([
   /**
@@ -93,7 +168,8 @@ Comments.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -105,6 +181,8 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
+      viewableBy: ['guests'],
+      resolveAs: 'upvoters: [User]',
     }
   },
   /**
@@ -116,7 +194,8 @@ Comments.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -128,6 +207,8 @@ Comments.addField([
       type: [String],
       optional: true,
       publish: true,
+      viewableBy: ['guests'],
+      resolveAs: 'downvoters: [User]',
     }
   },
   /**
@@ -140,7 +221,8 @@ Comments.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -153,9 +235,9 @@ Comments.addField([
       decimal: true,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
 ]);
 
-PublicationUtils.addToFields(Comments.publishedFields.list, ["upvotes", "downvotes", "baseScore", "score"]);

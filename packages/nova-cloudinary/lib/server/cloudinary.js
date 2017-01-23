@@ -1,15 +1,15 @@
-import Telescope from 'meteor/nova:lib';
 import cloudinary from "cloudinary";
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import { addCallback, Utils, getSetting } from 'meteor/nova:core';
 
 const Cloudinary = cloudinary.v2;
 const uploadSync = Meteor.wrapAsync(Cloudinary.uploader.upload);
 
 Cloudinary.config({
-  cloud_name: Telescope.settings.get("cloudinaryCloudName"),
-  api_key: Telescope.settings.get("cloudinaryAPIKey"),
-  api_secret: Telescope.settings.get("cloudinaryAPISecret"),
+  cloud_name: getSetting("cloudinaryCloudName"),
+  api_key: getSetting("cloudinaryAPIKey"),
+  api_secret: getSetting("cloudinaryAPISecret"),
   secure: true,
 });
 
@@ -18,7 +18,7 @@ const CloudinaryUtils = {
   // send an image URL to Cloudinary and get a cloudinary result object in return
   uploadImage(imageUrl) {
     try {
-      var result = uploadSync(Telescope.utils.addHttp(imageUrl));
+      var result = uploadSync(Utils.addHttp(imageUrl));
       const data = {
         cloudinaryId: result.public_id,
         result: result,
@@ -33,7 +33,7 @@ const CloudinaryUtils = {
 
   // generate signed URL for each format based off public_id
   getUrls(cloudinaryId) {
-    return Telescope.settings.get("cloudinaryFormats").map(format => {
+    return getSetting("cloudinaryFormats").map(format => {
       const url = Cloudinary.url(cloudinaryId, {
         width: format.width,
         height: format.height,
@@ -88,7 +88,7 @@ Meteor.methods({
 
 // post submit callback
 function cachePostThumbnailOnSubmit (post) {
-  if (Telescope.settings.get("cloudinaryAPIKey")) {
+  if (getSetting("cloudinaryAPIKey")) {
     if (post.thumbnailUrl) {
 
       const data = CloudinaryUtils.uploadImage(post.thumbnailUrl);
@@ -100,11 +100,11 @@ function cachePostThumbnailOnSubmit (post) {
     }
   }
 }
-Telescope.callbacks.add("posts.new.async", cachePostThumbnailOnSubmit);
+addCallback("posts.new.async", cachePostThumbnailOnSubmit);
 
 // post edit callback
 function cachePostThumbnailOnEdit (newPost, oldPost) {
-  if (Telescope.settings.get("cloudinaryAPIKey")) {
+  if (getSetting("cloudinaryAPIKey")) {
     if (newPost.thumbnailUrl && newPost.thumbnailUrl !== oldPost.thumbnailUrl) {
 
       const data = CloudinaryUtils.uploadImage(newPost.thumbnailUrl);
@@ -116,6 +116,6 @@ function cachePostThumbnailOnEdit (newPost, oldPost) {
     }
   }
 }
-Telescope.callbacks.add("posts.edit.async", cachePostThumbnailOnEdit);
+addCallback("posts.edit.async", cachePostThumbnailOnEdit);
 
 export default CloudinaryUtils;

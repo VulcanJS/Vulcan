@@ -1,8 +1,8 @@
-import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
+import { Callbacks, Utils, registerComponent } from 'meteor/nova:core';
 
 const methodList = Meteor.isServer ? Meteor.server.method_handlers : Meteor.connection._methodHandlers;
 
@@ -87,17 +87,17 @@ const Cheatsheet = props => {
             <li><code>run()</code></li>
             <li><code>runAsync()</code></li>
           </ul>
-          <h3>Hooks (<code>Telescope.callbacks.*</code>)</h3>
+          <h3>Hooks (<code>Callbacks.*</code>)</h3>
           <ul>
-            {_.map(Telescope.callbacks, renderCallback)}
+            {_.map(Callbacks, renderCallback)}
           </ul>
         </div>
 
         <div className="cheatsheet-block">
           <h2>Utils</h2>
-          <h3>Helpers (<code>Telescope.utils.*</code>)</h3>
+          <h3>Helpers (<code>Utils.*</code>)</h3>
           <ul>
-            {_.map(Telescope.utils, renderFunction)}
+            {_.map(Utils, renderFunction)}
           </ul>
         </div>
 
@@ -107,5 +107,4 @@ const Cheatsheet = props => {
   )
 }
 
-module.exports = Cheatsheet
-export default Cheatsheet
+registerComponent('Cheatsheet', Cheatsheet);

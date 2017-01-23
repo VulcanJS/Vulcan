@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -11,5 +12,4 @@ const Error404 = () => {
 
 Error404.displayName = "Error404";
 
-module.exports = Error404;
-export default Error404;
+registerComponent('Error404', Error404);

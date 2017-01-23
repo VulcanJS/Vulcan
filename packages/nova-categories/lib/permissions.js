@@ -1,14 +1,14 @@
 import Users from 'meteor/nova:users';
 
-const anonymousActions = [
+const guestsActions = [
   "categories.view.all"
 ];
-Users.groups.anonymous.can(anonymousActions);
+Users.groups.guests.can(guestsActions);
 
-const defaultActions = [
+const membersActions = [
   "categories.view.all"
 ];
-Users.groups.default.can(defaultActions);
+Users.groups.members.can(membersActions);
 
 const adminActions = [
   "categories.view.all",

@@ -1,15 +1,6 @@
-import Telescope from 'meteor/nova:lib';
+import { getSetting } from 'meteor/nova:core';
 import Users from 'meteor/nova:users';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
-
-// import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
-// checkNpmVersions({
-//   "formsy-react": "^0.18.0",
-//   "formsy-react-components": "^0.7.1",
-//   // "react-mounter": "^1.1.0",
-//   // "react-no-ssr": "^1.0.1",
-//   "react-bootstrap": "^0.29.0",
-// });
 
 Users.avatar.setOptions({
   "gravatarDefault": "mm",
@@ -17,4 +8,4 @@ Users.avatar.setOptions({
 });
 
 // https://github.com/softwarerero/meteor-accounts-t9n
-T9n.setLanguage(Telescope.settings.get("locale", "en"));
+T9n.setLanguage(getSetting("locale", "en"));

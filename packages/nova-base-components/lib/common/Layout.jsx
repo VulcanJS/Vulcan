@@ -1,38 +1,35 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import { FlashContainer } from "meteor/nova:core";
 
 class Layout extends Component {
 
   render() {
-
     return (
       <div className="wrapper" id="wrapper">
 
-        <Telescope.components.HeadTags />
+        <Components.HeadTags />
 
-        <Telescope.components.UsersProfileCheck {...this.props} />
+        <Components.UsersProfileCheck {...this.props} />
 
-        <Telescope.components.Header {...this.props}/>
+        <Components.Header {...this.props}/>
       
         <div className="main">
 
-          <FlashContainer component={Telescope.components.FlashMessages}/>
+          <Components.FlashMessages />
 
-          <Telescope.components.Newsletter />
+          <Components.Newsletter />
 
           {this.props.children}
 
         </div>
       
-        <Telescope.components.Footer {...this.props}/>
+        <Components.Footer {...this.props}/>
       
       </div>
     )
-
   }
 }
 
 Layout.displayName = "Layout";
 
-module.exports = Layout;
+registerComponent('Layout', Layout);

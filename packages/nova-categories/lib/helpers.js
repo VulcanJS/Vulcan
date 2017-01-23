@@ -1,9 +1,6 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
-
-Categories.helpers({getCollection: () => Categories});
-Categories.helpers({getCollectionName: () => "categories"});
+import { Utils } from 'meteor/nova:core';
 
 /**
  * @summary Get all of a category's parents
@@ -23,7 +20,6 @@ Categories.getParents = function (category) {
 
   return categoriesArray;
 };
-Categories.helpers({getParents: function () {return Categories.getParents(this);}});
 
 /**
  * @summary Get all of a category's children
@@ -43,8 +39,6 @@ Categories.getChildren = function (category) {
 
   return categoriesArray;
 };
-Categories.helpers({getChildren: function () {return Categories.getChildren(this);}});
-
 /**
  * @summary Get all of a post's categories
  * @param {Object} post
@@ -52,20 +46,16 @@ Categories.helpers({getChildren: function () {return Categories.getChildren(this
 Posts.getCategories = function (post) {
   return !!post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
 };
-Posts.helpers({getCategories: function () {return Posts.getCategories(this);}});
-
 /**
  * @summary Get a category's URL
  * @param {Object} category
  */
 Categories.getUrl = function (category, isAbsolute) {
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  const prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
   // return prefix + FlowRouter.path("postsCategory", category);
   return `${prefix}/?cat=${category.slug}`;
 };
-Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
-
 /**
  * @summary Get a category's counter name
  * @param {Object} category
@@ -73,4 +63,3 @@ Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
  Categories.getCounterName = function (category) {
   return category._id + "-postsCount";
  }
- Categories.helpers({getCounterName: function () {return Categories.getCounterName(this);}});

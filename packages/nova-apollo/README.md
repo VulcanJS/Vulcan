@@ -1,0 +1,1 @@
+Nova Apollo Client & Server package. It handles the data layer of Nova. 

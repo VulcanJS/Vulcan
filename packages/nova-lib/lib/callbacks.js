@@ -1,25 +1,22 @@
-import Telescope from './config.js';
-// import moment from 'moment';
-
 /**
  * @summary Callback hooks provide an easy way to add extra steps to common operations.
- * @namespace Telescope.callbacks
+ * @namespace Callbacks
  */
-Telescope.callbacks = {};
+export const Callbacks = {};
 
 /**
  * @summary Add a callback function to a hook
  * @param {String} hook - The name of the hook
  * @param {Function} callback - The callback function
  */
-Telescope.callbacks.add = function (hook, callback) {
+export const addCallback = function (hook, callback) {
 
   // if callback array doesn't exist yet, initialize it
-  if (typeof Telescope.callbacks[hook] === "undefined") {
-    Telescope.callbacks[hook] = [];
+  if (typeof Callbacks[hook] === "undefined") {
+    Callbacks[hook] = [];
   }
 
-  Telescope.callbacks[hook].push(callback);
+  Callbacks[hook].push(callback);
 };
 
 /**
@@ -27,8 +24,8 @@ Telescope.callbacks.add = function (hook, callback) {
  * @param {string} hook - The name of the hook
  * @param {string} functionName - The name of the function to remove
  */
-Telescope.callbacks.remove = function (hookName, callbackName) {
-  Telescope.callbacks[hookName] = _.reject(Telescope.callbacks[hookName], function (callback) {
+export const removeCallback = function (hookName, callbackName) {
+  Callbacks[hookName] = _.reject(Callbacks[hookName], function (callback) {
     return callback.name === callbackName;
   });
 };
@@ -40,7 +37,7 @@ Telescope.callbacks.remove = function (hookName, callbackName) {
  * @param {Any} args - Other arguments will be passed to each successive iteration
  * @returns {Object} Returns the item after it's been through all the callbacks for this hook
  */
-Telescope.callbacks.run = function () {
+export const runCallbacks = function () {
 
   // the first argument is the name of the hook
   const hook = arguments[0];
@@ -49,7 +46,7 @@ Telescope.callbacks.run = function () {
   // successive arguments are passed to each iteration
   const args = Array.prototype.slice.call(arguments).slice(2);
 
-  const callbacks = Telescope.callbacks[hook];
+  const callbacks = Callbacks[hook];
 
   if (typeof callbacks !== "undefined" && !!callbacks.length) { // if the hook exists, and contains callbacks to run
 
@@ -77,13 +74,13 @@ Telescope.callbacks.run = function () {
  * @param {String} hook - First argument: the name of the hook
  * @param {Any} args - Other arguments will be passed to each successive iteration
  */
-Telescope.callbacks.runAsync = function () {
+export const runCallbacksAsync = function () {
 
   // the first argument is the name of the hook
   var hook = arguments[0];
   // successive arguments are passed to each iteration
   var args = Array.prototype.slice.call(arguments).slice(1);
-  var callbacks = Telescope.callbacks[hook];
+  var callbacks = Callbacks[hook];
 
   if (Meteor.isServer && typeof callbacks !== "undefined" && !!callbacks.length) {
 

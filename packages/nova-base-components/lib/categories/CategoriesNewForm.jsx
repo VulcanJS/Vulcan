@@ -1,17 +1,18 @@
 import React, { PropTypes, Component } from 'react';
-//import { Messages } from "meteor/nova:core";
+import { intlShape } from 'react-intl';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import Categories from "meteor/nova:categories";
-import NovaForm from "meteor/nova:forms";
+import { withMessages } from 'meteor/nova:core';
 
 const CategoriesNewForm = (props, context) => {
 
   return (
     <div className="categories-new-form">
-      <NovaForm 
+      <Components.SmartForm 
         collection={Categories} 
-        methodName="categories.new"
-        successCallback={(category)=>{
-          context.messages.flash("Category created.", "success");
+        successCallback={category => {
+          props.closeCallback();
+          props.flash(context.intl.formatMessage({id: 'categories.new_success'}, {name: category.name}), "success");
         }}
       />
     </div>
@@ -20,10 +21,13 @@ const CategoriesNewForm = (props, context) => {
 
 CategoriesNewForm.displayName = "CategoriesNewForm";
 
-CategoriesNewForm.contextTypes = {
-  currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object
+CategoriesNewForm.propTypes = {
+  closeCallback: React.PropTypes.func,
+  flash: React.PropTypes.func,
 };
 
-module.exports = CategoriesNewForm;
-export default CategoriesNewForm;
+CategoriesNewForm.contextTypes = {
+  intl: intlShape,
+};
+
+registerComponent('CategoriesNewForm', CategoriesNewForm, withMessages);

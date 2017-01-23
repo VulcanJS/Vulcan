@@ -1,6 +1,10 @@
-import Telescope from 'meteor/nova:lib';
+import { Components } from 'meteor/nova:lib';
+import { withMutation } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
 import FRC from 'formsy-react-components';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
 const Input = FRC.Input;
 
 class EmbedlyURL extends Component {
@@ -21,33 +25,24 @@ class EmbedlyURL extends Component {
     const url = this.input.getValue();
 
     if (url.length) {
-
       // the URL has changed, get a new thumbnail
-      this.context.actions.call("getEmbedlyData", url, (error, result) => {
-
-        console.log("querying Embedly…"); // eslint-disable-line
-
+      this.props.getEmbedlyData({url}).then(result => {
         this.setState({loading: false});
-
-        if (error) {
-          console.log(error); // eslint-disable-line
-          this.context.throwError({content: error.message, type: "error"});
-        } else {
-          console.log(result); // eslint-disable-line
-          this.context.addToAutofilledValues({
-            title: result.title,
-            body: result.description,
-            thumbnailUrl: result.thumbnailUrl
-          });
-        }
+        console.log('Embedly Data', result);
+        this.context.addToAutofilledValues({
+          title: result.data.getEmbedlyData.title,
+          body: result.data.getEmbedlyData.description,
+          thumbnailUrl: result.data.getEmbedlyData.thumbnailUrl
+        });
+      }).catch(error => {
+        this.setState({loading: false});
+        console.log(error)
+        this.context.throwError({content: error.message, type: "error"});
       });
-
     }
   }
 
   render() {
-
-    const Loading = Telescope.components.Loading;
 
     const wrapperStyle = {
       position: "relative"
@@ -63,7 +58,7 @@ class EmbedlyURL extends Component {
     loadingStyle.display = this.state.loading ? "block" : "none";
 
     // see https://facebook.github.io/react/warnings/unknown-prop.html
-    const {document, updateCurrentValue, control, ...rest} = this.props; // eslint-disable-line
+    const {document, updateCurrentValue, control, getEmbedlyData, ...rest} = this.props;
 
     return (
       <div className="embedly-url-field" style={wrapperStyle}>
@@ -74,7 +69,7 @@ class EmbedlyURL extends Component {
           ref={ref => this.input = ref}
         />
         <div className="embedly-url-field-loading" style={loadingStyle}>
-          <Loading />
+          <Components.Loading />
         </div>
       </div>
     );
@@ -93,4 +88,26 @@ EmbedlyURL.contextTypes = {
   actions: React.PropTypes.object,
 }
 
-export default EmbedlyURL;
+// note: not used since we use `withMutation` and getEmbedlyData returns a `JSON` type
+// function withGetEmbedlyData() {
+//   return graphql(gql`
+//     mutation getEmbedlyData($url: String) {
+//       getEmbedlyData(url: $url) {
+//         title
+//         media
+//         description
+//         thumbnailUrl
+//         sourceName
+//         sourceUrl
+//       }
+//     }
+//   `, {
+//     name: 'getEmbedlyData'
+//   });
+// }
+
+
+export default withMutation({
+  name: 'getEmbedlyData',
+  args: {url: 'String'},
+})(EmbedlyURL);

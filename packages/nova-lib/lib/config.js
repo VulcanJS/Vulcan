@@ -7,16 +7,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const Telescope = {};
 
-Telescope.VERSION = '0.27.5-nova';
-
-// ------------------------------------- Config -------------------------------- //
-
-/**
- * @summary Telescope configuration namespace
- * @namespace Telescope.config
- */
-Telescope.config = {};
-
+Telescope.VERSION = '1.0.0';
 
 // ------------------------------------- Schemas -------------------------------- //
 
@@ -26,62 +17,14 @@ SimpleSchema.extendOptions({
   hidden: Match.Optional(Boolean),     // hidden: true means the field is never shown in a form no matter what
   required: Match.Optional(Boolean), // required: true means the field is required to have a complete profile
   profile: Match.Optional(Boolean), // profile: true means the field is shown on user profiles
-  template: Match.Optional(String), // template used to display the field
+  template: Match.Optional(String), // legacy template used to display the field; backward compatibility (not used anymore)
   form: Match.Optional(Object), // form placeholder
-  autoform: Match.Optional(Object), // legacy form placeholder; backward compatibility
-  control: Match.Optional(Match.Any), // NovaForm control (String or React component)
+  autoform: Match.Optional(Object), // legacy form placeholder; backward compatibility (not used anymore)
+  control: Match.Optional(Match.Any), // SmartForm control (String or React component)
   order: Match.Optional(Number), // position in the form
-  group: Match.Optional(Object) // form fieldset group
+  group: Match.Optional(Object), // form fieldset group
+  preload: Match.Optional(Boolean),
 });
-
-// ------------------------------------- Components -------------------------------- //
-
-Telescope.components = {};
-
-Telescope.registerComponent = (name, component) => {
-  Telescope.components[name] = component;
-};
-
-Telescope.getComponent = (name) => {
-  return Telescope.components[name];
-};
-
-// ------------------------------------- Subscriptions -------------------------------- //
-
- /**
- * @summary Subscriptions namespace
- * @namespace Telescope.subscriptions
- */
-Telescope.subscriptions = [];
-
-/**
- * @summary Add a subscription to be preloaded
- * @param {string} subscription - The name of the subscription
- */
-Telescope.subscriptions.preload = function (subscription, args) {
-  Telescope.subscriptions.push({name: subscription, arguments: args});
-};
-
-// ------------------------------------- Strings -------------------------------- //
-
-Telescope.strings = {};
-
-// ------------------------------------- Routes -------------------------------- //
-
-Telescope.routes = {
-  routes: [],
-  add(routeOrRouteArray) {
-    const addedRoutes = Array.isArray(routeOrRouteArray) ? routeOrRouteArray : [routeOrRouteArray];
-    this.routes = this.routes.concat(addedRoutes);
-  }
-}
-
-// ------------------------------------- Head Tags -------------------------------- //
-
-Telescope.headtags = {
-  meta: [],
-  link: []
-}
 
 // ------------------------------------- Statuses -------------------------------- //
 
@@ -107,5 +50,6 @@ Telescope.statuses = [
     label: 'deleted'
   }
 ];
+
 
 export default Telescope;

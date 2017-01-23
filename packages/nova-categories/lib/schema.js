@@ -1,24 +1,24 @@
-import Telescope from 'meteor/nova:lib';
-import Categories from "./collection.js";
-import Users from 'meteor/nova:users';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-
-const canInsert = user => Users.canDo(user, "categories.new");
-const canEdit = user => Users.canDo(user, "categories.edit.all");
-
 // category schema
-Categories.schema = new SimpleSchema({
+const schema = {
+  _id: {
+    type: String,
+    viewableBy: ['guests'],
+    optional: true,
+    publish: true
+  },
   name: {
     type: String,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true
   },
   description: {
     type: String,
     optional: true,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true,
     form: {
       rows: 3
@@ -27,78 +27,48 @@ Categories.schema = new SimpleSchema({
   order: {
     type: Number,
     optional: true,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true
   },
   slug: {
     type: String,
     optional: true,
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    publish: true
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
+    publish: true,
   },
   image: {
     type: String,
     optional: true,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     publish: true
   },
-  parentId: {
-    type: String,
-    optional: true,
-    insertableIf: canInsert,
-    editableIf: canEdit,
-    publish: true,
-    form: {
-      options: function () {
-        var categories = Categories.find().map(function (category) {
-          return {
-            value: category._id,
-            label: category.name
-          };
-        });
-        return categories;
-      }
-    }
-  }
-});
+  // parentId: {
+  //   type: String,
+  //   optional: true,
+  //   viewableBy: ['guests'],
+  //   insertableBy: ['members'],
+  //   editableBy: ['members'],
+  //   publish: true,
+  //   resolveAs: 'parent: Category',
+  //   form: {
+  //     options: function () {
+  //       // todo: get the collection from the options in form
+  //       var categories = Categories.find().map(function (category) {
+  //         return {
+  //           value: category._id,
+  //           label: category.name
+  //         };
+  //       });
+  //       return categories;
+  //     }
+  //   }
+  // }
+};
 
-// Meteor.startup(function(){
-//   Categories.internationalize();
-// });
-
-Categories.attachSchema(Categories.schema);
-
-
-Telescope.settings.collection.addField([
-  {
-    fieldName: 'categoriesBehavior',
-    fieldSchema: {
-      type: String,
-      optional: true,
-      form: {
-        group: 'categories',
-        instructions: 'Let users filter by one or multiple categories at a time.',
-        options: function () {
-          return [
-            {value: "single", label: "categories_behavior_one_at_a_time"},
-            {value: "multiple", label: "categories_behavior_multiple"}
-          ];
-        }
-      }
-    }
-  },
-  {
-    fieldName: 'hideEmptyCategories',
-    fieldSchema: {
-      type: Boolean,
-      optional: true,
-      form: {
-        group: 'categories',
-        instructions: 'Hide empty categories in navigation'
-      }
-    }
-  }
-]);
+export default schema;

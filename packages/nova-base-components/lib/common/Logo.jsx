@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { IndexLink } from 'react-router';
 
@@ -21,4 +22,4 @@ const Logo = ({logoUrl, siteTitle}) => {
 
 Logo.displayName = "Logo";
 
-module.exports = Logo;
+registerComponent('Logo', Logo);

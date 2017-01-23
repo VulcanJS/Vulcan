@@ -8,7 +8,7 @@
 //   render() {
 
 //     const params = {view: 'userSubscribedPosts', userId: Meteor.userId(), listId: "posts.list.subscribed"};
-//     const {selector, options} = Posts.parameters.get(params);
+//     const {selector, options} = Posts.getParameters(params);
 
 //     return (
 //       <ListContainer

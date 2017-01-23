@@ -1,45 +1,37 @@
-import PublicationUtils from 'meteor/utilities:smart-publications';
-import Users from 'meteor/nova:users';
+import Users from "meteor/nova:users";
 
 Users.addField([
   {
-    fieldName: 'telescope.subscribedItems',
+    fieldName: 'subscribedItems',
     fieldSchema: {
       type: Object,
       optional: true,
       blackbox: true,
-      form: {
-        omit: true
-      }
+      hidden: true, // never show this
     }
   },
   {
-    fieldName: 'telescope.subscribers',
+    fieldName: 'subscribers',
     fieldSchema: {
       type: [String],
       optional: true,
-      form: {
-        omit: true
-      },
-      publish: true,
-      join: {
-        joinAs: "subscribersArray",
-        collection: () => Users
-      }
+      hidden: true, // never show this,
+      // publish: true,
+      // join: {
+      //   joinAs: "subscribersArray",
+      //   collection: () => Users
+      // }
     }
   },
   {
-    fieldName: 'telescope.subscriberCount',
+    fieldName: 'subscriberCount',
     fieldSchema: {
       type: Number,
       optional: true,
-      form: {
-        omit: true
-      }
+      hidden: true, // never show this
     }
   }
 ]);
-PublicationUtils.addToFields(Users.publishedFields.list, ["telescope.subscribedItems", "telescope.subscribers", "telescope.subscriberCount"]);
 
 // check if nova:posts exists, if yes, add the custom fields to Posts
 if (typeof Package['nova:posts'] !== "undefined") {
@@ -50,14 +42,12 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        form: {
-          omit: true
-        },
-        publish: true,
-        join: {
-          joinAs: "subscribersArray",
-          collection: () => Users
-        }
+        hidden: true, // never show this
+        // publish: true,
+        // join: {
+        //   joinAs: "subscribersArray",
+        //   collection: () => Users
+        // }
       }
     },
     {
@@ -65,14 +55,11 @@ if (typeof Package['nova:posts'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        form: {
-          omit: true
-        }
+        hidden: true, // never show this
       }
     }
   ]);
 
-  PublicationUtils.addToFields(Posts.publishedFields.list, ["subscribers", "subscriberCount"]);
 }
 
 // check if nova:categories exists, if yes, add the custom fields to Categories
@@ -84,14 +71,12 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: [String],
         optional: true,
-        form: {
-          omit: true
-        },
-        publish: true,
-        join: {
-          joinAs: "subscribersArray",
-          collection: () => Users
-        }
+        hidden: true, // never show this
+        // publish: true,
+        // join: {
+        //   joinAs: "subscribersArray",
+        //   collection: () => Users
+        // }
       }
     },
     {
@@ -99,12 +84,9 @@ if (typeof Package['nova:categories'] !== "undefined") {
       fieldSchema: {
         type: Number,
         optional: true,
-        form: {
-          omit: true
-        }
+        hidden: true, // never show this
       }
     }
   ]);
 
-  PublicationUtils.addToFields(Categories.publishedFields.list, ["subscribers", "subscriberCount"]);
 }

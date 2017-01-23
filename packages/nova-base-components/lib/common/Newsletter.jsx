@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage, intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -6,6 +6,7 @@ import { Input } from 'formsy-react-components';
 import { Button } from 'react-bootstrap';
 import Cookie from 'react-cookie';
 import Users from 'meteor/nova:users';
+import { withCurrentUser, withMutation, withMessages } from 'meteor/nova:core';
 
 class Newsletter extends Component {
 
@@ -16,29 +17,27 @@ class Newsletter extends Component {
     this.dismissBanner = this.dismissBanner.bind(this);
 
     this.state = {
-      showBanner: showBanner(context.currentUser)
+      showBanner: showBanner(props.currentUser)
     };
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextContext.currentUser) {
-      this.setState({showBanner: showBanner(nextContext.currentUser)});
+    if (nextProps.currentUser) {
+      this.setState({showBanner: showBanner(nextProps.currentUser)});
     }
   }
 
   subscribeEmail(data) {
-    this.context.actions.call("newsletter.addEmail", data.email, (error, result) => {
-      if (error) {
-        console.log(error); // eslint-disable-line
-        this.context.messages.flash(error.message, "error");
-      } else {
-        this.successCallbackSubscription(result);
-      }
+    this.props.addEmailNewsletter({email: data.email}).then(result => {
+      this.successCallbackSubscription(result);
+    }).catch(error => {
+      console.log(error);
+      this.props.flash(error.message, "error");
     });
   }
 
   successCallbackSubscription(result) {
-    this.context.messages.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
+    this.props.flash(this.context.intl.formatMessage({id: "newsletter.success_message"}), "success");
     this.dismissBanner();
   }
 
@@ -47,20 +46,16 @@ class Newsletter extends Component {
 
     this.setState({showBanner: false});
 
-    // set cookie
+    // set cookie to keep the banner dismissed persistently 
     Cookie.save('showBanner', "no");
-
-    // set user setting too (if logged in)
-    if (this.context.currentUser) {
-      this.context.actions.call('users.setSetting', this.context.currentUser._id, 'newsletter.showBanner', false);
-    }
   }
 
   renderButton() {
-    return <Telescope.components.NewsletterButton
+    return <Components.NewsletterButton
+              label="newsletter.subscribe"
+              mutationName="addUserNewsletter"
               successCallback={() => this.successCallbackSubscription()}
-              subscribeText={this.context.intl.formatMessage({id: "newsletter.subscribe"})}
-              user={this.context.currentUser}
+              user={this.props.currentUser}
             />
   }
 
@@ -84,30 +79,32 @@ class Newsletter extends Component {
       ? (
         <div className="newsletter">
           <h4 className="newsletter-tagline"><FormattedMessage id="newsletter.subscribe_prompt"/></h4>
-          {this.context.currentUser ? this.renderButton() : this.renderForm()}
-          <a onClick={this.dismissBanner} className="newsletter-close"><Telescope.components.Icon name="close"/></a>
+          {this.props.currentUser ? this.renderButton() : this.renderForm()}
+          <a onClick={this.dismissBanner} className="newsletter-close"><Components.Icon name="close"/></a>
         </div>
       ) : null;
   }
 }
 
 Newsletter.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
-  messages: React.PropTypes.object,
   intl: intlShape
 };
+
+const mutationOptions = {
+  name: 'addEmailNewsletter',
+  args: {email: 'String'}
+}
 
 function showBanner (user) {
   return (
     // showBanner cookie either doesn't exist or is not set to "no"
     Cookie.load('showBanner') !== "no"
     // and showBanner user setting either doesn't exist or is set to true
-    && Users.getSetting(user, 'newsletter.showBanner', true)
+    // && Users.getSetting(user, 'newsletter.showBanner', true)
     // and user is not subscribed to the newsletter already (setting either DNE or is not set to false)
-    && !Users.getSetting(user, 'newsletter.subscribed', false)
+    && !Users.getSetting(user, 'newsletter_subscribeToNewsletter', false)
   );
 }
 
-module.exports = Newsletter;
-export default Newsletter;
+registerComponent('Newsletter', Newsletter, withMutation(mutationOptions), withCurrentUser, withMessages);

@@ -1,47 +1,85 @@
-import Telescope from 'meteor/nova:lib';
 import React from 'react';
-import {FormattedMessage } from 'react-intl';
-import { ListContainer } from "meteor/utilities:react-list-container";
-import { ModalTrigger } from "meteor/nova:core";
-import Comments from "meteor/nova:comments";
+import { FormattedMessage } from 'react-intl';
+import { ModalTrigger, withList, withCurrentUser, Components, registerComponent, Utils } from 'meteor/nova:core';
+import Comments from 'meteor/nova:comments';
+import gql from 'graphql-tag';
 
-const PostsCommentsThread = ({document}, {currentUser}) => {
+const PostsCommentsThread = (props, context) => {
 
-  const post = document;
+  const {loading, terms: { postId }, results, totalCount} = props;
+  
+  if (loading) {
+  
+    return <div className="posts-comments-thread"><Components.Loading/></div>
+  
+  } else {
+    
+    const resultsClone = _.map(results, _.clone); // we don't want to modify the objects we got from props
+    const nestedComments = Utils.unflatten(resultsClone, '_id', 'parentCommentId');
 
-  return (
-    <div className="posts-comments-thread">
-      <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
-      <ListContainer 
-        collection={Comments} 
-        publication="comments.list" 
-        selector={{postId: post._id}} 
-        terms={{postId: post._id, view: "postComments"}} 
-        limit={0}
-        parentProperty="parentCommentId"
-        joins={Comments.getJoins()}
-        component={Telescope.components.CommentsList}
-        listId="comments.list"
-      />
-      { currentUser ?
-        <div className="posts-comments-thread-new">
-          <h4><FormattedMessage id="comments.new"/></h4>
-          <Telescope.components.CommentsNew type="comment" postId={post._id} />
-        </div> :
-        <div>
-          <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
-            <Telescope.components.UsersAccountForm/>
-          </ModalTrigger>
-        </div> }
-    </div>
-  )
+    return (
+      <div className="posts-comments-thread">
+        <h4 className="posts-comments-thread-title"><FormattedMessage id="comments.comments"/></h4>
+        <Components.CommentsList comments={nestedComments} commentCount={totalCount}/>
+        {!!props.currentUser ?
+          <div className="posts-comments-thread-new">
+            <h4><FormattedMessage id="comments.new"/></h4>
+            <Components.CommentsNewForm
+              postId={postId} 
+              type="comment" 
+            />
+          </div> :
+          <div>
+            <ModalTrigger size="small" component={<a><FormattedMessage id="comments.please_log_in"/></a>}>
+              <Components.UsersAccountForm/>
+            </ModalTrigger>
+          </div> 
+        }
+      </div>
+    );
+  }
 };
 
 PostsCommentsThread.displayName = "PostsCommentsThread";
 
-PostsCommentsThread.contextTypes = {
+PostsCommentsThread.propTypes = {
   currentUser: React.PropTypes.object
 };
 
-module.exports = PostsCommentsThread;
-export default PostsCommentsThread;
+PostsCommentsThread.fragment = gql`
+  fragment commentsListFragment on Comment {
+    _id
+    postId
+    parentCommentId
+    topLevelCommentId
+    body
+    htmlBody
+    postedAt
+    user {
+      _id
+      displayName
+      emailHash
+      slug
+    }
+    post {
+      _id
+      commentCount
+      commenters {
+        _id
+        displayName
+        emailHash
+        slug
+      }
+    }
+    userId
+  }
+`;
+
+const options = {
+  collection: Comments,
+  queryName: 'commentsListQuery',
+  fragment: PostsCommentsThread.fragment,
+  limit: 0,
+};
+
+registerComponent('PostsCommentsThread', PostsCommentsThread, withList(options), withCurrentUser);

@@ -1,14 +1,6 @@
-import Telescope from 'meteor/nova:lib';
-import PublicationUtils from 'meteor/utilities:smart-publications';
 import EmbedlyURL from './components/EmbedlyURL.jsx';
 import ThumbnailURL from './components/ThumbnailURL.jsx';
 import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
-
-// check if user can create a new post
-const canInsert = user => Users.canDo(user, "posts.new");
-// check if user can edit a post
-const canEdit = Users.canEdit;
 
 Posts.addField([
   {
@@ -17,8 +9,9 @@ Posts.addField([
       type: String,
       optional: true,
       max: 500,
-      insertableIf: canInsert,
-      editableIf: canEdit,
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
       control: EmbedlyURL,
       publish: true
     }
@@ -28,8 +21,9 @@ Posts.addField([
     fieldSchema: {
       type: String,
       optional: true,
-      insertableIf: canInsert,
-      editableIf: canEdit,
+      insertableBy: ['members'],
+      editableBy: ['members'],
+      viewableBy: ['guests'],
       publish: true,
       control: ThumbnailURL
     }
@@ -40,7 +34,8 @@ Posts.addField([
       type: Object,
       publish: true,
       optional: true,
-      blackbox: true
+      blackbox: true,
+      viewableBy: ['guests'],
     }
   },
   {
@@ -49,6 +44,7 @@ Posts.addField([
       type: String,
       optional: true,
       publish: true,
+      viewableBy: ['guests'],
     }
   },
   {
@@ -57,45 +53,7 @@ Posts.addField([
       type: String,
       optional: true,
       publish: true,
+      viewableBy: ['guests'],
     }
   }
 ]);
-
-PublicationUtils.addToFields(Posts.publishedFields.list, ["thumbnailUrl", "media", "sourceName", "sourceUrl"]);
-
-if (typeof Telescope.settings.collection !== "undefined") {
-  Telescope.settings.collection.addField([
-    {
-      fieldName: 'embedlyKey',
-      fieldSchema: {
-        type: String,
-        optional: true,
-        private: true,
-        form: {
-          group: 'embedly',
-          class: 'private-field'
-        }
-      }
-    },
-    {
-      fieldName: 'thumbnailWidth',
-      fieldSchema: {
-        type: Number,
-        optional: true,
-        form: {
-          group: 'embedly'
-        }
-      }
-    },
-    {
-      fieldName: 'thumbnailHeight',
-      fieldSchema: {
-        type: Number,
-        optional: true,
-        form: {
-          group: 'embedly'
-        }
-      }
-    }
-  ]);
-}

@@ -184,9 +184,6 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
       if (frData) {
         ssrContext.addData(frData.collectionData);
       }
-      if (serverOptions.preRender) {
-        serverOptions.preRender(req, res);
-      }
 
       // Uncomment these two lines if you want to easily trigger
       // multiple client requests from different browsers at the same time
@@ -203,11 +200,16 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
         ...serverOptions.props
       };
 
-      fetchComponentData(serverOptions, renderProps);
+      // fetchComponentData(serverOptions, renderProps);
       let app = <RouterContext {...renderProps} />;
 
       if (typeof clientOptions.wrapperHook === 'function') {
-        app = clientOptions.wrapperHook(app);
+        const loginToken = req.cookies['meteor_login_token'];
+        app = clientOptions.wrapperHook(app, loginToken);
+      }
+
+      if (serverOptions.preRender) {
+        serverOptions.preRender(req, res, app);
       }
 
       if (!serverOptions.disableSSR){
@@ -219,7 +221,8 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
       css = global.__STYLE_COLLECTOR__;
 
       if (typeof serverOptions.dehydrateHook === 'function') {
-        InjectData.pushData(res, 'dehydrated-initial-data', JSON.stringify(serverOptions.dehydrateHook()));
+        const data = serverOptions.dehydrateHook();
+        InjectData.pushData(res, 'dehydrated-initial-data', JSON.stringify(data));
       }
 
       if (serverOptions.postRender) {

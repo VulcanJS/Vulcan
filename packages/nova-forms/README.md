@@ -1,6 +1,6 @@
 # Nova Forms
 
-This package provides a `NovaForm` component that works with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
+This package provides a `SmartForm` component that works with the schema extension defined in the [smart-methods](https://github.com/meteor-utilities/smart-methods) package to let you easily generate new document and edit document forms. 
 
 ### Install
 
@@ -44,14 +44,14 @@ const PostsSchema = new SimpleSchema({
   postedAt: {
     type: Date,
     optional: true
-    // no insertableIf or editableIf means this field won't appear in forms
+    // no insertableBy or editableBy means this field won't appear in forms
   },
   title: {
     type: String,
     optional: false,
     max: 500,
-    insertableIf: isLoggedIn,
-    editableIf: isOwner,
+    insertableBy: isLoggedIn,
+    editableBy: isOwner,
     control: "text",
     order: 1
   },
@@ -59,8 +59,8 @@ const PostsSchema = new SimpleSchema({
     type: String,
     optional: true,
     max: 3000,
-    insertableIf: isLoggedIn,
-    editableIf: isOwner,
+    insertableBy: isLoggedIn,
+    editableBy: isOwner,
     control: BodyFormControl,
     order: 2
   },
@@ -68,8 +68,8 @@ const PostsSchema = new SimpleSchema({
     type: Boolean,
     optional: true,
     defaultValue: false,
-    insertableIf: isAdmin,
-    editableIf: isAdmin,
+    insertableBy: isAdmin,
+    editableBy: isAdmin,
     control: "checkbox",
     order: 3
   },
@@ -79,7 +79,7 @@ const PostsSchema = new SimpleSchema({
 New document form:
 
 ```jsx
-<NovaForm 
+<Components.SmartForm 
   collection={Posts}
   methodName="posts.new"
 />
@@ -88,7 +88,7 @@ New document form:
 Edit document form:
 
 ```jsx
-<NovaForm 
+<Components.SmartForm 
   collection={Posts}
   methodName="posts.edit"
   document={post}
@@ -147,11 +147,11 @@ A set of props to prefill for new documents.
 
 This package generates forms based on the following special schema properties (see also the [Smart Methods](https://github.com/meteor-utilities/smart-methods) package:
 
-###### `insertableIf(user)`
+###### `insertableBy(user)`
 
 A function called on the `user` performing the operation, should return `true` or `false`. When generating a form for inserting new documents, the form will contain all the fields that return `true` for the current user. 
 
-###### `editableIf(user, document)`
+###### `editableBy(user, document)`
 
 Called on the `user` performing the operation, and the `document` being operated on, and should return `true` or `false`. When generating a form for editing existing documents, the form will contain all the fields that return `true` for the current user. 
 
@@ -173,8 +173,8 @@ For example:
 postedAt: {
   type: Date,
   optional: true,
-  insertableIf: Users.isAdmin,
-  editableIf: Users.isAdmin,
+  insertableBy: Users.isAdmin,
+  editableBy: Users.isAdmin,
   publish: true,
   control: "datetime",
   group: {
@@ -201,7 +201,7 @@ A React component that will be inserted just after the form component itself.
 
 ### Context
 
-The main `NovaForm` components makes the following objects available as context to all its children:
+The main `SmartForm` components makes the following objects available as context to all its children:
 
 ###### `autofilledValues`
 

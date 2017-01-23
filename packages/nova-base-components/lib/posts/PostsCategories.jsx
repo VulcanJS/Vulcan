@@ -1,10 +1,11 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { Link } from 'react-router';
 
 const PostsCategories = ({post}) => {
   return (
     <div className="posts-categories">
-      {post.categoriesArray.map(category => 
+      {post.categories.map(category => 
         <Link className="posts-category" key={category._id} to={{pathname: "/", query: {cat: category.slug}}}>{category.name}</Link>
       )}
     </div>
@@ -13,4 +14,4 @@ const PostsCategories = ({post}) => {
 
 PostsCategories.displayName = "PostsCategories";
 
-module.exports = PostsCategories;
+registerComponent('PostsCategories', PostsCategories);

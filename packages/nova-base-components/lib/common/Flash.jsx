@@ -1,6 +1,6 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Alert } from 'react-bootstrap';
-//import { Messages } from "meteor/nova:core";
 
 class Flash extends Component{
 
@@ -10,21 +10,21 @@ class Flash extends Component{
   }
 
   componentDidMount() {
-    this.context.messages.markAsSeen(this.props.message._id);
+    this.props.markAsSeen(this.props.message._id);
   }
 
   dismissFlash(e) {
     e.preventDefault();
-    this.context.messages.clear(this.props.message._id);
+    this.props.clear(this.props.message._id);
   }
 
   render() {
 
-    let type = this.props.message.type;
-    type = type === "error" ? "danger" : type; // if type is "error", use "danger" instead
+    let flashType = this.props.message.flashType;
+    flashType = flashType === "error" ? "danger" : flashType; // if flashType is "error", use "danger" instead
 
     return (
-      <Alert className="flash-message" bsStyle={type} onDismiss={this.dismissFlash}>
+      <Alert className="flash-message" bsStyle={flashType} onDismiss={this.dismissFlash}>
         {this.props.message.content}
       </Alert>
     )
@@ -35,8 +35,4 @@ Flash.propTypes = {
   message: React.PropTypes.object.isRequired
 }
 
-Flash.contextTypes = {
-  messages: React.PropTypes.object.isRequired
-}
-
-module.exports = Flash;
+registerComponent('Flash', Flash);

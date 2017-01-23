@@ -1,12 +1,12 @@
-import Telescope from 'meteor/nova:lib';
 import React from 'react';
+import { getSetting, registerComponent } from 'meteor/nova:core';
 
 const renderSetting = (field, key) => {
   return (
     <tr key={key}>
       <td><code>{key}</code></td>
       <td>{field.type && field.type.name}</td>
-      <td>{field.private ? <span className="private">private</span> : Telescope.settings.get(key)}</td>
+      <td>{field.private ? <span className="private">private</span> : getSetting(key)}</td>
       <td>{field.defaultValue && field.defaultValue.toString()}</td>
       <td>{field.form && field.form.instructions}</td>
     </tr>
@@ -31,7 +31,7 @@ const Settings = props => {
             </tr>
           </thead>
           <tbody>
-            {_.map(_.omit(Telescope.settings.collection.simpleSchema()._schema, (value, key) => key.indexOf("$") >= 0), renderSetting)}
+            {_.map(_.omit(Meteor.settings, (value, key) => key.indexOf("$") >= 0), renderSetting)}
           </tbody>
         </table>
 
@@ -41,5 +41,4 @@ const Settings = props => {
   )
 }
 
-module.exports = Settings
-export default Settings
+registerComponent('Settings', Settings);

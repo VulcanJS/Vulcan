@@ -1,1 +1,0 @@
-Telescope settings package, used internally. 

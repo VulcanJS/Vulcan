@@ -1,52 +1,7 @@
-import Telescope from 'meteor/nova:lib';
 import { Injected } from 'meteor/meteorhacks:inject-initial';
 import moment from 'moment';
 import Posts from './collection.js'
-
-/**
- * @summary Parameter callbacks let you add parameters to subscriptions
- * @namespace Posts.parameters
- */
-Posts.parameters = {};
-
-/**
- * @summary Takes a set of terms, and translates them into a `parameter` object containing the appropriate find
- * and options arguments for the subscriptions's Posts.find()
- * @memberof Parameters
- * @param {Object} terms
- */
-Posts.parameters.get = function (terms) {
-
-  // add this to ensure all post publications pass audit-arguments-check
-  check(terms, Match.Any);
-
-  // console.log(terms)
-
-  // note: using jquery's extend() with "deep" parameter set to true instead of shallow _.extend()
-  // see: http://api.jquery.com/jQuery.extend/
-
-  // initialize parameters with empty object
-  let parameters = {
-    selector: {},
-    options: {}
-  };
-
-  // iterate over posts.parameters callbacks
-  parameters = Telescope.callbacks.run("posts.parameters", parameters, _.clone(terms));
-
-  // if sort options are not provided, default to "createdAt" sort
-  if (_.isEmpty(parameters.options.sort)) {
-    parameters.options.sort = {sticky: -1, createdAt: -1};
-  }
-
-  // extend sort to sort posts by _id to break ties
-  // NOTE: always do this last to avoid _id sort overriding another sort
-  parameters = Telescope.utils.deepExtend(true, parameters, {options: {sort: {_id: -1}}});
-
-  // console.log(parameters);
-
-  return parameters;
-};
+import { addCallback, Utils } from 'meteor/nova:core';
 
 // Parameter callbacks
 
@@ -55,15 +10,15 @@ Posts.parameters.get = function (terms) {
 function addViewParameter (parameters, terms) {
 
   // if view is not defined, default to "new"
-  var view = !!terms.view ? Telescope.utils.dashToCamel(terms.view) : 'new';
+  var view = !!terms.view ? Utils.dashToCamel(terms.view) : 'new';
 
   // get query parameters according to current view
   if (typeof Posts.views[view] !== 'undefined')
-    parameters = Telescope.utils.deepExtend(true, parameters, Posts.views[view](terms));
+    parameters = Utils.deepExtend(true, parameters, Posts.views[view](terms));
 
   return parameters;
 }
-Telescope.callbacks.add("posts.parameters", addViewParameter);
+addCallback("posts.parameters", addViewParameter);
 
 // View Parameter
 // Add "after" and "before" properties to terms which can be used to limit posts in time.
@@ -113,9 +68,13 @@ function addTimeParameter (parameters, terms) {
       if (Meteor.isClient) {
         startOfDay.add(timeDifference, "minutes");
         // console.log("// after add   ", startOfDay.toDate(), startOfDay.valueOf());
+        // note: on the client, dates are stored as strings, 
+        // so use strings for MongoDB filtering options too
+        postedAt.$gte = startOfDay.toISOString();
+      } else {
+        postedAt.$gte = startOfDay.toDate();
       }
 
-      postedAt.$gte = startOfDay.toDate();
     }
 
     if (terms.before) {
@@ -125,9 +84,10 @@ function addTimeParameter (parameters, terms) {
 
       if (Meteor.isClient) {
         endOfDay.add(timeDifference, "minutes");
+        postedAt.$lt = endOfDay.toISOString();
+      } else {
+        postedAt.$lt = endOfDay.toDate();
       }
-
-      postedAt.$lt = endOfDay.toDate();
 
     }
 
@@ -139,7 +99,7 @@ function addTimeParameter (parameters, terms) {
 
   return parameters;
 }
-Telescope.callbacks.add("posts.parameters", addTimeParameter);
+addCallback("posts.parameters", addTimeParameter);
 
 // limit the number of items that can be requested at once
 function limitPosts (parameters, terms) {
@@ -173,4 +133,4 @@ function limitPosts (parameters, terms) {
 
   return parameters;
 }
-Telescope.callbacks.add("posts.parameters", limitPosts);
+addCallback("posts.parameters", limitPosts);

@@ -1,17 +1,26 @@
-import Telescope from 'meteor/nova:lib';
 import Categories from "./collection.js";
+import { addCallback } from 'meteor/nova:core';
+
+// Category Default Sorting by Ascending order (1, 2, 3..)
+const CategoriesAscOrderSorting = (parameters, terms) => {
+  parameters.options.sort = {order: 1};
+  
+  return parameters;
+};
+
+addCallback('categories.parameters', CategoriesAscOrderSorting);
 
 // Category Posts Parameters
 // Add a "categories" property to terms which can be used to filter *all* existing Posts views. 
-function addCategoryParameter (parameters, terms) {
+const PostsCategoryParameter = (parameters, terms) => {
 
-  var cat = terms.cat || terms["cat[]"];
+  const cat = terms.cat || terms["cat[]"];
 
   // filter by category if category slugs are provided
   if (cat) {
 
-    var categoriesIds = [];
-    var selector = {};
+    let categoriesIds = [];
+    let selector = {};
 
     if (typeof cat === "string") { // cat is a string
       selector = {slug: cat};
@@ -20,7 +29,7 @@ function addCategoryParameter (parameters, terms) {
     }
 
     // get all categories passed in terms
-    var categories = Categories.find(selector).fetch();
+    let categories = Categories.find(selector).fetch();
     
     // for each category, add its ID and the IDs of its children to categoriesId array
     categories.forEach(function (category) {
@@ -30,6 +39,8 @@ function addCategoryParameter (parameters, terms) {
 
     parameters.selector.categories = {$in: categoriesIds};
   }
+  
   return parameters;
 }
-Telescope.callbacks.add("posts.parameters", addCategoryParameter);
+
+addCallback("posts.parameters", PostsCategoryParameter);

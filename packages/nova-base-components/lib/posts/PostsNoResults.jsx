@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React from 'react';
 import { FormattedMessage } from "react-intl";
 
@@ -5,4 +6,4 @@ const PostsNoResults = props => <p className="posts-no-results"><FormattedMessag
 
 PostsNoResults.displayName = "PostsNoResults";
 
-module.exports = PostsNoResults;
+registerComponent('PostsNoResults', PostsNoResults);

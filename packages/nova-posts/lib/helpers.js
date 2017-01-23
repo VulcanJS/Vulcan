@@ -2,9 +2,7 @@ import Telescope from 'meteor/nova:lib';
 import moment from 'moment';
 import Posts from './collection.js';
 import Users from 'meteor/nova:users';
-
-Posts.helpers({getCollection: () => Posts});
-Posts.helpers({getCollectionName: () => "posts"});
+import { Utils, getSetting } from 'meteor/nova:core';
 
 //////////////////
 // Link Helpers //
@@ -15,19 +13,17 @@ Posts.helpers({getCollectionName: () => "posts"});
  * @param {Object} post
  */
 Posts.getLink = function (post, isAbsolute = false, isRedirected = true) {
-  const url = isRedirected ? Telescope.utils.getOutgoingUrl(post.url) : post.url;
-  return !!post.url ? url : this.getPageUrl(post, isAbsolute);
+  const url = isRedirected ? Utils.getOutgoingUrl(post.url) : post.url;
+  return !!post.url ? url : Posts.getPageUrl(post, isAbsolute);
 };
-Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
 /**
  * @summary Depending on the settings, return either a post's URL link (if it has one) or its page URL.
  * @param {Object} post
  */
 Posts.getShareableLink = function (post) {
-  return Telescope.settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+  return getSetting("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
 };
-Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this);}});
 
 /**
  * @summary Whether a post's link should open in a new tab or not
@@ -36,17 +32,15 @@ Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this
 Posts.getLinkTarget = function (post) {
   return !!post.url ? "_blank" : "";
 };
-Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
 
 /**
  * @summary Get URL of a post page.
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute = false){
-  const prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
   return `${prefix}/posts/${post._id}/${post.slug}`;
 };
-Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
 
 ///////////////////
 // Other Helpers //
@@ -59,12 +53,11 @@ Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, 
 Posts.getAuthorName = function (post) {
   var user = Users.findOne(post.userId);
   if (user) {
-    return user.getDisplayName();
+    return Users.getDisplayName(user);
   } else {
     return post.author;
   }
 };
-Posts.helpers({getAuthorName: function () {return Posts.getAuthorName(this);}});
 
 /**
  * @summary Get default status for new posts.
@@ -72,12 +65,20 @@ Posts.helpers({getAuthorName: function () {return Posts.getAuthorName(this);}});
  */
 Posts.getDefaultStatus = function (user) {
   const canPostApproved = typeof user === 'undefined' ? false : Users.canDo(user, "posts.new.approved");
-  if (!Telescope.settings.get('requirePostsApproval', false) || canPostApproved) {
+  if (!getSetting('requirePostsApproval', false) || canPostApproved) {
     // if user can post straight to "approved", or else post approval is not required
     return Posts.config.STATUS_APPROVED;
   } else {
     return Posts.config.STATUS_PENDING;
   }
+};
+
+/**
+ * @summary Get status name
+ * @param {Object} user
+ */
+Posts.getStatusName = function (post) {
+  return _.findWhere(Telescope.statuses, {value: post.status}).label;
 };
 
 /**
@@ -87,7 +88,6 @@ Posts.getDefaultStatus = function (user) {
 Posts.isApproved = function (post) {
   return post.status === Posts.config.STATUS_APPROVED;
 };
-Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
 
 /**
  * @summary Check if a post is pending
@@ -96,7 +96,6 @@ Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
 Posts.isPending = function (post) {
   return post.status === Posts.config.STATUS_PENDING;
 };
-Posts.helpers({isPending: function () {return Posts.isPending(this);}});
 
 
 /**
@@ -129,7 +128,6 @@ Posts.current = function () {
 Posts.isVideo = function (post) {
   return post.media && post.media.type === "video";
 };
-Posts.helpers({isVideo: function () {return Posts.isVideo(this);}});
 
 /**
  * @summary Get the complete thumbnail url whether it is hosted on Embedly or on an external website, or locally in the app.
@@ -138,20 +136,18 @@ Posts.helpers({isVideo: function () {return Posts.isVideo(this);}});
 Posts.getThumbnailUrl = (post) => {
   const thumbnailUrl = post.thumbnailUrl;
   if (!!thumbnailUrl) {
-    return thumbnailUrl.indexOf('//') > -1 ? Telescope.utils.addHttp(thumbnailUrl) : Telescope.utils.getSiteUrl().slice(0,-1) + thumbnailUrl;
+    return thumbnailUrl.indexOf('//') > -1 ? Utils.addHttp(thumbnailUrl) : Utils.getSiteUrl().slice(0,-1) + thumbnailUrl;
   }
 };
-Posts.helpers({ getThumbnailUrl() { return Posts.getThumbnailUrl(this); } });
 
 /**
  * @summary Get URL for sharing on Twitter.
  * @param {Object} post
  */
 Posts.getTwitterShareUrl = post => {
-  const via = Telescope.settings.get("twitterAccount", null) ? `&via=${Telescope.settings.get("twitterAccount")}` : "";
+  const via = getSetting("twitterAccount", null) ? `&via=${getSetting("twitterAccount")}` : "";
   return `https://twitter.com/intent/tweet?text=${ encodeURIComponent(post.title) }%20${ encodeURIComponent(Posts.getLink(post, true)) }${via}`;
 };
-Posts.helpers({ getTwitterShareUrl() { return Posts.getTwitterShareUrl(this); } });
 
 /**
  * @summary Get URL for sharing on Facebook.
@@ -160,7 +156,6 @@ Posts.helpers({ getTwitterShareUrl() { return Posts.getTwitterShareUrl(this); } 
 Posts.getFacebookShareUrl = post => {
   return `https://www.facebook.com/sharer/sharer.php?u=${ encodeURIComponent(Posts.getLink(post, true)) }`;
 };
-Posts.helpers({ getFacebookShareUrl() { return Posts.getFacebookShareUrl(this); } });
 
 /**
  * @summary Get URL for sharing by Email.
@@ -173,9 +168,7 @@ Posts.getEmailShareUrl = post => {
 ${post.title}
 ${Posts.getLink(post, true, false)}
 
-(found via ${Telescope.settings.get("siteUrl")})
+(found via ${getSetting("siteUrl")})
   `;
   return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 };
-Posts.helpers({ getEmailShareUrl() { return Posts.getEmailShareUrl(this); } });
-

@@ -1,5 +1,4 @@
-import Telescope from './modules.js';
-
 import './server/oauth-config.js';
 
-export default Telescope;
+export * from './modules.js';
+export { newMutation, editMutation, removeMutation } from './mutations.js';

@@ -1,6 +1,6 @@
-import Telescope from 'meteor/nova:lib';
 import NovaEmail from 'meteor/nova:email';
 import Users from 'meteor/nova:users';
+import { getSetting } from 'meteor/nova:core';
 
 Meteor.methods({
   "email.test": function (emailName) {
@@ -32,7 +32,7 @@ Meteor.methods({
       // get subject
       const subject = "[Test] " + email.subject.bind(email)(properties);
 
-      NovaEmail.send (Telescope.settings.get('defaultEmail'), subject, html)
+      NovaEmail.send (getSetting('defaultEmail'), subject, html)
 
       return subject;
 

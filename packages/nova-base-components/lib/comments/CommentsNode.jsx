@@ -1,4 +1,4 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 
 class CommentsNode extends Component {
@@ -6,7 +6,7 @@ class CommentsNode extends Component {
   renderComment(comment) {
 
     return (
-      <Telescope.components.CommentsItem comment={comment} key={comment._id} />
+      <Components.CommentsItem comment={comment} key={comment._id} />
     )
   }
 
@@ -26,7 +26,7 @@ class CommentsNode extends Component {
     return (
       <div className="comments-node">
         {this.renderComment(comment)}
-        {children ? this.renderChildren(children) : ""}
+        {children ? this.renderChildren(children) : null}
       </div>
     )
   }
@@ -37,8 +37,4 @@ CommentsNode.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
 };
 
-CommentsNode.contextTypes = {
-  currentUser: React.PropTypes.object, // the current user
-};
-
-module.exports = CommentsNode;
+registerComponent('CommentsNode', CommentsNode);

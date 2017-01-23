@@ -1,3 +1,5 @@
+import Users from 'meteor/nova:users';
+
 // add support for nested properties
 const deepValue = function(obj, path){
   const pathArray = path.split('.');
@@ -43,20 +45,20 @@ const flatten = function(data) {
 const getInsertableFields = function (schema, user) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return field.insertableIf && field.insertableIf(user);
+    return Users.canInsertField(user, field);
   });
   return fields;
 };
 
 /**
  * @method Mongo.Collection.getEditableFields
- * Get an array of all fields editable by a specific user for a given collection
+ * Get an array of all fields editable by a specific user for a given collection (and optionally document)
  * @param {Object} user – the user for which to check field permissions
  */
 const getEditableFields = function (schema, user, document) {
   const fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
-    return field.editableIf && field.editableIf(user, document);
+    return Users.canEditField(user, field, document);
   });
   return fields;
 };

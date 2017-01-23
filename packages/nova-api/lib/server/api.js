@@ -1,12 +1,12 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
+import { Utils } from 'meteor/nova:core';
 
 export const servePostsApi = (terms) => {
   var posts = [];
 
-  var parameters = Posts.parameters.get(terms);
+  var parameters = Posts.getParameters(terms);
 
   const postsCursor = Posts.find(parameters.selector, parameters.options);
 
@@ -26,10 +26,10 @@ export const servePostsApi = (terms) => {
       postOutput.body = post.body;
 
     if(post.url)
-      postOutput.domain = Telescope.utils.getDomain(url);
+      postOutput.domain = Utils.getDomain(url);
 
     if (post.thumbnailUrl) {
-      postOutput.thumbnailUrl = Telescope.utils.addHttp(post.thumbnailUrl);
+      postOutput.thumbnailUrl = Utils.addHttp(post.thumbnailUrl);
     }
 
     var twitterName = Users.getTwitterNameById(post.userId);

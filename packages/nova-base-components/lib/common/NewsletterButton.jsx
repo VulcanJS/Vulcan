@@ -1,53 +1,61 @@
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-// import { Messages } from 'meteor/nova:core';
-import Users from 'meteor/nova:users';
+import { withMutation, withCurrentUser, withMessages } from 'meteor/nova:core';
 
 class NewsletterButton extends Component {
   constructor(props) {
     super(props);
     this.subscriptionAction = this.subscriptionAction.bind(this);
   }
-
-  subscriptionAction() {
-    const action = Users.getSetting(this.props.user, 'newsletter.subscribed', false) ?
-      'newsletter.removeUser' : 'newsletter.addUser';
-    this.context.actions.call(action, this.props.user, (error, result) => {
-      if (error) {
-        console.log(error); // eslint-disable-line
-        this.context.messages.flash(error.message, "error");
-      } else {
-        this.props.successCallback(result);
-      }
-    });
+  
+  // use async/await + try/catch <=> promise.then(res => ..).catch(e => ...)
+  async subscriptionAction() {
+    
+    const { 
+      flash, 
+      mutationName, 
+      successCallback, 
+      user, 
+      [mutationName]: mutationToTrigger, // dynamic 'mutationToTrigger' variable based on the mutationName (addUserNewsletter or removeUserNewsletter)
+    } = this.props;
+    
+    try {
+      const mutationResult = await mutationToTrigger({userId: user._id});
+      
+      successCallback(mutationResult);
+    } catch(error) {
+      console.error(error); // eslint-disable-line no-console
+      
+      flash(error.message, "error");
+    }
   }
 
   render() {
-    const isSubscribed = Users.getSetting(this.props.user, 'newsletter.subscribed', false);
-
+    
     return (
       <Button
         className="newsletter-button"
         onClick={this.subscriptionAction}
         bsStyle="primary"
       >
-        {isSubscribed ? <FormattedMessage id="newsletter.unsubscribe"/> : <FormattedMessage id="newsletter.subscribe"/>}
+        <FormattedMessage id={this.props.label}/>
       </Button>
     )
   }
 }
 
 NewsletterButton.propTypes = {
-  user: React.PropTypes.object.isRequired,
-  successCallback: React.PropTypes.func.isRequired,
+  mutationName: PropTypes.string.isRequired, // mutation to fire
+  label: PropTypes.string.isRequired, // label of the button
+  user: PropTypes.object.isRequired, // user to operate on
+  successCallback: PropTypes.func.isRequired, // what do to after the mutationName
+  addUserNewsletter: PropTypes.func.isRequired, // prop given by withMutation HOC
+  removeUserNewsletter: PropTypes.func.isRequired, // prop given by withMutation HOC
 };
 
-NewsletterButton.contextTypes = {
-  currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
-  actions: React.PropTypes.object,
-}
+const addOptions = {name: 'addUserNewsletter', args: {userId: 'String'}};
+const removeOptions = {name: 'removeUserNewsletter', args: {userId: 'String'}};
 
-module.exports = NewsletterButton;
-export default NewsletterButton;
+registerComponent('NewsletterButton', NewsletterButton, withCurrentUser, withMutation(addOptions), withMutation(removeOptions), withMessages);

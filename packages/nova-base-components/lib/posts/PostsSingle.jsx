@@ -1,21 +1,11 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import { DocumentContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
 
 const PostsSingle = (props, context) => {
-  return (
-    <DocumentContainer 
-      collection={Posts} 
-      publication="posts.single" 
-      selector={{_id: props.params._id}}
-      terms={props.params}
-      joins={Posts.getJoins()}
-      component={Telescope.components.PostsPage}
-    />
-  )
+  return <Components.PostsPage documentId={props.params._id} />
 };
 
 PostsSingle.displayName = "PostsSingle";
 
-module.exports = PostsSingle;
+registerComponent('PostsSingle', PostsSingle);

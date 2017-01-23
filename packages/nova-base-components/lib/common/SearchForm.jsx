@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import Formsy from 'formsy-react';
@@ -60,10 +61,7 @@ class SearchForm extends Component{
 }
 
 SearchForm.contextTypes = {
-  currentRoute: React.PropTypes.object,
-  currentUser: React.PropTypes.object,
   intl: intlShape
-}
+};
 
-module.exports = withRouter(SearchForm);
-export default withRouter(SearchForm);
+registerComponent('SearchForm', SearchForm, withRouter);

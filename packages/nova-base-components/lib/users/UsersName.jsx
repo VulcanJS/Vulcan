@@ -1,3 +1,4 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Users from 'meteor/nova:users';
 import { Link } from 'react-router';
@@ -10,5 +11,4 @@ UsersName.propTypes = {
 
 UsersName.displayName = "UsersName";
 
-module.exports = UsersName;
-export default UsersName;
+registerComponent('UsersName', UsersName);

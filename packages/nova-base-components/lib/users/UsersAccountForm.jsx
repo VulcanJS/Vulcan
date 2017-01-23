@@ -1,22 +1,25 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 import { Accounts } from 'meteor/std:accounts-ui';
+import { withApollo } from 'react-apollo';
 
-const UsersAccountForm = () => {
+const UsersAccountForm = ({client}) => {
   return (
-    <Accounts.ui.LoginForm />
+    <Accounts.ui.LoginForm 
+      onPostSignUpHook={() => client.resetStore()}
+      onSignedInHook={() => client.resetStore()}
+      onSignedOutHook={() => client.resetStore()}
+    />
   )
 };
 
-module.exports = UsersAccountForm;
-export default UsersAccountForm;
+registerComponent('UsersAccountForm', UsersAccountForm, withApollo);
 
 // customize Accounts.ui
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
-  onSignedInHook: () => {},
-  onSignedOutHook: () => {},
 });
 
 class AccountsButton extends Accounts.ui.Button {
@@ -37,20 +40,16 @@ class AccountsButton extends Accounts.ui.Button {
 
 class AccountsField extends Accounts.ui.Field {
 
-  // see https://github.com/studiointeract/accounts-ui/issues/60
-  triggerUpdate () {
-    const { onChange } = this.props
-    if (this.input) {
-      onChange({ target: { value: this.input.value } })
-    }
-  }
-
   render() {
-    const { id, hint, /* label, */ type = 'text', onChange, className = "field", defaultValue = "" } = this.props;
+    const { id, hint, /* label, */ type = 'text', onChange, className = "field", defaultValue = "", message } = this.props;
     const { mount = true } = this.state;
     return mount ? (
       <div className={ className }>
-        <FormControl id={ id } type={ type } onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        <FormControl id={ id } type={ type } inputRef={ref => { this.input = ref; }} onChange={ onChange } placeholder={ hint } defaultValue={ defaultValue } />
+        {message && (
+          <span className={['message', message.type].join(' ').trim()}>
+            {message.message}</span>
+        )}
       </div>
     ) : null;
   }

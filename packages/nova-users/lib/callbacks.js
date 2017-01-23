@@ -1,79 +1,8 @@
-import Telescope from 'meteor/nova:lib';
-import Events from "meteor/nova:events";
+import Users from './collection.js';
+import marked from 'marked';
 import NovaEmail from 'meteor/nova:email';
 import { Gravatar } from 'meteor/jparker:gravatar';
-import marked from 'marked';
-import Users from './collection.js';
-
-//////////////////////////////////////////////////////
-// Collection Hooks                                 //
-//////////////////////////////////////////////////////
-
-/**
- * @summary Generate HTML body from Markdown on user bio insert
- */
-Users.after.insert(function (userId, user) {
-
-  // run create user async callbacks
-  Telescope.callbacks.runAsync("users.new.async", user);
-
-  // check if all required fields have been filled in. If so, run profile completion callbacks
-  if (Users.hasCompletedProfile(user)) {
-    Telescope.callbacks.runAsync("users.profileCompleted.async", user);
-  }
-
-});
-
-/**
- * @summary Generate HTML body from Markdown when user bio is updated
- */
-Users.before.update(function (userId, doc, fieldNames, modifier) {
-  // if bio is being modified, update htmlBio too
-  if (Meteor.isServer && modifier.$set && modifier.$set["telescope.bio"]) {
-    modifier.$set["telescope.htmlBio"] = Telescope.utils.sanitize(marked(modifier.$set["telescope.bio"]));
-  }
-});
-
-/**
- * @summary Disallow $rename
- */
-Users.before.update(function (userId, doc, fieldNames, modifier) {
-  if (!!modifier.$rename) {
-    throw new Meteor.Error("illegal $rename operator detected!");
-  }
-});
-
-/**
- * @summary If user.telescope.email has changed, check for existing emails and change user.emails and email hash if needed
- */
- if (Meteor.isServer) {
-  Users.before.update(function (userId, doc, fieldNames, modifier) {
-
-    var user = doc;
-
-    // if email is being modified, update user.emails too
-    if (Meteor.isServer && modifier.$set && modifier.$set["telescope.email"]) {
-
-      var newEmail = modifier.$set["telescope.email"];
-
-      // check for existing emails and throw error if necessary
-      var userWithSameEmail = Users.findByEmail(newEmail);
-      if (userWithSameEmail && userWithSameEmail._id !== doc._id) {
-        throw new Meteor.Error("email_taken2", "this_email_is_already_taken" + " (" + newEmail + ")");
-      }
-
-      // if user.emails exists, change it too
-      if (!!user.emails) {
-        user.emails[0].address = newEmail;
-        modifier.$set.emails = user.emails;
-      }
-
-      // update email hash
-      modifier.$set["telescope.emailHash"] = Gravatar.hash(newEmail);
-
-    }
-  });
-}
+import { addCallback, Utils } from 'meteor/nova:lib'; // import from nova:lib because nova:core isn't loaded yet
 
 //////////////////////////////////////////////////////
 // Callbacks                                        //
@@ -88,71 +17,73 @@ function setupUser (user, options) {
   // ------------------------------ Properties ------------------------------ //
   var userProperties = {
     profile: options.profile || {},
-    telescope: {
-      karma: 0,
-      isInvited: false,
-      postCount: 0,
-      commentCount: 0,
-      invitedCount: 0,
-      upvotedPosts: [],
-      downvotedPosts: [],
-      upvotedComments: [],
-      downvotedComments: []
-    }
+    karma: 0,
+    isInvited: false,
+    postCount: 0,
+    commentCount: 0,
+    invitedCount: 0,
+    upvotedPosts: [],
+    downvotedPosts: [],
+    upvotedComments: [],
+    downvotedComments: []
   };
   user = _.extend(user, userProperties);
 
   // look in a few places for the user email
   if (options.email) {
-    user.telescope.email = options.email;
+    user.email = options.email;
   } else if (user.services['meteor-developer'] && user.services['meteor-developer'].emails) {
-    user.telescope.email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
+    user.email = _.findWhere(user.services['meteor-developer'].emails, { primary: true }).address;
   } else if (user.services.facebook && user.services.facebook.email) {
-    user.telescope.email = user.services.facebook.email;
+    user.email = user.services.facebook.email;
   } else if (user.services.github && user.services.github.email) {
-    user.telescope.email = user.services.github.email;
+    user.email = user.services.github.email;
   } else if (user.services.google && user.services.google.email) {
-    user.telescope.email = user.services.google.email;
+    user.email = user.services.google.email;
   } else if (user.services.linkedin && user.services.linkedin.emailAddress) {
-    user.telescope.email = user.services.linkedin.emailAddress;
+    user.email = user.services.linkedin.emailAddress;
   }
 
   // generate email hash
-  if (!!user.telescope.email) {
-    user.telescope.emailHash = Gravatar.hash(user.telescope.email);
+  if (!!user.email) {
+    user.emailHash = Gravatar.hash(user.email);
   }
 
   // look in a few places for the displayName
   if (user.profile.username) {
-    user.telescope.displayName = user.profile.username;
+    user.displayName = user.profile.username;
   } else if (user.profile.name) {
-    user.telescope.displayName = user.profile.name;
+    user.displayName = user.profile.name;
   } else if (user.services.linkedin && user.services.linkedin.firstName) {
-    user.telescope.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
+    user.displayName = user.services.linkedin.firstName + " " + user.services.linkedin.lastName;
   } else {
-    user.telescope.displayName = user.username;
+    user.displayName = user.username;
+  }
+
+  // add Twitter username
+  if (user.services && user.services.twitter && user.services.twitter.screenName) {
+    user.twitterUsername = user.services.twitter.screenName;
   }
 
   // create a basic slug from display name and then modify it if this slugs already exists;
-  const basicSlug = Telescope.utils.slugify(user.telescope.displayName);
-  user.telescope.slug = Telescope.utils.getUnusedSlug(Users, basicSlug);
+  const basicSlug = Utils.slugify(user.displayName);
+  user.slug = Utils.getUnusedSlug(Users, basicSlug);
 
   // if this is not a dummy account, and is the first user ever, make them an admin
   user.isAdmin = (!user.profile.isDummy && Users.find({'profile.isDummy': {$ne: true}}).count() === 0) ? true : false;
 
-  Events.track('new user', {username: user.telescope.displayName, email: user.telescope.email});
+  // Events.track('new user', {username: user.displayName, email: user.email});
 
   return user;
 }
-Telescope.callbacks.add("users.new.sync", setupUser);
-
+addCallback("users.new.sync", setupUser);
 
 function hasCompletedProfile (user) {
   return Users.hasCompletedProfile(user);
 }
-Telescope.callbacks.add("users.profileCompleted.sync", hasCompletedProfile);
+addCallback("users.profileCompleted.sync", hasCompletedProfile);
 
-function adminUserCreationNotification (user) {
+function usersNewAdminUserCreationNotification (user) {
   // send notifications to admins
   const admins = Users.adminUsers();
   admins.forEach(function(admin) {
@@ -164,4 +95,38 @@ function adminUserCreationNotification (user) {
   });
   return user;
 }
-Telescope.callbacks.add("users.new.sync", adminUserCreationNotification);
+addCallback("users.new.sync", usersNewAdminUserCreationNotification);
+
+function usersEditGenerateHtmlBio (modifier) {
+  if (modifier.$set && modifier.$set.bio) {
+    modifier.$set.htmlBio = Utils.sanitize(marked(modifier.$set.bio));
+  }
+  return modifier;
+}
+addCallback("users.edit.sync", usersEditGenerateHtmlBio);
+
+function usersEditCheckEmail (modifier, user) {
+  // if email is being modified, update user.emails too
+  if (modifier.$set && modifier.$set.email) {
+
+    var newEmail = modifier.$set.email;
+
+    // check for existing emails and throw error if necessary
+    var userWithSameEmail = Users.findByEmail(newEmail);
+    if (userWithSameEmail && userWithSameEmail._id !== user._id) {
+      throw new Meteor.Error("email_taken2", "this_email_is_already_taken" + " (" + newEmail + ")");
+    }
+
+    // if user.emails exists, change it too
+    if (!!user.emails) {
+      user.emails[0].address = newEmail;
+      modifier.$set.emails = user.emails;
+    }
+
+    // update email hash
+    modifier.$set.emailHash = Gravatar.hash(newEmail);
+
+  }
+  return modifier;
+}
+addCallback("users.edit.sync", usersEditCheckEmail);

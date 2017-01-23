@@ -1,13 +1,12 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
-import Users from 'meteor/nova:users';
+import { addCallback, getSetting } from 'meteor/nova:core';
 
-var getEmbedlyData = function (url) {
-  // var data = {};
+function getEmbedlyData(url) {
+  var data = {};
   var extractBase = 'http://api.embed.ly/1/extract';
-  var embedlyKey = Telescope.settings.get('embedlyKey');
-  var thumbnailWidth = Telescope.settings.get('thumbnailWidth', 200);
-  var thumbnailHeight = Telescope.settings.get('thumbnailHeight', 125);
+  var embedlyKey = getSetting('embedlyKey');
+  var thumbnailWidth = getSetting('thumbnailWidth', 200);
+  var thumbnailHeight = getSetting('thumbnailHeight', 125);
 
   if(!embedlyKey) {
     // fail silently to still let the post be submitted as usual
@@ -78,7 +77,7 @@ function addMediaAfterSubmit (post) {
     }
   }
 }
-Telescope.callbacks.add("posts.new.async", addMediaAfterSubmit);
+addCallback("posts.new.async", addMediaAfterSubmit);
 
 function updateMediaOnEdit (modifier, post) {
   var newUrl = modifier.$set.url;
@@ -98,7 +97,7 @@ function updateMediaOnEdit (modifier, post) {
   }
   return modifier;
 }
-Telescope.callbacks.add("posts.edit.sync", updateMediaOnEdit);
+addCallback("posts.edit.sync", updateMediaOnEdit);
 
 var regenerateThumbnail = function (post) {
   delete post.thumbnailUrl;
@@ -108,49 +107,4 @@ var regenerateThumbnail = function (post) {
   addMediaAfterSubmit(post);
 };
 
-Meteor.methods({
-  testGetEmbedlyData: function (url) {
-    check(url, String);
-    console.log(getEmbedlyData(url)); // eslint-disable-line
-  },
-  getEmbedlyData: function (url) {
-    check(url, String);
-    return getEmbedlyData(url);
-  },
-  embedlyKeyExists: function () {
-    return !!Telescope.settings.get('embedlyKey');
-  },
-  generateThumbnail: function (post) {
-    check(post, Posts.simpleSchema());
-    if (Users.canEdit(Meteor.user(), post)) {
-      regenerateThumbnail(post);
-    }
-  },
-  generateThumbnails: function (limit = 20, mode = "generate") {
-    // mode = "generate" : generate thumbnails only for all posts that don't have one
-    // mode = "all" : regenerate thumbnais for all posts
-
-    if (Users.isAdmin(Meteor.user())) {
-
-      console.log("// Generating thumbnails…"); // eslint-disable-line
-
-      const selector = {url: {$exists: true}};
-      if (mode === "generate") {
-        selector.thumbnailUrl = {$exists: false};
-      }
-
-      const posts = Posts.find(selector, {limit: limit, sort: {postedAt: -1}});
-
-      posts.forEach((post, index) => {
-        Meteor.setTimeout(function () {
-          console.log(`// ${index}. fetching thumbnail for “${post.title}” (_id: ${post._id})`); // eslint-disable-line
-          try {
-            regenerateThumbnail(post);
-          } catch (error) {
-            console.log(error); // eslint-disable-line
-          }
-        }, index * 1000);
-      });
-    }
-  }
-});
+export { getEmbedlyData, addMediaAfterSubmit, updateMediaOnEdit, regenerateThumbnail }

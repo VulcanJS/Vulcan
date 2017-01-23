@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 
 class CommentsNew extends Component {
@@ -18,7 +17,7 @@ class CommentsNew extends Component {
 
     return (
       <div className="comments-new-form">
-        <NovaForm
+        <Components.SmartForm
           collection={Comments}
           methodName="comments.new"
           prefilledProps={prefilledProps}

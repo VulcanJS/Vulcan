@@ -5,36 +5,33 @@ const notificationsGroup = {
   order: 2
 };
 
-// check if user can create a new account
-const canInsert = user => Users.canDo(user, "users.new");
-// check if user can edit a user
-const canEdit = Users.canEdit;
-
 // Add notifications options to user profile settings
 Users.addField([
   {
-    fieldName: 'telescope.notifications_users',
+    fieldName: 'notifications_users',
     fieldSchema: {
       label: 'New users',
       type: Boolean,
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      insertableIf: Users.isAdmin,
-      editableIf: Users.isAdmin,
+      viewableBy: ['guests'],
+      insertableBy: ['admins'],
+      editableBy: ['admins'],
       group: notificationsGroup
     }
   },
   {
-    fieldName: 'telescope.notifications_posts',
+    fieldName: 'notifications_posts',
     fieldSchema: {
       label: 'New posts',
       type: Boolean,
       optional: true,
       defaultValue: false,
       control: "checkbox",
-      insertableIf: canInsert,
-      editableIf: canEdit,
+      viewableBy: ['guests'],
+      insertableBy: ['members'],
+      editableBy: ['members'],
       group: notificationsGroup
     }
   }
@@ -43,27 +40,29 @@ Users.addField([
 if (typeof Comments !== "undefined") {
   Users.addField([
     {
-      fieldName: 'telescope.notifications_comments',
+      fieldName: 'notifications_comments',
       fieldSchema: {
         label: 'Comments on my posts',
         type: Boolean,
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        insertableIf: canInsert,
-        editableIf: canEdit
+        viewableBy: ['guests'],
+        insertableBy: ['members'],
+        editableBy: ['members']
       }
     },
     {
-      fieldName: 'telescope.notifications_replies',
+      fieldName: 'notifications_replies',
       fieldSchema: {
         label: 'Replies to my comments',
         type: Boolean,
         optional: true,
         defaultValue: true,
         control: "checkbox",
-        insertableIf: canInsert,
-        editableIf: canEdit
+        viewableBy: ['guests'],
+        insertableBy: ['members'],
+        editableBy: ['members']
       }
     }
   ]);  

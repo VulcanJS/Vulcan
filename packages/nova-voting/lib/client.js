@@ -1,1 +1,1 @@
-import './modules';
+export * from './modules.js';

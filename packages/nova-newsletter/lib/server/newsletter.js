@@ -1,4 +1,3 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
 import Users from 'meteor/nova:users';
@@ -7,6 +6,7 @@ import NovaEmail from 'meteor/nova:email';
 import { SyncedCron } from 'meteor/percolatestudio:synced-cron';
 import moment from 'moment';
 import Newsletter from '../namespace.js';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 // create new "newsletter" view for all posts from the past X days that haven't been scheduled yet
 Posts.views.add("newsletter", function (terms) {
@@ -35,7 +35,7 @@ Newsletter.getPosts = function (postsCount) {
   var after = (lastNewsletter && moment(lastNewsletter.finishedAt).isAfter(lastWeek)) ? lastNewsletter.finishedAt : lastWeek.format("YYYY-MM-DD");
 
   // get parameters using "newsletter" view
-  var params = Posts.parameters.get({
+  var params = Posts.getParameters({
     view: "newsletter",
     after: after,
     limit: postsCount
@@ -51,6 +51,7 @@ Newsletter.getPosts = function (postsCount) {
  */
 Newsletter.build = function (postsArray) {
   var postsHTML = '', subject = '';
+  const excerptLength = getSetting('newsletterExcerptLength', 20);
 
   // 1. Iterate through posts and pass each of them through a handlebars template
   postsArray.forEach(function (post, index) {
@@ -64,7 +65,7 @@ Newsletter.build = function (postsArray) {
 
     // the naked post object as stored in the database is missing a few properties, so let's add them
     var properties = _.extend(post, {
-      authorName: post.getAuthorName(),
+      authorName: Posts.getAuthorName(post),
       postLink: Posts.getLink(post, true),
       profileUrl: Users.getProfileUrl(postUser, true),
       postPageLink: Posts.getPageUrl(post, true),
@@ -84,7 +85,7 @@ Newsletter.build = function (postsArray) {
 
     // trim the body and remove any HTML tags
     if (post.body) {
-      properties.body = Telescope.utils.trimHTML(post.htmlBody, 20);
+      properties.body = Utils.trimHTML(post.htmlBody, excerptLength);
     }
 
     // if post has comments
@@ -97,7 +98,7 @@ Newsletter.build = function (postsArray) {
         var user = Users.findOne(comment.userId);
 
         // add properties to comment
-        comment.body = Telescope.utils.trimHTML(comment.htmlBody, 20);
+        comment.body = Utils.trimHTML(comment.htmlBody, excerptLength);
         comment.authorProfileUrl = Users.getProfileUrl(user, true);
         comment.authorAvatarUrl = Users.avatar.getUrl(user);
 
@@ -115,12 +116,12 @@ Newsletter.build = function (postsArray) {
 
     // if post has an URL, at the link domain as a property
     if(post.url) {
-      properties.domain = Telescope.utils.getDomain(post.url);
+      properties.domain = Utils.getDomain(post.url);
     }
 
     // if post has a thumbnail, add the thumbnail URL as a property
     if (properties.thumbnailUrl) {
-      properties.thumbnailUrl = Telescope.utils.addHttp(properties.thumbnailUrl);
+      properties.thumbnailUrl = Utils.addHttp(properties.thumbnailUrl);
     }
 
     // if post has categories, add them
@@ -142,7 +143,7 @@ Newsletter.build = function (postsArray) {
 
   // 2. Wrap posts HTML in newsletter template
   var newsletterHTML = NovaEmail.getTemplate('newsletter')({
-    siteName: Telescope.settings.get('title', "Nova"),
+    siteName: getSetting('title', "Nova"),
     date: moment().format("dddd, MMMM D YYYY"),
     content: postsHTML
   });
@@ -156,7 +157,7 @@ Newsletter.build = function (postsArray) {
   // 4. build campaign object and return it
   var campaign = {
     postIds: _.pluck(postsArray, '_id'),
-    subject: Telescope.utils.trimWords(subject, 15),
+    subject: Utils.trimWords(subject, 15),
     html: emailHTML
   };
 

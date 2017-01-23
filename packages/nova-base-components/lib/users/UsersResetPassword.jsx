@@ -1,7 +1,9 @@
+import { registerComponent } from 'meteor/nova:lib';
+import React, { Component } from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
-import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { withCurrentUser } from 'meteor/nova:core';
 
 class UsersResetPassword extends Component {
   componentDidMount() {
@@ -10,7 +12,7 @@ class UsersResetPassword extends Component {
   }
 
   render() {
-    if (!this.context.currentUser) {
+    if (!this.props.currentUser) {
       return (
         <Accounts.ui.LoginForm
           formState={ STATES.PASSWORD_CHANGE }
@@ -29,9 +31,12 @@ class UsersResetPassword extends Component {
   }
 }
 
-module.exports = UsersResetPassword;
-export default UsersResetPassword;
 
-UsersResetPassword.contextTypes = {
-  currentUser: React.PropTypes.object
+UsersResetPassword.propsTypes = {
+  currentUser: React.PropTypes.object,
+  params: React.PropTypes.object,
 };
+
+UsersResetPassword.displayName = 'UsersResetPassword';
+
+registerComponent('UsersResetPassword', UsersResetPassword, withCurrentUser);

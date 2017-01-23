@@ -1,48 +1,33 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import marked from 'marked';
 import Posts from './collection.js';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 /**
  * @summary Posts config namespace
  * @type {Object}
  */
-Posts.config = {};
-
-Posts.config.STATUS_PENDING = 1;
-Posts.config.STATUS_APPROVED = 2;
-Posts.config.STATUS_REJECTED = 3;
-Posts.config.STATUS_SPAM = 4;
-Posts.config.STATUS_DELETED = 5;
-
-Posts.formGroups = {
+const formGroups = {
   admin: {
     name: "admin",
     order: 2
   }
 };
 
-// check if user can create a new post
-const canInsert = user => Users.canDo(user, "posts.new");
-
-// check if user can edit a post
-const canEdit = Users.canEdit;
-
-// check if user can edit *all* posts
-const canEditAll = user => Users.canDo(user, "posts.edit.all");
-
 /**
  * @summary Posts schema
- * @type {SimpleSchema}
+ * @type {Object}
  */
-Posts.schemaJSON = {
+const schema = {
   /**
     ID
   */
   _id: {
     type: String,
     optional: true,
-    publish: true
+    publish: true,
+    viewableBy: ['guests'],
   },
   /**
     Timetstamp of post creation
@@ -50,7 +35,11 @@ Posts.schemaJSON = {
   createdAt: {
     type: Date,
     optional: true,
-    publish: true // publish so that admins can sort pending posts by createdAt
+    viewableBy: ['admins'],
+    publish: true, // publish so that admins can sort pending posts by createdAt
+    autoValue: (documentOrModifier) => {
+      if (documentOrModifier && !documentOrModifier.$set) return new Date() // if this is an insert, set createdAt to current timestamp
+    }
   },
   /**
     Timestamp of post first appearing on the site (i.e. being approved)
@@ -58,11 +47,12 @@ Posts.schemaJSON = {
   postedAt: {
     type: Date,
     optional: true,
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     publish: true,
     control: "datetime",
-    group: Posts.formGroups.admin
+    group: formGroups.admin
   },
   /**
     URL
@@ -71,8 +61,9 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     max: 500,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     control: "text",
     publish: true,
     order: 10
@@ -84,8 +75,9 @@ Posts.schemaJSON = {
     type: String,
     optional: false,
     max: 500,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     control: "text",
     publish: true,
     order: 20
@@ -96,7 +88,15 @@ Posts.schemaJSON = {
   slug: {
     type: String,
     optional: true,
+    viewableBy: ['guests'],
     publish: true,
+    autoValue: (documentOrModifier) => {
+      // if title is changing, return new slug
+      const newTitle = documentOrModifier.title || documentOrModifier.$set && documentOrModifier.$set.title
+      if (newTitle) {
+        return Utils.slugify(newTitle)
+      }
+    }
   },
   /**
     Post body (markdown)
@@ -105,8 +105,9 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     max: 3000,
-    insertableIf: canInsert,
-    editableIf: canEdit,
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    editableBy: ['members'],
     control: "textarea",
     publish: true,
     order: 30
@@ -118,6 +119,15 @@ Posts.schemaJSON = {
     type: String,
     optional: true,
     publish: true,
+    viewableBy: ['guests'],
+    autoValue(documentOrModifier) {
+      const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
+      if (body) {
+        return Utils.sanitize(marked(body))
+      } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
+        return ''
+      }
+    }
   },
   /**
    Post Excerpt
@@ -127,6 +137,16 @@ Posts.schemaJSON = {
     optional: true,
     max: 255, //should not be changed the 255 is max we should load for each post/item
     publish: true,
+    viewableBy: ['guests'],
+    autoValue(documentOrModifier) {
+      const excerptLength = getSetting('postExcerptLength', 30);
+      const body = documentOrModifier.body || documentOrModifier.$set && documentOrModifier.$set.body;
+      if (body) {
+        return Utils.trimHTML(Utils.sanitize(marked(body)), excerptLength);
+      } else if (documentOrModifier.$unset && documentOrModifier.$unset.body) {
+        return ''
+      }
+    }
   },
   /**
     Count of how many times the post's page was viewed
@@ -135,6 +155,7 @@ Posts.schemaJSON = {
     type: Number,
     optional: true,
     publish: true,
+    viewableBy: ['admins'],
     defaultValue: 0
   },
   /**
@@ -144,6 +165,7 @@ Posts.schemaJSON = {
     type: Date,
     optional: true,
     publish: true,
+    viewableBy: ['guests'],
   },
   /**
     Count of how many times the post's link was clicked
@@ -152,6 +174,7 @@ Posts.schemaJSON = {
     type: Number,
     optional: true,
     publish: true,
+    viewableBy: ['admins'],
     defaultValue: 0
   },
   /**
@@ -160,24 +183,23 @@ Posts.schemaJSON = {
   status: {
     type: Number,
     optional: true,
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     control: "select",
-    publish: true,
-    autoValue: function () {
-      // only provide a default value
-      // 1) this is an insert operation
-      // 2) status field is not set in the document being inserted
-      var user = Users.findOne(this.userId);
-      if (this.isInsert && !this.isSet)
+    autoValue(documentOrModifier) {
+      // provide a default value if this is an insert operation and status field is not set in the document
+      if (documentOrModifier && !documentOrModifier.$set && documentOrModifier.userId && !documentOrModifier.status) {
+        const user = Users.findOne(documentOrModifier.userId);
         return Posts.getDefaultStatus(user);
+      }
     },
     form: {
       noselect: true,
       options: Telescope.statuses,
       group: 'admin'
     },
-    group: Posts.formGroups.admin
+    group: formGroups.admin
   },
   /**
     Whether a post is scheduled in the future or not
@@ -185,6 +207,7 @@ Posts.schemaJSON = {
   isFuture: {
     type: Boolean,
     optional: true,
+    viewableBy: ['guests'],
     publish: true
   },
   /**
@@ -194,11 +217,12 @@ Posts.schemaJSON = {
     type: Boolean,
     optional: true,
     defaultValue: false,
-    insertableIf: canEditAll,
-    editableIf: canEditAll,
+    viewableBy: ['guests'],
+    insertableBy: ['admins'],
+    editableBy: ['admins'],
     control: "checkbox",
     publish: true,
-    group: Posts.formGroups.admin
+    group: formGroups.admin
   },
   /**
     Whether the post is inactive. Inactive posts see their score recalculated less often
@@ -215,16 +239,19 @@ Posts.schemaJSON = {
   userIP: {
     type: String,
     optional: true,
+    viewableBy: ['admins'],
     publish: false
   },
   userAgent: {
     type: String,
     optional: true,
+    viewableBy: ['admins'],
     publish: false
   },
   referrer: {
     type: String,
     optional: true,
+    viewableBy: ['admins'],
     publish: false
   },
   /**
@@ -233,7 +260,13 @@ Posts.schemaJSON = {
   author: {
     type: String,
     optional: true,
+    viewableBy: ['guests'],
     publish: true,
+    autoValue: (documentOrModifier) => {
+      // if userId is changing, change the author name too
+      const userId = documentOrModifier.userId || documentOrModifier.$set && documentOrModifier.$set.userId
+      if (userId) return Users.getDisplayNameById(userId)
+    }
   },
   /**
     The post author's `_id`.
@@ -241,30 +274,31 @@ Posts.schemaJSON = {
   userId: {
     type: String,
     optional: true,
-    // regEx: SimpleSchema.RegEx.Id,
-    // insertableIf: canEditAll,
-    // editableIf: canEditAll,
     control: "select",
-    publish: true,
-    form: {
-      group: 'admin',
-      options: function () {
-        return Users.find().map(function (user) {
-          return {
-            value: user._id,
-            label: Users.getDisplayName(user)
-          };
-        });
-      }
-    },
-    join: {
-      joinAs: "user",
-      collection: () => Users
-    }
+    viewableBy: ['guests'],
+    insertableBy: ['members'],
+    hidden: true,
+    resolveAs: 'user: User',
+    // publish: true,
+    // regEx: SimpleSchema.RegEx.Id,
+    // insertableBy: ['admins'],
+    // editableBy: ['admins'],
+    // form: {
+    //   group: 'admin',
+    //   options: function () {
+    //     return Users.find().map(function (user) {
+    //       return {
+    //         value: user._id,
+    //         label: Users.getDisplayName(user)
+    //       };
+    //     });
+    //   }
+    // },
+    // join: {
+    //   joinAs: "user",
+    //   collection: () => Users
+    // }
   }
 };
 
-if (typeof SimpleSchema !== "undefined") {
-  Posts.schema = new SimpleSchema(Posts.schemaJSON);
-  Posts.attachSchema(Posts.schema);
-}
+export default schema;

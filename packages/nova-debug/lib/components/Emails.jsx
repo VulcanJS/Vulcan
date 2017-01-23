@@ -1,11 +1,7 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import Actions from "../actions.js";
 import { Button } from 'react-bootstrap';
-import { Messages } from "meteor/nova:core";
 import NovaEmail from 'meteor/nova:email';
-
-const Loading = Telescope.components.Loading;
 
 class Email extends Component {
 
@@ -20,14 +16,15 @@ class Email extends Component {
   sendTest() {
     this.setState({loading: true});
 
-    Actions.call("email.test", this.props.name, (error, result) => {
-      this.setState({loading: false});
-      if (error) {
-        Messages.flash(error.message, "error");
-      } else {
-        Messages.flash(`Test email sent (“${result}”).`, "success");
-      }
-    });
+    // TODO fix this
+    // Actions.call("email.test", this.props.name, (error, result) => {
+    //   this.setState({loading: false});
+    //   if (error) {
+    //     Messages.flash(error.message, "error");
+    //   } else {
+    //     Messages.flash(`Test email sent (“${result}”).`, "success");
+    //   }
+    // });
   }
 
   render() {
@@ -43,7 +40,7 @@ class Email extends Component {
         <td>
           <div className={this.state.loading ? "test-email loading" : "test-email"}>
             <Button disabled={this.state.loading} onClick={this.sendTest} bsStyle="primary">Send Test</Button>
-            {this.state.loading ? <Loading color="white"/> : null}
+            {this.state.loading ? <Components.Loading color="white"/> : null}
           </div>
         </td>
       </tr>
@@ -87,5 +84,4 @@ const Emails = props => {
   )
 }
 
-module.exports = Emails
-export default Emails
+registerComponent('Emails', Emails);

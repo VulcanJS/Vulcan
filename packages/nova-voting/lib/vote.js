@@ -1,97 +1,159 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import { hasUpvoted, hasDownvoted } from './helpers.js';
+import { runCallbacks, runCallbacksAsync } from 'meteor/nova:core';
+import update from 'immutability-helper';
 
 // The equation to determine voting power. Defaults to returning 1 for everybody
-Telescope.getVotePower = function (user) {
+export const getVotePower = function (user) {
   return 1;
 };
 
-Telescope.operateOnItem = function (collection, itemId, user, operation) {
+const keepVoteProperties = item => _.pick(item, '__typename', '_id', 'upvoters', 'downvoters', 'upvotes', 'downvotes', 'baseScore');
+
+/*
+
+- Simulation mode: runs all the operation and returns an objects without affecting the db.
+- Regular mode: same, but updates the db too.
+
+*/
+export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false, context = 'edit') {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
 
-  var item = collection.findOne(itemId);
-  var votePower = Telescope.getVotePower(user);
-  var hasUpvotedItem = user.hasUpvoted(item);
-  var hasDownvotedItem = user.hasDownvoted(item);
-  var update = {};
+  let item = {
+    upvotes: 0,
+    downvotes: 0,
+    upvoters: [],
+    downvoters: [],
+    baseScore: 0,
+    ...originalItem,
+  }; // we do not want to affect the original item directly
 
-  // console.log(collection)
-  // console.log(item)
-  // console.log(user)
-  // console.log(operation)
+  var votePower = getVotePower(user);
+  var hasUpvotedItem = hasUpvoted(user, item);
+  var hasDownvotedItem = hasDownvoted(user, item);
+  var modifier = {};
+
+  // console.log('// operateOnItem')
+  // console.log('isSimulation: ',isSimulation)
+  // console.log('context: ',context)
+  // console.log('collection: ',collection._name)
+  // console.log('operation: ',operation)
+  // console.log('item: ',item)
+  // console.log('user: ',user)
+
+  const collectionName = collection._name;
 
   // make sure item and user are defined, and user can perform the operation
   if (
     !item ||
     !user || 
-    !Users.canDo(user, `${item.getCollectionName()}.${operation}`) || 
+    !Users.canDo(user, `${collectionName}.${operation}`) || 
     operation === "upvote" && hasUpvotedItem ||
     operation === "downvote" && hasDownvotedItem ||
-    operation === "cancelUpvote" && !hasUpvotedItem||
+    operation === "cancelUpvote" && !hasUpvotedItem ||
     operation === "cancelDownvote" && !hasDownvotedItem
   ) {
     return false; 
   }
 
+  const voter = isSimulation ? {__typename: "User", _id: user._id} : user._id;
+
   // ------------------------------ Sync Callbacks ------------------------------ //
-  item = Telescope.callbacks.run(operation, item, user);
+
+  item = runCallbacks(operation, item, user);
 
   switch (operation) {
 
     case "upvote":
-
       if (hasDownvotedItem) {
-        Telescope.operateOnItem(collection, itemId, user, "cancelDownvote");
+        operateOnItem(collection, item, user, "cancelDownvote", isSimulation, context);
       }
-      update = {
-        $addToSet: {upvoters: user._id},
-        $inc: {upvotes: 1, baseScore: votePower}
+
+      item = update(item, {
+        upvoters: {$push: [voter]},
+        upvotes: {$set: item.upvotes + 1},
+        baseScore: {$set: item.baseScore + votePower},
+      });
+      
+      if (!isSimulation) {
+        modifier = {
+          $addToSet: {upvoters: user._id},
+          $inc: {upvotes: 1, baseScore: votePower}
+        }
       }
       break;
 
     case "downvote":
-
       if (hasUpvotedItem) {
-        Telescope.operateOnItem(collection, itemId, user, "cancelUpvote");
+        operateOnItem(collection, item, user, "cancelUpvote", isSimulation, context);
       }
-      update = {
-        $addToSet: {downvoters: user._id},
-        $inc: {downvotes: 1, baseScore: -votePower}
+
+      item = update(item, {
+        downvoters: {$push: [voter]},
+        downvotes: {$set: item.downvotes + 1},
+        baseScore: {$set: item.baseScore - votePower},
+      });
+      
+      if (!isSimulation) {
+        modifier = {
+          $addToSet: {downvoters: user._id},
+          $inc: {downvotes: 1, baseScore: -votePower}
+        }
       }
       break;
 
     case "cancelUpvote":
+      item = update(item, {
+        upvoters: {$set: item.upvoters.filter(u => u._id !== user._id)},
+        upvotes: {$set: item.upvotes - 1},
+        baseScore: {$set: item.baseScore - votePower},
+      });
 
-      update = {
-        $pull: {upvoters: user._id},
-        $inc: {upvotes: -1, baseScore: -votePower}
-      };
+      if (!isSimulation) {  
+        modifier = {
+          $pull: {upvoters: user._id},
+          $inc: {upvotes: -1, baseScore: -votePower}
+        };
+      }
       break;
 
     case "cancelDownvote":
 
-      update = {
-        $pull: {downvoters: user._id},
-        $inc: {downvotes: -1, baseScore: votePower}
-      };
+      item = update(item, {
+        downvoters: {$set: item.downvoters.filter(u => u._id !== user._id)},
+        downvotes: {$set: item.upvotes - 1},
+        baseScore: {$set: item.baseScore + votePower},
+      });
+      
+      if (!isSimulation) {
+        modifier = {
+          $pull: {downvoters: user._id},
+          $inc: {downvotes: -1, baseScore: votePower}
+        };
+      }
       break;
   }
 
-  update["$set"] = {inactive: false};
-  var result = collection.update({_id: item._id}, update);
+  if (!isSimulation) {
 
-
-  if (result > 0) {
-
-    // extend item with baseScore to help calculate newScore
-    item = _.extend(item, {baseScore: (item.baseScore + votePower)});
+    if (context === 'edit') {
+      modifier["$set"] = {inactive: false};
+      collection.update({_id: item._id}, modifier);
+    }
     
     // --------------------- Server-Side Async Callbacks --------------------- //
-    Telescope.callbacks.runAsync(operation+".async", item, user, collection, operation);
-    
-    return true;
-
+    runCallbacksAsync(operation+".async", item, user, collection, operation, context); 
+  
   }
 
+  const voteResult = item;
+
+  // if (isSimulation) {
+  //   console.log('item from apollo store', voteResult);
+  // } else {
+  //   console.log('item from mongo db', voteResult);
+  // }
+
+  return voteResult;
 };

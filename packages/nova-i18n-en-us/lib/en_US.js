@@ -1,6 +1,6 @@
-import Telescope from 'meteor/nova:lib';
+import { addStrings } from 'meteor/nova:core';
 
-Telescope.strings.en = {
+addStrings('en', {
   "forms.submit": "Submit",
   "forms.cancel": "Cancel",
 
@@ -50,8 +50,8 @@ Telescope.strings.en = {
   "comments.reply": "Reply",
   "comments.edit": "Edit",
   "comments.delete": "Delete",
-  "comments.delete_confirm": "Delete comment “{body}”?",
-  "comments.delete_success": "Comment “{body}” deleted.",
+  "comments.delete_confirm": "Delete this comment?",
+  "comments.delete_success": "Comment deleted.",
   "comments.please_log_in": "Please log in to comment.",
   "comments.parentCommentId": "Parent Comment ID",
   "comments.topLevelCommentId": "Top Level Comment ID",
@@ -64,32 +64,37 @@ Telescope.strings.en = {
   "users.edit_success": "User “{name}” edited",
   "users.log_in": "Log In",
   "users.log_out": "Log Out",
-  "users.telescope.bio": "Bio",
-  "users.telescope.displayName": "Display Name",
-  "users.telescope.email": "Email",
-  "users.telescope.twitterUsername": "Twitter Username",
-  "users.telescope.website": "Website",
-  "users.telescope.groups": "Groups",
-  "users.telescope.avatar": "Avatar",
+  "users.bio": "Bio",
+  "users.displayName": "Display Name",
+  "users.email": "Email",
+  "users.twitterUsername": "Twitter Username",
+  "users.website": "Website",
+  "users.groups": "Groups",
+  "users.avatar": "Avatar",
   "users.notifications": "Notifications",
-  "users.telescope.notifications_users": "New Users Notifications",
-  "users.telescope.notifications_posts": "New Posts Notifications",
-  "users.telescope.newsletter.subscribed": "Subscribe to newsletter",
+  "users.notifications_users": "New Users Notifications",
+  "users.notifications_posts": "New Posts Notifications",
+  "users.newsletter_subscribeToNewsletter": "Subscribe to newsletter",
   "users.admin": "Admin",
   "users.isAdmin": "Admin",
   "users.posts": "Posts",
   "users.please_log_in": "Please log in",
-  "users.cannot_post": "Sorry, you do not have permissions to post at this time",
+  "users.cannot_post": "Sorry, you do not have permission to post at this time",
+  "users.cannot_comment": "Sorry, you do not have permission to comment at this time",
   "users.subscribe": "Subscribe to this user's posts",
   "users.unsubscribe": "Unsubscribe to this user's posts",
   "users.subscribed": "You have subscribed to “{name}” posts.",
   "users.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "users.subscribers": "Subscribers",
+  "users.delete": "Delete user",
+  "users.delete_confirm": "Delete this user?",
 
   "categories": "Categories",
   "categories.all": "All Categories",
   "categories.edit": "Edit Category",
+  "categories.edit_success": "Category “{name}” edited.",
   "categories.new": "New Category",
+  "categories.new_success": "Category “{name}” created.",
   "categories.delete": "Delete Category",
   "categories.name": "Name",
   "categories.description": "Description",
@@ -102,6 +107,8 @@ Telescope.strings.en = {
   "categories.subscribed": "You have subscribed to “{name}” posts.",
   "categories.unsubscribed": "You have unsubscribed from “{name}” posts.",
   "categories.subscribed_categories" : "Categories subscribed to",
+  "categories.delete_confirm": "Delete category “{title}”?",
+  "categories.delete_success": "Category “{name}” deleted.",
 
   "settings": "Settings",
   "settings.json_message": "Note: settings already provided in your <code>settings.json</code> file will be disabled.",
@@ -150,4 +157,4 @@ Telescope.strings.en = {
 
   "admin": "Admin",
   "notifications": "Notifications",
-};
+});

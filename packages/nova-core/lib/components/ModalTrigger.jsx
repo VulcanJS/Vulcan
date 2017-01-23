@@ -1,7 +1,7 @@
+import { registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import ContextPasser from './ContextPasser.jsx'
 import { Modal } from 'react-bootstrap';
-// import Modal from 'react-modal';
 
 class ModalTrigger extends Component {
 
@@ -22,14 +22,6 @@ class ModalTrigger extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  // getChildContext() {
-  //   const component = this;
-  //   return {
-  //     closeCallback: component.closeModal,
-  //     currentUser: this.context.currentUser // pass on currentUser
-  //   };
-  // }
-
   renderHeader() {
     return (
       <Modal.Header closeButton>
@@ -41,6 +33,7 @@ class ModalTrigger extends Component {
   render() {
 
     const triggerComponent = React.cloneElement(this.props.component, { onClick: this.openModal });
+    const childrenComponent = React.cloneElement(this.props.children, {closeModal: this.closeModal});
 
     return (
       <div className="modal-trigger">
@@ -48,15 +41,7 @@ class ModalTrigger extends Component {
         <Modal bsSize={this.props.size} show={this.state.modalIsOpen} onHide={this.closeModal}>
           {this.props.title ? this.renderHeader() : null}
           <Modal.Body>
-            <ContextPasser
-              currentUser={this.context.currentUser}
-              actions={this.context.actions}
-              events={this.context.events}
-              messages={this.context.messages}
-              closeCallback={this.closeModal}
-            >
-              {this.props.children}
-            </ContextPasser>
+            {childrenComponent}
           </Modal.Body>
         </Modal>
       </div>
@@ -73,17 +58,4 @@ ModalTrigger.defaultProps = {
   size: "large"
 }
 
-ModalTrigger.contextTypes = {
-  currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
-  messages: React.PropTypes.object
-};
-
-// ModalTrigger.childContextTypes = {
-//   closeCallback: React.PropTypes.func,
-//   currentUser: React.PropTypes.object
-// }
-
-module.exports = ModalTrigger;
-export default ModalTrigger;
+export default registerComponent('ModalTrigger', ModalTrigger);

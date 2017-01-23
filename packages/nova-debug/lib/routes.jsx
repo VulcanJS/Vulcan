@@ -1,12 +1,8 @@
-import Telescope from 'meteor/nova:lib';
-import Cheatsheet from './components/Cheatsheet.jsx';
-import Groups from './components/Groups.jsx';
-import Settings from './components/Settings.jsx';
-import Emails from './components/Emails.jsx';
+import { addRoute, getComponent } from 'meteor/nova:core';
 
-Telescope.routes.add([
-  {name: "cheatsheet", path: "/cheatsheet", component: Cheatsheet},
-  {name: "groups", path: "/groups", component: Groups},
-  {name: "settings", path: "/settings", component: Settings},
-  {name: "emails", path: "/emails", component: Emails},
+addRoute([
+  {name: "cheatsheet", path: "/cheatsheet", component: getComponent("Cheatsheet")},
+  {name: "groups", path: "/groups", component: getComponent("Groups")},
+  {name: "settings", path: "/settings", component: getComponent("Settings")},
+  {name: "emails", path: "/emails", component: getComponent("Emails")},
 ]);

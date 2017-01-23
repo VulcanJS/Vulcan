@@ -1,12 +1,12 @@
 import Users from 'meteor/nova:users';
 
-const anonymousActions = [
+const guestsActions = [
   "posts.view.approved.own",
   "posts.view.approved.all"
 ];
-Users.groups.anonymous.can(anonymousActions);
+Users.groups.guests.can(guestsActions);
 
-const defaultActions = [
+const membersActions = [
   "posts.view.approved.own",
   "posts.view.approved.all",
   "posts.view.pending.own",
@@ -15,13 +15,9 @@ const defaultActions = [
   "posts.view.deleted.own",
   "posts.new", 
   "posts.edit.own", 
-  "posts.remove.own", 
-  "posts.upvote", 
-  "posts.cancelUpvote", 
-  "posts.downvote",
-  "posts.cancelDownvote"
+  "posts.remove.own",
 ];
-Users.groups.default.can(defaultActions);
+Users.groups.members.can(membersActions);
 
 const adminActions = [
   "posts.view.pending.all",

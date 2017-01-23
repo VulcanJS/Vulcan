@@ -1,43 +1,23 @@
-import Telescope from 'meteor/nova:lib';
-import Posts from "meteor/nova:posts";
-import { ListContainer } from "meteor/utilities:react-list-container";
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
-import moment from 'moment';
 
 class PostsDay extends Component {
 
   render() {
 
-    const {date, number} = this.props;
-
-    const terms = {
-      view: "top",
-      date: date,
-      after: moment(date).format("YYYY-MM-DD"),
-      before: moment(date).format("YYYY-MM-DD"),
-      enableCache: number <= 15 ? true : false, // only cache first 15 days
-      listId: `posts.list.${moment(date).format("YYYY-MM-DD")}`
-    };
-
-    const {selector, options} = Posts.parameters.get(terms);
-
-    const postsPerPage = Telescope.settings.get("postsPerPage", 10);
+    const {date, networkStatus, posts} = this.props;
+    const noPosts = posts.length === 0;
 
     return (
       <div className="posts-day">
-        <h4 className="posts-day-heading">{moment(date).format("dddd, MMMM Do YYYY")}</h4>
-        <ListContainer
-          collection={Posts}
-          publication="posts.list"
-          selector={selector}
-          options={options}
-          terms={terms}
-          joins={Posts.getJoins()}
-          component={Telescope.components.PostsList}
-          componentProps={{showHeader: false}}
-          listId={terms.listId}
-          limit={postsPerPage}
-        />
+        <h4 className="posts-day-heading">{date.format("dddd, MMMM Do YYYY")}</h4>
+        { noPosts ? <Components.PostsNoMore /> :
+          <div className="posts-list">
+            <div className="posts-list-content">
+              {posts.map(post => <Components.PostsItem post={post} key={post._id} currentUser={this.props.currentUser} />)}
+            </div>
+          </div>
+        }
       </div>
     )
 
@@ -46,9 +26,9 @@ class PostsDay extends Component {
 }
 
 PostsDay.propTypes = {
+  currentUser: React.PropTypes.object,
   date: React.PropTypes.object,
   number: React.PropTypes.number
 }
 
-module.exports = PostsDay;
-export default PostsDay;
+registerComponent('PostsDay', PostsDay);

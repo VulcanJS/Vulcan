@@ -1,32 +1,17 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import { DocumentContainer } from "meteor/utilities:react-list-container";
-import Users from 'meteor/nova:users';
+import { withCurrentUser } from 'meteor/nova:core';
 
 const UsersAccount = (props, context) => {
-  const terms = props.params.slug ? {"telescope.slug": props.params.slug} : context.currentUser ? {_id: context.currentUser._id } : undefined;
-  return (
-    <Telescope.components.CanDo action="users.edit.own" displayNoPermissionMessage={true}>
-      { 
-        // do not try to render DocumentContainer without required prop 'terms'
-        typeof terms === "undefined" ? null 
-        : <DocumentContainer 
-            collection={Users} 
-            publication="users.single" 
-            selector={terms} 
-            terms={terms}
-            documentPropName="user"
-            component={Telescope.components.UsersEdit}
-          /> 
-        }
-    </Telescope.components.CanDo>
-  )
+  // note: terms is as the same as a document-shape the SmartForm edit-mode expects to receive
+  const terms = props.params.slug ? {slug: props.params.slug} : props.currentUser ? {documentId: props.currentUser._id } : {};
+  return <Components.UsersEditForm terms={terms} />
 };
 
-UsersAccount.contextTypes = {
+UsersAccount.propTypes = {
   currentUser: React.PropTypes.object
-}
+};
 
 UsersAccount.displayName = "UsersAccount";
 
-module.exports = UsersAccount;
+registerComponent('UsersAccount', UsersAccount, withCurrentUser);

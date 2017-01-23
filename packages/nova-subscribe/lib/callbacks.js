@@ -1,5 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
+import { Callbacks, addCallback } from 'meteor/nova:core';
 
 // note: even if all these callbacks are async, they are imported on the client so they pop in the cheatsheet when debug is enabled
 
@@ -33,7 +34,7 @@ if (typeof Package['nova:posts'] !== "undefined" && typeof Package['nova:comment
     }
   };
 
-  Telescope.callbacks.add("comments.new.async", SubscribedPostNotifications);
+  addCallback("comments.new.async", SubscribedPostNotifications);
 }
 
 /**
@@ -50,9 +51,9 @@ if (typeof Package['nova:posts'] !== "undefined") {
 
       const user = Users.findOne({_id: post.userId});
 
-      if (!!user.telescope.subscribers && !!user.telescope.subscribers.length) {
+      if (!!user.subscribers && !!user.subscribers.length) {
         // remove userIds of users that have already been notified and of post's author 
-        let subscriberIdsToNotify = _.difference(user.telescope.subscribers, userIdsNotified, [user._id]);
+        let subscriberIdsToNotify = _.difference(user.subscribers, userIdsNotified, [user._id]);
         
         Telescope.notifications.create(subscriberIdsToNotify, 'newPost', notificationData);
 
@@ -61,7 +62,7 @@ if (typeof Package['nova:posts'] !== "undefined") {
     }
   };
 
-  Telescope.callbacks.add("posts.new.async", SubscribedUsersNotifications);
+  addCallback("posts.new.async", SubscribedUsersNotifications);
 }
 
 /**
@@ -99,5 +100,5 @@ if (typeof Package['nova:posts'] !== "undefined") {
     }
   };
 
-  Telescope.callbacks.add("posts.new.async", SubscribedCategoriesNotifications);
+  addCallback("posts.new.async", SubscribedCategoriesNotifications);
 }

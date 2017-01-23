@@ -1,9 +1,7 @@
-import Telescope from 'meteor/nova:lib';
+import { Utils } from 'meteor/nova:lib';
 import Users from './collection.js';
 import moment from 'moment';
-
-Users.helpers({getCollection: () => Users});
-Users.helpers({getCollectionName: () => "users"});
+import _ from 'underscore';
 
 ////////////////////
 //  User Getters  //
@@ -43,7 +41,6 @@ Users.getUserName = function (user) {
     return null;
   }
 };
-Users.helpers({getUserName: function () {return Users.getUserName(this);}});
 Users.getUserNameById = function (userId) {return Users.getUserName(Users.findOne(userId))};
 
 /**
@@ -54,10 +51,9 @@ Users.getDisplayName = function (user) {
   if (typeof user === "undefined") {
     return "";
   } else {
-    return (user.telescope && user.telescope.displayName) ? user.telescope.displayName : Users.getUserName(user);
+    return (user.displayName) ? user.displayName : Users.getUserName(user);
   }
 };
-Users.helpers({getDisplayName: function () {return Users.getDisplayName(this);}});
 Users.getDisplayNameById = function (userId) {return Users.getDisplayName(Users.findOne(userId));};
 
 /**
@@ -70,14 +66,13 @@ Users.getProfileUrl = function (user, isAbsolute) {
     return "";
   }
   isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  if (user.telescope && user.telescope.slug) {
-    return `${prefix}/users/${user.telescope.slug}`;
+  var prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
+  if (user.slug) {
+    return `${prefix}/users/${user.slug}`;
   } else {
     return "";
   }
 };
-Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(this, isAbsolute);}});
 
 /**
  * @summary Get a user's account edit URL
@@ -87,7 +82,6 @@ Users.helpers({getProfileUrl: function (isAbsolute) {return Users.getProfileUrl(
 Users.getEditUrl = function (user, isAbsolute) {
   return `${Users.getProfileUrl(user, isAbsolute)}/edit`;
 };
-Users.helpers({getEditUrl: function (isAbsolute) {return Users.getEditUrl(this, isAbsolute);}});
 
 /**
  * @summary Get a user's Twitter name
@@ -96,15 +90,14 @@ Users.helpers({getEditUrl: function (isAbsolute) {return Users.getEditUrl(this, 
 Users.getTwitterName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
   if (typeof user !== "undefined") {
-    if (Telescope.utils.checkNested(user, 'profile', 'twitter')) {
+    if (Utils.checkNested(user, 'profile', 'twitter')) {
       return user.profile.twitter;
-    } else if(Telescope.utils.checkNested(user, 'services', 'twitter', 'screenName')) {
+    } else if(Utils.checkNested(user, 'services', 'twitter', 'screenName')) {
       return user.services.twitter.screenName;
     }
   }
   return null;
 };
-Users.helpers({getTwitterName: function () {return Users.getTwitterName(this);}});
 Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Users.findOne(userId));};
 
 /**
@@ -113,14 +106,13 @@ Users.getTwitterNameById = function (userId) {return Users.getTwitterName(Users.
  */
 Users.getGitHubName = function (user) {
   // return twitter name provided by user, or else the one used for twitter login
-  if(Telescope.utils.checkNested(user, 'profile', 'github')){
+  if(Utils.checkNested(user, 'profile', 'github')){
     return user.profile.github;
-  }else if(Telescope.utils.checkNested(user, 'services', 'github', 'screenName')){ // TODO: double-check this with GitHub login
+  }else if(Utils.checkNested(user, 'services', 'github', 'screenName')){ // TODO: double-check this with GitHub login
     return user.services.github.screenName;
   }
   return null;
 };
-Users.helpers({getGitHubName: function () {return Users.getGitHubName(this);}});
 Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Users.findOne(userId));};
 
 /**
@@ -128,13 +120,12 @@ Users.getGitHubNameById = function (userId) {return Users.getGitHubName(Users.fi
  * @param {Object} user
  */
 Users.getEmail = function (user) {
-  if(user.telescope && user.telescope.email){
-    return user.telescope.email;
+  if(user.email){
+    return user.email;
   }else{
     return null;
   }
 };
-Users.helpers({getEmail: function () {return Users.getEmail(this);}});
 Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(userId));};
 
 /**
@@ -142,9 +133,8 @@ Users.getEmailById = function (userId) {return Users.getEmail(Users.findOne(user
  * @param {Object} user
  */
 Users.getEmailHash = function (user) {
-  return user.telescope.emailHash;
+  return user.emailHash;
 };
-Users.helpers({getEmailHash: function () {return Users.getEmailHash(this);}});
 Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.findOne(userId));};
 
 /**
@@ -153,20 +143,14 @@ Users.getEmailHashById = function (userId) {return Users.getEmailHash(Users.find
  * @param {String} settingName
  * @param {Object} defaultValue
  */
-Users.getSetting = function (user, settingName, defaultValue) {
-  user = user || Meteor.user();
-  defaultValue = defaultValue || null;
-  // all settings should be in the user.telescope namespace, so add "telescope." if needed
-  settingName = settingName.slice(0,10) === "telescope." ? settingName : "telescope." + settingName;
-
-  if (user && user.telescope) {
-    var settingValue = Users.getProperty(user, settingName);
+Users.getSetting = function (user = null, settingName, defaultValue = null) {
+  if (user) {
+    const settingValue = Users.getProperty(user, settingName);
     return typeof settingValue === 'undefined' ? defaultValue : settingValue;
   } else {
     return defaultValue;
   }
 };
-Users.helpers({getSetting: function (settingName, defaultValue) {return Users.getSetting(this, settingName, defaultValue);}});
 
 ////////////////////
 //  User Checks   //
@@ -178,31 +162,10 @@ Users.helpers({getSetting: function (settingName, defaultValue) {return Users.ge
  */
 Users.hasCompletedProfile = function (user) {
   return _.every(Users.getRequiredFields(), function (fieldName) {
-    return !!Telescope.getNestedProperty(user, fieldName);
+    return !!Utils.getNestedProperty(user, fieldName);
   });
 };
-Users.helpers({hasCompletedProfile: function () {return Users.hasCompletedProfile(this);}});
 Users.hasCompletedProfileById = function (userId) {return Users.hasCompletedProfile(Users.findOne(userId));};
-
-/**
- * @summary Check if a user has upvoted a document
- * @param {Object} user
- * @param {Object} document
- */
-Users.hasUpvoted = function (user, document) {
-  return user && _.include(document.upvoters, user._id);
-};
-Users.helpers({hasUpvoted: function (document) {return Users.hasUpvoted(this, document);}});
-
-/**
- * @summary Check if a user has downvoted a document
- * @param {Object} user
- * @param {Object} document
- */
-Users.hasDownvoted = function (user, document) {
-  return user && _.include(document.downvoters, user._id);
-};
-Users.helpers({hasDownvoted: function (document) {return Users.hasDownvoted(this, document);}});
 
 ///////////////////
 // Other Helpers //
@@ -244,6 +207,17 @@ Users.getProperty = function (object, property) {
   }
 };
 
+Users.setSetting = (user, settingName, value) => {
+  // all users settings should begin with the prexi : user.setting namespace, so add "" if needed
+  var field = settingName.slice(0,2) === "" ? settingName : "" + settingName;
+
+  var modifier = {$set: {}};
+  modifier.$set[field] = value;
+
+  Users.update(user._id, modifier);
+}
+
+
 ////////////////////
 // More Helpers   //
 ////////////////////
@@ -255,12 +229,24 @@ Users.getProperty = function (object, property) {
  * Get a list of all fields required for a profile to be complete.
  */
 Users.getRequiredFields = function () {
-  var schema = Users.simpleSchema()._schema;
+  var schema = Utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
   var fields = _.filter(_.keys(schema), function (fieldName) {
     var field = schema[fieldName];
     return !!field.required;
   });
   return fields;
+};
+
+/**
+ * @summary @method Users.getPreloadedFields
+ * Get a list of all fields that need to be preloaded for the current user
+ */
+Users.getPreloadedFields = function () {
+  // this = collection Users with the final (= extended) schema attached
+  const preloadedFields = _.compact(_.map(this.simpleSchema()._schema, (field, fieldName) => {
+    return field.preload ? fieldName : undefined;
+  }));
+  return preloadedFields;
 };
 
 Users.adminUsers = function (options) {
@@ -272,6 +258,5 @@ Users.getCurrentUserEmail = function () {
 };
 
 Users.findByEmail = function (email) {
-  return Users.findOne({"telescope.email": email});
+  return Users.findOne({"email": email});
 };
-

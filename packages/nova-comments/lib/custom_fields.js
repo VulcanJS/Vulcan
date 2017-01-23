@@ -1,6 +1,21 @@
-import PublicationUtils from 'meteor/utilities:smart-publications';
-import Posts from 'meteor/nova:posts';
-import Users from 'meteor/nova:users';
+import Posts from "meteor/nova:posts";
+import Users from "meteor/nova:users";
+
+Users.addField([
+  /**
+    Count of the user's comments
+  */
+  {
+    fieldName: "commentCount",
+    fieldSchema: {
+      type: Number,
+      optional: true,
+      publish: true,
+      defaultValue: 0,
+      viewableBy: ['guests'],
+    }
+  }
+]);
 
 Posts.addField([
   /**
@@ -12,7 +27,8 @@ Posts.addField([
       type: Number,
       optional: true,
       publish: true,
-      defaultValue: 0
+      defaultValue: 0,
+      viewableBy: ['guests'],
     }
   },
   /**
@@ -24,13 +40,13 @@ Posts.addField([
       type: [String],
       optional: true,
       publish: true,
-      join: {
-        joinAs: "commentersArray",
-        collection: () => Users,
-        limit: 4
-      }
+      // join: {
+      //   joinAs: "commentersArray",
+      //   collection: () => Users,
+      //   limit: 4
+      // },
+      resolveAs: 'commenters: [User]',
+      viewableBy: ['guests'],
     }
   }
 ]);
-
-PublicationUtils.addToFields(Posts.publishedFields.list, ["commentCount", "commenters"]);

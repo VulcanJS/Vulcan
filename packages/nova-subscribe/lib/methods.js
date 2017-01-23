@@ -36,8 +36,8 @@ const prepareSubscription = (action, collection, itemId, user) => {
 
   // assign the right fields depending on the collection
   const fields = {
-    subscribers: collectionName === 'Users' ? 'telescope.subscribers' : 'subscribers',
-    subscriberCount: collectionName === 'Users' ? 'telescope.subscriberCount' : 'subscriberCount',
+    subscribers: collectionName === 'Users' ? 'subscribers' : 'subscribers',
+    subscriberCount: collectionName === 'Users' ? 'subscriberCount' : 'subscriberCount',
   };
 
   // return true if the item has the subscriber's id in its fields
@@ -119,7 +119,7 @@ const performSubscriptionAction = (action, collection, itemId, user) => {
     Users.update({
       _id: user._id
     }, {
-      [updateOperator]: { [`telescope.subscribedItems.${collectionName}`]: loggedItem }
+      [updateOperator]: { [`subscribedItems.${collectionName}`]: loggedItem }
     });
 
     return true; // action completed! ✅

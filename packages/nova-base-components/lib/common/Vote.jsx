@@ -1,55 +1,81 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
-import Users from 'meteor/nova:users';
+import { withCurrentUser, withMessages } from 'meteor/nova:core';
+import { withVote, hasUpvoted, hasDownvoted } from 'meteor/nova:voting';
 
 class Vote extends Component {
 
   constructor() {
     super();
     this.upvote = this.upvote.bind(this);
+    this.getActionClass = this.getActionClass.bind(this);
+    // this.startLoading = this.startLoading.bind(this);
+    // this.stopLoading = this.stopLoading.bind(this);
+    this.state = {
+      loading: false
+    }
   }
+
+  /*
+
+  note: with optimisitc UI, loading functions are not needed
+  also, setState triggers issues when the component is unmounted
+  before the vote mutation returns. 
+
+  */
+
+  // startLoading() {
+  //   this.setState({ loading: true });
+  // }
+
+  // stopLoading() {
+  //   this.setState({ loading: false });
+  // }
 
   upvote(e) {
     e.preventDefault();
 
-    const post = this.props.post;
-    const user = this.context.currentUser;
+    // this.startLoading();
+
+    const document = this.props.document;
+    const collection = this.props.collection;
+    const user = this.props.currentUser;
 
     if(!user){
-      this.context.messages.flash("Please log in first");
-    } else if (user.hasUpvoted(post)) {
-      this.context.actions.call('posts.cancelUpvote', post._id, () => {
-        this.context.events.track("post upvote cancelled", {'_id': post._id});
-      });        
+      this.props.flash("Please log in first");
+      // this.stopLoading();
     } else {
-      this.context.actions.call('posts.upvote', post._id, () => {
-        this.context.events.track("post upvoted", {'_id': post._id});
+      const voteType = hasUpvoted(user, document) ? "cancelUpvote" : "upvote";
+      this.props.vote({document, voteType, collection, currentUser: this.props.currentUser}).then(result => {
+        // this.stopLoading();
       });
-    }
+    } 
+  }
 
+  getActionClass() {
+    const document = this.props.document;
+    const user = this.props.currentUser;
+
+    const isUpvoted = hasUpvoted(user, document);
+    const isDownvoted = hasDownvoted(user, document);
+    const actionsClass = classNames(
+      'vote', 
+      {voted: isUpvoted || isDownvoted},
+      {upvoted: isUpvoted},
+      {downvoted: isDownvoted}
+    );
+
+    return actionsClass;
   }
 
   render() {
-
-    const post = this.props.post;
-    const user = this.context.currentUser;
-
-    const hasUpvoted = Users.hasUpvoted(user, post);
-    const hasDownvoted = Users.hasDownvoted(user, post);
-    const actionsClass = classNames(
-      "vote", 
-      {voted: hasUpvoted || hasDownvoted},
-      {upvoted: hasUpvoted},
-      {downvoted: hasDownvoted}
-    );
-
     return (
-      <div className={actionsClass}>
+      <div className={this.getActionClass()}>
         <a className="upvote-button" onClick={this.upvote}>
-          <Telescope.components.Icon name="upvote" />
+          {this.state.loading ? <Components.Icon name="spinner" /> : <Components.Icon name="upvote" /> }
           <div className="sr-only">Upvote</div>
-          <div className="vote-count">{post.baseScore || 0}</div>
+          <div className="vote-count">{this.props.document.baseScore || 0}</div>
         </a>
       </div>
     )
@@ -58,15 +84,15 @@ class Vote extends Component {
 }
 
 Vote.propTypes = {
-  post: React.PropTypes.object.isRequired, // the current post
+  document: React.PropTypes.object.isRequired, // the document to upvote
+  collection: React.PropTypes.object.isRequired, // the collection containing the document
+  vote: React.PropTypes.func.isRequired, // mutate function with callback inside
+  currentUser: React.PropTypes.object, // user might not be logged in, so don't make it required
 };
 
 Vote.contextTypes = {
-  currentUser: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
-  messages: React.PropTypes.object
 };
 
-module.exports = Vote;
-export default Vote;
+registerComponent('Vote', Vote, withMessages, withVote);

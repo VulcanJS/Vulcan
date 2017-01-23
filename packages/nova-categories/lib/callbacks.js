@@ -1,27 +1,13 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
-
-// generate slug on insert
-Categories.before.insert(function (userId, doc) {
-  // if no slug has been provided, generate one
-  var slug = !!doc.slug ? doc.slug : Telescope.utils.slugify(doc.name);
-  doc.slug = Telescope.utils.getUnusedSlug(Categories, slug);
-});
-
-// generate slug on edit, if it has changed
-Categories.before.update(function (userId, doc, fieldNames, modifier) {
-  if (modifier.$set && modifier.$set.slug && modifier.$set.slug !== doc.slug) {
-    modifier.$set.slug = Telescope.utils.getUnusedSlug(Categories, modifier.$set.slug);
-  }
-});
+import { addCallback, Utils } from 'meteor/nova:core';
 
 // add callback that adds categories CSS classes
 function addCategoryClass (postClass, post) {
   var classArray = _.map(Posts.getCategories(post), function (category){return "category-"+category.slug;});
   return postClass + " " + classArray.join(' ');
 }
-Telescope.callbacks.add("postClass", addCategoryClass);
+addCallback("postClass", addCategoryClass);
 
 // ------- Categories Check -------- //
 
@@ -45,13 +31,31 @@ function postsNewCheckCategories (post) {
   checkCategories(post);
   return post;
 }
-Telescope.callbacks.add("posts.new.sync", postsNewCheckCategories);
+addCallback("posts.new.sync", postsNewCheckCategories);
 
-function postEditCheckCategories (post) {
-  checkCategories(post);
-  return post;
+function postEditCheckCategories (modifier) {
+  checkCategories(modifier.$set);
+  return modifier;
 }
-Telescope.callbacks.add("posts.edit.sync", postEditCheckCategories);
+addCallback("posts.edit.sync", postEditCheckCategories);
+
+function categoriesNewGenerateSlug (category) {
+  // if no slug has been provided, generate one
+  const slug = category.slug || Utils.slugify(category.name);
+  category.slug = Utils.getUnusedSlug(Categories, slug);
+  return category;
+}
+addCallback("categories.new.sync", categoriesNewGenerateSlug);
+
+function categoriesEditGenerateSlug (modifier) {
+  // if slug is changing
+  if (modifier.$set && modifier.$set.slug) {
+    const slug = modifier.$set.slug;
+    modifier.$set.slug = Utils.getUnusedSlug(Categories, slug);
+  }
+  return modifier;
+}
+addCallback("categories.edit.sync", categoriesEditGenerateSlug);
 
 // TODO: debug this
 
@@ -68,7 +72,7 @@ Telescope.callbacks.add("posts.edit.sync", postEditCheckCategories);
 //   post.categories = _.unique(newCategories);
 //   return post;
 // }
-// Telescope.callbacks.add("posts.new.sync", addParentCategoriesOnSubmit);
+// addCallback("posts.new.sync", addParentCategoriesOnSubmit);
 
 // function addParentCategoriesOnEdit (modifier, post) {
 //   if (modifier.$unset && modifier.$unset.categories !== undefined) {
@@ -87,4 +91,4 @@ Telescope.callbacks.add("posts.edit.sync", postEditCheckCategories);
 //   modifier.$set.categories = _.unique(newCategories);
 //   return modifier;
 // }
-// Telescope.callbacks.add("posts.edit.sync", addParentCategoriesOnEdit);
+// addCallback("posts.edit.sync", addParentCategoriesOnEdit);

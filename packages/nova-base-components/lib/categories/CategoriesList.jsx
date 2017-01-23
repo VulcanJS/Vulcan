@@ -1,11 +1,12 @@
-import Telescope from 'meteor/nova:lib';
-import { /* ModalTrigger, */ ContextPasser } from "meteor/nova:core";
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap';
+import { ShowIf, withList } from "meteor/nova:core";
 import { withRouter } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
-// import Users from 'meteor/nova:users';
+import Categories from 'meteor/nova:categories';
+import gql from 'graphql-tag';
 
 // note: cannot use ModalTrigger component because of https://github.com/react-bootstrap/react-bootstrap/issues/1808
 
@@ -43,9 +44,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.edit"/></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} actions={this.context.actions} closeCallback={this.closeModal}>
-            <Telescope.components.CategoriesEditForm category={category}/>
-          </ContextPasser>
+          <Components.CategoriesEditForm category={category} closeCallback={this.closeModal} />
         </Modal.Body>
       </Modal>
     )
@@ -59,9 +58,7 @@ class CategoriesList extends Component {
           <Modal.Title><FormattedMessage id="categories.new"/></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ContextPasser currentUser={this.context.currentUser} messages={this.context.messages} closeCallback={this.closeModal}>
-            <Telescope.components.CategoriesNewForm/>
-          </ContextPasser>
+          <Components.CategoriesNewForm closeCallback={this.closeModal}/>
         </Modal.Body>
       </Modal>
     )
@@ -69,22 +66,20 @@ class CategoriesList extends Component {
 
   renderCategoryNewButton() {
     return (
-      <Telescope.components.CanDo action="categories.new">
-        <div className="category-menu-item dropdown-item"><MenuItem><Button bsStyle="primary" onClick={this.openCategoryNewModal}><FormattedMessage id="categories.new"/></Button></MenuItem></div>
-      </Telescope.components.CanDo>
+      <div className="category-menu-item dropdown-item">
+        <MenuItem>
+          <Button bsStyle="primary" onClick={this.openCategoryNewModal}>
+            <FormattedMessage id="categories.new"/>
+          </Button>
+        </MenuItem>
+      </div>
     );
-    // const CategoriesNewForm = Telescope.components.CategoriesNewForm;
-    // return (
-    //   <ModalTrigger title="New Category" component={<MenuItem className="dropdown-item post-category"><Button bsStyle="primary">New Category</Button></MenuItem>}>
-    //     <CategoriesNewForm/>
-    //   </ModalTrigger>
-    // )
   }
 
   render() {
 
-    const categories = this.props.categories;
-    // const context = this.context;
+    const categories = this.props.results;
+
     const currentQuery = _.clone(this.props.router.location.query);
     delete currentQuery.cat;
 
@@ -103,13 +98,43 @@ class CategoriesList extends Component {
               </MenuItem>
             </LinkContainer>
           </div>
-          {categories && categories.length > 0 ? categories.map((category, index) => <Telescope.components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>) : null}
-          {this.renderCategoryNewButton()}
+          {
+            // categories data are loaded
+            !this.props.loading ?
+              // there are currently categories
+              categories && categories.length > 0 ?
+                categories.map((category, index) => <Components.Category key={index} category={category} index={index} openModal={_.partial(this.openCategoryEditModal, index)}/>)
+              // not any category found
+              : null
+            // categories are loading
+            : <div className="dropdown-item"><MenuItem><Components.Loading /></MenuItem></div>
+          }
+          <Components.ShowIf check={Categories.options.mutations.new.check}>{this.renderCategoryNewButton()}</Components.ShowIf>
         </DropdownButton>
+
         <div>
-          {/* modals cannot be inside DropdownButton component (see GH issue) */}
-          {categories && categories.length > 0 ? categories.map((category, index) => this.renderCategoryEditModal(category, index)) : null}
-          {this.renderCategoryNewModal()}
+          {
+            /*
+              Modals cannot be inside DropdownButton component (see GH issue link on top of the file)
+              -> we place them in a <div> outside the <DropdownButton> component
+            */
+
+            /* Modals for each category to edit */
+            // categories data are loaded
+            !this.props.loading ?
+              // there are currently categories
+              categories && categories.length > 0 ?
+                categories.map((category, index) => this.renderCategoryEditModal(category, index))
+              // not any category found
+              : null
+            // categories are loading
+            : null
+          }
+
+          {
+            /* modal for creating a new category */
+            this.renderCategoryNewModal()
+          }
         </div>
       </div>
     )
@@ -118,14 +143,26 @@ class CategoriesList extends Component {
 }
 
 CategoriesList.propTypes = {
-  categories: React.PropTypes.array
-}
-
-CategoriesList.contextTypes = {
-  actions: React.PropTypes.object,
-  currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
+  results: React.PropTypes.array,
 };
 
-module.exports = withRouter(CategoriesList);
-export default withRouter(CategoriesList);
+CategoriesList.fragment = gql`
+  fragment categoriesListFragment on Category {
+    _id
+    name
+    description
+    order
+    slug
+    image
+  }
+`;
+
+const categoriesListOptions = {
+  collection: Categories,
+  queryName: 'categoriesListQuery',
+  fragment: CategoriesList.fragment,
+  limit: 0,
+  pollInterval: 0,
+};
+
+registerComponent('CategoriesList', CategoriesList, withRouter, withList(categoriesListOptions));

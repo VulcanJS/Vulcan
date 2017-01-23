@@ -1,16 +1,16 @@
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
+import { registerComponent, Utils, getSetting, Headtags } from 'meteor/nova:core';
 
 class HeadTags extends Component {
 	render() {
 
-		const url = !!this.props.url ? this.props.url : Telescope.utils.getSiteUrl();
-		const title = !!this.props.title ? this.props.title : Telescope.settings.get("title", "Nova");
-		const description = !!this.props.description ? this.props.description : Telescope.settings.get("tagline");
+		const url = !!this.props.url ? this.props.url : Utils.getSiteUrl();
+		const title = !!this.props.title ? this.props.title : getSetting("title", "Nova");
+		const description = !!this.props.description ? this.props.description : getSetting("tagline");
 
 		// default image meta: logo url, else site image defined in settings
-		let image = !!Telescope.settings.get("siteImage") ? Telescope.settings.get("siteImage"): Telescope.settings.get("logoUrl");
+		let image = !!getSetting("siteImage") ? getSetting("siteImage"): getSetting("logoUrl");
 		
 		// overwrite default image if one is passed as props 
 		if (!!this.props.image) {
@@ -19,10 +19,10 @@ class HeadTags extends Component {
 
 		// add site url base if the image is stored locally
 		if (!!image && image.indexOf('//') === -1) {
-			image = Telescope.utils.getSiteUrl() + image;
+			image = Utils.getSiteUrl() + image;
 		}
 
-		const meta = Telescope.headtags.meta.concat([
+		const meta = Headtags.meta.concat([
 			{ charset: "utf-8" },
 			{ name: "description", content: description },
 			// responsive
@@ -40,9 +40,9 @@ class HeadTags extends Component {
 			{ name: "twitter:description", content: description }
 		]);
 
-		const link = Telescope.headtags.link.concat([
-			{ rel: "canonical", href: Telescope.utils.getSiteUrl() },
-			{ rel: "shortcut icon", href: Telescope.settings.get("faviconUrl", "/img/favicon.ico") }
+		const link = Headtags.link.concat([
+			{ rel: "canonical", href: Utils.getSiteUrl() },
+			{ rel: "shortcut icon", href: getSetting("faviconUrl", "/img/favicon.ico") }
 		]);
 
 		return (
@@ -60,5 +60,4 @@ HeadTags.propTypes = {
 	image: React.PropTypes.string,
 };
 
-module.exports = HeadTags;
-export default HeadTags;
+registerComponent('HeadTags', HeadTags);

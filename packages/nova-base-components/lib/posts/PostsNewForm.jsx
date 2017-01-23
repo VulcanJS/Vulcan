@@ -1,41 +1,42 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
+import { ShowIf, withMessages } from 'meteor/nova:core';
+import Posts from "meteor/nova:posts";
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
-import Posts from "meteor/nova:posts";
 
 const PostsNewForm = (props, context) => {
-  
-  const router = props.router;
-
   return (
-    <Telescope.components.CanDo
-      action="posts.new"
-      noPermissionMessage="users.cannot_post"
-      displayNoPermissionMessage={true}
+    <Components.ShowIf
+      check={Posts.options.mutations.new.check}
+      failureComponent={<Components.UsersAccountForm />}
     >
       <div className="posts-new-form">
-        <NovaForm 
-          collection={Posts} 
-          methodName="posts.new"
-          successCallback={(post)=>{
-            context.messages.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
-            router.push({pathname: Posts.getPageUrl(post)});
+        <Components.SmartForm
+          collection={Posts}
+          mutationFragment={getRawComponent('PostsPage').fragment}
+          successCallback={post => {
+            props.closeModal();
+            // props.router.push({pathname: Posts.getPageUrl(post)});
+            props.flash(context.intl.formatMessage({id: "posts.created_message"}), "success");
           }}
         />
       </div>
-    </Telescope.components.CanDo>
-  )
+    </Components.ShowIf>
+  );
+};
+
+PostsNewForm.propTypes = {
+  closeModal: React.PropTypes.func,
+  router: React.PropTypes.object,
+  flash: React.PropTypes.func,
 }
 
 PostsNewForm.contextTypes = {
-  currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
+  closeCallback: React.PropTypes.func,
   intl: intlShape
 };
 
 PostsNewForm.displayName = "PostsNewForm";
 
-module.exports = withRouter(PostsNewForm);
-export default withRouter(PostsNewForm);
+registerComponent('PostsNewForm', PostsNewForm, withRouter, withMessages);

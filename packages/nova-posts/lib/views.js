@@ -117,7 +117,7 @@ Posts.views.add("userPosts", function (terms) {
  */
 Posts.views.add("userUpvotedPosts", function (terms) {
   var user = Users.findOne(terms.userId);
-  var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
+  var postsIds = _.pluck(user.upvotedPosts, "itemId");
   return {
     selector: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
@@ -129,7 +129,7 @@ Posts.views.add("userUpvotedPosts", function (terms) {
  */
 Posts.views.add("userDownvotedPosts", function (terms) {
   var user = Users.findOne(terms.userId);
-  var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");
+  var postsIds = _.pluck(user.downvotedPosts, "itemId");
   // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {
     selector: {_id: {$in: postsIds}},

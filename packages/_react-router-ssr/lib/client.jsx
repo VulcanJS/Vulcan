@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
+import Cookie from 'react-cookie';
 
 const ReactRouterSSR = {
   Run(routes, clientOptions) {
@@ -54,7 +55,8 @@ const ReactRouterSSR = {
       );
 
       if (typeof clientOptions.wrapperHook === 'function') {
-        app = clientOptions.wrapperHook(app);
+        const loginToken = Cookie.load('meteor_login_token') || localStorage['Meteor.loginToken'];
+        app = clientOptions.wrapperHook(app, loginToken);
       }
 
       if (typeof clientOptions.renderHook === 'function') {

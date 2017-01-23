@@ -1,14 +1,14 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
-// import moment from 'moment';
-// import Users from 'meteor/nova:users';
+import { ShowIf, withCurrentUser, withMessages } from 'meteor/nova:core';
+import Comments from 'meteor/nova:comments';
 
 class CommentsItem extends Component{
 
   constructor() {
     super();
-    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback', 'deleteComment'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
+    ['showReply', 'replyCancelCallback', 'replySuccessCallback', 'showEdit', 'editCancelCallback', 'editSuccessCallback', 'removeSuccessCallback'].forEach(methodName => {this[methodName] = this[methodName].bind(this)});
     this.state = {
       showReply: false,
       showEdit: false
@@ -43,32 +43,24 @@ class CommentsItem extends Component{
     this.setState({showEdit: false});
   }
 
-  deleteComment() {
-
-    const comment = this.props.comment;
-    const deleteConfirmMessage = this.context.intl.formatMessage({id: "comments.delete_confirm"}, {body: Telescope.utils.trimWords(comment.body, 20)});
-    const deleteSuccessMessage = this.context.intl.formatMessage({id: "comments.delete_success"}, {body: Telescope.utils.trimWords(comment.body, 20)});
-
-    if (window.confirm(deleteConfirmMessage)) {
-      this.context.actions.call('comments.deleteById', comment._id, (error, result) => {
-        this.context.messages.flash(deleteSuccessMessage, "success");
-        this.context.events.track("comment deleted", {'_id': comment._id});
-      });
-    }
-
+  removeSuccessCallback({documentId}) {
+    const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'comments.delete_success'});
+    this.props.flash(deleteDocumentSuccess, "success");
+    // todo: handle events in async callback
+    // this.context.events.track("comment deleted", {_id: documentId});
   }
 
   renderComment() {
     const htmlBody = {__html: this.props.comment.htmlBody};
 
-    const showReplyButton = !this.props.comment.isDeleted && !!this.context.currentUser;
+    const showReplyButton = !this.props.comment.isDeleted && !!this.props.currentUser;
 
     return (
       <div className="comments-item-text">
         <div dangerouslySetInnerHTML={htmlBody}></div>
         { showReplyButton ?
           <a className="comments-item-reply-link" onClick={this.showReply}>
-            <Telescope.components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
+            <Components.Icon name="reply"/> <FormattedMessage id="comments.reply"/>
           </a> : null}
       </div>
     )
@@ -78,7 +70,7 @@ class CommentsItem extends Component{
 
     return (
       <div className="comments-item-reply">
-        <Telescope.components.CommentsNew
+        <Components.CommentsNewForm
           postId={this.props.comment.postId}
           parentComment={this.props.comment}
           successCallback={this.replySuccessCallback}
@@ -92,10 +84,11 @@ class CommentsItem extends Component{
   renderEdit() {
 
     return (
-      <Telescope.components.CommentsEdit
+      <Components.CommentsEditForm
         comment={this.props.comment}
         successCallback={this.editSuccessCallback}
         cancelCallback={this.editCancelCallback}
+        removeSuccessCallback={this.removeSuccessCallback}
       />
     )
   }
@@ -107,15 +100,14 @@ class CommentsItem extends Component{
       <div className="comments-item" id={comment._id}>
         <div className="comments-item-body">
           <div className="comments-item-meta">
-            <Telescope.components.UsersAvatar size="small" user={comment.user}/>
-            <Telescope.components.UsersName user={comment.user}/>
+            <Components.UsersAvatar size="small" user={comment.user}/>
+            <Components.UsersName user={comment.user}/>
             <div className="comments-item-date"><FormattedRelative value={comment.postedAt}/></div>
-            <Telescope.components.CanDo action="comments.edit" document={this.props.comment}>
+            <Components.ShowIf check={Comments.options.mutations.edit.check} document={this.props.comment}>
               <div>
                 <a className="comment-edit" onClick={this.showEdit}><FormattedMessage id="comments.edit"/></a>
-                <a className="comment-delete" onClick={this.deleteComment}><FormattedMessage id="comments.delete"/></a>
               </div>
-            </Telescope.components.CanDo>
+            </Components.ShowIf>
           </div>
           {this.state.showEdit ? this.renderEdit() : this.renderComment()}
         </div>
@@ -128,14 +120,12 @@ class CommentsItem extends Component{
 
 CommentsItem.propTypes = {
   comment: React.PropTypes.object.isRequired, // the current comment
+  currentUser: React.PropTypes.object,
 };
 
 CommentsItem.contextTypes = {
-  currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  messages: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
 };
 
-module.exports = CommentsItem;
+registerComponent('CommentsItem', CommentsItem, withCurrentUser, withMessages);

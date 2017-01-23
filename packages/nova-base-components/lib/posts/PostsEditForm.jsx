@@ -1,85 +1,64 @@
-import Telescope from 'meteor/nova:lib';
-import NovaForm from "meteor/nova:forms";
-import { DocumentContainer } from "meteor/utilities:react-list-container";
-import Posts from "meteor/nova:posts";
+import { Components, registerComponent, getRawComponent } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
-// import { Messages } from "meteor/nova:core";
-// import Actions from "../actions.js";
-// import Users from 'meteor/nova:users';
+import { intlShape } from 'react-intl';
+import Posts from "meteor/nova:posts";
+import { withRouter } from 'react-router'
+import { ShowIf, withMessages } from 'meteor/nova:core';
 
-class PostsEditForm extends Component{
-
-  constructor() {
-    super();
-    this.deletePost = this.deletePost.bind(this);
-  }
-
-  deletePost() {
-    const post = this.props.post;
-    const deletePostConfirm = this.context.intl.formatMessage({id: "posts.delete_confirm"}, {title: post.title});
-    const deletePostSuccess = this.context.intl.formatMessage({id: "posts.delete_success"}, {title: post.title});
-
-    if (window.confirm(deletePostConfirm)) {
-      this.context.actions.call('posts.remove', post._id, (error, result) => {
-        this.context.messages.flash(deletePostSuccess, "success");
-        this.context.events.track("post deleted", {'_id': post._id});
-      });
-    }
-  }
+class PostsEditForm extends Component {
 
   renderAdminArea() {
     return (
-      <Telescope.components.CanDo action="posts.edit.all">
+      <Components.ShowIf check={Posts.options.mutations.edit.check} document={this.props.post}>
         <div className="posts-edit-form-admin">
           <div className="posts-edit-form-id">ID: {this.props.post._id}</div>
-          <Telescope.components.PostsStats post={this.props.post} />
+          <Components.PostsStats post={this.props.post} />
         </div>
-      </Telescope.components.CanDo>
+      </Components.ShowIf>
     )
   }
 
   render() {
 
-
     return (
       <div className="posts-edit-form">
         {this.renderAdminArea()}
-        <DocumentContainer
+        <Components.SmartForm
           collection={Posts}
-          publication="posts.single"
-          selector={{_id: this.props.post._id}}
-          terms={{_id: this.props.post._id}}
-          joins={Posts.getJoins()}
-          component={NovaForm}
-          componentProps={{
-            // note: the document prop will be passed from DocumentContainer
-            collection: Posts,
-            currentUser: this.context.currentUser,
-            methodName: "posts.edit",
-            successCallback: (post) => {
-              this.context.messages.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success')
-            }
+          documentId={this.props.post._id}
+          mutationFragment={getRawComponent('PostsPage').fragment}
+          successCallback={post => {
+            this.props.closeModal();
+            this.props.flash(this.context.intl.formatMessage({id: "posts.edit_success"}, {title: post.title}), 'success');
           }}
+          removeSuccessCallback={({documentId, documentTitle}) => {
+            // post edit form is being included from a single post, redirect to index
+            // note: this.props.params is in the worst case an empty obj (from react-router)
+            if (this.props.params._id) {
+              this.props.router.push('/');
+            }
+
+            const deleteDocumentSuccess = this.context.intl.formatMessage({id: 'posts.delete_success'}, {title: documentTitle});
+            this.props.flash(deleteDocumentSuccess, "success");
+            // todo: handle events in collection callbacks
+            // this.context.events.track("post deleted", {_id: documentId});
+          }}
+          showRemove={true}
         />
-        <hr/>
-        <a onClick={this.deletePost} className="delete-post-link"><Telescope.components.Icon name="close"/> <FormattedMessage id="posts.delete"/></a>
       </div>
-    )
+    );
+
   }
 }
 
 PostsEditForm.propTypes = {
-  post: React.PropTypes.object.isRequired
+  closeModal: React.PropTypes.func,
+  flash: React.PropTypes.func,
+  post: React.PropTypes.object.isRequired,
 }
 
 PostsEditForm.contextTypes = {
-  currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
-  messages: React.PropTypes.object,
   intl: intlShape
 }
 
-module.exports = PostsEditForm;
-export default PostsEditForm;
+registerComponent('PostsEditForm', PostsEditForm, withMessages, withRouter);

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
-import Telescope from 'meteor/nova:lib';
+import { withCurrentUser, withMessages, registerComponent } from 'meteor/nova:core';
 
 class SubscribeTo extends Component {
 
@@ -21,15 +21,15 @@ class SubscribeTo extends Component {
     // method name will be for example posts.subscribe
     this.context.actions.call(`${documentType}.${action}`, document._id, (error, result) => {
       if (error) {
-        this.context.messages.flash(error.message, "error")
+        this.props.flash(error.message, "error");
       }
 
       if (result) {
         // success message will be for example posts.subscribed
-        this.context.messages.flash(this.context.intl.formatMessage(
+        this.props.flash(this.context.intl.formatMessage(
           {id: `${documentType}.${action}d`}, 
           // handle usual name properties
-          {name: document.name || document.title || document.telescope.displayName}
+          {name: document.name || document.title || document.displayName}
         ), "success");
         this.context.events.track(action, {'_id': this.props.document._id});
       }
@@ -37,15 +37,13 @@ class SubscribeTo extends Component {
   }
 
   isSubscribed() {
-    // if the document is a user, the subscribers object is located on `user.telescope`
-    const documentCheck = this.props.documentType === 'users' ? this.props.document.telescope : this.props.document;
+    const documentCheck = this.props.document;
 
     return documentCheck && documentCheck.subscribers && documentCheck.subscribers.indexOf(this.context.currentUser._id) !== -1;
   }
 
   render() {
-    const {document, documentType} = this.props;
-    const {currentUser, intl} = this.context;
+    const {currentUser, document, documentType} = this.props;
 
     // can't subscribe to yourself or to own post (also validated on server side)
     if (!currentUser || !document || (documentType === 'posts' && document && document.author === currentUser.username) || (documentType === 'users' && document === currentUser)) {
@@ -56,11 +54,7 @@ class SubscribeTo extends Component {
 
     const className = this.props.className ? this.props.className : "";
 
-    return (
-      <Telescope.components.CanDo action={action}>
-        <a className={className} onClick={this.onSubscribe}>{intl.formatMessage({id: action})}</a>
-      </Telescope.components.CanDo>
-    );
+    return Users.canDo(currentUser, action) ? <a className={className} onClick={this.onSubscribe}>{this.context.intl.formatMessage({id: action})}</a> : null;
   }
 
 }
@@ -69,14 +63,13 @@ SubscribeTo.propTypes = {
   document: React.PropTypes.object.isRequired,
   documentType: React.PropTypes.string.isRequired,
   className: React.PropTypes.string,
+  currentUser: React.PropTypes.object,
 }
 
 SubscribeTo.contextTypes = {
-  currentUser: React.PropTypes.object,
-  messages: React.PropTypes.object,
   actions: React.PropTypes.object,
   events: React.PropTypes.object,
   intl: intlShape
 };
 
-export default SubscribeTo;
+registerComponent('SubscribeTo', SubscribeTo, withCurrentUser, withMessages);
