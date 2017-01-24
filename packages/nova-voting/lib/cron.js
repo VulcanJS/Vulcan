@@ -3,6 +3,7 @@ import Comments from "meteor/nova:comments";
 import { getSetting } from 'meteor/nova:core';
 import { updateScore } from './scoring.js';
 
+// TODO use a node cron or at least synced-cron
 Meteor.startup(function () {
   const scoreInterval = parseInt(getSetting("scoreUpdateInterval")) || 30;
   if (scoreInterval > 0) {

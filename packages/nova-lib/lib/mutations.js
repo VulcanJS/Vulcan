@@ -77,7 +77,7 @@ export const newMutation = ({ collection, document, currentUser, validate, conte
 
   // run async callbacks
   // note: query for document to get fresh document with collection-hooks effects applied
-  runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser);
+  runCallbacksAsync(`${collectionName}.new.async`, insertedDocument, currentUser, collection);
   
   // console.log("// new mutation finished:")
   // console.log(newDocument)
@@ -128,7 +128,7 @@ export const editMutation = ({ collection, documentId, set, unset, currentUser, 
   const newDocument = collection.findOne(documentId);
 
   // run async callbacks
-  runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser);
+  runCallbacksAsync(`${collectionName}.edit.async`, newDocument, document, currentUser, collection);
 
   // console.log("// edit mutation finished")
   // console.log(newDocument)
@@ -155,7 +155,7 @@ export const removeMutation = ({ collection, documentId, currentUser, validate, 
 
   collection.remove(documentId);
 
-  runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser);
+  runCallbacksAsync(`${collectionName}.remove.async`, document, currentUser, collection);
 
   return document;
 }

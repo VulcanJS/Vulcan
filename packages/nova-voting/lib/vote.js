@@ -135,14 +135,15 @@ export const operateOnItem = function (collection, originalItem, user, operation
       break;
   }
 
-  if (!isSimulation) {
+  if (!isSimulation && context === 'edit') {
 
-    if (context === 'edit') {
-      modifier["$set"] = {inactive: false};
-      collection.update({_id: item._id}, modifier);
-    }
+    modifier["$set"] = {inactive: false};
+    collection.update({_id: item._id}, modifier);
+
     
     // --------------------- Server-Side Async Callbacks --------------------- //
+    // note: the upvote async callbacks on a "new" context (posts.new, comments.new) are
+    // triggered once the insert has been done, see server/callbacks.js
     runCallbacksAsync(operation+".async", item, user, collection, operation, context); 
   
   }
