@@ -37,7 +37,7 @@ import { updateScore } from './scoring.js';
 /**
  * @summary Make users upvote their own new posts (simulation)
  */
-const PostsNewUpvoteOwnPost = (post) => {
+function PostsNewUpvoteOwnPost(post) {
   var postAuthor = Users.findOne(post.userId);
   return {...post, ...operateOnItem(Posts, post, postAuthor, 'upvote', false, 'insert')};
 }
@@ -50,7 +50,7 @@ addCallback("posts.new.sync", PostsNewUpvoteOwnPost);
 /**
  * @summary Make users upvote their own new comments (simulation)
  */
-const CommentsNewUpvoteOwnComment = (comment) => {
+function CommentsNewUpvoteOwnComment(comment) {
   var commentAuthor = Users.findOne(comment.userId);
   return {...comment, ...operateOnItem(Comments, comment, commentAuthor, 'upvote', false, 'insert')};
 }
@@ -67,7 +67,7 @@ addCallback("comments.new.sync", CommentsNewUpvoteOwnComment);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
-const updateItemScore = (item, user, collection, operation, context) => {
+function updateItemScore(item, user, collection, operation, context) {
   updateScore({collection: collection, item: item, forceUpdate: true});
 }
 
@@ -84,7 +84,7 @@ addCallback("cancelDownvote.async", updateItemScore);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
-const updateUser = (item, user, collection, operation, context) => {
+function updateUser(item, user, collection, operation, context) {
   
   // uncomment for debug
   // console.log(item);
@@ -132,7 +132,7 @@ addCallback("cancelDownvote.async", updateUser);
  * @param {object} collection - The collection the item belongs to
  * @param {string} operation - The operation being performed
  */
-const updateKarma = (item, user, collection, operation, context) => {
+function updateKarma(item, user, collection, operation, context) {
 
   const votePower = getVotePower(user);
   const karmaAmount = (operation === "upvote" || operation === "cancelDownvote") ? votePower : -votePower;
@@ -159,9 +159,9 @@ addCallback("cancelDownvote.async", updateKarma);
  * @param {object} user - The user doing the operation
  * @param {object} collection - The collection the item belongs to
  */
-const UpvoteAsyncCallbacksAfterDocumentInsert = (item, user, collection) => {
+function UpvoteAsyncCallbacksAfterDocumentInsert(item, user, collection) {
   runCallbacksAsync("upvote.async", item, user, collection, 'upvote', 'new');
-};
+}
 
 addCallback("posts.new.async", UpvoteAsyncCallbacksAfterDocumentInsert);
 addCallback("comments.new.async", UpvoteAsyncCallbacksAfterDocumentInsert);

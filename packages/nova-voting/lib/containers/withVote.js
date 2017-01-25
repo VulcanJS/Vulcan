@@ -1,10 +1,8 @@
-import Posts from 'meteor/nova:posts';
 import React, { PropTypes, Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { operateOnItem } from '../vote.js';
 
-// to adapt like withNew? or withDocument?
 const withVote = component => {
 
   return graphql(gql`
