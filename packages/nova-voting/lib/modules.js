@@ -9,4 +9,4 @@ import withVote from './containers/withVote.js';
 
 export { withVote };
 export { hasUpvoted, hasDownvoted } from './helpers.js';
-export { operateOnItem } from './vote.js';
+export { operateOnItem, mutateItem } from './vote.js';

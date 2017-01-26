@@ -1,5 +1,5 @@
 import { GraphQLSchema, Utils } from 'meteor/nova:core';
-import { operateOnItem } from './vote.js';
+import { mutateItem, operateOnItem } from './vote.js';
 
 const voteSchema = `
   type Vote {
@@ -35,7 +35,7 @@ const voteResolver = {
     vote(root, {documentId, voteType, collectionName}, context) {
       const collection = context[Utils.capitalize(collectionName)];
       const document = collection.findOne(documentId);
-      return context.Users.canDo(context.currentUser, `${collectionName.toLowerCase()}.${voteType}`) ? operateOnItem(collection, document, context.currentUser, voteType, false) : false;
+      return context.Users.canDo(context.currentUser, `${collectionName.toLowerCase()}.${voteType}`) ? mutateItem(collection, document, context.currentUser, voteType, false) : false;
     },
   },
 };

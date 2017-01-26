@@ -12,11 +12,10 @@ const keepVoteProperties = item => _.pick(item, '__typename', '_id', 'upvoters',
 
 /*
 
-- Simulation mode: runs all the operation and returns an objects without affecting the db.
-- Regular mode: same, but updates the db too.
+Runs all the operation and returns an objects without affecting the db.
 
 */
-export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false, context = 'edit') {
+export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
 
@@ -29,14 +28,13 @@ export const operateOnItem = function (collection, originalItem, user, operation
     ...originalItem,
   }; // we do not want to affect the original item directly
 
-  var votePower = getVotePower(user);
-  var hasUpvotedItem = hasUpvoted(user, item);
-  var hasDownvotedItem = hasDownvoted(user, item);
-  var modifier = {};
+  const votePower = getVotePower(user);
+  const hasUpvotedItem = hasUpvoted(user, item);
+  const hasDownvotedItem = hasDownvoted(user, item);
+  const modifier = {};
 
   // console.log('// operateOnItem')
   // console.log('isSimulation: ',isSimulation)
-  // console.log('context: ',context)
   // console.log('collection: ',collection._name)
   // console.log('operation: ',operation)
   // console.log('item: ',item)
@@ -57,11 +55,12 @@ export const operateOnItem = function (collection, originalItem, user, operation
     return false; 
   }
 
-  const voter = isSimulation ? {__typename: "User", _id: user._id} : user._id;
-
   // ------------------------------ Sync Callbacks ------------------------------ //
+  
+  item = runCallbacks(operation, item, user, operation, isSimulation);
 
-  item = runCallbacks(operation, item, user);
+  const voter = isSimulation ? {__typename: "User", _id: user._id} : user._id;
+  const filterFunction = isSimulation ? u => u._id !== user._id : u => u !== user._id;
 
   switch (operation) {
 
@@ -76,12 +75,6 @@ export const operateOnItem = function (collection, originalItem, user, operation
         baseScore: {$set: item.baseScore + votePower},
       });
       
-      if (!isSimulation) {
-        modifier = {
-          $addToSet: {upvoters: user._id},
-          $inc: {upvotes: 1, baseScore: votePower}
-        }
-      }
       break;
 
     case "downvote":
@@ -95,66 +88,46 @@ export const operateOnItem = function (collection, originalItem, user, operation
         baseScore: {$set: item.baseScore - votePower},
       });
       
-      if (!isSimulation) {
-        modifier = {
-          $addToSet: {downvoters: user._id},
-          $inc: {downvotes: 1, baseScore: -votePower}
-        }
-      }
       break;
 
     case "cancelUpvote":
       item = update(item, {
-        upvoters: {$set: item.upvoters.filter(u => u._id !== user._id)},
+        upvoters: {$set: item.upvoters.filter(filterFunction)},
         upvotes: {$set: item.upvotes - 1},
         baseScore: {$set: item.baseScore - votePower},
       });
-
-      if (!isSimulation) {  
-        modifier = {
-          $pull: {upvoters: user._id},
-          $inc: {upvotes: -1, baseScore: -votePower}
-        };
-      }
       break;
 
     case "cancelDownvote":
 
       item = update(item, {
-        downvoters: {$set: item.downvoters.filter(u => u._id !== user._id)},
+        downvoters: {$set: item.downvoters.filter(filterFunction)},
         downvotes: {$set: item.upvotes - 1},
         baseScore: {$set: item.baseScore + votePower},
       });
       
-      if (!isSimulation) {
-        modifier = {
-          $pull: {downvoters: user._id},
-          $inc: {downvotes: -1, baseScore: votePower}
-        };
-      }
       break;
   }
 
-  if (!isSimulation && context === 'edit') {
+  // console.log('new item', item);
 
-    modifier["$set"] = {inactive: false};
-    collection.update({_id: item._id}, modifier);
-
-    
-    // --------------------- Server-Side Async Callbacks --------------------- //
-    // note: the upvote async callbacks on a "new" context (posts.new, comments.new) are
-    // triggered once the insert has been done, see server/callbacks.js
-    runCallbacksAsync(operation+".async", item, user, collection, operation, context); 
-  
-  }
-
-  const voteResult = item;
-
-  // if (isSimulation) {
-  //   console.log('item from apollo store', voteResult);
-  // } else {
-  //   console.log('item from mongo db', voteResult);
-  // }
-
-  return voteResult;
+  return item;
 };
+
+/*
+
+Call operateOnItem, update the db with the result, run callbacks.
+
+*/
+export const mutateItem = function (collection, originalItem, user, operation) {
+  const newItem = operateOnItem(collection, originalItem, user, operation, false);
+  newItem.inactive = false;
+  collection.update({_id: newItem._id}, newItem, {bypassCollection2:true});
+
+  // --------------------- Server-Side Async Callbacks --------------------- //
+  // note: the upvote async callbacks on a "new" context (posts.new, comments.new) are
+  // triggered once the insert has been done, see server/callbacks.js
+  runCallbacksAsync(operation+".async", newItem, user, collection, operation); 
+  
+  return newItem;
+}
