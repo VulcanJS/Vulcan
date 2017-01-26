@@ -35,11 +35,11 @@ import { updateScore } from './scoring.js';
 // -------------------------- posts.new.sync ------------------------------- //
 
 /**
- * @summary Make users upvote their own new posts (simulation)
+ * @summary Make users upvote their own new posts
  */
 function PostsNewUpvoteOwnPost(post) {
   var postAuthor = Users.findOne(post.userId);
-  return {...post, ...operateOnItem(Posts, post, postAuthor, 'upvote', false, 'insert')};
+  return {...post, ...operateOnItem(Posts, post, postAuthor, 'upvote', false)};
 }
 
 addCallback("posts.new.sync", PostsNewUpvoteOwnPost);
@@ -48,11 +48,11 @@ addCallback("posts.new.sync", PostsNewUpvoteOwnPost);
 // ----------------------- comments.new.sync ------------------------------- //
 
 /**
- * @summary Make users upvote their own new comments (simulation)
+ * @summary Make users upvote their own new comments
  */
 function CommentsNewUpvoteOwnComment(comment) {
   var commentAuthor = Users.findOne(comment.userId);
-  return {...comment, ...operateOnItem(Comments, comment, commentAuthor, 'upvote', false, 'insert')};
+  return {...comment, ...operateOnItem(Comments, comment, commentAuthor, 'upvote', false)};
 }
 
 addCallback("comments.new.sync", CommentsNewUpvoteOwnComment);
@@ -160,7 +160,7 @@ addCallback("cancelDownvote.async", updateKarma);
  * @param {object} collection - The collection the item belongs to
  */
 function UpvoteAsyncCallbacksAfterDocumentInsert(item, user, collection) {
-  runCallbacksAsync("upvote.async", item, user, collection, 'upvote', 'new');
+  runCallbacksAsync("upvote.async", item, user, collection, 'upvote');
 }
 
 addCallback("posts.new.async", UpvoteAsyncCallbacksAfterDocumentInsert);

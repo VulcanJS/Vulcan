@@ -15,7 +15,7 @@ const keepVoteProperties = item => _.pick(item, '__typename', '_id', 'upvoters',
 Runs all the operation and returns an objects without affecting the db.
 
 */
-export const operateOnItem = function (collection, originalItem, user, operation, isSimulation = false) {
+export const operateOnItem = function (collection, originalItem, user, operation, isClient = false) {
 
   user = typeof user === "undefined" ? Meteor.user() : user;
 
@@ -34,7 +34,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
   const modifier = {};
 
   // console.log('// operateOnItem')
-  // console.log('isSimulation: ',isSimulation)
+  // console.log('isClient: ',isClient)
   // console.log('collection: ',collection._name)
   // console.log('operation: ',operation)
   // console.log('item: ',item)
@@ -57,16 +57,25 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
   // ------------------------------ Sync Callbacks ------------------------------ //
   
-  item = runCallbacks(operation, item, user, operation, isSimulation);
+  item = runCallbacks(operation, item, user, operation, isClient);
 
-  const voter = isSimulation ? {__typename: "User", _id: user._id} : user._id;
-  const filterFunction = isSimulation ? u => u._id !== user._id : u => u !== user._id;
+  /*
+
+  voters arrays have different structures on client and server:
+  
+  - client: [{__typename: "User", _id: 'foo123'}]
+  - server: ['foo123']
+  
+  */
+
+  const voter = isClient ? {__typename: "User", _id: user._id} : user._id;
+  const filterFunction = isClient ? u => u._id !== user._id : u => u !== user._id;
 
   switch (operation) {
 
     case "upvote":
       if (hasDownvotedItem) {
-        operateOnItem(collection, item, user, "cancelDownvote", isSimulation, context);
+        operateOnItem(collection, item, user, "cancelDownvote", isClient);
       }
 
       item = update(item, {
@@ -79,7 +88,7 @@ export const operateOnItem = function (collection, originalItem, user, operation
 
     case "downvote":
       if (hasUpvotedItem) {
-        operateOnItem(collection, item, user, "cancelUpvote", isSimulation, context);
+        operateOnItem(collection, item, user, "cancelUpvote", isClient);
       }
 
       item = update(item, {
@@ -125,8 +134,6 @@ export const mutateItem = function (collection, originalItem, user, operation) {
   collection.update({_id: newItem._id}, newItem, {bypassCollection2:true});
 
   // --------------------- Server-Side Async Callbacks --------------------- //
-  // note: the upvote async callbacks on a "new" context (posts.new, comments.new) are
-  // triggered once the insert has been done, see server/callbacks.js
   runCallbacksAsync(operation+".async", newItem, user, collection, operation); 
   
   return newItem;
