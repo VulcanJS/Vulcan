@@ -9,12 +9,6 @@ const ReactRouterSSR = {
       clientOptions = {};
     }
 
-    let history = browserHistory;
-
-    if(typeof clientOptions.historyHook === 'function') {
-      history = clientOptions.historyHook(history);
-    }
-
     Meteor.startup(function() {
       const rootElementName = clientOptions.rootElement || 'react-app';
       const rootElementType = clientOptions.rootElementType || 'div';
@@ -45,6 +39,12 @@ const ReactRouterSSR = {
           const rehydratedData = data ? JSON.parse(data) : undefined;
           clientOptions.rehydrateHook(rehydratedData);
         });
+      }
+
+      let history = browserHistory;
+
+      if(typeof clientOptions.historyHook === 'function') {
+        history = clientOptions.historyHook(history);
       }
 
       let app = (
