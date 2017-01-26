@@ -4,7 +4,7 @@ HoC that provides access to flash messages stored in Redux state and actions to 
 
 */
 
-import { Actions, addAction, addReducer } from 'meteor/nova:lib';
+import { getActions, addAction, addReducer } from 'meteor/nova:lib';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -43,8 +43,8 @@ addReducer({
   messages: (state = [], action) => {
     // default values
     const flashType = typeof action.flashType === 'undefined' ? 'error' : action.flashType;
-    const currentMsg = typeof action.i === 'undefined' ? {} : state[action.i]; 
-    
+    const currentMsg = typeof action.i === 'undefined' ? {} : state[action.i];
+
     switch(action.type) {
       case 'FLASH':
         return [
@@ -57,7 +57,7 @@ addReducer({
           { ...currentMsg, seen: true },
           ...state.slice(action.i + 1),
         ];
-      case 'CLEAR': 
+      case 'CLEAR':
         return [
           ...state.slice(0, action.i),
           { ...currentMsg, show: false },
@@ -72,7 +72,7 @@ addReducer({
 });
 
 const mapStateToProps = state => ({ messages: state.messages, });
-const mapDispatchToProps = dispatch => bindActionCreators(Actions.messages, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(getActions().messages, dispatch);
 
 const withMessages = component => connect(mapStateToProps, mapDispatchToProps)(component);
 

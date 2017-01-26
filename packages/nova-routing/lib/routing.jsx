@@ -6,18 +6,18 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { getDataFromTree, ApolloProvider } from 'react-apollo';
 import { meteorClientConfig } from 'meteor/nova:apollo';
-import { Components, populateComponentsApp, Actions, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
+import { Components, populateComponentsApp, getActions, runCallbacks, addRoute, Routes, populateRoutesApp, configureStore, addReducer, addMiddleware } from 'meteor/nova:core';
 import { applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 
 Meteor.startup(function initNovaRoutesAndApollo() {
-  
+
   // note: route defined here because it "shouldn't be removable"
   addRoute({name:"app.notfound", path:"*", componentName: 'Error404'});
-  
+
   // uncomment for debug
   // console.log('// --> starting routing');
-  
+
   // init the application components and routes, including components & routes from 3rd-party packages
   populateComponentsApp();
   populateRoutesApp();
@@ -58,7 +58,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       client = new ApolloClient(meteorClientConfig({cookieLoginToken: loginToken}));
       const reducers = addReducer({apollo: client.reducer()});
       const middleware = addMiddleware(client.middleware());
-      
+
       // configure the redux store
       store = configureStore(reducers, initialState, middleware);
 
@@ -68,7 +68,7 @@ Meteor.startup(function initNovaRoutesAndApollo() {
       onUpdate: () => {
         runCallbacks('router.onUpdate');
         // clear all previous messages
-        store.dispatch(Actions.messages.clearSeen());
+        store.dispatch(getActions().messages.clearSeen());
       },
       render: applyRouterMiddleware(useScroll())
     },
