@@ -194,6 +194,7 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
 
       global.__STYLE_COLLECTOR_MODULES__ = [];
       global.__STYLE_COLLECTOR__ = '';
+      req.css = '';
 
       renderProps = {
         ...renderProps,
@@ -228,6 +229,8 @@ function generateSSRData(clientOptions, serverOptions, req, res, renderProps) {
       if (serverOptions.postRender) {
         serverOptions.postRender(req, res);
       }
+
+      css = css + req.css;
 
       // I'm pretty sure this could be avoided in a more elegant way?
       const context = FastRender.frContext.get();
